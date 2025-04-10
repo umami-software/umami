@@ -45,8 +45,8 @@ importers:
         specifier: ^0.16.0
         version: 0.16.0(@prisma/client@6.5.0(prisma@6.5.0(typescript@5.8.3))(typescript@5.8.3))(@prisma/extension-read-replicas@0.4.1(@prisma/client@6.5.0(prisma@6.5.0(typescript@5.8.3))(typescript@5.8.3)))
       '@umami/react-zen':
-        specifier: ^0.79.0
-        version: 0.79.0(@babel/core@7.26.9)(@types/react@19.1.0)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.0))
+        specifier: ^0.81.0
+        version: 0.81.0(@babel/core@7.26.9)(@types/react@19.1.0)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.0))
       '@umami/redis-client':
         specifier: ^0.27.0
         version: 0.27.0
@@ -2946,8 +2946,8 @@ packages:
       '@prisma/client': ^4.8.0
       '@prisma/extension-read-replicas': ^0.3.0
 
-  '@umami/react-zen@0.79.0':
-    resolution: {integrity: sha512-qumZSV/dWvtq7iR7QwxEO5emE/jzgI5uPP5Y1E9S+MMGnJRhD5gQ1TvURf+jYAlTuiPubLysu6U3nKYmPNJxUg==}
+  '@umami/react-zen@0.81.0':
+    resolution: {integrity: sha512-DmwttqG+rhllcyqdCusxZ0MLVPSjIv4BXPsz7M1CED8I6wrz2MzG7euZgkJY1GMLtLPscisTooCqSG/RzwhhjQ==}
 
   '@umami/redis-client@0.27.0':
     resolution: {integrity: sha512-SbHTpxhgeZyTBUSp2zdZM+XUtpsaSL4Tad8QXIEhEtjWhvvfoornyT5kLuyYCVtzSAT4daALeGmOO1z6EE1KcA==}
@@ -10572,7 +10572,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@umami/react-zen@0.79.0(@babel/core@7.26.9)(@types/react@19.1.0)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.0))':
+  '@umami/react-zen@0.81.0(@babel/core@7.26.9)(@types/react@19.1.0)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.0))':
     dependencies:
       '@fontsource/jetbrains-mono': 5.2.5
       '@react-aria/focus': 3.20.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)

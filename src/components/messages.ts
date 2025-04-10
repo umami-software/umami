@@ -299,6 +299,7 @@ export const labels = defineMessages({
   grouped: { id: 'label.grouped', defaultMessage: 'Grouped' },
   other: { id: 'label.other', defaultMessage: 'Other' },
   boards: { id: 'label.boards', defaultMessage: 'Boards' },
+  apply: { id: 'label.apply', defaultMessage: 'Apply' },
 });
 
 export const messages = defineMessages({

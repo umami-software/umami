@@ -22,7 +22,7 @@ export function EventsPage({ websiteId }) {
         <EventsMetricsBar websiteId={websiteId} />
       </Panel>
       <GridRow layout="two-one">
-        <Panel>
+        <Panel gridColumn="span 2">
           <EventsChart websiteId={websiteId} />
         </Panel>
         <Panel>

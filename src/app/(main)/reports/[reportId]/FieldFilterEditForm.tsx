@@ -7,7 +7,6 @@ import {
   Column,
   Row,
   Select,
-  Flexbox,
   Icon,
   Icons,
   Loading,
@@ -130,15 +129,17 @@ export function FieldFilterEditForm({
     window.setTimeout(() => setShowMenu(false), 500);
   };
 
+  const items = filterDropdownItems(name);
+
   return (
     <Column>
       <Row className={styles.filter}>
         <Label>{label}</Label>
-        <Flexbox gap="3">
+        <Row gap="3">
           {allowFilterSelect && (
             <Select
               className={styles.dropdown}
-              items={filterDropdownItems(name)}
+              items={items}
               value={operator}
               onChange={handleOperatorChange}
             >
@@ -183,7 +184,7 @@ export function FieldFilterEditForm({
               onChange={e => setValue(e.target.value)}
             />
           )}
-        </Flexbox>
+        </Row>
         <Button variant="primary" onPress={handleAdd} isDisabled={isDisabled}>
           {formatMessage(isNew ? labels.add : labels.update)}
         </Button>

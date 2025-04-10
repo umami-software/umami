@@ -20,7 +20,7 @@ export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
   const { formatMessage, labels } = useMessages();
 
   const handleSelect = (key: any) => {
-    router.push(renderUrl({ view: key }), { scroll: false });
+    router.push(renderUrl({ view: key }));
   };
 
   const buttons = [

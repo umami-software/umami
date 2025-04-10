@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Icon, Text, Flexbox } from '@umami/react-zen';
+import { Icon, Text, Column } from '@umami/react-zen';
 import { Icons } from '@/components/icons';
 
 export interface EmptyPlaceholderProps {
@@ -9,12 +9,12 @@ export interface EmptyPlaceholderProps {
 
 export function EmptyPlaceholder({ message, children }: EmptyPlaceholderProps) {
   return (
-    <Flexbox direction="column" alignItems="center" justifyContent="center" gap={60} height={600}>
+    <Column alignItems="center" justifyContent="center" gap="5" height="100%" width="100%">
       <Icon size="xl">
         <Icons.Logo />
       </Icon>
       <Text size="lg">{message}</Text>
       <div>{children}</div>
-    </Flexbox>
+    </Column>
   );
 }

@@ -22,7 +22,7 @@ export function SessionsPage({ websiteId }) {
         <SessionsMetricsBar websiteId={websiteId} />
       </Panel>
       <GridRow layout="two-one">
-        <Panel padding="0">
+        <Panel padding="0" gridColumn="span 2">
           <WorldMap websiteId={websiteId} />
         </Panel>
         <Panel>

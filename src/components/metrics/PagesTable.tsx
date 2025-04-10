@@ -20,7 +20,7 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
   const { domain } = useContext(WebsiteContext);
 
   const handleSelect = (key: any) => {
-    router.push(renderUrl({ view: key }), { scroll: false });
+    router.push(renderUrl({ view: key }));
   };
 
   const buttons = [

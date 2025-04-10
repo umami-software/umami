@@ -30,7 +30,7 @@ export function FilterSelectForm({
   return (
     <FieldFilterEditForm
       websiteId={websiteId}
-      name={name}
+      name={name || 'url'}
       label={label}
       type={type}
       startDate={startDate}

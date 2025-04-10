@@ -18,8 +18,8 @@ export function useNavigation() {
     return obj;
   }, [params]);
 
-  function renderUrl(params: any, reset?: boolean) {
-    return reset ? pathname : buildUrl(pathname, { ...query, ...params });
+  function renderUrl(params: any) {
+    return !params ? pathname : buildUrl(pathname, { ...query, ...params });
   }
 
   function renderTeamUrl(url: string) {

@@ -26,7 +26,7 @@ export function TimezoneSetting() {
     <Row gap="3">
       <Select
         className={styles.dropdown}
-        value={timezone}
+        selectedKey={timezone}
         onChange={(value: any) => saveTimezone(value)}
         allowSearch={true}
         onSearch={setSearch}

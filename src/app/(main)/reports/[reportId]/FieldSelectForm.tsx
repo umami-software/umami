@@ -11,11 +11,11 @@ export function FieldSelectForm({ fields = [], onSelect, showType = true }: Fiel
   const { formatMessage, labels } = useMessages();
 
   return (
-    <Menu>
-      <MenuSection title={formatMessage(labels.fields)}>
+    <Menu onAction={value => onSelect?.(value)}>
+      <MenuSection title={formatMessage(labels.fields)} selectionMode="multiple">
         {fields.map(({ name, label, type }) => {
           return (
-            <MenuItem key={name} id={name} onAction={() => onSelect(name)}>
+            <MenuItem key={name} id={name}>
               <Row alignItems="center" justifyContent="space-between">
                 <Text>{label || name}</Text>
                 {showType && type && <Text color="muted">{type}</Text>}

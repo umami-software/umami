@@ -1,7 +1,7 @@
-import { Button, Icon, Icons, MenuTrigger, Popover, Text } from '@umami/react-zen';
-import { FilterSelectForm } from '@/app/(main)/reports/[reportId]/FilterSelectForm';
-import { useFields, useMessages, useNavigation, useDateRange } from '@/components/hooks';
-import { OPERATOR_PREFIXES } from '@/lib/constants';
+import { Button, Icon, Icons, DialogTrigger, Dialog, Modal, Text } from '@umami/react-zen';
+import { FilterEditForm } from '@/components/common/FilterEditForm';
+import { useMessages, useNavigation, useFilters } from '@/components/hooks';
+import { OPERATORS } from '@/lib/constants';
 
 export function WebsiteFilterButton({
   websiteId,
@@ -14,41 +14,44 @@ export function WebsiteFilterButton({
 }) {
   const { formatMessage, labels } = useMessages();
   const { renderUrl, router } = useNavigation();
-  const { fields } = useFields();
-  const {
-    dateRange: { startDate, endDate },
-  } = useDateRange(websiteId);
+  const { filters } = useFilters();
 
-  const handleAddFilter = ({ name, operator, value }) => {
-    const prefix = OPERATOR_PREFIXES[operator];
+  const handleChange = (filters: any[]) => {
+    const params = filters.reduce((obj, filter) => {
+      const { name, operator, value } = filter;
 
-    router.push(renderUrl({ [name]: prefix + value }));
+      obj[name] = operator === OPERATORS.equals ? value : `${operator}~${value}`;
+
+      return obj;
+    }, {});
+
+    const url = renderUrl(params);
+
+    router.push(url);
   };
 
   return (
-    <MenuTrigger>
+    <DialogTrigger>
       <Button variant="quiet">
         <Icon>
           <Icons.Plus />
         </Icon>
         {showText && <Text>{formatMessage(labels.filter)}</Text>}
       </Button>
-      <Popover placement="bottom start">
-        {({ close }: any) => {
-          return (
-            <FilterSelectForm
-              websiteId={websiteId}
-              fields={fields}
-              startDate={startDate}
-              endDate={endDate}
-              onChange={value => {
-                handleAddFilter(value);
-                close();
-              }}
-            />
-          );
-        }}
-      </Popover>
-    </MenuTrigger>
+      <Modal>
+        <Dialog>
+          {({ close }) => {
+            return (
+              <FilterEditForm
+                websiteId={websiteId}
+                data={filters}
+                onChange={handleChange}
+                onClose={close}
+              />
+            );
+          }}
+        </Dialog>
+      </Modal>
+    </DialogTrigger>
   );
 }
