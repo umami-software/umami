@@ -9,6 +9,7 @@ const apiHeaders = {
   'Access-Control-Allow-Headers': '*',
   'Access-Control-Allow-Methods': 'GET, DELETE, POST, PUT',
   'Access-Control-Max-Age': process.env.CORS_MAX_AGE || '86400',
+  'Cache-Control': 'no-cache',
 };
 
 const trackerHeaders = {
