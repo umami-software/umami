@@ -61,7 +61,7 @@ async function relationalQuery(
         and we.session_id = m.session_id
     ${currency ? '' : `where we.${utmColumn} != ''`}  
     group by 1
-    order by name desc
+    order by 2 desc
     limit 20`;
   }
 
@@ -269,7 +269,7 @@ async function clickhouseQuery(
         and we.session_id = m.session_id
     ${currency ? '' : `where we.${utmColumn} != ''`}  
     group by 1
-    order by name desc
+    order by 2 desc
     limit 20`;
   }
 
@@ -361,7 +361,12 @@ async function clickhouseQuery(
     `
     ${currency ? revenueEventQuery : eventQuery}
     ${getModelQuery(model)}
-    select multiIf(gclid != '', 'Google', fbclid != '', 'Facebook', '') name,
+    select multiIf(gclid != '', 'Google Ads', 
+                   fbclid != '', 'Facebook / Meta', 
+                   msclkid != '', 'Microsoft Ads', 
+                   ttclid != '', 'TikTok Ads', 
+                   li_fat_id != '', '	LinkedIn Ads', 
+                   twclid != '', 'Twitter Ads (X)','') name,
         ${currency ? 'sum(e.value)' : 'uniqExact(we.session_id)'} value
     from events e
     join model m
