@@ -146,6 +146,21 @@ export async function POST(request: Request) {
       const urlQuery = currentUrl.search.substring(1);
       const urlDomain = currentUrl.hostname.replace(/^www./, '');
 
+      // UTM Params
+      const utmSource = currentUrl.searchParams.get('utm_source');
+      const utmMedium = currentUrl.searchParams.get('utm_medium');
+      const utmCampaign = currentUrl.searchParams.get('utm_campaign');
+      const utmContent = currentUrl.searchParams.get('utm_content');
+      const utmTerm = currentUrl.searchParams.get('utm_term');
+
+      // Click IDs
+      const gclid = currentUrl.searchParams.get('gclid');
+      const fbclid = currentUrl.searchParams.get('fbclid');
+      const msclkid = currentUrl.searchParams.get('msclkid');
+      const ttclid = currentUrl.searchParams.get('ttclid');
+      const lifatid = currentUrl.searchParams.get('li_fat_id');
+      const twclid = currentUrl.searchParams.get('twclid');
+
       if (process.env.REMOVE_TRAILING_SLASH) {
         urlPath = urlPath.replace(/(.+)\/$/, '$1');
       }
@@ -171,10 +186,21 @@ export async function POST(request: Request) {
         visitId,
         urlPath: safeDecodeURI(urlPath),
         urlQuery,
+        utmSource,
+        utmMedium,
+        utmCampaign,
+        utmContent,
+        utmTerm,
         referrerPath: safeDecodeURI(referrerPath),
         referrerQuery,
         referrerDomain,
         pageTitle: safeDecodeURIComponent(title),
+        gclid,
+        fbclid,
+        msclkid,
+        ttclid,
+        lifatid,
+        twclid,
         eventName: name,
         eventData: data,
         hostname: hostname || urlDomain,

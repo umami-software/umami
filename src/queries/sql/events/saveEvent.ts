@@ -12,10 +12,21 @@ export async function saveEvent(args: {
   visitId: string;
   urlPath: string;
   urlQuery?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmContent?: string;
+  utmTerm?: string;
   referrerPath?: string;
   referrerQuery?: string;
   referrerDomain?: string;
   pageTitle?: string;
+  gclid?: string;
+  fbclid?: string;
+  msclkid?: string;
+  ttclid?: string;
+  lifatid?: string;
+  twclid?: string;
   eventName?: string;
   eventData?: any;
   hostname?: string;
@@ -43,9 +54,20 @@ async function relationalQuery(data: {
   visitId: string;
   urlPath: string;
   urlQuery?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmContent?: string;
+  utmTerm?: string;
   referrerPath?: string;
   referrerQuery?: string;
   referrerDomain?: string;
+  gclid?: string;
+  fbclid?: string;
+  msclkid?: string;
+  ttclid?: string;
+  lifatid?: string;
+  twclid?: string;
   pageTitle?: string;
   eventName?: string;
   eventData?: any;
@@ -58,12 +80,23 @@ async function relationalQuery(data: {
     visitId,
     urlPath,
     urlQuery,
+    utmSource,
+    utmMedium,
+    utmCampaign,
+    utmContent,
+    utmTerm,
     referrerPath,
     referrerQuery,
     referrerDomain,
     eventName,
     eventData,
     pageTitle,
+    gclid,
+    fbclid,
+    msclkid,
+    ttclid,
+    lifatid,
+    twclid,
     tag,
     createdAt,
   } = data;
@@ -77,10 +110,21 @@ async function relationalQuery(data: {
       visitId,
       urlPath: urlPath?.substring(0, URL_LENGTH),
       urlQuery: urlQuery?.substring(0, URL_LENGTH),
+      utmSource,
+      utmMedium,
+      utmCampaign,
+      utmContent,
+      utmTerm,
       referrerPath: referrerPath?.substring(0, URL_LENGTH),
       referrerQuery: referrerQuery?.substring(0, URL_LENGTH),
       referrerDomain: referrerDomain?.substring(0, URL_LENGTH),
       pageTitle: pageTitle?.substring(0, PAGE_TITLE_LENGTH),
+      gclid,
+      fbclid,
+      msclkid,
+      ttclid,
+      lifatid,
+      twclid,
       eventType: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
       eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
       tag,
@@ -109,10 +153,21 @@ async function clickhouseQuery(data: {
   visitId: string;
   urlPath: string;
   urlQuery?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmContent?: string;
+  utmTerm?: string;
   referrerPath?: string;
   referrerQuery?: string;
   referrerDomain?: string;
   pageTitle?: string;
+  gclid?: string;
+  fbclid?: string;
+  msclkid?: string;
+  ttclid?: string;
+  lifatid?: string;
+  twclid?: string;
   eventName?: string;
   eventData?: any;
   hostname?: string;
@@ -134,9 +189,20 @@ async function clickhouseQuery(data: {
     visitId,
     urlPath,
     urlQuery,
+    utmSource,
+    utmMedium,
+    utmCampaign,
+    utmContent,
+    utmTerm,
     referrerPath,
     referrerQuery,
     referrerDomain,
+    gclid,
+    fbclid,
+    msclkid,
+    ttclid,
+    lifatid,
+    twclid,
     pageTitle,
     eventName,
     eventData,
@@ -169,10 +235,21 @@ async function clickhouseQuery(data: {
     city: city,
     url_path: urlPath?.substring(0, URL_LENGTH),
     url_query: urlQuery?.substring(0, URL_LENGTH),
+    utm_source: utmSource,
+    utm_medium: utmMedium,
+    utm_campaign: utmCampaign,
+    utm_content: utmContent,
+    utm_term: utmTerm,
     referrer_path: referrerPath?.substring(0, URL_LENGTH),
     referrer_query: referrerQuery?.substring(0, URL_LENGTH),
     referrer_domain: referrerDomain?.substring(0, URL_LENGTH),
     page_title: pageTitle?.substring(0, PAGE_TITLE_LENGTH),
+    gclid: gclid,
+    fbclid: fbclid,
+    msclkid: msclkid,
+    ttclid: ttclid,
+    li_fat_id: lifatid,
+    twclid: twclid,
     event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
     tag: tag,
