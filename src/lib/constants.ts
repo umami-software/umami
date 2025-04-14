@@ -124,6 +124,7 @@ export const REPORT_TYPES = {
   utm: 'utm',
   journey: 'journey',
   revenue: 'revenue',
+  attribution: 'attribution',
 } as const;
 
 export const REPORT_PARAMETERS = {
