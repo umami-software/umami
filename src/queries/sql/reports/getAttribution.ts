@@ -1,34 +1,17 @@
 import clickhouse from '@/lib/clickhouse';
+import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 
-const formatResults = (steps: { type: string; value: string }[]) => (results: unknown) => {
-  return steps.map((step: { type: string; value: string }, i: number) => {
-    const visitors = Number(results[i]?.count) || 0;
-    const previous = Number(results[i - 1]?.count) || 0;
-    const dropped = previous > 0 ? previous - visitors : 0;
-    const dropoff = 1 - visitors / previous;
-    const remaining = visitors / Number(results[0].count);
-
-    return {
-      ...step,
-      visitors,
-      previous,
-      dropped,
-      dropoff,
-      remaining,
-    };
-  });
-};
-
-export async function getFunnel(
+export async function getAttribution(
   ...args: [
     websiteId: string,
     criteria: {
-      windowMinutes: number;
       startDate: Date;
       endDate: Date;
+      model: string;
       steps: { type: string; value: string }[];
+      currency: string;
     },
   ]
 ) {
@@ -41,210 +24,452 @@ export async function getFunnel(
 async function relationalQuery(
   websiteId: string,
   criteria: {
-    windowMinutes: number;
     startDate: Date;
     endDate: Date;
+    model: string;
     steps: { type: string; value: string }[];
+    currency: string;
   },
-): Promise<
-  {
-    value: string;
-    visitors: number;
-    dropoff: number;
-  }[]
-> {
-  const { windowMinutes, startDate, endDate, steps } = criteria;
-  const { rawQuery, getAddIntervalQuery } = prisma;
-  const { levelOneQuery, levelQuery, sumQuery, params } = getFunnelQuery(steps, windowMinutes);
+): Promise<{
+  referrer: { name: string; value: number }[];
+  paidAds: { name: string; value: number }[];
+  utm_source: { name: string; value: number }[];
+  utm_medium: { name: string; value: number }[];
+  utm_campaign: { name: string; value: number }[];
+  utm_content: { name: string; value: number }[];
+  utm_term: { name: string; value: number }[];
+  total: { pageviews: number; visitors: number; visits: number };
+}> {
+  const { startDate, endDate, model, steps, currency } = criteria;
+  const { rawQuery } = prisma;
+  const conversionStep = steps[0].value;
+  const eventType = steps[0].type === 'url' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
+  const column = steps[0].type === 'url' ? 'url_path' : 'event_name';
+  //const db = getDatabaseType();
+  //const like = db === POSTGRESQL ? 'ilike' : 'like';
 
-  function getFunnelQuery(
-    steps: { type: string; value: string }[],
-    windowMinutes: number,
-  ): {
-    levelOneQuery: string;
-    levelQuery: string;
-    sumQuery: string;
-    params: string[];
-  } {
-    return steps.reduce(
-      (pv, cv, i) => {
-        const levelNumber = i + 1;
-        const startSum = i > 0 ? 'union ' : '';
-        const isURL = cv.type === 'url';
-        const column = isURL ? 'url_path' : 'event_name';
-
-        let operator = '=';
-        let paramValue = cv.value;
-
-        if (cv.value.startsWith('*') || cv.value.endsWith('*')) {
-          operator = 'like';
-          paramValue = cv.value.replace(/^\*|\*$/g, '%');
-        }
-
-        if (levelNumber === 1) {
-          pv.levelOneQuery = `
-          WITH level1 AS (
-            select distinct session_id, created_at
-            from website_event
-            where website_id = {{websiteId::uuid}}
-              and created_at between {{startDate}} and {{endDate}}
-              and ${column} ${operator} {{${i}}}
-          )`;
-        } else {
-          pv.levelQuery += `
-          , level${levelNumber} AS (
-            select distinct we.session_id, we.created_at
-            from level${i} l
-            join website_event we
-                on l.session_id = we.session_id
-            where we.website_id = {{websiteId::uuid}}
-                and we.created_at between l.created_at and ${getAddIntervalQuery(
-                  `l.created_at `,
-                  `${windowMinutes} minute`,
-                )}
-                and we.${column} ${operator} {{${i}}}
-                and we.created_at <= {{endDate}}
-          )`;
-        }
-
-        pv.sumQuery += `\n${startSum}select ${levelNumber} as level, count(distinct(session_id)) as count from level${levelNumber}`;
-        pv.params.push(paramValue);
-
-        return pv;
-      },
-      {
-        levelOneQuery: '',
-        levelQuery: '',
-        sumQuery: '',
-        params: [],
-      },
-    );
+  function getUTMQuery(utmColumn: string) {
+    return `
+    select 
+        we.${utmColumn} name,
+        ${currency ? 'sum(e.value)' : 'uniqExact(we.session_id)'} value
+    from events e
+    join model m
+    on m.session_id = e.session_id
+    join website_event we
+    on we.created_at = m.created_at
+        and we.session_id = m.session_id
+    ${currency ? '' : `where we.${utmColumn} != ''`}  
+    group by 1
+    order by name desc
+    limit 20`;
   }
 
-  return rawQuery(
+  const eventQuery = `WITH events AS (
+        select distinct
+            session_id,
+            max(created_at) max_dt
+        from website_event
+        where website_id = {websiteId:UUID}
+          and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+          and ${column} = {conversionStep:String}
+          and event_type = {eventType:UInt32}
+        group by 1),`;
+
+  const revenueEventQuery = `WITH events AS (
+          select
+              ed.session_id,
+              max(ed.created_at) max_dt,
+              sum(coalesce(toDecimal64(number_value, 2), toDecimal64(string_value, 2))) as value
+          from event_data ed
+          join (select event_id
+                from event_data
+                where website_id = {websiteId:UUID}
+                  and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+                  and positionCaseInsensitive(data_key, 'currency') > 0
+                  and string_value = {currency:String}) c
+            on c.event_id = ed.event_id
+          where website_id = {websiteId:UUID}
+            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+            and ${column} = {conversionStep:String} 
+            and positionCaseInsensitive(ed.data_key, 'revenue') > 0
+          group by 1),`;
+
+  function getModelQuery(model: string) {
+    return model === 'firstClick'
+      ? `\n 
+    model AS (select e.session_id,
+        min(we.created_at) created_at
+    from events e
+    join website_event we
+    on we.session_id = e.session_id
+    group by e.session_id)`
+      : `\n 
+    model AS (select e.session_id,
+        max(we.created_at) created_at
+    from events e
+    join website_event we
+    on we.session_id = e.session_id
+    where we.created_at < e.max_dt
+    group by e.session_id)`;
+  }
+
+  const referrerRes = await rawQuery(
     `
-    ${levelOneQuery}
-    ${levelQuery}
-    ${sumQuery}
-    ORDER BY level;
+    ${currency ? revenueEventQuery : eventQuery}
+    ${getModelQuery(model)}
+    select we.referrer_domain name,
+        ${currency ? 'sum(e.value)' : 'uniqExact(we.session_id)'} value
+    from events e
+    join model m
+    on m.session_id = e.session_id
+    join website_event we
+    on we.created_at = m.created_at
+        and we.session_id = m.session_id
+    ${
+      currency
+        ? ''
+        : `where referrer_domain != hostname
+      and we.referrer_domain != ''`
+    }  
+    group by 1
+    order by 2 desc
+    limit 20
     `,
-    {
-      websiteId,
-      startDate,
-      endDate,
-      ...params,
-    },
-  ).then(formatResults(steps));
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  );
+
+  const paidAdsres = await rawQuery(
+    `
+    ${currency ? revenueEventQuery : eventQuery}
+    ${getModelQuery(model)}
+    select multiIf(gclid != '', 'Google', fbclid != '', 'Facebook', '') name,
+        ${currency ? 'sum(e.value)' : 'uniqExact(we.session_id)'} value
+    from events e
+    join model m
+    on m.session_id = e.session_id
+    join website_event we
+    on we.created_at = m.created_at
+        and we.session_id = m.session_id
+    ${currency ? '' : `WHERE name != ''`}
+    group by 1
+    order by 2 desc
+    limit 20
+    `,
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  );
+
+  const sourceRes = await rawQuery(
+    `
+    ${currency ? revenueEventQuery : eventQuery}
+    ${getModelQuery(model)}
+    ${getUTMQuery('utm_source')}
+    `,
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  );
+
+  const mediumRes = await rawQuery(
+    `
+    ${currency ? revenueEventQuery : eventQuery}
+    ${getModelQuery(model)}
+    ${getUTMQuery('utm_medium')}
+    `,
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  );
+
+  const campaignRes = await rawQuery(
+    `
+    ${currency ? revenueEventQuery : eventQuery}
+    ${getModelQuery(model)}
+    ${getUTMQuery('utm_campaign')}
+    `,
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  );
+
+  const contentRes = await rawQuery(
+    `
+    ${currency ? revenueEventQuery : eventQuery}
+    ${getModelQuery(model)}
+    ${getUTMQuery('utm_content')}
+    `,
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  );
+
+  const termRes = await rawQuery(
+    `
+    ${currency ? revenueEventQuery : eventQuery}
+    ${getModelQuery(model)}
+    ${getUTMQuery('utm_term')}
+    `,
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  );
+
+  const totalRes = await rawQuery(
+    `
+    select 
+        count(*) as "pageviews",
+        uniqExact(session_id) as "visitors",
+        uniqExact(visit_id) as "visits"
+    from website_event
+    where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and ${column} = {conversionStep:String}
+        and event_type = {eventType:UInt32}
+    `,
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  ).then(result => result?.[0]);
+
+  return {
+    referrer: referrerRes,
+    paidAds: paidAdsres,
+    utm_source: sourceRes,
+    utm_medium: mediumRes,
+    utm_campaign: campaignRes,
+    utm_content: contentRes,
+    utm_term: termRes,
+    total: totalRes,
+  };
 }
 
 async function clickhouseQuery(
   websiteId: string,
   criteria: {
-    windowMinutes: number;
     startDate: Date;
     endDate: Date;
+    model: string;
     steps: { type: string; value: string }[];
+    currency: string;
   },
-): Promise<
-  {
-    value: string;
-    visitors: number;
-    dropoff: number;
-  }[]
-> {
-  const { windowMinutes, startDate, endDate, steps } = criteria;
+): Promise<{
+  referrer: { name: string; value: number }[];
+  paidAds: { name: string; value: number }[];
+  utm_source: { name: string; value: number }[];
+  utm_medium: { name: string; value: number }[];
+  utm_campaign: { name: string; value: number }[];
+  utm_content: { name: string; value: number }[];
+  utm_term: { name: string; value: number }[];
+  total: { pageviews: number; visitors: number; visits: number };
+}> {
+  const { startDate, endDate, model, steps, currency } = criteria;
   const { rawQuery } = clickhouse;
-  const { levelOneQuery, levelQuery, sumQuery, stepFilterQuery, params } = getFunnelQuery(
-    steps,
-    windowMinutes,
-  );
+  const conversionStep = steps[0].value;
+  const eventType = steps[0].type === 'url' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
+  const column = steps[0].type === 'url' ? 'url_path' : 'event_name';
 
-  function getFunnelQuery(
-    steps: { type: string; value: string }[],
-    windowMinutes: number,
-  ): {
-    levelOneQuery: string;
-    levelQuery: string;
-    sumQuery: string;
-    stepFilterQuery: string;
-    params: { [key: string]: string };
-  } {
-    return steps.reduce(
-      (pv, cv, i) => {
-        const levelNumber = i + 1;
-        const startSum = i > 0 ? 'union all ' : '';
-        const startFilter = i > 0 ? 'or' : '';
-        const isURL = cv.type === 'url';
-        const column = isURL ? 'url_path' : 'event_name';
-
-        let operator = '=';
-        let paramValue = cv.value;
-
-        if (cv.value.startsWith('*') || cv.value.endsWith('*')) {
-          operator = 'like';
-          paramValue = cv.value.replace(/^\*|\*$/g, '%');
-        }
-
-        if (levelNumber === 1) {
-          pv.levelOneQuery = `\n
-          level1 AS (
-            select *
-            from level0
-            where ${column} ${operator} {param${i}:String}
-          )`;
-        } else {
-          pv.levelQuery += `\n
-          , level${levelNumber} AS (
-            select distinct y.session_id as session_id,
-                y.url_path as url_path,
-                y.referrer_path as referrer_path,
-                y.event_name,
-                y.created_at as created_at
-            from level${i} x
-            join level0 y
-            on x.session_id = y.session_id
-            where y.created_at between x.created_at and x.created_at + interval ${windowMinutes} minute
-                and y.${column} ${operator} {param${i}:String}
-          )`;
-        }
-
-        pv.sumQuery += `\n${startSum}select ${levelNumber} as level, count(distinct(session_id)) as count from level${levelNumber}`;
-        pv.stepFilterQuery += `${startFilter} ${column} ${operator} {param${i}:String} `;
-        pv.params[`param${i}`] = paramValue;
-
-        return pv;
-      },
-      {
-        levelOneQuery: '',
-        levelQuery: '',
-        sumQuery: '',
-        stepFilterQuery: '',
-        params: {},
-      },
-    );
+  function getUTMQuery(utmColumn: string) {
+    return `
+    select 
+        we.${utmColumn} name,
+        ${currency ? 'sum(e.value)' : 'uniqExact(we.session_id)'} value
+    from events e
+    join model m
+    on m.session_id = e.session_id
+    join website_event we
+    on we.created_at = m.created_at
+        and we.session_id = m.session_id
+    ${currency ? '' : `where we.${utmColumn} != ''`}  
+    group by 1
+    order by name desc
+    limit 20`;
   }
 
-  return rawQuery(
-    `
-    WITH level0 AS (
-      select distinct session_id, url_path, referrer_path, event_name, created_at
-      from umami.website_event
-      where (${stepFilterQuery})
-        and website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-    ),
-    ${levelOneQuery}
-    ${levelQuery}
-    select *
-    from (
-      ${sumQuery} 
-    ) ORDER BY level;
-    `,
+  const eventQuery = `WITH events AS (
+        select distinct
+            session_id,
+            max(created_at) max_dt
+        from website_event
+        where website_id = {websiteId:UUID}
+          and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+          and ${column} = {conversionStep:String}
+          and event_type = {eventType:UInt32}
+        group by 1),`;
+
+  const revenueEventQuery = `WITH events AS (
+          select
+              ed.session_id,
+              max(ed.created_at) max_dt,
+              sum(coalesce(toDecimal64(number_value, 2), toDecimal64(string_value, 2))) as value
+          from event_data ed
+          join (select event_id
+                from event_data
+                where website_id = {websiteId:UUID}
+                  and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+                  and positionCaseInsensitive(data_key, 'currency') > 0
+                  and string_value = {currency:String}) c
+            on c.event_id = ed.event_id
+          where website_id = {websiteId:UUID}
+            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+            and ${column} = {conversionStep:String} 
+            and positionCaseInsensitive(ed.data_key, 'revenue') > 0
+          group by 1),`;
+
+  function getModelQuery(model: string) {
+    return model === 'firstClick'
+      ? `\n 
+    model AS (select e.session_id,
+        min(we.created_at) created_at
+    from events e
+    join website_event we
+    on we.session_id = e.session_id
+    group by e.session_id)`
+      : `\n 
+    model AS (select e.session_id,
+        max(we.created_at) created_at
+    from events e
+    join website_event we
+    on we.session_id = e.session_id
+    where we.created_at < e.max_dt
+    group by e.session_id)`;
+  }
+
+  const referrerRes = await rawQuery<
     {
-      websiteId,
-      startDate,
-      endDate,
-      ...params,
-    },
-  ).then(formatResults(steps));
+      name: string;
+      value: number;
+    }[]
+  >(
+    `
+    ${currency ? revenueEventQuery : eventQuery}
+    ${getModelQuery(model)}
+    select we.referrer_domain name,
+        ${currency ? 'sum(e.value)' : 'uniqExact(we.session_id)'} value
+    from events e
+    join model m
+    on m.session_id = e.session_id
+    join website_event we
+    on we.created_at = m.created_at
+        and we.session_id = m.session_id
+    ${
+      currency
+        ? ''
+        : `where referrer_domain != hostname
+      and we.referrer_domain != ''`
+    }  
+    group by 1
+    order by 2 desc
+    limit 20
+    `,
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  );
+
+  const paidAdsres = await rawQuery<
+    {
+      name: string;
+      value: number;
+    }[]
+  >(
+    `
+    ${currency ? revenueEventQuery : eventQuery}
+    ${getModelQuery(model)}
+    select multiIf(gclid != '', 'Google', fbclid != '', 'Facebook', '') name,
+        ${currency ? 'sum(e.value)' : 'uniqExact(we.session_id)'} value
+    from events e
+    join model m
+    on m.session_id = e.session_id
+    join website_event we
+    on we.created_at = m.created_at
+        and we.session_id = m.session_id
+    ${currency ? '' : `WHERE name != ''`}
+    group by 1
+    order by 2 desc
+    limit 20
+    `,
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  );
+
+  const sourceRes = await rawQuery<
+    {
+      name: string;
+      value: number;
+    }[]
+  >(
+    `
+    ${currency ? revenueEventQuery : eventQuery}
+    ${getModelQuery(model)}
+    ${getUTMQuery('utm_source')}
+    `,
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  );
+
+  const mediumRes = await rawQuery<
+    {
+      name: string;
+      value: number;
+    }[]
+  >(
+    `
+    ${currency ? revenueEventQuery : eventQuery}
+    ${getModelQuery(model)}
+    ${getUTMQuery('utm_medium')}
+    `,
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  );
+
+  const campaignRes = await rawQuery<
+    {
+      name: string;
+      value: number;
+    }[]
+  >(
+    `
+    ${currency ? revenueEventQuery : eventQuery}
+    ${getModelQuery(model)}
+    ${getUTMQuery('utm_campaign')}
+    `,
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  );
+
+  const contentRes = await rawQuery<
+    {
+      name: string;
+      value: number;
+    }[]
+  >(
+    `
+    ${currency ? revenueEventQuery : eventQuery}
+    ${getModelQuery(model)}
+    ${getUTMQuery('utm_content')}
+    `,
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  );
+
+  const termRes = await rawQuery<
+    {
+      name: string;
+      value: number;
+    }[]
+  >(
+    `
+    ${currency ? revenueEventQuery : eventQuery}
+    ${getModelQuery(model)}
+    ${getUTMQuery('utm_term')}
+    `,
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  );
+
+  const totalRes = await rawQuery<{ pageviews: number; visitors: number; visits: number }>(
+    `
+    select 
+        count(*) as "pageviews",
+        uniqExact(session_id) as "visitors",
+        uniqExact(visit_id) as "visits"
+    from website_event
+    where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and ${column} = {conversionStep:String}
+        and event_type = {eventType:UInt32}
+    `,
+    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+  ).then(result => result?.[0]);
+
+  return {
+    referrer: referrerRes,
+    paidAds: paidAdsres,
+    utm_source: sourceRes,
+    utm_medium: mediumRes,
+    utm_campaign: campaignRes,
+    utm_content: contentRes,
+    utm_term: termRes,
+    total: totalRes,
+  };
 }

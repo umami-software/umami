@@ -1,14 +1,14 @@
-import { z } from 'zod';
 import { canViewWebsite } from '@/lib/auth';
-import { unauthorized, json } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
-import { getFunnel } from '@/queries';
+import { json, unauthorized } from '@/lib/response';
 import { reportParms } from '@/lib/schema';
+import { getAttribution } from '@/queries/sql/reports/getAttribution';
+import { z } from 'zod';
 
 export async function POST(request: Request) {
   const schema = z.object({
     ...reportParms,
-    window: z.coerce.number().positive(),
+    model: z.string().regex(/firstClick|lastClick/i),
     steps: z
       .array(
         z.object({
@@ -16,7 +16,8 @@ export async function POST(request: Request) {
           value: z.string(),
         }),
       )
-      .min(2),
+      .min(1),
+    currency: z.string().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -27,8 +28,9 @@ export async function POST(request: Request) {
 
   const {
     websiteId,
+    model,
     steps,
-    window,
+    currency,
     dateRange: { startDate, endDate },
   } = body;
 
@@ -36,11 +38,12 @@ export async function POST(request: Request) {
     return unauthorized();
   }
 
-  const data = await getFunnel(websiteId, {
+  const data = await getAttribution(websiteId, {
     startDate: new Date(startDate),
     endDate: new Date(endDate),
+    model: model,
     steps,
-    windowMinutes: +window,
+    currency,
   });
 
   return json(data);

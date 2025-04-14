@@ -13,6 +13,7 @@ import {
   Popup,
   PopupTrigger,
   SubmitButton,
+  Toggle,
 } from 'react-basics';
 import BaseParameters from '../[reportId]/BaseParameters';
 import ParameterList from '../[reportId]/ParameterList';
@@ -21,6 +22,7 @@ import { ReportContext } from '../[reportId]/Report';
 import FunnelStepAddForm from '../funnel/FunnelStepAddForm';
 import styles from './AttributionParameters.module.css';
 import AttributionStepAddForm from './AttributionStepAddForm';
+import useRevenueValues from '@/components/hooks/queries/useRevenueValues';
 
 export function AttributionParameters() {
   const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
@@ -29,14 +31,32 @@ export function AttributionParameters() {
   const { websiteId, dateRange, steps } = parameters || {};
   const queryEnabled = websiteId && dateRange && steps.length > 0;
   const [model, setModel] = useState('');
+  const [revenueMode, setRevenueMode] = useState(false);
+
+  const { data: currencyValues = [] } = useRevenueValues(
+    websiteId,
+    dateRange?.startDate,
+    dateRange?.endDate,
+  );
 
   const handleSubmit = (data: any, e: any) => {
+    if (revenueMode === false) {
+      delete data.currency;
+    }
+
     e.stopPropagation();
     e.preventDefault();
     runReport(data);
   };
 
+  const handleCheck = () => {
+    setRevenueMode(!revenueMode);
+  };
+
   const handleAddStep = (step: { type: string; value: string }) => {
+    if (step.type === 'url') {
+      setRevenueMode(false);
+    }
     updateReport({ parameters: { steps: parameters.steps.concat(step) } });
   };
 
@@ -45,6 +65,9 @@ export function AttributionParameters() {
     index: number,
     step: { type: string; value: string },
   ) => {
+    if (step.type === 'url') {
+      setRevenueMode(false);
+    }
     const steps = [...parameters.steps];
     steps[index] = step;
     updateReport({ parameters: { steps } });
@@ -135,6 +158,24 @@ export function AttributionParameters() {
           })}
         </ParameterList>
       </FormRow>
+      <FormRow>
+        <Toggle
+          checked={revenueMode}
+          onChecked={handleCheck}
+          disabled={currencyValues.length === 0 || steps[0]?.type === 'url'}
+        >
+          <b>Revenue Mode</b>
+        </Toggle>
+      </FormRow>
+      {revenueMode && (
+        <FormRow label={formatMessage(labels.currency)}>
+          <FormInput name="currency" rules={{ required: formatMessage(labels.required) }}>
+            <Dropdown items={currencyValues.map(item => item.currency)}>
+              {item => <Item key={item}>{item}</Item>}
+            </Dropdown>
+          </FormInput>
+        </FormRow>
+      )}
       <FormButtons>
         <SubmitButton variant="primary" disabled={!queryEnabled} isLoading={isRunning}>
           {formatMessage(labels.runQuery)}
