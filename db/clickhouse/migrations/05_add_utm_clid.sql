@@ -198,7 +198,7 @@ ADD PROJECTION website_event_url_path_projection (
 SELECT * ORDER BY toStartOfDay(created_at), website_id, url_path, created_at
 );
 
-ALTER TABLE umami.website_event_new MATERIALIZE PROJECTION website_event_url_path_projection_new;
+ALTER TABLE umami.website_event_new MATERIALIZE PROJECTION website_event_url_path_projection;
 
 ALTER TABLE umami.website_event_new
 ADD PROJECTION website_event_referrer_domain_projection (
