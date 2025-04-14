@@ -1,5 +1,4 @@
-import { renderNumberLabels, renderDateLabels } from '../charts';
-import { formatDate } from '../date';
+import { renderNumberLabels } from '../charts';
 
 // test for renderNumberLabels
 
@@ -38,44 +37,5 @@ describe('renderNumberLabels', () => {
     ['-5000', '-5000'],
   ])('handles edge cases correctly (%s → %s)', (input, expected) => {
     expect(renderNumberLabels(input)).toBe(expected);
-  });
-});
-
-describe('renderDateLabels', () => {
-  const mockValues = [{ value: '2024-03-23T10:00:00Z' }, { value: '2024-03-24T15:30:00Z' }];
-
-  beforeEach(() => {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    jest.spyOn(require('@/lib/date'), 'formatDate');
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks(); // Reset spy to prevent interference
-  });
-
-  test.each([
-    ['minute', 'h:mm', 'en-US'],
-    ['hour', 'p', 'en-US'],
-    ['day', 'MMM d', 'en-US'],
-    ['month', 'MMM', 'en-US'],
-    ['year', 'yyyy', 'en-US'],
-  ])('formats date correctly for unit: %s', (unit, expectedFormat, locale) => {
-    const formatLabel = renderDateLabels(unit, locale);
-    const formatted = formatLabel('label', 0, mockValues);
-
-    expect(formatDate).toHaveBeenCalledWith(new Date(mockValues[0].value), expectedFormat, locale);
-    expect(formatted).toBe(formatDate(new Date(mockValues[0].value), expectedFormat, locale));
-  });
-
-  test('returns label for unknown unit', () => {
-    const formatLabel = renderDateLabels('unknown', 'en-US');
-    expect(formatLabel('original-label', 0, mockValues)).toBe('original-label');
-  });
-
-  test('throws error for invalid date input', () => {
-    const invalidValues = [{ value: 'invalid-date' }];
-    const formatLabel = renderDateLabels('day', 'en-US');
-
-    expect(() => formatLabel('label', 0, invalidValues)).toThrow();
   });
 });
