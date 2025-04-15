@@ -7,7 +7,6 @@ import { WebsiteFilterButton } from '@/app/(main)/websites/[websiteId]/WebsiteFi
 import { WebsiteDateFilter } from '@/components/input/WebsiteDateFilter';
 import { FilterBar } from '@/components/metrics/FilterBar';
 import { WebsiteMenu } from '@/app/(main)/websites/[websiteId]/WebsiteMenu';
-import { WebsiteCompareBar } from '@/app/(main)/websites/[websiteId]/WebsiteCompareBar';
 
 export function WebsiteHeader({
   websiteId,
@@ -17,7 +16,6 @@ export function WebsiteHeader({
   websiteId: string;
   showFilter?: boolean;
   allowEdit?: boolean;
-  compareMode?: boolean;
 }) {
   const website = useWebsite();
   const { name, domain } = website || {};
@@ -36,7 +34,6 @@ export function WebsiteHeader({
           {allowEdit && <WebsiteMenu websiteId={websiteId} />}
         </Row>
       </Row>
-      <WebsiteCompareBar websiteId={websiteId} />
       <FilterBar websiteId={websiteId} />
       <WebsiteTabs websiteId={websiteId} />
     </Column>

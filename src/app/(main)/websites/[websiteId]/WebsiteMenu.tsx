@@ -11,16 +11,25 @@ import {
 } from '@umami/react-zen';
 import { Fragment } from 'react';
 import { Lucide } from '@/components/icons';
-import { useMessages } from '@/components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
+import { InputItem } from '@/lib/types';
 
 export function WebsiteMenu({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
+  const { router, renderUrl, renderTeamUrl } = useNavigation();
 
-  const menuItems = [
-    { label: formatMessage(labels.compare), icon: <Lucide.GitCompare /> },
-    { label: formatMessage(labels.share), icon: <Lucide.Share /> },
-    { label: formatMessage(labels.edit), icon: <Lucide.Edit />, seperator: true },
+  const menuItems: InputItem[] = [
+    { id: 'share', label: formatMessage(labels.share), icon: <Lucide.Share /> },
+    { id: 'edit', label: formatMessage(labels.edit), icon: <Lucide.Edit />, seperator: true },
   ];
+
+  const handleAction = (id: any) => {
+    if (id === 'compare') {
+      router.push(renderUrl({ compare: 'prev' }));
+    } else if (id === 'edit') {
+      router.push(renderTeamUrl(`/settings/websites/${websiteId}`));
+    }
+  };
 
   return (
     <MenuTrigger>
@@ -29,13 +38,13 @@ export function WebsiteMenu({ websiteId }: { websiteId: string }) {
           <Icons.More />
         </Icon>
       </Button>
-      <Popover placement="bottom end">
-        <Menu>
-          {menuItems.map(({ label, icon, seperator }, index) => {
+      <Popover placement="bottom">
+        <Menu onAction={handleAction}>
+          {menuItems.map(({ id, label, icon, seperator }, index) => {
             return (
               <Fragment key={index}>
                 {seperator && <MenuSeparator />}
-                <MenuItem>
+                <MenuItem id={id}>
                   <Icon>{icon}</Icon>
                   <Text>{label}</Text>
                 </MenuItem>

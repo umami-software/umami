@@ -1,13 +1,9 @@
-import { FILTER_COLUMNS, OPERATOR_PREFIXES, OPERATORS } from '@/lib/constants';
+import { FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import { QueryFilters, QueryOptions } from '@/lib/types';
 
 export function parseParameterValue(param: any) {
   if (typeof param === 'string') {
-    const [, prefix, value] = param.match(/^(!~|!|~)?(.*)$/);
-
-    const operator =
-      Object.keys(OPERATOR_PREFIXES).find(key => OPERATOR_PREFIXES[key] === prefix) ||
-      OPERATORS.equals;
+    const [, operator, value] = param.match(/^([a-z]+)\.(.*)/) || [];
 
     return { operator, value };
   }

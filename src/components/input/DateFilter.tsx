@@ -98,6 +98,7 @@ export function DateFilter({
         selectedKey={value}
         placeholder={formatMessage(labels.selectDate)}
         onSelectionChange={handleChange}
+        style={{ width: '200px' }}
       >
         {options.map(({ label, value, divider }: any) => {
           return (

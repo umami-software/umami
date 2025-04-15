@@ -10,7 +10,7 @@ import { WebsiteTableView } from './WebsiteTableView';
 
 export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
   const {
-    query: { view },
+    query: { view, compare },
   } = useNavigation();
 
   return (
@@ -20,7 +20,7 @@ export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
         <WebsiteMetricsBar websiteId={websiteId} showFilter={true} showChange={true} />
       </Panel>
       <Panel>
-        <WebsiteChart websiteId={websiteId} />
+        <WebsiteChart websiteId={websiteId} compareMode={compare} />
       </Panel>
       {!view && <WebsiteTableView websiteId={websiteId} />}
       {view && <WebsiteExpandedView websiteId={websiteId} />}

@@ -1,7 +1,6 @@
 import { Button, Icon, Icons, DialogTrigger, Dialog, Modal, Text } from '@umami/react-zen';
 import { FilterEditForm } from '@/components/common/FilterEditForm';
 import { useMessages, useNavigation, useFilters } from '@/components/hooks';
-import { OPERATORS } from '@/lib/constants';
 
 export function WebsiteFilterButton({
   websiteId,
@@ -20,7 +19,7 @@ export function WebsiteFilterButton({
     const params = filters.reduce((obj, filter) => {
       const { name, operator, value } = filter;
 
-      obj[name] = operator === OPERATORS.equals ? value : `${operator}~${value}`;
+      obj[name] = `${operator}.${value}`;
 
       return obj;
     }, {});

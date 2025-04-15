@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react';
 import {
   COLLECTION_TYPE,
   DATA_TYPE,
@@ -8,13 +9,11 @@ import {
   ROLES,
 } from './constants';
 import { TIME_UNIT } from './date';
-import { Dispatch, SetStateAction } from 'react';
 
 type ObjectValues<T> = T[keyof T];
 
 export type TimeUnit = ObjectValues<typeof TIME_UNIT>;
 export type Permission = ObjectValues<typeof PERMISSIONS>;
-
 export type CollectionType = ObjectValues<typeof COLLECTION_TYPE>;
 export type Role = ObjectValues<typeof ROLES>;
 export type EventType = ObjectValues<typeof EVENT_TYPE>;
@@ -202,4 +201,11 @@ export interface SessionData {
   city: string;
   ip?: string;
   userAgent?: string;
+}
+
+export interface InputItem {
+  id: string;
+  label: string;
+  icon: any;
+  seperator?: boolean;
 }

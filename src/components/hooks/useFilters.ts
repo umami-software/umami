@@ -81,7 +81,7 @@ export function useFilters() {
       let value = safeDecodeURIComponent(query[key]);
       const label = fields.find(({ name }) => name === key)?.label;
 
-      const match = value.match(/^([a-z]+)~(.*)/);
+      const match = value.match(/^([a-z]+)\.(.*)/);
 
       if (match) {
         operator = match[1];

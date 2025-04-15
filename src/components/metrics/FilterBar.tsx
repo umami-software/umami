@@ -45,20 +45,29 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
           const paramValue = isSearchOperator(operator) ? value : formatValue(value, key);
 
           return (
-            <Button key={name} variant="outline">
-              <Row alignItems="center" gap="6">
+            <Row
+              key={name}
+              border
+              padding
+              backgroundColor
+              borderRadius
+              shadow="1"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Row alignItems="center" gap="4">
                 <Row alignItems="center" gap="2">
                   <Text weight="bold">{label}</Text>
-                  <Text transform="uppercase" color="11" size="1">
-                    {operatorLabels[operator]}
-                  </Text>
+                  <Text color="11">{operatorLabels[operator]}</Text>
                   <Text weight="bold">{paramValue}</Text>
                 </Row>
-                <Icon onClick={e => handleCloseFilter(name, e)}>
-                  <Icons.Close />
-                </Icon>
+                <Button variant="quiet" size="xs" style={{ left: '5px' }}>
+                  <Icon onClick={e => handleCloseFilter(name, e)} size="xs">
+                    <Icons.Close />
+                  </Icon>
+                </Button>
               </Row>
-            </Button>
+            </Row>
           );
         })}
         <WebsiteFilterButton websiteId={websiteId} alignment="center" showText={false} />

@@ -273,6 +273,7 @@ export const labels = defineMessages({
     id: 'label.journey-description',
     defaultMessage: 'Understand how users navigate through your website.',
   },
+  compareDates: { id: 'label.compare-dates', defaultMessage: 'Compare dates' },
   compare: { id: 'label.compare', defaultMessage: 'Compare' },
   current: { id: 'label.current', defaultMessage: 'Current' },
   previous: { id: 'label.previous', defaultMessage: 'Previous' },

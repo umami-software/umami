@@ -37,7 +37,7 @@ export function FilterLink({
       {children}
       {!value && `(${label || formatMessage(labels.unknown)})`}
       {value && (
-        <Link href={renderUrl({ [id]: value })} className={styles.label} replace>
+        <Link href={renderUrl({ [id]: `eq.${value}` })} className={styles.label} replace>
           {label || value}
         </Link>
       )}

@@ -101,13 +101,6 @@ export const OPERATORS = {
   after: 'af',
 } as const;
 
-export const OPERATOR_PREFIXES = {
-  [OPERATORS.equals]: '',
-  [OPERATORS.notEquals]: '!',
-  [OPERATORS.contains]: '~',
-  [OPERATORS.doesNotContain]: '!~',
-};
-
 export const DATA_TYPES = {
   [DATA_TYPE.string]: 'string',
   [DATA_TYPE.number]: 'number',
