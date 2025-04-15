@@ -62,26 +62,30 @@ const trackerHeaders = [
 const apiHeaders = [
   {
     key: 'Access-Control-Allow-Origin',
-    value: '*'
+    value: '*',
   },
   {
     key: 'Access-Control-Allow-Headers',
-    value: '*'
+    value: '*',
   },
   {
     key: 'Access-Control-Allow-Methods',
-    value: 'GET, DELETE, POST, PUT'
+    value: 'GET, DELETE, POST, PUT',
   },
   {
     key: 'Access-Control-Max-Age',
-    value: corsMaxAge || '86400'
+    value: corsMaxAge || '86400',
+  },
+  {
+    key: 'Cache-Control',
+    value: 'no-cache',
   },
 ];
 
 const headers = [
   {
     source: '/api/:path*',
-    headers: apiHeaders
+    headers: apiHeaders,
   },
   {
     source: '/:path*',

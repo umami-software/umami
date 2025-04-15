@@ -1,0 +1,20 @@
+.container {
+  display: grid;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 24px;
+  line-height: 36px;
+  font-weight: 700;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap: 20px;
+  border-top: 1px solid var(--base300);
+  padding-top: 30px;
+  margin-bottom: 30px;
+}

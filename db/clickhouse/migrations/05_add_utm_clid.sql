@@ -1,5 +1,5 @@
 -- Create Event
-CREATE TABLE umami.website_event
+CREATE TABLE umami.website_event_new
 (
     website_id UUID,
     session_id UUID,
@@ -48,43 +48,8 @@ ENGINE = MergeTree
     PRIMARY KEY (toStartOfHour(created_at), website_id, session_id, visit_id)
     SETTINGS index_granularity = 8192;
 
-CREATE TABLE umami.event_data
-(
-    website_id UUID,
-    session_id UUID,
-    event_id UUID,
-    url_path String,
-    event_name String,
-    data_key String,
-    string_value Nullable(String),
-    number_value Nullable(Decimal64(4)),
-    date_value Nullable(DateTime('UTC')),
-    data_type UInt32,
-    created_at DateTime('UTC'),
-    job_id Nullable(UUID)
-)
-ENGINE = MergeTree
-    ORDER BY (website_id, event_id, data_key, created_at)
-    SETTINGS index_granularity = 8192;
-
-CREATE TABLE umami.session_data
-(
-    website_id UUID,
-    session_id UUID,
-    data_key String,
-    string_value Nullable(String),
-    number_value Nullable(Decimal64(4)),
-    date_value Nullable(DateTime('UTC')),
-    data_type UInt32,
-    created_at DateTime('UTC'),
-    job_id Nullable(UUID)
-)
-ENGINE = ReplacingMergeTree
-    ORDER BY (website_id, session_id, data_key)
-    SETTINGS index_granularity = 8192;
-
 -- stats hourly
-CREATE TABLE umami.website_event_stats_hourly
+CREATE TABLE umami.website_event_stats_hourly_new
 (
     website_id UUID,
     session_id UUID,
@@ -133,6 +98,145 @@ ENGINE = AggregatingMergeTree
         visit_id
     )
     SAMPLE BY cityHash64(visit_id);
+
+CREATE MATERIALIZED VIEW umami.website_event_stats_hourly_mv_new
+TO umami.website_event_stats_hourly_new
+AS
+SELECT
+    website_id,
+    session_id,
+    visit_id,
+    hostname,
+    browser,
+    os,
+    device,
+    screen,
+    language,
+    country,
+    subdivision1,
+    city,
+    entry_url,
+    exit_url,
+    url_paths as url_path,
+    url_query,
+    utm_source,
+    utm_medium,
+    utm_campaign,
+    utm_content,
+    utm_term,
+    referrer_domain,
+    page_title,
+    gclid,
+    fbclid,
+    msclkid,
+    ttclid,
+    li_fat_id,
+    twclid,
+    event_type,
+    event_name,
+    views,
+    min_time,
+    max_time,
+    tag,
+    timestamp as created_at
+FROM (SELECT
+    website_id,
+    session_id,
+    visit_id,
+    hostname,
+    browser,
+    os,
+    device,
+    screen,
+    language,
+    country,
+    subdivision1,
+    city,
+    argMinState(url_path, created_at) entry_url,
+    argMaxState(url_path, created_at) exit_url,
+    arrayFilter(x -> x != '', groupArray(url_path)) as url_paths,
+    arrayFilter(x -> x != '', groupArray(url_query)) url_query,
+    arrayFilter(x -> x != '', groupArray(utm_source)) utm_source,
+    arrayFilter(x -> x != '', groupArray(utm_medium)) utm_medium,
+    arrayFilter(x -> x != '', groupArray(utm_campaign)) utm_campaign,
+    arrayFilter(x -> x != '', groupArray(utm_content)) utm_content,
+    arrayFilter(x -> x != '', groupArray(utm_term)) utm_term,
+    arrayFilter(x -> x != '', groupArray(referrer_domain)) referrer_domain,
+    arrayFilter(x -> x != '', groupArray(page_title)) page_title,
+    arrayFilter(x -> x != '', groupArray(gclid)) gclid,
+    arrayFilter(x -> x != '', groupArray(fbclid)) fbclid,
+    arrayFilter(x -> x != '', groupArray(msclkid)) msclkid,
+    arrayFilter(x -> x != '', groupArray(ttclid)) ttclid,
+    arrayFilter(x -> x != '', groupArray(li_fat_id)) li_fat_id,
+    arrayFilter(x -> x != '', groupArray(twclid)) twclid,
+    event_type,
+    if(event_type = 2, groupArray(event_name), []) event_name,
+    sumIf(1, event_type = 1) views,
+    min(created_at) min_time,
+    max(created_at) max_time,
+    arrayFilter(x -> x != '', groupArray(tag)) tag,
+    toStartOfHour(created_at) timestamp
+FROM umami.website_event_new
+GROUP BY website_id,
+    session_id,
+    visit_id,
+    hostname,
+    browser,
+    os,
+    device,
+    screen,
+    language,
+    country,
+    subdivision1,
+    city,
+    event_type,
+    timestamp);
+
+-- projections
+ALTER TABLE umami.website_event_new
+ADD PROJECTION website_event_url_path_projection (
+SELECT * ORDER BY toStartOfDay(created_at), website_id, url_path, created_at
+);
+
+ALTER TABLE umami.website_event_new MATERIALIZE PROJECTION website_event_url_path_projection;
+
+ALTER TABLE umami.website_event_new
+ADD PROJECTION website_event_referrer_domain_projection (
+SELECT * ORDER BY toStartOfDay(created_at), website_id, referrer_domain, created_at
+);
+
+ALTER TABLE umami.website_event_new MATERIALIZE PROJECTION website_event_referrer_domain_projection;
+
+-- migration
+INSERT INTO umami.website_event_new
+SELECT website_id, session_id, visit_id, event_id, hostname, browser, os, device, screen, language, country, subdivision1, subdivision2, city, url_path, url_query,
+    extract(url_query, 'utm_source=([^&]*)') AS utm_source,
+    extract(url_query, 'utm_medium=([^&]*)') AS utm_medium,
+    extract(url_query, 'utm_campaign=([^&]*)') AS utm_campaign,
+    extract(url_query, 'utm_content=([^&]*)') AS utm_content,
+    extract(url_query, 'utm_term=([^&]*)') AS utm_term,referrer_path, referrer_query, referrer_domain,
+    page_title,
+    extract(url_query, 'gclid=([^&]*)') gclid,
+    extract(url_query, 'fbclid=([^&]*)') fbclid,
+    extract(url_query, 'msclkid=([^&]*)') msclkid,
+    extract(url_query, 'ttclid=([^&]*)') ttclid,
+    extract(url_query, 'li_fat_id=([^&]*)') li_fat_id,
+    extract(url_query, 'twclid=([^&]*)') twclid,
+    event_type, event_name, tag, created_at, job_id
+FROM umami.website_event
+
+-- rename tables
+RENAME TABLE umami.website_event TO umami.website_event_old;
+RENAME TABLE umami.website_event_new TO umami.website_event;
+
+RENAME TABLE umami.website_event_stats_hourly TO umami.website_event_stats_hourly_old;
+RENAME TABLE umami.website_event_stats_hourly_new TO umami.website_event_stats_hourly;
+
+RENAME TABLE umami.website_event_stats_hourly_mv TO umami.website_event_stats_hourly_mv_old;
+RENAME TABLE umami.website_event_stats_hourly_mv_new TO umami.website_event_stats_hourly_mv;
+
+-- recreate view
+DROP TABLE umami.website_event_stats_hourly_mv;
 
 CREATE MATERIALIZED VIEW umami.website_event_stats_hourly_mv
 TO umami.website_event_stats_hourly
@@ -226,18 +330,3 @@ GROUP BY website_id,
     city,
     event_type,
     timestamp);
-
--- projections
-ALTER TABLE umami.website_event 
-ADD PROJECTION website_event_url_path_projection (
-SELECT * ORDER BY toStartOfDay(created_at), website_id, url_path, created_at
-);
-
-ALTER TABLE umami.website_event MATERIALIZE PROJECTION website_event_url_path_projection;
-
-ALTER TABLE umami.website_event 
-ADD PROJECTION website_event_referrer_domain_projection (
-SELECT * ORDER BY toStartOfDay(created_at), website_id, referrer_domain, created_at
-);
-
-ALTER TABLE umami.website_event MATERIALIZE PROJECTION website_event_referrer_domain_projection;
