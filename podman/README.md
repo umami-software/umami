@@ -15,7 +15,7 @@ If you need to stop umami, you can do so by running `podman-compose down`.
 If you want to install a systemd service to run umami, you can use the provided
 systemd service.
 
-Edit `umamicrm.service` and change these two variables:
+Edit `umami.service` and change these two variables:
 
 
 	WorkingDirectory=/opt/apps/umami
