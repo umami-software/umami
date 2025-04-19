@@ -13,7 +13,6 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-COPY docker/middleware.js ./src
 
 ARG DATABASE_TYPE
 ARG BASE_PATH
@@ -50,6 +49,8 @@ COPY --from=builder /app/scripts ./scripts
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+RUN mv ./.next/routes-manifest.json ./.next/routes-manifest-orig.json
 
 USER nextjs
 
