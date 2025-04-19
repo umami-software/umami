@@ -1,11 +1,11 @@
+import { Row } from '@umami/react-zen';
 import { FilterLink } from '@/components/common/FilterLink';
 import { Favicon } from '@/components/common/Favicon';
+import { FilterButtons } from '@/components/common/FilterButtons';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { MetricsTable, MetricsTableProps } from './MetricsTable';
-import { FilterButtons } from '@/components/common/FilterButtons';
 import thenby from 'thenby';
 import { GROUPED_DOMAINS } from '@/lib/constants';
-import { Flexbox } from '@umami/react-zen';
 
 export interface ReferrersTableProps extends MetricsTableProps {
   allowFilter?: boolean;
@@ -25,12 +25,12 @@ export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
 
   const buttons = [
     {
+      id: 'referrer',
       label: formatMessage(labels.domain),
-      key: 'referrer',
     },
     {
+      id: 'grouped',
       label: formatMessage(labels.grouped),
-      key: 'grouped',
     },
   ];
 
@@ -40,10 +40,10 @@ export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
         return `(${formatMessage(labels.other)})`;
       } else {
         return (
-          <Flexbox alignItems="center" gap="3">
+          <Row alignItems="center" gap="3">
             <Favicon domain={referrer} />
             {GROUPED_DOMAINS.find(({ domain }) => domain === referrer)?.name}
-          </Flexbox>
+          </Row>
         );
       }
     }
@@ -86,19 +86,15 @@ export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
   };
 
   return (
-    <>
-      <MetricsTable
-        {...props}
-        title={formatMessage(labels.referrers)}
-        type="referrer"
-        metric={formatMessage(labels.visitors)}
-        dataFilter={view === 'grouped' ? groupedFilter : undefined}
-        renderLabel={renderLink}
-      >
-        {allowFilter && (
-          <FilterButtons items={buttons} selectedKey={view} onSelect={handleSelect} />
-        )}
-      </MetricsTable>
-    </>
+    <MetricsTable
+      {...props}
+      title={formatMessage(labels.referrers)}
+      type="referrer"
+      metric={formatMessage(labels.visitors)}
+      dataFilter={view === 'grouped' ? groupedFilter : undefined}
+      renderLabel={renderLink}
+    >
+      {allowFilter && <FilterButtons items={buttons} value={view} onChange={handleSelect} />}
+    </MetricsTable>
   );
 }

@@ -20,10 +20,10 @@ export function QueryParametersTable({
 
   const buttons = [
     {
+      id: FILTER_COMBINED,
       label: formatMessage(labels.filterCombined),
-      key: FILTER_COMBINED,
     },
-    { label: formatMessage(labels.filterRaw), key: FILTER_RAW },
+    { id: FILTER_RAW, label: formatMessage(labels.filterRaw) },
   ];
 
   return (
@@ -45,7 +45,7 @@ export function QueryParametersTable({
       }
       delay={0}
     >
-      {allowFilter && <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />}
+      {allowFilter && <FilterButtons items={buttons} value={filter} onChange={setFilter} />}
     </MetricsTable>
   );
 }

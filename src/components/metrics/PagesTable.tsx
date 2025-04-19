@@ -19,26 +19,26 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
   const { formatMessage, labels } = useMessages();
   const { domain } = useContext(WebsiteContext);
 
-  const handleSelect = (key: any) => {
-    router.push(renderUrl({ view: key }));
+  const handleChange = (id: any) => {
+    router.push(renderUrl({ view: id }));
   };
 
   const buttons = [
     {
+      id: 'url',
       label: formatMessage(labels.path),
-      key: 'url',
     },
     {
+      id: 'entry',
       label: formatMessage(labels.entry),
-      key: 'entry',
     },
     {
+      id: 'exit',
       label: formatMessage(labels.exit),
-      key: 'exit',
     },
     {
+      id: 'title',
       label: formatMessage(labels.title),
-      key: 'title',
     },
   ];
 
@@ -66,7 +66,7 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
       dataFilter={emptyFilter}
       renderLabel={renderLink}
     >
-      {allowFilter && <FilterButtons items={buttons} selectedKey={view} onSelect={handleSelect} />}
+      {allowFilter && <FilterButtons items={buttons} value={view} onChange={handleChange} />}
     </MetricsTable>
   );
 }

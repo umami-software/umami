@@ -41,11 +41,13 @@ export function WebsiteDateFilter({
   const disableForward =
     value === 'all' || isAfter(getOffsetDateRange(dateRange, 1).startDate, new Date());
 
-  const handleChange = (value: string | DateRange) => {
-    saveDateRange(value);
+  const handleChange = (date: string | DateRange) => {
+    router.push(renderUrl({ date }));
+    saveDateRange(date);
   };
 
   const handleIncrement = (increment: number) => {
+    router.push(renderUrl({ increment }));
     saveDateRange(getOffsetDateRange(dateRange, increment));
   };
 
