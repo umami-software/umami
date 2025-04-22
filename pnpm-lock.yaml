@@ -51,11 +51,11 @@ importers:
         specifier: ^4.1.1
         version: 4.1.2
       chart.js:
-        specifier: ^4.4.2
-        version: 4.4.8
+        specifier: ^4.4.9
+        version: 4.4.9
       chartjs-adapter-date-fns:
         specifier: ^3.0.0
-        version: 3.0.0(chart.js@4.4.8)(date-fns@2.30.0)
+        version: 3.0.0(chart.js@4.4.9)(date-fns@2.30.0)
       classnames:
         specifier: ^2.3.1
         version: 2.5.1
@@ -177,8 +177,8 @@ importers:
         specifier: ^9.0.0
         version: 9.0.1
       zod:
-        specifier: ^3.24.1
-        version: 3.24.2
+        specifier: ^3.24.3
+        version: 3.24.3
       zustand:
         specifier: ^4.5.5
         version: 4.5.6(@types/react@19.1.2)(immer@9.0.21)(react@19.1.0)
@@ -187,8 +187,8 @@ importers:
         specifier: ^4.2.29
         version: 4.8.4(ts-jest@29.3.2(@babel/core@7.26.10)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.10))(esbuild@0.25.2)(jest@29.7.0(@types/node@22.14.1)(ts-node@10.9.2(@types/node@22.14.1)(typescript@5.8.3)))(typescript@5.8.3))
       '@netlify/plugin-nextjs':
-        specifier: ^5.8.1
-        version: 5.10.5
+        specifier: ^5.10.6
+        version: 5.10.6
       '@rollup/plugin-alias':
         specifier: ^5.0.0
         version: 5.1.1(rollup@3.29.5)
@@ -1800,8 +1800,8 @@ packages:
   '@napi-rs/wasm-runtime@0.2.8':
     resolution: {integrity: sha512-OBlgKdX7gin7OIq4fadsjpg+cp2ZphvAIKucHsNfTdJiqdOmOEwQd/bHi0VwNrcw5xpBJyUw6cK/QilCqy1BSg==}
 
-  '@netlify/plugin-nextjs@5.10.5':
-    resolution: {integrity: sha512-4Lw6fy4VMroBGcrdwjhWfnejmeqbTRgqhQKYIBT0AejzPv4HzxLndtSjqcgZp8gXQ7biEfJvk26cXW6rFnM+dw==}
+  '@netlify/plugin-nextjs@5.10.6':
+    resolution: {integrity: sha512-j/Jt/MMFy70f1LIa6qkviNWVoEIoF9ZICdDC3TF/IvStxWHGAYHm8pkqqbi1VqzjUEDUNu1ZGjo+VElZyenRBg==}
     engines: {node: '>=18.0.0'}
 
   '@next/env@15.3.0':
@@ -2834,8 +2834,8 @@ packages:
   charenc@0.0.2:
     resolution: {integrity: sha512-yrLQ/yVUFXkzg7EDQsPieE/53+0RlaWTs+wBrvW36cyilJ2SaDWfl4Yj7MtLTXleV9uEKefbAGUPv2/iWSooRA==}
 
-  chart.js@4.4.8:
-    resolution: {integrity: sha512-IkGZlVpXP+83QpMm4uxEiGqSI7jFizwVtF3+n5Pc3k7sMO+tkd0qxh2OzLhenM0K80xtmAONWGBn082EiBQSDA==}
+  chart.js@4.4.9:
+    resolution: {integrity: sha512-EyZ9wWKgpAU0fLJ43YAEIF8sr5F2W3LqbS40ZJyHIner2lY14ufqv2VMp69MAiZ2rpwxEUxEhIH/0U3xyRynxg==}
     engines: {pnpm: '>=8'}
 
   chartjs-adapter-date-fns@3.0.0:
@@ -6684,8 +6684,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod@3.24.2:
-    resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
+  zod@3.24.3:
+    resolution: {integrity: sha512-HhY1oqzWCQWuUqvBFnsyrtZRhyPeR7SUGv+C4+MsisMuVfSPx8HpwWqH8tRahSlt6M3PiFAcoeFhZAqIXTxoSg==}
 
   zustand@4.5.6:
     resolution: {integrity: sha512-ibr/n1hBzLLj5Y+yUcU7dYw8p6WnIVzdJbnX+1YpaScvZVF2ziugqHs+LAmHw4lWO9c/zRj+K1ncgWDQuthEdQ==}
@@ -8355,7 +8355,7 @@ snapshots:
       '@tybys/wasm-util': 0.9.0
     optional: true
 
-  '@netlify/plugin-nextjs@5.10.5': {}
+  '@netlify/plugin-nextjs@5.10.6': {}
 
   '@next/env@15.3.0': {}
 
@@ -9487,13 +9487,13 @@ snapshots:
 
   charenc@0.0.2: {}
 
-  chart.js@4.4.8:
+  chart.js@4.4.9:
     dependencies:
       '@kurkle/color': 0.3.4
 
-  chartjs-adapter-date-fns@3.0.0(chart.js@4.4.8)(date-fns@2.30.0):
+  chartjs-adapter-date-fns@3.0.0(chart.js@4.4.9)(date-fns@2.30.0):
     dependencies:
-      chart.js: 4.4.8
+      chart.js: 4.4.9
       date-fns: 2.30.0
 
   check-more-types@2.24.0: {}
@@ -13941,7 +13941,7 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod@3.24.2: {}
+  zod@3.24.3: {}
 
   zustand@4.5.6(@types/react@19.1.2)(immer@9.0.21)(react@19.1.0):
     dependencies:
