@@ -51,15 +51,16 @@ async function relationalQuery(
   function getUTMQuery(utmColumn: string) {
     return `
     select 
-        we.${utmColumn} name,
+        coalesce(we.${utmColumn}, '') name,
         ${currency ? 'sum(e.value)' : 'count(distinct we.session_id)'} value
-    from events e
-    join model m
-    on m.session_id = e.session_id
+    from model m
     join website_event we
     on we.created_at = m.created_at
         and we.session_id = m.session_id
-    ${currency ? '' : `where we.${utmColumn} != ''`}  
+    ${currency ? 'join events e on e.session_id = m.session_id' : ''}
+    where we.website_id = {{websiteId::uuid}}
+          and we.created_at between {{startDate}} and {{endDate}}
+    ${currency ? '' : `and we.${utmColumn} != ''`}  
     group by 1
     order by 2 desc
     limit 20`;
@@ -94,6 +95,7 @@ async function relationalQuery(
           on currency.website_event_id = ed.website_event_id
           where ed.website_id = {{websiteId::uuid}}
             and ed.created_at between {{startDate}} and {{endDate}}
+            and ${column} = {{conversionStep}}
             and ed.data_key ${like} '%revenue%'
           group by 1),`;
 
@@ -105,6 +107,8 @@ async function relationalQuery(
     from events e
     join website_event we
     on we.session_id = e.session_id
+    where we.website_id = {{websiteId::uuid}}
+          and we.created_at between {{startDate}} and {{endDate}}
     group by e.session_id)`
       : `\n 
     model AS (select e.session_id,
@@ -112,7 +116,9 @@ async function relationalQuery(
     from events e
     join website_event we
     on we.session_id = e.session_id
-    where we.created_at < e.max_dt
+    where we.website_id = {{websiteId::uuid}}
+          and we.created_at between {{startDate}} and {{endDate}} 
+          and we.created_at < e.max_dt
     group by e.session_id)`;
   }
 
@@ -120,20 +126,21 @@ async function relationalQuery(
     `
     ${currency ? revenueEventQuery : eventQuery}
     ${getModelQuery(model)}
-    select we.referrer_domain name,
+    select coalesce(we.referrer_domain, '') name,
         ${currency ? 'sum(e.value)' : 'count(distinct we.session_id)'} value
-    from events e
-    join model m
-    on m.session_id = e.session_id
+    from model m
     join website_event we
     on we.created_at = m.created_at
         and we.session_id = m.session_id
     join session s
-    on s.session_id = e.session_id
+    on s.session_id = m.session_id
+    ${currency ? 'join events e on e.session_id = m.session_id' : ''}
+    where we.website_id = {{websiteId::uuid}}
+          and we.created_at between {{startDate}} and {{endDate}}
     ${
       currency
         ? ''
-        : `where referrer_domain != hostname
+        : `and we.referrer_domain != hostname
       and we.referrer_domain != ''`
     }  
     group by 1
@@ -156,14 +163,16 @@ async function relationalQuery(
             when coalesce(ttclid, '') != '' then 'TikTok Ads' 
             when coalesce(li_fat_id, '') != '' then 'LinkedIn Ads' 
             when coalesce(twclid, '') != '' then 'Twitter Ads (X)'
+            else ''
           end name,
         ${currency ? 'sum(e.value)' : 'count(distinct we.session_id)'} value
-    from events e
-    join model m
-    on m.session_id = e.session_id
+    from model m
     join website_event we
     on we.created_at = m.created_at
         and we.session_id = m.session_id
+    ${currency ? 'join events e on e.session_id = m.session_id' : ''}
+    where we.website_id = {{websiteId::uuid}}
+          and we.created_at between {{startDate}} and {{endDate}}
     group by 1
     order by 2 desc
     limit 20)
@@ -276,13 +285,14 @@ async function clickhouseQuery(
     select 
         we.${utmColumn} name,
         ${currency ? 'sum(e.value)' : 'uniqExact(we.session_id)'} value
-    from events e
-    join model m
-    on m.session_id = e.session_id
+    from model m
     join website_event we
     on we.created_at = m.created_at
         and we.session_id = m.session_id
-    ${currency ? '' : `where we.${utmColumn} != ''`}  
+    ${currency ? 'join events e on e.session_id = m.session_id' : ''}
+    where we.website_id = {websiteId:UUID}
+          and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+    ${currency ? '' : `and we.${utmColumn} != ''`}  
     group by 1
     order by 2 desc
     limit 20`;
@@ -326,6 +336,8 @@ async function clickhouseQuery(
     from events e
     join website_event we
     on we.session_id = e.session_id
+    where we.website_id = {websiteId:UUID}
+      and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
     group by e.session_id)`
       : `\n 
     model AS (select e.session_id,
@@ -333,7 +345,9 @@ async function clickhouseQuery(
     from events e
     join website_event we
     on we.session_id = e.session_id
-    where we.created_at < e.max_dt
+    where we.website_id = {websiteId:UUID}
+      and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and we.created_at < e.max_dt
     group by e.session_id)`;
   }
 
@@ -348,16 +362,17 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     select we.referrer_domain name,
         ${currency ? 'sum(e.value)' : 'uniqExact(we.session_id)'} value
-    from events e
-    join model m
-    on m.session_id = e.session_id
+    from model m
     join website_event we
     on we.created_at = m.created_at
         and we.session_id = m.session_id
+    ${currency ? 'join events e on e.session_id = m.session_id' : ''}
+    where we.website_id = {websiteId:UUID}
+          and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
     ${
       currency
         ? ''
-        : `where referrer_domain != hostname
+        : `and we.referrer_domain != hostname
       and we.referrer_domain != ''`
     }  
     group by 1
@@ -380,16 +395,17 @@ async function clickhouseQuery(
                    fbclid != '', 'Facebook / Meta', 
                    msclkid != '', 'Microsoft Ads', 
                    ttclid != '', 'TikTok Ads', 
-                   li_fat_id != '', 'LinkedIn Ads', 
+                   li_fat_id != '', '	LinkedIn Ads', 
                    twclid != '', 'Twitter Ads (X)','') name,
         ${currency ? 'sum(e.value)' : 'uniqExact(we.session_id)'} value
-    from events e
-    join model m
-    on m.session_id = e.session_id
+    from model m
     join website_event we
     on we.created_at = m.created_at
         and we.session_id = m.session_id
-    ${currency ? '' : `WHERE name != ''`}
+    ${currency ? 'join events e on e.session_id = m.session_id' : ''}
+    where we.website_id = {websiteId:UUID}
+      and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+    ${currency ? '' : `and name != ''`}
     group by 1
     order by 2 desc
     limit 20
