@@ -1,3 +1,4 @@
+'use client';
 import { Button } from 'react-basics';
 import Link from 'next/link';
 import Script from 'next/script';
@@ -9,7 +10,7 @@ import WebsiteChart from '../websites/[websiteId]/WebsiteChart';
 import { useApi, useNavigation } from '@/components/hooks';
 import styles from './TestConsole.module.css';
 
-export function TestConsole({ websiteId }: { websiteId: string }) {
+export function TestConsole({ websiteId }: { websiteId?: string }) {
   const { get, useQuery } = useApi();
   const { data, isLoading, error } = useQuery({
     queryKey: ['websites:me'],
