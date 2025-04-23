@@ -13,15 +13,14 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-COPY docker/middleware.js ./src
 
 ARG DATABASE_TYPE
 ARG BASE_PATH
 
-ENV DATABASE_TYPE $DATABASE_TYPE
-ENV BASE_PATH $BASE_PATH
+ENV DATABASE_TYPE=$DATABASE_TYPE
+ENV BASE_PATH=$BASE_PATH
 
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN yarn build-docker
 
@@ -31,9 +30,9 @@ WORKDIR /app
 
 ARG NODE_OPTIONS
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
-ENV NODE_OPTIONS $NODE_OPTIONS
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_OPTIONS=$NODE_OPTIONS
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -42,10 +41,7 @@ RUN set -x \
     && apk add --no-cache curl \
     && yarn add npm-run-all dotenv semver prisma@6.1.0
 
-# You only need to copy next.config.js if you are NOT using the default configuration
-COPY --from=builder /app/next.config.js .
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/scripts ./scripts
 
@@ -54,11 +50,13 @@ COPY --from=builder /app/scripts ./scripts
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+RUN mv ./.next/routes-manifest.json ./.next/routes-manifest-orig.json
+
 USER nextjs
 
 EXPOSE 3000
 
-ENV HOSTNAME 0.0.0.0
-ENV PORT 3000
+ENV HOSTNAME=0.0.0.0
+ENV PORT=3000
 
 CMD ["yarn", "start-docker"]
