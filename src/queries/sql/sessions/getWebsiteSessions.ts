@@ -24,14 +24,14 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
     select
       session.session_id as "id",
       session.website_id as "websiteId",
-      session.hostname,
+      website_event.hostname,
       session.browser,
       session.os,
       session.device,
       session.screen,
       session.language,
       session.country,
-      session.subdivision1,
+      session.region,
       session.city,
       min(website_event.created_at) as "firstAt",
       max(website_event.created_at) as "lastAt",
@@ -45,14 +45,14 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
     ${filterQuery}
     group by session.session_id, 
       session.website_id, 
-      session.hostname, 
+      website_event.hostname, 
       session.browser, 
       session.os, 
       session.device, 
       session.screen, 
       session.language, 
       session.country, 
-      session.subdivision1, 
+      session.region, 
       session.city
     order by max(website_event.created_at) desc
     limit 1000)
@@ -80,7 +80,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
       screen,
       language,
       country,
-      subdivision1,
+      region,
       city,
       ${getDateStringSQL('min(min_time)')} as firstAt,
       ${getDateStringSQL('max(max_time)')} as lastAt,
@@ -91,7 +91,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     where website_id = {websiteId:UUID}
     ${dateQuery}
     ${filterQuery}
-    group by session_id, website_id, hostname, browser, os, device, screen, language, country, subdivision1, city
+    group by session_id, website_id, hostname, browser, os, device, screen, language, country, region, city
     order by lastAt desc
     limit 1000)
     select * from sessions

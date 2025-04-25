@@ -80,8 +80,10 @@ export async function POST(request: Request) {
     }
 
     // Client info
-    const { ip, userAgent, device, browser, os, country, subdivision1, subdivision2, city } =
-      await getClientInfo(request, payload);
+    const { ip, userAgent, device, browser, os, country, region, city } = await getClientInfo(
+      request,
+      payload,
+    );
 
     // Bot check
     if (!process.env.DISABLE_BOT_CHECK && isbot(userAgent)) {
@@ -111,15 +113,13 @@ export async function POST(request: Request) {
           await createSession({
             id: sessionId,
             websiteId,
-            hostname,
             browser,
             os,
             device,
             screen,
             language,
             country,
-            subdivision1,
-            subdivision2,
+            region,
             city,
           });
         } catch (e: any) {
@@ -212,8 +212,7 @@ export async function POST(request: Request) {
         screen,
         language,
         country,
-        subdivision1,
-        subdivision2,
+        region,
         city,
         tag,
         createdAt,

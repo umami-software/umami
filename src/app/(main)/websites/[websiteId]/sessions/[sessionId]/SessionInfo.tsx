@@ -36,7 +36,7 @@ export default function SessionInfo({ data }) {
           <Icon>
             <Icons.Location />
           </Icon>
-          {getRegionName(data?.subdivision1)}
+          {getRegionName(data?.region)}
         </dd>
 
         <dt>{formatMessage(labels.city)}</dt>

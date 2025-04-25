@@ -31,15 +31,13 @@ model User {
 model Session {
   id           String    @id @unique @map("session_id") @db.Uuid
   websiteId    String    @map("website_id") @db.Uuid
-  hostname     String?   @db.VarChar(100)
   browser      String?   @db.VarChar(20)
   os           String?   @db.VarChar(20)
   device       String?   @db.VarChar(20)
   screen       String?   @db.VarChar(11)
   language     String?   @db.VarChar(35)
   country      String?   @db.Char(2)
-  subdivision1 String?   @db.VarChar(20)
-  subdivision2 String?   @db.VarChar(50)
+  region       String?   @db.VarChar(20)
   city         String?   @db.VarChar(50)
   createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
 
@@ -49,14 +47,13 @@ model Session {
   @@index([createdAt])
   @@index([websiteId])
   @@index([websiteId, createdAt])
-  @@index([websiteId, createdAt, hostname])
   @@index([websiteId, createdAt, browser])
   @@index([websiteId, createdAt, os])
   @@index([websiteId, createdAt, device])
   @@index([websiteId, createdAt, screen])
   @@index([websiteId, createdAt, language])
   @@index([websiteId, createdAt, country])
-  @@index([websiteId, createdAt, subdivision1])
+  @@index([websiteId, createdAt, region])
   @@index([websiteId, createdAt, city])
   @@map("session")
 }
@@ -115,6 +112,7 @@ model WebsiteEvent {
   eventType      Int       @default(1) @map("event_type") @db.Integer
   eventName      String?   @map("event_name") @db.VarChar(50)
   tag            String?   @db.VarChar(50)
+  hostname       String?   @db.VarChar(100)
 
   eventData EventData[]
   session   Session     @relation(fields: [sessionId], references: [id])
@@ -132,6 +130,7 @@ model WebsiteEvent {
   @@index([websiteId, createdAt, tag])
   @@index([websiteId, sessionId, createdAt])
   @@index([websiteId, visitId, createdAt])
+  @@index([websiteId, createdAt, hostname])
   @@map("website_event")
 }
 
