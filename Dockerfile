@@ -21,8 +21,7 @@ ENV BASE_PATH=$BASE_PATH
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN npm install -g pnpm
-RUN pnpm build-docker
+RUN npm run build-docker
 
 # Production image, copy all the files and run next
 FROM node:22-alpine AS runner
@@ -39,10 +38,13 @@ RUN adduser --system --uid 1001 nextjs
 RUN npm install -g pnpm
 
 RUN set -x \
-    && apk add --no-cache curl \
-    && pnpm add npm-run-all dotenv prisma@6.1.0
+    && apk add --no-cache curl
 
-RUN chown -R nextjs:nodejs node_modules/
+# Script dependencies
+RUN pnpm add npm-run-all dotenv prisma@6.1.0
+
+# Permissions for prisma
+RUN chown -R nextjs:nodejs node_modules/.pnpm/
 
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder /app/prisma ./prisma
@@ -53,6 +55,7 @@ COPY --from=builder /app/scripts ./scripts
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Custom routes
 RUN mv ./.next/routes-manifest.json ./.next/routes-manifest-orig.json
 
 USER nextjs

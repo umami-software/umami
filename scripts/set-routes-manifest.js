@@ -17,7 +17,7 @@ const headers = [];
 const rewrites = [];
 
 if (collectApiEndpoint) {
-  const apiRoute = originalManifest.headers.find((route) => route.source === API_PATH);
+  const apiRoute = originalManifest.headers.find(route => route.source === API_PATH);
   const routeRegex = new RegExp(apiRoute.regex);
 
   rewrites.push({
@@ -34,7 +34,7 @@ if (collectApiEndpoint) {
 }
 
 if (trackerScriptName) {
-  const trackerRoute = originalManifest.headers.find((route) => route.source === TRACKER_SCRIPT);
+  const trackerRoute = originalManifest.headers.find(route => route.source === TRACKER_SCRIPT);
 
   const names = trackerScriptName?.split(',').map(name => name.trim());
 
@@ -57,11 +57,11 @@ if (trackerScriptName) {
 
 const routesManifest = { ...originalManifest };
 
-if (rewrites.length != 0) {
+if (rewrites.length !== 0) {
   const { buildCustomRoute } = require('next/dist/lib/build-custom-route');
 
-  const builtHeaders = headers.map((header) => buildCustomRoute('header', header));
-  const builtRewrites = rewrites.map((rewrite) => buildCustomRoute('rewrite', rewrite));
+  const builtHeaders = headers.map(header => buildCustomRoute('header', header));
+  const builtRewrites = rewrites.map(rewrite => buildCustomRoute('rewrite', rewrite));
 
   routesManifest.headers = [...originalManifest.headers, ...builtHeaders];
   routesManifest.rewrites = [...builtRewrites, ...originalManifest.rewrites];
