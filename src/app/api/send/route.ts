@@ -18,7 +18,6 @@ const schema = z.object({
   payload: z.object({
     website: z.string().uuid(),
     data: anyObjectParam.optional(),
-    id: z.string().optional(),
     hostname: z.string().max(100).optional(),
     language: z.string().max(35).optional(),
     referrer: urlOrPathParam.optional(),
@@ -30,6 +29,7 @@ const schema = z.object({
     ip: z.string().ip().optional(),
     userAgent: z.string().optional(),
     timestamp: z.coerce.number().int().optional(),
+    id: z.string().optional(),
   }),
 });
 
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
       title,
       tag,
       timestamp,
-      id,
+      id = '',
     } = payload;
 
     // Cache check
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
     const sessionSalt = hash(startOfMonth(createdAt).toUTCString());
     const visitSalt = hash(startOfHour(createdAt).toUTCString());
 
-    const sessionId = uuid(websiteId, ip, userAgent, sessionSalt, id ? id : '');
+    const sessionId = uuid(websiteId, ip, userAgent, sessionSalt, id);
 
     // Find session
     if (!clickhouse.enabled && !cache?.sessionId) {

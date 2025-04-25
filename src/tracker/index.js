@@ -233,28 +233,34 @@
     }
   };
 
-  const track = (obj, data) => {
-    if (typeof obj === 'string') {
+  const track = (name, data) => {
+    if (typeof name === 'string') {
       return send({
         ...getPayload(),
-        name: obj,
-        data: typeof data === 'object' ? data : undefined,
+        name,
+        data,
       });
-    } else if (typeof obj === 'object') {
-      return send({ ...obj, ...getPayload().id });
-    } else if (typeof obj === 'function') {
-      return send(obj(getPayload()));
+    } else if (typeof name === 'object') {
+      return send({ ...name });
+    } else if (typeof name === 'function') {
+      return send(name(getPayload()));
     }
     return send(getPayload());
   };
 
-  const identify = (data, id = undefined) => {
-    if (id && typeof id === 'string') {
+  const identify = (id, data) => {
+    if (typeof id === 'string') {
       identity = id;
     }
-    /* Clear cache since this will result in another session */
+
     cache = '';
-    send({ ...getPayload(), data }, 'identify');
+    return send(
+      {
+        ...getPayload(),
+        data: typeof id === 'object' ? id : data,
+      },
+      'identify',
+    );
   };
 
   /* Start */
