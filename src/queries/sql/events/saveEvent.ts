@@ -36,8 +36,7 @@ export async function saveEvent(args: {
   screen?: string;
   language?: string;
   country?: string;
-  subdivision1?: string;
-  subdivision2?: string;
+  region?: string;
   city?: string;
   tag?: string;
   createdAt?: Date;
@@ -72,6 +71,7 @@ async function relationalQuery(data: {
   eventName?: string;
   eventData?: any;
   tag?: string;
+  hostname?: string;
   createdAt?: Date;
 }) {
   const {
@@ -98,6 +98,7 @@ async function relationalQuery(data: {
     lifatid,
     twclid,
     tag,
+    hostname,
     createdAt,
   } = data;
   const websiteEventId = uuid();
@@ -128,6 +129,7 @@ async function relationalQuery(data: {
       eventType: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
       eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
       tag,
+      hostname,
       createdAt,
     },
   });
@@ -177,8 +179,7 @@ async function clickhouseQuery(data: {
   screen?: string;
   language?: string;
   country?: string;
-  subdivision1?: string;
-  subdivision2?: string;
+  region?: string;
   city?: string;
   tag?: string;
   createdAt?: Date;
@@ -207,8 +208,7 @@ async function clickhouseQuery(data: {
     eventName,
     eventData,
     country,
-    subdivision1,
-    subdivision2,
+    region,
     city,
     tag,
     createdAt,
@@ -225,13 +225,7 @@ async function clickhouseQuery(data: {
     visit_id: visitId,
     event_id: eventId,
     country: country,
-    subdivision1:
-      country && subdivision1
-        ? subdivision1.includes('-')
-          ? subdivision1
-          : `${country}-${subdivision1}`
-        : null,
-    subdivision2: subdivision2,
+    region: country && region ? (region.includes('-') ? region : `${country}-${region}`) : null,
     city: city,
     url_path: urlPath?.substring(0, URL_LENGTH),
     url_query: urlQuery?.substring(0, URL_LENGTH),

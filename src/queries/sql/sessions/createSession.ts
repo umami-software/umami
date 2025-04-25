@@ -2,34 +2,19 @@ import { Prisma } from '@prisma/client';
 import prisma from '@/lib/prisma';
 
 export async function createSession(data: Prisma.SessionCreateInput) {
-  const {
-    id,
-    websiteId,
-    hostname,
-    browser,
-    os,
-    device,
-    screen,
-    language,
-    country,
-    subdivision1,
-    subdivision2,
-    city,
-  } = data;
+  const { id, websiteId, browser, os, device, screen, language, country, region, city } = data;
 
   return prisma.client.session.create({
     data: {
       id,
       websiteId,
-      hostname,
       browser,
       os,
       device,
       screen,
       language,
       country,
-      subdivision1,
-      subdivision2,
+      region,
       city,
     },
   });
