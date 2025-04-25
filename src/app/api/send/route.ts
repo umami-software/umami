@@ -167,6 +167,8 @@ export async function POST(request: Request) {
         urlPath = urlPath.replace(/(.+)\/$/, '$1');
       }
 
+      urlPath = urlPath + currentUrl.hash;
+
       let referrerPath: string;
       let referrerQuery: string;
       let referrerDomain: string;
