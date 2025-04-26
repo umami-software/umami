@@ -55,7 +55,7 @@ export async function POST(request: Request) {
       title,
       tag,
       timestamp,
-      id = '',
+      id,
     } = payload;
 
     // Cache check
@@ -101,7 +101,7 @@ export async function POST(request: Request) {
     const sessionSalt = hash(startOfMonth(createdAt).toUTCString());
     const visitSalt = hash(startOfHour(createdAt).toUTCString());
 
-    const sessionId = uuid(websiteId, ip, userAgent, sessionSalt, id);
+    const sessionId = id ? uuid(websiteId, id) : uuid(websiteId, ip, userAgent, sessionSalt);
 
     // Find session
     if (!clickhouse.enabled && !cache?.sessionId) {
@@ -148,6 +148,10 @@ export async function POST(request: Request) {
       const urlQuery = currentUrl.search.substring(1);
       const urlDomain = currentUrl.hostname.replace(/^www./, '');
 
+      let referrerPath: string;
+      let referrerQuery: string;
+      let referrerDomain: string;
+
       // UTM Params
       const utmSource = currentUrl.searchParams.get('utm_source');
       const utmMedium = currentUrl.searchParams.get('utm_medium');
@@ -166,10 +170,6 @@ export async function POST(request: Request) {
       if (process.env.REMOVE_TRAILING_SLASH) {
         urlPath = urlPath.replace(/(.+)\/$/, '$1');
       }
-
-      let referrerPath: string;
-      let referrerQuery: string;
-      let referrerDomain: string;
 
       if (referrer) {
         const referrerUrl = new URL(referrer, base);
