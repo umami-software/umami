@@ -76,7 +76,6 @@
     "@prisma/extension-read-replicas": "^0.4.1",
     "@react-spring/web": "^9.7.3",
     "@tanstack/react-query": "^5.28.6",
-    "@umami/prisma-client": "^0.14.0",
     "@umami/redis-client": "^0.26.0",
     "bcryptjs": "^2.4.3",
     "chalk": "^4.1.1",

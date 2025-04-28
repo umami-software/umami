@@ -246,8 +246,8 @@ async function rawQuery(sql: string, data: object): Promise<any> {
   });
 
   return process.env.DATABASE_REPLICA_URL
-    ? client.$replica().$queryRawUnsafe(query, params)
-    : client.$queryRawUnsafe(query, params);
+    ? client.$replica().$queryRawUnsafe(query, ...params)
+    : client.$queryRawUnsafe(query, ...params);
 }
 
 async function pagedQuery<T>(model: string, criteria: T, pageParams: PageParams) {
@@ -369,6 +369,10 @@ function getClient(params?: {
 
   if (logQuery) {
     prisma.$on('query' as never, queryLogger || log);
+  }
+
+  if (process.env.NODE_ENV !== 'production') {
+    global[PRISMA] = prisma;
   }
 
   log('Prisma initialized');
