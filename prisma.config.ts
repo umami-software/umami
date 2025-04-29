@@ -3,5 +3,5 @@ import { defineConfig } from 'prisma/config';
 
 export default defineConfig({
   earlyAccess: true,
-  schema: path.join('prisma', 'schema.prisma'),
+  schema: path.resolve(process.cwd(), 'prisma', 'schema.prisma'),
 });

@@ -66,7 +66,6 @@
   "cacheDirectories": [
     ".next/cache"
   ],
-  "packageManager": "pnpm@10.10.0",
   "dependencies": {
     "@clickhouse/client": "^1.11.1",
     "@date-fns/utc": "^1.2.0",
