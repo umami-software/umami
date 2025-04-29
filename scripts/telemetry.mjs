@@ -3,11 +3,11 @@ import isCI from 'is-ci';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const pkg = require('./package.json');
+const pkg = require('../package.json');
 
 const url = 'https://api.umami.is/v1/telemetry';
 
-async function sendTelemetry(type) {
+export async function sendTelemetry(type) {
   const { default: isDocker } = await import('is-docker');
   const { default: fetch } = await import('node-fetch');
 
@@ -37,7 +37,3 @@ async function sendTelemetry(type) {
     // Ignore
   }
 }
-
-module.exports = {
-  sendTelemetry,
-};
