@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import 'dotenv/config';
 
-import { PrismaClient } from '../src/generated/prisma/client';
+import { PrismaClient } from '../src/generated/prisma/index.js';
 import chalk from 'chalk';
 import { execSync } from 'child_process';
 import semver from 'semver';
