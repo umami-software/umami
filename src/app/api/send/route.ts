@@ -121,6 +121,7 @@ export async function POST(request: Request) {
             country,
             region,
             city,
+            distinctId: id,
           });
         } catch (e: any) {
           if (!e.message.toLowerCase().includes('unique constraint')) {
@@ -215,6 +216,7 @@ export async function POST(request: Request) {
         region,
         city,
         tag,
+        distinctId: id,
         createdAt,
       });
     }
@@ -228,6 +230,7 @@ export async function POST(request: Request) {
         websiteId,
         sessionId,
         sessionData: data,
+        distinctId: id,
         createdAt,
       });
     }

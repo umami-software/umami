@@ -40,7 +40,7 @@ model Session {
   country     String?   @db.Char(2)
   region      String?   @db.Char(20)
   city        String?   @db.VarChar(50)
-  distinct_id String?   @db.VarChar(50)
+  distinctId  String?   @map("distinct_id") @db.VarChar(50)
   createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
 
   websiteEvent WebsiteEvent[]
@@ -167,7 +167,7 @@ model SessionData {
   numberValue Decimal?  @map("number_value") @db.Decimal(19, 4)
   dateValue   DateTime? @map("date_value") @db.Timestamp(0)
   dataType    Int       @map("data_type") @db.UnsignedInt
-  distinct_id String?   @db.VarChar(50)
+  distinctId  String?   @map("distinct_id") @db.VarChar(50)
   createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
 
   website Website @relation(fields: [websiteId], references: [id])
