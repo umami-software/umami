@@ -27,8 +27,8 @@ export function FunnelStepAddForm({
   const [value, setValue] = useState(defaultValue);
   const { formatMessage, labels } = useMessages();
   const items = [
-    { label: formatMessage(labels.url), value: 'url' },
-    { label: formatMessage(labels.event), value: 'event' },
+    { id: 'url', label: formatMessage(labels.url), value: 'url' },
+    { id: 'event', label: formatMessage(labels.event), value: 'event' },
   ];
   const isDisabled = !type || !value;
 

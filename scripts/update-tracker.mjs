@@ -1,7 +1,10 @@
 /* eslint-disable no-console */
-require('dotenv').config();
-const fs = require('fs');
-const path = require('path');
+import 'dotenv/config';
+import fs from 'node:fs';
+import path from 'node:path';
+import url from "node:url";
+
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 const endPoint = process.env.COLLECT_API_ENDPOINT;
 

@@ -1,8 +1,11 @@
 /* eslint-disable no-console */
-require('dotenv').config();
-const fse = require('fs-extra');
-const path = require('path');
-const del = require('del');
+import 'dotenv/config';
+import fse from 'fs-extra';
+import path from 'node:path';
+import url from 'node:url';
+import del from 'del';
+
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 function getDatabaseType(url = process.env.DATABASE_URL) {
   const type = process.env.DATABASE_TYPE || (url && url.split(':')[0]);

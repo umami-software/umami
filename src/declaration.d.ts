@@ -2,5 +2,7 @@ declare module 'bcryptjs';
 declare module 'chartjs-adapter-date-fns';
 declare module 'cors';
 declare module 'debug';
+declare module 'fs-extra';
 declare module 'jsonwebtoken';
 declare module 'md5';
+declare module 'prettier';

@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-console */
-require('dotenv').config();
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
-const zlib = require('zlib');
-const tar = require('tar');
+import 'dotenv/config';
+import fs from 'node:fs';
+import path from 'node:path';
+import https from 'https';
+import zlib from 'zlib';
+import tar from 'tar';
 
 if (process.env.VERCEL) {
   console.log('Vercel environment detected. Skipping geo setup.');

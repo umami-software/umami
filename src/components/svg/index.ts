@@ -24,6 +24,7 @@ export { default as Logo } from './Logo';
 export { default as Magnet } from './Magnet';
 export { default as Money } from './Money';
 export { default as Moon } from './Moon';
+export { default as Network } from './Network';
 export { default as Nodes } from './Nodes';
 export { default as Overview } from './Overview';
 export { default as Path } from './Path';

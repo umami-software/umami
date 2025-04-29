@@ -32,7 +32,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     where website_event.website_id = {{websiteId::uuid}}
     ${filterQuery}
     ${dateQuery}
-    order by website_event.created_at desc
+    order by website_event.created_at asc
     limit 100
     `,
     params,

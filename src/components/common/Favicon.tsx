@@ -1,4 +1,4 @@
-import { GROUPED_DOMAINS } from '@/lib/constants';
+import { FAVICON_URL, GROUPED_DOMAINS } from '@/lib/constants';
 
 function getHostName(url: string) {
   const match = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?([^:/\n?=]+)/im);
@@ -10,10 +10,10 @@ export function Favicon({ domain, ...props }) {
     return null;
   }
 
+  const url = process.env.faviconURL || FAVICON_URL;
   const hostName = domain ? getHostName(domain) : null;
-  const src = hostName
-    ? `https://icons.duckduckgo.com/ip3/${GROUPED_DOMAINS[hostName]?.domain || hostName}.ico`
-    : null;
+  const domainName = GROUPED_DOMAINS[hostName]?.domain || hostName;
+  const src = hostName ? url.replace(/\{\{\s*domain\s*}}/, domainName) : null;
 
   return hostName ? <img src={src} width={16} height={16} alt="" {...props} /> : null;
 }

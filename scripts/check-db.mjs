@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
-require('dotenv').config();
-const { PrismaClient } = require('@prisma/client');
-const chalk = require('chalk');
-const { execSync } = require('child_process');
-const semver = require('semver');
+import 'dotenv/config';
+
+import { PrismaClient } from '@prisma/client';
+import chalk from 'chalk';
+import { execSync } from 'child_process';
+import semver from 'semver';
 
 if (process.env.SKIP_DB_CHECK) {
   console.log('Skipping database check.');

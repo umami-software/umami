@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
-const fs = require('fs');
-const path = require('path');
-const chalk = require('chalk');
+import fs from 'node:fs';
+import path from 'node:path';
+import chalk from 'chalk';
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
 const messages = require('../src/lang/en-US.json');
 const ignore = require('../lang-ignore.json');
-
 const dir = path.resolve(__dirname, '../lang');
 const files = fs.readdirSync(dir);
 const keys = Object.keys(messages).sort();

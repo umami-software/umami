@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-require('dotenv').config();
+import 'dotenv/config';
 
 function checkMissing(vars) {
   const missing = vars.reduce((arr, key) => {

@@ -1,15 +1,18 @@
 /* eslint-disable no-console */
-const fs = require('fs-extra');
-const path = require('path');
-const https = require('https');
-const chalk = require('chalk');
+import fs from 'fs-extra';
+import path from 'node:path';
+import https from 'https';
+import chalk from 'chalk';
+import url from "node:url";
+
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 const src = path.resolve(__dirname, '../src/lang');
-const dest = path.resolve(__dirname, '../public/intl/language');
+const dest = path.resolve(__dirname, '../public/intl/country');
 const files = fs.readdirSync(src);
 
 const getUrl = locale =>
-  `https://raw.githubusercontent.com/umpirsky/language-list/master/data/${locale}/language.json`;
+  `https://raw.githubusercontent.com/umpirsky/country-list/master/data/${locale}/country.json`;
 
 const asyncForEach = async (array, callback) => {
   for (let index = 0; index < array.length; index++) {

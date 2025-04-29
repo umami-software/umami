@@ -1,5 +1,7 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-require('dotenv').config();
+import 'dotenv/config';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 const pkg = require('./package.json');
 
 const TRACKER_SCRIPT = '/script.js';
@@ -12,6 +14,7 @@ const corsMaxAge = process.env.CORS_MAX_AGE;
 const defaultLocale = process.env.DEFAULT_LOCALE;
 const disableLogin = process.env.DISABLE_LOGIN;
 const disableUI = process.env.DISABLE_UI;
+const faviconURL = process.env.FAVICON_URL;
 const forceSSL = process.env.FORCE_SSL;
 const frameAncestors = process.env.ALLOWED_FRAME_URLS;
 const privateMode = process.env.PRIVATE_MODE;
@@ -75,6 +78,10 @@ const apiHeaders = [
   {
     key: 'Access-Control-Max-Age',
     value: corsMaxAge || '86400',
+  },
+  {
+    key: 'Cache-Control',
+    value: 'no-cache',
   },
 ];
 
@@ -176,7 +183,7 @@ if (cloudMode && cloudUrl) {
 }
 
 /** @type {import('next').NextConfig} */
-const config = {
+export default {
   reactStrictMode: false,
   env: {
     basePath,
@@ -186,6 +193,7 @@ const config = {
     defaultLocale,
     disableLogin,
     disableUI,
+    faviconURL,
     privateMode,
   },
   basePath,
@@ -216,5 +224,3 @@ const config = {
     return [...redirects];
   },
 };
-
-module.exports = config;

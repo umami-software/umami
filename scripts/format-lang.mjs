@@ -1,8 +1,13 @@
-const fs = require('fs-extra');
-const path = require('path');
-const del = require('del');
-const prettier = require('prettier');
+import path from 'node:path';
+import url from 'node:url';
+import fs from 'fs-extra';
+import del from 'del';
+import prettier from 'prettier';
+import { createRequire } from 'module';
 
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
+
+const require = createRequire(import.meta.url);
 const src = path.resolve(__dirname, '../src/lang');
 const dest = path.resolve(__dirname, '../build/messages');
 const files = fs.readdirSync(src);

@@ -35,15 +35,15 @@ export function SessionInfo({ data }) {
         </Row>
       </Box>
 
-      <Box>
+      <Row>
         <Label>{formatMessage(labels.region)}</Label>
         <Row gap="3">
           <Icon>
             <Icons.Location />
           </Icon>
-          <Text>{getRegionName(data?.subdivision1)}</Text>
+          {getRegionName(data?.region)}
         </Row>
-      </Box>
+      </Row>
 
       <Box>
         <Label>{formatMessage(labels.city)}</Label>

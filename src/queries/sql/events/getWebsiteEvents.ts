@@ -52,7 +52,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
     limit 1000)
     select * from events
     `,
-    { ...params, query: `%${search}%` },
+    { ...params, search: `%${search}%` },
     pageParams,
   );
 }
