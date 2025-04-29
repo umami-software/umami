@@ -30,7 +30,7 @@
     "set-routes-manifest": "node scripts/set-routes-manifest.mjs",
     "update-tracker": "node scripts/update-tracker.mjs",
     "update-db": "prisma migrate deploy",
-    "check-db": "node scripts/check-db.mjs",
+    "check-db": "node scripts/check-db.js",
     "check-env": "node scripts/check-env.mjs",
     "copy-db-files": "node scripts/copy-db-files.mjs",
     "extract-messages": "formatjs extract \"src/components/messages.ts\" --out-file build/extracted-messages.json",
