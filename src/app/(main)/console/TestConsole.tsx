@@ -1,3 +1,4 @@
+'use client';
 import { Button } from '@umami/react-zen';
 import Link from 'next/link';
 import Script from 'next/script';

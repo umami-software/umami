@@ -21,7 +21,7 @@ export function TrackingCode({ websiteId, hostUrl }: { websiteId: string; hostUr
   return (
     <>
       <p>{formatMessage(messages.trackingCode)}</p>
-      <TextArea rows={4} value={code} readOnly allowCopy />
+      <TextArea rows={4} value={code} isReadOnly allowCopy />
     </>
   );
 }
