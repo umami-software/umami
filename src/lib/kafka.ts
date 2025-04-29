@@ -41,7 +41,7 @@ function getClient() {
   });
 
   if (process.env.NODE_ENV !== 'production') {
-    global[KAFKA] = client;
+    globalThis[KAFKA] = client;
   }
 
   log('Kafka initialized');
@@ -54,7 +54,7 @@ async function getProducer(): Promise<Producer> {
   await producer.connect();
 
   if (process.env.NODE_ENV !== 'production') {
-    global[KAFKA_PRODUCER] = producer;
+    globalThis[KAFKA_PRODUCER] = producer;
   }
 
   log('Kafka producer initialized');
@@ -91,10 +91,10 @@ async function sendMessage(
 
 async function connect(): Promise<Kafka> {
   if (!kafka) {
-    kafka = process.env.KAFKA_URL && process.env.KAFKA_BROKER && (global[KAFKA] || getClient());
+    kafka = process.env.KAFKA_URL && process.env.KAFKA_BROKER && (globalThis[KAFKA] || getClient());
 
     if (kafka) {
-      producer = global[KAFKA_PRODUCER] || (await getProducer());
+      producer = globalThis[KAFKA_PRODUCER] || (await getProducer());
     }
   }
 

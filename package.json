@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "2.18.0",
+  "version": "3.0.0",
   "description": "A modern, privacy-focused alternative to Google Analytics.",
   "author": "Umami Software, Inc. <hello@umami.is>",
   "license": "MIT",
@@ -30,7 +30,7 @@
     "set-routes-manifest": "node scripts/set-routes-manifest.mjs",
     "update-tracker": "node scripts/update-tracker.mjs",
     "update-db": "prisma migrate deploy",
-    "check-db": "node scripts/check-db.js",
+    "check-db": "node scripts/check-db.mjs",
     "check-env": "node scripts/check-env.mjs",
     "copy-db-files": "node scripts/copy-db-files.mjs",
     "extract-messages": "formatjs extract \"src/components/messages.ts\" --out-file build/extracted-messages.json",

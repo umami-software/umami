@@ -372,7 +372,7 @@ function getClient(params?: {
   }
 
   if (process.env.NODE_ENV !== 'production') {
-    global[PRISMA] = prisma;
+    globalThis[PRISMA] = prisma;
   }
 
   log('Prisma initialized');
@@ -380,7 +380,7 @@ function getClient(params?: {
   return prisma;
 }
 
-const client = global[PRISMA] || getClient();
+const client = globalThis[PRISMA] || getClient();
 
 export default {
   client,

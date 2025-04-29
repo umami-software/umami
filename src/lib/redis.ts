@@ -7,12 +7,12 @@ function getClient() {
   const redis = new UmamiRedisClient(process.env.REDIS_URL);
 
   if (process.env.NODE_ENV !== 'production') {
-    global[REDIS] = redis;
+    globalThis[REDIS] = redis;
   }
 
   return redis;
 }
 
-const client = global[REDIS] || getClient();
+const client = globalThis[REDIS] || getClient();
 
 export default { client, enabled };

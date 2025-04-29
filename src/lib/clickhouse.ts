@@ -41,7 +41,7 @@ function getClient() {
   });
 
   if (process.env.NODE_ENV !== 'production') {
-    global[CLICKHOUSE] = client;
+    globalThis[CLICKHOUSE] = client;
   }
 
   log('Clickhouse initialized');
@@ -219,7 +219,7 @@ async function findFirst(data: any[]) {
 
 async function connect() {
   if (enabled && !clickhouse) {
-    clickhouse = process.env.CLICKHOUSE_URL && (global[CLICKHOUSE] || getClient());
+    clickhouse = process.env.CLICKHOUSE_URL && (globalThis[CLICKHOUSE] || getClient());
   }
 
   return clickhouse;

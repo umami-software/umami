@@ -121,13 +121,13 @@ export async function getLocation(ip: string = '', headers: Headers, hasPayloadI
   }
 
   // Database lookup
-  if (!global[MAXMIND]) {
+  if (!globalThis[MAXMIND]) {
     const dir = path.join(process.cwd(), 'geo');
 
-    global[MAXMIND] = await maxmind.open(path.resolve(dir, 'GeoLite2-City.mmdb'));
+    globalThis[MAXMIND] = await maxmind.open(path.resolve(dir, 'GeoLite2-City.mmdb'));
   }
 
-  const result = global[MAXMIND].get(ip);
+  const result = globalThis[MAXMIND].get(ip);
 
   if (result) {
     const country = result.country?.iso_code ?? result?.registered_country?.iso_code;
