@@ -7,7 +7,7 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const messages = require('../src/lang/en-US.json');
 const ignore = require('../lang-ignore.json');
-const dir = path.resolve(__dirname, '../lang');
+const dir = path.resolve(process.cwd(), 'lang');
 const files = fs.readdirSync(dir);
 const keys = Object.keys(messages).sort();
 const filter = process.argv?.[2];

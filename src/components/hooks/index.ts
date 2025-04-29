@@ -1,3 +1,4 @@
+'use client';
 export * from './queries/useActiveUsersQuery';
 export * from './queries/useEventDataEventsQuery';
 export * from './queries/useEventDataPropertiesQuery';

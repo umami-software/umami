@@ -3,8 +3,8 @@ import 'dotenv/config';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const routesManifestPath = path.resolve(__dirname, '../.next/routes-manifest.json');
-const originalPath = path.resolve(__dirname, '../.next/routes-manifest-orig.json');
+const routesManifestPath = path.resolve(process.cwd(), '.next/routes-manifest.json');
+const originalPath = path.resolve(process.cwd(), '.next/routes-manifest-orig.json');
 const originalManifest = require(originalPath);
 
 const API_PATH = '/api/:path*';

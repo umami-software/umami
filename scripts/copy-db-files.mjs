@@ -2,10 +2,7 @@
 import 'dotenv/config';
 import fse from 'fs-extra';
 import path from 'node:path';
-import url from 'node:url';
 import del from 'del';
-
-const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 function getDatabaseType(url = process.env.DATABASE_URL) {
   const type = process.env.DATABASE_TYPE || (url && url.split(':')[0]);
@@ -25,8 +22,8 @@ if (!databaseType || !['mysql', 'postgresql'].includes(databaseType)) {
 
 console.log(`Database type detected: ${databaseType}`);
 
-const src = path.resolve(__dirname, `../db/${databaseType}`);
-const dest = path.resolve(__dirname, '../prisma');
+const src = path.resolve(process.cwd(), `db/${databaseType}`);
+const dest = path.resolve(process.cwd(), 'prisma');
 
 del.sync(dest);
 

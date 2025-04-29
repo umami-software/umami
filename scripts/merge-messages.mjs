@@ -6,7 +6,7 @@ import messages from '../build/extracted-messages.json';
 import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
-const dest = path.resolve(__dirname, '../src/lang');
+const dest = path.resolve(process.cwd(), 'src/lang');
 const files = fs.readdirSync(dest);
 const keys = Object.keys(messages).sort();
 

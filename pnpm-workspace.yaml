@@ -1,0 +1,10 @@
+packages:
+  - '**'
+ignoredBuiltDependencies:
+  - cypress
+  - esbuild
+  - sharp
+onlyBuiltDependencies:
+  - '@prisma/client'
+  - '@prisma/engines'
+  - prisma
