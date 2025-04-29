@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
+
 const pkg = require('./package.json');
 
 const TRACKER_SCRIPT = '/script.js';

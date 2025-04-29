@@ -2,7 +2,7 @@
 import 'dotenv/config';
 import fs from 'node:fs';
 import path from 'node:path';
-import { createRequire } from "module";
+import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 

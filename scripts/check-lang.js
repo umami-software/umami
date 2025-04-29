@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import chalk from 'chalk';
-import { createRequire } from "module";
+import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 const messages = require(path.resolve(process.cwd(), 'src/lang/en-US.json'));
