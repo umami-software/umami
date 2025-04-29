@@ -1,9 +1,10 @@
 import os from 'node:os';
+import path from 'node:path';
 import isCI from 'is-ci';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const pkg = require('../package.json');
+const pkg = require(path.resolve(process.cwd(), 'package.json'));
 
 const url = 'https://api.umami.is/v1/telemetry';
 

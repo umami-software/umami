@@ -5,8 +5,8 @@ import chalk from 'chalk';
 import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
-const messages = require('../src/lang/en-US.json');
-const ignore = require('../lang-ignore.json');
+const messages = require(path.resolve(process.cwd(), 'src/lang/en-US.json'));
+const ignore = require(path.resolve(process.cwd(), 'lang-ignore.json'));
 const dir = path.resolve(process.cwd(), 'lang');
 const files = fs.readdirSync(dir);
 const keys = Object.keys(messages).sort();

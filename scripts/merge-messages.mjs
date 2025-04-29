@@ -16,7 +16,7 @@ with the existing files under `lang`. Any newly added
 keys will be printed to the console.
  */
 files.forEach(file => {
-  const lang = require(`../src/lang/${file}`);
+  const lang = require(path.resolve(process.cwd(), `src/lang/${file}`));
 
   console.log(`Merging ${file}`);
 

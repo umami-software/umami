@@ -3,7 +3,6 @@ import fs from 'fs-extra';
 import path from 'node:path';
 import https from 'https';
 import chalk from 'chalk';
-import url from "node:url";
 
 const src = path.resolve(process.cwd(), 'src/lang');
 const dest = path.resolve(process.cwd(), 'public/intl/country');
