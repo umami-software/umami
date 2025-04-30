@@ -20,6 +20,7 @@ export function FunnelStepAddForm({
   const items = [
     { label: formatMessage(labels.url), value: 'url' },
     { label: formatMessage(labels.event), value: 'event' },
+    { label: formatMessage(labels.hosts), value: 'hosts' },
   ];
   const isDisabled = !type || !value;
 
