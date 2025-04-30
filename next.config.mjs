@@ -1,7 +1,5 @@
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import { createRequire } from 'module';
-
-dotenv.config();
 
 const require = createRequire(import.meta.url);
 const pkg = require('./package.json');

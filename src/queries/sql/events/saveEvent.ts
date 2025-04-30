@@ -39,6 +39,7 @@ export async function saveEvent(args: {
   region?: string;
   city?: string;
   tag?: string;
+  distinctId?: string;
   createdAt?: Date;
 }) {
   return runQuery({
@@ -182,6 +183,7 @@ async function clickhouseQuery(data: {
   region?: string;
   city?: string;
   tag?: string;
+  distinctId?: string;
   createdAt?: Date;
 }) {
   const {
@@ -211,6 +213,7 @@ async function clickhouseQuery(data: {
     region,
     city,
     tag,
+    distinctId,
     createdAt,
     ...args
   } = data;
@@ -247,6 +250,7 @@ async function clickhouseQuery(data: {
     event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
     tag: tag,
+    distinct_id: distinctId,
     created_at: getUTCString(createdAt),
   };
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 require('dotenv').config();
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require('../src/generated/prisma/index.js');
 const chalk = require('chalk');
 const { execSync } = require('child_process');
 const semver = require('semver');

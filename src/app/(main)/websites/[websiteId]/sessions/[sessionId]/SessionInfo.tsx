@@ -18,7 +18,8 @@ export default function SessionInfo({ data }) {
         <dd>
           {data?.id} <CopyIcon value={data?.id} />
         </dd>
-
+        <dt>{formatMessage(labels.distinctId)}</dt>
+        <dd>{data?.distinctId}</dd>
         <dt>{formatMessage(labels.lastSeen)}</dt>
         <dd>{formatTimezoneDate(data?.lastAt, 'PPPPpp')}</dd>
 

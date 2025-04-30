@@ -131,6 +131,7 @@ export const labels = defineMessages({
   all: { id: 'label.all', defaultMessage: 'All' },
   session: { id: 'label.session', defaultMessage: 'Session' },
   sessions: { id: 'label.sessions', defaultMessage: 'Sessions' },
+  distinctId: { id: 'label.distinct-id', defaultMessage: 'Distinct ID' },
   pageNotFound: { id: 'message.page-not-found', defaultMessage: 'Page not found' },
   activity: { id: 'label.activity', defaultMessage: 'Activity' },
   dismiss: { id: 'label.dismiss', defaultMessage: 'Dismiss' },
