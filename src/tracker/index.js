@@ -41,7 +41,7 @@
     website,
     screen,
     language,
-    title,
+    title: document.title,
     hostname,
     url: currentUrl,
     referrer: currentRef,
@@ -89,22 +89,6 @@
 
     history.pushState = hook(history, 'pushState', handlePush);
     history.replaceState = hook(history, 'replaceState', handlePush);
-  };
-
-  const handleTitleChanges = () => {
-    const observer = new MutationObserver(([entry]) => {
-      title = entry && entry.target ? entry.target.text : undefined;
-    });
-
-    const node = document.querySelector('head > title');
-
-    if (node) {
-      observer.observe(node, {
-        subtree: true,
-        characterData: true,
-        childList: true,
-      });
-    }
   };
 
   const handleClicks = () => {
@@ -226,7 +210,6 @@
     if (!initialized) {
       track();
       handlePathChanges();
-      handleTitleChanges();
       handleClicks();
       initialized = true;
     }
@@ -260,7 +243,6 @@
 
   let currentUrl = href;
   let currentRef = referrer.startsWith(origin) ? '' : referrer;
-  let title = document.title;
   let cache;
   let initialized;
   let disabled = false;
