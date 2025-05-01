@@ -8,6 +8,7 @@ import { SessionActivity } from './SessionActivity';
 import { SessionData } from './SessionData';
 import { SessionInfo } from './SessionInfo';
 import { SessionStats } from './SessionStats';
+import { Panel } from '@/components/common/Panel';
 
 export function SessionDetailsPage({
   websiteId,
@@ -22,27 +23,33 @@ export function SessionDetailsPage({
     <LoadingPanel {...query} loadingIcon="spinner" data={data}>
       <WebsiteHeader websiteId={websiteId} />
       <Grid
-        gap="9"
+        gap
         columns={{ xs: '1fr', sm: '1fr', md: '1fr 1fr', lg: '1fr 2fr 1fr', xl: '1fr 2fr 1fr' }}
       >
-        <Column gap="6" maxWidth="200px">
-          <Row justifyContent="center">
-            <Avatar seed={data?.id} size={128} />
-          </Row>
-          <SessionInfo data={data} />
-        </Column>
-        <Column gap="6">
-          <SessionStats data={data} />
-          <SessionActivity
-            websiteId={websiteId}
-            sessionId={sessionId}
-            startDate={data?.firstAt}
-            endDate={data?.lastAt}
-          />
-        </Column>
-        <Column gap="6">
-          <SessionData websiteId={websiteId} sessionId={sessionId} />
-        </Column>
+        <Panel>
+          <Column gap="6" maxWidth="200px">
+            <Row justifyContent="center">
+              <Avatar seed={data?.id} size={128} />
+            </Row>
+            <SessionInfo data={data} />
+          </Column>
+        </Panel>
+        <Panel>
+          <Column gap="6">
+            <SessionStats data={data} />
+            <SessionActivity
+              websiteId={websiteId}
+              sessionId={sessionId}
+              startDate={data?.firstAt}
+              endDate={data?.lastAt}
+            />
+          </Column>
+        </Panel>
+        <Panel>
+          <Column gap="6">
+            <SessionData websiteId={websiteId} sessionId={sessionId} />
+          </Column>
+        </Panel>
       </Grid>
     </LoadingPanel>
   );
