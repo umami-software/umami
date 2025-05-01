@@ -27,7 +27,7 @@
     "build-geo": "node scripts/build-geo.js",
     "build-db-schema": "prisma db pull",
     "build-db-client": "prisma generate",
-    "build-prisma": "tsc --project tsconfig.prisma.json",
+    "build-prisma-client": "node scripts/build-prisma-client.js",
     "build-icons": "svgr ./src/assets --out-dir ./src/components/svg --typescript",
     "set-routes-manifest": "node scripts/set-routes-manifest.js",
     "update-tracker": "node scripts/update-tracker.js",
