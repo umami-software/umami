@@ -21,7 +21,7 @@
     "noEmit": true,
     "jsx": "preserve",
     "incremental": false,
-    "types": ["jest"],
+    "types": ["node", "jest"],
     "typeRoots": ["node_modules/@types"],
     "baseUrl": ".",
     "paths": {

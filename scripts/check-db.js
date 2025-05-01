@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import 'dotenv/config';
 
-import { PrismaClient } from '../src/generated/prisma/index.js';
+import { execSync } from 'node:child_process';
 import chalk from 'chalk';
-import { execSync } from 'child_process';
 import semver from 'semver';
+import { PrismaClient } from '../dist/generated/prisma/client.js';
 
 if (process.env.SKIP_DB_CHECK) {
   console.log('Skipping database check.');
@@ -92,7 +92,13 @@ async function applyMigration() {
 
 (async () => {
   let err = false;
-  for (let fn of [checkEnv, checkConnection, checkDatabaseVersion, checkV1Tables, applyMigration]) {
+  for (const fn of [
+    checkEnv,
+    checkConnection,
+    checkDatabaseVersion,
+    checkV1Tables,
+    applyMigration,
+  ]) {
     try {
       await fn();
     } catch (e) {
