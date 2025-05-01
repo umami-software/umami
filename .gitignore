@@ -18,7 +18,6 @@ node_modules
 /public/script.js
 /geo
 /dist
-src/generated/prisma/
 
 # misc
 .DS_Store
