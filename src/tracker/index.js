@@ -8,11 +8,11 @@
     top,
     doNotTrack,
   } = window;
-  const { hostname, href, origin } = location;
   const { currentScript, referrer } = document;
-  const localStorage = href.startsWith('data:') ? undefined : window.localStorage;
-
   if (!currentScript) return;
+
+  const { hostname, href, origin } = location;
+  const localStorage = href.startsWith('data:') ? undefined : window.localStorage;
 
   const _data = 'data-';
   const _false = 'false';
@@ -55,20 +55,14 @@
 
   /* Event handlers */
 
-  const handlePush = (state, title, url) => {
+  const handlePush = (_state, _title, url) => {
     if (!url) return;
 
     currentRef = currentUrl;
     currentUrl = new URL(url, location.href);
 
-    if (excludeSearch) {
-      currentUrl.search = '';
-    }
-
-    if (excludeHash) {
-      currentUrl.hash = '';
-    }
-
+    if (excludeSearch) currentUrl.search = '';
+    if (excludeHash) currentUrl.hash = '';
     currentUrl = currentUrl.toString();
 
     if (currentUrl !== currentRef) {
@@ -127,6 +121,7 @@
               return null;
             }
           }
+          return null;
         };
 
         const el = e.target;
@@ -208,25 +203,17 @@
 
   const init = () => {
     if (!initialized) {
+      initialized = true;
       track();
       handlePathChanges();
       handleClicks();
-      initialized = true;
     }
   };
 
   const track = (obj, data) => {
-    if (typeof obj === 'string') {
-      return send({
-        ...getPayload(),
-        name: obj,
-        data: typeof data === 'object' ? data : undefined,
-      });
-    } else if (typeof obj === 'object') {
-      return send(obj);
-    } else if (typeof obj === 'function') {
-      return send(obj(getPayload()));
-    }
+    if (typeof obj === 'string') return send({ ...getPayload(), name: obj, data });
+    if (typeof obj === 'object') return send(obj);
+    if (typeof obj === 'function') return send(obj(getPayload()));
     return send(getPayload());
   };
 
@@ -244,7 +231,7 @@
   let currentUrl = href;
   let currentRef = referrer.startsWith(origin) ? '' : referrer;
   let cache;
-  let initialized;
+  let initialized = false;
   let disabled = false;
 
   if (autoTrack && !trackingDisabled()) {
