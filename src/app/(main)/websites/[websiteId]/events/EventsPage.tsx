@@ -8,7 +8,6 @@ import { EventsMetricsBar } from './EventsMetricsBar';
 import { Panel } from '@/components/common/Panel';
 import { EventsChart } from '@/components/metrics/EventsChart';
 import { GridRow } from '@/components/common/GridRow';
-import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { useMessages } from '@/components/hooks';
 import { EventProperties } from './EventProperties';
 
@@ -29,27 +28,17 @@ export function EventsPage({ websiteId }) {
       </Panel>
       <GridRow layout="two-one">
         <Panel gridColumn="span 2">
-          <EventsChart websiteId={websiteId} />
+          <EventsChart websiteId={websiteId} focusLabel={label} />
         </Panel>
         <Panel>
-          <MetricsTable
+          <EventsTable
             websiteId={websiteId}
             type="event"
             title={formatMessage(labels.events)}
             metric={formatMessage(labels.actions)}
+            onLabelClick={handleLabelClick}
           />
         </Panel>
-      </GridRow>
-      <EventsMetricsBar websiteId={websiteId} />
-      <GridRow columns="two-one">
-        <EventsChart websiteId={websiteId} focusLabel={label} />
-        <EventsTable
-          websiteId={websiteId}
-          type="event"
-          title={formatMessage(labels.events)}
-          metric={formatMessage(labels.actions)}
-          onLabelClick={handleLabelClick}
-        />
       </GridRow>
       <Panel marginY="6">
         <Tabs selectedKey={tab} onSelectionChange={(value: any) => setTab(value)}>

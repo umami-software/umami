@@ -64,7 +64,7 @@ export function DatePickerForm({
       <Row justifyContent="end" gap>
         <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
         <Button variant="primary" onPress={handleSave} isDisabled={disabled}>
-          {formatMessage(labels.save)}
+          {formatMessage(labels.apply)}
         </Button>
       </Row>
     </Column>

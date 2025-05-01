@@ -25,8 +25,8 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
 
   return (
     <Row
-      gap="3"
-      backgroundColor="2"
+      gap
+      backgroundColor="1"
       alignItems="center"
       justifyContent="space-between"
       paddingY="3"

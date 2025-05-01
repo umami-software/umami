@@ -17,6 +17,7 @@ import { RegionsTable } from '@/components/metrics/RegionsTable';
 import { ScreenTable } from '@/components/metrics/ScreenTable';
 import { TagsTable } from '@/components/metrics/TagsTable';
 import { ChannelsTable } from '@/components/metrics/ChannelsTable';
+import { Panel } from '@/components/common/Panel';
 
 const views = {
   url: PagesTable,
@@ -145,15 +146,17 @@ export function WebsiteExpandedView({
         <SideBar items={items} selectedKey={view} />
       </Column>
       <Column>
-        <DetailsComponent
-          websiteId={websiteId}
-          domainName={domainName}
-          animate={false}
-          virtualize={true}
-          itemCount={25}
-          allowFilter={true}
-          allowSearch={true}
-        />
+        <Panel>
+          <DetailsComponent
+            websiteId={websiteId}
+            domainName={domainName}
+            animate={false}
+            virtualize={true}
+            itemCount={25}
+            allowFilter={true}
+            allowSearch={true}
+          />
+        </Panel>
       </Column>
     </Grid>
   );

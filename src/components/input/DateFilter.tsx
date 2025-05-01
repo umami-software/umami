@@ -1,6 +1,6 @@
 import { useState, Key, Fragment } from 'react';
 import { Icon, Modal, Select, Text, Row, ListItem, ListSeparator, Dialog } from '@umami/react-zen';
-import { endOfYear, isSameDay } from 'date-fns';
+import { differenceInDays, endOfYear, isSameDay } from 'date-fns';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
 import { useLocale, useMessages } from '@/components/hooks';
 import { Icons } from '@/components/icons';
@@ -92,13 +92,26 @@ export function DateFilter({
     onChange(value.toString());
   };
 
+  const renderValue = ({ defaultChildren }) => {
+    return value.startsWith('range') ? (
+      <CustomRange
+        startDate={startDate}
+        endDate={endDate}
+        isSingleDate={differenceInDays(endDate, startDate) === 0}
+      />
+    ) : (
+      defaultChildren
+    );
+  };
+
   return (
     <>
       <Select
         selectedKey={value}
         placeholder={formatMessage(labels.selectDate)}
         onSelectionChange={handleChange}
-        style={{ width: '200px' }}
+        renderValue={renderValue}
+        style={{ width: 'auto' }}
       >
         {options.map(({ label, value, divider }: any) => {
           return (
@@ -127,29 +140,21 @@ export function DateFilter({
   );
 }
 
-export const CustomRange = ({ startDate, endDate, unit, onClick }) => {
+export const CustomRange = ({ startDate, endDate, isSingleDate }) => {
   const { locale } = useLocale();
-
-  const monthFormat = unit === 'month';
-
-  function handleClick(e) {
-    e.stopPropagation();
-
-    onClick();
-  }
 
   return (
     <Row gap="3" alignItems="center" wrap="nowrap">
-      <Icon onClick={handleClick}>
+      <Icon>
         <Icons.Calendar />
       </Icon>
-      <Text>
-        {monthFormat ? (
-          <>{formatDate(startDate, 'MMMM yyyy', locale)}</>
+      <Text wrap="nowrap">
+        {isSingleDate ? (
+          <>{formatDate(startDate, 'PP', locale)}</>
         ) : (
           <>
-            {formatDate(startDate, 'd LLL y', locale)}
-            {!isSameDay(startDate, endDate) && ` — ${formatDate(endDate, 'd LLL y', locale)}`}
+            {formatDate(startDate, 'PP', locale)}
+            {!isSameDay(startDate, endDate) && ` — ${formatDate(endDate, 'PP', locale)}`}
           </>
         )}
       </Text>
