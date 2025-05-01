@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { PrismaClient } from '@/generated/prisma/index.js';
+import { PrismaClient } from '@prisma/client';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import { formatInTimeZone } from 'date-fns-tz';
 import { MYSQL, POSTGRESQL, getDatabaseType } from '@/lib/db';
