@@ -14,7 +14,7 @@ export function SessionsDataTable({
   const queryResult = useWebsiteSessionsQuery(websiteId);
 
   return (
-    <DataGrid queryResult={queryResult} allowSearch={false} renderEmpty={() => children}>
+    <DataGrid queryResult={queryResult} allowSearch={true} renderEmpty={() => children}>
       {({ data }) => <SessionsTable data={data} showDomain={!websiteId} />}
     </DataGrid>
   );

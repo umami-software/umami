@@ -18,6 +18,11 @@ export function SessionInfo({ data }) {
       </Box>
 
       <Box>
+        <Label>{formatMessage(labels.distinctId)}</Label>
+        <Row>{data?.distinctId}</Row>
+      </Box>
+
+      <Box>
         <Label>{formatMessage(labels.lastSeen)}</Label>
         <Row>{formatTimezoneDate(data?.lastAt, 'PPPPpp')}</Row>
       </Box>

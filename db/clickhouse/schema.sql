@@ -38,6 +38,7 @@ CREATE TABLE umami.website_event
     event_type UInt32,
     event_name String,
     tag String,
+    distinct_id String,
     created_at DateTime('UTC'),
     job_id Nullable(UUID)
 )
@@ -75,6 +76,7 @@ CREATE TABLE umami.session_data
     number_value Nullable(Decimal64(4)),
     date_value Nullable(DateTime('UTC')),
     data_type UInt32,
+    distinct_id String,
     created_at DateTime('UTC'),
     job_id Nullable(UUID)
 )
@@ -120,6 +122,7 @@ CREATE TABLE umami.website_event_stats_hourly
     min_time SimpleAggregateFunction(min, DateTime('UTC')),
     max_time SimpleAggregateFunction(max, DateTime('UTC')),
     tag SimpleAggregateFunction(groupArrayArray, Array(String)),
+    distinct_id,
     created_at Datetime('UTC')
 )
 ENGINE = AggregatingMergeTree
@@ -172,6 +175,7 @@ SELECT
     min_time,
     max_time,
     tag,
+    distinct_id,
     timestamp as created_at
 FROM (SELECT
     website_id,
@@ -209,6 +213,7 @@ FROM (SELECT
     min(created_at) min_time,
     max(created_at) max_time,
     arrayFilter(x -> x != '', groupArray(tag)) tag,
+    distinct_id String,
     toStartOfHour(created_at) timestamp
 FROM umami.website_event
 GROUP BY website_id,
@@ -224,6 +229,7 @@ GROUP BY website_id,
     region,
     city,
     event_type,
+    distinct_id,
     timestamp);
 
 -- projections
