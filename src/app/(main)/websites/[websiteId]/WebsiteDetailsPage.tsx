@@ -7,6 +7,7 @@ import { WebsiteExpandedView } from './WebsiteExpandedView';
 import { WebsiteHeader } from './WebsiteHeader';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
 import { WebsiteTableView } from './WebsiteTableView';
+import { WebsiteCompareTables } from './WebsiteCompareTables';
 
 export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
   const {
@@ -22,8 +23,9 @@ export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
       <Panel>
         <WebsiteChart websiteId={websiteId} compareMode={compare} />
       </Panel>
-      {!view && <WebsiteTableView websiteId={websiteId} />}
-      {view && <WebsiteExpandedView websiteId={websiteId} />}
+      {!view && !compare && <WebsiteTableView websiteId={websiteId} />}
+      {view && !compare && <WebsiteExpandedView websiteId={websiteId} />}
+      {compare && <WebsiteCompareTables websiteId={websiteId} />}
     </Column>
   );
 }

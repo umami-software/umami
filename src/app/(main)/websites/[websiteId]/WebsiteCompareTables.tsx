@@ -20,6 +20,7 @@ import { getCompareDate } from '@/lib/date';
 import { formatNumber } from '@/lib/format';
 import { useState } from 'react';
 import { useWebsites } from '@/store/websites';
+import { Panel } from '@/components/common/Panel';
 
 const views = {
   url: PagesTable,
@@ -142,22 +143,29 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
   };
 
   return (
-    <Grid columns="300px 1fr 1fr" gap="3">
-      <SideBar items={items} selectedKey={view} />
-      <Column>
-        <Heading>{formatMessage(labels.previous)}</Heading>
-        <Component
-          websiteId={websiteId}
-          limit={20}
-          showMore={false}
-          onDataLoad={setData}
-          params={params}
-        />
-      </Column>
-      <Column>
-        <Heading> {formatMessage(labels.current)}</Heading>
-        <Component websiteId={websiteId} limit={20} showMore={false} renderChange={renderChange} />
-      </Column>
-    </Grid>
+    <Panel>
+      <Grid columns="200px 1fr 1fr" gap="6">
+        <SideBar items={items} selectedKey={view} />
+        <Column>
+          <Heading size="1">{formatMessage(labels.previous)}</Heading>
+          <Component
+            websiteId={websiteId}
+            limit={20}
+            showMore={false}
+            onDataLoad={setData}
+            params={params}
+          />
+        </Column>
+        <Column>
+          <Heading size="1"> {formatMessage(labels.current)}</Heading>
+          <Component
+            websiteId={websiteId}
+            limit={20}
+            showMore={false}
+            renderChange={renderChange}
+          />
+        </Column>
+      </Grid>
+    </Panel>
   );
 }

@@ -32,12 +32,6 @@ export function WebsiteTabs({ websiteId }: { websiteId: string }) {
       path: '/realtime',
     },
     {
-      id: 'compare',
-      label: formatMessage(labels.compare),
-      icon: <Icons.Compare />,
-      path: '/compare',
-    },
-    {
       id: 'reports',
       label: formatMessage(labels.reports),
       icon: <Icons.Reports />,
