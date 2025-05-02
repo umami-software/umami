@@ -63,7 +63,7 @@ export function BarChart(props: BarChartProps) {
           type: YAxisType,
           min: 0,
           beginAtZero: true,
-          stacked,
+          stacked: !!stacked,
           grid: {
             color: colors.chart.line,
           },

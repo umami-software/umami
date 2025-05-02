@@ -62,6 +62,6 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters): Promis
         order by createdAt asc
         limit 100
     `,
-    params,
+    { ...filters, ...params },
   );
 }

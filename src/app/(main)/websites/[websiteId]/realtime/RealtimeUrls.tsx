@@ -1,4 +1,5 @@
-import { Key, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
+import { Row } from '@umami/react-zen';
 import thenby from 'thenby';
 import { percentFilter } from '@/lib/filters';
 import { ListTable } from '@/components/metrics/ListTable';
@@ -12,19 +13,17 @@ export function RealtimeUrls({ data }: { data: RealtimeData }) {
   const website = useContext(WebsiteContext);
   const { formatMessage, labels } = useMessages();
   const { referrers, urls } = data || {};
-  const [filter, setFilter] = useState<Key>(FILTER_REFERRERS);
+  const [filter, setFilter] = useState(FILTER_REFERRERS);
   const limit = 15;
 
   const buttons = [
     {
-      id: 1,
+      id: FILTER_REFERRERS,
       label: formatMessage(labels.referrers),
-      key: FILTER_REFERRERS,
     },
     {
-      id: 2,
+      id: FILTER_PAGES,
       label: formatMessage(labels.pages),
-      key: FILTER_PAGES,
     },
   ];
 
@@ -63,7 +62,9 @@ export function RealtimeUrls({ data }: { data: RealtimeData }) {
 
   return (
     <>
-      <FilterButtons items={buttons} onSelect={setFilter} />
+      <Row justifyContent="center">
+        <FilterButtons items={buttons} value={filter} onChange={setFilter} />
+      </Row>
       {filter === FILTER_REFERRERS && (
         <ListTable
           title={formatMessage(labels.referrers)}

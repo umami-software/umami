@@ -36,7 +36,7 @@ export function WebsiteRealtimePage({ websiteId }: { websiteId: string }) {
       <Panel>
         <RealtimeChart data={data} unit="minute" />
       </Panel>
-      <GridRow layout="one-two">
+      <GridRow layout="two">
         <Panel>
           <RealtimeUrls data={data} />
         </Panel>
@@ -48,7 +48,7 @@ export function WebsiteRealtimePage({ websiteId }: { websiteId: string }) {
         <Panel>
           <RealtimeCountries data={countries} />
         </Panel>
-        <Panel padding="0">
+        <Panel padding="0" gridColumn="span 2">
           <WorldMap data={countries} />
         </Panel>
       </GridRow>

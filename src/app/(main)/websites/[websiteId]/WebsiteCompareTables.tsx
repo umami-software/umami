@@ -1,4 +1,4 @@
-import { Grid, Heading, Column } from '@umami/react-zen';
+import { Grid, Heading, Column, Row } from '@umami/react-zen';
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
 import { SideBar } from '@/components/common/SideBar';
 import { BrowsersTable } from '@/components/metrics/BrowsersTable';
@@ -21,6 +21,7 @@ import { formatNumber } from '@/lib/format';
 import { useState } from 'react';
 import { useWebsites } from '@/store/websites';
 import { Panel } from '@/components/common/Panel';
+import { DateDisplay } from '@/components/common/DateDisplay';
 
 const views = {
   url: PagesTable,
@@ -144,10 +145,13 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
 
   return (
     <Panel>
-      <Grid columns="200px 1fr 1fr" gap="6">
+      <Grid columns={{ xs: '1fr', lg: '200px 1fr 1fr' }} gap="6">
         <SideBar items={items} selectedKey={view} />
-        <Column>
-          <Heading size="1">{formatMessage(labels.previous)}</Heading>
+        <Column border="left" paddingLeft="6">
+          <Row alignItems="center" justifyContent="space-between">
+            <Heading size="1">{formatMessage(labels.previous)}</Heading>
+            <DateDisplay startDate={startDate} endDate={endDate} />
+          </Row>
           <Component
             websiteId={websiteId}
             limit={20}
@@ -157,7 +161,10 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
           />
         </Column>
         <Column>
-          <Heading size="1"> {formatMessage(labels.current)}</Heading>
+          <Row alignItems="center" justifyContent="space-between">
+            <Heading size="1"> {formatMessage(labels.current)}</Heading>
+            <DateDisplay startDate={dateRange.startDate} endDate={dateRange.endDate} />
+          </Row>
           <Component
             websiteId={websiteId}
             limit={20}

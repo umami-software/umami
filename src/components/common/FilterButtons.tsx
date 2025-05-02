@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ToggleGroup, ToggleGroupItem } from '@umami/react-zen';
+import { ToggleGroup, ToggleGroupItem, Box } from '@umami/react-zen';
 
 export interface FilterButtonsProps {
   items: { id: string; label: string }[];
@@ -16,12 +16,18 @@ export function FilterButtons({ items, value, onChange }: FilterButtonsProps) {
   };
 
   return (
-    <ToggleGroup value={[selected]} onChange={e => handleChange(e[0])}>
-      {items.map(({ id, label }) => (
-        <ToggleGroupItem key={id} id={id}>
-          {label}
-        </ToggleGroupItem>
-      ))}
-    </ToggleGroup>
+    <Box>
+      <ToggleGroup
+        value={[selected]}
+        onChange={e => handleChange(e[0])}
+        disallowEmptySelection={true}
+      >
+        {items.map(({ id, label }) => (
+          <ToggleGroupItem key={id} id={id}>
+            {label}
+          </ToggleGroupItem>
+        ))}
+      </ToggleGroup>
+    </Box>
   );
 }

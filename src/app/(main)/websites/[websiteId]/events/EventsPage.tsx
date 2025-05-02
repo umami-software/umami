@@ -40,7 +40,7 @@ export function EventsPage({ websiteId }) {
           />
         </Panel>
       </GridRow>
-      <Panel marginY="6">
+      <Panel>
         <Tabs selectedKey={tab} onSelectionChange={(value: any) => setTab(value)}>
           <TabList>
             <Tab id="activity">{formatMessage(labels.activity)}</Tab>

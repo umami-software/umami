@@ -1,10 +1,9 @@
 import { useState, Key, Fragment } from 'react';
-import { Icon, Modal, Select, Text, Row, ListItem, ListSeparator, Dialog } from '@umami/react-zen';
-import { differenceInDays, endOfYear, isSameDay } from 'date-fns';
+import { Modal, Select, ListItem, ListSeparator, Dialog } from '@umami/react-zen';
+import { endOfYear } from 'date-fns';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
-import { useLocale, useMessages } from '@/components/hooks';
-import { Icons } from '@/components/icons';
-import { formatDate } from '@/lib/date';
+import { useMessages } from '@/components/hooks';
+import { DateDisplay } from '@/components/common/DateDisplay';
 
 export interface DateFilterProps {
   value: string;
@@ -94,11 +93,7 @@ export function DateFilter({
 
   const renderValue = ({ defaultChildren }) => {
     return value.startsWith('range') ? (
-      <CustomRange
-        startDate={startDate}
-        endDate={endDate}
-        isSingleDate={differenceInDays(endDate, startDate) === 0}
-      />
+      <DateDisplay startDate={startDate} endDate={endDate} />
     ) : (
       defaultChildren
     );
@@ -139,25 +134,3 @@ export function DateFilter({
     </>
   );
 }
-
-export const CustomRange = ({ startDate, endDate, isSingleDate }) => {
-  const { locale } = useLocale();
-
-  return (
-    <Row gap="3" alignItems="center" wrap="nowrap">
-      <Icon>
-        <Icons.Calendar />
-      </Icon>
-      <Text wrap="nowrap">
-        {isSingleDate ? (
-          <>{formatDate(startDate, 'PP', locale)}</>
-        ) : (
-          <>
-            {formatDate(startDate, 'PP', locale)}
-            {!isSameDay(startDate, endDate) && ` — ${formatDate(endDate, 'PP', locale)}`}
-          </>
-        )}
-      </Text>
-    </Row>
-  );
-};
