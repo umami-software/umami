@@ -1,7 +1,7 @@
 import { Icon, Text, Row, Column, Grid } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { Icons } from '@/components/icons';
-import { PageHeader } from '@/components/common/PageHeader';
+import { SectionHeader } from '@/components/common/SectionHeader';
 import { LinkButton } from '@/components/common/LinkButton';
 
 export function ReportTemplates({ showHeader = true }: { showHeader?: boolean }) {
@@ -61,7 +61,7 @@ export function ReportTemplates({ showHeader = true }: { showHeader?: boolean })
 
   return (
     <>
-      {showHeader && <PageHeader title={formatMessage(labels.reports)} />}
+      {showHeader && <SectionHeader title={formatMessage(labels.reports)} />}
       <Grid columns="repeat(3, minmax(200px, 1fr))" gap="3">
         {reports.map(({ title, description, url, icon }) => {
           return (

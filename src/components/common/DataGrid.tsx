@@ -46,9 +46,9 @@ export function DataGrid({
   };
 
   return (
-    <>
+    <Column gap="4">
       {allowSearch && (hasData || search) && (
-        <Row width="280px" alignItems="center" marginBottom="6">
+        <Row width="280px" alignItems="center">
           <SearchField
             value={search}
             onSearch={handleSearch}
@@ -71,6 +71,6 @@ export function DataGrid({
           </Row>
         )}
       </LoadingPanel>
-    </>
+    </Column>
   );
 }

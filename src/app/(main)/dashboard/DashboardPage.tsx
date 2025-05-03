@@ -1,6 +1,6 @@
 'use client';
 import { Icon, Icons, Loading, Text } from '@umami/react-zen';
-import { PageHeader } from '@/components/common/PageHeader';
+import { SectionHeader } from '@/components/common/SectionHeader';
 import { Pager } from '@/components/common/Pager';
 import { WebsiteChartList } from '../websites/[websiteId]/WebsiteChartList';
 import { DashboardSettingsButton } from '@/app/(main)/dashboard/DashboardSettingsButton';
@@ -30,9 +30,9 @@ export function DashboardPage() {
 
   return (
     <section style={{ marginBottom: 60 }}>
-      <PageHeader title={formatMessage(labels.dashboard)}>
+      <SectionHeader title={formatMessage(labels.dashboard)}>
         {!editing && hasData && <DashboardSettingsButton />}
-      </PageHeader>
+      </SectionHeader>
       {!hasData && (
         <EmptyPlaceholder message={formatMessage(messages.noWebsitesConfigured)}>
           <LinkButton href={renderTeamUrl('/settings')}>

@@ -1,9 +1,8 @@
 import { DateFilter } from '@/components/input/DateFilter';
-import { Button, Flexbox } from '@umami/react-zen';
+import { Button, Row } from '@umami/react-zen';
 import { useDateRange, useMessages } from '@/components/hooks';
 import { DEFAULT_DATE_RANGE } from '@/lib/constants';
 import { DateRange } from '@/lib/types';
-import styles from './DateRangeSetting.module.css';
 
 export function DateRangeSetting() {
   const { formatMessage, labels } = useMessages();
@@ -14,15 +13,14 @@ export function DateRangeSetting() {
   const handleReset = () => saveDateRange(DEFAULT_DATE_RANGE);
 
   return (
-    <Flexbox gap="3" width="300px">
+    <Row gap="3">
       <DateFilter
-        className={styles.field}
         value={value}
         startDate={dateRange.startDate}
         endDate={dateRange.endDate}
         onChange={handleChange}
       />
       <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
-    </Flexbox>
+    </Row>
   );
 }

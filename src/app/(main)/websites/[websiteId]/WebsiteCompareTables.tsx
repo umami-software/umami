@@ -1,6 +1,6 @@
 import { Grid, Heading, Column, Row } from '@umami/react-zen';
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
-import { SideBar } from '@/components/common/SideBar';
+import { SideMenu } from '@/components/common/SideMenu';
 import { BrowsersTable } from '@/components/metrics/BrowsersTable';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { CitiesTable } from '@/components/metrics/CitiesTable';
@@ -146,7 +146,7 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
   return (
     <Panel>
       <Grid columns={{ xs: '1fr', lg: '200px 1fr 1fr' }} gap="6">
-        <SideBar items={items} selectedKey={view} />
+        <SideMenu items={items} selectedKey={view} />
         <Column border="left" paddingLeft="6">
           <Row alignItems="center" justifyContent="space-between">
             <Heading size="1">{formatMessage(labels.previous)}</Heading>

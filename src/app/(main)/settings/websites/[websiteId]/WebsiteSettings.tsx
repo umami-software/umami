@@ -1,14 +1,14 @@
 import { useContext } from 'react';
-import { Button, Icon, Tabs, TabList, Tab, TabPanel, Text } from '@umami/react-zen';
-import Link from 'next/link';
+import { Icon, Tabs, TabList, Tab, TabPanel, Text } from '@umami/react-zen';
 import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
 import { useMessages } from '@/components/hooks';
 import { Icons } from '@/components/icons';
-import { PageHeader } from '@/components/common/PageHeader';
+import { SectionHeader } from '@/components/common/SectionHeader';
 import { ShareUrl } from './ShareUrl';
 import { TrackingCode } from './TrackingCode';
 import { WebsiteData } from './WebsiteData';
 import { WebsiteEditForm } from './WebsiteEditForm';
+import { LinkButton } from '@/components/common/LinkButton';
 
 export function WebsiteSettings({
   websiteId,
@@ -22,16 +22,18 @@ export function WebsiteSettings({
 
   return (
     <>
-      <PageHeader title={website?.name} icon={<Icons.Globe />}>
-        <Link href={`/websites/${websiteId}`} target={openExternal ? '_blank' : null}>
-          <Button variant="primary">
-            <Icon>
-              <Icons.Arrow />
-            </Icon>
-            <Text>{formatMessage(labels.view)}</Text>
-          </Button>
-        </Link>
-      </PageHeader>
+      <SectionHeader title={website?.name} icon={<Icons.Globe />}>
+        <LinkButton
+          variant="primary"
+          href={`/websites/${websiteId}`}
+          target={openExternal ? '_blank' : null}
+        >
+          <Icon>
+            <Icons.Arrow />
+          </Icon>
+          <Text>{formatMessage(labels.view)}</Text>
+        </LinkButton>
+      </SectionHeader>
       <Tabs>
         <TabList>
           <Tab id="details">{formatMessage(labels.details)}</Tab>

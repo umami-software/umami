@@ -125,7 +125,7 @@ if (collectApiEndpoint) {
 const redirects = [
   {
     source: '/settings',
-    destination: '/settings/websites',
+    destination: '/settings/profile',
     permanent: true,
   },
   {

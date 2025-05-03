@@ -16,7 +16,7 @@ export function TeamsJoinButton() {
   return (
     <DialogTrigger>
       <Button variant="secondary">
-        <Icon>
+        <Icon fillColor="currentColor">
           <Icons.AddUser />
         </Icon>
         <Text>{formatMessage(labels.joinTeam)}</Text>

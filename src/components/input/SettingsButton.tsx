@@ -1,6 +1,6 @@
 import { Button, Icon, DialogTrigger, Popover, Column, Label } from '@umami/react-zen';
-import { TimezoneSetting } from '@/app/(main)/profile/TimezoneSetting';
-import { DateRangeSetting } from '@/app/(main)/profile/DateRangeSetting';
+import { TimezoneSetting } from '@/app/(main)/settings/profile/TimezoneSetting';
+import { DateRangeSetting } from '@/app/(main)/settings/profile/DateRangeSetting';
 import { Icons } from '@/components/icons';
 import { useMessages } from '@/components/hooks';
 

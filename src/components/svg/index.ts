@@ -32,6 +32,7 @@ export { default as Profile } from './Profile';
 export { default as Pushpin } from './Pushpin';
 export { default as Redo } from './Redo';
 export { default as Reports } from './Reports';
+export { default as Security } from './Security';
 export { default as Speaker } from './Speaker';
 export { default as Sun } from './Sun';
 export { default as Tag } from './Tag';

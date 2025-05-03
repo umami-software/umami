@@ -36,19 +36,19 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
   const buttons = [
     {
       label: formatMessage(labels.all),
-      key: TYPE_ALL,
+      id: TYPE_ALL,
     },
     {
       label: formatMessage(labels.views),
-      key: TYPE_PAGEVIEW,
+      id: TYPE_PAGEVIEW,
     },
     {
       label: formatMessage(labels.visitors),
-      key: TYPE_SESSION,
+      id: TYPE_SESSION,
     },
     {
       label: formatMessage(labels.events),
-      key: TYPE_EVENT,
+      id: TYPE_EVENT,
     },
   ];
 
@@ -160,7 +160,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     <div className={styles.table}>
       <div className={styles.actions}>
         <SearchField className={styles.search} value={search} onSearch={setSearch} />
-        <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />
+        <FilterButtons items={buttons} value={filter} onChange={setFilter} />
       </div>
       <div className={styles.header}>{formatMessage(labels.activity)}</div>
       <div className={styles.body}>

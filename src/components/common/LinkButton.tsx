@@ -5,6 +5,7 @@ import { useLocale } from '@/components/hooks';
 
 export interface LinkButtonProps {
   href: string;
+  target?: string;
   scroll?: boolean;
   variant?: any;
   children?: ReactNode;
@@ -12,8 +13,9 @@ export interface LinkButtonProps {
 
 export function LinkButton({
   href,
-  variant = 'quiet',
+  variant,
   scroll = true,
+  target,
   children,
   ...props
 }: LinkButtonProps) {
@@ -21,7 +23,7 @@ export function LinkButton({
 
   return (
     <Button {...props} variant={variant} asChild>
-      <Link href={href} dir={dir} scroll={scroll}>
+      <Link href={href} dir={dir} scroll={scroll} target={target}>
         {children}
       </Link>
     </Button>

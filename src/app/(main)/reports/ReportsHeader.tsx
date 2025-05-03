@@ -1,4 +1,4 @@
-import { PageHeader } from '@/components/common/PageHeader';
+import { SectionHeader } from '@/components/common/SectionHeader';
 import { Icon, Icons, Text } from '@umami/react-zen';
 import { useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
 import { LinkButton } from '@/components/common/LinkButton';
@@ -11,7 +11,7 @@ export function ReportsHeader() {
   const canEdit = user.role !== ROLES.viewOnly;
 
   return (
-    <PageHeader title={formatMessage(labels.reports)}>
+    <SectionHeader title={formatMessage(labels.reports)}>
       {canEdit && (
         <LinkButton href={renderTeamUrl('/reports/create')} variant="primary">
           <Icon>
@@ -20,6 +20,6 @@ export function ReportsHeader() {
           <Text>{formatMessage(labels.createReport)}</Text>
         </LinkButton>
       )}
-    </PageHeader>
+    </SectionHeader>
   );
 }

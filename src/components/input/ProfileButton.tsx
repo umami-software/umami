@@ -22,7 +22,7 @@ export function ProfileButton() {
 
   const handleSelect = (key: Key) => {
     if (key === 'profile') {
-      router.push('/profile');
+      router.push('/settings/profile');
     }
     if (key === 'logout') {
       router.push('/logout');

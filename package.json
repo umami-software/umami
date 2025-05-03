@@ -138,6 +138,7 @@
     "@rollup/plugin-node-resolve": "^15.2.0",
     "@rollup/plugin-replace": "^5.0.2",
     "@rollup/plugin-terser": "^0.4.4",
+    "@svgr/cli": "^8.1.0",
     "@svgr/rollup": "^8.1.0",
     "@svgr/webpack": "^8.1.0",
     "@types/jest": "^29.5.14",

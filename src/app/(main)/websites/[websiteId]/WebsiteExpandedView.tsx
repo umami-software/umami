@@ -1,7 +1,7 @@
 import { Icon, Icons, Text, Grid, Column } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { SideBar } from '@/components/common/SideBar';
+import { SideMenu } from '@/components/common/SideMenu';
 import { BrowsersTable } from '@/components/metrics/BrowsersTable';
 import { CitiesTable } from '@/components/metrics/CitiesTable';
 import { CountriesTable } from '@/components/metrics/CountriesTable';
@@ -17,7 +17,6 @@ import { RegionsTable } from '@/components/metrics/RegionsTable';
 import { ScreenTable } from '@/components/metrics/ScreenTable';
 import { TagsTable } from '@/components/metrics/TagsTable';
 import { ChannelsTable } from '@/components/metrics/ChannelsTable';
-import { Panel } from '@/components/common/Panel';
 
 const views = {
   url: PagesTable,
@@ -56,77 +55,77 @@ export function WebsiteExpandedView({
 
   const items = [
     {
-      key: 'url',
+      id: 'url',
       label: formatMessage(labels.pages),
       url: renderUrl({ view: 'url' }),
     },
     {
-      key: 'referrer',
+      id: 'referrer',
       label: formatMessage(labels.referrers),
       url: renderUrl({ view: 'referrer' }),
     },
     {
-      key: 'channel',
+      id: 'channel',
       label: formatMessage(labels.channels),
       url: renderUrl({ view: 'channel' }),
     },
     {
-      key: 'browser',
+      id: 'browser',
       label: formatMessage(labels.browsers),
       url: renderUrl({ view: 'browser' }),
     },
     {
-      key: 'os',
+      id: 'os',
       label: formatMessage(labels.os),
       url: renderUrl({ view: 'os' }),
     },
     {
-      key: 'device',
+      id: 'device',
       label: formatMessage(labels.devices),
       url: renderUrl({ view: 'device' }),
     },
     {
-      key: 'country',
+      id: 'country',
       label: formatMessage(labels.countries),
       url: renderUrl({ view: 'country' }),
     },
     {
-      key: 'region',
+      id: 'region',
       label: formatMessage(labels.regions),
       url: renderUrl({ view: 'region' }),
     },
     {
-      key: 'city',
+      id: 'city',
       label: formatMessage(labels.cities),
       url: renderUrl({ view: 'city' }),
     },
     {
-      key: 'language',
+      id: 'language',
       label: formatMessage(labels.languages),
       url: renderUrl({ view: 'language' }),
     },
     {
-      key: 'screen',
+      id: 'screen',
       label: formatMessage(labels.screens),
       url: renderUrl({ view: 'screen' }),
     },
     {
-      key: 'event',
+      id: 'event',
       label: formatMessage(labels.events),
       url: renderUrl({ view: 'event' }),
     },
     {
-      key: 'query',
+      id: 'query',
       label: formatMessage(labels.queryParameters),
       url: renderUrl({ view: 'query' }),
     },
     {
-      key: 'host',
+      id: 'host',
       label: formatMessage(labels.hosts),
       url: renderUrl({ view: 'host' }),
     },
     {
-      key: 'tag',
+      id: 'tag',
       label: formatMessage(labels.tags),
       url: renderUrl({ view: 'tag' }),
     },
@@ -143,20 +142,18 @@ export function WebsiteExpandedView({
           </Icon>
           <Text>{formatMessage(labels.back)}</Text>
         </LinkButton>
-        <SideBar items={items} selectedKey={view} />
+        <SideMenu items={items} selectedKey={view} />
       </Column>
       <Column>
-        <Panel>
-          <DetailsComponent
-            websiteId={websiteId}
-            domainName={domainName}
-            animate={false}
-            virtualize={true}
-            itemCount={25}
-            allowFilter={true}
-            allowSearch={true}
-          />
-        </Panel>
+        <DetailsComponent
+          websiteId={websiteId}
+          domainName={domainName}
+          animate={false}
+          virtualize={true}
+          itemCount={25}
+          allowFilter={true}
+          allowSearch={true}
+        />
       </Column>
     </Grid>
   );

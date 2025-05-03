@@ -79,6 +79,7 @@ export const labels = defineMessages({
   realtime: { id: 'label.realtime', defaultMessage: 'Realtime' },
   queries: { id: 'label.queries', defaultMessage: 'Queries' },
   teams: { id: 'label.teams', defaultMessage: 'Teams' },
+  teamSettings: { id: 'label.team-settings', defaultMessage: 'Team settings' },
   analytics: { id: 'label.analytics', defaultMessage: 'Analytics' },
   login: { id: 'label.login', defaultMessage: 'Login' },
   logout: { id: 'label.logout', defaultMessage: 'Logout' },

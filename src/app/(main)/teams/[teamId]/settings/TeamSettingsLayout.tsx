@@ -2,34 +2,48 @@
 import { ReactNode } from 'react';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { Grid, Column } from '@umami/react-zen';
-import { SideBar } from '@/components/common/SideBar';
+import { SideMenu } from '@/components/common/SideMenu';
+import { Panel } from '@/components/common/Panel';
+import { PageHeader } from '@/components/common/PageHeader';
 
 export function TeamSettingsLayout({ children }: { children: ReactNode }) {
   const { formatMessage, labels } = useMessages();
-  const { teamId } = useNavigation();
+  const { pathname, teamId } = useNavigation();
 
   const items = [
     {
-      key: 'team',
+      id: 'team',
       label: formatMessage(labels.team),
       url: `/teams/${teamId}/settings/team`,
     },
     {
-      key: 'websites',
+      id: 'websites',
       label: formatMessage(labels.websites),
       url: `/teams/${teamId}/settings/websites`,
     },
     {
-      key: 'members',
+      id: 'members',
       label: formatMessage(labels.members),
       url: `/teams/${teamId}/settings/members`,
     },
   ].filter(n => n);
 
+  const value = items.find(({ url }) => pathname.endsWith(url))?.id;
+
   return (
-    <Grid>
-      <SideBar items={items} />
-      <Column>{children}</Column>
-    </Grid>
+    <Column gap="6">
+      <PageHeader title={formatMessage(labels.teamSettings)} />
+
+      <Column gap="6">
+        <Grid columns="200px 1fr">
+          <Column marginTop="6">
+            <SideMenu items={items} selectedKey={value} />
+          </Column>
+          <Column>
+            <Panel>{children}</Panel>
+          </Column>
+        </Grid>
+      </Column>
+    </Column>
   );
 }

@@ -2,10 +2,11 @@
 import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
 import { WebsiteAddButton } from '@/app/(main)/settings/websites/WebsiteAddButton';
 import { useLoginQuery, useMessages } from '@/components/hooks';
-import { PageHeader } from '@/components/common/PageHeader';
+import { SectionHeader } from '@/components/common/SectionHeader';
 import { TeamWebsitesDataTable } from './TeamWebsitesDataTable';
 import { ROLES } from '@/lib/constants';
 import { useContext } from 'react';
+import { Column } from '@umami/react-zen';
 
 export function TeamWebsitesPage({ teamId }: { teamId: string }) {
   const team = useContext(TeamContext);
@@ -18,11 +19,11 @@ export function TeamWebsitesPage({ teamId }: { teamId: string }) {
     ) && user.role !== ROLES.viewOnly;
 
   return (
-    <>
-      <PageHeader title={formatMessage(labels.websites)}>
+    <Column gap>
+      <SectionHeader title={formatMessage(labels.websites)}>
         {canEdit && <WebsiteAddButton teamId={teamId} />}
-      </PageHeader>
+      </SectionHeader>
       <TeamWebsitesDataTable teamId={teamId} allowEdit={canEdit} />
-    </>
+    </Column>
   );
 }

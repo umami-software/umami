@@ -1,11 +1,11 @@
-import { Column, Label } from '@umami/react-zen';
-import { TimezoneSetting } from '@/app/(main)/profile/TimezoneSetting';
-import { DateRangeSetting } from '@/app/(main)/profile/DateRangeSetting';
-import { LanguageSetting } from '@/app/(main)/profile/LanguageSetting';
-import { ThemeSetting } from '@/app/(main)/profile/ThemeSetting';
-import { PasswordChangeButton } from './PasswordChangeButton';
+import { Row, Column, Label } from '@umami/react-zen';
 import { useLoginQuery, useMessages } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
+import { TimezoneSetting } from './TimezoneSetting';
+import { DateRangeSetting } from './DateRangeSetting';
+import { LanguageSetting } from './LanguageSetting';
+import { ThemeSetting } from './ThemeSetting';
+import { PasswordChangeButton } from './PasswordChangeButton';
 
 export function ProfileSettings() {
   const { user } = useLoginQuery();
@@ -47,7 +47,9 @@ export function ProfileSettings() {
       {!cloudMode && (
         <Column>
           <Label>{formatMessage(labels.password)}</Label>
-          <PasswordChangeButton />
+          <Row>
+            <PasswordChangeButton />
+          </Row>
         </Column>
       )}
 

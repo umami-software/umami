@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 import { Page } from '@/components/common/Page';
-import { PageHeader } from '@/components/common/PageHeader';
+import { SectionHeader } from '@/components/common/SectionHeader';
 import { EventsChart } from '@/components/metrics/EventsChart';
 import { WebsiteChart } from '../websites/[websiteId]/WebsiteChart';
 import { useApi, useNavigation } from '@/components/hooks';
@@ -118,9 +118,9 @@ export function TestConsole({ websiteId }: { websiteId: string }) {
 
   return (
     <Page isLoading={isLoading} error={error}>
-      <PageHeader title="Test console">
+      <SectionHeader title="Test console">
         <WebsiteSelect websiteId={website?.id} onSelect={handleChange} />
-      </PageHeader>
+      </SectionHeader>
       {website && (
         <div className={styles.container}>
           <Script

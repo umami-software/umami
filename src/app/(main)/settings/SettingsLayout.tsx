@@ -1,31 +1,49 @@
 'use client';
 import { ReactNode } from 'react';
 import { Grid, Column } from '@umami/react-zen';
-import { useLoginQuery, useMessages } from '@/components/hooks';
-import { SideBar } from '@/components/common/SideBar';
+import { useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
+import { SideMenu } from '@/components/common/SideMenu';
+import { PageHeader } from '@/components/common/PageHeader';
+import { Panel } from '@/components/common/Panel';
 
 export function SettingsLayout({ children }: { children: ReactNode }) {
   const { user } = useLoginQuery();
   const { formatMessage, labels } = useMessages();
+  const { pathname } = useNavigation();
 
   const items = [
     {
-      key: 'websites',
+      id: 'profile',
+      label: formatMessage(labels.profile),
+      url: '/settings/profile',
+    },
+    { id: 'teams', label: formatMessage(labels.teams), url: '/settings/teams' },
+    user.isAdmin && {
+      id: 'websites',
       label: formatMessage(labels.websites),
       url: '/settings/websites',
     },
-    { key: 'teams', label: formatMessage(labels.teams), url: '/settings/teams' },
     user.isAdmin && {
-      key: 'users',
+      id: 'users',
       label: formatMessage(labels.users),
       url: '/settings/users',
     },
   ].filter(n => n);
 
+  const value = items.find(({ url }) => pathname.includes(url))?.id;
+
   return (
-    <Grid>
-      <SideBar items={items} />
-      <Column>{children}</Column>
-    </Grid>
+    <Column gap="6">
+      <PageHeader title={formatMessage(labels.settings)} />
+
+      <Grid columns="160px 1fr" gap="6">
+        <Column marginTop="6">
+          <SideMenu items={items} selectedKey={value} />
+        </Column>
+        <Column>
+          <Panel>{children}</Panel>
+        </Column>
+      </Grid>
+    </Column>
   );
 }

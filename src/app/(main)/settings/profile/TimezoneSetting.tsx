@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Row, Select, ListItem, Button } from '@umami/react-zen';
 import { useTimezone, useMessages } from '@/components/hooks';
 import { getTimezone } from '@/lib/date';
-import styles from './TimezoneSetting.module.css';
 
 const timezones = Intl.supportedValuesOf('timeZone');
 
@@ -25,7 +24,6 @@ export function TimezoneSetting() {
   return (
     <Row gap="3">
       <Select
-        className={styles.dropdown}
         selectedKey={timezone}
         onChange={(value: any) => saveTimezone(value)}
         allowSearch={true}
