@@ -14,7 +14,7 @@ export default function SessionsDataTable({
   const queryResult = useWebsiteSessions(websiteId);
 
   return (
-    <DataTable queryResult={queryResult} allowSearch={false} renderEmpty={() => children}>
+    <DataTable queryResult={queryResult} allowSearch={true} renderEmpty={() => children}>
       {({ data }) => <SessionsTable data={data} showDomain={!websiteId} />}
     </DataTable>
   );

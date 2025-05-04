@@ -46,6 +46,7 @@
     url: currentUrl,
     referrer: currentRef,
     tag: tag ? tag : undefined,
+    id: identity ? identity : undefined,
   });
 
   const hasDoNotTrack = () => {
@@ -232,22 +233,35 @@
     }
   };
 
-  const track = (obj, data) => {
-    if (typeof obj === 'string') {
+  const track = (name, data) => {
+    if (typeof name === 'string') {
       return send({
         ...getPayload(),
-        name: obj,
-        data: typeof data === 'object' ? data : undefined,
+        name,
+        data,
       });
-    } else if (typeof obj === 'object') {
-      return send(obj);
-    } else if (typeof obj === 'function') {
-      return send(obj(getPayload()));
+    } else if (typeof name === 'object') {
+      return send({ ...name });
+    } else if (typeof name === 'function') {
+      return send(name(getPayload()));
     }
     return send(getPayload());
   };
 
-  const identify = data => send({ ...getPayload(), data }, 'identify');
+  const identify = (id, data) => {
+    if (typeof id === 'string') {
+      identity = id;
+    }
+
+    cache = '';
+    return send(
+      {
+        ...getPayload(),
+        data: typeof id === 'object' ? id : data,
+      },
+      'identify',
+    );
+  };
 
   /* Start */
 
@@ -264,6 +278,7 @@
   let cache;
   let initialized;
   let disabled = false;
+  let identity;
 
   if (autoTrack && !trackingDisabled()) {
     if (document.readyState === 'complete') {

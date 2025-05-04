@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 export const CURRENT_VERSION = process.env.currentVersion;
 export const AUTH_TOKEN = 'umami.auth';
 export const LOCALE_CONFIG = 'umami.locale';
@@ -12,6 +11,7 @@ export const HOMEPAGE_URL = 'https://umami.is';
 export const REPO_URL = 'https://github.com/umami-software/umami';
 export const UPDATES_URL = 'https://api.umami.is/v1/updates';
 export const TELEMETRY_PIXEL = 'https://i.umami.is/a.png';
+export const FAVICON_URL = 'https://icons.duckduckgo.com/ip3/{{domain}}.ico';
 
 export const DEFAULT_LOCALE = process.env.defaultLocale || 'en-US';
 export const DEFAULT_THEME = 'light';
@@ -42,8 +42,8 @@ export const SESSION_COLUMNS = [
   'screen',
   'language',
   'country',
-  'region',
   'city',
+  'region',
   'host',
 ];
 
@@ -59,7 +59,7 @@ export const FILTER_COLUMNS = {
   browser: 'browser',
   device: 'device',
   country: 'country',
-  region: 'subdivision1',
+  region: 'region',
   city: 'city',
   language: 'language',
   event: 'event_name',
@@ -124,6 +124,7 @@ export const REPORT_TYPES = {
   utm: 'utm',
   journey: 'journey',
   revenue: 'revenue',
+  attribution: 'attribution',
 } as const;
 
 export const REPORT_PARAMETERS = {

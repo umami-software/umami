@@ -6,8 +6,9 @@ import GoalReport from '../goals/GoalsReport';
 import InsightsReport from '../insights/InsightsReport';
 import JourneyReport from '../journey/JourneyReport';
 import RetentionReport from '../retention/RetentionReport';
-import UTMReport from '../utm/UTMReport';
 import RevenueReport from '../revenue/RevenueReport';
+import UTMReport from '../utm/UTMReport';
+import AttributionReport from '../attribution/AttributionReport';
 
 const reports = {
   funnel: FunnelReport,
@@ -18,6 +19,7 @@ const reports = {
   goals: GoalReport,
   journey: JourneyReport,
   revenue: RevenueReport,
+  attribution: AttributionReport,
 };
 
 export default function ReportPage({ reportId }: { reportId: string }) {
