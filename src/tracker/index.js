@@ -173,25 +173,18 @@
 
   const send = async (payload, type = 'event') => {
     if (trackingDisabled()) return;
-
-    const headers = {
-      'Content-Type': 'application/json',
-    };
-
-    if (typeof cache !== 'undefined') {
-      headers['x-umami-cache'] = cache;
-    }
-
     try {
       const res = await fetch(endpoint, {
         method: 'POST',
         body: JSON.stringify({ type, payload }),
-        headers,
+        headers: {
+          'Content-Type': 'application/json',
+          ...(typeof cache !== 'undefined' && { 'x-umami-cache': cache }),
+        },
         credentials: 'omit',
       });
 
       const data = await res.json();
-
       if (data) {
         disabled = !!data.disabled;
         cache = data.cache;
@@ -230,9 +223,9 @@
 
   let currentUrl = href;
   let currentRef = referrer.startsWith(origin) ? '' : referrer;
-  let cache;
   let initialized = false;
   let disabled = false;
+  let cache;
 
   if (autoTrack && !trackingDisabled()) {
     if (document.readyState === 'complete') {
