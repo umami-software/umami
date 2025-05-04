@@ -86,52 +86,48 @@
   };
 
   const handleClicks = () => {
-    document.addEventListener(
-      'click',
-      async e => {
-        const trackElement = async el => {
-          const attr = el.getAttribute.bind(el);
-          const eventName = attr(eventNameAttribute);
-          if (eventName) {
-            const eventData = {};
+    const trackElement = async el => {
+      const attr = el.getAttribute.bind(el);
+      const eventName = attr(eventNameAttribute);
+      if (eventName) {
+        const eventData = {};
 
-            el.getAttributeNames().forEach(name => {
-              const match = name.match(eventRegex);
-              if (match) eventData[match[1]] = attr(name);
-            });
+        el.getAttributeNames().forEach(name => {
+          const match = name.match(eventRegex);
+          if (match) eventData[match[1]] = attr(name);
+        });
 
-            return track(eventName, eventData);
+        return track(eventName, eventData);
+      }
+    };
+    const onClick = async e => {
+      const el = e.target;
+      const parentElement = el.closest('a,button');
+      if (!parentElement) return trackElement(el);
+
+      const { href, target } = parentElement;
+      const eventName = parentElement.getAttribute(eventNameAttribute);
+      if (!eventName) return;
+
+      if (parentElement.tagName === 'BUTTON') {
+        return trackElement(parentElement);
+      }
+      if (parentElement.tagName === 'A' && href) {
+        const external =
+          target === '_blank' ||
+          e.ctrlKey ||
+          e.shiftKey ||
+          e.metaKey ||
+          (e.button && e.button === 1);
+        if (!external) e.preventDefault();
+        return trackElement(parentElement).then(() => {
+          if (!external) {
+            (target === '_top' ? top.location : location).href = href;
           }
-        };
-
-        const el = e.target;
-        const parentElement = el.closest('a,button');
-        if (!parentElement) return trackElement(el);
-
-        const { href, target } = parentElement;
-        const eventName = parentElement.getAttribute(eventNameAttribute);
-        if (!eventName) return;
-
-        if (parentElement.tagName === 'BUTTON') {
-          return trackElement(parentElement);
-        }
-        if (parentElement.tagName === 'A' && href) {
-          const external =
-            target === '_blank' ||
-            e.ctrlKey ||
-            e.shiftKey ||
-            e.metaKey ||
-            (e.button && e.button === 1);
-          if (!external) e.preventDefault();
-          return trackElement(parentElement).then(() => {
-            if (!external) {
-              (target === '_top' ? top.location : location).href = href;
-            }
-          });
-        }
-      },
-      true,
-    );
+        });
+      }
+    };
+    document.addEventListener('click', onClick, true);
   };
 
   /* Tracking functions */
