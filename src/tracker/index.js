@@ -112,24 +112,22 @@
         const eventName = parentElement.getAttribute(eventNameAttribute);
         if (!eventName) return;
 
-        if (parentElement.tagName === 'A') {
+        if (parentElement.tagName === 'BUTTON') {
+          return trackElement(parentElement);
+        }
+        if (parentElement.tagName === 'A' && href) {
           const external =
             target === '_blank' ||
             e.ctrlKey ||
             e.shiftKey ||
             e.metaKey ||
             (e.button && e.button === 1);
-
-          if (eventName && href) {
-            if (!external) e.preventDefault();
-            return trackElement(parentElement).then(() => {
-              if (!external) {
-                (target === '_top' ? top.location : location).href = href;
-              }
-            });
-          }
-        } else if (parentElement.tagName === 'BUTTON') {
-          return trackElement(parentElement);
+          if (!external) e.preventDefault();
+          return trackElement(parentElement).then(() => {
+            if (!external) {
+              (target === '_top' ? top.location : location).href = href;
+            }
+          });
         }
       },
       true,
