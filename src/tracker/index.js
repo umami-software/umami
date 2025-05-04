@@ -20,7 +20,7 @@
   const attr = currentScript.getAttribute.bind(currentScript);
   const website = attr(_data + 'website-id');
   const hostUrl = attr(_data + 'host-url');
-  const tag = attr(_data + 'tag');
+  const tag = attr(_data + 'tag') || undefined;
   const autoTrack = attr(_data + 'auto-track') !== _false;
   const dnt = attr(_data + 'do-not-track') === _true;
   const excludeSearch = attr(_data + 'exclude-search') === _true;
@@ -45,7 +45,7 @@
     hostname,
     url: currentUrl,
     referrer: currentRef,
-    tag: tag ? tag : undefined,
+    tag,
   });
 
   const hasDoNotTrack = () => {
@@ -73,10 +73,8 @@
   const handlePathChanges = () => {
     const hook = (_this, method, callback) => {
       const orig = _this[method];
-
       return (...args) => {
         callback.apply(null, args);
-
         return orig.apply(_this, args);
       };
     };
@@ -87,14 +85,13 @@
 
   const handleClicks = () => {
     const trackElement = async el => {
-      const attr = el.getAttribute.bind(el);
-      const eventName = attr(eventNameAttribute);
+      const eventName = el.getAttribute(eventNameAttribute);
       if (eventName) {
         const eventData = {};
 
         el.getAttributeNames().forEach(name => {
           const match = name.match(eventRegex);
-          if (match) eventData[match[1]] = attr(name);
+          if (match) eventData[match[1]] = el.getAttribute(name);
         });
 
         return track(eventName, eventData);
@@ -106,8 +103,7 @@
       if (!parentElement) return trackElement(el);
 
       const { href, target } = parentElement;
-      const eventName = parentElement.getAttribute(eventNameAttribute);
-      if (!eventName) return;
+      if (!parentElement.getAttribute(eventNameAttribute)) return;
 
       if (parentElement.tagName === 'BUTTON') {
         return trackElement(parentElement);
@@ -158,7 +154,7 @@
         cache = data.cache;
       }
     } catch (e) {
-      /* empty */
+      /* no-op */
     }
   };
 
