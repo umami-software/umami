@@ -89,73 +89,47 @@
     document.addEventListener(
       'click',
       async e => {
-        const isSpecialTag = tagName => ['BUTTON', 'A'].includes(tagName);
-
         const trackElement = async el => {
           const attr = el.getAttribute.bind(el);
           const eventName = attr(eventNameAttribute);
-
           if (eventName) {
             const eventData = {};
 
             el.getAttributeNames().forEach(name => {
               const match = name.match(eventRegex);
-
-              if (match) {
-                eventData[match[1]] = attr(name);
-              }
+              if (match) eventData[match[1]] = attr(name);
             });
 
             return track(eventName, eventData);
           }
         };
 
-        const findParentTag = (rootElem, maxSearchDepth) => {
-          let currentElement = rootElem;
-          for (let i = 0; i < maxSearchDepth; i++) {
-            if (isSpecialTag(currentElement.tagName)) {
-              return currentElement;
-            }
-            currentElement = currentElement.parentElement;
-            if (!currentElement) {
-              return null;
-            }
-          }
-          return null;
-        };
-
         const el = e.target;
-        const parentElement = isSpecialTag(el.tagName) ? el : findParentTag(el, 10);
+        const parentElement = el.closest('a,button');
+        if (!parentElement) return trackElement(el);
 
-        if (parentElement) {
-          const { href, target } = parentElement;
-          const eventName = parentElement.getAttribute(eventNameAttribute);
+        const { href, target } = parentElement;
+        const eventName = parentElement.getAttribute(eventNameAttribute);
+        if (!eventName) return;
 
-          if (eventName) {
-            if (parentElement.tagName === 'A') {
-              const external =
-                target === '_blank' ||
-                e.ctrlKey ||
-                e.shiftKey ||
-                e.metaKey ||
-                (e.button && e.button === 1);
+        if (parentElement.tagName === 'A') {
+          const external =
+            target === '_blank' ||
+            e.ctrlKey ||
+            e.shiftKey ||
+            e.metaKey ||
+            (e.button && e.button === 1);
 
-              if (eventName && href) {
-                if (!external) {
-                  e.preventDefault();
-                }
-                return trackElement(parentElement).then(() => {
-                  if (!external) {
-                    (target === '_top' ? top.location : location).href = href;
-                  }
-                });
+          if (eventName && href) {
+            if (!external) e.preventDefault();
+            return trackElement(parentElement).then(() => {
+              if (!external) {
+                (target === '_top' ? top.location : location).href = href;
               }
-            } else if (parentElement.tagName === 'BUTTON') {
-              return trackElement(parentElement);
-            }
+            });
           }
-        } else {
-          return trackElement(el);
+        } else if (parentElement.tagName === 'BUTTON') {
+          return trackElement(parentElement);
         }
       },
       true,
