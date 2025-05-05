@@ -27,8 +27,8 @@ export function useFormat() {
     return countryNames[value] || value;
   };
 
-  const formatRegion = (value: string): string => {
-    const [country] = value.split('-');
+  const formatRegion = (value?: string): string => {
+    const [country] = value?.split('-') || [];
     return regions[value] ? `${regions[value]}, ${countryNames[country]}` : value;
   };
 

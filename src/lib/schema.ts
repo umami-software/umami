@@ -60,6 +60,7 @@ export const reportTypeParam = z.enum([
   'goals',
   'journey',
   'revenue',
+  'attribution',
 ]);
 
 export const reportParms = {

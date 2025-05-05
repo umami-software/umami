@@ -1,21 +1,23 @@
+import { useMemo, useState, useEffect } from 'react';
 import { colord } from 'colord';
 import BarChart from '@/components/charts/BarChart';
 import { useDateRange, useLocale, useWebsiteEventsSeries } from '@/components/hooks';
 import { renderDateLabels } from '@/lib/charts';
 import { CHART_COLORS } from '@/lib/constants';
-import { useMemo } from 'react';
 
 export interface EventsChartProps {
   websiteId: string;
   className?: string;
+  focusLabel?: string;
 }
 
-export function EventsChart({ websiteId, className }: EventsChartProps) {
+export function EventsChart({ websiteId, className, focusLabel }: EventsChartProps) {
   const {
     dateRange: { startDate, endDate, unit, value },
   } = useDateRange(websiteId);
   const { locale } = useLocale();
   const { data, isLoading } = useWebsiteEventsSeries(websiteId);
+  const [label, setLabel] = useState<string>(focusLabel);
 
   const chartData = useMemo(() => {
     if (!data) return [];
@@ -42,8 +44,15 @@ export function EventsChart({ websiteId, className }: EventsChartProps) {
           borderWidth: 1,
         };
       }),
+      focusLabel,
     };
-  }, [data, startDate, endDate, unit]);
+  }, [data, startDate, endDate, unit, focusLabel]);
+
+  useEffect(() => {
+    if (label !== focusLabel) {
+      setLabel(focusLabel);
+    }
+  }, [focusLabel]);
 
   return (
     <BarChart

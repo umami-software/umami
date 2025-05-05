@@ -46,6 +46,7 @@
     url: currentUrl,
     referrer: currentRef,
     tag,
+    id: identity ? identity : undefined,
   });
 
   const hasDoNotTrack = () => {
@@ -174,7 +175,20 @@
     return send(getPayload());
   };
 
-  const identify = data => send({ ...getPayload(), data }, 'identify');
+  const identify = (id, data) => {
+    if (typeof id === 'string') {
+      identity = id;
+    }
+
+    cache = '';
+    return send(
+      {
+        ...getPayload(),
+        data: typeof id === 'object' ? id : data,
+      },
+      'identify',
+    );
+  };
 
   /* Start */
 
@@ -190,6 +204,7 @@
   let initialized = false;
   let disabled = false;
   let cache;
+  let identity;
 
   if (autoTrack && !trackingDisabled()) {
     if (document.readyState === 'complete') {

@@ -197,8 +197,7 @@ export interface SessionData {
   screen: string;
   language: string;
   country: string;
-  subdivision1: string;
-  subdivision2: string;
+  region: string;
   city: string;
   ip?: string;
   userAgent?: string;
