@@ -1,27 +1,25 @@
-import { ThemeButton } from '@umami/react-zen';
-import { Icon, Text } from '@umami/react-zen';
+import { Row, Icon, Text, ThemeButton } from '@umami/react-zen';
 import Link from 'next/link';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { SettingsButton } from '@/components/input/SettingsButton';
 import { Icons } from '@/components/icons';
-import styles from './Header.module.css';
 
 export function Header() {
   return (
-    <header className={styles.header}>
-      <div>
-        <Link href="https://umami.is" target="_blank" className={styles.title}>
+    <Row as="header">
+      <Row gap>
+        <Link href="https://umami.is" target="_blank">
           <Icon size="lg">
             <Icons.Logo />
           </Icon>
           <Text>umami</Text>
         </Link>
-      </div>
-      <div className={styles.buttons}>
+      </Row>
+      <Row alignItems="center" gap>
         <ThemeButton />
         <LanguageButton />
         <SettingsButton />
-      </div>
-    </header>
+      </Row>
+    </Row>
   );
 }

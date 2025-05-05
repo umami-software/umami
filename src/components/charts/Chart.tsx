@@ -1,10 +1,11 @@
-import { useState, useRef, useEffect, useMemo, HTMLAttributes } from 'react';
-import { Loading } from '@umami/react-zen';
+import { useState, useRef, useEffect, useMemo } from 'react';
+import { Loading, Box, Column } from '@umami/react-zen';
 import ChartJS, { LegendItem, ChartOptions } from 'chart.js/auto';
 import { Legend } from '@/components/metrics/Legend';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
+import type { BoxProps } from '@umami/react-zen/Box';
 
-export interface ChartProps extends HTMLAttributes<HTMLDivElement> {
+export interface ChartProps extends BoxProps {
   type?: 'bar' | 'bubble' | 'doughnut' | 'pie' | 'line' | 'polarArea' | 'radar' | 'scatter';
   data?: object;
   isLoading?: boolean;
@@ -138,12 +139,12 @@ export function Chart({
   }, [data, options]);
 
   return (
-    <>
-      <div {...props}>
+    <Column gap="6">
+      <Box {...props}>
         {isLoading && <Loading position="page" icon="dots" />}
         <canvas ref={canvas} />
-      </div>
+      </Box>
       <Legend items={legendItems} onClick={handleLegendClick} />
-    </>
+    </Column>
   );
 }

@@ -1,9 +1,24 @@
 import { useMemo, useState } from 'react';
 import { useTheme } from '@umami/react-zen';
-import { BarChartTooltip } from '@/components/charts/BarChartTooltip';
+import { ChartTooltip } from '@/components/charts/ChartTooltip';
 import { Chart, ChartProps } from '@/components/charts/Chart';
+import { useLocale } from '@/components/hooks';
 import { renderNumberLabels } from '@/lib/charts';
 import { getThemeColors } from '@/lib/colors';
+import { formatDate } from '@/lib/date';
+import { formatLongCurrency, formatLongNumber } from '@/lib/format';
+
+const dateFormats = {
+  millisecond: 'T',
+  second: 'pp',
+  minute: 'p',
+  hour: 'p - PP',
+  day: 'PPPP',
+  week: 'PPPP',
+  month: 'LLLL yyyy',
+  quarter: 'qqq',
+  year: 'yyyy',
+};
 
 export interface BarChartProps extends ChartProps {
   unit: string;
@@ -18,22 +33,23 @@ export interface BarChartProps extends ChartProps {
   isAllTime?: boolean;
 }
 
-export function BarChart(props: BarChartProps) {
+export function BarChart({
+  renderXLabel,
+  renderYLabel,
+  unit,
+  XAxisType = 'time',
+  YAxisType = 'linear',
+  stacked = false,
+  minDate,
+  maxDate,
+  currency,
+  isAllTime,
+  ...props
+}: BarChartProps) {
   const [tooltip, setTooltip] = useState(null);
   const { theme } = useTheme();
+  const { locale } = useLocale();
   const { colors } = getThemeColors(theme);
-  const {
-    renderXLabel,
-    renderYLabel,
-    unit,
-    XAxisType = 'time',
-    YAxisType = 'linear',
-    stacked = false,
-    minDate,
-    maxDate,
-    currency,
-    isAllTime,
-  } = props;
 
   const options: any = useMemo(() => {
     return {
@@ -80,9 +96,23 @@ export function BarChart(props: BarChartProps) {
   }, [colors, unit, stacked, renderXLabel, renderYLabel]);
 
   const handleTooltip = ({ tooltip }: { tooltip: any }) => {
-    const { opacity } = tooltip;
+    const { opacity, labelColors, dataPoints } = tooltip;
 
-    setTooltip(opacity ? tooltip : null);
+    if (opacity) {
+      setTooltip({
+        title: formatDate(
+          new Date(dataPoints[0].raw?.d || dataPoints[0].raw?.x || dataPoints[0].raw),
+          dateFormats[unit],
+          locale,
+        ),
+        color: labelColors?.[0]?.backgroundColor,
+        value: currency
+          ? formatLongCurrency(dataPoints[0].raw.y, currency)
+          : `${formatLongNumber(dataPoints[0].raw.y)} ${dataPoints[0].dataset.label}`,
+      });
+    } else {
+      setTooltip(null);
+    }
   };
 
   return (
@@ -92,9 +122,9 @@ export function BarChart(props: BarChartProps) {
         type="bar"
         chartOptions={options}
         onTooltip={handleTooltip}
-        style={{ height: 400 }}
+        height="400px"
       />
-      {tooltip && <BarChartTooltip tooltip={tooltip} unit={unit} currency={currency} />}
+      {tooltip && <ChartTooltip {...tooltip} />}
     </>
   );
 }

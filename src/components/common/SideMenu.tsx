@@ -1,11 +1,11 @@
 import { Text, List, ListItem } from '@umami/react-zen';
 
-export interface MenuNavProps {
+export interface SideMenuProps {
   items: { id: string; label: string; url: string }[];
   selectedKey?: string;
 }
 
-export function SideMenu({ items, selectedKey }: MenuNavProps) {
+export function SideMenu({ items, selectedKey }: SideMenuProps) {
   return (
     <List>
       {items.map(({ id, label, url }) => {

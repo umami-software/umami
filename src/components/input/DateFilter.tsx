@@ -22,6 +22,7 @@ export function DateFilter({
   value,
   onChange,
   showAllTime = false,
+  ...props
 }: DateFilterProps) {
   const { formatMessage, labels } = useMessages();
   const [showPicker, setShowPicker] = useState(false);
@@ -102,6 +103,7 @@ export function DateFilter({
   return (
     <>
       <Select
+        {...props}
         selectedKey={value}
         placeholder={formatMessage(labels.selectDate)}
         onSelectionChange={handleChange}

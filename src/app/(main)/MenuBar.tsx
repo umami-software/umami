@@ -5,6 +5,7 @@ import { TeamsButton } from '@/components/input/TeamsButton';
 import type { RowProps } from '@umami/react-zen/Row';
 import useGlobalState from '@/components/hooks/useGlobalState';
 import { Lucide } from '@/components/icons';
+import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 
 export function MenuBar(props: RowProps) {
   const [isCollapsed, setCollapsed] = useGlobalState('sidenav-collapsed');
@@ -20,15 +21,19 @@ export function MenuBar(props: RowProps) {
       backgroundColor="2"
       border="bottom"
     >
-      <Row>
+      <Row alignItems="center">
         <Button onPress={() => setCollapsed(!isCollapsed)} variant="quiet">
           <Icon>
             <Lucide.PanelLeft />
           </Icon>
         </Button>
         <TeamsButton />
+        <Icon>
+          <Lucide.Slash />
+        </Icon>
+        <WebsiteSelect />
       </Row>
-      <Row justifyContent="flex-end">
+      <Row alignItems="center" justifyContent="flex-end">
         <ThemeButton />
         <LanguageButton />
         <ProfileButton />

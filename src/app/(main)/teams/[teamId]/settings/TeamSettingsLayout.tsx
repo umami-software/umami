@@ -28,12 +28,11 @@ export function TeamSettingsLayout({ children }: { children: ReactNode }) {
     },
   ].filter(n => n);
 
-  const value = items.find(({ url }) => pathname.endsWith(url))?.id;
+  const value = items.find(({ url }) => pathname.includes(url))?.id;
 
   return (
     <Column gap="6">
       <PageHeader title={formatMessage(labels.teamSettings)} />
-
       <Column gap="6">
         <Grid columns="200px 1fr">
           <Column marginTop="6">
