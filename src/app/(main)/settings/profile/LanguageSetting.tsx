@@ -28,7 +28,7 @@ export function LanguageSetting() {
   return (
     <Row gap="3">
       <Select
-        selectedKey={locale}
+        value={locale}
         onChange={val => saveLocale(val as string)}
         allowSearch
         onSearch={setSearch}

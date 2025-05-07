@@ -20,8 +20,8 @@ export function MenuButton({
           <Lucide.Ellipsis />
         </Icon>
       </Button>
-      <Popover>
-        <Menu onAction={handleAction} style={{ minWidth: '140px' }}>
+      <Popover placement="bottom start">
+        <Menu aria-label="menu" onAction={handleAction} style={{ minWidth: '140px' }}>
           {children}
         </Menu>
       </Popover>

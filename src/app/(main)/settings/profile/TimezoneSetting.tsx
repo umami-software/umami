@@ -24,7 +24,7 @@ export function TimezoneSetting() {
   return (
     <Row gap="3">
       <Select
-        selectedKey={timezone}
+        value={timezone}
         onChange={(value: any) => saveTimezone(value)}
         allowSearch={true}
         onSearch={setSearch}

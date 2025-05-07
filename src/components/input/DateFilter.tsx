@@ -102,7 +102,7 @@ export function DateFilter({
   return (
     <>
       <Select
-        selectedKey={value}
+        value={value}
         placeholder={formatMessage(labels.selectDate)}
         onChange={handleChange}
         renderValue={renderValue}

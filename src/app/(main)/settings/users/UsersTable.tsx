@@ -70,7 +70,11 @@ export function UsersTable({
                     </Row>
                   </MenuItem>
                   <MenuSeparator />
-                  <MenuItem id="delete" onAction={() => setDeleteUser(row)}>
+                  <MenuItem
+                    id="delete"
+                    onAction={() => setDeleteUser(row)}
+                    data-test="link-button-delete"
+                  >
                     <Row alignItems="center" gap>
                       <Icon>
                         <Icons.Trash />
