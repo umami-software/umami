@@ -19,7 +19,7 @@ export function LanguageSetting() {
 
   const handleReset = () => saveLocale(DEFAULT_LOCALE);
 
-  const handleOpen = isOpen => {
+  const handleOpen = (isOpen: boolean) => {
     if (isOpen) {
       setSearch('');
     }

@@ -1,8 +1,8 @@
-import { DataColumn, DataTable, Icon, Text } from '@umami/react-zen';
+import { DataColumn, DataTable, Icon, MenuItem, Text, Row } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import { Icons } from '@/components/icons';
 import { ROLES } from '@/lib/constants';
-import { LinkButton } from '@/components/common/LinkButton';
+import { MenuButton } from '@/components/input/MenuButton';
 
 export function TeamsTable({
   data = [],
@@ -32,12 +32,24 @@ export function TeamsTable({
             const { id } = row;
 
             return (
-              <LinkButton href={`/teams/${id}/settings`}>
-                <Icon>
-                  <Icons.Arrow />
-                </Icon>
-                <Text>{formatMessage(labels.view)}</Text>
-              </LinkButton>
+              <MenuButton>
+                <MenuItem href={`/teams/${id}`}>
+                  <Row alignItems="center" gap>
+                    <Icon>
+                      <Icons.Arrow />
+                    </Icon>
+                    <Text>{formatMessage(labels.view)}</Text>
+                  </Row>
+                </MenuItem>
+                <MenuItem href={`/teams/${id}/settings`}>
+                  <Row alignItems="center" gap>
+                    <Icon>
+                      <Icons.Edit />
+                    </Icon>
+                    <Text>{formatMessage(labels.edit)}</Text>
+                  </Row>
+                </MenuItem>
+              </MenuButton>
             );
           }}
         </DataColumn>

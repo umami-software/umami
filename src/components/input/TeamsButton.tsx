@@ -45,7 +45,7 @@ export function TeamsButton({
       <Button className={className} variant="quiet">
         <Row alignItems="center" gap="3">
           <Icon>{teamId ? <Users /> : <User />}</Icon>
-          {showText && <Text weight="bold">{teamId ? team?.name : user.username}</Text>}
+          {showText && <Text>{teamId ? team?.name : user.username}</Text>}
           <Icon rotate={90} size="xs">
             <Icons.Chevron />
           </Icon>

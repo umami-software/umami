@@ -62,12 +62,12 @@ export function UserAddForm({ onSave, onClose }) {
         </Select>
       </FormField>
       <FormButtons>
-        <FormSubmitButton variant="primary" data-test="button-submit" isDisabled={false}>
-          {formatMessage(labels.save)}
-        </FormSubmitButton>
         <Button isDisabled={isPending} onPress={onClose}>
           {formatMessage(labels.cancel)}
         </Button>
+        <FormSubmitButton variant="primary" data-test="button-submit" isDisabled={false}>
+          {formatMessage(labels.save)}
+        </FormSubmitButton>
       </FormButtons>
     </Form>
   );

@@ -57,7 +57,6 @@ export function WebsiteTransferForm({
   };
 
   const handleChange = (key: Key) => {
-    console.log('KEY', key);
     setTeamId(key as string);
   };
 

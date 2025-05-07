@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTheme } from '@umami/react-zen';
 import { BarChart, BarChartProps } from '@/components/charts/BarChart';
 import { useLocale, useMessages } from '@/components/hooks';
@@ -28,8 +28,8 @@ export function PageviewsChart({
 }: PageviewsChartProps) {
   const { formatMessage, labels } = useMessages();
   const { theme } = useTheme();
-  const { colors } = getThemeColors(theme);
   const { locale } = useLocale();
+  const { colors } = useMemo(() => getThemeColors(theme), [theme]);
 
   const chartData = useMemo(() => {
     if (!data) {
@@ -37,6 +37,7 @@ export function PageviewsChart({
     }
 
     return {
+      __id: new Date().getTime(),
       datasets: [
         {
           label: formatMessage(labels.visitors),
@@ -78,6 +79,8 @@ export function PageviewsChart({
     };
   }, [data, locale]);
 
+  const renderXLabel = useCallback(renderDateLabels(unit, locale), [unit, locale]);
+
   return (
     <BarChart
       {...props}
@@ -85,7 +88,7 @@ export function PageviewsChart({
       unit={unit}
       isLoading={isLoading}
       isAllTime={isAllTime}
-      renderXLabel={renderDateLabels(unit, locale)}
+      renderXLabel={renderXLabel}
     />
   );
 }

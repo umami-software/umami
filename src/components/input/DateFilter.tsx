@@ -22,7 +22,6 @@ export function DateFilter({
   value,
   onChange,
   showAllTime = false,
-  ...props
 }: DateFilterProps) {
   const { formatMessage, labels } = useMessages();
   const [showPicker, setShowPicker] = useState(false);
@@ -93,7 +92,7 @@ export function DateFilter({
   };
 
   const renderValue = ({ defaultChildren }) => {
-    return value.startsWith('range') ? (
+    return value?.startsWith('range') ? (
       <DateDisplay startDate={startDate} endDate={endDate} />
     ) : (
       defaultChildren
@@ -103,10 +102,9 @@ export function DateFilter({
   return (
     <>
       <Select
-        {...props}
         selectedKey={value}
         placeholder={formatMessage(labels.selectDate)}
-        onSelectionChange={handleChange}
+        onChange={handleChange}
         renderValue={renderValue}
       >
         {options.map(({ label, value, divider }: any) => {

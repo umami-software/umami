@@ -17,6 +17,7 @@ import { RegionsTable } from '@/components/metrics/RegionsTable';
 import { ScreenTable } from '@/components/metrics/ScreenTable';
 import { TagsTable } from '@/components/metrics/TagsTable';
 import { ChannelsTable } from '@/components/metrics/ChannelsTable';
+import { Panel } from '@/components/common/Panel';
 
 const views = {
   url: PagesTable,
@@ -134,27 +135,29 @@ export function WebsiteExpandedView({
   const DetailsComponent = views[view] || (() => null);
 
   return (
-    <Grid columns="auto 1fr" gap="6" marginTop="6">
-      <Column gap="6" width="200px">
-        <LinkButton href={renderUrl({ view: undefined })} variant="quiet" scroll={false}>
-          <Icon rotate={180}>
-            <Icons.Arrow />
-          </Icon>
-          <Text>{formatMessage(labels.back)}</Text>
-        </LinkButton>
-        <SideMenu items={items} selectedKey={view} />
-      </Column>
-      <Column>
-        <DetailsComponent
-          websiteId={websiteId}
-          domainName={domainName}
-          animate={false}
-          virtualize={true}
-          itemCount={25}
-          allowFilter={true}
-          allowSearch={true}
-        />
-      </Column>
-    </Grid>
+    <Panel>
+      <Grid columns="auto 1fr" gap="6">
+        <Column gap="6" width="200px" border="right" paddingRight="3">
+          <LinkButton href={renderUrl({ view: undefined })} variant="quiet" scroll={false}>
+            <Icon rotate={180}>
+              <Icons.Arrow />
+            </Icon>
+            <Text>{formatMessage(labels.back)}</Text>
+          </LinkButton>
+          <SideMenu items={items} selectedKey={view} />
+        </Column>
+        <Column>
+          <DetailsComponent
+            websiteId={websiteId}
+            domainName={domainName}
+            animate={false}
+            virtualize={true}
+            itemCount={25}
+            allowFilter={true}
+            allowSearch={true}
+          />
+        </Column>
+      </Grid>
+    </Panel>
   );
 }

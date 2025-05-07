@@ -1,7 +1,7 @@
-import { DataColumn, DataTable, Icon, Text } from '@umami/react-zen';
+import { DataColumn, DataTable, Icon, MenuItem, Text, Row } from '@umami/react-zen';
 import { useLoginQuery, useMessages } from '@/components/hooks';
 import { Icons } from '@/components/icons';
-import { LinkButton } from '@/components/common/LinkButton';
+import { MenuButton } from '@/components/input/MenuButton';
 
 export function TeamWebsitesTable({
   teamId,
@@ -25,23 +25,28 @@ export function TeamWebsitesTable({
       <DataColumn id="action" label=" " align="end">
         {(row: any) => {
           const { id: websiteId } = row;
+
           return (
-            <>
-              {allowEdit && (teamId || user?.isAdmin) && (
-                <LinkButton href={`/teams/${teamId}/settings/websites/${websiteId}`}>
+            <MenuButton>
+              <MenuItem href={`/teams/${teamId}/websites/${websiteId}`}>
+                <Row alignItems="center" gap>
                   <Icon>
-                    <Icons.Edit />
+                    <Icons.Arrow />
                   </Icon>
-                  <Text>{formatMessage(labels.edit)}</Text>
-                </LinkButton>
+                  <Text>{formatMessage(labels.view)}</Text>
+                </Row>
+              </MenuItem>
+              {allowEdit && (teamId || user?.isAdmin) && (
+                <MenuItem href={`/teams/${teamId}/settings/websites/${websiteId}`}>
+                  <Row alignItems="center" gap>
+                    <Icon>
+                      <Icons.Edit />
+                    </Icon>
+                    <Text>{formatMessage(labels.edit)}</Text>
+                  </Row>
+                </MenuItem>
               )}
-              <LinkButton href={`/teams/${teamId}/websites/${websiteId}`}>
-                <Icon>
-                  <Icons.Arrow />
-                </Icon>
-                <Text>{formatMessage(labels.view)}</Text>
-              </LinkButton>
-            </>
+            </MenuButton>
           );
         }}
       </DataColumn>

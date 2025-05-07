@@ -1,6 +1,7 @@
 import { useMessages, useModified } from '@/components/hooks';
 import {
-  Button,
+  Row,
+  Pressable,
   Icon,
   Icons,
   Modal,
@@ -34,12 +35,14 @@ export function TeamMemberEditButton({
 
   return (
     <DialogTrigger>
-      <Button>
-        <Icon>
-          <Icons.Edit />
-        </Icon>
-        <Text>{formatMessage(labels.edit)}</Text>
-      </Button>
+      <Pressable>
+        <Row alignItems="center" gap>
+          <Icon>
+            <Icons.Edit />
+          </Icon>
+          <Text>{formatMessage(labels.edit)}</Text>
+        </Row>
+      </Pressable>
       <Modal>
         <Dialog title={formatMessage(labels.editMember)}>
           {({ close }) => (

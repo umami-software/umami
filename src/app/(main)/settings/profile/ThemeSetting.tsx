@@ -1,5 +1,5 @@
 import { Row, Button, Icon, useTheme } from '@umami/react-zen';
-import { Icons } from '@/components/icons';
+import { Lucide } from '@/components/icons';
 
 export function ThemeSetting() {
   const { theme, setTheme } = useTheme();
@@ -10,13 +10,13 @@ export function ThemeSetting() {
         variant={theme === 'light' ? 'primary' : 'secondary'}
         onPress={() => setTheme('light')}
       >
-        <Icon fillColor="currentColor">
-          <Icons.Sun />
+        <Icon>
+          <Lucide.Sun />
         </Icon>
       </Button>
       <Button variant={theme === 'dark' ? 'primary' : 'secondary'} onPress={() => setTheme('dark')}>
-        <Icon fillColor="currentColor">
-          <Icons.Moon />
+        <Icon>
+          <Lucide.Moon />
         </Icon>
       </Button>
     </Row>

@@ -23,7 +23,7 @@ export function UserDeleteForm({ userId, username, onSave, onClose }) {
   return (
     <ConfirmationForm
       message={formatMessage(messages.confirmDelete, {
-        target: <b key={messages.confirmDelete.id}>{username}</b>,
+        target: <b key={messages.confirmDelete.id}>&nbsp;{username}</b>,
       })}
       onConfirm={handleConfirm}
       onClose={onClose}

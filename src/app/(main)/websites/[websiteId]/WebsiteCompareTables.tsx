@@ -53,72 +53,72 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
 
   const items = [
     {
-      key: 'url',
+      id: 'url',
       label: formatMessage(labels.pages),
       url: renderUrl({ view: 'url' }),
     },
     {
-      key: 'referrer',
+      id: 'referrer',
       label: formatMessage(labels.referrers),
       url: renderUrl({ view: 'referrer' }),
     },
     {
-      key: 'browser',
+      id: 'browser',
       label: formatMessage(labels.browsers),
       url: renderUrl({ view: 'browser' }),
     },
     {
-      key: 'os',
+      id: 'os',
       label: formatMessage(labels.os),
       url: renderUrl({ view: 'os' }),
     },
     {
-      key: 'device',
+      id: 'device',
       label: formatMessage(labels.devices),
       url: renderUrl({ view: 'device' }),
     },
     {
-      key: 'country',
+      id: 'country',
       label: formatMessage(labels.countries),
       url: renderUrl({ view: 'country' }),
     },
     {
-      key: 'region',
+      id: 'region',
       label: formatMessage(labels.regions),
       url: renderUrl({ view: 'region' }),
     },
     {
-      key: 'city',
+      id: 'city',
       label: formatMessage(labels.cities),
       url: renderUrl({ view: 'city' }),
     },
     {
-      key: 'language',
+      id: 'language',
       label: formatMessage(labels.languages),
       url: renderUrl({ view: 'language' }),
     },
     {
-      key: 'screen',
+      id: 'screen',
       label: formatMessage(labels.screens),
       url: renderUrl({ view: 'screen' }),
     },
     {
-      key: 'event',
+      id: 'event',
       label: formatMessage(labels.events),
       url: renderUrl({ view: 'event' }),
     },
     {
-      key: 'query',
+      id: 'query',
       label: formatMessage(labels.queryParameters),
       url: renderUrl({ view: 'query' }),
     },
     {
-      key: 'host',
+      id: 'host',
       label: formatMessage(labels.hosts),
       url: renderUrl({ view: 'host' }),
     },
     {
-      key: 'tag',
+      id: 'tag',
       label: formatMessage(labels.tags),
       url: renderUrl({ view: 'tag' }),
     },

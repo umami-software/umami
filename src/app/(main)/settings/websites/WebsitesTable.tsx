@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
-import { Row, Text, Icon, Icons, DataTable, DataColumn, Button } from '@umami/react-zen';
-import Link from 'next/link';
+import { Row, Text, Icon, DataTable, DataColumn, MenuItem } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
+import { MenuButton } from '@/components/input/MenuButton';
+import { Lucide } from '@/components/icons';
 
 export interface WebsitesTableProps {
   data: any[];
@@ -36,28 +37,28 @@ export function WebsitesTable({
             const websiteId = row.id;
 
             return (
-              <Row gap="3">
+              <MenuButton>
                 {allowEdit && (
-                  <Button asChild>
-                    <Link href={renderTeamUrl(`/settings/websites/${websiteId}`)}>
-                      <Icon data-test="link-button-edit">
-                        <Icons.Edit />
-                      </Icon>
-                      <Text>{formatMessage(labels.edit)}</Text>
-                    </Link>
-                  </Button>
-                )}
-                {allowView && (
-                  <Button asChild>
-                    <Link href={renderTeamUrl(`/websites/${websiteId}`)}>
+                  <MenuItem href={renderTeamUrl(`/websites/${websiteId}`)}>
+                    <Row alignItems="center" gap>
                       <Icon data-test="link-button-view">
-                        <Icons.Arrow />
+                        <Lucide.Eye />
                       </Icon>
                       <Text>{formatMessage(labels.view)}</Text>
-                    </Link>
-                  </Button>
+                    </Row>
+                  </MenuItem>
                 )}
-              </Row>
+                {allowView && (
+                  <MenuItem href={renderTeamUrl(`/settings/websites/${websiteId}`)}>
+                    <Row alignItems="center" gap>
+                      <Icon data-test="link-button-edit">
+                        <Lucide.SquarePen />
+                      </Icon>
+                      <Text>{formatMessage(labels.edit)}</Text>
+                    </Row>
+                  </MenuItem>
+                )}
+              </MenuButton>
             );
           }}
         </DataColumn>

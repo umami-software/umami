@@ -30,12 +30,12 @@ export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: 
         <TextField autoComplete="off" />
       </FormField>
       <FormButtons>
-        <FormSubmitButton variant="primary" isDisabled={isPending}>
-          {formatMessage(labels.save)}
-        </FormSubmitButton>
         <Button isDisabled={isPending} onPress={onClose}>
           {formatMessage(labels.cancel)}
         </Button>
+        <FormSubmitButton variant="primary" isDisabled={isPending}>
+          {formatMessage(labels.save)}
+        </FormSubmitButton>
       </FormButtons>
     </Form>
   );

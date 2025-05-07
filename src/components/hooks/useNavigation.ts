@@ -6,7 +6,8 @@ export function useNavigation() {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
-  const [, teamId] = pathname.match(/^\/teams\/([a-f0-9-]+)/) || [];
+  const [, teamId] = pathname.match(/\/teams\/([a-f0-9-]+)/) || [];
+  const [, websiteId] = pathname.match(/\/websites\/([a-f0-9-]+)/) || [];
 
   const query = useMemo<{ [key: string]: any }>(() => {
     const obj = {};
@@ -26,5 +27,5 @@ export function useNavigation() {
     return teamId ? `/teams/${teamId}${url}` : url;
   }
 
-  return { pathname, query, router, renderUrl, renderTeamUrl, teamId };
+  return { pathname, query, router, renderUrl, renderTeamUrl, teamId, websiteId };
 }

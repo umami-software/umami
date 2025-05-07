@@ -6,9 +6,13 @@ import type { RowProps } from '@umami/react-zen/Row';
 import useGlobalState from '@/components/hooks/useGlobalState';
 import { Lucide } from '@/components/icons';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
+import { useNavigation } from '@/components/hooks';
 
 export function MenuBar(props: RowProps) {
   const [isCollapsed, setCollapsed] = useGlobalState('sidenav-collapsed');
+  const { websiteId } = useNavigation();
+
+  const handleSelect = () => {};
 
   return (
     <Row
@@ -27,11 +31,17 @@ export function MenuBar(props: RowProps) {
             <Lucide.PanelLeft />
           </Icon>
         </Button>
-        <TeamsButton />
-        <Icon>
-          <Lucide.Slash />
-        </Icon>
-        <WebsiteSelect />
+        <Row alignItems="center" gap="1">
+          <TeamsButton />
+          {websiteId && (
+            <>
+              <Icon strokeColor="7" rotate={-25}>
+                <Lucide.Slash />
+              </Icon>
+              <WebsiteSelect variant="quiet" websiteId={websiteId} onSelect={handleSelect} />
+            </>
+          )}
+        </Row>
       </Row>
       <Row alignItems="center" justifyContent="flex-end">
         <ThemeButton />

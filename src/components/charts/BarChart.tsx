@@ -49,10 +49,11 @@ export function BarChart({
   const [tooltip, setTooltip] = useState(null);
   const { theme } = useTheme();
   const { locale } = useLocale();
-  const { colors } = getThemeColors(theme);
+  const { colors } = useMemo(() => getThemeColors(theme), [theme]);
 
   const options: any = useMemo(() => {
     return {
+      __id: new Date().getTime(),
       scales: {
         x: {
           type: XAxisType,
@@ -98,21 +99,21 @@ export function BarChart({
   const handleTooltip = ({ tooltip }: { tooltip: any }) => {
     const { opacity, labelColors, dataPoints } = tooltip;
 
-    if (opacity) {
-      setTooltip({
-        title: formatDate(
-          new Date(dataPoints[0].raw?.d || dataPoints[0].raw?.x || dataPoints[0].raw),
-          dateFormats[unit],
-          locale,
-        ),
-        color: labelColors?.[0]?.backgroundColor,
-        value: currency
-          ? formatLongCurrency(dataPoints[0].raw.y, currency)
-          : `${formatLongNumber(dataPoints[0].raw.y)} ${dataPoints[0].dataset.label}`,
-      });
-    } else {
-      setTooltip(null);
-    }
+    setTooltip(
+      opacity
+        ? {
+            title: formatDate(
+              new Date(dataPoints[0].raw?.d || dataPoints[0].raw?.x || dataPoints[0].raw),
+              dateFormats[unit],
+              locale,
+            ),
+            color: labelColors?.[0]?.backgroundColor,
+            value: currency
+              ? formatLongCurrency(dataPoints[0].raw.y, currency)
+              : `${formatLongNumber(dataPoints[0].raw.y)} ${dataPoints[0].dataset.label}`,
+          }
+        : null,
+    );
   };
 
   return (
