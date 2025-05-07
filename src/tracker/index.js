@@ -20,6 +20,7 @@
   const attr = currentScript.getAttribute.bind(currentScript);
   const website = attr(_data + 'website-id');
   const hostUrl = attr(_data + 'host-url');
+  const beforeSend = attr(_data + 'before-send');
   const tag = attr(_data + 'tag') || undefined;
   const autoTrack = attr(_data + 'auto-track') !== _false;
   const dnt = attr(_data + 'do-not-track') === _true;
@@ -138,6 +139,15 @@
 
   const send = async (payload, type = 'event') => {
     if (trackingDisabled()) return;
+
+    const callback = window[beforeSend];
+
+    if (typeof callback === 'function') {
+      payload = callback(type, payload);
+    }
+
+    if (!payload) return;
+
     try {
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -168,10 +178,10 @@
     }
   };
 
-  const track = (obj, data) => {
-    if (typeof obj === 'string') return send({ ...getPayload(), name: obj, data });
-    if (typeof obj === 'object') return send(obj);
-    if (typeof obj === 'function') return send(obj(getPayload()));
+  const track = (name, data) => {
+    if (typeof name === 'string') return send({ ...getPayload(), name, data });
+    if (typeof name === 'object') return send({ ...name });
+    if (typeof name === 'function') return send(name(getPayload()));
     return send(getPayload());
   };
 
