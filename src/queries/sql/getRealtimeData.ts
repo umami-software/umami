@@ -64,7 +64,7 @@ export async function getRealtimeData(
     countries,
     urls,
     referrers,
-    events: events.reverse(),
+    events: events,
     series: {
       views: pageviews,
       visitors: sessions,
