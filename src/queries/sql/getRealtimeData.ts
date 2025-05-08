@@ -24,7 +24,7 @@ export async function getRealtimeData(
 
   const uniques = new Set();
 
-  const { countries, urls, referrers, events } = activity.reduce(
+  const { countries, urls, referrers, events } = activity.reverse().reduce(
     (
       obj: { countries: any; urls: any; referrers: any; events: any },
       event: {
@@ -64,7 +64,7 @@ export async function getRealtimeData(
     countries,
     urls,
     referrers,
-    events: events,
+    events: events.reverse(),
     series: {
       views: pageviews,
       visitors: sessions,
