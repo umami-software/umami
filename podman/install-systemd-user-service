@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+service_name="umami"
+mkdir -p ~/.config/systemd/user
+cp $service_name.service ~/.config/systemd/user
+
+
+systemctl --user daemon-reload
+systemctl --user enable $service_name.service
+systemctl --user start $service_name.service

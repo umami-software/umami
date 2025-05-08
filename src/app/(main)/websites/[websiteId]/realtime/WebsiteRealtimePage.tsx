@@ -12,7 +12,7 @@ import RealtimeCountries from './RealtimeCountries';
 import WebsiteHeader from '../WebsiteHeader';
 import { percentFilter } from '@/lib/filters';
 
-export function WebsiteRealtimePage({ websiteId }) {
+export function WebsiteRealtimePage({ websiteId }: { websiteId: string }) {
   const { data, isLoading, error } = useRealtime(websiteId);
 
   if (isLoading || error) {
