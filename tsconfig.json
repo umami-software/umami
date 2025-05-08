@@ -23,6 +23,7 @@
     "incremental": false,
     "types": ["jest"],
     "typeRoots": ["node_modules/@types"],
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },

@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, getDatabaseType, POSTGRESQL, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { PageParams, QueryFilters } from '@/lib/types';
 
@@ -14,9 +14,13 @@ export async function getWebsiteSessions(
 
 async function relationalQuery(websiteId: string, filters: QueryFilters, pageParams: PageParams) {
   const { pagedRawQuery, parseFilters } = prisma;
+  const { search } = pageParams;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
   });
+
+  const db = getDatabaseType();
+  const like = db === POSTGRESQL ? 'ilike' : 'like';
 
   return pagedRawQuery(
     `
@@ -24,14 +28,14 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
     select
       session.session_id as "id",
       session.website_id as "websiteId",
-      session.hostname,
+      website_event.hostname,
       session.browser,
       session.os,
       session.device,
       session.screen,
       session.language,
       session.country,
-      session.subdivision1,
+      session.region,
       session.city,
       min(website_event.created_at) as "firstAt",
       max(website_event.created_at) as "lastAt",
@@ -43,22 +47,31 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
     where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
     ${filterQuery}
+    ${
+      search
+        ? `and (distinct_id ${like} {{search}}
+           or city ${like} {{search}}
+           or browser ${like} {{search}}
+           or os ${like} {{search}}
+           or device ${like} {{search}})`
+        : ''
+    }
     group by session.session_id, 
       session.website_id, 
-      session.hostname, 
+      website_event.hostname, 
       session.browser, 
       session.os, 
       session.device, 
       session.screen, 
       session.language, 
       session.country, 
-      session.subdivision1, 
+      session.region, 
       session.city
     order by max(website_event.created_at) desc
     limit 1000)
     select * from sessions
     `,
-    params,
+    { ...params, search: `%${search}%` },
     pageParams,
   );
 }
@@ -66,6 +79,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
 async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
   const { pagedQuery, parseFilters, getDateStringSQL } = clickhouse;
   const { params, dateQuery, filterQuery } = await parseFilters(websiteId, filters);
+  const { search } = pageParams;
 
   return pagedQuery(
     `
@@ -80,7 +94,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
       screen,
       language,
       country,
-      subdivision1,
+      region,
       city,
       ${getDateStringSQL('min(min_time)')} as firstAt,
       ${getDateStringSQL('max(max_time)')} as lastAt,
@@ -91,12 +105,21 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     where website_id = {websiteId:UUID}
     ${dateQuery}
     ${filterQuery}
-    group by session_id, website_id, hostname, browser, os, device, screen, language, country, subdivision1, city
+    ${
+      search
+        ? `and ((positionCaseInsensitive(distinct_id, {search:String}) > 0)
+           or (positionCaseInsensitive(city, {search:String}) > 0)
+           or (positionCaseInsensitive(browser, {search:String}) > 0)
+           or (positionCaseInsensitive(os, {search:String}) > 0)
+           or (positionCaseInsensitive(device, {search:String}) > 0))`
+        : ''
+    }
+    group by session_id, website_id, hostname, browser, os, device, screen, language, country, region, city
     order by lastAt desc
     limit 1000)
     select * from sessions
     `,
-    params,
+    { ...params, search },
     pageParams,
   );
 }
