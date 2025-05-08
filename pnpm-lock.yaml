@@ -346,8 +346,6 @@ importers:
         specifier: ^5.5.3
         version: 5.8.3
 
-  src/generated/prisma: {}
-
 packages:
 
   '@ampproject/remapping@2.3.0':
