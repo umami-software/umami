@@ -84,7 +84,7 @@ async function relationalQuery(
               sum(coalesce(cast(number_value as decimal(10,2)), cast(string_value as decimal(10,2)))) value
           from event_data ed
           join website_event we
-          on we.event_id = ed.website_event_Id
+          on we.event_id = ed.website_event_id
             and we.website_id = ed.website_id
           join (select website_event_id
                 from event_data
@@ -395,10 +395,10 @@ async function clickhouseQuery(
                    fbclid != '', 'Facebook / Meta', 
                    msclkid != '', 'Microsoft Ads', 
                    ttclid != '', 'TikTok Ads', 
-                   li_fat_id != '', '	LinkedIn Ads', 
+                   li_fat_id != '', 'LinkedIn Ads', 
                    twclid != '', 'Twitter Ads (X)','') name,
         ${currency ? 'sum(e.value)' : 'uniqExact(we.session_id)'} value
-    from model m
+    from model fm
     join website_event we
     on we.created_at = m.created_at
         and we.session_id = m.session_id
