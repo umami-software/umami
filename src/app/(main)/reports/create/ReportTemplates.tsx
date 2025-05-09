@@ -5,6 +5,7 @@ import Magnet from '@/assets/magnet.svg';
 import Path from '@/assets/path.svg';
 import Tag from '@/assets/tag.svg';
 import Target from '@/assets/target.svg';
+import Network from '@/assets/network.svg';
 import { useMessages, useTeamUrl } from '@/components/hooks';
 import PageHeader from '@/components/layout/PageHeader';
 import Link from 'next/link';
@@ -57,6 +58,12 @@ export function ReportTemplates({ showHeader = true }: { showHeader?: boolean })
       description: formatMessage(labels.revenueDescription),
       url: renderTeamUrl('/reports/revenue'),
       icon: <Money />,
+    },
+    {
+      title: formatMessage(labels.attribution),
+      description: formatMessage(labels.attributionDescription),
+      url: renderTeamUrl('/reports/attribution'),
+      icon: <Network />,
     },
   ];
 

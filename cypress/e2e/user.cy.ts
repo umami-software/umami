@@ -1,4 +1,4 @@
-describe('Website tests', () => {
+describe('User tests', () => {
   Cypress.session.clearAllSavedSessions();
 
   beforeEach(() => {
@@ -51,7 +51,7 @@ describe('Website tests', () => {
     cy.url().should('eq', Cypress.config().baseUrl + '/dashboard');
   });
 
-  it('Delete a website', () => {
+  it('Delete a user', () => {
     // delete user
     cy.get('table tbody tr')
       .contains('td', /Test-user/i)

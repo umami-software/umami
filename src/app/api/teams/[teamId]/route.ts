@@ -28,8 +28,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
 
 export async function POST(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const schema = z.object({
-    name: z.string().max(50),
-    accessCode: z.string().max(50),
+    name: z.string().max(50).optional(),
+    accessCode: z.string().max(50).optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);

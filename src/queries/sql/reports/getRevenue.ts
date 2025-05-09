@@ -56,7 +56,9 @@ async function relationalQuery(
     on we.event_id = ed.website_event_id
     join (select website_event_id
           from event_data
-          where data_key ${like} '%currency%'
+          where website_id = {{websiteId::uuid}}
+            and created_at between {{startDate}} and {{endDate}}
+            and data_key ${like} '%currency%'
             and string_value = {{currency}}) currency
     on currency.website_event_id = ed.website_event_id
     where ed.website_id = {{websiteId::uuid}}
@@ -80,7 +82,9 @@ async function relationalQuery(
     on s.session_id = we.session_id
     join (select website_event_id
           from event_data
-          where data_key ${like} '%currency%'
+          where website_id = {{websiteId::uuid}}
+            and created_at between {{startDate}} and {{endDate}}
+            and data_key ${like} '%currency%'
             and string_value = {{currency}}) currency
     on currency.website_event_id = ed.website_event_id
     where ed.website_id = {{websiteId::uuid}}
@@ -102,7 +106,9 @@ async function relationalQuery(
     on we.event_id = ed.website_event_id
     join (select website_event_id
           from event_data
-          where data_key ${like} '%currency%'
+          where website_id = {{websiteId::uuid}}
+            and created_at between {{startDate}} and {{endDate}}
+            and data_key ${like} '%currency%'
             and string_value = {{currency}}) currency
       on currency.website_event_id = ed.website_event_id
     where ed.website_id = {{websiteId::uuid}}
@@ -124,7 +130,9 @@ async function relationalQuery(
       on we.event_id = ed.website_event_id
     join (select website_event_id, string_value as currency
           from event_data
-          where data_key ${like} '%currency%') c
+          where website_id = {{websiteId::uuid}}
+            and created_at between {{startDate}} and {{endDate}}
+            and data_key ${like} '%currency%') c
       on c.website_event_id = ed.website_event_id
     where ed.website_id = {{websiteId::uuid}}
       and ed.created_at between {{startDate}} and {{endDate}}
@@ -176,7 +184,9 @@ async function clickhouseQuery(
     from event_data
     join (select event_id 
           from event_data
-          where positionCaseInsensitive(data_key, 'currency') > 0
+          where website_id = {websiteId:UUID}
+            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+            and positionCaseInsensitive(data_key, 'currency') > 0
             and string_value = {currency:String}) currency
       on currency.event_id = event_data.event_id
     where website_id = {websiteId:UUID}
@@ -201,7 +211,9 @@ async function clickhouseQuery(
     from event_data ed
     join (select event_id
           from event_data
-          where positionCaseInsensitive(data_key, 'currency') > 0
+          where website_id = {websiteId:UUID}
+            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+            and positionCaseInsensitive(data_key, 'currency') > 0
             and string_value = {currency:String}) c
       on c.event_id = ed.event_id
     join (select distinct website_id, session_id, country
@@ -231,7 +243,9 @@ async function clickhouseQuery(
     from event_data
     join (select event_id 
           from event_data
-          where positionCaseInsensitive(data_key, 'currency') > 0
+          where website_id = {websiteId:UUID}
+            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+            and positionCaseInsensitive(data_key, 'currency') > 0
             and string_value = {currency:String}) currency
       on currency.event_id = event_data.event_id
     where website_id = {websiteId:UUID}
@@ -259,7 +273,9 @@ async function clickhouseQuery(
     from event_data ed
     join (select event_id, string_value as currency
           from event_data
-          where positionCaseInsensitive(data_key, 'currency') > 0) c
+          where website_id = {websiteId:UUID}
+            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+            and positionCaseInsensitive(data_key, 'currency') > 0) c
       on c.event_id = ed.event_id
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
