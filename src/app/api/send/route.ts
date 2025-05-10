@@ -187,26 +187,19 @@ export async function POST(request: Request) {
         websiteId,
         sessionId,
         visitId,
+        createdAt,
+
+        // Page
+        pageTitle: safeDecodeURIComponent(title),
+        hostname: hostname || urlDomain,
         urlPath: safeDecodeURI(urlPath),
         urlQuery,
-        utmSource,
-        utmMedium,
-        utmCampaign,
-        utmContent,
-        utmTerm,
         referrerPath: safeDecodeURI(referrerPath),
         referrerQuery,
         referrerDomain,
-        pageTitle: safeDecodeURIComponent(title),
-        gclid,
-        fbclid,
-        msclkid,
-        ttclid,
-        lifatid,
-        twclid,
-        eventName: name,
-        eventData: data,
-        hostname: hostname || urlDomain,
+
+        // Session
+        distinctId: id,
         browser,
         os,
         device,
@@ -215,24 +208,39 @@ export async function POST(request: Request) {
         country,
         region,
         city,
+
+        // Events
+        eventName: name,
+        eventData: data,
         tag,
-        distinctId: id,
-        createdAt,
+
+        // UTM
+        utmSource,
+        utmMedium,
+        utmCampaign,
+        utmContent,
+        utmTerm,
+
+        // Click IDs
+        gclid,
+        fbclid,
+        msclkid,
+        ttclid,
+        lifatid,
+        twclid,
       });
     }
 
     if (type === COLLECTION_TYPE.identify) {
-      if (!data) {
-        return badRequest('Data required.');
+      if (data) {
+        await saveSessionData({
+          websiteId,
+          sessionId,
+          sessionData: data,
+          distinctId: id,
+          createdAt,
+        });
       }
-
-      await saveSessionData({
-        websiteId,
-        sessionId,
-        sessionData: data,
-        distinctId: id,
-        createdAt,
-      });
     }
 
     const token = createToken({ websiteId, sessionId, visitId, iat }, secret());
