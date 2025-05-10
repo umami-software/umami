@@ -162,7 +162,6 @@
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^15.1.0",
     "postcss-preset-env": "7.8.3",
-    "postcss-rtlcss": "^4.0.1",
     "prettier": "^2.6.2",
     "prompts": "2.4.2",
     "rollup": "^3.28.0",
