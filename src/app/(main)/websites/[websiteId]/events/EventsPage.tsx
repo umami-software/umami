@@ -5,24 +5,35 @@ import EventsMetricsBar from './EventsMetricsBar';
 import EventsChart from '@/components/metrics/EventsChart';
 import { GridRow } from '@/components/layout/Grid';
 import EventsTable from '@/components/metrics/EventsTable';
-import { useMessages } from '@/components/hooks';
+import FilterTags from '@/components/metrics/FilterTags';
+import { useMessages, useNavigation } from '@/components/hooks';
 import { Item, Tabs } from 'react-basics';
 import { useState } from 'react';
 import EventProperties from './EventProperties';
+import { FILTER_COLUMNS } from '@/lib/constants';
 
 export default function EventsPage({ websiteId }) {
   const [label, setLabel] = useState(null);
   const [tab, setTab] = useState('activity');
   const { formatMessage, labels } = useMessages();
+  const { query } = useNavigation();
 
   const handleLabelClick = (value: string) => {
     setLabel(value !== label ? value : '');
   };
 
+  const params = Object.keys(query).reduce((obj, key) => {
+    if (FILTER_COLUMNS[key]) {
+      obj[key] = query[key];
+    }
+    return obj;
+  }, {});
+
   return (
     <>
       <WebsiteHeader websiteId={websiteId} />
-      <EventsMetricsBar websiteId={websiteId} />
+      <FilterTags websiteId={websiteId} params={params} />
+      <EventsMetricsBar websiteId={websiteId} showFilter={true} />
       <GridRow columns="two-one">
         <EventsChart websiteId={websiteId} focusLabel={label} />
         <EventsTable
