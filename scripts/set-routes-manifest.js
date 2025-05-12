@@ -7,8 +7,10 @@ const routesManifestPath = path.resolve(__dirname, '../.next/routes-manifest.jso
 const originalPath = path.resolve(__dirname, '../.next/routes-manifest-orig.json');
 const originalManifest = require(originalPath);
 
-const API_PATH = '/api/:path*';
-const TRACKER_SCRIPT = '/script.js';
+const basePath = originalManifest.basePath;
+
+const API_PATH = basePath + '/api/:path*';
+const TRACKER_SCRIPT = basePath + '/script.js';
 
 const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT;
 const trackerScriptName = process.env.TRACKER_SCRIPT_NAME;
@@ -20,14 +22,16 @@ if (collectApiEndpoint) {
   const apiRoute = originalManifest.headers.find(route => route.source === API_PATH);
   const routeRegex = new RegExp(apiRoute.regex);
 
+  const normalizedSource = basePath + collectApiEndpoint;
+
   rewrites.push({
-    source: collectApiEndpoint,
-    destination: '/api/send',
+    source: normalizedSource,
+    destination: basePath + '/api/send',
   });
 
-  if (!routeRegex.test(collectApiEndpoint)) {
+  if (!routeRegex.test(normalizedSource)) {
     headers.push({
-      source: collectApiEndpoint,
+      source: normalizedSource,
       headers: apiRoute.headers,
     });
   }
@@ -40,7 +44,7 @@ if (trackerScriptName) {
 
   if (names) {
     names.forEach(name => {
-      const normalizedSource = `/${name.replace(/^\/+/, '')}`;
+      const normalizedSource = `${basePath}/${name.replace(/^\/+/, '')}`;
 
       rewrites.push({
         source: normalizedSource,

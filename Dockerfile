@@ -41,7 +41,7 @@ RUN set -x \
     && apk add --no-cache curl
 
 # Script dependencies
-RUN pnpm add npm-run-all dotenv prisma@6.1.0
+RUN pnpm add npm-run-all dotenv prisma@6.7.0
 
 # Permissions for prisma
 RUN chown -R nextjs:nodejs node_modules/.pnpm/
