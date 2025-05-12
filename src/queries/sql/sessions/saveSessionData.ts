@@ -7,26 +7,29 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import kafka from '@/lib/kafka';
 import clickhouse from '@/lib/clickhouse';
 
-export async function saveSessionData(data: {
+export interface SaveSessionDataArgs {
   websiteId: string;
   sessionId: string;
   sessionData: DynamicData;
+  distinctId?: string;
   createdAt?: Date;
-}) {
+}
+
+export async function saveSessionData(data: SaveSessionDataArgs) {
   return runQuery({
     [PRISMA]: () => relationalQuery(data),
     [CLICKHOUSE]: () => clickhouseQuery(data),
   });
 }
 
-export async function relationalQuery(data: {
-  websiteId: string;
-  sessionId: string;
-  sessionData: DynamicData;
-  createdAt?: Date;
-}) {
+export async function relationalQuery({
+  websiteId,
+  sessionId,
+  sessionData,
+  distinctId,
+  createdAt,
+}: SaveSessionDataArgs) {
   const { client } = prisma;
-  const { websiteId, sessionId, sessionData, createdAt } = data;
 
   const jsonKeys = flattenJSON(sessionData);
 
@@ -39,6 +42,7 @@ export async function relationalQuery(data: {
     numberValue: a.dataType === DATA_TYPE.number ? a.value : null,
     dateValue: a.dataType === DATA_TYPE.date ? new Date(a.value) : null,
     dataType: a.dataType,
+    distinctId,
     createdAt,
   }));
 
@@ -72,18 +76,15 @@ export async function relationalQuery(data: {
       });
     }
   }
-
-  return flattenedData;
 }
 
-async function clickhouseQuery(data: {
-  websiteId: string;
-  sessionId: string;
-  sessionData: DynamicData;
-  createdAt?: Date;
-}) {
-  const { websiteId, sessionId, sessionData, createdAt } = data;
-
+async function clickhouseQuery({
+  websiteId,
+  sessionId,
+  sessionData,
+  distinctId,
+  createdAt,
+}: SaveSessionDataArgs) {
   const { insert, getUTCString } = clickhouse;
   const { sendMessage } = kafka;
 
@@ -98,6 +99,7 @@ async function clickhouseQuery(data: {
       string_value: getStringValue(value, dataType),
       number_value: dataType === DATA_TYPE.number ? value : null,
       date_value: dataType === DATA_TYPE.date ? getUTCString(value) : null,
+      distinct_id: distinctId,
       created_at: getUTCString(createdAt),
     };
   });
@@ -107,6 +109,4 @@ async function clickhouseQuery(data: {
   } else {
     await insert('session_data', messages);
   }
-
-  return data;
 }

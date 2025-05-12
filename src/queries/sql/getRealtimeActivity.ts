@@ -59,7 +59,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters): Promis
         where website_id = {websiteId:UUID}
         ${filterQuery}
         ${dateQuery}
-        order by createdAt asc
+        order by createdAt desc
         limit 100
     `,
     params,

@@ -33,7 +33,7 @@ export async function POST(
   const schema = z.object({
     name: z.string(),
     domain: z.string(),
-    shareId: z.string().regex(SHARE_ID_REGEX).nullable(),
+    shareId: z.string().regex(SHARE_ID_REGEX).nullable().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);

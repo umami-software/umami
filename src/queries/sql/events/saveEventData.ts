@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import { DATA_TYPE } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
@@ -8,7 +7,7 @@ import kafka from '@/lib/kafka';
 import prisma from '@/lib/prisma';
 import { DynamicData } from '@/lib/types';
 
-export async function saveEventData(data: {
+export interface SaveEventDataArgs {
   websiteId: string;
   eventId: string;
   sessionId?: string;
@@ -16,19 +15,16 @@ export async function saveEventData(data: {
   eventName?: string;
   eventData: DynamicData;
   createdAt?: Date;
-}) {
+}
+
+export async function saveEventData(data: SaveEventDataArgs) {
   return runQuery({
     [PRISMA]: () => relationalQuery(data),
     [CLICKHOUSE]: () => clickhouseQuery(data),
   });
 }
 
-async function relationalQuery(data: {
-  websiteId: string;
-  eventId: string;
-  eventData: DynamicData;
-  createdAt?: Date;
-}): Promise<Prisma.BatchPayload> {
+async function relationalQuery(data: SaveEventDataArgs) {
   const { websiteId, eventId, eventData, createdAt } = data;
 
   const jsonKeys = flattenJSON(eventData);
@@ -46,20 +42,12 @@ async function relationalQuery(data: {
     createdAt,
   }));
 
-  return prisma.client.eventData.createMany({
+  await prisma.client.eventData.createMany({
     data: flattenedData,
   });
 }
 
-async function clickhouseQuery(data: {
-  websiteId: string;
-  eventId: string;
-  sessionId?: string;
-  urlPath?: string;
-  eventName?: string;
-  eventData: DynamicData;
-  createdAt?: Date;
-}) {
+async function clickhouseQuery(data: SaveEventDataArgs) {
   const { websiteId, sessionId, eventId, urlPath, eventName, eventData, createdAt } = data;
 
   const { insert, getUTCString } = clickhouse;
@@ -88,6 +76,4 @@ async function clickhouseQuery(data: {
   } else {
     await insert('event_data', messages);
   }
-
-  return data;
 }
