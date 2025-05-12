@@ -1,18 +1,18 @@
 -----------------------------------------------------
--- postgreSQL
+-- PostgreSQL
 -----------------------------------------------------
 UPDATE "website_event" we
-SET fbclid = url.fbclid,
-    gclid = url.gclid,
-    li_fat_id = url.li_fat_id,
-    msclkid = url.msclkid,
-    ttclid = url.ttclid,
-    twclid = url.twclid,
-    utm_campaign = url.utm_campaign,
-    utm_content = url.utm_content,
-    utm_medium = url.utm_medium,
-    utm_source = url.utm_source,
-    utm_term = url.utm_term
+SET fbclid = LEFT(url.fbclid, 255),
+    gclid = LEFT(url.gclid, 255),
+    li_fat_id = LEFT(url.li_fat_id, 255),
+    msclkid = LEFT(url.msclkid, 255),
+    ttclid = LEFT(url.ttclid, 255),
+    twclid = LEFT(url.twclid, 255),
+    utm_campaign = LEFT(url.utm_campaign, 255),
+    utm_content = LEFT(url.utm_content, 255),
+    utm_medium = LEFT(url.utm_medium, 255),
+    utm_source = LEFT(url.utm_source, 255),
+    utm_term = LEFT(url.utm_term, 255)
 FROM (SELECT event_id, website_id, session_id,
           (regexp_matches(url_query, '(?:[&?]|^)fbclid=([^&]+)', 'i'))[1] AS fbclid,
           (regexp_matches(url_query, '(?:[&?]|^)gclid=([^&]+)', 'i'))[1] AS gclid,
@@ -25,24 +25,25 @@ FROM (SELECT event_id, website_id, session_id,
           (regexp_matches(url_query, '(?:[&?]|^)utm_medium=([^&]+)', 'i'))[1] AS utm_medium,
           (regexp_matches(url_query, '(?:[&?]|^)utm_source=([^&]+)', 'i'))[1] AS utm_source,
           (regexp_matches(url_query, '(?:[&?]|^)utm_term=([^&]+)', 'i'))[1] AS utm_term
-    FROM "website_event") url
+    FROM "website_event"
+    WHERE url_query IS NOT NULL) url
 WHERE we.event_id = url.event_id
     and we.session_id = url.session_id
     and we.website_id = url.website_id;
 
 -----------------------------------------------------
--- mySQL
+-- MySQL
 -----------------------------------------------------
 UPDATE `website_event`
-SET fbclid = SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)fbclid=[^&]+'), '=', -1), '&', 1),
-    gclid = SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)gclid=[^&]+'), '=', -1), '&', 1),
-    li_fat_id = SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)li_fat_id=[^&]+'), '=', -1), '&', 1),
-    msclkid = SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)msclkid=[^&]+'), '=', -1), '&', 1),
-    ttclid = SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)ttclid=[^&]+'), '=', -1), '&', 1),
-    twclid = SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)twclid=[^&]+'), '=', -1), '&', 1),
-    utm_campaign = SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)utm_campaign=[^&]+'), '=', -1), '&', 1),
-    utm_content = SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)utm_content=[^&]+'), '=', -1), '&', 1),
-    utm_medium = SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)utm_medium=[^&]+'), '=', -1), '&', 1),
-    utm_source = SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)utm_source=[^&]+'), '=', -1), '&', 1),
-    utm_term = SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)utm_term=[^&]+'), '=', -1), '&', 1)
-WHERE 1 = 1;
+SET fbclid = LEFT(SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)fbclid=[^&]+'), '=', -1), '&', 1), 255),
+    gclid = LEFT(SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)gclid=[^&]+'), '=', -1), '&', 1), 255),
+    li_fat_id = LEFT(SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)li_fat_id=[^&]+'), '=', -1), '&', 1), 255),
+    msclkid = LEFT(SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)msclkid=[^&]+'), '=', -1), '&', 1), 255),
+    ttclid = LEFT(SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)ttclid=[^&]+'), '=', -1), '&', 1), 255),
+    twclid = LEFT(SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)twclid=[^&]+'), '=', -1), '&', 1), 255),
+    utm_campaign = LEFT(SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)utm_campaign=[^&]+'), '=', -1), '&', 1), 255),
+    utm_content = LEFT(SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)utm_content=[^&]+'), '=', -1), '&', 1), 255),
+    utm_medium = LEFT(SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)utm_medium=[^&]+'), '=', -1), '&', 1), 255),
+    utm_source = LEFT(SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)utm_source=[^&]+'), '=', -1), '&', 1), 255),
+    utm_term = LEFT(SUBSTRING_INDEX(SUBSTRING_INDEX(REGEXP_SUBSTR(url_query, '(?:[&?]|^)utm_term=[^&]+'), '=', -1), '&', 1), 255)
+WHERE url_query IS NOT NULL;

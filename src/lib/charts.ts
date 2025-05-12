@@ -11,7 +11,7 @@ export function renderDateLabels(unit: string, locale: string) {
 
     switch (unit) {
       case 'minute':
-        return formatDate(d, 'p', locale).split(' ')[0];
+        return formatDate(d, 'h:mm', locale);
       case 'hour':
         return formatDate(d, 'p', locale);
       case 'day':
