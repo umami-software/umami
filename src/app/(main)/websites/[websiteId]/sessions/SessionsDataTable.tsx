@@ -1,6 +1,6 @@
-import { useWebsiteSessions } from 'components/hooks';
+import { useWebsiteSessions } from '@/components/hooks';
 import SessionsTable from './SessionsTable';
-import DataTable from 'components/common/DataTable';
+import DataTable from '@/components/common/DataTable';
 import { ReactNode } from 'react';
 
 export default function SessionsDataTable({
@@ -14,7 +14,7 @@ export default function SessionsDataTable({
   const queryResult = useWebsiteSessions(websiteId);
 
   return (
-    <DataTable queryResult={queryResult} allowSearch={false} renderEmpty={() => children}>
+    <DataTable queryResult={queryResult} allowSearch={true} renderEmpty={() => children}>
       {({ data }) => <SessionsTable data={data} showDomain={!websiteId} />}
     </DataTable>
   );

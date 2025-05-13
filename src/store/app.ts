@@ -7,9 +7,9 @@ import {
   LOCALE_CONFIG,
   THEME_CONFIG,
   TIMEZONE_CONFIG,
-} from 'lib/constants';
-import { getItem } from 'next-basics';
-import { getTimezone } from 'lib/date';
+} from '@/lib/constants';
+import { getItem } from '@/lib/storage';
+import { getTimezone } from '@/lib/date';
 
 function getDefaultTheme() {
   return typeof window !== 'undefined'

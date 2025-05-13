@@ -1,12 +1,13 @@
-import Funnel from 'assets/funnel.svg';
-import Money from 'assets/money.svg';
-import Lightbulb from 'assets/lightbulb.svg';
-import Magnet from 'assets/magnet.svg';
-import Path from 'assets/path.svg';
-import Tag from 'assets/tag.svg';
-import Target from 'assets/target.svg';
-import { useMessages, useTeamUrl } from 'components/hooks';
-import PageHeader from 'components/layout/PageHeader';
+import Funnel from '@/assets/funnel.svg';
+import Money from '@/assets/money.svg';
+import Lightbulb from '@/assets/lightbulb.svg';
+import Magnet from '@/assets/magnet.svg';
+import Path from '@/assets/path.svg';
+import Tag from '@/assets/tag.svg';
+import Target from '@/assets/target.svg';
+import Network from '@/assets/network.svg';
+import { useMessages, useTeamUrl } from '@/components/hooks';
+import PageHeader from '@/components/layout/PageHeader';
 import Link from 'next/link';
 import { Button, Icon, Icons, Text } from 'react-basics';
 import styles from './ReportTemplates.module.css';
@@ -57,6 +58,12 @@ export function ReportTemplates({ showHeader = true }: { showHeader?: boolean })
       description: formatMessage(labels.revenueDescription),
       url: renderTeamUrl('/reports/revenue'),
       icon: <Money />,
+    },
+    {
+      title: formatMessage(labels.attribution),
+      description: formatMessage(labels.attributionDescription),
+      url: renderTeamUrl('/reports/attribution'),
+      icon: <Network />,
     },
   ];
 

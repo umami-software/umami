@@ -1,4 +1,4 @@
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 import { useState } from 'react';
 import { Button, Dropdown, Flexbox, FormRow, Item, TextField } from 'react-basics';
 import styles from './GoalsAddForm.module.css';

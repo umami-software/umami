@@ -1,7 +1,7 @@
-import { useFormat, useLocale, useMessages, useRegionNames, useTimezone } from 'components/hooks';
-import TypeIcon from 'components/common/TypeIcon';
+import { useFormat, useLocale, useMessages, useRegionNames, useTimezone } from '@/components/hooks';
+import TypeIcon from '@/components/common/TypeIcon';
 import { Icon, CopyIcon } from 'react-basics';
-import Icons from 'components/icons';
+import Icons from '@/components/icons';
 import styles from './SessionInfo.module.css';
 
 export default function SessionInfo({ data }) {
@@ -18,12 +18,13 @@ export default function SessionInfo({ data }) {
         <dd>
           {data?.id} <CopyIcon value={data?.id} />
         </dd>
-
+        <dt>{formatMessage(labels.distinctId)}</dt>
+        <dd>{data?.distinctId}</dd>
         <dt>{formatMessage(labels.lastSeen)}</dt>
-        <dd>{formatTimezoneDate(data?.lastAt, 'EEEE, PPPpp')}</dd>
+        <dd>{formatTimezoneDate(data?.lastAt, 'PPPPpp')}</dd>
 
         <dt>{formatMessage(labels.firstSeen)}</dt>
-        <dd>{formatTimezoneDate(data?.firstAt, 'EEEE, PPPpp')}</dd>
+        <dd>{formatTimezoneDate(data?.firstAt, 'PPPPpp')}</dd>
 
         <dt>{formatMessage(labels.country)}</dt>
         <dd>
@@ -36,7 +37,7 @@ export default function SessionInfo({ data }) {
           <Icon>
             <Icons.Location />
           </Icon>
-          {getRegionName(data?.subdivision1)}
+          {getRegionName(data?.region)}
         </dd>
 
         <dt>{formatMessage(labels.city)}</dt>

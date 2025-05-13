@@ -51,11 +51,6 @@ a.item {
   color: var(--base900);
 }
 
-.item.disabled {
-  color: var(--base500) !important;
-  pointer-events: none;
-}
-
 .minimized .text,
 .minimized .header {
   display: none;

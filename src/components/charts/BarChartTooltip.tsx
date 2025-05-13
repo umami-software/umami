@@ -1,13 +1,13 @@
-import { useLocale } from 'components/hooks';
-import { formatDate } from 'lib/date';
-import { formatLongCurrency, formatLongNumber } from 'lib/format';
+import { useLocale } from '@/components/hooks';
+import { formatDate } from '@/lib/date';
+import { formatLongCurrency, formatLongNumber } from '@/lib/format';
 import { Flexbox, StatusLight } from 'react-basics';
 
 const formats = {
   millisecond: 'T',
   second: 'pp',
   minute: 'p',
-  hour: 'h:mm aaa - PP',
+  hour: 'p - PP',
   day: 'PPPP',
   week: 'PPPP',
   month: 'LLLL yyyy',

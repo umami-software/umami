@@ -1,15 +1,16 @@
+'use client';
 import { Button } from 'react-basics';
 import Link from 'next/link';
 import Script from 'next/script';
-import WebsiteSelect from 'components/input/WebsiteSelect';
-import Page from 'components/layout/Page';
-import PageHeader from 'components/layout/PageHeader';
-import EventsChart from 'components/metrics/EventsChart';
+import WebsiteSelect from '@/components/input/WebsiteSelect';
+import Page from '@/components/layout/Page';
+import PageHeader from '@/components/layout/PageHeader';
+import EventsChart from '@/components/metrics/EventsChart';
 import WebsiteChart from '../websites/[websiteId]/WebsiteChart';
-import { useApi, useNavigation } from 'components/hooks';
+import { useApi, useNavigation } from '@/components/hooks';
 import styles from './TestConsole.module.css';
 
-export function TestConsole({ websiteId }: { websiteId: string }) {
+export function TestConsole({ websiteId }: { websiteId?: string }) {
   const { get, useQuery } = useApi();
   const { data, isLoading, error } = useQuery({
     queryKey: ['websites:me'],

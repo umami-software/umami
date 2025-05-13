@@ -1,0 +1,11 @@
+{
+  "userCreate": {
+    "username": "cypress1",
+    "password": "password",
+    "role": "user"
+  },
+  "userUpdate": {
+    "username": "cypress1",
+    "role": "view-only"
+  }
+}

@@ -1,5 +1,5 @@
 import useMessages from './useMessages';
-import { BROWSERS, OS_NAMES } from 'lib/constants';
+import { BROWSERS, OS_NAMES } from '@/lib/constants';
 import useLocale from './useLocale';
 import useCountryNames from './useCountryNames';
 import useLanguageNames from './useLanguageNames';
@@ -27,8 +27,8 @@ export function useFormat() {
     return countryNames[value] || value;
   };
 
-  const formatRegion = (value: string): string => {
-    const [country] = value.split('-');
+  const formatRegion = (value?: string): string => {
+    const [country] = value?.split('-') || [];
     return regions[value] ? `${regions[value]}, ${countryNames[country]}` : value;
   };
 

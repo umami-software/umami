@@ -1,8 +1,8 @@
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
-import { percentFilter } from 'lib/filters';
-import { useLocale } from 'components/hooks';
-import { useMessages } from 'components/hooks';
-import { useFormat } from 'components/hooks';
+import { percentFilter } from '@/lib/filters';
+import { useLocale } from '@/components/hooks';
+import { useMessages } from '@/components/hooks';
+import { useFormat } from '@/components/hooks';
 
 export function LanguagesTable({
   onDataLoad,

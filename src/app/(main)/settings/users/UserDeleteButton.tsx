@@ -1,5 +1,5 @@
 import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
-import { useMessages, useLogin } from 'components/hooks';
+import { useMessages, useLogin } from '@/components/hooks';
 import UserDeleteForm from './UserDeleteForm';
 
 export function UserDeleteButton({
@@ -16,7 +16,7 @@ export function UserDeleteButton({
 
   return (
     <ModalTrigger disabled={userId === user?.id}>
-      <Button disabled={userId === user?.id} variant="quiet">
+      <Button data-test="button-delete" disabled={userId === user?.id} variant="quiet">
         <Icon>
           <Icons.Trash />
         </Icon>

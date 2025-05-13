@@ -1,8 +1,8 @@
-import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
-import Breadcrumb from 'components/common/Breadcrumb';
-import { useMessages } from 'components/hooks';
-import Icons from 'components/icons';
-import PageHeader from 'components/layout/PageHeader';
+import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
+import Breadcrumb from '@/components/common/Breadcrumb';
+import { useMessages } from '@/components/hooks';
+import Icons from '@/components/icons';
+import PageHeader from '@/components/layout/PageHeader';
 import Link from 'next/link';
 import { Key, useContext, useState } from 'react';
 import { Button, Icon, Item, Tabs, Text, useToasts } from 'react-basics';

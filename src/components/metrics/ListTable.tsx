@@ -1,11 +1,11 @@
-import { FixedSizeList } from 'react-window';
-import { useSpring, animated, config } from '@react-spring/web';
+import Empty from '@/components/common/Empty';
+import { useMessages } from '@/components/hooks';
+import { formatLongCurrency, formatLongNumber } from '@/lib/format';
+import { animated, config, useSpring } from '@react-spring/web';
 import classNames from 'classnames';
-import Empty from 'components/common/Empty';
-import { formatLongNumber } from 'lib/format';
-import { useMessages } from 'components/hooks';
-import styles from './ListTable.module.css';
 import { ReactNode } from 'react';
+import { FixedSizeList } from 'react-window';
+import styles from './ListTable.module.css';
 
 const ITEM_SIZE = 30;
 
@@ -20,6 +20,7 @@ export interface ListTableProps {
   virtualize?: boolean;
   showPercentage?: boolean;
   itemCount?: number;
+  currency?: string;
 }
 
 export function ListTable({
@@ -33,6 +34,7 @@ export function ListTable({
   virtualize = false,
   showPercentage = true,
   itemCount = 10,
+  currency,
 }: ListTableProps) {
   const { formatMessage, labels } = useMessages();
 
@@ -48,6 +50,7 @@ export function ListTable({
         animate={animate && !virtualize}
         showPercentage={showPercentage}
         change={renderChange ? renderChange(row, index) : null}
+        currency={currency}
       />
     );
   };
@@ -81,7 +84,15 @@ export function ListTable({
   );
 }
 
-const AnimatedRow = ({ label, value = 0, percent, change, animate, showPercentage = true }) => {
+const AnimatedRow = ({
+  label,
+  value = 0,
+  percent,
+  change,
+  animate,
+  showPercentage = true,
+  currency,
+}) => {
   const props = useSpring({
     width: percent,
     y: value,
@@ -95,7 +106,9 @@ const AnimatedRow = ({ label, value = 0, percent, change, animate, showPercentag
       <div className={styles.value}>
         {change}
         <animated.div className={styles.value} title={props?.y as any}>
-          {props.y?.to(formatLongNumber)}
+          {currency
+            ? props.y?.to(n => formatLongCurrency(n, currency))
+            : props.y?.to(formatLongNumber)}
         </animated.div>
       </div>
       {showPercentage && (

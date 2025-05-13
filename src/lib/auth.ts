@@ -1,41 +1,83 @@
+import bcrypt from 'bcryptjs';
 import { Report } from '@prisma/client';
-import { getClient } from '@umami/redis-client';
+import redis from '@/lib/redis';
 import debug from 'debug';
-import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
-import { secret } from 'lib/crypto';
-import { NextApiRequest } from 'next';
-import { createSecureToken, ensureArray, getRandomChars, parseToken } from 'next-basics';
-import { getTeamUser, getWebsite } from 'queries';
+import { PERMISSIONS, ROLE_PERMISSIONS, ROLES, SHARE_TOKEN_HEADER } from '@/lib/constants';
+import { secret, getRandomChars } from '@/lib/crypto';
+import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
+import { ensureArray } from '@/lib/utils';
+import { getTeamUser, getUser, getWebsite } from '@/queries';
 import { Auth } from './types';
 
 const log = debug('umami:auth');
 const cloudMode = process.env.CLOUD_MODE;
+const SALT_ROUNDS = 10;
+
+export function hashPassword(password: string, rounds = SALT_ROUNDS) {
+  return bcrypt.hashSync(password, rounds);
+}
+
+export function checkPassword(password: string, passwordHash: string) {
+  return bcrypt.compareSync(password, passwordHash);
+}
+
+export async function checkAuth(request: Request) {
+  const token = request.headers.get('authorization')?.split(' ')?.[1];
+  const payload = parseSecureToken(token, secret());
+  const shareToken = await parseShareToken(request.headers);
+
+  let user = null;
+  const { userId, authKey, grant } = payload || {};
+
+  if (userId) {
+    user = await getUser(userId);
+  } else if (redis.enabled && authKey) {
+    const key = await redis.client.get(authKey);
+
+    if (key?.userId) {
+      user = await getUser(key.userId);
+    }
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    log('checkAuth:', { token, shareToken, payload, user, grant });
+  }
+
+  if (!user?.id && !shareToken) {
+    log('checkAuth: User not authorized');
+    return null;
+  }
+
+  if (user) {
+    user.isAdmin = user.role === ROLES.admin;
+  }
+
+  return {
+    user,
+    grant,
+    token,
+    shareToken,
+    authKey,
+  };
+}
 
 export async function saveAuth(data: any, expire = 0) {
   const authKey = `auth:${getRandomChars(32)}`;
 
-  const redis = getClient();
+  if (redis.enabled) {
+    await redis.client.set(authKey, data);
 
-  await redis.set(authKey, data);
-
-  if (expire) {
-    await redis.expire(authKey, expire);
+    if (expire) {
+      await redis.client.expire(authKey, expire);
+    }
   }
 
   return createSecureToken({ authKey }, secret());
 }
 
-export function getAuthToken(req: NextApiRequest) {
+export function parseShareToken(headers: Headers) {
   try {
-    return req.headers.authorization.split(' ')[1];
-  } catch {
-    return null;
-  }
-}
-
-export function parseShareToken(req: Request) {
-  try {
-    return parseToken(req.headers[SHARE_TOKEN_HEADER], secret());
+    return parseToken(headers.get(SHARE_TOKEN_HEADER), secret());
   } catch (e) {
     log(e);
     return null;

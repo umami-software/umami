@@ -11,6 +11,7 @@ export function useTeams(userId: string) {
     queryFn: (params: any) => {
       return get(`/users/${userId}/teams`, params);
     },
+    enabled: !!userId,
   });
 }
 

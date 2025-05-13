@@ -2,9 +2,9 @@ import { useState, useRef, useEffect, useMemo, ReactNode } from 'react';
 import { Loading } from 'react-basics';
 import classNames from 'classnames';
 import ChartJS, { LegendItem, ChartOptions } from 'chart.js/auto';
-import HoverTooltip from 'components/common/HoverTooltip';
-import Legend from 'components/metrics/Legend';
-import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
+import HoverTooltip from '@/components/common/HoverTooltip';
+import Legend from '@/components/metrics/Legend';
+import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
 import styles from './Chart.module.css';
 
 export interface ChartProps {
@@ -34,7 +34,7 @@ export function Chart({
   className,
   chartOptions,
 }: ChartProps) {
-  const canvas = useRef();
+  const canvas = useRef(null);
   const chart = useRef(null);
   const [legendItems, setLegendItems] = useState([]);
 
@@ -86,13 +86,19 @@ export function Chart({
             dataset.data = data?.datasets[index]?.data;
 
             if (chart.current.legend.legendItems[index]) {
-              chart.current.legend.legendItems[index].text = data?.datasets[index]?.label;
+              chart.current.legend.legendItems[index].text = data.datasets[index]?.label;
             }
           }
         });
       } else {
         chart.current.data.datasets = data.datasets;
       }
+    }
+
+    if (data.focusLabel !== null) {
+      chart.current.data.datasets.forEach(ds => {
+        ds.hidden = data.focusLabel ? ds.label !== data.focusLabel : false;
+      });
     }
 
     chart.current.options = options;
@@ -104,16 +110,6 @@ export function Chart({
 
     setLegendItems(chart.current.legend.legendItems);
   };
-
-  useEffect(() => {
-    if (data) {
-      if (!chart.current) {
-        createChart(data);
-      } else {
-        updateChart(data);
-      }
-    }
-  }, [data, options]);
 
   const handleLegendClick = (item: LegendItem) => {
     if (type === 'bar') {
@@ -135,6 +131,16 @@ export function Chart({
 
     setLegendItems(chart.current.legend.legendItems);
   };
+
+  useEffect(() => {
+    if (data) {
+      if (!chart.current) {
+        createChart(data);
+      } else {
+        updateChart(data);
+      }
+    }
+  }, [data, options]);
 
   return (
     <>

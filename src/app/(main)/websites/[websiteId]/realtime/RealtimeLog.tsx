@@ -1,12 +1,11 @@
-import useFormat from 'components//hooks/useFormat';
-import Empty from 'components/common/Empty';
-import FilterButtons from 'components/common/FilterButtons';
-import { useCountryNames, useLocale, useMessages, useTimezone } from 'components/hooks';
-import Icons from 'components/icons';
-import { BROWSERS, OS_NAMES } from 'lib/constants';
-import { stringToColor } from 'lib/format';
-import { RealtimeData } from 'lib/types';
-import { safeDecodeURI } from 'next-basics';
+import useFormat from '@/components//hooks/useFormat';
+import Empty from '@/components/common/Empty';
+import FilterButtons from '@/components/common/FilterButtons';
+import { useCountryNames, useLocale, useMessages, useTimezone } from '@/components/hooks';
+import Icons from '@/components/icons';
+import { BROWSERS, OS_NAMES } from '@/lib/constants';
+import { stringToColor } from '@/lib/format';
+import { RealtimeData } from '@/lib/types';
 import { useContext, useMemo, useState } from 'react';
 import { Icon, SearchField, StatusLight, Text } from 'react-basics';
 import { FixedSizeList } from 'react-window';
@@ -27,7 +26,7 @@ const icons = {
 export function RealtimeLog({ data }: { data: RealtimeData }) {
   const website = useContext(WebsiteContext);
   const [search, setSearch] = useState('');
-  const { formatMessage, labels, messages, FormattedMessage } = useMessages();
+  const { formatMessage, labels, messages } = useMessages();
   const { formatValue } = useFormat();
   const { locale } = useLocale();
   const { formatTimezoneDate } = useTimezone();
@@ -53,7 +52,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     },
   ];
 
-  const getTime = ({ createdAt, firstAt }) => formatTimezoneDate(firstAt || createdAt, 'h:mm:ss');
+  const getTime = ({ createdAt, firstAt }) => formatTimezoneDate(firstAt || createdAt, 'pp');
 
   const getColor = ({ id, sessionId }) => stringToColor(sessionId || id);
 
@@ -71,24 +70,20 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     const { __type, eventName, urlPath: url, browser, os, country, device } = log;
 
     if (__type === TYPE_EVENT) {
-      return (
-        <FormattedMessage
-          {...messages.eventLog}
-          values={{
-            event: <b>{eventName || formatMessage(labels.unknown)}</b>,
-            url: (
-              <a
-                href={`//${website?.domain}${url}`}
-                className={styles.link}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                {url}
-              </a>
-            ),
-          }}
-        />
-      );
+      return formatMessage(messages.eventLog, {
+        event: <b key="b">{eventName || formatMessage(labels.unknown)}</b>,
+        url: (
+          <a
+            key="a"
+            href={`//${website?.domain}${url}`}
+            className={styles.link}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {url}
+          </a>
+        ),
+      });
     }
 
     if (__type === TYPE_PAGEVIEW) {
@@ -99,23 +94,18 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
           target="_blank"
           rel="noreferrer noopener"
         >
-          {safeDecodeURI(url)}
+          {url}
         </a>
       );
     }
 
     if (__type === TYPE_SESSION) {
-      return (
-        <FormattedMessage
-          {...messages.visitorLog}
-          values={{
-            country: <b>{countryNames[country] || formatMessage(labels.unknown)}</b>,
-            browser: <b>{BROWSERS[browser]}</b>,
-            os: <b>{OS_NAMES[os] || os}</b>,
-            device: <b>{formatMessage(labels[device] || labels.unknown)}</b>,
-          }}
-        />
-      );
+      return formatMessage(messages.visitorLog, {
+        country: <b key="country">{countryNames[country] || formatMessage(labels.unknown)}</b>,
+        browser: <b key="browser">{BROWSERS[browser]}</b>,
+        os: <b key="os">{OS_NAMES[os] || os}</b>,
+        device: <b key="device">{formatMessage(labels[device] || labels.unknown)}</b>,
+      });
     }
   };
 

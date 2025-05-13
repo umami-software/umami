@@ -35,8 +35,8 @@ import {
   endOfMinute,
   isSameDay,
 } from 'date-fns';
-import { getDateLocale } from 'lib/lang';
-import { DateRange } from 'lib/types';
+import { getDateLocale } from '@/lib/lang';
+import { DateRange } from '@/lib/types';
 
 export const TIME_UNIT = {
   minute: 'minute',

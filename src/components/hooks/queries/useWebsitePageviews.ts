@@ -1,6 +1,6 @@
 import { UseQueryOptions } from '@tanstack/react-query';
 import { useApi } from '../useApi';
-import { useFilterParams } from '..//useFilterParams';
+import { useFilterParams } from '../useFilterParams';
 
 export function useWebsitePageviews(
   websiteId: string,

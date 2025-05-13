@@ -4,7 +4,7 @@ import ReportMenu from '../[reportId]/ReportMenu';
 import ReportBody from '../[reportId]/ReportBody';
 import EventDataParameters from './EventDataParameters';
 import EventDataTable from './EventDataTable';
-import Nodes from 'assets/nodes.svg';
+import Nodes from '@/assets/nodes.svg';
 
 const defaultParameters = {
   type: 'event-data',

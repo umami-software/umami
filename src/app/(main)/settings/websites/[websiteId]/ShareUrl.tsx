@@ -9,9 +9,9 @@ import {
   LoadingButton,
 } from 'react-basics';
 import { useContext, useState } from 'react';
-import { getRandomChars } from 'next-basics';
-import { useApi, useMessages, useModified } from 'components/hooks';
-import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
+import { getRandomChars } from '@/lib/crypto';
+import { useApi, useMessages, useModified } from '@/components/hooks';
+import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
 
 const generateId = () => getRandomChars(16);
 
@@ -35,7 +35,11 @@ export function ShareUrl({ hostUrl, onSave }: { hostUrl?: string; onSave?: () =>
   };
 
   const handleCheck = (checked: boolean) => {
-    const data = { shareId: checked ? generateId() : null };
+    const data = {
+      name: website.name,
+      domain: website.domain,
+      shareId: checked ? generateId() : null,
+    };
     mutate(data, {
       onSuccess: async () => {
         touch(`website:${website.id}`);
@@ -47,7 +51,7 @@ export function ShareUrl({ hostUrl, onSave }: { hostUrl?: string; onSave?: () =>
 
   const handleSave = () => {
     mutate(
-      { shareId: id },
+      { name: website.name, domain: website.domain, shareId: id },
       {
         onSuccess: async () => {
           touch(`website:${website.id}`);

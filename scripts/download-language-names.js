@@ -17,6 +17,30 @@ const asyncForEach = async (array, callback) => {
   }
 };
 
+const downloadFile = (url, filepath) =>
+  new Promise(resolve => {
+    https
+      .get(url, res => {
+        if (res.statusCode === 200) {
+          const fileStream = fs.createWriteStream(filepath);
+          res.pipe(fileStream);
+          fileStream.on('finish', () => {
+            fileStream.close();
+            console.log('Downloaded', chalk.greenBright('->'), filepath);
+            resolve();
+          });
+        } else {
+          res.resume();
+          console.warn(`Warning: ${url} returned ${res.statusCode}`);
+          resolve();
+        }
+      })
+      .on('error', err => {
+        console.error(`Error downloading ${url}:`, err.message);
+        resolve();
+      });
+  });
+
 const download = async files => {
   await fs.ensureDir(dest);
 
@@ -25,12 +49,8 @@ const download = async files => {
 
     const filename = path.join(dest, file);
     if (!fs.existsSync(filename)) {
-      await new Promise(resolve => {
-        https.get(getUrl(locale), res => {
-          console.log('Downloaded', chalk.greenBright('->'), filename);
-          resolve(res.pipe(fs.createWriteStream(filename)));
-        });
-      });
+      const url = getUrl(locale);
+      await downloadFile(url, filename);
     }
   });
 };

@@ -10,9 +10,9 @@ import {
   Item,
   Flexbox,
 } from 'react-basics';
-import { useApi, useLogin, useMessages, useTeams } from 'components/hooks';
-import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
-import { ROLES } from 'lib/constants';
+import { useApi, useLogin, useMessages, useTeams } from '@/components/hooks';
+import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
+import { ROLES } from '@/lib/constants';
 
 export function WebsiteTransferForm({
   websiteId,
@@ -71,7 +71,8 @@ export function WebsiteTransferForm({
               {result.data
                 .filter(({ teamUser }) =>
                   teamUser.find(
-                    ({ role, userId }) => [ ROLES.teamOwner, ROLES.teamManager ].includes(role) && userId === user.id,
+                    ({ role, userId }) =>
+                      [ROLES.teamOwner, ROLES.teamManager].includes(role) && userId === user.id,
                   ),
                 )
                 .map(({ id, name }) => {

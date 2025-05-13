@@ -9,8 +9,8 @@ import {
   SubmitButton,
   PasswordField,
 } from 'react-basics';
-import { useApi, useLogin, useMessages } from 'components/hooks';
-import { ROLES } from 'lib/constants';
+import { useApi, useLogin, useMessages } from '@/components/hooks';
+import { ROLES } from '@/lib/constants';
 import { useContext, useRef } from 'react';
 import { UserContext } from './UserProvider';
 
@@ -62,6 +62,7 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
       </FormRow>
       <FormRow label={formatMessage(labels.password)}>
         <FormInput
+          data-test="input-password"
           name="password"
           rules={{
             minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
@@ -73,16 +74,24 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
       {user.id !== login.id && (
         <FormRow label={formatMessage(labels.role)}>
           <FormInput name="role" rules={{ required: formatMessage(labels.required) }}>
-            <Dropdown renderValue={renderValue}>
-              <Item key={ROLES.viewOnly}>{formatMessage(labels.viewOnly)}</Item>
-              <Item key={ROLES.user}>{formatMessage(labels.user)}</Item>
-              <Item key={ROLES.admin}>{formatMessage(labels.admin)}</Item>
+            <Dropdown data-test="dropdown-role" renderValue={renderValue}>
+              <Item data-test="dropdown-item-viewOnly" key={ROLES.viewOnly}>
+                {formatMessage(labels.viewOnly)}
+              </Item>
+              <Item data-test="dropdown-item-user" key={ROLES.user}>
+                {formatMessage(labels.user)}
+              </Item>
+              <Item data-test="dropdown-item-admin" key={ROLES.admin}>
+                {formatMessage(labels.admin)}
+              </Item>
             </Dropdown>
           </FormInput>
         </FormRow>
       )}
       <FormButtons>
-        <SubmitButton variant="primary">{formatMessage(labels.save)}</SubmitButton>
+        <SubmitButton data-test="button-submit" variant="primary">
+          {formatMessage(labels.save)}
+        </SubmitButton>
       </FormButtons>
     </Form>
   );
