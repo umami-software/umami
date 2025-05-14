@@ -2,7 +2,6 @@
 import Link from 'next/link';
 import { Button, Flexbox, Icon, Icons, Text } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { WebsiteHeader } from '../WebsiteHeader';
 import { ReportsDataTable } from '@/app/(main)/reports/ReportsDataTable';
 
 export function WebsiteReportsPage({ websiteId }) {
@@ -11,7 +10,6 @@ export function WebsiteReportsPage({ websiteId }) {
 
   return (
     <>
-      <WebsiteHeader websiteId={websiteId} />
       <Flexbox alignItems="center" justifyContent="end">
         <Link href={renderTeamUrl('/reports/create')}>
           <Button variant="primary">

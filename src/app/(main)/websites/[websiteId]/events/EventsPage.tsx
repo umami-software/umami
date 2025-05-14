@@ -2,7 +2,6 @@
 import { TabList, Tab, Tabs, TabPanel, Column } from '@umami/react-zen';
 import { EventsTable } from '@/components/metrics/EventsTable';
 import { useState } from 'react';
-import { WebsiteHeader } from '../WebsiteHeader';
 import { EventsDataTable } from './EventsDataTable';
 import { EventsMetricsBar } from './EventsMetricsBar';
 import { Panel } from '@/components/common/Panel';
@@ -22,7 +21,6 @@ export function EventsPage({ websiteId }) {
 
   return (
     <Column gap="3">
-      <WebsiteHeader websiteId={websiteId} />
       <Panel>
         <EventsMetricsBar websiteId={websiteId} />
       </Panel>

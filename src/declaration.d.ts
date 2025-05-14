@@ -6,3 +6,4 @@ declare module 'fs-extra';
 declare module 'jsonwebtoken';
 declare module 'md5';
 declare module 'prettier';
+declare module 'semver';

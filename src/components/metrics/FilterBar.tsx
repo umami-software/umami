@@ -26,16 +26,16 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
   return (
     <Row
       gap
-      backgroundColor="1"
+      backgroundColor="3"
       alignItems="center"
       justifyContent="space-between"
-      paddingY="3"
-      paddingLeft="5"
+      paddingY="2"
+      paddingLeft="3"
       paddingRight="2"
       border
       borderRadius="2"
     >
-      <Row alignItems="center" gap="3" wrap="wrap">
+      <Row alignItems="center" gap="3" wrap="wrap" paddingX="2">
         <Text color="11" weight="bold">
           {formatMessage(labels.filters)}
         </Text>
@@ -61,11 +61,9 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
                   <Text color="11">{operatorLabels[operator]}</Text>
                   <Text weight="bold">{paramValue}</Text>
                 </Row>
-                <Button variant="quiet" size="xs" style={{ left: '5px' }}>
-                  <Icon onClick={e => handleCloseFilter(name, e)} size="xs">
-                    <Icons.Close />
-                  </Icon>
-                </Button>
+                <Icon onClick={e => handleCloseFilter(name, e)} size="xs">
+                  <Icons.Close />
+                </Icon>
               </Row>
             </Row>
           );

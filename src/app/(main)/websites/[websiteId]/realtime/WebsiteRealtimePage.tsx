@@ -11,7 +11,6 @@ import { RealtimeLog } from './RealtimeLog';
 import { RealtimeHeader } from './RealtimeHeader';
 import { RealtimeUrls } from './RealtimeUrls';
 import { RealtimeCountries } from './RealtimeCountries';
-import { WebsiteHeader } from '../WebsiteHeader';
 import { percentFilter } from '@/lib/filters';
 
 export function WebsiteRealtimePage({ websiteId }: { websiteId: string }) {
@@ -29,7 +28,6 @@ export function WebsiteRealtimePage({ websiteId }: { websiteId: string }) {
 
   return (
     <Grid gap="3">
-      <WebsiteHeader websiteId={websiteId} />
       <Panel>
         <RealtimeHeader data={data} />
       </Panel>

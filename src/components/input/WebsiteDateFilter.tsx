@@ -85,8 +85,8 @@ export function WebsiteDateFilter({
       />
       {!isAllTime && compare && (
         <Row alignItems="center" gap>
-          <Text>VS</Text>
-          <Select selectedKey={compare} onSelectionChange={handleSelect} style={{ width: '200px' }}>
+          <Text weight="bold">VS</Text>
+          <Select value={compare} onChange={handleSelect} popoverProps={{ style: { width: 200 } }}>
             <ListItem id="prev">{formatMessage(labels.previousPeriod)}</ListItem>
             <ListItem id="yoy">{formatMessage(labels.previousYear)}</ListItem>
           </Select>

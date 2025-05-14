@@ -3,7 +3,6 @@ import { Grid, Row, Column } from '@umami/react-zen';
 import { Avatar } from '@/components/common/Avatar';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useWebsiteSessionQuery } from '@/components/hooks';
-import { WebsiteHeader } from '@/app/(main)/websites/[websiteId]/WebsiteHeader';
 import { SessionActivity } from './SessionActivity';
 import { SessionData } from './SessionData';
 import { SessionInfo } from './SessionInfo';
@@ -21,7 +20,6 @@ export function SessionDetailsPage({
 
   return (
     <LoadingPanel {...query} loadingIcon="spinner" data={data}>
-      <WebsiteHeader websiteId={websiteId} />
       <Grid
         gap
         columns={{ xs: '1fr', sm: '1fr', md: '1fr 1fr', lg: '1fr 2fr 1fr', xl: '1fr 2fr 1fr' }}

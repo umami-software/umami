@@ -4,7 +4,6 @@ import { Panel } from '@/components/common/Panel';
 import { useNavigation } from '@/components/hooks';
 import { WebsiteChart } from './WebsiteChart';
 import { WebsiteExpandedView } from './WebsiteExpandedView';
-import { WebsiteHeader } from './WebsiteHeader';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
 import { WebsiteTableView } from './WebsiteTableView';
 import { WebsiteCompareTables } from './WebsiteCompareTables';
@@ -15,8 +14,7 @@ export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
   } = useNavigation();
 
   return (
-    <Column gap="3">
-      <WebsiteHeader websiteId={websiteId} />
+    <Column gap>
       <Panel>
         <WebsiteMetricsBar websiteId={websiteId} showFilter={true} showChange={true} />
       </Panel>

@@ -38,7 +38,7 @@ export function Nav(props: any) {
   ].filter(n => n);
 
   return (
-    <SideNav {...props} isCollapsed={isCollapsed} variant="0" showBorder={true}>
+    <SideNav {...props} isCollapsed={isCollapsed} variant="2" showBorder={true}>
       <SideNavSection>
         <SideNavHeader label="umami" icon={<Icons.Logo />} />
       </SideNavSection>

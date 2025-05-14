@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import { TabList, Tab, Tabs, TabPanel, Column } from '@umami/react-zen';
-import { WebsiteHeader } from '../WebsiteHeader';
 import { SessionsDataTable } from './SessionsDataTable';
 import { SessionsMetricsBar } from './SessionsMetricsBar';
 import { SessionProperties } from './SessionProperties';
@@ -17,7 +16,6 @@ export function SessionsPage({ websiteId }) {
 
   return (
     <Column gap="3">
-      <WebsiteHeader websiteId={websiteId} />
       <Panel>
         <SessionsMetricsBar websiteId={websiteId} />
       </Panel>

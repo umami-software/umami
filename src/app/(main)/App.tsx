@@ -19,6 +19,7 @@ export function App({ children }) {
 
   if (error) {
     window.location.href = `${process.env.basePath || ''}/login`;
+    return null;
   }
 
   if (!user || !config) {
@@ -30,7 +31,7 @@ export function App({ children }) {
   }
 
   return (
-    <Grid height="100vh" width="100%" columns="auto 1fr" rows="auto 1fr" overflow="hidden">
+    <Grid height="100vh" width="100%" columns="auto 1fr" rows="auto 1fr">
       <Nav gridColumn="1 / 2" gridRow="1 / 3" />
       <MenuBar gridColumn="2 / 3" gridRow="1 / 2" />
       <Column
@@ -39,6 +40,7 @@ export function App({ children }) {
         alignItems="center"
         overflow="auto"
         backgroundColor="2"
+        position="relative"
       >
         <Page>
           {children}
