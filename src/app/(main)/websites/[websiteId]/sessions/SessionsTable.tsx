@@ -12,15 +12,15 @@ export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean
 
   return (
     <DataTable data={data}>
-      <DataColumn id="id" label={formatMessage(labels.session)}>
+      <DataColumn id="id" label={formatMessage(labels.session)} width="100px">
         {(row: any) => (
           <Link href={`sessions/${row.id}`} className={styles.link}>
             <Avatar key={row.id} seed={row.id} size={64} />
           </Link>
         )}
       </DataColumn>
-      <DataColumn id="visits" label={formatMessage(labels.visits)} />
-      <DataColumn id="views" label={formatMessage(labels.views)} />
+      <DataColumn id="visits" label={formatMessage(labels.visits)} width="80px" />
+      <DataColumn id="views" label={formatMessage(labels.views)} width="80px" />
       <DataColumn id="country" label={formatMessage(labels.country)}>
         {(row: any) => (
           <TypeIcon type="country" value={row.country}>

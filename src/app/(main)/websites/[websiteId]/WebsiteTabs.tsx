@@ -88,15 +88,13 @@ export function WebsiteTabs({ websiteId }: { websiteId: string }) {
     },
   ];
 
-  const selected = links
-    ? links.find(({ path }) => path && pathname.endsWith(path))?.id
-    : 'overview';
+  const selected = links.find(({ path }) => path && pathname.endsWith(path))?.id || 'overview';
 
   return (
     <Column gap="2" position="absolute" padding="4" style={{ top: 0, left: 0, bottom: 0 }}>
       {links.map(({ id, label, icon, path }) => {
         return (
-          <Link key={id} href={renderTeamUrl(`/websites/${websiteId}/${path}`)}>
+          <Link key={id} href={renderTeamUrl(`/websites/${websiteId}${path}`)}>
             <Row
               alignItems="center"
               padding
