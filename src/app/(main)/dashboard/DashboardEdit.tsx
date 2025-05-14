@@ -59,7 +59,6 @@ export function DashboardEdit({ teamId }: { teamId: string }) {
     setOrder(orderedWebsites.map(website => website?.id || 0));
     setEdited(true);
   }
-
   function handleActiveWebsites(id: string) {
     setActive(prevActive =>
       prevActive.includes(id) ? prevActive.filter(a => a !== id) : [...prevActive, id],

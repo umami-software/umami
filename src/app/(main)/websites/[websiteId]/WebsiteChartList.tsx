@@ -21,10 +21,9 @@ export default function WebsiteChartList({
   const { websiteOrder, websiteActive } = useDashboard();
   const { renderTeamUrl } = useTeamUrl();
   const { dir } = useLocale();
-
   const ordered = useMemo(() => {
     return websites
-      .filter(website => (websiteActive.length ? websiteActive.includes(website.id) : true))
+      .filter(website => websiteActive.includes(website.id))
       .map(website => ({ ...website, order: websiteOrder.indexOf(website.id) || 0 }))
       .sort(firstBy('order'));
   }, [websites, websiteOrder, websiteActive]);

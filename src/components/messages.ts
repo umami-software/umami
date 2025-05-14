@@ -388,6 +388,11 @@ export const messages = defineMessages({
     id: 'message.no-websites-configured',
     defaultMessage: 'You do not have any websites configured.',
   },
+  noWebsitesToggled: {
+    id: 'message.no-websites-toggled',
+    defaultMessage: 'You havent Toggled any websites',
+  },
+
   noTeamWebsites: {
     id: 'message.no-team-websites',
     defaultMessage: 'This team does not have any websites.',
@@ -400,6 +405,10 @@ export const messages = defineMessages({
   goToSettings: {
     id: 'message.go-to-settings',
     defaultMessage: 'Go to settings',
+  },
+  goToEdit: {
+    id: 'message.go-to-edit',
+    defaultMessage: 'Edit Dashboard',
   },
   activeUsers: {
     id: 'message.active-users',

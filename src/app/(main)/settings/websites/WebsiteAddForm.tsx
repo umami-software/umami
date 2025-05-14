@@ -10,7 +10,7 @@ import {
 import { useApi } from '@/components/hooks';
 import { DOMAIN_REGEX } from '@/lib/constants';
 import { useMessages } from '@/components/hooks';
-
+import useDashboard, { saveDashboard } from '@/store/dashboard';
 export function WebsiteAddForm({
   teamId,
   onSave,
@@ -22,8 +22,15 @@ export function WebsiteAddForm({
 }) {
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
+  const settings = useDashboard();
+  const { websiteActive } = settings;
   const { mutate, error, isPending } = useMutation({
     mutationFn: (data: any) => post('/websites', { ...data, teamId }),
+    onSuccess: data => {
+      saveDashboard({
+        websiteActive: [...websiteActive, data.id],
+      });
+    },
   });
 
   const handleSubmit = async (data: any) => {
