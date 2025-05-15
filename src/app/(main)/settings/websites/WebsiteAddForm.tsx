@@ -27,9 +27,9 @@ export function WebsiteAddForm({
   const { mutate, error, isPending } = useMutation({
     mutationFn: (data: any) => post('/websites', { ...data, teamId }),
     onSuccess: data => {
-      saveDashboard({
-        websiteActive: [...websiteActive, data.id],
-      });
+      saveDashboard(prev => ({
+        websiteActive: [...(prev.websiteActive || []), data.id],
+      }));
     },
   });
 
