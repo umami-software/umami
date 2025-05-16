@@ -15,7 +15,7 @@ export function DashboardPage() {
   const { teamId, renderTeamUrl } = useTeamUrl();
   const { showCharts, editing, isEdited, websiteActive } = useDashboard();
   const { dir } = useLocale();
-  const pageSize = isEdited ? 10 : 200;
+  const pageSize = isEdited ? 200 : 10;
   const handleEdit = () => {
     saveDashboard({ editing: true });
   };
@@ -59,7 +59,7 @@ export function DashboardPage() {
                 <Pager
                   page={page}
                   pageSize={pageSize}
-                  count={websiteActive.length}
+                  count={result?.count}
                   onPageChange={handlePageChange}
                 />
               </>

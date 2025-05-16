@@ -390,7 +390,7 @@ export const messages = defineMessages({
   },
   noWebsitesToggled: {
     id: 'message.no-websites-toggled',
-    defaultMessage: 'You haven't toggled any websites',
+    defaultMessage: 'You have not toggled any websites',
   },
 
   noTeamWebsites: {
