@@ -49,7 +49,7 @@ export function DashboardPage() {
         <>
           {editing && <DashboardEdit teamId={teamId} />}
           {!editing &&
-            (websiteActive.length != 0 ? (
+            (websiteActive.length !== 0 ? (
               <>
                 <WebsiteChartList
                   websites={result?.data as any}
