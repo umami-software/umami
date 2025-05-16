@@ -32,7 +32,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     where website_event.website_id = {{websiteId::uuid}}
     ${filterQuery}
     ${dateQuery}
-    order by website_event.created_at asc
+    order by website_event.created_at desc
     limit 100
     `,
     params,
@@ -59,7 +59,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters): Promis
         where website_id = {websiteId:UUID}
         ${filterQuery}
         ${dateQuery}
-        order by createdAt asc
+        order by createdAt desc
         limit 100
     `,
     params,

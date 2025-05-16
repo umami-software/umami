@@ -398,7 +398,7 @@ async function clickhouseQuery(
                    li_fat_id != '', 'LinkedIn Ads', 
                    twclid != '', 'Twitter Ads (X)','') name,
         ${currency ? 'sum(e.value)' : 'uniqExact(we.session_id)'} value
-    from model fm
+    from model m
     join website_event we
     on we.created_at = m.created_at
         and we.session_id = m.session_id
