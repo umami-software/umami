@@ -55,11 +55,9 @@ export function DashboardEdit({ teamId }: { teamId: string }) {
     const orderedWebsites = [...ordered];
     const [removed] = orderedWebsites.splice(source.index, 1);
     orderedWebsites.splice(destination.index, 0, removed);
-
-    setOrder(orderedWebsites.map(website => website?.id || 0));
+    setOrder(orderedWebsites.filter(website => website?.id).map(website => website.id));
     setEdited(true);
   }
-
   function handleActiveWebsites(id: string) {
     setActive(prevActive =>
       prevActive.includes(id) ? prevActive.filter(a => a !== id) : [...prevActive, id],
