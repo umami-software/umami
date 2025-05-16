@@ -24,7 +24,7 @@ export default function WebsiteChartList({
   const ordered = useMemo(() => {
     return websites
       .filter(website => websiteActive.includes(website.id))
-      .map(website => ({ ...website, order: websiteOrder.indexOf(website.id) || 0 }))
+      .map(website => ({ ...website, order: websiteOrder.indexOf(website.id) === -1 ? Infinity : websiteOrder.indexOf(website.id) }))
       .sort(firstBy('order'));
   }, [websites, websiteOrder, websiteActive]);
 
