@@ -52,7 +52,7 @@ export function DashboardPage() {
             (websiteActive.length !== 0 ? (
               <>
                 <WebsiteChartList
-                  websites={result?.data as any}
+                  websites={result?.data as Array<{ id: string; name: string; domain: string; order?: number }>}
                   showCharts={showCharts}
                   limit={pageSize}
                 />
