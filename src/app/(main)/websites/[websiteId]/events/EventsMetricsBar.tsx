@@ -5,8 +5,18 @@ import MetricCard from '@/components/metrics/MetricCard';
 import MetricsBar from '@/components/metrics/MetricsBar';
 import { formatLongNumber } from '@/lib/format';
 import { Flexbox } from 'react-basics';
+import WebsiteFilterButton from '../WebsiteFilterButton';
+import styles from '../WebsiteMetricsBar.module.css';
 
-export function EventsMetricsBar({ websiteId }: { websiteId: string }) {
+export function EventsMetricsBar({
+  websiteId,
+  compareMode = false,
+  showFilter = false,
+}: {
+  websiteId: string;
+  compareMode?: boolean;
+  showFilter?: boolean;
+}) {
   const { formatMessage, labels } = useMessages();
   const { data, isLoading, isFetched, error } = useWebsiteSessionStats(websiteId);
 
@@ -34,7 +44,10 @@ export function EventsMetricsBar({ websiteId }: { websiteId: string }) {
           formatValue={formatLongNumber}
         />
       </MetricsBar>
-      <WebsiteDateFilter websiteId={websiteId} />
+      <div className={styles.actions}>
+        {showFilter && <WebsiteFilterButton websiteId={websiteId} />}
+        <WebsiteDateFilter websiteId={websiteId} showAllTime={!compareMode} />
+      </div>
     </Flexbox>
   );
 }
