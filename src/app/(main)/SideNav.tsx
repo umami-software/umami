@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { SideNav, SideNavHeader, SideNavSection, SideNavItem } from '@umami/react-zen';
+import { Sidebar, SidebarHeader, SidebarSection, SidebarItem } from '@umami/react-zen';
 import { Lucide, Icons } from '@/components/icons';
 import { useMessages, useNavigation } from '@/components/hooks';
 import useGlobalState from '@/components/hooks/useGlobalState';
 
-export function Nav(props: any) {
+export function SideNav(props: any) {
   const { formatMessage, labels } = useMessages();
   const { renderTeamUrl, pathname } = useNavigation();
   const [isCollapsed] = useGlobalState('sidenav-collapsed');
@@ -38,20 +38,20 @@ export function Nav(props: any) {
   ].filter(n => n);
 
   return (
-    <SideNav {...props} isCollapsed={isCollapsed} variant="2" showBorder={true}>
-      <SideNavSection>
-        <SideNavHeader label="umami" icon={<Icons.Logo />} />
-      </SideNavSection>
-      <SideNavSection>
+    <Sidebar {...props} isCollapsed={isCollapsed} variant="0" showBorder={true}>
+      <SidebarSection>
+        <SidebarHeader label="umami" icon={<Icons.Logo />} />
+      </SidebarSection>
+      <SidebarSection>
         {links.map(({ href, label, icon }) => {
           return (
             <Link key={href} href={href} role="button">
-              <SideNavItem label={label} icon={icon} isSelected={pathname.startsWith(href)} />
+              <SidebarItem label={label} icon={icon} isSelected={pathname.startsWith(href)} />
             </Link>
           );
         })}
-      </SideNavSection>
-      <SideNavSection alignSelf="end">{``}</SideNavSection>
-    </SideNav>
+      </SidebarSection>
+      <SidebarSection alignSelf="end">{``}</SidebarSection>
+    </Sidebar>
   );
 }

@@ -1,7 +1,6 @@
 import { Column, Row, Heading } from '@umami/react-zen';
 import { Favicon } from '@/components/common/Favicon';
 import { ActiveUsers } from '@/components/metrics/ActiveUsers';
-import { WebsiteTabs } from '@/app/(main)/websites/[websiteId]/WebsiteTabs';
 import { useWebsite } from '@/components/hooks/useWebsite';
 import { WebsiteFilterButton } from '@/app/(main)/websites/[websiteId]/WebsiteFilterButton';
 import { WebsiteDateFilter } from '@/components/input/WebsiteDateFilter';
@@ -35,7 +34,6 @@ export function WebsiteHeader({
         </Row>
       </Row>
       <FilterBar websiteId={websiteId} />
-      <WebsiteTabs websiteId={websiteId} />
     </Column>
   );
 }

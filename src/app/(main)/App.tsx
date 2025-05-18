@@ -3,7 +3,7 @@ import { Grid, Loading, Column } from '@umami/react-zen';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { UpdateNotice } from './UpdateNotice';
-import { Nav } from '@/app/(main)/Nav';
+import { SideNav } from '@/app/(main)/SideNav';
 import { MenuBar } from '@/app/(main)/MenuBar';
 import { Page } from '@/components/common/Page';
 import { useLoginQuery, useConfig } from '@/components/hooks';
@@ -32,7 +32,7 @@ export function App({ children }) {
 
   return (
     <Grid height="100vh" width="100%" columns="auto 1fr" rows="auto 1fr">
-      <Nav gridColumn="1 / 2" gridRow="1 / 3" />
+      <SideNav gridColumn="1 / 2" gridRow="1 / 3" />
       <MenuBar gridColumn="2 / 3" gridRow="1 / 2" />
       <Column
         gridColumn="2 / 3"
