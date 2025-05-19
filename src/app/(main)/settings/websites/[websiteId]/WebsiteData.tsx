@@ -78,7 +78,12 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
           </Button>
           <Modal title={formatMessage(labels.deleteWebsite)}>
             {(close: () => void) => (
-              <WebsiteDeleteForm websiteId={websiteId} onSave={handleSave} onClose={close} />
+              <WebsiteDeleteForm
+                CONFIRM_VALUE={'DELETE'}
+                websiteId={websiteId}
+                onSave={handleSave}
+                onClose={close}
+              />
             )}
           </Modal>
         </ModalTrigger>
