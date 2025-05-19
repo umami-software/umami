@@ -19,7 +19,7 @@ export function WebsiteDeleteForm({
       if (typeof websiteId === 'string') {
         return del(`/websites/${websiteId}`);
       } else {
-        const ids = Array.isArray(websiteId) ? websiteId : [websiteId];
+        const ids = typeof websiteId === 'string' ? [websiteId] : websiteId;
         return Promise.all(ids.map(id => del(`/websites/${id}`)));
       }
     },

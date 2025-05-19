@@ -31,7 +31,7 @@ export function WebsitesTable({
   }
   const checked = (websiteId: string) => {
     if (deleteIds.includes(websiteId)) {
-      setDeleteIds(deleteIds.filter(prev => prev != websiteId));
+      setDeleteIds(deleteIds.filter(prev => prev !== websiteId));
     } else {
       setDeleteIds(prev => [...prev, websiteId]);
     }
@@ -44,7 +44,7 @@ export function WebsitesTable({
           width="40px"
           name="delete"
           label={
-            deleteIds.length != 0 ? (
+            deleteIds.length > 0 ? (
               <Icon
                 style={{ color: 'red' }}
                 onClick={() => {
@@ -64,6 +64,7 @@ export function WebsitesTable({
             return (
               <Checkbox
                 defaultChecked={false}
+                checked={deleteIds.includes(websiteId)}
                 onChange={() => {
                   checked(websiteId);
                 }}
