@@ -3,7 +3,7 @@ import { Icons } from '@/components/icons';
 import { useMessages, useNavigation } from '@/components/hooks';
 import Link from 'next/link';
 
-export function WebsiteTabs({ websiteId }: { websiteId: string }) {
+export function WebsiteNav({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
   const { pathname, renderTeamUrl } = useNavigation();
 
@@ -60,7 +60,7 @@ export function WebsiteTabs({ websiteId }: { websiteId: string }) {
       id: 'retention',
       label: formatMessage(labels.retention),
       icon: <Icons.Magnet />,
-      path: '/funnels',
+      path: '/retention',
     },
     {
       id: 'utm',
@@ -97,7 +97,7 @@ export function WebsiteTabs({ websiteId }: { websiteId: string }) {
 
         return (
           <Link key={id} href={renderTeamUrl(`/websites/${websiteId}${path}`)}>
-            <NavMenuItem highlightColor="5" isSelected={isSelected}>
+            <NavMenuItem isSelected={isSelected}>
               <Row alignItems="center" gap>
                 <Icon style={{ fill: 'currentcolor' }}>{icon}</Icon>
                 <Text>{label}</Text>

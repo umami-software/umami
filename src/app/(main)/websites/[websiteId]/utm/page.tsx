@@ -1,12 +1,12 @@
 import { Metadata } from 'next';
-import { EventsPage } from './EventsPage';
+import { UTMPage } from './UTMPage';
 
 export default async function ({ params }: { params: Promise<{ websiteId: string }> }) {
   const { websiteId } = await params;
 
-  return <EventsPage websiteId={websiteId} />;
+  return <UTMPage websiteId={websiteId} />;
 }
 
 export const metadata: Metadata = {
-  title: 'Events',
+  title: 'UTM Parameters',
 };

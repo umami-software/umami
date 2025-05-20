@@ -157,6 +157,7 @@ export const labels = defineMessages({
   eventData: { id: 'label.event-data', defaultMessage: 'Event data' },
   sessionData: { id: 'label.session-data', defaultMessage: 'Session data' },
   funnel: { id: 'label.funnel', defaultMessage: 'Funnel' },
+  funnels: { id: 'label.funnels', defaultMessage: 'Funnels' },
   funnelDescription: {
     id: 'label.funnel-description',
     defaultMessage: 'Understand the conversion and drop-off rate of users.',
@@ -315,6 +316,8 @@ export const labels = defineMessages({
   other: { id: 'label.other', defaultMessage: 'Other' },
   boards: { id: 'label.boards', defaultMessage: 'Boards' },
   apply: { id: 'label.apply', defaultMessage: 'Apply' },
+  links: { id: 'label.links', defaultMessage: 'Links' },
+  pixels: { id: 'label.pixels', defaultMessage: 'Pixels' },
 });
 
 export const messages = defineMessages({

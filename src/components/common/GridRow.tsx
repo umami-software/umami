@@ -5,13 +5,13 @@ const LAYOUTS = {
   two: {
     columns: {
       xs: '1fr',
-      md: 'repeat(auto-fill, minmax(600px, 1fr))',
+      md: 'repeat(auto-fill, minmax(560px, 1fr))',
     },
   },
   three: {
     columns: {
       xs: '1fr',
-      md: 'repeat(auto-fill, minmax(400px, 1fr))',
+      md: 'repeat(auto-fill, minmax(360px, 1fr))',
     },
   },
   'one-two': { columns: { xs: '1fr', lg: 'repeat(3, 1fr)' } },

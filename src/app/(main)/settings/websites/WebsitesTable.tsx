@@ -31,7 +31,7 @@ export function WebsitesTable({
   return (
     <DataTable data={data}>
       <DataColumn id="name" label={formatMessage(labels.name)}>
-        {(row: any) => <Link href={`/websites/${row.id}`}>{row.name}</Link>}
+        {(row: any) => <Link href={renderTeamUrl(`/websites/${row.id}`)}>{row.name}</Link>}
       </DataColumn>
       <DataColumn id="domain" label={formatMessage(labels.domain)} />
       {showActions && (

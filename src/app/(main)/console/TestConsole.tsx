@@ -3,7 +3,7 @@ import { Button } from '@umami/react-zen';
 import Link from 'next/link';
 import Script from 'next/script';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
-import { Page } from '@/components/common/Page';
+import { PageBody } from '@/components/common/PageBody';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { EventsChart } from '@/components/metrics/EventsChart';
 import { WebsiteChart } from '../websites/[websiteId]/WebsiteChart';
@@ -117,7 +117,7 @@ export function TestConsole({ websiteId }: { websiteId: string }) {
   const website = data?.data.find(({ id }) => websiteId === id);
 
   return (
-    <Page isLoading={isLoading} error={error}>
+    <PageBody isLoading={isLoading} error={error}>
       <SectionHeader title="Test console">
         <WebsiteSelect websiteId={website?.id} onSelect={handleChange} />
       </SectionHeader>
@@ -214,6 +214,6 @@ export function TestConsole({ websiteId }: { websiteId: string }) {
           <EventsChart websiteId={website.id} />
         </div>
       )}
-    </Page>
+    </PageBody>
   );
 }

@@ -15,8 +15,14 @@ export function PageHeader({
   children?: ReactNode;
 }) {
   return (
-    <Row justifyContent="space-between" alignItems="center" paddingY="6" border="bottom">
-      <Row gap="3">
+    <Row
+      justifyContent="space-between"
+      alignItems="center"
+      paddingY="6"
+      border="bottom"
+      width="100%"
+    >
+      <Row alignItems="center" gap="3">
         {icon && <Icon>{icon}</Icon>}
         {title && <Heading size="4">{title}</Heading>}
         {description && <Text color="muted">{description}</Text>}

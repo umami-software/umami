@@ -5,6 +5,7 @@ import { Grid, Column } from '@umami/react-zen';
 import { SideMenu } from '@/components/common/SideMenu';
 import { Panel } from '@/components/common/Panel';
 import { PageHeader } from '@/components/common/PageHeader';
+import { PageBody } from '@/components/common/PageBody';
 
 export function TeamSettingsLayout({ children }: { children: ReactNode }) {
   const { formatMessage, labels } = useMessages();
@@ -31,11 +32,11 @@ export function TeamSettingsLayout({ children }: { children: ReactNode }) {
   const value = items.find(({ url }) => pathname.includes(url))?.id;
 
   return (
-    <Column gap="6">
-      <PageHeader title={formatMessage(labels.teamSettings)} />
+    <PageBody>
       <Column gap="6">
-        <Grid columns="200px 1fr">
-          <Column marginTop="6">
+        <PageHeader title={formatMessage(labels.teamSettings)} />
+        <Grid columns="200px 1fr" gap>
+          <Column>
             <SideMenu items={items} selectedKey={value} />
           </Column>
           <Column>
@@ -43,6 +44,6 @@ export function TeamSettingsLayout({ children }: { children: ReactNode }) {
           </Column>
         </Grid>
       </Column>
-    </Column>
+    </PageBody>
   );
 }

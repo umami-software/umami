@@ -11,14 +11,14 @@ export function SideNav(props: any) {
 
   const links = [
     {
-      label: formatMessage(labels.boards),
-      href: renderTeamUrl('/boards'),
-      icon: <Lucide.LayoutDashboard />,
-    },
-    {
       label: formatMessage(labels.dashboard),
       href: renderTeamUrl('/dashboard'),
       icon: <Lucide.Copy />,
+    },
+    {
+      label: formatMessage(labels.reports),
+      href: renderTeamUrl('/reports'),
+      icon: <Lucide.ChartArea />,
     },
     {
       label: formatMessage(labels.websites),
@@ -26,9 +26,19 @@ export function SideNav(props: any) {
       icon: <Lucide.Globe />,
     },
     {
-      label: formatMessage(labels.reports),
-      href: renderTeamUrl('/reports'),
-      icon: <Lucide.ChartArea />,
+      label: formatMessage(labels.boards),
+      href: renderTeamUrl('/boards'),
+      icon: <Lucide.LayoutDashboard />,
+    },
+    {
+      label: formatMessage(labels.links),
+      href: renderTeamUrl('/links'),
+      icon: <Lucide.Link />,
+    },
+    {
+      label: formatMessage(labels.pixels),
+      href: renderTeamUrl('/pixels'),
+      icon: <Lucide.Grid2X2 />,
     },
     {
       label: formatMessage(labels.settings),

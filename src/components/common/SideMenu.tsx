@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
-import { Text, List, ListItem, Icon, Row } from '@umami/react-zen';
+import { Text, NavMenu, NavMenuItem, Icon, Row } from '@umami/react-zen';
+import Link from 'next/link';
 
 export interface SideMenuProps {
   items: { id: string; label: string; url: string; icon?: ReactNode }[];
@@ -8,17 +9,19 @@ export interface SideMenuProps {
 
 export function SideMenu({ items, selectedKey }: SideMenuProps) {
   return (
-    <List>
+    <NavMenu highlightColor="3">
       {items.map(({ id, label, url, icon }) => {
         return (
-          <ListItem key={id} id={id} href={url}>
-            <Row alignItems="center" gap>
-              {icon && <Icon>{icon}</Icon>}
-              <Text weight={id === selectedKey ? 'bold' : 'regular'}>{label}</Text>
-            </Row>
-          </ListItem>
+          <Link key={id} href={url}>
+            <NavMenuItem isSelected={id === selectedKey}>
+              <Row alignItems="center" gap>
+                {icon && <Icon>{icon}</Icon>}
+                <Text>{label}</Text>
+              </Row>
+            </NavMenuItem>
+          </Link>
         );
       })}
-    </List>
+    </NavMenu>
   );
 }

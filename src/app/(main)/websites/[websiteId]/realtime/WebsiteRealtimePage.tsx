@@ -2,7 +2,7 @@
 import { firstBy } from 'thenby';
 import { Grid } from '@umami/react-zen';
 import { GridRow } from '@/components/common/GridRow';
-import { Page } from '@/components/common/Page';
+import { PageBody } from '@/components/common/PageBody';
 import { Panel } from '@/components/common/Panel';
 import { RealtimeChart } from '@/components/metrics/RealtimeChart';
 import { WorldMap } from '@/components/metrics/WorldMap';
@@ -17,7 +17,7 @@ export function WebsiteRealtimePage({ websiteId }: { websiteId: string }) {
   const { data, isLoading, error } = useRealtimeQuery(websiteId);
 
   if (isLoading || error) {
-    return <Page isLoading={isLoading} error={error} />;
+    return <PageBody isLoading={isLoading} error={error} />;
   }
 
   const countries = percentFilter(

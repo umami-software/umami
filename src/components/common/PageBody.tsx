@@ -3,13 +3,14 @@ import { ReactNode } from 'react';
 import { AlertBanner, Loading, Column } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 
-export function Page({
+export function PageBody({
+  maxWidth = '1600px',
   error,
   isLoading,
   children,
   ...props
 }: {
-  className?: string;
+  maxWidth?: string;
   error?: unknown;
   isLoading?: boolean;
   children?: ReactNode;
@@ -25,7 +26,7 @@ export function Page({
   }
 
   return (
-    <Column {...props} width="100%" maxWidth="1320px" margin="auto" paddingBottom="9">
+    <Column {...props} width="100%" paddingBottom="9" style={{ margin: '0 auto', maxWidth }}>
       {children}
     </Column>
   );

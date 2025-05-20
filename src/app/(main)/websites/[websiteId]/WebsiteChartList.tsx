@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { firstBy } from 'thenby';
 import { WebsiteChart } from './WebsiteChart';
 import { useDashboard } from '@/store/dashboard';
-import { WebsiteHeader } from './WebsiteHeader';
+import { WebsiteControls } from './WebsiteControls';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { LinkButton } from '@/components/common/LinkButton';
@@ -33,7 +33,7 @@ export function WebsiteChartList({
       {ordered.map(({ id }, index) => {
         return index < limit ? (
           <div key={id}>
-            <WebsiteHeader websiteId={id} showLinks={false}>
+            <WebsiteControls websiteId={id} showLinks={false}>
               <LinkButton href={renderTeamUrl(`/websites/${id}`)} variant="primary">
                 <Text>{formatMessage(labels.viewDetails)}</Text>
                 <Icon>
@@ -42,7 +42,7 @@ export function WebsiteChartList({
                   </Icon>
                 </Icon>
               </LinkButton>
-            </WebsiteHeader>
+            </WebsiteControls>
             <WebsiteMetricsBar websiteId={id} showChange={true} />
             {showCharts && <WebsiteChart websiteId={id} />}
           </div>

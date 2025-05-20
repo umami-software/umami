@@ -2,9 +2,8 @@ import { MouseEvent } from 'react';
 import { Button, Icon, Icons, Text, Row, TooltipTrigger, Tooltip } from '@umami/react-zen';
 import { useNavigation, useMessages, useFormat, useFilters } from '@/components/hooks';
 import { isSearchOperator } from '@/lib/params';
-import { WebsiteFilterButton } from '@/app/(main)/websites/[websiteId]/WebsiteFilterButton';
 
-export function FilterBar({ websiteId }: { websiteId: string }) {
+export function FilterBar() {
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
   const { router, renderUrl } = useNavigation();
@@ -25,8 +24,9 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
 
   return (
     <Row
+      theme="dark"
+      backgroundColor="1"
       gap
-      backgroundColor="3"
       alignItems="center"
       justifyContent="space-between"
       paddingY="2"
@@ -57,18 +57,21 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
             >
               <Row alignItems="center" gap="4">
                 <Row alignItems="center" gap="2">
-                  <Text weight="bold">{label}</Text>
+                  <Text color="12" weight="bold">
+                    {label}
+                  </Text>
                   <Text color="11">{operatorLabels[operator]}</Text>
-                  <Text weight="bold">{paramValue}</Text>
+                  <Text color="12" weight="bold">
+                    {paramValue}
+                  </Text>
                 </Row>
-                <Icon onClick={e => handleCloseFilter(name, e)} size="xs">
+                <Icon onClick={e => handleCloseFilter(name, e)} size="xs" color>
                   <Icons.Close />
                 </Icon>
               </Row>
             </Row>
           );
         })}
-        <WebsiteFilterButton websiteId={websiteId} alignment="center" showText={false} />
       </Row>
       <TooltipTrigger delay={0}>
         <Button variant="quiet" onPress={handleResetFilter}>

@@ -2,7 +2,7 @@
 import { WebsiteProvider } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
 import { WebsiteDetailsPage } from '@/app/(main)/websites/[websiteId]/WebsiteDetailsPage';
 import { useShareTokenQuery } from '@/components/hooks';
-import { Page } from '@/components/common/Page';
+import { PageBody } from '@/components/common/PageBody';
 import { Header } from './Header';
 import { Footer } from './Footer';
 
@@ -14,12 +14,12 @@ export function SharePage({ shareId }) {
   }
 
   return (
-    <Page>
+    <PageBody>
       <Header />
       <WebsiteProvider websiteId={shareToken.websiteId}>
         <WebsiteDetailsPage websiteId={shareToken.websiteId} />
       </WebsiteProvider>
       <Footer />
-    </Page>
+    </PageBody>
   );
 }

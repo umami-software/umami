@@ -1,39 +1,28 @@
-import { Column, Row, Heading } from '@umami/react-zen';
-import { Favicon } from '@/components/common/Favicon';
-import { ActiveUsers } from '@/components/metrics/ActiveUsers';
+import { Button, Icon, Text, Row } from '@umami/react-zen';
+import { PageHeader } from '@/components/common/PageHeader';
 import { useWebsite } from '@/components/hooks/useWebsite';
-import { WebsiteFilterButton } from '@/app/(main)/websites/[websiteId]/WebsiteFilterButton';
-import { WebsiteDateFilter } from '@/components/input/WebsiteDateFilter';
-import { FilterBar } from '@/components/metrics/FilterBar';
-import { WebsiteMenu } from '@/app/(main)/websites/[websiteId]/WebsiteMenu';
+import { Lucide } from '@/components/icons';
+import { Favicon } from '@/components/common/Favicon';
 
-export function WebsiteHeader({
-  websiteId,
-  showFilter = true,
-  allowEdit = true,
-}: {
-  websiteId: string;
-  showFilter?: boolean;
-  allowEdit?: boolean;
-}) {
+export function WebsiteHeader() {
   const website = useWebsite();
-  const { name, domain } = website || {};
 
   return (
-    <Column marginY="6" gap="6">
-      <Row alignItems="center" justifyContent="space-between" gap="3">
-        <Row alignItems="center" gap="3">
-          <Favicon domain={domain} />
-          <Heading>{name}</Heading>
-        </Row>
-        <ActiveUsers websiteId={websiteId} />
-        <Row alignItems="center" gap="3">
-          {showFilter && <WebsiteFilterButton websiteId={websiteId} />}
-          <WebsiteDateFilter websiteId={websiteId} />
-          {allowEdit && <WebsiteMenu websiteId={websiteId} />}
-        </Row>
+    <PageHeader title={website.name} icon={<Favicon domain={website.domain} />}>
+      <Row alignItems="center" gap>
+        <Button>
+          <Icon>
+            <Lucide.Share />
+          </Icon>
+          <Text>Share</Text>
+        </Button>
+        <Button>
+          <Icon>
+            <Lucide.Edit />
+          </Icon>
+          <Text>Edit</Text>
+        </Button>
       </Row>
-      <FilterBar websiteId={websiteId} />
-    </Column>
+    </PageHeader>
   );
 }

@@ -1,20 +1,27 @@
 'use client';
 import { ReactNode } from 'react';
-import { Grid, Column, Box } from '@umami/react-zen';
+import { Grid, Column } from '@umami/react-zen';
 import { WebsiteProvider } from './WebsiteProvider';
+import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
+import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
+import { PageBody } from '@/components/common/PageBody';
 import { WebsiteHeader } from '@/app/(main)/websites/[websiteId]/WebsiteHeader';
-import { WebsiteTabs } from '@/app/(main)/websites/[websiteId]/WebsiteTabs';
 
 export function WebsiteLayout({ websiteId, children }: { websiteId: string; children: ReactNode }) {
   return (
     <WebsiteProvider websiteId={websiteId}>
-      <WebsiteHeader websiteId={websiteId} />
-      <Grid columns="170px 1140px" justifyContent="center" gap>
-        <Box position="sticky" top="20px" alignSelf="flex-start">
-          <WebsiteTabs websiteId={websiteId} />
-        </Box>
-        <Column>{children}</Column>
-      </Grid>
+      <PageBody>
+        <WebsiteHeader />
+        <Grid columns="auto 1fr" justifyContent="center" gap width="100%">
+          <Column position="sticky" top="0px" alignSelf="flex-start" width="200px" paddingTop="3">
+            <WebsiteNav websiteId={websiteId} />
+          </Column>
+          <Column>
+            <WebsiteControls websiteId={websiteId} />
+            {children}
+          </Column>
+        </Grid>
+      </PageBody>
     </WebsiteProvider>
   );
 }

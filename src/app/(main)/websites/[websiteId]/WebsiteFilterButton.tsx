@@ -1,4 +1,5 @@
-import { Button, Icon, Icons, DialogTrigger, Dialog, Modal, Text } from '@umami/react-zen';
+import { Button, Icon, DialogTrigger, Dialog, Modal, Text } from '@umami/react-zen';
+import { Lucide } from '@/components/icons';
 import { FilterEditForm } from '@/components/common/FilterEditForm';
 import { useMessages, useNavigation, useFilters } from '@/components/hooks';
 
@@ -33,9 +34,9 @@ export function WebsiteFilterButton({
     <DialogTrigger>
       <Button variant="quiet">
         <Icon>
-          <Icons.Plus />
+          <Lucide.ListFilter />
         </Icon>
-        {showText && <Text>{formatMessage(labels.filter)}</Text>}
+        {showText && <Text weight="bold">{formatMessage(labels.filter)}</Text>}
       </Button>
       <Modal>
         <Dialog>
