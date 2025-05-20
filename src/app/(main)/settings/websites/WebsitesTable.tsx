@@ -23,7 +23,7 @@ export function WebsitesTable({
 }: WebsitesTableProps) {
   const { formatMessage, labels } = useMessages();
   const { renderTeamUrl } = useTeamUrl();
-  const [deleteIds, setDeleteIds] = useState([]);
+  const [deleteIds, setDeleteIds] = useState<string[]>([]);
   const [showConf, setShowConf] = useState(false);
 
   if (!data?.length) {
