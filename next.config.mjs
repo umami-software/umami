@@ -1,5 +1,7 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-require('dotenv').config();
+import 'dotenv/config';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 const pkg = require('./package.json');
 
 const TRACKER_SCRIPT = '/script.js';
@@ -12,6 +14,7 @@ const corsMaxAge = process.env.CORS_MAX_AGE;
 const defaultLocale = process.env.DEFAULT_LOCALE;
 const disableLogin = process.env.DISABLE_LOGIN;
 const disableUI = process.env.DISABLE_UI;
+const faviconURL = process.env.FAVICON_URL;
 const forceSSL = process.env.FORCE_SSL;
 const frameAncestors = process.env.ALLOWED_FRAME_URLS;
 const privateMode = process.env.PRIVATE_MODE;
@@ -59,15 +62,33 @@ const trackerHeaders = [
   },
 ];
 
+const apiHeaders = [
+  {
+    key: 'Access-Control-Allow-Origin',
+    value: '*',
+  },
+  {
+    key: 'Access-Control-Allow-Headers',
+    value: '*',
+  },
+  {
+    key: 'Access-Control-Allow-Methods',
+    value: 'GET, DELETE, POST, PUT',
+  },
+  {
+    key: 'Access-Control-Max-Age',
+    value: corsMaxAge || '86400',
+  },
+  {
+    key: 'Cache-Control',
+    value: 'no-cache',
+  },
+];
+
 const headers = [
   {
     source: '/api/:path*',
-    headers: [
-      { key: 'Access-Control-Allow-Origin', value: '*' },
-      { key: 'Access-Control-Allow-Headers', value: '*' },
-      { key: 'Access-Control-Allow-Methods', value: 'GET, DELETE, POST, PUT' },
-      { key: 'Access-Control-Max-Age', value: corsMaxAge || '86400' },
-    ],
+    headers: apiHeaders,
   },
   {
     source: '/:path*',
@@ -89,6 +110,11 @@ if (trackerScriptURL) {
 }
 
 if (collectApiEndpoint) {
+  headers.push({
+    source: collectApiEndpoint,
+    headers: apiHeaders,
+  });
+
   rewrites.push({
     source: collectApiEndpoint,
     destination: '/api/send',
@@ -157,17 +183,17 @@ if (cloudMode && cloudUrl) {
 }
 
 /** @type {import('next').NextConfig} */
-const config = {
+export default {
   reactStrictMode: false,
   env: {
     basePath,
     cloudMode,
     cloudUrl,
-    configUrl: '/config',
     currentVersion: pkg.version,
     defaultLocale,
     disableLogin,
     disableUI,
+    faviconURL,
     privateMode,
   },
   basePath,
@@ -178,13 +204,11 @@ const config = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  experimental: {
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },
@@ -216,5 +240,3 @@ const config = {
     return [...redirects];
   },
 };
-
-module.exports = config;

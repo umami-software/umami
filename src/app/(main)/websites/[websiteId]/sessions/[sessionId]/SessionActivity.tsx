@@ -27,19 +27,19 @@ export function SessionActivity({
 
   return (
     <div className={styles.timeline}>
-      {data.map(({ eventId, createdAt, urlPath, eventName, visitId }) => {
+      {data.map(({ id, createdAt, urlPath, eventName, visitId }) => {
         const showHeader = !lastDay || !isSameDay(new Date(lastDay), new Date(createdAt));
         lastDay = createdAt;
 
         return (
-          <Fragment key={eventId}>
+          <Fragment key={id}>
             {showHeader && (
               <div className={styles.header}>{formatTimezoneDate(createdAt, 'PPPP')}</div>
             )}
-            <div key={eventId} className={styles.row}>
+            <div className={styles.row}>
               <div className={styles.time}>
                 <StatusLight color={`#${visitId?.substring(0, 6)}`}>
-                  {formatTimezoneDate(createdAt, 'h:mm:ss aaa')}
+                  {formatTimezoneDate(createdAt, 'pp')}
                 </StatusLight>
               </div>
               <Icon>{eventName ? <Icons.Bolt /> : <Icons.Eye />}</Icon>

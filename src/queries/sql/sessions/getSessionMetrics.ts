@@ -38,7 +38,7 @@ async function relationalQuery(
       joinSession: SESSION_COLUMNS.includes(type),
     },
   );
-  const includeCountry = column === 'city' || column === 'subdivision1';
+  const includeCountry = column === 'city' || column === 'region';
 
   return rawQuery(
     `
@@ -75,7 +75,7 @@ async function clickhouseQuery(
     ...filters,
     eventType: EVENT_TYPE.pageView,
   });
-  const includeCountry = column === 'city' || column === 'subdivision1';
+  const includeCountry = column === 'city' || column === 'region';
 
   let sql = '';
 

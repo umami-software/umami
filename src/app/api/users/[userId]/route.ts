@@ -1,9 +1,8 @@
-import { z } from 'zod';
-import { canUpdateUser, canViewUser, canDeleteUser } from '@/lib/auth';
-import { getUser, getUserByUsername, updateUser, deleteUser } from '@/queries';
-import { json, unauthorized, badRequest, ok } from '@/lib/response';
-import { hashPassword } from '@/lib/auth';
+import { canDeleteUser, canUpdateUser, canViewUser, hashPassword } from '@/lib/auth';
 import { parseRequest } from '@/lib/request';
+import { badRequest, json, ok, unauthorized } from '@/lib/response';
+import { deleteUser, getUser, getUserByUsername, updateUser } from '@/queries';
+import { z } from 'zod';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const { auth, error } = await parseRequest(request);
@@ -26,8 +25,11 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
 export async function POST(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const schema = z.object({
     username: z.string().max(255),
-    password: z.string().max(255),
-    role: z.string().regex(/admin|user|view-only/i),
+    password: z.string().max(255).optional(),
+    role: z
+      .string()
+      .regex(/admin|user|view-only/i)
+      .optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);

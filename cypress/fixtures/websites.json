@@ -1,0 +1,10 @@
+{
+  "websiteCreate": {
+    "name": "Cypress Website",
+    "domain": "cypress.com"
+  },
+  "websiteUpdate": {
+    "name": "Cypress Website Updated",
+    "domain": "cypressupdated.com"
+  }
+}

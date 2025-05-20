@@ -39,7 +39,9 @@ export function ReportDeleteButton({
       <Modal title={formatMessage(labels.deleteReport)}>
         {(close: () => void) => (
           <ConfirmationForm
-            message={formatMessage(messages.confirmDelete, { target: <b>{reportName}</b> })}
+            message={formatMessage(messages.confirmDelete, {
+              target: <b key={messages.confirmDelete.id}>{reportName}</b>,
+            })}
             isLoading={isPending}
             error={error}
             onConfirm={handleConfirm.bind(null, close)}

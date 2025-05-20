@@ -2,7 +2,7 @@
 import { useMessages } from '@/components/hooks';
 import { GridRow } from '@/components/layout/Grid';
 import EventsChart from '@/components/metrics/EventsChart';
-import MetricsTable from '@/components/metrics/MetricsTable';
+import EventsTable from '@/components/metrics/EventsTable';
 import { useState } from 'react';
 import { Item, Tabs } from 'react-basics';
 import WebsiteHeader from '../WebsiteHeader';
@@ -12,8 +12,13 @@ import EventsDataTable from './EventsDataTable';
 import EventsMetricsBar from './EventsMetricsBar';
 
 export default function EventsPage({ websiteId }) {
+  const [label, setLabel] = useState(null);
   const [tab, setTab] = useState('activity');
   const { formatMessage, labels } = useMessages();
+
+  const handleLabelClick = (value: string) => {
+    setLabel(value !== label ? value : '');
+  };
 
   return (
     <>
@@ -22,12 +27,13 @@ export default function EventsPage({ websiteId }) {
         <EventsMetricsBar websiteId={websiteId} />
       </WebsiteMetrics>
       <GridRow columns="two-one">
-        <EventsChart websiteId={websiteId} />
-        <MetricsTable
+        <EventsChart websiteId={websiteId} focusLabel={label} />
+        <EventsTable
           websiteId={websiteId}
           type="event"
           title={formatMessage(labels.events)}
           metric={formatMessage(labels.actions)}
+          onLabelClick={handleLabelClick}
         />
       </GridRow>
       <div>
