@@ -318,6 +318,7 @@ export const labels = defineMessages({
   apply: { id: 'label.apply', defaultMessage: 'Apply' },
   links: { id: 'label.links', defaultMessage: 'Links' },
   pixels: { id: 'label.pixels', defaultMessage: 'Pixels' },
+  addBoard: { id: 'label.add-board', defaultMessage: 'Add board' },
 });
 
 export const messages = defineMessages({

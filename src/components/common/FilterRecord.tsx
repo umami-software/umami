@@ -38,7 +38,7 @@ export function FilterRecord({
         <Row gap alignItems="center">
           <Select
             items={operators.filter(({ type }) => type === 'string')}
-            selectedKey={operator}
+            value={operator}
             onSelectionChange={value => onSelect?.(name, value)}
           >
             {({ name, label }: any) => {

@@ -7,6 +7,7 @@ import { WebsiteExpandedView } from './WebsiteExpandedView';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
 import { WebsiteTableView } from './WebsiteTableView';
 import { WebsiteCompareTables } from './WebsiteCompareTables';
+import { WebsiteControls } from './WebsiteControls';
 
 export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
   const {
@@ -15,6 +16,7 @@ export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
 
   return (
     <Column gap>
+      <WebsiteControls websiteId={websiteId} />
       <Panel>
         <WebsiteMetricsBar websiteId={websiteId} showFilter={true} showChange={true} />
       </Panel>

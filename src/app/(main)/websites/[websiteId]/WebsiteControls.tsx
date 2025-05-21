@@ -11,8 +11,8 @@ export function WebsiteControls({
   showFilter?: boolean;
 }) {
   return (
-    <Column marginBottom="6" gap="3">
-      <Row alignItems="center" justifyContent="space-between" gap="3" paddingY="3">
+    <Column gap>
+      <Row alignItems="center" justifyContent="space-between" gap="3">
         {showFilter && <WebsiteFilterButton websiteId={websiteId} />}
         <Row alignItems="center" gap="3">
           <WebsiteDateFilter websiteId={websiteId} />

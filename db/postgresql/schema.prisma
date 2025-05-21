@@ -235,3 +235,42 @@ model Report {
   @@index([name])
   @@map("report")
 }
+
+model Board {
+  id          String    @id() @unique() @map("board_id") @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  teamId      String?   @map("team_id") @db.Uuid
+  name        String    @map("name") @db.VarChar(200)
+  description String    @map("description") @db.VarChar(500)
+  parameters  Json      @map("parameters") @db.JsonB
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user User  @relation(fields: [userId], references: [id])
+  team Team? @relation(fields: [teamId], references: [id])
+
+  @@index([userId])
+  @@index([teamId])
+  @@index([type])
+  @@index([name])
+  @@map("board")
+}
+
+model Block {
+  id         String    @id() @unique() @map("block_id") @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  name       String    @map("name") @db.VarChar(200)
+  type       String    @map("type") @db.VarChar(20)
+  parameters Json      @map("parameters") @db.JsonB
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user    User    @relation(fields: [userId], references: [id])
+  website Website @relation(fields: [websiteId], references: [id])
+
+  @@index([userId])
+  @@index([websiteId])
+  @@index([type])
+  @@index([name])
+  @@map("block")
+}

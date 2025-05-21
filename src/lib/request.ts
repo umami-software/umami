@@ -1,4 +1,4 @@
-import { z, ZodSchema } from 'zod';
+import { z } from 'zod/v4';
 import { FILTER_COLUMNS } from '@/lib/constants';
 import { badRequest, unauthorized } from '@/lib/response';
 import { getAllowedUnits, getMinimumUnit } from '@/lib/date';
@@ -7,7 +7,7 @@ import { getWebsiteDateRange } from '@/queries';
 
 export async function parseRequest(
   request: Request,
-  schema?: ZodSchema,
+  schema?: any,
   options?: { skipAuth: boolean },
 ): Promise<any> {
   const url = new URL(request.url);
@@ -21,7 +21,7 @@ export async function parseRequest(
     const result = schema.safeParse(isGet ? query : body);
 
     if (!result.success) {
-      error = () => badRequest(getErrorMessages(result.error));
+      error = () => badRequest(z.treeifyError(result.error));
     } else if (isGet) {
       query = result.data;
     } else {
@@ -86,14 +86,4 @@ export function getRequestFilters(query: Record<string, any>) {
 
     return obj;
   }, {});
-}
-
-export function getErrorMessages(error: z.ZodError) {
-  return Object.entries(error.format())
-    .flatMap(([key, value]) => {
-      if (key === '_errors') {
-        return value;
-      }
-    })
-    .filter(Boolean);
 }

@@ -23,22 +23,8 @@ export function FilterBar() {
   }
 
   return (
-    <Row
-      theme="dark"
-      backgroundColor="1"
-      gap
-      alignItems="center"
-      justifyContent="space-between"
-      paddingY="2"
-      paddingLeft="3"
-      paddingRight="2"
-      border
-      borderRadius="2"
-    >
-      <Row alignItems="center" gap="3" wrap="wrap" paddingX="2">
-        <Text color="11" weight="bold">
-          {formatMessage(labels.filters)}
-        </Text>
+    <Row gap alignItems="center" justifyContent="space-between" paddingY="3">
+      <Row alignItems="center" gap="3" wrap="wrap">
         {Object.keys(filters).map(key => {
           const filter = filters[key];
           const { name, label, operator, value } = filter;
@@ -51,9 +37,9 @@ export function FilterBar() {
               padding
               backgroundColor
               borderRadius
-              shadow="1"
               alignItems="center"
               justifyContent="space-between"
+              theme="dark"
             >
               <Row alignItems="center" gap="4">
                 <Row alignItems="center" gap="2">

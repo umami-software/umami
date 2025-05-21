@@ -9,6 +9,7 @@ import { EventsChart } from '@/components/metrics/EventsChart';
 import { GridRow } from '@/components/common/GridRow';
 import { useMessages } from '@/components/hooks';
 import { EventProperties } from './EventProperties';
+import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 
 export function EventsPage({ websiteId }) {
   const [label, setLabel] = useState(null);
@@ -21,6 +22,7 @@ export function EventsPage({ websiteId }) {
 
   return (
     <Column gap="3">
+      <WebsiteControls websiteId={websiteId} />
       <Panel>
         <EventsMetricsBar websiteId={websiteId} />
       </Panel>

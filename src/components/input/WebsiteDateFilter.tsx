@@ -95,7 +95,7 @@ export function WebsiteDateFilter({
       {!isAllTime && showCompare && (
         <TooltipTrigger delay={0}>
           <Button variant="quiet" onPress={handleCompare}>
-            <Icon fillColor="currentColor">{compare ? <Icons.Close /> : <Icons.Compare />}</Icon>
+            <Icon fillColor>{compare ? <Icons.Close /> : <Icons.Compare />}</Icon>
           </Button>
           <Tooltip>{formatMessage(compare ? labels.cancel : labels.compareDates)}</Tooltip>
         </TooltipTrigger>

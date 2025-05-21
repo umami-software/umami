@@ -28,7 +28,9 @@ export function ActiveUsers({
 
   return (
     <StatusLight variant="success">
-      <Text size="2">{formatMessage(messages.activeUsers, { x: count })}</Text>
+      <Text size="2" weight="bold">
+        {formatMessage(messages.activeUsers, { x: count })}
+      </Text>
     </StatusLight>
   );
 }

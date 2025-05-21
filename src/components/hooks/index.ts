@@ -21,6 +21,7 @@ export * from './queries/useTeamWebsitesQuery';
 export * from './queries/useTeamMembersQuery';
 export * from './queries/useUserQuery';
 export * from './queries/useUsersQuery';
+export * from './queries/useUTMQuery';
 export * from './queries/useWebsiteQuery';
 export * from './queries/useWebsites';
 export * from './queries/useWebsiteEventsQuery';
