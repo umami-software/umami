@@ -49,7 +49,7 @@ async function changePassword() {
 
     console.log(`Password changed successfully for ${username}.`);
   } catch (e) {
-    console.error('Error changing password:', e);
+    console.error('Error changing password:', e.message || e);
   } finally {
     await prisma.$disconnect();
   }
