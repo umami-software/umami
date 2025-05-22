@@ -319,6 +319,7 @@ export const labels = defineMessages({
   links: { id: 'label.links', defaultMessage: 'Links' },
   pixels: { id: 'label.pixels', defaultMessage: 'Pixels' },
   addBoard: { id: 'label.add-board', defaultMessage: 'Add board' },
+  cohort: { id: 'label.cohort', defaultMessage: 'Cohort' },
 });
 
 export const messages = defineMessages({

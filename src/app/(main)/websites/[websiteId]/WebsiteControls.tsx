@@ -6,16 +6,18 @@ import { FilterBar } from '@/components/input/FilterBar';
 export function WebsiteControls({
   websiteId,
   showFilter = true,
+  showCompare,
 }: {
   websiteId: string;
   showFilter?: boolean;
+  showCompare?: boolean;
 }) {
   return (
     <Column gap>
       <Row alignItems="center" justifyContent="space-between" gap="3">
         {showFilter && <WebsiteFilterButton websiteId={websiteId} />}
         <Row alignItems="center" gap="3">
-          <WebsiteDateFilter websiteId={websiteId} />
+          <WebsiteDateFilter websiteId={websiteId} showCompare={showCompare} />
         </Row>
       </Row>
       <FilterBar />

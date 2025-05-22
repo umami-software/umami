@@ -1,4 +1,4 @@
-import { Column, Heading } from '@umami/react-zen';
+import { Column, Heading, Text, Loading } from '@umami/react-zen';
 import { firstBy } from 'thenby';
 import { CHART_COLORS, UTM_PARAMS } from '@/lib/constants';
 import { useUTMQuery } from '@/components/hooks';
@@ -18,7 +18,11 @@ function toArray(data: { [key: string]: number } = {}) {
 
 export function UTMView({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
-  const { data } = useUTMQuery(websiteId);
+  const { data, isLoading } = useUTMQuery(websiteId);
+
+  if (isLoading) {
+    return <Loading position="page" />;
+  }
 
   if (!data) {
     return null;
@@ -46,7 +50,9 @@ export function UTMView({ websiteId }: { websiteId: string }) {
           <Panel key={param}>
             <GridRow layout="two">
               <Column>
-                <Heading>{param.replace(/^utm_/, '')}</Heading>
+                <Heading>
+                  <Text transform="capitalize">{param.replace(/^utm_/, '')}</Text>
+                </Heading>
                 <ListTable
                   metric={formatMessage(labels.views)}
                   data={items.map(({ name, value }) => ({

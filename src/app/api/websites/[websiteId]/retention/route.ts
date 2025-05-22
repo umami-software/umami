@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { canViewWebsite } from '@/lib/auth';
 import { unauthorized, json } from '@/lib/response';
 import { getRequestDateRange, parseRequest } from '@/lib/request';
-import { getUTM } from '@/queries';
+import { getRetention } from '@/queries';
 import { filterParams, timezoneParam, unitParam } from '@/lib/schema';
 
 export async function GET(
@@ -32,7 +32,7 @@ export async function GET(
 
   const { startDate, endDate } = await getRequestDateRange(query);
 
-  const data = await getUTM(websiteId, {
+  const data = await getRetention(websiteId, {
     startDate,
     endDate,
     timezone,
