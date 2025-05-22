@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 require('dotenv').config();
 const { PrismaClient } = require('@prisma/client');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const prompts = require('prompts');
 
 const prisma = new PrismaClient();
@@ -39,8 +39,7 @@ async function changePassword() {
       console.log(`User not found: ${username}`);
       return;
     }
-
-    const hash = hashPassword(password);
+    const hash = await hashPassword(password);
 
     await prisma.user.update({
       where: { id: user.id },
