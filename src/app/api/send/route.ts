@@ -145,7 +145,7 @@ export async function POST(request: Request) {
       const base = hostname ? `https://${hostname}` : 'https://localhost';
       const currentUrl = new URL(url, base);
 
-      let urlPath = currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname;
+      let urlPath = currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname + currentUrl.hash;
       const urlQuery = currentUrl.search.substring(1);
       const urlDomain = currentUrl.hostname.replace(/^www./, '');
 
