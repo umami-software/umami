@@ -11,6 +11,8 @@ env:
 
 jobs:
   build:
+    # Only run the CI if it belongs to the original repository
+    if: github.repository == 'umami-software/umami'
     runs-on: ubuntu-latest
 
     strategy:
