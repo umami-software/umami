@@ -41,7 +41,7 @@ async function createAdmin() {
 
     console.log(`Admin user created successfully with ID: ${user.id}`);
     console.log(`Username: ${username}`);
-    console.log(`Password: ${password}`);
+    console.log('Password: [REDACTED]');
   } catch (e) {
     console.error('Error creating admin user:', e);
   } finally {
