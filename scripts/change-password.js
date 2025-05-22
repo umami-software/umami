@@ -7,9 +7,9 @@ const prompts = require('prompts');
 const prisma = new PrismaClient();
 
 // Function to hash password with bcrypt (replaces imported hashPassword)
-function hashPassword(password) {
-  const salt = bcrypt.genSaltSync(10);
-  return bcrypt.hashSync(password, salt);
+async function hashPassword(password) {
+  const salt = await bcrypt.genSalt(10);
+  return bcrypt.hash(password, salt);
 }
 
 async function changePassword() {
