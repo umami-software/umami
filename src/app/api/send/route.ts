@@ -169,7 +169,7 @@ export async function POST(request: Request) {
       const twclid = currentUrl.searchParams.get('twclid');
 
       if (process.env.REMOVE_TRAILING_SLASH) {
-        urlPath = urlPath.replace(/(.+)\/$/, '$1');
+        urlPath = urlPath.replace(/\/(?=(#.*)?$)/, '');
       }
 
       if (referrer) {
