@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/**.{js,ts}": {
+      "regions": ["sin1"]   // replace with sin1, fra1, etc. as needed
+    }
+  }
+}
