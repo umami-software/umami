@@ -9,6 +9,7 @@ import { GridRow } from '@/components/common/GridRow';
 import { useMessages } from '@/components/hooks';
 import { SessionsWeekly } from './SessionsWeekly';
 import { Panel } from '@/components/common/Panel';
+import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 
 export function SessionsPage({ websiteId }) {
   const [tab, setTab] = useState('activity');
@@ -16,6 +17,7 @@ export function SessionsPage({ websiteId }) {
 
   return (
     <Column gap="3">
+      <WebsiteControls websiteId={websiteId} />
       <Panel>
         <SessionsMetricsBar websiteId={websiteId} />
       </Panel>

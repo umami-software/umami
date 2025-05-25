@@ -7,7 +7,7 @@ export function SectionHeader({
   icon,
   children,
 }: {
-  title: string;
+  title?: string;
   description?: string;
   icon?: ReactNode;
   allowEdit?: boolean;

@@ -89,6 +89,7 @@ export const labels = defineMessages({
   deleteTeam: { id: 'label.delete-team', defaultMessage: 'Delete team' },
   leaveTeam: { id: 'label.leave-team', defaultMessage: 'Leave team' },
   refresh: { id: 'label.refresh', defaultMessage: 'Refresh' },
+  page: { id: 'label.page', defaultMessage: 'Page' },
   pages: { id: 'label.pages', defaultMessage: 'Pages' },
   entry: { id: 'label.entry', defaultMessage: 'Entry path' },
   exit: { id: 'label.exit', defaultMessage: 'Exit path' },
@@ -274,6 +275,7 @@ export const labels = defineMessages({
   addStep: { id: 'label.add-step', defaultMessage: 'Add step' },
   goal: { id: 'label.goal', defaultMessage: 'Goal' },
   goals: { id: 'label.goals', defaultMessage: 'Goals' },
+  addGoal: { id: 'label.add-goal', defaultMessage: 'Add Goal' },
   goalsDescription: {
     id: 'label.goals-description',
     defaultMessage: 'Track your goals for pageviews and events.',

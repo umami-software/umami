@@ -19,7 +19,7 @@ export function WebsiteDateFilter({
   websiteId,
   showAllTime = true,
   showButtons = true,
-  allowCompare = true,
+  allowCompare,
 }: {
   websiteId: string;
   compare?: string;

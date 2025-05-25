@@ -80,12 +80,6 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
       icon: <Icons.Network />,
       path: '/attribution',
     },
-    {
-      id: 'reports',
-      label: formatMessage(labels.reports),
-      icon: <Icons.Reports />,
-      path: '/reports',
-    },
   ];
 
   const selected = links.find(({ path }) => path && pathname.endsWith(path))?.id || 'overview';

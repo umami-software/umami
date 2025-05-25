@@ -7,21 +7,15 @@ export function RevenueTable({ data = [] }) {
 
   return (
     <DataTable data={data}>
-      <DataColumn id="currency" label={formatMessage(labels.currency)} align="end">
-        {(row: any) => row.currency}
-      </DataColumn>
-      <DataColumn id="currency" label={formatMessage(labels.total)} align="end">
+      <DataColumn id="currency" label={formatMessage(labels.currency)} align="end" />
+      <DataColumn id="total" label={formatMessage(labels.total)} align="end">
         {(row: any) => formatLongCurrency(row.sum, row.currency)}
       </DataColumn>
-      <DataColumn id="currency" label={formatMessage(labels.average)} align="end">
+      <DataColumn id="average" label={formatMessage(labels.average)} align="end">
         {(row: any) => formatLongCurrency(row.count ? row.sum / row.count : 0, row.currency)}
       </DataColumn>
-      <DataColumn id="currency" label={formatMessage(labels.transactions)} align="end">
-        {(row: any) => row.count}
-      </DataColumn>
-      <DataColumn id="currency" label={formatMessage(labels.uniqueCustomers)} align="end">
-        {(row: any) => row.unique_count}
-      </DataColumn>
+      <DataColumn id="count" label={formatMessage(labels.transactions)} align="end" />
+      <DataColumn id="unique_count" label={formatMessage(labels.uniqueCustomers)} align="end" />
     </DataTable>
   );
 }

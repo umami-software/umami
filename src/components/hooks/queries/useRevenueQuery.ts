@@ -2,7 +2,7 @@ import { useApi } from '../useApi';
 import { useFilterParams } from '../useFilterParams';
 import { UseQueryOptions } from '@tanstack/react-query';
 
-interface RevenueData {
+export interface RevenueData {
   chart: any[];
   country: any[];
   total: {

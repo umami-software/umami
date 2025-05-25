@@ -52,7 +52,7 @@ export function TeamsButton({
         </Row>
       </Button>
       <Popover placement="bottom start">
-        <Box minWidth={300}>
+        <Box minWidth="300px">
           <Menu
             selectionMode="single"
             selectedKeys={selectedKeys}
