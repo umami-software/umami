@@ -15,11 +15,11 @@ export function renderDateLabels(unit: string, locale: string) {
       case 'hour':
         return formatDate(d, 'p', locale);
       case 'day':
-        return formatDate(d, 'MMM d', locale);
+        return formatDate(d, 'PP', locale).replace(/\W*20\d{2}\W*/, ''); // Remove year
       case 'month':
         return formatDate(d, 'MMM', locale);
       case 'year':
-        return formatDate(d, 'YYY', locale);
+        return formatDate(d, 'yyyy', locale);
       default:
         return label;
     }

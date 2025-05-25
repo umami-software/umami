@@ -18,7 +18,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     `
     select
       referrer_domain as domain,
-      referrer_query as query,
+      url_query as query,
       count(distinct session_id) as visitors
     from website_event
     where website_id = {{websiteId::uuid}}
@@ -41,7 +41,7 @@ async function clickhouseQuery(
   const sql = `
     select
       referrer_domain as domain,
-      referrer_query as query,
+      url_query as query,
       uniq(session_id) as visitors
     from website_event
     where website_id = {websiteId:UUID}

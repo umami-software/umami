@@ -1,6 +1,5 @@
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -29,19 +28,18 @@ model User {
 }
 
 model Session {
-  id           String    @id @unique @map("session_id") @db.VarChar(36)
-  websiteId    String    @map("website_id") @db.VarChar(36)
-  hostname     String?   @db.VarChar(100)
-  browser      String?   @db.VarChar(20)
-  os           String?   @db.VarChar(20)
-  device       String?   @db.VarChar(20)
-  screen       String?   @db.VarChar(11)
-  language     String?   @db.VarChar(35)
-  country      String?   @db.Char(2)
-  subdivision1 String?   @db.Char(20)
-  subdivision2 String?   @db.VarChar(50)
-  city         String?   @db.VarChar(50)
-  createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+  id         String    @id @unique @map("session_id") @db.VarChar(36)
+  websiteId  String    @map("website_id") @db.VarChar(36)
+  browser    String?   @db.VarChar(20)
+  os         String?   @db.VarChar(20)
+  device     String?   @db.VarChar(20)
+  screen     String?   @db.VarChar(11)
+  language   String?   @db.VarChar(35)
+  country    String?   @db.Char(2)
+  region     String?   @db.Char(20)
+  city       String?   @db.VarChar(50)
+  distinctId String?   @map("distinct_id") @db.VarChar(50)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
 
   websiteEvent WebsiteEvent[]
   sessionData  SessionData[]
@@ -49,14 +47,13 @@ model Session {
   @@index([createdAt])
   @@index([websiteId])
   @@index([websiteId, createdAt])
-  @@index([websiteId, createdAt, hostname])
   @@index([websiteId, createdAt, browser])
   @@index([websiteId, createdAt, os])
   @@index([websiteId, createdAt, device])
   @@index([websiteId, createdAt, screen])
   @@index([websiteId, createdAt, language])
   @@index([websiteId, createdAt, country])
-  @@index([websiteId, createdAt, subdivision1])
+  @@index([websiteId, createdAt, region])
   @@index([websiteId, createdAt, city])
   @@map("session")
 }
@@ -97,13 +94,25 @@ model WebsiteEvent {
   createdAt      DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
   urlPath        String    @map("url_path") @db.VarChar(500)
   urlQuery       String?   @map("url_query") @db.VarChar(500)
+  utmSource      String?   @map("utm_source") @db.VarChar(255)
+  utmMedium      String?   @map("utm_medium") @db.VarChar(255)
+  utmCampaign    String?   @map("utm_campaign") @db.VarChar(255)
+  utmContent     String?   @map("utm_content") @db.VarChar(255)
+  utmTerm        String?   @map("utm_term") @db.VarChar(255)
   referrerPath   String?   @map("referrer_path") @db.VarChar(500)
   referrerQuery  String?   @map("referrer_query") @db.VarChar(500)
   referrerDomain String?   @map("referrer_domain") @db.VarChar(500)
   pageTitle      String?   @map("page_title") @db.VarChar(500)
+  gclid          String?   @map("gclid") @db.VarChar(255)
+  fbclid         String?   @map("fbclid") @db.VarChar(255)
+  msclkid        String?   @map("msclkid") @db.VarChar(255)
+  ttclid         String?   @map("ttclid") @db.VarChar(255)
+  lifatid        String?   @map("li_fat_id") @db.VarChar(255)
+  twclid         String?   @map("twclid") @db.VarChar(255)
   eventType      Int       @default(1) @map("event_type") @db.UnsignedInt
   eventName      String?   @map("event_name") @db.VarChar(50)
   tag            String?   @db.VarChar(50)
+  hostname       String?   @db.VarChar(100)
 
   eventData EventData[]
   session   Session     @relation(fields: [sessionId], references: [id])
@@ -121,6 +130,7 @@ model WebsiteEvent {
   @@index([websiteId, createdAt, tag])
   @@index([websiteId, sessionId, createdAt])
   @@index([websiteId, visitId, createdAt])
+  @@index([websiteId, createdAt, hostname])
   @@map("website_event")
 }
 
@@ -155,6 +165,7 @@ model SessionData {
   numberValue Decimal?  @map("number_value") @db.Decimal(19, 4)
   dateValue   DateTime? @map("date_value") @db.Timestamp(0)
   dataType    Int       @map("data_type") @db.UnsignedInt
+  distinctId  String?   @map("distinct_id") @db.VarChar(50)
   createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
 
   website Website @relation(fields: [websiteId], references: [id])

@@ -29,16 +29,12 @@ const schema = z.object({
     ip: z.string().ip().optional(),
     userAgent: z.string().optional(),
     timestamp: z.coerce.number().int().optional(),
+    id: z.string().optional(),
   }),
 });
 
 export async function POST(request: Request) {
   try {
-    // Bot check
-    if (!process.env.DISABLE_BOT_CHECK && isbot(request.headers.get('user-agent'))) {
-      return json({ beep: 'boop' });
-    }
-
     const { body, error } = await parseRequest(request, schema, { skipAuth: true });
 
     if (error) {
@@ -59,6 +55,7 @@ export async function POST(request: Request) {
       title,
       tag,
       timestamp,
+      id,
     } = payload;
 
     // Cache check
@@ -83,8 +80,15 @@ export async function POST(request: Request) {
     }
 
     // Client info
-    const { ip, userAgent, device, browser, os, country, subdivision1, subdivision2, city } =
-      await getClientInfo(request, payload);
+    const { ip, userAgent, device, browser, os, country, region, city } = await getClientInfo(
+      request,
+      payload,
+    );
+
+    // Bot check
+    if (!process.env.DISABLE_BOT_CHECK && isbot(userAgent)) {
+      return json({ beep: 'boop' });
+    }
 
     // IP block
     if (hasBlockedIp(ip)) {
@@ -97,7 +101,7 @@ export async function POST(request: Request) {
     const sessionSalt = hash(startOfMonth(createdAt).toUTCString());
     const visitSalt = hash(startOfHour(createdAt).toUTCString());
 
-    const sessionId = uuid(websiteId, ip, userAgent, sessionSalt);
+    const sessionId = id ? uuid(websiteId, id) : uuid(websiteId, ip, userAgent, sessionSalt);
 
     // Find session
     if (!clickhouse.enabled && !cache?.sessionId) {
@@ -109,16 +113,15 @@ export async function POST(request: Request) {
           await createSession({
             id: sessionId,
             websiteId,
-            hostname,
             browser,
             os,
             device,
             screen,
             language,
             country,
-            subdivision1,
-            subdivision2,
+            region,
             city,
+            distinctId: id,
           });
         } catch (e: any) {
           if (!e.message.toLowerCase().includes('unique constraint')) {
@@ -142,17 +145,32 @@ export async function POST(request: Request) {
       const base = hostname ? `https://${hostname}` : 'https://localhost';
       const currentUrl = new URL(url, base);
 
-      let urlPath = currentUrl.pathname;
+      let urlPath = currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname;
       const urlQuery = currentUrl.search.substring(1);
       const urlDomain = currentUrl.hostname.replace(/^www./, '');
-
-      if (process.env.REMOVE_TRAILING_SLASH) {
-        urlPath = urlPath.replace(/(.+)\/$/, '$1');
-      }
 
       let referrerPath: string;
       let referrerQuery: string;
       let referrerDomain: string;
+
+      // UTM Params
+      const utmSource = currentUrl.searchParams.get('utm_source');
+      const utmMedium = currentUrl.searchParams.get('utm_medium');
+      const utmCampaign = currentUrl.searchParams.get('utm_campaign');
+      const utmContent = currentUrl.searchParams.get('utm_content');
+      const utmTerm = currentUrl.searchParams.get('utm_term');
+
+      // Click IDs
+      const gclid = currentUrl.searchParams.get('gclid');
+      const fbclid = currentUrl.searchParams.get('fbclid');
+      const msclkid = currentUrl.searchParams.get('msclkid');
+      const ttclid = currentUrl.searchParams.get('ttclid');
+      const lifatid = currentUrl.searchParams.get('li_fat_id');
+      const twclid = currentUrl.searchParams.get('twclid');
+
+      if (process.env.REMOVE_TRAILING_SLASH) {
+        urlPath = urlPath.replace(/(.+)\/$/, '$1');
+      }
 
       if (referrer) {
         const referrerUrl = new URL(referrer, base);
@@ -169,40 +187,60 @@ export async function POST(request: Request) {
         websiteId,
         sessionId,
         visitId,
+        createdAt,
+
+        // Page
+        pageTitle: safeDecodeURIComponent(title),
+        hostname: hostname || urlDomain,
         urlPath: safeDecodeURI(urlPath),
         urlQuery,
         referrerPath: safeDecodeURI(referrerPath),
         referrerQuery,
         referrerDomain,
-        pageTitle: safeDecodeURIComponent(title),
-        eventName: name,
-        eventData: data,
-        hostname: hostname || urlDomain,
+
+        // Session
+        distinctId: id,
         browser,
         os,
         device,
         screen,
         language,
         country,
-        subdivision1,
-        subdivision2,
+        region,
         city,
+
+        // Events
+        eventName: name,
+        eventData: data,
         tag,
-        createdAt,
+
+        // UTM
+        utmSource,
+        utmMedium,
+        utmCampaign,
+        utmContent,
+        utmTerm,
+
+        // Click IDs
+        gclid,
+        fbclid,
+        msclkid,
+        ttclid,
+        lifatid,
+        twclid,
       });
     }
 
     if (type === COLLECTION_TYPE.identify) {
-      if (!data) {
-        return badRequest('Data required.');
+      if (data) {
+        await saveSessionData({
+          websiteId,
+          sessionId,
+          sessionData: data,
+          distinctId: id,
+          createdAt,
+        });
       }
-
-      await saveSessionData({
-        websiteId,
-        sessionId,
-        sessionData: data,
-        createdAt,
-      });
     }
 
     const token = createToken({ websiteId, sessionId, visitId, iat }, secret());
