@@ -5,19 +5,19 @@ import { FilterBar } from '@/components/input/FilterBar';
 
 export function WebsiteControls({
   websiteId,
-  showFilter = true,
-  showCompare,
+  allowFilter = true,
+  allowCompare,
 }: {
   websiteId: string;
-  showFilter?: boolean;
-  showCompare?: boolean;
+  allowFilter?: boolean;
+  allowCompare?: boolean;
 }) {
   return (
     <Column gap>
       <Row alignItems="center" justifyContent="space-between" gap="3">
-        {showFilter && <WebsiteFilterButton websiteId={websiteId} />}
+        {allowFilter && <WebsiteFilterButton websiteId={websiteId} />}
         <Row alignItems="center" gap="3">
-          <WebsiteDateFilter websiteId={websiteId} showCompare={showCompare} />
+          <WebsiteDateFilter websiteId={websiteId} allowCompare={allowCompare} />
         </Row>
       </Row>
       <FilterBar />

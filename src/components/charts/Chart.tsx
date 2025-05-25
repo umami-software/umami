@@ -1,9 +1,8 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { Loading, Box, Column } from '@umami/react-zen';
+import { Loading, Box, Column, BoxProps } from '@umami/react-zen';
 import ChartJS, { LegendItem, ChartOptions } from 'chart.js/auto';
 import { Legend } from '@/components/metrics/Legend';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
-import type { BoxProps } from '@umami/react-zen/Box';
 
 export interface ChartProps extends BoxProps {
   type?: 'bar' | 'bubble' | 'doughnut' | 'pie' | 'line' | 'polarArea' | 'radar' | 'scatter';

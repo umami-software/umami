@@ -19,13 +19,13 @@ export function WebsiteDateFilter({
   websiteId,
   showAllTime = true,
   showButtons = true,
-  showCompare = true,
+  allowCompare = true,
 }: {
   websiteId: string;
   compare?: string;
   showAllTime?: boolean;
   showButtons?: boolean;
-  showCompare?: boolean;
+  allowCompare?: boolean;
 }) {
   const { dateRange, saveDateRange } = useDateRange(websiteId);
   const { value, startDate, endDate, offset } = dateRange;
@@ -92,7 +92,7 @@ export function WebsiteDateFilter({
           </Select>
         </Row>
       )}
-      {!isAllTime && showCompare && (
+      {!isAllTime && allowCompare && (
         <TooltipTrigger delay={0}>
           <Button variant="quiet" onPress={handleCompare}>
             <Icon fillColor>{compare ? <Icons.Close /> : <Icons.Compare />}</Icon>

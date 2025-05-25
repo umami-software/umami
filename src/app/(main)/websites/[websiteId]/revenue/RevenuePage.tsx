@@ -1,13 +1,13 @@
 'use client';
 import { Column } from '@umami/react-zen';
-import { UTMView } from './UTMView';
+import { RevenueView } from './RevenueView';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 
-export function UTMPage({ websiteId }: { websiteId: string }) {
+export function RevenuePage({ websiteId }: { websiteId: string }) {
   return (
     <Column gap>
       <WebsiteControls websiteId={websiteId} allowCompare={false} />
-      <UTMView websiteId={websiteId} />
+      <RevenueView websiteId={websiteId} />
     </Column>
   );
 }

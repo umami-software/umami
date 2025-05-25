@@ -28,8 +28,8 @@ export interface BarChartProps extends ChartProps {
   renderYLabel?: (label: string, index: number, values: any[]) => string;
   XAxisType?: string;
   YAxisType?: string;
-  minDate?: number | string;
-  maxDate?: number | string;
+  minDate?: Date;
+  maxDate?: Date;
   isAllTime?: boolean;
 }
 

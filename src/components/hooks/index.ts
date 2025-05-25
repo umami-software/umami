@@ -8,6 +8,7 @@ export * from './queries/useRealtimeQuery';
 export * from './queries/useReportQuery';
 export * from './queries/useReportsQuery';
 export * from './queries/useRetentionQuery';
+export * from './queries/useRevenueQuery';
 export * from './queries/useSessionActivityQuery';
 export * from './queries/useSessionDataQuery';
 export * from './queries/useSessionDataPropertiesQuery';

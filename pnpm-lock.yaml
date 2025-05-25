@@ -42,8 +42,8 @@ importers:
         specifier: ^5.28.6
         version: 5.76.1(react@19.1.0)
       '@umami/react-zen':
-        specifier: ^0.116.0
-        version: 0.116.0(@babel/core@7.27.1)(@types/react@19.1.4)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.0))
+        specifier: ^0.117.0
+        version: 0.117.0(@babel/core@7.27.1)(@types/react@19.1.4)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.0))
       '@umami/redis-client':
         specifier: ^0.27.0
         version: 0.27.0
@@ -3035,8 +3035,8 @@ packages:
     resolution: {integrity: sha512-ar0tjQfObzhSaW3C3QNmTc5ofj0hDoNQ5XWrCy6zDyabdr0TWhCkClp+rywGNj/odAFBVzzJrK4tEq5M4Hmu4w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@umami/react-zen@0.116.0':
-    resolution: {integrity: sha512-/OjfYgwA9/4JpfKjf/b3HinVoeEoyOfLHJk8Uv0opBx+Jy2I6WPM4ZwvaRVxIbNwzpw/JZekC46TJs6bQNzbGg==}
+  '@umami/react-zen@0.117.0':
+    resolution: {integrity: sha512-vo1i25cBpMsAWNHJ4RPFDJzlaH93NXwx8VotmnoAWgP39Yy+fdUwmi+dDXNBOKvWzoHO9BFf0nIYiT16klnR6g==}
 
   '@umami/redis-client@0.27.0':
     resolution: {integrity: sha512-SbHTpxhgeZyTBUSp2zdZM+XUtpsaSL4Tad8QXIEhEtjWhvvfoornyT5kLuyYCVtzSAT4daALeGmOO1z6EE1KcA==}
@@ -7459,8 +7459,8 @@ packages:
       react:
         optional: true
 
-  zustand@5.0.4:
-    resolution: {integrity: sha512-39VFTN5InDtMd28ZhjLyuTnlytDr9HfwO512Ai4I8ZABCoyAj4F1+sr7sD1jP/+p7k77Iko0Pb5NhgBFDCX0kQ==}
+  zustand@5.0.5:
+    resolution: {integrity: sha512-mILtRfKW9xM47hqxGIxCv12gXusoY/xTSHBYApXozR0HmQv299whhBeeAcRy+KrPPybzosvJBCOmVjq6x12fCg==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       '@types/react': '>=18.0.0'
@@ -10860,7 +10860,7 @@ snapshots:
       '@typescript-eslint/types': 8.32.1
       eslint-visitor-keys: 4.2.0
 
-  '@umami/react-zen@0.116.0(@babel/core@7.27.1)(@types/react@19.1.4)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.0))':
+  '@umami/react-zen@0.117.0(@babel/core@7.27.1)(@types/react@19.1.4)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.0))':
     dependencies:
       '@fontsource/jetbrains-mono': 5.2.5
       '@internationalized/date': 3.8.1
@@ -10877,7 +10877,7 @@ snapshots:
       react-hook-form: 7.56.4(react@19.1.0)
       react-icons: 5.5.0(react@19.1.0)
       thenby: 1.3.4
-      zustand: 5.0.4(@types/react@19.1.4)(immer@9.0.21)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0))
+      zustand: 5.0.5(@types/react@19.1.4)(immer@9.0.21)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0))
     transitivePeerDependencies:
       - '@babel/core'
       - '@opentelemetry/api'
@@ -16046,7 +16046,7 @@ snapshots:
       immer: 9.0.21
       react: 19.1.0
 
-  zustand@5.0.4(@types/react@19.1.4)(immer@9.0.21)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0)):
+  zustand@5.0.5(@types/react@19.1.4)(immer@9.0.21)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0)):
     optionalDependencies:
       '@types/react': 19.1.4
       immer: 9.0.21

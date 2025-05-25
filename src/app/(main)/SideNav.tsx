@@ -16,11 +16,6 @@ export function SideNav(props: any) {
       icon: <Lucide.Copy />,
     },
     {
-      label: formatMessage(labels.reports),
-      href: renderTeamUrl('/reports'),
-      icon: <Lucide.ChartArea />,
-    },
-    {
       label: formatMessage(labels.websites),
       href: renderTeamUrl('/websites'),
       icon: <Lucide.Globe />,
