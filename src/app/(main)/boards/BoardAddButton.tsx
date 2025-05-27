@@ -1,14 +1,6 @@
 import { useMessages, useModified, useNavigation } from '@/components/hooks';
-import {
-  Button,
-  Icon,
-  Icons,
-  Modal,
-  Dialog,
-  DialogTrigger,
-  Text,
-  useToast,
-} from '@umami/react-zen';
+import { Button, Icon, Modal, Dialog, DialogTrigger, Text, useToast } from '@umami/react-zen';
+import { Plus } from '@/components/icons';
 import { BoardAddForm } from './BoardAddForm';
 
 export function BoardAddButton() {
@@ -26,7 +18,7 @@ export function BoardAddButton() {
     <DialogTrigger>
       <Button data-test="button-website-add" variant="primary">
         <Icon>
-          <Icons.Plus />
+          <Plus />
         </Icon>
         <Text>{formatMessage(labels.addBoard)}</Text>
       </Button>

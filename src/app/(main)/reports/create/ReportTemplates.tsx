@@ -1,6 +1,16 @@
 import { Icon, Text, Row, Column, Grid } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { Icons } from '@/components/icons';
+import {
+  Lightbulb,
+  Funnel,
+  Magnet,
+  Tag,
+  Target,
+  Path,
+  Money,
+  Network,
+  Plus,
+} from '@/components/icons';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { LinkButton } from '@/components/common/LinkButton';
 
@@ -13,49 +23,49 @@ export function ReportTemplates({ showHeader = true }: { showHeader?: boolean })
       title: formatMessage(labels.insights),
       description: formatMessage(labels.insightsDescription),
       url: renderTeamUrl('/reports/insights'),
-      icon: <Icons.Lightbulb />,
+      icon: <Lightbulb />,
     },
     {
       title: formatMessage(labels.funnel),
       description: formatMessage(labels.funnelDescription),
       url: renderTeamUrl('/reports/funnel'),
-      icon: <Icons.Funnel />,
+      icon: <Funnel />,
     },
     {
       title: formatMessage(labels.retention),
       description: formatMessage(labels.retentionDescription),
       url: renderTeamUrl('/reports/retention'),
-      icon: <Icons.Magnet />,
+      icon: <Magnet />,
     },
     {
       title: formatMessage(labels.utm),
       description: formatMessage(labels.utmDescription),
       url: renderTeamUrl('/reports/utm'),
-      icon: <Icons.Tag />,
+      icon: <Tag />,
     },
     {
       title: formatMessage(labels.goals),
       description: formatMessage(labels.goalsDescription),
       url: renderTeamUrl('/reports/goals'),
-      icon: <Icons.Target />,
+      icon: <Target />,
     },
     {
       title: formatMessage(labels.journey),
       description: formatMessage(labels.journeyDescription),
       url: renderTeamUrl('/reports/journey'),
-      icon: <Icons.Path />,
+      icon: <Path />,
     },
     {
       title: formatMessage(labels.revenue),
       description: formatMessage(labels.revenueDescription),
       url: renderTeamUrl('/reports/revenue'),
-      icon: <Icons.Money />,
+      icon: <Money />,
     },
     {
       title: formatMessage(labels.attribution),
       description: formatMessage(labels.attributionDescription),
       url: renderTeamUrl('/reports/attribution'),
-      icon: <Icons.Network />,
+      icon: <Network />,
     },
   ];
 
@@ -87,8 +97,8 @@ function ReportItem({ title, description, url, icon }) {
       <Text>{description}</Text>
       <Row justifyContent="flex-end">
         <LinkButton href={url} variant="primary">
-          <Icon fillColor="currentColor">
-            <Icons.Plus />
+          <Icon>
+            <Plus />
           </Icon>
           <Text>{formatMessage(labels.create)}</Text>
         </LinkButton>

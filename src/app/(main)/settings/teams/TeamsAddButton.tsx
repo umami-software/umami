@@ -1,5 +1,5 @@
 import { Button, Icon, Modal, DialogTrigger, Dialog, Text, useToast } from '@umami/react-zen';
-import { Icons } from '@/components/icons';
+import { Plus } from '@/components/icons';
 import { useMessages, useModified } from '@/components/hooks';
 import { TeamAddForm } from './TeamAddForm';
 import { messages } from '@/components/messages';
@@ -19,7 +19,7 @@ export function TeamsAddButton({ onSave }: { onSave?: () => void }) {
     <DialogTrigger>
       <Button variant="primary">
         <Icon>
-          <Icons.Plus />
+          <Plus />
         </Icon>
         <Text>{formatMessage(labels.createTeam)}</Text>
       </Button>

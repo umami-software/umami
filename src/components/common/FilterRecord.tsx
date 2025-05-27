@@ -7,10 +7,10 @@ import {
   ListItem,
   Select,
   Icon,
-  Icons,
   Button,
 } from '@umami/react-zen';
 import { useFilters } from '@/components/hooks';
+import { Close } from '@/components/icons';
 
 export interface FilterRecordProps {
   name: string;
@@ -55,7 +55,7 @@ export function FilterRecord({
       <Column justifyContent="flex-end">
         <Button variant="quiet" onPress={() => onRemove?.(name)}>
           <Icon>
-            <Icons.Close />
+            <Close />
           </Icon>
         </Button>
       </Column>

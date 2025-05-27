@@ -10,4 +10,4 @@ const useGlobalState = (key: string, value?: any) => {
   return [store(state => state[key]), (value: any) => store.setState({ [key]: value })];
 };
 
-export default useGlobalState;
+export { useGlobalState };

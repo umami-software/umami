@@ -1,6 +1,6 @@
 import { ReactNode, Key } from 'react';
 import { DialogTrigger, Button, Menu, Popover, Icon } from '@umami/react-zen';
-import { Lucide } from '@/components/icons';
+import { Ellipsis } from '@/components/icons';
 
 export function MenuButton({
   children,
@@ -17,7 +17,7 @@ export function MenuButton({
     <DialogTrigger>
       <Button variant="outline">
         <Icon>
-          <Lucide.Ellipsis />
+          <Ellipsis />
         </Icon>
       </Button>
       <Popover placement="bottom start">

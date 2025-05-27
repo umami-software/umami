@@ -1,4 +1,4 @@
-import { Icon, Icons, Text, Grid, Column } from '@umami/react-zen';
+import { Icon, Text, Grid, Column } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { SideMenu } from '@/components/common/SideMenu';
@@ -18,6 +18,7 @@ import { ScreenTable } from '@/components/metrics/ScreenTable';
 import { TagsTable } from '@/components/metrics/TagsTable';
 import { ChannelsTable } from '@/components/metrics/ChannelsTable';
 import { Panel } from '@/components/common/Panel';
+import { Arrow } from '@/components/icons';
 
 const views = {
   url: PagesTable,
@@ -140,7 +141,7 @@ export function WebsiteExpandedView({
         <Column gap="6" width="200px" border="right" paddingRight="3">
           <LinkButton href={renderUrl({ view: undefined })} variant="quiet" scroll={false}>
             <Icon rotate={180}>
-              <Icons.Arrow />
+              <Arrow />
             </Icon>
             <Text>{formatMessage(labels.back)}</Text>
           </LinkButton>

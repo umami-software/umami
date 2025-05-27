@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Tabs, Tab, TabList, TabPanel } from '@umami/react-zen';
-import { Icons } from '@/components/icons';
+import { User } from '@/components/icons';
 import { UserEditForm } from './UserEditForm';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { useMessages } from '@/components/hooks';
@@ -13,7 +13,7 @@ export function UserSettings({ userId }: { userId: string }) {
 
   return (
     <>
-      <SectionHeader title={user?.username} icon={<Icons.User />} />
+      <SectionHeader title={user?.username} icon={<User />} />
       <Tabs>
         <TabList>
           <Tab id="details">{formatMessage(labels.details)}</Tab>

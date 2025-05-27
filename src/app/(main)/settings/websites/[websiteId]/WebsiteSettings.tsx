@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Icon, Tabs, TabList, Tab, TabPanel, Text } from '@umami/react-zen';
 import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
 import { useMessages } from '@/components/hooks';
-import { Icons } from '@/components/icons';
+import { Globe, Arrow } from '@/components/icons';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { ShareUrl } from './ShareUrl';
 import { TrackingCode } from './TrackingCode';
@@ -22,14 +22,14 @@ export function WebsiteSettings({
 
   return (
     <>
-      <SectionHeader title={website?.name} icon={<Icons.Globe />}>
+      <SectionHeader title={website?.name} icon={<Globe />}>
         <LinkButton
           variant="primary"
           href={`/websites/${websiteId}`}
           target={openExternal ? '_blank' : null}
         >
           <Icon>
-            <Icons.Arrow />
+            <Arrow />
           </Icon>
           <Text>{formatMessage(labels.view)}</Text>
         </LinkButton>

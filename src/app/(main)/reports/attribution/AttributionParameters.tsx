@@ -1,5 +1,5 @@
 import { useMessages } from '@/components/hooks';
-import { Icons } from '@/components/icons';
+import { Eye, Bolt, Plus } from '@/components/icons';
 import { useContext, useState } from 'react';
 import {
   Button,
@@ -82,7 +82,7 @@ export function AttributionParameters() {
       <DialogTrigger>
         <Button isDisabled={steps.length > 0}>
           <Icon>
-            <Icons.Plus />
+            <Plus />
           </Icon>
         </Button>
         <Popover placement="right top">
@@ -122,7 +122,7 @@ export function AttributionParameters() {
             return (
               <DialogTrigger key={index}>
                 <ParameterList.Item
-                  icon={step.type === 'url' ? <Icons.Eye /> : <Icons.Bolt />}
+                  icon={step.type === 'url' ? <Eye /> : <Bolt />}
                   onRemove={() => handleRemoveStep(index)}
                 >
                   <div>{step.value}</div>

@@ -8,7 +8,7 @@ import {
   Popover,
 } from '@umami/react-zen';
 import { Empty } from '@/components/common/Empty';
-import { Icons } from '@/components/icons';
+import { Plus } from '@/components/icons';
 import { useApi, useMessages, useReport } from '@/components/hooks';
 import { DATA_TYPES, REPORT_PARAMETERS } from '@/lib/constants';
 import { FieldAddForm } from '../[reportId]/FieldAddForm';
@@ -75,7 +75,7 @@ export function EventDataParameters() {
     return (
       <DialogTrigger>
         <Icon>
-          <Icons.Plus />
+          <Plus />
         </Icon>
         <Popover placement="bottom start">
           {({ close }: any) => {

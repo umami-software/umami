@@ -12,10 +12,10 @@ import {
   Popover,
   Row,
   Box,
-  Icons,
 } from '@umami/react-zen';
 import { User, Users } from 'lucide-react';
 import { useLoginQuery, useMessages, useTeamsQuery, useNavigation } from '@/components/hooks';
+import { Chevron } from '@/components/icons';
 
 export function TeamsButton({
   className,
@@ -46,8 +46,8 @@ export function TeamsButton({
         <Row alignItems="center" gap="3">
           <Icon>{teamId ? <Users /> : <User />}</Icon>
           {showText && <Text>{teamId ? team?.name : user.username}</Text>}
-          <Icon rotate={90} size="xs">
-            <Icons.Chevron />
+          <Icon rotate={90} size="sm">
+            <Chevron />
           </Icon>
         </Row>
       </Button>

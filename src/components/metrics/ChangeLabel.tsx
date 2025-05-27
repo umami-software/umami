@@ -1,6 +1,7 @@
 import classNames from 'classnames';
-import { Icon, Icons, Text } from '@umami/react-zen';
+import { Icon, Text } from '@umami/react-zen';
 import { ReactNode } from 'react';
+import { Arrow } from '@/components/icons';
 import styles from './ChangeLabel.module.css';
 
 export function ChangeLabel({
@@ -35,7 +36,7 @@ export function ChangeLabel({
     >
       {!neutral && (
         <Icon rotate={positive ? -90 : 90} size={size}>
-          <Icons.Arrow />
+          <Arrow />
         </Icon>
       )}
       <Text>{children || value}</Text>

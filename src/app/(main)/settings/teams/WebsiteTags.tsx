@@ -1,4 +1,5 @@
-import { Button, Icon, Icons, Text } from '@umami/react-zen';
+import { Button, Icon, Text } from '@umami/react-zen';
+import { Close } from '@/components/icons';
 import styles from './WebsiteTags.module.css';
 
 export function WebsiteTags({
@@ -26,7 +27,7 @@ export function WebsiteTags({
                 <b>{`${website.name}`}</b>
               </Text>
               <Icon>
-                <Icons.Close />
+                <Close />
               </Icon>
             </Button>
           </div>

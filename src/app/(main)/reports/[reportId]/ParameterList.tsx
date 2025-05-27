@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Icon, Row, Text, Button, Column } from '@umami/react-zen';
-import { Icons } from '@/components/icons';
+import { Close } from '@/components/icons';
 import { Empty } from '@/components/common/Empty';
 import { useMessages } from '@/components/hooks';
 
@@ -46,7 +46,7 @@ const Item = ({
       <Text>{children}</Text>
       <Button onPress={onRemove} variant="quiet">
         <Icon>
-          <Icons.Close />
+          <Close />
         </Icon>
       </Button>
     </Row>

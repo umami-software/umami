@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from '@umami/react-zen';
 import { isAfter } from 'date-fns';
-import { Icons } from '@/components/icons';
+import { Chevron, Close, Compare } from '@/components/icons';
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
 import { getOffsetDateRange } from '@/lib/date';
 import { DateRange } from '@/lib/types';
@@ -65,12 +65,12 @@ export function WebsiteDateFilter({
         <Row gap="1">
           <Button onPress={() => handleIncrement(-1)} variant="quiet">
             <Icon size="xs" rotate={180}>
-              <Icons.Chevron />
+              <Chevron />
             </Icon>
           </Button>
           <Button onPress={() => handleIncrement(1)} variant="quiet" isDisabled={disableForward}>
             <Icon size="xs">
-              <Icons.Chevron />
+              <Chevron />
             </Icon>
           </Button>
         </Row>
@@ -95,7 +95,7 @@ export function WebsiteDateFilter({
       {!isAllTime && allowCompare && (
         <TooltipTrigger delay={0}>
           <Button variant="quiet" onPress={handleCompare}>
-            <Icon fillColor>{compare ? <Icons.Close /> : <Icons.Compare />}</Icon>
+            <Icon fillColor>{compare ? <Close /> : <Compare />}</Icon>
           </Button>
           <Tooltip>{formatMessage(compare ? labels.cancel : labels.compareDates)}</Tooltip>
         </TooltipTrigger>

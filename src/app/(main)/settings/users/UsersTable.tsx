@@ -1,8 +1,8 @@
+import { useState } from 'react';
 import {
   Row,
   Text,
   Icon,
-  Icons,
   DataTable,
   DataColumn,
   MenuItem,
@@ -10,12 +10,13 @@ import {
   Modal,
   Dialog,
 } from '@umami/react-zen';
+import Link from 'next/link';
 import { formatDistance } from 'date-fns';
 import { ROLES } from '@/lib/constants';
+import { Trash } from '@/components/icons';
 import { useMessages, useLocale } from '@/components/hooks';
+import { Edit } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
-import Link from 'next/link';
-import { useState } from 'react';
 import { UserDeleteForm } from '@/app/(main)/settings/users/UserDeleteForm';
 
 export function UsersTable({
@@ -64,7 +65,7 @@ export function UsersTable({
                   <MenuItem href={`/settings/users/${id}`} data-test="link-button-edit">
                     <Row alignItems="center" gap>
                       <Icon>
-                        <Icons.Edit />
+                        <Edit />
                       </Icon>
                       <Text>{formatMessage(labels.edit)}</Text>
                     </Row>
@@ -77,7 +78,7 @@ export function UsersTable({
                   >
                     <Row alignItems="center" gap>
                       <Icon>
-                        <Icons.Trash />
+                        <Trash />
                       </Icon>
                       <Text>{formatMessage(labels.delete)}</Text>
                     </Row>

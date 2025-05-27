@@ -1,6 +1,6 @@
 import { DataColumn, DataTable, Icon, MenuItem, Text, Row } from '@umami/react-zen';
 import { useLoginQuery, useMessages } from '@/components/hooks';
-import { Icons } from '@/components/icons';
+import { Arrow, Edit } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
 
 export function TeamWebsitesTable({
@@ -31,7 +31,7 @@ export function TeamWebsitesTable({
               <MenuItem href={`/teams/${teamId}/websites/${websiteId}`}>
                 <Row alignItems="center" gap>
                   <Icon>
-                    <Icons.Arrow />
+                    <Arrow />
                   </Icon>
                   <Text>{formatMessage(labels.view)}</Text>
                 </Row>
@@ -40,7 +40,7 @@ export function TeamWebsitesTable({
                 <MenuItem href={`/teams/${teamId}/settings/websites/${websiteId}`}>
                   <Row alignItems="center" gap>
                     <Icon>
-                      <Icons.Edit />
+                      <Edit />
                     </Icon>
                     <Text>{formatMessage(labels.edit)}</Text>
                   </Row>

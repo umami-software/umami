@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Grid, Row, Column, Text, Loading, Icon } from '@umami/react-zen';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
-import { Lucide } from '@/components/icons';
+import { Users } from '@/components/icons';
 import { useMessages, useLocale, useRetentionQuery } from '@/components/hooks';
 import { formatDate } from '@/lib/date';
 import { formatLongNumber } from '@/lib/format';
@@ -68,7 +68,7 @@ export function RetentionTable({ websiteId, days = DAYS }: { websiteId: string; 
               <Text weight="bold">{formatDate(date, 'PP', locale)}</Text>
               <Row alignItems="center" gap>
                 <Icon>
-                  <Lucide.Users />
+                  <Users />
                 </Icon>
                 <Text>{formatLongNumber(visitors)}</Text>
               </Row>

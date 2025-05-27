@@ -8,7 +8,6 @@ import {
   Row,
   Select,
   Icon,
-  Icons,
   Loading,
   Menu,
   MenuItem,
@@ -18,6 +17,7 @@ import {
   TextField,
   Label,
 } from '@umami/react-zen';
+import { Close } from '@/components/icons';
 import styles from './FieldFilterEditForm.module.css';
 
 export interface FieldFilterFormProps {
@@ -152,7 +152,7 @@ export function FieldFilterEditForm({
             <div className={styles.selected} onClick={handleReset}>
               <Text>{formatValue(selected, name)}</Text>
               <Icon>
-                <Icons.Close />
+                <Close />
               </Icon>
             </div>
           )}

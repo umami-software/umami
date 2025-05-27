@@ -9,7 +9,15 @@ import {
 } from '@umami/react-zen';
 import { useApi, useMessages } from '@/components/hooks';
 
-export function GoalAddForm({ onSave, onClose }: { onSave?: () => void; onClose?: () => void }) {
+export function GoalAddForm({
+  websiteId,
+  onSave,
+  onClose,
+}: {
+  websiteId: string;
+  onSave?: () => void;
+  onClose?: () => void;
+}) {
   const { formatMessage, labels } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error, isPending } = useMutation({
@@ -32,6 +40,7 @@ export function GoalAddForm({ onSave, onClose }: { onSave?: () => void; onClose?
 
   return (
     <Form onSubmit={handleSubmit} error={error?.message}>
+      {websiteId}
       <FormField
         name="name"
         label={formatMessage(labels.name)}

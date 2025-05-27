@@ -1,6 +1,6 @@
 import { isSameDay } from 'date-fns';
 import { Loading, Icon, StatusLight } from '@umami/react-zen';
-import { Icons } from '@/components/icons';
+import { Bolt, Eye } from '@/components/icons';
 import { useSessionActivityQuery, useTimezone } from '@/components/hooks';
 import styles from './SessionActivity.module.css';
 import { Fragment } from 'react';
@@ -42,7 +42,7 @@ export function SessionActivity({
                   {formatTimezoneDate(createdAt, 'pp')}
                 </StatusLight>
               </div>
-              <Icon>{eventName ? <Icons.Bolt /> : <Icons.Eye />}</Icon>
+              <Icon>{eventName ? <Bolt /> : <Eye />}</Icon>
               <div>{eventName || urlPath}</div>
             </div>
           </Fragment>

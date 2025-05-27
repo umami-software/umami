@@ -1,7 +1,7 @@
 import { Button, MenuTrigger, Dialog, Icon, Text, Modal } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import { GoalAddForm } from './GoalAddForm';
-import { Icons } from '@/components/icons';
+import { Plus } from '@/components/icons';
 
 export function GoalAddButton({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
@@ -10,7 +10,7 @@ export function GoalAddButton({ websiteId }: { websiteId: string }) {
     <MenuTrigger>
       <Button variant="primary">
         <Icon>
-          <Icons.Plus />
+          <Plus />
         </Icon>
         <Text>{formatMessage(labels.addGoal)}</Text>
       </Button>

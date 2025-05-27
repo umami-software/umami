@@ -1,5 +1,5 @@
 'use client';
-import { Icon, Icons, Loading, Text } from '@umami/react-zen';
+import { Icon, Loading, Text } from '@umami/react-zen';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { Pager } from '@/components/common/Pager';
 import { WebsiteChartList } from '../websites/[websiteId]/WebsiteChartList';
@@ -7,6 +7,7 @@ import { DashboardSettingsButton } from '@/app/(main)/dashboard/DashboardSetting
 import { DashboardEdit } from '@/app/(main)/dashboard/DashboardEdit';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { useMessages, useNavigation, useWebsites } from '@/components/hooks';
+import { Arrow } from '@/components/icons';
 import { useDashboard } from '@/store/dashboard';
 import { LinkButton } from '@/components/common/LinkButton';
 
@@ -37,7 +38,7 @@ export function DashboardPage() {
         <EmptyPlaceholder message={formatMessage(messages.noWebsitesConfigured)}>
           <LinkButton href={renderTeamUrl('/settings')}>
             <Icon>
-              <Icons.Arrow />
+              <Arrow />
             </Icon>
             <Text>{formatMessage(messages.goToSettings)}</Text>
           </LinkButton>

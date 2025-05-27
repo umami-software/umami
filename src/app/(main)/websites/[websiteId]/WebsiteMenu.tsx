@@ -1,7 +1,6 @@
 import {
   Button,
   Icon,
-  Icons,
   Menu,
   MenuItem,
   MenuSeparator,
@@ -10,7 +9,7 @@ import {
   Text,
 } from '@umami/react-zen';
 import { Fragment } from 'react';
-import { Lucide } from '@/components/icons';
+import { More, Share, Edit } from '@/components/icons';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { InputItem } from '@/lib/types';
 
@@ -19,8 +18,8 @@ export function WebsiteMenu({ websiteId }: { websiteId: string }) {
   const { router, renderUrl, renderTeamUrl } = useNavigation();
 
   const menuItems: InputItem[] = [
-    { id: 'share', label: formatMessage(labels.share), icon: <Lucide.Share /> },
-    { id: 'edit', label: formatMessage(labels.edit), icon: <Lucide.Edit />, seperator: true },
+    { id: 'share', label: formatMessage(labels.share), icon: <Share /> },
+    { id: 'edit', label: formatMessage(labels.edit), icon: <Edit />, seperator: true },
   ];
 
   const handleAction = (id: any) => {
@@ -35,7 +34,7 @@ export function WebsiteMenu({ websiteId }: { websiteId: string }) {
     <MenuTrigger>
       <Button variant="quiet">
         <Icon>
-          <Icons.More />
+          <More />
         </Icon>
       </Button>
       <Popover placement="bottom">

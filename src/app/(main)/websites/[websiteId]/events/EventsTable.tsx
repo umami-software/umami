@@ -3,7 +3,7 @@ import { useMessages, useNavigation, useTimezone } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import { Avatar } from '@/components/common/Avatar';
 import Link from 'next/link';
-import { Icons } from '@/components/icons';
+import { Bolt, Eye } from '@/components/icons';
 
 export function EventsTable({ data = [] }) {
   const { formatTimezoneDate } = useTimezone();
@@ -27,7 +27,7 @@ export function EventsTable({ data = [] }) {
         {(row: any) => {
           return (
             <Row alignItems="center" gap="2">
-              <Icon>{row.eventName ? <Icons.Bolt /> : <Icons.Eye />}</Icon>
+              <Icon>{row.eventName ? <Bolt /> : <Eye />}</Icon>
               {formatMessage(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
               <strong>{row.eventName || row.urlPath}</strong>
             </Row>

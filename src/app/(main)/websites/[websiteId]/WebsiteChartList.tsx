@@ -1,4 +1,4 @@
-import { Text, Icon, Icons } from '@umami/react-zen';
+import { Text, Icon } from '@umami/react-zen';
 import { useMemo } from 'react';
 import { firstBy } from 'thenby';
 import { WebsiteChart } from './WebsiteChart';
@@ -7,6 +7,7 @@ import { WebsiteControls } from './WebsiteControls';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { LinkButton } from '@/components/common/LinkButton';
+import { Arrow } from '@/components/icons';
 
 export function WebsiteChartList({
   websites,
@@ -30,7 +31,7 @@ export function WebsiteChartList({
 
   return (
     <div>
-      {ordered.map(({ id }, index) => {
+      {ordered.map(({ id }: { id: string }, index) => {
         return index < limit ? (
           <div key={id}>
             <WebsiteControls websiteId={id} showLinks={false}>
@@ -38,7 +39,7 @@ export function WebsiteChartList({
                 <Text>{formatMessage(labels.viewDetails)}</Text>
                 <Icon>
                   <Icon>
-                    <Icons.Arrow />
+                    <Arrow />
                   </Icon>
                 </Icon>
               </LinkButton>

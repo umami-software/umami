@@ -1,7 +1,7 @@
 import { Icon, TextField, Column, Row, Label, Box, Text } from '@umami/react-zen';
 import { useFormat, useLocale, useMessages, useRegionNames, useTimezone } from '@/components/hooks';
 import { TypeIcon } from '@/components/common/TypeIcon';
-import { Icons } from '@/components/icons';
+import { Location } from '@/components/icons';
 
 export function SessionInfo({ data }) {
   const { locale } = useLocale();
@@ -44,7 +44,7 @@ export function SessionInfo({ data }) {
         <Label>{formatMessage(labels.region)}</Label>
         <Row gap="3">
           <Icon>
-            <Icons.Location />
+            <Location />
           </Icon>
           {getRegionName(data?.region)}
         </Row>
@@ -54,7 +54,7 @@ export function SessionInfo({ data }) {
         <Label>{formatMessage(labels.city)}</Label>
         <Row gap="3">
           <Icon>
-            <Icons.Location />
+            <Location />
           </Icon>
           <Text>{data?.city}</Text>
         </Row>

@@ -1,7 +1,8 @@
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 import { useApi, useMessages, useModified } from '@/components/hooks';
 import { messages } from '@/components/messages';
-import { Button, Icon, Icons, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
+import { Close } from '@/components/icons';
+import { Button, Icon, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
 
 export function TeamMemberRemoveButton({
   teamId,
@@ -36,7 +37,7 @@ export function TeamMemberRemoveButton({
     <DialogTrigger>
       <Button>
         <Icon>
-          <Icons.Close />
+          <Close />
         </Icon>
         <Text>{formatMessage(labels.remove)}</Text>
       </Button>

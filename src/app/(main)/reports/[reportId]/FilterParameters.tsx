@@ -1,5 +1,5 @@
 import { useMessages, useFormat, useFilters, useFields, useReport } from '@/components/hooks';
-import { Icons } from '@/components/icons';
+import { Plus } from '@/components/icons';
 import {
   Button,
   Row,
@@ -55,7 +55,7 @@ export function FilterParameters() {
         <MenuTrigger>
           <Button variant="quiet">
             <Icon size="sm">
-              <Icons.Plus />
+              <Plus />
             </Icon>
           </Button>
           <Popover placement="right top">

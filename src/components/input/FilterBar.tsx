@@ -1,6 +1,7 @@
 import { MouseEvent } from 'react';
-import { Button, Icon, Icons, Text, Row, TooltipTrigger, Tooltip } from '@umami/react-zen';
+import { Button, Icon, Text, Row, TooltipTrigger, Tooltip } from '@umami/react-zen';
 import { useNavigation, useMessages, useFormat, useFilters } from '@/components/hooks';
+import { Close } from '@/components/icons';
 import { isSearchOperator } from '@/lib/params';
 
 export function FilterBar() {
@@ -51,8 +52,8 @@ export function FilterBar() {
                     {paramValue}
                   </Text>
                 </Row>
-                <Icon onClick={e => handleCloseFilter(name, e)} size="xs" color>
-                  <Icons.Close />
+                <Icon onClick={e => handleCloseFilter(name, e)} size="xs">
+                  <Close />
                 </Icon>
               </Row>
             </Row>
@@ -62,7 +63,7 @@ export function FilterBar() {
       <TooltipTrigger delay={0}>
         <Button variant="quiet" onPress={handleResetFilter}>
           <Icon>
-            <Icons.Close />
+            <Close />
           </Icon>
         </Button>
         <Tooltip>

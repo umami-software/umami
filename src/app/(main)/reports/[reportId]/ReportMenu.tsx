@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Column, Icon, Row } from '@umami/react-zen';
-import { Icons } from '@/components/icons';
+import { PanelLeft } from '@/components/icons';
 import { useReport } from '@/components/hooks';
 
 export function ReportMenu({ children }) {
@@ -16,7 +16,7 @@ export function ReportMenu({ children }) {
       <Row alignItems="center" justifyContent="flex-end">
         <Button variant="quiet" onPress={() => setCollapsed(!collapsed)}>
           <Icon>
-            <Icons.PanelLeft />
+            <PanelLeft />
           </Icon>
         </Button>
       </Row>

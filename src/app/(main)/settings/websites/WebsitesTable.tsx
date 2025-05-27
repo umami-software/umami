@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { Row, Text, Icon, DataTable, DataColumn, MenuItem } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { MenuButton } from '@/components/input/MenuButton';
-import { Lucide } from '@/components/icons';
+import { Eye, SquarePen } from '@/components/icons';
 import Link from 'next/link';
 
 export interface WebsitesTableProps {
@@ -45,7 +45,7 @@ export function WebsitesTable({
                   <MenuItem href={renderTeamUrl(`/websites/${websiteId}`)}>
                     <Row alignItems="center" gap>
                       <Icon data-test="link-button-view">
-                        <Lucide.Eye />
+                        <Eye />
                       </Icon>
                       <Text>{formatMessage(labels.view)}</Text>
                     </Row>
@@ -55,7 +55,7 @@ export function WebsitesTable({
                   <MenuItem href={renderTeamUrl(`/settings/websites/${websiteId}`)}>
                     <Row alignItems="center" gap>
                       <Icon data-test="link-button-edit">
-                        <Lucide.SquarePen />
+                        <SquarePen />
                       </Icon>
                       <Text>{formatMessage(labels.edit)}</Text>
                     </Row>

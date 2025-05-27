@@ -1,5 +1,6 @@
-import { Button, Icon, Icons, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
+import { Button, Icon, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
 import { useApi, useMessages, useModified } from '@/components/hooks';
+import { Trash } from '@/components/icons';
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 
 export function ReportDeleteButton({
@@ -32,7 +33,7 @@ export function ReportDeleteButton({
     <DialogTrigger>
       <Button>
         <Icon>
-          <Icons.Trash />
+          <Trash />
         </Icon>
         <Text>{formatMessage(labels.delete)}</Text>
       </Button>

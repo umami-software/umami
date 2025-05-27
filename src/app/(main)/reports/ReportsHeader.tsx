@@ -1,6 +1,7 @@
 import { SectionHeader } from '@/components/common/SectionHeader';
-import { Icon, Icons, Text } from '@umami/react-zen';
+import { Icon, Text } from '@umami/react-zen';
 import { useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
+import { Plus } from '@/components/icons';
 import { LinkButton } from '@/components/common/LinkButton';
 import { ROLES } from '@/lib/constants';
 
@@ -15,7 +16,7 @@ export function ReportsHeader() {
       {canEdit && (
         <LinkButton href={renderTeamUrl('/reports/create')} variant="primary">
           <Icon>
-            <Icons.Plus />
+            <Plus />
           </Icon>
           <Text>{formatMessage(labels.createReport)}</Text>
         </LinkButton>

@@ -2,7 +2,7 @@ import { useFormat } from '@/components//hooks/useFormat';
 import { Empty } from '@/components/common/Empty';
 import { FilterButtons } from '@/components/common/FilterButtons';
 import { useCountryNames, useLocale, useMessages, useTimezone } from '@/components/hooks';
-import { Icons } from '@/components/icons';
+import { Eye, Visitor, Bolt } from '@/components/icons';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
 import { stringToColor } from '@/lib/format';
 import { RealtimeData } from '@/lib/types';
@@ -18,9 +18,9 @@ const TYPE_SESSION = 'session';
 const TYPE_EVENT = 'event';
 
 const icons = {
-  [TYPE_PAGEVIEW]: <Icons.Eye />,
-  [TYPE_SESSION]: <Icons.Visitor />,
-  [TYPE_EVENT]: <Icons.Bolt />,
+  [TYPE_PAGEVIEW]: <Eye />,
+  [TYPE_SESSION]: <Visitor />,
+  [TYPE_EVENT]: <Bolt />,
 };
 
 export function RealtimeLog({ data }: { data: RealtimeData }) {

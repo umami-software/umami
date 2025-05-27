@@ -1,7 +1,8 @@
-import { Icon, Icons, Text, DataTable, DataColumn, Row } from '@umami/react-zen';
+import { Icon, Text, DataTable, DataColumn, Row } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { useMessages, useLoginQuery, useNavigation } from '@/components/hooks';
 import { REPORT_TYPES } from '@/lib/constants';
+import { Arrow } from '@/components/icons';
 import { ReportDeleteButton } from './ReportDeleteButton';
 
 export function ReportsTable({ data = [] }: { data: any[]; showDomain?: boolean }) {
@@ -30,7 +31,7 @@ export function ReportsTable({ data = [] }: { data: any[]; showDomain?: boolean 
               )}
               <LinkButton href={renderTeamUrl(`/reports/${id}`)}>
                 <Icon>
-                  <Icons.Arrow />
+                  <Arrow />
                 </Icon>
                 <Text>{formatMessage(labels.view)}</Text>
               </LinkButton>

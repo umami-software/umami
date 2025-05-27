@@ -1,14 +1,6 @@
 import { useMessages, useModified } from '@/components/hooks';
-import {
-  Button,
-  Icon,
-  Icons,
-  Modal,
-  Dialog,
-  DialogTrigger,
-  Text,
-  useToast,
-} from '@umami/react-zen';
+import { Button, Icon, Modal, Dialog, DialogTrigger, Text, useToast } from '@umami/react-zen';
+import { Plus } from '@/components/icons';
 import { WebsiteAddForm } from './WebsiteAddForm';
 
 export function WebsiteAddButton({ teamId, onSave }: { teamId: string; onSave?: () => void }) {
@@ -26,7 +18,7 @@ export function WebsiteAddButton({ teamId, onSave }: { teamId: string; onSave?: 
     <DialogTrigger>
       <Button data-test="button-website-add" variant="primary">
         <Icon>
-          <Icons.Plus />
+          <Plus />
         </Icon>
         <Text>{formatMessage(labels.addWebsite)}</Text>
       </Button>

@@ -1,6 +1,6 @@
 import { Row, Text, Icon, Button, MenuTrigger, Popover, Menu, MenuItem } from '@umami/react-zen';
 import { startOfMonth, endOfMonth, startOfYear, addMonths, subYears } from 'date-fns';
-import { Icons } from '@/components/icons';
+import { Chevron } from '@/components/icons';
 import { useLocale } from '@/components/hooks';
 import { formatDate } from '@/lib/date';
 
@@ -9,7 +9,7 @@ export function MonthSelect({ date = new Date(), onChange }) {
   const month = formatDate(date, 'MMMM', locale);
   const year = date.getFullYear();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line
   const handleChange = (close: () => void, date: Date) => {
     onChange(`range:${startOfMonth(date).getTime()}:${endOfMonth(date).getTime()}`);
     close();
@@ -31,7 +31,7 @@ export function MonthSelect({ date = new Date(), onChange }) {
         <Button variant="quiet">
           <Text>{month}</Text>
           <Icon size="sm">
-            <Icons.Chevron />
+            <Chevron />
           </Icon>
         </Button>
         <Popover>
@@ -50,13 +50,17 @@ export function MonthSelect({ date = new Date(), onChange }) {
         <Button variant="quiet">
           <Text>{year}</Text>
           <Icon size="sm">
-            <Icons.Chevron />
+            <Chevron />
           </Icon>
         </Button>
         <Popover>
           <Menu>
             {years.map(year => {
-              return <MenuItem id={year}>{year}</MenuItem>;
+              return (
+                <MenuItem key={year} id={year}>
+                  {year}
+                </MenuItem>
+              );
             })}
           </Menu>
         </Popover>

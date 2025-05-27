@@ -1,12 +1,33 @@
-import { Icons as ZenIcons } from '@umami/react-zen';
-import * as lucide from 'lucide-react';
-import * as LocalIcons from '@/components/svg';
-
-const icons = {
-  ...ZenIcons,
-  ...LocalIcons,
-};
-
-export const Lucide = lucide;
-
-export const Icons = icons;
+export {
+  AlertTriangle as Alert,
+  ArrowRight as Arrow,
+  Calendar,
+  ChevronRight as Chevron,
+  X as Close,
+  Copy,
+  Edit,
+  Ellipsis,
+  Eye,
+  ExternalLink,
+  Globe,
+  Grid2X2,
+  LayoutDashboard,
+  Link,
+  ListFilter,
+  LockKeyhole,
+  LogOut,
+  Menu,
+  Moon,
+  MoreHorizontal as More,
+  PanelLeft,
+  Plus,
+  RefreshCw as Refresh,
+  Settings,
+  Share,
+  Slash,
+  SquarePen,
+  Sun,
+  Trash,
+  Users,
+} from 'lucide-react';
+export * from '@/components/svg';

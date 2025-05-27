@@ -1,5 +1,6 @@
-import { Button, Icon, Icons, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
+import { Button, Icon, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
 import { useMessages, useLoginQuery } from '@/components/hooks';
+import { Trash } from '@/components/icons';
 import { UserDeleteForm } from './UserDeleteForm';
 
 export function UserDeleteButton({
@@ -18,7 +19,7 @@ export function UserDeleteButton({
     <DialogTrigger>
       <Button isDisabled={userId === user?.id} data-test="button-delete">
         <Icon size="sm">
-          <Icons.Trash />
+          <Trash />
         </Icon>
         <Text>{formatMessage(labels.delete)}</Text>
       </Button>

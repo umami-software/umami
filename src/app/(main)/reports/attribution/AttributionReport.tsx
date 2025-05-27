@@ -1,4 +1,4 @@
-import { Icons } from '@/components/icons';
+import { Network } from '@/components/icons';
 import { REPORT_TYPES } from '@/lib/constants';
 import { Report } from '../[reportId]/Report';
 import { ReportBody } from '../[reportId]/ReportBody';
@@ -15,7 +15,7 @@ const defaultParameters = {
 export default function AttributionReport({ reportId }: { reportId?: string }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
-      <ReportHeader icon={<Icons.Network />} />
+      <ReportHeader icon={<Network />} />
       <ReportMenu>
         <AttributionParameters />
       </ReportMenu>

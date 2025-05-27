@@ -10,7 +10,7 @@ import {
   TextField,
   Button,
 } from '@umami/react-zen';
-import { Icons } from '@/components/icons';
+import { Eye, Bolt, Plus } from '@/components/icons';
 import { FunnelStepAddForm } from './FunnelStepAddForm';
 import { BaseParameters } from '../[reportId]/BaseParameters';
 import { ParameterList } from '../[reportId]/ParameterList';
@@ -59,7 +59,7 @@ export function FunnelParameters() {
       <DialogTrigger>
         <Button>
           <Icon>
-            <Icons.Plus />
+            <Plus />
           </Icon>
         </Button>
         <Popover placement="start">
@@ -85,7 +85,7 @@ export function FunnelParameters() {
             return (
               <DialogTrigger key={index}>
                 <ParameterList.Item
-                  icon={step.type === 'url' ? <Icons.Eye /> : <Icons.Bolt />}
+                  icon={step.type === 'url' ? <Eye /> : <Bolt />}
                   onRemove={() => handleRemoveStep(index)}
                 >
                   <div className={styles.value}>

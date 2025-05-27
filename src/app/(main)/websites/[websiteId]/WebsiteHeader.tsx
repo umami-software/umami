@@ -1,7 +1,7 @@
 import { Button, Icon, Text, Row } from '@umami/react-zen';
 import { PageHeader } from '@/components/common/PageHeader';
 import { useWebsite } from '@/components/hooks/useWebsite';
-import { Lucide } from '@/components/icons';
+import { Share, Edit } from '@/components/icons';
 import { Favicon } from '@/components/common/Favicon';
 import { ActiveUsers } from '@/components/metrics/ActiveUsers';
 
@@ -14,13 +14,13 @@ export function WebsiteHeader() {
         <ActiveUsers websiteId={website.id} />
         <Button>
           <Icon>
-            <Lucide.Share />
+            <Share />
           </Icon>
           <Text>Share</Text>
         </Button>
         <Button>
           <Icon>
-            <Lucide.Edit />
+            <Edit />
           </Icon>
           <Text>Edit</Text>
         </Button>

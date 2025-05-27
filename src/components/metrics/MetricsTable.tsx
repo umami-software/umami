@@ -5,7 +5,7 @@ import { LinkButton } from '@/components/common/LinkButton';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
 import { percentFilter } from '@/lib/filters';
 import { useNavigation, useWebsiteMetricsQuery, useMessages, useFormat } from '@/components/hooks';
-import { Icons } from '@/components/icons';
+import { Arrow } from '@/components/icons';
 import { ListTable, ListTableProps } from './ListTable';
 
 export interface MetricsTableProps extends ListTableProps {
@@ -98,7 +98,7 @@ export function MetricsTable({
           <LinkButton href={renderUrl({ view: type })} variant="quiet">
             <Text>{formatMessage(labels.more)}</Text>
             <Icon size="sm">
-              <Icons.Arrow />
+              <Arrow />
             </Icon>
           </LinkButton>
         )}

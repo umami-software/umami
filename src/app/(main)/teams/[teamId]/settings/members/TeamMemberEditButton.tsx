@@ -3,7 +3,6 @@ import {
   Row,
   Pressable,
   Icon,
-  Icons,
   Modal,
   DialogTrigger,
   Dialog,
@@ -11,6 +10,7 @@ import {
   useToast,
 } from '@umami/react-zen';
 import { TeamMemberEditForm } from './TeamMemberEditForm';
+import { Edit } from '@/components/icons';
 
 export function TeamMemberEditButton({
   teamId,
@@ -38,7 +38,7 @@ export function TeamMemberEditButton({
       <Pressable>
         <Row alignItems="center" gap>
           <Icon>
-            <Icons.Edit />
+            <Edit />
           </Icon>
           <Text>{formatMessage(labels.edit)}</Text>
         </Row>

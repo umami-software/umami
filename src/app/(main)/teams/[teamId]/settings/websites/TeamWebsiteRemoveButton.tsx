@@ -1,5 +1,6 @@
 import { useApi, useMessages } from '@/components/hooks';
-import { Icon, Icons, LoadingButton, Text } from '@umami/react-zen';
+import { Icon, LoadingButton, Text } from '@umami/react-zen';
+import { Close } from '@/components/icons';
 
 export function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
   const { formatMessage, labels } = useMessages();
@@ -19,7 +20,7 @@ export function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
   return (
     <LoadingButton variant="quiet" onClick={() => handleRemoveTeamMember()} isLoading={isPending}>
       <Icon>
-        <Icons.Close />
+        <Close />
       </Icon>
       <Text>{formatMessage(labels.remove)}</Text>
     </LoadingButton>

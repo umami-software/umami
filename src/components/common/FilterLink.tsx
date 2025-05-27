@@ -1,8 +1,9 @@
 import { ReactNode } from 'react';
 import classNames from 'classnames';
 import Link from 'next/link';
-import { Icon, Icons } from '@umami/react-zen';
+import { Icon } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
+import { ExternalLink } from '@/components/icons';
 import styles from './FilterLink.module.css';
 
 export interface FilterLinkProps {
@@ -44,7 +45,7 @@ export function FilterLink({
       {externalUrl && (
         <a className={styles.link} href={externalUrl} target="_blank" rel="noreferrer noopener">
           <Icon className={styles.icon}>
-            <Icons.ExternalLink />
+            <ExternalLink />
           </Icon>
         </a>
       )}

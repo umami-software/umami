@@ -1,7 +1,7 @@
 import { Button, Icon, DialogTrigger, Popover, Column, Label } from '@umami/react-zen';
 import { TimezoneSetting } from '@/app/(main)/settings/profile/TimezoneSetting';
 import { DateRangeSetting } from '@/app/(main)/settings/profile/DateRangeSetting';
-import { Icons } from '@/components/icons';
+import { Gear } from '@/components/icons';
 import { useMessages } from '@/components/hooks';
 
 export function SettingsButton() {
@@ -11,7 +11,7 @@ export function SettingsButton() {
     <DialogTrigger>
       <Button variant="quiet">
         <Icon>
-          <Icons.Gear />
+          <Gear />
         </Icon>
       </Button>
       <Popover placement="bottom end">

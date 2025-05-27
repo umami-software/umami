@@ -1,6 +1,7 @@
-import { Icon, Icons, Text } from '@umami/react-zen';
+import { Icon, Text } from '@umami/react-zen';
 import styles from './ErrorMessage.module.css';
 import { useMessages } from '@/components/hooks';
+import { Alert } from '@/components/icons';
 
 export function ErrorMessage() {
   const { formatMessage, messages } = useMessages();
@@ -8,7 +9,7 @@ export function ErrorMessage() {
   return (
     <div className={styles.error}>
       <Icon className={styles.icon} size="lg">
-        <Icons.Alert />
+        <Alert />
       </Icon>
       <Text>{formatMessage(messages.error)}</Text>
     </div>

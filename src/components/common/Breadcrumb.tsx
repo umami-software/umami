@@ -1,7 +1,8 @@
-import Link from 'next/link';
-import { Flexbox, Icon, Icons, Text } from '@umami/react-zen';
-import styles from './Breadcrumb.module.css';
 import { Fragment } from 'react';
+import Link from 'next/link';
+import { Row, Icon, Text } from '@umami/react-zen';
+import { Chevron } from '@/components/icons';
+import styles from './Breadcrumb.module.css';
 
 export interface BreadcrumbProps {
   data: {
@@ -12,7 +13,7 @@ export interface BreadcrumbProps {
 
 export function Breadcrumb({ data }: BreadcrumbProps) {
   return (
-    <Flexbox alignItems="center" gap={3} className={styles.bar}>
+    <Row alignItems="center" gap className={styles.bar}>
       {data.map((a, i) => {
         return (
           <Fragment key={i}>
@@ -25,12 +26,12 @@ export function Breadcrumb({ data }: BreadcrumbProps) {
             )}
             {i !== data.length - 1 ? (
               <Icon rotate={270}>
-                <Icons.Chevron />
+                <Chevron />
               </Icon>
             ) : null}
           </Fragment>
         );
       })}
-    </Flexbox>
+    </Row>
   );
 }

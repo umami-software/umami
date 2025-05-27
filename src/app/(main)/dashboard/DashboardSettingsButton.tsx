@@ -1,5 +1,5 @@
 import { Row, TooltipTrigger, Tooltip, Icon, Text, Button } from '@umami/react-zen';
-import { Icons } from '@/components/icons';
+import { BarChart, Edit } from '@/components/icons';
 import { saveDashboard } from '@/store/dashboard';
 import { useMessages } from '@/components/hooks';
 
@@ -19,14 +19,14 @@ export function DashboardSettingsButton() {
       <TooltipTrigger>
         <Button onPress={handleToggleCharts}>
           <Icon>
-            <Icons.BarChart />
+            <BarChart />
           </Icon>
         </Button>
         <Tooltip placement="bottom">{formatMessage(labels.toggleCharts)}</Tooltip>
       </TooltipTrigger>
       <Button onPress={handleEdit}>
         <Icon>
-          <Icons.Edit />
+          <Edit />
         </Icon>
         <Text>{formatMessage(labels.edit)}</Text>
       </Button>

@@ -2,10 +2,9 @@ import { ThemeButton, Row, Button, Icon } from '@umami/react-zen';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { ProfileButton } from '@/components/input/ProfileButton';
 import { TeamsButton } from '@/components/input/TeamsButton';
-import useGlobalState from '@/components/hooks/useGlobalState';
-import { Lucide } from '@/components/icons';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
-import { useNavigation } from '@/components/hooks';
+import { PanelLeft, Slash } from '@/components/icons';
+import { useNavigation, useGlobalState } from '@/components/hooks';
 
 export function MenuBar() {
   const [isCollapsed, setCollapsed] = useGlobalState('sidenav-collapsed');
@@ -26,7 +25,7 @@ export function MenuBar() {
       <Row alignItems="center">
         <Button onPress={() => setCollapsed(!isCollapsed)} variant="quiet">
           <Icon>
-            <Lucide.PanelLeft />
+            <PanelLeft />
           </Icon>
         </Button>
         <Row alignItems="center" gap="1">
@@ -34,7 +33,7 @@ export function MenuBar() {
           {websiteId && (
             <>
               <Icon strokeColor="7" rotate={-25}>
-                <Lucide.Slash />
+                <Slash />
               </Icon>
               <WebsiteSelect variant="quiet" websiteId={websiteId} onSelect={handleSelect} />
             </>

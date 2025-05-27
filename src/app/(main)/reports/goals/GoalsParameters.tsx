@@ -1,5 +1,5 @@
 import { useMessages, useReport } from '@/components/hooks';
-import { Icons } from '@/components/icons';
+import { Plus, Eye, Bolt } from '@/components/icons';
 import { formatNumber } from '@/lib/format';
 import {
   Button,
@@ -60,7 +60,7 @@ export function GoalsParameters() {
       <MenuTrigger>
         <Button>
           <Icon>
-            <Icons.Plus />
+            <Plus />
           </Icon>
         </Button>
         <Popover placement="start">
@@ -90,7 +90,7 @@ export function GoalsParameters() {
               return (
                 <MenuTrigger key={index}>
                   <ParameterList.Item
-                    icon={goal.type === 'url' ? <Icons.Eye /> : <Icons.Bolt />}
+                    icon={goal.type === 'url' ? <Eye /> : <Bolt />}
                     onRemove={() => handleRemoveGoals(index)}
                   >
                     <Column>

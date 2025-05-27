@@ -1,15 +1,7 @@
-import {
-  Button,
-  Icon,
-  Text,
-  Modal,
-  Icons,
-  DialogTrigger,
-  Dialog,
-  useToast,
-} from '@umami/react-zen';
+import { Button, Icon, Text, Modal, DialogTrigger, Dialog, useToast } from '@umami/react-zen';
 import { UserAddForm } from './UserAddForm';
 import { useMessages, useModified } from '@/components/hooks';
+import { Plus } from '@/components/icons';
 
 export function UserAddButton({ onSave }: { onSave?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();
@@ -26,7 +18,7 @@ export function UserAddButton({ onSave }: { onSave?: () => void }) {
     <DialogTrigger>
       <Button variant="primary" data-test="button-create-user">
         <Icon>
-          <Icons.Plus />
+          <Plus />
         </Icon>
         <Text>{formatMessage(labels.createUser)}</Text>
       </Button>
