@@ -9,7 +9,6 @@ import del from 'rollup-plugin-delete';
 import nodeExternals from 'rollup-plugin-node-externals';
 import esbuild from 'rollup-plugin-esbuild';
 import dts from 'rollup-plugin-dts';
-import svgr from '@svgr/rollup';
 
 const md5 = str => crypto.createHash('md5').update(str).digest('hex');
 
@@ -53,7 +52,6 @@ const jsBundle = {
         },
       },
     }),
-    svgr({ icon: true }),
     nodeExternals(),
     json(),
     alias(aliasConfig),
