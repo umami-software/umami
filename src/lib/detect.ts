@@ -146,9 +146,9 @@ export async function getClientInfo(request: Request, payload: Record<string, an
   const userAgent = payload?.userAgent || request.headers.get('user-agent');
   const ip = payload?.ip || getIpAddress(request.headers);
   const location = await getLocation(ip, request.headers, !!payload?.ip);
-  const country = decodeURIComponent(location?.country);
-  const region = decodeURIComponent(location?.region);
-  const city = decodeURIComponent(location?.city);
+  const country = decodeURIComponent(location?.country || 'UNKNOWN');
+  const region = decodeURIComponent(location?.region || 'UNKNOWN');
+  const city = decodeURIComponent(location?.city || 'UNKNOWN');
   const browser = browserName(userAgent);
   const os = detectOS(userAgent) as string;
   const device = getDevice(payload?.screen, os);
