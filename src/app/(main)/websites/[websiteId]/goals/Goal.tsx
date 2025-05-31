@@ -16,7 +16,7 @@ import {
   AlertDialog,
 } from '@umami/react-zen';
 import { useMessages, useResultQuery } from '@/components/hooks';
-import { Edit, More, Trash, File, Lightning, User, Eye } from '@/components/icons';
+import { Edit, More, Trash, File, Lightning, User } from '@/components/icons';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { formatLongNumber } from '@/lib/format';
 import { GoalAddForm } from '@/app/(main)/websites/[websiteId]/goals/GoalAddForm';
@@ -62,7 +62,7 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
             </Row>
           </Column>
           <Column>
-            <ActionsButton id={id} websiteId={websiteId} />
+            <ActionsButton id={id} name={name} websiteId={websiteId} />
           </Column>
         </Grid>
         <Row alignItems="center" justifyContent="space-between" gap>
@@ -77,7 +77,9 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
             <Text>{parameters.value}</Text>
           </Row>
           <Row alignItems="center" gap>
-            <Icon>{isPage ? <Eye /> : <User />}</Icon>
+            <Icon>
+              <User />
+            </Icon>
             <Text title={`${data?.num} / ${data?.total}`}>{`${formatLongNumber(
               data?.num,
             )} / ${formatLongNumber(data?.total)}`}</Text>
@@ -99,8 +101,16 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
   );
 }
 
-const ActionsButton = ({ id, websiteId }: { id: string; websiteId: string }) => {
-  const { formatMessage, labels } = useMessages();
+const ActionsButton = ({
+  id,
+  name,
+  websiteId,
+}: {
+  id: string;
+  name: string;
+  websiteId: string;
+}) => {
+  const { formatMessage, labels, messages } = useMessages();
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const { mutate, touch } = useDeleteQuery(`/reports/${id}`);
@@ -154,7 +164,11 @@ const ActionsButton = ({ id, websiteId }: { id: string; websiteId: string }) => 
       </MenuTrigger>
       <Modal isOpen={showEdit || showDelete} isDismissable={true}>
         {showEdit && (
-          <Dialog variant="modal" style={{ minHeight: 375, minWidth: 300 }}>
+          <Dialog
+            title={formatMessage(labels.goal)}
+            variant="modal"
+            style={{ minHeight: 375, minWidth: 400 }}
+          >
             <GoalAddForm id={id} websiteId={websiteId} onClose={handleClose} />
           </Dialog>
         )}
@@ -163,7 +177,9 @@ const ActionsButton = ({ id, websiteId }: { id: string; websiteId: string }) => 
             title={formatMessage(labels.delete)}
             onConfirm={handleDelete}
             onCancel={handleClose}
-          />
+          >
+            {formatMessage(messages.confirmDelete, { target: name })}
+          </AlertDialog>
         )}
       </Modal>
     </>

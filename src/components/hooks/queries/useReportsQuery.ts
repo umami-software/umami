@@ -4,23 +4,12 @@ import { useModified } from '../useModified';
 
 export function useReportsQuery({ websiteId, teamId }: { websiteId?: string; teamId?: string }) {
   const { modified } = useModified(`reports`);
-  const { get, del, useMutation } = useApi();
-  const queryResult = usePagedQuery({
+  const { get } = useApi();
+
+  return usePagedQuery({
     queryKey: ['reports', { websiteId, teamId, modified }],
     queryFn: (params: any) => {
       return get('/reports', { websiteId, teamId, ...params });
     },
   });
-  const { mutate } = useMutation({ mutationFn: (reportId: string) => del(`/reports/${reportId}`) });
-
-  const deleteReport = (reportId: any) => {
-    mutate(reportId, {
-      onSuccess: () => {},
-    });
-  };
-
-  return {
-    ...queryResult,
-    deleteReport,
-  };
 }

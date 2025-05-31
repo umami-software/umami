@@ -1,6 +1,6 @@
 import { Icon, Text, Row, NavMenu, NavMenuItem } from '@umami/react-zen';
 import {
-  Overview,
+  Eye,
   Lightning,
   User,
   Clock,
@@ -24,7 +24,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
     {
       id: 'overview',
       label: formatMessage(labels.overview),
-      icon: <Overview />,
+      icon: <Eye />,
       path: '',
     },
     {

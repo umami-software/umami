@@ -15,7 +15,11 @@ export function GoalAddButton({ websiteId }: { websiteId: string }) {
         <Text>{formatMessage(labels.addGoal)}</Text>
       </Button>
       <Modal>
-        <Dialog variant="modal" title={formatMessage(labels.addGoal)} style={{ width: '400px' }}>
+        <Dialog
+          variant="modal"
+          title={formatMessage(labels.addGoal)}
+          style={{ minHeight: 375, minWidth: 400 }}
+        >
           {({ close }) => <GoalAddForm websiteId={websiteId} onClose={close} />}
         </Dialog>
       </Modal>

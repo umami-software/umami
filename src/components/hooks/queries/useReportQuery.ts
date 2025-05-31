@@ -12,5 +12,6 @@ export function useReportQuery(reportId: string) {
         ...data,
       });
     },
+    enabled: !!reportId,
   });
 }

@@ -10,7 +10,6 @@ import {
   Radio,
   Text,
   Icon,
-  Loading,
 } from '@umami/react-zen';
 import { useApi, useMessages, useModified, useReportQuery } from '@/components/hooks';
 import { File, Lightning } from '@/components/icons';
@@ -54,7 +53,7 @@ export function GoalAddForm({
   };
 
   if (id && !data) {
-    return <Loading position="page" icon="dots" />;
+    return null;
   }
 
   return (

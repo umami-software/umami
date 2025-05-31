@@ -12,7 +12,7 @@ export function usePagedQuery<T = any>({
   const { query: queryParams } = useNavigation();
   const [params, setParams] = useState<PageParams>({
     search: '',
-    page: +queryParams.page || 1,
+    page: +queryParams?.page || 1,
   });
 
   const { useQuery } = useApi();

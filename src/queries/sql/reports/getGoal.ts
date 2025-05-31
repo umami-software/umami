@@ -30,7 +30,7 @@ async function relationalQuery(websiteId: string, criteria: GoalCriteria) {
     `
     select count(*) as num,
     (
-      select count(${isPage ? '*' : 'distinct session_id'})
+      select count(distinct session_id)
       from website_event
       where website_id = {websiteId:UUID}
       and event_type = ${eventType}
@@ -59,10 +59,9 @@ async function clickhouseQuery(websiteId: string, criteria: GoalCriteria) {
     `
     select count(*) as num,
     (
-      select count(${isPage ? '*' : 'distinct session_id'})
+      select count(distinct session_id)
       from website_event
       where website_id = {websiteId:UUID}
-      and event_type = ${eventType}
       ${dateQuery}
     ) as total
     from website_event
