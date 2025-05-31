@@ -1,7 +1,8 @@
 import { Button, Icon, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
-import { useApi, useMessages, useModified } from '@/components/hooks';
+import { useMessages } from '@/components/hooks';
 import { Trash } from '@/components/icons';
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
+import { useDeleteQuery } from '@/components/hooks/queries/useDeleteQuery';
 
 export function ReportDeleteButton({
   reportId,
@@ -13,11 +14,7 @@ export function ReportDeleteButton({
   onDelete?: () => void;
 }) {
   const { formatMessage, labels, messages } = useMessages();
-  const { del, useMutation } = useApi();
-  const { mutate, isPending, error } = useMutation({
-    mutationFn: reportId => del(`/reports/${reportId}`),
-  });
-  const { touch } = useModified();
+  const { mutate, isPending, error, touch } = useDeleteQuery(`/reports/${reportId}`);
 
   const handleConfirm = (close: () => void) => {
     mutate(reportId as any, {

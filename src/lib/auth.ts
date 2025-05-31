@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { Report } from '@prisma/client';
+import { Report } from '@/generated/prisma';
 import redis from '@/lib/redis';
 import debug from 'debug';
 import { PERMISSIONS, ROLE_PERMISSIONS, ROLES, SHARE_TOKEN_HEADER } from '@/lib/constants';

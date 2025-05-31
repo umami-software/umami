@@ -1,36 +1,36 @@
 import { ReactNode } from 'react';
 import classNames from 'classnames';
-import { Loading } from '@umami/react-zen';
+import { Spinner, Dots } from '@umami/react-zen';
 import { ErrorMessage } from '@/components/common/ErrorMessage';
 import { Empty } from '@/components/common/Empty';
 import styles from './LoadingPanel.module.css';
 
 export function LoadingPanel({
-  data,
   error,
+  isEmpty,
   isFetched,
   isLoading,
   loadingIcon = 'dots',
+  renderEmpty = () => <Empty />,
   className,
   children,
 }: {
   data?: any;
   error?: Error;
+  isEmpty?: boolean;
   isFetched?: boolean;
   isLoading?: boolean;
   loadingIcon?: 'dots' | 'spinner';
-  isEmpty?: boolean;
+  renderEmpty?: () => ReactNode;
   className?: string;
   children: ReactNode;
 }) {
-  const isEmpty = !isLoading && isFetched && data && Array.isArray(data) && data.length === 0;
-
   return (
     <div className={classNames(styles.panel, className)}>
-      {isLoading && !isFetched && <Loading className={styles.loading} icon={loadingIcon} />}
+      {isLoading && !isFetched && (loadingIcon === 'dots' ? <Dots /> : <Spinner />)}
       {error && <ErrorMessage />}
-      {!error && isEmpty && <Empty />}
-      {!error && !isEmpty && data && children}
+      {!error && !isLoading && isEmpty && renderEmpty()}
+      {!error && !isLoading && !isEmpty && children}
     </div>
   );
 }

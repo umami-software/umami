@@ -1,14 +1,4 @@
-import {
-  Grid,
-  Row,
-  Column,
-  TextField,
-  Label,
-  ListItem,
-  Select,
-  Icon,
-  Button,
-} from '@umami/react-zen';
+import { Grid, Column, TextField, Label, ListItem, Select, Icon, Button } from '@umami/react-zen';
 import { useFilters } from '@/components/hooks';
 import { Close } from '@/components/icons';
 
@@ -32,10 +22,10 @@ export function FilterRecord({
   const { fields, operators } = useFilters();
 
   return (
-    <Grid columns="1fr auto">
-      <Column>
-        <Label>{fields.find(f => f.name === name)?.label}</Label>
-        <Row gap alignItems="center">
+    <>
+      <Label>{fields.find(f => f.name === name)?.label}</Label>
+      <Grid columns="1fr auto" gap>
+        <Grid columns="200px 1fr" gap>
           <Select
             items={operators.filter(({ type }) => type === 'string')}
             value={operator}
@@ -50,15 +40,15 @@ export function FilterRecord({
             }}
           </Select>
           <TextField value={value} onChange={e => onChange?.(name, e.target.value)} />
-        </Row>
-      </Column>
-      <Column justifyContent="flex-end">
-        <Button variant="quiet" onPress={() => onRemove?.(name)}>
-          <Icon>
-            <Close />
-          </Icon>
-        </Button>
-      </Column>
-    </Grid>
+        </Grid>
+        <Column justifyContent="flex-end">
+          <Button variant="quiet" onPress={() => onRemove?.(name)}>
+            <Icon>
+              <Close />
+            </Icon>
+          </Button>
+        </Column>
+      </Grid>
+    </>
   );
 }

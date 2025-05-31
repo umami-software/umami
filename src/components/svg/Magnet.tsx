@@ -5,6 +5,7 @@ const SvgMagnet = (props: SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     width={512}
     height={512}
+    fill="currentColor"
     viewBox="0 0 508.467 508.467"
     {...props}
   >

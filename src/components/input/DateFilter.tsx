@@ -1,5 +1,5 @@
 import { useState, Key, Fragment } from 'react';
-import { Modal, Select, ListItem, ListSeparator, Dialog } from '@umami/react-zen';
+import { Modal, Select, ListItem, ListSeparator, Dialog, Row } from '@umami/react-zen';
 import { endOfYear } from 'date-fns';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
 import { useMessages } from '@/components/hooks';
@@ -100,7 +100,7 @@ export function DateFilter({
   };
 
   return (
-    <>
+    <Row width="200px">
       <Select
         value={value}
         placeholder={formatMessage(labels.selectDate)}
@@ -131,6 +131,6 @@ export function DateFilter({
           </Dialog>
         </Modal>
       )}
-    </>
+    </Row>
   );
 }

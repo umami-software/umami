@@ -9,8 +9,7 @@ import {
   Grid2X2,
   Settings,
 } from '@/components/icons';
-import { useMessages, useNavigation } from '@/components/hooks';
-import useGlobalState from '@/components/hooks/useGlobalState';
+import { useMessages, useNavigation, useGlobalState } from '@/components/hooks';
 
 export function SideNav(props: any) {
   const { formatMessage, labels } = useMessages();

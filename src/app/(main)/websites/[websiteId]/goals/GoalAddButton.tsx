@@ -1,4 +1,4 @@
-import { Button, MenuTrigger, Dialog, Icon, Text, Modal } from '@umami/react-zen';
+import { Button, DialogTrigger, Dialog, Icon, Text, Modal } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import { GoalAddForm } from './GoalAddForm';
 import { Plus } from '@/components/icons';
@@ -7,7 +7,7 @@ export function GoalAddButton({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <MenuTrigger>
+    <DialogTrigger>
       <Button variant="primary">
         <Icon>
           <Plus />
@@ -15,10 +15,10 @@ export function GoalAddButton({ websiteId }: { websiteId: string }) {
         <Text>{formatMessage(labels.addGoal)}</Text>
       </Button>
       <Modal>
-        <Dialog variant="modal" title={formatMessage(labels.addGoal)}>
+        <Dialog variant="modal" title={formatMessage(labels.addGoal)} style={{ width: '400px' }}>
           {({ close }) => <GoalAddForm websiteId={websiteId} onClose={close} />}
         </Dialog>
       </Modal>
-    </MenuTrigger>
+    </DialogTrigger>
   );
 }

@@ -5,6 +5,7 @@ const SvgTag = (props: SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     width="437pt"
     height="437pt"
+    fill="currentColor"
     viewBox="0 0 437.004 437"
     {...props}
   >

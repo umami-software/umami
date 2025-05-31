@@ -3,12 +3,14 @@ export {
   ArrowRight as Arrow,
   Calendar,
   ChevronRight as Chevron,
+  Clock,
   X as Close,
   Copy,
   Edit,
   Ellipsis,
   Eye,
   ExternalLink,
+  File,
   Globe,
   Grid2X2,
   LayoutDashboard,
@@ -28,6 +30,7 @@ export {
   SquarePen,
   Sun,
   Trash,
+  User,
   Users,
 } from 'lucide-react';
 export * from '@/components/svg';

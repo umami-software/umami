@@ -18,7 +18,7 @@ export function InsightsParameters() {
   };
 
   return (
-    <Form values={parameters} onSubmit={handleSubmit} gap="6">
+    <Form values={parameters} onSubmit={handleSubmit}>
       <BaseParameters allowWebsiteSelect={!id} />
       {parametersSelected && <FieldParameters />}
       {parametersSelected && <FilterParameters />}

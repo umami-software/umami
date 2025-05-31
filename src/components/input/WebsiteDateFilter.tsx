@@ -63,13 +63,13 @@ export function WebsiteDateFilter({
     <Row gap="3">
       {showButtons && !isAllTime && !isCustomRange && (
         <Row gap="1">
-          <Button onPress={() => handleIncrement(-1)} variant="quiet">
-            <Icon size="xs" rotate={180}>
+          <Button onPress={() => handleIncrement(-1)} variant="outline">
+            <Icon rotate={180}>
               <Chevron />
             </Icon>
           </Button>
-          <Button onPress={() => handleIncrement(1)} variant="quiet" isDisabled={disableForward}>
-            <Icon size="xs">
+          <Button onPress={() => handleIncrement(1)} variant="outline" isDisabled={disableForward}>
+            <Icon>
               <Chevron />
             </Icon>
           </Button>
@@ -86,10 +86,16 @@ export function WebsiteDateFilter({
       {!isAllTime && compare && (
         <Row alignItems="center" gap>
           <Text weight="bold">VS</Text>
-          <Select value={compare} onChange={handleSelect} popoverProps={{ style: { width: 200 } }}>
-            <ListItem id="prev">{formatMessage(labels.previousPeriod)}</ListItem>
-            <ListItem id="yoy">{formatMessage(labels.previousYear)}</ListItem>
-          </Select>
+          <Row width="200px">
+            <Select
+              value={compare}
+              onChange={handleSelect}
+              popoverProps={{ style: { width: 200 } }}
+            >
+              <ListItem id="prev">{formatMessage(labels.previousPeriod)}</ListItem>
+              <ListItem id="yoy">{formatMessage(labels.previousYear)}</ListItem>
+            </Select>
+          </Row>
         </Row>
       )}
       {!isAllTime && allowCompare && (

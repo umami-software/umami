@@ -13,9 +13,8 @@ import {
   Row,
   Box,
 } from '@umami/react-zen';
-import { User, Users } from 'lucide-react';
 import { useLoginQuery, useMessages, useTeamsQuery, useNavigation } from '@/components/hooks';
-import { Chevron } from '@/components/icons';
+import { Chevron, User, Users } from '@/components/icons';
 
 export function TeamsButton({
   className,

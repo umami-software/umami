@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@/generated/prisma';
 import { ROLES } from '@/lib/constants';
 import prisma from '@/lib/prisma';
 import { PageResult, Role, User, PageParams } from '@/lib/types';

@@ -69,10 +69,12 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
                       {hour > 0 && (
                         <TooltipTrigger delay={0}>
                           <Focusable>
-                            <div
-                              className={styles.block}
-                              style={{ opacity: pct, transform: `scale(${pct})` }}
-                            />
+                            <div>
+                              <div
+                                className={styles.block}
+                                style={{ opacity: pct, transform: `scale(${pct})` }}
+                              />
+                            </div>
                           </Focusable>
                           <Tooltip placement="right">{`${formatMessage(
                             labels.visitors,

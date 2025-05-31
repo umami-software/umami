@@ -67,7 +67,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
       id: 'journeys',
       label: formatMessage(labels.journey),
       icon: <Path />,
-      path: '/goals',
+      path: '/journeys',
     },
     {
       id: 'retention',
@@ -106,7 +106,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
           <Link key={id} href={renderTeamUrl(`/websites/${websiteId}${path}`)}>
             <NavMenuItem isSelected={isSelected}>
               <Row alignItems="center" gap>
-                <Icon style={{ fill: 'currentcolor' }}>{icon}</Icon>
+                <Icon>{icon}</Icon>
                 <Text>{label}</Text>
               </Row>
             </NavMenuItem>
