@@ -20,7 +20,7 @@ export function GoalsPage({ websiteId }: { websiteId: string }) {
       <SectionHeader>
         <GoalAddButton websiteId={websiteId} />
       </SectionHeader>
-      <LoadingPanel data={result.data} isLoading={query.isLoading} error={query.error}>
+      <LoadingPanel data={result?.data} isLoading={query?.isLoading} error={query?.error}>
         <Grid columns="1fr 1fr" gap>
           {result?.data?.map((report: any) => (
             <Panel key={report.id}>

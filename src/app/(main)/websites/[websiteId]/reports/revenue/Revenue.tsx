@@ -131,6 +131,7 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
               stacked={true}
               currency={currency}
               renderXLabel={renderDateLabels(unit, locale)}
+              height="400px"
             />
           </Panel>
           <Panel>

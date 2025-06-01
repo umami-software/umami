@@ -27,24 +27,25 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
     },
   });
 
-  const rows = data.reduce((arr: any[], row: { date: any; visitors: any; day: any }) => {
-    const { date, visitors, day } = row;
-    if (day === 0) {
-      return arr.concat({
-        date,
-        visitors,
-        records: days
-          .reduce((arr, day) => {
-            arr[day] = data.find(
-              (x: { date: any; day: number }) => x.date === date && x.day === day,
-            );
-            return arr;
-          }, [])
-          .filter(n => n),
-      });
-    }
-    return arr;
-  }, []);
+  const rows =
+    data?.reduce((arr: any[], row: { date: any; visitors: any; day: any }) => {
+      const { date, visitors, day } = row;
+      if (day === 0) {
+        return arr.concat({
+          date,
+          visitors,
+          records: days
+            .reduce((arr, day) => {
+              arr[day] = data.find(
+                (x: { date: any; day: number }) => x.date === date && x.day === day,
+              );
+              return arr;
+            }, [])
+            .filter(n => n),
+        });
+      }
+      return arr;
+    }, []) || [];
 
   const totalDays = rows.length;
 

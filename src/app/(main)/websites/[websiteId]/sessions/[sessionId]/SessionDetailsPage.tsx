@@ -21,36 +21,38 @@ export function SessionDetailsPage({
 
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
-      <Grid columns="260px 1fr" gap>
-        <Column gap="6">
-          <Row justifyContent="center">
-            <Avatar seed={data?.id} size={128} />
-          </Row>
-          <SessionInfo data={data} />
-        </Column>
-        <Column gap>
-          <SessionStats data={data} />
-          <Panel>
-            <Tabs>
-              <TabList>
-                <Tab id="activity">{formatMessage(labels.activity)}</Tab>
-                <Tab id="properties">{formatMessage(labels.properties)}</Tab>
-              </TabList>
-              <TabPanel id="activity">
-                <SessionActivity
-                  websiteId={websiteId}
-                  sessionId={sessionId}
-                  startDate={data?.firstAt}
-                  endDate={data?.lastAt}
-                />
-              </TabPanel>
-              <TabPanel id="properties">
-                <SessionData sessionId={sessionId} websiteId={websiteId} />
-              </TabPanel>
-            </Tabs>
-          </Panel>
-        </Column>
-      </Grid>
+      {data && (
+        <Grid columns="260px 1fr" gap>
+          <Column gap="6">
+            <Row justifyContent="center">
+              <Avatar seed={data?.id} size={128} />
+            </Row>
+            <SessionInfo data={data} />
+          </Column>
+          <Column gap>
+            <SessionStats data={data} />
+            <Panel>
+              <Tabs>
+                <TabList>
+                  <Tab id="activity">{formatMessage(labels.activity)}</Tab>
+                  <Tab id="properties">{formatMessage(labels.properties)}</Tab>
+                </TabList>
+                <TabPanel id="activity">
+                  <SessionActivity
+                    websiteId={websiteId}
+                    sessionId={sessionId}
+                    startDate={data?.firstAt}
+                    endDate={data?.lastAt}
+                  />
+                </TabPanel>
+                <TabPanel id="properties">
+                  <SessionData sessionId={sessionId} websiteId={websiteId} />
+                </TabPanel>
+              </Tabs>
+            </Panel>
+          </Column>
+        </Grid>
+      )}
     </LoadingPanel>
   );
 }
