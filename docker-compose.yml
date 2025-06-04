@@ -13,6 +13,8 @@ services:
       DATABASE_URL: postgresql://umami:umami@db:5432/umami
       DATABASE_TYPE: postgresql
       APP_SECRET: replace-me-with-a-random-string
+      DISABLE_TELEMETRY: 1
+      REMOVE_TRAILING_SLASH: 1
     depends_on:
       db:
         condition: service_healthy
@@ -23,19 +25,56 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
   db:
-    image: postgres:15-alpine
+    image: postgres:15
     environment:
       POSTGRES_DB: umami
       POSTGRES_USER: umami
       POSTGRES_PASSWORD: umami
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
     volumes:
       - umami-db-data:/var/lib/postgresql/data
-    restart: always
+      - ./sql/schema.postgresql.sql:/docker-entrypoint-initdb.d/schema.postgresql.sql:ro
+    # CRITICAL: PostgreSQL optimized for 64GB RAM
+    command: |
+      postgres
+      -c shared_buffers=16GB
+      -c effective_cache_size=48GB
+      -c work_mem=512MB
+      -c maintenance_work_mem=4GB
+      -c max_connections=300
+      -c wal_buffers=32MB
+      -c checkpoint_completion_target=0.9
+      -c checkpoint_timeout=15min
+      -c max_wal_size=8GB
+      -c min_wal_size=2GB
+      -c random_page_cost=1.1
+      -c effective_io_concurrency=200
+      -c max_worker_processes=16
+      -c max_parallel_workers=8
+      -c max_parallel_workers_per_gather=4
+      -c temp_buffers=32MB
+      -c listen_addresses='*'
+      -c log_statement=all
+      -c log_destination=stderr
+      -c logging_collector=on
+      -c log_filename='postgresql-%Y-%m-%d.log'
+    # CRITICAL: Increase shared memory for PostgreSQL
+    shm_size: 18gb
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
-      interval: 5s
+      test: ["CMD-SHELL", "pg_isready -U umami -d umami"]
+      interval: 10s
       timeout: 5s
       retries: 5
+    restart: always
+    networks:
+      - umami
+
 volumes:
   umami-db-data:
+    driver: local
+
+networks:
+  umami:
+    driver: bridge
