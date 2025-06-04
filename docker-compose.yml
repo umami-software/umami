@@ -1,7 +1,12 @@
 ---
 services:
   umami:
-    image: ghcr.io/umami-software/umami:postgresql-latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URL: postgresql://umami:umami@db:5432/umami
+    image: umami-local:dev
     ports:
       - "3000:3000"
     environment:

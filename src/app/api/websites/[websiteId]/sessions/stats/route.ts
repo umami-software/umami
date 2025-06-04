@@ -12,6 +12,7 @@ export async function GET(
   const schema = z.object({
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
+    pathPrefix: z.string().optional(),
     ...filterParams,
   });
 
@@ -22,6 +23,7 @@ export async function GET(
   }
 
   const { websiteId } = await params;
+  const { pathPrefix } = query;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
@@ -35,6 +37,7 @@ export async function GET(
     ...filters,
     startDate,
     endDate,
+    pathPrefix,
   });
 
   const data = Object.keys(metrics[0]).reduce((obj, key) => {
