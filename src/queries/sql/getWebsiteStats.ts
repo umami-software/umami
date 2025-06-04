@@ -6,7 +6,7 @@ import { QueryFilters } from '@/lib/types';
 import { EVENT_COLUMNS } from '@/lib/constants';
 
 export async function getWebsiteStats(
-  ...args: [websiteId: string, filters: QueryFilters]
+  ...args: [websiteId: string, filters: QueryFilters & { pathPrefix?: string }]
 ): Promise<
   { pageviews: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
 > {
@@ -18,7 +18,7 @@ export async function getWebsiteStats(
 
 async function relationalQuery(
   websiteId: string,
-  filters: QueryFilters,
+  filters: QueryFilters & { pathPrefix?: string },
 ): Promise<
   { pageviews: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
 > {
@@ -28,8 +28,7 @@ async function relationalQuery(
     eventType: EVENT_TYPE.pageView,
   });
 
-  return rawQuery(
-    `
+  let sql = `
     select
       sum(t.c) as "pageviews",
       count(distinct t.session_id) as "visitors",
@@ -49,16 +48,29 @@ async function relationalQuery(
         and website_event.created_at between {{startDate}} and {{endDate}}
         and event_type = {{eventType}}
         ${filterQuery}
+  `;
+
+  if (filters.pathPrefix) {
+    sql += `
+        and (
+          website_event.url_path LIKE {{pathPrefix}}
+          or website_event.url_path LIKE {{pathPrefixWithLang}}
+        )`;
+    params.pathPrefix = `${filters.pathPrefix}%`;
+    params.pathPrefixWithLang = `%/en${filters.pathPrefix}%`;
+  }
+
+  sql += `
       group by 1, 2
     ) as t
-    `,
-    params,
-  );
+  `;
+
+  return rawQuery(sql, params);
 }
 
 async function clickhouseQuery(
   websiteId: string,
-  filters: QueryFilters,
+  filters: QueryFilters & { pathPrefix?: string },
 ): Promise<
   { pageviews: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
 > {
@@ -90,6 +102,19 @@ async function clickhouseQuery(
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
         ${filterQuery}
+    `;
+
+    if (filters.pathPrefix) {
+      sql += `
+        and (
+          url_path LIKE {pathPrefix:String}
+          or url_path LIKE {pathPrefixWithLang:String}
+        )`;
+      params.pathPrefix = `${filters.pathPrefix}%`;
+      params.pathPrefixWithLang = `%/en${filters.pathPrefix}%`;
+    }
+
+    sql += `
       group by session_id, visit_id
     ) as t;
     `;
@@ -112,6 +137,19 @@ async function clickhouseQuery(
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}
       ${filterQuery}
+    `;
+
+    if (filters.pathPrefix) {
+      sql += `
+        and (
+          url_path LIKE {pathPrefix:String}
+          or url_path LIKE {pathPrefixWithLang:String}
+        )`;
+      params.pathPrefix = `${filters.pathPrefix}%`;
+      params.pathPrefixWithLang = `%/en${filters.pathPrefix}%`;
+    }
+
+    sql += `
       group by session_id, visit_id
     ) as t;
     `;

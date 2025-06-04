@@ -39,6 +39,16 @@ async function relationalQuery(
 
   let entryExitQuery = '';
   let excludeDomain = '';
+  let pathPrefixQuery = '';
+
+  if (filters.pathPrefix) {
+    pathPrefixQuery = `and (
+      website_event.url_path LIKE {{pathPrefix}}
+      or website_event.url_path LIKE {{pathPrefixWithLang}}
+    )`;
+    params.pathPrefix = `${filters.pathPrefix}%`;
+    params.pathPrefixWithLang = `%/en${filters.pathPrefix}%`;
+  }
 
   if (column === 'referrer_domain') {
     excludeDomain = `and website_event.referrer_domain != website_event.hostname
@@ -74,6 +84,7 @@ async function relationalQuery(
       and website_event.created_at between {{startDate}} and {{endDate}}
       and event_type = {{eventType}}
       ${excludeDomain}
+      ${pathPrefixQuery}
       ${filterQuery}
     group by 1
     order by 2 desc
@@ -100,13 +111,23 @@ async function clickhouseQuery(
 
   let sql = '';
   let excludeDomain = '';
+  let pathPrefixQuery = '';
+
+  if (filters.pathPrefix) {
+    pathPrefixQuery = `and (
+      url_path LIKE {pathPrefix:String}
+      or url_path LIKE {pathPrefixWithLang:String}
+    )`;
+    params.pathPrefix = `${filters.pathPrefix}%`;
+    params.pathPrefixWithLang = `%/en${filters.pathPrefix}%`;
+  }
+
+  if (column === 'referrer_domain') {
+    excludeDomain = `and referrer_domain != hostname and referrer_domain != ''`;
+  }
 
   if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
     let entryExitQuery = '';
-
-    if (column === 'referrer_domain') {
-      excludeDomain = `and referrer_domain != hostname and referrer_domain != ''`;
-    }
 
     if (type === 'entry' || type === 'exit') {
       const aggregrate = type === 'entry' ? 'min' : 'max';
@@ -132,6 +153,7 @@ async function clickhouseQuery(
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}
       ${excludeDomain}
+      ${pathPrefixQuery}
       ${filterQuery}
     group by x
     order by y desc
@@ -169,6 +191,7 @@ async function clickhouseQuery(
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
         ${excludeDomain}
+        ${pathPrefixQuery}
         ${filterQuery}
       ${groupByQuery}) as g
     group by x
