@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { canViewWebsite } from '@/lib/auth';
-import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { EVENT_COLUMNS, FILTER_COLUMNS, GROUP_FILTERS, SESSION_COLUMNS } from '@/lib/constants';
 import { getValues } from '@/queries';
 import { parseRequest, getRequestDateRange } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
@@ -30,7 +30,11 @@ export async function GET(
     return unauthorized();
   }
 
-  if (!SESSION_COLUMNS.includes(type) && !EVENT_COLUMNS.includes(type)) {
+  if (
+    !SESSION_COLUMNS.includes(type) &&
+    !EVENT_COLUMNS.includes(type) &&
+    !GROUP_FILTERS.includes(type)
+  ) {
     return badRequest('Invalid type.');
   }
 
