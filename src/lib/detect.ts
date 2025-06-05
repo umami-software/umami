@@ -124,7 +124,7 @@ export async function getLocation(ip: string = '', headers: Headers, hasPayloadI
   if (!global[MAXMIND]) {
     const dir = path.join(process.cwd(), 'geo');
 
-    global[MAXMIND] = await maxmind.open(path.resolve(dir, 'GeoLite2-City.mmdb'));
+    global[MAXMIND] = await maxmind.open(process.env.GEOLITE_DB_PATH || path.resolve(dir, 'GeoLite2-City.mmdb'));
   }
 
   const result = global[MAXMIND].get(ip);
