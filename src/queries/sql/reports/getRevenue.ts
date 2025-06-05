@@ -225,6 +225,7 @@ async function clickhouseQuery(
       and ed.created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and positionCaseInsensitive(ed.data_key, 'revenue') > 0
     group by s.country
+    order by value desc
     `,
     { websiteId, startDate, endDate, currency },
   );
