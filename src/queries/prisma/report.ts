@@ -88,10 +88,7 @@ export async function createReport(data: Prisma.ReportUncheckedCreateInput): Pro
   return prisma.client.report.create({ data });
 }
 
-export async function updateReport(
-  reportId: string,
-  data: Prisma.ReportUpdateInput,
-): Promise<Report> {
+export async function updateReport(reportId: string, data: any): Promise<Report> {
   return prisma.client.report.update({ where: { id: reportId }, data });
 }
 

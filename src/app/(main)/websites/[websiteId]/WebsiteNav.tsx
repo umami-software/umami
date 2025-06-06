@@ -59,7 +59,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
     },
     {
       id: 'funnel',
-      label: formatMessage(labels.funnel),
+      label: formatMessage(labels.funnels),
       icon: <Funnel />,
       path: '/funnels',
     },

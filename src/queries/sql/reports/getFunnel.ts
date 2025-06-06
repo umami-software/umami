@@ -2,36 +2,14 @@ import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 
-const formatResults = (steps: { type: string; value: string }[]) => (results: unknown) => {
-  return steps.map((step: { type: string; value: string }, i: number) => {
-    const visitors = Number(results[i]?.count) || 0;
-    const previous = Number(results[i - 1]?.count) || 0;
-    const dropped = previous > 0 ? previous - visitors : 0;
-    const dropoff = 1 - visitors / previous;
-    const remaining = visitors / Number(results[0].count);
+export interface FunnelCriteria {
+  windowMinutes: number;
+  startDate: Date;
+  endDate: Date;
+  steps: { type: string; value: string }[];
+}
 
-    return {
-      ...step,
-      visitors,
-      previous,
-      dropped,
-      dropoff,
-      remaining,
-    };
-  });
-};
-
-export async function getFunnel(
-  ...args: [
-    websiteId: string,
-    criteria: {
-      windowMinutes: number;
-      startDate: Date;
-      endDate: Date;
-      steps: { type: string; value: string }[];
-    },
-  ]
-) {
+export async function getFunnel(...args: [websiteId: string, criteria: FunnelCriteria]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -40,12 +18,7 @@ export async function getFunnel(
 
 async function relationalQuery(
   websiteId: string,
-  criteria: {
-    windowMinutes: number;
-    startDate: Date;
-    endDate: Date;
-    steps: { type: string; value: string }[];
-  },
+  criteria: FunnelCriteria,
 ): Promise<
   {
     value: string;
@@ -70,7 +43,7 @@ async function relationalQuery(
       (pv, cv, i) => {
         const levelNumber = i + 1;
         const startSum = i > 0 ? 'union ' : '';
-        const isURL = cv.type === 'url';
+        const isURL = cv.type === 'page';
         const column = isURL ? 'url_path' : 'event_name';
 
         let operator = '=';
@@ -139,12 +112,7 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  criteria: {
-    windowMinutes: number;
-    startDate: Date;
-    endDate: Date;
-    steps: { type: string; value: string }[];
-  },
+  criteria: FunnelCriteria,
 ): Promise<
   {
     value: string;
@@ -174,7 +142,7 @@ async function clickhouseQuery(
         const levelNumber = i + 1;
         const startSum = i > 0 ? 'union all ' : '';
         const startFilter = i > 0 ? 'or' : '';
-        const isURL = cv.type === 'url';
+        const isURL = cv.type === 'page';
         const column = isURL ? 'url_path' : 'event_name';
 
         let operator = '=';
@@ -248,3 +216,22 @@ async function clickhouseQuery(
     },
   ).then(formatResults(steps));
 }
+
+const formatResults = (steps: { type: string; value: string }[]) => (results: unknown) => {
+  return steps.map((step: { type: string; value: string }, i: number) => {
+    const visitors = Number(results[i]?.count) || 0;
+    const previous = Number(results[i - 1]?.count) || 0;
+    const dropped = previous > 0 ? previous - visitors : 0;
+    const dropoff = 1 - visitors / previous;
+    const remaining = visitors / Number(results[0].count);
+
+    return {
+      ...step,
+      visitors,
+      previous,
+      dropped,
+      dropoff,
+      remaining,
+    };
+  });
+};

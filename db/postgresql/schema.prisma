@@ -1,9 +1,8 @@
 generator client {
-  provider               = "prisma-client"
-  output                 = "../src/generated/prisma"
-  moduleFormat           = "esm"
-  generatedFileExtension = "ts"
-  importFileExtension    = "ts"
+  provider        = "prisma-client"
+  previewFeatures = ["driverAdapters"]
+  output          = "../src/generated/prisma"
+  moduleFormat    = "esm"
 }
 
 datasource db {
@@ -223,7 +222,7 @@ model Report {
   type        String    @db.VarChar(200)
   name        String    @db.VarChar(200)
   description String    @db.VarChar(500)
-  parameters  Json      
+  parameters  Json
   createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -238,12 +237,12 @@ model Report {
 }
 
 model Segment {
-  id          String    @id() @unique() @map("segment_id") @db.Uuid
-  websiteId   String    @map("website_id") @db.Uuid
-  name        String    @db.VarChar(200)
-  filters     Json      
-  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id        String    @id() @unique() @map("segment_id") @db.Uuid
+  websiteId String    @map("website_id") @db.Uuid
+  name      String    @db.VarChar(200)
+  filters   Json
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   website Website @relation(fields: [websiteId], references: [id])
 

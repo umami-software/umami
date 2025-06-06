@@ -10,17 +10,12 @@ import {
   Radio,
   Text,
   Icon,
+  Loading,
 } from '@umami/react-zen';
 import { useApi, useMessages, useModified, useReportQuery } from '@/components/hooks';
 import { File, Lightning } from '@/components/icons';
 
-const defaultValues = {
-  name: '',
-  type: 'page',
-  value: '',
-};
-
-export function GoalAddForm({
+export function GoalEditForm({
   id,
   websiteId,
   onSave,
@@ -36,36 +31,46 @@ export function GoalAddForm({
   const { post, useMutation } = useApi();
   const { data } = useReportQuery(id);
   const { mutate, error, isPending } = useMutation({
-    mutationFn: (params: any) => post(`/websites/${websiteId}/goals`, params),
+    mutationFn: (params: any) => post(`/reports${id ? `/${id}` : ''}`, params),
   });
 
-  const handleSubmit = async (data: any) => {
+  const handleSubmit = async ({ name, ...parameters }) => {
     mutate(
-      { id, ...data },
+      { ...data, id, name, type: 'goal', websiteId, parameters },
       {
         onSuccess: async () => {
+          if (id) touch(`report:${id}`);
+          touch('reports:goal');
           onSave?.();
           onClose?.();
-          touch('goals');
         },
       },
     );
   };
 
   if (id && !data) {
-    return null;
+    return <Loading position="page" />;
   }
 
+  const defaultValues = {
+    name: data?.name || '',
+    type: data?.parameters?.type || 'page',
+    value: data?.parameters?.value || '',
+  };
+
   return (
-    <Form
-      onSubmit={handleSubmit}
-      error={error?.message}
-      defaultValues={data?.parameters || defaultValues}
-    >
+    <Form onSubmit={handleSubmit} error={error?.message} defaultValues={defaultValues}>
       {({ watch }) => {
         const watchType = watch('type');
         return (
           <>
+            <FormField
+              name="name"
+              label={formatMessage(labels.name)}
+              rules={{ required: formatMessage(labels.required) }}
+            >
+              <TextField />
+            </FormField>
             <FormField
               name="type"
               label={formatMessage(labels.type)}
@@ -89,13 +94,6 @@ export function GoalAddForm({
               </RadioGroup>
             </FormField>
             <FormField
-              name="name"
-              label={formatMessage(labels.name)}
-              rules={{ required: formatMessage(labels.required) }}
-            >
-              <TextField />
-            </FormField>
-            <FormField
               name="value"
               label={formatMessage(watchType === 'event' ? labels.eventName : labels.path)}
               rules={{ required: formatMessage(labels.required) }}
@@ -106,7 +104,7 @@ export function GoalAddForm({
               <Button onPress={onClose} isDisabled={isPending}>
                 {formatMessage(labels.cancel)}
               </Button>
-              <FormSubmitButton>{formatMessage(id ? labels.save : labels.add)}</FormSubmitButton>
+              <FormSubmitButton>{formatMessage(labels.save)}</FormSubmitButton>
             </FormButtons>
           </>
         );

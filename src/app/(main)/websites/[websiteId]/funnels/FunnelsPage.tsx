@@ -1,15 +1,15 @@
 'use client';
 import { Grid, Loading } from '@umami/react-zen';
 import { SectionHeader } from '@/components/common/SectionHeader';
-import { Goal } from './Goal';
-import { GoalAddButton } from './GoalAddButton';
+import { Funnel } from './Funnel';
+import { FunnelAddButton } from './FunnelAddButton';
 import { WebsiteControls } from '../WebsiteControls';
 import { useDateRange, useReportsQuery } from '@/components/hooks';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 
-export function GoalsPage({ websiteId }: { websiteId: string }) {
-  const { result } = useReportsQuery({ websiteId, type: 'goal' });
+export function FunnelsPage({ websiteId }: { websiteId: string }) {
+  const { result } = useReportsQuery({ websiteId, type: 'funnel' });
   const {
     dateRange: { startDate, endDate },
   } = useDateRange(websiteId);
@@ -23,12 +23,12 @@ export function GoalsPage({ websiteId }: { websiteId: string }) {
       <WebsiteControls websiteId={websiteId} />
       <LoadingPanel isEmpty={!result?.data} isLoading={!result}>
         <SectionHeader>
-          <GoalAddButton websiteId={websiteId} />
+          <FunnelAddButton websiteId={websiteId} />
         </SectionHeader>
-        <Grid columns="1fr 1fr" gap>
+        <Grid gap>
           {result?.data?.map((report: any) => (
             <Panel key={report.id}>
-              <Goal {...report} reportId={report.id} startDate={startDate} endDate={endDate} />
+              <Funnel {...report} startDate={startDate} endDate={endDate} />
             </Panel>
           ))}
         </Grid>

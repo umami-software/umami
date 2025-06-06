@@ -1,9 +1,9 @@
 import { Button, DialogTrigger, Dialog, Icon, Text, Modal } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
-import { GoalEditForm } from './GoalEditForm';
+import { FunnelEditForm } from './FunnelEditForm';
 import { Plus } from '@/components/icons';
 
-export function GoalAddButton({ websiteId }: { websiteId: string }) {
+export function FunnelAddButton({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
 
   return (
@@ -12,15 +12,15 @@ export function GoalAddButton({ websiteId }: { websiteId: string }) {
         <Icon>
           <Plus />
         </Icon>
-        <Text>{formatMessage(labels.goal)}</Text>
+        <Text>{formatMessage(labels.funnel)}</Text>
       </Button>
       <Modal>
         <Dialog
           variant="modal"
-          title={formatMessage(labels.goal)}
-          style={{ minHeight: 375, minWidth: 400 }}
+          title={formatMessage(labels.funnel)}
+          style={{ minHeight: 375, minWidth: 600 }}
         >
-          {({ close }) => <GoalEditForm websiteId={websiteId} onClose={close} />}
+          {({ close }) => <FunnelEditForm websiteId={websiteId} onClose={close} />}
         </Dialog>
       </Modal>
     </DialogTrigger>

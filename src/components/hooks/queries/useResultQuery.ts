@@ -10,7 +10,7 @@ export function useResultQuery<T>(
 
   return useQuery<T>({
     queryKey: ['reports', type, params],
-    queryFn: () => post(`/reports/${type}`, params),
+    queryFn: () => post(`/reports/${type}`, { type, ...params }),
     enabled: !!type,
     ...options,
   });

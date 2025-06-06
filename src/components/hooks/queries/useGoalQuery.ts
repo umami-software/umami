@@ -9,9 +9,8 @@ export function useGoalQuery(
 
   return usePagedQuery({
     queryKey: ['goal', { websiteId, reportId, ...params }],
-    queryFn: (data: any) => {
+    queryFn: () => {
       return post(`/reports/goals`, {
-        ...data,
         ...params,
       });
     },

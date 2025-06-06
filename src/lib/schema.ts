@@ -56,10 +56,10 @@ export const urlOrPathParam = z.string().refine(
 
 export const reportTypeParam = z.enum([
   'funnel',
-  'insights',
+  'insight',
   'retention',
   'utm',
-  'goals',
+  'goal',
   'journey',
   'revenue',
   'attribution',
@@ -76,3 +76,58 @@ export const reportParms = {
     value: z.string().optional(),
   }),
 };
+
+export const goalReportSchema = z.object({
+  type: z.literal('goal'),
+  parameters: z
+    .object({
+      type: z.string(),
+      value: z.string(),
+      operator: z.enum(['count', 'sum', 'average']).optional(),
+      property: z.string().optional(),
+    })
+    .refine(data => {
+      if (data['type'] === 'event' && data['property']) {
+        return data['operator'] && data['property'];
+      }
+      return true;
+    }),
+});
+
+export const funnelReportSchema = z.object({
+  type: z.literal('funnel'),
+  parameters: z.object({
+    window: z.coerce.number().positive(),
+    steps: z
+      .array(
+        z.object({
+          type: z.enum(['page', 'event']),
+          value: z.string(),
+        }),
+      )
+      .min(2)
+      .max(8),
+  }),
+});
+
+export const reportBaseSchema = z.object({
+  websiteId: z.string().uuid(),
+  type: reportTypeParam,
+  name: z.string().max(200),
+  description: z.string().max(500).optional(),
+});
+
+export const reportTypeSchema = z.discriminatedUnion('type', [
+  goalReportSchema,
+  funnelReportSchema,
+]);
+
+export const reportSchema = z.intersection(reportBaseSchema, reportTypeSchema);
+
+export const reportResultSchema = z.intersection(
+  z.object({
+    ...reportParms,
+    ...filterParams,
+  }),
+  reportTypeSchema,
+);

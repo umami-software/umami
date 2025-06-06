@@ -11,12 +11,12 @@
 
 .positive {
   color: var(--success-color);
-  background: color-mix(in srgb, var(--success-color), var(--background-color) 85%);
+  background: color-mix(in srgb, var(--success-color), var(--background-color) 95%);
 }
 
 .negative {
   color: var(--danger-color);
-  background: color-mix(in srgb, var(--danger-color), var(--background-color) 85%);
+  background: color-mix(in srgb, var(--danger-color), var(--background-color) 95%);
 }
 
 .neutral {

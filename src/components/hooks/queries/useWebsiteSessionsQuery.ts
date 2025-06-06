@@ -13,9 +13,8 @@ export function useWebsiteSessionsQuery(
 
   return usePagedQuery({
     queryKey: ['sessions', { websiteId, modified, ...params, ...filters }],
-    queryFn: (data: any) => {
+    queryFn: () => {
       return get(`/websites/${websiteId}/sessions`, {
-        ...data,
         ...params,
         ...filters,
         pageSize: 20,

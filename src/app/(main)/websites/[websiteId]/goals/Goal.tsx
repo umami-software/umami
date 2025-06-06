@@ -1,26 +1,10 @@
-import { useState } from 'react';
-import {
-  Grid,
-  Row,
-  Column,
-  Text,
-  Icon,
-  Button,
-  MenuTrigger,
-  Menu,
-  MenuItem,
-  Popover,
-  ProgressBar,
-  Dialog,
-  Modal,
-  AlertDialog,
-} from '@umami/react-zen';
+import { Grid, Row, Column, Text, Icon, ProgressBar, Dialog } from '@umami/react-zen';
+import { ReportEditButton } from '@/components/input/ReportEditButton';
 import { useMessages, useResultQuery } from '@/components/hooks';
-import { Edit, More, Trash, File, Lightning, User } from '@/components/icons';
+import { File, Lightning, User } from '@/components/icons';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { formatLongNumber } from '@/lib/format';
-import { GoalAddForm } from '@/app/(main)/websites/[websiteId]/goals/GoalAddForm';
-import { useDeleteQuery } from '@/components/hooks/queries/useDeleteQuery';
+import { GoalEditForm } from './GoalEditForm';
 
 export interface GoalProps {
   id: string;
@@ -41,12 +25,12 @@ export type GoalData = { num: number; total: number };
 export function Goal({ id, name, type, parameters, websiteId, startDate, endDate }: GoalProps) {
   const { formatMessage, labels } = useMessages();
   const { data, error, isLoading } = useResultQuery<GoalData>(type, {
-    ...parameters,
     websiteId,
     dateRange: {
       startDate,
       endDate,
     },
+    parameters,
   });
   const isPage = parameters?.type === 'page';
 
@@ -62,7 +46,19 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
             </Row>
           </Column>
           <Column>
-            <ActionsButton id={id} name={name} websiteId={websiteId} />
+            <ReportEditButton id={id} name={name} type={type}>
+              {({ close }) => {
+                return (
+                  <Dialog
+                    title={formatMessage(labels.goal)}
+                    variant="modal"
+                    style={{ minHeight: 375, minWidth: 400 }}
+                  >
+                    <GoalEditForm id={id} websiteId={websiteId} onClose={close} />
+                  </Dialog>
+                );
+              }}
+            </ReportEditButton>
           </Column>
         </Grid>
         <Row alignItems="center" justifyContent="space-between" gap>
@@ -85,7 +81,7 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
             )} / ${formatLongNumber(data?.total)}`}</Text>
           </Row>
         </Row>
-        <Row alignItems="center" gap>
+        <Row alignItems="center" gap="6">
           <ProgressBar
             value={data?.num || 0}
             minValue={0}
@@ -100,88 +96,3 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
     </LoadingPanel>
   );
 }
-
-const ActionsButton = ({
-  id,
-  name,
-  websiteId,
-}: {
-  id: string;
-  name: string;
-  websiteId: string;
-}) => {
-  const { formatMessage, labels, messages } = useMessages();
-  const [showEdit, setShowEdit] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
-  const { mutate, touch } = useDeleteQuery(`/reports/${id}`);
-
-  const handleAction = (id: any) => {
-    if (id === 'edit') {
-      setShowEdit(true);
-    } else if (id === 'delete') {
-      setShowDelete(true);
-    }
-  };
-
-  const handleClose = () => {
-    setShowEdit(false);
-    setShowDelete(false);
-  };
-
-  const handleDelete = async () => {
-    mutate(null, {
-      onSuccess: async () => {
-        touch(`goals`);
-        setShowDelete(false);
-      },
-    });
-  };
-
-  return (
-    <>
-      <MenuTrigger>
-        <Button variant="quiet">
-          <Icon>
-            <More />
-          </Icon>
-        </Button>
-        <Popover placement="bottom">
-          <Menu onAction={handleAction}>
-            <MenuItem id="edit">
-              <Icon>
-                <Edit />
-              </Icon>
-              <Text>{formatMessage(labels.edit)}</Text>
-            </MenuItem>
-            <MenuItem id="delete">
-              <Icon>
-                <Trash />
-              </Icon>
-              <Text>{formatMessage(labels.delete)}</Text>
-            </MenuItem>
-          </Menu>
-        </Popover>
-      </MenuTrigger>
-      <Modal isOpen={showEdit || showDelete} isDismissable={true}>
-        {showEdit && (
-          <Dialog
-            title={formatMessage(labels.goal)}
-            variant="modal"
-            style={{ minHeight: 375, minWidth: 400 }}
-          >
-            <GoalAddForm id={id} websiteId={websiteId} onClose={handleClose} />
-          </Dialog>
-        )}
-        {showDelete && (
-          <AlertDialog
-            title={formatMessage(labels.delete)}
-            onConfirm={handleDelete}
-            onCancel={handleClose}
-          >
-            {formatMessage(messages.confirmDelete, { target: name })}
-          </AlertDialog>
-        )}
-      </Modal>
-    </>
-  );
-};

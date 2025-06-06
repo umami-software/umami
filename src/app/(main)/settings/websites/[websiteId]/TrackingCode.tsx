@@ -1,4 +1,4 @@
-import { TextArea } from '@umami/react-zen';
+import { TextField } from '@umami/react-zen';
 import { useMessages, useConfig } from '@/components/hooks';
 
 const SCRIPT_NAME = 'script.js';
@@ -21,7 +21,7 @@ export function TrackingCode({ websiteId, hostUrl }: { websiteId: string; hostUr
   return (
     <>
       <p>{formatMessage(messages.trackingCode)}</p>
-      <TextArea rows={4} value={code} isReadOnly allowCopy />
+      <TextField value={code} isReadOnly allowCopy asTextArea />
     </>
   );
 }

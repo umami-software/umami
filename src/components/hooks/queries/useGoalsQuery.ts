@@ -11,9 +11,8 @@ export function useGoalsQuery(
 
   return usePagedQuery({
     queryKey: ['goals', { websiteId, modified, ...params }],
-    queryFn: (data: any) => {
+    queryFn: () => {
       return get(`/websites/${websiteId}/goals`, {
-        ...data,
         ...params,
       });
     },

@@ -7,10 +7,8 @@ export function useReportQuery(reportId: string) {
 
   return useQuery({
     queryKey: ['report', { reportId, modified }],
-    queryFn: (data: any) => {
-      return get(`/reports/${reportId}`, {
-        ...data,
-      });
+    queryFn: () => {
+      return get(`/reports/${reportId}`);
     },
     enabled: !!reportId,
   });
