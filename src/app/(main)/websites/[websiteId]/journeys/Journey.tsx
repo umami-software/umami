@@ -185,7 +185,9 @@ export function Journey({
                     <div className={styles.visitors} title={column.visitorCount}>
                       {formatLongNumber(column.visitorCount)} {formatMessage(labels.visitors)}
                     </div>
-                    {columnIndex > 0 && <div className={styles.dropoff}>{dropOffPercent}</div>}
+                    <div>
+                      {columnIndex > 0 && <div className={styles.dropoff}>{dropOffPercent}</div>}
+                    </div>
                   </div>
                 </div>
                 <div className={styles.nodes}>

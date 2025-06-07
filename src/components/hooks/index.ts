@@ -49,7 +49,6 @@ export * from './useMessages';
 export * from './useModified';
 export * from './usePagedQuery';
 export * from './useRegionNames';
-export * from './useReport';
 export * from './useSticky';
 export * from './useNavigation';
 export * from './useTimezone';
