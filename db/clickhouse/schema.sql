@@ -277,7 +277,7 @@ SELECT DISTINCT
     ed.created_at
 FROM umami.event_data ed
 JOIN (SELECT event_id, string_value as currency
-        FROM event_data
+        FROM umami.event_data
         WHERE positionCaseInsensitive(data_key, 'currency') > 0) c
       ON c.event_id = ed.event_id
 WHERE positionCaseInsensitive(data_key, 'revenue') > 0;
