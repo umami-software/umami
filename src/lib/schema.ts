@@ -113,7 +113,7 @@ export const funnelReportSchema = z.object({
 export const journeyReportSchema = z.object({
   type: z.literal('journey'),
   parameters: z.object({
-    steps: z.coerce.number().positive(),
+    steps: z.coerce.number().min(2).max(7),
     startStep: z.string().optional(),
     endStep: z.string().optional(),
   }),

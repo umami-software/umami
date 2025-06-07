@@ -3,9 +3,9 @@
   height: 100%;
   position: relative;
 
-  --journey-line-color: var(--base600);
+  --journey-line-color: var(--base-color-6);
   --journey-active-color: var(--primary-color);
-  --journey-faded-color: var(--base300);
+  --journey-faded-color: var(--base-color-3);
 }
 
 .view {
@@ -43,8 +43,8 @@
 
 .dropoff {
   font-weight: 600;
-  color: var(--blue800);
-  background: var(--blue100);
+  color: var(--font-color-muted);
+  background: var(--base-color-3);
   padding: 4px 8px;
   border-radius: 5px;
 }
@@ -58,8 +58,8 @@
   height: 50px;
   font-size: 16px;
   font-weight: 700;
-  color: var(--base100);
-  background: var(--base800);
+  color: var(--base-color-1);
+  background: var(--base-color-12);
   z-index: 1;
   margin: 0 auto 20px;
 }
@@ -84,7 +84,7 @@
   position: relative;
   cursor: pointer;
   padding: 10px 20px;
-  background: var(--base75);
+  background: var(--base-color-3);
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -96,38 +96,31 @@
 }
 
 .node:hover:not(.selected) {
-  color: var(--base900);
-  background: var(--base100);
+  background: var(--base-color-4);
 }
 
 .node.selected {
-  color: var(--base75);
-  background: var(--base900);
-  font-weight: 400;
+  color: var(--base-color-1);
+  background: var(--base-color-12);
 }
 
 .node.active {
-  color: var(--light50);
+  color: var(--primary-font-color);
   background: var(--primary-color);
 }
 
 .node.selected .count {
-  color: var(--base50);
-  background: var(--base800);
+  color: var(--base-color-1);
+  background: var(--base-color-12);
 }
 
 .node.selected.active .count {
-  background: var(--primary600);
+  color: var(--primary-font-color);
+  background: var(--primary-color);
 }
 
 .name {
   max-width: 200px;
-}
-
-.count {
-  border-radius: 4px;
-  padding: 5px 10px;
-  background: var(--base200);
 }
 
 .line {
@@ -219,7 +212,7 @@
   position: absolute;
   border-radius: 100%;
   border: 3px solid var(--journey-line-color);
-  background: var(--light50);
+  background: var(--base-color-1);
   width: 14px;
   height: 14px;
 }

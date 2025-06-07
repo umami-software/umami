@@ -1,38 +1,67 @@
 'use client';
-import { Grid, Loading } from '@umami/react-zen';
-import { SectionHeader } from '@/components/common/SectionHeader';
-import { Journey } from './Journey';
-import { JourneyAddButton } from './JourneyAddButton';
-import { WebsiteControls } from '../WebsiteControls';
-import { useDateRange, useReportsQuery } from '@/components/hooks';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { useState } from 'react';
+import { ListItem, Select, Column, Grid, SearchField } from '@umami/react-zen';
+import { useDateRange, useMessages } from '@/components/hooks';
 import { Panel } from '@/components/common/Panel';
+import { Journey } from './Journey';
+import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
+
+const JOURNEY_STEPS = [2, 3, 4, 5, 6, 7];
+const DEFAULT_STEP = 3;
 
 export function JourneysPage({ websiteId }: { websiteId: string }) {
-  const { result } = useReportsQuery({ websiteId, type: 'journey' });
+  const { formatMessage, labels } = useMessages();
   const {
     dateRange: { startDate, endDate },
   } = useDateRange(websiteId);
-
-  if (!result) {
-    return <Loading position="page" />;
-  }
+  const [steps, setSteps] = useState(DEFAULT_STEP);
+  const [startStep, setStartStep] = useState('');
+  const [endStep, setEndStep] = useState('');
 
   return (
-    <>
+    <Column gap="6">
       <WebsiteControls websiteId={websiteId} />
-      <LoadingPanel isEmpty={!result?.data} isLoading={!result}>
-        <SectionHeader>
-          <JourneyAddButton websiteId={websiteId} />
-        </SectionHeader>
-        <Grid columns="1fr 1fr" gap>
-          {result?.data?.map((report: any) => (
-            <Panel key={report.id}>
-              <Journey {...report} reportId={report.id} startDate={startDate} endDate={endDate} />
-            </Panel>
+      <Grid columns="repeat(3, 1fr)" gap>
+        <Select
+          items={JOURNEY_STEPS}
+          label={formatMessage(labels.steps)}
+          value={steps}
+          defaultValue={steps}
+          onChange={setSteps}
+        >
+          {JOURNEY_STEPS.map(step => (
+            <ListItem key={step} id={step}>
+              {step}
+            </ListItem>
           ))}
-        </Grid>
-      </LoadingPanel>
-    </>
+        </Select>
+        <Column>
+          <SearchField
+            label={formatMessage(labels.startStep)}
+            value={startStep}
+            onSearch={setStartStep}
+            delay={1000}
+          />
+        </Column>
+        <Column>
+          <SearchField
+            label={formatMessage(labels.endStep)}
+            value={endStep}
+            onSearch={setEndStep}
+            delay={1000}
+          />
+        </Column>
+      </Grid>
+      <Panel height="900px" allowFullscreen>
+        <Journey
+          websiteId={websiteId}
+          startDate={startDate}
+          endDate={endDate}
+          steps={steps}
+          startStep={startStep}
+          endStep={endStep}
+        />
+      </Panel>
+    </Column>
   );
 }
