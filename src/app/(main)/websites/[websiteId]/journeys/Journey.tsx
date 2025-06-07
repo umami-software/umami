@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react';
-import { TooltipTrigger, Tooltip, Focusable } from '@umami/react-zen';
+import { TooltipTrigger, Tooltip, Focusable, Icon, Text, Row } from '@umami/react-zen';
 import { firstBy } from 'thenby';
 import classNames from 'classnames';
 import { useEscapeKey, useMessages, useResultQuery } from '@/components/hooks';
+import { File, Lightning } from '@/components/icons';
 import { objectToArray } from '@/lib/data';
-import styles from './Journey.module.css';
 import { formatLongNumber } from '@/lib/format';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import styles from './Journey.module.css';
 
 const NODE_HEIGHT = 60;
 const NODE_GAP = 10;
@@ -221,11 +222,12 @@ export function Journey({
                             })}
                             onClick={() => handleClick(name, columnIndex, paths)}
                           >
-                            <div className={styles.name} title={name}>
-                              {name}
-                            </div>
+                            <Row alignItems="center" className={styles.name} title={name} gap>
+                              <Icon>{name.startsWith('/') ? <File /> : <Lightning />}</Icon>
+                              <Text truncate>{name}</Text>
+                            </Row>
                             <div className={styles.count} title={nodeCount}>
-                              <TooltipTrigger delay={0}>
+                              <TooltipTrigger delay={0} isDisabled={columnIndex === 0}>
                                 <Focusable>
                                   <div>{formatLongNumber(nodeCount)}</div>
                                 </Focusable>

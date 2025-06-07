@@ -1,5 +1,6 @@
 import debug from 'debug';
 import { PrismaClient } from '@/generated/prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import { formatInTimeZone } from 'date-fns-tz';
 import { MYSQL, POSTGRESQL, getDatabaseType } from '@/lib/db';
@@ -353,7 +354,15 @@ function getClient(params?: {
     options,
   } = params || {};
 
+  const url = new URL(process.env.DATABASE_URL);
+
+  const adapter = new PrismaPg(
+    { connectionString: url.toString() },
+    { schema: url.searchParams.get('schema') },
+  );
+
   const prisma = new PrismaClient({
+    adapter,
     errorFormat: 'pretty',
     ...(logQuery && PRISMA_LOG_OPTIONS),
     ...options,

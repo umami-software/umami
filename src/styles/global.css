@@ -15,11 +15,6 @@ a:hover {
   text-decoration: none;
 }
 
-:where(svg) {
-  width: 1rem;
-  height: 1rem;
-}
-
 ::-webkit-scrollbar {
   width: 15px;
   background: transparent;

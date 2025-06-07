@@ -43,7 +43,11 @@ export function Funnel({ id, name, type, parameters, websiteId, startDate, endDa
             <ReportEditButton id={id} name={name} type={type}>
               {({ close }) => {
                 return (
-                  <Dialog title={formatMessage(labels.funnel)} variant="modal">
+                  <Dialog
+                    title={formatMessage(labels.funnel)}
+                    variant="modal"
+                    style={{ minHeight: 300, minWidth: 400 }}
+                  >
                     <FunnelEditForm id={id} websiteId={websiteId} onClose={close} />
                   </Dialog>
                 );

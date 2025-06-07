@@ -1,6 +1,15 @@
 import { useState } from 'react';
-import { Column, type ColumnProps, Row, Icon, Button } from '@umami/react-zen';
+import {
+  Column,
+  type ColumnProps,
+  Row,
+  Icon,
+  Button,
+  TooltipTrigger,
+  Tooltip,
+} from '@umami/react-zen';
 import { Maximize, Close } from '@/components/icons';
+import { useMessages } from '@/components/hooks';
 
 export interface PanelProps extends ColumnProps {
   allowFullscreen?: boolean;
@@ -16,6 +25,7 @@ const fullscreenStyles = {
 } as any;
 
 export function Panel({ allowFullscreen, style, children, ...props }: PanelProps) {
+  const { formatMessage, labels } = useMessages();
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const handleFullscreen = () => {
@@ -35,9 +45,12 @@ export function Panel({ allowFullscreen, style, children, ...props }: PanelProps
     >
       {allowFullscreen && (
         <Row justifyContent="flex-end" alignItems="center">
-          <Button variant="quiet" onPress={handleFullscreen}>
-            <Icon>{isFullscreen ? <Close /> : <Maximize />}</Icon>
-          </Button>
+          <TooltipTrigger delay={0} isDisabled={isFullscreen}>
+            <Button variant="quiet" onPress={handleFullscreen}>
+              <Icon>{isFullscreen ? <Close /> : <Maximize />}</Icon>
+            </Button>
+            <Tooltip>{formatMessage(labels.expand)}</Tooltip>
+          </TooltipTrigger>
         </Row>
       )}
       {children}
