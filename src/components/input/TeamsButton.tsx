@@ -32,7 +32,7 @@ export function TeamsButton({
   const selectedKeys = new Set([teamId || user.id]);
 
   const handleSelect = (id: Key) => {
-    router.push(id === user.id ? '/dashboard' : `/teams/${id}/dashboard`);
+    router.push(id === user.id ? '/websites' : `/teams/${id}/websites`);
   };
 
   if (!result?.count) {

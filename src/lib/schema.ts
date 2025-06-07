@@ -110,6 +110,15 @@ export const funnelReportSchema = z.object({
   }),
 });
 
+export const journeyReportSchema = z.object({
+  type: z.literal('journey'),
+  parameters: z.object({
+    steps: z.coerce.number().positive(),
+    startStep: z.string().optional(),
+    endStep: z.string().optional(),
+  }),
+});
+
 export const reportBaseSchema = z.object({
   websiteId: z.string().uuid(),
   type: reportTypeParam,
@@ -120,6 +129,7 @@ export const reportBaseSchema = z.object({
 export const reportTypeSchema = z.discriminatedUnion('type', [
   goalReportSchema,
   funnelReportSchema,
+  journeyReportSchema,
 ]);
 
 export const reportSchema = z.intersection(reportBaseSchema, reportTypeSchema);

@@ -1,4 +1,4 @@
-import { Grid, Column, Row, Text, Icon, ProgressBar, Dialog } from '@umami/react-zen';
+import { Grid, Column, Row, Text, Icon, ProgressBar, Dialog, Box } from '@umami/react-zen';
 import { useMessages, useResultQuery } from '@/components/hooks';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { File, Lightning, User } from '@/components/icons';
@@ -13,7 +13,7 @@ type FunnelResult = {
   visitors: number;
   previous: number;
   dropped: number;
-  droppoff: number;
+  dropoff: number;
   remaining: number;
 };
 
@@ -53,25 +53,35 @@ export function Funnel({ id, name, type, parameters, websiteId, startDate, endDa
         </Grid>
         {data?.map(
           (
-            { type, value, visitors, previous, dropped, remaining }: FunnelResult,
+            { type, value, visitors, previous, dropped, dropoff, remaining }: FunnelResult,
             index: number,
           ) => {
             const isPage = type === 'page';
             return (
               <Grid key={index} columns="auto 1fr" gap="6">
-                <Column>
+                <Column alignItems="center" position="relative">
                   <Row
                     borderRadius="full"
-                    backgroundColor="2"
+                    backgroundColor="3"
                     width="40px"
                     height="40px"
                     justifyContent="center"
                     alignItems="center"
+                    style={{ zIndex: 1 }}
                   >
-                    <Text weight="bold" size="4">
+                    <Text weight="bold" size="3">
                       {index + 1}
                     </Text>
                   </Row>
+                  {index > 0 && (
+                    <Box
+                      position="absolute"
+                      backgroundColor="3"
+                      width="2px"
+                      height="120px"
+                      top="-100%"
+                    />
+                  )}
                 </Column>
                 <Column gap>
                   <Row alignItems="center" justifyContent="space-between" gap>
@@ -87,12 +97,16 @@ export function Funnel({ id, name, type, parameters, websiteId, startDate, endDa
                     </Row>
                     <Row alignItems="center" gap>
                       {index > 0 && (
-                        <ChangeLabel value={-dropped}>{formatLongNumber(dropped)}</ChangeLabel>
+                        <ChangeLabel value={-dropped} title={`${-Math.round(dropoff * 100)}%`}>
+                          {formatLongNumber(dropped)}
+                        </ChangeLabel>
                       )}
                       <Icon>
                         <User />
                       </Icon>
-                      <Text title={visitors.toString()}>{formatLongNumber(visitors)}</Text>
+                      <Text title={visitors.toString()} transform="lowercase">
+                        {`${formatLongNumber(visitors)} ${formatMessage(labels.visitors)}`}
+                      </Text>
                     </Row>
                   </Row>
                   <Row alignItems="center" gap="6">
@@ -102,9 +116,11 @@ export function Funnel({ id, name, type, parameters, websiteId, startDate, endDa
                       maxValue={previous || 1}
                       style={{ width: '100%' }}
                     />
-                    <Text weight="bold" size="7">
-                      {Math.round(remaining * 100)}%
-                    </Text>
+                    <Row minWidth="90px" justifyContent="end">
+                      <Text weight="bold" size="7">
+                        {Math.round(remaining * 100)}%
+                      </Text>
+                    </Row>
                   </Row>
                 </Column>
               </Grid>

@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 12px;
+  font-size: var(--font-size);
   padding: 0.1em 0.5em;
   border-radius: 5px;
   color: var(--base500);

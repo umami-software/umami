@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { Sidebar, SidebarHeader, SidebarSection, SidebarItem } from '@umami/react-zen';
 import {
-  Copy,
   Globe,
   LayoutDashboard,
   Link as LinkIcon,
@@ -17,11 +16,6 @@ export function SideNav(props: any) {
   const [isCollapsed] = useGlobalState('sidenav-collapsed');
 
   const links = [
-    {
-      label: formatMessage(labels.dashboard),
-      href: renderTeamUrl('/dashboard'),
-      icon: <Copy />,
-    },
     {
       label: formatMessage(labels.websites),
       href: renderTeamUrl('/websites'),

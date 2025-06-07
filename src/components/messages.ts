@@ -282,6 +282,7 @@ export const labels = defineMessages({
     defaultMessage: 'Track your goals for pageviews and events.',
   },
   journey: { id: 'label.journey', defaultMessage: 'Journey' },
+  journeys: { id: 'label.journeys', defaultMessage: 'Journeys' },
   journeyDescription: {
     id: 'label.journey-description',
     defaultMessage: 'Understand how users navigate through your website.',

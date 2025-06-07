@@ -65,7 +65,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
     },
     {
       id: 'journeys',
-      label: formatMessage(labels.journey),
+      label: formatMessage(labels.journeys),
       icon: <Path />,
       path: '/journeys',
     },

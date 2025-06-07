@@ -1,7 +1,6 @@
 import { useState, Key } from 'react';
-import { Grid, Row, Column, Label, List, ListItem, Button, Heading } from '@umami/react-zen';
+import { Grid, Row, Column, Label, List, ListItem, Button, Heading, Text } from '@umami/react-zen';
 import { useFilters, useMessages } from '@/components/hooks';
-import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { FilterRecord } from '@/components/common/FilterRecord';
 
 export interface FilterEditFormProps {
@@ -73,7 +72,7 @@ export function FilterEditForm({ data = [], onChange, onClose }: FilterEditFormP
             />
           );
         })}
-        {!filters.length && <EmptyPlaceholder message="No filters selected." />}
+        {!filters.length && <Text align="center">{formatMessage(labels.none)}</Text>}
       </Column>
       <Row alignItems="center" justifyContent="flex-end" gridColumn="span 2" gap>
         <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>

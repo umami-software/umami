@@ -130,7 +130,7 @@ const redirects = [
   },
   {
     source: '/teams/:id',
-    destination: '/teams/:id/dashboard',
+    destination: '/teams/:id/websites',
     permanent: true,
   },
   {
