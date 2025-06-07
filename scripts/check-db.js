@@ -5,6 +5,7 @@ import { execSync } from 'node:child_process';
 import chalk from 'chalk';
 import semver from 'semver';
 import { PrismaClient } from '../dist/generated/prisma/client.js';
+import { PrismaPg } from '@prisma/adapter-pg';
 
 if (process.env.SKIP_DB_CHECK) {
   console.log('Skipping database check.');
@@ -21,7 +22,14 @@ function getDatabaseType(url = process.env.DATABASE_URL) {
   return type;
 }
 
-const prisma = new PrismaClient();
+const url = new URL(process.env.DATABASE_URL);
+
+const adapter = new PrismaPg(
+  { connectionString: url.toString() },
+  { schema: url.searchParams.get('schema') },
+);
+
+const prisma = new PrismaClient({ adapter });
 
 function success(msg) {
   console.log(chalk.greenBright(`✓ ${msg}`));
@@ -77,7 +85,7 @@ async function checkV1Tables() {
       );
       process.exit(1);
     }
-  } catch (e) {
+  } catch {
     // Ignore
   }
 }
@@ -105,7 +113,6 @@ async function applyMigration() {
       error(e.message);
       err = true;
     } finally {
-      await prisma.$disconnect();
       if (err) {
         process.exit(1);
       }
