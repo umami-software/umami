@@ -21,6 +21,7 @@ const fullscreenStyles = {
   height: '100%',
   top: 0,
   left: 0,
+  border: 'none',
   zIndex: 9999,
 } as any;
 

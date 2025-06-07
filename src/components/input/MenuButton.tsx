@@ -15,7 +15,7 @@ export function MenuButton({
 
   return (
     <DialogTrigger>
-      <Button variant="outline">
+      <Button variant="quiet">
         <Icon>
           <Ellipsis />
         </Icon>

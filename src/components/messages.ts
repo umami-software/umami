@@ -260,10 +260,6 @@ export const labels = defineMessages({
     id: 'message.triggered-event',
     defaultMessage: 'Triggered event',
   },
-  visitorsDroppedOff: {
-    id: 'message.visitors-dropped-off',
-    defaultMessage: 'Visitors dropped off',
-  },
   utm: { id: 'label.utm', defaultMessage: 'UTM' },
   utmDescription: {
     id: 'label.utm-description',
@@ -325,6 +321,8 @@ export const labels = defineMessages({
   addBoard: { id: 'label.add-board', defaultMessage: 'Add board' },
   cohort: { id: 'label.cohort', defaultMessage: 'Cohort' },
   expand: { id: 'label.expand', defaultMessage: 'Expand' },
+  remaining: { id: 'label.remaining', defaultMessage: 'Remaining' },
+  conversion: { id: 'label.converstion', defaultMessage: 'Conversion' },
 });
 
 export const messages = defineMessages({

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { TooltipTrigger, Tooltip, Focusable, Icon, Text, Row } from '@umami/react-zen';
+import { TooltipTrigger, Tooltip, Focusable, Icon, Text, Row, Column } from '@umami/react-zen';
 import { firstBy } from 'thenby';
 import classNames from 'classnames';
 import { useEscapeKey, useMessages, useResultQuery } from '@/components/hooks';
@@ -169,8 +169,7 @@ export function Journey({
     <LoadingPanel isEmpty={!data} isLoading={isLoading} error={error}>
       <div className={styles.container}>
         <div className={styles.view}>
-          {columns.map((column, columnIndex) => {
-            const dropOffPercent = `${~~column.dropOff}%`;
+          {columns.map(({ visitorCount, nodes }, columnIndex) => {
             return (
               <div
                 key={columnIndex}
@@ -182,16 +181,13 @@ export function Journey({
                 <div className={styles.header}>
                   <div className={styles.num}>{columnIndex + 1}</div>
                   <div className={styles.stats}>
-                    <div className={styles.visitors} title={column.visitorCount}>
-                      {formatLongNumber(column.visitorCount)} {formatMessage(labels.visitors)}
-                    </div>
-                    <div>
-                      {columnIndex > 0 && <div className={styles.dropoff}>{dropOffPercent}</div>}
+                    <div className={styles.visitors} title={visitorCount}>
+                      {formatLongNumber(visitorCount)} {formatMessage(labels.visitors)}
                     </div>
                   </div>
                 </div>
                 <div className={styles.nodes}>
-                  {column.nodes.map(
+                  {nodes.map(
                     ({
                       name,
                       totalCount,
@@ -207,6 +203,13 @@ export function Journey({
                           ? activeCount
                           : selectedCount
                         : totalCount;
+
+                      const remaining =
+                        columnIndex > 0
+                          ? Math.round((nodeCount / columns[columnIndex - 1]?.visitorCount) * 100)
+                          : 0;
+
+                      const dropped = 100 - remaining;
 
                       return (
                         <div
@@ -229,12 +232,22 @@ export function Journey({
                               <Text truncate>{name}</Text>
                             </Row>
                             <div className={styles.count} title={nodeCount}>
-                              <TooltipTrigger delay={0} isDisabled={columnIndex === 0}>
+                              <TooltipTrigger
+                                delay={0}
+                                isDisabled={columnIndex === 0 || (selectedNode && !selected)}
+                              >
                                 <Focusable>
                                   <div>{formatLongNumber(nodeCount)}</div>
                                 </Focusable>
-                                <Tooltip placement="right" offset={10}>
-                                  {dropOffPercent}
+                                <Tooltip placement="top" offset={20} showArrow>
+                                  <Text transform="lowercase" color="ruby">
+                                    {`${dropped}% ${formatMessage(labels.dropoff)}`}
+                                  </Text>
+                                  <Column>
+                                    <Text transform="lowercase">
+                                      {`${remaining}% ${formatMessage(labels.conversion)}`}
+                                    </Text>
+                                  </Column>
                                 </Tooltip>
                               </TooltipTrigger>
                             </div>
