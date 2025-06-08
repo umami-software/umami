@@ -43,7 +43,7 @@ A detailed getting started guide can be found at [umami.is/docs](https://umami.i
 ```bash
 git clone https://github.com/umami-software/umami.git
 cd umami
-npm install
+npm install --legacy-peer-deps
 ```
 
 ### Configure Umami
