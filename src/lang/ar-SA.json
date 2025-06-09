@@ -265,7 +265,7 @@
   "message.no-websites-configured": "لم تقم بإعداد اي موقع.",
   "message.page-not-found": "الصفحة غير موجودة.",
   "message.reset-website": "لإعادة ضبط موقع الويب هذا، اكتب {confirmation} في المربع أدناه للتأكيد.",
-  "message.reset-website-warning": "سيتم اعادة تعيين كافة الإحصائيات لهذا الموقع، لكن لن يتم تعيير كود التتبع",
+  "message.reset-website-warning": "سيتم اعادة تعيين كافة الإحصائيات لهذا الموقع، لكن لن يتم تغيير كود التتبع",
   "message.saved": "تم الحفظ بنجاح.",
   "message.share-url": "إحصائيات موقعك متاحة للجميع على الرابط التالي:",
   "message.team-already-member": "أنت عضو في الفريق",
