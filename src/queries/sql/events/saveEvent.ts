@@ -5,6 +5,7 @@ import kafka from '@/lib/kafka';
 import prisma from '@/lib/prisma';
 import { uuid } from '@/lib/crypto';
 import { saveEventData } from './saveEventData';
+import { saveRevenue } from './saveRevenue';
 
 export interface SaveEventArgs {
   websiteId: string;
@@ -130,6 +131,20 @@ async function relationalQuery({
       eventData,
       createdAt,
     });
+
+    const { revenue, currency } = eventData;
+
+    if (revenue > 0 && currency) {
+      await saveRevenue({
+        websiteId,
+        sessionId,
+        eventId: websiteEventId,
+        eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
+        currency,
+        revenue,
+        createdAt,
+      });
+    }
   }
 }
 
