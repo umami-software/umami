@@ -311,21 +311,14 @@ async function clickhouseQuery(
 
   const revenueEventQuery = `WITH events AS (
           select
-              ed.session_id,
-              max(ed.created_at) max_dt,
-              sum(coalesce(toDecimal64(number_value, 2), toDecimal64(string_value, 2))) as value
-          from event_data ed
-          join (select event_id
-                from event_data
-                where website_id = {websiteId:UUID}
-                  and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-                  and positionCaseInsensitive(data_key, 'currency') > 0
-                  and string_value = {currency:String}) c
-            on c.event_id = ed.event_id
+              session_id,
+              max(created_at) max_dt,
+              sum(revenue) as value
+          from website_revenue
           where website_id = {websiteId:UUID}
             and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-            and ${column} = {conversionStep:String} 
-            and positionCaseInsensitive(ed.data_key, 'revenue') > 0
+            and ${column} = {conversionStep:String}
+            and currency = {currency:String}
           group by 1),`;
 
   function getModelQuery(model: string) {
