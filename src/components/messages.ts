@@ -132,6 +132,7 @@ export const labels = defineMessages({
   selectWebsite: { id: 'label.select-website', defaultMessage: 'Select website' },
   selectRole: { id: 'label.select-role', defaultMessage: 'Select role' },
   selectDate: { id: 'label.select-date', defaultMessage: 'Select date' },
+  selectFilter: { id: 'label.select-filter', defaultMessage: 'Select filter' },
   all: { id: 'label.all', defaultMessage: 'All' },
   session: { id: 'label.session', defaultMessage: 'Session' },
   sessions: { id: 'label.sessions', defaultMessage: 'Sessions' },
@@ -331,6 +332,7 @@ export const messages = defineMessages({
   noUsers: { id: 'message.no-users', defaultMessage: 'There are no users.' },
   userDeleted: { id: 'message.user-deleted', defaultMessage: 'User deleted.' },
   noDataAvailable: { id: 'message.no-data-available', defaultMessage: 'No data available.' },
+  nothingSelected: { id: 'message.nothing-selected', defaultMessage: 'Nothing selected.' },
   confirmReset: {
     id: 'message.confirm-reset',
     defaultMessage: 'Are you sure you want to reset {target}?',

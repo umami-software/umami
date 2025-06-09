@@ -2,18 +2,14 @@ import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, getDatabaseType, POSTGRESQL, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 
-export async function getRevenue(
-  ...args: [
-    websiteId: string,
-    criteria: {
-      startDate: Date;
-      endDate: Date;
-      unit: string;
-      timezone: string;
-      currency: string;
-    },
-  ]
-) {
+export interface RevenueCriteria {
+  startDate: Date;
+  endDate: Date;
+  unit: string;
+  currency: string;
+}
+
+export async function getRevenue(...args: [websiteId: string, criteria: RevenueCriteria]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -22,13 +18,7 @@ export async function getRevenue(
 
 async function relationalQuery(
   websiteId: string,
-  criteria: {
-    startDate: Date;
-    endDate: Date;
-    unit: string;
-    timezone: string;
-    currency: string;
-  },
+  criteria: RevenueCriteria,
 ): Promise<{
   chart: { x: string; t: string; y: number }[];
   country: { name: string; value: number }[];
@@ -40,7 +30,7 @@ async function relationalQuery(
     unique_count: number;
   }[];
 }> {
-  const { startDate, endDate, timezone = 'UTC', unit = 'day', currency } = criteria;
+  const { startDate, endDate, unit = 'day', currency } = criteria;
   const { getDateSQL, rawQuery } = prisma;
   const db = getDatabaseType();
   const like = db === POSTGRESQL ? 'ilike' : 'like';
@@ -49,7 +39,7 @@ async function relationalQuery(
     `
     select
       we.event_name x,
-      ${getDateSQL('ed.created_at', unit, timezone)} t,
+      ${getDateSQL('ed.created_at', unit)} t,
       sum(coalesce(cast(number_value as decimal(10,2)), cast(string_value as decimal(10,2)))) y
     from event_data ed
     join website_event we
@@ -67,7 +57,7 @@ async function relationalQuery(
     group by  x, t
     order by t
     `,
-    { websiteId, startDate, endDate, unit, timezone, currency },
+    { websiteId, startDate, endDate, unit, currency },
   );
 
   const countryRes = await rawQuery(
@@ -140,7 +130,7 @@ async function relationalQuery(
     group by c.currency
     order by sum desc;
     `,
-    { websiteId, startDate, endDate, unit, timezone, currency },
+    { websiteId, startDate, endDate, unit, currency },
   );
 
   return { chart: chartRes, country: countryRes, total: totalRes, table: tableRes };
@@ -148,13 +138,7 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  criteria: {
-    startDate: Date;
-    endDate: Date;
-    unit: string;
-    timezone: string;
-    currency: string;
-  },
+  criteria: RevenueCriteria,
 ): Promise<{
   chart: { x: string; t: string; y: number }[];
   country: { name: string; value: number }[];
@@ -166,7 +150,7 @@ async function clickhouseQuery(
     unique_count: number;
   }[];
 }> {
-  const { startDate, endDate, timezone = 'UTC', unit = 'day', currency } = criteria;
+  const { startDate, endDate, unit = 'day', currency } = criteria;
   const { getDateSQL, rawQuery } = clickhouse;
 
   const chartRes = await rawQuery<
@@ -179,7 +163,7 @@ async function clickhouseQuery(
     `
     select
       event_name x,
-      ${getDateSQL('created_at', unit, timezone)} t,
+      ${getDateSQL('created_at', unit)} t,
       sum(coalesce(toDecimal64(number_value, 2), toDecimal64(string_value, 2))) y
     from event_data
     join (select event_id 
@@ -195,7 +179,7 @@ async function clickhouseQuery(
     group by  x, t
     order by t
     `,
-    { websiteId, startDate, endDate, unit, timezone, currency },
+    { websiteId, startDate, endDate, unit, currency },
   );
 
   const countryRes = await rawQuery<
@@ -283,7 +267,7 @@ async function clickhouseQuery(
     group by c.currency
     order by sum desc;
     `,
-    { websiteId, startDate, endDate, unit, timezone, currency },
+    { websiteId, startDate, endDate, unit, currency },
   );
 
   return { chart: chartRes, country: countryRes, total: totalRes, table: tableRes };

@@ -119,6 +119,26 @@ export const journeyReportSchema = z.object({
   }),
 });
 
+export const retentionReportSchema = z.object({
+  type: z.literal('retention'),
+});
+
+export const utmReportSchema = z.object({
+  type: z.literal('utm'),
+});
+
+export const revenueReportSchema = z.object({
+  type: z.literal('revenue'),
+});
+
+export const attributionReportSchema = z.object({
+  type: z.literal('attribution'),
+});
+
+export const insightsReportSchema = z.object({
+  type: z.literal('insights'),
+});
+
 export const reportBaseSchema = z.object({
   websiteId: z.string().uuid(),
   type: reportTypeParam,
@@ -130,6 +150,11 @@ export const reportTypeSchema = z.discriminatedUnion('type', [
   goalReportSchema,
   funnelReportSchema,
   journeyReportSchema,
+  retentionReportSchema,
+  utmReportSchema,
+  revenueReportSchema,
+  attributionReportSchema,
+  insightsReportSchema,
 ]);
 
 export const reportSchema = z.intersection(reportBaseSchema, reportTypeSchema);

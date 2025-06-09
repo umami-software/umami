@@ -5,11 +5,13 @@ export function PageHeader({
   title,
   description,
   icon,
+  showBorder = true,
   children,
 }: {
   title: string;
   description?: string;
   icon?: ReactNode;
+  showBorder?: boolean;
   allowEdit?: boolean;
   className?: string;
   children?: ReactNode;
@@ -19,7 +21,7 @@ export function PageHeader({
       justifyContent="space-between"
       alignItems="center"
       paddingY="6"
-      border="bottom"
+      border={showBorder ? 'bottom' : undefined}
       width="100%"
     >
       <Row alignItems="center" gap="3">

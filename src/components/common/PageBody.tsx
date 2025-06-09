@@ -4,7 +4,7 @@ import { AlertBanner, Loading, Column } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 
 export function PageBody({
-  maxWidth = '1600px',
+  maxWidth = '1320px',
   error,
   isLoading,
   children,

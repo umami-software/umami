@@ -2,6 +2,7 @@ export {
   AlertTriangle as Alert,
   ArrowRight as Arrow,
   Calendar,
+  ChartPie,
   ChevronRight as Chevron,
   Clock,
   X as Close,

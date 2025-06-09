@@ -32,7 +32,7 @@ export function WebsiteFilterButton({
 
   return (
     <DialogTrigger>
-      <Button variant="quiet">
+      <Button variant="outline">
         <Icon>
           <ListFilter />
         </Icon>

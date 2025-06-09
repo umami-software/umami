@@ -1,16 +1,11 @@
-import { z } from 'zod';
 import { canViewWebsite } from '@/lib/auth';
 import { unauthorized, json } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
 import { getUTM } from '@/queries';
-import { reportParms } from '@/lib/schema';
+import { reportResultSchema } from '@/lib/schema';
 
 export async function POST(request: Request) {
-  const schema = z.object({
-    ...reportParms,
-  });
-
-  const { auth, body, error } = await parseRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, reportResultSchema);
 
   if (error) {
     return error();
@@ -18,7 +13,7 @@ export async function POST(request: Request) {
 
   const {
     websiteId,
-    dateRange: { startDate, endDate, timezone },
+    dateRange: { startDate, endDate },
   } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
@@ -28,7 +23,6 @@ export async function POST(request: Request) {
   const data = await getUTM(websiteId, {
     startDate: new Date(startDate),
     endDate: new Date(endDate),
-    timezone,
   });
 
   return json(data);

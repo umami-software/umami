@@ -2,16 +2,12 @@ import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 
-export async function getRetention(
-  ...args: [
-    websiteId: string,
-    filters: {
-      startDate: Date;
-      endDate: Date;
-      timezone?: string;
-    },
-  ]
-) {
+export interface RetentionCriteria {
+  startDate: Date;
+  endDate: Date;
+}
+
+export async function getRetention(...args: [websiteId: string, criteria: RetentionCriteria]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -20,11 +16,7 @@ export async function getRetention(
 
 async function relationalQuery(
   websiteId: string,
-  filters: {
-    startDate: Date;
-    endDate: Date;
-    timezone?: string;
-  },
+  criteria: RetentionCriteria,
 ): Promise<
   {
     date: string;
@@ -34,7 +26,7 @@ async function relationalQuery(
     percentage: number;
   }[]
 > {
-  const { startDate, endDate, timezone = 'UTC' } = filters;
+  const { startDate, endDate } = criteria;
   const { getDateSQL, getDayDiffQuery, getCastColumnQuery, rawQuery } = prisma;
   const unit = 'day';
 
@@ -42,7 +34,7 @@ async function relationalQuery(
     `
     WITH cohort_items AS (
       select session_id,
-        ${getDateSQL('created_at', unit, timezone)} as cohort_date  
+        ${getDateSQL('created_at', unit)} as cohort_date  
       from session 
       where website_id = {{websiteId::uuid}}
         and created_at between {{startDate}} and {{endDate}}
@@ -50,7 +42,7 @@ async function relationalQuery(
     user_activities AS (
       select distinct
         w.session_id,
-        ${getDayDiffQuery(getDateSQL('created_at', unit, timezone), 'c.cohort_date')} as day_number
+        ${getDayDiffQuery(getDateSQL('created_at', unit), 'c.cohort_date')} as day_number
       from website_event w
       join cohort_items c
       on w.session_id = c.session_id
@@ -95,11 +87,7 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  filters: {
-    startDate: Date;
-    endDate: Date;
-    timezone?: string;
-  },
+  criteria: RetentionCriteria,
 ): Promise<
   {
     date: string;
@@ -109,7 +97,7 @@ async function clickhouseQuery(
     percentage: number;
   }[]
 > {
-  const { startDate, endDate, timezone = 'UTC' } = filters;
+  const { startDate, endDate } = criteria;
   const { getDateSQL, rawQuery } = clickhouse;
   const unit = 'day';
 
@@ -117,7 +105,7 @@ async function clickhouseQuery(
     `
     WITH cohort_items AS (
       select
-        min(${getDateSQL('created_at', unit, timezone)}) as cohort_date,
+        min(${getDateSQL('created_at', unit)}) as cohort_date,
         session_id
       from website_event
       where website_id = {websiteId:UUID}
@@ -127,7 +115,7 @@ async function clickhouseQuery(
     user_activities AS (
       select distinct
         w.session_id,
-        (${getDateSQL('created_at', unit, timezone)} - c.cohort_date) / 86400 as day_number
+        (${getDateSQL('created_at', unit)} - c.cohort_date) / 86400 as day_number
       from website_event w
       join cohort_items c
       on w.session_id = c.session_id

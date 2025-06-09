@@ -1,7 +1,8 @@
 import { useState, Key } from 'react';
-import { Grid, Row, Column, Label, List, ListItem, Button, Heading, Text } from '@umami/react-zen';
+import { Grid, Row, Column, Label, List, ListItem, Button, Heading } from '@umami/react-zen';
 import { useFilters, useMessages } from '@/components/hooks';
 import { FilterRecord } from '@/components/common/FilterRecord';
+import { Empty } from '@/components/common/Empty';
 
 export interface FilterEditFormProps {
   websiteId?: string;
@@ -11,7 +12,7 @@ export interface FilterEditFormProps {
 }
 
 export function FilterEditForm({ data = [], onChange, onClose }: FilterEditFormProps) {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, messages } = useMessages();
   const [filters, setFilters] = useState(data);
   const { fields } = useFilters();
 
@@ -72,7 +73,7 @@ export function FilterEditForm({ data = [], onChange, onClose }: FilterEditFormP
             />
           );
         })}
-        {!filters.length && <Text align="center">{formatMessage(labels.none)}</Text>}
+        {!filters.length && <Empty message={formatMessage(messages.nothingSelected)} />}
       </Column>
       <Row alignItems="center" justifyContent="flex-end" gridColumn="span 2" gap>
         <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>

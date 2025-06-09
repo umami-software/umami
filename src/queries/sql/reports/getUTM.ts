@@ -2,31 +2,20 @@ import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 
-export async function getUTM(
-  ...args: [
-    websiteId: string,
-    filters: {
-      startDate: Date;
-      endDate: Date;
-      timezone?: string;
-    },
-  ]
-) {
+export interface UTMCriteria {
+  startDate: Date;
+  endDate: Date;
+}
+
+export async function getUTM(...args: [websiteId: string, criteria: UTMCriteria]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-async function relationalQuery(
-  websiteId: string,
-  filters: {
-    startDate: Date;
-    endDate: Date;
-    timezone?: string;
-  },
-) {
-  const { startDate, endDate } = filters;
+async function relationalQuery(websiteId: string, criteria: UTMCriteria) {
+  const { startDate, endDate } = criteria;
   const { rawQuery } = prisma;
 
   return rawQuery(
@@ -47,15 +36,8 @@ async function relationalQuery(
   ).then(result => parseParameters(result as any[]));
 }
 
-async function clickhouseQuery(
-  websiteId: string,
-  filters: {
-    startDate: Date;
-    endDate: Date;
-    timezone?: string;
-  },
-) {
-  const { startDate, endDate } = filters;
+async function clickhouseQuery(websiteId: string, criteria: UTMCriteria) {
+  const { startDate, endDate } = criteria;
   const { rawQuery } = clickhouse;
 
   return rawQuery(
