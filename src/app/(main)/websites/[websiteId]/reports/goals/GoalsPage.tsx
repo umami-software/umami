@@ -17,10 +17,10 @@ export function GoalsPage({ websiteId }: { websiteId: string }) {
   return (
     <Column gap>
       <WebsiteControls websiteId={websiteId} />
-      <LoadingPanel isEmpty={!result?.data} isLoading={!result}>
-        <SectionHeader>
-          <GoalAddButton websiteId={websiteId} />
-        </SectionHeader>
+      <SectionHeader>
+        <GoalAddButton websiteId={websiteId} />
+      </SectionHeader>
+      <LoadingPanel isEmpty={!result?.data?.length} isLoading={!result}>
         <Grid columns="1fr 1fr" gap>
           {result?.data?.map((report: any) => (
             <Panel key={report.id}>

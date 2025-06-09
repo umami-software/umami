@@ -36,7 +36,7 @@ export function WebsiteFilterButton({
         <Icon>
           <ListFilter />
         </Icon>
-        {showText && <Text weight="bold">{formatMessage(labels.filter)}</Text>}
+        {showText && <Text>{formatMessage(labels.filter)}</Text>}
       </Button>
       <Modal>
         <Dialog>

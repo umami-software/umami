@@ -133,6 +133,12 @@ export const revenueReportSchema = z.object({
 
 export const attributionReportSchema = z.object({
   type: z.literal('attribution'),
+  parameters: z.object({
+    model: z.enum(['first-click', 'last-click']),
+    type: z.enum(['page', 'event']),
+    step: z.string(),
+    currency: z.string().optional(),
+  }),
 });
 
 export const insightsReportSchema = z.object({

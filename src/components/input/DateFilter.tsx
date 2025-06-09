@@ -106,7 +106,7 @@ export function DateFilter({
         placeholder={formatMessage(labels.selectDate)}
         onChange={handleChange}
         renderValue={renderValue}
-        popoverProps={{ style: { width: 200 } }}
+        popoverProps={{ placement: 'top', style: { width: 200 } }}
       >
         {options.map(({ label, value, divider }: any) => {
           return (

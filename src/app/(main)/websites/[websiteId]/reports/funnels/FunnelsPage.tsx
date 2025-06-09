@@ -17,10 +17,10 @@ export function FunnelsPage({ websiteId }: { websiteId: string }) {
   return (
     <Column gap>
       <WebsiteControls websiteId={websiteId} />
-      <LoadingPanel isEmpty={!result?.data} isLoading={!result}>
-        <SectionHeader>
-          <FunnelAddButton websiteId={websiteId} />
-        </SectionHeader>
+      <SectionHeader>
+        <FunnelAddButton websiteId={websiteId} />
+      </SectionHeader>
+      <LoadingPanel isEmpty={!result?.data?.length} isLoading={!result}>
         <Grid gap>
           {result?.data?.map((report: any) => (
             <Panel key={report.id}>

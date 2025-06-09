@@ -9,7 +9,14 @@ export function Empty({ message }: EmptyProps) {
   const { formatMessage, messages } = useMessages();
 
   return (
-    <Row color="muted" alignItems="center" justifyContent="center" width="100%" height="100%">
+    <Row
+      color="muted"
+      alignItems="center"
+      justifyContent="center"
+      width="100%"
+      height="100%"
+      minHeight="70px"
+    >
       {message || formatMessage(messages.noDataAvailable)}
     </Row>
   );

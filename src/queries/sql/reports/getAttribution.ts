@@ -3,18 +3,16 @@ import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, getDatabaseType, POSTGRESQL, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 
-export async function getAttribution(
-  ...args: [
-    websiteId: string,
-    criteria: {
-      startDate: Date;
-      endDate: Date;
-      model: string;
-      steps: { type: string; value: string }[];
-      currency: string;
-    },
-  ]
-) {
+export interface AttributionCriteria {
+  startDate: Date;
+  endDate: Date;
+  model: string;
+  type: string;
+  step: string;
+  currency?: string;
+}
+
+export async function getAttribution(...args: [websiteId: string, criteria: AttributionCriteria]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -23,13 +21,7 @@ export async function getAttribution(
 
 async function relationalQuery(
   websiteId: string,
-  criteria: {
-    startDate: Date;
-    endDate: Date;
-    model: string;
-    steps: { type: string; value: string }[];
-    currency: string;
-  },
+  criteria: AttributionCriteria,
 ): Promise<{
   referrer: { name: string; value: number }[];
   paidAds: { name: string; value: number }[];
@@ -40,11 +32,10 @@ async function relationalQuery(
   utm_term: { name: string; value: number }[];
   total: { pageviews: number; visitors: number; visits: number };
 }> {
-  const { startDate, endDate, model, steps, currency } = criteria;
+  const { startDate, endDate, model, type, step, currency } = criteria;
   const { rawQuery } = prisma;
-  const conversionStep = steps[0].value;
-  const eventType = steps[0].type === 'url' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
-  const column = steps[0].type === 'url' ? 'url_path' : 'event_name';
+  const eventType = type === 'url' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
+  const column = type === 'url' ? 'url_path' : 'event_name';
   const db = getDatabaseType();
   const like = db === POSTGRESQL ? 'ilike' : 'like';
 
@@ -147,7 +138,7 @@ async function relationalQuery(
     order by 2 desc
     limit 20
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const paidAdsres = await rawQuery(
@@ -180,7 +171,7 @@ async function relationalQuery(
     FROM results
     ${currency ? '' : `WHERE name != ''`}
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const sourceRes = await rawQuery(
@@ -189,7 +180,7 @@ async function relationalQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_source')}
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const mediumRes = await rawQuery(
@@ -198,7 +189,7 @@ async function relationalQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_medium')}
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const campaignRes = await rawQuery(
@@ -207,7 +198,7 @@ async function relationalQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_campaign')}
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const contentRes = await rawQuery(
@@ -216,7 +207,7 @@ async function relationalQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_content')}
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const termRes = await rawQuery(
@@ -225,7 +216,7 @@ async function relationalQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_term')}
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const totalRes = await rawQuery(
@@ -240,7 +231,7 @@ async function relationalQuery(
         and ${column} = {{conversionStep}}
         and event_type = {{eventType}}
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   ).then(result => result?.[0]);
 
   return {
@@ -257,13 +248,7 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  criteria: {
-    startDate: Date;
-    endDate: Date;
-    model: string;
-    steps: { type: string; value: string }[];
-    currency: string;
-  },
+  criteria: AttributionCriteria,
 ): Promise<{
   referrer: { name: string; value: number }[];
   paidAds: { name: string; value: number }[];
@@ -274,11 +259,10 @@ async function clickhouseQuery(
   utm_term: { name: string; value: number }[];
   total: { pageviews: number; visitors: number; visits: number };
 }> {
-  const { startDate, endDate, model, steps, currency } = criteria;
+  const { startDate, endDate, model, type, step, currency } = criteria;
   const { rawQuery } = clickhouse;
-  const conversionStep = steps[0].value;
-  const eventType = steps[0].type === 'url' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
-  const column = steps[0].type === 'url' ? 'url_path' : 'event_name';
+  const eventType = type === 'url' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
+  const column = type === 'url' ? 'url_path' : 'event_name';
 
   function getUTMQuery(utmColumn: string) {
     return `
@@ -372,7 +356,7 @@ async function clickhouseQuery(
     order by 2 desc
     limit 20
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const paidAdsres = await rawQuery<
@@ -403,7 +387,7 @@ async function clickhouseQuery(
     order by 2 desc
     limit 20
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const sourceRes = await rawQuery<
@@ -417,7 +401,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_source')}
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const mediumRes = await rawQuery<
@@ -431,7 +415,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_medium')}
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const campaignRes = await rawQuery<
@@ -445,7 +429,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_campaign')}
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const contentRes = await rawQuery<
@@ -459,7 +443,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_content')}
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const termRes = await rawQuery<
@@ -473,7 +457,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_term')}
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const totalRes = await rawQuery<{ pageviews: number; visitors: number; visits: number }>(
@@ -488,7 +472,7 @@ async function clickhouseQuery(
         and ${column} = {conversionStep:String}
         and event_type = {eventType:UInt32}
     `,
-    { websiteId, startDate, endDate, conversionStep, eventType, currency },
+    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   ).then(result => result?.[0]);
 
   return {

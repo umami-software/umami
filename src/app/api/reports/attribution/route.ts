@@ -1,26 +1,11 @@
 import { canViewWebsite } from '@/lib/auth';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { reportParms } from '@/lib/schema';
+import { reportResultSchema } from '@/lib/schema';
 import { getAttribution } from '@/queries/sql/reports/getAttribution';
-import { z } from 'zod';
 
 export async function POST(request: Request) {
-  const schema = z.object({
-    ...reportParms,
-    model: z.string().regex(/firstClick|lastClick/i),
-    steps: z
-      .array(
-        z.object({
-          type: z.string(),
-          value: z.string(),
-        }),
-      )
-      .min(1),
-    currency: z.string().optional(),
-  });
-
-  const { auth, body, error } = await parseRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, reportResultSchema);
 
   if (error) {
     return error();
@@ -28,10 +13,8 @@ export async function POST(request: Request) {
 
   const {
     websiteId,
-    model,
-    steps,
-    currency,
     dateRange: { startDate, endDate },
+    parameters: { model, type, step, currency },
   } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
@@ -41,8 +24,9 @@ export async function POST(request: Request) {
   const data = await getAttribution(websiteId, {
     startDate: new Date(startDate),
     endDate: new Date(endDate),
-    model: model,
-    steps,
+    model,
+    type,
+    step,
     currency,
   });
 

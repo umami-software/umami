@@ -323,7 +323,9 @@ export const labels = defineMessages({
   cohort: { id: 'label.cohort', defaultMessage: 'Cohort' },
   expand: { id: 'label.expand', defaultMessage: 'Expand' },
   remaining: { id: 'label.remaining', defaultMessage: 'Remaining' },
-  conversion: { id: 'label.converstion', defaultMessage: 'Conversion' },
+  conversion: { id: 'label.conversion', defaultMessage: 'Conversion' },
+  firstClick: { id: 'label.first-click', defaultMessage: 'First click' },
+  lastClick: { id: 'label.last-click', defaultMessage: 'Last click' },
 });
 
 export const messages = defineMessages({
