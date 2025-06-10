@@ -78,26 +78,16 @@ async function relationalQuery(
         group by 1),`;
 
   const revenueEventQuery = `WITH events AS (
-          select
-              we.session_id,
-              max(ed.created_at) max_dt,
-              sum(coalesce(cast(number_value as decimal(10,2)), cast(string_value as decimal(10,2)))) value
-          from event_data ed
-          join website_event we
-          on we.event_id = ed.website_event_id
-            and we.website_id = ed.website_id
-          join (select website_event_id
-                from event_data
-                where website_id = {{websiteId::uuid}}
-                  and created_at between {{startDate}} and {{endDate}}
-                  and data_key ${like} '%currency%'
-                  and string_value = {{currency}}) currency
-          on currency.website_event_id = ed.website_event_id
-          where ed.website_id = {{websiteId::uuid}}
-            and ed.created_at between {{startDate}} and {{endDate}}
-            and ${column} = {{conversionStep}}
-            and ed.data_key ${like} '%revenue%'
-          group by 1),`;
+        select
+          session_id,
+          max(created_at) max_dt,
+          sum(revenue) value
+        from revenue
+        where website_id = {{websiteId::uuid}}
+          and created_at between {{startDate}} and {{endDate}}
+          and ${column} = {{conversionStep}}
+          and currency ${like} {{currency}}
+        group by 1),`;
 
   function getModelQuery(model: string) {
     return model === 'firstClick'
