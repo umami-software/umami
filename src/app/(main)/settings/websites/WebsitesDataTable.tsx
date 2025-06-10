@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
 import WebsitesTable from '@/app/(main)/settings/websites/WebsitesTable';
 import DataTable from '@/components/common/DataTable';
-import { useWebsites } from '@/components/hooks';
-
+import { useWebsites, useModified } from '@/components/hooks';
 export function WebsitesDataTable({
   teamId,
   allowEdit = true,
@@ -17,7 +16,7 @@ export function WebsitesDataTable({
   children?: ReactNode;
 }) {
   const queryResult = useWebsites({ teamId });
-
+  const { touch } = useModified('websites');
   return (
     <DataTable queryResult={queryResult} renderEmpty={() => children}>
       {({ data }) => (
@@ -27,6 +26,7 @@ export function WebsitesDataTable({
           showActions={showActions}
           allowEdit={allowEdit}
           allowView={allowView}
+          updateChildren={() => touch()}
         />
       )}
     </DataTable>
