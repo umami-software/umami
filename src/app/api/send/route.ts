@@ -4,7 +4,7 @@ import { startOfHour, startOfMonth } from 'date-fns';
 import clickhouse from '@/lib/clickhouse';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, forbidden, serverError } from '@/lib/response';
-import { fetchSession, fetchWebsite } from '@/lib/load';
+import { fetchWebsite } from '@/lib/load';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { createToken, parseToken } from '@/lib/jwt';
 import { secret, uuid, hash } from '@/lib/crypto';
@@ -103,32 +103,24 @@ export async function POST(request: Request) {
 
     const sessionId = id ? uuid(websiteId, id) : uuid(websiteId, ip, userAgent, sessionSalt);
 
-    // Find session
+    // Create a session if not found
     if (!clickhouse.enabled && !cache?.sessionId) {
-      const session = await fetchSession(websiteId, sessionId);
-
-      // Create a session if not found
-      if (!session) {
-        try {
-          await createSession({
-            id: sessionId,
-            websiteId,
-            browser,
-            os,
-            device,
-            screen,
-            language,
-            country,
-            region,
-            city,
-            distinctId: id,
-          });
-        } catch (e: any) {
-          if (!e.message.toLowerCase().includes('unique constraint')) {
-            return serverError(e);
-          }
-        }
-      }
+      await createSession(
+        {
+          id: sessionId,
+          websiteId,
+          browser,
+          os,
+          device,
+          screen,
+          language,
+          country,
+          region,
+          city,
+          distinctId: id,
+        },
+        { skipDuplicates: true },
+      );
     }
 
     // Visit info
