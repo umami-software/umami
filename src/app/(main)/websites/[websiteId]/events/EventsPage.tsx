@@ -1,14 +1,15 @@
 'use client';
+import { useMessages } from '@/components/hooks';
+import { GridRow } from '@/components/layout/Grid';
+import EventsChart from '@/components/metrics/EventsChart';
+import EventsTable from '@/components/metrics/EventsTable';
+import { useState } from 'react';
+import { Item, Tabs } from 'react-basics';
 import WebsiteHeader from '../WebsiteHeader';
+import WebsiteMetrics from '../WebsiteMetrics';
+import EventProperties from './EventProperties';
 import EventsDataTable from './EventsDataTable';
 import EventsMetricsBar from './EventsMetricsBar';
-import EventsChart from '@/components/metrics/EventsChart';
-import { GridRow } from '@/components/layout/Grid';
-import EventsTable from '@/components/metrics/EventsTable';
-import { useMessages } from '@/components/hooks';
-import { Item, Tabs } from 'react-basics';
-import { useState } from 'react';
-import EventProperties from './EventProperties';
 
 export default function EventsPage({ websiteId }) {
   const [label, setLabel] = useState(null);
@@ -22,7 +23,9 @@ export default function EventsPage({ websiteId }) {
   return (
     <>
       <WebsiteHeader websiteId={websiteId} />
-      <EventsMetricsBar websiteId={websiteId} />
+      <WebsiteMetrics websiteId={websiteId}>
+        <EventsMetricsBar websiteId={websiteId} />
+      </WebsiteMetrics>
       <GridRow columns="two-one">
         <EventsChart websiteId={websiteId} focusLabel={label} />
         <EventsTable
