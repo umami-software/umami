@@ -13,7 +13,7 @@ import { RealtimeUrls } from './RealtimeUrls';
 import { RealtimeCountries } from './RealtimeCountries';
 import { percentFilter } from '@/lib/filters';
 
-export function WebsiteRealtimePage({ websiteId }: { websiteId: string }) {
+export function RealtimePage({ websiteId }: { websiteId: string }) {
   const { data, isLoading, error } = useRealtimeQuery(websiteId);
 
   if (isLoading || error) {
@@ -28,9 +28,7 @@ export function WebsiteRealtimePage({ websiteId }: { websiteId: string }) {
 
   return (
     <Grid gap="3">
-      <Panel>
-        <RealtimeHeader data={data} />
-      </Panel>
+      <RealtimeHeader data={data} />
       <Panel>
         <RealtimeChart data={data} unit="minute" />
       </Panel>
@@ -46,7 +44,7 @@ export function WebsiteRealtimePage({ websiteId }: { websiteId: string }) {
         <Panel>
           <RealtimeCountries data={countries} />
         </Panel>
-        <Panel padding="0" gridColumn="span 2">
+        <Panel gridColumn="span 2" noPadding>
           <WorldMap data={countries} />
         </Panel>
       </GridRow>

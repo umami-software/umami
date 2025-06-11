@@ -23,9 +23,7 @@ export function EventsPage({ websiteId }) {
   return (
     <Column gap="3">
       <WebsiteControls websiteId={websiteId} />
-      <Panel>
-        <EventsMetricsBar websiteId={websiteId} />
-      </Panel>
+      <EventsMetricsBar websiteId={websiteId} />
       <GridRow layout="two-one">
         <Panel gridColumn="span 2">
           <EventsChart websiteId={websiteId} focusLabel={label} />

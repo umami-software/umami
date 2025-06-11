@@ -12,6 +12,17 @@ export interface AttributionCriteria {
   currency?: string;
 }
 
+export interface AttributionResult {
+  referrer: { name: string; value: number }[];
+  paidAds: { name: string; value: number }[];
+  utm_source: { name: string; value: number }[];
+  utm_medium: { name: string; value: number }[];
+  utm_campaign: { name: string; value: number }[];
+  utm_content: { name: string; value: number }[];
+  utm_term: { name: string; value: number }[];
+  total: { pageviews: number; visitors: number; visits: number };
+}
+
 export async function getAttribution(...args: [websiteId: string, criteria: AttributionCriteria]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -22,20 +33,11 @@ export async function getAttribution(...args: [websiteId: string, criteria: Attr
 async function relationalQuery(
   websiteId: string,
   criteria: AttributionCriteria,
-): Promise<{
-  referrer: { name: string; value: number }[];
-  paidAds: { name: string; value: number }[];
-  utm_source: { name: string; value: number }[];
-  utm_medium: { name: string; value: number }[];
-  utm_campaign: { name: string; value: number }[];
-  utm_content: { name: string; value: number }[];
-  utm_term: { name: string; value: number }[];
-  total: { pageviews: number; visitors: number; visits: number };
-}> {
+): Promise<AttributionResult> {
   const { startDate, endDate, model, type, step, currency } = criteria;
   const { rawQuery } = prisma;
-  const eventType = type === 'url' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
-  const column = type === 'url' ? 'url_path' : 'event_name';
+  const eventType = type === 'page' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
+  const column = type === 'page' ? 'url_path' : 'event_name';
   const db = getDatabaseType();
   const like = db === POSTGRESQL ? 'ilike' : 'like';
 
@@ -81,7 +83,7 @@ async function relationalQuery(
         group by 1),`;
 
   function getModelQuery(model: string) {
-    return model === 'firstClick'
+    return model === 'first-click'
       ? `\n 
     model AS (select e.session_id,
         min(we.created_at) created_at
@@ -239,20 +241,11 @@ async function relationalQuery(
 async function clickhouseQuery(
   websiteId: string,
   criteria: AttributionCriteria,
-): Promise<{
-  referrer: { name: string; value: number }[];
-  paidAds: { name: string; value: number }[];
-  utm_source: { name: string; value: number }[];
-  utm_medium: { name: string; value: number }[];
-  utm_campaign: { name: string; value: number }[];
-  utm_content: { name: string; value: number }[];
-  utm_term: { name: string; value: number }[];
-  total: { pageviews: number; visitors: number; visits: number };
-}> {
+): Promise<AttributionResult> {
   const { startDate, endDate, model, type, step, currency } = criteria;
   const { rawQuery } = clickhouse;
-  const eventType = type === 'url' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
-  const column = type === 'url' ? 'url_path' : 'event_name';
+  const eventType = type === 'page' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
+  const column = type === 'page' ? 'url_path' : 'event_name';
 
   function getUTMQuery(utmColumn: string) {
     return `
@@ -296,7 +289,7 @@ async function clickhouseQuery(
           group by 1),`;
 
   function getModelQuery(model: string) {
-    return model === 'firstClick'
+    return model === 'first-click'
       ? `\n 
     model AS (select e.session_id,
         min(we.created_at) created_at

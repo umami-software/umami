@@ -154,15 +154,13 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
 
       <LoadingPanel isEmpty={isEmpty} isLoading={isLoading} error={error}>
         <Column gap>
-          <Panel>
-            <MetricsBar isFetched={!!data}>
-              {metricData?.map(({ label, value, formatValue }) => {
-                return (
-                  <MetricCard key={label} value={value} label={label} formatValue={formatValue} />
-                );
-              })}
-            </MetricsBar>
-          </Panel>
+          <MetricsBar isFetched={!!data}>
+            {metricData?.map(({ label, value, formatValue }) => {
+              return (
+                <MetricCard key={label} value={value} label={label} formatValue={formatValue} />
+              );
+            })}
+          </MetricsBar>
           {data && (
             <>
               <Panel>

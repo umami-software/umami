@@ -15,7 +15,7 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
   } = useDateRange(websiteId);
 
   return (
-    <Column gap>
+    <Column gap="6">
       <WebsiteControls websiteId={websiteId} />
       <Grid columns="1fr 1fr 1fr" gap>
         <Column>
@@ -46,6 +46,7 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
             value={step}
             defaultValue={step}
             onSearch={setStep}
+            delay={1000}
           />
         </Column>
       </Grid>

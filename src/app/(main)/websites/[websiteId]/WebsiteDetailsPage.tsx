@@ -17,9 +17,7 @@ export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
   return (
     <Column gap>
       <WebsiteControls websiteId={websiteId} allowCompare={true} />
-      <Panel>
-        <WebsiteMetricsBar websiteId={websiteId} showFilter={true} showChange={true} />
-      </Panel>
+      <WebsiteMetricsBar websiteId={websiteId} showFilter={true} showChange={true} />
       <Panel>
         <WebsiteChart websiteId={websiteId} compareMode={compare} />
       </Panel>

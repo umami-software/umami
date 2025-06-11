@@ -32,7 +32,7 @@ export function WebsiteTableView({ websiteId }: { websiteId: string }) {
         </Panel>
       </GridRow>
       <GridRow layout="two-one">
-        <Panel padding="0" gridColumn="span 2">
+        <Panel gridColumn="span 2" noPadding>
           <WorldMap websiteId={websiteId} />
         </Panel>
         <Panel>

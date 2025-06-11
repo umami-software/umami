@@ -3,7 +3,6 @@ import { useSpring } from '@react-spring/web';
 import { formatNumber } from '@/lib/format';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
-import styles from './MetricCard.module.css';
 
 export interface MetricCardProps {
   value: number;
@@ -34,7 +33,14 @@ export const MetricCard = ({
   const prevProps = useSpring({ x: Number(diff) || 0, from: { x: 0 } });
 
   return (
-    <Column className={styles.card} justifyContent="center" paddingX="8">
+    <Column
+      justifyContent="center"
+      paddingX="6"
+      paddingY="4"
+      borderRadius="3"
+      backgroundColor
+      border
+    >
       {showLabel && (
         <Text weight="bold" wrap="nowrap">
           {label}

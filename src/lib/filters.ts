@@ -47,6 +47,7 @@ export const emptyFilter = (data: any[]) => {
 };
 
 export const percentFilter = (data: any[]) => {
+  if (!data) return [];
   const total = data.reduce((n, { y }) => n + y, 0);
   return data.map(({ x, y, ...props }) => ({ x, y, z: total ? (y / total) * 100 : 0, ...props }));
 };

@@ -1,7 +1,0 @@
-.card {
-  border-right: 1px solid var(--border-color);
-}
-
-.card:last-child {
-  border-right: 0;
-}

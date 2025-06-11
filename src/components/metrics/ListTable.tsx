@@ -1,12 +1,11 @@
 import { ReactNode } from 'react';
 import { FixedSizeList } from 'react-window';
 import { useSpring, config } from '@react-spring/web';
-import classNames from 'classnames';
+import { Grid, Row, Column, Text } from '@umami/react-zen';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { Empty } from '@/components/common/Empty';
 import { useMessages } from '@/components/hooks';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
-import styles from './ListTable.module.css';
 
 const ITEM_SIZE = 30;
 
@@ -28,7 +27,6 @@ export function ListTable({
   data = [],
   title,
   metric,
-  className,
   renderLabel,
   renderChange,
   animate = true,
@@ -40,7 +38,7 @@ export function ListTable({
   const { formatMessage, labels } = useMessages();
 
   const getRow = (row: { x: any; y: any; z: any }, index: number) => {
-    const { x: label, y: value, z: percent } = row;
+    const { x: label, y: value, z: percent } = row || {};
 
     return (
       <AnimatedRow
@@ -56,18 +54,20 @@ export function ListTable({
     );
   };
 
-  const Row = ({ index, style }) => {
+  const ListTableRow = ({ index, style }) => {
     return <div style={style}>{getRow(data[index], index)}</div>;
   };
 
   return (
-    <div className={classNames(styles.table, className)}>
-      <div className={styles.header}>
-        <div className={styles.title}>{title}</div>
-        <div className={styles.metric}>{metric}</div>
-      </div>
-      <div className={styles.body}>
-        {data?.length === 0 && <Empty className={styles.empty} />}
+    <Column gap>
+      <Grid alignItems="center" justifyContent="space-between" paddingLeft="2" columns="1fr 100px">
+        <Text weight="bold">{title}</Text>
+        <Text weight="bold" align="center">
+          {metric}
+        </Text>
+      </Grid>
+      <Column gap="1">
+        {data?.length === 0 && <Empty />}
         {virtualize && data.length > 0 ? (
           <FixedSizeList
             width="100%"
@@ -75,13 +75,13 @@ export function ListTable({
             itemCount={data.length}
             itemSize={ITEM_SIZE}
           >
-            {Row}
+            {ListTableRow}
           </FixedSizeList>
         ) : (
           data.map(getRow)
         )}
-      </div>
-    </div>
+      </Column>
+    </Column>
   );
 }
 
@@ -102,22 +102,33 @@ const AnimatedRow = ({
   });
 
   return (
-    <div className={styles.row}>
-      <div className={styles.label}>{label}</div>
-      <div className={styles.value}>
+    <Grid columns="1fr 50px 50px" paddingLeft="2" alignItems="center" hoverBackgroundColor="2" gap>
+      <Row alignItems="center">
+        <Text>{label}</Text>
+      </Row>
+      <Row alignItems="center" height="30px" justifyContent="flex-end">
         {change}
-        <AnimatedDiv className={styles.value} title={props?.y as any}>
-          {currency
-            ? props.y?.to(n => formatLongCurrency(n, currency))
-            : props.y?.to(formatLongNumber)}
-        </AnimatedDiv>
-      </div>
+        <Text weight="bold">
+          <AnimatedDiv title={props?.y as any}>
+            {currency
+              ? props.y?.to(n => formatLongCurrency(n, currency))
+              : props.y?.to(formatLongNumber)}
+          </AnimatedDiv>
+        </Text>
+      </Row>
       {showPercentage && (
-        <div className={styles.percent}>
-          <AnimatedDiv className={styles.bar} style={{ width: props.width.to(n => `${n}%`) }} />
+        <Row
+          alignItems="center"
+          justifyContent="flex-start"
+          position="relative"
+          border="left"
+          borderColor="8"
+          color="muted"
+          paddingLeft="3"
+        >
           <AnimatedDiv>{props.width.to(n => `${n?.toFixed?.(0)}%`)}</AnimatedDiv>
-        </div>
+        </Row>
       )}
-    </div>
+    </Grid>
   );
 };

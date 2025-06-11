@@ -22,7 +22,7 @@ export function BreakdownPage({ websiteId }: { websiteId: string }) {
   const {
     dateRange: { startDate, endDate },
   } = useDateRange(websiteId);
-  const [fields, setFields] = useState([]);
+  const [fields, setFields] = useState(['url']);
 
   return (
     <Column gap>
