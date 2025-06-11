@@ -4,8 +4,8 @@ import clickhouse from '@/lib/clickhouse';
 import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { QueryFilters } from '@/lib/types';
 
-export async function getInsights(
-  ...args: [websiteId: string, fields: { name: string; type?: string }[], filters: QueryFilters]
+export async function getBreakdown(
+  ...args: [websiteId: string, fields: string[], filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -15,7 +15,7 @@ export async function getInsights(
 
 async function relationalQuery(
   websiteId: string,
-  fields: { name: string; type?: string }[],
+  fields: string[],
   filters: QueryFilters,
 ): Promise<
   {
@@ -31,7 +31,7 @@ async function relationalQuery(
       eventType: EVENT_TYPE.pageView,
     },
     {
-      joinSession: !!fields.find(({ name }) => SESSION_COLUMNS.includes(name)),
+      joinSession: !!fields.find(name => SESSION_COLUMNS.includes(name)),
     },
   );
 
@@ -71,7 +71,7 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  fields: { name: string; type?: string }[],
+  fields: string[],
   filters: QueryFilters,
 ): Promise<
   {
@@ -118,10 +118,10 @@ async function clickhouseQuery(
   );
 }
 
-function parseFields(fields: { name: any }[]) {
-  return fields.map(({ name }) => `${FILTER_COLUMNS[name]} as "${name}"`).join(',');
+function parseFields(fields: string[]) {
+  return fields.map(name => `${FILTER_COLUMNS[name]} as "${name}"`).join(',');
 }
 
-function parseFieldsByName(fields: { name: any }[]) {
-  return `${fields.map(({ name }) => name).join(',')}`;
+function parseFieldsByName(fields: string[]) {
+  return `${fields.map(name => name).join(',')}`;
 }

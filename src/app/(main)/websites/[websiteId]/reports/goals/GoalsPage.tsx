@@ -24,7 +24,7 @@ export function GoalsPage({ websiteId }: { websiteId: string }) {
         <Grid columns="1fr 1fr" gap>
           {result?.data?.map((report: any) => (
             <Panel key={report.id}>
-              <Goal {...report} reportId={report.id} startDate={startDate} endDate={endDate} />
+              <Goal {...report} startDate={startDate} endDate={endDate} />
             </Panel>
           ))}
         </Grid>

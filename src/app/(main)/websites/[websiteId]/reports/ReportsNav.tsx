@@ -1,6 +1,6 @@
 import { Row, NavMenu, NavMenuItem, Icon, Text } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { Funnel, Lightbulb, Magnet, Money, Network, Path, Tag, Target } from '@/components/icons';
+import { Funnel, Sheet, Magnet, Money, Network, Path, Tag, Target } from '@/components/icons';
 import Link from 'next/link';
 
 export function ReportsNav({ websiteId }: { websiteId: string }) {
@@ -33,6 +33,12 @@ export function ReportsNav({ websiteId }: { websiteId: string }) {
       path: '/retention',
     },
     {
+      id: 'breakdown',
+      label: formatMessage(labels.breakdown),
+      icon: <Sheet />,
+      path: '/breakdown',
+    },
+    {
       id: 'utm',
       label: formatMessage(labels.utm),
       icon: <Tag />,
@@ -49,12 +55,6 @@ export function ReportsNav({ websiteId }: { websiteId: string }) {
       label: formatMessage(labels.attribution),
       icon: <Network />,
       path: '/attribution',
-    },
-    {
-      id: 'insights',
-      label: formatMessage(labels.insights),
-      icon: <Lightbulb />,
-      path: '/insights',
     },
   ];
 

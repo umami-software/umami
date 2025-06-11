@@ -54,15 +54,31 @@ export const urlOrPathParam = z.string().refine(
   },
 );
 
+export const fieldsParam = z.enum([
+  'url',
+  'referrer',
+  'title',
+  'query',
+  'os',
+  'browser',
+  'device',
+  'country',
+  'region',
+  'city',
+  'tag',
+  'host',
+  'language',
+]);
+
 export const reportTypeParam = z.enum([
+  'attribution',
+  'breakdown',
   'funnel',
-  'insight',
-  'retention',
-  'utm',
   'goal',
   'journey',
+  'retention',
   'revenue',
-  'attribution',
+  'utm',
 ]);
 
 export const reportParms = {
@@ -141,8 +157,11 @@ export const attributionReportSchema = z.object({
   }),
 });
 
-export const insightsReportSchema = z.object({
-  type: z.literal('insights'),
+export const breakdownReportSchema = z.object({
+  type: z.literal('breakdown'),
+  parameters: z.object({
+    fields: z.array(fieldsParam),
+  }),
 });
 
 export const reportBaseSchema = z.object({
@@ -160,7 +179,7 @@ export const reportTypeSchema = z.discriminatedUnion('type', [
   utmReportSchema,
   revenueReportSchema,
   attributionReportSchema,
-  insightsReportSchema,
+  breakdownReportSchema,
 ]);
 
 export const reportSchema = z.intersection(reportBaseSchema, reportTypeSchema);

@@ -1,4 +1,4 @@
-import { Grid, Column, Heading } from '@umami/react-zen';
+import { Grid, Column } from '@umami/react-zen';
 import { useMessages, useResultQuery } from '@/components/hooks';
 import { Panel } from '@/components/common/Panel';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
@@ -125,8 +125,7 @@ export function Attribution({
           };
 
           return (
-            <Panel key={value}>
-              <Heading>{label}</Heading>
+            <Panel key={value} title={label}>
               <Grid columns="1fr 1fr" gap>
                 <ListTable
                   metric={formatMessage(currency ? labels.revenue : labels.visitors)}
@@ -142,25 +141,15 @@ export function Attribution({
             </Panel>
           );
         })}
-        <Grid gap>
+        <Panel title="UTM">
           <Grid columns="1fr 1fr" gap>
-            <Panel>
-              <UTMTable data={data} title={formatMessage(labels.sources)} utm={'utm_source'} />
-            </Panel>
-            <Panel>
-              <UTMTable data={data} title={formatMessage(labels.medium)} utm={'utm_medium'} />
-            </Panel>
-            <Panel>
-              <UTMTable data={data} title={formatMessage(labels.campaigns)} utm={'utm_campaign'} />
-            </Panel>
-            <Panel>
-              <UTMTable data={data} title={formatMessage(labels.content)} utm={'utm_content'} />
-            </Panel>
-            <Panel>
-              <UTMTable data={data} title={formatMessage(labels.terms)} utm={'utm_term'} />
-            </Panel>
+            <UTMTable data={data} title={formatMessage(labels.sources)} utm={'utm_source'} />
+            <UTMTable data={data} title={formatMessage(labels.medium)} utm={'utm_medium'} />
+            <UTMTable data={data} title={formatMessage(labels.campaigns)} utm={'utm_campaign'} />
+            <UTMTable data={data} title={formatMessage(labels.content)} utm={'utm_content'} />
+            <UTMTable data={data} title={formatMessage(labels.terms)} utm={'utm_term'} />
           </Grid>
-        </Grid>
+        </Panel>
       </Column>
     </LoadingPanel>
   );

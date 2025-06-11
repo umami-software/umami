@@ -8,7 +8,7 @@ import { useDateRange, useMessages } from '@/components/hooks';
 export function AttributionPage({ websiteId }: { websiteId: string }) {
   const [model, setModel] = useState('first-click');
   const [type, setType] = useState('page');
-  const [step, setStep] = useState('');
+  const [step, setStep] = useState('/');
   const { formatMessage, labels } = useMessages();
   const {
     dateRange: { startDate, endDate },
@@ -44,6 +44,7 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
           <SearchField
             label={formatMessage(labels.conversionStep)}
             value={step}
+            defaultValue={step}
             onSearch={setStep}
           />
         </Column>

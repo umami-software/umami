@@ -7,6 +7,7 @@ import {
   Logo,
   Grid2X2,
   Settings,
+  LockKeyhole,
 } from '@/components/icons';
 import { useMessages, useNavigation, useGlobalState } from '@/components/hooks';
 
@@ -40,6 +41,11 @@ export function SideNav(props: any) {
       label: formatMessage(labels.settings),
       href: renderTeamUrl('/settings'),
       icon: <Settings />,
+    },
+    {
+      label: formatMessage(labels.admin),
+      href: renderTeamUrl('/admin'),
+      icon: <LockKeyhole />,
     },
   ].filter(n => n);
 

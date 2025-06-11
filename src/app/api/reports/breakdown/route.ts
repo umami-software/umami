@@ -1,7 +1,7 @@
 import { canViewWebsite } from '@/lib/auth';
 import { unauthorized, json } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
-import { getInsights } from '@/queries';
+import { getBreakdown } from '@/queries';
 import { reportResultSchema } from '@/lib/schema';
 
 export async function POST(request: Request) {
@@ -14,27 +14,17 @@ export async function POST(request: Request) {
   const {
     websiteId,
     dateRange: { startDate, endDate },
-    fields,
-    filters,
+    parameters: { fields },
   } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const data = await getInsights(websiteId, fields, {
-    ...convertFilters(filters),
+  const data = await getBreakdown(websiteId, fields, {
     startDate: new Date(startDate),
     endDate: new Date(endDate),
   });
 
   return json(data);
-}
-
-function convertFilters(filters: any[]) {
-  return filters.reduce((obj, filter) => {
-    obj[filter.name] = filter;
-
-    return obj;
-  }, {});
 }

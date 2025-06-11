@@ -16,7 +16,7 @@ export * from '@/queries/sql/events/saveEvent';
 export * from '@/queries/sql/reports/getFunnel';
 export * from '@/queries/sql/reports/getJourney';
 export * from '@/queries/sql/reports/getRetention';
-export * from '@/queries/sql/reports/getInsights';
+export * from '@/queries/sql/reports/getBreakdown';
 export * from '@/queries/sql/reports/getUTM';
 export * from '@/queries/sql/pageviews/getPageviewMetrics';
 export * from '@/queries/sql/pageviews/getPageviewStats';

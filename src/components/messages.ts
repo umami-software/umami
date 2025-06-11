@@ -18,7 +18,7 @@ export const labels = defineMessages({
   user: { id: 'label.user', defaultMessage: 'User' },
   viewOnly: { id: 'label.view-only', defaultMessage: 'View only' },
   manage: { id: 'label.manage', defaultMessage: 'Manage' },
-  admin: { id: 'label.admin', defaultMessage: 'Administrator' },
+  admin: { id: 'label.admin', defaultMessage: 'Admin' },
   confirm: { id: 'label.confirm', defaultMessage: 'Confirm' },
   details: { id: 'label.details', defaultMessage: 'Details' },
   website: { id: 'label.website', defaultMessage: 'Website' },
@@ -215,6 +215,7 @@ export const labels = defineMessages({
   value: { id: 'label.value', defaultMessage: 'Value' },
   overview: { id: 'label.overview', defaultMessage: 'Overview' },
   totalRecords: { id: 'label.total-records', defaultMessage: 'Total records' },
+  insight: { id: 'label.insight', defaultMessage: 'Insight' },
   insights: { id: 'label.insights', defaultMessage: 'Insights' },
   insightsDescription: {
     id: 'label.insights-description',

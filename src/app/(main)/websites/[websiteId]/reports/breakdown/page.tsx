@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
-import { InsightsPage } from './InsightsPage';
+import { BreakdownPage } from './BreakdownPage';
 
 export default async function ({ params }: { params: Promise<{ websiteId: string }> }) {
   const { websiteId } = await params;
 
-  return <InsightsPage websiteId={websiteId} />;
+  return <BreakdownPage websiteId={websiteId} />;
 }
 
 export const metadata: Metadata = {

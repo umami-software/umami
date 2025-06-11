@@ -7,11 +7,13 @@ import {
   Button,
   TooltipTrigger,
   Tooltip,
+  Heading,
 } from '@umami/react-zen';
 import { Maximize, Close } from '@/components/icons';
 import { useMessages } from '@/components/hooks';
 
 export interface PanelProps extends ColumnProps {
+  title?: string;
   allowFullscreen?: boolean;
 }
 
@@ -25,7 +27,7 @@ const fullscreenStyles = {
   zIndex: 9999,
 } as any;
 
-export function Panel({ allowFullscreen, style, children, ...props }: PanelProps) {
+export function Panel({ title, allowFullscreen, style, children, ...props }: PanelProps) {
   const { formatMessage, labels } = useMessages();
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -44,6 +46,7 @@ export function Panel({ allowFullscreen, style, children, ...props }: PanelProps
       {...props}
       style={{ ...style, ...(isFullscreen ? fullscreenStyles : {}) }}
     >
+      {title && <Heading>{title}</Heading>}
       {allowFullscreen && (
         <Row justifyContent="flex-end" alignItems="center">
           <TooltipTrigger delay={0} isDisabled={isFullscreen}>
