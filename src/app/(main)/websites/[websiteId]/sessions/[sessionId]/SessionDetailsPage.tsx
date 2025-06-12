@@ -1,8 +1,8 @@
 'use client';
-import { Grid, Row, Column } from '@umami/react-zen';
+import { Grid, Row, Column, Tabs, TabList, Tab, TabPanel } from '@umami/react-zen';
 import { Avatar } from '@/components/common/Avatar';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useWebsiteSessionQuery } from '@/components/hooks';
+import { useMessages, useWebsiteSessionQuery } from '@/components/hooks';
 import { SessionActivity } from './SessionActivity';
 import { SessionData } from './SessionData';
 import { SessionInfo } from './SessionInfo';
@@ -16,38 +16,41 @@ export function SessionDetailsPage({
   websiteId: string;
   sessionId: string;
 }) {
-  const { data, ...query } = useWebsiteSessionQuery(websiteId, sessionId);
+  const { data, isLoading, error } = useWebsiteSessionQuery(websiteId, sessionId);
+  const { formatMessage, labels } = useMessages();
 
   return (
-    <LoadingPanel {...query} loadingIcon="spinner" data={data}>
-      <Grid
-        gap
-        columns={{ xs: '1fr', sm: '1fr', md: '1fr 1fr', lg: '1fr 2fr 1fr', xl: '1fr 2fr 1fr' }}
-      >
-        <Panel>
-          <Column gap="6" maxWidth="200px">
-            <Row justifyContent="center">
-              <Avatar seed={data?.id} size={128} />
-            </Row>
-            <SessionInfo data={data} />
-          </Column>
-        </Panel>
-        <Panel>
-          <Column gap="6">
-            <SessionStats data={data} />
-            <SessionActivity
-              websiteId={websiteId}
-              sessionId={sessionId}
-              startDate={data?.firstAt}
-              endDate={data?.lastAt}
-            />
-          </Column>
-        </Panel>
-        <Panel>
-          <Column gap="6">
-            <SessionData websiteId={websiteId} sessionId={sessionId} />
-          </Column>
-        </Panel>
+    <LoadingPanel isLoading={isLoading} error={error}>
+      <Grid columns="260px 1fr" gap>
+        <Column gap="6">
+          <Row justifyContent="center">
+            <Avatar seed={data?.id} size={128} />
+          </Row>
+          <SessionInfo data={data} />
+        </Column>
+
+        <Column gap>
+          <SessionStats data={data} />
+          <Panel>
+            <Tabs>
+              <TabList>
+                <Tab id="activity">{formatMessage(labels.activity)}</Tab>
+                <Tab id="properties">{formatMessage(labels.properties)}</Tab>
+              </TabList>
+              <TabPanel id="activity">
+                <SessionActivity
+                  websiteId={websiteId}
+                  sessionId={sessionId}
+                  startDate={data?.firstAt}
+                  endDate={data?.lastAt}
+                />
+              </TabPanel>
+              <TabPanel id="properties">
+                <SessionData sessionId={sessionId} websiteId={websiteId} />
+              </TabPanel>
+            </Tabs>
+          </Panel>
+        </Column>
       </Grid>
     </LoadingPanel>
   );

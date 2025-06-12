@@ -138,6 +138,7 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
           <Panel>
             <ListTable
               title={formatMessage(labels.country)}
+              metric={formatMessage(labels.revenue)}
               data={data?.country.map(({ name, value }: { name: string; value: number }) => ({
                 x: name,
                 y: value,

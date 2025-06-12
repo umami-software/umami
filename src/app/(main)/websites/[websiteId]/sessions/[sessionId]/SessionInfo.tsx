@@ -1,7 +1,8 @@
-import { Icon, TextField, Column, Row, Label, Box, Text } from '@umami/react-zen';
+import { ReactNode } from 'react';
+import { Icon, TextField, Column, Row, Label, Text } from '@umami/react-zen';
 import { useFormat, useLocale, useMessages, useRegionNames, useTimezone } from '@/components/hooks';
 import { TypeIcon } from '@/components/common/TypeIcon';
-import { Location } from '@/components/icons';
+import { Location, KeyRound, Calendar } from '@/components/icons';
 
 export function SessionInfo({ data }) {
   const { locale } = useLocale();
@@ -12,77 +13,77 @@ export function SessionInfo({ data }) {
 
   return (
     <Column gap="6">
-      <Box>
-        <Label>ID</Label>
+      <Info label="ID">
         <TextField value={data?.id} allowCopy />
-      </Box>
+      </Info>
 
-      <Box>
-        <Label>{formatMessage(labels.distinctId)}</Label>
-        <Row>{data?.distinctId}</Row>
-      </Box>
+      <Info label={formatMessage(labels.distinctId)} icon={<KeyRound />}>
+        {data?.distinctId}
+      </Info>
 
-      <Box>
-        <Label>{formatMessage(labels.lastSeen)}</Label>
-        <Row>{formatTimezoneDate(data?.lastAt, 'PPPPpp')}</Row>
-      </Box>
+      <Info label={formatMessage(labels.lastSeen)} icon={<Calendar />}>
+        {formatTimezoneDate(data?.lastAt, 'PPPPpp')}
+      </Info>
 
-      <Box>
-        <Label>{formatMessage(labels.firstSeen)}</Label>
-        <Row>{formatTimezoneDate(data?.firstAt, 'PPPPpp')}</Row>
-      </Box>
+      <Info label={formatMessage(labels.firstSeen)} icon={<Calendar />}>
+        {formatTimezoneDate(data?.firstAt, 'PPPPpp')}
+      </Info>
 
-      <Box>
-        <Label>{formatMessage(labels.country)}</Label>
-        <Row gap="3">
-          <TypeIcon type="country" value={data?.country} />
-          <Text>{formatValue(data?.country, 'country')}</Text>
-        </Row>
-      </Box>
+      <Info
+        label={formatMessage(labels.country)}
+        icon={<TypeIcon type="country" value={data?.country} />}
+      >
+        {formatValue(data?.country, 'country')}
+      </Info>
 
-      <Row>
-        <Label>{formatMessage(labels.region)}</Label>
-        <Row gap="3">
-          <Icon>
-            <Location />
-          </Icon>
-          {getRegionName(data?.region)}
-        </Row>
-      </Row>
+      <Info label={formatMessage(labels.region)} icon={<Location />}>
+        {getRegionName(data?.region)}
+      </Info>
 
-      <Box>
-        <Label>{formatMessage(labels.city)}</Label>
-        <Row gap="3">
-          <Icon>
-            <Location />
-          </Icon>
-          <Text>{data?.city}</Text>
-        </Row>
-      </Box>
+      <Info label={formatMessage(labels.city)} icon={<Location />}>
+        {data?.city}
+      </Info>
 
-      <Box>
-        <Label>{formatMessage(labels.os)}</Label>
-        <Row gap="3">
-          <TypeIcon type="os" value={data?.os?.toLowerCase()?.replaceAll(/\W/g, '-')} />
-          <Text>{formatValue(data?.os, 'os')}</Text>
-        </Row>
-      </Box>
+      <Info
+        label={formatMessage(labels.os)}
+        icon={<TypeIcon type="os" value={data?.os?.toLowerCase()?.replaceAll(/\W/g, '-')} />}
+      >
+        {formatValue(data?.os, 'os')}
+      </Info>
 
-      <Box>
-        <Label>{formatMessage(labels.device)}</Label>
-        <Row gap="3">
-          <TypeIcon type="device" value={data?.device} />
-          <Text>{formatValue(data?.device, 'device')}</Text>
-        </Row>
-      </Box>
+      <Info
+        label={formatMessage(labels.device)}
+        icon={<TypeIcon type="device" value={data?.device} />}
+      >
+        {formatValue(data?.device, 'device')}
+      </Info>
 
-      <Box>
-        <Label>{formatMessage(labels.browser)}</Label>
-        <Row gap="3">
-          <TypeIcon type="browser" value={data?.browser} />
-          <Text>{formatValue(data?.browser, 'browser')}</Text>
-        </Row>
-      </Box>
+      <Info
+        label={formatMessage(labels.browser)}
+        icon={<TypeIcon type="browser" value={data?.browser} />}
+      >
+        {formatValue(data?.browser, 'browser')}
+      </Info>
     </Column>
   );
 }
+
+const Info = ({
+  label,
+  icon,
+  children,
+}: {
+  label: string;
+  icon?: ReactNode;
+  children: ReactNode;
+}) => {
+  return (
+    <Column>
+      <Label>{label}</Label>
+      <Row alignItems="center" gap>
+        {icon && <Icon>{icon}</Icon>}
+        <Text>{children || '—'}</Text>
+      </Row>
+    </Column>
+  );
+};

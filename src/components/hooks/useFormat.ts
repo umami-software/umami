@@ -24,7 +24,7 @@ export function useFormat() {
   };
 
   const formatCountry = (value: string): string => {
-    return countryNames[value] || value || labels.unknown;
+    return countryNames[value] || value;
   };
 
   const formatRegion = (value?: string): string => {
@@ -57,7 +57,7 @@ export function useFormat() {
       case 'language':
         return formatLanguage(value);
       default:
-        return value;
+        return typeof value === 'string' ? value : undefined;
     }
   };
 

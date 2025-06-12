@@ -14,6 +14,7 @@ export {
   File,
   Globe,
   Grid2X2,
+  KeyRound,
   LayoutDashboard,
   Link,
   ListFilter,
