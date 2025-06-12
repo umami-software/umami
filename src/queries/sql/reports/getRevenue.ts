@@ -9,6 +9,18 @@ export interface RevenueCriteria {
   currency: string;
 }
 
+export interface RevenueResult {
+  chart: { x: string; t: string; y: number }[];
+  country: { name: string; value: number }[];
+  total: { sum: number; count: number; average: number; unique_count: number };
+  table: {
+    currency: string;
+    sum: number;
+    count: number;
+    unique_count: number;
+  }[];
+}
+
 export async function getRevenue(...args: [websiteId: string, criteria: RevenueCriteria]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -19,23 +31,13 @@ export async function getRevenue(...args: [websiteId: string, criteria: RevenueC
 async function relationalQuery(
   websiteId: string,
   criteria: RevenueCriteria,
-): Promise<{
-  chart: { x: string; t: string; y: number }[];
-  country: { name: string; value: number }[];
-  total: { sum: number; count: number; unique_count: number };
-  table: {
-    currency: string;
-    sum: number;
-    count: number;
-    unique_count: number;
-  }[];
-}> {
+): Promise<RevenueResult> {
   const { startDate, endDate, unit = 'day', currency } = criteria;
   const { getDateSQL, rawQuery } = prisma;
   const db = getDatabaseType();
   const like = db === POSTGRESQL ? 'ilike' : 'like';
 
-  const chartRes = await rawQuery(
+  const chart = await rawQuery(
     `
     select
       event_name x,
@@ -44,14 +46,14 @@ async function relationalQuery(
     from revenue
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}
-      and currency ${like} {{currency}}
+      and currency like {{currency}}
     group by  x, t
     order by t
     `,
     { websiteId, startDate, endDate, unit, currency },
   );
 
-  const countryRes = await rawQuery(
+  const country = await rawQuery(
     `
     select
       s.country as name,
@@ -67,7 +69,7 @@ async function relationalQuery(
     { websiteId, startDate, endDate, currency },
   );
 
-  const totalRes = await rawQuery(
+  const total = await rawQuery(
     `
     select
       sum(revenue) as sum,
@@ -81,7 +83,9 @@ async function relationalQuery(
     { websiteId, startDate, endDate, currency },
   ).then(result => result?.[0]);
 
-  const tableRes = await rawQuery(
+  total.average = total.count > 0 ? total.sum / total.count : 0;
+
+  const table = await rawQuery(
     `
     select
       currency,
@@ -97,27 +101,17 @@ async function relationalQuery(
     { websiteId, startDate, endDate, unit, currency },
   );
 
-  return { chart: chartRes, country: countryRes, total: totalRes, table: tableRes };
+  return { chart, country, table, total };
 }
 
 async function clickhouseQuery(
   websiteId: string,
   criteria: RevenueCriteria,
-): Promise<{
-  chart: { x: string; t: string; y: number }[];
-  country: { name: string; value: number }[];
-  total: { sum: number; count: number; unique_count: number };
-  table: {
-    currency: string;
-    sum: number;
-    count: number;
-    unique_count: number;
-  }[];
-}> {
+): Promise<RevenueResult> {
   const { startDate, endDate, unit = 'day', currency } = criteria;
   const { getDateSQL, rawQuery } = clickhouse;
 
-  const chartRes = await rawQuery<
+  const chart = await rawQuery<
     {
       x: string;
       t: string;
@@ -139,7 +133,7 @@ async function clickhouseQuery(
     { websiteId, startDate, endDate, unit, currency },
   );
 
-  const countryRes = await rawQuery<
+  const country = await rawQuery<
     {
       name: string;
       value: number;
@@ -151,7 +145,7 @@ async function clickhouseQuery(
       sum(w.revenue) as value
     from website_revenue w
     join (select distinct website_id, session_id, country
-          from website_event_stats_hourly
+          from website_event
           where website_id = {websiteId:UUID}) s
       on w.website_id = s.website_id
         and w.session_id = s.session_id
@@ -163,9 +157,8 @@ async function clickhouseQuery(
     { websiteId, startDate, endDate, currency },
   );
 
-  const totalRes = await rawQuery<{
+  const total = await rawQuery<{
     sum: number;
-    avg: number;
     count: number;
     unique_count: number;
   }>(
@@ -182,11 +175,12 @@ async function clickhouseQuery(
     { websiteId, startDate, endDate, currency },
   ).then(result => result?.[0]);
 
-  const tableRes = await rawQuery<
+  total.average = total.count > 0 ? total.sum / total.count : 0;
+
+  const table = await rawQuery<
     {
       currency: string;
       sum: number;
-      avg: number;
       count: number;
       unique_count: number;
     }[]
@@ -206,5 +200,5 @@ async function clickhouseQuery(
     { websiteId, startDate, endDate, unit, currency },
   );
 
-  return { chart: chartRes, country: countryRes, total: totalRes, table: tableRes };
+  return { chart, country, table, total };
 }

@@ -1,9 +1,8 @@
+import { Row, Grid, Text } from '@umami/react-zen';
 import { format, startOfDay, addHours } from 'date-fns';
 import { useLocale, useMessages, useWebsiteSessionsWeeklyQuery } from '@/components/hooks';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { getDayOfWeekAsDate } from '@/lib/date';
-import styles from './SessionsWeekly.module.css';
-import classNames from 'classnames';
 import { Focusable, Tooltip, TooltipTrigger } from '@umami/react-zen';
 
 export function SessionsWeekly({ websiteId }: { websiteId: string }) {
@@ -38,9 +37,9 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
 
   return (
     <LoadingPanel {...(props as any)} data={data}>
-      <div key={data} className={styles.week}>
-        <div className={styles.day}>
-          <div className={styles.header}>&nbsp;</div>
+      <Grid columns="repeat(8, 1fr)" gap>
+        <Grid rows="repeat(25, 20px)" gap="1">
+          <Row>&nbsp;</Row>
           {Array(24)
             .fill(null)
             .map((_, i) => {
@@ -48,46 +47,55 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
                 .replace(/\D00 ?/, '')
                 .toLowerCase();
               return (
-                <div key={i} className={styles.hour}>
-                  {label}
-                </div>
+                <Row key={i} justifyContent="flex-end">
+                  <Text color="muted" weight="bold">
+                    {label}
+                  </Text>
+                </Row>
               );
             })}
-        </div>
+        </Grid>
         {data &&
           daysOfWeek.map((index: number) => {
             const day = data[index];
             return (
-              <div key={index} className={styles.day}>
-                <div className={styles.header}>
-                  {format(getDayOfWeekAsDate(index), 'EEE', { locale: dateLocale })}
-                </div>
-                {day?.map((hour: number, j) => {
-                  const pct = hour / max;
+              <Grid
+                rows="repeat(25, 20px)"
+                justifyContent="center"
+                alignItems="center"
+                key={index}
+                gap="1"
+              >
+                <Row>
+                  <Text weight="bold" align="center">
+                    {format(getDayOfWeekAsDate(index), 'EEE', { locale: dateLocale })}
+                  </Text>
+                </Row>
+                {day?.map((count: number, j) => {
+                  const pct = count / max;
                   return (
-                    <div key={j} className={classNames(styles.cell)}>
-                      {hour > 0 && (
-                        <TooltipTrigger delay={0}>
-                          <Focusable>
-                            <div>
-                              <div
-                                className={styles.block}
-                                style={{ opacity: pct, transform: `scale(${pct})` }}
-                              />
-                            </div>
-                          </Focusable>
-                          <Tooltip placement="right">{`${formatMessage(
-                            labels.visitors,
-                          )}: ${hour}`}</Tooltip>
-                        </TooltipTrigger>
-                      )}
-                    </div>
+                    <TooltipTrigger key={j} delay={0} isDisabled={count <= 0}>
+                      <Focusable>
+                        <Row backgroundColor="2" width="20px" height="20px" borderRadius="full">
+                          <Row
+                            backgroundColor="primary"
+                            width="20px"
+                            height="20px"
+                            borderRadius="full"
+                            style={{ opacity: pct, transform: `scale(${pct})` }}
+                          />
+                        </Row>
+                      </Focusable>
+                      <Tooltip placement="right">{`${formatMessage(
+                        labels.visitors,
+                      )}: ${count}`}</Tooltip>
+                    </TooltipTrigger>
                   );
                 })}
-              </div>
+              </Grid>
             );
           })}
-      </div>
+      </Grid>
     </LoadingPanel>
   );
 }

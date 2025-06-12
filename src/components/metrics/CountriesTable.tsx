@@ -17,7 +17,7 @@ export function CountriesTable({ ...props }: MetricsTableProps) {
         value={(countryNames[code] && code) || code}
         label={formatCountry(code)}
       >
-        <TypeIcon type="country" value={code?.toLowerCase()} />
+        <TypeIcon type="country" value={code} />
       </FilterLink>
     );
   };

@@ -83,7 +83,7 @@ export function stringToColor(str: string) {
 }
 
 export function formatCurrency(value: number, currency: string, locale = 'en-US') {
-  let formattedValue;
+  let formattedValue: Intl.NumberFormat;
 
   try {
     formattedValue = new Intl.NumberFormat(locale, {

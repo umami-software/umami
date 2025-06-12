@@ -145,6 +145,9 @@ export const utmReportSchema = z.object({
 
 export const revenueReportSchema = z.object({
   type: z.literal('revenue'),
+  parameters: z.object({
+    currency: z.string(),
+  }),
 });
 
 export const attributionReportSchema = z.object({

@@ -13,8 +13,8 @@ export async function POST(request: Request) {
 
   const {
     websiteId,
-    currency,
     dateRange: { startDate, endDate, unit },
+    parameters: { currency },
   } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {

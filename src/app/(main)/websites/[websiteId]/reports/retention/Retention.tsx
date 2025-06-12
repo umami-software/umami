@@ -67,7 +67,9 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
             autoFlow="column"
           >
             <Column>
-              <Text weight="bold">{formatMessage(labels.cohort)}</Text>
+              <Text weight="bold" align="center">
+                {formatMessage(labels.cohort)}
+              </Text>
             </Column>
             {days.map(n => (
               <Column key={n}>

@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { TestConsole } from '../TestConsole';
+import { TestConsolePage } from './TestConsolePage';
 
 async function getEnabled() {
   return !!process.env.ENABLE_TEST_CONSOLE;
@@ -14,7 +14,7 @@ export default async function ({ params }: { params: Promise<{ websiteId: string
     return null;
   }
 
-  return <TestConsole websiteId={websiteId?.[0]} />;
+  return <TestConsolePage websiteId={websiteId} />;
 }
 
 export const metadata: Metadata = {

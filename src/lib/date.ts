@@ -145,6 +145,7 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
 
     const startDate = new Date(+startTime);
     const endDate = new Date(+endTime);
+    const unit = getMinimumUnit(startDate, endDate);
 
     return {
       startDate,
@@ -152,7 +153,7 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
       value,
       ...parseDateValue(value),
       offset: 0,
-      unit: getMinimumUnit(startDate, endDate),
+      unit,
     };
   }
 

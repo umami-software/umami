@@ -14,7 +14,7 @@ export function TypeIcon({
     <Row gap="3" alignItems="center">
       <img
         src={`${process.env.basePath || ''}/images/${type}/${
-          value?.replaceAll(' ', '-').toLowerCase() || 'xx'
+          value?.replaceAll(' ', '-').toLowerCase() || 'unknown'
         }.png`}
         onError={e => {
           e.currentTarget.src = `${process.env.basePath || ''}/images/${type}/unknown.png`;

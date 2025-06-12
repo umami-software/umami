@@ -50,6 +50,7 @@ export function Panel({
       borderRadius="3"
       backgroundColor
       position="relative"
+      overflowX="hidden"
       gap
       {...props}
       style={{ ...style, ...(isFullscreen ? fullscreenStyles : {}) }}

@@ -56,8 +56,8 @@ export function EventsChart({ websiteId, className, focusLabel }: EventsChartPro
 
   return (
     <BarChart
-      minDate={startDate.toISOString()}
-      maxDate={endDate.toISOString()}
+      minDate={startDate}
+      maxDate={endDate}
       className={className}
       data={chartData}
       unit={unit}

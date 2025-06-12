@@ -1,22 +1,22 @@
 import { useState } from 'react';
-import { Grid, Select, ListItem } from '@umami/react-zen';
+import { Grid, Row, Text } from '@umami/react-zen';
 import classNames from 'classnames';
 import { colord } from 'colord';
 import { BarChart } from '@/components/charts/BarChart';
-import { PieChart } from '@/components/charts/PieChart';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { useCountryNames, useLocale, useMessages, useResultQuery } from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { renderDateLabels } from '@/lib/charts';
-import { CHART_COLORS, CURRENCIES } from '@/lib/constants';
+import { CHART_COLORS } from '@/lib/constants';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
 import { useCallback, useMemo } from 'react';
 import { Panel } from '@/components/common/Panel';
 import { Column } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { parseDateRange } from '@/lib/date';
+import { getMinimumUnit } from '@/lib/date';
+import { CurrencySelect } from '@/components/input/CurrencySelect';
 
 export interface RevenueProps {
   websiteId: string;
@@ -26,11 +26,10 @@ export interface RevenueProps {
 
 export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
   const [currency, setCurrency] = useState('USD');
-  const [search, setSearch] = useState('');
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
   const { countryNames } = useCountryNames(locale);
-  const { unit } = parseDateRange({ startDate, endDate }, locale);
+  const unit = getMinimumUnit(startDate, endDate);
   const { data, error, isLoading } = useResultQuery<any>('revenue', {
     websiteId,
     dateRange: {
@@ -45,10 +44,10 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
 
   const renderCountryName = useCallback(
     ({ x: code }) => (
-      <span className={classNames(locale)}>
-        <TypeIcon type="country" value={code?.toLowerCase()} />
-        {countryNames[code]}
-      </span>
+      <Row className={classNames(locale)} gap>
+        <TypeIcon type="country" value={code} />
+        <Text>{countryNames[code] || formatMessage(labels.unknown)}</Text>
+      </Row>
     ),
     [countryNames, locale],
   );
@@ -79,24 +78,9 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
         };
       }),
     };
-  }, [data]);
+  }, [data, startDate, endDate, unit]);
 
-  const countryData = useMemo(() => {
-    if (!data) return [];
-
-    const labels = data.country.map(({ name }) => name);
-    const datasets = [
-      {
-        data: data.country.map(({ value }) => value),
-        backgroundColor: CHART_COLORS,
-        borderWidth: 0,
-      },
-    ];
-
-    return { labels, datasets };
-  }, [data]);
-
-  const metricData = useMemo(() => {
+  const metrics = useMemo(() => {
     if (!data) return [];
 
     const { sum, count, unique_count } = data.total;
@@ -128,69 +112,41 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
   return (
     <Column gap>
       <Grid columns="280px" gap>
-        <Select
-          items={CURRENCIES}
-          label={formatMessage(labels.currency)}
-          value={currency}
-          defaultValue={currency}
-          onChange={setCurrency}
-          listProps={{ style: { maxHeight: '300px' } }}
-          onSearch={setSearch}
-          allowSearch
-        >
-          {CURRENCIES.map(({ id, name }) => {
-            if (search && !`${id}${name}`.toLowerCase().includes(search)) {
-              return null;
-            }
-
-            return (
-              <ListItem key={id} id={id}>
-                {id} &mdash; {name}
-              </ListItem>
-            );
-          }).filter(n => n)}
-        </Select>
+        <CurrencySelect value={currency} onChange={setCurrency} />
       </Grid>
-
       <LoadingPanel isEmpty={isEmpty} isLoading={isLoading} error={error}>
         <Column gap>
-          <MetricsBar isFetched={!!data}>
-            {metricData?.map(({ label, value, formatValue }) => {
+          <MetricsBar isFetched={!!data} isLoading={isLoading}>
+            {metrics?.map(({ label, value, formatValue }) => {
               return (
                 <MetricCard key={label} value={value} label={label} formatValue={formatValue} />
               );
             })}
           </MetricsBar>
-          {data && (
-            <>
-              <Panel>
-                <BarChart
-                  minDate={startDate}
-                  maxDate={endDate}
-                  data={chartData}
-                  unit={unit}
-                  stacked={true}
-                  currency={currency}
-                  renderXLabel={renderDateLabels(unit, locale)}
-                  isLoading={isLoading}
-                />
-              </Panel>
-              <Panel>
-                <Grid columns="1fr 1fr">
-                  <ListTable
-                    metric={formatMessage(labels.country)}
-                    data={data?.country.map(({ name, value }) => ({
-                      x: name,
-                      y: Number(value),
-                      z: (value / data?.total.sum) * 100,
-                    }))}
-                    renderLabel={renderCountryName}
-                  />
-                  <PieChart type="doughnut" data={countryData} />
-                </Grid>
-              </Panel>
-            </>
-          )}
+          <Panel>
+            <BarChart
+              data={chartData}
+              minDate={startDate}
+              maxDate={endDate}
+              unit={unit}
+              stacked={true}
+              currency={currency}
+              isLoading={isLoading}
+              renderXLabel={renderDateLabels(unit, locale)}
+            />
+          </Panel>
+          <Panel>
+            <ListTable
+              title={formatMessage(labels.country)}
+              data={data?.country.map(({ name, value }: { name: string; value: number }) => ({
+                x: name,
+                y: value,
+                z: (value / data?.total.sum) * 100,
+              }))}
+              currency={currency}
+              renderLabel={renderCountryName}
+            />
+          </Panel>
         </Column>
       </LoadingPanel>
     </Column>

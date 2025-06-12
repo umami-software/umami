@@ -24,7 +24,7 @@ export function useFormat() {
   };
 
   const formatCountry = (value: string): string => {
-    return countryNames[value] || value;
+    return countryNames[value] || value || labels.unknown;
   };
 
   const formatRegion = (value?: string): string => {
