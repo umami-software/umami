@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
-import { Button } from '@umami/react-zen';
+import { Button, ButtonProps } from '@umami/react-zen';
 import { useLocale } from '@/components/hooks';
 
-export interface LinkButtonProps {
+export interface LinkButtonProps extends ButtonProps {
   href: string;
   target?: string;
   scroll?: boolean;

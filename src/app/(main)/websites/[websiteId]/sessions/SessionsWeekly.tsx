@@ -6,7 +6,7 @@ import { getDayOfWeekAsDate } from '@/lib/date';
 import { Focusable, Tooltip, TooltipTrigger } from '@umami/react-zen';
 
 export function SessionsWeekly({ websiteId }: { websiteId: string }) {
-  const { data, ...props } = useWebsiteSessionsWeeklyQuery(websiteId);
+  const { data, isLoading, error } = useWebsiteSessionsWeeklyQuery(websiteId);
   const { dateLocale } = useLocale();
   const { labels, formatMessage } = useMessages();
   const { weekStartsOn } = dateLocale.options;
@@ -36,7 +36,7 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
     : [];
 
   return (
-    <LoadingPanel {...(props as any)} data={data}>
+    <LoadingPanel isEmpty={!data?.length} isLoading={isLoading} error={error}>
       <Grid columns="repeat(8, 1fr)" gap>
         <Grid rows="repeat(25, 20px)" gap="1">
           <Row>&nbsp;</Row>

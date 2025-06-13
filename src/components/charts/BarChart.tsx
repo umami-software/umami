@@ -30,10 +30,10 @@ export interface BarChartProps extends ChartProps {
   YAxisType?: string;
   minDate?: Date;
   maxDate?: Date;
-  isAllTime?: boolean;
 }
 
 export function BarChart({
+  chartData,
   renderXLabel,
   renderYLabel,
   unit,
@@ -43,7 +43,6 @@ export function BarChart({
   minDate,
   maxDate,
   currency,
-  isAllTime,
   ...props
 }: BarChartProps) {
   const [tooltip, setTooltip] = useState(null);
@@ -51,14 +50,14 @@ export function BarChart({
   const { locale } = useLocale();
   const { colors } = useMemo(() => getThemeColors(theme), [theme]);
 
-  const options: any = useMemo(() => {
+  const chartOptions: any = useMemo(() => {
     return {
       __id: new Date().getTime(),
       scales: {
         x: {
           type: XAxisType,
           stacked: true,
-          min: isAllTime ? '' : minDate,
+          min: minDate,
           max: maxDate,
           time: {
             unit,
@@ -94,7 +93,7 @@ export function BarChart({
         },
       },
     };
-  }, [colors, unit, stacked, renderXLabel, renderYLabel]);
+  }, [chartData, colors, unit, stacked, renderXLabel, renderYLabel]);
 
   const handleTooltip = ({ tooltip }: { tooltip: any }) => {
     const { opacity, labelColors, dataPoints } = tooltip;
@@ -121,9 +120,9 @@ export function BarChart({
       <Chart
         {...props}
         type="bar"
-        chartOptions={options}
+        chartData={chartData}
+        chartOptions={chartOptions}
         onTooltip={handleTooltip}
-        height="400px"
       />
       {tooltip && <ChartTooltip {...tooltip} />}
     </>

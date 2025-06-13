@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { PageviewsChart } from '@/components/metrics/PageviewsChart';
 import { useWebsitePageviewsQuery } from '@/components/hooks/queries/useWebsitePageviewsQuery';
 import { useDateRange } from '@/components/hooks';
@@ -12,7 +13,7 @@ export function WebsiteChart({
 }) {
   const { dateRange, dateCompare } = useDateRange(websiteId);
   const { startDate, endDate, unit, value } = dateRange;
-  const { data, isLoading } = useWebsitePageviewsQuery(
+  const { data, isLoading, error } = useWebsitePageviewsQuery(
     websiteId,
     compareMode ? dateCompare : undefined,
   );
@@ -46,13 +47,14 @@ export function WebsiteChart({
   }, [data, startDate, endDate, unit]);
 
   return (
-    <PageviewsChart
-      data={chartData}
-      minDate={startDate.toISOString()}
-      maxDate={endDate.toISOString()}
-      unit={unit}
-      isLoading={isLoading}
-      isAllTime={value === 'all'}
-    />
+    <LoadingPanel isLoading={isLoading} error={error}>
+      <PageviewsChart
+        key={value}
+        data={chartData}
+        minDate={value === 'all' ? undefined : startDate}
+        maxDate={endDate}
+        unit={unit}
+      />
+    </LoadingPanel>
   );
 }

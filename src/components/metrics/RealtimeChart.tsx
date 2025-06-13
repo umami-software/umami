@@ -38,8 +38,8 @@ export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
   return (
     <PageviewsChart
       {...props}
-      minDate={startDate.toISOString()}
-      maxDate={endDate.toISOString()}
+      minDate={startDate}
+      maxDate={endDate}
       unit={unit}
       data={chartData}
       animationDuration={animationDuration}

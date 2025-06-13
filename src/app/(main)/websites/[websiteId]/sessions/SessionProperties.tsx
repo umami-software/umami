@@ -30,7 +30,7 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
       : null;
 
   return (
-    <LoadingPanel isLoading={isLoading} isFetched={isFetched} data={data} error={error}>
+    <LoadingPanel isLoading={isLoading} isFetched={isFetched} error={error}>
       <div className={styles.container}>
         <DataTable data={data} className={styles.table}>
           <DataColumn id="propertyName" label={formatMessage(labels.property)}>
@@ -45,7 +45,7 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
         {propertyName && (
           <div className={styles.chart}>
             <div className={styles.title}>{propertyName}</div>
-            <PieChart key={propertyName} type="doughnut" data={chartData} />
+            <PieChart key={propertyName} type="doughnut" chartData={chartData} />
           </div>
         )}
       </div>

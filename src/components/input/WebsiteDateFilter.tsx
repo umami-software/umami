@@ -47,7 +47,7 @@ export function WebsiteDateFilter({
   };
 
   const handleIncrement = (increment: number) => {
-    router.push(renderUrl({ increment }));
+    router.push(renderUrl({ offset: offset + increment }));
     saveDateRange(getOffsetDateRange(dateRange, increment));
   };
 

@@ -88,6 +88,7 @@ export function ReportEditButton({
             title={formatMessage(labels.delete)}
             onConfirm={handleDelete}
             onCancel={handleClose}
+            isDanger
           >
             <Row gap="1">
               {formatMessage(messages.confirmDelete, { target: <b key={name}>{name}</b> })}

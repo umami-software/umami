@@ -15,26 +15,16 @@ export interface PageviewsChartProps extends BarChartProps {
     };
   };
   unit: string;
-  isLoading?: boolean;
-  isAllTime?: boolean;
 }
 
-export function PageviewsChart({
-  data,
-  unit,
-  isLoading,
-  isAllTime,
-  ...props
-}: PageviewsChartProps) {
+export function PageviewsChart({ data, unit, ...props }: PageviewsChartProps) {
   const { formatMessage, labels } = useMessages();
   const { theme } = useTheme();
   const { locale } = useLocale();
   const { colors } = useMemo(() => getThemeColors(theme), [theme]);
 
-  const chartData = useMemo(() => {
-    if (!data) {
-      return {};
-    }
+  const chartData: any = useMemo(() => {
+    if (!data) return;
 
     return {
       __id: new Date().getTime(),
@@ -84,11 +74,10 @@ export function PageviewsChart({
   return (
     <BarChart
       {...props}
-      data={chartData}
+      chartData={chartData}
       unit={unit}
-      isLoading={isLoading}
-      isAllTime={isAllTime}
       renderXLabel={renderXLabel}
+      height="400px"
     />
   );
 }

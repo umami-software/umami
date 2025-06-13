@@ -96,13 +96,20 @@ const AnimatedRow = ({
 }) => {
   const props = useSpring({
     width: percent,
-    y: value,
+    y: !isNaN(value) ? value : 0,
     from: { width: 0, y: 0 },
     config: animate ? config.default : { duration: 0 },
   });
 
   return (
-    <Grid columns="1fr 50px 50px" paddingLeft="2" alignItems="center" hoverBackgroundColor="2" gap>
+    <Grid
+      columns="1fr 50px 50px"
+      paddingLeft="2"
+      alignItems="center"
+      hoverBackgroundColor="2"
+      borderRadius
+      gap
+    >
       <Row alignItems="center">
         <Text>{label}</Text>
       </Row>
