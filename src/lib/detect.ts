@@ -76,6 +76,43 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
     log('Localhost:', ip);
     return;
   }
+  const envHeaders = {
+    country: process.env.X_UMAMI_IP_COUNTRY?.toLowerCase(),
+    region: process.env.X_UMAMI_IP_COUNTRY_REGION?.toLowerCase(),
+    city: process.env.X_UMAMI_IP_CITY?.toLowerCase(),
+    lat: process.env.X_UMAMI_IP_LATITUDE?.toLowerCase(),
+    lng: process.env.X_UMAMI_IP_LONGITUDE?.toLowerCase(),
+  };
+
+  const hasCustomHeaders =
+    envHeaders.country &&
+    envHeaders.region &&
+    envHeaders.city &&
+    envHeaders.lat &&
+    envHeaders.lng &&
+    req.headers[envHeaders.country] &&
+    req.headers[envHeaders.region] &&
+    req.headers[envHeaders.city] &&
+    req.headers[envHeaders.lat] &&
+    req.headers[envHeaders.lng];
+
+  if (hasCustomHeaders) {
+    log('Use custom headers');
+
+    const country = safeDecodeURIComponent(req.headers[envHeaders.country]);
+    const subdivision1Raw = safeDecodeURIComponent(req.headers[envHeaders.region]);
+    const city = safeDecodeURIComponent(req.headers[envHeaders.city]);
+    const lat = parseFloat(safeDecodeURIComponent(req.headers[envHeaders.lat]));
+    const lng = parseFloat(safeDecodeURIComponent(req.headers[envHeaders.lng]));
+
+    return {
+      country,
+      subdivision1: getRegionCode(country, subdivision1Raw),
+      city,
+      lat,
+      lng,
+    };
+  }
 
   // Cloudflare headers
   if (req.headers['cf-ipcountry']) {
