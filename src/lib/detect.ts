@@ -88,17 +88,29 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
     envHeaders.country &&
     envHeaders.region &&
     envHeaders.city &&
+    envHeaders.lat &&
+    envHeaders.lng &&
     req.headers[envHeaders.country] &&
     req.headers[envHeaders.region] &&
-    req.headers[envHeaders.city];
+    req.headers[envHeaders.city] &&
+    req.headers[envHeaders.lat] &&
+    req.headers[envHeaders.lng];
 
   if (hasCustomHeaders) {
+    log('Use custom headers');
+
+    const country = safeDecodeURIComponent(req.headers[envHeaders.country]);
+    const subdivision1Raw = safeDecodeURIComponent(req.headers[envHeaders.region]);
+    const city = safeDecodeURIComponent(req.headers[envHeaders.city]);
+    const lat = parseFloat(safeDecodeURIComponent(req.headers[envHeaders.lat]));
+    const lng = parseFloat(safeDecodeURIComponent(req.headers[envHeaders.lng]));
+
     return {
-      country: safeDecodeURIComponent(req.headers[envHeaders.country]),
-      subdivision1: safeDecodeURIComponent(req.headers[envHeaders.region]),
-      city: safeDecodeURIComponent(req.headers[envHeaders.city]),
-      lat: safeDecodeURIComponent(req.headers[envHeaders.lat]),
-      lng: safeDecodeURIComponent(req.headers[envHeaders.lng]),
+      country,
+      subdivision1: getRegionCode(country, subdivision1Raw),
+      city,
+      lat,
+      lng,
     };
   }
 
