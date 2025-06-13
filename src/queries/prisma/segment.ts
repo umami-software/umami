@@ -13,6 +13,18 @@ export async function getSegment(segmentId: string): Promise<Segment> {
   });
 }
 
+export async function getWebsiteSegment(websiteId: string, name: string): Promise<Segment> {
+  return prisma.client.segment.findFirst({
+    where: { websiteId, name },
+  });
+}
+
+export async function getWebsiteSegments(websiteId: string, type: string): Promise<Segment[]> {
+  return prisma.client.Segment.findMany({
+    where: { websiteId, type },
+  });
+}
+
 export async function createSegment(data: Prisma.SegmentUncheckedCreateInput): Promise<Segment> {
   return prisma.client.Segment.create({ data });
 }

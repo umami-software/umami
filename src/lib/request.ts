@@ -1,9 +1,9 @@
 import { z, ZodSchema } from 'zod';
-import { FILTER_COLUMNS } from '@/lib/constants';
+import { FILTER_COLUMNS, FILTER_GROUPS } from '@/lib/constants';
 import { badRequest, unauthorized } from '@/lib/response';
 import { getAllowedUnits, getMinimumUnit } from '@/lib/date';
 import { checkAuth } from '@/lib/auth';
-import { getWebsiteDateRange } from '@/queries';
+import { getWebsiteSegment, getWebsiteDateRange } from '@/queries';
 
 export async function getJsonBody(request: Request) {
   try {
@@ -85,14 +85,21 @@ export async function getRequestDateRange(query: Record<string, any>) {
   };
 }
 
-export function getRequestFilters(query: Record<string, any>) {
-  return Object.keys(FILTER_COLUMNS).reduce((obj, key) => {
+export async function getRequestFilters(query: Record<string, any>, websiteId?: string) {
+  const result: Record<string, any> = {};
+
+  for (const key of Object.keys(FILTER_COLUMNS)) {
     const value = query[key];
-
     if (value !== undefined) {
-      obj[key] = value;
+      if (FILTER_GROUPS.includes(key)) {
+        const segment = await getWebsiteSegment(websiteId, value);
+        // merge filters into result
+        Object.assign(result, segment.filters);
+      } else {
+        result[key] = value;
+      }
     }
+  }
 
-    return obj;
-  }, {});
+  return result;
 }

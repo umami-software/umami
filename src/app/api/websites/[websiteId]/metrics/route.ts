@@ -48,7 +48,7 @@ export async function GET(
   const { startDate, endDate } = await getRequestDateRange(query);
   const column = FILTER_COLUMNS[type] || type;
   const filters = {
-    ...getRequestFilters(query),
+    ...(await getRequestFilters(query)),
     startDate,
     endDate,
   };

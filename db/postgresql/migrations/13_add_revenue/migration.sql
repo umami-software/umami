@@ -1,6 +1,3 @@
--- AlterTable
-ALTER TABLE "segment" ADD COLUMN     "type" VARCHAR(200) NOT NULL;
-
 -- CreateTable
 CREATE TABLE "revenue" (
     "revenue_id" UUID NOT NULL,

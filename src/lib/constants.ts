@@ -47,7 +47,7 @@ export const SESSION_COLUMNS = [
   'host',
 ];
 
-export const GROUP_FILTERS = ['segment', 'cohort'];
+export const FILTER_GROUPS = ['segment', 'cohort'];
 
 export const FILTER_COLUMNS = {
   url: 'url_path',
@@ -67,6 +67,7 @@ export const FILTER_COLUMNS = {
   event: 'event_name',
   tag: 'tag',
   segment: 'segment',
+  cohort: 'cohort',
 };
 
 export const COLLECTION_TYPE = {

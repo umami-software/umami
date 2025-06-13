@@ -21,6 +21,8 @@ export function useFilterParams(websiteId: string) {
       city,
       event,
       tag,
+      segment,
+      cohort,
     },
   } = useNavigation();
 
@@ -42,5 +44,7 @@ export function useFilterParams(websiteId: string) {
     city,
     event,
     tag,
+    segment,
+    cohort,
   };
 }

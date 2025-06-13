@@ -2,6 +2,7 @@
 CREATE TABLE "segment" (
     "segment_id" UUID NOT NULL,
     "website_id" UUID NOT NULL,
+    "type" VARCHAR(200) NOT NULL,
     "name" VARCHAR(200) NOT NULL,
     "filters" JSONB NOT NULL,
     "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
