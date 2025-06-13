@@ -76,6 +76,31 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
     log('Localhost:', ip);
     return;
   }
+  const envHeaders = {
+    country: process.env.X_UMAMI_IP_COUNTRY?.toLowerCase(),
+    region: process.env.X_UMAMI_IP_COUNTRY_REGION?.toLowerCase(),
+    city: process.env.X_UMAMI_IP_CITY?.toLowerCase(),
+    lat: process.env.X_UMAMI_IP_LATITUDE?.toLowerCase(),
+    lng: process.env.X_UMAMI_IP_LONGITUDE?.toLowerCase(),
+  };
+
+  const hasCustomHeaders =
+    envHeaders.country &&
+    envHeaders.region &&
+    envHeaders.city &&
+    req.headers[envHeaders.country] &&
+    req.headers[envHeaders.region] &&
+    req.headers[envHeaders.city];
+
+  if (hasCustomHeaders) {
+    return {
+      country: safeDecodeURIComponent(req.headers[envHeaders.country]),
+      subdivision1: safeDecodeURIComponent(req.headers[envHeaders.region]),
+      city: safeDecodeURIComponent(req.headers[envHeaders.city]),
+      lat: safeDecodeURIComponent(req.headers[envHeaders.lat]),
+      lng: safeDecodeURIComponent(req.headers[envHeaders.lng]),
+    };
+  }
 
   // Cloudflare headers
   if (req.headers['cf-ipcountry']) {
