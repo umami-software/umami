@@ -1,4 +1,5 @@
 import debug from 'debug';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
@@ -354,7 +355,28 @@ function getClient(params?: {
     options,
   } = params || {};
 
-  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL, maxUses: 1 });
+  if (process.env.RUNTIME === 'workerd') {
+    return new Proxy({} as PrismaClient, {
+      get: (target, prop, receiver) => {
+        const adapter = new PrismaPg({
+          connectionString:
+            getCloudflareContext()?.env?.HYPERDRIVE?.connectionString ?? process.env.DATABASE_URL,
+          maxUses: 1,
+        });
+        const prisma = new PrismaClient({
+          errorFormat: 'pretty',
+          adapter,
+          ...(logQuery && PRISMA_LOG_OPTIONS),
+          ...options,
+        });
+        return Reflect.get(prisma, prop, receiver);
+      },
+    });
+  }
+
+  const adapter = new PrismaPg({
+    connectionString: process.env.DATABASE_URL,
+  });
   const prisma = new PrismaClient({
     errorFormat: 'pretty',
     adapter,
