@@ -1,5 +1,6 @@
 'use client';
 export * from './queries/useActiveUsersQuery';
+export * from './queries/useEventDataQuery';
 export * from './queries/useEventDataEventsQuery';
 export * from './queries/useEventDataPropertiesQuery';
 export * from './queries/useEventDataValuesQuery';
@@ -22,7 +23,6 @@ export * from './queries/useTeamWebsitesQuery';
 export * from './queries/useTeamMembersQuery';
 export * from './queries/useUserQuery';
 export * from './queries/useUsersQuery';
-export * from './queries/useUTMQuery';
 export * from './queries/useWebsiteQuery';
 export * from './queries/useWebsites';
 export * from './queries/useWebsiteEventsQuery';

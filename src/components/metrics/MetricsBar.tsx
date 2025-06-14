@@ -1,22 +1,14 @@
 import { ReactNode } from 'react';
-import { Grid } from '@umami/react-zen';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { Grid, GridProps } from '@umami/react-zen';
 
-export interface MetricsBarProps {
-  isLoading?: boolean;
-  isFetched?: boolean;
-  error?: Error;
+export interface MetricsBarProps extends GridProps {
   children?: ReactNode;
 }
 
-export function MetricsBar({ children, isLoading, isFetched, error }: MetricsBarProps) {
+export function MetricsBar({ children, ...props }: MetricsBarProps) {
   return (
-    <LoadingPanel isLoading={isLoading} isFetched={isFetched} error={error}>
-      {!isLoading && !error && isFetched && (
-        <Grid columns="repeat(auto-fit, minmax(200px, 1fr))" width="100%" gap>
-          {children}
-        </Grid>
-      )}
-    </LoadingPanel>
+    <Grid columns="repeat(auto-fit, minmax(200px, 1fr))" gap {...props}>
+      {children}
+    </Grid>
   );
 }

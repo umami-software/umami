@@ -40,7 +40,6 @@ export function Attribution({
       step,
     },
   });
-  const isEmpty = !Object.keys(data || {}).length;
 
   const { formatMessage, labels } = useMessages();
 
@@ -83,9 +82,9 @@ export function Attribution({
   }
 
   return (
-    <LoadingPanel isEmpty={isEmpty} isLoading={isLoading} error={error}>
+    <LoadingPanel data={data} isLoading={isLoading} error={error}>
       <Column gap>
-        <MetricsBar isFetched={data}>
+        <MetricsBar>
           {metrics?.map(({ label, value, formatValue }) => {
             return <MetricCard key={label} value={value} label={label} formatValue={formatValue} />;
           })}

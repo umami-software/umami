@@ -100,13 +100,13 @@ export function DateFilter({
   };
 
   return (
-    <Row width="200px">
+    <Row width="280px">
       <Select
         value={value}
         placeholder={formatMessage(labels.selectDate)}
         onChange={handleChange}
         renderValue={renderValue}
-        popoverProps={{ placement: 'top', style: { width: 200 } }}
+        popoverProps={{ placement: 'bottom' }}
       >
         {options.map(({ label, value, divider }: any) => {
           return (

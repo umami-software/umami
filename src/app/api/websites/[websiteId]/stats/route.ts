@@ -45,19 +45,11 @@ export async function GET(
     endDate,
   });
 
-  const prevPeriod = await getWebsiteStats(websiteId, {
+  const previous = await getWebsiteStats(websiteId, {
     ...filters,
     startDate: compareStartDate,
     endDate: compareEndDate,
   });
 
-  const stats = Object.keys(metrics[0]).reduce((obj, key) => {
-    obj[key] = {
-      value: Number(metrics[0][key]) || 0,
-      prev: Number(prevPeriod[0][key]) || 0,
-    };
-    return obj;
-  }, {});
-
-  return json(stats);
+  return json({ ...metrics, previous });
 }

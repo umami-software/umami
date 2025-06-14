@@ -40,7 +40,6 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
       currency,
     },
   });
-  const isEmpty = !Object.keys(data || {})?.length;
 
   const renderCountryName = useCallback(
     ({ x: code }) => (
@@ -52,7 +51,7 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
     [countryNames, locale],
   );
 
-  const chartData = useMemo(() => {
+  const chartData: any = useMemo(() => {
     if (!data) return [];
 
     const map = (data.chart as any[]).reduce((obj, { x, t, y }) => {
@@ -114,9 +113,9 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
       <Grid columns="280px" gap>
         <CurrencySelect value={currency} onChange={setCurrency} />
       </Grid>
-      <LoadingPanel isEmpty={isEmpty} isLoading={isLoading} error={error}>
+      <LoadingPanel data={data} isLoading={isLoading} error={error}>
         <Column gap>
-          <MetricsBar isFetched={!!data} isLoading={isLoading}>
+          <MetricsBar>
             {metrics?.map(({ label, value, formatValue }) => {
               return (
                 <MetricCard key={label} value={value} label={label} formatValue={formatValue} />
@@ -125,13 +124,12 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
           </MetricsBar>
           <Panel>
             <BarChart
-              data={chartData}
+              chartData={chartData}
               minDate={startDate}
               maxDate={endDate}
               unit={unit}
               stacked={true}
               currency={currency}
-              isLoading={isLoading}
               renderXLabel={renderDateLabels(unit, locale)}
             />
           </Panel>

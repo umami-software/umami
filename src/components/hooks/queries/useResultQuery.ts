@@ -1,10 +1,10 @@
 import { useApi } from '@/components/hooks';
-import { UseQueryOptions, QueryKey } from '@tanstack/react-query';
+import { ReactQueryOptions } from '@/lib/types';
 
 export function useResultQuery<T>(
   type: string,
   params?: { [key: string]: any },
-  options?: Omit<UseQueryOptions<T, Error, T, QueryKey>, 'queryKey' | 'queryFn'>,
+  options?: ReactQueryOptions<T>,
 ) {
   const { post, useQuery } = useApi();
 

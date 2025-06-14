@@ -1,18 +1,22 @@
-import { UseQueryOptions } from '@tanstack/react-query';
 import { useApi } from '../useApi';
 import { useFilterParams } from '../useFilterParams';
+import { ReactQueryOptions } from '@/lib/types';
+
+export interface WebsitePageviewsData {
+  pageviews: { x: string; y: number }[];
+  sessions: { x: string; y: number }[];
+}
 
 export function useWebsitePageviewsQuery(
-  websiteId: string,
-  compare?: string,
-  options?: Omit<UseQueryOptions, 'queryKey' | 'queryFn'>,
+  { websiteId, compareMode }: { websiteId: string; compareMode?: string },
+  options?: ReactQueryOptions<WebsitePageviewsData>,
 ) {
   const { get, useQuery } = useApi();
-  const params = useFilterParams(websiteId);
+  const filterParams = useFilterParams(websiteId);
 
-  return useQuery({
-    queryKey: ['websites:pageviews', { websiteId, ...params, compare }],
-    queryFn: () => get(`/websites/${websiteId}/pageviews`, { ...params, compare }),
+  return useQuery<WebsitePageviewsData>({
+    queryKey: ['websites:pageviews', { websiteId, compareMode, ...filterParams }],
+    queryFn: () => get(`/websites/${websiteId}/pageviews`, { compareMode, ...filterParams }),
     enabled: !!websiteId,
     ...options,
   });

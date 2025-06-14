@@ -6,10 +6,9 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 
 export function SessionData({ websiteId, sessionId }: { websiteId: string; sessionId: string }) {
   const { data, isLoading, error } = useSessionDataQuery(websiteId, sessionId);
-  const isEmpty = !data?.length;
 
   return (
-    <LoadingPanel isEmpty={isEmpty} isLoading={isLoading} error={error}>
+    <LoadingPanel data={data} isLoading={isLoading} error={error}>
       {!data?.length && <Empty />}
       <Column gap="6">
         {data?.map(({ dataKey, dataType, stringValue }) => {

@@ -35,7 +35,7 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
   const isPage = parameters?.type === 'page';
 
   return (
-    <LoadingPanel isEmpty={!data} isLoading={isLoading} error={error}>
+    <LoadingPanel data={data} isLoading={isLoading} error={error}>
       <Grid gap>
         <Grid columns="1fr auto" gap>
           <Column gap>

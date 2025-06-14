@@ -1,12 +1,12 @@
-import { UseQueryOptions } from '@tanstack/react-query';
 import { useApi } from '../useApi';
 import { useFilterParams } from '../useFilterParams';
+import { ReactQueryOptions } from '@/lib/types';
 
 export function useEventDataValuesQuery(
   websiteId: string,
   eventName: string,
   propertyName: string,
-  options?: Omit<UseQueryOptions, 'queryKey' | 'queryFn'>,
+  options?: ReactQueryOptions<any>,
 ) {
   const { get, useQuery } = useApi();
   const params = useFilterParams(websiteId);

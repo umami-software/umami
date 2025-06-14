@@ -1,10 +1,7 @@
 import { useApi } from '../useApi';
-import { UseQueryOptions } from '@tanstack/react-query';
+import { ReactQueryOptions } from '@/lib/types';
 
-export function useActyiveUsersQuery(
-  websiteId: string,
-  options?: Omit<UseQueryOptions, 'queryKey' | 'queryFn'>,
-) {
+export function useActyiveUsersQuery(websiteId: string, options?: ReactQueryOptions<any>) {
   const { get, useQuery } = useApi();
   return useQuery<any>({
     queryKey: ['websites:active', websiteId],

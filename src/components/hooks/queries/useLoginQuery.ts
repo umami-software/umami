@@ -1,4 +1,3 @@
-import { UseQueryResult } from '@tanstack/react-query';
 import { useApp, setUser } from '@/store/app';
 import { useApi } from '../useApi';
 
@@ -7,7 +6,7 @@ const selector = (state: { user: any }) => state.user;
 export function useLoginQuery(): {
   user: any;
   setUser: (data: any) => void;
-} & UseQueryResult {
+} {
   const { post, useQuery } = useApi();
   const user = useApp(selector);
 

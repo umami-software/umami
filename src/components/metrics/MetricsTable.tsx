@@ -1,12 +1,12 @@
 import { ReactNode, useMemo, useState } from 'react';
-import { Loading, Icon, Text, SearchField, Row, Column } from '@umami/react-zen';
-import { ErrorMessage } from '@/components/common/ErrorMessage';
+import { Icon, Text, SearchField, Row, Column } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
 import { percentFilter } from '@/lib/filters';
 import { useNavigation, useWebsiteMetricsQuery, useMessages, useFormat } from '@/components/hooks';
 import { Arrow } from '@/components/icons';
 import { ListTable, ListTableProps } from './ListTable';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
 
 export interface MetricsTableProps extends ListTableProps {
   websiteId: string;
@@ -15,7 +15,6 @@ export interface MetricsTableProps extends ListTableProps {
   dataFilter?: (data: any) => any;
   limit?: number;
   delay?: number;
-  onDataLoad?: (data: any) => void;
   onSearch?: (search: string) => void;
   allowSearch?: boolean;
   searchFormattedValues?: boolean;
@@ -30,7 +29,6 @@ export function MetricsTable({
   className,
   dataFilter,
   limit,
-  onDataLoad,
   delay = null,
   allowSearch = false,
   searchFormattedValues = false,
@@ -44,12 +42,11 @@ export function MetricsTable({
   const { renderUrl } = useNavigation();
   const { formatMessage, labels } = useMessages();
 
-  const { data, isLoading, isFetched, error } = useWebsiteMetricsQuery(
+  const { data, isLoading, isFetching, error } = useWebsiteMetricsQuery(
     websiteId,
     { type, limit, search: searchFormattedValues ? undefined : search, ...params },
     {
       retryDelay: delay || DEFAULT_ANIMATION_DURATION,
-      onDataLoad,
     },
   );
 
@@ -84,25 +81,25 @@ export function MetricsTable({
 
   return (
     <Column gap="3" justifyContent="space-between">
-      {error && <ErrorMessage />}
-      <Row alignItems="center" justifyContent="space-between">
-        {allowSearch && <SearchField value={search} onSearch={setSearch} delay={300} />}
-        {children}
-      </Row>
-      {data && !error && (
-        <ListTable {...(props as ListTableProps)} data={filteredData} className={className} />
-      )}
-      {!data && isLoading && !isFetched && <Loading icon="dots" />}
-      <Row justifyContent="center">
-        {showMore && data && !error && limit && (
-          <LinkButton href={renderUrl({ view: type })} variant="quiet">
-            <Text>{formatMessage(labels.more)}</Text>
-            <Icon size="sm">
-              <Arrow />
-            </Icon>
-          </LinkButton>
+      <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error}>
+        <Row alignItems="center" justifyContent="space-between">
+          {allowSearch && <SearchField value={search} onSearch={setSearch} delay={300} />}
+          {children}
+        </Row>
+        {data && (
+          <ListTable {...(props as ListTableProps)} data={filteredData} className={className} />
         )}
-      </Row>
+        <Row justifyContent="center">
+          {showMore && data && !error && limit && (
+            <LinkButton href={renderUrl({ view: type })} variant="quiet">
+              <Text>{formatMessage(labels.more)}</Text>
+              <Icon size="sm">
+                <Arrow />
+              </Icon>
+            </LinkButton>
+          )}
+        </Row>
+      </LoadingPanel>
     </Column>
   );
 }

@@ -166,7 +166,7 @@ export function Journey({
   };
 
   return (
-    <LoadingPanel isEmpty={!data} isLoading={isLoading} error={error} height="100%">
+    <LoadingPanel data={data} isLoading={isLoading} error={error} height="100%">
       <div className={styles.container}>
         <div className={styles.view}>
           {columns.map(({ visitorCount, nodes }, columnIndex) => {

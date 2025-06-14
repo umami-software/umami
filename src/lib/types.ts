@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
+import { UseQueryOptions } from '@tanstack/react-query';
 import {
   COLLECTION_TYPE,
   DATA_TYPE,
@@ -208,3 +209,5 @@ export interface InputItem {
   icon: any;
   seperator?: boolean;
 }
+
+export type ReactQueryOptions<T> = Omit<UseQueryOptions<T, Error, T>, 'queryKey' | 'queryFn'>;

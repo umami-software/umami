@@ -9,7 +9,7 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 
 export function FunnelsPage({ websiteId }: { websiteId: string }) {
-  const { result } = useReportsQuery({ websiteId, type: 'funnel' });
+  const { result, query } = useReportsQuery({ websiteId, type: 'funnel' });
   const {
     dateRange: { startDate, endDate },
   } = useDateRange(websiteId);
@@ -20,7 +20,7 @@ export function FunnelsPage({ websiteId }: { websiteId: string }) {
       <SectionHeader>
         <FunnelAddButton websiteId={websiteId} />
       </SectionHeader>
-      <LoadingPanel isEmpty={!result?.data?.length} isLoading={!result}>
+      <LoadingPanel data={result?.data} isLoading={query?.isLoading} error={query?.error}>
         <Grid gap>
           {result?.data?.map((report: any) => (
             <Panel key={report.id}>

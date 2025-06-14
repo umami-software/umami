@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
-import { Grid, Row, Column, Text, Loading, Icon } from '@umami/react-zen';
-import { Empty } from '@/components/common/Empty';
+import { Grid, Row, Column, Text, Icon } from '@umami/react-zen';
 import { Users } from '@/components/icons';
 import { useMessages, useLocale, useResultQuery } from '@/components/hooks';
 import { formatDate } from '@/lib/date';
@@ -28,14 +27,6 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
     },
   });
 
-  if (isLoading) {
-    return <Loading position="page" />;
-  }
-
-  if (!data) {
-    return <Empty />;
-  }
-
   const rows = data.reduce((arr: any[], row: { date: any; visitors: any; day: any }) => {
     const { date, visitors, day } = row;
     if (day === 0) {
@@ -44,7 +35,9 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
         visitors,
         records: days
           .reduce((arr, day) => {
-            arr[day] = data.find(x => x.date === date && x.day === day);
+            arr[day] = data.find(
+              (x: { date: any; day: number }) => x.date === date && x.day === day,
+            );
             return arr;
           }, [])
           .filter(n => n),
@@ -56,7 +49,7 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
   const totalDays = rows.length;
 
   return (
-    <LoadingPanel isEmpty={!data?.length} isLoading={isLoading} error={error}>
+    <LoadingPanel data={data} isLoading={isLoading} error={error}>
       <Panel allowFullscreen height="900px">
         <Column gap="1" width="100%" overflow="auto">
           <Grid

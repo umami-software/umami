@@ -30,7 +30,7 @@ export function Breakdown({ websiteId, parameters, startDate, endDate }: Breakdo
   );
 
   return (
-    <LoadingPanel isEmpty={!data?.length} isLoading={isLoading} error={error}>
+    <LoadingPanel data={data} isLoading={isLoading} error={error}>
       <DataTable data={data}>
         {parameters?.fields.map(field => {
           return (

@@ -7,7 +7,7 @@ export function SessionStats({ data }) {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <MetricsBar isFetched={true}>
+    <MetricsBar>
       <MetricCard label={formatMessage(labels.visits)} value={data?.visits} />
       <MetricCard label={formatMessage(labels.views)} value={data?.views} />
       <MetricCard label={formatMessage(labels.events)} value={data?.events} />

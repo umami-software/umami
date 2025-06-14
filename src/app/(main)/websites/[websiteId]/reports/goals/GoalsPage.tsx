@@ -9,7 +9,7 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 
 export function GoalsPage({ websiteId }: { websiteId: string }) {
-  const { result } = useReportsQuery({ websiteId, type: 'goal' });
+  const { result, query } = useReportsQuery({ websiteId, type: 'goal' });
   const {
     dateRange: { startDate, endDate },
   } = useDateRange(websiteId);
@@ -20,7 +20,7 @@ export function GoalsPage({ websiteId }: { websiteId: string }) {
       <SectionHeader>
         <GoalAddButton websiteId={websiteId} />
       </SectionHeader>
-      <LoadingPanel isEmpty={!result?.data?.length} isLoading={!result}>
+      <LoadingPanel data={result.data} isLoading={query.isLoading} error={query.error}>
         <Grid columns="1fr 1fr" gap>
           {result?.data?.map((report: any) => (
             <Panel key={report.id}>

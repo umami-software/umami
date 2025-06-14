@@ -117,5 +117,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, params);
+  return rawQuery(sql, params).then(result => result?.[0]);
 }

@@ -23,10 +23,9 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
       endDate,
     },
   });
-  const isEmpty = !Object.keys(data || {})?.length;
 
   return (
-    <LoadingPanel isEmpty={isEmpty} isLoading={isLoading} error={error}>
+    <LoadingPanel data={data} isLoading={isLoading} error={error}>
       <Column gap>
         {UTM_PARAMS.map(param => {
           const items = toArray(data?.[param]);
@@ -61,7 +60,7 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
                   />
                 </Column>
                 <Column>
-                  <PieChart type="doughnut" data={chartData} />
+                  <PieChart type="doughnut" chartData={chartData} />
                 </Column>
               </Grid>
             </Panel>

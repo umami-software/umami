@@ -20,7 +20,7 @@ export function SessionDetailsPage({
   const { formatMessage, labels } = useMessages();
 
   return (
-    <LoadingPanel isLoading={isLoading} error={error}>
+    <LoadingPanel data={data} isLoading={isLoading} error={error}>
       <Grid columns="260px 1fr" gap>
         <Column gap="6">
           <Row justifyContent="center">
@@ -28,7 +28,6 @@ export function SessionDetailsPage({
           </Row>
           <SessionInfo data={data} />
         </Column>
-
         <Column gap>
           <SessionStats data={data} />
           <Panel>

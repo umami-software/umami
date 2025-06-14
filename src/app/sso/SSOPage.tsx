@@ -18,5 +18,5 @@ export function SSOPage() {
     }
   }, [router, url, token]);
 
-  return <Loading />;
+  return <Loading position="page" />;
 }

@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
-import { Loading, SearchField, Row, Column } from '@umami/react-zen';
+import { SearchField, Row, Column } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { Empty } from '@/components/common/Empty';
 import { Pager } from '@/components/common/Pager';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { PagedQueryResult } from '@/lib/types';
@@ -24,16 +23,14 @@ export function DataGrid({
   allowSearch = true,
   allowPaging = true,
   autoFocus,
-  renderEmpty,
   children,
 }: DataTableProps) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels } = useMessages();
   const { result, params, setParams, query } = queryResult || {};
-  const { error, isLoading, isFetched } = query || {};
+  const { error, isLoading, isFetching } = query || {};
   const { page, pageSize, count, data } = result || {};
   const { search } = params || {};
   const hasData = Boolean(!isLoading && data?.length);
-  const noResults = Boolean(search && !hasData);
   const { router, renderUrl } = useNavigation();
 
   const handleSearch = (search: string) => {
@@ -46,7 +43,7 @@ export function DataGrid({
   };
 
   return (
-    <Column gap="4">
+    <Column gap="4" minHeight="300px">
       {allowSearch && (hasData || search) && (
         <Row width="280px" alignItems="center">
           <SearchField
@@ -58,12 +55,9 @@ export function DataGrid({
           />
         </Row>
       )}
-      <LoadingPanel data={data} isLoading={isLoading} isFetched={isFetched} error={error}>
+      <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} error={error}>
         <Column>
           {hasData ? (typeof children === 'function' ? children(result) : children) : null}
-          {isLoading && <Loading position="page" />}
-          {!isLoading && !hasData && !search && (renderEmpty ? renderEmpty() : <Empty />)}
-          {!isLoading && noResults && <Empty message={formatMessage(messages.noResultsFound)} />}
         </Column>
         {allowPaging && hasData && (
           <Row marginTop="6">

@@ -1,11 +1,8 @@
 import { useApi } from '../useApi';
-import { UseQueryOptions } from '@tanstack/react-query';
 import { useFilterParams } from '../useFilterParams';
+import { ReactQueryOptions } from '@/lib/types';
 
-export function useSessionDataPropertiesQuery(
-  websiteId: string,
-  options?: Omit<UseQueryOptions, 'queryKey' | 'queryFn'>,
-) {
+export function useSessionDataPropertiesQuery(websiteId: string, options?: ReactQueryOptions<any>) {
   const { get, useQuery } = useApi();
   const params = useFilterParams(websiteId);
 

@@ -8,7 +8,7 @@ export function RealtimeHeader({ data }: { data: RealtimeData }) {
   const { totals }: any = data || {};
 
   return (
-    <MetricsBar isFetched={true}>
+    <MetricsBar>
       <MetricCard label={formatMessage(labels.views)} value={totals.views} />
       <MetricCard label={formatMessage(labels.visitors)} value={totals.visitors} />
       <MetricCard label={formatMessage(labels.events)} value={totals.events} />

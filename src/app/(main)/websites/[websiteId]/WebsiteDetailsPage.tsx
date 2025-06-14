@@ -1,6 +1,5 @@
 'use client';
 import { Column } from '@umami/react-zen';
-import { Panel } from '@/components/common/Panel';
 import { useNavigation } from '@/components/hooks';
 import { WebsiteChart } from './WebsiteChart';
 import { WebsiteExpandedView } from './WebsiteExpandedView';
@@ -18,9 +17,7 @@ export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
     <Column gap>
       <WebsiteControls websiteId={websiteId} allowCompare={true} />
       <WebsiteMetricsBar websiteId={websiteId} showFilter={true} showChange={true} />
-      <Panel>
-        <WebsiteChart websiteId={websiteId} compareMode={compare} />
-      </Panel>
+      <WebsiteChart websiteId={websiteId} compareMode={compare} />
       {!view && !compare && <WebsiteTableView websiteId={websiteId} />}
       {view && !compare && <WebsiteExpandedView websiteId={websiteId} />}
       {compare && <WebsiteCompareTables websiteId={websiteId} />}
