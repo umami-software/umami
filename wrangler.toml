@@ -15,3 +15,10 @@ binding = "ASSETS"
 [[services]]
 binding = "WORKER_SELF_REFERENCE"
 service = "umami"
+
+[[hyperdrive]]
+binding = "HYPERDRIVE"
+id = "89e1479b963241298c0e74cac02bbe33"
+
+[vars]
+RUNTIME = "workerd"
