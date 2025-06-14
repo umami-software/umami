@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
 export async function getWebsiteSessionStats(
-  ...args: [websiteId: string, filters: QueryFilters]
+  ...args: [websiteId: string, filters: QueryFilters & { pathPrefix?: string }]
 ): Promise<
   { pageviews: number; visitors: number; visits: number; countries: number; events: number }[]
 > {
@@ -16,7 +16,7 @@ export async function getWebsiteSessionStats(
 
 async function relationalQuery(
   websiteId: string,
-  filters: QueryFilters,
+  filters: QueryFilters & { pathPrefix?: string },
 ): Promise<
   { pageviews: number; visitors: number; visits: number; countries: number; events: number }[]
 > {
@@ -25,8 +25,7 @@ async function relationalQuery(
     ...filters,
   });
 
-  return rawQuery(
-    `
+  let sql = `
     select
       count(*) as "pageviews",
       count(distinct website_event.session_id) as "visitors",
@@ -38,14 +37,24 @@ async function relationalQuery(
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       ${filterQuery}
-    `,
-    params,
-  );
+  `;
+
+  if (filters.pathPrefix) {
+    sql += `
+      and (
+        website_event.url_path LIKE {{pathPrefix}}
+        or website_event.url_path LIKE {{pathPrefixWithLang}}
+      )`;
+    params.pathPrefix = `${filters.pathPrefix}%`;
+    params.pathPrefixWithLang = `%/en${filters.pathPrefix}%`;
+  }
+
+  return rawQuery(sql, params);
 }
 
 async function clickhouseQuery(
   websiteId: string,
-  filters: QueryFilters,
+  filters: QueryFilters & { pathPrefix?: string },
 ): Promise<
   { pageviews: number; visitors: number; visits: number; countries: number; events: number }[]
 > {
@@ -54,8 +63,7 @@ async function clickhouseQuery(
     ...filters,
   });
 
-  return rawQuery(
-    `
+  let sql = `
     select
       sum(views) as "pageviews",
       uniq(session_id) as "visitors",
@@ -66,7 +74,17 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         ${filterQuery}
-    `,
-    params,
-  );
+  `;
+
+  if (filters.pathPrefix) {
+    sql += `
+        and (
+          url_path LIKE {pathPrefix:String}
+          or url_path LIKE {pathPrefixWithLang:String}
+        )`;
+    params.pathPrefix = `${filters.pathPrefix}%`;
+    params.pathPrefixWithLang = `%/en${filters.pathPrefix}%`;
+  }
+
+  return rawQuery(sql, params);
 }
