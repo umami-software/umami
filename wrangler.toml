@@ -1,0 +1,24 @@
+main = ".open-next/worker.js"
+name = "umami"
+compatibility_date = "2025-06-09"
+compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
+workers_dev = false
+preview_urls = false
+
+[observability]
+enabled = true
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+[[services]]
+binding = "WORKER_SELF_REFERENCE"
+service = "umami"
+
+[[hyperdrive]]
+binding = "HYPERDRIVE"
+id = "89e1479b963241298c0e74cac02bbe33"
+
+[vars]
+RUNTIME = "workerd"
