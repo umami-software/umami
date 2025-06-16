@@ -291,9 +291,6 @@ importers:
       postcss-preset-env:
         specifier: 7.8.3
         version: 7.8.3(postcss@8.5.3)
-      postcss-rtlcss:
-        specifier: ^4.0.1
-        version: 4.0.9(postcss@8.5.3)
       prettier:
         specifier: ^2.6.2
         version: 2.8.8
@@ -345,8 +342,6 @@ importers:
       typescript:
         specifier: ^5.5.3
         version: 5.8.3
-
-  src/generated/prisma: {}
 
 packages:
 
@@ -5513,12 +5508,6 @@ packages:
   postcss-resolve-nested-selector@0.1.6:
     resolution: {integrity: sha512-0sglIs9Wmkzbr8lQwEyIzlDOOC9bGmfVKcJTaxv3vMmd3uo4o4DerC3En0bnmgceeql9BfC8hRkp7cg0fjdVqw==}
 
-  postcss-rtlcss@4.0.9:
-    resolution: {integrity: sha512-dCNKEf+FgTv+EA3XI8ysg2RnpS5s3/iZmU+9qpCNFxHU/BhK+4hz7jyCsCAfo0CLnDrMPtaQENhwb+EGm1wh7Q==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      postcss: ^8.4.21
-
   postcss-safe-parser@6.0.0:
     resolution: {integrity: sha512-FARHN8pwH+WiS2OPCxJI8FuRJpTVnn6ZNFiqAM2aeW2LwTHWWmWgIyKC6cUo0L8aeKiF/14MNvnpls6R2PBeMQ==}
     engines: {node: '>=12.0'}
@@ -5896,11 +5885,6 @@ packages:
   rollup@3.29.5:
     resolution: {integrity: sha512-GVsDdsbJzzy4S/v3dqWPJ7EfvZJfCHiDqe80IyrF59LYuP+e6U1LJoUqeuqRbwAWoMNoXivMNeNAOf5E22VA1w==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
-    hasBin: true
-
-  rtlcss@4.1.1:
-    resolution: {integrity: sha512-/oVHgBtnPNcggP2aVXQjSy6N1mMAfHg4GSag0QtZBlD5bdDgAHwr4pydqJGd+SUCu9260+Pjqbjwtvu7EMH1KQ==}
-    engines: {node: '>=12.0.0'}
     hasBin: true
 
   run-parallel@1.2.0:
@@ -12588,11 +12572,6 @@ snapshots:
 
   postcss-resolve-nested-selector@0.1.6: {}
 
-  postcss-rtlcss@4.0.9(postcss@8.5.3):
-    dependencies:
-      postcss: 8.5.3
-      rtlcss: 4.1.1
-
   postcss-safe-parser@6.0.0(postcss@8.5.3):
     dependencies:
       postcss: 8.5.3
@@ -13007,13 +12986,6 @@ snapshots:
   rollup@3.29.5:
     optionalDependencies:
       fsevents: 2.3.3
-
-  rtlcss@4.1.1:
-    dependencies:
-      escalade: 3.2.0
-      picocolors: 1.1.1
-      postcss: 8.5.3
-      strip-json-comments: 3.1.1
 
   run-parallel@1.2.0:
     dependencies:

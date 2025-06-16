@@ -6,30 +6,23 @@ import prisma from '@/lib/prisma';
 import { uuid } from '@/lib/crypto';
 import { saveEventData } from './saveEventData';
 
-export async function saveEvent(args: {
+export interface SaveEventArgs {
   websiteId: string;
   sessionId: string;
   visitId: string;
+  createdAt?: Date;
+
+  // Page
+  pageTitle?: string;
+  hostname?: string;
   urlPath: string;
   urlQuery?: string;
-  utmSource?: string;
-  utmMedium?: string;
-  utmCampaign?: string;
-  utmContent?: string;
-  utmTerm?: string;
   referrerPath?: string;
   referrerQuery?: string;
   referrerDomain?: string;
-  pageTitle?: string;
-  gclid?: string;
-  fbclid?: string;
-  msclkid?: string;
-  ttclid?: string;
-  lifatid?: string;
-  twclid?: string;
-  eventName?: string;
-  eventData?: any;
-  hostname?: string;
+
+  // Session
+  distinctId?: string;
   browser?: string;
   os?: string;
   device?: string;
@@ -38,73 +31,65 @@ export async function saveEvent(args: {
   country?: string;
   region?: string;
   city?: string;
-  tag?: string;
-  distinctId?: string;
-  createdAt?: Date;
-}) {
-  return runQuery({
-    [PRISMA]: () => relationalQuery(args),
-    [CLICKHOUSE]: () => clickhouseQuery(args),
-  });
-}
 
-async function relationalQuery(data: {
-  websiteId: string;
-  sessionId: string;
-  visitId: string;
-  urlPath: string;
-  urlQuery?: string;
+  // Events
+  eventName?: string;
+  eventData?: any;
+  tag?: string;
+
+  // UTM
   utmSource?: string;
   utmMedium?: string;
   utmCampaign?: string;
   utmContent?: string;
   utmTerm?: string;
-  referrerPath?: string;
-  referrerQuery?: string;
-  referrerDomain?: string;
+
+  // Click IDs
   gclid?: string;
   fbclid?: string;
   msclkid?: string;
   ttclid?: string;
   lifatid?: string;
   twclid?: string;
-  pageTitle?: string;
-  eventName?: string;
-  eventData?: any;
-  tag?: string;
-  hostname?: string;
-  createdAt?: Date;
-}) {
-  const {
-    websiteId,
-    sessionId,
-    visitId,
-    urlPath,
-    urlQuery,
-    utmSource,
-    utmMedium,
-    utmCampaign,
-    utmContent,
-    utmTerm,
-    referrerPath,
-    referrerQuery,
-    referrerDomain,
-    eventName,
-    eventData,
-    pageTitle,
-    gclid,
-    fbclid,
-    msclkid,
-    ttclid,
-    lifatid,
-    twclid,
-    tag,
-    hostname,
-    createdAt,
-  } = data;
+}
+
+export async function saveEvent(args: SaveEventArgs) {
+  return runQuery({
+    [PRISMA]: () => relationalQuery(args),
+    [CLICKHOUSE]: () => clickhouseQuery(args),
+  });
+}
+
+async function relationalQuery({
+  websiteId,
+  sessionId,
+  visitId,
+  createdAt,
+  pageTitle,
+  tag,
+  hostname,
+  urlPath,
+  urlQuery,
+  referrerPath,
+  referrerQuery,
+  referrerDomain,
+  eventName,
+  eventData,
+  utmSource,
+  utmMedium,
+  utmCampaign,
+  utmContent,
+  utmTerm,
+  gclid,
+  fbclid,
+  msclkid,
+  ttclid,
+  lifatid,
+  twclid,
+}: SaveEventArgs) {
   const websiteEventId = uuid();
 
-  const websiteEvent = prisma.client.websiteEvent.create({
+  await prisma.client.websiteEvent.create({
     data: {
       id: websiteEventId,
       websiteId,
@@ -146,83 +131,49 @@ async function relationalQuery(data: {
       createdAt,
     });
   }
-
-  return websiteEvent;
 }
 
-async function clickhouseQuery(data: {
-  websiteId: string;
-  sessionId: string;
-  visitId: string;
-  urlPath: string;
-  urlQuery?: string;
-  utmSource?: string;
-  utmMedium?: string;
-  utmCampaign?: string;
-  utmContent?: string;
-  utmTerm?: string;
-  referrerPath?: string;
-  referrerQuery?: string;
-  referrerDomain?: string;
-  pageTitle?: string;
-  gclid?: string;
-  fbclid?: string;
-  msclkid?: string;
-  ttclid?: string;
-  lifatid?: string;
-  twclid?: string;
-  eventName?: string;
-  eventData?: any;
-  hostname?: string;
-  browser?: string;
-  os?: string;
-  device?: string;
-  screen?: string;
-  language?: string;
-  country?: string;
-  region?: string;
-  city?: string;
-  tag?: string;
-  distinctId?: string;
-  createdAt?: Date;
-}) {
-  const {
-    websiteId,
-    sessionId,
-    visitId,
-    urlPath,
-    urlQuery,
-    utmSource,
-    utmMedium,
-    utmCampaign,
-    utmContent,
-    utmTerm,
-    referrerPath,
-    referrerQuery,
-    referrerDomain,
-    gclid,
-    fbclid,
-    msclkid,
-    ttclid,
-    lifatid,
-    twclid,
-    pageTitle,
-    eventName,
-    eventData,
-    country,
-    region,
-    city,
-    tag,
-    distinctId,
-    createdAt,
-    ...args
-  } = data;
+async function clickhouseQuery({
+  websiteId,
+  sessionId,
+  visitId,
+  distinctId,
+  createdAt,
+  pageTitle,
+  browser,
+  os,
+  device,
+  screen,
+  language,
+  country,
+  region,
+  city,
+  tag,
+  hostname,
+  urlPath,
+  urlQuery,
+  referrerPath,
+  referrerQuery,
+  referrerDomain,
+  eventName,
+  eventData,
+  utmSource,
+  utmMedium,
+  utmCampaign,
+  utmContent,
+  utmTerm,
+  gclid,
+  fbclid,
+  msclkid,
+  ttclid,
+  lifatid,
+  twclid,
+}: SaveEventArgs) {
   const { insert, getUTCString } = clickhouse;
   const { sendMessage } = kafka;
   const eventId = uuid();
 
   const message = {
-    ...args,
     website_id: websiteId,
     session_id: sessionId,
     visit_id: visitId,
@@ -252,6 +203,12 @@ async function clickhouseQuery(data: {
     tag: tag,
     distinct_id: distinctId,
     created_at: getUTCString(createdAt),
+    browser,
+    os,
+    device,
+    screen,
+    language,
+    hostname,
   };
 
   if (kafka.enabled) {
@@ -271,6 +228,4 @@ async function clickhouseQuery(data: {
       createdAt,
     });
   }
-
-  return data;
 }
