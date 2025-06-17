@@ -76,3 +76,5 @@ export const reportParms = {
     value: z.string().optional(),
   }),
 };
+
+export const segmentTypeParam = z.enum(['segment', 'cohort']);
