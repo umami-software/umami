@@ -5,12 +5,13 @@ import ipaddr from 'ipaddr.js';
 import maxmind from 'maxmind';
 import {
   DESKTOP_OS,
-  MOBILE_OS,
   DESKTOP_SCREEN_WIDTH,
-  LAPTOP_SCREEN_WIDTH,
-  MOBILE_SCREEN_WIDTH,
   IP_ADDRESS_HEADERS,
+  LAPTOP_SCREEN_WIDTH,
+  MOBILE_OS,
+  MOBILE_SCREEN_WIDTH,
 } from './constants';
+import { safeDecodeURIComponent } from '@/lib/url';
 
 const MAXMIND = 'maxmind';
 
@@ -146,9 +147,9 @@ export async function getClientInfo(request: Request, payload: Record<string, an
   const userAgent = payload?.userAgent || request.headers.get('user-agent');
   const ip = payload?.ip || getIpAddress(request.headers);
   const location = await getLocation(ip, request.headers, !!payload?.ip);
-  const country = location?.country;
-  const region = location?.region;
-  const city = location?.city;
+  const country = safeDecodeURIComponent(location?.country);
+  const region = safeDecodeURIComponent(location?.region);
+  const city = safeDecodeURIComponent(location?.city);
   const browser = browserName(userAgent);
   const os = detectOS(userAgent) as string;
   const device = getDevice(payload?.screen, os);
