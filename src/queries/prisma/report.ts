@@ -1,4 +1,4 @@
-import { Prisma, Report } from '@/generated/prisma';
+import { Prisma, Report } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
 import { PageResult, PageParams } from '@/lib/types';
 import ReportFindManyArgs = Prisma.ReportFindManyArgs;

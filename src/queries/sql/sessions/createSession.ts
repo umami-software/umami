@@ -1,4 +1,4 @@
-import { Prisma } from '@/generated/prisma';
+import { Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
 
 export async function createSession(
