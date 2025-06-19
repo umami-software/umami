@@ -1,4 +1,4 @@
-import { Prisma, TeamUser } from '@/generated/prisma';
+import { Prisma, TeamUser } from '@/generated/prisma/client';
 import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
 import { PageResult, PageParams } from '@/lib/types';

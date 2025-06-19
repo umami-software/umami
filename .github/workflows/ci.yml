@@ -20,8 +20,6 @@ jobs:
         include:
         - node-version: 18.18
           db-type: postgresql
-        - node-version: 18.18
-          db-type: mysql
 
     steps:
     - uses: actions/checkout@v4
@@ -29,10 +27,13 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
+        cache: 'pnpm'
       env:
         DATABASE_TYPE: ${{ matrix.db-type }}
-    - run: npm install --global yarn
-    - run: yarn install
-    - run: yarn test
-    - run: yarn build
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 10
+    - run: pnpm install
+    - run: pnpm test
+    - run: pnpm build

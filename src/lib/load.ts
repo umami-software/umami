@@ -1,4 +1,4 @@
-import { Website, Session } from '@/generated/prisma';
+import { Website, Session } from '@/generated/prisma/client';
 import redis from '@/lib/redis';
 import { getWebsiteSession, getWebsite } from '@/queries';
 
