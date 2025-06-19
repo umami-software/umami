@@ -11,7 +11,7 @@ const messages = {
   'en-US': enUS,
 };
 
-const selector = (state: { locale: any }) => state.locale;
+const selector = (state: { locale: string }) => state.locale;
 
 export function useLocale() {
   const locale = useApp(selector);

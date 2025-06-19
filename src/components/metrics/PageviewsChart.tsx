@@ -4,6 +4,7 @@ import { BarChart, BarChartProps } from '@/components/charts/BarChart';
 import { useLocale, useMessages } from '@/components/hooks';
 import { renderDateLabels } from '@/lib/charts';
 import { getThemeColors } from '@/lib/colors';
+import { formatDateByUnit } from '@/lib/date';
 
 export interface PageviewsChartProps extends BarChartProps {
   data: {
@@ -20,7 +21,7 @@ export interface PageviewsChartProps extends BarChartProps {
 export function PageviewsChart({ data, unit, ...props }: PageviewsChartProps) {
   const { formatMessage, labels } = useMessages();
   const { theme } = useTheme();
-  const { locale } = useLocale();
+  const { locale, dateLocale } = useLocale();
   const { colors } = useMemo(() => getThemeColors(theme), [theme]);
 
   const chartData: any = useMemo(() => {
@@ -31,14 +32,18 @@ export function PageviewsChart({ data, unit, ...props }: PageviewsChartProps) {
       datasets: [
         {
           label: formatMessage(labels.visitors),
-          data: data.sessions,
+          data: convertDataset(data.sessions, unit, dateLocale),
           borderWidth: 1,
+          barPercentage: 0.9,
+          categoryPercentage: 0.9,
           ...colors.chart.visitors,
           order: 3,
         },
         {
           label: formatMessage(labels.views),
-          data: data.pageviews,
+          data: convertDataset(data.pageviews, unit, dateLocale),
+          barPercentage: 0.9,
+          categoryPercentage: 0.9,
           borderWidth: 1,
           ...colors.chart.views,
           order: 4,
@@ -80,4 +85,8 @@ export function PageviewsChart({ data, unit, ...props }: PageviewsChartProps) {
       height="400px"
     />
   );
+}
+
+function convertDataset(data: { x: string; y: number }[], unit: string, locale?: any) {
+  return data.map(d => ({ ...d, x: formatDateByUnit(d.x, unit, locale) }));
 }

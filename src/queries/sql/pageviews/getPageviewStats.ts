@@ -76,7 +76,7 @@ async function clickhouseQuery(
     from (
       select
         ${getDateSQL('website_event.created_at', unit, timezone)} as t,
-        sum(views)as y
+        sum(views) as y
       from website_event_stats_hourly website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}

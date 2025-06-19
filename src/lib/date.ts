@@ -34,6 +34,7 @@ import {
   subWeeks,
   endOfMinute,
   isSameDay,
+  parseISO,
 } from 'date-fns';
 import { getDateLocale } from '@/lib/lang';
 import { DateRange } from '@/lib/types';
@@ -128,7 +129,7 @@ export function parseDateValue(value: string) {
 }
 
 export function parseDateRange(value: string | object, locale = 'en-US'): DateRange {
-  if (typeof value === 'object') {
+  if (typeof value !== 'string') {
     return value as DateRange;
   }
 
@@ -140,7 +141,7 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
     };
   }
 
-  if (value?.startsWith?.('range')) {
+  if (value.startsWith('range')) {
     const [, startTime, endTime] = value.split(':');
 
     const startDate = new Date(+startTime);
@@ -164,7 +165,7 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
   switch (unit) {
     case 'hour':
       return {
-        startDate: num ? subHours(startOfHour(now), num - 1) : startOfHour(now),
+        startDate: num ? subHours(startOfHour(now), num) : startOfHour(now),
         endDate: endOfHour(now),
         offset: 0,
         num: num || 1,
@@ -173,7 +174,7 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
       };
     case 'day':
       return {
-        startDate: num ? subDays(startOfDay(now), num - 1) : startOfDay(now),
+        startDate: num ? subDays(startOfDay(now), num) : startOfDay(now),
         endDate: endOfDay(now),
         unit: num ? 'day' : 'hour',
         offset: 0,
@@ -183,7 +184,7 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
     case 'week':
       return {
         startDate: num
-          ? subWeeks(startOfWeek(now, { locale: dateLocale }), num - 1)
+          ? subWeeks(startOfWeek(now, { locale: dateLocale }), num)
           : startOfWeek(now, { locale: dateLocale }),
         endDate: endOfWeek(now, { locale: dateLocale }),
         unit: 'day',
@@ -193,7 +194,7 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
       };
     case 'month':
       return {
-        startDate: num ? subMonths(startOfMonth(now), num - 1) : startOfMonth(now),
+        startDate: num ? subMonths(startOfMonth(now), num) : startOfMonth(now),
         endDate: endOfMonth(now),
         unit: num ? 'month' : 'day',
         offset: 0,
@@ -202,7 +203,7 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
       };
     case 'year':
       return {
-        startDate: num ? subYears(startOfYear(now), num - 1) : startOfYear(now),
+        startDate: num ? subYears(startOfYear(now), num) : startOfYear(now),
         endDate: endOfYear(now),
         unit: 'month',
         offset: 0,
@@ -280,6 +281,27 @@ export function getMinimumUnit(startDate: number | Date, endDate: number | Date)
   }
 
   return 'year';
+}
+
+export function formatDateByUnit(dateInput: string | Date, unit: string, locale?: any) {
+  const date = typeof dateInput === 'string' ? parseISO(dateInput) : dateInput;
+
+  switch (unit) {
+    case 'minute':
+      return format(startOfMinute(date), 'yyyy-MM-dd HH:mm');
+    case 'hour':
+      return format(startOfHour(date), 'yyyy-MM-dd HH');
+    case 'day':
+      return format(startOfDay(date), 'yyyy-MM-dd');
+    case 'week':
+      return format(startOfWeek(date, { locale }), "yyyy-'W'II");
+    case 'month':
+      return format(startOfMonth(date), 'yyyy-MM');
+    case 'year':
+      return format(startOfYear(date), 'yyyy');
+    default:
+      return format(startOfDay(date), 'yyyy-MM-dd');
+  }
 }
 
 export function getDateArray(data: any[], startDate: Date, endDate: Date, unit: string) {
