@@ -1,6 +1,6 @@
 import { useState, Key } from 'react';
 import { Grid, Row, Column, Label, List, ListItem, Button, Heading } from '@umami/react-zen';
-import { useFilters, useMessages } from '@/components/hooks';
+import { useDateRange, useFilters, useMessages } from '@/components/hooks';
 import { FilterRecord } from '@/components/common/FilterRecord';
 import { Empty } from '@/components/common/Empty';
 
@@ -11,10 +11,13 @@ export interface FilterEditFormProps {
   onClose?: () => void;
 }
 
-export function FilterEditForm({ data = [], onChange, onClose }: FilterEditFormProps) {
+export function FilterEditForm({ websiteId, data = [], onChange, onClose }: FilterEditFormProps) {
   const { formatMessage, labels, messages } = useMessages();
   const [filters, setFilters] = useState(data);
   const { fields } = useFilters();
+  const {
+    dateRange: { startDate, endDate },
+  } = useDateRange(websiteId);
 
   const updateFilter = (name: string, props: { [key: string]: any }) => {
     setFilters(filters =>
@@ -66,6 +69,10 @@ export function FilterEditForm({ data = [], onChange, onClose }: FilterEditFormP
           return (
             <FilterRecord
               key={filter.name}
+              websiteId={websiteId}
+              type={filter.name}
+              startDate={startDate}
+              endDate={endDate}
               {...filter}
               onSelect={handleSelect}
               onRemove={handleRemove}

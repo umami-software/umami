@@ -9,17 +9,14 @@ export interface DateFilterProps {
   value: string;
   startDate: Date;
   endDate: Date;
-  offset?: number;
-  className?: string;
   onChange?: (value: string) => void;
   showAllTime?: boolean;
-  alignment?: 'start' | 'center' | 'end';
 }
 
 export function DateFilter({
+  value,
   startDate,
   endDate,
-  value,
   onChange,
   showAllTime = false,
 }: DateFilterProps) {

@@ -13,7 +13,7 @@ export interface EventsChartProps extends BarChartProps {
 
 export function EventsChart({ websiteId, focusLabel }: EventsChartProps) {
   const {
-    dateRange: { startDate, endDate, unit, value },
+    dateRange: { startDate, endDate, unit },
   } = useDateRange(websiteId);
   const { locale } = useLocale();
   const { data, isLoading, error } = useWebsiteEventsSeriesQuery(websiteId);
@@ -59,7 +59,7 @@ export function EventsChart({ websiteId, focusLabel }: EventsChartProps) {
       {chartData && (
         <BarChart
           chartData={chartData}
-          minDate={value === 'all' ? undefined : startDate}
+          minDate={startDate}
           maxDate={endDate}
           unit={unit}
           stacked={true}

@@ -3,10 +3,7 @@ import { useApi } from '../useApi';
 
 const selector = (state: { user: any }) => state.user;
 
-export function useLoginQuery(): {
-  user: any;
-  setUser: (data: any) => void;
-} {
+export function useLoginQuery() {
   const { post, useQuery } = useApi();
   const user = useApp(selector);
 

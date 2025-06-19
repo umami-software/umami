@@ -53,7 +53,7 @@ export function WebsiteChart({
         <PageviewsChart
           key={value}
           data={chartData}
-          minDate={value === 'all' ? undefined : startDate}
+          minDate={startDate}
           maxDate={endDate}
           unit={unit}
         />

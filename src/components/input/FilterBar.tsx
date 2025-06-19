@@ -24,18 +24,19 @@ export function FilterBar() {
   }
 
   return (
-    <Row gap alignItems="center" justifyContent="space-between" paddingY="3">
-      <Row alignItems="center" gap="3" wrap="wrap">
+    <Row gap alignItems="center" justifyContent="space-between" padding backgroundColor="3">
+      <Row alignItems="center" gap="2" wrap="wrap">
         {Object.keys(filters).map(key => {
           const filter = filters[key];
           const { name, label, operator, value } = filter;
-          const paramValue = isSearchOperator(operator) ? value : formatValue(value, key);
+          const paramValue = isSearchOperator(operator) ? value : formatValue(value, name);
 
           return (
             <Row
               key={name}
               border
-              padding
+              padding="2"
+              color
               backgroundColor
               borderRadius
               alignItems="center"
@@ -61,7 +62,7 @@ export function FilterBar() {
         })}
       </Row>
       <TooltipTrigger delay={0}>
-        <Button variant="quiet" onPress={handleResetFilter}>
+        <Button variant="wrapper" onPress={handleResetFilter} style={{ alignSelf: 'flex-start' }}>
           <Icon>
             <Close />
           </Icon>

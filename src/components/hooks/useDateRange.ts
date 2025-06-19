@@ -27,11 +27,12 @@ export function useDateRange(websiteId?: string) {
 
           const startDate = new Date(mindate);
           const endDate = new Date(maxdate);
+          const unit = getMinimumUnit(startDate, endDate);
 
           dateRange = {
             startDate,
             endDate,
-            unit: getMinimumUnit(startDate, endDate),
+            unit,
             value,
           };
         } else {

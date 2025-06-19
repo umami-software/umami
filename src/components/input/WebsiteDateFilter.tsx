@@ -78,7 +78,6 @@ export function WebsiteDateFilter({
         value={value}
         startDate={startDate}
         endDate={endDate}
-        offset={offset}
         onChange={handleChange}
         showAllTime={showAllTime}
       />
