@@ -88,5 +88,5 @@ export function PageviewsChart({ data, unit, ...props }: PageviewsChartProps) {
 }
 
 function convertDataset(data: { x: string; y: number }[], unit: string, locale?: any) {
-  return data.map(d => ({ ...d, x: formatDateByUnit(d.x, unit, locale) }));
+  return data.map(d => ({ ...d, d: d.x, x: formatDateByUnit(d.x, unit, locale) }));
 }

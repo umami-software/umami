@@ -38,8 +38,7 @@ export function WebsiteDateFilter({
   const isAllTime = value === 'all';
   const isCustomRange = value.startsWith('range');
 
-  const disableForward =
-    value === 'all' || isAfter(getOffsetDateRange(dateRange, 1).startDate, new Date());
+  const disableForward = value === 'all' || isAfter(endDate, new Date());
 
   const handleChange = (date: string | DateRange) => {
     router.push(renderUrl({ date }));
