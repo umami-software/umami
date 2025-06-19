@@ -16,7 +16,7 @@ export function WebsiteChart({
   const { startDate, endDate, unit, value } = dateRange;
   const { data, isLoading, isFetching, error } = useWebsitePageviewsQuery({
     websiteId,
-    compareMode: compareMode ? dateCompare : undefined,
+    compare: compareMode ? dateCompare : undefined,
   });
   const { pageviews, sessions, compare } = (data || {}) as any;
 

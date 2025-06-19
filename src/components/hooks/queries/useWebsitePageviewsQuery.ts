@@ -8,15 +8,15 @@ export interface WebsitePageviewsData {
 }
 
 export function useWebsitePageviewsQuery(
-  { websiteId, compareMode }: { websiteId: string; compareMode?: string },
+  { websiteId, compare }: { websiteId: string; compare?: string },
   options?: ReactQueryOptions<WebsitePageviewsData>,
 ) {
   const { get, useQuery } = useApi();
   const filterParams = useFilterParams(websiteId);
 
   return useQuery<WebsitePageviewsData>({
-    queryKey: ['websites:pageviews', { websiteId, compareMode, ...filterParams }],
-    queryFn: () => get(`/websites/${websiteId}/pageviews`, { compareMode, ...filterParams }),
+    queryKey: ['websites:pageviews', { websiteId, compare, ...filterParams }],
+    queryFn: () => get(`/websites/${websiteId}/pageviews`, { compare, ...filterParams }),
     enabled: !!websiteId,
     ...options,
   });

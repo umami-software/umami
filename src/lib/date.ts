@@ -34,7 +34,8 @@ import {
   subWeeks,
   endOfMinute,
   isSameDay,
-  parseISO,
+  isBefore,
+  isEqual,
 } from 'date-fns';
 import { getDateLocale } from '@/lib/lang';
 import { DateRange } from '@/lib/types';
@@ -48,19 +49,7 @@ export const TIME_UNIT = {
   year: 'year',
 };
 
-export const CUSTOM_FORMATS = {
-  'en-US': {
-    p: 'ha',
-    pp: 'h:mm:ss',
-  },
-  'fr-FR': {
-    'M/d': 'd/M',
-    'MMM d': 'd MMM',
-    'EEE M/d': 'EEE d/M',
-  },
-};
-
-const DATE_FUNCTIONS = {
+export const DATE_FUNCTIONS = {
   minute: {
     diff: differenceInMinutes,
     add: addMinutes,
@@ -103,6 +92,15 @@ const DATE_FUNCTIONS = {
     start: startOfYear,
     end: endOfYear,
   },
+};
+
+export const DATE_FORMATS = {
+  minute: 'yyyy-MM-dd HH:mm',
+  hour: 'yyyy-MM-dd HH',
+  day: 'yyyy-MM-dd',
+  week: "yyyy-'W'II",
+  month: 'yyyy-MM',
+  year: 'yyyy',
 };
 
 export function isValidTimezone(timezone: string) {
@@ -283,67 +281,12 @@ export function getMinimumUnit(startDate: number | Date, endDate: number | Date)
   return 'year';
 }
 
-export function formatDateByUnit(dateInput: string | Date, unit: string, locale?: any) {
-  const date = typeof dateInput === 'string' ? parseISO(dateInput) : dateInput;
-
-  switch (unit) {
-    case 'minute':
-      return format(startOfMinute(date), 'yyyy-MM-dd HH:mm');
-    case 'hour':
-      return format(startOfHour(date), 'yyyy-MM-dd HH');
-    case 'day':
-      return format(startOfDay(date), 'yyyy-MM-dd');
-    case 'week':
-      return format(startOfWeek(date, { locale }), "yyyy-'W'II");
-    case 'month':
-      return format(startOfMonth(date), 'yyyy-MM');
-    case 'year':
-      return format(startOfYear(date), 'yyyy');
-    default:
-      return format(startOfDay(date), 'yyyy-MM-dd');
-  }
-}
-
-export function getDateArray(data: any[], startDate: Date, endDate: Date, unit: string) {
-  const arr = [];
-  const { diff, add, start } = DATE_FUNCTIONS[unit];
-  const n = diff(endDate, startDate);
-
-  for (let i = 0; i <= n; i++) {
-    const t = start(add(startDate, i));
-    const y = data.find(({ x }) => start(new Date(x)).getTime() === t.getTime())?.y || 0;
-
-    arr.push({ x: t, y });
-  }
-
-  return arr;
-}
-
-export function formatDate(date: string | number | Date, str: string, locale = 'en-US') {
-  return format(
-    typeof date === 'string' ? new Date(date) : date,
-    CUSTOM_FORMATS?.[locale]?.[str] || str,
-    {
-      locale: getDateLocale(locale),
-    },
-  );
-}
-
 export function maxDate(...args: Date[]) {
   return max(args.filter(n => isDate(n)));
 }
 
 export function minDate(...args: any[]) {
   return min(args.filter(n => isDate(n)));
-}
-
-export function getLocalTime(t: string | number | Date) {
-  return addMinutes(new Date(t), new Date().getTimezoneOffset());
-}
-
-export function getDateLength(startDate: Date, endDate: Date, unit: string | number) {
-  const { diff } = DATE_FUNCTIONS[unit];
-  return diff(endDate, startDate) + 1;
 }
 
 export function getCompareDate(compare: string, startDate: Date, endDate: Date) {
@@ -367,4 +310,40 @@ export function getDayOfWeekAsDate(dayOfWeek: number) {
   }
 
   return currentDate;
+}
+
+export function formatDate(date: string | number | Date, dateFormat: string, locale = 'en-US') {
+  return format(typeof date === 'string' ? new Date(date) : date, dateFormat, {
+    locale: getDateLocale(locale),
+  });
+}
+
+export function generateTimeSeries(
+  data: { x: string; y: number }[],
+  minDate: Date,
+  maxDate: Date,
+  unit: string,
+  locale: string,
+) {
+  const add = DATE_FUNCTIONS[unit].add;
+  const start = DATE_FUNCTIONS[unit].start;
+  const fmt = DATE_FORMATS[unit];
+
+  let current = start(minDate);
+  const end = start(maxDate);
+
+  const timeseries: string[] = [];
+
+  while (isBefore(current, end) || isEqual(current, end)) {
+    timeseries.push(formatDate(current, fmt, locale));
+    current = add(current, 1);
+  }
+
+  const lookup = new Map(data.map(({ x, y }) => [formatDate(x, fmt, locale), { x, y }]));
+
+  return timeseries.map(t => {
+    const { x, y } = lookup.get(t) || {};
+
+    return { x: t, d: x, y: y ?? null };
+  });
 }

@@ -5,7 +5,7 @@ import { Chart, ChartProps } from '@/components/charts/Chart';
 import { useLocale } from '@/components/hooks';
 import { renderNumberLabels } from '@/lib/charts';
 import { getThemeColors } from '@/lib/colors';
-import { formatDate, formatDateByUnit } from '@/lib/date';
+import { formatDate, DATE_FORMATS } from '@/lib/date';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
 
 const dateFormats = {
@@ -37,7 +37,7 @@ export function BarChart({
   renderXLabel,
   renderYLabel,
   unit,
-  XAxisType = 'time',
+  XAxisType = 'timeseries',
   YAxisType = 'linear',
   stacked = false,
   minDate,
@@ -57,8 +57,8 @@ export function BarChart({
         x: {
           type: XAxisType,
           stacked: true,
-          min: formatDateByUnit(minDate, unit),
-          max: formatDateByUnit(maxDate, unit),
+          min: formatDate(minDate, DATE_FORMATS[unit], locale),
+          max: formatDate(maxDate, DATE_FORMATS[unit], locale),
           offset: true,
           time: {
             unit,

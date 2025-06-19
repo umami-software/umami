@@ -129,7 +129,13 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
     const value = y - prev;
     const change = Math.abs(((y - prev) / prev) * 100);
 
-    return !isNaN(change) && <ChangeLabel value={value}>{formatNumber(change)}%</ChangeLabel>;
+    return (
+      !isNaN(change) && (
+        <Row alignItems="center" marginRight="3">
+          <ChangeLabel value={value}>{formatNumber(change)}%</ChangeLabel>
+        </Row>
+      )
+    );
   };
 
   const { startDate, endDate } = getCompareDate(
@@ -147,7 +153,7 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
     <Panel>
       <Grid columns={{ xs: '1fr', lg: '200px 1fr 1fr' }} gap="6">
         <SideMenu items={items} selectedKey={view} />
-        <Column border="left" paddingLeft="6">
+        <Column border="left" paddingLeft="6" gap="6">
           <Row alignItems="center" justifyContent="space-between">
             <Heading size="1">{formatMessage(labels.previous)}</Heading>
             <DateDisplay startDate={startDate} endDate={endDate} />
@@ -160,7 +166,7 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
             params={params}
           />
         </Column>
-        <Column>
+        <Column border="left" paddingLeft="6" gap="6">
           <Row alignItems="center" justifyContent="space-between">
             <Heading size="1"> {formatMessage(labels.current)}</Heading>
             <DateDisplay startDate={dateRange.startDate} endDate={dateRange.endDate} />

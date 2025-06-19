@@ -1,4 +1,4 @@
-import { ReactNode, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Icon, Text, SearchField, Row, Column } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
@@ -11,7 +11,6 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 export interface MetricsTableProps extends ListTableProps {
   websiteId: string;
   type?: string;
-  className?: string;
   dataFilter?: (data: any) => any;
   limit?: number;
   delay?: number;
@@ -20,13 +19,14 @@ export interface MetricsTableProps extends ListTableProps {
   searchFormattedValues?: boolean;
   showMore?: boolean;
   params?: { [key: string]: any };
+  onDataLoad?: (data: any) => any;
+  className?: string;
   children?: ReactNode;
 }
 
 export function MetricsTable({
   websiteId,
   type,
-  className,
   dataFilter,
   limit,
   delay = null,
@@ -34,6 +34,8 @@ export function MetricsTable({
   searchFormattedValues = false,
   showMore = true,
   params,
+  onDataLoad,
+  className,
   children,
   ...props
 }: MetricsTableProps) {
@@ -79,9 +81,15 @@ export function MetricsTable({
     return [];
   }, [data, dataFilter, search, limit, formatValue, type]);
 
+  useEffect(() => {
+    if (data) {
+      onDataLoad?.(data);
+    }
+  }, [data]);
+
   return (
     <Column gap="3" justifyContent="space-between">
-      <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error}>
+      <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error} gap>
         <Row alignItems="center" justifyContent="space-between">
           {allowSearch && <SearchField value={search} onSearch={setSearch} delay={300} />}
           {children}
