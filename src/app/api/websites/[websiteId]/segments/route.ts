@@ -39,7 +39,7 @@ export async function POST(
   const schema = z.object({
     type: segmentTypeParam,
     name: z.string().max(200),
-    filters: z.object({}).passthrough(),
+    parameters: z.object({}).passthrough(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -49,7 +49,7 @@ export async function POST(
   }
 
   const { websiteId } = await params;
-  const { type, name, filters } = body;
+  const { type, name, parameters } = body;
 
   if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
@@ -60,7 +60,7 @@ export async function POST(
     websiteId,
     type,
     name,
-    filters,
+    parameters,
   } as any);
 
   return json(result);
