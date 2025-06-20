@@ -41,7 +41,6 @@
     "format-lang": "node scripts/format-lang.js",
     "compile-lang": "formatjs compile-folder --ast build/messages public/intl/messages",
     "clean-lang": "prettier --write ./public/intl/**/*.json",
-    "check-lang": "node scripts/check-lang.js",
     "download-country-names": "node scripts/download-country-names.js",
     "download-language-names": "node scripts/download-language-names.js",
     "change-password": "node scripts/change-password.js",
