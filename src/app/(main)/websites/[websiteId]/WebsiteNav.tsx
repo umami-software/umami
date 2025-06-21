@@ -18,7 +18,7 @@ import Link from 'next/link';
 
 export function WebsiteNav({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
-  const { pathname, renderTeamUrl } = useNavigation();
+  const { pathname, renderUrl } = useNavigation();
 
   const links = [
     {
@@ -103,7 +103,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
         const isSelected = selected === id;
 
         return (
-          <Link key={id} href={renderTeamUrl(`/websites/${websiteId}${path}`)}>
+          <Link key={id} href={renderUrl(`/websites/${websiteId}${path}`)}>
             <NavMenuItem isSelected={isSelected}>
               <Row alignItems="center" gap>
                 <Icon>{icon}</Icon>

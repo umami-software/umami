@@ -23,6 +23,12 @@
       "value": "Ajouter"
     }
   ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "Add board"
+    }
+  ],
   "label.add-description": [
     {
       "type": 0,
@@ -83,6 +89,12 @@
       "value": "Analytics"
     }
   ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "Apply"
+    }
+  ],
   "label.attribution": [
     {
       "type": 0,
@@ -111,6 +123,12 @@
     {
       "type": 0,
       "value": "Avant"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "Boards"
     }
   ],
   "label.bounce-rate": [
@@ -179,10 +197,22 @@
       "value": "Réinitialiser"
     }
   ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "Cohort"
+    }
+  ],
   "label.compare": [
     {
       "type": 0,
       "value": "Comparer"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "Compare dates"
     }
   ],
   "label.confirm": [
@@ -213,6 +243,18 @@
     {
       "type": 0,
       "value": "Continuer"
+    }
+  ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "Conversion"
+    }
+  ],
+  "label.conversion-ratep": [
+    {
+      "type": 0,
+      "value": "Conversion rate"
     }
   ],
   "label.conversion-step": [
@@ -407,10 +449,28 @@
       "value": "Ignorer"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "Distinct ID"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
       "value": "Ne contient pas"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "Does not include"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "Does not exist"
     }
   ],
   "label.domain": [
@@ -479,16 +539,34 @@
       "value": "Données d'évènements"
     }
   ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "Event name"
+    }
+  ],
   "label.events": [
     {
       "type": 0,
       "value": "Évènements"
     }
   ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "Exists"
+    }
+  ],
   "label.exit": [
     {
       "type": 0,
       "value": "Chemin de sortie"
+    }
+  ],
+  "label.expand": [
+    {
+      "type": 0,
+      "value": "Expand"
     }
   ],
   "label.false": [
@@ -533,6 +611,12 @@
       "value": "Filtres"
     }
   ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "First click"
+    }
+  ],
   "label.first-seen": [
     {
       "type": 0,
@@ -549,6 +633,12 @@
     {
       "type": 0,
       "value": "Comprenez les taux de conversions et d'abandons des utilisateurs."
+    }
+  ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "Funnels"
     }
   ],
   "label.goal": [
@@ -587,16 +677,22 @@
       "value": "Groupé"
     }
   ],
-  "label.host": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "Hôte"
+      "value": "Hostname"
     }
   ],
-  "label.hosts": [
+  "label.includes": [
     {
       "type": 0,
-      "value": "Hôtes"
+      "value": "Includes"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "Insight"
     }
   ],
   "label.insights": [
@@ -617,6 +713,12 @@
       "value": "Est"
     }
   ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "Is false"
+    }
+  ],
   "label.is-not": [
     {
       "type": 0,
@@ -633,6 +735,12 @@
     {
       "type": 0,
       "value": "Est défini"
+    }
+  ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "Is true"
     }
   ],
   "label.join": [
@@ -659,6 +767,12 @@
       "value": "Comprennez comment les utilisateurs naviguent sur votre site."
     }
   ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "Journeys"
+    }
+  ],
   "label.language": [
     {
       "type": 0,
@@ -675,6 +789,12 @@
     {
       "type": 0,
       "value": "Portable"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "Last click"
     }
   ],
   "label.last-days": [
@@ -735,6 +855,12 @@
     {
       "type": 0,
       "value": "Inférieur ou égal à"
+    }
+  ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "Links"
     }
   ],
   "label.login": [
@@ -927,6 +1053,12 @@
       "value": "Propriétaire"
     }
   ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "Page"
+    }
+  ],
   "label.page-of": [
     {
       "type": 0,
@@ -1009,6 +1141,12 @@
     {
       "type": 0,
       "value": "Chemins"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "Pixels"
     }
   ],
   "label.powered-by": [
@@ -1123,6 +1261,12 @@
       "value": "Régions"
     }
   ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "Remaining"
+    }
+  ],
   "label.remove": [
     {
       "type": 0,
@@ -1225,6 +1369,12 @@
       "value": "Choisir une période"
     }
   ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "Select filter"
+    }
+  ],
   "label.select-role": [
     {
       "type": 0,
@@ -1259,6 +1409,12 @@
     {
       "type": 0,
       "value": "Paramètres"
+    }
+  ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "Share"
     }
   ],
   "label.share-url": [
@@ -1355,6 +1511,12 @@
     {
       "type": 0,
       "value": "Propriétaire de l'équipe"
+    }
+  ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "Team settings"
     }
   ],
   "label.team-view-only": [
@@ -1511,18 +1673,6 @@
     {
       "type": 0,
       "value": "Modifier"
-    }
-  ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "URL"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "URLs"
     }
   ],
   "label.user": [
@@ -1691,6 +1841,12 @@
       "value": " actuellement"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
@@ -1783,6 +1939,12 @@
     {
       "type": 1,
       "value": "url"
+    }
+  ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
     }
   ],
   "message.go-to-settings": [
@@ -1879,6 +2041,18 @@
       "value": "Vous n'avez pas configuré de site."
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1909,6 +2083,12 @@
     {
       "type": 0,
       "value": "Enregistré."
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1965,6 +2145,12 @@
       "value": "Évènement déclenché"
     }
   ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
@@ -2009,12 +2195,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "Visiteurs ont abandonné"
     }
   ]
 }

@@ -1,26 +1,16 @@
 import { Dispatch, SetStateAction } from 'react';
 import { UseQueryOptions } from '@tanstack/react-query';
-import {
-  COLLECTION_TYPE,
-  DATA_TYPE,
-  EVENT_TYPE,
-  KAFKA_TOPIC,
-  PERMISSIONS,
-  REPORT_TYPES,
-  ROLES,
-} from './constants';
+import { DATA_TYPE, PERMISSIONS, ROLES } from './constants';
 import { TIME_UNIT } from './date';
 
-type ObjectValues<T> = T[keyof T];
+export type ObjectValues<T> = T[keyof T];
+
+export type ReactQueryOptions<T> = Omit<UseQueryOptions<T, Error, T>, 'queryKey' | 'queryFn'>;
 
 export type TimeUnit = ObjectValues<typeof TIME_UNIT>;
 export type Permission = ObjectValues<typeof PERMISSIONS>;
-export type CollectionType = ObjectValues<typeof COLLECTION_TYPE>;
 export type Role = ObjectValues<typeof ROLES>;
-export type EventType = ObjectValues<typeof EVENT_TYPE>;
 export type DynamicDataType = ObjectValues<typeof DATA_TYPE>;
-export type KafkaTopic = ObjectValues<typeof KAFKA_TOPIC>;
-export type ReportType = ObjectValues<typeof REPORT_TYPES>;
 
 export interface PageParams {
   search?: string;
@@ -61,71 +51,6 @@ export interface Auth {
   shareToken?: {
     websiteId: string;
   };
-}
-
-export interface User {
-  id: string;
-  username: string;
-  password?: string;
-  role: string;
-  createdAt?: Date;
-}
-
-export interface Website {
-  id: string;
-  userId: string;
-  resetAt: Date;
-  name: string;
-  domain: string;
-  shareId: string;
-  createdAt: Date;
-}
-
-export interface Share {
-  id: string;
-  token: string;
-}
-
-export interface WebsiteActive {
-  x: number;
-}
-
-export interface WebsiteMetric {
-  x: string;
-  y: number;
-}
-
-export interface WebsiteEventMetric {
-  x: string;
-  t: string;
-  y: number;
-}
-
-export interface WebsiteEventData {
-  eventName?: string;
-  propertyName: string;
-  dataType: number;
-  propertyValue?: string;
-  total: number;
-}
-
-export interface WebsitePageviews {
-  pageviews: {
-    t: string;
-    y: number;
-  };
-  sessions: {
-    t: string;
-    y: number;
-  };
-}
-
-export interface WebsiteStats {
-  pageviews: { value: number; prev: number };
-  visitors: { value: number; prev: number };
-  visits: { value: number; prev: number };
-  bounces: { value: number; prev: number };
-  totaltime: { value: number; prev: number };
 }
 
 export interface DateRange {
@@ -209,5 +134,3 @@ export interface InputItem {
   icon: any;
   seperator?: boolean;
 }
-
-export type ReactQueryOptions<T> = Omit<UseQueryOptions<T, Error, T>, 'queryKey' | 'queryFn'>;

@@ -1,7 +1,15 @@
 import prisma from '@/lib/prisma';
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
-import { QueryFilters, WebsiteEventData } from '@/lib/types';
+import { QueryFilters } from '@/lib/types';
+
+export interface WebsiteEventData {
+  eventName?: string;
+  propertyName: string;
+  dataType: number;
+  propertyValue?: string;
+  total: number;
+}
 
 export async function getEventDataEvents(
   ...args: [websiteId: string, filters: QueryFilters]

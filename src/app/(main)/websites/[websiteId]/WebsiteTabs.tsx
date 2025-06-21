@@ -5,7 +5,7 @@ import { Clock, Eye, Lightning, User, ChartPie } from '@/components/icons';
 
 export function WebsiteTabs() {
   const website = useWebsite();
-  const { pathname, renderTeamUrl } = useNavigation();
+  const { pathname, renderUrl } = useNavigation();
   const { formatMessage, labels } = useMessages();
 
   const links = [
@@ -49,7 +49,7 @@ export function WebsiteTabs() {
         <TabList>
           {links.map(({ id, label, icon, path }) => {
             return (
-              <Tab key={id} id={id} href={renderTeamUrl(`/websites/${website.id}${path}`)}>
+              <Tab key={id} id={id} href={renderUrl(`/websites/${website.id}${path}`)}>
                 <Row alignItems="center" gap>
                   <Icon>{icon}</Icon>
                   <Text>{label}</Text>

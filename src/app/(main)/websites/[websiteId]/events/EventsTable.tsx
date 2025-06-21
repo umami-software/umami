@@ -8,7 +8,7 @@ import { Bolt, Eye } from '@/components/icons';
 export function EventsTable({ data = [] }) {
   const { formatTimezoneDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
-  const { renderTeamUrl } = useNavigation();
+  const { renderUrl } = useNavigation();
 
   if (data.length === 0) {
     return <Empty />;
@@ -18,7 +18,7 @@ export function EventsTable({ data = [] }) {
     <DataTable data={data}>
       <DataColumn id="session" label={formatMessage(labels.session)} width="100px">
         {(row: any) => (
-          <Link href={renderTeamUrl(`/websites/${row.websiteId}/sessions/${row.sessionId}`)}>
+          <Link href={renderUrl(`/websites/${row.websiteId}/sessions/${row.sessionId}`)}>
             <Avatar seed={row.sessionId} size={64} />
           </Link>
         )}

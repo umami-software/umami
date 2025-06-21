@@ -2,10 +2,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import prettier from 'prettier';
-import messages from '../build/extracted-messages.json';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
+
+const messages = require('../build/extracted-messages.json');
 const dest = path.resolve(process.cwd(), 'src/lang');
 const files = fs.readdirSync(dest);
 const keys = Object.keys(messages).sort();

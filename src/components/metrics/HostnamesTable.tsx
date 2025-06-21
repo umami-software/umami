@@ -3,17 +3,17 @@ import { FilterLink } from '@/components/common/FilterLink';
 import { useMessages } from '@/components/hooks';
 import { Flexbox } from '@umami/react-zen';
 
-export function HostsTable(props: MetricsTableProps) {
+export function HostnamesTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();
 
-  const renderLink = ({ x: host }) => {
+  const renderLink = ({ x: hostname }) => {
     return (
       <Flexbox alignItems="center">
         <FilterLink
-          id="host"
-          value={host}
-          externalUrl={`https://${host}`}
-          label={!host && formatMessage(labels.none)}
+          id="hostname"
+          value={hostname}
+          externalUrl={`https://${hostname}`}
+          label={!hostname && formatMessage(labels.none)}
         />
       </Flexbox>
     );
@@ -23,8 +23,8 @@ export function HostsTable(props: MetricsTableProps) {
     <>
       <MetricsTable
         {...props}
-        title={formatMessage(labels.hosts)}
-        type="host"
+        title={formatMessage(labels.hostname)}
+        type="hostname"
         metric={formatMessage(labels.visitors)}
         renderLabel={renderLink}
       />

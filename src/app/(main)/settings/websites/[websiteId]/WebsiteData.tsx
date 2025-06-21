@@ -17,7 +17,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   const { formatMessage, labels, messages } = useMessages();
   const { user } = useLoginQuery();
   const { touch } = useModified();
-  const { teamId, renderTeamUrl } = useNavigation();
+  const { teamId, renderUrl } = useNavigation();
   const router = useRouter();
   const { result } = useTeamsQuery(user.id);
   const canTransferWebsite =
@@ -38,7 +38,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   const handleSave = () => {
     touch('websites');
     onSave?.();
-    router.push(renderTeamUrl(`/settings/websites`));
+    router.push(renderUrl(`/settings/websites`));
   };
 
   const handleReset = async () => {

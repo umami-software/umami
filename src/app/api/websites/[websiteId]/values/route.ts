@@ -24,7 +24,6 @@ export async function GET(
 
   const { websiteId } = await params;
   const { type, search } = query;
-  const { startDate, endDate } = await getRequestDateRange(query);
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
@@ -33,6 +32,8 @@ export async function GET(
   if (!SESSION_COLUMNS.includes(type) && !EVENT_COLUMNS.includes(type)) {
     return badRequest('Invalid type.');
   }
+
+  const { startDate, endDate } = await getRequestDateRange(query);
 
   const values = await getValues(websiteId, FILTER_COLUMNS[type], startDate, endDate, search);
 

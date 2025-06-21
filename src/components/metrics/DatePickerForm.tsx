@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Button, Row, Column, Calendar, ToggleGroup, ToggleGroupItem } from '@umami/react-zen';
 import { isAfter, isBefore, isSameDay, startOfDay, endOfDay } from 'date-fns';
-import { FILTER_DAY, FILTER_RANGE } from '@/lib/constants';
 import { useMessages } from '@/components/hooks';
+
+const FILTER_DAY = 'filter-day';
+const FILTER_RANGE = 'filter-range';
 
 export function DatePickerForm({
   startDate: defaultStartDate,

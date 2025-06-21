@@ -2,11 +2,17 @@ import clickhouse from '@/lib/clickhouse';
 import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { QueryFilters, WebsiteEventMetric } from '@/lib/types';
+import { QueryFilters } from '@/lib/types';
+
+export interface WebsiteEventMetricData {
+  x: string;
+  t: string;
+  y: number;
+}
 
 export async function getEventMetrics(
   ...args: [websiteId: string, filters: QueryFilters]
-): Promise<WebsiteEventMetric[]> {
+): Promise<WebsiteEventMetricData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

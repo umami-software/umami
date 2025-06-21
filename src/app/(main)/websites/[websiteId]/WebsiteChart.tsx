@@ -7,10 +7,10 @@ import { Panel } from '@/components/common/Panel';
 
 export function WebsiteChart({
   websiteId,
-  compareMode = false,
+  compareMode,
 }: {
   websiteId: string;
-  compareMode?: boolean;
+  compareMode?: string;
 }) {
   const { dateRange, dateCompare } = useDateRange(websiteId);
   const { startDate, endDate, unit, value } = dateRange;

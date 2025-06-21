@@ -13,38 +13,38 @@ import { useMessages, useNavigation, useGlobalState } from '@/components/hooks';
 
 export function SideNav(props: any) {
   const { formatMessage, labels } = useMessages();
-  const { renderTeamUrl, pathname } = useNavigation();
+  const { renderUrl, pathname } = useNavigation();
   const [isCollapsed] = useGlobalState('sidenav-collapsed');
 
   const links = [
     {
       label: formatMessage(labels.websites),
-      href: renderTeamUrl('/websites'),
+      href: renderUrl('/websites'),
       icon: <Globe />,
     },
     {
       label: formatMessage(labels.boards),
-      href: renderTeamUrl('/boards'),
+      href: renderUrl('/boards'),
       icon: <LayoutDashboard />,
     },
     {
       label: formatMessage(labels.links),
-      href: renderTeamUrl('/links'),
+      href: renderUrl('/links'),
       icon: <LinkIcon />,
     },
     {
       label: formatMessage(labels.pixels),
-      href: renderTeamUrl('/pixels'),
+      href: renderUrl('/pixels'),
       icon: <Grid2X2 />,
     },
     {
       label: formatMessage(labels.settings),
-      href: renderTeamUrl('/settings'),
+      href: renderUrl('/settings'),
       icon: <Settings />,
     },
     {
       label: formatMessage(labels.admin),
-      href: renderTeamUrl('/admin'),
+      href: renderUrl('/admin'),
       icon: <LockKeyhole />,
     },
   ].filter(n => n);

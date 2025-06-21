@@ -22,7 +22,7 @@ export function WebsitesTable({
   children,
 }: WebsitesTableProps) {
   const { formatMessage, labels } = useMessages();
-  const { renderTeamUrl } = useNavigation();
+  const { renderUrl } = useNavigation();
 
   if (!data?.length) {
     return children;
@@ -31,7 +31,7 @@ export function WebsitesTable({
   return (
     <DataTable data={data}>
       <DataColumn id="name" label={formatMessage(labels.name)}>
-        {(row: any) => <Link href={renderTeamUrl(`/websites/${row.id}`)}>{row.name}</Link>}
+        {(row: any) => <Link href={renderUrl(`/websites/${row.id}`)}>{row.name}</Link>}
       </DataColumn>
       <DataColumn id="domain" label={formatMessage(labels.domain)} />
       {showActions && (
@@ -42,7 +42,7 @@ export function WebsitesTable({
             return (
               <MenuButton>
                 {allowEdit && (
-                  <MenuItem href={renderTeamUrl(`/websites/${websiteId}`)}>
+                  <MenuItem href={renderUrl(`/websites/${websiteId}`)}>
                     <Row alignItems="center" gap>
                       <Icon data-test="link-button-view">
                         <Eye />
@@ -52,7 +52,7 @@ export function WebsitesTable({
                   </MenuItem>
                 )}
                 {allowView && (
-                  <MenuItem href={renderTeamUrl(`/settings/websites/${websiteId}`)}>
+                  <MenuItem href={renderUrl(`/settings/websites/${websiteId}`)}>
                     <Row alignItems="center" gap>
                       <Icon data-test="link-button-edit">
                         <SquarePen />

@@ -47,7 +47,7 @@ export function FilterEditForm({ websiteId, data = [], onChange, onClose }: Filt
   };
 
   return (
-    <Grid columns="160px 1fr" width="760px" gapY="6">
+    <Grid columns="160px 1fr" width="760px" overflow="hidden" gapY="6">
       <Row gridColumn="span 2">
         <Heading>{formatMessage(labels.filters)}</Heading>
       </Row>
@@ -64,7 +64,13 @@ export function FilterEditForm({ websiteId, data = [], onChange, onClose }: Filt
           })}
         </List>
       </Column>
-      <Column paddingLeft="6" overflow="auto" gapY="4">
+      <Column
+        paddingLeft="6"
+        overflow="auto"
+        gapY="4"
+        maxHeight="600px"
+        style={{ contain: 'layout' }}
+      >
         {filters.map(filter => {
           return (
             <FilterRecord

@@ -42,18 +42,18 @@ export async function request(
   });
 }
 
-export async function httpGet(url: string, params: object = {}, headers: object = {}) {
-  return request('GET', buildUrl(url, params), undefined, headers);
+export async function httpGet(path: string, params: object = {}, headers: object = {}) {
+  return request('GET', buildUrl(path, params), undefined, headers);
 }
 
-export async function httpDelete(url: string, params: object = {}, headers: object = {}) {
-  return request('DELETE', buildUrl(url, params), undefined, headers);
+export async function httpDelete(path: string, params: object = {}, headers: object = {}) {
+  return request('DELETE', buildUrl(path, params), undefined, headers);
 }
 
-export async function httpPost(url: string, params: object = {}, headers: object = {}) {
-  return request('POST', url, JSON.stringify(params), headers);
+export async function httpPost(path: string, params: object = {}, headers: object = {}) {
+  return request('POST', path, JSON.stringify(params), headers);
 }
 
-export async function httpPut(url: string, params: object = {}, headers: object = {}) {
-  return request('PUT', url, JSON.stringify(params), headers);
+export async function httpPut(path: string, params: object = {}, headers: object = {}) {
+  return request('PUT', path, JSON.stringify(params), headers);
 }

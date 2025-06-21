@@ -41,7 +41,7 @@ export function MetricsTable({
 }: MetricsTableProps) {
   const [search, setSearch] = useState('');
   const { formatValue } = useFormat();
-  const { renderUrl } = useNavigation();
+  const { updateParams } = useNavigation();
   const { formatMessage, labels } = useMessages();
 
   const { data, isLoading, isFetching, error } = useWebsiteMetricsQuery(
@@ -99,7 +99,7 @@ export function MetricsTable({
         )}
         <Row justifyContent="center">
           {showMore && data && !error && limit && (
-            <LinkButton href={renderUrl({ view: type })} variant="quiet">
+            <LinkButton href={updateParams({ view: type })} variant="quiet">
               <Text>{formatMessage(labels.more)}</Text>
               <Icon size="sm">
                 <Arrow />

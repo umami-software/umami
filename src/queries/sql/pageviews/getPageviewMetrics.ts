@@ -34,7 +34,9 @@ async function relationalQuery(
       ...filters,
       eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     },
-    { joinSession: SESSION_COLUMNS.includes(type) || column === 'referrer_domain' },
+    {
+      joinSession: SESSION_COLUMNS.includes(type) || column === 'referrer_domain',
+    },
   );
 
   let entryExitQuery = '';
@@ -164,7 +166,7 @@ async function clickhouseQuery(
       ${column === 'referrer_domain' ? 'uniq(s)' : 'count(*)'} as y
     from (
       select ${columnQuery} as t
-      from website_event_stats_hourly website_event
+      from website_event_stats_hourly as website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}

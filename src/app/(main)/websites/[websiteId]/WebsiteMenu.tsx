@@ -15,7 +15,7 @@ import { InputItem } from '@/lib/types';
 
 export function WebsiteMenu({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
-  const { router, renderUrl, renderTeamUrl } = useNavigation();
+  const { router, updateParams, renderUrl } = useNavigation();
 
   const menuItems: InputItem[] = [
     { id: 'share', label: formatMessage(labels.share), icon: <Share /> },
@@ -24,9 +24,9 @@ export function WebsiteMenu({ websiteId }: { websiteId: string }) {
 
   const handleAction = (id: any) => {
     if (id === 'compare') {
-      router.push(renderUrl({ compare: 'prev' }));
+      router.push(updateParams({ compare: 'prev' }));
     } else if (id === 'edit') {
-      router.push(renderTeamUrl(`/settings/websites/${websiteId}`));
+      router.push(renderUrl(`/settings/websites/${websiteId}`));
     }
   };
 

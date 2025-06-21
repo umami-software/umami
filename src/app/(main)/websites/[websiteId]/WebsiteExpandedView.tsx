@@ -7,7 +7,7 @@ import { CitiesTable } from '@/components/metrics/CitiesTable';
 import { CountriesTable } from '@/components/metrics/CountriesTable';
 import { DevicesTable } from '@/components/metrics/DevicesTable';
 import { EventsTable } from '@/components/metrics/EventsTable';
-import { HostsTable } from '@/components/metrics/HostsTable';
+import { HostnamesTable } from '@/components/metrics/HostnamesTable';
 import { LanguagesTable } from '@/components/metrics/LanguagesTable';
 import { OSTable } from '@/components/metrics/OSTable';
 import { PagesTable } from '@/components/metrics/PagesTable';
@@ -21,13 +21,13 @@ import { Panel } from '@/components/common/Panel';
 import { Arrow } from '@/components/icons';
 
 const views = {
-  url: PagesTable,
+  path: PagesTable,
   entry: PagesTable,
   exit: PagesTable,
   title: PagesTable,
   referrer: ReferrersTable,
   grouped: ReferrersTable,
-  host: HostsTable,
+  hostname: HostnamesTable,
   browser: BrowsersTable,
   os: OSTable,
   device: DevicesTable,
@@ -51,85 +51,85 @@ export function WebsiteExpandedView({
 }) {
   const { formatMessage, labels } = useMessages();
   const {
-    renderUrl,
+    updateParams,
     query: { view },
   } = useNavigation();
 
   const items = [
     {
-      id: 'url',
+      id: 'path',
       label: formatMessage(labels.pages),
-      url: renderUrl({ view: 'url' }),
+      url: updateParams({ view: 'path' }),
     },
     {
       id: 'referrer',
       label: formatMessage(labels.referrers),
-      url: renderUrl({ view: 'referrer' }),
+      url: updateParams({ view: 'referrer' }),
     },
     {
       id: 'channel',
       label: formatMessage(labels.channels),
-      url: renderUrl({ view: 'channel' }),
+      url: updateParams({ view: 'channel' }),
     },
     {
       id: 'browser',
       label: formatMessage(labels.browsers),
-      url: renderUrl({ view: 'browser' }),
+      url: updateParams({ view: 'browser' }),
     },
     {
       id: 'os',
       label: formatMessage(labels.os),
-      url: renderUrl({ view: 'os' }),
+      url: updateParams({ view: 'os' }),
     },
     {
       id: 'device',
       label: formatMessage(labels.devices),
-      url: renderUrl({ view: 'device' }),
+      url: updateParams({ view: 'device' }),
     },
     {
       id: 'country',
       label: formatMessage(labels.countries),
-      url: renderUrl({ view: 'country' }),
+      url: updateParams({ view: 'country' }),
     },
     {
       id: 'region',
       label: formatMessage(labels.regions),
-      url: renderUrl({ view: 'region' }),
+      url: updateParams({ view: 'region' }),
     },
     {
       id: 'city',
       label: formatMessage(labels.cities),
-      url: renderUrl({ view: 'city' }),
+      url: updateParams({ view: 'city' }),
     },
     {
       id: 'language',
       label: formatMessage(labels.languages),
-      url: renderUrl({ view: 'language' }),
+      url: updateParams({ view: 'language' }),
     },
     {
       id: 'screen',
       label: formatMessage(labels.screens),
-      url: renderUrl({ view: 'screen' }),
+      url: updateParams({ view: 'screen' }),
     },
     {
       id: 'event',
       label: formatMessage(labels.events),
-      url: renderUrl({ view: 'event' }),
+      url: updateParams({ view: 'event' }),
     },
     {
       id: 'query',
       label: formatMessage(labels.queryParameters),
-      url: renderUrl({ view: 'query' }),
+      url: updateParams({ view: 'query' }),
     },
     {
-      id: 'host',
-      label: formatMessage(labels.hosts),
-      url: renderUrl({ view: 'host' }),
+      id: 'hostname',
+      label: formatMessage(labels.hostname),
+      url: updateParams({ view: 'hostname' }),
     },
     {
       id: 'tag',
       label: formatMessage(labels.tags),
-      url: renderUrl({ view: 'tag' }),
+      url: updateParams({ view: 'tag' }),
     },
   ];
 
@@ -139,7 +139,7 @@ export function WebsiteExpandedView({
     <Panel>
       <Grid columns="auto 1fr" gap="6">
         <Column gap="6" width="200px" border="right" paddingRight="3">
-          <LinkButton href={renderUrl({ view: undefined })} variant="quiet" scroll={false}>
+          <LinkButton href={updateParams({ view: undefined })} variant="quiet" scroll={false}>
             <Icon rotate={180}>
               <Arrow />
             </Icon>

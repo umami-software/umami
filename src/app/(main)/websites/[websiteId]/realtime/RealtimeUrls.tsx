@@ -3,11 +3,13 @@ import { Row } from '@umami/react-zen';
 import thenby from 'thenby';
 import { percentFilter } from '@/lib/filters';
 import { ListTable } from '@/components/metrics/ListTable';
-import { FILTER_PAGES, FILTER_REFERRERS } from '@/lib/constants';
 import { useMessages } from '@/components/hooks';
 import { RealtimeData } from '@/lib/types';
 import { WebsiteContext } from '../WebsiteProvider';
 import { FilterButtons } from '@/components/common/FilterButtons';
+
+const FILTER_REFERRERS = 'filter-referrers';
+const FILTER_PAGES = 'filter-pages';
 
 export function RealtimeUrls({ data }: { data: RealtimeData }) {
   const website = useContext(WebsiteContext);

@@ -46,81 +46,81 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
   const dateCompare = useWebsites(state => state[websiteId]?.dateCompare);
   const { formatMessage, labels } = useMessages();
   const {
-    renderUrl,
+    updateParams,
     query: { view },
   } = useNavigation();
-  const Component: typeof MetricsTable = views[view || 'url'] || (() => null);
+  const Component: typeof MetricsTable = views[view || 'path'] || (() => null);
 
   const items = [
     {
-      id: 'url',
+      id: 'path',
       label: formatMessage(labels.pages),
-      url: renderUrl({ view: 'url' }),
+      url: updateParams({ view: 'path' }),
     },
     {
       id: 'referrer',
       label: formatMessage(labels.referrers),
-      url: renderUrl({ view: 'referrer' }),
+      url: updateParams({ view: 'referrer' }),
     },
     {
       id: 'browser',
       label: formatMessage(labels.browsers),
-      url: renderUrl({ view: 'browser' }),
+      url: updateParams({ view: 'browser' }),
     },
     {
       id: 'os',
       label: formatMessage(labels.os),
-      url: renderUrl({ view: 'os' }),
+      url: updateParams({ view: 'os' }),
     },
     {
       id: 'device',
       label: formatMessage(labels.devices),
-      url: renderUrl({ view: 'device' }),
+      url: updateParams({ view: 'device' }),
     },
     {
       id: 'country',
       label: formatMessage(labels.countries),
-      url: renderUrl({ view: 'country' }),
+      url: updateParams({ view: 'country' }),
     },
     {
       id: 'region',
       label: formatMessage(labels.regions),
-      url: renderUrl({ view: 'region' }),
+      url: updateParams({ view: 'region' }),
     },
     {
       id: 'city',
       label: formatMessage(labels.cities),
-      url: renderUrl({ view: 'city' }),
+      url: updateParams({ view: 'city' }),
     },
     {
       id: 'language',
       label: formatMessage(labels.languages),
-      url: renderUrl({ view: 'language' }),
+      url: updateParams({ view: 'language' }),
     },
     {
       id: 'screen',
       label: formatMessage(labels.screens),
-      url: renderUrl({ view: 'screen' }),
+      url: updateParams({ view: 'screen' }),
     },
     {
       id: 'event',
       label: formatMessage(labels.events),
-      url: renderUrl({ view: 'event' }),
+      url: updateParams({ view: 'event' }),
     },
     {
       id: 'query',
       label: formatMessage(labels.queryParameters),
-      url: renderUrl({ view: 'query' }),
+      url: updateParams({ view: 'query' }),
     },
     {
-      id: 'host',
-      label: formatMessage(labels.hosts),
-      url: renderUrl({ view: 'host' }),
+      id: 'hostname',
+      label: formatMessage(labels.hostname),
+      url: updateParams({ view: 'hostname' }),
     },
     {
       id: 'tag',
       label: formatMessage(labels.tags),
-      url: renderUrl({ view: 'tag' }),
+      url: updateParams({ view: 'tag' }),
     },
   ];
 

@@ -19,7 +19,7 @@ async function run() {
   await fs.ensureDir(dest);
 
   files.forEach(file => {
-    const lang = require(path.resolve(process.cwd()`src/lang/${file}`));
+    const lang = require(path.resolve(process.cwd(), `src/lang/${file}`));
     const keys = Object.keys(lang).sort();
 
     const formatted = keys.reduce((obj, key) => {

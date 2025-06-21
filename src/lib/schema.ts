@@ -3,7 +3,7 @@ import { isValidTimezone } from '@/lib/date';
 import { UNIT_TYPES } from './constants';
 
 export const filterParams = {
-  url: z.string().optional(),
+  path: z.string().optional(),
   referrer: z.string().optional(),
   title: z.string().optional(),
   query: z.string().optional(),
@@ -14,7 +14,7 @@ export const filterParams = {
   region: z.string().optional(),
   city: z.string().optional(),
   tag: z.string().optional(),
-  host: z.string().optional(),
+  hostname: z.string().optional(),
   language: z.string().optional(),
   event: z.string().optional(),
 };
@@ -55,7 +55,7 @@ export const urlOrPathParam = z.string().refine(
 );
 
 export const fieldsParam = z.enum([
-  'url',
+  'path',
   'referrer',
   'title',
   'query',
@@ -66,7 +66,7 @@ export const fieldsParam = z.enum([
   'region',
   'city',
   'tag',
-  'host',
+  'hostname',
   'language',
 ]);
 

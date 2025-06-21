@@ -12,7 +12,6 @@ import { isAfter } from 'date-fns';
 import { Chevron, Close, Compare } from '@/components/icons';
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
 import { getOffsetDateRange } from '@/lib/date';
-import { DateRange } from '@/lib/types';
 import { DateFilter } from './DateFilter';
 
 export function WebsiteDateFilter({
@@ -32,7 +31,7 @@ export function WebsiteDateFilter({
   const { formatMessage, labels } = useMessages();
   const {
     router,
-    renderUrl,
+    updateParams,
     query: { compare },
   } = useNavigation();
   const isAllTime = value === 'all';
@@ -40,22 +39,22 @@ export function WebsiteDateFilter({
 
   const disableForward = value === 'all' || isAfter(endDate, new Date());
 
-  const handleChange = (date: string | DateRange) => {
-    router.push(renderUrl({ date }));
+  const handleChange = (date: string) => {
+    router.push(updateParams({ date }));
     saveDateRange(date);
   };
 
   const handleIncrement = (increment: number) => {
-    router.push(renderUrl({ offset: offset + increment }));
+    router.push(updateParams({ offset: offset + increment }));
     saveDateRange(getOffsetDateRange(dateRange, increment));
   };
 
   const handleSelect = (compare: any) => {
-    router.push(renderUrl({ compare }));
+    router.push(updateParams({ compare }));
   };
 
   const handleCompare = () => {
-    router.push(renderUrl({ compare: compare ? undefined : 'prev' }));
+    router.push(updateParams({ compare: compare ? undefined : 'prev' }));
   };
 
   return (

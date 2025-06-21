@@ -31,7 +31,7 @@ export function DataGrid({
   const { page, pageSize, count, data } = result || {};
   const { search } = params || {};
   const hasData = Boolean(!isLoading && data?.length);
-  const { router, renderUrl } = useNavigation();
+  const { router, updateParams } = useNavigation();
 
   const handleSearch = (search: string) => {
     setParams({ ...params, search });
@@ -39,7 +39,7 @@ export function DataGrid({
 
   const handlePageChange = (page: number) => {
     setParams({ ...params, page });
-    router.push(renderUrl({ page }));
+    router.push(updateParams({ page }));
   };
 
   return (

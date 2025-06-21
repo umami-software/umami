@@ -13,7 +13,7 @@ export function WebsiteFilterButton({
   showText?: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { renderUrl, router } = useNavigation();
+  const { updateParams, router } = useNavigation();
   const { filters } = useFilters();
 
   const handleChange = (filters: any[]) => {
@@ -25,7 +25,7 @@ export function WebsiteFilterButton({
       return obj;
     }, {});
 
-    const url = renderUrl(params);
+    const url = updateParams(params);
 
     router.push(url);
   };

@@ -14,13 +14,13 @@ export interface ReferrersTableProps extends MetricsTableProps {
 export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
   const {
     router,
-    renderUrl,
+    updateParams,
     query: { view = 'referrer' },
   } = useNavigation();
   const { formatMessage, labels } = useMessages();
 
   const handleSelect = (key: any) => {
-    router.push(renderUrl({ view: key }));
+    router.push(updateParams({ view: key }));
   };
 
   const buttons = [

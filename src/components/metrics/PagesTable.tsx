@@ -13,19 +13,19 @@ export interface PagesTableProps extends MetricsTableProps {
 export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
   const {
     router,
-    renderUrl,
-    query: { view = 'url' },
+    updateParams,
+    query: { view = 'path' },
   } = useNavigation();
   const { formatMessage, labels } = useMessages();
   const { domain } = useContext(WebsiteContext);
 
   const handleChange = (id: any) => {
-    router.push(renderUrl({ view: id }));
+    router.push(updateParams({ view: id }));
   };
 
   const buttons = [
     {
-      id: 'url',
+      id: 'path',
       label: formatMessage(labels.path),
     },
     {
@@ -45,7 +45,7 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
   const renderLink = ({ x }) => {
     return (
       <FilterLink
-        id={view === 'entry' || view === 'exit' ? 'url' : view}
+        id={view === 'entry' || view === 'exit' ? 'path' : view}
         value={x}
         label={!x && formatMessage(labels.none)}
         externalUrl={

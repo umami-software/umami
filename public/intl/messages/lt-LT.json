@@ -23,6 +23,12 @@
       "value": "Pridėti"
     }
   ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "Add board"
+    }
+  ],
   "label.add-description": [
     {
       "type": 0,
@@ -53,6 +59,12 @@
       "value": "Administrator"
     }
   ],
+  "label.affiliate": [
+    {
+      "type": 0,
+      "value": "Affiliate"
+    }
+  ],
   "label.after": [
     {
       "type": 0,
@@ -77,6 +89,24 @@
       "value": "Analytics"
     }
   ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "Apply"
+    }
+  ],
+  "label.attribution": [
+    {
+      "type": 0,
+      "value": "Attribution"
+    }
+  ],
+  "label.attribution-description": [
+    {
+      "type": 0,
+      "value": "See how users engage with your marketing and what drives conversions."
+    }
+  ],
   "label.average": [
     {
       "type": 0,
@@ -93,6 +123,12 @@
     {
       "type": 0,
       "value": "Prieš"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "Boards"
     }
   ],
   "label.bounce-rate": [
@@ -119,6 +155,12 @@
       "value": "Naršyklės"
     }
   ],
+  "label.campaigns": [
+    {
+      "type": 0,
+      "value": "Campaigns"
+    }
+  ],
   "label.cancel": [
     {
       "type": 0,
@@ -129,6 +171,12 @@
     {
       "type": 0,
       "value": "Pakeisti slaptažodį"
+    }
+  ],
+  "label.channels": [
+    {
+      "type": 0,
+      "value": "Channels"
     }
   ],
   "label.cities": [
@@ -149,10 +197,22 @@
       "value": "Išvalyti visus"
     }
   ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "Cohort"
+    }
+  ],
   "label.compare": [
     {
       "type": 0,
       "value": "Compare"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "Compare dates"
     }
   ],
   "label.confirm": [
@@ -173,10 +233,34 @@
       "value": "Contains"
     }
   ],
+  "label.content": [
+    {
+      "type": 0,
+      "value": "Content"
+    }
+  ],
   "label.continue": [
     {
       "type": 0,
       "value": "Continue"
+    }
+  ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "Conversion"
+    }
+  ],
+  "label.conversion-ratep": [
+    {
+      "type": 0,
+      "value": "Conversion rate"
+    }
+  ],
+  "label.conversion-step": [
+    {
+      "type": 0,
+      "value": "Conversion step"
     }
   ],
   "label.count": [
@@ -231,6 +315,12 @@
     {
       "type": 0,
       "value": "Created By"
+    }
+  ],
+  "label.currency": [
+    {
+      "type": 0,
+      "value": "Currency"
     }
   ],
   "label.current": [
@@ -347,16 +437,40 @@
       "value": "Įrenginiai"
     }
   ],
+  "label.direct": [
+    {
+      "type": 0,
+      "value": "Direct"
+    }
+  ],
   "label.dismiss": [
     {
       "type": 0,
       "value": "Gerai"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "Distinct ID"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
       "value": "Does not contain"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "Does not include"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "Does not exist"
     }
   ],
   "label.domain": [
@@ -389,6 +503,12 @@
       "value": "Redaguoti narį"
     }
   ],
+  "label.email": [
+    {
+      "type": 0,
+      "value": "Email"
+    }
+  ],
   "label.enable-share-url": [
     {
       "type": 0,
@@ -419,16 +539,34 @@
       "value": "Įvykių duomenys"
     }
   ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "Event name"
+    }
+  ],
   "label.events": [
     {
       "type": 0,
       "value": "Įvykiai"
     }
   ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "Exists"
+    }
+  ],
   "label.exit": [
     {
       "type": 0,
       "value": "Exit URL"
+    }
+  ],
+  "label.expand": [
+    {
+      "type": 0,
+      "value": "Expand"
     }
   ],
   "label.false": [
@@ -473,6 +611,12 @@
       "value": "Filtrai"
     }
   ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "First click"
+    }
+  ],
   "label.first-seen": [
     {
       "type": 0,
@@ -489,6 +633,12 @@
     {
       "type": 0,
       "value": "Understand the conversion and drop-off rate of users."
+    }
+  ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "Funnels"
     }
   ],
   "label.goal": [
@@ -521,16 +671,28 @@
       "value": "Greater than or equals"
     }
   ],
-  "label.host": [
+  "label.grouped": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "Grouped"
     }
   ],
-  "label.hosts": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "Hostname"
+    }
+  ],
+  "label.includes": [
+    {
+      "type": 0,
+      "value": "Includes"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "Insight"
     }
   ],
   "label.insights": [
@@ -551,6 +713,12 @@
       "value": "Is"
     }
   ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "Is false"
+    }
+  ],
   "label.is-not": [
     {
       "type": 0,
@@ -567,6 +735,12 @@
     {
       "type": 0,
       "value": "Is set"
+    }
+  ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "Is true"
     }
   ],
   "label.join": [
@@ -593,6 +767,12 @@
       "value": "Understand how users navigate through your website."
     }
   ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "Journeys"
+    }
+  ],
   "label.language": [
     {
       "type": 0,
@@ -609,6 +789,12 @@
     {
       "type": 0,
       "value": "Laptop"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "Last click"
     }
   ],
   "label.last-days": [
@@ -788,6 +974,12 @@
       "value": "Less than or equals"
     }
   ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "Links"
+    }
+  ],
   "label.login": [
     {
       "type": 0,
@@ -818,6 +1010,12 @@
       "value": "Max"
     }
   ],
+  "label.medium": [
+    {
+      "type": 0,
+      "value": "Medium"
+    }
+  ],
   "label.member": [
     {
       "type": 0,
@@ -840,6 +1038,12 @@
     {
       "type": 0,
       "value": "Mobilusis"
+    }
+  ],
+  "label.model": [
+    {
+      "type": 0,
+      "value": "Model"
     }
   ],
   "label.more": [
@@ -918,10 +1122,40 @@
       "value": "OK"
     }
   ],
+  "label.organic-search": [
+    {
+      "type": 0,
+      "value": "Organic search"
+    }
+  ],
+  "label.organic-shopping": [
+    {
+      "type": 0,
+      "value": "Organic shopping"
+    }
+  ],
+  "label.organic-social": [
+    {
+      "type": 0,
+      "value": "Organic social"
+    }
+  ],
+  "label.organic-video": [
+    {
+      "type": 0,
+      "value": "Organic video"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
       "value": "Operacinės sistemos"
+    }
+  ],
+  "label.other": [
+    {
+      "type": 0,
+      "value": "Other"
     }
   ],
   "label.overview": [
@@ -934,6 +1168,12 @@
     {
       "type": 0,
       "value": "Savininkas"
+    }
+  ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "Page"
     }
   ],
   "label.page-of": [
@@ -972,6 +1212,36 @@
       "value": "Puslapiai"
     }
   ],
+  "label.paid-ads": [
+    {
+      "type": 0,
+      "value": "Paid ads"
+    }
+  ],
+  "label.paid-search": [
+    {
+      "type": 0,
+      "value": "Paid search"
+    }
+  ],
+  "label.paid-shopping": [
+    {
+      "type": 0,
+      "value": "Paid shopping"
+    }
+  ],
+  "label.paid-social": [
+    {
+      "type": 0,
+      "value": "Paid social"
+    }
+  ],
+  "label.paid-video": [
+    {
+      "type": 0,
+      "value": "Paid video"
+    }
+  ],
   "label.password": [
     {
       "type": 0,
@@ -988,6 +1258,12 @@
     {
       "type": 0,
       "value": "Paths"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "Pixels"
     }
   ],
   "label.powered-by": [
@@ -1060,6 +1336,12 @@
       "value": "Realiuoju laiku"
     }
   ],
+  "label.referral": [
+    {
+      "type": 0,
+      "value": "Referral"
+    }
+  ],
   "label.referrer": [
     {
       "type": 0,
@@ -1094,6 +1376,12 @@
     {
       "type": 0,
       "value": "Regionai"
+    }
+  ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "Remaining"
     }
   ],
   "label.remove": [
@@ -1156,12 +1444,6 @@
       "value": "Look into your revenue across time."
     }
   ],
-  "label.revenue-property": [
-    {
-      "type": 0,
-      "value": "Revenue Property"
-    }
-  ],
   "label.role": [
     {
       "type": 0,
@@ -1204,6 +1486,12 @@
       "value": "Pasirinkti laikotarpį"
     }
   ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "Select filter"
+    }
+  ],
   "label.select-role": [
     {
       "type": 0,
@@ -1222,6 +1510,12 @@
       "value": "Session"
     }
   ],
+  "label.session-data": [
+    {
+      "type": 0,
+      "value": "Session data"
+    }
+  ],
   "label.sessions": [
     {
       "type": 0,
@@ -1234,6 +1528,12 @@
       "value": "Nustatymai"
     }
   ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "Share"
+    }
+  ],
   "label.share-url": [
     {
       "type": 0,
@@ -1244,6 +1544,18 @@
     {
       "type": 0,
       "value": "Viena diena"
+    }
+  ],
+  "label.sms": [
+    {
+      "type": 0,
+      "value": "SMS"
+    }
+  ],
+  "label.sources": [
+    {
+      "type": 0,
+      "value": "Sources"
     }
   ],
   "label.start-step": [
@@ -1268,6 +1580,18 @@
     {
       "type": 0,
       "value": "Planšetė"
+    }
+  ],
+  "label.tag": [
+    {
+      "type": 0,
+      "value": "Tag"
+    }
+  ],
+  "label.tags": [
+    {
+      "type": 0,
+      "value": "Tags"
     }
   ],
   "label.team": [
@@ -1306,6 +1630,12 @@
       "value": "Komandos savininkas"
     }
   ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "Team settings"
+    }
+  ],
   "label.team-view-only": [
     {
       "type": 0,
@@ -1322,6 +1652,12 @@
     {
       "type": 0,
       "value": "Komandos"
+    }
+  ],
+  "label.terms": [
+    {
+      "type": 0,
+      "value": "Terms"
     }
   ],
   "label.theme": [
@@ -1456,28 +1792,10 @@
       "value": "Update"
     }
   ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "URL"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "URLs"
-    }
-  ],
   "label.user": [
     {
       "type": 0,
       "value": "Vartotojas"
-    }
-  ],
-  "label.user-property": [
-    {
-      "type": 0,
-      "value": "User Property"
     }
   ],
   "label.username": [
@@ -1656,6 +1974,12 @@
       "value": "x"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
@@ -1748,6 +2072,12 @@
     {
       "type": 1,
       "value": "url"
+    }
+  ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
     }
   ],
   "message.go-to-settings": [
@@ -1844,6 +2174,18 @@
       "value": "Jūs nesate susikonfiguravę jokių svetainių."
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1874,6 +2216,12 @@
     {
       "type": 0,
       "value": "Sėkmingai išsaugota."
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1938,6 +2286,12 @@
       "value": "Triggered event"
     }
   ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
@@ -1982,12 +2336,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "Visitors dropped off"
     }
   ]
 }

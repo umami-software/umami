@@ -1,45 +1,32 @@
-import { useMessages } from './useMessages';
-import { useNavigation } from '@/components/hooks/useNavigation';
 import { FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import { safeDecodeURIComponent } from '@/lib/url';
+import { useMessages } from './useMessages';
+import { useNavigation } from './useNavigation';
+import { useFields } from './useFields';
 
 export function useFilters() {
   const { formatMessage, labels } = useMessages();
   const { query } = useNavigation();
-
-  const fields = [
-    { name: 'url', type: 'string', label: formatMessage(labels.url) },
-    { name: 'title', type: 'string', label: formatMessage(labels.pageTitle) },
-    { name: 'referrer', type: 'string', label: formatMessage(labels.referrer) },
-    { name: 'query', type: 'string', label: formatMessage(labels.query) },
-    { name: 'browser', type: 'string', label: formatMessage(labels.browser) },
-    { name: 'os', type: 'string', label: formatMessage(labels.os) },
-    { name: 'device', type: 'string', label: formatMessage(labels.device) },
-    { name: 'country', type: 'string', label: formatMessage(labels.country) },
-    { name: 'region', type: 'string', label: formatMessage(labels.region) },
-    { name: 'city', type: 'string', label: formatMessage(labels.city) },
-    { name: 'host', type: 'string', label: formatMessage(labels.host) },
-    { name: 'tag', type: 'string', label: formatMessage(labels.tag) },
-  ];
+  const { fields } = useFields();
 
   const operators = [
-    { name: 'eq', type: 'string', label: 'Is' },
-    { name: 'neq', type: 'string', label: 'Is not' },
-    { name: 'c', type: 'string', label: 'Contains' },
-    { name: 'dnc', type: 'string', label: 'Does not contain' },
-    { name: 'c', type: 'array', label: 'Contains' },
-    { name: 'dnc', type: 'array', label: 'Does not contain' },
-    { name: 't', type: 'boolean', label: 'True' },
-    { name: 'f', type: 'boolean', label: 'False' },
-    { name: 'eq', type: 'number', label: 'Is' },
-    { name: 'neq', type: 'number', label: 'Is not' },
-    { name: 'gt', type: 'number', label: 'Greater than' },
-    { name: 'lt', type: 'number', label: 'Less than' },
-    { name: 'gte', type: 'number', label: 'Greater than or equals' },
-    { name: 'lte', type: 'number', label: 'Less than or equals' },
-    { name: 'bf', type: 'date', label: 'Before' },
-    { name: 'af', type: 'date', label: 'After' },
-    { name: 'eq', type: 'uuid', label: 'Is' },
+    { name: 'eq', type: 'string', label: formatMessage(labels.is) },
+    { name: 'neq', type: 'string', label: formatMessage(labels.isNot) },
+    { name: 'c', type: 'string', label: formatMessage(labels.contains) },
+    { name: 'dnc', type: 'string', label: formatMessage(labels.doesNotContain) },
+    { name: 'i', type: 'array', label: formatMessage(labels.includes) },
+    { name: 'dni', type: 'array', label: formatMessage(labels.doesNotInclude) },
+    { name: 't', type: 'boolean', label: formatMessage(labels.isTrue) },
+    { name: 'f', type: 'boolean', label: formatMessage(labels.isFalse) },
+    { name: 'eq', type: 'number', label: formatMessage(labels.is) },
+    { name: 'neq', type: 'number', label: formatMessage(labels.isNot) },
+    { name: 'gt', type: 'number', label: formatMessage(labels.greaterThan) },
+    { name: 'lt', type: 'number', label: formatMessage(labels.lessThan) },
+    { name: 'gte', type: 'number', label: formatMessage(labels.greaterThanEquals) },
+    { name: 'lte', type: 'number', label: formatMessage(labels.lessThanEquals) },
+    { name: 'bf', type: 'date', label: formatMessage(labels.before) },
+    { name: 'af', type: 'date', label: formatMessage(labels.after) },
+    { name: 'eq', type: 'uuid', label: formatMessage(labels.is) },
   ];
 
   const operatorLabels = {

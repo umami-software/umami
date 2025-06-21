@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { Row, Text } from '@umami/react-zen';
 import { FilterButtons } from '@/components/common/FilterButtons';
 import { emptyFilter, paramFilter } from '@/lib/filters';
-import { FILTER_RAW, FILTER_COMBINED } from '@/lib/constants';
 import { MetricsTable, MetricsTableProps } from './MetricsTable';
 import { useMessages } from '@/components/hooks';
-import styles from './QueryParametersTable.module.css';
+
+const FILTER_COMBINED = 'filter-combined';
+const FILTER_RAW = 'filter-raw';
 
 const filters = {
   [FILTER_RAW]: emptyFilter,
@@ -26,6 +28,27 @@ export function QueryParametersTable({
     { id: FILTER_RAW, label: formatMessage(labels.filterRaw) },
   ];
 
+  const renderLabel = ({ x, p, v }) => {
+    return (
+      <Row alignItems="center" maxWidth="600px" gap>
+        {filter === FILTER_RAW ? (
+          <Text truncate title={x}>
+            {x}
+          </Text>
+        ) : (
+          <>
+            <Text color="primary" weight="bold">
+              {p}
+            </Text>
+            <Text truncate title={v}>
+              {v}
+            </Text>
+          </>
+        )}
+      </Row>
+    );
+  };
+
   return (
     <MetricsTable
       {...props}
@@ -33,16 +56,7 @@ export function QueryParametersTable({
       type="query"
       metric={formatMessage(labels.views)}
       dataFilter={filters[filter]}
-      renderLabel={({ x, p, v }) =>
-        filter === FILTER_RAW ? (
-          x
-        ) : (
-          <div className={styles.item}>
-            <div className={styles.param}>{p}</div>
-            <div className={styles.value}>{v}</div>
-          </div>
-        )
-      }
+      renderLabel={renderLabel}
       delay={0}
     >
       {allowFilter && <FilterButtons items={buttons} value={filter} onChange={setFilter} />}

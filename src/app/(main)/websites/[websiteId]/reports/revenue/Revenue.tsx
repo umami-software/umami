@@ -114,40 +114,42 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
         <CurrencySelect value={currency} onChange={setCurrency} />
       </Grid>
       <LoadingPanel data={data} isLoading={isLoading} error={error}>
-        <Column gap>
-          <MetricsBar>
-            {metrics?.map(({ label, value, formatValue }) => {
-              return (
-                <MetricCard key={label} value={value} label={label} formatValue={formatValue} />
-              );
-            })}
-          </MetricsBar>
-          <Panel>
-            <BarChart
-              chartData={chartData}
-              minDate={startDate}
-              maxDate={endDate}
-              unit={unit}
-              stacked={true}
-              currency={currency}
-              renderXLabel={renderDateLabels(unit, locale)}
-              height="400px"
-            />
-          </Panel>
-          <Panel>
-            <ListTable
-              title={formatMessage(labels.country)}
-              metric={formatMessage(labels.revenue)}
-              data={data?.country.map(({ name, value }: { name: string; value: number }) => ({
-                x: name,
-                y: value,
-                z: (value / data?.total.sum) * 100,
-              }))}
-              currency={currency}
-              renderLabel={renderCountryName}
-            />
-          </Panel>
-        </Column>
+        {data && (
+          <Column gap>
+            <MetricsBar>
+              {metrics?.map(({ label, value, formatValue }) => {
+                return (
+                  <MetricCard key={label} value={value} label={label} formatValue={formatValue} />
+                );
+              })}
+            </MetricsBar>
+            <Panel>
+              <BarChart
+                chartData={chartData}
+                minDate={startDate}
+                maxDate={endDate}
+                unit={unit}
+                stacked={true}
+                currency={currency}
+                renderXLabel={renderDateLabels(unit, locale)}
+                height="400px"
+              />
+            </Panel>
+            <Panel>
+              <ListTable
+                title={formatMessage(labels.country)}
+                metric={formatMessage(labels.revenue)}
+                data={data?.country.map(({ name, value }: { name: string; value: number }) => ({
+                  x: name,
+                  y: value,
+                  z: (value / data?.total.sum) * 100,
+                }))}
+                currency={currency}
+                renderLabel={renderCountryName}
+              />
+            </Panel>
+          </Column>
+        )}
       </LoadingPanel>
     </Column>
   );

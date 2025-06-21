@@ -25,15 +25,17 @@ export const DEFAULT_DATE_COMPARE = 'prev';
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 10000;
 
-export const FILTER_COMBINED = 'filter-combined';
-export const FILTER_RAW = 'filter-raw';
-export const FILTER_DAY = 'filter-day';
-export const FILTER_RANGE = 'filter-range';
-export const FILTER_REFERRERS = 'filter-referrers';
-export const FILTER_PAGES = 'filter-pages';
-
 export const UNIT_TYPES = ['year', 'month', 'hour', 'day', 'minute'];
-export const EVENT_COLUMNS = ['url', 'entry', 'exit', 'referrer', 'title', 'query', 'event', 'tag'];
+export const EVENT_COLUMNS = [
+  'path',
+  'entry',
+  'exit',
+  'referrer',
+  'title',
+  'query',
+  'event',
+  'tag',
+];
 
 export const SESSION_COLUMNS = [
   'browser',
@@ -44,15 +46,15 @@ export const SESSION_COLUMNS = [
   'country',
   'city',
   'region',
-  'host',
+  'hostname',
 ];
 
 export const FILTER_COLUMNS = {
-  url: 'url_path',
+  path: 'url_path',
   entry: 'url_path',
   exit: 'url_path',
   referrer: 'referrer_domain',
-  host: 'hostname',
+  hostname: 'hostname',
   title: 'page_title',
   query: 'url_query',
   os: 'os',
@@ -69,7 +71,7 @@ export const FILTER_COLUMNS = {
 export const COLLECTION_TYPE = {
   event: 'event',
   identify: 'identify',
-};
+} as const;
 
 export const EVENT_TYPE = {
   pageView: 1,
@@ -107,28 +109,6 @@ export const DATA_TYPES = {
   [DATA_TYPE.boolean]: 'boolean',
   [DATA_TYPE.date]: 'date',
   [DATA_TYPE.array]: 'array',
-};
-
-export const REPORT_TYPES = {
-  funnel: 'funnel',
-  goals: 'goal',
-  insights: 'insight',
-  retention: 'retention',
-  utm: 'utm',
-  journey: 'journey',
-  revenue: 'revenue',
-  attribution: 'attribution',
-} as const;
-
-export const REPORT_PARAMETERS = {
-  fields: 'fields',
-  filters: 'filters',
-  groups: 'groups',
-} as const;
-
-export const KAFKA_TOPIC = {
-  event: 'event',
-  eventData: 'event_data',
 } as const;
 
 export const ROLES = {
@@ -199,7 +179,7 @@ export const THEME_COLORS = {
     line: '#3a3a3a',
     fill: '#191919',
   },
-};
+} as const;
 
 export const CHART_COLORS = [
   '#2680eb',
@@ -263,7 +243,7 @@ export const OS_NAMES = {
   'Mac OS': 'macOS',
   'Sun OS': 'SunOS',
   'Windows 10': 'Windows 10/11',
-};
+} as const;
 
 export const BROWSERS = {
   android: 'Android',
@@ -294,7 +274,7 @@ export const BROWSERS = {
   silk: 'Silk',
   searchbot: 'Searchbot',
   yandexbrowser: 'Yandex',
-};
+} as const;
 
 export const IP_ADDRESS_HEADERS = [
   'cf-connecting-ip',

@@ -7,16 +7,16 @@ import { isSearchOperator } from '@/lib/params';
 export function FilterBar() {
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
-  const { router, renderUrl } = useNavigation();
+  const { router, updateParams } = useNavigation();
   const { filters, operatorLabels } = useFilters();
 
   const handleCloseFilter = (param: string, e: MouseEvent) => {
     e.stopPropagation();
-    router.push(renderUrl({ [param]: undefined }));
+    router.push(updateParams({ [param]: undefined }));
   };
 
   const handleResetFilter = () => {
-    router.push(renderUrl(false));
+    router.push(updateParams());
   };
 
   if (!filters.length) {
@@ -24,7 +24,7 @@ export function FilterBar() {
   }
 
   return (
-    <Row gap alignItems="center" justifyContent="space-between" padding backgroundColor="3">
+    <Row gap alignItems="center" justifyContent="space-between" padding="2" backgroundColor="3">
       <Row alignItems="center" gap="2" wrap="wrap">
         {Object.keys(filters).map(key => {
           const filter = filters[key];

@@ -23,6 +23,12 @@
       "value": "افزودن"
     }
   ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "Add board"
+    }
+  ],
   "label.add-description": [
     {
       "type": 0,
@@ -53,6 +59,12 @@
       "value": "مدیر"
     }
   ],
+  "label.affiliate": [
+    {
+      "type": 0,
+      "value": "Affiliate"
+    }
+  ],
   "label.after": [
     {
       "type": 0,
@@ -77,6 +89,24 @@
       "value": "تجزیه و تحلیل"
     }
   ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "Apply"
+    }
+  ],
+  "label.attribution": [
+    {
+      "type": 0,
+      "value": "Attribution"
+    }
+  ],
+  "label.attribution-description": [
+    {
+      "type": 0,
+      "value": "See how users engage with your marketing and what drives conversions."
+    }
+  ],
   "label.average": [
     {
       "type": 0,
@@ -93,6 +123,12 @@
     {
       "type": 0,
       "value": "قبل از"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "Boards"
     }
   ],
   "label.bounce-rate": [
@@ -119,6 +155,12 @@
       "value": "مرورگرها"
     }
   ],
+  "label.campaigns": [
+    {
+      "type": 0,
+      "value": "Campaigns"
+    }
+  ],
   "label.cancel": [
     {
       "type": 0,
@@ -129,6 +171,12 @@
     {
       "type": 0,
       "value": "تغییر رمز"
+    }
+  ],
+  "label.channels": [
+    {
+      "type": 0,
+      "value": "Channels"
     }
   ],
   "label.cities": [
@@ -149,10 +197,22 @@
       "value": "پاک کردن همه"
     }
   ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "Cohort"
+    }
+  ],
   "label.compare": [
     {
       "type": 0,
       "value": "مقایسه"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "Compare dates"
     }
   ],
   "label.confirm": [
@@ -173,10 +233,34 @@
       "value": "شامل"
     }
   ],
+  "label.content": [
+    {
+      "type": 0,
+      "value": "Content"
+    }
+  ],
   "label.continue": [
     {
       "type": 0,
       "value": "ادامه"
+    }
+  ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "Conversion"
+    }
+  ],
+  "label.conversion-ratep": [
+    {
+      "type": 0,
+      "value": "Conversion rate"
+    }
+  ],
+  "label.conversion-step": [
+    {
+      "type": 0,
+      "value": "Conversion step"
     }
   ],
   "label.count": [
@@ -231,6 +315,12 @@
     {
       "type": 0,
       "value": "ایجاد شده توسط"
+    }
+  ],
+  "label.currency": [
+    {
+      "type": 0,
+      "value": "Currency"
     }
   ],
   "label.current": [
@@ -347,16 +437,40 @@
       "value": "دستگاه‌ها"
     }
   ],
+  "label.direct": [
+    {
+      "type": 0,
+      "value": "Direct"
+    }
+  ],
   "label.dismiss": [
     {
       "type": 0,
       "value": "رد کردن"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "Distinct ID"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
       "value": "شامل نمی‌شود"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "Does not include"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "Does not exist"
     }
   ],
   "label.domain": [
@@ -389,6 +503,12 @@
       "value": "ویرایش عضو"
     }
   ],
+  "label.email": [
+    {
+      "type": 0,
+      "value": "Email"
+    }
+  ],
   "label.enable-share-url": [
     {
       "type": 0,
@@ -419,16 +539,34 @@
       "value": "داده‌های رویداد"
     }
   ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "Event name"
+    }
+  ],
   "label.events": [
     {
       "type": 0,
       "value": "رویدادها"
     }
   ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "Exists"
+    }
+  ],
   "label.exit": [
     {
       "type": 0,
       "value": "آدرس اینترنتی خروجی"
+    }
+  ],
+  "label.expand": [
+    {
+      "type": 0,
+      "value": "Expand"
     }
   ],
   "label.false": [
@@ -473,6 +611,12 @@
       "value": "فیلترها"
     }
   ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "First click"
+    }
+  ],
   "label.first-seen": [
     {
       "type": 0,
@@ -489,6 +633,12 @@
     {
       "type": 0,
       "value": "نرخ تبدیل و رها کردن کاربران را درک کنید."
+    }
+  ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "Funnels"
     }
   ],
   "label.goal": [
@@ -521,16 +671,28 @@
       "value": "بزرگ‌تر یا مساوی"
     }
   ],
-  "label.host": [
+  "label.grouped": [
     {
       "type": 0,
-      "value": "هاست"
+      "value": "Grouped"
     }
   ],
-  "label.hosts": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "هاست‌ها"
+      "value": "Hostname"
+    }
+  ],
+  "label.includes": [
+    {
+      "type": 0,
+      "value": "Includes"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "Insight"
     }
   ],
   "label.insights": [
@@ -551,6 +713,12 @@
       "value": "برابر است با"
     }
   ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "Is false"
+    }
+  ],
   "label.is-not": [
     {
       "type": 0,
@@ -567,6 +735,12 @@
     {
       "type": 0,
       "value": "تعیین شده"
+    }
+  ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "Is true"
     }
   ],
   "label.join": [
@@ -593,6 +767,12 @@
       "value": "درک کنید که کاربران چگونه در وب‌سایت شما حرکت می کنند."
     }
   ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "Journeys"
+    }
+  ],
   "label.language": [
     {
       "type": 0,
@@ -609,6 +789,12 @@
     {
       "type": 0,
       "value": "لپ‌تاپ"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "Last click"
     }
   ],
   "label.last-days": [
@@ -671,6 +857,12 @@
       "value": "کمتر یا مساوی"
     }
   ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "Links"
+    }
+  ],
   "label.login": [
     {
       "type": 0,
@@ -701,6 +893,12 @@
       "value": "حداکثر"
     }
   ],
+  "label.medium": [
+    {
+      "type": 0,
+      "value": "Medium"
+    }
+  ],
   "label.member": [
     {
       "type": 0,
@@ -723,6 +921,12 @@
     {
       "type": 0,
       "value": "موبایل"
+    }
+  ],
+  "label.model": [
+    {
+      "type": 0,
+      "value": "Model"
     }
   ],
   "label.more": [
@@ -801,10 +1005,40 @@
       "value": "تایید"
     }
   ],
+  "label.organic-search": [
+    {
+      "type": 0,
+      "value": "Organic search"
+    }
+  ],
+  "label.organic-shopping": [
+    {
+      "type": 0,
+      "value": "Organic shopping"
+    }
+  ],
+  "label.organic-social": [
+    {
+      "type": 0,
+      "value": "Organic social"
+    }
+  ],
+  "label.organic-video": [
+    {
+      "type": 0,
+      "value": "Organic video"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
       "value": "سیستم عامل"
+    }
+  ],
+  "label.other": [
+    {
+      "type": 0,
+      "value": "Other"
     }
   ],
   "label.overview": [
@@ -817,6 +1051,12 @@
     {
       "type": 0,
       "value": "مالک"
+    }
+  ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "Page"
     }
   ],
   "label.page-of": [
@@ -855,6 +1095,36 @@
       "value": "صفحه‌ها"
     }
   ],
+  "label.paid-ads": [
+    {
+      "type": 0,
+      "value": "Paid ads"
+    }
+  ],
+  "label.paid-search": [
+    {
+      "type": 0,
+      "value": "Paid search"
+    }
+  ],
+  "label.paid-shopping": [
+    {
+      "type": 0,
+      "value": "Paid shopping"
+    }
+  ],
+  "label.paid-social": [
+    {
+      "type": 0,
+      "value": "Paid social"
+    }
+  ],
+  "label.paid-video": [
+    {
+      "type": 0,
+      "value": "Paid video"
+    }
+  ],
   "label.password": [
     {
       "type": 0,
@@ -871,6 +1141,12 @@
     {
       "type": 0,
       "value": "مسیرها"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "Pixels"
     }
   ],
   "label.powered-by": [
@@ -943,6 +1219,12 @@
       "value": "آمار زنده"
     }
   ],
+  "label.referral": [
+    {
+      "type": 0,
+      "value": "Referral"
+    }
+  ],
   "label.referrer": [
     {
       "type": 0,
@@ -977,6 +1259,12 @@
     {
       "type": 0,
       "value": "مناطق"
+    }
+  ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "Remaining"
     }
   ],
   "label.remove": [
@@ -1039,12 +1327,6 @@
       "value": "به درآمد خود در طول زمان نگاه کنید."
     }
   ],
-  "label.revenue-property": [
-    {
-      "type": 0,
-      "value": "ویژگی درآمد"
-    }
-  ],
   "label.role": [
     {
       "type": 0,
@@ -1087,6 +1369,12 @@
       "value": "انتخاب تاریخ"
     }
   ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "Select filter"
+    }
+  ],
   "label.select-role": [
     {
       "type": 0,
@@ -1105,6 +1393,12 @@
       "value": "نشست"
     }
   ],
+  "label.session-data": [
+    {
+      "type": 0,
+      "value": "Session data"
+    }
+  ],
   "label.sessions": [
     {
       "type": 0,
@@ -1117,6 +1411,12 @@
       "value": "تنظیمات"
     }
   ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "Share"
+    }
+  ],
   "label.share-url": [
     {
       "type": 0,
@@ -1127,6 +1427,18 @@
     {
       "type": 0,
       "value": "یک روز"
+    }
+  ],
+  "label.sms": [
+    {
+      "type": 0,
+      "value": "SMS"
+    }
+  ],
+  "label.sources": [
+    {
+      "type": 0,
+      "value": "Sources"
     }
   ],
   "label.start-step": [
@@ -1151,6 +1463,18 @@
     {
       "type": 0,
       "value": "تبلت"
+    }
+  ],
+  "label.tag": [
+    {
+      "type": 0,
+      "value": "Tag"
+    }
+  ],
+  "label.tags": [
+    {
+      "type": 0,
+      "value": "Tags"
     }
   ],
   "label.team": [
@@ -1189,6 +1513,12 @@
       "value": "مالک تیم"
     }
   ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "Team settings"
+    }
+  ],
   "label.team-view-only": [
     {
       "type": 0,
@@ -1205,6 +1535,12 @@
     {
       "type": 0,
       "value": "تیم‌ها"
+    }
+  ],
+  "label.terms": [
+    {
+      "type": 0,
+      "value": "Terms"
     }
   ],
   "label.theme": [
@@ -1339,28 +1675,10 @@
       "value": "به‌روزرسانی"
     }
   ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "آدرس اینترنتی"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "آدرس‌های اینترنتی"
-    }
-  ],
   "label.user": [
     {
       "type": 0,
       "value": "کاربر"
-    }
-  ],
-  "label.user-property": [
-    {
-      "type": 0,
-      "value": "ویژگی کاربر"
     }
   ],
   "label.username": [
@@ -1519,6 +1837,12 @@
       "value": "x"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
@@ -1611,6 +1935,12 @@
     {
       "type": 1,
       "value": "url"
+    }
+  ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
     }
   ],
   "message.go-to-settings": [
@@ -1707,6 +2037,18 @@
       "value": "شما هیچ وب‌سایتی را پیکربندی نکرده‌اید."
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1737,6 +2079,12 @@
     {
       "type": 0,
       "value": "ذخیره شد."
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1793,6 +2141,12 @@
       "value": "رویداد فعال شده"
     }
   ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
@@ -1837,12 +2191,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "ریزش بازدیدکننده‌ها"
     }
   ]
 }
