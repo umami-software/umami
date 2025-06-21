@@ -1,3 +1,11 @@
+# To deploy on Cloudflare Workers, please follow these two steps
+# 
+# 1. Build the Application: pnpm run cloudflare:build
+# 2. Deploy the Application: pnpm run cloudflare:deploy
+#
+# You need add `DATABASE_URL` variable in build environment and runtime environment.
+#
+# When use Hyperdrive, you don't need to add the `DATABASE_URL` variable in the runtime environment.
 main = ".open-next/worker.js"
 name = "umami"
 compatibility_date = "2025-06-09"
@@ -19,7 +27,8 @@ service = "umami"
 [vars]
 RUNTIME = "workerd"
 
-# Advanced users can enable hyperdrive to optimize database connection latency. For usage, please refer to https://developers.cloudflare.com/hyperdrive/get-started/.
+# Advanced users can enable hyperdrive to optimize database connection latency. 
+# For usage, please refer to https://developers.cloudflare.com/hyperdrive/get-started/.
 # [[hyperdrive]]
 # binding = "HYPERDRIVE"
 # id = ""
