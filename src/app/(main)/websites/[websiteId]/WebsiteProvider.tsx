@@ -2,8 +2,9 @@
 import { createContext, ReactNode, useEffect } from 'react';
 import { useModified, useWebsiteQuery } from '@/components/hooks';
 import { Loading } from '@umami/react-zen';
+import { Website } from '@/generated/prisma/client';
 
-export const WebsiteContext = createContext(null);
+export const WebsiteContext = createContext<Website>(null);
 
 export function WebsiteProvider({
   websiteId,

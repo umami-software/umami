@@ -15,7 +15,7 @@ export function TeamsJoinButton() {
 
   return (
     <DialogTrigger>
-      <Button variant="secondary">
+      <Button>
         <Icon>
           <AddUser />
         </Icon>

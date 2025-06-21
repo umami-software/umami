@@ -17,7 +17,7 @@ export function TeamLeaveButton({ teamId, teamName }: { teamId: string; teamName
 
   return (
     <DialogTrigger>
-      <Button variant="secondary">
+      <Button>
         <Icon>
           <LogOut />
         </Icon>

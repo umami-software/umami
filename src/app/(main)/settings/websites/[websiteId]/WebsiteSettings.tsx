@@ -4,7 +4,7 @@ import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvide
 import { useMessages } from '@/components/hooks';
 import { Globe, Arrow } from '@/components/icons';
 import { SectionHeader } from '@/components/common/SectionHeader';
-import { ShareUrl } from './ShareUrl';
+import { WebsiteShareForm } from './WebsiteShareForm';
 import { TrackingCode } from './TrackingCode';
 import { WebsiteData } from './WebsiteData';
 import { WebsiteEditForm } from './WebsiteEditForm';
@@ -48,7 +48,7 @@ export function WebsiteSettings({
           <TrackingCode websiteId={websiteId} />
         </TabPanel>
         <TabPanel id="share">
-          <ShareUrl />
+          <WebsiteShareForm />
         </TabPanel>
         <TabPanel id="data">
           <WebsiteData websiteId={websiteId} />

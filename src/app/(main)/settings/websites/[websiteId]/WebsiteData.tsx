@@ -52,9 +52,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
         description={formatMessage(messages.transferWebsite)}
       >
         <DialogTrigger>
-          <Button variant="secondary" isDisabled={!canTransferWebsite}>
-            {formatMessage(labels.transfer)}
-          </Button>
+          <Button isDisabled={!canTransferWebsite}>{formatMessage(labels.transfer)}</Button>
           <Modal>
             <Dialog title={formatMessage(labels.transferWebsite)}>
               {({ close }) => (
@@ -70,7 +68,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
         description={formatMessage(messages.resetWebsiteWarning)}
       >
         <DialogTrigger>
-          <Button variant="secondary">{formatMessage(labels.reset)}</Button>
+          <Button>{formatMessage(labels.reset)}</Button>
           <Modal>
             <Dialog title={formatMessage(labels.resetWebsite)}>
               {({ close }) => (
