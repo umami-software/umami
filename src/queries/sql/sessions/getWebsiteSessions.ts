@@ -24,7 +24,6 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
 
   return pagedRawQuery(
     `
-    with sessions as (
     select
       session.session_id as "id",
       session.website_id as "websiteId",
@@ -68,8 +67,6 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
       session.region, 
       session.city
     order by max(website_event.created_at) desc
-    limit 1000)
-    select * from sessions
     `,
     { ...params, search: `%${search}%` },
     pageParams,
@@ -83,7 +80,6 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
 
   return pagedQuery(
     `
-    with sessions as (
     select
       session_id as id,
       website_id as websiteId,
@@ -116,8 +112,6 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     }
     group by session_id, website_id, hostname, browser, os, device, screen, language, country, region, city
     order by lastAt desc
-    limit 1000)
-    select * from sessions
     `,
     { ...params, search },
     pageParams,
