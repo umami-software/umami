@@ -91,16 +91,19 @@ export async function getRequestFilters(query: Record<string, any>, websiteId?: 
   for (const key of Object.keys(FILTER_COLUMNS)) {
     const value = query[key];
     if (value !== undefined) {
-      if (FILTER_GROUPS.includes(key)) {
-        const segment = await getWebsiteSegment(websiteId, key, value);
-        if (key === 'segment') {
-          // merge filters into result
-          Object.assign(result, segment.parameters);
-        } else {
-          result[key] = segment.parameters;
-        }
+      result[key] = value;
+    }
+  }
+
+  for (const key of Object.keys(FILTER_GROUPS)) {
+    const value = query[key];
+    if (value !== undefined) {
+      const segment = await getWebsiteSegment(websiteId, key, value);
+      if (key === 'segment') {
+        // merge filters into result
+        Object.assign(result, segment.parameters);
       } else {
-        result[key] = value;
+        result[key] = segment.parameters;
       }
     }
   }

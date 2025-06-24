@@ -105,6 +105,22 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) 
   return query.join('\n');
 }
 
+function getCohortQuery(filters: QueryFilters = {}, options: QueryOptions = {}) {
+  const query = filtersToArray(filters, options).reduce((arr, { name, column, operator }) => {
+    if (column) {
+      arr.push(`and ${mapFilter(column, operator, name)}`);
+
+      if (name === 'referrer') {
+        arr.push(`and referrer_domain != hostname`);
+      }
+    }
+
+    return arr;
+  }, []);
+
+  return query.join('\n');
+}
+
 function getDateQuery(filters: QueryFilters = {}) {
   const { startDate, endDate, timezone } = filters;
 
@@ -146,6 +162,7 @@ async function parseFilters(websiteId: string, filters: QueryFilters = {}, optio
       websiteId,
       startDate: maxDate(filters.startDate, new Date(website?.resetAt)),
     },
+    cohortQuery: getCohortQuery(filters),
   };
 }
 

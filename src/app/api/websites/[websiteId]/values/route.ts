@@ -30,17 +30,13 @@ export async function GET(
     return unauthorized();
   }
 
-  if (
-    !SESSION_COLUMNS.includes(type) &&
-    !EVENT_COLUMNS.includes(type) &&
-    !FILTER_GROUPS.includes(type)
-  ) {
+  if (!SESSION_COLUMNS.includes(type) && !EVENT_COLUMNS.includes(type) && !FILTER_GROUPS[type]) {
     return badRequest('Invalid type.');
   }
 
   let values;
 
-  if (FILTER_GROUPS.includes(type)) {
+  if (FILTER_GROUPS[type]) {
     values = (await getWebsiteSegments(websiteId, type)).map(segment => ({ value: segment.name }));
   } else {
     values = await getValues(websiteId, FILTER_COLUMNS[type], startDate, endDate, search);
