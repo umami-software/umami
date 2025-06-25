@@ -19,32 +19,32 @@ export function SideNav(props: any) {
   const links = [
     {
       label: formatMessage(labels.websites),
-      href: renderUrl('/websites'),
+      href: '/websites',
       icon: <Globe />,
     },
     {
       label: formatMessage(labels.boards),
-      href: renderUrl('/boards'),
+      href: '/boards',
       icon: <LayoutDashboard />,
     },
     {
       label: formatMessage(labels.links),
-      href: renderUrl('/links'),
+      href: '/links',
       icon: <LinkIcon />,
     },
     {
       label: formatMessage(labels.pixels),
-      href: renderUrl('/pixels'),
+      href: '/pixels',
       icon: <Grid2X2 />,
     },
     {
       label: formatMessage(labels.settings),
-      href: renderUrl('/settings'),
+      href: '/settings',
       icon: <Settings />,
     },
     {
       label: formatMessage(labels.admin),
-      href: renderUrl('/admin'),
+      href: '/admin',
       icon: <LockKeyhole />,
     },
   ].filter(n => n);
@@ -57,7 +57,7 @@ export function SideNav(props: any) {
       <SidebarSection>
         {links.map(({ href, label, icon }) => {
           return (
-            <Link key={href} href={href} role="button">
+            <Link key={href} href={renderUrl(href, false)} role="button">
               <SidebarItem label={label} icon={icon} isSelected={pathname.startsWith(href)} />
             </Link>
           );

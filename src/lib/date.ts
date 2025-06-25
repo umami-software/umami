@@ -126,9 +126,9 @@ export function parseDateValue(value: string) {
   return { num: +num, unit };
 }
 
-export function parseDateRange(value: string | object, locale = 'en-US'): DateRange {
+export function parseDateRange(value: string, locale = 'en-US'): DateRange {
   if (typeof value !== 'string') {
-    return value as DateRange;
+    return null;
   }
 
   if (value === 'all') {
@@ -151,14 +151,13 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
       endDate,
       value,
       ...parseDateValue(value),
-      offset: 0,
       unit,
     };
   }
 
   const now = new Date();
   const dateLocale = getDateLocale(locale);
-  const { num, unit } = parseDateValue(value);
+  const { num = 1, unit } = parseDateValue(value);
 
   switch (unit) {
     case 'hour':
@@ -211,10 +210,14 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
   }
 }
 
-export function getOffsetDateRange(dateRange: DateRange, increment: number) {
-  const { startDate, endDate, unit, num, offset, value } = dateRange;
+export function getOffsetDateRange(dateRange: DateRange, offset: number) {
+  if (offset === 0) {
+    return dateRange;
+  }
 
-  const change = num * increment;
+  const { startDate, endDate, unit, num, value } = dateRange;
+
+  const change = num * offset;
   const { add } = DATE_FUNCTIONS[unit];
   const { unit: originalUnit } = parseDateValue(value) || {};
 
@@ -224,28 +227,24 @@ export function getOffsetDateRange(dateRange: DateRange, increment: number) {
         ...dateRange,
         startDate: addDays(startDate, change),
         endDate: addDays(endDate, change),
-        offset: offset + increment,
       };
     case 'week':
       return {
         ...dateRange,
         startDate: addWeeks(startDate, change),
         endDate: addWeeks(endDate, change),
-        offset: offset + increment,
       };
     case 'month':
       return {
         ...dateRange,
         startDate: addMonths(startDate, change),
         endDate: addMonths(endDate, change),
-        offset: offset + increment,
       };
     case 'year':
       return {
         ...dateRange,
         startDate: addYears(startDate, change),
         endDate: addYears(endDate, change),
-        offset: offset + increment,
       };
     default:
       return {
@@ -254,7 +253,6 @@ export function getOffsetDateRange(dateRange: DateRange, increment: number) {
         value,
         unit,
         num,
-        offset: offset + increment,
       };
   }
 }

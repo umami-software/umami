@@ -11,7 +11,7 @@ export function ActiveUsers({
   value?: number;
   refetchInterval?: number;
 }) {
-  const { formatMessage, messages } = useMessages();
+  const { formatMessage, labels } = useMessages();
   const { data } = useActyiveUsersQuery(websiteId, { refetchInterval });
 
   const count = useMemo(() => {
@@ -28,8 +28,8 @@ export function ActiveUsers({
 
   return (
     <StatusLight variant="success">
-      <Text size="2" weight="bold">
-        {formatMessage(messages.numberOfUsers, { x: count })}
+      <Text size="2" weight="medium">
+        {count} {formatMessage(labels.online)}
       </Text>
     </StatusLight>
   );

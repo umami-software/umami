@@ -5,22 +5,24 @@ import { Share, Edit } from '@/components/icons';
 import { Favicon } from '@/components/common/Favicon';
 import { ActiveUsers } from '@/components/metrics/ActiveUsers';
 import { WebsiteShareForm } from '@/app/(main)/settings/websites/[websiteId]/WebsiteShareForm';
-import { useMessages } from '@/components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
+import { LinkButton } from '@/components/common/LinkButton';
 
 export function WebsiteHeader() {
   const website = useWebsite();
+  const { renderUrl } = useNavigation();
 
   return (
     <PageHeader title={website.name} icon={<Favicon domain={website.domain} />} showBorder={false}>
       <Row alignItems="center" gap>
         <ActiveUsers websiteId={website.id} />
         <ShareButton websiteId={website.id} shareId={website.shareId} />
-        <Button>
+        <LinkButton href={renderUrl(`/settings/websites/${website.id}`)}>
           <Icon>
             <Edit />
           </Icon>
           <Text>Edit</Text>
-        </Button>
+        </LinkButton>
       </Row>
     </PageHeader>
   );

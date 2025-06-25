@@ -33,7 +33,7 @@ export function ProfileSettings() {
   };
 
   return (
-    <Column gap="6">
+    <Column width="400px" gap="6">
       <Column>
         <Label>{formatMessage(labels.username)}</Label>
         {username}

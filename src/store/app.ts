@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import {
   DATE_RANGE_CONFIG,
-  DEFAULT_DATE_RANGE,
+  DEFAULT_DATE_RANGE_VALUE,
   DEFAULT_LOCALE,
   DEFAULT_THEME,
   LOCALE_CONFIG,
@@ -23,7 +23,7 @@ const initialState = {
   locale: getItem(LOCALE_CONFIG) || DEFAULT_LOCALE,
   theme: getItem(THEME_CONFIG) || getDefaultTheme() || DEFAULT_THEME,
   timezone: getItem(TIMEZONE_CONFIG) || getTimezone(),
-  dateRange: getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE,
+  dateRangeValue: getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE_VALUE,
   shareToken: null,
   user: null,
   config: null,
@@ -51,8 +51,8 @@ export function setConfig(config: object) {
   store.setState({ config });
 }
 
-export function setDateRange(dateRange: string | object) {
-  store.setState({ dateRange });
+export function setDateRangeValue(dateRangeValue: string) {
+  store.setState({ dateRangeValue });
 }
 
 export const useApp = store;

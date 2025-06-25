@@ -22,7 +22,7 @@ const generateId = () => getRandomChars(16);
 
 export interface WebsiteShareFormProps {
   websiteId: string;
-  shareId: string;
+  shareId?: string;
   onSave?: () => void;
   onClose?: () => void;
 }

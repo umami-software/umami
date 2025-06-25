@@ -11,7 +11,6 @@ import {
 import { isAfter } from 'date-fns';
 import { Chevron, Close, Compare } from '@/components/icons';
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
-import { getOffsetDateRange } from '@/lib/date';
 import { DateFilter } from './DateFilter';
 
 export function WebsiteDateFilter({
@@ -26,13 +25,13 @@ export function WebsiteDateFilter({
   showButtons?: boolean;
   allowCompare?: boolean;
 }) {
-  const { dateRange, saveDateRange } = useDateRange(websiteId);
-  const { value, startDate, endDate, offset } = dateRange;
+  const { dateRange } = useDateRange(websiteId);
+  const { value, startDate, endDate } = dateRange;
   const { formatMessage, labels } = useMessages();
   const {
     router,
     updateParams,
-    query: { compare },
+    query: { compare, offset = 0 },
   } = useNavigation();
   const isAllTime = value === 'all';
   const isCustomRange = value.startsWith('range');
@@ -40,13 +39,11 @@ export function WebsiteDateFilter({
   const disableForward = value === 'all' || isAfter(endDate, new Date());
 
   const handleChange = (date: string) => {
-    router.push(updateParams({ date }));
-    saveDateRange(date);
+    router.push(updateParams({ date, offset: undefined }));
   };
 
   const handleIncrement = (increment: number) => {
-    router.push(updateParams({ offset: offset + increment }));
-    saveDateRange(getOffsetDateRange(dateRange, increment));
+    router.push(updateParams({ offset: +offset + increment }));
   };
 
   const handleSelect = (compare: any) => {
@@ -79,6 +76,7 @@ export function WebsiteDateFilter({
         endDate={endDate}
         onChange={handleChange}
         showAllTime={showAllTime}
+        renderDate={+offset !== 0}
       />
       {!isAllTime && compare && (
         <Row alignItems="center" gap>

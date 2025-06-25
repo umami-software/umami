@@ -330,6 +330,7 @@ export const labels = defineMessages({
   conversion: { id: 'label.conversion', defaultMessage: 'Conversion' },
   firstClick: { id: 'label.first-click', defaultMessage: 'First click' },
   lastClick: { id: 'label.last-click', defaultMessage: 'Last click' },
+  online: { id: 'label.online', defaultMessage: 'Online' },
 });
 
 export const messages = defineMessages({

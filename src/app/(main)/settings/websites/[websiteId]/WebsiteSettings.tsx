@@ -5,7 +5,7 @@ import { useMessages } from '@/components/hooks';
 import { Globe, Arrow } from '@/components/icons';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { WebsiteShareForm } from './WebsiteShareForm';
-import { TrackingCode } from './TrackingCode';
+import { WebsiteTrackingCode } from './WebsiteTrackingCode';
 import { WebsiteData } from './WebsiteData';
 import { WebsiteEditForm } from './WebsiteEditForm';
 import { LinkButton } from '@/components/common/LinkButton';
@@ -23,11 +23,7 @@ export function WebsiteSettings({
   return (
     <>
       <SectionHeader title={website?.name} icon={<Globe />}>
-        <LinkButton
-          variant="primary"
-          href={`/websites/${websiteId}`}
-          target={openExternal ? '_blank' : null}
-        >
+        <LinkButton href={`/websites/${websiteId}`} target={openExternal ? '_blank' : null}>
           <Icon>
             <Arrow />
           </Icon>
@@ -45,10 +41,10 @@ export function WebsiteSettings({
           <WebsiteEditForm websiteId={websiteId} />
         </TabPanel>
         <TabPanel id="tracking">
-          <TrackingCode websiteId={websiteId} />
+          <WebsiteTrackingCode websiteId={websiteId} />
         </TabPanel>
         <TabPanel id="share">
-          <WebsiteShareForm />
+          <WebsiteShareForm websiteId={websiteId} />
         </TabPanel>
         <TabPanel id="data">
           <WebsiteData websiteId={websiteId} />

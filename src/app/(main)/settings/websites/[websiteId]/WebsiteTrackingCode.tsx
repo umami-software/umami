@@ -1,9 +1,15 @@
-import { TextField } from '@umami/react-zen';
+import { TextField, Text, Column } from '@umami/react-zen';
 import { useMessages, useConfig } from '@/components/hooks';
 
 const SCRIPT_NAME = 'script.js';
 
-export function TrackingCode({ websiteId, hostUrl }: { websiteId: string; hostUrl?: string }) {
+export function WebsiteTrackingCode({
+  websiteId,
+  hostUrl,
+}: {
+  websiteId: string;
+  hostUrl?: string;
+}) {
   const { formatMessage, messages } = useMessages();
   const config = useConfig();
 
@@ -19,9 +25,9 @@ export function TrackingCode({ websiteId, hostUrl }: { websiteId: string; hostUr
   const code = `<script defer src="${url}" data-website-id="${websiteId}"></script>`;
 
   return (
-    <>
-      <p>{formatMessage(messages.trackingCode)}</p>
-      <TextField value={code} isReadOnly allowCopy asTextArea />
-    </>
+    <Column gap>
+      <Text>{formatMessage(messages.trackingCode)}</Text>
+      <TextField value={code} isReadOnly allowCopy asTextArea resize="none" />
+    </Column>
   );
 }
