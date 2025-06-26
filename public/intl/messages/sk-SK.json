@@ -2,7 +2,7 @@
   "label.access-code": [
     {
       "type": 0,
-      "value": "Access code"
+      "value": "Prístupový kód"
     }
   ],
   "label.actions": [
@@ -14,37 +14,37 @@
   "label.activity": [
     {
       "type": 0,
-      "value": "Activity log"
+      "value": "Denník aktivít"
     }
   ],
   "label.add": [
     {
       "type": 0,
-      "value": "Add"
+      "value": "Pridať"
     }
   ],
   "label.add-board": [
     {
       "type": 0,
-      "value": "Add board"
+      "value": "Pridať tabuľu"
     }
   ],
   "label.add-description": [
     {
       "type": 0,
-      "value": "Add description"
+      "value": "Pridať popis"
     }
   ],
   "label.add-member": [
     {
       "type": 0,
-      "value": "Add member"
+      "value": "Pridať člena"
     }
   ],
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "Pridať krok"
     }
   ],
   "label.add-website": [
@@ -62,13 +62,13 @@
   "label.affiliate": [
     {
       "type": 0,
-      "value": "Affiliate"
+      "value": "Partner"
     }
   ],
   "label.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "Po"
     }
   ],
   "label.all": [
@@ -80,37 +80,37 @@
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "Celý čas"
     }
   ],
   "label.analytics": [
     {
       "type": 0,
-      "value": "Analytics"
+      "value": "Analytika"
     }
   ],
   "label.apply": [
     {
       "type": 0,
-      "value": "Apply"
+      "value": "Použiť"
     }
   ],
   "label.attribution": [
     {
       "type": 0,
-      "value": "Attribution"
+      "value": "Priradenie"
     }
   ],
   "label.attribution-description": [
     {
       "type": 0,
-      "value": "See how users engage with your marketing and what drives conversions."
+      "value": "Pozrite sa, ako používatelia interagujú s vaším marketingom a čo vedie ku konverziám."
     }
   ],
   "label.average": [
     {
       "type": 0,
-      "value": "Average"
+      "value": "Priemer"
     }
   ],
   "label.back": [
@@ -122,13 +122,13 @@
   "label.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "Pred"
     }
   ],
   "label.boards": [
     {
       "type": 0,
-      "value": "Boards"
+      "value": "Tabule"
     }
   ],
   "label.bounce-rate": [
@@ -140,13 +140,13 @@
   "label.breakdown": [
     {
       "type": 0,
-      "value": "Breakdown"
+      "value": "Rozpis"
     }
   ],
   "label.browser": [
     {
       "type": 0,
-      "value": "Browser"
+      "value": "Prehliadač"
     }
   ],
   "label.browsers": [
@@ -158,7 +158,7 @@
   "label.campaigns": [
     {
       "type": 0,
-      "value": "Campaigns"
+      "value": "Kampane"
     }
   ],
   "label.cancel": [
@@ -176,49 +176,49 @@
   "label.channels": [
     {
       "type": 0,
-      "value": "Channels"
+      "value": "Kanály"
     }
   ],
   "label.cities": [
     {
       "type": 0,
-      "value": "Cities"
+      "value": "Mestá"
     }
   ],
   "label.city": [
     {
       "type": 0,
-      "value": "City"
+      "value": "Mesto"
     }
   ],
   "label.clear-all": [
     {
       "type": 0,
-      "value": "Clear all"
+      "value": "Vymazať všetko"
     }
   ],
   "label.cohort": [
     {
       "type": 0,
-      "value": "Cohort"
+      "value": "Kohorta"
     }
   ],
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "Porovnať"
     }
   ],
   "label.compare-dates": [
     {
       "type": 0,
-      "value": "Compare dates"
+      "value": "Porovnať dátumy"
     }
   ],
   "label.confirm": [
     {
       "type": 0,
-      "value": "Confirm"
+      "value": "Potvrdiť"
     }
   ],
   "label.confirm-password": [
@@ -236,7 +236,7 @@
   "label.content": [
     {
       "type": 0,
-      "value": "Content"
+      "value": "Obsah"
     }
   ],
   "label.continue": [
@@ -248,25 +248,25 @@
   "label.conversion": [
     {
       "type": 0,
-      "value": "Conversion"
+      "value": "Konverzia"
     }
   ],
-  "label.conversion-ratep": [
+  "label.conversion-rate": [
     {
       "type": 0,
-      "value": "Conversion rate"
+      "value": "Miera konverzie"
     }
   ],
   "label.conversion-step": [
     {
       "type": 0,
-      "value": "Conversion step"
+      "value": "Krok konverzie"
     }
   ],
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "Počet"
     }
   ],
   "label.countries": [
@@ -278,55 +278,55 @@
   "label.country": [
     {
       "type": 0,
-      "value": "Country"
+      "value": "Krajina"
     }
   ],
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "Vytvoriť"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "Create report"
+      "value": "Vytvoriť správu"
     }
   ],
   "label.create-team": [
     {
       "type": 0,
-      "value": "Create team"
+      "value": "Vytvoriť tím"
     }
   ],
   "label.create-user": [
     {
       "type": 0,
-      "value": "Create user"
+      "value": "Vytvoriť používateľa"
     }
   ],
   "label.created": [
     {
       "type": 0,
-      "value": "Created"
+      "value": "Vytvorené"
     }
   ],
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "Vytvoril"
     }
   ],
   "label.currency": [
     {
       "type": 0,
-      "value": "Currency"
+      "value": "Mena"
     }
   ],
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "Aktuálny"
     }
   ],
   "label.current-password": [
@@ -368,7 +368,7 @@
   "label.day": [
     {
       "type": 0,
-      "value": "Day"
+      "value": "Deň"
     }
   ],
   "label.default-date-range": [
@@ -386,19 +386,19 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "Zmazať správu"
     }
   ],
   "label.delete-team": [
     {
       "type": 0,
-      "value": "Delete team"
+      "value": "Zmazať tím"
     }
   ],
   "label.delete-user": [
     {
       "type": 0,
-      "value": "Delete user"
+      "value": "Zmazať používateľa"
     }
   ],
   "label.delete-website": [
@@ -410,7 +410,7 @@
   "label.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "Popis"
     }
   ],
   "label.desktop": [
@@ -428,7 +428,7 @@
   "label.device": [
     {
       "type": 0,
-      "value": "Device"
+      "value": "Zariadenie"
     }
   ],
   "label.devices": [
@@ -440,7 +440,7 @@
   "label.direct": [
     {
       "type": 0,
-      "value": "Direct"
+      "value": "Priamy"
     }
   ],
   "label.dismiss": [
@@ -452,25 +452,25 @@
   "label.distinct-id": [
     {
       "type": 0,
-      "value": "Distinct ID"
+      "value": "Jedinečné ID"
     }
   ],
   "label.does-not-contain": [
     {
       "type": 0,
-      "value": "Does not contain"
+      "value": "Neobsahuje"
     }
   ],
   "label.does-not-include": [
     {
       "type": 0,
-      "value": "Does not include"
+      "value": "Nezahŕňa"
     }
   ],
   "label.doest-not-exist": [
     {
       "type": 0,
-      "value": "Does not exist"
+      "value": "Neexistuje"
     }
   ],
   "label.domain": [
@@ -494,13 +494,13 @@
   "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Upraviť prehľad"
     }
   ],
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "Upraviť člena"
     }
   ],
   "label.email": [
@@ -518,31 +518,31 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "Konečný krok"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "Vstupná URL"
     }
   ],
   "label.event": [
     {
       "type": 0,
-      "value": "Event"
+      "value": "Udalosť"
     }
   ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "Dáta udalosti"
     }
   ],
   "label.event-name": [
     {
       "type": 0,
-      "value": "Event name"
+      "value": "Názov udalosti"
     }
   ],
   "label.events": [
@@ -554,37 +554,37 @@
   "label.exists": [
     {
       "type": 0,
-      "value": "Exists"
+      "value": "Existuje"
     }
   ],
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "Výstupná URL"
     }
   ],
   "label.expand": [
     {
       "type": 0,
-      "value": "Expand"
+      "value": "Rozbaliť"
     }
   ],
   "label.false": [
     {
       "type": 0,
-      "value": "False"
+      "value": "Nepravda"
     }
   ],
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "Pole"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Fields"
+      "value": "Polia"
     }
   ],
   "label.filter": [
@@ -608,91 +608,91 @@
   "label.filters": [
     {
       "type": 0,
-      "value": "Filters"
+      "value": "Filtre"
     }
   ],
   "label.first-click": [
     {
       "type": 0,
-      "value": "First click"
+      "value": "Prvé kliknutie"
     }
   ],
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "Prvýkrát videné"
     }
   ],
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Lievik"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "Pochopte mieru konverzie a odchodu používateľov."
     }
   ],
   "label.funnels": [
     {
       "type": 0,
-      "value": "Funnels"
+      "value": "Lieviky"
     }
   ],
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "Cieľ"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "Ciele"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "Sledujte svoje ciele pre zobrazenia stránok a udalosti."
     }
   ],
   "label.greater-than": [
     {
       "type": 0,
-      "value": "Greater than"
+      "value": "Väčšie ako"
     }
   ],
   "label.greater-than-equals": [
     {
       "type": 0,
-      "value": "Greater than or equals"
+      "value": "Väčšie alebo rovné"
     }
   ],
   "label.grouped": [
     {
       "type": 0,
-      "value": "Grouped"
+      "value": "Zoskupené"
     }
   ],
   "label.hostname": [
     {
       "type": 0,
-      "value": "Hostname"
+      "value": "Názov hostiteľa"
     }
   ],
   "label.includes": [
     {
       "type": 0,
-      "value": "Includes"
+      "value": "Zahŕňa"
     }
   ],
   "label.insight": [
     {
       "type": 0,
-      "value": "Insight"
+      "value": "Prehľad"
     }
   ],
   "label.insights": [
@@ -710,79 +710,79 @@
   "label.is": [
     {
       "type": 0,
-      "value": "Is"
+      "value": "Je"
     }
   ],
   "label.is-false": [
     {
       "type": 0,
-      "value": "Is false"
+      "value": "Je nepravda"
     }
   ],
   "label.is-not": [
     {
       "type": 0,
-      "value": "Is not"
+      "value": "Nie je"
     }
   ],
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Is not set"
+      "value": "Nie je nastavené"
     }
   ],
   "label.is-set": [
     {
       "type": 0,
-      "value": "Is set"
+      "value": "Nastavené"
     }
   ],
   "label.is-true": [
     {
       "type": 0,
-      "value": "Is true"
+      "value": "Je pravda"
     }
   ],
   "label.join": [
     {
       "type": 0,
-      "value": "Join"
+      "value": "Pripojiť sa"
     }
   ],
   "label.join-team": [
     {
       "type": 0,
-      "value": "Join team"
+      "value": "Pripojiť sa k tímu"
     }
   ],
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "Cesta"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users navigate through your website."
+      "value": "Pochopte, ako používatelia prechádzajú vaším webom."
     }
   ],
   "label.journeys": [
     {
       "type": 0,
-      "value": "Journeys"
+      "value": "Cesty"
     }
   ],
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "Jazyk"
     }
   ],
   "label.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "Jazyky"
     }
   ],
   "label.laptop": [
@@ -794,7 +794,7 @@
   "label.last-click": [
     {
       "type": 0,
-      "value": "Last click"
+      "value": "Posledné kliknutie"
     }
   ],
   "label.last-days": [
@@ -828,7 +828,7 @@
   "label.last-months": [
     {
       "type": 0,
-      "value": "Last "
+      "value": "Posledných "
     },
     {
       "type": 1,
@@ -836,43 +836,43 @@
     },
     {
       "type": 0,
-      "value": " months"
+      "value": " mesiacov"
     }
   ],
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "Naposledy videné"
     }
   ],
   "label.leave": [
     {
       "type": 0,
-      "value": "Leave"
+      "value": "Odísť"
     }
   ],
   "label.leave-team": [
     {
       "type": 0,
-      "value": "Leave team"
+      "value": "Opustiť tím"
     }
   ],
   "label.less-than": [
     {
       "type": 0,
-      "value": "Less than"
+      "value": "Menej ako"
     }
   ],
   "label.less-than-equals": [
     {
       "type": 0,
-      "value": "Less than or equals"
+      "value": "Menej alebo rovné"
     }
   ],
   "label.links": [
     {
       "type": 0,
-      "value": "Links"
+      "value": "Odkazy"
     }
   ],
   "label.login": [
@@ -890,43 +890,43 @@
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "Spravovať"
     }
   ],
   "label.manager": [
     {
       "type": 0,
-      "value": "Manager"
+      "value": "Manažér"
     }
   ],
   "label.max": [
     {
       "type": 0,
-      "value": "Max"
+      "value": "Maximum"
     }
   ],
   "label.medium": [
     {
       "type": 0,
-      "value": "Medium"
+      "value": "Stredný"
     }
   ],
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "Člen"
     }
   ],
   "label.members": [
     {
       "type": 0,
-      "value": "Members"
+      "value": "Členovia"
     }
   ],
   "label.min": [
     {
       "type": 0,
-      "value": "Min"
+      "value": "Minimum"
     }
   ],
   "label.mobile": [
@@ -950,13 +950,13 @@
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "Môj účet"
     }
   ],
   "label.my-websites": [
     {
       "type": 0,
-      "value": "My websites"
+      "value": "Moje weby"
     }
   ],
   "label.name": [
@@ -974,7 +974,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "Žiadny"
     }
   ],
   "label.number-of-records": [
@@ -1020,25 +1020,25 @@
   "label.organic-search": [
     {
       "type": 0,
-      "value": "Organic search"
+      "value": "Organické vyhľadávanie"
     }
   ],
   "label.organic-shopping": [
     {
       "type": 0,
-      "value": "Organic shopping"
+      "value": "Organické nakupovanie"
     }
   ],
   "label.organic-social": [
     {
       "type": 0,
-      "value": "Organic social"
+      "value": "Organické sociálne siete"
     }
   ],
   "label.organic-video": [
     {
       "type": 0,
-      "value": "Organic video"
+      "value": "Organické video"
     }
   ],
   "label.os": [
@@ -1050,7 +1050,7 @@
   "label.other": [
     {
       "type": 0,
-      "value": "Other"
+      "value": "Iné"
     }
   ],
   "label.overview": [
@@ -1068,7 +1068,7 @@
   "label.page": [
     {
       "type": 0,
-      "value": "Page"
+      "value": "Stránka"
     }
   ],
   "label.page-of": [
@@ -1110,31 +1110,31 @@
   "label.paid-ads": [
     {
       "type": 0,
-      "value": "Paid ads"
+      "value": "Platené reklamy"
     }
   ],
   "label.paid-search": [
     {
       "type": 0,
-      "value": "Paid search"
+      "value": "Platené vyhľadávanie"
     }
   ],
   "label.paid-shopping": [
     {
       "type": 0,
-      "value": "Paid shopping"
+      "value": "Platené nakupovanie"
     }
   ],
   "label.paid-social": [
     {
       "type": 0,
-      "value": "Paid social"
+      "value": "Platené sociálne siete"
     }
   ],
   "label.paid-video": [
     {
       "type": 0,
-      "value": "Paid video"
+      "value": "Platené video"
     }
   ],
   "label.password": [
@@ -1146,19 +1146,19 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "Cesta"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "Cesty"
     }
   ],
   "label.pixels": [
     {
       "type": 0,
-      "value": "Pixels"
+      "value": "Pixely"
     }
   ],
   "label.powered-by": [
@@ -1174,19 +1174,19 @@
   "label.previous": [
     {
       "type": 0,
-      "value": "Previous"
+      "value": "Predchádzajúci"
     }
   ],
   "label.previous-period": [
     {
       "type": 0,
-      "value": "Previous period"
+      "value": "Predchádzajúce obdobie"
     }
   ],
   "label.previous-year": [
     {
       "type": 0,
-      "value": "Previous year"
+      "value": "Predchádzajúci rok"
     }
   ],
   "label.profile": [
@@ -1198,13 +1198,13 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "Vlastnosti"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "Vlastnosť"
     }
   ],
   "label.queries": [
@@ -1234,7 +1234,7 @@
   "label.referral": [
     {
       "type": 0,
-      "value": "Referral"
+      "value": "Odporúčanie"
     }
   ],
   "label.referrer": [
@@ -1276,7 +1276,7 @@
   "label.remaining": [
     {
       "type": 0,
-      "value": "Remaining"
+      "value": "Zostáva"
     }
   ],
   "label.remove": [
@@ -1330,13 +1330,13 @@
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "Príjem"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
+      "value": "Pozrite si svoj príjem v priebehu času."
     }
   ],
   "label.role": [
@@ -1384,7 +1384,7 @@
   "label.select-filter": [
     {
       "type": 0,
-      "value": "Select filter"
+      "value": "Vybrať filter"
     }
   ],
   "label.select-role": [
@@ -1402,13 +1402,13 @@
   "label.session": [
     {
       "type": 0,
-      "value": "Session"
+      "value": "Sedenie"
     }
   ],
   "label.session-data": [
     {
       "type": 0,
-      "value": "Session data"
+      "value": "Dáta sedenia"
     }
   ],
   "label.sessions": [
@@ -1426,7 +1426,7 @@
   "label.share": [
     {
       "type": 0,
-      "value": "Share"
+      "value": "Zdieľať"
     }
   ],
   "label.share-url": [
@@ -1450,7 +1450,7 @@
   "label.sources": [
     {
       "type": 0,
-      "value": "Sources"
+      "value": "Zdroje"
     }
   ],
   "label.start-step": [
@@ -1480,13 +1480,13 @@
   "label.tag": [
     {
       "type": 0,
-      "value": "Tag"
+      "value": "Značka"
     }
   ],
   "label.tags": [
     {
       "type": 0,
-      "value": "Tags"
+      "value": "Značky"
     }
   ],
   "label.team": [
@@ -1504,7 +1504,7 @@
   "label.team-manager": [
     {
       "type": 0,
-      "value": "Team manager"
+      "value": "Manažér tímu"
     }
   ],
   "label.team-member": [
@@ -1528,7 +1528,7 @@
   "label.team-settings": [
     {
       "type": 0,
-      "value": "Team settings"
+      "value": "Nastavenia tímu"
     }
   ],
   "label.team-view-only": [
@@ -1552,7 +1552,7 @@
   "label.terms": [
     {
       "type": 0,
-      "value": "Terms"
+      "value": "Podmienky"
     }
   ],
   "label.theme": [

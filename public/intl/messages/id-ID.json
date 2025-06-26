@@ -26,7 +26,7 @@
   "label.add-board": [
     {
       "type": 0,
-      "value": "Add board"
+      "value": "Tambah papan"
     }
   ],
   "label.add-description": [
@@ -62,7 +62,7 @@
   "label.affiliate": [
     {
       "type": 0,
-      "value": "Affiliate"
+      "value": "Afiliasi"
     }
   ],
   "label.after": [
@@ -92,19 +92,19 @@
   "label.apply": [
     {
       "type": 0,
-      "value": "Apply"
+      "value": "Terapkan"
     }
   ],
   "label.attribution": [
     {
       "type": 0,
-      "value": "Attribution"
+      "value": "Atribusi"
     }
   ],
   "label.attribution-description": [
     {
       "type": 0,
-      "value": "See how users engage with your marketing and what drives conversions."
+      "value": "Lihat bagaimana pengguna berinteraksi dengan pemasaran Anda dan apa yang mendorong konversi."
     }
   ],
   "label.average": [
@@ -128,7 +128,7 @@
   "label.boards": [
     {
       "type": 0,
-      "value": "Boards"
+      "value": "Papan"
     }
   ],
   "label.bounce-rate": [
@@ -158,7 +158,7 @@
   "label.campaigns": [
     {
       "type": 0,
-      "value": "Campaigns"
+      "value": "Kampanye"
     }
   ],
   "label.cancel": [
@@ -176,7 +176,7 @@
   "label.channels": [
     {
       "type": 0,
-      "value": "Channels"
+      "value": "Saluran"
     }
   ],
   "label.cities": [
@@ -200,7 +200,7 @@
   "label.cohort": [
     {
       "type": 0,
-      "value": "Cohort"
+      "value": "Kelompok"
     }
   ],
   "label.compare": [
@@ -212,7 +212,7 @@
   "label.compare-dates": [
     {
       "type": 0,
-      "value": "Compare dates"
+      "value": "Bandingkan tanggal"
     }
   ],
   "label.confirm": [
@@ -236,7 +236,7 @@
   "label.content": [
     {
       "type": 0,
-      "value": "Content"
+      "value": "Konten"
     }
   ],
   "label.continue": [
@@ -248,19 +248,19 @@
   "label.conversion": [
     {
       "type": 0,
-      "value": "Conversion"
+      "value": "Konversi"
     }
   ],
-  "label.conversion-ratep": [
+  "label.conversion-rate": [
     {
       "type": 0,
-      "value": "Conversion rate"
+      "value": "Tingkat konversi"
     }
   ],
   "label.conversion-step": [
     {
       "type": 0,
-      "value": "Conversion step"
+      "value": "Langkah konversi"
     }
   ],
   "label.count": [
@@ -320,7 +320,7 @@
   "label.currency": [
     {
       "type": 0,
-      "value": "Currency"
+      "value": "Mata uang"
     }
   ],
   "label.current": [
@@ -440,7 +440,7 @@
   "label.direct": [
     {
       "type": 0,
-      "value": "Direct"
+      "value": "Langsung"
     }
   ],
   "label.dismiss": [
@@ -452,7 +452,7 @@
   "label.distinct-id": [
     {
       "type": 0,
-      "value": "Distinct ID"
+      "value": "ID unik"
     }
   ],
   "label.does-not-contain": [
@@ -464,13 +464,13 @@
   "label.does-not-include": [
     {
       "type": 0,
-      "value": "Does not include"
+      "value": "Tidak termasuk"
     }
   ],
   "label.doest-not-exist": [
     {
       "type": 0,
-      "value": "Does not exist"
+      "value": "Tidak ada"
     }
   ],
   "label.domain": [
@@ -542,7 +542,7 @@
   "label.event-name": [
     {
       "type": 0,
-      "value": "Event name"
+      "value": "Nama peristiwa"
     }
   ],
   "label.events": [
@@ -554,7 +554,7 @@
   "label.exists": [
     {
       "type": 0,
-      "value": "Exists"
+      "value": "Ada"
     }
   ],
   "label.exit": [
@@ -566,7 +566,7 @@
   "label.expand": [
     {
       "type": 0,
-      "value": "Expand"
+      "value": "Perluas"
     }
   ],
   "label.false": [
@@ -614,7 +614,7 @@
   "label.first-click": [
     {
       "type": 0,
-      "value": "First click"
+      "value": "Klik pertama"
     }
   ],
   "label.first-seen": [
@@ -638,7 +638,7 @@
   "label.funnels": [
     {
       "type": 0,
-      "value": "Funnels"
+      "value": "Corong"
     }
   ],
   "label.goal": [
@@ -674,25 +674,25 @@
   "label.grouped": [
     {
       "type": 0,
-      "value": "Grouped"
+      "value": "Dikelompokkan"
     }
   ],
   "label.hostname": [
     {
       "type": 0,
-      "value": "Hostname"
+      "value": "Nama host"
     }
   ],
   "label.includes": [
     {
       "type": 0,
-      "value": "Includes"
+      "value": "Termasuk"
     }
   ],
   "label.insight": [
     {
       "type": 0,
-      "value": "Insight"
+      "value": "Wawasan"
     }
   ],
   "label.insights": [
@@ -716,7 +716,7 @@
   "label.is-false": [
     {
       "type": 0,
-      "value": "Is false"
+      "value": "Salah"
     }
   ],
   "label.is-not": [
@@ -740,7 +740,7 @@
   "label.is-true": [
     {
       "type": 0,
-      "value": "Is true"
+      "value": "Benar"
     }
   ],
   "label.join": [
@@ -770,7 +770,7 @@
   "label.journeys": [
     {
       "type": 0,
-      "value": "Journeys"
+      "value": "Perjalanan"
     }
   ],
   "label.language": [
@@ -794,7 +794,7 @@
   "label.last-click": [
     {
       "type": 0,
-      "value": "Last click"
+      "value": "Klik terakhir"
     }
   ],
   "label.last-days": [
@@ -860,7 +860,7 @@
   "label.links": [
     {
       "type": 0,
-      "value": "Links"
+      "value": "Tautan"
     }
   ],
   "label.login": [
@@ -884,19 +884,19 @@
   "label.manager": [
     {
       "type": 0,
-      "value": "Pengelola"
+      "value": "Manajer"
     }
   ],
   "label.max": [
     {
       "type": 0,
-      "value": "Maks"
+      "value": "Maksimum"
     }
   ],
   "label.medium": [
     {
       "type": 0,
-      "value": "Medium"
+      "value": "Sedang"
     }
   ],
   "label.member": [
@@ -914,7 +914,7 @@
   "label.min": [
     {
       "type": 0,
-      "value": "Min"
+      "value": "Minimum"
     }
   ],
   "label.mobile": [
@@ -981,7 +981,7 @@
           "value": [
             {
               "type": 0,
-              "value": "record"
+              "value": "catatan"
             }
           ]
         },
@@ -989,7 +989,7 @@
           "value": [
             {
               "type": 0,
-              "value": "records"
+              "value": "catatan"
             }
           ]
         }
@@ -1008,25 +1008,25 @@
   "label.organic-search": [
     {
       "type": 0,
-      "value": "Organic search"
+      "value": "Pencarian organik"
     }
   ],
   "label.organic-shopping": [
     {
       "type": 0,
-      "value": "Organic shopping"
+      "value": "Belanja organik"
     }
   ],
   "label.organic-social": [
     {
       "type": 0,
-      "value": "Organic social"
+      "value": "Sosial organik"
     }
   ],
   "label.organic-video": [
     {
       "type": 0,
-      "value": "Organic video"
+      "value": "Video organik"
     }
   ],
   "label.os": [
@@ -1038,7 +1038,7 @@
   "label.other": [
     {
       "type": 0,
-      "value": "Other"
+      "value": "Lainnya"
     }
   ],
   "label.overview": [
@@ -1056,7 +1056,7 @@
   "label.page": [
     {
       "type": 0,
-      "value": "Page"
+      "value": "Halaman"
     }
   ],
   "label.page-of": [
@@ -1098,31 +1098,31 @@
   "label.paid-ads": [
     {
       "type": 0,
-      "value": "Paid ads"
+      "value": "Iklan berbayar"
     }
   ],
   "label.paid-search": [
     {
       "type": 0,
-      "value": "Paid search"
+      "value": "Pencarian berbayar"
     }
   ],
   "label.paid-shopping": [
     {
       "type": 0,
-      "value": "Paid shopping"
+      "value": "Belanja berbayar"
     }
   ],
   "label.paid-social": [
     {
       "type": 0,
-      "value": "Paid social"
+      "value": "Sosial berbayar"
     }
   ],
   "label.paid-video": [
     {
       "type": 0,
-      "value": "Paid video"
+      "value": "Video berbayar"
     }
   ],
   "label.password": [
@@ -1134,19 +1134,19 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "Jalur"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "Jalur"
     }
   ],
   "label.pixels": [
     {
       "type": 0,
-      "value": "Pixels"
+      "value": "Piksel"
     }
   ],
   "label.powered-by": [
@@ -1186,31 +1186,31 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "Properti"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "Properti"
     }
   ],
   "label.queries": [
     {
       "type": 0,
-      "value": "Queries"
+      "value": "Kueri"
     }
   ],
   "label.query": [
     {
       "type": 0,
-      "value": "Query"
+      "value": "Kueri"
     }
   ],
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "Parameter kueri"
     }
   ],
   "label.realtime": [
@@ -1222,7 +1222,7 @@
   "label.referral": [
     {
       "type": 0,
-      "value": "Referral"
+      "value": "Rujukan"
     }
   ],
   "label.referrer": [
@@ -1264,7 +1264,7 @@
   "label.remaining": [
     {
       "type": 0,
-      "value": "Remaining"
+      "value": "Tersisa"
     }
   ],
   "label.remove": [
@@ -1372,7 +1372,7 @@
   "label.select-filter": [
     {
       "type": 0,
-      "value": "Select filter"
+      "value": "Pilih filter"
     }
   ],
   "label.select-role": [
@@ -1396,7 +1396,7 @@
   "label.session-data": [
     {
       "type": 0,
-      "value": "Session data"
+      "value": "Data sesi"
     }
   ],
   "label.sessions": [
@@ -1414,7 +1414,7 @@
   "label.share": [
     {
       "type": 0,
-      "value": "Share"
+      "value": "Bagikan"
     }
   ],
   "label.share-url": [
@@ -1438,7 +1438,7 @@
   "label.sources": [
     {
       "type": 0,
-      "value": "Sources"
+      "value": "Sumber"
     }
   ],
   "label.start-step": [
@@ -1474,7 +1474,7 @@
   "label.tags": [
     {
       "type": 0,
-      "value": "Tags"
+      "value": "Tag"
     }
   ],
   "label.team": [
@@ -1516,7 +1516,7 @@
   "label.team-settings": [
     {
       "type": 0,
-      "value": "Team settings"
+      "value": "Pengaturan tim"
     }
   ],
   "label.team-view-only": [
@@ -1540,7 +1540,7 @@
   "label.terms": [
     {
       "type": 0,
-      "value": "Terms"
+      "value": "Ketentuan"
     }
   ],
   "label.theme": [

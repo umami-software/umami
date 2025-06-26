@@ -26,7 +26,7 @@
   "label.add-board": [
     {
       "type": 0,
-      "value": "Add board"
+      "value": "Добавить доску"
     }
   ],
   "label.add-description": [
@@ -62,7 +62,7 @@
   "label.affiliate": [
     {
       "type": 0,
-      "value": "Affiliate"
+      "value": "Партнер"
     }
   ],
   "label.after": [
@@ -92,19 +92,19 @@
   "label.apply": [
     {
       "type": 0,
-      "value": "Apply"
+      "value": "Применить"
     }
   ],
   "label.attribution": [
     {
       "type": 0,
-      "value": "Attribution"
+      "value": "Атрибуция"
     }
   ],
   "label.attribution-description": [
     {
       "type": 0,
-      "value": "See how users engage with your marketing and what drives conversions."
+      "value": "Посмотрите, как пользователи взаимодействуют с вашим маркетингом и что приводит к конверсиям."
     }
   ],
   "label.average": [
@@ -128,7 +128,7 @@
   "label.boards": [
     {
       "type": 0,
-      "value": "Boards"
+      "value": "Доски"
     }
   ],
   "label.bounce-rate": [
@@ -158,7 +158,7 @@
   "label.campaigns": [
     {
       "type": 0,
-      "value": "Campaigns"
+      "value": "Кампании"
     }
   ],
   "label.cancel": [
@@ -176,7 +176,7 @@
   "label.channels": [
     {
       "type": 0,
-      "value": "Channels"
+      "value": "Каналы"
     }
   ],
   "label.cities": [
@@ -200,7 +200,7 @@
   "label.cohort": [
     {
       "type": 0,
-      "value": "Cohort"
+      "value": "Когорта"
     }
   ],
   "label.compare": [
@@ -212,7 +212,7 @@
   "label.compare-dates": [
     {
       "type": 0,
-      "value": "Compare dates"
+      "value": "Сравнить даты"
     }
   ],
   "label.confirm": [
@@ -236,7 +236,7 @@
   "label.content": [
     {
       "type": 0,
-      "value": "Content"
+      "value": "Контент"
     }
   ],
   "label.continue": [
@@ -248,19 +248,19 @@
   "label.conversion": [
     {
       "type": 0,
-      "value": "Conversion"
+      "value": "Конверсия"
     }
   ],
-  "label.conversion-ratep": [
+  "label.conversion-rate": [
     {
       "type": 0,
-      "value": "Conversion rate"
+      "value": "Коэффициент конверсии"
     }
   ],
   "label.conversion-step": [
     {
       "type": 0,
-      "value": "Conversion step"
+      "value": "Шаг конверсии"
     }
   ],
   "label.count": [
@@ -320,7 +320,7 @@
   "label.currency": [
     {
       "type": 0,
-      "value": "Currency"
+      "value": "Валюта"
     }
   ],
   "label.current": [
@@ -464,13 +464,13 @@
   "label.does-not-include": [
     {
       "type": 0,
-      "value": "Does not include"
+      "value": "Не включает"
     }
   ],
   "label.doest-not-exist": [
     {
       "type": 0,
-      "value": "Does not exist"
+      "value": "Не существует"
     }
   ],
   "label.domain": [
@@ -542,7 +542,7 @@
   "label.event-name": [
     {
       "type": 0,
-      "value": "Event name"
+      "value": "Название события"
     }
   ],
   "label.events": [
@@ -554,7 +554,7 @@
   "label.exists": [
     {
       "type": 0,
-      "value": "Exists"
+      "value": "Существует"
     }
   ],
   "label.exit": [
@@ -566,7 +566,7 @@
   "label.expand": [
     {
       "type": 0,
-      "value": "Expand"
+      "value": "Развернуть"
     }
   ],
   "label.false": [
@@ -614,7 +614,7 @@
   "label.first-click": [
     {
       "type": 0,
-      "value": "First click"
+      "value": "Первый клик"
     }
   ],
   "label.first-seen": [
@@ -638,7 +638,7 @@
   "label.funnels": [
     {
       "type": 0,
-      "value": "Funnels"
+      "value": "Воронки"
     }
   ],
   "label.goal": [
@@ -674,25 +674,25 @@
   "label.grouped": [
     {
       "type": 0,
-      "value": "Grouped"
+      "value": "Группировано"
     }
   ],
   "label.hostname": [
     {
       "type": 0,
-      "value": "Hostname"
+      "value": "Имя хоста"
     }
   ],
   "label.includes": [
     {
       "type": 0,
-      "value": "Includes"
+      "value": "Включает"
     }
   ],
   "label.insight": [
     {
       "type": 0,
-      "value": "Insight"
+      "value": "Инсайт"
     }
   ],
   "label.insights": [
@@ -716,7 +716,7 @@
   "label.is-false": [
     {
       "type": 0,
-      "value": "Is false"
+      "value": "Ложно"
     }
   ],
   "label.is-not": [
@@ -740,7 +740,7 @@
   "label.is-true": [
     {
       "type": 0,
-      "value": "Is true"
+      "value": "Истинно"
     }
   ],
   "label.join": [
@@ -770,7 +770,7 @@
   "label.journeys": [
     {
       "type": 0,
-      "value": "Journeys"
+      "value": "Пути"
     }
   ],
   "label.language": [
@@ -794,7 +794,7 @@
   "label.last-click": [
     {
       "type": 0,
-      "value": "Last click"
+      "value": "Последний клик"
     }
   ],
   "label.last-days": [
@@ -872,7 +872,7 @@
   "label.links": [
     {
       "type": 0,
-      "value": "Links"
+      "value": "Ссылки"
     }
   ],
   "label.login": [
@@ -908,7 +908,7 @@
   "label.medium": [
     {
       "type": 0,
-      "value": "Medium"
+      "value": "Средний"
     }
   ],
   "label.member": [
@@ -938,7 +938,7 @@
   "label.model": [
     {
       "type": 0,
-      "value": "Model"
+      "value": "Модель"
     }
   ],
   "label.more": [
@@ -1020,25 +1020,25 @@
   "label.organic-search": [
     {
       "type": 0,
-      "value": "Organic search"
+      "value": "Органический поиск"
     }
   ],
   "label.organic-shopping": [
     {
       "type": 0,
-      "value": "Organic shopping"
+      "value": "Органические покупки"
     }
   ],
   "label.organic-social": [
     {
       "type": 0,
-      "value": "Organic social"
+      "value": "Органические соцсети"
     }
   ],
   "label.organic-video": [
     {
       "type": 0,
-      "value": "Organic video"
+      "value": "Органическое видео"
     }
   ],
   "label.os": [
@@ -1050,7 +1050,7 @@
   "label.other": [
     {
       "type": 0,
-      "value": "Other"
+      "value": "Другое"
     }
   ],
   "label.overview": [
@@ -1068,7 +1068,7 @@
   "label.page": [
     {
       "type": 0,
-      "value": "Page"
+      "value": "Страница"
     }
   ],
   "label.page-of": [
@@ -1110,31 +1110,31 @@
   "label.paid-ads": [
     {
       "type": 0,
-      "value": "Paid ads"
+      "value": "Платная реклама"
     }
   ],
   "label.paid-search": [
     {
       "type": 0,
-      "value": "Paid search"
+      "value": "Платный поиск"
     }
   ],
   "label.paid-shopping": [
     {
       "type": 0,
-      "value": "Paid shopping"
+      "value": "Платные покупки"
     }
   ],
   "label.paid-social": [
     {
       "type": 0,
-      "value": "Paid social"
+      "value": "Платные соцсети"
     }
   ],
   "label.paid-video": [
     {
       "type": 0,
-      "value": "Paid video"
+      "value": "Платное видео"
     }
   ],
   "label.password": [
@@ -1158,7 +1158,7 @@
   "label.pixels": [
     {
       "type": 0,
-      "value": "Pixels"
+      "value": "Пиксели"
     }
   ],
   "label.powered-by": [
@@ -1276,7 +1276,7 @@
   "label.remaining": [
     {
       "type": 0,
-      "value": "Remaining"
+      "value": "Осталось"
     }
   ],
   "label.remove": [
@@ -1384,7 +1384,7 @@
   "label.select-filter": [
     {
       "type": 0,
-      "value": "Select filter"
+      "value": "Выберите фильтр"
     }
   ],
   "label.select-role": [
@@ -1408,7 +1408,7 @@
   "label.session-data": [
     {
       "type": 0,
-      "value": "Session data"
+      "value": "Данные сессии"
     }
   ],
   "label.sessions": [
@@ -1426,7 +1426,7 @@
   "label.share": [
     {
       "type": 0,
-      "value": "Share"
+      "value": "Поделиться"
     }
   ],
   "label.share-url": [
@@ -1450,7 +1450,7 @@
   "label.sources": [
     {
       "type": 0,
-      "value": "Sources"
+      "value": "Источники"
     }
   ],
   "label.start-step": [
@@ -1480,13 +1480,13 @@
   "label.tag": [
     {
       "type": 0,
-      "value": "Tag"
+      "value": "Тег"
     }
   ],
   "label.tags": [
     {
       "type": 0,
-      "value": "Tags"
+      "value": "Теги"
     }
   ],
   "label.team": [
@@ -1528,7 +1528,7 @@
   "label.team-settings": [
     {
       "type": 0,
-      "value": "Team settings"
+      "value": "Настройки команды"
     }
   ],
   "label.team-view-only": [
@@ -1552,7 +1552,7 @@
   "label.terms": [
     {
       "type": 0,
-      "value": "Terms"
+      "value": "Условия"
     }
   ],
   "label.theme": [

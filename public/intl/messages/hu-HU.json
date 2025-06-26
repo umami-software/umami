@@ -2,7 +2,7 @@
   "label.access-code": [
     {
       "type": 0,
-      "value": "Access code"
+      "value": "Hozzáférési kód"
     }
   ],
   "label.actions": [
@@ -14,37 +14,37 @@
   "label.activity": [
     {
       "type": 0,
-      "value": "Activity log"
+      "value": "Tevékenységnapló"
     }
   ],
   "label.add": [
     {
       "type": 0,
-      "value": "Add"
+      "value": "Hozzáadás"
     }
   ],
   "label.add-board": [
     {
       "type": 0,
-      "value": "Add board"
+      "value": "Tábla hozzáadása"
     }
   ],
   "label.add-description": [
     {
       "type": 0,
-      "value": "Add description"
+      "value": "Leírás hozzáadása"
     }
   ],
   "label.add-member": [
     {
       "type": 0,
-      "value": "Add member"
+      "value": "Tag hozzáadása"
     }
   ],
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "Lépés hozzáadása"
     }
   ],
   "label.add-website": [
@@ -62,13 +62,13 @@
   "label.affiliate": [
     {
       "type": 0,
-      "value": "Affiliate"
+      "value": "Partner"
     }
   ],
   "label.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "Után"
     }
   ],
   "label.all": [
@@ -80,37 +80,37 @@
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "Minden időszak"
     }
   ],
   "label.analytics": [
     {
       "type": 0,
-      "value": "Analytics"
+      "value": "Analitika"
     }
   ],
   "label.apply": [
     {
       "type": 0,
-      "value": "Apply"
+      "value": "Alkalmaz"
     }
   ],
   "label.attribution": [
     {
       "type": 0,
-      "value": "Attribution"
+      "value": "Attribúció"
     }
   ],
   "label.attribution-description": [
     {
       "type": 0,
-      "value": "See how users engage with your marketing and what drives conversions."
+      "value": "Nézze meg, hogyan lépnek kapcsolatba a felhasználók a marketingjével, és mi vezet konverzióhoz."
     }
   ],
   "label.average": [
     {
       "type": 0,
-      "value": "Average"
+      "value": "Átlag"
     }
   ],
   "label.back": [
@@ -122,13 +122,13 @@
   "label.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "Előtt"
     }
   ],
   "label.boards": [
     {
       "type": 0,
-      "value": "Boards"
+      "value": "Táblák"
     }
   ],
   "label.bounce-rate": [
@@ -140,13 +140,13 @@
   "label.breakdown": [
     {
       "type": 0,
-      "value": "Breakdown"
+      "value": "Bontás"
     }
   ],
   "label.browser": [
     {
       "type": 0,
-      "value": "Browser"
+      "value": "Böngésző"
     }
   ],
   "label.browsers": [
@@ -158,7 +158,7 @@
   "label.campaigns": [
     {
       "type": 0,
-      "value": "Campaigns"
+      "value": "Kampányok"
     }
   ],
   "label.cancel": [
@@ -176,49 +176,49 @@
   "label.channels": [
     {
       "type": 0,
-      "value": "Channels"
+      "value": "Csatornák"
     }
   ],
   "label.cities": [
     {
       "type": 0,
-      "value": "Cities"
+      "value": "Városok"
     }
   ],
   "label.city": [
     {
       "type": 0,
-      "value": "City"
+      "value": "Város"
     }
   ],
   "label.clear-all": [
     {
       "type": 0,
-      "value": "Clear all"
+      "value": "Összes törlése"
     }
   ],
   "label.cohort": [
     {
       "type": 0,
-      "value": "Cohort"
+      "value": "Kohorsz"
     }
   ],
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "Összehasonlít"
     }
   ],
   "label.compare-dates": [
     {
       "type": 0,
-      "value": "Compare dates"
+      "value": "Dátumok összehasonlítása"
     }
   ],
   "label.confirm": [
     {
       "type": 0,
-      "value": "Confirm"
+      "value": "Megerősít"
     }
   ],
   "label.confirm-password": [
@@ -236,37 +236,37 @@
   "label.content": [
     {
       "type": 0,
-      "value": "Content"
+      "value": "Tartalom"
     }
   ],
   "label.continue": [
     {
       "type": 0,
-      "value": "Continue"
+      "value": "Folytatás"
     }
   ],
   "label.conversion": [
     {
       "type": 0,
-      "value": "Conversion"
+      "value": "Konverzió"
     }
   ],
-  "label.conversion-ratep": [
+  "label.conversion-rate": [
     {
       "type": 0,
-      "value": "Conversion rate"
+      "value": "Konverziós arány"
     }
   ],
   "label.conversion-step": [
     {
       "type": 0,
-      "value": "Conversion step"
+      "value": "Konverziós lépés"
     }
   ],
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "Darabszám"
     }
   ],
   "label.countries": [
@@ -278,55 +278,55 @@
   "label.country": [
     {
       "type": 0,
-      "value": "Country"
+      "value": "Ország"
     }
   ],
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "Létrehozás"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "Create report"
+      "value": "Jelentés létrehozása"
     }
   ],
   "label.create-team": [
     {
       "type": 0,
-      "value": "Create team"
+      "value": "Csapat létrehozása"
     }
   ],
   "label.create-user": [
     {
       "type": 0,
-      "value": "Create user"
+      "value": "Felhasználó létrehozása"
     }
   ],
   "label.created": [
     {
       "type": 0,
-      "value": "Created"
+      "value": "Létrehozva"
     }
   ],
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "Létrehozta"
     }
   ],
   "label.currency": [
     {
       "type": 0,
-      "value": "Currency"
+      "value": "Pénznem"
     }
   ],
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "Jelenlegi"
     }
   ],
   "label.current-password": [
@@ -350,13 +350,13 @@
   "label.data": [
     {
       "type": 0,
-      "value": "Data"
+      "value": "Adat"
     }
   ],
   "label.date": [
     {
       "type": 0,
-      "value": "Date"
+      "value": "Dátum"
     }
   ],
   "label.date-range": [
@@ -368,7 +368,7 @@
   "label.day": [
     {
       "type": 0,
-      "value": "Day"
+      "value": "Nap"
     }
   ],
   "label.default-date-range": [
@@ -386,19 +386,19 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "Jelentés törlése"
     }
   ],
   "label.delete-team": [
     {
       "type": 0,
-      "value": "Delete team"
+      "value": "Csapat törlése"
     }
   ],
   "label.delete-user": [
     {
       "type": 0,
-      "value": "Delete user"
+      "value": "Felhasználó törlése"
     }
   ],
   "label.delete-website": [
@@ -410,7 +410,7 @@
   "label.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "Leírás"
     }
   ],
   "label.desktop": [
@@ -422,13 +422,13 @@
   "label.details": [
     {
       "type": 0,
-      "value": "Details"
+      "value": "Részletek"
     }
   ],
   "label.device": [
     {
       "type": 0,
-      "value": "Device"
+      "value": "Eszköz"
     }
   ],
   "label.devices": [
@@ -440,7 +440,7 @@
   "label.direct": [
     {
       "type": 0,
-      "value": "Direct"
+      "value": "Közvetlen"
     }
   ],
   "label.dismiss": [
@@ -452,25 +452,25 @@
   "label.distinct-id": [
     {
       "type": 0,
-      "value": "Distinct ID"
+      "value": "Egyedi azonosító"
     }
   ],
   "label.does-not-contain": [
     {
       "type": 0,
-      "value": "Does not contain"
+      "value": "Nem tartalmazza"
     }
   ],
   "label.does-not-include": [
     {
       "type": 0,
-      "value": "Does not include"
+      "value": "Nem tartalmazza"
     }
   ],
   "label.doest-not-exist": [
     {
       "type": 0,
-      "value": "Does not exist"
+      "value": "Nem létezik"
     }
   ],
   "label.domain": [
@@ -482,7 +482,7 @@
   "label.dropoff": [
     {
       "type": 0,
-      "value": "Dropoff"
+      "value": "Lemorzsolódás"
     }
   ],
   "label.edit": [
@@ -494,19 +494,19 @@
   "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Irányítópult szerkesztése"
     }
   ],
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "Tag szerkesztése"
     }
   ],
   "label.email": [
     {
       "type": 0,
-      "value": "Email"
+      "value": "E-mail"
     }
   ],
   "label.enable-share-url": [
@@ -518,31 +518,31 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "Befejező lépés"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "Belépési URL"
     }
   ],
   "label.event": [
     {
       "type": 0,
-      "value": "Event"
+      "value": "Esemény"
     }
   ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "Eseményadatok"
     }
   ],
   "label.event-name": [
     {
       "type": 0,
-      "value": "Event name"
+      "value": "Esemény neve"
     }
   ],
   "label.events": [
@@ -554,37 +554,37 @@
   "label.exists": [
     {
       "type": 0,
-      "value": "Exists"
+      "value": "Létezik"
     }
   ],
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "Kilépési URL"
     }
   ],
   "label.expand": [
     {
       "type": 0,
-      "value": "Expand"
+      "value": "Kibontás"
     }
   ],
   "label.false": [
     {
       "type": 0,
-      "value": "False"
+      "value": "Hamis"
     }
   ],
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "Mező"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Fields"
+      "value": "Mezők"
     }
   ],
   "label.filter": [
@@ -608,169 +608,169 @@
   "label.filters": [
     {
       "type": 0,
-      "value": "Filters"
+      "value": "Szűrők"
     }
   ],
   "label.first-click": [
     {
       "type": 0,
-      "value": "First click"
+      "value": "Első kattintás"
     }
   ],
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "Első megtekintés"
     }
   ],
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Tölcsér"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "Értse meg a felhasználók konverziós és lemorzsolódási arányát."
     }
   ],
   "label.funnels": [
     {
       "type": 0,
-      "value": "Funnels"
+      "value": "Tölcsérek"
     }
   ],
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "Cél"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "Célok"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "Kövesse nyomon a céljait oldalmegtekintések és események alapján."
     }
   ],
   "label.greater-than": [
     {
       "type": 0,
-      "value": "Greater than"
+      "value": "Nagyobb mint"
     }
   ],
   "label.greater-than-equals": [
     {
       "type": 0,
-      "value": "Greater than or equals"
+      "value": "Nagyobb vagy egyenlő"
     }
   ],
   "label.grouped": [
     {
       "type": 0,
-      "value": "Grouped"
+      "value": "Csoportosítva"
     }
   ],
   "label.hostname": [
     {
       "type": 0,
-      "value": "Hostname"
+      "value": "Hosztnév"
     }
   ],
   "label.includes": [
     {
       "type": 0,
-      "value": "Includes"
+      "value": "Tartalmazza"
     }
   ],
   "label.insight": [
     {
       "type": 0,
-      "value": "Insight"
+      "value": "Betekintés"
     }
   ],
   "label.insights": [
     {
       "type": 0,
-      "value": "Insights"
+      "value": "Betekintések"
     }
   ],
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "Merüljön el mélyebben az adataiban szegmensek és szűrők használatával."
     }
   ],
   "label.is": [
     {
       "type": 0,
-      "value": "Is"
+      "value": "Az"
     }
   ],
   "label.is-false": [
     {
       "type": 0,
-      "value": "Is false"
+      "value": "Hamis"
     }
   ],
   "label.is-not": [
     {
       "type": 0,
-      "value": "Is not"
+      "value": "Nem az"
     }
   ],
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Is not set"
+      "value": "Nincs beállítva"
     }
   ],
   "label.is-set": [
     {
       "type": 0,
-      "value": "Is set"
+      "value": "Beállítva"
     }
   ],
   "label.is-true": [
     {
       "type": 0,
-      "value": "Is true"
+      "value": "Igaz"
     }
   ],
   "label.join": [
     {
       "type": 0,
-      "value": "Join"
+      "value": "Csatlakozás"
     }
   ],
   "label.join-team": [
     {
       "type": 0,
-      "value": "Join team"
+      "value": "Csatlakozás a csapathoz"
     }
   ],
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "Út"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users navigate through your website."
+      "value": "Értse meg, hogyan navigálnak a felhasználók a weboldalán."
     }
   ],
   "label.journeys": [
     {
       "type": 0,
-      "value": "Journeys"
+      "value": "Utak"
     }
   ],
   "label.language": [
@@ -794,7 +794,7 @@
   "label.last-click": [
     {
       "type": 0,
-      "value": "Last click"
+      "value": "Utolsó kattintás"
     }
   ],
   "label.last-days": [
@@ -828,7 +828,7 @@
   "label.last-months": [
     {
       "type": 0,
-      "value": "Last "
+      "value": "Utolsó "
     },
     {
       "type": 1,
@@ -836,43 +836,43 @@
     },
     {
       "type": 0,
-      "value": " months"
+      "value": " hónap"
     }
   ],
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "Utoljára látva"
     }
   ],
   "label.leave": [
     {
       "type": 0,
-      "value": "Leave"
+      "value": "Kilépés"
     }
   ],
   "label.leave-team": [
     {
       "type": 0,
-      "value": "Leave team"
+      "value": "Csapat elhagyása"
     }
   ],
   "label.less-than": [
     {
       "type": 0,
-      "value": "Less than"
+      "value": "Kevesebb mint"
     }
   ],
   "label.less-than-equals": [
     {
       "type": 0,
-      "value": "Less than or equals"
+      "value": "Kevesebb vagy egyenlő"
     }
   ],
   "label.links": [
     {
       "type": 0,
-      "value": "Links"
+      "value": "Linkek"
     }
   ],
   "label.login": [
@@ -890,43 +890,43 @@
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "Kezelés"
     }
   ],
   "label.manager": [
     {
       "type": 0,
-      "value": "Manager"
+      "value": "Menedzser"
     }
   ],
   "label.max": [
     {
       "type": 0,
-      "value": "Max"
+      "value": "Maximum"
     }
   ],
   "label.medium": [
     {
       "type": 0,
-      "value": "Medium"
+      "value": "Közepes"
     }
   ],
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "Tag"
     }
   ],
   "label.members": [
     {
       "type": 0,
-      "value": "Members"
+      "value": "Tagok"
     }
   ],
   "label.min": [
     {
       "type": 0,
-      "value": "Min"
+      "value": "Minimum"
     }
   ],
   "label.mobile": [
@@ -950,13 +950,13 @@
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "Saját fiók"
     }
   ],
   "label.my-websites": [
     {
       "type": 0,
-      "value": "My websites"
+      "value": "Saját weboldalak"
     }
   ],
   "label.name": [
@@ -974,7 +974,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "Nincs"
     }
   ],
   "label.number-of-records": [
@@ -993,7 +993,7 @@
           "value": [
             {
               "type": 0,
-              "value": "record"
+              "value": "rekord"
             }
           ]
         },
@@ -1001,7 +1001,7 @@
           "value": [
             {
               "type": 0,
-              "value": "records"
+              "value": "rekord"
             }
           ]
         }
@@ -1020,25 +1020,25 @@
   "label.organic-search": [
     {
       "type": 0,
-      "value": "Organic search"
+      "value": "Organikus keresés"
     }
   ],
   "label.organic-shopping": [
     {
       "type": 0,
-      "value": "Organic shopping"
+      "value": "Organikus vásárlás"
     }
   ],
   "label.organic-social": [
     {
       "type": 0,
-      "value": "Organic social"
+      "value": "Organikus közösségi"
     }
   ],
   "label.organic-video": [
     {
       "type": 0,
-      "value": "Organic video"
+      "value": "Organikus videó"
     }
   ],
   "label.os": [
@@ -1050,31 +1050,31 @@
   "label.other": [
     {
       "type": 0,
-      "value": "Other"
+      "value": "Egyéb"
     }
   ],
   "label.overview": [
     {
       "type": 0,
-      "value": "Overview"
+      "value": "Áttekintés"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "Tulajdonos"
     }
   ],
   "label.page": [
     {
       "type": 0,
-      "value": "Page"
+      "value": "Oldal"
     }
   ],
   "label.page-of": [
     {
       "type": 0,
-      "value": "Page "
+      "value": "Oldal "
     },
     {
       "type": 1,
@@ -1082,7 +1082,7 @@
     },
     {
       "type": 0,
-      "value": " of "
+      "value": " / "
     },
     {
       "type": 1,
@@ -1110,31 +1110,31 @@
   "label.paid-ads": [
     {
       "type": 0,
-      "value": "Paid ads"
+      "value": "Fizetett hirdetések"
     }
   ],
   "label.paid-search": [
     {
       "type": 0,
-      "value": "Paid search"
+      "value": "Fizetett keresés"
     }
   ],
   "label.paid-shopping": [
     {
       "type": 0,
-      "value": "Paid shopping"
+      "value": "Fizetett vásárlás"
     }
   ],
   "label.paid-social": [
     {
       "type": 0,
-      "value": "Paid social"
+      "value": "Fizetett közösségi"
     }
   ],
   "label.paid-video": [
     {
       "type": 0,
-      "value": "Paid video"
+      "value": "Fizetett videó"
     }
   ],
   "label.password": [
@@ -1146,19 +1146,19 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "Útvonal"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "Útvonalak"
     }
   ],
   "label.pixels": [
     {
       "type": 0,
-      "value": "Pixels"
+      "value": "Pixelek"
     }
   ],
   "label.powered-by": [
@@ -1198,31 +1198,31 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "Tulajdonságok"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "Tulajdonság"
     }
   ],
   "label.queries": [
     {
       "type": 0,
-      "value": "Queries"
+      "value": "Lekérdezések"
     }
   ],
   "label.query": [
     {
       "type": 0,
-      "value": "Query"
+      "value": "Lekérdezés"
     }
   ],
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "Lekérdezési paraméterek"
     }
   ],
   "label.realtime": [
@@ -1234,7 +1234,7 @@
   "label.referral": [
     {
       "type": 0,
-      "value": "Referral"
+      "value": "Hivatkozás"
     }
   ],
   "label.referrer": [
@@ -1276,7 +1276,7 @@
   "label.remaining": [
     {
       "type": 0,
-      "value": "Remaining"
+      "value": "Hátralévő"
     }
   ],
   "label.remove": [
@@ -1330,13 +1330,13 @@
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "Bevétel"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
+      "value": "Tekintse meg bevételeit az idő múlásával."
     }
   ],
   "label.role": [
@@ -1360,7 +1360,7 @@
   "label.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "Képernyők"
     }
   ],
   "label.search": [
@@ -1384,7 +1384,7 @@
   "label.select-filter": [
     {
       "type": 0,
-      "value": "Select filter"
+      "value": "Szűrő kiválasztása"
     }
   ],
   "label.select-role": [
@@ -1402,13 +1402,13 @@
   "label.session": [
     {
       "type": 0,
-      "value": "Session"
+      "value": "Munkamenet"
     }
   ],
   "label.session-data": [
     {
       "type": 0,
-      "value": "Session data"
+      "value": "Munkamenet adatai"
     }
   ],
   "label.sessions": [
@@ -1426,7 +1426,7 @@
   "label.share": [
     {
       "type": 0,
-      "value": "Share"
+      "value": "Megosztás"
     }
   ],
   "label.share-url": [
@@ -1450,19 +1450,19 @@
   "label.sources": [
     {
       "type": 0,
-      "value": "Sources"
+      "value": "Források"
     }
   ],
   "label.start-step": [
     {
       "type": 0,
-      "value": "Start Step"
+      "value": "Kezdő lépés"
     }
   ],
   "label.steps": [
     {
       "type": 0,
-      "value": "Steps"
+      "value": "Lépések"
     }
   ],
   "label.sum": [
@@ -1480,13 +1480,13 @@
   "label.tag": [
     {
       "type": 0,
-      "value": "Tag"
+      "value": "Címke"
     }
   ],
   "label.tags": [
     {
       "type": 0,
-      "value": "Tags"
+      "value": "Címkék"
     }
   ],
   "label.team": [
@@ -1528,7 +1528,7 @@
   "label.team-settings": [
     {
       "type": 0,
-      "value": "Team settings"
+      "value": "Csapat beállításai"
     }
   ],
   "label.team-view-only": [
@@ -1552,7 +1552,7 @@
   "label.terms": [
     {
       "type": 0,
-      "value": "Terms"
+      "value": "Kifejezések"
     }
   ],
   "label.theme": [

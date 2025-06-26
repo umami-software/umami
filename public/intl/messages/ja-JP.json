@@ -26,7 +26,7 @@
   "label.add-board": [
     {
       "type": 0,
-      "value": "Add board"
+      "value": "ボードを追加"
     }
   ],
   "label.add-description": [
@@ -62,7 +62,7 @@
   "label.affiliate": [
     {
       "type": 0,
-      "value": "Affiliate"
+      "value": "アフィリエイト"
     }
   ],
   "label.after": [
@@ -92,19 +92,19 @@
   "label.apply": [
     {
       "type": 0,
-      "value": "Apply"
+      "value": "適用"
     }
   ],
   "label.attribution": [
     {
       "type": 0,
-      "value": "Attribution"
+      "value": "アトリビューション"
     }
   ],
   "label.attribution-description": [
     {
       "type": 0,
-      "value": "See how users engage with your marketing and what drives conversions."
+      "value": "ユーザーがあなたのマーケティングにどのように関与し、何がコンバージョンを促進するかを確認します。"
     }
   ],
   "label.average": [
@@ -128,7 +128,7 @@
   "label.boards": [
     {
       "type": 0,
-      "value": "Boards"
+      "value": "ボード"
     }
   ],
   "label.bounce-rate": [
@@ -158,7 +158,7 @@
   "label.campaigns": [
     {
       "type": 0,
-      "value": "Campaigns"
+      "value": "キャンペーン"
     }
   ],
   "label.cancel": [
@@ -176,7 +176,7 @@
   "label.channels": [
     {
       "type": 0,
-      "value": "Channels"
+      "value": "チャンネル"
     }
   ],
   "label.cities": [
@@ -200,7 +200,7 @@
   "label.cohort": [
     {
       "type": 0,
-      "value": "Cohort"
+      "value": "コホート"
     }
   ],
   "label.compare": [
@@ -212,7 +212,7 @@
   "label.compare-dates": [
     {
       "type": 0,
-      "value": "Compare dates"
+      "value": "日付を比較"
     }
   ],
   "label.confirm": [
@@ -236,7 +236,7 @@
   "label.content": [
     {
       "type": 0,
-      "value": "Content"
+      "value": "コンテンツ"
     }
   ],
   "label.continue": [
@@ -248,19 +248,19 @@
   "label.conversion": [
     {
       "type": 0,
-      "value": "Conversion"
+      "value": "コンバージョン"
     }
   ],
-  "label.conversion-ratep": [
+  "label.conversion-rate": [
     {
       "type": 0,
-      "value": "Conversion rate"
+      "value": "コンバージョン率"
     }
   ],
   "label.conversion-step": [
     {
       "type": 0,
-      "value": "Conversion step"
+      "value": "コンバージョンステップ"
     }
   ],
   "label.count": [
@@ -320,7 +320,7 @@
   "label.currency": [
     {
       "type": 0,
-      "value": "Currency"
+      "value": "通貨"
     }
   ],
   "label.current": [
@@ -440,7 +440,7 @@
   "label.direct": [
     {
       "type": 0,
-      "value": "Direct"
+      "value": "ダイレクト"
     }
   ],
   "label.dismiss": [
@@ -452,7 +452,7 @@
   "label.distinct-id": [
     {
       "type": 0,
-      "value": "Distinct ID"
+      "value": "識別ID"
     }
   ],
   "label.does-not-contain": [
@@ -464,13 +464,13 @@
   "label.does-not-include": [
     {
       "type": 0,
-      "value": "Does not include"
+      "value": "含まない"
     }
   ],
   "label.doest-not-exist": [
     {
       "type": 0,
-      "value": "Does not exist"
+      "value": "存在しない"
     }
   ],
   "label.domain": [
@@ -506,7 +506,7 @@
   "label.email": [
     {
       "type": 0,
-      "value": "Email"
+      "value": "メール"
     }
   ],
   "label.enable-share-url": [
@@ -542,7 +542,7 @@
   "label.event-name": [
     {
       "type": 0,
-      "value": "Event name"
+      "value": "イベント名"
     }
   ],
   "label.events": [
@@ -554,7 +554,7 @@
   "label.exists": [
     {
       "type": 0,
-      "value": "Exists"
+      "value": "存在する"
     }
   ],
   "label.exit": [
@@ -566,7 +566,7 @@
   "label.expand": [
     {
       "type": 0,
-      "value": "Expand"
+      "value": "展開"
     }
   ],
   "label.false": [
@@ -614,7 +614,7 @@
   "label.first-click": [
     {
       "type": 0,
-      "value": "First click"
+      "value": "最初のクリック"
     }
   ],
   "label.first-seen": [
@@ -638,7 +638,7 @@
   "label.funnels": [
     {
       "type": 0,
-      "value": "Funnels"
+      "value": "ファネル"
     }
   ],
   "label.goal": [
@@ -674,25 +674,25 @@
   "label.grouped": [
     {
       "type": 0,
-      "value": "Grouped"
+      "value": "グループ化"
     }
   ],
   "label.hostname": [
     {
       "type": 0,
-      "value": "Hostname"
+      "value": "ホスト名"
     }
   ],
   "label.includes": [
     {
       "type": 0,
-      "value": "Includes"
+      "value": "含む"
     }
   ],
   "label.insight": [
     {
       "type": 0,
-      "value": "Insight"
+      "value": "インサイト"
     }
   ],
   "label.insights": [
@@ -716,7 +716,7 @@
   "label.is-false": [
     {
       "type": 0,
-      "value": "Is false"
+      "value": "偽である"
     }
   ],
   "label.is-not": [
@@ -740,7 +740,7 @@
   "label.is-true": [
     {
       "type": 0,
-      "value": "Is true"
+      "value": "真である"
     }
   ],
   "label.join": [
@@ -770,7 +770,7 @@
   "label.journeys": [
     {
       "type": 0,
-      "value": "Journeys"
+      "value": "ジャーニー"
     }
   ],
   "label.language": [
@@ -794,7 +794,7 @@
   "label.last-click": [
     {
       "type": 0,
-      "value": "Last click"
+      "value": "最後のクリック"
     }
   ],
   "label.last-days": [
@@ -872,7 +872,7 @@
   "label.links": [
     {
       "type": 0,
-      "value": "Links"
+      "value": "リンク"
     }
   ],
   "label.login": [
@@ -908,7 +908,7 @@
   "label.medium": [
     {
       "type": 0,
-      "value": "Medium"
+      "value": "メディア"
     }
   ],
   "label.member": [
@@ -938,7 +938,7 @@
   "label.model": [
     {
       "type": 0,
-      "value": "Model"
+      "value": "モデル"
     }
   ],
   "label.more": [
@@ -1020,25 +1020,25 @@
   "label.organic-search": [
     {
       "type": 0,
-      "value": "Organic search"
+      "value": "オーガニック検索"
     }
   ],
   "label.organic-shopping": [
     {
       "type": 0,
-      "value": "Organic shopping"
+      "value": "オーガニックショッピング"
     }
   ],
   "label.organic-social": [
     {
       "type": 0,
-      "value": "Organic social"
+      "value": "オーガニックソーシャル"
     }
   ],
   "label.organic-video": [
     {
       "type": 0,
-      "value": "Organic video"
+      "value": "オーガニックビデオ"
     }
   ],
   "label.os": [
@@ -1050,7 +1050,7 @@
   "label.other": [
     {
       "type": 0,
-      "value": "Other"
+      "value": "その他"
     }
   ],
   "label.overview": [
@@ -1068,7 +1068,7 @@
   "label.page": [
     {
       "type": 0,
-      "value": "Page"
+      "value": "ページ"
     }
   ],
   "label.page-of": [
@@ -1110,31 +1110,31 @@
   "label.paid-ads": [
     {
       "type": 0,
-      "value": "Paid ads"
+      "value": "有料広告"
     }
   ],
   "label.paid-search": [
     {
       "type": 0,
-      "value": "Paid search"
+      "value": "有料検索"
     }
   ],
   "label.paid-shopping": [
     {
       "type": 0,
-      "value": "Paid shopping"
+      "value": "有料ショッピング"
     }
   ],
   "label.paid-social": [
     {
       "type": 0,
-      "value": "Paid social"
+      "value": "有料ソーシャル"
     }
   ],
   "label.paid-video": [
     {
       "type": 0,
-      "value": "Paid video"
+      "value": "有料ビデオ"
     }
   ],
   "label.password": [
@@ -1158,7 +1158,7 @@
   "label.pixels": [
     {
       "type": 0,
-      "value": "Pixels"
+      "value": "ピクセル"
     }
   ],
   "label.powered-by": [
@@ -1276,7 +1276,7 @@
   "label.remaining": [
     {
       "type": 0,
-      "value": "Remaining"
+      "value": "残り"
     }
   ],
   "label.remove": [
@@ -1384,7 +1384,7 @@
   "label.select-filter": [
     {
       "type": 0,
-      "value": "Select filter"
+      "value": "フィルターを選択"
     }
   ],
   "label.select-role": [
@@ -1408,7 +1408,7 @@
   "label.session-data": [
     {
       "type": 0,
-      "value": "Session data"
+      "value": "セッションデータ"
     }
   ],
   "label.sessions": [
@@ -1426,7 +1426,7 @@
   "label.share": [
     {
       "type": 0,
-      "value": "Share"
+      "value": "共有"
     }
   ],
   "label.share-url": [
@@ -1450,7 +1450,7 @@
   "label.sources": [
     {
       "type": 0,
-      "value": "Sources"
+      "value": "ソース"
     }
   ],
   "label.start-step": [
@@ -1480,13 +1480,13 @@
   "label.tag": [
     {
       "type": 0,
-      "value": "Tag"
+      "value": "タグ"
     }
   ],
   "label.tags": [
     {
       "type": 0,
-      "value": "Tags"
+      "value": "タグ"
     }
   ],
   "label.team": [
@@ -1528,7 +1528,7 @@
   "label.team-settings": [
     {
       "type": 0,
-      "value": "Team settings"
+      "value": "チーム設定"
     }
   ],
   "label.team-view-only": [
@@ -1552,7 +1552,7 @@
   "label.terms": [
     {
       "type": 0,
-      "value": "Terms"
+      "value": "利用規約"
     }
   ],
   "label.theme": [

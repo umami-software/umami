@@ -26,7 +26,7 @@
   "label.add-board": [
     {
       "type": 0,
-      "value": "Add board"
+      "value": "افزودن برد"
     }
   ],
   "label.add-description": [
@@ -62,7 +62,7 @@
   "label.affiliate": [
     {
       "type": 0,
-      "value": "Affiliate"
+      "value": "همکار فروش"
     }
   ],
   "label.after": [
@@ -92,19 +92,19 @@
   "label.apply": [
     {
       "type": 0,
-      "value": "Apply"
+      "value": "اعمال"
     }
   ],
   "label.attribution": [
     {
       "type": 0,
-      "value": "Attribution"
+      "value": "انتساب"
     }
   ],
   "label.attribution-description": [
     {
       "type": 0,
-      "value": "See how users engage with your marketing and what drives conversions."
+      "value": "ببینید کاربران چگونه با بازاریابی شما تعامل دارند و چه چیزی باعث تبدیل می‌شود."
     }
   ],
   "label.average": [
@@ -128,7 +128,7 @@
   "label.boards": [
     {
       "type": 0,
-      "value": "Boards"
+      "value": "بردها"
     }
   ],
   "label.bounce-rate": [
@@ -158,7 +158,7 @@
   "label.campaigns": [
     {
       "type": 0,
-      "value": "Campaigns"
+      "value": "کمپین‌ها"
     }
   ],
   "label.cancel": [
@@ -176,7 +176,7 @@
   "label.channels": [
     {
       "type": 0,
-      "value": "Channels"
+      "value": "کانال‌ها"
     }
   ],
   "label.cities": [
@@ -200,7 +200,7 @@
   "label.cohort": [
     {
       "type": 0,
-      "value": "Cohort"
+      "value": "گروه"
     }
   ],
   "label.compare": [
@@ -212,7 +212,7 @@
   "label.compare-dates": [
     {
       "type": 0,
-      "value": "Compare dates"
+      "value": "مقایسه تاریخ‌ها"
     }
   ],
   "label.confirm": [
@@ -236,7 +236,7 @@
   "label.content": [
     {
       "type": 0,
-      "value": "Content"
+      "value": "محتوا"
     }
   ],
   "label.continue": [
@@ -248,19 +248,19 @@
   "label.conversion": [
     {
       "type": 0,
-      "value": "Conversion"
+      "value": "تبدیل"
     }
   ],
-  "label.conversion-ratep": [
+  "label.conversion-rate": [
     {
       "type": 0,
-      "value": "Conversion rate"
+      "value": "نرخ تبدیل"
     }
   ],
   "label.conversion-step": [
     {
       "type": 0,
-      "value": "Conversion step"
+      "value": "گام تبدیل"
     }
   ],
   "label.count": [
@@ -320,7 +320,7 @@
   "label.currency": [
     {
       "type": 0,
-      "value": "Currency"
+      "value": "واحد پول"
     }
   ],
   "label.current": [
@@ -440,7 +440,7 @@
   "label.direct": [
     {
       "type": 0,
-      "value": "Direct"
+      "value": "مستقیم"
     }
   ],
   "label.dismiss": [
@@ -452,7 +452,7 @@
   "label.distinct-id": [
     {
       "type": 0,
-      "value": "Distinct ID"
+      "value": "شناسه یکتا"
     }
   ],
   "label.does-not-contain": [
@@ -464,13 +464,13 @@
   "label.does-not-include": [
     {
       "type": 0,
-      "value": "Does not include"
+      "value": "شامل نمی‌شود"
     }
   ],
   "label.doest-not-exist": [
     {
       "type": 0,
-      "value": "Does not exist"
+      "value": "وجود ندارد"
     }
   ],
   "label.domain": [
@@ -506,7 +506,7 @@
   "label.email": [
     {
       "type": 0,
-      "value": "Email"
+      "value": "ایمیل"
     }
   ],
   "label.enable-share-url": [
@@ -542,7 +542,7 @@
   "label.event-name": [
     {
       "type": 0,
-      "value": "Event name"
+      "value": "نام رویداد"
     }
   ],
   "label.events": [
@@ -554,7 +554,7 @@
   "label.exists": [
     {
       "type": 0,
-      "value": "Exists"
+      "value": "وجود دارد"
     }
   ],
   "label.exit": [
@@ -566,7 +566,7 @@
   "label.expand": [
     {
       "type": 0,
-      "value": "Expand"
+      "value": "گسترش"
     }
   ],
   "label.false": [
@@ -614,7 +614,7 @@
   "label.first-click": [
     {
       "type": 0,
-      "value": "First click"
+      "value": "اولین کلیک"
     }
   ],
   "label.first-seen": [
@@ -638,7 +638,7 @@
   "label.funnels": [
     {
       "type": 0,
-      "value": "Funnels"
+      "value": "قیف‌ها"
     }
   ],
   "label.goal": [
@@ -674,25 +674,25 @@
   "label.grouped": [
     {
       "type": 0,
-      "value": "Grouped"
+      "value": "گروه‌بندی شده"
     }
   ],
   "label.hostname": [
     {
       "type": 0,
-      "value": "Hostname"
+      "value": "نام میزبان"
     }
   ],
   "label.includes": [
     {
       "type": 0,
-      "value": "Includes"
+      "value": "شامل می‌شود"
     }
   ],
   "label.insight": [
     {
       "type": 0,
-      "value": "Insight"
+      "value": "بینش"
     }
   ],
   "label.insights": [
@@ -716,7 +716,7 @@
   "label.is-false": [
     {
       "type": 0,
-      "value": "Is false"
+      "value": "نادرست است"
     }
   ],
   "label.is-not": [
@@ -740,7 +740,7 @@
   "label.is-true": [
     {
       "type": 0,
-      "value": "Is true"
+      "value": "درست است"
     }
   ],
   "label.join": [
@@ -770,7 +770,7 @@
   "label.journeys": [
     {
       "type": 0,
-      "value": "Journeys"
+      "value": "مسیرها"
     }
   ],
   "label.language": [
@@ -794,7 +794,7 @@
   "label.last-click": [
     {
       "type": 0,
-      "value": "Last click"
+      "value": "آخرین کلیک"
     }
   ],
   "label.last-days": [
@@ -860,7 +860,7 @@
   "label.links": [
     {
       "type": 0,
-      "value": "Links"
+      "value": "لینک‌ها"
     }
   ],
   "label.login": [
@@ -896,7 +896,7 @@
   "label.medium": [
     {
       "type": 0,
-      "value": "Medium"
+      "value": "متوسط"
     }
   ],
   "label.member": [
@@ -926,7 +926,7 @@
   "label.model": [
     {
       "type": 0,
-      "value": "Model"
+      "value": "مدل"
     }
   ],
   "label.more": [
@@ -1008,25 +1008,25 @@
   "label.organic-search": [
     {
       "type": 0,
-      "value": "Organic search"
+      "value": "جستجوی ارگانیک"
     }
   ],
   "label.organic-shopping": [
     {
       "type": 0,
-      "value": "Organic shopping"
+      "value": "خرید ارگانیک"
     }
   ],
   "label.organic-social": [
     {
       "type": 0,
-      "value": "Organic social"
+      "value": "شبکه اجتماعی ارگانیک"
     }
   ],
   "label.organic-video": [
     {
       "type": 0,
-      "value": "Organic video"
+      "value": "ویدیوی ارگانیک"
     }
   ],
   "label.os": [
@@ -1038,7 +1038,7 @@
   "label.other": [
     {
       "type": 0,
-      "value": "Other"
+      "value": "سایر"
     }
   ],
   "label.overview": [
@@ -1056,7 +1056,7 @@
   "label.page": [
     {
       "type": 0,
-      "value": "Page"
+      "value": "صفحه"
     }
   ],
   "label.page-of": [
@@ -1098,31 +1098,31 @@
   "label.paid-ads": [
     {
       "type": 0,
-      "value": "Paid ads"
+      "value": "تبلیغات پولی"
     }
   ],
   "label.paid-search": [
     {
       "type": 0,
-      "value": "Paid search"
+      "value": "جستجوی پولی"
     }
   ],
   "label.paid-shopping": [
     {
       "type": 0,
-      "value": "Paid shopping"
+      "value": "خرید پولی"
     }
   ],
   "label.paid-social": [
     {
       "type": 0,
-      "value": "Paid social"
+      "value": "شبکه اجتماعی پولی"
     }
   ],
   "label.paid-video": [
     {
       "type": 0,
-      "value": "Paid video"
+      "value": "ویدیوی پولی"
     }
   ],
   "label.password": [
@@ -1146,7 +1146,7 @@
   "label.pixels": [
     {
       "type": 0,
-      "value": "Pixels"
+      "value": "پیکسل‌ها"
     }
   ],
   "label.powered-by": [
@@ -1222,7 +1222,7 @@
   "label.referral": [
     {
       "type": 0,
-      "value": "Referral"
+      "value": "ارجاع"
     }
   ],
   "label.referrer": [
@@ -1264,7 +1264,7 @@
   "label.remaining": [
     {
       "type": 0,
-      "value": "Remaining"
+      "value": "باقی‌مانده"
     }
   ],
   "label.remove": [
@@ -1372,7 +1372,7 @@
   "label.select-filter": [
     {
       "type": 0,
-      "value": "Select filter"
+      "value": "انتخاب فیلتر"
     }
   ],
   "label.select-role": [
@@ -1396,7 +1396,7 @@
   "label.session-data": [
     {
       "type": 0,
-      "value": "Session data"
+      "value": "داده‌های نشست"
     }
   ],
   "label.sessions": [
@@ -1414,7 +1414,7 @@
   "label.share": [
     {
       "type": 0,
-      "value": "Share"
+      "value": "اشتراک‌گذاری"
     }
   ],
   "label.share-url": [
@@ -1438,7 +1438,7 @@
   "label.sources": [
     {
       "type": 0,
-      "value": "Sources"
+      "value": "منابع"
     }
   ],
   "label.start-step": [
@@ -1468,13 +1468,13 @@
   "label.tag": [
     {
       "type": 0,
-      "value": "Tag"
+      "value": "برچسب"
     }
   ],
   "label.tags": [
     {
       "type": 0,
-      "value": "Tags"
+      "value": "برچسب‌ها"
     }
   ],
   "label.team": [
@@ -1516,7 +1516,7 @@
   "label.team-settings": [
     {
       "type": 0,
-      "value": "Team settings"
+      "value": "تنظیمات تیم"
     }
   ],
   "label.team-view-only": [
@@ -1540,7 +1540,7 @@
   "label.terms": [
     {
       "type": 0,
-      "value": "Terms"
+      "value": "شرایط"
     }
   ],
   "label.theme": [

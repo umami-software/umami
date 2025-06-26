@@ -26,7 +26,7 @@
   "label.add-board": [
     {
       "type": 0,
-      "value": "Add board"
+      "value": "Ajouter un tableau"
     }
   ],
   "label.add-description": [
@@ -86,13 +86,13 @@
   "label.analytics": [
     {
       "type": 0,
-      "value": "Analytics"
+      "value": "Analytique"
     }
   ],
   "label.apply": [
     {
       "type": 0,
-      "value": "Apply"
+      "value": "Appliquer"
     }
   ],
   "label.attribution": [
@@ -128,7 +128,7 @@
   "label.boards": [
     {
       "type": 0,
-      "value": "Boards"
+      "value": "Tableaux"
     }
   ],
   "label.bounce-rate": [
@@ -200,7 +200,7 @@
   "label.cohort": [
     {
       "type": 0,
-      "value": "Cohort"
+      "value": "Cohorte"
     }
   ],
   "label.compare": [
@@ -212,7 +212,7 @@
   "label.compare-dates": [
     {
       "type": 0,
-      "value": "Compare dates"
+      "value": "Comparer les dates"
     }
   ],
   "label.confirm": [
@@ -251,10 +251,10 @@
       "value": "Conversion"
     }
   ],
-  "label.conversion-ratep": [
+  "label.conversion-rate": [
     {
       "type": 0,
-      "value": "Conversion rate"
+      "value": "Taux de conversion"
     }
   ],
   "label.conversion-step": [
@@ -452,7 +452,7 @@
   "label.distinct-id": [
     {
       "type": 0,
-      "value": "Distinct ID"
+      "value": "ID distinct"
     }
   ],
   "label.does-not-contain": [
@@ -464,13 +464,13 @@
   "label.does-not-include": [
     {
       "type": 0,
-      "value": "Does not include"
+      "value": "N'inclut pas"
     }
   ],
   "label.doest-not-exist": [
     {
       "type": 0,
-      "value": "Does not exist"
+      "value": "N'existe pas"
     }
   ],
   "label.domain": [
@@ -542,7 +542,7 @@
   "label.event-name": [
     {
       "type": 0,
-      "value": "Event name"
+      "value": "Nom de l'évènement"
     }
   ],
   "label.events": [
@@ -554,7 +554,7 @@
   "label.exists": [
     {
       "type": 0,
-      "value": "Exists"
+      "value": "Existe"
     }
   ],
   "label.exit": [
@@ -566,7 +566,7 @@
   "label.expand": [
     {
       "type": 0,
-      "value": "Expand"
+      "value": "Développer"
     }
   ],
   "label.false": [
@@ -614,7 +614,7 @@
   "label.first-click": [
     {
       "type": 0,
-      "value": "First click"
+      "value": "Premier clic"
     }
   ],
   "label.first-seen": [
@@ -638,7 +638,7 @@
   "label.funnels": [
     {
       "type": 0,
-      "value": "Funnels"
+      "value": "Entonnoirs"
     }
   ],
   "label.goal": [
@@ -680,25 +680,25 @@
   "label.hostname": [
     {
       "type": 0,
-      "value": "Hostname"
+      "value": "Nom d'hôte"
     }
   ],
   "label.includes": [
     {
       "type": 0,
-      "value": "Includes"
+      "value": "Inclut"
     }
   ],
   "label.insight": [
     {
       "type": 0,
-      "value": "Insight"
+      "value": "Aperçu"
     }
   ],
   "label.insights": [
     {
       "type": 0,
-      "value": "Insights"
+      "value": "Aperçus"
     }
   ],
   "label.insights-description": [
@@ -716,7 +716,7 @@
   "label.is-false": [
     {
       "type": 0,
-      "value": "Is false"
+      "value": "Est faux"
     }
   ],
   "label.is-not": [
@@ -740,7 +740,7 @@
   "label.is-true": [
     {
       "type": 0,
-      "value": "Is true"
+      "value": "Est vrai"
     }
   ],
   "label.join": [
@@ -770,7 +770,7 @@
   "label.journeys": [
     {
       "type": 0,
-      "value": "Journeys"
+      "value": "Parcours"
     }
   ],
   "label.language": [
@@ -794,7 +794,7 @@
   "label.last-click": [
     {
       "type": 0,
-      "value": "Last click"
+      "value": "Dernier clic"
     }
   ],
   "label.last-days": [
@@ -860,7 +860,7 @@
   "label.links": [
     {
       "type": 0,
-      "value": "Links"
+      "value": "Liens"
     }
   ],
   "label.login": [
@@ -884,7 +884,7 @@
   "label.manager": [
     {
       "type": 0,
-      "value": "Manager"
+      "value": "Gestionnaire"
     }
   ],
   "label.max": [
@@ -896,7 +896,7 @@
   "label.medium": [
     {
       "type": 0,
-      "value": "Support"
+      "value": "Moyen"
     }
   ],
   "label.member": [
@@ -1014,7 +1014,7 @@
   "label.organic-shopping": [
     {
       "type": 0,
-      "value": "E-commerce organique"
+      "value": "Achat organique"
     }
   ],
   "label.organic-social": [
@@ -1110,7 +1110,7 @@
   "label.paid-shopping": [
     {
       "type": 0,
-      "value": "E-commerce payant"
+      "value": "Achat payant"
     }
   ],
   "label.paid-social": [
@@ -1264,7 +1264,7 @@
   "label.remaining": [
     {
       "type": 0,
-      "value": "Remaining"
+      "value": "Restant"
     }
   ],
   "label.remove": [
@@ -1318,13 +1318,13 @@
   "label.revenue": [
     {
       "type": 0,
-      "value": "Recettes"
+      "value": "Revenus"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Examinez vos recettes et comment dépensent vos utilisateurs."
+      "value": "Consultez vos revenus au fil du temps."
     }
   ],
   "label.role": [
@@ -1348,7 +1348,7 @@
   "label.screens": [
     {
       "type": 0,
-      "value": "Résolutions d'écran"
+      "value": "Écrans"
     }
   ],
   "label.search": [
@@ -1372,7 +1372,7 @@
   "label.select-filter": [
     {
       "type": 0,
-      "value": "Select filter"
+      "value": "Sélectionner un filtre"
     }
   ],
   "label.select-role": [
@@ -1396,7 +1396,7 @@
   "label.session-data": [
     {
       "type": 0,
-      "value": "Session data"
+      "value": "Données de session"
     }
   ],
   "label.sessions": [
@@ -1414,7 +1414,7 @@
   "label.share": [
     {
       "type": 0,
-      "value": "Share"
+      "value": "Partager"
     }
   ],
   "label.share-url": [
@@ -1468,13 +1468,13 @@
   "label.tag": [
     {
       "type": 0,
-      "value": "Tag"
+      "value": "Étiquette"
     }
   ],
   "label.tags": [
     {
       "type": 0,
-      "value": "Tags"
+      "value": "Étiquettes"
     }
   ],
   "label.team": [
