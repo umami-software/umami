@@ -14,7 +14,7 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
     .fill(weekStartsOn)
     .map((d, i) => (d + i) % 7);
 
-  const [, max] = data
+  const [, max = 1] = data
     ? data.reduce((arr: number[], hours: number[], index: number) => {
         const min = Math.min(...hours);
         const max = Math.max(...hours);
@@ -69,17 +69,25 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
                   key={index}
                   gap="1"
                 >
-                  <Row marginBottom="3">
+                  <Row alignItems="center" justifyContent="center" marginBottom="3">
                     <Text weight="bold" align="center">
                       {format(getDayOfWeekAsDate(index), 'EEE', { locale: dateLocale })}
                     </Text>
                   </Row>
                   {day?.map((count: number, j) => {
-                    const pct = count / max;
+                    const pct = max ? count / max : 0;
                     return (
                       <TooltipTrigger key={j} delay={0} isDisabled={count <= 0}>
                         <Focusable>
-                          <Row backgroundColor="2" width="20px" height="20px" borderRadius="full">
+                          <Row
+                            alignItems="center"
+                            justifyContent="center"
+                            backgroundColor="2"
+                            width="20px"
+                            height="20px"
+                            borderRadius="full"
+                            style={{ margin: '0 auto' }}
+                          >
                             <Row
                               backgroundColor="primary"
                               width="20px"

@@ -1,5 +1,5 @@
 import { canViewWebsite } from '@/lib/auth';
-import { parseRequest } from '@/lib/request';
+import { getRequestDateRange, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { getSessionDataValues } from '@/queries';
 import { z } from 'zod';
@@ -20,15 +20,13 @@ export async function GET(
     return error();
   }
 
-  const { startAt, endAt, propertyName } = query;
+  const { propertyName } = query;
   const { websiteId } = await params;
+  const { startDate, endDate } = await getRequestDateRange(query);
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
-
-  const startDate = new Date(+startAt);
-  const endDate = new Date(+endAt);
 
   const data = await getSessionDataValues(websiteId, {
     startDate,

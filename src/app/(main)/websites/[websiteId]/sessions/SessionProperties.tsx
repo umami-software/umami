@@ -1,4 +1,4 @@
-import { DataColumn, DataTable } from '@umami/react-zen';
+import { Grid, DataColumn, DataTable } from '@umami/react-zen';
 import {
   useSessionDataPropertiesQuery,
   useSessionDataValuesQuery,
@@ -8,12 +8,11 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { PieChart } from '@/components/charts/PieChart';
 import { useState } from 'react';
 import { CHART_COLORS } from '@/lib/constants';
-import styles from './SessionProperties.module.css';
 
 export function SessionProperties({ websiteId }: { websiteId: string }) {
   const [propertyName, setPropertyName] = useState('');
   const { formatMessage, labels } = useMessages();
-  const { data, isLoading, isFetched, error } = useSessionDataPropertiesQuery(websiteId);
+  const { data, isLoading, isFetching, error } = useSessionDataPropertiesQuery(websiteId);
   const { data: values } = useSessionDataValuesQuery(websiteId, propertyName);
   const chartData =
     propertyName && values
@@ -30,25 +29,23 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
       : null;
 
   return (
-    <LoadingPanel isLoading={isLoading} isFetched={isFetched} error={error}>
-      <div className={styles.container}>
-        <DataTable data={data} className={styles.table}>
+    <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} error={error}>
+      <Grid>
+        <DataTable data={data}>
           <DataColumn id="propertyName" label={formatMessage(labels.property)}>
             {(row: any) => (
-              <div className={styles.link} onClick={() => setPropertyName(row.propertyName)}>
-                {row.propertyName}
-              </div>
+              <div onClick={() => setPropertyName(row.propertyName)}>{row.propertyName}</div>
             )}
           </DataColumn>
           <DataColumn id="total" label={formatMessage(labels.count)} align="end" />
         </DataTable>
         {propertyName && (
-          <div className={styles.chart}>
-            <div className={styles.title}>{propertyName}</div>
+          <div>
+            <div>{propertyName}</div>
             <PieChart key={propertyName} type="doughnut" chartData={chartData} />
           </div>
         )}
-      </div>
+      </Grid>
     </LoadingPanel>
   );
 }

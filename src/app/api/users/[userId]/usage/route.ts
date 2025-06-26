@@ -3,7 +3,7 @@ import { json, unauthorized } from '@/lib/response';
 import { getAllUserWebsitesIncludingTeamOwner } from '@/queries/prisma/website';
 import { getEventUsage } from '@/queries/sql/events/getEventUsage';
 import { getEventDataUsage } from '@/queries/sql/events/getEventDataUsage';
-import { parseRequest } from '@/lib/request';
+import { parseRequest, getRequestDateRange } from '@/lib/request';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const schema = z.object({
@@ -22,10 +22,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
   }
 
   const { userId } = await params;
-  const { startAt, endAt } = query;
-
-  const startDate = new Date(+startAt);
-  const endDate = new Date(+endAt);
+  const { startDate, endDate } = await getRequestDateRange(query);
 
   const websites = await getAllUserWebsitesIncludingTeamOwner(userId);
 

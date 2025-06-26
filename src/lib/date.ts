@@ -310,7 +310,11 @@ export function getDayOfWeekAsDate(dayOfWeek: number) {
   return currentDate;
 }
 
-export function formatDate(date: string | number | Date, dateFormat: string, locale = 'en-US') {
+export function formatDate(
+  date: string | number | Date,
+  dateFormat: string = 'PPpp',
+  locale = 'en-US',
+) {
   return format(typeof date === 'string' ? new Date(date) : date, dateFormat, {
     locale: getDateLocale(locale),
   });
