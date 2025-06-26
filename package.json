@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "next dev",
     "dev-turbo": "next dev -p 3001 --turbopack",
-    "build": "npm-run-all check-env build-db check-db build-tracker build-geo build-app",
+    "build": "npm-run-all check-env build-db build-tracker build-geo build-app",
     "start": "next start",
     "build-docker": "npm-run-all build-db build-tracker build-geo build-app",
     "start-docker": "npm-run-all check-db update-tracker set-routes-manifest start-server",
