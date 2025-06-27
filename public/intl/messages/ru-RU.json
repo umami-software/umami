@@ -563,12 +563,6 @@
       "value": "URL-адрес выхода"
     }
   ],
-  "label.expand": [
-    {
-      "type": 0,
-      "value": "Развернуть"
-    }
-  ],
   "label.false": [
     {
       "type": 0,
@@ -905,6 +899,12 @@
       "value": "Максимум"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Развернуть"
+    }
+  ],
   "label.medium": [
     {
       "type": 0,
@@ -1015,6 +1015,12 @@
     {
       "type": 0,
       "value": "OK"
+    }
+  ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
     }
   ],
   "label.organic-search": [

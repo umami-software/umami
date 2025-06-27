@@ -563,12 +563,6 @@
       "value": "Útgangs URL"
     }
   ],
-  "label.expand": [
-    {
-      "type": 0,
-      "value": "Víðka"
-    }
-  ],
   "label.false": [
     {
       "type": 0,
@@ -905,6 +899,12 @@
       "value": "Mest"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Víðka"
+    }
+  ],
   "label.medium": [
     {
       "type": 0,
@@ -1015,6 +1015,12 @@
     {
       "type": 0,
       "value": "OK"
+    }
+  ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
     }
   ],
   "label.organic-search": [

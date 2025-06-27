@@ -563,12 +563,6 @@
       "value": "Exit URL"
     }
   ],
-  "label.expand": [
-    {
-      "type": 0,
-      "value": "Expandera"
-    }
-  ],
   "label.false": [
     {
       "type": 0,
@@ -905,6 +899,12 @@
       "value": "Max"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Expandera"
+    }
+  ],
   "label.medium": [
     {
       "type": 0,
@@ -1015,6 +1015,12 @@
     {
       "type": 0,
       "value": "OK"
+    }
+  ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
     }
   ],
   "label.organic-search": [

@@ -563,12 +563,6 @@
       "value": "퇴장 URL"
     }
   ],
-  "label.expand": [
-    {
-      "type": 0,
-      "value": "확장"
-    }
-  ],
   "label.false": [
     {
       "type": 0,
@@ -905,6 +899,12 @@
       "value": "최대"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "확장"
+    }
+  ],
   "label.medium": [
     {
       "type": 0,
@@ -991,6 +991,12 @@
     {
       "type": 0,
       "value": "확인"
+    }
+  ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
     }
   ],
   "label.organic-search": [

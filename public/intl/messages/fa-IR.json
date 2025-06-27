@@ -563,12 +563,6 @@
       "value": "آدرس اینترنتی خروجی"
     }
   ],
-  "label.expand": [
-    {
-      "type": 0,
-      "value": "گسترش"
-    }
-  ],
   "label.false": [
     {
       "type": 0,
@@ -893,6 +887,12 @@
       "value": "حداکثر"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "گسترش"
+    }
+  ],
   "label.medium": [
     {
       "type": 0,
@@ -1003,6 +1003,12 @@
     {
       "type": 0,
       "value": "تایید"
+    }
+  ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
     }
   ],
   "label.organic-search": [

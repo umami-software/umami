@@ -563,12 +563,6 @@
       "value": "退出 URL"
     }
   ],
-  "label.expand": [
-    {
-      "type": 0,
-      "value": "展开"
-    }
-  ],
   "label.false": [
     {
       "type": 0,
@@ -905,6 +899,12 @@
       "value": "最大"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "展开"
+    }
+  ],
   "label.medium": [
     {
       "type": 0,
@@ -1015,6 +1015,12 @@
     {
       "type": 0,
       "value": "好的"
+    }
+  ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
     }
   ],
   "label.organic-search": [

@@ -563,12 +563,6 @@
       "value": "URL wyjściowy"
     }
   ],
-  "label.expand": [
-    {
-      "type": 0,
-      "value": "Rozwiń"
-    }
-  ],
   "label.false": [
     {
       "type": 0,
@@ -905,6 +899,12 @@
       "value": "Maks"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Rozwiń"
+    }
+  ],
   "label.medium": [
     {
       "type": 0,
@@ -1015,6 +1015,12 @@
     {
       "type": 0,
       "value": "OK"
+    }
+  ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
     }
   ],
   "label.organic-search": [

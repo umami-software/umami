@@ -563,12 +563,6 @@
       "value": "Išėjimo URL"
     }
   ],
-  "label.expand": [
-    {
-      "type": 0,
-      "value": "Išplėsti"
-    }
-  ],
   "label.false": [
     {
       "type": 0,
@@ -1010,6 +1004,12 @@
       "value": "Maksimumas"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Išplėsti"
+    }
+  ],
   "label.medium": [
     {
       "type": 0,
@@ -1120,6 +1120,12 @@
     {
       "type": 0,
       "value": "OK"
+    }
+  ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
     }
   ],
   "label.organic-search": [

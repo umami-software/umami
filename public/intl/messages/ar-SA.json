@@ -563,12 +563,6 @@
       "value": "رابط المغادرة"
     }
   ],
-  "label.expand": [
-    {
-      "type": 0,
-      "value": "توسيع"
-    }
-  ],
   "label.false": [
     {
       "type": 0,
@@ -905,6 +899,12 @@
       "value": "الحد الأقصى"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "توسيع"
+    }
+  ],
   "label.medium": [
     {
       "type": 0,
@@ -1015,6 +1015,12 @@
     {
       "type": 0,
       "value": "نعم"
+    }
+  ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
     }
   ],
   "label.organic-search": [

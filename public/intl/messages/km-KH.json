@@ -563,12 +563,6 @@
       "value": "URL ចេញ"
     }
   ],
-  "label.expand": [
-    {
-      "type": 0,
-      "value": "ពង្រីក"
-    }
-  ],
   "label.false": [
     {
       "type": 0,
@@ -893,6 +887,12 @@
       "value": "Max"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "ពង្រីក"
+    }
+  ],
   "label.medium": [
     {
       "type": 0,
@@ -1003,6 +1003,12 @@
     {
       "type": 0,
       "value": "OK"
+    }
+  ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
     }
   ],
   "label.organic-search": [
@@ -1309,12 +1315,6 @@
     {
       "type": 0,
       "value": " នៅក្នុងប្រអប់ខាងក្រោមដើម្បីបញ្ជាក់។"
-    }
-  ],
-  "label.reset-website-warning": [
-    {
-      "type": 0,
-      "value": "ស្ថិតិទាំងអស់សម្រាប់គេហទំព័រនេះនឹងត្រូវបានលុប ប៉ុន្តែកូដតាមដានរបស់អ្នកនឹងនៅដដែល។"
     }
   ],
   "label.retention": [

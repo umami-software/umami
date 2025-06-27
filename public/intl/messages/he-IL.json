@@ -563,12 +563,6 @@
       "value": "כתובת יציאה"
     }
   ],
-  "label.expand": [
-    {
-      "type": 0,
-      "value": "הרחב"
-    }
-  ],
   "label.false": [
     {
       "type": 0,
@@ -893,6 +887,12 @@
       "value": "מקסימום"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "הרחב"
+    }
+  ],
   "label.medium": [
     {
       "type": 0,
@@ -1003,6 +1003,12 @@
     {
       "type": 0,
       "value": "OK"
+    }
+  ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
     }
   ],
   "label.organic-search": [

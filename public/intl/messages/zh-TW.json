@@ -563,12 +563,6 @@
       "value": "離開網址"
     }
   ],
-  "label.expand": [
-    {
-      "type": 0,
-      "value": "Expand"
-    }
-  ],
   "label.false": [
     {
       "type": 0,
@@ -905,6 +899,12 @@
       "value": "最大值"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Expand"
+    }
+  ],
   "label.medium": [
     {
       "type": 0,
@@ -991,6 +991,12 @@
     {
       "type": 0,
       "value": "OK"
+    }
+  ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
     }
   ],
   "label.organic-search": [
