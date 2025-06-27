@@ -33,4 +33,4 @@ jobs:
 
       - run: pnpm install
       - run: pnpm test
-      - run: pnpm build
+      - run: pnpm build-turbo
