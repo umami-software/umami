@@ -11,28 +11,30 @@ export function SessionsMetricsBar({ websiteId }: { websiteId: string }) {
 
   return (
     <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} error={error}>
-      <MetricsBar>
-        <MetricCard
-          value={data?.visitors?.value}
-          label={formatMessage(labels.visitors)}
-          formatValue={formatLongNumber}
-        />
-        <MetricCard
-          value={data?.visits?.value}
-          label={formatMessage(labels.visits)}
-          formatValue={formatLongNumber}
-        />
-        <MetricCard
-          value={data?.pageviews?.value}
-          label={formatMessage(labels.views)}
-          formatValue={formatLongNumber}
-        />
-        <MetricCard
-          value={data?.countries?.value}
-          label={formatMessage(labels.countries)}
-          formatValue={formatLongNumber}
-        />
-      </MetricsBar>
+      {data && (
+        <MetricsBar>
+          <MetricCard
+            value={data?.visitors?.value}
+            label={formatMessage(labels.visitors)}
+            formatValue={formatLongNumber}
+          />
+          <MetricCard
+            value={data?.visits?.value}
+            label={formatMessage(labels.visits)}
+            formatValue={formatLongNumber}
+          />
+          <MetricCard
+            value={data?.pageviews?.value}
+            label={formatMessage(labels.views)}
+            formatValue={formatLongNumber}
+          />
+          <MetricCard
+            value={data?.countries?.value}
+            label={formatMessage(labels.countries)}
+            formatValue={formatLongNumber}
+          />
+        </MetricsBar>
+      )}
     </LoadingPanel>
   );
 }

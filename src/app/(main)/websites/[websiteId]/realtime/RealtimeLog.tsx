@@ -67,7 +67,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     country: string;
     device: string;
   }) => {
-    const { __type, eventName, urlPath: url, browser, os, country, device } = log;
+    const { __type, eventName, urlPath, browser, os, country, device } = log;
 
     if (__type === TYPE_EVENT) {
       return formatMessage(messages.eventLog, {
@@ -75,12 +75,12 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
         url: (
           <a
             key="a"
-            href={`//${website?.domain}${url}`}
+            href={`//${website?.domain}${urlPath}`}
             className={styles.link}
             target="_blank"
             rel="noreferrer noopener"
           >
-            {url}
+            {urlPath}
           </a>
         ),
       });
@@ -89,12 +89,12 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     if (__type === TYPE_PAGEVIEW) {
       return (
         <a
-          href={`//${website?.domain}${url}`}
+          href={`//${website?.domain}${urlPath}`}
           className={styles.link}
           target="_blank"
           rel="noreferrer noopener"
         >
-          {url}
+          {urlPath}
         </a>
       );
     }

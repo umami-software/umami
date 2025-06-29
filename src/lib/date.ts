@@ -349,3 +349,7 @@ export function generateTimeSeries(
     return { x: t, d: x, y: y ?? null };
   });
 }
+
+export function dateToRangeValue(date: Date) {
+  return `range:${startOfMonth(date).getTime()}:${endOfMonth(date).getTime()}`;
+}

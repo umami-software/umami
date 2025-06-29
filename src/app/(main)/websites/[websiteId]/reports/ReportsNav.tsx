@@ -66,7 +66,13 @@ export function ReportsNav({ websiteId }: { websiteId: string }) {
         const isSelected = selected === id;
 
         return (
-          <Link key={id} href={renderUrl(`/websites/${websiteId}/reports${path}`)}>
+          <Link
+            key={id}
+            href={renderUrl(
+              `/websites/${websiteId}/reports${path}`,
+              path === '/retention' ? false : null,
+            )}
+          >
             <NavMenuItem isSelected={isSelected}>
               <Row alignItems="center" gap>
                 <Icon>{icon}</Icon>

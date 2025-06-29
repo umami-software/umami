@@ -5,6 +5,15 @@ import prisma from '@/lib/prisma';
 export interface RetentionCriteria {
   startDate: Date;
   endDate: Date;
+  timezone?: string;
+}
+
+export interface RetentionResult {
+  date: string;
+  day: number;
+  visitors: number;
+  returnVisitors: number;
+  percentage: number;
 }
 
 export async function getRetention(...args: [websiteId: string, criteria: RetentionCriteria]) {
@@ -17,16 +26,8 @@ export async function getRetention(...args: [websiteId: string, criteria: Retent
 async function relationalQuery(
   websiteId: string,
   criteria: RetentionCriteria,
-): Promise<
-  {
-    date: string;
-    day: number;
-    visitors: number;
-    returnVisitors: number;
-    percentage: number;
-  }[]
-> {
-  const { startDate, endDate } = criteria;
+): Promise<RetentionResult[]> {
+  const { startDate, endDate, timezone } = criteria;
   const { getDateSQL, getDayDiffQuery, getCastColumnQuery, rawQuery } = prisma;
   const unit = 'day';
 
@@ -42,7 +43,7 @@ async function relationalQuery(
     user_activities AS (
       select distinct
         w.session_id,
-        ${getDayDiffQuery(getDateSQL('created_at', unit), 'c.cohort_date')} as day_number
+        ${getDayDiffQuery(getDateSQL('created_at', unit, timezone), 'c.cohort_date')} as day_number
       from website_event w
       join cohort_items c
       on w.session_id = c.session_id
@@ -88,16 +89,8 @@ async function relationalQuery(
 async function clickhouseQuery(
   websiteId: string,
   criteria: RetentionCriteria,
-): Promise<
-  {
-    date: string;
-    day: number;
-    visitors: number;
-    returnVisitors: number;
-    percentage: number;
-  }[]
-> {
-  const { startDate, endDate } = criteria;
+): Promise<RetentionResult[]> {
+  const { startDate, endDate, timezone } = criteria;
   const { getDateSQL, rawQuery } = clickhouse;
   const unit = 'day';
 
@@ -105,7 +98,7 @@ async function clickhouseQuery(
     `
     WITH cohort_items AS (
       select
-        min(${getDateSQL('created_at', unit)}) as cohort_date,
+        min(${getDateSQL('created_at', unit, timezone)}) as cohort_date,
         session_id
       from website_event
       where website_id = {websiteId:UUID}

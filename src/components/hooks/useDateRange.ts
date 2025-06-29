@@ -22,7 +22,7 @@ export function useDateRange(websiteId?: string) {
   );
   const dateRange = useMemo(
     () => (offset ? getOffsetDateRange(dateRangeObject, +offset) : dateRangeObject),
-    [date, offset],
+    [date, offset, websiteConfig],
   );
   const dateCompare = useWebsites(state => state[websiteId]?.dateCompare || DEFAULT_DATE_COMPARE);
 

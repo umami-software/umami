@@ -14,15 +14,17 @@ export function WebsiteHeader() {
 
   return (
     <PageHeader title={website.name} icon={<Favicon domain={website.domain} />} showBorder={false}>
-      <Row alignItems="center" gap>
+      <Row alignItems="center" gap="6">
         <ActiveUsers websiteId={website.id} />
-        <ShareButton websiteId={website.id} shareId={website.shareId} />
-        <LinkButton href={renderUrl(`/settings/websites/${website.id}`)}>
-          <Icon>
-            <Edit />
-          </Icon>
-          <Text>Edit</Text>
-        </LinkButton>
+        <Row alignItems="center" gap>
+          <ShareButton websiteId={website.id} shareId={website.shareId} />
+          <LinkButton href={renderUrl(`/settings/websites/${website.id}`)}>
+            <Icon>
+              <Edit />
+            </Icon>
+            <Text>Edit</Text>
+          </LinkButton>
+        </Row>
       </Row>
     </PageHeader>
   );

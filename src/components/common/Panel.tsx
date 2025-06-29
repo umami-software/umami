@@ -62,7 +62,7 @@ export function Panel({
             <Button variant="quiet" onPress={handleFullscreen}>
               <Icon>{isFullscreen ? <Close /> : <Maximize />}</Icon>
             </Button>
-            <Tooltip>{formatMessage(labels.expand)}</Tooltip>
+            <Tooltip>{formatMessage(labels.maximize)}</Tooltip>
           </TooltipTrigger>
         </Row>
       )}

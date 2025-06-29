@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Grid, Row, Column, Text, Icon } from '@umami/react-zen';
 import { Users } from '@/components/icons';
-import { useMessages, useLocale, useResultQuery } from '@/components/hooks';
+import { useMessages, useLocale, useResultQuery, useTimezone } from '@/components/hooks';
 import { formatDate } from '@/lib/date';
 import { formatLongNumber } from '@/lib/format';
 import { Panel } from '@/components/common/Panel';
@@ -19,8 +19,10 @@ export interface RetentionProps {
 export function Retention({ websiteId, days = DAYS, startDate, endDate }: RetentionProps) {
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
+  const { timezone } = useTimezone();
   const { data, error, isLoading } = useResultQuery<any>('retention', {
     websiteId,
+    timezone,
     dateRange: {
       startDate,
       endDate,
@@ -51,54 +53,56 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
 
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
-      <Panel allowFullscreen height="900px">
-        <Column gap="1" width="100%" overflow="auto">
-          <Grid
-            columns="120px repeat(10, 100px)"
-            alignItems="center"
-            gap="1"
-            height="50px"
-            autoFlow="column"
-          >
-            <Column>
-              <Text weight="bold" align="center">
-                {formatMessage(labels.cohort)}
-              </Text>
-            </Column>
-            {days.map(n => (
-              <Column key={n}>
-                <Text weight="bold" align="center" wrap="nowrap">
-                  {formatMessage(labels.day)} {n}
+      {data && (
+        <Panel allowFullscreen height="900px">
+          <Column gap="1" width="100%" overflow="auto">
+            <Grid
+              columns="120px repeat(10, 100px)"
+              alignItems="center"
+              gap="1"
+              height="50px"
+              autoFlow="column"
+            >
+              <Column>
+                <Text weight="bold" align="center">
+                  {formatMessage(labels.cohort)}
                 </Text>
               </Column>
-            ))}
-          </Grid>
-          {rows.map(({ date, visitors, records }: any, rowIndex: number) => {
-            return (
-              <Grid key={rowIndex} columns="120px repeat(10, 100px)" gap="1" autoFlow="column">
-                <Column justifyContent="center" gap="1">
-                  <Text weight="bold">{formatDate(date, 'PP', locale)}</Text>
-                  <Row alignItems="center" gap>
-                    <Icon>
-                      <Users />
-                    </Icon>
-                    <Text>{formatLongNumber(visitors)}</Text>
-                  </Row>
+              {days.map(n => (
+                <Column key={n}>
+                  <Text weight="bold" align="center" wrap="nowrap">
+                    {formatMessage(labels.day)} {n}
+                  </Text>
                 </Column>
-                {days.map(day => {
-                  if (totalDays - rowIndex < day) {
-                    return null;
-                  }
-                  const percentage = records.filter(a => a.day === day)[0]?.percentage;
-                  return (
-                    <Cell key={day}>{percentage ? `${Number(percentage).toFixed(2)}%` : ''}</Cell>
-                  );
-                })}
-              </Grid>
-            );
-          })}
-        </Column>
-      </Panel>
+              ))}
+            </Grid>
+            {rows.map(({ date, visitors, records }: any, rowIndex: number) => {
+              return (
+                <Grid key={rowIndex} columns="120px repeat(10, 100px)" gap="1" autoFlow="column">
+                  <Column justifyContent="center" gap="1">
+                    <Text weight="bold">{formatDate(date, 'PP', locale)}</Text>
+                    <Row alignItems="center" gap>
+                      <Icon>
+                        <Users />
+                      </Icon>
+                      <Text>{formatLongNumber(visitors)}</Text>
+                    </Row>
+                  </Column>
+                  {days.map(day => {
+                    if (totalDays - rowIndex < day) {
+                      return null;
+                    }
+                    const percentage = records.filter(a => a.day === day)[0]?.percentage;
+                    return (
+                      <Cell key={day}>{percentage ? `${Number(percentage).toFixed(2)}%` : ''}</Cell>
+                    );
+                  })}
+                </Grid>
+              );
+            })}
+          </Column>
+        </Panel>
+      )}
     </LoadingPanel>
   );
 }

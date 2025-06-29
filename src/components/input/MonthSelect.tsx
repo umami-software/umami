@@ -1,70 +1,47 @@
-import { Row, Text, Icon, Button, MenuTrigger, Popover, Menu, MenuItem } from '@umami/react-zen';
-import { startOfMonth, endOfMonth, startOfYear, addMonths, subYears } from 'date-fns';
-import { Chevron } from '@/components/icons';
+import { Row, Select, ListItem } from '@umami/react-zen';
 import { useLocale } from '@/components/hooks';
 import { formatDate } from '@/lib/date';
 
 export function MonthSelect({ date = new Date(), onChange }) {
   const { locale } = useLocale();
-  const month = formatDate(date, 'MMMM', locale);
+  const month = date.getMonth();
   const year = date.getFullYear();
+  const currentYear = new Date().getFullYear();
 
-  // eslint-disable-next-line
-  const handleChange = (close: () => void, date: Date) => {
-    onChange(`range:${startOfMonth(date).getTime()}:${endOfMonth(date).getTime()}`);
-    close();
+  const months = [...Array(12)].map((_, i) => i);
+  const years = [...Array(10)].map((_, i) => currentYear - i);
+
+  const handleMonthChange = (month: number) => {
+    const d = new Date(date);
+    d.setMonth(month);
+    onChange?.(d);
+  };
+  const handleYearChange = (year: number) => {
+    const d = new Date(date);
+    d.setFullYear(year);
+    onChange?.(d);
   };
 
-  const start = startOfYear(date);
-  const months: Date[] = [];
-  for (let i = 0; i < 12; i++) {
-    months.push(addMonths(start, i));
-  }
-  const years: number[] = [];
-  for (let i = 0; i < 10; i++) {
-    years.push(subYears(start, 10 - i).getFullYear());
-  }
-
   return (
-    <Row>
-      <MenuTrigger>
-        <Button variant="quiet">
-          <Text>{month}</Text>
-          <Icon size="sm">
-            <Chevron />
-          </Icon>
-        </Button>
-        <Popover>
-          <Menu>
-            {months.map(month => {
-              return (
-                <MenuItem key={month.toString()} id={month.toString()}>
-                  {month.getDay()}
-                </MenuItem>
-              );
-            })}
-          </Menu>
-        </Popover>
-      </MenuTrigger>
-      <MenuTrigger>
-        <Button variant="quiet">
-          <Text>{year}</Text>
-          <Icon size="sm">
-            <Chevron />
-          </Icon>
-        </Button>
-        <Popover>
-          <Menu>
-            {years.map(year => {
-              return (
-                <MenuItem key={year} id={year}>
-                  {year}
-                </MenuItem>
-              );
-            })}
-          </Menu>
-        </Popover>
-      </MenuTrigger>
+    <Row gap>
+      <Select value={month} onChange={handleMonthChange}>
+        {months.map(m => {
+          return (
+            <ListItem id={m} key={m}>
+              {formatDate(new Date(year, m, 1), 'MMMM', locale)}
+            </ListItem>
+          );
+        })}
+      </Select>
+      <Select value={year} onChange={handleYearChange}>
+        {years.map(y => {
+          return (
+            <ListItem id={y} key={y}>
+              {y}
+            </ListItem>
+          );
+        })}
+      </Select>
     </Row>
   );
 }

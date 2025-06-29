@@ -55,7 +55,7 @@ export function WebsiteDateFilter({
   };
 
   return (
-    <Row gap="3">
+    <Row gap>
       {showButtons && !isAllTime && !isCustomRange && (
         <Row gap="1">
           <Button onPress={() => handleIncrement(-1)} variant="outline">

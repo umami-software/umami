@@ -99,7 +99,7 @@ export function DateFilter({
   };
 
   return (
-    <Row width="280px">
+    <Row minWidth="200px">
       <Select
         value={value}
         placeholder={formatMessage(labels.selectDate)}

@@ -8,7 +8,7 @@ export function useFilterParams(websiteId: string) {
   const { timezone, toUtc } = useTimezone();
   const {
     query: {
-      url,
+      path,
       referrer,
       title,
       query,
@@ -29,7 +29,7 @@ export function useFilterParams(websiteId: string) {
     endAt: +toUtc(endDate),
     unit,
     timezone,
-    url,
+    path,
     referrer,
     title,
     query,
