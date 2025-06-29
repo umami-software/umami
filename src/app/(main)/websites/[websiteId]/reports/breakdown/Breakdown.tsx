@@ -46,14 +46,14 @@ export function Breakdown({ websiteId, parameters, startDate, endDate }: Breakdo
             </DataColumn>
           );
         })}
-        <DataColumn id="views" label={formatMessage(labels.views)} align="end">
-          {row => row?.['views']?.toLocaleString()}
+        <DataColumn id="visitors" label={formatMessage(labels.visitors)} align="end">
+          {row => row?.['visitors']?.toLocaleString()}
         </DataColumn>
         <DataColumn id="visits" label={formatMessage(labels.visits)} align="end">
           {row => row?.['visits']?.toLocaleString()}
         </DataColumn>
-        <DataColumn id="visitors" label={formatMessage(labels.visitors)} align="end">
-          {row => row?.['visitors']?.toLocaleString()}
+        <DataColumn id="views" label={formatMessage(labels.views)} align="end">
+          {row => row?.['views']?.toLocaleString()}
         </DataColumn>
         <DataColumn id="bounceRate" label={formatMessage(labels.bounceRate)} align="end">
           {row => {

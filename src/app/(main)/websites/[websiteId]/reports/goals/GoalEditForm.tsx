@@ -69,7 +69,7 @@ export function GoalEditForm({
               label={formatMessage(labels.name)}
               rules={{ required: formatMessage(labels.required) }}
             >
-              <TextField />
+              <TextField autoFocus />
             </FormField>
             <FormField
               name="type"

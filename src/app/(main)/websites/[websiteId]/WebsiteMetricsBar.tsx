@@ -30,9 +30,9 @@ export function WebsiteMetricsBar({
   const metrics = data
     ? [
         {
-          value: pageviews,
-          label: formatMessage(labels.views),
-          change: pageviews - previous.pageviews,
+          value: visitors,
+          label: formatMessage(labels.visitors),
+          change: visitors - previous.visitors,
           formatValue: formatLongNumber,
         },
         {
@@ -42,9 +42,9 @@ export function WebsiteMetricsBar({
           formatValue: formatLongNumber,
         },
         {
-          value: visitors,
-          label: formatMessage(labels.visitors),
-          change: visitors - previous.visitors,
+          value: pageviews,
+          label: formatMessage(labels.views),
+          change: pageviews - previous.pageviews,
           formatValue: formatLongNumber,
         },
         {

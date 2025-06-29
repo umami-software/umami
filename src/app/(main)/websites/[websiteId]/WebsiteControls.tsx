@@ -20,7 +20,7 @@ export function WebsiteControls({
   return (
     <Column gap>
       <Row alignItems="center" justifyContent="space-between" gap="3">
-        {allowFilter && <WebsiteFilterButton websiteId={websiteId} />}
+        {allowFilter ? <WebsiteFilterButton websiteId={websiteId} /> : <div />}
         {allowDateFilter && <WebsiteDateFilter websiteId={websiteId} allowCompare={allowCompare} />}
         {allowMonthFilter && <WebsiteMonthSelect websiteId={websiteId} />}
       </Row>

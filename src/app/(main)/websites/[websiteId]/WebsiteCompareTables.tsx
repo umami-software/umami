@@ -24,7 +24,7 @@ import { Panel } from '@/components/common/Panel';
 import { DateDisplay } from '@/components/common/DateDisplay';
 
 const views = {
-  url: PagesTable,
+  path: PagesTable,
   title: PagesTable,
   referrer: ReferrersTable,
   browser: BrowsersTable,

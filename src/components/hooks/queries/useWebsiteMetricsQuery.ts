@@ -11,7 +11,7 @@ export type WebsiteMetricsData = {
 
 export function useWebsiteMetricsQuery(
   websiteId: string,
-  queryParams: { type: string; limit?: number; search?: string; startAt?: number; endAt?: number },
+  params: { type: string; limit?: number; search?: string; startAt?: number; endAt?: number },
   options?: ReactQueryOptions<WebsiteMetricsData>,
 ) {
   const { get, useQuery } = useApi();
@@ -24,14 +24,14 @@ export function useWebsiteMetricsQuery(
       {
         websiteId,
         ...filterParams,
-        ...queryParams,
+        ...params,
       },
     ],
     queryFn: async () =>
       get(`/websites/${websiteId}/metrics`, {
         ...filterParams,
         [searchParams.get('view')]: undefined,
-        ...queryParams,
+        ...params,
       }),
     enabled: !!websiteId,
     placeholderData: keepPreviousData,

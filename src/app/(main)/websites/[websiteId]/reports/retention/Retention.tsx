@@ -22,10 +22,10 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
   const { timezone } = useTimezone();
   const { data, error, isLoading } = useResultQuery<any>('retention', {
     websiteId,
-    timezone,
     dateRange: {
       startDate,
       endDate,
+      timezone,
     },
   });
 

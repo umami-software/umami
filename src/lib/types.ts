@@ -68,7 +68,7 @@ export interface QueryFilters {
   timezone?: string;
   unit?: string;
   eventType?: number;
-  url?: string;
+  path?: string;
   referrer?: string;
   title?: string;
   query?: string;

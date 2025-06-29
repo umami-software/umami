@@ -88,7 +88,8 @@ export const reportParms = {
     endDate: z.coerce.date(),
     num: z.coerce.number().optional(),
     offset: z.coerce.number().optional(),
-    unit: z.string().optional(),
+    timezone: timezoneParam.optional(),
+    unit: unitParam.optional(),
     value: z.string().optional(),
   }),
 };

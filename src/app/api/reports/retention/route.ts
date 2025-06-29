@@ -13,8 +13,7 @@ export async function POST(request: Request) {
 
   const {
     websiteId,
-    dateRange: { startDate, endDate },
-    timezone,
+    dateRange: { startDate, endDate, timezone },
   } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {

@@ -15,6 +15,7 @@ export async function POST(request: Request) {
     websiteId,
     dateRange: { startDate, endDate },
     parameters: { fields },
+    filters,
   } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
@@ -24,6 +25,7 @@ export async function POST(request: Request) {
   const data = await getBreakdown(websiteId, fields, {
     startDate: new Date(startDate),
     endDate: new Date(endDate),
+    ...filters,
   });
 
   return json(data);

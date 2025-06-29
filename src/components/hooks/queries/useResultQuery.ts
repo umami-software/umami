@@ -1,4 +1,5 @@
-import { useApi } from '@/components/hooks';
+import { useApi } from '../useApi';
+import { useFilterParams } from '../useFilterParams';
 import { ReactQueryOptions } from '@/lib/types';
 
 export function useResultQuery<T>(
@@ -6,11 +7,21 @@ export function useResultQuery<T>(
   params?: { [key: string]: any },
   options?: ReactQueryOptions<T>,
 ) {
+  const { websiteId } = params;
   const { post, useQuery } = useApi();
+  const filterParams = useFilterParams(websiteId);
 
   return useQuery<T>({
-    queryKey: ['reports', type, params],
-    queryFn: () => post(`/reports/${type}`, { type, ...params }),
+    queryKey: [
+      'reports',
+      {
+        type,
+        websiteId,
+        ...filterParams,
+        ...params,
+      },
+    ],
+    queryFn: () => post(`/reports/${type}`, { type, ...filterParams, ...params }),
     enabled: !!type,
     ...options,
   });
