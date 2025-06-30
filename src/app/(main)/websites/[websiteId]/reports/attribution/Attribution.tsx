@@ -48,8 +48,8 @@ export function Attribution({
   const metrics = data
     ? [
         {
-          value: pageviews,
-          label: formatMessage(labels.views),
+          value: visitors,
+          label: formatMessage(labels.visitors),
           formatValue: formatLongNumber,
         },
         {
@@ -58,8 +58,8 @@ export function Attribution({
           formatValue: formatLongNumber,
         },
         {
-          value: visitors,
-          label: formatMessage(labels.visitors),
+          value: pageviews,
+          label: formatMessage(labels.views),
           formatValue: formatLongNumber,
         },
       ]
@@ -83,60 +83,64 @@ export function Attribution({
 
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
-      <Column gap>
-        <MetricsBar>
-          {metrics?.map(({ label, value, formatValue }) => {
-            return <MetricCard key={label} value={value} label={label} formatValue={formatValue} />;
-          })}
-        </MetricsBar>
-        <SectionHeader title={formatMessage(labels.sources)} />
-        <Grid columns="1fr 1fr" gap>
-          <Panel>
-            <ListTable
-              title={formatMessage(labels.referrer)}
-              metric={formatMessage(currency ? labels.revenue : labels.visitors)}
-              currency={currency}
-              data={percentFilter(
-                data?.['referrer']?.map(({ name, value }) => ({
-                  x: name,
-                  y: Number(value),
-                })),
-              )}
-            />
-          </Panel>
-          <Panel>
-            <ListTable
-              title={formatMessage(labels.paidAds)}
-              metric={formatMessage(currency ? labels.revenue : labels.visitors)}
-              currency={currency}
-              data={percentFilter(
-                data?.['paidAds']?.map(({ name, value }) => ({
-                  x: name,
-                  y: Number(value),
-                })),
-              )}
-            />
-          </Panel>
-        </Grid>
-        <SectionHeader title="UTM" />
-        <Grid columns="1fr 1fr" gap>
-          <Panel>
-            <UTMTable data={data?.['utm_source']} title={formatMessage(labels.sources)} />
-          </Panel>
-          <Panel>
-            <UTMTable data={data?.['utm_medium']} title={formatMessage(labels.medium)} />
-          </Panel>
-          <Panel>
-            <UTMTable data={data?.['utm_cmapaign']} title={formatMessage(labels.campaigns)} />
-          </Panel>
-          <Panel>
-            <UTMTable data={data?.['utm_content']} title={formatMessage(labels.content)} />
-          </Panel>
-          <Panel>
-            <UTMTable data={data?.['utm_term']} title={formatMessage(labels.terms)} />
-          </Panel>
-        </Grid>
-      </Column>
+      {data && (
+        <Column gap>
+          <MetricsBar>
+            {metrics?.map(({ label, value, formatValue }) => {
+              return (
+                <MetricCard key={label} value={value} label={label} formatValue={formatValue} />
+              );
+            })}
+          </MetricsBar>
+          <SectionHeader title={formatMessage(labels.sources)} />
+          <Grid columns="1fr 1fr" gap>
+            <Panel>
+              <ListTable
+                title={formatMessage(labels.referrer)}
+                metric={formatMessage(currency ? labels.revenue : labels.visitors)}
+                currency={currency}
+                data={percentFilter(
+                  data?.['referrer']?.map(({ name, value }) => ({
+                    x: name,
+                    y: Number(value),
+                  })),
+                )}
+              />
+            </Panel>
+            <Panel>
+              <ListTable
+                title={formatMessage(labels.paidAds)}
+                metric={formatMessage(currency ? labels.revenue : labels.visitors)}
+                currency={currency}
+                data={percentFilter(
+                  data?.['paidAds']?.map(({ name, value }) => ({
+                    x: name,
+                    y: Number(value),
+                  })),
+                )}
+              />
+            </Panel>
+          </Grid>
+          <SectionHeader title="UTM" />
+          <Grid columns="1fr 1fr" gap>
+            <Panel>
+              <UTMTable data={data?.['utm_source']} title={formatMessage(labels.sources)} />
+            </Panel>
+            <Panel>
+              <UTMTable data={data?.['utm_medium']} title={formatMessage(labels.medium)} />
+            </Panel>
+            <Panel>
+              <UTMTable data={data?.['utm_cmapaign']} title={formatMessage(labels.campaigns)} />
+            </Panel>
+            <Panel>
+              <UTMTable data={data?.['utm_content']} title={formatMessage(labels.content)} />
+            </Panel>
+            <Panel>
+              <UTMTable data={data?.['utm_term']} title={formatMessage(labels.terms)} />
+            </Panel>
+          </Grid>
+        </Column>
+      )}
     </LoadingPanel>
   );
 }

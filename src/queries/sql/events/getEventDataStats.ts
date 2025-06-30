@@ -18,7 +18,7 @@ export async function getEventDataStats(
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, params } = await parseFilters(websiteId, filters);
+  const { filterQuery, filterParams } = await parseFilters(websiteId, filters);
 
   return rawQuery(
     `
@@ -38,7 +38,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       group by website_event_id, data_key
       ) as t
     `,
-    params,
+    filterParams,
   );
 }
 
@@ -47,7 +47,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ events: number; properties: number; records: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, params } = await parseFilters(websiteId, filters);
+  const { filterQuery, filterParams } = await parseFilters(websiteId, filters);
 
   return rawQuery(
     `
@@ -67,6 +67,6 @@ async function clickhouseQuery(
       group by event_id, data_key
       ) as t
     `,
-    params,
+    filterParams,
   );
 }

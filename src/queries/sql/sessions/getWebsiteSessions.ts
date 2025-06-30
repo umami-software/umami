@@ -15,7 +15,7 @@ export async function getWebsiteSessions(
 async function relationalQuery(websiteId: string, filters: QueryFilters, pageParams: PageParams) {
   const { pagedRawQuery, parseFilters } = prisma;
   const { search } = pageParams;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+  const { filterQuery, filterParams } = await parseFilters(websiteId, {
     ...filters,
   });
 
@@ -68,14 +68,14 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
       session.city
     order by max(website_event.created_at) desc
     `,
-    { ...params, search: `%${search}%` },
+    { ...filterParams, search: `%${search}%` },
     pageParams,
   );
 }
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
   const { pagedQuery, parseFilters, getDateStringSQL } = clickhouse;
-  const { params, dateQuery, filterQuery } = await parseFilters(websiteId, filters);
+  const { filterParams, dateQuery, filterQuery } = await parseFilters(websiteId, filters);
   const { search } = pageParams;
 
   return pagedQuery(
@@ -113,7 +113,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     group by session_id, website_id, hostname, browser, os, device, screen, language, country, region, city
     order by lastAt desc
     `,
-    { ...params, search },
+    { ...filterParams, search },
     pageParams,
   );
 }

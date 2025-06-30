@@ -15,6 +15,7 @@ export async function POST(request: Request) {
     websiteId,
     dateRange: { startDate, endDate },
     parameters: { steps, window },
+    ...filters
   } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
@@ -22,6 +23,7 @@ export async function POST(request: Request) {
   }
 
   const data = await getFunnel(websiteId, {
+    ...filters,
     startDate: new Date(startDate),
     endDate: new Date(endDate),
     steps,

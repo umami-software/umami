@@ -28,7 +28,7 @@ async function relationalQuery(
 ) {
   const column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = prisma;
-  const { filterQuery, joinSession, params } = await parseFilters(
+  const { filterQuery, joinSession, filterParams } = await parseFilters(
     websiteId,
     {
       ...filters,
@@ -58,7 +58,7 @@ async function relationalQuery(
     limit ${limit}
     offset ${offset}
     `,
-    params,
+    filterParams,
   );
 }
 
@@ -71,7 +71,7 @@ async function clickhouseQuery(
 ): Promise<{ x: string; y: number }[]> {
   const column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = clickhouse;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+  const { filterQuery, filterParams } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.pageView,
   });
@@ -115,5 +115,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, params);
+  return rawQuery(sql, filterParams);
 }

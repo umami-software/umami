@@ -1,5 +1,5 @@
-import { FloatingTooltip, Column, useTheme } from '@umami/react-zen';
-import { useState, useMemo, HTMLAttributes } from 'react';
+import { FloatingTooltip, Column, useTheme, ColumnProps } from '@umami/react-zen';
+import { useState, useMemo } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import classNames from 'classnames';
 import { colord } from 'colord';
@@ -16,16 +16,12 @@ import { percentFilter } from '@/lib/filters';
 import styles from './WorldMap.module.css';
 import { getThemeColors } from '@/lib/colors';
 
-export function WorldMap({
-  websiteId,
-  data,
-  className,
-  ...props
-}: {
+export interface WorldMapProps extends ColumnProps {
   websiteId?: string;
   data?: any[];
-  className?: string;
-} & HTMLAttributes<HTMLDivElement>) {
+}
+
+export function WorldMap({ websiteId, data, className, ...props }: WorldMapProps) {
   const [tooltip, setTooltipPopup] = useState();
   const { theme } = useTheme();
   const { colors } = getThemeColors(theme);

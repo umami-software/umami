@@ -215,7 +215,7 @@ async function parseFilters(
         : '',
     filterQuery: getFilterQuery(filters, options),
     dateQuery: getDateQuery(filters),
-    params: {
+    filterParams: {
       ...getFilterParams(filters),
       websiteId,
       startDate: maxDate(filters.startDate, website?.resetAt),

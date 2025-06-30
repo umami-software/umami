@@ -25,7 +25,7 @@ export function usePagedQuery<T = any>({
   return {
     result: data as PageResult<T>,
     query,
-    params,
+    filterParams: params,
     setParams,
   };
 }

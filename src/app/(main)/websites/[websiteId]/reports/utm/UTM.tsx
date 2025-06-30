@@ -26,47 +26,49 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
 
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
-      <Column gap>
-        {UTM_PARAMS.map(param => {
-          const items = toArray(data?.[param]);
-          const chartData = {
-            labels: items.map(({ name }) => name),
-            datasets: [
-              {
-                data: items.map(({ value }) => value),
-                backgroundColor: CHART_COLORS,
-                borderWidth: 0,
-              },
-            ],
-          };
-          const total = items.reduce((sum, { value }) => {
-            return +sum + +value;
-          }, 0);
+      {data && (
+        <Column gap>
+          {UTM_PARAMS.map(param => {
+            const items = toArray(data?.[param]);
+            const chartData = {
+              labels: items.map(({ name }) => name),
+              datasets: [
+                {
+                  data: items.map(({ value }) => value),
+                  backgroundColor: CHART_COLORS,
+                  borderWidth: 0,
+                },
+              ],
+            };
+            const total = items.reduce((sum, { value }) => {
+              return +sum + +value;
+            }, 0);
 
-          return (
-            <Panel key={param}>
-              <Grid columns="1fr 1fr">
-                <Column>
-                  <Heading>
-                    <Text transform="capitalize">{param.replace(/^utm_/, '')}</Text>
-                  </Heading>
-                  <ListTable
-                    metric={formatMessage(labels.views)}
-                    data={items.map(({ name, value }) => ({
-                      x: name,
-                      y: value,
-                      z: (value / total) * 100,
-                    }))}
-                  />
-                </Column>
-                <Column>
-                  <PieChart type="doughnut" chartData={chartData} />
-                </Column>
-              </Grid>
-            </Panel>
-          );
-        })}
-      </Column>
+            return (
+              <Panel key={param}>
+                <Grid columns="1fr 1fr">
+                  <Column>
+                    <Heading>
+                      <Text transform="capitalize">{param.replace(/^utm_/, '')}</Text>
+                    </Heading>
+                    <ListTable
+                      metric={formatMessage(labels.views)}
+                      data={items.map(({ name, value }) => ({
+                        x: name,
+                        y: value,
+                        z: (value / total) * 100,
+                      }))}
+                    />
+                  </Column>
+                  <Column>
+                    <PieChart type="doughnut" chartData={chartData} />
+                  </Column>
+                </Grid>
+              </Panel>
+            );
+          })}
+        </Column>
+      )}
     </LoadingPanel>
   );
 }

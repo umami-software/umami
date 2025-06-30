@@ -15,7 +15,7 @@ export async function getWebsiteSessionsWeekly(
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { timezone = 'utc' } = filters;
   const { rawQuery, getDateWeeklySQL, parseFilters } = prisma;
-  const { params } = await parseFilters(websiteId, filters);
+  const { filterParams } = await parseFilters(websiteId, filters);
 
   return rawQuery(
     `
@@ -28,14 +28,14 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     group by time
     order by 2
     `,
-    params,
+    filterParams,
   ).then(formatResults);
 }
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   const { timezone = 'utc' } = filters;
   const { rawQuery, parseFilters } = clickhouse;
-  const { params } = await parseFilters(websiteId, filters);
+  const { filterParams } = await parseFilters(websiteId, filters);
 
   return rawQuery(
     `
@@ -48,7 +48,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     group by time
     order by time
     `,
-    params,
+    filterParams,
   ).then(formatResults);
 }
 

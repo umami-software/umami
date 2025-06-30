@@ -21,7 +21,7 @@ export async function getGoal(...args: [websiteId: string, criteria: GoalCriteri
 async function relationalQuery(websiteId: string, criteria: GoalCriteria) {
   const { type, value } = criteria;
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, dateQuery, params } = await parseFilters(websiteId, criteria);
+  const { filterQuery, dateQuery, filterParams } = await parseFilters(websiteId, criteria);
   const isPage = type === 'page';
   const column = isPage ? 'url_path' : 'event_name';
   const eventType = isPage ? 1 : 2;
@@ -43,14 +43,14 @@ async function relationalQuery(websiteId: string, criteria: GoalCriteria) {
     ${dateQuery}
     ${filterQuery}
     `,
-    { ...params, value },
+    { ...filterParams, value },
   );
 }
 
 async function clickhouseQuery(websiteId: string, criteria: GoalCriteria) {
   const { type, value } = criteria;
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, dateQuery, params } = await parseFilters(websiteId, criteria);
+  const { filterQuery, dateQuery, filterParams } = await parseFilters(websiteId, criteria);
   const isPage = type === 'page';
   const column = isPage ? 'url_path' : 'event_name';
   const eventType = isPage ? 1 : 2;
@@ -71,6 +71,6 @@ async function clickhouseQuery(websiteId: string, criteria: GoalCriteria) {
     ${dateQuery}
     ${filterQuery}
     `,
-    { ...params, value },
+    { ...filterParams, value },
   ).then(results => results?.[0]);
 }

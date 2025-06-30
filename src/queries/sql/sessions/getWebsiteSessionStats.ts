@@ -21,7 +21,7 @@ async function relationalQuery(
   { pageviews: number; visitors: number; visits: number; countries: number; events: number }[]
 > {
   const { parseFilters, rawQuery } = prisma;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+  const { filterQuery, filterParams } = await parseFilters(websiteId, {
     ...filters,
   });
 
@@ -39,7 +39,7 @@ async function relationalQuery(
       and website_event.created_at between {{startDate}} and {{endDate}}
       ${filterQuery}
     `,
-    params,
+    filterParams,
   );
 }
 
@@ -50,7 +50,7 @@ async function clickhouseQuery(
   { pageviews: number; visitors: number; visits: number; countries: number; events: number }[]
 > {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+  const { filterQuery, filterParams } = await parseFilters(websiteId, {
     ...filters,
   });
 
@@ -67,6 +67,6 @@ async function clickhouseQuery(
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         ${filterQuery}
     `,
-    params,
+    filterParams,
   );
 }

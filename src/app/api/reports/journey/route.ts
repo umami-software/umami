@@ -15,6 +15,7 @@ export async function POST(request: Request) {
     websiteId,
     dateRange: { startDate, endDate },
     parameters: { steps, startStep, endStep },
+    ...filters
   } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
@@ -22,6 +23,7 @@ export async function POST(request: Request) {
   }
 
   const data = await getJourney(websiteId, {
+    ...filters,
     startDate: new Date(startDate),
     endDate: new Date(endDate),
     steps,

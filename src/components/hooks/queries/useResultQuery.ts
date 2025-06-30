@@ -9,7 +9,7 @@ export function useResultQuery<T>(
 ) {
   const { websiteId } = params;
   const { post, useQuery } = useApi();
-  const filterParams = useFilterParams(websiteId);
+  const filters = useFilterParams(websiteId);
 
   return useQuery<T>({
     queryKey: [
@@ -17,11 +17,11 @@ export function useResultQuery<T>(
       {
         type,
         websiteId,
-        ...filterParams,
+        ...filters,
         ...params,
       },
     ],
-    queryFn: () => post(`/reports/${type}`, { type, ...filterParams, ...params }),
+    queryFn: () => post(`/reports/${type}`, { type, ...filters, ...params }),
     enabled: !!type,
     ...options,
   });

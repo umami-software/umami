@@ -14,6 +14,7 @@ export async function POST(request: Request) {
   const {
     websiteId,
     dateRange: { startDate, endDate, timezone },
+    ...filters
   } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
@@ -21,6 +22,7 @@ export async function POST(request: Request) {
   }
 
   const data = await getRetention(websiteId, {
+    ...filters,
     startDate: new Date(startDate),
     endDate: new Date(endDate),
     timezone,

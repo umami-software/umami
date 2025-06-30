@@ -15,6 +15,7 @@ export async function POST(request: Request) {
     websiteId,
     dateRange: { startDate, endDate },
     parameters: { type, value, property, operator },
+    ...filters
   } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
@@ -22,12 +23,13 @@ export async function POST(request: Request) {
   }
 
   const data = await getGoal(websiteId, {
+    ...filters,
+    startDate: new Date(startDate),
+    endDate: new Date(endDate),
     type,
     value,
     property,
     operator,
-    startDate: new Date(startDate),
-    endDate: new Date(endDate),
   });
 
   return json(data);

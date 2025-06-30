@@ -1,7 +1,12 @@
 import prisma from '@/lib/prisma';
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
-import { QueryFilters, WebsiteEventData } from '@/lib/types';
+import { QueryFilters } from '@/lib/types';
+
+export interface WebsiteEventData {
+  value: string;
+  total: number;
+}
 
 export async function getEventDataValues(
   ...args: [
@@ -20,7 +25,7 @@ async function relationalQuery(
   filters: QueryFilters & { eventName?: string; propertyName?: string },
 ) {
   const { rawQuery, parseFilters, getDateSQL } = prisma;
-  const { filterQuery, params } = await parseFilters(websiteId, filters);
+  const { filterQuery, filterParams } = await parseFilters(websiteId, filters);
 
   return rawQuery(
     `
@@ -42,7 +47,7 @@ async function relationalQuery(
     order by 2 desc
     limit 100
     `,
-    params,
+    filterParams,
   );
 }
 
@@ -51,7 +56,7 @@ async function clickhouseQuery(
   filters: QueryFilters & { eventName?: string; propertyName?: string },
 ): Promise<{ value: string; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, params } = await parseFilters(websiteId, filters);
+  const { filterQuery, filterParams } = await parseFilters(websiteId, filters);
 
   return rawQuery(
     `
@@ -70,6 +75,6 @@ async function clickhouseQuery(
     order by 2 desc
     limit 100
     `,
-    params,
+    filterParams,
   );
 }

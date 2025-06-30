@@ -1,6 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
 import { EVENT_TYPE } from '@/lib/constants';
-import { CLICKHOUSE, getDatabaseType, POSTGRESQL, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 
 export interface AttributionCriteria {
@@ -38,8 +38,6 @@ async function relationalQuery(
   const { rawQuery } = prisma;
   const eventType = type === 'page' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'page' ? 'url_path' : 'event_name';
-  const db = getDatabaseType();
-  const like = db === POSTGRESQL ? 'ilike' : 'like';
 
   function getUTMQuery(utmColumn: string) {
     return `
@@ -79,7 +77,7 @@ async function relationalQuery(
         where website_id = {{websiteId::uuid}}
           and created_at between {{startDate}} and {{endDate}}
           and ${column} = {{conversionStep}}
-          and currency ${like} {{currency}}
+          and currency = {{currency}}
         group by 1),`;
 
   function getModelQuery(model: string) {
@@ -243,26 +241,57 @@ async function clickhouseQuery(
   criteria: AttributionCriteria,
 ): Promise<AttributionResult> {
   const { startDate, endDate, model, type, step, currency } = criteria;
-  const { rawQuery } = clickhouse;
+  const { rawQuery, parseFilters } = clickhouse;
   const eventType = type === 'page' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'page' ? 'url_path' : 'event_name';
+  const { filterQuery, filterParams } = await parseFilters(websiteId, criteria);
 
   function getUTMQuery(utmColumn: string) {
     return `
-    select 
-        we.${utmColumn} name,
-        ${currency ? 'sum(e.value)' : 'uniqExact(we.session_id)'} value
-    from model m
-    join website_event we
-    on we.created_at = m.created_at
-        and we.session_id = m.session_id
-    ${currency ? 'join events e on e.session_id = m.session_id' : ''}
-    where we.website_id = {websiteId:UUID}
+      select 
+          we.${utmColumn} name,
+          ${currency ? 'sum(e.value)' : 'uniqExact(we.session_id)'} value
+      from model m
+      join website_event we
+      on we.created_at = m.created_at
+          and we.session_id = m.session_id
+      ${currency ? 'join events e on e.session_id = m.session_id' : ''}
+      where we.website_id = {websiteId:UUID}
+            and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      ${currency ? '' : `and we.${utmColumn} != ''`}  
+      group by 1
+      order by 2 desc
+      limit 20
+    `;
+  }
+
+  function getModelQuery(model: string) {
+    if (model === 'first-click') {
+      return ` 
+        model AS (select e.session_id,
+            min(we.created_at) created_at
+        from events e
+        join website_event we
+        on we.session_id = e.session_id
+        where we.website_id = {websiteId:UUID}
           and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-    ${currency ? '' : `and we.${utmColumn} != ''`}  
-    group by 1
-    order by 2 desc
-    limit 20`;
+          ${filterQuery}
+        group by e.session_id)
+      `;
+    }
+
+    return `
+      model AS (select e.session_id,
+          max(we.created_at) created_at
+      from events e
+      join website_event we
+      on we.session_id = e.session_id
+      where we.website_id = {websiteId:UUID}
+        and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and we.created_at < e.max_dt
+        ${filterQuery}
+      group by e.session_id)
+      `;
   }
 
   const eventQuery = `WITH events AS (
@@ -287,29 +316,6 @@ async function clickhouseQuery(
             and ${column} = {conversionStep:String}
             and currency = {currency:String}
           group by 1),`;
-
-  function getModelQuery(model: string) {
-    return model === 'first-click'
-      ? `\n 
-    model AS (select e.session_id,
-        min(we.created_at) created_at
-    from events e
-    join website_event we
-    on we.session_id = e.session_id
-    where we.website_id = {websiteId:UUID}
-      and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-    group by e.session_id)`
-      : `\n 
-    model AS (select e.session_id,
-        max(we.created_at) created_at
-    from events e
-    join website_event we
-    on we.session_id = e.session_id
-    where we.website_id = {websiteId:UUID}
-      and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and we.created_at < e.max_dt
-    group by e.session_id)`;
-  }
 
   const referrerRes = await rawQuery<
     {
@@ -339,7 +345,7 @@ async function clickhouseQuery(
     order by 2 desc
     limit 20
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const paidAdsres = await rawQuery<
@@ -370,7 +376,7 @@ async function clickhouseQuery(
     order by 2 desc
     limit 20
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const sourceRes = await rawQuery<
@@ -384,7 +390,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_source')}
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const mediumRes = await rawQuery<
@@ -398,7 +404,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_medium')}
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const campaignRes = await rawQuery<
@@ -412,7 +418,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_campaign')}
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const contentRes = await rawQuery<
@@ -426,7 +432,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_content')}
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const termRes = await rawQuery<
@@ -440,7 +446,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_term')}
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const totalRes = await rawQuery<{ pageviews: number; visitors: number; visits: number }>(
@@ -454,8 +460,9 @@ async function clickhouseQuery(
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and ${column} = {conversionStep:String}
         and event_type = {eventType:UInt32}
+        ${filterQuery}
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   ).then(result => result?.[0]);
 
   return {

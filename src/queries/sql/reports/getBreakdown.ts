@@ -24,7 +24,7 @@ async function relationalQuery(
   }[]
 > {
   const { getTimestampDiffSQL, parseFilters, rawQuery } = prisma;
-  const { filterQuery, joinSession, params } = await parseFilters(
+  const { filterQuery, joinSession, filterParams } = await parseFilters(
     websiteId,
     {
       ...filters,
@@ -65,7 +65,7 @@ async function relationalQuery(
     order by 1 desc, 2 desc
     limit 500
     `,
-    params,
+    filterParams,
   );
 }
 
@@ -80,7 +80,7 @@ async function clickhouseQuery(
   }[]
 > {
   const { parseFilters, rawQuery } = clickhouse;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+  const { filterQuery, filterParams } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.pageView,
   });
@@ -114,7 +114,7 @@ async function clickhouseQuery(
     order by 1 desc, 2 desc
     limit 500
     `,
-    params,
+    filterParams,
   );
 }
 

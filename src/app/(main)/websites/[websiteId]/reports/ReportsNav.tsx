@@ -70,7 +70,7 @@ export function ReportsNav({ websiteId }: { websiteId: string }) {
             key={id}
             href={renderUrl(
               `/websites/${websiteId}/reports${path}`,
-              path === '/retention' ? false : null,
+              path === '/retention' ? { date: undefined } : null,
             )}
           >
             <NavMenuItem isSelected={isSelected}>

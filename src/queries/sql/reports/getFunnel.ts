@@ -121,11 +121,12 @@ async function clickhouseQuery(
   }[]
 > {
   const { windowMinutes, startDate, endDate, steps } = criteria;
-  const { rawQuery } = clickhouse;
+  const { rawQuery, parseFilters } = clickhouse;
   const { levelOneQuery, levelQuery, sumQuery, stepFilterQuery, params } = getFunnelQuery(
     steps,
     windowMinutes,
   );
+  const { filterQuery, filterParams: filterParams } = await parseFilters(websiteId, criteria);
 
   function getFunnelQuery(
     steps: { type: string; value: string }[],
@@ -200,6 +201,7 @@ async function clickhouseQuery(
       where (${stepFilterQuery})
         and website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+       ${filterQuery}
     ),
     ${levelOneQuery}
     ${levelQuery}
@@ -213,6 +215,7 @@ async function clickhouseQuery(
       startDate,
       endDate,
       ...params,
+      ...filterParams,
     },
   ).then(formatResults(steps));
 }

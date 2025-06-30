@@ -108,7 +108,7 @@ async function relationalQuery(
       sequenceQuery,
       startStepQuery,
       endStepQuery,
-      params,
+      filterParams: params,
     };
   }
 
@@ -152,7 +152,7 @@ async function clickhouseQuery(
   },
 ): Promise<JourneyResult[]> {
   const { startDate, endDate, steps, startStep, endStep } = filters;
-  const { rawQuery } = clickhouse;
+  const { rawQuery, parseFilters } = clickhouse;
   const { sequenceQuery, startStepQuery, endStepQuery, params } = getJourneyQuery(
     steps,
     startStep,
@@ -218,9 +218,11 @@ async function clickhouseQuery(
       sequenceQuery,
       startStepQuery,
       endStepQuery,
-      params,
+      filterParams: params,
     };
   }
+
+  const { filterQuery, filterParams: filterParams } = await parseFilters(websiteId, filters);
 
   return rawQuery(
     `
@@ -231,6 +233,7 @@ async function clickhouseQuery(
           row_number() OVER (PARTITION BY visit_id ORDER BY created_at) AS event_number
       from umami.website_event
       where website_id = {websiteId:UUID}
+        ${filterQuery}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}),
     ${sequenceQuery}
     select *
@@ -246,6 +249,7 @@ async function clickhouseQuery(
       startDate,
       endDate,
       ...params,
+      ...filterParams,
     },
   ).then(parseResult);
 }

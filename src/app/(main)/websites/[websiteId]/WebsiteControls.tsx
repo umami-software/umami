@@ -24,7 +24,7 @@ export function WebsiteControls({
         {allowDateFilter && <WebsiteDateFilter websiteId={websiteId} allowCompare={allowCompare} />}
         {allowMonthFilter && <WebsiteMonthSelect websiteId={websiteId} />}
       </Row>
-      <FilterBar />
+      {allowFilter && <FilterBar />}
     </Column>
   );
 }

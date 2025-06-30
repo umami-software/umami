@@ -141,7 +141,7 @@ async function parseFilters(websiteId: string, filters: QueryFilters = {}, optio
   return {
     filterQuery: getFilterQuery(filters, options),
     dateQuery: getDateQuery(filters),
-    params: {
+    filterParams: {
       ...getFilterParams(filters),
       websiteId,
       startDate: maxDate(filters.startDate, new Date(website?.resetAt)),

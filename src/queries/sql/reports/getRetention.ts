@@ -28,8 +28,10 @@ async function relationalQuery(
   criteria: RetentionCriteria,
 ): Promise<RetentionResult[]> {
   const { startDate, endDate, timezone } = criteria;
-  const { getDateSQL, getDayDiffQuery, getCastColumnQuery, rawQuery } = prisma;
+  const { getDateSQL, getDayDiffQuery, getCastColumnQuery, rawQuery, parseFilters } = prisma;
   const unit = 'day';
+
+  const { filterQuery, filterParams } = await parseFilters(websiteId, criteria);
 
   return rawQuery(
     `
@@ -49,6 +51,7 @@ async function relationalQuery(
       on w.session_id = c.session_id
       where website_id = {{websiteId::uuid}}
           and created_at between {{startDate}} and {{endDate}}
+          ${filterQuery}
       ),
     cohort_size as (
       select cohort_date,
@@ -82,6 +85,7 @@ async function relationalQuery(
       websiteId,
       startDate,
       endDate,
+      ...filterParams,
     },
   );
 }
@@ -91,8 +95,10 @@ async function clickhouseQuery(
   criteria: RetentionCriteria,
 ): Promise<RetentionResult[]> {
   const { startDate, endDate, timezone } = criteria;
-  const { getDateSQL, rawQuery } = clickhouse;
+  const { getDateSQL, rawQuery, parseFilters } = clickhouse;
   const unit = 'day';
+
+  const { filterQuery, filterParams } = await parseFilters(websiteId, criteria);
 
   return rawQuery(
     `
@@ -114,6 +120,7 @@ async function clickhouseQuery(
       on w.session_id = c.session_id
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        ${filterQuery}
     ),
     cohort_size as (
       select cohort_date,
@@ -147,6 +154,7 @@ async function clickhouseQuery(
       websiteId,
       startDate,
       endDate,
+      ...filterParams,
     },
   );
 }
