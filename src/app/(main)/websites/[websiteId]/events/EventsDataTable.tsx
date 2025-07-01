@@ -5,8 +5,10 @@ import { ReactNode } from 'react';
 
 export default function EventsDataTable({
   websiteId,
+  label,
 }: {
   websiteId?: string;
+  label?: string;
   teamId?: string;
   children?: ReactNode;
 }) {
@@ -14,7 +16,10 @@ export default function EventsDataTable({
 
   return (
     <DataTable queryResult={queryResult} allowSearch={true} autoFocus={false}>
-      {({ data }) => <EventsTable data={data} />}
+      {({ data: eventData = [] }) => {
+        const data = label ? eventData.filter(({ eventName }) => eventName === label) : eventData;
+        return <EventsTable data={data} />;
+      }}
     </DataTable>
   );
 }

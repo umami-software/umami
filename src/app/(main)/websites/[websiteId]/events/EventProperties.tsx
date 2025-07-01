@@ -6,12 +6,13 @@ import { useState } from 'react';
 import { CHART_COLORS } from '@/lib/constants';
 import styles from './EventProperties.module.css';
 
-export function EventProperties({ websiteId }: { websiteId: string }) {
+export function EventProperties({ websiteId, label }: { websiteId: string; label: string }) {
   const [propertyName, setPropertyName] = useState('');
   const [eventName, setEventName] = useState('');
   const { formatMessage, labels } = useMessages();
-  const { data, isLoading, isFetched, error } = useEventDataProperties(websiteId);
+  const { data: eventData = [], isLoading, isFetched, error } = useEventDataProperties(websiteId);
   const { data: values } = useEventDataValues(websiteId, eventName, propertyName);
+  const data = label ? eventData.filter(({ eventName }) => eventName === label) : eventData;
   const chartData =
     propertyName && values
       ? {
