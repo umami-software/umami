@@ -28,7 +28,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const data = await getWebsiteEvents(websiteId, { startDate, endDate }, query);
+  const data = await getWebsiteEvents(websiteId, { ...query, startDate, endDate }, query);
 
   return json(data);
 }

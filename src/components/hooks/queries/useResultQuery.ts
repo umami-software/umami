@@ -2,7 +2,7 @@ import { useApi } from '../useApi';
 import { useFilterParams } from '../useFilterParams';
 import { ReactQueryOptions } from '@/lib/types';
 
-export function useResultQuery<T>(
+export function useResultQuery<T = any>(
   type: string,
   params?: { [key: string]: any },
   options?: ReactQueryOptions<T>,

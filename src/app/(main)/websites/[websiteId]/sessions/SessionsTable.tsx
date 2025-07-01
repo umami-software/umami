@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { DataColumn, DataTable } from '@umami/react-zen';
-import { useFormat, useMessages, useTimezone } from '@/components/hooks';
+import { useFormat, useMessages } from '@/components/hooks';
 import { Avatar } from '@/components/common/Avatar';
 import { TypeIcon } from '@/components/common/TypeIcon';
+import { DateDistance } from '@/components/common/DateDistance';
 
 export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean }) {
-  const { formatTimezoneDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
 
@@ -50,7 +50,7 @@ export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean
         )}
       </DataColumn>
       <DataColumn id="lastAt" label={formatMessage(labels.lastSeen)}>
-        {(row: any) => formatTimezoneDate(row.createdAt, 'PPPpp')}
+        {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
     </DataTable>
   );

@@ -22,14 +22,19 @@ export function useFilterParams(websiteId: string) {
       event,
       tag,
       hostname,
+      page,
+      pageSize,
+      search,
     },
   } = useNavigation();
 
   return {
+    // Date range
     startAt: +toUtc(startDate),
     endAt: +toUtc(endDate),
     unit,
     timezone,
+    // Filters
     path,
     referrer,
     title,
@@ -44,5 +49,9 @@ export function useFilterParams(websiteId: string) {
     event,
     tag,
     hostname,
+    // Paging
+    page,
+    pageSize,
+    search,
   };
 }

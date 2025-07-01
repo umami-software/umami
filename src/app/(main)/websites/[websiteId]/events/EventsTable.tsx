@@ -1,12 +1,12 @@
 import { DataTable, DataColumn, Icon, Row } from '@umami/react-zen';
-import { useMessages, useNavigation, useTimezone } from '@/components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import { Avatar } from '@/components/common/Avatar';
 import Link from 'next/link';
 import { Bolt, Eye } from '@/components/icons';
+import { DateDistance } from '@/components/common/DateDistance';
 
 export function EventsTable({ data = [] }) {
-  const { formatTimezoneDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
   const { renderUrl } = useNavigation();
 
@@ -34,8 +34,8 @@ export function EventsTable({ data = [] }) {
           );
         }}
       </DataColumn>
-      <DataColumn id="created" label={formatMessage(labels.created)} width="1fr">
-        {(row: any) => formatTimezoneDate(row.createdAt, 'PPPpp')}
+      <DataColumn id="created" label={formatMessage(labels.created)} width="200px">
+        {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
     </DataTable>
   );

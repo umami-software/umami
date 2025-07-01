@@ -29,7 +29,7 @@ export interface PageResult<T> {
   sortDescending?: boolean;
 }
 
-export interface PagedQueryResult<T> {
+export interface PagedQueryResult<T = any> {
   result: PageResult<T>;
   query: any;
   params: PageParams;

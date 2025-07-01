@@ -21,7 +21,7 @@ const dateFormats = {
 };
 
 export interface BarChartProps extends ChartProps {
-  unit: string;
+  unit?: string;
   stacked?: boolean;
   currency?: string;
   renderXLabel?: (label: string, index: number, values: any[]) => string;
