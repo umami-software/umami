@@ -1,26 +1,27 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, getDatabaseType, POSTGRESQL, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { PageParams, QueryFilters } from '@/lib/types';
+import { QueryFilters } from '@/lib/types';
 
-export function getWebsiteEvents(
-  ...args: [websiteId: string, filters: QueryFilters, pageParams?: PageParams]
-) {
+export function getWebsiteEvents(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-async function relationalQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
+async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { pagedRawQuery, parseFilters } = prisma;
-  const { search } = pageParams;
-  const { filterQuery, filterParams } = await parseFilters(websiteId, {
+  const { search } = filters;
+  const { filterQuery, queryParams } = await parseFilters({
     ...filters,
+    websiteId,
   });
 
-  const db = getDatabaseType();
-  const like = db === POSTGRESQL ? 'ilike' : 'like';
+  const searchQuery = filters.search
+    ? `and ((event_name ilike {{search}} and event_type = 2)
+           or (url_path ilike {{search}} and event_type = 1))`
+    : '';
 
   return pagedRawQuery(
     `
@@ -41,25 +42,27 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
     where website_id = {{websiteId::uuid}}
         and created_at between {{startDate}} and {{endDate}}
     ${filterQuery}
-    ${
-      search
-        ? `and ((event_name ${like} {{search}} and event_type = 2)
-           or (url_path ${like} {{search}} and event_type = 1))`
-        : ''
-    }
+    ${searchQuery}
     order by created_at desc
     `,
-    { ...filterParams, search: `%${search}%` },
-    pageParams,
+    { ...queryParams, search: `%${search}%` },
+    filters,
   );
 }
 
-async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
-  const { pagedQuery, parseFilters } = clickhouse;
-  const { filterParams, dateQuery, filterQuery } = await parseFilters(websiteId, filters);
-  const { search } = pageParams;
+async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
+  const { pagedRawQuery, parseFilters } = clickhouse;
+  const { queryParams, dateQuery, filterQuery } = await parseFilters({
+    ...filters,
+    websiteId,
+  });
 
-  return pagedQuery(
+  const searchQuery = filters.search
+    ? `and ((positionCaseInsensitive(event_name, {search:String}) > 0 and event_type = 2)
+           or (positionCaseInsensitive(url_path, {search:String}) > 0 and event_type = 1))`
+    : '';
+
+  return pagedRawQuery(
     `
     select
       event_id as id,
@@ -78,15 +81,10 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     where website_id = {websiteId:UUID}
     ${dateQuery}
     ${filterQuery}
-    ${
-      search
-        ? `and ((positionCaseInsensitive(event_name, {search:String}) > 0 and event_type = 2)
-           or (positionCaseInsensitive(url_path, {search:String}) > 0 and event_type = 1))`
-        : ''
-    }
+    ${searchQuery}
     order by created_at desc
     `,
-    { ...filterParams, search },
-    pageParams,
+    queryParams,
+    filters,
   );
 }

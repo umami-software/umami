@@ -1,7 +1,7 @@
 import { Prisma, Website } from '@/generated/prisma/client';
 import redis from '@/lib/redis';
 import prisma from '@/lib/prisma';
-import { PageResult, PageParams } from '@/lib/types';
+import { PageResult, QueryFilters } from '@/lib/types';
 import WebsiteFindManyArgs = Prisma.WebsiteFindManyArgs;
 import { ROLES } from '@/lib/constants';
 
@@ -28,9 +28,9 @@ export async function getSharedWebsite(shareId: string) {
 
 export async function getWebsites(
   criteria: WebsiteFindManyArgs,
-  pageParams: PageParams,
+  filters: QueryFilters,
 ): Promise<PageResult<Website[]>> {
-  const { search } = pageParams;
+  const { search } = filters;
 
   const where: Prisma.WebsiteWhereInput = {
     ...criteria.where,
@@ -43,7 +43,7 @@ export async function getWebsites(
     deletedAt: null,
   };
 
-  return prisma.pagedQuery('website', { ...criteria, where }, pageParams);
+  return prisma.pagedQuery('website', { ...criteria, where }, filters);
 }
 
 export async function getAllWebsites(userId: string) {
@@ -90,7 +90,7 @@ export async function getAllUserWebsitesIncludingTeamOwner(userId: string) {
 
 export async function getUserWebsites(
   userId: string,
-  filters?: PageParams,
+  filters?: QueryFilters,
 ): Promise<PageResult<Website[]>> {
   return getWebsites(
     {
@@ -115,7 +115,7 @@ export async function getUserWebsites(
 
 export async function getTeamWebsites(
   teamId: string,
-  filters?: PageParams,
+  filters?: QueryFilters,
 ): Promise<PageResult<Website[]>> {
   return getWebsites(
     {

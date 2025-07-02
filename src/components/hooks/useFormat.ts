@@ -40,7 +40,7 @@ export function useFormat() {
     return languageNames[value?.split('-')[0]] || value;
   };
 
-  const formatValue = (value: string, type: string, data?: { [key: string]: any }): string => {
+  const formatValue = (value: string, type: string, data?: Record<string, any>): string => {
     switch (type) {
       case 'os':
         return formatOS(value);

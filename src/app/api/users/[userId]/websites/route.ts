@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { unauthorized, json } from '@/lib/response';
 import { getUserWebsites } from '@/queries/prisma/website';
 import { pagingParams } from '@/lib/schema';
-import { parseRequest } from '@/lib/request';
+import { getQueryFilters, parseRequest } from '@/lib/request';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const schema = z.object({
@@ -21,7 +21,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
     return unauthorized();
   }
 
-  const websites = await getUserWebsites(userId, query);
+  const filters = await getQueryFilters(query);
+
+  const websites = await getUserWebsites(userId, filters);
 
   return json(websites);
 }

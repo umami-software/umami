@@ -1,9 +1,9 @@
 import { WebsitesTable } from '@/app/(main)/settings/websites/WebsitesTable';
 import { DataGrid } from '@/components/common/DataGrid';
-import { useWebsites } from '@/components/hooks';
+import { useWebsitesQuery } from '@/components/hooks';
 
 export function UserWebsites({ userId }) {
-  const queryResult = useWebsites({ userId });
+  const queryResult = useWebsitesQuery({ userId });
 
   return (
     <DataGrid queryResult={queryResult}>

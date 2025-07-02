@@ -292,9 +292,13 @@ export function getCompareDate(compare: string, startDate: Date, endDate: Date) 
     return { startDate: subYears(startDate, 1), endDate: subYears(endDate, 1) };
   }
 
-  const diff = differenceInMinutes(endDate, startDate);
+  if (compare === 'prev') {
+    const diff = differenceInMinutes(endDate, startDate);
 
-  return { startDate: subMinutes(startDate, diff), endDate: subMinutes(endDate, diff) };
+    return { startDate: subMinutes(startDate, diff), endDate: subMinutes(endDate, diff) };
+  }
+
+  return {};
 }
 
 export function getDayOfWeekAsDate(dayOfWeek: number) {

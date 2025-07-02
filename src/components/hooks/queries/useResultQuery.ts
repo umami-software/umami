@@ -4,7 +4,7 @@ import { ReactQueryOptions } from '@/lib/types';
 
 export function useResultQuery<T = any>(
   type: string,
-  params?: { [key: string]: any },
+  params?: Record<string, any>,
   options?: ReactQueryOptions<T>,
 ) {
   const { websiteId } = params;
@@ -21,7 +21,7 @@ export function useResultQuery<T = any>(
         ...params,
       },
     ],
-    queryFn: () => post(`/reports/${type}`, { type, ...filters, ...params }),
+    queryFn: () => post(`/reports/${type}`, { type, filters, ...params }),
     enabled: !!type,
     ...options,
   });

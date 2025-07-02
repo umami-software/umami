@@ -1,8 +1,10 @@
 import { z } from 'zod/v4';
-import { FILTER_COLUMNS } from '@/lib/constants';
+import { FILTER_COLUMNS, DEFAULT_PAGE_SIZE } from '@/lib/constants';
 import { badRequest, unauthorized } from '@/lib/response';
-import { getAllowedUnits, getCompareDate, getMinimumUnit } from '@/lib/date';
+import { getAllowedUnits, getCompareDate, getMinimumUnit, maxDate } from '@/lib/date';
 import { checkAuth } from '@/lib/auth';
+import { fetchWebsite } from '@/lib/load';
+import { QueryFilters } from '@/lib/types';
 
 export async function parseRequest(
   request: Request,
@@ -47,8 +49,8 @@ export async function getJsonBody(request: Request) {
   }
 }
 
-export async function getRequestDateRange(query: Record<string, string>) {
-  const { startAt, endAt, unit, compare } = query;
+export function getRequestDateRange(query: Record<string, string>) {
+  const { startAt, endAt, unit, compare, timezone } = query;
 
   const startDate = new Date(+startAt);
   const endDate = new Date(+endAt);
@@ -62,8 +64,10 @@ export async function getRequestDateRange(query: Record<string, string>) {
   return {
     startDate,
     endDate,
+    compare,
     compareStartDate,
     compareEndDate,
+    timezone,
     unit: getAllowedUnits(startDate, endDate).includes(unit)
       ? unit
       : getMinimumUnit(startDate, endDate),
@@ -80,4 +84,31 @@ export function getRequestFilters(query: Record<string, any>) {
 
     return obj;
   }, {});
+}
+
+export async function getQueryFilters(params: Record<string, any>): Promise<QueryFilters> {
+  const dateRange = getRequestDateRange(params);
+  const filters = getRequestFilters(params);
+
+  const data = {
+    ...dateRange,
+    ...filters,
+    page: params?.page,
+    pageSize: params?.page ? params?.pageSize || DEFAULT_PAGE_SIZE : undefined,
+    orderBy: params?.orderBy,
+    sortDescending: params?.sortDescending,
+    search: params?.search,
+    websiteId: undefined,
+  };
+
+  const { websiteId } = params;
+
+  if (websiteId) {
+    const website = await fetchWebsite(websiteId);
+
+    data.websiteId = websiteId;
+    data.startDate = maxDate(data.startDate, new Date(website?.resetAt));
+  }
+
+  return data;
 }

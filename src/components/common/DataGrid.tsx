@@ -1,14 +1,13 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { SearchField, Row, Column } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { Pager } from '@/components/common/Pager';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { PagedQueryResult } from '@/lib/types';
 
 const DEFAULT_SEARCH_DELAY = 600;
 
 export interface DataTableProps {
-  queryResult: PagedQueryResult<any>;
+  queryResult: any;
   searchDelay?: number;
   allowSearch?: boolean;
   allowPaging?: boolean;
@@ -20,31 +19,30 @@ export interface DataTableProps {
 export function DataGrid({
   queryResult,
   searchDelay = 600,
-  allowSearch = true,
-  allowPaging = true,
+  allowSearch,
+  allowPaging,
   autoFocus,
   children,
 }: DataTableProps) {
   const { formatMessage, labels } = useMessages();
-  const { result, params, setParams, query } = queryResult || {};
-  const { error, isLoading, isFetching } = query || {};
-  const { page, pageSize, count, data } = result || {};
-  const { search } = params || {};
-  const hasData = Boolean(!isLoading && data?.length);
+  const { data, error, isLoading, isFetching, setParams } = queryResult || {};
   const { router, updateParams } = useNavigation();
+  const [search, setSearch] = useState('');
 
   const handleSearch = (search: string) => {
-    setParams({ ...params, search });
+    setSearch(search);
+    setParams(params => ({ ...params, search }));
+    router.push(updateParams({ search }));
   };
 
   const handlePageChange = (page: number) => {
-    setParams({ ...params, page });
+    setParams(params => ({ ...params, page }));
     router.push(updateParams({ page }));
   };
 
   return (
     <Column gap="4" minHeight="300px">
-      {allowSearch && (hasData || search) && (
+      {allowSearch && (data || search) && (
         <Row width="280px" alignItems="center">
           <SearchField
             value={search}
@@ -57,11 +55,16 @@ export function DataGrid({
       )}
       <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} error={error}>
         <Column>
-          {hasData ? (typeof children === 'function' ? children(result) : children) : null}
+          {data ? (typeof children === 'function' ? children(data) : children) : null}
         </Column>
-        {allowPaging && hasData && (
+        {allowPaging && data && (
           <Row marginTop="6">
-            <Pager page={page} pageSize={pageSize} count={count} onPageChange={handlePageChange} />
+            <Pager
+              page={data.page}
+              pageSize={data.pageSize}
+              count={data.count}
+              onPageChange={handlePageChange}
+            />
           </Row>
         )}
       </LoadingPanel>

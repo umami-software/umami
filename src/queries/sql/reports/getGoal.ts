@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { QueryFilters } from '@/lib/types';
 
 export interface GoalCriteria {
   startDate: Date;
@@ -9,6 +10,7 @@ export interface GoalCriteria {
   value: string;
   operator?: string;
   property?: string;
+  filters: QueryFilters;
 }
 
 export async function getGoal(...args: [websiteId: string, criteria: GoalCriteria]) {
@@ -19,9 +21,13 @@ export async function getGoal(...args: [websiteId: string, criteria: GoalCriteri
 }
 
 async function relationalQuery(websiteId: string, criteria: GoalCriteria) {
-  const { type, value } = criteria;
+  const { type, value, filters } = criteria;
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, dateQuery, filterParams } = await parseFilters(websiteId, criteria);
+  const { filterQuery, dateQuery, queryParams } = await parseFilters({
+    ...filters,
+    websiteId,
+    value,
+  });
   const isPage = type === 'page';
   const column = isPage ? 'url_path' : 'event_name';
   const eventType = isPage ? 1 : 2;
@@ -43,14 +49,18 @@ async function relationalQuery(websiteId: string, criteria: GoalCriteria) {
     ${dateQuery}
     ${filterQuery}
     `,
-    { ...filterParams, value },
+    queryParams,
   );
 }
 
 async function clickhouseQuery(websiteId: string, criteria: GoalCriteria) {
-  const { type, value } = criteria;
+  const { type, value, filters } = criteria;
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, dateQuery, filterParams } = await parseFilters(websiteId, criteria);
+  const { filterQuery, dateQuery, queryParams } = await parseFilters({
+    ...filters,
+    websiteId,
+    value,
+  });
   const isPage = type === 'page';
   const column = isPage ? 'url_path' : 'event_name';
   const eventType = isPage ? 1 : 2;
@@ -71,6 +81,6 @@ async function clickhouseQuery(websiteId: string, criteria: GoalCriteria) {
     ${dateQuery}
     ${filterQuery}
     `,
-    { ...filterParams, value },
+    queryParams,
   ).then(results => results?.[0]);
 }

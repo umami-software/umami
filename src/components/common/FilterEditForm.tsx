@@ -19,7 +19,7 @@ export function FilterEditForm({ websiteId, data = [], onChange, onClose }: Filt
     dateRange: { startDate, endDate },
   } = useDateRange(websiteId);
 
-  const updateFilter = (name: string, props: { [key: string]: any }) => {
+  const updateFilter = (name: string, props: Record<string, any>) => {
     setFilters(filters =>
       filters.map(filter => (filter.name === name ? { ...filter, ...props } : filter)),
     );

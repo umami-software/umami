@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
 import { Icon, TextField, Column, Row, Label, Text } from '@umami/react-zen';
-import { useFormat, useLocale, useMessages, useRegionNames, useTimezone } from '@/components/hooks';
+import { useFormat, useLocale, useMessages, useRegionNames } from '@/components/hooks';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { Location, KeyRound, Calendar } from '@/components/icons';
+import { DateDistance } from '@/components/common/DateDistance';
 
 export function SessionInfo({ data }) {
   const { locale } = useLocale();
-  const { formatTimezoneDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
   const { getRegionName } = useRegionNames(locale);
@@ -22,11 +22,11 @@ export function SessionInfo({ data }) {
       </Info>
 
       <Info label={formatMessage(labels.lastSeen)} icon={<Calendar />}>
-        {formatTimezoneDate(data?.lastAt, 'PPPPpp')}
+        <DateDistance date={new Date(data.lastAt)} />
       </Info>
 
       <Info label={formatMessage(labels.firstSeen)} icon={<Calendar />}>
-        {formatTimezoneDate(data?.firstAt, 'PPPPpp')}
+        <DateDistance date={new Date(data.firstAt)} />
       </Info>
 
       <Info

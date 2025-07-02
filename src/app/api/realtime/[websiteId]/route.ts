@@ -3,7 +3,7 @@ import { getRealtimeData } from '@/queries';
 import { canViewWebsite } from '@/lib/auth';
 import { startOfMinute, subMinutes } from 'date-fns';
 import { REALTIME_RANGE } from '@/lib/constants';
-import { parseRequest } from '@/lib/request';
+import { parseRequest, getQueryFilters } from '@/lib/request';
 
 export async function GET(
   request: Request,
@@ -16,15 +16,19 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { timezone } = query;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const startDate = subMinutes(startOfMinute(new Date()), REALTIME_RANGE);
+  const filters = await getQueryFilters({
+    ...query,
+    websiteId,
+    startAt: subMinutes(startOfMinute(new Date()), REALTIME_RANGE).getTime(),
+    endAt: Date.now(),
+  });
 
-  const data = await getRealtimeData(websiteId, { startDate, timezone });
+  const data = await getRealtimeData(websiteId, filters);
 
   return json(data);
 }

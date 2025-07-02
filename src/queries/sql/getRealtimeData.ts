@@ -1,4 +1,5 @@
 import { getPageviewStats, getRealtimeActivity, getSessionStats } from '@/queries';
+import { QueryFilters } from '@/lib/types';
 
 function increment(data: object, key: string) {
   if (key) {
@@ -10,12 +11,7 @@ function increment(data: object, key: string) {
   }
 }
 
-export async function getRealtimeData(
-  websiteId: string,
-  criteria: { startDate: Date; timezone: string },
-) {
-  const { startDate, timezone } = criteria;
-  const filters = { startDate, endDate: new Date(), unit: 'minute', timezone };
+export async function getRealtimeData(websiteId: string, filters: QueryFilters) {
   const [activity, pageviews, sessions] = await Promise.all([
     getRealtimeActivity(websiteId, filters),
     getPageviewStats(websiteId, filters),

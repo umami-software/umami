@@ -244,7 +244,7 @@ async function clickhouseQuery(
   const { rawQuery, parseFilters } = clickhouse;
   const eventType = type === 'page' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'page' ? 'url_path' : 'event_name';
-  const { filterQuery, filterParams } = await parseFilters(websiteId, criteria);
+  const { filterQuery, queryParams } = await parseFilters(criteria);
 
   function getUTMQuery(utmColumn: string) {
     return `
@@ -345,7 +345,7 @@ async function clickhouseQuery(
     order by 2 desc
     limit 20
     `,
-    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const paidAdsres = await rawQuery<
@@ -376,7 +376,7 @@ async function clickhouseQuery(
     order by 2 desc
     limit 20
     `,
-    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const sourceRes = await rawQuery<
@@ -390,7 +390,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_source')}
     `,
-    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const mediumRes = await rawQuery<
@@ -404,7 +404,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_medium')}
     `,
-    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const campaignRes = await rawQuery<
@@ -418,7 +418,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_campaign')}
     `,
-    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const contentRes = await rawQuery<
@@ -432,7 +432,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_content')}
     `,
-    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const termRes = await rawQuery<
@@ -446,7 +446,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_term')}
     `,
-    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   );
 
   const totalRes = await rawQuery<{ pageviews: number; visitors: number; visits: number }>(
@@ -462,7 +462,7 @@ async function clickhouseQuery(
         and event_type = {eventType:UInt32}
         ${filterQuery}
     `,
-    { ...filterParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
   ).then(result => result?.[0]);
 
   return {

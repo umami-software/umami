@@ -1,8 +1,7 @@
 import { z } from 'zod';
-import { parseRequest, getRequestDateRange, getRequestFilters } from '@/lib/request';
+import { parseRequest, getQueryFilters } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/lib/auth';
-import { getCompareDate } from '@/lib/date';
 import { filterParams } from '@/lib/schema';
 import { getWebsiteStats } from '@/queries';
 
@@ -24,32 +23,20 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { compare } = query;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const { startDate, endDate } = await getRequestDateRange(query);
-  const { startDate: compareStartDate, endDate: compareEndDate } = getCompareDate(
-    compare,
-    startDate,
-    endDate,
-  );
+  const filters = await getQueryFilters({ ...query, websiteId });
 
-  const filters = getRequestFilters(query);
-
-  const metrics = await getWebsiteStats(websiteId, {
-    ...filters,
-    startDate,
-    endDate,
-  });
+  const data = await getWebsiteStats(websiteId, filters);
 
   const previous = await getWebsiteStats(websiteId, {
     ...filters,
-    startDate: compareStartDate,
-    endDate: compareEndDate,
+    startDate: filters.compareStartDate,
+    endDate: filters.compareEndDate,
   });
 
-  return json({ ...metrics, previous });
+  return json({ ...data, previous });
 }

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { getRequestDateRange, parseRequest } from '@/lib/request';
+import { getQueryFilters, parseRequest } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/lib/auth';
 import { getEventDataEvents } from '@/queries/sql/events/getEventDataEvents';
@@ -20,16 +20,16 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { event } = query;
-  const { startDate, endDate } = await getRequestDateRange(query);
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
+  const { event } = query;
+  const filters = await getQueryFilters(query);
+
   const data = await getEventDataEvents(websiteId, {
-    startDate,
-    endDate,
+    ...filters,
     event,
   });
 

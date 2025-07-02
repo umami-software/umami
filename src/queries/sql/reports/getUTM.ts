@@ -17,7 +17,7 @@ export async function getUTM(...args: [websiteId: string, criteria: UTMCriteria]
 async function relationalQuery(websiteId: string, criteria: UTMCriteria) {
   const { startDate, endDate } = criteria;
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, filterParams } = await parseFilters(websiteId, criteria);
+  const { filterQuery, queryParams } = await parseFilters(criteria);
 
   return rawQuery(
     `
@@ -31,7 +31,7 @@ async function relationalQuery(websiteId: string, criteria: UTMCriteria) {
     group by 1
     `,
     {
-      ...filterParams,
+      ...queryParams,
       websiteId,
       startDate,
       endDate,
@@ -42,7 +42,7 @@ async function relationalQuery(websiteId: string, criteria: UTMCriteria) {
 async function clickhouseQuery(websiteId: string, criteria: UTMCriteria) {
   const { startDate, endDate } = criteria;
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, filterParams } = await parseFilters(websiteId, criteria);
+  const { filterQuery, queryParams } = await parseFilters(criteria);
 
   return rawQuery(
     `
@@ -56,7 +56,7 @@ async function clickhouseQuery(websiteId: string, criteria: UTMCriteria) {
     group by 1
     `,
     {
-      ...filterParams,
+      ...queryParams,
       websiteId,
       startDate,
       endDate,

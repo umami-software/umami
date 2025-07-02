@@ -3,26 +3,18 @@ import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatShortTime, formatLongNumber } from '@/lib/format';
 import { useWebsiteStatsQuery } from '@/components/hooks/queries/useWebsiteStatsQuery';
-import { useWebsites } from '@/store/websites';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 
 export function WebsiteMetricsBar({
   websiteId,
-  showChange = false,
-  compareMode = false,
 }: {
   websiteId: string;
   showChange?: boolean;
   compareMode?: boolean;
-  showFilter?: boolean;
 }) {
   const { dateRange } = useDateRange(websiteId);
   const { formatMessage, labels } = useMessages();
-  const dateCompare = useWebsites(state => state[websiteId]?.dateCompare);
-  const { data, isLoading, isFetching, error } = useWebsiteStatsQuery(
-    websiteId,
-    compareMode && dateCompare,
-  );
+  const { data, isLoading, isFetching, error } = useWebsiteStatsQuery(websiteId);
   const isAllTime = dateRange.value === 'all';
 
   const { pageviews, visitors, visits, bounces, totaltime, previous } = data || {};
@@ -87,8 +79,7 @@ export function WebsiteMetricsBar({
               change={change}
               formatValue={formatValue}
               reverseColors={reverseColors}
-              showChange={!isAllTime && (compareMode || showChange)}
-              showPrevious={!isAllTime && compareMode}
+              showChange={!isAllTime}
             />
           );
         })}

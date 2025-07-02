@@ -24,7 +24,7 @@ export function PasswordEditForm({ onSave, onClose }) {
     });
   };
 
-  const samePassword = (value: string, values: { [key: string]: any }) => {
+  const samePassword = (value: string, values: Record<string, any>) => {
     if (value !== values.newPassword) {
       return formatMessage(messages.noMatchPassword);
     }

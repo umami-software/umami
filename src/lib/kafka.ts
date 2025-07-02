@@ -64,7 +64,7 @@ async function getProducer(): Promise<Producer> {
 
 async function sendMessage(
   topic: string,
-  message: { [key: string]: string | number } | { [key: string]: string | number }[],
+  message: Record<string, string | number> | Record<string, string | number>[],
 ): Promise<RecordMetadata[]> {
   try {
     await connect();

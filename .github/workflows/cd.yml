@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        db-type: [postgresql, mysql]
+        db-type: [postgresql]
 
     steps:
       - uses: actions/checkout@v3

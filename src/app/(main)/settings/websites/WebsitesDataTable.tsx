@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { WebsitesTable } from '@/app/(main)/settings/websites/WebsitesTable';
 import { DataGrid } from '@/components/common/DataGrid';
-import { useWebsites } from '@/components/hooks';
+import { useWebsitesQuery } from '@/components/hooks';
 
 export function WebsitesDataTable({
   teamId,
@@ -16,10 +16,10 @@ export function WebsitesDataTable({
   showActions?: boolean;
   children?: ReactNode;
 }) {
-  const queryResult = useWebsites({ teamId });
+  const queryResult = useWebsitesQuery({ teamId });
 
   return (
-    <DataGrid queryResult={queryResult} renderEmpty={() => children}>
+    <DataGrid queryResult={queryResult} renderEmpty={() => children} allowSearch allowPaging>
       {({ data }) => (
         <WebsitesTable
           teamId={teamId}

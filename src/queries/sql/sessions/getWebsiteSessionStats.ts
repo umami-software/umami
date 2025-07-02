@@ -3,11 +3,17 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
+export interface WebsiteSessionStatsData {
+  pageviews: number;
+  visitors: number;
+  visits: number;
+  countries: number;
+  events: number;
+}
+
 export async function getWebsiteSessionStats(
   ...args: [websiteId: string, filters: QueryFilters]
-): Promise<
-  { pageviews: number; visitors: number; visits: number; countries: number; events: number }[]
-> {
+): Promise<WebsiteSessionStatsData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -17,13 +23,9 @@ export async function getWebsiteSessionStats(
 async function relationalQuery(
   websiteId: string,
   filters: QueryFilters,
-): Promise<
-  { pageviews: number; visitors: number; visits: number; countries: number; events: number }[]
-> {
+): Promise<WebsiteSessionStatsData[]> {
   const { parseFilters, rawQuery } = prisma;
-  const { filterQuery, filterParams } = await parseFilters(websiteId, {
-    ...filters,
-  });
+  const { filterQuery, queryParams } = await parseFilters(filters);
 
   return rawQuery(
     `
@@ -39,20 +41,16 @@ async function relationalQuery(
       and website_event.created_at between {{startDate}} and {{endDate}}
       ${filterQuery}
     `,
-    filterParams,
+    queryParams,
   );
 }
 
 async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
-): Promise<
-  { pageviews: number; visitors: number; visits: number; countries: number; events: number }[]
-> {
+): Promise<WebsiteSessionStatsData[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, filterParams } = await parseFilters(websiteId, {
-    ...filters,
-  });
+  const { filterQuery, queryParams } = await parseFilters(filters);
 
   return rawQuery(
     `
@@ -67,6 +65,6 @@ async function clickhouseQuery(
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         ${filterQuery}
     `,
-    filterParams,
+    queryParams,
   );
 }

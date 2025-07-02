@@ -24,7 +24,7 @@ export * from './queries/useTeamMembersQuery';
 export * from './queries/useUserQuery';
 export * from './queries/useUsersQuery';
 export * from './queries/useWebsiteQuery';
-export * from './queries/useWebsites';
+export * from './queries/useWebsitesQuery';
 export * from './queries/useWebsiteEventsQuery';
 export * from './queries/useWebsiteEventsSeriesQuery';
 export * from './queries/useWebsiteMetricsQuery';

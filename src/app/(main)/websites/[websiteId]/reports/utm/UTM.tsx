@@ -73,7 +73,7 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
   );
 }
 
-function toArray(data: { [key: string]: number } = {}) {
+function toArray(data: Record<string, number> = {}) {
   return Object.keys(data)
     .map(key => {
       return { name: key, value: data[key] };

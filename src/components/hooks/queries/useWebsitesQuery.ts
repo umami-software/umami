@@ -2,10 +2,12 @@ import { useApi } from '../useApi';
 import { usePagedQuery } from '../usePagedQuery';
 import { useLoginQuery } from './useLoginQuery';
 import { useModified } from '../useModified';
+import { ReactQueryOptions } from '@/lib/types';
 
-export function useWebsites(
+export function useWebsitesQuery(
   { userId, teamId }: { userId?: string; teamId?: string },
-  params?: { [key: string]: string | number },
+  params?: Record<string, any>,
+  options?: ReactQueryOptions,
 ) {
   const { get } = useApi();
   const { user } = useLoginQuery();
@@ -13,10 +15,12 @@ export function useWebsites(
 
   return usePagedQuery({
     queryKey: ['websites', { userId, teamId, modified, ...params }],
-    queryFn: () => {
+    queryFn: pageParams => {
       return get(teamId ? `/teams/${teamId}/websites` : `/users/${userId || user.id}/websites`, {
         ...params,
+        ...pageParams,
       });
     },
+    ...options,
   });
 }

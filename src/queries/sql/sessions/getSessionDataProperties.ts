@@ -17,7 +17,7 @@ async function relationalQuery(
   filters: QueryFilters & { propertyName?: string },
 ) {
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, filterParams } = await parseFilters(websiteId, filters, {
+  const { filterQuery, queryParams } = await parseFilters(filters, {
     columns: { propertyName: 'data_key' },
   });
 
@@ -36,7 +36,7 @@ async function relationalQuery(
     order by 2 desc
     limit 500
     `,
-    filterParams,
+    queryParams,
   );
 }
 
@@ -45,7 +45,7 @@ async function clickhouseQuery(
   filters: QueryFilters & { propertyName?: string },
 ): Promise<{ propertyName: string; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, filterParams } = await parseFilters(websiteId, filters, {
+  const { filterQuery, queryParams } = await parseFilters(filters, {
     columns: { propertyName: 'data_key' },
   });
 
@@ -65,6 +65,6 @@ async function clickhouseQuery(
     order by 2 desc
     limit 500
     `,
-    filterParams,
+    queryParams,
   );
 }

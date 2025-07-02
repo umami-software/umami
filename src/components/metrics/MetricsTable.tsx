@@ -18,7 +18,7 @@ export interface MetricsTableProps extends ListTableProps {
   allowSearch?: boolean;
   searchFormattedValues?: boolean;
   showMore?: boolean;
-  params?: { [key: string]: any };
+  params?: Record<string, any>;
   onDataLoad?: (data: any) => any;
   className?: string;
   children?: ReactNode;

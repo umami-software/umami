@@ -12,11 +12,11 @@ export function useWebsitePageviewsQuery(
   options?: ReactQueryOptions<WebsitePageviewsData>,
 ) {
   const { get, useQuery } = useApi();
-  const filterParams = useFilterParams(websiteId);
+  const queryParams = useFilterParams(websiteId);
 
   return useQuery<WebsitePageviewsData>({
-    queryKey: ['websites:pageviews', { websiteId, compare, ...filterParams }],
-    queryFn: () => get(`/websites/${websiteId}/pageviews`, { compare, ...filterParams }),
+    queryKey: ['websites:pageviews', { websiteId, compare, ...queryParams }],
+    queryFn: () => get(`/websites/${websiteId}/pageviews`, { compare, ...queryParams }),
     enabled: !!websiteId,
     ...options,
   });

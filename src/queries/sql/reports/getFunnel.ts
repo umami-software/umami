@@ -126,7 +126,7 @@ async function clickhouseQuery(
     steps,
     windowMinutes,
   );
-  const { filterQuery, filterParams: filterParams } = await parseFilters(websiteId, criteria);
+  const { filterQuery, queryParams } = await parseFilters(criteria);
 
   function getFunnelQuery(
     steps: { type: string; value: string }[],
@@ -136,7 +136,7 @@ async function clickhouseQuery(
     levelQuery: string;
     sumQuery: string;
     stepFilterQuery: string;
-    params: { [key: string]: string };
+    params: Record<string, string>;
   } {
     return steps.reduce(
       (pv, cv, i) => {
@@ -215,7 +215,7 @@ async function clickhouseQuery(
       startDate,
       endDate,
       ...params,
-      ...filterParams,
+      ...queryParams,
     },
   ).then(formatResults(steps));
 }

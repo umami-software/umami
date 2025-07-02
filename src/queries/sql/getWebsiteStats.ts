@@ -5,11 +5,17 @@ import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 import { EVENT_COLUMNS } from '@/lib/constants';
 
+export interface WebsiteStatsData {
+  pageviews: number;
+  visitors: number;
+  visits: number;
+  bounces: number;
+  totaltime: number;
+}
+
 export async function getWebsiteStats(
   ...args: [websiteId: string, filters: QueryFilters]
-): Promise<
-  { pageviews: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
-> {
+): Promise<WebsiteStatsData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -19,12 +25,11 @@ export async function getWebsiteStats(
 async function relationalQuery(
   websiteId: string,
   filters: QueryFilters,
-): Promise<
-  { pageviews: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
-> {
+): Promise<WebsiteStatsData[]> {
   const { getTimestampDiffSQL, parseFilters, rawQuery } = prisma;
-  const { filterQuery, joinSession, filterParams } = await parseFilters(websiteId, {
+  const { filterQuery, joinSessionQuery, queryParams } = await parseFilters({
     ...filters,
+    websiteId,
     eventType: EVENT_TYPE.pageView,
   });
 
@@ -44,7 +49,7 @@ async function relationalQuery(
         min(website_event.created_at) as "min_time",
         max(website_event.created_at) as "max_time"
       from website_event
-        ${joinSession}
+        ${joinSessionQuery}
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
         and event_type = {{eventType}}
@@ -52,19 +57,18 @@ async function relationalQuery(
       group by 1, 2
     ) as t
     `,
-    filterParams,
+    queryParams,
   );
 }
 
 async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
-): Promise<
-  { pageviews: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
-> {
+): Promise<WebsiteStatsData[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, filterParams } = await parseFilters(websiteId, {
+  const { filterQuery, queryParams } = await parseFilters({
     ...filters,
+    websiteId,
     eventType: EVENT_TYPE.pageView,
   });
 
@@ -117,5 +121,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, filterParams).then(result => result?.[0]);
+  return rawQuery(sql, queryParams).then(result => result?.[0]);
 }

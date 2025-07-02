@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { canViewWebsite } from '@/lib/auth';
 import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { getValues } from '@/queries';
-import { parseRequest, getRequestDateRange } from '@/lib/request';
+import { parseRequest, getQueryFilters } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 
 export async function GET(
@@ -23,7 +23,7 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { type, search } = query;
+  const { type } = query;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
@@ -33,9 +33,9 @@ export async function GET(
     return badRequest('Invalid type.');
   }
 
-  const { startDate, endDate } = await getRequestDateRange(query);
+  const filters = await getQueryFilters(query);
 
-  const values = await getValues(websiteId, FILTER_COLUMNS[type], startDate, endDate, search);
+  const values = await getValues(websiteId, FILTER_COLUMNS[type], { ...filters });
 
   return json(values.filter(n => n).sort());
 }

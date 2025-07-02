@@ -31,7 +31,7 @@ async function relationalQuery(
   const { getDateSQL, getDayDiffQuery, getCastColumnQuery, rawQuery, parseFilters } = prisma;
   const unit = 'day';
 
-  const { filterQuery, filterParams } = await parseFilters(websiteId, criteria);
+  const { filterQuery, queryParams } = await parseFilters(criteria);
 
   return rawQuery(
     `
@@ -85,7 +85,7 @@ async function relationalQuery(
       websiteId,
       startDate,
       endDate,
-      ...filterParams,
+      ...queryParams,
     },
   );
 }
@@ -98,7 +98,7 @@ async function clickhouseQuery(
   const { getDateSQL, rawQuery, parseFilters } = clickhouse;
   const unit = 'day';
 
-  const { filterQuery, filterParams } = await parseFilters(websiteId, criteria);
+  const { filterQuery, queryParams } = await parseFilters(criteria);
 
   return rawQuery(
     `
@@ -154,7 +154,7 @@ async function clickhouseQuery(
       websiteId,
       startDate,
       endDate,
-      ...filterParams,
+      ...queryParams,
     },
   );
 }

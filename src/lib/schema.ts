@@ -2,6 +2,22 @@ import { z } from 'zod';
 import { isValidTimezone } from '@/lib/date';
 import { UNIT_TYPES } from './constants';
 
+export const timezoneParam = z.string().refine(value => isValidTimezone(value), {
+  message: 'Invalid timezone',
+});
+
+export const unitParam = z.string().refine(value => UNIT_TYPES.includes(value), {
+  message: 'Invalid unit',
+});
+
+export const dateRangeParams = {
+  startAt: z.coerce.number(),
+  endAt: z.coerce.number(),
+  timezone: timezoneParam.optional(),
+  unit: unitParam.optional(),
+  compare: z.string().optional(),
+};
+
 export const filterParams = {
   path: z.string().optional(),
   referrer: z.string().optional(),
@@ -22,17 +38,13 @@ export const filterParams = {
 export const pagingParams = {
   page: z.coerce.number().int().positive().optional(),
   pageSize: z.coerce.number().int().positive().optional(),
-  orderBy: z.string().optional(),
   search: z.string().optional(),
 };
 
-export const timezoneParam = z.string().refine(value => isValidTimezone(value), {
-  message: 'Invalid timezone',
-});
-
-export const unitParam = z.string().refine(value => UNIT_TYPES.includes(value), {
-  message: 'Invalid unit',
-});
+export const sortingParams = {
+  orderBy: z.string().optional(),
+  sortDescending: z.string().optional(),
+};
 
 export const userRoleParam = z.enum(['admin', 'user', 'view-only']);
 
@@ -86,11 +98,11 @@ export const reportParms = {
   dateRange: z.object({
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
-    num: z.coerce.number().optional(),
-    offset: z.coerce.number().optional(),
     timezone: timezoneParam.optional(),
     unit: unitParam.optional(),
-    value: z.string().optional(),
+    compare: z.string().optional(),
+    compareStartDate: z.coerce.date().optional(),
+    compareEndDate: z.coerce.date().optional(),
   }),
 };
 
@@ -191,7 +203,7 @@ export const reportSchema = z.intersection(reportBaseSchema, reportTypeSchema);
 export const reportResultSchema = z.intersection(
   z.object({
     ...reportParms,
-    ...filterParams,
+    filters: z.object({ ...filterParams }),
   }),
   reportTypeSchema,
 );

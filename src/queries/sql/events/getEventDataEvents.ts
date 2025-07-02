@@ -23,7 +23,7 @@ export async function getEventDataEvents(
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
   const { event } = filters;
-  const { filterParams } = await parseFilters(websiteId, filters);
+  const { queryParams } = await parseFilters(filters);
 
   if (event) {
     return rawQuery(
@@ -43,7 +43,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       group by website_event.event_name, event_data.data_key, event_data.data_type, event_data.string_value
       order by 1 asc, 2 asc, 3 asc, 5 desc
       `,
-      filterParams,
+      queryParams,
     );
   }
 
@@ -63,7 +63,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     order by 1 asc, 2 asc
     limit 500
     `,
-    filterParams,
+    queryParams,
   );
 }
 
@@ -73,7 +73,7 @@ async function clickhouseQuery(
 ): Promise<{ eventName: string; propertyName: string; dataType: number; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { event } = filters;
-  const { filterParams } = await parseFilters(websiteId, filters);
+  const { queryParams } = await parseFilters(filters);
 
   if (event) {
     return rawQuery(
@@ -92,7 +92,7 @@ async function clickhouseQuery(
       order by 1 asc, 2 asc, 3 asc, 5 desc
       limit 500
       `,
-      filterParams,
+      queryParams,
     );
   }
 
@@ -110,6 +110,6 @@ async function clickhouseQuery(
     order by 1 asc, 2 asc
     limit 500
     `,
-    filterParams,
+    queryParams,
   );
 }

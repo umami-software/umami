@@ -1,7 +1,7 @@
 import { Prisma, User } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
 import prisma from '@/lib/prisma';
-import { PageResult, Role, PageParams } from '@/lib/types';
+import { PageResult, Role, QueryFilters } from '@/lib/types';
 import { getRandomChars } from '@/lib/crypto';
 import UserFindManyArgs = Prisma.UserFindManyArgs;
 
@@ -49,9 +49,9 @@ export async function getUserByUsername(username: string, options: GetUserOption
 
 export async function getUsers(
   criteria: UserFindManyArgs,
-  pageParams?: PageParams,
+  filters: QueryFilters = {},
 ): Promise<PageResult<User[]>> {
-  const { search } = pageParams;
+  const { search } = filters;
 
   const where: Prisma.UserWhereInput = {
     ...criteria.where,
@@ -68,7 +68,7 @@ export async function getUsers(
     {
       orderBy: 'createdAt',
       sortDescending: true,
-      ...pageParams,
+      ...filters,
     },
   );
 }

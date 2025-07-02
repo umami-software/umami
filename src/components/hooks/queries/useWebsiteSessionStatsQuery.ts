@@ -1,10 +1,7 @@
 import { useApi } from '../useApi';
 import { useFilterParams } from '../useFilterParams';
 
-export function useWebsiteSessionStatsQuery(
-  websiteId: string,
-  options?: { [key: string]: string },
-) {
+export function useWebsiteSessionStatsQuery(websiteId: string, options?: Record<string, string>) {
   const { get, useQuery } = useApi();
   const params = useFilterParams(websiteId);
 

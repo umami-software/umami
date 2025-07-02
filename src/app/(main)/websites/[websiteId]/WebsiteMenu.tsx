@@ -11,13 +11,12 @@ import {
 import { Fragment } from 'react';
 import { More, Share, Edit } from '@/components/icons';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { InputItem } from '@/lib/types';
 
 export function WebsiteMenu({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
   const { router, updateParams, renderUrl } = useNavigation();
 
-  const menuItems: InputItem[] = [
+  const menuItems = [
     { id: 'share', label: formatMessage(labels.share), icon: <Share /> },
     { id: 'edit', label: formatMessage(labels.edit), icon: <Edit />, seperator: true },
   ];

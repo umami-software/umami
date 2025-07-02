@@ -15,7 +15,7 @@ export function useMessages(): any {
       id: string;
       defaultMessage: string;
     },
-    values?: { [key: string]: string },
+    values?: Record<string, string>,
     opts?: any,
   ) => {
     return descriptor ? intl.formatMessage(descriptor, values, opts) : null;

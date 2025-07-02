@@ -15,7 +15,7 @@ export function useWebsiteMetricsQuery(
   options?: ReactQueryOptions<WebsiteMetricsData>,
 ) {
   const { get, useQuery } = useApi();
-  const filterParams = useFilterParams(websiteId);
+  const queryParams = useFilterParams(websiteId);
   const searchParams = useSearchParams();
 
   return useQuery<WebsiteMetricsData>({
@@ -23,13 +23,13 @@ export function useWebsiteMetricsQuery(
       'websites:metrics',
       {
         websiteId,
-        ...filterParams,
+        ...queryParams,
         ...params,
       },
     ],
     queryFn: async () =>
       get(`/websites/${websiteId}/metrics`, {
-        ...filterParams,
+        ...queryParams,
         [searchParams.get('view')]: undefined,
         ...params,
       }),

@@ -1,9 +1,10 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { QueryFilters } from '@/lib/types';
 
 export async function getSessionActivity(
-  ...args: [websiteId: string, sessionId: string, startDate: Date, endDate: Date]
+  ...args: [websiteId: string, sessionId: string, filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -11,12 +12,9 @@ export async function getSessionActivity(
   });
 }
 
-async function relationalQuery(
-  websiteId: string,
-  sessionId: string,
-  startDate: Date,
-  endDate: Date,
-) {
+async function relationalQuery(websiteId: string, sessionId: string, filters: QueryFilters) {
+  const { startDate, endDate } = filters;
+
   return prisma.client.websiteEvent.findMany({
     where: {
       sessionId,
@@ -28,13 +26,9 @@ async function relationalQuery(
   });
 }
 
-async function clickhouseQuery(
-  websiteId: string,
-  sessionId: string,
-  startDate: Date,
-  endDate: Date,
-) {
+async function clickhouseQuery(websiteId: string, sessionId: string, filters: QueryFilters) {
   const { rawQuery } = clickhouse;
+  const { startDate, endDate } = filters;
 
   return rawQuery(
     `

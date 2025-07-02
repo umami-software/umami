@@ -3,7 +3,7 @@ import { json, unauthorized } from '@/lib/response';
 import { getAllUserWebsitesIncludingTeamOwner } from '@/queries/prisma/website';
 import { getEventUsage } from '@/queries/sql/events/getEventUsage';
 import { getEventDataUsage } from '@/queries/sql/events/getEventDataUsage';
-import { parseRequest, getRequestDateRange } from '@/lib/request';
+import { parseRequest, getQueryFilters } from '@/lib/request';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const schema = z.object({
@@ -22,14 +22,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
   }
 
   const { userId } = await params;
-  const { startDate, endDate } = await getRequestDateRange(query);
+  const filters = await getQueryFilters(query);
 
   const websites = await getAllUserWebsitesIncludingTeamOwner(userId);
 
   const websiteIds = websites.map(a => a.id);
 
-  const websiteEventUsage = await getEventUsage(websiteIds, startDate, endDate);
-  const eventDataUsage = await getEventDataUsage(websiteIds, startDate, endDate);
+  const websiteEventUsage = await getEventUsage(websiteIds, filters);
+  const eventDataUsage = await getEventDataUsage(websiteIds, filters);
 
   const websiteUsage = websites.map(a => ({
     websiteId: a.id,

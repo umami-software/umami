@@ -12,8 +12,9 @@ export async function getWebsiteDateRange(...args: [websiteId: string]) {
 
 async function relationalQuery(websiteId: string) {
   const { rawQuery, parseFilters } = prisma;
-  const { filterParams } = await parseFilters(websiteId, {
+  const { queryParams } = await parseFilters({
     startDate: new Date(DEFAULT_RESET_DATE),
+    websiteId,
   });
 
   const result = await rawQuery(
@@ -25,7 +26,7 @@ async function relationalQuery(websiteId: string) {
     where website_id = {{websiteId::uuid}}
       and created_at >= {{startDate}}
     `,
-    filterParams,
+    queryParams,
   );
 
   return result[0] ?? null;
@@ -33,8 +34,9 @@ async function relationalQuery(websiteId: string) {
 
 async function clickhouseQuery(websiteId: string) {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterParams } = await parseFilters(websiteId, {
+  const { queryParams } = await parseFilters({
     startDate: new Date(DEFAULT_RESET_DATE),
+    websiteId,
   });
 
   const result = await rawQuery(
@@ -46,7 +48,7 @@ async function clickhouseQuery(websiteId: string) {
     where website_id = {websiteId:UUID}
       and created_at >= {startDate:DateTime64}
     `,
-    filterParams,
+    queryParams,
   );
 
   return result[0] ?? null;

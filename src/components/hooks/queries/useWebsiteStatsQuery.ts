@@ -19,15 +19,14 @@ export interface WebsiteStatsData {
 
 export function useWebsiteStatsQuery(
   websiteId: string,
-  compare?: string,
   options?: UseQueryOptions<WebsiteStatsData, Error, WebsiteStatsData>,
 ) {
   const { get, useQuery } = useApi();
-  const params = useFilterParams(websiteId);
+  const filterParams = useFilterParams(websiteId);
 
   return useQuery<WebsiteStatsData>({
-    queryKey: ['websites:stats', { websiteId, ...params, compare }],
-    queryFn: () => get(`/websites/${websiteId}/stats`, { ...params, compare }),
+    queryKey: ['websites:stats', { websiteId, ...filterParams }],
+    queryFn: () => get(`/websites/${websiteId}/stats`, { ...filterParams }),
     enabled: !!websiteId,
     ...options,
   });

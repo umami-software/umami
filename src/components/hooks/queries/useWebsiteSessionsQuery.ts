@@ -5,7 +5,7 @@ import { useFilterParams } from '@/components/hooks/useFilterParams';
 
 export function useWebsiteSessionsQuery(
   websiteId: string,
-  params?: { [key: string]: string | number },
+  params?: Record<string, string | number>,
 ) {
   const { get } = useApi();
   const { modified } = useModified(`sessions`);

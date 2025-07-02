@@ -13,7 +13,7 @@ import {
   VIDEO_DOMAINS,
   PAID_AD_PARAMS,
 } from '@/lib/constants';
-import { getRequestFilters, getRequestDateRange, parseRequest } from '@/lib/request';
+import { parseRequest, getQueryFilters } from '@/lib/request';
 import { json, unauthorized, badRequest } from '@/lib/response';
 import { getPageviewMetrics, getSessionMetrics, getChannelMetrics } from '@/queries';
 import { filterParams } from '@/lib/schema';
@@ -45,13 +45,8 @@ export async function GET(
     return unauthorized();
   }
 
-  const { startDate, endDate } = await getRequestDateRange(query);
   const column = FILTER_COLUMNS[type] || type;
-  const filters = {
-    ...getRequestFilters(query),
-    startDate,
-    endDate,
-  };
+  const filters = await getQueryFilters({ ...query, websiteId });
 
   if (search) {
     filters[type] = {

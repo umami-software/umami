@@ -3,7 +3,6 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { PageviewsChart } from '@/components/metrics/PageviewsChart';
 import { useWebsitePageviewsQuery } from '@/components/hooks/queries/useWebsitePageviewsQuery';
 import { useDateRange } from '@/components/hooks';
-import { Panel } from '@/components/common/Panel';
 
 export function WebsiteChart({
   websiteId,
@@ -48,16 +47,14 @@ export function WebsiteChart({
   }, [data, startDate, endDate, unit]);
 
   return (
-    <Panel height="520px">
-      <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error}>
-        <PageviewsChart
-          key={value}
-          data={chartData}
-          minDate={startDate}
-          maxDate={endDate}
-          unit={unit}
-        />
-      </LoadingPanel>
-    </Panel>
+    <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error}>
+      <PageviewsChart
+        key={value}
+        data={chartData}
+        minDate={startDate}
+        maxDate={endDate}
+        unit={unit}
+      />
+    </LoadingPanel>
   );
 }

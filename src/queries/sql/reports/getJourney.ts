@@ -57,7 +57,7 @@ async function relationalQuery(
     sequenceQuery: string;
     startStepQuery: string;
     endStepQuery: string;
-    params: { [key: string]: string };
+    params: Record<string, string>;
   } {
     const params = {};
     let sequenceQuery = '';
@@ -108,7 +108,7 @@ async function relationalQuery(
       sequenceQuery,
       startStepQuery,
       endStepQuery,
-      filterParams: params,
+      params,
     };
   }
 
@@ -167,7 +167,7 @@ async function clickhouseQuery(
     sequenceQuery: string;
     startStepQuery: string;
     endStepQuery: string;
-    params: { [key: string]: string };
+    params: Record<string, string>;
   } {
     const params = {};
     let sequenceQuery = '';
@@ -218,11 +218,11 @@ async function clickhouseQuery(
       sequenceQuery,
       startStepQuery,
       endStepQuery,
-      filterParams: params,
+      params,
     };
   }
 
-  const { filterQuery, filterParams: filterParams } = await parseFilters(websiteId, filters);
+  const { filterQuery, queryParams } = await parseFilters(filters);
 
   return rawQuery(
     `
@@ -249,7 +249,7 @@ async function clickhouseQuery(
       startDate,
       endDate,
       ...params,
-      ...filterParams,
+      ...queryParams,
     },
   ).then(parseResult);
 }

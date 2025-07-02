@@ -4,7 +4,7 @@ import { useFilterParams } from '@/components/hooks/useFilterParams';
 
 export function useWebsiteSessionsWeeklyQuery(
   websiteId: string,
-  params?: { [key: string]: string | number },
+  params?: Record<string, string | number>,
 ) {
   const { get, useQuery } = useApi();
   const { modified } = useModified(`sessions`);

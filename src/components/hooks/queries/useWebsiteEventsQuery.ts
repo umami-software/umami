@@ -5,11 +5,11 @@ import { ReactQueryOptions } from '@/lib/types';
 
 export function useWebsiteEventsQuery(websiteId: string, options?: ReactQueryOptions<any>) {
   const { get } = useApi();
-  const filterParams = useFilterParams(websiteId);
+  const queryParams = useFilterParams(websiteId);
 
   return usePagedQuery({
-    queryKey: ['websites:events', { websiteId, ...filterParams }],
-    queryFn: () => get(`/websites/${websiteId}/events`, { ...filterParams, pageSize: 20 }),
+    queryKey: ['websites:events', { websiteId, ...queryParams }],
+    queryFn: () => get(`/websites/${websiteId}/events`, { ...queryParams, pageSize: 20 }),
     enabled: !!websiteId,
     ...options,
   });

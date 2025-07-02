@@ -28,8 +28,7 @@ async function relationalQuery(
 ) {
   const column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = prisma;
-  const { filterQuery, joinSession, filterParams } = await parseFilters(
-    websiteId,
+  const { filterQuery, joinSessionQuery, queryParams } = await parseFilters(
     {
       ...filters,
       eventType: EVENT_TYPE.pageView,
@@ -47,7 +46,7 @@ async function relationalQuery(
       count(distinct website_event.session_id) y
       ${includeCountry ? ', country' : ''}
     from website_event
-    ${joinSession}
+    ${joinSessionQuery}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_type = {{eventType}}
@@ -58,7 +57,7 @@ async function relationalQuery(
     limit ${limit}
     offset ${offset}
     `,
-    filterParams,
+    queryParams,
   );
 }
 
@@ -71,7 +70,7 @@ async function clickhouseQuery(
 ): Promise<{ x: string; y: number }[]> {
   const column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = clickhouse;
-  const { filterQuery, filterParams } = await parseFilters(websiteId, {
+  const { filterQuery, queryParams } = await parseFilters({
     ...filters,
     eventType: EVENT_TYPE.pageView,
   });
@@ -115,5 +114,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, filterParams);
+  return rawQuery(sql, queryParams);
 }

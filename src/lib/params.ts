@@ -18,7 +18,7 @@ export function isSearchOperator(operator: any) {
   return [OPERATORS.contains, OPERATORS.doesNotContain].includes(operator);
 }
 
-export function filtersToArray(filters: QueryFilters = {}, options: QueryOptions = {}) {
+export function filtersToArray(filters: QueryFilters, options: QueryOptions = {}) {
   return Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
 

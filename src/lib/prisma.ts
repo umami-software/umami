@@ -2,12 +2,9 @@ import debug from 'debug';
 import { PrismaClient } from '@/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
-import { formatInTimeZone } from 'date-fns-tz';
 import { MYSQL, POSTGRESQL, getDatabaseType } from '@/lib/db';
 import { SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE } from './constants';
-import { fetchWebsite } from './load';
-import { maxDate } from './date';
-import { QueryFilters, QueryOptions, PageParams } from './types';
+import { QueryOptions, QueryFilters } from './types';
 import { filtersToArray } from './params';
 
 const log = debug('umami:prisma');
@@ -20,14 +17,6 @@ const PRISMA_LOG_OPTIONS = {
       level: 'query',
     },
   ],
-};
-
-const MYSQL_DATE_FORMATS = {
-  minute: '%Y-%m-%dT%H:%i:00',
-  hour: '%Y-%m-%d %H:00:00',
-  day: '%Y-%m-%d 00:00:00',
-  month: '%Y-%m-01 00:00:00',
-  year: '%Y-01-01 00:00:00',
 };
 
 const POSTGRESQL_DATE_FORMATS = {
@@ -75,59 +64,23 @@ function getCastColumnQuery(field: string, type: string): string {
 }
 
 function getDateSQL(field: string, unit: string, timezone?: string): string {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    if (timezone) {
-      return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${POSTGRESQL_DATE_FORMATS[unit]}')`;
-    }
-    return `to_char(date_trunc('${unit}', ${field}), '${POSTGRESQL_DATE_FORMATS[unit]}')`;
+  if (timezone) {
+    return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${POSTGRESQL_DATE_FORMATS[unit]}')`;
   }
 
-  if (db === MYSQL) {
-    if (timezone) {
-      const tz = formatInTimeZone(new Date(), timezone, 'xxx');
-      return `date_format(convert_tz(${field},'+00:00','${tz}'), '${MYSQL_DATE_FORMATS[unit]}')`;
-    }
-    return `date_format(${field}, '${MYSQL_DATE_FORMATS[unit]}')`;
-  }
+  return `to_char(date_trunc('${unit}', ${field}), '${POSTGRESQL_DATE_FORMATS[unit]}')`;
 }
 
 function getDateWeeklySQL(field: string, timezone?: string) {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    return `concat(extract(dow from (${field} at time zone '${timezone}')), ':', to_char((${field} at time zone '${timezone}'), 'HH24'))`;
-  }
-
-  if (db === MYSQL) {
-    const tz = formatInTimeZone(new Date(), timezone, 'xxx');
-    return `date_format(convert_tz(${field},'+00:00','${tz}'), '%w:%H')`;
-  }
+  return `concat(extract(dow from (${field} at time zone '${timezone}')), ':', to_char((${field} at time zone '${timezone}'), 'HH24'))`;
 }
 
 export function getTimestampSQL(field: string) {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    return `floor(extract(epoch from ${field}))`;
-  }
-
-  if (db === MYSQL) {
-    return `UNIX_TIMESTAMP(${field})`;
-  }
+  return `floor(extract(epoch from ${field}))`;
 }
 
 function getTimestampDiffSQL(field1: string, field2: string): string {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    return `floor(extract(epoch from (${field2} - ${field1})))`;
-  }
-
-  if (db === MYSQL) {
-    return `timestampdiff(second, ${field1}, ${field2})`;
-  }
+  return `floor(extract(epoch from (${field2} - ${field1})))`;
 }
 
 function getSearchSQL(column: string, param: string = 'search'): string {
@@ -156,7 +109,7 @@ function mapFilter(column: string, operator: string, name: string, type: string 
   }
 }
 
-function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}): string {
+function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}): string {
   const query = filtersToArray(filters, options).reduce((arr, { name, column, operator }) => {
     if (column) {
       arr.push(`and ${mapFilter(column, operator, name)}`);
@@ -174,7 +127,7 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}):
   return query.join('\n');
 }
 
-function getDateQuery(filters: QueryFilters = {}) {
+function getDateQuery(filters: Record<string, any>) {
   const { startDate, endDate } = filters;
 
   if (startDate) {
@@ -188,38 +141,32 @@ function getDateQuery(filters: QueryFilters = {}) {
   return '';
 }
 
-function getFilterParams(filters: QueryFilters = {}) {
-  return filtersToArray(filters).reduce((obj, { name, operator, value }) => {
-    obj[name] = [OPERATORS.contains, OPERATORS.doesNotContain].includes(operator)
-      ? `%${value}%`
-      : value;
+function getQueryParams(filters: Record<string, any>) {
+  return {
+    ...filters,
+    ...filtersToArray(filters).reduce((obj, { name, operator, value }) => {
+      obj[name] = [OPERATORS.contains, OPERATORS.doesNotContain].includes(operator)
+        ? `%${value}%`
+        : value;
 
-    return obj;
-  }, {});
+      return obj;
+    }, {}),
+  };
 }
 
-async function parseFilters(
-  websiteId: string,
-  filters: QueryFilters = {},
-  options: QueryOptions = {},
-) {
-  const website = await fetchWebsite(websiteId);
+async function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   const joinSession = Object.keys(filters).find(key =>
     ['referrer', ...SESSION_COLUMNS].includes(key),
   );
 
   return {
-    joinSession:
+    joinSessionQuery:
       options?.joinSession || joinSession
         ? `inner join session on website_event.session_id = session.session_id`
         : '',
-    filterQuery: getFilterQuery(filters, options),
     dateQuery: getDateQuery(filters),
-    filterParams: {
-      ...getFilterParams(filters),
-      websiteId,
-      startDate: maxDate(filters.startDate, website?.resetAt),
-    },
+    filterQuery: getFilterQuery(filters, options),
+    queryParams: getQueryParams(filters),
   };
 }
 
@@ -251,8 +198,8 @@ async function rawQuery(sql: string, data: object): Promise<any> {
     : client.$queryRawUnsafe(query, ...params);
 }
 
-async function pagedQuery<T>(model: string, criteria: T, pageParams: PageParams) {
-  const { page = 1, pageSize, orderBy, sortDescending = false } = pageParams || {};
+async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters) {
+  const { page = 1, pageSize, orderBy, sortDescending = false } = filters || {};
   const size = +pageSize || DEFAULT_PAGE_SIZE;
 
   const data = await client[model].findMany({
@@ -276,10 +223,10 @@ async function pagedQuery<T>(model: string, criteria: T, pageParams: PageParams)
 
 async function pagedRawQuery(
   query: string,
-  queryParams: { [key: string]: any },
-  pageParams: PageParams = {},
+  filters: QueryFilters,
+  queryParams: Record<string, any>,
 ) {
-  const { page = 1, pageSize, orderBy, sortDescending = false } = pageParams;
+  const { page = 1, pageSize, orderBy, sortDescending = false } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
   const direction = sortDescending ? 'desc' : 'asc';
@@ -310,11 +257,11 @@ function getQueryMode(): { mode?: 'default' | 'insensitive' } {
   return {};
 }
 
-function getSearchParameters(query: string, filters: { [key: string]: any }[]) {
+function getSearchParameters(query: string, filters: Record<string, any>[]) {
   if (!query) return;
 
   const mode = getQueryMode();
-  const parseFilter = (filter: { [key: string]: any }) => {
+  const parseFilter = (filter: Record<string, any>) => {
     const [[key, value]] = Object.entries(filter);
 
     return {

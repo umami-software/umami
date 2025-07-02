@@ -2,11 +2,9 @@ import { ClickHouseClient, createClient } from '@clickhouse/client';
 import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
 import { CLICKHOUSE } from '@/lib/db';
-import { getWebsite } from '@/queries';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from './constants';
-import { maxDate } from './date';
 import { filtersToArray } from './params';
-import { PageParams, QueryFilters, QueryOptions } from './types';
+import { QueryFilters, QueryOptions } from './types';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   utc: '%Y-%m-%dT%H:%i:%SZ',
@@ -89,7 +87,7 @@ function mapFilter(column: string, operator: string, name: string, type: string 
   }
 }
 
-function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) {
+function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}) {
   const query = filtersToArray(filters, options).reduce((arr, { name, column, operator }) => {
     if (column) {
       arr.push(`and ${mapFilter(column, operator, name)}`);
@@ -105,7 +103,7 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) 
   return query.join('\n');
 }
 
-function getDateQuery(filters: QueryFilters = {}) {
+function getDateQuery(filters: Record<string, any>) {
   const { startDate, endDate, timezone } = filters;
 
   if (startDate) {
@@ -125,36 +123,33 @@ function getDateQuery(filters: QueryFilters = {}) {
   return '';
 }
 
-function getFilterParams(filters: QueryFilters = {}) {
-  return filtersToArray(filters).reduce((obj, { name, value }) => {
-    if (name && value !== undefined) {
-      obj[name] = value;
-    }
-
-    return obj;
-  }, {});
-}
-
-async function parseFilters(websiteId: string, filters: QueryFilters = {}, options?: QueryOptions) {
-  const website = await getWebsite(websiteId);
-
+function getQueryParams(filters: Record<string, any>) {
   return {
-    filterQuery: getFilterQuery(filters, options),
-    dateQuery: getDateQuery(filters),
-    filterParams: {
-      ...getFilterParams(filters),
-      websiteId,
-      startDate: maxDate(filters.startDate, new Date(website?.resetAt)),
-    },
+    ...filters,
+    ...filtersToArray(filters).reduce((obj, { name, value }) => {
+      if (name && value !== undefined) {
+        obj[name] = value;
+      }
+
+      return obj;
+    }, {}),
   };
 }
 
-async function pagedQuery(
+async function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
+  return {
+    filterQuery: getFilterQuery(filters, options),
+    dateQuery: getDateQuery(filters),
+    queryParams: getQueryParams(filters),
+  };
+}
+
+async function pagedRawQuery(
   query: string,
-  queryParams: { [key: string]: any },
-  pageParams: PageParams = {},
+  queryParams: Record<string, any>,
+  filters: QueryFilters,
 ) {
-  const { page = 1, pageSize, orderBy, sortDescending = false } = pageParams;
+  const { page = 1, pageSize, orderBy, sortDescending = false } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
   const direction = sortDescending ? 'desc' : 'asc';
@@ -236,7 +231,7 @@ export default {
   getFilterQuery,
   getUTCString,
   parseFilters,
-  pagedQuery,
+  pagedRawQuery,
   findUnique,
   findFirst,
   rawQuery,

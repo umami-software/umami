@@ -9,11 +9,11 @@ export function useNavigation() {
   const [, websiteId] = pathname.match(/\/websites\/([a-f0-9-]+)/) || [];
   const query = Object.fromEntries(searchParams);
 
-  const updateParams = (params?: { [key: string]: string | number }) => {
+  const updateParams = (params?: Record<string, string | number>) => {
     return !params ? pathname : buildUrl(pathname, { ...query, ...params });
   };
 
-  const renderUrl = (path: string, params?: { [key: string]: string | number } | false) => {
+  const renderUrl = (path: string, params?: Record<string, string | number> | false) => {
     return buildUrl(
       teamId ? `/teams/${teamId}${path}` : path,
       params === false ? {} : { ...query, ...params },

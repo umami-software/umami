@@ -13,7 +13,6 @@ export interface MetricCardProps {
   formatValue?: (n: any) => string;
   showLabel?: boolean;
   showChange?: boolean;
-  showPrevious?: boolean;
 }
 
 export const MetricCard = ({
@@ -24,13 +23,11 @@ export const MetricCard = ({
   formatValue = formatNumber,
   showLabel = true,
   showChange = false,
-  showPrevious = false,
 }: MetricCardProps) => {
   const diff = value - change;
   const pct = ((value - diff) / diff) * 100;
   const props = useSpring({ x: Number(value) || 0, from: { x: 0 } });
   const changeProps = useSpring({ x: Number(pct) || 0, from: { x: 0 } });
-  const prevProps = useSpring({ x: Number(diff) || 0, from: { x: 0 } });
 
   return (
     <Column
@@ -53,9 +50,6 @@ export const MetricCard = ({
         <ChangeLabel value={change} title={formatValue(change)} reverseColors={reverseColors}>
           <AnimatedDiv>{changeProps?.x?.to(x => `${Math.abs(~~x)}%`)}</AnimatedDiv>
         </ChangeLabel>
-      )}
-      {showPrevious && (
-        <AnimatedDiv title={diff.toString()}>{prevProps?.x?.to(x => formatValue(x))}</AnimatedDiv>
       )}
     </Column>
   );
