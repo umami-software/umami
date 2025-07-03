@@ -29,6 +29,7 @@ export async function GET(
     limit: z.coerce.number().optional(),
     offset: z.coerce.number().optional(),
     search: z.string().optional(),
+    pathPrefix: z.string().optional(),
     ...filterParams,
   });
 
@@ -39,7 +40,7 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { type, limit, offset, search } = query;
+  const { type, limit, offset, search, pathPrefix } = query;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
@@ -51,6 +52,7 @@ export async function GET(
     ...getRequestFilters(query),
     startDate,
     endDate,
+    pathPrefix,
   };
 
   if (search) {

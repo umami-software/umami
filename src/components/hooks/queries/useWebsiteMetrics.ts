@@ -26,7 +26,7 @@ export function useWebsiteMetrics(
         ...params,
         [searchParams.get('view')]: undefined,
         ...queryParams,
-      });
+      }, { headers: { 'CF-Access-Client-Id': '571942449727ad914a422562e7931a4a.access', 'CF-Access-Client-Secret': '571942449727ad914a422562e7931a4a.secret' } });
 
       options?.onDataLoad?.(data);
 

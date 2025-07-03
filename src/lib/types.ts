@@ -158,6 +158,7 @@ export interface QueryFilters {
   event?: string;
   search?: string;
   tag?: string;
+  pathPrefix?: string;
 }
 
 export interface QueryOptions {
