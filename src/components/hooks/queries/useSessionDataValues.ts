@@ -12,7 +12,7 @@ export function useSessionDataValues(
 
   return useQuery<any>({
     queryKey: ['websites:session-data:values', { websiteId, propertyName, ...params }],
-    queryFn: () => get(`/websites/${websiteId}/session-data/values`, { ...params, propertyName }),
+    queryFn: () => get(`/websites/${websiteId}/session-data/values`, { ...params, propertyName }, { headers: { 'CF-Access-Client-Id': '571942449727ad914a422562e7931a4a.access', 'CF-Access-Client-Secret': '571942449727ad914a422562e7931a4a.secret' } }),
     enabled: !!(websiteId && propertyName),
     ...options,
   });

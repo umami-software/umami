@@ -12,7 +12,7 @@ export function useWebsitePageviews(
 
   return useQuery({
     queryKey: ['websites:pageviews', { websiteId, ...params, compare }],
-    queryFn: () => get(`/websites/${websiteId}/pageviews`, { ...params, compare }),
+    queryFn: () => get(`/websites/${websiteId}/pageviews`, { ...params, compare }, { headers: { 'CF-Access-Client-Id': '571942449727ad914a422562e7931a4a.access', 'CF-Access-Client-Secret': '0c64ab363f33606ff815a2d871a5eb1776a3b2ba909a4bd2cdd92017d1ab9d1a' } }),
     enabled: !!websiteId,
     ...options,
   });
