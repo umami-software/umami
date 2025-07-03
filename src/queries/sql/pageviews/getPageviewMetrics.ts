@@ -28,7 +28,7 @@ async function relationalQuery(
 ) {
   const column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, joinSession, params } = await parseFilters(
+  const { filterQuery, cohortQuery, joinSession, params } = await parseFilters(
     websiteId,
     {
       ...filters,
@@ -68,6 +68,7 @@ async function relationalQuery(
     select ${column} x,
       ${column === 'referrer_domain' ? 'count(distinct website_event.session_id)' : 'count(*)'} as y
     from website_event
+    ${cohortQuery}
     ${joinSession}
     ${entryExitQuery}
     where website_event.website_id = {{websiteId::uuid}}
@@ -93,7 +94,7 @@ async function clickhouseQuery(
 ): Promise<{ x: string; y: number }[]> {
   const column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   });
@@ -127,6 +128,7 @@ async function clickhouseQuery(
     select ${column} x, 
       ${column === 'referrer_domain' ? 'uniq(session_id)' : 'count(*)'} as y
     from website_event
+    ${cohortQuery}
     ${entryExitQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
@@ -165,6 +167,7 @@ async function clickhouseQuery(
     from (
       select ${columnQuery} as t
       from website_event_stats_hourly website_event
+      ${cohortQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
