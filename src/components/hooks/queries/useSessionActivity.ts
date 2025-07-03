@@ -14,7 +14,7 @@ export function useSessionActivity(
       return get(`/websites/${websiteId}/sessions/${sessionId}/activity`, {
         startAt: +new Date(startDate),
         endAt: +new Date(endDate),
-      });
+      }, { headers: { 'CF-Access-Client-Id': '571942449727ad914a422562e7931a4a.access', 'CF-Access-Client-Secret': '571942449727ad914a422562e7931a4a.secret' } });
     },
     enabled: Boolean(websiteId && sessionId && startDate && endDate),
   });
