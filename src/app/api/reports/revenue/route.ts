@@ -1,8 +1,8 @@
 import { canViewWebsite } from '@/lib/auth';
 import { unauthorized, json } from '@/lib/response';
-import { parseRequest } from '@/lib/request';
+import { parseRequest, getQueryFilters, setWebsiteDate } from '@/lib/request';
 import { reportResultSchema } from '@/lib/schema';
-import { getRevenue } from '@/queries/sql/reports/getRevenue';
+import { getRevenue, RevenuParameters } from '@/queries/sql/reports/getRevenue';
 
 export async function POST(request: Request) {
   const { auth, body, error } = await parseRequest(request, reportResultSchema);
@@ -11,24 +11,16 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const {
-    websiteId,
-    dateRange: { startDate, endDate, unit },
-    parameters: { currency },
-    ...filters
-  } = body;
+  const { websiteId } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const data = await getRevenue(websiteId, {
-    ...filters,
-    startDate: new Date(startDate),
-    endDate: new Date(endDate),
-    unit,
-    currency,
-  });
+  const parameters = await setWebsiteDate(websiteId, body.parameters);
+  const filters = getQueryFilters(body.filters);
+
+  const data = await getRevenue(websiteId, parameters as RevenuParameters, filters);
 
   return json(data);
 }

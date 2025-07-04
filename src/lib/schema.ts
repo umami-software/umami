@@ -11,8 +11,10 @@ export const unitParam = z.string().refine(value => UNIT_TYPES.includes(value), 
 });
 
 export const dateRangeParams = {
-  startAt: z.coerce.number(),
-  endAt: z.coerce.number(),
+  startAt: z.coerce.number().optional(),
+  endAt: z.coerce.number().optional(),
+  startDate: z.coerce.date().optional(),
+  endDate: z.coerce.date().optional(),
   timezone: timezoneParam.optional(),
   unit: unitParam.optional(),
   compare: z.string().optional(),
@@ -33,12 +35,12 @@ export const filterParams = {
   hostname: z.string().optional(),
   language: z.string().optional(),
   event: z.string().optional(),
+  search: z.string().optional(),
 };
 
 export const pagingParams = {
   page: z.coerce.number().int().positive().optional(),
   pageSize: z.coerce.number().int().positive().optional(),
-  search: z.string().optional(),
 };
 
 export const sortingParams = {
@@ -93,23 +95,63 @@ export const reportTypeParam = z.enum([
   'utm',
 ]);
 
-export const reportParms = {
-  websiteId: z.string().uuid(),
-  dateRange: z.object({
-    startDate: z.coerce.date(),
-    endDate: z.coerce.date(),
-    timezone: timezoneParam.optional(),
-    unit: unitParam.optional(),
-    compare: z.string().optional(),
-    compareStartDate: z.coerce.date().optional(),
-    compareEndDate: z.coerce.date().optional(),
-  }),
-};
+export const dateRangeSchema = z.object({ ...dateRangeParams }).superRefine((data, ctx) => {
+  const hasTimestamps = data.startAt !== undefined && data.endAt !== undefined;
+  const hasDates = data.startDate !== undefined && data.endDate !== undefined;
+
+  if (!hasTimestamps && !hasDates) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'You must provide either startAt & endAt or startDate & endDate.',
+    });
+  }
+
+  if (hasTimestamps && hasDates) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Provide either startAt & endAt or startDate & endDate, not both.',
+    });
+  }
+
+  if (data.startAt !== undefined && data.endAt === undefined) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'If you provide startAt, you must also provide endAt.',
+      path: ['endAt'],
+    });
+  }
+
+  if (data.endAt !== undefined && data.startAt === undefined) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'If you provide endAt, you must also provide startAt.',
+      path: ['startAt'],
+    });
+  }
+
+  if (data.startDate !== undefined && data.endDate === undefined) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'If you provide startDate, you must also provide endDate.',
+      path: ['endDate'],
+    });
+  }
+
+  if (data.endDate !== undefined && data.startDate === undefined) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'If you provide endDate, you must also provide startDate.',
+      path: ['startDate'],
+    });
+  }
+});
 
 export const goalReportSchema = z.object({
   type: z.literal('goal'),
   parameters: z
     .object({
+      startDate: z.coerce.date(),
+      endDate: z.coerce.date(),
       type: z.string(),
       value: z.string(),
       operator: z.enum(['count', 'sum', 'average']).optional(),
@@ -126,6 +168,8 @@ export const goalReportSchema = z.object({
 export const funnelReportSchema = z.object({
   type: z.literal('funnel'),
   parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
     window: z.coerce.number().positive(),
     steps: z
       .array(
@@ -142,6 +186,8 @@ export const funnelReportSchema = z.object({
 export const journeyReportSchema = z.object({
   type: z.literal('journey'),
   parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
     steps: z.coerce.number().min(2).max(7),
     startStep: z.string().optional(),
     endStep: z.string().optional(),
@@ -150,15 +196,27 @@ export const journeyReportSchema = z.object({
 
 export const retentionReportSchema = z.object({
   type: z.literal('retention'),
+  parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+    timezone: z.string().optional(),
+  }),
 });
 
 export const utmReportSchema = z.object({
   type: z.literal('utm'),
+  parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+  }),
 });
 
 export const revenueReportSchema = z.object({
   type: z.literal('revenue'),
   parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+    timezone: z.string().optional(),
     currency: z.string(),
   }),
 });
@@ -166,6 +224,8 @@ export const revenueReportSchema = z.object({
 export const attributionReportSchema = z.object({
   type: z.literal('attribution'),
   parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
     model: z.enum(['first-click', 'last-click']),
     type: z.enum(['page', 'event']),
     step: z.string(),
@@ -176,6 +236,8 @@ export const attributionReportSchema = z.object({
 export const breakdownReportSchema = z.object({
   type: z.literal('breakdown'),
   parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
     fields: z.array(fieldsParam),
   }),
 });
@@ -202,7 +264,7 @@ export const reportSchema = z.intersection(reportBaseSchema, reportTypeSchema);
 
 export const reportResultSchema = z.intersection(
   z.object({
-    ...reportParms,
+    websiteId: z.string().uuid(),
     filters: z.object({ ...filterParams }),
   }),
   reportTypeSchema,

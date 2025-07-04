@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { canViewWebsite } from '@/lib/auth';
-import { getQueryFilters, parseRequest } from '@/lib/request';
+import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
 import { dateRangeParams, filterParams } from '@/lib/schema';
 import { getCompareDate } from '@/lib/date';
 import { unauthorized, json } from '@/lib/response';
@@ -27,7 +27,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const filters = await getQueryFilters({ ...query, websiteId });
+  const filters = await setWebsiteDate(websiteId, getQueryFilters(query));
 
   const [pageviews, sessions] = await Promise.all([
     getPageviewStats(websiteId, filters),

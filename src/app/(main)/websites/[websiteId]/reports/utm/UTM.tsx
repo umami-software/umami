@@ -18,10 +18,8 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
   const { formatMessage, labels } = useMessages();
   const { data, error, isLoading } = useResultQuery<any>('utm', {
     websiteId,
-    dateRange: {
-      startDate,
-      endDate,
-    },
+    startDate,
+    endDate,
   });
 
   return (

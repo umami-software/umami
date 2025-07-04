@@ -14,8 +14,9 @@ export async function getSessionStats(...args: [websiteId: string, filters: Quer
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { timezone = 'utc', unit = 'day' } = filters;
   const { getDateSQL, parseFilters, rawQuery } = prisma;
-  const { filterQuery, joinSessionQuery, queryParams } = await parseFilters({
+  const { filterQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
+    websiteId,
     eventType: EVENT_TYPE.pageView,
   });
 
@@ -43,8 +44,9 @@ async function clickhouseQuery(
 ): Promise<{ x: string; y: number }[]> {
   const { timezone = 'utc', unit = 'day' } = filters;
   const { parseFilters, rawQuery, getDateSQL } = clickhouse;
-  const { filterQuery, queryParams } = await parseFilters({
+  const { filterQuery, queryParams } = parseFilters({
     ...filters,
+    websiteId,
     eventType: EVENT_TYPE.pageView,
   });
 

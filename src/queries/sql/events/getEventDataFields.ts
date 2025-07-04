@@ -12,7 +12,7 @@ export async function getEventDataFields(...args: [websiteId: string, filters: Q
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters, getDateSQL } = prisma;
-  const { filterQuery, queryParams } = await parseFilters(filters);
+  const { filterQuery, queryParams } = parseFilters(filters);
 
   return rawQuery(
     `
@@ -43,7 +43,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ propertyName: string; dataType: number; propertyValue: string; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, queryParams } = await parseFilters(filters);
+  const { filterQuery, queryParams } = parseFilters(filters);
 
   return rawQuery(
     `

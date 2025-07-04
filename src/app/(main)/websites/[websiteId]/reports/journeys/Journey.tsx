@@ -22,28 +22,15 @@ export interface JourneyProps {
   endStep?: string;
 }
 
-export function Journey({
-  websiteId,
-  startDate,
-  endDate,
-  steps,
-  startStep,
-  endStep,
-}: JourneyProps) {
+export function Journey({ websiteId, steps, startStep, endStep }: JourneyProps) {
   const [selectedNode, setSelectedNode] = useState(null);
   const [activeNode, setActiveNode] = useState(null);
   const { formatMessage, labels } = useMessages();
   const { data, error, isLoading } = useResultQuery<any>('journey', {
     websiteId,
-    dateRange: {
-      startDate,
-      endDate,
-    },
-    parameters: {
-      steps,
-      startStep,
-      endStep,
-    },
+    steps,
+    startStep,
+    endStep,
   });
 
   useEscapeKey(() => setSelectedNode(null));

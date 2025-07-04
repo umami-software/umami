@@ -4,8 +4,6 @@ import { canViewWebsite } from '@/lib/auth';
 import {
   SESSION_COLUMNS,
   EVENT_COLUMNS,
-  FILTER_COLUMNS,
-  OPERATORS,
   SEARCH_DOMAINS,
   SOCIAL_DOMAINS,
   EMAIL_DOMAINS,
@@ -13,7 +11,7 @@ import {
   VIDEO_DOMAINS,
   PAID_AD_PARAMS,
 } from '@/lib/constants';
-import { parseRequest, getQueryFilters } from '@/lib/request';
+import { parseRequest, getQueryFilters, setWebsiteDate } from '@/lib/request';
 import { json, unauthorized, badRequest } from '@/lib/response';
 import { getPageviewMetrics, getSessionMetrics, getChannelMetrics } from '@/queries';
 import { filterParams } from '@/lib/schema';
@@ -45,20 +43,14 @@ export async function GET(
     return unauthorized();
   }
 
-  const column = FILTER_COLUMNS[type] || type;
-  const filters = await getQueryFilters({ ...query, websiteId });
+  const filters = await setWebsiteDate(websiteId, getQueryFilters(query));
 
   if (search) {
-    filters[type] = {
-      name: type,
-      column,
-      operator: OPERATORS.contains,
-      value: search,
-    };
+    filters[type] = `c.${search}`;
   }
 
   if (SESSION_COLUMNS.includes(type)) {
-    const data = await getSessionMetrics(websiteId, type, filters, limit, offset);
+    const data = await getSessionMetrics(websiteId, { type, limit, offset }, filters);
 
     if (type === 'language') {
       const combined = {};
@@ -80,7 +72,7 @@ export async function GET(
   }
 
   if (EVENT_COLUMNS.includes(type)) {
-    const data = await getPageviewMetrics(websiteId, type, filters, limit, offset);
+    const data = await getPageviewMetrics(websiteId, { type, limit, offset }, filters);
 
     return json(data);
   }

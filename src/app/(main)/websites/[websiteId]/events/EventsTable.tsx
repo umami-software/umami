@@ -5,6 +5,7 @@ import { Avatar } from '@/components/common/Avatar';
 import Link from 'next/link';
 import { Bolt, Eye } from '@/components/icons';
 import { DateDistance } from '@/components/common/DateDistance';
+import { TypeIcon } from '@/components/common/TypeIcon';
 
 export function EventsTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
@@ -16,13 +17,6 @@ export function EventsTable({ data = [] }) {
 
   return (
     <DataTable data={data}>
-      <DataColumn id="session" label={formatMessage(labels.session)} width="100px">
-        {(row: any) => (
-          <Link href={renderUrl(`/websites/${row.websiteId}/sessions/${row.sessionId}`)}>
-            <Avatar seed={row.sessionId} size={64} />
-          </Link>
-        )}
-      </DataColumn>
       <DataColumn id="event" label={formatMessage(labels.event)} width="2fr">
         {(row: any) => {
           return (
@@ -34,8 +28,21 @@ export function EventsTable({ data = [] }) {
           );
         }}
       </DataColumn>
-      <DataColumn id="created" label={formatMessage(labels.created)} width="200px">
-        {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
+      <DataColumn id="created" width="1fr" align="end">
+        {(row: any) => (
+          <Row alignItems="center" gap>
+            <DateDistance date={new Date(row.createdAt)} />
+            <Link href={renderUrl(`/websites/${row.websiteId}/sessions/${row.sessionId}`)}>
+              <Avatar seed={row.sessionId} size={32} />
+            </Link>
+            <Row alignItems="center" gap="1">
+              <TypeIcon type="country" value={row.country} />
+              <TypeIcon type="browser" value={row.browser} />
+              <TypeIcon type="os" value={row.os} />
+              <TypeIcon type="device" value={row.device} />
+            </Row>
+          </Row>
+        )}
       </DataColumn>
     </DataTable>
   );

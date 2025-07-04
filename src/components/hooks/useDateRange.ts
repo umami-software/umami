@@ -8,7 +8,11 @@ import { useApi } from './useApi';
 import { useNavigation } from './useNavigation';
 import { useMemo } from 'react';
 
-export function useDateRange(websiteId?: string) {
+export interface UseDateRangeOptions {
+  ignoreOffset?: boolean;
+}
+
+export function useDateRange(websiteId?: string, options: UseDateRangeOptions = {}) {
   const { get } = useApi();
   const { locale } = useLocale();
   const {
@@ -16,14 +20,16 @@ export function useDateRange(websiteId?: string) {
   } = useNavigation();
   const websiteConfig = useWebsites(state => state[websiteId]?.dateRange);
   const globalConfig = useApp(state => state.dateRangeValue);
-  const dateRangeObject = parseDateRange(
-    date || websiteConfig?.value || globalConfig || DEFAULT_DATE_RANGE_VALUE,
-    locale,
-  );
-  const dateRange = useMemo(
-    () => (offset ? getOffsetDateRange(dateRangeObject, +offset) : dateRangeObject),
-    [date, offset, websiteConfig],
-  );
+  const dateValue = date || websiteConfig?.value || globalConfig || DEFAULT_DATE_RANGE_VALUE;
+
+  const dateRange = useMemo(() => {
+    const dateRangeObject = parseDateRange(dateValue, locale);
+
+    return !options.ignoreOffset && offset
+      ? getOffsetDateRange(dateRangeObject, +offset)
+      : dateRangeObject;
+  }, [date, offset, dateValue, options]);
+
   const dateCompare = useWebsites(state => state[websiteId]?.dateCompare || DEFAULT_DATE_COMPARE);
 
   const saveDateRange = async (value: string) => {

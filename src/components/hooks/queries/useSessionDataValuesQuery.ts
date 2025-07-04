@@ -1,5 +1,6 @@
 import { useApi } from '../useApi';
-import { useFilterParams } from '../useFilterParams';
+import { useFilterParameters } from '../useFilterParameters';
+import { useDateParameters } from '../useDateParameters';
 import { ReactQueryOptions } from '@/lib/types';
 
 export function useSessionDataValuesQuery(
@@ -8,11 +9,13 @@ export function useSessionDataValuesQuery(
   options?: ReactQueryOptions<any>,
 ) {
   const { get, useQuery } = useApi();
-  const params = useFilterParams(websiteId);
+  const date = useDateParameters(websiteId);
+  const filters = useFilterParameters();
 
   return useQuery<any>({
-    queryKey: ['websites:session-data:values', { websiteId, propertyName, ...params }],
-    queryFn: () => get(`/websites/${websiteId}/session-data/values`, { ...params, propertyName }),
+    queryKey: ['websites:session-data:values', { websiteId, propertyName, ...date, ...filters }],
+    queryFn: () =>
+      get(`/websites/${websiteId}/session-data/values`, { ...date, ...filters, propertyName }),
     enabled: !!(websiteId && propertyName),
     ...options,
   });

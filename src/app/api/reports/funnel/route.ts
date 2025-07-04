@@ -1,7 +1,7 @@
 import { canViewWebsite } from '@/lib/auth';
 import { unauthorized, json } from '@/lib/response';
-import { parseRequest } from '@/lib/request';
-import { getFunnel } from '@/queries';
+import { parseRequest, getQueryFilters, setWebsiteDate } from '@/lib/request';
+import { FunnelParameters, getFunnel } from '@/queries';
 import { reportResultSchema } from '@/lib/schema';
 
 export async function POST(request: Request) {
@@ -11,24 +11,16 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const {
-    websiteId,
-    dateRange: { startDate, endDate },
-    parameters: { steps, window },
-    ...filters
-  } = body;
+  const { websiteId } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const data = await getFunnel(websiteId, {
-    ...filters,
-    startDate: new Date(startDate),
-    endDate: new Date(endDate),
-    steps,
-    windowMinutes: +window,
-  });
+  const parameters = await setWebsiteDate(websiteId, body.parameters);
+  const filters = getQueryFilters(body.filters);
+
+  const data = await getFunnel(websiteId, parameters as FunnelParameters, filters);
 
   return json(data);
 }

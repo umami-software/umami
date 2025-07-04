@@ -4,8 +4,19 @@ import clickhouse from '@/lib/clickhouse';
 import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { QueryFilters } from '@/lib/types';
 
+export interface BreakdownParameters {
+  startDate: Date;
+  endDate: Date;
+  fields: string[];
+}
+
+export interface BreakdownData {
+  x: string;
+  y: number;
+}
+
 export async function getBreakdown(
-  ...args: [websiteId: string, fields: string[], filters: QueryFilters]
+  ...args: [websiteId: string, parameters: BreakdownParameters, filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -15,22 +26,21 @@ export async function getBreakdown(
 
 async function relationalQuery(
   websiteId: string,
-  fields: string[],
+  parameters: BreakdownParameters,
   filters: QueryFilters,
-): Promise<
-  {
-    x: string;
-    y: number;
-  }[]
-> {
+): Promise<BreakdownData[]> {
   const { getTimestampDiffSQL, parseFilters, rawQuery } = prisma;
-  const { filterQuery, joinSessionQuery, queryParams } = await parseFilters(
+  const { startDate, endDate, fields } = parameters;
+  const { filterQuery, joinSessionQuery, queryParams } = parseFilters(
     {
       ...filters,
+      websiteId,
+      startDate,
+      endDate,
       eventType: EVENT_TYPE.pageView,
     },
     {
-      joinSession: !!fields.find(name => SESSION_COLUMNS.includes(name)),
+      joinSession: !!fields.find((name: string) => SESSION_COLUMNS.includes(name)),
     },
   );
 
@@ -70,17 +80,16 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  fields: string[],
+  parameters: BreakdownParameters,
   filters: QueryFilters,
-): Promise<
-  {
-    x: string;
-    y: number;
-  }[]
-> {
+): Promise<BreakdownData[]> {
   const { parseFilters, rawQuery } = clickhouse;
-  const { filterQuery, queryParams } = await parseFilters({
+  const { startDate, endDate, fields } = parameters;
+  const { filterQuery, queryParams } = parseFilters({
     ...filters,
+    websiteId,
+    startDate,
+    endDate,
     eventType: EVENT_TYPE.pageView,
   });
 

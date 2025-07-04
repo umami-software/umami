@@ -23,7 +23,7 @@ export function BreakdownPage({ websiteId }: { websiteId: string }) {
           websiteId={websiteId}
           startDate={startDate}
           endDate={endDate}
-          parameters={{ fields }}
+          selectedFields={fields}
         />
       </Panel>
     </Column>

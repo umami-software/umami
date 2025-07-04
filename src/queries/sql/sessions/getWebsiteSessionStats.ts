@@ -25,7 +25,7 @@ async function relationalQuery(
   filters: QueryFilters,
 ): Promise<WebsiteSessionStatsData[]> {
   const { parseFilters, rawQuery } = prisma;
-  const { filterQuery, queryParams } = await parseFilters(filters);
+  const { filterQuery, queryParams } = parseFilters({ ...filters, websiteId });
 
   return rawQuery(
     `
@@ -50,7 +50,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<WebsiteSessionStatsData[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, queryParams } = await parseFilters(filters);
+  const { filterQuery, queryParams } = parseFilters({ ...filters, websiteId });
 
   return rawQuery(
     `

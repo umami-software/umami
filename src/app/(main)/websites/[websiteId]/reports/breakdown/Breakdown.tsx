@@ -7,12 +7,10 @@ export interface BreakdownProps {
   websiteId: string;
   startDate: Date;
   endDate: Date;
-  parameters: {
-    fields: string[];
-  };
+  selectedFields: string[];
 }
 
-export function Breakdown({ websiteId, parameters, startDate, endDate }: BreakdownProps) {
+export function Breakdown({ websiteId, selectedFields = [], startDate, endDate }: BreakdownProps) {
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
   const { fields } = useFields();
@@ -20,19 +18,17 @@ export function Breakdown({ websiteId, parameters, startDate, endDate }: Breakdo
     'breakdown',
     {
       websiteId,
-      dateRange: {
-        startDate,
-        endDate,
-      },
-      parameters,
+      startDate,
+      endDate,
+      fields: selectedFields,
     },
-    { enabled: !!parameters.fields.length },
+    { enabled: !!selectedFields.length },
   );
 
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
       <DataTable data={data}>
-        {parameters?.fields.map(field => {
+        {selectedFields.map(field => {
           return (
             <DataColumn key={field} id={field} label={fields.find(f => f.name === field)?.label}>
               {row => {

@@ -17,43 +17,43 @@ export function WebsiteMetricsBar({
   const { data, isLoading, isFetching, error } = useWebsiteStatsQuery(websiteId);
   const isAllTime = dateRange.value === 'all';
 
-  const { pageviews, visitors, visits, bounces, totaltime, previous } = data || {};
+  const { pageviews, visitors, visits, bounces, totaltime, comparison } = data || {};
 
   const metrics = data
     ? [
         {
           value: visitors,
           label: formatMessage(labels.visitors),
-          change: visitors - previous.visitors,
+          change: visitors - comparison.visitors,
           formatValue: formatLongNumber,
         },
         {
           value: visits,
           label: formatMessage(labels.visits),
-          change: visits - previous.visits,
+          change: visits - comparison.visits,
           formatValue: formatLongNumber,
         },
         {
           value: pageviews,
           label: formatMessage(labels.views),
-          change: pageviews - previous.pageviews,
+          change: pageviews - comparison.pageviews,
           formatValue: formatLongNumber,
         },
         {
           label: formatMessage(labels.bounceRate),
           value: (Math.min(visits, bounces) / visits) * 100,
-          prev: (Math.min(previous.visits, previous.bounces) / previous.visits) * 100,
+          prev: (Math.min(comparison.visits, comparison.bounces) / comparison.visits) * 100,
           change:
             (Math.min(visits, bounces) / visits) * 100 -
-            (Math.min(previous.visits, previous.bounces) / previous.visits) * 100,
+            (Math.min(comparison.visits, comparison.bounces) / comparison.visits) * 100,
           formatValue: n => Math.round(+n) + '%',
           reverseColors: true,
         },
         {
           label: formatMessage(labels.visitDuration),
           value: totaltime / visits,
-          prev: previous.totaltime / previous.visits,
-          change: totaltime / visits - previous.totaltime / previous.visits,
+          prev: comparison.totaltime / comparison.visits,
+          change: totaltime / visits - comparison.totaltime / comparison.visits,
           formatValue: n =>
             `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`,
         },

@@ -2,8 +2,9 @@ import clickhouse from '@/lib/clickhouse';
 import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { QueryFilters } from '@/lib/types';
 
-export interface AttributionCriteria {
+export interface AttributionParameters {
   startDate: Date;
   endDate: Date;
   model: string;
@@ -23,7 +24,9 @@ export interface AttributionResult {
   total: { pageviews: number; visitors: number; visits: number };
 }
 
-export async function getAttribution(...args: [websiteId: string, criteria: AttributionCriteria]) {
+export async function getAttribution(
+  ...args: [websiteId: string, parameters: AttributionParameters, filters: QueryFilters]
+) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -32,12 +35,18 @@ export async function getAttribution(...args: [websiteId: string, criteria: Attr
 
 async function relationalQuery(
   websiteId: string,
-  criteria: AttributionCriteria,
+  parameters: AttributionParameters,
+  filters: QueryFilters,
 ): Promise<AttributionResult> {
-  const { startDate, endDate, model, type, step, currency } = criteria;
-  const { rawQuery } = prisma;
+  const { model, type, currency } = parameters;
+  const { rawQuery, parseFilters } = prisma;
   const eventType = type === 'page' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'page' ? 'url_path' : 'event_name';
+  const { filterQuery, queryParams } = parseFilters({
+    ...filters,
+    ...parameters,
+    eventType,
+  });
 
   function getUTMQuery(utmColumn: string) {
     return `
@@ -64,8 +73,9 @@ async function relationalQuery(
         from website_event
         where website_id = {{websiteId::uuid}}
           and created_at between {{startDate}} and {{endDate}}
-          and ${column} = {{conversionStep}}
+          and ${column} = {{step}}
           and event_type = {{eventType}}
+          ${filterQuery}
         group by 1),`;
 
   const revenueEventQuery = `WITH events AS (
@@ -76,8 +86,9 @@ async function relationalQuery(
         from revenue
         where website_id = {{websiteId::uuid}}
           and created_at between {{startDate}} and {{endDate}}
-          and ${column} = {{conversionStep}}
+          and ${column} = {{step}}
           and currency = {{currency}}
+          ${filterQuery}
         group by 1),`;
 
   function getModelQuery(model: string) {
@@ -128,7 +139,7 @@ async function relationalQuery(
     order by 2 desc
     limit 20
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   );
 
   const paidAdsres = await rawQuery(
@@ -161,7 +172,7 @@ async function relationalQuery(
     FROM results
     ${currency ? '' : `WHERE name != ''`}
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   );
 
   const sourceRes = await rawQuery(
@@ -170,7 +181,7 @@ async function relationalQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_source')}
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   );
 
   const mediumRes = await rawQuery(
@@ -179,7 +190,7 @@ async function relationalQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_medium')}
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   );
 
   const campaignRes = await rawQuery(
@@ -188,7 +199,7 @@ async function relationalQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_campaign')}
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   );
 
   const contentRes = await rawQuery(
@@ -197,7 +208,7 @@ async function relationalQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_content')}
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   );
 
   const termRes = await rawQuery(
@@ -206,7 +217,7 @@ async function relationalQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_term')}
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   );
 
   const totalRes = await rawQuery(
@@ -218,10 +229,11 @@ async function relationalQuery(
     from website_event
     where website_id = {{websiteId::uuid}}
         and created_at between {{startDate}} and {{endDate}}
-        and ${column} = {{conversionStep}}
+        and ${column} = {{step}}
         and event_type = {{eventType}}
+        ${filterQuery}
     `,
-    { websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   ).then(result => result?.[0]);
 
   return {
@@ -238,13 +250,19 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  criteria: AttributionCriteria,
+  parameters: AttributionParameters,
+  filters: QueryFilters,
 ): Promise<AttributionResult> {
-  const { startDate, endDate, model, type, step, currency } = criteria;
+  const { model, type, currency } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
   const eventType = type === 'page' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'page' ? 'url_path' : 'event_name';
-  const { filterQuery, queryParams } = await parseFilters(criteria);
+  const { filterQuery, queryParams } = parseFilters({
+    ...filters,
+    ...parameters,
+    websiteId,
+    eventType,
+  });
 
   function getUTMQuery(utmColumn: string) {
     return `
@@ -301,7 +319,7 @@ async function clickhouseQuery(
         from website_event
         where website_id = {websiteId:UUID}
           and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-          and ${column} = {conversionStep:String}
+          and ${column} = {step:String}
           and event_type = {eventType:UInt32}
         group by 1),`;
 
@@ -313,7 +331,7 @@ async function clickhouseQuery(
           from website_revenue
           where website_id = {websiteId:UUID}
             and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-            and ${column} = {conversionStep:String}
+            and ${column} = {step:String}
             and currency = {currency:String}
           group by 1),`;
 
@@ -345,7 +363,7 @@ async function clickhouseQuery(
     order by 2 desc
     limit 20
     `,
-    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   );
 
   const paidAdsres = await rawQuery<
@@ -376,7 +394,7 @@ async function clickhouseQuery(
     order by 2 desc
     limit 20
     `,
-    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   );
 
   const sourceRes = await rawQuery<
@@ -390,7 +408,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_source')}
     `,
-    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   );
 
   const mediumRes = await rawQuery<
@@ -404,7 +422,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_medium')}
     `,
-    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   );
 
   const campaignRes = await rawQuery<
@@ -418,7 +436,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_campaign')}
     `,
-    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   );
 
   const contentRes = await rawQuery<
@@ -432,7 +450,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_content')}
     `,
-    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   );
 
   const termRes = await rawQuery<
@@ -446,7 +464,7 @@ async function clickhouseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_term')}
     `,
-    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   );
 
   const totalRes = await rawQuery<{ pageviews: number; visitors: number; visits: number }>(
@@ -458,11 +476,11 @@ async function clickhouseQuery(
     from website_event
     where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and ${column} = {conversionStep:String}
+        and ${column} = {step:String}
         and event_type = {eventType:UInt32}
         ${filterQuery}
     `,
-    { ...queryParams, websiteId, startDate, endDate, conversionStep: step, eventType, currency },
+    queryParams,
   ).then(result => result?.[0]);
 
   return {

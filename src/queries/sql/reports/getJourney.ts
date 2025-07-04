@@ -1,8 +1,17 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { QueryFilters } from '@/lib/types';
 
-interface JourneyResult {
+export interface JourneyParameters {
+  startDate: Date;
+  endDate: Date;
+  steps: number;
+  startStep?: string;
+  endStep?: string;
+}
+
+export interface JourneyResult {
   e1: string;
   e2: string;
   e3: string;
@@ -14,16 +23,7 @@ interface JourneyResult {
 }
 
 export async function getJourney(
-  ...args: [
-    websiteId: string,
-    filters: {
-      startDate: Date;
-      endDate: Date;
-      steps: number;
-      startStep?: string;
-      endStep?: string;
-    },
-  ]
+  ...args: [websiteId: string, parameters: JourneyParameters, filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -33,21 +33,17 @@ export async function getJourney(
 
 async function relationalQuery(
   websiteId: string,
-  filters: {
-    startDate: Date;
-    endDate: Date;
-    steps: number;
-    startStep?: string;
-    endStep?: string;
-  },
+  parameters: JourneyParameters,
+  filters: QueryFilters,
 ): Promise<JourneyResult[]> {
-  const { startDate, endDate, steps, startStep, endStep } = filters;
-  const { rawQuery } = prisma;
+  const { startDate, endDate, steps, startStep, endStep } = parameters;
+  const { rawQuery, parseFilters } = prisma;
   const { sequenceQuery, startStepQuery, endStepQuery, params } = getJourneyQuery(
     steps,
     startStep,
     endStep,
   );
+  const { filterQuery, queryParams } = parseFilters({ ...filters, websiteId, startDate, endDate });
 
   function getJourneyQuery(
     steps: number,
@@ -123,6 +119,7 @@ async function relationalQuery(
       from website_event
       where website_id = {{websiteId::uuid}}
         and created_at between {{startDate}} and {{endDate}}),
+        ${filterQuery}
     ${sequenceQuery}
     select *
     from sequences
@@ -133,31 +130,25 @@ async function relationalQuery(
     limit 100
     `,
     {
-      websiteId,
-      startDate,
-      endDate,
       ...params,
+      ...queryParams,
     },
   ).then(parseResult);
 }
 
 async function clickhouseQuery(
   websiteId: string,
-  filters: {
-    startDate: Date;
-    endDate: Date;
-    steps: number;
-    startStep?: string;
-    endStep?: string;
-  },
+  parameters: JourneyParameters,
+  filters: QueryFilters,
 ): Promise<JourneyResult[]> {
-  const { startDate, endDate, steps, startStep, endStep } = filters;
+  const { startDate, endDate, steps, startStep, endStep } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
   const { sequenceQuery, startStepQuery, endStepQuery, params } = getJourneyQuery(
     steps,
     startStep,
     endStep,
   );
+  const { filterQuery, queryParams } = parseFilters({ ...filters, websiteId, startDate, endDate });
 
   function getJourneyQuery(
     steps: number,
@@ -222,8 +213,6 @@ async function clickhouseQuery(
     };
   }
 
-  const { filterQuery, queryParams } = await parseFilters(filters);
-
   return rawQuery(
     `
     WITH events AS (
@@ -245,9 +234,6 @@ async function clickhouseQuery(
     limit 100
     `,
     {
-      websiteId,
-      startDate,
-      endDate,
       ...params,
       ...queryParams,
     },

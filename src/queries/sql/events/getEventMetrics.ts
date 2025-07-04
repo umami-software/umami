@@ -22,8 +22,9 @@ export async function getEventMetrics(
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { timezone = 'utc', unit = 'day' } = filters;
   const { rawQuery, getDateSQL, parseFilters } = prisma;
-  const { filterQuery, joinSessionQuery, queryParams } = await parseFilters({
+  const { filterQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
+    websiteId,
     eventType: EVENT_TYPE.customEvent,
   });
 
@@ -49,11 +50,12 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
-): Promise<{ x: string; t: string; y: number }[]> {
+): Promise<WebsiteEventMetricData[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
   const { rawQuery, getDateSQL, parseFilters } = clickhouse;
-  const { filterQuery, queryParams } = await parseFilters({
+  const { filterQuery, queryParams } = parseFilters({
     ...filters,
+    websiteId,
     eventType: EVENT_TYPE.customEvent,
   });
 

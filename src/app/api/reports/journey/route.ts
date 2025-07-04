@@ -1,6 +1,6 @@
 import { canViewWebsite } from '@/lib/auth';
 import { unauthorized, json } from '@/lib/response';
-import { parseRequest } from '@/lib/request';
+import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
 import { getJourney } from '@/queries';
 import { reportResultSchema } from '@/lib/schema';
 
@@ -11,25 +11,15 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const {
-    websiteId,
-    dateRange: { startDate, endDate },
-    parameters: { steps, startStep, endStep },
-    ...filters
-  } = body;
+  const { websiteId, parameters, filters } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const data = await getJourney(websiteId, {
-    ...filters,
-    startDate: new Date(startDate),
-    endDate: new Date(endDate),
-    steps,
-    startStep,
-    endStep,
-  });
+  const queryFilters = await setWebsiteDate(websiteId, getQueryFilters(filters));
+
+  const data = await getJourney(websiteId, parameters, queryFilters);
 
   return json(data);
 }

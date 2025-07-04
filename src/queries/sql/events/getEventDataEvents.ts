@@ -23,7 +23,7 @@ export async function getEventDataEvents(
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
   const { event } = filters;
-  const { queryParams } = await parseFilters(filters);
+  const { queryParams } = parseFilters(filters);
 
   if (event) {
     return rawQuery(
@@ -73,7 +73,7 @@ async function clickhouseQuery(
 ): Promise<{ eventName: string; propertyName: string; dataType: number; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { event } = filters;
-  const { queryParams } = await parseFilters(filters);
+  const { queryParams } = parseFilters(filters);
 
   if (event) {
     return rawQuery(

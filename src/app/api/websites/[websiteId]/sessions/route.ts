@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { getQueryFilters, parseRequest } from '@/lib/request';
+import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/lib/auth';
 import { dateRangeParams, filterParams, pagingParams } from '@/lib/schema';
@@ -27,7 +27,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const filters = await getQueryFilters({ ...query, websiteId });
+  const filters = await setWebsiteDate(websiteId, getQueryFilters(query));
 
   const data = await getWebsiteSessions(websiteId, filters);
 

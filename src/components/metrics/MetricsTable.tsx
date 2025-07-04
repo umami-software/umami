@@ -46,7 +46,12 @@ export function MetricsTable({
 
   const { data, isLoading, isFetching, error } = useWebsiteMetricsQuery(
     websiteId,
-    { type, limit, search: searchFormattedValues ? undefined : search, ...params },
+    {
+      type,
+      limit,
+      search: searchFormattedValues ? undefined : search,
+      ...params,
+    },
     {
       retryDelay: delay || DEFAULT_ANIMATION_DURATION,
     },

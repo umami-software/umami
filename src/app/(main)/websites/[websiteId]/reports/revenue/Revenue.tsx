@@ -32,13 +32,9 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
   const unit = getMinimumUnit(startDate, endDate);
   const { data, error, isLoading } = useResultQuery<any>('revenue', {
     websiteId,
-    dateRange: {
-      startDate,
-      endDate,
-    },
-    parameters: {
-      currency,
-    },
+    startDate,
+    endDate,
+    currency,
   });
 
   const renderCountryName = useCallback(

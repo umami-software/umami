@@ -17,7 +17,7 @@ async function relationalQuery(
   filters: QueryFilters & { propertyName?: string },
 ) {
   const { rawQuery, parseFilters, getDateSQL } = prisma;
-  const { filterQuery, queryParams } = await parseFilters(filters);
+  const { filterQuery, queryParams } = parseFilters(filters);
 
   return rawQuery(
     `
@@ -48,7 +48,7 @@ async function clickhouseQuery(
   filters: QueryFilters & { propertyName?: string },
 ): Promise<{ propertyName: string; dataType: number; propertyValue: string; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, queryParams } = await parseFilters(filters);
+  const { filterQuery, queryParams } = parseFilters(filters);
 
   return rawQuery(
     `

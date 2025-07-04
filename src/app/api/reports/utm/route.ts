@@ -1,7 +1,7 @@
 import { canViewWebsite } from '@/lib/auth';
 import { unauthorized, json } from '@/lib/response';
-import { parseRequest } from '@/lib/request';
-import { getUTM } from '@/queries';
+import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
+import { getUTM, UTMParameters } from '@/queries';
 import { reportResultSchema } from '@/lib/schema';
 
 export async function POST(request: Request) {
@@ -11,21 +11,16 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const {
-    websiteId,
-    dateRange: { startDate, endDate },
-    ...filters
-  } = body;
+  const { websiteId } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const data = await getUTM(websiteId, {
-    ...filters,
-    startDate: new Date(startDate),
-    endDate: new Date(endDate),
-  });
+  const parameters = await setWebsiteDate(websiteId, body.parameters);
+  const filters = getQueryFilters(body.filters);
+
+  const data = await getUTM(websiteId, parameters as UTMParameters, filters);
 
   return json(data);
 }

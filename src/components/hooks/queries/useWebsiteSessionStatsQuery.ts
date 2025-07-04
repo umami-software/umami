@@ -1,13 +1,15 @@
 import { useApi } from '../useApi';
-import { useFilterParams } from '../useFilterParams';
+import { useFilterParameters } from '../useFilterParameters';
+import { useDateParameters } from '../useDateParameters';
 
 export function useWebsiteSessionStatsQuery(websiteId: string, options?: Record<string, string>) {
   const { get, useQuery } = useApi();
-  const params = useFilterParams(websiteId);
+  const date = useDateParameters(websiteId);
+  const filters = useFilterParameters();
 
   return useQuery({
-    queryKey: ['sessions:stats', { websiteId, ...params }],
-    queryFn: () => get(`/websites/${websiteId}/sessions/stats`, { ...params }),
+    queryKey: ['sessions:stats', { websiteId, ...date, ...filters }],
+    queryFn: () => get(`/websites/${websiteId}/sessions/stats`, { ...date, ...filters }),
     enabled: !!websiteId,
     ...options,
   });

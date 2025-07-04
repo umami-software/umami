@@ -3,30 +3,37 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
-export interface GoalCriteria {
+export interface GoalParameters {
   startDate: Date;
   endDate: Date;
   type: string;
   value: string;
   operator?: string;
   property?: string;
-  filters: QueryFilters;
 }
 
-export async function getGoal(...args: [websiteId: string, criteria: GoalCriteria]) {
+export async function getGoal(
+  ...args: [websiteId: string, params: GoalParameters, filters: QueryFilters]
+) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-async function relationalQuery(websiteId: string, criteria: GoalCriteria) {
-  const { type, value, filters } = criteria;
+async function relationalQuery(
+  websiteId: string,
+  parameters: GoalParameters,
+  filters: QueryFilters,
+) {
+  const { startDate, endDate, type, value } = parameters;
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, dateQuery, queryParams } = await parseFilters({
+  const { filterQuery, dateQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     value,
+    startDate,
+    endDate,
   });
   const isPage = type === 'page';
   const column = isPage ? 'url_path' : 'event_name';
@@ -53,13 +60,19 @@ async function relationalQuery(websiteId: string, criteria: GoalCriteria) {
   );
 }
 
-async function clickhouseQuery(websiteId: string, criteria: GoalCriteria) {
-  const { type, value, filters } = criteria;
+async function clickhouseQuery(
+  websiteId: string,
+  parameters: GoalParameters,
+  filters: QueryFilters,
+) {
+  const { startDate, endDate, type, value } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, dateQuery, queryParams } = await parseFilters({
+  const { filterQuery, dateQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     value,
+    startDate,
+    endDate,
   });
   const isPage = type === 'page';
   const column = isPage ? 'url_path' : 'event_name';

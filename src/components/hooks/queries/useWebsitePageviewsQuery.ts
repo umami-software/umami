@@ -1,5 +1,6 @@
 import { useApi } from '../useApi';
-import { useFilterParams } from '../useFilterParams';
+import { useFilterParameters } from '../useFilterParameters';
+import { useDateParameters } from '../useDateParameters';
 import { ReactQueryOptions } from '@/lib/types';
 
 export interface WebsitePageviewsData {
@@ -12,11 +13,12 @@ export function useWebsitePageviewsQuery(
   options?: ReactQueryOptions<WebsitePageviewsData>,
 ) {
   const { get, useQuery } = useApi();
-  const queryParams = useFilterParams(websiteId);
+  const date = useDateParameters(websiteId);
+  const queryParams = useFilterParameters();
 
   return useQuery<WebsitePageviewsData>({
-    queryKey: ['websites:pageviews', { websiteId, compare, ...queryParams }],
-    queryFn: () => get(`/websites/${websiteId}/pageviews`, { compare, ...queryParams }),
+    queryKey: ['websites:pageviews', { websiteId, compare, ...date, ...queryParams }],
+    queryFn: () => get(`/websites/${websiteId}/pageviews`, { compare, ...date, ...queryParams }),
     enabled: !!websiteId,
     ...options,
   });

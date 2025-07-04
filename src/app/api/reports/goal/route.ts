@@ -1,7 +1,7 @@
 import { canViewWebsite } from '@/lib/auth';
 import { unauthorized, json } from '@/lib/response';
-import { getQueryFilters, parseRequest } from '@/lib/request';
-import { getGoal } from '@/queries/sql/reports/getGoal';
+import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
+import { getGoal, GoalParameters } from '@/queries/sql/reports/getGoal';
 import { reportResultSchema } from '@/lib/schema';
 
 export async function POST(request: Request) {
@@ -11,27 +11,16 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const {
-    websiteId,
-    dateRange: { startDate, endDate },
-    parameters: { type, value, property, operator },
-  } = body;
+  const { websiteId } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const filters = await getQueryFilters(body.filters);
+  const parameters = await setWebsiteDate(websiteId, body.parameters);
+  const filters = getQueryFilters(body.filters);
 
-  const data = await getGoal(websiteId, {
-    startDate: new Date(startDate),
-    endDate: new Date(endDate),
-    type,
-    value,
-    property,
-    operator,
-    filters,
-  });
+  const data = await getGoal(websiteId, parameters as GoalParameters, filters);
 
   return json(data);
 }

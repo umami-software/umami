@@ -4,14 +4,14 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
+export interface SessionMetricsParameters {
+  type: string;
+  limit: number | string;
+  offset: number | string;
+}
+
 export async function getSessionMetrics(
-  ...args: [
-    websiteId: string,
-    type: string,
-    filters: QueryFilters,
-    limit?: number | string,
-    offset?: number | string,
-  ]
+  ...args: [websiteId: string, parameters: SessionMetricsParameters, filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -21,16 +21,16 @@ export async function getSessionMetrics(
 
 async function relationalQuery(
   websiteId: string,
-  type: string,
+  parameters: SessionMetricsParameters,
   filters: QueryFilters,
-  limit: number | string = 500,
-  offset: number | string = 0,
 ) {
+  const { type, limit = 500, offset = 0 } = parameters;
   const column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = prisma;
-  const { filterQuery, joinSessionQuery, queryParams } = await parseFilters(
+  const { filterQuery, joinSessionQuery, queryParams } = parseFilters(
     {
       ...filters,
+      websiteId,
       eventType: EVENT_TYPE.pageView,
     },
     {
@@ -57,21 +57,21 @@ async function relationalQuery(
     limit ${limit}
     offset ${offset}
     `,
-    queryParams,
+    { ...queryParams, ...parameters },
   );
 }
 
 async function clickhouseQuery(
   websiteId: string,
-  type: string,
+  parameters: SessionMetricsParameters,
   filters: QueryFilters,
-  limit: number | string = 500,
-  offset: number | string = 0,
 ): Promise<{ x: string; y: number }[]> {
+  const { type, limit = 500, offset = 0 } = parameters;
   const column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = clickhouse;
-  const { filterQuery, queryParams } = await parseFilters({
+  const { filterQuery, queryParams } = parseFilters({
     ...filters,
+    websiteId,
     eventType: EVENT_TYPE.pageView,
   });
   const includeCountry = column === 'city' || column === 'region';
@@ -114,5 +114,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, queryParams);
+  return rawQuery(sql, { ...queryParams, ...parameters });
 }

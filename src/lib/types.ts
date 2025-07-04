@@ -41,19 +41,20 @@ export interface QueryOptions {
   joinSession?: boolean;
   columns?: Record<string, string>;
   limit?: number;
+  prefix?: string;
 }
 
-export interface QueryFilters {
-  websiteId?: string;
-  // Date range
+export interface QueryFilters extends DateParams, FilterParams, SortParams, PageParams {}
+
+export interface DateParams {
   startDate?: Date;
   endDate?: Date;
-  compareStartDate?: Date;
-  compareEndDate?: Date;
-  compare?: string;
   unit?: string;
   timezone?: string;
-  // Filters
+  compareDate?: Date;
+}
+
+export interface FilterParams {
   path?: string;
   referrer?: string;
   title?: string;
@@ -70,20 +71,16 @@ export interface QueryFilters {
   search?: string;
   tag?: string;
   eventType?: number;
-  // Paging
-  page?: number;
-  pageSize?: number;
-  // Sorting
+}
+
+export interface SortParams {
   orderBy?: string;
   sortDescending?: boolean;
 }
 
 export interface PageParams {
-  page: number;
-  pageSize: number;
-  orderBy?: string;
-  sortDescending?: boolean;
-  search?: string;
+  page?: number;
+  pageSize?: number;
 }
 
 export interface PageResult<T> {

@@ -14,7 +14,7 @@ export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean
       <DataColumn id="id" label={formatMessage(labels.session)} width="100px">
         {(row: any) => (
           <Link href={`sessions/${row.id}`}>
-            <Avatar seed={row.id} size={64} />
+            <Avatar seed={row.id} size={48} />
           </Link>
         )}
       </DataColumn>

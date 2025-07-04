@@ -30,15 +30,11 @@ export function Attribution({
 }: AttributionProps) {
   const { data, error, isLoading } = useResultQuery<any>('attribution', {
     websiteId,
-    dateRange: {
-      startDate,
-      endDate,
-    },
-    parameters: {
-      model,
-      type,
-      step,
-    },
+    startDate,
+    endDate,
+    model,
+    type,
+    step,
   });
 
   const { formatMessage, labels } = useMessages();

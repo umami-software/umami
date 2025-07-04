@@ -1,23 +1,30 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { QueryFilters } from '@/lib/types';
 
-export interface UTMCriteria {
+export interface UTMParameters {
   startDate: Date;
   endDate: Date;
 }
 
-export async function getUTM(...args: [websiteId: string, criteria: UTMCriteria]) {
+export async function getUTM(
+  ...args: [websiteId: string, parameters: UTMParameters, filters: QueryFilters]
+) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-async function relationalQuery(websiteId: string, criteria: UTMCriteria) {
-  const { startDate, endDate } = criteria;
+async function relationalQuery(
+  websiteId: string,
+  parameters: UTMParameters,
+  filters: QueryFilters,
+) {
+  const { startDate, endDate } = parameters;
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, queryParams } = await parseFilters(criteria);
+  const { filterQuery, queryParams } = parseFilters({ ...filters, websiteId, startDate, endDate });
 
   return rawQuery(
     `
@@ -30,19 +37,18 @@ async function relationalQuery(websiteId: string, criteria: UTMCriteria) {
       ${filterQuery}
     group by 1
     `,
-    {
-      ...queryParams,
-      websiteId,
-      startDate,
-      endDate,
-    },
+    queryParams,
   ).then(result => parseParameters(result as any[]));
 }
 
-async function clickhouseQuery(websiteId: string, criteria: UTMCriteria) {
-  const { startDate, endDate } = criteria;
+async function clickhouseQuery(
+  websiteId: string,
+  parameters: UTMParameters,
+  filters: QueryFilters,
+) {
+  const { startDate, endDate } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, queryParams } = await parseFilters(criteria);
+  const { filterQuery, queryParams } = parseFilters({ ...filters, websiteId, startDate, endDate });
 
   return rawQuery(
     `
@@ -55,12 +61,7 @@ async function clickhouseQuery(websiteId: string, criteria: UTMCriteria) {
       ${filterQuery}
     group by 1
     `,
-    {
-      ...queryParams,
-      websiteId,
-      startDate,
-      endDate,
-    },
+    queryParams,
   ).then(result => parseParameters(result as any[]));
 }
 

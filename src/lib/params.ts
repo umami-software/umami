@@ -37,6 +37,7 @@ export function filtersToArray(filters: QueryFilters, options: QueryOptions = {}
       column: options?.columns?.[key] ?? FILTER_COLUMNS[key],
       operator,
       value,
+      prefix: options?.prefix,
     });
   }, []);
 }

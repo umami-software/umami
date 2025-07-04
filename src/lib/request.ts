@@ -1,7 +1,7 @@
 import { z } from 'zod/v4';
 import { FILTER_COLUMNS, DEFAULT_PAGE_SIZE } from '@/lib/constants';
 import { badRequest, unauthorized } from '@/lib/response';
-import { getAllowedUnits, getCompareDate, getMinimumUnit, maxDate } from '@/lib/date';
+import { getAllowedUnits, getMinimumUnit, maxDate } from '@/lib/date';
 import { checkAuth } from '@/lib/auth';
 import { fetchWebsite } from '@/lib/load';
 import { QueryFilters } from '@/lib/types';
@@ -50,23 +50,14 @@ export async function getJsonBody(request: Request) {
 }
 
 export function getRequestDateRange(query: Record<string, string>) {
-  const { startAt, endAt, unit, compare, timezone } = query;
+  const { startAt, endAt, unit, timezone } = query;
 
   const startDate = new Date(+startAt);
   const endDate = new Date(+endAt);
 
-  const { startDate: compareStartDate, endDate: compareEndDate } = getCompareDate(
-    compare,
-    startDate,
-    endDate,
-  );
-
   return {
     startDate,
     endDate,
-    compare,
-    compareStartDate,
-    compareEndDate,
     timezone,
     unit: getAllowedUnits(startDate, endDate).includes(unit)
       ? unit
@@ -86,11 +77,21 @@ export function getRequestFilters(query: Record<string, any>) {
   }, {});
 }
 
-export async function getQueryFilters(params: Record<string, any>): Promise<QueryFilters> {
+export async function setWebsiteDate(websiteId: string, data: Record<string, any>) {
+  const website = await fetchWebsite(websiteId);
+
+  if (website) {
+    data.startDate = maxDate(data.startDate, new Date(website?.resetAt));
+  }
+
+  return data;
+}
+
+export function getQueryFilters(params: Record<string, any>): QueryFilters {
   const dateRange = getRequestDateRange(params);
   const filters = getRequestFilters(params);
 
-  const data = {
+  return {
     ...dateRange,
     ...filters,
     page: params?.page,
@@ -98,17 +99,5 @@ export async function getQueryFilters(params: Record<string, any>): Promise<Quer
     orderBy: params?.orderBy,
     sortDescending: params?.sortDescending,
     search: params?.search,
-    websiteId: undefined,
   };
-
-  const { websiteId } = params;
-
-  if (websiteId) {
-    const website = await fetchWebsite(websiteId);
-
-    data.websiteId = websiteId;
-    data.startDate = maxDate(data.startDate, new Date(website?.resetAt));
-  }
-
-  return data;
 }

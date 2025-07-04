@@ -136,7 +136,7 @@ function getQueryParams(filters: Record<string, any>) {
   };
 }
 
-async function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
+function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   return {
     filterQuery: getFilterQuery(filters, options),
     dateQuery: getDateQuery(filters),

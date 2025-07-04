@@ -12,7 +12,7 @@ export async function getChannelMetrics(...args: [websiteId: string, filters?: Q
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
-  const { queryParams, filterQuery, dateQuery } = await parseFilters(filters);
+  const { queryParams, filterQuery, dateQuery } = parseFilters(filters);
 
   return rawQuery(
     `
@@ -36,7 +36,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { queryParams, filterQuery, dateQuery } = await parseFilters(filters);
+  const { queryParams, filterQuery, dateQuery } = parseFilters(filters);
 
   const sql = `
     select

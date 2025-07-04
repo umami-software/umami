@@ -6,13 +6,13 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 
 const DEFAULT_SEARCH_DELAY = 600;
 
-export interface DataTableProps {
+export interface DataGridProps {
   queryResult: any;
   searchDelay?: number;
   allowSearch?: boolean;
   allowPaging?: boolean;
   autoFocus?: boolean;
-  renderEmpty?: () => ReactNode;
+  renderActions?: () => ReactNode;
   children: ReactNode | ((data: any) => ReactNode);
 }
 
@@ -20,12 +20,13 @@ export function DataGrid({
   queryResult,
   searchDelay = 600,
   allowSearch,
-  allowPaging,
+  allowPaging = true,
   autoFocus,
+  renderActions,
   children,
-}: DataTableProps) {
+}: DataGridProps) {
   const { formatMessage, labels } = useMessages();
-  const { data, error, isLoading, isFetching, setParams } = queryResult || {};
+  const { data, error, isLoading, isFetching, setParams } = queryResult;
   const { router, updateParams } = useNavigation();
   const [search, setSearch] = useState('');
 
@@ -43,29 +44,33 @@ export function DataGrid({
   return (
     <Column gap="4" minHeight="300px">
       {allowSearch && (data || search) && (
-        <Row width="280px" alignItems="center">
+        <Row alignItems="center" justifyContent="space-between">
           <SearchField
             value={search}
             onSearch={handleSearch}
             delay={searchDelay || DEFAULT_SEARCH_DELAY}
             autoFocus={autoFocus}
             placeholder={formatMessage(labels.search)}
+            style={{ width: '280px' }}
           />
+          {renderActions?.()}
         </Row>
       )}
       <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} error={error}>
-        <Column>
-          {data ? (typeof children === 'function' ? children(data) : children) : null}
-        </Column>
-        {allowPaging && data && (
-          <Row marginTop="6">
-            <Pager
-              page={data.page}
-              pageSize={data.pageSize}
-              count={data.count}
-              onPageChange={handlePageChange}
-            />
-          </Row>
+        {data && (
+          <>
+            <Column>{typeof children === 'function' ? children(data) : children}</Column>
+            {allowPaging && data && (
+              <Row marginTop="6">
+                <Pager
+                  page={data.page}
+                  pageSize={data.pageSize}
+                  count={data.count}
+                  onPageChange={handlePageChange}
+                />
+              </Row>
+            )}
+          </>
         )}
       </LoadingPanel>
     </Column>

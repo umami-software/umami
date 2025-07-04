@@ -4,14 +4,19 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
+export interface PageviewMetricsParameters {
+  type: string;
+  limit?: number | string;
+  offset?: number | string;
+}
+
+export interface PageviewMetricsData {
+  x: string;
+  y: number;
+}
+
 export async function getPageviewMetrics(
-  ...args: [
-    websiteId: string,
-    type: string,
-    filters: QueryFilters,
-    limit?: number | string,
-    offset?: number | string,
-  ]
+  ...args: [websiteId: string, parameters: PageviewMetricsParameters, filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -21,16 +26,16 @@ export async function getPageviewMetrics(
 
 async function relationalQuery(
   websiteId: string,
-  type: string,
+  parameters: PageviewMetricsParameters,
   filters: QueryFilters,
-  limit: number | string = 500,
-  offset: number | string = 0,
-) {
+): Promise<PageviewMetricsData[]> {
+  const { type, limit = 500, offset = 0 } = parameters;
   const column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, joinSessionQuery, queryParams } = await parseFilters(
+  const { filterQuery, joinSessionQuery, queryParams } = parseFilters(
     {
       ...filters,
+      websiteId,
       eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     },
     {
@@ -87,15 +92,15 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  type: string,
+  parameters: PageviewMetricsParameters,
   filters: QueryFilters,
-  limit: number | string = 500,
-  offset: number | string = 0,
-): Promise<{ x: string; y: number }[]> {
+): Promise<PageviewMetricsData[]> {
+  const { type, limit = 500, offset = 0 } = parameters;
   const column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, queryParams } = await parseFilters({
+  const { filterQuery, queryParams } = parseFilters({
     ...filters,
+    websiteId,
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   });
 

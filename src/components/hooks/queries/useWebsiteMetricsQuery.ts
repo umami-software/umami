@@ -1,6 +1,7 @@
 import { keepPreviousData } from '@tanstack/react-query';
 import { useApi } from '../useApi';
-import { useFilterParams } from '../useFilterParams';
+import { useFilterParameters } from '../useFilterParameters';
+import { useDateParameters } from '../useDateParameters';
 import { useSearchParams } from 'next/navigation';
 import { ReactQueryOptions } from '@/lib/types';
 
@@ -11,11 +12,12 @@ export type WebsiteMetricsData = {
 
 export function useWebsiteMetricsQuery(
   websiteId: string,
-  params: { type: string; limit?: number; search?: string; startAt?: number; endAt?: number },
+  params: { type: string; limit?: number; search?: string },
   options?: ReactQueryOptions<WebsiteMetricsData>,
 ) {
   const { get, useQuery } = useApi();
-  const queryParams = useFilterParams(websiteId);
+  const date = useDateParameters(websiteId);
+  const filters = useFilterParameters();
   const searchParams = useSearchParams();
 
   return useQuery<WebsiteMetricsData>({
@@ -23,13 +25,15 @@ export function useWebsiteMetricsQuery(
       'websites:metrics',
       {
         websiteId,
-        ...queryParams,
+        ...date,
+        ...filters,
         ...params,
       },
     ],
     queryFn: async () =>
       get(`/websites/${websiteId}/metrics`, {
-        ...queryParams,
+        ...date,
+        ...filters,
         [searchParams.get('view')]: undefined,
         ...params,
       }),

@@ -26,11 +26,9 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
   const { formatMessage, labels } = useMessages();
   const { data, error, isLoading, isFetching } = useResultQuery<GoalData>(type, {
     websiteId,
-    dateRange: {
-      startDate,
-      endDate,
-    },
-    parameters,
+    startDate,
+    endDate,
+    ...parameters,
   });
   const isPage = parameters?.type === 'page';
 

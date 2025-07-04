@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Grid, Row, Column, Text, Icon } from '@umami/react-zen';
 import { Users } from '@/components/icons';
-import { useMessages, useLocale, useResultQuery, useTimezone } from '@/components/hooks';
+import { useMessages, useLocale, useResultQuery } from '@/components/hooks';
 import { formatDate } from '@/lib/date';
 import { formatLongNumber } from '@/lib/format';
 import { Panel } from '@/components/common/Panel';
@@ -19,14 +19,10 @@ export interface RetentionProps {
 export function Retention({ websiteId, days = DAYS, startDate, endDate }: RetentionProps) {
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
-  const { timezone } = useTimezone();
-  const { data, error, isLoading } = useResultQuery<any>('retention', {
+  const { data, error, isLoading } = useResultQuery('retention', {
     websiteId,
-    dateRange: {
-      startDate,
-      endDate,
-      timezone,
-    },
+    startDate,
+    endDate,
   });
 
   const rows =

@@ -1,8 +1,9 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { QueryFilters } from '@/lib/types';
 
-export interface RetentionCriteria {
+export interface RetentionParameters {
   startDate: Date;
   endDate: Date;
   timezone?: string;
@@ -16,7 +17,9 @@ export interface RetentionResult {
   percentage: number;
 }
 
-export async function getRetention(...args: [websiteId: string, criteria: RetentionCriteria]) {
+export async function getRetention(
+  ...args: [websiteId: string, parameters: RetentionParameters, filters: QueryFilters]
+) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -25,13 +28,20 @@ export async function getRetention(...args: [websiteId: string, criteria: Retent
 
 async function relationalQuery(
   websiteId: string,
-  criteria: RetentionCriteria,
+  parameters: RetentionParameters,
+  filters: QueryFilters,
 ): Promise<RetentionResult[]> {
-  const { startDate, endDate, timezone } = criteria;
+  const { startDate, endDate, timezone } = parameters;
   const { getDateSQL, getDayDiffQuery, getCastColumnQuery, rawQuery, parseFilters } = prisma;
   const unit = 'day';
 
-  const { filterQuery, queryParams } = await parseFilters(criteria);
+  const { filterQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+    timezone,
+  });
 
   return rawQuery(
     `
@@ -81,24 +91,26 @@ async function relationalQuery(
     on c.cohort_date = s.cohort_date
     where c.day_number <= 31
     order by 1, 2`,
-    {
-      websiteId,
-      startDate,
-      endDate,
-      ...queryParams,
-    },
+    queryParams,
   );
 }
 
 async function clickhouseQuery(
   websiteId: string,
-  criteria: RetentionCriteria,
+  parameters: RetentionParameters,
+  filters: QueryFilters,
 ): Promise<RetentionResult[]> {
-  const { startDate, endDate, timezone } = criteria;
+  const { startDate, endDate, timezone } = parameters;
   const { getDateSQL, rawQuery, parseFilters } = clickhouse;
   const unit = 'day';
 
-  const { filterQuery, queryParams } = await parseFilters(criteria);
+  const { filterQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+    timezone,
+  });
 
   return rawQuery(
     `
@@ -150,11 +162,6 @@ async function clickhouseQuery(
     on c.cohort_date = s.cohort_date
     where c.day_number <= 31
     order by 1, 2`,
-    {
-      websiteId,
-      startDate,
-      endDate,
-      ...queryParams,
-    },
+    queryParams,
   );
 }

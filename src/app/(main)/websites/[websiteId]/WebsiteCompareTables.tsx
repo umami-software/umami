@@ -19,7 +19,6 @@ import { TagsTable } from '@/components/metrics/TagsTable';
 import { getCompareDate } from '@/lib/date';
 import { formatNumber } from '@/lib/format';
 import { useState } from 'react';
-import { useWebsites } from '@/store/websites';
 import { Panel } from '@/components/common/Panel';
 import { DateDisplay } from '@/components/common/DateDisplay';
 
@@ -42,8 +41,7 @@ const views = {
 
 export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
   const [data, setData] = useState([]);
-  const { dateRange } = useDateRange(websiteId);
-  const dateCompare = useWebsites(state => state[websiteId]?.dateCompare);
+  const { dateRange, dateCompare } = useDateRange(websiteId);
   const { formatMessage, labels } = useMessages();
   const {
     updateParams,

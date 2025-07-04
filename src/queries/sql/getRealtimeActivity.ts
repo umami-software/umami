@@ -12,7 +12,7 @@ export async function getRealtimeActivity(...args: [websiteId: string, filters: 
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
-  const { queryParams, filterQuery, dateQuery } = await parseFilters(filters);
+  const { queryParams, filterQuery, dateQuery } = parseFilters(filters);
 
   return rawQuery(
     `
@@ -41,7 +41,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters): Promise<{ x: number }> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { queryParams, filterQuery, dateQuery } = await parseFilters(filters);
+  const { queryParams, filterQuery, dateQuery } = parseFilters(filters);
 
   return rawQuery(
     `

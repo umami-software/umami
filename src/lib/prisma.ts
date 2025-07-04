@@ -84,15 +84,10 @@ function getTimestampDiffSQL(field1: string, field2: string): string {
 }
 
 function getSearchSQL(column: string, param: string = 'search'): string {
-  const db = getDatabaseType();
-  const like = db === POSTGRESQL ? 'ilike' : 'like';
-
-  return `and ${column} ${like} {{${param}}}`;
+  return `and ${column} ilike {{${param}}}`;
 }
 
 function mapFilter(column: string, operator: string, name: string, type: string = '') {
-  const db = getDatabaseType();
-  const like = db === POSTGRESQL ? 'ilike' : 'like';
   const value = `{{${name}${type ? `::${type}` : ''}}}`;
 
   switch (operator) {
@@ -101,28 +96,31 @@ function mapFilter(column: string, operator: string, name: string, type: string 
     case OPERATORS.notEquals:
       return `${column} != ${value}`;
     case OPERATORS.contains:
-      return `${column} ${like} ${value}`;
+      return `${column} ilike ${value}`;
     case OPERATORS.doesNotContain:
-      return `${column} not ${like} ${value}`;
+      return `${column} not ilike ${value}`;
     default:
       return '';
   }
 }
 
 function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}): string {
-  const query = filtersToArray(filters, options).reduce((arr, { name, column, operator }) => {
-    if (column) {
-      arr.push(`and ${mapFilter(column, operator, name)}`);
+  const query = filtersToArray(filters, options).reduce(
+    (arr, { name, column, operator, prefix = '' }) => {
+      if (column) {
+        arr.push(`and ${mapFilter(`${prefix}${column}`, operator, name)}`);
 
-      if (name === 'referrer') {
-        arr.push(
-          `and (website_event.referrer_domain != website_event.hostname or website_event.referrer_domain is null)`,
-        );
+        if (name === 'referrer') {
+          arr.push(
+            `and (website_event.referrer_domain != website_event.hostname or website_event.referrer_domain is null)`,
+          );
+        }
       }
-    }
 
-    return arr;
-  }, []);
+      return arr;
+    },
+    [],
+  );
 
   return query.join('\n');
 }
@@ -154,7 +152,7 @@ function getQueryParams(filters: Record<string, any>) {
   };
 }
 
-async function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
+function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   const joinSession = Object.keys(filters).find(key =>
     ['referrer', ...SESSION_COLUMNS].includes(key),
   );

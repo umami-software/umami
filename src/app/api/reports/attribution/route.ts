@@ -1,8 +1,8 @@
 import { canViewWebsite } from '@/lib/auth';
-import { parseRequest } from '@/lib/request';
+import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { reportResultSchema } from '@/lib/schema';
-import { getAttribution } from '@/queries/sql/reports/getAttribution';
+import { AttributionParameters, getAttribution } from '@/queries/sql/reports/getAttribution';
 
 export async function POST(request: Request) {
   const { auth, body, error } = await parseRequest(request, reportResultSchema);
@@ -11,26 +11,16 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const {
-    websiteId,
-    dateRange: { startDate, endDate },
-    parameters: { model, type, step, currency },
-    ...filters
-  } = body;
+  const { websiteId } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const data = await getAttribution(websiteId, {
-    ...filters,
-    startDate: new Date(startDate),
-    endDate: new Date(endDate),
-    model,
-    type,
-    step,
-    currency,
-  });
+  const parameters = await setWebsiteDate(websiteId, body.parameters);
+  const filters = getQueryFilters(body.filters);
+
+  const data = await getAttribution(websiteId, parameters as AttributionParameters, filters);
 
   return json(data);
 }

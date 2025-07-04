@@ -17,15 +17,11 @@ type FunnelResult = {
   remaining: number;
 };
 
-export function Funnel({ id, name, type, parameters, websiteId, startDate, endDate }) {
+export function Funnel({ id, name, type, parameters, websiteId }) {
   const { formatMessage, labels } = useMessages();
-  const { data, error, isLoading } = useResultQuery<any>(type, {
+  const { data, error, isLoading } = useResultQuery(type, {
     websiteId,
-    dateRange: {
-      startDate,
-      endDate,
-    },
-    parameters,
+    ...parameters,
   });
 
   return (

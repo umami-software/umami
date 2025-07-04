@@ -1,9 +1,10 @@
 import { z } from 'zod';
-import { parseRequest, getQueryFilters } from '@/lib/request';
+import { parseRequest, getQueryFilters, setWebsiteDate } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/lib/auth';
 import { filterParams } from '@/lib/schema';
 import { getWebsiteStats } from '@/queries';
+import { getCompareDate } from '@/lib/date';
 
 export async function GET(
   request: Request,
@@ -28,15 +29,17 @@ export async function GET(
     return unauthorized();
   }
 
-  const filters = await getQueryFilters({ ...query, websiteId });
+  const filters = await setWebsiteDate(websiteId, getQueryFilters(query));
 
   const data = await getWebsiteStats(websiteId, filters);
 
-  const previous = await getWebsiteStats(websiteId, {
+  const { startDate, endDate } = getCompareDate('prev', filters.startDate, filters.endDate);
+
+  const comparison = await getWebsiteStats(websiteId, {
     ...filters,
-    startDate: filters.compareStartDate,
-    endDate: filters.compareEndDate,
+    startDate,
+    endDate,
   });
 
-  return json({ ...data, previous });
+  return json({ ...data, comparison });
 }

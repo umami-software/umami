@@ -1,14 +1,16 @@
 import { useApi } from '../useApi';
-import { useFilterParams } from '../useFilterParams';
+import { useFilterParameters } from '../useFilterParameters';
+import { useDateParameters } from '../useDateParameters';
 import { ReactQueryOptions } from '@/lib/types';
 
 export function useWebsiteEventsSeriesQuery(websiteId: string, options?: ReactQueryOptions<any>) {
   const { get, useQuery } = useApi();
-  const params = useFilterParams(websiteId);
+  const date = useDateParameters(websiteId);
+  const filters = useFilterParameters();
 
   return useQuery({
-    queryKey: ['websites:events:series', { websiteId, ...params }],
-    queryFn: () => get(`/websites/${websiteId}/events/series`, { ...params }),
+    queryKey: ['websites:events:series', { websiteId, ...date, ...filters }],
+    queryFn: () => get(`/websites/${websiteId}/events/series`, { ...date, ...filters }),
     enabled: !!websiteId,
     ...options,
   });

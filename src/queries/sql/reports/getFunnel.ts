@@ -1,15 +1,24 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { QueryFilters } from '@/lib/types';
 
-export interface FunnelCriteria {
-  windowMinutes: number;
+export interface FunnelParameters {
   startDate: Date;
   endDate: Date;
+  window: number;
   steps: { type: string; value: string }[];
 }
 
-export async function getFunnel(...args: [websiteId: string, criteria: FunnelCriteria]) {
+export interface FunnelResult {
+  value: string;
+  visitors: number;
+  dropoff: number;
+}
+
+export async function getFunnel(
+  ...args: [websiteId: string, parameters: FunnelParameters, filters: QueryFilters]
+) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -18,21 +27,18 @@ export async function getFunnel(...args: [websiteId: string, criteria: FunnelCri
 
 async function relationalQuery(
   websiteId: string,
-  criteria: FunnelCriteria,
-): Promise<
-  {
-    value: string;
-    visitors: number;
-    dropoff: number;
-  }[]
-> {
-  const { windowMinutes, startDate, endDate, steps } = criteria;
-  const { rawQuery, getAddIntervalQuery } = prisma;
-  const { levelOneQuery, levelQuery, sumQuery, params } = getFunnelQuery(steps, windowMinutes);
+  parameters: FunnelParameters,
+  filters: QueryFilters,
+): Promise<FunnelResult[]> {
+  const { startDate, endDate, window, steps } = parameters;
+  const { rawQuery, getAddIntervalQuery, parseFilters } = prisma;
+  const { levelOneQuery, levelQuery, sumQuery, params } = getFunnelQuery(steps, window);
+
+  const { filterQuery, queryParams } = parseFilters({ ...filters, websiteId, startDate, endDate });
 
   function getFunnelQuery(
     steps: { type: string; value: string }[],
-    windowMinutes: number,
+    window: number,
   ): {
     levelOneQuery: string;
     levelQuery: string;
@@ -62,6 +68,7 @@ async function relationalQuery(
             where website_id = {{websiteId::uuid}}
               and created_at between {{startDate}} and {{endDate}}
               and ${column} ${operator} {{${i}}}
+              ${filterQuery}
           )`;
         } else {
           pv.levelQuery += `
@@ -73,7 +80,7 @@ async function relationalQuery(
             where we.website_id = {{websiteId::uuid}}
                 and we.created_at between l.created_at and ${getAddIntervalQuery(
                   `l.created_at `,
-                  `${windowMinutes} minute`,
+                  `${window} minute`,
                 )}
                 and we.${column} ${operator} {{${i}}}
                 and we.created_at <= {{endDate}}
@@ -102,17 +109,16 @@ async function relationalQuery(
     ORDER BY level;
     `,
     {
-      websiteId,
-      startDate,
-      endDate,
       ...params,
+      ...queryParams,
     },
   ).then(formatResults(steps));
 }
 
 async function clickhouseQuery(
   websiteId: string,
-  criteria: FunnelCriteria,
+  parameters: FunnelParameters,
+  filters: QueryFilters,
 ): Promise<
   {
     value: string;
@@ -120,17 +126,17 @@ async function clickhouseQuery(
     dropoff: number;
   }[]
 > {
-  const { windowMinutes, startDate, endDate, steps } = criteria;
+  const { startDate, endDate, window, steps } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
   const { levelOneQuery, levelQuery, sumQuery, stepFilterQuery, params } = getFunnelQuery(
     steps,
-    windowMinutes,
+    window,
   );
-  const { filterQuery, queryParams } = await parseFilters(criteria);
+  const { filterQuery, queryParams } = parseFilters({ ...filters, websiteId, startDate, endDate });
 
   function getFunnelQuery(
     steps: { type: string; value: string }[],
-    windowMinutes: number,
+    window: number,
   ): {
     levelOneQuery: string;
     levelQuery: string;
@@ -172,7 +178,7 @@ async function clickhouseQuery(
             from level${i} x
             join level0 y
             on x.session_id = y.session_id
-            where y.created_at between x.created_at and x.created_at + interval ${windowMinutes} minute
+            where y.created_at between x.created_at and x.created_at + interval ${window} minute
                 and y.${column} ${operator} {param${i}:String}
           )`;
         }
@@ -211,9 +217,6 @@ async function clickhouseQuery(
     ) ORDER BY level;
     `,
     {
-      websiteId,
-      startDate,
-      endDate,
       ...params,
       ...queryParams,
     },

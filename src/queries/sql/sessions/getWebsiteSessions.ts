@@ -12,7 +12,14 @@ export async function getWebsiteSessions(...args: [websiteId: string, filters: Q
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { pagedRawQuery, parseFilters } = prisma;
-  const { filterQuery, dateQuery, queryParams } = await parseFilters(filters);
+  const { search } = filters;
+  const { filterQuery, dateQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    search: search ? `%${search}%` : undefined,
+  });
+
+  const searchQuery = search ? `and session.distinct_id ilike {{search}}` : '';
 
   return pagedRawQuery(
     `
@@ -38,6 +45,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     where website_event.website_id = {{websiteId::uuid}}
     ${dateQuery}
     ${filterQuery}
+    ${searchQuery}
     group by session.session_id, 
       session.website_id, 
       website_event.hostname, 
@@ -58,7 +66,13 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   const { pagedRawQuery, parseFilters, getDateStringSQL } = clickhouse;
-  const { filterQuery, dateQuery, queryParams } = await parseFilters(filters);
+  const { search } = filters;
+  const { filterQuery, dateQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
+
+  const searchQuery = search ? `and positionCaseInsensitive(distinct_id, {search:String}) > 0` : '';
 
   return pagedRawQuery(
     `
@@ -83,6 +97,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     where website_id = {websiteId:UUID}
     ${dateQuery}
     ${filterQuery}
+    ${searchQuery}
     group by session_id, website_id, hostname, browser, os, device, screen, language, country, region, city
     order by lastAt desc
     `,

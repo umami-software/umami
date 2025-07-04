@@ -27,7 +27,7 @@ async function relationalQuery(
   filters: QueryFilters,
 ): Promise<WebsiteStatsData[]> {
   const { getTimestampDiffSQL, parseFilters, rawQuery } = prisma;
-  const { filterQuery, joinSessionQuery, queryParams } = await parseFilters({
+  const { filterQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     eventType: EVENT_TYPE.pageView,
@@ -66,7 +66,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<WebsiteStatsData[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, queryParams } = await parseFilters({
+  const { filterQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     eventType: EVENT_TYPE.pageView,

@@ -1,8 +1,9 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, getDatabaseType, POSTGRESQL, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { QueryFilters } from '@/lib/types';
 
-export interface RevenueCriteria {
+export interface RevenuParameters {
   startDate: Date;
   endDate: Date;
   unit: string;
@@ -21,7 +22,9 @@ export interface RevenueResult {
   }[];
 }
 
-export async function getRevenue(...args: [websiteId: string, criteria: RevenueCriteria]) {
+export async function getRevenue(
+  ...args: [websiteId: string, parameters: RevenuParameters, filters: QueryFilters]
+) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -30,12 +33,12 @@ export async function getRevenue(...args: [websiteId: string, criteria: RevenueC
 
 async function relationalQuery(
   websiteId: string,
-  criteria: RevenueCriteria,
+  parameters: RevenuParameters,
+  filters: QueryFilters,
 ): Promise<RevenueResult> {
-  const { startDate, endDate, unit = 'day', currency } = criteria;
-  const { getDateSQL, rawQuery } = prisma;
-  const db = getDatabaseType();
-  const like = db === POSTGRESQL ? 'ilike' : 'like';
+  const { startDate, endDate, currency, unit = 'day' } = parameters;
+  const { getDateSQL, rawQuery, parseFilters } = prisma;
+  const { queryParams } = parseFilters({ ...filters, websiteId, startDate, endDate, currency });
 
   const chart = await rawQuery(
     `
@@ -50,7 +53,7 @@ async function relationalQuery(
     group by  x, t
     order by t
     `,
-    { websiteId, startDate, endDate, unit, currency },
+    queryParams,
   );
 
   const country = await rawQuery(
@@ -63,10 +66,10 @@ async function relationalQuery(
     on s.session_id = r.session_id
     where r.website_id = {{websiteId::uuid}}
       and r.created_at between {{startDate}} and {{endDate}}
-      and r.currency ${like} {{currency}}
+      and r.currency = {{currency}}
     group by s.country
     `,
-    { websiteId, startDate, endDate, currency },
+    queryParams,
   );
 
   const total = await rawQuery(
@@ -78,9 +81,9 @@ async function relationalQuery(
     from revenue r
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}
-      and currency ${like} {{currency}}
+      and currency = {{currency}}
   `,
-    { websiteId, startDate, endDate, currency },
+    queryParams,
   ).then(result => result?.[0]);
 
   total.average = total.count > 0 ? total.sum / total.count : 0;
@@ -98,7 +101,7 @@ async function relationalQuery(
     group by currency
     order by sum desc
     `,
-    { websiteId, startDate, endDate, unit, currency },
+    queryParams,
   );
 
   return { chart, country, table, total };
@@ -106,10 +109,18 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  criteria: RevenueCriteria,
+  parameters: RevenuParameters,
+  filters: QueryFilters,
 ): Promise<RevenueResult> {
-  const { startDate, endDate, unit = 'day', currency } = criteria;
-  const { getDateSQL, rawQuery } = clickhouse;
+  const { startDate, endDate, unit = 'day', currency } = parameters;
+  const { getDateSQL, rawQuery, parseFilters } = clickhouse;
+  const { queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+    currency,
+  });
 
   const chart = await rawQuery<
     {
@@ -130,7 +141,7 @@ async function clickhouseQuery(
     group by  x, t
     order by t
     `,
-    { websiteId, startDate, endDate, unit, currency },
+    queryParams,
   );
 
   const country = await rawQuery<
@@ -144,9 +155,11 @@ async function clickhouseQuery(
       s.country as name,
       sum(w.revenue) as value
     from website_revenue w
-    join (select distinct website_id, session_id, country
-          from website_event
-          where website_id = {websiteId:UUID}) s
+    join (
+        select distinct website_id, session_id, country
+        from website_event
+        where website_id = {websiteId:UUID}
+      ) s
       on w.website_id = s.website_id
         and w.session_id = s.session_id
    where w.website_id = {websiteId:UUID}
@@ -154,7 +167,7 @@ async function clickhouseQuery(
       and w.currency = {currency:String}
     group by s.country
     `,
-    { websiteId, startDate, endDate, currency },
+    queryParams,
   );
 
   const total = await rawQuery<{
@@ -172,7 +185,7 @@ async function clickhouseQuery(
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and currency = {currency:String}
     `,
-    { websiteId, startDate, endDate, currency },
+    queryParams,
   ).then(result => result?.[0]);
 
   total.average = total.count > 0 ? total.sum / total.count : 0;
@@ -197,7 +210,7 @@ async function clickhouseQuery(
     group by currency
     order by sum desc
     `,
-    { websiteId, startDate, endDate, unit, currency },
+    queryParams,
   );
 
   return { chart, country, table, total };

@@ -1,7 +1,7 @@
 import { canViewWebsite } from '@/lib/auth';
 import { unauthorized, json } from '@/lib/response';
-import { parseRequest } from '@/lib/request';
-import { getRetention } from '@/queries';
+import { parseRequest, getQueryFilters, setWebsiteDate } from '@/lib/request';
+import { getRetention, RetentionParameters } from '@/queries';
 import { reportResultSchema } from '@/lib/schema';
 
 export async function POST(request: Request) {
@@ -11,22 +11,16 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const {
-    websiteId,
-    dateRange: { startDate, endDate, timezone },
-    ...filters
-  } = body;
+  const { websiteId } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const data = await getRetention(websiteId, {
-    ...filters,
-    startDate: new Date(startDate),
-    endDate: new Date(endDate),
-    timezone,
-  });
+  const filters = getQueryFilters(body.filters);
+  const parameters = await setWebsiteDate(websiteId, body.parameters);
+
+  const data = await getRetention(websiteId, parameters as RetentionParameters, filters);
 
   return json(data);
 }
