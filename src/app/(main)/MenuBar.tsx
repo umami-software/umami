@@ -8,7 +8,7 @@ import { useNavigation, useGlobalState } from '@/components/hooks';
 
 export function MenuBar() {
   const [isCollapsed, setCollapsed] = useGlobalState('sidenav-collapsed');
-  const { websiteId } = useNavigation();
+  const { teamId, websiteId } = useNavigation();
 
   const handleSelect = () => {};
 
@@ -35,7 +35,12 @@ export function MenuBar() {
               <Icon strokeColor="7" rotate={-25}>
                 <Slash />
               </Icon>
-              <WebsiteSelect variant="quiet" websiteId={websiteId} onSelect={handleSelect} />
+              <WebsiteSelect
+                variant="quiet"
+                websiteId={websiteId}
+                teamId={teamId}
+                onSelect={handleSelect}
+              />
             </>
           )}
         </Row>

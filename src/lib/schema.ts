@@ -35,6 +35,9 @@ export const filterParams = {
   hostname: z.string().optional(),
   language: z.string().optional(),
   event: z.string().optional(),
+};
+
+export const searchParams = {
   search: z.string().optional(),
 };
 

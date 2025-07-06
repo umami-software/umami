@@ -2,8 +2,8 @@
 import { UsersDataTable } from './UsersDataTable';
 import { Column } from '@umami/react-zen';
 import { SectionHeader } from '@/components/common/SectionHeader';
-import { UserAddButton } from '@/app/(main)/settings/users/UserAddButton';
 import { useMessages } from '@/components/hooks';
+import { UserAddButton } from './UserAddButton';
 
 export function UsersSettingsPage() {
   const { formatMessage, labels } = useMessages();

@@ -29,10 +29,6 @@ export function WebsiteSelect({
     setSearch(value);
   };
 
-  if (!data) {
-    return null;
-  }
-
   return (
     <Select
       {...props}

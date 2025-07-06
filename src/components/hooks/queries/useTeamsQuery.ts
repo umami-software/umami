@@ -7,8 +7,8 @@ export function useTeamsQuery(userId: string) {
 
   return useQuery({
     queryKey: ['teams', { userId, modified }],
-    queryFn: (params: any) => {
-      return get(`/users/${userId}/teams`, params);
+    queryFn: () => {
+      return get(`/users/${userId}/teams`, { userId });
     },
     enabled: !!userId,
   });

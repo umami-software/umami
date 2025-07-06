@@ -25,17 +25,17 @@ export function TeamsButton({
 }) {
   const { user } = useLoginQuery();
   const { formatMessage, labels } = useMessages();
-  const { result } = useTeamsQuery(user.id);
+  const { data } = useTeamsQuery(user.id);
   const { teamId } = useNavigation();
   const router = useRouter();
-  const team = result?.data?.find(({ id }) => id === teamId);
+  const team = data?.data?.find(({ id }) => id === teamId);
   const selectedKeys = new Set([teamId || user.id]);
 
   const handleSelect = (id: Key) => {
     router.push(id === user.id ? '/websites' : `/teams/${id}/websites`);
   };
 
-  if (!result?.count) {
+  if (!data?.count) {
     return null;
   }
 
@@ -68,7 +68,7 @@ export function TeamsButton({
             </MenuSection>
             <MenuSeparator />
             <MenuSection title={formatMessage(labels.teams)}>
-              {result?.data?.map(({ id, name }) => (
+              {data?.data?.map(({ id, name }) => (
                 <MenuItem key={id} id={id}>
                   <Icon size="sm">
                     <Users />

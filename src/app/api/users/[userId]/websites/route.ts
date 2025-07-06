@@ -1,12 +1,13 @@
 import { z } from 'zod';
 import { unauthorized, json } from '@/lib/response';
 import { getUserWebsites } from '@/queries/prisma/website';
-import { pagingParams } from '@/lib/schema';
-import { getQueryFilters, parseRequest } from '@/lib/request';
+import { pagingParams, searchParams } from '@/lib/schema';
+import { parseRequest } from '@/lib/request';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const schema = z.object({
     ...pagingParams,
+    ...searchParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -21,9 +22,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
     return unauthorized();
   }
 
-  const filters = await getQueryFilters(query);
-
-  const websites = await getUserWebsites(userId, filters);
+  const websites = await getUserWebsites(userId, query);
 
   return json(websites);
 }

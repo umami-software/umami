@@ -8,7 +8,6 @@ import {
   MenuItem,
   MenuSeparator,
   Modal,
-  Dialog,
 } from '@umami/react-zen';
 import Link from 'next/link';
 import { formatDistance } from 'date-fns';
@@ -17,7 +16,7 @@ import { Trash } from '@/components/icons';
 import { useMessages, useLocale } from '@/components/hooks';
 import { Edit } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
-import { UserDeleteForm } from '@/app/(main)/settings/users/UserDeleteForm';
+import { UserDeleteForm } from './UserDeleteForm';
 
 export function UsersTable({
   data = [],
@@ -29,13 +28,12 @@ export function UsersTable({
   const { formatMessage, labels } = useMessages();
   const { dateLocale } = useLocale();
   const [deleteUser, setDeleteUser] = useState(null);
-  const handleDelete = () => {};
 
   return (
     <>
       <DataTable data={data}>
         <DataColumn id="username" label={formatMessage(labels.username)} width="2fr">
-          {(row: any) => <Link href={`/settings/users/${row.id}`}>{row.username}</Link>}
+          {(row: any) => <Link href={`/admin/users/${row.id}`}>{row.username}</Link>}
         </DataColumn>
         <DataColumn id="role" label={formatMessage(labels.role)}>
           {(row: any) =>
@@ -62,7 +60,7 @@ export function UsersTable({
 
               return (
                 <MenuButton>
-                  <MenuItem href={`/settings/users/${id}`} data-test="link-button-edit">
+                  <MenuItem href={`/admin/users/${id}`} data-test="link-button-edit">
                     <Row alignItems="center" gap>
                       <Icon>
                         <Edit />
@@ -90,19 +88,13 @@ export function UsersTable({
         )}
       </DataTable>
       <Modal isOpen={!!deleteUser}>
-        <Dialog title={formatMessage(labels.deleteUser)}>
-          {({ close }) => (
-            <UserDeleteForm
-              userId={deleteUser?.id}
-              username={deleteUser?.username}
-              onSave={handleDelete}
-              onClose={() => {
-                close();
-                setDeleteUser(null);
-              }}
-            />
-          )}
-        </Dialog>
+        <UserDeleteForm
+          userId={deleteUser?.id}
+          username={deleteUser?.username}
+          onClose={() => {
+            setDeleteUser(null);
+          }}
+        />
       </Modal>
     </>
   );

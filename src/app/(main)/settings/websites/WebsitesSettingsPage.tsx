@@ -1,10 +1,10 @@
 'use client';
+import { Column } from '@umami/react-zen';
 import { useLoginQuery, useMessages } from '@/components/hooks';
 import { WebsitesDataTable } from './WebsitesDataTable';
 import { ROLES } from '@/lib/constants';
-import { WebsiteAddButton } from '@/app/(main)/settings/websites/WebsiteAddButton';
 import { SectionHeader } from '@/components/common/SectionHeader';
-import { Column } from '@umami/react-zen';
+import { WebsiteAddButton } from './WebsiteAddButton';
 
 export function WebsitesSettingsPage({ teamId }: { teamId: string }) {
   const { user } = useLoginQuery();

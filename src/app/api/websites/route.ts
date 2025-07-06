@@ -3,22 +3,9 @@ import { canCreateTeamWebsite, canCreateWebsite } from '@/lib/auth';
 import { json, unauthorized } from '@/lib/response';
 import { uuid } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';
-import { createWebsite, getUserWebsites } from '@/queries';
-import { pagingParams } from '@/lib/schema';
+import { createWebsite } from '@/queries';
 
-export async function GET(request: Request) {
-  const schema = z.object({ ...pagingParams });
-
-  const { auth, query, error } = await parseRequest(request, schema);
-
-  if (error) {
-    return error();
-  }
-
-  const websites = await getUserWebsites(auth.user.id, query);
-
-  return json(websites);
-}
+export { GET } from '@/app/api/users/[userId]/websites/route';
 
 export async function POST(request: Request) {
   const schema = z.object({
