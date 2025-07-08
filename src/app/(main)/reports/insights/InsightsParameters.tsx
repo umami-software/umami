@@ -10,10 +10,10 @@ export function InsightsParameters() {
   const { report, runReport, isRunning } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
   const { id, parameters } = report || {};
-  const { websiteId, dateRange, fields, filters } = parameters || {};
+  const { websiteId, dateRange, fields } = parameters || {};
   const { startDate, endDate } = dateRange || {};
   const parametersSelected = websiteId && startDate && endDate;
-  const queryEnabled = websiteId && dateRange && (fields?.length || filters?.length);
+  const queryEnabled = websiteId && dateRange && fields?.length;
 
   const handleSubmit = (values: any) => {
     runReport(values);
