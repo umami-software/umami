@@ -14,6 +14,7 @@ export async function GET(
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
     compare: z.string().optional(),
+    pathPrefix: z.string().optional(),
     ...filterParams,
   });
 
@@ -24,7 +25,7 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { compare } = query;
+  const { compare, pathPrefix } = query;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
@@ -43,12 +44,14 @@ export async function GET(
     ...filters,
     startDate,
     endDate,
+    pathPrefix,
   });
 
   const prevPeriod = await getWebsiteStats(websiteId, {
     ...filters,
     startDate: compareStartDate,
     endDate: compareEndDate,
+    pathPrefix,
   });
 
   const stats = Object.keys(metrics[0]).reduce((obj, key) => {

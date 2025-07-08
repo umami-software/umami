@@ -40,6 +40,17 @@ async function relationalQuery(
   );
   const includeCountry = column === 'city' || column === 'region';
 
+  let pathPrefixQuery = '';
+
+  if (filters.pathPrefix) {
+    pathPrefixQuery = `and (
+      website_event.url_path LIKE {{pathPrefix}}
+      or website_event.url_path LIKE {{pathPrefixWithLang}}
+    )`;
+    params.pathPrefix = `${filters.pathPrefix}%`;
+    params.pathPrefixWithLang = `%/en${filters.pathPrefix}%`;
+  }
+
   return rawQuery(
     `
     select 
@@ -51,6 +62,7 @@ async function relationalQuery(
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_type = {{eventType}}
+      ${pathPrefixQuery}
     ${filterQuery}
     group by 1 
     ${includeCountry ? ', 3' : ''}
@@ -77,6 +89,17 @@ async function clickhouseQuery(
   });
   const includeCountry = column === 'city' || column === 'region';
 
+  let pathPrefixQuery = '';
+
+  if (filters.pathPrefix) {
+    pathPrefixQuery = `and (
+      url_path LIKE {pathPrefix:String}
+      or url_path LIKE {pathPrefixWithLang:String}
+    )`;
+    params.pathPrefix = `${filters.pathPrefix}%`;
+    params.pathPrefixWithLang = `%/en${filters.pathPrefix}%`;
+  }
+
   let sql = '';
 
   if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
@@ -89,6 +112,7 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}
+      ${pathPrefixQuery}
       ${filterQuery}
     group by x 
     ${includeCountry ? ', country' : ''}
@@ -106,6 +130,7 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}
+      ${pathPrefixQuery}
       ${filterQuery}
     group by x 
     ${includeCountry ? ', country' : ''}
