@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { GridColumn, GridTable, Flexbox, Button, ButtonGroup } from 'react-basics';
+import { GridColumn, GridTable, Flexbox, Button, ButtonGroup, Loading } from 'react-basics';
 import { useEventDataProperties, useEventDataValues, useMessages } from '@/components/hooks';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import PieChart from '@/components/charts/PieChart';
@@ -82,8 +82,8 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
               </ButtonGroup>
             </Flexbox>
 
-            {values?.length === 0 ? (
-              <div>{formatMessage(labels.noData)}</div>
+            {!values ? (
+              <Loading icon="dots" />
             ) : propertyView === 'table' ? (
               <ListTable data={tableData} />
             ) : (
