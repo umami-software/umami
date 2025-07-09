@@ -1,13 +1,15 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useCallback } from 'react';
 import { SearchField, Row, Column } from '@umami/react-zen';
+import { UseQueryResult } from '@tanstack/react-query';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { Pager } from '@/components/common/Pager';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { PageResult } from '@/lib/types';
 
 const DEFAULT_SEARCH_DELAY = 600;
 
 export interface DataGridProps {
-  queryResult: any;
+  query: UseQueryResult<PageResult<any>, any>;
   searchDelay?: number;
   allowSearch?: boolean;
   allowPaging?: boolean;
@@ -17,7 +19,7 @@ export interface DataGridProps {
 }
 
 export function DataGrid({
-  queryResult,
+  query,
   searchDelay = 600,
   allowSearch,
   allowPaging = true,
@@ -26,20 +28,23 @@ export function DataGrid({
   children,
 }: DataGridProps) {
   const { formatMessage, labels } = useMessages();
-  const { data, error, isLoading, isFetching, setParams } = queryResult;
-  const { router, updateParams } = useNavigation();
-  const [search, setSearch] = useState('');
+  const { data, error, isLoading, isFetching } = query;
+  const { router, updateParams, query: queryParams } = useNavigation();
+  const [search, setSearch] = useState(queryParams?.saerch || data?.search || '');
 
-  const handleSearch = (search: string) => {
-    setSearch(search);
-    setParams(params => ({ ...params, search }));
-    router.push(updateParams({ search }));
+  const handleSearch = (value: string) => {
+    if (value !== search) {
+      setSearch(value);
+      router.push(updateParams({ search: value, page: 1 }));
+    }
   };
 
-  const handlePageChange = (page: number) => {
-    setParams(params => ({ ...params, page }));
-    router.push(updateParams({ page }));
-  };
+  const handlePageChange = useCallback(
+    (page: number) => {
+      router.push(updateParams({ search, page }));
+    },
+    [search],
+  );
 
   return (
     <Column gap="4" minHeight="300px">

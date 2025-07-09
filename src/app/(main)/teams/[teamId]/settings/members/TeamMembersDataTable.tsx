@@ -12,7 +12,7 @@ export function TeamMembersDataTable({
   const queryResult = useTeamMembersQuery(teamId);
 
   return (
-    <DataGrid queryResult={queryResult}>
+    <DataGrid query={queryResult}>
       {({ data }) => <TeamMembersTable data={data} teamId={teamId} allowEdit={allowEdit} />}
     </DataGrid>
   );

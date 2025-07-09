@@ -8,9 +8,9 @@ export function useUsersQuery() {
 
   return usePagedQuery({
     queryKey: ['users', { modified }],
-    queryFn: (params: any) => {
+    queryFn: (pageParams: any) => {
       return get('/admin/users', {
-        ...params,
+        ...pageParams,
       });
     },
   });

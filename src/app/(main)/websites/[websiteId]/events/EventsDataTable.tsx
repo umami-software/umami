@@ -37,7 +37,7 @@ export function EventsDataTable({
 
   return (
     <DataGrid
-      queryResult={queryResult}
+      query={queryResult}
       allowSearch={true}
       autoFocus={false}
       allowPaging={true}

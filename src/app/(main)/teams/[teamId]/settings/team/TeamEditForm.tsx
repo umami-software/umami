@@ -48,7 +48,7 @@ export function TeamEditForm({ teamId, allowEdit }: { teamId: string; allowEdit?
               rules={{ required: formatMessage(labels.required) }}
             >
               {allowEdit && <TextField />}
-              {!allowEdit && team.name}
+              {!allowEdit && team?.name}
             </FormField>
             {!cloudMode && allowEdit && (
               <FormField name="accessCode" label={formatMessage(labels.accessCode)}>

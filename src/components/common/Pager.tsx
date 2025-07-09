@@ -34,9 +34,14 @@ export function Pager({ page, pageSize, count, onPageChange }: PagerProps) {
 
   return (
     <Row alignItems="center" justifyContent="space-between" gap="3" flexGrow={1}>
-      <Text>{formatMessage(labels.numberOfRecords, { x: count })}</Text>
+      <Text>{formatMessage(labels.numberOfRecords, { x: count.toLocaleString() })}</Text>
       <Row alignItems="center" justifyContent="flex-end" gap="3">
-        <Text>{formatMessage(labels.pageOf, { current: page, total: maxPage })}</Text>
+        <Text>
+          {formatMessage(labels.pageOf, {
+            current: page.toLocaleString(),
+            total: maxPage.toLocaleString(),
+          })}
+        </Text>
         <Button onPress={() => handlePageChange(-1)} isDisabled={firstPage}>
           <Icon size="sm" rotate={180}>
             <Chevron />

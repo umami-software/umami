@@ -13,7 +13,7 @@ import {
   Row,
   Box,
 } from '@umami/react-zen';
-import { useLoginQuery, useMessages, useTeamsQuery, useNavigation } from '@/components/hooks';
+import { useLoginQuery, useMessages, useUserTeamsQuery, useNavigation } from '@/components/hooks';
 import { Chevron, User, Users } from '@/components/icons';
 
 export function TeamsButton({
@@ -25,7 +25,7 @@ export function TeamsButton({
 }) {
   const { user } = useLoginQuery();
   const { formatMessage, labels } = useMessages();
-  const { data } = useTeamsQuery(user.id);
+  const { data } = useUserTeamsQuery(user.id);
   const { teamId } = useNavigation();
   const router = useRouter();
   const team = data?.data?.find(({ id }) => id === teamId);

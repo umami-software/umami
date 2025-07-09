@@ -19,6 +19,8 @@ export * from './queries/useWebsiteSessionsWeeklyQuery';
 export * from './queries/useShareTokenQuery';
 export * from './queries/useTeamQuery';
 export * from './queries/useTeamsQuery';
+export * from './queries/useUserTeamsQuery';
+export * from './queries/useUserWebsitesQuery';
 export * from './queries/useTeamWebsitesQuery';
 export * from './queries/useTeamMembersQuery';
 export * from './queries/useUserQuery';

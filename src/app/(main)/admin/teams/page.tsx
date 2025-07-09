@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
-import { UsersPage } from './UsersPage';
+import { AdminTeamsPage } from './AdminTeamsPage';
 
 export default function () {
-  return <UsersPage />;
+  return <AdminTeamsPage />;
 }
 export const metadata: Metadata = {
-  title: 'Users',
+  title: 'Teams',
 };

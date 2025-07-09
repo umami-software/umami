@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Select, SelectProps, ListItem } from '@umami/react-zen';
-import { useWebsitesQuery, useMessages } from '@/components/hooks';
+import { useUserWebsitesQuery, useMessages } from '@/components/hooks';
 
 export function WebsiteSelect({
   websiteId,
@@ -18,7 +18,7 @@ export function WebsiteSelect({
   const [search, setSearch] = useState('');
   const [selectedId, setSelectedId] = useState(websiteId);
 
-  const { data, isLoading } = useWebsitesQuery({ teamId }, { search, pageSize: 5 });
+  const { data, isLoading } = useUserWebsitesQuery({ teamId }, { search, pageSize: 5 });
 
   const handleSelect = (value: any) => {
     setSelectedId(value);

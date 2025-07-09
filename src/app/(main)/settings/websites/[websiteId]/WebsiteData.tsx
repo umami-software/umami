@@ -4,7 +4,7 @@ import {
   useLoginQuery,
   useMessages,
   useModified,
-  useTeamsQuery,
+  useUserTeamsQuery,
   useNavigation,
 } from '@/components/hooks';
 import { WebsiteDeleteForm } from './WebsiteDeleteForm';
@@ -19,11 +19,11 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   const { touch } = useModified();
   const { teamId, renderUrl } = useNavigation();
   const router = useRouter();
-  const { result } = useTeamsQuery(user.id);
+  const { data } = useUserTeamsQuery(user.id);
   const canTransferWebsite =
     (
       !teamId &&
-      result.data.filter(({ teamUser }) =>
+      data.filter(({ teamUser }) =>
         teamUser.find(
           ({ role, userId }) =>
             [ROLES.teamOwner, ROLES.teamManager].includes(role) && userId === user.id,
@@ -31,7 +31,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
       )
     ).length > 0 ||
     (teamId &&
-      !!result?.data
+      !!data
         ?.find(({ id }) => id === teamId)
         ?.teamUser.find(({ role, userId }) => role === ROLES.teamOwner && userId === user.id));
 

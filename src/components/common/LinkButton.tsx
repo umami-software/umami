@@ -17,13 +17,20 @@ export function LinkButton({
   scroll = true,
   target,
   children,
+  isDisabled,
   ...props
 }: LinkButtonProps) {
   const { dir } = useLocale();
 
   return (
-    <Button {...props} variant={variant} asChild>
-      <Link href={href} dir={dir} scroll={scroll} target={target}>
+    <Button {...props} variant={variant} isDisabled={isDisabled} asChild>
+      <Link
+        href={href}
+        dir={dir}
+        scroll={scroll}
+        target={target}
+        style={{ pointerEvents: isDisabled ? 'none' : undefined }}
+      >
         {children}
       </Link>
     </Button>

@@ -1,15 +1,13 @@
 import { useState } from 'react';
 import { Row, Text, Icon, DataTable, DataColumn, MenuItem, Modal } from '@umami/react-zen';
 import Link from 'next/link';
-import { ROLES } from '@/lib/constants';
 import { Trash } from '@/components/icons';
 import { useMessages } from '@/components/hooks';
 import { Edit } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
-import { UserDeleteForm } from './UserDeleteForm';
 import { DateDistance } from '@/components/common/DateDistance';
 
-export function UsersTable({
+export function AdminTeamsTable({
   data = [],
   showActions = true,
 }: {
@@ -22,24 +20,27 @@ export function UsersTable({
   return (
     <>
       <DataTable data={data}>
-        <DataColumn id="username" label={formatMessage(labels.username)} width="2fr">
-          {(row: any) => <Link href={`/admin/users/${row.id}`}>{row.username}</Link>}
+        <DataColumn id="name" label={formatMessage(labels.name)} width="2fr">
+          {(row: any) => <Link href={`/admin/teams/${row.id}`}>{row.name}</Link>}
         </DataColumn>
-        <DataColumn id="role" label={formatMessage(labels.role)}>
-          {(row: any) =>
-            formatMessage(
-              labels[Object.keys(ROLES).find(key => ROLES[key] === row.role)] || labels.unknown,
-            )
-          }
+        <DataColumn id="websites" label={formatMessage(labels.members)}>
+          {(row: any) => row?._count?.teamUser}
         </DataColumn>
-        <DataColumn id="websites" label={formatMessage(labels.websites)}>
-          {(row: any) => row._count.websiteUser}
+        <DataColumn id="members" label={formatMessage(labels.websites)}>
+          {(row: any) => row?._count?.website}
         </DataColumn>
-        <DataColumn id="created" label={formatMessage(labels.created)}>
+        <DataColumn id="owner" label={formatMessage(labels.owner)} width="200px">
+          {(row: any) => (
+            <Text title={row?.teamUser?.[0]?.user?.username} truncate>
+              {row?.teamUser?.[0]?.user?.username}
+            </Text>
+          )}
+        </DataColumn>
+        <DataColumn id="created" label={formatMessage(labels.created)} width="160px">
           {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
         </DataColumn>
         {showActions && (
-          <DataColumn id="action" align="end" width="100px">
+          <DataColumn id="action" align="end" width="50px">
             {(row: any) => {
               const { id } = row;
 
@@ -71,15 +72,7 @@ export function UsersTable({
           </DataColumn>
         )}
       </DataTable>
-      <Modal isOpen={!!deleteUser}>
-        <UserDeleteForm
-          userId={deleteUser?.id}
-          username={deleteUser?.username}
-          onClose={() => {
-            setDeleteUser(null);
-          }}
-        />
-      </Modal>
+      <Modal isOpen={!!deleteUser}></Modal>
     </>
   );
 }

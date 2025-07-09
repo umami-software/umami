@@ -2,9 +2,8 @@ import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams } from '@/lib/schema';
-import { canViewAllWebsites } from '@/lib/auth';
-import { getWebsites } from '@/queries/prisma/website';
-import { ROLES } from '@/lib/constants';
+import { canViewAllTeams } from '@/lib/auth';
+import { getTeams } from '@/queries/prisma/team';
 
 export async function GET(request: Request) {
   const schema = z.object({
@@ -18,32 +17,29 @@ export async function GET(request: Request) {
     return error();
   }
 
-  if (!(await canViewAllWebsites(auth))) {
+  if (!(await canViewAllTeams(auth))) {
     return unauthorized();
   }
 
-  const websites = await getWebsites(
+  const teams = await getTeams(
     {
       include: {
-        user: {
-          where: {
-            deletedAt: null,
-          },
+        _count: {
           select: {
-            username: true,
-            id: true,
+            teamUser: true,
+            website: true,
           },
         },
-        team: {
-          where: {
-            deletedAt: null,
-          },
-          include: {
-            teamUser: {
-              where: {
-                role: ROLES.teamOwner,
+        teamUser: {
+          select: {
+            user: {
+              omit: {
+                password: true,
               },
             },
+          },
+          where: {
+            role: 'team-owner',
           },
         },
       },
@@ -54,5 +50,5 @@ export async function GET(request: Request) {
     query,
   );
 
-  return json(websites);
+  return json(teams);
 }

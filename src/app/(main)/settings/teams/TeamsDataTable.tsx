@@ -1,6 +1,6 @@
 import { DataGrid } from '@/components/common/DataGrid';
 import { TeamsTable } from '@/app/(main)/settings/teams/TeamsTable';
-import { useLoginQuery, useTeamsQuery } from '@/components/hooks';
+import { useLoginQuery, useUserTeamsQuery } from '@/components/hooks';
 import { ReactNode } from 'react';
 
 export function TeamsDataTable({
@@ -13,10 +13,10 @@ export function TeamsDataTable({
   children?: ReactNode;
 }) {
   const { user } = useLoginQuery();
-  const queryResult = useTeamsQuery(user.id);
+  const queryResult = useUserTeamsQuery(user.id);
 
   return (
-    <DataGrid queryResult={queryResult} renderEmpty={() => children}>
+    <DataGrid query={queryResult} renderEmpty={() => children}>
       {({ data }) => {
         return <TeamsTable data={data} allowEdit={allowEdit} showActions={showActions} />;
       }}

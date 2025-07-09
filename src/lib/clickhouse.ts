@@ -149,7 +149,7 @@ async function pagedRawQuery(
   queryParams: Record<string, any>,
   filters: QueryFilters,
 ) {
-  const { page = 1, pageSize, orderBy, sortDescending = false } = filters;
+  const { page = 1, pageSize, orderBy, sortDescending = false, search } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
   const direction = sortDescending ? 'desc' : 'asc';
@@ -167,7 +167,7 @@ async function pagedRawQuery(
 
   const data = await rawQuery(`${query}${statements}`, queryParams);
 
-  return { data, count, page: +page, pageSize: size, orderBy };
+  return { data, count, page: +page, pageSize: size, orderBy, search };
 }
 
 async function rawQuery<T = unknown>(

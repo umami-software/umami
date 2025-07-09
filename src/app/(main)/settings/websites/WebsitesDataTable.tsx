@@ -1,6 +1,6 @@
 import { WebsitesTable } from './WebsitesTable';
 import { DataGrid } from '@/components/common/DataGrid';
-import { useWebsitesQuery } from '@/components/hooks';
+import { useUserWebsitesQuery } from '@/components/hooks';
 
 export function WebsitesDataTable({
   teamId,
@@ -13,10 +13,10 @@ export function WebsitesDataTable({
   allowView?: boolean;
   showActions?: boolean;
 }) {
-  const queryResult = useWebsitesQuery({ teamId });
+  const queryResult = useUserWebsitesQuery({ teamId });
 
   return (
-    <DataGrid queryResult={queryResult} allowSearch allowPaging>
+    <DataGrid query={queryResult} allowSearch allowPaging>
       {({ data }) => (
         <WebsitesTable
           teamId={teamId}

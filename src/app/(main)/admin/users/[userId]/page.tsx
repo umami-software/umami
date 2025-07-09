@@ -8,5 +8,5 @@ export default async function ({ params }: { params: Promise<{ userId: string }>
 }
 
 export const metadata: Metadata = {
-  title: 'User Settings',
+  title: 'Users',
 };

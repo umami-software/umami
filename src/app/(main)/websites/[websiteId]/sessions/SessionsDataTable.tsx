@@ -6,7 +6,7 @@ export function SessionsDataTable({ websiteId }: { websiteId?: string; teamId?: 
   const queryResult = useWebsiteSessionsQuery(websiteId);
 
   return (
-    <DataGrid queryResult={queryResult} allowPaging allowSearch>
+    <DataGrid query={queryResult} allowPaging allowSearch>
       {({ data }) => {
         return <SessionsTable data={data} showDomain={!websiteId} />;
       }}

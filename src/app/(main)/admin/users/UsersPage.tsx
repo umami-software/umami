@@ -5,7 +5,7 @@ import { SectionHeader } from '@/components/common/SectionHeader';
 import { useMessages } from '@/components/hooks';
 import { UserAddButton } from './UserAddButton';
 
-export function UsersSettingsPage() {
+export function UsersPage() {
   const { formatMessage, labels } = useMessages();
 
   const handleSave = () => {};

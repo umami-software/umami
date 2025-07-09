@@ -197,7 +197,7 @@ async function rawQuery(sql: string, data: object): Promise<any> {
 }
 
 async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters) {
-  const { page = 1, pageSize, orderBy, sortDescending = false } = filters || {};
+  const { page = 1, pageSize, orderBy, sortDescending = false, search } = filters || {};
   const size = +pageSize || DEFAULT_PAGE_SIZE;
 
   const data = await client[model].findMany({
@@ -216,7 +216,7 @@ async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters)
 
   const count = await client[model].count({ where: (criteria as any).where });
 
-  return { data, count, page: +page, pageSize: size, orderBy };
+  return { data, count, page: +page, pageSize: size, orderBy, search };
 }
 
 async function pagedRawQuery(

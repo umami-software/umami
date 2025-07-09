@@ -288,6 +288,10 @@ export async function canCreateTeamWebsite({ user }: Auth, teamId: string) {
   return teamUser && hasPermission(teamUser.role, PERMISSIONS.websiteCreate);
 }
 
+export async function canViewAllTeams({ user }: Auth) {
+  return user.isAdmin;
+}
+
 export async function canCreateUser({ user }: Auth) {
   return user.isAdmin;
 }
