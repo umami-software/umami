@@ -122,7 +122,7 @@ CREATE TABLE umami.website_event_stats_hourly
     min_time SimpleAggregateFunction(min, DateTime('UTC')),
     max_time SimpleAggregateFunction(max, DateTime('UTC')),
     tag SimpleAggregateFunction(groupArrayArray, Array(String)),
-    distinct_id,
+    distinct_id String,
     created_at Datetime('UTC')
 )
 ENGINE = AggregatingMergeTree
@@ -213,7 +213,7 @@ FROM (SELECT
     min(created_at) min_time,
     max(created_at) max_time,
     arrayFilter(x -> x != '', groupArray(tag)) tag,
-    distinct_id String,
+    distinct_id,
     toStartOfHour(created_at) timestamp
 FROM umami.website_event
 GROUP BY website_id,

@@ -130,7 +130,7 @@ export async function getLocation(ip: string = '', headers: Headers, hasPayloadI
     );
   }
 
-  const result = globalThis[MAXMIND].get(ip);
+  const result = globalThis[MAXMIND].get(ip?.split(':')[0]);
 
   if (result) {
     const country = result.country?.iso_code ?? result?.registered_country?.iso_code;
