@@ -21,7 +21,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const filters = await getQueryFilters({
+  const filters = getQueryFilters({
     ...query,
     websiteId,
     startAt: subMinutes(startOfMinute(new Date()), REALTIME_RANGE).getTime(),

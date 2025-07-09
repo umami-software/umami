@@ -24,11 +24,6 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
       label: formatMessage(labels.websites),
       url: '/settings/websites',
     },
-    user.isAdmin && {
-      id: 'users',
-      label: formatMessage(labels.users),
-      url: '/settings/users',
-    },
   ].filter(n => n);
 
   const value = items.find(({ url }) => pathname.includes(url))?.id;

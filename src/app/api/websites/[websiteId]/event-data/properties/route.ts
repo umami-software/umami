@@ -27,7 +27,7 @@ export async function GET(
   }
 
   const { propertyName } = query;
-  const filters = await getQueryFilters(query);
+  const filters = getQueryFilters(query);
 
   const data = await getEventDataProperties(websiteId, { ...filters, propertyName });
 

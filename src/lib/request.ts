@@ -1,10 +1,11 @@
 import { z } from 'zod/v4';
-import { FILTER_COLUMNS, DEFAULT_PAGE_SIZE } from '@/lib/constants';
+import { FILTER_COLUMNS, DEFAULT_PAGE_SIZE, FILTER_GROUPS } from '@/lib/constants';
 import { badRequest, unauthorized } from '@/lib/response';
 import { getAllowedUnits, getMinimumUnit, maxDate } from '@/lib/date';
 import { checkAuth } from '@/lib/auth';
 import { fetchWebsite } from '@/lib/load';
 import { QueryFilters } from '@/lib/types';
+import { getWebsiteSegment } from '@/queries';
 
 export async function parseRequest(
   request: Request,
@@ -65,16 +66,30 @@ export function getRequestDateRange(query: Record<string, string>) {
   };
 }
 
-export function getRequestFilters(query: Record<string, any>) {
-  return Object.keys(FILTER_COLUMNS).reduce((obj, key) => {
+export async function getRequestFilters(query: Record<string, any>, websiteId?: string) {
+  const result: Record<string, any> = {};
+
+  for (const key of Object.keys(FILTER_COLUMNS)) {
     const value = query[key];
-
     if (value !== undefined) {
-      obj[key] = value;
+      result[key] = value;
     }
+  }
 
-    return obj;
-  }, {});
+  for (const key of Object.keys(FILTER_GROUPS)) {
+    const value = query[key];
+    if (value !== undefined) {
+      const segment = await getWebsiteSegment(websiteId, key, value);
+      if (key === 'segment') {
+        // merge filters into result
+        Object.assign(result, segment.parameters);
+      } else {
+        result[key] = segment.parameters;
+      }
+    }
+  }
+
+  return result;
 }
 
 export async function setWebsiteDate(websiteId: string, data: Record<string, any>) {

@@ -35,6 +35,8 @@ export const filterParams = {
   hostname: z.string().optional(),
   language: z.string().optional(),
   event: z.string().optional(),
+  segment: z.string().optional(),
+  cohort: z.string().optional(),
 };
 
 export const searchParams = {
@@ -272,3 +274,5 @@ export const reportResultSchema = z.intersection(
   }),
   reportTypeSchema,
 );
+
+export const segmentTypeParam = z.enum(['segment', 'cohort']);

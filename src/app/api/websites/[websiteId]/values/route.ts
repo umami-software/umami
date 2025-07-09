@@ -1,9 +1,10 @@
-import { z } from 'zod';
 import { canViewWebsite } from '@/lib/auth';
-import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
-import { getValues } from '@/queries';
-import { parseRequest, getQueryFilters } from '@/lib/request';
+import { EVENT_COLUMNS, FILTER_COLUMNS, FILTER_GROUPS, SESSION_COLUMNS } from '@/lib/constants';
+import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
+import { getWebsiteSegments, getValues } from '@/queries';
+import { z } from 'zod';
+import { dateRangeParams, searchParams } from '@/lib/schema';
 
 export async function GET(
   request: Request,
@@ -11,9 +12,8 @@ export async function GET(
 ) {
   const schema = z.object({
     type: z.string(),
-    startAt: z.coerce.number().int(),
-    endAt: z.coerce.number().int(),
-    search: z.string().optional(),
+    ...dateRangeParams,
+    ...searchParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -23,19 +23,25 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { type } = query;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  if (!SESSION_COLUMNS.includes(type) && !EVENT_COLUMNS.includes(type)) {
+  const { type } = query;
+
+  if (!SESSION_COLUMNS.includes(type) && !EVENT_COLUMNS.includes(type) && !FILTER_GROUPS[type]) {
     return badRequest('Invalid type.');
   }
 
-  const filters = await getQueryFilters(query);
+  let values;
 
-  const values = await getValues(websiteId, FILTER_COLUMNS[type], { ...filters });
+  if (FILTER_GROUPS[type]) {
+    values = (await getWebsiteSegments(websiteId, type)).map(segment => ({ value: segment.name }));
+  } else {
+    const filters = getQueryFilters(query);
+    values = await getValues(websiteId, FILTER_COLUMNS[type], filters);
+  }
 
   return json(values.filter(n => n).sort());
 }

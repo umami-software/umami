@@ -22,7 +22,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
   }
 
   const { userId } = await params;
-  const filters = await getQueryFilters(query);
+  const filters = getQueryFilters(query);
 
   const websites = await getAllUserWebsitesIncludingTeamOwner(userId);
 

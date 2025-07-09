@@ -28,7 +28,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const filters = await getQueryFilters(query);
+  const filters = getQueryFilters(query);
 
   const data = await getWebsiteSessionsWeekly(websiteId, filters);
 

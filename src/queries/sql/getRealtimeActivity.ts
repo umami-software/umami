@@ -12,7 +12,7 @@ export async function getRealtimeActivity(...args: [websiteId: string, filters: 
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
-  const { queryParams, filterQuery, dateQuery } = parseFilters(filters);
+  const { queryParams, filterQuery, cohortQuery, dateQuery } = parseFilters(filters);
 
   return rawQuery(
     `
@@ -27,6 +27,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
         website_event.url_path as "urlPath",
         website_event.referrer_domain as "referrerDomain"
     from website_event
+    ${cohortQuery}
     inner join session
       on session.session_id = website_event.session_id
     where website_event.website_id = {{websiteId::uuid}}
@@ -41,7 +42,10 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters): Promise<{ x: number }> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { queryParams, filterQuery, dateQuery } = parseFilters(filters);
+  const { queryParams, filterQuery, cohortQuery, dateQuery } = parseFilters({
+    ...filters,
+    websiteId,
+  });
 
   return rawQuery(
     `
@@ -56,12 +60,13 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters): Promis
             url_path as urlPath,
             referrer_domain as referrerDomain
         from website_event
+        ${cohortQuery}
         where website_id = {websiteId:UUID}
         ${filterQuery}
         ${dateQuery}
         order by createdAt desc
         limit 100
     `,
-    { ...filters, ...queryParams },
+    queryParams,
   );
 }

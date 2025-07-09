@@ -14,7 +14,7 @@ export async function getPageviewStats(...args: [websiteId: string, filters: Que
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { timezone = 'utc', unit = 'day' } = filters;
   const { getDateSQL, parseFilters, rawQuery } = prisma;
-  const { filterQuery, joinSessionQuery, queryParams } = parseFilters({
+  const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     eventType: EVENT_TYPE.pageView,
@@ -27,6 +27,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       count(*) y
     from website_event
       ${joinSessionQuery}
+      ${cohortQuery}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and event_type = {{eventType}}
@@ -44,7 +45,7 @@ async function clickhouseQuery(
 ): Promise<{ x: string; y: number }[]> {
   const { timezone = 'utc', unit = 'day' } = filters;
   const { parseFilters, rawQuery, getDateSQL } = clickhouse;
-  const { filterQuery, queryParams } = parseFilters({
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     eventType: EVENT_TYPE.pageView,
@@ -62,6 +63,7 @@ async function clickhouseQuery(
         ${getDateSQL('website_event.created_at', unit, timezone)} as t,
         count(*) as y
       from website_event
+      ${cohortQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
@@ -80,6 +82,7 @@ async function clickhouseQuery(
         ${getDateSQL('website_event.created_at', unit, timezone)} as t,
         sum(views) as y
       from website_event_stats_hourly website_event
+      ${cohortQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}

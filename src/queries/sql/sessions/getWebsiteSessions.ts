@@ -13,7 +13,7 @@ export async function getWebsiteSessions(...args: [websiteId: string, filters: Q
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { pagedRawQuery, parseFilters } = prisma;
   const { search } = filters;
-  const { filterQuery, dateQuery, queryParams } = parseFilters({
+  const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     search: search ? `%${search}%` : undefined,
@@ -41,6 +41,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       sum(case when website_event.event_type = 1 then 1 else 0 end) as "views",
       max(website_event.created_at) as "createdAt"
     from website_event 
+    ${cohortQuery}
     join session on session.session_id = website_event.session_id
     where website_event.website_id = {{websiteId::uuid}}
     ${dateQuery}
@@ -67,7 +68,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   const { pagedRawQuery, parseFilters, getDateStringSQL } = clickhouse;
   const { search } = filters;
-  const { filterQuery, dateQuery, queryParams } = parseFilters({
+  const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
@@ -93,7 +94,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       uniq(visit_id) as visits,
       sumIf(views, event_type = 1) as views,
       lastAt as createdAt
-    from website_event_stats_hourly
+    from website_event_stats_hourly website_event
+    ${cohortQuery}
     where website_id = {websiteId:UUID}
     ${dateQuery}
     ${filterQuery}

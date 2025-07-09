@@ -104,6 +104,24 @@ function mapFilter(column: string, operator: string, name: string, type: string 
   }
 }
 
+function mapCohortFilter(column: string, operator: string, value: string) {
+  const db = getDatabaseType();
+  const like = db === POSTGRESQL ? 'ilike' : 'like';
+
+  switch (operator) {
+    case OPERATORS.equals:
+      return `${column} = '${value}'`;
+    case OPERATORS.notEquals:
+      return `${column} != '${value}'`;
+    case OPERATORS.contains:
+      return `${column} ${like} '${value}'`;
+    case OPERATORS.doesNotContain:
+      return `${column} not ${like} '${value}'`;
+    default:
+      return '';
+  }
+}
+
 function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}): string {
   const query = filtersToArray(filters, options).reduce(
     (arr, { name, column, operator, prefix = '' }) => {
@@ -123,6 +141,43 @@ function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}
   );
 
   return query.join('\n');
+}
+
+function getCohortQuery(websiteId: string, filters: QueryFilters = {}, options: QueryOptions = {}) {
+  const query = filtersToArray(filters, options).reduce(
+    (arr, { name, column, operator, value }) => {
+      if (column) {
+        arr.push(
+          `${arr.length === 0 ? 'where' : 'and'} ${mapCohortFilter(column, operator, value)}`,
+        );
+
+        if (name === 'referrer') {
+          arr.push(`and referrer_domain != hostname`);
+        }
+      }
+
+      return arr;
+    },
+    [],
+  );
+
+  if (query.length > 0) {
+    // add website and date range filters
+    query.push(`and website_event.website_id = '${websiteId}'`);
+    query.push(
+      `and website_event.created_at between '${filters.startDate}'::timestamptz and '${filters.endDate}'::timestamptz`,
+    );
+
+    return `join
+    (select distinct website_event.session_id
+    from website_event
+    join session on session.session_id = website_event.session_id
+    ${query.join('\n')}) cohort
+    on cohort.session_id = website_event.session_id
+    `;
+  }
+
+  return '';
 }
 
 function getDateQuery(filters: Record<string, any>) {
@@ -165,6 +220,7 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
     dateQuery: getDateQuery(filters),
     filterQuery: getFilterQuery(filters, options),
     queryParams: getQueryParams(filters),
+    cohortQuery: getCohortQuery(filters?.cohort),
   };
 }
 

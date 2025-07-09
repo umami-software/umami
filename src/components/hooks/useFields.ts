@@ -5,6 +5,9 @@ export function useFields() {
 
   const fields = [
     { name: 'path', type: 'string', label: formatMessage(labels.path) },
+    // { name: 'cohort', type: 'string', label: formatMessage(labels.cohort) },
+    // { name: 'segment', type: 'string', label: formatMessage(labels.segment) },
+    { name: 'url', type: 'string', label: formatMessage(labels.url) },
     { name: 'title', type: 'string', label: formatMessage(labels.pageTitle) },
     { name: 'referrer', type: 'string', label: formatMessage(labels.referrer) },
     //{ name: 'query', type: 'string', label: formatMessage(labels.query) },
