@@ -18,7 +18,7 @@ export function SectionHeader({
   return (
     <Row {...props} justifyContent="space-between" alignItems="center" height="60px">
       <Row gap="3" alignItems="center">
-        {icon && <Icon>{icon}</Icon>}
+        {icon && <Icon size="md">{icon}</Icon>}
         {title && <Heading size="3">{title}</Heading>}
         {description && <Text color="muted">{description}</Text>}
       </Row>

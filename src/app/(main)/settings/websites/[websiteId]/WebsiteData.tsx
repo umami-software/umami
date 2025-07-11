@@ -19,19 +19,21 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   const { touch } = useModified();
   const { teamId, renderUrl } = useNavigation();
   const router = useRouter();
-  const { data } = useUserTeamsQuery(user.id);
+  const { data: teams } = useUserTeamsQuery(user.id);
+
   const canTransferWebsite =
     (
-      !teamId &&
-      data.filter(({ teamUser }) =>
-        teamUser.find(
-          ({ role, userId }) =>
-            [ROLES.teamOwner, ROLES.teamManager].includes(role) && userId === user.id,
-        ),
-      )
+      (!teamId &&
+        teams?.data?.filter(({ teamUser }) =>
+          teamUser.find(
+            ({ role, userId }) =>
+              [ROLES.teamOwner, ROLES.teamManager].includes(role) && userId === user.id,
+          ),
+        )) ||
+      []
     ).length > 0 ||
     (teamId &&
-      !!data
+      !!teams?.data
         ?.find(({ id }) => id === teamId)
         ?.teamUser.find(({ role, userId }) => role === ROLES.teamOwner && userId === user.id));
 

@@ -7,7 +7,7 @@ export function useUsersQuery() {
   const { modified } = useModified(`users`);
 
   return usePagedQuery({
-    queryKey: ['users', { modified }],
+    queryKey: ['users:admin', { modified }],
     queryFn: (pageParams: any) => {
       return get('/admin/users', {
         ...pageParams,

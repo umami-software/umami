@@ -24,7 +24,6 @@ export * from '@/app/(main)/settings/teams/TeamsDataTable';
 export * from '@/app/(main)/settings/teams/TeamsHeader';
 export * from '@/app/(main)/settings/teams/TeamsJoinButton';
 export * from '@/app/(main)/settings/teams/TeamsTable';
-export * from '@/app/(main)/settings/teams/WebsiteTags';
 
 export * from '@/app/(main)/settings/websites/[websiteId]/WebsiteShareForm';
 export * from '@/app/(main)/settings/websites/[websiteId]/WebsiteTrackingCode';

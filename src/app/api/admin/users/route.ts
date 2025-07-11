@@ -32,6 +32,9 @@ export async function GET(request: Request) {
           },
         },
       },
+      omit: {
+        password: true,
+      },
       orderBy: {
         createdAt: 'desc',
       },

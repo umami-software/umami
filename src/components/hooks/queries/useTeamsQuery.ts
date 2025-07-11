@@ -1,6 +1,6 @@
 import { useApi } from '../useApi';
 import { useModified } from '../useModified';
-import { usePagedQuery } from '@/components/hooks';
+import { usePagedQuery } from '../usePagedQuery';
 import { ReactQueryOptions } from '@/lib/types';
 
 export function useTeamsQuery(params?: Record<string, any>, options?: ReactQueryOptions) {
@@ -8,7 +8,7 @@ export function useTeamsQuery(params?: Record<string, any>, options?: ReactQuery
   const { modified } = useModified(`teams`);
 
   return usePagedQuery({
-    queryKey: ['websites', { modified, ...params }],
+    queryKey: ['teams:admin', { modified, ...params }],
     queryFn: pageParams => {
       return get(`/admin/teams`, {
         ...params,

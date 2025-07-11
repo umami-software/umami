@@ -31,15 +31,16 @@ export function WebsiteTransferForm({
   const { mutate, error } = useMutation({
     mutationFn: (data: any) => post(`/websites/${websiteId}/transfer`, data),
   });
-  const { result, query } = useUserTeamsQuery(user.id);
+  const { data: teams, isLoading } = useUserTeamsQuery(user.id);
   const isTeamWebsite = !!website?.teamId;
 
-  const items = result.data.filter(({ teamUser }) =>
-    teamUser.find(
-      ({ role, userId }) =>
-        [ROLES.teamOwner, ROLES.teamManager].includes(role) && userId === user.id,
-    ),
-  );
+  const items =
+    teams?.data?.filter(({ teamUser }) =>
+      teamUser.find(
+        ({ role, userId }) =>
+          [ROLES.teamOwner, ROLES.teamManager].includes(role) && userId === user.id,
+      ),
+    ) || [];
 
   const handleSubmit = async () => {
     mutate(
@@ -60,7 +61,7 @@ export function WebsiteTransferForm({
     setTeamId(key as string);
   };
 
-  if (query.isLoading) {
+  if (isLoading) {
     return <Loading icon="dots" position="center" />;
   }
 

@@ -1,12 +1,15 @@
+import { useContext, useState } from 'react';
+import { Column, Tabs, TabList, Tab, TabPanel } from '@umami/react-zen';
 import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
 import { useLoginQuery, useMessages } from '@/components/hooks';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { ROLES } from '@/lib/constants';
-import { useContext, useState } from 'react';
-import { Column, Tabs, TabList, Tab, TabPanel } from '@umami/react-zen';
+import { Users } from '@/components/icons';
 import { TeamLeaveButton } from '@/app/(main)/settings/teams/TeamLeaveButton';
 import { TeamManage } from './TeamManage';
 import { TeamEditForm } from './TeamEditForm';
+import { TeamWebsitesDataTable } from '@/app/(main)/teams/[teamId]/settings/websites/TeamWebsitesDataTable';
+import { TeamMembersDataTable } from '@/app/(main)/teams/[teamId]/settings/members/TeamMembersDataTable';
 
 export function TeamDetails({ teamId }: { teamId: string }) {
   const team = useContext(TeamContext);
@@ -26,16 +29,24 @@ export function TeamDetails({ teamId }: { teamId: string }) {
 
   return (
     <Column gap>
-      <SectionHeader title={team?.name}>
+      <SectionHeader title={team?.name} icon={<Users />}>
         {!isTeamOwner && <TeamLeaveButton teamId={team.id} teamName={team.name} />}
       </SectionHeader>
       <Tabs selectedKey={tab} onSelectionChange={(value: any) => setTab(value)}>
         <TabList>
           <Tab id="details">{formatMessage(labels.details)}</Tab>
+          <Tab id="members">{formatMessage(labels.members)}</Tab>
+          <Tab id="websites">{formatMessage(labels.websites)}</Tab>
           {isTeamOwner && <Tab id="manage">{formatMessage(labels.manage)}</Tab>}
         </TabList>
         <TabPanel id="details">
           <TeamEditForm teamId={teamId} allowEdit={canEdit} />
+        </TabPanel>
+        <TabPanel id="members">
+          <TeamMembersDataTable teamId={teamId} allowEdit />
+        </TabPanel>
+        <TabPanel id="websites">
+          <TeamWebsitesDataTable teamId={teamId} allowEdit />
         </TabPanel>
         <TabPanel id="manage">
           <TeamManage teamId={teamId} />

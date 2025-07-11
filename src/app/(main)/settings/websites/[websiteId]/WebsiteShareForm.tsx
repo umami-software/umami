@@ -6,17 +6,13 @@ import {
   Switch,
   FormSubmitButton,
   Column,
-  Icon,
-  Grid,
   Label,
   useToast,
-  TooltipTrigger,
-  Tooltip,
+  Row,
 } from '@umami/react-zen';
 import { useState } from 'react';
 import { getRandomChars } from '@/lib/crypto';
 import { useApi, useMessages, useModified } from '@/components/hooks';
-import { Refresh } from '@/components/icons';
 
 const generateId = () => getRandomChars(16);
 
@@ -70,24 +66,19 @@ export function WebsiteShareForm({ websiteId, shareId, onSave, onClose }: Websit
         {id && (
           <Column>
             <Label>{formatMessage(labels.shareUrl)}</Label>
-            <Grid columns="1fr auto" gap>
-              <TextField value={url} isReadOnly allowCopy />
-              <TooltipTrigger>
-                <Button onPress={handleGenerate} variant="quiet" size="sm">
-                  <Icon>
-                    <Refresh />
-                  </Icon>
-                </Button>
-                <Tooltip>{formatMessage(labels.regenerate)}</Tooltip>
-              </TooltipTrigger>
-            </Grid>
+            <TextField value={url} isReadOnly allowCopy />
           </Column>
         )}
-        <FormButtons>
-          <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
-          <FormSubmitButton isDisabled={false} isLoading={isPending}>
-            {formatMessage(labels.save)}
-          </FormSubmitButton>
+        <FormButtons justifyContent="space-between">
+          <Row>
+            {id && <Button onPress={handleGenerate}>{formatMessage(labels.regenerate)}</Button>}
+          </Row>
+          <Row>
+            {onClose && <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>}
+            <FormSubmitButton isDisabled={false} isLoading={isPending}>
+              {formatMessage(labels.save)}
+            </FormSubmitButton>
+          </Row>
         </FormButtons>
       </Column>
     </Form>

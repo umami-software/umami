@@ -6,6 +6,7 @@ import {
   TextField,
   Button,
   useToast,
+  Text,
 } from '@umami/react-zen';
 import { getRandomChars } from '@/lib/crypto';
 import { useContext } from 'react';
@@ -47,8 +48,7 @@ export function TeamEditForm({ teamId, allowEdit }: { teamId: string; allowEdit?
               label={formatMessage(labels.name)}
               rules={{ required: formatMessage(labels.required) }}
             >
-              {allowEdit && <TextField />}
-              {!allowEdit && team?.name}
+              {allowEdit ? <TextField /> : <Text>{team?.name}</Text>}
             </FormField>
             {!cloudMode && allowEdit && (
               <FormField name="accessCode" label={formatMessage(labels.accessCode)}>

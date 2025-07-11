@@ -8,7 +8,7 @@ export function useWebsitesQuery(params?: Record<string, any>, options?: ReactQu
   const { modified } = useModified(`websites`);
 
   return usePagedQuery({
-    queryKey: ['websites', { modified, ...params }],
+    queryKey: ['websites:admin', { modified, ...params }],
     queryFn: pageParams => {
       return get(`/admin/websites`, {
         ...pageParams,

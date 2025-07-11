@@ -19,22 +19,22 @@ export function SideNav(props: any) {
   const links = [
     {
       label: formatMessage(labels.websites),
-      href: '/websites',
+      href: renderUrl('/websites', false),
       icon: <Globe />,
     },
     {
       label: formatMessage(labels.boards),
-      href: '/boards',
+      href: renderUrl('/boards', false),
       icon: <LayoutDashboard />,
     },
     {
       label: formatMessage(labels.links),
-      href: '/links',
+      href: renderUrl('/links', false),
       icon: <LinkIcon />,
     },
     {
       label: formatMessage(labels.pixels),
-      href: '/pixels',
+      href: renderUrl('/pixels', false),
       icon: <Grid2X2 />,
     },
     {
@@ -57,7 +57,7 @@ export function SideNav(props: any) {
       <SidebarSection>
         {links.map(({ href, label, icon }) => {
           return (
-            <Link key={href} href={renderUrl(href, false)} role="button">
+            <Link key={href} href={href} role="button">
               <SidebarItem label={label} icon={icon} isSelected={pathname.startsWith(href)} />
             </Link>
           );
