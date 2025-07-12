@@ -42,7 +42,7 @@ const ShareButton = ({ websiteId, shareId }) => {
         <Text>Share</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.share)} style={{ width: 600 }}>
+        <Dialog title={formatMessage(labels.share)} style={{ width: 400 }}>
           {({ close }) => {
             return <WebsiteShareForm websiteId={websiteId} shareId={shareId} onClose={close} />;
           }}

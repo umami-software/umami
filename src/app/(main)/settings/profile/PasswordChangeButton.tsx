@@ -29,7 +29,7 @@ export function PasswordChangeButton() {
         <Text>{formatMessage(labels.changePassword)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.changePassword)}>
+        <Dialog title={formatMessage(labels.changePassword)} style={{ width: 400 }}>
           {({ close }) => (
             <Column width="300px">
               <PasswordEditForm onSave={handleSave} onClose={close} />

@@ -56,7 +56,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
         <DialogTrigger>
           <Button isDisabled={!canTransferWebsite}>{formatMessage(labels.transfer)}</Button>
           <Modal>
-            <Dialog title={formatMessage(labels.transferWebsite)}>
+            <Dialog title={formatMessage(labels.transferWebsite)} style={{ width: 400 }}>
               {({ close }) => (
                 <WebsiteTransferForm websiteId={websiteId} onSave={handleSave} onClose={close} />
               )}
@@ -72,7 +72,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
         <DialogTrigger>
           <Button>{formatMessage(labels.reset)}</Button>
           <Modal>
-            <Dialog title={formatMessage(labels.resetWebsite)}>
+            <Dialog title={formatMessage(labels.resetWebsite)} style={{ width: 400 }}>
               {({ close }) => (
                 <WebsiteResetForm websiteId={websiteId} onSave={handleReset} onClose={close} />
               )}
@@ -90,7 +90,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
             {formatMessage(labels.delete)}
           </Button>
           <Modal>
-            <Dialog title={formatMessage(labels.deleteWebsite)}>
+            <Dialog title={formatMessage(labels.deleteWebsite)} style={{ width: 400 }}>
               {({ close }) => (
                 <WebsiteDeleteForm websiteId={websiteId} onSave={handleSave} onClose={close} />
               )}

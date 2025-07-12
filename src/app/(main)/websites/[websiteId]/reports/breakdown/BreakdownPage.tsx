@@ -43,7 +43,7 @@ const FieldsButton = ({ value, onChange }) => {
           <Text>Fields</Text>
         </Button>
         <Modal>
-          <Dialog title={formatMessage(labels.fields)}>
+          <Dialog title={formatMessage(labels.fields)} style={{ width: 400 }}>
             {({ close }) => (
               <FieldSelectForm selectedFields={value} onChange={onChange} onClose={close} />
             )}

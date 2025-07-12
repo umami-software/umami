@@ -25,9 +25,7 @@ export function ConfirmationForm({
 
   return (
     <Form onSubmit={onConfirm} error={error}>
-      <Row marginY="4" gap="2">
-        {message}
-      </Row>
+      <Row marginY="4">{message}</Row>
       <FormButtons>
         <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
         <FormSubmitButton

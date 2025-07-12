@@ -5,6 +5,7 @@ import { useMessages, useNavigation } from '@/components/hooks';
 import { Pager } from '@/components/common/Pager';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { PageResult } from '@/lib/types';
+import { Empty } from '@/components/common/Empty';
 
 const DEFAULT_SEARCH_DELAY = 600;
 
@@ -45,6 +46,10 @@ export function DataGrid({
     },
     [search],
   );
+
+  if (data?.data?.length === 0) {
+    return <Empty />;
+  }
 
   return (
     <Column gap="4" minHeight="300px">

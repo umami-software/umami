@@ -23,7 +23,7 @@ export function BoardAddButton() {
         <Text>{formatMessage(labels.addBoard)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.addBoard)}>
+        <Dialog title={formatMessage(labels.addBoard)} style={{ width: 400 }}>
           {({ close }) => <BoardAddForm teamId={teamId} onSave={handleSave} onClose={close} />}
         </Dialog>
       </Modal>

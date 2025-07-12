@@ -34,7 +34,7 @@ export function TeamMemberEditButton({
         </Row>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.editMember)}>
+        <Dialog title={formatMessage(labels.editMember)} style={{ width: 400 }}>
           {({ close }) => (
             <TeamMemberEditForm
               teamId={teamId}

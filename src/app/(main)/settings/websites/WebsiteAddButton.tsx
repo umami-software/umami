@@ -32,7 +32,7 @@ export function WebsiteAddButton({ teamId, onSave }: { teamId: string; onSave?: 
         <Text>{formatMessage(labels.addWebsite)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.addWebsite)}>
+        <Dialog title={formatMessage(labels.addWebsite)} style={{ width: 400 }}>
           {({ close }) => (
             <Column width="300px">
               <WebsiteAddForm teamId={teamId} onSave={handleSave} onClose={close} />

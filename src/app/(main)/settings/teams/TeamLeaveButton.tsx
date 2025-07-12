@@ -24,7 +24,7 @@ export function TeamLeaveButton({ teamId, teamName }: { teamId: string; teamName
         <Text>{formatMessage(labels.leave)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.leaveTeam)}>
+        <Dialog title={formatMessage(labels.leaveTeam)} style={{ width: 400 }}>
           {({ close }) => (
             <TeamLeaveForm
               teamId={teamId}

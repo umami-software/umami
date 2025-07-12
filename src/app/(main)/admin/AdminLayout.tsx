@@ -45,7 +45,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
             <SideMenu items={items} selectedKey={value} />
           </Column>
           <Column>
-            <Panel>{children}</Panel>
+            <Panel minHeight="300px">{children}</Panel>
           </Column>
         </Grid>
       </Column>

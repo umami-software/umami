@@ -22,7 +22,7 @@ export function TeamManage({ teamId }: { teamId: string }) {
       <DialogTrigger>
         <Button variant="danger">{formatMessage(labels.delete)}</Button>
         <Modal>
-          <Dialog title={formatMessage(labels.deleteTeam)}>
+          <Dialog title={formatMessage(labels.deleteTeam)} style={{ width: 400 }}>
             {({ close }) => <TeamDeleteForm teamId={teamId} onSave={handleLeave} onClose={close} />}
           </Dialog>
         </Modal>

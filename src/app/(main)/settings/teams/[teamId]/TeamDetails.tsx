@@ -41,7 +41,7 @@ export function TeamDetails({ teamId }: { teamId: string }) {
           <Tab id="websites">{formatMessage(labels.websites)}</Tab>
           {isTeamOwner && <Tab id="manage">{formatMessage(labels.manage)}</Tab>}
         </TabList>
-        <TabPanel id="details">
+        <TabPanel id="details" style={{ width: 500 }}>
           <TeamEditForm teamId={teamId} allowEdit={canEdit} />
         </TabPanel>
         <TabPanel id="members">

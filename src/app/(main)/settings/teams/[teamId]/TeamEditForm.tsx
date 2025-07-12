@@ -45,7 +45,7 @@ export function TeamEditForm({
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error} defaultValues={{ ...team }} style={{ width: 400 }}>
+    <Form onSubmit={handleSubmit} error={error} defaultValues={{ ...team }}>
       {({ setValue }) => {
         return (
           <>

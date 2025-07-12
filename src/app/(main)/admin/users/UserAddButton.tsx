@@ -23,7 +23,7 @@ export function UserAddButton({ onSave }: { onSave?: () => void }) {
         <Text>{formatMessage(labels.createUser)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.createUser)}>
+        <Dialog title={formatMessage(labels.createUser)} style={{ width: 400 }}>
           {({ close }) => <UserAddForm onSave={handleSave} onClose={close} />}
         </Dialog>
       </Modal>

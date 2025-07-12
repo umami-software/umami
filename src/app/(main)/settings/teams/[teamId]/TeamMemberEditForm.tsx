@@ -39,7 +39,7 @@ export function TeamMemberEditForm({
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error} defaultValues={{ role }} style={{ minWidth: 400 }}>
+    <Form onSubmit={handleSubmit} error={error} defaultValues={{ role }}>
       <FormField
         name="role"
         rules={{ required: formatMessage(labels.required) }}

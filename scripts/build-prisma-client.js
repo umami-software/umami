@@ -2,7 +2,7 @@ import esbuild from 'esbuild';
 
 esbuild
   .build({
-    entryPoints: ['src/generated/prisma/client.ts'], // Adjust this to your entry file
+    entryPoints: ['src/generated/prisma/client.js'], // Adjust this to your entry file
     bundle: true, // Bundle all files into one (optional)
     outfile: 'dist/generated/prisma/client.js', // Output file
     platform: 'node', // For Node.js compatibility

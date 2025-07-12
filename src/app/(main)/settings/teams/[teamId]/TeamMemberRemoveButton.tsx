@@ -41,11 +41,11 @@ export function TeamMemberRemoveButton({
         </Icon>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.removeMember)}>
+        <Dialog title={formatMessage(labels.removeMember)} style={{ width: 400 }}>
           {({ close }) => (
             <ConfirmationForm
               message={formatMessage(messages.confirmRemove, {
-                target: <b key={messages.confirmRemove.id}>{userName}</b>,
+                target: userName,
               })}
               isLoading={isPending}
               error={error}

@@ -37,13 +37,13 @@ export function WebsiteSettings({
           <Tab id="share"> {formatMessage(labels.shareUrl)}</Tab>
           <Tab id="manage">{formatMessage(labels.manage)}</Tab>
         </TabList>
-        <TabPanel id="details">
+        <TabPanel id="details" style={{ width: 500 }}>
           <WebsiteEditForm websiteId={websiteId} />
         </TabPanel>
         <TabPanel id="tracking">
           <WebsiteTrackingCode websiteId={websiteId} />
         </TabPanel>
-        <TabPanel id="share">
+        <TabPanel id="share" style={{ width: 500 }}>
           <WebsiteShareForm websiteId={websiteId} shareId={website.shareId} />
         </TabPanel>
         <TabPanel id="manage">

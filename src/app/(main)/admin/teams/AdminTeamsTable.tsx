@@ -46,7 +46,7 @@ export function AdminTeamsTable({
 
               return (
                 <MenuButton>
-                  <MenuItem href={`/admin/users/${id}`} data-test="link-button-edit">
+                  <MenuItem href={`/admin/teams/${id}`} data-test="link-button-edit">
                     <Row alignItems="center" gap>
                       <Icon>
                         <Edit />

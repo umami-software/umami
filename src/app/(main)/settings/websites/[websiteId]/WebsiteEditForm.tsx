@@ -33,7 +33,7 @@ export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSa
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error} values={website} style={{ width: 400 }}>
+    <Form onSubmit={handleSubmit} error={error} values={website}>
       <FormField name="id" label={formatMessage(labels.websiteId)}>
         <TextField data-test="text-field-websiteId" value={website?.id} isReadOnly allowCopy />
       </FormField>

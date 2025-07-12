@@ -22,7 +22,7 @@ export function TeamsJoinButton() {
         <Text>{formatMessage(labels.joinTeam)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.joinTeam)}>
+        <Dialog title={formatMessage(labels.joinTeam)} style={{ width: 400 }}>
           {({ close }) => <TeamJoinForm onSave={handleJoin} onClose={close} />}
         </Dialog>
       </Modal>

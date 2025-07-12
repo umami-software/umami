@@ -19,7 +19,7 @@ export function UserSettings({ userId }: { userId: string }) {
           <Tab id="details">{formatMessage(labels.details)}</Tab>
           <Tab id="websites">{formatMessage(labels.websites)}</Tab>
         </TabList>
-        <TabPanel id="details">
+        <TabPanel id="details" style={{ width: 500 }}>
           <UserEditForm userId={userId} />
         </TabPanel>
         <TabPanel id="websites">

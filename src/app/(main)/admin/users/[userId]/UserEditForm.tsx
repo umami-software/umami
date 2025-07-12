@@ -45,7 +45,7 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={getMessage(error)} values={user} style={{ width: 300 }}>
+    <Form onSubmit={handleSubmit} error={getMessage(error)} values={user}>
       <FormField name="username" label={formatMessage(labels.username)}>
         <TextField data-test="input-username" />
       </FormField>

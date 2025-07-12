@@ -24,7 +24,7 @@ export function TeamsAddButton({ onSave }: { onSave?: () => void }) {
         <Text>{formatMessage(labels.createTeam)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.createTeam)}>
+        <Dialog title={formatMessage(labels.createTeam)} style={{ width: 400 }}>
           {({ close }) => <TeamAddForm onSave={handleSave} onClose={close} />}
         </Dialog>
       </Modal>
