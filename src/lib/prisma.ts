@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { PrismaClient } from '@/generated/prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import { MYSQL, POSTGRESQL, getDatabaseType } from '@/lib/db';

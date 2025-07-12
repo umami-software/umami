@@ -1,4 +1,4 @@
-import { Prisma, Website } from '@/generated/prisma/client';
+import { Prisma, Website } from '@prisma/client';
 import redis from '@/lib/redis';
 import prisma from '@/lib/prisma';
 import { PageResult, QueryFilters } from '@/lib/types';
