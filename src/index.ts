@@ -1,19 +1,17 @@
 export * from '@/components/hooks';
 
-export * from '@/app/(main)/teams/[teamId]/settings/members/TeamMemberEditButton';
-export * from '@/app/(main)/teams/[teamId]/settings/members/TeamMemberEditForm';
-export * from '@/app/(main)/teams/[teamId]/settings/members/TeamMemberRemoveButton';
-export * from '@/app/(main)/teams/[teamId]/settings/members/TeamMembersDataTable';
-export * from '@/app/(main)/teams/[teamId]/settings/members/TeamMembersTable';
-
-export * from '@/app/(main)/teams/[teamId]/settings/team/TeamDeleteForm';
-export * from '@/app/(main)/teams/[teamId]/settings/team/TeamDetails';
-export * from '@/app/(main)/teams/[teamId]/settings/team/TeamEditForm';
-export * from '@/app/(main)/teams/[teamId]/settings/team/TeamManage';
-
-export * from '@/app/(main)/teams/[teamId]/settings/websites/TeamWebsiteRemoveButton';
-export * from '@/app/(main)/teams/[teamId]/settings/websites/TeamWebsitesDataTable';
-export * from '@/app/(main)/teams/[teamId]/settings/websites/TeamWebsitesTable';
+export * from '@/app/(main)/settings/teams/[teamId]/TeamMemberEditButton';
+export * from '@/app/(main)/settings/teams/[teamId]/TeamMemberEditForm';
+export * from '@/app/(main)/settings/teams/[teamId]/TeamMemberRemoveButton';
+export * from '@/app/(main)/settings/teams/[teamId]/TeamMembersDataTable';
+export * from '@/app/(main)/settings/teams/[teamId]/TeamMembersTable';
+export * from '@/app/(main)/settings/teams/[teamId]/TeamDeleteForm';
+export * from '@/app/(main)/settings/teams/[teamId]/TeamDetails';
+export * from '@/app/(main)/settings/teams/[teamId]/TeamEditForm';
+export * from '@/app/(main)/settings/teams/[teamId]/TeamManage';
+export * from '@/app/(main)/settings/teams/[teamId]/TeamWebsiteRemoveButton';
+export * from '@/app/(main)/settings/teams/[teamId]/TeamWebsitesDataTable';
+export * from '@/app/(main)/settings/teams/[teamId]/TeamWebsitesTable';
 
 export * from '@/app/(main)/settings/teams/TeamAddForm';
 export * from '@/app/(main)/settings/teams/TeamJoinForm';

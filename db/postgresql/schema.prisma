@@ -1,8 +1,7 @@
 generator client {
-  provider        = "prisma-client-js"
+  provider        = "prisma-client"
   previewFeatures = ["queryCompiler", "driverAdapters"]
   output          = "../src/generated/prisma"
-  moduleFormat    = "esm"
 }
 
 datasource db {

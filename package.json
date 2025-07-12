@@ -26,7 +26,7 @@
     "build-components": "rollup -c rollup.components.config.js",
     "build-tracker": "rollup -c rollup.tracker.config.js",
     "build-prisma-client": "node scripts/build-prisma-client.js",
-    "build-db": "npm-run-all copy-db-files build-db-client build-prisma-client",
+    "build-db": "npm-run-all copy-db-files build-db-client",
     "build-lang": "npm-run-all format-lang compile-lang download-country-names download-language-names clean-lang",
     "build-geo": "node scripts/build-geo.js",
     "build-db-schema": "prisma db pull",
