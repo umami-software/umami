@@ -1,11 +1,17 @@
 import { useApi } from '../useApi';
+import { useModified } from '@/components/hooks';
+import { keepPreviousData } from '@tanstack/react-query';
+import { ReactQueryOptions } from '@/lib/types';
 
-export function useUserQuery(userId: string, options?: Record<string, any>) {
+export function useUserQuery(userId: string, options?: ReactQueryOptions<any>) {
   const { get, useQuery } = useApi();
+  const { modified } = useModified(`user:${userId}`);
+
   return useQuery({
-    queryKey: ['users', userId],
+    queryKey: ['users', { userId, modified }],
     queryFn: () => get(`/users/${userId}`),
     enabled: !!userId,
+    placeholderData: keepPreviousData,
     ...options,
   });
 }

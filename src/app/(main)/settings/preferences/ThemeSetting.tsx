@@ -6,15 +6,12 @@ export function ThemeSetting() {
 
   return (
     <Row gap>
-      <Button
-        variant={theme === 'light' ? 'primary' : 'secondary'}
-        onPress={() => setTheme('light')}
-      >
+      <Button variant={theme === 'light' ? 'primary' : undefined} onPress={() => setTheme('light')}>
         <Icon>
           <Sun />
         </Icon>
       </Button>
-      <Button variant={theme === 'dark' ? 'primary' : 'secondary'} onPress={() => setTheme('dark')}>
+      <Button variant={theme === 'dark' ? 'primary' : undefined} onPress={() => setTheme('dark')}>
         <Icon>
           <Moon />
         </Icon>

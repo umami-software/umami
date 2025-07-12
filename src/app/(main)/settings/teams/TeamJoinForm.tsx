@@ -25,7 +25,7 @@ export function TeamJoinForm({ onSave, onClose }: { onSave: () => void; onClose:
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error}>
+    <Form onSubmit={handleSubmit} error={error} style={{ minWidth: 300 }}>
       <FormField
         label={formatMessage(labels.accessCode)}
         name="accessCode"

@@ -6,17 +6,16 @@ import { ReactNode } from 'react';
 export function TeamsDataTable({
   allowEdit,
   showActions,
-  children,
 }: {
   allowEdit?: boolean;
   showActions?: boolean;
   children?: ReactNode;
 }) {
   const { user } = useLoginQuery();
-  const queryResult = useUserTeamsQuery(user.id);
+  const query = useUserTeamsQuery(user.id);
 
   return (
-    <DataGrid query={queryResult} renderEmpty={() => children}>
+    <DataGrid query={query}>
       {({ data }) => {
         return <TeamsTable data={data} allowEdit={allowEdit} showActions={showActions} />;
       }}

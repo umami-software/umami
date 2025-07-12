@@ -1,12 +1,12 @@
 import { Metadata } from 'next';
-import { TeamPage } from './TeamPage';
+import { TeamSettingsPage } from './TeamSettingsPage';
 
 export default async function ({ params }: { params: Promise<{ teamId: string }> }) {
   const { teamId } = await params;
 
-  return <TeamPage teamId={teamId} />;
+  return <TeamSettingsPage teamId={teamId} />;
 }
 
 export const metadata: Metadata = {
-  title: 'Teams Details',
+  title: 'Teams',
 };

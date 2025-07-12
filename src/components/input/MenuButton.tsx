@@ -5,9 +5,11 @@ import { Ellipsis } from '@/components/icons';
 export function MenuButton({
   children,
   onAction,
+  isDisabled,
 }: {
   children: ReactNode;
   onAction?: (action: string) => void;
+  isDisabled?: boolean;
 }) {
   const handleAction = (key: Key) => {
     onAction?.(key.toString());
@@ -15,7 +17,7 @@ export function MenuButton({
 
   return (
     <DialogTrigger>
-      <Button variant="quiet">
+      <Button variant="quiet" isDisabled={isDisabled}>
         <Icon>
           <Ellipsis />
         </Icon>

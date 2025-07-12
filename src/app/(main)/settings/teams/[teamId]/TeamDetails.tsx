@@ -8,8 +8,8 @@ import { Users } from '@/components/icons';
 import { TeamLeaveButton } from '@/app/(main)/settings/teams/TeamLeaveButton';
 import { TeamManage } from './TeamManage';
 import { TeamEditForm } from './TeamEditForm';
-import { TeamWebsitesDataTable } from '@/app/(main)/teams/[teamId]/settings/websites/TeamWebsitesDataTable';
-import { TeamMembersDataTable } from '@/app/(main)/teams/[teamId]/settings/members/TeamMembersDataTable';
+import { TeamWebsitesDataTable } from './TeamWebsitesDataTable';
+import { TeamMembersDataTable } from './TeamMembersDataTable';
 
 export function TeamDetails({ teamId }: { teamId: string }) {
   const team = useContext(TeamContext);
@@ -22,10 +22,12 @@ export function TeamDetails({ teamId }: { teamId: string }) {
     user.role !== ROLES.viewOnly;
 
   const canEdit =
-    !!team?.teamUser?.find(
+    user.isAdmin ||
+    (!!team?.teamUser?.find(
       ({ userId, role }) =>
         (role === ROLES.teamOwner || role === ROLES.teamManager) && userId === user.id,
-    ) && user.role !== ROLES.viewOnly;
+    ) &&
+      user.role !== ROLES.viewOnly);
 
   return (
     <Column gap>

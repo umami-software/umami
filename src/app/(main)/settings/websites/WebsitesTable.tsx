@@ -6,7 +6,7 @@ import { Eye, SquarePen } from '@/components/icons';
 import Link from 'next/link';
 
 export interface WebsitesTableProps {
-  data: any[];
+  data: Record<string, any>[];
   showActions?: boolean;
   allowEdit?: boolean;
   allowView?: boolean;
@@ -22,7 +22,8 @@ export function WebsitesTable({
   children,
 }: WebsitesTableProps) {
   const { formatMessage, labels } = useMessages();
-  const { renderUrl } = useNavigation();
+  const { renderUrl, pathname } = useNavigation();
+  const isSettings = pathname.includes('/settings');
 
   if (!data?.length) {
     return children;
@@ -31,7 +32,11 @@ export function WebsitesTable({
   return (
     <DataTable data={data}>
       <DataColumn id="name" label={formatMessage(labels.name)}>
-        {(row: any) => <Link href={renderUrl(`/websites/${row.id}`, false)}>{row.name}</Link>}
+        {(row: any) => (
+          <Link href={renderUrl(`${isSettings ? '/settings' : ''}/websites/${row.id}`, false)}>
+            {row.name}
+          </Link>
+        )}
       </DataColumn>
       <DataColumn id="domain" label={formatMessage(labels.domain)} />
       {showActions && (
@@ -41,7 +46,7 @@ export function WebsitesTable({
 
             return (
               <MenuButton>
-                {allowEdit && (
+                {allowView && (
                   <MenuItem href={renderUrl(`/websites/${websiteId}`)}>
                     <Row alignItems="center" gap>
                       <Icon data-test="link-button-view">
@@ -51,7 +56,7 @@ export function WebsitesTable({
                     </Row>
                   </MenuItem>
                 )}
-                {allowView && (
+                {allowEdit && (
                   <MenuItem href={renderUrl(`/settings/websites/${websiteId}`)}>
                     <Row alignItems="center" gap>
                       <Icon data-test="link-button-edit">

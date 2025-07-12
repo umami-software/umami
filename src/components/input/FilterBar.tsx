@@ -62,7 +62,7 @@ export function FilterBar() {
         })}
       </Row>
       <TooltipTrigger delay={0}>
-        <Button variant="wrapper" onPress={handleResetFilter} style={{ alignSelf: 'flex-start' }}>
+        <Button variant="zero" onPress={handleResetFilter} style={{ alignSelf: 'flex-start' }}>
           <Icon>
             <Close />
           </Icon>

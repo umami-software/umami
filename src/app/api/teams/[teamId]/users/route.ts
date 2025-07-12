@@ -1,13 +1,14 @@
 import { z } from 'zod';
 import { unauthorized, json, badRequest } from '@/lib/response';
 import { canAddUserToTeam, canViewTeam } from '@/lib/auth';
-import { parseRequest } from '@/lib/request';
-import { pagingParams, teamRoleParam } from '@/lib/schema';
+import { getQueryFilters, parseRequest } from '@/lib/request';
+import { pagingParams, teamRoleParam, searchParams } from '@/lib/schema';
 import { createTeamUser, getTeamUser, getTeamUsers } from '@/queries';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const schema = z.object({
     ...pagingParams,
+    ...searchParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -21,6 +22,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
   if (!(await canViewTeam(auth, teamId))) {
     return unauthorized('You must be the owner of this team.');
   }
+
+  const filters = getQueryFilters(query);
 
   const users = await getTeamUsers(
     {
@@ -39,7 +42,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
         },
       },
     },
-    query,
+    filters,
   );
 
   return json(users);

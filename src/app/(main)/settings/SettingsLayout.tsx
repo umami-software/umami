@@ -14,6 +14,11 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
 
   const items = [
     {
+      id: 'preferences',
+      label: formatMessage(labels.preferences),
+      url: '/settings/preferences',
+    },
+    {
       id: 'profile',
       label: formatMessage(labels.profile),
       url: '/settings/profile',

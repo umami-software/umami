@@ -39,7 +39,7 @@ export function TeamMemberEditForm({
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error} values={{ role }}>
+    <Form onSubmit={handleSubmit} error={error} defaultValues={{ role }} style={{ minWidth: 400 }}>
       <FormField
         name="role"
         rules={{ required: formatMessage(labels.required) }}
@@ -53,12 +53,12 @@ export function TeamMemberEditForm({
       </FormField>
 
       <FormButtons>
-        <FormSubmitButton variant="primary" isDisabled={false}>
-          {formatMessage(labels.save)}
-        </FormSubmitButton>
         <Button isDisabled={isPending} onPress={onClose}>
           {formatMessage(labels.cancel)}
         </Button>
+        <FormSubmitButton variant="primary" isDisabled={false}>
+          {formatMessage(labels.save)}
+        </FormSubmitButton>
       </FormButtons>
     </Form>
   );

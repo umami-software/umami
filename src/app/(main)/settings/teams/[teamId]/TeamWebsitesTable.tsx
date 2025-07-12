@@ -1,7 +1,8 @@
 import { DataColumn, DataTable, Icon, MenuItem, Text, Row } from '@umami/react-zen';
 import { useLoginQuery, useMessages } from '@/components/hooks';
-import { Arrow, Edit } from '@/components/icons';
+import { Eye, Edit } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
+import Link from 'next/link';
 
 export function TeamWebsitesTable({
   teamId,
@@ -17,7 +18,9 @@ export function TeamWebsitesTable({
 
   return (
     <DataTable data={data}>
-      <DataColumn id="name" label={formatMessage(labels.name)} />
+      <DataColumn id="name" label={formatMessage(labels.name)}>
+        {(row: any) => <Link href={`/settings/websites/${row.id}`}>{row.name}</Link>}
+      </DataColumn>
       <DataColumn id="domain" label={formatMessage(labels.domain)} />
       <DataColumn id="createdBy" label={formatMessage(labels.createdBy)}>
         {(row: any) => row?.createUser?.username}
@@ -31,7 +34,7 @@ export function TeamWebsitesTable({
               <MenuItem href={`/teams/${teamId}/websites/${websiteId}`}>
                 <Row alignItems="center" gap>
                   <Icon>
-                    <Arrow />
+                    <Eye />
                   </Icon>
                   <Text>{formatMessage(labels.view)}</Text>
                 </Row>

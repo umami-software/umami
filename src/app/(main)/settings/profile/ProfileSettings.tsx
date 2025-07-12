@@ -1,10 +1,6 @@
 import { Row, Column, Label } from '@umami/react-zen';
 import { useLoginQuery, useMessages } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
-import { TimezoneSetting } from './TimezoneSetting';
-import { DateRangeSetting } from './DateRangeSetting';
-import { LanguageSetting } from './LanguageSetting';
-import { ThemeSetting } from './ThemeSetting';
 import { PasswordChangeButton } from './PasswordChangeButton';
 
 export function ProfileSettings() {
@@ -52,26 +48,6 @@ export function ProfileSettings() {
           </Row>
         </Column>
       )}
-
-      <Column>
-        <Label>{formatMessage(labels.defaultDateRange)}</Label>
-        <DateRangeSetting />
-      </Column>
-
-      <Column>
-        <Label>{formatMessage(labels.language)}</Label>
-        <LanguageSetting />
-      </Column>
-
-      <Column>
-        <Label>{formatMessage(labels.timezone)}</Label>
-        <TimezoneSetting />
-      </Column>
-
-      <Column>
-        <Label>{formatMessage(labels.theme)}</Label>
-        <ThemeSetting />
-      </Column>
     </Column>
   );
 }

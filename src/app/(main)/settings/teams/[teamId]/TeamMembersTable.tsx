@@ -1,9 +1,8 @@
-import { DataColumn, DataTable, MenuItem } from '@umami/react-zen';
-import { useMessages, useLoginQuery } from '@/components/hooks';
+import { DataColumn, DataTable, Row } from '@umami/react-zen';
+import { useMessages } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 import { TeamMemberRemoveButton } from './TeamMemberRemoveButton';
 import { TeamMemberEditButton } from './TeamMemberEditButton';
-import { MenuButton } from '@/components/input/MenuButton';
 
 export function TeamMembersTable({
   data = [],
@@ -15,7 +14,6 @@ export function TeamMembersTable({
   allowEdit: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { user } = useLoginQuery();
 
   const roles = {
     [ROLES.teamOwner]: formatMessage(labels.teamOwner),
@@ -32,28 +30,22 @@ export function TeamMembersTable({
       <DataColumn id="role" label={formatMessage(labels.role)}>
         {(row: any) => roles[row?.role]}
       </DataColumn>
-      <DataColumn id="action" align="end">
-        {(row: any) => {
-          return (
-            allowEdit &&
-            row?.role !== ROLES.teamOwner &&
-            user?.id !== row?.user?.id && (
-              <MenuButton>
-                <MenuItem>
-                  <TeamMemberEditButton teamId={teamId} userId={row?.user?.id} role={row?.role} />
-                </MenuItem>
-                <MenuItem>
-                  <TeamMemberRemoveButton
-                    teamId={teamId}
-                    userId={row?.user?.id}
-                    userName={row?.user?.username}
-                  />
-                </MenuItem>
-              </MenuButton>
-            )
-          );
-        }}
-      </DataColumn>
+      {allowEdit && (
+        <DataColumn id="action" align="end">
+          {(row: any) => {
+            return (
+              <Row alignItems="center">
+                <TeamMemberEditButton teamId={teamId} userId={row?.user?.id} role={row?.role} />
+                <TeamMemberRemoveButton
+                  teamId={teamId}
+                  userId={row?.user?.id}
+                  userName={row?.user?.username}
+                />
+              </Row>
+            );
+          }}
+        </DataColumn>
+      )}
     </DataTable>
   );
 }

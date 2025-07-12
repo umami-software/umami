@@ -334,6 +334,7 @@ export const labels = defineMessages({
   firstClick: { id: 'label.first-click', defaultMessage: 'First click' },
   lastClick: { id: 'label.last-click', defaultMessage: 'Last click' },
   online: { id: 'label.online', defaultMessage: 'Online' },
+  preferences: { id: 'label.preferences', defaultMessage: 'Preferences' },
 });
 
 export const messages = defineMessages({

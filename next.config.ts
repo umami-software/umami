@@ -125,17 +125,12 @@ if (collectApiEndpoint) {
 const redirects = [
   {
     source: '/settings',
-    destination: '/settings/profile',
+    destination: '/settings/preferences',
     permanent: true,
   },
   {
     source: '/teams/:id',
     destination: '/teams/:id/websites',
-    permanent: true,
-  },
-  {
-    source: '/teams/:id/settings',
-    destination: '/teams/:id/settings/team',
     permanent: true,
   },
   {
@@ -170,12 +165,6 @@ if (cloudMode && cloudUrl) {
   redirects.push({
     source: '/settings/:path*',
     destination: `${cloudUrl}/settings/:path*`,
-    permanent: false,
-  });
-
-  redirects.push({
-    source: '/teams/:id/settings/:path*',
-    destination: `${cloudUrl}/teams/:id/settings/:path*`,
     permanent: false,
   });
 

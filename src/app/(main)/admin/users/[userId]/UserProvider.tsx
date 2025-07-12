@@ -1,22 +1,19 @@
-import { createContext, ReactNode, useEffect } from 'react';
+import { createContext, ReactNode } from 'react';
 import { Loading } from '@umami/react-zen';
-import { useModified, useUserQuery } from '@/components/hooks';
+import { useUserQuery } from '@/components/hooks';
 
 export const UserContext = createContext(null);
 
 export function UserProvider({ userId, children }: { userId: string; children: ReactNode }) {
-  const { modified } = useModified(`user:${userId}`);
-  const { data: user, isFetching, isLoading, refetch } = useUserQuery(userId);
-
-  useEffect(() => {
-    if (modified) {
-      refetch();
-    }
-  }, [modified]);
+  const { data: user, isFetching, isLoading } = useUserQuery(userId);
 
   if (isFetching && isLoading) {
     return <Loading position="page" />;
   }
 
-  return <UserContext.Provider value={{ ...user, modified }}>{children}</UserContext.Provider>;
+  if (!user) {
+    return null;
+  }
+
+  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 }

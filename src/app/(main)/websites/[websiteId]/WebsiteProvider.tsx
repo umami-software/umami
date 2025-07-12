@@ -1,6 +1,6 @@
 'use client';
-import { createContext, ReactNode, useEffect } from 'react';
-import { useModified, useWebsiteQuery } from '@/components/hooks';
+import { createContext, ReactNode } from 'react';
+import { useWebsiteQuery } from '@/components/hooks';
 import { Loading } from '@umami/react-zen';
 import { Website } from '@/generated/prisma/client';
 
@@ -13,17 +13,14 @@ export function WebsiteProvider({
   websiteId: string;
   children: ReactNode;
 }) {
-  const { modified } = useModified(`website:${websiteId}`);
-  const { data: website, isFetching, isLoading, refetch } = useWebsiteQuery(websiteId);
-
-  useEffect(() => {
-    if (modified) {
-      refetch();
-    }
-  }, [modified]);
+  const { data: website, isFetching, isLoading } = useWebsiteQuery(websiteId);
 
   if (isFetching && isLoading) {
     return <Loading position="page" />;
+  }
+
+  if (!website) {
+    return null;
   }
 
   return <WebsiteContext.Provider value={website}>{children}</WebsiteContext.Provider>;

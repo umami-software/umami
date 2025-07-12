@@ -1,14 +1,5 @@
 import { useMessages, useModified } from '@/components/hooks';
-import {
-  Row,
-  Pressable,
-  Icon,
-  Modal,
-  DialogTrigger,
-  Dialog,
-  Text,
-  useToast,
-} from '@umami/react-zen';
+import { Row, Button, Icon, Modal, DialogTrigger, Dialog, useToast } from '@umami/react-zen';
 import { TeamMemberEditForm } from './TeamMemberEditForm';
 import { Edit } from '@/components/icons';
 
@@ -28,21 +19,20 @@ export function TeamMemberEditButton({
   const { touch } = useModified();
 
   const handleSave = () => {
-    toast(formatMessage(messages.saved));
     touch('teams:members');
+    toast(formatMessage(messages.saved));
     onSave?.();
   };
 
   return (
     <DialogTrigger>
-      <Pressable>
+      <Button variant="quiet">
         <Row alignItems="center" gap>
           <Icon>
             <Edit />
           </Icon>
-          <Text>{formatMessage(labels.edit)}</Text>
         </Row>
-      </Pressable>
+      </Button>
       <Modal>
         <Dialog title={formatMessage(labels.editMember)}>
           {({ close }) => (

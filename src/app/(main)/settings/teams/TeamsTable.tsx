@@ -1,8 +1,9 @@
 import { DataColumn, DataTable, Icon, MenuItem, Text, Row } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
-import { Arrow, Edit } from '@/components/icons';
+import { Eye, Edit } from '@/components/icons';
 import { ROLES } from '@/lib/constants';
 import { MenuButton } from '@/components/input/MenuButton';
+import Link from 'next/link';
 
 export function TeamsTable({
   data = [],
@@ -16,7 +17,9 @@ export function TeamsTable({
 
   return (
     <DataTable data={data}>
-      <DataColumn id="name" label={formatMessage(labels.name)} />
+      <DataColumn id="name" label={formatMessage(labels.name)}>
+        {(row: any) => <Link href={`/settings/teams/${row.id}`}>{row.name}</Link>}
+      </DataColumn>
       <DataColumn id="owner" label={formatMessage(labels.owner)}>
         {(row: any) => row.teamUser.find(({ role }) => role === ROLES.teamOwner)?.user?.username}
       </DataColumn>
@@ -36,12 +39,12 @@ export function TeamsTable({
                 <MenuItem href={`/teams/${id}`}>
                   <Row alignItems="center" gap>
                     <Icon>
-                      <Arrow />
+                      <Eye />
                     </Icon>
                     <Text>{formatMessage(labels.view)}</Text>
                   </Row>
                 </MenuItem>
-                <MenuItem href={`/teams/${id}/settings`}>
+                <MenuItem href={`/settings/teams/${id}`}>
                   <Row alignItems="center" gap>
                     <Icon>
                       <Edit />
