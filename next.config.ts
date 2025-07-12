@@ -199,6 +199,18 @@ export default {
   typescript: {
     ignoreBuildErrors: true,
   },
+  functions: {
+    'app/api/**/*.js': {
+      maxDuration: 30,
+    },
+  },
+  outputFileTracing: {
+    include: [
+      'src/generated/prisma/**/*',
+      'node_modules/@prisma/client/**/*',
+      'node_modules/.prisma/client/**/*',
+    ],
+  },
   async headers() {
     return headers;
   },
