@@ -4,7 +4,7 @@ import 'dotenv/config';
 import { execSync } from 'node:child_process';
 import chalk from 'chalk';
 import semver from 'semver';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../dist/generated/prisma/client.js';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 if (process.env.SKIP_DB_CHECK) {
