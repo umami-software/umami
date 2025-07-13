@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     return unauthorized();
   }
 
-  const queryFilters = await setWebsiteDate(websiteId, getQueryFilters(filters));
+  const queryFilters = await setWebsiteDate(websiteId, await getQueryFilters(filters));
 
   const data = await getJourney(websiteId, parameters, queryFilters);
 

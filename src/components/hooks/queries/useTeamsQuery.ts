@@ -11,8 +11,8 @@ export function useTeamsQuery(params?: Record<string, any>, options?: ReactQuery
     queryKey: ['teams:admin', { modified, ...params }],
     queryFn: pageParams => {
       return get(`/admin/teams`, {
-        ...params,
         ...pageParams,
+        ...params,
       });
     },
     ...options,

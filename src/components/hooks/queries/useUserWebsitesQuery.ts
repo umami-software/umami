@@ -17,8 +17,8 @@ export function useUserWebsitesQuery(
     queryKey: ['websites', { userId, teamId, modified, ...params }],
     queryFn: pageParams => {
       return get(teamId ? `/teams/${teamId}/websites` : `/users/${userId || user.id}/websites`, {
-        ...params,
         ...pageParams,
+        ...params,
       });
     },
     ...options,

@@ -85,7 +85,7 @@ async function clickhouseQuery(
     from (
       select arrayJoin(event_name) as event_name,
         created_at
-      from website_event_stats_hourly website_event
+      from website_event_stats_hourly as website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}

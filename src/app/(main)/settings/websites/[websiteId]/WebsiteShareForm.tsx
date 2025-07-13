@@ -73,7 +73,7 @@ export function WebsiteShareForm({ websiteId, shareId, onSave, onClose }: Websit
           <Row>
             {id && <Button onPress={handleGenerate}>{formatMessage(labels.regenerate)}</Button>}
           </Row>
-          <Row>
+          <Row alignItems="center" gap>
             {onClose && <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>}
             <FormSubmitButton isDisabled={false} isLoading={isPending}>
               {formatMessage(labels.save)}

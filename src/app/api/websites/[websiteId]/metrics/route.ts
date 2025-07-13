@@ -11,10 +11,10 @@ import {
   VIDEO_DOMAINS,
   PAID_AD_PARAMS,
 } from '@/lib/constants';
-import { parseRequest, getQueryFilters, setWebsiteDate } from '@/lib/request';
+import { parseRequest, getQueryFilters } from '@/lib/request';
 import { json, unauthorized, badRequest } from '@/lib/response';
 import { getPageviewMetrics, getSessionMetrics, getChannelMetrics } from '@/queries';
-import { filterParams } from '@/lib/schema';
+import { dateRangeParams, filterParams, searchParams } from '@/lib/schema';
 
 export async function GET(
   request: Request,
@@ -22,11 +22,10 @@ export async function GET(
 ) {
   const schema = z.object({
     type: z.string(),
-    startAt: z.coerce.number().int(),
-    endAt: z.coerce.number().int(),
     limit: z.coerce.number().optional(),
     offset: z.coerce.number().optional(),
-    search: z.string().optional(),
+    ...dateRangeParams,
+    ...searchParams,
     ...filterParams,
   });
 
@@ -37,13 +36,13 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { type, limit, offset, search } = query;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const filters = await setWebsiteDate(websiteId, getQueryFilters(query));
+  const { type, limit, offset, search } = query;
+  const filters = await getQueryFilters(query, websiteId);
 
   if (search) {
     filters[type] = `c.${search}`;

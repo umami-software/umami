@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import { Row, Text, Icon, DataTable, DataColumn, MenuItem, Modal } from '@umami/react-zen';
+import { Row, Text, Icon, DataTable, DataColumn, MenuItem, Modal, Dialog } from '@umami/react-zen';
 import { Trash, Users } from '@/components/icons';
 import { useMessages } from '@/components/hooks';
 import { Edit } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
 import { DateDistance } from '@/components/common/DateDistance';
+import { WebsiteDeleteForm } from '@/app/(main)/settings/websites/[websiteId]/WebsiteDeleteForm';
 
 export function AdminWebsitesTable({ data = [] }: { data: any[] }) {
   const { formatMessage, labels } = useMessages();
-  const [deleteUser, setDeleteUser] = useState(null);
+  const [deleteWebsite, setDeleteWebsite] = useState(null);
 
   return (
     <>
@@ -64,7 +65,7 @@ export function AdminWebsitesTable({ data = [] }: { data: any[] }) {
                 </MenuItem>
                 <MenuItem
                   id="delete"
-                  onAction={() => setDeleteUser(row)}
+                  onAction={() => setDeleteWebsite(id)}
                   data-test="link-button-delete"
                 >
                   <Row alignItems="center" gap>
@@ -79,7 +80,11 @@ export function AdminWebsitesTable({ data = [] }: { data: any[] }) {
           }}
         </DataColumn>
       </DataTable>
-      <Modal isOpen={!!deleteUser}></Modal>
+      <Modal isOpen={!!deleteWebsite}>
+        <Dialog style={{ width: 400 }}>
+          <WebsiteDeleteForm websiteId={deleteWebsite} onClose={() => setDeleteWebsite(null)} />
+        </Dialog>
+      </Modal>
     </>
   );
 }

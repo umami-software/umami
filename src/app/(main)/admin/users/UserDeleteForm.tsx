@@ -21,6 +21,7 @@ export function UserDeleteForm({
     mutate(null, {
       onSuccess: async () => {
         touch('users');
+        touch(`users:${userId}`);
         onSave?.();
         onClose?.();
       },
@@ -35,9 +36,7 @@ export function UserDeleteForm({
       confirmLabel={formatMessage(labels.delete)}
       isDanger
     >
-      <Row gap="1">
-        {formatMessage(messages.confirmDelete, { target: <b key={username}>{username}</b> })}
-      </Row>
+      <Row gap="1">{formatMessage(messages.confirmDelete, { target: username })}</Row>
     </AlertDialog>
   );
 }

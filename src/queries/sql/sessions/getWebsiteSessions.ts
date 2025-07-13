@@ -94,7 +94,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       uniq(visit_id) as visits,
       sumIf(views, event_type = 1) as views,
       lastAt as createdAt
-    from website_event_stats_hourly website_event
+    from website_event_stats_hourly as website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}
     ${dateQuery}

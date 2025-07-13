@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { Column, Tabs, TabList, Tab, TabPanel } from '@umami/react-zen';
 import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
-import { useLoginQuery, useMessages } from '@/components/hooks';
+import { useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { ROLES } from '@/lib/constants';
 import { Users } from '@/components/icons';
@@ -15,7 +15,10 @@ export function TeamDetails({ teamId }: { teamId: string }) {
   const team = useContext(TeamContext);
   const { formatMessage, labels } = useMessages();
   const { user } = useLoginQuery();
-  const [tab, setTab] = useState('details');
+  const { query, pathname } = useNavigation();
+  const [tab, setTab] = useState(query?.tab || 'details');
+
+  const isAdmin = pathname.includes('/admin');
 
   const isTeamOwner =
     !!team?.teamUser?.find(({ userId, role }) => role === ROLES.teamOwner && userId === user.id) &&
@@ -32,7 +35,7 @@ export function TeamDetails({ teamId }: { teamId: string }) {
   return (
     <Column gap>
       <SectionHeader title={team?.name} icon={<Users />}>
-        {!isTeamOwner && <TeamLeaveButton teamId={team.id} teamName={team.name} />}
+        {!isTeamOwner && !isAdmin && <TeamLeaveButton teamId={team.id} teamName={team.name} />}
       </SectionHeader>
       <Tabs selectedKey={tab} onSelectionChange={(value: any) => setTab(value)}>
         <TabList>

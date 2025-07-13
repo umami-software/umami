@@ -57,7 +57,7 @@ export function WebsitesTable({
                   </MenuItem>
                 )}
                 {allowEdit && (
-                  <MenuItem href={renderUrl(`/settings/websites/${websiteId}`)}>
+                  <MenuItem href={`/settings/websites/${websiteId}`}>
                     <Row alignItems="center" gap>
                       <Icon data-test="link-button-edit">
                         <SquarePen />

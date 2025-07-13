@@ -23,7 +23,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
     return unauthorized('You must be the owner of this team.');
   }
 
-  const filters = getQueryFilters(query);
+  const filters = await getQueryFilters(query);
 
   const users = await getTeamUsers(
     {

@@ -42,16 +42,18 @@ export function Pager({ page, pageSize, count, onPageChange }: PagerProps) {
             total: maxPage.toLocaleString(),
           })}
         </Text>
-        <Button onPress={() => handlePageChange(-1)} isDisabled={firstPage}>
-          <Icon size="sm" rotate={180}>
-            <Chevron />
-          </Icon>
-        </Button>
-        <Button onPress={() => handlePageChange(1)} isDisabled={lastPage}>
-          <Icon size="sm">
-            <Chevron />
-          </Icon>
-        </Button>
+        <Row gap="1">
+          <Button variant="outline" onPress={() => handlePageChange(-1)} isDisabled={firstPage}>
+            <Icon size="sm" rotate={180}>
+              <Chevron />
+            </Icon>
+          </Button>
+          <Button variant="outline" onPress={() => handlePageChange(1)} isDisabled={lastPage}>
+            <Icon size="sm">
+              <Chevron />
+            </Icon>
+          </Button>
+        </Row>
       </Row>
     </Row>
   );

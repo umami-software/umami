@@ -33,6 +33,10 @@ export function TeamMembersTable({
       {allowEdit && (
         <DataColumn id="action" align="end">
           {(row: any) => {
+            if (row?.role === ROLES.teamOwner) {
+              return null;
+            }
+
             return (
               <Row alignItems="center">
                 <TeamMemberEditButton teamId={teamId} userId={row?.user?.id} role={row?.role} />

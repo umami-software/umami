@@ -4,7 +4,7 @@ import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { UpdateNotice } from './UpdateNotice';
 import { SideNav } from '@/app/(main)/SideNav';
-import { MenuBar } from '@/app/(main)/MenuBar';
+import { TopNav } from '@/app/(main)/TopNav';
 import { useLoginQuery, useConfig } from '@/components/hooks';
 
 export function App({ children }) {
@@ -35,7 +35,7 @@ export function App({ children }) {
         <SideNav />
       </Column>
       <Row gridColumn="2 / 3" gridRow="1 / 2">
-        <MenuBar />
+        <TopNav />
       </Row>
       <Column
         gridColumn="2 / 3"

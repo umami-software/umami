@@ -5,12 +5,11 @@ import { Share, Edit } from '@/components/icons';
 import { Favicon } from '@/components/common/Favicon';
 import { ActiveUsers } from '@/components/metrics/ActiveUsers';
 import { WebsiteShareForm } from '@/app/(main)/settings/websites/[websiteId]/WebsiteShareForm';
-import { useMessages, useNavigation } from '@/components/hooks';
+import { useMessages } from '@/components/hooks';
 import { LinkButton } from '@/components/common/LinkButton';
 
 export function WebsiteHeader() {
   const website = useWebsite();
-  const { renderUrl } = useNavigation();
 
   return (
     <PageHeader title={website.name} icon={<Favicon domain={website.domain} />} showBorder={false}>
@@ -18,7 +17,7 @@ export function WebsiteHeader() {
         <ActiveUsers websiteId={website.id} />
         <Row alignItems="center" gap>
           <ShareButton websiteId={website.id} shareId={website.shareId} />
-          <LinkButton href={renderUrl(`/settings/websites/${website.id}`)}>
+          <LinkButton href={`/settings/websites/${website.id}`}>
             <Icon>
               <Edit />
             </Icon>
@@ -42,7 +41,7 @@ const ShareButton = ({ websiteId, shareId }) => {
         <Text>Share</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.share)} style={{ width: 400 }}>
+        <Dialog title={formatMessage(labels.share)} style={{ width: 600 }}>
           {({ close }) => {
             return <WebsiteShareForm websiteId={websiteId} shareId={shareId} onClose={close} />;
           }}

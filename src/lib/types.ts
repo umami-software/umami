@@ -71,6 +71,9 @@ export interface FilterParams {
   search?: string;
   tag?: string;
   eventType?: number;
+  segment?: string;
+  cohort?: string;
+  compare?: string;
 }
 
 export interface SortParams {

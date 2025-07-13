@@ -18,7 +18,7 @@ export function WebsitesPage() {
           <WebsiteAddButton teamId={teamId} />
         </PageHeader>
         <Panel>
-          <WebsitesDataTable teamId={teamId} allowEdit={false} />
+          <WebsitesDataTable teamId={teamId} />
         </Panel>
       </Column>
     </PageBody>

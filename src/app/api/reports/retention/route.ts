@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     return unauthorized();
   }
 
-  const filters = getQueryFilters(body.filters);
+  const filters = await getQueryFilters(body.filters);
   const parameters = await setWebsiteDate(websiteId, body.parameters);
 
   const data = await getRetention(websiteId, parameters as RetentionParameters, filters);

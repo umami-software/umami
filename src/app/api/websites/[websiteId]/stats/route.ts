@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { parseRequest, getQueryFilters, setWebsiteDate } from '@/lib/request';
+import { parseRequest, getQueryFilters } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/lib/auth';
-import { filterParams } from '@/lib/schema';
+import { dateRangeParams, filterParams } from '@/lib/schema';
 import { getWebsiteStats } from '@/queries';
 import { getCompareDate } from '@/lib/date';
 
@@ -11,9 +11,8 @@ export async function GET(
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
-    startAt: z.coerce.number().int(),
-    endAt: z.coerce.number().int(),
     compare: z.string().optional(),
+    ...dateRangeParams,
     ...filterParams,
   });
 
@@ -29,7 +28,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const filters = await setWebsiteDate(websiteId, getQueryFilters(query));
+  const filters = await getQueryFilters(query, websiteId);
 
   const data = await getWebsiteStats(websiteId, filters);
 

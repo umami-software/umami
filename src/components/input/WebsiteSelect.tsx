@@ -1,28 +1,24 @@
 import { useState } from 'react';
 import { Select, SelectProps, ListItem } from '@umami/react-zen';
-import { useUserWebsitesQuery, useMessages } from '@/components/hooks';
+import { useUserWebsitesQuery, useWebsiteQuery, useNavigation } from '@/components/hooks';
 
 export function WebsiteSelect({
   websiteId,
   teamId,
   variant,
-  onSelect,
   ...props
 }: {
   websiteId?: string;
   teamId?: string;
   variant?: 'primary' | 'outline' | 'quiet' | 'danger' | 'zero';
-  onSelect?: (key: any) => void;
 } & SelectProps) {
-  const { formatMessage, labels } = useMessages();
+  const { router, renderUrl } = useNavigation();
   const [search, setSearch] = useState('');
-  const [selectedId, setSelectedId] = useState(websiteId);
-
+  const { data: website } = useWebsiteQuery(websiteId);
   const { data, isLoading } = useUserWebsitesQuery({ teamId }, { search, pageSize: 5 });
 
   const handleSelect = (value: any) => {
-    setSelectedId(value);
-    onSelect?.(value);
+    router.push(renderUrl(`/websites/${value}`));
   };
 
   const handleSearch = (value: string) => {
@@ -33,14 +29,14 @@ export function WebsiteSelect({
     <Select
       {...props}
       items={data?.['data'] || []}
-      value={selectedId}
-      placeholder={formatMessage(labels.selectWebsite)}
+      value={websiteId}
       isLoading={isLoading}
       buttonProps={{ variant }}
       allowSearch={true}
       searchValue={search}
       onSearch={handleSearch}
       onChange={handleSelect}
+      renderValue={() => website?.name}
     >
       {({ id, name }: any) => <ListItem key={id}>{name}</ListItem>}
     </Select>

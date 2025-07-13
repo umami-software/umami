@@ -22,7 +22,7 @@ export async function GET(
 
   const { websiteId } = await params;
   const { propertyName } = query;
-  const filters = getQueryFilters(query);
+  const filters = await getQueryFilters(query);
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();

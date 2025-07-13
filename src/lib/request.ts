@@ -66,7 +66,7 @@ export function getRequestDateRange(query: Record<string, string>) {
   };
 }
 
-export async function getRequestFilters(query: Record<string, any>, websiteId?: string) {
+export function getRequestFilters(query: Record<string, any>) {
   const result: Record<string, any> = {};
 
   for (const key of Object.keys(FILTER_COLUMNS)) {
@@ -76,20 +76,17 @@ export async function getRequestFilters(query: Record<string, any>, websiteId?: 
     }
   }
 
+  return result;
+}
+
+export async function getRequestSegments(websiteId: string, query: Record<string, any>) {
   for (const key of Object.keys(FILTER_GROUPS)) {
     const value = query[key];
+
     if (value !== undefined) {
-      const segment = await getWebsiteSegment(websiteId, key, value);
-      if (key === 'segment') {
-        // merge filters into result
-        Object.assign(result, segment.parameters);
-      } else {
-        result[key] = segment.parameters;
-      }
+      return getWebsiteSegment(websiteId, key, value);
     }
   }
-
-  return result;
 }
 
 export async function setWebsiteDate(websiteId: string, data: Record<string, any>) {
@@ -102,13 +99,18 @@ export async function setWebsiteDate(websiteId: string, data: Record<string, any
   return data;
 }
 
-export function getQueryFilters(params: Record<string, any>): QueryFilters {
-  const dateRange = getRequestDateRange(params);
+export async function getQueryFilters(
+  params: Record<string, any>,
+  websiteId?: string,
+): Promise<QueryFilters> {
+  const dateRange = await setWebsiteDate(websiteId, getRequestDateRange(params));
   const filters = getRequestFilters(params);
+  const segments = await getRequestSegments(websiteId, params);
 
   return {
     ...dateRange,
     ...filters,
+    ...segments,
     page: params?.page,
     pageSize: params?.page ? params?.pageSize || DEFAULT_PAGE_SIZE : undefined,
     orderBy: params?.orderBy,

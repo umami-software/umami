@@ -6,11 +6,10 @@ import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 import { PanelLeft, Slash } from '@/components/icons';
 import { useNavigation, useGlobalState } from '@/components/hooks';
 
-export function MenuBar() {
+export function TopNav() {
   const [isCollapsed, setCollapsed] = useGlobalState('sidenav-collapsed');
-  const { teamId, websiteId } = useNavigation();
-
-  const handleSelect = () => {};
+  const { teamId, websiteId, pathname } = useNavigation();
+  const isSettings = pathname.includes('/settings');
 
   return (
     <Row
@@ -30,17 +29,12 @@ export function MenuBar() {
         </Button>
         <Row alignItems="center" gap="1">
           <TeamsButton />
-          {websiteId && (
+          {websiteId && !isSettings && (
             <>
               <Icon strokeColor="7" rotate={-25}>
                 <Slash />
               </Icon>
-              <WebsiteSelect
-                variant="quiet"
-                websiteId={websiteId}
-                teamId={teamId}
-                onSelect={handleSelect}
-              />
+              <WebsiteSelect variant="quiet" websiteId={websiteId} teamId={teamId} />
             </>
           )}
         </Row>
