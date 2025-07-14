@@ -27,7 +27,6 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
     select
       session.session_id as "id",
       session.website_id as "websiteId",
-      website_event.hostname,
       session.browser,
       session.os,
       session.device,
@@ -58,7 +57,6 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
     }
     group by session.session_id, 
       session.website_id, 
-      website_event.hostname, 
       session.browser, 
       session.os, 
       session.device, 
@@ -84,7 +82,6 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     select
       session_id as id,
       website_id as websiteId,
-      hostname,
       browser,
       os,
       device,
@@ -112,7 +109,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
            or (positionCaseInsensitive(device, {search:String}) > 0))`
         : ''
     }
-    group by session_id, website_id, hostname, browser, os, device, screen, language, country, region, city
+    group by session_id, website_id, browser, os, device, screen, language, country, region, city
     order by lastAt desc
     `,
     { ...params, search },
