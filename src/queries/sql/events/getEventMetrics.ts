@@ -16,7 +16,7 @@ export async function getEventMetrics(
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { timezone = 'utc', unit = 'day' } = filters;
   const { rawQuery, getDateSQL, parseFilters } = prisma;
-  const { filterQuery, joinSession, params } = await parseFilters(websiteId, {
+  const { filterQuery, cohortQuery, joinSession, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.customEvent,
   });
@@ -28,6 +28,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       ${getDateSQL('website_event.created_at', unit, timezone)} t,
       count(*) y
     from website_event
+    ${cohortQuery}
     ${joinSession}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
@@ -46,20 +47,21 @@ async function clickhouseQuery(
 ): Promise<{ x: string; t: string; y: number }[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
   const { rawQuery, getDateSQL, parseFilters } = clickhouse;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.customEvent,
   });
 
   let sql = '';
 
-  if (filterQuery) {
+  if (filterQuery || cohortQuery) {
     sql = `
     select
       event_name x,
       ${getDateSQL('created_at', unit, timezone)} t,
       count(*) y
     from website_event
+    ${cohortQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}

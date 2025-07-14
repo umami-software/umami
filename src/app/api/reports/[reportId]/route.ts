@@ -20,8 +20,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ repo
     return unauthorized();
   }
 
-  report.parameters = JSON.parse(report.parameters);
-
   return json(report);
 }
 

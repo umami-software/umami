@@ -47,6 +47,11 @@ export const SESSION_COLUMNS = [
   'host',
 ];
 
+export const FILTER_GROUPS = {
+  segment: 'segment',
+  cohort: 'cohort',
+};
+
 export const FILTER_COLUMNS = {
   url: 'url_path',
   entry: 'url_path',

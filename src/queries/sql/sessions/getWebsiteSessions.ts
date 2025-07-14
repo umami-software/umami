@@ -15,7 +15,7 @@ export async function getWebsiteSessions(
 async function relationalQuery(websiteId: string, filters: QueryFilters, pageParams: PageParams) {
   const { pagedRawQuery, parseFilters } = prisma;
   const { search } = pageParams;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, {
     ...filters,
   });
 
@@ -24,7 +24,6 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
 
   return pagedRawQuery(
     `
-    with sessions as (
     select
       session.session_id as "id",
       session.website_id as "websiteId",
@@ -43,6 +42,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
       sum(case when website_event.event_type = 1 then 1 else 0 end) as "views",
       max(website_event.created_at) as "createdAt"
     from website_event 
+    ${cohortQuery}
     join session on session.session_id = website_event.session_id
     where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
@@ -68,8 +68,6 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
       session.region, 
       session.city
     order by max(website_event.created_at) desc
-    limit 1000)
-    select * from sessions
     `,
     { ...params, search: `%${search}%` },
     pageParams,
@@ -78,12 +76,11 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
   const { pagedQuery, parseFilters, getDateStringSQL } = clickhouse;
-  const { params, dateQuery, filterQuery } = await parseFilters(websiteId, filters);
+  const { params, dateQuery, filterQuery, cohortQuery } = await parseFilters(websiteId, filters);
   const { search } = pageParams;
 
   return pagedQuery(
     `
-    with sessions as (
     select
       session_id as id,
       website_id as websiteId,
@@ -101,7 +98,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
       uniq(visit_id) as visits,
       sumIf(views, event_type = 1) as views,
       lastAt as createdAt
-    from website_event_stats_hourly
+    from website_event_stats_hourly website_event
+    ${cohortQuery}
     where website_id = {websiteId:UUID}
     ${dateQuery}
     ${filterQuery}
@@ -116,8 +114,6 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     }
     group by session_id, website_id, hostname, browser, os, device, screen, language, country, region, city
     order by lastAt desc
-    limit 1000)
-    select * from sessions
     `,
     { ...params, search },
     pageParams,
