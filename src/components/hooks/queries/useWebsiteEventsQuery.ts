@@ -11,7 +11,8 @@ export function useWebsiteEventsQuery(websiteId: string, options?: ReactQueryOpt
 
   return usePagedQuery({
     queryKey: ['websites:events', { websiteId, ...date, ...filters }],
-    queryFn: () => get(`/websites/${websiteId}/events`, { ...date, ...filters, pageSize: 20 }),
+    queryFn: pageParams =>
+      get(`/websites/${websiteId}/events`, { ...date, ...filters, ...pageParams, pageSize: 20 }),
     enabled: !!websiteId,
     ...options,
   });

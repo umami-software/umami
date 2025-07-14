@@ -13,7 +13,7 @@ export function EventsDataTable({
   children?: ReactNode;
 }) {
   const { formatMessage, labels } = useMessages();
-  const queryResult = useWebsiteEventsQuery(websiteId);
+  const query = useWebsiteEventsQuery(websiteId);
   const [view, setView] = useState('all');
 
   const buttons = [
@@ -22,12 +22,12 @@ export function EventsDataTable({
       label: formatMessage(labels.all),
     },
     {
-      id: 'page',
-      label: formatMessage(labels.page),
+      id: 'views',
+      label: formatMessage(labels.views),
     },
     {
-      id: 'event',
-      label: formatMessage(labels.event),
+      id: 'events',
+      label: formatMessage(labels.events),
     },
   ];
 
@@ -37,7 +37,7 @@ export function EventsDataTable({
 
   return (
     <DataGrid
-      query={queryResult}
+      query={query}
       allowSearch={true}
       autoFocus={false}
       allowPaging={true}

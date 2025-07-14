@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/lib/auth';
-import { dateRangeParams, pagingParams, filterParams } from '@/lib/schema';
+import { dateRangeParams, pagingParams, filterParams, searchParams } from '@/lib/schema';
 import { getWebsiteEvents } from '@/queries';
 
 export async function GET(
@@ -13,6 +13,7 @@ export async function GET(
     ...dateRangeParams,
     ...filterParams,
     ...pagingParams,
+    ...searchParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -27,7 +28,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const filters = await getQueryFilters(query);
+  const filters = await getQueryFilters(query, websiteId);
 
   const data = await getWebsiteEvents(websiteId, filters);
 

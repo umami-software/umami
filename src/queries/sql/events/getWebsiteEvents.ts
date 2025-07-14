@@ -16,6 +16,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
+    search: `%${search}%`,
   });
 
   const searchQuery = filters.search
@@ -46,7 +47,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     ${searchQuery}
     order by created_at desc
     `,
-    { ...queryParams, search: `%${search}%` },
+    queryParams,
     filters,
   );
 }

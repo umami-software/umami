@@ -15,11 +15,12 @@ export function useWebsiteSessionsQuery(
 
   return usePagedQuery({
     queryKey: ['sessions', { websiteId, modified, ...params, ...date, ...filters }],
-    queryFn: () => {
+    queryFn: pageParams => {
       return get(`/websites/${websiteId}/sessions`, {
-        ...params,
-        ...filters,
         ...date,
+        ...filters,
+        ...pageParams,
+        ...params,
         pageSize: 20,
       });
     },

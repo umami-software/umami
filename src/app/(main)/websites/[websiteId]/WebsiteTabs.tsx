@@ -23,7 +23,7 @@ export function WebsiteTabs() {
     },
     {
       id: 'sessions',
-      label: formatMessage(labels.users),
+      label: formatMessage(labels.sessions),
       icon: <User />,
       path: '/sessions',
     },

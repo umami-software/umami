@@ -103,9 +103,13 @@ export async function getQueryFilters(
   params: Record<string, any>,
   websiteId?: string,
 ): Promise<QueryFilters> {
-  const dateRange = await setWebsiteDate(websiteId, getRequestDateRange(params));
+  const dateRange = getRequestDateRange(params);
   const filters = getRequestFilters(params);
-  const segments = await getRequestSegments(websiteId, params);
+  const segments = websiteId ? await getRequestSegments(websiteId, params) : null;
+
+  if (websiteId) {
+    await setWebsiteDate(websiteId, dateRange);
+  }
 
   return {
     ...dateRange,
