@@ -74,6 +74,7 @@ export const labels = defineMessages({
   language: { id: 'label.language', defaultMessage: 'Language' },
   theme: { id: 'label.theme', defaultMessage: 'Theme' },
   profile: { id: 'label.profile', defaultMessage: 'Profile' },
+  profiles: { id: 'label.profiles', defaultMessage: 'Profiles' },
   dashboard: { id: 'label.dashboard', defaultMessage: 'Dashboard' },
   more: { id: 'label.more', defaultMessage: 'More' },
   realtime: { id: 'label.realtime', defaultMessage: 'Realtime' },
@@ -335,6 +336,7 @@ export const labels = defineMessages({
   lastClick: { id: 'label.last-click', defaultMessage: 'Last click' },
   online: { id: 'label.online', defaultMessage: 'Online' },
   preferences: { id: 'label.preferences', defaultMessage: 'Preferences' },
+  location: { id: 'label.location', defaultMessage: 'Location' },
 });
 
 export const messages = defineMessages({

@@ -1,5 +1,5 @@
 import { canViewWebsite } from '@/lib/auth';
-import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
+import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { getSessionDataValues } from '@/queries';
 import { z } from 'zod';
@@ -20,13 +20,14 @@ export async function GET(
     return error();
   }
 
-  const { propertyName } = query;
   const { websiteId } = await params;
-  const filters = await setWebsiteDate(websiteId, await getQueryFilters(query));
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
+
+  const { propertyName } = query;
+  const filters = await getQueryFilters(query, websiteId);
 
   const data = await getSessionDataValues(websiteId, {
     ...filters,

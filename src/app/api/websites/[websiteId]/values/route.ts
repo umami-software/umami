@@ -39,7 +39,7 @@ export async function GET(
   if (FILTER_GROUPS[type]) {
     values = (await getWebsiteSegments(websiteId, type)).map(segment => ({ value: segment.name }));
   } else {
-    const filters = await getQueryFilters(query);
+    const filters = await getQueryFilters(query, websiteId);
     values = await getValues(websiteId, FILTER_COLUMNS[type], filters);
   }
 

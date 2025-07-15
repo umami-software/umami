@@ -45,6 +45,13 @@ export function SessionInfo({ data }) {
       </Info>
 
       <Info
+        label={formatMessage(labels.browser)}
+        icon={<TypeIcon type="browser" value={data?.browser} />}
+      >
+        {formatValue(data?.browser, 'browser')}
+      </Info>
+
+      <Info
         label={formatMessage(labels.os)}
         icon={<TypeIcon type="os" value={data?.os?.toLowerCase()?.replaceAll(/\W/g, '-')} />}
       >
@@ -56,13 +63,6 @@ export function SessionInfo({ data }) {
         icon={<TypeIcon type="device" value={data?.device} />}
       >
         {formatValue(data?.device, 'device')}
-      </Info>
-
-      <Info
-        label={formatMessage(labels.browser)}
-        icon={<TypeIcon type="browser" value={data?.browser} />}
-      >
-        {formatValue(data?.browser, 'browser')}
       </Info>
     </Column>
   );

@@ -28,6 +28,7 @@ export function WebsiteSelect({
   return (
     <Select
       {...props}
+      placeholder=""
       items={data?.['data'] || []}
       value={websiteId}
       isLoading={isLoading}

@@ -17,9 +17,12 @@ async function relationalQuery(
   filters: QueryFilters & { propertyName?: string },
 ) {
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters(filters, {
-    columns: { propertyName: 'data_key' },
-  });
+  const { filterQuery, cohortQuery, queryParams } = parseFilters(
+    { ...filters, websiteId },
+    {
+      columns: { propertyName: 'data_key' },
+    },
+  );
 
   return rawQuery(
     `
@@ -48,9 +51,12 @@ async function clickhouseQuery(
   filters: QueryFilters & { propertyName?: string },
 ): Promise<{ eventName: string; propertyName: string; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters(filters, {
-    columns: { propertyName: 'data_key' },
-  });
+  const { filterQuery, cohortQuery, queryParams } = parseFilters(
+    { ...filters, websiteId },
+    {
+      columns: { propertyName: 'data_key' },
+    },
+  );
 
   return rawQuery(
     `

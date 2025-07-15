@@ -36,6 +36,11 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       referrer_path as "referrerPath",
       referrer_query as "referrerQuery",
       referrer_domain as "referrerDomain",
+      country as country,
+      city as city,
+      device as  device,
+      os as os,
+      browser as browser,
       page_title as "pageTitle",
       event_type as "eventType",
       event_name as "eventName"
@@ -77,12 +82,14 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       referrer_query as referrerQuery,
       referrer_domain as referrerDomain,
       country as country,
+      city as city,
       device as  device,
       os as os,
       browser as browser,
       page_title as pageTitle,
       event_type as eventType,
-      event_name as eventName
+      event_name as eventName,
+      event_id IN (SELECT event_id FROM event_data) AS hasData
     from website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}

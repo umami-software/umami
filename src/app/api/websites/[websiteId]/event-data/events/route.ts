@@ -26,7 +26,7 @@ export async function GET(
   }
 
   const { event } = query;
-  const filters = await getQueryFilters(query);
+  const filters = await getQueryFilters(query, websiteId);
 
   const data = await getEventDataEvents(websiteId, {
     ...filters,

@@ -1,14 +1,5 @@
 import { useMessages, useModified } from '@/components/hooks';
-import {
-  Button,
-  Icon,
-  Modal,
-  Dialog,
-  DialogTrigger,
-  Text,
-  Column,
-  useToast,
-} from '@umami/react-zen';
+import { Button, Icon, Modal, Dialog, DialogTrigger, Text, useToast } from '@umami/react-zen';
 import { Plus } from '@/components/icons';
 import { WebsiteAddForm } from './WebsiteAddForm';
 
@@ -33,11 +24,7 @@ export function WebsiteAddButton({ teamId, onSave }: { teamId: string; onSave?: 
       </Button>
       <Modal>
         <Dialog title={formatMessage(labels.addWebsite)} style={{ width: 400 }}>
-          {({ close }) => (
-            <Column width="300px">
-              <WebsiteAddForm teamId={teamId} onSave={handleSave} onClose={close} />
-            </Column>
-          )}
+          {({ close }) => <WebsiteAddForm teamId={teamId} onSave={handleSave} onClose={close} />}
         </Dialog>
       </Modal>
     </DialogTrigger>

@@ -13,8 +13,8 @@ export function EventsDataTable({
   children?: ReactNode;
 }) {
   const { formatMessage, labels } = useMessages();
-  const query = useWebsiteEventsQuery(websiteId);
   const [view, setView] = useState('all');
+  const query = useWebsiteEventsQuery(websiteId);
 
   const buttons = [
     {

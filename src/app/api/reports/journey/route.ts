@@ -1,6 +1,6 @@
 import { canViewWebsite } from '@/lib/auth';
 import { unauthorized, json } from '@/lib/response';
-import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
+import { getQueryFilters, parseRequest } from '@/lib/request';
 import { getJourney } from '@/queries';
 import { reportResultSchema } from '@/lib/schema';
 
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     return unauthorized();
   }
 
-  const queryFilters = await setWebsiteDate(websiteId, await getQueryFilters(filters));
+  const queryFilters = await getQueryFilters(filters, websiteId);
 
   const data = await getJourney(websiteId, parameters, queryFilters);
 

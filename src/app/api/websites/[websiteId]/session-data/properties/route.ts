@@ -21,12 +21,13 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { propertyName } = query;
-  const filters = await getQueryFilters(query);
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
+
+  const { propertyName } = query;
+  const filters = await getQueryFilters(query, websiteId);
 
   const data = await getSessionDataProperties(websiteId, { ...filters, propertyName });
 

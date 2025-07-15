@@ -105,16 +105,16 @@ export async function getQueryFilters(
 ): Promise<QueryFilters> {
   const dateRange = getRequestDateRange(params);
   const filters = getRequestFilters(params);
-  const segments = websiteId ? await getRequestSegments(websiteId, params) : null;
 
   if (websiteId) {
     await setWebsiteDate(websiteId, dateRange);
+
+    Object.assign(filters, await getRequestSegments(websiteId, params));
   }
 
   return {
     ...dateRange,
     ...filters,
-    ...segments,
     page: params?.page,
     pageSize: params?.page ? params?.pageSize || DEFAULT_PAGE_SIZE : undefined,
     orderBy: params?.orderBy,

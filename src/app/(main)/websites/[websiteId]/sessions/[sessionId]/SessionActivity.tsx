@@ -13,7 +13,7 @@ import {
 } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Bolt, Eye, FileText } from '@/components/icons';
-import { useSessionActivityQuery, useTimezone } from '@/components/hooks';
+import { useMessages, useSessionActivityQuery, useTimezone } from '@/components/hooks';
 import { EventData } from '@/components/metrics/EventData';
 
 export function SessionActivity({
@@ -27,6 +27,7 @@ export function SessionActivity({
   startDate: Date;
   endDate: Date;
 }) {
+  const { formatMessage, labels } = useMessages();
   const { formatTimezoneDate } = useTimezone();
   const { data, isLoading, error } = useSessionActivityQuery(
     websiteId,
@@ -50,9 +51,14 @@ export function SessionActivity({
                 <StatusLight color={`#${visitId?.substring(0, 6)}`}>
                   {formatTimezoneDate(createdAt, 'pp')}
                 </StatusLight>
-                <Row alignItems="center" gap>
+                <Row alignItems="center" gap="2">
                   <Icon>{eventName ? <Bolt /> : <Eye />}</Icon>
-                  <Text>{eventName || urlPath}</Text>
+                  <Text>
+                    {eventName
+                      ? formatMessage(labels.triggeredEvent)
+                      : formatMessage(labels.viewedPage)}
+                  </Text>
+                  <Text weight="bold">{eventName || urlPath}</Text>
                   {hasData > 0 && <PropertiesButton websiteId={websiteId} eventId={eventId} />}
                 </Row>
               </Row>

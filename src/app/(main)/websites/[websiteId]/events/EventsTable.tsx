@@ -1,5 +1,5 @@
 import { DataTable, DataColumn, Icon, Row } from '@umami/react-zen';
-import { useMessages, useNavigation } from '@/components/hooks';
+import { useFormat, useMessages, useNavigation } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import { Avatar } from '@/components/common/Avatar';
 import Link from 'next/link';
@@ -10,6 +10,7 @@ import { TypeIcon } from '@/components/common/TypeIcon';
 export function EventsTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
   const { renderUrl } = useNavigation();
+  const { formatValue } = useFormat();
 
   if (data.length === 0) {
     return <Empty />;
@@ -20,7 +21,10 @@ export function EventsTable({ data = [] }) {
       <DataColumn id="event" label={formatMessage(labels.event)} width="2fr">
         {(row: any) => {
           return (
-            <Row alignItems="center" gap="2">
+            <Row alignItems="center" gap>
+              <Link href={renderUrl(`/websites/${row.websiteId}/sessions/${row.sessionId}`)}>
+                <Avatar seed={row.sessionId} size={32} />
+              </Link>
               <Icon>{row.eventName ? <Bolt /> : <Eye />}</Icon>
               {formatMessage(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
               <strong>{row.eventName || row.urlPath}</strong>
@@ -28,21 +32,29 @@ export function EventsTable({ data = [] }) {
           );
         }}
       </DataColumn>
-      <DataColumn id="created" width="1fr" align="end">
+      <DataColumn id="location" label={formatMessage(labels.location)}>
         {(row: any) => (
-          <Row alignItems="center" gap>
-            <DateDistance date={new Date(row.createdAt)} />
-            <Link href={renderUrl(`/websites/${row.websiteId}/sessions/${row.sessionId}`)}>
-              <Avatar seed={row.sessionId} size={32} />
-            </Link>
-            <Row alignItems="center" gap="1">
-              <TypeIcon type="country" value={row.country} />
-              <TypeIcon type="browser" value={row.browser} />
-              <TypeIcon type="os" value={row.os} />
-              <TypeIcon type="device" value={row.device} />
-            </Row>
-          </Row>
+          <TypeIcon type="country" value={row.country}>
+            {row.city ? `${row.city}, ` : ''} {formatValue(row.country, 'country')}
+          </TypeIcon>
         )}
+      </DataColumn>
+      <DataColumn id="browser" label={formatMessage(labels.browser)}>
+        {(row: any) => (
+          <TypeIcon type="browser" value={row.browser}>
+            {formatValue(row.browser, 'browser')}
+          </TypeIcon>
+        )}
+      </DataColumn>
+      <DataColumn id="device" label={formatMessage(labels.device)}>
+        {(row: any) => (
+          <TypeIcon type="device" value={row.device}>
+            {formatValue(row.device, 'device')}
+          </TypeIcon>
+        )}
+      </DataColumn>
+      <DataColumn id="created" width="160px" align="end">
+        {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
     </DataTable>
   );

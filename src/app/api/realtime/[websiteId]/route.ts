@@ -21,12 +21,14 @@ export async function GET(
     return unauthorized();
   }
 
-  const filters = await getQueryFilters({
-    ...query,
+  const filters = await getQueryFilters(
+    {
+      ...query,
+      startAt: subMinutes(startOfMinute(new Date()), REALTIME_RANGE).getTime(),
+      endAt: Date.now(),
+    },
     websiteId,
-    startAt: subMinutes(startOfMinute(new Date()), REALTIME_RANGE).getTime(),
-    endAt: Date.now(),
-  });
+  );
 
   const data = await getRealtimeData(websiteId, filters);
 
