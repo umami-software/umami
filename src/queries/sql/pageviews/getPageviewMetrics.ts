@@ -38,9 +38,7 @@ async function relationalQuery(
       websiteId,
       eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     },
-    {
-      joinSession: SESSION_COLUMNS.includes(type) || column === 'referrer_domain',
-    },
+    { joinSession: SESSION_COLUMNS.includes(type) },
   );
 
   let entryExitQuery = '';
@@ -72,7 +70,7 @@ async function relationalQuery(
   return rawQuery(
     `
     select ${column} x,
-      ${column === 'referrer_domain' ? 'count(distinct website_event.session_id)' : 'count(*)'} as y
+      count(distinct website_event.session_id) as y
     from website_event
     ${joinSessionQuery}
     ${cohortQuery}
@@ -132,8 +130,9 @@ async function clickhouseQuery(
 
     sql = `
     select ${column} x, 
-      ${column === 'referrer_domain' ? 'uniq(session_id)' : 'count(*)'} as y
+      uniq(website_event.session_id) as y
     from website_event
+    ${cohortQuery}
     ${entryExitQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
@@ -147,28 +146,27 @@ async function clickhouseQuery(
     `;
   } else {
     let groupByQuery = '';
-    let columnQuery = `arrayJoin(${column})`;
+    let columnQuery = `session_id s, arrayJoin(${column})`;
 
     if (column === 'referrer_domain') {
-      excludeDomain = `and t != hostname and t != ''`;
-      columnQuery = `session_id s, arrayJoin(${column})`;
+      excludeDomain = `and t != ''`;
     }
 
     if (type === 'entry') {
-      columnQuery = `visit_id x, argMinMerge(entry_url)`;
+      columnQuery = `session_id s, argMinMerge(entry_url)`;
     }
 
     if (type === 'exit') {
-      columnQuery = `visit_id x, argMaxMerge(exit_url)`;
+      columnQuery = `session_id s, argMaxMerge(exit_url)`;
     }
 
     if (type === 'entry' || type === 'exit') {
-      groupByQuery = 'group by x';
+      groupByQuery = 'group by s';
     }
 
     sql = `
     select g.t as x,
-      ${column === 'referrer_domain' ? 'uniq(s)' : 'count(*)'} as y
+      uniq(s) as y
     from (
       select ${columnQuery} as t
       from website_event_stats_hourly as website_event

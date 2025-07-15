@@ -1,4 +1,14 @@
-import { DataColumn, DataTable } from '@umami/react-zen';
+import { useMemo, useState } from 'react';
+import {
+  DataColumn,
+  DataTable,
+  Row,
+  Loading,
+  Column,
+  ToggleGroup,
+  ToggleGroupItem,
+  Text,
+} from '@umami/react-zen';
 import {
   useEventDataPropertiesQuery,
   useEventDataValuesQuery,
@@ -6,29 +16,44 @@ import {
 } from '@/components/hooks';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { PieChart } from '@/components/charts/PieChart';
-import { useState } from 'react';
 import { CHART_COLORS } from '@/lib/constants';
-import styles from './EventProperties.module.css';
+import { ListTable } from '@/components/metrics/ListTable';
 
 export function EventProperties({ websiteId }: { websiteId: string }) {
   const [propertyName, setPropertyName] = useState('');
   const [eventName, setEventName] = useState('');
+  const [propertyView, setPropertyView] = useState('table');
+
   const { formatMessage, labels } = useMessages();
-  const { data, isLoading, isFetched, error } = useEventDataPropertiesQuery(websiteId);
+  const { data, isLoading, isFetching, error } = useEventDataPropertiesQuery(websiteId);
   const { data: values } = useEventDataValuesQuery(websiteId, eventName, propertyName);
-  const chartData =
-    propertyName && values
-      ? {
-          labels: values.map(({ value }) => value),
-          datasets: [
-            {
-              data: values.map(({ total }) => total),
-              backgroundColor: CHART_COLORS,
-              borderWidth: 0,
-            },
-          ],
-        }
-      : null;
+
+  const propertySum = useMemo(() => {
+    return values?.reduce((sum, { total }) => sum + total, 0) ?? 0;
+  }, [values]);
+
+  const chartData = useMemo(() => {
+    if (!propertyName || !values) return null;
+    return {
+      labels: values.map(({ value }) => value),
+      datasets: [
+        {
+          data: values.map(({ total }) => total),
+          backgroundColor: CHART_COLORS,
+          borderWidth: 0,
+        },
+      ],
+    };
+  }, [propertyName, values]);
+
+  const tableData = useMemo(() => {
+    if (!propertyName || !values || propertySum === 0) return [];
+    return values.map(({ value, total }) => ({
+      x: value,
+      y: total,
+      z: 100 * (total / propertySum),
+    }));
+  }, [propertyName, values, propertySum]);
 
   const handleRowClick = row => {
     setEventName(row.eventName);
@@ -36,32 +61,37 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
   };
 
   return (
-    <LoadingPanel isLoading={isLoading} isFetched={isFetched} data={data} error={error}>
-      <div className={styles.container}>
-        <DataTable data={data} cardMode={false} className={styles.table}>
-          <DataColumn name="eventName" label={formatMessage(labels.name)}>
-            {row => (
-              <div className={styles.link} onClick={() => handleRowClick(row)}>
-                {row.eventName}
-              </div>
-            )}
+    <LoadingPanel isLoading={isLoading} isFetching={isFetching} data={data} error={error}>
+      <Column>
+        <DataTable data={data}>
+          <DataColumn id="eventName" label={formatMessage(labels.name)}>
+            {(row: any) => <Row onClick={() => handleRowClick(row)}>{row.eventName}</Row>}
           </DataColumn>
-          <DataColumn name="propertyName" label={formatMessage(labels.property)}>
-            {row => (
-              <div className={styles.link} onClick={() => handleRowClick(row)}>
-                {row.propertyName}
-              </div>
-            )}
+          <DataColumn id="propertyName" label={formatMessage(labels.property)}>
+            {(row: any) => <Row onClick={() => handleRowClick(row)}>{row.propertyName}</Row>}
           </DataColumn>
-          <DataColumn name="total" label={formatMessage(labels.count)} alignment="end" />
+          <DataColumn id="total" label={formatMessage(labels.count)} align="end" />
         </DataTable>
         {propertyName && (
-          <div className={styles.chart}>
-            <div className={styles.title}>{propertyName}</div>
-            <PieChart key={propertyName + eventName} type="doughnut" data={chartData} />
-          </div>
+          <Column>
+            <Row gap justifyContent="space-between">
+              <Text>{`${eventName}: ${propertyName}`}</Text>
+              <ToggleGroup value={[propertyView]} onChange={value => setPropertyView(value[0])}>
+                <ToggleGroupItem id="table">{formatMessage(labels.table)}</ToggleGroupItem>
+                <ToggleGroupItem id="chart">{formatMessage(labels.chart)}</ToggleGroupItem>
+              </ToggleGroup>
+            </Row>
+
+            {!values ? (
+              <Loading icon="dots" />
+            ) : propertyView === 'table' ? (
+              <ListTable data={tableData} />
+            ) : (
+              <PieChart key={propertyName + eventName} type="doughnut" chartData={chartData} />
+            )}
+          </Column>
         )}
-      </div>
+      </Column>
     </LoadingPanel>
   );
 }

@@ -35,6 +35,7 @@ export const EVENT_COLUMNS = [
   'query',
   'event',
   'tag',
+  'host',
 ];
 
 export const SESSION_COLUMNS = [
@@ -46,7 +47,6 @@ export const SESSION_COLUMNS = [
   'country',
   'city',
   'region',
-  'hostname',
 ];
 
 export const FILTER_GROUPS = {
