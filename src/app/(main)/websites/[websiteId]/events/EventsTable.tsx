@@ -1,4 +1,4 @@
-import { DataTable, DataColumn, Icon, Row } from '@umami/react-zen';
+import { DataTable, DataColumn, Icon, Row, Text } from '@umami/react-zen';
 import { useFormat, useMessages, useNavigation } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import { Avatar } from '@/components/common/Avatar';
@@ -21,13 +21,17 @@ export function EventsTable({ data = [] }) {
       <DataColumn id="event" label={formatMessage(labels.event)} width="2fr">
         {(row: any) => {
           return (
-            <Row alignItems="center" gap>
+            <Row alignItems="center" gap="2">
               <Link href={renderUrl(`/websites/${row.websiteId}/sessions/${row.sessionId}`)}>
                 <Avatar seed={row.sessionId} size={32} />
               </Link>
               <Icon>{row.eventName ? <Bolt /> : <Eye />}</Icon>
-              {formatMessage(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
-              <strong>{row.eventName || row.urlPath}</strong>
+              <Text>
+                {formatMessage(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
+              </Text>
+              <Text weight="bold" truncate>
+                {row.eventName || row.urlPath}
+              </Text>
             </Row>
           );
         }}
@@ -39,14 +43,14 @@ export function EventsTable({ data = [] }) {
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="browser" label={formatMessage(labels.browser)}>
+      <DataColumn id="browser" label={formatMessage(labels.browser)} width="120px">
         {(row: any) => (
           <TypeIcon type="browser" value={row.browser}>
             {formatValue(row.browser, 'browser')}
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="device" label={formatMessage(labels.device)}>
+      <DataColumn id="device" label={formatMessage(labels.device)} width="120px">
         {(row: any) => (
           <TypeIcon type="device" value={row.device}>
             {formatValue(row.device, 'device')}

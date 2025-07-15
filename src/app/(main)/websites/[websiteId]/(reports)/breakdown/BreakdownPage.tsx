@@ -6,7 +6,7 @@ import { ListCheck } from '@/components/icons';
 import { Panel } from '@/components/common/Panel';
 import { Breakdown } from './Breakdown';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
-import { FieldSelectForm } from '@/app/(main)/websites/[websiteId]/reports/breakdown/FieldSelectForm';
+import { FieldSelectForm } from '@/app/(main)/websites/[websiteId]/(reports)/breakdown/FieldSelectForm';
 
 export function BreakdownPage({ websiteId }: { websiteId: string }) {
   const {

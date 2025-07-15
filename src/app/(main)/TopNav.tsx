@@ -1,13 +1,12 @@
-import { ThemeButton, Row, Button, Icon } from '@umami/react-zen';
+import { ThemeButton, Row, Icon } from '@umami/react-zen';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { ProfileButton } from '@/components/input/ProfileButton';
 import { TeamsButton } from '@/components/input/TeamsButton';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
-import { PanelLeft, Slash } from '@/components/icons';
-import { useNavigation, useGlobalState } from '@/components/hooks';
+import { Slash } from '@/components/icons';
+import { useNavigation } from '@/components/hooks';
 
 export function TopNav() {
-  const [isCollapsed, setCollapsed] = useGlobalState('sidenav-collapsed');
   const { teamId, websiteId, pathname } = useNavigation();
   const isSettings = pathname.includes('/settings');
 
@@ -22,11 +21,6 @@ export function TopNav() {
       width="100%"
     >
       <Row alignItems="center">
-        <Button onPress={() => setCollapsed(!isCollapsed)} variant="quiet">
-          <Icon>
-            <PanelLeft />
-          </Icon>
-        </Button>
         <Row alignItems="center" gap="1">
           <TeamsButton />
           {websiteId && !isSettings && (
