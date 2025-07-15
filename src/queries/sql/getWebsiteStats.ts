@@ -109,7 +109,7 @@ async function clickhouseQuery(
             sum(views) c,
             min(min_time) min_time,
             max(max_time) max_time
-        from umami.website_event_stats_hourly "website_event"
+        from website_event_stats_hourly "website_event"
         ${cohortQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
