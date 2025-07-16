@@ -26,6 +26,9 @@ export function App({ children }) {
     return null;
   }
 
+  // eslint-disable-next-line no-console
+  console.log('process.env', process.env);
+
   return (
     <>
       {children}
