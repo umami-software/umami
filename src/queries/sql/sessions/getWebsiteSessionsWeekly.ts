@@ -2,6 +2,7 @@ import prisma from '@/lib/prisma';
 import clickhouse from '@/lib/clickhouse';
 import { runQuery, PRISMA, CLICKHOUSE } from '@/lib/db';
 import { QueryFilters } from '@/lib/types';
+import { EVENT_COLUMNS } from '@/lib/constants';
 
 export async function getWebsiteSessionsWeekly(
   ...args: [websiteId: string, filters?: QueryFilters]
@@ -35,21 +36,39 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   const { timezone = 'utc' } = filters;
   const { rawQuery, parseFilters } = clickhouse;
-  const { params } = await parseFilters(websiteId, filters);
+  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, filters);
 
-  return rawQuery(
-    `
+  let sql = '';
+
+  if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
+    sql = `
     select
       formatDateTime(toDateTime(created_at, '${timezone}'), '%w:%H') as time,
       count(distinct session_id) as value
-    from website_event_stats_hourly
+    from website_event
+    ${cohortQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      ${filterQuery}
     group by time
     order by time
-    `,
-    params,
-  ).then(formatResults);
+    `;
+  } else {
+    sql = `
+    select
+      formatDateTime(toDateTime(created_at, '${timezone}'), '%w:%H') as time,
+      count(distinct session_id) as value
+    from website_event_stats_hourly website_event
+    ${cohortQuery}
+    where website_id = {websiteId:UUID}
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      ${filterQuery}
+    group by time
+    order by time
+    `;
+  }
+
+  return rawQuery(sql, params).then(formatResults);
 }
 
 function formatResults(data: any) {

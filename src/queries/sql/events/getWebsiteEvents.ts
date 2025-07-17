@@ -15,7 +15,7 @@ export function getWebsiteEvents(
 async function relationalQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
   const { pagedRawQuery, parseFilters } = prisma;
   const { search } = pageParams;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, {
     ...filters,
   });
 
@@ -38,6 +38,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
       event_type as "eventType",
       event_name as "eventName"
     from website_event
+    ${cohortQuery}
     where website_id = {{websiteId::uuid}}
         and created_at between {{startDate}} and {{endDate}}
     ${filterQuery}
@@ -56,7 +57,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
   const { pagedQuery, parseFilters } = clickhouse;
-  const { params, dateQuery, filterQuery } = await parseFilters(websiteId, filters);
+  const { params, dateQuery, filterQuery, cohortQuery } = await parseFilters(websiteId, filters);
   const { search } = pageParams;
 
   return pagedQuery(
@@ -75,6 +76,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
       event_type as eventType,
       event_name as eventName
     from website_event
+    ${cohortQuery}
     where website_id = {websiteId:UUID}
     ${dateQuery}
     ${filterQuery}
