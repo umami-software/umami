@@ -12,7 +12,7 @@ export function WebsiteHeader() {
   const website = useWebsite();
 
   return (
-    <PageHeader title={website.name} icon={<Favicon domain={website.domain} />} showBorder={false}>
+    <PageHeader title={website.name} icon={<Favicon domain={website.domain} />}>
       <Row alignItems="center" gap="6">
         <ActiveUsers websiteId={website.id} />
         <Row alignItems="center" gap>

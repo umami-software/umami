@@ -1,10 +1,10 @@
-import { Icon, Text, Row, NavMenu, NavMenuItem } from '@umami/react-zen';
+import { Icon, Text, Row, NavMenu, NavMenuItem, NavMenuGroup } from '@umami/react-zen';
 import {
   Eye,
   Lightning,
   User,
   Clock,
-  Lightbulb,
+  Sheet,
   Target,
   Funnel,
   Path,
@@ -22,95 +22,123 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
 
   const links = [
     {
-      id: 'overview',
-      label: formatMessage(labels.overview),
-      icon: <Eye />,
-      path: '',
+      label: formatMessage(labels.core),
+      items: [
+        {
+          id: 'overview',
+          label: formatMessage(labels.overview),
+          icon: <Eye />,
+          path: '',
+        },
+        {
+          id: 'events',
+          label: formatMessage(labels.events),
+          icon: <Lightning />,
+          path: '/events',
+        },
+        {
+          id: 'sessions',
+          label: formatMessage(labels.sessions),
+          icon: <User />,
+          path: '/sessions',
+        },
+        {
+          id: 'realtime',
+          label: formatMessage(labels.realtime),
+          icon: <Clock />,
+          path: '/realtime',
+        },
+      ],
     },
     {
-      id: 'events',
-      label: formatMessage(labels.events),
-      icon: <Lightning />,
-      path: '/events',
+      label: formatMessage(labels.behavior),
+      items: [
+        {
+          id: 'goals',
+          label: formatMessage(labels.goals),
+          icon: <Target />,
+          path: '/goals',
+        },
+        {
+          id: 'funnel',
+          label: formatMessage(labels.funnels),
+          icon: <Funnel />,
+          path: '/funnels',
+        },
+        {
+          id: 'journeys',
+          label: formatMessage(labels.journeys),
+          icon: <Path />,
+          path: '/journeys',
+        },
+        {
+          id: 'retention',
+          label: formatMessage(labels.retention),
+          icon: <Magnet />,
+          path: '/retention',
+        },
+      ],
     },
     {
-      id: 'sessions',
-      label: formatMessage(labels.sessions),
-      icon: <User />,
-      path: '/sessions',
+      label: formatMessage(labels.segments),
+      items: [
+        {
+          id: 'breakdown',
+          label: formatMessage(labels.breakdown),
+          icon: <Sheet />,
+          path: '/breakdown',
+        },
+      ],
     },
     {
-      id: 'realtime',
-      label: formatMessage(labels.realtime),
-      icon: <Clock />,
-      path: '/realtime',
-    },
-    {
-      id: 'insights',
-      label: formatMessage(labels.insights),
-      icon: <Lightbulb />,
-      path: '/insights',
-    },
-    {
-      id: 'goals',
-      label: formatMessage(labels.goals),
-      icon: <Target />,
-      path: '/goals',
-    },
-    {
-      id: 'funnel',
-      label: formatMessage(labels.funnels),
-      icon: <Funnel />,
-      path: '/funnels',
-    },
-    {
-      id: 'journeys',
-      label: formatMessage(labels.journeys),
-      icon: <Path />,
-      path: '/journeys',
-    },
-    {
-      id: 'retention',
-      label: formatMessage(labels.retention),
-      icon: <Magnet />,
-      path: '/retention',
-    },
-    {
-      id: 'utm',
-      label: formatMessage(labels.utm),
-      icon: <Tag />,
-      path: '/utm',
-    },
-    {
-      id: 'revenue',
-      label: formatMessage(labels.revenue),
-      icon: <Money />,
-      path: '/revenue',
-    },
-    {
-      id: 'attribution',
-      label: formatMessage(labels.attribution),
-      icon: <Network />,
-      path: '/attribution',
+      label: formatMessage(labels.growth),
+      items: [
+        {
+          id: 'utm',
+          label: formatMessage(labels.utm),
+          icon: <Tag />,
+          path: '/utm',
+        },
+        {
+          id: 'revenue',
+          label: formatMessage(labels.revenue),
+          icon: <Money />,
+          path: '/revenue',
+        },
+        {
+          id: 'attribution',
+          label: formatMessage(labels.attribution),
+          icon: <Network />,
+          path: '/attribution',
+        },
+      ],
     },
   ];
 
-  const selected = links.find(({ path }) => path && pathname.endsWith(path))?.id || 'overview';
+  const selected =
+    links.flatMap(e => e.items).find(({ path }) => path && pathname.endsWith(path))?.id ||
+    'overview';
 
   return (
-    <NavMenu highlightColor="3">
-      {links.map(({ id, label, icon, path }) => {
-        const isSelected = selected === id;
-
+    <NavMenu highlightColor="3" style={{ position: 'sticky', top: 'var(--spacing-2)' }}>
+      {links.map(({ label, items }) => {
         return (
-          <Link key={id} href={renderUrl(`/websites/${websiteId}${path}`)}>
-            <NavMenuItem isSelected={isSelected}>
-              <Row alignItems="center" gap>
-                <Icon>{icon}</Icon>
-                <Text>{label}</Text>
-              </Row>
-            </NavMenuItem>
-          </Link>
+          <NavMenuGroup title={label} key={label} gap="2">
+            {items.map(({ id, label, icon, path }) => {
+              const isSelected = selected === id;
+
+              return (
+                <Link key={id} href={renderUrl(`/websites/${websiteId}${path}`)}>
+                  <NavMenuItem isSelected={isSelected}>
+                    <Row alignItems="center" gap>
+                      <Icon>{icon}</Icon>
+                      <Text>{label}</Text>
+                    </Row>
+                  </NavMenuItem>
+                </Link>
+              );
+            })}
+          </NavMenuGroup>
         );
       })}
     </NavMenu>

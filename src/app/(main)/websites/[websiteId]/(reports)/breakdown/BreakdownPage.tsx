@@ -7,6 +7,7 @@ import { Panel } from '@/components/common/Panel';
 import { Breakdown } from './Breakdown';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { FieldSelectForm } from '@/app/(main)/websites/[websiteId]/(reports)/breakdown/FieldSelectForm';
+import { SectionHeader } from '@/components/common/SectionHeader';
 
 export function BreakdownPage({ websiteId }: { websiteId: string }) {
   const {
@@ -17,7 +18,9 @@ export function BreakdownPage({ websiteId }: { websiteId: string }) {
   return (
     <Column gap>
       <WebsiteControls websiteId={websiteId} />
-      <FieldsButton value={fields} onChange={setFields} />
+      <SectionHeader>
+        <FieldsButton value={fields} onChange={setFields} />
+      </SectionHeader>
       <Panel height="900px" overflow="auto" allowFullscreen>
         <Breakdown
           websiteId={websiteId}
@@ -36,7 +39,7 @@ const FieldsButton = ({ value, onChange }) => {
   return (
     <Box>
       <DialogTrigger>
-        <Button>
+        <Button variant="primary">
           <Icon>
             <ListCheck />
           </Icon>

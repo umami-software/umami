@@ -40,7 +40,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
     <PageBody>
       <Column gap="6">
         <PageHeader title={formatMessage(labels.admin)} />
-        <Grid columns="160px 1fr" gap>
+        <Grid columns="200px 1fr" gap>
           <Column>
             <SideMenu items={items} selectedKey={value} />
           </Column>

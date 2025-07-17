@@ -37,7 +37,7 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
     <PageBody>
       <Column gap="6">
         <PageHeader title={formatMessage(labels.settings)} />
-        <Grid columns="160px 1fr" gap>
+        <Grid columns="200px 1fr" gap>
           <Column>
             <SideMenu items={items} selectedKey={value} />
           </Column>

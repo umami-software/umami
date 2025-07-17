@@ -1,6 +1,6 @@
 'use client';
 import { ReactNode } from 'react';
-import { AlertBanner, Loading, Column } from '@umami/react-zen';
+import { AlertBanner, Loading, Column, ColumnProps } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 
 export function PageBody({
@@ -14,7 +14,7 @@ export function PageBody({
   error?: unknown;
   isLoading?: boolean;
   children?: ReactNode;
-}) {
+} & ColumnProps) {
   const { formatMessage, messages } = useMessages();
 
   if (error) {

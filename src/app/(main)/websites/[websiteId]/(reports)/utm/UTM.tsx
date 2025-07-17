@@ -23,7 +23,7 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
   });
 
   return (
-    <LoadingPanel data={data} isLoading={isLoading} error={error}>
+    <LoadingPanel data={data} isLoading={isLoading} error={error} minHeight="300px">
       {data && (
         <Column gap>
           {UTM_PARAMS.map(param => {

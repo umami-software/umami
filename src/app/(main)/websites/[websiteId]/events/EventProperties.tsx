@@ -1,14 +1,5 @@
 import { useMemo, useState } from 'react';
-import {
-  DataColumn,
-  DataTable,
-  Row,
-  Loading,
-  Column,
-  ToggleGroup,
-  ToggleGroupItem,
-  Text,
-} from '@umami/react-zen';
+import { Select, ListItem, Grid } from '@umami/react-zen';
 import {
   useEventDataPropertiesQuery,
   useEventDataValuesQuery,
@@ -22,11 +13,69 @@ import { ListTable } from '@/components/metrics/ListTable';
 export function EventProperties({ websiteId }: { websiteId: string }) {
   const [propertyName, setPropertyName] = useState('');
   const [eventName, setEventName] = useState('');
-  const [propertyView, setPropertyView] = useState('table');
 
   const { formatMessage, labels } = useMessages();
   const { data, isLoading, isFetching, error } = useEventDataPropertiesQuery(websiteId);
-  const { data: values } = useEventDataValuesQuery(websiteId, eventName, propertyName);
+
+  const events: string[] = data
+    ? data.reduce((arr: string | any[], e: { eventName: any }) => {
+        return !arr.includes(e.eventName) ? arr.concat(e.eventName) : arr;
+      }, [])
+    : [];
+  const properties: string[] = eventName
+    ? data?.filter(e => e.eventName === eventName).map(e => e.propertyName)
+    : [];
+
+  return (
+    <LoadingPanel
+      isLoading={isLoading}
+      isFetching={isFetching}
+      data={data}
+      error={error}
+      minHeight="300px"
+      gap="6"
+    >
+      <Grid columns="repeat(auto-fill, minmax(300px, 1fr))" gap>
+        <Select
+          label={formatMessage(labels.event)}
+          value={eventName}
+          onChange={setEventName}
+          placeholder=""
+        >
+          {events?.map(p => (
+            <ListItem key={p} id={p}>
+              {p}
+            </ListItem>
+          ))}
+        </Select>
+        <Select
+          label={formatMessage(labels.property)}
+          value={propertyName}
+          onChange={setPropertyName}
+          isDisabled={!eventName}
+          placeholder=""
+        >
+          {properties?.map(p => (
+            <ListItem key={p} id={p}>
+              {p}
+            </ListItem>
+          ))}
+        </Select>
+      </Grid>
+      {propertyName && (
+        <EventValues websiteId={websiteId} eventName={eventName} propertyName={propertyName} />
+      )}
+    </LoadingPanel>
+  );
+}
+
+const EventValues = ({ websiteId, eventName, propertyName }) => {
+  const {
+    data: values,
+    isLoading,
+    isFetching,
+    error,
+  } = useEventDataValuesQuery(websiteId, eventName, propertyName);
 
   const propertySum = useMemo(() => {
     return values?.reduce((sum, { total }) => sum + total, 0) ?? 0;
@@ -55,43 +104,19 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
     }));
   }, [propertyName, values, propertySum]);
 
-  const handleRowClick = row => {
-    setEventName(row.eventName);
-    setPropertyName(row.propertyName);
-  };
-
   return (
-    <LoadingPanel isLoading={isLoading} isFetching={isFetching} data={data} error={error}>
-      <Column>
-        <DataTable data={data}>
-          <DataColumn id="eventName" label={formatMessage(labels.name)}>
-            {(row: any) => <Row onClick={() => handleRowClick(row)}>{row.eventName}</Row>}
-          </DataColumn>
-          <DataColumn id="propertyName" label={formatMessage(labels.property)}>
-            {(row: any) => <Row onClick={() => handleRowClick(row)}>{row.propertyName}</Row>}
-          </DataColumn>
-          <DataColumn id="total" label={formatMessage(labels.count)} align="end" />
-        </DataTable>
-        {propertyName && (
-          <Column>
-            <Row gap justifyContent="space-between">
-              <Text>{`${eventName}: ${propertyName}`}</Text>
-              <ToggleGroup value={[propertyView]} onChange={value => setPropertyView(value[0])}>
-                <ToggleGroupItem id="table">{formatMessage(labels.table)}</ToggleGroupItem>
-                <ToggleGroupItem id="chart">{formatMessage(labels.chart)}</ToggleGroupItem>
-              </ToggleGroup>
-            </Row>
-
-            {!values ? (
-              <Loading icon="dots" />
-            ) : propertyView === 'table' ? (
-              <ListTable data={tableData} />
-            ) : (
-              <PieChart key={propertyName + eventName} type="doughnut" chartData={chartData} />
-            )}
-          </Column>
-        )}
-      </Column>
+    <LoadingPanel
+      isLoading={isLoading}
+      isFetching={isFetching}
+      data={values}
+      error={error}
+      minHeight="300px"
+      gap="6"
+    >
+      <Grid columns="1fr 1fr" gap>
+        {values && <ListTable title={propertyName} data={tableData} />}
+        <PieChart key={propertyName + eventName} type="doughnut" chartData={chartData} />
+      </Grid>
     </LoadingPanel>
   );
-}
+};
