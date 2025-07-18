@@ -1,4 +1,4 @@
-import { Icon, Text, Row, NavMenu, NavMenuItem, NavMenuGroup } from '@umami/react-zen';
+import { Icon, Text, Row, NavMenu, NavMenuItem, NavMenuGroup, Column } from '@umami/react-zen';
 import {
   Eye,
   Lightning,
@@ -12,6 +12,8 @@ import {
   Tag,
   Money,
   Network,
+  UserPlus,
+  ChartPie,
 } from '@/components/icons';
 import { useMessages, useNavigation } from '@/components/hooks';
 import Link from 'next/link';
@@ -22,7 +24,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
 
   const links = [
     {
-      label: formatMessage(labels.core),
+      label: formatMessage(labels.traffic),
       items: [
         {
           id: 'overview',
@@ -88,6 +90,18 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
           icon: <Sheet />,
           path: '/breakdown',
         },
+        {
+          id: 'segments',
+          label: formatMessage(labels.segments),
+          icon: <ChartPie />,
+          path: '/segments',
+        },
+        {
+          id: 'cohorts',
+          label: formatMessage(labels.cohorts),
+          icon: <UserPlus />,
+          path: '/cohorts',
+        },
       ],
     },
     {
@@ -120,27 +134,29 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
     'overview';
 
   return (
-    <NavMenu highlightColor="3" style={{ position: 'sticky', top: 'var(--spacing-2)' }}>
-      {links.map(({ label, items }) => {
-        return (
-          <NavMenuGroup title={label} key={label} gap="2">
-            {items.map(({ id, label, icon, path }) => {
-              const isSelected = selected === id;
+    <Column gap padding width="240px" border="left">
+      <NavMenu highlightColor="2">
+        {links.map(({ label, items }) => {
+          return (
+            <NavMenuGroup title={label} key={label} gap="1">
+              {items.map(({ id, label, icon, path }) => {
+                const isSelected = selected === id;
 
-              return (
-                <Link key={id} href={renderUrl(`/websites/${websiteId}${path}`)}>
-                  <NavMenuItem isSelected={isSelected}>
-                    <Row alignItems="center" gap>
-                      <Icon>{icon}</Icon>
-                      <Text>{label}</Text>
-                    </Row>
-                  </NavMenuItem>
-                </Link>
-              );
-            })}
-          </NavMenuGroup>
-        );
-      })}
-    </NavMenu>
+                return (
+                  <Link key={id} href={renderUrl(`/websites/${websiteId}${path}`)}>
+                    <NavMenuItem isSelected={isSelected}>
+                      <Row alignItems="center" gap>
+                        <Icon>{icon}</Icon>
+                        <Text>{label}</Text>
+                      </Row>
+                    </NavMenuItem>
+                  </Link>
+                );
+              })}
+            </NavMenuGroup>
+          );
+        })}
+      </NavMenu>
+    </Column>
   );
 }

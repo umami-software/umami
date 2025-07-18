@@ -1,12 +1,11 @@
 import Link from 'next/link';
 import {
   Sidebar,
-  SidebarHeader,
   SidebarSection,
   SidebarItem,
-  Button,
-  Icon,
+  SidebarHeader,
   Row,
+  SidebarProps,
 } from '@umami/react-zen';
 import {
   Globe,
@@ -16,14 +15,14 @@ import {
   Grid2X2,
   Settings,
   LockKeyhole,
-  PanelLeft,
 } from '@/components/icons';
 import { useMessages, useNavigation, useGlobalState } from '@/components/hooks';
+import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 
-export function SideNav(props: any) {
+export function SideNav(props: SidebarProps) {
   const { formatMessage, labels } = useMessages();
-  const { pathname, renderUrl } = useNavigation();
-  const [isCollapsed, setCollapsed] = useGlobalState('sidenav-collapsed');
+  const { pathname, renderUrl, websiteId } = useNavigation();
+  const [isCollapsed] = useGlobalState('sidenav-collapsed');
 
   const links = [
     {
@@ -68,37 +67,37 @@ export function SideNav(props: any) {
   ];
 
   return (
-    <Sidebar {...props} isCollapsed={isCollapsed} variant="quiet" showBorder={true}>
-      <SidebarSection>
-        <SidebarHeader label="umami" icon={<Logo />} />
-      </SidebarSection>
-      <SidebarSection flexGrow={1}>
-        {links.map(({ id, path, label, icon }) => {
-          return (
-            <Link key={id} href={renderUrl(path, false)} role="button">
-              <SidebarItem label={label} icon={icon} isSelected={pathname.endsWith(path)} />
-            </Link>
-          );
-        })}
-      </SidebarSection>
-      <SidebarSection>
-        {bottomLinks.map(({ id, path, label, icon }) => {
-          return (
-            <Link key={id} href={path} role="button">
-              <SidebarItem label={label} icon={icon} isSelected={pathname.startsWith(path)} />
-            </Link>
-          );
-        })}
-      </SidebarSection>
-      <SidebarSection>
-        <Row>
-          <Button onPress={() => setCollapsed(!isCollapsed)} variant="quiet">
-            <Icon>
-              <PanelLeft />
-            </Icon>
-          </Button>
-        </Row>
-      </SidebarSection>
-    </Sidebar>
+    <Row height="100%" margin="2" backgroundColor border borderRadius>
+      <Sidebar
+        {...props}
+        isCollapsed={isCollapsed || websiteId}
+        muteItems={false}
+        variant="quiet"
+        showBorder={false}
+      >
+        <SidebarSection>
+          <SidebarHeader label="umami" icon={<Logo />} />
+        </SidebarSection>
+        <SidebarSection flexGrow={1}>
+          {links.map(({ id, path, label, icon }) => {
+            return (
+              <Link key={id} href={renderUrl(path, false)} role="button">
+                <SidebarItem label={label} icon={icon} isSelected={pathname.endsWith(path)} />
+              </Link>
+            );
+          })}
+        </SidebarSection>
+        <SidebarSection>
+          {bottomLinks.map(({ id, path, label, icon }) => {
+            return (
+              <Link key={id} href={path} role="button">
+                <SidebarItem label={label} icon={icon} isSelected={pathname.startsWith(path)} />
+              </Link>
+            );
+          })}
+        </SidebarSection>
+      </Sidebar>
+      {websiteId && <WebsiteNav websiteId={websiteId} />}
+    </Row>
   );
 }

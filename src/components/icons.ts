@@ -45,6 +45,7 @@ export {
   Upload,
   User,
   Users,
+  UserPlus,
   X as Close,
 } from 'lucide-react';
 export * from '@/components/svg';

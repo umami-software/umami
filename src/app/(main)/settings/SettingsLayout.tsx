@@ -1,14 +1,13 @@
 'use client';
 import { ReactNode } from 'react';
 import { Grid, Column } from '@umami/react-zen';
-import { useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
 import { SideMenu } from '@/components/common/SideMenu';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
 import { PageBody } from '@/components/common/PageBody';
 
 export function SettingsLayout({ children }: { children: ReactNode }) {
-  const { user } = useLoginQuery();
   const { formatMessage, labels } = useMessages();
   const { pathname } = useNavigation();
 
@@ -23,13 +22,13 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
       label: formatMessage(labels.profile),
       url: '/settings/profile',
     },
-    { id: 'teams', label: formatMessage(labels.teams), url: '/settings/teams' },
-    user.isAdmin && {
+    {
       id: 'websites',
       label: formatMessage(labels.websites),
       url: '/settings/websites',
     },
-  ].filter(n => n);
+    { id: 'teams', label: formatMessage(labels.teams), url: '/settings/teams' },
+  ];
 
   const value = items.find(({ url }) => pathname.includes(url))?.id;
 

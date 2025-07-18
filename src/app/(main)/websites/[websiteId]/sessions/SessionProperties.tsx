@@ -26,20 +26,22 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
       minHeight="300px"
       gap="6"
     >
-      <Grid columns="repeat(auto-fill, minmax(300px, 1fr))" gap>
-        <Select
-          label={formatMessage(labels.event)}
-          value={propertyName}
-          onChange={setPropertyName}
-          placeholder=""
-        >
-          {properties?.map(p => (
-            <ListItem key={p} id={p}>
-              {p}
-            </ListItem>
-          ))}
-        </Select>
-      </Grid>
+      {data && (
+        <Grid columns="repeat(auto-fill, minmax(300px, 1fr))" gap>
+          <Select
+            label={formatMessage(labels.event)}
+            value={propertyName}
+            onChange={setPropertyName}
+            placeholder=""
+          >
+            {properties?.map(p => (
+              <ListItem key={p} id={p}>
+                {p}
+              </ListItem>
+            ))}
+          </Select>
+        </Grid>
+      )}
       {propertyName && <SessionValues websiteId={websiteId} propertyName={propertyName} />}
     </LoadingPanel>
   );
@@ -84,10 +86,12 @@ const SessionValues = ({ websiteId, propertyName }) => {
       minHeight="300px"
       gap="6"
     >
-      <Grid columns="1fr 1fr" gap>
-        {data && <ListTable title={propertyName} data={tableData} />}
-        <PieChart key={propertyName} type="doughnut" chartData={chartData} />
-      </Grid>
+      {data && (
+        <Grid columns="1fr 1fr" gap>
+          <ListTable title={propertyName} data={tableData} />
+          <PieChart type="doughnut" chartData={chartData} />
+        </Grid>
+      )}
     </LoadingPanel>
   );
 };

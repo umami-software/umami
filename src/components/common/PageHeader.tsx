@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Heading, Icon, Row, Text } from '@umami/react-zen';
+import { Heading, Icon, Row, RowProps, Text } from '@umami/react-zen';
 
 export function PageHeader({
   title,
@@ -7,6 +7,7 @@ export function PageHeader({
   icon,
   showBorder = true,
   children,
+  ...props
 }: {
   title: string;
   description?: string;
@@ -15,7 +16,7 @@ export function PageHeader({
   allowEdit?: boolean;
   className?: string;
   children?: ReactNode;
-}) {
+} & RowProps) {
   return (
     <Row
       justifyContent="space-between"
@@ -23,6 +24,7 @@ export function PageHeader({
       paddingY="6"
       border={showBorder ? 'bottom' : undefined}
       width="100%"
+      {...props}
     >
       <Row alignItems="center" gap="3">
         {icon && <Icon>{icon}</Icon>}

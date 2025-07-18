@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { Select, SelectProps, ListItem } from '@umami/react-zen';
 import { useUserWebsitesQuery, useWebsiteQuery, useNavigation } from '@/components/hooks';
+import { ButtonProps } from 'react-basics';
 
 export function WebsiteSelect({
   websiteId,
   teamId,
-  variant,
+  buttonProps,
   ...props
 }: {
   websiteId?: string;
   teamId?: string;
-  variant?: 'primary' | 'outline' | 'quiet' | 'danger' | 'zero';
+  buttonProps?: ButtonProps;
 } & SelectProps) {
   const { router, renderUrl } = useNavigation();
   const [search, setSearch] = useState('');
@@ -32,7 +33,7 @@ export function WebsiteSelect({
       items={data?.['data'] || []}
       value={websiteId}
       isLoading={isLoading}
-      buttonProps={{ variant }}
+      buttonProps={buttonProps}
       allowSearch={true}
       searchValue={search}
       onSearch={handleSearch}

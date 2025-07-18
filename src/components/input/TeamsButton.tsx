@@ -16,13 +16,7 @@ import {
 import { useLoginQuery, useMessages, useUserTeamsQuery, useNavigation } from '@/components/hooks';
 import { Chevron, User, Users } from '@/components/icons';
 
-export function TeamsButton({
-  className,
-  showText = true,
-}: {
-  className?: string;
-  showText?: boolean;
-}) {
+export function TeamsButton({ showText = true }: { showText?: boolean }) {
   const { user } = useLoginQuery();
   const { formatMessage, labels } = useMessages();
   const { data } = useUserTeamsQuery(user.id);
@@ -41,13 +35,17 @@ export function TeamsButton({
 
   return (
     <MenuTrigger>
-      <Button className={className} variant="quiet">
-        <Row alignItems="center" gap="3">
-          <Icon>{teamId ? <Users /> : <User />}</Icon>
-          {showText && <Text>{teamId ? team?.name : user.username}</Text>}
-          <Icon rotate={90} size="sm">
-            <Chevron />
-          </Icon>
+      <Button variant="quiet">
+        <Row alignItems="center" justifyContent="space-between" width="100%" gap>
+          <Row alignItems="center" gap>
+            <Icon>{teamId ? <Users /> : <User />}</Icon>
+            {showText && <Text truncate>{teamId ? team?.name : user.username}</Text>}
+          </Row>
+          {showText && (
+            <Icon rotate={90} size="sm">
+              <Chevron />
+            </Icon>
+          )}
         </Row>
       </Button>
       <Popover placement="bottom start">

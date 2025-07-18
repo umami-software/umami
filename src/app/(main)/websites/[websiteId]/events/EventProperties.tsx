@@ -28,41 +28,43 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
 
   return (
     <LoadingPanel
+      data={data}
       isLoading={isLoading}
       isFetching={isFetching}
-      data={data}
       error={error}
       minHeight="300px"
       gap="6"
     >
-      <Grid columns="repeat(auto-fill, minmax(300px, 1fr))" gap>
-        <Select
-          label={formatMessage(labels.event)}
-          value={eventName}
-          onChange={setEventName}
-          placeholder=""
-        >
-          {events?.map(p => (
-            <ListItem key={p} id={p}>
-              {p}
-            </ListItem>
-          ))}
-        </Select>
-        <Select
-          label={formatMessage(labels.property)}
-          value={propertyName}
-          onChange={setPropertyName}
-          isDisabled={!eventName}
-          placeholder=""
-        >
-          {properties?.map(p => (
-            <ListItem key={p} id={p}>
-              {p}
-            </ListItem>
-          ))}
-        </Select>
-      </Grid>
-      {propertyName && (
+      {data && (
+        <Grid columns="repeat(auto-fill, minmax(300px, 1fr))" gap>
+          <Select
+            label={formatMessage(labels.event)}
+            value={eventName}
+            onChange={setEventName}
+            placeholder=""
+          >
+            {events?.map(p => (
+              <ListItem key={p} id={p}>
+                {p}
+              </ListItem>
+            ))}
+          </Select>
+          <Select
+            label={formatMessage(labels.property)}
+            value={propertyName}
+            onChange={setPropertyName}
+            isDisabled={!eventName}
+            placeholder=""
+          >
+            {properties?.map(p => (
+              <ListItem key={p} id={p}>
+                {p}
+              </ListItem>
+            ))}
+          </Select>
+        </Grid>
+      )}
+      {eventName && propertyName && (
         <EventValues websiteId={websiteId} eventName={eventName} propertyName={propertyName} />
       )}
     </LoadingPanel>
@@ -113,10 +115,12 @@ const EventValues = ({ websiteId, eventName, propertyName }) => {
       minHeight="300px"
       gap="6"
     >
-      <Grid columns="1fr 1fr" gap>
-        {values && <ListTable title={propertyName} data={tableData} />}
-        <PieChart key={propertyName + eventName} type="doughnut" chartData={chartData} />
-      </Grid>
+      {values && (
+        <Grid columns="1fr 1fr" gap>
+          <ListTable title={propertyName} data={tableData} />
+          <PieChart type="doughnut" chartData={chartData} />
+        </Grid>
+      )}
     </LoadingPanel>
   );
 };

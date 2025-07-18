@@ -5,6 +5,7 @@ import { TeamsButton } from '@/components/input/TeamsButton';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 import { Slash } from '@/components/icons';
 import { useNavigation } from '@/components/hooks';
+import { PanelButton } from '@/components/input/PanelButton';
 
 export function TopNav() {
   const { teamId, websiteId, pathname } = useNavigation();
@@ -14,21 +15,27 @@ export function TopNav() {
     <Row
       justifyContent="space-between"
       alignItems="center"
-      paddingY="3"
+      paddingY="2"
       paddingX="3"
       paddingRight="5"
-      border="bottom"
       width="100%"
+      style={{ position: 'sticky', top: 0 }}
+      backgroundColor="2"
+      zIndex={1}
     >
       <Row alignItems="center">
+        <PanelButton />
+        <Seperator />
         <Row alignItems="center" gap="1">
           <TeamsButton />
           {websiteId && !isSettings && (
             <>
-              <Icon strokeColor="7" rotate={-25}>
-                <Slash />
-              </Icon>
-              <WebsiteSelect variant="quiet" websiteId={websiteId} teamId={teamId} />
+              <Seperator />
+              <WebsiteSelect
+                buttonProps={{ variant: 'quiet' }}
+                websiteId={websiteId}
+                teamId={teamId}
+              />
             </>
           )}
         </Row>
@@ -41,3 +48,11 @@ export function TopNav() {
     </Row>
   );
 }
+
+const Seperator = () => {
+  return (
+    <Icon strokeColor="7" rotate={-25}>
+      <Slash />
+    </Icon>
+  );
+};
