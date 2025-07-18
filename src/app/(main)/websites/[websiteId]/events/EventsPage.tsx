@@ -42,8 +42,8 @@ export default function EventsPage({ websiteId }) {
           <Item key="activity">{formatMessage(labels.activity)}</Item>
           <Item key="properties">{formatMessage(labels.properties)}</Item>
         </Tabs>
-        {tab === 'activity' && <EventsDataTable websiteId={websiteId} />}
-        {tab === 'properties' && <EventProperties websiteId={websiteId} />}
+        {tab === 'activity' && <EventsDataTable websiteId={websiteId} label={label} />}
+        {tab === 'properties' && <EventProperties websiteId={websiteId} label={label} />}
       </div>
     </>
   );
