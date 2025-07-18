@@ -1,4 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
+import { EVENT_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
@@ -53,20 +54,37 @@ async function clickhouseQuery(
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
 
-  return rawQuery(
-    `
+  let sql = '';
+
+  if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
+    sql = `
+    select
+      sumIf(1, event_type = 1) as "pageviews",
+      uniq(session_id) as "visitors",
+      uniq(visit_id) as "visits",
+      uniq(country) as "countries",
+      sum(length(event_name)) as "events"
+    from website_event
+    ${cohortQuery}
+    where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        ${filterQuery}
+    `;
+  } else {
+    sql = `
     select
       sum(views) as "pageviews",
       uniq(session_id) as "visitors",
       uniq(visit_id) as "visits",
       uniq(country) as "countries",
       sum(length(event_name)) as "events"
-    from umami.website_event_stats_hourly "website_event"
+    from website_event_stats_hourly website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         ${filterQuery}
-    `,
-    queryParams,
-  );
+    `;
+  }
+
+  return rawQuery(sql, queryParams);
 }

@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { EVENT_COLUMNS } from '@/lib/constants';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
@@ -75,8 +76,37 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
 
   const searchQuery = search ? `and positionCaseInsensitive(distinct_id, {search:String}) > 0` : '';
 
-  return pagedRawQuery(
-    `
+  let sql = '';
+
+  if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
+    sql = `
+    select
+      session_id as id,
+      website_id as websiteId,
+      browser,
+      os,
+      device,
+      screen,
+      language,
+      country,
+      region,
+      city,
+      ${getDateStringSQL('min(created_at)')} as firstAt,
+      ${getDateStringSQL('max(created_at)')} as lastAt,
+      uniq(visit_id) as visits,
+      sumIf(views, event_type = 1) as views,
+      lastAt as createdAt
+    from website_event
+    ${cohortQuery}
+    where website_id = {websiteId:UUID}
+    ${dateQuery}
+    ${filterQuery}
+    ${searchQuery}
+    group by session_id, website_id, browser, os, device, screen, language, country, region, city
+    order by lastAt desc
+    `;
+  } else {
+    sql = `
     select
       session_id as id,
       website_id as websiteId,
@@ -102,8 +132,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ${searchQuery}
     group by session_id, website_id, hostname, browser, os, device, screen, language, country, region, city
     order by lastAt desc
-    `,
-    queryParams,
-    filters,
-  );
+    `;
+  }
+
+  return pagedRawQuery(sql, queryParams, filters);
 }

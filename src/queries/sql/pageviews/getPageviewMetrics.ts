@@ -146,18 +146,18 @@ async function clickhouseQuery(
     `;
   } else {
     let groupByQuery = '';
-    let columnQuery = `session_id s, arrayJoin(${column})`;
+    let columnQuery = `arrayJoin(${column})`;
 
     if (column === 'referrer_domain') {
       excludeDomain = `and t != ''`;
     }
 
     if (type === 'entry') {
-      columnQuery = `session_id s, argMinMerge(entry_url)`;
+      columnQuery = `argMinMerge(entry_url)`;
     }
 
     if (type === 'exit') {
-      columnQuery = `session_id s, argMaxMerge(exit_url)`;
+      columnQuery = `argMaxMerge(exit_url)`;
     }
 
     if (type === 'entry' || type === 'exit') {
@@ -168,6 +168,9 @@ async function clickhouseQuery(
     select g.t as x,
       uniq(s) as y
     from (
+      select session_id s, 
+        ${columnQuery} as t
+      from website_event_stats_hourly website_event
       select ${columnQuery} as t
       from website_event_stats_hourly as website_event
       ${cohortQuery}
