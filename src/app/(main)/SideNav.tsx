@@ -21,8 +21,9 @@ import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 
 export function SideNav(props: SidebarProps) {
   const { formatMessage, labels } = useMessages();
-  const { pathname, renderUrl, websiteId } = useNavigation();
+  const { pathname, renderUrl, websiteId, teamId } = useNavigation();
   const [isCollapsed] = useGlobalState('sidenav-collapsed');
+  const isWebsite = websiteId && !pathname.includes('/settings');
 
   const links = [
     {
@@ -67,10 +68,10 @@ export function SideNav(props: SidebarProps) {
   ];
 
   return (
-    <Row height="100%" margin="2" backgroundColor border borderRadius>
+    <Row height="100%" backgroundColor border="right">
       <Sidebar
         {...props}
-        isCollapsed={isCollapsed || websiteId}
+        isCollapsed={isCollapsed || isWebsite}
         muteItems={false}
         variant="quiet"
         showBorder={false}
@@ -88,16 +89,17 @@ export function SideNav(props: SidebarProps) {
           })}
         </SidebarSection>
         <SidebarSection>
-          {bottomLinks.map(({ id, path, label, icon }) => {
-            return (
-              <Link key={id} href={path} role="button">
-                <SidebarItem label={label} icon={icon} isSelected={pathname.startsWith(path)} />
-              </Link>
-            );
-          })}
+          {!teamId &&
+            bottomLinks.map(({ id, path, label, icon }) => {
+              return (
+                <Link key={id} href={path} role="button">
+                  <SidebarItem label={label} icon={icon} isSelected={pathname.startsWith(path)} />
+                </Link>
+              );
+            })}
         </SidebarSection>
       </Sidebar>
-      {websiteId && <WebsiteNav websiteId={websiteId} />}
+      {isWebsite && <WebsiteNav websiteId={websiteId} />}
     </Row>
   );
 }

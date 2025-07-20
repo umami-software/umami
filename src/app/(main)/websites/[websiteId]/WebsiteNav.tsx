@@ -134,7 +134,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
     'overview';
 
   return (
-    <Column gap padding width="240px" border="left">
+    <Column gap padding width="240px" border="left" overflowY="auto">
       <NavMenu highlightColor="2">
         {links.map(({ label, items }) => {
           return (

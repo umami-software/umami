@@ -170,8 +170,6 @@ async function clickhouseQuery(
     from (
       select session_id s, 
         ${columnQuery} as t
-      from website_event_stats_hourly website_event
-      select ${columnQuery} as t
       from website_event_stats_hourly as website_event
       ${cohortQuery}
       where website_id = {websiteId:UUID}

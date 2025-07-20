@@ -9,7 +9,7 @@ import { PanelButton } from '@/components/input/PanelButton';
 
 export function TopNav() {
   const { teamId, websiteId, pathname } = useNavigation();
-  const isSettings = pathname.includes('/settings');
+  const isWebsite = websiteId && !pathname.includes('/settings');
 
   return (
     <Row
@@ -24,21 +24,19 @@ export function TopNav() {
       zIndex={1}
     >
       <Row alignItems="center">
-        <PanelButton />
+        <PanelButton isDisabled={!!isWebsite} />
         <Seperator />
-        <Row alignItems="center" gap="1">
-          <TeamsButton />
-          {websiteId && !isSettings && (
-            <>
-              <Seperator />
-              <WebsiteSelect
-                buttonProps={{ variant: 'quiet' }}
-                websiteId={websiteId}
-                teamId={teamId}
-              />
-            </>
-          )}
-        </Row>
+        <TeamsButton />
+        {isWebsite && (
+          <>
+            <Seperator />
+            <WebsiteSelect
+              buttonProps={{ variant: 'quiet' }}
+              websiteId={websiteId}
+              teamId={teamId}
+            />
+          </>
+        )}
       </Row>
       <Row alignItems="center" justifyContent="flex-end">
         <ThemeButton />
