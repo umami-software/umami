@@ -11,6 +11,7 @@ export * from '@/queries/sql/events/getEventDataValues';
 export * from '@/queries/sql/events/getEventDataStats';
 export * from '@/queries/sql/events/getEventDataUsage';
 export * from '@/queries/sql/events/getEventMetrics';
+export * from '@/queries/sql/events/getEventStats';
 export * from '@/queries/sql/events/getWebsiteEvents';
 export * from '@/queries/sql/events/getEventUsage';
 export * from '@/queries/sql/events/saveEvent';

@@ -9,14 +9,20 @@ import { useMessages } from '@/components/hooks';
 import { Item, Tabs } from 'react-basics';
 import { useState } from 'react';
 import EventProperties from './EventProperties';
+import { getItem, setItem } from '@/lib/storage';
 
 export default function EventsPage({ websiteId }) {
   const [label, setLabel] = useState(null);
-  const [tab, setTab] = useState('activity');
+  const [tab, setTab] = useState(getItem('eventTab') || 'activity');
   const { formatMessage, labels } = useMessages();
 
   const handleLabelClick = (value: string) => {
     setLabel(value !== label ? value : '');
+  };
+
+  const onSelect = (value: 'activity' | 'properties') => {
+    setItem('eventTab', value);
+    setTab(value);
   };
 
   return (
@@ -34,11 +40,7 @@ export default function EventsPage({ websiteId }) {
         />
       </GridRow>
       <div>
-        <Tabs
-          selectedKey={tab}
-          onSelect={(value: any) => setTab(value)}
-          style={{ marginBottom: 30 }}
-        >
+        <Tabs selectedKey={tab} onSelect={onSelect} style={{ marginBottom: 30 }}>
           <Item key="activity">{formatMessage(labels.activity)}</Item>
           <Item key="properties">{formatMessage(labels.properties)}</Item>
         </Tabs>
