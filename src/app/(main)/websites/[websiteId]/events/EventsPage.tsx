@@ -20,7 +20,7 @@ export default function EventsPage({ websiteId }) {
     setLabel(value !== label ? value : '');
   };
 
-  const onSelect = (value: any) => {
+  const onSelect = (value: 'activity' | 'properties') => {
     setItem('eventTab', value);
     setTab(value);
   };
