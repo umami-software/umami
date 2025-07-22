@@ -316,6 +316,7 @@ export const labels = defineMessages({
   other: { id: 'label.other', defaultMessage: 'Other' },
   chart: { id: 'label.chart', defaultMessage: 'Chart' },
   table: { id: 'label.table', defaultMessage: 'Table' },
+  download: { id: 'label.download', defaultMessage: 'Download' },
 });
 
 export const messages = defineMessages({

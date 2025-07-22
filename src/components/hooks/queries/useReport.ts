@@ -29,7 +29,7 @@ export function useReport(
     data.parameters = {
       ...defaultParameters?.parameters,
       ...data.parameters,
-      dateRange: parseDateRange(dateRange.value),
+      dateRange: dateRange ? parseDateRange(dateRange?.value) : {},
     };
 
     setReport(data);
