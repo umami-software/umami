@@ -5,7 +5,7 @@ import { getRequestFilters, parseRequest } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/lib/auth';
 import { pagingParams } from '@/lib/schema';
-import { getEventMetrics, getWebsiteEvents } from '@/queries';
+import { getEventMetrics, getPageviewMetrics, getSessionMetrics } from '@/queries';
 
 export async function GET(
   request: Request,
@@ -32,8 +32,6 @@ export async function GET(
 
   const startDate = new Date(+startAt);
   const endDate = new Date(+endAt);
-  const limit = 10;
-  const offset = 0;
 
   const filters = {
     ...(await getRequestFilters(query)),
@@ -42,13 +40,13 @@ export async function GET(
   };
 
   const [events, pages, referrers, browsers, os, devices, countries] = await Promise.all([
-    getWebsiteEvents(websiteId, { startDate, endDate }, query),
-    getEventMetrics(websiteId, 'url', filters, limit, offset),
-    getEventMetrics(websiteId, 'referrer', filters, limit, offset),
-    getEventMetrics(websiteId, 'browser', filters, limit, offset),
-    getEventMetrics(websiteId, 'os', filters, limit, offset),
-    getEventMetrics(websiteId, 'device', filters, limit, offset),
-    getEventMetrics(websiteId, 'country', filters, limit, offset),
+    getEventMetrics(websiteId, 'event', filters),
+    getPageviewMetrics(websiteId, 'url', filters),
+    getPageviewMetrics(websiteId, 'referrer', filters),
+    getSessionMetrics(websiteId, 'browser', filters),
+    getSessionMetrics(websiteId, 'os', filters),
+    getSessionMetrics(websiteId, 'device', filters),
+    getSessionMetrics(websiteId, 'country', filters),
   ]);
 
   const zip = new JSZip();
@@ -60,7 +58,7 @@ export async function GET(
     });
   };
 
-  zip.file('events.csv', parse(events?.data));
+  zip.file('events.csv', parse(events));
   zip.file('pages.csv', parse(pages));
   zip.file('referrers.csv', parse(referrers));
   zip.file('browsers.csv', parse(browsers));

@@ -12,7 +12,9 @@ export function ReportBody({ children }) {
 
   return (
     <div className={styles.body}>
-      <DownloadButton filename={report.name} data={report.data} />
+      {report.type !== 'revenue' && report.type !== 'attribution' && (
+        <DownloadButton filename={report.name} data={report.data} />
+      )}
       {children}
     </div>
   );
