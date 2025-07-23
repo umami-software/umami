@@ -60,7 +60,7 @@ export async function POST(
     type,
     name,
     description,
-    parameters: JSON.stringify(parameters),
+    parameters: parameters,
   } as any);
 
   return json(result);
