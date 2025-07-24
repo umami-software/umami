@@ -14,7 +14,7 @@ export function EventsDataTable({
 }) {
   const { formatMessage, labels } = useMessages();
   const [view, setView] = useState('all');
-  const query = useWebsiteEventsQuery(websiteId);
+  const query = useWebsiteEventsQuery(websiteId, { view });
 
   const buttons = [
     {

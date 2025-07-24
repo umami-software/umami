@@ -37,18 +37,18 @@ export function TeamsButton({ showText = true }: { showText?: boolean }) {
   return (
     <MenuTrigger>
       <Pressable>
-        <SidebarItem
-          label={teamId ? team?.name : user.username}
-          icon={teamId ? <Users /> : <User />}
-        >
-          <Row alignItems="center" justifyContent="space-between" width="100%" gap>
+        <Row alignItems="center" justifyContent="space-between" width="100%" gap>
+          <SidebarItem
+            label={teamId ? team?.name : user.username}
+            icon={teamId ? <Users /> : <User />}
+          >
             {showText && (
               <Icon rotate={90} size="sm">
                 <Chevron />
               </Icon>
             )}
-          </Row>
-        </SidebarItem>
+          </SidebarItem>
+        </Row>
       </Pressable>
       <Popover placement="bottom start">
         <Box minWidth="300px">
@@ -60,20 +60,24 @@ export function TeamsButton({ showText = true }: { showText?: boolean }) {
           >
             <MenuSection title={formatMessage(labels.myAccount)}>
               <MenuItem id={user.id}>
-                <Icon>
-                  <User />
-                </Icon>
-                <Text wrap="nowrap">{user.username}</Text>
+                <Row alignItems="center" gap>
+                  <Icon>
+                    <User />
+                  </Icon>
+                  <Text wrap="nowrap">{user.username}</Text>
+                </Row>
               </MenuItem>
             </MenuSection>
             <MenuSeparator />
             <MenuSection title={formatMessage(labels.teams)}>
               {data?.data?.map(({ id, name }) => (
                 <MenuItem key={id} id={id}>
-                  <Icon size="sm">
-                    <Users />
-                  </Icon>
-                  <Text wrap="nowrap">{name}</Text>
+                  <Row alignItems="center" gap>
+                    <Icon size="sm">
+                      <Users />
+                    </Icon>
+                    <Text wrap="nowrap">{name}</Text>
+                  </Row>
                 </MenuItem>
               ))}
             </MenuSection>

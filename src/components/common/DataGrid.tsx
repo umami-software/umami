@@ -16,6 +16,7 @@ export interface DataGridProps {
   allowPaging?: boolean;
   autoFocus?: boolean;
   renderActions?: () => ReactNode;
+  renderEmpty?: () => ReactNode;
   children: ReactNode | ((data: any) => ReactNode);
 }
 
@@ -26,12 +27,13 @@ export function DataGrid({
   allowPaging = true,
   autoFocus,
   renderActions,
+  renderEmpty = () => <Empty />,
   children,
 }: DataGridProps) {
   const { formatMessage, labels } = useMessages();
   const { data, error, isLoading, isFetching } = query;
   const { router, updateParams, query: queryParams } = useNavigation();
-  const [search, setSearch] = useState(queryParams?.saerch || data?.search || '');
+  const [search, setSearch] = useState(queryParams?.search || data?.search || '');
 
   const handleSearch = (value: string) => {
     if (value !== search) {
@@ -47,13 +49,9 @@ export function DataGrid({
     [search],
   );
 
-  if (data?.data?.length === 0) {
-    return <Empty />;
-  }
-
   return (
     <Column gap="4" minHeight="300px">
-      {allowSearch && (data || search) && (
+      {allowSearch && (
         <Row alignItems="center" justifyContent="space-between">
           <SearchField
             value={search}
@@ -66,7 +64,13 @@ export function DataGrid({
           {renderActions?.()}
         </Row>
       )}
-      <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} error={error}>
+      <LoadingPanel
+        data={data}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        error={error}
+        renderEmpty={renderEmpty}
+      >
         {data && (
           <>
             <Column>{typeof children === 'function' ? children(data) : children}</Column>

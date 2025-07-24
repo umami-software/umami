@@ -71,6 +71,7 @@ export const FILTER_COLUMNS = {
   language: 'language',
   event: 'event_name',
   tag: 'tag',
+  eventType: 'event_type',
 };
 
 export const COLLECTION_TYPE = {

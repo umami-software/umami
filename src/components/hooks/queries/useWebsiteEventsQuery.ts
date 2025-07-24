@@ -4,6 +4,11 @@ import { useDateParameters } from '../useDateParameters';
 import { usePagedQuery } from '../usePagedQuery';
 import { ReactQueryOptions } from '@/lib/types';
 
+const EVENT_TYPES = {
+  views: 1,
+  events: 2,
+};
+
 export function useWebsiteEventsQuery(
   websiteId: string,
   params?: Record<string, any>,
@@ -20,7 +25,7 @@ export function useWebsiteEventsQuery(
         ...date,
         ...filters,
         ...pageParams,
-        ...params,
+        eventType: EVENT_TYPES[params.view],
       }),
     enabled: !!websiteId,
     ...options,

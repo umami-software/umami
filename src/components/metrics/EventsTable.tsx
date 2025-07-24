@@ -8,10 +8,6 @@ export interface EventsTableProps extends MetricsTableProps {
 export function EventsTable({ onLabelClick, ...props }: EventsTableProps) {
   const { formatMessage, labels } = useMessages();
 
-  const handleDataLoad = (data: any) => {
-    props.onDataLoad?.(data);
-  };
-
   const renderLabel = ({ x: label }) => {
     if (onLabelClick) {
       return (
@@ -30,7 +26,6 @@ export function EventsTable({ onLabelClick, ...props }: EventsTableProps) {
       title={formatMessage(labels.events)}
       type="event"
       metric={formatMessage(labels.actions)}
-      onDataLoad={handleDataLoad}
       renderLabel={renderLabel}
       allowDownload={false}
     />

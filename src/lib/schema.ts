@@ -37,6 +37,7 @@ export const filterParams = {
   event: z.string().optional(),
   segment: z.string().optional(),
   cohort: z.string().optional(),
+  eventType: z.coerce.number().int().positive().optional(),
 };
 
 export const searchParams = {
