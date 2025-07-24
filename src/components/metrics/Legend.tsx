@@ -22,7 +22,7 @@ export function Legend({
         return (
           <Row key={text} onClick={() => onClick(item)}>
             <StatusLight color={color.alpha(color.alpha() + 0.2).toHex()}>
-              <Text size="1" color={hidden ? 'disabled' : undefined} wrap="nowrap">
+              <Text size="2" color={hidden ? 'disabled' : undefined} wrap="nowrap">
                 {text}
               </Text>
             </StatusLight>

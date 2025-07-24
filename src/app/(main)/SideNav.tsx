@@ -18,6 +18,8 @@ import {
 } from '@/components/icons';
 import { useMessages, useNavigation, useGlobalState } from '@/components/hooks';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
+import { TeamsButton } from '@/components/input/TeamsButton';
+import { PanelButton } from '@/components/input/PanelButton';
 
 export function SideNav(props: SidebarProps) {
   const { formatMessage, labels } = useMessages();
@@ -73,7 +75,6 @@ export function SideNav(props: SidebarProps) {
         {...props}
         isCollapsed={isCollapsed || isWebsite}
         muteItems={false}
-        variant="quiet"
         showBorder={false}
       >
         <SidebarSection>
@@ -97,6 +98,12 @@ export function SideNav(props: SidebarProps) {
                 </Link>
               );
             })}
+        </SidebarSection>
+        <SidebarSection>
+          <TeamsButton showText={!isCollapsed} />
+          <Row>
+            <PanelButton isDisabled={!!isWebsite} />
+          </Row>
         </SidebarSection>
       </Sidebar>
       {isWebsite && <WebsiteNav websiteId={websiteId} />}

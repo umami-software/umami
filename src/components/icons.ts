@@ -44,6 +44,7 @@ export {
   Trash,
   Upload,
   User,
+  CircleUserRound as UserCircle,
   Users,
   UserPlus,
   X as Close,

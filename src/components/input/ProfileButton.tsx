@@ -11,8 +11,8 @@ import {
   Text,
 } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
-import { User, LogOut, CircleUserRound } from 'lucide-react';
 import { useMessages, useLoginQuery } from '@/components/hooks';
+import { LogOut, Settings, UserCircle, LockKeyhole } from '@/components/icons';
 
 export function ProfileButton() {
   const { formatMessage, labels } = useMessages();
@@ -21,31 +21,34 @@ export function ProfileButton() {
   const cloudMode = !!process.env.cloudMode;
 
   const handleSelect = (key: Key) => {
-    if (key === 'profile') {
-      router.push('/settings/profile');
-    }
-    if (key === 'logout') {
-      router.push('/logout');
-    }
+    router.push(`/${key}`);
   };
 
   return (
     <MenuTrigger>
       <Button data-test="button-profile" variant="quiet">
         <Icon>
-          <CircleUserRound />
+          <UserCircle />
         </Icon>
       </Button>
       <Popover placement="bottom end">
         <Menu autoFocus="last" onAction={handleSelect}>
           <MenuSection title={user.username}>
             <MenuSeparator />
-            <MenuItem id="profile">
+            <MenuItem id="settings">
               <Icon>
-                <User />
+                <Settings />
               </Icon>
-              <Text>{formatMessage(labels.profile)}</Text>
+              <Text>{formatMessage(labels.settings)}</Text>
             </MenuItem>
+            {user.isAdmin && (
+              <MenuItem id="admin">
+                <Icon>
+                  <LockKeyhole />
+                </Icon>
+                <Text>{formatMessage(labels.admin)}</Text>
+              </MenuItem>
+            )}
             {!cloudMode && (
               <MenuItem data-test="item-logout" id="logout">
                 <Icon>

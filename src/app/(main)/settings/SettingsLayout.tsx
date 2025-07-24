@@ -22,11 +22,6 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
       label: formatMessage(labels.profile),
       url: '/settings/profile',
     },
-    {
-      id: 'websites',
-      label: formatMessage(labels.websites),
-      url: '/settings/websites',
-    },
     { id: 'teams', label: formatMessage(labels.teams), url: '/settings/teams' },
   ];
 

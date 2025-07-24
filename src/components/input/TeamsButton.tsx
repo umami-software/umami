@@ -3,7 +3,6 @@ import { useRouter } from 'next/navigation';
 import {
   Text,
   Icon,
-  Button,
   Menu,
   MenuItem,
   MenuTrigger,
@@ -12,6 +11,8 @@ import {
   Popover,
   Row,
   Box,
+  SidebarItem,
+  Pressable,
 } from '@umami/react-zen';
 import { useLoginQuery, useMessages, useUserTeamsQuery, useNavigation } from '@/components/hooks';
 import { Chevron, User, Users } from '@/components/icons';
@@ -35,19 +36,20 @@ export function TeamsButton({ showText = true }: { showText?: boolean }) {
 
   return (
     <MenuTrigger>
-      <Button variant="quiet">
-        <Row alignItems="center" justifyContent="space-between" width="100%" gap>
-          <Row alignItems="center" gap>
-            <Icon>{teamId ? <Users /> : <User />}</Icon>
-            {showText && <Text truncate>{teamId ? team?.name : user.username}</Text>}
+      <Pressable>
+        <SidebarItem
+          label={teamId ? team?.name : user.username}
+          icon={teamId ? <Users /> : <User />}
+        >
+          <Row alignItems="center" justifyContent="space-between" width="100%" gap>
+            {showText && (
+              <Icon rotate={90} size="sm">
+                <Chevron />
+              </Icon>
+            )}
           </Row>
-          {showText && (
-            <Icon rotate={90} size="sm">
-              <Chevron />
-            </Icon>
-          )}
-        </Row>
-      </Button>
+        </SidebarItem>
+      </Pressable>
       <Popover placement="bottom start">
         <Box minWidth="300px">
           <Menu

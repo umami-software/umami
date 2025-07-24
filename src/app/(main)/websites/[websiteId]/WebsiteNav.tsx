@@ -17,10 +17,11 @@ import {
 } from '@/components/icons';
 import { useMessages, useNavigation } from '@/components/hooks';
 import Link from 'next/link';
+import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 
 export function WebsiteNav({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
-  const { pathname, renderUrl } = useNavigation();
+  const { pathname, renderUrl, teamId } = useNavigation();
 
   const links = [
     {
@@ -135,7 +136,8 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
 
   return (
     <Column gap padding width="240px" border="left" overflowY="auto">
-      <NavMenu highlightColor="2">
+      <WebsiteSelect buttonProps={{ variant: 'quiet' }} websiteId={websiteId} teamId={teamId} />
+      <NavMenu muteItems={false}>
         {links.map(({ label, items }) => {
           return (
             <NavMenuGroup title={label} key={label} gap="1">

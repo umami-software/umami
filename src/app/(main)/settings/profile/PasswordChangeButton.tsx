@@ -1,13 +1,4 @@
-import {
-  Button,
-  Icon,
-  Text,
-  useToast,
-  DialogTrigger,
-  Dialog,
-  Modal,
-  Column,
-} from '@umami/react-zen';
+import { Button, Icon, Text, useToast, DialogTrigger, Dialog, Modal } from '@umami/react-zen';
 import { PasswordEditForm } from './PasswordEditForm';
 import { LockKeyhole } from '@/components/icons';
 import { useMessages } from '@/components/hooks';
@@ -30,11 +21,7 @@ export function PasswordChangeButton() {
       </Button>
       <Modal>
         <Dialog title={formatMessage(labels.changePassword)} style={{ width: 400 }}>
-          {({ close }) => (
-            <Column width="300px">
-              <PasswordEditForm onSave={handleSave} onClose={close} />
-            </Column>
-          )}
+          {({ close }) => <PasswordEditForm onSave={handleSave} onClose={close} />}
         </Dialog>
       </Modal>
     </DialogTrigger>
