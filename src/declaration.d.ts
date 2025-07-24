@@ -1,3 +1,6 @@
+declare module '*.css';
+declare module '*.svg';
+declare module '*.json';
 declare module 'bcryptjs';
 declare module 'chartjs-adapter-date-fns';
 declare module 'cors';
@@ -6,5 +9,8 @@ declare module 'debug';
 declare module 'fs-extra';
 declare module 'jsonwebtoken';
 declare module 'md5';
+declare module 'papaparse';
 declare module 'prettier';
+declare module 'react-simple-maps';
 declare module 'semver';
+declare module 'uuid';

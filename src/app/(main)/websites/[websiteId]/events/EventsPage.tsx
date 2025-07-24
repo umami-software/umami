@@ -1,28 +1,36 @@
 'use client';
 import { TabList, Tab, Tabs, TabPanel, Column } from '@umami/react-zen';
 import { EventsTable } from '@/components/metrics/EventsTable';
-import { useState } from 'react';
+import { useState, Key } from 'react';
 import { EventsDataTable } from './EventsDataTable';
 import { Panel } from '@/components/common/Panel';
 import { EventsChart } from '@/components/metrics/EventsChart';
 import { useMessages } from '@/components/hooks';
 import { EventProperties } from './EventProperties';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
+import { getItem, setItem } from '@/lib/storage';
+
+const KEY_NAME = 'umami.events.tab';
 
 export function EventsPage({ websiteId }) {
   const [label, setLabel] = useState(null);
-  const [tab, setTab] = useState('activity');
+  const [tab, setTab] = useState(getItem(KEY_NAME) || 'activity');
   const { formatMessage, labels } = useMessages();
 
   const handleLabelClick = (value: string) => {
     setLabel(value !== label ? value : '');
   };
 
+  const handleSelect = (value: Key) => {
+    setItem(KEY_NAME, value);
+    setTab(value);
+  };
+
   return (
     <Column gap="3">
       <WebsiteControls websiteId={websiteId} />
       <Panel>
-        <Tabs selectedKey={tab} onSelectionChange={(value: any) => setTab(value)}>
+        <Tabs selectedKey={tab} onSelectionChange={key => handleSelect(key)}>
           <TabList>
             <Tab id="activity">{formatMessage(labels.activity)}</Tab>
             <Tab id="chart">{formatMessage(labels.chart)}</Tab>

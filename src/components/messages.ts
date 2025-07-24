@@ -338,6 +338,7 @@ export const labels = defineMessages({
   location: { id: 'label.location', defaultMessage: 'Location' },
   chart: { id: 'label.chart', defaultMessage: 'Chart' },
   table: { id: 'label.table', defaultMessage: 'Table' },
+  download: { id: 'label.download', defaultMessage: 'Download' },
   traffic: { id: 'label.traffic', defaultMessage: 'Traffic' },
   behavior: { id: 'label.behavior', defaultMessage: 'Behavior' },
   growth: { id: 'label.growth', defaultMessage: 'Growth' },

@@ -227,8 +227,7 @@ async function rawQuery<T = unknown>(
   params: Record<string, unknown> = {},
 ): Promise<T> {
   if (process.env.LOG_QUERY) {
-    log('QUERY:\n', query);
-    log('PARAMETERS:\n', params);
+    log({ query, params });
   }
 
   await connect();

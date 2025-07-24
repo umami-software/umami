@@ -13,7 +13,12 @@ import {
 } from '@/lib/constants';
 import { parseRequest, getQueryFilters } from '@/lib/request';
 import { json, unauthorized, badRequest } from '@/lib/response';
-import { getPageviewMetrics, getSessionMetrics, getChannelMetrics } from '@/queries';
+import {
+  getEventMetrics,
+  getPageviewMetrics,
+  getSessionMetrics,
+  getChannelMetrics,
+} from '@/queries';
 import { dateRangeParams, filterParams, searchParams } from '@/lib/schema';
 
 export async function GET(
@@ -71,7 +76,13 @@ export async function GET(
   }
 
   if (EVENT_COLUMNS.includes(type)) {
-    const data = await getPageviewMetrics(websiteId, { type, limit, offset }, filters);
+    let data;
+
+    if (type === 'event') {
+      data = await getEventMetrics(websiteId, { type, limit, offset }, filters);
+    } else {
+      data = await getPageviewMetrics(websiteId, { type, limit, offset }, filters);
+    }
 
     return json(data);
   }

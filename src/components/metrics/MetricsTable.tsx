@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import { Icon, Text, SearchField, Row, Column } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
@@ -7,6 +7,7 @@ import { useNavigation, useWebsiteMetricsQuery, useMessages, useFormat } from '@
 import { Arrow } from '@/components/icons';
 import { ListTable, ListTableProps } from './ListTable';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { DownloadButton } from '@/components/input/DownloadButton';
 
 export interface MetricsTableProps extends ListTableProps {
   websiteId: string;
@@ -18,9 +19,8 @@ export interface MetricsTableProps extends ListTableProps {
   allowSearch?: boolean;
   searchFormattedValues?: boolean;
   showMore?: boolean;
-  params?: Record<string, any>;
-  onDataLoad?: (data: any) => any;
-  className?: string;
+  params?: { [key: string]: any };
+  allowDownload?: boolean;
   children?: ReactNode;
 }
 
@@ -34,8 +34,7 @@ export function MetricsTable({
   searchFormattedValues = false,
   showMore = true,
   params,
-  onDataLoad,
-  className,
+  allowDownload = true,
   children,
   ...props
 }: MetricsTableProps) {
@@ -86,22 +85,17 @@ export function MetricsTable({
     return [];
   }, [data, dataFilter, search, limit, formatValue, type]);
 
-  useEffect(() => {
-    if (data) {
-      onDataLoad?.(data);
-    }
-  }, [data]);
-
   return (
     <Column gap="3" justifyContent="space-between">
       <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error} gap>
         <Row alignItems="center" justifyContent="space-between">
           {allowSearch && <SearchField value={search} onSearch={setSearch} delay={300} />}
-          {children}
+          <Row>
+            {children}
+            {allowDownload && <DownloadButton filename={type} data={filteredData} />}
+          </Row>
         </Row>
-        {data && (
-          <ListTable {...(props as ListTableProps)} data={filteredData} className={className} />
-        )}
+        {data && <ListTable {...(props as ListTableProps)} data={filteredData} />}
         <Row justifyContent="center">
           {showMore && data && !error && limit && (
             <LinkButton href={updateParams({ view: type })} variant="quiet">

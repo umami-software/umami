@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Select, SelectProps, ListItem } from '@umami/react-zen';
+import { Select, SelectProps, ListItem, Text } from '@umami/react-zen';
 import { useUserWebsitesQuery, useWebsiteQuery, useNavigation } from '@/components/hooks';
 import { ButtonProps } from 'react-basics';
 
@@ -38,7 +38,11 @@ export function WebsiteSelect({
       searchValue={search}
       onSearch={handleSearch}
       onChange={handleSelect}
-      renderValue={() => website?.name}
+      renderValue={() => (
+        <Text truncate style={{ maxWidth: 160 }}>
+          {website?.name}
+        </Text>
+      )}
     >
       {({ id, name }: any) => <ListItem key={id}>{name}</ListItem>}
     </Select>

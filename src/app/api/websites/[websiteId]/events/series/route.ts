@@ -3,7 +3,7 @@ import { parseRequest, getQueryFilters } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/lib/auth';
 import { filterParams, timezoneParam, unitParam } from '@/lib/schema';
-import { getEventMetrics } from '@/queries';
+import { getEventStats } from '@/queries';
 
 export async function GET(
   request: Request,
@@ -31,7 +31,7 @@ export async function GET(
 
   const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getEventMetrics(websiteId, filters);
+  const data = await getEventStats(websiteId, filters);
 
   return json(data);
 }

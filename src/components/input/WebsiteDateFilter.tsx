@@ -12,6 +12,7 @@ import { isAfter } from 'date-fns';
 import { Chevron, Close, Compare } from '@/components/icons';
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
 import { DateFilter } from './DateFilter';
+import { ExportButton } from '@/components/input/ExportButton';
 
 export function WebsiteDateFilter({
   websiteId,
@@ -99,6 +100,7 @@ export function WebsiteDateFilter({
             <Icon fillColor>{compare ? <Close /> : <Compare />}</Icon>
           </Button>
           <Tooltip>{formatMessage(compare ? labels.cancel : labels.compareDates)}</Tooltip>
+          <ExportButton websiteId={websiteId} />
         </TooltipTrigger>
       )}
     </Row>

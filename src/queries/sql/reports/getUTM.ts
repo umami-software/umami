@@ -1,15 +1,16 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
-
-export interface UTMParameters {
-  startDate: Date;
-  endDate: Date;
-}
 
 export async function getUTM(
-  ...args: [websiteId: string, parameters: UTMParameters, filters: QueryFilters]
+  ...args: [
+    websiteId: string,
+    filters: {
+      startDate: Date;
+      endDate: Date;
+      timezone?: string;
+    },
+  ]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -19,12 +20,14 @@ export async function getUTM(
 
 async function relationalQuery(
   websiteId: string,
-  parameters: UTMParameters,
-  filters: QueryFilters,
+  filters: {
+    startDate: Date;
+    endDate: Date;
+    timezone?: string;
+  },
 ) {
-  const { startDate, endDate } = parameters;
-  const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, queryParams } = parseFilters({ ...filters, websiteId, startDate, endDate });
+  const { startDate, endDate } = filters;
+  const { rawQuery } = prisma;
 
   return rawQuery(
     `
@@ -34,21 +37,26 @@ async function relationalQuery(
       and created_at between {{startDate}} and {{endDate}}
       and coalesce(url_query, '') != ''
       and event_type = 1
-      ${filterQuery}
     group by 1
     `,
-    queryParams,
-  ).then(result => parseParameters(result as any[]));
+    {
+      websiteId,
+      startDate,
+      endDate,
+    },
+  );
 }
 
 async function clickhouseQuery(
   websiteId: string,
-  parameters: UTMParameters,
-  filters: QueryFilters,
+  filters: {
+    startDate: Date;
+    endDate: Date;
+    timezone?: string;
+  },
 ) {
-  const { startDate, endDate } = parameters;
-  const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, queryParams } = parseFilters({ ...filters, websiteId, startDate, endDate });
+  const { startDate, endDate } = filters;
+  const { rawQuery } = clickhouse;
 
   return rawQuery(
     `
@@ -58,34 +66,12 @@ async function clickhouseQuery(
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and url_query != ''
       and event_type = 1
-      ${filterQuery}
     group by 1
     `,
-    queryParams,
-  ).then(result => parseParameters(result as any[]));
-}
-
-function parseParameters(data: any[]) {
-  return data.reduce((obj, { url_query, num }) => {
-    try {
-      const searchParams = new URLSearchParams(url_query);
-
-      for (const [key, value] of searchParams) {
-        if (key.match(/^utm_(\w+)$/)) {
-          const name = value;
-          if (!obj[key]) {
-            obj[key] = { [name]: Number(num) };
-          } else if (!obj[key][name]) {
-            obj[key][name] = Number(num);
-          } else {
-            obj[key][name] += Number(num);
-          }
-        }
-      }
-    } catch {
-      // Ignore
-    }
-
-    return obj;
-  }, {});
+    {
+      websiteId,
+      startDate,
+      endDate,
+    },
+  );
 }

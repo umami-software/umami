@@ -6,8 +6,8 @@ import { QueryFilters } from '@/lib/types';
 
 export interface SessionMetricsParameters {
   type: string;
-  limit: number | string;
-  offset: number | string;
+  limit?: number | string;
+  offset?: number | string;
 }
 
 export async function getSessionMetrics(

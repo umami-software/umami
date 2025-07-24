@@ -51,8 +51,8 @@ export async function POST(
     type,
     name,
     description,
-    parameters,
-  });
+    parameters: parameters,
+  } as any);
 
   return json(result);
 }
