@@ -13,7 +13,7 @@ export function Favicon({ domain, ...props }) {
     return null;
   }
 
-  const url = config?.faviconURL || process.env.faviconURL || FAVICON_URL;
+  const url = config?.faviconURL || FAVICON_URL;
   const hostName = domain ? getHostName(domain) : null;
   const domainName = GROUPED_DOMAINS[hostName]?.domain || hostName;
   const src = hostName ? url.replace(/\{\{\s*domain\s*}}/, domainName) : null;
