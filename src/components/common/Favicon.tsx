@@ -9,11 +9,11 @@ function getHostName(url: string) {
 export function Favicon({ domain, ...props }) {
   const config = useConfig();
 
-  if (process.env.privateMode) {
+  if (config?.privateMode) {
     return null;
   }
 
-  const url = config?.faviconURL || FAVICON_URL;
+  const url = config?.faviconUrl || FAVICON_URL;
   const hostName = domain ? getHostName(domain) : null;
   const domainName = GROUPED_DOMAINS[hostName]?.domain || hostName;
   const src = hostName ? url.replace(/\{\{\s*domain\s*}}/, domainName) : null;

@@ -20,7 +20,7 @@ function getDefaultTheme() {
 }
 
 const initialState = {
-  locale: getItem(LOCALE_CONFIG) || DEFAULT_LOCALE,
+  locale: getItem(LOCALE_CONFIG) || process.env.defaultLocale || DEFAULT_LOCALE,
   theme: getItem(THEME_CONFIG) || getDefaultTheme() || DEFAULT_THEME,
   timezone: getItem(TIMEZONE_CONFIG) || getTimezone(),
   dateRange: getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE,

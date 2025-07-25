@@ -1,9 +1,12 @@
 'use client';
+import { useConfig } from '@/components/hooks';
 import LoginForm from './LoginForm';
 import styles from './LoginPage.module.css';
 
 export function LoginPage() {
-  if (process.env.disableLogin) {
+  const config = useConfig();
+
+  if (config?.loginDisabled) {
     return null;
   }
 
