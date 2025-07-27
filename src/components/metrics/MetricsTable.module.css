@@ -14,6 +14,13 @@
   margin-bottom: 10px;
 }
 
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
 .footer {
   display: flex;
   justify-content: center;
