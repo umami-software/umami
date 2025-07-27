@@ -11,13 +11,14 @@ export function UpdateNotice({ user, config }) {
   const { latest, checked, hasUpdate, releaseUrl } = useVersion();
   const pathname = usePathname();
   const [dismissed, setDismissed] = useState(checked);
+
   const allowUpdate =
     process.env.NODE_ENV === 'production' &&
     user?.isAdmin &&
     !config?.updatesDisabled &&
+    !config?.privateMode &&
     !pathname.includes('/share/') &&
     !process.env.cloudMode &&
-    !process.env.privateMode &&
     !dismissed;
 
   const updateCheck = useCallback(() => {

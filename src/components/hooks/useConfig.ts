@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useApp, setConfig } from '@/store/app';
-import { getConfig } from '@/app/actions/getConfig';
+import { getConfig, Config } from '@/app/actions/getConfig';
 
-export function useConfig() {
+export function useConfig(): Config {
   const { config } = useApp();
 
   async function loadConfig() {

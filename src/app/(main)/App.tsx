@@ -25,10 +25,6 @@ export function App({ children }) {
     return null;
   }
 
-  if (config.uiDisabled) {
-    return null;
-  }
-
   return (
     <Grid height="100vh" width="100%" columns="auto 1fr" backgroundColor="2">
       <Column>

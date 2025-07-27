@@ -9,6 +9,14 @@ import '@/styles/global.css';
 import '@/styles/variables.css';
 
 export default function ({ children }) {
+  if (process.env.DISABLE_UI) {
+    return (
+      <html>
+        <body></body>
+      </html>
+    );
+  }
+
   return (
     <html lang="en">
       <head>
