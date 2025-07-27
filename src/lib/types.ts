@@ -158,6 +158,7 @@ export interface QueryFilters {
   event?: string;
   search?: string;
   tag?: string;
+  cohort?: { [key: string]: string };
 }
 
 export interface QueryOptions {

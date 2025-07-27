@@ -103,7 +103,7 @@ export async function POST(request: Request) {
     type,
     name,
     description,
-    parameters: JSON.stringify(parameters),
+    parameters: parameters,
   } as any);
 
   return json(result);

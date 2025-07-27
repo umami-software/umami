@@ -22,10 +22,6 @@ export function App({ children }) {
     return null;
   }
 
-  if (config.uiDisabled) {
-    return null;
-  }
-
   return (
     <>
       {children}

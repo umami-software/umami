@@ -35,7 +35,7 @@ export async function GET(
   const { startDate, endDate, unit } = await getRequestDateRange(query);
 
   const filters = {
-    ...getRequestFilters(query),
+    ...(await getRequestFilters(query)),
     startDate,
     endDate,
     timezone,

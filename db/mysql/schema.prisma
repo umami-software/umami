@@ -43,6 +43,7 @@ model Session {
 
   websiteEvent WebsiteEvent[]
   sessionData  SessionData[]
+  revenue     Revenue[]
 
   @@index([createdAt])
   @@index([websiteId])
@@ -76,7 +77,9 @@ model Website {
   team        Team?         @relation(fields: [teamId], references: [id])
   eventData   EventData[]
   report      Report[]
+  revenue     Revenue[]
   sessionData SessionData[]
+  segment     Segment[]
 
   @@index([userId])
   @@index([teamId])
@@ -215,10 +218,10 @@ model Report {
   id          String    @id() @unique() @map("report_id") @db.VarChar(36)
   userId      String    @map("user_id") @db.VarChar(36)
   websiteId   String    @map("website_id") @db.VarChar(36)
-  type        String    @map("type") @db.VarChar(200)
-  name        String    @map("name") @db.VarChar(200)
-  description String    @map("description") @db.VarChar(500)
-  parameters  String    @map("parameters") @db.VarChar(6000)
+  type        String    @db.VarChar(200)
+  name        String    @db.VarChar(200)
+  description String    @db.VarChar(500)
+  parameters  Json      
   createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
   updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamp(0)
 
@@ -230,4 +233,39 @@ model Report {
   @@index([type])
   @@index([name])
   @@map("report")
+}
+
+model Segment {
+  id          String    @id() @unique() @map("segment_id") @db.VarChar(36)
+  websiteId   String    @map("website_id") @db.VarChar(36)
+  type        String    @db.VarChar(200)
+  name        String    @db.VarChar(200)
+  parameters  Json      
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamp(0)
+
+  website Website @relation(fields: [websiteId], references: [id])
+
+  @@index([websiteId])
+  @@map("segment")
+}
+
+model Revenue {
+  id          String    @id() @unique() @map("revenue_id") @db.VarChar(36)
+  websiteId   String    @map("website_id") @db.VarChar(36)
+  sessionId   String    @map("session_id") @db.VarChar(36)
+  eventId     String    @map("event_id") @db.VarChar(36)
+  eventName   String    @map("event_name") @db.VarChar(50)
+  currency    String    @db.VarChar(100)
+  revenue     Decimal?  @db.Decimal(19, 4)
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+
+  website Website @relation(fields: [websiteId], references: [id])
+  session Session @relation(fields: [sessionId], references: [id])
+
+  @@index([websiteId])
+  @@index([sessionId])
+  @@index([websiteId, createdAt])
+  @@index([websiteId, sessionId, createdAt])
+  @@map("revenue")
 }

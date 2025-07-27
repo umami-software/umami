@@ -9,6 +9,7 @@ export function LanguageSetting() {
   const [search, setSearch] = useState('');
   const { formatMessage, labels } = useMessages();
   const { locale, saveLocale } = useLocale();
+
   const options = search
     ? Object.keys(languages).filter(n => {
         return (

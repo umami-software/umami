@@ -1,9 +1,9 @@
-import { z } from 'zod';
 import { canViewWebsite } from '@/lib/auth';
-import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
-import { getValues } from '@/queries';
-import { parseRequest, getRequestDateRange } from '@/lib/request';
+import { EVENT_COLUMNS, FILTER_COLUMNS, FILTER_GROUPS, SESSION_COLUMNS } from '@/lib/constants';
+import { getRequestDateRange, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
+import { getWebsiteSegments, getValues } from '@/queries';
+import { z } from 'zod';
 
 export async function GET(
   request: Request,
@@ -30,11 +30,17 @@ export async function GET(
     return unauthorized();
   }
 
-  if (!SESSION_COLUMNS.includes(type) && !EVENT_COLUMNS.includes(type)) {
+  if (!SESSION_COLUMNS.includes(type) && !EVENT_COLUMNS.includes(type) && !FILTER_GROUPS[type]) {
     return badRequest('Invalid type.');
   }
 
-  const values = await getValues(websiteId, FILTER_COLUMNS[type], startDate, endDate, search);
+  let values;
+
+  if (FILTER_GROUPS[type]) {
+    values = (await getWebsiteSegments(websiteId, type)).map(segment => ({ value: segment.name }));
+  } else {
+    values = await getValues(websiteId, FILTER_COLUMNS[type], startDate, endDate, search);
+  }
 
   return json(values.filter(n => n).sort());
 }

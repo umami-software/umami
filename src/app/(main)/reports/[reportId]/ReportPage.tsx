@@ -31,5 +31,9 @@ export default function ReportPage({ reportId }: { reportId: string }) {
 
   const ReportComponent = reports[report.type];
 
+  if (!ReportComponent) {
+    return null;
+  }
+
   return <ReportComponent reportId={reportId} />;
 }

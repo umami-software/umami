@@ -24,7 +24,7 @@ async function relationalQuery(
   }[]
 > {
   const { getTimestampDiffSQL, parseFilters, rawQuery } = prisma;
-  const { filterQuery, joinSession, params } = await parseFilters(
+  const { filterQuery, cohortQuery, joinSession, params } = await parseFilters(
     websiteId,
     {
       ...filters,
@@ -53,6 +53,7 @@ async function relationalQuery(
         min(website_event.created_at) as "min_time",
         max(website_event.created_at) as "max_time"
       from website_event
+        ${cohortQuery}
         ${joinSession}
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
@@ -80,7 +81,7 @@ async function clickhouseQuery(
   }[]
 > {
   const { parseFilters, rawQuery } = clickhouse;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.pageView,
   });
@@ -103,6 +104,7 @@ async function clickhouseQuery(
         min(created_at) min_time,
         max(created_at) max_time
       from website_event
+      ${cohortQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}

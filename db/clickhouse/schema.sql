@@ -90,7 +90,7 @@ CREATE TABLE umami.website_event_stats_hourly
     website_id UUID,
     session_id UUID,
     visit_id UUID,
-    hostname LowCardinality(String),
+    hostname SimpleAggregateFunction(groupArrayArray, Array(String)),
     browser LowCardinality(String),
     os LowCardinality(String),
     device LowCardinality(String),
@@ -143,7 +143,7 @@ SELECT
     website_id,
     session_id,
     visit_id,
-    hostname,
+    hostnames as hostname,
     browser,
     os,
     device,
@@ -181,7 +181,7 @@ FROM (SELECT
     website_id,
     session_id,
     visit_id,
-    hostname,
+    arrayFilter(x -> x != '', groupArray(hostname)) hostnames,
     browser,
     os,
     device,
@@ -199,7 +199,7 @@ FROM (SELECT
     arrayFilter(x -> x != '', groupArray(utm_campaign)) utm_campaign,
     arrayFilter(x -> x != '', groupArray(utm_content)) utm_content,
     arrayFilter(x -> x != '', groupArray(utm_term)) utm_term,
-    arrayFilter(x -> x != '', groupArray(referrer_domain)) referrer_domain,
+    arrayFilter(x -> x != '' and x != hostname, groupArray(referrer_domain)) referrer_domain,
     arrayFilter(x -> x != '', groupArray(page_title)) page_title,
     arrayFilter(x -> x != '', groupArray(gclid)) gclid,
     arrayFilter(x -> x != '', groupArray(fbclid)) fbclid,
@@ -246,3 +246,38 @@ SELECT * ORDER BY toStartOfDay(created_at), website_id, referrer_domain, created
 );
 
 ALTER TABLE umami.website_event MATERIALIZE PROJECTION website_event_referrer_domain_projection;
+
+-- revenue
+CREATE TABLE umami.website_revenue
+(
+    website_id UUID,
+    session_id UUID,
+    event_id UUID,
+    event_name String,
+    currency String,
+    revenue DECIMAL(18,4),
+    created_at DateTime('UTC')
+)
+ENGINE = MergeTree
+    PARTITION BY toYYYYMM(created_at)
+    ORDER BY (website_id, session_id, created_at)
+    SETTINGS index_granularity = 8192;
+
+
+CREATE MATERIALIZED VIEW umami.website_revenue_mv
+TO umami.website_revenue
+AS
+SELECT DISTINCT
+    ed.website_id,
+    ed.session_id,
+    ed.event_id,
+    ed.event_name,
+    c.currency,
+    coalesce(toDecimal64(ed.number_value, 2), toDecimal64(ed.string_value, 2)) revenue,
+    ed.created_at
+FROM umami.event_data ed
+JOIN (SELECT event_id, string_value as currency
+        FROM umami.event_data
+        WHERE positionCaseInsensitive(data_key, 'currency') > 0) c
+      ON c.event_id = ed.event_id
+WHERE positionCaseInsensitive(data_key, 'revenue') > 0;

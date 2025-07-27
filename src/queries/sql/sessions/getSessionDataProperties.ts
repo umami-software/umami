@@ -17,7 +17,7 @@ async function relationalQuery(
   filters: QueryFilters & { propertyName?: string },
 ) {
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, params } = await parseFilters(websiteId, filters, {
+  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, filters, {
     columns: { propertyName: 'data_key' },
   });
 
@@ -25,12 +25,13 @@ async function relationalQuery(
     `
     select
         data_key as "propertyName",
-        count(distinct d.session_id) as "total"
-    from website_event e
-    join session_data d 
-        on d.session_id = e.session_id
-    where e.website_id = {{websiteId::uuid}}
-      and e.created_at between {{startDate}} and {{endDate}}
+        count(distinct session_data.session_id) as "total"
+    from website_event 
+      ${cohortQuery}
+    join session_data 
+        on session_data.session_id = website_event.session_id
+    where website_event.website_id = {{websiteId::uuid}}
+      and website_event.created_at between {{startDate}} and {{endDate}}
         ${filterQuery}
     group by 1
     order by 2 desc
@@ -45,7 +46,7 @@ async function clickhouseQuery(
   filters: QueryFilters & { propertyName?: string },
 ): Promise<{ propertyName: string; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, params } = await parseFilters(websiteId, filters, {
+  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, filters, {
     columns: { propertyName: 'data_key' },
   });
 
@@ -53,13 +54,14 @@ async function clickhouseQuery(
     `
     select
       data_key as propertyName,
-      count(distinct d.session_id) as total
-    from website_event e
-    join session_data d final
-      on d.session_id = e.session_id
-    where e.website_id = {websiteId:UUID}
-      and e.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and d.data_key != ''
+      count(distinct session_data.session_id) as total
+    from website_event
+    ${cohortQuery}
+    join session_data final
+      on session_data.session_id = website_event.session_id
+    where website_event.website_id = {websiteId:UUID}
+      and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and session_data.data_key != ''
     ${filterQuery}
     group by 1
     order by 2 desc

@@ -32,6 +32,7 @@ export function EventsTable({ onLabelClick, ...props }: EventsTableProps) {
       metric={formatMessage(labels.actions)}
       onDataLoad={handleDataLoad}
       renderLabel={renderLabel}
+      allowDownload={false}
     />
   );
 }

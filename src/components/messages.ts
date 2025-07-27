@@ -99,6 +99,8 @@ export const labels = defineMessages({
   countries: { id: 'label.countries', defaultMessage: 'Countries' },
   languages: { id: 'label.languages', defaultMessage: 'Languages' },
   tags: { id: 'label.tags', defaultMessage: 'Tags' },
+  segments: { id: 'label.segments', defaultMessage: 'Segments' },
+  cohorts: { id: 'label.cohorts', defaultMessage: 'Cohorts' },
   count: { id: 'label.count', defaultMessage: 'Count' },
   average: { id: 'label.average', defaultMessage: 'Average' },
   sum: { id: 'label.sum', defaultMessage: 'Sum' },
@@ -229,6 +231,8 @@ export const labels = defineMessages({
   device: { id: 'label.device', defaultMessage: 'Device' },
   pageTitle: { id: 'label.pageTitle', defaultMessage: 'Page title' },
   tag: { id: 'label.tag', defaultMessage: 'Tag' },
+  segment: { id: 'label.segment', defaultMessage: 'Segment' },
+  cohort: { id: 'label.cohort', defaultMessage: 'Cohort' },
   day: { id: 'label.day', defaultMessage: 'Day' },
   date: { id: 'label.date', defaultMessage: 'Date' },
   pageOf: { id: 'label.page-of', defaultMessage: 'Page {current} of {total}' },
@@ -310,6 +314,9 @@ export const labels = defineMessages({
   paidVideo: { id: 'label.paid-video', defaultMessage: 'Paid video' },
   grouped: { id: 'label.grouped', defaultMessage: 'Grouped' },
   other: { id: 'label.other', defaultMessage: 'Other' },
+  chart: { id: 'label.chart', defaultMessage: 'Chart' },
+  table: { id: 'label.table', defaultMessage: 'Table' },
+  download: { id: 'label.download', defaultMessage: 'Download' },
 });
 
 export const messages = defineMessages({

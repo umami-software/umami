@@ -28,7 +28,7 @@ async function relationalQuery(
 ) {
   const column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = prisma;
-  const { filterQuery, joinSession, params } = await parseFilters(
+  const { filterQuery, cohortQuery, joinSession, params } = await parseFilters(
     websiteId,
     {
       ...filters,
@@ -47,6 +47,7 @@ async function relationalQuery(
       count(distinct website_event.session_id) y
       ${includeCountry ? ', country' : ''}
     from website_event
+    ${cohortQuery}
     ${joinSession}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
@@ -71,7 +72,7 @@ async function clickhouseQuery(
 ): Promise<{ x: string; y: number }[]> {
   const column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = clickhouse;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.pageView,
   });
@@ -86,6 +87,7 @@ async function clickhouseQuery(
       count(distinct session_id) y
       ${includeCountry ? ', country' : ''}
     from website_event
+    ${cohortQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}
@@ -103,6 +105,7 @@ async function clickhouseQuery(
       uniq(session_id) y
       ${includeCountry ? ', country' : ''}
     from website_event_stats_hourly website_event
+    ${cohortQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}

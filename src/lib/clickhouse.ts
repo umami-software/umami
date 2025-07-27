@@ -89,6 +89,21 @@ function mapFilter(column: string, operator: string, name: string, type: string 
   }
 }
 
+function mapCohortFilter(column: string, operator: string, value: string) {
+  switch (operator) {
+    case OPERATORS.equals:
+      return `${column} = '${value}'`;
+    case OPERATORS.notEquals:
+      return `${column} != '${value}'`;
+    case OPERATORS.contains:
+      return `positionCaseInsensitive(${column}, '${value}') > 0`;
+    case OPERATORS.doesNotContain:
+      return `positionCaseInsensitive(${column}, '${value}') = 0`;
+    default:
+      return '';
+  }
+}
+
 function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) {
   const query = filtersToArray(filters, options).reduce((arr, { name, column, operator }) => {
     if (column) {
@@ -103,6 +118,42 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) 
   }, []);
 
   return query.join('\n');
+}
+
+function getCohortQuery(websiteId: string, filters: QueryFilters = {}, options: QueryOptions = {}) {
+  const query = filtersToArray(filters, options).reduce(
+    (arr, { name, column, operator, value }) => {
+      if (column) {
+        arr.push(
+          `${arr.length === 0 ? 'where' : 'and'} ${mapCohortFilter(column, operator, value)}`,
+        );
+
+        if (name === 'referrer') {
+          arr.push(`and referrer_domain != hostname`);
+        }
+      }
+
+      return arr;
+    },
+    [],
+  );
+
+  if (query.length > 0) {
+    // add website and date range filters
+    query.push(`and website_id = '${websiteId}'`);
+    query.push(
+      `and created_at between parseDateTimeBestEffort('${filters.startDate}') and parseDateTimeBestEffort('${filters.endDate}')`,
+    );
+
+    return `join
+    (select distinct session_id
+    from website_event
+    ${query.join('\n')}) cohort
+    on cohort.session_id = website_event.session_id
+    `;
+  }
+
+  return '';
 }
 
 function getDateQuery(filters: QueryFilters = {}) {
@@ -146,6 +197,7 @@ async function parseFilters(websiteId: string, filters: QueryFilters = {}, optio
       websiteId,
       startDate: maxDate(filters.startDate, new Date(website?.resetAt)),
     },
+    cohortQuery: getCohortQuery(websiteId, filters?.cohort),
   };
 }
 

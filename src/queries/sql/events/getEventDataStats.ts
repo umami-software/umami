@@ -18,7 +18,7 @@ export async function getEventDataStats(
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, params } = await parseFilters(websiteId, filters);
+  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, filters);
 
   return rawQuery(
     `
@@ -32,8 +32,12 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
         data_key,
         count(*) as "total"
       from event_data
-      where website_id = {{websiteId::uuid}}
-        and created_at between {{startDate}} and {{endDate}}
+      join website_event on website_event.event_id = event_data.website_event_id
+      and website_event.website_id = {{websiteId::uuid}}
+      and website_event.created_at between {{startDate}} and {{endDate}}
+    ${cohortQuery}
+      where event_data.website_id = {{websiteId::uuid}}
+        and event_data.created_at between {{startDate}} and {{endDate}}
       ${filterQuery}
       group by website_event_id, data_key
       ) as t
@@ -47,7 +51,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ events: number; properties: number; records: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, params } = await parseFilters(websiteId, filters);
+  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, filters);
 
   return rawQuery(
     `
@@ -60,7 +64,8 @@ async function clickhouseQuery(
         event_id,
         data_key,
         count(*) as "total"
-      from event_data
+      from event_data website_event
+      ${cohortQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       ${filterQuery}

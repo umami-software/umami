@@ -1,3 +1,4 @@
+import { useConfig } from '@/components/hooks';
 import { FAVICON_URL, GROUPED_DOMAINS } from '@/lib/constants';
 
 function getHostName(url: string) {
@@ -6,11 +7,13 @@ function getHostName(url: string) {
 }
 
 export function Favicon({ domain, ...props }) {
-  if (process.env.privateMode) {
+  const config = useConfig();
+
+  if (config?.privateMode) {
     return null;
   }
 
-  const url = process.env.faviconURL || FAVICON_URL;
+  const url = config?.faviconUrl || FAVICON_URL;
   const hostName = domain ? getHostName(domain) : null;
   const domainName = GROUPED_DOMAINS[hostName]?.domain || hostName;
   const src = hostName ? url.replace(/\{\{\s*domain\s*}}/, domainName) : null;

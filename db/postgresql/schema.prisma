@@ -43,6 +43,7 @@ model Session {
 
   websiteEvent WebsiteEvent[]
   sessionData  SessionData[]
+  revenue     Revenue[]
 
   @@index([createdAt])
   @@index([websiteId])
@@ -76,7 +77,9 @@ model Website {
   team        Team?         @relation(fields: [teamId], references: [id])
   eventData   EventData[]
   report      Report[]
+  revenue     Revenue[]
   sessionData SessionData[]
+  segment     Segment[]
 
   @@index([userId])
   @@index([teamId])
@@ -103,12 +106,12 @@ model WebsiteEvent {
   referrerQuery  String?   @map("referrer_query") @db.VarChar(500)
   referrerDomain String?   @map("referrer_domain") @db.VarChar(500)
   pageTitle      String?   @map("page_title") @db.VarChar(500)
-  gclid          String?   @map("gclid") @db.VarChar(255)
-  fbclid         String?   @map("fbclid") @db.VarChar(255)
-  msclkid        String?   @map("msclkid") @db.VarChar(255)
-  ttclid         String?   @map("ttclid") @db.VarChar(255)
+  gclid          String?   @db.VarChar(255)
+  fbclid         String?   @db.VarChar(255)
+  msclkid        String?   @db.VarChar(255)
+  ttclid         String?   @db.VarChar(255)
   lifatid        String?   @map("li_fat_id") @db.VarChar(255)
-  twclid         String?   @map("twclid") @db.VarChar(255)
+  twclid         String?   @db.VarChar(255)
   eventType      Int       @default(1) @map("event_type") @db.Integer
   eventName      String?   @map("event_name") @db.VarChar(50)
   tag            String?   @db.VarChar(50)
@@ -199,7 +202,7 @@ model TeamUser {
   id        String    @id() @unique() @map("team_user_id") @db.Uuid
   teamId    String    @map("team_id") @db.Uuid
   userId    String    @map("user_id") @db.Uuid
-  role      String    @map("role") @db.VarChar(50)
+  role      String    @db.VarChar(50)
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -215,10 +218,10 @@ model Report {
   id          String    @id() @unique() @map("report_id") @db.Uuid
   userId      String    @map("user_id") @db.Uuid
   websiteId   String    @map("website_id") @db.Uuid
-  type        String    @map("type") @db.VarChar(200)
-  name        String    @map("name") @db.VarChar(200)
-  description String    @map("description") @db.VarChar(500)
-  parameters  String    @map("parameters") @db.VarChar(6000)
+  type        String    @db.VarChar(200)
+  name        String    @db.VarChar(200)
+  description String    @db.VarChar(500)
+  parameters  Json      
   createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -230,4 +233,39 @@ model Report {
   @@index([type])
   @@index([name])
   @@map("report")
+}
+
+model Segment {
+  id          String    @id() @unique() @map("segment_id") @db.Uuid
+  websiteId   String    @map("website_id") @db.Uuid
+  type        String    @db.VarChar(200)
+  name        String    @db.VarChar(200)
+  parameters  Json      
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  website Website @relation(fields: [websiteId], references: [id])
+
+  @@index([websiteId])
+  @@map("segment")
+}
+
+model Revenue {
+  id          String    @id() @unique() @map("revenue_id") @db.Uuid
+  websiteId   String    @map("website_id") @db.Uuid
+  sessionId   String    @map("session_id") @db.Uuid
+  eventId     String    @map("event_id") @db.Uuid
+  eventName   String    @map("event_name") @db.VarChar(50)
+  currency    String    @db.VarChar(100)
+  revenue     Decimal?  @db.Decimal(19, 4)
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  website Website @relation(fields: [websiteId], references: [id])
+  session Session @relation(fields: [sessionId], references: [id])
+
+  @@index([websiteId])
+  @@index([sessionId])
+  @@index([websiteId, createdAt])
+  @@index([websiteId, sessionId, createdAt])
+  @@map("revenue")
 }

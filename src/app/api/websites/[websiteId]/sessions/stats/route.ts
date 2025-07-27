@@ -29,7 +29,7 @@ export async function GET(
 
   const { startDate, endDate } = await getRequestDateRange(query);
 
-  const filters = getRequestFilters(query);
+  const filters = await getRequestFilters(query);
 
   const metrics = await getWebsiteSessionStats(websiteId, {
     ...filters,

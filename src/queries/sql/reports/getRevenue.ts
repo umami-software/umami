@@ -48,22 +48,13 @@ async function relationalQuery(
   const chartRes = await rawQuery(
     `
     select
-      we.event_name x,
-      ${getDateSQL('ed.created_at', unit, timezone)} t,
-      sum(coalesce(cast(number_value as decimal(10,2)), cast(string_value as decimal(10,2)))) y
-    from event_data ed
-    join website_event we
-    on we.event_id = ed.website_event_id
-    join (select website_event_id
-          from event_data
-          where website_id = {{websiteId::uuid}}
-            and created_at between {{startDate}} and {{endDate}}
-            and data_key ${like} '%currency%'
-            and string_value = {{currency}}) currency
-    on currency.website_event_id = ed.website_event_id
-    where ed.website_id = {{websiteId::uuid}}
-      and ed.created_at between {{startDate}} and {{endDate}}
-      and ed.data_key ${like} '%revenue%'
+      event_name x,
+      ${getDateSQL('created_at', unit, timezone)} t,
+      sum(revenue) y
+    from revenue
+    where website_id = {{websiteId::uuid}}
+      and created_at between {{startDate}} and {{endDate}}
+      and currency ${like} {{currency}}
     group by  x, t
     order by t
     `,
@@ -74,22 +65,13 @@ async function relationalQuery(
     `
     select
       s.country as name,
-      sum(coalesce(cast(number_value as decimal(10,2)), cast(string_value as decimal(10,2)))) value
-    from event_data ed
-    join website_event we
-    on we.event_id = ed.website_event_id
+      sum(r.revenue) value
+    from revenue r
     join session s
-    on s.session_id = we.session_id
-    join (select website_event_id
-          from event_data
-          where website_id = {{websiteId::uuid}}
-            and created_at between {{startDate}} and {{endDate}}
-            and data_key ${like} '%currency%'
-            and string_value = {{currency}}) currency
-    on currency.website_event_id = ed.website_event_id
-    where ed.website_id = {{websiteId::uuid}}
-      and ed.created_at between {{startDate}} and {{endDate}}
-      and ed.data_key ${like} '%revenue%'
+    on s.session_id = r.session_id
+    where r.website_id = {{websiteId::uuid}}
+      and r.created_at between {{startDate}} and {{endDate}}
+      and r.currency ${like} {{currency}}
     group by s.country
     `,
     { websiteId, startDate, endDate, currency },
@@ -98,22 +80,13 @@ async function relationalQuery(
   const totalRes = await rawQuery(
     `
     select
-      sum(coalesce(cast(number_value as decimal(10,2)), cast(string_value as decimal(10,2)))) as sum,
+      sum(revenue) as sum,
       count(distinct event_id) as count,
       count(distinct session_id) as unique_count
-    from event_data ed
-    join website_event we
-    on we.event_id = ed.website_event_id
-    join (select website_event_id
-          from event_data
-          where website_id = {{websiteId::uuid}}
-            and created_at between {{startDate}} and {{endDate}}
-            and data_key ${like} '%currency%'
-            and string_value = {{currency}}) currency
-      on currency.website_event_id = ed.website_event_id
-    where ed.website_id = {{websiteId::uuid}}
-      and ed.created_at between {{startDate}} and {{endDate}}
-      and ed.data_key ${like} '%revenue%'
+    from revenue r
+    where website_id = {{websiteId::uuid}}
+      and created_at between {{startDate}} and {{endDate}}
+      and currency ${like} {{currency}}
   `,
     { websiteId, startDate, endDate, currency },
   ).then(result => result?.[0]);
@@ -121,24 +94,15 @@ async function relationalQuery(
   const tableRes = await rawQuery(
     `
     select
-      c.currency,
-      sum(coalesce(cast(number_value as decimal(10,2)), cast(string_value as decimal(10,2)))) as sum,
-      count(distinct ed.website_event_id) as count,
-      count(distinct we.session_id) as unique_count
-    from event_data ed
-    join website_event we
-      on we.event_id = ed.website_event_id
-    join (select website_event_id, string_value as currency
-          from event_data
-          where website_id = {{websiteId::uuid}}
-            and created_at between {{startDate}} and {{endDate}}
-            and data_key ${like} '%currency%') c
-      on c.website_event_id = ed.website_event_id
-    where ed.website_id = {{websiteId::uuid}}
-      and ed.created_at between {{startDate}} and {{endDate}}
-      and ed.data_key ${like} '%revenue%'
-    group by c.currency
-    order by sum desc;
+      currency,
+      sum(revenue) as sum,
+      count(distinct event_id) as count,
+      count(distinct session_id) as unique_count
+    from revenue r
+    where website_id = {{websiteId::uuid}}
+      and created_at between {{startDate}} and {{endDate}}
+    group by currency
+    order by sum desc
     `,
     { websiteId, startDate, endDate, unit, timezone, currency },
   );
@@ -180,18 +144,11 @@ async function clickhouseQuery(
     select
       event_name x,
       ${getDateSQL('created_at', unit, timezone)} t,
-      sum(coalesce(toDecimal64(number_value, 2), toDecimal64(string_value, 2))) y
-    from event_data
-    join (select event_id 
-          from event_data
-          where website_id = {websiteId:UUID}
-            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-            and positionCaseInsensitive(data_key, 'currency') > 0
-            and string_value = {currency:String}) currency
-      on currency.event_id = event_data.event_id
+      sum(revenue) y
+    from website_revenue
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and positionCaseInsensitive(data_key, 'revenue') > 0
+      and currency = {currency:String}
     group by  x, t
     order by t
     `,
@@ -207,24 +164,18 @@ async function clickhouseQuery(
     `
     select
       s.country as name,
-      sum(coalesce(toDecimal64(number_value, 2), toDecimal64(string_value, 2))) as value
-    from event_data ed
-    join (select event_id
-          from event_data
-          where website_id = {websiteId:UUID}
-            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-            and positionCaseInsensitive(data_key, 'currency') > 0
-            and string_value = {currency:String}) c
-      on c.event_id = ed.event_id
+      sum(w.revenue) as value
+    from website_revenue w
     join (select distinct website_id, session_id, country
           from website_event_stats_hourly
           where website_id = {websiteId:UUID}) s
-      on ed.website_id = s.website_id
-        and ed.session_id = s.session_id
-   where ed.website_id = {websiteId:UUID}
-      and ed.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and positionCaseInsensitive(ed.data_key, 'revenue') > 0
+      on w.website_id = s.website_id
+        and w.session_id = s.session_id
+   where w.website_id = {websiteId:UUID}
+      and w.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and w.currency = {currency:String}
     group by s.country
+    order by value desc
     `,
     { websiteId, startDate, endDate, currency },
   );
@@ -237,20 +188,13 @@ async function clickhouseQuery(
   }>(
     `
     select
-      sum(coalesce(toDecimal64(number_value, 2), toDecimal64(string_value, 2))) as sum,
+      sum(revenue) as sum,
       uniqExact(event_id) as count,
       uniqExact(session_id) as unique_count
-    from event_data
-    join (select event_id 
-          from event_data
-          where website_id = {websiteId:UUID}
-            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-            and positionCaseInsensitive(data_key, 'currency') > 0
-            and string_value = {currency:String}) currency
-      on currency.event_id = event_data.event_id
+    from website_revenue
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and positionCaseInsensitive(data_key, 'revenue') > 0
+      and currency = {currency:String}
     `,
     { websiteId, startDate, endDate, currency },
   ).then(result => result?.[0]);
@@ -266,22 +210,15 @@ async function clickhouseQuery(
   >(
     `
     select
-      c.currency,
-      sum(coalesce(toDecimal64(ed.number_value, 2), toDecimal64(ed.string_value, 2))) as sum,
-      uniqExact(ed.event_id) as count,
-      uniqExact(ed.session_id) as unique_count
-    from event_data ed
-    join (select event_id, string_value as currency
-          from event_data
-          where website_id = {websiteId:UUID}
-            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-            and positionCaseInsensitive(data_key, 'currency') > 0) c
-      on c.event_id = ed.event_id
+      currency,
+      sum(revenue) as sum,
+      uniqExact(event_id) as count,
+      uniqExact(session_id) as unique_count
+    from website_revenue
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and positionCaseInsensitive(data_key, 'revenue') > 0
-    group by c.currency
-    order by sum desc;
+    group by currency
+    order by sum desc
     `,
     { websiteId, startDate, endDate, unit, timezone, currency },
   );

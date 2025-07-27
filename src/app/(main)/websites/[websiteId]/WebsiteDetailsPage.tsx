@@ -7,7 +7,7 @@ import WebsiteExpandedView from './WebsiteExpandedView';
 import WebsiteHeader from './WebsiteHeader';
 import WebsiteMetricsBar from './WebsiteMetricsBar';
 import WebsiteTableView from './WebsiteTableView';
-import { FILTER_COLUMNS } from '@/lib/constants';
+import { FILTER_COLUMNS, FILTER_GROUPS } from '@/lib/constants';
 
 export default function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
   const pathname = usePathname();
@@ -17,7 +17,7 @@ export default function WebsiteDetailsPage({ websiteId }: { websiteId: string })
   const { view } = query;
 
   const params = Object.keys(query).reduce((obj, key) => {
-    if (FILTER_COLUMNS[key]) {
+    if (FILTER_COLUMNS[key] || FILTER_GROUPS[key]) {
       obj[key] = query[key];
     }
     return obj;

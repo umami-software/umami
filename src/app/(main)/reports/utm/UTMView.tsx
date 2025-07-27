@@ -15,6 +15,31 @@ function toArray(data: { [key: string]: number } = {}) {
     .sort(firstBy('value', -1));
 }
 
+function parseParameters(data: any[]) {
+  return data.reduce((obj, { url_query, num }) => {
+    try {
+      const searchParams = new URLSearchParams(url_query);
+
+      for (const [key, value] of searchParams) {
+        if (key.match(/^utm_(\w+)$/)) {
+          const name = value;
+          if (!obj[key]) {
+            obj[key] = { [name]: Number(num) };
+          } else if (!obj[key][name]) {
+            obj[key][name] = Number(num);
+          } else {
+            obj[key][name] += Number(num);
+          }
+        }
+      }
+    } catch {
+      // Ignore
+    }
+
+    return obj;
+  }, {});
+}
+
 export default function UTMView() {
   const { formatMessage, labels } = useMessages();
   const { report } = useContext(ReportContext);
@@ -27,7 +52,7 @@ export default function UTMView() {
   return (
     <div>
       {UTM_PARAMS.map(param => {
-        const items = toArray(data[param]);
+        const items = toArray(parseParameters(data)[param]);
         const chartData = {
           labels: items.map(({ name }) => name),
           datasets: [

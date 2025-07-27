@@ -8,6 +8,8 @@ import Change from '@/assets/change.svg';
 import Clock from '@/assets/clock.svg';
 import Compare from '@/assets/compare.svg';
 import Dashboard from '@/assets/dashboard.svg';
+import Download from '@/assets/download.svg';
+import Export from '@/assets/export.svg';
 import Eye from '@/assets/eye.svg';
 import Gear from '@/assets/gear.svg';
 import Globe from '@/assets/globe.svg';
@@ -37,6 +39,8 @@ const icons = {
   Clock,
   Compare,
   Dashboard,
+  Download,
+  Export,
   Eye,
   Gear,
   Globe,

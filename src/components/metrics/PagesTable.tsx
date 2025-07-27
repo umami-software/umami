@@ -62,7 +62,7 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
       {...props}
       title={formatMessage(labels.pages)}
       type={view}
-      metric={formatMessage(labels.views)}
+      metric={formatMessage(labels.visitors)}
       dataFilter={emptyFilter}
       renderLabel={renderLink}
     >

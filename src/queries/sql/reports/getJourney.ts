@@ -229,7 +229,7 @@ async function clickhouseQuery(
           visit_id,
           coalesce(nullIf(event_name, ''), url_path) event,
           row_number() OVER (PARTITION BY visit_id ORDER BY created_at) AS event_number
-      from umami.website_event
+      from website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}),
     ${sequenceQuery}
