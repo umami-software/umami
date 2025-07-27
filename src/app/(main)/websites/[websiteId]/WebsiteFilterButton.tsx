@@ -13,19 +13,26 @@ export function WebsiteFilterButton({
   showText?: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { updateParams, router } = useNavigation();
+  const {
+    replaceParams,
+    router,
+    query: { segment },
+  } = useNavigation();
   const { filters } = useFilters();
 
-  const handleChange = (filters: any[]) => {
-    const params = filters.reduce((obj, filter) => {
-      const { name, operator, value } = filter;
+  const handleChange = ({ filters, segment }) => {
+    const params = filters.reduce(
+      (obj: { [x: string]: string }, filter: { name: any; operator: any; value: any }) => {
+        const { name, operator, value } = filter;
 
-      obj[name] = `${operator}.${value}`;
+        obj[name] = `${operator}.${value}`;
 
-      return obj;
-    }, {});
+        return obj;
+      },
+      {},
+    );
 
-    const url = updateParams(params);
+    const url = replaceParams({ ...params, segment: segment?.id });
 
     router.push(url);
   };
@@ -39,12 +46,13 @@ export function WebsiteFilterButton({
         {showText && <Text>{formatMessage(labels.filter)}</Text>}
       </Button>
       <Modal>
-        <Dialog>
+        <Dialog title={formatMessage(labels.filters)} style={{ width: 800, minHeight: 600 }}>
           {({ close }) => {
             return (
               <FilterEditForm
                 websiteId={websiteId}
-                data={filters}
+                filters={filters}
+                segmentId={segment}
                 onChange={handleChange}
                 onClose={close}
               />

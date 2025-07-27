@@ -100,9 +100,9 @@ export function WebsiteDateFilter({
             <Icon fillColor>{compare ? <Close /> : <Compare />}</Icon>
           </Button>
           <Tooltip>{formatMessage(compare ? labels.cancel : labels.compareDates)}</Tooltip>
-          <ExportButton websiteId={websiteId} />
         </TooltipTrigger>
       )}
+      <ExportButton websiteId={websiteId} />
     </Row>
   );
 }

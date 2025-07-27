@@ -2,7 +2,6 @@ import debug from 'debug';
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
-import { MYSQL, POSTGRESQL, getDatabaseType } from '@/lib/db';
 import { SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE } from './constants';
 import { QueryOptions, QueryFilters } from './types';
 import { filtersToArray } from './params';
@@ -19,7 +18,7 @@ const PRISMA_LOG_OPTIONS = {
   ],
 };
 
-const POSTGRESQL_DATE_FORMATS = {
+const DATE_FORMATS = {
   minute: 'YYYY-MM-DD HH24:MI:00',
   hour: 'YYYY-MM-DD HH24:00:00',
   day: 'YYYY-MM-DD HH24:00:00',
@@ -28,47 +27,23 @@ const POSTGRESQL_DATE_FORMATS = {
 };
 
 function getAddIntervalQuery(field: string, interval: string): string {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    return `${field} + interval '${interval}'`;
-  }
-
-  if (db === MYSQL) {
-    return `DATE_ADD(${field}, interval ${interval})`;
-  }
+  return `${field} + interval '${interval}'`;
 }
 
 function getDayDiffQuery(field1: string, field2: string): string {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    return `${field1}::date - ${field2}::date`;
-  }
-
-  if (db === MYSQL) {
-    return `DATEDIFF(${field1}, ${field2})`;
-  }
+  return `${field1}::date - ${field2}::date`;
 }
 
 function getCastColumnQuery(field: string, type: string): string {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    return `${field}::${type}`;
-  }
-
-  if (db === MYSQL) {
-    return `${field}`;
-  }
+  return `${field}::${type}`;
 }
 
 function getDateSQL(field: string, unit: string, timezone?: string): string {
   if (timezone) {
-    return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${POSTGRESQL_DATE_FORMATS[unit]}')`;
+    return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${DATE_FORMATS[unit]}')`;
   }
 
-  return `to_char(date_trunc('${unit}', ${field}), '${POSTGRESQL_DATE_FORMATS[unit]}')`;
+  return `to_char(date_trunc('${unit}', ${field}), '${DATE_FORMATS[unit]}')`;
 }
 
 function getDateWeeklySQL(field: string, timezone?: string) {
@@ -105,18 +80,15 @@ function mapFilter(column: string, operator: string, name: string, type: string 
 }
 
 function mapCohortFilter(column: string, operator: string, value: string) {
-  const db = getDatabaseType();
-  const like = db === POSTGRESQL ? 'ilike' : 'like';
-
   switch (operator) {
     case OPERATORS.equals:
       return `${column} = '${value}'`;
     case OPERATORS.notEquals:
       return `${column} != '${value}'`;
     case OPERATORS.contains:
-      return `${column} ${like} '${value}'`;
+      return `${column} ilike '${value}'`;
     case OPERATORS.doesNotContain:
-      return `${column} not ${like} '${value}'`;
+      return `${column} not ilike '${value}'`;
     default:
       return '';
   }
@@ -229,13 +201,7 @@ async function rawQuery(sql: string, data: object): Promise<any> {
     log('QUERY:\n', sql);
     log('PARAMETERS:\n', data);
   }
-
-  const db = getDatabaseType();
   const params = [];
-
-  if (db !== POSTGRESQL && db !== MYSQL) {
-    return Promise.reject(new Error('Unknown database.'));
-  }
 
   const query = sql?.replaceAll(/\{\{\s*(\w+)(::\w+)?\s*}}/g, (...args) => {
     const [, name, type] = args;
@@ -244,7 +210,7 @@ async function rawQuery(sql: string, data: object): Promise<any> {
 
     params.push(value);
 
-    return db === MYSQL ? '?' : `$${params.length}${type ?? ''}`;
+    return `$${params.length}${type ?? ''}`;
   });
 
   return process.env.DATABASE_REPLICA_URL
@@ -301,20 +267,9 @@ async function pagedRawQuery(
   return { data, count, page: +page, pageSize: size, orderBy };
 }
 
-function getQueryMode(): { mode?: 'default' | 'insensitive' } {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    return { mode: 'insensitive' };
-  }
-
-  return {};
-}
-
 function getSearchParameters(query: string, filters: Record<string, any>[]) {
   if (!query) return;
 
-  const mode = getQueryMode();
   const parseFilter = (filter: Record<string, any>) => {
     const [[key, value]] = Object.entries(filter);
 
@@ -323,7 +278,7 @@ function getSearchParameters(query: string, filters: Record<string, any>[]) {
         typeof value === 'string'
           ? {
               [value]: query,
-              ...mode,
+              mode: 'insensitive',
             }
           : parseFilter(value),
     };
@@ -404,7 +359,6 @@ export default {
   getSearchParameters,
   getTimestampDiffSQL,
   getSearchSQL,
-  getQueryMode,
   pagedQuery,
   pagedRawQuery,
   parseFilters,

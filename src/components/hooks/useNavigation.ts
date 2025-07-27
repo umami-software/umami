@@ -11,7 +11,11 @@ export function useNavigation() {
   const [queryParams, setQueryParams] = useState(Object.fromEntries(searchParams));
 
   const updateParams = (params?: Record<string, string | number>) => {
-    return !params ? pathname : buildUrl(pathname, { ...queryParams, ...params });
+    return buildUrl(pathname, { ...queryParams, ...params });
+  };
+
+  const replaceParams = (params?: Record<string, string | number>) => {
+    return buildUrl(pathname, params);
   };
 
   useEffect(() => {
@@ -33,6 +37,7 @@ export function useNavigation() {
     teamId,
     websiteId,
     updateParams,
+    replaceParams,
     renderUrl,
   };
 }

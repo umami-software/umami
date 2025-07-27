@@ -43,7 +43,7 @@ export function EventsTable({ data = [] }) {
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="browser" label={formatMessage(labels.browser)} width="120px">
+      <DataColumn id="browser" label={formatMessage(labels.browser)} width="140px">
         {(row: any) => (
           <TypeIcon type="browser" value={row.browser}>
             {formatValue(row.browser, 'browser')}

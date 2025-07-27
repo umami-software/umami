@@ -14,7 +14,7 @@ const KEY_NAME = 'umami.events.tab';
 
 export function EventsPage({ websiteId }) {
   const [label, setLabel] = useState(null);
-  const [tab, setTab] = useState(getItem(KEY_NAME) || 'activity');
+  const [tab, setTab] = useState(getItem(KEY_NAME) || 'chart');
   const { formatMessage, labels } = useMessages();
 
   const handleLabelClick = (value: string) => {
@@ -32,8 +32,8 @@ export function EventsPage({ websiteId }) {
       <Panel>
         <Tabs selectedKey={tab} onSelectionChange={key => handleSelect(key)}>
           <TabList>
-            <Tab id="activity">{formatMessage(labels.activity)}</Tab>
             <Tab id="chart">{formatMessage(labels.chart)}</Tab>
+            <Tab id="activity">{formatMessage(labels.activity)}</Tab>
             <Tab id="properties">{formatMessage(labels.properties)}</Tab>
           </TabList>
           <TabPanel id="activity">
@@ -41,7 +41,9 @@ export function EventsPage({ websiteId }) {
           </TabPanel>
           <TabPanel id="chart">
             <Column gap="6">
-              <EventsChart websiteId={websiteId} focusLabel={label} />
+              <Column border="bottom" paddingBottom="6">
+                <EventsChart websiteId={websiteId} focusLabel={label} />
+              </Column>
               <EventsTable
                 websiteId={websiteId}
                 type="event"
