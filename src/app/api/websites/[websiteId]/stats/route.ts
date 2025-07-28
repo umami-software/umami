@@ -37,7 +37,7 @@ export async function GET(
     endDate,
   );
 
-  const filters = getRequestFilters(query);
+  const filters = await getRequestFilters(query);
 
   const metrics = await getWebsiteStats(websiteId, {
     ...filters,
