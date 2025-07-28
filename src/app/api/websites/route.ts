@@ -26,6 +26,7 @@ export async function POST(request: Request) {
     domain: z.string().max(500),
     shareId: z.string().max(50).nullable().optional(),
     teamId: z.string().nullable().optional(),
+    id: z.string().uuid().nullable().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -34,14 +35,14 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const { name, domain, shareId, teamId } = body;
+  const { id, name, domain, shareId, teamId } = body;
 
   if ((teamId && !(await canCreateTeamWebsite(auth, teamId))) || !(await canCreateWebsite(auth))) {
     return unauthorized();
   }
 
   const data: any = {
-    id: uuid(),
+    id: id ?? uuid(),
     createdBy: auth.user.id,
     name,
     domain,

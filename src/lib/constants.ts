@@ -13,7 +13,7 @@ export const UPDATES_URL = 'https://api.umami.is/v1/updates';
 export const TELEMETRY_PIXEL = 'https://i.umami.is/a.png';
 export const FAVICON_URL = 'https://icons.duckduckgo.com/ip3/{{domain}}.ico';
 
-export const DEFAULT_LOCALE = process.env.defaultLocale || 'en-US';
+export const DEFAULT_LOCALE = 'en-US';
 export const DEFAULT_THEME = 'light';
 export const DEFAULT_ANIMATION_DURATION = 300;
 export const DEFAULT_DATE_RANGE = '24hour';
@@ -33,7 +33,17 @@ export const FILTER_REFERRERS = 'filter-referrers';
 export const FILTER_PAGES = 'filter-pages';
 
 export const UNIT_TYPES = ['year', 'month', 'hour', 'day', 'minute'];
-export const EVENT_COLUMNS = ['url', 'entry', 'exit', 'referrer', 'title', 'query', 'event', 'tag'];
+export const EVENT_COLUMNS = [
+  'url',
+  'entry',
+  'exit',
+  'referrer',
+  'title',
+  'query',
+  'event',
+  'tag',
+  'host',
+];
 
 export const SESSION_COLUMNS = [
   'browser',
@@ -44,8 +54,12 @@ export const SESSION_COLUMNS = [
   'country',
   'city',
   'region',
-  'host',
 ];
+
+export const FILTER_GROUPS = {
+  segment: 'segment',
+  cohort: 'cohort',
+};
 
 export const FILTER_COLUMNS = {
   url: 'url_path',

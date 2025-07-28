@@ -12,15 +12,16 @@ export async function getChannelMetrics(...args: [websiteId: string, filters?: Q
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
-  const { params, filterQuery, dateQuery } = await parseFilters(websiteId, filters);
+  const { params, filterQuery, cohortQuery, dateQuery } = await parseFilters(websiteId, filters);
 
   return rawQuery(
     `
     select
       referrer_domain as domain,
-      referrer_query as query,
+      url_query as query,
       count(distinct session_id) as visitors
     from website_event
+    ${cohortQuery}
     where website_id = {{websiteId::uuid}}
         ${filterQuery}
         ${dateQuery}
@@ -36,14 +37,15 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { params, filterQuery, dateQuery } = await parseFilters(websiteId, filters);
+  const { params, filterQuery, cohortQuery, dateQuery } = await parseFilters(websiteId, filters);
 
   const sql = `
     select
       referrer_domain as domain,
-      referrer_query as query,
+      url_query as query,
       uniq(session_id) as visitors
     from website_event
+    ${cohortQuery}
     where website_id = {websiteId:UUID}
     ${filterQuery}
     ${dateQuery}

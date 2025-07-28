@@ -15,7 +15,12 @@ import {
 } from '@/lib/constants';
 import { getRequestFilters, getRequestDateRange, parseRequest } from '@/lib/request';
 import { json, unauthorized, badRequest } from '@/lib/response';
-import { getPageviewMetrics, getSessionMetrics, getChannelMetrics } from '@/queries';
+import {
+  getPageviewMetrics,
+  getSessionMetrics,
+  getEventMetrics,
+  getChannelMetrics,
+} from '@/queries';
 import { filterParams } from '@/lib/schema';
 
 export async function GET(
@@ -48,7 +53,7 @@ export async function GET(
   const { startDate, endDate } = await getRequestDateRange(query);
   const column = FILTER_COLUMNS[type] || type;
   const filters = {
-    ...getRequestFilters(query),
+    ...(await getRequestFilters(query)),
     startDate,
     endDate,
   };
@@ -85,7 +90,13 @@ export async function GET(
   }
 
   if (EVENT_COLUMNS.includes(type)) {
-    const data = await getPageviewMetrics(websiteId, type, filters, limit, offset);
+    let data;
+
+    if (type === 'event') {
+      data = await getEventMetrics(websiteId, type, filters, limit, offset);
+    } else {
+      data = await getPageviewMetrics(websiteId, type, filters, limit, offset);
+    }
 
     return json(data);
   }
