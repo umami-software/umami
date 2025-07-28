@@ -12,12 +12,8 @@ const cloudMode = process.env.CLOUD_MODE;
 const cloudUrl = process.env.CLOUD_URL;
 const corsMaxAge = process.env.CORS_MAX_AGE;
 const defaultLocale = process.env.DEFAULT_LOCALE;
-const disableLogin = process.env.DISABLE_LOGIN;
-const disableUI = process.env.DISABLE_UI;
-const faviconURL = process.env.FAVICON_URL;
 const forceSSL = process.env.FORCE_SSL;
-const frameAncestors = process.env.ALLOWED_FRAME_URLS;
-const privateMode = process.env.PRIVATE_MODE;
+const frameAncestors = process.env.ALLOWED_FRAME_URLS ?? '';
 const trackerScriptName = process.env.TRACKER_SCRIPT_NAME;
 const trackerScriptURL = process.env.TRACKER_SCRIPT_URL;
 
@@ -173,13 +169,11 @@ if (cloudMode && cloudUrl) {
     permanent: false,
   });
 
-  if (disableLogin) {
-    redirects.push({
-      source: '/login',
-      destination: cloudUrl,
-      permanent: false,
-    });
-  }
+  redirects.push({
+    source: '/login',
+    destination: cloudUrl,
+    permanent: false,
+  });
 }
 
 /** @type {import('next').NextConfig} */
@@ -191,10 +185,6 @@ export default {
     cloudUrl,
     currentVersion: pkg.version,
     defaultLocale,
-    disableLogin,
-    disableUI,
-    faviconURL,
-    privateMode,
   },
   basePath,
   output: 'standalone',
