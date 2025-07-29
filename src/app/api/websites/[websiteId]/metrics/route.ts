@@ -1,27 +1,15 @@
-import { z } from 'zod';
-import thenby from 'thenby';
 import { canViewWebsite } from '@/lib/auth';
+import { EVENT_COLUMNS, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from '@/lib/constants';
+import { getRequestDateRange, getRequestFilters, parseRequest } from '@/lib/request';
+import { badRequest, json, unauthorized } from '@/lib/response';
+import { filterParams } from '@/lib/schema';
 import {
-  SESSION_COLUMNS,
-  EVENT_COLUMNS,
-  FILTER_COLUMNS,
-  OPERATORS,
-  SEARCH_DOMAINS,
-  SOCIAL_DOMAINS,
-  EMAIL_DOMAINS,
-  SHOPPING_DOMAINS,
-  VIDEO_DOMAINS,
-  PAID_AD_PARAMS,
-} from '@/lib/constants';
-import { getRequestFilters, getRequestDateRange, parseRequest } from '@/lib/request';
-import { json, unauthorized, badRequest } from '@/lib/response';
-import {
+  getChannelMetrics,
+  getEventMetrics,
   getPageviewMetrics,
   getSessionMetrics,
-  getEventMetrics,
-  getChannelMetrics,
 } from '@/queries';
-import { filterParams } from '@/lib/schema';
+import { z } from 'zod';
 
 export async function GET(
   request: Request,
@@ -104,75 +92,8 @@ export async function GET(
   if (type === 'channel') {
     const data = await getChannelMetrics(websiteId, filters);
 
-    const channels = getChannels(data);
-
-    return json(
-      Object.keys(channels)
-        .map(key => ({ x: key, y: channels[key] }))
-        .sort(thenby.firstBy('y', -1)),
-    );
+    return json(data);
   }
 
   return badRequest();
-}
-
-function getChannels(data: { domain: string; query: string; visitors: number }[]) {
-  const channels = {
-    direct: 0,
-    referral: 0,
-    affiliate: 0,
-    email: 0,
-    sms: 0,
-    organicSearch: 0,
-    organicSocial: 0,
-    organicShopping: 0,
-    organicVideo: 0,
-    paidAds: 0,
-    paidSearch: 0,
-    paidSocial: 0,
-    paidShopping: 0,
-    paidVideo: 0,
-  };
-
-  const match = (value: string) => {
-    return (str: string | RegExp) => {
-      return typeof str === 'string' ? value?.includes(str) : (str as RegExp).test(value);
-    };
-  };
-
-  for (const { domain, query, visitors } of data) {
-    if (!domain && !query) {
-      channels.direct += Number(visitors);
-    }
-
-    const prefix = /utm_medium=(.*cp.*|ppc|retargeting|paid.*)/.test(query) ? 'paid' : 'organic';
-
-    if (PAID_AD_PARAMS.some(match(query))) {
-      channels.paidAds += Number(visitors);
-    } else if (/utm_medium=(referral|app|link)/.test(query)) {
-      channels.referral += Number(visitors);
-    } else if (/utm_medium=affiliate/.test(query)) {
-      channels.affiliate += Number(visitors);
-    } else if (/utm_(source|medium)=sms/.test(query)) {
-      channels.sms += Number(visitors);
-    } else if (SEARCH_DOMAINS.some(match(domain)) || /utm_medium=organic/.test(query)) {
-      channels[`${prefix}Search`] += Number(visitors);
-    } else if (
-      SOCIAL_DOMAINS.some(match(domain)) ||
-      /utm_medium=(social|social-network|social-media|sm|social network|social media)/.test(query)
-    ) {
-      channels[`${prefix}Social`] += Number(visitors);
-    } else if (EMAIL_DOMAINS.some(match(domain)) || /utm_medium=(.*e[-_ ]?mail.*)/.test(query)) {
-      channels.email += Number(visitors);
-    } else if (
-      SHOPPING_DOMAINS.some(match(domain)) ||
-      /utm_campaign=(.*(([^a-df-z]|^)shop|shopping).*)/.test(query)
-    ) {
-      channels[`${prefix}Shopping`] += Number(visitors);
-    } else if (VIDEO_DOMAINS.some(match(domain)) || /utm_medium=(.*video.*)/.test(query)) {
-      channels[`${prefix}Video`] += Number(visitors);
-    }
-  }
-
-  return channels;
 }
