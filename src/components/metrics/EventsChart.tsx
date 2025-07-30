@@ -55,7 +55,7 @@ export function EventsChart({ websiteId, focusLabel }: EventsChartProps) {
   }, [focusLabel]);
 
   return (
-    <LoadingPanel isLoading={isLoading} error={error}>
+    <LoadingPanel isLoading={isLoading} error={error} minHeight="400px">
       {chartData && (
         <BarChart
           chartData={chartData}
