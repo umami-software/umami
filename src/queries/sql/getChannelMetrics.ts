@@ -29,17 +29,35 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 
   return rawQuery(
     `
-    select
-      referrer_domain as domain,
-      url_query as query,
-      count(distinct session_id) as visitors
-    from website_event
-    ${cohortQuery}
-    where website_id = {{websiteId::uuid}}
-        ${filterQuery}
+    WITH channels as (
+      select case when ${toPostgresPositionClause('utm_medium', ['cp', 'ppc', 'retargeting', 'paid'])} then 'paid' else 'organic' end prefix,
+          case
+          when referrer_domain = '' and url_query = '' then 'direct'
+          when ${toPostgresPositionClause('url_query', PAID_AD_PARAMS)} then 'paidAds'
+          when ${toPostgresPositionClause('utm_medium', ['referral', 'app', 'link'])} then 'referral'
+          when position(utm_medium, 'affiliate') > 0 then 'affiliate'
+          when position(utm_medium, 'sms') > 0 or position(utm_source, 'sms') > 0 then 'sms'
+          when ${toPostgresPositionClause('referrer_domain', SEARCH_DOMAINS)} or position(utm_medium, 'organic') > 0 then concat(prefix, 'Search')
+          when ${toPostgresPositionClause('referrer_domain', SOCIAL_DOMAINS)} then concat(prefix, 'Social')
+          when ${toPostgresPositionClause('referrer_domain', EMAIL_DOMAINS)} or position(utm_medium, 'mail') > 0 then 'email'
+          when ${toPostgresPositionClause('referrer_domain', SHOPPING_DOMAINS)} or position(utm_medium, 'shop') > 0 then concat(prefix, 'Shopping')
+          when ${toPostgresPositionClause('referrer_domain', VIDEO_DOMAINS)} or position(utm_medium, 'video') > 0 then concat(prefix, 'Video')
+          else '' end AS x,
+        count(distinct session_id) y
+      from website_event
+      ${cohortQuery}
+      where website_id = {{websiteId::uuid}}
+        and event_type = {{eventType}}
         ${dateQuery}
-    group by 1, 2
-    order by visitors desc
+        ${filterQuery}
+      group by 1, 2
+      order by y desc)
+
+    select x, sum(y) y
+    from channels
+    where x != ''
+    group by x
+    order by y desc;
     `,
     queryParams,
   );
@@ -105,4 +123,8 @@ async function clickhouseQuery(
 
 function toClickHouseStringArray(arr: string[]): string {
   return arr.map(p => `'${p.replace(/'/g, "\\'")}'`).join(', ');
+}
+
+function toPostgresPositionClause(column: string, arr: string[]) {
+  return arr.map(val => `position(${column}, '${val.replace(/'/g, "''")}') > 0`).join(' OR\n  ');
 }
