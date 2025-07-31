@@ -87,21 +87,6 @@ function mapFilter(column: string, operator: string, name: string, type: string 
   }
 }
 
-function mapCohortFilter(column: string, operator: string, value: string) {
-  switch (operator) {
-    case OPERATORS.equals:
-      return `${column} = '${value}'`;
-    case OPERATORS.notEquals:
-      return `${column} != '${value}'`;
-    case OPERATORS.contains:
-      return `positionCaseInsensitive(${column}, '${value}') > 0`;
-    case OPERATORS.doesNotContain:
-      return `positionCaseInsensitive(${column}, '${value}') = 0`;
-    default:
-      return '';
-  }
-}
-
 function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}) {
   const query = filtersToArray(filters, options).reduce((arr, { name, column, operator }) => {
     if (column) {
@@ -118,40 +103,22 @@ function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}
   return query.join('\n');
 }
 
-function getCohortQuery(websiteId: string, filters: QueryFilters = {}, options: QueryOptions = {}) {
-  const query = filtersToArray(filters, options).reduce(
-    (arr, { name, column, operator, value }) => {
-      if (column) {
-        arr.push(
-          `${arr.length === 0 ? 'where' : 'and'} ${mapCohortFilter(column, operator, value)}`,
-        );
-
-        if (name === 'referrer') {
-          arr.push(`and referrer_domain != hostname`);
-        }
-      }
-
-      return arr;
-    },
-    [],
-  );
-
-  if (query.length > 0) {
-    // add website and date range filters
-    query.push(`and website_id = '${websiteId}'`);
-    query.push(
-      `and created_at between parseDateTimeBestEffort('${filters.startDate}') and parseDateTimeBestEffort('${filters.endDate}')`,
-    );
-
-    return `join
-    (select distinct session_id
-    from website_event
-    ${query.join('\n')}) cohort
-    on cohort.session_id = website_event.session_id
-    `;
+function getCohortQuery(filters: Record<string, any>, options: QueryOptions = {}) {
+  if (!filters) {
+    return '';
   }
 
-  return '';
+  const filterQuery = getFilterQuery(filters, options);
+
+  return `join (
+      select distinct session_id
+      from website_event
+      where website_id = {websiteId:UUID}
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      ${filterQuery}
+    ) as cohort
+      on cohort.session_id = website_event.session_id
+    `;
 }
 
 function getDateQuery(filters: Record<string, any>) {
@@ -192,7 +159,7 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
     filterQuery: getFilterQuery(filters, options),
     dateQuery: getDateQuery(filters),
     queryParams: getQueryParams(filters),
-    cohortQuery: getCohortQuery(filters?.cohort),
+    cohortQuery: getCohortQuery(filters?.cohortFilters, options),
   };
 }
 

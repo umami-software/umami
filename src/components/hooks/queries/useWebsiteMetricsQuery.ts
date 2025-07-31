@@ -2,7 +2,6 @@ import { keepPreviousData } from '@tanstack/react-query';
 import { useApi } from '../useApi';
 import { useFilterParameters } from '../useFilterParameters';
 import { useDateParameters } from '../useDateParameters';
-import { useSearchParams } from 'next/navigation';
 import { ReactQueryOptions } from '@/lib/types';
 
 export type WebsiteMetricsData = {
@@ -18,7 +17,6 @@ export function useWebsiteMetricsQuery(
   const { get, useQuery } = useApi();
   const date = useDateParameters(websiteId);
   const filters = useFilterParameters();
-  const searchParams = useSearchParams();
 
   return useQuery<WebsiteMetricsData>({
     queryKey: [
@@ -34,7 +32,6 @@ export function useWebsiteMetricsQuery(
       get(`/websites/${websiteId}/metrics`, {
         ...date,
         ...filters,
-        [searchParams.get('view')]: undefined,
         ...params,
       }),
     enabled: !!websiteId,

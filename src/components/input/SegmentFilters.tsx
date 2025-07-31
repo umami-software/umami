@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { List, Column, ListItem } from '@umami/react-zen';
 import { useWebsiteSegmentsQuery } from '@/components/hooks';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
@@ -11,17 +10,15 @@ export interface SegmentFiltersProps {
 
 export function SegmentFilters({ websiteId, segmentId, onSave }: SegmentFiltersProps) {
   const { data, isLoading } = useWebsiteSegmentsQuery(websiteId, { type: 'segment' });
-  const [currentSegment, setCurrentSegment] = useState(segmentId);
 
-  const handleSave = (id: string) => {
-    setCurrentSegment(id);
-    onSave?.(data.find(item => item.id === id));
+  const handleChange = (id: string) => {
+    onSave?.(id);
   };
 
   return (
     <Column height="400px" gap>
       <LoadingPanel data={data} isLoading={isLoading} overflowY="auto">
-        <List selectionMode="single" value={[currentSegment]} onChange={id => handleSave(id[0])}>
+        <List selectionMode="single" value={[segmentId]} onChange={id => handleChange(id[0])}>
           {data?.map(item => {
             return (
               <ListItem key={item.id} id={item.id}>

@@ -1,5 +1,5 @@
 import { z } from 'zod/v4';
-import { FILTER_COLUMNS, DEFAULT_PAGE_SIZE, FILTER_GROUPS } from '@/lib/constants';
+import { FILTER_COLUMNS, DEFAULT_PAGE_SIZE } from '@/lib/constants';
 import { badRequest, unauthorized } from '@/lib/response';
 import { getAllowedUnits, getMinimumUnit, maxDate } from '@/lib/date';
 import { checkAuth } from '@/lib/auth';
@@ -79,16 +79,6 @@ export function getRequestFilters(query: Record<string, any>) {
   return result;
 }
 
-export async function getRequestSegments(websiteId: string, query: Record<string, any>) {
-  for (const key of Object.keys(FILTER_GROUPS)) {
-    const value = query[key];
-
-    if (value !== undefined) {
-      return getWebsiteSegment(websiteId, key, value);
-    }
-  }
-}
-
 export async function setWebsiteDate(websiteId: string, data: Record<string, any>) {
   const website = await fetchWebsite(websiteId);
 
@@ -109,7 +99,13 @@ export async function getQueryFilters(
   if (websiteId) {
     await setWebsiteDate(websiteId, dateRange);
 
-    Object.assign(filters, await getRequestSegments(websiteId, params));
+    if (params.segment) {
+      Object.assign(filters, (await getWebsiteSegment(websiteId, params.segment))?.parameters);
+    }
+
+    if (params.cohort) {
+      filters.cohortFilters = (await getWebsiteSegment(websiteId, params.cohort))?.parameters;
+    }
   }
 
   return {

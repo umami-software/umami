@@ -21,10 +21,11 @@ export function FilterEditForm({
 }: FilterEditFormProps) {
   const { formatMessage, labels } = useMessages();
   const [currentFilters, setCurrentFilters] = useState(filters);
-  const [currentSegment, setCurrentSegment] = useState(null);
+  const [currentSegment, setCurrentSegment] = useState(segmentId);
 
   const handleReset = () => {
     setCurrentFilters([]);
+    setCurrentSegment(null);
   };
 
   const handleSave = () => {
@@ -32,8 +33,8 @@ export function FilterEditForm({
     onClose?.();
   };
 
-  const handleSegmentChange = (segment?: { id: string }) => {
-    setCurrentSegment(segment);
+  const handleSegmentChange = (id: string) => {
+    setCurrentSegment(id);
   };
 
   return (
@@ -49,7 +50,7 @@ export function FilterEditForm({
         <TabPanel id="segments">
           <SegmentFilters
             websiteId={websiteId}
-            segmentId={segmentId}
+            segmentId={currentSegment}
             onSave={handleSegmentChange}
           />
         </TabPanel>

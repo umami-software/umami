@@ -5,7 +5,7 @@ export function parseParameterValue(param: any) {
   if (typeof param === 'string') {
     const [, operator, value] = param.match(/^([a-z]+)\.(.*)/) || [];
 
-    return { operator, value };
+    return { operator: operator || OPERATORS.equals, value: value || param };
   }
   return { operator: OPERATORS.equals, value: param };
 }

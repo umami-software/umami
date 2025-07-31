@@ -13,13 +13,9 @@ export async function getSegment(segmentId: string): Promise<Segment> {
   });
 }
 
-export async function getWebsiteSegment(
-  websiteId: string,
-  type: string,
-  name: string,
-): Promise<Segment> {
-  return prisma.client.segment.findFirst({
-    where: { websiteId, type, name },
+export async function getWebsiteSegment(websiteId: string, segmentId: string): Promise<Segment> {
+  return prisma.client.Segment.findFirst({
+    where: { id: segmentId, websiteId },
   });
 }
 

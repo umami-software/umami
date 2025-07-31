@@ -241,7 +241,7 @@ async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters)
   return { data, count, page: +page, pageSize: size, orderBy, search };
 }
 
-async function pagedRawQuery(
+async function rawPagedQuery(
   query: string,
   filters: QueryFilters,
   queryParams: Record<string, any>,
@@ -360,7 +360,7 @@ export default {
   getTimestampDiffSQL,
   getSearchSQL,
   pagedQuery,
-  pagedRawQuery,
+  pagedRawQuery: rawPagedQuery,
   parseFilters,
   rawQuery,
 };

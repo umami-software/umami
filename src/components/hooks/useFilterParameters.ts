@@ -21,6 +21,8 @@ export function useFilterParameters() {
       page,
       pageSize,
       search,
+      segment,
+      cohort,
     },
   } = useNavigation();
 
@@ -41,6 +43,8 @@ export function useFilterParameters() {
       tag,
       hostname,
       search,
+      segment,
+      cohort,
     };
   }, [
     path,
@@ -60,5 +64,7 @@ export function useFilterParameters() {
     page,
     pageSize,
     search,
+    segment,
+    cohort,
   ]);
 }

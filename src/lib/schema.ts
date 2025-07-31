@@ -35,8 +35,8 @@ export const filterParams = {
   hostname: z.string().optional(),
   language: z.string().optional(),
   event: z.string().optional(),
-  segment: z.string().optional(),
-  cohort: z.string().optional(),
+  segment: z.string().uuid().optional(),
+  cohort: z.string().uuid().optional(),
   eventType: z.coerce.number().int().positive().optional(),
 };
 

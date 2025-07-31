@@ -32,7 +32,7 @@ export function WebsiteFilterButton({
       {},
     );
 
-    const url = replaceParams({ ...params, segment: segment?.id });
+    const url = replaceParams({ ...params, segment });
 
     router.push(url);
   };

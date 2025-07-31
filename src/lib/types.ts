@@ -44,7 +44,14 @@ export interface QueryOptions {
   prefix?: string;
 }
 
-export interface QueryFilters extends DateParams, FilterParams, SortParams, PageParams {}
+export interface QueryFilters
+  extends DateParams,
+    FilterParams,
+    SortParams,
+    PageParams,
+    SegmentParams {
+  cohortFilters?: QueryFilters;
+}
 
 export interface DateParams {
   startDate?: Date;
@@ -84,6 +91,11 @@ export interface SortParams {
 export interface PageParams {
   page?: number;
   pageSize?: number;
+}
+
+export interface SegmentParams {
+  segment?: string;
+  cohort?: string;
 }
 
 export interface PageResult<T> {
