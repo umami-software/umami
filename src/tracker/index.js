@@ -24,6 +24,7 @@
   const tag = attr(_data + 'tag') || undefined;
   const autoTrack = attr(_data + 'auto-track') !== _false;
   const dnt = attr(_data + 'do-not-track') === _true;
+  const debug = attr(_data + 'debug') === _true;
   const excludeSearch = attr(_data + 'exclude-search') === _true;
   const excludeHash = attr(_data + 'exclude-hash') === _true;
   const domain = attr(_data + 'domains') || '';
@@ -147,6 +148,10 @@
     }
 
     if (!payload) return;
+
+    if (debug){
+      console.log(`Umami Analytics Debug:`, { type, payload });
+    }
 
     try {
       const res = await fetch(endpoint, {
