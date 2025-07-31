@@ -149,7 +149,7 @@
 
     if (!payload) return;
 
-    if (debug){
+    if (debug) {
       console.log(`Umami Analytics Debug:`, { type, payload });
     }
 
