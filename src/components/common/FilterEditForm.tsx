@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Column, Tabs, TabList, Tab, TabPanel, Row, Button } from '@umami/react-zen';
-import { useMessages } from '@/components/hooks';
+import { useDateRange, useMessages } from '@/components/hooks';
 import { FieldFilters } from '@/components/input/FieldFilters';
 import { SegmentFilters } from '@/components/input/SegmentFilters';
 
@@ -22,6 +22,10 @@ export function FilterEditForm({
   const { formatMessage, labels } = useMessages();
   const [currentFilters, setCurrentFilters] = useState(filters);
   const [currentSegment, setCurrentSegment] = useState(segmentId);
+
+  const {
+    dateRange: { startDate, endDate },
+  } = useDateRange(websiteId);
 
   const handleReset = () => {
     setCurrentFilters([]);
@@ -45,7 +49,13 @@ export function FilterEditForm({
           <Tab id="segments">{formatMessage(labels.segments)}</Tab>
         </TabList>
         <TabPanel id="fields">
-          <FieldFilters websiteId={websiteId} filters={currentFilters} onSave={setCurrentFilters} />
+          <FieldFilters
+            websiteId={websiteId}
+            filters={currentFilters}
+            startDate={startDate}
+            endDate={endDate}
+            onSave={setCurrentFilters}
+          />
         </TabPanel>
         <TabPanel id="segments">
           <SegmentFilters

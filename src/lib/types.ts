@@ -24,6 +24,13 @@ export interface Auth {
   };
 }
 
+export interface Filter {
+  name: string;
+  operator: string;
+  value: string;
+  type?: string;
+}
+
 export interface DateRange {
   startDate: Date;
   endDate: Date;

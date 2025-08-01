@@ -1,9 +1,15 @@
 import { Button, Icon, Text, Row, TooltipTrigger, Tooltip } from '@umami/react-zen';
-import { useNavigation, useMessages, useFormat, useFilters } from '@/components/hooks';
+import {
+  useNavigation,
+  useMessages,
+  useFormat,
+  useFilters,
+  useWebsiteSegmentQuery,
+} from '@/components/hooks';
 import { Close } from '@/components/icons';
 import { isSearchOperator } from '@/lib/params';
 
-export function FilterBar() {
+export function FilterBar({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
   const {
@@ -13,6 +19,7 @@ export function FilterBar() {
     query: { segment },
   } = useNavigation();
   const { filters, operatorLabels } = useFilters();
+  const { data, isLoading } = useWebsiteSegmentQuery(websiteId, segment);
 
   const handleCloseFilter = (param: string) => {
     router.push(updateParams({ [param]: undefined }));
@@ -33,11 +40,11 @@ export function FilterBar() {
   return (
     <Row gap alignItems="center" justifyContent="space-between" padding="2" backgroundColor="3">
       <Row alignItems="center" gap="2" wrap="wrap">
-        {segment && (
+        {segment && !isLoading && (
           <FilterItem
             name="segment"
             label={formatMessage(labels.segment)}
-            value={segment}
+            value={data?.name || segment}
             operator={operatorLabels.eq}
             onRemove={handleSegmentRemove}
           />

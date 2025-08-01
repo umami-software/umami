@@ -2,7 +2,7 @@ import { canUpdateWebsite, canViewWebsite } from '@/lib/auth';
 import { uuid } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { segmentTypeParam } from '@/lib/schema';
+import { segmentTypeParam, searchParams } from '@/lib/schema';
 import { createSegment, getWebsiteSegments } from '@/queries';
 import { z } from 'zod';
 
@@ -12,6 +12,7 @@ export async function GET(
 ) {
   const schema = z.object({
     type: segmentTypeParam,
+    ...searchParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);

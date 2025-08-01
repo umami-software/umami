@@ -20,7 +20,7 @@ export async function getWebsiteSegment(websiteId: string, segmentId: string): P
 }
 
 export async function getWebsiteSegments(websiteId: string, type: string): Promise<Segment[]> {
-  return prisma.client.Segment.findMany({
+  return prisma.pagedQuery('segment', {
     where: { websiteId, type },
   });
 }

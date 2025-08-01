@@ -2,6 +2,7 @@ import { Button, Icon, DialogTrigger, Dialog, Modal, Text } from '@umami/react-z
 import { ListFilter } from '@/components/icons';
 import { FilterEditForm } from '@/components/common/FilterEditForm';
 import { useMessages, useNavigation, useFilters } from '@/components/hooks';
+import { filtersArrayToObject } from '@/lib/params';
 
 export function WebsiteFilterButton({
   websiteId,
@@ -21,16 +22,7 @@ export function WebsiteFilterButton({
   const { filters } = useFilters();
 
   const handleChange = ({ filters, segment }) => {
-    const params = filters.reduce(
-      (obj: { [x: string]: string }, filter: { name: any; operator: any; value: any }) => {
-        const { name, operator, value } = filter;
-
-        obj[name] = `${operator}.${value}`;
-
-        return obj;
-      },
-      {},
-    );
+    const params = filtersArrayToObject(filters);
 
     const url = replaceParams({ ...params, segment });
 

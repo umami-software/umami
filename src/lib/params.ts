@@ -1,7 +1,7 @@
 import { FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
-import { QueryFilters, QueryOptions } from '@/lib/types';
+import { Filter, QueryFilters, QueryOptions } from '@/lib/types';
 
-export function parseParameterValue(param: any) {
+export function parseFilterValue(param: any) {
   if (typeof param === 'string') {
     const [, operator, value] = param.match(/^([a-z]+)\.(.*)/) || [];
 
@@ -18,7 +18,7 @@ export function isSearchOperator(operator: any) {
   return [OPERATORS.contains, OPERATORS.doesNotContain].includes(operator);
 }
 
-export function filtersToArray(filters: QueryFilters, options: QueryOptions = {}) {
+export function filtersObjectToArray(filters: QueryFilters, options: QueryOptions = {}) {
   return Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
 
@@ -30,7 +30,7 @@ export function filtersToArray(filters: QueryFilters, options: QueryOptions = {}
       return arr.concat({ ...filter, column: options?.columns?.[key] ?? FILTER_COLUMNS[key] });
     }
 
-    const { operator, value } = parseParameterValue(filter);
+    const { operator, value } = parseFilterValue(filter);
 
     return arr.concat({
       name: key,
@@ -40,4 +40,14 @@ export function filtersToArray(filters: QueryFilters, options: QueryOptions = {}
       prefix: options?.prefix,
     });
   }, []);
+}
+
+export function filtersArrayToObject(filters: Filter[]) {
+  return filters.reduce((obj, filter: Filter) => {
+    const { name, operator, value } = filter;
+
+    obj[name] = `${operator}.${value}`;
+
+    return obj;
+  }, {});
 }

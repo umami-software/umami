@@ -1,21 +1,26 @@
 import { Key } from 'react';
 import { Grid, Column, List, ListItem } from '@umami/react-zen';
-import { useDateRange, useFields, useMessages } from '@/components/hooks';
+import { useFields, useMessages } from '@/components/hooks';
 import { FilterRecord } from '@/components/common/FilterRecord';
 import { Empty } from '@/components/common/Empty';
 
 export interface FieldFiltersProps {
   websiteId: string;
   filters: { name: string; operator: string; value: string }[];
+  startDate: Date;
+  endDate: Date;
   onSave?: (data: any) => void;
 }
 
-export function FieldFilters({ websiteId, filters, onSave }: FieldFiltersProps) {
+export function FieldFilters({
+  websiteId,
+  filters,
+  startDate,
+  endDate,
+  onSave,
+}: FieldFiltersProps) {
   const { formatMessage, messages } = useMessages();
   const { fields } = useFields();
-  const {
-    dateRange: { startDate, endDate },
-  } = useDateRange(websiteId);
 
   const updateFilter = (name: string, props: Record<string, any>) => {
     onSave(filters.map(filter => (filter.name === name ? { ...filter, ...props } : filter)));

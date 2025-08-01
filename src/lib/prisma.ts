@@ -4,7 +4,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import { SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE } from './constants';
 import { QueryOptions, QueryFilters } from './types';
-import { filtersToArray } from './params';
+import { filtersObjectToArray } from './params';
 
 const log = debug('umami:prisma');
 
@@ -95,7 +95,7 @@ function mapCohortFilter(column: string, operator: string, value: string) {
 }
 
 function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}): string {
-  const query = filtersToArray(filters, options).reduce(
+  const query = filtersObjectToArray(filters, options).reduce(
     (arr, { name, column, operator, prefix = '' }) => {
       if (column) {
         arr.push(`and ${mapFilter(`${prefix}${column}`, operator, name)}`);
@@ -116,7 +116,7 @@ function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}
 }
 
 function getCohortQuery(websiteId: string, filters: QueryFilters = {}, options: QueryOptions = {}) {
-  const query = filtersToArray(filters, options).reduce(
+  const query = filtersObjectToArray(filters, options).reduce(
     (arr, { name, column, operator, value }) => {
       if (column) {
         arr.push(
@@ -169,7 +169,7 @@ function getDateQuery(filters: Record<string, any>) {
 function getQueryParams(filters: Record<string, any>) {
   return {
     ...filters,
-    ...filtersToArray(filters).reduce((obj, { name, operator, value }) => {
+    ...filtersObjectToArray(filters).reduce((obj, { name, operator, value }) => {
       obj[name] = [OPERATORS.contains, OPERATORS.doesNotContain].includes(operator)
         ? `%${value}%`
         : value;

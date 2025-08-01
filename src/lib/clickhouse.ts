@@ -3,7 +3,7 @@ import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
 import { CLICKHOUSE } from '@/lib/db';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from './constants';
-import { filtersToArray } from './params';
+import { filtersObjectToArray } from './params';
 import { QueryFilters, QueryOptions } from './types';
 
 export const CLICKHOUSE_DATE_FORMATS = {
@@ -88,7 +88,7 @@ function mapFilter(column: string, operator: string, name: string, type: string 
 }
 
 function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}) {
-  const query = filtersToArray(filters, options).reduce((arr, { name, column, operator }) => {
+  const query = filtersObjectToArray(filters, options).reduce((arr, { name, column, operator }) => {
     if (column) {
       arr.push(`and ${mapFilter(column, operator, name)}`);
 
@@ -144,7 +144,7 @@ function getDateQuery(filters: Record<string, any>) {
 function getQueryParams(filters: Record<string, any>) {
   return {
     ...filters,
-    ...filtersToArray(filters).reduce((obj, { name, value }) => {
+    ...filtersObjectToArray(filters).reduce((obj, { name, value }) => {
       if (name && value !== undefined) {
         obj[name] = value;
       }

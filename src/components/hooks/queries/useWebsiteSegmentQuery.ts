@@ -3,18 +3,18 @@ import { useModified } from '@/components/hooks';
 import { keepPreviousData } from '@tanstack/react-query';
 import { ReactQueryOptions } from '@/lib/types';
 
-export function useWebsiteSegmentsQuery(
+export function useWebsiteSegmentQuery(
   websiteId: string,
-  params?: Record<string, string>,
+  segmentId: string,
   options?: ReactQueryOptions<any>,
 ) {
   const { get, useQuery } = useApi();
-  const { modified } = useModified(`website:${websiteId}`);
+  const { modified } = useModified(`segments`);
 
   return useQuery({
-    queryKey: ['website:segments', { websiteId, modified, ...params }],
-    queryFn: () => get(`/websites/${websiteId}/segments`, { ...params }),
-    enabled: !!websiteId,
+    queryKey: ['website:segments', { websiteId, segmentId, modified }],
+    queryFn: () => get(`/websites/${websiteId}/segments/${segmentId}`),
+    enabled: !!(websiteId && segmentId),
     placeholderData: keepPreviousData,
     ...options,
   });

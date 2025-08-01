@@ -19,7 +19,7 @@ export function SegmentFilters({ websiteId, segmentId, onSave }: SegmentFiltersP
     <Column height="400px" gap>
       <LoadingPanel data={data} isLoading={isLoading} overflowY="auto">
         <List selectionMode="single" value={[segmentId]} onChange={id => handleChange(id[0])}>
-          {data?.map(item => {
+          {data?.data?.map(item => {
             return (
               <ListItem key={item.id} id={item.id}>
                 {item.name}
