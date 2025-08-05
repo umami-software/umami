@@ -30,7 +30,7 @@ export function App({ children }) {
       <Column>
         <SideNav />
       </Column>
-      <Column alignItems="center" overflow="auto" position="relative">
+      <Column alignItems="center" overflow="auto" position="relative" marginLeft="2">
         <TopNav />
         {children}
       </Column>

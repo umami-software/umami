@@ -28,6 +28,7 @@ export * from '@/queries/sql/sessions/getSessionData';
 export * from '@/queries/sql/sessions/getSessionDataProperties';
 export * from '@/queries/sql/sessions/getSessionDataValues';
 export * from '@/queries/sql/sessions/getSessionMetrics';
+export * from '@/queries/sql/sessions/getSessionExpandedMetrics';
 export * from '@/queries/sql/sessions/getWebsiteSessions';
 export * from '@/queries/sql/sessions/getWebsiteSessionStats';
 export * from '@/queries/sql/sessions/getWebsiteSessionsWeekly';

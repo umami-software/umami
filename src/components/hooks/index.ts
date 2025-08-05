@@ -31,6 +31,7 @@ export * from './queries/useWebsitesQuery';
 export * from './queries/useWebsiteEventsQuery';
 export * from './queries/useWebsiteEventsSeriesQuery';
 export * from './queries/useWebsiteMetricsQuery';
+export * from './queries/useWebsiteExpandedMetricsQuery';
 export * from './queries/useWebsiteValuesQuery';
 export * from './useApi';
 export * from './useConfig';

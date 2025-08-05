@@ -156,6 +156,7 @@ export function WebsiteExpandedView({
             itemCount={25}
             allowFilter={true}
             allowSearch={true}
+            expanded={true}
           />
         </Column>
       </Grid>

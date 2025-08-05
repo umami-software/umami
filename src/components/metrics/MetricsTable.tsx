@@ -1,13 +1,20 @@
-import { ReactNode, useMemo, useState } from 'react';
-import { Icon, Text, SearchField, Row, Column } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
+import {
+  useFormat,
+  useMessages,
+  useNavigation,
+  useWebsiteExpandedMetricsQuery,
+  useWebsiteMetricsQuery,
+} from '@/components/hooks';
+import { Arrow } from '@/components/icons';
+import { DownloadButton } from '@/components/input/DownloadButton';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
 import { percentFilter } from '@/lib/filters';
-import { useNavigation, useWebsiteMetricsQuery, useMessages, useFormat } from '@/components/hooks';
-import { Arrow } from '@/components/icons';
+import { Column, Icon, Row, SearchField, Text } from '@umami/react-zen';
+import { ReactNode, useMemo, useState } from 'react';
+import { ListExpandedTable, ListExpandedTableProps } from './ListExpandedTable';
 import { ListTable, ListTableProps } from './ListTable';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { DownloadButton } from '@/components/input/DownloadButton';
 
 export interface MetricsTableProps extends ListTableProps {
   websiteId: string;
@@ -21,6 +28,7 @@ export interface MetricsTableProps extends ListTableProps {
   showMore?: boolean;
   params?: { [key: string]: any };
   allowDownload?: boolean;
+  expanded?: boolean;
   children?: ReactNode;
 }
 
@@ -35,6 +43,7 @@ export function MetricsTable({
   showMore = true,
   params,
   allowDownload = true,
+  expanded = false,
   children,
   ...props
 }: MetricsTableProps) {
@@ -43,7 +52,21 @@ export function MetricsTable({
   const { updateParams } = useNavigation();
   const { formatMessage, labels } = useMessages();
 
-  const { data, isLoading, isFetching, error } = useWebsiteMetricsQuery(
+  const expandedQuery = useWebsiteExpandedMetricsQuery(
+    websiteId,
+    {
+      type,
+      limit: 30,
+      search: searchFormattedValues ? undefined : search,
+      ...params,
+    },
+    {
+      retryDelay: delay || DEFAULT_ANIMATION_DURATION,
+      enabled: expanded,
+    },
+  );
+
+  const query = useWebsiteMetricsQuery(
     websiteId,
     {
       type,
@@ -53,8 +76,11 @@ export function MetricsTable({
     },
     {
       retryDelay: delay || DEFAULT_ANIMATION_DURATION,
+      enabled: !expanded,
     },
   );
+
+  const { data, isLoading, isFetching, error } = expanded ? expandedQuery : query;
 
   const filteredData = useMemo(() => {
     if (data) {
@@ -95,7 +121,12 @@ export function MetricsTable({
             {allowDownload && <DownloadButton filename={type} data={filteredData} />}
           </Row>
         </Row>
-        {data && <ListTable {...(props as ListTableProps)} data={filteredData} />}
+        {data &&
+          (expanded ? (
+            <ListExpandedTable {...(props as ListExpandedTableProps)} data={data} />
+          ) : (
+            <ListTable {...(props as ListTableProps)} data={filteredData} />
+          ))}
         <Row justifyContent="center">
           {showMore && data && !error && limit && (
             <LinkButton href={updateParams({ view: type })} variant="quiet">
