@@ -35,7 +35,7 @@ export const EVENT_COLUMNS = [
   'query',
   'event',
   'tag',
-  'host',
+  'hostname',
 ];
 
 export const SESSION_COLUMNS = [

@@ -46,22 +46,6 @@ export async function GET(
   if (SESSION_COLUMNS.includes(type)) {
     const data = await getSessionMetrics(websiteId, { type, limit, offset }, filters);
 
-    if (type === 'language') {
-      const combined = {};
-
-      for (const { x, y } of data) {
-        const key = String(x).toLowerCase().split('-')[0];
-
-        if (combined[key] === undefined) {
-          combined[key] = { x: key, y };
-        } else {
-          combined[key].y += y;
-        }
-      }
-
-      return json(Object.values(combined));
-    }
-
     return json(data);
   }
 

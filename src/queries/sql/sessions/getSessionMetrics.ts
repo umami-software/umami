@@ -25,7 +25,7 @@ async function relationalQuery(
   filters: QueryFilters,
 ) {
   const { type, limit = 500, offset = 0 } = parameters;
-  const column = FILTER_COLUMNS[type] || type;
+  let column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = prisma;
   const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters(
     {
@@ -38,6 +38,10 @@ async function relationalQuery(
     },
   );
   const includeCountry = column === 'city' || column === 'region';
+
+  if (type === 'language') {
+    column = `lower(left(${type}, 2))`;
+  }
 
   return rawQuery(
     `
@@ -68,7 +72,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
   const { type, limit = 500, offset = 0 } = parameters;
-  const column = FILTER_COLUMNS[type] || type;
+  let column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
@@ -76,6 +80,10 @@ async function clickhouseQuery(
     eventType: EVENT_TYPE.pageView,
   });
   const includeCountry = column === 'city' || column === 'region';
+
+  if (type === 'language') {
+    column = `lower(left(${type}, 2))`;
+  }
 
   let sql = '';
 
@@ -89,7 +97,6 @@ async function clickhouseQuery(
     ${cohortQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type = {eventType:UInt32}
       ${filterQuery}
     group by x 
     ${includeCountry ? ', country' : ''}
@@ -107,7 +114,6 @@ async function clickhouseQuery(
     ${cohortQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type = {eventType:UInt32}
       ${filterQuery}
     group by x 
     ${includeCountry ? ', country' : ''}

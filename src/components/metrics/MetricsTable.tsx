@@ -56,7 +56,6 @@ export function MetricsTable({
     websiteId,
     {
       type,
-      limit: 30,
       search: searchFormattedValues ? undefined : search,
       ...params,
     },
@@ -111,6 +110,8 @@ export function MetricsTable({
     return [];
   }, [data, dataFilter, search, limit, formatValue, type]);
 
+  const downloadData = expanded ? data : filteredData;
+
   return (
     <Column gap="3" justifyContent="space-between">
       <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error} gap>
@@ -118,12 +119,12 @@ export function MetricsTable({
           {allowSearch && <SearchField value={search} onSearch={setSearch} delay={300} />}
           <Row>
             {children}
-            {allowDownload && <DownloadButton filename={type} data={filteredData} />}
+            {allowDownload && <DownloadButton filename={type} data={downloadData} />}
           </Row>
         </Row>
         {data &&
           (expanded ? (
-            <ListExpandedTable {...(props as ListExpandedTableProps)} data={data} />
+            <ListExpandedTable {...(props as ListExpandedTableProps)} data={data} type={type} />
           ) : (
             <ListTable {...(props as ListTableProps)} data={filteredData} />
           ))}

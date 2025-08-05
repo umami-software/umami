@@ -58,6 +58,7 @@ export function QueryParametersTable({
       dataFilter={filters[filter]}
       renderLabel={renderLabel}
       delay={0}
+      expanded={false}
     >
       {allowFilter && <FilterButtons items={buttons} value={filter} onChange={setFilter} />}
     </MetricsTable>

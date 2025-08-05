@@ -1,22 +1,26 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS, EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
-export interface PageviewMetricsParameters {
+export interface PageviewExpandedMetricsParameters {
   type: string;
   limit?: number | string;
   offset?: number | string;
 }
 
-export interface PageviewMetricsData {
-  x: string;
-  y: number;
+export interface PageviewExpandedMetricsData {
+  name: string;
+  pageviews: number;
+  visitors: number;
+  visits: number;
+  bounces: number;
+  totaltime: number;
 }
 
-export async function getPageviewMetrics(
-  ...args: [websiteId: string, parameters: PageviewMetricsParameters, filters: QueryFilters]
+export async function getPageviewExpandedMetrics(
+  ...args: [websiteId: string, parameters: PageviewExpandedMetricsParameters, filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -26,9 +30,9 @@ export async function getPageviewMetrics(
 
 async function relationalQuery(
   websiteId: string,
-  parameters: PageviewMetricsParameters,
+  parameters: PageviewExpandedMetricsParameters,
   filters: QueryFilters,
-): Promise<PageviewMetricsData[]> {
+): Promise<PageviewExpandedMetricsData[]> {
   const { type, limit = 500, offset = 0 } = parameters;
   const column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = prisma;
@@ -91,7 +95,7 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  parameters: PageviewMetricsParameters,
+  parameters: PageviewExpandedMetricsParameters,
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
   const { type, limit = 500, offset = 0 } = parameters;
@@ -103,20 +107,17 @@ async function clickhouseQuery(
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   });
 
-  let sql = '';
   let excludeDomain = '';
+  let entryExitQuery = '';
 
-  if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
-    let entryExitQuery = '';
+  if (column === 'referrer_domain') {
+    excludeDomain = `and referrer_domain != hostname and referrer_domain != ''`;
+  }
 
-    if (column === 'referrer_domain') {
-      excludeDomain = `and referrer_domain != hostname and referrer_domain != ''`;
-    }
+  if (type === 'entry' || type === 'exit') {
+    const aggregrate = type === 'entry' ? 'min' : 'max';
 
-    if (type === 'entry' || type === 'exit') {
-      const aggregrate = type === 'entry' ? 'min' : 'max';
-
-      entryExitQuery = `
+    entryExitQuery = `
       JOIN (select visit_id,
           ${aggregrate}(created_at) target_created_at
       from website_event
@@ -126,62 +127,40 @@ async function clickhouseQuery(
       group by visit_id) x
       ON x.visit_id = website_event.visit_id
           and x.target_created_at = website_event.created_at`;
-    }
-
-    sql = `
-    select ${column} x, 
-      uniq(website_event.session_id) as y
-    from website_event
-    ${cohortQuery}
-    ${entryExitQuery}
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      ${excludeDomain}
-      ${filterQuery}
-    group by x
-    order by y desc
-    limit ${limit}
-    offset ${offset}
-    `;
-  } else {
-    let groupByQuery = '';
-    let columnQuery = `arrayJoin(${column})`;
-
-    if (column === 'referrer_domain') {
-      excludeDomain = `and t != ''`;
-    }
-
-    if (type === 'entry') {
-      columnQuery = `argMinMerge(entry_url)`;
-    }
-
-    if (type === 'exit') {
-      columnQuery = `argMaxMerge(exit_url)`;
-    }
-
-    if (type === 'entry' || type === 'exit') {
-      groupByQuery = 'group by s';
-    }
-
-    sql = `
-    select g.t as x,
-      uniq(s) as y
-    from (
-      select session_id s, 
-        ${columnQuery} as t
-      from website_event_stats_hourly as website_event
-      ${cohortQuery}
-      where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        ${excludeDomain}
-        ${filterQuery}
-      ${groupByQuery}) as g
-    group by x
-    order by y desc
-    limit ${limit}
-    offset ${offset}
-    `;
   }
 
-  return rawQuery(sql, queryParams);
+  return rawQuery(
+    `
+    select
+      name,
+      sum(t.c) as "pageviews",
+      uniq(t.session_id) as "visitors",
+      uniq(t.visit_id) as "visits",
+      sum(if(t.c = 1, 1, 0)) as "bounces",
+      sum(max_time-min_time) as "totaltime"
+    from (
+      select
+        ${column} name,
+        session_id,
+        visit_id,
+        count(*) c,
+        min(created_at) min_time,
+        max(created_at) max_time
+      from website_event
+      ${cohortQuery}
+      ${entryExitQuery}
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and name != ''
+        ${excludeDomain}
+        ${filterQuery}
+      group by name, session_id, visit_id
+    ) as t
+    group by name 
+    order by visitors desc, visits desc
+    limit ${limit}
+    offset ${offset}
+    `,
+    { ...queryParams, ...parameters },
+  );
 }

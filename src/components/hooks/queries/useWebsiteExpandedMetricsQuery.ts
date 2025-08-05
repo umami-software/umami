@@ -5,7 +5,7 @@ import { useDateParameters } from '../useDateParameters';
 import { ReactQueryOptions } from '@/lib/types';
 
 export type WebsiteExpandedMetricsData = {
-  label: string;
+  name: string;
   pageviews: number;
   visitors: number;
   visits: number;

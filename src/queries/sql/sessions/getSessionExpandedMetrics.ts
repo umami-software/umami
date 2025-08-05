@@ -11,7 +11,7 @@ export interface SessionExpandedMetricsParameters {
 }
 
 export interface SessionExpandedMetricsData {
-  label: string;
+  name: string;
   pageviews: number;
   visitors: number;
   visits: number;
@@ -34,7 +34,7 @@ async function relationalQuery(
   filters: QueryFilters,
 ): Promise<SessionExpandedMetricsData[]> {
   const { type, limit = 500, offset = 0 } = parameters;
-  const column = FILTER_COLUMNS[type] || type;
+  let column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = prisma;
   const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters(
     {
@@ -47,6 +47,10 @@ async function relationalQuery(
     },
   );
   const includeCountry = column === 'city' || column === 'region';
+
+  if (type === 'language') {
+    column = `lower(left(${type}, 2))`;
+  }
 
   return rawQuery(
     `
@@ -77,7 +81,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<SessionExpandedMetricsData[]> {
   const { type, limit = 500, offset = 0 } = parameters;
-  const column = FILTER_COLUMNS[type] || type;
+  let column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
@@ -86,10 +90,14 @@ async function clickhouseQuery(
   });
   const includeCountry = column === 'city' || column === 'region';
 
+  if (type === 'language') {
+    column = `lower(left(${type}, 2))`;
+  }
+
   return rawQuery(
     `
     select
-      label,
+      name,
       ${includeCountry ? 'country,' : ''}
       sum(t.c) as "pageviews",
       uniq(t.session_id) as "visitors",
@@ -98,7 +106,7 @@ async function clickhouseQuery(
       sum(max_time-min_time) as "totaltime"
     from (
       select
-        ${column} label,
+        ${column} name,
         ${includeCountry ? 'country,' : ''}
         session_id,
         visit_id,
@@ -109,13 +117,12 @@ async function clickhouseQuery(
       ${cohortQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type = {eventType:UInt32}
-        and label != ''
+        and name != ''
         ${filterQuery}
-      group by label, session_id, visit_id
+      group by name, session_id, visit_id
       ${includeCountry ? ', country' : ''}
     ) as t
-    group by label 
+    group by name 
     ${includeCountry ? ', country' : ''}
     order by visitors desc, visits desc
     limit ${limit}

@@ -90,7 +90,11 @@ function mapFilter(column: string, operator: string, name: string, type: string 
 function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}) {
   const query = filtersToArray(filters, options).reduce((arr, { name, column, operator }) => {
     if (column) {
-      arr.push(`and ${mapFilter(column, operator, name)}`);
+      if (name === 'eventType') {
+        arr.push(`and ${mapFilter(column, operator, name, 'UInt32')}`);
+      } else {
+        arr.push(`and ${mapFilter(column, operator, name)}`);
+      }
 
       if (name === 'referrer') {
         arr.push(`and referrer_domain != hostname`);
