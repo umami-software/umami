@@ -1,5 +1,5 @@
 'use client';
-import { TeamProvider } from '@/app/(main)/teams/[teamId]/TeamProvider';
+import { TeamProvider } from '@/app/(main)/settings/teams/[teamId]/TeamProvider';
 import { TeamDetails } from '@/app/(main)/settings/teams/[teamId]/TeamDetails';
 
 export function TeamSettingsPage({ teamId }: { teamId: string }) {

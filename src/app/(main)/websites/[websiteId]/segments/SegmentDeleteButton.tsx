@@ -1,33 +1,32 @@
-import { ConfirmationForm } from '@/components/common/ConfirmationForm';
-import { useApi, useMessages, useModified } from '@/components/hooks';
-import { messages } from '@/components/messages';
-import { Trash } from '@/components/icons';
 import { Dialog } from '@umami/react-zen';
 import { ActionButton } from '@/components/input/ActionButton';
+import { Trash } from '@/components/icons';
+import { ConfirmationForm } from '@/components/common/ConfirmationForm';
+import { messages } from '@/components/messages';
+import { useApi, useMessages, useModified } from '@/components/hooks';
 
-export function TeamMemberRemoveButton({
-  teamId,
-  userId,
-  userName,
+export function SegmentDeleteButton({
+  segmentId,
+  websiteId,
+  name,
   onSave,
 }: {
-  teamId: string;
-  userId: string;
-  userName: string;
-  disabled?: boolean;
+  segmentId: string;
+  websiteId: string;
+  name: string;
   onSave?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
   const { del, useMutation } = useApi();
   const { mutate, isPending, error } = useMutation({
-    mutationFn: () => del(`/teams/${teamId}/users/${userId}`),
+    mutationFn: () => del(`/websites/${websiteId}/segments/${segmentId}`),
   });
   const { touch } = useModified();
 
   const handleConfirm = (close: () => void) => {
     mutate(null, {
       onSuccess: () => {
-        touch('teams:members');
+        touch('segments');
         onSave?.();
         close();
       },
@@ -36,17 +35,17 @@ export function TeamMemberRemoveButton({
 
   return (
     <ActionButton tooltip={formatMessage(labels.delete)} icon={<Trash />}>
-      <Dialog title={formatMessage(labels.removeMember)} style={{ width: 400 }}>
+      <Dialog title={formatMessage(labels.confirm)} style={{ width: 400 }}>
         {({ close }) => (
           <ConfirmationForm
             message={formatMessage(messages.confirmRemove, {
-              target: userName,
+              target: name,
             })}
             isLoading={isPending}
             error={error}
             onConfirm={handleConfirm.bind(null, close)}
             onClose={close}
-            buttonLabel={formatMessage(labels.remove)}
+            buttonLabel={formatMessage(labels.delete)}
             buttonVariant="danger"
           />
         )}

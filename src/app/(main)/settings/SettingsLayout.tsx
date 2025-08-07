@@ -2,44 +2,60 @@
 import { ReactNode } from 'react';
 import { Grid, Column } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { SideMenu } from '@/components/common/SideMenu';
-import { PageHeader } from '@/components/common/PageHeader';
-import { Panel } from '@/components/common/Panel';
 import { PageBody } from '@/components/common/PageBody';
+import { SideMenu } from '@/components/common/SideMenu';
+import { UserCircle, Users, Knobs } from '@/components/icons';
 
 export function SettingsLayout({ children }: { children: ReactNode }) {
   const { formatMessage, labels } = useMessages();
-  const { pathname } = useNavigation();
+  const { renderUrl, pathname } = useNavigation();
 
   const items = [
     {
-      id: 'preferences',
-      label: formatMessage(labels.preferences),
-      url: '/settings/preferences',
+      label: formatMessage(labels.application),
+      items: [
+        {
+          id: 'preferences',
+          label: formatMessage(labels.preferences),
+          path: renderUrl('/settings/preferences'),
+          icon: <Knobs />,
+        },
+        {
+          id: 'teams',
+          label: formatMessage(labels.teams),
+          path: renderUrl('/settings/teams'),
+          icon: <Users />,
+        },
+      ],
     },
     {
-      id: 'profile',
-      label: formatMessage(labels.profile),
-      url: '/settings/profile',
+      label: formatMessage(labels.account),
+      items: [
+        {
+          id: 'profile',
+          label: formatMessage(labels.profile),
+          path: renderUrl('/settings/profile'),
+          icon: <UserCircle />,
+        },
+      ],
     },
-    { id: 'teams', label: formatMessage(labels.teams), url: '/settings/teams' },
   ];
 
-  const value = items.find(({ url }) => pathname.includes(url))?.id;
+  const selectedKey =
+    items.flatMap(e => e.items)?.find(({ path }) => path && pathname.endsWith(path))?.id ||
+    'overview';
 
   return (
-    <PageBody>
-      <Column gap="6">
-        <PageHeader title={formatMessage(labels.settings)} />
-        <Grid columns="200px 1fr" gap>
-          <Column>
-            <SideMenu items={items} selectedKey={value} />
-          </Column>
-          <Column>
-            <Panel minHeight="300px">{children}</Panel>
-          </Column>
-        </Grid>
+    <Grid columns="auto 1fr" width="100%" height="100%">
+      <Column height="100%" border="right" backgroundColor>
+        <SideMenu
+          items={items}
+          title={formatMessage(labels.settings)}
+          selectedKey={selectedKey}
+          allowMinimize={false}
+        />
       </Column>
-    </PageBody>
+      <PageBody gap="6">{children}</PageBody>
+    </Grid>
   );
 }

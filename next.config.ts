@@ -97,7 +97,12 @@ const headers = [
   },
 ];
 
-const rewrites = [];
+const rewrites = [
+  {
+    source: '/teams/:id/settings/:path*',
+    destination: '/settings/:path*',
+  },
+];
 
 if (trackerScriptURL) {
   rewrites.push({

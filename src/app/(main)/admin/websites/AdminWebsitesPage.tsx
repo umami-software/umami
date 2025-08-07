@@ -1,16 +1,19 @@
 'use client';
 import { AdminWebsitesDataTable } from './AdminWebsitesDataTable';
 import { Column } from '@umami/react-zen';
-import { SectionHeader } from '@/components/common/SectionHeader';
 import { useMessages } from '@/components/hooks';
+import { PageHeader } from '@/components/common/PageHeader';
+import { Panel } from '@/components/common/Panel';
 
 export function AdminWebsitesPage() {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <Column gap>
-      <SectionHeader title={formatMessage(labels.websites)} />
-      <AdminWebsitesDataTable />
+    <Column gap="6">
+      <PageHeader title={formatMessage(labels.websites)} />
+      <Panel>
+        <AdminWebsitesDataTable />
+      </Panel>
     </Column>
   );
 }

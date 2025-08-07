@@ -15,7 +15,7 @@ import {
   Pressable,
 } from '@umami/react-zen';
 import { useLoginQuery, useMessages, useUserTeamsQuery, useNavigation } from '@/components/hooks';
-import { Chevron, User, Users } from '@/components/icons';
+import { Chevron, User, Users, LogOut } from '@/components/icons';
 
 export function TeamsButton({ showText = true }: { showText?: boolean }) {
   const { user } = useLoginQuery();
@@ -80,6 +80,17 @@ export function TeamsButton({ showText = true }: { showText?: boolean }) {
                   </Row>
                 </MenuItem>
               ))}
+            </MenuSection>
+            <MenuSeparator />
+            <MenuSection>
+              <MenuItem id="logout">
+                <Row alignItems="center" gap>
+                  <Icon size="sm">
+                    <LogOut />
+                  </Icon>
+                  <Text wrap="nowrap">{formatMessage(labels.logout)}</Text>
+                </Row>
+              </MenuItem>
             </MenuSection>
           </Menu>
         </Box>

@@ -1,9 +1,9 @@
 import { Button, DialogTrigger, Modal, Text, Icon, Dialog } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import { Plus } from '@/components/icons';
-import { SegmentEditForm } from './SegmentEditForm';
+import { SegmentEditForm } from '@/app/(main)/websites/[websiteId]/segments/SegmentEditForm';
 
-export function SegmentAddButton({ websiteId }: { websiteId: string }) {
+export function SegmentSaveButton({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
 
   return (

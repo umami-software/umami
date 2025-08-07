@@ -1,4 +1,14 @@
-import { Button, Icon, Text, Row, TooltipTrigger, Tooltip } from '@umami/react-zen';
+import {
+  Button,
+  Icon,
+  Text,
+  Row,
+  TooltipTrigger,
+  Tooltip,
+  Modal,
+  Dialog,
+  DialogTrigger,
+} from '@umami/react-zen';
 import {
   useNavigation,
   useMessages,
@@ -6,8 +16,9 @@ import {
   useFilters,
   useWebsiteSegmentQuery,
 } from '@/components/hooks';
-import { Close } from '@/components/icons';
+import { Close, Bookmark } from '@/components/icons';
 import { isSearchOperator } from '@/lib/params';
+import { SegmentEditForm } from '@/app/(main)/websites/[websiteId]/segments/SegmentEditForm';
 
 export function FilterBar({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
@@ -65,16 +76,37 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
           );
         })}
       </Row>
-      <TooltipTrigger delay={0}>
-        <Button variant="zero" onPress={handleResetFilter} style={{ alignSelf: 'flex-start' }}>
-          <Icon>
-            <Close />
-          </Icon>
-        </Button>
-        <Tooltip>
-          <Text>{formatMessage(labels.clearAll)}</Text>
-        </Tooltip>
-      </TooltipTrigger>
+      <Row alignItems="center">
+        <DialogTrigger>
+          <TooltipTrigger delay={0}>
+            <Button variant="zero">
+              <Icon>
+                <Bookmark />
+              </Icon>
+            </Button>
+            <Tooltip>
+              <Text>{formatMessage(labels.saveSegment)}</Text>
+            </Tooltip>
+          </TooltipTrigger>
+          <Modal>
+            <Dialog title={formatMessage(labels.segment)} style={{ width: 800 }}>
+              {({ close }) => {
+                return <SegmentEditForm websiteId={websiteId} onClose={close} />;
+              }}
+            </Dialog>
+          </Modal>
+        </DialogTrigger>
+        <TooltipTrigger delay={0}>
+          <Button variant="zero" onPress={handleResetFilter}>
+            <Icon>
+              <Close />
+            </Icon>
+          </Button>
+          <Tooltip>
+            <Text>{formatMessage(labels.clearAll)}</Text>
+          </Tooltip>
+        </TooltipTrigger>
+      </Row>
     </Row>
   );
 }

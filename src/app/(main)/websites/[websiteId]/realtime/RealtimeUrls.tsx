@@ -6,7 +6,7 @@ import { ListTable } from '@/components/metrics/ListTable';
 import { useMessages } from '@/components/hooks';
 import { RealtimeData } from '@/lib/types';
 import { WebsiteContext } from '../WebsiteProvider';
-import { FilterButtons } from '@/components/common/FilterButtons';
+import { FilterButtons } from '@/components/input/FilterButtons';
 
 const FILTER_REFERRERS = 'filter-referrers';
 const FILTER_PAGES = 'filter-pages';

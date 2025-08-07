@@ -1,6 +1,7 @@
 import { useMessages, useModified } from '@/components/hooks';
-import { Row, Button, Icon, Modal, DialogTrigger, Dialog, useToast } from '@umami/react-zen';
+import { Dialog, useToast } from '@umami/react-zen';
 import { TeamMemberEditForm } from './TeamMemberEditForm';
+import { ActionButton } from '@/components/input/ActionButton';
 import { Edit } from '@/components/icons';
 
 export function TeamMemberEditButton({
@@ -25,27 +26,18 @@ export function TeamMemberEditButton({
   };
 
   return (
-    <DialogTrigger>
-      <Button variant="quiet">
-        <Row alignItems="center" gap>
-          <Icon>
-            <Edit />
-          </Icon>
-        </Row>
-      </Button>
-      <Modal>
-        <Dialog title={formatMessage(labels.editMember)} style={{ width: 400 }}>
-          {({ close }) => (
-            <TeamMemberEditForm
-              teamId={teamId}
-              userId={userId}
-              role={role}
-              onSave={handleSave}
-              onClose={close}
-            />
-          )}
-        </Dialog>
-      </Modal>
-    </DialogTrigger>
+    <ActionButton tooltip={formatMessage(labels.edit)} icon={<Edit />}>
+      <Dialog title={formatMessage(labels.editMember)} style={{ width: 400 }}>
+        {({ close }) => (
+          <TeamMemberEditForm
+            teamId={teamId}
+            userId={userId}
+            role={role}
+            onSave={handleSave}
+            onClose={close}
+          />
+        )}
+      </Dialog>
+    </ActionButton>
   );
 }

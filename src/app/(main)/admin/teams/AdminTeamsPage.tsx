@@ -1,16 +1,19 @@
 'use client';
 import { AdminTeamsDataTable } from './AdminTeamsDataTable';
 import { Column } from '@umami/react-zen';
-import { SectionHeader } from '@/components/common/SectionHeader';
 import { useMessages } from '@/components/hooks';
+import { PageHeader } from '@/components/common/PageHeader';
+import { Panel } from '@/components/common/Panel';
 
 export function AdminTeamsPage() {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <Column gap>
-      <SectionHeader title={formatMessage(labels.teams)} />
-      <AdminTeamsDataTable />
+    <Column gap="6">
+      <PageHeader title={formatMessage(labels.teams)} />
+      <Panel>
+        <AdminTeamsDataTable />
+      </Panel>
     </Column>
   );
 }

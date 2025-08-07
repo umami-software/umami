@@ -45,8 +45,8 @@ importers:
         specifier: ^5.83.0
         version: 5.83.0(react@19.1.0)
       '@umami/react-zen':
-        specifier: ^0.154.0
-        version: 0.154.0(@babel/core@7.27.1)(@types/react@19.1.8)(babel-plugin-react-compiler@19.1.0-rc.2)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.0))
+        specifier: ^0.157.0
+        version: 0.157.0(@babel/core@7.27.1)(@types/react@19.1.8)(babel-plugin-react-compiler@19.1.0-rc.2)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.0))
       '@umami/redis-client':
         specifier: ^0.27.0
         version: 0.27.0
@@ -2544,8 +2544,8 @@ packages:
     resolution: {integrity: sha512-pWrTcoFNWuwHlA9CvlfSsGWs14JxfN1TH25zM5L7o0pRLhsoZkDnTsXfQRJBEWJoV5DL0jf+Z+sxiud+K0mq1g==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@umami/react-zen@0.154.0':
-    resolution: {integrity: sha512-waVMJNwGPSDereFWTnbtdJjQGQhJIi1n7Hs2EnuS9OSMUbj9THgA1A9722zyO3w46KmbIBMqmIxur4ykpHOYlg==}
+  '@umami/react-zen@0.157.0':
+    resolution: {integrity: sha512-QZqZcah1t6KniDvFTF+GxBDkaEYUuQOyj1olao5p5rtZBMW1/v4GaVcL+8UAzWyWIUnsrRI3e5HoytapJg6VfQ==}
 
   '@umami/redis-client@0.27.0':
     resolution: {integrity: sha512-SbHTpxhgeZyTBUSp2zdZM+XUtpsaSL4Tad8QXIEhEtjWhvvfoornyT5kLuyYCVtzSAT4daALeGmOO1z6EE1KcA==}
@@ -5984,8 +5984,8 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
 
-  react-hook-form@7.61.1:
-    resolution: {integrity: sha512-2vbXUFDYgqEgM2RcXcAT2PwDW/80QARi+PKmHy5q2KhuKvOlG8iIYgf7eIlIANR5trW9fJbP4r5aub3a4egsew==}
+  react-hook-form@7.62.0:
+    resolution: {integrity: sha512-7KWFejc98xqG/F4bAxpL41NB3o1nnvQO1RWZT3TqRZYL8RryQETGfEdVnJN2fy1crCiBLLjkRBVK05j24FxJGA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -9751,7 +9751,7 @@ snapshots:
       '@typescript-eslint/types': 8.38.0
       eslint-visitor-keys: 4.2.1
 
-  '@umami/react-zen@0.154.0(@babel/core@7.27.1)(@types/react@19.1.8)(babel-plugin-react-compiler@19.1.0-rc.2)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.0))':
+  '@umami/react-zen@0.157.0(@babel/core@7.27.1)(@types/react@19.1.8)(babel-plugin-react-compiler@19.1.0-rc.2)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.0))':
     dependencies:
       '@fontsource/jetbrains-mono': 5.2.6
       '@internationalized/date': 3.8.2
@@ -9765,7 +9765,7 @@ snapshots:
       react: 19.1.0
       react-aria-components: 1.9.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-dom: 19.1.0(react@19.1.0)
-      react-hook-form: 7.61.1(react@19.1.0)
+      react-hook-form: 7.62.0(react@19.1.0)
       react-icons: 5.5.0(react@19.1.0)
       thenby: 1.3.4
       zustand: 5.0.6(@types/react@19.1.8)(immer@9.0.21)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0))
@@ -13763,7 +13763,7 @@ snapshots:
     dependencies:
       react: 19.1.0
 
-  react-hook-form@7.61.1(react@19.1.0):
+  react-hook-form@7.62.0(react@19.1.0):
     dependencies:
       react: 19.1.0
 

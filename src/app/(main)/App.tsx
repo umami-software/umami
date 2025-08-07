@@ -4,7 +4,6 @@ import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { UpdateNotice } from './UpdateNotice';
 import { SideNav } from '@/app/(main)/SideNav';
-import { TopNav } from '@/app/(main)/TopNav';
 import { useLoginQuery, useConfig } from '@/components/hooks';
 
 export function App({ children }) {
@@ -31,7 +30,6 @@ export function App({ children }) {
         <SideNav />
       </Column>
       <Column alignItems="center" overflow="auto" position="relative">
-        <TopNav />
         {children}
       </Column>
       <UpdateNotice user={user} config={config} />

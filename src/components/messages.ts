@@ -342,6 +342,10 @@ export const labels = defineMessages({
   traffic: { id: 'label.traffic', defaultMessage: 'Traffic' },
   behavior: { id: 'label.behavior', defaultMessage: 'Behavior' },
   growth: { id: 'label.growth', defaultMessage: 'Growth' },
+  account: { id: 'label.account', defaultMessage: 'Account' },
+  application: { id: 'label.application', defaultMessage: 'Application' },
+  saveSegment: { id: 'label.save-segment', defaultMessage: 'Save segment' },
+  saveCohort: { id: 'label.save-cohort', defaultMessage: 'Save cohort' },
 });
 
 export const messages = defineMessages({

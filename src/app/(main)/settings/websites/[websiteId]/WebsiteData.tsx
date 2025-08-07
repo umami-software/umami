@@ -1,5 +1,4 @@
 import { Button, Modal, DialogTrigger, Dialog, Column } from '@umami/react-zen';
-import { useRouter } from 'next/navigation';
 import {
   useLoginQuery,
   useMessages,
@@ -17,9 +16,9 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   const { formatMessage, labels, messages } = useMessages();
   const { user } = useLoginQuery();
   const { touch } = useModified();
-  const { teamId, renderUrl } = useNavigation();
-  const router = useRouter();
+  const { router, pathname, teamId, renderUrl } = useNavigation();
   const { data: teams } = useUserTeamsQuery(user.id);
+  const isAdmin = pathname.startsWith('/admin');
 
   const canTransferWebsite =
     (
@@ -49,21 +48,23 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
 
   return (
     <Column gap="6">
-      <ActionForm
-        label={formatMessage(labels.transferWebsite)}
-        description={formatMessage(messages.transferWebsite)}
-      >
-        <DialogTrigger>
-          <Button isDisabled={!canTransferWebsite}>{formatMessage(labels.transfer)}</Button>
-          <Modal>
-            <Dialog title={formatMessage(labels.transferWebsite)} style={{ width: 400 }}>
-              {({ close }) => (
-                <WebsiteTransferForm websiteId={websiteId} onSave={handleSave} onClose={close} />
-              )}
-            </Dialog>
-          </Modal>
-        </DialogTrigger>
-      </ActionForm>
+      {!isAdmin && (
+        <ActionForm
+          label={formatMessage(labels.transferWebsite)}
+          description={formatMessage(messages.transferWebsite)}
+        >
+          <DialogTrigger>
+            <Button isDisabled={!canTransferWebsite}>{formatMessage(labels.transfer)}</Button>
+            <Modal>
+              <Dialog title={formatMessage(labels.transferWebsite)} style={{ width: 400 }}>
+                {({ close }) => (
+                  <WebsiteTransferForm websiteId={websiteId} onSave={handleSave} onClose={close} />
+                )}
+              </Dialog>
+            </Modal>
+          </DialogTrigger>
+        </ActionForm>
+      )}
 
       <ActionForm
         label={formatMessage(labels.resetWebsite)}

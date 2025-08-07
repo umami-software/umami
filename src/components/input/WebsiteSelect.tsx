@@ -33,13 +33,13 @@ export function WebsiteSelect({
       items={data?.['data'] || []}
       value={websiteId}
       isLoading={isLoading}
-      buttonProps={buttonProps}
+      buttonProps={{ ...buttonProps }}
       allowSearch={true}
       searchValue={search}
       onSearch={handleSearch}
       onChange={handleSelect}
       renderValue={() => (
-        <Text truncate style={{ maxWidth: 160 }}>
+        <Text truncate weight="bold" style={{ maxWidth: 160, lineHeight: 1 }}>
           {website?.name}
         </Text>
       )}

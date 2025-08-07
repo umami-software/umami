@@ -1,6 +1,6 @@
 import { Button, Icon, DialogTrigger, Dialog, Modal, Text } from '@umami/react-zen';
 import { ListFilter } from '@/components/icons';
-import { FilterEditForm } from '@/components/common/FilterEditForm';
+import { FilterEditForm } from '@/components/input/FilterEditForm';
 import { useMessages, useNavigation, useFilters } from '@/components/hooks';
 import { filtersArrayToObject } from '@/lib/params';
 

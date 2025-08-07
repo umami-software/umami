@@ -1,6 +1,6 @@
 import { useFormat } from '@/components//hooks/useFormat';
 import { Empty } from '@/components/common/Empty';
-import { FilterButtons } from '@/components/common/FilterButtons';
+import { FilterButtons } from '@/components/input/FilterButtons';
 import { useCountryNames, useLocale, useMessages, useTimezone } from '@/components/hooks';
 import { Eye, Visitor, Bolt } from '@/components/icons';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';

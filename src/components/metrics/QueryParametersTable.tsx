@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Row, Text } from '@umami/react-zen';
-import { FilterButtons } from '@/components/common/FilterButtons';
+import { FilterButtons } from '@/components/input/FilterButtons';
 import { emptyFilter, paramFilter } from '@/lib/filters';
 import { MetricsTable, MetricsTableProps } from './MetricsTable';
 import { useMessages } from '@/components/hooks';

@@ -6,24 +6,30 @@ import {
   FormSubmitButton,
   TextField,
   Label,
+  Loading,
 } from '@umami/react-zen';
 import { subMonths, endOfDay } from 'date-fns';
 import { FieldFilters } from '@/components/input/FieldFilters';
 import { useState } from 'react';
-import { useApi, useMessages, useModified } from '@/components/hooks';
+import { useApi, useMessages, useModified, useWebsiteSegmentQuery } from '@/components/hooks';
 import { filtersArrayToObject } from '@/lib/params';
 
 export function SegmentEditForm({
+  segmentId,
   websiteId,
   filters = [],
+  showFilters = true,
   onSave,
   onClose,
 }: {
+  segmentId: string;
   websiteId: string;
   filters?: any[];
+  showFilters?: boolean;
   onSave?: () => void;
   onClose?: () => void;
 }) {
+  const { data } = useWebsiteSegmentQuery(websiteId, segmentId);
   const { formatMessage, labels } = useMessages();
   const [currentFilters, setCurrentFilters] = useState(filters);
   const { touch } = useModified();
@@ -33,7 +39,10 @@ export function SegmentEditForm({
   const { post, useMutation } = useApi();
   const { mutate, error, isPending } = useMutation({
     mutationFn: (data: any) =>
-      post(`/websites/${websiteId}/segments`, { ...data, type: 'segment' }),
+      post(`/websites/${websiteId}/segments${segmentId ? `/${segmentId}` : ''}`, {
+        ...data,
+        type: 'segment',
+      }),
   });
 
   const handleSubmit = async (data: any) => {
@@ -49,28 +58,40 @@ export function SegmentEditForm({
     );
   };
 
+  if (segmentId && !data) {
+    return <Loading position="page" />;
+  }
+
   return (
-    <Form error={error} onSubmit={handleSubmit}>
+    <Form error={error} onSubmit={handleSubmit} defaultValues={data}>
       <FormField
         name="name"
         label={formatMessage(labels.name)}
         rules={{ required: formatMessage(labels.required) }}
       >
-        <TextField />
+        <TextField autoFocus />
       </FormField>
-      <Label>{formatMessage(labels.filters)}</Label>
-      <FieldFilters
-        websiteId={websiteId}
-        filters={currentFilters}
-        startDate={startDate}
-        endDate={endDate}
-        onSave={setCurrentFilters}
-      />
+      {showFilters && (
+        <>
+          <Label>{formatMessage(labels.filters)}</Label>
+          <FieldFilters
+            websiteId={websiteId}
+            filters={currentFilters}
+            startDate={startDate}
+            endDate={endDate}
+            onSave={setCurrentFilters}
+          />
+        </>
+      )}
       <FormButtons>
         <Button isDisabled={isPending} onPress={onClose}>
           {formatMessage(labels.cancel)}
         </Button>
-        <FormSubmitButton variant="primary" data-test="button-submit" isDisabled={isPending}>
+        <FormSubmitButton
+          variant="primary"
+          data-test="button-submit"
+          isDisabled={isPending || currentFilters.length === 0}
+        >
           {formatMessage(labels.save)}
         </FormSubmitButton>
       </FormButtons>

@@ -1,4 +1,3 @@
-import { Icon, Text, Row, NavMenu, NavMenuItem, NavMenuGroup, Column } from '@umami/react-zen';
 import {
   Eye,
   Lightning,
@@ -16,14 +15,16 @@ import {
   ChartPie,
 } from '@/components/icons';
 import { useMessages, useNavigation } from '@/components/hooks';
-import Link from 'next/link';
+import { SideMenu } from '@/components/common/SideMenu';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 
 export function WebsiteNav({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
   const { pathname, renderUrl, teamId } = useNavigation();
 
-  const links = [
+  const renderPath = (path: string) => renderUrl(`/websites/${websiteId}${path}`);
+
+  const items = [
     {
       label: formatMessage(labels.traffic),
       items: [
@@ -31,25 +32,31 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
           id: 'overview',
           label: formatMessage(labels.overview),
           icon: <Eye />,
-          path: '',
+          path: renderPath(''),
         },
         {
           id: 'events',
           label: formatMessage(labels.events),
           icon: <Lightning />,
-          path: '/events',
+          path: renderPath('/events'),
         },
         {
           id: 'sessions',
           label: formatMessage(labels.sessions),
           icon: <User />,
-          path: '/sessions',
+          path: renderPath('/sessions'),
         },
         {
           id: 'realtime',
           label: formatMessage(labels.realtime),
           icon: <Clock />,
-          path: '/realtime',
+          path: renderPath('/realtime'),
+        },
+        {
+          id: 'breakdown',
+          label: formatMessage(labels.breakdown),
+          icon: <Sheet />,
+          path: renderPath('/breakdown'),
         },
       ],
     },
@@ -60,25 +67,25 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
           id: 'goals',
           label: formatMessage(labels.goals),
           icon: <Target />,
-          path: '/goals',
+          path: renderPath('/goals'),
         },
         {
           id: 'funnel',
           label: formatMessage(labels.funnels),
           icon: <Funnel />,
-          path: '/funnels',
+          path: renderPath('/funnels'),
         },
         {
           id: 'journeys',
           label: formatMessage(labels.journeys),
           icon: <Path />,
-          path: '/journeys',
+          path: renderPath('/journeys'),
         },
         {
           id: 'retention',
           label: formatMessage(labels.retention),
           icon: <Magnet />,
-          path: '/retention',
+          path: renderPath('/retention'),
         },
       ],
     },
@@ -86,22 +93,16 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
       label: formatMessage(labels.segments),
       items: [
         {
-          id: 'breakdown',
-          label: formatMessage(labels.breakdown),
-          icon: <Sheet />,
-          path: '/breakdown',
-        },
-        {
           id: 'segments',
           label: formatMessage(labels.segments),
           icon: <ChartPie />,
-          path: '/segments',
+          path: renderPath('/segments'),
         },
         {
           id: 'cohorts',
           label: formatMessage(labels.cohorts),
           icon: <UserPlus />,
-          path: '/cohorts',
+          path: renderPath('/cohorts'),
         },
       ],
     },
@@ -112,53 +113,31 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
           id: 'utm',
           label: formatMessage(labels.utm),
           icon: <Tag />,
-          path: '/utm',
+          path: renderPath('/utm'),
         },
         {
           id: 'revenue',
           label: formatMessage(labels.revenue),
           icon: <Money />,
-          path: '/revenue',
+          path: renderPath('/revenue'),
         },
         {
           id: 'attribution',
           label: formatMessage(labels.attribution),
           icon: <Network />,
-          path: '/attribution',
+          path: renderPath('/attribution'),
         },
       ],
     },
   ];
 
-  const selected =
-    links.flatMap(e => e.items).find(({ path }) => path && pathname.endsWith(path))?.id ||
+  const selectedKey =
+    items.flatMap(e => e.items).find(({ path }) => path && pathname.endsWith(path))?.id ||
     'overview';
 
   return (
-    <Column gap padding width="240px" border="left" overflowY="auto">
+    <SideMenu items={items} selectedKey={selectedKey} allowMinimize={false}>
       <WebsiteSelect buttonProps={{ variant: 'quiet' }} websiteId={websiteId} teamId={teamId} />
-      <NavMenu muteItems={false}>
-        {links.map(({ label, items }) => {
-          return (
-            <NavMenuGroup title={label} key={label} gap="1">
-              {items.map(({ id, label, icon, path }) => {
-                const isSelected = selected === id;
-
-                return (
-                  <Link key={id} href={renderUrl(`/websites/${websiteId}${path}`)}>
-                    <NavMenuItem isSelected={isSelected}>
-                      <Row alignItems="center" gap>
-                        <Icon>{icon}</Icon>
-                        <Text>{label}</Text>
-                      </Row>
-                    </NavMenuItem>
-                  </Link>
-                );
-              })}
-            </NavMenuGroup>
-          );
-        })}
-      </NavMenu>
-    </Column>
+    </SideMenu>
   );
 }

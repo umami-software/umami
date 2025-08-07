@@ -9,6 +9,7 @@ import {
   MenuSeparator,
   MenuSection,
   Text,
+  Row,
 } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
 import { useMessages, useLoginQuery } from '@/components/hooks';
@@ -36,25 +37,31 @@ export function ProfileButton() {
           <MenuSection title={user.username}>
             <MenuSeparator />
             <MenuItem id="settings">
-              <Icon>
-                <Settings />
-              </Icon>
-              <Text>{formatMessage(labels.settings)}</Text>
+              <Row alignItems="center" gap>
+                <Icon>
+                  <Settings />
+                </Icon>
+                <Text>{formatMessage(labels.settings)}</Text>
+              </Row>
             </MenuItem>
             {user.isAdmin && (
               <MenuItem id="admin">
-                <Icon>
-                  <LockKeyhole />
-                </Icon>
-                <Text>{formatMessage(labels.admin)}</Text>
+                <Row alignItems="center" gap>
+                  <Icon>
+                    <LockKeyhole />
+                  </Icon>
+                  <Text>{formatMessage(labels.admin)}</Text>
+                </Row>
               </MenuItem>
             )}
             {!cloudMode && (
               <MenuItem data-test="item-logout" id="logout">
-                <Icon>
-                  <LogOut />
-                </Icon>
-                <Text>{formatMessage(labels.logout)}</Text>
+                <Row alignItems="center" gap>
+                  <Icon>
+                    <LogOut />
+                  </Icon>
+                  <Text>{formatMessage(labels.logout)}</Text>
+                </Row>
               </MenuItem>
             )}
           </MenuSection>

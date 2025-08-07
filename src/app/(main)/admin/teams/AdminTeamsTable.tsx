@@ -32,7 +32,9 @@ export function AdminTeamsTable({
         <DataColumn id="owner" label={formatMessage(labels.owner)} width="200px">
           {(row: any) => (
             <Text title={row?.teamUser?.[0]?.user?.username} truncate>
-              {row?.teamUser?.[0]?.user?.username}
+              <Link href={`/admin/users/${row?.teamUser?.[0]?.user?.id}`}>
+                {row?.teamUser?.[0]?.user?.username}
+              </Link>
             </Text>
           )}
         </DataColumn>

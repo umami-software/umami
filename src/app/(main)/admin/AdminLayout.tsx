@@ -2,9 +2,8 @@
 import { ReactNode } from 'react';
 import { Grid, Column } from '@umami/react-zen';
 import { useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
+import { User, Users, Globe } from '@/components/icons';
 import { SideMenu } from '@/components/common/SideMenu';
-import { PageHeader } from '@/components/common/PageHeader';
-import { Panel } from '@/components/common/Panel';
 import { PageBody } from '@/components/common/PageBody';
 
 export function AdminLayout({ children }: { children: ReactNode }) {
@@ -18,37 +17,45 @@ export function AdminLayout({ children }: { children: ReactNode }) {
 
   const items = [
     {
-      id: 'users',
-      label: formatMessage(labels.users),
-      url: '/admin/users',
-    },
-    {
-      id: 'websites',
-      label: formatMessage(labels.websites),
-      url: '/admin/websites',
-    },
-    {
-      id: 'teams',
-      label: formatMessage(labels.teams),
-      url: '/admin/teams',
+      label: formatMessage(labels.application),
+      items: [
+        {
+          id: 'users',
+          label: formatMessage(labels.users),
+          path: '/admin/users',
+          icon: <User />,
+        },
+        {
+          id: 'websites',
+          label: formatMessage(labels.websites),
+          path: '/admin/websites',
+          icon: <Globe />,
+        },
+        {
+          id: 'teams',
+          label: formatMessage(labels.teams),
+          path: '/admin/teams',
+          icon: <Users />,
+        },
+      ],
     },
   ];
 
-  const value = items.find(({ url }) => pathname.includes(url))?.id;
+  const selectedKey = items
+    .flatMap(e => e.items)
+    ?.find(({ path }) => path && pathname.startsWith(path))?.id;
 
   return (
-    <PageBody>
-      <Column gap="6">
-        <PageHeader title={formatMessage(labels.admin)} />
-        <Grid columns="200px 1fr" gap>
-          <Column>
-            <SideMenu items={items} selectedKey={value} />
-          </Column>
-          <Column>
-            <Panel minHeight="300px">{children}</Panel>
-          </Column>
-        </Grid>
+    <Grid columns="auto 1fr" width="100%" height="100%">
+      <Column height="100%" border="right" backgroundColor>
+        <SideMenu
+          items={items}
+          title={formatMessage(labels.admin)}
+          selectedKey={selectedKey}
+          allowMinimize={false}
+        />
       </Column>
-    </PageBody>
+      <PageBody>{children}</PageBody>
+    </Grid>
   );
 }

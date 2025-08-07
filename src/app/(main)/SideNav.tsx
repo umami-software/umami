@@ -17,15 +17,20 @@ import {
   LockKeyhole,
 } from '@/components/icons';
 import { useMessages, useNavigation, useGlobalState } from '@/components/hooks';
-import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { TeamsButton } from '@/components/input/TeamsButton';
 import { PanelButton } from '@/components/input/PanelButton';
 
 export function SideNav(props: SidebarProps) {
   const { formatMessage, labels } = useMessages();
-  const { pathname, renderUrl, websiteId, teamId } = useNavigation();
+  const { pathname, renderUrl, websiteId } = useNavigation();
   const [isCollapsed] = useGlobalState('sidenav-collapsed');
-  const isWebsite = websiteId && !pathname.includes('/settings');
+
+  const hasNav = !!(
+    websiteId ||
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/settings') ||
+    pathname.endsWith('/settings')
+  );
 
   const links = [
     {
@@ -71,12 +76,7 @@ export function SideNav(props: SidebarProps) {
 
   return (
     <Row height="100%" backgroundColor border="right">
-      <Sidebar
-        {...props}
-        isCollapsed={isCollapsed || isWebsite}
-        muteItems={false}
-        showBorder={false}
-      >
+      <Sidebar {...props} isCollapsed={isCollapsed || hasNav} muteItems={false} showBorder={false}>
         <SidebarSection>
           <SidebarHeader label="umami" icon={<Logo />} />
         </SidebarSection>
@@ -90,23 +90,21 @@ export function SideNav(props: SidebarProps) {
           })}
         </SidebarSection>
         <SidebarSection>
-          {!teamId &&
-            bottomLinks.map(({ id, path, label, icon }) => {
-              return (
-                <Link key={id} href={path} role="button">
-                  <SidebarItem label={label} icon={icon} isSelected={pathname.startsWith(path)} />
-                </Link>
-              );
-            })}
+          {bottomLinks.map(({ id, path, label, icon }) => {
+            return (
+              <Link key={id} href={path} role="button">
+                <SidebarItem label={label} icon={icon} isSelected={pathname.startsWith(path)} />
+              </Link>
+            );
+          })}
         </SidebarSection>
         <SidebarSection>
           <TeamsButton showText={!isCollapsed} />
           <Row>
-            <PanelButton isDisabled={!!isWebsite} />
+            <PanelButton isDisabled={hasNav} />
           </Row>
         </SidebarSection>
       </Sidebar>
-      {isWebsite && <WebsiteNav websiteId={websiteId} />}
     </Row>
   );
 }

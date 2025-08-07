@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export function TeamsTable({
   data = [],
-  showActions = true,
+  showActions = false,
 }: {
   data: any[];
   allowEdit?: boolean;
@@ -29,7 +29,7 @@ export function TeamsTable({
       <DataColumn id="members" label={formatMessage(labels.members)}>
         {(row: any) => row._count.teamUser}
       </DataColumn>
-      {showActions && (
+      {showActions ? (
         <DataColumn id="action" label=" " align="end">
           {(row: any) => {
             const { id } = row;
@@ -56,7 +56,7 @@ export function TeamsTable({
             );
           }}
         </DataColumn>
-      )}
+      ) : null}
     </DataTable>
   );
 }

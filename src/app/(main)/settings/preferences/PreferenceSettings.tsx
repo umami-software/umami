@@ -19,17 +19,14 @@ export function PreferenceSettings() {
         <Label>{formatMessage(labels.defaultDateRange)}</Label>
         <DateRangeSetting />
       </Column>
-
-      <Column>
-        <Label>{formatMessage(labels.language)}</Label>
-        <LanguageSetting />
-      </Column>
-
       <Column>
         <Label>{formatMessage(labels.timezone)}</Label>
         <TimezoneSetting />
       </Column>
-
+      <Column>
+        <Label>{formatMessage(labels.language)}</Label>
+        <LanguageSetting />
+      </Column>
       <Column>
         <Label>{formatMessage(labels.theme)}</Label>
         <ThemeSetting />

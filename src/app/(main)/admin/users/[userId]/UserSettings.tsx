@@ -1,19 +1,13 @@
-import { useContext } from 'react';
-import { Tabs, Tab, TabList, TabPanel } from '@umami/react-zen';
-import { User } from '@/components/icons';
+import { Column, Tabs, Tab, TabList, TabPanel } from '@umami/react-zen';
 import { UserEditForm } from './UserEditForm';
-import { SectionHeader } from '@/components/common/SectionHeader';
 import { useMessages } from '@/components/hooks';
 import { UserWebsites } from './UserWebsites';
-import { UserContext } from './UserProvider';
 
 export function UserSettings({ userId }: { userId: string }) {
   const { formatMessage, labels } = useMessages();
-  const user = useContext(UserContext);
 
   return (
-    <>
-      <SectionHeader title={user?.username} icon={<User />} />
+    <Column gap="6">
       <Tabs>
         <TabList>
           <Tab id="details">{formatMessage(labels.details)}</Tab>
@@ -26,6 +20,6 @@ export function UserSettings({ userId }: { userId: string }) {
           <UserWebsites userId={userId} />
         </TabPanel>
       </Tabs>
-    </>
+    </Column>
   );
 }

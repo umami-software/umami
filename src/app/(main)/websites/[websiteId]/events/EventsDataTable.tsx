@@ -3,7 +3,7 @@ import { useMessages, useWebsiteEventsQuery } from '@/components/hooks';
 import { EventsTable } from './EventsTable';
 import { DataGrid } from '@/components/common/DataGrid';
 import { ReactNode } from 'react';
-import { FilterButtons } from '@/components/common/FilterButtons';
+import { FilterButtons } from '@/components/input/FilterButtons';
 
 export function EventsDataTable({
   websiteId,

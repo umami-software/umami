@@ -57,7 +57,7 @@ export function FilterEditForm({
             onSave={setCurrentFilters}
           />
         </TabPanel>
-        <TabPanel id="segments">
+        <TabPanel id="segments" style={{ height: 400 }}>
           <SegmentFilters
             websiteId={websiteId}
             segmentId={currentSegment}
@@ -65,7 +65,7 @@ export function FilterEditForm({
           />
         </TabPanel>
       </Tabs>
-      <Row alignItems="center" justifyContent="space-between" gridColumn="span 2" gap>
+      <Row alignItems="center" justifyContent="space-between" gridColumn="span 2" marginTop="6" gap>
         <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
         <Row alignItems="center" justifyContent="flex-end" gridColumn="span 2" gap>
           <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>

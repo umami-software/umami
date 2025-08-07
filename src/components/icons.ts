@@ -35,6 +35,7 @@ export {
   Plus,
   RefreshCw as Refresh,
   Settings,
+  Settings2 as Knobs,
   Share,
   Sheet,
   Slash,

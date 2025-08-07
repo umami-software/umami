@@ -34,12 +34,10 @@ export function ProfileSettings() {
         <Label>{formatMessage(labels.username)}</Label>
         {username}
       </Column>
-
       <Column>
         <Label>{formatMessage(labels.role)}</Label>
         {renderRole(role)}
       </Column>
-
       {!cloudMode && (
         <Column>
           <Label>{formatMessage(labels.password)}</Label>

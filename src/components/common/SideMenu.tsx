@@ -1,27 +1,68 @@
-import { ReactNode } from 'react';
-import { Text, NavMenu, NavMenuItem, Icon, Row } from '@umami/react-zen';
+import {
+  Text,
+  Heading,
+  NavMenu,
+  NavMenuItem,
+  Icon,
+  Row,
+  Column,
+  NavMenuGroup,
+} from '@umami/react-zen';
 import Link from 'next/link';
 
 export interface SideMenuProps {
-  items: { id: string; label: string; url: string; icon?: ReactNode }[];
+  items: { label: string; items: { id: string; label: string; icon?: any; path: string }[] }[];
+  title?: string;
   selectedKey?: string;
+  allowMinimize?: boolean;
 }
 
-export function SideMenu({ items, selectedKey }: SideMenuProps) {
+export function SideMenu({ items, title, selectedKey, allowMinimize, children }: SideMenuProps) {
   return (
-    <NavMenu highlightColor="3">
-      {items.map(({ id, label, url, icon }) => {
-        return (
-          <Link key={id} href={url}>
-            <NavMenuItem isSelected={id === selectedKey}>
-              <Row alignItems="center" gap>
-                {icon && <Icon>{icon}</Icon>}
-                <Text>{label}</Text>
-              </Row>
-            </NavMenuItem>
-          </Link>
-        );
-      })}
-    </NavMenu>
+    <Column
+      gap
+      padding
+      width="240px"
+      overflowY="auto"
+      justifyContent="space-between"
+      position="sticky"
+      top="0"
+      backgroundColor
+    >
+      {children}
+      {title && (
+        <Row padding>
+          <Heading size="1">{title}</Heading>
+        </Row>
+      )}
+      <NavMenu muteItems={false} gap="6">
+        {items.map(({ label, items }) => {
+          return (
+            <NavMenuGroup
+              title={label}
+              key={label}
+              gap="1"
+              allowMinimize={allowMinimize}
+              marginBottom="3"
+            >
+              {items.map(({ id, label, icon, path }) => {
+                const isSelected = selectedKey === id;
+
+                return (
+                  <Link key={id} href={path}>
+                    <NavMenuItem isSelected={isSelected}>
+                      <Row alignItems="center" gap>
+                        <Icon>{icon}</Icon>
+                        <Text>{label}</Text>
+                      </Row>
+                    </NavMenuItem>
+                  </Link>
+                );
+              })}
+            </NavMenuGroup>
+          );
+        })}
+      </NavMenu>
+    </Column>
   );
 }

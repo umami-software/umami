@@ -1,7 +1,7 @@
 import { Row } from '@umami/react-zen';
 import { FilterLink } from '@/components/common/FilterLink';
 import { Favicon } from '@/components/common/Favicon';
-import { FilterButtons } from '@/components/common/FilterButtons';
+import { FilterButtons } from '@/components/input/FilterButtons';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { MetricsTable, MetricsTableProps } from './MetricsTable';
 import thenby from 'thenby';

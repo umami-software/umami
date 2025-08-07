@@ -27,7 +27,7 @@ export function PageHeader({
       {...props}
     >
       <Row alignItems="center" gap="3">
-        {icon && <Icon>{icon}</Icon>}
+        {icon && <Icon size="md">{icon}</Icon>}
         {title && <Heading size="4">{title}</Heading>}
         {description && <Text color="muted">{description}</Text>}
       </Row>
