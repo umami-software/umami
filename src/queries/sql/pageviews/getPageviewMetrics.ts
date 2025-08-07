@@ -30,7 +30,7 @@ async function relationalQuery(
   filters: QueryFilters,
 ): Promise<PageviewMetricsData[]> {
   const { type, limit = 500, offset = 0 } = parameters;
-  const column = FILTER_COLUMNS[type] || type;
+  let column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = prisma;
   const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters(
     {
@@ -50,20 +50,21 @@ async function relationalQuery(
   }
 
   if (type === 'entry' || type === 'exit') {
-    const aggregrate = type === 'entry' ? 'min' : 'max';
+    const order = type === 'entry' ? 'asc' : 'desc';
+    column = `x.${column}`;
 
     entryExitQuery = `
       join (
-        select visit_id,
-            ${aggregrate}(created_at) target_created_at
+        select distinct on (visit_id)
+          visit_id,
+          url_path
         from website_event
         where website_event.website_id = {{websiteId::uuid}}
           and website_event.created_at between {{startDate}} and {{endDate}}
           and event_type = {{eventType}}
-        group by visit_id
+        order by visit_id, created_at ${order}
       ) x
       on x.visit_id = website_event.visit_id
-          and x.target_created_at = website_event.created_at
     `;
   }
 
@@ -95,7 +96,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
   const { type, limit = 500, offset = 0 } = parameters;
-  const column = FILTER_COLUMNS[type] || type;
+  let column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
@@ -114,18 +115,18 @@ async function clickhouseQuery(
     }
 
     if (type === 'entry' || type === 'exit') {
-      const aggregrate = type === 'entry' ? 'min' : 'max';
+      const aggregrate = type === 'entry' ? 'argMin' : 'argMax';
+      column = `x.${column}`;
 
       entryExitQuery = `
       JOIN (select visit_id,
-          ${aggregrate}(created_at) target_created_at
+          ${aggregrate}(url_path, created_at) url_path
       from website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
       group by visit_id) x
-      ON x.visit_id = website_event.visit_id
-          and x.target_created_at = website_event.created_at`;
+      ON x.visit_id = website_event.visit_id`;
     }
 
     sql = `

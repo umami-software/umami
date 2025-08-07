@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { EVENT_TYPE, FILTER_COLUMNS, GROUPED_DOMAINS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
@@ -99,7 +99,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
   const { type, limit = 500, offset = 0 } = parameters;
-  const column = FILTER_COLUMNS[type] || type;
+  let column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
@@ -112,21 +112,24 @@ async function clickhouseQuery(
 
   if (column === 'referrer_domain') {
     excludeDomain = `and referrer_domain != hostname and referrer_domain != ''`;
+    if (type === 'grouped') {
+      column = toClickHouseGroupedReferrer(GROUPED_DOMAINS);
+    }
   }
 
   if (type === 'entry' || type === 'exit') {
-    const aggregrate = type === 'entry' ? 'min' : 'max';
+    const aggregrate = type === 'entry' ? 'argMin' : 'argMax';
+    column = `x.${column}`;
 
     entryExitQuery = `
       JOIN (select visit_id,
-          ${aggregrate}(created_at) target_created_at
+          ${aggregrate}(url_path, created_at) url_path
       from website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
       group by visit_id) x
-      ON x.visit_id = website_event.visit_id
-          and x.target_created_at = website_event.created_at`;
+      ON x.visit_id = website_event.visit_id`;
   }
 
   return rawQuery(
@@ -163,4 +166,20 @@ async function clickhouseQuery(
     `,
     { ...queryParams, ...parameters },
   );
+}
+
+export function toClickHouseGroupedReferrer(
+  domains: any[],
+  column: string = 'referrer_domain',
+): string {
+  return [
+    'CASE',
+    ...domains.map(group => {
+      const matches = Array.isArray(group.match) ? group.match : [group.match];
+      const formattedArray = matches.map(m => `'${m}'`).join(', ');
+      return `  WHEN multiSearchAny(${column}, [${formattedArray}]) != 0 THEN '${group.domain}'`;
+    }),
+    "  ELSE 'Other'",
+    'END',
+  ].join('\n');
 }

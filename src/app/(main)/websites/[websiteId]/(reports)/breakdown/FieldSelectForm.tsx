@@ -25,7 +25,7 @@ export function FieldSelectForm({
   };
 
   return (
-    <Column width="300px" gap="6">
+    <Column gap="6">
       <List value={selected} onChange={handleChange} selectionMode="multiple">
         {fields.map(({ name, label }) => {
           return (

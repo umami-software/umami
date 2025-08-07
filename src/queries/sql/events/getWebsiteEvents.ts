@@ -19,7 +19,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     search: `%${search}%`,
   });
 
-  const searchQuery = filters.search
+  const searchQuery = search
     ? `and ((event_name ilike {{search}} and event_type = 2)
            or (url_path ilike {{search}} and event_type = 1))`
     : '';
@@ -59,12 +59,13 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   const { pagedRawQuery, parseFilters } = clickhouse;
+  const { search } = filters;
   const { queryParams, dateQuery, cohortQuery, filterQuery } = parseFilters({
     ...filters,
     websiteId,
   });
 
-  const searchQuery = filters.search
+  const searchQuery = search
     ? `and ((positionCaseInsensitive(event_name, {search:String}) > 0 and event_type = 2)
            or (positionCaseInsensitive(url_path, {search:String}) > 0 and event_type = 1))`
     : '';
