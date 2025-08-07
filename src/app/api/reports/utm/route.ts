@@ -17,8 +17,8 @@ export async function POST(request: Request) {
     return unauthorized();
   }
 
-  const parameters = await setWebsiteDate(websiteId, body.parameters);
   const filters = await getQueryFilters(body.filters, websiteId);
+  const parameters = await setWebsiteDate(websiteId, body.parameters);
 
   const data = await getUTM(websiteId, parameters as UTMParameters, filters);
 

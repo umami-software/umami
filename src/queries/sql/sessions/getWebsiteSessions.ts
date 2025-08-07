@@ -20,7 +20,13 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     search: search ? `%${search}%` : undefined,
   });
 
-  const searchQuery = search ? `and session.distinct_id ilike {{search}}` : '';
+  const searchQuery = search
+    ? `and (distinct_id ilike {{search}}
+           or city ilike {{search}}
+           or browser ilike {{search}}
+           or os ilike {{search}}
+           or device ilike {{search}})`
+    : '';
 
   return pagedRawQuery(
     `
@@ -74,7 +80,13 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     websiteId,
   });
 
-  const searchQuery = search ? `and positionCaseInsensitive(distinct_id, {search:String}) > 0` : '';
+  const searchQuery = search
+    ? `and ((positionCaseInsensitive(distinct_id, {search:String}) > 0)
+           or (positionCaseInsensitive(city, {search:String}) > 0)
+           or (positionCaseInsensitive(browser, {search:String}) > 0)
+           or (positionCaseInsensitive(os, {search:String}) > 0)
+           or (positionCaseInsensitive(device, {search:String}) > 0))`
+    : '';
 
   let sql = '';
 

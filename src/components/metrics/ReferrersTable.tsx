@@ -1,11 +1,11 @@
-import { Row } from '@umami/react-zen';
-import { FilterLink } from '@/components/common/FilterLink';
 import { Favicon } from '@/components/common/Favicon';
 import { FilterButtons } from '@/components/common/FilterButtons';
+import { FilterLink } from '@/components/common/FilterLink';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { MetricsTable, MetricsTableProps } from './MetricsTable';
-import thenby from 'thenby';
 import { GROUPED_DOMAINS } from '@/lib/constants';
+import { emptyFilter } from '@/lib/filters';
+import { Row } from '@umami/react-zen';
+import { MetricsTable, MetricsTableProps } from './MetricsTable';
 
 export interface ReferrersTableProps extends MetricsTableProps {
   allowFilter?: boolean;
@@ -36,7 +36,7 @@ export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
 
   const renderLink = ({ x: referrer }) => {
     if (view === 'grouped') {
-      if (referrer === '_other') {
+      if (referrer === 'Other') {
         return `(${formatMessage(labels.other)})`;
       } else {
         return (
@@ -60,38 +60,13 @@ export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
     );
   };
 
-  const getDomain = (x: string) => {
-    for (const { domain, match } of GROUPED_DOMAINS) {
-      if (Array.isArray(match) ? match.some(str => x.includes(str)) : x.includes(match)) {
-        return domain;
-      }
-    }
-    return '_other';
-  };
-
-  const groupedFilter = (data: any[]) => {
-    const groups = { _other: 0 };
-
-    for (const { x, y } of data) {
-      const domain = getDomain(x);
-      if (!groups[domain]) {
-        groups[domain] = 0;
-      }
-      groups[domain] += +y;
-    }
-
-    return Object.keys(groups)
-      .map((key: any) => ({ x: key, y: groups[key] }))
-      .sort(thenby.firstBy('y', -1));
-  };
-
   return (
     <MetricsTable
       {...props}
       title={formatMessage(labels.referrers)}
-      type="referrer"
+      type={view}
       metric={formatMessage(labels.visitors)}
-      dataFilter={view === 'grouped' ? groupedFilter : undefined}
+      dataFilter={emptyFilter}
       renderLabel={renderLink}
     >
       {allowFilter && <FilterButtons items={buttons} value={view} onChange={handleSelect} />}

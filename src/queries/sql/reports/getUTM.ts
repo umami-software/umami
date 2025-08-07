@@ -1,16 +1,15 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { QueryFilters } from '@/lib/types';
+
+export interface UTMParameters {
+  startDate: Date;
+  endDate: Date;
+}
 
 export async function getUTM(
-  ...args: [
-    websiteId: string,
-    filters: {
-      startDate: Date;
-      endDate: Date;
-      timezone?: string;
-    },
-  ]
+  ...args: [websiteId: string, parameters: UTMParameters, filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -20,14 +19,18 @@ export async function getUTM(
 
 async function relationalQuery(
   websiteId: string,
-  filters: {
-    startDate: Date;
-    endDate: Date;
-    timezone?: string;
-  },
+  parameters: UTMParameters,
+  filters: QueryFilters,
 ) {
-  const { startDate, endDate } = filters;
-  const { rawQuery } = prisma;
+  const { startDate, endDate } = parameters;
+  const { parseFilters, rawQuery } = prisma;
+
+  const { filterQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+  });
 
   return rawQuery(
     `
@@ -37,26 +40,26 @@ async function relationalQuery(
       and created_at between {{startDate}} and {{endDate}}
       and coalesce(url_query, '') != ''
       and event_type = 1
+      ${filterQuery}
     group by 1
     `,
-    {
-      websiteId,
-      startDate,
-      endDate,
-    },
+    queryParams,
   );
 }
 
 async function clickhouseQuery(
   websiteId: string,
-  filters: {
-    startDate: Date;
-    endDate: Date;
-    timezone?: string;
-  },
+  parameters: UTMParameters,
+  filters: QueryFilters,
 ) {
-  const { startDate, endDate } = filters;
-  const { rawQuery } = clickhouse;
+  const { startDate, endDate } = parameters;
+  const { parseFilters, rawQuery } = clickhouse;
+  const { filterQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+  });
 
   return rawQuery(
     `
@@ -66,12 +69,9 @@ async function clickhouseQuery(
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and url_query != ''
       and event_type = 1
+      ${filterQuery}
     group by 1
     `,
-    {
-      websiteId,
-      startDate,
-      endDate,
-    },
+    queryParams,
   );
 }

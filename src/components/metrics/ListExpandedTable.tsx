@@ -7,11 +7,10 @@ import styles from './ListExpandedTable.module.css';
 export interface ListExpandedTableProps {
   data?: any[];
   title?: string;
-  type?: string;
   renderLabel?: (row: any, index: number) => ReactNode;
 }
 
-export function ListExpandedTable({ data = [], title, type, renderLabel }: ListExpandedTableProps) {
+export function ListExpandedTable({ data = [], title, renderLabel }: ListExpandedTableProps) {
   const { formatMessage, labels } = useMessages();
 
   return (
@@ -32,26 +31,18 @@ export function ListExpandedTable({ data = [], title, type, renderLabel }: ListE
       <DataColumn id="pageviews" label={formatMessage(labels.views)} align="end">
         {row => row?.['pageviews']?.toLocaleString()}
       </DataColumn>
-      {type !== 'exit' && type !== 'entry' ? (
-        <DataColumn id="bounceRate" label={formatMessage(labels.bounceRate)} align="end">
-          {row => {
-            const n = (Math.min(row?.['visits'], row?.['bounces']) / row?.['visits']) * 100;
-            return Math.round(+n) + '%';
-          }}
-        </DataColumn>
-      ) : (
-        <></>
-      )}
-      {type !== 'exit' && type !== 'entry' ? (
-        <DataColumn id="visitDuration" label={formatMessage(labels.visitDuration)} align="end">
-          {row => {
-            const n = (row?.['totaltime'] / row?.['visits']) * 100;
-            return `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`;
-          }}
-        </DataColumn>
-      ) : (
-        <></>
-      )}
+      <DataColumn id="bounceRate" label={formatMessage(labels.bounceRate)} align="end">
+        {row => {
+          const n = (Math.min(row?.['visits'], row?.['bounces']) / row?.['visits']) * 100;
+          return Math.round(+n) + '%';
+        }}
+      </DataColumn>
+      <DataColumn id="visitDuration" label={formatMessage(labels.visitDuration)} align="end">
+        {row => {
+          const n = (row?.['totaltime'] / row?.['visits']) * 100;
+          return `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`;
+        }}
+      </DataColumn>
     </DataTable>
   );
 }

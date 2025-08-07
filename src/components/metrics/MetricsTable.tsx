@@ -114,7 +114,7 @@ export function MetricsTable({
 
   return (
     <Column gap="3" justifyContent="space-between">
-      <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error} gap>
+      <LoadingPanel isFetching={isFetching} isLoading={isLoading} error={error} gap>
         <Row alignItems="center" justifyContent="space-between">
           {allowSearch && <SearchField value={search} onSearch={setSearch} delay={300} />}
           <Row>
@@ -124,7 +124,7 @@ export function MetricsTable({
         </Row>
         {data &&
           (expanded ? (
-            <ListExpandedTable {...(props as ListExpandedTableProps)} data={data} type={type} />
+            <ListExpandedTable {...(props as ListExpandedTableProps)} data={data} />
           ) : (
             <ListTable {...(props as ListTableProps)} data={filteredData} />
           ))}

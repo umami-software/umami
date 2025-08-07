@@ -26,11 +26,13 @@ export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 10000;
 
 export const UNIT_TYPES = ['year', 'month', 'hour', 'day', 'minute'];
+
 export const EVENT_COLUMNS = [
   'path',
   'entry',
   'exit',
   'referrer',
+  'grouped',
   'title',
   'query',
   'event',
@@ -59,6 +61,7 @@ export const FILTER_COLUMNS = {
   entry: 'url_path',
   exit: 'url_path',
   referrer: 'referrer_domain',
+  grouped: 'referrer_domain',
   hostname: 'hostname',
   title: 'page_title',
   query: 'url_query',
@@ -386,6 +389,9 @@ export const GROUPED_DOMAINS = [
   { name: 'Snapchat', domain: 'snapchat.com', match: 'snapchat.' },
   { name: 'Pinterest', domain: 'pinterest.com', match: 'pinterest.' },
   { name: 'ChatGPT', domain: 'chatgpt.com', match: 'chatgpt.' },
+  { name: 'Yahoo', domain: 'yahoo.com', match: 'yahoo.' },
+  { name: 'Yandex', domain: 'yandex.ru', match: 'yandex.' },
+  { name: 'Baidu', domain: 'baidu.com', match: 'baidu.' },
 ];
 
 export const MAP_FILE = '/datamaps.world.json';
