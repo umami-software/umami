@@ -12,14 +12,34 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
-export async function getChannelMetrics(...args: [websiteId: string, filters?: QueryFilters]) {
+export interface ChannelExpandedMetricsParameters {
+  limit?: number | string;
+  offset?: number | string;
+}
+
+export interface ChannelExpandedMetricsData {
+  name: string;
+  pageviews: number;
+  visitors: number;
+  visits: number;
+  bounces: number;
+  totaltime: number;
+}
+
+export async function getChannelExpandedMetrics(
+  ...args: [websiteId: string, parameters: ChannelExpandedMetricsParameters, filters?: QueryFilters]
+): Promise<ChannelExpandedMetricsData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-async function relationalQuery(websiteId: string, filters: QueryFilters) {
+async function relationalQuery(
+  websiteId: string,
+  parameters: ChannelExpandedMetricsParameters,
+  filters: QueryFilters,
+): Promise<ChannelExpandedMetricsData[]> {
   const { rawQuery, parseFilters } = prisma;
   const { queryParams, filterQuery, cohortQuery, dateQuery } = parseFilters({
     ...filters,
@@ -59,23 +79,33 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     group by x
     order by y desc;
     `,
-    queryParams,
+    { ...queryParams, ...parameters },
   );
 }
 
 async function clickhouseQuery(
   websiteId: string,
+  parameters: ChannelExpandedMetricsParameters,
   filters: QueryFilters,
-): Promise<{ x: string; y: number }[]> {
+): Promise<ChannelExpandedMetricsData[]> {
+  const { limit = 500, offset = 0 } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
-  const { queryParams, filterQuery, cohortQuery, dateQuery } = parseFilters({
+  const { queryParams, filterQuery, cohortQuery } = parseFilters({
     ...filters,
     websiteId,
     eventType: EVENT_TYPE.pageView,
   });
 
-  const sql = `
-    WITH channels as (
+  return rawQuery(
+    `
+    select
+      name,
+      sum(t.c) as "pageviews",
+      uniq(t.session_id) as "visitors",
+      uniq(t.visit_id) as "visits",
+      sum(if(t.c = 1, 1, 0)) as "bounces",
+      sum(max_time-min_time) as "totaltime"
+    from (
       select case when multiSearchAny(utm_medium, ['cp', 'ppc', 'retargeting', 'paid']) != 0 then 'paid' else 'organic' end prefix,
           case
           when referrer_domain = '' and url_query = '' then 'direct'
@@ -100,24 +130,27 @@ async function clickhouseQuery(
           when multiSearchAny(referrer_domain, [${toClickHouseStringArray(
             VIDEO_DOMAINS,
           )}]) != 0 or position(utm_medium, 'video') > 0 then concat(prefix, 'Video')
-          else '' end AS x,
-        count(distinct session_id) y
+          else '' end AS name,
+        session_id,
+        visit_id,
+        count(*) c,
+        min(created_at) min_time,
+        max(created_at) max_time
       from website_event
       ${cohortQuery}
       where website_id = {websiteId:UUID}
-        ${dateQuery}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and name != ''
         ${filterQuery}
-      group by 1, 2
-      order by y desc)
-
-    select x, sum(y) y
-    from channels
-    where x != ''
-    group by x
-    order by y desc;
-  `;
-
-  return rawQuery(sql, queryParams);
+      group by prefix, name, session_id, visit_id
+    ) as t
+    group by name 
+    order by visitors desc, visits desc
+    limit ${limit}
+    offset ${offset}
+    `,
+    { ...queryParams, ...parameters },
+  );
 }
 
 function toClickHouseStringArray(arr: string[]): string {

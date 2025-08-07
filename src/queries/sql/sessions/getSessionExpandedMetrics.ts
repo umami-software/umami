@@ -1,18 +1,27 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS, EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
-export interface SessionMetricsParameters {
+export interface SessionExpandedMetricsParameters {
   type: string;
   limit?: number | string;
   offset?: number | string;
 }
 
-export async function getSessionMetrics(
-  ...args: [websiteId: string, parameters: SessionMetricsParameters, filters: QueryFilters]
-) {
+export interface SessionExpandedMetricsData {
+  name: string;
+  pageviews: number;
+  visitors: number;
+  visits: number;
+  bounces: number;
+  totaltime: number;
+}
+
+export async function getSessionExpandedMetrics(
+  ...args: [websiteId: string, parameters: SessionExpandedMetricsParameters, filters: QueryFilters]
+): Promise<SessionExpandedMetricsData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -21,9 +30,9 @@ export async function getSessionMetrics(
 
 async function relationalQuery(
   websiteId: string,
-  parameters: SessionMetricsParameters,
+  parameters: SessionExpandedMetricsParameters,
   filters: QueryFilters,
-) {
+): Promise<SessionExpandedMetricsData[]> {
   const { type, limit = 500, offset = 0 } = parameters;
   let column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = prisma;
@@ -68,9 +77,9 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  parameters: SessionMetricsParameters,
+  parameters: SessionExpandedMetricsParameters,
   filters: QueryFilters,
-): Promise<{ x: string; y: number }[]> {
+): Promise<SessionExpandedMetricsData[]> {
   const { type, limit = 500, offset = 0 } = parameters;
   let column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = clickhouse;
@@ -85,43 +94,40 @@ async function clickhouseQuery(
     column = `lower(left(${type}, 2))`;
   }
 
-  let sql = '';
-
-  if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
-    sql = `
+  return rawQuery(
+    `
     select
-      ${column} x,
-      count(distinct session_id) y
+      name,
+      ${includeCountry ? 'country,' : ''}
+      sum(t.c) as "pageviews",
+      uniq(t.session_id) as "visitors",
+      uniq(t.visit_id) as "visits",
+      sum(if(t.c = 1, 1, 0)) as "bounces",
+      sum(max_time-min_time) as "totaltime"
+    from (
+      select
+        ${column} name,
+        ${includeCountry ? 'country,' : ''}
+        session_id,
+        visit_id,
+        count(*) c,
+        min(created_at) min_time,
+        max(created_at) max_time
+      from website_event
+      ${cohortQuery}
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and name != ''
+        ${filterQuery}
+      group by name, session_id, visit_id
       ${includeCountry ? ', country' : ''}
-    from website_event
-    ${cohortQuery}
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      ${filterQuery}
-    group by x 
+    ) as t
+    group by name 
     ${includeCountry ? ', country' : ''}
-    order by y desc
+    order by visitors desc, visits desc
     limit ${limit}
     offset ${offset}
-    `;
-  } else {
-    sql = `
-    select
-      ${column} x,
-      uniq(session_id) y
-      ${includeCountry ? ', country' : ''}
-    from website_event_stats_hourly as website_event
-    ${cohortQuery}
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      ${filterQuery}
-    group by x 
-    ${includeCountry ? ', country' : ''}
-    order by y desc
-    limit ${limit}
-    offset ${offset}
-    `;
-  }
-
-  return rawQuery(sql, { ...queryParams, ...parameters });
+    `,
+    { ...queryParams, ...parameters },
+  );
 }

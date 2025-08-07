@@ -2,14 +2,14 @@ import { canViewWebsite } from '@/lib/auth';
 import { EVENT_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
+import { dateRangeParams, filterParams, searchParams } from '@/lib/schema';
 import {
-  getChannelMetrics,
-  getEventMetrics,
-  getPageviewMetrics,
-  getSessionMetrics,
+  getChannelExpandedMetrics,
+  getEventExpandedMetrics,
+  getPageviewExpandedMetrics,
+  getSessionExpandedMetrics,
 } from '@/queries';
 import { z } from 'zod';
-import { dateRangeParams, filterParams, searchParams } from '@/lib/schema';
 
 export async function GET(
   request: Request,
@@ -44,7 +44,7 @@ export async function GET(
   }
 
   if (SESSION_COLUMNS.includes(type)) {
-    const data = await getSessionMetrics(websiteId, { type, limit, offset }, filters);
+    const data = await getSessionExpandedMetrics(websiteId, { type, limit, offset }, filters);
 
     return json(data);
   }
@@ -53,16 +53,16 @@ export async function GET(
     let data;
 
     if (type === 'event') {
-      data = await getEventMetrics(websiteId, { type, limit, offset }, filters);
+      data = await getEventExpandedMetrics(websiteId, { type, limit, offset }, filters);
     } else {
-      data = await getPageviewMetrics(websiteId, { type, limit, offset }, filters);
+      data = await getPageviewExpandedMetrics(websiteId, { type, limit, offset }, filters);
     }
 
     return json(data);
   }
 
   if (type === 'channel') {
-    const data = await getChannelMetrics(websiteId, filters);
+    const data = await getChannelExpandedMetrics(websiteId, { limit, offset }, filters);
 
     return json(data);
   }

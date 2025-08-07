@@ -28,9 +28,9 @@ async function relationalQuery(
         else string_value
       end as "value",
       count(distinct session_data.session_id) as "total"
-    from website_event e
+    from website_event
     ${cohortQuery}
-    join session_data d 
+    join session_data
         on session_data.session_id = website_event.session_id
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
@@ -58,9 +58,9 @@ async function clickhouseQuery(
               data_type = 4, toString(date_trunc('hour', date_value)),
               string_value) as "value",
       uniq(session_data.session_id) as "total"
-    from website_event e
+    from website_event
     ${cohortQuery}
-    join session_data d final
+    join session_data final
       on session_data.session_id = website_event.session_id
     where website_event.website_id = {websiteId:UUID}
       and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
