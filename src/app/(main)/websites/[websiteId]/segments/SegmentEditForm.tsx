@@ -22,7 +22,7 @@ export function SegmentEditForm({
   onSave,
   onClose,
 }: {
-  segmentId: string;
+  segmentId?: string;
   websiteId: string;
   filters?: any[];
   showFilters?: boolean;

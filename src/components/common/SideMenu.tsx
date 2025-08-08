@@ -15,9 +15,16 @@ export interface SideMenuProps {
   title?: string;
   selectedKey?: string;
   allowMinimize?: boolean;
+  children?: React.ReactNode;
 }
 
-export function SideMenu({ items, title, selectedKey, allowMinimize, children }: SideMenuProps) {
+export function SideMenu({
+  items = [],
+  title,
+  selectedKey,
+  allowMinimize,
+  children,
+}: SideMenuProps) {
   return (
     <Column
       gap
@@ -36,7 +43,7 @@ export function SideMenu({ items, title, selectedKey, allowMinimize, children }:
         </Row>
       )}
       <NavMenu muteItems={false} gap="6">
-        {items.map(({ label, items }) => {
+        {items?.map(({ label, items }) => {
           return (
             <NavMenuGroup
               title={label}
@@ -45,7 +52,7 @@ export function SideMenu({ items, title, selectedKey, allowMinimize, children }:
               allowMinimize={allowMinimize}
               marginBottom="3"
             >
-              {items.map(({ id, label, icon, path }) => {
+              {items?.map(({ id, label, icon, path }) => {
                 const isSelected = selectedKey === id;
 
                 return (

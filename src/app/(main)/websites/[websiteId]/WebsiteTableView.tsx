@@ -10,25 +10,27 @@ import { WorldMap } from '@/components/metrics/WorldMap';
 import { CountriesTable } from '@/components/metrics/CountriesTable';
 
 export function WebsiteTableView({ websiteId }: { websiteId: string }) {
+  const props = { websiteId, limit: 10, allowDownload: false };
+
   return (
     <Grid gap="3">
       <GridRow layout="two">
         <Panel>
-          <PagesTable websiteId={websiteId} limit={10} />
+          <PagesTable {...props} />
         </Panel>
         <Panel>
-          <ReferrersTable websiteId={websiteId} limit={10} />
+          <ReferrersTable {...props} />
         </Panel>
       </GridRow>
       <GridRow layout="three">
         <Panel>
-          <BrowsersTable websiteId={websiteId} limit={10} />
+          <BrowsersTable {...props} />
         </Panel>
         <Panel>
-          <OSTable websiteId={websiteId} limit={10} />
+          <OSTable {...props} />
         </Panel>
         <Panel>
-          <DevicesTable websiteId={websiteId} limit={10} />
+          <DevicesTable {...props} />
         </Panel>
       </GridRow>
       <GridRow layout="two-one">
@@ -36,7 +38,7 @@ export function WebsiteTableView({ websiteId }: { websiteId: string }) {
           <WorldMap websiteId={websiteId} />
         </Panel>
         <Panel>
-          <CountriesTable websiteId={websiteId} limit={10} />
+          <CountriesTable {...props} />
         </Panel>
       </GridRow>
     </Grid>

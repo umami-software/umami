@@ -7,11 +7,11 @@ import {
   useWebsiteExpandedMetricsQuery,
   useWebsiteMetricsQuery,
 } from '@/components/hooks';
-import { Arrow } from '@/components/icons';
+import { Close, Maximize } from '@/components/icons';
 import { DownloadButton } from '@/components/input/DownloadButton';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
 import { percentFilter } from '@/lib/filters';
-import { Column, Icon, Row, SearchField, Text } from '@umami/react-zen';
+import { Button, Column, Icon, Row, SearchField, Text } from '@umami/react-zen';
 import { ReactNode, useMemo, useState } from 'react';
 import { ListExpandedTable, ListExpandedTableProps } from './ListExpandedTable';
 import { ListTable, ListTableProps } from './ListTable';
@@ -28,7 +28,8 @@ export interface MetricsTableProps extends ListTableProps {
   showMore?: boolean;
   params?: { [key: string]: any };
   allowDownload?: boolean;
-  expanded?: boolean;
+  isExpanded?: boolean;
+  onClose?: () => void;
   children?: ReactNode;
 }
 
@@ -43,7 +44,8 @@ export function MetricsTable({
   showMore = true,
   params,
   allowDownload = true,
-  expanded = false,
+  isExpanded = false,
+  onClose,
   children,
   ...props
 }: MetricsTableProps) {
@@ -61,7 +63,7 @@ export function MetricsTable({
     },
     {
       retryDelay: delay || DEFAULT_ANIMATION_DURATION,
-      enabled: expanded,
+      enabled: isExpanded,
     },
   );
 
@@ -75,11 +77,11 @@ export function MetricsTable({
     },
     {
       retryDelay: delay || DEFAULT_ANIMATION_DURATION,
-      enabled: !expanded,
+      enabled: !isExpanded,
     },
   );
 
-  const { data, isLoading, isFetching, error } = expanded ? expandedQuery : query;
+  const { data, isLoading, isFetching, error } = isExpanded ? expandedQuery : query;
 
   const filteredData = useMemo(() => {
     if (data) {
@@ -110,20 +112,27 @@ export function MetricsTable({
     return [];
   }, [data, dataFilter, search, limit, formatValue, type]);
 
-  const downloadData = expanded ? data : filteredData;
+  const downloadData = isExpanded ? data : filteredData;
 
   return (
     <Column gap="3" justifyContent="space-between">
       <LoadingPanel isFetching={isFetching} isLoading={isLoading} error={error} gap>
         <Row alignItems="center" justifyContent="space-between">
           {allowSearch && <SearchField value={search} onSearch={setSearch} delay={300} />}
-          <Row>
+          <Row gap>
             {children}
             {allowDownload && <DownloadButton filename={type} data={downloadData} />}
+            {onClose && (
+              <Button onPress={onClose} variant="quiet">
+                <Icon>
+                  <Close />
+                </Icon>
+              </Button>
+            )}
           </Row>
         </Row>
         {data &&
-          (expanded ? (
+          (isExpanded ? (
             <ListExpandedTable {...(props as ListExpandedTableProps)} data={data} />
           ) : (
             <ListTable {...(props as ListTableProps)} data={filteredData} />
@@ -131,10 +140,10 @@ export function MetricsTable({
         <Row justifyContent="center">
           {showMore && data && !error && limit && (
             <LinkButton href={updateParams({ view: type })} variant="quiet">
-              <Text>{formatMessage(labels.more)}</Text>
               <Icon size="sm">
-                <Arrow />
+                <Maximize />
               </Icon>
+              <Text>{formatMessage(labels.more)}</Text>
             </LinkButton>
           )}
         </Row>

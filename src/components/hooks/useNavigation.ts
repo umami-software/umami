@@ -18,16 +18,16 @@ export function useNavigation() {
     return buildUrl(pathname, params);
   };
 
-  useEffect(() => {
-    setQueryParams(Object.fromEntries(searchParams));
-  }, [searchParams.toString()]);
-
   const renderUrl = (path: string, params?: Record<string, string | number> | false) => {
     return buildUrl(
       teamId ? `/teams/${teamId}${path}` : path,
       params === false ? {} : { ...queryParams, ...params },
     );
   };
+
+  useEffect(() => {
+    setQueryParams(Object.fromEntries(searchParams));
+  }, [searchParams.toString()]);
 
   return {
     router,

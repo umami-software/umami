@@ -1,6 +1,5 @@
-import { Grid, Heading, Column, Row } from '@umami/react-zen';
+import { Grid, Heading, Column, Row, NavMenu, NavMenuItem, Text } from '@umami/react-zen';
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
-import { SideMenu } from '@/components/common/SideMenu';
 import { BrowsersTable } from '@/components/metrics/BrowsersTable';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { CitiesTable } from '@/components/metrics/CitiesTable';
@@ -40,7 +39,7 @@ const views = {
 };
 
 export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
-  const [data, setData] = useState([]);
+  const [data] = useState([]);
   const { dateRange, dateCompare } = useDateRange(websiteId);
   const { formatMessage, labels } = useMessages();
   const {
@@ -53,72 +52,72 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
     {
       id: 'path',
       label: formatMessage(labels.pages),
-      url: updateParams({ view: 'path' }),
+      path: updateParams({ view: 'path' }),
     },
     {
       id: 'referrer',
       label: formatMessage(labels.referrers),
-      url: updateParams({ view: 'referrer' }),
+      path: updateParams({ view: 'referrer' }),
     },
     {
       id: 'browser',
       label: formatMessage(labels.browsers),
-      url: updateParams({ view: 'browser' }),
+      path: updateParams({ view: 'browser' }),
     },
     {
       id: 'os',
       label: formatMessage(labels.os),
-      url: updateParams({ view: 'os' }),
+      path: updateParams({ view: 'os' }),
     },
     {
       id: 'device',
       label: formatMessage(labels.devices),
-      url: updateParams({ view: 'device' }),
+      path: updateParams({ view: 'device' }),
     },
     {
       id: 'country',
       label: formatMessage(labels.countries),
-      url: updateParams({ view: 'country' }),
+      path: updateParams({ view: 'country' }),
     },
     {
       id: 'region',
       label: formatMessage(labels.regions),
-      url: updateParams({ view: 'region' }),
+      path: updateParams({ view: 'region' }),
     },
     {
       id: 'city',
       label: formatMessage(labels.cities),
-      url: updateParams({ view: 'city' }),
+      path: updateParams({ view: 'city' }),
     },
     {
       id: 'language',
       label: formatMessage(labels.languages),
-      url: updateParams({ view: 'language' }),
+      path: updateParams({ view: 'language' }),
     },
     {
       id: 'screen',
       label: formatMessage(labels.screens),
-      url: updateParams({ view: 'screen' }),
+      path: updateParams({ view: 'screen' }),
     },
     {
       id: 'event',
       label: formatMessage(labels.events),
-      url: updateParams({ view: 'event' }),
+      path: updateParams({ view: 'event' }),
     },
     {
       id: 'query',
       label: formatMessage(labels.queryParameters),
-      url: updateParams({ view: 'query' }),
+      path: updateParams({ view: 'query' }),
     },
     {
       id: 'hostname',
       label: formatMessage(labels.hostname),
-      url: updateParams({ view: 'hostname' }),
+      path: updateParams({ view: 'hostname' }),
     },
     {
       id: 'tag',
       label: formatMessage(labels.tags),
-      url: updateParams({ view: 'tag' }),
+      path: updateParams({ view: 'tag' }),
     },
   ];
 
@@ -150,19 +149,21 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
   return (
     <Panel>
       <Grid columns={{ xs: '1fr', lg: '200px 1fr 1fr' }} gap="6">
-        <SideMenu items={items} selectedKey={view} />
+        <NavMenu>
+          {items.map(({ id, label }) => {
+            return (
+              <NavMenuItem key={id}>
+                <Text>{label}</Text>
+              </NavMenuItem>
+            );
+          })}
+        </NavMenu>
         <Column border="left" paddingLeft="6" gap="6">
           <Row alignItems="center" justifyContent="space-between">
             <Heading size="1">{formatMessage(labels.previous)}</Heading>
             <DateDisplay startDate={startDate} endDate={endDate} />
           </Row>
-          <Component
-            websiteId={websiteId}
-            limit={20}
-            showMore={false}
-            onDataLoad={setData}
-            params={params}
-          />
+          <Component websiteId={websiteId} limit={20} showMore={false} params={params} />
         </Column>
         <Column border="left" paddingLeft="6" gap="6">
           <Row alignItems="center" justifyContent="space-between">

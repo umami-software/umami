@@ -1,18 +1,29 @@
 'use client';
-import { Column } from '@umami/react-zen';
+import { Column, Modal, Dialog } from '@umami/react-zen';
 import { useNavigation } from '@/components/hooks';
 import { Panel } from '@/components/common/Panel';
 import { WebsiteChart } from './WebsiteChart';
 import { WebsiteExpandedView } from './WebsiteExpandedView';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
 import { WebsiteTableView } from './WebsiteTableView';
-import { WebsiteCompareTables } from './WebsiteCompareTables';
 import { WebsiteControls } from './WebsiteControls';
 
 export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
   const {
+    router,
     query: { view, compare },
+    updateParams,
   } = useNavigation();
+  const handleClose = (close: () => void) => {
+    router.push(updateParams({ view: undefined }));
+    close();
+  };
+
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      router.push(updateParams({ view: undefined }));
+    }
+  };
 
   return (
     <Column gap>
@@ -21,9 +32,14 @@ export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
       <Panel>
         <WebsiteChart websiteId={websiteId} compareMode={compare} />
       </Panel>
-      {!view && !compare && <WebsiteTableView websiteId={websiteId} />}
-      {view && !compare && <WebsiteExpandedView websiteId={websiteId} />}
-      {compare && <WebsiteCompareTables websiteId={websiteId} />}
+      <WebsiteTableView websiteId={websiteId} />
+      <Modal isOpen={!!view} onOpenChange={handleOpenChange} isDismissable>
+        <Dialog style={{ width: '90vw', height: '90vh' }}>
+          {({ close }) => {
+            return <WebsiteExpandedView websiteId={websiteId} onClose={() => handleClose(close)} />;
+          }}
+        </Dialog>
+      </Modal>
     </Column>
   );
 }

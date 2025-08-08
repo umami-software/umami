@@ -1,7 +1,5 @@
-import { Icon, Text, Grid, Column } from '@umami/react-zen';
-import { LinkButton } from '@/components/common/LinkButton';
+import { Grid, Column, NavMenu, NavMenuItem } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { SideMenu } from '@/components/common/SideMenu';
 import { BrowsersTable } from '@/components/metrics/BrowsersTable';
 import { CitiesTable } from '@/components/metrics/CitiesTable';
 import { CountriesTable } from '@/components/metrics/CountriesTable';
@@ -17,8 +15,7 @@ import { RegionsTable } from '@/components/metrics/RegionsTable';
 import { ScreenTable } from '@/components/metrics/ScreenTable';
 import { TagsTable } from '@/components/metrics/TagsTable';
 import { ChannelsTable } from '@/components/metrics/ChannelsTable';
-import { Panel } from '@/components/common/Panel';
-import { Arrow } from '@/components/icons';
+import Link from 'next/link';
 
 const views = {
   path: PagesTable,
@@ -44,10 +41,10 @@ const views = {
 
 export function WebsiteExpandedView({
   websiteId,
-  domainName,
+  onClose,
 }: {
   websiteId: string;
-  domainName?: string;
+  onClose?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
   const {
@@ -59,107 +56,107 @@ export function WebsiteExpandedView({
     {
       id: 'path',
       label: formatMessage(labels.pages),
-      url: updateParams({ view: 'path' }),
+      path: updateParams({ view: 'path' }),
     },
     {
       id: 'referrer',
       label: formatMessage(labels.referrers),
-      url: updateParams({ view: 'referrer' }),
+      path: updateParams({ view: 'referrer' }),
     },
     {
       id: 'channel',
       label: formatMessage(labels.channels),
-      url: updateParams({ view: 'channel' }),
+      path: updateParams({ view: 'channel' }),
     },
     {
       id: 'browser',
       label: formatMessage(labels.browsers),
-      url: updateParams({ view: 'browser' }),
+      path: updateParams({ view: 'browser' }),
     },
     {
       id: 'os',
       label: formatMessage(labels.os),
-      url: updateParams({ view: 'os' }),
+      path: updateParams({ view: 'os' }),
     },
     {
       id: 'device',
       label: formatMessage(labels.devices),
-      url: updateParams({ view: 'device' }),
+      path: updateParams({ view: 'device' }),
     },
     {
       id: 'country',
       label: formatMessage(labels.countries),
-      url: updateParams({ view: 'country' }),
+      path: updateParams({ view: 'country' }),
     },
     {
       id: 'region',
       label: formatMessage(labels.regions),
-      url: updateParams({ view: 'region' }),
+      path: updateParams({ view: 'region' }),
     },
     {
       id: 'city',
       label: formatMessage(labels.cities),
-      url: updateParams({ view: 'city' }),
+      path: updateParams({ view: 'city' }),
     },
     {
       id: 'language',
       label: formatMessage(labels.languages),
-      url: updateParams({ view: 'language' }),
+      path: updateParams({ view: 'language' }),
     },
     {
       id: 'screen',
       label: formatMessage(labels.screens),
-      url: updateParams({ view: 'screen' }),
+      path: updateParams({ view: 'screen' }),
     },
     {
       id: 'event',
       label: formatMessage(labels.events),
-      url: updateParams({ view: 'event' }),
+      path: updateParams({ view: 'event' }),
     },
     {
       id: 'query',
       label: formatMessage(labels.queryParameters),
-      url: updateParams({ view: 'query' }),
+      path: updateParams({ view: 'query' }),
     },
     {
       id: 'hostname',
       label: formatMessage(labels.hostname),
-      url: updateParams({ view: 'hostname' }),
+      path: updateParams({ view: 'hostname' }),
     },
     {
       id: 'tag',
       label: formatMessage(labels.tags),
-      url: updateParams({ view: 'tag' }),
+      path: updateParams({ view: 'tag' }),
     },
   ];
 
   const DetailsComponent = views[view] || (() => null);
 
   return (
-    <Panel>
-      <Grid columns="auto 1fr" gap="6">
-        <Column gap="6" width="200px" border="right" paddingRight="3">
-          <LinkButton href={updateParams({ view: undefined })} variant="quiet" scroll={false}>
-            <Icon rotate={180}>
-              <Arrow />
-            </Icon>
-            <Text>{formatMessage(labels.back)}</Text>
-          </LinkButton>
-          <SideMenu items={items} selectedKey={view} />
-        </Column>
-        <Column>
-          <DetailsComponent
-            websiteId={websiteId}
-            domainName={domainName}
-            animate={false}
-            virtualize={true}
-            itemCount={25}
-            allowFilter={true}
-            allowSearch={true}
-            expanded={true}
-          />
-        </Column>
-      </Grid>
-    </Panel>
+    <Grid columns="auto 1fr" gap="6" height="100%">
+      <Column gap="6" width="200px" border="right" paddingRight="3">
+        <NavMenu position="sticky" top="0">
+          {items.map(({ id, label, path }) => {
+            return (
+              <Link key={id} href={path}>
+                <NavMenuItem isSelected={id === view}>{label}</NavMenuItem>
+              </Link>
+            );
+          })}
+        </NavMenu>
+      </Column>
+      <Column>
+        <DetailsComponent
+          websiteId={websiteId}
+          animate={false}
+          virtualize={true}
+          itemCount={25}
+          allowFilter={true}
+          allowSearch={true}
+          isExpanded={true}
+          onClose={onClose}
+        />
+      </Column>
+    </Grid>
   );
 }
