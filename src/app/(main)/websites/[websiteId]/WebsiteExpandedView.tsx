@@ -133,7 +133,7 @@ export function WebsiteExpandedView({
   const DetailsComponent = views[view] || (() => null);
 
   return (
-    <Grid columns="auto 1fr" gap="6" height="100%">
+    <Grid columns="auto 1fr" gap="6" height="100%" overflow="hidden">
       <Column gap="6" width="200px" border="right" paddingRight="3">
         <NavMenu position="sticky" top="0">
           {items.map(({ id, label, path }) => {
@@ -145,7 +145,7 @@ export function WebsiteExpandedView({
           })}
         </NavMenu>
       </Column>
-      <Column>
+      <Column overflow="hidden">
         <DetailsComponent
           websiteId={websiteId}
           animate={false}

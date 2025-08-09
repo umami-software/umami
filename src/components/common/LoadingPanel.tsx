@@ -28,7 +28,7 @@ export function LoadingPanel({
   const empty = isEmpty ?? checkEmpty(data);
 
   return (
-    <Column position="relative" flexGrow={1} {...props}>
+    <Column position="relative" flexGrow={1} overflow="hidden" {...props}>
       {/* Show loading spinner only if no data exists */}
       {(isLoading || isFetching) && !data && <Loading icon={loadingIcon} position="page" />}
 

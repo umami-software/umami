@@ -34,7 +34,7 @@ export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
       </Panel>
       <WebsiteTableView websiteId={websiteId} />
       <Modal isOpen={!!view} onOpenChange={handleOpenChange} isDismissable>
-        <Dialog style={{ width: '90vw', height: '90vh' }}>
+        <Dialog style={{ maxWidth: 1320, width: '100vw', height: 'calc(100vh - 40px)' }}>
           {({ close }) => {
             return <WebsiteExpandedView websiteId={websiteId} onClose={() => handleClose(close)} />;
           }}
