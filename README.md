@@ -107,6 +107,33 @@ docker pull docker.umami.is/umami-software/umami:mysql-latest
 
 ---
 
+## 🚄 Deploying on Railway
+
+You can deploy Umami on [Railway](https://railway.app/) in just a few minutes.
+
+### Quick Deploy
+Click the button below to create a Railway project with Umami and PostgreSQL preconfigured:
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/YOUR_UMAMI_TEMPLATE_LINK)
+
+### Step-by-Step
+
+1. **Sign up / Log in** to [Railway](https://railway.app/).
+2. Click the **Deploy on Railway** button above.
+3. In your Railway project:
+   - Open the **Variables** tab and ensure:
+     | Variable        | Description                                        |
+     |-----------------|----------------------------------------------------|
+     | `DATABASE_URL`  | Set automatically when PostgreSQL service is added |
+     | `HASH_SALT`     | Generate a secure random string (32+ chars)        |
+   - Optional: Add other [Umami environment variables](https://umami.is/docs/environment-variables) if needed.
+4. Deploy the service and wait for the build to finish.
+5. Open the Railway **Shell** and run:
+   ```bash
+   npx prisma migrate deploy
+
+---
+
 ## 🔄 Getting Updates
 
 To get the latest features, simply do a pull, install any new dependencies, and rebuild:
