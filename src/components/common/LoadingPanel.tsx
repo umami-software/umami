@@ -28,9 +28,13 @@ export function LoadingPanel({
   const empty = isEmpty ?? checkEmpty(data);
 
   return (
-    <Column position="relative" flexGrow={1} overflow="hidden" {...props}>
+    <>
       {/* Show loading spinner only if no data exists */}
-      {(isLoading || isFetching) && !data && <Loading icon={loadingIcon} position="page" />}
+      {(isLoading || isFetching) && !data && (
+        <Column position="relative" height="100%" {...props}>
+          <Loading icon={loadingIcon} position="page" />
+        </Column>
+      )}
 
       {/* Show error */}
       {error && <ErrorMessage />}
@@ -40,7 +44,7 @@ export function LoadingPanel({
 
       {/* Show main content when data exists */}
       {!error && !empty && children}
-    </Column>
+    </>
   );
 }
 

@@ -23,7 +23,7 @@ import { PanelButton } from '@/components/input/PanelButton';
 export function SideNav(props: SidebarProps) {
   const { formatMessage, labels } = useMessages();
   const { pathname, renderUrl, websiteId } = useNavigation();
-  const [isCollapsed] = useGlobalState('sidenav-collapsed');
+  let [isCollapsed] = useGlobalState('sidenav-collapsed');
 
   const hasNav = !!(
     websiteId ||
@@ -32,18 +32,22 @@ export function SideNav(props: SidebarProps) {
     pathname.endsWith('/settings')
   );
 
+  if (hasNav) {
+    isCollapsed = true;
+  }
+
   const links = [
-    {
-      id: 'websites',
-      label: formatMessage(labels.websites),
-      path: '/websites',
-      icon: <Globe />,
-    },
     {
       id: 'boards',
       label: formatMessage(labels.boards),
       path: '/boards',
       icon: <LayoutDashboard />,
+    },
+    {
+      id: 'websites',
+      label: formatMessage(labels.websites),
+      path: '/websites',
+      icon: <Globe />,
     },
     {
       id: 'links',

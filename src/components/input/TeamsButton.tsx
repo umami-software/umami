@@ -25,6 +25,7 @@ export function TeamsButton({ showText = true }: { showText?: boolean }) {
   const router = useRouter();
   const team = data?.data?.find(({ id }) => id === teamId);
   const selectedKeys = new Set([teamId || user.id]);
+  const label = teamId ? team?.name : user.username;
 
   const handleSelect = (id: Key) => {
     router.push(id === user.id ? '/websites' : `/teams/${id}/websites`);
@@ -37,11 +38,8 @@ export function TeamsButton({ showText = true }: { showText?: boolean }) {
   return (
     <MenuTrigger>
       <Pressable>
-        <Row alignItems="center" justifyContent="space-between" width="100%" gap>
-          <SidebarItem
-            label={teamId ? team?.name : user.username}
-            icon={teamId ? <Users /> : <User />}
-          >
+        <Row width="100%" backgroundColor="2" border borderRadius>
+          <SidebarItem label={label} icon={teamId ? <Users /> : <User />}>
             {showText && (
               <Icon rotate={90} size="sm">
                 <Chevron />
