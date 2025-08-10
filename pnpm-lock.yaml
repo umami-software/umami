@@ -45,8 +45,8 @@ importers:
         specifier: ^5.83.0
         version: 5.83.0(react@19.1.1)
       '@umami/react-zen':
-        specifier: ^0.162.0
-        version: 0.162.0(@babel/core@7.27.1)(@types/react@19.1.9)(babel-plugin-react-compiler@19.1.0-rc.2)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.1))
+        specifier: ^0.163.0
+        version: 0.163.0(@babel/core@7.27.1)(@types/react@19.1.9)(babel-plugin-react-compiler@19.1.0-rc.2)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.1))
       '@umami/redis-client':
         specifier: ^0.27.0
         version: 0.27.0
@@ -2547,8 +2547,8 @@ packages:
     resolution: {integrity: sha512-pWrTcoFNWuwHlA9CvlfSsGWs14JxfN1TH25zM5L7o0pRLhsoZkDnTsXfQRJBEWJoV5DL0jf+Z+sxiud+K0mq1g==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@umami/react-zen@0.162.0':
-    resolution: {integrity: sha512-pQs5XV6arCjeyWjBBy2rCW2UcWKbq2HjU44iskaV63D88b3sWL6dyx4FnHfJ/0UQv20OJ1gv0qqElB4fva3d8Q==}
+  '@umami/react-zen@0.163.0':
+    resolution: {integrity: sha512-H+Z7sADljnBdzRQdOUIHXKphiPkzHKTLTNtBf/VbylzXg5A61e+OYoDG37eOkR+JFU9+KmJnF+zOiXyA33LW0A==}
 
   '@umami/redis-client@0.27.0':
     resolution: {integrity: sha512-SbHTpxhgeZyTBUSp2zdZM+XUtpsaSL4Tad8QXIEhEtjWhvvfoornyT5kLuyYCVtzSAT4daALeGmOO1z6EE1KcA==}
@@ -9873,7 +9873,7 @@ snapshots:
       '@typescript-eslint/types': 8.38.0
       eslint-visitor-keys: 4.2.1
 
-  '@umami/react-zen@0.162.0(@babel/core@7.27.1)(@types/react@19.1.9)(babel-plugin-react-compiler@19.1.0-rc.2)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.1))':
+  '@umami/react-zen@0.163.0(@babel/core@7.27.1)(@types/react@19.1.9)(babel-plugin-react-compiler@19.1.0-rc.2)(immer@9.0.21)(use-sync-external-store@1.5.0(react@19.1.1))':
     dependencies:
       '@fontsource/jetbrains-mono': 5.2.6
       '@internationalized/date': 3.8.2

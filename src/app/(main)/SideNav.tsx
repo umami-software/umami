@@ -15,6 +15,7 @@ import {
   Grid2X2,
   Settings,
   LockKeyhole,
+  PanelLeft,
 } from '@/components/icons';
 import { useMessages, useNavigation, useGlobalState } from '@/components/hooks';
 import { TeamsButton } from '@/components/input/TeamsButton';
@@ -23,7 +24,7 @@ import { PanelButton } from '@/components/input/PanelButton';
 export function SideNav(props: SidebarProps) {
   const { formatMessage, labels } = useMessages();
   const { pathname, renderUrl, websiteId } = useNavigation();
-  let [isCollapsed] = useGlobalState('sidenav-collapsed');
+  const [isCollapsed, setIsCollapsed] = useGlobalState('sidenav-collapsed');
 
   const hasNav = !!(
     websiteId ||
@@ -31,10 +32,6 @@ export function SideNav(props: SidebarProps) {
     pathname.startsWith('/settings') ||
     pathname.endsWith('/settings')
   );
-
-  if (hasNav) {
-    isCollapsed = true;
-  }
 
   const links = [
     {
@@ -81,8 +78,10 @@ export function SideNav(props: SidebarProps) {
   return (
     <Row height="100%" backgroundColor border="right">
       <Sidebar {...props} isCollapsed={isCollapsed || hasNav} muteItems={false} showBorder={false}>
-        <SidebarSection>
-          <SidebarHeader label="umami" icon={<Logo />} />
+        <SidebarSection onClick={() => setIsCollapsed(false)}>
+          <SidebarHeader label="umami" icon={isCollapsed && !hasNav ? <PanelLeft /> : <Logo />}>
+            {!isCollapsed && !hasNav && <PanelButton />}
+          </SidebarHeader>
         </SidebarSection>
         <SidebarSection flexGrow={1}>
           {links.map(({ id, path, label, icon }) => {
@@ -103,10 +102,7 @@ export function SideNav(props: SidebarProps) {
           })}
         </SidebarSection>
         <SidebarSection>
-          <TeamsButton showText={!isCollapsed} />
-          <Row>
-            <PanelButton isDisabled={hasNav} />
-          </Row>
+          <TeamsButton showText={!hasNav && !isCollapsed} />
         </SidebarSection>
       </Sidebar>
     </Row>

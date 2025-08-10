@@ -5,7 +5,12 @@ import { useGlobalState } from '@/components/hooks';
 export function PanelButton(props: ButtonProps) {
   const [isCollapsed, setIsCollapsed] = useGlobalState('sidenav-collapsed');
   return (
-    <Button onPress={() => setIsCollapsed(!isCollapsed)} variant="quiet" {...props}>
+    <Button
+      onPress={() => setIsCollapsed(!isCollapsed)}
+      variant="zero"
+      {...props}
+      style={{ padding: 0 }}
+    >
       <Icon>
         <PanelLeft />
       </Icon>
