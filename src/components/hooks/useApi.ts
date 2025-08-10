@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import * as reactQuery from '@tanstack/react-query';
-import { getClientAuthToken } from '@/lib/client';
 import { SHARE_TOKEN_HEADER } from '@/lib/constants';
 import { httpGet, httpPost, httpPut, httpDelete, FetchResponse } from '@/lib/fetch';
 import useStore from '@/store/app';
@@ -22,9 +21,8 @@ export function useApi() {
   const shareToken = useStore(selector);
 
   const defaultHeaders = {
-    authorization: `Bearer ${getClientAuthToken()}`,
     [SHARE_TOKEN_HEADER]: shareToken?.token,
-  };
+  } as any;
   const basePath = process.env.basePath;
 
   const getUrl = (url: string) => {

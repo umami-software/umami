@@ -9,29 +9,27 @@ import {
   Icon,
 } from 'react-basics';
 import { useRouter } from 'next/navigation';
-import { useApi, useMessages } from '@/components/hooks';
-import { setUser } from '@/store/app';
-import { setClientAuthToken } from '@/lib/client';
+import { useMessages } from '@/components/hooks';
 import Logo from '@/assets/logo.svg';
 import styles from './LoginForm.module.css';
+import { signIn } from 'next-auth/react';
 
 export function LoginForm() {
-  const { formatMessage, labels, getMessage } = useMessages();
+  const { formatMessage, labels } = useMessages();
   const router = useRouter();
-  const { post, useMutation } = useApi();
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) => post('/auth/login', data),
-  });
 
   const handleSubmit = async (data: any) => {
-    mutate(data, {
-      onSuccess: async ({ token, user }) => {
-        setClientAuthToken(token);
-        setUser(user);
-
-        router.push('/dashboard');
-      },
+    const res = await signIn('credentials', {
+      username: data.username,
+      password: data.password,
+      redirect: false,
     });
+
+    if (res?.error) {
+      throw new Error(res.error);
+    }
+
+    router.push('/dashboard');
   };
 
   return (
@@ -40,14 +38,14 @@ export function LoginForm() {
         <Logo />
       </Icon>
       <div className={styles.title}>umami</div>
-      <Form className={styles.form} onSubmit={handleSubmit} error={getMessage(error)}>
+      <Form className={styles.form} onSubmit={handleSubmit}>
         <FormRow label={formatMessage(labels.username)}>
           <FormInput
             data-test="input-username"
             name="username"
             rules={{ required: formatMessage(labels.required) }}
           >
-            <TextField autoComplete="off" />
+            <TextField autoComplete="username" />
           </FormInput>
         </FormRow>
         <FormRow label={formatMessage(labels.password)}>
@@ -56,16 +54,11 @@ export function LoginForm() {
             name="password"
             rules={{ required: formatMessage(labels.required) }}
           >
-            <PasswordField />
+            <PasswordField autoComplete="current-password" />
           </FormInput>
         </FormRow>
         <FormButtons>
-          <SubmitButton
-            data-test="button-submit"
-            className={styles.button}
-            variant="primary"
-            disabled={isPending}
-          >
+          <SubmitButton data-test="button-submit" className={styles.button} variant="primary">
             {formatMessage(labels.login)}
           </SubmitButton>
         </FormButtons>

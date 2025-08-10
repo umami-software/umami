@@ -4,10 +4,12 @@ import redis from '@/lib/redis';
 import debug from 'debug';
 import { PERMISSIONS, ROLE_PERMISSIONS, ROLES, SHARE_TOKEN_HEADER } from '@/lib/constants';
 import { secret, getRandomChars } from '@/lib/crypto';
-import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
+import { createSecureToken, parseToken } from '@/lib/jwt';
 import { ensureArray } from '@/lib/utils';
 import { getTeamUser, getUser, getWebsite } from '@/queries';
 import { Auth } from './types';
+import { getServerSession } from 'next-auth';
+import authOptions from '@/lib/authOptions';
 
 const log = debug('umami:auth');
 const cloudMode = process.env.CLOUD_MODE;
@@ -22,25 +24,20 @@ export function checkPassword(password: string, passwordHash: string) {
 }
 
 export async function checkAuth(request: Request) {
-  const token = request.headers.get('authorization')?.split(' ')?.[1];
-  const payload = parseSecureToken(token, secret());
+  const session = await getServerSession(authOptions);
   const shareToken = await parseShareToken(request.headers);
 
-  let user = null;
-  const { userId, authKey, grant } = payload || {};
+  let user: any = null;
+  const grant = undefined as any;
+  const token = undefined as any;
+  const authKey = undefined as any;
 
-  if (userId) {
-    user = await getUser(userId);
-  } else if (redis.enabled && authKey) {
-    const key = await redis.client.get(authKey);
-
-    if (key?.userId) {
-      user = await getUser(key.userId);
-    }
+  if ((session as any)?.user?.id) {
+    user = await getUser((session as any).user.id as string);
   }
 
   if (process.env.NODE_ENV === 'development') {
-    log('checkAuth:', { token, shareToken, payload, user, grant });
+    log('checkAuth:', { session, shareToken, user, grant });
   }
 
   if (!user?.id && !shareToken) {

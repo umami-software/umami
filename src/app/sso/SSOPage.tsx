@@ -2,7 +2,6 @@
 import { useEffect } from 'react';
 import { Loading } from 'react-basics';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { setClientAuthToken } from '@/lib/client';
 
 export default function SSOPage() {
   const router = useRouter();
@@ -12,8 +11,6 @@ export default function SSOPage() {
 
   useEffect(() => {
     if (url && token) {
-      setClientAuthToken(token);
-
       router.push(url);
     }
   }, [router, url, token]);
