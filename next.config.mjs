@@ -178,7 +178,8 @@ if (cloudMode && cloudUrl) {
 
 // Disable standalone output on Windows to avoid symlink errors during build.
 // Enable by setting NEXT_STANDALONE=true when needed (e.g., Docker/Linux deploys).
-const enableStandaloneOutput = process.platform !== 'win32' && (process.env.NEXT_STANDALONE !== 'false');
+const enableStandaloneOutput =
+  process.platform !== 'win32' && process.env.NEXT_STANDALONE !== 'false';
 
 /** @type {import('next').NextConfig} */
 export default {

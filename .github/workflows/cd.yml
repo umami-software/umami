@@ -18,7 +18,7 @@ jobs:
       - name: Set env
         run: |
           echo "NOW=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
-          
+
       - name: Generate tags
         id: generate_tags
         run: |

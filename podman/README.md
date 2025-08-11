@@ -1,6 +1,5 @@
 # How to deploy umami on podman
 
-
 ## How to use
 
 1. Rename `env.sample` to `.env`
@@ -9,7 +8,6 @@
 
 If you need to stop umami, you can do so by running `podman-compose down`.
 
-
 ### Install systemd service (optional)
 
 If you want to install a systemd service to run umami, you can use the provided
@@ -17,9 +15,8 @@ systemd service.
 
 Edit `umami.service` and change these two variables:
 
-
-	WorkingDirectory=/opt/apps/umami
-	EnvironmentFile=/opt/apps/umami/.env
+    WorkingDirectory=/opt/apps/umami
+    EnvironmentFile=/opt/apps/umami/.env
 
 `WorkingDirectory` should be changed to the path in which `podman-compose.yml`
 is located.
@@ -30,16 +27,13 @@ located.
 You can run the script `install-systemd-user-service` to install the systemd
 service under the current user.
 
-
-	./install-systemd-user-service
+    ./install-systemd-user-service
 
 Note: this script will enable the service and also start it. So it will assume
-that umami is not currently running.  If you started it previously, bring it
+that umami is not currently running. If you started it previously, bring it
 down using:
 
-	podman-compose down
-
-
+    podman-compose down
 
 ## Compatibility
 
