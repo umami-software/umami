@@ -27,7 +27,7 @@ export interface ChannelExpandedMetricsData {
 }
 
 export async function getChannelExpandedMetrics(
-  ...args: [websiteId: string, parameters: ChannelExpandedMetricsParameters, filters?: QueryFilters]
+  ...args: [websiteId: string, filters?: QueryFilters]
 ): Promise<ChannelExpandedMetricsData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -37,7 +37,6 @@ export async function getChannelExpandedMetrics(
 
 async function relationalQuery(
   websiteId: string,
-  parameters: ChannelExpandedMetricsParameters,
   filters: QueryFilters,
 ): Promise<ChannelExpandedMetricsData[]> {
   const { rawQuery, parseFilters } = prisma;
@@ -79,16 +78,14 @@ async function relationalQuery(
     group by x
     order by y desc;
     `,
-    { ...queryParams, ...parameters },
+    queryParams,
   );
 }
 
 async function clickhouseQuery(
   websiteId: string,
-  parameters: ChannelExpandedMetricsParameters,
   filters: QueryFilters,
 ): Promise<ChannelExpandedMetricsData[]> {
-  const { limit = 500, offset = 0 } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
   const { queryParams, filterQuery, cohortQuery } = parseFilters({
     ...filters,
@@ -145,11 +142,9 @@ async function clickhouseQuery(
       group by prefix, name, session_id, visit_id
     ) as t
     group by name 
-    order by visitors desc, visits desc
-    limit ${limit}
-    offset ${offset}
+    order by visitors desc, visits desc;
     `,
-    { ...queryParams, ...parameters },
+    queryParams,
   );
 }
 

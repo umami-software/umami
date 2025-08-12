@@ -62,7 +62,7 @@ export async function GET(
   }
 
   if (type === 'channel') {
-    const data = await getChannelExpandedMetrics(websiteId, { limit, offset }, filters);
+    const data = await getChannelExpandedMetrics(websiteId, filters);
 
     return json(data);
   }

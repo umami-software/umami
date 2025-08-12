@@ -1,4 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
+import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
@@ -31,6 +32,7 @@ async function relationalQuery(
     websiteId,
     startDate,
     endDate,
+    eventType: EVENT_TYPE.pageView,
   });
 
   return rawQuery(
@@ -41,7 +43,6 @@ async function relationalQuery(
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}
       and coalesce(${column}, '') != ''
-      and event_type = 1
       ${filterQuery}
     group by 1
     order by 2 desc
@@ -62,6 +63,7 @@ async function clickhouseQuery(
     websiteId,
     startDate,
     endDate,
+    eventType: EVENT_TYPE.pageView,
   });
 
   return rawQuery(
@@ -72,7 +74,6 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and ${column} != ''
-      and event_type = 1
       ${filterQuery}
     group by 1
     order by 2 desc
