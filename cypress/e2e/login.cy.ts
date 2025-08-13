@@ -9,9 +9,9 @@ describe('Login tests', () => {
       defaultCommandTimeout: 10000,
     },
     () => {
-      cy.getDataTest('input-username').find('input').as('inputUsername').click();
-      cy.get('@inputUsername').type(Cypress.env('umami_user'), { delay: 0 });
-      cy.get('@inputUsername').click();
+      cy.getDataTest('input-username').find('input').as('inputEmail').click();
+      cy.get('@inputEmail').type(Cypress.env('umami_email'), { delay: 0 });
+      cy.get('@inputEmail').click();
       cy.getDataTest('input-password')
         .find('input')
         .type(Cypress.env('umami_password'), { delay: 0 });
@@ -25,12 +25,12 @@ describe('Login tests', () => {
     cy.getDataTest('button-submit').click();
     cy.contains(/Required/i).should('be.visible');
 
-    cy.getDataTest('input-username').find('input').as('inputUsername');
-    cy.get('@inputUsername').click();
-    cy.get('@inputUsername').type(Cypress.env('umami_user'), { delay: 0 });
-    cy.get('@inputUsername').click();
+    cy.getDataTest('input-username').find('input').as('inputEmail');
+    cy.get('@inputEmail').click();
+    cy.get('@inputEmail').type(Cypress.env('umami_email'), { delay: 0 });
+    cy.get('@inputEmail').click();
     cy.getDataTest('input-password').find('input').type('wrongpassword', { delay: 0 });
     cy.getDataTest('button-submit').click();
-    cy.contains(/Incorrect username and\/or password./i).should('be.visible');
+    cy.contains(/Incorrect username and\/or password\./i).should('be.visible');
   });
 });

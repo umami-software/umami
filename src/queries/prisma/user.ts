@@ -32,6 +32,24 @@ async function findUser(
   });
 }
 
+export async function getUserByEmail(email: string, options: GetUserOptions = {}) {
+  const { includePassword = false, showDeleted = false } = options;
+
+  return prisma.client.user.findFirst({
+    where: {
+      OR: [{ email }, { username: email }],
+      ...(showDeleted && { deletedAt: null }),
+    },
+    select: {
+      id: true,
+      username: true,
+      password: includePassword,
+      role: true,
+      createdAt: true,
+    },
+  }) as unknown as Promise<User>;
+}
+
 export async function getUser(userId: string, options: GetUserOptions = {}) {
   return findUser(
     {
@@ -221,6 +239,12 @@ export async function deleteUser(
     client.user.delete({
       where: {
         id: userId,
+      },
+      select: {
+        id: true,
+        username: true,
+        role: true,
+        createdAt: true,
       },
     }),
   ]);

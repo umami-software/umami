@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { checkPassword } from '@/lib/auth';
 import { createSecureToken } from '@/lib/jwt';
 import redis from '@/lib/redis';
-import { getUserByUsername } from '@/queries';
+import { getUserByEmail } from '@/queries';
 import { json, unauthorized } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
 import { saveAuth } from '@/lib/auth';
@@ -11,7 +11,7 @@ import { ROLES } from '@/lib/constants';
 
 export async function POST(request: Request) {
   const schema = z.object({
-    username: z.string(),
+    email: z.string().email(),
     password: z.string(),
   });
 
@@ -21,9 +21,9 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const { username, password } = body;
+  const { email, password } = body;
 
-  const user = await getUserByUsername(username, { includePassword: true });
+  const user = await getUserByEmail(email, { includePassword: true });
 
   if (!user || !checkPassword(password, user.password)) {
     return unauthorized('message.incorrect-username-password');
@@ -41,6 +41,6 @@ export async function POST(request: Request) {
 
   return json({
     token,
-    user: { id, username, role, createdAt, isAdmin: role === ROLES.admin },
+    user: { id, username: user.username, role, createdAt, isAdmin: role === ROLES.admin },
   });
 }

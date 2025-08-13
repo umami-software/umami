@@ -1,7 +1,7 @@
 import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { checkPassword } from '@/lib/auth';
-import { getUserByUsername } from '@/queries';
+import { getUserByEmail } from '@/queries';
 
 const AUTH_SECRET = process.env.NEXTAUTH_SECRET || process.env.APP_SECRET;
 
@@ -12,12 +12,12 @@ const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: { label: 'Username', type: 'text' },
+        email: { label: 'Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
       authorize: async credentials => {
-        if (!credentials?.username || !credentials?.password) return null;
-        const user = await getUserByUsername(credentials.username, {
+        if (!credentials?.email || !credentials?.password) return null;
+        const user = await getUserByEmail(credentials.email, {
           includePassword: true,
         } as any);
         if (!user) return null;

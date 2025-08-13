@@ -11,6 +11,8 @@ datasource db {
 model User {
   id          String    @id @unique @map("user_id") @db.Uuid
   username    String    @unique @db.VarChar(255)
+  email       String?   @unique @db.VarChar(255)
+  emailVerified DateTime? @map("email_verified") @db.Timestamptz(6)
   password    String    @db.VarChar(60)
   role        String    @map("role") @db.VarChar(50)
   logoUrl     String?   @map("logo_url") @db.VarChar(2183)

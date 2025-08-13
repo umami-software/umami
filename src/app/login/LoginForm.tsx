@@ -20,7 +20,7 @@ export function LoginForm() {
 
   const handleSubmit = async (data: any) => {
     const res = await signIn('credentials', {
-      username: data.username,
+      email: data.email,
       password: data.password,
       redirect: false,
     });
@@ -39,13 +39,13 @@ export function LoginForm() {
       </Icon>
       <div className={styles.title}>umami</div>
       <Form className={styles.form} onSubmit={handleSubmit}>
-        <FormRow label={formatMessage(labels.username)}>
+        <FormRow label={formatMessage(labels.email)}>
           <FormInput
             data-test="input-username"
-            name="username"
+            name="email"
             rules={{ required: formatMessage(labels.required) }}
           >
-            <TextField autoComplete="username" />
+            <TextField autoComplete="email" />
           </FormInput>
         </FormRow>
         <FormRow label={formatMessage(labels.password)}>
