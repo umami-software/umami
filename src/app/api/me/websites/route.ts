@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { pagingParams } from '@/lib/schema';
 import { getUserWebsites } from '@/queries';
 import { json } from '@/lib/response';
-import { parseRequest } from '@/lib/request';
+import { parseRequest, getQueryFilters } from '@/lib/request';
 
 export async function GET(request: Request) {
   const schema = z.object({
@@ -15,7 +15,9 @@ export async function GET(request: Request) {
     return error();
   }
 
-  const websites = await getUserWebsites(auth.user.id, query);
+  const filters = await getQueryFilters(query);
+
+  const websites = await getUserWebsites(auth.user.id, filters);
 
   return json(websites);
 }

@@ -1,3 +1,5 @@
+export * from '@/queries/prisma/link';
+export * from '@/queries/prisma/pixel';
 export * from '@/queries/prisma/report';
 export * from '@/queries/prisma/segment';
 export * from '@/queries/prisma/team';

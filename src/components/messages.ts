@@ -325,9 +325,13 @@ export const labels = defineMessages({
   other: { id: 'label.other', defaultMessage: 'Other' },
   boards: { id: 'label.boards', defaultMessage: 'Boards' },
   apply: { id: 'label.apply', defaultMessage: 'Apply' },
+  link: { id: 'label.link', defaultMessage: 'Link' },
   links: { id: 'label.links', defaultMessage: 'Links' },
+  pixel: { id: 'label.pixel', defaultMessage: 'Pixel' },
   pixels: { id: 'label.pixels', defaultMessage: 'Pixels' },
   addBoard: { id: 'label.add-board', defaultMessage: 'Add board' },
+  addLink: { id: 'label.add-link', defaultMessage: 'Add link' },
+  addPixel: { id: 'label.add-pixel', defaultMessage: 'Add pixel' },
   maximize: { id: 'label.maximize', defaultMessage: 'Maximize' },
   remaining: { id: 'label.remaining', defaultMessage: 'Remaining' },
   conversion: { id: 'label.conversion', defaultMessage: 'Conversion' },
@@ -347,6 +351,7 @@ export const labels = defineMessages({
   saveSegment: { id: 'label.save-segment', defaultMessage: 'Save as segment' },
   saveCohort: { id: 'label.save-cohort', defaultMessage: 'Save as cohort' },
   analysis: { id: 'label.analysis', defaultMessage: 'Analysis' },
+  destinationUrl: { id: 'label.destination-url', defaultMessage: 'Destination URL' },
 });
 
 export const messages = defineMessages({

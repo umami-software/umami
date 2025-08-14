@@ -2,22 +2,24 @@
 import { PageBody } from '@/components/common/PageBody';
 import { Column } from '@umami/react-zen';
 import { PageHeader } from '@/components/common/PageHeader';
-import { BoardAddButton } from '@/app/(main)/boards/BoardAddButton';
-import Link from 'next/link';
-import { useMessages } from '@/components/hooks';
+import { LinkAddButton } from './LinkAddButton';
+import { useMessages, useNavigation } from '@/components/hooks';
+import { LinksDataTable } from '@/app/(main)/links/LinksDataTable';
+import { Panel } from '@/components/common/Panel';
 
 export function LinksPage() {
   const { formatMessage, labels } = useMessages();
+  const { teamId } = useNavigation();
 
   return (
     <PageBody>
-      <Column>
+      <Column gap="6">
         <PageHeader title={formatMessage(labels.links)}>
-          <BoardAddButton />
+          <LinkAddButton teamId={teamId} />
         </PageHeader>
-        <Link href="/teams/3a97e34a-7f9d-4de2-8754-ed81714b528d/boards/86d4095c-a2a8-4fc8-9521-103e858e2b41">
-          Board 1
-        </Link>
+        <Panel>
+          <LinksDataTable />
+        </Panel>
       </Column>
     </PageBody>
   );

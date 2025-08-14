@@ -20,10 +20,12 @@ model User {
   updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  websiteUser       Website[]  @relation("user")
-  websiteCreateUser Website[]  @relation("createUser")
-  teamUser          TeamUser[]
-  report            Report[]
+  websites  Website[]  @relation("user")
+  createdBy Website[]  @relation("createUser")
+  links     Link[]     @relation("user")
+  pixels    Pixel[]    @relation("user")
+  teams     TeamUser[]
+  reports   Report[]
 
   @@map("user")
 }
@@ -42,9 +44,9 @@ model Session {
   distinctId String?   @map("distinct_id") @db.VarChar(50)
   createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
 
-  websiteEvent WebsiteEvent[]
-  sessionData  SessionData[]
-  revenue      Revenue[]
+  websiteEvents WebsiteEvent[]
+  sessionData   SessionData[]
+  revenue       Revenue[]
 
   @@index([createdAt])
   @@index([websiteId])
@@ -77,10 +79,10 @@ model Website {
   createUser  User?         @relation("createUser", fields: [createdBy], references: [id])
   team        Team?         @relation(fields: [teamId], references: [id])
   eventData   EventData[]
-  report      Report[]
+  reports     Report[]
   revenue     Revenue[]
+  segments    Segment[]
   sessionData SessionData[]
-  segment     Segment[]
 
   @@index([userId])
   @@index([teamId])
@@ -192,8 +194,10 @@ model Team {
   updatedAt  DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt  DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  website  Website[]
-  teamUser TeamUser[]
+  websites Website[]
+  members  TeamUser[]
+  links    Link[]
+  pixels   Pixel[]
 
   @@index([accessCode])
   @@map("team")
@@ -219,7 +223,7 @@ model Report {
   id          String    @id() @unique() @map("report_id") @db.Uuid
   userId      String    @map("user_id") @db.Uuid
   websiteId   String    @map("website_id") @db.Uuid
-  type        String    @db.VarChar(200)
+  type        String    @db.VarChar(50)
   name        String    @db.VarChar(200)
   description String    @db.VarChar(500)
   parameters  Json
@@ -239,7 +243,7 @@ model Report {
 model Segment {
   id         String    @id() @unique() @map("segment_id") @db.Uuid
   websiteId  String    @map("website_id") @db.Uuid
-  type       String    @db.VarChar(200)
+  type       String    @db.VarChar(50)
   name       String    @db.VarChar(200)
   parameters Json
   createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -257,7 +261,7 @@ model Revenue {
   sessionId String    @map("session_id") @db.Uuid
   eventId   String    @map("event_id") @db.Uuid
   eventName String    @map("event_name") @db.VarChar(50)
-  currency  String    @db.VarChar(100)
+  currency  String    @db.VarChar(10)
   revenue   Decimal?  @db.Decimal(19, 4)
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
 
@@ -269,4 +273,45 @@ model Revenue {
   @@index([websiteId, createdAt])
   @@index([websiteId, sessionId, createdAt])
   @@map("revenue")
+}
+
+model Link {
+  id        String    @id() @unique() @map("link_id") @db.Uuid
+  name      String    @db.VarChar(100)
+  url       String    @db.VarChar(500)
+  slug      String    @db.VarChar(100)
+  userId    String?   @map("user_id") @db.Uuid
+  teamId    String?   @map("team_id") @db.Uuid
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  user User? @relation("user", fields: [userId], references: [id])
+  team Team? @relation(fields: [teamId], references: [id])
+
+  @@index([slug])
+  @@index([userId])
+  @@index([teamId])
+  @@index([createdAt])
+  @@map("link")
+}
+
+model Pixel {
+  id        String    @id() @unique() @map("pixel_id") @db.Uuid
+  name      String    @db.VarChar(100)
+  slug      String    @db.VarChar(100)
+  userId    String?   @map("user_id") @db.Uuid
+  teamId    String?   @map("team_id") @db.Uuid
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  user User? @relation("user", fields: [userId], references: [id])
+  team Team? @relation(fields: [teamId], references: [id])
+
+  @@index([slug])
+  @@index([userId])
+  @@index([teamId])
+  @@index([createdAt])
+  @@map("pixel")
 }

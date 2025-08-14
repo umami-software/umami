@@ -11,7 +11,7 @@ export function PanelButton(props: ButtonProps) {
       {...props}
       style={{ padding: 0 }}
     >
-      <Icon>
+      <Icon strokeColor="muted">
         <PanelLeft />
       </Icon>
     </Button>

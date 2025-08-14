@@ -1,11 +1,13 @@
 'use server';
 
 export type Config = {
-  faviconUrl: string | undefined;
+  faviconUrl?: string;
   privateMode: boolean;
   telemetryDisabled: boolean;
-  trackerScriptName: string | undefined;
+  trackerScriptName?: string;
   updatesDisabled: boolean;
+  linkDomain?: string;
+  pixelDomain?: string;
 };
 
 export async function getConfig(): Promise<Config> {
@@ -15,6 +17,7 @@ export async function getConfig(): Promise<Config> {
     telemetryDisabled: !!process.env.DISABLE_TELEMETRY,
     trackerScriptName: process.env.TRACKER_SCRIPT_NAME,
     updatesDisabled: !!process.env.DISABLE_UPDATES,
-    loginDisabled: !!process.env.DISABLE_LOGIN,
+    linkDomain: process.env.LINK_DOMAIN,
+    pixelDomain: process.env.PIXEL_DOMAIN,
   };
 }

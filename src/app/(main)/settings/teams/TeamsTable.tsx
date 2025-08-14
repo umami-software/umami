@@ -21,13 +21,13 @@ export function TeamsTable({
         {(row: any) => <Link href={`/settings/teams/${row.id}`}>{row.name}</Link>}
       </DataColumn>
       <DataColumn id="owner" label={formatMessage(labels.owner)}>
-        {(row: any) => row.teamUser.find(({ role }) => role === ROLES.teamOwner)?.user?.username}
+        {(row: any) => row.users.find(({ role }) => role === ROLES.teamOwner)?.user?.username}
       </DataColumn>
-      <DataColumn id="websites" label={formatMessage(labels.websites)}>
-        {(row: any) => row._count.website}
+      <DataColumn id="websites" label={formatMessage(labels.websites)} align="end">
+        {(row: any) => row._count.websites}
       </DataColumn>
-      <DataColumn id="members" label={formatMessage(labels.members)}>
-        {(row: any) => row._count.teamUser}
+      <DataColumn id="members" label={formatMessage(labels.members)} align="end">
+        {(row: any) => row._count.users}
       </DataColumn>
       {showActions ? (
         <DataColumn id="action" label=" " align="end">

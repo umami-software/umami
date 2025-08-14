@@ -1,30 +1,29 @@
 import { z } from 'zod';
 import { unauthorized, json } from '@/lib/response';
-import { getUserWebsites } from '@/queries/prisma/website';
-import { pagingParams, searchParams } from '@/lib/schema';
+import { canViewTeam } from '@/lib/auth';
 import { getQueryFilters, parseRequest } from '@/lib/request';
+import { pagingParams, searchParams } from '@/lib/schema';
+import { getTeamPixels } from '@/queries';
 
-export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
+export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const schema = z.object({
     ...pagingParams,
     ...searchParams,
   });
-
+  const { teamId } = await params;
   const { auth, query, error } = await parseRequest(request, schema);
 
   if (error) {
     return error();
   }
 
-  const { userId } = await params;
-
-  if (!auth.user.isAdmin && auth.user.id !== userId) {
+  if (!(await canViewTeam(auth, teamId))) {
     return unauthorized();
   }
 
   const filters = await getQueryFilters(query);
 
-  const websites = await getUserWebsites(userId, filters);
+  const websites = await getTeamPixels(teamId, filters);
 
   return json(websites);
 }

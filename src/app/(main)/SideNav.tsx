@@ -83,6 +83,9 @@ export function SideNav(props: SidebarProps) {
             {!isCollapsed && !hasNav && <PanelButton />}
           </SidebarHeader>
         </SidebarSection>
+        <SidebarSection style={{ paddingTop: 0, paddingBottom: 0 }}>
+          <TeamsButton showText={!hasNav && !isCollapsed} />
+        </SidebarSection>
         <SidebarSection flexGrow={1}>
           {links.map(({ id, path, label, icon }) => {
             return (
@@ -100,9 +103,6 @@ export function SideNav(props: SidebarProps) {
               </Link>
             );
           })}
-        </SidebarSection>
-        <SidebarSection>
-          <TeamsButton showText={!hasNav && !isCollapsed} />
         </SidebarSection>
       </Sidebar>
     </Row>

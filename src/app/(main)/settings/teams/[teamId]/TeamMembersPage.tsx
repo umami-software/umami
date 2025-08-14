@@ -1,19 +1,17 @@
 'use client';
-import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
 import { TeamMembersDataTable } from './TeamMembersDataTable';
 import { SectionHeader } from '@/components/common/SectionHeader';
-import { useLoginQuery, useMessages } from '@/components/hooks';
+import { useLoginQuery, useMessages, useTeam } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
-import { useContext } from 'react';
 import { Column } from '@umami/react-zen';
 
 export function TeamMembersPage({ teamId }: { teamId: string }) {
-  const team = useContext(TeamContext);
+  const team = useTeam();
   const { user } = useLoginQuery();
   const { formatMessage, labels } = useMessages();
 
   const canEdit =
-    team?.teamUser?.find(
+    team?.members?.find(
       ({ userId, role }) =>
         (role === ROLES.teamOwner || role === ROLES.teamManager) && userId === user.id,
     ) && user.role !== ROLES.viewOnly;

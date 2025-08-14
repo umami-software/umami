@@ -2,7 +2,6 @@ import { Prisma, Website } from '@prisma/client';
 import redis from '@/lib/redis';
 import prisma from '@/lib/prisma';
 import { PageResult, QueryFilters } from '@/lib/types';
-import WebsiteFindManyArgs = Prisma.WebsiteFindManyArgs;
 import { ROLES } from '@/lib/constants';
 
 async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs): Promise<Website> {
@@ -27,7 +26,7 @@ export async function getSharedWebsite(shareId: string) {
 }
 
 export async function getWebsites(
-  criteria: WebsiteFindManyArgs,
+  criteria: Prisma.WebsiteFindManyArgs,
   filters: QueryFilters,
 ): Promise<PageResult<Website[]>> {
   const { search } = filters;

@@ -16,7 +16,7 @@ export async function getTeam(teamId: string, options: { includeMembers?: boolea
     where: {
       id: teamId,
     },
-    ...(includeMembers && { include: { teamUser: true } }),
+    ...(includeMembers && { include: { members: true } }),
   });
 }
 
@@ -47,12 +47,12 @@ export async function getUserTeams(userId: string, filters: QueryFilters) {
     {
       where: {
         deletedAt: null,
-        teamUser: {
+        members: {
           some: { userId },
         },
       },
       include: {
-        teamUser: {
+        members: {
           include: {
             user: {
               select: {
@@ -64,10 +64,10 @@ export async function getUserTeams(userId: string, filters: QueryFilters) {
         },
         _count: {
           select: {
-            website: {
+            websites: {
               where: { deletedAt: null },
             },
-            teamUser: {
+            members: {
               where: {
                 user: { deletedAt: null },
               },
