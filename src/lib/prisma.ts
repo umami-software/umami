@@ -155,6 +155,24 @@ function mapFilter(column: string, operator: string, name: string, type: string 
   }
 }
 
+function mapCohortFilter(column: string, operator: string, value: string) {
+  const db = getDatabaseType();
+  const like = db === POSTGRESQL ? 'ilike' : 'like';
+
+  switch (operator) {
+    case OPERATORS.equals:
+      return `${column} = '${value}'`;
+    case OPERATORS.notEquals:
+      return `${column} != '${value}'`;
+    case OPERATORS.contains:
+      return `${column} ${like} '${value}'`;
+    case OPERATORS.doesNotContain:
+      return `${column} not ${like} '${value}'`;
+    default:
+      return '';
+  }
+}
+
 function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}): string {
   const query = filtersToArray(filters, options).reduce((arr, { name, column, operator }) => {
     if (column) {
@@ -171,6 +189,43 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}):
   }, []);
 
   return query.join('\n');
+}
+
+function getCohortQuery(websiteId: string, filters: QueryFilters = {}, options: QueryOptions = {}) {
+  const query = filtersToArray(filters, options).reduce(
+    (arr, { name, column, operator, value }) => {
+      if (column) {
+        arr.push(
+          `${arr.length === 0 ? 'where' : 'and'} ${mapCohortFilter(column, operator, value)}`,
+        );
+
+        if (name === 'referrer') {
+          arr.push(`and referrer_domain != hostname`);
+        }
+      }
+
+      return arr;
+    },
+    [],
+  );
+
+  if (query.length > 0) {
+    // add website and date range filters
+    query.push(`and website_event.website_id = '${websiteId}'`);
+    query.push(
+      `and website_event.created_at between '${filters.startDate}'::timestamptz and '${filters.endDate}'::timestamptz`,
+    );
+
+    return `join
+    (select distinct website_event.session_id
+    from website_event
+    join session on session.session_id = website_event.session_id
+    ${query.join('\n')}) cohort
+    on cohort.session_id = website_event.session_id
+    `;
+  }
+
+  return '';
 }
 
 function getDateQuery(filters: QueryFilters = {}) {
@@ -219,6 +274,7 @@ async function parseFilters(
       websiteId,
       startDate: maxDate(filters.startDate, website?.resetAt),
     },
+    cohortQuery: getCohortQuery(websiteId, filters?.cohort),
   };
 }
 
