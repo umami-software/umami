@@ -1,5 +1,5 @@
 'use client';
-import { WebsiteSettings } from '@/app/(main)/settings/websites/[websiteId]/WebsiteSettings';
+import { WebsiteSettings } from '@/app/(main)/websites/[websiteId]/settings/WebsiteSettings';
 import { WebsiteProvider } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
 import { Panel } from '@/components/common/Panel';
 

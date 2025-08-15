@@ -19,7 +19,7 @@ export function TypeConfirmationForm({
 }: {
   confirmationValue: string;
   buttonLabel?: string;
-  buttonVariant?: 'primary' | 'secondary' | 'outline' | 'quiet' | 'danger' | 'none';
+  buttonVariant?: 'primary' | 'outline' | 'quiet' | 'danger' | 'zero';
   isLoading?: boolean;
   error?: string | Error;
   onConfirm?: () => void;

@@ -1,11 +1,11 @@
 import { useContext, useState } from 'react';
 import { Column, Tabs, TabList, Tab, TabPanel } from '@umami/react-zen';
-import { TeamContext } from '@/app/(main)/settings/teams/[teamId]/TeamProvider';
+import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
 import { useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
 
 import { ROLES } from '@/lib/constants';
 import { Users } from '@/components/icons';
-import { TeamLeaveButton } from '@/app/(main)/settings/teams/TeamLeaveButton';
+import { TeamLeaveButton } from '@/app/(main)/teams/TeamLeaveButton';
 import { TeamManage } from './TeamManage';
 import { TeamEditForm } from './TeamEditForm';
 import { TeamWebsitesDataTable } from './TeamWebsitesDataTable';

@@ -6,7 +6,7 @@ import { useMessages } from '@/components/hooks';
 import { Edit } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
 import { DateDistance } from '@/components/common/DateDistance';
-import { WebsiteDeleteForm } from '@/app/(main)/settings/websites/[websiteId]/WebsiteDeleteForm';
+import { WebsiteDeleteForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteDeleteForm';
 
 export function AdminWebsitesTable({ data = [] }: { data: any[] }) {
   const { formatMessage, labels } = useMessages();

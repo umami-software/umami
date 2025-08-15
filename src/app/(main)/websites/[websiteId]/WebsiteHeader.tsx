@@ -4,7 +4,7 @@ import { useWebsite } from '@/components/hooks/useWebsite';
 import { Share, Edit } from '@/components/icons';
 import { Favicon } from '@/components/common/Favicon';
 import { ActiveUsers } from '@/components/metrics/ActiveUsers';
-import { WebsiteShareForm } from '@/app/(main)/settings/websites/[websiteId]/WebsiteShareForm';
+import { WebsiteShareForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteShareForm';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { LinkButton } from '@/components/common/LinkButton';
 
