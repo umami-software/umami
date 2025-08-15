@@ -20,9 +20,9 @@ export async function GET(request: Request) {
 
   const filters = await getQueryFilters(query);
 
-  const inks = await getUserLinks(auth.user.id, filters);
+  const links = await getUserLinks(auth.user.id, filters);
 
-  return json(inks);
+  return json(links);
 }
 
 export async function POST(request: Request) {

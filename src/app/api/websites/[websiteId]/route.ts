@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { canUpdateWebsite, canDeleteWebsite, canViewWebsite } from '@/validations';
 import { SHARE_ID_REGEX } from '@/lib/constants';
 import { parseRequest } from '@/lib/request';
-import { ok, json, unauthorized, serverError } from '@/lib/response';
+import { ok, json, unauthorized, serverError, badRequest } from '@/lib/response';
 import { deleteWebsite, getWebsite, updateWebsite } from '@/queries';
 
 export async function GET(
@@ -55,7 +55,7 @@ export async function POST(
     return Response.json(website);
   } catch (e: any) {
     if (e.message.includes('Unique constraint') && e.message.includes('share_id')) {
-      return serverError(new Error('That share ID is already taken.'));
+      return badRequest('That share ID is already taken.');
     }
 
     return serverError(e);

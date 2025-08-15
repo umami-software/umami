@@ -9,7 +9,7 @@ export function LinkEditButton({ linkId }: { linkId: string }) {
 
   return (
     <ActionButton title={formatMessage(labels.edit)} icon={<Edit />}>
-      <Dialog title={formatMessage(labels.link)} style={{ width: 800 }}>
+      <Dialog title={formatMessage(labels.link)} style={{ width: 800, minHeight: 300 }}>
         {({ close }) => {
           return <LinkEditForm linkId={linkId} onClose={close} />;
         }}

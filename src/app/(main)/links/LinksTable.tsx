@@ -5,12 +5,13 @@ import { DateDistance } from '@/components/common/DateDistance';
 import { ExternalLink } from '@/components/common/ExternalLink';
 import { LinkEditButton } from './LinkEditButton';
 import { LinkDeleteButton } from './LinkDeleteButton';
+import { LINKS_URL } from '@/lib/constants';
 
 export function LinksTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
   const { websiteId } = useNavigation();
   const { linksUrl } = useConfig();
-  const hostUrl = linksUrl || `${window.location.origin}/x`;
+  const hostUrl = linksUrl || LINKS_URL;
 
   if (data.length === 0) {
     return <Empty />;

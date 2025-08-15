@@ -353,6 +353,7 @@ export const labels = defineMessages({
   analysis: { id: 'label.analysis', defaultMessage: 'Analysis' },
   destinationUrl: { id: 'label.destination-url', defaultMessage: 'Destination URL' },
   audience: { id: 'label.audience', defaultMessage: 'Audience' },
+  invalidUrl: { id: 'label.invalid-url', defaultMessage: 'Invalid URL' },
 });
 
 export const messages = defineMessages({

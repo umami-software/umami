@@ -1,39 +1,32 @@
 import { z } from 'zod';
-import { canUpdateWebsite, canDeleteWebsite, canViewWebsite } from '@/validations';
-import { SHARE_ID_REGEX } from '@/lib/constants';
+import { canUpdatePixel, canDeletePixel, canViewPixel } from '@/validations';
 import { parseRequest } from '@/lib/request';
-import { ok, json, unauthorized, serverError } from '@/lib/response';
-import { deleteWebsite, getWebsite, updateWebsite } from '@/queries';
+import { ok, json, unauthorized, serverError, badRequest } from '@/lib/response';
+import { deletePixel, getPixel, updatePixel } from '@/queries';
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ websiteId: string }> },
-) {
+export async function GET(request: Request, { params }: { params: Promise<{ pixelId: string }> }) {
   const { auth, error } = await parseRequest(request);
 
   if (error) {
     return error();
   }
 
-  const { websiteId } = await params;
+  const { pixelId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewPixel(auth, pixelId))) {
     return unauthorized();
   }
 
-  const website = await getWebsite(websiteId);
+  const pixel = await getPixel(pixelId);
 
-  return json(website);
+  return json(pixel);
 }
 
-export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ websiteId: string }> },
-) {
+export async function POST(request: Request, { params }: { params: Promise<{ pixelId: string }> }) {
   const schema = z.object({
-    name: z.string().optional(),
-    domain: z.string().optional(),
-    shareId: z.string().regex(SHARE_ID_REGEX).nullable().optional(),
+    name: z.string(),
+    url: z.string().url(),
+    slug: z.string().min(8),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -42,20 +35,20 @@ export async function POST(
     return error();
   }
 
-  const { websiteId } = await params;
+  const { pixelId } = await params;
   const { name, domain, shareId } = body;
 
-  if (!(await canUpdateWebsite(auth, websiteId))) {
+  if (!(await canUpdatePixel(auth, pixelId))) {
     return unauthorized();
   }
 
   try {
-    const website = await updateWebsite(websiteId, { name, domain, shareId });
+    const pixel = await updatePixel(pixelId, { name, domain, shareId });
 
-    return Response.json(website);
+    return Response.json(pixel);
   } catch (e: any) {
-    if (e.message.includes('Unique constraint') && e.message.includes('share_id')) {
-      return serverError(new Error('That share ID is already taken.'));
+    if (e.message.includes('Unique constraint') && e.message.includes('slug')) {
+      return badRequest('That slug is already taken.');
     }
 
     return serverError(e);
@@ -64,7 +57,7 @@ export async function POST(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: Promise<{ websiteId: string }> },
+  { params }: { params: Promise<{ pixelId: string }> },
 ) {
   const { auth, error } = await parseRequest(request);
 
@@ -72,13 +65,13 @@ export async function DELETE(
     return error();
   }
 
-  const { websiteId } = await params;
+  const { pixelId } = await params;
 
-  if (!(await canDeleteWebsite(auth, websiteId))) {
+  if (!(await canDeletePixel(auth, pixelId))) {
     return unauthorized();
   }
 
-  await deleteWebsite(websiteId);
+  await deletePixel(pixelId);
 
   return ok();
 }

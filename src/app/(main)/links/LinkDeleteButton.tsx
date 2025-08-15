@@ -7,7 +7,6 @@ import { useApi, useMessages, useModified } from '@/components/hooks';
 
 export function LinkDeleteButton({
   linkId,
-  websiteId,
   name,
   onSave,
 }: {
@@ -19,7 +18,7 @@ export function LinkDeleteButton({
   const { formatMessage, labels } = useMessages();
   const { del, useMutation } = useApi();
   const { mutate, isPending, error } = useMutation({
-    mutationFn: () => del(`/websites/${websiteId}/links/${linkId}`),
+    mutationFn: () => del(`/links/${linkId}`),
   });
   const { touch } = useModified();
 

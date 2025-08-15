@@ -1,39 +1,32 @@
 import { z } from 'zod';
 import { canUpdateLink, canDeleteLink, canViewLink } from '@/validations';
-import { SHARE_ID_REGEX } from '@/lib/constants';
 import { parseRequest } from '@/lib/request';
-import { ok, json, unauthorized, serverError } from '@/lib/response';
+import { ok, json, unauthorized, serverError, badRequest } from '@/lib/response';
 import { deleteLink, getLink, updateLink } from '@/queries';
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ websiteId: string }> },
-) {
+export async function GET(request: Request, { params }: { params: Promise<{ linkId: string }> }) {
   const { auth, error } = await parseRequest(request);
 
   if (error) {
     return error();
   }
 
-  const { websiteId } = await params;
+  const { linkId } = await params;
 
-  if (!(await canViewLink(auth, websiteId))) {
+  if (!(await canViewLink(auth, linkId))) {
     return unauthorized();
   }
 
-  const website = await getLink(websiteId);
+  const website = await getLink(linkId);
 
   return json(website);
 }
 
-export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ websiteId: string }> },
-) {
+export async function POST(request: Request, { params }: { params: Promise<{ linkId: string }> }) {
   const schema = z.object({
-    name: z.string().optional(),
-    domain: z.string().optional(),
-    shareId: z.string().regex(SHARE_ID_REGEX).nullable().optional(),
+    name: z.string(),
+    url: z.string(),
+    slug: z.string(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -42,20 +35,20 @@ export async function POST(
     return error();
   }
 
-  const { websiteId } = await params;
-  const { name, domain, shareId } = body;
+  const { linkId } = await params;
+  const { name, url, slug } = body;
 
-  if (!(await canUpdateLink(auth, websiteId))) {
+  if (!(await canUpdateLink(auth, linkId))) {
     return unauthorized();
   }
 
   try {
-    const website = await updateLink(websiteId, { name, domain, shareId });
+    const result = await updateLink(linkId, { name, url, slug });
 
-    return Response.json(website);
+    return Response.json(result);
   } catch (e: any) {
-    if (e.message.includes('Unique constraint') && e.message.includes('share_id')) {
-      return serverError(new Error('That share ID is already taken.'));
+    if (e.message.includes('Unique constraint') && e.message.includes('slug')) {
+      return badRequest('That slug is already taken.');
     }
 
     return serverError(e);
@@ -64,7 +57,7 @@ export async function POST(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: Promise<{ websiteId: string }> },
+  { params }: { params: Promise<{ linkId: string }> },
 ) {
   const { auth, error } = await parseRequest(request);
 
@@ -72,13 +65,13 @@ export async function DELETE(
     return error();
   }
 
-  const { websiteId } = await params;
+  const { linkId } = await params;
 
-  if (!(await canDeleteLink(auth, websiteId))) {
+  if (!(await canDeleteLink(auth, linkId))) {
     return unauthorized();
   }
 
-  await deleteLink(websiteId);
+  await deleteLink(linkId);
 
   return ok();
 }
