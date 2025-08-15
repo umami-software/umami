@@ -58,7 +58,7 @@ async function relationalQuery(
     limit ${limit}
     offset ${offset}
     `,
-    queryParams,
+    { ...queryParams, ...parameters },
   );
 }
 
@@ -80,15 +80,15 @@ async function clickhouseQuery(
     `select ${column} x,
             count(*) as y
      from website_event
-              ${cohortQuery}
+      ${cohortQuery}
      where website_id = {websiteId:UUID}
-       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-         ${filterQuery}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        ${filterQuery}
      group by x
      order by y desc
          limit ${limit}
      offset ${offset}
     `,
-    queryParams,
+    { ...queryParams, ...parameters },
   );
 }

@@ -3,6 +3,7 @@ import { unauthorized, json } from '@/lib/response';
 import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
 import { getUTM, UTMParameters } from '@/queries';
 import { reportResultSchema } from '@/lib/schema';
+import { UTM_PARAMS } from '@/lib/constants';
 
 export async function POST(request: Request) {
   const { auth, body, error } = await parseRequest(request, reportResultSchema);
@@ -20,7 +21,17 @@ export async function POST(request: Request) {
   const filters = await getQueryFilters(body.filters, websiteId);
   const parameters = await setWebsiteDate(websiteId, body.parameters);
 
-  const data = await getUTM(websiteId, parameters as UTMParameters, filters);
+  const data = {
+    utm_source: [],
+    utm_medium: [],
+    utm_campaign: [],
+    utm_term: [],
+    utm_content: [],
+  };
+
+  for (const key of UTM_PARAMS) {
+    data[key] = await getUTM(websiteId, { column: key, ...parameters } as UTMParameters, filters);
+  }
 
   return json(data);
 }

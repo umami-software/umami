@@ -86,7 +86,7 @@ async function relationalQuery(
     limit ${limit}
     offset ${offset}
     `,
-    queryParams,
+    { ...queryParams, ...parameters },
   );
 }
 
@@ -184,5 +184,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, queryParams);
+  return rawQuery(sql, { ...queryParams, ...parameters });
 }

@@ -36,7 +36,7 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
       gap="6"
     >
       {data && (
-        <Grid columns="repeat(auto-fill, minmax(300px, 1fr))" gap>
+        <Grid columns="repeat(auto-fill, minmax(300px, 1fr))" marginBottom="3" gap>
           <Select
             label={formatMessage(labels.event)}
             value={eventName}

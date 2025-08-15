@@ -1,12 +1,10 @@
-import { Grid, Column, Heading, Text } from '@umami/react-zen';
-import { firstBy } from 'thenby';
-import { CHART_COLORS, UTM_PARAMS } from '@/lib/constants';
-import { useResultQuery } from '@/components/hooks';
 import { PieChart } from '@/components/charts/PieChart';
-import { ListTable } from '@/components/metrics/ListTable';
-import { useMessages } from '@/components/hooks';
-import { Panel } from '@/components/common/Panel';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { Panel } from '@/components/common/Panel';
+import { useMessages, useResultQuery } from '@/components/hooks';
+import { ListTable } from '@/components/metrics/ListTable';
+import { CHART_COLORS, UTM_PARAMS } from '@/lib/constants';
+import { Column, Grid, Heading, Text } from '@umami/react-zen';
 
 export interface UTMProps {
   websiteId: string;
@@ -27,19 +25,19 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
       {data && (
         <Column gap>
           {UTM_PARAMS.map(param => {
-            const items = toArray(data?.[param]);
+            const items = data?.[param];
             const chartData = {
-              labels: items.map(({ name }) => name),
+              labels: items.map(({ utm }) => utm),
               datasets: [
                 {
-                  data: items.map(({ value }) => value),
+                  data: items.map(({ views }) => views),
                   backgroundColor: CHART_COLORS,
                   borderWidth: 0,
                 },
               ],
             };
-            const total = items.reduce((sum, { value }) => {
-              return +sum + +value;
+            const total = items.reduce((sum, { views }) => {
+              return +sum + +views;
             }, 0);
 
             return (
@@ -51,10 +49,10 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
                     </Heading>
                     <ListTable
                       metric={formatMessage(labels.views)}
-                      data={items.map(({ name, value }) => ({
-                        x: name,
-                        y: value,
-                        z: (value / total) * 100,
+                      data={items.map(({ utm, views }) => ({
+                        x: utm,
+                        y: views,
+                        z: (views / total) * 100,
                       }))}
                     />
                   </Column>
@@ -69,12 +67,4 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
       )}
     </LoadingPanel>
   );
-}
-
-function toArray(data: Record<string, number> = {}) {
-  return Object.keys(data)
-    .map(key => {
-      return { name: key, value: data[key] };
-    })
-    .sort(firstBy('value', -1));
 }

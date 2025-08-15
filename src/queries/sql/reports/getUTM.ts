@@ -1,9 +1,11 @@
 import clickhouse from '@/lib/clickhouse';
+import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
 export interface UTMParameters {
+  column: string;
   startDate: Date;
   endDate: Date;
 }
@@ -22,26 +24,28 @@ async function relationalQuery(
   parameters: UTMParameters,
   filters: QueryFilters,
 ) {
-  const { startDate, endDate } = parameters;
+  const { column, startDate, endDate } = parameters;
   const { parseFilters, rawQuery } = prisma;
 
-  const { filterQuery, queryParams } = parseFilters({
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     startDate,
     endDate,
+    eventType: EVENT_TYPE.pageView,
   });
 
   return rawQuery(
     `
-    select url_query, count(*) as "num"
+    select ${column} utm, count(*) as views
     from website_event
+    ${cohortQuery}
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}
-      and coalesce(url_query, '') != ''
-      and event_type = 1
+      and coalesce(${column}, '') != ''
       ${filterQuery}
     group by 1
+    order by 2 desc
     `,
     queryParams,
   );
@@ -52,25 +56,27 @@ async function clickhouseQuery(
   parameters: UTMParameters,
   filters: QueryFilters,
 ) {
-  const { startDate, endDate } = parameters;
+  const { column, startDate, endDate } = parameters;
   const { parseFilters, rawQuery } = clickhouse;
-  const { filterQuery, queryParams } = parseFilters({
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     startDate,
     endDate,
+    eventType: EVENT_TYPE.pageView,
   });
 
   return rawQuery(
     `
-    select url_query, count(*) as "num"
+    select ${column} utm, count(*) as views
     from website_event
+    ${cohortQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and url_query != ''
-      and event_type = 1
+      and ${column} != ''
       ${filterQuery}
     group by 1
+    order by 2 desc
     `,
     queryParams,
   );
