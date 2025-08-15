@@ -1,9 +1,9 @@
 'use client';
-import { WebsitesDataTable } from '@/app/(main)/settings/websites/WebsitesDataTable';
+import { WebsitesDataTable } from './WebsitesDataTable';
+import { WebsiteAddButton } from './WebsiteAddButton';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { Column } from '@umami/react-zen';
 import { PageHeader } from '@/components/common/PageHeader';
-import { WebsiteAddButton } from '@/app/(main)/settings/websites/WebsiteAddButton';
 import { Panel } from '@/components/common/Panel';
 import { PageBody } from '@/components/common/PageBody';
 

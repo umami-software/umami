@@ -11,6 +11,8 @@ import {
   Tag,
   Money,
   Network,
+  ChartPie,
+  UserPlus,
 } from '@/components/icons';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { SideMenu } from '@/components/common/SideMenu';
@@ -84,6 +86,23 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
           label: formatMessage(labels.retention),
           icon: <Magnet />,
           path: renderPath('/retention'),
+        },
+      ],
+    },
+    {
+      label: formatMessage(labels.audience),
+      items: [
+        {
+          id: 'segments',
+          label: formatMessage(labels.segments),
+          icon: <ChartPie />,
+          path: renderPath('/segments'),
+        },
+        {
+          id: 'cohorts',
+          label: formatMessage(labels.cohorts),
+          icon: <UserPlus />,
+          path: renderPath('/cohorts'),
         },
       ],
     },

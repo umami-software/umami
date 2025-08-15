@@ -35,7 +35,7 @@ export function TeamMemberRemoveButton({
   };
 
   return (
-    <ActionButton tooltip={formatMessage(labels.delete)} icon={<Trash />}>
+    <ActionButton title={formatMessage(labels.delete)} icon={<Trash />}>
       <Dialog title={formatMessage(labels.removeMember)} style={{ width: 400 }}>
         {({ close }) => (
           <ConfirmationForm

@@ -3,11 +3,7 @@ import { useFilterParameters } from '../useFilterParameters';
 import { useDateParameters } from '../useDateParameters';
 import { ReactQueryOptions } from '@/lib/types';
 
-export function useEventDataQuery(
-  websiteId: string,
-  eventId: string,
-  options?: ReactQueryOptions<any>,
-) {
+export function useEventDataQuery(websiteId: string, eventId: string, options?: ReactQueryOptions) {
   const { get, useQuery } = useApi();
   const date = useDateParameters(websiteId);
   const params = useFilterParameters();

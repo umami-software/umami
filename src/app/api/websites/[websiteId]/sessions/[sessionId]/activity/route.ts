@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { parseRequest, getQueryFilters } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
-import { canViewWebsite } from '@/lib/auth';
+import { canViewWebsite } from '@/validations';
 import { getSessionActivity } from '@/queries';
 
 export async function GET(

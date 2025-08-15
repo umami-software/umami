@@ -352,6 +352,7 @@ export const labels = defineMessages({
   saveCohort: { id: 'label.save-cohort', defaultMessage: 'Save as cohort' },
   analysis: { id: 'label.analysis', defaultMessage: 'Analysis' },
   destinationUrl: { id: 'label.destination-url', defaultMessage: 'Destination URL' },
+  audience: { id: 'label.audience', defaultMessage: 'Audience' },
 });
 
 export const messages = defineMessages({

@@ -33,7 +33,7 @@ export function UsersTable({
           }
         </DataColumn>
         <DataColumn id="websites" label={formatMessage(labels.websites)}>
-          {(row: any) => row._count.websiteUser}
+          {(row: any) => row._count.websites}
         </DataColumn>
         <DataColumn id="created" label={formatMessage(labels.created)}>
           {(row: any) => <DateDistance date={new Date(row.createdAt)} />}

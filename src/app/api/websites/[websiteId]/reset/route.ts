@@ -1,4 +1,4 @@
-import { canUpdateWebsite } from '@/lib/auth';
+import { canUpdateWebsite } from '@/validations';
 import { resetWebsite } from '@/queries';
 import { unauthorized, ok } from '@/lib/response';
 import { parseRequest } from '@/lib/request';

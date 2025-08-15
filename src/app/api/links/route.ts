@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { canCreateTeamWebsite, canCreateWebsite } from '@/lib/auth';
+import { canCreateTeamWebsite, canCreateWebsite } from '@/validations';
 import { json, unauthorized } from '@/lib/response';
 import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
@@ -20,9 +20,9 @@ export async function GET(request: Request) {
 
   const filters = await getQueryFilters(query);
 
-  const result = await getUserLinks(auth.user.id, filters);
+  const links = await getUserLinks(auth.user.id, filters);
 
-  return json(result);
+  return json(links);
 }
 
 export async function POST(request: Request) {

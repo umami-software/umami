@@ -1,5 +1,5 @@
 import { DataGrid } from '@/components/common/DataGrid';
-import { TeamsTable } from '@/app/(main)/settings/teams/TeamsTable';
+import { TeamsTable } from './TeamsTable';
 import { useLoginQuery, useUserTeamsQuery } from '@/components/hooks';
 import { ReactNode } from 'react';
 

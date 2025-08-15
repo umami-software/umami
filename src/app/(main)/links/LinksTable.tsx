@@ -1,13 +1,16 @@
 import { DataTable, DataColumn, Row } from '@umami/react-zen';
-import { useMessages, useNavigation } from '@/components/hooks';
+import { useConfig, useMessages, useNavigation } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import { DateDistance } from '@/components/common/DateDistance';
+import { ExternalLink } from '@/components/common/ExternalLink';
 import { LinkEditButton } from './LinkEditButton';
 import { LinkDeleteButton } from './LinkDeleteButton';
 
 export function LinksTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
   const { websiteId } = useNavigation();
+  const { linksUrl } = useConfig();
+  const hostUrl = linksUrl || `${window.location.origin}/x`;
 
   if (data.length === 0) {
     return <Empty />;
@@ -16,14 +19,22 @@ export function LinksTable({ data = [] }) {
   return (
     <DataTable data={data}>
       <DataColumn id="name" label={formatMessage(labels.name)} />
-      <DataColumn id="url" label={formatMessage(labels.destinationUrl)} />
-      <DataColumn id="created" label={formatMessage(labels.created)}>
+      <DataColumn id="slug" label={formatMessage(labels.link)}>
+        {({ slug }: any) => {
+          const url = `${hostUrl}/${slug}`;
+          return <ExternalLink href={url}>{url}</ExternalLink>;
+        }}
+      </DataColumn>
+      <DataColumn id="url" label={formatMessage(labels.destinationUrl)}>
+        {({ url }: any) => {
+          return <ExternalLink href={url}>{url}</ExternalLink>;
+        }}
+      </DataColumn>
+      <DataColumn id="created" label={formatMessage(labels.created)} width="200px">
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
       <DataColumn id="action" align="end" width="100px">
-        {(row: any) => {
-          const { id, name } = row;
-
+        {({ id, name }: any) => {
           return (
             <Row>
               <LinkEditButton linkId={id} />

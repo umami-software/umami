@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { canTransferWebsiteToTeam, canTransferWebsiteToUser } from '@/lib/auth';
+import { canTransferWebsiteToTeam, canTransferWebsiteToUser } from '@/validations';
 import { updateWebsite } from '@/queries';
 import { parseRequest } from '@/lib/request';
 import { badRequest, unauthorized, json } from '@/lib/response';

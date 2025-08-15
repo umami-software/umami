@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { unauthorized, json, badRequest } from '@/lib/response';
-import { canAddUserToTeam, canViewTeam } from '@/lib/auth';
+import { canAddUserToTeam, canViewTeam } from '@/validations';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { pagingParams, teamRoleParam, searchParams } from '@/lib/schema';
 import { createTeamUser, getTeamUser, getTeamUsers } from '@/queries';

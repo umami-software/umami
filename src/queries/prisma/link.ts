@@ -19,13 +19,18 @@ export async function getLinks(
   filters: QueryFilters = {},
 ): Promise<PageResult<Link[]>> {
   const { search } = filters;
+  const { getSearchParameters, pagedQuery } = prisma;
 
   const where: Prisma.LinkWhereInput = {
     ...criteria.where,
-    ...prisma.getSearchParameters(search, [{ name: 'contains' }]),
+    ...getSearchParameters(search, [
+      { name: 'contains' },
+      { url: 'contains' },
+      { slug: 'contains' },
+    ]),
   };
 
-  return prisma.pagedQuery('link', { ...criteria, where }, filters);
+  return pagedQuery('link', { ...criteria, where }, filters);
 }
 
 export async function getUserLinks(
@@ -51,7 +56,6 @@ export async function getTeamLinks(
     {
       where: {
         teamId,
-        deletedAt: null,
       },
     },
     filters,

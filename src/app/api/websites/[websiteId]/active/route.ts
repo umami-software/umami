@@ -1,4 +1,4 @@
-import { canViewWebsite } from '@/lib/auth';
+import { canViewWebsite } from '@/validations';
 import { json, unauthorized } from '@/lib/response';
 import { getActiveVisitors } from '@/queries';
 import { parseRequest } from '@/lib/request';
@@ -19,7 +19,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const result = await getActiveVisitors(websiteId);
+  const visitors = await getActiveVisitors(websiteId);
 
-  return json(result);
+  return json(visitors);
 }

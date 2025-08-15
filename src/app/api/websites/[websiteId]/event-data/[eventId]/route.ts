@@ -1,6 +1,6 @@
 import { parseRequest } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
-import { canViewWebsite } from '@/lib/auth';
+import { canViewWebsite } from '@/validations';
 import { getEventData } from '@/queries/sql/events/getEventData';
 
 export async function GET(

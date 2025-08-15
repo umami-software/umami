@@ -1,17 +1,16 @@
-import { useMessages, useModified, useNavigation } from '@/components/hooks';
+import { useMessages, useModified } from '@/components/hooks';
 import { Button, Icon, Modal, Dialog, DialogTrigger, Text, useToast } from '@umami/react-zen';
 import { Plus } from '@/components/icons';
-import { PixelAddForm } from './PixelAddForm';
+import { PixelEditForm } from './PixelEditForm';
 
-export function PixelAddButton() {
+export function PixelAddButton({ teamId }: { teamId?: string }) {
   const { formatMessage, labels, messages } = useMessages();
   const { toast } = useToast();
   const { touch } = useModified();
-  const { teamId } = useNavigation();
 
   const handleSave = async () => {
     toast(formatMessage(messages.saved));
-    touch('boards');
+    touch('pixels');
   };
 
   return (
@@ -23,8 +22,8 @@ export function PixelAddButton() {
         <Text>{formatMessage(labels.addPixel)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.addPixel)} style={{ width: 400 }}>
-          {({ close }) => <PixelAddForm teamId={teamId} onSave={handleSave} onClose={close} />}
+        <Dialog title={formatMessage(labels.addPixel)} style={{ width: 600 }}>
+          {({ close }) => <PixelEditForm teamId={teamId} onSave={handleSave} onClose={close} />}
         </Dialog>
       </Modal>
     </DialogTrigger>

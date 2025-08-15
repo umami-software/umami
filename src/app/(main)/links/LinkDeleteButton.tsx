@@ -34,7 +34,7 @@ export function LinkDeleteButton({
   };
 
   return (
-    <ActionButton tooltip={formatMessage(labels.delete)} icon={<Trash />}>
+    <ActionButton title={formatMessage(labels.delete)} icon={<Trash />}>
       <Dialog title={formatMessage(labels.confirm)} style={{ width: 400 }}>
         {({ close }) => (
           <ConfirmationForm

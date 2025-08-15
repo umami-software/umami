@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams } from '@/lib/schema';
-import { canViewUsers } from '@/lib/auth';
+import { canViewUsers } from '@/validations';
 import { getUsers } from '@/queries/prisma/user';
 
 export async function GET(request: Request) {
@@ -26,7 +26,7 @@ export async function GET(request: Request) {
       include: {
         _count: {
           select: {
-            websiteUser: {
+            websites: {
               where: { deletedAt: null },
             },
           },

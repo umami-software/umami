@@ -16,7 +16,7 @@ export function SegmentEditButton({
   const { formatMessage, labels } = useMessages();
 
   return (
-    <ActionButton tooltip={formatMessage(labels.edit)} icon={<Edit />}>
+    <ActionButton title={formatMessage(labels.edit)} icon={<Edit />}>
       <Dialog title={formatMessage(labels.segment)} style={{ width: 800 }}>
         {({ close }) => {
           return (

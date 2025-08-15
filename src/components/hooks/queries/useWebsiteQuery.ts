@@ -3,7 +3,7 @@ import { useModified } from '@/components/hooks';
 import { keepPreviousData } from '@tanstack/react-query';
 import { ReactQueryOptions } from '@/lib/types';
 
-export function useWebsiteQuery(websiteId: string, options?: ReactQueryOptions<any>) {
+export function useWebsiteQuery(websiteId: string, options?: ReactQueryOptions) {
   const { get, useQuery } = useApi();
   const { modified } = useModified(`website:${websiteId}`);
 

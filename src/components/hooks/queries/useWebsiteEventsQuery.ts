@@ -12,7 +12,7 @@ const EVENT_TYPES = {
 export function useWebsiteEventsQuery(
   websiteId: string,
   params?: Record<string, any>,
-  options?: ReactQueryOptions<any>,
+  options?: ReactQueryOptions,
 ) {
   const { get } = useApi();
   const date = useDateParameters(websiteId);

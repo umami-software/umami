@@ -5,7 +5,7 @@ import { ReactQueryOptions } from '@/lib/types';
 
 export function useReportsQuery(
   { websiteId, type }: { websiteId: string; type?: string },
-  options?: ReactQueryOptions<any>,
+  options?: ReactQueryOptions,
 ) {
   const { modified } = useModified(`reports:${type}`);
   const { get } = useApi();

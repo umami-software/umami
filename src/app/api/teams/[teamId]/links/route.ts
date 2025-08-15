@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { unauthorized, json } from '@/lib/response';
-import { canViewTeam } from '@/lib/auth';
+import { canViewTeam } from '@/validations';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { pagingParams, searchParams } from '@/lib/schema';
 import { getTeamLinks } from '@/queries';
@@ -23,7 +23,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
 
   const filters = await getQueryFilters(query);
 
-  const websites = await getTeamLinks(teamId, filters);
+  const links = await getTeamLinks(teamId, filters);
 
-  return json(websites);
+  return json(links);
 }

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { canViewWebsite } from '@/lib/auth';
+import { canViewWebsite } from '@/validations';
 import { getReports } from '@/queries';
 import { filterParams, pagingParams } from '@/lib/schema';
 import { parseRequest } from '@/lib/request';

@@ -30,10 +30,11 @@ export async function getWebsites(
   filters: QueryFilters,
 ): Promise<PageResult<Website[]>> {
   const { search } = filters;
+  const { getSearchParameters, pagedQuery } = prisma;
 
   const where: Prisma.WebsiteWhereInput = {
     ...criteria.where,
-    ...prisma.getSearchParameters(search, [
+    ...getSearchParameters(search, [
       {
         name: 'contains',
       },
@@ -42,7 +43,7 @@ export async function getWebsites(
     deletedAt: null,
   };
 
-  return prisma.pagedQuery('website', { ...criteria, where }, filters);
+  return pagedQuery('website', { ...criteria, where }, filters);
 }
 
 export async function getAllWebsites(userId: string) {

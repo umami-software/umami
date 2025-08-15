@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams } from '@/lib/schema';
-import { canViewAllTeams } from '@/lib/auth';
+import { canViewAllTeams } from '@/validations';
 import { getTeams } from '@/queries/prisma/team';
 
 export async function GET(request: Request) {
@@ -26,11 +26,11 @@ export async function GET(request: Request) {
       include: {
         _count: {
           select: {
-            teamUser: true,
-            website: true,
+            members: true,
+            websites: true,
           },
         },
-        teamUser: {
+        members: {
           select: {
             user: {
               omit: {

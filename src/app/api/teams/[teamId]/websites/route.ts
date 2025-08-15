@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { unauthorized, json } from '@/lib/response';
-import { canViewTeam } from '@/lib/auth';
+import { canViewTeam } from '@/validations';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { pagingParams, searchParams } from '@/lib/schema';
 import { getTeamWebsites } from '@/queries';

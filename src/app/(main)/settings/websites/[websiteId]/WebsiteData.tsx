@@ -23,8 +23,8 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   const canTransferWebsite =
     (
       (!teamId &&
-        teams?.data?.filter(({ teamUser }) =>
-          teamUser.find(
+        teams?.data?.filter(({ members }) =>
+          members.find(
             ({ role, userId }) =>
               [ROLES.teamOwner, ROLES.teamManager].includes(role) && userId === user.id,
           ),
@@ -34,7 +34,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
     (teamId &&
       !!teams?.data
         ?.find(({ id }) => id === teamId)
-        ?.teamUser.find(({ role, userId }) => role === ROLES.teamOwner && userId === user.id));
+        ?.members.find(({ role, userId }) => role === ROLES.teamOwner && userId === user.id));
 
   const handleSave = () => {
     touch('websites');

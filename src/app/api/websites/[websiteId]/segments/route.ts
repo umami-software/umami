@@ -1,4 +1,4 @@
-import { canUpdateWebsite, canViewWebsite } from '@/lib/auth';
+import { canUpdateWebsite, canViewWebsite } from '@/validations';
 import { uuid } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';

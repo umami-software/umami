@@ -1,4 +1,4 @@
-import { canViewWebsite } from '@/lib/auth';
+import { canViewWebsite } from '@/validations';
 import { unauthorized, json } from '@/lib/response';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { getJourney } from '@/queries';

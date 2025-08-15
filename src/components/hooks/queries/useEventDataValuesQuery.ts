@@ -7,7 +7,7 @@ export function useEventDataValuesQuery(
   websiteId: string,
   eventName: string,
   propertyName: string,
-  options?: ReactQueryOptions<any>,
+  options?: ReactQueryOptions,
 ) {
   const { get, useQuery } = useApi();
   const date = useDateParameters(websiteId);

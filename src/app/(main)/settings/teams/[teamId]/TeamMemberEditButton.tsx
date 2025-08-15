@@ -26,7 +26,7 @@ export function TeamMemberEditButton({
   };
 
   return (
-    <ActionButton tooltip={formatMessage(labels.edit)} icon={<Edit />}>
+    <ActionButton title={formatMessage(labels.edit)} icon={<Edit />}>
       <Dialog title={formatMessage(labels.editMember)} style={{ width: 400 }}>
         {({ close }) => (
           <TeamMemberEditForm

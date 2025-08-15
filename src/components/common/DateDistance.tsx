@@ -1,4 +1,4 @@
-import { Tooltip, TooltipTrigger, Text, Focusable } from '@umami/react-zen';
+import { Text } from '@umami/react-zen';
 import { formatDistanceToNow } from 'date-fns';
 import { useLocale, useTimezone } from '@/components/hooks';
 
@@ -7,11 +7,8 @@ export function DateDistance({ date }: { date: Date }) {
   const { dateLocale } = useLocale();
 
   return (
-    <TooltipTrigger delay={0}>
-      <Focusable>
-        <Text>{formatDistanceToNow(date, { addSuffix: true, locale: dateLocale })}</Text>
-      </Focusable>
-      <Tooltip>{formatTimezoneDate(date.toISOString(), 'PPPpp')}</Tooltip>
-    </TooltipTrigger>
+    <Text title={formatTimezoneDate(date.toISOString(), 'PPPpp')}>
+      {formatDistanceToNow(date, { addSuffix: true, locale: dateLocale })}
+    </Text>
   );
 }

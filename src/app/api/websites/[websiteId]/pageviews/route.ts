@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { canViewWebsite } from '@/lib/auth';
+import { canViewWebsite } from '@/validations';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { dateRangeParams, filterParams } from '@/lib/schema';
 import { getCompareDate } from '@/lib/date';

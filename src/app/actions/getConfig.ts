@@ -6,8 +6,8 @@ export type Config = {
   telemetryDisabled: boolean;
   trackerScriptName?: string;
   updatesDisabled: boolean;
-  linkDomain?: string;
-  pixelDomain?: string;
+  linksUrl?: string;
+  pixelsUrl?: string;
 };
 
 export async function getConfig(): Promise<Config> {
@@ -17,7 +17,7 @@ export async function getConfig(): Promise<Config> {
     telemetryDisabled: !!process.env.DISABLE_TELEMETRY,
     trackerScriptName: process.env.TRACKER_SCRIPT_NAME,
     updatesDisabled: !!process.env.DISABLE_UPDATES,
-    linkDomain: process.env.LINK_DOMAIN,
-    pixelDomain: process.env.PIXEL_DOMAIN,
+    linksUrl: process.env.LINKS_URL,
+    pixelsUrl: process.env.PIXELS_URL,
   };
 }

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { unauthorized, json, notFound, ok } from '@/lib/response';
-import { canDeleteTeam, canUpdateTeam, canViewTeam } from '@/lib/auth';
+import { canDeleteTeam, canUpdateTeam, canViewTeam } from '@/validations';
 import { parseRequest } from '@/lib/request';
 import { deleteTeam, getTeam, updateTeam } from '@/queries';
 

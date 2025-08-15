@@ -1,25 +1,24 @@
 import { ReactNode } from 'react';
-import { Button, Icon, Modal, DialogTrigger, TooltipTrigger, Tooltip } from '@umami/react-zen';
+import { Button, Icon, Modal, Text, DialogTrigger } from '@umami/react-zen';
 
 export function ActionButton({
   onClick,
   icon,
-  tooltip,
+  title,
   children,
 }: {
   onSave?: () => void;
   icon?: ReactNode;
-  tooltip?: string;
-  children?: React.ReactNode;
+  title?: string;
+  children?: ReactNode;
 }) {
   return (
     <DialogTrigger>
-      <TooltipTrigger delay={0}>
+      <Text title={title}>
         <Button variant="quiet" onPress={onClick}>
           <Icon>{icon}</Icon>
         </Button>
-        <Tooltip>{tooltip}</Tooltip>
-      </TooltipTrigger>
+      </Text>
       <Modal>{children}</Modal>
     </DialogTrigger>
   );

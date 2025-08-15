@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { canUpdateWebsite, canDeleteWebsite, canViewWebsite } from '@/lib/auth';
+import { canUpdateLink, canDeleteLink, canViewLink } from '@/validations';
 import { SHARE_ID_REGEX } from '@/lib/constants';
 import { parseRequest } from '@/lib/request';
 import { ok, json, unauthorized, serverError } from '@/lib/response';
-import { deleteWebsite, getWebsite, updateWebsite } from '@/queries';
+import { deleteLink, getLink, updateLink } from '@/queries';
 
 export async function GET(
   request: Request,
@@ -17,11 +17,11 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewLink(auth, websiteId))) {
     return unauthorized();
   }
 
-  const website = await getWebsite(websiteId);
+  const website = await getLink(websiteId);
 
   return json(website);
 }
@@ -45,12 +45,12 @@ export async function POST(
   const { websiteId } = await params;
   const { name, domain, shareId } = body;
 
-  if (!(await canUpdateWebsite(auth, websiteId))) {
+  if (!(await canUpdateLink(auth, websiteId))) {
     return unauthorized();
   }
 
   try {
-    const website = await updateWebsite(websiteId, { name, domain, shareId });
+    const website = await updateLink(websiteId, { name, domain, shareId });
 
     return Response.json(website);
   } catch (e: any) {
@@ -74,11 +74,11 @@ export async function DELETE(
 
   const { websiteId } = await params;
 
-  if (!(await canDeleteWebsite(auth, websiteId))) {
+  if (!(await canDeleteLink(auth, websiteId))) {
     return unauthorized();
   }
 
-  await deleteWebsite(websiteId);
+  await deleteLink(websiteId);
 
   return ok();
 }

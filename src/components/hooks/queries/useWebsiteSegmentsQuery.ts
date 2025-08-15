@@ -7,7 +7,7 @@ import { useFilterParameters } from '@/components/hooks/useFilterParameters';
 export function useWebsiteSegmentsQuery(
   websiteId: string,
   params?: Record<string, string>,
-  options?: ReactQueryOptions<any>,
+  options?: ReactQueryOptions,
 ) {
   const { get, useQuery } = useApi();
   const { modified } = useModified(`segments`);

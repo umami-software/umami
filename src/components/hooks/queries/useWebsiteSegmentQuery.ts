@@ -6,7 +6,7 @@ import { ReactQueryOptions } from '@/lib/types';
 export function useWebsiteSegmentQuery(
   websiteId: string,
   segmentId: string,
-  options?: ReactQueryOptions<any>,
+  options?: ReactQueryOptions,
 ) {
   const { get, useQuery } = useApi();
   const { modified } = useModified(`segments`);

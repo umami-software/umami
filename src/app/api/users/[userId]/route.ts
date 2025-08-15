@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { canUpdateUser, canViewUser, canDeleteUser } from '@/lib/auth';
+import { canUpdateUser, canViewUser, canDeleteUser } from '@/validations';
 import { getUser, getUserByUsername, updateUser, deleteUser } from '@/queries';
 import { json, unauthorized, badRequest, ok } from '@/lib/response';
 import { hashPassword } from '@/lib/auth';
