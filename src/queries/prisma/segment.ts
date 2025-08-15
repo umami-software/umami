@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-import { Prisma, Segment } from '@prisma/client';
+import { Prisma, Segment } from '@/generated/prisma/client';
 
 async function findSegment(criteria: Prisma.SegmentFindUniqueArgs): Promise<Segment> {
   return prisma.client.Segment.findUnique(criteria);

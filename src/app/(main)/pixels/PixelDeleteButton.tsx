@@ -7,19 +7,17 @@ import { useApi, useMessages, useModified } from '@/components/hooks';
 
 export function PixelDeleteButton({
   pixelId,
-  websiteId,
   name,
   onSave,
 }: {
   pixelId: string;
-  websiteId: string;
   name: string;
   onSave?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
   const { del, useMutation } = useApi();
   const { mutate, isPending, error } = useMutation({
-    mutationFn: () => del(`/websites/${websiteId}/pixels/${pixelId}`),
+    mutationFn: () => del(`/pixels/${pixelId}`),
   });
   const { touch } = useModified();
 

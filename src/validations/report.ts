@@ -1,5 +1,5 @@
 import { Auth } from '@/lib/types';
-import { Report } from '@prisma/client';
+import { Report } from '@/generated/prisma/client';
 import { canViewWebsite } from './website';
 
 export async function canViewReport(auth: Auth, report: Report) {

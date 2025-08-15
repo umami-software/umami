@@ -1,4 +1,4 @@
-import { Prisma, Pixel } from '@prisma/client';
+import { Prisma, Pixel } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
 import { PageResult, QueryFilters } from '@/lib/types';
 

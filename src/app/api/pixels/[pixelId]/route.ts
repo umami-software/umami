@@ -25,7 +25,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ pixe
 export async function POST(request: Request, { params }: { params: Promise<{ pixelId: string }> }) {
   const schema = z.object({
     name: z.string(),
-    url: z.string().url(),
     slug: z.string().min(8),
   });
 
@@ -36,14 +35,14 @@ export async function POST(request: Request, { params }: { params: Promise<{ pix
   }
 
   const { pixelId } = await params;
-  const { name, domain, shareId } = body;
+  const { name, slug } = body;
 
   if (!(await canUpdatePixel(auth, pixelId))) {
     return unauthorized();
   }
 
   try {
-    const pixel = await updatePixel(pixelId, { name, domain, shareId });
+    const pixel = await updatePixel(pixelId, { name, slug });
 
     return Response.json(pixel);
   } catch (e: any) {

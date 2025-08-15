@@ -9,7 +9,7 @@ export function PixelEditButton({ pixelId }: { pixelId: string }) {
 
   return (
     <ActionButton title={formatMessage(labels.edit)} icon={<Edit />}>
-      <Dialog title={formatMessage(labels.pixel)} style={{ width: 800 }}>
+      <Dialog title={formatMessage(labels.pixel)} style={{ width: 800, minHeight: 300 }}>
         {({ close }) => {
           return <PixelEditForm pixelId={pixelId} onClose={close} />;
         }}

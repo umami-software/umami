@@ -4,7 +4,7 @@ import { json, unauthorized } from '@/lib/response';
 import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { pagingParams, searchParams } from '@/lib/schema';
-import { createPixel, getUserLinks } from '@/queries';
+import { createPixel, getUserPixels } from '@/queries';
 
 export async function GET(request: Request) {
   const schema = z.object({
@@ -20,7 +20,7 @@ export async function GET(request: Request) {
 
   const filters = await getQueryFilters(query);
 
-  const links = await getUserLinks(auth.user.id, filters);
+  const links = await getUserPixels(auth.user.id, filters);
 
   return json(links);
 }
