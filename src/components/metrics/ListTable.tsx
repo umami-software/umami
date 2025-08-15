@@ -43,7 +43,7 @@ export function ListTable({
     return (
       <AnimatedRow
         key={label}
-        label={renderLabel ? renderLabel(row, index) : label ?? formatMessage(labels.unknown)}
+        label={renderLabel ? renderLabel(row, index) : (label ?? formatMessage(labels.unknown))}
         value={value}
         percent={percent}
         animate={animate && !virtualize}
