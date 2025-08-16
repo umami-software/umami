@@ -1,0 +1,22 @@
+.container {
+  margin: 0 auto;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.form {
+  background: var(--base50);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    margin: 0;
+    padding: 10px;
+  }
+
+  .form {
+    padding: 15px;
+  }
+}
