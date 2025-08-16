@@ -11,7 +11,7 @@ import SessionsWeekly from './SessionsWeekly';
 import { useQueryState } from 'nuqs';
 
 export function SessionsPage({ websiteId }) {
-  const [tab, setTab] = useQueryState('activity', { defaultValue: 'activity' });
+  const [tab, setTab] = useQueryState('tab', { defaultValue: 'activity' });
 
   const { formatMessage, labels } = useMessages();
 
