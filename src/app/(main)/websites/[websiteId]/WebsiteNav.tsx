@@ -137,7 +137,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
 
   return (
     <SideMenu items={items} selectedKey={selectedKey} allowMinimize={false}>
-      <WebsiteSelect buttonProps={{ variant: 'quiet' }} websiteId={websiteId} teamId={teamId} />
+      <WebsiteSelect websiteId={websiteId} teamId={teamId} />
     </SideMenu>
   );
 }

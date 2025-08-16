@@ -20,12 +20,6 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
           path: renderUrl('/settings/preferences'),
           icon: <Knobs />,
         },
-        {
-          id: 'teams',
-          label: formatMessage(labels.teams),
-          path: renderUrl('/settings/teams'),
-          icon: <Users />,
-        },
       ],
     },
     {
@@ -37,12 +31,18 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
           path: renderUrl('/settings/profile'),
           icon: <UserCircle />,
         },
+        {
+          id: 'teams',
+          label: formatMessage(labels.teams),
+          path: renderUrl('/settings/teams'),
+          icon: <Users />,
+        },
       ],
     },
   ];
 
   const selectedKey =
-    items.flatMap(e => e.items)?.find(({ path }) => path && pathname.endsWith(path))?.id ||
+    items.flatMap(e => e.items)?.find(({ path }) => path && pathname.includes(path))?.id ||
     'overview';
 
   return (

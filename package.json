@@ -120,7 +120,6 @@
     "prisma": "6.14.0",
     "pure-rand": "^7.0.1",
     "react": "^19.1.1",
-    "react-basics": "^0.126.0",
     "react-dom": "^19.1.1",
     "react-error-boundary": "^4.0.4",
     "react-intl": "^7.1.11",

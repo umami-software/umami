@@ -2,7 +2,7 @@ import { Prisma, Link } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
 import { PageResult, QueryFilters } from '@/lib/types';
 
-async function findLink(criteria: Prisma.LinkFindUniqueArgs): Promise<Link> {
+export async function findLink(criteria: Prisma.LinkFindUniqueArgs): Promise<Link> {
   return prisma.client.link.findUnique(criteria);
 }
 

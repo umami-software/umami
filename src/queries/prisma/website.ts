@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 import { PageResult, QueryFilters } from '@/lib/types';
 import { ROLES } from '@/lib/constants';
 
-async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs): Promise<Website> {
+export async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs): Promise<Website> {
   return prisma.client.website.findUnique(criteria);
 }
 

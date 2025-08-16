@@ -13,7 +13,7 @@ import { TeamMembersDataTable } from './TeamMembersDataTable';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
 
-export function TeamDetails({ teamId }: { teamId: string }) {
+export function TeamSettings({ teamId }: { teamId: string }) {
   const team = useContext(TeamContext);
   const { formatMessage, labels } = useMessages();
   const { user } = useLoginQuery();
@@ -23,12 +23,12 @@ export function TeamDetails({ teamId }: { teamId: string }) {
   const isAdmin = pathname.includes('/admin');
 
   const isTeamOwner =
-    !!team?.teamUser?.find(({ userId, role }) => role === ROLES.teamOwner && userId === user.id) &&
+    !!team?.members?.find(({ userId, role }) => role === ROLES.teamOwner && userId === user.id) &&
     user.role !== ROLES.viewOnly;
 
   const canEdit =
     user.isAdmin ||
-    (!!team?.teamUser?.find(
+    (!!team?.members?.find(
       ({ userId, role }) =>
         (role === ROLES.teamOwner || role === ROLES.teamManager) && userId === user.id,
     ) &&

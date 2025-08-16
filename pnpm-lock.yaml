@@ -158,9 +158,6 @@ importers:
       react:
         specifier: ^19.1.1
         version: 19.1.1
-      react-basics:
-        specifier: ^0.126.0
-        version: 0.126.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react-dom:
         specifier: ^19.1.1
         version: 19.1.1(react@19.1.1)
@@ -6047,13 +6044,6 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-
-  react-basics@0.126.0:
-    resolution: {integrity: sha512-TQtNZMeH5FtJjYxSN72rBmZWlIcs9jK3oVSCUUxfZq9LnFdoFSagTLCrihs3YCnX8vZEJXaJHQsp7lKEfyH5sw==}
-    engines: {node: '>= 14'}
-    peerDependencies:
-      react: ^18.2.0
-      react-dom: ^18.2.0
 
   react-dom@19.1.1:
     resolution: {integrity: sha512-Dlq/5LAZgF0Gaz6yiqZCf6VCcZs1ghAJyrsu84Q/GT0gV+mCxbfmKNoGRKBYMJ8IEdGPqu49YWXD02GCknEDkw==}
@@ -13880,16 +13870,6 @@ snapshots:
       '@react-types/shared': 3.31.0(react@19.1.1)
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
-
-  react-basics@0.126.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1):
-    dependencies:
-      '@react-spring/web': 9.7.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      classnames: 2.5.1
-      date-fns: 2.30.0
-      react: 19.1.1
-      react-dom: 19.1.1(react@19.1.1)
-      react-hook-form: 7.62.0(react@19.1.1)
-      react-window: 1.8.11(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
 
   react-dom@19.1.1(react@19.1.1):
     dependencies:

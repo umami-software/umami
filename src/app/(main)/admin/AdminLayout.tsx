@@ -17,7 +17,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
 
   const items = [
     {
-      label: formatMessage(labels.application),
+      label: formatMessage(labels.manage),
       items: [
         {
           id: 'users',

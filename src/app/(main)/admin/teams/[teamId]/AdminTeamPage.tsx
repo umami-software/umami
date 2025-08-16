@@ -1,11 +1,11 @@
 'use client';
-import { TeamDetails } from '@/app/(main)/teams/[teamId]/TeamDetails';
+import { TeamSettings } from '@/app/(main)/teams/[teamId]/TeamSettings';
 import { TeamProvider } from '@/app/(main)/teams/[teamId]/TeamProvider';
 
 export function AdminTeamPage({ teamId }: { teamId: string }) {
   return (
     <TeamProvider teamId={teamId}>
-      <TeamDetails teamId={teamId} />
+      <TeamSettings teamId={teamId} />
     </TeamProvider>
   );
 }

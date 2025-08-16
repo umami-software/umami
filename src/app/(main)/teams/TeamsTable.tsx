@@ -1,5 +1,5 @@
 import { DataColumn, DataTable, Icon, MenuItem, Text, Row } from '@umami/react-zen';
-import { useMessages } from '@/components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
 import { Eye, Edit } from '@/components/icons';
 import { ROLES } from '@/lib/constants';
 import { MenuButton } from '@/components/input/MenuButton';
@@ -14,20 +14,21 @@ export function TeamsTable({
   showActions?: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
+  const { renderUrl } = useNavigation();
 
   return (
     <DataTable data={data}>
       <DataColumn id="name" label={formatMessage(labels.name)}>
-        {(row: any) => <Link href={`/settings/teams/${row.id}`}>{row.name}</Link>}
+        {(row: any) => <Link href={renderUrl(`/settings/teams/${row.id}`)}>{row.name}</Link>}
       </DataColumn>
       <DataColumn id="owner" label={formatMessage(labels.owner)}>
-        {(row: any) => row.users.find(({ role }) => role === ROLES.teamOwner)?.user?.username}
+        {(row: any) => row?.members?.find(({ role }) => role === ROLES.teamOwner)?.user?.username}
       </DataColumn>
       <DataColumn id="websites" label={formatMessage(labels.websites)} align="end">
-        {(row: any) => row._count.websites}
+        {(row: any) => row?._count?.websites}
       </DataColumn>
       <DataColumn id="members" label={formatMessage(labels.members)} align="end">
-        {(row: any) => row._count.users}
+        {(row: any) => row?._count?.members}
       </DataColumn>
       {showActions ? (
         <DataColumn id="action" label=" " align="end">

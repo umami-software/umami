@@ -117,7 +117,7 @@ export function MetricsTable({
 
   return (
     <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error}>
-      <Grid rows="auto 1fr" height="100%" overflow="hidden" gap>
+      <Grid rows="40px 1fr" height="100%" overflow="hidden" gap>
         <Row alignItems="center">
           {allowSearch && <SearchField value={search} onSearch={setSearch} delay={300} />}
           <Row justifyContent="flex-end" flexGrow={1} gap>

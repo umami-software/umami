@@ -97,12 +97,7 @@ const headers = [
   },
 ];
 
-const rewrites = [
-  {
-    source: '/teams/:id/settings/:path*',
-    destination: '/settings/:path*',
-  },
-];
+const rewrites = [];
 
 if (trackerScriptURL) {
   rewrites.push({
@@ -132,6 +127,11 @@ const redirects = [
   {
     source: '/teams/:id',
     destination: '/teams/:id/websites',
+    permanent: true,
+  },
+  {
+    source: '/teams/:id/settings',
+    destination: '/teams/:id/settings/preferences',
     permanent: true,
   },
   {
@@ -205,7 +205,7 @@ export default {
         destination: '/api/scripts/telemetry',
       },
       {
-        source: '/teams/:teamId/:path((?!settings).*)*',
+        source: '/teams/:teamId/:path*',
         destination: '/:path*',
       },
     ];

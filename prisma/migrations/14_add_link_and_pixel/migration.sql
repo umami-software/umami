@@ -12,7 +12,7 @@ CREATE TABLE "link" (
     "link_id" UUID NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "url" VARCHAR(500) NOT NULL,
-    "slug" VARCHAR(100) NOT NULL,
+    "slug" VARCHAR(100) UNIQUE NOT NULL,
     "user_id" UUID,
     "team_id" UUID,
     "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
@@ -26,7 +26,7 @@ CREATE TABLE "link" (
 CREATE TABLE "pixel" (
     "pixel_id" UUID NOT NULL,
     "name" VARCHAR(100) NOT NULL,
-    "slug" VARCHAR(100) NOT NULL,
+    "slug" VARCHAR(100) UNIQUE NOT NULL,
     "user_id" UUID,
     "team_id" UUID,
     "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,

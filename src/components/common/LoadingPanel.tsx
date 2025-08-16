@@ -43,7 +43,7 @@ export function LoadingPanel({
       {!error && !isLoading && !isFetching && empty && renderEmpty()}
 
       {/* Show main content when data exists */}
-      {!error && !empty && children}
+      {!isLoading && !isFetching && !error && !empty && children}
     </>
   );
 }

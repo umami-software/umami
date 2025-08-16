@@ -12,6 +12,7 @@ export interface SaveEventArgs {
   sessionId: string;
   visitId: string;
   createdAt?: Date;
+  eventType?: number;
 
   // Page
   pageTitle?: string;
@@ -66,6 +67,7 @@ async function relationalQuery({
   sessionId,
   visitId,
   createdAt,
+  eventType,
   pageTitle,
   tag,
   hostname,
@@ -113,7 +115,7 @@ async function relationalQuery({
       ttclid,
       lifatid,
       twclid,
-      eventType: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+      eventType: eventType || (eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView),
       eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
       tag,
       hostname,

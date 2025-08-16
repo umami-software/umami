@@ -6,6 +6,7 @@ import {
   SidebarHeader,
   Row,
   SidebarProps,
+  ThemeButton,
 } from '@umami/react-zen';
 import {
   Globe,
@@ -14,24 +15,19 @@ import {
   Logo,
   Grid2X2,
   Settings,
-  LockKeyhole,
   PanelLeft,
 } from '@/components/icons';
 import { useMessages, useNavigation, useGlobalState } from '@/components/hooks';
 import { TeamsButton } from '@/components/input/TeamsButton';
 import { PanelButton } from '@/components/input/PanelButton';
+import { ProfileButton } from '@/components/input/ProfileButton';
 
 export function SideNav(props: SidebarProps) {
   const { formatMessage, labels } = useMessages();
   const { pathname, renderUrl, websiteId } = useNavigation();
   const [isCollapsed, setIsCollapsed] = useGlobalState('sidenav-collapsed');
 
-  const hasNav = !!(
-    websiteId ||
-    pathname.startsWith('/admin') ||
-    pathname.startsWith('/settings') ||
-    pathname.endsWith('/settings')
-  );
+  const hasNav = !!(websiteId || pathname.startsWith('/admin') || pathname.includes('/settings'));
 
   const links = [
     {
@@ -64,14 +60,8 @@ export function SideNav(props: SidebarProps) {
     {
       id: 'settings',
       label: formatMessage(labels.settings),
-      path: '/settings',
+      path: renderUrl('/settings'),
       icon: <Settings />,
-    },
-    {
-      id: 'admin',
-      label: formatMessage(labels.admin),
-      path: '/admin',
-      icon: <LockKeyhole />,
     },
   ];
 
@@ -99,10 +89,18 @@ export function SideNav(props: SidebarProps) {
           {bottomLinks.map(({ id, path, label, icon }) => {
             return (
               <Link key={id} href={path} role="button">
-                <SidebarItem label={label} icon={icon} isSelected={pathname.startsWith(path)} />
+                <SidebarItem label={label} icon={icon} isSelected={pathname.includes(path)} />
               </Link>
             );
           })}
+          <Row alignItems="center" justifyContent="space-between" height="40px">
+            <ProfileButton />
+            {!isCollapsed && !hasNav && (
+              <Row>
+                <ThemeButton />
+              </Row>
+            )}
+          </Row>
         </SidebarSection>
       </Sidebar>
     </Row>

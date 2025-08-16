@@ -6,7 +6,7 @@ export * from '@/app/(main)/teams/[teamId]/TeamMemberRemoveButton';
 export * from '@/app/(main)/teams/[teamId]/TeamMembersDataTable';
 export * from '@/app/(main)/teams/[teamId]/TeamMembersTable';
 export * from '@/app/(main)/teams/[teamId]/TeamDeleteForm';
-export * from '@/app/(main)/teams/[teamId]/TeamDetails';
+export * from '@/app/(main)/teams/[teamId]/TeamSettings';
 export * from '@/app/(main)/teams/[teamId]/TeamEditForm';
 export * from '@/app/(main)/teams/[teamId]/TeamManage';
 export * from '@/app/(main)/teams/[teamId]/TeamWebsiteRemoveButton';

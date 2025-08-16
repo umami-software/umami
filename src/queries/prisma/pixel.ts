@@ -2,7 +2,7 @@ import { Prisma, Pixel } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
 import { PageResult, QueryFilters } from '@/lib/types';
 
-async function findPixel(criteria: Prisma.PixelFindUniqueArgs): Promise<Pixel> {
+export async function findPixel(criteria: Prisma.PixelFindUniqueArgs): Promise<Pixel> {
   return prisma.client.pixel.findUnique(criteria);
 }
 
@@ -22,7 +22,7 @@ export async function getPixels(
 
   const where: Prisma.PixelWhereInput = {
     ...criteria.where,
-    ...prisma.getSearchParameters(search, [{ name: 'contains' }]),
+    ...prisma.getSearchParameters(search, [{ name: 'contains' }, { slug: 'contains' }]),
   };
 
   return prisma.pagedQuery('pixel', { ...criteria, where }, filters);

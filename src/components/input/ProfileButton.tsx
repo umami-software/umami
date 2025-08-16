@@ -1,4 +1,4 @@
-import { Key } from 'react';
+import { Fragment } from 'react';
 import {
   Icon,
   Button,
@@ -11,19 +11,37 @@ import {
   Text,
   Row,
 } from '@umami/react-zen';
-import { useRouter } from 'next/navigation';
-import { useMessages, useLoginQuery } from '@/components/hooks';
-import { LogOut, Settings, UserCircle, LockKeyhole } from '@/components/icons';
+import { useMessages, useLoginQuery, useNavigation } from '@/components/hooks';
+import { LogOut, UserCircle, LockKeyhole } from '@/components/icons';
 
 export function ProfileButton() {
   const { formatMessage, labels } = useMessages();
   const { user } = useLoginQuery();
-  const router = useRouter();
+  const { renderUrl } = useNavigation();
   const cloudMode = !!process.env.cloudMode;
 
-  const handleSelect = (key: Key) => {
-    router.push(`/${key}`);
-  };
+  const items = [
+    {
+      id: 'profile',
+      label: formatMessage(labels.profile),
+      path: renderUrl('/settings/profile'),
+      icon: <UserCircle />,
+    },
+    user.isAdmin &&
+      !cloudMode && {
+        id: 'admin',
+        label: formatMessage(labels.admin),
+        path: '/admin',
+        icon: <LockKeyhole />,
+      },
+    {
+      id: 'LogOut',
+      label: formatMessage(labels.logout),
+      path: '/logout',
+      icon: <LogOut />,
+      separator: true,
+    },
+  ].filter(n => n);
 
   return (
     <MenuTrigger>
@@ -33,37 +51,22 @@ export function ProfileButton() {
         </Icon>
       </Button>
       <Popover placement="bottom end">
-        <Menu autoFocus="last" onAction={handleSelect}>
+        <Menu autoFocus="last">
           <MenuSection title={user.username}>
             <MenuSeparator />
-            <MenuItem id="settings">
-              <Row alignItems="center" gap>
-                <Icon>
-                  <Settings />
-                </Icon>
-                <Text>{formatMessage(labels.settings)}</Text>
-              </Row>
-            </MenuItem>
-            {user.isAdmin && (
-              <MenuItem id="admin">
-                <Row alignItems="center" gap>
-                  <Icon>
-                    <LockKeyhole />
-                  </Icon>
-                  <Text>{formatMessage(labels.admin)}</Text>
-                </Row>
-              </MenuItem>
-            )}
-            {!cloudMode && (
-              <MenuItem data-test="item-logout" id="logout">
-                <Row alignItems="center" gap>
-                  <Icon>
-                    <LogOut />
-                  </Icon>
-                  <Text>{formatMessage(labels.logout)}</Text>
-                </Row>
-              </MenuItem>
-            )}
+            {items.map(({ id, path, label, icon, separator }) => {
+              return (
+                <Fragment key={id}>
+                  {separator && <MenuSeparator />}
+                  <MenuItem id={id} href={path}>
+                    <Row alignItems="center" gap>
+                      <Icon>{icon}</Icon>
+                      <Text>{label}</Text>
+                    </Row>
+                  </MenuItem>
+                </Fragment>
+              );
+            })}
           </MenuSection>
         </Menu>
       </Popover>
