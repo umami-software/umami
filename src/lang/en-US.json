@@ -235,7 +235,7 @@
   "label.websites": "Websites",
   "label.window": "Window",
   "label.yesterday": "Yesterday",
-  "label.invitation-link": "邀请链接",
+  "label.invitation-link": "Invitation link",
   "message.action-confirmation": "Type {confirmation} in the box below to confirm.",
   "message.active-users": "{x} current {x, plural, one {visitor} other {visitors}}",
   "message.collected-data": "Collected data",
