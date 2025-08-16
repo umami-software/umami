@@ -2,11 +2,11 @@
 import { Form, FormRow, FormInput, FormButtons, TextField, Button } from 'react-basics';
 import { useApi, useMessages, useModified } from '@/components/hooks';
 import styles from './InviteForm.module.css';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export function InviteForm() {
   const searchParams = useSearchParams();
-
+  const router = useRouter();
   const accessCode = searchParams.get('accessCode');
   const { formatMessage, labels } = useMessages();
   const { post, useMutation } = useApi();
@@ -24,7 +24,9 @@ export function InviteForm() {
       },
     });
   };
-
+  const onClose = () => {
+    router.replace('/dashboard');
+  };
   return (
     <div className={styles.container}>
       <div className={styles.form}>
@@ -46,7 +48,7 @@ export function InviteForm() {
             <Button type="submit" variant="primary">
               {formatMessage(labels.join)}
             </Button>
-            <Button onClick={() => {}}>{formatMessage(labels.cancel)}</Button>
+            <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
           </FormButtons>
         </Form>
       </div>
