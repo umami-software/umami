@@ -6,12 +6,13 @@ import SessionProperties from './SessionProperties';
 import WorldMap from '@/components/metrics/WorldMap';
 import { GridRow } from '@/components/layout/Grid';
 import { Item, Tabs } from 'react-basics';
-import { useState } from 'react';
 import { useMessages } from '@/components/hooks';
 import SessionsWeekly from './SessionsWeekly';
+import { useQueryState } from 'nuqs';
 
 export function SessionsPage({ websiteId }) {
-  const [tab, setTab] = useState('activity');
+  const [tab, setTab] = useQueryState('activity', { defaultValue: 'activity' });
+
   const { formatMessage, labels } = useMessages();
 
   return (
