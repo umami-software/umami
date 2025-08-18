@@ -12,7 +12,7 @@ CREATE TABLE "link" (
     "link_id" UUID NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "url" VARCHAR(500) NOT NULL,
-    "slug" VARCHAR(100) UNIQUE NOT NULL,
+    "slug" VARCHAR(100) NOT NULL,
     "user_id" UUID,
     "team_id" UUID,
     "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
@@ -26,7 +26,7 @@ CREATE TABLE "link" (
 CREATE TABLE "pixel" (
     "pixel_id" UUID NOT NULL,
     "name" VARCHAR(100) NOT NULL,
-    "slug" VARCHAR(100) UNIQUE NOT NULL,
+    "slug" VARCHAR(100) NOT NULL,
     "user_id" UUID,
     "team_id" UUID,
     "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
@@ -38,6 +38,9 @@ CREATE TABLE "pixel" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "link_link_id_key" ON "link"("link_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "link_slug_key" ON "link"("slug");
 
 -- CreateIndex
 CREATE INDEX "link_slug_idx" ON "link"("slug");
@@ -53,6 +56,9 @@ CREATE INDEX "link_created_at_idx" ON "link"("created_at");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "pixel_pixel_id_key" ON "pixel"("pixel_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "pixel_slug_key" ON "pixel"("slug");
 
 -- CreateIndex
 CREATE INDEX "pixel_slug_idx" ON "pixel"("slug");
