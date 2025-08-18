@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import debug from 'debug';
 import { isbot } from 'isbot';
 import { startOfHour, startOfMonth } from 'date-fns';
 import clickhouse from '@/lib/clickhouse';
@@ -8,29 +9,52 @@ import { fetchWebsite } from '@/lib/load';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { createToken, parseToken } from '@/lib/jwt';
 import { secret, uuid, hash } from '@/lib/crypto';
-import { COLLECTION_TYPE } from '@/lib/constants';
+import { COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
 import { createSession, saveEvent, saveSessionData } from '@/queries';
 
+const log = debug('umami:send');
+
+interface Cache {
+  websiteId: string;
+  sessionId: string;
+  visitId: string;
+  iat: number;
+}
+
 const schema = z.object({
   type: z.enum(['event', 'identify']),
-  payload: z.object({
-    website: z.string().uuid(),
-    data: anyObjectParam.optional(),
-    hostname: z.string().max(100).optional(),
-    language: z.string().max(35).optional(),
-    referrer: urlOrPathParam.optional(),
-    screen: z.string().max(11).optional(),
-    title: z.string().optional(),
-    url: urlOrPathParam.optional(),
-    name: z.string().max(50).optional(),
-    tag: z.string().max(50).optional(),
-    ip: z.string().ip().optional(),
-    userAgent: z.string().optional(),
-    timestamp: z.coerce.number().int().optional(),
-    id: z.string().optional(),
-  }),
+  payload: z
+    .object({
+      website: z.string().uuid().optional(),
+      link: z.string().uuid().optional(),
+      pixel: z.string().uuid().optional(),
+      data: anyObjectParam.optional(),
+      hostname: z.string().max(100).optional(),
+      language: z.string().max(35).optional(),
+      referrer: urlOrPathParam.optional(),
+      screen: z.string().max(11).optional(),
+      title: z.string().optional(),
+      url: urlOrPathParam.optional(),
+      name: z.string().max(50).optional(),
+      tag: z.string().max(50).optional(),
+      ip: z.string().ip().optional(),
+      userAgent: z.string().optional(),
+      timestamp: z.coerce.number().int().optional(),
+      id: z.string().optional(),
+    })
+    .refine(
+      data => {
+        const keys = [data.website, data.link, data.pixel];
+        const count = keys.filter(Boolean).length;
+        return count === 1;
+      },
+      {
+        message: 'Exactly one of website, link, or pixel must be provided',
+        path: ['website'],
+      },
+    ),
 });
 
 export async function POST(request: Request) {
@@ -45,6 +69,8 @@ export async function POST(request: Request) {
 
     const {
       website: websiteId,
+      pixel: pixelId,
+      link: linkId,
       hostname,
       screen,
       language,
@@ -59,23 +85,26 @@ export async function POST(request: Request) {
     } = payload;
 
     // Cache check
-    let cache: { websiteId: string; sessionId: string; visitId: string; iat: number } | null = null;
-    const cacheHeader = request.headers.get('x-umami-cache');
+    let cache: Cache | null = null;
 
-    if (cacheHeader) {
-      const result = await parseToken(cacheHeader, secret());
+    if (websiteId) {
+      const cacheHeader = request.headers.get('x-umami-cache');
 
-      if (result) {
-        cache = result;
+      if (cacheHeader) {
+        const result = await parseToken(cacheHeader, secret());
+
+        if (result) {
+          cache = result;
+        }
       }
-    }
 
-    // Find website
-    if (!cache?.websiteId) {
-      const website = await fetchWebsite(websiteId);
+      // Find website
+      if (!cache?.websiteId) {
+        const website = await fetchWebsite(websiteId);
 
-      if (!website) {
-        return badRequest('Website not found.');
+        if (!website) {
+          return badRequest('Website not found.');
+        }
       }
     }
 
@@ -105,22 +134,19 @@ export async function POST(request: Request) {
 
     // Create a session if not found
     if (!clickhouse.enabled && !cache?.sessionId) {
-      await createSession(
-        {
-          id: sessionId,
-          websiteId,
-          browser,
-          os,
-          device,
-          screen,
-          language,
-          country,
-          region,
-          city,
-          distinctId: id,
-        },
-        { skipDuplicates: true },
-      );
+      await createSession({
+        id: sessionId,
+        websiteId,
+        browser,
+        os,
+        device,
+        screen,
+        language,
+        country,
+        region,
+        city,
+        distinctId: id,
+      });
     }
 
     // Visit info
@@ -176,10 +202,19 @@ export async function POST(request: Request) {
         }
       }
 
+      const eventType = linkId
+        ? EVENT_TYPE.linkEvent
+        : pixelId
+          ? EVENT_TYPE.pixelEvent
+          : name
+            ? EVENT_TYPE.customEvent
+            : EVENT_TYPE.pageView;
+
       await saveEvent({
-        websiteId,
+        websiteId: websiteId || linkId || pixelId,
         sessionId,
         visitId,
+        eventType,
         createdAt,
 
         // Page
@@ -240,6 +275,7 @@ export async function POST(request: Request) {
 
     return json({ cache: token, sessionId, visitId });
   } catch (e) {
+    log.error(e);
     return serverError(e);
   }
 }

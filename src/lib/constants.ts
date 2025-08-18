@@ -87,6 +87,8 @@ export const COLLECTION_TYPE = {
 export const EVENT_TYPE = {
   pageView: 1,
   customEvent: 2,
+  linkEvent: 3,
+  pixelEvent: 4,
 } as const;
 
 export const DATA_TYPE = {

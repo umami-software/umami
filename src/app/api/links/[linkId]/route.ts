@@ -47,7 +47,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ lin
 
     return Response.json(result);
   } catch (e: any) {
-    if (e.message.includes('Unique constraint') && e.message.includes('slug')) {
+    if (e.message.toLowerCase().includes('unique constraint') && e.message.includes('slug')) {
       return badRequest('That slug is already taken.');
     }
 

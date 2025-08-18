@@ -89,8 +89,8 @@ function decodeHeader(s: string | undefined | null): string | undefined | null {
 
 export async function getLocation(ip: string = '', headers: Headers, hasPayloadIP: boolean) {
   // Ignore local ips
-  if (await isLocalhost(ip)) {
-    return;
+  if (!ip || (await isLocalhost(ip))) {
+    return null;
   }
 
   if (!hasPayloadIP && !process.env.SKIP_LOCATION_HEADERS) {
@@ -130,7 +130,7 @@ export async function getLocation(ip: string = '', headers: Headers, hasPayloadI
     );
   }
 
-  const result = globalThis[MAXMIND].get(ip?.split(':')[0]);
+  const result = globalThis[MAXMIND]?.get(ip?.split(':')[0]);
 
   if (result) {
     const country = result.country?.iso_code ?? result?.registered_country?.iso_code;
