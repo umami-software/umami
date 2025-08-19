@@ -11,7 +11,7 @@ export function RevenuePage({ websiteId }: { websiteId: string }) {
 
   return (
     <Column gap>
-      <WebsiteControls websiteId={websiteId} allowFilter={false} />
+      <WebsiteControls websiteId={websiteId} />
       <Revenue websiteId={websiteId} startDate={startDate} endDate={endDate} />
     </Column>
   );

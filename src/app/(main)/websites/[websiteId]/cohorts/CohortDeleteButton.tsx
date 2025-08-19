@@ -19,7 +19,7 @@ export function CohortDeleteButton({
   const { formatMessage, labels } = useMessages();
   const { del, useMutation } = useApi();
   const { mutate, isPending, error } = useMutation({
-    mutationFn: () => del(`/websites/${websiteId}/cohorts/${cohortId}`),
+    mutationFn: () => del(`/websites/${websiteId}/segments/${cohortId}`),
   });
   const { touch } = useModified();
 
