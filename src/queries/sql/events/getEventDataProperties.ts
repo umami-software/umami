@@ -17,7 +17,7 @@ async function relationalQuery(
   filters: QueryFilters & { propertyName?: string },
 ) {
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters(
+  const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters(
     { ...filters, websiteId },
     {
       columns: { propertyName: 'data_key' },
@@ -35,6 +35,7 @@ async function relationalQuery(
       and website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
     ${cohortQuery}
+    ${joinSessionQuery}
     where event_data.website_id = {{websiteId::uuid}}
       and event_data.created_at between {{startDate}} and {{endDate}}
     ${filterQuery}

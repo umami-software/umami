@@ -26,7 +26,10 @@ async function relationalQuery(
   filters: QueryFilters,
 ): Promise<WebsiteSessionStatsData[]> {
   const { parseFilters, rawQuery } = prisma;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
 
   return rawQuery(
     `

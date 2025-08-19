@@ -27,7 +27,7 @@ async function relationalQuery(
   const { column, startDate, endDate } = parameters;
   const { parseFilters, rawQuery } = prisma;
 
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     startDate,
@@ -40,6 +40,7 @@ async function relationalQuery(
     select ${column} utm, count(*) as views
     from website_event
     ${cohortQuery}
+    ${joinSessionQuery}
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}
       and coalesce(${column}, '') != ''

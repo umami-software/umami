@@ -1,4 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
+import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
@@ -28,16 +29,16 @@ async function relationalQuery(
 ) {
   const { startDate, endDate, type, value } = parameters;
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, dateQuery, queryParams } = parseFilters({
+  const eventType = type === 'page' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
+  const column = type === 'page' ? 'url_path' : 'event_name';
+  const { filterQuery, dateQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     value,
     startDate,
     endDate,
+    eventType,
   });
-  const isPage = type === 'page';
-  const column = isPage ? 'url_path' : 'event_name';
-  const eventType = isPage ? 1 : 2;
 
   return rawQuery(
     `
@@ -45,16 +46,19 @@ async function relationalQuery(
     (
       select count(distinct session_id)
       from website_event
+      ${cohortQuery}
+      ${joinSessionQuery}
       where website_id = {websiteId:UUID}
-      and event_type = ${eventType}
       ${dateQuery}
+      ${filterQuery}
     ) as total
     from website_event
+    ${cohortQuery}
+    ${joinSessionQuery}
     where website_id = {websiteId:UUID}
-    and event_type = ${eventType}
-    and ${column} = {value:String}
-    ${dateQuery}
-    ${filterQuery}
+      and ${column} = {value:String}
+      ${dateQuery}
+      ${filterQuery}
     `,
     queryParams,
   );
@@ -67,16 +71,16 @@ async function clickhouseQuery(
 ) {
   const { startDate, endDate, type, value } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, dateQuery, queryParams } = parseFilters({
+  const eventType = type === 'page' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
+  const column = type === 'page' ? 'url_path' : 'event_name';
+  const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     value,
     startDate,
     endDate,
+    eventType,
   });
-  const isPage = type === 'page';
-  const column = isPage ? 'url_path' : 'event_name';
-  const eventType = isPage ? 1 : 2;
 
   return rawQuery(
     `
@@ -84,15 +88,17 @@ async function clickhouseQuery(
     (
       select count(distinct session_id)
       from website_event
+      ${cohortQuery}
       where website_id = {websiteId:UUID}
-      ${dateQuery}
+        ${dateQuery}
+        ${filterQuery}
     ) as total
     from website_event
+    ${cohortQuery}
     where website_id = {websiteId:UUID}
-    and event_type = ${eventType}
-    and ${column} = {value:String}
-    ${dateQuery}
-    ${filterQuery}
+      and ${column} = {value:String}
+      ${dateQuery}
+      ${filterQuery}
     `,
     queryParams,
   ).then(results => results?.[0]);
