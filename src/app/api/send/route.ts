@@ -257,9 +257,7 @@ export async function POST(request: Request) {
         lifatid,
         twclid,
       });
-    }
-
-    if (type === COLLECTION_TYPE.identify) {
+    } else if (type === COLLECTION_TYPE.identify) {
       if (data) {
         await saveSessionData({
           websiteId,
