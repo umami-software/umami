@@ -9,7 +9,7 @@ import {
 } from '@umami/react-zen';
 import { useApi, useMessages, useModified } from '@/components/hooks';
 import { DOMAIN_REGEX } from '@/lib/constants';
-import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
+import { WebsiteContext } from '@/app/(main)/websites/WebsiteProvider';
 
 export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
   const website = useContext(WebsiteContext);

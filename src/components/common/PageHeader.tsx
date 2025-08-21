@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Heading, Icon, Row, RowProps, Text } from '@umami/react-zen';
+import { Heading, Icon, Row, RowProps, Text, Column } from '@umami/react-zen';
 
 export function PageHeader({
   title,
@@ -26,11 +26,13 @@ export function PageHeader({
       width="100%"
       {...props}
     >
-      <Row alignItems="center" gap="3">
-        {icon && <Icon size="md">{icon}</Icon>}
-        {title && <Heading size="4">{title}</Heading>}
+      <Column>
+        <Row alignItems="center" gap="3">
+          {icon && <Icon size="md">{icon}</Icon>}
+          {title && <Heading size="4">{title}</Heading>}
+        </Row>
         {description && <Text color="muted">{description}</Text>}
-      </Row>
+      </Column>
       <Row justifyContent="flex-end">{children}</Row>
     </Row>
   );

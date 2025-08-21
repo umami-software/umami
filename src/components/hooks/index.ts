@@ -1,5 +1,11 @@
 'use client';
 
+// Context hooks
+export * from './context/useLink';
+export * from './context/usePixel';
+export * from './context/useTeam';
+export * from './context/useWebsite';
+
 // Query hooks
 export * from './queries/useActiveUsersQuery';
 export * from './queries/useDeleteQuery';
@@ -70,7 +76,6 @@ export * from './useNavigation';
 export * from './usePagedQuery';
 export * from './usePageParameters';
 export * from './useRegionNames';
+export * from './useSlug';
 export * from './useSticky';
-export * from './useTeam';
 export * from './useTimezone';
-export * from './useWebsite';

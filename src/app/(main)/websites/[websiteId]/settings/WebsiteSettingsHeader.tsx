@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
+import { WebsiteContext } from '@/app/(main)/websites/WebsiteProvider';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Globe } from '@/components/icons';
 

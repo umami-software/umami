@@ -10,7 +10,7 @@ import {
 import { getRandomChars } from '@/lib/crypto';
 import { useContext } from 'react';
 import { useApi, useMessages, useModified } from '@/components/hooks';
-import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
+import { TeamContext } from '@/app/(main)/teams/TeamProvider';
 
 const generateId = () => `team_${getRandomChars(16)}`;
 

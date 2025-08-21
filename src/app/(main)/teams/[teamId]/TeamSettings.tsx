@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { Column, Tabs, TabList, Tab, TabPanel } from '@umami/react-zen';
-import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
+import { TeamContext } from '@/app/(main)/teams/TeamProvider';
 import { useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
 
 import { ROLES } from '@/lib/constants';

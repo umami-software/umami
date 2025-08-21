@@ -32,8 +32,8 @@ export function LinkEditForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
-  const { mutate, error, isPending, touch } = useUpdateQuery(
+  const { formatMessage, labels, messages } = useMessages();
+  const { mutate, error, isPending, touch, toast } = useUpdateQuery(
     linkId ? `/links/${linkId}` : '/links',
     {
       id: linkId,
@@ -48,6 +48,7 @@ export function LinkEditForm({
   const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
+        toast(formatMessage(messages.saved));
         touch('links');
         onSave?.();
         onClose?.();

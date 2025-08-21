@@ -358,7 +358,7 @@ export const labels = defineMessages({
 
 export const messages = defineMessages({
   error: { id: 'message.error', defaultMessage: 'Something went wrong.' },
-  saved: { id: 'message.saved', defaultMessage: 'Saved.' },
+  saved: { id: 'message.saved', defaultMessage: 'Saved successfully.' },
   noUsers: { id: 'message.no-users', defaultMessage: 'There are no users.' },
   userDeleted: { id: 'message.user-deleted', defaultMessage: 'User deleted.' },
   noDataAvailable: { id: 'message.no-data-available', defaultMessage: 'No data available.' },

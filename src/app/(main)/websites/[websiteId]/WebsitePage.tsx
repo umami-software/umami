@@ -8,7 +8,7 @@ import { WebsiteMetricsBar } from './WebsiteMetricsBar';
 import { WebsiteTableView } from './WebsiteTableView';
 import { WebsiteControls } from './WebsiteControls';
 
-export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
+export function WebsitePage({ websiteId }: { websiteId: string }) {
   const {
     router,
     query: { view, compare },

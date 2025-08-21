@@ -11,7 +11,7 @@ import {
   Text,
 } from '@umami/react-zen';
 import { useApi, useLoginQuery, useMessages, useUserTeamsQuery } from '@/components/hooks';
-import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
+import { WebsiteContext } from '@/app/(main)/websites/WebsiteProvider';
 import { ROLES } from '@/lib/constants';
 
 export function WebsiteTransferForm({

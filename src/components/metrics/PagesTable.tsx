@@ -1,4 +1,4 @@
-import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
+import { WebsiteContext } from '@/app/(main)/websites/WebsiteProvider';
 import { FilterButtons } from '@/components/input/FilterButtons';
 import { FilterLink } from '@/components/common/FilterLink';
 import { useMessages, useNavigation } from '@/components/hooks';

@@ -1,4 +1,6 @@
-import { useApi, useModified } from '@/components/hooks';
+import { useApi } from '../useApi';
+import { useModified } from '../useModified';
+import { useToast } from '@umami/react-zen';
 
 export function useUpdateQuery(path: string, params?: Record<string, any>) {
   const { post, useMutation } = useApi();
@@ -6,6 +8,7 @@ export function useUpdateQuery(path: string, params?: Record<string, any>) {
     mutationFn: (data: Record<string, any>) => post(path, { ...data, ...params }),
   });
   const { touch } = useModified();
+  const { toast } = useToast();
 
-  return { mutate, isPending, error, touch };
+  return { mutate, isPending, error, touch, toast };
 }

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Tabs, TabList, Tab, TabPanel } from '@umami/react-zen';
-import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
+import { WebsiteContext } from '@/app/(main)/websites/WebsiteProvider';
 import { useMessages } from '@/components/hooks';
 import { WebsiteShareForm } from './WebsiteShareForm';
 import { WebsiteTrackingCode } from './WebsiteTrackingCode';
