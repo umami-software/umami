@@ -5,11 +5,10 @@ import { useCountryNames, useLocale, useMessages, useTimezone } from '@/componen
 import { Eye, Visitor, Bolt } from '@/components/icons';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
 import { stringToColor } from '@/lib/format';
-import { RealtimeData } from '@/lib/types';
 import { useContext, useMemo, useState } from 'react';
 import { Icon, SearchField, StatusLight, Text } from '@umami/react-zen';
 import { FixedSizeList } from 'react-window';
-import { WebsiteContext } from '../WebsiteProvider';
+import { WebsiteContext } from '@/app/(main)/websites/WebsiteProvider';
 import styles from './RealtimeLog.module.css';
 
 const TYPE_ALL = 'all';
@@ -23,7 +22,7 @@ const icons = {
   [TYPE_EVENT]: <Bolt />,
 };
 
-export function RealtimeLog({ data }: { data: RealtimeData }) {
+export function RealtimeLog({ data }: { data: any }) {
   const website = useContext(WebsiteContext);
   const [search, setSearch] = useState('');
   const { formatMessage, labels, messages } = useMessages();

@@ -24,7 +24,13 @@ export function PixelControls({
     <Column gap>
       <Row alignItems="center" justifyContent="space-between" gap="3">
         {allowFilter ? <WebsiteFilterButton websiteId={websiteId} /> : <div />}
-        {allowDateFilter && <WebsiteDateFilter websiteId={websiteId} allowCompare={allowCompare} />}
+        {allowDateFilter && (
+          <WebsiteDateFilter
+            websiteId={websiteId}
+            allowCompare={allowCompare}
+            showAllTime={false}
+          />
+        )}
         {allowDownload && <ExportButton websiteId={websiteId} />}
         {allowMonthFilter && <WebsiteMonthSelect websiteId={websiteId} />}
       </Row>
