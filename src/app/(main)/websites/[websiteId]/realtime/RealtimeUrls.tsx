@@ -1,18 +1,16 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Row } from '@umami/react-zen';
 import thenby from 'thenby';
 import { percentFilter } from '@/lib/filters';
 import { ListTable } from '@/components/metrics/ListTable';
-import { useMessages } from '@/components/hooks';
-import { RealtimeData } from '@/lib/types';
-import { WebsiteContext } from '../WebsiteProvider';
+import { useMessages, useWebsite } from '@/components/hooks';
 import { FilterButtons } from '@/components/input/FilterButtons';
 
 const FILTER_REFERRERS = 'filter-referrers';
 const FILTER_PAGES = 'filter-pages';
 
-export function RealtimeUrls({ data }: { data: RealtimeData }) {
-  const website = useContext(WebsiteContext);
+export function RealtimeUrls({ data }: { data: any }) {
+  const website = useWebsite();
   const { formatMessage, labels } = useMessages();
   const { referrers, urls } = data || {};
   const [filter, setFilter] = useState(FILTER_REFERRERS);

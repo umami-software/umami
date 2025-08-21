@@ -8,9 +8,7 @@ import {
   useToast,
 } from '@umami/react-zen';
 import { getRandomChars } from '@/lib/crypto';
-import { useContext } from 'react';
-import { useApi, useMessages, useModified } from '@/components/hooks';
-import { TeamContext } from '@/app/(main)/teams/TeamProvider';
+import { useApi, useMessages, useModified, useTeam } from '@/components/hooks';
 
 const generateId = () => `team_${getRandomChars(16)}`;
 
@@ -23,7 +21,7 @@ export function TeamEditForm({
   allowEdit?: boolean;
   onSave?: () => void;
 }) {
-  const team = useContext(TeamContext);
+  const team = useTeam();
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { toast } = useToast();

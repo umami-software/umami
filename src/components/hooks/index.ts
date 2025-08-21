@@ -4,6 +4,7 @@
 export * from './context/useLink';
 export * from './context/usePixel';
 export * from './context/useTeam';
+export * from './context/useUser';
 export * from './context/useWebsite';
 
 // Query hooks

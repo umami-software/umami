@@ -1,9 +1,7 @@
-import { WebsiteContext } from '@/app/(main)/websites/WebsiteProvider';
 import { FilterButtons } from '@/components/input/FilterButtons';
 import { FilterLink } from '@/components/common/FilterLink';
-import { useMessages, useNavigation } from '@/components/hooks';
+import { useMessages, useNavigation, useWebsite } from '@/components/hooks';
 import { emptyFilter } from '@/lib/filters';
-import { useContext } from 'react';
 import { MetricsTable, MetricsTableProps } from './MetricsTable';
 
 export interface PagesTableProps extends MetricsTableProps {
@@ -14,7 +12,7 @@ export interface PagesTableProps extends MetricsTableProps {
 export function PagesTable({ type, allowFilter, ...props }: PagesTableProps) {
   const { router, updateParams } = useNavigation();
   const { formatMessage, labels } = useMessages();
-  const { domain } = useContext(WebsiteContext);
+  const { domain } = useWebsite();
 
   const handleChange = (id: any) => {
     router.push(updateParams({ view: id }));

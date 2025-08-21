@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import {
   FormSubmitButton,
   Form,
@@ -7,12 +6,11 @@ import {
   TextField,
   useToast,
 } from '@umami/react-zen';
-import { useApi, useMessages, useModified } from '@/components/hooks';
+import { useApi, useMessages, useModified, useWebsite } from '@/components/hooks';
 import { DOMAIN_REGEX } from '@/lib/constants';
-import { WebsiteContext } from '@/app/(main)/websites/WebsiteProvider';
 
 export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
-  const website = useContext(WebsiteContext);
+  const website = useWebsite();
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { toast } = useToast();

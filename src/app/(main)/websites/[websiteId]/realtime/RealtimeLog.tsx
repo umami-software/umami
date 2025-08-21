@@ -1,14 +1,19 @@
 import { useFormat } from '@/components//hooks/useFormat';
 import { Empty } from '@/components/common/Empty';
 import { FilterButtons } from '@/components/input/FilterButtons';
-import { useCountryNames, useLocale, useMessages, useTimezone } from '@/components/hooks';
+import {
+  useCountryNames,
+  useLocale,
+  useMessages,
+  useTimezone,
+  useWebsite,
+} from '@/components/hooks';
 import { Eye, Visitor, Bolt } from '@/components/icons';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
 import { stringToColor } from '@/lib/format';
-import { useContext, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Icon, SearchField, StatusLight, Text } from '@umami/react-zen';
 import { FixedSizeList } from 'react-window';
-import { WebsiteContext } from '@/app/(main)/websites/WebsiteProvider';
 import styles from './RealtimeLog.module.css';
 
 const TYPE_ALL = 'all';
@@ -23,7 +28,7 @@ const icons = {
 };
 
 export function RealtimeLog({ data }: { data: any }) {
-  const website = useContext(WebsiteContext);
+  const website = useWebsite();
   const [search, setSearch] = useState('');
   const { formatMessage, labels, messages } = useMessages();
   const { formatValue } = useFormat();

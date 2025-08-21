@@ -1,4 +1,4 @@
-import { Key, useContext, useState } from 'react';
+import { Key, useState } from 'react';
 import {
   Button,
   Form,
@@ -10,8 +10,13 @@ import {
   ListItem,
   Text,
 } from '@umami/react-zen';
-import { useApi, useLoginQuery, useMessages, useUserTeamsQuery } from '@/components/hooks';
-import { WebsiteContext } from '@/app/(main)/websites/WebsiteProvider';
+import {
+  useApi,
+  useLoginQuery,
+  useMessages,
+  useUserTeamsQuery,
+  useWebsite,
+} from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 
 export function WebsiteTransferForm({
@@ -24,7 +29,7 @@ export function WebsiteTransferForm({
   onClose?: () => void;
 }) {
   const { user } = useLoginQuery();
-  const website = useContext(WebsiteContext);
+  const website = useWebsite();
   const [teamId, setTeamId] = useState<string>(null);
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
