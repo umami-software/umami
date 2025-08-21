@@ -1,11 +1,10 @@
 import { Button, Icon, Text, Row, DialogTrigger, Dialog, Modal } from '@umami/react-zen';
 import { PageHeader } from '@/components/common/PageHeader';
-import { useWebsite } from '@/components/hooks/useWebsite';
 import { Share, Edit } from '@/components/icons';
 import { Favicon } from '@/components/common/Favicon';
 import { ActiveUsers } from '@/components/metrics/ActiveUsers';
 import { WebsiteShareForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteShareForm';
-import { useMessages, useNavigation } from '@/components/hooks';
+import { useMessages, useNavigation, useWebsite } from '@/components/hooks';
 import { LinkButton } from '@/components/common/LinkButton';
 
 export function WebsiteHeader() {
