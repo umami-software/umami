@@ -34,7 +34,12 @@ async function relationalQuery(
   const { rawQuery, getAddIntervalQuery, parseFilters } = prisma;
   const { levelOneQuery, levelQuery, sumQuery, params } = getFunnelQuery(steps, window);
 
-  const { filterQuery, queryParams } = parseFilters({ ...filters, websiteId, startDate, endDate });
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+  });
 
   function getFunnelQuery(
     steps: { type: string; value: string }[],
@@ -65,6 +70,8 @@ async function relationalQuery(
           WITH level1 AS (
             select distinct session_id, created_at
             from website_event
+            ${cohortQuery}
+            ${joinSessionQuery}
             where website_id = {{websiteId::uuid}}
               and created_at between {{startDate}} and {{endDate}}
               and ${column} ${operator} {{${i}}}
@@ -132,7 +139,12 @@ async function clickhouseQuery(
     steps,
     window,
   );
-  const { filterQuery, queryParams } = parseFilters({ ...filters, websiteId, startDate, endDate });
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+  });
 
   function getFunnelQuery(
     steps: { type: string; value: string }[],
@@ -204,6 +216,7 @@ async function clickhouseQuery(
     WITH level0 AS (
       select distinct session_id, url_path, referrer_path, event_name, created_at
       from website_event
+      ${cohortQuery}
       where (${stepFilterQuery})
         and website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}

@@ -1,6 +1,6 @@
 import { canUpdateWebsite, canViewWebsite } from '@/validations';
 import { uuid } from '@/lib/crypto';
-import { parseRequest } from '@/lib/request';
+import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { segmentTypeParam, searchParams } from '@/lib/schema';
 import { createSegment, getWebsiteSegments } from '@/queries';
@@ -28,7 +28,9 @@ export async function GET(
     return unauthorized();
   }
 
-  const segments = await getWebsiteSegments(websiteId, type);
+  const filters = await getQueryFilters(query);
+
+  const segments = await getWebsiteSegments(websiteId, type, filters);
 
   return json(segments);
 }

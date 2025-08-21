@@ -62,11 +62,10 @@ async function relationalQuery(
         min(website_event.created_at) as "min_time",
         max(website_event.created_at) as "max_time"
       from website_event
-        ${cohortQuery}
-        ${joinSessionQuery}
+      ${cohortQuery}  
+      ${joinSessionQuery}
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
-        and event_type = {{eventType}}
         ${filterQuery}
       group by ${parseFieldsByName(fields)}, 
         website_event.session_id, website_event.visit_id

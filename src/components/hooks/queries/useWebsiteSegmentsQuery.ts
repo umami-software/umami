@@ -15,7 +15,8 @@ export function useWebsiteSegmentsQuery(
 
   return useQuery({
     queryKey: ['website:segments', { websiteId, modified, ...filters, ...params }],
-    queryFn: () => get(`/websites/${websiteId}/segments`, { ...filters, ...params }),
+    queryFn: pageParams =>
+      get(`/websites/${websiteId}/segments`, { ...pageParams, ...filters, ...params }),
     enabled: !!websiteId,
     placeholderData: keepPreviousData,
     ...options,

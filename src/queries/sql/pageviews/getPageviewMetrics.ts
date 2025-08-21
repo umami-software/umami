@@ -73,12 +73,11 @@ async function relationalQuery(
     select ${column} x,
       count(distinct website_event.session_id) as y
     from website_event
-    ${joinSessionQuery}
     ${cohortQuery}
+    ${joinSessionQuery}
     ${entryExitQuery}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
-      and event_type = {{eventType}}
       ${excludeDomain}
       ${filterQuery}
     group by 1

@@ -14,9 +14,12 @@ export async function getWebsiteSessionsWeekly(
 }
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
-  const { timezone = 'utc' } = filters;
+  const timezone = 'utc';
   const { rawQuery, getDateWeeklySQL, parseFilters } = prisma;
-  const { queryParams } = parseFilters(filters);
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
 
   return rawQuery(
     `
@@ -24,8 +27,11 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       ${getDateWeeklySQL('created_at', timezone)} as time,
       count(distinct session_id) as value
     from website_event
+    ${cohortQuery}
+    ${joinSessionQuery}
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}
+      ${filterQuery}
     group by time
     order by 2
     `,

@@ -35,7 +35,7 @@ async function relationalQuery(
   const { getDateSQL, getDayDiffQuery, getCastColumnQuery, rawQuery, parseFilters } = prisma;
   const unit = 'day';
 
-  const { filterQuery, queryParams } = parseFilters({
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     startDate,
@@ -54,11 +54,13 @@ async function relationalQuery(
     ),
     user_activities AS (
       select distinct
-        w.session_id,
-        ${getDayDiffQuery(getDateSQL('created_at', unit, timezone), 'c.cohort_date')} as day_number
-      from website_event w
-      join cohort_items c
-      on w.session_id = c.session_id
+        website_event.session_id,
+        ${getDayDiffQuery(getDateSQL('created_at', unit, timezone), 'cohort_items.cohort_date')} as day_number
+      from website_event
+      join cohort_items
+      on website_event.session_id = cohort_items.session_id
+      ${cohortQuery}
+      ${joinSessionQuery}
       where website_id = {{websiteId::uuid}}
           and created_at between {{startDate}} and {{endDate}}
           ${filterQuery}
@@ -104,7 +106,7 @@ async function clickhouseQuery(
   const { getDateSQL, rawQuery, parseFilters } = clickhouse;
   const unit = 'day';
 
-  const { filterQuery, queryParams } = parseFilters({
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     startDate,
@@ -125,11 +127,12 @@ async function clickhouseQuery(
     ),
     user_activities AS (
       select distinct
-        w.session_id,
-        (${getDateSQL('created_at', unit, timezone)} - c.cohort_date) / 86400 as day_number
-      from website_event w
-      join cohort_items c
-      on w.session_id = c.session_id
+        website_event.session_id,
+        (${getDateSQL('created_at', unit, timezone)} - cohort_items.cohort_date) / 86400 as day_number
+      from website_event
+      join cohort_items
+      on website_event.session_id = cohort_items.session_id
+      ${cohortQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         ${filterQuery}

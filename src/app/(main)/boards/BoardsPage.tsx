@@ -7,7 +7,7 @@ import { BoardAddButton } from './BoardAddButton';
 export function BoardsPage() {
   return (
     <PageBody>
-      <Column>
+      <Column margin="2">
         <PageHeader title="My Boards">
           <BoardAddButton />
         </PageHeader>

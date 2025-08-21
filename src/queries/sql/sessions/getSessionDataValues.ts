@@ -17,7 +17,10 @@ async function relationalQuery(
   filters: QueryFilters & { propertyName?: string },
 ) {
   const { rawQuery, parseFilters, getDateSQL } = prisma;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
 
   return rawQuery(
     `
@@ -30,6 +33,7 @@ async function relationalQuery(
       count(distinct session_data.session_id) as "total"
     from website_event
     ${cohortQuery}
+    ${joinSessionQuery}
     join session_data
         on session_data.session_id = website_event.session_id
     where website_event.website_id = {{websiteId::uuid}}

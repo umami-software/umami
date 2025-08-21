@@ -21,7 +21,7 @@ export async function getChannelMetrics(...args: [websiteId: string, filters?: Q
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
-  const { queryParams, filterQuery, cohortQuery, dateQuery } = parseFilters({
+  const { queryParams, filterQuery, joinSessionQuery, cohortQuery, dateQuery } = parseFilters({
     ...filters,
     websiteId,
     eventType: EVENT_TYPE.pageView,
@@ -46,8 +46,8 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
         count(distinct session_id) y
       from website_event
       ${cohortQuery}
+      ${joinSessionQuery}
       where website_id = {{websiteId::uuid}}
-        and event_type = {{eventType}}
         ${dateQuery}
         ${filterQuery}
       group by 1, 2

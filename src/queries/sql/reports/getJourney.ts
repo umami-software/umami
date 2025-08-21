@@ -43,7 +43,12 @@ async function relationalQuery(
     startStep,
     endStep,
   );
-  const { filterQuery, queryParams } = parseFilters({ ...filters, websiteId, startDate, endDate });
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+  });
 
   function getJourneyQuery(
     steps: number,
@@ -117,6 +122,8 @@ async function relationalQuery(
           coalesce(nullIf(event_name, ''), url_path) event,
           row_number() OVER (PARTITION BY visit_id ORDER BY created_at) AS event_number
       from website_event
+      ${cohortQuery}
+      ${joinSessionQuery}
       where website_id = {{websiteId::uuid}}
         and created_at between {{startDate}} and {{endDate}}),
         ${filterQuery}
@@ -148,7 +155,12 @@ async function clickhouseQuery(
     startStep,
     endStep,
   );
-  const { filterQuery, queryParams } = parseFilters({ ...filters, websiteId, startDate, endDate });
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+  });
 
   function getJourneyQuery(
     steps: number,
@@ -221,6 +233,7 @@ async function clickhouseQuery(
           coalesce(nullIf(event_name, ''), url_path) event,
           row_number() OVER (PARTITION BY visit_id ORDER BY created_at) AS event_number
       from website_event
+      ${cohortQuery}
       where website_id = {websiteId:UUID}
         ${filterQuery}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}),

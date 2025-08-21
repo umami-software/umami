@@ -42,9 +42,10 @@ async function relationalQuery(
   const { rawQuery, parseFilters } = prisma;
   const eventType = type === 'page' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'page' ? 'url_path' : 'event_name';
-  const { filterQuery, queryParams } = parseFilters({
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     ...parameters,
+    websiteId,
     eventType,
   });
 
@@ -71,23 +72,32 @@ async function relationalQuery(
             session_id,
             max(created_at) max_dt
         from website_event
+        ${cohortQuery}
+        ${joinSessionQuery}
         where website_id = {{websiteId::uuid}}
           and created_at between {{startDate}} and {{endDate}}
           and ${column} = {{step}}
-          and event_type = {{eventType}}
           ${filterQuery}
         group by 1),`;
 
   const revenueEventQuery = `WITH events AS (
         select
-          session_id,
-          max(created_at) max_dt,
-          sum(revenue) value
+          revenue.session_id,
+          max(revenue.created_at) max_dt,
+          sum(revenue.revenue) value
         from revenue
-        where website_id = {{websiteId::uuid}}
-          and created_at between {{startDate}} and {{endDate}}
-          and ${column} = {{step}}
-          and currency = {{currency}}
+        join website_event
+          on website_event.website_id = revenue.website_id
+            and website_event.session_id = revenue.session_id
+            and website_event.event_id = revenue.event_id
+            and website_event.website_id = {{websiteId::uuid}}
+            and website_event.created_at between {{startDate}} and {{endDate}}
+        ${cohortQuery}
+        ${joinSessionQuery}
+        where revenue.website_id = {{websiteId::uuid}}
+          and revenue.created_at between {{startDate}} and {{endDate}}
+          and revenue.${column} = {{step}}
+          and revenue.currency = {{currency}}
           ${filterQuery}
         group by 1),`;
 
@@ -227,10 +237,11 @@ async function relationalQuery(
         count(distinct session_id) as "visitors",
         count(distinct visit_id) as "visits"
     from website_event
+    ${joinSessionQuery}
+    ${cohortQuery}
     where website_id = {{websiteId::uuid}}
         and created_at between {{startDate}} and {{endDate}}
         and ${column} = {{step}}
-        and event_type = {{eventType}}
         ${filterQuery}
     `,
     queryParams,
@@ -257,7 +268,7 @@ async function clickhouseQuery(
   const { rawQuery, parseFilters } = clickhouse;
   const eventType = type === 'page' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'page' ? 'url_path' : 'event_name';
-  const { filterQuery, queryParams } = parseFilters({
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     ...parameters,
     websiteId,
@@ -293,7 +304,6 @@ async function clickhouseQuery(
         on we.session_id = e.session_id
         where we.website_id = {websiteId:UUID}
           and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-          ${filterQuery}
         group by e.session_id)
       `;
     }
@@ -307,7 +317,6 @@ async function clickhouseQuery(
       where we.website_id = {websiteId:UUID}
         and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and we.created_at < e.max_dt
-        ${filterQuery}
       group by e.session_id)
       `;
   }
@@ -317,22 +326,31 @@ async function clickhouseQuery(
             session_id,
             max(created_at) max_dt
         from website_event
+        ${cohortQuery}
         where website_id = {websiteId:UUID}
           and created_at between {startDate:DateTime64} and {endDate:DateTime64}
           and ${column} = {step:String}
-          and event_type = {eventType:UInt32}
+          ${filterQuery}
         group by 1),`;
 
   const revenueEventQuery = `WITH events AS (
           select
-              session_id,
-              max(created_at) max_dt,
-              sum(revenue) as value
+              website_revenue.session_id,
+              max(website_revenue.created_at) max_dt,
+              sum(website_revenue.revenue) as value
           from website_revenue
-          where website_id = {websiteId:UUID}
-            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-            and ${column} = {step:String}
-            and currency = {currency:String}
+          join website_event
+          on website_event.website_id = website_revenue.website_id
+            and website_event.session_id = website_revenue.session_id
+            and website_event.event_id = website_revenue.event_id
+            and website_event.website_id = {websiteId:UUID}
+            and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+          ${cohortQuery}
+          where website_revenue.website_id = {websiteId:UUID}
+            and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+            and website_revenue.${column} = {step:String}
+            and website_revenue.currency = {currency:String}
+            ${filterQuery}
           group by 1),`;
 
   const referrerRes = await rawQuery<
@@ -474,6 +492,7 @@ async function clickhouseQuery(
         uniqExact(session_id) as "visitors",
         uniqExact(visit_id) as "visits"
     from website_event
+    ${cohortQuery}
     where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and ${column} = {step:String}

@@ -16,7 +16,7 @@ export function useWebsiteCohortsQuery(
   return useQuery({
     queryKey: ['website:cohorts', { websiteId, modified, ...filters, ...params }],
     queryFn: pageParams => {
-      return get(`/websites/${websiteId}/cohorts`, { ...pageParams, ...filters, ...params });
+      return get(`/websites/${websiteId}/segments`, { ...pageParams, ...filters, ...params });
     },
     enabled: !!websiteId,
     placeholderData: keepPreviousData,

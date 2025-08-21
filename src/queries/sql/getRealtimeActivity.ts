@@ -12,7 +12,10 @@ export async function getRealtimeActivity(...args: [websiteId: string, filters: 
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
-  const { queryParams, filterQuery, cohortQuery, dateQuery } = parseFilters(filters);
+  const { queryParams, filterQuery, cohortQuery, dateQuery } = parseFilters({
+    ...filters,
+    websiteId,
+  });
 
   return rawQuery(
     `
