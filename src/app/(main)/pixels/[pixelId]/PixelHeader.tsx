@@ -11,7 +11,7 @@ export function PixelHeader() {
 
   return (
     <PageHeader title={pixel.name} description={pixel.url}>
-      <LinkButton href={getSlugUrl(pixel.slug)}>
+      <LinkButton href={getSlugUrl(pixel.slug)} target="_blank">
         <Icon>
           <ExternalLink />
         </Icon>

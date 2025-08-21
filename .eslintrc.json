@@ -42,7 +42,8 @@
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/no-empty-interface": "off",
     "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }],
-    "@typescript-eslint/no-namespace": ["error", { "allowDeclarations": true }]
+    "@typescript-eslint/no-namespace": ["error", { "allowDeclarations": true }],
+    "@typescript-eslint/triple-slash-reference": "off"
   },
   "globals": {
     "React": "writable"

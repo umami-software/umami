@@ -7,15 +7,12 @@ import { useContext } from 'react';
 import { MetricsTable, MetricsTableProps } from './MetricsTable';
 
 export interface PagesTableProps extends MetricsTableProps {
+  type: string;
   allowFilter?: boolean;
 }
 
-export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
-  const {
-    router,
-    updateParams,
-    query: { view = 'path' },
-  } = useNavigation();
+export function PagesTable({ type, allowFilter, ...props }: PagesTableProps) {
+  const { router, updateParams } = useNavigation();
   const { formatMessage, labels } = useMessages();
   const { domain } = useContext(WebsiteContext);
 
@@ -45,11 +42,11 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
   const renderLink = ({ x }) => {
     return (
       <FilterLink
-        id={view === 'entry' || view === 'exit' ? 'path' : view}
+        id={type === 'entry' || type === 'exit' ? 'path' : type}
         value={x}
         label={!x && formatMessage(labels.none)}
         externalUrl={
-          view !== 'title'
+          type !== 'title'
             ? `${domain.startsWith('http') ? domain : `https://${domain}`}${x}`
             : null
         }
@@ -61,12 +58,12 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
     <MetricsTable
       {...props}
       title={formatMessage(labels.pages)}
-      type={view}
+      type={type}
       metric={formatMessage(labels.visitors)}
       dataFilter={emptyFilter}
       renderLabel={renderLink}
     >
-      {allowFilter && <FilterButtons items={buttons} value={view} onChange={handleChange} />}
+      {allowFilter && <FilterButtons items={buttons} value={type} onChange={handleChange} />}
     </MetricsTable>
   );
 }

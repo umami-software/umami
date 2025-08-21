@@ -52,9 +52,7 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
                     .toLowerCase();
                   return (
                     <Row key={i} justifyContent="flex-end">
-                      <Text color="muted" weight="bold">
-                        {label}
-                      </Text>
+                      <Text color="muted">{label}</Text>
                     </Row>
                   );
                 })}

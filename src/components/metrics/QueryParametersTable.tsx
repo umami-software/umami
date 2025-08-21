@@ -16,7 +16,7 @@ const filters = {
 export function QueryParametersTable({
   allowFilter,
   ...props
-}: { allowFilter: boolean } & MetricsTableProps) {
+}: { allowFilter?: boolean } & MetricsTableProps) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
   const { formatMessage, labels } = useMessages();
 

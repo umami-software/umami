@@ -1,5 +1,5 @@
 import { ReactNode, useMemo, useState } from 'react';
-import { Button, Column, Icon, Row, SearchField, Text, Grid } from '@umami/react-zen';
+import { Button, Column, Icon, Row, SearchField, Text } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
@@ -114,11 +114,18 @@ export function MetricsTable({
   }, [data, dataFilter, search, limit, formatValue, type]);
 
   const downloadData = isExpanded ? data : filteredData;
+  const hasActions = data && (allowSearch || allowDownload || onClose || children);
 
   return (
-    <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error}>
-      <Grid rows="40px 1fr" height="100%" overflow="hidden" gap>
-        <Row alignItems="center">
+    <LoadingPanel
+      data={data}
+      isFetching={isFetching}
+      isLoading={isLoading}
+      error={error}
+      height="100%"
+    >
+      {hasActions && (
+        <Row alignItems="center" paddingBottom="3">
           {allowSearch && <SearchField value={search} onSearch={setSearch} delay={300} />}
           <Row justifyContent="flex-end" flexGrow={1} gap>
             {children}
@@ -132,25 +139,32 @@ export function MetricsTable({
             )}
           </Row>
         </Row>
-        <Column overflowY="auto" minHeight="0" height="100%" paddingRight="3" overflow="hidden">
-          {data &&
-            (isExpanded ? (
-              <ListExpandedTable {...(props as ListExpandedTableProps)} data={data} />
-            ) : (
-              <ListTable {...(props as ListTableProps)} data={filteredData} />
-            ))}
-          {showMore && limit && (
-            <Row justifyContent="center">
-              <LinkButton href={updateParams({ view: type })} variant="quiet">
-                <Icon size="sm">
-                  <Maximize />
-                </Icon>
-                <Text>{formatMessage(labels.more)}</Text>
-              </LinkButton>
-            </Row>
-          )}
-        </Column>
-      </Grid>
+      )}
+      <Column
+        overflowY="auto"
+        minHeight="0"
+        height="100%"
+        paddingRight="3"
+        overflow="hidden"
+        flexGrow={1}
+      >
+        {data &&
+          (isExpanded ? (
+            <ListExpandedTable {...(props as ListExpandedTableProps)} data={data} />
+          ) : (
+            <ListTable {...(props as ListTableProps)} data={filteredData} />
+          ))}
+      </Column>
+      {showMore && limit && (
+        <Row justifyContent="center">
+          <LinkButton href={updateParams({ view: type })} variant="quiet">
+            <Icon size="sm">
+              <Maximize />
+            </Icon>
+            <Text>{formatMessage(labels.more)}</Text>
+          </LinkButton>
+        </Row>
+      )}
     </LoadingPanel>
   );
 }
