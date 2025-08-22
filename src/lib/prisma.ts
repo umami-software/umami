@@ -436,7 +436,7 @@ function getClient(params?: {
   return prisma;
 }
 
-const client = global[PRISMA] || getClient();
+const client: PrismaClient = global[PRISMA] || getClient();
 
 export default {
   client,

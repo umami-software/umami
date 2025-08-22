@@ -269,3 +269,11 @@ model Revenue {
   @@index([websiteId, sessionId, createdAt])
   @@map("revenue")
 }
+
+model OidcState {
+  state        String   @id() @unique() @db.Uuid
+  codeVerifier String   @db.VarChar(255)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("oidc_state")
+}
