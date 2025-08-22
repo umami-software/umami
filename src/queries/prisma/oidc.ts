@@ -17,7 +17,7 @@ export async function getOidcState(state: string): Promise<{
   state: string;
   codeVerifier: string;
   createdAt: Date;
-}> {
+} | null> {
   return prisma.client.oidcState.findUnique({
     where: {
       state: state,
