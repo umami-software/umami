@@ -273,7 +273,7 @@ model Revenue {
 model OidcState {
   state        String   @id() @unique() @db.Uuid
   codeVerifier String   @db.VarChar(255)
-  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp(0)
 
   @@map("oidc_state")
 }
