@@ -6,7 +6,7 @@ import { setUser } from '@/store/app';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-export default function () {
+export default function OidcCallbackPage() {
   const router = useRouter();
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
