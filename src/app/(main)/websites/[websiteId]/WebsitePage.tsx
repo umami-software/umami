@@ -29,7 +29,7 @@ export function WebsitePage({ websiteId }: { websiteId: string }) {
     <Column gap>
       <WebsiteControls websiteId={websiteId} allowCompare={true} />
       <WebsiteMetricsBar websiteId={websiteId} showChange={true} />
-      <Panel>
+      <Panel minHeight="520px">
         <WebsiteChart websiteId={websiteId} compareMode={compare} />
       </Panel>
       <WebsitePanels websiteId={websiteId} />

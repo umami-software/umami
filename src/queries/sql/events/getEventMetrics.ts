@@ -4,21 +4,21 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
-export interface WebsiteEventMetricParameters {
+export interface EventMetricParameters {
   type: string;
   limit?: string;
   offset?: string;
 }
 
-export interface WebsiteEventMetricData {
+export interface EventMetricData {
   x: string;
   t: string;
   y: number;
 }
 
 export async function getEventMetrics(
-  ...args: [websiteId: string, parameters: WebsiteEventMetricParameters, filters: QueryFilters]
-): Promise<WebsiteEventMetricData[]> {
+  ...args: [websiteId: string, parameters: EventMetricParameters, filters: QueryFilters]
+): Promise<EventMetricData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -27,7 +27,7 @@ export async function getEventMetrics(
 
 async function relationalQuery(
   websiteId: string,
-  parameters: WebsiteEventMetricParameters,
+  parameters: EventMetricParameters,
   filters: QueryFilters,
 ) {
   const { type, limit = 500, offset = 0 } = parameters;
@@ -63,9 +63,9 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  parameters: WebsiteEventMetricParameters,
+  parameters: EventMetricParameters,
   filters: QueryFilters,
-): Promise<WebsiteEventMetricData[]> {
+): Promise<EventMetricData[]> {
   const { type, limit = 500, offset = 0 } = parameters;
   const column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = clickhouse;

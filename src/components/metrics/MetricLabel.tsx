@@ -115,14 +115,20 @@ export function MetricLabel({ type, data }: MetricLabelProps) {
         />
       );
 
-    case 'grouped':
+    case 'domain':
       if (label === 'Other') {
         return `(${formatMessage(labels.other)})`;
       } else {
+        const name = GROUPED_DOMAINS.find(({ domain }) => domain === label)?.name;
+
+        if (!name) {
+          return null;
+        }
+
         return (
           <Row alignItems="center" gap="3">
             <Favicon domain={label} />
-            {GROUPED_DOMAINS.find(({ domain }) => domain === label)?.name}
+            {name}
           </Row>
         );
       }

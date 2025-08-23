@@ -70,7 +70,11 @@ export function MetricsExpandedTable({
           {items && (
             <DataTable data={items}>
               <DataColumn id="label" label={title} width="2fr" align="start">
-                {row => <MetricLabel type={type} data={row} />}
+                {row => (
+                  <Row overflow="hidden">
+                    <MetricLabel type={type} data={row} />
+                  </Row>
+                )}
               </DataColumn>
               <DataColumn id="visitors" label={formatMessage(labels.visitors)} align="end">
                 {row => row?.['visitors']?.toLocaleString()}

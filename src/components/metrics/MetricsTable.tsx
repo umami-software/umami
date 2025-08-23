@@ -55,8 +55,8 @@ export function MetricsTable({
     return [];
   }, [data, dataFilter, limit, type]);
 
-  const renderLabel = (data: any) => {
-    return <MetricLabel type={type} data={data} />;
+  const renderLabel = (row: any) => {
+    return <MetricLabel type={type} data={row} />;
   };
 
   return (

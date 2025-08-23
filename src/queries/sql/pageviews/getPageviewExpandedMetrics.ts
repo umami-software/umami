@@ -111,7 +111,7 @@ async function clickhouseQuery(
 
   if (column === 'referrer_domain') {
     excludeDomain = `and referrer_domain != hostname and referrer_domain != ''`;
-    if (type === 'grouped') {
+    if (type === 'domain') {
       column = toClickHouseGroupedReferrer(GROUPED_DOMAINS);
     }
   }

@@ -1,6 +1,6 @@
 import { HTMLAttributes, ReactNode, useState } from 'react';
 import Link from 'next/link';
-import { Icon, Row } from '@umami/react-zen';
+import { Icon, Row, Text } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { ExternalLink } from '@/components/icons';
 
@@ -31,9 +31,11 @@ export function FilterLink({ type, value, label, externalUrl, icon }: FilterLink
       {icon}
       {!value && `(${label || formatMessage(labels.unknown)})`}
       {value && (
-        <Link href={updateParams({ [type]: `eq.${value}` })} replace>
-          {label || value}
-        </Link>
+        <Text title={label || value} truncate>
+          <Link href={updateParams({ [type]: `eq.${value}` })} replace>
+            {label || value}
+          </Link>
+        </Text>
       )}
       {externalUrl && showLink && (
         <a href={externalUrl} target="_blank" rel="noreferrer noopener">

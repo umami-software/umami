@@ -24,11 +24,11 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
           <Heading size="2">{formatMessage(labels.pages)}</Heading>
           <Tabs>
             <TabList>
-              <Tab id="page">{formatMessage(labels.pages)}</Tab>
+              <Tab id="path">{formatMessage(labels.path)}</Tab>
               <Tab id="entry">{formatMessage(labels.entry)}</Tab>
               <Tab id="exit">{formatMessage(labels.exit)}</Tab>
             </TabList>
-            <TabPanel id="page">
+            <TabPanel id="path">
               <MetricsTable type="path" title={formatMessage(labels.path)} {...tableProps} />
             </TabPanel>
             <TabPanel id="entry">
@@ -47,10 +47,14 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
               <Tab id="channel">{formatMessage(labels.channels)}</Tab>
             </TabList>
             <TabPanel id="referrer">
-              <MetricsTable type="referrer" title={formatMessage(labels.domain)} {...tableProps} />
+              <MetricsTable
+                type="referrer"
+                title={formatMessage(labels.referrer)}
+                {...tableProps}
+              />
             </TabPanel>
             <TabPanel id="channel">
-              <MetricsTable type="channel" title={formatMessage(labels.type)} {...tableProps} />
+              <MetricsTable type="channel" title={formatMessage(labels.channel)} {...tableProps} />
             </TabPanel>
           </Tabs>
         </Panel>

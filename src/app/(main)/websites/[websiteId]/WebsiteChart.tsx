@@ -47,13 +47,7 @@ export function WebsiteChart({
   }, [data, startDate, endDate, unit]);
 
   return (
-    <LoadingPanel
-      data={data}
-      isFetching={isFetching}
-      isLoading={isLoading}
-      error={error}
-      minHeight="520px"
-    >
+    <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error}>
       <PageviewsChart
         key={value}
         data={chartData}

@@ -94,6 +94,7 @@ export const labels = defineMessages({
   entry: { id: 'label.entry', defaultMessage: 'Entry' },
   exit: { id: 'label.exit', defaultMessage: 'Exit' },
   referrers: { id: 'label.referrers', defaultMessage: 'Referrers' },
+  screen: { id: 'label.screen', defaultMessage: 'Screen' },
   screens: { id: 'label.screens', defaultMessage: 'Screens' },
   browsers: { id: 'label.browsers', defaultMessage: 'Browsers' },
   os: { id: 'label.os', defaultMessage: 'OS' },
@@ -301,6 +302,7 @@ export const labels = defineMessages({
   lastSeen: { id: 'label.last-seen', defaultMessage: 'Last seen' },
   firstSeen: { id: 'label.first-seen', defaultMessage: 'First seen' },
   properties: { id: 'label.properties', defaultMessage: 'Properties' },
+  channel: { id: 'label.channel', defaultMessage: 'Channel' },
   channels: { id: 'label.channels', defaultMessage: 'Channels' },
   sources: { id: 'label.sources', defaultMessage: 'Sources' },
   medium: { id: 'label.medium', defaultMessage: 'Medium' },
@@ -355,7 +357,6 @@ export const labels = defineMessages({
   audience: { id: 'label.audience', defaultMessage: 'Audience' },
   invalidUrl: { id: 'label.invalid-url', defaultMessage: 'Invalid URL' },
   environment: { id: 'label.environment', defaultMessage: 'Environment' },
-  weekly: { id: 'label.weekly', defaultMessage: 'Weekly' },
 });
 
 export const messages = defineMessages({
