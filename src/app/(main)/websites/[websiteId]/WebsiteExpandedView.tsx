@@ -18,6 +18,7 @@ import ScreenTable from '@/components/metrics/ScreenTable';
 import TagsTable from '@/components/metrics/TagsTable';
 import ChannelsTable from '@/components/metrics/ChannelsTable';
 import styles from './WebsiteExpandedView.module.css';
+import { sub } from 'date-fns';
 
 const views = {
   url: PagesTable,
@@ -136,8 +137,8 @@ export default function WebsiteExpandedView({
 
   const DetailsComponent = views[view] || (() => null);
 
-  const handleChange = (view: any) => {
-    router.push(renderUrl({ view }));
+  const handleChange = (view?: any) => {
+    router.push(renderUrl({ view },false,['subview']));
   };
 
   const renderValue = (value: string) => items.find(({ key }) => key === value)?.label;
@@ -146,7 +147,7 @@ export default function WebsiteExpandedView({
     <div className={styles.layout}>
       <div className={styles.menu}>
         <LinkButton
-          href={renderUrl({ view: undefined })}
+          href={renderUrl({ view: undefined ,subview: undefined})}
           className={styles.back}
           variant="quiet"
           scroll={false}
@@ -156,7 +157,7 @@ export default function WebsiteExpandedView({
           </Icon>
           <Text>{formatMessage(labels.back)}</Text>
         </LinkButton>
-        <SideNav className={styles.nav} items={items} selectedKey={view} shallow={true} />
+        <SideNav onSelect={handleChange} className={styles.nav} items={items} selectedKey={view} shallow={true} />
         <Dropdown
           className={styles.dropdown}
           items={items}

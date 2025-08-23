@@ -14,13 +14,13 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
   const {
     router,
     renderUrl,
-    query: { view = 'url' },
+    query: { subview="url" },
   } = useNavigation();
   const { formatMessage, labels } = useMessages();
   const { domain } = useContext(WebsiteContext);
 
   const handleSelect = (key: any) => {
-    router.push(renderUrl({ view: key }), { scroll: false });
+    router.push(renderUrl({ subview: key }), { scroll: false });
   };
 
   const buttons = [
@@ -45,11 +45,11 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
   const renderLink = ({ x }) => {
     return (
       <FilterLink
-        id={view === 'entry' || view === 'exit' ? 'url' : view}
+        id={subview === 'entry' || subview === 'exit' ? 'url' : subview}
         value={x}
         label={!x && formatMessage(labels.none)}
         externalUrl={
-          view !== 'title'
+          subview !== 'title'
             ? `${domain.startsWith('http') ? domain : `https://${domain}`}${x}`
             : null
         }
@@ -61,12 +61,12 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
     <MetricsTable
       {...props}
       title={formatMessage(labels.pages)}
-      type={view}
+      type={subview}
       metric={formatMessage(labels.visitors)}
       dataFilter={emptyFilter}
       renderLabel={renderLink}
     >
-      {allowFilter && <FilterButtons items={buttons} selectedKey={view} onSelect={handleSelect} />}
+      {allowFilter && <FilterButtons items={buttons} selectedKey={subview} onSelect={handleSelect} />}
     </MetricsTable>
   );
 }
