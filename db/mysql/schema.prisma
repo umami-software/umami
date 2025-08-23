@@ -271,7 +271,7 @@ model Revenue {
 }
 
 model OidcState {
-  state        String   @id() @unique() @db.Uuid
+  state        String   @id() @unique() @db.VarChar(255)
   codeVerifier String   @db.VarChar(255)
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp(0)
 
