@@ -14,7 +14,7 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
   const {
     router,
     renderUrl,
-    query: { subview="url" },
+    query: { subview = "url" },
   } = useNavigation();
   const { formatMessage, labels } = useMessages();
   const { domain } = useContext(WebsiteContext);
