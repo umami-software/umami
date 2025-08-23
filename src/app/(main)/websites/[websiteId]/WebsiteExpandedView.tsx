@@ -138,7 +138,7 @@ export default function WebsiteExpandedView({
   const DetailsComponent = views[view] || (() => null);
 
   const handleChange = (view?: any) => {
-    router.push(renderUrl({ view },false,['subview']));
+    router.push(renderUrl({ view }, false, ['subview']));
   };
 
   const renderValue = (value: string) => items.find(({ key }) => key === value)?.label;
@@ -147,7 +147,7 @@ export default function WebsiteExpandedView({
     <div className={styles.layout}>
       <div className={styles.menu}>
         <LinkButton
-          href={renderUrl({ view: undefined ,subview: undefined})}
+          href={renderUrl({ view: undefined, subview: undefined })}
           className={styles.back}
           variant="quiet"
           scroll={false}
