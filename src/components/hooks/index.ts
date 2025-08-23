@@ -50,7 +50,7 @@ export * from './queries/useWebsiteSegmentsQuery';
 export * from './queries/useWebsiteSessionQuery';
 export * from './queries/useWebsiteSessionStatsQuery';
 export * from './queries/useWebsiteSessionsQuery';
-export * from './queries/useWebsiteSessionsWeeklyQuery';
+export * from './queries/useWeeklyTrafficQuery';
 export * from './queries/useWebsiteStatsQuery';
 export * from './queries/useWebsiteValuesQuery';
 export * from './queries/useWebsitesQuery';

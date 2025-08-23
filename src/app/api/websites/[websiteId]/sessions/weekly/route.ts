@@ -3,7 +3,7 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/validations';
 import { pagingParams, timezoneParam } from '@/lib/schema';
-import { getWebsiteSessionsWeekly } from '@/queries';
+import { getWeeklyTraffic } from '@/queries';
 
 export async function GET(
   request: Request,
@@ -30,7 +30,7 @@ export async function GET(
 
   const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getWebsiteSessionsWeekly(websiteId, filters);
+  const data = await getWeeklyTraffic(websiteId, filters);
 
   return json(data);
 }

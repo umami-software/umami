@@ -100,9 +100,9 @@ const EventValues = ({ websiteId, eventName, propertyName }) => {
   const tableData = useMemo(() => {
     if (!propertyName || !values || propertySum === 0) return [];
     return values.map(({ value, total }) => ({
-      x: value,
-      y: total,
-      z: 100 * (total / propertySum),
+      label: value,
+      count: total,
+      percent: 100 * (total / propertySum),
     }));
   }, [propertyName, values, propertySum]);
 

@@ -78,16 +78,18 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
       </Row>
       <Row alignItems="center">
         <DialogTrigger>
-          <TooltipTrigger delay={0}>
-            <Button variant="zero">
-              <Icon>
-                <Bookmark />
-              </Icon>
-            </Button>
-            <Tooltip>
-              <Text>{formatMessage(labels.saveSegment)}</Text>
-            </Tooltip>
-          </TooltipTrigger>
+          {!!filters.length && (
+            <TooltipTrigger delay={0}>
+              <Button variant="zero">
+                <Icon>
+                  <Bookmark />
+                </Icon>
+              </Button>
+              <Tooltip>
+                <Text>{formatMessage(labels.saveSegment)}</Text>
+              </Tooltip>
+            </TooltipTrigger>
+          )}
           <Modal>
             <Dialog title={formatMessage(labels.segment)} style={{ width: 400 }}>
               {({ close }) => {

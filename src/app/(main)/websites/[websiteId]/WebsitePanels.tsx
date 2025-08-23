@@ -1,28 +1,27 @@
-import { Grid, Tabs, Tab, TabList, TabPanel } from '@umami/react-zen';
+import { Grid, Tabs, Tab, TabList, TabPanel, Heading, Row } from '@umami/react-zen';
 import { GridRow } from '@/components/common/GridRow';
 import { Panel } from '@/components/common/Panel';
-import { PagesTable } from '@/components/metrics/PagesTable';
-import { ReferrersTable } from '@/components/metrics/ReferrersTable';
-import { BrowsersTable } from '@/components/metrics/BrowsersTable';
-import { OSTable } from '@/components/metrics/OSTable';
-import { DevicesTable } from '@/components/metrics/DevicesTable';
 import { WorldMap } from '@/components/metrics/WorldMap';
-import { CountriesTable } from '@/components/metrics/CountriesTable';
+import { MetricsTable } from '@/components/metrics/MetricsTable';
+import { WeeklyTraffic } from '@/components/metrics/WeeklyTraffic';
 import { useMessages } from '@/components/hooks';
-import { ChannelsTable } from '@/components/metrics/ChannelsTable';
-import { RegionsTable } from '@/components/metrics/RegionsTable';
-import { CitiesTable } from '@/components/metrics/CitiesTable';
-import { SessionsWeekly } from '@/app/(main)/websites/[websiteId]/sessions/SessionsWeekly';
 
-export function WebsiteTableView({ websiteId }: { websiteId: string }) {
+export function WebsitePanels({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
-  const tableProps = { websiteId, limit: 10, allowDownload: false };
+  const tableProps = {
+    websiteId,
+    limit: 10,
+    allowDownload: false,
+    showMore: true,
+    metric: formatMessage(labels.visitors),
+  };
   const rowProps = { minHeight: 570 };
 
   return (
     <Grid gap="3">
       <GridRow layout="two" {...rowProps}>
         <Panel>
+          <Heading size="2">{formatMessage(labels.pages)}</Heading>
           <Tabs>
             <TabList>
               <Tab id="page">{formatMessage(labels.pages)}</Tab>
@@ -30,27 +29,28 @@ export function WebsiteTableView({ websiteId }: { websiteId: string }) {
               <Tab id="exit">{formatMessage(labels.exit)}</Tab>
             </TabList>
             <TabPanel id="page">
-              <PagesTable type="path" {...tableProps} />
+              <MetricsTable type="path" title={formatMessage(labels.path)} {...tableProps} />
             </TabPanel>
             <TabPanel id="entry">
-              <PagesTable type="entry" {...tableProps} />
+              <MetricsTable type="entry" title={formatMessage(labels.path)} {...tableProps} />
             </TabPanel>
             <TabPanel id="exit">
-              <PagesTable type="exit" {...tableProps} />
+              <MetricsTable type="exit" title={formatMessage(labels.path)} {...tableProps} />
             </TabPanel>
           </Tabs>
         </Panel>
         <Panel>
+          <Heading size="2">{formatMessage(labels.sources)}</Heading>
           <Tabs>
             <TabList>
               <Tab id="referrer">{formatMessage(labels.referrers)}</Tab>
               <Tab id="channel">{formatMessage(labels.channels)}</Tab>
             </TabList>
             <TabPanel id="referrer">
-              <ReferrersTable {...tableProps} />
+              <MetricsTable type="referrer" title={formatMessage(labels.domain)} {...tableProps} />
             </TabPanel>
             <TabPanel id="channel">
-              <ChannelsTable {...tableProps} />
+              <MetricsTable type="channel" title={formatMessage(labels.type)} {...tableProps} />
             </TabPanel>
           </Tabs>
         </Panel>
@@ -60,6 +60,7 @@ export function WebsiteTableView({ websiteId }: { websiteId: string }) {
           <WorldMap websiteId={websiteId} />
         </Panel>
         <Panel>
+          <Heading size="2">{formatMessage(labels.location)}</Heading>
           <Tabs>
             <TabList>
               <Tab id="country">{formatMessage(labels.countries)}</Tab>
@@ -67,19 +68,20 @@ export function WebsiteTableView({ websiteId }: { websiteId: string }) {
               <Tab id="city">{formatMessage(labels.cities)}</Tab>
             </TabList>
             <TabPanel id="country">
-              <CountriesTable {...tableProps} />
+              <MetricsTable type="country" title={formatMessage(labels.country)} {...tableProps} />
             </TabPanel>
             <TabPanel id="region">
-              <RegionsTable {...tableProps} />
+              <MetricsTable type="region" title={formatMessage(labels.region)} {...tableProps} />
             </TabPanel>
             <TabPanel id="city">
-              <CitiesTable {...tableProps} />
+              <MetricsTable type="city" title={formatMessage(labels.city)} {...tableProps} />
             </TabPanel>
           </Tabs>
         </Panel>
       </GridRow>
       <GridRow layout="two" {...rowProps}>
         <Panel>
+          <Heading size="2">{formatMessage(labels.environment)}</Heading>
           <Tabs>
             <TabList>
               <Tab id="browser">{formatMessage(labels.browsers)}</Tab>
@@ -87,18 +89,20 @@ export function WebsiteTableView({ websiteId }: { websiteId: string }) {
               <Tab id="device">{formatMessage(labels.devices)}</Tab>
             </TabList>
             <TabPanel id="browser">
-              <BrowsersTable {...tableProps} />
+              <MetricsTable type="browser" title={formatMessage(labels.browser)} {...tableProps} />
             </TabPanel>
             <TabPanel id="os">
-              <OSTable {...tableProps} />
+              <MetricsTable type="os" title={formatMessage(labels.os)} {...tableProps} />
             </TabPanel>
             <TabPanel id="device">
-              <DevicesTable {...tableProps} />
+              <MetricsTable type="device" title={formatMessage(labels.device)} {...tableProps} />
             </TabPanel>
           </Tabs>
         </Panel>
         <Panel>
-          <SessionsWeekly websiteId={websiteId} />
+          <Heading size="2">{formatMessage(labels.traffic)}</Heading>
+          <Row border="bottom" marginBottom="4" />
+          <WeeklyTraffic websiteId={websiteId} />
         </Panel>
       </GridRow>
     </Grid>

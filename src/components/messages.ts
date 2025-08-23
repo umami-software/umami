@@ -91,8 +91,8 @@ export const labels = defineMessages({
   refresh: { id: 'label.refresh', defaultMessage: 'Refresh' },
   page: { id: 'label.page', defaultMessage: 'Page' },
   pages: { id: 'label.pages', defaultMessage: 'Pages' },
-  entry: { id: 'label.entry', defaultMessage: 'Entry path' },
-  exit: { id: 'label.exit', defaultMessage: 'Exit path' },
+  entry: { id: 'label.entry', defaultMessage: 'Entry' },
+  exit: { id: 'label.exit', defaultMessage: 'Exit' },
   referrers: { id: 'label.referrers', defaultMessage: 'Referrers' },
   screens: { id: 'label.screens', defaultMessage: 'Screens' },
   browsers: { id: 'label.browsers', defaultMessage: 'Browsers' },
@@ -354,6 +354,8 @@ export const labels = defineMessages({
   destinationUrl: { id: 'label.destination-url', defaultMessage: 'Destination URL' },
   audience: { id: 'label.audience', defaultMessage: 'Audience' },
   invalidUrl: { id: 'label.invalid-url', defaultMessage: 'Invalid URL' },
+  environment: { id: 'label.environment', defaultMessage: 'Environment' },
+  weekly: { id: 'label.weekly', defaultMessage: 'Weekly' },
 });
 
 export const messages = defineMessages({

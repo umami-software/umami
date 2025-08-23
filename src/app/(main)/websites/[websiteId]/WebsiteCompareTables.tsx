@@ -1,42 +1,12 @@
 import { Grid, Heading, Column, Row, NavMenu, NavMenuItem, Text } from '@umami/react-zen';
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
-import { BrowsersTable } from '@/components/metrics/BrowsersTable';
-import { ChangeLabel } from '@/components/metrics/ChangeLabel';
-import { CitiesTable } from '@/components/metrics/CitiesTable';
-import { CountriesTable } from '@/components/metrics/CountriesTable';
-import { DevicesTable } from '@/components/metrics/DevicesTable';
-import { EventsTable } from '@/components/metrics/EventsTable';
-import { LanguagesTable } from '@/components/metrics/LanguagesTable';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
-import { OSTable } from '@/components/metrics/OSTable';
-import { PagesTable } from '@/components/metrics/PagesTable';
-import { QueryParametersTable } from '@/components/metrics/QueryParametersTable';
-import { ReferrersTable } from '@/components/metrics/ReferrersTable';
-import { RegionsTable } from '@/components/metrics/RegionsTable';
-import { ScreenTable } from '@/components/metrics/ScreenTable';
-import { TagsTable } from '@/components/metrics/TagsTable';
 import { getCompareDate } from '@/lib/date';
 import { formatNumber } from '@/lib/format';
 import { useState } from 'react';
 import { Panel } from '@/components/common/Panel';
 import { DateDisplay } from '@/components/common/DateDisplay';
-
-const views = {
-  path: PagesTable,
-  title: PagesTable,
-  referrer: ReferrersTable,
-  browser: BrowsersTable,
-  os: OSTable,
-  device: DevicesTable,
-  screen: ScreenTable,
-  country: CountriesTable,
-  region: RegionsTable,
-  city: CitiesTable,
-  language: LanguagesTable,
-  event: EventsTable,
-  query: QueryParametersTable,
-  tag: TagsTable,
-};
+import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 
 export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
   const [data] = useState([]);
@@ -46,7 +16,6 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
     updateParams,
     query: { view },
   } = useNavigation();
-  const Component: typeof MetricsTable = views[view || 'path'] || (() => null);
 
   const items = [
     {
@@ -121,7 +90,7 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
     },
   ];
 
-  const renderChange = ({ x, y }) => {
+  const renderChange = ({ label: x, count: y }) => {
     const prev = data.find(d => d.x === x)?.y;
     const value = y - prev;
     const change = Math.abs(((y - prev) / prev) * 100);
@@ -163,15 +132,22 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
             <Heading size="1">{formatMessage(labels.previous)}</Heading>
             <DateDisplay startDate={startDate} endDate={endDate} />
           </Row>
-          <Component websiteId={websiteId} limit={20} showMore={false} params={params} />
+          <MetricsTable
+            websiteId={websiteId}
+            type={view}
+            limit={20}
+            showMore={false}
+            params={params}
+          />
         </Column>
         <Column border="left" paddingLeft="6" gap="6">
           <Row alignItems="center" justifyContent="space-between">
             <Heading size="1"> {formatMessage(labels.current)}</Heading>
             <DateDisplay startDate={dateRange.startDate} endDate={dateRange.endDate} />
           </Row>
-          <Component
+          <MetricsTable
             websiteId={websiteId}
+            type={view}
             limit={20}
             showMore={false}
             renderChange={renderChange}

@@ -9,13 +9,19 @@ import { formatLongCurrency, formatLongNumber } from '@/lib/format';
 
 const ITEM_SIZE = 30;
 
+interface ListData {
+  label: string;
+  count: number;
+  percent: number;
+}
+
 export interface ListTableProps {
-  data?: any[];
+  data?: ListData[];
   title?: string;
   metric?: string;
   className?: string;
-  renderLabel?: (row: any, index: number) => ReactNode;
-  renderChange?: (row: any, index: number) => ReactNode;
+  renderLabel?: (data: ListData, index: number) => ReactNode;
+  renderChange?: (data: ListData, index: number) => ReactNode;
   animate?: boolean;
   virtualize?: boolean;
   showPercentage?: boolean;
@@ -37,14 +43,14 @@ export function ListTable({
 }: ListTableProps) {
   const { formatMessage, labels } = useMessages();
 
-  const getRow = (row: { x: any; y: any; z: any }, index: number) => {
-    const { x: label, y: value, z: percent } = row || {};
+  const getRow = (row: ListData, index: number) => {
+    const { label, count, percent } = row;
 
     return (
       <AnimatedRow
-        key={label}
+        key={`${label}${index}`}
         label={renderLabel ? renderLabel(row, index) : (label ?? formatMessage(labels.unknown))}
-        value={value}
+        value={count}
         percent={percent}
         animate={animate && !virtualize}
         showPercentage={showPercentage}

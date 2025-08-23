@@ -71,9 +71,9 @@ const SessionValues = ({ websiteId, propertyName }) => {
   const tableData = useMemo(() => {
     if (!propertyName || !data || propertySum === 0) return [];
     return data.map(({ value, total }) => ({
-      x: value,
-      y: total,
-      z: 100 * (total / propertySum),
+      label: value,
+      count: total,
+      percent: 100 * (total / propertySum),
     }));
   }, [propertyName, data, propertySum]);
 

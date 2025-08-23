@@ -4,9 +4,7 @@ import { runQuery, PRISMA, CLICKHOUSE } from '@/lib/db';
 import { QueryFilters } from '@/lib/types';
 import { EVENT_COLUMNS } from '@/lib/constants';
 
-export async function getWebsiteSessionsWeekly(
-  ...args: [websiteId: string, filters: QueryFilters]
-) {
+export async function getWeeklyTraffic(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

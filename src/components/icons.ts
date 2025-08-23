@@ -17,7 +17,7 @@ export {
   FileJson,
   FileText,
   Globe,
-  Grid2X2,
+  Grid2X2 as Pixel,
   KeyRound,
   LayoutDashboard,
   Link,

@@ -1,12 +1,12 @@
 import { Row, Grid, Text } from '@umami/react-zen';
 import { format, startOfDay, addHours } from 'date-fns';
-import { useLocale, useMessages, useWebsiteSessionsWeeklyQuery } from '@/components/hooks';
+import { useLocale, useMessages, useWeeklyTrafficQuery } from '@/components/hooks';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { getDayOfWeekAsDate } from '@/lib/date';
 import { Focusable, Tooltip, TooltipTrigger } from '@umami/react-zen';
 
-export function SessionsWeekly({ websiteId }: { websiteId: string }) {
-  const { data, isLoading, error } = useWebsiteSessionsWeeklyQuery(websiteId);
+export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
+  const { data, isLoading, error } = useWeeklyTrafficQuery(websiteId);
   const { dateLocale } = useLocale();
   const { labels, formatMessage } = useMessages();
   const { weekStartsOn } = dateLocale.options;
@@ -40,19 +40,19 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
       <Grid columns="repeat(8, 1fr)" gap>
         {data && (
           <>
-            <Grid rows="repeat(25, 20px)" gap="1">
+            <Grid rows="repeat(25, 16px)" gap="1">
               <Row>&nbsp;</Row>
               {Array(24)
                 .fill(null)
                 .map((_, i) => {
-                  const label = format(addHours(startOfDay(new Date()), i), 'p', {
+                  const label = format(addHours(startOfDay(new Date()), i), 'haaa', {
                     locale: dateLocale,
-                  })
-                    .replace(/\D00 ?/, '')
-                    .toLowerCase();
+                  });
                   return (
                     <Row key={i} justifyContent="flex-end">
-                      <Text color="muted">{label}</Text>
+                      <Text color="muted" size="2">
+                        {label}
+                      </Text>
                     </Row>
                   );
                 })}
@@ -61,7 +61,7 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
               const day = data[index];
               return (
                 <Grid
-                  rows="repeat(24, 20px)"
+                  rows="repeat(24, 16px)"
                   justifyContent="center"
                   alignItems="center"
                   key={index}
@@ -81,15 +81,15 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
                             alignItems="center"
                             justifyContent="center"
                             backgroundColor="2"
-                            width="20px"
-                            height="20px"
+                            width="16px"
+                            height="16px"
                             borderRadius="full"
                             style={{ margin: '0 auto' }}
                           >
                             <Row
                               backgroundColor="primary"
-                              width="20px"
-                              height="20px"
+                              width="16px"
+                              height="16px"
                               borderRadius="full"
                               style={{ opacity: pct, transform: `scale(${pct})` }}
                             />

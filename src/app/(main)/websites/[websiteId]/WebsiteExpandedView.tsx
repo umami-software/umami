@@ -1,43 +1,7 @@
+import Link from 'next/link';
 import { Grid, Column, NavMenu, NavMenuItem } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { BrowsersTable } from '@/components/metrics/BrowsersTable';
-import { CitiesTable } from '@/components/metrics/CitiesTable';
-import { CountriesTable } from '@/components/metrics/CountriesTable';
-import { DevicesTable } from '@/components/metrics/DevicesTable';
-import { EventsTable } from '@/components/metrics/EventsTable';
-import { HostnamesTable } from '@/components/metrics/HostnamesTable';
-import { LanguagesTable } from '@/components/metrics/LanguagesTable';
-import { OSTable } from '@/components/metrics/OSTable';
-import { PagesTable } from '@/components/metrics/PagesTable';
-import { QueryParametersTable } from '@/components/metrics/QueryParametersTable';
-import { ReferrersTable } from '@/components/metrics/ReferrersTable';
-import { RegionsTable } from '@/components/metrics/RegionsTable';
-import { ScreenTable } from '@/components/metrics/ScreenTable';
-import { TagsTable } from '@/components/metrics/TagsTable';
-import { ChannelsTable } from '@/components/metrics/ChannelsTable';
-import Link from 'next/link';
-
-const views = {
-  path: PagesTable,
-  entry: PagesTable,
-  exit: PagesTable,
-  title: PagesTable,
-  referrer: ReferrersTable,
-  grouped: ReferrersTable,
-  hostname: HostnamesTable,
-  browser: BrowsersTable,
-  os: OSTable,
-  device: DevicesTable,
-  screen: ScreenTable,
-  country: CountriesTable,
-  region: RegionsTable,
-  city: CitiesTable,
-  language: LanguagesTable,
-  event: EventsTable,
-  query: QueryParametersTable,
-  tag: TagsTable,
-  channel: ChannelsTable,
-};
+import { MetricsExpandedTable } from '@/components/metrics/MetricsExpandedTable';
 
 export function WebsiteExpandedView({
   websiteId,
@@ -130,8 +94,6 @@ export function WebsiteExpandedView({
     },
   ];
 
-  const DetailsComponent = views[view] || (() => null);
-
   return (
     <Grid columns="auto 1fr" gap="6" height="100%" overflow="hidden">
       <Column gap="6" width="200px" border="right" paddingRight="3">
@@ -146,15 +108,13 @@ export function WebsiteExpandedView({
         </NavMenu>
       </Column>
       <Column overflow="hidden">
-        <DetailsComponent
+        <MetricsExpandedTable
+          title={formatMessage(labels[view])}
+          type={view}
           websiteId={websiteId}
-          animate={false}
-          virtualize={true}
-          itemCount={25}
-          allowFilter={true}
-          allowSearch={true}
-          isExpanded={true}
           onClose={onClose}
+          allowSearch
+          allowDownload
         />
       </Column>
     </Grid>

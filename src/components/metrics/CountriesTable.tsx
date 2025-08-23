@@ -3,17 +3,22 @@ import { useCountryNames } from '@/components/hooks';
 import { useLocale, useMessages, useFormat } from '@/components/hooks';
 import { MetricsTable, MetricsTableProps } from './MetricsTable';
 import { TypeIcon } from '@/components/common/TypeIcon';
+import { MetricsExpandedTable } from '@/components/metrics/MetricsExpandedTable';
 
-export function CountriesTable({ ...props }: MetricsTableProps) {
+export interface CountriesTableProps extends MetricsTableProps {
+  isExpanded?: boolean;
+}
+
+export function CountriesTable({ isExpanded, ...props }: CountriesTableProps) {
   const { locale } = useLocale();
   const { countryNames } = useCountryNames(locale);
   const { formatMessage, labels } = useMessages();
   const { formatCountry } = useFormat();
 
-  const renderLink = ({ x: code }) => {
+  const renderLabel = ({ label: code }) => {
     return (
       <FilterLink
-        id="country"
+        type="country"
         value={(countryNames[code] && code) || code}
         label={formatCountry(code)}
       >
@@ -22,13 +27,15 @@ export function CountriesTable({ ...props }: MetricsTableProps) {
     );
   };
 
+  const Component = isExpanded ? MetricsExpandedTable : MetricsTable;
+
   return (
-    <MetricsTable
+    <Component
       {...props}
       title={formatMessage(labels.countries)}
       type="country"
       metric={formatMessage(labels.visitors)}
-      renderLabel={renderLink}
+      renderLabel={renderLabel}
       searchFormattedValues={true}
     />
   );

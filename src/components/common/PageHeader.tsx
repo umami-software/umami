@@ -28,7 +28,11 @@ export function PageHeader({
     >
       <Column>
         <Row alignItems="center" gap="3">
-          {icon && <Icon size="md">{icon}</Icon>}
+          {icon && (
+            <Icon size="md" color="muted">
+              {icon}
+            </Icon>
+          )}
           {title && <Heading size="4">{title}</Heading>}
         </Row>
         {description && <Text color="muted">{description}</Text>}

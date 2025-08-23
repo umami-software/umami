@@ -5,10 +5,11 @@ import { DateDistance } from '@/components/common/DateDistance';
 import { filtersObjectToArray } from '@/lib/params';
 import { CohortEditButton } from '@/app/(main)/websites/[websiteId]/cohorts/CohortEditButton';
 import { CohortDeleteButton } from '@/app/(main)/websites/[websiteId]/cohorts/CohortDeleteButton';
+import Link from 'next/link';
 
 export function CohortsTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
-  const { websiteId } = useNavigation();
+  const { websiteId, renderUrl } = useNavigation();
 
   if (data.length === 0) {
     return <Empty />;
@@ -16,7 +17,11 @@ export function CohortsTable({ data = [] }) {
 
   return (
     <DataTable data={data}>
-      <DataColumn id="name" label={formatMessage(labels.name)} />
+      <DataColumn id="name" label={formatMessage(labels.name)}>
+        {(row: any) => (
+          <Link href={renderUrl(`/websites/${websiteId}?cohort=${row.id}`)}>{row.name}</Link>
+        )}
+      </DataColumn>
       <DataColumn id="created" label={formatMessage(labels.created)}>
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>

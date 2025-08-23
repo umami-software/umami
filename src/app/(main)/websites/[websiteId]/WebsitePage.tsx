@@ -5,7 +5,7 @@ import { Panel } from '@/components/common/Panel';
 import { WebsiteChart } from './WebsiteChart';
 import { WebsiteExpandedView } from './WebsiteExpandedView';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
-import { WebsiteTableView } from './WebsiteTableView';
+import { WebsitePanels } from './WebsitePanels';
 import { WebsiteControls } from './WebsiteControls';
 
 export function WebsitePage({ websiteId }: { websiteId: string }) {
@@ -32,7 +32,7 @@ export function WebsitePage({ websiteId }: { websiteId: string }) {
       <Panel>
         <WebsiteChart websiteId={websiteId} compareMode={compare} />
       </Panel>
-      <WebsiteTableView websiteId={websiteId} />
+      <WebsitePanels websiteId={websiteId} />
       <Modal isOpen={!!view} onOpenChange={handleOpenChange} isDismissable>
         <Dialog style={{ maxWidth: 1320, width: '100vw', height: 'calc(100vh - 40px)' }}>
           {({ close }) => {

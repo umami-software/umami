@@ -11,9 +11,9 @@ import {
   Text,
 } from '@umami/react-zen';
 import {
-  useApi,
   useLoginQuery,
   useMessages,
+  useUpdateQuery,
   useUserTeamsQuery,
   useWebsite,
 } from '@/components/hooks';
@@ -32,10 +32,7 @@ export function WebsiteTransferForm({
   const website = useWebsite();
   const [teamId, setTeamId] = useState<string>(null);
   const { formatMessage, labels, messages } = useMessages();
-  const { post, useMutation } = useApi();
-  const { mutate, error } = useMutation({
-    mutationFn: (data: any) => post(`/websites/${websiteId}/transfer`, data),
-  });
+  const { mutate, error, isPending } = useUpdateQuery(`/websites/${websiteId}/transfer`);
   const { data: teams, isLoading } = useUserTeamsQuery(user.id);
   const isTeamWebsite = !!website?.teamId;
 
@@ -92,7 +89,11 @@ export function WebsiteTransferForm({
       </FormField>
       <FormButtons>
         <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
-        <FormSubmitButton variant="primary" isDisabled={!isTeamWebsite && !teamId}>
+        <FormSubmitButton
+          variant="primary"
+          isPending={isPending}
+          isDisabled={!isTeamWebsite && !teamId}
+        >
           {formatMessage(labels.transfer)}
         </FormSubmitButton>
       </FormButtons>

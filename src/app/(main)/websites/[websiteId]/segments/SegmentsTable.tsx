@@ -5,10 +5,11 @@ import { DateDistance } from '@/components/common/DateDistance';
 import { filtersObjectToArray } from '@/lib/params';
 import { SegmentEditButton } from '@/app/(main)/websites/[websiteId]/segments/SegmentEditButton';
 import { SegmentDeleteButton } from '@/app/(main)/websites/[websiteId]/segments/SegmentDeleteButton';
+import Link from 'next/link';
 
 export function SegmentsTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
-  const { websiteId } = useNavigation();
+  const { websiteId, renderUrl } = useNavigation();
 
   if (data.length === 0) {
     return <Empty />;
@@ -16,7 +17,11 @@ export function SegmentsTable({ data = [] }) {
 
   return (
     <DataTable data={data}>
-      <DataColumn id="name" label={formatMessage(labels.name)} />
+      <DataColumn id="name" label={formatMessage(labels.name)}>
+        {(row: any) => (
+          <Link href={renderUrl(`/websites/${websiteId}?segment=${row.id}`)}>{row.name}</Link>
+        )}
+      </DataColumn>
       <DataColumn id="created" label={formatMessage(labels.created)}>
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>

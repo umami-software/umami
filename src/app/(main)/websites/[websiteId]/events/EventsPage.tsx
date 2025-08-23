@@ -1,6 +1,6 @@
 'use client';
 import { TabList, Tab, Tabs, TabPanel, Column } from '@umami/react-zen';
-import { EventsTable } from '@/components/metrics/EventsTable';
+import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { useState, Key } from 'react';
 import { EventsDataTable } from './EventsDataTable';
 import { Panel } from '@/components/common/Panel';
@@ -13,13 +13,8 @@ import { getItem, setItem } from '@/lib/storage';
 const KEY_NAME = 'umami.events.tab';
 
 export function EventsPage({ websiteId }) {
-  const [label, setLabel] = useState(null);
   const [tab, setTab] = useState(getItem(KEY_NAME) || 'chart');
   const { formatMessage, labels } = useMessages();
-
-  const handleLabelClick = (value: string) => {
-    setLabel(value !== label ? value : '');
-  };
 
   const handleSelect = (value: Key) => {
     setItem(KEY_NAME, value);
@@ -42,14 +37,13 @@ export function EventsPage({ websiteId }) {
           <TabPanel id="chart">
             <Column gap="6">
               <Column border="bottom" paddingBottom="6">
-                <EventsChart websiteId={websiteId} focusLabel={label} />
+                <EventsChart websiteId={websiteId} />
               </Column>
-              <EventsTable
+              <MetricsTable
                 websiteId={websiteId}
                 type="event"
                 title={formatMessage(labels.events)}
                 metric={formatMessage(labels.actions)}
-                onLabelClick={handleLabelClick}
               />
             </Column>
           </TabPanel>
