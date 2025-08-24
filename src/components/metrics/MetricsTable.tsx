@@ -68,13 +68,7 @@ export function MetricsTable({
   };
 
   return (
-    <LoadingPanel
-      data={data}
-      isFetching={isFetching}
-      isLoading={isLoading}
-      error={error}
-      height="100%"
-    >
+    <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error}>
       {data && <ListTable {...props} data={filteredData} renderLabel={renderLabel} />}
       {showMore && limit && (
         <Row justifyContent="center">

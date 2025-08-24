@@ -11,7 +11,7 @@ import {
 import { subMonths, endOfDay } from 'date-fns';
 import { FieldFilters } from '@/components/input/FieldFilters';
 import { useState } from 'react';
-import { useApi, useMessages, useModified, useWebsiteCohortQuery } from '@/components/hooks';
+import { useMessages, useUpdateQuery, useWebsiteCohortQuery } from '@/components/hooks';
 import { filtersArrayToObject } from '@/lib/params';
 
 export function CohortEditForm({
@@ -30,26 +30,25 @@ export function CohortEditForm({
   onClose?: () => void;
 }) {
   const { data } = useWebsiteCohortQuery(websiteId, cohortId);
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, messages } = useMessages();
   const [currentFilters, setCurrentFilters] = useState(filters);
-  const { touch } = useModified();
   const startDate = subMonths(endOfDay(new Date()), 6);
   const endDate = endOfDay(new Date());
 
-  const { post, useMutation } = useApi();
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) =>
-      post(`/websites/${websiteId}/cohorts${cohortId ? `/${cohortId}` : ''}`, {
-        ...data,
-        type: 'cohort',
-      }),
-  });
+  const { mutate, error, isPending, touch, toast } = useUpdateQuery(
+    `/websites/${websiteId}/cohorts${cohortId ? `/${cohortId}` : ''}`,
+    {
+      ...data,
+      type: 'cohort',
+    },
+  );
 
   const handleSubmit = async (data: any) => {
     mutate(
       { ...data, parameters: filtersArrayToObject(currentFilters) },
       {
         onSuccess: async () => {
+          toast(formatMessage(messages.save));
           touch('cohorts');
           onSave?.();
           onClose?.();

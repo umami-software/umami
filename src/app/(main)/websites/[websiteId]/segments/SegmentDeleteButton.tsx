@@ -3,7 +3,7 @@ import { ActionButton } from '@/components/input/ActionButton';
 import { Trash } from '@/components/icons';
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 import { messages } from '@/components/messages';
-import { useApi, useMessages, useModified } from '@/components/hooks';
+import { useDeleteQuery, useMessages } from '@/components/hooks';
 
 export function SegmentDeleteButton({
   segmentId,
@@ -17,11 +17,9 @@ export function SegmentDeleteButton({
   onSave?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { del, useMutation } = useApi();
-  const { mutate, isPending, error } = useMutation({
-    mutationFn: () => del(`/websites/${websiteId}/segments/${segmentId}`),
-  });
-  const { touch } = useModified();
+  const { mutate, isPending, error, touch } = useDeleteQuery(
+    `/websites/${websiteId}/segments/${segmentId}`,
+  );
 
   const handleConfirm = (close: () => void) => {
     mutate(null, {

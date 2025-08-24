@@ -1,5 +1,5 @@
 import { AlertDialog, Row } from '@umami/react-zen';
-import { useApi, useMessages, useModified } from '@/components/hooks';
+import { useDeleteQuery, useMessages, useModified } from '@/components/hooks';
 
 export function UserDeleteForm({
   userId,
@@ -13,8 +13,7 @@ export function UserDeleteForm({
   onClose?: () => void;
 }) {
   const { messages, labels, formatMessage } = useMessages();
-  const { del, useMutation } = useApi();
-  const { mutate } = useMutation({ mutationFn: () => del(`/users/${userId}`) });
+  const { mutate } = useDeleteQuery(`/users/${userId}`);
   const { touch } = useModified();
 
   const handleConfirm = async () => {

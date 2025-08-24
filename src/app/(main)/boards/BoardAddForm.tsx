@@ -1,5 +1,5 @@
 import { Form, FormField, FormSubmitButton, Row, TextField, Button } from '@umami/react-zen';
-import { useApi } from '@/components/hooks';
+import { useUpdateQuery } from '@/components/hooks';
 import { DOMAIN_REGEX } from '@/lib/constants';
 import { useMessages } from '@/components/hooks';
 
@@ -13,10 +13,7 @@ export function BoardAddForm({
   onClose?: () => void;
 }) {
   const { formatMessage, labels, messages } = useMessages();
-  const { post, useMutation } = useApi();
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) => post('/websites', { ...data, teamId }),
-  });
+  const { mutate, error, isPending } = useUpdateQuery('/websites', { teamId });
 
   const handleSubmit = async (data: any) => {
     mutate(data, {

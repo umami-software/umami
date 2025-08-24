@@ -1,5 +1,5 @@
 import { TypeConfirmationForm } from '@/components/common/TypeConfirmationForm';
-import { useApi, useMessages } from '@/components/hooks';
+import { useDeleteQuery, useMessages } from '@/components/hooks';
 
 const CONFIRM_VALUE = 'DELETE';
 
@@ -13,14 +13,12 @@ export function TeamDeleteForm({
   onClose?: () => void;
 }) {
   const { labels, formatMessage } = useMessages();
-  const { del, useMutation } = useApi();
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: () => del(`/teams/${teamId}`),
-  });
+  const { mutate, error, isPending, touch } = useDeleteQuery(`/teams/${teamId}`);
 
   const handleConfirm = async () => {
     mutate(null, {
       onSuccess: async () => {
+        touch('teams');
         onSave?.();
         onClose?.();
       },

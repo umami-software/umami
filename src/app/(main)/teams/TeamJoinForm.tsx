@@ -6,12 +6,11 @@ import {
   Button,
   FormSubmitButton,
 } from '@umami/react-zen';
-import { useApi, useMessages, useModified } from '@/components/hooks';
+import { useMessages, useModified, useUpdateQuery } from '@/components/hooks';
 
 export function TeamJoinForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
   const { formatMessage, labels } = useMessages();
-  const { post, useMutation } = useApi();
-  const { mutate, error } = useMutation({ mutationFn: (data: any) => post('/teams/join', data) });
+  const { mutate, error } = useUpdateQuery('/teams/join');
   const { touch } = useModified();
 
   const handleSubmit = async (data: any) => {

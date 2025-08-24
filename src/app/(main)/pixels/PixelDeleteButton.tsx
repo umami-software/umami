@@ -3,8 +3,7 @@ import { ActionButton } from '@/components/input/ActionButton';
 import { Trash } from '@/components/icons';
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 import { messages } from '@/components/messages';
-import { useApi, useMessages, useModified } from '@/components/hooks';
-
+import { useDeleteQuery, useMessages, useModified } from '@/components/hooks';
 export function PixelDeleteButton({
   pixelId,
   name,
@@ -15,10 +14,7 @@ export function PixelDeleteButton({
   onSave?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { del, useMutation } = useApi();
-  const { mutate, isPending, error } = useMutation({
-    mutationFn: () => del(`/pixels/${pixelId}`),
-  });
+  const { mutate, isPending, error } = useDeleteQuery(`/pixels/${pixelId}`);
   const { touch } = useModified();
 
   const handleConfirm = (close: () => void) => {

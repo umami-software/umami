@@ -5,10 +5,9 @@ import {
   FormSubmitButton,
   TextField,
   Button,
-  useToast,
 } from '@umami/react-zen';
 import { getRandomChars } from '@/lib/crypto';
-import { useApi, useMessages, useModified, useTeam } from '@/components/hooks';
+import { useMessages, useTeam, useUpdateQuery } from '@/components/hooks';
 
 const generateId = () => `team_${getRandomChars(16)}`;
 
@@ -23,20 +22,15 @@ export function TeamEditForm({
 }) {
   const team = useTeam();
   const { formatMessage, labels, messages } = useMessages();
-  const { post, useMutation } = useApi();
-  const { toast } = useToast();
-  const { touch } = useModified();
 
-  const { mutate, error } = useMutation({
-    mutationFn: (data: any) => post(`/teams/${teamId}`, data),
-  });
+  const { mutate, error, isPending, touch, toast } = useUpdateQuery(`/teams/${teamId}`);
 
   const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
+        toast(formatMessage(messages.saved));
         touch('teams');
         touch(`teams:${teamId}`);
-        toast(formatMessage(messages.saved));
         onSave?.();
       },
     });
@@ -65,7 +59,9 @@ export function TeamEditForm({
                 <Button onPress={() => setValue('accessCode', generateId(), { shouldDirty: true })}>
                   {formatMessage(labels.regenerate)}
                 </Button>
-                <FormSubmitButton variant="primary">{formatMessage(labels.save)}</FormSubmitButton>
+                <FormSubmitButton variant="primary" isPending={isPending}>
+                  {formatMessage(labels.save)}
+                </FormSubmitButton>
               </FormButtons>
             )}
           </>

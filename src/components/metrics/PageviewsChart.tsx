@@ -31,6 +31,7 @@ export function PageviewsChart({ data, unit, minDate, maxDate, ...props }: Pagev
       __id: new Date().getTime(),
       datasets: [
         {
+          type: data.compare ? 'line' : 'bar',
           label: formatMessage(labels.visitors),
           data: generateTimeSeries(data.sessions, minDate, maxDate, unit, dateLocale),
           borderWidth: 1,
@@ -40,6 +41,7 @@ export function PageviewsChart({ data, unit, minDate, maxDate, ...props }: Pagev
           order: 3,
         },
         {
+          type: data.compare ? 'line' : 'bar',
           label: formatMessage(labels.views),
           data: generateTimeSeries(data.pageviews, minDate, maxDate, unit, dateLocale),
           barPercentage: 0.9,

@@ -1,4 +1,4 @@
-import { useApi, useMessages, useModified } from '@/components/hooks';
+import { useDeleteQuery, useMessages } from '@/components/hooks';
 import { TypeConfirmationForm } from '@/components/common/TypeConfirmationForm';
 
 const CONFIRM_VALUE = 'DELETE';
@@ -13,11 +13,7 @@ export function WebsiteDeleteForm({
   onClose?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { del, useMutation } = useApi();
-  const { mutate, isPending, error } = useMutation({
-    mutationFn: () => del(`/websites/${websiteId}`),
-  });
-  const { touch } = useModified();
+  const { mutate, isPending, error, touch } = useDeleteQuery(`/websites/${websiteId}`);
 
   const handleConfirm = async () => {
     mutate(null, {

@@ -1,5 +1,5 @@
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
-import { useApi, useMessages, useModified } from '@/components/hooks';
+import { useDeleteQuery, useMessages, useModified } from '@/components/hooks';
 import { messages } from '@/components/messages';
 import { Trash } from '@/components/icons';
 import { Dialog } from '@umami/react-zen';
@@ -18,10 +18,7 @@ export function TeamMemberRemoveButton({
   onSave?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { del, useMutation } = useApi();
-  const { mutate, isPending, error } = useMutation({
-    mutationFn: () => del(`/teams/${teamId}/users/${userId}`),
-  });
+  const { mutate, isPending, error } = useDeleteQuery(`/teams/${teamId}/users/${userId}`);
   const { touch } = useModified();
 
   const handleConfirm = (close: () => void) => {

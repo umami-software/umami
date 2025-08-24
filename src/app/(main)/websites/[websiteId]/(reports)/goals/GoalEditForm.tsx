@@ -12,7 +12,7 @@ import {
   Icon,
   Loading,
 } from '@umami/react-zen';
-import { useApi, useMessages, useModified, useReportQuery } from '@/components/hooks';
+import { useMessages, useReportQuery, useUpdateQuery } from '@/components/hooks';
 import { File, Lightning } from '@/components/icons';
 
 export function GoalEditForm({
@@ -27,12 +27,9 @@ export function GoalEditForm({
   onClose?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { touch } = useModified();
-  const { post, useMutation } = useApi();
+
   const { data } = useReportQuery(id);
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: (params: any) => post(`/reports${id ? `/${id}` : ''}`, params),
-  });
+  const { mutate, error, isPending, touch } = useUpdateQuery(`/reports${id ? `/${id}` : ''}`);
 
   const handleSubmit = async ({ name, ...parameters }) => {
     mutate(

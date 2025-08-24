@@ -7,12 +7,11 @@ import {
   FormSubmitButton,
   Column,
   Label,
-  useToast,
   Row,
 } from '@umami/react-zen';
 import { useState } from 'react';
 import { getRandomChars } from '@/lib/crypto';
-import { useApi, useMessages, useModified } from '@/components/hooks';
+import { useMessages, useUpdateQuery } from '@/components/hooks';
 
 const generateId = () => getRandomChars(16);
 
@@ -26,12 +25,7 @@ export interface WebsiteShareFormProps {
 export function WebsiteShareForm({ websiteId, shareId, onSave, onClose }: WebsiteShareFormProps) {
   const { formatMessage, labels, messages } = useMessages();
   const [id, setId] = useState(shareId);
-  const { post, useMutation } = useApi();
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) => post(`/websites/${websiteId}`, data),
-  });
-  const { touch } = useModified();
-  const { toast } = useToast();
+  const { mutate, error, isPending, touch, toast } = useUpdateQuery(`/websites/${websiteId}`);
 
   const url = `${window?.location.origin || ''}${process.env.basePath || ''}/share/${id}`;
 

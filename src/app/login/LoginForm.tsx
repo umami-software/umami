@@ -10,7 +10,7 @@ import {
   Heading,
 } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
-import { useApi, useMessages } from '@/components/hooks';
+import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { setUser } from '@/store/app';
 import { setClientAuthToken } from '@/lib/client';
 import { Logo } from '@/components/icons';
@@ -18,10 +18,7 @@ import { Logo } from '@/components/icons';
 export function LoginForm() {
   const { formatMessage, labels, getMessage } = useMessages();
   const router = useRouter();
-  const { post, useMutation } = useApi();
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) => post('/auth/login', data),
-  });
+  const { mutate, error, isPending } = useUpdateQuery('/auth/login');
 
   const handleSubmit = async (data: any) => {
     mutate(data, {

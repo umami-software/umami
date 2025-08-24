@@ -9,14 +9,11 @@ import {
   PasswordField,
   Button,
 } from '@umami/react-zen';
-import { useApi, useMessages } from '@/components/hooks';
+import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 
 export function UserAddForm({ onSave, onClose }) {
-  const { post, useMutation } = useApi();
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) => post(`/users`, data),
-  });
+  const { mutate, error, isPending } = useUpdateQuery(`/users`);
   const { formatMessage, labels } = useMessages();
 
   const handleSubmit = async (data: any) => {

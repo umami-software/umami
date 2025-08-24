@@ -24,7 +24,11 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
   const { pathname, renderUrl, teamId } = useNavigation();
 
   const renderPath = (path: string) =>
-    renderUrl(`/websites/${websiteId}${path}`, { event: undefined });
+    renderUrl(`/websites/${websiteId}${path}`, {
+      event: undefined,
+      compare: undefined,
+      view: undefined,
+    });
 
   const items = [
     {

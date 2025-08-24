@@ -1,4 +1,4 @@
-import { useApi, useMessages } from '@/components/hooks';
+import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { TypeConfirmationForm } from '@/components/common/TypeConfirmationForm';
 
 const CONFIRM_VALUE = 'RESET';
@@ -13,10 +13,7 @@ export function WebsiteResetForm({
   onClose?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { post, useMutation } = useApi();
-  const { mutate, isPending, error } = useMutation({
-    mutationFn: (data: any) => post(`/websites/${websiteId}/reset`, data),
-  });
+  const { mutate, isPending, error } = useUpdateQuery(`/websites/${websiteId}/reset`);
 
   const handleConfirm = async () => {
     mutate(null, {

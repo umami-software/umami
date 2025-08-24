@@ -1,4 +1,4 @@
-import { useApi, useMessages } from '@/components/hooks';
+import { useMessages, useUpdateQuery } from '@/components/hooks';
 import {
   Button,
   Form,
@@ -10,10 +10,7 @@ import {
 
 export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
   const { formatMessage, labels } = useMessages();
-  const { post, useMutation } = useApi();
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) => post('/teams', data),
-  });
+  const { mutate, error, isPending } = useUpdateQuery('/teams');
 
   const handleSubmit = async (data: any) => {
     mutate(data, {

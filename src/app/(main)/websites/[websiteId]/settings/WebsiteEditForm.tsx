@@ -1,24 +1,11 @@
-import {
-  FormSubmitButton,
-  Form,
-  FormField,
-  FormButtons,
-  TextField,
-  useToast,
-} from '@umami/react-zen';
-import { useApi, useMessages, useModified, useWebsite } from '@/components/hooks';
+import { FormSubmitButton, Form, FormField, FormButtons, TextField } from '@umami/react-zen';
+import { useMessages, useUpdateQuery, useWebsite } from '@/components/hooks';
 import { DOMAIN_REGEX } from '@/lib/constants';
 
 export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
   const website = useWebsite();
   const { formatMessage, labels, messages } = useMessages();
-  const { post, useMutation } = useApi();
-  const { toast } = useToast();
-  const { touch } = useModified();
-
-  const { mutate, error } = useMutation({
-    mutationFn: (data: any) => post(`/websites/${websiteId}`, data),
-  });
+  const { mutate, error, touch, toast } = useUpdateQuery(`/websites/${websiteId}`);
 
   const handleSubmit = async (data: any) => {
     mutate(data, {

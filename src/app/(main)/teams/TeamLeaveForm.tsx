@@ -1,4 +1,4 @@
-import { useApi, useMessages, useModified } from '@/components/hooks';
+import { useDeleteQuery, useMessages, useModified } from '@/components/hooks';
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 
 export function TeamLeaveForm({
@@ -15,10 +15,7 @@ export function TeamLeaveForm({
   onClose: () => void;
 }) {
   const { formatMessage, labels, messages } = useMessages();
-  const { del, useMutation } = useApi();
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: () => del(`/teams/${teamId}/users/${userId}`),
-  });
+  const { mutate, error, isPending } = useDeleteQuery(`/teams/${teamId}/users/${userId}`);
   const { touch } = useModified();
 
   const handleConfirm = async () => {

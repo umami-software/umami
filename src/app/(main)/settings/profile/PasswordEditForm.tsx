@@ -6,14 +6,11 @@ import {
   Button,
   FormSubmitButton,
 } from '@umami/react-zen';
-import { useApi, useMessages } from '@/components/hooks';
+import { useMessages, useUpdateQuery } from '@/components/hooks';
 
 export function PasswordEditForm({ onSave, onClose }) {
   const { formatMessage, labels, messages } = useMessages();
-  const { post, useMutation } = useApi();
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) => post('/me/password', data),
-  });
+  const { mutate, error, isPending } = useUpdateQuery('/me/password');
 
   const handleSubmit = async (data: any) => {
     mutate(data, {

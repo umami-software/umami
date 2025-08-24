@@ -3,7 +3,7 @@ import { ActionButton } from '@/components/input/ActionButton';
 import { Trash } from '@/components/icons';
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 import { messages } from '@/components/messages';
-import { useApi, useMessages, useModified } from '@/components/hooks';
+import { useDeleteQuery, useMessages } from '@/components/hooks';
 
 export function LinkDeleteButton({
   linkId,
@@ -16,11 +16,7 @@ export function LinkDeleteButton({
   onSave?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { del, useMutation } = useApi();
-  const { mutate, isPending, error } = useMutation({
-    mutationFn: () => del(`/links/${linkId}`),
-  });
-  const { touch } = useModified();
+  const { mutate, isPending, error, touch } = useDeleteQuery(`/links/${linkId}`);
 
   const handleConfirm = (close: () => void) => {
     mutate(null, {

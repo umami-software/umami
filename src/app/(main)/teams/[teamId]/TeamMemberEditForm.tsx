@@ -1,4 +1,4 @@
-import { useApi, useMessages } from '@/components/hooks';
+import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 import {
   Button,
@@ -23,10 +23,7 @@ export function TeamMemberEditForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { post, useMutation } = useApi();
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) => post(`/teams/${teamId}/users/${userId}`, data),
-  });
+  const { mutate, error, isPending } = useUpdateQuery(`/teams/${teamId}/users/${userId}`);
   const { formatMessage, labels } = useMessages();
 
   const handleSubmit = async (data: any) => {

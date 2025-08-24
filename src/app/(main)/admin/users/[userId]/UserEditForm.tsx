@@ -7,30 +7,16 @@ import {
   TextField,
   FormSubmitButton,
   PasswordField,
-  useToast,
 } from '@umami/react-zen';
-import { useApi, useLoginQuery, useMessages, useModified, useUser } from '@/components/hooks';
+import { useLoginQuery, useMessages, useUpdateQuery, useUser } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 
 export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () => void }) {
   const { formatMessage, labels, messages, getMessage } = useMessages();
-  const { post, useMutation } = useApi();
   const user = useUser();
   const { user: login } = useLoginQuery();
-  const { toast } = useToast();
-  const { touch } = useModified();
 
-  const { mutate, error } = useMutation({
-    mutationFn: ({
-      username,
-      password,
-      role,
-    }: {
-      username: string;
-      password: string;
-      role: string;
-    }) => post(`/users/${userId}`, { username, password, role }),
-  });
+  const { mutate, error, toast, touch } = useUpdateQuery(`/users/${userId}`);
 
   const handleSubmit = async (data: any) => {
     mutate(data, {
