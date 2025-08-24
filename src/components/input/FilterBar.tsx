@@ -27,10 +27,11 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
     router,
     updateParams,
     replaceParams,
-    query: { segment },
+    query: { segment, cohort },
   } = useNavigation();
   const { filters, operatorLabels } = useFilters();
   const { data, isLoading } = useWebsiteSegmentQuery(websiteId, segment);
+  const canSave = filters.length > 0 && !segment && !cohort;
 
   const handleCloseFilter = (param: string) => {
     router.push(updateParams({ [param]: undefined }));
@@ -78,7 +79,7 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
       </Row>
       <Row alignItems="center">
         <DialogTrigger>
-          {!!filters.length && (
+          {canSave && (
             <TooltipTrigger delay={0}>
               <Button variant="zero">
                 <Icon>

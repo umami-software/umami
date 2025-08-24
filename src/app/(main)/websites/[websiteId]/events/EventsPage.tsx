@@ -43,7 +43,7 @@ export function EventsPage({ websiteId }) {
                 websiteId={websiteId}
                 type="event"
                 title={formatMessage(labels.events)}
-                metric={formatMessage(labels.actions)}
+                metric={formatMessage(labels.count)}
               />
             </Column>
           </TabPanel>

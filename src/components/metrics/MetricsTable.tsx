@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Icon, Row, Text } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
@@ -15,6 +15,7 @@ export interface MetricsTableProps extends ListTableProps {
   limit?: number;
   showMore?: boolean;
   params?: Record<string, any>;
+  onDataLoad?: (data: any) => void;
 }
 
 export function MetricsTable({
@@ -24,6 +25,7 @@ export function MetricsTable({
   limit,
   showMore = false,
   params,
+  onDataLoad,
   ...props
 }: MetricsTableProps) {
   const { updateParams } = useNavigation();
@@ -54,6 +56,12 @@ export function MetricsTable({
     }
     return [];
   }, [data, dataFilter, limit, type]);
+
+  useEffect(() => {
+    if (data) {
+      onDataLoad?.(data);
+    }
+  }, [data]);
 
   const renderLabel = (row: any) => {
     return <MetricLabel type={type} data={row} />;

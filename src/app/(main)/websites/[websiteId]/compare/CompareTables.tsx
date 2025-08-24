@@ -1,26 +1,27 @@
-import { Grid, Heading, Column, Row, NavMenu, NavMenuItem, Text } from '@umami/react-zen';
+import { useState } from 'react';
+import { Grid, Heading, Column, Row, Select, ListItem } from '@umami/react-zen';
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
-import { getCompareDate } from '@/lib/date';
-import { formatNumber } from '@/lib/format';
-import { useState } from 'react';
 import { Panel } from '@/components/common/Panel';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
+import { getCompareDate } from '@/lib/date';
+import { formatNumber } from '@/lib/format';
 
-export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
-  const [data] = useState([]);
+export function CompareTables({ websiteId }: { websiteId: string }) {
+  const [data, setData] = useState([]);
   const { dateRange, dateCompare } = useDateRange(websiteId);
   const { formatMessage, labels } = useMessages();
   const {
+    router,
     updateParams,
-    query: { view },
+    query: { view = 'path' },
   } = useNavigation();
 
   const items = [
     {
       id: 'path',
-      label: formatMessage(labels.pages),
+      label: formatMessage(labels.path),
       path: updateParams({ view: 'path' }),
     },
     {
@@ -74,11 +75,6 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
       path: updateParams({ view: 'event' }),
     },
     {
-      id: 'query',
-      label: formatMessage(labels.queryParameters),
-      path: updateParams({ view: 'query' }),
-    },
-    {
       id: 'hostname',
       label: formatMessage(labels.hostname),
       path: updateParams({ view: 'hostname' }),
@@ -90,7 +86,8 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
     },
   ];
 
-  const renderChange = ({ label: x, count: y }) => {
+  const renderChange = props => {
+    const { label: x, count: y } = props;
     const prev = data.find(d => d.x === x)?.y;
     const value = y - prev;
     const change = Math.abs(((y - prev) / prev) * 100);
@@ -102,6 +99,10 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
         </Row>
       )
     );
+  };
+
+  const handleChange = id => {
+    router.push(updateParams({ view: id }));
   };
 
   const { startDate, endDate } = getCompareDate(
@@ -116,44 +117,53 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
   };
 
   return (
-    <Panel>
-      <Grid columns={{ xs: '1fr', lg: '200px 1fr 1fr' }} gap="6">
-        <NavMenu>
-          {items.map(({ id, label }) => {
-            return (
-              <NavMenuItem key={id}>
-                <Text>{label}</Text>
-              </NavMenuItem>
-            );
-          })}
-        </NavMenu>
-        <Column border="left" paddingLeft="6" gap="6">
-          <Row alignItems="center" justifyContent="space-between">
-            <Heading size="1">{formatMessage(labels.previous)}</Heading>
-            <DateDisplay startDate={startDate} endDate={endDate} />
-          </Row>
-          <MetricsTable
-            websiteId={websiteId}
-            type={view}
-            limit={20}
-            showMore={false}
-            params={params}
-          />
-        </Column>
-        <Column border="left" paddingLeft="6" gap="6">
-          <Row alignItems="center" justifyContent="space-between">
-            <Heading size="1"> {formatMessage(labels.current)}</Heading>
-            <DateDisplay startDate={dateRange.startDate} endDate={dateRange.endDate} />
-          </Row>
-          <MetricsTable
-            websiteId={websiteId}
-            type={view}
-            limit={20}
-            showMore={false}
-            renderChange={renderChange}
-          />
-        </Column>
-      </Grid>
-    </Panel>
+    <>
+      <Row width="300px">
+        <Select
+          items={items}
+          label={formatMessage(labels.compare)}
+          value={view}
+          defaultValue={view}
+          onChange={handleChange}
+        >
+          {items.map(({ id, label }) => (
+            <ListItem key={id} id={id}>
+              {label}
+            </ListItem>
+          ))}
+        </Select>
+      </Row>
+      <Panel>
+        <Grid columns={{ xs: '1fr', lg: '1fr 1fr' }} gap="6">
+          <Column gap="6">
+            <Row alignItems="center" justifyContent="space-between">
+              <Heading size="2">{formatMessage(labels.previous)}</Heading>
+              <DateDisplay startDate={startDate} endDate={endDate} />
+            </Row>
+            <MetricsTable
+              websiteId={websiteId}
+              type={view}
+              limit={20}
+              showMore={false}
+              params={params}
+              onDataLoad={setData}
+            />
+          </Column>
+          <Column border="left" paddingLeft="6" gap="6">
+            <Row alignItems="center" justifyContent="space-between">
+              <Heading size="2"> {formatMessage(labels.current)}</Heading>
+              <DateDisplay startDate={dateRange.startDate} endDate={dateRange.endDate} />
+            </Row>
+            <MetricsTable
+              websiteId={websiteId}
+              type={view}
+              limit={20}
+              showMore={false}
+              renderChange={renderChange}
+            />
+          </Column>
+        </Grid>
+      </Panel>
+    </>
   );
 }

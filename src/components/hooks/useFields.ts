@@ -5,10 +5,8 @@ export function useFields() {
 
   const fields = [
     { name: 'path', type: 'string', label: formatMessage(labels.path) },
-    // { name: 'cohort', type: 'string', label: formatMessage(labels.cohort) },
     { name: 'title', type: 'string', label: formatMessage(labels.pageTitle) },
     { name: 'referrer', type: 'string', label: formatMessage(labels.referrer) },
-    //{ name: 'query', type: 'string', label: formatMessage(labels.query) },
     { name: 'browser', type: 'string', label: formatMessage(labels.browser) },
     { name: 'os', type: 'string', label: formatMessage(labels.os) },
     { name: 'device', type: 'string', label: formatMessage(labels.device) },
@@ -17,6 +15,7 @@ export function useFields() {
     { name: 'city', type: 'string', label: formatMessage(labels.city) },
     { name: 'hostname', type: 'string', label: formatMessage(labels.hostname) },
     { name: 'tag', type: 'string', label: formatMessage(labels.tag) },
+    { name: 'event', type: 'string', label: formatMessage(labels.event) },
   ];
 
   return { fields };

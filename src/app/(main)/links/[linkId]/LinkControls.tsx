@@ -10,12 +10,10 @@ export function LinkControls({
   allowFilter = true,
   allowDateFilter = true,
   allowMonthFilter,
-  allowCompare,
   allowDownload = false,
 }: {
   linkId: string;
   allowFilter?: boolean;
-  allowCompare?: boolean;
   allowDateFilter?: boolean;
   allowMonthFilter?: boolean;
   allowDownload?: boolean;
@@ -24,13 +22,7 @@ export function LinkControls({
     <Column gap>
       <Row alignItems="center" justifyContent="space-between" gap="3">
         {allowFilter ? <WebsiteFilterButton websiteId={websiteId} /> : <div />}
-        {allowDateFilter && (
-          <WebsiteDateFilter
-            websiteId={websiteId}
-            allowCompare={allowCompare}
-            showAllTime={false}
-          />
-        )}
+        {allowDateFilter && <WebsiteDateFilter websiteId={websiteId} showAllTime={false} />}
         {allowDownload && <ExportButton websiteId={websiteId} />}
         {allowMonthFilter && <WebsiteMonthSelect websiteId={websiteId} />}
       </Row>
