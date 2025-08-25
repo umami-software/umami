@@ -15,7 +15,7 @@ export function SegmentAddButton({ websiteId }: { websiteId: string }) {
         <Text>{formatMessage(labels.segment)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.segment)} style={{ width: 800 }}>
+        <Dialog title={formatMessage(labels.segment)} style={{ width: 800, maxHeight: '90vh' }}>
           {({ close }) => {
             return <SegmentEditForm websiteId={websiteId} onClose={close} />;
           }}

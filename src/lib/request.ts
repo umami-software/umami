@@ -1,11 +1,11 @@
-import { z } from 'zod/v4';
-import { FILTER_COLUMNS, DEFAULT_PAGE_SIZE } from '@/lib/constants';
-import { badRequest, unauthorized } from '@/lib/response';
-import { getAllowedUnits, getMinimumUnit, maxDate } from '@/lib/date';
 import { checkAuth } from '@/lib/auth';
+import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS } from '@/lib/constants';
+import { getAllowedUnits, getMinimumUnit, maxDate, parseDateRange } from '@/lib/date';
 import { fetchWebsite } from '@/lib/load';
+import { badRequest, unauthorized } from '@/lib/response';
 import { QueryFilters } from '@/lib/types';
 import { getWebsiteSegment } from '@/queries';
+import { z } from 'zod/v4';
 
 export async function parseRequest(
   request: Request,
@@ -104,7 +104,27 @@ export async function getQueryFilters(
     }
 
     if (params.cohort) {
-      filters.cohortFilters = (await getWebsiteSegment(websiteId, params.cohort))?.parameters;
+      const cohortFilters = (await getWebsiteSegment(websiteId, params.cohort))
+        ?.parameters as Record<string, any>;
+
+      // convert dateRange to startDate and endDate
+      if (cohortFilters.dateRange) {
+        const { startDate, endDate } = parseDateRange(cohortFilters.dateRange);
+        cohortFilters.startDate = startDate;
+        cohortFilters.endDate = endDate;
+        delete cohortFilters.dateRange;
+      }
+
+      Object.assign(
+        filters,
+        Object.fromEntries(
+          Object.entries(cohortFilters || {}).map(([key, value]) =>
+            key === 'startDate' || key === 'endDate'
+              ? [`cohort_${key}`, new Date(value)]
+              : [`cohort_${key}`, value],
+          ),
+        ),
+      );
     }
   }
 
