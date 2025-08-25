@@ -9,7 +9,7 @@ export function WebsiteChart({
   compareMode,
 }: {
   websiteId: string;
-  compareMode?: string;
+  compareMode?: boolean;
 }) {
   const { dateRange, dateCompare } = useDateRange(websiteId);
   const { startDate, endDate, unit, value } = dateRange;

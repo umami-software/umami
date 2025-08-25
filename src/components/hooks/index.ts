@@ -1,5 +1,12 @@
 'use client';
 
+// Context hooks
+export * from './context/useLink';
+export * from './context/usePixel';
+export * from './context/useTeam';
+export * from './context/useUser';
+export * from './context/useWebsite';
+
 // Query hooks
 export * from './queries/useActiveUsersQuery';
 export * from './queries/useDeleteQuery';
@@ -43,7 +50,7 @@ export * from './queries/useWebsiteSegmentsQuery';
 export * from './queries/useWebsiteSessionQuery';
 export * from './queries/useWebsiteSessionStatsQuery';
 export * from './queries/useWebsiteSessionsQuery';
-export * from './queries/useWebsiteSessionsWeeklyQuery';
+export * from './queries/useWeeklyTrafficQuery';
 export * from './queries/useWebsiteStatsQuery';
 export * from './queries/useWebsiteValuesQuery';
 export * from './queries/useWebsitesQuery';
@@ -70,7 +77,6 @@ export * from './useNavigation';
 export * from './usePagedQuery';
 export * from './usePageParameters';
 export * from './useRegionNames';
+export * from './useSlug';
 export * from './useSticky';
-export * from './useTeam';
 export * from './useTimezone';
-export * from './useWebsite';

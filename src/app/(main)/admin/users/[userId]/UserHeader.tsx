@@ -1,10 +1,9 @@
-import { useContext } from 'react';
 import { User } from '@/components/icons';
 import { PageHeader } from '@/components/common/PageHeader';
-import { UserContext } from '@/app/(main)/admin/users/[userId]/UserProvider';
+import { useUser } from '@/components/hooks';
 
 export function UserHeader() {
-  const user = useContext(UserContext);
+  const user = useUser();
 
   return <PageHeader title={user?.username} icon={<User />} />;
 }

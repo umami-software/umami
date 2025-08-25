@@ -17,7 +17,7 @@ export * from '@/app/(main)/teams/TeamAddForm';
 export * from '@/app/(main)/teams/TeamJoinForm';
 export * from '@/app/(main)/teams/TeamLeaveButton';
 export * from '@/app/(main)/teams/TeamLeaveForm';
-export * from '@/app/(main)/teams/[teamId]/TeamProvider';
+export * from '@/app/(main)/teams/TeamProvider';
 export * from '@/app/(main)/teams/TeamsAddButton';
 export * from '@/app/(main)/teams/TeamsDataTable';
 export * from '@/app/(main)/teams/TeamsHeader';
@@ -38,7 +38,7 @@ export * from '@/app/(main)/websites/WebsitesDataTable';
 export * from '@/app/(main)/websites/WebsitesHeader';
 export * from '@/app/(main)/websites/WebsitesTable';
 
-export * from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
+export * from '@/app/(main)/websites/WebsiteProvider';
 
 export * from '@/components/common/ConfirmationForm';
 export * from '@/components/common/DataGrid';

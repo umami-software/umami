@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import {
   Text,
   Heading,
@@ -7,15 +8,16 @@ import {
   Row,
   Column,
   NavMenuGroup,
+  NavMenuProps,
 } from '@umami/react-zen';
 import Link from 'next/link';
 
-export interface SideMenuProps {
+export interface SideMenuProps extends NavMenuProps {
   items: { label: string; items: { id: string; label: string; icon?: any; path: string }[] }[];
   title?: string;
   selectedKey?: string;
   allowMinimize?: boolean;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 export function SideMenu({
@@ -24,6 +26,7 @@ export function SideMenu({
   selectedKey,
   allowMinimize,
   children,
+  ...props
 }: SideMenuProps) {
   return (
     <Column
@@ -42,12 +45,12 @@ export function SideMenu({
           <Heading size="1">{title}</Heading>
         </Row>
       )}
-      <NavMenu muteItems={false} gap="6">
-        {items?.map(({ label, items }) => {
+      <NavMenu muteItems={false} gap="6" {...props}>
+        {items?.map(({ label, items }, index) => {
           return (
             <NavMenuGroup
               title={label}
-              key={label}
+              key={`${label}${index}`}
               gap="1"
               allowMinimize={allowMinimize}
               marginBottom="3"

@@ -31,8 +31,8 @@ export function PixelEditForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
-  const { mutate, error, isPending, touch } = useUpdateQuery(
+  const { formatMessage, labels, messages } = useMessages();
+  const { mutate, error, isPending, touch, toast } = useUpdateQuery(
     pixelId ? `/pixels/${pixelId}` : '/pixels',
     {
       id: pixelId,
@@ -47,6 +47,7 @@ export function PixelEditForm({
   const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
+        toast(formatMessage(messages.saved));
         touch('pixels');
         onSave?.();
         onClose?.();

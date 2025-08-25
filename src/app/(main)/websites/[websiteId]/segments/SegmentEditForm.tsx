@@ -11,8 +11,9 @@ import {
 import { subMonths, endOfDay } from 'date-fns';
 import { FieldFilters } from '@/components/input/FieldFilters';
 import { useState } from 'react';
-import { useApi, useMessages, useModified, useWebsiteSegmentQuery } from '@/components/hooks';
+import { useMessages, useUpdateQuery, useWebsiteSegmentQuery } from '@/components/hooks';
 import { filtersArrayToObject } from '@/lib/params';
+import { messages } from '@/components/messages';
 
 export function SegmentEditForm({
   segmentId,
@@ -32,24 +33,23 @@ export function SegmentEditForm({
   const { data } = useWebsiteSegmentQuery(websiteId, segmentId);
   const { formatMessage, labels } = useMessages();
   const [currentFilters, setCurrentFilters] = useState(filters);
-  const { touch } = useModified();
   const startDate = subMonths(endOfDay(new Date()), 6);
   const endDate = endOfDay(new Date());
 
-  const { post, useMutation } = useApi();
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) =>
-      post(`/websites/${websiteId}/segments${segmentId ? `/${segmentId}` : ''}`, {
-        ...data,
-        type: 'segment',
-      }),
-  });
+  const { mutate, error, isPending, touch, toast } = useUpdateQuery(
+    `/websites/${websiteId}/segments${segmentId ? `/${segmentId}` : ''}`,
+    {
+      ...data,
+      type: 'segment',
+    },
+  );
 
   const handleSubmit = async (data: any) => {
     mutate(
       { ...data, parameters: filtersArrayToObject(currentFilters) },
       {
         onSuccess: async () => {
+          toast(formatMessage(messages.saved));
           touch('segments');
           onSave?.();
           onClose?.();

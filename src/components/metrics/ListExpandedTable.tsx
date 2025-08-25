@@ -2,7 +2,6 @@ import { useMessages } from '@/components/hooks';
 import { formatShortTime } from '@/lib/format';
 import { DataColumn, DataTable } from '@umami/react-zen';
 import { ReactNode } from 'react';
-import styles from './ListExpandedTable.module.css';
 
 export interface ListExpandedTableProps {
   data?: any[];
@@ -15,7 +14,7 @@ export function ListExpandedTable({ data = [], title, renderLabel }: ListExpande
 
   return (
     <DataTable data={data}>
-      <DataColumn id="label" label={title} align="start" className={styles.truncate}>
+      <DataColumn id="label" label={title} align="start">
         {row =>
           renderLabel
             ? renderLabel({ x: row?.['name'], country: row?.['country'] }, Number(row.id))

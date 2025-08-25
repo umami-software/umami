@@ -1,37 +1,21 @@
-import { ReactNode, useMemo, useState } from 'react';
-import { Button, Column, Icon, Row, SearchField, Text, Grid } from '@umami/react-zen';
+import { useEffect, useMemo } from 'react';
+import { Icon, Row, Text } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import {
-  useFormat,
-  useMessages,
-  useNavigation,
-  useWebsiteExpandedMetricsQuery,
-  useWebsiteMetricsQuery,
-} from '@/components/hooks';
-import { Close, Maximize } from '@/components/icons';
-import { DownloadButton } from '@/components/input/DownloadButton';
-import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
+import { useMessages, useNavigation, useWebsiteMetricsQuery } from '@/components/hooks';
+import { Maximize } from '@/components/icons';
 import { percentFilter } from '@/lib/filters';
-
-import { ListExpandedTable, ListExpandedTableProps } from './ListExpandedTable';
 import { ListTable, ListTableProps } from './ListTable';
+import { MetricLabel } from '@/components/metrics/MetricLabel';
 
 export interface MetricsTableProps extends ListTableProps {
   websiteId: string;
-  type?: string;
+  type: string;
   dataFilter?: (data: any) => any;
   limit?: number;
-  delay?: number;
-  onSearch?: (search: string) => void;
-  allowSearch?: boolean;
-  searchFormattedValues?: boolean;
   showMore?: boolean;
-  params?: { [key: string]: any };
-  allowDownload?: boolean;
-  isExpanded?: boolean;
-  onClose?: () => void;
-  children?: ReactNode;
+  params?: Record<string, any>;
+  onDataLoad?: (data: any) => void;
 }
 
 export function MetricsTable({
@@ -39,50 +23,18 @@ export function MetricsTable({
   type,
   dataFilter,
   limit,
-  delay = null,
-  allowSearch = false,
-  searchFormattedValues = false,
-  showMore = true,
+  showMore = false,
   params,
-  allowDownload = true,
-  isExpanded = false,
-  onClose,
-  children,
+  onDataLoad,
   ...props
 }: MetricsTableProps) {
-  const [search, setSearch] = useState('');
-  const { formatValue } = useFormat();
   const { updateParams } = useNavigation();
   const { formatMessage, labels } = useMessages();
-
-  const expandedQuery = useWebsiteExpandedMetricsQuery(
-    websiteId,
-    {
-      type,
-      search: searchFormattedValues ? undefined : search,
-      ...params,
-    },
-    {
-      retryDelay: delay || DEFAULT_ANIMATION_DURATION,
-      enabled: isExpanded,
-    },
-  );
-
-  const query = useWebsiteMetricsQuery(
-    websiteId,
-    {
-      type,
-      limit,
-      search: searchFormattedValues ? undefined : search,
-      ...params,
-    },
-    {
-      retryDelay: delay || DEFAULT_ANIMATION_DURATION,
-      enabled: !isExpanded,
-    },
-  );
-
-  const { data, isLoading, isFetching, error } = isExpanded ? expandedQuery : query;
+  const { data, isLoading, isFetching, error } = useWebsiteMetricsQuery(websiteId, {
+    type,
+    limit,
+    ...params,
+  });
 
   const filteredData = useMemo(() => {
     if (data) {
@@ -98,59 +50,42 @@ export function MetricsTable({
         }
       }
 
-      if (searchFormattedValues && search) {
-        items = items.filter(({ x, ...data }) => {
-          const value = formatValue(x, type, data);
-
-          return value?.toLowerCase().includes(search.toLowerCase());
-        });
-      }
-
       items = percentFilter(items);
 
-      return items;
+      return items.map(({ x, y, z, ...props }) => ({ label: x, count: y, percent: z, ...props }));
     }
     return [];
-  }, [data, dataFilter, search, limit, formatValue, type]);
+  }, [data, dataFilter, limit, type]);
 
-  const downloadData = isExpanded ? data : filteredData;
+  useEffect(() => {
+    if (data) {
+      onDataLoad?.(data);
+    }
+  }, [data]);
+
+  const renderLabel = (row: any) => {
+    return <MetricLabel type={type} data={row} />;
+  };
 
   return (
-    <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error}>
-      <Grid rows="40px 1fr" height="100%" overflow="hidden" gap>
-        <Row alignItems="center">
-          {allowSearch && <SearchField value={search} onSearch={setSearch} delay={300} />}
-          <Row justifyContent="flex-end" flexGrow={1} gap>
-            {children}
-            {allowDownload && <DownloadButton filename={type} data={downloadData} />}
-            {onClose && (
-              <Button onPress={onClose} variant="quiet">
-                <Icon>
-                  <Close />
-                </Icon>
-              </Button>
-            )}
-          </Row>
+    <LoadingPanel
+      data={data}
+      isFetching={isFetching}
+      isLoading={isLoading}
+      error={error}
+      height="100%"
+    >
+      {data && <ListTable {...props} data={filteredData} renderLabel={renderLabel} />}
+      {showMore && limit && (
+        <Row justifyContent="center">
+          <LinkButton href={updateParams({ view: type })} variant="quiet">
+            <Icon size="sm">
+              <Maximize />
+            </Icon>
+            <Text>{formatMessage(labels.more)}</Text>
+          </LinkButton>
         </Row>
-        <Column overflowY="auto" minHeight="0" height="100%" paddingRight="3" overflow="hidden">
-          {data &&
-            (isExpanded ? (
-              <ListExpandedTable {...(props as ListExpandedTableProps)} data={data} />
-            ) : (
-              <ListTable {...(props as ListTableProps)} data={filteredData} />
-            ))}
-          {showMore && limit && (
-            <Row justifyContent="center">
-              <LinkButton href={updateParams({ view: type })} variant="quiet">
-                <Icon size="sm">
-                  <Maximize />
-                </Icon>
-                <Text>{formatMessage(labels.more)}</Text>
-              </LinkButton>
-            </Row>
-          )}
-        </Column>
-      </Grid>
+      )}
     </LoadingPanel>
   );
 }

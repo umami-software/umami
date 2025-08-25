@@ -13,6 +13,7 @@ import {
   Network,
   ChartPie,
   UserPlus,
+  Compare,
 } from '@/components/icons';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { SideMenu } from '@/components/common/SideMenu';
@@ -22,7 +23,8 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
   const { pathname, renderUrl, teamId } = useNavigation();
 
-  const renderPath = (path: string) => renderUrl(`/websites/${websiteId}${path}`);
+  const renderPath = (path: string) =>
+    renderUrl(`/websites/${websiteId}${path}`, { event: undefined });
 
   const items = [
     {
@@ -51,6 +53,12 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
           label: formatMessage(labels.realtime),
           icon: <Clock />,
           path: renderPath('/realtime'),
+        },
+        {
+          id: 'compare',
+          label: formatMessage(labels.compare),
+          icon: <Compare />,
+          path: renderPath('/compare'),
         },
         {
           id: 'breakdown',
@@ -132,8 +140,8 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
   ];
 
   const selectedKey =
-    items.flatMap(e => e.items).find(({ path }) => path && pathname.endsWith(path))?.id ||
-    'overview';
+    items.flatMap(e => e.items).find(({ path }) => path && pathname.endsWith(path.split('?')[0]))
+      ?.id || 'overview';
 
   return (
     <SideMenu items={items} selectedKey={selectedKey} allowMinimize={false}>

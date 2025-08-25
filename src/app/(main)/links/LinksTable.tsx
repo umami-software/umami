@@ -1,17 +1,16 @@
+import Link from 'next/link';
 import { DataTable, DataColumn, Row } from '@umami/react-zen';
-import { useConfig, useMessages, useNavigation } from '@/components/hooks';
+import { useMessages, useNavigation, useSlug } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import { DateDistance } from '@/components/common/DateDistance';
 import { ExternalLink } from '@/components/common/ExternalLink';
 import { LinkEditButton } from './LinkEditButton';
 import { LinkDeleteButton } from './LinkDeleteButton';
-import { LINKS_URL } from '@/lib/constants';
 
 export function LinksTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
-  const { websiteId } = useNavigation();
-  const { linksUrl } = useConfig();
-  const hostUrl = linksUrl || LINKS_URL;
+  const { websiteId, renderUrl } = useNavigation();
+  const { getSlugUrl } = useSlug('link');
 
   if (data.length === 0) {
     return <Empty />;
@@ -19,10 +18,14 @@ export function LinksTable({ data = [] }) {
 
   return (
     <DataTable data={data}>
-      <DataColumn id="name" label={formatMessage(labels.name)} />
+      <DataColumn id="name" label={formatMessage(labels.name)}>
+        {({ id, name }: any) => {
+          return <Link href={renderUrl(`/links/${id}`)}>{name}</Link>;
+        }}
+      </DataColumn>
       <DataColumn id="slug" label={formatMessage(labels.link)}>
         {({ slug }: any) => {
-          const url = `${hostUrl}/${slug}`;
+          const url = getSlugUrl(slug);
           return <ExternalLink href={url}>{url}</ExternalLink>;
         }}
       </DataColumn>

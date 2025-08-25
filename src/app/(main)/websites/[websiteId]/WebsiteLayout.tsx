@@ -1,10 +1,10 @@
 'use client';
 import { ReactNode } from 'react';
 import { Column, Grid } from '@umami/react-zen';
-import { WebsiteProvider } from './WebsiteProvider';
+import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
 import { PageBody } from '@/components/common/PageBody';
 import { WebsiteHeader } from './WebsiteHeader';
-import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
+import { WebsiteNav } from './WebsiteNav';
 
 export function WebsiteLayout({ websiteId, children }: { websiteId: string; children: ReactNode }) {
   return (

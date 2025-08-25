@@ -5,10 +5,10 @@ import { Panel } from '@/components/common/Panel';
 import { WebsiteChart } from './WebsiteChart';
 import { WebsiteExpandedView } from './WebsiteExpandedView';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
-import { WebsiteTableView } from './WebsiteTableView';
+import { WebsitePanels } from './WebsitePanels';
 import { WebsiteControls } from './WebsiteControls';
 
-export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
+export function WebsitePage({ websiteId }: { websiteId: string }) {
   const {
     router,
     query: { view, compare },
@@ -27,12 +27,12 @@ export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
 
   return (
     <Column gap>
-      <WebsiteControls websiteId={websiteId} allowCompare={true} />
+      <WebsiteControls websiteId={websiteId} />
       <WebsiteMetricsBar websiteId={websiteId} showChange={true} />
-      <Panel>
+      <Panel minHeight="520px">
         <WebsiteChart websiteId={websiteId} compareMode={compare} />
       </Panel>
-      <WebsiteTableView websiteId={websiteId} />
+      <WebsitePanels websiteId={websiteId} />
       <Modal isOpen={!!view} onOpenChange={handleOpenChange} isDismissable>
         <Dialog style={{ maxWidth: 1320, width: '100vw', height: 'calc(100vh - 40px)' }}>
           {({ close }) => {

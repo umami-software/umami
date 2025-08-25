@@ -1,37 +1,30 @@
-import {
-  Button,
-  Icon,
-  Row,
-  Text,
-  Select,
-  ListItem,
-  TooltipTrigger,
-  Tooltip,
-} from '@umami/react-zen';
+import { Button, Icon, Row, Text, Select, ListItem } from '@umami/react-zen';
 import { isAfter } from 'date-fns';
-import { Chevron, Close, Compare } from '@/components/icons';
+import { Chevron } from '@/components/icons';
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
 import { DateFilter } from './DateFilter';
+
+export interface WebsiteDateFilterProps {
+  websiteId: string;
+  compare?: string;
+  showAllTime?: boolean;
+  showButtons?: boolean;
+  allowCompare?: boolean;
+}
 
 export function WebsiteDateFilter({
   websiteId,
   showAllTime = true,
   showButtons = true,
   allowCompare,
-}: {
-  websiteId: string;
-  compare?: string;
-  showAllTime?: boolean;
-  showButtons?: boolean;
-  allowCompare?: boolean;
-}) {
+}: WebsiteDateFilterProps) {
   const { dateRange } = useDateRange(websiteId);
   const { value, startDate, endDate } = dateRange;
   const { formatMessage, labels } = useMessages();
   const {
     router,
     updateParams,
-    query: { compare, offset = 0 },
+    query: { compare = 'prev', offset = 0 },
   } = useNavigation();
   const isAllTime = value === 'all';
   const isCustomRange = value.startsWith('range');
@@ -48,10 +41,6 @@ export function WebsiteDateFilter({
 
   const handleSelect = (compare: any) => {
     router.push(updateParams({ compare }));
-  };
-
-  const handleCompare = () => {
-    router.push(updateParams({ compare: compare ? undefined : 'prev' }));
   };
 
   return (
@@ -78,7 +67,7 @@ export function WebsiteDateFilter({
         showAllTime={showAllTime}
         renderDate={+offset !== 0}
       />
-      {!isAllTime && compare && (
+      {allowCompare && !isAllTime && (
         <Row alignItems="center" gap>
           <Text weight="bold">VS</Text>
           <Row width="200px">
@@ -92,14 +81,6 @@ export function WebsiteDateFilter({
             </Select>
           </Row>
         </Row>
-      )}
-      {!isAllTime && allowCompare && (
-        <TooltipTrigger delay={0}>
-          <Button variant="quiet" onPress={handleCompare}>
-            <Icon fillColor>{compare ? <Close /> : <Compare />}</Icon>
-          </Button>
-          <Tooltip>{formatMessage(compare ? labels.cancel : labels.compareDates)}</Tooltip>
-        </TooltipTrigger>
       )}
     </Row>
   );

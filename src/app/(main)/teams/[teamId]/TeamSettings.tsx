@@ -1,7 +1,6 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Column, Tabs, TabList, Tab, TabPanel } from '@umami/react-zen';
-import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
-import { useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
+import { useLoginQuery, useMessages, useNavigation, useTeam } from '@/components/hooks';
 
 import { ROLES } from '@/lib/constants';
 import { Users } from '@/components/icons';
@@ -14,7 +13,7 @@ import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
 
 export function TeamSettings({ teamId }: { teamId: string }) {
-  const team = useContext(TeamContext);
+  const team = useTeam();
   const { formatMessage, labels } = useMessages();
   const { user } = useLoginQuery();
   const { query, pathname } = useNavigation();

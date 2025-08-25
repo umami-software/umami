@@ -13,7 +13,7 @@ import {
   LayoutDashboard,
   Link as LinkIcon,
   Logo,
-  Grid2X2,
+  Pixel,
   Settings,
   PanelLeft,
 } from '@/components/icons';
@@ -21,6 +21,7 @@ import { useMessages, useNavigation, useGlobalState } from '@/components/hooks';
 import { TeamsButton } from '@/components/input/TeamsButton';
 import { PanelButton } from '@/components/input/PanelButton';
 import { ProfileButton } from '@/components/input/ProfileButton';
+import { LanguageButton } from '@/components/input/LanguageButton';
 
 export function SideNav(props: SidebarProps) {
   const { formatMessage, labels } = useMessages();
@@ -52,7 +53,7 @@ export function SideNav(props: SidebarProps) {
       id: 'pixels',
       label: formatMessage(labels.pixels),
       path: '/pixels',
-      icon: <Grid2X2 />,
+      icon: <Pixel />,
     },
   ];
 
@@ -97,6 +98,7 @@ export function SideNav(props: SidebarProps) {
             <ProfileButton />
             {!isCollapsed && !hasNav && (
               <Row>
+                <LanguageButton />
                 <ThemeButton />
               </Row>
             )}

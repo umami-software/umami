@@ -10,15 +10,15 @@ export function WebsiteControls({
   allowFilter = true,
   allowDateFilter = true,
   allowMonthFilter,
-  allowCompare,
   allowDownload = false,
+  allowCompare = false,
 }: {
   websiteId: string;
   allowFilter?: boolean;
-  allowCompare?: boolean;
   allowDateFilter?: boolean;
   allowMonthFilter?: boolean;
   allowDownload?: boolean;
+  allowCompare?: boolean;
 }) {
   return (
     <Column gap>

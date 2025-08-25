@@ -9,7 +9,12 @@ export function useRegionNames(locale: string) {
       return regions[regionCode];
     }
 
-    const region = regionCode.includes('-') ? regionCode : `${countryCode}-${regionCode}`;
+    if (!regionCode) {
+      return null;
+    }
+
+    const region = regionCode?.includes('-') ? regionCode : `${countryCode}-${regionCode}`;
+
     return regions[region] ? `${regions[region]}, ${countryNames[countryCode]}` : region;
   };
 

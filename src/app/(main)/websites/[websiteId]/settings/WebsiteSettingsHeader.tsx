@@ -1,10 +1,9 @@
-import { useContext } from 'react';
-import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Globe } from '@/components/icons';
+import { useWebsite } from '@/components/hooks';
 
 export function WebsiteSettingsHeader() {
-  const website = useContext(WebsiteContext);
+  const website = useWebsite();
 
   return <PageHeader title={website?.name} icon={<Globe />} />;
 }

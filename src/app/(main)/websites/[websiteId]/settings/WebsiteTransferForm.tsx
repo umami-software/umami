@@ -1,4 +1,4 @@
-import { Key, useContext, useState } from 'react';
+import { Key, useState } from 'react';
 import {
   Button,
   Form,
@@ -10,8 +10,13 @@ import {
   ListItem,
   Text,
 } from '@umami/react-zen';
-import { useApi, useLoginQuery, useMessages, useUserTeamsQuery } from '@/components/hooks';
-import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
+import {
+  useLoginQuery,
+  useMessages,
+  useUpdateQuery,
+  useUserTeamsQuery,
+  useWebsite,
+} from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 
 export function WebsiteTransferForm({
@@ -24,13 +29,10 @@ export function WebsiteTransferForm({
   onClose?: () => void;
 }) {
   const { user } = useLoginQuery();
-  const website = useContext(WebsiteContext);
+  const website = useWebsite();
   const [teamId, setTeamId] = useState<string>(null);
   const { formatMessage, labels, messages } = useMessages();
-  const { post, useMutation } = useApi();
-  const { mutate, error } = useMutation({
-    mutationFn: (data: any) => post(`/websites/${websiteId}/transfer`, data),
-  });
+  const { mutate, error, isPending } = useUpdateQuery(`/websites/${websiteId}/transfer`);
   const { data: teams, isLoading } = useUserTeamsQuery(user.id);
   const isTeamWebsite = !!website?.teamId;
 
@@ -87,7 +89,11 @@ export function WebsiteTransferForm({
       </FormField>
       <FormButtons>
         <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
-        <FormSubmitButton variant="primary" isDisabled={!isTeamWebsite && !teamId}>
+        <FormSubmitButton
+          variant="primary"
+          isPending={isPending}
+          isDisabled={!isTeamWebsite && !teamId}
+        >
           {formatMessage(labels.transfer)}
         </FormSubmitButton>
       </FormButtons>

@@ -1,4 +1,4 @@
-import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
+import { WebsiteContext } from '@/app/(main)/websites/WebsiteProvider';
 import { useContext } from 'react';
 
 export function useWebsite() {

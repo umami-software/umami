@@ -1,14 +1,12 @@
-import { useContext } from 'react';
 import { Tabs, TabList, Tab, TabPanel } from '@umami/react-zen';
-import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
-import { useMessages } from '@/components/hooks';
+import { useMessages, useWebsite } from '@/components/hooks';
 import { WebsiteShareForm } from './WebsiteShareForm';
 import { WebsiteTrackingCode } from './WebsiteTrackingCode';
 import { WebsiteData } from './WebsiteData';
 import { WebsiteEditForm } from './WebsiteEditForm';
 
 export function WebsiteSettings({ websiteId }: { websiteId: string; openExternal?: boolean }) {
-  const website = useContext(WebsiteContext);
+  const website = useWebsite();
   const { formatMessage, labels } = useMessages();
 
   return (

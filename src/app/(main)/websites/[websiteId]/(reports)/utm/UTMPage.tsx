@@ -11,7 +11,7 @@ export function UTMPage({ websiteId }: { websiteId: string }) {
 
   return (
     <Column gap>
-      <WebsiteControls websiteId={websiteId} allowCompare={false} />
+      <WebsiteControls websiteId={websiteId} />
       <UTM websiteId={websiteId} startDate={startDate} endDate={endDate} />
     </Column>
   );

@@ -1,6 +1,6 @@
 'use client';
-import { WebsiteProvider } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
-import { WebsiteDetailsPage } from '@/app/(main)/websites/[websiteId]/WebsiteDetailsPage';
+import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
+import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
 import { useShareTokenQuery } from '@/components/hooks';
 import { PageBody } from '@/components/common/PageBody';
 import { Header } from './Header';
@@ -17,7 +17,7 @@ export function SharePage({ shareId }) {
     <PageBody>
       <Header />
       <WebsiteProvider websiteId={shareToken.websiteId}>
-        <WebsiteDetailsPage websiteId={shareToken.websiteId} />
+        <WebsitePage websiteId={shareToken.websiteId} />
       </WebsiteProvider>
       <Footer />
     </PageBody>

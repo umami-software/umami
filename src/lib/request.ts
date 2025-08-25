@@ -136,5 +136,6 @@ export async function getQueryFilters(
     orderBy: params?.orderBy,
     sortDescending: params?.sortDescending,
     search: params?.search,
+    compare: params?.compare,
   };
 }

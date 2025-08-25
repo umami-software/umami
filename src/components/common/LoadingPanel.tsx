@@ -30,7 +30,7 @@ export function LoadingPanel({
   return (
     <>
       {/* Show loading spinner only if no data exists */}
-      {(isLoading || isFetching) && !data && (
+      {(isLoading || isFetching) && (
         <Column position="relative" height="100%" {...props}>
           <Loading icon={loadingIcon} position="page" />
         </Column>
