@@ -59,7 +59,7 @@ export function Breakdown({ websiteId, selectedFields = [], startDate, endDate }
         </DataColumn>
         <DataColumn id="visitDuration" label={formatMessage(labels.visitDuration)} align="end">
           {row => {
-            const n = (row?.['totaltime'] / row?.['visits']) * 100;
+            const n = row?.['totaltime'] / row?.['visits'];
             return `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`;
           }}
         </DataColumn>
