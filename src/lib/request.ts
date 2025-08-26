@@ -100,25 +100,33 @@ export async function getQueryFilters(
     await setWebsiteDate(websiteId, dateRange);
 
     if (params.segment) {
-      Object.assign(filters, (await getWebsiteSegment(websiteId, params.segment))?.parameters);
+      const segmentParams = (await getWebsiteSegment(websiteId, params.segment))
+        ?.parameters as Record<string, any>;
+
+      Object.assign(filters, segmentParams.filters);
     }
 
     if (params.cohort) {
-      const cohortFilters = (await getWebsiteSegment(websiteId, params.cohort))
+      const cohortParams = (await getWebsiteSegment(websiteId, params.cohort))
         ?.parameters as Record<string, any>;
 
       // convert dateRange to startDate and endDate
-      if (cohortFilters.dateRange) {
-        const { startDate, endDate } = parseDateRange(cohortFilters.dateRange);
-        cohortFilters.startDate = startDate;
-        cohortFilters.endDate = endDate;
-        delete cohortFilters.dateRange;
+      if (cohortParams.dateRange) {
+        const { startDate, endDate } = parseDateRange(cohortParams.dateRange);
+        cohortParams.startDate = startDate;
+        cohortParams.endDate = endDate;
+        delete cohortParams.dateRange;
+      }
+
+      if (cohortParams.filters) {
+        Object.assign(cohortParams, cohortParams.filters);
+        delete cohortParams.filters;
       }
 
       Object.assign(
         filters,
         Object.fromEntries(
-          Object.entries(cohortFilters || {}).map(([key, value]) =>
+          Object.entries(cohortParams || {}).map(([key, value]) =>
             key === 'startDate' || key === 'endDate'
               ? [`cohort_${key}`, new Date(value)]
               : [`cohort_${key}`, value],
