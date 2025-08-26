@@ -46,6 +46,10 @@ export function DateFilter({
       divider: true,
     },
     {
+      label: formatMessage(labels.lastDays, { x: 28 }),
+      value: '28day',
+    },
+    {
       label: formatMessage(labels.lastDays, { x: 30 }),
       value: '30day',
     },
