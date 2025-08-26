@@ -55,7 +55,9 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
           allowMinimize={false}
         />
       </Column>
-      <PageBody gap="6">{children}</PageBody>
+      <Column gap="6" margin="2">
+        <PageBody>{children}</PageBody>
+      </Column>
     </Grid>
   );
 }
