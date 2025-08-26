@@ -6,6 +6,7 @@ import { Close } from '@/components/icons';
 import { DownloadButton } from '@/components/input/DownloadButton';
 import { formatShortTime } from '@/lib/format';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
+import { SESSION_COLUMNS } from '@/lib/constants';
 
 export interface MetricsExpandedTableProps {
   websiteId: string;
@@ -34,6 +35,7 @@ export function MetricsExpandedTable({
   const [search, setSearch] = useState('');
   const { formatMessage, labels } = useMessages();
   const isType = ['browser', 'country', 'device', 'os'].includes(type);
+  const showBounceDuration = SESSION_COLUMNS.includes(type);
 
   const { data, isLoading, isFetching, error } = useWebsiteExpandedMetricsQuery(websiteId, {
     type,
@@ -85,22 +87,31 @@ export function MetricsExpandedTable({
               <DataColumn id="pageviews" label={formatMessage(labels.views)} align="end">
                 {row => row?.['pageviews']?.toLocaleString()}
               </DataColumn>
-              <DataColumn id="bounceRate" label={formatMessage(labels.bounceRate)} align="end">
-                {row => {
-                  const n = (Math.min(row?.['visits'], row?.['bounces']) / row?.['visits']) * 100;
-                  return Math.round(+n) + '%';
-                }}
-              </DataColumn>
-              <DataColumn
-                id="visitDuration"
-                label={formatMessage(labels.visitDuration)}
-                align="end"
-              >
-                {row => {
-                  const n = (row?.['totaltime'] / row?.['visits']) * 100;
-                  return `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`;
-                }}
-              </DataColumn>
+              {showBounceDuration && [
+                <DataColumn
+                  key="bounceRate"
+                  id="bounceRate"
+                  label={formatMessage(labels.bounceRate)}
+                  align="end"
+                >
+                  {row => {
+                    const n = (Math.min(row?.['visits'], row?.['bounces']) / row?.['visits']) * 100;
+                    return Math.round(+n) + '%';
+                  }}
+                </DataColumn>,
+
+                <DataColumn
+                  key="visitDuration"
+                  id="visitDuration"
+                  label={formatMessage(labels.visitDuration)}
+                  align="end"
+                >
+                  {row => {
+                    const n = row?.['totaltime'] / row?.['visits'];
+                    return `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`;
+                  }}
+                </DataColumn>,
+              ]}
             </DataTable>
           )}
         </Column>

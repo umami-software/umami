@@ -2,7 +2,7 @@ import debug from 'debug';
 import { PrismaClient } from '@/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
-import { SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE } from './constants';
+import { SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE, FILTER_COLUMNS } from './constants';
 import { QueryOptions, QueryFilters } from './types';
 import { filtersObjectToArray } from './params';
 
@@ -79,24 +79,15 @@ function mapFilter(column: string, operator: string, name: string, type: string 
   }
 }
 
-function mapCohortFilter(column: string, operator: string, value: string) {
-  switch (operator) {
-    case OPERATORS.equals:
-      return `${column} = '${value}'`;
-    case OPERATORS.notEquals:
-      return `${column} != '${value}'`;
-    case OPERATORS.contains:
-      return `${column} ilike '${value}'`;
-    case OPERATORS.doesNotContain:
-      return `${column} not ilike '${value}'`;
-    default:
-      return '';
-  }
-}
-
 function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}): string {
   const query = filtersObjectToArray(filters, options).reduce(
     (arr, { name, column, operator, prefix = '' }) => {
+      const isCohort = options?.isCohort;
+
+      if (isCohort) {
+        column = FILTER_COLUMNS[name.slice('cohort_'.length)];
+      }
+
       if (column) {
         arr.push(`and ${mapFilter(`${prefix}${column}`, operator, name)}`);
 
@@ -115,41 +106,23 @@ function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}
   return query.join('\n');
 }
 
-function getCohortQuery(websiteId: string, filters: QueryFilters = {}, options: QueryOptions = {}) {
-  const query = filtersObjectToArray(filters, options).reduce(
-    (arr, { name, column, operator, value }) => {
-      if (column) {
-        arr.push(
-          `${arr.length === 0 ? 'where' : 'and'} ${mapCohortFilter(column, operator, value)}`,
-        );
+function getCohortQuery(filters: QueryFilters = {}) {
+  if (!filters || Object.keys(filters).length === 0) {
+    return '';
+  }
 
-        if (name === 'referrer') {
-          arr.push(`and referrer_domain != hostname`);
-        }
-      }
+  const filterQuery = getFilterQuery(filters, { isCohort: true });
 
-      return arr;
-    },
-    [],
-  );
-
-  if (query.length > 0) {
-    // add website and date range filters
-    query.push(`and website_event.website_id = '${websiteId}'`);
-    query.push(
-      `and website_event.created_at between '${filters.startDate}'::timestamptz and '${filters.endDate}'::timestamptz`,
-    );
-
-    return `join
+  return `join
     (select distinct website_event.session_id
     from website_event
     join session on session.session_id = website_event.session_id
-    ${query.join('\n')}) cohort
+    where website_event.website_id = {{websiteId}}
+      and website_event.created_at between {{cohort_startDate}} and {{cohort_endDate}}
+      ${filterQuery}
+    ) cohort
     on cohort.session_id = website_event.session_id
     `;
-  }
-
-  return '';
 }
 
 function getDateQuery(filters: Record<string, any>) {
@@ -184,6 +157,10 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
     ['referrer', ...SESSION_COLUMNS].includes(key),
   );
 
+  const cohortFilters = Object.fromEntries(
+    Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
+  );
+
   return {
     joinSessionQuery:
       options?.joinSession || joinSession
@@ -192,7 +169,7 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
     dateQuery: getDateQuery(filters),
     filterQuery: getFilterQuery(filters, options),
     queryParams: getQueryParams(filters),
-    cohortQuery: getCohortQuery(filters?.cohort),
+    cohortQuery: getCohortQuery(cohortFilters),
   };
 }
 

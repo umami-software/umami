@@ -2,7 +2,7 @@ import { ClickHouseClient, createClient } from '@clickhouse/client';
 import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
 import { CLICKHOUSE } from '@/lib/db';
-import { DEFAULT_PAGE_SIZE, OPERATORS } from './constants';
+import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from './constants';
 import { filtersObjectToArray } from './params';
 import { QueryFilters, QueryOptions } from './types';
 
@@ -89,6 +89,12 @@ function mapFilter(column: string, operator: string, name: string, type: string 
 
 function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}) {
   const query = filtersObjectToArray(filters, options).reduce((arr, { name, column, operator }) => {
+    const isCohort = options?.isCohort;
+
+    if (isCohort) {
+      column = FILTER_COLUMNS[name.slice('cohort_'.length)];
+    }
+
     if (column) {
       if (name === 'eventType') {
         arr.push(`and ${mapFilter(column, operator, name, 'UInt32')}`);
@@ -107,18 +113,18 @@ function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}
   return query.join('\n');
 }
 
-function getCohortQuery(filters: Record<string, any>, options: QueryOptions = {}) {
-  if (!filters) {
+function getCohortQuery(filters: Record<string, any>) {
+  if (!filters || Object.keys(filters).length === 0) {
     return '';
   }
 
-  const filterQuery = getFilterQuery(filters, options);
+  const filterQuery = getFilterQuery(filters, { isCohort: true });
 
   return `join (
       select distinct session_id
       from website_event
       where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and created_at between {cohort_startDate:DateTime64} and {cohort_endDate:DateTime64}
       ${filterQuery}
     ) as cohort
       on cohort.session_id = website_event.session_id
@@ -159,11 +165,15 @@ function getQueryParams(filters: Record<string, any>) {
 }
 
 function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
+  const cohortFilters = Object.fromEntries(
+    Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
+  );
+
   return {
     filterQuery: getFilterQuery(filters, options),
     dateQuery: getDateQuery(filters),
     queryParams: getQueryParams(filters),
-    cohortQuery: getCohortQuery(filters?.cohortFilters, options),
+    cohortQuery: getCohortQuery(cohortFilters),
   };
 }
 

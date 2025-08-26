@@ -49,6 +49,7 @@ export interface QueryOptions {
   columns?: Record<string, string>;
   limit?: number;
   prefix?: string;
+  isCohort?: boolean;
 }
 
 export interface QueryFilters
