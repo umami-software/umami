@@ -119,6 +119,19 @@ export async function getLocation(ip: string = '', headers: Headers, hasPayloadI
         city,
       };
     }
+
+    // CloudFront headers
+    if (headers.get('cloudfront-viewer-country')) {
+      const country = decodeHeader(headers.get('cloudfront-viewer-country'));
+      const region = decodeHeader(headers.get('cloudfront-viewer-country-region'));
+      const city = decodeHeader(headers.get('cloudfront-viewer-city'));
+
+      return {
+        country,
+        region: getRegionCode(country, region),
+        city,
+      };
+    }
   }
 
   // Database lookup
