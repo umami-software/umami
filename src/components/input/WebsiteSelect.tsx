@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { Select, SelectProps, ListItem, Text } from '@umami/react-zen';
-import { useUserWebsitesQuery, useWebsiteQuery, useNavigation } from '@/components/hooks';
+import {
+  useUserWebsitesQuery,
+  useWebsiteQuery,
+  useNavigation,
+  useMessages,
+} from '@/components/hooks';
+import { Empty } from '@/components/common/Empty';
 
 export function WebsiteSelect({
   websiteId,
@@ -10,6 +16,7 @@ export function WebsiteSelect({
   websiteId?: string;
   teamId?: string;
 } & SelectProps) {
+  const { formatMessage, messages } = useMessages();
   const { router, renderUrl } = useNavigation();
   const [search, setSearch] = useState('');
   const { data: website } = useWebsiteQuery(websiteId);
@@ -21,6 +28,10 @@ export function WebsiteSelect({
 
   const handleSearch = (value: string) => {
     setSearch(value);
+  };
+
+  const handleOpenChange = () => {
+    setSearch('');
   };
 
   return (
@@ -35,6 +46,10 @@ export function WebsiteSelect({
       searchValue={search}
       onSearch={handleSearch}
       onChange={handleSelect}
+      onOpenChange={handleOpenChange}
+      listProps={{
+        renderEmptyState: () => <Empty message={formatMessage(messages.noResultsFound)} />,
+      }}
       renderValue={() => (
         <Text truncate weight="bold" style={{ maxWidth: 160, lineHeight: 1 }}>
           {website?.name}

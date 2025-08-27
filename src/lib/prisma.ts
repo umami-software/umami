@@ -3,7 +3,7 @@ import { PrismaClient } from '@/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import { SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE, FILTER_COLUMNS } from './constants';
-import { QueryOptions, QueryFilters } from './types';
+import { QueryOptions, QueryFilters, Operator } from './types';
 import { filtersObjectToArray } from './params';
 
 const log = debug('umami:prisma');
@@ -143,7 +143,7 @@ function getQueryParams(filters: Record<string, any>) {
   return {
     ...filters,
     ...filtersObjectToArray(filters).reduce((obj, { name, operator, value }) => {
-      obj[name] = [OPERATORS.contains, OPERATORS.doesNotContain].includes(operator)
+      obj[name] = ([OPERATORS.contains, OPERATORS.doesNotContain] as Operator[]).includes(operator)
         ? `%${value}%`
         : value;
 

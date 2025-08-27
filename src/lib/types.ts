@@ -1,5 +1,5 @@
 import { UseQueryOptions } from '@tanstack/react-query';
-import { DATA_TYPE, PERMISSIONS, ROLES } from './constants';
+import { DATA_TYPE, PERMISSIONS, ROLES, OPERATORS } from './constants';
 import { TIME_UNIT } from './date';
 
 export type ObjectValues<T> = T[keyof T];
@@ -10,6 +10,7 @@ export type TimeUnit = ObjectValues<typeof TIME_UNIT>;
 export type Permission = ObjectValues<typeof PERMISSIONS>;
 export type Role = ObjectValues<typeof ROLES>;
 export type DynamicDataType = ObjectValues<typeof DATA_TYPE>;
+export type Operator = (typeof OPERATORS)[keyof typeof OPERATORS];
 
 export interface Auth {
   user?: {
@@ -26,10 +27,10 @@ export interface Auth {
 
 export interface Filter {
   name: string;
-  operator: string;
+  operator: Operator;
   value: string;
   type?: string;
-  columns?: string;
+  column?: string;
   prefix?: string;
 }
 

@@ -10,7 +10,6 @@ import { useNavigation } from './useNavigation';
 
 export interface UseDateRangeOptions {
   ignoreOffset?: boolean;
-  useQueryParameter?: boolean;
 }
 
 export function useDateRange(websiteId?: string, options: UseDateRangeOptions = {}) {
@@ -21,11 +20,7 @@ export function useDateRange(websiteId?: string, options: UseDateRangeOptions = 
   } = useNavigation();
   const websiteConfig = useWebsites(state => state[websiteId]?.dateRange);
   const globalConfig = useApp(state => state.dateRangeValue);
-  const dateValue =
-    (options.useQueryParameter ? date : false) ||
-    websiteConfig?.value ||
-    globalConfig ||
-    DEFAULT_DATE_RANGE_VALUE;
+  const dateValue = websiteConfig?.value || date || globalConfig || DEFAULT_DATE_RANGE_VALUE;
 
   const dateRange = useMemo(() => {
     const dateRangeObject = parseDateRange(dateValue, locale);
