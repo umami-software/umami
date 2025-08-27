@@ -10,6 +10,7 @@ node_modules
 
 # next.js
 /.next/
+/.open-next/
 /out/
 /prisma/
 /src/generated/
@@ -38,6 +39,8 @@ yarn-error.log*
 .env
 .env.*
 *.env.*
+.dev.vars
 
 *.dev.yml
 
+.wrangler
