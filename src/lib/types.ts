@@ -29,6 +29,8 @@ export interface Filter {
   operator: string;
   value: string;
   type?: string;
+  columns?: string;
+  prefix?: string;
 }
 
 export interface DateRange {

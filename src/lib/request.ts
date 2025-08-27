@@ -6,6 +6,7 @@ import { badRequest, unauthorized } from '@/lib/response';
 import { QueryFilters } from '@/lib/types';
 import { getWebsiteSegment } from '@/queries';
 import { z } from 'zod/v4';
+import { filtersArrayToObject } from '@/lib/params';
 
 export async function parseRequest(
   request: Request,
@@ -103,36 +104,31 @@ export async function getQueryFilters(
       const segmentParams = (await getWebsiteSegment(websiteId, params.segment))
         ?.parameters as Record<string, any>;
 
-      Object.assign(filters, segmentParams.filters);
+      Object.assign(filters, filtersArrayToObject(segmentParams.filters));
     }
 
     if (params.cohort) {
       const cohortParams = (await getWebsiteSegment(websiteId, params.cohort))
         ?.parameters as Record<string, any>;
 
-      // convert dateRange to startDate and endDate
-      if (cohortParams.dateRange) {
-        const { startDate, endDate } = parseDateRange(cohortParams.dateRange);
-        cohortParams.startDate = startDate;
-        cohortParams.endDate = endDate;
-        delete cohortParams.dateRange;
-      }
+      const { startDate, endDate } = parseDateRange(cohortParams.dateRange);
 
-      if (cohortParams.filters) {
-        Object.assign(cohortParams, cohortParams.filters);
-        delete cohortParams.filters;
-      }
+      const cohortFilters = cohortParams.filters.map(({ name, ...props }) => ({
+        ...props,
+        name: `cohort_${name}`,
+      }));
 
-      Object.assign(
-        filters,
-        Object.fromEntries(
-          Object.entries(cohortParams || {}).map(([key, value]) =>
-            key === 'startDate' || key === 'endDate'
-              ? [`cohort_${key}`, new Date(value)]
-              : [`cohort_${key}`, value],
-          ),
-        ),
-      );
+      cohortFilters.push({
+        name: cohortParams.action.type,
+        operator: 'eq',
+        value: cohortParams.action.value,
+      });
+
+      Object.assign(filters, {
+        ...filtersArrayToObject(cohortFilters),
+        cohort_startDate: startDate,
+        cohort_endDate: endDate,
+      });
     }
   }
 

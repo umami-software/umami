@@ -53,7 +53,7 @@ export const SESSION_COLUMNS = [
   'region',
 ];
 
-export const FILTER_GROUPS = {
+export const SEGMENT_TYPES = {
   segment: 'segment',
   cohort: 'cohort',
 };

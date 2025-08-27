@@ -1,5 +1,5 @@
 import { canViewWebsite } from '@/validations';
-import { EVENT_COLUMNS, FILTER_COLUMNS, FILTER_GROUPS, SESSION_COLUMNS } from '@/lib/constants';
+import { EVENT_COLUMNS, FILTER_COLUMNS, SEGMENT_TYPES, SESSION_COLUMNS } from '@/lib/constants';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { getWebsiteSegments, getValues } from '@/queries';
@@ -30,14 +30,16 @@ export async function GET(
 
   const { type } = query;
 
-  if (!SESSION_COLUMNS.includes(type) && !EVENT_COLUMNS.includes(type) && !FILTER_GROUPS[type]) {
+  if (!SESSION_COLUMNS.includes(type) && !EVENT_COLUMNS.includes(type) && !SEGMENT_TYPES[type]) {
     return badRequest();
   }
 
-  let values;
+  let values: any[];
 
-  if (FILTER_GROUPS[type]) {
-    values = (await getWebsiteSegments(websiteId, type)).map(segment => ({ value: segment.name }));
+  if (SEGMENT_TYPES[type]) {
+    values = (await getWebsiteSegments(websiteId, type))?.data?.map(segment => ({
+      value: segment.name,
+    }));
   } else {
     const filters = await getQueryFilters(query, websiteId);
     values = await getValues(websiteId, FILTER_COLUMNS[type], filters);

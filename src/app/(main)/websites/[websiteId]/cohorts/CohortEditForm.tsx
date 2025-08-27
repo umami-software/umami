@@ -90,7 +90,9 @@ export function CohortEditForm({
     <Form
       error={error}
       onSubmit={handleSubmit}
-      defaultValues={data || { parameters: { filters, dateRange: '30day' } }}
+      defaultValues={
+        data || { parameters: { filters, dateRange: '30day', action: { type: 'path' } } }
+      }
     >
       <FormField
         name="name"
@@ -104,14 +106,19 @@ export function CohortEditForm({
         <Label>{formatMessage(labels.action)}</Label>
         <Grid columns="260px 1fr" gap>
           <Column>
-            <Select value={action} onChange={setAction}>
-              <ListItem id="path">{formatMessage(labels.viewedPage)}</ListItem>
-              <ListItem id="event">{formatMessage(labels.triggeredEvent)}</ListItem>
-            </Select>
+            <FormField
+              name="parameters.action.type"
+              rules={{ required: formatMessage(labels.required) }}
+            >
+              <Select onSelectionChange={(value: any) => setAction(value)}>
+                <ListItem id="path">{formatMessage(labels.viewedPage)}</ListItem>
+                <ListItem id="event">{formatMessage(labels.triggeredEvent)}</ListItem>
+              </Select>
+            </FormField>
           </Column>
           <Column>
             <FormField
-              name="parameters.action"
+              name="parameters.action.value"
               rules={{ required: formatMessage(labels.required) }}
             >
               {({ field }) => {
