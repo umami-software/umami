@@ -2,7 +2,6 @@ import { DataTable, DataColumn, Row } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import { DateDistance } from '@/components/common/DateDistance';
-import { filtersObjectToArray } from '@/lib/params';
 import { SegmentEditButton } from '@/app/(main)/websites/[websiteId]/segments/SegmentEditButton';
 import { SegmentDeleteButton } from '@/app/(main)/websites/[websiteId]/segments/SegmentDeleteButton';
 import Link from 'next/link';
@@ -27,15 +26,11 @@ export function SegmentsTable({ data = [] }) {
       </DataColumn>
       <DataColumn id="action" align="end" width="100px">
         {(row: any) => {
-          const { id, name, parameters } = row;
+          const { id, name } = row;
 
           return (
             <Row>
-              <SegmentEditButton
-                segmentId={id}
-                websiteId={websiteId}
-                filters={filtersObjectToArray(parameters)}
-              />
+              <SegmentEditButton segmentId={id} websiteId={websiteId} />
               <SegmentDeleteButton segmentId={id} websiteId={websiteId} name={name} />
             </Row>
           );

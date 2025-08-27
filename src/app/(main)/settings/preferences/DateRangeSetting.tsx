@@ -8,17 +8,14 @@ export function DateRangeSetting() {
   const { dateRange, saveDateRange } = useDateRange();
   const { value } = dateRange;
 
-  const handleChange = (value: string) => saveDateRange(value);
+  const handleChange = (value: string) => {
+    saveDateRange(value);
+  };
   const handleReset = () => saveDateRange(DEFAULT_DATE_RANGE_VALUE);
 
   return (
     <Row gap="3">
-      <DateFilter
-        value={value}
-        startDate={dateRange.startDate}
-        endDate={dateRange.endDate}
-        onChange={handleChange}
-      />
+      <DateFilter value={value} onChange={handleChange} />
       <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
     </Row>
   );

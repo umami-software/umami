@@ -13,7 +13,7 @@ export function useWebsiteCohortQuery(
 
   return useQuery({
     queryKey: ['website:cohorts', { websiteId, cohortId, modified }],
-    queryFn: () => get(`/websites/${websiteId}/cohorts/${cohortId}`),
+    queryFn: () => get(`/websites/${websiteId}/segments/${cohortId}`),
     enabled: !!(websiteId && cohortId),
     placeholderData: keepPreviousData,
     ...options,

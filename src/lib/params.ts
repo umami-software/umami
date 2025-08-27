@@ -19,6 +19,10 @@ export function isSearchOperator(operator: any) {
 }
 
 export function filtersObjectToArray(filters: QueryFilters, options: QueryOptions = {}) {
+  if (!filters) {
+    return [];
+  }
+
   return Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
 

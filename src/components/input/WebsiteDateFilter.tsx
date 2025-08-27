@@ -19,7 +19,7 @@ export function WebsiteDateFilter({
   allowCompare,
 }: WebsiteDateFilterProps) {
   const { dateRange } = useDateRange(websiteId);
-  const { value, startDate, endDate } = dateRange;
+  const { value, endDate } = dateRange;
   const { formatMessage, labels } = useMessages();
   const {
     router,
@@ -61,8 +61,6 @@ export function WebsiteDateFilter({
       )}
       <DateFilter
         value={value}
-        startDate={startDate}
-        endDate={endDate}
         onChange={handleChange}
         showAllTime={showAllTime}
         renderDate={+offset !== 0}

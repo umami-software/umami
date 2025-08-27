@@ -51,6 +51,7 @@ export const labels = defineMessages({
   data: { id: 'label.data', defaultMessage: 'Data' },
   trackingCode: { id: 'label.tracking-code', defaultMessage: 'Tracking code' },
   shareUrl: { id: 'label.share-url', defaultMessage: 'Share URL' },
+  action: { id: 'label.action', defaultMessage: 'Action' },
   actions: { id: 'label.actions', defaultMessage: 'Actions' },
   domain: { id: 'label.domain', defaultMessage: 'Domain' },
   websiteId: { id: 'label.website-id', defaultMessage: 'Website ID' },
@@ -357,6 +358,7 @@ export const labels = defineMessages({
   audience: { id: 'label.audience', defaultMessage: 'Audience' },
   invalidUrl: { id: 'label.invalid-url', defaultMessage: 'Invalid URL' },
   environment: { id: 'label.environment', defaultMessage: 'Environment' },
+  criteria: { id: 'label.criteria', defaultMessage: 'Criteria' },
 });
 
 export const messages = defineMessages({

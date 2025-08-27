@@ -7,18 +7,29 @@ import {
   TextField,
   Label,
   Loading,
+  Column,
+  ComboBox,
+  Select,
+  ListItem,
+  Grid,
+  useDebounce,
 } from '@umami/react-zen';
-import { subMonths, endOfDay } from 'date-fns';
+import {
+  useMessages,
+  useUpdateQuery,
+  useWebsiteCohortQuery,
+  useWebsiteValuesQuery,
+} from '@/components/hooks';
+import { DateFilter } from '@/components/input/DateFilter';
 import { FieldFilters } from '@/components/input/FieldFilters';
-import { useState } from 'react';
-import { useMessages, useUpdateQuery, useWebsiteCohortQuery } from '@/components/hooks';
-import { filtersArrayToObject } from '@/lib/params';
+import { SetStateAction, useMemo, useState } from 'react';
+import { endOfDay, subMonths } from 'date-fns';
+import { Empty } from '@/components/common/Empty';
 
 export function CohortEditForm({
   cohortId,
   websiteId,
   filters = [],
-  showFilters = true,
   onSave,
   onClose,
 }: {
@@ -29,32 +40,46 @@ export function CohortEditForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
+  const [action, setAction] = useState('path');
+  const [search, setSearch] = useState('');
+  const searchValue = useDebounce(search, 300);
   const { data } = useWebsiteCohortQuery(websiteId, cohortId);
   const { formatMessage, labels, messages } = useMessages();
-  const [currentFilters, setCurrentFilters] = useState(filters);
   const startDate = subMonths(endOfDay(new Date()), 6);
   const endDate = endOfDay(new Date());
 
+  const { data: searchResults, isLoading } = useWebsiteValuesQuery({
+    websiteId,
+    type: action,
+    search: searchValue,
+    startDate,
+    endDate,
+  });
+
   const { mutate, error, isPending, touch, toast } = useUpdateQuery(
-    `/websites/${websiteId}/cohorts${cohortId ? `/${cohortId}` : ''}`,
+    `/websites/${websiteId}/segments${cohortId ? `/${cohortId}` : ''}`,
     {
-      ...data,
       type: 'cohort',
     },
   );
 
-  const handleSubmit = async (data: any) => {
-    mutate(
-      { ...data, parameters: filtersArrayToObject(currentFilters) },
-      {
-        onSuccess: async () => {
-          toast(formatMessage(messages.save));
-          touch('cohorts');
-          onSave?.();
-          onClose?.();
-        },
+  const items: string[] = useMemo(() => {
+    return searchResults?.map(({ value }) => value) || [];
+  }, [searchResults]);
+
+  const handleSubmit = async (formData: any) => {
+    mutate(formData, {
+      onSuccess: async () => {
+        toast(formatMessage(messages.saved));
+        touch('cohorts');
+        onSave?.();
+        onClose?.();
       },
-    );
+    });
+  };
+
+  const handleSearch = (value: SetStateAction<string>) => {
+    setSearch(value);
   };
 
   if (cohortId && !data) {
@@ -62,7 +87,11 @@ export function CohortEditForm({
   }
 
   return (
-    <Form error={error} onSubmit={handleSubmit} defaultValues={data}>
+    <Form
+      error={error}
+      onSubmit={handleSubmit}
+      defaultValues={data || { parameters: { filters, dateRange: '30day' } }}
+    >
       <FormField
         name="name"
         label={formatMessage(labels.name)}
@@ -70,27 +99,74 @@ export function CohortEditForm({
       >
         <TextField autoFocus />
       </FormField>
-      {showFilters && (
-        <>
-          <Label>{formatMessage(labels.filters)}</Label>
-          <FieldFilters
-            websiteId={websiteId}
-            filters={currentFilters}
-            startDate={startDate}
-            endDate={endDate}
-            onSave={setCurrentFilters}
-          />
-        </>
-      )}
+
+      <Column>
+        <Label>{formatMessage(labels.action)}</Label>
+        <Grid columns="260px 1fr" gap>
+          <Column>
+            <Select value={action} onChange={setAction}>
+              <ListItem id="path">{formatMessage(labels.viewedPage)}</ListItem>
+              <ListItem id="event">{formatMessage(labels.triggeredEvent)}</ListItem>
+            </Select>
+          </Column>
+          <Column>
+            <FormField
+              name="parameters.action"
+              rules={{ required: formatMessage(labels.required) }}
+            >
+              {({ field }) => {
+                return (
+                  <ComboBox
+                    aria-label="action"
+                    items={items}
+                    inputValue={field?.value}
+                    onInputChange={value => {
+                      handleSearch(value);
+                      field?.onChange?.(value);
+                    }}
+                    formValue="text"
+                    allowsEmptyCollection
+                    allowsCustomValue
+                    renderEmptyState={() =>
+                      isLoading ? (
+                        <Loading position="center" icon="dots" />
+                      ) : (
+                        <Empty message={formatMessage(messages.noResultsFound)} />
+                      )
+                    }
+                  >
+                    {items.map(item => (
+                      <ListItem key={item} id={item}>
+                        {item}
+                      </ListItem>
+                    ))}
+                  </ComboBox>
+                );
+              }}
+            </FormField>
+          </Column>
+        </Grid>
+      </Column>
+
+      <Column width="260px">
+        <Label>{formatMessage(labels.dateRange)}</Label>
+        <FormField name="parameters.dateRange" rules={{ required: formatMessage(labels.required) }}>
+          <DateFilter placement="bottom start" />
+        </FormField>
+      </Column>
+
+      <Column>
+        <Label>{formatMessage(labels.filters)}</Label>
+        <FormField name="parameters.filters" rules={{ required: formatMessage(labels.required) }}>
+          <FieldFilters websiteId={websiteId} exclude={['path', 'event']} />
+        </FormField>
+      </Column>
+
       <FormButtons>
         <Button isDisabled={isPending} onPress={onClose}>
           {formatMessage(labels.cancel)}
         </Button>
-        <FormSubmitButton
-          variant="primary"
-          data-test="button-submit"
-          isDisabled={isPending || currentFilters.length === 0}
-        >
+        <FormSubmitButton variant="primary" data-test="button-submit" isDisabled={isPending}>
           {formatMessage(labels.save)}
         </FormSubmitButton>
       </FormButtons>

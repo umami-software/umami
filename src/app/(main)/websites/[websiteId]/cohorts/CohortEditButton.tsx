@@ -17,7 +17,7 @@ export function CohortEditButton({
 
   return (
     <ActionButton title={formatMessage(labels.edit)} icon={<Edit />}>
-      <Dialog title={formatMessage(labels.cohort)} style={{ width: 800, maxHeight: '90vh' }}>
+      <Dialog title={formatMessage(labels.cohort)} style={{ width: 800, minHeight: 300 }}>
         {({ close }) => {
           return (
             <CohortEditForm

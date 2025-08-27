@@ -4,14 +4,14 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { getWebsiteSegments, getValues } from '@/queries';
 import { z } from 'zod';
-import { dateRangeParams, searchParams } from '@/lib/schema';
+import { dateRangeParams, fieldsParam, searchParams } from '@/lib/schema';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
-    type: z.string(),
+    type: fieldsParam,
     ...dateRangeParams,
     ...searchParams,
   });
@@ -31,7 +31,7 @@ export async function GET(
   const { type } = query;
 
   if (!SESSION_COLUMNS.includes(type) && !EVENT_COLUMNS.includes(type) && !FILTER_GROUPS[type]) {
-    return badRequest('Invalid type.');
+    return badRequest();
   }
 
   let values;

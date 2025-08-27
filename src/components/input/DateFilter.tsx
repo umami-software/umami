@@ -4,31 +4,31 @@ import { endOfYear } from 'date-fns';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
 import { useMessages } from '@/components/hooks';
 import { DateDisplay } from '@/components/common/DateDisplay';
+import { parseDateRange } from '@/lib/date';
 
 export interface DateFilterProps {
-  value: string;
-  startDate: Date;
-  endDate: Date;
+  value?: string;
   onChange?: (value: string) => void;
   showAllTime?: boolean;
   renderDate?: boolean;
+  placement?: string;
 }
 
 export function DateFilter({
   value,
-  startDate,
-  endDate,
   onChange,
   showAllTime,
   renderDate,
+  placement = 'bottom',
 }: DateFilterProps) {
   const { formatMessage, labels } = useMessages();
   const [showPicker, setShowPicker] = useState(false);
+  const { startDate, endDate } = parseDateRange(value) || {};
 
   const options = [
     { label: formatMessage(labels.today), value: '0day' },
     {
-      label: formatMessage(labels.lastHours, { x: 24 }),
+      label: formatMessage(labels.lastHours, { x: '24' }),
       value: '24hour',
     },
     {
@@ -37,7 +37,7 @@ export function DateFilter({
       divider: true,
     },
     {
-      label: formatMessage(labels.lastDays, { x: 7 }),
+      label: formatMessage(labels.lastDays, { x: '7' }),
       value: '7day',
     },
     {
@@ -46,21 +46,21 @@ export function DateFilter({
       divider: true,
     },
     {
-      label: formatMessage(labels.lastDays, { x: 30 }),
+      label: formatMessage(labels.lastDays, { x: '30' }),
       value: '30day',
     },
     {
-      label: formatMessage(labels.lastDays, { x: 90 }),
+      label: formatMessage(labels.lastDays, { x: '90' }),
       value: '90day',
     },
     { label: formatMessage(labels.thisYear), value: '0year' },
     {
-      label: formatMessage(labels.lastMonths, { x: 6 }),
+      label: formatMessage(labels.lastMonths, { x: '6' }),
       value: '6month',
       divider: true,
     },
     {
-      label: formatMessage(labels.lastMonths, { x: 12 }),
+      label: formatMessage(labels.lastMonths, { x: '12' }),
       value: '12month',
     },
     showAllTime && {
@@ -105,7 +105,7 @@ export function DateFilter({
         placeholder={formatMessage(labels.selectDate)}
         onChange={handleChange}
         renderValue={renderValue}
-        popoverProps={{ placement: 'bottom' }}
+        popoverProps={{ placement: placement as any }}
       >
         {options.map(({ label, value, divider }: any) => {
           return (

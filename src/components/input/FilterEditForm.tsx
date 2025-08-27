@@ -51,7 +51,7 @@ export function FilterEditForm({
         <TabPanel id="fields">
           <FieldFilters
             websiteId={websiteId}
-            filters={currentFilters}
+            value={currentFilters}
             startDate={startDate}
             endDate={endDate}
             onSave={setCurrentFilters}

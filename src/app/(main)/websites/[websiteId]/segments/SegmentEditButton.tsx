@@ -11,13 +11,13 @@ export function SegmentEditButton({
 }: {
   segmentId: string;
   websiteId: string;
-  filters: any[];
+  filters?: any[];
 }) {
   const { formatMessage, labels } = useMessages();
 
   return (
     <ActionButton title={formatMessage(labels.edit)} icon={<Edit />}>
-      <Dialog title={formatMessage(labels.segment)} style={{ width: 800, maxHeight: '90vh' }}>
+      <Dialog title={formatMessage(labels.segment)} style={{ width: 800, minHeight: 300 }}>
         {({ close }) => {
           return (
             <SegmentEditForm

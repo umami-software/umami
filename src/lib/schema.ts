@@ -87,6 +87,7 @@ export const fieldsParam = z.enum([
   'tag',
   'hostname',
   'language',
+  'event',
 ]);
 
 export const reportTypeParam = z.enum([

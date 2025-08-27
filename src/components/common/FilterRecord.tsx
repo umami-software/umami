@@ -3,6 +3,7 @@ import { Grid, Column, TextField, Label, Select, Icon, Button, ListItem } from '
 import { useFilters, useFormat, useWebsiteValuesQuery } from '@/components/hooks';
 import { Close } from '@/components/icons';
 import { isSearchOperator } from '@/lib/params';
+import { Empty } from '@/components/common/Empty';
 
 export interface FilterRecordProps {
   websiteId: string;
@@ -41,18 +42,23 @@ export function FilterRecord({
     endDate,
   });
   const isSearch = isSearchOperator(operator);
+  const items = data?.filter(({ value }) => value) || [];
 
-  const handleSearch = value => {
+  const handleSearch = (value: string) => {
     setSearch(value);
   };
 
-  const handleSelectOperator = value => {
+  const handleSelectOperator = (value: any) => {
     onSelect?.(name, value);
   };
 
-  const handleSelectValue = value => {
+  const handleSelectValue = (value: string) => {
     setSelected(value);
     onChange?.(name, value);
+  };
+
+  const renderValue = () => {
+    return formatValue(selected, type);
   };
 
   return (
@@ -78,15 +84,17 @@ export function FilterRecord({
           )}
           {!isSearch && (
             <Select
-              items={data}
+              items={items}
               value={selected}
               onChange={handleSelectValue}
               searchValue={search}
+              renderValue={renderValue}
               onSearch={handleSearch}
               isLoading={isLoading}
+              listProps={{ renderEmptyState: () => <Empty /> }}
               allowSearch
             >
-              {data?.map(({ value }) => {
+              {items?.map(({ value }) => {
                 return (
                   <ListItem key={value} id={value}>
                     {formatValue(value, type)}

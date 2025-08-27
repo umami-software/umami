@@ -72,7 +72,7 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
               label={label}
               operator={operatorLabels[operator]}
               value={paramValue}
-              onRemove={name => handleCloseFilter(name)}
+              onRemove={(name: string) => handleCloseFilter(name)}
             />
           );
         })}
@@ -143,7 +143,7 @@ const FilterItem = ({ name, label, operator, value, onRemove }) => {
             {value}
           </Text>
         </Row>
-        <Icon onClick={() => onRemove(name)} size="xs">
+        <Icon onClick={() => onRemove(name)} size="xs" style={{ cursor: 'pointer' }}>
           <Close />
         </Icon>
       </Row>

@@ -70,7 +70,11 @@ export function SideNav(props: SidebarProps) {
     <Row height="100%" backgroundColor border="right">
       <Sidebar {...props} isCollapsed={isCollapsed || hasNav} muteItems={false} showBorder={false}>
         <SidebarSection onClick={() => setIsCollapsed(false)}>
-          <SidebarHeader label="umami" icon={isCollapsed && !hasNav ? <PanelLeft /> : <Logo />}>
+          <SidebarHeader
+            label="umami"
+            icon={isCollapsed && !hasNav ? <PanelLeft /> : <Logo />}
+            style={{ maxHeight: 40 }}
+          >
             {!isCollapsed && !hasNav && <PanelButton />}
           </SidebarHeader>
         </SidebarSection>
@@ -81,7 +85,12 @@ export function SideNav(props: SidebarProps) {
           {links.map(({ id, path, label, icon }) => {
             return (
               <Link key={id} href={renderUrl(path, false)} role="button">
-                <SidebarItem label={label} icon={icon} isSelected={pathname.endsWith(path)} />
+                <SidebarItem
+                  label={label}
+                  icon={icon}
+                  isSelected={pathname.endsWith(path)}
+                  role="button"
+                />
               </Link>
             );
           })}
@@ -90,7 +99,12 @@ export function SideNav(props: SidebarProps) {
           {bottomLinks.map(({ id, path, label, icon }) => {
             return (
               <Link key={id} href={path} role="button">
-                <SidebarItem label={label} icon={icon} isSelected={pathname.includes(path)} />
+                <SidebarItem
+                  label={label}
+                  icon={icon}
+                  isSelected={pathname.includes(path)}
+                  role="button"
+                />
               </Link>
             );
           })}

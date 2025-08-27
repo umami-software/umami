@@ -38,8 +38,8 @@ export function TeamsButton({ showText = true }: { showText?: boolean }) {
   return (
     <MenuTrigger>
       <Pressable>
-        <Row width="100%" backgroundColor="2" border borderRadius>
-          <SidebarItem label={label} icon={teamId ? <Users /> : <User />}>
+        <Row role="button" width="100%" backgroundColor="2" border borderRadius>
+          <SidebarItem role="button" label={label} icon={teamId ? <Users /> : <User />}>
             {showText && (
               <Icon rotate={90} size="sm">
                 <Chevron />

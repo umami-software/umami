@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl';
 import { messages, labels } from '@/components/messages';
 
-export function useMessages(): any {
+export function useMessages() {
   const intl = useIntl();
 
   const getMessage = (id: string) => {

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { getMinimumUnit, parseDateRange, getOffsetDateRange } from '@/lib/date';
 import { setItem } from '@/lib/storage';
 import { DATE_RANGE_CONFIG, DEFAULT_DATE_COMPARE, DEFAULT_DATE_RANGE_VALUE } from '@/lib/constants';
@@ -6,10 +7,10 @@ import { setDateRangeValue, useApp } from '@/store/app';
 import { useLocale } from './useLocale';
 import { useApi } from './useApi';
 import { useNavigation } from './useNavigation';
-import { useMemo } from 'react';
 
 export interface UseDateRangeOptions {
   ignoreOffset?: boolean;
+  useQueryParameter?: boolean;
 }
 
 export function useDateRange(websiteId?: string, options: UseDateRangeOptions = {}) {
@@ -20,7 +21,11 @@ export function useDateRange(websiteId?: string, options: UseDateRangeOptions = 
   } = useNavigation();
   const websiteConfig = useWebsites(state => state[websiteId]?.dateRange);
   const globalConfig = useApp(state => state.dateRangeValue);
-  const dateValue = date || websiteConfig?.value || globalConfig || DEFAULT_DATE_RANGE_VALUE;
+  const dateValue =
+    (options.useQueryParameter ? date : false) ||
+    websiteConfig?.value ||
+    globalConfig ||
+    DEFAULT_DATE_RANGE_VALUE;
 
   const dateRange = useMemo(() => {
     const dateRangeObject = parseDateRange(dateValue, locale);
