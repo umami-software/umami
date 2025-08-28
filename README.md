@@ -43,7 +43,7 @@ A detailed getting started guide can be found at [umami.is/docs](https://umami.i
 ```bash
 git clone https://github.com/umami-software/umami.git
 cd umami
-npm install
+pnpm install
 ```
 
 ### Configure Umami
@@ -64,7 +64,7 @@ mysql://username:mypassword@localhost:3306/mydb
 ### Build the Application
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 _The build step will create tables in your database if you are installing for the first time. It will also create a login user with username **admin** and password **umami**._
@@ -72,7 +72,7 @@ _The build step will create tables in your database if you are installing for th
 ### Start the Application
 
 ```bash
-npm run start
+pnpm run start
 ```
 
 _By default, this will launch the application on `http://localhost:3000`. You will need to either [proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly._
@@ -107,8 +107,8 @@ To get the latest features, simply do a pull, install any new dependencies, and 
 
 ```bash
 git pull
-npm install
-npm run build
+pnpm install
+pnpm run build
 ```
 
 To update the Docker image, simply pull the new images and rebuild:
