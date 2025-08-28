@@ -3,6 +3,7 @@ import { Edit } from '@/components/icons';
 import { Dialog } from '@umami/react-zen';
 import { CohortEditForm } from '@/app/(main)/websites/[websiteId]/cohorts/CohortEditForm';
 import { useMessages } from '@/components/hooks';
+import { Filter } from '@/lib/types';
 
 export function CohortEditButton({
   cohortId,
@@ -11,7 +12,7 @@ export function CohortEditButton({
 }: {
   cohortId: string;
   websiteId: string;
-  filters: any[];
+  filters: Filter[];
 }) {
   const { formatMessage, labels } = useMessages();
 

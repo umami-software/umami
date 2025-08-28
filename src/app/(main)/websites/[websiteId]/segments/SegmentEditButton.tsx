@@ -3,6 +3,7 @@ import { Edit } from '@/components/icons';
 import { Dialog } from '@umami/react-zen';
 import { SegmentEditForm } from '@/app/(main)/websites/[websiteId]/segments/SegmentEditForm';
 import { useMessages } from '@/components/hooks';
+import { Filter } from '@/lib/types';
 
 export function SegmentEditButton({
   segmentId,
@@ -11,7 +12,7 @@ export function SegmentEditButton({
 }: {
   segmentId: string;
   websiteId: string;
-  filters?: any[];
+  filters?: Filter[];
 }) {
   const { formatMessage, labels } = useMessages();
 
