@@ -429,6 +429,7 @@ export const GROUPED_DOMAINS = [
   { name: 'DuckDuckGo', domain: 'duckduckgo.com', match: 'duckduckgo.' },
   { name: 'Facebook', domain: 'facebook.com', match: 'facebook.' },
   { name: 'GitHub', domain: 'github.com', match: 'github.' },
+  { name: 'Google', domain: 'google.com', match: 'google.' },
   { name: 'Hacker News', domain: 'news.ycombinator.com', match: 'news.ycombinator.com' },
   { name: 'Instagram', domain: 'instagram.com', match: ['instagram.', 'ig.com'] },
   { name: 'LinkedIn', domain: 'linkedin.com', match: 'linkedin.' },
@@ -436,7 +437,6 @@ export const GROUPED_DOMAINS = [
   { name: 'Reddit', domain: 'reddit.com', match: 'reddit.' },
   { name: 'Snapchat', domain: 'snapchat.com', match: 'snapchat.' },
   { name: 'Twitter', domain: 'twitter.com', match: ['twitter.', 't.co', 'x.com'] },
-  { name: 'Google', domain: 'google.com', match: 'google.' },
 ];
 
 export const MAP_FILE = '/datamaps.world.json';
