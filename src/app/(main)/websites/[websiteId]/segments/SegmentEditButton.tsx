@@ -18,7 +18,10 @@ export function SegmentEditButton({
 
   return (
     <ActionButton title={formatMessage(labels.edit)} icon={<Edit />}>
-      <Dialog title={formatMessage(labels.segment)} style={{ width: 800, minHeight: 300 }}>
+      <Dialog
+        title={formatMessage(labels.segment)}
+        style={{ width: 800, minHeight: 300, maxHeight: '90vh' }}
+      >
         {({ close }) => {
           return (
             <SegmentEditForm
