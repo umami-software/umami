@@ -52,12 +52,12 @@ export function WebsiteExpandedView({
       items: [
         {
           id: 'referrer',
-          label: formatMessage(labels.referrers),
+          label: formatMessage(labels.referrer),
           path: updateParams({ view: 'referrer' }),
         },
         {
           id: 'channel',
-          label: formatMessage(labels.channels),
+          label: formatMessage(labels.channel),
           path: updateParams({ view: 'channel' }),
         },
         {
@@ -72,17 +72,17 @@ export function WebsiteExpandedView({
       items: [
         {
           id: 'country',
-          label: formatMessage(labels.countries),
+          label: formatMessage(labels.country),
           path: updateParams({ view: 'country' }),
         },
         {
           id: 'region',
-          label: formatMessage(labels.regions),
+          label: formatMessage(labels.region),
           path: updateParams({ view: 'region' }),
         },
         {
           id: 'city',
-          label: formatMessage(labels.cities),
+          label: formatMessage(labels.city),
           path: updateParams({ view: 'city' }),
         },
       ],
@@ -92,7 +92,7 @@ export function WebsiteExpandedView({
       items: [
         {
           id: 'browser',
-          label: formatMessage(labels.browsers),
+          label: formatMessage(labels.browser),
           path: updateParams({ view: 'browser' }),
         },
         {
@@ -102,17 +102,17 @@ export function WebsiteExpandedView({
         },
         {
           id: 'device',
-          label: formatMessage(labels.devices),
+          label: formatMessage(labels.device),
           path: updateParams({ view: 'device' }),
         },
         {
           id: 'language',
-          label: formatMessage(labels.languages),
+          label: formatMessage(labels.language),
           path: updateParams({ view: 'language' }),
         },
         {
           id: 'screen',
-          label: formatMessage(labels.screens),
+          label: formatMessage(labels.screen),
           path: updateParams({ view: 'screen' }),
         },
       ],
@@ -122,7 +122,7 @@ export function WebsiteExpandedView({
       items: [
         {
           id: 'event',
-          label: formatMessage(labels.events),
+          label: formatMessage(labels.event),
           path: updateParams({ view: 'event' }),
         },
         {
@@ -132,7 +132,7 @@ export function WebsiteExpandedView({
         },
         {
           id: 'tag',
-          label: formatMessage(labels.tags),
+          label: formatMessage(labels.tag),
           path: updateParams({ view: 'tag' }),
         },
       ],

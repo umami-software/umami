@@ -5,7 +5,6 @@ import classNames from 'classnames';
 import { colord } from 'colord';
 import { ISO_COUNTRIES, MAP_FILE } from '@/lib/constants';
 import {
-  useDateRange,
   useWebsiteMetricsQuery,
   useCountryNames,
   useLocale,
@@ -30,14 +29,11 @@ export function WorldMap({ websiteId, data, className, ...props }: WorldMapProps
   const { countryNames } = useCountryNames(locale);
   const visitorsLabel = formatMessage(labels.visitors).toLocaleLowerCase(locale);
   const unknownLabel = formatMessage(labels.unknown);
-  const {
-    dateRange: { startDate, endDate },
-  } = useDateRange(websiteId);
+
   const { data: mapData } = useWebsiteMetricsQuery(websiteId, {
     type: 'country',
-    startAt: +startDate,
-    endAt: +endDate,
   });
+
   const metrics = useMemo(
     () => (data || mapData ? percentFilter((data || mapData) as any[]) : []),
     [data, mapData],

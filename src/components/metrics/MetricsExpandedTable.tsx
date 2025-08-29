@@ -67,6 +67,7 @@ export function MetricsExpandedTable({
         isLoading={isLoading}
         error={error}
         height="100%"
+        loadingIcon="spinner"
       >
         <Column overflowY="auto" minHeight="0" height="100%" paddingRight="3" overflow="hidden">
           {items && (

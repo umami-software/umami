@@ -59,30 +59,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
           </Tabs>
         </Panel>
       </GridRow>
-      <GridRow layout="two-one" {...rowProps}>
-        <Panel gridColumn="span 2" noPadding>
-          <WorldMap websiteId={websiteId} />
-        </Panel>
-        <Panel>
-          <Heading size="2">{formatMessage(labels.location)}</Heading>
-          <Tabs>
-            <TabList>
-              <Tab id="country">{formatMessage(labels.countries)}</Tab>
-              <Tab id="region">{formatMessage(labels.regions)}</Tab>
-              <Tab id="city">{formatMessage(labels.cities)}</Tab>
-            </TabList>
-            <TabPanel id="country">
-              <MetricsTable type="country" title={formatMessage(labels.country)} {...tableProps} />
-            </TabPanel>
-            <TabPanel id="region">
-              <MetricsTable type="region" title={formatMessage(labels.region)} {...tableProps} />
-            </TabPanel>
-            <TabPanel id="city">
-              <MetricsTable type="city" title={formatMessage(labels.city)} {...tableProps} />
-            </TabPanel>
-          </Tabs>
-        </Panel>
-      </GridRow>
+
       <GridRow layout="two" {...rowProps}>
         <Panel>
           <Heading size="2">{formatMessage(labels.environment)}</Heading>
@@ -103,6 +80,33 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
             </TabPanel>
           </Tabs>
         </Panel>
+
+        <Panel>
+          <Heading size="2">{formatMessage(labels.location)}</Heading>
+          <Tabs>
+            <TabList>
+              <Tab id="country">{formatMessage(labels.countries)}</Tab>
+              <Tab id="region">{formatMessage(labels.regions)}</Tab>
+              <Tab id="city">{formatMessage(labels.cities)}</Tab>
+            </TabList>
+            <TabPanel id="country">
+              <MetricsTable type="country" title={formatMessage(labels.country)} {...tableProps} />
+            </TabPanel>
+            <TabPanel id="region">
+              <MetricsTable type="region" title={formatMessage(labels.region)} {...tableProps} />
+            </TabPanel>
+            <TabPanel id="city">
+              <MetricsTable type="city" title={formatMessage(labels.city)} {...tableProps} />
+            </TabPanel>
+          </Tabs>
+        </Panel>
+      </GridRow>
+
+      <GridRow layout="two-one" {...rowProps}>
+        <Panel gridColumn="span 2" noPadding>
+          <WorldMap websiteId={websiteId} />
+        </Panel>
+
         <Panel>
           <Heading size="2">{formatMessage(labels.traffic)}</Heading>
           <Row border="bottom" marginBottom="4" />
