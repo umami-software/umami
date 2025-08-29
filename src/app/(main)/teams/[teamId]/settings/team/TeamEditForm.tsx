@@ -71,6 +71,15 @@ export function TeamEditForm({ teamId, allowEdit }: { teamId: string; allowEdit?
           </Flexbox>
         </FormRow>
       )}
+      <FormRow label={formatMessage(labels.invitationLink)}>
+        <Flexbox gap={10}>
+          <TextField
+            value={`${window.location.host}/invite?accessCode=${accessCode}`}
+            readOnly
+            allowCopy
+          />
+        </Flexbox>
+      </FormRow>
       {allowEdit && (
         <FormButtons>
           <SubmitButton variant="primary">{formatMessage(labels.save)}</SubmitButton>

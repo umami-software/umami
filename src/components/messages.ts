@@ -33,6 +33,7 @@ export const labels = defineMessages({
   member: { id: 'label.member', defaultMessage: 'Member' },
   members: { id: 'label.members', defaultMessage: 'Members' },
   accessCode: { id: 'label.access-code', defaultMessage: 'Access code' },
+  invitationLink: { id: 'label.invitation-link', defaultMessage: 'Invitation link' },
   teamId: { id: 'label.team-id', defaultMessage: 'Team ID' },
   team: { id: 'label.team', defaultMessage: 'Team' },
   teamName: { id: 'label.team-name', defaultMessage: 'Team name' },
