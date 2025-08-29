@@ -9,6 +9,9 @@ export function TypeIcon({
   value: string;
   children?: ReactNode;
 }) {
+  if (value === undefined) {
+    value = 'unknown';
+  }
   return (
     <>
       <img
@@ -19,8 +22,8 @@ export function TypeIcon({
           e.currentTarget.src = `${process.env.basePath || ''}/images/${type}/unknown.png`;
         }}
         alt={value}
-        width={type === 'country' ? undefined : 16}
-        height={type === 'country' ? undefined : 16}
+        width={16}
+        height={16}
       />
       {children}
     </>
