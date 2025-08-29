@@ -101,57 +101,6 @@ export const reportTypeParam = z.enum([
   'utm',
 ]);
 
-export const dateRangeSchema = z.object({ ...dateRangeParams }).superRefine((data, ctx) => {
-  const hasTimestamps = data.startAt !== undefined && data.endAt !== undefined;
-  const hasDates = data.startDate !== undefined && data.endDate !== undefined;
-
-  if (!hasTimestamps && !hasDates) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'You must provide either startAt & endAt or startDate & endDate.',
-    });
-  }
-
-  if (hasTimestamps && hasDates) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'Provide either startAt & endAt or startDate & endDate, not both.',
-    });
-  }
-
-  if (data.startAt !== undefined && data.endAt === undefined) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'If you provide startAt, you must also provide endAt.',
-      path: ['endAt'],
-    });
-  }
-
-  if (data.endAt !== undefined && data.startAt === undefined) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'If you provide endAt, you must also provide startAt.',
-      path: ['startAt'],
-    });
-  }
-
-  if (data.startDate !== undefined && data.endDate === undefined) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'If you provide startDate, you must also provide endDate.',
-      path: ['endDate'],
-    });
-  }
-
-  if (data.endDate !== undefined && data.startDate === undefined) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'If you provide endDate, you must also provide startDate.',
-      path: ['startDate'],
-    });
-  }
-});
-
 export const goalReportSchema = z.object({
   type: z.literal('goal'),
   parameters: z
@@ -180,7 +129,7 @@ export const funnelReportSchema = z.object({
     steps: z
       .array(
         z.object({
-          type: z.enum(['page', 'event']),
+          type: z.enum(['path', 'event']),
           value: z.string(),
         }),
       )
@@ -233,7 +182,7 @@ export const attributionReportSchema = z.object({
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
     model: z.enum(['first-click', 'last-click']),
-    type: z.enum(['page', 'event']),
+    type: z.enum(['path', 'event']),
     step: z.string(),
     currency: z.string().optional(),
   }),
@@ -253,6 +202,7 @@ export const reportBaseSchema = z.object({
   type: reportTypeParam,
   name: z.string().max(200),
   description: z.string().max(500).optional(),
+  parameters: z.object({}).passthrough(),
 });
 
 export const reportTypeSchema = z.discriminatedUnion('type', [
@@ -266,7 +216,7 @@ export const reportTypeSchema = z.discriminatedUnion('type', [
   breakdownReportSchema,
 ]);
 
-export const reportSchema = z.intersection(reportBaseSchema, reportTypeSchema);
+export const reportSchema = reportBaseSchema;
 
 export const reportResultSchema = z.intersection(
   z.object({

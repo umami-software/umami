@@ -15,7 +15,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
     showMore: true,
     metric: formatMessage(labels.visitors),
   };
-  const rowProps = { minHeight: 570 };
+  const rowProps = { minHeight: '570px' };
 
   return (
     <Grid gap="3">

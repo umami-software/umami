@@ -54,7 +54,7 @@ async function relationalQuery(
       (pv, cv, i) => {
         const levelNumber = i + 1;
         const startSum = i > 0 ? 'union ' : '';
-        const isURL = cv.type === 'page';
+        const isURL = cv.type === 'path';
         const column = isURL ? 'url_path' : 'event_name';
 
         let operator = '=';
@@ -161,7 +161,7 @@ async function clickhouseQuery(
         const levelNumber = i + 1;
         const startSum = i > 0 ? 'union all ' : '';
         const startFilter = i > 0 ? 'or' : '';
-        const isURL = cv.type === 'page';
+        const isURL = cv.type === 'path';
         const column = isURL ? 'url_path' : 'event_name';
 
         let operator = '=';

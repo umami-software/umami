@@ -7,7 +7,7 @@ export function ActionButton({
   title,
   children,
 }: {
-  onSave?: () => void;
+  onClick?: () => void;
   icon?: ReactNode;
   title?: string;
   children?: ReactNode;

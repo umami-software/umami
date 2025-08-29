@@ -16,9 +16,10 @@ export function GoalAddButton({ websiteId }: { websiteId: string }) {
       </Button>
       <Modal>
         <Dialog
+          aria-label="add goal"
           variant="modal"
           title={formatMessage(labels.goal)}
-          style={{ minHeight: 375, minWidth: 400 }}
+          style={{ minWidth: 800, minHeight: 300 }}
         >
           {({ close }) => <GoalEditForm websiteId={websiteId} onClose={close} />}
         </Dialog>

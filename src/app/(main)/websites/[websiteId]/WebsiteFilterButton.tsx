@@ -1,7 +1,7 @@
 import { Button, Icon, DialogTrigger, Dialog, Modal, Text } from '@umami/react-zen';
 import { ListFilter } from '@/components/icons';
 import { FilterEditForm } from '@/components/input/FilterEditForm';
-import { useMessages, useNavigation, useFilters } from '@/components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
 import { filtersArrayToObject } from '@/lib/params';
 
 export function WebsiteFilterButton({
@@ -14,17 +14,12 @@ export function WebsiteFilterButton({
   showText?: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
-  const {
-    replaceParams,
-    router,
-    query: { segment },
-  } = useNavigation();
-  const { filters } = useFilters();
+  const { replaceParams, router } = useNavigation();
 
-  const handleChange = ({ filters, segment }) => {
+  const handleChange = ({ filters, segment, cohort }: any) => {
     const params = filtersArrayToObject(filters);
 
-    const url = replaceParams({ ...params, segment });
+    const url = replaceParams({ ...params, segment, cohort });
 
     router.push(url);
   };
@@ -40,15 +35,7 @@ export function WebsiteFilterButton({
       <Modal>
         <Dialog title={formatMessage(labels.filters)} style={{ width: 800, minHeight: 600 }}>
           {({ close }) => {
-            return (
-              <FilterEditForm
-                websiteId={websiteId}
-                filters={filters}
-                segmentId={segment}
-                onChange={handleChange}
-                onClose={close}
-              />
-            );
+            return <FilterEditForm websiteId={websiteId} onChange={handleChange} onClose={close} />;
           }}
         </Dialog>
       </Modal>

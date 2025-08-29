@@ -6,14 +6,13 @@ import {
   FormButtons,
   FormSubmitButton,
   Button,
-  RadioGroup,
-  Radio,
-  Text,
-  Icon,
   Loading,
+  Column,
+  Label,
 } from '@umami/react-zen';
 import { useMessages, useReportQuery, useUpdateQuery } from '@/components/hooks';
-import { File, Lightning } from '@/components/icons';
+import { LookupField } from '@/components/input/LookupField';
+import { ActionSelect } from '@/components/input/ActionSelect';
 
 export function GoalEditForm({
   id,
@@ -27,13 +26,12 @@ export function GoalEditForm({
   onClose?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-
   const { data } = useReportQuery(id);
   const { mutate, error, isPending, touch } = useUpdateQuery(`/reports${id ? `/${id}` : ''}`);
 
-  const handleSubmit = async ({ name, ...parameters }) => {
+  const handleSubmit = async (formData: Record<string, any>) => {
     mutate(
-      { ...data, id, name, type: 'goal', websiteId, parameters },
+      { ...formData, type: 'goal', websiteId },
       {
         onSuccess: async () => {
           if (id) touch(`report:${id}`);
@@ -50,15 +48,15 @@ export function GoalEditForm({
   }
 
   const defaultValues = {
-    name: data?.name || '',
-    type: data?.parameters?.type || 'page',
-    value: data?.parameters?.value || '',
+    name: '',
+    parameters: { type: 'path', value: '' },
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error?.message} defaultValues={defaultValues}>
+    <Form onSubmit={handleSubmit} error={error?.message} defaultValues={data || defaultValues}>
       {({ watch }) => {
-        const watchType = watch('type');
+        const type = watch('parameters.type');
+
         return (
           <>
             <FormField
@@ -68,35 +66,30 @@ export function GoalEditForm({
             >
               <TextField autoFocus />
             </FormField>
-            <FormField
-              name="type"
-              label={formatMessage(labels.type)}
-              rules={{ required: formatMessage(labels.required) }}
-            >
-              <RadioGroup orientation="horizontal" variant="box">
-                <Grid columns="1fr 1fr" flexGrow={1} gap>
-                  <Radio value="page">
-                    <Icon>
-                      <File />
-                    </Icon>
-                    <Text>{formatMessage(labels.page)}</Text>
-                  </Radio>
-                  <Radio value="event">
-                    <Icon>
-                      <Lightning />
-                    </Icon>
-                    <Text>{formatMessage(labels.event)}</Text>
-                  </Radio>
-                </Grid>
-              </RadioGroup>
-            </FormField>
-            <FormField
-              name="value"
-              label={formatMessage(watchType === 'event' ? labels.eventName : labels.path)}
-              rules={{ required: formatMessage(labels.required) }}
-            >
-              <TextField />
-            </FormField>
+            <Column>
+              <Label>{formatMessage(labels.action)}</Label>
+              <Grid columns="260px 1fr" gap>
+                <Column>
+                  <FormField
+                    name="parameters.type"
+                    rules={{ required: formatMessage(labels.required) }}
+                  >
+                    <ActionSelect />
+                  </FormField>
+                </Column>
+                <Column>
+                  <FormField
+                    name="parameters.value"
+                    rules={{ required: formatMessage(labels.required) }}
+                  >
+                    {({ field }) => {
+                      return <LookupField websiteId={websiteId} type={type} {...field} />;
+                    }}
+                  </FormField>
+                </Column>
+              </Grid>
+            </Column>
+
             <FormButtons>
               <Button onPress={onClose} isDisabled={isPending}>
                 {formatMessage(labels.cancel)}

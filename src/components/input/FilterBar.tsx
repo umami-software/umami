@@ -30,8 +30,8 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
     query: { segment, cohort },
   } = useNavigation();
   const { filters, operatorLabels } = useFilters();
-  const { data, isLoading } = useWebsiteSegmentQuery(websiteId, segment);
-  const canSave = filters.length > 0 && !segment && !cohort;
+  const { data, isLoading } = useWebsiteSegmentQuery(websiteId, segment || cohort);
+  const canSaveSegment = filters.length > 0 && !segment && !cohort;
 
   const handleCloseFilter = (param: string) => {
     router.push(updateParams({ [param]: undefined }));
@@ -41,11 +41,11 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
     router.push(replaceParams());
   };
 
-  const handleSegmentRemove = () => {
-    router.push(updateParams({ segment: undefined }));
+  const handleSegmentRemove = (type: string) => {
+    router.push(updateParams({ [type]: undefined }));
   };
 
-  if (!filters.length && !segment) {
+  if (!filters.length && !segment && !cohort) {
     return null;
   }
 
@@ -58,7 +58,16 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
             label={formatMessage(labels.segment)}
             value={data?.name || segment}
             operator={operatorLabels.eq}
-            onRemove={handleSegmentRemove}
+            onRemove={() => handleSegmentRemove('segment')}
+          />
+        )}
+        {cohort && !isLoading && (
+          <FilterItem
+            name="cohort"
+            label={formatMessage(labels.cohort)}
+            value={data?.name || cohort}
+            operator={operatorLabels.eq}
+            onRemove={() => handleSegmentRemove('cohort')}
           />
         )}
         {filters.map(filter => {
@@ -79,7 +88,7 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
       </Row>
       <Row alignItems="center">
         <DialogTrigger>
-          {canSave && (
+          {canSaveSegment && (
             <TooltipTrigger delay={0}>
               <Button variant="zero">
                 <Icon>

@@ -33,7 +33,7 @@ export function LanguageSetting() {
         allowSearch
         onSearch={setSearch}
         onOpenChange={handleOpen}
-        listProps={{ style: { maxHeight: '300px' } }}
+        listProps={{ style: { maxHeight: 300 } }}
       >
         {items.map(item => (
           <ListItem key={item} id={item}>

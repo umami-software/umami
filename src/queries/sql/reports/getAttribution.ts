@@ -40,8 +40,8 @@ async function relationalQuery(
 ): Promise<AttributionResult> {
   const { model, type, currency } = parameters;
   const { rawQuery, parseFilters } = prisma;
-  const eventType = type === 'page' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
-  const column = type === 'page' ? 'url_path' : 'event_name';
+  const eventType = type === 'path' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
+  const column = type === 'path' ? 'url_path' : 'event_name';
   const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     ...parameters,
@@ -266,8 +266,8 @@ async function clickhouseQuery(
 ): Promise<AttributionResult> {
   const { model, type, currency } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
-  const eventType = type === 'page' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
-  const column = type === 'page' ? 'url_path' : 'event_name';
+  const eventType = type === 'path' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
+  const column = type === 'path' ? 'url_path' : 'event_name';
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     ...parameters,

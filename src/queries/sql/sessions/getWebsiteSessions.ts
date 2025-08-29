@@ -106,7 +106,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       ${getDateStringSQL('min(created_at)')} as firstAt,
       ${getDateStringSQL('max(created_at)')} as lastAt,
       uniq(visit_id) as visits,
-      sumIf(views, event_type = 1) as views,
+      sumIf(1, event_type = 1) as views,
       lastAt as createdAt
     from website_event
     ${cohortQuery}

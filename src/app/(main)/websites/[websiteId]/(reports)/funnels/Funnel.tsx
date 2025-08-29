@@ -56,7 +56,7 @@ export function Funnel({ id, name, type, parameters, websiteId }) {
             { type, value, visitors, previous, dropped, dropoff, remaining }: FunnelResult,
             index: number,
           ) => {
-            const isPage = type === 'page';
+            const isPage = type === 'path';
             return (
               <Grid key={index} columns="auto 1fr" gap="6">
                 <Column alignItems="center" position="relative">
@@ -92,7 +92,7 @@ export function Funnel({ id, name, type, parameters, websiteId }) {
                   </Row>
                   <Row alignItems="center" justifyContent="space-between" gap>
                     <Row alignItems="center" gap>
-                      <Icon>{type === 'page' ? <File /> : <Lightning />}</Icon>
+                      <Icon>{type === 'path' ? <File /> : <Lightning />}</Icon>
                       <Text>{value}</Text>
                     </Row>
                     <Row alignItems="center" gap>

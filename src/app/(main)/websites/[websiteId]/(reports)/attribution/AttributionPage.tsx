@@ -7,7 +7,7 @@ import { useDateRange, useMessages } from '@/components/hooks';
 
 export function AttributionPage({ websiteId }: { websiteId: string }) {
   const [model, setModel] = useState('first-click');
-  const [type, setType] = useState('page');
+  const [type, setType] = useState('path');
   const [step, setStep] = useState('/');
   const { formatMessage, labels } = useMessages();
   const {
@@ -36,7 +36,7 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
             defaultValue={type}
             onChange={setType}
           >
-            <ListItem id="page">{formatMessage(labels.page)}</ListItem>
+            <ListItem id="path">{formatMessage(labels.page)}</ListItem>
             <ListItem id="event">{formatMessage(labels.event)}</ListItem>
           </Select>
         </Column>

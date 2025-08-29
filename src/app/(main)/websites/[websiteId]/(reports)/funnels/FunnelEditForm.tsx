@@ -55,7 +55,7 @@ export function FunnelEditForm({
   const defaultValues = {
     name: data?.name || '',
     window: data?.parameters?.window || 60,
-    steps: data?.parameters?.steps || [{ type: 'page', value: '/' }],
+    steps: data?.parameters?.steps || [{ type: 'path', value: '/' }],
   };
 
   return (
@@ -91,7 +91,7 @@ export function FunnelEditForm({
                             onChange={field.onChange}
                           >
                             <Grid columns="1fr 1fr" flexGrow={1} gap>
-                              <Radio id="page" value="page">
+                              <Radio id="path" value="path">
                                 <Icon>
                                   <File />
                                 </Icon>
@@ -130,7 +130,7 @@ export function FunnelEditForm({
               })}
               <Row>
                 <Button
-                  onPress={() => append({ type: 'page', value: '/' })}
+                  onPress={() => append({ type: 'path', value: '/' })}
                   isDisabled={fields.length >= FUNNEL_STEPS_MAX}
                 >
                   <Icon>

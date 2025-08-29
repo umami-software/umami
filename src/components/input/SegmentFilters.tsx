@@ -5,14 +5,20 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 export interface SegmentFiltersProps {
   websiteId: string;
   segmentId: string;
-  onSave?: (data: any) => void;
+  type?: string;
+  onChange?: (id: string, type: string) => void;
 }
 
-export function SegmentFilters({ websiteId, segmentId, onSave }: SegmentFiltersProps) {
-  const { data, isLoading, isFetching } = useWebsiteSegmentsQuery(websiteId, { type: 'segment' });
+export function SegmentFilters({
+  websiteId,
+  segmentId,
+  type = 'segment',
+  onChange,
+}: SegmentFiltersProps) {
+  const { data, isLoading, isFetching } = useWebsiteSegmentsQuery(websiteId, { type });
 
   const handleChange = (id: string) => {
-    onSave?.(id);
+    onChange?.(id, type);
   };
 
   return (

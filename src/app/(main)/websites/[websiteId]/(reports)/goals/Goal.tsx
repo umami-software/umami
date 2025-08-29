@@ -30,7 +30,7 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
     endDate,
     ...parameters,
   });
-  const isPage = parameters?.type === 'page';
+  const isPage = parameters?.type === 'path';
 
   return (
     <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} error={error}>
@@ -68,7 +68,7 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
           </Row>
           <Row alignItems="center" justifyContent="space-between" gap>
             <Row alignItems="center" gap>
-              <Icon>{parameters.type === 'page' ? <File /> : <Lightning />}</Icon>
+              <Icon>{parameters.type === 'path' ? <File /> : <Lightning />}</Icon>
               <Text>{parameters.value}</Text>
             </Row>
             <Row alignItems="center" gap>

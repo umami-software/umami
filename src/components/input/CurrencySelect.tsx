@@ -14,7 +14,7 @@ export function CurrencySelect({ value, onChange }) {
       value={value}
       defaultValue={value}
       onChange={onChange}
-      listProps={{ style: { maxHeight: '300px' } }}
+      listProps={{ style: { maxHeight: 300 } }}
       onSearch={setSearch}
       allowSearch
     >

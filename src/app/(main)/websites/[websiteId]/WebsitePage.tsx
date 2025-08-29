@@ -11,7 +11,7 @@ import { WebsiteControls } from './WebsiteControls';
 export function WebsitePage({ websiteId }: { websiteId: string }) {
   const {
     router,
-    query: { view, compare },
+    query: { view },
     updateParams,
   } = useNavigation();
   const handleClose = (close: () => void) => {
@@ -30,7 +30,7 @@ export function WebsitePage({ websiteId }: { websiteId: string }) {
       <WebsiteControls websiteId={websiteId} />
       <WebsiteMetricsBar websiteId={websiteId} showChange={true} />
       <Panel minHeight="520px">
-        <WebsiteChart websiteId={websiteId} compareMode={compare} />
+        <WebsiteChart websiteId={websiteId} />
       </Panel>
       <WebsitePanels websiteId={websiteId} />
       <Modal isOpen={!!view} onOpenChange={handleOpenChange} isDismissable>
