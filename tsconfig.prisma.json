@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "include": ["src/generated/prisma/client.ts"],
   "compilerOptions": {
-    "outDir": "dist/generated/prisma",
+    "outDir": "generated/prisma",
     "module": "ESNext",
     "moduleResolution": "Node",
     "target": "ES2020",

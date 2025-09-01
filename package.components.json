@@ -1,6 +1,6 @@
 {
   "name": "@umami/components",
-  "version": "0.100.0",
+  "version": "0.101.0",
   "description": "Umami React components.",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
@@ -13,7 +13,6 @@
     "colord": "^2.9.2",
     "date-fns-tz": "^1.1.4",
     "immer": "^9.0.12",
-    "moment-timezone": "^0.5.35",
     "next": "^13.4.0",
     "next-basics": "^0.36.0",
     "react": "^18.2.0",
