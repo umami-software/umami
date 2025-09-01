@@ -19,6 +19,9 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
   const [currentFilters, setCurrentFilters] = useState(filters);
   const [currentSegment, setCurrentSegment] = useState(segment);
   const [currentCohort, setCurrentCohort] = useState(cohort);
+  const panelProps = {
+    style: { height: 500 },
+  };
 
   const handleReset = () => {
     setCurrentFilters([]);
@@ -48,17 +51,17 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
           <Tab id="segments">{formatMessage(labels.segments)}</Tab>
           <Tab id="cohorts">{formatMessage(labels.cohorts)}</Tab>
         </TabList>
-        <TabPanel id="fields">
+        <TabPanel id="fields" {...panelProps}>
           <FieldFilters websiteId={websiteId} value={currentFilters} onChange={setCurrentFilters} />
         </TabPanel>
-        <TabPanel id="segments" style={{ height: 400 }}>
+        <TabPanel id="segments" {...panelProps}>
           <SegmentFilters
             websiteId={websiteId}
             segmentId={currentSegment}
             onChange={handleSegmentChange}
           />
         </TabPanel>
-        <TabPanel id="cohorts" style={{ height: 400 }}>
+        <TabPanel id="cohorts" {...panelProps}>
           <SegmentFilters
             type="cohort"
             websiteId={websiteId}

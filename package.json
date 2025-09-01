@@ -23,7 +23,7 @@
     "build-app": "next build",
     "build-app-turbo": "next build --turbo",
     "build-icons": "svgr ./src/assets --out-dir src/components/svg --typescript",
-    "build-components": "rollup -c rollup.components.config.js",
+    "build-components": "npm-run-all types esbuild",
     "build-tracker": "rollup -c rollup.tracker.config.js",
     "build-prisma-client": "node scripts/build-prisma-client.js",
     "build-lang": "npm-run-all format-lang compile-lang download-country-names download-language-names clean-lang",
@@ -51,7 +51,10 @@
     "postbuild": "node scripts/postbuild.js",
     "test": "jest",
     "cypress-open": "cypress open cypress run",
-    "cypress-run": "cypress run cypress run"
+    "cypress-run": "cypress run cypress run",
+    "rollup": "rollup -c rollup.components.config.js",
+    "esbuild": "node esbuild.mjs",
+    "types": "tsup"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
@@ -82,7 +85,7 @@
     "@react-spring/web": "^10.0.1",
     "@svgr/cli": "^8.1.0",
     "@tanstack/react-query": "^5.85.5",
-    "@umami/react-zen": "^0.171.0",
+    "@umami/react-zen": "^0.174.0",
     "@umami/redis-client": "^0.27.0",
     "bcryptjs": "^3.0.2",
     "chalk": "^5.6.0",
@@ -136,6 +139,7 @@
   },
   "devDependencies": {
     "@formatjs/cli": "^4.2.29",
+    "@hyrious/esbuild-plugin-commonjs": "^0.2.6",
     "@netlify/plugin-nextjs": "^5.12.1",
     "@rollup/plugin-alias": "^5.0.0",
     "@rollup/plugin-commonjs": "^25.0.4",
@@ -143,6 +147,7 @@
     "@rollup/plugin-node-resolve": "^15.2.0",
     "@rollup/plugin-replace": "^5.0.2",
     "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.4",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.3.0",
     "@types/react": "^19.1.12",
@@ -150,6 +155,7 @@
     "@types/react-window": "^1.8.8",
     "@typescript-eslint/eslint-plugin": "^8.41.0",
     "@typescript-eslint/parser": "^8.41.0",
+    "@umami/esbuild-plugin-css-modules": "^0.4.0",
     "babel-plugin-react-compiler": "19.1.0-rc.2",
     "cross-env": "^10.0.0",
     "cypress": "^13.6.6",
@@ -173,12 +179,13 @@
     "postcss-preset-env": "7.8.3",
     "prettier": "^3.6.2",
     "prompts": "2.4.2",
-    "rollup": "^3.28.0",
+    "rollup": "^4.49.0",
     "rollup-plugin-copy": "^3.4.0",
-    "rollup-plugin-delete": "^2.0.0",
-    "rollup-plugin-dts": "^5.3.1",
-    "rollup-plugin-esbuild": "^5.0.0",
-    "rollup-plugin-node-externals": "^6.1.1",
+    "rollup-plugin-delete": "^3.0.1",
+    "rollup-plugin-dts": "^6.2.3",
+    "rollup-plugin-esbuild": "^6.2.1",
+    "rollup-plugin-node-externals": "^8.1.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
     "stylelint": "^15.10.1",
     "stylelint-config-css-modules": "^4.5.1",
@@ -187,6 +194,7 @@
     "tar": "^6.1.2",
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.1",
+    "tsup": "^8.5.0",
     "typescript": "^5.9.2"
   }
 }

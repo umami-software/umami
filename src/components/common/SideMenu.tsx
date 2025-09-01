@@ -45,7 +45,7 @@ export function SideMenu({
           <Heading size="1">{title}</Heading>
         </Row>
       )}
-      <NavMenu muteItems={false} gap="6" {...props}>
+      <NavMenu gap="6" {...props}>
         {items?.map(({ label, items }, index) => {
           return (
             <NavMenuGroup

@@ -143,12 +143,12 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
     },
   ];
 
-  const selectedKey =
-    items.flatMap(e => e.items).find(({ path }) => path && pathname.endsWith(path.split('?')[0]))
-      ?.id || 'overview';
+  const selectedKey = items
+    .flatMap(e => e.items)
+    .find(({ path }) => path && pathname.endsWith(path.split('?')[0]))?.id;
 
   return (
-    <SideMenu items={items} selectedKey={selectedKey} allowMinimize={false}>
+    <SideMenu items={items} selectedKey={selectedKey} allowMinimize={false} muteItems={false}>
       <WebsiteSelect websiteId={websiteId} teamId={teamId} />
     </SideMenu>
   );

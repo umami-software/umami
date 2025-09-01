@@ -1,9 +1,10 @@
 'use client';
 import { createContext, ReactNode } from 'react';
-import { useLinkQuery } from '@/components/hooks';
 import { Loading } from '@umami/react-zen';
+import { Link } from '@/generated/prisma/client';
+import { useLinkQuery } from '@/components/hooks/queries/useLinkQuery';
 
-export const LinkContext = createContext(null);
+export const LinkContext = createContext<Link>(null);
 
 export function LinkProvider({ linkId, children }: { linkId?: string; children: ReactNode }) {
   const { data: link, isLoading, isFetching } = useLinkQuery(linkId);

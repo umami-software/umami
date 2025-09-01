@@ -1,4 +1,6 @@
-import { getPageviewStats, getRealtimeActivity, getSessionStats } from '@/queries';
+import { getPageviewStats } from '@/queries/sql/pageviews/getPageviewStats';
+import { getRealtimeActivity } from '@/queries/sql/getRealtimeActivity';
+import { getSessionStats } from '@/queries/sql/sessions/getSessionStats';
 import { QueryFilters } from '@/lib/types';
 
 function increment(data: object, key: string) {

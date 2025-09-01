@@ -1,5 +1,5 @@
-import { Prisma, TeamUser } from '@/generated/prisma/client';
 import { uuid } from '@/lib/crypto';
+import { Prisma, TeamUser } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
 import { PageResult, QueryFilters } from '@/lib/types';
 import TeamUserFindManyArgs = Prisma.TeamUserFindManyArgs;

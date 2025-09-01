@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Select, ListItem, Grid } from '@umami/react-zen';
+import { Select, ListItem, Grid, Column } from '@umami/react-zen';
 import {
   useEventDataPropertiesQuery,
   useEventDataValuesQuery,
@@ -33,40 +33,41 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
       isFetching={isFetching}
       error={error}
       minHeight="300px"
-      gap="6"
     >
-      {data && (
-        <Grid columns="repeat(auto-fill, minmax(300px, 1fr))" marginBottom="3" gap>
-          <Select
-            label={formatMessage(labels.event)}
-            value={eventName}
-            onChange={setEventName}
-            placeholder=""
-          >
-            {events?.map(p => (
-              <ListItem key={p} id={p}>
-                {p}
-              </ListItem>
-            ))}
-          </Select>
-          <Select
-            label={formatMessage(labels.property)}
-            value={propertyName}
-            onChange={setPropertyName}
-            isDisabled={!eventName}
-            placeholder=""
-          >
-            {properties?.map(p => (
-              <ListItem key={p} id={p}>
-                {p}
-              </ListItem>
-            ))}
-          </Select>
-        </Grid>
-      )}
-      {eventName && propertyName && (
-        <EventValues websiteId={websiteId} eventName={eventName} propertyName={propertyName} />
-      )}
+      <Column gap="6">
+        {data && (
+          <Grid columns="repeat(auto-fill, minmax(300px, 1fr))" marginBottom="3" gap>
+            <Select
+              label={formatMessage(labels.event)}
+              value={eventName}
+              onChange={setEventName}
+              placeholder=""
+            >
+              {events?.map(p => (
+                <ListItem key={p} id={p}>
+                  {p}
+                </ListItem>
+              ))}
+            </Select>
+            <Select
+              label={formatMessage(labels.property)}
+              value={propertyName}
+              onChange={setPropertyName}
+              isDisabled={!eventName}
+              placeholder=""
+            >
+              {properties?.map(p => (
+                <ListItem key={p} id={p}>
+                  {p}
+                </ListItem>
+              ))}
+            </Select>
+          </Grid>
+        )}
+        {eventName && propertyName && (
+          <EventValues websiteId={websiteId} eventName={eventName} propertyName={propertyName} />
+        )}
+      </Column>
     </LoadingPanel>
   );
 }

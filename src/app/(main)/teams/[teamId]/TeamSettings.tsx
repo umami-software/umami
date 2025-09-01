@@ -13,7 +13,7 @@ import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
 
 export function TeamSettings({ teamId }: { teamId: string }) {
-  const team = useTeam();
+  const team: any = useTeam();
   const { formatMessage, labels } = useMessages();
   const { user } = useLoginQuery();
   const { query, pathname } = useNavigation();

@@ -2,7 +2,7 @@ import { Prisma, User } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
 import prisma from '@/lib/prisma';
 import { PageResult, Role, QueryFilters } from '@/lib/types';
-import { getRandomChars } from '@/lib/crypto';
+import { getRandomChars } from '@/lib/generate';
 import UserFindManyArgs = Prisma.UserFindManyArgs;
 
 export interface GetUserOptions {

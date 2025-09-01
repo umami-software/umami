@@ -59,7 +59,6 @@ export function DataGrid({
             delay={searchDelay || DEFAULT_SEARCH_DELAY}
             autoFocus={autoFocus}
             placeholder={formatMessage(labels.search)}
-            style={{ width: '280px' }}
           />
           {renderActions?.()}
         </Row>

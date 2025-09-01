@@ -10,7 +10,7 @@ import {
   Row,
 } from '@umami/react-zen';
 import { useState } from 'react';
-import { getRandomChars } from '@/lib/crypto';
+import { getRandomChars } from '@/lib/generate';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
 
 const generateId = () => getRandomChars(16);

@@ -2,7 +2,8 @@ import bcrypt from 'bcryptjs';
 import redis from '@/lib/redis';
 import debug from 'debug';
 import { ROLE_PERMISSIONS, ROLES, SHARE_TOKEN_HEADER } from '@/lib/constants';
-import { secret, getRandomChars } from '@/lib/crypto';
+import { secret } from '@/lib/crypto';
+import { getRandomChars } from '@/lib/generate';
 import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
 import { ensureArray } from '@/lib/utils';
 import { getUser } from '@/queries';
@@ -36,12 +37,10 @@ export async function checkAuth(request: Request) {
     }
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    log('checkAuth:', { token, shareToken, payload, user, grant });
-  }
+  log({ token, shareToken, payload, user, grant });
 
   if (!user?.id && !shareToken) {
-    log('checkAuth: User not authorized');
+    log('User not authorized');
     return null;
   }
 

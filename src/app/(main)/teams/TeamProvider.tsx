@@ -1,9 +1,10 @@
 'use client';
 import { createContext, ReactNode } from 'react';
-import { useTeamQuery } from '@/components/hooks';
 import { Loading } from '@umami/react-zen';
+import { useTeamQuery } from '@/components/hooks/queries/useTeamQuery';
+import { Team } from '@/generated/prisma/client';
 
-export const TeamContext = createContext(null);
+export const TeamContext = createContext<Team>(null);
 
 export function TeamProvider({ teamId, children }: { teamId?: string; children: ReactNode }) {
   const { data: team, isLoading, isFetching } = useTeamQuery(teamId);

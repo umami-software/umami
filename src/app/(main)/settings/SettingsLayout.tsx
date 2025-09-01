@@ -41,9 +41,9 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
     },
   ];
 
-  const selectedKey =
-    items.flatMap(e => e.items)?.find(({ path }) => path && pathname.includes(path))?.id ||
-    'overview';
+  const selectedKey = items
+    .flatMap(e => e.items)
+    .find(({ path }) => path && pathname.endsWith(path.split('?')[0]))?.id;
 
   return (
     <Grid columns="auto 1fr" width="100%" height="100%">

@@ -9,16 +9,16 @@ node_modules
 /coverage
 
 # next.js
-/.next/
-/out/
-/src/generated/
+/.next
+/out
 
 # production
 /build
 /public/script.js
 /geo
 /dist
-src/generated/prisma/
+/generated
+/src/generated
 
 # misc
 .DS_Store

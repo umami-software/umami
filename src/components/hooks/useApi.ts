@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import * as reactQuery from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { getClientAuthToken } from '@/lib/client';
 import { SHARE_TOKEN_HEADER } from '@/lib/constants';
 import { httpGet, httpPost, httpPut, httpDelete, FetchResponse } from '@/lib/fetch';
@@ -72,6 +72,7 @@ export function useApi() {
       },
       [httpDelete],
     ),
-    ...reactQuery,
+    useQuery,
+    useMutation,
   };
 }

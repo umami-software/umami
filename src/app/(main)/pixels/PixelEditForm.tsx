@@ -13,7 +13,7 @@ import {
 import { useConfig, usePixelQuery } from '@/components/hooks';
 import { useMessages } from '@/components/hooks';
 import { Refresh } from '@/components/icons';
-import { getRandomChars } from '@/lib/crypto';
+import { getRandomChars } from '@/lib/generate';
 import { useUpdateQuery } from '@/components/hooks/queries/useUpdateQuery';
 import { useEffect, useState } from 'react';
 import { PIXELS_URL } from '@/lib/constants';

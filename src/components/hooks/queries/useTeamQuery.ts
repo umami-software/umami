@@ -1,5 +1,5 @@
 import { useApi } from '../useApi';
-import { useModified } from '@/components/hooks';
+import { useModified } from '../useModified';
 import { keepPreviousData } from '@tanstack/react-query';
 import { ReactQueryOptions } from '@/lib/types';
 

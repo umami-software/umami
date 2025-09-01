@@ -4,7 +4,7 @@ esbuild
   .build({
     entryPoints: ['src/generated/prisma/client.ts'], // Adjust this to your entry file
     bundle: true, // Bundle all files into one (optional)
-    outfile: 'dist/generated/prisma/client.js', // Output file
+    outfile: 'generated/prisma/client.js', // Output file
     platform: 'node', // For Node.js compatibility
     target: 'es2020', // Target version of Node.js
     format: 'esm', // Use ESM format

@@ -39,7 +39,7 @@ const schema = z.object({
       url: urlOrPathParam.optional(),
       name: z.string().max(50).optional(),
       tag: z.string().max(50).optional(),
-      ip: z.string().ip().optional(),
+      ip: z.string().optional(),
       userAgent: z.string().optional(),
       timestamp: z.coerce.number().int().optional(),
       id: z.string().optional(),

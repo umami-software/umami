@@ -6,7 +6,7 @@ import {
   TextField,
   Button,
 } from '@umami/react-zen';
-import { getRandomChars } from '@/lib/crypto';
+import { getRandomChars } from '@/lib/generate';
 import { useMessages, useTeam, useUpdateQuery } from '@/components/hooks';
 
 const generateId = () => `team_${getRandomChars(16)}`;

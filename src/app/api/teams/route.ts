@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { getRandomChars } from '@/lib/crypto';
+import { getRandomChars } from '@/lib/generate';
 import { unauthorized, json } from '@/lib/response';
 import { canCreateTeam } from '@/validations';
 import { uuid } from '@/lib/crypto';
