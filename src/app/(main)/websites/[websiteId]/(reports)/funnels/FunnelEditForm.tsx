@@ -4,19 +4,19 @@ import {
   FormFieldArray,
   TextField,
   Grid,
-  FormController,
   FormButtons,
   FormSubmitButton,
   Button,
-  RadioGroup,
-  Radio,
   Text,
   Icon,
   Row,
   Loading,
+  Column,
 } from '@umami/react-zen';
 import { useMessages, useReportQuery, useUpdateQuery } from '@/components/hooks';
-import { File, Lightning, Close, Plus } from '@/components/icons';
+import { Close, Plus } from '@/components/icons';
+import { ActionSelect } from '@/components/input/ActionSelect';
+import { LookupField } from '@/components/input/LookupField';
 
 const FUNNEL_STEPS_MAX = 8;
 
@@ -41,6 +41,7 @@ export function FunnelEditForm({
       {
         onSuccess: async () => {
           touch('reports:funnel');
+          touch(`report:${id}`);
           onSave?.();
           onClose?.();
         },
@@ -75,57 +76,38 @@ export function FunnelEditForm({
         <TextField />
       </FormField>
       <FormFieldArray name="steps" label={formatMessage(labels.steps)}>
-        {({ fields, append, remove, control }) => {
+        {({ fields, append, remove, getValues }) => {
           return (
             <Grid gap>
-              {fields.map((field: { id: string; type: string; value: string }, index: number) => {
+              {fields.map(({ id }: { id: string }, index: number) => {
+                const type = getValues(`steps.${index}.type`);
+
                 return (
-                  <Row key={field.id} alignItems="center" justifyContent="space-between" gap>
-                    <FormController control={control} name={`steps.${index}.type`}>
-                      {({ field }) => {
-                        return (
-                          <RadioGroup
-                            orientation="horizontal"
-                            variant="box"
-                            value={field.value}
-                            onChange={field.onChange}
-                          >
-                            <Grid columns="1fr 1fr" flexGrow={1} gap>
-                              <Radio id="path" value="path">
-                                <Icon>
-                                  <File />
-                                </Icon>
-                                <Text>{formatMessage(labels.page)}</Text>
-                              </Radio>
-                              <Radio id="event" value="event">
-                                <Icon>
-                                  <Lightning />
-                                </Icon>
-                                <Text>{formatMessage(labels.event)}</Text>
-                              </Radio>
-                            </Grid>
-                          </RadioGroup>
-                        );
-                      }}
-                    </FormController>
-                    <FormController control={control} name={`steps.${index}.value`}>
-                      {({ field }) => {
-                        return (
-                          <TextField
-                            value={field.value}
-                            onChange={field.onChange}
-                            defaultValue={field.value}
-                            style={{ flexGrow: 1 }}
-                          />
-                        );
-                      }}
-                    </FormController>
-                    <Button variant="quiet" onPress={() => remove(index)}>
+                  <Grid key={id} columns="260px 1fr auto" gap>
+                    <Column>
+                      <FormField
+                        name={`steps.${index}.type`}
+                        rules={{ required: formatMessage(labels.required) }}
+                      >
+                        <ActionSelect />
+                      </FormField>
+                    </Column>
+                    <Column>
+                      <FormField
+                        name={`steps.${index}.value`}
+                        rules={{ required: formatMessage(labels.required) }}
+                      >
+                        {({ field }) => {
+                          return <LookupField websiteId={websiteId} type={type} {...field} />;
+                        }}
+                      </FormField>
+                    </Column>
+                    <Button onPress={() => remove(index)}>
                       <Icon size="sm">
                         <Close />
                       </Icon>
                     </Button>
-                  </Row>
+                  </Grid>
                 );
               })}
               <Row>

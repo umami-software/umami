@@ -1,7 +1,6 @@
 import debug from 'debug';
 import { PrismaClient } from '@/generated/prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
-import { readReplicas } from '@prisma/extension-read-replicas';
+import { UmamiPrismaClient } from '@umami/prisma-client';
 import { SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE, FILTER_COLUMNS } from './constants';
 import { QueryOptions, QueryFilters, Operator } from './types';
 import { filtersObjectToArray } from './params';
@@ -9,14 +8,6 @@ import { filtersObjectToArray } from './params';
 const log = debug('umami:prisma');
 
 const PRISMA = 'prisma';
-const PRISMA_LOG_OPTIONS = {
-  log: [
-    {
-      emit: 'event',
-      level: 'query',
-    },
-  ],
-};
 
 const DATE_FORMATS = {
   minute: 'YYYY-MM-DD HH24:MI:00',
@@ -218,7 +209,7 @@ async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters)
   return { data, count, page: +page, pageSize: size, orderBy, search };
 }
 
-async function rawPagedQuery(
+async function pagedRawQuery(
   query: string,
   filters: QueryFilters,
   queryParams: Record<string, any>,
@@ -274,52 +265,18 @@ function transaction(input: any, options?: any) {
   return client.$transaction(input, options);
 }
 
-function getClient(params?: {
-  logQuery?: boolean;
-  queryLogger?: () => void;
-  replicaUrl?: string;
-  options?: any;
-}): PrismaClient {
-  const {
-    logQuery = !!process.env.LOG_QUERY,
-    queryLogger,
-    replicaUrl = process.env.DATABASE_REPLICA_URL,
-    options,
-  } = params || {};
-
-  const url = new URL(process.env.DATABASE_URL);
-
-  const adapter = new PrismaPg(
-    { connectionString: url.toString() },
-    { schema: url.searchParams.get('schema') },
-  );
-
-  const prisma = new PrismaClient({
-    adapter,
-    errorFormat: 'pretty',
-    ...(logQuery && PRISMA_LOG_OPTIONS),
-    ...options,
+function getClient() {
+  const prisma = new UmamiPrismaClient({
+    url: process.env.DATABASE_URL,
+    prismaClient: PrismaClient,
+    logQuery: !!process.env.LOG_QUERY,
   });
 
-  if (replicaUrl) {
-    prisma.$extends(
-      readReplicas({
-        url: replicaUrl,
-      }),
-    );
-  }
-
-  if (logQuery) {
-    prisma.$on('query' as never, queryLogger || log);
-  }
-
   if (process.env.NODE_ENV !== 'production') {
-    globalThis[PRISMA] = prisma;
+    globalThis[PRISMA] = prisma.client;
   }
 
-  log('Prisma initialized');
-
-  return prisma;
+  return prisma.client;
 }
 
 const client = globalThis[PRISMA] || getClient();
@@ -337,7 +294,7 @@ export default {
   getTimestampDiffSQL,
   getSearchSQL,
   pagedQuery,
-  pagedRawQuery: rawPagedQuery,
+  pagedRawQuery,
   parseFilters,
   rawQuery,
 };
