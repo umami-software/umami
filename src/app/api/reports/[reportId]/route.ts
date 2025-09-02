@@ -1,6 +1,6 @@
 import { parseRequest } from '@/lib/request';
 import { deleteReport, getReport, updateReport } from '@/queries';
-import { canDeleteReport, canUpdateReport, canViewReport } from '@/validations';
+import { canDeleteReport, canUpdateReport, canViewReport } from '@/permissions';
 import { unauthorized, json, notFound, ok } from '@/lib/response';
 import { reportSchema } from '@/lib/schema';
 

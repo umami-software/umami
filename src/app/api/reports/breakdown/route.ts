@@ -1,4 +1,4 @@
-import { canViewWebsite } from '@/validations';
+import { canViewWebsite } from '@/permissions';
 import { unauthorized, json } from '@/lib/response';
 import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
 import { BreakdownParameters, getBreakdown } from '@/queries';

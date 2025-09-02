@@ -1,4 +1,4 @@
-import { canDeleteTeamUser, canUpdateTeam } from '@/validations';
+import { canDeleteTeamUser, canUpdateTeam } from '@/permissions';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, ok, unauthorized } from '@/lib/response';
 import { deleteTeamUser, getTeamUser, updateTeamUser } from '@/queries';

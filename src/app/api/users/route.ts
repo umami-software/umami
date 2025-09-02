@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { hashPassword } from '@/lib/auth';
-import { canCreateUser } from '@/validations';
+import { canCreateUser } from '@/permissions';
 import { ROLES } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';

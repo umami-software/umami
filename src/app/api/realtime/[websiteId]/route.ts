@@ -1,6 +1,6 @@
 import { json, unauthorized } from '@/lib/response';
 import { getRealtimeData } from '@/queries';
-import { canViewWebsite } from '@/validations';
+import { canViewWebsite } from '@/permissions';
 import { startOfMinute, subMinutes } from 'date-fns';
 import { REALTIME_RANGE } from '@/lib/constants';
 import { parseRequest, getQueryFilters } from '@/lib/request';

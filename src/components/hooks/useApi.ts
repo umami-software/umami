@@ -10,7 +10,7 @@ const selector = (state: { shareToken: { token?: string } }) => state.shareToken
 async function handleResponse(res: FetchResponse): Promise<any> {
   if (res.error) {
     const { message, code } = res?.error?.error || {};
-    return Promise.reject(new Error(code || message || 'Unexpectd error.'));
+    return Promise.reject(new Error(code || message || 'Unexpected error.'));
   }
   return Promise.resolve(res.data);
 }

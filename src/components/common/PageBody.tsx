@@ -3,8 +3,10 @@ import { ReactNode } from 'react';
 import { AlertBanner, Loading, Column, ColumnProps } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 
+const DEFAULT_WIDTH = '1320px';
+
 export function PageBody({
-  maxWidth = '1320px',
+  maxWidth = DEFAULT_WIDTH,
   error,
   isLoading,
   children,

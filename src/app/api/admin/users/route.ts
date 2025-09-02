@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams } from '@/lib/schema';
-import { canViewUsers } from '@/validations';
+import { canViewUsers } from '@/permissions';
 import { getUsers } from '@/queries/prisma/user';
 
 export async function GET(request: Request) {

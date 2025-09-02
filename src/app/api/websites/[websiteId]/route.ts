@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { canUpdateWebsite, canDeleteWebsite, canViewWebsite } from '@/validations';
+import { canUpdateWebsite, canDeleteWebsite, canViewWebsite } from '@/permissions';
 import { SHARE_ID_REGEX } from '@/lib/constants';
 import { parseRequest } from '@/lib/request';
 import { ok, json, unauthorized, serverError, badRequest } from '@/lib/response';

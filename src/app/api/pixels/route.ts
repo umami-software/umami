@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { canCreateTeamWebsite, canCreateWebsite } from '@/validations';
+import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { json, unauthorized } from '@/lib/response';
 import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';

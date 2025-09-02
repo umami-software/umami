@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { unauthorized, json, badRequest, notFound } from '@/lib/response';
-import { canCreateTeam } from '@/validations';
+import { canCreateTeam } from '@/permissions';
 import { parseRequest } from '@/lib/request';
 import { ROLES } from '@/lib/constants';
 import { createTeamUser, findTeam, getTeamUser } from '@/queries';

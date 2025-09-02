@@ -3,7 +3,7 @@ import JSZip from 'jszip';
 import Papa from 'papaparse';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
-import { canViewWebsite } from '@/validations';
+import { canViewWebsite } from '@/permissions';
 import { pagingParams, dateRangeParams } from '@/lib/schema';
 import { getEventMetrics, getPageviewMetrics, getSessionMetrics } from '@/queries';
 

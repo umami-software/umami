@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { parseRequest, getQueryFilters } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
-import { canViewWebsite } from '@/validations';
+import { canViewWebsite } from '@/permissions';
 import { filterParams, timezoneParam, unitParam } from '@/lib/schema';
 import { getEventStats } from '@/queries';
 

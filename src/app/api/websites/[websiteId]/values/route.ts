@@ -1,4 +1,4 @@
-import { canViewWebsite } from '@/validations';
+import { canViewWebsite } from '@/permissions';
 import { EVENT_COLUMNS, FILTER_COLUMNS, SEGMENT_TYPES, SESSION_COLUMNS } from '@/lib/constants';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';

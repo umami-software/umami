@@ -1,4 +1,4 @@
-import { canViewWebsite } from '@/validations';
+import { canViewWebsite } from '@/permissions';
 import { unauthorized, json } from '@/lib/response';
 import { parseRequest, getQueryFilters, setWebsiteDate } from '@/lib/request';
 import { FunnelParameters, getFunnel } from '@/queries';

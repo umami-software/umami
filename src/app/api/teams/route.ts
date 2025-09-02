@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { getRandomChars } from '@/lib/generate';
 import { unauthorized, json } from '@/lib/response';
-import { canCreateTeam } from '@/validations';
+import { canCreateTeam } from '@/permissions';
 import { uuid } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';
 import { createTeam } from '@/queries';

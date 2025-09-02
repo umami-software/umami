@@ -1,4 +1,4 @@
-import { canDeleteWebsite, canUpdateWebsite, canViewWebsite } from '@/validations';
+import { canDeleteWebsite, canUpdateWebsite, canViewWebsite } from '@/permissions';
 import { parseRequest } from '@/lib/request';
 import { json, notFound, ok, unauthorized } from '@/lib/response';
 import { segmentTypeParam } from '@/lib/schema';

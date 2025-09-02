@@ -23,7 +23,7 @@
     "build-app": "next build",
     "build-app-turbo": "next build --turbo",
     "build-icons": "svgr ./src/assets --out-dir src/components/svg --typescript",
-    "build-components": "npm-run-all types esbuild",
+    "build-components": "tsup",
     "build-tracker": "rollup -c rollup.tracker.config.js",
     "build-prisma-client": "node scripts/build-prisma-client.js",
     "build-lang": "npm-run-all format-lang compile-lang download-country-names download-language-names clean-lang",
@@ -51,10 +51,7 @@
     "postbuild": "node scripts/postbuild.js",
     "test": "jest",
     "cypress-open": "cypress open cypress run",
-    "cypress-run": "cypress run cypress run",
-    "rollup": "rollup -c rollup.components.config.js",
-    "esbuild": "node esbuild.mjs",
-    "types": "tsup"
+    "cypress-run": "cypress run cypress run"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
@@ -86,7 +83,7 @@
     "@svgr/cli": "^8.1.0",
     "@tanstack/react-query": "^5.85.5",
     "@umami/react-zen": "^0.175.0",
-    "@umami/redis-client": "^0.27.0",
+    "@umami/redis-client": "^0.29.0",
     "bcryptjs": "^3.0.2",
     "chalk": "^5.6.0",
     "chart.js": "^4.5.0",
@@ -139,7 +136,6 @@
   },
   "devDependencies": {
     "@formatjs/cli": "^4.2.29",
-    "@hyrious/esbuild-plugin-commonjs": "^0.2.6",
     "@netlify/plugin-nextjs": "^5.12.1",
     "@rollup/plugin-alias": "^5.0.0",
     "@rollup/plugin-commonjs": "^25.0.4",
@@ -155,12 +151,10 @@
     "@types/react-window": "^1.8.8",
     "@typescript-eslint/eslint-plugin": "^8.41.0",
     "@typescript-eslint/parser": "^8.41.0",
-    "@umami/esbuild-plugin-css-modules": "^0.4.0",
     "@umami/prisma-client": "^0.19.0",
     "babel-plugin-react-compiler": "19.1.0-rc.2",
     "cross-env": "^10.0.0",
     "cypress": "^13.6.6",
-    "esbuild": "^0.25.8",
     "eslint": "^8.33.0",
     "eslint-config-next": "^14.2.32",
     "eslint-config-prettier": "^10.1.8",
@@ -184,7 +178,6 @@
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-delete": "^3.0.1",
     "rollup-plugin-dts": "^6.2.3",
-    "rollup-plugin-esbuild": "^6.2.1",
     "rollup-plugin-node-externals": "^8.1.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",

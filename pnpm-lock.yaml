@@ -48,8 +48,8 @@ importers:
         specifier: ^0.175.0
         version: 0.175.0(@babel/core@7.28.3)(@types/react@19.1.12)(babel-plugin-react-compiler@19.1.0-rc.2)(immer@10.1.1)(use-sync-external-store@1.5.0(react@19.1.1))
       '@umami/redis-client':
-        specifier: ^0.27.0
-        version: 0.27.0
+        specifier: ^0.29.0
+        version: 0.29.0
       bcryptjs:
         specifier: ^3.0.2
         version: 3.0.2
@@ -201,9 +201,6 @@ importers:
       '@formatjs/cli':
         specifier: ^4.2.29
         version: 4.8.4(ts-jest@29.4.1(@babel/core@7.28.3)(@jest/transform@29.7.0)(@jest/types@30.0.5)(babel-jest@29.7.0(@babel/core@7.28.3))(esbuild@0.25.9)(jest-util@30.0.5)(jest@29.7.0(@types/node@24.3.0)(ts-node@10.9.2(@types/node@24.3.0)(typescript@5.9.2)))(typescript@5.9.2))
-      '@hyrious/esbuild-plugin-commonjs':
-        specifier: ^0.2.6
-        version: 0.2.6(cjs-module-lexer@1.4.3)(esbuild@0.25.9)
       '@netlify/plugin-nextjs':
         specifier: ^5.12.1
         version: 5.12.1
@@ -249,9 +246,6 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^8.41.0
         version: 8.41.0(eslint@8.57.1)(typescript@5.9.2)
-      '@umami/esbuild-plugin-css-modules':
-        specifier: ^0.4.0
-        version: 0.4.0
       '@umami/prisma-client':
         specifier: ^0.19.0
         version: 0.19.0(@prisma/adapter-pg@6.15.0)(@prisma/client@6.15.0(prisma@6.15.0(typescript@5.9.2))(typescript@5.9.2))(@prisma/extension-read-replicas@0.4.1(@prisma/client@6.15.0(prisma@6.15.0(typescript@5.9.2))(typescript@5.9.2)))
@@ -264,9 +258,6 @@ importers:
       cypress:
         specifier: ^13.6.6
         version: 13.17.0
-      esbuild:
-        specifier: ^0.25.8
-        version: 0.25.9
       eslint:
         specifier: ^8.33.0
         version: 8.57.1
@@ -336,9 +327,6 @@ importers:
       rollup-plugin-dts:
         specifier: ^6.2.3
         version: 6.2.3(rollup@4.49.0)(typescript@5.9.2)
-      rollup-plugin-esbuild:
-        specifier: ^6.2.1
-        version: 6.2.1(esbuild@0.25.9)(rollup@4.49.0)
       rollup-plugin-node-externals:
         specifier: ^8.1.0
         version: 8.1.0(rollup@4.49.0)
@@ -1206,16 +1194,6 @@ packages:
   '@humanwhocodes/object-schema@2.0.3':
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
     deprecated: Use @eslint/object-schema instead
-
-  '@hyrious/esbuild-plugin-commonjs@0.2.6':
-    resolution: {integrity: sha512-LIPT8Y6EbNaHdV7lS9Ki6nnK0G1fP4bhzlMU1fgbOEJkR+yOA6FCORnPhjbQyeRTjG/ALPXdqCMRxTGwroL9CQ==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      cjs-module-lexer: '*'
-      esbuild: '*'
-    peerDependenciesMeta:
-      cjs-module-lexer:
-        optional: true
 
   '@img/sharp-darwin-arm64@0.34.3':
     resolution: {integrity: sha512-ryFMfvxxpQRsgZJqBd4wsttYQbCxsJksrv9Lw/v798JcQ8+w84mBWuXwl+TT0WJ/WrYOLaYpwQXi3sA9nTIaIg==}
@@ -2879,9 +2857,6 @@ packages:
     resolution: {integrity: sha512-+GeGMebMCy0elMNg67LRNoVnUFPIm37iu5CmHESVx56/9Jsfdpsvbv605DQ81Pi/x11IdKUsS5nzgTYbCQU9fg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@umami/esbuild-plugin-css-modules@0.4.0':
-    resolution: {integrity: sha512-OcFbipBJZCmMnJ52/eHkZxpXGQT8Q5bAePgkhpxlreT4zP98grZ6iLzaIkDPFqURQwM/llDhPyNEFRzkSfVYFw==}
-
   '@umami/prisma-client@0.19.0':
     resolution: {integrity: sha512-Vnys7MMAPexxmxrC+0q68B/iYmM1LFaP9RjKjffHbLfgZJ3moklJ2ea91cr8+m0CA3+3mqN38WEJI/o/ohOxYQ==}
     peerDependencies:
@@ -2892,8 +2867,8 @@ packages:
   '@umami/react-zen@0.175.0':
     resolution: {integrity: sha512-iOUCZwmr09RnqIm01wnjcSTTJ5iJdXRmFlmja2Qf42di/SOOTSBJmu1fKiYESp4dLrXXcmMeDfDqtJli0PPSRw==}
 
-  '@umami/redis-client@0.27.0':
-    resolution: {integrity: sha512-SbHTpxhgeZyTBUSp2zdZM+XUtpsaSL4Tad8QXIEhEtjWhvvfoornyT5kLuyYCVtzSAT4daALeGmOO1z6EE1KcA==}
+  '@umami/redis-client@0.29.0':
+    resolution: {integrity: sha512-Jaqh++jskqDB7ny75pfC02OvKp1JTS4asGDsFrRL3qy8sxL3PAl9+/mybCJe4/6vWrXDJKqpgkSfUDJq2bFjyw==}
 
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
@@ -4005,9 +3980,6 @@ packages:
   es-iterator-helpers@1.2.1:
     resolution: {integrity: sha512-uDn+FE1yrDzyC0pCo961B2IHbdM8y/ACZsKD4dG6WqrjV53BADjwa7D+1aom2rsNVfLyDgU/eigvlJGJ08OQ4w==}
     engines: {node: '>= 0.4'}
-
-  es-module-lexer@1.7.0:
-    resolution: {integrity: sha512-jEQoCwk8hyb2AZziIOLhDqpm5+2ww5uIE6lkO/6jcOCusfk6LhMHpXXfBLXTZ7Ydyt0j4VoUQv6uGNYbdW+kBA==}
 
   es-object-atoms@1.1.1:
     resolution: {integrity: sha512-FGgH2h8zKNim9ljj7dankFPcICIK9Cp5bm+c2gQSYePhpaG5+esrLODihIorn+Pe6FGJzWhXQotPv73jTaldXA==}
@@ -6230,11 +6202,6 @@ packages:
     peerDependencies:
       postcss: ^8.0.0
 
-  postcss-modules@6.0.1:
-    resolution: {integrity: sha512-zyo2sAkVvuZFFy0gc2+4O+xar5dYlaVy/ebO24KT0ftk/iJevSNyPyQellsBLlnccwh7f6V6Y4GvuKRYToNgpQ==}
-    peerDependencies:
-      postcss: ^8.0.0
-
   postcss-nesting@10.2.0:
     resolution: {integrity: sha512-EwMkYchxiDiKUhlJGzWsD9b2zvq/r2SSubcRrgP+jujMXFzqvANLt16lJANC+5uZ6hjI7lpRmI6O8JIl+8l1KA==}
     engines: {node: ^12 || ^14 || >=16}
@@ -6761,13 +6728,6 @@ packages:
     peerDependencies:
       rollup: ^3.29.4 || ^4
       typescript: ^4.5 || ^5.0
-
-  rollup-plugin-esbuild@6.2.1:
-    resolution: {integrity: sha512-jTNOMGoMRhs0JuueJrJqbW8tOwxumaWYq+V5i+PD+8ecSCVkuX27tGW7BXqDgoULQ55rO7IdNxPcnsWtshz3AA==}
-    engines: {node: '>=14.18.0'}
-    peerDependencies:
-      esbuild: '>=0.18.0'
-      rollup: ^1.20.0 || ^2.0.0 || ^3.0.0 || ^4.0.0
 
   rollup-plugin-node-externals@8.1.0:
     resolution: {integrity: sha512-0D3S0E0Dl1V3Q6Cywnc7wt88VAfOB9AC5QHwVdgvP1vByRHW2wnEXoK0x3VYZzJ/EmGsR5Uix5HUmMJNG+hz2Q==}
@@ -7490,10 +7450,6 @@ packages:
   universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
-
-  unplugin-utils@0.2.5:
-    resolution: {integrity: sha512-gwXJnPRewT4rT7sBi/IvxKTjsms7jX7QIDLOClApuZwR49SXbrB1z2NLUZ+vDHyqCj/n58OzRRqaW+B8OZi8vg==}
-    engines: {node: '>=18.12.0'}
 
   unrs-resolver@1.11.1:
     resolution: {integrity: sha512-bSjt9pjaEBnNiGgc9rUiHGKv5l4/TGzDmYw3RhnkJGtLhbnnA/5qJj7x3dNDCRx/PJxu774LlH8lCOlB4hEfKg==}
@@ -8503,12 +8459,6 @@ snapshots:
   '@humanwhocodes/module-importer@1.0.1': {}
 
   '@humanwhocodes/object-schema@2.0.3': {}
-
-  '@hyrious/esbuild-plugin-commonjs@0.2.6(cjs-module-lexer@1.4.3)(esbuild@0.25.9)':
-    dependencies:
-      esbuild: 0.25.9
-    optionalDependencies:
-      cjs-module-lexer: 1.4.3
 
   '@img/sharp-darwin-arm64@0.34.3':
     optionalDependencies:
@@ -10680,11 +10630,6 @@ snapshots:
       '@typescript-eslint/types': 8.41.0
       eslint-visitor-keys: 4.2.1
 
-  '@umami/esbuild-plugin-css-modules@0.4.0':
-    dependencies:
-      postcss: 8.5.6
-      postcss-modules: 6.0.1(postcss@8.5.6)
-
   '@umami/prisma-client@0.19.0(@prisma/adapter-pg@6.15.0)(@prisma/client@6.15.0(prisma@6.15.0(typescript@5.9.2))(typescript@5.9.2))(@prisma/extension-read-replicas@0.4.1(@prisma/client@6.15.0(prisma@6.15.0(typescript@5.9.2))(typescript@5.9.2)))':
     dependencies:
       '@prisma/adapter-pg': 6.15.0
@@ -10724,7 +10669,7 @@ snapshots:
       - sass
       - use-sync-external-store
 
-  '@umami/redis-client@0.27.0':
+  '@umami/redis-client@0.29.0':
     dependencies:
       debug: 4.4.1(supports-color@8.1.1)
       redis: 4.7.1
@@ -11982,8 +11927,6 @@ snapshots:
       internal-slot: 1.1.0
       iterator.prototype: 1.1.5
       safe-array-concat: 1.1.3
-
-  es-module-lexer@1.7.0: {}
 
   es-object-atoms@1.1.1:
     dependencies:
@@ -14523,18 +14466,6 @@ snapshots:
       postcss-modules-values: 4.0.0(postcss@8.5.6)
       string-hash: 1.1.3
 
-  postcss-modules@6.0.1(postcss@8.5.6):
-    dependencies:
-      generic-names: 4.0.0
-      icss-utils: 5.1.0(postcss@8.5.6)
-      lodash.camelcase: 4.3.0
-      postcss: 8.5.6
-      postcss-modules-extract-imports: 3.1.0(postcss@8.5.6)
-      postcss-modules-local-by-default: 4.2.0(postcss@8.5.6)
-      postcss-modules-scope: 3.2.1(postcss@8.5.6)
-      postcss-modules-values: 4.0.0(postcss@8.5.6)
-      string-hash: 1.1.3
-
   postcss-nesting@10.2.0(postcss@8.5.6):
     dependencies:
       '@csstools/selector-specificity': 2.2.0(postcss-selector-parser@6.1.2)
@@ -15199,17 +15130,6 @@ snapshots:
       typescript: 5.9.2
     optionalDependencies:
       '@babel/code-frame': 7.27.1
-
-  rollup-plugin-esbuild@6.2.1(esbuild@0.25.9)(rollup@4.49.0):
-    dependencies:
-      debug: 4.4.1(supports-color@8.1.1)
-      es-module-lexer: 1.7.0
-      esbuild: 0.25.9
-      get-tsconfig: 4.10.1
-      rollup: 4.49.0
-      unplugin-utils: 0.2.5
-    transitivePeerDependencies:
-      - supports-color
 
   rollup-plugin-node-externals@8.1.0(rollup@4.49.0):
     dependencies:
@@ -16068,11 +15988,6 @@ snapshots:
   universalify@0.1.2: {}
 
   universalify@2.0.1: {}
-
-  unplugin-utils@0.2.5:
-    dependencies:
-      pathe: 2.0.3
-      picomatch: 4.0.3
 
   unrs-resolver@1.11.1:
     dependencies:

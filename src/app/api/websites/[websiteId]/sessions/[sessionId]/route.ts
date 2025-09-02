@@ -1,5 +1,5 @@
 import { unauthorized, json } from '@/lib/response';
-import { canViewWebsite } from '@/validations';
+import { canViewWebsite } from '@/permissions';
 import { getWebsiteSession } from '@/queries';
 import { parseRequest } from '@/lib/request';
 

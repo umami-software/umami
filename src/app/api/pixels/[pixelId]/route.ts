@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { canUpdatePixel, canDeletePixel, canViewPixel } from '@/validations';
+import { canUpdatePixel, canDeletePixel, canViewPixel } from '@/permissions';
 import { parseRequest } from '@/lib/request';
 import { ok, json, unauthorized, serverError, badRequest } from '@/lib/response';
 import { deletePixel, getPixel, updatePixel } from '@/queries';

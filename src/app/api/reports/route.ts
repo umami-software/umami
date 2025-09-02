@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { uuid } from '@/lib/crypto';
 import { pagingParams, reportSchema } from '@/lib/schema';
 import { parseRequest } from '@/lib/request';
-import { canViewWebsite, canUpdateWebsite } from '@/validations';
+import { canViewWebsite, canUpdateWebsite } from '@/permissions';
 import { unauthorized, json } from '@/lib/response';
 import { getReports, createReport } from '@/queries';
 
