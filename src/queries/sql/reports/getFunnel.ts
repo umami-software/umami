@@ -228,7 +228,7 @@ async function clickhouseQuery(
     `
     WITH level0 AS (
       select distinct session_id, url_path, referrer_path, event_name, created_at
-      from umami.website_event
+      from website_event
       where (${stepFilterQuery})
         and website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}

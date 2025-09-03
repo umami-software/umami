@@ -11,10 +11,11 @@ import { Item, Tabs } from 'react-basics';
 import { useState } from 'react';
 import EventProperties from './EventProperties';
 import { FILTER_COLUMNS } from '@/lib/constants';
+import { getItem, setItem } from '@/lib/storage';
 
 export default function EventsPage({ websiteId }) {
   const [label, setLabel] = useState(null);
-  const [tab, setTab] = useState('activity');
+  const [tab, setTab] = useState(getItem('eventTab') || 'activity');
   const { formatMessage, labels } = useMessages();
   const { query } = useNavigation();
 
@@ -28,6 +29,10 @@ export default function EventsPage({ websiteId }) {
     }
     return obj;
   }, {});
+  const onSelect = (value: 'activity' | 'properties') => {
+    setItem('eventTab', value);
+    setTab(value);
+  };
 
   return (
     <>
@@ -45,11 +50,7 @@ export default function EventsPage({ websiteId }) {
         />
       </GridRow>
       <div>
-        <Tabs
-          selectedKey={tab}
-          onSelect={(value: any) => setTab(value)}
-          style={{ marginBottom: 30 }}
-        >
+        <Tabs selectedKey={tab} onSelect={onSelect} style={{ marginBottom: 30 }}>
           <Item key="activity">{formatMessage(labels.activity)}</Item>
           <Item key="properties">{formatMessage(labels.properties)}</Item>
         </Tabs>

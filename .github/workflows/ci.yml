@@ -11,6 +11,8 @@ env:
 
 jobs:
   build:
+    # Only run the CI if it belongs to the original repository
+    if: github.repository == 'umami-software/umami'
     runs-on: ubuntu-latest
 
     strategy:
@@ -27,10 +29,10 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
+        cache: 'pnpm'
       env:
         DATABASE_TYPE: ${{ matrix.db-type }}
-    - run: npm install --global yarn
-    - run: yarn install
-    - run: yarn test
-    - run: yarn build
+    - run: npm install --global pnpm
+    - run: pnpm install
+    - run: pnpm test
+    - run: pnpm build
