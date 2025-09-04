@@ -31,7 +31,7 @@ async function relationalQuery(
     select
       count(*) filter (where website_event.event_type = 1) as "pageviews",
       count(distinct website_event.session_id) filter (where website_event.event_type = 1) as "visitors",
-      count(distinct visit_id) filter (where website_event.event_type = 1) as "visits",
+      count(distinct website_event.visit_id) filter (where website_event.event_type = 1) as "visits",
       count(distinct session.country) filter (where website_event.event_type = 1) as "countries",
       count(*) filter (where website_event.event_type = 2) as "events"
     from website_event
