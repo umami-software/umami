@@ -29,11 +29,11 @@ async function relationalQuery(
   return rawQuery(
     `
     select
-      count(*) as "pageviews",
-      count(distinct website_event.session_id) as "visitors",
-      count(distinct website_event.visit_id) as "visits",
-      count(distinct session.country) as "countries",
-      sum(case when website_event.event_type = 2 then 1 else 0 end) as "events"
+      count(*) filter (where website_event.event_type = 1) as "pageviews",
+      count(distinct website_event.session_id) filter (where website_event.event_type = 1) as "visitors",
+      count(distinct visit_id) filter (where website_event.event_type = 1) as "visits",
+      count(distinct session.country) filter (where website_event.event_type = 1) as "countries",
+      count(*) filter (where website_event.event_type = 2) as "events"
     from website_event
     ${cohortQuery}
     join session on website_event.session_id = session.session_id
