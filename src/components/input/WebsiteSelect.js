@@ -19,6 +19,7 @@ export function WebsiteSelect({ websiteId, onSelect }) {
       onChange={onSelect}
       alignment="end"
       placeholder={formatMessage(labels.selectWebsite)}
+      className="h-72 overflow-y-auto"
     >
       {({ id, name }) => <Item key={id}>{name}</Item>}
     </Dropdown>
