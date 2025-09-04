@@ -164,12 +164,6 @@ if (trackerScriptName) {
 
 if (cloudMode && cloudUrl) {
   redirects.push({
-    source: '/settings/:path*',
-    destination: `${cloudUrl}/settings/:path*`,
-    permanent: false,
-  });
-
-  redirects.push({
     source: '/login',
     destination: cloudUrl,
     permanent: false,

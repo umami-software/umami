@@ -45,8 +45,8 @@ importers:
         specifier: ^5.85.5
         version: 5.85.5(react@19.1.1)
       '@umami/react-zen':
-        specifier: ^0.175.0
-        version: 0.175.0(@babel/core@7.28.3)(@types/react@19.1.12)(babel-plugin-react-compiler@19.1.0-rc.2)(immer@10.1.1)(use-sync-external-store@1.5.0(react@19.1.1))
+        specifier: ^0.176.0
+        version: 0.176.0(@babel/core@7.28.3)(@types/react@19.1.12)(babel-plugin-react-compiler@19.1.0-rc.2)(immer@10.1.1)(use-sync-external-store@1.5.0(react@19.1.1))
       '@umami/redis-client':
         specifier: ^0.29.0
         version: 0.29.0
@@ -2735,8 +2735,8 @@ packages:
       '@prisma/client': ^6.1.0
       '@prisma/extension-read-replicas': ^0.4.1
 
-  '@umami/react-zen@0.175.0':
-    resolution: {integrity: sha512-iOUCZwmr09RnqIm01wnjcSTTJ5iJdXRmFlmja2Qf42di/SOOTSBJmu1fKiYESp4dLrXXcmMeDfDqtJli0PPSRw==}
+  '@umami/react-zen@0.176.0':
+    resolution: {integrity: sha512-GP+Df68w0Kfo09ZC5WgK1YCg/IbqOz7HWPw8PLYG3shYm+feuF8ND8DHjoTle4qXY4oRJFufXCEsDbTb8FITkg==}
 
   '@umami/redis-client@0.29.0':
     resolution: {integrity: sha512-Jaqh++jskqDB7ny75pfC02OvKp1JTS4asGDsFrRL3qy8sxL3PAl9+/mybCJe4/6vWrXDJKqpgkSfUDJq2bFjyw==}
@@ -10333,7 +10333,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@umami/react-zen@0.175.0(@babel/core@7.28.3)(@types/react@19.1.12)(babel-plugin-react-compiler@19.1.0-rc.2)(immer@10.1.1)(use-sync-external-store@1.5.0(react@19.1.1))':
+  '@umami/react-zen@0.176.0(@babel/core@7.28.3)(@types/react@19.1.12)(babel-plugin-react-compiler@19.1.0-rc.2)(immer@10.1.1)(use-sync-external-store@1.5.0(react@19.1.1))':
     dependencies:
       '@fontsource/jetbrains-mono': 5.2.6
       '@internationalized/date': 3.9.0

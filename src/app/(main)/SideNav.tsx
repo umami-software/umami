@@ -22,10 +22,11 @@ import { TeamsButton } from '@/components/input/TeamsButton';
 import { PanelButton } from '@/components/input/PanelButton';
 import { ProfileButton } from '@/components/input/ProfileButton';
 import { LanguageButton } from '@/components/input/LanguageButton';
+import { Key } from 'react';
 
 export function SideNav(props: SidebarProps) {
   const { formatMessage, labels } = useMessages();
-  const { pathname, renderUrl, websiteId } = useNavigation();
+  const { pathname, renderUrl, websiteId, router } = useNavigation();
   const [isCollapsed, setIsCollapsed] = useGlobalState('sidenav-collapsed');
 
   const hasNav = !!(websiteId || pathname.startsWith('/admin') || pathname.includes('/settings'));
@@ -66,20 +67,28 @@ export function SideNav(props: SidebarProps) {
     },
   ];
 
+  const handleSelect = (id: Key) => {
+    console.log({ id });
+    router.push(id === 'user' ? '/websites' : `/teams/${id}/websites`);
+  };
+
   return (
     <Row height="100%" backgroundColor border="right">
       <Sidebar {...props} isCollapsed={isCollapsed || hasNav} muteItems={false} showBorder={false}>
         <SidebarSection onClick={() => setIsCollapsed(false)}>
           <SidebarHeader
             label="umami"
-            icon={isCollapsed && !hasNav ? <PanelLeft /> : <Logo />}
+            icon={
+              isCollapsed && !hasNav ? (
+                <PanelLeft />
+              ) : (
+                <Logo onClick={() => (window.location.href = process.env.cloudUrl)} />
+              )
+            }
             style={{ maxHeight: 40 }}
           >
             {!isCollapsed && !hasNav && <PanelButton />}
           </SidebarHeader>
-        </SidebarSection>
-        <SidebarSection style={{ paddingTop: 0, paddingBottom: 0 }}>
-          <TeamsButton showText={!hasNav && !isCollapsed} />
         </SidebarSection>
         <SidebarSection flexGrow={1}>
           {links.map(({ id, path, label, icon }) => {
@@ -95,6 +104,9 @@ export function SideNav(props: SidebarProps) {
             );
           })}
         </SidebarSection>
+        <SidebarSection style={{ paddingTop: 0, paddingBottom: 0 }}>
+          <TeamsButton showText={!hasNav && !isCollapsed} onAction={handleSelect} />
+        </SidebarSection>
         <SidebarSection>
           {bottomLinks.map(({ id, path, label, icon }) => {
             return (
@@ -108,7 +120,7 @@ export function SideNav(props: SidebarProps) {
               </Link>
             );
           })}
-          <Row alignItems="center" justifyContent="space-between" height="40px">
+          <Row alignItems="center" height="40px">
             <ProfileButton />
             {!isCollapsed && !hasNav && (
               <Row>

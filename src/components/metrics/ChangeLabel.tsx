@@ -1,14 +1,26 @@
-import classNames from 'classnames';
-import { Icon, Text } from '@umami/react-zen';
-import { HTMLAttributes, ReactNode } from 'react';
+import { Icon, Text, Row, RowProps } from '@umami/react-zen';
+import { ReactNode } from 'react';
 import { Arrow } from '@/components/icons';
-import styles from './ChangeLabel.module.css';
+
+const STYLES = {
+  positive: {
+    color: `var(--success-color)`,
+    background: `color-mix(in srgb, var(--success-color), var(--background-color) 95%)`,
+  },
+  negative: {
+    color: `var(--danger-color)`,
+    background: `color-mix(in srgb, var(--danger-color), var(--background-color) 95%)`,
+  },
+  neutral: {
+    color: `var(--font-color-muted)`,
+    background: `var(--base-color-2)`,
+  },
+};
 
 export function ChangeLabel({
   value,
   size,
   reverseColors,
-  className,
   children,
   ...props
 }: {
@@ -17,29 +29,24 @@ export function ChangeLabel({
   title?: string;
   reverseColors?: boolean;
   showPercentage?: boolean;
-  className?: string;
   children?: ReactNode;
-} & HTMLAttributes<HTMLDivElement>) {
+} & RowProps) {
   const positive = value >= 0;
   const negative = value < 0;
   const neutral = value === 0 || isNaN(value);
   const good = reverseColors ? negative : positive;
 
+  const style =
+    STYLES[good && 'positive'] || STYLES[!good && 'negative'] || STYLES[neutral && 'neutral'];
+
   return (
-    <div
-      {...props}
-      className={classNames(styles.label, className, {
-        [styles.positive]: good,
-        [styles.negative]: !good,
-        [styles.neutral]: neutral,
-      })}
-    >
+    <Row {...props} style={style} alignSelf="flex-start" paddingX="2" paddingY="1">
       {!neutral && (
         <Icon rotate={positive ? -90 : 90} size={size}>
           <Arrow />
         </Icon>
       )}
       <Text>{children || value}</Text>
-    </div>
+    </Row>
   );
 }

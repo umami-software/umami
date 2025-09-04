@@ -7,7 +7,7 @@ export default defineConfig({
   dts: true,
   splitting: false,
   sourcemap: false,
-  clean: true,
+  clean: false,
   external: ['react', 'react-dom', 'react/jsx-runtime', '@swc/helpers'],
   esbuildOptions(options) {
     options.jsx = 'automatic';

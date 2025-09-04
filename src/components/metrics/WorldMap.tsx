@@ -1,7 +1,6 @@
 import { FloatingTooltip, Column, useTheme, ColumnProps } from '@umami/react-zen';
 import { useState, useMemo } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
-import classNames from 'classnames';
 import { colord } from 'colord';
 import { ISO_COUNTRIES, MAP_FILE } from '@/lib/constants';
 import {
@@ -12,7 +11,6 @@ import {
 } from '@/components/hooks';
 import { formatLongNumber } from '@/lib/format';
 import { percentFilter } from '@/lib/filters';
-import styles from './WorldMap.module.css';
 import { getThemeColors } from '@/lib/colors';
 
 export interface WorldMapProps extends ColumnProps {
@@ -20,7 +18,7 @@ export interface WorldMapProps extends ColumnProps {
   data?: any[];
 }
 
-export function WorldMap({ websiteId, data, className, ...props }: WorldMapProps) {
+export function WorldMap({ websiteId, data, ...props }: WorldMapProps) {
   const [tooltip, setTooltipPopup] = useState();
   const { theme } = useTheme();
   const { colors } = getThemeColors(theme);
@@ -67,12 +65,7 @@ export function WorldMap({ websiteId, data, className, ...props }: WorldMapProps
   };
 
   return (
-    <Column
-      {...props}
-      className={classNames(styles.container, className)}
-      data-tip=""
-      data-for="world-map-tooltip"
-    >
+    <Column {...props} data-tip="" data-for="world-map-tooltip" style={{ margin: 'auto 0' }}>
       <ComposableMap projection="geoMercator">
         <ZoomableGroup zoom={0.8} minZoom={0.7} center={[0, 40]}>
           <Geographies geography={`${process.env.basePath || ''}${MAP_FILE}`}>

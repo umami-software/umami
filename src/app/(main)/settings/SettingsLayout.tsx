@@ -53,6 +53,7 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
           title={formatMessage(labels.settings)}
           selectedKey={selectedKey}
           allowMinimize={false}
+          muteItems={false}
         />
       </Column>
       <Column gap="6" margin="2">

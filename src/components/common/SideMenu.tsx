@@ -12,8 +12,20 @@ import {
 } from '@umami/react-zen';
 import Link from 'next/link';
 
+interface SideMenuData {
+  id: string;
+  label: string;
+  icon?: any;
+  path: string;
+}
+
+interface SideMenuItems {
+  label?: string;
+  items: SideMenuData[];
+}
+
 export interface SideMenuProps extends NavMenuProps {
-  items: { label: string; items: { id: string; label: string; icon?: any; path: string }[] }[];
+  items: SideMenuItems[];
   title?: string;
   selectedKey?: string;
   allowMinimize?: boolean;
@@ -28,6 +40,23 @@ export function SideMenu({
   children,
   ...props
 }: SideMenuProps) {
+  const renderItems = (items: SideMenuData[]) => {
+    return items?.map(({ id, label, icon, path }) => {
+      const isSelected = selectedKey === id;
+
+      return (
+        <Link key={id} href={path}>
+          <NavMenuItem isSelected={isSelected}>
+            <Row alignItems="center" gap>
+              <Icon>{icon}</Icon>
+              <Text>{label}</Text>
+            </Row>
+          </NavMenuItem>
+        </Link>
+      );
+    });
+  };
+
   return (
     <Column
       gap
@@ -47,30 +76,19 @@ export function SideMenu({
       )}
       <NavMenu gap="6" {...props}>
         {items?.map(({ label, items }, index) => {
-          return (
-            <NavMenuGroup
-              title={label}
-              key={`${label}${index}`}
-              gap="1"
-              allowMinimize={allowMinimize}
-              marginBottom="3"
-            >
-              {items?.map(({ id, label, icon, path }) => {
-                const isSelected = selectedKey === id;
-
-                return (
-                  <Link key={id} href={path}>
-                    <NavMenuItem isSelected={isSelected}>
-                      <Row alignItems="center" gap>
-                        <Icon>{icon}</Icon>
-                        <Text>{label}</Text>
-                      </Row>
-                    </NavMenuItem>
-                  </Link>
-                );
-              })}
-            </NavMenuGroup>
-          );
+          if (label) {
+            return (
+              <NavMenuGroup
+                title={label}
+                key={`${label}${index}`}
+                gap="1"
+                allowMinimize={allowMinimize}
+                marginBottom="3"
+              >
+                {renderItems(items)}
+              </NavMenuGroup>
+            );
+          }
         })}
       </NavMenu>
     </Column>

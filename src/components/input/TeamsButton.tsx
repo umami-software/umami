@@ -11,25 +11,29 @@ import {
   Popover,
   Row,
   Box,
-  SidebarItem,
-  Pressable,
+  Button,
+  Loading,
 } from '@umami/react-zen';
 import { useLoginQuery, useMessages, useUserTeamsQuery, useNavigation } from '@/components/hooks';
 import { Chevron, User, Users } from '@/components/icons';
 
-export function TeamsButton({ showText = true }: { showText?: boolean }) {
+export interface TeamsButtonProps {
+  showText?: boolean;
+  onAction?: (id: any) => void;
+}
+
+export function TeamsButton({ showText = true, onAction }: TeamsButtonProps) {
   const { user } = useLoginQuery();
   const { formatMessage, labels } = useMessages();
-  const { data } = useUserTeamsQuery(user.id);
+  const { data, isLoading } = useUserTeamsQuery(user.id);
   const { teamId } = useNavigation();
-  const router = useRouter();
   const team = data?.data?.find(({ id }) => id === teamId);
-  const selectedKeys = new Set([teamId || user.id]);
+  const selectedKeys = new Set([teamId || 'user']);
   const label = teamId ? team?.name : user.username;
 
-  const handleSelect = (id: Key) => {
-    router.push(id === user.id ? '/websites' : `/teams/${id}/websites`);
-  };
+  if (isLoading) {
+    return <Loading icon="dots" position="center" />;
+  }
 
   if (!data?.count) {
     return null;
@@ -37,27 +41,29 @@ export function TeamsButton({ showText = true }: { showText?: boolean }) {
 
   return (
     <MenuTrigger>
-      <Pressable>
-        <Row role="button" width="100%" backgroundColor="2" border borderRadius>
-          <SidebarItem role="button" label={label} icon={teamId ? <Users /> : <User />}>
-            {showText && (
-              <Icon rotate={90} size="sm">
-                <Chevron />
-              </Icon>
-            )}
-          </SidebarItem>
+      <Button variant="outline">
+        <Row alignItems="center" justifyContent="space-between" flexGrow={1}>
+          <Row alignItems="center" gap>
+            <Icon>{teamId ? <Users /> : <User />}</Icon>
+            {showText && <Text>{label}</Text>}
+          </Row>
+          {showText && (
+            <Icon rotate={90} size="sm">
+              <Chevron />
+            </Icon>
+          )}
         </Row>
-      </Pressable>
+      </Button>
       <Popover placement="bottom start">
         <Box minWidth="300px">
           <Menu
             selectionMode="single"
             selectedKeys={selectedKeys}
             autoFocus="last"
-            onAction={handleSelect}
+            onAction={onAction}
           >
             <MenuSection title={formatMessage(labels.myAccount)}>
-              <MenuItem id={user.id}>
+              <MenuItem id={'user'}>
                 <Row alignItems="center" gap>
                   <Icon>
                     <User />
