@@ -1,12 +1,12 @@
 import { Row, Column, Label } from '@umami/react-zen';
-import { useLoginQuery, useMessages } from '@/components/hooks';
+import { useConfig, useLoginQuery, useMessages } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 import { PasswordChangeButton } from './PasswordChangeButton';
 
 export function ProfileSettings() {
   const { user } = useLoginQuery();
   const { formatMessage, labels } = useMessages();
-  const cloudMode = !!process.env.cloudMode;
+  const { cloudMode } = useConfig();
 
   if (!user) {
     return null;

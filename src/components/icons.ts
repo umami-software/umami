@@ -1,6 +1,7 @@
 export {
   AlertTriangle as Alert,
   ArrowRight as Arrow,
+  Bookmark,
   Calendar,
   ChartPie,
   ChevronRight as Chevron,
@@ -50,4 +51,20 @@ export {
   UserPlus,
   X as Close,
 } from 'lucide-react';
-export * from '@/components/svg';
+export {
+  Logo,
+  Bolt,
+  Change,
+  Compare,
+  Funnel,
+  Lightbulb,
+  Lightning,
+  Magnet,
+  Money,
+  Network,
+  Path,
+  Tag,
+  Target,
+  AddUser,
+  Visitor,
+} from '@/components/svg';

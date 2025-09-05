@@ -10,7 +10,7 @@ export function PixelProvider({ pixelId, children }: { pixelId?: string; childre
   const { data: pixel, isLoading, isFetching } = usePixelQuery(pixelId);
 
   if (isFetching && isLoading) {
-    return <Loading position="page" />;
+    return <Loading placement="absolute" />;
   }
 
   if (!pixel) {

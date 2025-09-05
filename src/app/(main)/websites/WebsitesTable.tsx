@@ -3,27 +3,24 @@ import { Row, Text, Icon, DataTable, DataColumn, MenuItem } from '@umami/react-z
 import { useMessages, useNavigation } from '@/components/hooks';
 import { MenuButton } from '@/components/input/MenuButton';
 import { Eye, SquarePen } from '@/components/icons';
-import Link from 'next/link';
-
-export interface WebsitesTableProps {
-  data: Record<string, any>[];
-  showActions?: boolean;
-  allowEdit?: boolean;
-  allowView?: boolean;
-  teamId?: string;
-  children?: ReactNode;
-}
 
 export function WebsitesTable({
   data = [],
   showActions,
   allowEdit,
   allowView,
+  renderLink,
   children,
-}: WebsitesTableProps) {
+}: {
+  data: Record<string, any>[];
+  showActions?: boolean;
+  allowEdit?: boolean;
+  allowView?: boolean;
+  renderLink?: (row: any) => ReactNode;
+  children?: ReactNode;
+}) {
   const { formatMessage, labels } = useMessages();
-  const { renderUrl, pathname } = useNavigation();
-  const isSettings = pathname.includes('/settings');
+  const { renderUrl } = useNavigation();
 
   if (!data?.length) {
     return children;
@@ -32,11 +29,7 @@ export function WebsitesTable({
   return (
     <DataTable data={data}>
       <DataColumn id="name" label={formatMessage(labels.name)}>
-        {(row: any) => (
-          <Link href={renderUrl(`${isSettings ? '/settings' : ''}/websites/${row.id}`, false)}>
-            {row.name}
-          </Link>
-        )}
+        {renderLink}
       </DataColumn>
       <DataColumn id="domain" label={formatMessage(labels.domain)} />
       {showActions && (

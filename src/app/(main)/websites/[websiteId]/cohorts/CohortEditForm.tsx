@@ -52,7 +52,7 @@ export function CohortEditForm({
   };
 
   if (cohortId && !data) {
-    return <Loading position="page" />;
+    return <Loading placement="absolute" />;
   }
 
   const defaultValues = {

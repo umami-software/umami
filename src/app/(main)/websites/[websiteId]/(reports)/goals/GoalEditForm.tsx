@@ -44,7 +44,7 @@ export function GoalEditForm({
   };
 
   if (id && !data) {
-    return <Loading position="page" />;
+    return <Loading placement="absolute" />;
   }
 
   const defaultValues = {

@@ -11,31 +11,31 @@ import {
   Text,
   Row,
 } from '@umami/react-zen';
-import { useMessages, useLoginQuery, useNavigation } from '@/components/hooks';
+import { useMessages, useLoginQuery, useNavigation, useConfig } from '@/components/hooks';
 import { LogOut, UserCircle, LockKeyhole } from '@/components/icons';
 
 export function ProfileButton() {
   const { formatMessage, labels } = useMessages();
   const { user } = useLoginQuery();
   const { renderUrl } = useNavigation();
-  const cloudMode = !!process.env.cloudMode;
+  const { cloudUrl } = useConfig();
 
   const items = [
     {
-      id: 'profile',
+      id: 'settings',
       label: formatMessage(labels.profile),
       path: renderUrl('/settings/profile'),
       icon: <UserCircle />,
     },
     user.isAdmin &&
-      !cloudMode && {
+      !cloudUrl && {
         id: 'admin',
         label: formatMessage(labels.admin),
         path: '/admin',
         icon: <LockKeyhole />,
       },
     {
-      id: 'LogOut',
+      id: 'logout',
       label: formatMessage(labels.logout),
       path: '/logout',
       icon: <LogOut />,

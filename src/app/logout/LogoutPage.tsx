@@ -8,7 +8,7 @@ import { removeClientAuthToken } from '@/lib/client';
 export function LogoutPage() {
   const router = useRouter();
   const { post } = useApi();
-  const disabled = process.env.cloudMode;
+  const disabled = process.env.cloudUrl;
 
   useEffect(() => {
     async function logout() {

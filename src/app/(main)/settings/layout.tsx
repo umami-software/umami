@@ -2,6 +2,10 @@ import { Metadata } from 'next';
 import { SettingsLayout } from './SettingsLayout';
 
 export default function ({ children }) {
+  if (process.env.cloudUrl) {
+    return null;
+  }
+
   return <SettingsLayout>{children}</SettingsLayout>;
 }
 

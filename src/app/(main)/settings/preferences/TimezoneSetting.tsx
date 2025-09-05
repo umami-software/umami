@@ -22,7 +22,7 @@ export function TimezoneSetting() {
   };
 
   return (
-    <Row gap="3">
+    <Row gap>
       <Select
         value={timezone}
         onChange={(value: any) => saveTimezone(value)}

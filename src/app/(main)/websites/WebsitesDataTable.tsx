@@ -1,6 +1,7 @@
+import Link from 'next/link';
 import { WebsitesTable } from './WebsitesTable';
 import { DataGrid } from '@/components/common/DataGrid';
-import { useUserWebsitesQuery } from '@/components/hooks';
+import { useNavigation, useUserWebsitesQuery } from '@/components/hooks';
 
 export function WebsitesDataTable({
   teamId,
@@ -14,16 +15,21 @@ export function WebsitesDataTable({
   showActions?: boolean;
 }) {
   const queryResult = useUserWebsitesQuery({ teamId });
+  const { renderUrl } = useNavigation();
+
+  const renderLink = (row: any) => (
+    <Link href={renderUrl(`/websites/${row.id}`, false)}>{row.name}</Link>
+  );
 
   return (
     <DataGrid query={queryResult} allowSearch allowPaging>
       {({ data }) => (
         <WebsitesTable
-          teamId={teamId}
           data={data}
           showActions={showActions}
           allowEdit={allowEdit}
           allowView={allowView}
+          renderLink={renderLink}
         />
       )}
     </DataGrid>

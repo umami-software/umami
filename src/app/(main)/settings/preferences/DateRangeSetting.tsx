@@ -15,7 +15,7 @@ export function DateRangeSetting() {
 
   return (
     <Row gap="3">
-      <DateFilter value={value} onChange={handleChange} />
+      <DateFilter value={value} onChange={handleChange} placement="bottom start" />
       <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
     </Row>
   );

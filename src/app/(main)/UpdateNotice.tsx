@@ -18,7 +18,7 @@ export function UpdateNotice({ user, config }) {
     !config?.updatesDisabled &&
     !config?.privateMode &&
     !pathname.includes('/share/') &&
-    !process.env.cloudMode &&
+    !process.env.cloudUrl &&
     !dismissed;
 
   const updateCheck = useCallback(() => {

@@ -1,10 +1,10 @@
+import { ReactNode } from 'react';
+import Link from 'next/link';
 import { DataGrid } from '@/components/common/DataGrid';
 import { TeamsTable } from './TeamsTable';
 import { useLoginQuery, useUserTeamsQuery } from '@/components/hooks';
-import { ReactNode } from 'react';
 
 export function TeamsDataTable({
-  allowEdit,
   showActions,
 }: {
   allowEdit?: boolean;
@@ -14,10 +14,18 @@ export function TeamsDataTable({
   const { user } = useLoginQuery();
   const query = useUserTeamsQuery(user.id);
 
+  const renderLink = (row: any) => {
+    return (
+      <Link key={row.id} href={`/teams/${row.id}`}>
+        {row.name}
+      </Link>
+    );
+  };
+
   return (
     <DataGrid query={query}>
       {({ data }) => {
-        return <TeamsTable data={data} allowEdit={allowEdit} showActions={showActions} />;
+        return <TeamsTable data={data} showActions={showActions} renderLink={renderLink} />;
       }}
     </DataGrid>
   );

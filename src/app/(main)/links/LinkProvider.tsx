@@ -10,7 +10,7 @@ export function LinkProvider({ linkId, children }: { linkId?: string; children: 
   const { data: link, isLoading, isFetching } = useLinkQuery(linkId);
 
   if (isFetching && isLoading) {
-    return <Loading position="page" />;
+    return <Loading placement="absolute" />;
   }
 
   if (!link) {

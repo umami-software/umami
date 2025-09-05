@@ -59,12 +59,14 @@ export function WebsiteDateFilter({
           </Button>
         </Row>
       )}
-      <DateFilter
-        value={value}
-        onChange={handleChange}
-        showAllTime={showAllTime}
-        renderDate={+offset !== 0}
-      />
+      <Row width="200px">
+        <DateFilter
+          value={value}
+          onChange={handleChange}
+          showAllTime={showAllTime}
+          renderDate={+offset !== 0}
+        />
+      </Row>
       {allowCompare && !isAllTime && (
         <Row alignItems="center" gap>
           <Text weight="bold">VS</Text>

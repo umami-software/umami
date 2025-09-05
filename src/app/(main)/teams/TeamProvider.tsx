@@ -10,7 +10,7 @@ export function TeamProvider({ teamId, children }: { teamId?: string; children: 
   const { data: team, isLoading, isFetching } = useTeamQuery(teamId);
 
   if (isFetching && isLoading) {
-    return <Loading position="page" />;
+    return <Loading placement="absolute" />;
   }
 
   if (!team) {

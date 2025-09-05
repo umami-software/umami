@@ -16,7 +16,7 @@ export function WebsiteProvider({
   const { data: website, isFetching, isLoading } = useWebsiteQuery(websiteId);
 
   if (isFetching && isLoading) {
-    return <Loading position="page" />;
+    return <Loading placement="absolute" />;
   }
 
   if (!website) {

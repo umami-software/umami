@@ -9,7 +9,7 @@ export function UserProvider({ userId, children }: { userId: string; children: R
   const { data: user, isFetching, isLoading } = useUserQuery(userId);
 
   if (isFetching && isLoading) {
-    return <Loading position="page" />;
+    return <Loading placement="absolute" />;
   }
 
   if (!user) {

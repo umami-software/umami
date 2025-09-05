@@ -50,7 +50,7 @@ export function FunnelEditForm({
   };
 
   if (id && !data) {
-    return <Loading position="page" />;
+    return <Loading placement="absolute" />;
   }
 
   const defaultValues = {

@@ -26,7 +26,7 @@ export function LanguageSetting() {
   };
 
   return (
-    <Row gap="3">
+    <Row gap>
       <Select
         value={locale}
         onChange={val => saveLocale(val as string)}

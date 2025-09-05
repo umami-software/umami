@@ -117,7 +117,7 @@ export async function deleteTeam(
   teamId: string,
 ): Promise<Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Team]>> {
   const { client, transaction } = prisma;
-  const cloudMode = process.env.CLOUD_MODE;
+  const cloudMode = !!process.env.CLOUD_URL;
 
   if (cloudMode) {
     return transaction([

@@ -3,7 +3,7 @@ import { PERMISSIONS } from '@/lib/constants';
 import { hasPermission } from '@/lib/auth';
 import { getTeamUser, getWebsite } from '@/queries';
 
-const cloudMode = !!process.env.CLOUD_MODE;
+const cloudMode = !!process.env.CLOUD_URL;
 
 export async function canViewWebsite({ user, shareToken }: Auth, websiteId: string) {
   if (user?.isAdmin) {

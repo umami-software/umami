@@ -1,15 +1,10 @@
 import 'dotenv/config';
-import { createRequire } from 'module';
-
-const require = createRequire(import.meta.url);
-
-const pkg = require('./package.json');
+import pkg from './package.json' assert { type: 'json' };
 
 const TRACKER_SCRIPT = '/script.js';
 
 const basePath = process.env.BASE_PATH;
 const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT;
-const cloudMode = process.env.CLOUD_MODE;
 const cloudUrl = process.env.CLOUD_URL;
 const corsMaxAge = process.env.CORS_MAX_AGE;
 const defaultLocale = process.env.DEFAULT_LOCALE;
@@ -162,7 +157,7 @@ if (trackerScriptName) {
   }
 }
 
-if (cloudMode && cloudUrl) {
+if (cloudUrl) {
   redirects.push({
     source: '/login',
     destination: cloudUrl,
@@ -175,7 +170,6 @@ export default {
   reactStrictMode: false,
   env: {
     basePath,
-    cloudMode,
     cloudUrl,
     currentVersion: pkg.version,
     defaultLocale,

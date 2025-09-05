@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { AdminLayout } from './AdminLayout';
 
 export default function ({ children }) {
-  if (process.env.cloudMode) {
+  if (process.env.cloudUrl) {
     return null;
   }
 

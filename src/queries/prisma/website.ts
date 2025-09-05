@@ -159,7 +159,7 @@ export async function resetWebsite(
   websiteId: string,
 ): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Website]> {
   const { client, transaction } = prisma;
-  const cloudMode = !!process.env.cloudMode;
+  const cloudMode = !!process.env.CLOUD_URL;
 
   return transaction([
     client.eventData.deleteMany({
@@ -193,7 +193,7 @@ export async function deleteWebsite(
   websiteId: string,
 ): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Website]> {
   const { client, transaction } = prisma;
-  const cloudMode = !!process.env.CLOUD_MODE;
+  const cloudMode = !!process.env.CLOUD_URL;
 
   return transaction([
     client.eventData.deleteMany({

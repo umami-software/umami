@@ -122,7 +122,7 @@ export async function deleteUser(
   ]
 > {
   const { client, transaction } = prisma;
-  const cloudMode = process.env.CLOUD_MODE;
+  const cloudMode = !!process.env.CLOUD_URL;
 
   const websites = await client.website.findMany({
     where: { userId },

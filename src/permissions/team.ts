@@ -3,7 +3,7 @@ import { PERMISSIONS } from '@/lib/constants';
 import { getTeamUser } from '@/queries';
 import { hasPermission } from '@/lib/auth';
 
-const cloudMode = !!process.env.CLOUD_MODE;
+const cloudMode = !!process.env.CLOUD_URL;
 
 export async function canViewTeam({ user }: Auth, teamId: string) {
   if (user.isAdmin) {

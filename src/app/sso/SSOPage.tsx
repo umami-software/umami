@@ -18,5 +18,5 @@ export function SSOPage() {
     }
   }, [router, url, token]);
 
-  return <Loading position="page" />;
+  return <Loading placement="absolute" />;
 }

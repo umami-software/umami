@@ -49,7 +49,7 @@ export function LookupField({ websiteId, type, value, onChange, ...props }: Look
       allowsCustomValue
       renderEmptyState={() =>
         isLoading ? (
-          <Loading position="center" icon="dots" />
+          <Loading placement="center" icon="dots" />
         ) : (
           <Empty message={formatMessage(messages.noResultsFound)} />
         )

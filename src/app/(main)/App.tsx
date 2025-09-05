@@ -11,8 +11,8 @@ export function App({ children }) {
   const config = useConfig();
   const pathname = usePathname();
 
-  if (isLoading) {
-    return <Loading position="page" />;
+  if (isLoading || !config) {
+    return <Loading placement="absolute" />;
   }
 
   if (error) {

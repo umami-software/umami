@@ -1,25 +1,25 @@
 import { DataColumn, DataTable, Icon, MenuItem, Text, Row } from '@umami/react-zen';
-import { useMessages, useNavigation } from '@/components/hooks';
+import { useMessages } from '@/components/hooks';
 import { Eye, Edit } from '@/components/icons';
 import { ROLES } from '@/lib/constants';
 import { MenuButton } from '@/components/input/MenuButton';
-import Link from 'next/link';
+import { ReactNode } from 'react';
 
 export function TeamsTable({
   data = [],
   showActions = false,
+  renderLink,
 }: {
   data: any[];
-  allowEdit?: boolean;
   showActions?: boolean;
+  renderLink?: (row: any) => ReactNode;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { renderUrl } = useNavigation();
 
   return (
     <DataTable data={data}>
       <DataColumn id="name" label={formatMessage(labels.name)}>
-        {(row: any) => <Link href={renderUrl(`/settings/teams/${row.id}`)}>{row.name}</Link>}
+        {renderLink}
       </DataColumn>
       <DataColumn id="owner" label={formatMessage(labels.owner)}>
         {(row: any) => row?.members?.find(({ role }) => role === ROLES.teamOwner)?.user?.username}

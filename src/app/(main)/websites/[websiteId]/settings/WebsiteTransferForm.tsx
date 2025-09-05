@@ -64,7 +64,7 @@ export function WebsiteTransferForm({
   };
 
   if (isLoading) {
-    return <Loading icon="dots" position="center" />;
+    return <Loading icon="dots" placement="center" />;
   }
 
   return (

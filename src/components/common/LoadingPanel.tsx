@@ -10,7 +10,7 @@ export interface LoadingPanelProps extends ColumnProps {
   isLoading?: boolean;
   isFetching?: boolean;
   loadingIcon?: 'dots' | 'spinner';
-  loadingPosition?: 'center' | 'page' | 'inline';
+  loadingPlacement?: 'center' | 'absolute' | 'inline';
   renderEmpty?: () => ReactNode;
   children: ReactNode;
 }
@@ -22,7 +22,7 @@ export function LoadingPanel({
   isLoading,
   isFetching,
   loadingIcon = 'dots',
-  loadingPosition = 'page',
+  loadingPlacement = 'absolute',
   renderEmpty = () => <Empty />,
   children,
   ...props
@@ -34,7 +34,7 @@ export function LoadingPanel({
       {/* Show loading spinner only if no data exists */}
       {(isLoading || isFetching) && (
         <Column position="relative" height="100%" {...props}>
-          <Loading icon={loadingIcon} position={loadingPosition} />
+          <Loading icon={loadingIcon} placement={loadingPlacement} />
         </Column>
       )}
 

@@ -49,7 +49,7 @@ export function SegmentEditForm({
   };
 
   if (segmentId && !data) {
-    return <Loading position="page" />;
+    return <Loading placement="absolute" />;
   }
 
   return (

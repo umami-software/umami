@@ -78,7 +78,7 @@ export function LinkEditForm({
   }, [data]);
 
   if (linkId && isLoading) {
-    return <Loading position="page" />;
+    return <Loading placement="absolute" />;
   }
 
   return (

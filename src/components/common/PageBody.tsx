@@ -24,7 +24,7 @@ export function PageBody({
   }
 
   if (isLoading) {
-    return <Loading position="page" />;
+    return <Loading placement="absolute" />;
   }
 
   return (

@@ -1,12 +1,12 @@
 import { useState, Key, Fragment } from 'react';
-import { Modal, Select, ListItem, ListSeparator, Dialog, Row } from '@umami/react-zen';
+import { Modal, Select, ListItem, ListSeparator, Dialog, SelectProps } from '@umami/react-zen';
 import { endOfYear } from 'date-fns';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
 import { useMessages } from '@/components/hooks';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { parseDateRange } from '@/lib/date';
 
-export interface DateFilterProps {
+export interface DateFilterProps extends SelectProps {
   value?: string;
   onChange?: (value: string) => void;
   showAllTime?: boolean;
@@ -20,6 +20,7 @@ export function DateFilter({
   showAllTime,
   renderDate,
   placement = 'bottom',
+  ...props
 }: DateFilterProps) {
   const { formatMessage, labels } = useMessages();
   const [showPicker, setShowPicker] = useState(false);
@@ -99,8 +100,9 @@ export function DateFilter({
   };
 
   return (
-    <Row minWidth="200px">
+    <>
       <Select
+        {...props}
         value={value}
         placeholder={formatMessage(labels.selectDate)}
         onChange={handleChange}
@@ -130,6 +132,6 @@ export function DateFilter({
           </Dialog>
         </Modal>
       )}
-    </Row>
+    </>
   );
 }

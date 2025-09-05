@@ -70,7 +70,7 @@ export function PixelEditForm({
   }, [data]);
 
   if (pixelId && isLoading) {
-    return <Loading position="page" />;
+    return <Loading placement="absolute" />;
   }
 
   return (

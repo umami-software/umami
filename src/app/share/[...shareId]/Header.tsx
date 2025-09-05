@@ -1,7 +1,7 @@
 import { Row, Icon, Text, ThemeButton } from '@umami/react-zen';
 import Link from 'next/link';
 import { LanguageButton } from '@/components/input/LanguageButton';
-import { SettingsButton } from '@/components/input/SettingsButton';
+import { PreferencesButton } from '@/components/input/PreferencesButton';
 import { Logo } from '@/components/icons';
 
 export function Header() {
@@ -18,7 +18,7 @@ export function Header() {
       <Row alignItems="center" gap>
         <ThemeButton />
         <LanguageButton />
-        <SettingsButton />
+        <PreferencesButton />
       </Row>
     </Row>
   );

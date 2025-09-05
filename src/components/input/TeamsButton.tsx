@@ -1,5 +1,3 @@
-import { Key } from 'react';
-import { useRouter } from 'next/navigation';
 import {
   Text,
   Icon,
@@ -10,8 +8,8 @@ import {
   MenuSeparator,
   Popover,
   Row,
-  Box,
-  Button,
+  Column,
+  Pressable,
   Loading,
 } from '@umami/react-zen';
 import { useLoginQuery, useMessages, useUserTeamsQuery, useNavigation } from '@/components/hooks';
@@ -32,7 +30,7 @@ export function TeamsButton({ showText = true, onAction }: TeamsButtonProps) {
   const label = teamId ? team?.name : user.username;
 
   if (isLoading) {
-    return <Loading icon="dots" position="center" />;
+    return <Loading icon="dots" size="sm" placement="center" />;
   }
 
   if (!data?.count) {
@@ -41,8 +39,15 @@ export function TeamsButton({ showText = true, onAction }: TeamsButtonProps) {
 
   return (
     <MenuTrigger>
-      <Button variant="outline">
-        <Row alignItems="center" justifyContent="space-between" flexGrow={1}>
+      <Pressable>
+        <Row
+          alignItems="center"
+          justifyContent="space-between"
+          flexGrow={1}
+          padding
+          backgroundColor="2"
+          style={{ cursor: 'pointer', textWrap: 'nowrap', outline: 'none' }}
+        >
           <Row alignItems="center" gap>
             <Icon>{teamId ? <Users /> : <User />}</Icon>
             {showText && <Text>{label}</Text>}
@@ -53,9 +58,9 @@ export function TeamsButton({ showText = true, onAction }: TeamsButtonProps) {
             </Icon>
           )}
         </Row>
-      </Button>
+      </Pressable>
       <Popover placement="bottom start">
-        <Box minWidth="300px">
+        <Column minWidth="300px">
           <Menu
             selectionMode="single"
             selectedKeys={selectedKeys}
@@ -86,7 +91,7 @@ export function TeamsButton({ showText = true, onAction }: TeamsButtonProps) {
               ))}
             </MenuSection>
           </Menu>
-        </Box>
+        </Column>
       </Popover>
     </MenuTrigger>
   );
