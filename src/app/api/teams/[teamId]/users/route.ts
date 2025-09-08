@@ -50,7 +50,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
 
 export async function POST(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const schema = z.object({
-    userId: z.string().uuid(),
+    userId: z.uuid(),
     role: teamRoleParam,
   });
 

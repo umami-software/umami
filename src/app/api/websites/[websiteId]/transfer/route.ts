@@ -9,8 +9,8 @@ export async function POST(
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
-    userId: z.string().uuid().optional(),
-    teamId: z.string().uuid().optional(),
+    userId: z.uuid().optional(),
+    teamId: z.uuid().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);

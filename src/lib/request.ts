@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { checkAuth } from '@/lib/auth';
 import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS } from '@/lib/constants';
 import { getAllowedUnits, getMinimumUnit, maxDate, parseDateRange } from '@/lib/date';
@@ -5,7 +6,6 @@ import { fetchWebsite } from '@/lib/load';
 import { badRequest, unauthorized } from '@/lib/response';
 import { QueryFilters } from '@/lib/types';
 import { getWebsiteSegment } from '@/queries';
-import { z } from 'zod/v4';
 import { filtersArrayToObject } from '@/lib/params';
 
 export async function parseRequest(

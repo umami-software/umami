@@ -19,8 +19,14 @@ export function checkPassword(password: string, passwordHash: string) {
   return bcrypt.compareSync(password, passwordHash);
 }
 
+export function getBearerToken(request: Request) {
+  const auth = request.headers.get('authorization');
+
+  return auth?.split(' ')[1];
+}
+
 export async function checkAuth(request: Request) {
-  const token = request.headers.get('authorization')?.split(' ')?.[1];
+  const token = getBearerToken(request);
   const payload = parseSecureToken(token, secret());
   const shareToken = await parseShareToken(request.headers);
 

@@ -9,7 +9,7 @@ export function TeamsSettingsPage() {
     <Column gap="6">
       <TeamsHeader />
       <Panel>
-        <TeamsDataTable />
+        <TeamsDataTable showActions={true} />
       </Panel>
     </Column>
   );

@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     url: z.string().max(500),
     slug: z.string().max(100),
     teamId: z.string().nullable().optional(),
-    id: z.string().uuid().nullable().optional(),
+    id: z.uuid().nullable().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);

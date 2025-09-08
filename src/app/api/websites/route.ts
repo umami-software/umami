@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     domain: z.string().max(500),
     shareId: z.string().max(50).nullable().optional(),
     teamId: z.string().nullable().optional(),
-    id: z.string().uuid().nullable().optional(),
+    id: z.uuid().nullable().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);

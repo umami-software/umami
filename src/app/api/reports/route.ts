@@ -8,7 +8,7 @@ import { getReports, createReport } from '@/queries';
 
 export async function GET(request: Request) {
   const schema = z.object({
-    websiteId: z.string().uuid().optional(),
+    websiteId: z.uuid().optional(),
     type: z.string().optional(),
     ...pagingParams,
   });

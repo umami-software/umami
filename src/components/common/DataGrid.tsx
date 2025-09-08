@@ -34,6 +34,7 @@ export function DataGrid({
   const { data, error, isLoading, isFetching } = query;
   const { router, updateParams, query: queryParams } = useNavigation();
   const [search, setSearch] = useState(queryParams?.search || data?.search || '');
+  const showPager = allowPaging && data && data.count > data.pageSize;
 
   const handleSearch = (value: string) => {
     if (value !== search) {
@@ -73,7 +74,7 @@ export function DataGrid({
         {data && (
           <>
             <Column>{typeof children === 'function' ? children(data) : children}</Column>
-            {allowPaging && data && (
+            {showPager && (
               <Row marginTop="6">
                 <Pager
                   page={data.page}

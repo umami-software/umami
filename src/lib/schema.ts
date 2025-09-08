@@ -35,8 +35,8 @@ export const filterParams = {
   hostname: z.string().optional(),
   language: z.string().optional(),
   event: z.string().optional(),
-  segment: z.string().uuid().optional(),
-  cohort: z.string().uuid().optional(),
+  segment: z.uuid().optional(),
+  cohort: z.uuid().optional(),
   eventType: z.coerce.number().int().positive().optional(),
 };
 
@@ -198,7 +198,7 @@ export const breakdownReportSchema = z.object({
 });
 
 export const reportBaseSchema = z.object({
-  websiteId: z.string().uuid(),
+  websiteId: z.uuid(),
   type: reportTypeParam,
   name: z.string().max(200),
   description: z.string().max(500).optional(),
@@ -220,7 +220,7 @@ export const reportSchema = reportBaseSchema;
 
 export const reportResultSchema = z.intersection(
   z.object({
-    websiteId: z.string().uuid(),
+    websiteId: z.uuid(),
     filters: z.object({ ...filterParams }),
   }),
   reportTypeSchema,

@@ -9,7 +9,7 @@ import { createUser, getUserByUsername } from '@/queries';
 
 export async function POST(request: Request) {
   const schema = z.object({
-    id: z.string().uuid().optional(),
+    id: z.uuid().optional(),
     username: z.string().max(255),
     password: z.string(),
     role: z.string().regex(/admin|user|view-only/i),
