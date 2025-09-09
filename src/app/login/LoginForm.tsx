@@ -16,7 +16,7 @@ import { setClientAuthToken } from '@/lib/client';
 import { Logo } from '@/components/icons';
 
 export function LoginForm() {
-  const { formatMessage, labels, getMessage } = useMessages();
+  const { formatMessage, labels } = useMessages();
   const router = useRouter();
   const { mutate, error, isPending } = useUpdateQuery('/auth/login');
 
@@ -37,7 +37,7 @@ export function LoginForm() {
         <Logo />
       </Icon>
       <Heading>umami</Heading>
-      <Form onSubmit={handleSubmit} error={getMessage(error)}>
+      <Form onSubmit={handleSubmit} error={error}>
         <FormField
           label={formatMessage(labels.username)}
           data-test="input-username"

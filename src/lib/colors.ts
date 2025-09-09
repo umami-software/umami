@@ -1,6 +1,15 @@
-import md5 from 'md5';
-import { THEME_COLORS } from '@/lib/constants';
 import { colord } from 'colord';
+import { THEME_COLORS } from '@/lib/constants';
+
+export function hex6(str: string) {
+  let h = 0x811c9dc5; // FNV-1a 32-bit offset
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = (h >>> 0) * 0x01000193; // FNV prime
+  }
+  // use lower 24 bits; pad to 6 hex chars
+  return ((h >>> 0) & 0xffffff).toString(16).padStart(6, '0');
+}
 
 export const pick = (num: number, arr: any[]) => {
   return arr[num % arr.length];
@@ -40,7 +49,7 @@ export function getPastel(color: string, factor: number = 0.5, prefix = '') {
 }
 
 export function getColor(seed: string, min: number = 0, max: number = 255) {
-  const color = md5(seed).substring(0, 6);
+  const color = hex6(seed);
   const { r, g, b } = hex2RGB(color, min, max);
 
   return rgb2Hex(r, g, b);
