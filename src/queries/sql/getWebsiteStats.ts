@@ -1,9 +1,8 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
-import { EVENT_COLUMNS } from '@/lib/constants';
+import { EVENT_COLUMNS, EVENT_TYPE } from '@/lib/constants';
 
 export async function getWebsiteStats(
   ...args: [websiteId: string, filters: QueryFilters]
@@ -34,21 +33,28 @@ async function relationalQuery(
       sum(t.c) as "pageviews",
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
-      sum(case when t.c = 1 then 1 else 0 end) as "bounces",
+      sum(case when t.c = 1 and t.has_event = 0 then 1 else 0 end) as "bounces",
       sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime"
     from (
       select
         website_event.session_id,
         website_event.visit_id,
-        count(*) as "c",
+        sum(case when website_event.event_type = ${EVENT_TYPE.pageView} then 1 else 0 end) as "c",
         min(website_event.created_at) as "min_time",
-        max(website_event.created_at) as "max_time"
+        max(website_event.created_at) as "max_time",
+        max(case when exists (
+          select 1
+          from website_event we2
+          where we2.website_id = website_event.website_id
+            and we2.session_id = website_event.session_id
+            and we2.created_at between {{startDate}} and {{endDate}}
+            and we2.event_type = ${EVENT_TYPE.customEvent}
+        ) then 1 else 0 end) as "has_event"
       from website_event
         ${cohortQuery}
         ${joinSession}
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
-        and event_type = {{eventType}}
         ${filterQuery}
       group by 1, 2
     ) as t
@@ -77,23 +83,30 @@ async function clickhouseQuery(
       sum(t.c) as "pageviews",
       uniq(t.session_id) as "visitors",
       uniq(t.visit_id) as "visits",
-      sum(if(t.c = 1, 1, 0)) as "bounces",
+      sumIf(1, t.c = 1 and ifNull(e.has_event, 0) = 0) as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (
       select
         session_id,
         visit_id,
-        count(*) c,
+        countIf(event_type = ${EVENT_TYPE.pageView}) as c,
         min(created_at) min_time,
         max(created_at) max_time
       from website_event
       ${cohortQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type = {eventType:UInt32}
         ${filterQuery}
       group by session_id, visit_id
-    ) as t;
+    ) as t
+    left join (
+      select session_id, toUInt8(count() > 0) as has_event
+      from website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = ${EVENT_TYPE.customEvent}
+      group by session_id
+    ) as e using session_id;
     `;
   } else {
     sql = `
@@ -101,22 +114,28 @@ async function clickhouseQuery(
       sum(t.c) as "pageviews",
       uniq(session_id) as "visitors",
       uniq(visit_id) as "visits",
-      sumIf(1, t.c = 1) as "bounces",
+      sumIf(1, t.c = 1 and ifNull(e.has_event, 0) = 0) as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (select
             session_id,
             visit_id,
-            sum(views) c,
+            sumIf(views, event_type = ${EVENT_TYPE.pageView}) as c,
             min(min_time) min_time,
             max(max_time) max_time
         from website_event_stats_hourly "website_event"
         ${cohortQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type = {eventType:UInt32}
       ${filterQuery}
       group by session_id, visit_id
-    ) as t;
+    ) as t
+    left join (
+      select session_id, toUInt8(sumIf(views, event_type = ${EVENT_TYPE.customEvent}) > 0) as has_event
+      from website_event_stats_hourly
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      group by session_id
+    ) as e using session_id;
     `;
   }
 
