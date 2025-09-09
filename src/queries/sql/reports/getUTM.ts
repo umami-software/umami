@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { EVENT_TYPE } from '@/lib/constants';
 
 export async function getUTM(
   ...args: [
@@ -36,7 +37,7 @@ async function relationalQuery(
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}
       and coalesce(url_query, '') != ''
-      and event_type = 1
+      and event_type = ${EVENT_TYPE.pageView}
     group by 1
     `,
     {
@@ -65,7 +66,7 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and url_query != ''
-      and event_type = 1
+      and event_type = ${EVENT_TYPE.pageView}
     group by 1
     `,
     {
