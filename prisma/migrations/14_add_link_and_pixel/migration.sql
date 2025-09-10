@@ -72,8 +72,29 @@ CREATE INDEX "pixel_team_id_idx" ON "pixel"("team_id");
 -- CreateIndex
 CREATE INDEX "pixel_created_at_idx" ON "pixel"("created_at");
 
--- DataMigration
-UPDATE "report" SET parameters = parameters - 'websiteId' - 'dateRange' WHERE type = 'funnel';
+-- DataMigration Funnel
+DELETE FROM "report" WHERE type = 'funnel' and jsonb_array_length(parameters->'steps') = 1;
+UPDATE "report" SET parameters = parameters - 'websiteId' - 'dateRange' - 'urls' WHERE type = 'funnel';
+
+UPDATE "report"
+SET parameters = jsonb_set(
+    parameters,
+    '{steps}',
+    (
+      SELECT jsonb_agg(
+               CASE
+                 WHEN step->>'type' = 'url'
+                 THEN jsonb_set(step, '{type}', '"path"')
+                 ELSE step
+               END
+             )
+      FROM jsonb_array_elements(parameters->'steps') step
+    )
+)
+WHERE type = 'funnel'
+    and parameters @> '{"steps":[{"type":"url"}]}';
+
+-- DataMigration Goals
 UPDATE "report" SET type = 'goal' WHERE type = 'goals';
 
 INSERT INTO "report" (report_id, user_id, website_id, type, name, description, parameters, created_at, updated_at)
@@ -92,7 +113,7 @@ SELECT gen_random_uuid(),
     updated_at
 FROM "report"
 CROSS JOIN LATERAL jsonb_array_elements(parameters -> 'goals') elem
-WHERE elem ->> 'type' IN ('event', 'url')
-    and type = 'goal';
+WHERE type = 'goal'
+    and elem ->> 'type' IN ('event', 'url');
 
-DELETE FROM "report" WHERE parameters ? 'goals' and type = 'goal';
+DELETE FROM "report" WHERE type = 'goal' and parameters ? 'goals';

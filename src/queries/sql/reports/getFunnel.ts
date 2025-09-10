@@ -32,14 +32,13 @@ async function relationalQuery(
 ): Promise<FunnelResult[]> {
   const { startDate, endDate, window, steps } = parameters;
   const { rawQuery, getAddIntervalQuery, parseFilters } = prisma;
-  const { levelOneQuery, levelQuery, sumQuery, params } = getFunnelQuery(steps, window);
-
   const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     startDate,
     endDate,
   });
+  const { levelOneQuery, levelQuery, sumQuery, params } = getFunnelQuery(steps, window);
 
   function getFunnelQuery(
     steps: { type: string; value: string }[],
