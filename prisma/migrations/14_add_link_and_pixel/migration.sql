@@ -71,3 +71,29 @@ CREATE INDEX "pixel_team_id_idx" ON "pixel"("team_id");
 
 -- CreateIndex
 CREATE INDEX "pixel_created_at_idx" ON "pixel"("created_at");
+
+-- DataMigration
+UPDATE "report"
+SET parameters = parameters - 'websiteId' - 'dateRange'
+WHERE type = 'funnel';
+
+INSERT INTO "report" (report_id, user_id, website_id, type, name, description, parameters, created_at, updated_at)
+SELECT gen_random_uuid(),
+    user_id,
+    website_id,
+    'goal',
+    concat(name, ' - ', elem ->> 'value'),
+    description,
+    jsonb_build_object(
+           'type', CASE WHEN elem ->> 'type' = 'url' THEN 'path'
+                        ELSE elem ->> 'type' END,
+           'value', elem ->> 'value'
+       ) AS parameters,
+    created_at,
+    updated_at
+FROM "report"
+CROSS JOIN LATERAL jsonb_array_elements(parameters -> 'goals') elem
+WHERE elem ->> 'type' IN ('event', 'url')
+    and type = 'goal';
+
+DELETE FROM "report" WHERE parameters ? 'goals' and type = 'goal';
