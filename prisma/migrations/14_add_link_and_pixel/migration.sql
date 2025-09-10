@@ -73,9 +73,8 @@ CREATE INDEX "pixel_team_id_idx" ON "pixel"("team_id");
 CREATE INDEX "pixel_created_at_idx" ON "pixel"("created_at");
 
 -- DataMigration
-UPDATE "report"
-SET parameters = parameters - 'websiteId' - 'dateRange'
-WHERE type = 'funnel';
+UPDATE "report" SET parameters = parameters - 'websiteId' - 'dateRange' WHERE type = 'funnel';
+UPDATE "report" SET type = 'goal' WHERE type = 'goals';
 
 INSERT INTO "report" (report_id, user_id, website_id, type, name, description, parameters, created_at, updated_at)
 SELECT gen_random_uuid(),
