@@ -24,7 +24,7 @@ async function relationalQuery(websiteId: string) {
     { websiteId, startDate },
   );
 
-  return result[0] ?? null;
+  return result?.[0] ?? null;
 }
 
 async function clickhouseQuery(websiteId: string): Promise<{ x: number }> {

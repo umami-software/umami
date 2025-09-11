@@ -40,5 +40,5 @@ export async function GET(
     endDate,
   });
 
-  return json({ ...data, comparison });
+  return json({ ...data[0], comparison });
 }

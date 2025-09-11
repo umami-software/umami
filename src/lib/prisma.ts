@@ -170,6 +170,11 @@ async function rawQuery(sql: string, data: object): Promise<any> {
     log('PARAMETERS:\n', data);
   }
   const params = [];
+  const schema = getSchema();
+
+  if (schema) {
+    await client.$executeRawUnsafe(`SET search_path TO "${schema}";`);
+  }
 
   const query = sql?.replaceAll(/\{\{\s*(\w+)(::\w+)?\s*}}/g, (...args) => {
     const [, name, type] = args;
@@ -182,8 +187,8 @@ async function rawQuery(sql: string, data: object): Promise<any> {
   });
 
   return process.env.DATABASE_REPLICA_URL
-    ? client.$replica().$queryRawUnsafe(query, ...params)
-    : client.$queryRawUnsafe(query, ...params);
+    ? await client.$replica().$queryRawUnsafe(query, ...params)
+    : await client.$queryRawUnsafe(query, ...params);
 }
 
 async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters) {
@@ -263,6 +268,12 @@ function getSearchParameters(query: string, filters: Record<string, any>[]) {
 
 function transaction(input: any, options?: any) {
   return client.$transaction(input, options);
+}
+
+function getSchema() {
+  const connectionUrl = new URL(process.env.DATABASE_URL);
+
+  return connectionUrl.searchParams.get('schema');
 }
 
 function getClient() {

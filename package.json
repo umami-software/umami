@@ -151,7 +151,7 @@
     "@types/react-window": "^1.8.8",
     "@typescript-eslint/eslint-plugin": "^8.41.0",
     "@typescript-eslint/parser": "^8.41.0",
-    "@umami/prisma-client": "^0.19.0",
+    "@umami/prisma-client": "^0.20.0",
     "babel-plugin-react-compiler": "19.1.0-rc.2",
     "cross-env": "^10.0.0",
     "cypress": "^13.6.6",

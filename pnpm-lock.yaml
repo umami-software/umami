@@ -247,8 +247,8 @@ importers:
         specifier: ^8.41.0
         version: 8.41.0(eslint@8.57.1)(typescript@5.9.2)
       '@umami/prisma-client':
-        specifier: ^0.19.0
-        version: 0.19.0(@prisma/adapter-pg@6.16.0)(@prisma/client@6.16.0(prisma@6.16.0(typescript@5.9.2))(typescript@5.9.2))(@prisma/extension-read-replicas@0.4.1(@prisma/client@6.16.0(prisma@6.16.0(typescript@5.9.2))(typescript@5.9.2)))
+        specifier: ^0.20.0
+        version: 0.20.0(@prisma/adapter-pg@6.16.0)(@prisma/client@6.16.0(prisma@6.16.0(typescript@5.9.2))(typescript@5.9.2))(@prisma/extension-read-replicas@0.4.1(@prisma/client@6.16.0(prisma@6.16.0(typescript@5.9.2))(typescript@5.9.2)))
       babel-plugin-react-compiler:
         specifier: 19.1.0-rc.2
         version: 19.1.0-rc.2
@@ -2728,8 +2728,8 @@ packages:
     resolution: {integrity: sha512-+GeGMebMCy0elMNg67LRNoVnUFPIm37iu5CmHESVx56/9Jsfdpsvbv605DQ81Pi/x11IdKUsS5nzgTYbCQU9fg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@umami/prisma-client@0.19.0':
-    resolution: {integrity: sha512-Vnys7MMAPexxmxrC+0q68B/iYmM1LFaP9RjKjffHbLfgZJ3moklJ2ea91cr8+m0CA3+3mqN38WEJI/o/ohOxYQ==}
+  '@umami/prisma-client@0.20.0':
+    resolution: {integrity: sha512-zcLzdSq+NJa/s4xZkzktreuuxmbAET7GAizO0LU+AVg3k9k4stEulvWUfBg48fC/iBRjz0AfOnHsuXDIHKN5Xw==}
     peerDependencies:
       '@prisma/adapter-pg': ^6.1.0
       '@prisma/client': ^6.1.0
@@ -10313,7 +10313,7 @@ snapshots:
       '@typescript-eslint/types': 8.41.0
       eslint-visitor-keys: 4.2.1
 
-  '@umami/prisma-client@0.19.0(@prisma/adapter-pg@6.16.0)(@prisma/client@6.16.0(prisma@6.16.0(typescript@5.9.2))(typescript@5.9.2))(@prisma/extension-read-replicas@0.4.1(@prisma/client@6.16.0(prisma@6.16.0(typescript@5.9.2))(typescript@5.9.2)))':
+  '@umami/prisma-client@0.20.0(@prisma/adapter-pg@6.16.0)(@prisma/client@6.16.0(prisma@6.16.0(typescript@5.9.2))(typescript@5.9.2))(@prisma/extension-read-replicas@0.4.1(@prisma/client@6.16.0(prisma@6.16.0(typescript@5.9.2))(typescript@5.9.2)))':
     dependencies:
       '@prisma/adapter-pg': 6.16.0
       '@prisma/client': 6.16.0(prisma@6.16.0(typescript@5.9.2))(typescript@5.9.2)
