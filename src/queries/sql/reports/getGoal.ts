@@ -48,15 +48,15 @@ async function relationalQuery(
       from website_event
       ${cohortQuery}
       ${joinSessionQuery}
-      where website_id = {websiteId:UUID}
+      where website_id = {{websiteId::uuid}}
       ${dateQuery}
       ${filterQuery}
     ) as total
     from website_event
     ${cohortQuery}
     ${joinSessionQuery}
-    where website_id = {websiteId:UUID}
-      and ${column} = {value:String}
+    where website_id = {{websiteId::uuid}}
+      and ${column} = {{value}}
       ${dateQuery}
       ${filterQuery}
     `,

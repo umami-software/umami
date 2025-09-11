@@ -59,6 +59,7 @@ export {
   Funnel,
   Lightbulb,
   Lightning,
+  Location,
   Magnet,
   Money,
   Network,

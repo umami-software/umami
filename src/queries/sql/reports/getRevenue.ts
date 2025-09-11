@@ -75,7 +75,7 @@ async function relationalQuery(
     `
     select
       session.country as name,
-      sum(r.revenue) value
+      sum(revenue) value
     from revenue 
     join website_event
       on website_event.website_id = revenue.website_id
