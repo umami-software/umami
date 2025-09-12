@@ -46,46 +46,34 @@ export async function getWebsites(
   return pagedQuery('website', { ...criteria, where }, filters);
 }
 
-export async function getAllWebsites(userId: string) {
-  return prisma.client.website.findMany({
-    where: {
-      OR: [
-        { userId },
-        {
-          team: {
-            deletedAt: null,
-            teamUser: {
-              some: {
-                userId,
+export async function getAllUserWebsitesIncludingTeamOwner(
+  userId: string,
+  filters?: QueryFilters,
+): Promise<PageResult<Website[]>> {
+  return getWebsites(
+    {
+      where: {
+        OR: [
+          { userId },
+          {
+            team: {
+              deletedAt: null,
+              members: {
+                some: {
+                  role: ROLES.teamOwner,
+                  userId,
+                },
               },
             },
           },
-        },
-      ],
-      deletedAt: null,
+        ],
+      },
     },
-  });
-}
-
-export async function getAllUserWebsitesIncludingTeamOwner(userId: string) {
-  return prisma.client.website.findMany({
-    where: {
-      OR: [
-        { userId },
-        {
-          team: {
-            deletedAt: null,
-            teamUser: {
-              some: {
-                role: ROLES.teamOwner,
-                userId,
-              },
-            },
-          },
-        },
-      ],
+    {
+      orderBy: 'name',
+      ...filters,
     },
-  });
+  );
 }
 
 export async function getUserWebsites(

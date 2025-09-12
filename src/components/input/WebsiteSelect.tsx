@@ -3,28 +3,28 @@ import { Select, SelectProps, ListItem, Text } from '@umami/react-zen';
 import {
   useUserWebsitesQuery,
   useWebsiteQuery,
-  useNavigation,
   useMessages,
+  useLoginQuery,
 } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 
 export function WebsiteSelect({
   websiteId,
   teamId,
+  onChange,
   ...props
 }: {
   websiteId?: string;
   teamId?: string;
 } & SelectProps) {
   const { formatMessage, messages } = useMessages();
-  const { router, renderUrl } = useNavigation();
   const [search, setSearch] = useState('');
   const { data: website } = useWebsiteQuery(websiteId);
-  const { data, isLoading } = useUserWebsitesQuery({ teamId }, { search, pageSize: 5 });
-
-  const handleSelect = (value: any) => {
-    router.push(renderUrl(`/websites/${value}`));
-  };
+  const { user } = useLoginQuery();
+  const { data, isLoading } = useUserWebsitesQuery(
+    { userId: user?.id, teamId },
+    { search, pageSize: 5 },
+  );
 
   const handleSearch = (value: string) => {
     setSearch(value);
@@ -45,7 +45,7 @@ export function WebsiteSelect({
       allowSearch={true}
       searchValue={search}
       onSearch={handleSearch}
-      onChange={handleSelect}
+      onChange={onChange}
       onOpenChange={handleOpenChange}
       listProps={{
         renderEmptyState: () => <Empty message={formatMessage(messages.noResultsFound)} />,

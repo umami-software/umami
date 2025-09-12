@@ -1,20 +1,23 @@
 import Link from 'next/link';
 import { WebsitesTable } from './WebsitesTable';
 import { DataGrid } from '@/components/common/DataGrid';
-import { useNavigation, useUserWebsitesQuery } from '@/components/hooks';
+import { useLoginQuery, useNavigation, useUserWebsitesQuery } from '@/components/hooks';
 
 export function WebsitesDataTable({
+  userId,
   teamId,
   allowEdit = true,
   allowView = true,
   showActions = true,
 }: {
+  userId?: string;
   teamId?: string;
   allowEdit?: boolean;
   allowView?: boolean;
   showActions?: boolean;
 }) {
-  const queryResult = useUserWebsitesQuery({ teamId });
+  const { user } = useLoginQuery();
+  const queryResult = useUserWebsitesQuery({ userId: userId || user?.id, teamId });
   const { renderUrl } = useNavigation();
 
   const renderLink = (row: any) => (

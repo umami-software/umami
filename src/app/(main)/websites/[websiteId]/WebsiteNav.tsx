@@ -21,7 +21,7 @@ import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 
 export function WebsiteNav({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
-  const { pathname, renderUrl, teamId } = useNavigation();
+  const { pathname, renderUrl, teamId, router } = useNavigation();
 
   const renderPath = (path: string) =>
     renderUrl(`/websites/${websiteId}${path}`, {
@@ -143,13 +143,17 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
     },
   ];
 
+  const handleChange = (value: string) => {
+    router.push(renderUrl(`/websites/${value}`));
+  };
+
   const selectedKey = items
     .flatMap(e => e.items)
     .find(({ path }) => path && pathname.endsWith(path.split('?')[0]))?.id;
 
   return (
     <SideMenu items={items} selectedKey={selectedKey} allowMinimize={false} muteItems={false}>
-      <WebsiteSelect websiteId={websiteId} teamId={teamId} />
+      <WebsiteSelect websiteId={websiteId} teamId={teamId} onChange={handleChange} />
     </SideMenu>
   );
 }

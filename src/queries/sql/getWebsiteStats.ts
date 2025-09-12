@@ -58,7 +58,7 @@ async function relationalQuery(
     ) as t
     `,
     queryParams,
-  );
+  ).then(result => result?.[0]);
 }
 
 async function clickhouseQuery(

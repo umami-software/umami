@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { pagingParams } from '@/lib/schema';
-import { getUserWebsites } from '@/queries';
+import { getAllUserWebsitesIncludingTeamOwner, getUserWebsites } from '@/queries';
 import { json } from '@/lib/response';
 import { parseRequest, getQueryFilters } from '@/lib/request';
 
@@ -17,7 +17,9 @@ export async function GET(request: Request) {
 
   const filters = await getQueryFilters(query);
 
-  const websites = await getUserWebsites(auth.user.id, filters);
+  if (query.includeTeams) {
+    return json(await getAllUserWebsitesIncludingTeamOwner(auth.user.id, filters));
+  }
 
-  return json(websites);
+  return json(await getUserWebsites(auth.user.id, filters));
 }

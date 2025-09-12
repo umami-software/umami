@@ -3,6 +3,7 @@ import { Row, Text, Icon, DataTable, DataColumn, MenuItem } from '@umami/react-z
 import { useMessages, useNavigation } from '@/components/hooks';
 import { MenuButton } from '@/components/input/MenuButton';
 import { Eye, SquarePen } from '@/components/icons';
+import { Empty } from '@/components/common/Empty';
 
 export function WebsitesTable({
   data = [],
@@ -10,20 +11,18 @@ export function WebsitesTable({
   allowEdit,
   allowView,
   renderLink,
-  children,
 }: {
   data: Record<string, any>[];
   showActions?: boolean;
   allowEdit?: boolean;
   allowView?: boolean;
   renderLink?: (row: any) => ReactNode;
-  children?: ReactNode;
 }) {
   const { formatMessage, labels } = useMessages();
   const { renderUrl } = useNavigation();
 
-  if (!data?.length) {
-    return children;
+  if (data.length === 0) {
+    return <Empty />;
   }
 
   return (
