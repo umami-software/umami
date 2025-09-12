@@ -7,7 +7,7 @@ import '@fontsource/inter/700.css';
 import 'react-basics/dist/styles.css';
 import '@/styles/index.css';
 import '@/styles/variables.css';
-
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 export default function ({ children }) {
   if (process.env.DISABLE_UI) {
     return (
@@ -32,7 +32,9 @@ export default function ({ children }) {
         <meta name="robots" content="noindex,nofollow" />
       </head>
       <body suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        <Providers>
+          <NuqsAdapter>{children}</NuqsAdapter>
+        </Providers>
       </body>
     </html>
   );
