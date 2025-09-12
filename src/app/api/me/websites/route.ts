@@ -7,6 +7,7 @@ import { parseRequest, getQueryFilters } from '@/lib/request';
 export async function GET(request: Request) {
   const schema = z.object({
     ...pagingParams,
+    includeTeams: z.string().optional(),
   });
 
   const { auth, query, error } = await parseRequest(request, schema);

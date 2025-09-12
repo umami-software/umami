@@ -18,6 +18,7 @@ import {
 import { useMessages, useNavigation } from '@/components/hooks';
 import { SideMenu } from '@/components/common/SideMenu';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
+import { Text } from '@umami/react-zen';
 
 export function WebsiteNav({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
@@ -147,13 +148,27 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
     router.push(renderUrl(`/websites/${value}`));
   };
 
+  const renderValue = (value: any) => {
+    return (
+      <Text truncate style={{ maxWidth: 160, lineHeight: 1 }}>
+        {value?.selectedItem?.name}
+      </Text>
+    );
+  };
+
   const selectedKey = items
     .flatMap(e => e.items)
     .find(({ path }) => path && pathname.endsWith(path.split('?')[0]))?.id;
 
   return (
     <SideMenu items={items} selectedKey={selectedKey} allowMinimize={false} muteItems={false}>
-      <WebsiteSelect websiteId={websiteId} teamId={teamId} onChange={handleChange} />
+      <WebsiteSelect
+        websiteId={websiteId}
+        teamId={teamId}
+        onChange={handleChange}
+        renderValue={renderValue}
+        buttonProps={{ style: { outline: 'none' } }}
+      />
     </SideMenu>
   );
 }
