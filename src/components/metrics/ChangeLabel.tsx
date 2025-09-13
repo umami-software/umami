@@ -40,7 +40,15 @@ export function ChangeLabel({
     STYLES[good && 'positive'] || STYLES[!good && 'negative'] || STYLES[neutral && 'neutral'];
 
   return (
-    <Row {...props} style={style} alignSelf="flex-start" paddingX="2" paddingY="1">
+    <Row
+      {...props}
+      style={style}
+      alignItems="center"
+      alignSelf="flex-start"
+      paddingX="2"
+      paddingY="1"
+      gap="2"
+    >
       {!neutral && (
         <Icon rotate={positive ? -90 : 90} size={size}>
           <Arrow />

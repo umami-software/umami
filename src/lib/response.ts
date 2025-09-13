@@ -2,11 +2,11 @@ export function ok() {
   return Response.json({ ok: true });
 }
 
-export function json(data: any = {}) {
+export function json(data: Record<string, any> = {}) {
   return Response.json(data);
 }
 
-export function badRequest(error?: any) {
+export function badRequest(error?: Record<string, any>) {
   return Response.json(
     {
       error: { message: 'Bad request', code: 'bad-request', status: 400, ...error },
@@ -15,7 +15,7 @@ export function badRequest(error?: any) {
   );
 }
 
-export function unauthorized(error?: any) {
+export function unauthorized(error?: Record<string, any>) {
   return Response.json(
     {
       error: {
@@ -29,21 +29,21 @@ export function unauthorized(error?: any) {
   );
 }
 
-export function forbidden(error?: any) {
+export function forbidden(error?: Record<string, any>) {
   return Response.json(
     { error: { message: 'Forbidden', code: 'forbidden', status: 403, ...error } },
     { status: 403 },
   );
 }
 
-export function notFound(error?: any) {
+export function notFound(error?: Record<string, any>) {
   return Response.json(
     { error: { message: 'Not found', code: 'not-found', status: 404, ...error } },
     { status: 404 },
   );
 }
 
-export function serverError(error?: any) {
+export function serverError(error?: Record<string, any>) {
   return Response.json(
     {
       error: {

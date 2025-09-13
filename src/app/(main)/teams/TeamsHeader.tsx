@@ -10,7 +10,7 @@ export function TeamsHeader({
   allowJoin = true,
 }: {
   allowCreate?: boolean;
-  allowJoin: boolean;
+  allowJoin?: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useLoginQuery();
