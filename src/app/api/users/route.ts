@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { hashPassword } from '@/lib/auth';
+import { hashPassword } from '@/lib/password';
 import { canCreateUser } from '@/permissions';
 import { ROLES } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   const existingUser = await getUserByUsername(username, { showDeleted: true });
 
   if (existingUser) {
-    return badRequest('User already exists');
+    return badRequest({ message: 'User already exists' });
   }
 
   const user = await createUser({

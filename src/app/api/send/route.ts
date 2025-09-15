@@ -103,7 +103,7 @@ export async function POST(request: Request) {
         const website = await fetchWebsite(websiteId);
 
         if (!website) {
-          return badRequest('Website not found.');
+          return badRequest({ message: 'Website not found.' });
         }
       }
     }

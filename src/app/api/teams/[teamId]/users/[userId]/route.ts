@@ -17,7 +17,7 @@ export async function GET(
   const { teamId, userId } = await params;
 
   if (!(await canUpdateTeam(auth, teamId))) {
-    return unauthorized('You must be the owner of this team.');
+    return unauthorized({ message: 'You must be the owner of this team.' });
   }
 
   const teamUser = await getTeamUser(teamId, userId);
@@ -42,13 +42,13 @@ export async function POST(
   const { teamId, userId } = await params;
 
   if (!(await canUpdateTeam(auth, teamId))) {
-    return unauthorized('You must be the owner of this team.');
+    return unauthorized({ message: 'You must be the owner of this team.' });
   }
 
   const teamUser = await getTeamUser(teamId, userId);
 
   if (!teamUser) {
-    return badRequest('The User does not exists on this team.');
+    return badRequest({ message: 'The User does not exists on this team.' });
   }
 
   const user = await updateTeamUser(teamUser.id, body);
@@ -69,13 +69,13 @@ export async function DELETE(
   const { teamId, userId } = await params;
 
   if (!(await canDeleteTeamUser(auth, teamId, userId))) {
-    return unauthorized('You must be the owner of this team.');
+    return unauthorized({ message: 'You must be the owner of this team.' });
   }
 
   const teamUser = await getTeamUser(teamId, userId);
 
   if (!teamUser) {
-    return badRequest('The User does not exists on this team.');
+    return badRequest({ message: 'The User does not exists on this team.' });
   }
 
   await deleteTeamUser(teamId, userId);

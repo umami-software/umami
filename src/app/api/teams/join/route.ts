@@ -29,13 +29,13 @@ export async function POST(request: Request) {
   });
 
   if (!team) {
-    return notFound('Team not found.');
+    return notFound({ message: 'Team not found.' });
   }
 
   const teamUser = await getTeamUser(team.id, auth.user.id);
 
   if (teamUser) {
-    return badRequest('User is already a team member.');
+    return badRequest({ message: 'User is already a team member.' });
   }
 
   const user = await createTeamUser(auth.user.id, team.id, ROLES.teamMember);

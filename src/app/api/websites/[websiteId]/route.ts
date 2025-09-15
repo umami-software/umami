@@ -55,7 +55,7 @@ export async function POST(
     return Response.json(website);
   } catch (e: any) {
     if (e.message.toLowerCase().includes('unique constraint') && e.message.includes('share_id')) {
-      return badRequest('That share ID is already taken.');
+      return badRequest({ message: 'That share ID is already taken.' });
     }
 
     return serverError(e);

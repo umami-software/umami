@@ -20,7 +20,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
   const { teamId } = await params;
 
   if (!(await canViewTeam(auth, teamId))) {
-    return unauthorized('You must be the owner of this team.');
+    return unauthorized({ message: 'You must be the owner of this team.' });
   }
 
   const filters = await getQueryFilters(query);
@@ -71,7 +71,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
   const teamUser = await getTeamUser(teamId, userId);
 
   if (teamUser) {
-    return badRequest('User is already a member of the Team.');
+    return badRequest({ message: 'User is already a member of the Team.' });
   }
 
   const users = await createTeamUser(userId, teamId, role);

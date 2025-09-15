@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { canUpdateUser, canViewUser, canDeleteUser } from '@/permissions';
 import { getUser, getUserByUsername, updateUser, deleteUser } from '@/queries';
 import { json, unauthorized, badRequest, ok } from '@/lib/response';
-import { hashPassword } from '@/lib/auth';
+import { hashPassword } from '@/lib/password';
 import { parseRequest } from '@/lib/request';
 import { userRoleParam } from '@/lib/schema';
 
@@ -67,7 +67,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ use
     const user = await getUserByUsername(username);
 
     if (user) {
-      return badRequest('User already exists');
+      return badRequest({ message: 'User already exists' });
     }
   }
 
@@ -93,7 +93,7 @@ export async function DELETE(
   }
 
   if (userId === auth.user.id) {
-    return badRequest('You cannot delete yourself.');
+    return badRequest({ message: 'You cannot delete yourself.' });
   }
 
   await deleteUser(userId);

@@ -20,7 +20,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
   const team = await getTeam(teamId, { includeMembers: true });
 
   if (!team) {
-    return notFound('Team not found.');
+    return notFound({ message: 'Team not found.' });
   }
 
   return json(team);
@@ -41,7 +41,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
   const { teamId } = await params;
 
   if (!(await canUpdateTeam(auth, teamId))) {
-    return unauthorized('You must be the owner of this team.');
+    return unauthorized({ message: 'You must be the owner of this team.' });
   }
 
   const team = await updateTeam(teamId, body);
@@ -62,7 +62,7 @@ export async function DELETE(
   const { teamId } = await params;
 
   if (!(await canDeleteTeam(auth, teamId))) {
-    return unauthorized('You must be the owner of this team.');
+    return unauthorized({ message: 'You must be the owner of this team.' });
   }
 
   await deleteTeam(teamId);
