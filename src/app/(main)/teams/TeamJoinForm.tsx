@@ -9,7 +9,7 @@ import {
 import { useMessages, useModified, useUpdateQuery } from '@/components/hooks';
 
 export function TeamJoinForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, getErrorMessage } = useMessages();
   const { mutate, error } = useUpdateQuery('/teams/join');
   const { touch } = useModified();
 
@@ -24,7 +24,7 @@ export function TeamJoinForm({ onSave, onClose }: { onSave: () => void; onClose:
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error}>
+    <Form onSubmit={handleSubmit} error={getErrorMessage(error)}>
       <FormField
         label={formatMessage(labels.accessCode)}
         name="accessCode"

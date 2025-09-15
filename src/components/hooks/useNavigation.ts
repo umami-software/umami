@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { buildUrl } from '@/lib/url';
+import { buildPath } from '@/lib/url';
 
 export function useNavigation() {
   const router = useRouter();
@@ -11,15 +11,15 @@ export function useNavigation() {
   const [queryParams, setQueryParams] = useState(Object.fromEntries(searchParams));
 
   const updateParams = (params?: Record<string, string | number>) => {
-    return buildUrl(pathname, { ...queryParams, ...params });
+    return buildPath(pathname, { ...queryParams, ...params });
   };
 
   const replaceParams = (params?: Record<string, string | number>) => {
-    return buildUrl(pathname, params);
+    return buildPath(pathname, params);
   };
 
   const renderUrl = (path: string, params?: Record<string, string | number> | false) => {
-    return buildUrl(
+    return buildPath(
       teamId ? `/teams/${teamId}${path}` : path,
       params === false ? {} : { ...queryParams, ...params },
     );

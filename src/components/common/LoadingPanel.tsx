@@ -5,7 +5,7 @@ import { Empty } from '@/components/common/Empty';
 
 export interface LoadingPanelProps extends ColumnProps {
   data?: any;
-  error?: Error;
+  error?: unknown;
   isEmpty?: boolean;
   isLoading?: boolean;
   isFetching?: boolean;

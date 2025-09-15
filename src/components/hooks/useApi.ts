@@ -2,21 +2,16 @@ import { useCallback } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { getClientAuthToken } from '@/lib/client';
 import { SHARE_TOKEN_HEADER } from '@/lib/constants';
-import { httpGet, httpPost, httpPut, httpDelete, FetchResponse } from '@/lib/fetch';
+import { httpGet, httpPost, httpPut, httpDelete, FetchResponse, ErrorResponse } from '@/lib/fetch';
 import { useApp } from '@/store/app';
 
 const selector = (state: { shareToken: { token?: string } }) => state.shareToken;
 
 async function handleResponse(res: FetchResponse): Promise<any> {
-  if (res.error) {
-    const { message, code } = res?.error?.error || {};
-    return Promise.reject(new Error(code || message || 'Unexpected error.'));
+  if (!res.ok) {
+    return Promise.reject(res.data?.error as ErrorResponse);
   }
   return Promise.resolve(res.data);
-}
-
-function handleError(err: Error | string) {
-  return Promise.reject((err as Error)?.message || err || null);
 }
 
 export function useApi() {
@@ -39,36 +34,28 @@ export function useApi() {
   return {
     get: useCallback(
       async (url: string, params: object = {}, headers: object = {}) => {
-        return httpGet(getUrl(url), params, getHeaders(headers))
-          .then(handleResponse)
-          .catch(handleError);
+        return httpGet(getUrl(url), params, getHeaders(headers)).then(handleResponse);
       },
       [httpGet],
     ),
 
     post: useCallback(
       async (url: string, params: object = {}, headers: object = {}) => {
-        return httpPost(getUrl(url), params, getHeaders(headers))
-          .then(handleResponse)
-          .catch(handleError);
+        return httpPost(getUrl(url), params, getHeaders(headers)).then(handleResponse);
       },
       [httpPost],
     ),
 
     put: useCallback(
       async (url: string, params: object = {}, headers: object = {}) => {
-        return httpPut(getUrl(url), params, getHeaders(headers))
-          .then(handleResponse)
-          .catch(handleError);
+        return httpPut(getUrl(url), params, getHeaders(headers)).then(handleResponse);
       },
       [httpPut],
     ),
 
     del: useCallback(
       async (url: string, params: object = {}, headers: object = {}) => {
-        return httpDelete(getUrl(url), params, getHeaders(headers))
-          .then(handleResponse)
-          .catch(handleError);
+        return httpDelete(getUrl(url), params, getHeaders(headers)).then(handleResponse);
       },
       [httpDelete],
     ),

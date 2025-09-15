@@ -31,7 +31,7 @@ export function WebsiteTransferForm({
   const { user } = useLoginQuery();
   const website = useWebsite();
   const [teamId, setTeamId] = useState<string>(null);
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
   const { mutate, error, isPending } = useUpdateQuery(`/websites/${websiteId}/transfer`);
   const { data: teams, isLoading } = useUserTeamsQuery(user.id);
   const isTeamWebsite = !!website?.teamId;
@@ -68,7 +68,7 @@ export function WebsiteTransferForm({
   }
 
   return (
-    <Form onSubmit={handleSubmit} error={error} values={{ teamId }}>
+    <Form onSubmit={handleSubmit} error={getErrorMessage(error)} values={{ teamId }}>
       <Text>
         {formatMessage(
           isTeamWebsite ? messages.transferTeamWebsiteToUser : messages.transferUserWebsiteToTeam,

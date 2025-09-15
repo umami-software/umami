@@ -4,7 +4,7 @@ import { LoginForm } from './LoginForm';
 
 export function LoginPage() {
   return (
-    <Column justifyContent="center" alignItems="center" height="100vh" backgroundColor="2">
+    <Column alignItems="center" height="100vh" backgroundColor="2" paddingTop="12">
       <LoginForm />
     </Column>
   );

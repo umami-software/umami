@@ -10,6 +10,16 @@ export function useMessages() {
     return message ? formatMessage(message) : id;
   };
 
+  const getErrorMessage = (error: unknown) => {
+    if (!error) {
+      return undefined;
+    }
+
+    const code = error?.['code'];
+
+    return code ? getMessage(code) : error?.['message'] || 'Unknown error';
+  };
+
   const formatMessage = (
     descriptor: {
       id: string;
@@ -21,5 +31,5 @@ export function useMessages() {
     return descriptor ? intl.formatMessage(descriptor, values, opts) : null;
   };
 
-  return { formatMessage, messages, labels, getMessage };
+  return { formatMessage, messages, labels, getMessage, getErrorMessage };
 }

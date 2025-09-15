@@ -21,7 +21,7 @@ export function TeamEditForm({
   onSave?: () => void;
 }) {
   const team = useTeam();
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
 
   const { mutate, error, isPending, touch, toast } = useUpdateQuery(`/teams/${teamId}`);
 
@@ -37,7 +37,7 @@ export function TeamEditForm({
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error} defaultValues={{ ...team }}>
+    <Form onSubmit={handleSubmit} error={getErrorMessage(error)} defaultValues={{ ...team }}>
       {({ setValue }) => {
         return (
           <>

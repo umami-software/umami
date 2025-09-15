@@ -32,7 +32,7 @@ export function LinkEditForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
   const { mutate, error, isPending, touch, toast } = useUpdateQuery(
     linkId ? `/links/${linkId}` : '/links',
     {
@@ -82,7 +82,7 @@ export function LinkEditForm({
   }
 
   return (
-    <Form onSubmit={handleSubmit} error={error?.message} defaultValues={{ slug, ...data }}>
+    <Form onSubmit={handleSubmit} error={getErrorMessage(error)} defaultValues={{ slug, ...data }}>
       {({ setValue }) => {
         return (
           <>

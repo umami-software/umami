@@ -4,7 +4,8 @@ import redis from '@/lib/redis';
 import { getUserByUsername } from '@/queries';
 import { json, unauthorized } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
-import { saveAuth, checkPassword } from '@/lib/auth';
+import { saveAuth } from '@/lib/auth';
+import { checkPassword } from '@/lib/password';
 import { secret } from '@/lib/crypto';
 import { ROLES } from '@/lib/constants';
 

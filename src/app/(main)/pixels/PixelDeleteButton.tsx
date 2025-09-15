@@ -13,7 +13,7 @@ export function PixelDeleteButton({
   name: string;
   onSave?: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, getErrorMessage } = useMessages();
   const { mutate, isPending, error } = useDeleteQuery(`/pixels/${pixelId}`);
   const { touch } = useModified();
 
@@ -36,7 +36,7 @@ export function PixelDeleteButton({
               target: name,
             })}
             isLoading={isPending}
-            error={error}
+            error={getErrorMessage(error)}
             onConfirm={handleConfirm.bind(null, close)}
             onClose={close}
             buttonLabel={formatMessage(labels.delete)}

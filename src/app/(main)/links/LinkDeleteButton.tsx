@@ -15,7 +15,7 @@ export function LinkDeleteButton({
   name: string;
   onSave?: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, getErrorMessage } = useMessages();
   const { mutate, isPending, error, touch } = useDeleteQuery(`/links/${linkId}`);
 
   const handleConfirm = (close: () => void) => {
@@ -37,7 +37,7 @@ export function LinkDeleteButton({
               target: name,
             })}
             isLoading={isPending}
-            error={error}
+            error={getErrorMessage(error)}
             onConfirm={handleConfirm.bind(null, close)}
             onClose={close}
             buttonLabel={formatMessage(labels.delete)}

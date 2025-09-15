@@ -14,7 +14,7 @@ export function TeamLeaveForm({
   onSave: () => void;
   onClose: () => void;
 }) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
   const { mutate, error, isPending } = useDeleteQuery(`/teams/${teamId}/users/${userId}`);
   const { touch } = useModified();
 
@@ -37,7 +37,7 @@ export function TeamLeaveForm({
       onConfirm={handleConfirm}
       onClose={onClose}
       isLoading={isPending}
-      error={error}
+      error={getErrorMessage(error)}
     />
   );
 }

@@ -29,7 +29,7 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={getMessage(error)} values={user}>
+    <Form onSubmit={handleSubmit} error={getMessage(error?.['code'])} values={user}>
       <FormField name="username" label={formatMessage(labels.username)}>
         <TextField data-test="input-username" />
       </FormField>
@@ -37,7 +37,7 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
         name="password"
         label={formatMessage(labels.password)}
         rules={{
-          minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
+          minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: '8' }) },
         }}
       >
         <PasswordField autoComplete="new-password" data-test="input-password" />

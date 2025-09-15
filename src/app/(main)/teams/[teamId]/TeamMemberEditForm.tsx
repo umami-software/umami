@@ -24,7 +24,7 @@ export function TeamMemberEditForm({
   onClose?: () => void;
 }) {
   const { mutate, error, isPending } = useUpdateQuery(`/teams/${teamId}/users/${userId}`);
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, getErrorMessage } = useMessages();
 
   const handleSubmit = async (data: any) => {
     mutate(data, {
@@ -36,7 +36,7 @@ export function TeamMemberEditForm({
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error} defaultValues={{ role }}>
+    <Form onSubmit={handleSubmit} error={getErrorMessage(error)} defaultValues={{ role }}>
       <FormField
         name="role"
         rules={{ required: formatMessage(labels.required) }}

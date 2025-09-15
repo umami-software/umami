@@ -16,7 +16,7 @@ import { setClientAuthToken } from '@/lib/client';
 import { Logo } from '@/components/icons';
 
 export function LoginForm() {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, getErrorMessage } = useMessages();
   const router = useRouter();
   const { mutate, error, isPending } = useUpdateQuery('/auth/login');
 
@@ -32,12 +32,12 @@ export function LoginForm() {
   };
 
   return (
-    <Column justifyContent="center" alignItems="center" padding="8" gap="6">
+    <Column justifyContent="center" alignItems="center" gap="6">
       <Icon size="lg">
         <Logo />
       </Icon>
       <Heading>umami</Heading>
-      <Form onSubmit={handleSubmit} error={error}>
+      <Form onSubmit={handleSubmit} error={getErrorMessage(error)}>
         <FormField
           label={formatMessage(labels.username)}
           data-test="input-username"
@@ -58,6 +58,7 @@ export function LoginForm() {
           <FormSubmitButton
             data-test="button-submit"
             variant="primary"
+            isLoading={isPending}
             isDisabled={isPending}
             style={{ flex: 1 }}
           >

@@ -9,7 +9,7 @@ import {
 import { useMessages, useUpdateQuery } from '@/components/hooks';
 
 export function PasswordEditForm({ onSave, onClose }) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
   const { mutate, error, isPending } = useUpdateQuery('/me/password');
 
   const handleSubmit = async (data: any) => {
@@ -29,7 +29,7 @@ export function PasswordEditForm({ onSave, onClose }) {
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error}>
+    <Form onSubmit={handleSubmit} error={getErrorMessage(error)}>
       <FormField
         label={formatMessage(labels.currentPassword)}
         name="currentPassword"
@@ -42,7 +42,7 @@ export function PasswordEditForm({ onSave, onClose }) {
         label={formatMessage(labels.newPassword)}
         rules={{
           required: 'Required',
-          minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
+          minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: '8' }) },
         }}
       >
         <PasswordField autoComplete="new-password" />
@@ -52,7 +52,7 @@ export function PasswordEditForm({ onSave, onClose }) {
         label={formatMessage(labels.confirmPassword)}
         rules={{
           required: formatMessage(labels.required),
-          minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
+          minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: '8' }) },
           validate: samePassword,
         }}
       >

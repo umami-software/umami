@@ -9,7 +9,7 @@ import {
 } from '@umami/react-zen';
 
 export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, getErrorMessage } = useMessages();
   const { mutate, error, isPending } = useUpdateQuery('/teams');
 
   const handleSubmit = async (data: any) => {
@@ -22,7 +22,7 @@ export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: 
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error}>
+    <Form onSubmit={handleSubmit} error={getErrorMessage(error)}>
       <FormField name="name" label={formatMessage(labels.name)}>
         <TextField autoComplete="off" />
       </FormField>

@@ -28,7 +28,7 @@ export function SegmentEditForm({
   onClose?: () => void;
 }) {
   const { data } = useWebsiteSegmentQuery(websiteId, segmentId);
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, getErrorMessage } = useMessages();
 
   const { mutate, error, isPending, touch, toast } = useUpdateQuery(
     `/websites/${websiteId}/segments${segmentId ? `/${segmentId}` : ''}`,
@@ -53,7 +53,11 @@ export function SegmentEditForm({
   }
 
   return (
-    <Form error={error} onSubmit={handleSubmit} defaultValues={data || { parameters: { filters } }}>
+    <Form
+      onSubmit={handleSubmit}
+      defaultValues={data || { parameters: { filters } }}
+      error={getErrorMessage(error)}
+    >
       <FormField
         name="name"
         label={formatMessage(labels.name)}

@@ -23,7 +23,7 @@ export interface WebsiteShareFormProps {
 }
 
 export function WebsiteShareForm({ websiteId, shareId, onSave, onClose }: WebsiteShareFormProps) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
   const [id, setId] = useState(shareId);
   const { mutate, error, isPending, touch, toast } = useUpdateQuery(`/websites/${websiteId}`);
 
@@ -52,7 +52,7 @@ export function WebsiteShareForm({ websiteId, shareId, onSave, onClose }: Websit
   };
 
   return (
-    <Form onSubmit={handleSave} error={error} values={{ url }}>
+    <Form onSubmit={handleSave} error={getErrorMessage(error)} values={{ url }}>
       <Column gap>
         <Switch isSelected={!!id} onChange={handleSwitch}>
           {formatMessage(labels.enableShareUrl)}

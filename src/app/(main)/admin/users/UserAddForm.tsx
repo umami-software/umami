@@ -14,7 +14,7 @@ import { ROLES } from '@/lib/constants';
 
 export function UserAddForm({ onSave, onClose }) {
   const { mutate, error, isPending } = useUpdateQuery(`/users`);
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, getErrorMessage } = useMessages();
 
   const handleSubmit = async (data: any) => {
     mutate(data, {
@@ -26,7 +26,7 @@ export function UserAddForm({ onSave, onClose }) {
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error}>
+    <Form onSubmit={handleSubmit} error={getErrorMessage(error)}>
       <FormField
         label={formatMessage(labels.username)}
         name="username"

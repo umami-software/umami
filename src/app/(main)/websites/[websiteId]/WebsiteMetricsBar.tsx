@@ -13,7 +13,7 @@ export function WebsiteMetricsBar({
   compareMode?: boolean;
 }) {
   const { dateRange } = useDateRange(websiteId);
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, getErrorMessage } = useMessages();
   const { data, isLoading, isFetching, error } = useWebsiteStatsQuery(websiteId);
   const isAllTime = dateRange.value === 'all';
 
@@ -65,7 +65,7 @@ export function WebsiteMetricsBar({
       data={metrics}
       isLoading={isLoading}
       isFetching={isFetching}
-      error={error}
+      error={getErrorMessage(error)}
       minHeight="136px"
     >
       <MetricsBar>

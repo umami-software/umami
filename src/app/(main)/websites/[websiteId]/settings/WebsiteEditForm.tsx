@@ -4,7 +4,7 @@ import { DOMAIN_REGEX } from '@/lib/constants';
 
 export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
   const website = useWebsite();
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
   const { mutate, error, touch, toast } = useUpdateQuery(`/websites/${websiteId}`);
 
   const handleSubmit = async (data: any) => {
@@ -18,7 +18,7 @@ export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSa
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error} values={website}>
+    <Form onSubmit={handleSubmit} error={getErrorMessage(error)} values={website}>
       <FormField name="id" label={formatMessage(labels.websiteId)}>
         <TextField data-test="text-field-websiteId" value={website?.id} isReadOnly allowCopy />
       </FormField>

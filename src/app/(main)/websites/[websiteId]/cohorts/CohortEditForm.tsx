@@ -31,7 +31,7 @@ export function CohortEditForm({
   onClose?: () => void;
 }) {
   const { data } = useWebsiteCohortQuery(websiteId, cohortId);
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
 
   const { mutate, error, isPending, touch, toast } = useUpdateQuery(
     `/websites/${websiteId}/segments${cohortId ? `/${cohortId}` : ''}`,
@@ -60,7 +60,11 @@ export function CohortEditForm({
   };
 
   return (
-    <Form error={error} onSubmit={handleSubmit} defaultValues={data || defaultValues}>
+    <Form
+      error={getErrorMessage(error)}
+      onSubmit={handleSubmit}
+      defaultValues={data || defaultValues}
+    >
       {({ watch }) => {
         const type = watch('parameters.action.type');
 

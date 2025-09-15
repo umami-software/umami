@@ -25,14 +25,13 @@ export function TypeConfirmationForm({
   onConfirm?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels, messages } = useMessages();
-
+  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
   if (!confirmationValue) {
     return null;
   }
 
   return (
-    <Form onSubmit={onConfirm} error={error}>
+    <Form onSubmit={onConfirm} error={getErrorMessage(error)}>
       <p>
         {formatMessage(messages.actionConfirmation, {
           confirmation: confirmationValue,

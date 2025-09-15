@@ -10,9 +10,9 @@ export function getQueryString(params: object = {}): string {
   return searchParams.toString();
 }
 
-export function buildUrl(url: string, params: object = {}): string {
+export function buildPath(path: string, params: object = {}): string {
   const queryString = getQueryString(params);
-  return `${url}${queryString && '?' + queryString}`;
+  return queryString ? `${path}?${queryString}` : path;
 }
 
 export function safeDecodeURI(s: string | undefined | null): string | undefined | null {

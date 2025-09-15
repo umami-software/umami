@@ -21,10 +21,10 @@ export function ConfirmationForm({
   onConfirm,
   onClose,
 }: ConfirmationFormProps) {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, getErrorMessage } = useMessages();
 
   return (
-    <Form onSubmit={onConfirm} error={error}>
+    <Form onSubmit={onConfirm} error={getErrorMessage(error)}>
       <Row marginY="4">{message}</Row>
       <FormButtons>
         <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>

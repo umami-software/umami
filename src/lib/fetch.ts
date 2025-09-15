@@ -1,4 +1,4 @@
-import { buildUrl } from '@/lib/url';
+import { buildPath } from '@/lib/url';
 
 export interface ErrorResponse {
   error: {
@@ -36,18 +36,17 @@ export async function request(
     return {
       ok: res.ok,
       status: res.status,
-      data: res.ok ? data : undefined,
-      error: res.ok ? undefined : data,
+      data,
     };
   });
 }
 
 export async function httpGet(path: string, params: object = {}, headers: object = {}) {
-  return request('GET', buildUrl(path, params), undefined, headers);
+  return request('GET', buildPath(path, params), undefined, headers);
 }
 
 export async function httpDelete(path: string, params: object = {}, headers: object = {}) {
-  return request('DELETE', buildUrl(path, params), undefined, headers);
+  return request('DELETE', buildPath(path, params), undefined, headers);
 }
 
 export async function httpPost(path: string, params: object = {}, headers: object = {}) {
