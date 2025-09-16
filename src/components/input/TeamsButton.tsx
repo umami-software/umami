@@ -33,10 +33,6 @@ export function TeamsButton({ showText = true, onAction }: TeamsButtonProps) {
     return <Loading icon="dots" size="sm" placement="center" />;
   }
 
-  if (!data?.count) {
-    return null;
-  }
-
   return (
     <MenuTrigger>
       <Pressable>

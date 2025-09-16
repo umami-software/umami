@@ -8,7 +8,7 @@ import { Panel } from '@/components/common/Panel';
 export function WebsiteSettingsPage({ websiteId }: { websiteId: string }) {
   return (
     <WebsiteProvider websiteId={websiteId}>
-      <Column gap="6">
+      <Column gap="6" margin="2">
         <WebsiteSettingsHeader />
         <Panel>
           <WebsiteSettings websiteId={websiteId} />

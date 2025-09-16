@@ -12,7 +12,7 @@ export function UsersPage() {
   const handleSave = () => {};
 
   return (
-    <Column gap="6">
+    <Column gap="6" margin="2">
       <PageHeader title={formatMessage(labels.users)}>
         <UserAddButton onSave={handleSave} />
       </PageHeader>

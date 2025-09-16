@@ -9,7 +9,7 @@ export function AdminTeamsPage() {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <Column gap="6">
+    <Column gap="6" margin="2">
       <PageHeader title={formatMessage(labels.teams)} />
       <Panel>
         <AdminTeamsDataTable />

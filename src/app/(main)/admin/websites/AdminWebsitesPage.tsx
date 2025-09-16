@@ -9,7 +9,7 @@ export function AdminWebsitesPage() {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <Column gap="6">
+    <Column gap="6" margin="2">
       <PageHeader title={formatMessage(labels.websites)} />
       <Panel>
         <AdminWebsitesDataTable />
