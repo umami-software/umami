@@ -333,17 +333,20 @@ export const BROWSERS = {
   yandexbrowser: 'Yandex',
 };
 
+// The order here is important and influences how IPs are detected by lib/detect.ts
+// Please do not change the order unless you know exactly what you're doing - read https://developers.cloudflare.com/fundamentals/reference/http-headers/
 export const IP_ADDRESS_HEADERS = [
-  'cf-connecting-ip',
+  'x-client-ip',
+  'x-forwarded-for',
+  'cf-connecting-ip', // This should be *after* x-forwarded-for, so that x-forwarded-for is respected if present
   'do-connecting-ip',
   'fastly-client-ip',
-  'forwarded',
   'true-client-ip',
-  'x-appengine-user-ip',
-  'x-client-ip',
+  'x-real-ip',
   'x-cluster-client-ip',
   'x-forwarded',
-  'x-forwarded-for',
+  'forwarded',
+  'x-appengine-user-ip',
   'x-nf-client-connection-ip',
   'x-real-ip',
 ];
