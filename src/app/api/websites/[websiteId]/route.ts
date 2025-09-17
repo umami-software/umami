@@ -31,8 +31,8 @@ export async function POST(
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
-    name: z.string(),
-    domain: z.string(),
+    name: z.string().optional(),
+    domain: z.string().optional(),
     shareId: z.string().regex(SHARE_ID_REGEX).nullable().optional(),
   });
 
