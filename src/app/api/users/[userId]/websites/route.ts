@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { unauthorized, json } from '@/lib/response';
-import { getAllUserWebsitesIncludingTeamOwner, getUserWebsites } from '@/queries/prisma/website';
 import { pagingParams, searchParams } from '@/lib/schema';
 import { getQueryFilters, parseRequest } from '@/lib/request';
+import { getAllUserWebsitesIncludingTeamOwner, getUserWebsites } from '@/queries/prisma/website';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const schema = z.object({
@@ -26,7 +26,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
   const filters = await getQueryFilters(query);
 
   if (query.includeTeams) {
-    return json(await getAllUserWebsitesIncludingTeamOwner(auth.user.id, filters));
+    return json(await getAllUserWebsitesIncludingTeamOwner(userId, filters));
   }
 
   return json(await getUserWebsites(userId, filters));
