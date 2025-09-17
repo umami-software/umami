@@ -446,6 +446,7 @@ export const ISO_COUNTRIES = {
   ARE: 'AE',
   BLM: 'BL',
   CHE: 'CH',
+  CHN: 'CN',
   ESH: 'EH',
   ESP: 'ES',
   FSM: 'FM',
