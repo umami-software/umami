@@ -15,6 +15,27 @@ import { safeDecodeURIComponent } from '@/lib/url';
 
 const MAXMIND = 'maxmind';
 
+const PROVIDER_HEADERS = [
+  // Cloudflare headers
+  {
+    countryHeader: 'cf-ipcountry',
+    regionHeader: 'cf-region-code',
+    cityHeader: 'cf-ipcity',
+  },
+  // Vercel headers
+  {
+    countryHeader: 'x-vercel-ip-country',
+    regionHeader: 'x-vercel-ip-country-region',
+    cityHeader: 'x-vercel-ip-city',
+  },
+  // CloudFront headers
+  {
+    countryHeader: 'cloudfront-viewer-country',
+    regionHeader: 'cloudfront-viewer-country-region',
+    cityHeader: 'cloudfront-viewer-city',
+  },
+];
+
 export function getIpAddress(headers: Headers) {
   const customHeader = process.env.CLIENT_IP_HEADER;
 
@@ -94,30 +115,19 @@ export async function getLocation(ip: string = '', headers: Headers, hasPayloadI
   }
 
   if (!hasPayloadIP && !process.env.SKIP_LOCATION_HEADERS) {
-    // Cloudflare headers
-    if (headers.get('cf-ipcountry')) {
-      const country = decodeHeader(headers.get('cf-ipcountry'));
-      const region = decodeHeader(headers.get('cf-region-code'));
-      const city = decodeHeader(headers.get('cf-ipcity'));
+    for (const provider of PROVIDER_HEADERS) {
+      const countryHeader = headers.get(provider.countryHeader);
+      if (countryHeader) {
+        const country = decodeHeader(countryHeader);
+        const region = decodeHeader(headers.get(provider.regionHeader));
+        const city = decodeHeader(headers.get(provider.cityHeader));
 
-      return {
-        country,
-        region: getRegionCode(country, region),
-        city,
-      };
-    }
-
-    // Vercel headers
-    if (headers.get('x-vercel-ip-country')) {
-      const country = decodeHeader(headers.get('x-vercel-ip-country'));
-      const region = decodeHeader(headers.get('x-vercel-ip-country-region'));
-      const city = decodeHeader(headers.get('x-vercel-ip-city'));
-
-      return {
-        country,
-        region: getRegionCode(country, region),
-        city,
-      };
+        return {
+          country,
+          region: getRegionCode(country, region),
+          city,
+        };
+      }
     }
   }
 

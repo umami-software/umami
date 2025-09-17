@@ -18,19 +18,15 @@ jobs:
             db-type: postgresql
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 10
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
-
-      - run: pnpm install
-      - run: pnpm test
-      - run: pnpm build
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+      env:
+        DATABASE_TYPE: ${{ matrix.db-type }}
+    - run: npm install --global pnpm
+    - run: pnpm install
+    - run: pnpm test
+    - run: pnpm build
