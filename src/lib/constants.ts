@@ -215,40 +215,11 @@ export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{8,50}$/;
 export const DATETIME_REGEX =
   /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{3}(Z|\+[0-9]{2}:[0-9]{2})?)?$/;
 
-export const DESKTOP_SCREEN_WIDTH = 1920;
-export const LAPTOP_SCREEN_WIDTH = 1024;
-export const MOBILE_SCREEN_WIDTH = 479;
-
 export const URL_LENGTH = 500;
 export const PAGE_TITLE_LENGTH = 500;
 export const EVENT_NAME_LENGTH = 50;
 
 export const UTM_PARAMS = ['utm_campaign', 'utm_content', 'utm_medium', 'utm_source', 'utm_term'];
-
-export const DESKTOP_OS = [
-  'BeOS',
-  'Chrome OS',
-  'Linux',
-  'Mac OS',
-  'Open BSD',
-  'OS/2',
-  'QNX',
-  'Sun OS',
-  'Windows 10',
-  'Windows 2000',
-  'Windows 3.11',
-  'Windows 7',
-  'Windows 8',
-  'Windows 8.1',
-  'Windows 95',
-  'Windows 98',
-  'Windows ME',
-  'Windows Server 2003',
-  'Windows Vista',
-  'Windows XP',
-];
-
-export const MOBILE_OS = ['Amazon OS', 'Android OS', 'BlackBerry OS', 'iOS', 'Windows Mobile'];
 
 export const OS_NAMES = {
   'Android OS': 'Android',
@@ -288,24 +259,6 @@ export const BROWSERS = {
   silk: 'Silk',
   yandexbrowser: 'Yandex',
 } as const;
-
-// The order here is important and influences how IPs are detected by lib/detect.ts
-// Please do not change the order unless you know exactly what you're doing - read https://developers.cloudflare.com/fundamentals/reference/http-headers/
-export const IP_ADDRESS_HEADERS = [
-  'x-client-ip',
-  'x-forwarded-for',
-  'cf-connecting-ip', // This should be *after* x-forwarded-for, so that x-forwarded-for is respected if present
-  'do-connecting-ip',
-  'fastly-client-ip',
-  'true-client-ip',
-  'x-real-ip',
-  'x-cluster-client-ip',
-  'x-forwarded',
-  'forwarded',
-  'x-appengine-user-ip',
-  'x-nf-client-connection-ip',
-  'x-real-ip',
-];
 
 export const SOCIAL_DOMAINS = [
   'bsky.app',

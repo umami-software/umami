@@ -3,17 +3,56 @@ import { browserName, detectOS } from 'detect-browser';
 import isLocalhost from 'is-localhost-ip';
 import ipaddr from 'ipaddr.js';
 import maxmind from 'maxmind';
-import {
-  DESKTOP_OS,
-  DESKTOP_SCREEN_WIDTH,
-  IP_ADDRESS_HEADERS,
-  LAPTOP_SCREEN_WIDTH,
-  MOBILE_OS,
-  MOBILE_SCREEN_WIDTH,
-} from './constants';
 import { safeDecodeURIComponent } from '@/lib/url';
 
 const MAXMIND = 'maxmind';
+
+export const DESKTOP_OS = [
+  'BeOS',
+  'Chrome OS',
+  'Linux',
+  'Mac OS',
+  'Open BSD',
+  'OS/2',
+  'QNX',
+  'Sun OS',
+  'Windows 10',
+  'Windows 2000',
+  'Windows 3.11',
+  'Windows 7',
+  'Windows 8',
+  'Windows 8.1',
+  'Windows 95',
+  'Windows 98',
+  'Windows ME',
+  'Windows Server 2003',
+  'Windows Vista',
+  'Windows XP',
+];
+
+export const MOBILE_OS = ['Amazon OS', 'Android OS', 'BlackBerry OS', 'iOS', 'Windows Mobile'];
+
+export const DESKTOP_SCREEN_WIDTH = 1920;
+export const LAPTOP_SCREEN_WIDTH = 1024;
+export const MOBILE_SCREEN_WIDTH = 479;
+
+// The order here is important and influences how IPs are detected by lib/detect.ts
+// Please do not change the order unless you know exactly what you're doing - read https://developers.cloudflare.com/fundamentals/reference/http-headers/
+export const IP_ADDRESS_HEADERS = [
+  'x-client-ip',
+  'x-forwarded-for',
+  'cf-connecting-ip', // This should be *after* x-forwarded-for, so that x-forwarded-for is respected if present
+  'do-connecting-ip',
+  'fastly-client-ip',
+  'true-client-ip',
+  'x-real-ip',
+  'x-cluster-client-ip',
+  'x-forwarded',
+  'forwarded',
+  'x-appengine-user-ip',
+  'x-nf-client-connection-ip',
+  'x-real-ip',
+];
 
 const PROVIDER_HEADERS = [
   // Cloudflare headers
@@ -35,6 +74,24 @@ const PROVIDER_HEADERS = [
     cityHeader: 'cloudfront-viewer-city',
   },
 ];
+
+function stripPort(ip) {
+  if (ip.startsWith('[')) {
+    const endBracket = ip.indexOf(']');
+    if (endBracket !== -1) {
+      return ip.slice(0, endBracket + 1);
+    }
+  }
+
+  const idx = ip.lastIndexOf(':');
+  if (idx !== -1) {
+    if (ip.includes('.') || /^[a-zA-Z0-9.-]+$/.test(ip.slice(0, idx))) {
+      return ip.slice(0, idx);
+    }
+  }
+
+  return ip;
+}
 
 export function getIpAddress(headers: Headers) {
   const customHeader = process.env.CLIENT_IP_HEADER;
@@ -140,7 +197,7 @@ export async function getLocation(ip: string = '', headers: Headers, hasPayloadI
     );
   }
 
-  const result = globalThis[MAXMIND]?.get(ip?.split(':')[0]);
+  const result = globalThis[MAXMIND]?.get(stripPort(ip));
 
   if (result) {
     const country = result.country?.iso_code ?? result?.registered_country?.iso_code;
