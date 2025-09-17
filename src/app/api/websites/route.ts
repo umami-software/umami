@@ -2,10 +2,34 @@ import { z } from 'zod';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { json, unauthorized } from '@/lib/response';
 import { uuid } from '@/lib/crypto';
-import { parseRequest } from '@/lib/request';
+import { getQueryFilters, parseRequest } from '@/lib/request';
+import { pagingParams, searchParams } from '@/lib/schema';
 import { createWebsite } from '@/queries';
+import { getAllUserWebsitesIncludingTeamOwner, getUserWebsites } from '@/queries/prisma/website';
 
-export { GET } from '@/app/api/users/[userId]/websites/route';
+export async function GET(request: Request) {
+  const schema = z.object({
+    ...pagingParams,
+    ...searchParams,
+    includeTeams: z.string().optional(),
+  });
+
+  const { auth, query, error } = await parseRequest(request, schema);
+
+  if (error) {
+    return error();
+  }
+
+  const userId = auth.user.id;
+
+  const filters = await getQueryFilters(query);
+
+  if (query.includeTeams) {
+    return json(await getAllUserWebsitesIncludingTeamOwner(userId, filters));
+  }
+
+  return json(await getUserWebsites(userId, filters));
+}
 
 export async function POST(request: Request) {
   const schema = z.object({
