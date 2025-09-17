@@ -344,6 +344,7 @@ export const IP_ADDRESS_HEADERS = [
   'x-cluster-client-ip',
   'x-forwarded',
   'x-forwarded-for',
+  'x-nf-client-connection-ip',
   'x-real-ip',
 ];
 
