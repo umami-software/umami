@@ -61,18 +61,24 @@ export function Attribution({
       ]
     : [];
 
-  function UTMTable({ data = [], title }: { data: any; title: string }) {
+  function AttributionTable({ data = [], title }: { data: any; title: string }) {
+    const attributionData = percentFilter(
+      data.map(({ name, value }) => ({
+        x: name,
+        y: Number(value),
+      })),
+    );
+
     return (
       <ListTable
         title={title}
         metric={formatMessage(currency ? labels.revenue : labels.visitors)}
         currency={currency}
-        data={percentFilter(
-          data.map(({ name, value }) => ({
-            x: name,
-            y: Number(value),
-          })),
-        )}
+        data={attributionData.map(({ x, y, z }: { x: string; y: number; z: number }) => ({
+          label: x,
+          count: y,
+          percent: z,
+        }))}
       />
     );
   }
@@ -91,48 +97,34 @@ export function Attribution({
           <SectionHeader title={formatMessage(labels.sources)} />
           <Grid columns="1fr 1fr" gap>
             <Panel>
-              <ListTable
-                title={formatMessage(labels.referrer)}
-                metric={formatMessage(currency ? labels.revenue : labels.visitors)}
-                currency={currency}
-                data={percentFilter(
-                  data?.['referrer']?.map(({ name, value }) => ({
-                    x: name,
-                    y: Number(value),
-                  })),
-                )}
-              />
+              <AttributionTable data={data?.['referrer']} title={formatMessage(labels.referrer)} />
             </Panel>
             <Panel>
-              <ListTable
-                title={formatMessage(labels.paidAds)}
-                metric={formatMessage(currency ? labels.revenue : labels.visitors)}
-                currency={currency}
-                data={percentFilter(
-                  data?.['paidAds']?.map(({ name, value }) => ({
-                    x: name,
-                    y: Number(value),
-                  })),
-                )}
-              />
+              <AttributionTable data={data?.['paidAds']} title={formatMessage(labels.paidAds)} />
             </Panel>
           </Grid>
           <SectionHeader title="UTM" />
           <Grid columns="1fr 1fr" gap>
             <Panel>
-              <UTMTable data={data?.['utm_source']} title={formatMessage(labels.sources)} />
+              <AttributionTable data={data?.['utm_source']} title={formatMessage(labels.sources)} />
             </Panel>
             <Panel>
-              <UTMTable data={data?.['utm_medium']} title={formatMessage(labels.medium)} />
+              <AttributionTable data={data?.['utm_medium']} title={formatMessage(labels.medium)} />
             </Panel>
             <Panel>
-              <UTMTable data={data?.['utm_cmapaign']} title={formatMessage(labels.campaigns)} />
+              <AttributionTable
+                data={data?.['utm_cmapaign']}
+                title={formatMessage(labels.campaigns)}
+              />
             </Panel>
             <Panel>
-              <UTMTable data={data?.['utm_content']} title={formatMessage(labels.content)} />
+              <AttributionTable
+                data={data?.['utm_content']}
+                title={formatMessage(labels.content)}
+              />
             </Panel>
             <Panel>
-              <UTMTable data={data?.['utm_term']} title={formatMessage(labels.terms)} />
+              <AttributionTable data={data?.['utm_term']} title={formatMessage(labels.terms)} />
             </Panel>
           </Grid>
         </Column>
