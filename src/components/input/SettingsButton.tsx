@@ -8,12 +8,9 @@ import {
   MenuItem,
   MenuSeparator,
   MenuSection,
-  Dialog,
-  SubMenuTrigger,
 } from '@umami/react-zen';
 import { useMessages, useLoginQuery, useNavigation, useConfig } from '@/components/hooks';
-import { LogOut, LockKeyhole, Settings, Knobs } from '@/components/icons';
-import { PreferenceSettings } from '@/app/(main)/settings/preferences/PreferenceSettings';
+import { LogOut, LockKeyhole, Settings } from '@/components/icons';
 
 export function SettingsButton() {
   const { formatMessage, labels } = useMessages();
@@ -44,20 +41,6 @@ export function SettingsButton() {
           <MenuSection title={user.username}>
             <MenuSeparator />
             <MenuItem id="settings" icon={<Settings />} label={formatMessage(labels.settings)} />
-            {cloudMode && (
-              <SubMenuTrigger>
-                <MenuItem
-                  icon={<Knobs />}
-                  label={formatMessage(labels.preferences)}
-                  showSubMenuIcon
-                />
-                <Popover placement="right bottom">
-                  <Dialog>
-                    <PreferenceSettings />
-                  </Dialog>
-                </Popover>
-              </SubMenuTrigger>
-            )}
             {!cloudMode && user.isAdmin && (
               <MenuItem id="admin" icon={<LockKeyhole />} label={formatMessage(labels.admin)} />
             )}
