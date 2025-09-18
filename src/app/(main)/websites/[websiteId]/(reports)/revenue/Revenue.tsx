@@ -38,7 +38,7 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
   });
 
   const renderCountryName = useCallback(
-    ({ x: code }) => (
+    ({ label: code }) => (
       <Row className={classNames(locale)} gap>
         <TypeIcon type="country" value={code} />
         <Text>{countryNames[code] || formatMessage(labels.unknown)}</Text>
@@ -136,9 +136,9 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
                 title={formatMessage(labels.country)}
                 metric={formatMessage(labels.revenue)}
                 data={data?.country.map(({ name, value }: { name: string; value: number }) => ({
-                  x: name,
-                  y: value,
-                  z: (value / data?.total.sum) * 100,
+                  label: name,
+                  count: value,
+                  percent: (value / data?.total.sum) * 100,
                 }))}
                 currency={currency}
                 renderLabel={renderCountryName}

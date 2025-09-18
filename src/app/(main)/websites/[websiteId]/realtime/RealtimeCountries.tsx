@@ -11,7 +11,7 @@ export function RealtimeCountries({ data }) {
   const { countryNames } = useCountryNames(locale);
 
   const renderCountryName = useCallback(
-    ({ x: code }) => (
+    ({ label: code }) => (
       <span className={classNames(styles.row)}>
         <TypeIcon type="country" value={code} />
         {countryNames[code]}
@@ -24,7 +24,11 @@ export function RealtimeCountries({ data }) {
     <ListTable
       title={formatMessage(labels.countries)}
       metric={formatMessage(labels.visitors)}
-      data={data}
+      data={data.map(({ x, y, z }: { x: string; y: number; z: number }) => ({
+        label: x,
+        count: y,
+        percent: z,
+      }))}
       renderLabel={renderCountryName}
     />
   );

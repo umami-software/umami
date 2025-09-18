@@ -27,7 +27,7 @@ export function RealtimeUrls({ data }: { data: any }) {
     },
   ];
 
-  const renderLink = ({ x }) => {
+  const renderLink = ({ label: x }) => {
     const domain = x.startsWith('/') ? website?.domain : '';
     return (
       <a href={`//${domain}${x}`} target="_blank" rel="noreferrer noopener">
@@ -70,7 +70,11 @@ export function RealtimeUrls({ data }: { data: any }) {
           title={formatMessage(labels.referrers)}
           metric={formatMessage(labels.views)}
           renderLabel={renderLink}
-          data={domains}
+          data={domains.map(({ x, y, z }: { x: string; y: number; z: number }) => ({
+            label: x,
+            count: y,
+            percent: z,
+          }))}
         />
       )}
       {filter === FILTER_PAGES && (
@@ -78,7 +82,11 @@ export function RealtimeUrls({ data }: { data: any }) {
           title={formatMessage(labels.pages)}
           metric={formatMessage(labels.views)}
           renderLabel={renderLink}
-          data={pages}
+          data={pages.map(({ x, y, z }: { x: string; y: number; z: number }) => ({
+            label: x,
+            count: y,
+            percent: z,
+          }))}
         />
       )}
     </>

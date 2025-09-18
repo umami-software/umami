@@ -26,6 +26,7 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
         <Column gap>
           {UTM_PARAMS.map(param => {
             const items = data?.[param];
+
             const chartData = {
               labels: items.map(({ utm }) => utm),
               datasets: [
@@ -50,9 +51,9 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
                     <ListTable
                       metric={formatMessage(labels.views)}
                       data={items.map(({ utm, views }) => ({
-                        x: utm,
-                        y: views,
-                        z: (views / total) * 100,
+                        label: utm,
+                        count: views,
+                        percent: (views / total) * 100,
                       }))}
                     />
                   </Column>
