@@ -19,7 +19,7 @@ export function useConfig(): Config {
   const { get } = useApi();
 
   async function loadConfig() {
-    const { data } = await get(`/config`);
+    const data = await get(`/config`);
 
     setConfig(data);
   }
