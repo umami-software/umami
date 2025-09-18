@@ -117,22 +117,22 @@ const redirects = [
   {
     source: '/settings',
     destination: '/settings/preferences',
-    permanent: true,
+    permanent: false,
   },
   {
     source: '/teams/:id',
     destination: '/teams/:id/websites',
-    permanent: true,
+    permanent: false,
   },
   {
     source: '/teams/:id/settings',
     destination: '/teams/:id/settings/preferences',
-    permanent: true,
+    permanent: false,
   },
   {
     source: '/admin',
     destination: '/admin/users',
-    permanent: true,
+    permanent: false,
   },
 ];
 
