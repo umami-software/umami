@@ -70,8 +70,18 @@ async function relationalQuery(
       (pv, cv, i) => {
         const levelNumber = i + 1;
         const startSum = i > 0 ? 'union ' : '';
-        const isURL = cv.type === 'url';
-        const column = isURL ? 'url_path' : 'event_name';
+        let column;
+        switch (cv.type) {
+          case 'url':
+            column = 'url_path';
+            break;
+          case 'event':
+            column = 'event_name';
+            break;
+          case 'hosts':
+            column = 'hostname';
+            break;
+        }
 
         let operator = '=';
         let paramValue = cv.value;
@@ -84,26 +94,26 @@ async function relationalQuery(
         if (levelNumber === 1) {
           pv.levelOneQuery = `
           WITH level1 AS (
-            select distinct session_id, created_at
-            from website_event
-            where website_id = {{websiteId::uuid}}
-              and created_at between {{startDate}} and {{endDate}}
+            select distinct we.website_id, we.session_id, we.created_at, we.url_path, we.event_name, s.hostname
+            from website_event we
+            join session s
+                on we.session_id = s.session_id
+            where we.website_id = {{websiteId::uuid}}
+              and we.created_at between {{startDate}} and {{endDate}}
               and ${column} ${operator} {{${i}}}
           )`;
         } else {
           pv.levelQuery += `
           , level${levelNumber} AS (
-            select distinct we.session_id, we.created_at
+            select distinct l.website_id, l.session_id, l.created_at, l.url_path, l.event_name, l.hostname
             from level${i} l
-            join website_event we
-                on l.session_id = we.session_id
-            where we.website_id = {{websiteId::uuid}}
-                and we.created_at between l.created_at and ${getAddIntervalQuery(
+            where l.website_id = {{websiteId::uuid}}
+                and l.created_at between l.created_at and ${getAddIntervalQuery(
                   `l.created_at `,
                   `${windowMinutes} minute`,
                 )}
-                and we.${column} ${operator} {{${i}}}
-                and we.created_at <= {{endDate}}
+                and l.${column} ${operator} {{${i}}}
+                and l.created_at <= {{endDate}}
           )`;
         }
 
