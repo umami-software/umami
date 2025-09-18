@@ -25,7 +25,7 @@ export function WebsiteMenu({ websiteId }: { websiteId: string }) {
     if (id === 'compare') {
       router.push(updateParams({ compare: 'prev' }));
     } else if (id === 'edit') {
-      router.push(renderUrl(`/settings/websites/${websiteId}`));
+      router.push(renderUrl(`/websites/${websiteId}`));
     }
   };
 

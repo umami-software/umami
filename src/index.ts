@@ -1,3 +1,8 @@
+export * from '@/app/(main)/settings/preferences/LanguageSetting';
+export * from '@/app/(main)/settings/preferences/PreferenceSettings';
+export * from '@/app/(main)/settings/preferences/PreferencesPage';
+export * from '@/app/(main)/settings/preferences/ThemeSetting';
+
 export * from '@/app/(main)/teams/[teamId]/TeamMemberEditButton';
 export * from '@/app/(main)/teams/[teamId]/TeamMemberEditForm';
 export * from '@/app/(main)/teams/[teamId]/TeamMemberRemoveButton';

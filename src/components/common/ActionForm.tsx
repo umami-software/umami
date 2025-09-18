@@ -2,12 +2,12 @@ import { Row, Column, Text } from '@umami/react-zen';
 
 export function ActionForm({ label, description, children }) {
   return (
-    <Row padding="6" border borderRadius="3" justifyContent="space-between" shadow="2">
-      <Column gap>
+    <Row alignItems="center" justifyContent="space-between" gap>
+      <Column gap="2">
         <Text weight="bold">{label}</Text>
-        <Text>{description}</Text>
+        <Text color="muted">{description}</Text>
       </Column>
-      <Row gap="3" alignItems="center">
+      <Row alignItems="center" gap>
         {children}
       </Row>
     </Row>

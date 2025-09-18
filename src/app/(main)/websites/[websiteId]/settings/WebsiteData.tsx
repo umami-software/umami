@@ -39,7 +39,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   const handleSave = () => {
     touch('websites');
     onSave?.();
-    router.push(renderUrl(`/settings/websites`));
+    router.push(renderUrl(`/websites`));
   };
 
   const handleReset = async () => {

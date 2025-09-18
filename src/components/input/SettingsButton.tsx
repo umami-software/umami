@@ -24,7 +24,7 @@ export function SettingsButton() {
   const handleAction = (id: Key) => {
     if (id === 'settings') {
       if (cloudMode) {
-        window.location.href = `${cloudUrl}/dashboard`;
+        window.location.href = `${cloudUrl}/settings`;
         return;
       }
     }
