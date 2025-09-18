@@ -1,50 +1,101 @@
 name: Create docker images
 
-on: [create]
+on:
+  push:
+    branches:
+      - master
+      - main
+      - dev
+    # Publish semver tags as releases.
+    tags: [ 'v*.*.*' ]
+  pull_request:
+    branches:
+      - master
+      - main
+      - dev
+  workflow_dispatch:
 
 jobs:
   build:
     name: Build, push, and deploy
-    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
 
     strategy:
       matrix:
         db-type: [postgresql, mysql]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
 
-      - name: Set env
-        run: |
-          echo "NOW=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
-          
-      - name: Generate tags
-        id: generate_tags
-        run: |
-          echo "tag_patch=$(echo ${{ matrix.db-type }})-${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-          echo "tag_minor=$(echo ${{ matrix.db-type }})-$(echo ${GITHUB_REF#refs/tags/} | cut -d. -f1,2)" >> $GITHUB_ENV
-          echo "tag_major=$(echo ${{ matrix.db-type }})-$(echo ${GITHUB_REF#refs/tags/} | cut -d. -f1)" >> $GITHUB_ENV
-          echo "tag_latest=$(echo ${{ matrix.db-type }})-latest" >> $GITHUB_ENV
+      # Install the cosign tool except on PR
+      # https://github.com/sigstore/cosign-installer
+      - name: Install cosign
+        if: github.event_name != 'pull_request'
+        uses: sigstore/cosign-installer@v3
 
-      - uses: mr-smithers-excellent/docker-build-push@v6
-        name: Build & push Docker image to ghcr.io for ${{ matrix.db-type }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log into registry docker.io
+        if: github.event_name != 'pull_request' && github.repository == 'umami-software/umami' 
+        uses: docker/login-action@v3
         with:
-          image: umami
-          tags: ${{ env.tag_major }}, ${{ env.tag_minor }}, ${{ env.tag_patch }}, ${{ env.tag_latest }}
-          buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
-          registry: ghcr.io
-          multiPlatform: true
-          platform: linux/amd64,linux/arm64
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: mr-smithers-excellent/docker-build-push@v6
-        name: Build & push Docker image to docker.io for ${{ matrix.db-type }}
-        with:
-          image: umamisoftware/umami
-          tags: ${{ env.tag_major }}, ${{ env.tag_minor }}, ${{ env.tag_patch }}, ${{ env.tag_latest }}
-          buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Log into ghcr registry 
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            umamisoftware/umami,enable=${{ github.repository == 'umami-software/umami' }}
+            ghcr.io/${{ github.repository }}
+          flavor: |
+            latest=auto
+            prefix=${{ matrix.db-type }}-
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+
+            # output 1.1.2
+            type=semver,pattern={{version}}
+            # output 1.1
+            type=semver,pattern={{major}}.{{minor}}
+            # output 1
+            type=semver,pattern={{major}}
+
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          build-args: DATABASE_TYPE=${{ matrix.db-type }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Sign the resulting Docker image digest except on PRs.
+      - name: Sign the published Docker image
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
+          DIGEST: ${{ steps.build-and-push.outputs.digest }}
+        run: echo "${TAGS}" | xargs -I {} cosign sign --yes "{}@${DIGEST}"
