@@ -34,7 +34,7 @@ export function TeamSettings({ teamId }: { teamId: string }) {
       user.role !== ROLES.viewOnly);
 
   return (
-    <Column gap="6">
+    <Column gap="6" margin="2">
       <PageHeader title={team?.name} icon={<Users />}>
         {!isTeamOwner && !isAdmin && <TeamLeaveButton teamId={team.id} teamName={team.name} />}
       </PageHeader>
