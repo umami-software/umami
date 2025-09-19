@@ -1,4 +1,8 @@
 export const CURRENT_VERSION = process.env.currentVersion;
+export const BOUNCE_THRESHOLD = Math.max(
+  1,
+  Number.parseInt(process.env.BOUNCE_THRESHOLD || '1', 10) || 1,
+);
 export const AUTH_TOKEN = 'umami.auth';
 export const LOCALE_CONFIG = 'umami.locale';
 export const TIMEZONE_CONFIG = 'umami.timezone';
