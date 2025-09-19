@@ -1,19 +1,14 @@
-'use server';
+import { parseRequest } from '@/lib/request';
+import { json } from '@/lib/response';
 
-export type Config = {
-  cloudMode: boolean;
-  cloudUrl?: string;
-  faviconUrl?: string;
-  linksUrl?: string;
-  pixelsUrl?: string;
-  privateMode: boolean;
-  telemetryDisabled: boolean;
-  trackerScriptName?: string;
-  updatesDisabled: boolean;
-};
+export async function GET(request: Request) {
+  const { error } = await parseRequest(request, null, { skipAuth: true });
 
-export async function getConfig(): Promise<Config> {
-  return {
+  if (error) {
+    return error();
+  }
+
+  return json({
     cloudMode: !!process.env.CLOUD_URL,
     cloudUrl: process.env.CLOUD_URL,
     faviconUrl: process.env.FAVICON_URL,
@@ -23,5 +18,5 @@ export async function getConfig(): Promise<Config> {
     telemetryDisabled: !!process.env.DISABLE_TELEMETRY,
     trackerScriptName: process.env.TRACKER_SCRIPT_NAME,
     updatesDisabled: !!process.env.DISABLE_UPDATES,
-  };
+  });
 }
