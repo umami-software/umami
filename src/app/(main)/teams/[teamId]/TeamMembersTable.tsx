@@ -38,7 +38,7 @@ export function TeamMembersTable({
             }
 
             return (
-              <Row alignItems="center">
+              <Row alignItems="center" maxHeight="20px">
                 <TeamMemberEditButton teamId={teamId} userId={row?.user?.id} role={row?.role} />
                 <TeamMemberRemoveButton
                   teamId={teamId}
