@@ -1,6 +1,5 @@
 import { z } from 'zod';
-import { unauthorized, json, badRequest, notFound } from '@/lib/response';
-import { canCreateTeam } from '@/permissions';
+import { json, badRequest, notFound } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
 import { ROLES } from '@/lib/constants';
 import { createTeamUser, findTeam, getTeamUser } from '@/queries';
@@ -16,10 +15,6 @@ export async function POST(request: Request) {
     return error();
   }
 
-  if (!(await canCreateTeam(auth))) {
-    return unauthorized();
-  }
-
   const { accessCode } = body;
 
   const team = await findTeam({
@@ -29,7 +24,7 @@ export async function POST(request: Request) {
   });
 
   if (!team) {
-    return notFound({ message: 'Team not found.' });
+    return notFound({ message: 'Team not found.', code: 'team-not-found' });
   }
 
   const teamUser = await getTeamUser(team.id, auth.user.id);

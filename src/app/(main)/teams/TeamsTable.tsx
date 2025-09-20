@@ -1,17 +1,13 @@
-import { DataColumn, DataTable, Icon, MenuItem, Text, Row } from '@umami/react-zen';
+import { DataColumn, DataTable } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
-import { Eye, Edit } from '@/components/icons';
 import { ROLES } from '@/lib/constants';
-import { MenuButton } from '@/components/input/MenuButton';
 import { ReactNode } from 'react';
 
 export function TeamsTable({
   data = [],
-  showActions = false,
   renderLink,
 }: {
   data: any[];
-  showActions?: boolean;
   renderLink?: (row: any) => ReactNode;
 }) {
   const { formatMessage, labels } = useMessages();
@@ -30,34 +26,6 @@ export function TeamsTable({
       <DataColumn id="members" label={formatMessage(labels.members)} align="end">
         {(row: any) => row?._count?.members}
       </DataColumn>
-      {showActions ? (
-        <DataColumn id="action" label=" " align="end">
-          {(row: any) => {
-            const { id } = row;
-
-            return (
-              <MenuButton>
-                <MenuItem href={`/teams/${id}`}>
-                  <Row alignItems="center" gap>
-                    <Icon>
-                      <Eye />
-                    </Icon>
-                    <Text>{formatMessage(labels.view)}</Text>
-                  </Row>
-                </MenuItem>
-                <MenuItem href={`/settings/teams/${id}`}>
-                  <Row alignItems="center" gap>
-                    <Icon>
-                      <Edit />
-                    </Icon>
-                    <Text>{formatMessage(labels.edit)}</Text>
-                  </Row>
-                </MenuItem>
-              </MenuButton>
-            );
-          }}
-        </DataColumn>
-      ) : null}
     </DataTable>
   );
 }

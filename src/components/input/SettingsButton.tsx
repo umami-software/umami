@@ -10,7 +10,7 @@ import {
   MenuSection,
 } from '@umami/react-zen';
 import { useMessages, useLoginQuery, useNavigation, useConfig } from '@/components/hooks';
-import { LogOut, LockKeyhole, Settings } from '@/components/icons';
+import { LogOut, LockKeyhole, Settings, UserCircle } from '@/components/icons';
 
 export function SettingsButton() {
   const { formatMessage, labels } = useMessages();
@@ -33,7 +33,7 @@ export function SettingsButton() {
     <MenuTrigger>
       <Button data-test="button-profile" variant="quiet" autoFocus={false}>
         <Icon>
-          <Settings />
+          <UserCircle />
         </Icon>
       </Button>
       <Popover placement="bottom end">

@@ -14,10 +14,12 @@ const generateId = () => `team_${getRandomChars(16)}`;
 export function TeamEditForm({
   teamId,
   allowEdit,
+  showAccessCode,
   onSave,
 }: {
   teamId: string;
   allowEdit?: boolean;
+  showAccessCode?: boolean;
   onSave?: () => void;
 }) {
   const team = useTeam();
@@ -51,9 +53,11 @@ export function TeamEditForm({
             >
               <TextField isReadOnly={!allowEdit} />
             </FormField>
-            <FormField name="accessCode" label={formatMessage(labels.accessCode)}>
-              <TextField isReadOnly allowCopy />
-            </FormField>
+            {showAccessCode && (
+              <FormField name="accessCode" label={formatMessage(labels.accessCode)}>
+                <TextField isReadOnly allowCopy />
+              </FormField>
+            )}
             {allowEdit && (
               <FormButtons justifyContent="space-between">
                 <Button onPress={() => setValue('accessCode', generateId(), { shouldDirty: true })}>

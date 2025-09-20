@@ -1,23 +1,20 @@
-import { useState } from 'react';
-import { Column, Tabs, TabList, Tab, TabPanel } from '@umami/react-zen';
+import Link from 'next/link';
+import { Column, Icon, Text, Row } from '@umami/react-zen';
 import { useLoginQuery, useMessages, useNavigation, useTeam } from '@/components/hooks';
-
 import { ROLES } from '@/lib/constants';
-import { Users } from '@/components/icons';
+import { Users, Arrow } from '@/components/icons';
 import { TeamLeaveButton } from '@/app/(main)/teams/TeamLeaveButton';
 import { TeamManage } from './TeamManage';
 import { TeamEditForm } from './TeamEditForm';
-import { TeamWebsitesDataTable } from './TeamWebsitesDataTable';
 import { TeamMembersDataTable } from './TeamMembersDataTable';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
 
 export function TeamSettings({ teamId }: { teamId: string }) {
   const team: any = useTeam();
-  const { formatMessage, labels } = useMessages();
   const { user } = useLoginQuery();
-  const { query, pathname } = useNavigation();
-  const [tab, setTab] = useState(query?.tab || 'details');
+  const { formatMessage, labels } = useMessages();
+  const { pathname } = useNavigation();
 
   const isAdmin = pathname.includes('/admin');
 
@@ -34,32 +31,32 @@ export function TeamSettings({ teamId }: { teamId: string }) {
       user.role !== ROLES.viewOnly);
 
   return (
-    <Column gap="6">
-      <PageHeader title={team?.name} icon={<Users />}>
-        {!isTeamOwner && !isAdmin && <TeamLeaveButton teamId={team.id} teamName={team.name} />}
-      </PageHeader>
-      <Panel>
-        <Tabs selectedKey={tab} onSelectionChange={(value: any) => setTab(value)}>
-          <TabList>
-            <Tab id="details">{formatMessage(labels.details)}</Tab>
-            <Tab id="members">{formatMessage(labels.members)}</Tab>
-            <Tab id="websites">{formatMessage(labels.websites)}</Tab>
-            {isTeamOwner && <Tab id="manage">{formatMessage(labels.manage)}</Tab>}
-          </TabList>
-          <TabPanel id="details" style={{ width: 500 }}>
-            <TeamEditForm teamId={teamId} allowEdit={canEdit} />
-          </TabPanel>
-          <TabPanel id="members">
-            <TeamMembersDataTable teamId={teamId} allowEdit />
-          </TabPanel>
-          <TabPanel id="websites">
-            <TeamWebsitesDataTable teamId={teamId} allowEdit />
-          </TabPanel>
-          <TabPanel id="manage">
+    <>
+      <Link href="/settings/teams">
+        <Row marginTop="2" alignItems="center" gap>
+          <Icon rotate={180}>
+            <Arrow />
+          </Icon>
+          <Text>{formatMessage(labels.teams)}</Text>
+        </Row>
+      </Link>
+
+      <Column gap="6">
+        <PageHeader title={team?.name} icon={<Users />}>
+          {!isTeamOwner && !isAdmin && <TeamLeaveButton teamId={team.id} teamName={team.name} />}
+        </PageHeader>
+        <Panel>
+          <TeamEditForm teamId={teamId} allowEdit={canEdit} showAccessCode={canEdit} />
+        </Panel>
+        <Panel>
+          <TeamMembersDataTable teamId={teamId} allowEdit={canEdit} />
+        </Panel>
+        {isTeamOwner && (
+          <Panel>
             <TeamManage teamId={teamId} />
-          </TabPanel>
-        </Tabs>
-      </Panel>
-    </Column>
+          </Panel>
+        )}
+      </Column>
+    </>
   );
 }
