@@ -139,7 +139,9 @@ export function LinkEditForm({
                   {formatMessage(labels.cancel)}
                 </Button>
               )}
-              <FormSubmitButton isDisabled={false}>{formatMessage(labels.save)}</FormSubmitButton>
+              <FormSubmitButton isDisabled={false} isLoading={isPending}>
+                {formatMessage(labels.save)}
+              </FormSubmitButton>
             </Row>
           </>
         );

@@ -359,7 +359,7 @@ export const labels = defineMessages({
   invalidUrl: { id: 'label.invalid-url', defaultMessage: 'Invalid URL' },
   environment: { id: 'label.environment', defaultMessage: 'Environment' },
   criteria: { id: 'label.criteria', defaultMessage: 'Criteria' },
-  share: { defaultMessage: 'label.share', id: 'Share' },
+  share: { id: 'label.share', defaultMessage: 'Share' },
 });
 
 export const messages = defineMessages({

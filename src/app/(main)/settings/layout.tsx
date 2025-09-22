@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { SettingsLayout } from './SettingsLayout';
 
 export default function ({ children }) {
-  if (process.env.cloudUrl) {
+  if (process.env.cloudMode) {
     return null;
   }
 

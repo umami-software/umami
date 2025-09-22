@@ -18,7 +18,7 @@ export function getBearerToken(request: Request) {
 export async function checkAuth(request: Request) {
   const token = getBearerToken(request);
   const payload = parseSecureToken(token, secret());
-  const shareToken = await parseShareToken(request.headers);
+  const shareToken = await parseShareToken(request);
 
   let user = null;
   const { userId, authKey, grant } = payload || {};
@@ -71,9 +71,9 @@ export async function hasPermission(role: string, permission: string | string[])
   return ensureArray(permission).some(e => ROLE_PERMISSIONS[role]?.includes(e));
 }
 
-export function parseShareToken(headers: Headers) {
+export function parseShareToken(request: Request) {
   try {
-    return parseToken(headers.get(SHARE_TOKEN_HEADER), secret());
+    return parseToken(request.headers.get(SHARE_TOKEN_HEADER), secret());
   } catch (e) {
     log(e);
     return null;

@@ -16,12 +16,12 @@ export function SettingsButton() {
   const { formatMessage, labels } = useMessages();
   const { user } = useLoginQuery();
   const { router, renderUrl } = useNavigation();
-  const { cloudMode, cloudUrl } = useConfig();
+  const { cloudMode } = useConfig();
 
   const handleAction = (id: Key) => {
     if (id === 'settings') {
       if (cloudMode) {
-        window.location.href = `${cloudUrl}/settings`;
+        window.location.href = `/settings`;
         return;
       }
     }

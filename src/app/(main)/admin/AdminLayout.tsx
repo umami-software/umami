@@ -11,7 +11,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
   const { formatMessage, labels } = useMessages();
   const { pathname } = useNavigation();
 
-  if (!user.isAdmin || process.env.cloudUrl) {
+  if (!user.isAdmin || process.env.cloudMode) {
     return null;
   }
 

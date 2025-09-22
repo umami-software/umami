@@ -5,7 +5,7 @@ const TRACKER_SCRIPT = '/script.js';
 
 const basePath = process.env.BASE_PATH;
 const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT;
-const cloudUrl = process.env.CLOUD_URL;
+const cloudMode = !!process.env.CLOUD_MODE;
 const corsMaxAge = process.env.CORS_MAX_AGE;
 const defaultLocale = process.env.DEFAULT_LOCALE;
 const forceSSL = process.env.FORCE_SSL;
@@ -157,20 +157,12 @@ if (trackerScriptName) {
   }
 }
 
-if (cloudUrl) {
-  redirects.push({
-    source: '/login',
-    destination: cloudUrl,
-    permanent: false,
-  });
-}
-
 /** @type {import('next').NextConfig} */
 export default {
   reactStrictMode: false,
   env: {
     basePath,
-    cloudUrl,
+    cloudMode,
     currentVersion: pkg.version,
     defaultLocale,
   },

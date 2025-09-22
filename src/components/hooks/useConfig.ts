@@ -4,7 +4,6 @@ import { useApi } from '@/components/hooks/useApi';
 
 export type Config = {
   cloudMode: boolean;
-  cloudUrl?: string;
   faviconUrl?: string;
   linksUrl?: string;
   pixelsUrl?: string;

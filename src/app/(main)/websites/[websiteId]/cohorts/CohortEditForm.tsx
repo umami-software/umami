@@ -114,10 +114,7 @@ export function CohortEditForm({
 
             <Column>
               <Label>{formatMessage(labels.filters)}</Label>
-              <FormField
-                name="parameters.filters"
-                rules={{ required: formatMessage(labels.required) }}
-              >
+              <FormField name="parameters.filters">
                 <FieldFilters websiteId={websiteId} exclude={['path', 'event']} />
               </FormField>
             </Column>
