@@ -26,7 +26,7 @@ export function WebsitePage({ websiteId }: { websiteId: string }) {
   };
 
   return (
-    <Column gap marginLeft="2">
+    <Column gap>
       <WebsiteControls websiteId={websiteId} />
       <WebsiteMetricsBar websiteId={websiteId} showChange={true} />
       <Panel minHeight="520px">

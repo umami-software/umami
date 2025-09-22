@@ -10,7 +10,7 @@ export function WebsiteLayout({ websiteId, children }: { websiteId: string; chil
   return (
     <WebsiteProvider websiteId={websiteId}>
       <Grid columns="auto 1fr" width="100%" height="100%">
-        <Column height="100%" border="right" backgroundColor>
+        <Column height="100%" border="right" backgroundColor marginRight="2">
           <WebsiteNav websiteId={websiteId} />
         </Column>
         <PageBody gap>
