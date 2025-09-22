@@ -3,8 +3,6 @@ import { PERMISSIONS } from '@/lib/constants';
 import { hasPermission } from '@/lib/auth';
 import { getTeamUser, getWebsite } from '@/queries';
 
-const cloudMode = !!process.env.CLOUD_URL;
-
 export async function canViewWebsite({ user, shareToken }: Auth, websiteId: string) {
   if (user?.isAdmin) {
     return true;
@@ -33,11 +31,7 @@ export async function canViewAllWebsites({ user }: Auth) {
   return user.isAdmin;
 }
 
-export async function canCreateWebsite({ user, grant }: Auth) {
-  if (cloudMode) {
-    return !!grant?.find(a => a === PERMISSIONS.websiteCreate);
-  }
-
+export async function canCreateWebsite({ user }: Auth) {
   if (user.isAdmin) {
     return true;
   }

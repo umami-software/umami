@@ -3,8 +3,6 @@ import { PERMISSIONS } from '@/lib/constants';
 import { getTeamUser } from '@/queries';
 import { hasPermission } from '@/lib/auth';
 
-const cloudMode = !!process.env.CLOUD_URL;
-
 export async function canViewTeam({ user }: Auth, teamId: string) {
   if (user.isAdmin) {
     return true;
@@ -13,11 +11,7 @@ export async function canViewTeam({ user }: Auth, teamId: string) {
   return getTeamUser(teamId, user.id);
 }
 
-export async function canCreateTeam({ user, grant }: Auth) {
-  if (cloudMode) {
-    return !!grant?.find(a => a === PERMISSIONS.teamCreate);
-  }
-
+export async function canCreateTeam({ user }: Auth) {
   if (user.isAdmin) {
     return true;
   }
@@ -25,13 +19,9 @@ export async function canCreateTeam({ user, grant }: Auth) {
   return !!user;
 }
 
-export async function canUpdateTeam({ user, grant }: Auth, teamId: string) {
+export async function canUpdateTeam({ user }: Auth, teamId: string) {
   if (user.isAdmin) {
     return true;
-  }
-
-  if (cloudMode) {
-    return !!grant?.find(a => a === PERMISSIONS.teamUpdate);
   }
 
   const teamUser = await getTeamUser(teamId, user.id);
@@ -49,11 +39,7 @@ export async function canDeleteTeam({ user }: Auth, teamId: string) {
   return teamUser && hasPermission(teamUser.role, PERMISSIONS.teamDelete);
 }
 
-export async function canAddUserToTeam({ user, grant }: Auth) {
-  if (cloudMode) {
-    return !!grant?.find(a => a === PERMISSIONS.teamUpdate);
-  }
-
+export async function canAddUserToTeam({ user }: Auth) {
   return user.isAdmin;
 }
 

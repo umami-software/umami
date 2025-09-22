@@ -1,5 +1,5 @@
 import { UseQueryOptions } from '@tanstack/react-query';
-import { DATA_TYPE, PERMISSIONS, ROLES, OPERATORS } from './constants';
+import { DATA_TYPE, ROLES, OPERATORS } from './constants';
 import { TIME_UNIT } from './date';
 
 export type ObjectValues<T> = T[keyof T];
@@ -7,7 +7,6 @@ export type ObjectValues<T> = T[keyof T];
 export type ReactQueryOptions<T = any> = Omit<UseQueryOptions<T, Error, T>, 'queryKey' | 'queryFn'>;
 
 export type TimeUnit = ObjectValues<typeof TIME_UNIT>;
-export type Permission = ObjectValues<typeof PERMISSIONS>;
 export type Role = ObjectValues<typeof ROLES>;
 export type DynamicDataType = ObjectValues<typeof DATA_TYPE>;
 export type Operator = (typeof OPERATORS)[keyof typeof OPERATORS];
@@ -19,7 +18,6 @@ export interface Auth {
     role: string;
     isAdmin: boolean;
   };
-  grant?: Permission[];
   shareToken?: {
     websiteId: string;
   };

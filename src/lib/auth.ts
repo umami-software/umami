@@ -21,7 +21,7 @@ export async function checkAuth(request: Request) {
   const shareToken = await parseShareToken(request);
 
   let user = null;
-  const { userId, authKey, grant } = payload || {};
+  const { userId, authKey } = payload || {};
 
   if (userId) {
     user = await getUser(userId);
@@ -33,7 +33,7 @@ export async function checkAuth(request: Request) {
     }
   }
 
-  log({ token, shareToken, payload, user, grant });
+  log({ token, payload, authKey, shareToken, user });
 
   if (!user?.id && !shareToken) {
     log('User not authorized');
@@ -45,11 +45,10 @@ export async function checkAuth(request: Request) {
   }
 
   return {
-    user,
-    grant,
     token,
-    shareToken,
     authKey,
+    shareToken,
+    user,
   };
 }
 
