@@ -29,7 +29,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
 
   const req = new Request(request.url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: request.headers,
     body: JSON.stringify(payload),
   });
 
