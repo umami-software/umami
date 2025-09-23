@@ -1,19 +1,19 @@
 import {
   Eye,
-  Lightning,
+  LightningSvg,
   User,
   Clock,
   Sheet,
-  Target,
-  Funnel,
-  Path,
-  Magnet,
+  TargetSvg,
+  FunnelSvg,
+  PathSvg,
+  MagnetSvg,
   Tag,
-  Money,
+  MoneySvg,
   Network,
   ChartPie,
   UserPlus,
-  Compare,
+  CompareSvg,
 } from '@/components/icons';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { SideMenu } from '@/components/common/SideMenu';
@@ -44,7 +44,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
         {
           id: 'events',
           label: formatMessage(labels.events),
-          icon: <Lightning />,
+          icon: <LightningSvg />,
           path: renderPath('/events'),
         },
         {
@@ -62,7 +62,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
         {
           id: 'compare',
           label: formatMessage(labels.compare),
-          icon: <Compare />,
+          icon: <CompareSvg />,
           path: renderPath('/compare'),
         },
         {
@@ -79,25 +79,25 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
         {
           id: 'goals',
           label: formatMessage(labels.goals),
-          icon: <Target />,
+          icon: <TargetSvg />,
           path: renderPath('/goals'),
         },
         {
           id: 'funnel',
           label: formatMessage(labels.funnels),
-          icon: <Funnel />,
+          icon: <FunnelSvg />,
           path: renderPath('/funnels'),
         },
         {
           id: 'journeys',
           label: formatMessage(labels.journeys),
-          icon: <Path />,
+          icon: <PathSvg />,
           path: renderPath('/journeys'),
         },
         {
           id: 'retention',
           label: formatMessage(labels.retention),
-          icon: <Magnet />,
+          icon: <MagnetSvg />,
           path: renderPath('/retention'),
         },
       ],
@@ -131,7 +131,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
         {
           id: 'revenue',
           label: formatMessage(labels.revenue),
-          icon: <Money />,
+          icon: <MoneySvg />,
           path: renderPath('/revenue'),
         },
         {

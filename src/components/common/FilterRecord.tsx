@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Grid, Column, TextField, Label, Select, Icon, Button, ListItem } from '@umami/react-zen';
 import { useFilters, useFormat, useWebsiteValuesQuery } from '@/components/hooks';
-import { Close } from '@/components/icons';
+import { X } from '@/components/icons';
 import { isSearchOperator } from '@/lib/params';
 import { Empty } from '@/components/common/Empty';
 
@@ -107,7 +107,7 @@ export function FilterRecord({
         <Column justifyContent="flex-end">
           <Button variant="quiet" onPress={() => onRemove?.(name)}>
             <Icon>
-              <Close />
+              <X />
             </Icon>
           </Button>
         </Column>

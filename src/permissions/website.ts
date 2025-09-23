@@ -14,6 +14,10 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
 
   const website = await getWebsite(websiteId);
 
+  if (!website) {
+    return false;
+  }
+
   if (website.userId) {
     return user.id === website.userId;
   }
@@ -46,6 +50,10 @@ export async function canUpdateWebsite({ user }: Auth, websiteId: string) {
 
   const website = await getWebsite(websiteId);
 
+  if (!website) {
+    return false;
+  }
+
   if (website.userId) {
     return user.id === website.userId;
   }
@@ -66,6 +74,10 @@ export async function canDeleteWebsite({ user }: Auth, websiteId: string) {
 
   const website = await getWebsite(websiteId);
 
+  if (!website) {
+    return false;
+  }
+
   if (website.userId) {
     return user.id === website.userId;
   }
@@ -82,6 +94,10 @@ export async function canDeleteWebsite({ user }: Auth, websiteId: string) {
 export async function canTransferWebsiteToUser({ user }: Auth, websiteId: string, userId: string) {
   const website = await getWebsite(websiteId);
 
+  if (!website) {
+    return false;
+  }
+
   if (website.teamId && user.id === userId) {
     const teamUser = await getTeamUser(website.teamId, userId);
 
@@ -93,6 +109,10 @@ export async function canTransferWebsiteToUser({ user }: Auth, websiteId: string
 
 export async function canTransferWebsiteToTeam({ user }: Auth, websiteId: string, teamId: string) {
   const website = await getWebsite(websiteId);
+
+  if (!website) {
+    return false;
+  }
 
   if (website.userId && website.userId === user.id) {
     const teamUser = await getTeamUser(teamId, user.id);

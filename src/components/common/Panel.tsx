@@ -9,7 +9,7 @@ import {
   Tooltip,
   Heading,
 } from '@umami/react-zen';
-import { Maximize, Close } from '@/components/icons';
+import { Maximize, X } from '@/components/icons';
 import { useMessages } from '@/components/hooks';
 
 export interface PanelProps extends ColumnProps {
@@ -59,7 +59,7 @@ export function Panel({
         <Row justifyContent="flex-end" alignItems="center">
           <TooltipTrigger delay={0} isDisabled={isFullscreen}>
             <Button variant="quiet" onPress={handleFullscreen}>
-              <Icon>{isFullscreen ? <Close /> : <Maximize />}</Icon>
+              <Icon>{isFullscreen ? <X /> : <Maximize />}</Icon>
             </Button>
             <Tooltip>{formatMessage(labels.maximize)}</Tooltip>
           </TooltipTrigger>

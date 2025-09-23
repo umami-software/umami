@@ -12,7 +12,7 @@ import {
 } from '@umami/react-zen';
 import { useConfig, usePixelQuery } from '@/components/hooks';
 import { useMessages } from '@/components/hooks';
-import { Refresh } from '@/components/icons';
+import { RefreshCw } from '@/components/icons';
 import { getRandomChars } from '@/lib/generate';
 import { useUpdateQuery } from '@/components/hooks/queries/useUpdateQuery';
 import { useEffect, useState } from 'react';
@@ -111,7 +111,7 @@ export function PixelEditForm({
                   onPress={() => setValue('slug', handleSlug(), { shouldDirty: true })}
                 >
                   <Icon>
-                    <Refresh />
+                    <RefreshCw />
                   </Icon>
                 </Button>
               </Row>

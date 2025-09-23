@@ -11,17 +11,9 @@ import {
 import { getItem } from '@/lib/storage';
 import { getTimezone } from '@/lib/date';
 
-function getDefaultTheme() {
-  return typeof window !== 'undefined'
-    ? window?.matchMedia('(prefers-color-scheme: dark)')?.matches
-      ? 'dark'
-      : 'light'
-    : 'light';
-}
-
 const initialState = {
   locale: getItem(LOCALE_CONFIG) || process.env.defaultLocale || DEFAULT_LOCALE,
-  theme: getItem(THEME_CONFIG) || getDefaultTheme() || DEFAULT_THEME,
+  theme: getItem(THEME_CONFIG) || DEFAULT_THEME,
   timezone: getItem(TIMEZONE_CONFIG) || getTimezone(),
   dateRangeValue: getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE_VALUE,
   shareToken: null,

@@ -16,7 +16,7 @@ import {
   useFilters,
   useWebsiteSegmentQuery,
 } from '@/components/hooks';
-import { Close, Bookmark } from '@/components/icons';
+import { X, Bookmark } from '@/components/icons';
 import { isSearchOperator } from '@/lib/params';
 import { SegmentEditForm } from '@/app/(main)/websites/[websiteId]/segments/SegmentEditForm';
 
@@ -111,7 +111,7 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
         <TooltipTrigger delay={0}>
           <Button variant="zero" onPress={handleResetFilter}>
             <Icon>
-              <Close />
+              <X />
             </Icon>
           </Button>
           <Tooltip>
@@ -146,7 +146,7 @@ const FilterItem = ({ name, label, operator, value, onRemove }) => {
           </Text>
         </Row>
         <Icon onClick={() => onRemove(name)} size="xs" style={{ cursor: 'pointer' }}>
-          <Close />
+          <X />
         </Icon>
       </Row>
     </Row>

@@ -1,6 +1,6 @@
 import { Button, Icon, Row, Text, Select, ListItem } from '@umami/react-zen';
 import { isAfter } from 'date-fns';
-import { Chevron } from '@/components/icons';
+import { ChevronRight } from '@/components/icons';
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
 import { DateFilter } from './DateFilter';
 
@@ -49,12 +49,12 @@ export function WebsiteDateFilter({
         <Row gap="1">
           <Button onPress={() => handleIncrement(-1)} variant="outline">
             <Icon rotate={180}>
-              <Chevron />
+              <ChevronRight />
             </Icon>
           </Button>
           <Button onPress={() => handleIncrement(1)} variant="outline" isDisabled={disableForward}>
             <Icon>
-              <Chevron />
+              <ChevronRight />
             </Icon>
           </Button>
         </Row>

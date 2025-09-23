@@ -13,7 +13,7 @@ import {
 } from '@umami/react-zen';
 import { useConfig, useLinkQuery } from '@/components/hooks';
 import { useMessages } from '@/components/hooks';
-import { Refresh } from '@/components/icons';
+import { RefreshCw } from '@/components/icons';
 import { getRandomChars } from '@/lib/generate';
 import { useUpdateQuery } from '@/components/hooks/queries/useUpdateQuery';
 import { LINKS_URL } from '@/lib/constants';
@@ -127,7 +127,7 @@ export function LinkEditForm({
                   onPress={() => setValue('slug', handleSlug(), { shouldDirty: true })}
                 >
                   <Icon>
-                    <Refresh />
+                    <RefreshCw />
                   </Icon>
                 </Button>
               </Row>

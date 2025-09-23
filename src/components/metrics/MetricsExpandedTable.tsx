@@ -2,7 +2,7 @@ import { ReactNode, useState } from 'react';
 import { Button, Column, DataColumn, DataTable, Icon, Row, SearchField } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useWebsiteExpandedMetricsQuery } from '@/components/hooks';
-import { Close } from '@/components/icons';
+import { X } from '@/components/icons';
 import { DownloadButton } from '@/components/input/DownloadButton';
 import { formatShortTime } from '@/lib/format';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
@@ -55,7 +55,7 @@ export function MetricsExpandedTable({
           {onClose && (
             <Button onPress={onClose} variant="quiet">
               <Icon>
-                <Close />
+                <X />
               </Icon>
             </Button>
           )}

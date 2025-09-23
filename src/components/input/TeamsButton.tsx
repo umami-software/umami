@@ -13,7 +13,7 @@ import {
   Loading,
 } from '@umami/react-zen';
 import { useLoginQuery, useMessages, useUserTeamsQuery, useNavigation } from '@/components/hooks';
-import { Chevron, User, Users } from '@/components/icons';
+import { ChevronRight, User, Users } from '@/components/icons';
 
 export interface TeamsButtonProps {
   showText?: boolean;
@@ -50,7 +50,7 @@ export function TeamsButton({ showText = true, onAction }: TeamsButtonProps) {
           </Row>
           {showText && (
             <Icon rotate={90} size="sm">
-              <Chevron />
+              <ChevronRight />
             </Icon>
           )}
         </Row>

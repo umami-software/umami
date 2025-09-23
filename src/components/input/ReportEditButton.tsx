@@ -13,7 +13,7 @@ import {
   Text,
   Row,
 } from '@umami/react-zen';
-import { Edit, More, Trash } from '@/components/icons';
+import { Edit, MoreHorizontal, Trash } from '@/components/icons';
 
 export function ReportEditButton({
   id,
@@ -61,7 +61,7 @@ export function ReportEditButton({
       <MenuTrigger>
         <Button variant="quiet">
           <Icon>
-            <More />
+            <MoreHorizontal />
           </Icon>
         </Button>
         <Popover placement="bottom">
@@ -90,9 +90,7 @@ export function ReportEditButton({
             onCancel={handleClose}
             isDanger
           >
-            <Row gap="1">
-              {formatMessage(messages.confirmDelete, { target: <b key={name}>{name}</b> })}
-            </Row>
+            <Row gap="1">{formatMessage(messages.confirmDelete, { target: name })}</Row>
           </AlertDialog>
         )}
       </Modal>

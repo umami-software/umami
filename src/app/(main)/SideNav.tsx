@@ -8,7 +8,7 @@ import {
   SidebarProps,
   ThemeButton,
 } from '@umami/react-zen';
-import { Globe, Link as LinkIcon, Logo, Pixel, PanelLeft } from '@/components/icons';
+import { Globe, LinkIcon, LogoSvg, Grid2x2, PanelLeft } from '@/components/icons';
 import { useMessages, useNavigation, useGlobalState } from '@/components/hooks';
 import { TeamsButton } from '@/components/input/TeamsButton';
 import { PanelButton } from '@/components/input/PanelButton';
@@ -39,7 +39,7 @@ export function SideNav(props: SidebarProps) {
       id: 'pixels',
       label: formatMessage(labels.pixels),
       path: '/pixels',
-      icon: <Pixel />,
+      icon: <Grid2x2 />,
     },
   ];
 
@@ -53,7 +53,7 @@ export function SideNav(props: SidebarProps) {
         <SidebarSection onClick={() => setIsCollapsed(false)}>
           <SidebarHeader
             label="umami"
-            icon={isCollapsed && !hasNav ? <PanelLeft /> : <Logo />}
+            icon={isCollapsed && !hasNav ? <PanelLeft /> : <LogoSvg />}
             style={{ maxHeight: 40 }}
           >
             {!isCollapsed && !hasNav && <PanelButton />}
