@@ -19,7 +19,7 @@ export function CohortsTable({ data = [] }) {
     <DataTable data={data}>
       <DataColumn id="name" label={formatMessage(labels.name)}>
         {(row: any) => (
-          <Link href={renderUrl(`/websites/${websiteId}?cohort=${row.id}`)}>{row.name}</Link>
+          <Link href={renderUrl(`/websites/${websiteId}?cohort=${row.id}`, false)}>{row.name}</Link>
         )}
       </DataColumn>
       <DataColumn id="created" label={formatMessage(labels.created)}>

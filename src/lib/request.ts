@@ -119,7 +119,7 @@ export async function getQueryFilters(
       }));
 
       cohortFilters.push({
-        name: cohortParams.action.type,
+        name: `cohort_${cohortParams.action.type}`,
         operator: 'eq',
         value: cohortParams.action.value,
       });
