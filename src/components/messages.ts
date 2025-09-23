@@ -360,6 +360,8 @@ export const labels = defineMessages({
   environment: { id: 'label.environment', defaultMessage: 'Environment' },
   criteria: { id: 'label.criteria', defaultMessage: 'Criteria' },
   share: { id: 'label.share', defaultMessage: 'Share' },
+  support: { id: 'label.support', defaultMessage: 'Support' },
+  documentation: { id: 'label.documentation', defaultMessage: 'Documentation' },
 });
 
 export const messages = defineMessages({

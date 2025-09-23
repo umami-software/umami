@@ -10,7 +10,7 @@ import {
   MagnetSvg,
   Tag,
   MoneySvg,
-  Network,
+  NetworkSvg,
   ChartPie,
   UserPlus,
   CompareSvg,
@@ -137,7 +137,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
         {
           id: 'attribution',
           label: formatMessage(labels.attribution),
-          icon: <Network />,
+          icon: <NetworkSvg />,
           path: renderPath('/attribution'),
         },
       ],

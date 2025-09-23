@@ -106,10 +106,7 @@ export function PixelEditForm({
                   allowCopy
                   style={{ width: '100%' }}
                 />
-                <Button
-                  variant="quiet"
-                  onPress={() => setValue('slug', handleSlug(), { shouldDirty: true })}
-                >
+                <Button onPress={() => setValue('slug', handleSlug(), { shouldDirty: true })}>
                   <Icon>
                     <RefreshCw />
                   </Icon>

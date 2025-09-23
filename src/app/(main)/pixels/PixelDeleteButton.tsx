@@ -17,7 +17,7 @@ export function PixelDeleteButton({
   const { mutateAsync, isPending, error } = useDeleteQuery(`/pixels/${pixelId}`);
   const { touch } = useModified();
 
-  const handleConfirm = (close: () => void) => {
+  const handleConfirm = async (close: () => void) => {
     await mutateAsync(null, {
       onSuccess: () => {
         touch('pixels');

@@ -8,7 +8,7 @@ import {
   Search,
   Type,
   SquareSlash,
-  SquareArrowRight,
+  Share2,
   Megaphone,
   Earth,
   Globe,
@@ -20,7 +20,7 @@ import {
   Monitor,
   Cpu,
   LightningSvg,
-  LucideCaseSensitive,
+  Network,
   Tag,
 } from '@/components/icons';
 
@@ -80,7 +80,7 @@ export function WebsiteExpandedView({
           id: 'referrer',
           label: formatMessage(labels.referrer),
           path: updateParams({ view: 'referrer' }),
-          icon: <SquareArrowRight />,
+          icon: <Share2 />,
         },
         {
           id: 'channel',
@@ -167,7 +167,7 @@ export function WebsiteExpandedView({
           id: 'hostname',
           label: formatMessage(labels.hostname),
           path: updateParams({ view: 'hostname' }),
-          icon: <LucideCaseSensitive />,
+          icon: <Network />,
         },
         {
           id: 'tag',

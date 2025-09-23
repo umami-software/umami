@@ -1,7 +1,7 @@
 import { usePixel, useMessages, useSlug } from '@/components/hooks';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Icon, Text } from '@umami/react-zen';
-import { ExternalLink, Pixel } from '@/components/icons';
+import { ExternalLink, Grid2x2 } from '@/components/icons';
 import { LinkButton } from '@/components/common/LinkButton';
 
 export function PixelHeader() {
@@ -10,7 +10,7 @@ export function PixelHeader() {
   const pixel = usePixel();
 
   return (
-    <PageHeader title={pixel.name} description={pixel.url} icon={<Pixel />}>
+    <PageHeader title={pixel.name} description={pixel.slug} icon={<Grid2x2 />}>
       <LinkButton href={getSlugUrl(pixel.slug)} target="_blank">
         <Icon>
           <ExternalLink />

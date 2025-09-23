@@ -4,7 +4,7 @@ import { Grid, Column } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { PageBody } from '@/components/common/PageBody';
 import { SideMenu } from '@/components/common/SideMenu';
-import { UserCircle, Users, Knobs } from '@/components/icons';
+import { UserCircle, Users, Settings2 } from '@/components/icons';
 
 export function SettingsLayout({ children }: { children: ReactNode }) {
   const { formatMessage, labels } = useMessages();
@@ -18,7 +18,7 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
           id: 'preferences',
           label: formatMessage(labels.preferences),
           path: renderUrl('/settings/preferences'),
-          icon: <Knobs />,
+          icon: <Settings2 />,
         },
       ],
     },
