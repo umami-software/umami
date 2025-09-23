@@ -1,7 +1,7 @@
 import { Grid, Column, Row, Text, Icon, ProgressBar, Dialog, Box } from '@umami/react-zen';
 import { useMessages, useResultQuery } from '@/components/hooks';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { File, Lightning, User } from '@/components/icons';
+import { File, LightningSvg, User } from '@/components/icons';
 import { formatLongNumber } from '@/lib/format';
 import { ReportEditButton } from '@/components/input/ReportEditButton';
 import { FunnelEditForm } from './FunnelEditForm';
@@ -92,7 +92,7 @@ export function Funnel({ id, name, type, parameters, websiteId }) {
                   </Row>
                   <Row alignItems="center" justifyContent="space-between" gap>
                     <Row alignItems="center" gap>
-                      <Icon>{type === 'path' ? <File /> : <Lightning />}</Icon>
+                      <Icon>{type === 'path' ? <File /> : <LightningSvg />}</Icon>
                       <Text>{value}</Text>
                     </Row>
                     <Row alignItems="center" gap>

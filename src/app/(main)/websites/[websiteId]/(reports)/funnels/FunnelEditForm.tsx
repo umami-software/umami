@@ -14,7 +14,7 @@ import {
   Column,
 } from '@umami/react-zen';
 import { useMessages, useReportQuery, useUpdateQuery } from '@/components/hooks';
-import { Close, Plus } from '@/components/icons';
+import { X, Plus } from '@/components/icons';
 import { ActionSelect } from '@/components/input/ActionSelect';
 import { LookupField } from '@/components/input/LookupField';
 
@@ -36,6 +36,8 @@ export function FunnelEditForm({
   const { mutate, error, isPending, touch } = useUpdateQuery(`/reports${id ? `/${id}` : ''}`);
 
   const handleSubmit = async ({ name, ...parameters }) => {
+    //
+
     mutate(
       { ...data, id, name, type: 'funnel', websiteId, parameters },
       {
@@ -75,7 +77,13 @@ export function FunnelEditForm({
       >
         <TextField />
       </FormField>
-      <FormFieldArray name="steps" label={formatMessage(labels.steps)}>
+      <FormFieldArray
+        name="steps"
+        label={formatMessage(labels.steps)}
+        rules={{
+          validate: value => value.length > 1 || 'At least two steps are required',
+        }}
+      >
         {({ fields, append, remove, getValues }) => {
           return (
             <Grid gap>
@@ -104,7 +112,7 @@ export function FunnelEditForm({
                     </Column>
                     <Button onPress={() => remove(index)}>
                       <Icon size="sm">
-                        <Close />
+                        <X />
                       </Icon>
                     </Button>
                   </Grid>

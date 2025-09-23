@@ -57,7 +57,7 @@ export const userRoleParam = z.enum(['admin', 'user', 'view-only']);
 
 export const teamRoleParam = z.enum(['team-member', 'team-view-only', 'team-manager']);
 
-export const anyObjectParam = z.object({}).passthrough();
+export const anyObjectParam = z.record(z.string(), z.any());
 
 export const urlOrPathParam = z.string().refine(
   value => {
@@ -202,7 +202,7 @@ export const reportBaseSchema = z.object({
   type: reportTypeParam,
   name: z.string().max(200),
   description: z.string().max(500).optional(),
-  parameters: z.object({}).passthrough(),
+  parameters: anyObjectParam,
 });
 
 export const reportTypeSchema = z.discriminatedUnion('type', [

@@ -59,7 +59,7 @@ export function WebsiteDateFilter({
           </Button>
         </Row>
       )}
-      <Row width="200px">
+      <Row minWidth="200px">
         <DateFilter
           value={value}
           onChange={handleChange}

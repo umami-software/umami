@@ -3,12 +3,12 @@ import { useMessages, useNavigation } from '@/components/hooks';
 import { MetricsExpandedTable } from '@/components/metrics/MetricsExpandedTable';
 import { SideMenu } from '@/components/common/SideMenu';
 import {
-  Link,
   LogOut,
   LogIn,
   Search,
   Type,
-  ArrowRight,
+  SquareSlash,
+  SquareArrowRight,
   Megaphone,
   Earth,
   Globe,
@@ -45,7 +45,7 @@ export function WebsiteExpandedView({
           id: 'path',
           label: formatMessage(labels.path),
           path: updateParams({ view: 'path' }),
-          icon: <Link />,
+          icon: <SquareSlash />,
         },
         {
           id: 'entry',
@@ -80,7 +80,7 @@ export function WebsiteExpandedView({
           id: 'referrer',
           label: formatMessage(labels.referrer),
           path: updateParams({ view: 'referrer' }),
-          icon: <ArrowRight />,
+          icon: <SquareArrowRight />,
         },
         {
           id: 'channel',
