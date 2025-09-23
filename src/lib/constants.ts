@@ -448,8 +448,10 @@ export const MAP_FILE = '/datamaps.world.json';
 export const ISO_COUNTRIES = {
   ANT: 'AN',
   ARE: 'AE',
+  AUT: 'AT',
   BLM: 'BL',
   CHE: 'CH',
+  DEU: 'DE',
   ESH: 'EH',
   ESP: 'ES',
   FSM: 'FM',
