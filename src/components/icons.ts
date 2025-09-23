@@ -14,4 +14,5 @@ export {
   Path as PathSvg,
   Tag as TagSvg,
   Target as TargetSvg,
+  AddUser as AddUserSvg,
 } from '@/components/svg';

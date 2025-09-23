@@ -7,19 +7,24 @@ import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
 import { LinkMetricsBar } from '@/app/(main)/links/[linkId]/LinkMetricsBar';
 import { LinkControls } from '@/app/(main)/links/[linkId]/LinkControls';
 import { LinkPanels } from '@/app/(main)/links/[linkId]/LinkPanels';
+import { Column, Grid } from '@umami/react-zen';
 
 export function LinkPage({ linkId }: { linkId: string }) {
   return (
     <LinkProvider linkId={linkId}>
-      <PageBody gap>
-        <LinkHeader />
-        <LinkControls linkId={linkId} />
-        <LinkMetricsBar linkId={linkId} showChange={true} />
-        <Panel>
-          <WebsiteChart websiteId={linkId} />
-        </Panel>
-        <LinkPanels linkId={linkId} />
-      </PageBody>
+      <Grid width="100%" height="100%">
+        <Column margin="2">
+          <PageBody gap>
+            <LinkHeader />
+            <LinkControls linkId={linkId} />
+            <LinkMetricsBar linkId={linkId} showChange={true} />
+            <Panel>
+              <WebsiteChart websiteId={linkId} />
+            </Panel>
+            <LinkPanels linkId={linkId} />
+          </PageBody>
+        </Column>
+      </Grid>
     </LinkProvider>
   );
 }

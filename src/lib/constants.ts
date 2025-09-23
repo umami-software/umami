@@ -127,12 +127,12 @@ export const DATA_TYPES = {
 
 export const ROLES = {
   admin: 'admin',
-  teamManager: 'team-manager',
-  teamMember: 'team-member',
-  teamOwner: 'team-owner',
-  teamViewOnly: 'team-view-only',
   user: 'user',
   viewOnly: 'view-only',
+  teamOwner: 'team-owner',
+  teamManager: 'team-manager',
+  teamMember: 'team-member',
+  teamViewOnly: 'team-view-only',
 } as const;
 
 export const PERMISSIONS = {
