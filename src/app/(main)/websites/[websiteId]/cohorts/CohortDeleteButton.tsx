@@ -21,7 +21,7 @@ export function CohortDeleteButton({
     `/websites/${websiteId}/segments/${cohortId}`,
   );
 
-  const handleConfirm = (close: () => void) => {
+  const handleConfirm = async (close: () => void) => {
     await mutateAsync(null, {
       onSuccess: () => {
         touch('cohorts');

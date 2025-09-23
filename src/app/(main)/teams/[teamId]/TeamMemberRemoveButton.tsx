@@ -21,7 +21,7 @@ export function TeamMemberRemoveButton({
   const { mutateAsync, isPending, error } = useDeleteQuery(`/teams/${teamId}/users/${userId}`);
   const { touch } = useModified();
 
-  const handleConfirm = (close: () => void) => {
+  const handleConfirm = async (close: () => void) => {
     await mutateAsync(null, {
       onSuccess: () => {
         touch('teams:members');

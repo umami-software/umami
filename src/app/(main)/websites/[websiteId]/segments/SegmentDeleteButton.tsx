@@ -21,7 +21,7 @@ export function SegmentDeleteButton({
     `/websites/${websiteId}/segments/${segmentId}`,
   );
 
-  const handleConfirm = (close: () => void) => {
+  const handleConfirm = async (close: () => void) => {
     await mutateAsync(null, {
       onSuccess: () => {
         touch('segments');
