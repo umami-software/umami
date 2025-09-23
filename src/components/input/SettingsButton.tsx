@@ -46,7 +46,7 @@ export function SettingsButton() {
             <MenuSeparator />
             <MenuItem id="/settings" icon={<Settings />} label={formatMessage(labels.settings)} />
             {!cloudMode && user.isAdmin && (
-              <MenuItem id="admin" icon={<LockKeyhole />} label={formatMessage(labels.admin)} />
+              <MenuItem id="/admin" icon={<LockKeyhole />} label={formatMessage(labels.admin)} />
             )}
             {cloudMode && (
               <>
