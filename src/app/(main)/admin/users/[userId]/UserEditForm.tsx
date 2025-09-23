@@ -16,10 +16,10 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
   const user = useUser();
   const { user: login } = useLoginQuery();
 
-  const { mutate, error, toast, touch } = useUpdateQuery(`/users/${userId}`);
+  const { mutateAsync, error, toast, touch } = useUpdateQuery(`/users/${userId}`);
 
   const handleSubmit = async (data: any) => {
-    mutate(data, {
+    await mutateAsync(data, {
       onSuccess: async () => {
         toast(formatMessage(messages.saved));
         touch(`user:${user.id}`);

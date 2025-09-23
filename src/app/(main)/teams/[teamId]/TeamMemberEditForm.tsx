@@ -23,11 +23,11 @@ export function TeamMemberEditForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { mutate, error, isPending } = useUpdateQuery(`/teams/${teamId}/users/${userId}`);
+  const { mutateAsync, error, isPending } = useUpdateQuery(`/teams/${teamId}/users/${userId}`);
   const { formatMessage, labels, getErrorMessage } = useMessages();
 
   const handleSubmit = async (data: any) => {
-    mutate(data, {
+    await mutateAsync(data, {
       onSuccess: async () => {
         onSave();
         onClose();

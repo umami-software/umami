@@ -13,11 +13,11 @@ export function UserDeleteForm({
   onClose?: () => void;
 }) {
   const { messages, labels, formatMessage } = useMessages();
-  const { mutate } = useDeleteQuery(`/users/${userId}`);
+  const { mutateAsync } = useDeleteQuery(`/users/${userId}`);
   const { touch } = useModified();
 
   const handleConfirm = async () => {
-    mutate(null, {
+    await mutateAsync(null, {
       onSuccess: async () => {
         touch('users');
         touch(`users:${userId}`);

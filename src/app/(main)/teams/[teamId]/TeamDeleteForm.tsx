@@ -13,10 +13,10 @@ export function TeamDeleteForm({
   onClose?: () => void;
 }) {
   const { labels, formatMessage, getErrorMessage } = useMessages();
-  const { mutate, error, isPending, touch } = useDeleteQuery(`/teams/${teamId}`);
+  const { mutateAsync, error, isPending, touch } = useDeleteQuery(`/teams/${teamId}`);
 
   const handleConfirm = async () => {
-    mutate(null, {
+    await mutateAsync(null, {
       onSuccess: async () => {
         touch('teams');
         onSave?.();

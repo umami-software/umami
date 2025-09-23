@@ -30,7 +30,7 @@ export function SegmentEditForm({
   const { data } = useWebsiteSegmentQuery(websiteId, segmentId);
   const { formatMessage, labels, getErrorMessage } = useMessages();
 
-  const { mutate, error, isPending, touch, toast } = useUpdateQuery(
+  const { mutateAsync, error, isPending, touch, toast } = useUpdateQuery(
     `/websites/${websiteId}/segments${segmentId ? `/${segmentId}` : ''}`,
     {
       type: 'segment',
@@ -38,7 +38,7 @@ export function SegmentEditForm({
   );
 
   const handleSubmit = async (formData: any) => {
-    mutate(formData, {
+    await mutateAsync(formData, {
       onSuccess: async () => {
         toast(formatMessage(messages.saved));
         touch('segments');

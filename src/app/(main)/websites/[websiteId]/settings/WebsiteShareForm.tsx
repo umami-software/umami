@@ -25,7 +25,7 @@ export interface WebsiteShareFormProps {
 export function WebsiteShareForm({ websiteId, shareId, onSave, onClose }: WebsiteShareFormProps) {
   const { formatMessage, labels, messages, getErrorMessage } = useMessages();
   const [id, setId] = useState(shareId);
-  const { mutate, error, isPending, touch, toast } = useUpdateQuery(`/websites/${websiteId}`);
+  const { mutateAsync, error, touch, toast } = useUpdateQuery(`/websites/${websiteId}`);
 
   const url = `${window?.location.origin || ''}${process.env.basePath || ''}/share/${id}`;
 
@@ -37,11 +37,11 @@ export function WebsiteShareForm({ websiteId, shareId, onSave, onClose }: Websit
     setId(id ? null : generateId());
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const data = {
       shareId: id,
     };
-    mutate(data, {
+    await mutateAsync(data, {
       onSuccess: async () => {
         toast(formatMessage(messages.saved));
         touch(`website:${websiteId}`);
@@ -69,9 +69,7 @@ export function WebsiteShareForm({ websiteId, shareId, onSave, onClose }: Websit
           </Row>
           <Row alignItems="center" gap>
             {onClose && <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>}
-            <FormSubmitButton isDisabled={false} isLoading={isPending}>
-              {formatMessage(labels.save)}
-            </FormSubmitButton>
+            <FormSubmitButton isDisabled={false}>{formatMessage(labels.save)}</FormSubmitButton>
           </Row>
         </FormButtons>
       </Column>

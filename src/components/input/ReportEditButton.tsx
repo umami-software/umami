@@ -31,7 +31,7 @@ export function ReportEditButton({
   const { formatMessage, labels, messages } = useMessages();
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
-  const { mutate, touch } = useDeleteQuery(`/reports/${id}`);
+  const { mutateAsync, touch } = useDeleteQuery(`/reports/${id}`);
 
   const handleAction = (id: any) => {
     if (id === 'edit') {
@@ -47,7 +47,7 @@ export function ReportEditButton({
   };
 
   const handleDelete = async () => {
-    mutate(null, {
+    await mutateAsync(null, {
       onSuccess: async () => {
         touch(`reports:${type}`);
         setShowDelete(false);

@@ -17,12 +17,12 @@ export function CohortDeleteButton({
   onSave?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { mutate, isPending, error, touch } = useDeleteQuery(
+  const { mutateAsync, isPending, error, touch } = useDeleteQuery(
     `/websites/${websiteId}/segments/${cohortId}`,
   );
 
   const handleConfirm = (close: () => void) => {
-    mutate(null, {
+    await mutateAsync(null, {
       onSuccess: () => {
         touch('cohorts');
         onSave?.();

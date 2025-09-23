@@ -17,12 +17,12 @@ export function SegmentDeleteButton({
   onSave?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { mutate, isPending, error, touch } = useDeleteQuery(
+  const { mutateAsync, isPending, error, touch } = useDeleteQuery(
     `/websites/${websiteId}/segments/${segmentId}`,
   );
 
   const handleConfirm = (close: () => void) => {
-    mutate(null, {
+    await mutateAsync(null, {
       onSuccess: () => {
         touch('segments');
         onSave?.();

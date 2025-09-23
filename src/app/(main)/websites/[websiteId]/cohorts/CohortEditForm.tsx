@@ -33,7 +33,7 @@ export function CohortEditForm({
   const { data } = useWebsiteCohortQuery(websiteId, cohortId);
   const { formatMessage, labels, messages, getErrorMessage } = useMessages();
 
-  const { mutate, error, isPending, touch, toast } = useUpdateQuery(
+  const { mutateAsync, error, isPending, touch, toast } = useUpdateQuery(
     `/websites/${websiteId}/segments${cohortId ? `/${cohortId}` : ''}`,
     {
       type: 'cohort',
@@ -41,7 +41,7 @@ export function CohortEditForm({
   );
 
   const handleSubmit = async (formData: any) => {
-    mutate(formData, {
+    await mutateAsync(formData, {
       onSuccess: async () => {
         toast(formatMessage(messages.saved));
         touch('cohorts');

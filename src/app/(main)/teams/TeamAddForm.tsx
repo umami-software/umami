@@ -10,10 +10,10 @@ import {
 
 export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
   const { formatMessage, labels, getErrorMessage } = useMessages();
-  const { mutate, error, isPending } = useUpdateQuery('/teams');
+  const { mutateAsync, error, isPending } = useUpdateQuery('/teams');
 
   const handleSubmit = async (data: any) => {
-    mutate(data, {
+    await mutateAsync(data, {
       onSuccess: async () => {
         onSave?.();
         onClose?.();

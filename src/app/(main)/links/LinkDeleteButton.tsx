@@ -16,10 +16,10 @@ export function LinkDeleteButton({
   onSave?: () => void;
 }) {
   const { formatMessage, labels, getErrorMessage } = useMessages();
-  const { mutate, isPending, error, touch } = useDeleteQuery(`/links/${linkId}`);
+  const { mutateAsync, isPending, error, touch } = useDeleteQuery(`/links/${linkId}`);
 
-  const handleConfirm = (close: () => void) => {
-    mutate(null, {
+  const handleConfirm = async (close: () => void) => {
+    await mutateAsync(null, {
       onSuccess: () => {
         touch('links');
         onSave?.();

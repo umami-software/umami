@@ -10,10 +10,10 @@ import { useMessages, useUpdateQuery } from '@/components/hooks';
 
 export function PasswordEditForm({ onSave, onClose }) {
   const { formatMessage, labels, messages, getErrorMessage } = useMessages();
-  const { mutate, error, isPending } = useUpdateQuery('/me/password');
+  const { mutateAsync, error, isPending } = useUpdateQuery('/me/password');
 
   const handleSubmit = async (data: any) => {
-    mutate(data, {
+    await mutateAsync(data, {
       onSuccess: async () => {
         onSave();
         onClose();

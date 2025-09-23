@@ -13,11 +13,11 @@ import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 
 export function UserAddForm({ onSave, onClose }) {
-  const { mutate, error, isPending } = useUpdateQuery(`/users`);
+  const { mutateAsync, error, isPending } = useUpdateQuery(`/users`);
   const { formatMessage, labels, getErrorMessage } = useMessages();
 
   const handleSubmit = async (data: any) => {
-    mutate(data, {
+    await mutateAsync(data, {
       onSuccess: async () => {
         onSave(data);
         onClose();

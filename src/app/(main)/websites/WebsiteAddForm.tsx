@@ -13,10 +13,10 @@ export function WebsiteAddForm({
   onClose?: () => void;
 }) {
   const { formatMessage, labels, messages } = useMessages();
-  const { mutate, error, isPending } = useUpdateQuery('/websites', { teamId });
+  const { mutateAsync, error, isPending } = useUpdateQuery('/websites', { teamId });
 
   const handleSubmit = async (data: any) => {
-    mutate(data, {
+    await mutateAsync(data, {
       onSuccess: async () => {
         onSave?.();
         onClose?.();

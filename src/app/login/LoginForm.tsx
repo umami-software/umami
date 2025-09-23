@@ -18,10 +18,10 @@ import { LogoSvg } from '@/components/icons';
 export function LoginForm() {
   const { formatMessage, labels, getErrorMessage } = useMessages();
   const router = useRouter();
-  const { mutate, error, isPending } = useUpdateQuery('/auth/login');
+  const { mutateAsync, error } = useUpdateQuery('/auth/login');
 
   const handleSubmit = async (data: any) => {
-    mutate(data, {
+    await mutateAsync(data, {
       onSuccess: async ({ token, user }) => {
         setClientAuthToken(token);
         setUser(user);
@@ -55,13 +55,7 @@ export function LoginForm() {
           <PasswordField />
         </FormField>
         <FormButtons>
-          <FormSubmitButton
-            data-test="button-submit"
-            variant="primary"
-            isLoading={isPending}
-            isDisabled={isPending}
-            style={{ flex: 1 }}
-          >
+          <FormSubmitButton data-test="button-submit" variant="primary" style={{ flex: 1 }}>
             {formatMessage(labels.login)}
           </FormSubmitButton>
         </FormButtons>

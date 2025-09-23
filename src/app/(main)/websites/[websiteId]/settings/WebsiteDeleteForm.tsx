@@ -13,10 +13,10 @@ export function WebsiteDeleteForm({
   onClose?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { mutate, isPending, error, touch } = useDeleteQuery(`/websites/${websiteId}`);
+  const { mutateAsync, isPending, error, touch } = useDeleteQuery(`/websites/${websiteId}`);
 
   const handleConfirm = async () => {
-    mutate(null, {
+    await mutateAsync(null, {
       onSuccess: async () => {
         touch('websites');
         touch(`websites:${websiteId}`);

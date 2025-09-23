@@ -32,7 +32,7 @@ export function WebsiteTransferForm({
   const website = useWebsite();
   const [teamId, setTeamId] = useState<string>(null);
   const { formatMessage, labels, messages, getErrorMessage } = useMessages();
-  const { mutate, error, isPending } = useUpdateQuery(`/websites/${websiteId}/transfer`);
+  const { mutateAsync, error, isPending } = useUpdateQuery(`/websites/${websiteId}/transfer`);
   const { data: teams, isLoading } = useUserTeamsQuery(user.id);
   const isTeamWebsite = !!website?.teamId;
 
@@ -45,7 +45,7 @@ export function WebsiteTransferForm({
     ) || [];
 
   const handleSubmit = async () => {
-    mutate(
+    await mutateAsync(
       {
         userId: website.teamId ? user.id : undefined,
         teamId: website.userId ? teamId : undefined,

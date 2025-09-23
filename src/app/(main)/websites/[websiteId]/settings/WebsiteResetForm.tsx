@@ -13,10 +13,10 @@ export function WebsiteResetForm({
   onClose?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { mutate, isPending, error } = useUpdateQuery(`/websites/${websiteId}/reset`);
+  const { mutateAsync, isPending, error } = useUpdateQuery(`/websites/${websiteId}/reset`);
 
   const handleConfirm = async () => {
-    mutate(null, {
+    await mutateAsync(null, {
       onSuccess: async () => {
         onSave?.();
         onClose?.();

@@ -10,10 +10,10 @@ import { useMessages, useUpdateQuery } from '@/components/hooks';
 
 export function TeamJoinForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
   const { formatMessage, labels, getErrorMessage } = useMessages();
-  const { mutate, error, isPending, touch } = useUpdateQuery('/teams/join');
+  const { mutateAsync, error, touch } = useUpdateQuery('/teams/join');
 
   const handleSubmit = async (data: any) => {
-    mutate(data, {
+    await mutateAsync(data, {
       onSuccess: async () => {
         touch('teams:members');
         onSave?.();
@@ -33,9 +33,7 @@ export function TeamJoinForm({ onSave, onClose }: { onSave: () => void; onClose:
       </FormField>
       <FormButtons>
         <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
-        <FormSubmitButton variant="primary" isLoading={isPending} isDisabled={isPending}>
-          {formatMessage(labels.join)}
-        </FormSubmitButton>
+        <FormSubmitButton variant="primary">{formatMessage(labels.join)}</FormSubmitButton>
       </FormButtons>
     </Form>
   );

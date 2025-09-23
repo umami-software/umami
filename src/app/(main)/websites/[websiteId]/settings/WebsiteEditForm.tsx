@@ -5,10 +5,10 @@ import { DOMAIN_REGEX } from '@/lib/constants';
 export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
   const website = useWebsite();
   const { formatMessage, labels, messages, getErrorMessage } = useMessages();
-  const { mutate, error, touch, toast, isPending } = useUpdateQuery(`/websites/${websiteId}`);
+  const { mutateAsync, error, touch, toast } = useUpdateQuery(`/websites/${websiteId}`);
 
   const handleSubmit = async (data: any) => {
-    mutate(data, {
+    await mutateAsync(data, {
       onSuccess: async () => {
         toast(formatMessage(messages.saved));
         touch(`website:${website.id}`);
@@ -45,12 +45,7 @@ export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSa
         <TextField />
       </FormField>
       <FormButtons>
-        <FormSubmitButton
-          data-test="button-submit"
-          variant="primary"
-          isLoading={isPending}
-          isDisabled={isPending}
-        >
+        <FormSubmitButton data-test="button-submit" variant="primary">
           {formatMessage(labels.save)}
         </FormSubmitButton>
       </FormButtons>

@@ -18,11 +18,11 @@ export function TeamMemberRemoveButton({
   onSave?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { mutate, isPending, error } = useDeleteQuery(`/teams/${teamId}/users/${userId}`);
+  const { mutateAsync, isPending, error } = useDeleteQuery(`/teams/${teamId}/users/${userId}`);
   const { touch } = useModified();
 
   const handleConfirm = (close: () => void) => {
-    mutate(null, {
+    await mutateAsync(null, {
       onSuccess: () => {
         touch('teams:members');
         onSave?.();

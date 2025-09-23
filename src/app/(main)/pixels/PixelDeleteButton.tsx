@@ -14,11 +14,11 @@ export function PixelDeleteButton({
   onSave?: () => void;
 }) {
   const { formatMessage, labels, getErrorMessage } = useMessages();
-  const { mutate, isPending, error } = useDeleteQuery(`/pixels/${pixelId}`);
+  const { mutateAsync, isPending, error } = useDeleteQuery(`/pixels/${pixelId}`);
   const { touch } = useModified();
 
   const handleConfirm = (close: () => void) => {
-    mutate(null, {
+    await mutateAsync(null, {
       onSuccess: () => {
         touch('pixels');
         onSave?.();

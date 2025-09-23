@@ -19,14 +19,14 @@ export function SettingsButton() {
   const { cloudMode } = useConfig();
 
   const handleAction = (id: Key) => {
-    if (id === 'settings') {
-      if (cloudMode) {
-        window.location.href = `/settings`;
-        return;
-      }
+    const url = `/${id}`;
+
+    if (cloudMode) {
+      window.location.href = url;
+      return;
     }
 
-    router.push(renderUrl(`/${id}`));
+    router.push(renderUrl(url));
   };
 
   return (

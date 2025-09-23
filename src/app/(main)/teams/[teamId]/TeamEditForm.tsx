@@ -25,10 +25,10 @@ export function TeamEditForm({
   const team = useTeam();
   const { formatMessage, labels, messages, getErrorMessage } = useMessages();
 
-  const { mutate, error, isPending, touch, toast } = useUpdateQuery(`/teams/${teamId}`);
+  const { mutateAsync, error, isPending, touch, toast } = useUpdateQuery(`/teams/${teamId}`);
 
   const handleSubmit = async (data: any) => {
-    mutate(data, {
+    await mutateAsync(data, {
       onSuccess: async () => {
         toast(formatMessage(messages.saved));
         touch('teams');

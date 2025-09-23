@@ -33,12 +33,10 @@ export function FunnelEditForm({
 }) {
   const { formatMessage, labels } = useMessages();
   const { data } = useReportQuery(id);
-  const { mutate, error, isPending, touch } = useUpdateQuery(`/reports${id ? `/${id}` : ''}`);
+  const { mutateAsync, error, isPending, touch } = useUpdateQuery(`/reports${id ? `/${id}` : ''}`);
 
   const handleSubmit = async ({ name, ...parameters }) => {
-    //
-
-    mutate(
+    await mutateAsync(
       { ...data, id, name, type: 'funnel', websiteId, parameters },
       {
         onSuccess: async () => {

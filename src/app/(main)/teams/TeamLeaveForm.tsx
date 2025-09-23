@@ -15,11 +15,11 @@ export function TeamLeaveForm({
   onClose: () => void;
 }) {
   const { formatMessage, labels, messages, getErrorMessage } = useMessages();
-  const { mutate, error, isPending } = useDeleteQuery(`/teams/${teamId}/users/${userId}`);
+  const { mutateAsync, error, isPending } = useDeleteQuery(`/teams/${teamId}/users/${userId}`);
   const { touch } = useModified();
 
   const handleConfirm = async () => {
-    mutate(null, {
+    await mutateAsync(null, {
       onSuccess: async () => {
         touch('teams:members');
         onSave();

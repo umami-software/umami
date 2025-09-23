@@ -27,10 +27,10 @@ export function GoalEditForm({
 }) {
   const { formatMessage, labels } = useMessages();
   const { data } = useReportQuery(id);
-  const { mutate, error, isPending, touch } = useUpdateQuery(`/reports${id ? `/${id}` : ''}`);
+  const { mutateAsync, error, isPending, touch } = useUpdateQuery(`/reports${id ? `/${id}` : ''}`);
 
   const handleSubmit = async (formData: Record<string, any>) => {
-    mutate(
+    await mutateAsync(
       { ...formData, type: 'goal', websiteId },
       {
         onSuccess: async () => {

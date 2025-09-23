@@ -1,13 +1,13 @@
 import { useDeleteQuery, useMessages } from '@/components/hooks';
 import { Icon, LoadingButton, Text } from '@umami/react-zen';
-import { Close } from '@/components/icons';
+import { X } from '@/components/icons';
 
 export function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
   const { formatMessage, labels } = useMessages();
-  const { mutate, isPending } = useDeleteQuery(`/teams/${teamId}/websites/${websiteId}`);
+  const { mutateAsync } = useDeleteQuery(`/teams/${teamId}/websites/${websiteId}`);
 
   const handleRemoveTeamMember = async () => {
-    mutate(null, {
+    await mutateAsync(null, {
       onSuccess: () => {
         onSave();
       },
@@ -15,9 +15,9 @@ export function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
   };
 
   return (
-    <LoadingButton variant="quiet" onClick={() => handleRemoveTeamMember()} isLoading={isPending}>
+    <LoadingButton variant="quiet" onClick={() => handleRemoveTeamMember()}>
       <Icon>
-        <Close />
+        <X />
       </Icon>
       <Text>{formatMessage(labels.remove)}</Text>
     </LoadingButton>
