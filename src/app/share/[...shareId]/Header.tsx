@@ -2,7 +2,7 @@ import { Row, Icon, Text, ThemeButton } from '@umami/react-zen';
 import Link from 'next/link';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { PreferencesButton } from '@/components/input/PreferencesButton';
-import { Logo } from '@/components/icons';
+import { LogoSvg } from '@/components/icons';
 
 export function Header() {
   return (
@@ -10,7 +10,7 @@ export function Header() {
       <Row gap>
         <Link href="https://umami.is" target="_blank">
           <Icon size="lg">
-            <Logo />
+            <LogoSvg />
           </Icon>
           <Text>umami</Text>
         </Link>
