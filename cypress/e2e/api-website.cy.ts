@@ -149,6 +149,21 @@ describe('Website API tests', () => {
     });
   });
 
+  it('Updates a website with only shareId.', () => {
+    cy.request({
+      method: 'POST',
+      url: `/api/websites/${websiteId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: Cypress.env('authorization'),
+      },
+      body: { shareId: 'ABCDEF' },
+    }).then(response => {
+      expect(response.status).to.eq(200);
+      expect(response.body).to.have.property('shareId', 'ABCDEF');
+    });
+  });
+
   it('Resets a website by removing all data related to the website.', () => {
     cy.request({
       method: 'POST',
