@@ -10,4 +10,5 @@ export {
   Network as NetworkSvg,
   Path as PathSvg,
   Target as TargetSvg,
+  AddUser as AddUserSvg,
 } from '@/components/svg';

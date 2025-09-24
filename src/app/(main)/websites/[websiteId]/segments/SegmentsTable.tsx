@@ -18,7 +18,9 @@ export function SegmentsTable({ data = [] }) {
     <DataTable data={data}>
       <DataColumn id="name" label={formatMessage(labels.name)}>
         {(row: any) => (
-          <Link href={renderUrl(`/websites/${websiteId}?segment=${row.id}`)}>{row.name}</Link>
+          <Link href={renderUrl(`/websites/${websiteId}?segment=${row.id}`, false)}>
+            {row.name}
+          </Link>
         )}
       </DataColumn>
       <DataColumn id="created" label={formatMessage(labels.created)}>

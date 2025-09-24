@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import { DataGrid } from '@/components/common/DataGrid';
-import { TeamsTable } from './TeamsTable';
 import { useLoginQuery, useNavigation, useUserTeamsQuery } from '@/components/hooks';
+import Link from 'next/link';
+import { TeamsTable } from './TeamsTable';
 
 export function TeamsDataTable() {
   const { user } = useLoginQuery();
