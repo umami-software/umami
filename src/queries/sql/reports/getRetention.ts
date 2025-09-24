@@ -46,11 +46,16 @@ async function relationalQuery(
   return rawQuery(
     `
     WITH cohort_items AS (
-      select session_id,
-        ${getDateSQL('created_at', unit)} as cohort_date  
-      from session 
-      where website_id = {{websiteId::uuid}}
-        and created_at between {{startDate}} and {{endDate}}
+      select
+        min(${getDateSQL('website_event.created_at', unit, timezone)}) as cohort_date,
+        website_event.session_id
+      from website_event
+      ${cohortQuery}
+      ${joinSessionQuery}
+      where website_event.website_id = {{websiteId::uuid}}
+        and website_event.created_at between {{startDate}} and {{endDate}}
+        ${filterQuery}
+      group by website_event.session_id
     ),
     user_activities AS (
       select distinct
@@ -59,11 +64,9 @@ async function relationalQuery(
       from website_event
       join cohort_items
       on website_event.session_id = cohort_items.session_id
-      ${cohortQuery}
-      ${joinSessionQuery}
       where website_id = {{websiteId::uuid}}
           and created_at between {{startDate}} and {{endDate}}
-          ${filterQuery}
+          
       ),
     cohort_size as (
       select cohort_date,
@@ -121,8 +124,10 @@ async function clickhouseQuery(
         min(${getDateSQL('created_at', unit, timezone)}) as cohort_date,
         session_id
       from website_event
+      ${cohortQuery}
       where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        ${filterQuery}
       group by session_id
     ),
     user_activities AS (
@@ -132,10 +137,8 @@ async function clickhouseQuery(
       from website_event
       join cohort_items
       on website_event.session_id = cohort_items.session_id
-      ${cohortQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        ${filterQuery}
     ),
     cohort_size as (
       select cohort_date,
