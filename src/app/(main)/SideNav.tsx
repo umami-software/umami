@@ -69,7 +69,7 @@ export function SideNav(props: SidebarProps) {
                 <SidebarItem
                   label={label}
                   icon={icon}
-                  isSelected={pathname.endsWith(path)}
+                  isSelected={pathname.includes(path)}
                   role="button"
                 />
               </Link>

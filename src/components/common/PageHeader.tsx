@@ -38,7 +38,11 @@ export function PageHeader({
           )}
           {title && <Heading size="4">{title}</Heading>}
         </Row>
-        {description && <Text color="muted">{description}</Text>}
+        {description && (
+          <Text color="muted" truncate style={{ maxWidth: 600 }} title={description}>
+            {description}
+          </Text>
+        )}
       </Column>
       <Row justifyContent="flex-end">{children}</Row>
     </Row>

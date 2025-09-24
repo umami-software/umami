@@ -10,7 +10,7 @@ export function LinkHeader() {
   const link = useLink();
 
   return (
-    <PageHeader title={link.name} description={link.url} icon={<Link />}>
+    <PageHeader title={link.name} description={link.url} icon={<Link />} marginBottom="3">
       <LinkButton href={getSlugUrl(link.slug)} target="_blank">
         <Icon>
           <ExternalLink />
