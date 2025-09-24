@@ -325,7 +325,7 @@ export function formatDate(
 }
 
 export function generateTimeSeries(
-  data: { x: string; y: number }[],
+  data: { x: string; y: number; d?: string }[],
   minDate: Date,
   maxDate: Date,
   unit: string,
@@ -345,12 +345,12 @@ export function generateTimeSeries(
     current = add(current, 1);
   }
 
-  const lookup = new Map(data.map(({ x, y }) => [formatDate(x, fmt, locale), { x, y }]));
+  const lookup = new Map(data.map(({ x, y, d }) => [formatDate(x, fmt, locale), { x, y, d }]));
 
   return timeseries.map(t => {
-    const { x, y } = lookup.get(t) || {};
+    const { x, y, d } = lookup.get(t) || {};
 
-    return { x: t, d: x, y: y ?? null };
+    return { x: t, d: d || x, y: y ?? null };
   });
 }
 
