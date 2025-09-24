@@ -4,6 +4,7 @@ import { Heading, Icon, Row, RowProps, Text, Column } from '@umami/react-zen';
 export function PageHeader({
   title,
   description,
+  label,
   icon,
   showBorder = true,
   children,
@@ -11,6 +12,7 @@ export function PageHeader({
 }: {
   title: string;
   description?: string;
+  label?: ReactNode;
   icon?: ReactNode;
   showBorder?: boolean;
   allowEdit?: boolean;
@@ -26,7 +28,8 @@ export function PageHeader({
       width="100%"
       {...props}
     >
-      <Column>
+      <Column gap="2">
+        {label}
         <Row alignItems="center" gap="3">
           {icon && (
             <Icon size="md" color="muted">

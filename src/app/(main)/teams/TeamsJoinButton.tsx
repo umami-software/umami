@@ -1,5 +1,5 @@
 import { Button, Icon, Modal, DialogTrigger, Dialog, Text, useToast } from '@umami/react-zen';
-import { AddUser } from '@/components/icons';
+import { UserPlus } from '@/components/icons';
 import { useMessages, useModified } from '@/components/hooks';
 import { TeamJoinForm } from './TeamJoinForm';
 
@@ -17,7 +17,7 @@ export function TeamsJoinButton() {
     <DialogTrigger>
       <Button>
         <Icon>
-          <AddUser />
+          <UserPlus />
         </Icon>
         <Text>{formatMessage(labels.joinTeam)}</Text>
       </Button>

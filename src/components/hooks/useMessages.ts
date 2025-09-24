@@ -1,7 +1,22 @@
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage, type MessageDescriptor } from 'react-intl';
 import { messages, labels } from '@/components/messages';
 
-export function useMessages() {
+type FormatMessage = (
+  descriptor: MessageDescriptor,
+  values?: Record<string, string | number | boolean | null | undefined>,
+  opts?: any,
+) => string | null;
+
+interface UseMessages {
+  formatMessage: FormatMessage;
+  messages: typeof messages;
+  labels: typeof labels;
+  getMessage: (id: string) => string;
+  getErrorMessage: (error: unknown) => string | undefined;
+  FormattedMessage: typeof FormattedMessage;
+}
+
+export function useMessages(): UseMessages {
   const intl = useIntl();
 
   const getMessage = (id: string) => {
@@ -21,15 +36,12 @@ export function useMessages() {
   };
 
   const formatMessage = (
-    descriptor: {
-      id: string;
-      defaultMessage: string;
-    },
-    values?: Record<string, string>,
+    descriptor: MessageDescriptor,
+    values?: Record<string, string | number | boolean | null | undefined>,
     opts?: any,
   ) => {
     return descriptor ? intl.formatMessage(descriptor, values, opts) : null;
   };
 
-  return { formatMessage, messages, labels, getMessage, getErrorMessage };
+  return { formatMessage, messages, labels, getMessage, getErrorMessage, FormattedMessage };
 }

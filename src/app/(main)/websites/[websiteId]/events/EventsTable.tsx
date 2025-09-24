@@ -3,7 +3,7 @@ import { useFormat, useMessages, useNavigation } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import { Avatar } from '@/components/common/Avatar';
 import Link from 'next/link';
-import { Bolt, Eye } from '@/components/icons';
+import { LightningSvg, Eye } from '@/components/icons';
 import { DateDistance } from '@/components/common/DateDistance';
 import { TypeIcon } from '@/components/common/TypeIcon';
 
@@ -25,7 +25,7 @@ export function EventsTable({ data = [] }) {
               <Link href={renderUrl(`/websites/${row.websiteId}/sessions/${row.sessionId}`)}>
                 <Avatar seed={row.sessionId} size={32} />
               </Link>
-              <Icon>{row.eventName ? <Bolt /> : <Eye />}</Icon>
+              <Icon>{row.eventName ? <LightningSvg /> : <Eye />}</Icon>
               <Text>
                 {formatMessage(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
               </Text>

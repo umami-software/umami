@@ -13,7 +13,7 @@ export function PixelDeleteButton({
   name: string;
   onSave?: () => void;
 }) {
-  const { formatMessage, labels, getErrorMessage } = useMessages();
+  const { formatMessage, labels, getErrorMessage, FormattedMessage } = useMessages();
   const { mutateAsync, isPending, error } = useDeleteQuery(`/pixels/${pixelId}`);
   const { touch } = useModified();
 
@@ -32,9 +32,14 @@ export function PixelDeleteButton({
       <Dialog title={formatMessage(labels.confirm)} style={{ width: 400 }}>
         {({ close }) => (
           <ConfirmationForm
-            message={formatMessage(messages.confirmRemove, {
-              target: name,
-            })}
+            message={
+              <FormattedMessage
+                {...messages.confirmRemove}
+                values={{
+                  target: <b>{name}</b>,
+                }}
+              />
+            }
             isLoading={isPending}
             error={getErrorMessage(error)}
             onConfirm={handleConfirm.bind(null, close)}

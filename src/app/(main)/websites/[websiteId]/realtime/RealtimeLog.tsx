@@ -8,7 +8,7 @@ import {
   useTimezone,
   useWebsite,
 } from '@/components/hooks';
-import { Eye, Visitor, Bolt } from '@/components/icons';
+import { Eye, User, LightningSvg } from '@/components/icons';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
 import { stringToColor } from '@/lib/format';
 import { useMemo, useState } from 'react';
@@ -23,14 +23,14 @@ const TYPE_EVENT = 'event';
 
 const icons = {
   [TYPE_PAGEVIEW]: <Eye />,
-  [TYPE_SESSION]: <Visitor />,
-  [TYPE_EVENT]: <Bolt />,
+  [TYPE_SESSION]: <User />,
+  [TYPE_EVENT]: <LightningSvg />,
 };
 
 export function RealtimeLog({ data }: { data: any }) {
   const website = useWebsite();
   const [search, setSearch] = useState('');
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { formatValue } = useFormat();
   const { locale } = useLocale();
   const { formatTimezoneDate } = useTimezone();
@@ -74,20 +74,25 @@ export function RealtimeLog({ data }: { data: any }) {
     const { __type, eventName, urlPath, browser, os, country, device } = log;
 
     if (__type === TYPE_EVENT) {
-      return formatMessage(messages.eventLog, {
-        event: <b key="b">{eventName || formatMessage(labels.unknown)}</b>,
-        url: (
-          <a
-            key="a"
-            href={`//${website?.domain}${urlPath}`}
-            className={styles.link}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            {urlPath}
-          </a>
-        ),
-      });
+      return (
+        <FormattedMessage
+          {...messages.eventLog}
+          values={{
+            event: <b key="b">{eventName || formatMessage(labels.unknown)}</b>,
+            url: (
+              <a
+                key="a"
+                href={`//${website?.domain}${urlPath}`}
+                className={styles.link}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                {urlPath}
+              </a>
+            ),
+          }}
+        />
+      );
     }
 
     if (__type === TYPE_PAGEVIEW) {
@@ -104,12 +109,17 @@ export function RealtimeLog({ data }: { data: any }) {
     }
 
     if (__type === TYPE_SESSION) {
-      return formatMessage(messages.visitorLog, {
-        country: <b key="country">{countryNames[country] || formatMessage(labels.unknown)}</b>,
-        browser: <b key="browser">{BROWSERS[browser]}</b>,
-        os: <b key="os">{OS_NAMES[os] || os}</b>,
-        device: <b key="device">{formatMessage(labels[device] || labels.unknown)}</b>,
-      });
+      return (
+        <FormattedMessage
+          {...messages.visitorLog}
+          values={{
+            country: <b key="country">{countryNames[country] || formatMessage(labels.unknown)}</b>,
+            browser: <b key="browser">{BROWSERS[browser]}</b>,
+            os: <b key="os">{OS_NAMES[os] || os}</b>,
+            device: <b key="device">{formatMessage(labels[device] || labels.unknown)}</b>,
+          }}
+        />
+      );
     }
   };
 

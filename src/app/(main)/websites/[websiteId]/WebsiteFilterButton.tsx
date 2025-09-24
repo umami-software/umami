@@ -14,12 +14,12 @@ export function WebsiteFilterButton({
   showText?: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { replaceParams, router } = useNavigation();
+  const { updateParams, router } = useNavigation();
 
   const handleChange = ({ filters, segment, cohort }: any) => {
     const params = filtersArrayToObject(filters);
 
-    const url = replaceParams({ ...params, segment, cohort });
+    const url = updateParams({ ...params, segment, cohort });
 
     router.push(url);
   };

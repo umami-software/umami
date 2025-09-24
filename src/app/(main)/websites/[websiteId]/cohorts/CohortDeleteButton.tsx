@@ -16,7 +16,7 @@ export function CohortDeleteButton({
   name: string;
   onSave?: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, FormattedMessage } = useMessages();
   const { mutateAsync, isPending, error, touch } = useDeleteQuery(
     `/websites/${websiteId}/segments/${cohortId}`,
   );
@@ -36,9 +36,14 @@ export function CohortDeleteButton({
       <Dialog title={formatMessage(labels.confirm)} style={{ width: 400 }}>
         {({ close }) => (
           <ConfirmationForm
-            message={formatMessage(messages.confirmRemove, {
-              target: name,
-            })}
+            message={
+              <FormattedMessage
+                {...messages.confirmRemove}
+                values={{
+                  target: <b>{name}</b>,
+                }}
+              />
+            }
             isLoading={isPending}
             error={error}
             onConfirm={handleConfirm.bind(null, close)}

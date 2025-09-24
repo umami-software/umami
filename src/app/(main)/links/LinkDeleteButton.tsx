@@ -15,7 +15,7 @@ export function LinkDeleteButton({
   name: string;
   onSave?: () => void;
 }) {
-  const { formatMessage, labels, getErrorMessage } = useMessages();
+  const { formatMessage, labels, getErrorMessage, FormattedMessage } = useMessages();
   const { mutateAsync, isPending, error, touch } = useDeleteQuery(`/links/${linkId}`);
 
   const handleConfirm = async (close: () => void) => {
@@ -33,9 +33,14 @@ export function LinkDeleteButton({
       <Dialog title={formatMessage(labels.confirm)} style={{ width: 400 }}>
         {({ close }) => (
           <ConfirmationForm
-            message={formatMessage(messages.confirmRemove, {
-              target: name,
-            })}
+            message={
+              <FormattedMessage
+                {...messages.confirmRemove}
+                values={{
+                  target: <b>{name}</b>,
+                }}
+              />
+            }
             isLoading={isPending}
             error={getErrorMessage(error)}
             onConfirm={handleConfirm.bind(null, close)}

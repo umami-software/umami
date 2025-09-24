@@ -136,7 +136,7 @@ export async function getQueryFilters(
     ...dateRange,
     ...filters,
     page: params?.page,
-    pageSize: params?.page ? params?.pageSize || DEFAULT_PAGE_SIZE : undefined,
+    pageSize: params?.pageSize ? params?.pageSize || DEFAULT_PAGE_SIZE : undefined,
     orderBy: params?.orderBy,
     sortDescending: params?.sortDescending,
     search: params?.search,

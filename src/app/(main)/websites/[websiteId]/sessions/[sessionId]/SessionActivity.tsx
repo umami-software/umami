@@ -12,7 +12,7 @@ import {
   Dialog,
 } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { Bolt, Eye, FileText } from '@/components/icons';
+import { LightningSvg, Eye, FileText } from '@/components/icons';
 import { useMessages, useSessionActivityQuery, useTimezone } from '@/components/hooks';
 import { EventData } from '@/components/metrics/EventData';
 
@@ -52,7 +52,7 @@ export function SessionActivity({
                   {formatTimezoneDate(createdAt, 'pp')}
                 </StatusLight>
                 <Row alignItems="center" gap="2">
-                  <Icon>{eventName ? <Bolt /> : <Eye />}</Icon>
+                  <Icon>{eventName ? <LightningSvg /> : <Eye />}</Icon>
                   <Text>
                     {eventName
                       ? formatMessage(labels.triggeredEvent)

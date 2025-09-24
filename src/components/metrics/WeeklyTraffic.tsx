@@ -85,7 +85,7 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                             height="16px"
                             borderRadius="full"
                             style={{ margin: '0 auto' }}
-                            role="cell"
+                            role="button"
                           >
                             <Row
                               backgroundColor="primary"

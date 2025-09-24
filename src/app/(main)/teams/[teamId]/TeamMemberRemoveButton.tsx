@@ -17,7 +17,7 @@ export function TeamMemberRemoveButton({
   disabled?: boolean;
   onSave?: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, FormattedMessage } = useMessages();
   const { mutateAsync, isPending, error } = useDeleteQuery(`/teams/${teamId}/users/${userId}`);
   const { touch } = useModified();
 
@@ -36,9 +36,14 @@ export function TeamMemberRemoveButton({
       <Dialog title={formatMessage(labels.removeMember)} style={{ width: 400 }}>
         {({ close }) => (
           <ConfirmationForm
-            message={formatMessage(messages.confirmRemove, {
-              target: userName,
-            })}
+            message={
+              <FormattedMessage
+                {...messages.confirmRemove}
+                values={{
+                  target: <b>{userName}</b>,
+                }}
+              />
+            }
             isLoading={isPending}
             error={error}
             onConfirm={handleConfirm.bind(null, close)}

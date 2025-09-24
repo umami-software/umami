@@ -18,7 +18,7 @@ export function WebsiteDateFilter({
   showButtons = true,
   allowCompare,
 }: WebsiteDateFilterProps) {
-  const { dateRange } = useDateRange(websiteId);
+  const { dateRange, saveDateRange } = useDateRange(websiteId);
   const { value, endDate } = dateRange;
   const { formatMessage, labels } = useMessages();
   const {
@@ -32,6 +32,7 @@ export function WebsiteDateFilter({
   const disableForward = value === 'all' || isAfter(endDate, new Date());
 
   const handleChange = (date: string) => {
+    saveDateRange(date);
     router.push(updateParams({ date, offset: undefined }));
   };
 

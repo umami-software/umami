@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Column, Icon, Text, Row } from '@umami/react-zen';
 import { useLoginQuery, useMessages, useNavigation, useTeam } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
-import { Users, Arrow } from '@/components/icons';
+import { Users, ArrowRight } from '@/components/icons';
 import { TeamLeaveButton } from '@/app/(main)/teams/TeamLeaveButton';
 import { TeamManage } from './TeamManage';
 import { TeamEditForm } from './TeamEditForm';
@@ -35,7 +35,7 @@ export function TeamSettings({ teamId }: { teamId: string }) {
       <Link href="/settings/teams">
         <Row marginTop="2" alignItems="center" gap>
           <Icon rotate={180}>
-            <Arrow />
+            <ArrowRight />
           </Icon>
           <Text>{formatMessage(labels.teams)}</Text>
         </Row>
