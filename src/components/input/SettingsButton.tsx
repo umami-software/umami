@@ -10,7 +10,15 @@ import {
   MenuSection,
 } from '@umami/react-zen';
 import { useMessages, useLoginQuery, useNavigation, useConfig } from '@/components/hooks';
-import { LogOut, LockKeyhole, Settings, UserCircle, LifeBuoy, BookText } from '@/components/icons';
+import {
+  LogOut,
+  LockKeyhole,
+  Settings,
+  UserCircle,
+  LifeBuoy,
+  BookText,
+  ExternalLink,
+} from '@/components/icons';
 import { DOCS_URL } from '@/lib/constants';
 
 export function SettingsButton() {
@@ -54,7 +62,11 @@ export function SettingsButton() {
                   id="/docs"
                   icon={<BookText />}
                   label={formatMessage(labels.documentation)}
-                />
+                >
+                  <Icon color="muted">
+                    <ExternalLink />
+                  </Icon>
+                </MenuItem>
                 <MenuItem
                   id="/settings/support"
                   icon={<LifeBuoy />}
