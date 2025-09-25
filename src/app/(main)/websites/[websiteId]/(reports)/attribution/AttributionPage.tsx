@@ -36,8 +36,8 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
             defaultValue={type}
             onChange={setType}
           >
-            <ListItem id="path">{formatMessage(labels.page)}</ListItem>
-            <ListItem id="event">{formatMessage(labels.event)}</ListItem>
+            <ListItem id="path">{formatMessage(labels.viewedPage)}</ListItem>
+            <ListItem id="event">{formatMessage(labels.triggeredEvent)}</ListItem>
           </Select>
         </Column>
         <Column>

@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Column, Tabs, TabList, Tab, TabPanel, Row, Button } from '@umami/react-zen';
 import { useFilters, useMessages, useNavigation } from '@/components/hooks';
 import { FieldFilters } from '@/components/input/FieldFilters';
 import { SegmentFilters } from '@/components/input/SegmentFilters';
+import { Button, Column, Row, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { useState } from 'react';
 
 export interface FilterEditFormProps {
   websiteId?: string;
@@ -13,6 +13,7 @@ export interface FilterEditFormProps {
 export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormProps) {
   const {
     query: { segment, cohort },
+    pathname,
   } = useNavigation();
   const { filters } = useFilters();
   const { formatMessage, labels } = useMessages();
@@ -22,6 +23,7 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
   const panelProps = {
     style: { height: 500 },
   };
+  const excludeFilters = pathname.includes('/pixels') || pathname.includes('/links');
 
   const handleReset = () => {
     setCurrentFilters([]);
@@ -48,11 +50,20 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
       <Tabs>
         <TabList>
           <Tab id="fields">{formatMessage(labels.fields)}</Tab>
-          <Tab id="segments">{formatMessage(labels.segments)}</Tab>
-          <Tab id="cohorts">{formatMessage(labels.cohorts)}</Tab>
+          {!excludeFilters && (
+            <>
+              <Tab id="segments">{formatMessage(labels.segments)}</Tab>
+              <Tab id="cohorts">{formatMessage(labels.cohorts)}</Tab>
+            </>
+          )}
         </TabList>
         <TabPanel id="fields" {...panelProps}>
-          <FieldFilters websiteId={websiteId} value={currentFilters} onChange={setCurrentFilters} />
+          <FieldFilters
+            websiteId={websiteId}
+            value={currentFilters}
+            onChange={setCurrentFilters}
+            exclude={excludeFilters ? ['path', 'title', 'hostname', 'tag', 'event'] : []}
+          />
         </TabPanel>
         <TabPanel id="segments" {...panelProps}>
           <SegmentFilters
