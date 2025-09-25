@@ -1,4 +1,5 @@
-import path from 'path';
+import path from 'node:path';
+import { UAParser } from 'ua-parser-js';
 import { browserName, detectOS } from 'detect-browser';
 import isLocalhost from 'is-localhost-ip';
 import ipaddr from 'ipaddr.js';
@@ -6,35 +7,6 @@ import maxmind from 'maxmind';
 import { safeDecodeURIComponent } from '@/lib/url';
 
 const MAXMIND = 'maxmind';
-
-export const DESKTOP_OS = [
-  'BeOS',
-  'Chrome OS',
-  'Linux',
-  'Mac OS',
-  'Open BSD',
-  'OS/2',
-  'QNX',
-  'Sun OS',
-  'Windows 10',
-  'Windows 2000',
-  'Windows 3.11',
-  'Windows 7',
-  'Windows 8',
-  'Windows 8.1',
-  'Windows 95',
-  'Windows 98',
-  'Windows ME',
-  'Windows Server 2003',
-  'Windows Vista',
-  'Windows XP',
-];
-
-export const MOBILE_OS = ['Amazon OS', 'Android OS', 'BlackBerry OS', 'iOS', 'Windows Mobile'];
-
-export const DESKTOP_SCREEN_WIDTH = 1920;
-export const LAPTOP_SCREEN_WIDTH = 1024;
-export const MOBILE_SCREEN_WIDTH = 479;
 
 // The order here is important and influences how IPs are detected by lib/detect.ts
 // Please do not change the order unless you know exactly what you're doing - read https://developers.cloudflare.com/fundamentals/reference/http-headers/
@@ -121,32 +93,10 @@ export function getIpAddress(headers: Headers) {
   return ip;
 }
 
-export function getDevice(screen: string, os: string) {
-  if (!screen) return;
+export function getDevice(userAgent: string) {
+  const { device } = UAParser(userAgent);
 
-  const [width] = screen.split('x');
-
-  if (DESKTOP_OS.includes(os)) {
-    if (os === 'Chrome OS' || +width < DESKTOP_SCREEN_WIDTH) {
-      return 'laptop';
-    }
-    return 'desktop';
-  } else if (MOBILE_OS.includes(os)) {
-    if (os === 'Amazon OS' || +width > MOBILE_SCREEN_WIDTH) {
-      return 'tablet';
-    }
-    return 'mobile';
-  }
-
-  if (+width >= DESKTOP_SCREEN_WIDTH) {
-    return 'desktop';
-  } else if (+width >= LAPTOP_SCREEN_WIDTH) {
-    return 'laptop';
-  } else if (+width >= MOBILE_SCREEN_WIDTH) {
-    return 'tablet';
-  } else {
-    return 'mobile';
-  }
+  return device?.type || 'desktop';
 }
 
 function getRegionCode(country: string, region: string) {
@@ -221,7 +171,7 @@ export async function getClientInfo(request: Request, payload: Record<string, an
   const city = safeDecodeURIComponent(location?.city);
   const browser = browserName(userAgent);
   const os = detectOS(userAgent) as string;
-  const device = getDevice(payload?.screen, os);
+  const device = getDevice(userAgent);
 
   return { userAgent, browser, os, ip, country, region, city, device };
 }

@@ -161,7 +161,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
     .find(({ path }) => path && pathname.endsWith(path.split('?')[0]))?.id;
 
   return (
-    <SideMenu items={items} selectedKey={selectedKey} allowMinimize={false} muteItems={false}>
+    <SideMenu items={items} selectedKey={selectedKey} allowMinimize={false}>
       <WebsiteSelect
         websiteId={websiteId}
         teamId={teamId}

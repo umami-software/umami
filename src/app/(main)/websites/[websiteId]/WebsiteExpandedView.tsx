@@ -182,7 +182,7 @@ export function WebsiteExpandedView({
   return (
     <Grid columns="auto 1fr" gap="6" height="100%" overflow="hidden">
       <Column gap="6" border="right" paddingRight="3" overflowY="auto">
-        <SideMenu items={items} selectedKey={view} muteItems={false} />
+        <SideMenu items={items} selectedKey={view} />
       </Column>
       <Column overflow="hidden">
         <MetricsExpandedTable

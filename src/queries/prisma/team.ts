@@ -42,7 +42,7 @@ export async function getTeams(
   );
 }
 
-export async function getUserTeams(userId: string, filters: QueryFilters) {
+export async function getUserTeams(userId: string, filters: QueryFilters = {}) {
   return getTeams(
     {
       where: {
@@ -78,6 +78,22 @@ export async function getUserTeams(userId: string, filters: QueryFilters) {
     },
     filters,
   );
+}
+
+export async function getAllUserTeams(userId: string) {
+  return prisma.client.team.findMany({
+    where: {
+      deletedAt: null,
+      members: {
+        some: { userId },
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+      logoUrl: true,
+    },
+  });
 }
 
 export async function createTeam(data: Prisma.TeamCreateInput, userId: string): Promise<any> {

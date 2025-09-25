@@ -10,7 +10,7 @@ import {
 } from '@umami/react-zen';
 import { Globe, LinkIcon, LogoSvg, Grid2x2, PanelLeft } from '@/components/icons';
 import { useMessages, useNavigation, useGlobalState } from '@/components/hooks';
-import { TeamsButton } from '@/components/input/TeamsButton';
+import { NavButton } from '@/components/input/NavButton';
 import { PanelButton } from '@/components/input/PanelButton';
 import { Key } from 'react';
 import { SettingsButton } from '@/components/input/SettingsButton';
@@ -48,8 +48,8 @@ export function SideNav(props: SidebarProps) {
   };
 
   return (
-    <Row height="100%" backgroundColor border="right">
-      <Sidebar {...props} isCollapsed={isCollapsed || hasNav} muteItems={false} showBorder={false}>
+    <Row height="100%" backgroundColor>
+      <Sidebar {...props} isCollapsed={isCollapsed || hasNav}>
         <SidebarSection onClick={() => setIsCollapsed(false)}>
           <SidebarHeader
             label="umami"
@@ -60,7 +60,7 @@ export function SideNav(props: SidebarProps) {
           </SidebarHeader>
         </SidebarSection>
         <SidebarSection paddingTop="0" paddingBottom="0" justifyContent="center">
-          <TeamsButton showText={!hasNav && !isCollapsed} onAction={handleSelect} />
+          <NavButton showText={!hasNav && !isCollapsed} onAction={handleSelect} />
         </SidebarSection>
         <SidebarSection flexGrow={1}>
           {links.map(({ id, path, label, icon }) => {
