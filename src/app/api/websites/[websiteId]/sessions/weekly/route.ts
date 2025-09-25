@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/permissions';
-import { pagingParams, timezoneParam } from '@/lib/schema';
+import { filterParams, pagingParams, timezoneParam } from '@/lib/schema';
 import { getWeeklyTraffic } from '@/queries';
 
 export async function GET(
@@ -13,6 +13,7 @@ export async function GET(
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
     timezone: timezoneParam,
+    ...filterParams,
     ...pagingParams,
   });
 
