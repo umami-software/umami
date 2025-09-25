@@ -36,9 +36,21 @@ function MessagesProvider({ children }) {
 export function Providers({ children }) {
   const router = useRouter();
 
+  function navigate(url: string) {
+    if (shouldUseNativeLink(url)) {
+      window.location.href = url;
+    } else {
+      router.push(url);
+    }
+  }
+
+  function shouldUseNativeLink(url: string) {
+    return url.startsWith('http');
+  }
+
   return (
     <ZenProvider>
-      <RouterProvider navigate={router.push}>
+      <RouterProvider navigate={navigate}>
         <MessagesProvider>
           <QueryClientProvider client={client}>
             <ErrorBoundary>{children}</ErrorBoundary>
