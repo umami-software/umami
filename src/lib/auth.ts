@@ -18,6 +18,9 @@ export function hashPassword(password: string, rounds = SALT_ROUNDS) {
 }
 
 export function checkPassword(password: string, passwordHash: string) {
+  if (password === '' || passwordHash === '') {
+    return false;
+  }
   return bcrypt.compareSync(password, passwordHash);
 }
 
