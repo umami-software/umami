@@ -6,7 +6,6 @@ body {
   background-color: var(--background-color);
   width: 100%;
   min-height: 100vh;
-  overflow: hidden;
 }
 
 html[style*='padding-right'] {

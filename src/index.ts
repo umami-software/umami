@@ -74,7 +74,7 @@ export * from '@/components/input/DateFilter';
 export * from '@/components/input/DownloadButton';
 export * from '@/components/input/ExportButton';
 export * from '@/components/input/FilterButtons';
-export * from '@/components/input/TeamsButton';
+export * from '@/components/input/NavButton';
 export * from '@/components/input/ProfileButton';
 export * from '@/components/input/WebsiteSelect';
 

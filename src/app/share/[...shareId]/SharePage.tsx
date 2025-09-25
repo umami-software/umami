@@ -1,4 +1,5 @@
 'use client';
+import { Column } from '@umami/react-zen';
 import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
 import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
 import { useShareTokenQuery } from '@/components/hooks';
@@ -14,12 +15,14 @@ export function SharePage({ shareId }) {
   }
 
   return (
-    <PageBody>
-      <Header />
-      <WebsiteProvider websiteId={shareToken.websiteId}>
-        <WebsitePage websiteId={shareToken.websiteId} />
-      </WebsiteProvider>
-      <Footer />
-    </PageBody>
+    <Column backgroundColor="2">
+      <PageBody gap>
+        <Header />
+        <WebsiteProvider websiteId={shareToken.websiteId}>
+          <WebsitePage websiteId={shareToken.websiteId} />
+        </WebsiteProvider>
+        <Footer />
+      </PageBody>
+    </Column>
   );
 }

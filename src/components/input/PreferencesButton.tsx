@@ -3,6 +3,7 @@ import { TimezoneSetting } from '@/app/(main)/settings/preferences/TimezoneSetti
 import { DateRangeSetting } from '@/app/(main)/settings/preferences/DateRangeSetting';
 import { Settings } from '@/components/icons';
 import { useMessages } from '@/components/hooks';
+import { Panel } from '@/components/common/Panel';
 
 export function PreferencesButton() {
   const { formatMessage, labels } = useMessages();
@@ -15,12 +16,16 @@ export function PreferencesButton() {
         </Icon>
       </Button>
       <Popover placement="bottom end">
-        <Column gap="3">
-          <Label>{formatMessage(labels.timezone)}</Label>
-          <TimezoneSetting />
-          <Label>{formatMessage(labels.defaultDateRange)}</Label>
-          <DateRangeSetting />
-        </Column>
+        <Panel gap="3">
+          <Column>
+            <Label>{formatMessage(labels.timezone)}</Label>
+            <TimezoneSetting />
+          </Column>
+          <Column>
+            <Label>{formatMessage(labels.defaultDateRange)}</Label>
+            <DateRangeSetting />
+          </Column>
+        </Panel>
       </Popover>
     </DialogTrigger>
   );

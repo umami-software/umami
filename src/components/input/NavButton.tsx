@@ -10,9 +10,8 @@ import {
   Row,
   Column,
   Pressable,
-  Loading,
 } from '@umami/react-zen';
-import { useLoginQuery, useMessages, useUserTeamsQuery, useNavigation } from '@/components/hooks';
+import { useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
 import { ChevronRight, User, Users } from '@/components/icons';
 
 export interface TeamsButtonProps {
@@ -20,18 +19,13 @@ export interface TeamsButtonProps {
   onAction?: (id: any) => void;
 }
 
-export function TeamsButton({ showText = true, onAction }: TeamsButtonProps) {
+export function NavButton({ showText = true, onAction }: TeamsButtonProps) {
   const { user } = useLoginQuery();
   const { formatMessage, labels } = useMessages();
-  const { data, isLoading } = useUserTeamsQuery(user.id);
   const { teamId } = useNavigation();
-  const team = data?.data?.find(({ id }) => id === teamId);
+  const team = user?.teams?.find(({ id }) => id === teamId);
   const selectedKeys = new Set([teamId || 'user']);
   const label = teamId ? team?.name : user.username;
-
-  if (isLoading) {
-    return <Loading icon="dots" size="sm" placement="center" />;
-  }
 
   return (
     <MenuTrigger>
@@ -41,10 +35,13 @@ export function TeamsButton({ showText = true, onAction }: TeamsButtonProps) {
           justifyContent="space-between"
           flexGrow={1}
           padding
-          backgroundColor="2"
+          border
+          borderRadius
+          shadow="1"
+          maxHeight="40px"
           style={{ cursor: 'pointer', textWrap: 'nowrap', outline: 'none' }}
         >
-          <Row alignItems="center" gap>
+          <Row alignItems="center" position="relative" gap maxHeight="40px">
             <Icon>{teamId ? <Users /> : <User />}</Icon>
             {showText && <Text>{label}</Text>}
           </Row>
@@ -75,7 +72,7 @@ export function TeamsButton({ showText = true, onAction }: TeamsButtonProps) {
             </MenuSection>
             <MenuSeparator />
             <MenuSection title={formatMessage(labels.teams)}>
-              {data?.data?.map(({ id, name }) => (
+              {user?.teams?.map(({ id, name }) => (
                 <MenuItem key={id} id={id}>
                   <Row alignItems="center" gap>
                     <Icon size="sm">
