@@ -6,7 +6,7 @@ export function useNavigation(): {
   pathname: string;
   query: { [key: string]: string };
   router: any;
-  renderUrl: (params: any, reset?: boolean) => string;
+  renderUrl: (params: any, reset?: boolean, removeParams?: string[]) => string;
 } {
   const router = useRouter();
   const pathname = usePathname();
@@ -22,8 +22,17 @@ export function useNavigation(): {
     return obj;
   }, [params]);
 
-  function renderUrl(params: any, reset?: boolean) {
-    return reset ? pathname : buildUrl(pathname, { ...query, ...params });
+  function renderUrl(params: any, reset?: boolean, removeParams: string[] = []) {
+    if (reset) {
+      return pathname;
+    } else {
+      const newParams = { ...query, ...params };
+      removeParams.forEach(param => {
+        delete newParams[param];
+      });
+
+      return buildUrl(pathname, newParams);
+    }
   }
 
   return { pathname, query, router, renderUrl };
