@@ -8,10 +8,12 @@ import {
   Column,
   Label,
   Row,
+  IconLabel,
 } from '@umami/react-zen';
 import { useState } from 'react';
 import { getRandomChars } from '@/lib/generate';
-import { useMessages, useUpdateQuery } from '@/components/hooks';
+import { useMessages, useUpdateQuery, useConfig } from '@/components/hooks';
+import { RefreshCcw } from 'lucide-react';
 
 const generateId = () => getRandomChars(16);
 
@@ -24,22 +26,31 @@ export interface WebsiteShareFormProps {
 
 export function WebsiteShareForm({ websiteId, shareId, onSave, onClose }: WebsiteShareFormProps) {
   const { formatMessage, labels, messages, getErrorMessage } = useMessages();
-  const [id, setId] = useState(shareId);
+  const [currentId, setCurrentId] = useState(shareId);
   const { mutateAsync, error, touch, toast } = useUpdateQuery(`/websites/${websiteId}`);
+  const { cloudMode } = useConfig();
 
-  const url = `${window?.location.origin || ''}${process.env.basePath || ''}/share/${id}`;
+  const getUrl = (shareId: string) => {
+    if (cloudMode) {
+      return `${process.env.cloudUrl}/share/${shareId}`;
+    }
+
+    return `${window?.location.origin}${process.env.basePath || ''}/share/${shareId}`;
+  };
+
+  const url = getUrl(currentId);
 
   const handleGenerate = () => {
-    setId(generateId());
+    setCurrentId(generateId());
   };
 
   const handleSwitch = () => {
-    setId(id ? null : generateId());
+    setCurrentId(currentId ? null : generateId());
   };
 
   const handleSave = async () => {
     const data = {
-      shareId: id,
+      shareId: currentId,
     };
     await mutateAsync(data, {
       onSuccess: async () => {
@@ -54,19 +65,23 @@ export function WebsiteShareForm({ websiteId, shareId, onSave, onClose }: Websit
   return (
     <Form onSubmit={handleSave} error={getErrorMessage(error)} values={{ url }}>
       <Column gap>
-        <Switch isSelected={!!id} onChange={handleSwitch}>
+        <Switch isSelected={!!currentId} onChange={handleSwitch}>
           {formatMessage(labels.enableShareUrl)}
         </Switch>
-        {id && (
-          <Column>
-            <Label>{formatMessage(labels.shareUrl)}</Label>
-            <TextField value={url} isReadOnly allowCopy />
-          </Column>
-        )}
-        <FormButtons justifyContent="space-between">
-          <Row>
-            {id && <Button onPress={handleGenerate}>{formatMessage(labels.regenerate)}</Button>}
+        {currentId && (
+          <Row alignItems="flex-end" gap>
+            <Column flexGrow={1}>
+              <Label>{formatMessage(labels.shareUrl)}</Label>
+              <TextField value={url} isReadOnly allowCopy />
+            </Column>
+            <Column>
+              <Button onPress={handleGenerate}>
+                <IconLabel icon={<RefreshCcw />} label={formatMessage(labels.regenerate)} />
+              </Button>
+            </Column>
           </Row>
+        )}
+        <FormButtons justifyContent="flex-end">
           <Row alignItems="center" gap>
             {onClose && <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>}
             <FormSubmitButton isDisabled={false}>{formatMessage(labels.save)}</FormSubmitButton>

@@ -16,11 +16,17 @@ export function WebsiteTrackingCode({
   const trackerScriptName =
     config?.trackerScriptName?.split(',')?.map((n: string) => n.trim())?.[0] || SCRIPT_NAME;
 
-  const url = trackerScriptName?.startsWith('http')
-    ? trackerScriptName
-    : `${hostUrl || window?.location.origin || ''}${
-        process.env.basePath || ''
-      }/${trackerScriptName}`;
+  const getUrl = () => {
+    if (config?.cloudMode) {
+      return `${process.env.cloudUrl}/${trackerScriptName}`;
+    }
+
+    return `${hostUrl || window?.location?.origin || ''}${
+      process.env.basePath || ''
+    }/${trackerScriptName}`;
+  };
+
+  const url = trackerScriptName?.startsWith('http') ? trackerScriptName : getUrl();
 
   const code = `<script defer src="${url}" data-website-id="${websiteId}"></script>`;
 

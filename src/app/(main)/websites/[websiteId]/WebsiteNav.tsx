@@ -1,20 +1,5 @@
-import {
-  Eye,
-  LightningSvg,
-  User,
-  Clock,
-  Sheet,
-  TargetSvg,
-  FunnelSvg,
-  PathSvg,
-  MagnetSvg,
-  Tag,
-  MoneySvg,
-  NetworkSvg,
-  ChartPie,
-  UserPlus,
-  CompareSvg,
-} from '@/components/icons';
+import { Eye, User, Clock, Sheet, Tag, ChartPie, UserPlus } from '@/components/icons';
+import { Lightning, Path, Money, Compare, Target, Funnel, Magnet, Network } from '@/components/svg';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { SideMenu } from '@/components/common/SideMenu';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
@@ -44,7 +29,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
         {
           id: 'events',
           label: formatMessage(labels.events),
-          icon: <LightningSvg />,
+          icon: <Lightning />,
           path: renderPath('/events'),
         },
         {
@@ -62,7 +47,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
         {
           id: 'compare',
           label: formatMessage(labels.compare),
-          icon: <CompareSvg />,
+          icon: <Compare />,
           path: renderPath('/compare'),
         },
         {
@@ -79,25 +64,25 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
         {
           id: 'goals',
           label: formatMessage(labels.goals),
-          icon: <TargetSvg />,
+          icon: <Target />,
           path: renderPath('/goals'),
         },
         {
           id: 'funnel',
           label: formatMessage(labels.funnels),
-          icon: <FunnelSvg />,
+          icon: <Funnel />,
           path: renderPath('/funnels'),
         },
         {
           id: 'journeys',
           label: formatMessage(labels.journeys),
-          icon: <PathSvg />,
+          icon: <Path />,
           path: renderPath('/journeys'),
         },
         {
           id: 'retention',
           label: formatMessage(labels.retention),
-          icon: <MagnetSvg />,
+          icon: <Magnet />,
           path: renderPath('/retention'),
         },
       ],
@@ -131,13 +116,13 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
         {
           id: 'revenue',
           label: formatMessage(labels.revenue),
-          icon: <MoneySvg />,
+          icon: <Money />,
           path: renderPath('/revenue'),
         },
         {
           id: 'attribution',
           label: formatMessage(labels.attribution),
-          icon: <NetworkSvg />,
+          icon: <Network />,
           path: renderPath('/attribution'),
         },
       ],

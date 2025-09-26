@@ -1,7 +1,7 @@
 import { Grid, Row, Column, Text, Icon, ProgressBar, Dialog } from '@umami/react-zen';
 import { ReportEditButton } from '@/components/input/ReportEditButton';
 import { useMessages, useResultQuery } from '@/components/hooks';
-import { File, LightningSvg, User } from '@/components/icons';
+import { File, Lightning, User } from '@/components/icons';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { formatLongNumber } from '@/lib/format';
 import { GoalEditForm } from './GoalEditForm';
@@ -68,7 +68,7 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
           </Row>
           <Row alignItems="center" justifyContent="space-between" gap>
             <Row alignItems="center" gap>
-              <Icon>{parameters.type === 'path' ? <File /> : <LightningSvg />}</Icon>
+              <Icon>{parameters.type === 'path' ? <File /> : <Lightning />}</Icon>
               <Text>{parameters.value}</Text>
             </Row>
             <Row alignItems="center" gap>

@@ -3,7 +3,7 @@ import { TooltipTrigger, Tooltip, Focusable, Icon, Text, Row, Column } from '@um
 import { firstBy } from 'thenby';
 import classNames from 'classnames';
 import { useEscapeKey, useMessages, useResultQuery } from '@/components/hooks';
-import { File, LightningSvg } from '@/components/icons';
+import { File, Lightning } from '@/components/icons';
 import { objectToArray } from '@/lib/data';
 import { formatLongNumber } from '@/lib/format';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
@@ -215,7 +215,7 @@ export function Journey({ websiteId, steps, startStep, endStep }: JourneyProps) 
                             onClick={() => handleClick(name, columnIndex, paths)}
                           >
                             <Row alignItems="center" className={styles.name} title={name} gap>
-                              <Icon>{name.startsWith('/') ? <File /> : <LightningSvg />}</Icon>
+                              <Icon>{name.startsWith('/') ? <File /> : <Lightning />}</Icon>
                               <Text truncate>{name}</Text>
                             </Row>
                             <div className={styles.count} title={nodeCount}>

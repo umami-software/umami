@@ -8,7 +8,7 @@ import {
   useTimezone,
   useWebsite,
 } from '@/components/hooks';
-import { Eye, User, LightningSvg } from '@/components/icons';
+import { Eye, User, Lightning } from '@/components/icons';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
 import { stringToColor } from '@/lib/format';
 import { useMemo, useState } from 'react';
@@ -24,7 +24,7 @@ const TYPE_EVENT = 'event';
 const icons = {
   [TYPE_PAGEVIEW]: <Eye />,
   [TYPE_SESSION]: <User />,
-  [TYPE_EVENT]: <LightningSvg />,
+  [TYPE_EVENT]: <Lightning />,
 };
 
 export function RealtimeLog({ data }: { data: any }) {

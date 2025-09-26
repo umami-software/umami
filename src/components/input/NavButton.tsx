@@ -24,8 +24,8 @@ import {
   Settings,
   User,
   Users,
-  SwitchSvg,
 } from '@/components/icons';
+import { Switch } from '@/components/svg';
 import { DOCS_URL } from '@/lib/constants';
 import { ArrowRight } from 'lucide-react';
 
@@ -79,7 +79,7 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
           <Menu autoFocus="last" onAction={handleAction}>
             <SubmenuTrigger>
               <MenuItem id="teams" showChecked={false} showSubMenuIcon>
-                <IconLabel icon={<SwitchSvg />} label={formatMessage(labels.switchAccount)} />
+                <IconLabel icon={<Switch />} label={formatMessage(labels.switchAccount)} />
               </MenuItem>
               <Popover placement="right top">
                 <Column minWidth="300px">

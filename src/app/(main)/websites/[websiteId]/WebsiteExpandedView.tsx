@@ -19,10 +19,10 @@ import {
   Languages,
   Monitor,
   Cpu,
-  LightningSvg,
   Network,
   Tag,
 } from '@/components/icons';
+import { Lightning } from '@/components/svg';
 
 export function WebsiteExpandedView({
   websiteId,
@@ -161,7 +161,7 @@ export function WebsiteExpandedView({
           id: 'event',
           label: formatMessage(labels.event),
           path: updateParams({ view: 'event' }),
-          icon: <LightningSvg />,
+          icon: <Lightning />,
         },
         {
           id: 'hostname',

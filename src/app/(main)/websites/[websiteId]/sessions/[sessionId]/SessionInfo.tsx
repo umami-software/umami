@@ -2,7 +2,8 @@ import { ReactNode } from 'react';
 import { Icon, TextField, Column, Row, Label, Text } from '@umami/react-zen';
 import { useFormat, useLocale, useMessages, useRegionNames } from '@/components/hooks';
 import { TypeIcon } from '@/components/common/TypeIcon';
-import { LocationSvg, KeyRound, Calendar } from '@/components/icons';
+import { KeyRound, Calendar } from '@/components/icons';
+import { Location } from '@/components/svg';
 import { DateDistance } from '@/components/common/DateDistance';
 
 export function SessionInfo({ data }) {
@@ -36,11 +37,11 @@ export function SessionInfo({ data }) {
         {formatValue(data?.country, 'country')}
       </Info>
 
-      <Info label={formatMessage(labels.region)} icon={<LocationSvg />}>
+      <Info label={formatMessage(labels.region)} icon={<Location />}>
         {getRegionName(data?.region)}
       </Info>
 
-      <Info label={formatMessage(labels.city)} icon={<LocationSvg />}>
+      <Info label={formatMessage(labels.city)} icon={<Location />}>
         {data?.city}
       </Info>
 

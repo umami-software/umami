@@ -1,7 +1,7 @@
 import { Row, Icon, Text, ThemeButton } from '@umami/react-zen';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { PreferencesButton } from '@/components/input/PreferencesButton';
-import { LogoSvg } from '@/components/icons';
+import { Logo } from '@/components/svg';
 
 export function Header() {
   return (
@@ -9,7 +9,7 @@ export function Header() {
       <a href="https://umami.is" target="_blank">
         <Row alignItems="center" gap>
           <Icon>
-            <LogoSvg />
+            <Logo />
           </Icon>
           <Text weight="bold">umami</Text>
         </Row>
