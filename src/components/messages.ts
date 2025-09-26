@@ -362,6 +362,7 @@ export const labels = defineMessages({
   share: { id: 'label.share', defaultMessage: 'Share' },
   support: { id: 'label.support', defaultMessage: 'Support' },
   documentation: { id: 'label.documentation', defaultMessage: 'Documentation' },
+  switchAccount: { id: 'label.switch-account', defaultMessage: 'Switch account' },
 });
 
 export const messages = defineMessages({

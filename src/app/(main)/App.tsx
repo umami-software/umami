@@ -1,22 +1,25 @@
 'use client';
 import { Grid, Loading, Column } from '@umami/react-zen';
 import Script from 'next/script';
-import { usePathname } from 'next/navigation';
 import { UpdateNotice } from './UpdateNotice';
 import { SideNav } from '@/app/(main)/SideNav';
-import { useLoginQuery, useConfig } from '@/components/hooks';
+import { useLoginQuery, useConfig, useNavigation } from '@/components/hooks';
 
 export function App({ children }) {
   const { user, isLoading, error } = useLoginQuery();
   const config = useConfig();
-  const pathname = usePathname();
+  const { pathname, router } = useNavigation();
 
   if (isLoading || !config) {
     return <Loading placement="absolute" />;
   }
 
   if (error) {
-    window.location.href = `${process.env.basePath || ''}/login`;
+    if (process.env.cloudMode) {
+      window.location.href = '/login';
+    } else {
+      router.push('/login');
+    }
     return null;
   }
 

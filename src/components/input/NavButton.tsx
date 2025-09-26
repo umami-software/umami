@@ -24,9 +24,10 @@ import {
   Settings,
   User,
   Users,
+  SwitchSvg,
 } from '@/components/icons';
 import { DOCS_URL } from '@/lib/constants';
-import * as url from 'node:url';
+import { ArrowRight } from 'lucide-react';
 
 export interface TeamsButtonProps {
   showText?: boolean;
@@ -43,7 +44,7 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
   const label = teamId ? team?.name : user.username;
 
   const getUrl = (url: string) => {
-    return cloudMode ? `${process.env.cloudUrl}/${url}` : url;
+    return cloudMode ? `${process.env.cloudUrl}${url}` : url;
   };
 
   const handleAction = async () => {};
@@ -75,42 +76,52 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
       </Pressable>
       <Popover placement="bottom start">
         <Column minWidth="300px">
-          <Menu
-            selectionMode="single"
-            selectedKeys={selectedKeys}
-            autoFocus="last"
-            onAction={handleAction}
-          >
-            <MenuSection title={formatMessage(labels.myAccount)}>
-              <MenuItem id="user">
-                <IconLabel icon={<User />} label={user.username} />
-              </MenuItem>
-            </MenuSection>
-            <MenuSeparator />
+          <Menu autoFocus="last" onAction={handleAction}>
             <SubmenuTrigger>
               <MenuItem id="teams" showChecked={false} showSubMenuIcon>
-                <IconLabel icon={<Users />} label={formatMessage(labels.teams)} />
+                <IconLabel icon={<SwitchSvg />} label={formatMessage(labels.switchAccount)} />
               </MenuItem>
               <Popover placement="right top">
                 <Column minWidth="300px">
-                  <Menu>
+                  <Menu selectionMode="single" selectedKeys={selectedKeys}>
+                    <MenuSection title={formatMessage(labels.myAccount)}>
+                      <MenuItem id="user" href={getUrl('/')}>
+                        <IconLabel icon={<User />} label={user.username} />
+                      </MenuItem>
+                    </MenuSection>
+                    <MenuSeparator />
                     <MenuSection title={formatMessage(labels.teams)}>
                       {user?.teams?.map(({ id, name }) => (
-                        <MenuItem key={id} id={id}>
-                          <Row alignItems="center" gap>
-                            <Icon size="sm">
-                              <Users />
-                            </Icon>
+                        <MenuItem key={id} id={id} href={getUrl(`/teams/${id}`)}>
+                          <IconLabel icon={<Users />}>
                             <Text wrap="nowrap">{name}</Text>
-                          </Row>
+                          </IconLabel>
                         </MenuItem>
                       ))}
+                      {user?.teams?.length === 0 && (
+                        <MenuItem id="manage-teams">
+                          <a href="/settings/teams" style={{ width: '100%' }}>
+                            <Row alignItems="center" justifyContent="space-between" gap>
+                              <Text align="center">Manage teams</Text>
+                              <Icon>
+                                <ArrowRight />
+                              </Icon>
+                            </Row>
+                          </a>
+                        </MenuItem>
+                      )}
                     </MenuSection>
                   </Menu>
                 </Column>
               </Popover>
             </SubmenuTrigger>
-            <MenuItem id="settings" icon={<Settings />} label={formatMessage(labels.settings)} />
+            <MenuSeparator />
+            <MenuItem
+              id="settings"
+              href={getUrl('/settings')}
+              icon={<Settings />}
+              label={formatMessage(labels.settings)}
+            />
             {cloudMode && (
               <>
                 <MenuItem
@@ -132,14 +143,24 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
                 />
               </>
             )}
-            {user.isAdmin && (
+            {!cloudMode && user.isAdmin && (
               <>
                 <MenuSeparator />
-                <MenuItem id="/admin" icon={<LockKeyhole />} label={formatMessage(labels.admin)} />
+                <MenuItem
+                  id="/admin"
+                  href="/admin"
+                  icon={<LockKeyhole />}
+                  label={formatMessage(labels.admin)}
+                />
               </>
             )}
             <MenuSeparator />
-            <MenuItem id="/logout" icon={<LogOut />} label={formatMessage(labels.logout)} />
+            <MenuItem
+              id="logout"
+              href={getUrl('/logout')}
+              icon={<LogOut />}
+              label={formatMessage(labels.logout)}
+            />
           </Menu>
         </Column>
       </Popover>

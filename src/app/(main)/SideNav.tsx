@@ -1,3 +1,4 @@
+import { Key } from 'react';
 import Link from 'next/link';
 import {
   Sidebar,
@@ -12,8 +13,7 @@ import { Globe, LinkIcon, LogoSvg, Grid2x2, PanelLeft } from '@/components/icons
 import { useMessages, useNavigation, useGlobalState } from '@/components/hooks';
 import { NavButton } from '@/components/input/NavButton';
 import { PanelButton } from '@/components/input/PanelButton';
-import { Key } from 'react';
-import { SettingsButton } from '@/components/input/SettingsButton';
+import { LanguageButton } from '@/components/input/LanguageButton';
 
 export function SideNav(props: SidebarProps) {
   const { formatMessage, labels } = useMessages();
@@ -77,9 +77,9 @@ export function SideNav(props: SidebarProps) {
           })}
         </SidebarSection>
         <SidebarSection justifyContent="flex-start">
-          <Row>
-            <SettingsButton />
-            {!isCollapsed && !hasNav && <ThemeButton />}
+          <Row wrap="wrap">
+            <LanguageButton />
+            <ThemeButton />
           </Row>
         </SidebarSection>
       </Sidebar>
