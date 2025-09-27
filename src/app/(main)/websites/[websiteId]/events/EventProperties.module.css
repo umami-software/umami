@@ -14,12 +14,14 @@
   color: var(--primary400);
 }
 
-.title {
-  text-align: center;
-  font-weight: bold;
-  margin: 20px 0;
+.header {
+  margin-bottom: 40px;
 }
 
-.chart {
+.title {
+  font-weight: bold;
+}
+
+.data {
   min-height: 620px;
 }

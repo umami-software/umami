@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { isValidTimezone } from '@/lib/date';
+import { isValidTimezone, normalizeTimezone } from '@/lib/date';
 import { UNIT_TYPES } from './constants';
 
 export const filterParams = {
@@ -17,6 +17,8 @@ export const filterParams = {
   host: z.string().optional(),
   language: z.string().optional(),
   event: z.string().optional(),
+  segment: z.string().optional(),
+  cohort: z.string().optional(),
 };
 
 export const pagingParams = {
@@ -26,9 +28,9 @@ export const pagingParams = {
   search: z.string().optional(),
 };
 
-export const timezoneParam = z.string().refine(value => isValidTimezone(value), {
+export const timezoneParam = z.string().refine((value: string) => isValidTimezone(value), {
   message: 'Invalid timezone',
-});
+}).transform((value: string) => normalizeTimezone(value));
 
 export const unitParam = z.string().refine(value => UNIT_TYPES.includes(value), {
   message: 'Invalid unit',
@@ -74,3 +76,5 @@ export const reportParms = {
     value: z.string().optional(),
   }),
 };
+
+export const segmentTypeParam = z.enum(['segment', 'cohort']);

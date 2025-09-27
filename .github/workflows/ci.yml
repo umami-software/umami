@@ -19,20 +19,26 @@ jobs:
       matrix:
         include:
         - node-version: 18.18
+          pnpm-version: 10
           db-type: postgresql
         - node-version: 18.18
+          pnpm-version: 10
           db-type: mysql
 
     steps:
     - uses: actions/checkout@v4
+    - uses: pnpm/action-setup@v4 # required so that setup-node will work
+      with:
+        version: ${{ matrix.pnpm-version }}
+        run_install: false
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
+        cache: 'pnpm'
       env:
         DATABASE_TYPE: ${{ matrix.db-type }}
-    - run: npm install --global yarn
-    - run: yarn install
-    - run: yarn test
-    - run: yarn build
+    - run: npm install --global pnpm
+    - run: pnpm install
+    - run: pnpm test
+    - run: pnpm build
