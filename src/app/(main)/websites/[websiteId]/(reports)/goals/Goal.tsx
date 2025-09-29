@@ -1,7 +1,8 @@
 import { Grid, Row, Column, Text, Icon, ProgressBar, Dialog } from '@umami/react-zen';
 import { ReportEditButton } from '@/components/input/ReportEditButton';
 import { useMessages, useResultQuery } from '@/components/hooks';
-import { File, Lightning, User } from '@/components/icons';
+import { File, User } from '@/components/icons';
+import { Lightning } from '@/components/svg';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { formatLongNumber } from '@/lib/format';
 import { GoalEditForm } from './GoalEditForm';

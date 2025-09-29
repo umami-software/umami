@@ -8,7 +8,8 @@ import {
   useTimezone,
   useWebsite,
 } from '@/components/hooks';
-import { Eye, User, Lightning } from '@/components/icons';
+import { Eye, User } from '@/components/icons';
+import { Lightning } from '@/components/svg';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
 import { stringToColor } from '@/lib/format';
 import { useMemo, useState } from 'react';
