@@ -3,7 +3,7 @@ import { canUpdateWebsite, canDeleteWebsite, canViewWebsite } from '@/permission
 import { SHARE_ID_REGEX } from '@/lib/constants';
 import { parseRequest } from '@/lib/request';
 import { ok, json, unauthorized, serverError, badRequest } from '@/lib/response';
-import { deleteWebsite, getWebsite, updateWebsite } from '@/queries';
+import { deleteWebsite, getWebsite, updateWebsite } from '@/queries/prisma';
 
 export async function GET(
   request: Request,

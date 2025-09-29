@@ -1,7 +1,7 @@
 import { Auth } from '@/lib/types';
 import { PERMISSIONS } from '@/lib/constants';
 import { hasPermission } from '@/lib/auth';
-import { getTeamUser, getWebsite } from '@/queries';
+import { getTeamUser, getWebsite } from '@/queries/prisma';
 
 export async function canViewWebsite({ user, shareToken }: Auth, websiteId: string) {
   if (user?.isAdmin) {

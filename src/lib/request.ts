@@ -5,7 +5,7 @@ import { getAllowedUnits, getMinimumUnit, maxDate, parseDateRange } from '@/lib/
 import { fetchWebsite } from '@/lib/load';
 import { badRequest, unauthorized } from '@/lib/response';
 import { QueryFilters } from '@/lib/types';
-import { getWebsiteSegment } from '@/queries';
+import { getWebsiteSegment } from '@/queries/prisma';
 import { filtersArrayToObject } from '@/lib/params';
 
 export async function parseRequest(

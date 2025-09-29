@@ -4,7 +4,7 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { dateRangeParams, filterParams } from '@/lib/schema';
 import { getCompareDate } from '@/lib/date';
 import { unauthorized, json } from '@/lib/response';
-import { getPageviewStats, getSessionStats } from '@/queries';
+import { getPageviewStats, getSessionStats } from '@/queries/sql';
 
 export async function GET(
   request: Request,

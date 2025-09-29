@@ -5,7 +5,7 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/permissions';
 import { pagingParams, dateRangeParams } from '@/lib/schema';
-import { getEventMetrics, getPageviewMetrics, getSessionMetrics } from '@/queries';
+import { getEventMetrics, getPageviewMetrics, getSessionMetrics } from '@/queries/sql';
 
 export async function GET(
   request: Request,

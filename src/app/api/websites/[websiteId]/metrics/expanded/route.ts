@@ -8,7 +8,7 @@ import {
   getEventExpandedMetrics,
   getPageviewExpandedMetrics,
   getSessionExpandedMetrics,
-} from '@/queries';
+} from '@/queries/sql';
 import { z } from 'zod';
 
 export async function GET(

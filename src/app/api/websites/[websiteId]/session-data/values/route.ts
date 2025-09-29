@@ -1,7 +1,7 @@
 import { canViewWebsite } from '@/permissions';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { getSessionDataValues } from '@/queries';
+import { getSessionDataValues } from '@/queries/sql';
 import { z } from 'zod';
 
 export async function GET(

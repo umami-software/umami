@@ -3,7 +3,7 @@ import { parseRequest, getQueryFilters } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/permissions';
 import { filterParams } from '@/lib/schema';
-import { getWebsiteSessionStats } from '@/queries';
+import { getWebsiteSessionStats } from '@/queries/sql';
 
 export async function GET(
   request: Request,

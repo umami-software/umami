@@ -1,7 +1,7 @@
 import { canViewWebsite } from '@/permissions';
 import { unauthorized, json } from '@/lib/response';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { getJourney } from '@/queries';
+import { getJourney } from '@/queries/sql';
 import { reportResultSchema } from '@/lib/schema';
 
 export async function POST(request: Request) {

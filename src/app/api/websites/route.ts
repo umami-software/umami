@@ -4,7 +4,7 @@ import { json, unauthorized } from '@/lib/response';
 import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { pagingParams, searchParams } from '@/lib/schema';
-import { createWebsite } from '@/queries';
+import { createWebsite } from '@/queries/prisma';
 import { getAllUserWebsitesIncludingTeamOwner, getUserWebsites } from '@/queries/prisma/website';
 
 export async function GET(request: Request) {

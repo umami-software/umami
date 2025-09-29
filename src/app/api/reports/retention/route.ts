@@ -1,7 +1,7 @@
 import { canViewWebsite } from '@/permissions';
 import { unauthorized, json } from '@/lib/response';
 import { parseRequest, getQueryFilters, setWebsiteDate } from '@/lib/request';
-import { getRetention, RetentionParameters } from '@/queries';
+import { getRetention, RetentionParameters } from '@/queries/sql';
 import { reportResultSchema } from '@/lib/schema';
 
 export async function POST(request: Request) {

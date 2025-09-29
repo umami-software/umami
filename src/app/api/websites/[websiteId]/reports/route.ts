@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { canViewWebsite } from '@/permissions';
-import { getReports } from '@/queries';
+import { getReports } from '@/queries/prisma';
 import { filterParams, pagingParams } from '@/lib/schema';
 import { parseRequest } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';

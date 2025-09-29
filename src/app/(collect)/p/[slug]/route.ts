@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { notFound } from '@/lib/response';
-import { findPixel } from '@/queries';
+import { findPixel } from '@/queries/prisma';
 import { POST } from '@/app/api/send/route';
 
 const image = Buffer.from('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw', 'base64');

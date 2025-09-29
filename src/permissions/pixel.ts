@@ -1,5 +1,5 @@
 import { Auth } from '@/lib/types';
-import { getPixel, getTeamUser } from '@/queries';
+import { getPixel, getTeamUser } from '@/queries/prisma';
 import { hasPermission } from '@/lib/auth';
 import { PERMISSIONS } from '@/lib/constants';
 

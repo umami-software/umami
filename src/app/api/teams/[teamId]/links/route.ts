@@ -3,7 +3,7 @@ import { unauthorized, json } from '@/lib/response';
 import { canViewTeam } from '@/permissions';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { pagingParams, searchParams } from '@/lib/schema';
-import { getTeamLinks } from '@/queries';
+import { getTeamLinks } from '@/queries/prisma';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const schema = z.object({

@@ -7,7 +7,7 @@ import {
   getEventMetrics,
   getPageviewMetrics,
   getSessionMetrics,
-} from '@/queries';
+} from '@/queries/sql';
 import { z } from 'zod';
 import { dateRangeParams, filterParams, searchParams } from '@/lib/schema';
 

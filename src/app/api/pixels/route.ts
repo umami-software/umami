@@ -4,7 +4,7 @@ import { json, unauthorized } from '@/lib/response';
 import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { pagingParams, searchParams } from '@/lib/schema';
-import { createPixel, getUserPixels } from '@/queries';
+import { createPixel, getUserPixels } from '@/queries/prisma';
 
 export async function GET(request: Request) {
   const schema = z.object({

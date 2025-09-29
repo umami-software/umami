@@ -1,7 +1,7 @@
 import { canViewWebsite } from '@/permissions';
 import { unauthorized, json } from '@/lib/response';
 import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
-import { getUTM, UTMParameters } from '@/queries';
+import { getUTM, UTMParameters } from '@/queries/sql';
 import { reportResultSchema } from '@/lib/schema';
 import { UTM_PARAMS } from '@/lib/constants';
 

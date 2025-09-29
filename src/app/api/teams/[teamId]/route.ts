@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { unauthorized, json, notFound, ok } from '@/lib/response';
 import { canDeleteTeam, canUpdateTeam, canViewTeam } from '@/permissions';
 import { parseRequest } from '@/lib/request';
-import { deleteTeam, getTeam, updateTeam } from '@/queries';
+import { deleteTeam, getTeam, updateTeam } from '@/queries/prisma';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const { auth, error } = await parseRequest(request);

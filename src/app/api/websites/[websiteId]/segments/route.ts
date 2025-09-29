@@ -3,7 +3,7 @@ import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { segmentTypeParam, searchParams, anyObjectParam } from '@/lib/schema';
-import { createSegment, getWebsiteSegments } from '@/queries';
+import { createSegment, getWebsiteSegments } from '@/queries/prisma';
 import { z } from 'zod';
 
 export async function GET(

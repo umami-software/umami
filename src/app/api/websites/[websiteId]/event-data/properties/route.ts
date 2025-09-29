@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/permissions';
-import { getEventDataProperties } from '@/queries';
+import { getEventDataProperties } from '@/queries/sql';
 
 export async function GET(
   request: Request,

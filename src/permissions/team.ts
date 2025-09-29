@@ -1,6 +1,6 @@
 import { Auth } from '@/lib/types';
 import { PERMISSIONS } from '@/lib/constants';
-import { getTeamUser } from '@/queries';
+import { getTeamUser } from '@/queries/prisma';
 import { hasPermission } from '@/lib/auth';
 
 export async function canViewTeam({ user }: Auth, teamId: string) {

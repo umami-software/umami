@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { createSecureToken } from '@/lib/jwt';
 import redis from '@/lib/redis';
-import { getUserByUsername } from '@/queries';
+import { getUserByUsername } from '@/queries/prisma';
 import { json, unauthorized } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
 import { saveAuth } from '@/lib/auth';

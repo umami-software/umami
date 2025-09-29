@@ -5,7 +5,7 @@ import { ROLES } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';
 import { unauthorized, json, badRequest } from '@/lib/response';
-import { createUser, getUserByUsername } from '@/queries';
+import { createUser, getUserByUsername } from '@/queries/prisma';
 
 export async function POST(request: Request) {
   const schema = z.object({

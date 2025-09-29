@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { notFound } from '@/lib/response';
-import { findLink } from '@/queries';
+import { findLink } from '@/queries/prisma';
 import { POST } from '@/app/api/send/route';
 
 export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {

@@ -1,5 +1,5 @@
 import { canViewWebsite } from '@/permissions';
-import { getWebsiteDateRange } from '@/queries';
+import { getWebsiteDateRange } from '@/queries/sql';
 import { json, unauthorized } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
 

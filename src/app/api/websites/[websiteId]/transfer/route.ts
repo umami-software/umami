@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { canTransferWebsiteToTeam, canTransferWebsiteToUser } from '@/permissions';
-import { updateWebsite } from '@/queries';
+import { updateWebsite } from '@/queries/prisma';
 import { parseRequest } from '@/lib/request';
 import { badRequest, unauthorized, json } from '@/lib/response';
 

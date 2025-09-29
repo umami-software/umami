@@ -3,7 +3,7 @@ import { unauthorized, json, badRequest } from '@/lib/response';
 import { canAddUserToTeam, canViewTeam } from '@/permissions';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { pagingParams, teamRoleParam, searchParams } from '@/lib/schema';
-import { createTeamUser, getTeamUser, getTeamUsers } from '@/queries';
+import { createTeamUser, getTeamUser, getTeamUsers } from '@/queries/prisma';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const schema = z.object({

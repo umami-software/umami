@@ -12,7 +12,7 @@ import { secret, uuid, hash } from '@/lib/crypto';
 import { COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData } from '@/queries';
+import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
 
 const log = debug('umami:send');
 

@@ -2,7 +2,7 @@ import { canDeleteWebsite, canUpdateWebsite, canViewWebsite } from '@/permission
 import { parseRequest } from '@/lib/request';
 import { json, notFound, ok, unauthorized } from '@/lib/response';
 import { anyObjectParam, segmentTypeParam } from '@/lib/schema';
-import { deleteSegment, getSegment, updateSegment } from '@/queries';
+import { deleteSegment, getSegment, updateSegment } from '@/queries/prisma';
 import { z } from 'zod';
 
 export async function GET(
