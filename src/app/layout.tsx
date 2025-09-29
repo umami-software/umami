@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Metadata } from 'next';
 import { Providers } from './Providers';
 import '@fontsource/inter/300.css';
@@ -32,7 +33,9 @@ export default function ({ children }) {
         <meta name="robots" content="noindex,nofollow" />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Suspense>
+          <Providers>{children}</Providers>
+        </Suspense>
       </body>
     </html>
   );

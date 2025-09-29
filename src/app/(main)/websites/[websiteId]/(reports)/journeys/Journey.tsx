@@ -3,7 +3,8 @@ import { TooltipTrigger, Tooltip, Focusable, Icon, Text, Row, Column } from '@um
 import { firstBy } from 'thenby';
 import classNames from 'classnames';
 import { useEscapeKey, useMessages, useResultQuery } from '@/components/hooks';
-import { File, Lightning } from '@/components/icons';
+import { File } from '@/components/icons';
+import { Lightning } from '@/components/svg';
 import { objectToArray } from '@/lib/data';
 import { formatLongNumber } from '@/lib/format';
 import { LoadingPanel } from '@/components/common/LoadingPanel';

@@ -5,8 +5,8 @@ import { File, User } from '@/components/icons';
 import { Lightning } from '@/components/svg';
 import { formatLongNumber } from '@/lib/format';
 import { ReportEditButton } from '@/components/input/ReportEditButton';
-import { FunnelEditForm } from './FunnelEditForm';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
+import { FunnelEditForm } from './FunnelEditForm';
 
 type FunnelResult = {
   type: string;

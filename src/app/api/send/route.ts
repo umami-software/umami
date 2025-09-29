@@ -196,10 +196,7 @@ export async function POST(request: Request) {
 
         referrerPath = referrerUrl.pathname;
         referrerQuery = referrerUrl.search.substring(1);
-
-        if (referrerUrl.hostname !== 'localhost') {
-          referrerDomain = referrerUrl.hostname.replace(/^www\./, '');
-        }
+        referrerDomain = referrerUrl.hostname.replace(/^www\./, '');
       }
 
       const eventType = linkId

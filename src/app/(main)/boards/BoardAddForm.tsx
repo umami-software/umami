@@ -1,7 +1,6 @@
 import { Form, FormField, FormSubmitButton, Row, TextField, Button } from '@umami/react-zen';
-import { useUpdateQuery } from '@/components/hooks';
+import { useUpdateQuery, useMessages } from '@/components/hooks';
 import { DOMAIN_REGEX } from '@/lib/constants';
-import { useMessages } from '@/components/hooks';
 
 export function BoardAddForm({
   teamId,

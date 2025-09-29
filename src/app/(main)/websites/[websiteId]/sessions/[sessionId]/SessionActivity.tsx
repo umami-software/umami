@@ -12,7 +12,8 @@ import {
   Dialog,
 } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { Lightning, Eye, FileText } from '@/components/icons';
+import { Eye, FileText } from '@/components/icons';
+import { Lightning } from '@/components/svg';
 import { useMessages, useSessionActivityQuery, useTimezone } from '@/components/hooks';
 import { EventData } from '@/components/metrics/EventData';
 
