@@ -1,39 +1,37 @@
-import { useState } from 'react';
-import { Grid, Row, Text } from '@umami/react-zen';
-import classNames from 'classnames';
-import { colord } from 'colord';
 import { BarChart } from '@/components/charts/BarChart';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { Panel } from '@/components/common/Panel';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { useCountryNames, useLocale, useMessages, useResultQuery } from '@/components/hooks';
+import { CurrencySelect } from '@/components/input/CurrencySelect';
 import { ListTable } from '@/components/metrics/ListTable';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { renderDateLabels } from '@/lib/charts';
 import { CHART_COLORS } from '@/lib/constants';
+import { generateTimeSeries } from '@/lib/date';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
-import { useCallback, useMemo } from 'react';
-import { Panel } from '@/components/common/Panel';
-import { Column } from '@umami/react-zen';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { getMinimumUnit } from '@/lib/date';
-import { CurrencySelect } from '@/components/input/CurrencySelect';
+import { Column, Grid, Row, Text } from '@umami/react-zen';
+import classNames from 'classnames';
+import { colord } from 'colord';
+import { useCallback, useMemo, useState } from 'react';
 
 export interface RevenueProps {
   websiteId: string;
-  startDate: Date;
-  endDate: Date;
+  minDate: Date;
+  maxDate: Date;
+  unit: string;
 }
 
-export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
+export function Revenue({ websiteId, minDate, maxDate, unit }: RevenueProps) {
   const [currency, setCurrency] = useState('USD');
   const { formatMessage, labels } = useMessages();
-  const { locale } = useLocale();
+  const { locale, dateLocale } = useLocale();
   const { countryNames } = useCountryNames(locale);
-  const unit = getMinimumUnit(startDate, endDate);
   const { data, error, isLoading } = useResultQuery<any>('revenue', {
     websiteId,
-    startDate,
-    endDate,
+    minDate,
+    maxDate,
     currency,
   });
 
@@ -65,7 +63,7 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
         const color = colord(CHART_COLORS[index % CHART_COLORS.length]);
         return {
           label: key,
-          data: map[key],
+          data: generateTimeSeries(map[key], minDate, maxDate, unit, dateLocale),
           lineTension: 0,
           backgroundColor: color.alpha(0.6).toRgbString(),
           borderColor: color.alpha(0.7).toRgbString(),
@@ -73,7 +71,7 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
         };
       }),
     };
-  }, [data, startDate, endDate, unit]);
+  }, [data, minDate, maxDate, unit]);
 
   const metrics = useMemo(() => {
     if (!data) return [];
@@ -104,6 +102,8 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
     ] as any;
   }, [data, locale]);
 
+  const renderXLabel = useCallback(renderDateLabels(unit, locale), [unit, locale]);
+
   return (
     <Column gap>
       <Grid columns="280px" gap>
@@ -122,12 +122,12 @@ export function Revenue({ websiteId, startDate, endDate }: RevenueProps) {
             <Panel>
               <BarChart
                 chartData={chartData}
-                minDate={startDate}
-                maxDate={endDate}
+                minDate={minDate}
+                maxDate={maxDate}
                 unit={unit}
                 stacked={true}
                 currency={currency}
-                renderXLabel={renderDateLabels(unit, locale)}
+                renderXLabel={renderXLabel}
                 height="400px"
               />
             </Panel>

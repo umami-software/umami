@@ -6,13 +6,13 @@ import { useDateRange } from '@/components/hooks';
 
 export function RevenuePage({ websiteId }: { websiteId: string }) {
   const {
-    dateRange: { startDate, endDate },
+    dateRange: { startDate, endDate, unit },
   } = useDateRange(websiteId);
 
   return (
     <Column gap>
       <WebsiteControls websiteId={websiteId} />
-      <Revenue websiteId={websiteId} startDate={startDate} endDate={endDate} />
+      <Revenue websiteId={websiteId} minDate={startDate} maxDate={endDate} unit={unit} />
     </Column>
   );
 }
