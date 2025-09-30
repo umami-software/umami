@@ -122,8 +122,9 @@ export function parseDateValue(value: string) {
   if (!match) return null;
 
   const { num, unit } = match.groups;
+  const formattedNum = +num > 0 ? +num - 1 : +num;
 
-  return { num: +num, unit };
+  return { num: formattedNum, unit };
 }
 
 export function parseDateRange(value: string, locale = 'en-US'): DateRange {
@@ -157,12 +158,7 @@ export function parseDateRange(value: string, locale = 'en-US'): DateRange {
 
   const now = new Date();
   const dateLocale = getDateLocale(locale);
-  const { unit } = parseDateValue(value);
-  let { num = 1 } = parseDateValue(value);
-
-  if (value === '7day') {
-    num--;
-  }
+  const { num = 1, unit } = parseDateValue(value);
 
   switch (unit) {
     case 'hour':
