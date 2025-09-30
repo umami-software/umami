@@ -3,6 +3,8 @@ import clickhouse from '@/lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from '@/lib/db';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getRealtimeActivity';
+
 export async function getRealtimeActivity(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -40,6 +42,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     limit 100
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }
 
@@ -71,5 +74,6 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters): Promis
         limit 100
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }

@@ -12,6 +12,8 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getChannelExpandedMetrics';
+
 export interface ChannelExpandedMetricsParameters {
   limit?: number | string;
   offset?: number | string;
@@ -79,6 +81,7 @@ async function relationalQuery(
     order by y desc;
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }
 
@@ -145,6 +148,7 @@ async function clickhouseQuery(
     order by visitors desc, visits desc;
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }
 

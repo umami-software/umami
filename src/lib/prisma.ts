@@ -164,10 +164,11 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   };
 }
 
-async function rawQuery(sql: string, data: object): Promise<any> {
+async function rawQuery(sql: string, data: Record<string, any>, name?: string): Promise<any> {
   if (process.env.LOG_QUERY) {
     log('QUERY:\n', sql);
     log('PARAMETERS:\n', data);
+    log('NAME:\n', name);
   }
   const params = [];
   const schema = getSchema();

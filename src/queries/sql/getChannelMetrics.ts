@@ -12,6 +12,8 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getChannelMetrics';
+
 export async function getChannelMetrics(...args: [websiteId: string, filters?: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -60,6 +62,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     order by y desc;
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }
 
@@ -117,7 +120,7 @@ async function clickhouseQuery(
     order by y desc;
   `;
 
-  return rawQuery(sql, queryParams);
+  return rawQuery(sql, queryParams, FUNCTION_NAME);
 }
 
 function toClickHouseStringArray(arr: string[]): string {

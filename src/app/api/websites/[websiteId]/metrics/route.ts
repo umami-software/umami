@@ -1,5 +1,5 @@
 import { canViewWebsite } from '@/permissions';
-import { EVENT_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { EVENT_COLUMNS, EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import {
@@ -50,21 +50,21 @@ export async function GET(
   }
 
   if (EVENT_COLUMNS.includes(type)) {
-    let data;
+    const column = FILTER_COLUMNS[type] || type;
 
-    if (type === 'event') {
-      data = await getEventMetrics(websiteId, { type, limit, offset }, filters);
-    } else {
-      data = await getPageviewMetrics(websiteId, { type, limit, offset }, filters);
+    if (column === 'event_name') {
+      filters.eventType = EVENT_TYPE.customEvent;
     }
 
-    return json(data);
+    if (type === 'event') {
+      return json(await getEventMetrics(websiteId, { type, limit, offset }, filters));
+    } else {
+      return json(await getPageviewMetrics(websiteId, { type, limit, offset }, filters));
+    }
   }
 
   if (type === 'channel') {
-    const data = await getChannelMetrics(websiteId, filters);
-
-    return json(data);
+    return json(await getChannelMetrics(websiteId, filters));
   }
 
   return badRequest();

@@ -1,8 +1,10 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS, EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
+
+const FUNCTION_NAME = 'getPageviewMetrics';
 
 export interface PageviewMetricsParameters {
   type: string;
@@ -36,7 +38,6 @@ async function relationalQuery(
     {
       ...filters,
       websiteId,
-      eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     },
     { joinSession: SESSION_COLUMNS.includes(type) },
   );
@@ -86,6 +87,7 @@ async function relationalQuery(
     offset ${offset}
     `,
     { ...queryParams, ...parameters },
+    FUNCTION_NAME,
   );
 }
 
@@ -100,7 +102,6 @@ async function clickhouseQuery(
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
-    eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   });
 
   let sql = '';
@@ -183,5 +184,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, { ...queryParams, ...parameters });
+  return rawQuery(sql, { ...queryParams, ...parameters }, FUNCTION_NAME);
 }

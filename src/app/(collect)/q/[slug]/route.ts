@@ -1,19 +1,43 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
 import { notFound } from '@/lib/response';
 import { findLink } from '@/queries/prisma';
 import { POST } from '@/app/api/send/route';
+import { Link } from '@/generated/prisma/client';
+import redis from '@/lib/redis';
 
 export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
-  const link = await findLink({
-    where: {
-      slug,
-    },
-  });
+  let link: Link;
 
-  if (!link) {
-    return notFound();
+  if (redis.enabled) {
+    link = await redis.client.fetch(
+      `link:${slug}`,
+      async () => {
+        return findLink({
+          where: {
+            slug,
+          },
+        });
+      },
+      86400,
+    );
+
+    if (!link) {
+      return notFound();
+    }
+  } else {
+    link = await findLink({
+      where: {
+        slug,
+      },
+    });
+
+    if (!link) {
+      return notFound();
+    }
   }
 
   const payload = {
@@ -21,7 +45,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     payload: {
       link: link.id,
       url: request.url,
-      referrer: request.referrer,
+      referrer: request.headers.get('referer'),
     },
   };
 

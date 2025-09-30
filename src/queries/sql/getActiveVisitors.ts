@@ -3,6 +3,8 @@ import prisma from '@/lib/prisma';
 import clickhouse from '@/lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from '@/lib/db';
 
+const FUNCTION_NAME = 'getActiveVisitors';
+
 export async function getActiveVisitors(...args: [websiteId: string]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -22,6 +24,7 @@ async function relationalQuery(websiteId: string) {
     and created_at >= {{startDate}}
     `,
     { websiteId, startDate },
+    FUNCTION_NAME,
   );
 
   return result?.[0] ?? null;
@@ -40,6 +43,7 @@ async function clickhouseQuery(websiteId: string): Promise<{ x: number }> {
       and created_at >= {startDate:DateTime64}
     `,
     { websiteId, startDate },
+    FUNCTION_NAME,
   );
 
   return result[0] ?? null;

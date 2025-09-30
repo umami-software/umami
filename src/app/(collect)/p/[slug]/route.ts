@@ -1,6 +1,10 @@
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from 'next/server';
 import { notFound } from '@/lib/response';
+import redis from '@/lib/redis';
 import { findPixel } from '@/queries/prisma';
+import { Pixel } from '@/generated/prisma/client';
 import { POST } from '@/app/api/send/route';
 
 const image = Buffer.from('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw', 'base64');
@@ -8,14 +12,34 @@ const image = Buffer.from('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICR
 export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
-  const pixel = await findPixel({
-    where: {
-      slug,
-    },
-  });
+  let pixel: Pixel;
 
-  if (!pixel) {
-    return notFound();
+  if (redis.enabled) {
+    pixel = await redis.client.fetch(
+      `pixel:${slug}`,
+      async () => {
+        return findPixel({
+          where: {
+            slug,
+          },
+        });
+      },
+      86400,
+    );
+
+    if (!pixel) {
+      return notFound();
+    }
+  } else {
+    pixel = await findPixel({
+      where: {
+        slug,
+      },
+    });
+
+    if (!pixel) {
+      return notFound();
+    }
   }
 
   const payload = {
@@ -23,7 +47,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     payload: {
       pixel: pixel.id,
       url: request.url,
-      referrer: request.referrer,
+      referrer: request.headers.get('referer'),
     },
   };
 
@@ -33,13 +57,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     body: JSON.stringify(payload),
   });
 
-  const res = await POST(req);
+  await POST(req);
 
   return new NextResponse(image, {
     headers: {
       'Content-Type': 'image/gif',
       'Content-Length': image.length.toString(),
-      'x-umami-collect': JSON.stringify(res),
     },
   });
 }

@@ -4,6 +4,8 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getEventMetrics';
+
 export interface EventMetricParameters {
   type: string;
   limit?: string;
@@ -58,6 +60,7 @@ async function relationalQuery(
     offset ${offset}
     `,
     { ...queryParams, ...parameters },
+    FUNCTION_NAME,
   );
 }
 
@@ -89,5 +92,6 @@ async function clickhouseQuery(
      offset ${offset}
     `,
     { ...queryParams, ...parameters },
+    FUNCTION_NAME,
   );
 }

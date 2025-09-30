@@ -206,9 +206,10 @@ async function pagedRawQuery(
 async function rawQuery<T = unknown>(
   query: string,
   params: Record<string, unknown> = {},
+  name?: string,
 ): Promise<T> {
   if (process.env.LOG_QUERY) {
-    log({ query, params });
+    log({ query, params, name });
   }
 
   await connect();

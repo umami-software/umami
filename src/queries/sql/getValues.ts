@@ -3,6 +3,8 @@ import clickhouse from '@/lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from '@/lib/db';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getValues';
+
 export async function getValues(
   ...args: [websiteId: string, column: string, filters: QueryFilters]
 ) {
@@ -64,6 +66,7 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
       search: `%${search}%`,
       ...params,
     },
+    FUNCTION_NAME,
   );
 }
 
@@ -120,5 +123,6 @@ async function clickhouseQuery(websiteId: string, column: string, filters: Query
       search,
       ...params,
     },
+    FUNCTION_NAME,
   );
 }
