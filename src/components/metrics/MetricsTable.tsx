@@ -73,19 +73,23 @@ export function MetricsTable({
       isFetching={isFetching}
       isLoading={isLoading}
       error={error}
-      minHeight="380px"
+      minHeight="400px"
     >
-      {data && <ListTable {...props} data={filteredData} renderLabel={renderLabel} />}
-      {showMore && limit && (
-        <Row justifyContent="center">
-          <LinkButton href={updateParams({ view: type })} variant="quiet">
-            <Icon size="sm">
-              <Maximize />
-            </Icon>
-            <Text>{formatMessage(labels.more)}</Text>
-          </LinkButton>
-        </Row>
-      )}
+      <div style={{ display: 'grid', gridTemplateRows: '1fr auto', minHeight: '400px' }}>
+        <div>{data && <ListTable {...props} data={filteredData} renderLabel={renderLabel} />}</div>
+        <div>
+          {showMore && limit && (
+            <Row justifyContent="center" alignItems="flex-end">
+              <LinkButton href={updateParams({ view: type })} variant="quiet">
+                <Icon size="sm">
+                  <Maximize />
+                </Icon>
+                <Text>{formatMessage(labels.more)}</Text>
+              </LinkButton>
+            </Row>
+          )}
+        </div>
+      </div>
     </LoadingPanel>
   );
 }

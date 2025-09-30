@@ -37,8 +37,8 @@ export function WebsiteTransferForm({
   const isTeamWebsite = !!website?.teamId;
 
   const items =
-    teams?.data?.filter(({ teamUser }) =>
-      teamUser.find(
+    teams?.data?.filter(({ members }) =>
+      members.some(
         ({ role, userId }) =>
           [ROLES.teamOwner, ROLES.teamManager].includes(role) && userId === user.id,
       ),
@@ -79,7 +79,7 @@ export function WebsiteTransferForm({
           <Select onSelectionChange={handleChange} selectedKey={teamId}>
             {items.map(({ id, name }) => {
               return (
-                <ListItem key={`${id}!!!!`} id={`${id}????`}>
+                <ListItem key={`${id}`} id={`${id}`}>
                   {name}
                 </ListItem>
               );

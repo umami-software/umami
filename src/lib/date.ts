@@ -122,8 +122,9 @@ export function parseDateValue(value: string) {
   if (!match) return null;
 
   const { num, unit } = match.groups;
+  const formattedNum = +num > 0 ? +num - 1 : +num;
 
-  return { num: +num, unit };
+  return { num: formattedNum, unit };
 }
 
 export function parseDateRange(value: string, locale = 'en-US'): DateRange {
