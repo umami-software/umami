@@ -18,20 +18,20 @@ import { useCallback, useMemo, useState } from 'react';
 
 export interface RevenueProps {
   websiteId: string;
-  minDate: Date;
-  maxDate: Date;
+  startDate: Date;
+  endDate: Date;
   unit: string;
 }
 
-export function Revenue({ websiteId, minDate, maxDate, unit }: RevenueProps) {
+export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
   const [currency, setCurrency] = useState('USD');
   const { formatMessage, labels } = useMessages();
   const { locale, dateLocale } = useLocale();
   const { countryNames } = useCountryNames(locale);
   const { data, error, isLoading } = useResultQuery<any>('revenue', {
     websiteId,
-    minDate,
-    maxDate,
+    startDate,
+    endDate,
     currency,
   });
 
@@ -63,7 +63,7 @@ export function Revenue({ websiteId, minDate, maxDate, unit }: RevenueProps) {
         const color = colord(CHART_COLORS[index % CHART_COLORS.length]);
         return {
           label: key,
-          data: generateTimeSeries(map[key], minDate, maxDate, unit, dateLocale),
+          data: generateTimeSeries(map[key], startDate, endDate, unit, dateLocale),
           lineTension: 0,
           backgroundColor: color.alpha(0.6).toRgbString(),
           borderColor: color.alpha(0.7).toRgbString(),
@@ -71,7 +71,7 @@ export function Revenue({ websiteId, minDate, maxDate, unit }: RevenueProps) {
         };
       }),
     };
-  }, [data, minDate, maxDate, unit]);
+  }, [data, startDate, endDate, unit]);
 
   const metrics = useMemo(() => {
     if (!data) return [];
@@ -122,8 +122,8 @@ export function Revenue({ websiteId, minDate, maxDate, unit }: RevenueProps) {
             <Panel>
               <BarChart
                 chartData={chartData}
-                minDate={minDate}
-                maxDate={maxDate}
+                minDate={startDate}
+                maxDate={endDate}
                 unit={unit}
                 stacked={true}
                 currency={currency}

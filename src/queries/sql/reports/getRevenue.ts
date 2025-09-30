@@ -7,6 +7,7 @@ export interface RevenuParameters {
   startDate: Date;
   endDate: Date;
   unit: string;
+  timezone: string;
   currency: string;
 }
 
@@ -30,7 +31,7 @@ async function relationalQuery(
   parameters: RevenuParameters,
   filters: QueryFilters,
 ): Promise<RevenueResult> {
-  const { startDate, endDate, currency, unit = 'day' } = parameters;
+  const { startDate, endDate, unit = 'day', timezone = 'utc', currency } = parameters;
   const { getDateSQL, rawQuery, parseFilters } = prisma;
   const { queryParams, filterQuery, cohortQuery, joinSessionQuery } = parseFilters({
     ...filters,
@@ -44,7 +45,7 @@ async function relationalQuery(
     `
     select
       revenue.event_name x,
-      ${getDateSQL('revenue.created_at', unit)} t,
+      ${getDateSQL('revenue.created_at', unit, timezone)} t,
       sum(revenue.revenue) y
     from revenue
     join website_event
@@ -123,7 +124,7 @@ async function clickhouseQuery(
   parameters: RevenuParameters,
   filters: QueryFilters,
 ): Promise<RevenueResult> {
-  const { startDate, endDate, unit = 'day', currency } = parameters;
+  const { startDate, endDate, unit = 'day', timezone = 'utc', currency } = parameters;
   const { getDateSQL, rawQuery, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
@@ -143,7 +144,7 @@ async function clickhouseQuery(
     `
     select
       website_revenue.event_name x,
-      ${getDateSQL('website_revenue.created_at', unit)} t,
+      ${getDateSQL('website_revenue.created_at', unit, timezone)} t,
       sum(website_revenue.revenue) y
     from website_revenue
     join website_event
