@@ -1,3 +1,4 @@
+'use client';
 import { useMemo } from 'react';
 import { createAvatar } from '@dicebear/core';
 import { lorelei } from '@dicebear/collection';
