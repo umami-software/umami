@@ -55,7 +55,7 @@ export function DashboardPage() {
                 limit={pageSize}
               />
               <Pager
-                page={page}
+                page={Number(page) || 1}
                 pageSize={pageSize}
                 count={result?.count}
                 onPageChange={handlePageChange}
