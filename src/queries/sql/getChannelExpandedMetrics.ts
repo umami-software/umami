@@ -1,7 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
 import {
   EMAIL_DOMAINS,
-  EVENT_TYPE,
   PAID_AD_PARAMS,
   SEARCH_DOMAINS,
   SHOPPING_DOMAINS,
@@ -45,7 +44,6 @@ async function relationalQuery(
   const { queryParams, filterQuery, joinSessionQuery, cohortQuery, dateQuery } = parseFilters({
     ...filters,
     websiteId,
-    eventType: EVENT_TYPE.pageView,
   });
 
   return rawQuery(
@@ -68,7 +66,8 @@ async function relationalQuery(
       from website_event
       ${cohortQuery}
       ${joinSessionQuery}
-      where website_id = {{websiteId::uuid}}
+      where website_event.website_id = {{websiteId::uuid}}
+        and website_event.event_type != 2
         ${dateQuery}
         ${filterQuery}
       group by 1, 2
@@ -93,7 +92,6 @@ async function clickhouseQuery(
   const { queryParams, filterQuery, cohortQuery } = parseFilters({
     ...filters,
     websiteId,
-    eventType: EVENT_TYPE.pageView,
   });
 
   return rawQuery(
@@ -140,6 +138,7 @@ async function clickhouseQuery(
       ${cohortQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type != 2
         and name != ''
         ${filterQuery}
       group by prefix, name, session_id, visit_id

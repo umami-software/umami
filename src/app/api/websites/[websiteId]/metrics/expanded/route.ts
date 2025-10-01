@@ -1,8 +1,8 @@
-import { canViewWebsite } from '@/permissions';
-import { EVENT_COLUMNS, EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { EVENT_COLUMNS, EVENT_TYPE, SESSION_COLUMNS } from '@/lib/constants';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { dateRangeParams, filterParams, searchParams } from '@/lib/schema';
+import { canViewWebsite } from '@/permissions';
 import {
   getChannelExpandedMetrics,
   getEventExpandedMetrics,
@@ -50,13 +50,8 @@ export async function GET(
   }
 
   if (EVENT_COLUMNS.includes(type)) {
-    const column = FILTER_COLUMNS[type] || type;
-
-    if (column === 'event_name') {
-      filters.eventType = EVENT_TYPE.customEvent;
-    }
-
     if (type === 'event') {
+      filters.eventType = EVENT_TYPE.customEvent;
       return json(await getEventExpandedMetrics(websiteId, { type, limit, offset }, filters));
     } else {
       return json(await getPageviewExpandedMetrics(websiteId, { type, limit, offset }, filters));

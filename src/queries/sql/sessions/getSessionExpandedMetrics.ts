@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
@@ -40,7 +40,6 @@ async function relationalQuery(
     {
       ...filters,
       websiteId,
-      eventType: EVENT_TYPE.pageView,
     },
     {
       joinSession: SESSION_COLUMNS.includes(type),
@@ -63,6 +62,7 @@ async function relationalQuery(
     ${joinSessionQuery}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
+      and website_event.event_type != 2
     ${filterQuery}
     group by 1 
     ${includeCountry ? ', 3' : ''}
@@ -85,7 +85,6 @@ async function clickhouseQuery(
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
-    eventType: EVENT_TYPE.pageView,
   });
   const includeCountry = column === 'city' || column === 'region';
 
@@ -116,6 +115,7 @@ async function clickhouseQuery(
       ${cohortQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type != 2
         and name != ''
         ${filterQuery}
       group by name, session_id, visit_id
