@@ -14,14 +14,14 @@ const frameAncestors = process.env.ALLOWED_FRAME_URLS || '';
 const trackerScriptName = process.env.TRACKER_SCRIPT_NAME || '';
 const trackerScriptURL = process.env.TRACKER_SCRIPT_URL || '';
 
-const contentSecurityPolicy = [
-  `default-src 'self'`,
-  `img-src * data:`,
-  `script-src 'self' 'unsafe-eval' 'unsafe-inline'`,
-  `style-src 'self' 'unsafe-inline'`,
-  `connect-src 'self' api.umami.is cloud.umami.is`,
-  `frame-ancestors 'self' ${frameAncestors}`,
-];
+const contentSecurityPolicy = `
+  default-src 'self';
+  img-src 'self' https: data:;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline';
+  style-src 'self' 'unsafe-inline';
+  connect-src *;
+  frame-ancestors 'self' ${frameAncestors};
+`;
 
 const defaultHeaders = [
   {
@@ -30,10 +30,7 @@ const defaultHeaders = [
   },
   {
     key: 'Content-Security-Policy',
-    value: contentSecurityPolicy
-      .join(';')
-      .replace(/\s{2,}/g, ' ')
-      .trim(),
+    value: contentSecurityPolicy.replace(/\s{2,}/g, ' ').trim(),
   },
 ];
 
