@@ -3,6 +3,8 @@ import prisma from '@/lib/prisma';
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 
+const FUNCTION_NAME = 'getEventData';
+
 export async function getEventData(...args: [eventId: string]): Promise<EventData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -30,6 +32,7 @@ async function relationalQuery(eventId: string) {
     where event_id = {{eventId::uuid}}
     `,
     { eventId },
+    FUNCTION_NAME,
   );
 }
 
@@ -53,5 +56,6 @@ async function clickhouseQuery(eventId: string): Promise<EventData[]> {
       where event_id = {eventId:UUID}
     `,
     { eventId },
+    FUNCTION_NAME,
   );
 }

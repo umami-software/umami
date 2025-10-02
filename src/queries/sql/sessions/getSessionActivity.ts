@@ -3,6 +3,8 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getSessionActivity';
+
 export async function getSessionActivity(
   ...args: [websiteId: string, sessionId: string, filters: QueryFilters]
 ) {
@@ -13,17 +15,31 @@ export async function getSessionActivity(
 }
 
 async function relationalQuery(websiteId: string, sessionId: string, filters: QueryFilters) {
+  const { rawQuery } = prisma;
   const { startDate, endDate } = filters;
 
-  return prisma.client.websiteEvent.findMany({
-    where: {
-      sessionId,
-      websiteId,
-      createdAt: { gte: startDate, lte: endDate },
-    },
-    take: 500,
-    orderBy: { createdAt: 'desc' },
-  });
+  return rawQuery(
+    `
+    select
+      created_at as createdAt,
+      url_path as urlPath,
+      url_query as urlQuery,
+      referrer_domain as referrerDomain,
+      event_id as eventId,
+      event_type as eventType,
+      event_name as eventName,
+      visit_id as visitId,
+      event_id IN (SELECT event_id FROM event_data) AS hasData
+    from website_event e 
+    where e.website_id = {websiteId:UUID}
+      and e.session_id = {sessionId:UUID} 
+      and e.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+    order by e.created_at desc
+    limit 500
+    `,
+    { websiteId, sessionId, startDate, endDate },
+    FUNCTION_NAME,
+  );
 }
 
 async function clickhouseQuery(websiteId: string, sessionId: string, filters: QueryFilters) {
@@ -50,5 +66,6 @@ async function clickhouseQuery(websiteId: string, sessionId: string, filters: Qu
     limit 500
     `,
     { websiteId, sessionId, startDate, endDate },
+    FUNCTION_NAME,
   );
 }

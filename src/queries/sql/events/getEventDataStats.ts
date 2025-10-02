@@ -3,6 +3,8 @@ import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getEventDataStats';
+
 export async function getEventDataStats(
   ...args: [websiteId: string, filters: QueryFilters]
 ): Promise<{
@@ -47,6 +49,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       ) as t
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }
 
@@ -77,5 +80,6 @@ async function clickhouseQuery(
       ) as t
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }

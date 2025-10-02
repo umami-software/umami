@@ -3,6 +3,8 @@ import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getEventDataValues';
+
 interface WebsiteEventData {
   value: string;
   total: number;
@@ -55,6 +57,7 @@ async function relationalQuery(
     limit 100
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }
 
@@ -84,5 +87,6 @@ async function clickhouseQuery(
     limit 100
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }

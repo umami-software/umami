@@ -5,6 +5,8 @@ import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 import { EVENT_COLUMNS } from '@/lib/constants';
 
+const FUNCTION_NAME = 'getWebsiteStats';
+
 export interface WebsiteStatsData {
   pageviews: number;
   visitors: number;
@@ -58,6 +60,7 @@ async function relationalQuery(
     ) as t
     `,
     queryParams,
+    FUNCTION_NAME,
   ).then(result => result?.[0]);
 }
 
@@ -121,5 +124,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, queryParams).then(result => result?.[0]);
+  return rawQuery(sql, queryParams, FUNCTION_NAME).then(result => result?.[0]);
 }

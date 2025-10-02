@@ -4,6 +4,8 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getEventStats';
+
 interface WebsiteEventMetric {
   x: string;
   t: string;
@@ -44,6 +46,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     order by 2
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }
 
@@ -94,5 +97,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, queryParams);
+  return rawQuery(sql, queryParams, FUNCTION_NAME);
 }

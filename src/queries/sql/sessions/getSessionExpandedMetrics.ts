@@ -4,6 +4,8 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getSessionExpandedMetrics';
+
 export interface SessionExpandedMetricsParameters {
   type: string;
   limit?: number | string;
@@ -71,6 +73,7 @@ async function relationalQuery(
     offset ${offset}
     `,
     { ...queryParams, ...parameters },
+    FUNCTION_NAME,
   );
 }
 
@@ -128,5 +131,6 @@ async function clickhouseQuery(
     offset ${offset}
     `,
     { ...queryParams, ...parameters },
+    FUNCTION_NAME,
   );
 }

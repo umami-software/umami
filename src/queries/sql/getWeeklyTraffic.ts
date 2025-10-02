@@ -4,6 +4,8 @@ import { runQuery, PRISMA, CLICKHOUSE } from '@/lib/db';
 import { QueryFilters } from '@/lib/types';
 import { EVENT_COLUMNS } from '@/lib/constants';
 
+const FUNCTION_NAME = 'getWeeklyTraffic';
+
 export async function getWeeklyTraffic(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -34,6 +36,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     order by 2
     `,
     queryParams,
+    FUNCTION_NAME,
   ).then(formatResults);
 }
 
@@ -72,7 +75,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     `;
   }
 
-  return rawQuery(sql, queryParams).then(formatResults);
+  return rawQuery(sql, queryParams, FUNCTION_NAME).then(formatResults);
 }
 
 function formatResults(data: any) {

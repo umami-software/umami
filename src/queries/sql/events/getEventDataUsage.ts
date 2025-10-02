@@ -2,6 +2,8 @@ import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery, notImplemented } from '@/lib/db';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getEventDataUsage';
+
 export function getEventDataUsage(...args: [websiteIds: string[], filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: notImplemented,
@@ -31,5 +33,6 @@ function clickhouseQuery(
       startDate,
       endDate,
     },
+    FUNCTION_NAME,
   );
 }

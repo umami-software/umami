@@ -3,6 +3,8 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getEventDataFields';
+
 export async function getEventDataFields(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -42,6 +44,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     limit 100
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }
 
@@ -71,5 +74,6 @@ async function clickhouseQuery(
     limit 100
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }

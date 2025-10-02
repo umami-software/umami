@@ -4,6 +4,8 @@ import prisma from '@/lib/prisma';
 import { EVENT_COLUMNS, EVENT_TYPE } from '@/lib/constants';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getPageviewStats';
+
 export async function getPageviewStats(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -35,6 +37,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     order by 1
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }
 
@@ -90,5 +93,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, queryParams);
+  return rawQuery(sql, queryParams, FUNCTION_NAME);
 }

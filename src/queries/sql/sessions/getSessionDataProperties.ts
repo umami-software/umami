@@ -3,6 +3,8 @@ import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getSessionDataProperties';
+
 export async function getSessionDataProperties(
   ...args: [websiteId: string, filters: QueryFilters & { propertyName?: string }]
 ) {
@@ -42,6 +44,7 @@ async function relationalQuery(
     limit 500
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }
 
@@ -75,5 +78,6 @@ async function clickhouseQuery(
     limit 500
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }

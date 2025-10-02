@@ -4,6 +4,8 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getWebsiteSessionStats';
+
 export interface WebsiteSessionStatsData {
   pageviews: number;
   visitors: number;
@@ -47,6 +49,7 @@ async function relationalQuery(
       ${filterQuery}
     `,
     queryParams,
+    FUNCTION_NAME,
   );
 }
 
@@ -89,5 +92,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, queryParams);
+  return rawQuery(sql, queryParams, FUNCTION_NAME);
 }
