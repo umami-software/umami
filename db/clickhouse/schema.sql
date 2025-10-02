@@ -209,7 +209,7 @@ FROM (SELECT
     arrayFilter(x -> x != '', groupArray(twclid)) twclid,
     event_type,
     if(event_type = 2, groupArray(event_name), []) event_name,
-    sumIf(1, event_type = 1) views,
+    sumIf(1, event_type != 2) views,
     min(created_at) min_time,
     max(created_at) max_time,
     arrayFilter(x -> x != '', groupArray(tag)) tag,
