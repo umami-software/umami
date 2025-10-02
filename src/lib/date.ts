@@ -157,12 +157,7 @@ export function parseDateRange(value: string, locale = 'en-US'): DateRange {
 
   const now = new Date();
   const dateLocale = getDateLocale(locale);
-  const { unit } = parseDateValue(value);
-  let { num = 1 } = parseDateValue(value);
-
-  if (value === '7day') {
-    num--;
-  }
+  const { num = 1, unit } = parseDateValue(value);
 
   switch (unit) {
     case 'hour':

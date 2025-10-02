@@ -78,6 +78,7 @@ async function clickhouseQuery(
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
+    eventType: EVENT_TYPE.customEvent,
   });
 
   return rawQuery(

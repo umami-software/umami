@@ -1,9 +1,8 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_TYPE } from '@/lib/constants';
+import { EVENT_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
-import { EVENT_COLUMNS } from '@/lib/constants';
 
 const FUNCTION_NAME = 'getWebsiteStats';
 
@@ -32,7 +31,6 @@ async function relationalQuery(
   const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
-    eventType: EVENT_TYPE.pageView,
   });
 
   return rawQuery(
@@ -55,6 +53,7 @@ async function relationalQuery(
       ${joinSessionQuery}  
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
+        and website_event.event_type != 2
         ${filterQuery}
       group by 1, 2
     ) as t
@@ -72,7 +71,6 @@ async function clickhouseQuery(
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
-    eventType: EVENT_TYPE.pageView,
   });
 
   let sql = '';
@@ -96,6 +94,7 @@ async function clickhouseQuery(
       ${cohortQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type != 2
         ${filterQuery}
       group by session_id, visit_id
     ) as t;
@@ -118,6 +117,7 @@ async function clickhouseQuery(
         ${cohortQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_type != 2
       ${filterQuery}
       group by session_id, visit_id
     ) as t;
