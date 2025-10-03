@@ -1,6 +1,7 @@
-import { Button, Icon, Icons } from 'react-basics';
+import { Button, Icon } from '@umami/react-zen';
 import { useState } from 'react';
-import MobileMenu from './MobileMenu';
+import { Close, Menu } from '@/components/icons';
+import { MobileMenu } from './MobileMenu';
 
 export function HamburgerButton({ menuItems }: { menuItems: any[] }) {
   const [active, setActive] = useState(false);
@@ -11,11 +12,9 @@ export function HamburgerButton({ menuItems }: { menuItems: any[] }) {
   return (
     <>
       <Button variant="quiet" onClick={handleClick}>
-        <Icon>{active ? <Icons.Close /> : <Icons.Menu />}</Icon>
+        <Icon>{active ? <Close /> : <Menu />}</Icon>
       </Button>
       {active && <MobileMenu items={menuItems} onClose={handleClose} />}
     </>
   );
 }
-
-export default HamburgerButton;

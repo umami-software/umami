@@ -4,11 +4,19 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getWebsiteSessionStats';
+
+export interface WebsiteSessionStatsData {
+  pageviews: number;
+  visitors: number;
+  visits: number;
+  countries: number;
+  events: number;
+}
+
 export async function getWebsiteSessionStats(
   ...args: [websiteId: string, filters: QueryFilters]
-): Promise<
-  { pageviews: number; visitors: number; visits: number; countries: number; events: number }[]
-> {
+): Promise<WebsiteSessionStatsData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -18,12 +26,11 @@ export async function getWebsiteSessionStats(
 async function relationalQuery(
   websiteId: string,
   filters: QueryFilters,
-): Promise<
-  { pageviews: number; visitors: number; visits: number; countries: number; events: number }[]
-> {
+): Promise<WebsiteSessionStatsData[]> {
   const { parseFilters, rawQuery } = prisma;
-  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, {
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
+    websiteId,
   });
 
   return rawQuery(
@@ -41,20 +48,17 @@ async function relationalQuery(
       and website_event.created_at between {{startDate}} and {{endDate}}
       ${filterQuery}
     `,
-    params,
+    queryParams,
+    FUNCTION_NAME,
   );
 }
 
 async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
-): Promise<
-  { pageviews: number; visitors: number; visits: number; countries: number; events: number }[]
-> {
+): Promise<WebsiteSessionStatsData[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, {
-    ...filters,
-  });
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
 
   let sql = '';
 
@@ -88,5 +92,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, params);
+  return rawQuery(sql, queryParams, FUNCTION_NAME);
 }

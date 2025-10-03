@@ -1,60 +1,51 @@
-import { useState, Key } from 'react';
-import { Dropdown, Item } from 'react-basics';
-import { useWebsite, useWebsites, useMessages } from '@/components/hooks';
-import Empty from '@/components/common/Empty';
-import styles from './WebsiteSelect.module.css';
+import { useState } from 'react';
+import { Select, SelectProps, ListItem } from '@umami/react-zen';
+import { useUserWebsitesQuery, useMessages, useLoginQuery } from '@/components/hooks';
+import { Empty } from '@/components/common/Empty';
 
 export function WebsiteSelect({
   websiteId,
   teamId,
-  onSelect,
+  onChange,
+  includeTeams,
+  ...props
 }: {
   websiteId?: string;
   teamId?: string;
-  onSelect?: (key: any) => void;
-}) {
-  const { formatMessage, labels, messages } = useMessages();
+  includeTeams?: boolean;
+} & SelectProps) {
+  const { formatMessage, messages } = useMessages();
   const [search, setSearch] = useState('');
-  const [selectedId, setSelectedId] = useState<Key>(websiteId);
-
-  const { data: website } = useWebsite(selectedId as string);
-
-  const queryResult = useWebsites({ teamId }, { search, pageSize: 5 });
-
-  const renderValue = () => {
-    return website?.name;
-  };
-
-  const renderEmpty = () => {
-    return <Empty message={formatMessage(messages.noResultsFound)} />;
-  };
-
-  const handleSelect = (value: any) => {
-    setSelectedId(value);
-    onSelect?.(value);
-  };
+  const { user } = useLoginQuery();
+  const { data, isLoading } = useUserWebsitesQuery(
+    { userId: user?.id, teamId },
+    { search, pageSize: 5, includeTeams },
+  );
 
   const handleSearch = (value: string) => {
     setSearch(value);
   };
 
+  const handleOpenChange = () => {
+    setSearch('');
+  };
+
   return (
-    <Dropdown
-      menuProps={{ className: styles.dropdown }}
-      items={queryResult?.result?.data as any[]}
-      value={selectedId as string}
-      renderValue={renderValue}
-      renderEmpty={renderEmpty}
-      onChange={handleSelect}
-      alignment="end"
-      placeholder={formatMessage(labels.selectWebsite)}
+    <Select
+      {...props}
+      items={data?.['data'] || []}
+      value={websiteId}
+      isLoading={isLoading}
       allowSearch={true}
+      searchValue={search}
       onSearch={handleSearch}
-      isLoading={queryResult.query.isLoading}
+      onChange={onChange}
+      onOpenChange={handleOpenChange}
+      listProps={{
+        renderEmptyState: () => <Empty message={formatMessage(messages.noResultsFound)} />,
+      }}
     >
-      {({ id, name }) => <Item key={id}>{name}</Item>}
-    </Dropdown>
+      {({ id, name }: any) => <ListItem key={id}>{name}</ListItem>}
+    </Select>
   );
 }
-
-export default WebsiteSelect;

@@ -30,5 +30,3 @@ export function useCountryNames(locale: string) {
 
   return { countryNames: list };
 }
-
-export default useCountryNames;

@@ -1,54 +1,15 @@
-import {
-  COLLECTION_TYPE,
-  DATA_TYPE,
-  EVENT_TYPE,
-  KAFKA_TOPIC,
-  PERMISSIONS,
-  REPORT_TYPES,
-  ROLES,
-} from './constants';
+import { UseQueryOptions } from '@tanstack/react-query';
+import { DATA_TYPE, ROLES, OPERATORS } from './constants';
 import { TIME_UNIT } from './date';
-import { Dispatch, SetStateAction } from 'react';
 
-type ObjectValues<T> = T[keyof T];
+export type ObjectValues<T> = T[keyof T];
+
+export type ReactQueryOptions<T = any> = Omit<UseQueryOptions<T, Error, T>, 'queryKey' | 'queryFn'>;
 
 export type TimeUnit = ObjectValues<typeof TIME_UNIT>;
-export type Permission = ObjectValues<typeof PERMISSIONS>;
-
-export type CollectionType = ObjectValues<typeof COLLECTION_TYPE>;
 export type Role = ObjectValues<typeof ROLES>;
-export type EventType = ObjectValues<typeof EVENT_TYPE>;
 export type DynamicDataType = ObjectValues<typeof DATA_TYPE>;
-export type KafkaTopic = ObjectValues<typeof KAFKA_TOPIC>;
-export type ReportType = ObjectValues<typeof REPORT_TYPES>;
-
-export interface PageParams {
-  search?: string;
-  page?: string | number;
-  pageSize?: string;
-  orderBy?: string;
-  sortDescending?: boolean;
-}
-
-export interface PageResult<T> {
-  data: T;
-  count: number;
-  page: number;
-  pageSize: number;
-  orderBy?: string;
-  sortDescending?: boolean;
-}
-
-export interface PagedQueryResult<T> {
-  result: PageResult<T>;
-  query: any;
-  params: PageParams;
-  setParams: Dispatch<SetStateAction<T | PageParams>>;
-}
-
-export interface DynamicData {
-  [key: string]: number | string | number[] | string[];
-}
+export type Operator = (typeof OPERATORS)[keyof typeof OPERATORS];
 
 export interface Auth {
   user?: {
@@ -57,93 +18,60 @@ export interface Auth {
     role: string;
     isAdmin: boolean;
   };
-  grant?: Permission[];
   shareToken?: {
     websiteId: string;
   };
 }
 
-export interface User {
-  id: string;
-  username: string;
-  password?: string;
-  role: string;
-  createdAt?: Date;
-}
-
-export interface Website {
-  id: string;
-  userId: string;
-  resetAt: Date;
+export interface Filter {
   name: string;
-  domain: string;
-  shareId: string;
-  createdAt: Date;
-}
-
-export interface Share {
-  id: string;
-  token: string;
-}
-
-export interface WebsiteActive {
-  x: number;
-}
-
-export interface WebsiteMetric {
-  x: string;
-  y: number;
-}
-
-export interface WebsiteEventMetric {
-  x: string;
-  t: string;
-  y: number;
-}
-
-export interface WebsiteEventData {
-  eventName?: string;
-  propertyName: string;
-  dataType: number;
-  propertyValue?: string;
-  total: number;
-}
-
-export interface WebsitePageviews {
-  pageviews: {
-    t: string;
-    y: number;
-  };
-  sessions: {
-    t: string;
-    y: number;
-  };
-}
-
-export interface WebsiteStats {
-  pageviews: { value: number; prev: number };
-  visitors: { value: number; prev: number };
-  visits: { value: number; prev: number };
-  bounces: { value: number; prev: number };
-  totaltime: { value: number; prev: number };
+  operator: Operator;
+  value: string;
+  type?: string;
+  column?: string;
+  prefix?: string;
 }
 
 export interface DateRange {
-  value: string;
   startDate: Date;
   endDate: Date;
+  value?: string;
   unit?: TimeUnit;
   num?: number;
   offset?: number;
 }
 
-export interface QueryFilters {
+export interface DynamicData {
+  [key: string]: number | string | number[] | string[];
+}
+
+export interface QueryOptions {
+  joinSession?: boolean;
+  columns?: Record<string, string>;
+  limit?: number;
+  prefix?: string;
+  isCohort?: boolean;
+}
+
+export interface QueryFilters
+  extends DateParams,
+    FilterParams,
+    SortParams,
+    PageParams,
+    SegmentParams {
+  cohortFilters?: QueryFilters;
+}
+
+export interface DateParams {
   startDate?: Date;
   endDate?: Date;
-  timezone?: string;
   unit?: string;
-  eventType?: number;
-  url?: string;
+  timezone?: string;
+  compareDate?: Date;
+}
+
+export interface FilterParams {
+  path?: string;
   referrer?: string;
   title?: string;
   query?: string;
@@ -158,48 +86,33 @@ export interface QueryFilters {
   event?: string;
   search?: string;
   tag?: string;
-  cohort?: { [key: string]: string };
+  eventType?: number;
+  segment?: string;
+  cohort?: string;
+  compare?: string;
 }
 
-export interface QueryOptions {
-  joinSession?: boolean;
-  columns?: { [key: string]: string };
-  limit?: number;
+export interface SortParams {
+  orderBy?: string;
+  sortDescending?: boolean;
 }
 
-export interface RealtimeData {
-  countries: { [key: string]: number };
-  events: any[];
-  pageviews: any[];
-  referrers: { [key: string]: number };
-  timestamp: number;
-  series: {
-    views: any[];
-    visitors: any[];
-  };
-  totals: {
-    views: number;
-    visitors: number;
-    events: number;
-    countries: number;
-  };
-  urls: { [key: string]: number };
-  visitors: any[];
+export interface PageParams {
+  page?: number;
+  pageSize?: number;
 }
 
-export interface SessionData {
-  id: string;
-  websiteId: string;
-  visitId: string;
-  hostname: string;
-  browser: string;
-  os: string;
-  device: string;
-  screen: string;
-  language: string;
-  country: string;
-  region: string;
-  city: string;
-  ip?: string;
-  userAgent?: string;
+export interface SegmentParams {
+  segment?: string;
+  cohort?: string;
+}
+
+export interface PageResult<T> {
+  data: T;
+  count: number;
+  page: number;
+  pageSize: number;
+  orderBy?: string;
+  sortDescending?: boolean;
+  search?: string;
 }

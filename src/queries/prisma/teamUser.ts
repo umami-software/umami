@@ -1,7 +1,7 @@
-import { Prisma, TeamUser } from '@prisma/client';
 import { uuid } from '@/lib/crypto';
+import { Prisma, TeamUser } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
-import { PageResult, PageParams } from '@/lib/types';
+import { PageResult, QueryFilters } from '@/lib/types';
 import TeamUserFindManyArgs = Prisma.TeamUserFindManyArgs;
 
 export async function findTeamUser(criteria: Prisma.TeamUserFindUniqueArgs): Promise<TeamUser> {
@@ -19,7 +19,7 @@ export async function getTeamUser(teamId: string, userId: string): Promise<TeamU
 
 export async function getTeamUsers(
   criteria: TeamUserFindManyArgs,
-  filters?: PageParams,
+  filters?: QueryFilters,
 ): Promise<PageResult<TeamUser[]>> {
   const { search } = filters;
 

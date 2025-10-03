@@ -1,7 +1,7 @@
-import DashboardPage from './DashboardPage';
 import { Metadata } from 'next';
+import { DashboardPage } from './DashboardPage';
 
-export default function () {
+export default async function () {
   return <DashboardPage />;
 }
 

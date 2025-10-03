@@ -1,15 +1,20 @@
-import useFormat from '@/components//hooks/useFormat';
-import Empty from '@/components/common/Empty';
-import FilterButtons from '@/components/common/FilterButtons';
-import { useCountryNames, useLocale, useMessages, useTimezone } from '@/components/hooks';
-import Icons from '@/components/icons';
+import { useFormat } from '@/components//hooks/useFormat';
+import { Empty } from '@/components/common/Empty';
+import { FilterButtons } from '@/components/input/FilterButtons';
+import {
+  useCountryNames,
+  useLocale,
+  useMessages,
+  useTimezone,
+  useWebsite,
+} from '@/components/hooks';
+import { Eye, User } from '@/components/icons';
+import { Lightning } from '@/components/svg';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
 import { stringToColor } from '@/lib/format';
-import { RealtimeData } from '@/lib/types';
-import { useContext, useMemo, useState } from 'react';
-import { Icon, SearchField, StatusLight, Text } from 'react-basics';
+import { useMemo, useState } from 'react';
+import { Icon, SearchField, StatusLight, Text } from '@umami/react-zen';
 import { FixedSizeList } from 'react-window';
-import { WebsiteContext } from '../WebsiteProvider';
 import styles from './RealtimeLog.module.css';
 
 const TYPE_ALL = 'all';
@@ -18,15 +23,15 @@ const TYPE_SESSION = 'session';
 const TYPE_EVENT = 'event';
 
 const icons = {
-  [TYPE_PAGEVIEW]: <Icons.Eye />,
-  [TYPE_SESSION]: <Icons.Visitor />,
-  [TYPE_EVENT]: <Icons.Bolt />,
+  [TYPE_PAGEVIEW]: <Eye />,
+  [TYPE_SESSION]: <User />,
+  [TYPE_EVENT]: <Lightning />,
 };
 
-export function RealtimeLog({ data }: { data: RealtimeData }) {
-  const website = useContext(WebsiteContext);
+export function RealtimeLog({ data }: { data: any }) {
+  const website = useWebsite();
   const [search, setSearch] = useState('');
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { formatValue } = useFormat();
   const { locale } = useLocale();
   const { formatTimezoneDate } = useTimezone();
@@ -36,19 +41,19 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
   const buttons = [
     {
       label: formatMessage(labels.all),
-      key: TYPE_ALL,
+      id: TYPE_ALL,
     },
     {
       label: formatMessage(labels.views),
-      key: TYPE_PAGEVIEW,
+      id: TYPE_PAGEVIEW,
     },
     {
       label: formatMessage(labels.visitors),
-      key: TYPE_SESSION,
+      id: TYPE_SESSION,
     },
     {
       label: formatMessage(labels.events),
-      key: TYPE_EVENT,
+      id: TYPE_EVENT,
     },
   ];
 
@@ -67,45 +72,55 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     country: string;
     device: string;
   }) => {
-    const { __type, eventName, urlPath: url, browser, os, country, device } = log;
+    const { __type, eventName, urlPath, browser, os, country, device } = log;
 
     if (__type === TYPE_EVENT) {
-      return formatMessage(messages.eventLog, {
-        event: <b key="b">{eventName || formatMessage(labels.unknown)}</b>,
-        url: (
-          <a
-            key="a"
-            href={`//${website?.domain}${url}`}
-            className={styles.link}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            {url}
-          </a>
-        ),
-      });
+      return (
+        <FormattedMessage
+          {...messages.eventLog}
+          values={{
+            event: <b key="b">{eventName || formatMessage(labels.unknown)}</b>,
+            url: (
+              <a
+                key="a"
+                href={`//${website?.domain}${urlPath}`}
+                className={styles.link}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                {urlPath}
+              </a>
+            ),
+          }}
+        />
+      );
     }
 
     if (__type === TYPE_PAGEVIEW) {
       return (
         <a
-          href={`//${website?.domain}${url}`}
+          href={`//${website?.domain}${urlPath}`}
           className={styles.link}
           target="_blank"
           rel="noreferrer noopener"
         >
-          {url}
+          {urlPath}
         </a>
       );
     }
 
     if (__type === TYPE_SESSION) {
-      return formatMessage(messages.visitorLog, {
-        country: <b key="country">{countryNames[country] || formatMessage(labels.unknown)}</b>,
-        browser: <b key="browser">{BROWSERS[browser]}</b>,
-        os: <b key="os">{OS_NAMES[os] || os}</b>,
-        device: <b key="device">{formatMessage(labels[device] || labels.unknown)}</b>,
-      });
+      return (
+        <FormattedMessage
+          {...messages.visitorLog}
+          values={{
+            country: <b key="country">{countryNames[country] || formatMessage(labels.unknown)}</b>,
+            browser: <b key="browser">{BROWSERS[browser]}</b>,
+            os: <b key="os">{OS_NAMES[os] || os}</b>,
+            device: <b key="device">{formatMessage(labels[device] || labels.unknown)}</b>,
+          }}
+        />
+      );
     }
   };
 
@@ -160,7 +175,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     <div className={styles.table}>
       <div className={styles.actions}>
         <SearchField className={styles.search} value={search} onSearch={setSearch} />
-        <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />
+        <FilterButtons items={buttons} value={filter} onChange={setFilter} />
       </div>
       <div className={styles.header}>{formatMessage(labels.activity)}</div>
       <div className={styles.body}>
@@ -174,5 +189,3 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     </div>
   );
 }
-
-export default RealtimeLog;

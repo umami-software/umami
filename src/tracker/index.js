@@ -151,7 +151,7 @@
     const callback = window[beforeSend];
 
     if (typeof callback === 'function') {
-      payload = callback(type, payload);
+      payload = await Promise.resolve(callback(type, payload));
     }
 
     if (!payload) return;
@@ -173,6 +173,7 @@
         disabled = !!data.disabled;
         cache = data.cache;
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       /* no-op */
     }

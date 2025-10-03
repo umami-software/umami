@@ -1,6 +1,6 @@
 import Papa from 'papaparse';
-import { Button, Icon, TooltipPopup } from 'react-basics';
-import Icons from '@/components/icons';
+import { Button, Icon, TooltipTrigger, Tooltip } from '@umami/react-zen';
+import { Download } from '@/components/icons';
 import { useMessages } from '@/components/hooks';
 
 export function DownloadButton({
@@ -18,13 +18,14 @@ export function DownloadButton({
   };
 
   return (
-    <TooltipPopup label={formatMessage(labels.download)} position="top">
-      <Button variant="quiet" onClick={handleClick} disabled={!data}>
+    <TooltipTrigger delay={0}>
+      <Button variant="quiet" onClick={handleClick} isDisabled={!data}>
         <Icon>
-          <Icons.Download />
+          <Download />
         </Icon>
       </Button>
-    </TooltipPopup>
+      <Tooltip>{formatMessage(labels.download)}</Tooltip>
+    </TooltipTrigger>
   );
 }
 

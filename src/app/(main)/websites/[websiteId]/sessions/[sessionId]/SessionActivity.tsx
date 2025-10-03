@@ -1,9 +1,21 @@
 import { isSameDay } from 'date-fns';
-import { Loading, Icon, StatusLight } from 'react-basics';
-import Icons from '@/components/icons';
-import { useSessionActivity, useTimezone } from '@/components/hooks';
-import styles from './SessionActivity.module.css';
-import { Fragment } from 'react';
+import {
+  Icon,
+  StatusLight,
+  Column,
+  Row,
+  Heading,
+  Text,
+  Button,
+  DialogTrigger,
+  Popover,
+  Dialog,
+} from '@umami/react-zen';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { Eye, FileText } from '@/components/icons';
+import { Lightning } from '@/components/svg';
+import { useMessages, useSessionActivityQuery, useTimezone } from '@/components/hooks';
+import { EventData } from '@/components/metrics/EventData';
 
 export function SessionActivity({
   websiteId,
@@ -16,38 +28,64 @@ export function SessionActivity({
   startDate: Date;
   endDate: Date;
 }) {
+  const { formatMessage, labels } = useMessages();
   const { formatTimezoneDate } = useTimezone();
-  const { data, isLoading } = useSessionActivity(websiteId, sessionId, startDate, endDate);
-
-  if (isLoading) {
-    return <Loading position="page" />;
-  }
-
+  const { data, isLoading, error } = useSessionActivityQuery(
+    websiteId,
+    sessionId,
+    startDate,
+    endDate,
+  );
   let lastDay = null;
 
   return (
-    <div className={styles.timeline}>
-      {data.map(({ id, createdAt, urlPath, eventName, visitId }) => {
-        const showHeader = !lastDay || !isSameDay(new Date(lastDay), new Date(createdAt));
-        lastDay = createdAt;
+    <LoadingPanel data={data} isLoading={isLoading} error={error}>
+      <Column gap>
+        {data?.map(({ eventId, createdAt, urlPath, eventName, visitId, hasData }) => {
+          const showHeader = !lastDay || !isSameDay(new Date(lastDay), new Date(createdAt));
+          lastDay = createdAt;
 
-        return (
-          <Fragment key={id}>
-            {showHeader && (
-              <div className={styles.header}>{formatTimezoneDate(createdAt, 'PPPP')}</div>
-            )}
-            <div className={styles.row}>
-              <div className={styles.time}>
+          return (
+            <Column key={eventId} gap>
+              {showHeader && <Heading size="2">{formatTimezoneDate(createdAt, 'PPPP')}</Heading>}
+              <Row alignItems="center" gap="6" height="40px">
                 <StatusLight color={`#${visitId?.substring(0, 6)}`}>
                   {formatTimezoneDate(createdAt, 'pp')}
                 </StatusLight>
-              </div>
-              <Icon>{eventName ? <Icons.Bolt /> : <Icons.Eye />}</Icon>
-              <div>{eventName || urlPath}</div>
-            </div>
-          </Fragment>
-        );
-      })}
-    </div>
+                <Row alignItems="center" gap="2">
+                  <Icon>{eventName ? <Lightning /> : <Eye />}</Icon>
+                  <Text>
+                    {eventName
+                      ? formatMessage(labels.triggeredEvent)
+                      : formatMessage(labels.viewedPage)}
+                  </Text>
+                  <Text weight="bold">{eventName || urlPath}</Text>
+                  {hasData > 0 && <PropertiesButton websiteId={websiteId} eventId={eventId} />}
+                </Row>
+              </Row>
+            </Column>
+          );
+        })}
+      </Column>
+    </LoadingPanel>
   );
 }
+
+const PropertiesButton = props => {
+  return (
+    <DialogTrigger>
+      <Button variant="quiet">
+        <Row alignItems="center" gap>
+          <Icon>
+            <FileText />
+          </Icon>
+        </Row>
+      </Button>
+      <Popover placement="right">
+        <Dialog>
+          <EventData {...props} />
+        </Dialog>
+      </Popover>
+    </DialogTrigger>
+  );
+};

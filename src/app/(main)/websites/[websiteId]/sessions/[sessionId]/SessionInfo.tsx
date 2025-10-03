@@ -1,71 +1,90 @@
-import { useFormat, useLocale, useMessages, useRegionNames, useTimezone } from '@/components/hooks';
-import TypeIcon from '@/components/common/TypeIcon';
-import { Icon, CopyIcon } from 'react-basics';
-import Icons from '@/components/icons';
-import styles from './SessionInfo.module.css';
+import { ReactNode } from 'react';
+import { Icon, TextField, Column, Row, Label, Text } from '@umami/react-zen';
+import { useFormat, useLocale, useMessages, useRegionNames } from '@/components/hooks';
+import { TypeIcon } from '@/components/common/TypeIcon';
+import { KeyRound, Calendar } from '@/components/icons';
+import { Location } from '@/components/svg';
+import { DateDistance } from '@/components/common/DateDistance';
 
-export default function SessionInfo({ data }) {
+export function SessionInfo({ data }) {
   const { locale } = useLocale();
-  const { formatTimezoneDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
   const { getRegionName } = useRegionNames(locale);
 
   return (
-    <div className={styles.info}>
-      <dl>
-        <dt>ID</dt>
-        <dd>
-          {data?.id} <CopyIcon value={data?.id} />
-        </dd>
-        <dt>{formatMessage(labels.distinctId)}</dt>
-        <dd>{data?.distinctId}</dd>
-        <dt>{formatMessage(labels.lastSeen)}</dt>
-        <dd>{formatTimezoneDate(data?.lastAt, 'PPPPpp')}</dd>
+    <Column gap="6">
+      <Info label="ID">
+        <TextField value={data?.id} allowCopy />
+      </Info>
 
-        <dt>{formatMessage(labels.firstSeen)}</dt>
-        <dd>{formatTimezoneDate(data?.firstAt, 'PPPPpp')}</dd>
+      <Info label={formatMessage(labels.distinctId)} icon={<KeyRound />}>
+        {data?.distinctId}
+      </Info>
 
-        <dt>{formatMessage(labels.country)}</dt>
-        <dd>
-          <TypeIcon type="country" value={data?.country} />
-          {formatValue(data?.country, 'country')}
-        </dd>
+      <Info label={formatMessage(labels.lastSeen)} icon={<Calendar />}>
+        <DateDistance date={new Date(data.lastAt)} />
+      </Info>
 
-        <dt>{formatMessage(labels.region)}</dt>
-        <dd>
-          <Icon>
-            <Icons.Location />
-          </Icon>
-          {getRegionName(data?.region)}
-        </dd>
+      <Info label={formatMessage(labels.firstSeen)} icon={<Calendar />}>
+        <DateDistance date={new Date(data.firstAt)} />
+      </Info>
 
-        <dt>{formatMessage(labels.city)}</dt>
-        <dd>
-          <Icon>
-            <Icons.Location />
-          </Icon>
-          {data?.city}
-        </dd>
+      <Info
+        label={formatMessage(labels.country)}
+        icon={<TypeIcon type="country" value={data?.country} />}
+      >
+        {formatValue(data?.country, 'country')}
+      </Info>
 
-        <dt>{formatMessage(labels.os)}</dt>
-        <dd>
-          <TypeIcon type="os" value={data?.os?.toLowerCase()?.replaceAll(/\W/g, '-')} />
-          {formatValue(data?.os, 'os')}
-        </dd>
+      <Info label={formatMessage(labels.region)} icon={<Location />}>
+        {getRegionName(data?.region)}
+      </Info>
 
-        <dt>{formatMessage(labels.device)}</dt>
-        <dd>
-          <TypeIcon type="device" value={data?.device} />
-          {formatValue(data?.device, 'device')}
-        </dd>
+      <Info label={formatMessage(labels.city)} icon={<Location />}>
+        {data?.city}
+      </Info>
 
-        <dt>{formatMessage(labels.browser)}</dt>
-        <dd>
-          <TypeIcon type="browser" value={data?.browser} />
-          {formatValue(data?.browser, 'browser')}
-        </dd>
-      </dl>
-    </div>
+      <Info
+        label={formatMessage(labels.browser)}
+        icon={<TypeIcon type="browser" value={data?.browser} />}
+      >
+        {formatValue(data?.browser, 'browser')}
+      </Info>
+
+      <Info
+        label={formatMessage(labels.os)}
+        icon={<TypeIcon type="os" value={data?.os?.toLowerCase()?.replaceAll(/\W/g, '-')} />}
+      >
+        {formatValue(data?.os, 'os')}
+      </Info>
+
+      <Info
+        label={formatMessage(labels.device)}
+        icon={<TypeIcon type="device" value={data?.device} />}
+      >
+        {formatValue(data?.device, 'device')}
+      </Info>
+    </Column>
   );
 }
+
+const Info = ({
+  label,
+  icon,
+  children,
+}: {
+  label: string;
+  icon?: ReactNode;
+  children: ReactNode;
+}) => {
+  return (
+    <Column>
+      <Label>{label}</Label>
+      <Row alignItems="center" gap>
+        {icon && <Icon>{icon}</Icon>}
+        <Text>{children || '—'}</Text>
+      </Row>
+    </Column>
+  );
+};

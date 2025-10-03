@@ -1,9 +1,8 @@
-import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
-import { deleteReport, getReport, updateReport } from '@/queries';
-import { canDeleteReport, canUpdateReport, canViewReport } from '@/lib/auth';
+import { deleteReport, getReport, updateReport } from '@/queries/prisma';
+import { canDeleteReport, canUpdateReport, canViewReport } from '@/permissions';
 import { unauthorized, json, notFound, ok } from '@/lib/response';
-import { reportTypeParam } from '@/lib/schema';
+import { reportSchema } from '@/lib/schema';
 
 export async function GET(request: Request, { params }: { params: Promise<{ reportId: string }> }) {
   const { auth, error } = await parseRequest(request);
@@ -27,15 +26,7 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ reportId: string }> },
 ) {
-  const schema = z.object({
-    websiteId: z.string().uuid(),
-    type: reportTypeParam,
-    name: z.string().max(200),
-    description: z.string().max(500),
-    parameters: z.object({}).passthrough(),
-  });
-
-  const { auth, body, error } = await parseRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, reportSchema);
 
   if (error) {
     return error();
@@ -60,7 +51,7 @@ export async function POST(
     type,
     name,
     description,
-    parameters: parameters,
+    parameters,
   } as any);
 
   return json(result);

@@ -23,6 +23,12 @@
       "value": "जोडो"
     }
   ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "बोर्ड जोड़ें"
+    }
+  ],
   "label.add-description": [
     {
       "type": 0,
@@ -32,13 +38,13 @@
   "label.add-member": [
     {
       "type": 0,
-      "value": "Add member"
+      "value": "सदस्य जोड़ें"
     }
   ],
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "चरण जोड़ें"
     }
   ],
   "label.add-website": [
@@ -53,10 +59,16 @@
       "value": "प्रशासक"
     }
   ],
+  "label.affiliate": [
+    {
+      "type": 0,
+      "value": "संबद्ध"
+    }
+  ],
   "label.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "बाद में"
     }
   ],
   "label.all": [
@@ -68,19 +80,37 @@
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "सभी समय"
     }
   ],
   "label.analytics": [
     {
       "type": 0,
-      "value": "Analytics"
+      "value": "विश्लेषण"
+    }
+  ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "लागू करें"
+    }
+  ],
+  "label.attribution": [
+    {
+      "type": 0,
+      "value": "अर्पण"
+    }
+  ],
+  "label.attribution-description": [
+    {
+      "type": 0,
+      "value": "देखें कि उपयोगकर्ता आपके विपणन के साथ कैसे जुड़ते हैं और क्या रूपांतरण को प्रेरित करता है।"
     }
   ],
   "label.average": [
     {
       "type": 0,
-      "value": "Average"
+      "value": "औसत"
     }
   ],
   "label.back": [
@@ -92,7 +122,13 @@
   "label.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "पहले"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "बोर्ड्स"
     }
   ],
   "label.bounce-rate": [
@@ -104,19 +140,25 @@
   "label.breakdown": [
     {
       "type": 0,
-      "value": "Breakdown"
+      "value": "विभाजन"
     }
   ],
   "label.browser": [
     {
       "type": 0,
-      "value": "Browser"
+      "value": "ब्राउज़र"
     }
   ],
   "label.browsers": [
     {
       "type": 0,
       "value": "वेब ब्राउज़र"
+    }
+  ],
+  "label.campaigns": [
+    {
+      "type": 0,
+      "value": "अभियान"
     }
   ],
   "label.cancel": [
@@ -131,34 +173,52 @@
       "value": "पासवर्ड बदलें"
     }
   ],
+  "label.channels": [
+    {
+      "type": 0,
+      "value": "चैनल"
+    }
+  ],
   "label.cities": [
     {
       "type": 0,
-      "value": "Cities"
+      "value": "शहर"
     }
   ],
   "label.city": [
     {
       "type": 0,
-      "value": "City"
+      "value": "शहर"
     }
   ],
   "label.clear-all": [
     {
       "type": 0,
-      "value": "Clear all"
+      "value": "सभी साफ करें"
+    }
+  ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "समूह"
     }
   ],
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "तुलना करें"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "तिथियों की तुलना करें"
     }
   ],
   "label.confirm": [
     {
       "type": 0,
-      "value": "Confirm"
+      "value": "पुष्टि करें"
     }
   ],
   "label.confirm-password": [
@@ -170,19 +230,43 @@
   "label.contains": [
     {
       "type": 0,
-      "value": "Contains"
+      "value": "शामिल है"
+    }
+  ],
+  "label.content": [
+    {
+      "type": 0,
+      "value": "सामग्री"
     }
   ],
   "label.continue": [
     {
       "type": 0,
-      "value": "Continue"
+      "value": "जारी रखें"
+    }
+  ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "रूपांतरण"
+    }
+  ],
+  "label.conversion-rate": [
+    {
+      "type": 0,
+      "value": "रूपांतरण दर"
+    }
+  ],
+  "label.conversion-step": [
+    {
+      "type": 0,
+      "value": "रूपांतरण चरण"
     }
   ],
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "गिनती"
     }
   ],
   "label.countries": [
@@ -194,49 +278,55 @@
   "label.country": [
     {
       "type": 0,
-      "value": "Country"
+      "value": "देश"
     }
   ],
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "बनाएँ"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "Create report"
+      "value": "रिपोर्ट बनाएं"
     }
   ],
   "label.create-team": [
     {
       "type": 0,
-      "value": "Create team"
+      "value": "टीम बनाएं"
     }
   ],
   "label.create-user": [
     {
       "type": 0,
-      "value": "Create user"
+      "value": "उपयोगकर्ता बनाएं"
     }
   ],
   "label.created": [
     {
       "type": 0,
-      "value": "Created"
+      "value": "बनाया गया"
     }
   ],
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "द्वारा बनाया गया"
+    }
+  ],
+  "label.currency": [
+    {
+      "type": 0,
+      "value": "मुद्रा"
     }
   ],
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "वर्तमान"
     }
   ],
   "label.current-password": [
@@ -260,13 +350,13 @@
   "label.data": [
     {
       "type": 0,
-      "value": "Data"
+      "value": "डेटा"
     }
   ],
   "label.date": [
     {
       "type": 0,
-      "value": "Date"
+      "value": "तिथि"
     }
   ],
   "label.date-range": [
@@ -278,7 +368,7 @@
   "label.day": [
     {
       "type": 0,
-      "value": "Day"
+      "value": "दिन"
     }
   ],
   "label.default-date-range": [
@@ -296,19 +386,19 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "रिपोर्ट हटाएं"
     }
   ],
   "label.delete-team": [
     {
       "type": 0,
-      "value": "Delete team"
+      "value": "टीम हटाएं"
     }
   ],
   "label.delete-user": [
     {
       "type": 0,
-      "value": "Delete user"
+      "value": "उपयोगकर्ता हटाएं"
     }
   ],
   "label.delete-website": [
@@ -320,7 +410,7 @@
   "label.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "विवरण"
     }
   ],
   "label.desktop": [
@@ -332,13 +422,13 @@
   "label.details": [
     {
       "type": 0,
-      "value": "Details"
+      "value": "विवरण"
     }
   ],
   "label.device": [
     {
       "type": 0,
-      "value": "Device"
+      "value": "डिवाइस"
     }
   ],
   "label.devices": [
@@ -347,16 +437,40 @@
       "value": "उपकरण"
     }
   ],
+  "label.direct": [
+    {
+      "type": 0,
+      "value": "प्रत्यक्ष"
+    }
+  ],
   "label.dismiss": [
     {
       "type": 0,
       "value": "खारिज कीजिये"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "अद्वितीय आईडी"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
-      "value": "Does not contain"
+      "value": "शामिल नहीं है"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "शामिल नहीं है"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "मौजूद नहीं है"
     }
   ],
   "label.domain": [
@@ -380,13 +494,19 @@
   "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "डैशबोर्ड संपादित करें"
     }
   ],
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "सदस्य संपादित करें"
+    }
+  ],
+  "label.email": [
+    {
+      "type": 0,
+      "value": "ईमेल"
     }
   ],
   "label.enable-share-url": [
@@ -398,25 +518,31 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "अंतिम चरण"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "प्रवेश URL"
     }
   ],
   "label.event": [
     {
       "type": 0,
-      "value": "Event"
+      "value": "घटना"
     }
   ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "घटना डेटा"
+    }
+  ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "घटना नाम"
     }
   ],
   "label.events": [
@@ -425,34 +551,40 @@
       "value": "स्पर्धाएँ"
     }
   ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "मौजूद है"
+    }
+  ],
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "निकास URL"
     }
   ],
   "label.false": [
     {
       "type": 0,
-      "value": "False"
+      "value": "गलत"
     }
   ],
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "फ़ील्ड"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Fields"
+      "value": "फ़ील्ड्स"
     }
   ],
   "label.filter": [
     {
       "type": 0,
-      "value": "Filter"
+      "value": "फ़िल्टर"
     }
   ],
   "label.filter-combined": [
@@ -470,145 +602,193 @@
   "label.filters": [
     {
       "type": 0,
-      "value": "Filters"
+      "value": "फ़िल्टर"
+    }
+  ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "पहला क्लिक"
     }
   ],
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "पहली बार देखा गया"
     }
   ],
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "फनल"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "उपयोगकर्ताओं की रूपांतरण और ड्रॉप-ऑफ दर को समझें।"
+    }
+  ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "फनल्स"
     }
   ],
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "लक्ष्य"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "लक्ष्य"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "पृष्ठदृश्यों और घटनाओं के लिए अपने लक्ष्यों को ट्रैक करें।"
     }
   ],
   "label.greater-than": [
     {
       "type": 0,
-      "value": "Greater than"
+      "value": "से अधिक"
     }
   ],
   "label.greater-than-equals": [
     {
       "type": 0,
-      "value": "Greater than or equals"
+      "value": "से अधिक या बराबर"
     }
   ],
-  "label.host": [
+  "label.grouped": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "समूहित"
     }
   ],
-  "label.hosts": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "होस्टनाम"
+    }
+  ],
+  "label.includes": [
+    {
+      "type": 0,
+      "value": "शामिल है"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "अंतर्दृष्टि"
     }
   ],
   "label.insights": [
     {
       "type": 0,
-      "value": "Insights"
+      "value": "अंतर्दृष्टियाँ"
     }
   ],
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "सेगमेंट और फ़िल्टर का उपयोग करके अपने डेटा में गहराई से जाएं।"
     }
   ],
   "label.is": [
     {
       "type": 0,
-      "value": "Is"
+      "value": "है"
+    }
+  ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "गलत है"
     }
   ],
   "label.is-not": [
     {
       "type": 0,
-      "value": "Is not"
+      "value": "नहीं है"
     }
   ],
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Is not set"
+      "value": "सेट नहीं है"
     }
   ],
   "label.is-set": [
     {
       "type": 0,
-      "value": "Is set"
+      "value": "सेट है"
+    }
+  ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "सही है"
     }
   ],
   "label.join": [
     {
       "type": 0,
-      "value": "Join"
+      "value": "शामिल हों"
     }
   ],
   "label.join-team": [
     {
       "type": 0,
-      "value": "Join team"
+      "value": "टीम में शामिल हों"
     }
   ],
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "यात्रा"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users navigate through your website."
+      "value": "समझें कि उपयोगकर्ता आपकी वेबसाइट पर कैसे नेविगेट करते हैं।"
+    }
+  ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "यात्राएँ"
     }
   ],
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "भाषा"
     }
   ],
   "label.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "भाषाएँ"
     }
   ],
   "label.laptop": [
     {
       "type": 0,
       "value": "लैपटॉप"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "अंतिम क्लिक"
     }
   ],
   "label.last-days": [
@@ -642,7 +822,7 @@
   "label.last-months": [
     {
       "type": 0,
-      "value": "Last "
+      "value": "पिछले "
     },
     {
       "type": 1,
@@ -650,37 +830,43 @@
     },
     {
       "type": 0,
-      "value": " months"
+      "value": " महीने"
     }
   ],
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "अंतिम बार देखा गया"
     }
   ],
   "label.leave": [
     {
       "type": 0,
-      "value": "Leave"
+      "value": "छोड़ें"
     }
   ],
   "label.leave-team": [
     {
       "type": 0,
-      "value": "Leave team"
+      "value": "टीम छोड़ें"
     }
   ],
   "label.less-than": [
     {
       "type": 0,
-      "value": "Less than"
+      "value": "से कम"
     }
   ],
   "label.less-than-equals": [
     {
       "type": 0,
-      "value": "Less than or equals"
+      "value": "से कम या बराबर"
+    }
+  ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "लिंक"
     }
   ],
   "label.login": [
@@ -698,43 +884,61 @@
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "प्रबंधित करें"
     }
   ],
   "label.manager": [
     {
       "type": 0,
-      "value": "Manager"
+      "value": "प्रबंधक"
     }
   ],
   "label.max": [
     {
       "type": 0,
-      "value": "Max"
+      "value": "अधिकतम"
+    }
+  ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "विस्तार करें"
+    }
+  ],
+  "label.medium": [
+    {
+      "type": 0,
+      "value": "मध्यम"
     }
   ],
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "सदस्य"
     }
   ],
   "label.members": [
     {
       "type": 0,
-      "value": "Members"
+      "value": "सदस्यगण"
     }
   ],
   "label.min": [
     {
       "type": 0,
-      "value": "Min"
+      "value": "न्यूनतम"
     }
   ],
   "label.mobile": [
     {
       "type": 0,
       "value": "मोबाइल फोन"
+    }
+  ],
+  "label.model": [
+    {
+      "type": 0,
+      "value": "मॉडल"
     }
   ],
   "label.more": [
@@ -746,13 +950,13 @@
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "मेरा खाता"
     }
   ],
   "label.my-websites": [
     {
       "type": 0,
-      "value": "My websites"
+      "value": "मेरी वेबसाइट्स"
     }
   ],
   "label.name": [
@@ -770,7 +974,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "कोई नहीं"
     }
   ],
   "label.number-of-records": [
@@ -813,28 +1017,70 @@
       "value": "OK"
     }
   ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
+    }
+  ],
+  "label.organic-search": [
+    {
+      "type": 0,
+      "value": "ऑर्गेनिक खोज"
+    }
+  ],
+  "label.organic-shopping": [
+    {
+      "type": 0,
+      "value": "ऑर्गेनिक खरीदारी"
+    }
+  ],
+  "label.organic-social": [
+    {
+      "type": 0,
+      "value": "ऑर्गेनिक सोशल"
+    }
+  ],
+  "label.organic-video": [
+    {
+      "type": 0,
+      "value": "ऑर्गेनिक वीडियो"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
       "value": "OS"
     }
   ],
+  "label.other": [
+    {
+      "type": 0,
+      "value": "अन्य"
+    }
+  ],
   "label.overview": [
     {
       "type": 0,
-      "value": "Overview"
+      "value": "सारांश"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "मालिक"
+    }
+  ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "पृष्ठ"
     }
   ],
   "label.page-of": [
     {
       "type": 0,
-      "value": "Page "
+      "value": "पृष्ठ "
     },
     {
       "type": 1,
@@ -842,7 +1088,7 @@
     },
     {
       "type": 0,
-      "value": " of "
+      "value": " का "
     },
     {
       "type": 1,
@@ -858,13 +1104,43 @@
   "label.pageTitle": [
     {
       "type": 0,
-      "value": "Page title"
+      "value": "पृष्ठ शीर्षक"
     }
   ],
   "label.pages": [
     {
       "type": 0,
       "value": "पृष्ठों"
+    }
+  ],
+  "label.paid-ads": [
+    {
+      "type": 0,
+      "value": "पेड विज्ञापन"
+    }
+  ],
+  "label.paid-search": [
+    {
+      "type": 0,
+      "value": "पेड खोज"
+    }
+  ],
+  "label.paid-shopping": [
+    {
+      "type": 0,
+      "value": "पेड खरीदारी"
+    }
+  ],
+  "label.paid-social": [
+    {
+      "type": 0,
+      "value": "पेड सोशल"
+    }
+  ],
+  "label.paid-video": [
+    {
+      "type": 0,
+      "value": "पेड वीडियो"
     }
   ],
   "label.password": [
@@ -876,13 +1152,19 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "पथ"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "पथ"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "पिक्सेल"
     }
   ],
   "label.powered-by": [
@@ -922,31 +1204,31 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "गुण"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "गुण"
     }
   ],
   "label.queries": [
     {
       "type": 0,
-      "value": "Queries"
+      "value": "प्रश्न"
     }
   ],
   "label.query": [
     {
       "type": 0,
-      "value": "Query"
+      "value": "प्रश्न"
     }
   ],
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "प्रश्न पैरामीटर"
     }
   ],
   "label.realtime": [
@@ -955,10 +1237,16 @@
       "value": "वास्तव काल"
     }
   ],
+  "label.referral": [
+    {
+      "type": 0,
+      "value": "संदर्भ"
+    }
+  ],
   "label.referrer": [
     {
       "type": 0,
-      "value": "Referrer"
+      "value": "संदर्भकर्ता"
     }
   ],
   "label.referrers": [
@@ -976,37 +1264,43 @@
   "label.regenerate": [
     {
       "type": 0,
-      "value": "Regenerate"
+      "value": "पुनः उत्पन्न करें"
     }
   ],
   "label.region": [
     {
       "type": 0,
-      "value": "Region"
+      "value": "क्षेत्र"
     }
   ],
   "label.regions": [
     {
       "type": 0,
-      "value": "Regions"
+      "value": "क्षेत्र"
+    }
+  ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "शेष"
     }
   ],
   "label.remove": [
     {
       "type": 0,
-      "value": "Remove"
+      "value": "हटाएं"
     }
   ],
   "label.remove-member": [
     {
       "type": 0,
-      "value": "Remove member"
+      "value": "सदस्य हटाएं"
     }
   ],
   "label.reports": [
     {
       "type": 0,
-      "value": "प्रतिवेदन"
+      "value": "रिपोर्ट्स"
     }
   ],
   "label.required": [
@@ -1024,49 +1318,43 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "आँकड़े रीसेट करें"
     }
   ],
   "label.retention": [
     {
       "type": 0,
-      "value": "Retention"
+      "value": "पुनः आगमन"
     }
   ],
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
+      "value": "यह मापें कि उपयोगकर्ता कितनी बार आपकी वेबसाइट पर लौटते हैं।"
     }
   ],
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "राजस्व"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
-    }
-  ],
-  "label.revenue-property": [
-    {
-      "type": 0,
-      "value": "Revenue Property"
+      "value": "समय के साथ अपने राजस्व को देखें।"
     }
   ],
   "label.role": [
     {
       "type": 0,
-      "value": "Role"
+      "value": "भूमिका"
     }
   ],
   "label.run-query": [
     {
       "type": 0,
-      "value": "Run query"
+      "value": "प्रश्न चलाएँ"
     }
   ],
   "label.save": [
@@ -1078,55 +1366,73 @@
   "label.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "स्क्रीन"
     }
   ],
   "label.search": [
     {
       "type": 0,
-      "value": "Search"
+      "value": "खोजें"
     }
   ],
   "label.select": [
     {
       "type": 0,
-      "value": "Select"
+      "value": "चुनें"
     }
   ],
   "label.select-date": [
     {
       "type": 0,
-      "value": "Select date"
+      "value": "तिथि चुनें"
+    }
+  ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "फ़िल्टर चुनें"
     }
   ],
   "label.select-role": [
     {
       "type": 0,
-      "value": "Select role"
+      "value": "भूमिका चुनें"
     }
   ],
   "label.select-website": [
     {
       "type": 0,
-      "value": "Select website"
+      "value": "वेबसाइट चुनें"
     }
   ],
   "label.session": [
     {
       "type": 0,
-      "value": "Session"
+      "value": "सत्र"
+    }
+  ],
+  "label.session-data": [
+    {
+      "type": 0,
+      "value": "सत्र डेटा"
     }
   ],
   "label.sessions": [
     {
       "type": 0,
-      "value": "Sessions"
+      "value": "सत्र"
     }
   ],
   "label.settings": [
     {
       "type": 0,
       "value": "समायोजन"
+    }
+  ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "साझा करें"
     }
   ],
   "label.share-url": [
@@ -1141,22 +1447,34 @@
       "value": "एक दिन"
     }
   ],
+  "label.sms": [
+    {
+      "type": 0,
+      "value": "SMS"
+    }
+  ],
+  "label.sources": [
+    {
+      "type": 0,
+      "value": "स्रोत"
+    }
+  ],
   "label.start-step": [
     {
       "type": 0,
-      "value": "Start Step"
+      "value": "प्रारंभिक चरण"
     }
   ],
   "label.steps": [
     {
       "type": 0,
-      "value": "Steps"
+      "value": "चरण"
     }
   ],
   "label.sum": [
     {
       "type": 0,
-      "value": "Sum"
+      "value": "योग"
     }
   ],
   "label.tablet": [
@@ -1165,64 +1483,88 @@
       "value": "टैबलेट"
     }
   ],
+  "label.tag": [
+    {
+      "type": 0,
+      "value": "टैग"
+    }
+  ],
+  "label.tags": [
+    {
+      "type": 0,
+      "value": "टैग्स"
+    }
+  ],
   "label.team": [
     {
       "type": 0,
-      "value": "Team"
+      "value": "टीम"
     }
   ],
   "label.team-id": [
     {
       "type": 0,
-      "value": "Team ID"
+      "value": "टीम आईडी"
     }
   ],
   "label.team-manager": [
     {
       "type": 0,
-      "value": "Team manager"
+      "value": "टीम प्रबंधक"
     }
   ],
   "label.team-member": [
     {
       "type": 0,
-      "value": "Team member"
+      "value": "टीम सदस्य"
     }
   ],
   "label.team-name": [
     {
       "type": 0,
-      "value": "Team name"
+      "value": "टीम नाम"
     }
   ],
   "label.team-owner": [
     {
       "type": 0,
-      "value": "Team owner"
+      "value": "टीम मालिक"
+    }
+  ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "टीम सेटिंग्स"
     }
   ],
   "label.team-view-only": [
     {
       "type": 0,
-      "value": "Team view only"
+      "value": "केवल टीम देखें"
     }
   ],
   "label.team-websites": [
     {
       "type": 0,
-      "value": "Team websites"
+      "value": "टीम वेबसाइट्स"
     }
   ],
   "label.teams": [
     {
       "type": 0,
-      "value": "Teams"
+      "value": "टीमें"
+    }
+  ],
+  "label.terms": [
+    {
+      "type": 0,
+      "value": "शर्तें"
     }
   ],
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "थीम"
     }
   ],
   "label.this-month": [
@@ -1351,28 +1693,10 @@
       "value": "Update"
     }
   ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "URL"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "URLs"
-    }
-  ],
   "label.user": [
     {
       "type": 0,
       "value": "User"
-    }
-  ],
-  "label.user-property": [
-    {
-      "type": 0,
-      "value": "User Property"
     }
   ],
   "label.username": [
@@ -1531,6 +1855,12 @@
       "value": "x"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
@@ -1623,6 +1953,12 @@
     {
       "type": 1,
       "value": "url"
+    }
+  ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
     }
   ],
   "message.go-to-settings": [
@@ -1719,6 +2055,18 @@
       "value": "आपके पास कोई वेबसाइट कॉन्फ़िगर नहीं है।"
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1749,6 +2097,12 @@
     {
       "type": 0,
       "value": "सफलतापूर्वक संचित कर लिया गया है।"
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1813,6 +2167,12 @@
       "value": "Triggered event"
     }
   ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
@@ -1849,12 +2209,6 @@
     {
       "type": 0,
       "value": " यन्त्र पर"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "Visitors dropped off"
     }
   ]
 }

@@ -1,184 +1,197 @@
-import { Dropdown, Icon, Icons, Item, Text } from 'react-basics';
-import LinkButton from '@/components/common/LinkButton';
-import { useLocale, useMessages, useNavigation } from '@/components/hooks';
-import SideNav from '@/components/layout/SideNav';
-import BrowsersTable from '@/components/metrics/BrowsersTable';
-import CitiesTable from '@/components/metrics/CitiesTable';
-import CountriesTable from '@/components/metrics/CountriesTable';
-import DevicesTable from '@/components/metrics/DevicesTable';
-import EventsTable from '@/components/metrics/EventsTable';
-import HostsTable from '@/components/metrics/HostsTable';
-import LanguagesTable from '@/components/metrics/LanguagesTable';
-import OSTable from '@/components/metrics/OSTable';
-import PagesTable from '@/components/metrics/PagesTable';
-import QueryParametersTable from '@/components/metrics/QueryParametersTable';
-import ReferrersTable from '@/components/metrics/ReferrersTable';
-import RegionsTable from '@/components/metrics/RegionsTable';
-import ScreenTable from '@/components/metrics/ScreenTable';
-import TagsTable from '@/components/metrics/TagsTable';
-import ChannelsTable from '@/components/metrics/ChannelsTable';
-import styles from './WebsiteExpandedView.module.css';
+import { Grid, Column } from '@umami/react-zen';
+import { useMessages, useNavigation } from '@/components/hooks';
+import { MetricsExpandedTable } from '@/components/metrics/MetricsExpandedTable';
+import { SideMenu } from '@/components/common/SideMenu';
+import {
+  LogOut,
+  LogIn,
+  Search,
+  Type,
+  SquareSlash,
+  Share2,
+  Megaphone,
+  Earth,
+  Globe,
+  Landmark,
+  MapPin,
+  AppWindow,
+  Laptop,
+  Languages,
+  Monitor,
+  Cpu,
+  Network,
+  Tag,
+} from '@/components/icons';
+import { Lightning } from '@/components/svg';
 
-const views = {
-  url: PagesTable,
-  entry: PagesTable,
-  exit: PagesTable,
-  title: PagesTable,
-  referrer: ReferrersTable,
-  grouped: ReferrersTable,
-  host: HostsTable,
-  browser: BrowsersTable,
-  os: OSTable,
-  device: DevicesTable,
-  screen: ScreenTable,
-  country: CountriesTable,
-  region: RegionsTable,
-  city: CitiesTable,
-  language: LanguagesTable,
-  event: EventsTable,
-  query: QueryParametersTable,
-  tag: TagsTable,
-  channel: ChannelsTable,
-};
-
-export default function WebsiteExpandedView({
+export function WebsiteExpandedView({
   websiteId,
-  domainName,
+  onClose,
 }: {
   websiteId: string;
-  domainName?: string;
+  onClose?: () => void;
 }) {
-  const { dir } = useLocale();
   const { formatMessage, labels } = useMessages();
   const {
-    router,
-    renderUrl,
+    updateParams,
     query: { view },
   } = useNavigation();
 
   const items = [
     {
-      key: 'url',
       label: formatMessage(labels.pages),
-      url: renderUrl({ view: 'url' }),
+      items: [
+        {
+          id: 'path',
+          label: formatMessage(labels.path),
+          path: updateParams({ view: 'path' }),
+          icon: <SquareSlash />,
+        },
+        {
+          id: 'entry',
+          label: formatMessage(labels.entry),
+          path: updateParams({ view: 'entry' }),
+          icon: <LogIn />,
+        },
+        {
+          id: 'exit',
+          label: formatMessage(labels.exit),
+          path: updateParams({ view: 'exit' }),
+          icon: <LogOut />,
+        },
+        {
+          id: 'title',
+          label: formatMessage(labels.title),
+          path: updateParams({ view: 'title' }),
+          icon: <Type />,
+        },
+        {
+          id: 'query',
+          label: formatMessage(labels.query),
+          path: updateParams({ view: 'query' }),
+          icon: <Search />,
+        },
+      ],
     },
     {
-      key: 'referrer',
-      label: formatMessage(labels.referrers),
-      url: renderUrl({ view: 'referrer' }),
+      label: formatMessage(labels.sources),
+      items: [
+        {
+          id: 'referrer',
+          label: formatMessage(labels.referrer),
+          path: updateParams({ view: 'referrer' }),
+          icon: <Share2 />,
+        },
+        {
+          id: 'channel',
+          label: formatMessage(labels.channel),
+          path: updateParams({ view: 'channel' }),
+          icon: <Megaphone />,
+        },
+        {
+          id: 'domain',
+          label: formatMessage(labels.domain),
+          path: updateParams({ view: 'domain' }),
+          icon: <Globe />,
+        },
+      ],
     },
     {
-      key: 'channel',
-      label: formatMessage(labels.channels),
-      url: renderUrl({ view: 'channel' }),
+      label: formatMessage(labels.location),
+      items: [
+        {
+          id: 'country',
+          label: formatMessage(labels.country),
+          path: updateParams({ view: 'country' }),
+          icon: <Earth />,
+        },
+        {
+          id: 'region',
+          label: formatMessage(labels.region),
+          path: updateParams({ view: 'region' }),
+          icon: <MapPin />,
+        },
+        {
+          id: 'city',
+          label: formatMessage(labels.city),
+          path: updateParams({ view: 'city' }),
+          icon: <Landmark />,
+        },
+      ],
     },
     {
-      key: 'browser',
-      label: formatMessage(labels.browsers),
-      url: renderUrl({ view: 'browser' }),
+      label: formatMessage(labels.environment),
+      items: [
+        {
+          id: 'browser',
+          label: formatMessage(labels.browser),
+          path: updateParams({ view: 'browser' }),
+          icon: <AppWindow />,
+        },
+        {
+          id: 'os',
+          label: formatMessage(labels.os),
+          path: updateParams({ view: 'os' }),
+          icon: <Cpu />,
+        },
+        {
+          id: 'device',
+          label: formatMessage(labels.device),
+          path: updateParams({ view: 'device' }),
+          icon: <Laptop />,
+        },
+        {
+          id: 'language',
+          label: formatMessage(labels.language),
+          path: updateParams({ view: 'language' }),
+          icon: <Languages />,
+        },
+        {
+          id: 'screen',
+          label: formatMessage(labels.screen),
+          path: updateParams({ view: 'screen' }),
+          icon: <Monitor />,
+        },
+      ],
     },
     {
-      key: 'os',
-      label: formatMessage(labels.os),
-      url: renderUrl({ view: 'os' }),
-    },
-    {
-      key: 'device',
-      label: formatMessage(labels.devices),
-      url: renderUrl({ view: 'device' }),
-    },
-    {
-      key: 'country',
-      label: formatMessage(labels.countries),
-      url: renderUrl({ view: 'country' }),
-    },
-    {
-      key: 'region',
-      label: formatMessage(labels.regions),
-      url: renderUrl({ view: 'region' }),
-    },
-    {
-      key: 'city',
-      label: formatMessage(labels.cities),
-      url: renderUrl({ view: 'city' }),
-    },
-    {
-      key: 'language',
-      label: formatMessage(labels.languages),
-      url: renderUrl({ view: 'language' }),
-    },
-    {
-      key: 'screen',
-      label: formatMessage(labels.screens),
-      url: renderUrl({ view: 'screen' }),
-    },
-    {
-      key: 'event',
-      label: formatMessage(labels.events),
-      url: renderUrl({ view: 'event' }),
-    },
-    {
-      key: 'query',
-      label: formatMessage(labels.queryParameters),
-      url: renderUrl({ view: 'query' }),
-    },
-    {
-      key: 'host',
-      label: formatMessage(labels.hosts),
-      url: renderUrl({ view: 'host' }),
-    },
-    {
-      key: 'tag',
-      label: formatMessage(labels.tags),
-      url: renderUrl({ view: 'tag' }),
+      label: formatMessage(labels.other),
+      items: [
+        {
+          id: 'event',
+          label: formatMessage(labels.event),
+          path: updateParams({ view: 'event' }),
+          icon: <Lightning />,
+        },
+        {
+          id: 'hostname',
+          label: formatMessage(labels.hostname),
+          path: updateParams({ view: 'hostname' }),
+          icon: <Network />,
+        },
+        {
+          id: 'tag',
+          label: formatMessage(labels.tag),
+          path: updateParams({ view: 'tag' }),
+          icon: <Tag />,
+        },
+      ],
     },
   ];
 
-  const DetailsComponent = views[view] || (() => null);
-
-  const handleChange = (view: any) => {
-    router.push(renderUrl({ view }));
-  };
-
-  const renderValue = (value: string) => items.find(({ key }) => key === value)?.label;
-
   return (
-    <div className={styles.layout}>
-      <div className={styles.menu}>
-        <LinkButton
-          href={renderUrl({ view: undefined })}
-          className={styles.back}
-          variant="quiet"
-          scroll={false}
-        >
-          <Icon rotate={dir === 'rtl' ? 0 : 180}>
-            <Icons.ArrowRight />
-          </Icon>
-          <Text>{formatMessage(labels.back)}</Text>
-        </LinkButton>
-        <SideNav className={styles.nav} items={items} selectedKey={view} shallow={true} />
-        <Dropdown
-          className={styles.dropdown}
-          items={items}
-          value={view}
-          renderValue={renderValue}
-          onChange={handleChange}
-          alignment="end"
-        >
-          {({ key, label }) => <Item key={key}>{label}</Item>}
-        </Dropdown>
-      </div>
-      <div className={styles.content}>
-        <DetailsComponent
+    <Grid columns="auto 1fr" gap="6" height="100%" overflow="hidden">
+      <Column gap="6" border="right" paddingRight="3" overflowY="auto">
+        <SideMenu items={items} selectedKey={view} />
+      </Column>
+      <Column overflow="hidden">
+        <MetricsExpandedTable
+          title={formatMessage(labels[view])}
+          type={view}
           websiteId={websiteId}
-          domainName={domainName}
-          animate={false}
-          virtualize={true}
-          itemCount={25}
-          allowFilter={true}
-          allowSearch={true}
+          onClose={onClose}
         />
-      </div>
-    </div>
+      </Column>
+    </Grid>
   );
 }

@@ -1,11 +1,13 @@
 import prisma from '@/lib/prisma';
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
-import { QueryFilters, WebsiteEventData } from '@/lib/types';
+import { QueryFilters } from '@/lib/types';
+
+const FUNCTION_NAME = 'getSessionDataProperties';
 
 export async function getSessionDataProperties(
   ...args: [websiteId: string, filters: QueryFilters & { propertyName?: string }]
-): Promise<WebsiteEventData[]> {
+) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -17,9 +19,12 @@ async function relationalQuery(
   filters: QueryFilters & { propertyName?: string },
 ) {
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, filters, {
-    columns: { propertyName: 'data_key' },
-  });
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters(
+    { ...filters, websiteId },
+    {
+      columns: { propertyName: 'data_key' },
+    },
+  );
 
   return rawQuery(
     `
@@ -27,7 +32,8 @@ async function relationalQuery(
         data_key as "propertyName",
         count(distinct session_data.session_id) as "total"
     from website_event 
-      ${cohortQuery}
+    ${cohortQuery}
+    ${joinSessionQuery}
     join session_data 
         on session_data.session_id = website_event.session_id
     where website_event.website_id = {{websiteId::uuid}}
@@ -37,7 +43,8 @@ async function relationalQuery(
     order by 2 desc
     limit 500
     `,
-    params,
+    queryParams,
+    FUNCTION_NAME,
   );
 }
 
@@ -46,9 +53,12 @@ async function clickhouseQuery(
   filters: QueryFilters & { propertyName?: string },
 ): Promise<{ propertyName: string; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, filters, {
-    columns: { propertyName: 'data_key' },
-  });
+  const { filterQuery, cohortQuery, queryParams } = parseFilters(
+    { ...filters, websiteId },
+    {
+      columns: { propertyName: 'data_key' },
+    },
+  );
 
   return rawQuery(
     `
@@ -67,6 +77,7 @@ async function clickhouseQuery(
     order by 2 desc
     limit 500
     `,
-    params,
+    queryParams,
+    FUNCTION_NAME,
   );
 }

@@ -1,13 +1,18 @@
 import { z } from 'zod';
-import { canCreateTeamWebsite, canCreateWebsite } from '@/lib/auth';
+import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { json, unauthorized } from '@/lib/response';
 import { uuid } from '@/lib/crypto';
-import { parseRequest } from '@/lib/request';
-import { createWebsite, getUserWebsites } from '@/queries';
-import { pagingParams } from '@/lib/schema';
+import { getQueryFilters, parseRequest } from '@/lib/request';
+import { pagingParams, searchParams } from '@/lib/schema';
+import { createWebsite } from '@/queries/prisma';
+import { getAllUserWebsitesIncludingTeamOwner, getUserWebsites } from '@/queries/prisma/website';
 
 export async function GET(request: Request) {
-  const schema = z.object({ ...pagingParams });
+  const schema = z.object({
+    ...pagingParams,
+    ...searchParams,
+    includeTeams: z.string().optional(),
+  });
 
   const { auth, query, error } = await parseRequest(request, schema);
 
@@ -15,9 +20,15 @@ export async function GET(request: Request) {
     return error();
   }
 
-  const websites = await getUserWebsites(auth.user.id, query);
+  const userId = auth.user.id;
 
-  return json(websites);
+  const filters = await getQueryFilters(query);
+
+  if (query.includeTeams) {
+    return json(await getAllUserWebsitesIncludingTeamOwner(userId, filters));
+  }
+
+  return json(await getUserWebsites(userId, filters));
 }
 
 export async function POST(request: Request) {
@@ -26,7 +37,7 @@ export async function POST(request: Request) {
     domain: z.string().max(500),
     shareId: z.string().max(50).nullable().optional(),
     teamId: z.string().nullable().optional(),
-    id: z.string().uuid().nullable().optional(),
+    id: z.uuid().nullable().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);

@@ -1,7 +1,14 @@
 import prisma from '@/lib/prisma';
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
-import { QueryFilters, WebsiteEventData } from '@/lib/types';
+import { QueryFilters } from '@/lib/types';
+
+const FUNCTION_NAME = 'getEventDataValues';
+
+interface WebsiteEventData {
+  value: string;
+  total: number;
+}
 
 export async function getEventDataValues(
   ...args: [
@@ -20,7 +27,10 @@ async function relationalQuery(
   filters: QueryFilters & { eventName?: string; propertyName?: string },
 ) {
   const { rawQuery, parseFilters, getDateSQL } = prisma;
-  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, filters);
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
 
   return rawQuery(
     `
@@ -36,6 +46,7 @@ async function relationalQuery(
       and website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
     ${cohortQuery}
+    ${joinSessionQuery}
     where event_data.website_id = {{websiteId::uuid}}
       and event_data.created_at between {{startDate}} and {{endDate}}
       and event_data.data_key = {{propertyName}}
@@ -45,7 +56,8 @@ async function relationalQuery(
     order by 2 desc
     limit 100
     `,
-    params,
+    queryParams,
+    FUNCTION_NAME,
   );
 }
 
@@ -54,7 +66,7 @@ async function clickhouseQuery(
   filters: QueryFilters & { eventName?: string; propertyName?: string },
 ): Promise<{ value: string; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, filters);
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
 
   return rawQuery(
     `
@@ -74,6 +86,7 @@ async function clickhouseQuery(
     order by 2 desc
     limit 100
     `,
-    params,
+    queryParams,
+    FUNCTION_NAME,
   );
 }

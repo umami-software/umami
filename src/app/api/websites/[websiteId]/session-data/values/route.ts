@@ -1,7 +1,7 @@
-import { canViewWebsite } from '@/lib/auth';
-import { parseRequest } from '@/lib/request';
+import { canViewWebsite } from '@/permissions';
+import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { getSessionDataValues } from '@/queries';
+import { getSessionDataValues } from '@/queries/sql';
 import { z } from 'zod';
 
 export async function GET(
@@ -20,19 +20,17 @@ export async function GET(
     return error();
   }
 
-  const { startAt, endAt, propertyName } = query;
   const { websiteId } = await params;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const startDate = new Date(+startAt);
-  const endDate = new Date(+endAt);
+  const { propertyName } = query;
+  const filters = await getQueryFilters(query, websiteId);
 
   const data = await getSessionDataValues(websiteId, {
-    startDate,
-    endDate,
+    ...filters,
     propertyName,
   });
 

@@ -1,11 +1,11 @@
 import { z } from 'zod';
-import { checkPassword } from '@/lib/auth';
 import { createSecureToken } from '@/lib/jwt';
 import redis from '@/lib/redis';
-import { getUserByUsername } from '@/queries';
+import { getUserByUsername } from '@/queries/prisma';
 import { json, unauthorized } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
 import { saveAuth } from '@/lib/auth';
+import { checkPassword } from '@/lib/password';
 import { secret } from '@/lib/crypto';
 import { ROLES } from '@/lib/constants';
 
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
   const user = await getUserByUsername(username, { includePassword: true });
 
   if (!user || !checkPassword(password, user.password)) {
-    return unauthorized('message.incorrect-username-password');
+    return unauthorized({ code: 'incorrect-username-password' });
   }
 
   const { id, role, createdAt } = user;

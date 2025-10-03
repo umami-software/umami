@@ -1,36 +1,65 @@
 import { ReactNode } from 'react';
-import classNames from 'classnames';
-import { Loading } from 'react-basics';
-import ErrorMessage from '@/components/common/ErrorMessage';
-import Empty from '@/components/common/Empty';
-import styles from './LoadingPanel.module.css';
+import { Loading, Column, type ColumnProps } from '@umami/react-zen';
+import { ErrorMessage } from '@/components/common/ErrorMessage';
+import { Empty } from '@/components/common/Empty';
+
+export interface LoadingPanelProps extends ColumnProps {
+  data?: any;
+  error?: unknown;
+  isEmpty?: boolean;
+  isLoading?: boolean;
+  isFetching?: boolean;
+  loadingIcon?: 'dots' | 'spinner';
+  loadingPlacement?: 'center' | 'absolute' | 'inline';
+  renderEmpty?: () => ReactNode;
+  children: ReactNode;
+}
 
 export function LoadingPanel({
   data,
   error,
-  isFetched,
+  isEmpty,
   isLoading,
+  isFetching,
   loadingIcon = 'dots',
-  className,
+  loadingPlacement = 'absolute',
+  renderEmpty = () => <Empty />,
   children,
-}: {
-  data?: any;
-  error?: Error;
-  isFetched?: boolean;
-  isLoading?: boolean;
-  loadingIcon?: 'dots' | 'spinner';
-  isEmpty?: boolean;
-  className?: string;
-  children: ReactNode;
-}) {
-  const isEmpty = !isLoading && isFetched && data && Array.isArray(data) && data.length === 0;
+  ...props
+}: LoadingPanelProps) {
+  const empty = isEmpty ?? checkEmpty(data);
 
   return (
-    <div className={classNames(styles.panel, className)}>
-      {isLoading && !isFetched && <Loading className={styles.loading} icon={loadingIcon} />}
+    <>
+      {/* Show loading spinner only if no data exists */}
+      {(isLoading || isFetching) && (
+        <Column position="relative" height="100%" {...props}>
+          <Loading icon={loadingIcon} placement={loadingPlacement} />
+        </Column>
+      )}
+
+      {/* Show error */}
       {error && <ErrorMessage />}
-      {!error && isEmpty && <Empty />}
-      {!error && !isEmpty && data && children}
-    </div>
+
+      {/* Show empty state (once loaded) */}
+      {!error && !isLoading && !isFetching && empty && renderEmpty()}
+
+      {/* Show main content when data exists */}
+      {!isLoading && !isFetching && !error && !empty && children}
+    </>
   );
+}
+
+function checkEmpty(data: any) {
+  if (!data) return false;
+
+  if (Array.isArray(data)) {
+    return data.length <= 0;
+  }
+
+  if (typeof data === 'object') {
+    return Object.keys(data).length <= 0;
+  }
+
+  return !!data;
 }

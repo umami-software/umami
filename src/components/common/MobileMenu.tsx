@@ -43,5 +43,3 @@ export function MobileMenu({
     document.body,
   );
 }
-
-export default MobileMenu;

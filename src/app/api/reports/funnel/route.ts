@@ -1,47 +1,26 @@
-import { z } from 'zod';
-import { canViewWebsite } from '@/lib/auth';
+import { canViewWebsite } from '@/permissions';
 import { unauthorized, json } from '@/lib/response';
-import { parseRequest } from '@/lib/request';
-import { getFunnel } from '@/queries';
-import { reportParms } from '@/lib/schema';
+import { parseRequest, getQueryFilters, setWebsiteDate } from '@/lib/request';
+import { FunnelParameters, getFunnel } from '@/queries/sql';
+import { reportResultSchema } from '@/lib/schema';
 
 export async function POST(request: Request) {
-  const schema = z.object({
-    ...reportParms,
-    window: z.coerce.number().positive(),
-    steps: z
-      .array(
-        z.object({
-          type: z.string(),
-          value: z.string(),
-        }),
-      )
-      .min(2),
-  });
-
-  const { auth, body, error } = await parseRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, reportResultSchema);
 
   if (error) {
     return error();
   }
 
-  const {
-    websiteId,
-    steps,
-    window,
-    dateRange: { startDate, endDate },
-  } = body;
+  const { websiteId } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const data = await getFunnel(websiteId, {
-    startDate: new Date(startDate),
-    endDate: new Date(endDate),
-    steps,
-    windowMinutes: +window,
-  });
+  const parameters = await setWebsiteDate(websiteId, body.parameters);
+  const filters = await getQueryFilters(body.filters, websiteId);
+
+  const data = await getFunnel(websiteId, parameters as FunnelParameters, filters);
 
   return json(data);
 }

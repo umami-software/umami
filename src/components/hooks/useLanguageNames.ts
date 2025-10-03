@@ -30,5 +30,3 @@ export function useLanguageNames(locale) {
 
   return { languageNames: list };
 }
-
-export default useLanguageNames;

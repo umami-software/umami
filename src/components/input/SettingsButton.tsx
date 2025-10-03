@@ -1,32 +1,84 @@
-import { Button, Icon, PopupTrigger, Popup, Form, FormRow } from 'react-basics';
-import TimezoneSetting from '@/app/(main)/profile/TimezoneSetting';
-import DateRangeSetting from '@/app/(main)/profile/DateRangeSetting';
-import Icons from '@/components/icons';
-import { useMessages } from '@/components/hooks';
-import styles from './SettingsButton.module.css';
+import { Key } from 'react';
+import {
+  Icon,
+  Button,
+  MenuTrigger,
+  Popover,
+  Menu,
+  MenuItem,
+  MenuSeparator,
+  MenuSection,
+} from '@umami/react-zen';
+import { useMessages, useLoginQuery, useNavigation, useConfig } from '@/components/hooks';
+import {
+  LogOut,
+  LockKeyhole,
+  Settings,
+  UserCircle,
+  LifeBuoy,
+  BookText,
+  ExternalLink,
+} from '@/components/icons';
+import { DOCS_URL } from '@/lib/constants';
 
 export function SettingsButton() {
   const { formatMessage, labels } = useMessages();
+  const { user } = useLoginQuery();
+  const { router } = useNavigation();
+  const { cloudMode } = useConfig();
+
+  const handleAction = (id: Key) => {
+    const url = id.toString();
+
+    if (cloudMode) {
+      if (url === '/docs') {
+        window.open(DOCS_URL, '_blank');
+      } else {
+        window.location.href = url;
+      }
+    } else {
+      router.push(url);
+    }
+  };
 
   return (
-    <PopupTrigger>
-      <Button variant="quiet">
+    <MenuTrigger>
+      <Button data-test="button-profile" variant="quiet" autoFocus={false}>
         <Icon>
-          <Icons.Gear />
+          <UserCircle />
         </Icon>
       </Button>
-      <Popup className={styles.popup} position="bottom" alignment="end">
-        <Form>
-          <FormRow label={formatMessage(labels.timezone)}>
-            <TimezoneSetting />
-          </FormRow>
-          <FormRow label={formatMessage(labels.defaultDateRange)}>
-            <DateRangeSetting />
-          </FormRow>
-        </Form>
-      </Popup>
-    </PopupTrigger>
+      <Popover placement="bottom end">
+        <Menu autoFocus="last" onAction={handleAction}>
+          <MenuSection title={user.username}>
+            <MenuSeparator />
+            <MenuItem id="/settings" icon={<Settings />} label={formatMessage(labels.settings)} />
+            {!cloudMode && user.isAdmin && (
+              <MenuItem id="/admin" icon={<LockKeyhole />} label={formatMessage(labels.admin)} />
+            )}
+            {cloudMode && (
+              <>
+                <MenuItem
+                  id="/docs"
+                  icon={<BookText />}
+                  label={formatMessage(labels.documentation)}
+                >
+                  <Icon color="muted">
+                    <ExternalLink />
+                  </Icon>
+                </MenuItem>
+                <MenuItem
+                  id="/settings/support"
+                  icon={<LifeBuoy />}
+                  label={formatMessage(labels.support)}
+                />
+              </>
+            )}
+            <MenuSeparator />
+            <MenuItem id="/logout" icon={<LogOut />} label={formatMessage(labels.logout)} />
+          </MenuSection>
+        </Menu>
+      </Popover>
+    </MenuTrigger>
   );
 }
-
-export default SettingsButton;

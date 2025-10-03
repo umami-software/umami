@@ -1,13 +1,13 @@
 import { setItem } from '@/lib/storage';
 import { TIMEZONE_CONFIG } from '@/lib/constants';
 import { formatInTimeZone, zonedTimeToUtc, utcToZonedTime } from 'date-fns-tz';
-import useStore, { setTimezone } from '@/store/app';
-import useLocale from './useLocale';
+import { useApp, setTimezone } from '@/store/app';
+import { useLocale } from './useLocale';
 
 const selector = (state: { timezone: string }) => state.timezone;
 
 export function useTimezone() {
-  const timezone = useStore(selector);
+  const timezone = useApp(selector);
   const { dateLocale } = useLocale();
 
   const saveTimezone = (value: string) => {
@@ -36,5 +36,3 @@ export function useTimezone() {
 
   return { timezone, saveTimezone, formatTimezoneDate, toUtc, fromUtc };
 }
-
-export default useTimezone;

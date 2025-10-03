@@ -23,6 +23,12 @@
       "value": "Дадаць"
     }
   ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "Дадаць дошку"
+    }
+  ],
   "label.add-description": [
     {
       "type": 0,
@@ -53,6 +59,12 @@
       "value": "Адміністратар"
     }
   ],
+  "label.affiliate": [
+    {
+      "type": 0,
+      "value": "Партнёр"
+    }
+  ],
   "label.after": [
     {
       "type": 0,
@@ -77,6 +89,24 @@
       "value": "Аналітыка"
     }
   ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "Ужыць"
+    }
+  ],
+  "label.attribution": [
+    {
+      "type": 0,
+      "value": "Атрыбуцыя"
+    }
+  ],
+  "label.attribution-description": [
+    {
+      "type": 0,
+      "value": "Глядзіце, як карыстальнікі ўзаемадзейнічаюць з вашым маркетынгам і што прыводзіць да канверсій."
+    }
+  ],
   "label.average": [
     {
       "type": 0,
@@ -93,6 +123,12 @@
     {
       "type": 0,
       "value": "Да"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "Дошкі"
     }
   ],
   "label.bounce-rate": [
@@ -119,6 +155,12 @@
       "value": "Браўзеры"
     }
   ],
+  "label.campaigns": [
+    {
+      "type": 0,
+      "value": "Кампаніі"
+    }
+  ],
   "label.cancel": [
     {
       "type": 0,
@@ -129,6 +171,12 @@
     {
       "type": 0,
       "value": "Змяніць пароль"
+    }
+  ],
+  "label.channels": [
+    {
+      "type": 0,
+      "value": "Каналы"
     }
   ],
   "label.cities": [
@@ -149,10 +197,22 @@
       "value": "Ачысціць усё"
     }
   ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "Кагорта"
+    }
+  ],
   "label.compare": [
     {
       "type": 0,
       "value": "Параўнаць"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "Параўнаць даты"
     }
   ],
   "label.confirm": [
@@ -173,10 +233,34 @@
       "value": "Уключае"
     }
   ],
+  "label.content": [
+    {
+      "type": 0,
+      "value": "Змест"
+    }
+  ],
   "label.continue": [
     {
       "type": 0,
       "value": "Працягнуць"
+    }
+  ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "Канверсія"
+    }
+  ],
+  "label.conversion-rate": [
+    {
+      "type": 0,
+      "value": "Канверсійная стаўка"
+    }
+  ],
+  "label.conversion-step": [
+    {
+      "type": 0,
+      "value": "Крок канверсіі"
     }
   ],
   "label.count": [
@@ -231,6 +315,12 @@
     {
       "type": 0,
       "value": "Створана"
+    }
+  ],
+  "label.currency": [
+    {
+      "type": 0,
+      "value": "Валюта"
     }
   ],
   "label.current": [
@@ -347,16 +437,40 @@
       "value": "Прылады"
     }
   ],
+  "label.direct": [
+    {
+      "type": 0,
+      "value": "Прама"
+    }
+  ],
   "label.dismiss": [
     {
       "type": 0,
       "value": "Адхіліць"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "Унікальны ID"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
       "value": "Не ўключае"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "Не ўключае"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "Не існуе"
     }
   ],
   "label.domain": [
@@ -389,6 +503,12 @@
       "value": "Рэдагаваць удзельніка"
     }
   ],
+  "label.email": [
+    {
+      "type": 0,
+      "value": "Email"
+    }
+  ],
   "label.enable-share-url": [
     {
       "type": 0,
@@ -419,10 +539,22 @@
       "value": "Дадзеныя падзеі"
     }
   ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "Назва падзеі"
+    }
+  ],
   "label.events": [
     {
       "type": 0,
       "value": "Падзеі"
+    }
+  ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "Існуе"
     }
   ],
   "label.exit": [
@@ -473,10 +605,16 @@
       "value": "Фільтры"
     }
   ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "Першы клік"
+    }
+  ],
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "Першы раз убачана"
     }
   ],
   "label.funnel": [
@@ -489,6 +627,12 @@
     {
       "type": 0,
       "value": "Разумець паказчыкі канверсіі і адмоваў."
+    }
+  ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "Варонкі"
     }
   ],
   "label.goal": [
@@ -521,16 +665,28 @@
       "value": "Больш чым або роўна"
     }
   ],
-  "label.host": [
+  "label.grouped": [
     {
       "type": 0,
-      "value": "Хост"
+      "value": "Групаваны"
     }
   ],
-  "label.hosts": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "Хасты"
+      "value": "Імя хаста"
+    }
+  ],
+  "label.includes": [
+    {
+      "type": 0,
+      "value": "Уключае"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "Інсайт"
     }
   ],
   "label.insights": [
@@ -551,6 +707,12 @@
       "value": "З'яўляецца"
     }
   ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "Ложна"
+    }
+  ],
   "label.is-not": [
     {
       "type": 0,
@@ -567,6 +729,12 @@
     {
       "type": 0,
       "value": "Устаноўлена"
+    }
+  ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "Праўда"
     }
   ],
   "label.join": [
@@ -593,6 +761,12 @@
       "value": "Разумець як карыстальнікі навігуюць па сайце."
     }
   ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "Маршруты"
+    }
+  ],
   "label.language": [
     {
       "type": 0,
@@ -609,6 +783,12 @@
     {
       "type": 0,
       "value": "Ноўтбук"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "Апошні клік"
     }
   ],
   "label.last-days": [
@@ -683,6 +863,12 @@
       "value": "Менш чым або роўна"
     }
   ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "Спасылкі"
+    }
+  ],
   "label.login": [
     {
       "type": 0,
@@ -713,6 +899,18 @@
       "value": "Максімум"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Разгарнуць"
+    }
+  ],
+  "label.medium": [
+    {
+      "type": 0,
+      "value": "Сярэдні"
+    }
+  ],
   "label.member": [
     {
       "type": 0,
@@ -735,6 +933,12 @@
     {
       "type": 0,
       "value": "Мабільны"
+    }
+  ],
+  "label.model": [
+    {
+      "type": 0,
+      "value": "Мадэль"
     }
   ],
   "label.more": [
@@ -813,10 +1017,46 @@
       "value": "ОК"
     }
   ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
+    }
+  ],
+  "label.organic-search": [
+    {
+      "type": 0,
+      "value": "Арганічны пошук"
+    }
+  ],
+  "label.organic-shopping": [
+    {
+      "type": 0,
+      "value": "Арганічныя пакупкі"
+    }
+  ],
+  "label.organic-social": [
+    {
+      "type": 0,
+      "value": "Арганічныя сацыяльныя сеткі"
+    }
+  ],
+  "label.organic-video": [
+    {
+      "type": 0,
+      "value": "Арганічнае відэа"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
       "value": "Аперацыйная сістэма"
+    }
+  ],
+  "label.other": [
+    {
+      "type": 0,
+      "value": "Іншае"
     }
   ],
   "label.overview": [
@@ -829,6 +1069,12 @@
     {
       "type": 0,
       "value": "Уласнік"
+    }
+  ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "Старонка"
     }
   ],
   "label.page-of": [
@@ -867,6 +1113,36 @@
       "value": "Старонкі"
     }
   ],
+  "label.paid-ads": [
+    {
+      "type": 0,
+      "value": "Платная рэклама"
+    }
+  ],
+  "label.paid-search": [
+    {
+      "type": 0,
+      "value": "Платаны пошук"
+    }
+  ],
+  "label.paid-shopping": [
+    {
+      "type": 0,
+      "value": "Платныя пакупкі"
+    }
+  ],
+  "label.paid-social": [
+    {
+      "type": 0,
+      "value": "Платныя сацыяльныя сеткі"
+    }
+  ],
+  "label.paid-video": [
+    {
+      "type": 0,
+      "value": "Платнае відэа"
+    }
+  ],
   "label.password": [
     {
       "type": 0,
@@ -876,13 +1152,19 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "Шлях"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "Шляхи"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "Пікселі"
     }
   ],
   "label.powered-by": [
@@ -922,7 +1204,7 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "Уласцівасці"
     }
   ],
   "label.property": [
@@ -953,6 +1235,12 @@
     {
       "type": 0,
       "value": "У рэяльным часе"
+    }
+  ],
+  "label.referral": [
+    {
+      "type": 0,
+      "value": "Рэферал"
     }
   ],
   "label.referrer": [
@@ -989,6 +1277,12 @@
     {
       "type": 0,
       "value": "Рэгіёны"
+    }
+  ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "Засталося"
     }
   ],
   "label.remove": [
@@ -1051,12 +1345,6 @@
       "value": "Look into your revenue across time."
     }
   ],
-  "label.revenue-property": [
-    {
-      "type": 0,
-      "value": "Revenue Property"
-    }
-  ],
   "label.role": [
     {
       "type": 0,
@@ -1099,6 +1387,12 @@
       "value": "Выбраць дату"
     }
   ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "Выбраць фільтр"
+    }
+  ],
   "label.select-role": [
     {
       "type": 0,
@@ -1114,7 +1408,13 @@
   "label.session": [
     {
       "type": 0,
-      "value": "Session"
+      "value": "Сесія"
+    }
+  ],
+  "label.session-data": [
+    {
+      "type": 0,
+      "value": "Дадзеныя сесіі"
     }
   ],
   "label.sessions": [
@@ -1129,6 +1429,12 @@
       "value": "Налады"
     }
   ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "Падзяліцца"
+    }
+  ],
   "label.share-url": [
     {
       "type": 0,
@@ -1139,6 +1445,18 @@
     {
       "type": 0,
       "value": "Адзін дзень"
+    }
+  ],
+  "label.sms": [
+    {
+      "type": 0,
+      "value": "SMS"
+    }
+  ],
+  "label.sources": [
+    {
+      "type": 0,
+      "value": "Крыніцы"
     }
   ],
   "label.start-step": [
@@ -1163,6 +1481,18 @@
     {
       "type": 0,
       "value": "Планшэт"
+    }
+  ],
+  "label.tag": [
+    {
+      "type": 0,
+      "value": "Tag"
+    }
+  ],
+  "label.tags": [
+    {
+      "type": 0,
+      "value": "Tags"
     }
   ],
   "label.team": [
@@ -1201,6 +1531,12 @@
       "value": "Уласнік каманды"
     }
   ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "Налады каманды"
+    }
+  ],
   "label.team-view-only": [
     {
       "type": 0,
@@ -1217,6 +1553,12 @@
     {
       "type": 0,
       "value": "Каманды"
+    }
+  ],
+  "label.terms": [
+    {
+      "type": 0,
+      "value": "Тэрміны"
     }
   ],
   "label.theme": [
@@ -1351,28 +1693,10 @@
       "value": "Абнавіць"
     }
   ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "URL"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "URLs"
-    }
-  ],
   "label.user": [
     {
       "type": 0,
       "value": "Карыстальнік"
-    }
-  ],
-  "label.user-property": [
-    {
-      "type": 0,
-      "value": "User Property"
     }
   ],
   "label.username": [
@@ -1531,6 +1855,12 @@
       "value": "x"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
@@ -1623,6 +1953,12 @@
     {
       "type": 1,
       "value": "url"
+    }
+  ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
     }
   ],
   "message.go-to-settings": [
@@ -1719,6 +2055,18 @@
       "value": "Вы не наладзілі ніводнага сайта."
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1749,6 +2097,12 @@
     {
       "type": 0,
       "value": "Захавана паспяхова."
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1813,6 +2167,12 @@
       "value": "Падзея якая спрацавала"
     }
   ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
@@ -1857,12 +2217,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "Наведвальнікі сышлі"
     }
   ]
 }

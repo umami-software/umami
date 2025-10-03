@@ -2,43 +2,49 @@
   "label.access-code": [
     {
       "type": 0,
-      "value": "Access code"
+      "value": "Pristupni kod"
     }
   ],
   "label.actions": [
     {
       "type": 0,
-      "value": "Actions"
+      "value": "Akcije"
     }
   ],
   "label.activity": [
     {
       "type": 0,
-      "value": "Activity log"
+      "value": "Dnevnik aktivnosti"
     }
   ],
   "label.add": [
     {
       "type": 0,
-      "value": "Add"
+      "value": "Dodaj"
+    }
+  ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "Dodaj ploču"
     }
   ],
   "label.add-description": [
     {
       "type": 0,
-      "value": "Add description"
+      "value": "Dodaj opis"
     }
   ],
   "label.add-member": [
     {
       "type": 0,
-      "value": "Add member"
+      "value": "Dodaj člana"
     }
   ],
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "Dodaj korak"
     }
   ],
   "label.add-website": [
@@ -53,10 +59,16 @@
       "value": "Administrator"
     }
   ],
+  "label.affiliate": [
+    {
+      "type": 0,
+      "value": "Partner"
+    }
+  ],
   "label.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "Nakon"
     }
   ],
   "label.all": [
@@ -74,13 +86,31 @@
   "label.analytics": [
     {
       "type": 0,
-      "value": "Analytics"
+      "value": "Analitika"
+    }
+  ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "Primijeni"
+    }
+  ],
+  "label.attribution": [
+    {
+      "type": 0,
+      "value": "Atribucija"
+    }
+  ],
+  "label.attribution-description": [
+    {
+      "type": 0,
+      "value": "Pogledajte kako korisnici komuniciraju s vašim marketingom i što dovodi do konverzija."
     }
   ],
   "label.average": [
     {
       "type": 0,
-      "value": "Average"
+      "value": "Prosjek"
     }
   ],
   "label.back": [
@@ -92,31 +122,43 @@
   "label.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "Prije"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "Ploče"
     }
   ],
   "label.bounce-rate": [
     {
       "type": 0,
-      "value": "Bounce rate"
+      "value": "Stopa napuštanja"
     }
   ],
   "label.breakdown": [
     {
       "type": 0,
-      "value": "Breakdown"
+      "value": "Raspad"
     }
   ],
   "label.browser": [
     {
       "type": 0,
-      "value": "Browser"
+      "value": "Preglednik"
     }
   ],
   "label.browsers": [
     {
       "type": 0,
-      "value": "Browsers"
+      "value": "Preglednici"
+    }
+  ],
+  "label.campaigns": [
+    {
+      "type": 0,
+      "value": "Kampanje"
     }
   ],
   "label.cancel": [
@@ -131,34 +173,52 @@
       "value": "Promijeni lozinku"
     }
   ],
+  "label.channels": [
+    {
+      "type": 0,
+      "value": "Kanali"
+    }
+  ],
   "label.cities": [
     {
       "type": 0,
-      "value": "Cities"
+      "value": "Gradovi"
     }
   ],
   "label.city": [
     {
       "type": 0,
-      "value": "City"
+      "value": "Grad"
     }
   ],
   "label.clear-all": [
     {
       "type": 0,
-      "value": "Clear all"
+      "value": "Očisti sve"
+    }
+  ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "Kohorta"
     }
   ],
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "Usporedi"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "Usporedi datume"
     }
   ],
   "label.confirm": [
     {
       "type": 0,
-      "value": "Confirm"
+      "value": "Potvrdi"
     }
   ],
   "label.confirm-password": [
@@ -173,16 +233,40 @@
       "value": "Contains"
     }
   ],
+  "label.content": [
+    {
+      "type": 0,
+      "value": "Sadržaj"
+    }
+  ],
   "label.continue": [
     {
       "type": 0,
-      "value": "Continue"
+      "value": "Nastavi"
+    }
+  ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "Konverzija"
+    }
+  ],
+  "label.conversion-rate": [
+    {
+      "type": 0,
+      "value": "Stopa konverzije"
+    }
+  ],
+  "label.conversion-step": [
+    {
+      "type": 0,
+      "value": "Korak konverzije"
     }
   ],
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "Broj"
     }
   ],
   "label.countries": [
@@ -194,49 +278,55 @@
   "label.country": [
     {
       "type": 0,
-      "value": "Country"
+      "value": "Država"
     }
   ],
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "Kreiraj"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "Create report"
+      "value": "Kreiraj izvještaj"
     }
   ],
   "label.create-team": [
     {
       "type": 0,
-      "value": "Create team"
+      "value": "Kreiraj tim"
     }
   ],
   "label.create-user": [
     {
       "type": 0,
-      "value": "Create user"
+      "value": "Kreiraj korisnika"
     }
   ],
   "label.created": [
     {
       "type": 0,
-      "value": "Created"
+      "value": "Kreirano"
     }
   ],
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "Kreirao"
+    }
+  ],
+  "label.currency": [
+    {
+      "type": 0,
+      "value": "Valuta"
     }
   ],
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "Trenutno"
     }
   ],
   "label.current-password": [
@@ -260,13 +350,13 @@
   "label.data": [
     {
       "type": 0,
-      "value": "Data"
+      "value": "Podaci"
     }
   ],
   "label.date": [
     {
       "type": 0,
-      "value": "Date"
+      "value": "Datum"
     }
   ],
   "label.date-range": [
@@ -278,7 +368,7 @@
   "label.day": [
     {
       "type": 0,
-      "value": "Day"
+      "value": "Dan"
     }
   ],
   "label.default-date-range": [
@@ -296,19 +386,19 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "Obriši izvještaj"
     }
   ],
   "label.delete-team": [
     {
       "type": 0,
-      "value": "Delete team"
+      "value": "Obriši tim"
     }
   ],
   "label.delete-user": [
     {
       "type": 0,
-      "value": "Delete user"
+      "value": "Obriši korisnika"
     }
   ],
   "label.delete-website": [
@@ -320,31 +410,37 @@
   "label.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "Opis"
     }
   ],
   "label.desktop": [
     {
       "type": 0,
-      "value": "Desktop"
+      "value": "Stolno računalo"
     }
   ],
   "label.details": [
     {
       "type": 0,
-      "value": "Details"
+      "value": "Detalji"
     }
   ],
   "label.device": [
     {
       "type": 0,
-      "value": "Device"
+      "value": "Uređaj"
     }
   ],
   "label.devices": [
     {
       "type": 0,
-      "value": "Devices"
+      "value": "Uređaji"
+    }
+  ],
+  "label.direct": [
+    {
+      "type": 0,
+      "value": "Direktno"
     }
   ],
   "label.dismiss": [
@@ -353,10 +449,28 @@
       "value": "Odbaci"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "Jedinstveni ID"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
-      "value": "Does not contain"
+      "value": "Ne sadrži"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "Ne uključuje"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "Ne postoji"
     }
   ],
   "label.domain": [
@@ -368,7 +482,7 @@
   "label.dropoff": [
     {
       "type": 0,
-      "value": "Dropoff"
+      "value": "Odlazak"
     }
   ],
   "label.edit": [
@@ -380,13 +494,19 @@
   "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Uredi nadzornu ploču"
     }
   ],
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "Uredi člana"
+    }
+  ],
+  "label.email": [
+    {
+      "type": 0,
+      "value": "E-mail"
     }
   ],
   "label.enable-share-url": [
@@ -398,19 +518,19 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "Završni korak"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "Ulazni URL"
     }
   ],
   "label.event": [
     {
       "type": 0,
-      "value": "Event"
+      "value": "Događaj"
     }
   ],
   "label.event-data": [
@@ -419,34 +539,46 @@
       "value": "Podaci događaja"
     }
   ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "Naziv događaja"
+    }
+  ],
   "label.events": [
     {
       "type": 0,
       "value": "Events"
     }
   ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "Postoji"
+    }
+  ],
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "Izlazni URL"
     }
   ],
   "label.false": [
     {
       "type": 0,
-      "value": "False"
+      "value": "Netočno"
     }
   ],
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "Polje"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Fields"
+      "value": "Polja"
     }
   ],
   "label.filter": [
@@ -470,127 +602,169 @@
   "label.filters": [
     {
       "type": 0,
-      "value": "Filters"
+      "value": "Filteri"
+    }
+  ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "Prvi klik"
     }
   ],
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "Prvi put viđeno"
     }
   ],
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Lijevak"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "Razumite stopu konverzije i odlaska korisnika."
+    }
+  ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "Ljevci"
     }
   ],
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "Cilj"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "Ciljevi"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "Pratite svoje ciljeve za prikaze stranica i događaje."
     }
   ],
   "label.greater-than": [
     {
       "type": 0,
-      "value": "Greater than"
+      "value": "Veće od"
     }
   ],
   "label.greater-than-equals": [
     {
       "type": 0,
-      "value": "Greater than or equals"
+      "value": "Veće ili jednako"
     }
   ],
-  "label.host": [
+  "label.grouped": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "Grupirano"
     }
   ],
-  "label.hosts": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "Naziv hosta"
+    }
+  ],
+  "label.includes": [
+    {
+      "type": 0,
+      "value": "Uključuje"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "Uvid"
     }
   ],
   "label.insights": [
     {
       "type": 0,
-      "value": "Insights"
+      "value": "Uvidi"
     }
   ],
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "Dublje analizirajte svoje podatke pomoću segmenata i filtera."
     }
   ],
   "label.is": [
     {
       "type": 0,
-      "value": "Is"
+      "value": "Je"
+    }
+  ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "Je netočno"
     }
   ],
   "label.is-not": [
     {
       "type": 0,
-      "value": "Is not"
+      "value": "Nije"
     }
   ],
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Is not set"
+      "value": "Nije postavljeno"
     }
   ],
   "label.is-set": [
     {
       "type": 0,
-      "value": "Is set"
+      "value": "Postavljeno"
+    }
+  ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "Je točno"
     }
   ],
   "label.join": [
     {
       "type": 0,
-      "value": "Join"
+      "value": "Pridruži se"
     }
   ],
   "label.join-team": [
     {
       "type": 0,
-      "value": "Join team"
+      "value": "Pridruži se timu"
     }
   ],
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "Putovanje"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users navigate through your website."
+      "value": "Razumite kako korisnici navigiraju vašom web stranicom."
+    }
+  ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "Putovanja"
     }
   ],
   "label.language": [
@@ -609,6 +783,12 @@
     {
       "type": 0,
       "value": "Laptop"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "Zadnji klik"
     }
   ],
   "label.last-days": [
@@ -642,7 +822,7 @@
   "label.last-months": [
     {
       "type": 0,
-      "value": "Last "
+      "value": "Zadnjih "
     },
     {
       "type": 1,
@@ -650,37 +830,43 @@
     },
     {
       "type": 0,
-      "value": " months"
+      "value": " mjeseci"
     }
   ],
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "Zadnji put viđeno"
     }
   ],
   "label.leave": [
     {
       "type": 0,
-      "value": "Leave"
+      "value": "Napusti"
     }
   ],
   "label.leave-team": [
     {
       "type": 0,
-      "value": "Leave team"
+      "value": "Napusti tim"
     }
   ],
   "label.less-than": [
     {
       "type": 0,
-      "value": "Less than"
+      "value": "Manje od"
     }
   ],
   "label.less-than-equals": [
     {
       "type": 0,
-      "value": "Less than or equals"
+      "value": "Manje ili jednako"
+    }
+  ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "Poveznice"
     }
   ],
   "label.login": [
@@ -698,43 +884,61 @@
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "Upravljaj"
     }
   ],
   "label.manager": [
     {
       "type": 0,
-      "value": "Manager"
+      "value": "Upravitelj"
     }
   ],
   "label.max": [
     {
       "type": 0,
-      "value": "Max"
+      "value": "Maksimum"
+    }
+  ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Proširi"
+    }
+  ],
+  "label.medium": [
+    {
+      "type": 0,
+      "value": "Srednje"
     }
   ],
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "Član"
     }
   ],
   "label.members": [
     {
       "type": 0,
-      "value": "Members"
+      "value": "Članovi"
     }
   ],
   "label.min": [
     {
       "type": 0,
-      "value": "Min"
+      "value": "Minimum"
     }
   ],
   "label.mobile": [
     {
       "type": 0,
       "value": "Mobile"
+    }
+  ],
+  "label.model": [
+    {
+      "type": 0,
+      "value": "Model"
     }
   ],
   "label.more": [
@@ -746,13 +950,13 @@
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "Moj račun"
     }
   ],
   "label.my-websites": [
     {
       "type": 0,
-      "value": "My websites"
+      "value": "Moje web stranice"
     }
   ],
   "label.name": [
@@ -770,7 +974,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "Ništa"
+      "value": "Nijedan"
     }
   ],
   "label.number-of-records": [
@@ -789,7 +993,7 @@
           "value": [
             {
               "type": 0,
-              "value": "record"
+              "value": "zapis"
             }
           ]
         },
@@ -797,7 +1001,7 @@
           "value": [
             {
               "type": 0,
-              "value": "records"
+              "value": "zapisa"
             }
           ]
         }
@@ -813,16 +1017,52 @@
       "value": "OK"
     }
   ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
+    }
+  ],
+  "label.organic-search": [
+    {
+      "type": 0,
+      "value": "Organsko pretraživanje"
+    }
+  ],
+  "label.organic-shopping": [
+    {
+      "type": 0,
+      "value": "Organska kupovina"
+    }
+  ],
+  "label.organic-social": [
+    {
+      "type": 0,
+      "value": "Organska društvena mreža"
+    }
+  ],
+  "label.organic-video": [
+    {
+      "type": 0,
+      "value": "Organski videozapis"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
       "value": "OS"
     }
   ],
+  "label.other": [
+    {
+      "type": 0,
+      "value": "Ostalo"
+    }
+  ],
   "label.overview": [
     {
       "type": 0,
-      "value": "Overview"
+      "value": "Pregled"
     }
   ],
   "label.owner": [
@@ -831,10 +1071,16 @@
       "value": "Vlasnik"
     }
   ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "Stranica"
+    }
+  ],
   "label.page-of": [
     {
       "type": 0,
-      "value": "Page "
+      "value": "Stranica "
     },
     {
       "type": 1,
@@ -842,7 +1088,7 @@
     },
     {
       "type": 0,
-      "value": " of "
+      "value": " od "
     },
     {
       "type": 1,
@@ -867,6 +1113,36 @@
       "value": "Pages"
     }
   ],
+  "label.paid-ads": [
+    {
+      "type": 0,
+      "value": "Plaćeni oglasi"
+    }
+  ],
+  "label.paid-search": [
+    {
+      "type": 0,
+      "value": "Plaćeno pretraživanje"
+    }
+  ],
+  "label.paid-shopping": [
+    {
+      "type": 0,
+      "value": "Plaćena kupovina"
+    }
+  ],
+  "label.paid-social": [
+    {
+      "type": 0,
+      "value": "Plaćena društvena mreža"
+    }
+  ],
+  "label.paid-video": [
+    {
+      "type": 0,
+      "value": "Plaćeni videozapis"
+    }
+  ],
   "label.password": [
     {
       "type": 0,
@@ -876,13 +1152,19 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "Putanja"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "Putanje"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "Pikseli"
     }
   ],
   "label.powered-by": [
@@ -922,37 +1204,43 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "Svojstva"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "Svojstvo"
     }
   ],
   "label.queries": [
     {
       "type": 0,
-      "value": "Queries"
+      "value": "Upiti"
     }
   ],
   "label.query": [
     {
       "type": 0,
-      "value": "Query"
+      "value": "Upit"
     }
   ],
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "Parametri upita"
     }
   ],
   "label.realtime": [
     {
       "type": 0,
       "value": "Stvarno vrijeme"
+    }
+  ],
+  "label.referral": [
+    {
+      "type": 0,
+      "value": "Preporuka"
     }
   ],
   "label.referrer": [
@@ -989,6 +1277,12 @@
     {
       "type": 0,
       "value": "Regions"
+    }
+  ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "Preostalo"
     }
   ],
   "label.remove": [
@@ -1042,19 +1336,13 @@
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "Prihod"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
-    }
-  ],
-  "label.revenue-property": [
-    {
-      "type": 0,
-      "value": "Revenue Property"
+      "value": "Pogledajte svoj prihod tijekom vremena."
     }
   ],
   "label.role": [
@@ -1078,7 +1366,7 @@
   "label.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "Ekrani"
     }
   ],
   "label.search": [
@@ -1099,6 +1387,12 @@
       "value": "Select date"
     }
   ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "Odaberi filter"
+    }
+  ],
   "label.select-role": [
     {
       "type": 0,
@@ -1114,7 +1408,13 @@
   "label.session": [
     {
       "type": 0,
-      "value": "Session"
+      "value": "Sesija"
+    }
+  ],
+  "label.session-data": [
+    {
+      "type": 0,
+      "value": "Podaci sesije"
     }
   ],
   "label.sessions": [
@@ -1129,6 +1429,12 @@
       "value": "Postavke"
     }
   ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "Podijeli"
+    }
+  ],
   "label.share-url": [
     {
       "type": 0,
@@ -1141,16 +1447,28 @@
       "value": "Jedan dan"
     }
   ],
+  "label.sms": [
+    {
+      "type": 0,
+      "value": "SMS"
+    }
+  ],
+  "label.sources": [
+    {
+      "type": 0,
+      "value": "Izvori"
+    }
+  ],
   "label.start-step": [
     {
       "type": 0,
-      "value": "Start Step"
+      "value": "Početni korak"
     }
   ],
   "label.steps": [
     {
       "type": 0,
-      "value": "Steps"
+      "value": "Koraci"
     }
   ],
   "label.sum": [
@@ -1163,6 +1481,18 @@
     {
       "type": 0,
       "value": "Tablet"
+    }
+  ],
+  "label.tag": [
+    {
+      "type": 0,
+      "value": "Oznaka"
+    }
+  ],
+  "label.tags": [
+    {
+      "type": 0,
+      "value": "Oznake"
     }
   ],
   "label.team": [
@@ -1201,6 +1531,12 @@
       "value": "Team owner"
     }
   ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "Postavke tima"
+    }
+  ],
   "label.team-view-only": [
     {
       "type": 0,
@@ -1217,6 +1553,12 @@
     {
       "type": 0,
       "value": "Teams"
+    }
+  ],
+  "label.terms": [
+    {
+      "type": 0,
+      "value": "Pojmovi"
     }
   ],
   "label.theme": [
@@ -1351,28 +1693,10 @@
       "value": "Update"
     }
   ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "URL"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "URLs"
-    }
-  ],
   "label.user": [
     {
       "type": 0,
       "value": "User"
-    }
-  ],
-  "label.user-property": [
-    {
-      "type": 0,
-      "value": "User Property"
     }
   ],
   "label.username": [
@@ -1531,6 +1855,12 @@
       "value": "x"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
@@ -1623,6 +1953,12 @@
     {
       "type": 1,
       "value": "url"
+    }
+  ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
     }
   ],
   "message.go-to-settings": [
@@ -1719,6 +2055,18 @@
       "value": "You do not have any websites configured."
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1749,6 +2097,12 @@
     {
       "type": 0,
       "value": "Saved."
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1827,6 +2181,12 @@
       "value": "Triggered event"
     }
   ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
@@ -1871,12 +2231,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "Visitors dropped off"
     }
   ]
 }

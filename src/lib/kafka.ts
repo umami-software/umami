@@ -16,7 +16,8 @@ const enabled = Boolean(process.env.KAFKA_URL && process.env.KAFKA_BROKER);
 function getClient() {
   const { username, password } = new URL(process.env.KAFKA_URL);
   const brokers = process.env.KAFKA_BROKER.split(',');
-  const mechanism = process.env.KAFKA_SASL_MECHANISM as 'plain' | 'scram-sha-256' | 'scram-sha-512';
+  const mechanism =
+    (process.env.KAFKA_SASL_MECHANISM as 'plain' | 'scram-sha-256' | 'scram-sha-512') || 'plain';
 
   const ssl: { ssl?: tls.ConnectionOptions | boolean; sasl?: SASLOptions } =
     username && password
@@ -41,7 +42,7 @@ function getClient() {
   });
 
   if (process.env.NODE_ENV !== 'production') {
-    global[KAFKA] = client;
+    globalThis[KAFKA] = client;
   }
 
   log('Kafka initialized');
@@ -54,7 +55,7 @@ async function getProducer(): Promise<Producer> {
   await producer.connect();
 
   if (process.env.NODE_ENV !== 'production') {
-    global[KAFKA_PRODUCER] = producer;
+    globalThis[KAFKA_PRODUCER] = producer;
   }
 
   log('Kafka producer initialized');
@@ -64,7 +65,7 @@ async function getProducer(): Promise<Producer> {
 
 async function sendMessage(
   topic: string,
-  message: { [key: string]: string | number } | { [key: string]: string | number }[],
+  message: Record<string, string | number> | Record<string, string | number>[],
 ): Promise<RecordMetadata[]> {
   try {
     await connect();
@@ -91,10 +92,10 @@ async function sendMessage(
 
 async function connect(): Promise<Kafka> {
   if (!kafka) {
-    kafka = process.env.KAFKA_URL && process.env.KAFKA_BROKER && (global[KAFKA] || getClient());
+    kafka = process.env.KAFKA_URL && process.env.KAFKA_BROKER && (globalThis[KAFKA] || getClient());
 
     if (kafka) {
-      producer = global[KAFKA_PRODUCER] || (await getProducer());
+      producer = globalThis[KAFKA_PRODUCER] || (await getProducer());
     }
   }
 

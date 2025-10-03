@@ -1,64 +1,44 @@
-import { Button, Icon, Icons, Popup, PopupTrigger, Text } from 'react-basics';
-import PopupForm from '@/app/(main)/reports/[reportId]/PopupForm';
-import FilterSelectForm from '@/app/(main)/reports/[reportId]/FilterSelectForm';
-import { useFields, useMessages, useNavigation, useDateRange } from '@/components/hooks';
-import { OPERATOR_PREFIXES } from '@/lib/constants';
-import styles from './WebsiteFilterButton.module.css';
+import { Button, Icon, DialogTrigger, Dialog, Modal, Text } from '@umami/react-zen';
+import { ListFilter } from '@/components/icons';
+import { FilterEditForm } from '@/components/input/FilterEditForm';
+import { useMessages, useNavigation } from '@/components/hooks';
+import { filtersArrayToObject } from '@/lib/params';
 
 export function WebsiteFilterButton({
   websiteId,
-  className,
-  position = 'bottom',
-  alignment = 'end',
   showText = true,
 }: {
   websiteId: string;
-  className?: string;
   position?: 'bottom' | 'top' | 'left' | 'right';
   alignment?: 'end' | 'center' | 'start';
   showText?: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { renderUrl, router } = useNavigation();
-  const { fields } = useFields();
-  const {
-    dateRange: { startDate, endDate },
-  } = useDateRange(websiteId);
+  const { updateParams, router } = useNavigation();
 
-  const handleAddFilter = ({ name, operator, value }) => {
-    const prefix = OPERATOR_PREFIXES[operator];
+  const handleChange = ({ filters, segment, cohort }: any) => {
+    const params = filtersArrayToObject(filters);
 
-    router.push(renderUrl({ [name]: prefix + value }));
+    const url = updateParams({ ...params, segment, cohort });
+
+    router.push(url);
   };
 
   return (
-    <PopupTrigger className={className}>
-      <Button className={styles.button} variant="quiet">
+    <DialogTrigger>
+      <Button variant="outline">
         <Icon>
-          <Icons.Plus />
+          <ListFilter />
         </Icon>
         {showText && <Text>{formatMessage(labels.filter)}</Text>}
       </Button>
-      <Popup position={position} alignment={alignment}>
-        {(close: () => void) => {
-          return (
-            <PopupForm>
-              <FilterSelectForm
-                websiteId={websiteId}
-                fields={fields}
-                startDate={startDate}
-                endDate={endDate}
-                onChange={value => {
-                  handleAddFilter(value);
-                  close();
-                }}
-              />
-            </PopupForm>
-          );
-        }}
-      </Popup>
-    </PopupTrigger>
+      <Modal>
+        <Dialog title={formatMessage(labels.filters)} style={{ width: 800, minHeight: 600 }}>
+          {({ close }) => {
+            return <FilterEditForm websiteId={websiteId} onChange={handleChange} onClose={close} />;
+          }}
+        </Dialog>
+      </Modal>
+    </DialogTrigger>
   );
 }
-
-export default WebsiteFilterButton;

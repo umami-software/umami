@@ -1,8 +1,8 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
 import prisma from '@/lib/prisma';
-import { PageResult, Role, User, PageParams } from '@/lib/types';
-import { getRandomChars } from '@/lib/crypto';
+import { PageResult, Role, QueryFilters } from '@/lib/types';
+import { getRandomChars } from '@/lib/generate';
 import UserFindManyArgs = Prisma.UserFindManyArgs;
 
 export interface GetUserOptions {
@@ -49,9 +49,9 @@ export async function getUserByUsername(username: string, options: GetUserOption
 
 export async function getUsers(
   criteria: UserFindManyArgs,
-  pageParams?: PageParams,
+  filters: QueryFilters = {},
 ): Promise<PageResult<User[]>> {
-  const { search } = pageParams;
+  const { search } = filters;
 
   const where: Prisma.UserWhereInput = {
     ...criteria.where,
@@ -68,7 +68,7 @@ export async function getUsers(
     {
       orderBy: 'createdAt',
       sortDescending: true,
-      ...pageParams,
+      ...filters,
     },
   );
 }
@@ -122,7 +122,7 @@ export async function deleteUser(
   ]
 > {
   const { client, transaction } = prisma;
-  const cloudMode = process.env.CLOUD_MODE;
+  const cloudMode = !!process.env.CLOUD_URL;
 
   const websites = await client.website.findMany({
     where: { userId },
@@ -136,7 +136,7 @@ export async function deleteUser(
 
   const teams = await client.team.findMany({
     where: {
-      teamUser: {
+      members: {
         some: {
           userId,
           role: ROLES.teamOwner,

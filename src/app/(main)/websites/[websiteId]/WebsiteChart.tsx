@@ -1,18 +1,22 @@
 import { useMemo } from 'react';
-import PageviewsChart from '@/components/metrics/PageviewsChart';
-import useWebsitePageviews from '@/components/hooks/queries/useWebsitePageviews';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { PageviewsChart } from '@/components/metrics/PageviewsChart';
+import { useWebsitePageviewsQuery } from '@/components/hooks/queries/useWebsitePageviewsQuery';
 import { useDateRange } from '@/components/hooks';
 
 export function WebsiteChart({
   websiteId,
-  compareMode = false,
+  compareMode,
 }: {
   websiteId: string;
   compareMode?: boolean;
 }) {
   const { dateRange, dateCompare } = useDateRange(websiteId);
   const { startDate, endDate, unit, value } = dateRange;
-  const { data, isLoading } = useWebsitePageviews(websiteId, compareMode ? dateCompare : undefined);
+  const { data, isLoading, isFetching, error } = useWebsitePageviewsQuery({
+    websiteId,
+    compare: compareMode ? dateCompare : undefined,
+  });
   const { pageviews, sessions, compare } = (data || {}) as any;
 
   const chartData = useMemo(() => {
@@ -43,15 +47,14 @@ export function WebsiteChart({
   }, [data, startDate, endDate, unit]);
 
   return (
-    <PageviewsChart
-      data={chartData}
-      minDate={startDate.toISOString()}
-      maxDate={endDate.toISOString()}
-      unit={unit}
-      isLoading={isLoading}
-      isAllTime={value === 'all'}
-    />
+    <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error}>
+      <PageviewsChart
+        key={value}
+        data={chartData}
+        minDate={startDate}
+        maxDate={endDate}
+        unit={unit}
+      />
+    </LoadingPanel>
   );
 }
-
-export default WebsiteChart;

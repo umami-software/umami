@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { getRandomChars } from '@/lib/crypto';
+import { getRandomChars } from '@/lib/generate';
 import { unauthorized, json } from '@/lib/response';
-import { canCreateTeam } from '@/lib/auth';
+import { canCreateTeam } from '@/permissions';
 import { uuid } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';
-import { createTeam } from '@/queries';
+import { createTeam } from '@/queries/prisma';
 
 export async function POST(request: Request) {
   const schema = z.object({

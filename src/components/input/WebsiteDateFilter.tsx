@@ -1,59 +1,88 @@
-import { useDateRange, useLocale } from '@/components/hooks';
+import { Button, Icon, Row, Text, Select, ListItem } from '@umami/react-zen';
 import { isAfter } from 'date-fns';
-import { getOffsetDateRange } from '@/lib/date';
-import { Button, Icon, Icons } from 'react-basics';
-import DateFilter from './DateFilter';
-import styles from './WebsiteDateFilter.module.css';
-import { DateRange } from '@/lib/types';
+import { ChevronRight } from '@/components/icons';
+import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
+import { DateFilter } from './DateFilter';
+
+export interface WebsiteDateFilterProps {
+  websiteId: string;
+  compare?: string;
+  showAllTime?: boolean;
+  showButtons?: boolean;
+  allowCompare?: boolean;
+}
 
 export function WebsiteDateFilter({
   websiteId,
   showAllTime = true,
-}: {
-  websiteId: string;
-  showAllTime?: boolean;
-}) {
-  const { dir } = useLocale();
+  showButtons = true,
+  allowCompare,
+}: WebsiteDateFilterProps) {
   const { dateRange, saveDateRange } = useDateRange(websiteId);
-  const { value, startDate, endDate, offset } = dateRange;
-  const disableForward =
-    value === 'all' || isAfter(getOffsetDateRange(dateRange, 1).startDate, new Date());
+  const { value, endDate } = dateRange;
+  const { formatMessage, labels } = useMessages();
+  const {
+    router,
+    updateParams,
+    query: { compare = 'prev', offset = 0 },
+  } = useNavigation();
+  const isAllTime = value === 'all';
+  const isCustomRange = value.startsWith('range');
 
-  const handleChange = (value: string | DateRange) => {
-    saveDateRange(value);
+  const disableForward = value === 'all' || isAfter(endDate, new Date());
+
+  const handleChange = (date: string) => {
+    saveDateRange(date);
+    router.push(updateParams({ date, offset: undefined }));
   };
 
   const handleIncrement = (increment: number) => {
-    saveDateRange(getOffsetDateRange(dateRange, increment));
+    router.push(updateParams({ offset: +offset + increment }));
+  };
+
+  const handleSelect = (compare: any) => {
+    router.push(updateParams({ compare }));
   };
 
   return (
-    <div className={styles.container}>
-      <DateFilter
-        className={styles.dropdown}
-        value={value}
-        startDate={startDate}
-        endDate={endDate}
-        offset={offset}
-        onChange={handleChange}
-        showAllTime={showAllTime}
-      />
-      {value !== 'all' && !value.startsWith('range') && (
-        <div className={styles.buttons}>
-          <Button onClick={() => handleIncrement(-1)}>
-            <Icon rotate={dir === 'rtl' ? 270 : 90}>
-              <Icons.ChevronDown />
+    <Row gap>
+      {showButtons && !isAllTime && !isCustomRange && (
+        <Row gap="1">
+          <Button onPress={() => handleIncrement(-1)} variant="outline">
+            <Icon rotate={180}>
+              <ChevronRight />
             </Icon>
           </Button>
-          <Button onClick={() => handleIncrement(1)} disabled={disableForward}>
-            <Icon rotate={dir === 'rtl' ? 90 : 270}>
-              <Icons.ChevronDown />
+          <Button onPress={() => handleIncrement(1)} variant="outline" isDisabled={disableForward}>
+            <Icon>
+              <ChevronRight />
             </Icon>
           </Button>
-        </div>
+        </Row>
       )}
-    </div>
+      <Row minWidth="200px">
+        <DateFilter
+          value={value}
+          onChange={handleChange}
+          showAllTime={showAllTime}
+          renderDate={+offset !== 0}
+        />
+      </Row>
+      {allowCompare && !isAllTime && (
+        <Row alignItems="center" gap>
+          <Text weight="bold">VS</Text>
+          <Row width="200px">
+            <Select
+              value={compare}
+              onChange={handleSelect}
+              popoverProps={{ style: { width: 200 } }}
+            >
+              <ListItem id="prev">{formatMessage(labels.previousPeriod)}</ListItem>
+              <ListItem id="yoy">{formatMessage(labels.previousYear)}</ListItem>
+            </Select>
+          </Row>
+        </Row>
+      )}
+    </Row>
   );
 }
-
-export default WebsiteDateFilter;

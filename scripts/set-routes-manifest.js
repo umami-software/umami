@@ -1,10 +1,13 @@
 /* eslint-disable no-console */
-require('dotenv').config();
-const fs = require('fs');
-const path = require('path');
+import 'dotenv/config';
+import fs from 'node:fs';
+import path from 'node:path';
+import { createRequire } from 'module';
 
-const routesManifestPath = path.resolve(__dirname, '../.next/routes-manifest.json');
-const originalPath = path.resolve(__dirname, '../.next/routes-manifest-orig.json');
+const require = createRequire(import.meta.url);
+
+const routesManifestPath = path.resolve(process.cwd(), '.next/routes-manifest.json');
+const originalPath = path.resolve(process.cwd(), '.next/routes-manifest-orig.json');
 const originalManifest = require(originalPath);
 
 const basePath = originalManifest.basePath;
