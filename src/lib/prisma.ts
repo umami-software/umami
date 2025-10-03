@@ -187,9 +187,7 @@ async function rawQuery(sql: string, data: Record<string, any>, name?: string): 
     return `$${params.length}${type ?? ''}`;
   });
 
-  return process.env.DATABASE_REPLICA_URL
-    ? await client.$replica().$queryRawUnsafe(query, ...params)
-    : await client.$queryRawUnsafe(query, ...params);
+  return client.$queryRawUnsafe(query, ...params);
 }
 
 async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters) {
@@ -283,6 +281,7 @@ function getClient() {
     url: process.env.DATABASE_URL,
     prismaClient: PrismaClient,
     logQuery: !!process.env.LOG_QUERY,
+    replicaUrl: process.env.DATABASE_REPLICA_URL,
   });
 
   if (process.env.NODE_ENV !== 'production') {
@@ -292,7 +291,7 @@ function getClient() {
   return prisma.client;
 }
 
-const client = globalThis[PRISMA] || getClient();
+const client: PrismaClient = globalThis[PRISMA] || getClient();
 
 export default {
   client,

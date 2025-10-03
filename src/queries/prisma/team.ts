@@ -9,7 +9,10 @@ export async function findTeam(criteria: Prisma.TeamFindUniqueArgs): Promise<Tea
   return prisma.client.team.findUnique(criteria);
 }
 
-export async function getTeam(teamId: string, options: { includeMembers?: boolean } = {}) {
+export async function getTeam(
+  teamId: string,
+  options: { includeMembers?: boolean } = {},
+): Promise<Team> {
   const { includeMembers } = options;
 
   return findTeam({
@@ -129,11 +132,9 @@ export async function updateTeam(teamId: string, data: Prisma.TeamUpdateInput): 
   });
 }
 
-export async function deleteTeam(
-  teamId: string,
-): Promise<Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Team]>> {
+export async function deleteTeam(teamId: string) {
   const { client, transaction } = prisma;
-  const cloudMode = !!process.env.CLOUD_URL;
+  const cloudMode = !!process.env.CLOUD_MODE;
 
   if (cloudMode) {
     return transaction([
