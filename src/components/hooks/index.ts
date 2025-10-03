@@ -9,6 +9,7 @@ export * from './context/useWebsite';
 
 // Query hooks
 export * from './queries/useActiveUsersQuery';
+export * from './queries/useDateRangeQuery';
 export * from './queries/useDeleteQuery';
 export * from './queries/useEventDataEventsQuery';
 export * from './queries/useEventDataPropertiesQuery';
@@ -76,6 +77,7 @@ export * from './useModified';
 export * from './useNavigation';
 export * from './usePagedQuery';
 export * from './usePageParameters';
+export * from './useQueryStringDate';
 export * from './useRegionNames';
 export * from './useSlug';
 export * from './useSticky';

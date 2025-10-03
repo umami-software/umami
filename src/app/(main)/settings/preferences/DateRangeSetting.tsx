@@ -1,21 +1,24 @@
+import { useState } from 'react';
 import { DateFilter } from '@/components/input/DateFilter';
 import { Button, Row } from '@umami/react-zen';
-import { useDateRange, useMessages } from '@/components/hooks';
-import { DEFAULT_DATE_RANGE_VALUE } from '@/lib/constants';
+import { useMessages } from '@/components/hooks';
+import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE_VALUE } from '@/lib/constants';
+import { setItem, getItem } from '@/lib/storage';
 
 export function DateRangeSetting() {
   const { formatMessage, labels } = useMessages();
-  const { dateRange, saveDateRange } = useDateRange();
-  const { value } = dateRange;
+  const [date, setDate] = useState(getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE_VALUE);
 
   const handleChange = (value: string) => {
-    saveDateRange(value);
+    setItem(DATE_RANGE_CONFIG, value);
+    setDate(value);
   };
-  const handleReset = () => saveDateRange(DEFAULT_DATE_RANGE_VALUE);
+
+  const handleReset = () => setItem(DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE_VALUE);
 
   return (
     <Row gap="3">
-      <DateFilter value={value} onChange={handleChange} placement="bottom start" />
+      <DateFilter value={date} onChange={handleChange} placement="bottom start" />
       <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
     </Row>
   );

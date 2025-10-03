@@ -3,6 +3,8 @@ import { isAfter } from 'date-fns';
 import { ChevronRight } from '@/components/icons';
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
 import { DateFilter } from './DateFilter';
+import { getOffsetDateRange } from '@/lib/date';
+import { useCallback } from 'react';
 
 export interface WebsiteDateFilterProps {
   websiteId: string;
@@ -18,7 +20,7 @@ export function WebsiteDateFilter({
   showButtons = true,
   allowCompare,
 }: WebsiteDateFilterProps) {
-  const { dateRange, saveDateRange } = useDateRange(websiteId);
+  const { dateRange, setDateRange, setDateRangeValue } = useDateRange(websiteId);
   const { value, endDate } = dateRange;
   const { formatMessage, labels } = useMessages();
   const {
@@ -27,18 +29,25 @@ export function WebsiteDateFilter({
     query: { compare = 'prev', offset = 0 },
   } = useNavigation();
   const isAllTime = value === 'all';
+
   const isCustomRange = value.startsWith('range');
 
   const disableForward = value === 'all' || isAfter(endDate, new Date());
 
   const handleChange = (date: string) => {
-    saveDateRange(date);
+    setDateRangeValue(date);
     router.push(updateParams({ date, offset: undefined }));
   };
 
-  const handleIncrement = (increment: number) => {
-    router.push(updateParams({ offset: +offset + increment }));
-  };
+  const handleIncrement = useCallback(
+    (increment: number) => {
+      const offsetDate = getOffsetDateRange(dateRange, +offset + increment);
+
+      setDateRange(offsetDate);
+      router.push(updateParams({ offset: +offset + increment }));
+    },
+    [offset],
+  );
 
   const handleSelect = (compare: any) => {
     router.push(updateParams({ compare }));
