@@ -289,13 +289,13 @@ export function minDate(...args: any[]) {
 
 export function getCompareDate(compare: string, startDate: Date, endDate: Date) {
   if (compare === 'yoy') {
-    return { startDate: subYears(startDate, 1), endDate: subYears(endDate, 1) };
+    return { compare, startDate: subYears(startDate, 1), endDate: subYears(endDate, 1) };
   }
 
   if (compare === 'prev') {
     const diff = differenceInMinutes(endDate, startDate);
 
-    return { startDate: subMinutes(startDate, diff), endDate: subMinutes(endDate, diff) };
+    return { compare, startDate: subMinutes(startDate, diff), endDate: subMinutes(endDate, diff) };
   }
 
   return {};

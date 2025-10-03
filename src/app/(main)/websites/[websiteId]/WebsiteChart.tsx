@@ -1,8 +1,8 @@
-import { useMemo } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { PageviewsChart } from '@/components/metrics/PageviewsChart';
-import { useWebsitePageviewsQuery } from '@/components/hooks/queries/useWebsitePageviewsQuery';
 import { useDateRange } from '@/components/hooks';
+import { useWebsitePageviewsQuery } from '@/components/hooks/queries/useWebsitePageviewsQuery';
+import { PageviewsChart } from '@/components/metrics/PageviewsChart';
+import { useMemo } from 'react';
 
 export function WebsiteChart({
   websiteId,
@@ -15,7 +15,7 @@ export function WebsiteChart({
   const { startDate, endDate, unit, value } = dateRange;
   const { data, isLoading, isFetching, error } = useWebsitePageviewsQuery({
     websiteId,
-    compare: compareMode ? dateCompare?.['value'] : undefined,
+    compare: compareMode ? dateCompare?.compare : undefined,
   });
   const { pageviews, sessions, compare } = (data || {}) as any;
 
