@@ -41,7 +41,7 @@ export function WebsiteDateFilter({
         }),
       );
     } else {
-      router.push(updateParams({ date, offset: undefined }));
+      router.push(updateParams({ date, offset: undefined, all: undefined }));
     }
   };
 
