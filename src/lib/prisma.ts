@@ -277,6 +277,10 @@ function getSchema() {
 }
 
 function getClient() {
+  if (!process.env.DATABASE_URL) {
+    return null;
+  }
+
   const prisma = new UmamiPrismaClient({
     url: process.env.DATABASE_URL,
     prismaClient: PrismaClient,
