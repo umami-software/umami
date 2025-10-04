@@ -5,14 +5,12 @@ on:
     branches:
       - master
       - main
-      - dev
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
     branches:
       - master
       - main
-      - dev
   workflow_dispatch:
 
 jobs:
