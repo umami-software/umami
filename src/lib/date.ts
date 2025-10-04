@@ -94,18 +94,18 @@ export const DATE_FUNCTIONS = {
   },
 };
 
-export const DATE_FORMATS = {
-  minute: 'yyyy-MM-dd HH:mm',
-  hour: 'yyyy-MM-dd HH',
-  day: 'yyyy-MM-dd',
-  week: "yyyy-'W'II",
-  month: 'yyyy-MM',
-  year: 'yyyy',
+const TIMEZONE_MAPPINGS: Record<string, string> = {
+  'Asia/Calcutta': 'Asia/Kolkata',
 };
+
+export function normalizeTimezone(timezone: string): string {
+  return TIMEZONE_MAPPINGS[timezone] || timezone;
+}
 
 export function isValidTimezone(timezone: string) {
   try {
-    Intl.DateTimeFormat(undefined, { timeZone: timezone });
+    const normalizedTimezone = normalizeTimezone(timezone);
+    Intl.DateTimeFormat(undefined, { timeZone: normalizedTimezone });
     return true;
   } catch {
     return false;
