@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Row, Button, FormSubmitButton, Form, FormButtons } from '@umami/react-zen';
+import { Box, Button, FormSubmitButton, Form, FormButtons } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 
 export interface ConfirmationFormProps {
@@ -25,7 +25,7 @@ export function ConfirmationForm({
 
   return (
     <Form onSubmit={onConfirm} error={getErrorMessage(error)}>
-      <Row marginY="4">{message}</Row>
+      <Box marginY="4">{message}</Box>
       <FormButtons>
         <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
         <FormSubmitButton
