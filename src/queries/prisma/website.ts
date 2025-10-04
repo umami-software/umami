@@ -203,3 +203,11 @@ export async function deleteWebsite(websiteId: string) {
     return data;
   });
 }
+
+export async function getWebsiteCount(userId: string) {
+  return prisma.client.website.count({
+    where: {
+      userId,
+    },
+  });
+}
