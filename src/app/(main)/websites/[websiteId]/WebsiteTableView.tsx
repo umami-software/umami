@@ -14,6 +14,7 @@ export default function WebsiteTableView({ websiteId }: { websiteId: string }) {
   const pathname = usePathname();
   const tableProps = {
     websiteId,
+    allowDownload: false,
     limit: 10,
   };
   const isSharePage = pathname.includes('/share/');
