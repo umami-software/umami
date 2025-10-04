@@ -2,7 +2,7 @@ import { Column, Row } from '@umami/react-zen';
 import { WebsiteFilterButton } from '@/components/input/WebsiteFilterButton';
 import { WebsiteDateFilter } from '@/components/input/WebsiteDateFilter';
 import { FilterBar } from '@/components/input/FilterBar';
-import { WebsiteMonthSelect } from '@/components/input/WebsiteMonthSelect';
+import { MonthFilter } from '@/components/input/MonthFilter';
 import { ExportButton } from '@/components/input/ExportButton';
 
 export function WebsiteControls({
@@ -26,7 +26,7 @@ export function WebsiteControls({
         {allowFilter ? <WebsiteFilterButton websiteId={websiteId} /> : <div />}
         {allowDateFilter && <WebsiteDateFilter websiteId={websiteId} allowCompare={allowCompare} />}
         {allowDownload && <ExportButton websiteId={websiteId} />}
-        {allowMonthFilter && <WebsiteMonthSelect websiteId={websiteId} />}
+        {allowMonthFilter && <MonthFilter />}
       </Row>
       {allowFilter && <FilterBar websiteId={websiteId} />}
     </Column>

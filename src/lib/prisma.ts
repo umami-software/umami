@@ -284,7 +284,7 @@ function getClient() {
     replicaUrl: process.env.DATABASE_REPLICA_URL,
   });
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (!globalThis[PRISMA]) {
     globalThis[PRISMA] = prisma.client;
   }
 

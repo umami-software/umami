@@ -2,7 +2,7 @@ import { useDateRange, useNavigation } from '@/components/hooks';
 import { getMonthDateRangeValue } from '@/lib/date';
 import { MonthSelect } from './MonthSelect';
 
-export function WebsiteMonthSelect() {
+export function MonthFilter() {
   const { router, updateParams } = useNavigation();
   const {
     dateRange: { startDate },
