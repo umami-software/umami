@@ -12,10 +12,9 @@ export function LinkMetricsBar({
   showChange?: boolean;
   compareMode?: boolean;
 }) {
-  const { dateRange } = useDateRange(linkId);
+  const { isAllTime } = useDateRange();
   const { formatMessage, labels } = useMessages();
   const { data, isLoading, isFetching, error } = useWebsiteStatsQuery(linkId);
-  const isAllTime = dateRange.value === 'all';
 
   const { pageviews, visitors, visits, comparison } = data || {};
 

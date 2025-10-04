@@ -7,7 +7,7 @@ import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteContro
 export function UTMPage({ websiteId }: { websiteId: string }) {
   const {
     dateRange: { startDate, endDate },
-  } = useDateRange(websiteId);
+  } = useDateRange();
 
   return (
     <Column gap>

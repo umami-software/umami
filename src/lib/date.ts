@@ -131,14 +131,6 @@ export function parseDateRange(value: string, locale = 'en-US'): DateRange {
     return null;
   }
 
-  if (value === 'all') {
-    return {
-      startDate: new Date(0),
-      endDate: new Date(1),
-      value,
-    };
-  }
-
   if (value.startsWith('range')) {
     const [, startTime, endTime] = value.split(':');
 
@@ -225,24 +217,28 @@ export function getOffsetDateRange(dateRange: DateRange, offset: number) {
     case 'day':
       return {
         ...dateRange,
+        offset,
         startDate: addDays(startDate, change),
         endDate: addDays(endDate, change),
       };
     case 'week':
       return {
         ...dateRange,
+        offset,
         startDate: addWeeks(startDate, change),
         endDate: addWeeks(endDate, change),
       };
     case 'month':
       return {
         ...dateRange,
+        offset,
         startDate: addMonths(startDate, change),
         endDate: addMonths(endDate, change),
       };
     case 'year':
       return {
         ...dateRange,
+        offset,
         startDate: addYears(startDate, change),
         endDate: addYears(endDate, change),
       };
@@ -250,6 +246,7 @@ export function getOffsetDateRange(dateRange: DateRange, offset: number) {
       return {
         startDate: add(startDate, change),
         endDate: add(endDate, change),
+        offset,
         value,
         unit,
         num,
@@ -354,6 +351,10 @@ export function generateTimeSeries(
   });
 }
 
-export function dateToRangeValue(date: Date) {
-  return `range:${startOfMonth(date).getTime()}:${endOfMonth(date).getTime()}`;
+export function getDateRangeValue(startDate: Date, endDate: Date) {
+  return `range:${startDate.getTime()}:${endDate.getTime()}`;
+}
+
+export function getMonthDateRangeValue(date: Date) {
+  return getDateRangeValue(startOfMonth(date), endOfMonth(date));
 }

@@ -77,7 +77,6 @@ export * from './useModified';
 export * from './useNavigation';
 export * from './usePagedQuery';
 export * from './usePageParameters';
-export * from './useQueryStringDate';
 export * from './useRegionNames';
 export * from './useSlug';
 export * from './useSticky';

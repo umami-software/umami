@@ -20,8 +20,8 @@ async function relationalQuery(websiteId: string) {
   const result = await rawQuery(
     `
     select
-      min(created_at) as mindate,
-      max(created_at) as maxdate
+      min(created_at) as startDate,
+      max(created_at) as endDate
     from website_event
     where website_id = {{websiteId::uuid}}
       and created_at >= {{startDate}}
@@ -42,8 +42,8 @@ async function clickhouseQuery(websiteId: string) {
   const result = await rawQuery(
     `
     select
-      min(created_at) as mindate,
-      max(created_at) as maxdate
+      min(created_at) as startDate,
+      max(created_at) as endDate
     from website_event_stats_hourly
     where website_id = {websiteId:UUID}
       and created_at >= {startDate:DateTime64}

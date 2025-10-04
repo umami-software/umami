@@ -1,10 +1,10 @@
+import { useCallback, useMemo } from 'react';
 import { Button, Icon, Row, Text, Select, ListItem } from '@umami/react-zen';
 import { isAfter } from 'date-fns';
 import { ChevronRight } from '@/components/icons';
-import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
+import { useDateRange, useDateRangeQuery, useMessages, useNavigation } from '@/components/hooks';
+import { getDateRangeValue } from '@/lib/date';
 import { DateFilter } from './DateFilter';
-import { getOffsetDateRange } from '@/lib/date';
-import { useCallback } from 'react';
 
 export interface WebsiteDateFilterProps {
   websiteId: string;
@@ -20,30 +20,33 @@ export function WebsiteDateFilter({
   showButtons = true,
   allowCompare,
 }: WebsiteDateFilterProps) {
-  const { dateRange, setDateRange, setDateRangeValue } = useDateRange(websiteId);
-  const { value, endDate } = dateRange;
+  const { dateRange, isAllTime, isCustomRange } = useDateRange();
   const { formatMessage, labels } = useMessages();
   const {
     router,
     updateParams,
     query: { compare = 'prev', offset = 0 },
   } = useNavigation();
-  const isAllTime = value === 'all';
+  const disableForward = isAllTime || isAfter(dateRange.endDate, new Date());
 
-  const isCustomRange = value.startsWith('range');
-
-  const disableForward = value === 'all' || isAfter(endDate, new Date());
+  const websiteDateRange = useDateRangeQuery(websiteId);
 
   const handleChange = (date: string) => {
-    setDateRangeValue(date);
-    router.push(updateParams({ date, offset: undefined }));
+    if (date === 'all') {
+      router.push(
+        updateParams({
+          date: getDateRangeValue(websiteDateRange.startDate, websiteDateRange.endDate),
+          offset: undefined,
+          all: 1,
+        }),
+      );
+    } else {
+      router.push(updateParams({ date, offset: undefined }));
+    }
   };
 
   const handleIncrement = useCallback(
     (increment: number) => {
-      const offsetDate = getOffsetDateRange(dateRange, +offset + increment);
-
-      setDateRange(offsetDate);
       router.push(updateParams({ offset: +offset + increment }));
     },
     [offset],
@@ -52,6 +55,12 @@ export function WebsiteDateFilter({
   const handleSelect = (compare: any) => {
     router.push(updateParams({ compare }));
   };
+
+  const dateValue = useMemo(() => {
+    return offset !== 0
+      ? getDateRangeValue(dateRange.startDate, dateRange.endDate)
+      : dateRange.value;
+  }, [dateRange]);
 
   return (
     <Row gap>
@@ -71,7 +80,7 @@ export function WebsiteDateFilter({
       )}
       <Row minWidth="200px">
         <DateFilter
-          value={value}
+          value={dateValue}
           onChange={handleChange}
           showAllTime={showAllTime}
           renderDate={+offset !== 0}

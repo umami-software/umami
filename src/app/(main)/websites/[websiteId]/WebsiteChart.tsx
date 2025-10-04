@@ -11,7 +11,7 @@ export function WebsiteChart({
   websiteId: string;
   compareMode?: boolean;
 }) {
-  const { dateRange, dateCompare } = useDateRange(websiteId);
+  const { dateRange, dateCompare } = useDateRange();
   const { startDate, endDate, unit, value } = dateRange;
   const { data, isLoading, isFetching, error } = useWebsitePageviewsQuery({
     websiteId,

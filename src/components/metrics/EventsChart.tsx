@@ -14,7 +14,7 @@ export interface EventsChartProps extends BarChartProps {
 export function EventsChart({ websiteId, focusLabel }: EventsChartProps) {
   const {
     dateRange: { startDate, endDate, unit },
-  } = useDateRange(websiteId);
+  } = useDateRange();
   const { locale } = useLocale();
   const { data, isLoading, error } = useWebsiteEventsSeriesQuery(websiteId);
   const [label, setLabel] = useState<string>(focusLabel);

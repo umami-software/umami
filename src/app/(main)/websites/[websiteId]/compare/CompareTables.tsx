@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 export function CompareTables({ websiteId }: { websiteId: string }) {
   const [data, setData] = useState([]);
-  const { dateRange, dateCompare } = useDateRange(websiteId);
+  const { dateRange, dateCompare } = useDateRange();
   const { formatMessage, labels } = useMessages();
   const {
     router,

@@ -12,7 +12,7 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
   const {
     dateRange: { startDate, endDate },
-  } = useDateRange(websiteId);
+  } = useDateRange();
 
   return (
     <Column gap="6">

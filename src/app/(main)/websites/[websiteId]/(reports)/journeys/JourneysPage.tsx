@@ -13,7 +13,7 @@ export function JourneysPage({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
   const {
     dateRange: { startDate, endDate },
-  } = useDateRange(websiteId);
+  } = useDateRange();
   const [steps, setSteps] = useState(DEFAULT_STEP);
   const [startStep, setStartStep] = useState('');
   const [endStep, setEndStep] = useState('');

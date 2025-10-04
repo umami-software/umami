@@ -1,7 +1,8 @@
-import { List, ListItem } from '@umami/react-zen';
+import { IconLabel, List, ListItem } from '@umami/react-zen';
 import { useWebsiteSegmentsQuery } from '@/components/hooks';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Empty } from '@/components/common/Empty';
+import { ChartPie, UserPlus } from '@/components/icons';
 
 export interface SegmentFiltersProps {
   websiteId: string;
@@ -29,7 +30,9 @@ export function SegmentFilters({
         {data?.data?.map(item => {
           return (
             <ListItem key={item.id} id={item.id}>
-              {item.name}
+              <IconLabel icon={type === 'segment' ? <ChartPie /> : <UserPlus />}>
+                {item.name}
+              </IconLabel>
             </ListItem>
           );
         })}

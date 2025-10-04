@@ -1,35 +1,32 @@
-import { getMinimumUnit, parseDateRange } from '@/lib/date';
+import { useNavigation } from '@/components/hooks/useNavigation';
+import { useMemo } from 'react';
+import { getCompareDate, getOffsetDateRange, parseDateRange } from '@/lib/date';
 import { useLocale } from '@/components/hooks/useLocale';
-import { useApi } from '@/components/hooks//useApi';
-import { useQueryStringDate } from '@/components/hooks/useQueryStringDate';
-import { useGlobalState } from '@/components/hooks/useGlobalState';
+import { DEFAULT_DATE_RANGE_VALUE } from '@/lib/constants';
 
-export function useDateRange(websiteId: string) {
-  const { get } = useApi();
+export function useDateRange(options: { ignoreOffset?: boolean } = {}) {
+  const {
+    query: { date = DEFAULT_DATE_RANGE_VALUE, offset = 0, compare = 'prev', all },
+  } = useNavigation();
   const { locale } = useLocale();
-  const { dateRange: defaultDateRange, dateCompare } = useQueryStringDate();
 
-  const [dateRange, setDateRange] = useGlobalState(`date-range:${websiteId}`, defaultDateRange);
+  const dateRange = useMemo(() => {
+    const dateRangeObject = parseDateRange(date, locale);
 
-  const setDateRangeValue = async (value: string) => {
-    if (value === 'all') {
-      const result = await get(`/websites/${websiteId}/daterange`);
-      const { mindate, maxdate } = result;
+    return !options.ignoreOffset && offset
+      ? getOffsetDateRange(dateRangeObject, +offset)
+      : dateRangeObject;
+  }, [date, offset, options]);
 
-      const startDate = new Date(mindate);
-      const endDate = new Date(maxdate);
-      const unit = getMinimumUnit(startDate, endDate);
+  const dateCompare = getCompareDate(compare, dateRange.startDate, dateRange.endDate);
 
-      setDateRange({
-        startDate,
-        endDate,
-        unit,
-        value,
-      });
-    } else {
-      setDateRange(parseDateRange(value, locale));
-    }
+  return {
+    date,
+    offset,
+    compare,
+    isAllTime: !!all,
+    isCustomRange: date.startsWith('range:'),
+    dateRange,
+    dateCompare,
   };
-
-  return { dateRange, dateCompare, setDateRange, setDateRangeValue };
 }

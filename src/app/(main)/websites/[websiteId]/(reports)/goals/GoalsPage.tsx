@@ -12,7 +12,7 @@ export function GoalsPage({ websiteId }: { websiteId: string }) {
   const { data, isLoading, error } = useReportsQuery({ websiteId, type: 'goal' });
   const {
     dateRange: { startDate, endDate },
-  } = useDateRange(websiteId);
+  } = useDateRange();
 
   return (
     <Column gap>

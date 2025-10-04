@@ -12,10 +12,9 @@ export function WebsiteMetricsBar({
   showChange?: boolean;
   compareMode?: boolean;
 }) {
-  const { dateRange } = useDateRange(websiteId);
+  const { isAllTime } = useDateRange();
   const { formatMessage, labels, getErrorMessage } = useMessages();
   const { data, isLoading, isFetching, error } = useWebsiteStatsQuery(websiteId);
-  const isAllTime = dateRange.value === 'all';
 
   const { pageviews, visitors, visits, bounces, totaltime, comparison } = data || {};
 

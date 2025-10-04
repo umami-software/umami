@@ -1,10 +1,10 @@
 import { useDateRange } from './useDateRange';
 import { useTimezone } from './useTimezone';
 
-export function useDateParameters(websiteId: string) {
+export function useDateParameters() {
   const {
     dateRange: { startDate, endDate, unit },
-  } = useDateRange(websiteId);
+  } = useDateRange();
   const { timezone, toUtc } = useTimezone();
 
   return {

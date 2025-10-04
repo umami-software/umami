@@ -12,10 +12,9 @@ export function PixelMetricsBar({
   showChange?: boolean;
   compareMode?: boolean;
 }) {
-  const { dateRange } = useDateRange(pixelId);
+  const { isAllTime } = useDateRange();
   const { formatMessage, labels } = useMessages();
   const { data, isLoading, isFetching, error } = useWebsiteStatsQuery(pixelId);
-  const isAllTime = dateRange.value === 'all';
 
   const { pageviews, visitors, visits, comparison } = data || {};
 

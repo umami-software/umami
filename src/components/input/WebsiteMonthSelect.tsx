@@ -1,16 +1,17 @@
-import { useDateRange } from '@/components/hooks';
-import { dateToRangeValue } from '@/lib/date';
+import { useDateRange, useNavigation } from '@/components/hooks';
+import { getMonthDateRangeValue } from '@/lib/date';
 import { MonthSelect } from './MonthSelect';
 
-export function WebsiteMonthSelect({ websiteId }: { websiteId: string }) {
+export function WebsiteMonthSelect() {
+  const { router, updateParams } = useNavigation();
   const {
     dateRange: { startDate },
-    saveDateRange,
-  } = useDateRange(websiteId);
+  } = useDateRange();
 
   const handleMonthSelect = (date: Date) => {
-    const range = dateToRangeValue(date);
-    saveDateRange(range);
+    const range = getMonthDateRangeValue(date);
+
+    router.push(updateParams({ date: range, offset: undefined }));
   };
 
   return <MonthSelect date={startDate} onChange={handleMonthSelect} />;

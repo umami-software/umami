@@ -12,7 +12,7 @@ export function FunnelsPage({ websiteId }: { websiteId: string }) {
   const { data, isLoading, error } = useReportsQuery({ websiteId, type: 'funnel' });
   const {
     dateRange: { startDate, endDate },
-  } = useDateRange(websiteId);
+  } = useDateRange();
 
   return (
     <Column gap>

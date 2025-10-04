@@ -12,7 +12,7 @@ import { SectionHeader } from '@/components/common/SectionHeader';
 export function BreakdownPage({ websiteId }: { websiteId: string }) {
   const {
     dateRange: { startDate, endDate },
-  } = useDateRange(websiteId);
+  } = useDateRange();
   const [fields, setFields] = useState(['path']);
 
   return (

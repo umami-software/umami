@@ -7,7 +7,7 @@ import { useDateRange } from '@/components/hooks';
 export function RevenuePage({ websiteId }: { websiteId: string }) {
   const {
     dateRange: { startDate, endDate, unit },
-  } = useDateRange(websiteId);
+  } = useDateRange();
 
   return (
     <Column gap>
