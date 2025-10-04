@@ -1,13 +1,12 @@
 'use client';
 import { useState } from 'react';
-import { Button, Column, Box, Text, Icon, DialogTrigger, Modal, Dialog } from '@umami/react-zen';
+import { Button, Column, Box, DialogTrigger, Popover, Dialog, IconLabel } from '@umami/react-zen';
 import { useDateRange, useMessages } from '@/components/hooks';
 import { ListCheck } from '@/components/icons';
 import { Panel } from '@/components/common/Panel';
 import { Breakdown } from './Breakdown';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { FieldSelectForm } from '@/app/(main)/websites/[websiteId]/(reports)/breakdown/FieldSelectForm';
-import { SectionHeader } from '@/components/common/SectionHeader';
 
 export function BreakdownPage({ websiteId }: { websiteId: string }) {
   const {
@@ -18,9 +17,7 @@ export function BreakdownPage({ websiteId }: { websiteId: string }) {
   return (
     <Column gap>
       <WebsiteControls websiteId={websiteId} />
-      <SectionHeader>
-        <FieldsButton value={fields} onChange={setFields} />
-      </SectionHeader>
+      <FieldsButton value={fields} onChange={setFields} />
       <Panel height="900px" overflow="auto" allowFullscreen>
         <Breakdown
           websiteId={websiteId}
@@ -39,19 +36,16 @@ const FieldsButton = ({ value, onChange }) => {
   return (
     <Box>
       <DialogTrigger>
-        <Button variant="primary">
-          <Icon>
-            <ListCheck />
-          </Icon>
-          <Text>Fields</Text>
+        <Button>
+          <IconLabel icon={<ListCheck />}>{formatMessage(labels.fields)}</IconLabel>
         </Button>
-        <Modal>
+        <Popover>
           <Dialog title={formatMessage(labels.fields)} style={{ width: 400 }}>
             {({ close }) => (
               <FieldSelectForm selectedFields={value} onChange={onChange} onClose={close} />
             )}
           </Dialog>
-        </Modal>
+        </Popover>
       </DialogTrigger>
     </Box>
   );

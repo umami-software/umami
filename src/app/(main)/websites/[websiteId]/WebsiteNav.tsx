@@ -1,9 +1,9 @@
+import { Text } from '@umami/react-zen';
 import { Eye, User, Clock, Sheet, Tag, ChartPie, UserPlus } from '@/components/icons';
 import { Lightning, Path, Money, Compare, Target, Funnel, Magnet, Network } from '@/components/svg';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { SideMenu } from '@/components/common/SideMenu';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
-import { Text } from '@umami/react-zen';
 
 export function WebsiteNav({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();

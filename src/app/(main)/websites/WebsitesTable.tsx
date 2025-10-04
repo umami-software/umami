@@ -1,15 +1,13 @@
 import { ReactNode } from 'react';
-import { Row, Text, Icon, DataTable, DataColumn, MenuItem } from '@umami/react-zen';
+import { Icon, DataTable, DataColumn } from '@umami/react-zen';
+import { LinkButton } from '@/components/common/LinkButton';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { MenuButton } from '@/components/input/MenuButton';
-import { Eye, SquarePen } from '@/components/icons';
+import { SquarePen } from '@/components/icons';
 import { Empty } from '@/components/common/Empty';
 
 export function WebsitesTable({
   data = [],
   showActions,
-  allowEdit,
-  allowView,
   renderLink,
 }: {
   data: Record<string, any>[];
@@ -37,28 +35,11 @@ export function WebsitesTable({
             const websiteId = row.id;
 
             return (
-              <MenuButton>
-                {allowView && (
-                  <MenuItem href={renderUrl(`/websites/${websiteId}`)}>
-                    <Row alignItems="center" gap>
-                      <Icon data-test="link-button-view">
-                        <Eye />
-                      </Icon>
-                      <Text>{formatMessage(labels.view)}</Text>
-                    </Row>
-                  </MenuItem>
-                )}
-                {allowEdit && (
-                  <MenuItem href={renderUrl(`/websites/${websiteId}/settings`)}>
-                    <Row alignItems="center" gap>
-                      <Icon data-test="link-button-edit">
-                        <SquarePen />
-                      </Icon>
-                      <Text>{formatMessage(labels.edit)}</Text>
-                    </Row>
-                  </MenuItem>
-                )}
-              </MenuButton>
+              <LinkButton href={renderUrl(`/websites/${websiteId}/settings`)} variant="quiet">
+                <Icon>
+                  <SquarePen />
+                </Icon>
+              </LinkButton>
             );
           }}
         </DataColumn>

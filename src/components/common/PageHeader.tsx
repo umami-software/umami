@@ -24,6 +24,7 @@ export function PageHeader({
       justifyContent="space-between"
       alignItems="center"
       paddingY="6"
+      marginBottom="6"
       border={showBorder ? 'bottom' : undefined}
       width="100%"
       {...props}

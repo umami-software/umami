@@ -1,14 +1,13 @@
 import { ReactNode } from 'react';
 import {
-  Text,
   Heading,
   NavMenu,
   NavMenuItem,
-  Icon,
   Row,
   Column,
   NavMenuGroup,
   NavMenuProps,
+  IconLabel,
 } from '@umami/react-zen';
 import Link from 'next/link';
 
@@ -47,10 +46,7 @@ export function SideMenu({
       return (
         <Link key={id} href={path}>
           <NavMenuItem isSelected={isSelected}>
-            <Row alignItems="center" gap>
-              <Icon>{icon}</Icon>
-              <Text>{label}</Text>
-            </Row>
+            <IconLabel icon={icon}>{label}</IconLabel>
           </NavMenuItem>
         </Link>
       );
