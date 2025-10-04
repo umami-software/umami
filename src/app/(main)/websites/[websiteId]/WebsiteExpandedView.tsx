@@ -26,9 +26,11 @@ import { Lightning } from '@/components/svg';
 
 export function WebsiteExpandedView({
   websiteId,
+  excludedIds = [],
   onClose,
 }: {
   websiteId: string;
+  excludedIds?: string[];
   onClose?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
@@ -37,9 +39,11 @@ export function WebsiteExpandedView({
     query: { view },
   } = useNavigation();
 
+  const filterExcluded = (item: { id: string }) => !excludedIds.includes(item.id);
+
   const items = [
     {
-      label: formatMessage(labels.pages),
+      label: 'URL',
       items: [
         {
           id: 'path',
@@ -71,7 +75,7 @@ export function WebsiteExpandedView({
           path: updateParams({ view: 'query' }),
           icon: <Search />,
         },
-      ],
+      ].filter(filterExcluded),
     },
     {
       label: formatMessage(labels.sources),
@@ -94,7 +98,7 @@ export function WebsiteExpandedView({
           path: updateParams({ view: 'domain' }),
           icon: <Globe />,
         },
-      ],
+      ].filter(filterExcluded),
     },
     {
       label: formatMessage(labels.location),
@@ -117,7 +121,7 @@ export function WebsiteExpandedView({
           path: updateParams({ view: 'city' }),
           icon: <Landmark />,
         },
-      ],
+      ].filter(filterExcluded),
     },
     {
       label: formatMessage(labels.environment),
@@ -152,7 +156,7 @@ export function WebsiteExpandedView({
           path: updateParams({ view: 'screen' }),
           icon: <Monitor />,
         },
-      ],
+      ].filter(filterExcluded),
     },
     {
       label: formatMessage(labels.other),
@@ -175,7 +179,7 @@ export function WebsiteExpandedView({
           path: updateParams({ view: 'tag' }),
           icon: <Tag />,
         },
-      ],
+      ].filter(filterExcluded),
     },
   ];
 

@@ -1,4 +1,4 @@
-import { Button, Icon, DialogTrigger, Dialog, Modal, Text } from '@umami/react-zen';
+import { Button, Icon, DialogTrigger, Dialog, Popover, Text } from '@umami/react-zen';
 import { ListFilter } from '@/components/icons';
 import { FilterEditForm } from '@/components/input/FilterEditForm';
 import { useMessages, useNavigation } from '@/components/hooks';
@@ -32,13 +32,13 @@ export function WebsiteFilterButton({
         </Icon>
         {showText && <Text>{formatMessage(labels.filter)}</Text>}
       </Button>
-      <Modal>
+      <Popover placement="bottom start">
         <Dialog title={formatMessage(labels.filters)} style={{ width: 800, minHeight: 600 }}>
           {({ close }) => {
             return <FilterEditForm websiteId={websiteId} onChange={handleChange} onClose={close} />;
           }}
         </Dialog>
-      </Modal>
+      </Popover>
     </DialogTrigger>
   );
 }
