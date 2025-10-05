@@ -42,3 +42,4 @@ yarn-error.log*
 
 *.dev.yml
 
+/context.md
