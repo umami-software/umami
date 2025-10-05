@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Select, SelectProps, ListItem } from '@umami/react-zen';
-import { useUserWebsitesQuery, useMessages, useLoginQuery } from '@/components/hooks';
+import { Select, SelectProps, ListItem, Text, Row } from '@umami/react-zen';
+import { useUserWebsitesQuery, useMessages, useLoginQuery, useWebsite } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 
 export function WebsiteSelect({
@@ -14,12 +14,13 @@ export function WebsiteSelect({
   teamId?: string;
   includeTeams?: boolean;
 } & SelectProps) {
+  const website = useWebsite();
   const { formatMessage, messages } = useMessages();
   const [search, setSearch] = useState('');
   const { user } = useLoginQuery();
   const { data, isLoading } = useUserWebsitesQuery(
     { userId: user?.id, teamId },
-    { search, pageSize: 5, includeTeams },
+    { search, pageSize: 10, includeTeams },
   );
 
   const handleSearch = (value: string) => {
@@ -28,6 +29,14 @@ export function WebsiteSelect({
 
   const handleOpenChange = () => {
     setSearch('');
+  };
+
+  const renderValue = () => {
+    return (
+      <Row maxWidth="160px">
+        <Text truncate>{website.name}</Text>
+      </Row>
+    );
   };
 
   return (
@@ -41,8 +50,10 @@ export function WebsiteSelect({
       onSearch={handleSearch}
       onChange={onChange}
       onOpenChange={handleOpenChange}
+      renderValue={renderValue}
       listProps={{
         renderEmptyState: () => <Empty message={formatMessage(messages.noResultsFound)} />,
+        style: { maxHeight: '400px' },
       }}
     >
       {({ id, name }: any) => <ListItem key={id}>{name}</ListItem>}

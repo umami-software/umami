@@ -35,13 +35,12 @@ export function WebsiteDateFilter({
     if (date === 'all') {
       router.push(
         updateParams({
-          date: getDateRangeValue(websiteDateRange.startDate, websiteDateRange.endDate),
+          date: `${getDateRangeValue(websiteDateRange.startDate, websiteDateRange.endDate)}:all`,
           offset: undefined,
-          all: 1,
         }),
       );
     } else {
-      router.push(updateParams({ date, offset: undefined, all: undefined }));
+      router.push(updateParams({ date, offset: undefined }));
     }
   };
 

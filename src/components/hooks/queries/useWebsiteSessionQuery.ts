@@ -8,5 +8,6 @@ export function useWebsiteSessionQuery(websiteId: string, sessionId: string) {
     queryFn: () => {
       return get(`/websites/${websiteId}/sessions/${sessionId}`);
     },
+    enabled: Boolean(websiteId && sessionId),
   });
 }

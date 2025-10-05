@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Icon, TextField, Column, Row, Label, Text } from '@umami/react-zen';
+import { Icon, TextField, Column, Row, Label } from '@umami/react-zen';
 import { useFormat, useLocale, useMessages, useRegionNames } from '@/components/hooks';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { KeyRound, Calendar } from '@/components/icons';
@@ -15,7 +15,7 @@ export function SessionInfo({ data }) {
   return (
     <Column gap="6">
       <Info label="ID">
-        <TextField value={data?.id} allowCopy />
+        <TextField value={data?.id} style={{ width: '100%' }} allowCopy />
       </Info>
 
       <Info label={formatMessage(labels.distinctId)} icon={<KeyRound />}>
@@ -83,7 +83,7 @@ const Info = ({
       <Label>{label}</Label>
       <Row alignItems="center" gap>
         {icon && <Icon>{icon}</Icon>}
-        <Text>{children || '—'}</Text>
+        {children || '—'}
       </Row>
     </Column>
   );

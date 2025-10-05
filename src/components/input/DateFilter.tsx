@@ -99,11 +99,13 @@ export function DateFilter({
     );
   };
 
+  const selectedValue = value.endsWith(':all') ? 'all' : value;
+
   return (
     <>
       <Select
         {...props}
-        value={value}
+        value={selectedValue}
         placeholder={formatMessage(labels.selectDate)}
         onChange={handleChange}
         renderValue={renderValue}

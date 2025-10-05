@@ -6,7 +6,7 @@ import { DEFAULT_DATE_RANGE_VALUE } from '@/lib/constants';
 
 export function useDateRange(options: { ignoreOffset?: boolean } = {}) {
   const {
-    query: { date = DEFAULT_DATE_RANGE_VALUE, offset = 0, compare = 'prev', all },
+    query: { date = DEFAULT_DATE_RANGE_VALUE, offset = 0, compare = 'prev' },
   } = useNavigation();
   const { locale } = useLocale();
 
@@ -24,7 +24,7 @@ export function useDateRange(options: { ignoreOffset?: boolean } = {}) {
     date,
     offset,
     compare,
-    isAllTime: !!all,
+    isAllTime: date.endsWith(`:all`),
     isCustomRange: date.startsWith('range:'),
     dateRange,
     dateCompare,

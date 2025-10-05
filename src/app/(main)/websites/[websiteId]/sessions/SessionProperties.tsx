@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Select, ListItem, Grid } from '@umami/react-zen';
+import { Select, ListItem, Grid, Column } from '@umami/react-zen';
 import {
   useMessages,
   useSessionDataPropertiesQuery,
@@ -24,25 +24,26 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
       data={data}
       error={error}
       minHeight="300px"
-      gap="6"
     >
-      {data && (
-        <Grid columns="repeat(auto-fill, minmax(300px, 1fr))" gap>
-          <Select
-            label={formatMessage(labels.event)}
-            value={propertyName}
-            onChange={setPropertyName}
-            placeholder=""
-          >
-            {properties?.map(p => (
-              <ListItem key={p} id={p}>
-                {p}
-              </ListItem>
-            ))}
-          </Select>
-        </Grid>
-      )}
-      {propertyName && <SessionValues websiteId={websiteId} propertyName={propertyName} />}
+      <Column gap="6">
+        {data && (
+          <Grid columns="repeat(auto-fill, minmax(300px, 1fr))" gap>
+            <Select
+              label={formatMessage(labels.event)}
+              value={propertyName}
+              onChange={setPropertyName}
+              placeholder=""
+            >
+              {properties?.map(p => (
+                <ListItem key={p} id={p}>
+                  {p}
+                </ListItem>
+              ))}
+            </Select>
+          </Grid>
+        )}
+        {propertyName && <SessionValues websiteId={websiteId} propertyName={propertyName} />}
+      </Column>
     </LoadingPanel>
   );
 }
@@ -84,7 +85,6 @@ const SessionValues = ({ websiteId, propertyName }) => {
       data={data}
       error={error}
       minHeight="300px"
-      gap="6"
     >
       {data && (
         <Grid columns="1fr 1fr" gap>

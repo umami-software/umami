@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { DataColumn, DataTable } from '@umami/react-zen';
-import { useFormat, useMessages } from '@/components/hooks';
+import { useFormat, useMessages, useNavigation } from '@/components/hooks';
 import { Avatar } from '@/components/common/Avatar';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { DateDistance } from '@/components/common/DateDistance';
@@ -8,12 +8,13 @@ import { DateDistance } from '@/components/common/DateDistance';
 export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean }) {
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
+  const { updateParams } = useNavigation();
 
   return (
     <DataTable data={data}>
       <DataColumn id="id" label={formatMessage(labels.session)} width="100px">
         {(row: any) => (
-          <Link href={`sessions/${row.id}`}>
+          <Link href={updateParams({ session: row.id })}>
             <Avatar seed={row.id} size={32} />
           </Link>
         )}
