@@ -14,14 +14,16 @@ export function WebsiteSelect({
   teamId?: string;
   includeTeams?: boolean;
 } & SelectProps) {
-  const website = useWebsite();
   const { formatMessage, messages } = useMessages();
+  const website = useWebsite();
+  const [name, setName] = useState<string>(website?.name);
   const [search, setSearch] = useState('');
   const { user } = useLoginQuery();
   const { data, isLoading } = useUserWebsitesQuery(
     { userId: user?.id, teamId },
     { search, pageSize: 10, includeTeams },
   );
+  const listItems: { id: string; name: string }[] = data?.['data'] || [];
 
   const handleSearch = (value: string) => {
     setSearch(value);
@@ -31,10 +33,15 @@ export function WebsiteSelect({
     setSearch('');
   };
 
+  const handleChange = (id: string) => {
+    setName(listItems.find(item => item.id === id)?.name);
+    onChange(id);
+  };
+
   const renderValue = () => {
     return (
       <Row maxWidth="160px">
-        <Text truncate>{website.name}</Text>
+        <Text truncate>{name}</Text>
       </Row>
     );
   };
@@ -42,13 +49,13 @@ export function WebsiteSelect({
   return (
     <Select
       {...props}
-      items={data?.['data'] || []}
+      items={listItems}
       value={websiteId}
       isLoading={isLoading}
       allowSearch={true}
       searchValue={search}
       onSearch={handleSearch}
-      onChange={onChange}
+      onChange={handleChange}
       onOpenChange={handleOpenChange}
       renderValue={renderValue}
       listProps={{

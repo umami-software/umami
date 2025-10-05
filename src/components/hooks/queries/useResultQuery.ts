@@ -10,7 +10,7 @@ export function useResultQuery<T = any>(
 ) {
   const { websiteId, ...parameters } = params;
   const { post, useQuery } = useApi();
-  const { startDate, endDate, timezone } = useDateParameters(websiteId);
+  const { startDate, endDate, timezone } = useDateParameters();
   const filters = useFilterParameters();
 
   return useQuery<T>({

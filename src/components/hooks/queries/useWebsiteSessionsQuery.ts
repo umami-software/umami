@@ -10,7 +10,7 @@ export function useWebsiteSessionsQuery(
 ) {
   const { get } = useApi();
   const { modified } = useModified(`sessions`);
-  const date = useDateParameters(websiteId);
+  const date = useDateParameters();
   const filters = useFilterParameters();
 
   return usePagedQuery({

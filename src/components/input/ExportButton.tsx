@@ -9,7 +9,7 @@ import { useFilterParameters } from '@/components/hooks/useFilterParameters';
 export function ExportButton({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
   const [isLoading, setIsLoading] = useState(false);
-  const date = useDateParameters(websiteId);
+  const date = useDateParameters();
   const filters = useFilterParameters();
   const searchParams = useSearchParams();
   const { get } = useApi();

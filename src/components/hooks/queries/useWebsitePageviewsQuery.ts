@@ -13,7 +13,7 @@ export function useWebsitePageviewsQuery(
   options?: ReactQueryOptions<WebsitePageviewsData>,
 ) {
   const { get, useQuery } = useApi();
-  const date = useDateParameters(websiteId);
+  const date = useDateParameters();
   const queryParams = useFilterParameters();
 
   return useQuery<WebsitePageviewsData>({

@@ -4,7 +4,7 @@ import { useDateParameters } from '../useDateParameters';
 
 export function useWebsiteSessionStatsQuery(websiteId: string, options?: Record<string, string>) {
   const { get, useQuery } = useApi();
-  const date = useDateParameters(websiteId);
+  const date = useDateParameters();
   const filters = useFilterParameters();
 
   return useQuery({

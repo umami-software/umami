@@ -15,7 +15,7 @@ export function useWebsiteEventsQuery(
   options?: ReactQueryOptions,
 ) {
   const { get } = useApi();
-  const date = useDateParameters(websiteId);
+  const date = useDateParameters();
   const filters = useFilterParameters();
 
   return usePagedQuery({

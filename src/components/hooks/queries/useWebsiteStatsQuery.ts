@@ -23,7 +23,7 @@ export function useWebsiteStatsQuery(
   options?: UseQueryOptions<WebsiteStatsData, Error, WebsiteStatsData>,
 ) {
   const { get, useQuery } = useApi();
-  const date = useDateParameters(websiteId);
+  const date = useDateParameters();
   const filters = useFilterParameters();
 
   return useQuery<WebsiteStatsData>({

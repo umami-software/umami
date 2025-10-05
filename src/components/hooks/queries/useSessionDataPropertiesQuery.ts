@@ -5,7 +5,7 @@ import { ReactQueryOptions } from '@/lib/types';
 
 export function useSessionDataPropertiesQuery(websiteId: string, options?: ReactQueryOptions) {
   const { get, useQuery } = useApi();
-  const date = useDateParameters(websiteId);
+  const date = useDateParameters();
   const filters = useFilterParameters();
 
   return useQuery<any>({
