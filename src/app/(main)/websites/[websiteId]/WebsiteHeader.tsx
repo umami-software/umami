@@ -7,7 +7,7 @@ import { WebsiteShareForm } from '@/app/(main)/websites/[websiteId]/settings/Web
 import { useMessages, useNavigation, useWebsite } from '@/components/hooks';
 import { LinkButton } from '@/components/common/LinkButton';
 
-export function WebsiteHeader() {
+export function WebsiteHeader({ showActions }: { showActions?: boolean }) {
   const website = useWebsite();
   const { renderUrl, pathname } = useNavigation();
   const isSettings = pathname.endsWith('/settings');
@@ -20,15 +20,18 @@ export function WebsiteHeader() {
     <PageHeader title={website.name} icon={<Favicon domain={website.domain} />} marginBottom="3">
       <Row alignItems="center" gap="6">
         <ActiveUsers websiteId={website.id} />
-        <Row alignItems="center" gap>
-          <ShareButton websiteId={website.id} shareId={website.shareId} />
-          <LinkButton href={renderUrl(`/websites/${website.id}/settings`, false)}>
-            <Icon>
-              <Edit />
-            </Icon>
-            <Text>Edit</Text>
-          </LinkButton>
-        </Row>
+
+        {showActions && (
+          <Row alignItems="center" gap>
+            <ShareButton websiteId={website.id} shareId={website.shareId} />
+            <LinkButton href={renderUrl(`/websites/${website.id}/settings`, false)}>
+              <Icon>
+                <Edit />
+              </Icon>
+              <Text>Edit</Text>
+            </LinkButton>
+          </Row>
+        )}
       </Row>
     </PageHeader>
   );

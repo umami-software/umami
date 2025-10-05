@@ -14,7 +14,10 @@ export function DateRangeSetting() {
     setDate(value);
   };
 
-  const handleReset = () => setItem(DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE_VALUE);
+  const handleReset = () => {
+    setItem(DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE_VALUE);
+    setDate(DEFAULT_DATE_RANGE_VALUE);
+  };
 
   return (
     <Row gap="3">

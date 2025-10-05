@@ -2,16 +2,20 @@ import { useNavigation } from '@/components/hooks/useNavigation';
 import { useMemo } from 'react';
 import { getCompareDate, getOffsetDateRange, parseDateRange } from '@/lib/date';
 import { useLocale } from '@/components/hooks/useLocale';
-import { DEFAULT_DATE_RANGE_VALUE } from '@/lib/constants';
+import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE_VALUE } from '@/lib/constants';
+import { getItem } from '@/lib/storage';
 
 export function useDateRange(options: { ignoreOffset?: boolean } = {}) {
   const {
-    query: { date = DEFAULT_DATE_RANGE_VALUE, offset = 0, compare = 'prev' },
+    query: { date = '', offset = 0, compare = 'prev' },
   } = useNavigation();
   const { locale } = useLocale();
 
   const dateRange = useMemo(() => {
-    const dateRangeObject = parseDateRange(date, locale);
+    const dateRangeObject = parseDateRange(
+      date || getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE_VALUE,
+      locale,
+    );
 
     return !options.ignoreOffset && offset
       ? getOffsetDateRange(dateRangeObject, +offset)

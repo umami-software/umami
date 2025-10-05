@@ -21,7 +21,7 @@ export function WebsiteLayout({ websiteId, children }: { websiteId: string; chil
           </Column>
         )}
         <PageBody gap>
-          <WebsiteHeader />
+          <WebsiteHeader showActions />
           <Column>{children}</Column>
         </PageBody>
       </Grid>

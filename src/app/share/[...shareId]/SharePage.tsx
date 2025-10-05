@@ -6,6 +6,7 @@ import { useShareTokenQuery } from '@/components/hooks';
 import { PageBody } from '@/components/common/PageBody';
 import { Header } from './Header';
 import { Footer } from './Footer';
+import { WebsiteHeader } from '@/app/(main)/websites/[websiteId]/WebsiteHeader';
 
 export function SharePage({ shareId }) {
   const { shareToken, isLoading } = useShareTokenQuery(shareId);
@@ -19,6 +20,7 @@ export function SharePage({ shareId }) {
       <PageBody gap>
         <Header />
         <WebsiteProvider websiteId={shareToken.websiteId}>
+          <WebsiteHeader showActions={false} />
           <WebsitePage websiteId={shareToken.websiteId} />
         </WebsiteProvider>
         <Footer />
