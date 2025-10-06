@@ -156,7 +156,10 @@ export async function resetWebsite(websiteId: string) {
     }),
   ]).then(async data => {
     if (cloudMode) {
-      await redis.client.set(`website:${websiteId}`, data[3]);
+      await redis.client.set(
+        `website:${websiteId}`,
+        data.find(website => website.id),
+      );
     }
 
     return data;
