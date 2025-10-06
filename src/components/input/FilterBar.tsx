@@ -25,13 +25,14 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
   const { formatValue } = useFormat();
   const {
     router,
+    pathname,
     updateParams,
     replaceParams,
     query: { segment, cohort },
   } = useNavigation();
   const { filters, operatorLabels } = useFilters();
   const { data, isLoading } = useWebsiteSegmentQuery(websiteId, segment || cohort);
-  const canSaveSegment = filters.length > 0 && !segment && !cohort;
+  const canSaveSegment = filters.length > 0 && !segment && !cohort && !pathname.includes('/share');
 
   const handleCloseFilter = (param: string) => {
     router.push(updateParams({ [param]: undefined }));
