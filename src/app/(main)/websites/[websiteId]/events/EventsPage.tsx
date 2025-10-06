@@ -9,6 +9,7 @@ import { useMessages } from '@/components/hooks';
 import { EventProperties } from './EventProperties';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { getItem, setItem } from '@/lib/storage';
+import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 
 const KEY_NAME = 'umami.events.tab';
 
@@ -52,6 +53,7 @@ export function EventsPage({ websiteId }) {
           </TabPanel>
         </Tabs>
       </Panel>
+      <SessionModal websiteId={websiteId} />
     </Column>
   );
 }

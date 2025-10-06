@@ -1,5 +1,14 @@
 import { Text } from '@umami/react-zen';
-import { Eye, User, Clock, Ungroup, Tag, ChartPie, UserPlus, GitCompare } from '@/components/icons';
+import {
+  Eye,
+  User,
+  Clock,
+  Sheet,
+  Tag,
+  ChartPie,
+  UserPlus,
+  AlignEndHorizontal,
+} from '@/components/icons';
 import { Lightning, Path, Money, Target, Funnel, Magnet, Network } from '@/components/svg';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { SideMenu } from '@/components/common/SideMenu';
@@ -47,13 +56,13 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
         {
           id: 'compare',
           label: formatMessage(labels.compare),
-          icon: <GitCompare />,
+          icon: <AlignEndHorizontal />,
           path: renderPath('/compare'),
         },
         {
           id: 'breakdown',
           label: formatMessage(labels.breakdown),
-          icon: <Ungroup />,
+          icon: <Sheet />,
           path: renderPath('/breakdown'),
         },
       ],

@@ -10,7 +10,7 @@ import { TypeIcon } from '@/components/common/TypeIcon';
 
 export function EventsTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
-  const { renderUrl } = useNavigation();
+  const { updateParams } = useNavigation();
   const { formatValue } = useFormat();
 
   if (data.length === 0) {
@@ -23,7 +23,7 @@ export function EventsTable({ data = [] }) {
         {(row: any) => {
           return (
             <Row alignItems="center" gap="2">
-              <Link href={renderUrl(`/websites/${row.websiteId}/sessions/${row.sessionId}`)}>
+              <Link href={updateParams({ session: row.sessionId })}>
                 <Avatar seed={row.sessionId} size={32} />
               </Link>
               <Icon>{row.eventName ? <Lightning /> : <Eye />}</Icon>

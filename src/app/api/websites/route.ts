@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import redis from '@/lib/redis';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { json, unauthorized } from '@/lib/response';
 import { uuid } from '@/lib/crypto';
@@ -50,11 +51,15 @@ export async function POST(request: Request) {
 
   const { id, name, domain, shareId, teamId } = body;
 
-  if (process.env.CLOUD_MODE && !teamId && !auth.user.hasSubscription) {
-    const count = await getWebsiteCount(auth.user.id);
+  if (process.env.CLOUD_MODE && !teamId) {
+    const account = await redis.client.get(`account:${auth.user.id}`);
 
-    if (count >= CLOUD_WEBSITE_LIMIT) {
-      return unauthorized({ message: 'Website limit reached.' });
+    if (!account?.hasSubscription) {
+      const count = await getWebsiteCount(auth.user.id);
+
+      if (count >= CLOUD_WEBSITE_LIMIT) {
+        return unauthorized({ message: 'Website limit reached.' });
+      }
     }
   }
 

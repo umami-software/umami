@@ -208,6 +208,7 @@ export async function getWebsiteCount(userId: string) {
   return prisma.client.website.count({
     where: {
       userId,
+      deletedAt: null,
     },
   });
 }
