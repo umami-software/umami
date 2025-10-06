@@ -8,6 +8,7 @@ services:
       DATABASE_URL: postgresql://umami:umami@db:5432/umami
       DATABASE_TYPE: postgresql
       APP_SECRET: replace-me-with-a-random-string
+      # BOUNCE_THRESHOLD: 2 # OPTIONAL: set the minimum amount custom events to trigger a bounce
     depends_on:
       db:
         condition: service_healthy

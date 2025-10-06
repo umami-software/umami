@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS } from '@/lib/constants';
+import { EVENT_COLUMNS, EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, getDatabaseType, POSTGRESQL, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { PageParams, QueryFilters } from '@/lib/types';
@@ -39,7 +39,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
       min(website_event.created_at) as "firstAt",
       max(website_event.created_at) as "lastAt",
       count(distinct website_event.visit_id) as "visits",
-      sum(case when website_event.event_type = 1 then 1 else 0 end) as "views",
+      sum(case when website_event.event_type = ${EVENT_TYPE.pageView} then 1 else 0 end) as "views",
       max(website_event.created_at) as "createdAt"
     from website_event 
     ${cohortQuery}
@@ -96,7 +96,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
       ${getDateStringSQL('min(created_at)')} as firstAt,
       ${getDateStringSQL('max(created_at)')} as lastAt,
       uniq(visit_id) as visits,
-      sumIf(views, event_type = 1) as views,
+      sumIf(views, event_type = ${EVENT_TYPE.pageView}) as views,
       lastAt as createdAt
     from website_event
     ${cohortQuery}
@@ -131,7 +131,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
       ${getDateStringSQL('min(min_time)')} as firstAt,
       ${getDateStringSQL('max(max_time)')} as lastAt,
       uniq(visit_id) as visits,
-      sumIf(views, event_type = 1) as views,
+      sumIf(views, event_type = ${EVENT_TYPE.pageView}) as views,
       lastAt as createdAt
     from website_event_stats_hourly website_event
     ${cohortQuery}

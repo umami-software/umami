@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, getDatabaseType, POSTGRESQL, PRISMA, runQuery } from '@/lib/db';
+import { EVENT_TYPE } from '@/lib/constants';
 import prisma from '@/lib/prisma';
 import { PageParams, QueryFilters } from '@/lib/types';
 
@@ -44,8 +45,8 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
     ${filterQuery}
     ${
       search
-        ? `and ((event_name ${like} {{search}} and event_type = 2)
-           or (url_path ${like} {{search}} and event_type = 1))`
+        ? `and ((event_name ${like} {{search}} and event_type = ${EVENT_TYPE.customEvent})
+           or (url_path ${like} {{search}} and event_type = ${EVENT_TYPE.pageView}))`
         : ''
     }
     order by created_at desc
@@ -82,8 +83,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     ${filterQuery}
     ${
       search
-        ? `and ((positionCaseInsensitive(event_name, {search:String}) > 0 and event_type = 2)
-           or (positionCaseInsensitive(url_path, {search:String}) > 0 and event_type = 1))`
+        ? `and ((positionCaseInsensitive(event_name, {search:String}) > 0 and event_type = ${EVENT_TYPE.customEvent})
+           or (positionCaseInsensitive(url_path, {search:String}) > 0 and event_type = ${EVENT_TYPE.pageView}))`
         : ''
     }
     order by created_at desc
