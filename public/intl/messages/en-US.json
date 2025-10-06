@@ -524,7 +524,7 @@
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry path"
+      "value": "Entry page"
     }
   ],
   "label.event": [
@@ -560,7 +560,7 @@
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit path"
+      "value": "Exit page"
     }
   ],
   "label.false": [

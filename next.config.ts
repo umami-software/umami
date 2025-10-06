@@ -19,7 +19,7 @@ const contentSecurityPolicy = `
   img-src 'self' https: data:;
   script-src 'self' 'unsafe-eval' 'unsafe-inline';
   style-src 'self' 'unsafe-inline';
-  connect-src *;
+  connect-src 'self' https:;
   frame-ancestors 'self' ${frameAncestors};
 `;
 

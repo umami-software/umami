@@ -4,8 +4,9 @@ export const config = {
   matcher: '/:path*',
 };
 
-const TRACKER_NAME = '/script.js';
-const COLLECT_ENDPOINT = '/api/send';
+const TRACKER_PATH = '/script.js';
+const COLLECT_PATH = '/api/send';
+const LOGIN_PATH = '/login';
 
 const apiHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -27,7 +28,7 @@ function customCollectEndpoint(request: NextRequest) {
     const url = request.nextUrl.clone();
 
     if (url.pathname.endsWith(collectEndpoint)) {
-      url.pathname = COLLECT_ENDPOINT;
+      url.pathname = COLLECT_PATH;
       return NextResponse.rewrite(url, { headers: apiHeaders });
     }
   }
@@ -41,7 +42,7 @@ function customScriptName(request: NextRequest) {
     const names = scriptName.split(',').map(name => name.trim().replace(/^\/+/, ''));
 
     if (names.find(name => url.pathname.endsWith(name))) {
-      url.pathname = TRACKER_NAME;
+      url.pathname = TRACKER_PATH;
       return NextResponse.rewrite(url, { headers: trackerHeaders });
     }
   }
@@ -50,13 +51,21 @@ function customScriptName(request: NextRequest) {
 function customScriptUrl(request: NextRequest) {
   const scriptUrl = process.env.TRACKER_SCRIPT_URL;
 
-  if (scriptUrl && request.nextUrl.pathname.endsWith(TRACKER_NAME)) {
+  if (scriptUrl && request.nextUrl.pathname.endsWith(TRACKER_PATH)) {
     return NextResponse.rewrite(scriptUrl, { headers: trackerHeaders });
   }
 }
 
+function disableLogin(request: NextRequest) {
+  const loginDisabled = process.env.DISABLE_LOGIN;
+
+  if (loginDisabled && request.nextUrl.pathname.endsWith(LOGIN_PATH)) {
+    return new NextResponse('Access denied', { status: 403 });
+  }
+}
+
 export default function middleware(req: NextRequest) {
-  const fns = [customCollectEndpoint, customScriptName, customScriptUrl];
+  const fns = [customCollectEndpoint, customScriptName, customScriptUrl, disableLogin];
 
   for (const fn of fns) {
     const res = fn(req);

@@ -2,55 +2,49 @@
   "label.access-code": [
     {
       "type": 0,
-      "value": "Koda za dostop"
+      "value": "Kirish kodi"
     }
   ],
   "label.actions": [
     {
       "type": 0,
-      "value": "Dejanja"
+      "value": "Amallar"
     }
   ],
   "label.activity": [
     {
       "type": 0,
-      "value": "Dnevnik dejavnosti"
+      "value": "Faoliyat"
     }
   ],
   "label.add": [
     {
       "type": 0,
-      "value": "Dodaj"
-    }
-  ],
-  "label.add-board": [
-    {
-      "type": 0,
-      "value": "Dodaj tablo"
+      "value": "Qoʻshish"
     }
   ],
   "label.add-description": [
     {
       "type": 0,
-      "value": "Dodaj opis"
+      "value": "Tavsif qoʻshish"
     }
   ],
   "label.add-member": [
     {
       "type": 0,
-      "value": "Dodaj člana"
+      "value": "A'zo qoʻshish"
     }
   ],
   "label.add-step": [
     {
       "type": 0,
-      "value": "Dodaj korak"
+      "value": "Qadam qoʻshish"
     }
   ],
   "label.add-website": [
     {
       "type": 0,
-      "value": "Dodaj spletno mesto"
+      "value": "Veb-sayt qoʻshish"
     }
   ],
   "label.admin": [
@@ -59,664 +53,568 @@
       "value": "Administrator"
     }
   ],
-  "label.affiliate": [
-    {
-      "type": 0,
-      "value": "Partner"
-    }
-  ],
   "label.after": [
     {
       "type": 0,
-      "value": "Po"
+      "value": "Keyin"
     }
   ],
   "label.all": [
     {
       "type": 0,
-      "value": "Vsi"
+      "value": "Barchasi"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "Ves čas"
+      "value": "Barcha vaqtlar"
     }
   ],
   "label.analytics": [
     {
       "type": 0,
-      "value": "Analitika"
-    }
-  ],
-  "label.apply": [
-    {
-      "type": 0,
-      "value": "Uporabi"
-    }
-  ],
-  "label.attribution": [
-    {
-      "type": 0,
-      "value": "Pripis"
-    }
-  ],
-  "label.attribution-description": [
-    {
-      "type": 0,
-      "value": "Oglejte si, kako uporabniki sodelujejo z vašim marketingom in kaj spodbuja konverzije."
+      "value": "Tahlil"
     }
   ],
   "label.average": [
     {
       "type": 0,
-      "value": "Povprečno"
+      "value": "Oʻrtacha"
     }
   ],
   "label.back": [
     {
       "type": 0,
-      "value": "Nazaj"
+      "value": "Orqaga"
     }
   ],
   "label.before": [
     {
       "type": 0,
-      "value": "Pred"
-    }
-  ],
-  "label.boards": [
-    {
-      "type": 0,
-      "value": "Table"
+      "value": "Oldin"
     }
   ],
   "label.bounce-rate": [
     {
       "type": 0,
-      "value": "Odbojna stopnja"
+      "value": "Chiqib ketish darajasi"
     }
   ],
   "label.breakdown": [
     {
       "type": 0,
-      "value": "Razčlenitev"
+      "value": "Tahlil"
     }
   ],
   "label.browser": [
     {
       "type": 0,
-      "value": "Brskalnik"
+      "value": "Brauzer"
     }
   ],
   "label.browsers": [
     {
       "type": 0,
-      "value": "Brskalniki"
-    }
-  ],
-  "label.campaigns": [
-    {
-      "type": 0,
-      "value": "Kampanje"
+      "value": "Brauzerlar"
     }
   ],
   "label.cancel": [
     {
       "type": 0,
-      "value": "Prekliči"
+      "value": "Bekor qilish"
     }
   ],
   "label.change-password": [
     {
       "type": 0,
-      "value": "Zamenjaj geslo"
-    }
-  ],
-  "label.channels": [
-    {
-      "type": 0,
-      "value": "Kanali"
+      "value": "Parolni oʻzgartirish"
     }
   ],
   "label.cities": [
     {
       "type": 0,
-      "value": "Mesta"
+      "value": "Shaharlar"
     }
   ],
   "label.city": [
     {
       "type": 0,
-      "value": "Mesto"
+      "value": "Shahar"
     }
   ],
   "label.clear-all": [
     {
       "type": 0,
-      "value": "Počisti vse"
+      "value": "Barchasini tozalash"
     }
   ],
   "label.compare": [
     {
       "type": 0,
-      "value": "Primerjaj"
+      "value": "Taqqoslash"
     }
   ],
   "label.confirm": [
     {
       "type": 0,
-      "value": "Potrdi"
+      "value": "Tasdiqlash"
     }
   ],
   "label.confirm-password": [
     {
       "type": 0,
-      "value": "Potrdi geslo"
+      "value": "Parolni tasdiqlash"
     }
   ],
   "label.contains": [
     {
       "type": 0,
-      "value": "Vsebuje"
-    }
-  ],
-  "label.content": [
-    {
-      "type": 0,
-      "value": "Vsebina"
+      "value": "Oʻz ichiga oladi"
     }
   ],
   "label.continue": [
     {
       "type": 0,
-      "value": "Nadaljuj"
+      "value": "Davom etish"
     }
   ],
   "label.count": [
     {
       "type": 0,
-      "value": "Število"
+      "value": "Soni"
     }
   ],
   "label.countries": [
     {
       "type": 0,
-      "value": "Države"
+      "value": "Davlatlar"
     }
   ],
   "label.country": [
     {
       "type": 0,
-      "value": "Država"
+      "value": "Davlat"
     }
   ],
   "label.create": [
     {
       "type": 0,
-      "value": "Ustvari"
+      "value": "Yaratish"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "Ustvari poročilo"
+      "value": "Hisobot yaratish"
     }
   ],
   "label.create-team": [
     {
       "type": 0,
-      "value": "Ustvari ekipo"
+      "value": "Jamoa yaratish"
     }
   ],
   "label.create-user": [
     {
       "type": 0,
-      "value": "Ustvari uporabnika"
+      "value": "Foydalanuvchi yaratish"
     }
   ],
   "label.created": [
     {
       "type": 0,
-      "value": "Ustvarjeno"
+      "value": "Yaratilgan"
     }
   ],
   "label.created-by": [
     {
       "type": 0,
-      "value": "Ustvaril"
+      "value": "Kim tomonidan yaratilgan"
     }
   ],
   "label.current": [
     {
       "type": 0,
-      "value": "Trenutno"
+      "value": "Joriy"
     }
   ],
   "label.current-password": [
     {
       "type": 0,
-      "value": "Trenutno geslo"
+      "value": "Joriy parol"
     }
   ],
   "label.custom-range": [
     {
       "type": 0,
-      "value": "Obdobje po meri"
+      "value": "Maxsus oraliq"
     }
   ],
   "label.dashboard": [
     {
       "type": 0,
-      "value": "Nadzorna plošča"
+      "value": "Boshqaruv paneli"
     }
   ],
   "label.data": [
     {
       "type": 0,
-      "value": "Podatki"
+      "value": "Ma'lumotlar"
     }
   ],
   "label.date": [
     {
       "type": 0,
-      "value": "Datum"
+      "value": "Sana"
     }
   ],
   "label.date-range": [
     {
       "type": 0,
-      "value": "Časovno obdobje"
+      "value": "Sana oraligʻi"
     }
   ],
   "label.day": [
     {
       "type": 0,
-      "value": "Dan"
+      "value": "Kun"
     }
   ],
   "label.default-date-range": [
     {
       "type": 0,
-      "value": "Privzeto časovno obdobje"
+      "value": "Standart sana oraligʻi"
     }
   ],
   "label.delete": [
     {
       "type": 0,
-      "value": "Izbriši"
+      "value": "Oʻchirish"
     }
   ],
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Izbriši poročilo"
+      "value": "Hisobotni oʻchirish"
     }
   ],
   "label.delete-team": [
     {
       "type": 0,
-      "value": "Izbriši ekipo"
+      "value": "Jamoani oʻchirish"
     }
   ],
   "label.delete-user": [
     {
       "type": 0,
-      "value": "Izbriši uporabnika"
+      "value": "Foydalanuvchini oʻchirish"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
-      "value": "Izbriši spletno mesto"
+      "value": "Veb-saytni oʻchirish"
     }
   ],
   "label.description": [
     {
       "type": 0,
-      "value": "Opis"
+      "value": "Tavsif"
     }
   ],
   "label.desktop": [
     {
       "type": 0,
-      "value": "Namizni računalnik"
+      "value": "Ish stoli"
     }
   ],
   "label.details": [
     {
       "type": 0,
-      "value": "Podrobnosti"
+      "value": "Batafsil ma'lumot"
     }
   ],
   "label.device": [
     {
       "type": 0,
-      "value": "Naprava"
+      "value": "Qurilma"
     }
   ],
   "label.devices": [
     {
       "type": 0,
-      "value": "Naprave"
-    }
-  ],
-  "label.direct": [
-    {
-      "type": 0,
-      "value": "Neposredno"
+      "value": "Qurilmalar"
     }
   ],
   "label.dismiss": [
     {
       "type": 0,
-      "value": "Prezri"
-    }
-  ],
-  "label.distinct-id": [
-    {
-      "type": 0,
-      "value": "Unikatni ID"
+      "value": "Yopish"
     }
   ],
   "label.does-not-contain": [
     {
       "type": 0,
-      "value": "Ne vsebuje"
-    }
-  ],
-  "label.does-not-include": [
-    {
-      "type": 0,
-      "value": "Ne vključuje"
-    }
-  ],
-  "label.doest-not-exist": [
-    {
-      "type": 0,
-      "value": "Ne obstaja"
+      "value": "Oʻz ichiga olmaydi"
     }
   ],
   "label.domain": [
     {
       "type": 0,
-      "value": "Domena"
+      "value": "Domen"
     }
   ],
   "label.dropoff": [
     {
       "type": 0,
-      "value": "Zapustitev"
+      "value": "Tashlab ketish"
     }
   ],
   "label.edit": [
     {
       "type": 0,
-      "value": "Uredi"
+      "value": "Tahrirlash"
     }
   ],
   "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Uredi nadzorno ploščo"
+      "value": "Boshqaruv panelini tahrirlash"
     }
   ],
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Uredi člana"
+      "value": "A'zoni tahrirlash"
     }
   ],
   "label.enable-share-url": [
     {
       "type": 0,
-      "value": "Omogoči povezavo za deljenje"
+      "value": "Ulashish URL'ini yoqish"
     }
   ],
   "label.end-step": [
     {
       "type": 0,
-      "value": "Končni korak"
+      "value": "Yakuniy qadam"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Vstopni URL"
+      "value": "Kirish yoʻli"
     }
   ],
   "label.event": [
     {
       "type": 0,
-      "value": "Dogodek"
+      "value": "Hodisa"
     }
   ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Podatki dogodka"
-    }
-  ],
-  "label.event-name": [
-    {
-      "type": 0,
-      "value": "Ime dogodka"
+      "value": "Hodisa ma'lumotlari"
     }
   ],
   "label.events": [
     {
       "type": 0,
-      "value": "Dogodki"
+      "value": "Hodisalar"
     }
   ],
   "label.exit": [
     {
       "type": 0,
-      "value": "Izhodni URL"
+      "value": "Chiqish yoʻli"
     }
   ],
   "label.false": [
     {
       "type": 0,
-      "value": "Napačno"
+      "value": "Yolgʻon"
     }
   ],
   "label.field": [
     {
       "type": 0,
-      "value": "Polje"
+      "value": "Maydon"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Polja"
+      "value": "Maydonlar"
     }
   ],
   "label.filter": [
     {
       "type": 0,
-      "value": "Filter"
+      "value": "Filtr"
     }
   ],
   "label.filter-combined": [
     {
       "type": 0,
-      "value": "Skupaj"
+      "value": "Birlashtirilgan"
     }
   ],
   "label.filter-raw": [
     {
       "type": 0,
-      "value": "Neobdelano"
+      "value": "Xom"
     }
   ],
   "label.filters": [
     {
       "type": 0,
-      "value": "Filtri"
+      "value": "Filtrlar"
     }
   ],
   "label.first-seen": [
     {
       "type": 0,
-      "value": "Prvič viden"
+      "value": "Birinchi koʻrilgan"
     }
   ],
   "label.funnel": [
     {
       "type": 0,
-      "value": "Prodajni lijak"
+      "value": "Voronka"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Razumite stopnjo konverzije in osipa uporabnikov."
+      "value": "Foydalanuvchilarning konversiya va tashlab ketish darajasini tushunish."
     }
   ],
   "label.goal": [
     {
       "type": 0,
-      "value": "Cilj"
+      "value": "Maqsad"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Cilji"
+      "value": "Maqsadlar"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Spremljajte svoje cilje za oglede strani in dogodke."
+      "value": "Sahifa koʻrishlari va hodisalar uchun maqsadlaringizni kuzatib boring."
     }
   ],
   "label.greater-than": [
     {
       "type": 0,
-      "value": "Večje od"
+      "value": "Kattaroq"
     }
   ],
   "label.greater-than-equals": [
     {
       "type": 0,
-      "value": "Večje ali enako kot"
+      "value": "Kattaroq yoki teng"
     }
   ],
   "label.host": [
     {
       "type": 0,
-      "value": "Gostitelj"
+      "value": "Xost"
     }
   ],
   "label.hosts": [
     {
       "type": 0,
-      "value": "Gostitelji"
+      "value": "Xostlar"
     }
   ],
   "label.insights": [
     {
       "type": 0,
-      "value": "Vpogled"
+      "value": "Tushunchalar"
     }
   ],
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Poglobite se v podatke z uporabo segmentov in filtrov."
+      "value": "Segmentlar va filtrlardan foydalanib ma'lumotlaringizga chuqurroq kiring."
     }
   ],
   "label.is": [
     {
       "type": 0,
-      "value": "Je"
-    }
-  ],
-  "label.is-false": [
-    {
-      "type": 0,
-      "value": "Je napačno"
+      "value": "Teng"
     }
   ],
   "label.is-not": [
     {
       "type": 0,
-      "value": "Ni"
+      "value": "Teng emas"
     }
   ],
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Ni nastavljeno"
+      "value": "Oʻrnatilmagan"
     }
   ],
   "label.is-set": [
     {
       "type": 0,
-      "value": "Je nastavljeno"
-    }
-  ],
-  "label.is-true": [
-    {
-      "type": 0,
-      "value": "Je res"
+      "value": "Oʻrnatilgan"
     }
   ],
   "label.join": [
     {
       "type": 0,
-      "value": "Pridruži se"
+      "value": "Qoʻshilish"
     }
   ],
   "label.join-team": [
     {
       "type": 0,
-      "value": "Pridruži se ekipi"
+      "value": "Jamoaga qoʻshilish"
     }
   ],
   "label.journey": [
     {
       "type": 0,
-      "value": "Uporabniška pot"
+      "value": "Sayohat"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Razumite, kako uporabniki krmarijo po vašem spletnem mestu."
+      "value": "Foydalanuvchilar veb-saytingizda qanday harakat qilishlarini tushunish."
     }
   ],
   "label.language": [
     {
       "type": 0,
-      "value": "Jezik"
+      "value": "Til"
     }
   ],
   "label.languages": [
     {
       "type": 0,
-      "value": "Jeziki"
+      "value": "Tillar"
     }
   ],
   "label.laptop": [
     {
       "type": 0,
-      "value": "Prenosni računalnik"
-    }
-  ],
-  "label.last-click": [
-    {
-      "type": 0,
-      "value": "Zadnji klik"
+      "value": "Noutbuk"
     }
   ],
   "label.last-days": [
     {
       "type": 0,
-      "value": "Zadnjih "
+      "value": "Oxirgi "
     },
     {
       "type": 1,
@@ -724,13 +622,13 @@
     },
     {
       "type": 0,
-      "value": " dni"
+      "value": " kun"
     }
   ],
   "label.last-hours": [
     {
       "type": 0,
-      "value": "Zadnjih "
+      "value": "Oxirgi "
     },
     {
       "type": 1,
@@ -738,13 +636,13 @@
     },
     {
       "type": 0,
-      "value": " ur"
+      "value": " soat"
     }
   ],
   "label.last-months": [
     {
       "type": 0,
-      "value": "Zadnjih "
+      "value": "Oxirgi "
     },
     {
       "type": 1,
@@ -752,139 +650,127 @@
     },
     {
       "type": 0,
-      "value": " mesecev"
+      "value": " oy"
     }
   ],
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Nazadnje viden"
+      "value": "Oxirgi koʻrilgan"
     }
   ],
   "label.leave": [
     {
       "type": 0,
-      "value": "Zapusti"
+      "value": "Tark etish"
     }
   ],
   "label.leave-team": [
     {
       "type": 0,
-      "value": "Zapusti ekipo"
+      "value": "Jamoani tark etish"
     }
   ],
   "label.less-than": [
     {
       "type": 0,
-      "value": "Manjše kot"
+      "value": "Kichikroq"
     }
   ],
   "label.less-than-equals": [
     {
       "type": 0,
-      "value": "Manjše ali enako kot"
-    }
-  ],
-  "label.links": [
-    {
-      "type": 0,
-      "value": "Povezave"
+      "value": "Kichikroq yoki teng"
     }
   ],
   "label.login": [
     {
       "type": 0,
-      "value": "Prijava"
+      "value": "Kirish"
     }
   ],
   "label.logout": [
     {
       "type": 0,
-      "value": "Odjava"
+      "value": "Chiqish"
     }
   ],
   "label.manage": [
     {
       "type": 0,
-      "value": "Upravljaj"
+      "value": "Boshqarish"
     }
   ],
   "label.manager": [
     {
       "type": 0,
-      "value": "Upravitelj"
+      "value": "Menejer"
     }
   ],
   "label.max": [
     {
       "type": 0,
-      "value": "Največ"
+      "value": "Maksimal"
     }
   ],
   "label.member": [
     {
       "type": 0,
-      "value": "Član"
+      "value": "A'zo"
     }
   ],
   "label.members": [
     {
       "type": 0,
-      "value": "Člani"
+      "value": "A'zolar"
     }
   ],
   "label.min": [
     {
       "type": 0,
-      "value": "Najmanj"
+      "value": "Minimal"
     }
   ],
   "label.mobile": [
     {
       "type": 0,
-      "value": "Mobilne naprave"
-    }
-  ],
-  "label.model": [
-    {
-      "type": 0,
-      "value": "Model"
+      "value": "Mobil"
     }
   ],
   "label.more": [
     {
       "type": 0,
-      "value": "Več"
+      "value": "Koʻproq"
     }
   ],
   "label.my-account": [
     {
       "type": 0,
-      "value": "Moj račun"
+      "value": "Mening hisobim"
     }
   ],
   "label.my-websites": [
     {
       "type": 0,
-      "value": "Moja spletna mesta"
+      "value": "Mening veb-saytlarim"
     }
   ],
   "label.name": [
     {
       "type": 0,
-      "value": "Ime"
+      "value": "Ism"
     }
   ],
   "label.new-password": [
     {
       "type": 0,
-      "value": "Novo geslo"
+      "value": "Yangi parol"
     }
   ],
   "label.none": [
     {
       "type": 0,
-      "value": "Noben"
+      "value": "Hech biri"
     }
   ],
   "label.number-of-records": [
@@ -894,31 +780,7 @@
     },
     {
       "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "record"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "records"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
+      "value": " yozuv"
     }
   ],
   "label.ok": [
@@ -927,70 +789,28 @@
       "value": "OK"
     }
   ],
-  "label.online": [
-    {
-      "type": 0,
-      "value": "Online"
-    }
-  ],
-  "label.organic-search": [
-    {
-      "type": 0,
-      "value": "Organsko iskanje"
-    }
-  ],
-  "label.organic-shopping": [
-    {
-      "type": 0,
-      "value": "Organski nakupi"
-    }
-  ],
-  "label.organic-social": [
-    {
-      "type": 0,
-      "value": "Organska družbena omrežja"
-    }
-  ],
-  "label.organic-video": [
-    {
-      "type": 0,
-      "value": "Organski video"
-    }
-  ],
   "label.os": [
     {
       "type": 0,
-      "value": "OS"
-    }
-  ],
-  "label.other": [
-    {
-      "type": 0,
-      "value": "Drugo"
+      "value": "OT (Operatsion tizim)"
     }
   ],
   "label.overview": [
     {
       "type": 0,
-      "value": "Pregled"
+      "value": "Umumiy koʻrinish"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Lastnik"
-    }
-  ],
-  "label.page": [
-    {
-      "type": 0,
-      "value": "Stran"
+      "value": "Egasi"
     }
   ],
   "label.page-of": [
     {
       "type": 0,
-      "value": "Stran "
+      "value": "Sahifa "
     },
     {
       "type": 1,
@@ -998,7 +818,7 @@
     },
     {
       "type": 0,
-      "value": " od "
+      "value": " dan "
     },
     {
       "type": 1,
@@ -1008,95 +828,65 @@
   "label.page-views": [
     {
       "type": 0,
-      "value": "Obiski strani"
+      "value": "Sahifa koʻrishlari"
     }
   ],
   "label.pageTitle": [
     {
       "type": 0,
-      "value": "Naslov strani"
+      "value": "Sahifa sarlavhasi"
     }
   ],
   "label.pages": [
     {
       "type": 0,
-      "value": "Strani"
-    }
-  ],
-  "label.paid-ads": [
-    {
-      "type": 0,
-      "value": "Plačani oglasi"
-    }
-  ],
-  "label.paid-search": [
-    {
-      "type": 0,
-      "value": "Plačano iskanje"
-    }
-  ],
-  "label.paid-shopping": [
-    {
-      "type": 0,
-      "value": "Plačani nakupi"
-    }
-  ],
-  "label.paid-social": [
-    {
-      "type": 0,
-      "value": "Plačana družbena omrežja"
-    }
-  ],
-  "label.paid-video": [
-    {
-      "type": 0,
-      "value": "Plačani video"
+      "value": "Sahifalar"
     }
   ],
   "label.password": [
     {
       "type": 0,
-      "value": "Geslo"
+      "value": "Parol"
     }
   ],
   "label.path": [
     {
       "type": 0,
-      "value": "Pot"
+      "value": "Yoʻl"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Poti"
+      "value": "Yoʻllar"
     }
   ],
   "label.powered-by": [
     {
-      "type": 0,
-      "value": "Poganja "
-    },
-    {
       "type": 1,
       "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " tomonidan quvvatlanadi"
     }
   ],
   "label.previous": [
     {
       "type": 0,
-      "value": "Prejšnji"
+      "value": "Oldingi"
     }
   ],
   "label.previous-period": [
     {
       "type": 0,
-      "value": "Prejšnje obdobje"
+      "value": "Oldingi davr"
     }
   ],
   "label.previous-year": [
     {
       "type": 0,
-      "value": "Prejšnje leto"
+      "value": "Oldingi yil"
     }
   ],
   "label.profile": [
@@ -1108,487 +898,469 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Lastnosti"
+      "value": "Xususiyatlar"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Lastnost"
+      "value": "Xususiyat"
     }
   ],
   "label.queries": [
     {
       "type": 0,
-      "value": "Poizvedbe"
+      "value": "Soʻrovlar"
     }
   ],
   "label.query": [
     {
       "type": 0,
-      "value": "Poizvedba"
+      "value": "Soʻrov"
     }
   ],
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Parametri poizvedbe"
+      "value": "Soʻrov parametrlari"
     }
   ],
   "label.realtime": [
     {
       "type": 0,
-      "value": "V živo"
-    }
-  ],
-  "label.referral": [
-    {
-      "type": 0,
-      "value": "Napoten"
+      "value": "Haqiqiy vaqt"
     }
   ],
   "label.referrer": [
     {
       "type": 0,
-      "value": "Vir"
+      "value": "Tavsiya etuvchi"
     }
   ],
   "label.referrers": [
     {
       "type": 0,
-      "value": "Viri"
+      "value": "Tavsiya etuvchilar"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
-      "value": "Osveži"
+      "value": "Yangilash"
     }
   ],
   "label.regenerate": [
     {
       "type": 0,
-      "value": "Ponovno generiraj"
+      "value": "Qayta yaratish"
     }
   ],
   "label.region": [
     {
       "type": 0,
-      "value": "Regija"
+      "value": "Viloyat/Mintaqa"
     }
   ],
   "label.regions": [
     {
       "type": 0,
-      "value": "Regije"
-    }
-  ],
-  "label.remaining": [
-    {
-      "type": 0,
-      "value": "Preostalo"
+      "value": "Viloyatlar/Mintaqalar"
     }
   ],
   "label.remove": [
     {
       "type": 0,
-      "value": "Odstrani"
+      "value": "Olib tashlash"
     }
   ],
   "label.remove-member": [
     {
       "type": 0,
-      "value": "Odstrani člana"
+      "value": "A'zoni olib tashlash"
     }
   ],
   "label.reports": [
     {
       "type": 0,
-      "value": "Poročila"
+      "value": "Hisobotlar"
     }
   ],
   "label.required": [
     {
       "type": 0,
-      "value": "Zahtevano"
+      "value": "Majburiy"
     }
   ],
   "label.reset": [
     {
       "type": 0,
-      "value": "Ponastavi"
+      "value": "Qayta tiklash"
     }
   ],
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Ponastavi statistiko"
+      "value": "Veb-saytni qayta tiklash"
     }
   ],
   "label.retention": [
     {
       "type": 0,
-      "value": "Ohranjanje uporabnikov"
+      "value": "Saqlanish"
     }
   ],
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Merite uporabnikovo zadržanost s sledenjem, kako pogosto se vračajo."
+      "value": "Foydalanuvchilarning qaytish chastotasini kuzatib, veb-saytingizning jozibadorligini oʻlchang."
     }
   ],
   "label.revenue": [
     {
       "type": 0,
-      "value": "Prihodki"
+      "value": "Daromad"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Preglejte svoje prihodke skozi čas."
+      "value": "Vaqt oʻtishi bilan daromadingizni tekshiring."
     }
   ],
   "label.revenue-property": [
     {
       "type": 0,
-      "value": "Lastnost prihodkov"
+      "value": "Daromad xususiyati"
     }
   ],
   "label.role": [
     {
       "type": 0,
-      "value": "Vloga"
+      "value": "Rol"
     }
   ],
   "label.run-query": [
     {
       "type": 0,
-      "value": "Izvedi poizvedbo"
+      "value": "Soʻrovni ishga tushirish"
     }
   ],
   "label.save": [
     {
       "type": 0,
-      "value": "Shrani"
+      "value": "Saqlash"
     }
   ],
   "label.screens": [
     {
       "type": 0,
-      "value": "Zasloni"
+      "value": "Ekranlar"
     }
   ],
   "label.search": [
     {
       "type": 0,
-      "value": "Išči"
+      "value": "Qidiruv"
     }
   ],
   "label.select": [
     {
       "type": 0,
-      "value": "Izberi"
+      "value": "Tanlash"
     }
   ],
   "label.select-date": [
     {
       "type": 0,
-      "value": "Izberi datum"
+      "value": "Sanani tanlash"
     }
   ],
   "label.select-role": [
     {
       "type": 0,
-      "value": "Izberi vlogo"
+      "value": "Rolni tanlash"
     }
   ],
   "label.select-website": [
     {
       "type": 0,
-      "value": "Izberi spletno mesto"
+      "value": "Veb-saytni tanlash"
     }
   ],
   "label.session": [
     {
       "type": 0,
-      "value": "Seja"
+      "value": "Sessiya"
     }
   ],
   "label.sessions": [
     {
       "type": 0,
-      "value": "Seje"
+      "value": "Sessiyalar"
     }
   ],
   "label.settings": [
     {
       "type": 0,
-      "value": "Nastavitve"
-    }
-  ],
-  "label.share": [
-    {
-      "type": 0,
-      "value": "Deli"
+      "value": "Sozlamalar"
     }
   ],
   "label.share-url": [
     {
       "type": 0,
-      "value": "Deli povezavo"
+      "value": "Ulashish URL'i"
     }
   ],
   "label.single-day": [
     {
       "type": 0,
-      "value": "En dan"
+      "value": "Bir kun"
     }
   ],
   "label.start-step": [
     {
       "type": 0,
-      "value": "Začetni korak"
+      "value": "Boshlanish qadami"
     }
   ],
   "label.steps": [
     {
       "type": 0,
-      "value": "Koraki"
+      "value": "Qadamlar"
     }
   ],
   "label.sum": [
     {
       "type": 0,
-      "value": "Seštevek"
+      "value": "Yigʻindi"
     }
   ],
   "label.tablet": [
     {
       "type": 0,
-      "value": "Tablični računalnik"
-    }
-  ],
-  "label.tag": [
-    {
-      "type": 0,
-      "value": "Oznaka"
-    }
-  ],
-  "label.tags": [
-    {
-      "type": 0,
-      "value": "Oznake"
+      "value": "Planshet"
     }
   ],
   "label.team": [
     {
       "type": 0,
-      "value": "Ekipa"
+      "value": "Jamoa"
     }
   ],
   "label.team-id": [
     {
       "type": 0,
-      "value": "ID ekipe"
+      "value": "Jamoa ID'si"
     }
   ],
   "label.team-manager": [
     {
       "type": 0,
-      "value": "Upravitelj ekipe"
+      "value": "Jamoa menejeri"
     }
   ],
   "label.team-member": [
     {
       "type": 0,
-      "value": "Član ekipe"
+      "value": "Jamoa a'zosi"
     }
   ],
   "label.team-name": [
     {
       "type": 0,
-      "value": "Ime ekipe"
+      "value": "Jamoa nomi"
     }
   ],
   "label.team-owner": [
     {
       "type": 0,
-      "value": "Lastnik ekipe"
+      "value": "Jamoa egasi"
     }
   ],
   "label.team-view-only": [
     {
       "type": 0,
-      "value": "Ekipa samo za ogled"
+      "value": "Jamoa faqat koʻrish"
     }
   ],
   "label.team-websites": [
     {
       "type": 0,
-      "value": "Spletna mesta ekipe"
+      "value": "Jamoa veb-saytlari"
     }
   ],
   "label.teams": [
     {
       "type": 0,
-      "value": "Ekipe"
-    }
-  ],
-  "label.terms": [
-    {
-      "type": 0,
-      "value": "Pogoji"
+      "value": "Jamoalar"
     }
   ],
   "label.theme": [
     {
       "type": 0,
-      "value": "Tema"
+      "value": "Mavzu"
     }
   ],
   "label.this-month": [
     {
       "type": 0,
-      "value": "Ta mesec"
+      "value": "Shu oy"
     }
   ],
   "label.this-week": [
     {
       "type": 0,
-      "value": "Ta teden"
+      "value": "Shu hafta"
     }
   ],
   "label.this-year": [
     {
       "type": 0,
-      "value": "To leto"
+      "value": "Shu yil"
     }
   ],
   "label.timezone": [
     {
       "type": 0,
-      "value": "Časovni pas"
+      "value": "Vaqt zonasi"
     }
   ],
   "label.title": [
     {
       "type": 0,
-      "value": "Naslov"
+      "value": "Sarlavha"
     }
   ],
   "label.today": [
     {
       "type": 0,
-      "value": "Danes"
+      "value": "Bugun"
     }
   ],
   "label.toggle-charts": [
     {
       "type": 0,
-      "value": "Preklopi grafe"
+      "value": "Grafiklarni almashtirish"
     }
   ],
   "label.total": [
     {
       "type": 0,
-      "value": "Skupaj"
+      "value": "Jami"
     }
   ],
   "label.total-records": [
     {
       "type": 0,
-      "value": "Skupni zapisi"
+      "value": "Jami yozuvlar"
     }
   ],
   "label.tracking-code": [
     {
       "type": 0,
-      "value": "Koda za sledenje"
+      "value": "Kuzatuv kodi"
     }
   ],
   "label.transactions": [
     {
       "type": 0,
-      "value": "Transactions"
+      "value": "Tranzaksiyalar"
     }
   ],
   "label.transfer": [
     {
       "type": 0,
-      "value": "Transfer"
+      "value": "Oʻtkazish"
     }
   ],
   "label.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website"
+      "value": "Veb-saytni oʻtkazish"
     }
   ],
   "label.true": [
     {
       "type": 0,
-      "value": "Pravilno"
+      "value": "Rost"
     }
   ],
   "label.type": [
     {
       "type": 0,
-      "value": "Vrsta"
+      "value": "Tur"
     }
   ],
   "label.unique": [
     {
       "type": 0,
-      "value": "Unikatni"
+      "value": "Noyob"
     }
   ],
   "label.unique-visitors": [
     {
       "type": 0,
-      "value": "Unikatni obiskovalci"
+      "value": "Noyob tashrif buyuruvchilar"
     }
   ],
   "label.uniqueCustomers": [
     {
       "type": 0,
-      "value": "Unique Customers"
+      "value": "Noyob mijozlar"
     }
   ],
   "label.unknown": [
     {
       "type": 0,
-      "value": "Neznano"
+      "value": "Noma'lum"
     }
   ],
   "label.untitled": [
     {
       "type": 0,
-      "value": "Brez naslova"
+      "value": "Sarlavhasiz"
     }
   ],
   "label.update": [
     {
       "type": 0,
-      "value": "Update"
+      "value": "Yangilash"
+    }
+  ],
+  "label.url": [
+    {
+      "type": 0,
+      "value": "URL"
+    }
+  ],
+  "label.urls": [
+    {
+      "type": 0,
+      "value": "URL'lar"
     }
   ],
   "label.user": [
     {
       "type": 0,
-      "value": "Uporabnik"
+      "value": "Foydalanuvchi"
+    }
+  ],
+  "label.user-property": [
+    {
+      "type": 0,
+      "value": "Foydalanuvchi xususiyati"
     }
   ],
   "label.username": [
     {
       "type": 0,
-      "value": "Uporabniško ime"
+      "value": "Foydalanuvchi nomi"
     }
   ],
   "label.users": [
     {
       "type": 0,
-      "value": "Uporabniki"
+      "value": "Foydalanuvchilar"
     }
   ],
   "label.utm": [
@@ -1600,97 +1372,97 @@
   "label.utm-description": [
     {
       "type": 0,
-      "value": "Track your campaigns through UTM parameters."
+      "value": "UTM parametrlari orqali kampaniyalaringizni kuzatib boring."
     }
   ],
   "label.value": [
     {
       "type": 0,
-      "value": "Vrednost"
+      "value": "Qiymat"
     }
   ],
   "label.view": [
     {
       "type": 0,
-      "value": "Poglej"
+      "value": "Koʻrish"
     }
   ],
   "label.view-details": [
     {
       "type": 0,
-      "value": "Poglej podrobnosti"
+      "value": "Batafsil koʻrish"
     }
   ],
   "label.view-only": [
     {
       "type": 0,
-      "value": "Samo ogledovanje"
+      "value": "Faqat koʻrish"
     }
   ],
   "label.views": [
     {
       "type": 0,
-      "value": "Obiski"
+      "value": "Koʻrishlar"
     }
   ],
   "label.views-per-visit": [
     {
       "type": 0,
-      "value": "Views per visit"
+      "value": "Tashrifga koʻrishlar soni"
     }
   ],
   "label.visit-duration": [
     {
       "type": 0,
-      "value": "Povprečni čas obiska"
+      "value": "Tashrif davomiyligi"
     }
   ],
   "label.visitors": [
     {
       "type": 0,
-      "value": "Obiskovalci"
+      "value": "Tashrif buyuruvchilar"
     }
   ],
   "label.visits": [
     {
       "type": 0,
-      "value": "Visits"
+      "value": "Tashriflar"
     }
   ],
   "label.website": [
     {
       "type": 0,
-      "value": "Spletno mesto"
+      "value": "Veb-sayt"
     }
   ],
   "label.website-id": [
     {
       "type": 0,
-      "value": "ID spletnega mesta"
+      "value": "Veb-sayt ID'si"
     }
   ],
   "label.websites": [
     {
       "type": 0,
-      "value": "Spletna mesta"
+      "value": "Veb-saytlar"
     }
   ],
   "label.window": [
     {
       "type": 0,
-      "value": "Okno"
+      "value": "Oyna"
     }
   ],
   "label.yesterday": [
     {
       "type": 0,
-      "value": "Včeraj"
+      "value": "Kecha"
     }
   ],
   "message.action-confirmation": [
     {
       "type": 0,
-      "value": "Za potrditev v spodnje polje vnesite "
+      "value": "Tasdiqlash uchun pastdagi qutiga **"
     },
     {
       "type": 1,
@@ -1698,7 +1470,7 @@
     },
     {
       "type": 0,
-      "value": "."
+      "value": "** yozing."
     }
   ],
   "message.active-users": [
@@ -1708,7 +1480,7 @@
     },
     {
       "type": 0,
-      "value": " trenutni "
+      "value": " joriy "
     },
     {
       "offset": 0,
@@ -1717,7 +1489,7 @@
           "value": [
             {
               "type": 0,
-              "value": "obiskovalec"
+              "value": "tashrif buyuruvchi"
             }
           ]
         },
@@ -1725,7 +1497,7 @@
           "value": [
             {
               "type": 0,
-              "value": "obiskovalcev"
+              "value": "tashrif buyuruvchilar"
             }
           ]
         }
@@ -1738,13 +1510,13 @@
   "message.collected-data": [
     {
       "type": 0,
-      "value": "Zbrani podatki"
+      "value": "Yigʻilgan ma'lumotlar"
     }
   ],
   "message.confirm-delete": [
     {
       "type": 0,
-      "value": "Ste prepričani, da želite izbrisati "
+      "value": "**"
     },
     {
       "type": 1,
@@ -1752,13 +1524,13 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": "** ni oʻchirmoqchi ekanligingizga ishonchingiz komilmi?"
     }
   ],
   "message.confirm-leave": [
     {
       "type": 0,
-      "value": "Ste prepričani, da želite zapustiti "
+      "value": "**"
     },
     {
       "type": 1,
@@ -1766,13 +1538,13 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": "** ni tark etmoqchi ekanligingizga ishonchingiz komilmi?"
     }
   ],
   "message.confirm-remove": [
     {
       "type": 0,
-      "value": "Ali ste prepričani, da želite odstraniti "
+      "value": "**"
     },
     {
       "type": 1,
@@ -1780,13 +1552,13 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": "** ni olib tashlamoqchi ekanligingizga ishonchingiz komilmi?"
     }
   ],
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Ste prepričani, da želite ponastaviti statistiko "
+      "value": "**"
     },
     {
       "type": 1,
@@ -1794,69 +1566,71 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": "** ni qayta tiklamoqchi ekanligingizga ishonchingiz komilmi?"
     }
   ],
   "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "Brisanje ekipe bo izbrisalo tudi vsa spletna mesta ekipe."
+      "value": "Jamoani oʻchirish, shuningdek, barcha jamoa veb-saytlarini ham oʻchiradi."
     }
   ],
   "message.delete-website-warning": [
     {
       "type": 0,
-      "value": "Izbrisani bodo tudi vsi pripadajoči podatki."
+      "value": "Barcha veb-sayt ma'lumotlari oʻchiriladi."
     }
   ],
   "message.error": [
     {
       "type": 0,
-      "value": "Nekaj je šlo narobe."
+      "value": "Nimadir xato ketdi."
     }
   ],
   "message.event-log": [
+    {
+      "type": 0,
+      "value": "**"
+    },
+    {
+      "type": 1,
+      "value": "url"
+    },
+    {
+      "type": 0,
+      "value": "** da **"
+    },
     {
       "type": 1,
       "value": "event"
     },
     {
       "type": 0,
-      "value": " na "
-    },
-    {
-      "type": 1,
-      "value": "url"
-    }
-  ],
-  "message.forbidden": [
-    {
-      "type": 0,
-      "value": "Forbidden"
+      "value": "** hodisasi"
     }
   ],
   "message.go-to-settings": [
     {
       "type": 0,
-      "value": "Pojdi v nastavitve"
+      "value": "Sozlamalarga oʻtish"
     }
   ],
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "Nepravilno uporabniško ime/geslo."
+      "value": "Notoʻgʻri foydalanuvchi nomi va/yoki parol."
     }
   ],
   "message.invalid-domain": [
     {
       "type": 0,
-      "value": "Neveljavna domena"
+      "value": "Notoʻgʻri domen. http/https qoʻshmang."
     }
   ],
   "message.min-password-length": [
     {
       "type": 0,
-      "value": "Najmanjša dolžina je "
+      "value": "Minimal uzunligi "
     },
     {
       "type": 1,
@@ -1864,13 +1638,13 @@
     },
     {
       "type": 0,
-      "value": " znakov"
+      "value": " belgidan"
     }
   ],
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Na voljo je nova verzija programa Umami "
+      "value": "Umami'ning yangi **"
     },
     {
       "type": 1,
@@ -1878,79 +1652,67 @@
     },
     {
       "type": 0,
-      "value": "!"
+      "value": "** versiyasi mavjud!"
     }
   ],
   "message.no-data-available": [
     {
       "type": 0,
-      "value": "Podatki niso na voljo."
+      "value": "Ma'lumotlar mavjud emas."
     }
   ],
   "message.no-event-data": [
     {
       "type": 0,
-      "value": "Podatki o dogodku niso na voljo."
+      "value": "Hodisa ma'lumotlari mavjud emas."
     }
   ],
   "message.no-match-password": [
     {
       "type": 0,
-      "value": "Gesli se ne ujemata"
+      "value": "Parollar mos kelmadi."
     }
   ],
   "message.no-results-found": [
     {
       "type": 0,
-      "value": "Rezultatov ni bilo mogoče najti."
+      "value": "Hech qanday natija topilmadi."
     }
   ],
   "message.no-team-websites": [
     {
       "type": 0,
-      "value": "Ta ekipa nima spletnih mest."
+      "value": "Bu jamoada hech qanday veb-sayt yoʻq."
     }
   ],
   "message.no-teams": [
     {
       "type": 0,
-      "value": "Niste še ustvarili nobene ekipe."
+      "value": "Siz hech qanday jamoa yaratmagansiz."
     }
   ],
   "message.no-users": [
     {
       "type": 0,
-      "value": "Ni uporabnikov."
+      "value": "Hech qanday foydalanuvchi yoʻq."
     }
   ],
   "message.no-websites-configured": [
     {
       "type": 0,
-      "value": "Nimate nastavljenih nobenih spletnih mest."
-    }
-  ],
-  "message.not-found": [
-    {
-      "type": 0,
-      "value": "Not found"
-    }
-  ],
-  "message.nothing-selected": [
-    {
-      "type": 0,
-      "value": "Nothing selected."
+      "value": "Sizda hech qanday veb-sayt sozlanmagan."
     }
   ],
   "message.page-not-found": [
     {
       "type": 0,
-      "value": "Stran ni bila najdena."
+      "value": "Sahifa topilmadi"
     }
   ],
   "message.reset-website": [
     {
       "type": 0,
-      "value": "Za ponastavitev izbrisa tega spletnega mesta vnesite "
+      "value": "Bu veb-saytni qayta tiklash uchun tasdiqlash uchun pastdagi qutiga **"
     },
     {
       "type": 1,
@@ -1958,122 +1720,102 @@
     },
     {
       "type": 0,
-      "value": " v spodnje polje."
+      "value": "** yozing."
     }
   ],
   "message.reset-website-warning": [
     {
       "type": 0,
-      "value": "Vse statistike za to spletno mesto bodo izbrisane, koda za sledenje pa bo ostala nespremenjena."
+      "value": "Bu veb-sayt uchun barcha statistik ma'lumotlar oʻchiriladi, lekin sozlamalaringiz saqlanib qoladi."
     }
   ],
   "message.saved": [
     {
       "type": 0,
-      "value": "Uspešno shranjeno."
-    }
-  ],
-  "message.sever-error": [
-    {
-      "type": 0,
-      "value": "Server error"
+      "value": "Saqlandi."
     }
   ],
   "message.share-url": [
     {
       "type": 0,
-      "value": "To je javno dostopna povezava za "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "."
+      "value": "Sizning veb-sayt statistikalaringiz quyidagi URL'da ochiqdir:"
     }
   ],
   "message.team-already-member": [
     {
       "type": 0,
-      "value": "Ste že član ekipe."
+      "value": "Siz allaqachon jamoa a'zosisiz."
     }
   ],
   "message.team-not-found": [
     {
       "type": 0,
-      "value": "Ekipa ni bila najdena."
+      "value": "Jamoa topilmadi."
     }
   ],
   "message.team-websites-info": [
     {
       "type": 0,
-      "value": "Spletne strani si lahko ogleda vsak član ekipe."
+      "value": "Veb-saytlarni jamoaning har bir a'zosi koʻrishi mumkin."
     }
   ],
   "message.tracking-code": [
     {
       "type": 0,
-      "value": "Koda za sledenje"
+      "value": "Bu veb-sayt uchun statistikani kuzatish uchun quyidagi kodni HTML'ingizdagi **"
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "..."
+        }
+      ],
+      "type": 8,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": "** qismiga joylashtiring."
     }
   ],
   "message.transfer-team-website-to-user": [
     {
       "type": 0,
-      "value": "Želite prenesti to spletno mesto v svoj račun?"
+      "value": "Bu veb-saytni oʻz hisobingizga oʻtkazasizmi?"
     }
   ],
   "message.transfer-user-website-to-team": [
     {
       "type": 0,
-      "value": "Izberite ekipo, na katero želite prenesti to spletno mesto."
+      "value": "Bu veb-saytni oʻtkazish uchun jamoani tanlang."
     }
   ],
   "message.transfer-website": [
     {
       "type": 0,
-      "value": "Prenesite lastništvo spletnega mesta na svoj račun ali drugo ekipo."
+      "value": "Veb-sayt egaligini oʻz hisobingizga yoki boshqa jamoaga oʻtkazish."
     }
   ],
   "message.triggered-event": [
     {
       "type": 0,
-      "value": "Sprožen dogodek"
+      "value": "Hodisa ishga tushirildi"
     }
   ],
   "message.user-deleted": [
     {
       "type": 0,
-      "value": "Uporabnik je izbrisan."
+      "value": "Foydalanuvchi oʻchirildi."
     }
   ],
   "message.viewed-page": [
     {
       "type": 0,
-      "value": "Ogledana stran"
+      "value": "Sahifa koʻrildi"
     }
   ],
   "message.visitor-log": [
-    {
-      "type": 0,
-      "value": "Obiskovalec iz "
-    },
-    {
-      "type": 1,
-      "value": "country"
-    },
-    {
-      "type": 0,
-      "value": " uporablja "
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    },
-    {
-      "type": 0,
-      "value": " na "
-    },
     {
       "type": 1,
       "value": "os"
@@ -2085,12 +1827,32 @@
     {
       "type": 1,
       "value": "device"
+    },
+    {
+      "type": 0,
+      "value": " da "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " dan foydalanayotgan "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " dan tashrif buyuruvchi"
     }
   ],
   "message.visitors-dropped-off": [
     {
       "type": 0,
-      "value": "Osip obiskovalcev"
+      "value": "Tashrif buyuruvchilar tashlab ketishdi"
     }
   ]
 }

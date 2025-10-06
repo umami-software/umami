@@ -1,7 +1,6 @@
 import path from 'node:path';
 import fs from 'fs-extra';
 import del from 'del';
-import prettier from 'prettier';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
@@ -27,7 +26,7 @@ async function run() {
       return obj;
     }, {});
 
-    const json = prettier.format(JSON.stringify(formatted), { parser: 'json' });
+    const json = JSON.stringify(formatted, null, 2);
 
     fs.writeFileSync(path.resolve(dest, file), json);
   });

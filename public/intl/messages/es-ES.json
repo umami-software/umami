@@ -836,7 +836,7 @@
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Última vez visto"
+      "value": "Visto por última vez"
     }
   ],
   "label.leave": [
@@ -1336,13 +1336,19 @@
   "label.revenue": [
     {
       "type": 0,
-      "value": "Ingresos"
+      "value": "Ganancias"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Consulte sus ingresos a lo largo del tiempo."
+      "value": "Analice sus ganancias a lo largo del tiempo."
+    }
+  ],
+  "label.revenue-property": [
+    {
+      "type": 0,
+      "value": "Propiedad de ganancias"
     }
   ],
   "label.role": [
@@ -1409,12 +1415,6 @@
     {
       "type": 0,
       "value": "Sesión"
-    }
-  ],
-  "label.session-data": [
-    {
-      "type": 0,
-      "value": "Datos de sesión"
     }
   ],
   "label.sessions": [
@@ -1630,7 +1630,7 @@
   "label.transactions": [
     {
       "type": 0,
-      "value": "Transactions"
+      "value": "Transacciones"
     }
   ],
   "label.transfer": [
@@ -1672,7 +1672,7 @@
   "label.uniqueCustomers": [
     {
       "type": 0,
-      "value": "Unique Customers"
+      "value": "Clientes únicos"
     }
   ],
   "label.unknown": [
@@ -1697,6 +1697,12 @@
     {
       "type": 0,
       "value": "Usuario"
+    }
+  ],
+  "label.user-property": [
+    {
+      "type": 0,
+      "value": "Propiedad de usuario"
     }
   ],
   "label.username": [
