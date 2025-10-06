@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import debug from 'debug';
 import { isbot } from 'isbot';
 import { startOfHour, startOfMonth } from 'date-fns';
 import clickhouse from '@/lib/clickhouse';
@@ -13,8 +12,7 @@ import { COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
 import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
-
-const log = debug('umami:send');
+import { serializeError } from 'serialize-error';
 
 interface Cache {
   websiteId: string;
@@ -270,7 +268,8 @@ export async function POST(request: Request) {
 
     return json({ cache: token, sessionId, visitId });
   } catch (e) {
-    log.error(e);
-    return serverError(e);
+    const error = serializeError(e);
+
+    return serverError({ errorObject: error });
   }
 }

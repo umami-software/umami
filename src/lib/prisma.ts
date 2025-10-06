@@ -1,6 +1,7 @@
 import debug from 'debug';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { readReplicas } from '@prisma/extension-read-replicas';
 import { PrismaClient } from '@/generated/prisma/client';
-import { UmamiPrismaClient } from '@umami/prisma-client';
 import { SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE, FILTER_COLUMNS } from './constants';
 import { QueryOptions, QueryFilters, Operator } from './types';
 import { filtersObjectToArray } from './params';
@@ -8,6 +9,15 @@ import { filtersObjectToArray } from './params';
 const log = debug('umami:prisma');
 
 const PRISMA = 'prisma';
+
+const PRISMA_LOG_OPTIONS = {
+  log: [
+    {
+      emit: 'event' as const,
+      level: 'query' as const,
+    },
+  ],
+};
 
 const DATE_FORMATS = {
   minute: 'YYYY-MM-DD HH24:MI:00',
@@ -281,18 +291,47 @@ function getClient() {
     return null;
   }
 
-  const prisma = new UmamiPrismaClient({
-    url: process.env.DATABASE_URL,
-    prismaClient: PrismaClient,
-    logQuery: !!process.env.LOG_QUERY,
-    replicaUrl: process.env.DATABASE_REPLICA_URL,
+  const url = process.env.DATABASE_URL;
+  const replicaUrl = process.env.DATABASE_REPLICA_URL;
+  const logQuery = process.env.LOG_QUERY;
+
+  const connectionUrl = new URL(url);
+  const schema = connectionUrl.searchParams.get('schema') ?? undefined;
+
+  const adapter = new PrismaPg({ connectionString: url.toString() }, { schema });
+
+  const prisma = new PrismaClient({
+    adapter,
+    errorFormat: 'pretty',
+    ...(logQuery ? PRISMA_LOG_OPTIONS : {}),
   });
 
-  if (!globalThis[PRISMA]) {
-    globalThis[PRISMA] = prisma.client;
+  if (replicaUrl) {
+    const replicaAdapter = new PrismaPg({ connectionString: replicaUrl.toString() }, { schema });
+
+    const replicaClient = new PrismaClient({
+      adapter: replicaAdapter,
+      ...(logQuery ? PRISMA_LOG_OPTIONS : {}),
+    });
+
+    prisma.$extends(
+      readReplicas({
+        replicas: [replicaClient],
+      }),
+    );
   }
 
-  return prisma.client;
+  if (logQuery) {
+    prisma.$on('query' as never, log);
+  }
+
+  log('Prisma initialized');
+
+  if (!globalThis[PRISMA]) {
+    globalThis[PRISMA] = prisma;
+  }
+
+  return prisma;
 }
 
 const client: PrismaClient = globalThis[PRISMA] || getClient();
