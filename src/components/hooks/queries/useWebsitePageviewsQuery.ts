@@ -13,12 +13,23 @@ export function useWebsitePageviewsQuery(
   options?: ReactQueryOptions<WebsitePageviewsData>,
 ) {
   const { get, useQuery } = useApi();
-  const date = useDateParameters();
+  const { startAt, endAt, unit, timezone } = useDateParameters();
   const queryParams = useFilterParameters();
 
   return useQuery<WebsitePageviewsData>({
-    queryKey: ['websites:pageviews', { websiteId, compare, ...date, ...queryParams }],
-    queryFn: () => get(`/websites/${websiteId}/pageviews`, { compare, ...date, ...queryParams }),
+    queryKey: [
+      'websites:pageviews',
+      { websiteId, compare, startAt, endAt, unit, timezone, ...queryParams },
+    ],
+    queryFn: () =>
+      get(`/websites/${websiteId}/pageviews`, {
+        compare,
+        startAt,
+        endAt,
+        unit,
+        timezone,
+        ...queryParams,
+      }),
     enabled: !!websiteId,
     ...options,
   });
