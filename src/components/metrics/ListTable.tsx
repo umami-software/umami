@@ -117,7 +117,9 @@ const AnimatedRow = ({
       gap
     >
       <Row alignItems="center">
-        <Text>{label}</Text>
+        <Text truncate={true} style={{ maxWidth: '400px' }}>
+          {label}
+        </Text>
       </Row>
       <Row alignItems="center" height="30px" justifyContent="flex-end">
         {change}
