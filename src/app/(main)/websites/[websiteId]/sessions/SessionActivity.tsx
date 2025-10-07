@@ -59,7 +59,9 @@ export function SessionActivity({
                       ? formatMessage(labels.triggeredEvent)
                       : formatMessage(labels.viewedPage)}
                   </Text>
-                  <Text weight="bold">{eventName || urlPath}</Text>
+                  <Text weight="bold" style={{ maxWidth: '400px' }} truncate>
+                    {eventName || urlPath}
+                  </Text>
                   {hasData > 0 && <PropertiesButton websiteId={websiteId} eventId={eventId} />}
                 </Row>
               </Row>

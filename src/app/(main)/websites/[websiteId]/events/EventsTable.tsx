@@ -30,7 +30,7 @@ export function EventsTable({ data = [] }) {
               <Text>
                 {formatMessage(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
               </Text>
-              <Text weight="bold" truncate>
+              <Text weight="bold" style={{ maxWidth: '300px' }} truncate>
                 {row.eventName || row.urlPath}
               </Text>
             </Row>
