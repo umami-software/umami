@@ -3,17 +3,21 @@ import { useLogin, useMessages } from '@/components/hooks';
 import Icons from '@/components/icons';
 import PageHeader from '@/components/layout/PageHeader';
 import { ROLES } from '@/lib/constants';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { Flexbox, Item, Tabs } from 'react-basics';
 import TeamLeaveButton from '@/app/(main)/settings/teams/TeamLeaveButton';
 import TeamManage from './TeamManage';
 import TeamEditForm from './TeamEditForm';
+import { useQueryState } from 'nuqs';
 
 export function TeamDetails({ teamId }: { teamId: string }) {
   const team = useContext(TeamContext);
   const { formatMessage, labels } = useMessages();
   const { user } = useLogin();
-  const [tab, setTab] = useState('details');
+  const [tab, setTab] = useQueryState('tab', {
+    defaultValue: 'details',
+    parse: value => value as 'details' | 'manage',
+  });
 
   const isTeamOwner =
     !!team?.teamUser?.find(({ userId, role }) => role === ROLES.teamOwner && userId === user.id) &&
