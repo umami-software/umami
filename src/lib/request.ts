@@ -1,6 +1,6 @@
 import { checkAuth } from '@/lib/auth';
 import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS } from '@/lib/constants';
-import { getAllowedUnits, getMinimumUnit, parseDateRange } from '@/lib/date';
+import { getAllowedUnits, getMinimumUnit, maxDate, parseDateRange } from '@/lib/date';
 import { fetchWebsite } from '@/lib/load';
 import { filtersArrayToObject } from '@/lib/params';
 import { badRequest, unauthorized } from '@/lib/response';
@@ -84,7 +84,7 @@ export async function setWebsiteDate(websiteId: string, data: Record<string, any
   const website = await fetchWebsite(websiteId);
 
   if (website?.resetAt) {
-    data.startDate = new Date(website.resetAt);
+    data.startDate = maxDate(data.startDate, new Date(website?.resetAt));
   }
 
   return data;
