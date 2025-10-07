@@ -15,12 +15,12 @@ export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
   const {
     router,
     renderUrl,
-    query: { view = 'referrer' },
+    query: { subview = 'referrer' },
   } = useNavigation();
   const { formatMessage, labels } = useMessages();
 
   const handleSelect = (key: any) => {
-    router.push(renderUrl({ view: key }), { scroll: false });
+    router.push(renderUrl({ subview: key }), { scroll: false });
   };
 
   const buttons = [
@@ -35,7 +35,7 @@ export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
   ];
 
   const renderLink = ({ x: referrer }) => {
-    if (view === 'grouped') {
+    if (subview === 'grouped') {
       if (referrer === '_other') {
         return `(${formatMessage(labels.other)})`;
       } else {
@@ -92,11 +92,11 @@ export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
         title={formatMessage(labels.referrers)}
         type="referrer"
         metric={formatMessage(labels.visitors)}
-        dataFilter={view === 'grouped' ? groupedFilter : undefined}
+        dataFilter={subview === 'grouped' ? groupedFilter : undefined}
         renderLabel={renderLink}
       >
         {allowFilter && (
-          <FilterButtons items={buttons} selectedKey={view} onSelect={handleSelect} />
+          <FilterButtons items={buttons} selectedKey={subview} onSelect={handleSelect} />
         )}
       </MetricsTable>
     </>
