@@ -236,6 +236,7 @@
   "label.websites": "网站",
   "label.window": "窗口",
   "label.yesterday": "昨天",
+  "label.invitation-link": "邀请链接",
   "message.action-confirmation": "请在下方输入框中输入 {confirmation} 以确认操作。",
   "message.active-users": "当前在线 {x} 位访客",
   "message.collected-data": "已收集的数据",
