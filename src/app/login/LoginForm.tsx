@@ -55,7 +55,12 @@ export function LoginForm() {
           <PasswordField />
         </FormField>
         <FormButtons>
-          <FormSubmitButton data-test="button-submit" variant="primary" style={{ flex: 1 }}>
+          <FormSubmitButton
+            data-test="button-submit"
+            variant="primary"
+            style={{ flex: 1 }}
+            isDisabled={false}
+          >
             {formatMessage(labels.login)}
           </FormSubmitButton>
         </FormButtons>
