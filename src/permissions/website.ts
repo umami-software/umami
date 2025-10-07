@@ -1,7 +1,7 @@
 import { Auth } from '@/lib/types';
 import { PERMISSIONS } from '@/lib/constants';
 import { hasPermission } from '@/lib/auth';
-import { getTeamUser, getWebsite } from '@/queries/prisma';
+import { getLink, getPixel, getTeamUser, getWebsite } from '@/queries/prisma';
 
 export async function canViewWebsite({ user, shareToken }: Auth, websiteId: string) {
   if (user?.isAdmin) {
@@ -13,17 +13,21 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
   }
 
   const website = await getWebsite(websiteId);
+  const link = await getLink(websiteId);
+  const pixel = await getPixel(websiteId);
 
-  if (!website) {
+  const entity = website || link || pixel;
+
+  if (!entity) {
     return false;
   }
 
-  if (website.userId) {
-    return user.id === website.userId;
+  if (entity.userId) {
+    return user.id === entity.userId;
   }
 
-  if (website.teamId) {
-    const teamUser = await getTeamUser(website.teamId, user.id);
+  if (entity.teamId) {
+    const teamUser = await getTeamUser(entity.teamId, user.id);
 
     return !!teamUser;
   }
