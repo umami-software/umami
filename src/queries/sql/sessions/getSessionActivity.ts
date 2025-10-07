@@ -57,7 +57,7 @@ async function clickhouseQuery(websiteId: string, sessionId: string, filters: Qu
       event_type as eventType,
       event_name as eventName,
       visit_id as visitId,
-      event_id IN (SELECT event_id FROM event_data) AS hasData
+      event_id IN (SELECT event_id FROM event_data where website_id = {websiteId:UUID} and session_id = {sessionId:UUID}) AS hasData
     from website_event e 
     where e.website_id = {websiteId:UUID}
       and e.session_id = {sessionId:UUID} 
