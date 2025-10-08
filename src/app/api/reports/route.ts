@@ -8,7 +8,7 @@ import { getReports, createReport } from '@/queries/prisma';
 
 export async function GET(request: Request) {
   const schema = z.object({
-    websiteId: z.uuid().optional(),
+    websiteId: z.uuid(),
     type: z.string().optional(),
     ...pagingParams,
   });
@@ -26,7 +26,7 @@ export async function GET(request: Request) {
     search,
   };
 
-  if (websiteId && !(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
