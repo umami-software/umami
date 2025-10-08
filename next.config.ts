@@ -155,6 +155,13 @@ if (trackerScriptName) {
   }
 }
 
+if (cloudMode) {
+  rewrites.push({
+    source: '/script.js',
+    destination: 'https://cloud.umami.is/script.js',
+  });
+}
+
 /** @type {import('next').NextConfig} */
 export default {
   reactStrictMode: false,
