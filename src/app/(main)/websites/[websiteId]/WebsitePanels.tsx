@@ -119,6 +119,8 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
       {isSharePage && (
         <GridRow layout="two-one" {...rowProps}>
           <Panel>
+            <Heading size="2">{formatMessage(labels.event)}</Heading>
+            <Row border="bottom" marginBottom="4" />
             <MetricsTable
               websiteId={websiteId}
               type="event"
