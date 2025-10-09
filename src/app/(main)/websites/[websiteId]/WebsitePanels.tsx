@@ -1,13 +1,15 @@
-import { Grid, Tabs, Tab, TabList, TabPanel, Heading, Row } from '@umami/react-zen';
 import { GridRow } from '@/components/common/GridRow';
 import { Panel } from '@/components/common/Panel';
-import { WorldMap } from '@/components/metrics/WorldMap';
+import { useMessages, useNavigation } from '@/components/hooks';
+import { EventsChart } from '@/components/metrics/EventsChart';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { WeeklyTraffic } from '@/components/metrics/WeeklyTraffic';
-import { useMessages } from '@/components/hooks';
+import { WorldMap } from '@/components/metrics/WorldMap';
+import { Grid, Heading, Row, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
 
 export function WebsitePanels({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
+  const { pathname } = useNavigation();
   const tableProps = {
     websiteId,
     limit: 10,
@@ -16,6 +18,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
     metric: formatMessage(labels.visitors),
   };
   const rowProps = { minHeight: '570px' };
+  const isSharePage = pathname.includes('/share/');
 
   return (
     <Grid gap="3">
@@ -113,6 +116,23 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
           <WeeklyTraffic websiteId={websiteId} />
         </Panel>
       </GridRow>
+      {isSharePage && (
+        <GridRow layout="two-one" {...rowProps}>
+          <Panel>
+            <MetricsTable
+              websiteId={websiteId}
+              type="event"
+              title={formatMessage(labels.events)}
+              metric={formatMessage(labels.count)}
+              limit={15}
+              filterLink={false}
+            />
+          </Panel>
+          <Panel gridColumn="span 2">
+            <EventsChart websiteId={websiteId} />
+          </Panel>
+        </GridRow>
+      )}
     </Grid>
   );
 }

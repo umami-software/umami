@@ -1,12 +1,12 @@
-import { useEffect, useMemo } from 'react';
-import { Icon, Row, Text } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useNavigation, useWebsiteMetricsQuery } from '@/components/hooks';
 import { Maximize } from '@/components/icons';
-import { percentFilter } from '@/lib/filters';
-import { ListTable, ListTableProps } from './ListTable';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
+import { percentFilter } from '@/lib/filters';
+import { Icon, Row, Text } from '@umami/react-zen';
+import { useEffect, useMemo } from 'react';
+import { ListTable, ListTableProps } from './ListTable';
 
 export interface MetricsTableProps extends ListTableProps {
   websiteId: string;
@@ -14,6 +14,7 @@ export interface MetricsTableProps extends ListTableProps {
   dataFilter?: (data: any) => any;
   limit?: number;
   showMore?: boolean;
+  filterLink?: boolean;
   params?: Record<string, any>;
   onDataLoad?: (data: any) => void;
 }
@@ -24,6 +25,7 @@ export function MetricsTable({
   dataFilter,
   limit,
   showMore = false,
+  filterLink = true,
   params,
   onDataLoad,
   ...props
@@ -64,7 +66,7 @@ export function MetricsTable({
   }, [data]);
 
   const renderLabel = (row: any) => {
-    return <MetricLabel type={type} data={row} />;
+    return filterLink ? <MetricLabel type={type} data={row} /> : row.label;
   };
 
   return (
