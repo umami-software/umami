@@ -119,12 +119,12 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
       {isSharePage && (
         <GridRow layout="two-one" {...rowProps}>
           <Panel>
-            <Heading size="2">{formatMessage(labels.event)}</Heading>
+            <Heading size="2">{formatMessage(labels.events)}</Heading>
             <Row border="bottom" marginBottom="4" />
             <MetricsTable
               websiteId={websiteId}
               type="event"
-              title={formatMessage(labels.events)}
+              title={formatMessage(labels.event)}
               metric={formatMessage(labels.count)}
               limit={15}
               filterLink={false}

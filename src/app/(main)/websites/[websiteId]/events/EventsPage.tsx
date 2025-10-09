@@ -43,7 +43,7 @@ export function EventsPage({ websiteId }) {
               <MetricsTable
                 websiteId={websiteId}
                 type="event"
-                title={formatMessage(labels.events)}
+                title={formatMessage(labels.event)}
                 metric={formatMessage(labels.count)}
               />
             </Column>
