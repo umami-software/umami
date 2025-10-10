@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
+import { IconLabel } from '@umami/react-zen';
 import { ListTable } from '@/components/metrics/ListTable';
 import { useLocale, useCountryNames, useMessages } from '@/components/hooks';
-import classNames from 'classnames';
-import styles from './RealtimeCountries.module.css';
 import { TypeIcon } from '@/components/common/TypeIcon';
 
 export function RealtimeCountries({ data }) {
@@ -12,10 +11,7 @@ export function RealtimeCountries({ data }) {
 
   const renderCountryName = useCallback(
     ({ label: code }) => (
-      <span className={classNames(styles.row)}>
-        <TypeIcon type="country" value={code} />
-        {countryNames[code]}
-      </span>
+      <IconLabel icon={<TypeIcon type="country" value={code} />} label={countryNames[code]} />
     ),
     [countryNames, locale],
   );

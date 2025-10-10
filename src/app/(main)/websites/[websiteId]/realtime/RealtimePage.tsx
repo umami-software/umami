@@ -9,7 +9,8 @@ import { WorldMap } from '@/components/metrics/WorldMap';
 import { useRealtimeQuery } from '@/components/hooks';
 import { RealtimeLog } from './RealtimeLog';
 import { RealtimeHeader } from './RealtimeHeader';
-import { RealtimeUrls } from './RealtimeUrls';
+import { RealtimePaths } from './RealtimePaths';
+import { RealtimeReferrers } from './RealtimeReferrers';
 import { RealtimeCountries } from './RealtimeCountries';
 import { percentFilter } from '@/lib/filters';
 
@@ -32,12 +33,15 @@ export function RealtimePage({ websiteId }: { websiteId: string }) {
       <Panel>
         <RealtimeChart data={data} unit="minute" />
       </Panel>
+      <Panel>
+        <RealtimeLog data={data} />
+      </Panel>
       <GridRow layout="two">
         <Panel>
-          <RealtimeUrls data={data} />
+          <RealtimePaths data={data} />
         </Panel>
         <Panel>
-          <RealtimeLog data={data} />
+          <RealtimeReferrers data={data} />
         </Panel>
       </GridRow>
       <GridRow layout="one-two">

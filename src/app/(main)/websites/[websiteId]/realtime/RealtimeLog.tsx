@@ -1,3 +1,7 @@
+import { useMemo, useState } from 'react';
+import { FixedSizeList } from 'react-window';
+import { SearchField, Text, Column, Row, IconLabel, Heading } from '@umami/react-zen';
+import Link from 'next/link';
 import { useFormat } from '@/components//hooks/useFormat';
 import { Empty } from '@/components/common/Empty';
 import { FilterButtons } from '@/components/input/FilterButtons';
@@ -5,17 +9,15 @@ import {
   useCountryNames,
   useLocale,
   useMessages,
+  useNavigation,
   useTimezone,
   useWebsite,
 } from '@/components/hooks';
 import { Eye, User } from '@/components/icons';
 import { Lightning } from '@/components/svg';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
-import { stringToColor } from '@/lib/format';
-import { useMemo, useState } from 'react';
-import { Icon, SearchField, StatusLight, Text } from '@umami/react-zen';
-import { FixedSizeList } from 'react-window';
-import styles from './RealtimeLog.module.css';
+import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
+import { Avatar } from '@/components/common/Avatar';
 
 const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';
@@ -37,6 +39,7 @@ export function RealtimeLog({ data }: { data: any }) {
   const { formatTimezoneDate } = useTimezone();
   const { countryNames } = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);
+  const { updateParams } = useNavigation();
 
   const buttons = [
     {
@@ -58,8 +61,6 @@ export function RealtimeLog({ data }: { data: any }) {
   ];
 
   const getTime = ({ createdAt, firstAt }) => formatTimezoneDate(firstAt || createdAt, 'pp');
-
-  const getColor = ({ id, sessionId }) => stringToColor(sessionId || id);
 
   const getIcon = ({ __type }) => icons[__type];
 
@@ -84,7 +85,6 @@ export function RealtimeLog({ data }: { data: any }) {
               <a
                 key="a"
                 href={`//${website?.domain}${urlPath}`}
-                className={styles.link}
                 target="_blank"
                 rel="noreferrer noopener"
               >
@@ -98,12 +98,7 @@ export function RealtimeLog({ data }: { data: any }) {
 
     if (__type === TYPE_PAGEVIEW) {
       return (
-        <a
-          href={`//${website?.domain}${urlPath}`}
-          className={styles.link}
-          target="_blank"
-          rel="noreferrer noopener"
-        >
+        <a href={`//${website?.domain}${urlPath}`} target="_blank" rel="noreferrer noopener">
           {urlPath}
         </a>
       );
@@ -124,19 +119,18 @@ export function RealtimeLog({ data }: { data: any }) {
     }
   };
 
-  const Row = ({ index, style }) => {
+  const TableRow = ({ index, style }) => {
     const row = logs[index];
     return (
-      <div className={styles.row} style={style}>
-        <div>
-          <StatusLight color={getColor(row)} />
-        </div>
-        <div className={styles.time}>{getTime(row)}</div>
-        <div className={styles.detail}>
-          <Icon className={styles.icon}>{getIcon(row)}</Icon>
+      <Row alignItems="center" style={style} gap>
+        <Link href={updateParams({ session: row.sessionId })}>
+          <Avatar seed={row.sessionId} size={32} />
+        </Link>
+        <Row width="100px">{getTime(row)}</Row>
+        <IconLabel icon={getIcon(row)}>
           <Text>{getDetail(row)}</Text>
-        </div>
-      </div>
+        </IconLabel>
+      </Row>
     );
   };
 
@@ -172,20 +166,21 @@ export function RealtimeLog({ data }: { data: any }) {
   }, [data, filter, formatValue, search]);
 
   return (
-    <div className={styles.table}>
-      <div className={styles.actions}>
-        <SearchField className={styles.search} value={search} onSearch={setSearch} />
+    <Column gap>
+      <Heading size="2">{formatMessage(labels.activity)}</Heading>
+      <Row alignItems="center" justifyContent="space-between">
+        <SearchField value={search} onSearch={setSearch} />
         <FilterButtons items={buttons} value={filter} onChange={setFilter} />
-      </div>
-      <div className={styles.header}>{formatMessage(labels.activity)}</div>
-      <div className={styles.body}>
+      </Row>
+      <Column>
         {logs?.length === 0 && <Empty />}
         {logs?.length > 0 && (
           <FixedSizeList width="100%" height={500} itemCount={logs.length} itemSize={50}>
-            {Row}
+            {TableRow}
           </FixedSizeList>
         )}
-      </div>
-    </div>
+      </Column>
+      <SessionModal websiteId={website.id} />
+    </Column>
   );
 }

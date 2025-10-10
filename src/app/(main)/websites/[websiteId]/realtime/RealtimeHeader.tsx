@@ -1,9 +1,8 @@
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { useMessages } from '@/components/hooks';
-import { RealtimeData } from '@/lib/types';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 
-export function RealtimeHeader({ data }: { data: RealtimeData }) {
+export function RealtimeHeader({ data }: { data: any }) {
   const { formatMessage, labels } = useMessages();
   const { totals }: any = data || {};
 
