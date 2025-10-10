@@ -55,7 +55,7 @@ export function PixelPanels({ pixelId }: { pixelId: string }) {
         </Panel>
       </GridRow>
       <GridRow layout="two" {...rowProps}>
-        <Panel noPadding>
+        <Panel padding="0">
           <WorldMap websiteId={pixelId} />
         </Panel>
         <Panel>

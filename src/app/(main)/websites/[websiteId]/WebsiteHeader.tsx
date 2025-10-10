@@ -22,7 +22,11 @@ export function WebsiteHeader({ showActions }: { showActions?: boolean }) {
         <ActiveUsers websiteId={website.id} />
 
         {showActions && (
-          <Row alignItems="center" gap>
+          <Row
+            display={{ xs: 'none', sm: 'none', md: 'none', lg: 'flex', xl: 'flex' }}
+            alignItems="center"
+            gap
+          >
             <ShareButton websiteId={website.id} shareId={website.shareId} />
             <LinkButton href={renderUrl(`/websites/${website.id}/settings`, false)}>
               <Icon>

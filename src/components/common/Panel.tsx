@@ -15,7 +15,6 @@ import { useMessages } from '@/components/hooks';
 export interface PanelProps extends ColumnProps {
   title?: string;
   allowFullscreen?: boolean;
-  noPadding?: boolean;
 }
 
 const fullscreenStyles = {
@@ -28,14 +27,7 @@ const fullscreenStyles = {
   zIndex: 9999,
 } as any;
 
-export function Panel({
-  title,
-  allowFullscreen,
-  noPadding,
-  style,
-  children,
-  ...props
-}: PanelProps) {
+export function Panel({ title, allowFullscreen, style, children, ...props }: PanelProps) {
   const { formatMessage, labels } = useMessages();
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -45,7 +37,7 @@ export function Panel({
 
   return (
     <Column
-      padding={!noPadding ? '6' : undefined}
+      padding={{ xs: '3', md: '6' }}
       border
       borderRadius="3"
       backgroundColor

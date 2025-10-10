@@ -1,11 +1,11 @@
+import { useEffect, useMemo } from 'react';
+import { Icon, Text, Row, Grid } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useNavigation, useWebsiteMetricsQuery } from '@/components/hooks';
 import { Maximize } from '@/components/icons';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
 import { percentFilter } from '@/lib/filters';
-import { Icon, Row, Text } from '@umami/react-zen';
-import { useEffect, useMemo } from 'react';
 import { ListTable, ListTableProps } from './ListTable';
 
 export interface MetricsTableProps extends ListTableProps {
@@ -77,21 +77,19 @@ export function MetricsTable({
       error={error}
       minHeight="400px"
     >
-      <div style={{ display: 'grid', gridTemplateRows: '1fr auto', minHeight: '400px' }}>
-        <div>{data && <ListTable {...props} data={filteredData} renderLabel={renderLabel} />}</div>
-        <div>
-          {showMore && limit && (
-            <Row justifyContent="center" alignItems="flex-end">
-              <LinkButton href={updateParams({ view: type })} variant="quiet">
-                <Icon size="sm">
-                  <Maximize />
-                </Icon>
-                <Text>{formatMessage(labels.more)}</Text>
-              </LinkButton>
-            </Row>
-          )}
-        </div>
-      </div>
+      <Grid>
+        {data && <ListTable {...props} data={filteredData} renderLabel={renderLabel} />}
+        {showMore && limit && (
+          <Row justifyContent="center" alignItems="flex-end">
+            <LinkButton href={updateParams({ view: type })} variant="quiet">
+              <Icon size="sm">
+                <Maximize />
+              </Icon>
+              <Text>{formatMessage(labels.more)}</Text>
+            </LinkButton>
+          </Row>
+        )}
+      </Grid>
     </LoadingPanel>
   );
 }

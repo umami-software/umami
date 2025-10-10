@@ -28,7 +28,14 @@ export function PageBody({
   }
 
   return (
-    <Column {...props} width="100%" paddingBottom="9" style={{ margin: '0 auto', maxWidth }}>
+    <Column
+      {...props}
+      width="100%"
+      paddingBottom="9"
+      maxWidth={maxWidth}
+      paddingX="4"
+      style={{ margin: '0 auto' }}
+    >
       {children}
     </Column>
   );

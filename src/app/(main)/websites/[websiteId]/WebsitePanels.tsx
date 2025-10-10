@@ -106,7 +106,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
       </GridRow>
 
       <GridRow layout="two-one" {...rowProps}>
-        <Panel gridColumn="span 2" noPadding>
+        <Panel gridColumn={{ xs: 'span 1', md: 'span 2' }} padding="0">
           <WorldMap websiteId={websiteId} />
         </Panel>
 
@@ -130,7 +130,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
               filterLink={false}
             />
           </Panel>
-          <Panel gridColumn="span 2">
+          <Panel gridColumn={{ xs: 'span 1', md: 'span 2' }}>
             <EventsChart websiteId={websiteId} />
           </Panel>
         </GridRow>

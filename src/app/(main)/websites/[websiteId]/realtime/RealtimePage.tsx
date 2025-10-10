@@ -44,7 +44,7 @@ export function RealtimePage({ websiteId }: { websiteId: string }) {
         <Panel>
           <RealtimeCountries data={countries} />
         </Panel>
-        <Panel gridColumn="span 2" noPadding>
+        <Panel gridColumn="span 2" padding="0">
           <WorldMap data={countries} />
         </Panel>
       </GridRow>

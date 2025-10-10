@@ -14,12 +14,11 @@ const LAYOUTS = {
       md: 'repeat(auto-fill, minmax(360px, 1fr))',
     },
   },
-  'one-two': { columns: { xs: '1fr', lg: 'repeat(3, 1fr)' } },
-  'two-one': { columns: { xs: '1fr', lg: 'repeat(3, 1fr)' } },
+  'one-two': { columns: { xs: '1fr', md: 'repeat(3, 1fr)' } },
+  'two-one': { columns: { xs: '1fr', md: 'repeat(3, 1fr)' } },
 };
 
 export function GridRow(props: {
-  [x: string]: any;
   layout?: 'one' | 'two' | 'three' | 'one-two' | 'two-one' | 'compare';
   className?: string;
   children?: any;

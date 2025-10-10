@@ -55,7 +55,7 @@ export function LinkPanels({ linkId }: { linkId: string }) {
         </Panel>
       </GridRow>
       <GridRow layout="two" {...rowProps}>
-        <Panel noPadding>
+        <Panel padding="0">
           <WorldMap websiteId={linkId} />
         </Panel>
         <Panel>
