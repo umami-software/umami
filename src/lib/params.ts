@@ -3,10 +3,15 @@ import { Filter, QueryFilters, QueryOptions } from '@/lib/types';
 
 export function parseFilterValue(param: any) {
   if (typeof param === 'string') {
-    const [, operator, value] = param.match(/^([a-z]+)\.(.*)/) || [];
+    const operatorValues = Object.values(OPERATORS).join('|');
+
+    const regex = new RegExp(`^(${operatorValues})\\.(.*)$`);
+
+    const [, operator, value] = param.match(regex) || [];
 
     return { operator: operator || OPERATORS.equals, value: value || param };
   }
+
   return { operator: OPERATORS.equals, value: param };
 }
 
