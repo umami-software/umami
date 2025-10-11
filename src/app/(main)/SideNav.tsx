@@ -49,41 +49,39 @@ export function SideNav(props: SidebarProps) {
   };
 
   return (
-    <Row height="100%" backgroundColor>
-      <Sidebar {...props} isCollapsed={isCollapsed || hasNav}>
-        <SidebarSection onClick={() => setIsCollapsed(false)}>
-          <SidebarHeader
-            label="umami"
-            icon={isCollapsed && !hasNav ? <PanelLeft /> : <Logo />}
-            style={{ maxHeight: 40 }}
-          >
-            {!isCollapsed && !hasNav && <PanelButton />}
-          </SidebarHeader>
-        </SidebarSection>
-        <SidebarSection paddingTop="0" paddingBottom="0" justifyContent="center">
-          <NavButton showText={!hasNav && !isCollapsed} onAction={handleSelect} />
-        </SidebarSection>
-        <SidebarSection flexGrow={1}>
-          {links.map(({ id, path, label, icon }) => {
-            return (
-              <Link key={id} href={renderUrl(path, false)} role="button">
-                <SidebarItem
-                  label={label}
-                  icon={icon}
-                  isSelected={pathname.includes(path)}
-                  role="button"
-                />
-              </Link>
-            );
-          })}
-        </SidebarSection>
-        <SidebarSection justifyContent="flex-start">
-          <Row wrap="wrap">
-            <LanguageButton />
-            <ThemeButton />
-          </Row>
-        </SidebarSection>
-      </Sidebar>
-    </Row>
+    <Sidebar {...props} isCollapsed={isCollapsed || hasNav} backgroundColor>
+      <SidebarSection onClick={() => setIsCollapsed(false)}>
+        <SidebarHeader
+          label="umami"
+          icon={isCollapsed && !hasNav ? <PanelLeft /> : <Logo />}
+          style={{ maxHeight: 40 }}
+        >
+          {!isCollapsed && !hasNav && <PanelButton />}
+        </SidebarHeader>
+      </SidebarSection>
+      <SidebarSection paddingTop="0" paddingBottom="0" justifyContent="center">
+        <NavButton showText={!hasNav && !isCollapsed} onAction={handleSelect} />
+      </SidebarSection>
+      <SidebarSection flexGrow={1}>
+        {links.map(({ id, path, label, icon }) => {
+          return (
+            <Link key={id} href={renderUrl(path, false)} role="button">
+              <SidebarItem
+                label={label}
+                icon={icon}
+                isSelected={pathname.includes(path)}
+                role="button"
+              />
+            </Link>
+          );
+        })}
+      </SidebarSection>
+      <SidebarSection justifyContent="flex-start">
+        <Row wrap="wrap">
+          <LanguageButton />
+          <ThemeButton />
+        </Row>
+      </SidebarSection>
+    </Sidebar>
   );
 }

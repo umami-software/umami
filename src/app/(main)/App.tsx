@@ -1,5 +1,5 @@
 'use client';
-import { Grid, Loading, Column } from '@umami/react-zen';
+import { Grid, Loading, Column, Row } from '@umami/react-zen';
 import Script from 'next/script';
 import { UpdateNotice } from './UpdateNotice';
 import { SideNav } from '@/app/(main)/SideNav';
@@ -28,11 +28,14 @@ export function App({ children }) {
   }
 
   return (
-    <Grid height="100vh" width="100%" columns="auto 1fr" backgroundColor="2">
-      <Column>
+    <Grid columns={{ xs: '1fr', md: 'auto 1fr' }} height="100vh" width="100%" backgroundColor="2">
+      <Row display={{ xs: 'flex', md: 'none' }} alignItems="center" gap>
+        oh hi
+      </Row>
+      <Column display={{ xs: 'none', md: 'flex' }}>
         <SideNav />
       </Column>
-      <Column alignItems="center" overflow="auto" position="relative">
+      <Column alignItems="center" overflowY="auto" overflowX="hidden" position="relative">
         {children}
       </Column>
       <UpdateNotice user={user} config={config} />

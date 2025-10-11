@@ -37,7 +37,8 @@ export function Panel({ title, allowFullscreen, style, children, ...props }: Pan
 
   return (
     <Column
-      padding={{ xs: '3', md: '6' }}
+      paddingY="6"
+      paddingX={{ xs: '3', md: '6' }}
       border
       borderRadius="3"
       backgroundColor
@@ -50,7 +51,7 @@ export function Panel({ title, allowFullscreen, style, children, ...props }: Pan
       {allowFullscreen && (
         <Row justifyContent="flex-end" alignItems="center">
           <TooltipTrigger delay={0} isDisabled={isFullscreen}>
-            <Button variant="quiet" onPress={handleFullscreen}>
+            <Button size="sm" variant="quiet" onPress={handleFullscreen}>
               <Icon>{isFullscreen ? <X /> : <Maximize />}</Icon>
             </Button>
             <Tooltip>{formatMessage(labels.maximize)}</Tooltip>
