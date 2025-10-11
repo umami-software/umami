@@ -29,9 +29,7 @@ export function App({ children }) {
 
   return (
     <Grid columns={{ xs: '1fr', md: 'auto 1fr' }} height="100vh" width="100%" backgroundColor="2">
-      <Row display={{ xs: 'flex', md: 'none' }} alignItems="center" gap>
-        oh hi
-      </Row>
+      <Row display={{ xs: 'flex', md: 'none' }} alignItems="center" gap></Row>
       <Column display={{ xs: 'none', md: 'flex' }}>
         <SideNav />
       </Column>
