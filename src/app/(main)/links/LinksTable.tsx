@@ -1,23 +1,18 @@
 import Link from 'next/link';
-import { DataTable, DataColumn, Row } from '@umami/react-zen';
+import { DataTable, DataColumn, Row, DataTableProps } from '@umami/react-zen';
 import { useMessages, useNavigation, useSlug } from '@/components/hooks';
-import { Empty } from '@/components/common/Empty';
 import { DateDistance } from '@/components/common/DateDistance';
 import { ExternalLink } from '@/components/common/ExternalLink';
 import { LinkEditButton } from './LinkEditButton';
 import { LinkDeleteButton } from './LinkDeleteButton';
 
-export function LinksTable({ data = [] }) {
+export function LinksTable(props: DataTableProps) {
   const { formatMessage, labels } = useMessages();
   const { websiteId, renderUrl } = useNavigation();
   const { getSlugUrl } = useSlug('link');
 
-  if (data.length === 0) {
-    return <Empty />;
-  }
-
   return (
-    <DataTable data={data}>
+    <DataTable {...props}>
       <DataColumn id="name" label={formatMessage(labels.name)}>
         {({ id, name }: any) => {
           return <Link href={renderUrl(`/links/${id}`)}>{name}</Link>;

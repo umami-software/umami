@@ -1,6 +1,5 @@
-import { DataTable, DataColumn, Icon, Row, Text } from '@umami/react-zen';
+import { DataTable, DataColumn, Row, Text, DataTableProps, IconLabel } from '@umami/react-zen';
 import { useFormat, useMessages, useNavigation } from '@/components/hooks';
-import { Empty } from '@/components/common/Empty';
 import { Avatar } from '@/components/common/Avatar';
 import Link from 'next/link';
 import { Eye } from '@/components/icons';
@@ -8,32 +7,41 @@ import { Lightning } from '@/components/svg';
 import { DateDistance } from '@/components/common/DateDistance';
 import { TypeIcon } from '@/components/common/TypeIcon';
 
-export function EventsTable({ data = [] }) {
+export function EventsTable(props: DataTableProps) {
   const { formatMessage, labels } = useMessages();
   const { updateParams } = useNavigation();
   const { formatValue } = useFormat();
 
-  if (data.length === 0) {
-    return <Empty />;
-  }
-
   return (
-    <DataTable data={data}>
+    <DataTable {...props}>
       <DataColumn id="event" label={formatMessage(labels.event)} width="2fr">
         {(row: any) => {
           return (
-            <Row alignItems="center" gap="2">
-              <Link href={updateParams({ session: row.sessionId })}>
-                <Avatar seed={row.sessionId} size={32} />
-              </Link>
-              <Icon>{row.eventName ? <Lightning /> : <Eye />}</Icon>
-              <Text>
-                {formatMessage(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
-              </Text>
-              <Text weight="bold" style={{ maxWidth: '300px' }} truncate>
+            <Row alignItems="center" wrap="wrap" gap>
+              <Row>
+                <IconLabel
+                  icon={row.eventName ? <Lightning /> : <Eye />}
+                  label={formatMessage(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
+                />
+              </Row>
+              <Text
+                weight="bold"
+                style={{ maxWidth: '300px' }}
+                title={row.eventName || row.urlPath}
+                truncate
+              >
                 {row.eventName || row.urlPath}
               </Text>
             </Row>
+          );
+        }}
+      </DataColumn>
+      <DataColumn id="session" label={formatMessage(labels.session)} width="80px">
+        {(row: any) => {
+          return (
+            <Link href={updateParams({ session: row.sessionId })}>
+              <Avatar seed={row.sessionId} size={32} />
+            </Link>
           );
         }}
       </DataColumn>

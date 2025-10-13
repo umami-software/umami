@@ -1,19 +1,17 @@
-import { DataColumn, DataTable } from '@umami/react-zen';
+import { DataColumn, DataTable, DataTableProps } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 import { ReactNode } from 'react';
 
-export function TeamsTable({
-  data = [],
-  renderLink,
-}: {
-  data: any[];
+export interface TeamsTableProps extends DataTableProps {
   renderLink?: (row: any) => ReactNode;
-}) {
+}
+
+export function TeamsTable({ renderLink, ...props }: TeamsTableProps) {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <DataTable data={data}>
+    <DataTable {...props}>
       <DataColumn id="name" label={formatMessage(labels.name)}>
         {renderLink}
       </DataColumn>

@@ -1,30 +1,22 @@
 import { ReactNode } from 'react';
-import { Icon, DataTable, DataColumn } from '@umami/react-zen';
+import { Icon, DataTable, DataColumn, DataTableProps } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { SquarePen } from '@/components/icons';
-import { Empty } from '@/components/common/Empty';
 
-export function WebsitesTable({
-  data = [],
-  showActions,
-  renderLink,
-}: {
-  data: Record<string, any>[];
+export interface WebsitesTableProps extends DataTableProps {
   showActions?: boolean;
   allowEdit?: boolean;
   allowView?: boolean;
   renderLink?: (row: any) => ReactNode;
-}) {
+}
+
+export function WebsitesTable({ showActions, renderLink, ...props }: WebsitesTableProps) {
   const { formatMessage, labels } = useMessages();
   const { renderUrl } = useNavigation();
 
-  if (data.length === 0) {
-    return <Empty />;
-  }
-
   return (
-    <DataTable data={data}>
+    <DataTable {...props}>
       <DataColumn id="name" label={formatMessage(labels.name)}>
         {renderLink}
       </DataColumn>

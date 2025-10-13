@@ -1,17 +1,17 @@
 import Link from 'next/link';
-import { DataColumn, DataTable } from '@umami/react-zen';
+import { DataColumn, DataTable, DataTableProps } from '@umami/react-zen';
 import { useFormat, useMessages, useNavigation } from '@/components/hooks';
 import { Avatar } from '@/components/common/Avatar';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { DateDistance } from '@/components/common/DateDistance';
 
-export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean }) {
+export function SessionsTable(props: DataTableProps) {
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
   const { updateParams } = useNavigation();
 
   return (
-    <DataTable data={data}>
+    <DataTable {...props}>
       <DataColumn id="id" label={formatMessage(labels.session)} width="100px">
         {(row: any) => (
           <Link href={updateParams({ session: row.id })}>

@@ -31,9 +31,9 @@ export function PageBody({
     <Column
       {...props}
       width="100%"
-      paddingBottom="9"
+      paddingBottom="6"
       maxWidth={maxWidth}
-      paddingX="4"
+      paddingX={{ xs: '3', md: '6' }}
       style={{ margin: '0 auto' }}
     >
       {children}

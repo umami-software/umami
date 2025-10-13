@@ -8,7 +8,7 @@ export function SessionsDataTable({ websiteId }: { websiteId?: string; teamId?: 
   return (
     <DataGrid query={queryResult} allowPaging allowSearch>
       {({ data }) => {
-        return <SessionsTable data={data} showDomain={!websiteId} />;
+        return <SessionsTable data={data} />;
       }}
     </DataGrid>
   );

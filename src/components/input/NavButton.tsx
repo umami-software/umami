@@ -61,6 +61,7 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
           borderRadius
           shadow="1"
           maxHeight="40px"
+          role="button"
           style={{ cursor: 'pointer', textWrap: 'nowrap', outline: 'none' }}
         >
           <Row alignItems="center" position="relative" gap maxHeight="40px">
