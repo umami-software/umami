@@ -68,10 +68,15 @@ async function clickhouseQuery(
       event_name as eventName,
       data_key as propertyName,
       count(*) as total
-    from event_data website_event
+    from event_data
+    join website_event
+    on website_event.event_id = event_data.event_id
+      and website_event.website_id = event_data.website_id
+      and website_event.website_id = {websiteId:UUID}
+      and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
     ${cohortQuery}
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+    where event_data.website_id = {websiteId:UUID}
+      and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
     ${filterQuery}
     group by event_name, data_key
     order by 1, 3 desc

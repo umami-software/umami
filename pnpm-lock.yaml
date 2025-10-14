@@ -364,8 +364,6 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  dist: {}
-
 packages:
 
   '@ampproject/remapping@2.3.0':
