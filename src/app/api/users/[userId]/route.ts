@@ -26,9 +26,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
 
 export async function POST(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const schema = z.object({
-    username: z.string().max(255),
+    username: z.string().max(255).optional(),
     password: z.string().max(255).optional(),
-    role: userRoleParam,
+    role: userRoleParam.optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);

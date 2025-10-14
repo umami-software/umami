@@ -24,22 +24,26 @@ export async function GET(request: Request) {
   const teams = await getTeams(
     {
       include: {
-        _count: {
-          select: {
-            members: true,
-            websites: true,
-          },
-        },
         members: {
-          select: {
+          include: {
             user: {
-              omit: {
-                password: true,
+              select: {
+                id: true,
+                username: true,
               },
             },
           },
-          where: {
-            role: 'team-owner',
+        },
+        _count: {
+          select: {
+            websites: {
+              where: { deletedAt: null },
+            },
+            members: {
+              where: {
+                user: { deletedAt: null },
+              },
+            },
           },
         },
       },
