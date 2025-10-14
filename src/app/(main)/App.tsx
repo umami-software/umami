@@ -1,9 +1,10 @@
 'use client';
-import { Grid, Loading, Column, Row } from '@umami/react-zen';
+import { Grid, Loading, Column, Row, List, ListItem } from '@umami/react-zen';
 import Script from 'next/script';
 import { UpdateNotice } from './UpdateNotice';
 import { SideNav } from '@/app/(main)/SideNav';
 import { useLoginQuery, useConfig, useNavigation } from '@/components/hooks';
+import { MobileMenuButton } from '@/components/input/MobileMenuButton';
 
 export function App({ children }) {
   const { user, isLoading, error } = useLoginQuery();
@@ -29,7 +30,15 @@ export function App({ children }) {
 
   return (
     <Grid columns={{ xs: '1fr', lg: 'auto 1fr' }} height="100vh" width="100%" backgroundColor="2">
-      <Row display={{ xs: 'flex', lg: 'none' }} alignItems="center" gap></Row>
+      <Row display={{ xs: 'flex', lg: 'none' }} alignItems="center" gap padding>
+        <MobileMenuButton>
+          <List>
+            <ListItem>Websites</ListItem>
+            <ListItem>Links</ListItem>
+            <ListItem>Pixels</ListItem>
+          </List>
+        </MobileMenuButton>
+      </Row>
       <Column display={{ xs: 'none', lg: 'flex' }}>
         <SideNav />
       </Column>
