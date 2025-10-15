@@ -26,9 +26,11 @@ export function ExpandedViewModal({
     }
   };
 
+  const height = CSS.supports('height', '100dvh') ? 'calc(100dvh - 40px)' : 'calc(100vh - 40px)';
+
   return (
     <Modal isOpen={!!view} onOpenChange={handleOpenChange} isDismissable>
-      <Dialog style={{ maxWidth: 1320, width: '100vw', height: 'calc(100vh - 40px)' }}>
+      <Dialog style={{ maxWidth: 1320, width: '100vw', height: height }}>
         {({ close }) => {
           return (
             <WebsiteExpandedView
