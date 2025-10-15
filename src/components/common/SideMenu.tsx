@@ -57,7 +57,6 @@ export function SideMenu({
     <Column
       gap
       padding
-      width="240px"
       overflowY="auto"
       justifyContent="space-between"
       position="sticky"

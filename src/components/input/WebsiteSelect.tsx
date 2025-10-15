@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { Select, SelectProps, ListItem, Text, Row } from '@umami/react-zen';
-import { useUserWebsitesQuery, useMessages, useLoginQuery, useWebsite } from '@/components/hooks';
+import {
+  useUserWebsitesQuery,
+  useMessages,
+  useLoginQuery,
+  useWebsiteQuery,
+} from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 
 export function WebsiteSelect({
@@ -15,7 +20,7 @@ export function WebsiteSelect({
   includeTeams?: boolean;
 } & SelectProps) {
   const { formatMessage, messages } = useMessages();
-  const website = useWebsite();
+  const { data: website } = useWebsiteQuery(websiteId);
   const [name, setName] = useState<string>(website?.name);
   const [search, setSearch] = useState('');
   const { user } = useLoginQuery();
