@@ -16,6 +16,7 @@ import { useMessages, useNavigation } from '@/components/hooks';
 import Link from 'next/link';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { Logo } from '@/components/svg';
+import { NavButton } from '@/components/input/NavButton';
 
 export function MobileNav() {
   const { formatMessage, labels } = useMessages();
@@ -53,6 +54,7 @@ export function MobileNav() {
         <Modal position="left" offset="80px">
           <Dialog variant="sheet">
             <NavMenu padding="3">
+              <NavButton />
               {links.map(link => {
                 return (
                   <Link key={link.id} href={link.path}>

@@ -29,7 +29,12 @@ export function App({ children }) {
   }
 
   return (
-    <Grid columns={{ xs: '1fr', lg: 'auto 1fr' }} height="100vh" width="100%">
+    <Grid
+      columns={{ xs: '1fr', lg: 'auto 1fr' }}
+      rows={{ xs: 'auto 1fr', lg: '1fr' }}
+      height={{ xs: 'auto', lg: '100vh' }}
+      width="100%"
+    >
       <Row display={{ xs: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
         <MobileNav />
       </Row>
