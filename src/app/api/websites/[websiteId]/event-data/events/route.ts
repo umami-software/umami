@@ -27,12 +27,10 @@ export async function GET(
     return unauthorized();
   }
 
-  const { event } = query;
   const filters = await getQueryFilters(query, websiteId);
 
   const data = await getEventDataEvents(websiteId, {
     ...filters,
-    event,
   });
 
   return json(data);

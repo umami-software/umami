@@ -5,7 +5,7 @@ import { useFilterParameters } from '../useFilterParameters';
 
 export function useEventDataValuesQuery(
   websiteId: string,
-  eventName: string,
+  event: string,
   propertyName: string,
   options?: ReactQueryOptions,
 ) {
@@ -16,7 +16,7 @@ export function useEventDataValuesQuery(
   return useQuery<any>({
     queryKey: [
       'websites:event-data:values',
-      { websiteId, eventName, propertyName, startAt, endAt, unit, timezone, ...filters },
+      { websiteId, event, propertyName, startAt, endAt, unit, timezone, ...filters },
     ],
     queryFn: () =>
       get(`/websites/${websiteId}/event-data/values`, {
@@ -25,7 +25,7 @@ export function useEventDataValuesQuery(
         unit,
         timezone,
         ...filters,
-        eventName,
+        event,
         propertyName,
       }),
     enabled: !!(websiteId && propertyName),
