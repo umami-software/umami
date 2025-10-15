@@ -3,15 +3,16 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/permissions';
 import { getEventDataProperties } from '@/queries/sql';
+import { dateRangeParams, filterParams } from '@/lib/schema';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
-    startAt: z.coerce.number().int(),
-    endAt: z.coerce.number().int(),
     propertyName: z.string().optional(),
+    ...dateRangeParams,
+    ...filterParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
