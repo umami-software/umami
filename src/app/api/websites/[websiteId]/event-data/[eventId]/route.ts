@@ -19,7 +19,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const data = await getEventData(eventId);
+  const data = await getEventData(websiteId, eventId);
 
   return json(data);
 }

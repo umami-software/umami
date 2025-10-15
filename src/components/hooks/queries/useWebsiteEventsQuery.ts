@@ -15,14 +15,20 @@ export function useWebsiteEventsQuery(
   options?: ReactQueryOptions,
 ) {
   const { get } = useApi();
-  const date = useDateParameters();
+  const { startAt, endAt, unit, timezone } = useDateParameters();
   const filters = useFilterParameters();
 
   return usePagedQuery({
-    queryKey: ['websites:events', { websiteId, ...date, ...filters, ...params }],
+    queryKey: [
+      'websites:events',
+      { websiteId, startAt, endAt, unit, timezone, ...filters, ...params },
+    ],
     queryFn: pageParams =>
       get(`/websites/${websiteId}/events`, {
-        ...date,
+        startAt,
+        endAt,
+        unit,
+        timezone,
         ...filters,
         ...pageParams,
         eventType: EVENT_TYPES[params.view],

@@ -18,7 +18,13 @@ export function WebsiteExpandedView({
   } = useNavigation();
 
   return (
-    <Grid columns={{ xs: '1fr', md: 'auto 1fr' }} gap="6" height="100%" overflow="hidden">
+    <Grid
+      columns={{ xs: '1fr', md: 'auto 1fr' }}
+      gap="6"
+      height="100%"
+      overflowX="auto"
+      minWidth="500px"
+    >
       <Column
         display={{ xs: 'none', md: 'flex' }}
         gap="6"
