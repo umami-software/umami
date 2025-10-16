@@ -179,6 +179,7 @@ if (cloudMode && cloudUrl) {
 /** @type {import('next').NextConfig} */
 export default {
   reactStrictMode: false,
+  serverExternalPackages: ['@prisma/client', '.prisma/client'],
   env: {
     basePath,
     cloudMode,

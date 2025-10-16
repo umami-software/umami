@@ -47,7 +47,11 @@
     "postbuild": "node scripts/postbuild.js",
     "test": "jest",
     "cypress-open": "cypress open cypress run",
-    "cypress-run": "cypress run cypress run"
+    "cypress-run": "cypress run cypress run",
+    "cloudflare:build": "opennextjs-cloudflare build",
+    "cloudflare:preview": "opennextjs-cloudflare preview",
+    "cloudflare:deploy": "opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
@@ -72,6 +76,8 @@
     "@dicebear/core": "^9.2.1",
     "@fontsource/inter": "^4.5.15",
     "@hello-pangea/dnd": "^17.0.0",
+    "@opennextjs/cloudflare": "^1.11.0",
+    "@prisma/adapter-pg": "^6.17.1",
     "@prisma/client": "6.7.0",
     "@prisma/extension-read-replicas": "^0.4.1",
     "@react-spring/web": "^9.7.3",

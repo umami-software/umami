@@ -11,6 +11,7 @@ node_modules
 
 # next.js
 /.next/
+/.open-next/
 /out/
 /prisma/
 /src/generated/
