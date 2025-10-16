@@ -7,6 +7,7 @@ import {
   PasswordField,
   SubmitButton,
   Icon,
+  Button,
 } from 'react-basics';
 import { useRouter } from 'next/navigation';
 import { useApi, useMessages } from '@/components/hooks';
@@ -16,11 +17,23 @@ import Logo from '@/assets/logo.svg';
 import styles from './LoginForm.module.css';
 
 export function LoginForm() {
-  const { formatMessage, labels, getMessage } = useMessages();
+  const { formatMessage, labels } = useMessages();
   const router = useRouter();
   const { post, useMutation } = useApi();
   const { mutate, error, isPending } = useMutation({
     mutationFn: (data: any) => post('/auth/login', data),
+  });
+  const { mutate: startOIDC, isPending: isOIDC } = useMutation({
+    mutationFn: async (returnUrl?: string) => {
+      const res = await fetch(
+        `/api/auth/oidc/authorize?returnUrl=${encodeURIComponent(returnUrl || '/dashboard')}`,
+      );
+      const data = await res.json();
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+      return data;
+    },
   });
 
   const handleSubmit = async (data: any) => {
@@ -40,7 +53,7 @@ export function LoginForm() {
         <Logo />
       </Icon>
       <div className={styles.title}>umami</div>
-      <Form className={styles.form} onSubmit={handleSubmit} error={getMessage(error)}>
+      <Form className={styles.form} onSubmit={handleSubmit} error={error}>
         <FormRow label={formatMessage(labels.username)}>
           <FormInput
             data-test="input-username"
@@ -68,6 +81,14 @@ export function LoginForm() {
           >
             {formatMessage(labels.login)}
           </SubmitButton>
+          <Button
+            variant="secondary"
+            onClick={() => startOIDC('/dashboard')}
+            disabled={isOIDC}
+            className={styles.button}
+          >
+            Se connecter avec OIDC
+          </Button>
         </FormButtons>
       </Form>
     </div>
