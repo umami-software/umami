@@ -3,6 +3,7 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/permissions';
 import { getEventDataStats } from '@/queries/sql';
+import { filterParams } from '@/lib/schema';
 
 export async function GET(
   request: Request,
@@ -11,7 +12,7 @@ export async function GET(
   const schema = z.object({
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
-    propertyName: z.string().optional(),
+    ...filterParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);

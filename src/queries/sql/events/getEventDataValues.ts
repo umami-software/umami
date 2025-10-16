@@ -11,10 +11,7 @@ interface WebsiteEventData {
 }
 
 export async function getEventDataValues(
-  ...args: [
-    websiteId: string,
-    filters: QueryFilters & { eventName?: string; propertyName?: string },
-  ]
+  ...args: [websiteId: string, filters: QueryFilters & { propertyName?: string }]
 ): Promise<WebsiteEventData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -24,7 +21,7 @@ export async function getEventDataValues(
 
 async function relationalQuery(
   websiteId: string,
-  filters: QueryFilters & { eventName?: string; propertyName?: string },
+  filters: QueryFilters & { propertyName?: string },
 ) {
   const { rawQuery, parseFilters, getDateSQL } = prisma;
   const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
@@ -63,7 +60,7 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  filters: QueryFilters & { eventName?: string; propertyName?: string },
+  filters: QueryFilters & { propertyName?: string },
 ): Promise<{ value: string; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
@@ -85,7 +82,7 @@ async function clickhouseQuery(
     where event_data.website_id = {websiteId:UUID}
       and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_data.data_key = {propertyName:String}
-      and event_data.event_name = {eventName:String}
+      and event_data.event_name = {event:String}
     ${filterQuery}
     group by value
     order by 2 desc

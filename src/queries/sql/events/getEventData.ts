@@ -5,14 +5,16 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 
 const FUNCTION_NAME = 'getEventData';
 
-export async function getEventData(...args: [eventId: string]): Promise<EventData[]> {
+export async function getEventData(
+  ...args: [websiteId: string, eventId: string]
+): Promise<EventData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-async function relationalQuery(eventId: string) {
+async function relationalQuery(websiteId: string, eventId: string) {
   const { rawQuery } = prisma;
 
   return rawQuery(
@@ -29,14 +31,15 @@ async function relationalQuery(eventId: string) {
        data_type as dataType,
        created_at as createdAt
     from event_data
-    where event_id = {{eventId::uuid}}
+    website_id = {{websiteId::uuid}}
+      event_id = {{eventId::uuid}}
     `,
-    { eventId },
+    { websiteId, eventId },
     FUNCTION_NAME,
   );
 }
 
-async function clickhouseQuery(eventId: string): Promise<EventData[]> {
+async function clickhouseQuery(websiteId: string, eventId: string): Promise<EventData[]> {
   const { rawQuery } = clickhouse;
 
   return rawQuery(
@@ -53,9 +56,10 @@ async function clickhouseQuery(eventId: string): Promise<EventData[]> {
         data_type as dataType,
         created_at as createdAt
       from event_data
-      where event_id = {eventId:UUID}
+      where website_id = {websiteId:UUID} 
+        and event_id = {eventId:UUID}
     `,
-    { eventId },
+    { websiteId, eventId },
     FUNCTION_NAME,
   );
 }

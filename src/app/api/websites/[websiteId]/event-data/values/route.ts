@@ -3,16 +3,17 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/permissions';
 import { getEventDataValues } from '@/queries/sql';
-import { dateRangeParams, filterParams } from '@/lib/schema';
+import { filterParams } from '@/lib/schema';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
-    eventName: z.string().optional(),
-    propertyName: z.string().optional(),
-    ...dateRangeParams,
+    startAt: z.coerce.number().int(),
+    endAt: z.coerce.number().int(),
+    event: z.string(),
+    propertyName: z.string(),
     ...filterParams,
   });
 
@@ -28,12 +29,11 @@ export async function GET(
     return unauthorized();
   }
 
-  const { eventName, propertyName } = query;
+  const { propertyName } = query;
   const filters = await getQueryFilters(query, websiteId);
 
   const data = await getEventDataValues(websiteId, {
     ...filters,
-    eventName,
     propertyName,
   });
 
