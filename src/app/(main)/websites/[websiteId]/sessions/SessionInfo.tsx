@@ -1,9 +1,8 @@
 import { ReactNode } from 'react';
-import { Icon, TextField, Column, Row, Label } from '@umami/react-zen';
+import { Icon, Grid, Column, Row, Label } from '@umami/react-zen';
 import { useFormat, useLocale, useMessages, useRegionNames } from '@/components/hooks';
 import { TypeIcon } from '@/components/common/TypeIcon';
-import { KeyRound, Calendar } from '@/components/icons';
-import { Location } from '@/components/svg';
+import { KeyRound, Calendar, MapPin, Landmark } from '@/components/icons';
 import { DateDistance } from '@/components/common/DateDistance';
 
 export function SessionInfo({ data }) {
@@ -13,11 +12,7 @@ export function SessionInfo({ data }) {
   const { getRegionName } = useRegionNames(locale);
 
   return (
-    <Column gap="6">
-      <Info label="ID">
-        <TextField value={data?.id} style={{ width: '100%' }} allowCopy />
-      </Info>
-
+    <Grid columns="repeat(auto-fit, minmax(200px, 1fr)" gap>
       <Info label={formatMessage(labels.distinctId)} icon={<KeyRound />}>
         {data?.distinctId}
       </Info>
@@ -37,11 +32,11 @@ export function SessionInfo({ data }) {
         {formatValue(data?.country, 'country')}
       </Info>
 
-      <Info label={formatMessage(labels.region)} icon={<Location />}>
+      <Info label={formatMessage(labels.region)} icon={<MapPin />}>
         {getRegionName(data?.region)}
       </Info>
 
-      <Info label={formatMessage(labels.city)} icon={<Location />}>
+      <Info label={formatMessage(labels.city)} icon={<Landmark />}>
         {data?.city}
       </Info>
 
@@ -65,7 +60,7 @@ export function SessionInfo({ data }) {
       >
         {formatValue(data?.device, 'device')}
       </Info>
-    </Column>
+    </Grid>
   );
 }
 

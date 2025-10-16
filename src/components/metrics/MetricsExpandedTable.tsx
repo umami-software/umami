@@ -69,23 +69,38 @@ export function MetricsExpandedTable({
         height="100%"
         loadingIcon="spinner"
       >
-        <Column overflowY="auto" minHeight="0" height="100%" paddingRight="3" overflow="hidden">
+        <Column overflow="auto" minHeight="0" height="100%" paddingRight="3">
           {items && (
             <DataTable data={items}>
-              <DataColumn id="label" label={title} width="2fr" align="start">
+              <DataColumn id="label" label={title} width="minmax(200px, 2fr)" align="start">
                 {row => (
                   <Row overflow="hidden">
                     <MetricLabel type={type} data={row} />
                   </Row>
                 )}
               </DataColumn>
-              <DataColumn id="visitors" label={formatMessage(labels.visitors)} align="end">
+              <DataColumn
+                id="visitors"
+                label={formatMessage(labels.visitors)}
+                align="end"
+                width="120px"
+              >
                 {row => row?.['visitors']?.toLocaleString()}
               </DataColumn>
-              <DataColumn id="visits" label={formatMessage(labels.visits)} align="end">
+              <DataColumn
+                id="visits"
+                label={formatMessage(labels.visits)}
+                align="end"
+                width="120px"
+              >
                 {row => row?.['visits']?.toLocaleString()}
               </DataColumn>
-              <DataColumn id="pageviews" label={formatMessage(labels.views)} align="end">
+              <DataColumn
+                id="pageviews"
+                label={formatMessage(labels.views)}
+                align="end"
+                width="120px"
+              >
                 {row => row?.['pageviews']?.toLocaleString()}
               </DataColumn>
               {showBounceDuration && [
@@ -94,6 +109,7 @@ export function MetricsExpandedTable({
                   id="bounceRate"
                   label={formatMessage(labels.bounceRate)}
                   align="end"
+                  width="120px"
                 >
                   {row => {
                     const n = (Math.min(row?.['visits'], row?.['bounces']) / row?.['visits']) * 100;
@@ -106,6 +122,7 @@ export function MetricsExpandedTable({
                   id="visitDuration"
                   label={formatMessage(labels.visitDuration)}
                   align="end"
+                  width="120px"
                 >
                   {row => {
                     const n = row?.['totaltime'] / row?.['visits'];

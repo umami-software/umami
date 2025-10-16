@@ -1,4 +1,14 @@
-import { Grid, Row, Column, Tabs, TabList, Tab, TabPanel, Icon, Button } from '@umami/react-zen';
+import {
+  TextField,
+  Row,
+  Column,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanel,
+  Icon,
+  Button,
+} from '@umami/react-zen';
 import { Avatar } from '@/components/common/Avatar';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { X } from '@/components/icons';
@@ -37,35 +47,34 @@ export function SessionProfile({
               </Icon>
             </Button>
           </Row>
-          <Grid columns="340px 1fr" gap="6">
-            <Column gap="6">
-              <Row justifyContent="center">
-                <Avatar seed={data?.id} size={128} />
-              </Row>
-              <SessionInfo data={data} />
-            </Column>
-            <Column gap>
-              <SessionStats data={data} />
+          <Column gap="6">
+            <Row justifyContent="center" alignItems="center" gap="6">
+              <Avatar seed={data?.id} size={128} />
+              <Column width="360px">
+                <TextField label="ID" value={data?.id} allowCopy />
+              </Column>
+            </Row>
+            <SessionStats data={data} />
+            <SessionInfo data={data} />
 
-              <Tabs>
-                <TabList>
-                  <Tab id="activity">{formatMessage(labels.activity)}</Tab>
-                  <Tab id="properties">{formatMessage(labels.properties)}</Tab>
-                </TabList>
-                <TabPanel id="activity">
-                  <SessionActivity
-                    websiteId={websiteId}
-                    sessionId={sessionId}
-                    startDate={data?.firstAt}
-                    endDate={data?.lastAt}
-                  />
-                </TabPanel>
-                <TabPanel id="properties">
-                  <SessionData sessionId={sessionId} websiteId={websiteId} />
-                </TabPanel>
-              </Tabs>
-            </Column>
-          </Grid>
+            <Tabs>
+              <TabList>
+                <Tab id="activity">{formatMessage(labels.activity)}</Tab>
+                <Tab id="properties">{formatMessage(labels.properties)}</Tab>
+              </TabList>
+              <TabPanel id="activity">
+                <SessionActivity
+                  websiteId={websiteId}
+                  sessionId={sessionId}
+                  startDate={data?.firstAt}
+                  endDate={data?.lastAt}
+                />
+              </TabPanel>
+              <TabPanel id="properties">
+                <SessionData sessionId={sessionId} websiteId={websiteId} />
+              </TabPanel>
+            </Tabs>
+          </Column>
         </Column>
       )}
     </LoadingPanel>

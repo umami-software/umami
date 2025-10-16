@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import {
   Heading,
   NavMenu,
@@ -28,7 +27,6 @@ export interface SideMenuProps extends NavMenuProps {
   title?: string;
   selectedKey?: string;
   allowMinimize?: boolean;
-  children?: ReactNode;
 }
 
 export function SideMenu({
@@ -36,7 +34,6 @@ export function SideMenu({
   title,
   selectedKey,
   allowMinimize,
-  children,
   ...props
 }: SideMenuProps) {
   const renderItems = (items: SideMenuData[]) => {
@@ -54,16 +51,7 @@ export function SideMenu({
   };
 
   return (
-    <Column
-      gap
-      padding
-      overflowY="auto"
-      justifyContent="space-between"
-      position="sticky"
-      top="0"
-      backgroundColor
-    >
-      {children}
+    <Column gap overflowY="auto" justifyContent="space-between">
       {title && (
         <Row padding>
           <Heading size="1">{title}</Heading>

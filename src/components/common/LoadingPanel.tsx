@@ -26,7 +26,7 @@ export function LoadingPanel({
   renderEmpty = () => <Empty />,
   children,
   ...props
-}: LoadingPanelProps) {
+}: LoadingPanelProps): ReactNode {
   const empty = isEmpty ?? checkEmpty(data);
 
   // Show loading spinner only if no data exists

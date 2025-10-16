@@ -5,6 +5,7 @@ export function useFields() {
 
   const fields = [
     { name: 'path', type: 'string', label: formatMessage(labels.path) },
+    { name: 'query', type: 'string', label: formatMessage(labels.query) },
     { name: 'title', type: 'string', label: formatMessage(labels.pageTitle) },
     { name: 'referrer', type: 'string', label: formatMessage(labels.referrer) },
     { name: 'browser', type: 'string', label: formatMessage(labels.browser) },

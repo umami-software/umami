@@ -22,7 +22,13 @@ import {
 } from '@/components/icons';
 import { Lightning } from '@/components/svg';
 
-export function WebsiteExpandedMenu({ excludedIds = [] }: { excludedIds?: string[] }) {
+export function WebsiteExpandedMenu({
+  excludedIds = [],
+  onItemClick,
+}: {
+  excludedIds?: string[];
+  onItemClick?: () => void;
+}) {
   const { formatMessage, labels } = useMessages();
   const {
     updateParams,
@@ -173,5 +179,5 @@ export function WebsiteExpandedMenu({ excludedIds = [] }: { excludedIds?: string
     },
   ];
 
-  return <SideMenu items={items} selectedKey={view} />;
+  return <SideMenu items={items} selectedKey={view} onItemClick={onItemClick} />;
 }

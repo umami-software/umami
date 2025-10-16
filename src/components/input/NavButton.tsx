@@ -12,6 +12,7 @@ import {
   Column,
   Pressable,
   IconLabel,
+  useBreakpoint,
 } from '@umami/react-zen';
 import { useConfig, useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
 import {
@@ -39,9 +40,11 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
   const { cloudMode } = useConfig();
   const { formatMessage, labels } = useMessages();
   const { teamId } = useNavigation();
+  const breakpoint = useBreakpoint();
   const team = user?.teams?.find(({ id }) => id === teamId);
   const selectedKeys = new Set([teamId || 'user']);
   const label = teamId ? team?.name : user.username;
+  const isMobile = ['xs', 'sm', 'md'].includes(breakpoint);
 
   const getUrl = (url: string) => {
     return cloudMode ? `${process.env.cloudUrl}${url}` : url;
@@ -82,7 +85,7 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
               <MenuItem id="teams" showChecked={false} showSubMenuIcon>
                 <IconLabel icon={<Switch />} label={formatMessage(labels.switchAccount)} />
               </MenuItem>
-              <Popover placement="right top">
+              <Popover placement={isMobile ? 'bottom start' : 'right top'}>
                 <Column minWidth="300px">
                   <Menu selectionMode="single" selectedKeys={selectedKeys}>
                     <MenuSection title={formatMessage(labels.myAccount)}>

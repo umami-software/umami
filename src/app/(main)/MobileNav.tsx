@@ -1,22 +1,11 @@
-import {
-  Row,
-  Dialog,
-  DialogTrigger,
-  Button,
-  Icon,
-  Modal,
-  NavMenu,
-  NavMenuItem,
-  IconLabel,
-  Text,
-  Grid,
-} from '@umami/react-zen';
-import { Globe, Grid2x2, LinkIcon, Menu } from '@/components/icons';
+import { Row, NavMenu, NavMenuItem, IconLabel, Text, Grid } from '@umami/react-zen';
+import { Globe, Grid2x2, LinkIcon } from '@/components/icons';
 import { useMessages, useNavigation } from '@/components/hooks';
 import Link from 'next/link';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { Logo } from '@/components/svg';
 import { NavButton } from '@/components/input/NavButton';
+import { MobileMenu } from '@/components/common/MobileMenu';
 
 export function MobileNav() {
   const { formatMessage, labels } = useMessages();
@@ -45,30 +34,27 @@ export function MobileNav() {
 
   return (
     <Grid columns="auto 1fr" flexGrow={1}>
-      <DialogTrigger>
-        <Button>
-          <Icon>
-            <Menu />
-          </Icon>
-        </Button>
-        <Modal position="left" offset="80px">
-          <Dialog variant="sheet">
-            <NavMenu padding="3">
-              <NavButton />
-              {links.map(link => {
-                return (
-                  <Link key={link.id} href={link.path}>
-                    <NavMenuItem>
-                      <IconLabel icon={link.icon} label={link.label} />
-                    </NavMenuItem>
-                  </Link>
-                );
-              })}
-            </NavMenu>
-            {websiteId && <WebsiteNav websiteId={websiteId} />}
-          </Dialog>
-        </Modal>
-      </DialogTrigger>
+      <MobileMenu>
+        {({ close }) => {
+          return (
+            <>
+              <NavMenu padding="3" onItemClick={close} border="bottom">
+                <NavButton />
+                {links.map(link => {
+                  return (
+                    <Link key={link.id} href={link.path}>
+                      <NavMenuItem>
+                        <IconLabel icon={link.icon} label={link.label} />
+                      </NavMenuItem>
+                    </Link>
+                  );
+                })}
+              </NavMenu>
+              {websiteId && <WebsiteNav websiteId={websiteId} onItemClick={close} />}
+            </>
+          );
+        }}
+      </MobileMenu>
       <Row alignItems="center" justifyContent="center" flexGrow={1}>
         <IconLabel icon={<Logo />} style={{ width: 'auto' }}>
           <Text weight="bold">umami</Text>

@@ -1,4 +1,4 @@
-import { Text } from '@umami/react-zen';
+import { Text, Column } from '@umami/react-zen';
 import {
   Eye,
   User,
@@ -14,7 +14,13 @@ import { useMessages, useNavigation } from '@/components/hooks';
 import { SideMenu } from '@/components/common/SideMenu';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 
-export function WebsiteNav({ websiteId }: { websiteId: string }) {
+export function WebsiteNav({
+  websiteId,
+  onItemClick,
+}: {
+  websiteId: string;
+  onItemClick?: () => void;
+}) {
   const { formatMessage, labels } = useMessages();
   const { pathname, renderUrl, teamId, router } = useNavigation();
 
@@ -155,7 +161,7 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
     .find(({ path }) => path && pathname.endsWith(path.split('?')[0]))?.id;
 
   return (
-    <SideMenu items={items} selectedKey={selectedKey} allowMinimize={false}>
+    <Column padding="3" gap>
       <WebsiteSelect
         websiteId={websiteId}
         teamId={teamId}
@@ -163,6 +169,12 @@ export function WebsiteNav({ websiteId }: { websiteId: string }) {
         renderValue={renderValue}
         buttonProps={{ style: { outline: 'none' } }}
       />
-    </SideMenu>
+      <SideMenu
+        items={items}
+        selectedKey={selectedKey}
+        allowMinimize={false}
+        onItemClick={onItemClick}
+      />
+    </Column>
   );
 }

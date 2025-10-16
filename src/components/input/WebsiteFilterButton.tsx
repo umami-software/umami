@@ -1,4 +1,4 @@
-import { Button, Icon, DialogTrigger, Dialog, Popover, Text } from '@umami/react-zen';
+import { Button, Icon, DialogTrigger, Dialog, Text, Modal, useBreakpoint } from '@umami/react-zen';
 import { ListFilter } from '@/components/icons';
 import { FilterEditForm } from '@/components/input/FilterEditForm';
 import { useMessages, useNavigation } from '@/components/hooks';
@@ -15,6 +15,8 @@ export function WebsiteFilterButton({
 }) {
   const { formatMessage, labels } = useMessages();
   const { updateParams, router } = useNavigation();
+  const breakpoint = useBreakpoint();
+  const isMobile = ['xs', 'sm', 'md'].includes(breakpoint);
 
   const handleChange = ({ filters, segment, cohort }: any) => {
     const params = filtersArrayToObject(filters);
@@ -32,13 +34,13 @@ export function WebsiteFilterButton({
         </Icon>
         {showText && <Text>{formatMessage(labels.filter)}</Text>}
       </Button>
-      <Popover placement="bottom start">
-        <Dialog title={formatMessage(labels.filters)} style={{ width: 800, minHeight: 600 }}>
+      <Modal position={isMobile ? 'fullscreen' : 'center'}>
+        <Dialog title={formatMessage(labels.filters)}>
           {({ close }) => {
             return <FilterEditForm websiteId={websiteId} onChange={handleChange} onClose={close} />;
           }}
         </Dialog>
-      </Popover>
+      </Modal>
     </DialogTrigger>
   );
 }

@@ -1,7 +1,20 @@
 import { Key } from 'react';
 import { subMonths, endOfDay } from 'date-fns';
-import { Grid, Column, List, ListItem } from '@umami/react-zen';
+import {
+  Grid,
+  Column,
+  List,
+  ListItem,
+  Row,
+  Button,
+  Popover,
+  MenuTrigger,
+  Menu,
+  MenuItem,
+  Icon,
+} from '@umami/react-zen';
 import { useFields, useMessages } from '@/components/hooks';
+import { Plus } from '@/components/icons';
 import { FilterRecord } from '@/components/common/FilterRecord';
 import { Empty } from '@/components/common/Empty';
 
@@ -39,8 +52,31 @@ export function FieldFilters({ websiteId, value, exclude = [], onChange }: Field
   };
 
   return (
-    <Grid columns="160px 1fr" overflow="hidden" gapY="6">
-      <Column border="right" paddingRight="3">
+    <Grid columns={{ xs: '1fr', md: '180px 1fr' }} overflow="hidden" gapY="6">
+      <Row display={{ xs: 'flex', md: 'none' }}>
+        <MenuTrigger>
+          <Button>
+            <Icon>
+              <Plus />
+            </Icon>
+          </Button>
+          <Popover placement="bottom start">
+            <Menu onAction={handleAdd}>
+              {fields
+                .filter(({ name }) => !exclude.includes(name))
+                .map(field => {
+                  const isDisabled = !!value.find(({ name }) => name === field.name);
+                  return (
+                    <MenuItem key={field.name} id={field.name} isDisabled={isDisabled}>
+                      {field.label}
+                    </MenuItem>
+                  );
+                })}
+            </Menu>
+          </Popover>
+        </MenuTrigger>
+      </Row>
+      <Column display={{ xs: 'none', md: 'flex' }} border="right" paddingRight="3" marginRight="6">
         <List onAction={handleAdd}>
           {fields
             .filter(({ name }) => !exclude.includes(name))
@@ -54,7 +90,7 @@ export function FieldFilters({ websiteId, value, exclude = [], onChange }: Field
             })}
         </List>
       </Column>
-      <Column paddingLeft="6" overflow="auto" gapY="4" height="500px" style={{ contain: 'layout' }}>
+      <Column overflow="auto" gapY="4" style={{ contain: 'layout' }}>
         {value.map(filter => {
           return (
             <FilterRecord
