@@ -1,19 +1,21 @@
-import { ActionButton } from '@/components/input/ActionButton';
 import { Edit } from '@/components/icons';
-import { Dialog } from '@umami/react-zen';
 import { PixelEditForm } from './PixelEditForm';
 import { useMessages } from '@/components/hooks';
+import { DialogButton } from '@/components/input/DialogButton';
 
 export function PixelEditButton({ pixelId }: { pixelId: string }) {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <ActionButton title={formatMessage(labels.edit)} icon={<Edit />}>
-      <Dialog title={formatMessage(labels.pixel)} style={{ width: 600, minHeight: 300 }}>
-        {({ close }) => {
-          return <PixelEditForm pixelId={pixelId} onClose={close} />;
-        }}
-      </Dialog>
-    </ActionButton>
+    <DialogButton
+      icon={<Edit />}
+      title={formatMessage(labels.addPixel)}
+      variant="quiet"
+      width="600px"
+    >
+      {({ close }) => {
+        return <PixelEditForm pixelId={pixelId} onClose={close} />;
+      }}
+    </DialogButton>
   );
 }

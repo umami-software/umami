@@ -34,7 +34,7 @@ export function WebsiteFilterButton({
         </Icon>
         {showText && <Text>{formatMessage(labels.filter)}</Text>}
       </Button>
-      <Modal position={isMobile ? 'fullscreen' : 'center'}>
+      <Modal placement={isMobile ? 'fullscreen' : 'center'}>
         <Dialog title={formatMessage(labels.filters)}>
           {({ close }) => {
             return <FilterEditForm websiteId={websiteId} onChange={handleChange} onClose={close} />;

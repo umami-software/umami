@@ -8,7 +8,7 @@ import { endOfMonth, startOfMonth } from 'date-fns';
 export function RetentionPage({ websiteId }: { websiteId: string }) {
   const {
     dateRange: { startDate },
-  } = useDateRange(websiteId, { ignoreOffset: true });
+  } = useDateRange();
 
   const monthStartDate = startOfMonth(startDate);
   const monthEndDate = endOfMonth(startDate);

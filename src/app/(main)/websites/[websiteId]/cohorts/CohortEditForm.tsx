@@ -80,7 +80,7 @@ export function CohortEditForm({
 
             <Column>
               <Label>{formatMessage(labels.action)}</Label>
-              <Grid columns="260px 1fr" gap>
+              <Grid columns={{ xs: '1fr', md: '1fr 1fr' }} gap>
                 <Column>
                   <FormField
                     name="parameters.action.type"

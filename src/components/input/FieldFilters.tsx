@@ -13,7 +13,7 @@ import {
   MenuItem,
   Icon,
 } from '@umami/react-zen';
-import { useFields, useMessages } from '@/components/hooks';
+import { useFields, useMessages, useMobile } from '@/components/hooks';
 import { Plus } from '@/components/icons';
 import { FilterRecord } from '@/components/common/FilterRecord';
 import { Empty } from '@/components/common/Empty';
@@ -30,6 +30,7 @@ export function FieldFilters({ websiteId, value, exclude = [], onChange }: Field
   const { fields } = useFields();
   const startDate = subMonths(endOfDay(new Date()), 6);
   const endDate = endOfDay(new Date());
+  const { isMobile } = useMobile();
 
   const updateFilter = (name: string, props: Record<string, any>) => {
     onChange(value.map(filter => (filter.name === name ? { ...filter, ...props } : filter)));
@@ -60,8 +61,11 @@ export function FieldFilters({ websiteId, value, exclude = [], onChange }: Field
               <Plus />
             </Icon>
           </Button>
-          <Popover placement="bottom start">
-            <Menu onAction={handleAdd}>
+          <Popover placement={isMobile ? 'left' : 'bottom start'} shouldFlip>
+            <Menu
+              onAction={handleAdd}
+              style={{ maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}
+            >
               {fields
                 .filter(({ name }) => !exclude.includes(name))
                 .map(field => {

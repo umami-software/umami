@@ -1,9 +1,8 @@
-import { Dialog } from '@umami/react-zen';
-import { ActionButton } from '@/components/input/ActionButton';
 import { Trash } from '@/components/icons';
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 import { messages } from '@/components/messages';
 import { useDeleteQuery, useMessages } from '@/components/hooks';
+import { DialogButton } from '@/components/input/DialogButton';
 
 export function LinkDeleteButton({
   linkId,
@@ -29,27 +28,30 @@ export function LinkDeleteButton({
   };
 
   return (
-    <ActionButton title={formatMessage(labels.delete)} icon={<Trash />}>
-      <Dialog title={formatMessage(labels.confirm)} style={{ width: 400 }}>
-        {({ close }) => (
-          <ConfirmationForm
-            message={
-              <FormattedMessage
-                {...messages.confirmRemove}
-                values={{
-                  target: <b>{name}</b>,
-                }}
-              />
-            }
-            isLoading={isPending}
-            error={getErrorMessage(error)}
-            onConfirm={handleConfirm.bind(null, close)}
-            onClose={close}
-            buttonLabel={formatMessage(labels.delete)}
-            buttonVariant="danger"
-          />
-        )}
-      </Dialog>
-    </ActionButton>
+    <DialogButton
+      icon={<Trash />}
+      title={formatMessage(labels.confirm)}
+      variant="quiet"
+      width="400px"
+    >
+      {({ close }) => (
+        <ConfirmationForm
+          message={
+            <FormattedMessage
+              {...messages.confirmRemove}
+              values={{
+                target: <b>{name}</b>,
+              }}
+            />
+          }
+          isLoading={isPending}
+          error={getErrorMessage(error)}
+          onConfirm={handleConfirm.bind(null, close)}
+          onClose={close}
+          buttonLabel={formatMessage(labels.delete)}
+          buttonVariant="danger"
+        />
+      )}
+    </DialogButton>
   );
 }

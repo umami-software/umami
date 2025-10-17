@@ -1,19 +1,16 @@
-import { ActionButton } from '@/components/input/ActionButton';
 import { Edit } from '@/components/icons';
-import { Dialog } from '@umami/react-zen';
 import { LinkEditForm } from './LinkEditForm';
 import { useMessages } from '@/components/hooks';
+import { DialogButton } from '@/components/input/DialogButton';
 
 export function LinkEditButton({ linkId }: { linkId: string }) {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <ActionButton title={formatMessage(labels.edit)} icon={<Edit />}>
-      <Dialog title={formatMessage(labels.link)} style={{ width: 800, minHeight: 300 }}>
-        {({ close }) => {
-          return <LinkEditForm linkId={linkId} onClose={close} />;
-        }}
-      </Dialog>
-    </ActionButton>
+    <DialogButton icon={<Edit />} title={formatMessage(labels.link)} variant="quiet" width="800px">
+      {({ close }) => {
+        return <LinkEditForm linkId={linkId} onClose={close} />;
+      }}
+    </DialogButton>
   );
 }

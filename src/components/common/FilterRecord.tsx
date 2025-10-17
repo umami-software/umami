@@ -104,8 +104,8 @@ export function FilterRecord({
             </Select>
           )}
         </Grid>
-        <Column justifyContent="flex-end">
-          <Button variant="quiet" onPress={() => onRemove?.(name)}>
+        <Column justifyContent="flex-start">
+          <Button onPress={() => onRemove?.(name)}>
             <Icon>
               <X />
             </Icon>

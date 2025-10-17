@@ -2,8 +2,7 @@ import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 import { useDeleteQuery, useMessages, useModified } from '@/components/hooks';
 import { messages } from '@/components/messages';
 import { Trash } from '@/components/icons';
-import { Dialog } from '@umami/react-zen';
-import { ActionButton } from '@/components/input/ActionButton';
+import { DialogButton } from '@/components/input/DialogButton';
 
 export function TeamMemberRemoveButton({
   teamId,
@@ -32,27 +31,30 @@ export function TeamMemberRemoveButton({
   };
 
   return (
-    <ActionButton title={formatMessage(labels.delete)} icon={<Trash />}>
-      <Dialog title={formatMessage(labels.removeMember)} style={{ width: 400 }}>
-        {({ close }) => (
-          <ConfirmationForm
-            message={
-              <FormattedMessage
-                {...messages.confirmRemove}
-                values={{
-                  target: <b>{userName}</b>,
-                }}
-              />
-            }
-            isLoading={isPending}
-            error={error}
-            onConfirm={handleConfirm.bind(null, close)}
-            onClose={close}
-            buttonLabel={formatMessage(labels.remove)}
-            buttonVariant="danger"
-          />
-        )}
-      </Dialog>
-    </ActionButton>
+    <DialogButton
+      icon={<Trash />}
+      title={formatMessage(labels.confirm)}
+      variant="quiet"
+      width="400px"
+    >
+      {({ close }) => (
+        <ConfirmationForm
+          message={
+            <FormattedMessage
+              {...messages.confirmRemove}
+              values={{
+                target: <b>{userName}</b>,
+              }}
+            />
+          }
+          isLoading={isPending}
+          error={error}
+          onConfirm={handleConfirm.bind(null, close)}
+          onClose={close}
+          buttonLabel={formatMessage(labels.remove)}
+          buttonVariant="danger"
+        />
+      )}
+    </DialogButton>
   );
 }

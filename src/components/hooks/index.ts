@@ -73,6 +73,7 @@ export * from './useGlobalState';
 export * from './useLanguageNames';
 export * from './useLocale';
 export * from './useMessages';
+export * from './useMobile';
 export * from './useModified';
 export * from './useNavigation';
 export * from './usePagedQuery';

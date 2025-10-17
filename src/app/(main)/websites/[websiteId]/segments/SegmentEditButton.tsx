@@ -1,9 +1,8 @@
-import { Dialog } from '@umami/react-zen';
-import { ActionButton } from '@/components/input/ActionButton';
 import { Edit } from '@/components/icons';
 import { useMessages } from '@/components/hooks';
 import { SegmentEditForm } from './SegmentEditForm';
 import { Filter } from '@/lib/types';
+import { DialogButton } from '@/components/input/DialogButton';
 
 export function SegmentEditButton({
   segmentId,
@@ -17,22 +16,22 @@ export function SegmentEditButton({
   const { formatMessage, labels } = useMessages();
 
   return (
-    <ActionButton title={formatMessage(labels.edit)} icon={<Edit />}>
-      <Dialog
-        title={formatMessage(labels.segment)}
-        style={{ width: 800, minHeight: 300, maxHeight: '90vh' }}
-      >
-        {({ close }) => {
-          return (
-            <SegmentEditForm
-              segmentId={segmentId}
-              websiteId={websiteId}
-              filters={filters}
-              onClose={close}
-            />
-          );
-        }}
-      </Dialog>
-    </ActionButton>
+    <DialogButton
+      icon={<Edit />}
+      title={formatMessage(labels.segment)}
+      variant="quiet"
+      width="800px"
+    >
+      {({ close }) => {
+        return (
+          <SegmentEditForm
+            segmentId={segmentId}
+            websiteId={websiteId}
+            filters={filters}
+            onClose={close}
+          />
+        );
+      }}
+    </DialogButton>
   );
 }

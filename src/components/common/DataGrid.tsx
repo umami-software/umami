@@ -64,7 +64,7 @@ export function DataGrid({
   return (
     <Column gap="4" minHeight="300px">
       {allowSearch && (
-        <Row alignItems="center" justifyContent="space-between">
+        <Row alignItems="center" justifyContent="space-between" wrap="wrap" gap>
           <SearchField
             value={search}
             onSearch={handleSearch}
