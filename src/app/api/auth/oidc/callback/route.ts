@@ -71,7 +71,25 @@ export async function GET(request: NextRequest) {
     token = createSecureToken({ userId: user.id, role: user.role }, secret());
   }
 
-  const baseUrl = new URL(request.url).origin;
+  // Reconstruit l'origine depuis les en-têtes proxy si présents
+  const headers = request.headers;
+  const forwardedProto = headers.get('x-forwarded-proto');
+  const forwardedHost = headers.get('x-forwarded-host') || headers.get('host');
+  const forwardedPort = headers.get('x-forwarded-port');
+
+  let baseOrigin = '';
+  if (forwardedProto && forwardedHost) {
+    // Ajoute le port si fourni et non déjà inclus dans le host
+    const hasPortInHost = forwardedHost.includes(':');
+    const hostWithPort = !hasPortInHost && forwardedPort
+      ? `${forwardedHost}:${forwardedPort}`
+      : forwardedHost;
+    baseOrigin = `${forwardedProto}://${hostWithPort}`;
+  } else {
+    baseOrigin = new URL(request.url).origin;
+  }
+
+  const baseUrl = baseOrigin;
   const ssoUrl = `${baseUrl}/sso?url=${encodeURIComponent(returnCookie)}&token=${encodeURIComponent(
     token,
   )}`;
