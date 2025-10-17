@@ -1,7 +1,7 @@
 import { Dialog, DialogTrigger, Button, Icon, Modal, DialogProps } from '@umami/react-zen';
 import { Menu } from '@/components/icons';
 
-export function MobileMenu(props: DialogProps) {
+export function MobileMenuButton(props: DialogProps) {
   return (
     <DialogTrigger>
       <Button>

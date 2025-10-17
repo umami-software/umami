@@ -2,7 +2,7 @@ import { Grid, Column, Row } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { MetricsExpandedTable } from '@/components/metrics/MetricsExpandedTable';
 import { WebsiteExpandedMenu } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedMenu';
-import { MobileMenu } from '@/components/common/MobileMenu';
+import { MobileMenuButton } from '@/components/input/MobileMenuButton';
 
 export function WebsiteExpandedView({
   websiteId,
@@ -21,11 +21,11 @@ export function WebsiteExpandedView({
   return (
     <Column gap>
       <Row display={{ xs: 'flex', md: 'none' }}>
-        <MobileMenu>
+        <MobileMenuButton>
           {({ close }) => {
             return <WebsiteExpandedMenu excludedIds={excludedIds} onItemClick={close} />;
           }}
-        </MobileMenu>
+        </MobileMenuButton>
       </Row>
       <Grid columns={{ xs: '1fr', md: 'auto 1fr' }} gap="6" height="100%" overflow="hidden">
         <Column

@@ -161,7 +161,7 @@ export function WebsiteNav({
     .find(({ path }) => path && pathname.endsWith(path.split('?')[0]))?.id;
 
   return (
-    <Column padding="3" gap>
+    <Column padding="3" position="sticky" top="0" gap>
       <WebsiteSelect
         websiteId={websiteId}
         teamId={teamId}

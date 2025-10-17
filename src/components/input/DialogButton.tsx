@@ -46,7 +46,6 @@ export function DialogButton({
       <Button {...props}>
         <IconLabel icon={icon} label={label} />
       </Button>
-
       <Modal placement={isMobile ? 'fullscreen' : 'center'}>
         <Dialog variant={isMobile ? 'sheet' : undefined} title={title || label} style={style}>
           {children}

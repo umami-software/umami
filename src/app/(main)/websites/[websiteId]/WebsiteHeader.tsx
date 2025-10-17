@@ -1,4 +1,4 @@
-import { Button, Icon, Text, Row, DialogTrigger, Dialog, Modal } from '@umami/react-zen';
+import { Icon, Text, Row } from '@umami/react-zen';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Share, Edit } from '@/components/icons';
 import { Favicon } from '@/components/common/Favicon';
@@ -6,6 +6,7 @@ import { ActiveUsers } from '@/components/metrics/ActiveUsers';
 import { WebsiteShareForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteShareForm';
 import { useMessages, useNavigation, useWebsite } from '@/components/hooks';
 import { LinkButton } from '@/components/common/LinkButton';
+import { DialogButton } from '@/components/input/DialogButton';
 
 export function WebsiteHeader({ showActions }: { showActions?: boolean }) {
   const website = useWebsite();
@@ -45,20 +46,10 @@ const ShareButton = ({ websiteId, shareId }) => {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <DialogTrigger>
-      <Button>
-        <Icon>
-          <Share />
-        </Icon>
-        <Text>Share</Text>
-      </Button>
-      <Modal>
-        <Dialog title={formatMessage(labels.share)} style={{ width: 800 }}>
-          {({ close }) => {
-            return <WebsiteShareForm websiteId={websiteId} shareId={shareId} onClose={close} />;
-          }}
-        </Dialog>
-      </Modal>
-    </DialogTrigger>
+    <DialogButton icon={<Share />} label={formatMessage(labels.share)} width="800px">
+      {({ close }) => {
+        return <WebsiteShareForm websiteId={websiteId} shareId={shareId} onClose={close} />;
+      }}
+    </DialogButton>
   );
 };

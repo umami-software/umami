@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { Logo } from '@/components/svg';
 import { NavButton } from '@/components/input/NavButton';
-import { MobileMenu } from '@/components/common/MobileMenu';
+import { MobileMenuButton } from '@/components/input/MobileMenuButton';
 
 export function MobileNav() {
   const { formatMessage, labels } = useMessages();
@@ -34,7 +34,7 @@ export function MobileNav() {
 
   return (
     <Grid columns="auto 1fr" flexGrow={1}>
-      <MobileMenu>
+      <MobileMenuButton>
         {({ close }) => {
           return (
             <>
@@ -54,7 +54,7 @@ export function MobileNav() {
             </>
           );
         }}
-      </MobileMenu>
+      </MobileMenuButton>
       <Row alignItems="center" justifyContent="center" flexGrow={1}>
         <IconLabel icon={<Logo />} style={{ width: 'auto' }}>
           <Text weight="bold">umami</Text>

@@ -106,7 +106,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
       </GridRow>
 
       <GridRow layout="two-one" {...rowProps}>
-        <Panel gridColumn={{ xs: 'span 1', md: 'span 2' }} padding="0">
+        <Panel gridColumn={{ xs: 'span 1', md: 'span 2' }} paddingX="0" paddingY="0">
           <WorldMap websiteId={websiteId} />
         </Panel>
 
