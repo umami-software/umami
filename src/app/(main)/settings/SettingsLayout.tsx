@@ -19,6 +19,11 @@ export default function SettingsLayout({ children }: { children: ReactNode }) {
       label: formatMessage(labels.users),
       url: '/settings/users',
     },
+    user.isAdmin && {
+      key: 'oidc',
+      label: 'OIDC',
+      url: '/settings/oidc',
+    },
   ].filter(n => n);
 
   return <MenuLayout items={items}>{children}</MenuLayout>;

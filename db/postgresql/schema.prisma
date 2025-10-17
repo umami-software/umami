@@ -269,3 +269,13 @@ model Revenue {
   @@index([websiteId, sessionId, createdAt])
   @@map("revenue")
 }
+
+model Setting {
+  id        String    @id @unique @map("setting_id") @db.Uuid
+  key       String    @unique @db.VarChar(255)
+  value     String?   @db.VarChar(4000)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("setting")
+}
