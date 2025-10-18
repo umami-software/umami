@@ -1,7 +1,7 @@
-import { useFilters, useMessages, useNavigation } from '@/components/hooks';
+import { useFilters, useMessages, useMobile, useNavigation } from '@/components/hooks';
 import { FieldFilters } from '@/components/input/FieldFilters';
 import { SegmentFilters } from '@/components/input/SegmentFilters';
-import { Button, Column, Row, Tab, TabList, TabPanel, Tabs, useBreakpoint } from '@umami/react-zen';
+import { Button, Column, Row, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
 import { useState } from 'react';
 
 export interface FilterEditFormProps {
@@ -20,8 +20,7 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
   const [currentFilters, setCurrentFilters] = useState(filters);
   const [currentSegment, setCurrentSegment] = useState(segment);
   const [currentCohort, setCurrentCohort] = useState(cohort);
-  const breakpoint = useBreakpoint();
-  const isMobile = ['xs', 'sm', 'md'].includes(breakpoint);
+  const { isMobile } = useMobile();
   const excludeFilters = pathname.includes('/pixels') || pathname.includes('/links');
 
   const handleReset = () => {

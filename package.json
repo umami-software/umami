@@ -78,7 +78,7 @@
     "@react-spring/web": "^10.0.3",
     "@svgr/cli": "^8.1.0",
     "@tanstack/react-query": "^5.90.5",
-    "@umami/react-zen": "^0.200.0",
+    "@umami/react-zen": "^0.203.0",
     "@umami/redis-client": "^0.29.0",
     "bcryptjs": "^3.0.2",
     "chalk": "^5.6.2",

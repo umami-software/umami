@@ -25,7 +25,7 @@ export function DialogButton({
   icon,
   label,
   title,
-  width = '800px',
+  width,
   height,
   minWidth,
   minHeight,

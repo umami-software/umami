@@ -12,9 +12,14 @@ import {
   Column,
   Pressable,
   IconLabel,
-  useBreakpoint,
 } from '@umami/react-zen';
-import { useConfig, useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
+import {
+  useConfig,
+  useLoginQuery,
+  useMessages,
+  useMobile,
+  useNavigation,
+} from '@/components/hooks';
 import {
   BookText,
   ChevronRight,
@@ -40,11 +45,10 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
   const { cloudMode } = useConfig();
   const { formatMessage, labels } = useMessages();
   const { teamId } = useNavigation();
-  const breakpoint = useBreakpoint();
+  const { isMobile } = useMobile();
   const team = user?.teams?.find(({ id }) => id === teamId);
   const selectedKeys = new Set([teamId || 'user']);
   const label = teamId ? team?.name : user.username;
-  const isMobile = ['xs', 'sm', 'md'].includes(breakpoint);
 
   const getUrl = (url: string) => {
     return cloudMode ? `${process.env.cloudUrl}${url}` : url;

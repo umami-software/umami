@@ -33,7 +33,7 @@ export function MobileNav() {
   ];
 
   return (
-    <Grid columns="auto 1fr" flexGrow={1}>
+    <Grid columns="auto 1fr" flexGrow={1} backgroundColor="3" borderRadius>
       <MobileMenuButton>
         {({ close }) => {
           return (

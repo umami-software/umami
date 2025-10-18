@@ -1,6 +1,6 @@
-import { Dialog, Modal, useBreakpoint } from '@umami/react-zen';
+import { Dialog, Modal } from '@umami/react-zen';
 import { WebsiteExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedView';
-import { useNavigation } from '@/components/hooks';
+import { useNavigation, useMobile } from '@/components/hooks';
 
 export function ExpandedViewModal({
   websiteId,
@@ -14,8 +14,7 @@ export function ExpandedViewModal({
     query: { view },
     updateParams,
   } = useNavigation();
-  const breakpoint = useBreakpoint();
-  const isMobile = ['xs', 'sm', 'md'].includes(breakpoint);
+  const { isMobile } = useMobile();
 
   const handleClose = (close: () => void) => {
     router.push(updateParams({ view: undefined }));

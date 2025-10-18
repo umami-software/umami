@@ -1,16 +1,8 @@
 import { useState, Key, Fragment } from 'react';
-import {
-  Modal,
-  Select,
-  ListItem,
-  ListSeparator,
-  Dialog,
-  SelectProps,
-  useBreakpoint,
-} from '@umami/react-zen';
+import { Modal, Select, ListItem, ListSeparator, Dialog, SelectProps } from '@umami/react-zen';
 import { endOfYear } from 'date-fns';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
-import { useMessages } from '@/components/hooks';
+import { useMessages, useMobile } from '@/components/hooks';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { parseDateRange } from '@/lib/date';
 
@@ -33,8 +25,7 @@ export function DateFilter({
   const { formatMessage, labels } = useMessages();
   const [showPicker, setShowPicker] = useState(false);
   const { startDate, endDate } = parseDateRange(value) || {};
-  const breakpoint = useBreakpoint();
-  const isMobile = ['xs', 'sm', 'md'].includes(breakpoint);
+  const { isMobile } = useMobile();
 
   const options = [
     { label: formatMessage(labels.today), value: '0day' },
@@ -119,7 +110,8 @@ export function DateFilter({
         placeholder={formatMessage(labels.selectDate)}
         onChange={handleChange}
         renderValue={renderValue}
-        popoverProps={{ placement, isNonModal: isMobile }}
+        popoverProps={{ placement }}
+        isFullscreen={isMobile}
       >
         {options.map(({ label, value, divider }: any) => {
           return (

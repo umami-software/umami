@@ -6,9 +6,9 @@ import {
   cloneElement,
   isValidElement,
 } from 'react';
-import { SearchField, Row, Column, useBreakpoint } from '@umami/react-zen';
+import { SearchField, Row, Column } from '@umami/react-zen';
 import { UseQueryResult } from '@tanstack/react-query';
-import { useMessages, useNavigation } from '@/components/hooks';
+import { useMessages, useMobile, useNavigation } from '@/components/hooks';
 import { Pager } from '@/components/common/Pager';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { PageResult } from '@/lib/types';
@@ -42,8 +42,8 @@ export function DataGrid({
   const { router, updateParams, query: queryParams } = useNavigation();
   const [search, setSearch] = useState(queryParams?.search || data?.search || '');
   const showPager = allowPaging && data && data.count > data.pageSize;
-  const breakpoint = useBreakpoint();
-  const displayMode = ['xs', 'sm', 'md', 'lg'].includes(breakpoint) ? 'cards' : undefined;
+  const { isMobile } = useMobile();
+  const displayMode = isMobile ? 'cards' : undefined;
 
   const handleSearch = (value: string) => {
     if (value !== search) {

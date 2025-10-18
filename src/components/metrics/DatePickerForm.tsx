@@ -47,7 +47,7 @@ export function DatePickerForm({
           <Calendar value={date} minValue={minDate} maxValue={maxDate} onChange={setDate} />
         )}
         {selected.includes(FILTER_RANGE) && (
-          <Row gap>
+          <Row gap wrap="wrap" style={{ margin: '0 auto' }}>
             <Calendar
               value={startDate}
               minValue={minDate}
