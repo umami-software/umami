@@ -1,4 +1,4 @@
-import { Dialog, Modal, ModalProps } from '@umami/react-zen';
+import { Dialog, Modal, ModalProps, Column } from '@umami/react-zen';
 import { SessionProfile } from '@/app/(main)/websites/[websiteId]/sessions/SessionProfile';
 import { useNavigation } from '@/components/hooks';
 
@@ -12,12 +12,6 @@ export function SessionModal({ websiteId, ...props }: SessionModalProps) {
     query: { session },
     updateParams,
   } = useNavigation();
-
-  const handleClose = (close: () => void) => {
-    router.push(updateParams({ session: undefined }));
-    close();
-  };
-
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
       router.push(updateParams({ session: undefined }));
@@ -25,25 +19,21 @@ export function SessionModal({ websiteId, ...props }: SessionModalProps) {
   };
 
   return (
-    <Modal isOpen={!!session} onOpenChange={handleOpenChange} isDismissable {...props}>
-      <Dialog
-        style={{
-          maxWidth: 1320,
-          width: '100vw',
-          minHeight: '300px',
-          height: 'calc(100vh - 40px)',
-        }}
-      >
-        {({ close }) => {
-          return (
-            <SessionProfile
-              websiteId={websiteId}
-              sessionId={session}
-              onClose={() => handleClose(close)}
-            />
-          );
-        }}
-      </Dialog>
+    <Modal
+      placement="bottom"
+      offset="80px"
+      isOpen={!!session}
+      onOpenChange={handleOpenChange}
+      isDismissable
+      {...props}
+    >
+      <Column height="100%" maxWidth="1320px" style={{ margin: '0 auto' }}>
+        <Dialog variant="sheet">
+          <Column padding="6">
+            <SessionProfile websiteId={websiteId} sessionId={session} />
+          </Column>
+        </Dialog>
+      </Column>
     </Modal>
   );
 }

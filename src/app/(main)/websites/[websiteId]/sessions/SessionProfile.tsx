@@ -1,32 +1,13 @@
-import {
-  TextField,
-  Row,
-  Column,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanel,
-  Icon,
-  Button,
-} from '@umami/react-zen';
+import { TextField, Row, Column, Tabs, TabList, Tab, TabPanel } from '@umami/react-zen';
 import { Avatar } from '@/components/common/Avatar';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { X } from '@/components/icons';
 import { useMessages, useWebsiteSessionQuery } from '@/components/hooks';
 import { SessionActivity } from './SessionActivity';
 import { SessionData } from './SessionData';
 import { SessionInfo } from './SessionInfo';
 import { SessionStats } from './SessionStats';
 
-export function SessionProfile({
-  websiteId,
-  sessionId,
-  onClose,
-}: {
-  websiteId: string;
-  sessionId: string;
-  onClose?: () => void;
-}) {
+export function SessionProfile({ websiteId, sessionId }: { websiteId: string; sessionId: string }) {
   const { data, isLoading, error } = useWebsiteSessionQuery(websiteId, sessionId);
   const { formatMessage, labels } = useMessages();
 
@@ -40,13 +21,6 @@ export function SessionProfile({
     >
       {data && (
         <Column gap>
-          <Row alignItems="center" justifyContent="flex-end">
-            <Button onPress={onClose} variant="quiet">
-              <Icon>
-                <X />
-              </Icon>
-            </Button>
-          </Row>
           <Column gap="6">
             <Row justifyContent="center" alignItems="center" gap="6">
               <Avatar seed={data?.id} size={128} />

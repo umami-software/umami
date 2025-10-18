@@ -9,7 +9,7 @@ import { MobileMenuButton } from '@/components/input/MobileMenuButton';
 
 export function MobileNav() {
   const { formatMessage, labels } = useMessages();
-  const { websiteId } = useNavigation();
+  const { websiteId, renderUrl } = useNavigation();
 
   const links = [
     {
@@ -42,7 +42,7 @@ export function MobileNav() {
                 <NavButton />
                 {links.map(link => {
                   return (
-                    <Link key={link.id} href={link.path}>
+                    <Link key={link.id} href={renderUrl(link.path)}>
                       <NavMenuItem>
                         <IconLabel icon={link.icon} label={link.label} />
                       </NavMenuItem>
