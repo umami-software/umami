@@ -5,11 +5,13 @@ import { unitParam, timezoneParam, filterParams } from '@/lib/schema';
 import { getCompareDate } from '@/lib/date';
 import { unauthorized, json } from '@/lib/response';
 import { getPageviewStats, getSessionStats } from '@/queries';
+import { canonicalizeTimeZone } from '@/lib/timezone';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
+  // Define and validate request query parameters
   const schema = z.object({
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
@@ -26,12 +28,16 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { timezone, compare } = query;
+  const { timezone: requestedTz, compare } = query;
 
+  const timezone = canonicalizeTimeZone(requestedTz || 'UTC');
+
+  // Authorization check
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
+  // Compute date range and unit from request
   const { startDate, endDate, unit } = await getRequestDateRange(query);
 
   const filters = {
