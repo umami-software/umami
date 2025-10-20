@@ -381,7 +381,6 @@ export const SEARCH_DOMAINS = [
   'perplexity.ai',
   'search.brave.com',
   'yandex.',
-  
 ];
 
 export const SHOPPING_DOMAINS = [
