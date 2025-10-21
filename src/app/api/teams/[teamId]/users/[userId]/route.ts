@@ -17,7 +17,7 @@ export async function GET(
   const { teamId, userId } = await params;
 
   if (!(await canUpdateTeam(auth, teamId))) {
-    return unauthorized({ message: 'You must be the owner of this team.' });
+    return unauthorized({ message: 'You must be the owner/manager of this team.' });
   }
 
   const teamUser = await getTeamUser(teamId, userId);
@@ -42,7 +42,7 @@ export async function POST(
   const { teamId, userId } = await params;
 
   if (!(await canUpdateTeam(auth, teamId))) {
-    return unauthorized({ message: 'You must be the owner of this team.' });
+    return unauthorized({ message: 'You must be the owner/manager of this team.' });
   }
 
   const teamUser = await getTeamUser(teamId, userId);
@@ -69,7 +69,7 @@ export async function DELETE(
   const { teamId, userId } = await params;
 
   if (!(await canDeleteTeamUser(auth, teamId, userId))) {
-    return unauthorized({ message: 'You must be the owner of this team.' });
+    return unauthorized({ message: 'You must be the owner/manager of this team.' });
   }
 
   const teamUser = await getTeamUser(teamId, userId);

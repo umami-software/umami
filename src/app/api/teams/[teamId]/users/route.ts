@@ -1,9 +1,9 @@
-import { z } from 'zod';
-import { unauthorized, json, badRequest } from '@/lib/response';
-import { canAddUserToTeam, canViewTeam } from '@/permissions';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { pagingParams, teamRoleParam, searchParams } from '@/lib/schema';
+import { badRequest, json, unauthorized } from '@/lib/response';
+import { pagingParams, searchParams, teamRoleParam } from '@/lib/schema';
+import { canUpdateTeam, canViewTeam } from '@/permissions';
 import { createTeamUser, getTeamUser, getTeamUsers } from '@/queries/prisma';
+import { z } from 'zod';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const schema = z.object({
@@ -20,7 +20,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
   const { teamId } = await params;
 
   if (!(await canViewTeam(auth, teamId))) {
-    return unauthorized({ message: 'You must be the owner of this team.' });
+    return unauthorized({ message: 'You must be a member of this team.' });
   }
 
   const filters = await getQueryFilters(query);
@@ -65,8 +65,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
 
   const { teamId } = await params;
 
-  if (!(await canAddUserToTeam(auth))) {
-    return unauthorized();
+  if (!(await canUpdateTeam(auth, teamId))) {
+    return unauthorized({ message: 'You must be the owner/manager of this team.' });
   }
 
   const { userId, role } = body;

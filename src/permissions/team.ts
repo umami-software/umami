@@ -39,10 +39,6 @@ export async function canDeleteTeam({ user }: Auth, teamId: string) {
   return teamUser && hasPermission(teamUser.role, PERMISSIONS.teamDelete);
 }
 
-export async function canAddUserToTeam({ user }: Auth) {
-  return user.isAdmin;
-}
-
 export async function canDeleteTeamUser({ user }: Auth, teamId: string, removeUserId: string) {
   if (user.isAdmin) {
     return true;

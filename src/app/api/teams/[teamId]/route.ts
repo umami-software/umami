@@ -41,7 +41,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
   const { teamId } = await params;
 
   if (!(await canUpdateTeam(auth, teamId))) {
-    return unauthorized({ message: 'You must be the owner of this team.' });
+    return unauthorized({ message: 'You must be the owner/manager of this team.' });
   }
 
   const team = await updateTeam(teamId, body);
@@ -62,7 +62,7 @@ export async function DELETE(
   const { teamId } = await params;
 
   if (!(await canDeleteTeam(auth, teamId))) {
-    return unauthorized({ message: 'You must be the owner of this team.' });
+    return unauthorized({ message: 'You must be the owner/manager of this team.' });
   }
 
   await deleteTeam(teamId);
