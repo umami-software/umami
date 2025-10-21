@@ -15,6 +15,27 @@ import { safeDecodeURIComponent } from '@/lib/url';
 
 const MAXMIND = 'maxmind';
 
+const PROVIDER_HEADERS = [
+  // Cloudflare headers
+  {
+    countryHeader: 'cf-ipcountry',
+    regionHeader: 'cf-region-code',
+    cityHeader: 'cf-ipcity',
+  },
+  // Vercel headers
+  {
+    countryHeader: 'x-vercel-ip-country',
+    regionHeader: 'x-vercel-ip-country-region',
+    cityHeader: 'x-vercel-ip-city',
+  },
+  // CloudFront headers
+  {
+    countryHeader: 'cloudfront-viewer-country',
+    regionHeader: 'cloudfront-viewer-country-region',
+    cityHeader: 'cloudfront-viewer-city',
+  },
+];
+
 export function getIpAddress(headers: Headers) {
   const customHeader = process.env.CLIENT_IP_HEADER;
 
@@ -87,6 +108,14 @@ function decodeHeader(s: string | undefined | null): string | undefined | null {
   return Buffer.from(s, 'latin1').toString('utf-8');
 }
 
+function removePortFromIP(ip: string = "") {
+  const split = ip.split(":");
+
+  // Assuming ip is a valid IPv4/IPv6 address, 3 colons is the minumum for IPv6
+  const ipv4 = split.length - 1 < 3;
+  return ipv4 ? split[0] : ip;
+}
+
 export async function getLocation(ip: string = '', headers: Headers, hasPayloadIP: boolean) {
   // Ignore local ips
   if (await isLocalhost(ip)) {
@@ -94,30 +123,19 @@ export async function getLocation(ip: string = '', headers: Headers, hasPayloadI
   }
 
   if (!hasPayloadIP && !process.env.SKIP_LOCATION_HEADERS) {
-    // Cloudflare headers
-    if (headers.get('cf-ipcountry')) {
-      const country = decodeHeader(headers.get('cf-ipcountry'));
-      const region = decodeHeader(headers.get('cf-region-code'));
-      const city = decodeHeader(headers.get('cf-ipcity'));
+    for (const provider of PROVIDER_HEADERS) {
+      const countryHeader = headers.get(provider.countryHeader);
+      if (countryHeader) {
+        const country = decodeHeader(countryHeader);
+        const region = decodeHeader(headers.get(provider.regionHeader));
+        const city = decodeHeader(headers.get(provider.cityHeader));
 
-      return {
-        country,
-        region: getRegionCode(country, region),
-        city,
-      };
-    }
-
-    // Vercel headers
-    if (headers.get('x-vercel-ip-country')) {
-      const country = decodeHeader(headers.get('x-vercel-ip-country'));
-      const region = decodeHeader(headers.get('x-vercel-ip-country-region'));
-      const city = decodeHeader(headers.get('x-vercel-ip-city'));
-
-      return {
-        country,
-        region: getRegionCode(country, region),
-        city,
-      };
+        return {
+          country,
+          region: getRegionCode(country, region),
+          city,
+        };
+      }
     }
   }
 
@@ -131,7 +149,7 @@ export async function getLocation(ip: string = '', headers: Headers, hasPayloadI
   }
 
   // When the client IP is extracted from headers, sometimes the value includes a port
-  const cleanIp = ip?.split(':')[0];
+  const cleanIp = removePortFromIP(ip);
   const result = global[MAXMIND].get(cleanIp);
 
   if (result) {

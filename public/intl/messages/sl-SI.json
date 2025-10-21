@@ -32,13 +32,13 @@
   "label.add-member": [
     {
       "type": 0,
-      "value": "Add member"
+      "value": "Dodaj člana"
     }
   ],
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "Dodaj korak"
     }
   ],
   "label.add-website": [
@@ -152,7 +152,7 @@
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "Primerjaj"
     }
   ],
   "label.confirm": [
@@ -182,7 +182,7 @@
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "Število"
     }
   ],
   "label.countries": [
@@ -200,7 +200,7 @@
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "Ustvari"
     }
   ],
   "label.create-report": [
@@ -230,13 +230,13 @@
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "Ustvaril"
     }
   ],
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "Trenutno"
     }
   ],
   "label.current-password": [
@@ -296,7 +296,7 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "Izbriši poročilo"
     }
   ],
   "label.delete-team": [
@@ -386,25 +386,25 @@
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "Uredi člana"
     }
   ],
   "label.enable-share-url": [
     {
       "type": 0,
-      "value": "Uredi povezavo za deljenje"
+      "value": "Omogoči povezavo za deljenje"
     }
   ],
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "Končni korak"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "Vstopni URL"
     }
   ],
   "label.event": [
@@ -428,7 +428,7 @@
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "Izhodni URL"
     }
   ],
   "label.false": [
@@ -476,7 +476,7 @@
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "Prvič viden"
     }
   ],
   "label.funnel": [
@@ -488,25 +488,25 @@
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "Razumite stopnjo konverzije in osipa uporabnikov."
     }
   ],
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "Cilj"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "Cilji"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "Spremljajte svoje cilje za oglede strani in dogodke."
     }
   ],
   "label.greater-than": [
@@ -524,13 +524,13 @@
   "label.host": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "Gostitelj"
     }
   ],
   "label.hosts": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "Gostitelji"
     }
   ],
   "label.insights": [
@@ -542,7 +542,7 @@
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "Poglobite se v podatke z uporabo segmentov in filtrov."
     }
   ],
   "label.is": [
@@ -584,13 +584,13 @@
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "Uporabniška pot"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users navigate through your website."
+      "value": "Razumite, kako uporabniki krmarijo po vašem spletnem mestu."
     }
   ],
   "label.language": [
@@ -642,7 +642,7 @@
   "label.last-months": [
     {
       "type": 0,
-      "value": "Last "
+      "value": "Zadnjih "
     },
     {
       "type": 1,
@@ -650,13 +650,13 @@
     },
     {
       "type": 0,
-      "value": " months"
+      "value": " mesecev"
     }
   ],
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "Nazadnje viden"
     }
   ],
   "label.leave": [
@@ -698,13 +698,13 @@
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "Upravljaj"
     }
   ],
   "label.manager": [
     {
       "type": 0,
-      "value": "Manager"
+      "value": "Upravitelj"
     }
   ],
   "label.max": [
@@ -716,7 +716,7 @@
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "Član"
     }
   ],
   "label.members": [
@@ -746,7 +746,7 @@
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "Moj račun"
     }
   ],
   "label.my-websites": [
@@ -876,13 +876,13 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "Pot"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "Poti"
     }
   ],
   "label.powered-by": [
@@ -898,19 +898,19 @@
   "label.previous": [
     {
       "type": 0,
-      "value": "Previous"
+      "value": "Prejšnji"
     }
   ],
   "label.previous-period": [
     {
       "type": 0,
-      "value": "Previous period"
+      "value": "Prejšnje obdobje"
     }
   ],
   "label.previous-year": [
     {
       "type": 0,
-      "value": "Previous year"
+      "value": "Prejšnje leto"
     }
   ],
   "label.profile": [
@@ -922,13 +922,13 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "Lastnosti"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "Lastnost"
     }
   ],
   "label.queries": [
@@ -1000,7 +1000,7 @@
   "label.remove-member": [
     {
       "type": 0,
-      "value": "Remove member"
+      "value": "Odstrani člana"
     }
   ],
   "label.reports": [
@@ -1036,25 +1036,25 @@
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
+      "value": "Merite uporabnikovo zadržanost s sledenjem, kako pogosto se vračajo."
     }
   ],
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "Prihodki"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
+      "value": "Preglejte svoje prihodke skozi čas."
     }
   ],
   "label.revenue-property": [
     {
       "type": 0,
-      "value": "Revenue Property"
+      "value": "Lastnost prihodkov"
     }
   ],
   "label.role": [
@@ -1084,13 +1084,13 @@
   "label.search": [
     {
       "type": 0,
-      "value": "Search"
+      "value": "Išči"
     }
   ],
   "label.select": [
     {
       "type": 0,
-      "value": "Select"
+      "value": "Izberi"
     }
   ],
   "label.select-date": [
@@ -1102,7 +1102,7 @@
   "label.select-role": [
     {
       "type": 0,
-      "value": "Select role"
+      "value": "Izberi vlogo"
     }
   ],
   "label.select-website": [
@@ -1114,7 +1114,7 @@
   "label.session": [
     {
       "type": 0,
-      "value": "Session"
+      "value": "Seja"
     }
   ],
   "label.sessions": [
@@ -1144,13 +1144,13 @@
   "label.start-step": [
     {
       "type": 0,
-      "value": "Start Step"
+      "value": "Začetni korak"
     }
   ],
   "label.steps": [
     {
       "type": 0,
-      "value": "Steps"
+      "value": "Koraki"
     }
   ],
   "label.sum": [
@@ -1180,7 +1180,7 @@
   "label.team-manager": [
     {
       "type": 0,
-      "value": "Team manager"
+      "value": "Upravitelj ekipe"
     }
   ],
   "label.team-member": [
@@ -1204,7 +1204,7 @@
   "label.team-view-only": [
     {
       "type": 0,
-      "value": "Team view only"
+      "value": "Ekipa samo za ogled"
     }
   ],
   "label.team-websites": [
@@ -1468,7 +1468,7 @@
   "label.websites": [
     {
       "type": 0,
-      "value": "Spletnih mest"
+      "value": "Spletna mesta"
     }
   ],
   "label.window": [
@@ -1486,7 +1486,7 @@
   "message.action-confirmation": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Za potrditev v spodnje polje vnesite "
     },
     {
       "type": 1,
@@ -1494,7 +1494,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": "."
     }
   ],
   "message.active-users": [
@@ -1534,7 +1534,7 @@
   "message.collected-data": [
     {
       "type": 0,
-      "value": "Collected data"
+      "value": "Zbrani podatki"
     }
   ],
   "message.confirm-delete": [
@@ -1568,7 +1568,7 @@
   "message.confirm-remove": [
     {
       "type": 0,
-      "value": "Are you sure you want to remove "
+      "value": "Ali ste prepričani, da želite odstraniti "
     },
     {
       "type": 1,
@@ -1596,7 +1596,7 @@
   "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "Deleting a team will also delete all team websites."
+      "value": "Brisanje ekipe bo izbrisalo tudi vsa spletna mesta ekipe."
     }
   ],
   "message.delete-website-warning": [
@@ -1792,25 +1792,25 @@
   "message.transfer-team-website-to-user": [
     {
       "type": 0,
-      "value": "Transfer this website to your account?"
+      "value": "Želite prenesti to spletno mesto v svoj račun?"
     }
   ],
   "message.transfer-user-website-to-team": [
     {
       "type": 0,
-      "value": "Select the team to transfer this website to."
+      "value": "Izberite ekipo, na katero želite prenesti to spletno mesto."
     }
   ],
   "message.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website ownership to your account or another team."
+      "value": "Prenesite lastništvo spletnega mesta na svoj račun ali drugo ekipo."
     }
   ],
   "message.triggered-event": [
     {
       "type": 0,
-      "value": "Triggered event"
+      "value": "Sprožen dogodek"
     }
   ],
   "message.user-deleted": [
@@ -1822,7 +1822,7 @@
   "message.viewed-page": [
     {
       "type": 0,
-      "value": "Viewed page"
+      "value": "Ogledana stran"
     }
   ],
   "message.visitor-log": [
@@ -1862,7 +1862,7 @@
   "message.visitors-dropped-off": [
     {
       "type": 0,
-      "value": "Visitors dropped off"
+      "value": "Osip obiskovalcev"
     }
   ]
 }
