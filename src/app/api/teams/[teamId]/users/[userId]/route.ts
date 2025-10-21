@@ -3,6 +3,7 @@ import { parseRequest } from '@/lib/request';
 import { badRequest, json, ok, unauthorized } from '@/lib/response';
 import { deleteTeamUser, getTeamUser, updateTeamUser } from '@/queries/prisma';
 import { z } from 'zod';
+import { teamRoleParam } from '@/lib/schema';
 
 export async function GET(
   request: Request,
@@ -30,7 +31,7 @@ export async function POST(
   { params }: { params: Promise<{ teamId: string; userId: string }> },
 ) {
   const schema = z.object({
-    role: z.string().regex(/team-member|team-view-only|team-manager/),
+    role: teamRoleParam,
   });
 
   const { auth, body, error } = await parseRequest(request, schema);

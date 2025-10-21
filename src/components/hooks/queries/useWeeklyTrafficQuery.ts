@@ -6,15 +6,21 @@ import { useFilterParameters } from '@/components/hooks/useFilterParameters';
 export function useWeeklyTrafficQuery(websiteId: string, params?: Record<string, string | number>) {
   const { get, useQuery } = useApi();
   const { modified } = useModified(`sessions`);
-  const date = useDateParameters();
+  const { startAt, endAt, unit, timezone } = useDateParameters();
   const filters = useFilterParameters();
 
   return useQuery({
-    queryKey: ['sessions', { websiteId, modified, ...params, ...date, ...filters }],
+    queryKey: [
+      'sessions',
+      { websiteId, modified, startAt, endAt, unit, timezone, ...params, ...filters },
+    ],
     queryFn: () => {
       return get(`/websites/${websiteId}/sessions/weekly`, {
+        startAt,
+        endAt,
+        unit,
+        timezone,
         ...params,
-        ...date,
         ...filters,
       });
     },

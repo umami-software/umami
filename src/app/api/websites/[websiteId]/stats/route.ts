@@ -11,7 +11,6 @@ export async function GET(
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
-    compare: z.string().optional(),
     ...dateRangeParams,
     ...filterParams,
   });
