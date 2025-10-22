@@ -26,7 +26,7 @@ export function useLocale() {
   }
 
   async function saveLocale(value: string) {
-    if (!messages[value] && !process.env.cloudMode) {
+    if (!messages[value]) {
       await loadMessages(value);
     }
 
