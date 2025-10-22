@@ -1,10 +1,10 @@
 'use client';
-import { ReactNode } from 'react';
-import { Grid, Column } from '@umami/react-zen';
-import { useMessages, useNavigation } from '@/components/hooks';
 import { PageBody } from '@/components/common/PageBody';
 import { SideMenu } from '@/components/common/SideMenu';
-import { UserCircle, Users, Settings2 } from '@/components/icons';
+import { useMessages, useNavigation } from '@/components/hooks';
+import { Settings2, UserCircle, Users } from '@/components/icons';
+import { Column, Grid } from '@umami/react-zen';
+import { ReactNode } from 'react';
 
 export function SettingsLayout({ children }: { children: ReactNode }) {
   const { formatMessage, labels } = useMessages();
@@ -46,8 +46,15 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
     .find(({ path }) => path && pathname.includes(path.split('?')[0]))?.id;
 
   return (
-    <Grid columns="auto 1fr" width="100%" height="100%">
-      <Column height="100%" border="right" backgroundColor>
+    <Grid columns={{ xs: '1fr', lg: 'auto 1fr' }} width="100%" height="100%">
+      <Column
+        display={{ xs: 'none', lg: 'flex' }}
+        width="240px"
+        height="100%"
+        border="right"
+        backgroundColor
+        marginRight="2"
+      >
         <SideMenu
           items={items}
           title={formatMessage(labels.settings)}

@@ -69,7 +69,7 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
           shadow="1"
           maxHeight="40px"
           role="button"
-          style={{ cursor: 'pointer', textWrap: 'nowrap', outline: 'none' }}
+          style={{ cursor: 'pointer', textWrap: 'nowrap', overflow: 'hidden', outline: 'none' }}
         >
           <Row alignItems="center" position="relative" gap maxHeight="40px">
             <Icon>{teamId ? <Users /> : <User />}</Icon>
