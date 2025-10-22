@@ -96,7 +96,10 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       page_title as pageTitle,
       event_type as eventType,
       event_name as eventName,
-      event_id IN (SELECT event_id FROM event_data where website_id = {websiteId:UUID}) as hasData
+      event_id IN (select event_id 
+                   from event_data 
+                   where website_id = {websiteId:UUID}
+                   ${dateQuery}) as hasData
     from website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}

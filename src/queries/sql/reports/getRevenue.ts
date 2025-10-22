@@ -134,6 +134,15 @@ async function clickhouseQuery(
     currency,
   });
 
+  const joinQuery = filterQuery
+    ? `join website_event
+   on website_event.website_id = website_revenue.website_id
+    and website_event.session_id = website_revenue.session_id
+    and website_event.event_id = website_revenue.event_id
+    and website_event.website_id = {websiteId:UUID}
+    and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}`
+    : '';
+
   const chart = await rawQuery<
     {
       x: string;
@@ -147,12 +156,7 @@ async function clickhouseQuery(
       ${getDateSQL('website_revenue.created_at', unit, timezone)} t,
       sum(website_revenue.revenue) y
     from website_revenue
-    join website_event
-          on website_event.website_id = website_revenue.website_id
-            and website_event.session_id = website_revenue.session_id
-            and website_event.event_id = website_revenue.event_id
-            and website_event.website_id = {websiteId:UUID}
-            and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+    ${joinQuery}
     ${cohortQuery}
     where website_revenue.website_id = {websiteId:UUID}
       and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
@@ -175,13 +179,13 @@ async function clickhouseQuery(
         website_event.country as name,
         sum(website_revenue.revenue) as value
       from website_revenue
-        join website_event
+      join website_event
       on website_event.website_id = website_revenue.website_id
         and website_event.session_id = website_revenue.session_id
         and website_event.event_id = website_revenue.event_id
         and website_event.website_id = {websiteId:UUID}
         and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        ${cohortQuery}
+      ${cohortQuery}
       where website_revenue.website_id = {websiteId:UUID}
         and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and website_revenue.currency = {currency:String}
@@ -203,12 +207,7 @@ async function clickhouseQuery(
       uniqExact(website_revenue.event_id) as count,
       uniqExact(website_revenue.session_id) as unique_count
     from website_revenue
-    join website_event
-          on website_event.website_id = website_revenue.website_id
-            and website_event.session_id = website_revenue.session_id
-            and website_event.event_id = website_revenue.event_id
-            and website_event.website_id = {websiteId:UUID}
-            and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+    ${joinQuery}
     ${cohortQuery}
     where website_revenue.website_id = {websiteId:UUID}
       and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}

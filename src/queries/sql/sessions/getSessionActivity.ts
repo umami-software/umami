@@ -57,12 +57,16 @@ async function clickhouseQuery(websiteId: string, sessionId: string, filters: Qu
       event_type as eventType,
       event_name as eventName,
       visit_id as visitId,
-      event_id IN (SELECT event_id FROM event_data where website_id = {websiteId:UUID} and session_id = {sessionId:UUID}) AS hasData
-    from website_event e 
-    where e.website_id = {websiteId:UUID}
-      and e.session_id = {sessionId:UUID} 
-      and e.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-    order by e.created_at desc
+      event_id IN (select event_id 
+                   from event_data 
+                   where website_id = {websiteId:UUID} 
+                    and session_id = {sessionId:UUID}
+                    and created_at between {startDate:DateTime64} and {endDate:DateTime64}) AS hasData
+    from website_event
+    where website_id = {websiteId:UUID}
+      and session_id = {sessionId:UUID} 
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+    order by created_at desc
     limit 500
     `,
     { websiteId, sessionId, startDate, endDate },
