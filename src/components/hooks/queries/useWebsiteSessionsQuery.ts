@@ -1,8 +1,8 @@
 import { useApi } from '../useApi';
-import { usePagedQuery } from '../usePagedQuery';
-import { useModified } from '../useModified';
-import { useFilterParameters } from '../useFilterParameters';
 import { useDateParameters } from '../useDateParameters';
+import { useFilterParameters } from '../useFilterParameters';
+import { useModified } from '../useModified';
+import { usePagedQuery } from '../usePagedQuery';
 
 export function useWebsiteSessionsQuery(
   websiteId: string,
@@ -10,14 +10,20 @@ export function useWebsiteSessionsQuery(
 ) {
   const { get } = useApi();
   const { modified } = useModified(`sessions`);
-  const date = useDateParameters();
+  const { startAt, endAt, unit, timezone } = useDateParameters();
   const filters = useFilterParameters();
 
   return usePagedQuery({
-    queryKey: ['sessions', { websiteId, modified, ...params, ...date, ...filters }],
+    queryKey: [
+      'sessions',
+      { websiteId, modified, startAt, endAt, unit, timezone, ...params, ...filters },
+    ],
     queryFn: pageParams => {
       return get(`/websites/${websiteId}/sessions`, {
-        ...date,
+        startAt,
+        endAt,
+        unit,
+        timezone,
         ...filters,
         ...pageParams,
         ...params,

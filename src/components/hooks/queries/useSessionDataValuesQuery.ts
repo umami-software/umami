@@ -9,13 +9,23 @@ export function useSessionDataValuesQuery(
   options?: ReactQueryOptions,
 ) {
   const { get, useQuery } = useApi();
-  const date = useDateParameters();
+  const { startAt, endAt, unit, timezone } = useDateParameters();
   const filters = useFilterParameters();
 
   return useQuery<any>({
-    queryKey: ['websites:session-data:values', { websiteId, propertyName, ...date, ...filters }],
+    queryKey: [
+      'websites:session-data:values',
+      { websiteId, propertyName, startAt, endAt, unit, timezone, ...filters },
+    ],
     queryFn: () =>
-      get(`/websites/${websiteId}/session-data/values`, { ...date, ...filters, propertyName }),
+      get(`/websites/${websiteId}/session-data/values`, {
+        startAt,
+        endAt,
+        unit,
+        timezone,
+        ...filters,
+        propertyName,
+      }),
     enabled: !!(websiteId && propertyName),
     ...options,
   });

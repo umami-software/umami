@@ -69,6 +69,7 @@ async function clickhouseQuery(
     ${cohortQuery}
     join session_data final
       on session_data.session_id = website_event.session_id
+        and session_data.website_id = {websiteId:UUID}
     where website_event.website_id = {websiteId:UUID}
       and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and session_data.data_key = {propertyName:String}

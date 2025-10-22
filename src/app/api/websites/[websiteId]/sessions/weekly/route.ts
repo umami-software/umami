@@ -1,9 +1,9 @@
-import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { unauthorized, json } from '@/lib/response';
+import { json, unauthorized } from '@/lib/response';
+import { filterParams, timezoneParam } from '@/lib/schema';
 import { canViewWebsite } from '@/permissions';
-import { filterParams, pagingParams, timezoneParam } from '@/lib/schema';
 import { getWeeklyTraffic } from '@/queries/sql';
+import { z } from 'zod';
 
 export async function GET(
   request: Request,
@@ -14,7 +14,6 @@ export async function GET(
     endAt: z.coerce.number().int(),
     timezone: timezoneParam,
     ...filterParams,
-    ...pagingParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);

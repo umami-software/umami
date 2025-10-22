@@ -98,6 +98,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     select
       session_id as id,
       website_id as websiteId,
+      hostname,
       browser,
       os,
       device,
@@ -117,7 +118,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ${dateQuery}
     ${filterQuery}
     ${searchQuery}
-    group by session_id, website_id, browser, os, device, screen, language, country, region, city
+    group by session_id, website_id, hostname, browser, os, device, screen, language, country, region, city
     order by lastAt desc
     `;
   } else {
@@ -125,7 +126,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     select
       session_id as id,
       website_id as websiteId,
-      hostname,
+      arrayFirst(x -> 1, hostname) hostname,
       browser,
       os,
       device,
