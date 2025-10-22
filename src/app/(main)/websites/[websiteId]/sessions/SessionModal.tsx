@@ -29,9 +29,11 @@ export function SessionModal({ websiteId, ...props }: SessionModalProps) {
     >
       <Column height="100%" maxWidth="1320px" style={{ margin: '0 auto' }}>
         <Dialog variant="sheet">
-          <Column padding="6">
-            <SessionProfile websiteId={websiteId} sessionId={session} />
-          </Column>
+          {({ close }) => (
+            <Column padding="6">
+              <SessionProfile websiteId={websiteId} sessionId={session} onClose={() => close()} />
+            </Column>
+          )}
         </Dialog>
       </Column>
     </Modal>
