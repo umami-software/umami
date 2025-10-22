@@ -1,15 +1,21 @@
-import { json, unauthorized } from '@/lib/response';
-import { getRealtimeData } from '@/queries/sql';
-import { canViewWebsite } from '@/permissions';
-import { startOfMinute, subMinutes } from 'date-fns';
 import { REALTIME_RANGE } from '@/lib/constants';
-import { parseRequest, getQueryFilters } from '@/lib/request';
+import { getQueryFilters, parseRequest } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
+import { timezoneParam } from '@/lib/schema';
+import { canViewWebsite } from '@/permissions';
+import { getRealtimeData } from '@/queries/sql';
+import { startOfMinute, subMinutes } from 'date-fns';
+import z from 'zod';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
-  const { auth, query, error } = await parseRequest(request);
+  const schema = z.object({
+    timezone: timezoneParam,
+  });
+
+  const { auth, query, error } = await parseRequest(request, schema);
 
   if (error) {
     return error();
