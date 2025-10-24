@@ -40,7 +40,7 @@ async function relationalQuery(
   websiteId: string,
   filters: QueryFilters,
 ): Promise<ChannelExpandedMetricsData[]> {
-  const { rawQuery, parseFilters } = prisma;
+  const { rawQuery, parseFilters, getTimestampDiffSQL } = prisma;
   const { queryParams, filterQuery, joinSessionQuery, cohortQuery, dateQuery } = parseFilters({
     ...filters,
     websiteId,
@@ -48,40 +48,70 @@ async function relationalQuery(
 
   return rawQuery(
     `
-    WITH channels as (
-      select case when ${toPostgresPositionClause('utm_medium', ['cp', 'ppc', 'retargeting', 'paid'])} then 'paid' else 'organic' end prefix,
-          case
-          when referrer_domain = '' and url_query = '' then 'direct'
-          when ${toPostgresPositionClause('url_query', PAID_AD_PARAMS)} then 'paidAds'
-          when ${toPostgresPositionClause('utm_medium', ['referral', 'app', 'link'])} then 'referral'
-          when position(utm_medium, 'affiliate') > 0 then 'affiliate'
-          when position(utm_medium, 'sms') > 0 or position(utm_source, 'sms') > 0 then 'sms'
-          when ${toPostgresPositionClause('referrer_domain', SEARCH_DOMAINS)} or position(utm_medium, 'organic') > 0 then concat(prefix, 'Search')
-          when ${toPostgresPositionClause('referrer_domain', SOCIAL_DOMAINS)} then concat(prefix, 'Social')
-          when ${toPostgresPositionClause('referrer_domain', EMAIL_DOMAINS)} or position(utm_medium, 'mail') > 0 then 'email'
-          when ${toPostgresPositionClause('referrer_domain', SHOPPING_DOMAINS)} or position(utm_medium, 'shop') > 0 then concat(prefix, 'Shopping')
-          when ${toPostgresPositionClause('referrer_domain', VIDEO_DOMAINS)} or position(utm_medium, 'video') > 0 then concat(prefix, 'Video')
-          else '' end AS x,
-        count(distinct session_id) y
-      from website_event
-      ${cohortQuery}
-      ${joinSessionQuery}
-      where website_event.website_id = {{websiteId::uuid}}
-        and website_event.event_type != 2
-        ${dateQuery}
-        ${filterQuery}
-      group by 1, 2
-      order by y desc)
-
-    select x, sum(y) y
-    from channels
-    where x != ''
-    group by x
-    order by y desc;
-    `,
+      WITH prefix AS (
+        select case when utm_medium LIKE 'p%' OR
+            utm_medium LIKE '%ppc%' OR
+            utm_medium LIKE '%retargeting%' OR
+            utm_medium LIKE '%paid%' then 'paid' else 'organic' end prefix,
+            referrer_domain,
+            url_query,
+            utm_medium,
+            utm_source,
+            session_id,
+            visit_id,
+            count(*) c,
+            min(created_at) min_time,
+            max(created_at) max_time
+        from website_event
+        ${cohortQuery}
+        ${joinSessionQuery}
+        where website_event.website_id = {{websiteId::uuid}}
+          and website_event.event_type != 2
+          ${dateQuery}
+          ${filterQuery}
+        group by prefix, 
+            referrer_domain,
+            url_query,
+            utm_medium,
+            utm_source,
+            session_id,
+            visit_id),
+  
+      channels as (
+        select case
+            when referrer_domain = '' and url_query = '' then 'direct'
+            when ${toPostgresPositionClause('url_query', PAID_AD_PARAMS)} then 'paidAds'
+            when ${toPostgresPositionClause('utm_medium', ['referral', 'app', 'link'])} then 'referral'
+            when utm_medium ilike '%affiliate%' then 'affiliate'
+            when utm_medium ilike '%sms%' or utm_source ilike '%sms%' then 'sms'
+            when ${toPostgresPositionClause('referrer_domain', SEARCH_DOMAINS)} or utm_medium ilike '%organic%' then concat(prefix, 'Search')
+            when ${toPostgresPositionClause('referrer_domain', SOCIAL_DOMAINS)} then concat(prefix, 'Social')
+            when ${toPostgresPositionClause('referrer_domain', EMAIL_DOMAINS)} or utm_medium ilike '%mail%' then 'email'
+            when ${toPostgresPositionClause('referrer_domain', SHOPPING_DOMAINS)} or utm_medium ilike '%shop%' then concat(prefix, 'Shopping')
+            when ${toPostgresPositionClause('referrer_domain', VIDEO_DOMAINS)} or utm_medium ilike '%video%' then concat(prefix, 'Video')
+            else '' end AS name,
+            session_id,
+            visit_id,
+            c,
+            min_time,
+            max_time
+        from prefix)
+  
+      select
+        name,
+        sum(c) as "pageviews",
+        count(distinct session_id) as "visitors",
+        count(distinct visit_id) as "visits",
+        sum(case when c = 1 then 1 else 0 end) as "bounces",
+        sum(${getTimestampDiffSQL('min_time', 'max_time')}) as "totaltime"
+      from channels
+      where name != ''
+      group by name 
+      order by visitors desc, visits desc
+      `,
     queryParams,
     FUNCTION_NAME,
-  );
+  ).then(results => results.map(item => ({ ...item, y: Number(item.y) })));
 }
 
 async function clickhouseQuery(
@@ -156,5 +186,5 @@ function toClickHouseStringArray(arr: string[]): string {
 }
 
 function toPostgresPositionClause(column: string, arr: string[]) {
-  return arr.map(val => `position(${column}, '${val.replace(/'/g, "''")}') > 0`).join(' OR\n  ');
+  return arr.map(val => `${column} ilike '%${val.replace(/'/g, "''")}%'`).join(' OR\n  ');
 }

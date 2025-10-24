@@ -50,15 +50,15 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     channels as (
       select case
           when referrer_domain = '' and url_query = '' then 'direct'
-          when ${toPostgresPositionClause('url_query', PAID_AD_PARAMS)} then 'paidAds'
-          when ${toPostgresPositionClause('utm_medium', ['referral', 'app', 'link'])} then 'referral'
+          when ${toPostgresLikeClause('url_query', PAID_AD_PARAMS)} then 'paidAds'
+          when ${toPostgresLikeClause('utm_medium', ['referral', 'app', 'link'])} then 'referral'
           when utm_medium ilike '%affiliate%' then 'affiliate'
           when utm_medium ilike '%sms%' or utm_source ilike '%sms%' then 'sms'
-          when ${toPostgresPositionClause('referrer_domain', SEARCH_DOMAINS)} or utm_medium ilike '%organic%' then concat(prefix, 'Search')
-          when ${toPostgresPositionClause('referrer_domain', SOCIAL_DOMAINS)} then concat(prefix, 'Social')
-          when ${toPostgresPositionClause('referrer_domain', EMAIL_DOMAINS)} or utm_medium ilike '%mail%' then 'email'
-          when ${toPostgresPositionClause('referrer_domain', SHOPPING_DOMAINS)} or utm_medium ilike '%shop%' then concat(prefix, 'Shopping')
-          when ${toPostgresPositionClause('referrer_domain', VIDEO_DOMAINS)} or utm_medium ilike '%video%' then concat(prefix, 'Video')
+          when ${toPostgresLikeClause('referrer_domain', SEARCH_DOMAINS)} or utm_medium ilike '%organic%' then concat(prefix, 'Search')
+          when ${toPostgresLikeClause('referrer_domain', SOCIAL_DOMAINS)} then concat(prefix, 'Social')
+          when ${toPostgresLikeClause('referrer_domain', EMAIL_DOMAINS)} or utm_medium ilike '%mail%' then 'email'
+          when ${toPostgresLikeClause('referrer_domain', SHOPPING_DOMAINS)} or utm_medium ilike '%shop%' then concat(prefix, 'Shopping')
+          when ${toPostgresLikeClause('referrer_domain', VIDEO_DOMAINS)} or utm_medium ilike '%video%' then concat(prefix, 'Video')
           else '' end AS x,
         count(distinct session_id) y
       from prefix
@@ -137,6 +137,6 @@ function toClickHouseStringArray(arr: string[]): string {
   return arr.map(p => `'${p.replace(/'/g, "\\'")}'`).join(', ');
 }
 
-function toPostgresPositionClause(column: string, arr: string[]) {
+function toPostgresLikeClause(column: string, arr: string[]) {
   return arr.map(val => `${column} ilike '%${val.replace(/'/g, "''")}%'`).join(' OR\n  ');
 }

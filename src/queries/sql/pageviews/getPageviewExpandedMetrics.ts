@@ -36,8 +36,8 @@ async function relationalQuery(
   filters: QueryFilters,
 ): Promise<PageviewExpandedMetricsData[]> {
   const { type, limit = 500, offset = 0 } = parameters;
-  const column = FILTER_COLUMNS[type] || type;
-  const { rawQuery, parseFilters } = prisma;
+  let column = FILTER_COLUMNS[type] || type;
+  const { rawQuery, parseFilters, getTimestampDiffSQL } = prisma;
   const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters(
     {
       ...filters,
@@ -52,6 +52,9 @@ async function relationalQuery(
   if (column === 'referrer_domain') {
     excludeDomain = `and website_event.referrer_domain != website_event.hostname
       and website_event.referrer_domain != ''`;
+    if (type === 'domain') {
+      column = toPostgresGroupedReferrer(GROUPED_DOMAINS);
+    }
   }
 
   if (type === 'entry' || type === 'exit') {
@@ -74,19 +77,34 @@ async function relationalQuery(
 
   return rawQuery(
     `
-    select ${column} x,
-      count(distinct website_event.session_id) as y
-    from website_event
-    ${cohortQuery}
-    ${joinSessionQuery}
-    ${entryExitQuery}
-    where website_event.website_id = {{websiteId::uuid}}
+    select
+      name,
+      sum(t.c) as "pageviews",
+      count(distinct t.session_id) as "visitors",
+      count(distinct t.visit_id) as "visits",
+      sum(case when t.c = 1 then 1 else 0 end) as "bounces",
+      sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime"
+    from (
+      select
+        ${column} name,
+        website_event.session_id,
+        website_event.visit_id,
+        count(*) as "c",
+        min(website_event.created_at) as "min_time",
+        max(website_event.created_at) as "max_time"
+      from website_event
+      ${cohortQuery}
+      ${joinSessionQuery} 
+      ${entryExitQuery} 
+      where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_type != 2
-      ${excludeDomain}
-      ${filterQuery}
-    group by 1
-    order by 2 desc
+        ${excludeDomain}
+        ${filterQuery}
+      group by name, website_event.session_id, website_event.visit_id
+    ) as t
+    group by name 
+    order by visitors desc, visits desc
     limit ${limit}
     offset ${offset}
     `,
@@ -185,4 +203,24 @@ export function toClickHouseGroupedReferrer(
     "  ELSE 'Other'",
     'END',
   ].join('\n');
+}
+
+export function toPostgresGroupedReferrer(
+  domains: any[],
+  column: string = 'referrer_domain',
+): string {
+  return [
+    'CASE',
+    ...domains.map(group => {
+      const matches = Array.isArray(group.match) ? group.match : [group.match];
+
+      return `WHEN ${toPostgresLikeClause(column, matches)} THEN '${group.domain}'`;
+    }),
+    "  ELSE 'Other'",
+    'END',
+  ].join('\n');
+}
+
+function toPostgresLikeClause(column: string, arr: string[]) {
+  return arr.map(val => `${column} ilike '%${val.replace(/'/g, "''")}%'`).join(' OR\n  ');
 }

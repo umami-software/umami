@@ -37,7 +37,7 @@ async function relationalQuery(
 ) {
   const { type, limit = 500, offset = 0 } = parameters;
   const column = FILTER_COLUMNS[type] || type;
-  const { rawQuery, parseFilters } = prisma;
+  const { rawQuery, parseFilters, getTimestampDiffSQL } = prisma;
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters(
     {
       ...filters,
@@ -49,16 +49,31 @@ async function relationalQuery(
 
   return rawQuery(
     `
-    select ${column} x,
-      count(*) as y
-    from website_event
-    ${cohortQuery}
-    ${joinSessionQuery}
-    where website_event.website_id = {{websiteId::uuid}}
-      and website_event.created_at between {{startDate}} and {{endDate}}
-      ${filterQuery}
-    group by 1
-    order by 2 desc
+    select
+      name,
+      sum(t.c) as "pageviews",
+      count(distinct t.session_id) as "visitors",
+      count(distinct t.visit_id) as "visits",
+      sum(case when t.c = 1 then 1 else 0 end) as "bounces",
+      sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime"
+    from (
+      select
+        ${column} name,
+        website_event.session_id,
+        website_event.visit_id,
+        count(*) as "c",
+        min(website_event.created_at) as "min_time",
+        max(website_event.created_at) as "max_time"
+      from website_event
+      ${cohortQuery}
+      ${joinSessionQuery}  
+      where website_event.website_id = {{websiteId::uuid}}
+        and website_event.created_at between {{startDate}} and {{endDate}}
+        ${filterQuery}
+      group by name, website_event.session_id, website_event.visit_id
+    ) as t
+    group by name 
+    order by visitors desc, visits desc
     limit ${limit}
     offset ${offset}
     `,
