@@ -42,7 +42,7 @@ export function ListTable({
   currency,
 }: ListTableProps) {
   const { formatMessage, labels } = useMessages();
-  const { isMobile } = useMobile();
+  const { isPhone } = useMobile();
 
   const getRow = (row: ListData, index: number) => {
     const { label, count, percent } = row;
@@ -57,7 +57,7 @@ export function ListTable({
         showPercentage={showPercentage}
         change={renderChange ? renderChange(row, index) : null}
         currency={currency}
-        isMobile={isMobile}
+        isMobile={isPhone}
       />
     );
   };
