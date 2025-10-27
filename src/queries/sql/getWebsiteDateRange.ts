@@ -20,8 +20,8 @@ async function relationalQuery(websiteId: string) {
   const result = await rawQuery(
     `
     select
-      min(created_at) as startDate,
-      max(created_at) as endDate
+      min(created_at) as "startDate",
+      max(created_at) as "endDate"
     from website_event
     where website_id = {{websiteId::uuid}}
       and created_at >= {{startDate}}

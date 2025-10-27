@@ -117,16 +117,16 @@ async function relationalQuery(
     `
     WITH events AS (
       select distinct
-          visit_id,
-          referrer_path,
-          coalesce(nullIf(event_name, ''), url_path) event,
-          row_number() OVER (PARTITION BY visit_id ORDER BY created_at) AS event_number
+          website_event.visit_id,
+          website_event.referrer_path,
+          coalesce(nullIf(website_event.event_name, ''), website_event.url_path) event,
+          row_number() OVER (PARTITION BY visit_id ORDER BY website_event.created_at) AS event_number
       from website_event
       ${cohortQuery}
       ${joinSessionQuery}
-      where website_id = {{websiteId::uuid}}
-        and created_at between {{startDate}} and {{endDate}}),
-        ${filterQuery}
+      where website_event.website_id = {{websiteId::uuid}}
+        and website_event.created_at between {{startDate}} and {{endDate}}
+        ${filterQuery}),
     ${sequenceQuery}
     select *
     from sequences

@@ -18,7 +18,6 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
-    search: `%${search}%`,
   });
 
   const searchQuery = search
@@ -29,32 +28,33 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   return pagedRawQuery(
     `
     select
-      event_id as "id",
-      website_id as "websiteId", 
-      session_id as "sessionId",
-      created_at as "createdAt",
-      hostname,
-      url_path as "urlPath",
-      url_query as "urlQuery",
-      referrer_path as "referrerPath",
-      referrer_query as "referrerQuery",
-      referrer_domain as "referrerDomain",
-      country as country,
+      website_event.event_id as "id",
+      website_event.website_id as "websiteId", 
+      website_event.session_id as "sessionId",
+      website_event.created_at as "createdAt",
+      website_event.hostname,
+      website_event.url_path as "urlPath",
+      website_event.url_query as "urlQuery",
+      website_event.referrer_path as "referrerPath",
+      website_event.referrer_query as "referrerQuery",
+      website_event.referrer_domain as "referrerDomain",
+      session.country as country,
       city as city,
       device as  device,
       os as os,
       browser as browser,
       page_title as "pageTitle",
-      event_type as "eventType",
-      event_name as "eventName"
+      website_event.event_type as "eventType",
+      website_event.event_name as "eventName"
     from website_event
     ${cohortQuery}
-    join session on website_event.session_id = session.session_id 
-    where website_id = {{websiteId::uuid}}
+    join session on session.session_id = website_event.session_id 
+      and session.website_id = website_event.website_id
+    where website_event.website_id = {{websiteId::uuid}}
     ${dateQuery}
     ${filterQuery}
     ${searchQuery}
-    order by created_at desc
+    order by website_event.created_at desc
     `,
     queryParams,
     filters,

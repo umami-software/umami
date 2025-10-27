@@ -67,12 +67,12 @@ async function relationalQuery(
         if (levelNumber === 1) {
           pv.levelOneQuery = `
           WITH level1 AS (
-            select distinct session_id, created_at
+            select distinct website_event.session_id, website_event.created_at
             from website_event
             ${cohortQuery}
             ${joinSessionQuery}
-            where website_id = {{websiteId::uuid}}
-              and created_at between {{startDate}} and {{endDate}}
+            where website_event.website_id = {{websiteId::uuid}}
+              and website_event.created_at between {{startDate}} and {{endDate}}
               and ${column} ${operator} {{${i}}}
               ${filterQuery}
           )`;

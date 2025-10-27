@@ -118,6 +118,7 @@ function getCohortQuery(filters: QueryFilters = {}) {
     (select distinct website_event.session_id
     from website_event
     join session on session.session_id = website_event.session_id
+      and session.website_id = website_event.website_id
     where website_event.website_id = {{websiteId}}
       and website_event.created_at between {{cohort_startDate}} and {{cohort_endDate}}
       ${filterQuery}
@@ -165,7 +166,7 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   return {
     joinSessionQuery:
       options?.joinSession || joinSession
-        ? `inner join session on website_event.session_id = session.session_id`
+        ? `inner join session on website_event.session_id = session.session_id and website_event.website_id = session.website_id`
         : '',
     dateQuery: getDateQuery(filters),
     filterQuery: getFilterQuery(filters, options),
@@ -225,8 +226,8 @@ async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters)
 
 async function pagedRawQuery(
   query: string,
-  filters: QueryFilters,
   queryParams: Record<string, any>,
+  filters: QueryFilters,
   name?: string,
 ) {
   const { page = 1, pageSize, orderBy, sortDescending = false } = filters;

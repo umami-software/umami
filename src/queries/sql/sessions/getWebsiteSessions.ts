@@ -52,6 +52,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     from website_event 
     ${cohortQuery}
     join session on session.session_id = website_event.session_id
+      and session.website_id = website_event.website_id
     where website_event.website_id = {{websiteId::uuid}}
     ${dateQuery}
     ${filterQuery}

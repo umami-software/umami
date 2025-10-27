@@ -21,20 +21,23 @@ async function relationalQuery(websiteId: string, sessionId: string, filters: Qu
   return rawQuery(
     `
     select
-      created_at as createdAt,
-      url_path as urlPath,
-      url_query as urlQuery,
-      referrer_domain as referrerDomain,
-      event_id as eventId,
-      event_type as eventType,
-      event_name as eventName,
-      visit_id as visitId,
-      event_id IN (SELECT event_id FROM event_data) AS hasData
-    from website_event e 
-    where e.website_id = {websiteId:UUID}
-      and e.session_id = {sessionId:UUID} 
-      and e.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-    order by e.created_at desc
+      created_at as "createdAt",
+      url_path as "urlPath",
+      url_query as "urlQuery",
+      referrer_domain as "referrerDomain",
+      event_id as "eventId",
+      event_type as "eventType",
+      event_name as "eventName",
+      visit_id as "visitId",
+      event_id IN (select event_id 
+                   from event_data
+                   where website_id = {{websiteId::uuid}}
+                    and session_id = {{sessionId::uuid}}) AS "hasData"
+    from website_event
+    where website_id = {{websiteId::uuid}}
+      and session_id = {{sessionId::uuid}}
+      and created_at between {{startDate}} and {{endDate}}
+    order by created_at desc
     limit 500
     `,
     { websiteId, sessionId, startDate, endDate },

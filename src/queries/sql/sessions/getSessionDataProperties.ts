@@ -31,6 +31,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     ${joinSessionQuery}
     join session_data 
         on session_data.session_id = website_event.session_id
+          and session_data.website_id = website_event.website_id
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
         ${filterQuery}

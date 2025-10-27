@@ -42,26 +42,26 @@ async function relationalQuery(
 
   return rawQuery(
     `
-    select count(*) as num,
+    select count(distinct website_event.session_id) as num,
     (
-      select count(distinct session_id)
+      select count(distinct website_event.session_id)
       from website_event
       ${cohortQuery}
       ${joinSessionQuery}
-      where website_id = {{websiteId::uuid}}
+      where website_event.website_id = {{websiteId::uuid}}
       ${dateQuery}
       ${filterQuery}
     ) as total
     from website_event
     ${cohortQuery}
     ${joinSessionQuery}
-    where website_id = {{websiteId::uuid}}
+    where website_event.website_id = {{websiteId::uuid}}
       and ${column} = {{value}}
       ${dateQuery}
       ${filterQuery}
     `,
     queryParams,
-  );
+  ).then(results => results?.[0]);
 }
 
 async function clickhouseQuery(
@@ -84,7 +84,7 @@ async function clickhouseQuery(
 
   return rawQuery(
     `
-    select count(*) as num,
+    select count(distinct session_id) as num,
     (
       select count(distinct session_id)
       from website_event

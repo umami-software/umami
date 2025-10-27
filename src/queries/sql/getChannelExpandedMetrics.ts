@@ -49,19 +49,19 @@ async function relationalQuery(
   return rawQuery(
     `
       WITH prefix AS (
-        select case when utm_medium LIKE 'p%' OR
-            utm_medium LIKE '%ppc%' OR
-            utm_medium LIKE '%retargeting%' OR
-            utm_medium LIKE '%paid%' then 'paid' else 'organic' end prefix,
-            referrer_domain,
-            url_query,
-            utm_medium,
-            utm_source,
-            session_id,
-            visit_id,
+        select case when website_event.utm_medium LIKE 'p%' OR
+            website_event.utm_medium LIKE '%ppc%' OR
+            website_event.utm_medium LIKE '%retargeting%' OR
+            website_event.utm_medium LIKE '%paid%' then 'paid' else 'organic' end prefix,
+            website_event.referrer_domain,
+            website_event.url_query,
+            website_event.utm_medium,
+            website_event.utm_source,
+            website_event.session_id,
+            website_event.visit_id,
             count(*) c,
-            min(created_at) min_time,
-            max(created_at) max_time
+            min(website_event.created_at) min_time,
+            max(website_event.created_at) max_time
         from website_event
         ${cohortQuery}
         ${joinSessionQuery}
@@ -70,12 +70,12 @@ async function relationalQuery(
           ${dateQuery}
           ${filterQuery}
         group by prefix, 
-            referrer_domain,
-            url_query,
-            utm_medium,
-            utm_source,
-            session_id,
-            visit_id),
+            website_event.referrer_domain,
+            website_event.url_query,
+            website_event.utm_medium,
+            website_event.utm_source,
+            website_event.session_id,
+            website_event.visit_id),
   
       channels as (
         select case

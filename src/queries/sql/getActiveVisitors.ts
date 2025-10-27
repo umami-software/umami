@@ -18,7 +18,7 @@ async function relationalQuery(websiteId: string) {
 
   const result = await rawQuery(
     `
-    select count(distinct session_id) as visitors
+    select count(distinct session_id) as "visitors"
     from website_event
     where website_id = {{websiteId::uuid}}
     and created_at >= {{startDate}}

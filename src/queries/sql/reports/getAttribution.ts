@@ -69,14 +69,14 @@ async function relationalQuery(
 
   const eventQuery = `WITH events AS (
         select distinct
-            session_id,
-            max(created_at) max_dt
+            website_event.session_id,
+            max(website_event.created_at) max_dt
         from website_event
         ${cohortQuery}
         ${joinSessionQuery}
-        where website_id = {{websiteId::uuid}}
-          and created_at between {{startDate}} and {{endDate}}
-          and ${column} = {{step}}
+        where website_event.website_id = {{websiteId::uuid}}
+          and website_event.created_at between {{startDate}} and {{endDate}}
+          and website_event.${column} = {{step}}
           ${filterQuery}
         group by 1),`;
 
@@ -234,14 +234,14 @@ async function relationalQuery(
     `
     select 
         count(*) as "pageviews",
-        count(distinct session_id) as "visitors",
-        count(distinct visit_id) as "visits"
+        count(distinct website_event.session_id) as "visitors",
+        count(distinct website_event.visit_id) as "visits"
     from website_event
     ${joinSessionQuery}
     ${cohortQuery}
-    where website_id = {{websiteId::uuid}}
-        and created_at between {{startDate}} and {{endDate}}
-        and ${column} = {{step}}
+    where website_event.website_id = {{websiteId::uuid}}
+        and website_event.created_at between {{startDate}} and {{endDate}}
+        and website_event.${column} = {{step}}
         ${filterQuery}
     `,
     queryParams,

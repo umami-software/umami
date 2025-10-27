@@ -37,13 +37,13 @@ async function relationalQuery(
 
   return rawQuery(
     `
-    select ${column} utm, count(*) as views
+    select website_event.${column} utm, count(*) as views
     from website_event
     ${cohortQuery}
     ${joinSessionQuery}
-    where website_id = {{websiteId::uuid}}
-      and created_at between {{startDate}} and {{endDate}}
-      and coalesce(${column}, '') != ''
+    where website_event.website_id = {{websiteId::uuid}}
+      and website_event.created_at between {{startDate}} and {{endDate}}
+      and coalesce(website_event.${column}, '') != ''
       ${filterQuery}
     group by 1
     order by 2 desc

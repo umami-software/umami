@@ -24,13 +24,13 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   return rawQuery(
     `
     select
-      ${getDateWeeklySQL('created_at', timezone)} as time,
-      count(distinct session_id) as value
+      ${getDateWeeklySQL('website_event.created_at', timezone)} as time,
+      count(distinct website_event.session_id) as value
     from website_event
     ${cohortQuery}
     ${joinSessionQuery}
-    where website_id = {{websiteId::uuid}}
-      and created_at between {{startDate}} and {{endDate}}
+    where website_event.website_id = {{websiteId::uuid}}
+      and website_event.created_at between {{startDate}} and {{endDate}}
       ${filterQuery}
     group by time
     order by 2

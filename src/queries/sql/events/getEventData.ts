@@ -19,17 +19,17 @@ async function relationalQuery(websiteId: string, eventId: string) {
 
   return rawQuery(
     `
-    select website_id as websiteId,
-       session_id as sessionId,
-       event_id as eventId,
-       url_path as urlPath,
-       event_name as eventName,
-       data_key as dataKey,
-       string_value as stringValue,
-       number_value as numberValue,
-       date_value as dateValue,
-       data_type as dataType,
-       created_at as createdAt
+    select website_id as "websiteId",
+       session_id as "sessionId",
+       event_id as "eventId",
+       url_path as "urlPath",
+       event_name as "eventName",
+       data_key as "dataKey",
+       string_value as "stringValue",
+       number_value as "numberValue",
+       date_value as "dateValue",
+       data_type as "dataType",
+       created_at as "createdAt"
     from event_data
     website_id = {{websiteId::uuid}}
       event_id = {{eventId::uuid}}
