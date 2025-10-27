@@ -4,7 +4,7 @@ import { useSpring, config } from '@react-spring/web';
 import { Grid, Row, Column, Text } from '@umami/react-zen';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { Empty } from '@/components/common/Empty';
-import { useMessages } from '@/components/hooks';
+import { useMessages, useMobile } from '@/components/hooks';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
 
 const ITEM_SIZE = 30;
@@ -42,6 +42,7 @@ export function ListTable({
   currency,
 }: ListTableProps) {
   const { formatMessage, labels } = useMessages();
+  const { isMobile } = useMobile();
 
   const getRow = (row: ListData, index: number) => {
     const { label, count, percent } = row;
@@ -56,6 +57,7 @@ export function ListTable({
         showPercentage={showPercentage}
         change={renderChange ? renderChange(row, index) : null}
         currency={currency}
+        isMobile={isMobile}
       />
     );
   };
@@ -99,6 +101,7 @@ const AnimatedRow = ({
   animate,
   showPercentage = true,
   currency,
+  isMobile,
 }) => {
   const props = useSpring({
     width: percent,
@@ -117,7 +120,7 @@ const AnimatedRow = ({
       gap
     >
       <Row alignItems="center">
-        <Text truncate={true} style={{ maxWidth: '400px' }}>
+        <Text truncate={true} style={{ maxWidth: isMobile ? '200px' : '400px' }}>
           {label}
         </Text>
       </Row>
