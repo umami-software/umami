@@ -2,6 +2,8 @@ import { ReactNode } from 'react';
 import { Text, Icon, Icons, GridTable, GridColumn } from 'react-basics';
 import { useMessages, useTeamUrl } from '@/components/hooks';
 import LinkButton from '@/components/common/LinkButton';
+import Link from 'next/link';
+import styles from './WebsitesTable.module.css';
 
 export interface WebsitesTableProps {
   data: any[];
@@ -28,8 +30,28 @@ export function WebsitesTable({
 
   return (
     <GridTable data={data}>
-      <GridColumn name="name" label={formatMessage(labels.name)} />
-      <GridColumn name="domain" label={formatMessage(labels.domain)} />
+      <GridColumn name="name" label={formatMessage(labels.name)}>
+        {row =>
+          allowView ? (
+            <Link href={renderTeamUrl(`/websites/${row.id}`)} className={styles.row}>
+              {row.name}
+            </Link>
+          ) : (
+            row.name
+          )
+        }
+      </GridColumn>
+      <GridColumn name="domain" label={formatMessage(labels.domain)}>
+        {row =>
+          allowView ? (
+            <Link href={renderTeamUrl(`/websites/${row.id}`)} className={styles.row}>
+              {row.domain}
+            </Link>
+          ) : (
+            row.domain
+          )
+        }
+      </GridColumn>
       {showActions && (
         <GridColumn name="action" label=" " alignment="end">
           {row => {
