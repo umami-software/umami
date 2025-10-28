@@ -1,0 +1,11 @@
+.row {
+  color: inherit;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.row:visited {
+  color: inherit;
+}
