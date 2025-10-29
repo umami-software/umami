@@ -1,15 +1,19 @@
-import { Row, NavMenu, NavMenuItem, IconLabel, Text, Grid } from '@umami/react-zen';
-import { Globe, Grid2x2, LinkIcon } from '@/components/icons';
-import { useMessages, useNavigation } from '@/components/hooks';
-import Link from 'next/link';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
-import { Logo } from '@/components/svg';
-import { NavButton } from '@/components/input/NavButton';
+import { useMessages, useNavigation } from '@/components/hooks';
+import { Globe, Grid2x2, LinkIcon } from '@/components/icons';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
+import { NavButton } from '@/components/input/NavButton';
+import { Logo } from '@/components/svg';
+import { Grid, IconLabel, NavMenu, NavMenuItem, Row, Text } from '@umami/react-zen';
+import Link from 'next/link';
+import { AdminNav } from './admin/AdminNav';
+import { SettingsNav } from './settings/SettingsNav';
 
 export function MobileNav() {
   const { formatMessage, labels } = useMessages();
-  const { websiteId, renderUrl } = useNavigation();
+  const { pathname, websiteId, renderUrl } = useNavigation();
+  const isAdmin = pathname.includes('/admin');
+  const isSettings = pathname.includes('/settings');
 
   const links = [
     {
@@ -51,6 +55,8 @@ export function MobileNav() {
                 })}
               </NavMenu>
               {websiteId && <WebsiteNav websiteId={websiteId} onItemClick={close} />}
+              {isAdmin && <AdminNav onItemClick={close} />}
+              {isSettings && <SettingsNav onItemClick={close} />}
             </>
           );
         }}
