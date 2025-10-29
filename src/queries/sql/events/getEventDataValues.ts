@@ -47,7 +47,6 @@ async function relationalQuery(
     where event_data.website_id = {{websiteId::uuid}}
       and event_data.created_at between {{startDate}} and {{endDate}}
       and event_data.data_key = {{propertyName}}
-      and website_event.event_name = {{eventName}}
     ${filterQuery}
     group by value
     order by 2 desc
