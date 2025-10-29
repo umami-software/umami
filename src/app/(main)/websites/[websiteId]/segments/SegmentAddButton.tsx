@@ -12,6 +12,7 @@ export function SegmentAddButton({ websiteId }: { websiteId: string }) {
       label={formatMessage(labels.segment)}
       variant="primary"
       width="800px"
+      height="calc(100dvh - 40px)"
     >
       {({ close }) => {
         return <SegmentEditForm websiteId={websiteId} onClose={close} />;

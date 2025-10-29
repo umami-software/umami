@@ -21,6 +21,7 @@ export function SegmentEditButton({
       title={formatMessage(labels.segment)}
       variant="quiet"
       width="800px"
+      height="calc(100dvh - 40px)"
     >
       {({ close }) => {
         return (

@@ -1,23 +1,27 @@
 'use client';
-import { useState } from 'react';
-import { Button, Column, Box, DialogTrigger, Popover, Dialog, IconLabel } from '@umami/react-zen';
-import { useDateRange, useMessages } from '@/components/hooks';
-import { ListCheck } from '@/components/icons';
-import { Panel } from '@/components/common/Panel';
-import { Breakdown } from './Breakdown';
-import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { FieldSelectForm } from '@/app/(main)/websites/[websiteId]/(reports)/breakdown/FieldSelectForm';
+import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
+import { Panel } from '@/components/common/Panel';
+import { useDateRange, useMessages, useMobile } from '@/components/hooks';
+import { ListCheck } from '@/components/icons';
+import { DialogButton } from '@/components/input/DialogButton';
+import { Column, Row } from '@umami/react-zen';
+import { useState } from 'react';
+import { Breakdown } from './Breakdown';
 
 export function BreakdownPage({ websiteId }: { websiteId: string }) {
   const {
     dateRange: { startDate, endDate },
   } = useDateRange();
   const [fields, setFields] = useState(['path']);
+  const { isMobile } = useMobile();
 
   return (
     <Column gap>
       <WebsiteControls websiteId={websiteId} />
-      <FieldsButton value={fields} onChange={setFields} />
+      <Row alignItems="center" justifyContent={isMobile ? 'flex-end' : 'flex-start'}>
+        <FieldsButton value={fields} onChange={setFields} />
+      </Row>
       <Panel height="900px" overflow="auto" allowFullscreen>
         <Breakdown
           websiteId={websiteId}
@@ -34,19 +38,15 @@ const FieldsButton = ({ value, onChange }) => {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <Box>
-      <DialogTrigger>
-        <Button>
-          <IconLabel icon={<ListCheck />}>{formatMessage(labels.fields)}</IconLabel>
-        </Button>
-        <Popover>
-          <Dialog title={formatMessage(labels.fields)} style={{ width: 400 }}>
-            {({ close }) => (
-              <FieldSelectForm selectedFields={value} onChange={onChange} onClose={close} />
-            )}
-          </Dialog>
-        </Popover>
-      </DialogTrigger>
-    </Box>
+    <DialogButton
+      icon={<ListCheck />}
+      label={formatMessage(labels.fields)}
+      width="800px"
+      minHeight="300px"
+    >
+      {({ close }) => {
+        return <FieldSelectForm selectedFields={value} onChange={onChange} onClose={close} />;
+      }}
+    </DialogButton>
   );
 };

@@ -21,7 +21,7 @@ export function CohortEditButton({
       variant="quiet"
       title={formatMessage(labels.cohort)}
       width="800px"
-      minHeight="300px"
+      height="calc(100dvh - 40px)"
     >
       {({ close }) => {
         return (
