@@ -19,6 +19,7 @@ export function TeamDeleteForm({
     await mutateAsync(null, {
       onSuccess: async () => {
         touch('teams');
+        touch(`teams:${teamId}`);
         onSave?.();
         onClose?.();
       },

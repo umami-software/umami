@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Row, Text, Icon, DataTable, DataColumn, MenuItem, Modal } from '@umami/react-zen';
-import Link from 'next/link';
-import { Trash } from '@/components/icons';
-import { useMessages } from '@/components/hooks';
-import { Edit } from '@/components/icons';
-import { MenuButton } from '@/components/input/MenuButton';
 import { DateDistance } from '@/components/common/DateDistance';
+import { useMessages } from '@/components/hooks';
+import { Edit, Trash } from '@/components/icons';
+import { MenuButton } from '@/components/input/MenuButton';
+import { DataColumn, DataTable, Dialog, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
+import { TeamDeleteForm } from '../../teams/[teamId]/TeamDeleteForm';
+import Link from 'next/link';
+import { useState } from 'react';
 
 export function AdminTeamsTable({
   data = [],
@@ -15,7 +15,7 @@ export function AdminTeamsTable({
   showActions?: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
-  const [deleteUser, setDeleteUser] = useState(null);
+  const [deleteTeam, setDeleteTeam] = useState(null);
 
   return (
     <>
@@ -60,7 +60,7 @@ export function AdminTeamsTable({
                   </MenuItem>
                   <MenuItem
                     id="delete"
-                    onAction={() => setDeleteUser(row)}
+                    onAction={() => setDeleteTeam(id)}
                     data-test="link-button-delete"
                   >
                     <Row alignItems="center" gap>
@@ -76,7 +76,11 @@ export function AdminTeamsTable({
           </DataColumn>
         )}
       </DataTable>
-      <Modal isOpen={!!deleteUser}></Modal>
+      <Modal isOpen={!!deleteTeam}>
+        <Dialog style={{ width: 400 }}>
+          <TeamDeleteForm teamId={deleteTeam} onClose={() => setDeleteTeam(null)} />
+        </Dialog>
+      </Modal>
     </>
   );
 }

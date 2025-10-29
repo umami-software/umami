@@ -46,8 +46,15 @@ export function AdminLayout({ children }: { children: ReactNode }) {
     ?.find(({ path }) => path && pathname.startsWith(path))?.id;
 
   return (
-    <Grid columns="auto 1fr" width="100%" height="100%">
-      <Column height="100%" border="right" backgroundColor>
+    <Grid columns={{ xs: '1fr', lg: 'auto 1fr' }} width="100%" height="100%">
+      <Column
+        display={{ xs: 'none', lg: 'flex' }}
+        width="240px"
+        height="100%"
+        border="right"
+        backgroundColor
+        marginRight="2"
+      >
         <SideMenu
           items={items}
           title={formatMessage(labels.admin)}
@@ -55,7 +62,9 @@ export function AdminLayout({ children }: { children: ReactNode }) {
           allowMinimize={false}
         />
       </Column>
-      <PageBody>{children}</PageBody>
+      <Column gap="6" margin="2">
+        <PageBody>{children}</PageBody>
+      </Column>
     </Grid>
   );
 }
