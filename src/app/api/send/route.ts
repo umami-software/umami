@@ -82,6 +82,8 @@ export async function POST(request: Request) {
       id,
     } = payload;
 
+    const sourceId = websiteId || pixelId || linkId;
+
     // Cache check
     let cache: Cache | null = null;
 
@@ -128,13 +130,13 @@ export async function POST(request: Request) {
     const sessionSalt = hash(startOfMonth(createdAt).toUTCString());
     const visitSalt = hash(startOfHour(createdAt).toUTCString());
 
-    const sessionId = id ? uuid(websiteId, id) : uuid(websiteId, ip, userAgent, sessionSalt);
+    const sessionId = id ? uuid(sourceId, id) : uuid(sourceId, ip, userAgent, sessionSalt);
 
     // Create a session if not found
     if (!clickhouse.enabled && !cache?.sessionId) {
       await createSession({
         id: sessionId,
-        websiteId,
+        websiteId: sourceId,
         browser,
         os,
         device,
@@ -206,7 +208,7 @@ export async function POST(request: Request) {
             : EVENT_TYPE.pageView;
 
       await saveEvent({
-        websiteId: websiteId || linkId || pixelId,
+        websiteId: sourceId,
         sessionId,
         visitId,
         eventType,
@@ -269,6 +271,9 @@ export async function POST(request: Request) {
     return json({ cache: token, sessionId, visitId });
   } catch (e) {
     const error = serializeError(e);
+
+    // eslint-disable-next-line no-console
+    console.log(error);
 
     return serverError({ errorObject: error });
   }
