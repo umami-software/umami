@@ -18,7 +18,7 @@
     "start-docker": "npm-run-all check-db update-tracker set-routes-manifest start-server",
     "start-env": "node scripts/start-env.js",
     "start-server": "node server.js",
-    "build-app": "next build",
+    "build-app": "prisma generate && next build",
     "build-components": "rollup -c rollup.components.config.mjs",
     "build-tracker": "rollup -c rollup.tracker.config.mjs",
     "build-db": "npm-run-all copy-db-files build-db-client",
@@ -47,7 +47,8 @@
     "postbuild": "node scripts/postbuild.js",
     "test": "jest",
     "cypress-open": "cypress open cypress run",
-    "cypress-run": "cypress run cypress run"
+    "cypress-run": "cypress run cypress run",
+    "postinstall": "prisma generate"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
