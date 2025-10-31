@@ -1,6 +1,5 @@
 export const PRISMA = 'prisma';
 export const POSTGRESQL = 'postgresql';
-export const MYSQL = 'mysql';
 export const CLICKHOUSE = 'clickhouse';
 export const KAFKA = 'kafka';
 export const KAFKA_PRODUCER = 'kafka-producer';
@@ -31,7 +30,7 @@ export async function runQuery(queries: any) {
 
   const db = getDatabaseType();
 
-  if (db === POSTGRESQL || db === MYSQL) {
+  if (db === POSTGRESQL) {
     return queries[PRISMA]();
   }
 }
