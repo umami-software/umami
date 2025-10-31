@@ -5,26 +5,9 @@ import isLocalhost from 'is-localhost-ip';
 import ipaddr from 'ipaddr.js';
 import maxmind from 'maxmind';
 import { safeDecodeURIComponent } from '@/lib/url';
+import { stripPort, getIpAddress } from '@/lib/ip';
 
 const MAXMIND = 'maxmind';
-
-// The order here is important and influences how IPs are detected by lib/detect.ts
-// Please do not change the order unless you know exactly what you're doing - read https://developers.cloudflare.com/fundamentals/reference/http-headers/
-export const IP_ADDRESS_HEADERS = [
-  'x-client-ip',
-  'x-forwarded-for',
-  'cf-connecting-ip', // This should be *after* x-forwarded-for, so that x-forwarded-for is respected if present
-  'do-connecting-ip',
-  'fastly-client-ip',
-  'true-client-ip',
-  'x-real-ip',
-  'x-cluster-client-ip',
-  'x-forwarded',
-  'forwarded',
-  'x-appengine-user-ip',
-  'x-nf-client-connection-ip',
-  'x-real-ip',
-];
 
 const PROVIDER_HEADERS = [
   // Cloudflare headers
@@ -46,52 +29,6 @@ const PROVIDER_HEADERS = [
     cityHeader: 'cloudfront-viewer-city',
   },
 ];
-
-function stripPort(ip) {
-  if (ip.startsWith('[')) {
-    const endBracket = ip.indexOf(']');
-    if (endBracket !== -1) {
-      return ip.slice(0, endBracket + 1);
-    }
-  }
-
-  const idx = ip.lastIndexOf(':');
-  if (idx !== -1) {
-    if (ip.includes('.') || /^[a-zA-Z0-9.-]+$/.test(ip.slice(0, idx))) {
-      return ip.slice(0, idx);
-    }
-  }
-
-  return ip;
-}
-
-export function getIpAddress(headers: Headers) {
-  const customHeader = process.env.CLIENT_IP_HEADER;
-
-  if (customHeader && headers.get(customHeader)) {
-    return headers.get(customHeader);
-  }
-
-  const header = IP_ADDRESS_HEADERS.find(name => {
-    return headers.get(name);
-  });
-
-  const ip = headers.get(header);
-
-  if (header === 'x-forwarded-for') {
-    return ip?.split(',')?.[0]?.trim();
-  }
-
-  if (header === 'forwarded') {
-    const match = ip.match(/for=(\[?[0-9a-fA-F:.]+\]?)/);
-
-    if (match) {
-      return match[1];
-    }
-  }
-
-  return ip;
-}
 
 export function getDevice(userAgent: string) {
   const { device } = UAParser(userAgent);

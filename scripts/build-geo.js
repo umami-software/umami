@@ -6,7 +6,7 @@ import https from 'https';
 import zlib from 'zlib';
 import tar from 'tar';
 
-if (process.env.VERCEL) {
+if (process.env.VERCEL && !process.env.BUILD_GEO) {
   console.log('Vercel environment detected. Skipping geo setup.');
   process.exit(0);
 }
