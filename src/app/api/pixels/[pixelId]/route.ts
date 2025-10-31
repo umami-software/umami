@@ -24,8 +24,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ pixe
 
 export async function POST(request: Request, { params }: { params: Promise<{ pixelId: string }> }) {
   const schema = z.object({
-    name: z.string(),
-    slug: z.string().min(8),
+    name: z.string().optional(),
+    slug: z.string().min(8).optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
