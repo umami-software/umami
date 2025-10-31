@@ -8,6 +8,7 @@ export interface LinkButtonProps extends ButtonProps {
   target?: string;
   scroll?: boolean;
   variant?: any;
+  prefetch?: boolean;
   children?: ReactNode;
 }
 
@@ -16,6 +17,7 @@ export function LinkButton({
   variant,
   scroll = true,
   target,
+  prefetch,
   children,
   ...props
 }: LinkButtonProps) {
@@ -23,7 +25,7 @@ export function LinkButton({
 
   return (
     <Button {...props} variant={variant} asChild>
-      <Link href={href} dir={dir} scroll={scroll} target={target}>
+      <Link href={href} dir={dir} scroll={scroll} target={target} prefetch={prefetch}>
         {children}
       </Link>
     </Button>
