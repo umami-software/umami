@@ -30,10 +30,18 @@ const PROVIDER_HEADERS = [
   },
 ];
 
-export function getDevice(userAgent: string) {
+export function getDevice(userAgent: string, screen: string = '') {
   const { device } = UAParser(userAgent);
 
-  return device?.type || 'desktop';
+  const [width] = screen.split('x');
+
+  const type = device?.type || 'desktop';
+
+  if (type === 'desktop' && screen && +width <= 1920) {
+    return 'laptop';
+  }
+
+  return type;
 }
 
 function getRegionCode(country: string, region: string) {
@@ -108,7 +116,7 @@ export async function getClientInfo(request: Request, payload: Record<string, an
   const city = safeDecodeURIComponent(location?.city);
   const browser = browserName(userAgent);
   const os = detectOS(userAgent) as string;
-  const device = getDevice(userAgent);
+  const device = getDevice(userAgent, payload?.screen);
 
   return { userAgent, browser, os, ip, country, region, city, device };
 }

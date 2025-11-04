@@ -1,19 +1,16 @@
-// The order here is important and influences how IPs are detected by lib/detect.ts
-// Please do not change the order unless you know exactly what you're doing - read https://developers.cloudflare.com/fundamentals/reference/http-headers/
 export const IP_ADDRESS_HEADERS = [
-  'x-client-ip',
-  'x-forwarded-for',
-  'cf-connecting-ip', // This should be *after* x-forwarded-for, so that x-forwarded-for is respected if present
-  'do-connecting-ip',
-  'fastly-client-ip',
-  'true-client-ip',
   'x-real-ip',
+  'x-forwarded-for',
+  'cf-connecting-ip', // Cloudflare
+  'fastly-client-ip', // Fastly
+  'true-client-ip', // Akamai
+  'x-nf-client-connection-ip', // Netlify
+  'do-connecting-ip', // Digital Ocean
+  'x-appengine-user-ip', // Google App Ending
+  'x-client-ip',
   'x-cluster-client-ip',
   'x-forwarded',
   'forwarded',
-  'x-appengine-user-ip',
-  'x-nf-client-connection-ip',
-  'x-real-ip',
 ];
 
 export function getIpAddress(headers: Headers) {
