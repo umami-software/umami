@@ -33,11 +33,19 @@ export function DialogButton({
   ...props
 }: DialogButtonProps) {
   const { isMobile } = useMobile();
-  const style: CSSProperties = { width, height, minWidth, minHeight, padding: '32px' };
+  const style: CSSProperties = {
+    width,
+    height,
+    minWidth,
+    minHeight,
+    maxHeight: 'calc(100dvh - 40px)',
+    padding: '32px',
+  };
 
   if (isMobile) {
     style.width = '100%';
     style.height = '100%';
+    style.maxHeight = '100%';
     style.overflowY = 'auto';
   }
 

@@ -12,7 +12,6 @@ export function CohortAddButton({ websiteId }: { websiteId: string }) {
       label={formatMessage(labels.cohort)}
       variant="primary"
       width="800px"
-      height="calc(100dvh - 40px)"
     >
       {({ close }) => {
         return <CohortEditForm websiteId={websiteId} onClose={close} />;
