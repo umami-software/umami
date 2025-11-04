@@ -42,7 +42,7 @@ RUN set -x \
     && apk add --no-cache curl
 
 # Script dependencies
-RUN pnpm add npm-run-all dotenv chalk semver prisma@6.16.3 @prisma/adapter-pg@6.16.3
+RUN pnpm add npm-run-all dotenv chalk semver prisma@6.18.0 @prisma/adapter-pg@6.18.0
 
 # Permissions for prisma
 RUN chown -R nextjs:nodejs node_modules/.pnpm/
