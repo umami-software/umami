@@ -1,9 +1,9 @@
 export const IP_ADDRESS_HEADERS = [
-  'x-real-ip',
+  'true-client-ip', // CDN
+  'x-real-ip', // Reverse proxy
   'x-forwarded-for',
   'cf-connecting-ip', // Cloudflare
   'fastly-client-ip', // Fastly
-  'true-client-ip', // Akamai
   'x-nf-client-connection-ip', // Netlify
   'do-connecting-ip', // Digital Ocean
   'x-appengine-user-ip', // Google App Ending
