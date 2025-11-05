@@ -113,7 +113,107 @@ docker compose up --force-recreate -d
 
 ---
 
+## 🎯 First8 Marketing Integration
+
+This is a customized version of Umami Analytics integrated into the **First8 Marketing Hyper-Personalized System**. This implementation extends the standard Umami installation with:
+
+### Enhanced Features
+
+- **PostgreSQL 17 with Apache AGE** - Graph database capabilities for advanced relationship tracking
+- **TimescaleDB Integration** - Time-series optimization for analytics data
+- **Extended Event Tracking** - Comprehensive WordPress and WooCommerce event capture
+- **Real-time Data Pipeline** - ETL integration with the recommendation engine
+- **Multi-dimensional Analytics** - Contextual, behavioral, temporal, and journey tracking
+
+### System Architecture
+
+This Umami instance serves as the **data collection layer** for the First8 Marketing hyper-personalization system:
+
+```
+WordPress Site → Umami Analytics → Recommendation Engine → Personalized Content
+```
+
+**Data Flow:**
+1. **Collection**: Umami captures all user interactions, page views, and WooCommerce events
+2. **Storage**: Events stored in PostgreSQL with TimescaleDB for time-series optimization
+3. **Graph Analysis**: Apache AGE enables relationship mapping between users, products, and behaviors
+4. **ETL Pipeline**: Real-time synchronization with the recommendation engine
+5. **Personalization**: ML models use analytics data to generate hyper-personalized recommendations
+
+### Integration Components
+
+This Umami installation works in conjunction with:
+
+- **First8 Marketing Track Plugin** - WordPress connector for seamless event tracking
+- **Recommendation Engine** - Proprietary ML-powered personalization backend
+- **First8 Marketing Recommendation Engine Plugin** - WordPress connector for displaying personalized content
+
+### Database Enhancements
+
+**PostgreSQL Extensions:**
+- **Apache AGE 1.6.0** - Graph database for relationship mapping
+- **TimescaleDB 2.23.0** - Time-series optimization for analytics queries
+- **Prisma 6.18.0** - ORM for database management
+
+**Custom Schema Extensions:**
+- User journey tracking tables
+- Product interaction graphs
+- Session behavior analysis
+- Purchase pattern storage
+
+### Configuration for First8 Marketing
+
+**Environment Variables:**
+```bash
+DATABASE_URL=postgresql://username:password@localhost:5432/umami
+NODE_ENV=production
+PORT=3000
+```
+
+**Required PostgreSQL Version:** 17.x (for Apache AGE compatibility)
+
+### Usage in First8 Marketing System
+
+**Event Tracking:**
+- All WordPress core events (page views, clicks, form submissions)
+- WooCommerce events (product views, add to cart, purchases, checkout steps)
+- Custom events via First8 Marketing Track plugin
+- User journey and session tracking
+
+**Data Access:**
+- Real-time analytics dashboard via Umami UI
+- ETL pipeline for recommendation engine
+- Graph queries via Apache AGE for relationship analysis
+- Time-series queries via TimescaleDB for trend analysis
+
+### Deployment Notes
+
+This instance is configured for standalone deployment with:
+- PostgreSQL 17 database server
+- Apache AGE graph extension
+- TimescaleDB time-series extension
+- Node.js 18.18+ runtime
+- Reverse proxy (Nginx/Apache) for production
+
+### Credits
+
+**Original Software:**
+- **Umami Analytics** - Created by [Umami Software](https://umami.is)
+- Licensed under MIT License
+- Original repository: [github.com/umami-software/umami](https://github.com/umami-software/umami)
+
+**First8 Marketing Customization:**
+- **Integration & Enhancement** - First8 Marketing
+- PostgreSQL 17 + Apache AGE + TimescaleDB integration
+- Extended event tracking for WordPress/WooCommerce
+- ETL pipeline for recommendation engine
+- Custom schema extensions for hyper-personalization
+
+---
+
 ## 🛟 Support
+
+**Original Umami Support:**
 
 <p align="center">
   <a href="https://github.com/umami-software/umami">
@@ -129,6 +229,19 @@ docker compose up --force-recreate -d
     <img src="https://img.shields.io/badge/Discord--blue?style=social&logo=discord" alt="Discord" />
   </a>
 </p>
+
+**First8 Marketing Integration Support:**
+- For integration-specific issues, contact First8 Marketing
+- For core Umami issues, use the official Umami support channels above
+
+---
+
+## 📄 License
+
+This project maintains the original MIT License from Umami Software.
+
+**Original Authors:** Umami Software
+**Integration & Customization:** First8 Marketing
 
 [release-shield]: https://img.shields.io/github/release/umami-software/umami.svg
 [releases-url]: https://github.com/umami-software/umami/releases

@@ -1,0 +1,114 @@
+---
+# Docker Compose for Umami with PostgreSQL 17 + Apache AGE + TimescaleDB
+# This is the upgraded configuration for the hyper-personalized marketing system
+services:
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://umami:umami@db:5432/umami
+      DATABASE_TYPE: postgresql
+      APP_SECRET: ${APP_SECRET:-replace-me-with-a-random-string}
+      # Optional: Enable debug logging
+      # LOG_QUERY: 1
+    depends_on:
+      db:
+        condition: service_healthy
+    init: true
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:3000/api/heartbeat"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - umami-network
+
+  db:
+    # Custom PostgreSQL 17 image with Apache AGE and TimescaleDB
+    build:
+      context: ./docker/postgres
+      dockerfile: Dockerfile
+    image: postgres:17-age-timescaledb
+    environment:
+      POSTGRES_DB: umami
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-umami}
+      # TimescaleDB configuration
+      TIMESCALEDB_TELEMETRY: 'off'
+    volumes:
+      - umami-db-data:/var/lib/postgresql/data
+      # Mount initialization scripts
+      - ./docker/postgres/init-scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - umami-network
+    # Increase shared memory for better performance
+    shm_size: 256mb
+    # PostgreSQL configuration for performance
+    command:
+      - "postgres"
+      - "-c"
+      - "shared_preload_libraries=timescaledb,age"
+      - "-c"
+      - "max_connections=200"
+      - "-c"
+      - "shared_buffers=256MB"
+      - "-c"
+      - "effective_cache_size=1GB"
+      - "-c"
+      - "maintenance_work_mem=128MB"
+      - "-c"
+      - "checkpoint_completion_target=0.9"
+      - "-c"
+      - "wal_buffers=16MB"
+      - "-c"
+      - "default_statistics_target=100"
+      - "-c"
+      - "random_page_cost=1.1"
+      - "-c"
+      - "effective_io_concurrency=200"
+      - "-c"
+      - "work_mem=4MB"
+      - "-c"
+      - "min_wal_size=1GB"
+      - "-c"
+      - "max_wal_size=4GB"
+
+  # Optional: pgAdmin for database management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@umami.local}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - db
+    restart: always
+    networks:
+      - umami-network
+    profiles:
+      - tools
+
+volumes:
+  umami-db-data:
+    driver: local
+  pgadmin-data:
+    driver: local
+
+networks:
+  umami-network:
+    driver: bridge
+

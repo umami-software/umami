@@ -42,3 +42,40 @@ yarn-error.log*
 
 *.dev.yml
 
+# database files
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# prisma generated
+prisma/generated/
+
+# cache
+.cache/
+.eslintcache
+.stylelintcache
+
+# temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+
+# OS files
+Thumbs.db
+Desktop.ini
+*~
+
+# secrets
+*.key
+*.pem
+secrets/
+
+# logs
+logs/
+*.log
+
+# custom
+public/uploads/
+public/cache/

@@ -121,6 +121,20 @@ model WebsiteEvent {
   tag            String?   @db.VarChar(50)
   hostname       String?   @db.VarChar(100)
 
+  // Enhanced engagement tracking fields
+  scrollDepth       Int?     @map("scroll_depth") @db.Integer
+  timeOnPage        Int?     @map("time_on_page") @db.Integer
+  clickCount        Int?     @map("click_count") @db.Integer
+  formInteractions  Json?    @map("form_interactions")
+
+  // WooCommerce e-commerce tracking fields
+  wcProductId       String?  @map("wc_product_id") @db.VarChar(50)
+  wcCategoryId      String?  @map("wc_category_id") @db.VarChar(50)
+  wcCartValue       Decimal? @map("wc_cart_value") @db.Decimal(19, 4)
+  wcCheckoutStep    Int?     @map("wc_checkout_step") @db.Integer
+  wcOrderId         String?  @map("wc_order_id") @db.VarChar(50)
+  wcRevenue         Decimal? @map("wc_revenue") @db.Decimal(19, 4)
+
   eventData EventData[]
   session   Session     @relation(fields: [sessionId], references: [id])
 
