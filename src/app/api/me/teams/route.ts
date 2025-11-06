@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { pagingParams } from '@/lib/schema';
-import { getUserTeams } from '@/queries';
+import { getUserTeams } from '@/queries/prisma';
 import { json } from '@/lib/response';
-import { parseRequest } from '@/lib/request';
+import { getQueryFilters, parseRequest } from '@/lib/request';
 
 export async function GET(request: Request) {
   const schema = z.object({
@@ -15,7 +15,9 @@ export async function GET(request: Request) {
     return error();
   }
 
-  const teams = await getUserTeams(auth.user.id, query);
+  const filters = await getQueryFilters(query);
+
+  const teams = await getUserTeams(auth.user.id, filters);
 
   return json(teams);
 }

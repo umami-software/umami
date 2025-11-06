@@ -8,29 +8,51 @@ import { fetchWebsite } from '@/lib/load';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { createToken, parseToken } from '@/lib/jwt';
 import { secret, uuid, hash } from '@/lib/crypto';
-import { COLLECTION_TYPE } from '@/lib/constants';
+import { COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData } from '@/queries';
+import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
+import { serializeError } from 'serialize-error';
+
+interface Cache {
+  websiteId: string;
+  sessionId: string;
+  visitId: string;
+  iat: number;
+}
 
 const schema = z.object({
   type: z.enum(['event', 'identify']),
-  payload: z.object({
-    website: z.string().uuid(),
-    data: anyObjectParam.optional(),
-    hostname: z.string().max(100).optional(),
-    language: z.string().max(35).optional(),
-    referrer: urlOrPathParam.optional(),
-    screen: z.string().max(11).optional(),
-    title: z.string().optional(),
-    url: urlOrPathParam.optional(),
-    name: z.string().max(50).optional(),
-    tag: z.string().max(50).optional(),
-    ip: z.string().ip().optional(),
-    userAgent: z.string().optional(),
-    timestamp: z.coerce.number().int().optional(),
-    id: z.string().optional(),
-  }),
+  payload: z
+    .object({
+      website: z.uuid().optional(),
+      link: z.uuid().optional(),
+      pixel: z.uuid().optional(),
+      data: anyObjectParam.optional(),
+      hostname: z.string().max(100).optional(),
+      language: z.string().max(35).optional(),
+      referrer: urlOrPathParam.optional(),
+      screen: z.string().max(11).optional(),
+      title: z.string().optional(),
+      url: urlOrPathParam.optional(),
+      name: z.string().max(50).optional(),
+      tag: z.string().max(50).optional(),
+      ip: z.string().optional(),
+      userAgent: z.string().optional(),
+      timestamp: z.coerce.number().int().optional(),
+      id: z.string().optional(),
+    })
+    .refine(
+      data => {
+        const keys = [data.website, data.link, data.pixel];
+        const count = keys.filter(Boolean).length;
+        return count === 1;
+      },
+      {
+        message: 'Exactly one of website, link, or pixel must be provided',
+        path: ['website'],
+      },
+    ),
 });
 
 export async function POST(request: Request) {
@@ -45,6 +67,8 @@ export async function POST(request: Request) {
 
     const {
       website: websiteId,
+      pixel: pixelId,
+      link: linkId,
       hostname,
       screen,
       language,
@@ -58,24 +82,29 @@ export async function POST(request: Request) {
       id,
     } = payload;
 
+    const sourceId = websiteId || pixelId || linkId;
+
     // Cache check
-    let cache: { websiteId: string; sessionId: string; visitId: string; iat: number } | null = null;
-    const cacheHeader = request.headers.get('x-umami-cache');
+    let cache: Cache | null = null;
 
-    if (cacheHeader) {
-      const result = await parseToken(cacheHeader, secret());
+    if (websiteId) {
+      const cacheHeader = request.headers.get('x-umami-cache');
 
-      if (result) {
-        cache = result;
+      if (cacheHeader) {
+        const result = await parseToken(cacheHeader, secret());
+
+        if (result) {
+          cache = result;
+        }
       }
-    }
 
-    // Find website
-    if (!cache?.websiteId) {
-      const website = await fetchWebsite(websiteId);
+      // Find website
+      if (!cache?.websiteId) {
+        const website = await fetchWebsite(websiteId);
 
-      if (!website) {
-        return badRequest('Website not found.');
+        if (!website) {
+          return badRequest({ message: 'Website not found.' });
+        }
       }
     }
 
@@ -101,26 +130,23 @@ export async function POST(request: Request) {
     const sessionSalt = hash(startOfMonth(createdAt).toUTCString());
     const visitSalt = hash(startOfHour(createdAt).toUTCString());
 
-    const sessionId = id ? uuid(websiteId, id) : uuid(websiteId, ip, userAgent, sessionSalt);
+    const sessionId = id ? uuid(sourceId, id) : uuid(sourceId, ip, userAgent, sessionSalt);
 
     // Create a session if not found
     if (!clickhouse.enabled && !cache?.sessionId) {
-      await createSession(
-        {
-          id: sessionId,
-          websiteId,
-          browser,
-          os,
-          device,
-          screen,
-          language,
-          country,
-          region,
-          city,
-          distinctId: id,
-        },
-        { skipDuplicates: true },
-      );
+      await createSession({
+        id: sessionId,
+        websiteId: sourceId,
+        browser,
+        os,
+        device,
+        screen,
+        language,
+        country,
+        region,
+        city,
+        distinctId: id,
+      });
     }
 
     // Visit info
@@ -170,16 +196,22 @@ export async function POST(request: Request) {
 
         referrerPath = referrerUrl.pathname;
         referrerQuery = referrerUrl.search.substring(1);
-
-        if (referrerUrl.hostname !== 'localhost') {
-          referrerDomain = referrerUrl.hostname.replace(/^www\./, '');
-        }
+        referrerDomain = referrerUrl.hostname.replace(/^www\./, '');
       }
 
+      const eventType = linkId
+        ? EVENT_TYPE.linkEvent
+        : pixelId
+          ? EVENT_TYPE.pixelEvent
+          : name
+            ? EVENT_TYPE.customEvent
+            : EVENT_TYPE.pageView;
+
       await saveEvent({
-        websiteId,
+        websiteId: sourceId,
         sessionId,
         visitId,
+        eventType,
         createdAt,
 
         // Page
@@ -222,9 +254,7 @@ export async function POST(request: Request) {
         lifatid,
         twclid,
       });
-    }
-
-    if (type === COLLECTION_TYPE.identify) {
+    } else if (type === COLLECTION_TYPE.identify) {
       if (data) {
         await saveSessionData({
           websiteId,
@@ -240,6 +270,11 @@ export async function POST(request: Request) {
 
     return json({ cache: token, sessionId, visitId });
   } catch (e) {
-    return serverError(e);
+    const error = serializeError(e);
+
+    // eslint-disable-next-line no-console
+    console.log(error);
+
+    return serverError({ errorObject: error });
   }
 }

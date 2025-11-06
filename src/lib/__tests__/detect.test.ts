@@ -1,5 +1,4 @@
 import * as detect from '../detect';
-import { expect } from '@jest/globals';
 
 const IP = '127.0.0.1';
 const BAD_IP = '127.127.127.127';

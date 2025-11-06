@@ -1,10 +1,7 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
 
-export async function createSession(
-  data: Prisma.SessionCreateInput,
-  options = { skipDuplicates: false },
-) {
+export async function createSession(data: Prisma.SessionCreateInput) {
   const {
     id,
     websiteId,
@@ -36,12 +33,7 @@ export async function createSession(
       },
     });
   } catch (e: any) {
-    // With skipDuplicates flag: ignore unique constraint error and return null
-    if (
-      options.skipDuplicates &&
-      e instanceof Prisma.PrismaClientKnownRequestError &&
-      e.code === 'P2002'
-    ) {
+    if (e.message.toLowerCase().includes('unique constraint')) {
       return null;
     }
     throw e;

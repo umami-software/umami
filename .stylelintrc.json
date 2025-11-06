@@ -1,11 +1,6 @@
 {
-  "extends": [
-    "stylelint-config-recommended",
-    "stylelint-config-css-modules",
-    "stylelint-config-prettier"
-  ],
+  "extends": ["stylelint-config-recommended", "stylelint-config-css-modules"],
   "rules": {
     "no-descending-specificity": null
-  },
-  "ignoreFiles": ["**/*.js", "**/*.md"]
+  }
 }

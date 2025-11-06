@@ -1,35 +1,25 @@
 import debug from 'debug';
-import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
-import { formatInTimeZone } from 'date-fns-tz';
-import { MYSQL, POSTGRESQL, getDatabaseType } from '@/lib/db';
-import { SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE } from './constants';
-import { fetchWebsite } from './load';
-import { maxDate } from './date';
-import { QueryFilters, QueryOptions, PageParams } from './types';
-import { filtersToArray } from './params';
+import { PrismaClient } from '@/generated/prisma/client';
+import { SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE, FILTER_COLUMNS } from './constants';
+import { QueryOptions, QueryFilters, Operator } from './types';
+import { filtersObjectToArray } from './params';
 
 const log = debug('umami:prisma');
 
 const PRISMA = 'prisma';
+
 const PRISMA_LOG_OPTIONS = {
   log: [
     {
-      emit: 'event',
-      level: 'query',
+      emit: 'event' as const,
+      level: 'query' as const,
     },
   ],
 };
 
-const MYSQL_DATE_FORMATS = {
-  minute: '%Y-%m-%dT%H:%i:00',
-  hour: '%Y-%m-%d %H:00:00',
-  day: '%Y-%m-%d 00:00:00',
-  month: '%Y-%m-01 00:00:00',
-  year: '%Y-01-01 00:00:00',
-};
-
-const POSTGRESQL_DATE_FORMATS = {
+const DATE_FORMATS = {
   minute: 'YYYY-MM-DD HH24:MI:00',
   hour: 'YYYY-MM-DD HH24:00:00',
   day: 'YYYY-MM-DD HH24:00:00',
@@ -38,107 +28,42 @@ const POSTGRESQL_DATE_FORMATS = {
 };
 
 function getAddIntervalQuery(field: string, interval: string): string {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    return `${field} + interval '${interval}'`;
-  }
-
-  if (db === MYSQL) {
-    return `DATE_ADD(${field}, interval ${interval})`;
-  }
+  return `${field} + interval '${interval}'`;
 }
 
 function getDayDiffQuery(field1: string, field2: string): string {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    return `${field1}::date - ${field2}::date`;
-  }
-
-  if (db === MYSQL) {
-    return `DATEDIFF(${field1}, ${field2})`;
-  }
+  return `${field1}::date - ${field2}::date`;
 }
 
 function getCastColumnQuery(field: string, type: string): string {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    return `${field}::${type}`;
-  }
-
-  if (db === MYSQL) {
-    return `${field}`;
-  }
+  return `${field}::${type}`;
 }
 
 function getDateSQL(field: string, unit: string, timezone?: string): string {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    if (timezone) {
-      return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${POSTGRESQL_DATE_FORMATS[unit]}')`;
-    }
-    return `to_char(date_trunc('${unit}', ${field}), '${POSTGRESQL_DATE_FORMATS[unit]}')`;
+  if (timezone) {
+    return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${DATE_FORMATS[unit]}')`;
   }
 
-  if (db === MYSQL) {
-    if (timezone) {
-      const tz = formatInTimeZone(new Date(), timezone, 'xxx');
-      return `date_format(convert_tz(${field},'+00:00','${tz}'), '${MYSQL_DATE_FORMATS[unit]}')`;
-    }
-    return `date_format(${field}, '${MYSQL_DATE_FORMATS[unit]}')`;
-  }
+  return `to_char(date_trunc('${unit}', ${field}), '${DATE_FORMATS[unit]}')`;
 }
 
 function getDateWeeklySQL(field: string, timezone?: string) {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    return `concat(extract(dow from (${field} at time zone '${timezone}')), ':', to_char((${field} at time zone '${timezone}'), 'HH24'))`;
-  }
-
-  if (db === MYSQL) {
-    const tz = formatInTimeZone(new Date(), timezone, 'xxx');
-    return `date_format(convert_tz(${field},'+00:00','${tz}'), '%w:%H')`;
-  }
+  return `concat(extract(dow from (${field} at time zone '${timezone}')), ':', to_char((${field} at time zone '${timezone}'), 'HH24'))`;
 }
 
 export function getTimestampSQL(field: string) {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    return `floor(extract(epoch from ${field}))`;
-  }
-
-  if (db === MYSQL) {
-    return `UNIX_TIMESTAMP(${field})`;
-  }
+  return `floor(extract(epoch from ${field}))`;
 }
 
 function getTimestampDiffSQL(field1: string, field2: string): string {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    return `floor(extract(epoch from (${field2} - ${field1})))`;
-  }
-
-  if (db === MYSQL) {
-    return `timestampdiff(second, ${field1}, ${field2})`;
-  }
+  return `floor(extract(epoch from (${field2} - ${field1})))`;
 }
 
 function getSearchSQL(column: string, param: string = 'search'): string {
-  const db = getDatabaseType();
-  const like = db === POSTGRESQL ? 'ilike' : 'like';
-
-  return `and ${column} ${like} {{${param}}}`;
+  return `and ${column} ilike {{${param}}}`;
 }
 
 function mapFilter(column: string, operator: string, name: string, type: string = '') {
-  const db = getDatabaseType();
-  const like = db === POSTGRESQL ? 'ilike' : 'like';
   const value = `{{${name}${type ? `::${type}` : ''}}}`;
 
   switch (operator) {
@@ -147,60 +72,30 @@ function mapFilter(column: string, operator: string, name: string, type: string 
     case OPERATORS.notEquals:
       return `${column} != ${value}`;
     case OPERATORS.contains:
-      return `${column} ${like} ${value}`;
+      return `${column} ilike ${value}`;
     case OPERATORS.doesNotContain:
-      return `${column} not ${like} ${value}`;
+      return `${column} not ilike ${value}`;
     default:
       return '';
   }
 }
 
-function mapCohortFilter(column: string, operator: string, value: string) {
-  const db = getDatabaseType();
-  const like = db === POSTGRESQL ? 'ilike' : 'like';
+function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}): string {
+  const query = filtersObjectToArray(filters, options).reduce(
+    (arr, { name, column, operator, prefix = '' }) => {
+      const isCohort = options?.isCohort;
 
-  switch (operator) {
-    case OPERATORS.equals:
-      return `${column} = '${value}'`;
-    case OPERATORS.notEquals:
-      return `${column} != '${value}'`;
-    case OPERATORS.contains:
-      return `${column} ${like} '${value}'`;
-    case OPERATORS.doesNotContain:
-      return `${column} not ${like} '${value}'`;
-    default:
-      return '';
-  }
-}
-
-function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}): string {
-  const query = filtersToArray(filters, options).reduce((arr, { name, column, operator }) => {
-    if (column) {
-      arr.push(`and ${mapFilter(column, operator, name)}`);
-
-      if (name === 'referrer') {
-        arr.push(
-          `and (website_event.referrer_domain != website_event.hostname or website_event.referrer_domain is null)`,
-        );
+      if (isCohort) {
+        column = FILTER_COLUMNS[name.slice('cohort_'.length)];
       }
-    }
 
-    return arr;
-  }, []);
-
-  return query.join('\n');
-}
-
-function getCohortQuery(websiteId: string, filters: QueryFilters = {}, options: QueryOptions = {}) {
-  const query = filtersToArray(filters, options).reduce(
-    (arr, { name, column, operator, value }) => {
       if (column) {
-        arr.push(
-          `${arr.length === 0 ? 'where' : 'and'} ${mapCohortFilter(column, operator, value)}`,
-        );
+        arr.push(`and ${mapFilter(`${prefix}${column}`, operator, name)}`);
 
         if (name === 'referrer') {
-          arr.push(`and referrer_domain != hostname`);
+          arr.push(
+            `and (website_event.referrer_domain != website_event.hostname or website_event.referrer_domain is null)`,
+          );
         }
       }
 
@@ -209,26 +104,30 @@ function getCohortQuery(websiteId: string, filters: QueryFilters = {}, options: 
     [],
   );
 
-  if (query.length > 0) {
-    // add website and date range filters
-    query.push(`and website_event.website_id = '${websiteId}'`);
-    query.push(
-      `and website_event.created_at between '${filters.startDate}'::timestamptz and '${filters.endDate}'::timestamptz`,
-    );
+  return query.join('\n');
+}
 
-    return `join
+function getCohortQuery(filters: QueryFilters = {}) {
+  if (!filters || Object.keys(filters).length === 0) {
+    return '';
+  }
+
+  const filterQuery = getFilterQuery(filters, { isCohort: true });
+
+  return `join
     (select distinct website_event.session_id
     from website_event
     join session on session.session_id = website_event.session_id
-    ${query.join('\n')}) cohort
+      and session.website_id = website_event.website_id
+    where website_event.website_id = {{websiteId}}
+      and website_event.created_at between {{cohort_startDate}} and {{cohort_endDate}}
+      ${filterQuery}
+    ) cohort
     on cohort.session_id = website_event.session_id
     `;
-  }
-
-  return '';
 }
 
-function getDateQuery(filters: QueryFilters = {}) {
+function getDateQuery(filters: Record<string, any>) {
   const { startDate, endDate } = filters;
 
   if (startDate) {
@@ -242,53 +141,51 @@ function getDateQuery(filters: QueryFilters = {}) {
   return '';
 }
 
-function getFilterParams(filters: QueryFilters = {}) {
-  return filtersToArray(filters).reduce((obj, { name, operator, value }) => {
-    obj[name] = [OPERATORS.contains, OPERATORS.doesNotContain].includes(operator)
-      ? `%${value}%`
-      : value;
+function getQueryParams(filters: Record<string, any>) {
+  return {
+    ...filters,
+    ...filtersObjectToArray(filters).reduce((obj, { name, operator, value }) => {
+      obj[name] = ([OPERATORS.contains, OPERATORS.doesNotContain] as Operator[]).includes(operator)
+        ? `%${value}%`
+        : value;
 
-    return obj;
-  }, {});
+      return obj;
+    }, {}),
+  };
 }
 
-async function parseFilters(
-  websiteId: string,
-  filters: QueryFilters = {},
-  options: QueryOptions = {},
-) {
-  const website = await fetchWebsite(websiteId);
+function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   const joinSession = Object.keys(filters).find(key =>
     ['referrer', ...SESSION_COLUMNS].includes(key),
   );
 
+  const cohortFilters = Object.fromEntries(
+    Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
+  );
+
   return {
-    joinSession:
+    joinSessionQuery:
       options?.joinSession || joinSession
-        ? `inner join session on website_event.session_id = session.session_id`
+        ? `inner join session on website_event.session_id = session.session_id and website_event.website_id = session.website_id`
         : '',
-    filterQuery: getFilterQuery(filters, options),
     dateQuery: getDateQuery(filters),
-    params: {
-      ...getFilterParams(filters),
-      websiteId,
-      startDate: maxDate(filters.startDate, website?.resetAt),
-    },
-    cohortQuery: getCohortQuery(websiteId, filters?.cohort),
+    filterQuery: getFilterQuery(filters, options),
+    queryParams: getQueryParams(filters),
+    cohortQuery: getCohortQuery(cohortFilters),
   };
 }
 
-async function rawQuery(sql: string, data: object): Promise<any> {
+async function rawQuery(sql: string, data: Record<string, any>, name?: string): Promise<any> {
   if (process.env.LOG_QUERY) {
     log('QUERY:\n', sql);
     log('PARAMETERS:\n', data);
+    log('NAME:\n', name);
   }
-
-  const db = getDatabaseType();
   const params = [];
+  const schema = getSchema();
 
-  if (db !== POSTGRESQL && db !== MYSQL) {
-    return Promise.reject(new Error('Unknown database.'));
+  if (schema) {
+    await client.$executeRawUnsafe(`SET search_path TO "${schema}";`);
   }
 
   const query = sql?.replaceAll(/\{\{\s*(\w+)(::\w+)?\s*}}/g, (...args) => {
@@ -298,16 +195,14 @@ async function rawQuery(sql: string, data: object): Promise<any> {
 
     params.push(value);
 
-    return db === MYSQL ? '?' : `$${params.length}${type ?? ''}`;
+    return `$${params.length}${type ?? ''}`;
   });
 
-  return process.env.DATABASE_REPLICA_URL
-    ? client.$replica().$queryRawUnsafe(query, ...params)
-    : client.$queryRawUnsafe(query, ...params);
+  return client.$queryRawUnsafe(query, ...params);
 }
 
-async function pagedQuery<T>(model: string, criteria: T, pageParams: PageParams) {
-  const { page = 1, pageSize, orderBy, sortDescending = false } = pageParams || {};
+async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters) {
+  const { page = 1, pageSize, orderBy, sortDescending = false, search } = filters || {};
   const size = +pageSize || DEFAULT_PAGE_SIZE;
 
   const data = await client[model].findMany({
@@ -326,15 +221,16 @@ async function pagedQuery<T>(model: string, criteria: T, pageParams: PageParams)
 
   const count = await client[model].count({ where: (criteria as any).where });
 
-  return { data, count, page: +page, pageSize: size, orderBy };
+  return { data, count, page: +page, pageSize: size, orderBy, search };
 }
 
 async function pagedRawQuery(
   query: string,
-  queryParams: { [key: string]: any },
-  pageParams: PageParams = {},
+  queryParams: Record<string, any>,
+  filters: QueryFilters,
+  name?: string,
 ) {
-  const { page = 1, pageSize, orderBy, sortDescending = false } = pageParams;
+  const { page = 1, pageSize, orderBy, sortDescending = false } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
   const direction = sortDescending ? 'desc' : 'asc';
@@ -350,26 +246,15 @@ async function pagedRawQuery(
     res => res[0].num,
   );
 
-  const data = await rawQuery(`${query}${statements}`, queryParams);
+  const data = await rawQuery(`${query}${statements}`, queryParams, name);
 
   return { data, count, page: +page, pageSize: size, orderBy };
 }
 
-function getQueryMode(): { mode?: 'default' | 'insensitive' } {
-  const db = getDatabaseType();
-
-  if (db === POSTGRESQL) {
-    return { mode: 'insensitive' };
-  }
-
-  return {};
-}
-
-function getSearchParameters(query: string, filters: { [key: string]: any }[]) {
+function getSearchParameters(query: string, filters: Record<string, any>[]) {
   if (!query) return;
 
-  const mode = getQueryMode();
-  const parseFilter = (filter: { [key: string]: any }) => {
+  const parseFilter = (filter: Record<string, any>) => {
     const [[key, value]] = Object.entries(filter);
 
     return {
@@ -377,7 +262,7 @@ function getSearchParameters(query: string, filters: { [key: string]: any }[]) {
         typeof value === 'string'
           ? {
               [value]: query,
-              ...mode,
+              mode: 'insensitive',
             }
           : parseFilter(value),
     };
@@ -396,47 +281,61 @@ function transaction(input: any, options?: any) {
   return client.$transaction(input, options);
 }
 
-function getClient(params?: {
-  logQuery?: boolean;
-  queryLogger?: () => void;
-  replicaUrl?: string;
-  options?: any;
-}): PrismaClient {
-  const {
-    logQuery = !!process.env.LOG_QUERY,
-    queryLogger,
-    replicaUrl = process.env.DATABASE_REPLICA_URL,
-    options,
-  } = params || {};
+function getSchema() {
+  const connectionUrl = new URL(process.env.DATABASE_URL);
+
+  return connectionUrl.searchParams.get('schema');
+}
+
+function getClient() {
+  if (!process.env.DATABASE_URL) {
+    return null;
+  }
+
+  const url = process.env.DATABASE_URL;
+  const replicaUrl = process.env.DATABASE_REPLICA_URL;
+  const logQuery = process.env.LOG_QUERY;
+
+  const connectionUrl = new URL(url);
+  const schema = connectionUrl.searchParams.get('schema') ?? undefined;
+
+  const adapter = new PrismaPg({ connectionString: url.toString() }, { schema });
 
   const prisma = new PrismaClient({
+    adapter,
     errorFormat: 'pretty',
-    ...(logQuery && PRISMA_LOG_OPTIONS),
-    ...options,
+    ...(logQuery ? PRISMA_LOG_OPTIONS : {}),
   });
 
   if (replicaUrl) {
+    const replicaAdapter = new PrismaPg({ connectionString: replicaUrl.toString() }, { schema });
+
+    const replicaClient = new PrismaClient({
+      adapter: replicaAdapter,
+      ...(logQuery ? PRISMA_LOG_OPTIONS : {}),
+    });
+
     prisma.$extends(
       readReplicas({
-        url: replicaUrl,
+        replicas: [replicaClient],
       }),
     );
   }
 
   if (logQuery) {
-    prisma.$on('query' as never, queryLogger || log);
-  }
-
-  if (process.env.NODE_ENV !== 'production') {
-    global[PRISMA] = prisma;
+    prisma.$on('query' as never, log);
   }
 
   log('Prisma initialized');
 
+  if (!globalThis[PRISMA]) {
+    globalThis[PRISMA] = prisma;
+  }
+
   return prisma;
 }
 
-const client = global[PRISMA] || getClient();
+const client: PrismaClient = globalThis[PRISMA] || getClient();
 
 export default {
   client,
@@ -450,7 +349,6 @@ export default {
   getSearchParameters,
   getTimestampDiffSQL,
   getSearchSQL,
-  getQueryMode,
   pagedQuery,
   pagedRawQuery,
   parseFilters,

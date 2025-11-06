@@ -1,21 +1,15 @@
-import { useWebsiteSessions } from '@/components/hooks';
-import SessionsTable from './SessionsTable';
-import DataTable from '@/components/common/DataTable';
-import { ReactNode } from 'react';
+import { useWebsiteSessionsQuery } from '@/components/hooks';
+import { SessionsTable } from './SessionsTable';
+import { DataGrid } from '@/components/common/DataGrid';
 
-export default function SessionsDataTable({
-  websiteId,
-  children,
-}: {
-  websiteId?: string;
-  teamId?: string;
-  children?: ReactNode;
-}) {
-  const queryResult = useWebsiteSessions(websiteId);
+export function SessionsDataTable({ websiteId }: { websiteId?: string; teamId?: string }) {
+  const queryResult = useWebsiteSessionsQuery(websiteId);
 
   return (
-    <DataTable queryResult={queryResult} allowSearch={true} renderEmpty={() => children}>
-      {({ data }) => <SessionsTable data={data} showDomain={!websiteId} />}
-    </DataTable>
+    <DataGrid query={queryResult} allowPaging allowSearch>
+      {({ data }) => {
+        return <SessionsTable data={data} />;
+      }}
+    </DataGrid>
   );
 }

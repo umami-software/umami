@@ -1,0 +1,43 @@
+html,
+body {
+  font-family: var(--font-family), sans-serif;
+  color: var(--font-color);
+  font-size: var(--font-size);
+  background-color: var(--base-color-2);
+  width: 100%;
+  min-height: 100vh;
+}
+
+html[style*='padding-right'] {
+  padding-right: 0 !important;
+}
+
+a,
+a:active,
+a:hover {
+  color: var(--font-color);
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  border: 7px solid rgba(0, 0, 0, 0);
+  background-color: var(--base-color-4);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 7px solid rgba(0, 0, 0, 0);
+  background-color: var(--base-color-9);
+  border-radius: var(--border-radius-full);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  border: 4px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+}

@@ -1,9 +1,12 @@
 import prisma from '@/lib/prisma';
 import clickhouse from '@/lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from '@/lib/db';
+import { QueryFilters } from '@/lib/types';
+
+const FUNCTION_NAME = 'getValues';
 
 export async function getValues(
-  ...args: [websiteId: string, column: string, startDate: Date, endDate: Date, search: string]
+  ...args: [websiteId: string, column: string, filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -11,15 +14,11 @@ export async function getValues(
   });
 }
 
-async function relationalQuery(
-  websiteId: string,
-  column: string,
-  startDate: Date,
-  endDate: Date,
-  search: string,
-) {
+async function relationalQuery(websiteId: string, column: string, filters: QueryFilters) {
   const { rawQuery, getSearchSQL } = prisma;
   const params = {};
+  const { startDate, endDate, search } = filters;
+
   let searchQuery = '';
   let excludeDomain = '';
 
@@ -52,6 +51,7 @@ async function relationalQuery(
     from website_event
     inner join session
       on session.session_id = website_event.session_id
+        and session.website_id = website_event.website_id
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       ${searchQuery}
@@ -67,18 +67,15 @@ async function relationalQuery(
       search: `%${search}%`,
       ...params,
     },
+    FUNCTION_NAME,
   );
 }
 
-async function clickhouseQuery(
-  websiteId: string,
-  column: string,
-  startDate: Date,
-  endDate: Date,
-  search: string,
-) {
+async function clickhouseQuery(websiteId: string, column: string, filters: QueryFilters) {
   const { rawQuery, getSearchSQL } = clickhouse;
   const params = {};
+  const { startDate, endDate, search } = filters;
+
   let searchQuery = '';
   let excludeDomain = '';
 
@@ -127,5 +124,6 @@ async function clickhouseQuery(
       search,
       ...params,
     },
+    FUNCTION_NAME,
   );
 }

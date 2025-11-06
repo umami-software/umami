@@ -52,4 +52,4 @@ export async function checkVersion() {
   );
 }
 
-export default store;
+export const useVersion = store;

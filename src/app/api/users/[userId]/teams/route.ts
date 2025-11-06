@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { pagingParams } from '@/lib/schema';
-import { getUserTeams } from '@/queries';
+import { getUserTeams } from '@/queries/prisma';
 import { unauthorized, json } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
 

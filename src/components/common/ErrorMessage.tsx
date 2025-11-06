@@ -1,18 +1,16 @@
-import { Icon, Icons, Text } from 'react-basics';
-import styles from './ErrorMessage.module.css';
+import { Icon, Text, Row } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
+import { AlertTriangle } from '@/components/icons';
 
 export function ErrorMessage() {
   const { formatMessage, messages } = useMessages();
 
   return (
-    <div className={styles.error}>
-      <Icon className={styles.icon} size="lg">
-        <Icons.Alert />
+    <Row alignItems="center" justifyContent="center" gap>
+      <Icon>
+        <AlertTriangle />
       </Icon>
       <Text>{formatMessage(messages.error)}</Text>
-    </div>
+    </Row>
   );
 }
-
-export default ErrorMessage;

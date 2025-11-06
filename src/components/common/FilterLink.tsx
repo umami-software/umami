@@ -1,55 +1,49 @@
-import classNames from 'classnames';
-import { useMessages, useNavigation } from '@/components/hooks';
+import { HTMLAttributes, ReactNode, useState } from 'react';
 import Link from 'next/link';
-import { ReactNode } from 'react';
-import { Icon, Icons } from 'react-basics';
-import styles from './FilterLink.module.css';
+import { Icon, Row, Text } from '@umami/react-zen';
+import { useMessages, useNavigation } from '@/components/hooks';
+import { ExternalLink } from '@/components/icons';
 
-export interface FilterLinkProps {
-  id: string;
+export interface FilterLinkProps extends HTMLAttributes<HTMLDivElement> {
+  type: string;
   value: string;
   label?: string;
+  icon?: ReactNode;
   externalUrl?: string;
-  className?: string;
-  children?: ReactNode;
 }
 
-export function FilterLink({
-  id,
-  value,
-  label,
-  externalUrl,
-  children,
-  className,
-}: FilterLinkProps) {
+export function FilterLink({ type, value, label, externalUrl, icon }: FilterLinkProps) {
+  const [showLink, setShowLink] = useState(false);
   const { formatMessage, labels } = useMessages();
-  const { renderUrl, query } = useNavigation();
-  const active = query[id] !== undefined;
-  const selected = query[id] === value;
+  const { updateParams, query } = useNavigation();
+  const active = query[type] !== undefined;
+  const selected = query[type] === value;
 
   return (
-    <div
-      className={classNames(styles.row, className, {
-        [styles.inactive]: active && !selected,
-        [styles.active]: active && selected,
-      })}
+    <Row
+      alignItems="center"
+      gap
+      fontWeight={active && selected ? 'bold' : undefined}
+      color={active && !selected ? 'muted' : undefined}
+      onMouseOver={() => setShowLink(true)}
+      onMouseOut={() => setShowLink(false)}
     >
-      {children}
+      {icon}
       {!value && `(${label || formatMessage(labels.unknown)})`}
       {value && (
-        <Link href={renderUrl({ [id]: value })} className={styles.label} replace>
-          {label || value}
-        </Link>
+        <Text title={label || value} truncate>
+          <Link href={updateParams({ [type]: `eq.${value}` })} replace>
+            {label || value}
+          </Link>
+        </Text>
       )}
-      {externalUrl && (
-        <a className={styles.link} href={externalUrl} target="_blank" rel="noreferrer noopener">
-          <Icon className={styles.icon}>
-            <Icons.External />
+      {externalUrl && showLink && (
+        <a href={externalUrl} target="_blank" rel="noreferrer noopener">
+          <Icon color="muted">
+            <ExternalLink />
           </Icon>
         </a>
       )}
-    </div>
+    </Row>
   );
 }
-
-export default FilterLink;

@@ -1,10 +1,10 @@
 'use client';
 import { useEffect } from 'react';
-import { Loading } from 'react-basics';
+import { Loading } from '@umami/react-zen';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { setClientAuthToken } from '@/lib/client';
 
-export default function SSOPage() {
+export function SSOPage() {
   const router = useRouter();
   const search = useSearchParams();
   const url = search.get('url');
@@ -18,5 +18,5 @@ export default function SSOPage() {
     }
   }, [router, url, token]);
 
-  return <Loading />;
+  return <Loading placement="absolute" />;
 }

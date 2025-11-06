@@ -23,6 +23,12 @@
       "value": "Ekle"
     }
   ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "Pano ekle"
+    }
+  ],
   "label.add-description": [
     {
       "type": 0,
@@ -53,6 +59,12 @@
       "value": "Administrator"
     }
   ],
+  "label.affiliate": [
+    {
+      "type": 0,
+      "value": "Ortak"
+    }
+  ],
   "label.after": [
     {
       "type": 0,
@@ -77,6 +89,24 @@
       "value": "Analitik"
     }
   ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "Uygula"
+    }
+  ],
+  "label.attribution": [
+    {
+      "type": 0,
+      "value": "Atıf"
+    }
+  ],
+  "label.attribution-description": [
+    {
+      "type": 0,
+      "value": "Kullanıcıların pazarlamanızla nasıl etkileşime girdiğini ve dönüşümleri neyin tetiklediğini görün."
+    }
+  ],
   "label.average": [
     {
       "type": 0,
@@ -93,6 +123,12 @@
     {
       "type": 0,
       "value": "Önce"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "Panolar"
     }
   ],
   "label.bounce-rate": [
@@ -119,6 +155,12 @@
       "value": "Tarayıcılar"
     }
   ],
+  "label.campaigns": [
+    {
+      "type": 0,
+      "value": "Kampanyalar"
+    }
+  ],
   "label.cancel": [
     {
       "type": 0,
@@ -129,6 +171,12 @@
     {
       "type": 0,
       "value": "Şifre değiştir"
+    }
+  ],
+  "label.channels": [
+    {
+      "type": 0,
+      "value": "Kanallar"
     }
   ],
   "label.cities": [
@@ -149,10 +197,22 @@
       "value": "Hepsini temizle"
     }
   ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "Kohort"
+    }
+  ],
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "Karşılaştır"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "Tarihleri karşılaştır"
     }
   ],
   "label.confirm": [
@@ -173,16 +233,40 @@
       "value": "İçeriği"
     }
   ],
+  "label.content": [
+    {
+      "type": 0,
+      "value": "İçerik"
+    }
+  ],
   "label.continue": [
     {
       "type": 0,
       "value": "Devam et"
     }
   ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "Dönüşüm"
+    }
+  ],
+  "label.conversion-rate": [
+    {
+      "type": 0,
+      "value": "Dönüşüm oranı"
+    }
+  ],
+  "label.conversion-step": [
+    {
+      "type": 0,
+      "value": "Dönüşüm adımı"
+    }
+  ],
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "Adet"
     }
   ],
   "label.countries": [
@@ -233,10 +317,16 @@
       "value": "Tarafından oluşturldu"
     }
   ],
+  "label.currency": [
+    {
+      "type": 0,
+      "value": "Para birimi"
+    }
+  ],
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "Mevcut"
     }
   ],
   "label.current-password": [
@@ -347,16 +437,40 @@
       "value": "Cihazlar"
     }
   ],
+  "label.direct": [
+    {
+      "type": 0,
+      "value": "Doğrudan"
+    }
+  ],
   "label.dismiss": [
     {
       "type": 0,
       "value": "Reddet"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "Benzersiz ID"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
       "value": "İçermez"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "İçermiyor"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "Mevcut değil"
     }
   ],
   "label.domain": [
@@ -389,6 +503,12 @@
       "value": "Üyeyi düzenle"
     }
   ],
+  "label.email": [
+    {
+      "type": 0,
+      "value": "Email"
+    }
+  ],
   "label.enable-share-url": [
     {
       "type": 0,
@@ -419,10 +539,22 @@
       "value": "Olay verisi"
     }
   ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "Olay adı"
+    }
+  ],
   "label.events": [
     {
       "type": 0,
       "value": "Olaylar"
+    }
+  ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "Mevcut"
     }
   ],
   "label.exit": [
@@ -473,6 +605,12 @@
       "value": "Filtreler"
     }
   ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "İlk tıklama"
+    }
+  ],
   "label.first-seen": [
     {
       "type": 0,
@@ -491,22 +629,28 @@
       "value": "Kullanıcıların dönüşüm ve ayrılma oranlarını anlayın."
     }
   ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "Huniler"
+    }
+  ],
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "Hedef"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "Hedefler"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "Sayfa görüntüleme ve olaylar için hedeflerinizi takip edin."
     }
   ],
   "label.greater-than": [
@@ -521,16 +665,28 @@
       "value": "Büyük veya eşittir"
     }
   ],
-  "label.host": [
+  "label.grouped": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "Gruplandırılmış"
     }
   ],
-  "label.hosts": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "Sunucu adı"
+    }
+  ],
+  "label.includes": [
+    {
+      "type": 0,
+      "value": "İçerir"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "İçgörü"
     }
   ],
   "label.insights": [
@@ -551,6 +707,12 @@
       "value": "Is"
     }
   ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "Yanlış"
+    }
+  ],
   "label.is-not": [
     {
       "type": 0,
@@ -569,6 +731,12 @@
       "value": "Ayarlandı"
     }
   ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "Doğru"
+    }
+  ],
   "label.join": [
     {
       "type": 0,
@@ -584,13 +752,19 @@
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "Yolculuk"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users navigate through your website."
+      "value": "Kullanıcıların sitenizde nasıl gezindiğini anlayın."
+    }
+  ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "Yolculuklar"
     }
   ],
   "label.language": [
@@ -609,6 +783,12 @@
     {
       "type": 0,
       "value": "Dizüstü"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "Son tıklama"
     }
   ],
   "label.last-days": [
@@ -656,7 +836,7 @@
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "Son görüldü"
     }
   ],
   "label.leave": [
@@ -681,6 +861,12 @@
     {
       "type": 0,
       "value": "Küçük veya eşittir"
+    }
+  ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "Bağlantılar"
     }
   ],
   "label.login": [
@@ -713,6 +899,18 @@
       "value": "Max"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Genişlet"
+    }
+  ],
+  "label.medium": [
+    {
+      "type": 0,
+      "value": "Orta"
+    }
+  ],
   "label.member": [
     {
       "type": 0,
@@ -735,6 +933,12 @@
     {
       "type": 0,
       "value": "Mobil Cihaz"
+    }
+  ],
+  "label.model": [
+    {
+      "type": 0,
+      "value": "Model"
     }
   ],
   "label.more": [
@@ -813,10 +1017,46 @@
       "value": "TAMAM"
     }
   ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
+    }
+  ],
+  "label.organic-search": [
+    {
+      "type": 0,
+      "value": "Organik arama"
+    }
+  ],
+  "label.organic-shopping": [
+    {
+      "type": 0,
+      "value": "Organik alışveriş"
+    }
+  ],
+  "label.organic-social": [
+    {
+      "type": 0,
+      "value": "Organik sosyal"
+    }
+  ],
+  "label.organic-video": [
+    {
+      "type": 0,
+      "value": "Organik video"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
       "value": "OS"
+    }
+  ],
+  "label.other": [
+    {
+      "type": 0,
+      "value": "Diğer"
     }
   ],
   "label.overview": [
@@ -829,6 +1069,12 @@
     {
       "type": 0,
       "value": "Sahibi"
+    }
+  ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "Sayfa"
     }
   ],
   "label.page-of": [
@@ -867,6 +1113,36 @@
       "value": "Sayfalar"
     }
   ],
+  "label.paid-ads": [
+    {
+      "type": 0,
+      "value": "Ücretli reklamlar"
+    }
+  ],
+  "label.paid-search": [
+    {
+      "type": 0,
+      "value": "Ücretli arama"
+    }
+  ],
+  "label.paid-shopping": [
+    {
+      "type": 0,
+      "value": "Ücretli alışveriş"
+    }
+  ],
+  "label.paid-social": [
+    {
+      "type": 0,
+      "value": "Ücretli sosyal"
+    }
+  ],
+  "label.paid-video": [
+    {
+      "type": 0,
+      "value": "Ücretli video"
+    }
+  ],
   "label.password": [
     {
       "type": 0,
@@ -876,13 +1152,19 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "Yol"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "Yollar"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "Pikseller"
     }
   ],
   "label.powered-by": [
@@ -898,19 +1180,19 @@
   "label.previous": [
     {
       "type": 0,
-      "value": "Previous"
+      "value": "Önceki"
     }
   ],
   "label.previous-period": [
     {
       "type": 0,
-      "value": "Previous period"
+      "value": "Önceki dönem"
     }
   ],
   "label.previous-year": [
     {
       "type": 0,
-      "value": "Previous year"
+      "value": "Önceki yıl"
     }
   ],
   "label.profile": [
@@ -922,13 +1204,13 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "Özellikler"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "Özellik"
     }
   ],
   "label.queries": [
@@ -953,6 +1235,12 @@
     {
       "type": 0,
       "value": "Gerçek Zamanlı"
+    }
+  ],
+  "label.referral": [
+    {
+      "type": 0,
+      "value": "Yönlendirme"
     }
   ],
   "label.referrer": [
@@ -989,6 +1277,12 @@
     {
       "type": 0,
       "value": "Bölgeler"
+    }
+  ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "Kalan"
     }
   ],
   "label.remove": [
@@ -1042,19 +1336,13 @@
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "Gelir"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
-    }
-  ],
-  "label.revenue-property": [
-    {
-      "type": 0,
-      "value": "Revenue Property"
+      "value": "Gelirinizi zaman içinde inceleyin."
     }
   ],
   "label.role": [
@@ -1099,6 +1387,12 @@
       "value": "Tarih seç"
     }
   ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "Filtre seç"
+    }
+  ],
   "label.select-role": [
     {
       "type": 0,
@@ -1114,7 +1408,13 @@
   "label.session": [
     {
       "type": 0,
-      "value": "Session"
+      "value": "Oturum"
+    }
+  ],
+  "label.session-data": [
+    {
+      "type": 0,
+      "value": "Oturum verisi"
     }
   ],
   "label.sessions": [
@@ -1129,6 +1429,12 @@
       "value": "Ayarlar"
     }
   ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "Paylaş"
+    }
+  ],
   "label.share-url": [
     {
       "type": 0,
@@ -1139,6 +1445,18 @@
     {
       "type": 0,
       "value": "Tekil gün"
+    }
+  ],
+  "label.sms": [
+    {
+      "type": 0,
+      "value": "SMS"
+    }
+  ],
+  "label.sources": [
+    {
+      "type": 0,
+      "value": "Kaynaklar"
     }
   ],
   "label.start-step": [
@@ -1165,6 +1483,18 @@
       "value": "Tablet"
     }
   ],
+  "label.tag": [
+    {
+      "type": 0,
+      "value": "Etiket"
+    }
+  ],
+  "label.tags": [
+    {
+      "type": 0,
+      "value": "Etiketler"
+    }
+  ],
   "label.team": [
     {
       "type": 0,
@@ -1180,7 +1510,7 @@
   "label.team-manager": [
     {
       "type": 0,
-      "value": "Team manager"
+      "value": "Takım yöneticisi"
     }
   ],
   "label.team-member": [
@@ -1201,6 +1531,12 @@
       "value": "Takım sahibi"
     }
   ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "Takım ayarları"
+    }
+  ],
   "label.team-view-only": [
     {
       "type": 0,
@@ -1217,6 +1553,12 @@
     {
       "type": 0,
       "value": "Takımlar"
+    }
+  ],
+  "label.terms": [
+    {
+      "type": 0,
+      "value": "Koşullar"
     }
   ],
   "label.theme": [
@@ -1351,28 +1693,10 @@
       "value": "Güncelle"
     }
   ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "URL"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "URLs"
-    }
-  ],
   "label.user": [
     {
       "type": 0,
       "value": "Kullanıcı"
-    }
-  ],
-  "label.user-property": [
-    {
-      "type": 0,
-      "value": "User Property"
     }
   ],
   "label.username": [
@@ -1507,6 +1831,12 @@
       "value": " aktif ziyaretçi"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
@@ -1583,6 +1913,12 @@
     {
       "type": 1,
       "value": "url"
+    }
+  ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
     }
   ],
   "message.go-to-settings": [
@@ -1679,6 +2015,18 @@
       "value": "Henüz hiç web sitesi tanımlamadınız"
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1709,6 +2057,12 @@
     {
       "type": 0,
       "value": "Başarıyla kaydedildi."
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1769,6 +2123,12 @@
       "value": "Tetiklenen olay"
     }
   ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
@@ -1813,12 +2173,6 @@
     {
       "type": 1,
       "value": "browser"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "Bırakan ziyaretçiler"
     }
   ]
 }

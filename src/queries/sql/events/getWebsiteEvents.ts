@@ -1,94 +1,115 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, getDatabaseType, POSTGRESQL, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { PageParams, QueryFilters } from '@/lib/types';
+import { QueryFilters } from '@/lib/types';
 
-export function getWebsiteEvents(
-  ...args: [websiteId: string, filters: QueryFilters, pageParams?: PageParams]
-) {
+const FUNCTION_NAME = 'getWebsiteEvents';
+
+export function getWebsiteEvents(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-async function relationalQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
+async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { pagedRawQuery, parseFilters } = prisma;
-  const { search } = pageParams;
-  const { filterQuery, cohortQuery, params } = await parseFilters(websiteId, {
+  const { search } = filters;
+  const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
+    websiteId,
   });
 
-  const db = getDatabaseType();
-  const like = db === POSTGRESQL ? 'ilike' : 'like';
+  const searchQuery = search
+    ? `and ((event_name ilike {{search}} and event_type = 2)
+           or (url_path ilike {{search}} and event_type = 1))`
+    : '';
 
   return pagedRawQuery(
     `
     select
-      event_id as "id",
-      website_id as "websiteId", 
-      session_id as "sessionId",
-      created_at as "createdAt",
-      url_path as "urlPath",
-      url_query as "urlQuery",
-      referrer_path as "referrerPath",
-      referrer_query as "referrerQuery",
-      referrer_domain as "referrerDomain",
+      website_event.event_id as "id",
+      website_event.website_id as "websiteId", 
+      website_event.session_id as "sessionId",
+      website_event.created_at as "createdAt",
+      website_event.hostname,
+      website_event.url_path as "urlPath",
+      website_event.url_query as "urlQuery",
+      website_event.referrer_path as "referrerPath",
+      website_event.referrer_query as "referrerQuery",
+      website_event.referrer_domain as "referrerDomain",
+      session.country as country,
+      city as city,
+      device as  device,
+      os as os,
+      browser as browser,
       page_title as "pageTitle",
-      event_type as "eventType",
-      event_name as "eventName"
+      website_event.event_type as "eventType",
+      website_event.event_name as "eventName"
     from website_event
     ${cohortQuery}
-    where website_id = {{websiteId::uuid}}
-        and created_at between {{startDate}} and {{endDate}}
+    join session on session.session_id = website_event.session_id 
+      and session.website_id = website_event.website_id
+    where website_event.website_id = {{websiteId::uuid}}
+    ${dateQuery}
     ${filterQuery}
-    ${
-      search
-        ? `and ((event_name ${like} {{search}} and event_type = 2)
-           or (url_path ${like} {{search}} and event_type = 1))`
-        : ''
-    }
-    order by created_at desc
+    ${searchQuery}
+    order by website_event.created_at desc
     `,
-    { ...params, search: `%${search}%` },
-    pageParams,
+    queryParams,
+    filters,
+    FUNCTION_NAME,
   );
 }
 
-async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
-  const { pagedQuery, parseFilters } = clickhouse;
-  const { params, dateQuery, filterQuery, cohortQuery } = await parseFilters(websiteId, filters);
-  const { search } = pageParams;
+async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
+  const { pagedRawQuery, parseFilters } = clickhouse;
+  const { search } = filters;
+  const { queryParams, dateQuery, cohortQuery, filterQuery } = parseFilters({
+    ...filters,
+    websiteId,
+  });
 
-  return pagedQuery(
+  const searchQuery = search
+    ? `and ((positionCaseInsensitive(event_name, {search:String}) > 0 and event_type = 2)
+           or (positionCaseInsensitive(url_path, {search:String}) > 0 and event_type = 1))`
+    : '';
+
+  return pagedRawQuery(
     `
     select
       event_id as id,
       website_id as websiteId, 
       session_id as sessionId,
       created_at as createdAt,
+      hostname,
       url_path as urlPath,
       url_query as urlQuery,
       referrer_path as referrerPath,
       referrer_query as referrerQuery,
       referrer_domain as referrerDomain,
+      country as country,
+      city as city,
+      device as device,
+      os as os,
+      browser as browser,
       page_title as pageTitle,
       event_type as eventType,
-      event_name as eventName
+      event_name as eventName,
+      event_id IN (select event_id 
+                   from event_data 
+                   where website_id = {websiteId:UUID}
+                   ${dateQuery}) as hasData
     from website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}
     ${dateQuery}
     ${filterQuery}
-    ${
-      search
-        ? `and ((positionCaseInsensitive(event_name, {search:String}) > 0 and event_type = 2)
-           or (positionCaseInsensitive(url_path, {search:String}) > 0 and event_type = 1))`
-        : ''
-    }
+    ${searchQuery}
     order by created_at desc
     `,
-    { ...params, search },
-    pageParams,
+    queryParams,
+    filters,
+    FUNCTION_NAME,
   );
 }
