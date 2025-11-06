@@ -8,9 +8,6 @@ ALTER TABLE session ADD COLUMN IF NOT EXISTS user_id VARCHAR(36);
 -- Add index for user_id lookups
 CREATE INDEX IF NOT EXISTS idx_session_user_id ON session(user_id);
 
--- Add composite index for visitor_id and user_id
-CREATE INDEX IF NOT EXISTS idx_session_visitor_user ON session(visitor_id, user_id);
-
 -- Create user_mapping table for tracking visitor_id to user_id relationships
 CREATE TABLE IF NOT EXISTS user_mapping (
     id SERIAL PRIMARY KEY,

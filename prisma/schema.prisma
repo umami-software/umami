@@ -43,6 +43,7 @@ model Session {
   region     String?   @db.VarChar(20)
   city       String?   @db.VarChar(50)
   distinctId String?   @map("distinct_id") @db.VarChar(50)
+  userId     String?   @map("user_id") @db.VarChar(36)
   createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
 
   websiteEvents WebsiteEvent[]
@@ -52,6 +53,8 @@ model Session {
   @@index([createdAt])
   @@index([websiteId])
   @@index([websiteId, createdAt])
+  @@index([userId])
+  @@index([websiteId, userId])
   @@index([websiteId, createdAt, browser])
   @@index([websiteId, createdAt, os])
   @@index([websiteId, createdAt, device])
@@ -76,14 +79,15 @@ model Website {
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  user        User?         @relation("user", fields: [userId], references: [id])
-  createUser  User?         @relation("createUser", fields: [createdBy], references: [id])
-  team        Team?         @relation(fields: [teamId], references: [id])
-  eventData   EventData[]
-  reports     Report[]
-  revenue     Revenue[]
-  segments    Segment[]
-  sessionData SessionData[]
+  user         User?          @relation("user", fields: [userId], references: [id])
+  createUser   User?          @relation("createUser", fields: [createdBy], references: [id])
+  team         Team?          @relation(fields: [teamId], references: [id])
+  eventData    EventData[]
+  reports      Report[]
+  revenue      Revenue[]
+  segments     Segment[]
+  sessionData  SessionData[]
+  userMappings UserMapping[]
 
   @@index([userId])
   @@index([teamId])
@@ -329,4 +333,23 @@ model Pixel {
   @@index([teamId])
   @@index([createdAt])
   @@map("pixel")
+}
+
+model UserMapping {
+  id           Int       @id @default(autoincrement())
+  websiteId    String    @map("website_id") @db.Uuid
+  visitorId    String    @map("visitor_id") @db.VarChar(36)
+  userId       String    @map("user_id") @db.VarChar(36)
+  firstSeenAt  DateTime  @default(now()) @map("first_seen_at") @db.Timestamptz(6)
+  lastSeenAt   DateTime  @default(now()) @map("last_seen_at") @db.Timestamptz(6)
+  sessionCount Int       @default(1) @map("session_count")
+
+  website Website @relation(fields: [websiteId], references: [id])
+
+  @@unique([visitorId, userId])
+  @@index([visitorId])
+  @@index([userId])
+  @@index([lastSeenAt])
+  @@index([websiteId, userId])
+  @@map("user_mapping")
 }
