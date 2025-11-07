@@ -89,7 +89,7 @@ docker compose up -d
 Alternatively, to pull just the Umami Docker image with PostgreSQL support:
 
 ```bash
-docker pull docker.umami.is/umami-software/umami:postgresql-latest
+docker pull docker.umami.is/umami-software/umami:latest
 ```
 
 ---

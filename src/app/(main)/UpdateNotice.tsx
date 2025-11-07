@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useState } from 'react';
-import { Button, AlertBanner, Flexbox } from '@umami/react-zen';
+import { Button, AlertBanner, Column, Row } from '@umami/react-zen';
 import { setItem } from '@/lib/storage';
 import { useVersion, checkVersion } from '@/store/version';
 import { REPO_URL, VERSION_CHECK } from '@/lib/constants';
@@ -47,13 +47,15 @@ export function UpdateNotice({ user, config }) {
   }
 
   return (
-    <Flexbox justifyContent="space-between" alignItems="center">
-      <AlertBanner title={formatMessage(messages.newVersionAvailable, { version: `v${latest}` })}>
-        <Button variant="primary" onPress={handleViewClick}>
-          {formatMessage(labels.viewDetails)}
-        </Button>
-        <Button onPress={handleDismissClick}>{formatMessage(labels.dismiss)}</Button>
-      </AlertBanner>
-    </Flexbox>
+    <Column justifyContent="center" alignItems="center" position="fixed" top="10px" width="100%">
+      <Row width="600px">
+        <AlertBanner title={formatMessage(messages.newVersionAvailable, { version: `v${latest}` })}>
+          <Button variant="primary" onPress={handleViewClick}>
+            {formatMessage(labels.viewDetails)}
+          </Button>
+          <Button onPress={handleDismissClick}>{formatMessage(labels.dismiss)}</Button>
+        </AlertBanner>
+      </Row>
+    </Column>
   );
 }

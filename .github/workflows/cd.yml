@@ -5,6 +5,11 @@ on:
     tags:
       - 'v*.*.*'
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Optional image version (e.g. 3.0.0, v3.0.0, or 3.0.0-beta.1)'
+        required: false
+        default: ''
 
 jobs:
   build:
@@ -15,19 +20,21 @@ jobs:
       packages: write
       id-token: write
 
-    strategy:
-      matrix:
-        db-type: [postgresql]
-
     steps:
       - uses: actions/checkout@v5
 
-      # Install cosign (for image signing)
       - name: Install cosign
         uses: sigstore/cosign-installer@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: Log into GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Log into Docker Hub
         if: github.repository == 'umami-software/umami'
@@ -37,12 +44,28 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Log into GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      # Compute tags for the image
+      - name: Compute version tags
+        id: compute
+        run: |
+          INPUT="${{ github.event.inputs.version }}"
+          TAGS=""
+
+          if [[ -n "$INPUT" ]]; then
+            VERSION="${INPUT#v}"  # strip leading v
+            MAJOR=$(echo "$VERSION" | cut -d. -f1)
+            MINOR=$(echo "$VERSION" | cut -d. -f2)
+
+            # prereleases (e.g., 3.0.0-beta) do NOT get 'latest'
+            if [[ "$VERSION" == *-* ]]; then
+              TAGS="${VERSION}"
+            else
+              TAGS="${VERSION},${MAJOR}.${MINOR},${MAJOR},latest"
+            fi
+          fi
+
+          echo "tags=$TAGS" >> $GITHUB_OUTPUT
+          echo "Computed tags: $TAGS"
 
       - name: Extract Docker metadata
         id: meta
@@ -51,30 +74,32 @@ jobs:
           images: |
             umamisoftware/umami,enable=${{ github.repository == 'umami-software/umami' }}
             ghcr.io/${{ github.repository }}
-          flavor: |
-            latest=auto
-            prefix=${{ matrix.db-type }}-
           tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
+            type=semver,pattern={{version}},enable=${{ github.ref_type == 'tag' }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ github.ref_type == 'tag' }}
+            type=semver,pattern={{major}},enable=${{ github.ref_type == 'tag' }}
+            type=raw,value=${{ steps.compute.outputs.tags }},enable=${{ steps.compute.outputs.tags != '' }}
+            type=ref,event=branch
+            type=sha
 
+      # Build and push images
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
-          build-args: DATABASE_TYPE=${{ matrix.db-type }}
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          provenance: false  # disable automatic registry attestations
 
-      # Sign the published image digest
-      - name: Sign the published Docker image
-        env:
-          TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes "{}@${DIGEST}"
+      # Generate a local provenance attestation (not uploaded)
+      - name: Generate local provenance attestation
+        run: |
+          cosign attest --yes \
+            --predicate <(echo '{"build":"github-actions","repo":"${{ github.repository }}","run_id":"${{ github.run_id }}"}') \
+            --type slsaprovenance \
+            ${{ steps.meta.outputs.tags }}
