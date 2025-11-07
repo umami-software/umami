@@ -5,6 +5,11 @@ on:
     tags:
       - 'v*.*.*'
   workflow_dispatch:
+    inputs:
+      manual_tag:
+        description: 'Optional image tag (e.g. 1.2.3, beta, nightly)'
+        required: false
+        default: ''
 
 jobs:
   build:
@@ -54,8 +59,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=ref,event=branch
-            type=ref,event=pr
-            type=sha
+            type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' }}
 
       - name: Build and push Docker image
         id: build-and-push
