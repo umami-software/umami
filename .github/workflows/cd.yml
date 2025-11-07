@@ -54,7 +54,8 @@ jobs:
             VERSION="${INPUT#v}"
             MAJOR=$(echo "$VERSION" | cut -d. -f1)
             MINOR=$(echo "$VERSION" | cut -d. -f2)
-            echo "version_tags=${VERSION},${MAJOR}.${MINOR},${MAJOR}" >> $GITHUB_ENV
+            # Include latest explicitly
+            echo "version_tags=${VERSION},${MAJOR}.${MINOR},${MAJOR},latest" >> $GITHUB_ENV
           else
             echo "version_tags=" >> $GITHUB_ENV
           fi
@@ -69,17 +70,16 @@ jobs:
           flavor: |
             latest=auto
           tags: |
-            # Semver tags from real Git tags
+            # From real Git tags (v1.2.3)
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
 
-            # Manual input derived tags
+            # Manual input tags
             type=raw,value=${{ env.version_tags }},enable=${{ env.version_tags != '' }}
 
-            # Fallbacks for branches/PRs
+            # Fallbacks
             type=ref,event=branch
-            type=ref,event=pr
             type=sha
 
       - name: Build and push Docker image
