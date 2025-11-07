@@ -6,8 +6,8 @@ on:
       - 'v*.*.*'
   workflow_dispatch:
     inputs:
-      manual_tag:
-        description: 'Optional image tag (e.g. 1.2.3, beta, nightly)'
+      version:
+        description: 'Optional image version (e.g. 3.0.0, beta)'
         required: false
         default: ''
 
@@ -23,7 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      # Install cosign (for image signing)
       - name: Install cosign
         uses: sigstore/cosign-installer@v3
 
@@ -45,6 +44,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # Normalize manual input if provided
+      - name: Normalize manual version
+        id: normalize
+        run: |
+          INPUT="${{ github.event.inputs.version }}"
+          if [[ -n "$INPUT" ]]; then
+            # Strip leading v if present
+            VERSION="${INPUT#v}"
+            MAJOR=$(echo "$VERSION" | cut -d. -f1)
+            MINOR=$(echo "$VERSION" | cut -d. -f2)
+            echo "version_tags=${VERSION},${MAJOR}.${MINOR},${MAJOR}" >> $GITHUB_ENV
+          else
+            echo "version_tags=" >> $GITHUB_ENV
+          fi
+
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -55,11 +69,18 @@ jobs:
           flavor: |
             latest=auto
           tags: |
+            # Semver tags from real Git tags
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
+
+            # Manual input derived tags
+            type=raw,value=${{ env.version_tags }},enable=${{ env.version_tags != '' }}
+
+            # Fallbacks for branches/PRs
             type=ref,event=branch
-            type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=ref,event=pr
+            type=sha
 
       - name: Build and push Docker image
         id: build-and-push
@@ -73,7 +94,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Sign the published image digest
       - name: Sign the published Docker image
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
