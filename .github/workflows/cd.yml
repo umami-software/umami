@@ -23,9 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Install cosign
-        uses: sigstore/cosign-installer@v3
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -95,11 +92,3 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false  # disable automatic registry attestations
-
-      # Generate a local provenance attestation (not uploaded)
-      - name: Generate local provenance attestation
-        run: |
-          cosign attest --yes \
-            --predicate <(echo '{"build":"github-actions","repo":"${{ github.repository }}","run_id":"${{ github.run_id }}"}') \
-            --type slsaprovenance \
-            ${{ steps.meta.outputs.tags }}
