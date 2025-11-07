@@ -18,7 +18,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: write
 
     steps:
       - uses: actions/checkout@v5
@@ -41,54 +40,52 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Compute tags for the image
       - name: Compute version tags
         id: compute
         run: |
           INPUT="${{ github.event.inputs.version }}"
+          REF_TYPE="${{ github.ref_type }}"
+          REF_NAME="${{ github.ref_name }}"
+
+          # Determine version source
+          if [[ -n "$INPUT" ]]; then
+            VERSION="${INPUT#v}"
+          elif [[ "$REF_TYPE" == "tag" ]]; then
+            VERSION="${REF_NAME#v}"
+          else
+            VERSION=""
+          fi
+
           TAGS=""
 
-          if [[ -n "$INPUT" ]]; then
-            VERSION="${INPUT#v}"  # strip leading v
+          if [[ -n "$VERSION" ]]; then
             MAJOR=$(echo "$VERSION" | cut -d. -f1)
             MINOR=$(echo "$VERSION" | cut -d. -f2)
 
-            # prereleases (e.g., 3.0.0-beta) do NOT get 'latest'
             if [[ "$VERSION" == *-* ]]; then
-              TAGS="${VERSION}"
+              # prerelease: only version tag
+              TAGS="$VERSION"
             else
-              TAGS="${VERSION},${MAJOR}.${MINOR},${MAJOR},latest"
+              # stable release: version + hierarchy + latest
+              TAGS="$VERSION,${MAJOR}.${MINOR},${MAJOR},latest"
             fi
+          else
+            # Non-tag build (e.g. from main branch)
+            TAGS="${REF_NAME}"
           fi
 
           echo "tags=$TAGS" >> $GITHUB_OUTPUT
           echo "Computed tags: $TAGS"
 
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            umamisoftware/umami,enable=${{ github.repository == 'umami-software/umami' }}
-            ghcr.io/${{ github.repository }}
-          tags: |
-            type=semver,pattern={{version}},enable=${{ github.ref_type == 'tag' }}
-            type=semver,pattern={{major}}.{{minor}},enable=${{ github.ref_type == 'tag' }}
-            type=semver,pattern={{major}},enable=${{ github.ref_type == 'tag' }}
-            type=raw,value=${{ steps.compute.outputs.tags }},enable=${{ steps.compute.outputs.tags != '' }}
-            type=ref,event=branch
-            type=sha
-
-      # Build and push images
       - name: Build and push Docker image
-        id: build-and-push
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            umamisoftware/umami:${{ steps.compute.outputs.tags }}
+            ghcr.io/${{ github.repository }}:${{ steps.compute.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          provenance: false  # disable automatic registry attestations
+          provenance: false
