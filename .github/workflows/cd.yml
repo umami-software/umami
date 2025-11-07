@@ -50,11 +50,9 @@ jobs:
         run: |
           INPUT="${{ github.event.inputs.version }}"
           if [[ -n "$INPUT" ]]; then
-            # Strip leading v if present
             VERSION="${INPUT#v}"
             MAJOR=$(echo "$VERSION" | cut -d. -f1)
             MINOR=$(echo "$VERSION" | cut -d. -f2)
-            # Include latest explicitly
             echo "version_tags=${VERSION},${MAJOR}.${MINOR},${MAJOR},latest" >> $GITHUB_ENV
           else
             echo "version_tags=" >> $GITHUB_ENV
@@ -70,15 +68,10 @@ jobs:
           flavor: |
             latest=auto
           tags: |
-            # From real Git tags (v1.2.3)
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-
-            # Manual input tags
             type=raw,value=${{ env.version_tags }},enable=${{ env.version_tags != '' }}
-
-            # Fallbacks
             type=ref,event=branch
             type=sha
 
@@ -93,9 +86,13 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          provenance: false # disable automatic attestations
 
-      - name: Sign the published Docker image
-        env:
-          TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes "{}@${DIGEST}"
+      # Generate a local provenance attestation instead of uploading signatures
+      - name: Generate provenance attestation
+        run: |
+          cosign attest --yes \
+            --predicate <(echo '{"build":"github-actions","repo":"${{ github.repository }}","run_id":"${{ github.run_id }}"}') \
+            --type slsaprovenance \
+            ${{ steps.meta.outputs.tags }}
+
