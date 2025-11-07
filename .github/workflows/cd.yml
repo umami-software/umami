@@ -15,10 +15,6 @@ jobs:
       packages: write
       id-token: write
 
-    strategy:
-      matrix:
-        db-type: [postgresql]
-
     steps:
       - uses: actions/checkout@v5
 
@@ -53,7 +49,6 @@ jobs:
             ghcr.io/${{ github.repository }}
           flavor: |
             latest=auto
-            prefix=${{ matrix.db-type }}-
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
@@ -65,7 +60,6 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          build-args: DATABASE_TYPE=${{ matrix.db-type }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
