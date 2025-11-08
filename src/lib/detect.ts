@@ -84,27 +84,46 @@ export async function getLocation(ip: string = '', headers: Headers, hasPayloadI
   }
 
   // Database lookup
-  if (!globalThis[MAXMIND]) {
-    const dir = path.join(process.cwd(), 'geo');
+  try {
+    if (!globalThis[MAXMIND]) {
+      const dir = path.join(process.cwd(), 'geo');
 
-    globalThis[MAXMIND] = await maxmind.open(
-      process.env.GEOLITE_DB_PATH || path.resolve(dir, 'GeoLite2-City.mmdb'),
-    );
+      globalThis[MAXMIND] = await maxmind.open(
+        process.env.GEOLITE_DB_PATH || path.resolve(dir, 'GeoLite2-City.mmdb'),
+      );
+    }
+
+    // Strip port from IP address before lookup
+    const cleanIp = stripPort(ip);
+    const result = globalThis[MAXMIND]?.get(cleanIp);
+
+    if (result) {
+      // Try multiple sources for country code to ensure we get a value
+      const country = 
+        result.country?.iso_code || 
+        result.registered_country?.iso_code || 
+        result.represented_country?.iso_code ||
+        result.continent?.code;
+      
+      const region = result.subdivisions?.[0]?.iso_code;
+      const city = result.city?.names?.en;
+
+      // Only return location data if we have at least a country code
+      if (country) {
+        return {
+          country,
+          region: getRegionCode(country, region),
+          city,
+        };
+      }
+    }
+  } catch (error) {
+    // Log error but don't crash the application
+    console.error('Geo-location lookup failed:', error);
   }
-
-  const result = globalThis[MAXMIND]?.get(stripPort(ip));
-
-  if (result) {
-    const country = result.country?.iso_code ?? result?.registered_country?.iso_code;
-    const region = result.subdivisions?.[0]?.iso_code;
-    const city = result.city?.names?.en;
-
-    return {
-      country,
-      region: getRegionCode(country, region),
-      city,
-    };
-  }
+  
+  // Return null if no location data could be determined
+  return null;
 }
 
 export async function getClientInfo(request: Request, payload: Record<string, any>) {

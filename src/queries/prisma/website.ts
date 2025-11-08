@@ -132,38 +132,41 @@ export async function updateWebsite(
 }
 
 export async function resetWebsite(websiteId: string) {
-  const { client, transaction } = prisma;
+  const { client } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
-  return transaction([
-    client.eventData.deleteMany({
-      where: { websiteId },
-    }),
-    client.sessionData.deleteMany({
-      where: { websiteId },
-    }),
-    client.websiteEvent.deleteMany({
-      where: { websiteId },
-    }),
-    client.session.deleteMany({
-      where: { websiteId },
-    }),
-    client.website.update({
-      where: { id: websiteId },
-      data: {
-        resetAt: new Date(),
-      },
-    }),
-  ]).then(async data => {
-    if (cloudMode) {
-      await redis.client.set(
-        `website:${websiteId}`,
-        data.find(website => website.id),
-      );
-    }
+  // For large datasets, we need to delete data in chunks to avoid transaction timeouts
+  // We'll delete data in batches of 10000 records at a time
+  const deleteInBatches = async (model: any, where: any) => {
+    let deletedCount;
+    do {
+      const result = await model.deleteMany({
+        where,
+        take: 10000, // Limit to 10000 records per batch
+      });
+      deletedCount = result.count;
+    } while (deletedCount === 10000); // Continue until we delete less than 10000 records
+  };
 
-    return data;
+  // Delete data in batches to avoid transaction timeouts
+  await deleteInBatches(client.eventData, { websiteId });
+  await deleteInBatches(client.sessionData, { websiteId });
+  await deleteInBatches(client.websiteEvent, { websiteId });
+  await deleteInBatches(client.session, { websiteId });
+
+  // Update the website reset timestamp
+  const data = await client.website.update({
+    where: { id: websiteId },
+    data: {
+      resetAt: new Date(),
+    },
   });
+
+  if (cloudMode) {
+    await redis.client.set(`website:${websiteId}`, data);
+  }
+
+  return data;
 }
 
 export async function deleteWebsite(websiteId: string) {

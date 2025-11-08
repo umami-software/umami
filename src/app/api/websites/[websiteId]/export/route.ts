@@ -40,6 +40,21 @@ export async function GET(
     getSessionMetrics(websiteId, { type: 'country' }, filters),
   ]);
 
+  // Check if all datasets are empty
+  const hasData = [
+    events,
+    pages,
+    referrers,
+    browsers,
+    os,
+    devices,
+    countries
+  ].some(dataset => dataset && dataset.length > 0);
+
+  if (!hasData) {
+    return json({ error: 'no_data' });
+  }
+
   const zip = new JSZip();
 
   const parse = (data: any) => {

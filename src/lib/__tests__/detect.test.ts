@@ -1,28 +1,113 @@
-import { getIpAddress } from '../ip';
+import { getLocation } from '../detect';
+import isLocalhost from 'is-localhost-ip';
+import maxmind from 'maxmind';
 
-const IP = '127.0.0.1';
-const BAD_IP = '127.127.127.127';
+// Mock the dependencies
+jest.mock('is-localhost-ip', () => jest.fn());
+jest.mock('maxmind', () => ({
+  open: jest.fn(),
+}));
 
-test('getIpAddress: Custom header', () => {
-  process.env.CLIENT_IP_HEADER = 'x-custom-ip-header';
+describe('getLocation', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    delete global.maxmind;
+  });
 
-  expect(getIpAddress(new Headers({ 'x-custom-ip-header': IP }))).toEqual(IP);
-});
+  it('should return null for localhost IPs', async () => {
+    (isLocalhost as jest.Mock).mockResolvedValue(true);
+    
+    const result = await getLocation('127.0.0.1', new Headers(), false);
+    
+    expect(result).toBeNull();
+  });
 
-test('getIpAddress: CloudFlare header', () => {
-  expect(getIpAddress(new Headers({ 'cf-connecting-ip': IP }))).toEqual(IP);
-});
+  it('should return location data from provider headers', async () => {
+    (isLocalhost as jest.Mock).mockResolvedValue(false);
+    
+    const headers = new Headers();
+    headers.set('cf-ipcountry', 'KR');
+    headers.set('cf-region-code', '11');
+    headers.set('cf-ipcity', 'Seoul');
+    
+    const result = await getLocation('1.2.3.4', headers, false);
+    
+    expect(result).toEqual({
+      country: 'KR',
+      region: 'KR-11',
+      city: 'Seoul',
+    });
+  });
 
-test('getIpAddress: Standard header', () => {
-  expect(getIpAddress(new Headers({ 'x-forwarded-for': IP }))).toEqual(IP);
-});
+  it('should return location data from MaxMind database', async () => {
+    (isLocalhost as jest.Mock).mockResolvedValue(false);
+    
+    const mockMaxmindDb = {
+      get: jest.fn().mockReturnValue({
+        country: { iso_code: 'KR' },
+        subdivisions: [{ iso_code: '11' }],
+        city: { names: { en: 'Seoul' } },
+      }),
+    };
+    
+    (maxmind.open as jest.Mock).mockResolvedValue(mockMaxmindDb);
+    
+    const result = await getLocation('1.2.3.4', new Headers(), false);
+    
+    expect(result).toEqual({
+      country: 'KR',
+      region: 'KR-11',
+      city: 'Seoul',
+    });
+  });
 
-test('getIpAddress: CloudFlare header is lower priority than standard header', () => {
-  expect(getIpAddress(new Headers({ 'cf-connecting-ip': BAD_IP, 'x-forwarded-for': IP }))).toEqual(
-    IP,
-  );
-});
+  it('should try multiple sources for country code', async () => {
+    (isLocalhost as jest.Mock).mockResolvedValue(false);
+    
+    const mockMaxmindDb = {
+      get: jest.fn().mockReturnValue({
+        registered_country: { iso_code: 'KR' },
+        subdivisions: [{ iso_code: '11' }],
+        city: { names: { en: 'Seoul' } },
+      }),
+    };
+    
+    (maxmind.open as jest.Mock).mockResolvedValue(mockMaxmindDb);
+    
+    const result = await getLocation('1.2.3.4', new Headers(), false);
+    
+    expect(result).toEqual({
+      country: 'KR',
+      region: 'KR-11',
+      city: 'Seoul',
+    });
+  });
 
-test('getIpAddress: No header', () => {
-  expect(getIpAddress(new Headers())).toEqual(null);
+  it('should return null if no country code is available', async () => {
+    (isLocalhost as jest.Mock).mockResolvedValue(false);
+    
+    const mockMaxmindDb = {
+      get: jest.fn().mockReturnValue({
+        // No country information
+        subdivisions: [{ iso_code: '11' }],
+        city: { names: { en: 'Seoul' } },
+      }),
+    };
+    
+    (maxmind.open as jest.Mock).mockResolvedValue(mockMaxmindDb);
+    
+    const result = await getLocation('1.2.3.4', new Headers(), false);
+    
+    expect(result).toBeNull();
+  });
+
+  it('should handle errors gracefully', async () => {
+    (isLocalhost as jest.Mock).mockResolvedValue(false);
+    
+    (maxmind.open as jest.Mock).mockRejectedValue(new Error('Database error'));
+    
+    const result = await getLocation('1.2.3.4', new Headers(), false);
+    
+    expect(result).toBeNull();
+  });
 });

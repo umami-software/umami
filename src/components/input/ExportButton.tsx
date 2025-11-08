@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Icon, Tooltip, TooltipTrigger, LoadingButton } from '@umami/react-zen';
+import { Icon, Tooltip, TooltipTrigger, LoadingButton, useToast } from '@umami/react-zen';
 import { Download } from '@/components/icons';
 import { useMessages, useApi } from '@/components/hooks';
 import { useSearchParams } from 'next/navigation';
@@ -7,7 +7,8 @@ import { useDateParameters } from '@/components/hooks/useDateParameters';
 import { useFilterParameters } from '@/components/hooks/useFilterParameters';
 
 export function ExportButton({ websiteId }: { websiteId: string }) {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, messages } = useMessages();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const date = useDateParameters();
   const filters = useFilterParameters();
@@ -17,16 +18,29 @@ export function ExportButton({ websiteId }: { websiteId: string }) {
   const handleClick = async () => {
     setIsLoading(true);
 
-    const { zip } = await get(`/websites/${websiteId}/export`, {
-      ...date,
-      ...filters,
-      ...searchParams,
-      format: 'json',
-    });
+    try {
+      const response = await get(`/websites/${websiteId}/export`, {
+        ...date,
+        ...filters,
+        ...searchParams,
+        format: 'json',
+      });
 
-    await loadZip(zip);
+      // Check if there's an error indicating no data
+      if (response.error === 'no_data') {
+        toast(formatMessage(messages.noDataAvailable));
+        setIsLoading(false);
+        return;
+      }
 
-    setIsLoading(false);
+      // Proceed with export if there's data
+      await loadZip(response.zip);
+    } catch (error) {
+      // Handle any other errors
+      toast(formatMessage(messages.error));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
