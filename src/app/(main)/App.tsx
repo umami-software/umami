@@ -9,18 +9,14 @@ import { MobileNav } from '@/app/(main)/MobileNav';
 export function App({ children }) {
   const { user, isLoading, error } = useLoginQuery();
   const config = useConfig();
-  const { pathname, router } = useNavigation();
+  const { pathname } = useNavigation();
 
   if (isLoading || !config) {
     return <Loading placement="absolute" />;
   }
 
   if (error) {
-    if (process.env.cloudMode) {
-      window.location.href = '/login';
-    } else {
-      router.push('/login');
-    }
+    window.location.href = '/login';
     return null;
   }
 
