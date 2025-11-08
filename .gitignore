@@ -5,7 +5,7 @@ node_modules
 .pnp
 .pnp.js
 .pnpm-store
-.package-lock.json
+package-lock.json
 
 # testing
 /coverage
