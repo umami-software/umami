@@ -78,15 +78,23 @@ jobs:
           echo "Computed tags: $TAGS"
 
       - name: Build and push Docker image
-        id: build
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          provenance: false
-          tags: |
-            ghcr.io/${{ github.repository }}:${{ steps.compute.outputs.tags }}
-            ${{ github.repository == 'umami-software/umami' && format('umamisoftware/umami:{0}', steps.compute.outputs.tags) || '' }}
+        run: |
+          TAGS="${{ steps.compute.outputs.tags }}"
+
+          # Set image targets conditionally
+          if [[ "${{ github.repository }}" == "umami-software/umami" ]]; then
+            IMAGES=("umamisoftware/umami" "ghcr.io/${{ github.repository }}")
+          else
+            IMAGES=("ghcr.io/${{ github.repository }}")
+          fi
+
+          for IMAGE in "${IMAGES[@]}"; do
+            echo "Building and pushing $IMAGE with tags: $TAGS"
+            docker buildx build \
+              --platform linux/amd64,linux/arm64 \
+              --push \
+              $(echo "$TAGS" | tr ',' '\n' | sed "s|^|--tag ${IMAGE}:|") \
+              --cache-from type=gha \
+              --cache-to type=gha,mode=max \
+              .
+          done
