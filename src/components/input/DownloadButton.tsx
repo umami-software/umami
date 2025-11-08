@@ -14,12 +14,15 @@ export function DownloadButton({
   const { formatMessage, labels } = useMessages();
 
   const handleClick = async () => {
+    if (!data || data.length === 0) {
+      return;
+    }
     downloadCsv(`${filename}.csv`, Papa.unparse(data));
   };
 
   return (
     <TooltipTrigger delay={0}>
-      <Button variant="quiet" onClick={handleClick} isDisabled={!data}>
+      <Button variant="quiet" onClick={handleClick} isDisabled={!data || data.length === 0}>
         <Icon>
           <Download />
         </Icon>
