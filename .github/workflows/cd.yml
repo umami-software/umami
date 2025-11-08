@@ -67,7 +67,7 @@ jobs:
               TAGS="$VERSION"
             else
               # stable release: version + hierarchy + latest
-              TAGS="$VERSION,${MAJOR}.${MINOR},${MAJOR},latest"
+              TAGS="$VERSION,${MAJOR}.${MINOR},${MAJOR},postgresql-latest,latest"
             fi
           else
             # Non-tag build (e.g. from main branch)
@@ -78,14 +78,15 @@ jobs:
           echo "Computed tags: $TAGS"
 
       - name: Build and push Docker image
+        id: build
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: |
-            umamisoftware/umami:${{ steps.compute.outputs.tags }}
-            ghcr.io/${{ github.repository }}:${{ steps.compute.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ steps.compute.outputs.tags }}
+            ${{ github.repository == 'umami-software/umami' && format('umamisoftware/umami:{0}', steps.compute.outputs.tags) || '' }}
