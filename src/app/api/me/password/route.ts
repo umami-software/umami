@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { checkPassword, hashPassword } from '@/lib/auth';
+import { checkPassword, hashPassword } from '@/lib/password';
 import { parseRequest } from '@/lib/request';
 import { json, badRequest } from '@/lib/response';
 import { getUser, updateUser } from '@/queries/prisma/user';
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
   const user = await getUser(userId, { includePassword: true });
 
   if (!checkPassword(currentPassword, user.password)) {
-    return badRequest('Current password is incorrect');
+    return badRequest({ message: 'Current password is incorrect' });
   }
 
   const password = hashPassword(newPassword);

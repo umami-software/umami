@@ -1,36 +1,23 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { QueryFilters } from '@/lib/types';
 
-const formatResults = (steps: { type: string; value: string }[]) => (results: unknown) => {
-  return steps.map((step: { type: string; value: string }, i: number) => {
-    const visitors = Number(results[i]?.count) || 0;
-    const previous = Number(results[i - 1]?.count) || 0;
-    const dropped = previous > 0 ? previous - visitors : 0;
-    const dropoff = 1 - visitors / previous;
-    const remaining = visitors / Number(results[0].count);
+export interface FunnelParameters {
+  startDate: Date;
+  endDate: Date;
+  window: number;
+  steps: { type: string; value: string }[];
+}
 
-    return {
-      ...step,
-      visitors,
-      previous,
-      dropped,
-      dropoff,
-      remaining,
-    };
-  });
-};
+export interface FunnelResult {
+  value: string;
+  visitors: number;
+  dropoff: number;
+}
 
 export async function getFunnel(
-  ...args: [
-    websiteId: string,
-    criteria: {
-      windowMinutes: number;
-      startDate: Date;
-      endDate: Date;
-      steps: { type: string; value: string }[];
-    },
-  ]
+  ...args: [websiteId: string, parameters: FunnelParameters, filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -40,26 +27,22 @@ export async function getFunnel(
 
 async function relationalQuery(
   websiteId: string,
-  criteria: {
-    windowMinutes: number;
-    startDate: Date;
-    endDate: Date;
-    steps: { type: string; value: string }[];
-  },
-): Promise<
-  {
-    value: string;
-    visitors: number;
-    dropoff: number;
-  }[]
-> {
-  const { windowMinutes, startDate, endDate, steps } = criteria;
-  const { rawQuery, getAddIntervalQuery } = prisma;
-  const { levelOneQuery, levelQuery, sumQuery, params } = getFunnelQuery(steps, windowMinutes);
+  parameters: FunnelParameters,
+  filters: QueryFilters,
+): Promise<FunnelResult[]> {
+  const { startDate, endDate, window, steps } = parameters;
+  const { rawQuery, getAddIntervalQuery, parseFilters } = prisma;
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+  });
+  const { levelOneQuery, levelQuery, sumQuery, params } = getFunnelQuery(steps, window);
 
   function getFunnelQuery(
     steps: { type: string; value: string }[],
-    windowMinutes: number,
+    window: number,
   ): {
     levelOneQuery: string;
     levelQuery: string;
@@ -70,7 +53,7 @@ async function relationalQuery(
       (pv, cv, i) => {
         const levelNumber = i + 1;
         const startSum = i > 0 ? 'union ' : '';
-        const isURL = cv.type === 'url';
+        const isURL = cv.type === 'path';
         const column = isURL ? 'url_path' : 'event_name';
 
         let operator = '=';
@@ -84,11 +67,14 @@ async function relationalQuery(
         if (levelNumber === 1) {
           pv.levelOneQuery = `
           WITH level1 AS (
-            select distinct session_id, created_at
+            select distinct website_event.session_id, website_event.created_at
             from website_event
-            where website_id = {{websiteId::uuid}}
-              and created_at between {{startDate}} and {{endDate}}
+            ${cohortQuery}
+            ${joinSessionQuery}
+            where website_event.website_id = {{websiteId::uuid}}
+              and website_event.created_at between {{startDate}} and {{endDate}}
               and ${column} ${operator} {{${i}}}
+              ${filterQuery}
           )`;
         } else {
           pv.levelQuery += `
@@ -100,7 +86,7 @@ async function relationalQuery(
             where we.website_id = {{websiteId::uuid}}
                 and we.created_at between l.created_at and ${getAddIntervalQuery(
                   `l.created_at `,
-                  `${windowMinutes} minute`,
+                  `${window} minute`,
                 )}
                 and we.${column} ${operator} {{${i}}}
                 and we.created_at <= {{endDate}}
@@ -129,22 +115,16 @@ async function relationalQuery(
     ORDER BY level;
     `,
     {
-      websiteId,
-      startDate,
-      endDate,
       ...params,
+      ...queryParams,
     },
   ).then(formatResults(steps));
 }
 
 async function clickhouseQuery(
   websiteId: string,
-  criteria: {
-    windowMinutes: number;
-    startDate: Date;
-    endDate: Date;
-    steps: { type: string; value: string }[];
-  },
+  parameters: FunnelParameters,
+  filters: QueryFilters,
 ): Promise<
   {
     value: string;
@@ -152,29 +132,35 @@ async function clickhouseQuery(
     dropoff: number;
   }[]
 > {
-  const { windowMinutes, startDate, endDate, steps } = criteria;
-  const { rawQuery } = clickhouse;
+  const { startDate, endDate, window, steps } = parameters;
+  const { rawQuery, parseFilters } = clickhouse;
   const { levelOneQuery, levelQuery, sumQuery, stepFilterQuery, params } = getFunnelQuery(
     steps,
-    windowMinutes,
+    window,
   );
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+  });
 
   function getFunnelQuery(
     steps: { type: string; value: string }[],
-    windowMinutes: number,
+    window: number,
   ): {
     levelOneQuery: string;
     levelQuery: string;
     sumQuery: string;
     stepFilterQuery: string;
-    params: { [key: string]: string };
+    params: Record<string, string>;
   } {
     return steps.reduce(
       (pv, cv, i) => {
         const levelNumber = i + 1;
         const startSum = i > 0 ? 'union all ' : '';
         const startFilter = i > 0 ? 'or' : '';
-        const isURL = cv.type === 'url';
+        const isURL = cv.type === 'path';
         const column = isURL ? 'url_path' : 'event_name';
 
         let operator = '=';
@@ -203,7 +189,7 @@ async function clickhouseQuery(
             from level${i} x
             join level0 y
             on x.session_id = y.session_id
-            where y.created_at between x.created_at and x.created_at + interval ${windowMinutes} minute
+            where y.created_at between x.created_at and x.created_at + interval ${window} minute
                 and y.${column} ${operator} {param${i}:String}
           )`;
         }
@@ -228,10 +214,12 @@ async function clickhouseQuery(
     `
     WITH level0 AS (
       select distinct session_id, url_path, referrer_path, event_name, created_at
-      from umami.website_event
+      from website_event
+      ${cohortQuery}
       where (${stepFilterQuery})
         and website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+       ${filterQuery}
     ),
     ${levelOneQuery}
     ${levelQuery}
@@ -241,10 +229,27 @@ async function clickhouseQuery(
     ) ORDER BY level;
     `,
     {
-      websiteId,
-      startDate,
-      endDate,
       ...params,
+      ...queryParams,
     },
   ).then(formatResults(steps));
 }
+
+const formatResults = (steps: { type: string; value: string }[]) => (results: unknown) => {
+  return steps.map((step: { type: string; value: string }, i: number) => {
+    const visitors = Number(results[i]?.count) || 0;
+    const previous = Number(results[i - 1]?.count) || 0;
+    const dropped = previous > 0 ? previous - visitors : 0;
+    const dropoff = 1 - visitors / previous;
+    const remaining = visitors / Number(results[0].count);
+
+    return {
+      ...step,
+      visitors,
+      previous,
+      dropped,
+      dropoff,
+      remaining,
+    };
+  });
+};

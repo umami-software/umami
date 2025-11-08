@@ -23,6 +23,12 @@
       "value": "Добавить"
     }
   ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "Добавить доску"
+    }
+  ],
   "label.add-description": [
     {
       "type": 0,
@@ -53,6 +59,12 @@
       "value": "Администратор"
     }
   ],
+  "label.affiliate": [
+    {
+      "type": 0,
+      "value": "Партнер"
+    }
+  ],
   "label.after": [
     {
       "type": 0,
@@ -77,6 +89,24 @@
       "value": "Аналитика"
     }
   ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "Применить"
+    }
+  ],
+  "label.attribution": [
+    {
+      "type": 0,
+      "value": "Атрибуция"
+    }
+  ],
+  "label.attribution-description": [
+    {
+      "type": 0,
+      "value": "Посмотрите, как пользователи взаимодействуют с вашим маркетингом и что приводит к конверсиям."
+    }
+  ],
   "label.average": [
     {
       "type": 0,
@@ -93,6 +123,12 @@
     {
       "type": 0,
       "value": "До"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "Доски"
     }
   ],
   "label.bounce-rate": [
@@ -119,6 +155,12 @@
       "value": "Браузеры"
     }
   ],
+  "label.campaigns": [
+    {
+      "type": 0,
+      "value": "Кампании"
+    }
+  ],
   "label.cancel": [
     {
       "type": 0,
@@ -129,6 +171,12 @@
     {
       "type": 0,
       "value": "Изменить пароль"
+    }
+  ],
+  "label.channels": [
+    {
+      "type": 0,
+      "value": "Каналы"
     }
   ],
   "label.cities": [
@@ -149,10 +197,22 @@
       "value": "Очистить все"
     }
   ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "Когорта"
+    }
+  ],
   "label.compare": [
     {
       "type": 0,
       "value": "Сравнить"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "Сравнить даты"
     }
   ],
   "label.confirm": [
@@ -173,10 +233,34 @@
       "value": "Содержит"
     }
   ],
+  "label.content": [
+    {
+      "type": 0,
+      "value": "Контент"
+    }
+  ],
   "label.continue": [
     {
       "type": 0,
       "value": "Продолжить"
+    }
+  ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "Конверсия"
+    }
+  ],
+  "label.conversion-rate": [
+    {
+      "type": 0,
+      "value": "Коэффициент конверсии"
+    }
+  ],
+  "label.conversion-step": [
+    {
+      "type": 0,
+      "value": "Шаг конверсии"
     }
   ],
   "label.count": [
@@ -231,6 +315,12 @@
     {
       "type": 0,
       "value": "Создано"
+    }
+  ],
+  "label.currency": [
+    {
+      "type": 0,
+      "value": "Валюта"
     }
   ],
   "label.current": [
@@ -347,16 +437,40 @@
       "value": "Устройства"
     }
   ],
+  "label.direct": [
+    {
+      "type": 0,
+      "value": "Direct"
+    }
+  ],
   "label.dismiss": [
     {
       "type": 0,
       "value": "Отклонить"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "Distinct ID"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
       "value": "Не содержит"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "Не включает"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "Не существует"
     }
   ],
   "label.domain": [
@@ -389,6 +503,12 @@
       "value": "Редактировать участника"
     }
   ],
+  "label.email": [
+    {
+      "type": 0,
+      "value": "Email"
+    }
+  ],
   "label.enable-share-url": [
     {
       "type": 0,
@@ -419,10 +539,22 @@
       "value": "Данные о событии"
     }
   ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "Название события"
+    }
+  ],
   "label.events": [
     {
       "type": 0,
       "value": "События"
+    }
+  ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "Существует"
     }
   ],
   "label.exit": [
@@ -473,6 +605,12 @@
       "value": "Фильтры"
     }
   ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "Первый клик"
+    }
+  ],
   "label.first-seen": [
     {
       "type": 0,
@@ -489,6 +627,12 @@
     {
       "type": 0,
       "value": "Изучите коэффициент конверсии и ухода пользователей."
+    }
+  ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "Воронки"
     }
   ],
   "label.goal": [
@@ -521,16 +665,28 @@
       "value": "Больше или равно"
     }
   ],
-  "label.host": [
+  "label.grouped": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "Группировано"
     }
   ],
-  "label.hosts": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "Имя хоста"
+    }
+  ],
+  "label.includes": [
+    {
+      "type": 0,
+      "value": "Включает"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "Инсайт"
     }
   ],
   "label.insights": [
@@ -551,6 +707,12 @@
       "value": "Является"
     }
   ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "Ложно"
+    }
+  ],
   "label.is-not": [
     {
       "type": 0,
@@ -567,6 +729,12 @@
     {
       "type": 0,
       "value": "Установлен"
+    }
+  ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "Истинно"
     }
   ],
   "label.join": [
@@ -593,6 +761,12 @@
       "value": "Поймите, как пользователи перемещаются по вашему сайту."
     }
   ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "Пути"
+    }
+  ],
   "label.language": [
     {
       "type": 0,
@@ -609,6 +783,12 @@
     {
       "type": 0,
       "value": "Ноутбук"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "Последний клик"
     }
   ],
   "label.last-days": [
@@ -683,6 +863,12 @@
       "value": "Меньше или равно"
     }
   ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "Ссылки"
+    }
+  ],
   "label.login": [
     {
       "type": 0,
@@ -713,6 +899,18 @@
       "value": "Максимум"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Развернуть"
+    }
+  ],
+  "label.medium": [
+    {
+      "type": 0,
+      "value": "Средний"
+    }
+  ],
   "label.member": [
     {
       "type": 0,
@@ -735,6 +933,12 @@
     {
       "type": 0,
       "value": "Смартфон"
+    }
+  ],
+  "label.model": [
+    {
+      "type": 0,
+      "value": "Модель"
     }
   ],
   "label.more": [
@@ -813,10 +1017,46 @@
       "value": "OK"
     }
   ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
+    }
+  ],
+  "label.organic-search": [
+    {
+      "type": 0,
+      "value": "Органический поиск"
+    }
+  ],
+  "label.organic-shopping": [
+    {
+      "type": 0,
+      "value": "Органические покупки"
+    }
+  ],
+  "label.organic-social": [
+    {
+      "type": 0,
+      "value": "Органические соцсети"
+    }
+  ],
+  "label.organic-video": [
+    {
+      "type": 0,
+      "value": "Органическое видео"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
       "value": "OS"
+    }
+  ],
+  "label.other": [
+    {
+      "type": 0,
+      "value": "Другое"
     }
   ],
   "label.overview": [
@@ -829,6 +1069,12 @@
     {
       "type": 0,
       "value": "Владелец"
+    }
+  ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "Страница"
     }
   ],
   "label.page-of": [
@@ -867,6 +1113,36 @@
       "value": "Страницы"
     }
   ],
+  "label.paid-ads": [
+    {
+      "type": 0,
+      "value": "Платная реклама"
+    }
+  ],
+  "label.paid-search": [
+    {
+      "type": 0,
+      "value": "Платный поиск"
+    }
+  ],
+  "label.paid-shopping": [
+    {
+      "type": 0,
+      "value": "Платные покупки"
+    }
+  ],
+  "label.paid-social": [
+    {
+      "type": 0,
+      "value": "Платные соцсети"
+    }
+  ],
+  "label.paid-video": [
+    {
+      "type": 0,
+      "value": "Платное видео"
+    }
+  ],
   "label.password": [
     {
       "type": 0,
@@ -883,6 +1159,12 @@
     {
       "type": 0,
       "value": "Пути"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "Пиксели"
     }
   ],
   "label.powered-by": [
@@ -955,6 +1237,12 @@
       "value": "Реальное время"
     }
   ],
+  "label.referral": [
+    {
+      "type": 0,
+      "value": "Referral"
+    }
+  ],
   "label.referrer": [
     {
       "type": 0,
@@ -989,6 +1277,12 @@
     {
       "type": 0,
       "value": "Регионы"
+    }
+  ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "Осталось"
     }
   ],
   "label.remove": [
@@ -1051,12 +1345,6 @@
       "value": "Изучите свои доходы за определенное время."
     }
   ],
-  "label.revenue-property": [
-    {
-      "type": 0,
-      "value": "Доходная недвижимость"
-    }
-  ],
   "label.role": [
     {
       "type": 0,
@@ -1099,6 +1387,12 @@
       "value": "Выберите дату"
     }
   ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "Выберите фильтр"
+    }
+  ],
   "label.select-role": [
     {
       "type": 0,
@@ -1117,6 +1411,12 @@
       "value": "Сессия"
     }
   ],
+  "label.session-data": [
+    {
+      "type": 0,
+      "value": "Данные сессии"
+    }
+  ],
   "label.sessions": [
     {
       "type": 0,
@@ -1129,6 +1429,12 @@
       "value": "Настройки"
     }
   ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "Поделиться"
+    }
+  ],
   "label.share-url": [
     {
       "type": 0,
@@ -1139,6 +1445,18 @@
     {
       "type": 0,
       "value": "Один день"
+    }
+  ],
+  "label.sms": [
+    {
+      "type": 0,
+      "value": "SMS"
+    }
+  ],
+  "label.sources": [
+    {
+      "type": 0,
+      "value": "Источники"
     }
   ],
   "label.start-step": [
@@ -1163,6 +1481,18 @@
     {
       "type": 0,
       "value": "Планшет"
+    }
+  ],
+  "label.tag": [
+    {
+      "type": 0,
+      "value": "Тег"
+    }
+  ],
+  "label.tags": [
+    {
+      "type": 0,
+      "value": "Теги"
     }
   ],
   "label.team": [
@@ -1201,6 +1531,12 @@
       "value": "Владелец команды"
     }
   ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "Настройки команды"
+    }
+  ],
   "label.team-view-only": [
     {
       "type": 0,
@@ -1217,6 +1553,12 @@
     {
       "type": 0,
       "value": "Команды"
+    }
+  ],
+  "label.terms": [
+    {
+      "type": 0,
+      "value": "Условия"
     }
   ],
   "label.theme": [
@@ -1351,28 +1693,10 @@
       "value": "Обновление"
     }
   ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "URL"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "URLs"
-    }
-  ],
   "label.user": [
     {
       "type": 0,
       "value": "Пользователь"
-    }
-  ],
-  "label.user-property": [
-    {
-      "type": 0,
-      "value": "Собственность пользователя"
     }
   ],
   "label.username": [
@@ -1507,6 +1831,12 @@
       "value": " текущих посетителей"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
@@ -1599,6 +1929,12 @@
     {
       "type": 1,
       "value": "url"
+    }
+  ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
     }
   ],
   "message.go-to-settings": [
@@ -1695,6 +2031,18 @@
       "value": "У вас нет настроенных сайтов."
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1717,6 +2065,12 @@
     {
       "type": 0,
       "value": "Успешно сохранено."
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1781,6 +2135,12 @@
       "value": "Запущенное событие"
     }
   ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
@@ -1825,12 +2185,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "Высадка посетителей"
     }
   ]
 }

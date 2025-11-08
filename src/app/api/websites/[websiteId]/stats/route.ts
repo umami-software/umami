@@ -1,19 +1,17 @@
 import { z } from 'zod';
-import { parseRequest, getRequestDateRange, getRequestFilters } from '@/lib/request';
+import { parseRequest, getQueryFilters } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
-import { canViewWebsite } from '@/lib/auth';
+import { canViewWebsite } from '@/permissions';
+import { dateRangeParams, filterParams } from '@/lib/schema';
+import { getWebsiteStats } from '@/queries/sql';
 import { getCompareDate } from '@/lib/date';
-import { filterParams } from '@/lib/schema';
-import { getWebsiteStats } from '@/queries';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
-    startAt: z.coerce.number().int(),
-    endAt: z.coerce.number().int(),
-    compare: z.string().optional(),
+    ...dateRangeParams,
     ...filterParams,
   });
 
@@ -24,40 +22,22 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { compare } = query;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const { startDate, endDate } = await getRequestDateRange(query);
-  const { startDate: compareStartDate, endDate: compareEndDate } = getCompareDate(
-    compare,
-    startDate,
-    endDate,
-  );
+  const filters = await getQueryFilters(query, websiteId);
 
-  const filters = getRequestFilters(query);
+  const data = await getWebsiteStats(websiteId, filters);
 
-  const metrics = await getWebsiteStats(websiteId, {
+  const { startDate, endDate } = getCompareDate('prev', filters.startDate, filters.endDate);
+
+  const comparison = await getWebsiteStats(websiteId, {
     ...filters,
     startDate,
     endDate,
   });
 
-  const prevPeriod = await getWebsiteStats(websiteId, {
-    ...filters,
-    startDate: compareStartDate,
-    endDate: compareEndDate,
-  });
-
-  const stats = Object.keys(metrics[0]).reduce((obj, key) => {
-    obj[key] = {
-      value: Number(metrics[0][key]) || 0,
-      prev: Number(prevPeriod[0][key]) || 0,
-    };
-    return obj;
-  }, {});
-
-  return json(stats);
+  return json({ ...data, comparison });
 }

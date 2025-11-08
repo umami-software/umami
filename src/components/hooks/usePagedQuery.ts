@@ -1,33 +1,27 @@
-import { UseQueryOptions } from '@tanstack/react-query';
-import { useState } from 'react';
-import { PageResult, PageParams, PagedQueryResult } from '@/lib/types';
+import { UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { useApi } from './useApi';
 import { useNavigation } from './useNavigation';
+import { PageResult } from '@/lib/types';
 
-export function usePagedQuery<T = any>({
+export function usePagedQuery<TData = any, TError = Error>({
   queryKey,
   queryFn,
   ...options
-}: Omit<UseQueryOptions, 'queryFn'> & { queryFn: (params?: object) => any }): PagedQueryResult<T> {
-  const { query: queryParams } = useNavigation();
-  const [params, setParams] = useState<PageParams>({
-    search: '',
-    page: +queryParams.page || 1,
-  });
-
+}: Omit<
+  UseQueryOptions<PageResult<TData>, TError, PageResult<TData>, readonly unknown[]>,
+  'queryFn' | 'queryKey'
+> & {
+  queryKey: readonly unknown[];
+  queryFn: (params?: object) => Promise<PageResult<TData>> | PageResult<TData>;
+}): UseQueryResult<PageResult<TData>, TError> {
+  const {
+    query: { page, search },
+  } = useNavigation();
   const { useQuery } = useApi();
-  const { data, ...query } = useQuery({
-    queryKey: [{ ...queryKey, ...params }],
-    queryFn: () => queryFn(params as any),
+
+  return useQuery<PageResult<TData>, TError>({
+    queryKey: [...queryKey, page, search] as const,
+    queryFn: () => queryFn({ page, search }),
     ...options,
   });
-
-  return {
-    result: data as PageResult<T>,
-    query,
-    params,
-    setParams,
-  };
 }
-
-export default usePagedQuery;

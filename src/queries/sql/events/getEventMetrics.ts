@@ -1,90 +1,97 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_TYPE } from '@/lib/constants';
+import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { QueryFilters, WebsiteEventMetric } from '@/lib/types';
+import { QueryFilters } from '@/lib/types';
+
+const FUNCTION_NAME = 'getEventMetrics';
+
+export interface EventMetricParameters {
+  type: string;
+  limit?: string;
+  offset?: string;
+}
+
+export interface EventMetricData {
+  x: string;
+  t: string;
+  y: number;
+}
 
 export async function getEventMetrics(
-  ...args: [websiteId: string, filters: QueryFilters]
-): Promise<WebsiteEventMetric[]> {
+  ...args: [websiteId: string, parameters: EventMetricParameters, filters: QueryFilters]
+): Promise<EventMetricData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-async function relationalQuery(websiteId: string, filters: QueryFilters) {
-  const { timezone = 'utc', unit = 'day' } = filters;
-  const { rawQuery, getDateSQL, parseFilters } = prisma;
-  const { filterQuery, joinSession, params } = await parseFilters(websiteId, {
-    ...filters,
-    eventType: EVENT_TYPE.customEvent,
-  });
+async function relationalQuery(
+  websiteId: string,
+  parameters: EventMetricParameters,
+  filters: QueryFilters,
+) {
+  const { type, limit = 500, offset = 0 } = parameters;
+  const column = FILTER_COLUMNS[type] || type;
+  const { rawQuery, parseFilters } = prisma;
+  const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters(
+    {
+      ...filters,
+      websiteId,
+      eventType: EVENT_TYPE.customEvent,
+    },
+    { joinSession: SESSION_COLUMNS.includes(type) },
+  );
 
   return rawQuery(
     `
-    select
-      event_name x,
-      ${getDateSQL('website_event.created_at', unit, timezone)} t,
-      count(*) y
+    select ${column} x,
+      count(*) as y
     from website_event
-    ${joinSession}
+    ${cohortQuery}
+    ${joinSessionQuery}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
-      and event_type = {{eventType}}
       ${filterQuery}
-    group by 1, 2
-    order by 2
+    group by 1
+    order by 2 desc
+    limit ${limit}
+    offset ${offset}
     `,
-    params,
+    { ...queryParams, ...parameters },
+    FUNCTION_NAME,
   );
 }
 
 async function clickhouseQuery(
   websiteId: string,
+  parameters: EventMetricParameters,
   filters: QueryFilters,
-): Promise<{ x: string; t: string; y: number }[]> {
-  const { timezone = 'UTC', unit = 'day' } = filters;
-  const { rawQuery, getDateSQL, parseFilters } = clickhouse;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+): Promise<EventMetricData[]> {
+  const { type, limit = 500, offset = 0 } = parameters;
+  const column = FILTER_COLUMNS[type] || type;
+  const { rawQuery, parseFilters } = clickhouse;
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
+    websiteId,
     eventType: EVENT_TYPE.customEvent,
   });
 
-  let sql = '';
-
-  if (filterQuery) {
-    sql = `
-    select
-      event_name x,
-      ${getDateSQL('created_at', unit, timezone)} t,
-      count(*) y
-    from website_event
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type = {eventType:UInt32}
-      ${filterQuery}
-    group by x, t
-    order by t
-    `;
-  } else {
-    sql = `
-    select
-      event_name x,
-      ${getDateSQL('created_at', unit, timezone)} t,
-      count(*) y
-    from (
-      select arrayJoin(event_name) as event_name,
-        created_at
-      from website_event_stats_hourly website_event
-      where website_id = {websiteId:UUID}
+  return rawQuery(
+    `select ${column} x,
+            count(*) as y
+     from website_event
+      ${cohortQuery}
+     where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type = {eventType:UInt32}
-    ) as g
-    group by x, t
-    order by t
-    `;
-  }
-
-  return rawQuery(sql, params);
+        ${filterQuery}
+     group by x
+     order by y desc
+         limit ${limit}
+     offset ${offset}
+    `,
+    { ...queryParams, ...parameters },
+    FUNCTION_NAME,
+  );
 }

@@ -1,15 +1,15 @@
 import { z } from 'zod';
 import { uuid } from '@/lib/crypto';
-import { pagingParams, reportTypeParam } from '@/lib/schema';
+import { pagingParams, reportSchema, reportTypeParam } from '@/lib/schema';
 import { parseRequest } from '@/lib/request';
-import { canViewTeam, canViewWebsite, canUpdateWebsite } from '@/lib/auth';
+import { canViewWebsite, canUpdateWebsite } from '@/permissions';
 import { unauthorized, json } from '@/lib/response';
-import { getReports, createReport } from '@/queries';
+import { getReports, createReport } from '@/queries/prisma';
 
 export async function GET(request: Request) {
   const schema = z.object({
-    websiteId: z.string().uuid().optional(),
-    teamId: z.string().uuid().optional(),
+    websiteId: z.uuid(),
+    type: reportTypeParam.optional(),
     ...pagingParams,
   });
 
@@ -19,53 +19,24 @@ export async function GET(request: Request) {
     return error();
   }
 
-  const { page, search, pageSize, websiteId, teamId } = query;
-  const userId = auth.user.id;
+  const { page, search, pageSize, websiteId, type } = query;
   const filters = {
     page,
     pageSize,
     search,
   };
 
-  if (
-    (websiteId && !(await canViewWebsite(auth, websiteId))) ||
-    (teamId && !(await canViewTeam(auth, teamId)))
-  ) {
+  if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
   const data = await getReports(
     {
       where: {
-        OR: [
-          ...(websiteId ? [{ websiteId }] : []),
-          ...(teamId
-            ? [
-                {
-                  website: {
-                    deletedAt: null,
-                    teamId,
-                  },
-                },
-              ]
-            : []),
-          ...(userId && !websiteId && !teamId
-            ? [
-                {
-                  website: {
-                    deletedAt: null,
-                    userId,
-                  },
-                },
-              ]
-            : []),
-        ],
-      },
-      include: {
+        websiteId,
+        type,
         website: {
-          select: {
-            domain: true,
-          },
+          deletedAt: null,
         },
       },
     },
@@ -76,15 +47,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const schema = z.object({
-    websiteId: z.string().uuid(),
-    name: z.string().max(200),
-    type: reportTypeParam,
-    description: z.string().max(500),
-    parameters: z.object({}).passthrough(),
-  });
-
-  const { auth, body, error } = await parseRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, reportSchema);
 
   if (error) {
     return error();
@@ -102,9 +65,9 @@ export async function POST(request: Request) {
     websiteId,
     type,
     name,
-    description,
-    parameters: JSON.stringify(parameters),
-  } as any);
+    description: description || '',
+    parameters,
+  });
 
   return json(result);
 }

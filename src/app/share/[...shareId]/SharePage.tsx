@@ -1,28 +1,30 @@
 'use client';
-import WebsiteDetailsPage from '../../(main)/websites/[websiteId]/WebsiteDetailsPage';
-import { useShareToken } from '@/components/hooks';
-import Page from '@/components/layout/Page';
-import Header from './Header';
-import Footer from './Footer';
-import styles from './SharePage.module.css';
-import { WebsiteProvider } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
+import { Column } from '@umami/react-zen';
+import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
+import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
+import { useShareTokenQuery } from '@/components/hooks';
+import { PageBody } from '@/components/common/PageBody';
+import { Header } from './Header';
+import { Footer } from './Footer';
+import { WebsiteHeader } from '@/app/(main)/websites/[websiteId]/WebsiteHeader';
 
-export default function SharePage({ shareId }) {
-  const { shareToken, isLoading } = useShareToken(shareId);
+export function SharePage({ shareId }) {
+  const { shareToken, isLoading } = useShareTokenQuery(shareId);
 
   if (isLoading || !shareToken) {
     return null;
   }
 
   return (
-    <div className={styles.container}>
-      <Page>
+    <Column backgroundColor="2">
+      <PageBody gap>
         <Header />
         <WebsiteProvider websiteId={shareToken.websiteId}>
-          <WebsiteDetailsPage websiteId={shareToken.websiteId} />
+          <WebsiteHeader showActions={false} />
+          <WebsitePage websiteId={shareToken.websiteId} />
         </WebsiteProvider>
         <Footer />
-      </Page>
-    </div>
+      </PageBody>
+    </Column>
   );
 }

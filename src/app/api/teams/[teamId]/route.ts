@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { unauthorized, json, notFound, ok } from '@/lib/response';
-import { canDeleteTeam, canUpdateTeam, canViewTeam } from '@/lib/auth';
+import { canDeleteTeam, canUpdateTeam, canViewTeam } from '@/permissions';
 import { parseRequest } from '@/lib/request';
-import { deleteTeam, getTeam, updateTeam } from '@/queries';
+import { deleteTeam, getTeam, updateTeam } from '@/queries/prisma';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const { auth, error } = await parseRequest(request);
@@ -20,7 +20,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
   const team = await getTeam(teamId, { includeMembers: true });
 
   if (!team) {
-    return notFound('Team not found.');
+    return notFound({ message: 'Team not found.' });
   }
 
   return json(team);
@@ -41,7 +41,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
   const { teamId } = await params;
 
   if (!(await canUpdateTeam(auth, teamId))) {
-    return unauthorized('You must be the owner of this team.');
+    return unauthorized({ message: 'You must be the owner/manager of this team.' });
   }
 
   const team = await updateTeam(teamId, body);
@@ -62,7 +62,7 @@ export async function DELETE(
   const { teamId } = await params;
 
   if (!(await canDeleteTeam(auth, teamId))) {
-    return unauthorized('You must be the owner of this team.');
+    return unauthorized({ message: 'You must be the owner/manager of this team.' });
   }
 
   await deleteTeam(teamId);

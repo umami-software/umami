@@ -1,50 +1,100 @@
 name: Create docker images
 
-on: [create]
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Optional image version (e.g. 3.0.0, v3.0.0, or 3.0.0-beta.1)'
+        required: false
+        default: ''
 
 jobs:
   build:
     name: Build, push, and deploy
-    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        db-type: [postgresql, mysql]
+    permissions:
+      contents: read
+      packages: write
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
 
-      - name: Set env
-        run: |
-          echo "NOW=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
-          
-      - name: Generate tags
-        id: generate_tags
-        run: |
-          echo "tag_patch=$(echo ${{ matrix.db-type }})-${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-          echo "tag_minor=$(echo ${{ matrix.db-type }})-$(echo ${GITHUB_REF#refs/tags/} | cut -d. -f1,2)" >> $GITHUB_ENV
-          echo "tag_major=$(echo ${{ matrix.db-type }})-$(echo ${GITHUB_REF#refs/tags/} | cut -d. -f1)" >> $GITHUB_ENV
-          echo "tag_latest=$(echo ${{ matrix.db-type }})-latest" >> $GITHUB_ENV
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - uses: mr-smithers-excellent/docker-build-push@v6
-        name: Build & push Docker image to ghcr.io for ${{ matrix.db-type }}
+      - name: Log into GHCR
+        uses: docker/login-action@v3
         with:
-          image: umami
-          tags: ${{ env.tag_major }}, ${{ env.tag_minor }}, ${{ env.tag_patch }}, ${{ env.tag_latest }}
-          buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: ghcr.io
-          multiPlatform: true
-          platform: linux/amd64,linux/arm64
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: mr-smithers-excellent/docker-build-push@v6
-        name: Build & push Docker image to docker.io for ${{ matrix.db-type }}
+      - name: Log into Docker Hub
+        if: github.repository == 'umami-software/umami'
+        uses: docker/login-action@v3
         with:
-          image: umamisoftware/umami
-          tags: ${{ env.tag_major }}, ${{ env.tag_minor }}, ${{ env.tag_patch }}, ${{ env.tag_latest }}
-          buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Compute version tags
+        id: compute
+        run: |
+          INPUT="${{ github.event.inputs.version }}"
+          REF_TYPE="${{ github.ref_type }}"
+          REF_NAME="${{ github.ref_name }}"
+
+          # Determine version source
+          if [[ -n "$INPUT" ]]; then
+            VERSION="${INPUT#v}"
+          elif [[ "$REF_TYPE" == "tag" ]]; then
+            VERSION="${REF_NAME#v}"
+          else
+            VERSION=""
+          fi
+
+          TAGS=""
+
+          if [[ -n "$VERSION" ]]; then
+            MAJOR=$(echo "$VERSION" | cut -d. -f1)
+            MINOR=$(echo "$VERSION" | cut -d. -f2)
+
+            if [[ "$VERSION" == *-* ]]; then
+              # prerelease: only version tag
+              TAGS="$VERSION"
+            else
+              # stable release: version + hierarchy + latest
+              TAGS="$VERSION,${MAJOR}.${MINOR},${MAJOR},postgresql-latest,latest"
+            fi
+          else
+            # Non-tag build (e.g. from main branch)
+            TAGS="${REF_NAME}"
+          fi
+
+          echo "tags=$TAGS" >> $GITHUB_OUTPUT
+          echo "Computed tags: $TAGS"
+
+      - name: Build and push Docker image
+        run: |
+          TAGS="${{ steps.compute.outputs.tags }}"
+
+          # Set image targets conditionally
+          if [[ "${{ github.repository }}" == "umami-software/umami" ]]; then
+            IMAGES=("umamisoftware/umami" "ghcr.io/${{ github.repository }}")
+          else
+            IMAGES=("ghcr.io/${{ github.repository }}")
+          fi
+
+          for IMAGE in "${IMAGES[@]}"; do
+            echo "Building and pushing $IMAGE with tags: $TAGS"
+            docker buildx build \
+              --platform linux/amd64,linux/arm64 \
+              --push \
+              $(echo "$TAGS" | tr ',' '\n' | sed "s|^|--tag ${IMAGE}:|") \
+              --cache-from type=gha \
+              --cache-to type=gha,mode=max \
+              .
+          done

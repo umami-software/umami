@@ -17,5 +17,3 @@ export function useEscapeKey(handler: (event: KeyboardEvent) => void) {
 
   return null;
 }
-
-export default useEscapeKey;

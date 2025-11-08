@@ -1,3 +1,5 @@
+import { uuid } from '../../src/lib/crypto';
+
 describe('Website API tests', () => {
   Cypress.session.clearAllSavedSessions();
 
@@ -65,6 +67,37 @@ describe('Website API tests', () => {
     });
   });
 
+  it('Creates a website with a fixed ID.', () => {
+    cy.fixture('websites').then(data => {
+      const websiteCreate = data.websiteCreate;
+      const fixedId = uuid();
+      cy.request({
+        method: 'POST',
+        url: '/api/websites',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: Cypress.env('authorization'),
+        },
+        body: { ...websiteCreate, id: fixedId },
+      }).then(response => {
+        expect(response.status).to.eq(200);
+        expect(response.body).to.have.property('id', fixedId);
+        expect(response.body).to.have.property('name', 'Cypress Website');
+        expect(response.body).to.have.property('domain', 'cypress.com');
+
+        // cleanup
+        cy.request({
+          method: 'DELETE',
+          url: `/api/websites/${fixedId}`,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: Cypress.env('authorization'),
+          },
+        });
+      });
+    });
+  });
+
   it('Returns all tracked websites.', () => {
     cy.request({
       method: 'GET',
@@ -113,6 +146,21 @@ describe('Website API tests', () => {
         expect(response.body).to.have.property('name', 'Cypress Website Updated');
         expect(response.body).to.have.property('domain', 'cypressupdated.com');
       });
+    });
+  });
+
+  it('Updates a website with only shareId.', () => {
+    cy.request({
+      method: 'POST',
+      url: `/api/websites/${websiteId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: Cypress.env('authorization'),
+      },
+      body: { shareId: 'ABCDEF' },
+    }).then(response => {
+      expect(response.status).to.eq(200);
+      expect(response.body).to.have.property('shareId', 'ABCDEF');
     });
   });
 

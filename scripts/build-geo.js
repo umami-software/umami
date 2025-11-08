@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-console */
-require('dotenv').config();
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
-const zlib = require('zlib');
-const tar = require('tar');
+import 'dotenv/config';
+import fs from 'node:fs';
+import path from 'node:path';
+import https from 'https';
+import zlib from 'zlib';
+import tar from 'tar';
 
-if (process.env.VERCEL) {
+if (process.env.VERCEL && !process.env.BUILD_GEO) {
   console.log('Vercel environment detected. Skipping geo setup.');
   process.exit(0);
 }
@@ -22,7 +21,7 @@ if (process.env.MAXMIND_LICENSE_KEY) {
     `?edition_id=${db}&license_key=${process.env.MAXMIND_LICENSE_KEY}&suffix=tar.gz`;
 }
 
-const dest = path.resolve(__dirname, '../geo');
+const dest = path.resolve(process.cwd(), 'geo');
 
 if (!fs.existsSync(dest)) {
   fs.mkdirSync(dest);

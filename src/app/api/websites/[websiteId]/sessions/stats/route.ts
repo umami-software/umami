@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { parseRequest, getRequestDateRange, getRequestFilters } from '@/lib/request';
+import { parseRequest, getQueryFilters } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
-import { canViewWebsite } from '@/lib/auth';
+import { canViewWebsite } from '@/permissions';
 import { filterParams } from '@/lib/schema';
-import { getWebsiteSessionStats } from '@/queries';
+import { getWebsiteSessionStats } from '@/queries/sql';
 
 export async function GET(
   request: Request,
@@ -27,15 +27,9 @@ export async function GET(
     return unauthorized();
   }
 
-  const { startDate, endDate } = await getRequestDateRange(query);
+  const filters = await getQueryFilters(query, websiteId);
 
-  const filters = getRequestFilters(query);
-
-  const metrics = await getWebsiteSessionStats(websiteId, {
-    ...filters,
-    startDate,
-    endDate,
-  });
+  const metrics = await getWebsiteSessionStats(websiteId, filters);
 
   const data = Object.keys(metrics[0]).reduce((obj, key) => {
     obj[key] = {

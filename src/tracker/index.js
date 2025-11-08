@@ -38,6 +38,18 @@
 
   /* Helper functions */
 
+  const normalize = raw => {
+    if (!raw) return raw;
+    try {
+      const u = new URL(raw, location.href);
+      if (excludeSearch) u.search = '';
+      if (excludeHash) u.hash = '';
+      return u.toString();
+    } catch (e) {
+      return raw;
+    }
+  };
+
   const getPayload = () => ({
     website,
     screen,
@@ -61,11 +73,7 @@
     if (!url) return;
 
     currentRef = currentUrl;
-    currentUrl = new URL(url, location.href);
-
-    if (excludeSearch) currentUrl.search = '';
-    if (excludeHash) currentUrl.hash = '';
-    currentUrl = currentUrl.toString();
+    currentUrl = normalize(new URL(url, location.href).toString());
 
     if (currentUrl !== currentRef) {
       setTimeout(track, delayDuration);
@@ -143,13 +151,14 @@
     const callback = window[beforeSend];
 
     if (typeof callback === 'function') {
-      payload = callback(type, payload);
+      payload = await Promise.resolve(callback(type, payload));
     }
 
     if (!payload) return;
 
     try {
       const res = await fetch(endpoint, {
+        keepalive: true,
         method: 'POST',
         body: JSON.stringify({ type, payload }),
         headers: {
@@ -164,6 +173,7 @@
         disabled = !!data.disabled;
         cache = data.cache;
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       /* no-op */
     }
@@ -209,8 +219,9 @@
     };
   }
 
-  let currentUrl = href;
-  let currentRef = referrer.startsWith(origin) ? '' : referrer;
+  let currentUrl = normalize(href);
+  let currentRef = normalize(referrer.startsWith(origin) ? '' : referrer);
+
   let initialized = false;
   let disabled = false;
   let cache;

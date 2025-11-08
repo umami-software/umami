@@ -2,7 +2,7 @@
   "label.access-code": [
     {
       "type": 0,
-      "value": "Access code"
+      "value": "Codice di accesso"
     }
   ],
   "label.actions": [
@@ -14,31 +14,37 @@
   "label.activity": [
     {
       "type": 0,
-      "value": "Activity log"
+      "value": "Registro attività"
     }
   ],
   "label.add": [
     {
       "type": 0,
-      "value": "Add"
+      "value": "Aggiungi"
+    }
+  ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "Aggiungi bacheca"
     }
   ],
   "label.add-description": [
     {
       "type": 0,
-      "value": "Add description"
+      "value": "Aggiungi descrizione"
     }
   ],
   "label.add-member": [
     {
       "type": 0,
-      "value": "Add member"
+      "value": "Aggiungi membro"
     }
   ],
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "Aggiungi passaggio"
     }
   ],
   "label.add-website": [
@@ -53,10 +59,16 @@
       "value": "Amministratore"
     }
   ],
+  "label.affiliate": [
+    {
+      "type": 0,
+      "value": "Affiliato"
+    }
+  ],
   "label.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "Dopo"
     }
   ],
   "label.all": [
@@ -74,13 +86,31 @@
   "label.analytics": [
     {
       "type": 0,
-      "value": "Analytics"
+      "value": "Analitica"
+    }
+  ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "Applica"
+    }
+  ],
+  "label.attribution": [
+    {
+      "type": 0,
+      "value": "Attribuzione"
+    }
+  ],
+  "label.attribution-description": [
+    {
+      "type": 0,
+      "value": "Scopri come gli utenti interagiscono con il tuo marketing e cosa genera conversioni."
     }
   ],
   "label.average": [
     {
       "type": 0,
-      "value": "Average"
+      "value": "Media"
     }
   ],
   "label.back": [
@@ -92,7 +122,13 @@
   "label.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "Prima"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "Bacheche"
     }
   ],
   "label.bounce-rate": [
@@ -104,7 +140,7 @@
   "label.breakdown": [
     {
       "type": 0,
-      "value": "Breakdown"
+      "value": "Dettaglio"
     }
   ],
   "label.browser": [
@@ -119,6 +155,12 @@
       "value": "Browser"
     }
   ],
+  "label.campaigns": [
+    {
+      "type": 0,
+      "value": "Campagne"
+    }
+  ],
   "label.cancel": [
     {
       "type": 0,
@@ -131,34 +173,52 @@
       "value": "Modifica password"
     }
   ],
+  "label.channels": [
+    {
+      "type": 0,
+      "value": "Canali"
+    }
+  ],
   "label.cities": [
     {
       "type": 0,
-      "value": "Cities"
+      "value": "Città"
     }
   ],
   "label.city": [
     {
       "type": 0,
-      "value": "City"
+      "value": "Città"
     }
   ],
   "label.clear-all": [
     {
       "type": 0,
-      "value": "Clear all"
+      "value": "Cancella tutto"
+    }
+  ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "Coorte"
     }
   ],
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "Confronta"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "Confronta date"
     }
   ],
   "label.confirm": [
     {
       "type": 0,
-      "value": "Confirm"
+      "value": "Conferma"
     }
   ],
   "label.confirm-password": [
@@ -173,16 +233,40 @@
       "value": "Contains"
     }
   ],
+  "label.content": [
+    {
+      "type": 0,
+      "value": "Contenuto"
+    }
+  ],
   "label.continue": [
     {
       "type": 0,
-      "value": "Continue"
+      "value": "Continua"
+    }
+  ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "Conversione"
+    }
+  ],
+  "label.conversion-rate": [
+    {
+      "type": 0,
+      "value": "Tasso di conversione"
+    }
+  ],
+  "label.conversion-step": [
+    {
+      "type": 0,
+      "value": "Passaggio di conversione"
     }
   ],
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "Conteggio"
     }
   ],
   "label.countries": [
@@ -194,49 +278,55 @@
   "label.country": [
     {
       "type": 0,
-      "value": "Country"
+      "value": "Paese"
     }
   ],
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "Crea"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "Create report"
+      "value": "Crea rapporto"
     }
   ],
   "label.create-team": [
     {
       "type": 0,
-      "value": "Create team"
+      "value": "Crea team"
     }
   ],
   "label.create-user": [
     {
       "type": 0,
-      "value": "Create user"
+      "value": "Crea utente"
     }
   ],
   "label.created": [
     {
       "type": 0,
-      "value": "Created"
+      "value": "Creato"
     }
   ],
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "Creato da"
+    }
+  ],
+  "label.currency": [
+    {
+      "type": 0,
+      "value": "Valuta"
     }
   ],
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "Attuale"
     }
   ],
   "label.current-password": [
@@ -260,13 +350,13 @@
   "label.data": [
     {
       "type": 0,
-      "value": "Data"
+      "value": "Dati"
     }
   ],
   "label.date": [
     {
       "type": 0,
-      "value": "Date"
+      "value": "Data"
     }
   ],
   "label.date-range": [
@@ -278,7 +368,7 @@
   "label.day": [
     {
       "type": 0,
-      "value": "Day"
+      "value": "Giorno"
     }
   ],
   "label.default-date-range": [
@@ -296,19 +386,19 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "Elimina rapporto"
     }
   ],
   "label.delete-team": [
     {
       "type": 0,
-      "value": "Delete team"
+      "value": "Elimina team"
     }
   ],
   "label.delete-user": [
     {
       "type": 0,
-      "value": "Delete user"
+      "value": "Elimina utente"
     }
   ],
   "label.delete-website": [
@@ -320,7 +410,7 @@
   "label.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "Descrizione"
     }
   ],
   "label.desktop": [
@@ -332,13 +422,13 @@
   "label.details": [
     {
       "type": 0,
-      "value": "Details"
+      "value": "Dettagli"
     }
   ],
   "label.device": [
     {
       "type": 0,
-      "value": "Device"
+      "value": "Dispositivo"
     }
   ],
   "label.devices": [
@@ -347,16 +437,40 @@
       "value": "Dispositivi"
     }
   ],
+  "label.direct": [
+    {
+      "type": 0,
+      "value": "Diretto"
+    }
+  ],
   "label.dismiss": [
     {
       "type": 0,
       "value": "Scarta"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "ID distinto"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
-      "value": "Does not contain"
+      "value": "Non contiene"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "Non include"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "Non esiste"
     }
   ],
   "label.domain": [
@@ -368,7 +482,7 @@
   "label.dropoff": [
     {
       "type": 0,
-      "value": "Dropoff"
+      "value": "Abbandono"
     }
   ],
   "label.edit": [
@@ -380,13 +494,19 @@
   "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Modifica pannello di controllo"
     }
   ],
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "Modifica membro"
+    }
+  ],
+  "label.email": [
+    {
+      "type": 0,
+      "value": "Email"
     }
   ],
   "label.enable-share-url": [
@@ -398,25 +518,31 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "Passaggio finale"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "URL di ingresso"
     }
   ],
   "label.event": [
     {
       "type": 0,
-      "value": "Event"
+      "value": "Evento"
     }
   ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "Dati evento"
+    }
+  ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "Nome evento"
     }
   ],
   "label.events": [
@@ -425,28 +551,34 @@
       "value": "Eventi"
     }
   ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "Esiste"
+    }
+  ],
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "URL di uscita"
     }
   ],
   "label.false": [
     {
       "type": 0,
-      "value": "False"
+      "value": "Falso"
     }
   ],
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "Campo"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Fields"
+      "value": "Campi"
     }
   ],
   "label.filter": [
@@ -470,13 +602,19 @@
   "label.filters": [
     {
       "type": 0,
-      "value": "Filters"
+      "value": "Filtri"
+    }
+  ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "Primo clic"
     }
   ],
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "Prima visualizzazione"
     }
   ],
   "label.funnel": [
@@ -488,109 +626,145 @@
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "Comprendi il tasso di conversione e di abbandono degli utenti."
+    }
+  ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "Funnel"
     }
   ],
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "Obiettivo"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "Obiettivi"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "Tieni traccia dei tuoi obiettivi per visualizzazioni di pagina ed eventi."
     }
   ],
   "label.greater-than": [
     {
       "type": 0,
-      "value": "Greater than"
+      "value": "Maggiore di"
     }
   ],
   "label.greater-than-equals": [
     {
       "type": 0,
-      "value": "Greater than or equals"
+      "value": "Maggiore o uguale a"
     }
   ],
-  "label.host": [
+  "label.grouped": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "Raggruppato"
     }
   ],
-  "label.hosts": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "Nome host"
+    }
+  ],
+  "label.includes": [
+    {
+      "type": 0,
+      "value": "Include"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "Approfondimento"
     }
   ],
   "label.insights": [
     {
       "type": 0,
-      "value": "Insights"
+      "value": "Approfondimenti"
     }
   ],
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "Analizza più a fondo i tuoi dati utilizzando segmenti e filtri."
     }
   ],
   "label.is": [
     {
       "type": 0,
-      "value": "Is"
+      "value": "È"
+    }
+  ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "È falso"
     }
   ],
   "label.is-not": [
     {
       "type": 0,
-      "value": "Is not"
+      "value": "Non è"
     }
   ],
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Is not set"
+      "value": "Non impostato"
     }
   ],
   "label.is-set": [
     {
       "type": 0,
-      "value": "Is set"
+      "value": "Impostato"
+    }
+  ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "È vero"
     }
   ],
   "label.join": [
     {
       "type": 0,
-      "value": "Join"
+      "value": "Unisciti"
     }
   ],
   "label.join-team": [
     {
       "type": 0,
-      "value": "Join team"
+      "value": "Unisciti al team"
     }
   ],
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "Percorso"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users navigate through your website."
+      "value": "Comprendi come gli utenti navigano nel tuo sito web."
+    }
+  ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "Percorsi"
     }
   ],
   "label.language": [
@@ -609,6 +783,12 @@
     {
       "type": 0,
       "value": "Portatile"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "Ultimo clic"
     }
   ],
   "label.last-days": [
@@ -642,7 +822,7 @@
   "label.last-months": [
     {
       "type": 0,
-      "value": "Last "
+      "value": "Ultimi "
     },
     {
       "type": 1,
@@ -650,37 +830,43 @@
     },
     {
       "type": 0,
-      "value": " months"
+      "value": " mesi"
     }
   ],
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "Ultima visualizzazione"
     }
   ],
   "label.leave": [
     {
       "type": 0,
-      "value": "Leave"
+      "value": "Lascia"
     }
   ],
   "label.leave-team": [
     {
       "type": 0,
-      "value": "Leave team"
+      "value": "Lascia il team"
     }
   ],
   "label.less-than": [
     {
       "type": 0,
-      "value": "Less than"
+      "value": "Meno di"
     }
   ],
   "label.less-than-equals": [
     {
       "type": 0,
-      "value": "Less than or equals"
+      "value": "Meno o uguale a"
+    }
+  ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "Link"
     }
   ],
   "label.login": [
@@ -698,7 +884,7 @@
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "Gestisci"
     }
   ],
   "label.manager": [
@@ -710,31 +896,49 @@
   "label.max": [
     {
       "type": 0,
-      "value": "Max"
+      "value": "Massimo"
+    }
+  ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Espandi"
+    }
+  ],
+  "label.medium": [
+    {
+      "type": 0,
+      "value": "Medio"
     }
   ],
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "Membro"
     }
   ],
   "label.members": [
     {
       "type": 0,
-      "value": "Members"
+      "value": "Membri"
     }
   ],
   "label.min": [
     {
       "type": 0,
-      "value": "Min"
+      "value": "Minimo"
     }
   ],
   "label.mobile": [
     {
       "type": 0,
       "value": "Cellulare"
+    }
+  ],
+  "label.model": [
+    {
+      "type": 0,
+      "value": "Model"
     }
   ],
   "label.more": [
@@ -746,13 +950,13 @@
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "Il mio account"
     }
   ],
   "label.my-websites": [
     {
       "type": 0,
-      "value": "My websites"
+      "value": "I miei siti"
     }
   ],
   "label.name": [
@@ -770,7 +974,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "Nessuno"
     }
   ],
   "label.number-of-records": [
@@ -813,10 +1017,46 @@
       "value": "OK"
     }
   ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
+    }
+  ],
+  "label.organic-search": [
+    {
+      "type": 0,
+      "value": "Ricerca organica"
+    }
+  ],
+  "label.organic-shopping": [
+    {
+      "type": 0,
+      "value": "Acquisto organico"
+    }
+  ],
+  "label.organic-social": [
+    {
+      "type": 0,
+      "value": "Social organico"
+    }
+  ],
+  "label.organic-video": [
+    {
+      "type": 0,
+      "value": "Video organico"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
       "value": "OS"
+    }
+  ],
+  "label.other": [
+    {
+      "type": 0,
+      "value": "Altro"
     }
   ],
   "label.overview": [
@@ -829,6 +1069,12 @@
     {
       "type": 0,
       "value": "Proprietario"
+    }
+  ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "Pagina"
     }
   ],
   "label.page-of": [
@@ -867,6 +1113,36 @@
       "value": "Pagine"
     }
   ],
+  "label.paid-ads": [
+    {
+      "type": 0,
+      "value": "Annunci a pagamento"
+    }
+  ],
+  "label.paid-search": [
+    {
+      "type": 0,
+      "value": "Ricerca a pagamento"
+    }
+  ],
+  "label.paid-shopping": [
+    {
+      "type": 0,
+      "value": "Acquisto a pagamento"
+    }
+  ],
+  "label.paid-social": [
+    {
+      "type": 0,
+      "value": "Social a pagamento"
+    }
+  ],
+  "label.paid-video": [
+    {
+      "type": 0,
+      "value": "Video a pagamento"
+    }
+  ],
   "label.password": [
     {
       "type": 0,
@@ -876,13 +1152,19 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "Percorso"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "Percorsi"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "Pixel"
     }
   ],
   "label.powered-by": [
@@ -922,19 +1204,19 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "Proprietà"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "Proprietà"
     }
   ],
   "label.queries": [
     {
       "type": 0,
-      "value": "Queries"
+      "value": "Query"
     }
   ],
   "label.query": [
@@ -946,13 +1228,19 @@
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "Parametri query"
     }
   ],
   "label.realtime": [
     {
       "type": 0,
       "value": "Tempo reale"
+    }
+  ],
+  "label.referral": [
+    {
+      "type": 0,
+      "value": "Referente"
     }
   ],
   "label.referrer": [
@@ -989,6 +1277,12 @@
     {
       "type": 0,
       "value": "Regions"
+    }
+  ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "Rimanente"
     }
   ],
   "label.remove": [
@@ -1042,19 +1336,13 @@
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "Ricavi"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
-    }
-  ],
-  "label.revenue-property": [
-    {
-      "type": 0,
-      "value": "Revenue Property"
+      "value": "Consulta i tuoi ricavi nel tempo."
     }
   ],
   "label.role": [
@@ -1078,7 +1366,7 @@
   "label.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "Schermi"
     }
   ],
   "label.search": [
@@ -1099,6 +1387,12 @@
       "value": "Select date"
     }
   ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "Seleziona filtro"
+    }
+  ],
   "label.select-role": [
     {
       "type": 0,
@@ -1117,6 +1411,12 @@
       "value": "Session"
     }
   ],
+  "label.session-data": [
+    {
+      "type": 0,
+      "value": "Dati sessione"
+    }
+  ],
   "label.sessions": [
     {
       "type": 0,
@@ -1129,6 +1429,12 @@
       "value": "Impostazioni"
     }
   ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "Condividi"
+    }
+  ],
   "label.share-url": [
     {
       "type": 0,
@@ -1139,6 +1445,18 @@
     {
       "type": 0,
       "value": "Singolo giorno"
+    }
+  ],
+  "label.sms": [
+    {
+      "type": 0,
+      "value": "SMS"
+    }
+  ],
+  "label.sources": [
+    {
+      "type": 0,
+      "value": "Fonti"
     }
   ],
   "label.start-step": [
@@ -1163,6 +1481,18 @@
     {
       "type": 0,
       "value": "Tablet"
+    }
+  ],
+  "label.tag": [
+    {
+      "type": 0,
+      "value": "Etichetta"
+    }
+  ],
+  "label.tags": [
+    {
+      "type": 0,
+      "value": "Etichette"
     }
   ],
   "label.team": [
@@ -1201,6 +1531,12 @@
       "value": "Team owner"
     }
   ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "Impostazioni team"
+    }
+  ],
   "label.team-view-only": [
     {
       "type": 0,
@@ -1217,6 +1553,12 @@
     {
       "type": 0,
       "value": "Teams"
+    }
+  ],
+  "label.terms": [
+    {
+      "type": 0,
+      "value": "Termini"
     }
   ],
   "label.theme": [
@@ -1351,28 +1693,10 @@
       "value": "Update"
     }
   ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "URL"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "URLs"
-    }
-  ],
   "label.user": [
     {
       "type": 0,
       "value": "User"
-    }
-  ],
-  "label.user-property": [
-    {
-      "type": 0,
-      "value": "User Property"
     }
   ],
   "label.username": [
@@ -1535,6 +1859,12 @@
       "value": " online"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
@@ -1627,6 +1957,12 @@
     {
       "type": 1,
       "value": "url"
+    }
+  ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
     }
   ],
   "message.go-to-settings": [
@@ -1723,6 +2059,18 @@
       "value": "Non hai ancora configurato alcun sito."
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1753,6 +2101,12 @@
     {
       "type": 0,
       "value": "Salvato!"
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1817,6 +2171,12 @@
       "value": "Triggered event"
     }
   ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
@@ -1861,12 +2221,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "Visitors dropped off"
     }
   ]
 }

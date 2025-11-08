@@ -1,30 +1,33 @@
 import { ReactNode } from 'react';
-import classNames from 'classnames';
 import Link from 'next/link';
+import { Button, ButtonProps } from '@umami/react-zen';
 import { useLocale } from '@/components/hooks';
-import styles from './LinkButton.module.css';
 
-export interface LinkButtonProps {
+export interface LinkButtonProps extends ButtonProps {
   href: string;
-  className?: string;
-  variant?: string;
+  target?: string;
   scroll?: boolean;
+  variant?: any;
+  prefetch?: boolean;
   children?: ReactNode;
 }
 
-export function LinkButton({ href, className, variant, scroll = true, children }: LinkButtonProps) {
+export function LinkButton({
+  href,
+  variant,
+  scroll = true,
+  target,
+  prefetch,
+  children,
+  ...props
+}: LinkButtonProps) {
   const { dir } = useLocale();
 
   return (
-    <Link
-      className={classNames(styles.button, className, { [styles[variant]]: true })}
-      href={href}
-      dir={dir}
-      scroll={scroll}
-    >
-      {children}
-    </Link>
+    <Button {...props} variant={variant} asChild>
+      <Link href={href} dir={dir} scroll={scroll} target={target} prefetch={prefetch}>
+        {children}
+      </Link>
+    </Button>
   );
 }
-
-export default LinkButton;

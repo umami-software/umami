@@ -32,4 +32,4 @@ export function setWebsiteDateCompare(websiteId: string, dateCompare: string) {
   );
 }
 
-export default store;
+export const useWebsites = store;

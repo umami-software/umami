@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { parseRequest } from '@/lib/request';
+import { parseRequest, getQueryFilters } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
-import { canViewWebsite } from '@/lib/auth';
-import { getSessionActivity } from '@/queries';
+import { canViewWebsite } from '@/permissions';
+import { getSessionActivity } from '@/queries/sql';
 
 export async function GET(
   request: Request,
@@ -20,16 +20,14 @@ export async function GET(
   }
 
   const { websiteId, sessionId } = await params;
-  const { startAt, endAt } = query;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const startDate = new Date(+startAt);
-  const endDate = new Date(+endAt);
+  const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getSessionActivity(websiteId, sessionId, startDate, endDate);
+  const data = await getSessionActivity(websiteId, sessionId, filters);
 
   return json(data);
 }

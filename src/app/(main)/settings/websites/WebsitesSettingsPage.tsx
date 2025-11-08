@@ -1,17 +1,16 @@
 'use client';
-import { useLogin } from '@/components/hooks';
-import WebsitesDataTable from './WebsitesDataTable';
-import WebsitesHeader from './WebsitesHeader';
-import { ROLES } from '@/lib/constants';
+import { Column } from '@umami/react-zen';
+import { useMessages } from '@/components/hooks';
+import { WebsitesDataTable } from '@/app/(main)/websites/WebsitesDataTable';
+import { SectionHeader } from '@/components/common/SectionHeader';
 
-export default function WebsitesSettingsPage({ teamId }: { teamId: string }) {
-  const { user } = useLogin();
-  const canCreate = user.role !== ROLES.viewOnly;
+export function WebsitesSettingsPage({ teamId }: { teamId: string }) {
+  const { formatMessage, labels } = useMessages();
 
   return (
-    <>
-      <WebsitesHeader teamId={teamId} allowCreate={canCreate} />
+    <Column gap>
+      <SectionHeader title={formatMessage(labels.websites)} />
       <WebsitesDataTable teamId={teamId} />
-    </>
+    </Column>
   );
 }

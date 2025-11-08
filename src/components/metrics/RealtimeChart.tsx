@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react';
 import { startOfMinute, subMinutes, isBefore } from 'date-fns';
-import PageviewsChart from './PageviewsChart';
+import { PageviewsChart } from './PageviewsChart';
 import { DEFAULT_ANIMATION_DURATION, REALTIME_RANGE } from '@/lib/constants';
 import { RealtimeData } from '@/lib/types';
 
@@ -38,13 +38,11 @@ export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
   return (
     <PageviewsChart
       {...props}
-      minDate={startDate.toISOString()}
-      maxDate={endDate.toISOString()}
+      minDate={startDate}
+      maxDate={endDate}
       unit={unit}
       data={chartData}
       animationDuration={animationDuration}
     />
   );
 }
-
-export default RealtimeChart;

@@ -1,16 +1,17 @@
 import clickhouse from '@/lib/clickhouse';
+import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { QueryFilters } from '@/lib/types';
+
+export interface UTMParameters {
+  column: string;
+  startDate: Date;
+  endDate: Date;
+}
 
 export async function getUTM(
-  ...args: [
-    websiteId: string,
-    filters: {
-      startDate: Date;
-      endDate: Date;
-      timezone?: string;
-    },
-  ]
+  ...args: [websiteId: string, parameters: UTMParameters, filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -20,83 +21,64 @@ export async function getUTM(
 
 async function relationalQuery(
   websiteId: string,
-  filters: {
-    startDate: Date;
-    endDate: Date;
-    timezone?: string;
-  },
+  parameters: UTMParameters,
+  filters: QueryFilters,
 ) {
-  const { startDate, endDate } = filters;
-  const { rawQuery } = prisma;
+  const { column, startDate, endDate } = parameters;
+  const { parseFilters, rawQuery } = prisma;
+
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+    eventType: EVENT_TYPE.pageView,
+  });
 
   return rawQuery(
     `
-    select url_query, count(*) as "num"
+    select website_event.${column} utm, count(*) as views
     from website_event
-    where website_id = {{websiteId::uuid}}
-      and created_at between {{startDate}} and {{endDate}}
-      and coalesce(url_query, '') != ''
-      and event_type = 1
+    ${cohortQuery}
+    ${joinSessionQuery}
+    where website_event.website_id = {{websiteId::uuid}}
+      and website_event.created_at between {{startDate}} and {{endDate}}
+      and coalesce(website_event.${column}, '') != ''
+      ${filterQuery}
     group by 1
+    order by 2 desc
     `,
-    {
-      websiteId,
-      startDate,
-      endDate,
-    },
-  ).then(result => parseParameters(result as any[]));
+    queryParams,
+  );
 }
 
 async function clickhouseQuery(
   websiteId: string,
-  filters: {
-    startDate: Date;
-    endDate: Date;
-    timezone?: string;
-  },
+  parameters: UTMParameters,
+  filters: QueryFilters,
 ) {
-  const { startDate, endDate } = filters;
-  const { rawQuery } = clickhouse;
+  const { column, startDate, endDate } = parameters;
+  const { parseFilters, rawQuery } = clickhouse;
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+    eventType: EVENT_TYPE.pageView,
+  });
 
   return rawQuery(
     `
-    select url_query, count(*) as "num"
+    select ${column} utm, count(*) as views
     from website_event
+    ${cohortQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and url_query != ''
-      and event_type = 1
+      and ${column} != ''
+      ${filterQuery}
     group by 1
+    order by 2 desc
     `,
-    {
-      websiteId,
-      startDate,
-      endDate,
-    },
-  ).then(result => parseParameters(result as any[]));
-}
-
-function parseParameters(data: any[]) {
-  return data.reduce((obj, { url_query, num }) => {
-    try {
-      const searchParams = new URLSearchParams(url_query);
-
-      for (const [key, value] of searchParams) {
-        if (key.match(/^utm_(\w+)$/)) {
-          const name = value;
-          if (!obj[key]) {
-            obj[key] = { [name]: Number(num) };
-          } else if (!obj[key][name]) {
-            obj[key][name] = Number(num);
-          } else {
-            obj[key][name] += Number(num);
-          }
-        }
-      }
-    } catch {
-      // Ignore
-    }
-
-    return obj;
-  }, {});
+    queryParams,
+  );
 }
