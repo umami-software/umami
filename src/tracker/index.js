@@ -233,6 +233,7 @@
   }
 
   let currentUrl = normalize(href);
+  // Fix referrer handling for exclude-hash functionality
   let currentRef = referrer && referrer.startsWith(origin) ? '' : normalize(referrer);
 
   let initialized = false;
