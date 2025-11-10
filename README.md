@@ -7,6 +7,7 @@
 <p align="center">
   <i>Umami is a simple, fast, privacy-focused alternative to Google Analytics.</i>
 </p>
+# Test contribution for course assignment
 
 <p align="center">
   <a href="https://github.com/umami-software/umami/releases">
