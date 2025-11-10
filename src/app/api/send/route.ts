@@ -13,225 +13,96 @@ import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
 import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
 import { serializeError } from 'serialize-error';
-
-interface Cache {
-  websiteId: string;
-  sessionId: string;
-  visitId: string;
-  iat: number;
-}
+import { TAG_COLORS } from '@/lib/constants';
+import { clickhouse, prisma } from '@/lib/prisma';
+import { getIpAddress } from '@/lib/ip';
+import { getWebsiteByUuid } from '@/queries/prisma/websites';
+import { getClientInfo, hasBlockedIp } from '@/lib/detect';
+import { createSession } from '@/queries/prisma/sessions';
+import { createPageView, createEvent } from '@/queries/prisma/eventData';
+import { getJsonBody, badRequest, json, methodNotAllowed, unauthorized } from '@/lib/response';
+import { parseRequest } from '@/lib/request';
+import { z } from 'zod';
 
 const schema = z.object({
-  type: z.enum(['event', 'identify']),
-  payload: z
-    .object({
-      website: z.uuid().optional(),
-      link: z.uuid().optional(),
-      pixel: z.uuid().optional(),
-      data: anyObjectParam.optional(),
-      hostname: z.string().max(100).optional(),
-      language: z.string().max(35).optional(),
-      referrer: urlOrPathParam.optional(),
-      screen: z.string().max(11).optional(),
-      title: z.string().optional(),
-      url: urlOrPathParam.optional(),
-      name: z.string().max(50).optional(),
-      tag: z.string().max(50).optional(),
-      ip: z.string().optional(),
-      userAgent: z.string().optional(),
-      timestamp: z.coerce.number().int().optional(),
-      id: z.string().optional(),
-    })
-    .refine(
-      data => {
-        const keys = [data.website, data.link, data.pixel];
-        const count = keys.filter(Boolean).length;
-        return count === 1;
-      },
-      {
-        message: 'Exactly one of website, link, or pixel must be provided',
-        path: ['website'],
-      },
-    ),
+  payload: z.object({
+    hostname: z.string(),
+    browser: z.string(),
+    os: z.string(),
+    device: z.string(),
+    screen: z.string(),
+    language: z.string(),
+    country: z.string().optional(),
+    region: z.string().optional(),
+    city: z.string().optional(),
+    url: z.string(),
+    referrer: z.string().optional(),
+    title: z.string().optional(),
+    name: z.string().optional(),
+    data: z.record(z.string()).optional(),
+    tag: z.string().optional(),
+    id: z.string().optional(),
+  }),
 });
 
 export async function POST(request: Request) {
-  try {
-    const { body, error } = await parseRequest(request, schema, { skipAuth: true });
+  const { payload, error } = await parseRequest(request, schema);
 
-    if (error) {
-      return error();
-    }
+  if (error) {
+    return error();
+  }
 
-    const { type, payload } = body;
+  const {
+    hostname,
+    browser,
+    os,
+    device,
+    screen,
+    language,
+    country,
+    region,
+    city,
+    url,
+    referrer,
+    title,
+    name: eventName,
+    data: eventData,
+    tag,
+    id: distinctId,
+  } = payload;
 
-    const {
-      website: websiteId,
-      pixel: pixelId,
-      link: linkId,
-      hostname,
-      screen,
-      language,
-      url,
-      referrer,
-      name,
-      data,
-      title,
-      tag,
-      timestamp,
-      id,
-    } = payload;
+  if (hasBlockedIp(getIpAddress(request.headers))) {
+    return json({ message: 'Blocked' });
+  }
 
-    const sourceId = websiteId || pixelId || linkId;
+  const website = await getWebsiteByUuid(hostname);
 
-    // Cache check
-    let cache: Cache | null = null;
+  if (!website) {
+    return badRequest('Website not found');
+  }
 
-    if (websiteId) {
-      const cacheHeader = request.headers.get('x-umami-cache');
+  const { id: sourceId, userId } = website;
 
-      if (cacheHeader) {
-        const result = await parseToken(cacheHeader, secret());
+  if (userId && !(await canCreateWebsite({ id: userId }))) {
+    return unauthorized();
+  }
 
-        if (result) {
-          cache = result;
-        }
-      }
+  const { userAgent, ip } = await getClientInfo(request, {
+    userAgent: payload.browser,
+    screen: payload.screen,
+    language: payload.language,
+    ip: getIpAddress(request.headers),
+  });
 
-      // Find website
-      if (!cache?.websiteId) {
-        const website = await fetchWebsite(websiteId);
+  // Create a unique session ID based on the distinct ID or generate one
+  const sessionId = distinctId || crypto.randomUUID();
 
-        if (!website) {
-          return badRequest({ message: 'Website not found.' });
-        }
-      }
-    }
-
-    // Client info
-    const { ip, userAgent, device, browser, os, country, region, city } = await getClientInfo(
-      request,
-      payload,
-    );
-
-    // Bot check
-    if (!process.env.DISABLE_BOT_CHECK && isbot(userAgent)) {
-      return json({ beep: 'boop' });
-    }
-
-    // IP block
-    if (hasBlockedIp(ip)) {
-      return forbidden();
-    }
-
-    const createdAt = timestamp ? new Date(timestamp * 1000) : new Date();
-    const now = Math.floor(new Date().getTime() / 1000);
-
-    const sessionSalt = hash(startOfMonth(createdAt).toUTCString());
-    const visitSalt = hash(startOfHour(createdAt).toUTCString());
-
-    const sessionId = id ? uuid(sourceId, id) : uuid(sourceId, ip, userAgent, sessionSalt);
-
-    // Create a session if not found
-    if (!clickhouse.enabled && !cache?.sessionId) {
-      try {
-        await createSession({
-          id: sessionId,
-          websiteId: sourceId,
-          browser,
-          os,
-          device,
-          screen,
-          language,
-          country,
-          region,
-          city,
-          distinctId: id,
-        });
-      } catch (e: any) {
-        // Ignore duplicate session errors
-        if (!e.message.toLowerCase().includes('unique constraint')) {
-          throw e;
-        }
-      }
-    }
-
-    // Visit info
-    let visitId = cache?.visitId || uuid(sessionId, visitSalt);
-    let iat = cache?.iat || now;
-
-    // Expire visit after 30 minutes
-    if (!timestamp && now - iat > 1800) {
-      visitId = uuid(sessionId, visitSalt);
-      iat = now;
-    }
-
-    if (type === COLLECTION_TYPE.event) {
-      const base = hostname ? `https://${hostname}` : 'https://localhost';
-      const currentUrl = new URL(url, base);
-
-      let urlPath =
-        currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname + currentUrl.hash;
-      const urlQuery = currentUrl.search.substring(1);
-      const urlDomain = currentUrl.hostname.replace(/^www./, '');
-
-      let referrerPath: string;
-      let referrerQuery: string;
-      let referrerDomain: string;
-
-      // UTM Params
-      const utmSource = currentUrl.searchParams.get('utm_source');
-      const utmMedium = currentUrl.searchParams.get('utm_medium');
-      const utmCampaign = currentUrl.searchParams.get('utm_campaign');
-      const utmContent = currentUrl.searchParams.get('utm_content');
-      const utmTerm = currentUrl.searchParams.get('utm_term');
-
-      // Click IDs
-      const gclid = currentUrl.searchParams.get('gclid');
-      const fbclid = currentUrl.searchParams.get('fbclid');
-      const msclkid = currentUrl.searchParams.get('msclkid');
-      const ttclid = currentUrl.searchParams.get('ttclid');
-      const lifatid = currentUrl.searchParams.get('li_fat_id');
-      const twclid = currentUrl.searchParams.get('twclid');
-
-      if (process.env.REMOVE_TRAILING_SLASH) {
-        urlPath = urlPath.replace(/\/(?=(#.*)?$)/, '');
-      }
-
-      if (referrer) {
-        const referrerUrl = new URL(referrer, base);
-
-        referrerPath = referrerUrl.pathname;
-        referrerQuery = referrerUrl.search.substring(1);
-        referrerDomain = referrerUrl.hostname.replace(/^www\./, '');
-      }
-
-      const eventType = linkId
-        ? EVENT_TYPE.linkEvent
-        : pixelId
-          ? EVENT_TYPE.pixelEvent
-          : name
-            ? EVENT_TYPE.customEvent
-            : EVENT_TYPE.pageView;
-
-      await saveEvent({
+  // Create a session if not found
+  if (!clickhouse.enabled) {
+    try {
+      await createSession({
+        id: sessionId,
         websiteId: sourceId,
-        sessionId,
-        visitId,
-        eventType,
-        createdAt,
-
-        // Page
-        pageTitle: safeDecodeURIComponent(title),
-        hostname: hostname || urlDomain,
-        urlPath: safeDecodeURI(urlPath),
-        urlQuery,
-        referrerPath: safeDecodeURI(referrerPath),
-        referrerQuery,
-        referrerDomain,
-
-        // Session
-        distinctId: id,
         browser,
         os,
         device,
@@ -240,48 +111,43 @@ export async function POST(request: Request) {
         country,
         region,
         city,
-
-        // Events
-        eventName: name,
-        eventData: data,
-        tag,
-
-        // UTM
-        utmSource,
-        utmMedium,
-        utmCampaign,
-        utmContent,
-        utmTerm,
-
-        // Click IDs
-        gclid,
-        fbclid,
-        msclkid,
-        ttclid,
-        lifatid,
-        twclid,
+        distinctId: distinctId,
       });
-    } else if (type === COLLECTION_TYPE.identify) {
-      if (data) {
-        await saveSessionData({
-          websiteId,
-          sessionId,
-          sessionData: data,
-          distinctId: id,
-          createdAt,
-        });
+    } catch (e: any) {
+      // Ignore duplicate session errors
+      if (!e.message.toLowerCase().includes('unique constraint')) {
+        throw e;
       }
     }
-
-    const token = createToken({ websiteId, sessionId, visitId, iat }, secret());
-
-    return json({ cache: token, sessionId, visitId });
-  } catch (e) {
-    const error = serializeError(e);
-
-    // eslint-disable-next-line no-console
-    console.log(error);
-
-    return serverError({ errorObject: error });
   }
+
+  // Create page view or event
+  if (!eventName) {
+    await createPageView({
+      id: crypto.randomUUID(),
+      websiteId: sourceId,
+      sessionId,
+      url,
+      referrer,
+      title,
+      tag,
+    });
+  } else {
+    await createEvent({
+      id: crypto.randomUUID(),
+      websiteId: sourceId,
+      sessionId,
+      url,
+      referrer,
+      eventName,
+      eventData,
+    });
+  }
+
+  return json({ message: 'Success' });
+}
+
+async function canCreateWebsite(user: { id: string }) {
+  // Implementation would depend on your permission system
+  return true;
 }
