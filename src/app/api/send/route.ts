@@ -12,8 +12,6 @@ import { COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
 import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
-import { serializeError } from 'serialize-error';
-import { TAG_COLORS } from '@/lib/constants';
 import { clickhouse as prismaClickhouse, prisma } from '@/lib/prisma';
 import { getIpAddress } from '@/lib/ip';
 import { getWebsite } from '@/queries/prisma/websites';
