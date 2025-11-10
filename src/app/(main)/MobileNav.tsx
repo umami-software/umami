@@ -8,6 +8,7 @@ import { Grid, IconLabel, NavMenu, NavMenuItem, Row, Text } from '@umami/react-z
 import Link from 'next/link';
 import { AdminNav } from './admin/AdminNav';
 import { SettingsNav } from './settings/SettingsNav';
+import { MobileLanguageButton } from '@/components/input/MobileLanguageButton';
 
 export function MobileNav() {
   const { formatMessage, labels } = useMessages();
@@ -54,6 +55,7 @@ export function MobileNav() {
                   );
                 })}
               </NavMenu>
+              <MobileLanguageButton />
               {websiteId && <WebsiteNav websiteId={websiteId} onItemClick={close} />}
               {isAdmin && <AdminNav onItemClick={close} />}
               {isSettings && <SettingsNav onItemClick={close} />}
