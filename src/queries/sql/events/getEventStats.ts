@@ -1,101 +1,63 @@
-import clickhouse from '@/lib/clickhouse';
 import { EVENT_TYPE } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
-import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
+import { FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { getFilterQuery } from '@/queries/sql/common';
+import { clickhouse, prisma } from '@/lib/prisma';
+import { FilterQuery, QueryFilters } from '@/lib/types';
 
-const FUNCTION_NAME = 'getEventStats';
-
-interface WebsiteEventMetric {
-  x: string;
-  t: string;
-  y: number;
+function getEventFilterQuery(filters: QueryFilters = {}, eventType: string): FilterQuery {
+  const { eventType: _, ...rest } = filters;
+  return getFilterQuery(rest, {
+    eventType,
+    [FILTER_COLUMNS.eventName]: 'c."eventName"',
+    [SESSION_COLUMNS.os]: 's."os"',
+    [SESSION_COLUMNS.browser]: 's."browser"',
+    [SESSION_COLUMNS.device]: 's."device"',
+    [SESSION_COLUMNS.country]: 's."country"',
+    [SESSION_COLUMNS.region]: 's."region"',
+    [SESSION_COLUMNS.city]: 's."city"',
+  });
 }
 
 export async function getEventStats(
-  ...args: [websiteId: string, filters: QueryFilters]
-): Promise<WebsiteEventMetric[]> {
-  return runQuery({
-    [PRISMA]: () => relationalQuery(...args),
-    [CLICKHOUSE]: () => clickhouseQuery(...args),
-  });
-}
-
-async function relationalQuery(websiteId: string, filters: QueryFilters) {
-  const { timezone = 'utc', unit = 'day' } = filters;
-  const { rawQuery, getDateSQL, parseFilters } = prisma;
-  const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
-    ...filters,
-    websiteId,
-    eventType: EVENT_TYPE.customEvent,
-  });
-
-  return rawQuery(
-    `
-    select
-      event_name x,
-      ${getDateSQL('website_event.created_at', unit, timezone)} t,
-      count(*) y
-    from website_event
-    ${cohortQuery}
-    ${joinSessionQuery}
-    where website_event.website_id = {{websiteId::uuid}}
-      and website_event.created_at between {{startDate}} and {{endDate}}
-      ${filterQuery}
-    group by 1, 2
-    order by 2
-    `,
-    queryParams,
-    FUNCTION_NAME,
-  );
-}
-
-async function clickhouseQuery(
   websiteId: string,
-  filters: QueryFilters,
-): Promise<{ x: string; t: string; y: number }[]> {
-  const { timezone = 'utc', unit = 'day' } = filters;
-  const { rawQuery, getDateSQL, parseFilters } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({
-    ...filters,
-    websiteId,
-    eventType: EVENT_TYPE.customEvent,
-  });
+  filters: QueryFilters = {},
+  eventType = EVENT_TYPE.customEvent,
+) {
+  const { filterQuery, params } = getEventFilterQuery(filters, eventType);
 
-  let sql = '';
+  if (clickhouse.enabled) {
+    const { rawQuery, findUnique } = clickhouse;
 
-  if (filterQuery || cohortQuery) {
-    sql = `
-    select
-      event_name x,
-      ${getDateSQL('created_at', unit, timezone)} t,
-      count(*) y
-    from website_event
-    ${cohortQuery}
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      ${filterQuery}
-    group by x, t
-    order by t
-    `;
-  } else {
-    sql = `
-    select
-      event_name x,
-      ${getDateSQL('created_at', unit, timezone)} t,
-      count(*) y
-    from (
-      select arrayJoin(event_name) as event_name,
-        created_at
-      from website_event_stats_hourly website_event
-      where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type = {eventType:UInt32}
-    ) as g
-    group by x, t
-    order by t
-    `;
+    const result = await rawQuery(
+      `
+      select
+        count(*) as "count",
+        count(distinct "sessionId") as "events"
+      from event
+      where "websiteId" = {websiteId:UUID}
+        and "eventType" = {eventType:String}
+        ${filterQuery}`,
+      {
+        websiteId,
+        eventType,
+        ...params,
+      },
+    );
+
+    return findUnique(result);
   }
 
-  return rawQuery(sql, queryParams, FUNCTION_NAME);
+  // Prisma implementation
+  // Extract timezone from filters to ensure consistent timezone usage
+  const { timezone = 'utc' } = filters;
+  
+  return prisma.$queryRaw`
+    select
+      count(*) as count,
+      count(distinct "sessionId") as events
+    from "WebsiteEvent" e
+    join "Session" s on s."id" = e."sessionId"
+    where e."websiteId" = ${websiteId}::uuid
+      and e."eventType" = ${eventType}
+      ${filterQuery}`;
 }
