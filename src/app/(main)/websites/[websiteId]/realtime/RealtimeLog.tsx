@@ -9,6 +9,7 @@ import {
   useCountryNames,
   useLocale,
   useMessages,
+  useMobile,
   useNavigation,
   useTimezone,
   useWebsite,
@@ -40,6 +41,7 @@ export function RealtimeLog({ data }: { data: any }) {
   const { countryNames } = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);
   const { updateParams } = useNavigation();
+  const { isPhone } = useMobile();
 
   const buttons = [
     {
@@ -123,12 +125,18 @@ export function RealtimeLog({ data }: { data: any }) {
     const row = logs[index];
     return (
       <Row alignItems="center" style={style} gap>
-        <Link href={updateParams({ session: row.sessionId })}>
-          <Avatar seed={row.sessionId} size={32} />
-        </Link>
-        <Row width="100px">{getTime(row)}</Row>
+        <Row minWidth="30px">
+          <Link href={updateParams({ session: row.sessionId })}>
+            <Avatar seed={row.sessionId} size={32} />
+          </Link>
+        </Row>
+        <Row minWidth="100px">
+          <Text wrap="nowrap">{getTime(row)}</Text>
+        </Row>
         <IconLabel icon={getIcon(row)}>
-          <Text>{getDetail(row)}</Text>
+          <Text style={{ maxWidth: isPhone ? '400px' : null }} truncate>
+            {getDetail(row)}
+          </Text>
         </IconLabel>
       </Row>
     );
@@ -168,10 +176,22 @@ export function RealtimeLog({ data }: { data: any }) {
   return (
     <Column gap>
       <Heading size="2">{formatMessage(labels.activity)}</Heading>
-      <Row alignItems="center" justifyContent="space-between">
-        <SearchField value={search} onSearch={setSearch} />
-        <FilterButtons items={buttons} value={filter} onChange={setFilter} />
-      </Row>
+      {isPhone ? (
+        <>
+          <Row>
+            <SearchField value={search} onSearch={setSearch} />
+          </Row>
+          <Row>
+            <FilterButtons items={buttons} value={filter} onChange={setFilter} />
+          </Row>
+        </>
+      ) : (
+        <Row alignItems="center" justifyContent="space-between">
+          <SearchField value={search} onSearch={setSearch} />
+          <FilterButtons items={buttons} value={filter} onChange={setFilter} />
+        </Row>
+      )}
+
       <Column>
         {logs?.length === 0 && <Empty />}
         {logs?.length > 0 && (

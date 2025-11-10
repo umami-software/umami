@@ -57,7 +57,7 @@ export function ListTable({
         showPercentage={showPercentage}
         change={renderChange ? renderChange(row, index) : null}
         currency={currency}
-        isMobile={isPhone}
+        isPhone={isPhone}
       />
     );
   };
@@ -101,7 +101,7 @@ const AnimatedRow = ({
   animate,
   showPercentage = true,
   currency,
-  isMobile,
+  isPhone,
 }) => {
   const props = useSpring({
     width: percent,
@@ -120,7 +120,7 @@ const AnimatedRow = ({
       gap
     >
       <Row alignItems="center">
-        <Text truncate={true} style={{ maxWidth: isMobile ? '200px' : '400px' }}>
+        <Text truncate={true} style={{ maxWidth: isPhone ? '200px' : '400px' }}>
           {label}
         </Text>
       </Row>
