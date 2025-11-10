@@ -3,6 +3,7 @@ import { FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { getFilterQuery } from '@/queries/sql/common';
 import { clickhouse, prisma } from '@/lib/prisma';
 import { FilterQuery, QueryFilters } from '@/lib/types';
+import { getDateRange } from '@/lib/date';
 
 function getEventFilterQuery(filters: QueryFilters = {}, eventType: string): FilterQuery {
   const { eventType: _, ...rest } = filters;
@@ -47,11 +48,6 @@ export async function getEventStats(
     return findUnique(result);
   }
 
-  // Prisma implementation
-  // Extract timezone from filters to ensure consistent timezone usage
-  const { timezone = 'utc' } = filters;
-  
-  // Fix the Prisma raw query syntax
   return prisma.$queryRaw`
     select
       count(*) as count,
@@ -61,4 +57,56 @@ export async function getEventStats(
     where e."websiteId" = ${websiteId}::uuid
       and e."eventType" = ${eventType}
       ${filterQuery}`;
+}
+
+// Restore the original time series function that was removed
+export async function getEventTimeSeries(
+  websiteId: string,
+  filters: QueryFilters = {},
+  eventType = EVENT_TYPE.customEvent,
+) {
+  const { filterQuery, params } = getEventFilterQuery(filters, eventType);
+  const { startDate, endDate, unit, timezone } = getDateRange(filters);
+
+  if (clickhouse.enabled) {
+    const { rawQuery } = clickhouse;
+
+    return rawQuery(
+      `
+      select
+        toStartOfInterval("createdAt", INTERVAL 1 ${unit}, {timezone:String}) as "t",
+        count(*) as "y"
+      from event
+      where "websiteId" = {websiteId:UUID}
+        and "eventType" = {eventType:String}
+        and "createdAt" >= {startDate:DateTime}
+        and "createdAt" < {endDate:DateTime}
+        ${filterQuery}
+      group by "t"
+      order by "t"
+      `,
+      {
+        websiteId,
+        eventType,
+        startDate,
+        endDate,
+        timezone,
+        ...params,
+      },
+    );
+  }
+
+  return prisma.$queryRaw`
+    select
+      date_trunc(${unit}, "createdAt", ${timezone}) as t,
+      count(*) as y
+    from "WebsiteEvent" e
+    join "Session" s on s."id" = e."sessionId"
+    where e."websiteId" = ${websiteId}::uuid
+      and e."eventType" = ${eventType}
+      and e."createdAt" >= ${startDate}
+      and e."createdAt" < ${endDate}
+      ${filterQuery}
+    group by t
+    order by t`;
 }
