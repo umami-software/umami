@@ -51,6 +51,7 @@ export async function getEventStats(
   // Extract timezone from filters to ensure consistent timezone usage
   const { timezone = 'utc' } = filters;
   
+  // Fix the Prisma raw query syntax
   return prisma.$queryRaw`
     select
       count(*) as count,
