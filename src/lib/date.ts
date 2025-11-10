@@ -105,6 +105,7 @@ export const DATE_FORMATS = {
 
 const TIMEZONE_MAPPINGS: Record<string, string> = {
   'Asia/Calcutta': 'Asia/Kolkata',
+  'Asia/Saigon': 'Asia/Ho_Chi_Minh',
 };
 
 export function normalizeTimezone(timezone: string): string {
@@ -339,14 +340,15 @@ export function generateTimeSeries(
 ) {
   const add = DATE_FUNCTIONS[unit].add;
   const start = DATE_FUNCTIONS[unit].start;
+  const end = DATE_FUNCTIONS[unit].end;
   const fmt = DATE_FORMATS[unit];
 
   let current = start(minDate);
-  const end = start(maxDate);
+  const endDate = end(maxDate);
 
   const timeseries: string[] = [];
 
-  while (isBefore(current, end) || isEqual(current, end)) {
+  while (isBefore(current, endDate) || isEqual(current, endDate)) {
     timeseries.push(formatDate(current, fmt, locale));
     current = add(current, 1);
   }

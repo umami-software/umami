@@ -21,7 +21,7 @@ export async function getRealtimeData(websiteId: string, filters: QueryFilters) 
   const statsFilters = { ...filters, timezone };
   
   const [activity, pageviews, sessions] = await Promise.all([
-    getRealtimeActivity(websiteId, filters),
+    getRealtimeActivity(websiteId, statsFilters),
     getPageviewStats(websiteId, statsFilters),
     getSessionStats(websiteId, statsFilters),
   ]);

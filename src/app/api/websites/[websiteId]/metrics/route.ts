@@ -37,28 +37,30 @@ export async function GET(
   }
 
   const { type, limit, offset, search } = query;
+  // Map 'url' to 'path' for backward compatibility
+  const metricType = type === 'url' ? 'path' : type;
   const filters = await getQueryFilters(query, websiteId);
 
   if (search) {
-    filters[type] = `c.${search}`;
+    filters[metricType] = `c.${search}`;
   }
 
-  if (SESSION_COLUMNS.includes(type)) {
-    const data = await getSessionMetrics(websiteId, { type, limit, offset }, filters);
+  if (SESSION_COLUMNS.includes(metricType)) {
+    const data = await getSessionMetrics(websiteId, { type: metricType, limit, offset }, filters);
 
     return json(data);
   }
 
-  if (EVENT_COLUMNS.includes(type)) {
-    if (type === 'event') {
+  if (EVENT_COLUMNS.includes(metricType)) {
+    if (metricType === 'event') {
       filters.eventType = EVENT_TYPE.customEvent;
-      return json(await getEventMetrics(websiteId, { type, limit, offset }, filters));
+      return json(await getEventMetrics(websiteId, { type: metricType, limit, offset }, filters));
     } else {
-      return json(await getPageviewMetrics(websiteId, { type, limit, offset }, filters));
+      return json(await getPageviewMetrics(websiteId, { type: metricType, limit, offset }, filters));
     }
   }
 
-  if (type === 'channel') {
+  if (metricType === 'channel') {
     return json(await getChannelMetrics(websiteId, filters));
   }
 

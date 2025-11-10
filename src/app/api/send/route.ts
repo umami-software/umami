@@ -134,19 +134,26 @@ export async function POST(request: Request) {
 
     // Create a session if not found
     if (!clickhouse.enabled && !cache?.sessionId) {
-      await createSession({
-        id: sessionId,
-        websiteId: sourceId,
-        browser,
-        os,
-        device,
-        screen,
-        language,
-        country,
-        region,
-        city,
-        distinctId: id,
-      });
+      try {
+        await createSession({
+          id: sessionId,
+          websiteId: sourceId,
+          browser,
+          os,
+          device,
+          screen,
+          language,
+          country,
+          region,
+          city,
+          distinctId: id,
+        });
+      } catch (e: any) {
+        // Ignore duplicate session errors
+        if (!e.message.toLowerCase().includes('unique constraint')) {
+          throw e;
+        }
+      }
     }
 
     // Visit info

@@ -140,12 +140,31 @@ export async function resetWebsite(websiteId: string) {
   const deleteInBatches = async (model: any, where: any) => {
     let deletedCount;
     do {
-      const result = await model.deleteMany({
+      // First, find records to delete (up to 10000)
+      const recordsToDelete = await model.findMany({
         where,
-        take: 10000, // Limit to 10000 records per batch
+        take: 10000,
+        select: {
+          id: true,
+        },
       });
+      
+      if (recordsToDelete.length === 0) {
+        deletedCount = 0;
+        break;
+      }
+      
+      // Then delete those records by their IDs
+      const result = await model.deleteMany({
+        where: {
+          id: {
+            in: recordsToDelete.map((record: any) => record.id),
+          },
+        },
+      });
+      
       deletedCount = result.count;
-    } while (deletedCount === 10000); // Continue until we delete less than 10000 records
+    } while (deletedCount > 0);
   };
 
   // Delete data in batches to avoid transaction timeouts
