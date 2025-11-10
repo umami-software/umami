@@ -1,3 +1,5 @@
+# Test line for course assignment
+
 <p align="center">
   <img src="https://content.umami.is/website/images/umami-logo.png" alt="Umami Logo" width="100">
 </p>
