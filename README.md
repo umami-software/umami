@@ -38,7 +38,26 @@ A detailed getting started guide can be found at [umami.is/docs](https://umami.i
 - A server with Node.js version 18.18 or newer
 - A database. Umami supports [PostgreSQL](https://www.postgresql.org/) (minimum v12.14) databases.
 
-### Get the Source Code and Install Packages
+### Quick Setup (Recommended for Beginners)
+
+Use our interactive setup wizard for a guided installation:
+
+```bash
+git clone https://github.com/umami-software/umami.git
+cd umami
+pnpm install
+pnpm run setup
+```
+
+The wizard will guide you through:
+- Checking prerequisites
+- Configuring your database
+- Creating the `.env` file
+- Building the application
+
+### Manual Setup
+
+#### 1. Get the Source Code and Install Packages
 
 ```bash
 git clone https://github.com/umami-software/umami.git
@@ -46,12 +65,33 @@ cd umami
 pnpm install
 ```
 
-### Configure Umami
+#### 2. Validate Your Setup
+
+Before proceeding, validate your environment:
+
+```bash
+pnpm run validate-setup
+```
+
+This will check:
+- Node.js version (>= 18.18)
+- pnpm installation
+- Environment configuration
+- Database connectivity
+- Dependencies
+
+#### 3. Configure Umami
 
 Create an `.env` file with the following:
 
 ```bash
 DATABASE_URL=connection-url
+```
+
+You can use `.env.example` as a template:
+
+```bash
+cp .env.example .env
 ```
 
 The connection URL format:
@@ -60,7 +100,7 @@ The connection URL format:
 postgresql://username:mypassword@localhost:5432/mydb
 ```
 
-### Build the Application
+#### 4. Build the Application
 
 ```bash
 pnpm run build
@@ -68,13 +108,46 @@ pnpm run build
 
 _The build step will create tables in your database if you are installing for the first time. It will also create a login user with username **admin** and password **umami**._
 
-### Start the Application
+⚠️ **Important:** Change the default password immediately after first login!
+
+#### 5. Start the Application
+
+For development:
+
+```bash
+pnpm run dev
+```
+
+_Development server runs on `http://localhost:3001` with hot-reload enabled._
+
+For production:
 
 ```bash
 pnpm run start
 ```
 
-_By default, this will launch the application on `http://localhost:3000`. You will need to either [proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly._
+_Production server runs on `http://localhost:3000`. You will need to either [proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly._
+
+### Troubleshooting
+
+If you encounter issues during setup, see our detailed [Setup Guide](SETUP.md) which includes:
+- Step-by-step installation instructions
+- Common error scenarios and solutions
+- Database configuration help
+- Environment variable reference
+
+You can also run diagnostics:
+
+```bash
+# Check environment variables
+pnpm run check-env
+
+# Check database connection
+pnpm run check-db
+
+# Validate complete setup
+pnpm run validate-setup
+```
 
 ---
 
