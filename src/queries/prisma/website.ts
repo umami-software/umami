@@ -1,46 +1,146 @@
 import { Prisma } from '@/generated/prisma/client';
 import redis from '@/lib/redis';
-import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
-import { ROLES } from '@/lib/constants';
+import { clickhouse, prisma } from '@/lib/prisma';
+import { Website } from '@prisma/client';
 
-export async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs) {
-  return prisma.client.website.findUnique(criteria);
-}
+export async function getWebsite(where: any): Promise<Website> {
+  if (clickhouse.enabled) {
+    const { rawQuery, findUnique } = clickhouse;
 
-export async function getWebsite(websiteId: string) {
-  return findWebsite({
-    where: {
-      id: websiteId,
-    },
-  });
-}
-
-export async function getSharedWebsite(shareId: string) {
-  return findWebsite({
-    where: {
-      shareId,
-      deletedAt: null,
-    },
-  });
-}
-
-export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters: QueryFilters) {
-  const { search } = filters;
-  const { getSearchParameters, pagedQuery } = prisma;
-
-  const where: Prisma.WebsiteWhereInput = {
-    ...criteria.where,
-    ...getSearchParameters(search, [
+    const result = await rawQuery(
+      `select * from website where ${Object.keys(where)[0]} = {value:String}`,
       {
-        name: 'contains',
+        value: Object.values(where)[0],
       },
-      { domain: 'contains' },
-    ]),
-    deletedAt: null,
-  };
+    );
 
-  return pagedQuery('website', { ...criteria, where }, filters);
+    return findUnique(result);
+  }
+
+  return prisma.website.findUnique({
+    where,
+  });
+}
+
+export async function getWebsites(where: any): Promise<Website[]> {
+  if (clickhouse.enabled) {
+    const { rawQuery } = clickhouse;
+
+    return rawQuery(`select * from website where "userId" = {userId:UUID}`, where);
+  }
+
+  return prisma.website.findMany({
+    where,
+    orderBy: {
+      name: 'asc',
+    },
+  });
+}
+
+export async function createWebsite(data: any): Promise<Website> {
+  if (clickhouse.enabled) {
+    const { rawQuery } = clickhouse;
+
+    const result = await rawQuery(
+      `insert into website ("id", "name", "domain", "userId", "shareId", "public") values ({id:UUID}, {name:String}, {domain:String}, {userId:UUID}, {shareId:String}, {public:Boolean})`,
+      data,
+    );
+
+    return result[0];
+  }
+
+  return prisma.website.create({
+    data,
+  });
+}
+
+export async function updateWebsite(
+  where: { id: string },
+  data: { name?: string; domain?: string; shareId?: string; public?: boolean },
+): Promise<Website> {
+  if (clickhouse.enabled) {
+    const { rawQuery } = clickhouse;
+
+    const result = await rawQuery(
+      `alter table website update "name" = {name:String}, "domain" = {domain:String}, "shareId" = {shareId:String}, "public" = {public:Boolean} where "id" = {id:UUID}`,
+      {
+        ...data,
+        ...where,
+      },
+    );
+
+    return result[0];
+  }
+
+  return prisma.website.update({
+    where,
+    data,
+  });
+}
+
+export async function deleteWebsite(where: { id: string }): Promise<Website> {
+  if (clickhouse.enabled) {
+    const { rawQuery } = clickhouse;
+
+    const result = await rawQuery(`delete from website where "id" = {id:UUID}`, where);
+
+    return result[0];
+  }
+
+  return prisma.website.delete({
+    where,
+  });
+}
+
+export async function resetWebsite(websiteId: string): Promise<void> {
+  if (clickhouse.enabled) {
+    const { rawQuery } = clickhouse;
+
+    await rawQuery(`delete from event where "websiteId" = {websiteId:UUID}`, {
+      websiteId,
+    });
+    await rawQuery(`delete from session where "websiteId" = {websiteId:UUID}`, {
+      websiteId,
+    });
+  } else {
+    // For large datasets, we need to delete data in chunks to avoid transaction timeouts
+    // We'll delete data in batches of 10000 records at a time
+    const deleteInBatches = async (model: any, where: any) => {
+      let deletedCount;
+      do {
+        // First, find records to delete (up to 10000)
+        const recordsToDelete = await model.findMany({
+          where,
+          take: 10000,
+          select: {
+            id: true,
+          },
+        });
+        
+        if (recordsToDelete.length === 0) {
+          deletedCount = 0;
+          break;
+        }
+        
+        // Then delete those records by their IDs
+        const result = await model.deleteMany({
+          where: {
+            id: {
+              in: recordsToDelete.map((record: any) => record.id),
+            },
+          },
+        });
+        
+        deletedCount = result.count;
+      } while (deletedCount > 0);
+    };
+
+    // Delete data in batches to avoid transaction timeouts
+    await deleteInBatches(prisma.eventData, { websiteId });
+    await deleteInBatches(prisma.sessionData, { websiteId });
+    await deleteInBatches(prisma.websiteEvent, { websiteId });
+    await deleteInBatches(prisma.session, { websiteId });
+  }
 }
 
 export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filters?: QueryFilters) {
@@ -109,124 +209,6 @@ export async function getTeamWebsites(teamId: string, filters?: QueryFilters) {
     },
     filters,
   );
-}
-
-export async function createWebsite(
-  data: Prisma.WebsiteCreateInput | Prisma.WebsiteUncheckedCreateInput,
-) {
-  return prisma.client.website.create({
-    data,
-  });
-}
-
-export async function updateWebsite(
-  websiteId: string,
-  data: Prisma.WebsiteUpdateInput | Prisma.WebsiteUncheckedUpdateInput,
-) {
-  return prisma.client.website.update({
-    where: {
-      id: websiteId,
-    },
-    data,
-  });
-}
-
-export async function resetWebsite(websiteId: string) {
-  const { client } = prisma;
-  const cloudMode = !!process.env.CLOUD_MODE;
-
-  // For large datasets, we need to delete data in chunks to avoid transaction timeouts
-  // We'll delete data in batches of 10000 records at a time
-  const deleteInBatches = async (model: any, where: any) => {
-    let deletedCount;
-    do {
-      // First, find records to delete (up to 10000)
-      const recordsToDelete = await model.findMany({
-        where,
-        take: 10000,
-        select: {
-          id: true,
-        },
-      });
-      
-      if (recordsToDelete.length === 0) {
-        deletedCount = 0;
-        break;
-      }
-      
-      // Then delete those records by their IDs
-      const result = await model.deleteMany({
-        where: {
-          id: {
-            in: recordsToDelete.map((record: any) => record.id),
-          },
-        },
-      });
-      
-      deletedCount = result.count;
-    } while (deletedCount > 0);
-  };
-
-  // Delete data in batches to avoid transaction timeouts
-  await deleteInBatches(client.eventData, { websiteId });
-  await deleteInBatches(client.sessionData, { websiteId });
-  await deleteInBatches(client.websiteEvent, { websiteId });
-  await deleteInBatches(client.session, { websiteId });
-
-  // Update the website reset timestamp
-  const data = await client.website.update({
-    where: { id: websiteId },
-    data: {
-      resetAt: new Date(),
-    },
-  });
-
-  if (cloudMode) {
-    await redis.client.set(`website:${websiteId}`, data);
-  }
-
-  return data;
-}
-
-export async function deleteWebsite(websiteId: string) {
-  const { client, transaction } = prisma;
-  const cloudMode = !!process.env.CLOUD_MODE;
-
-  return transaction([
-    client.eventData.deleteMany({
-      where: { websiteId },
-    }),
-    client.sessionData.deleteMany({
-      where: { websiteId },
-    }),
-    client.websiteEvent.deleteMany({
-      where: { websiteId },
-    }),
-    client.session.deleteMany({
-      where: { websiteId },
-    }),
-    client.report.deleteMany({
-      where: {
-        websiteId,
-      },
-    }),
-    cloudMode
-      ? client.website.update({
-          data: {
-            deletedAt: new Date(),
-          },
-          where: { id: websiteId },
-        })
-      : client.website.delete({
-          where: { id: websiteId },
-        }),
-  ]).then(async data => {
-    if (cloudMode) {
-      await redis.client.del(`website:${websiteId}`);
-    }
-
-    return data;
-  });
 }
 
 export async function getWebsiteCount(userId: string) {
