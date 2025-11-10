@@ -1,7 +1,8 @@
 import { EVENT_TYPE } from '@/lib/constants';
 import { FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+// Fix import errors by using correct paths
 import { getFilterQuery } from '@/queries/sql/common';
-import { clickhouse, prisma } from '@/lib/prisma';
+import { clickhouse as prismaClickhouse, prisma } from '@/lib/prisma';
 import { FilterQuery, QueryFilters } from '@/lib/types';
 import { getDateRange } from '@/lib/date';
 
@@ -26,8 +27,8 @@ export async function getEventStats(
 ) {
   const { filterQuery, params } = getEventFilterQuery(filters, eventType);
 
-  if (clickhouse.enabled) {
-    const { rawQuery, findUnique } = clickhouse;
+  if (prismaClickhouse.enabled) {
+    const { rawQuery, findUnique } = prismaClickhouse;
 
     const result = await rawQuery(
       `
@@ -68,8 +69,8 @@ export async function getEventTimeSeries(
   const { filterQuery, params } = getEventFilterQuery(filters, eventType);
   const { startDate, endDate, unit, timezone } = getDateRange(filters);
 
-  if (clickhouse.enabled) {
-    const { rawQuery } = clickhouse;
+  if (prismaClickhouse.enabled) {
+    const { rawQuery } = prismaClickhouse;
 
     return rawQuery(
       `
