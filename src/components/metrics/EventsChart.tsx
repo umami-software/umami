@@ -1,10 +1,11 @@
-import { useMemo, useState, useEffect } from 'react';
-import { colord } from 'colord';
 import { BarChart, BarChartProps } from '@/components/charts/BarChart';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useDateRange, useLocale, useWebsiteEventsSeriesQuery } from '@/components/hooks';
 import { renderDateLabels } from '@/lib/charts';
 import { CHART_COLORS } from '@/lib/constants';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { generateTimeSeries } from '@/lib/date';
+import { colord } from 'colord';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export interface EventsChartProps extends BarChartProps {
   websiteId: string;
@@ -15,7 +16,7 @@ export function EventsChart({ websiteId, focusLabel }: EventsChartProps) {
   const {
     dateRange: { startDate, endDate, unit },
   } = useDateRange();
-  const { locale } = useLocale();
+  const { locale, dateLocale } = useLocale();
   const { data, isLoading, error } = useWebsiteEventsSeriesQuery(websiteId);
   const [label, setLabel] = useState<string>(focusLabel);
 
@@ -37,7 +38,7 @@ export function EventsChart({ websiteId, focusLabel }: EventsChartProps) {
         const color = colord(CHART_COLORS[index % CHART_COLORS.length]);
         return {
           label: key,
-          data: map[key],
+          data: generateTimeSeries(map[key], startDate, endDate, unit, dateLocale),
           lineTension: 0,
           backgroundColor: color.alpha(0.6).toRgbString(),
           borderColor: color.alpha(0.7).toRgbString(),
@@ -54,6 +55,8 @@ export function EventsChart({ websiteId, focusLabel }: EventsChartProps) {
     }
   }, [focusLabel]);
 
+  const renderXLabel = useCallback(renderDateLabels(unit, locale), [unit, locale]);
+
   return (
     <LoadingPanel isLoading={isLoading} error={error} minHeight="400px">
       {chartData && (
@@ -63,7 +66,7 @@ export function EventsChart({ websiteId, focusLabel }: EventsChartProps) {
           maxDate={endDate}
           unit={unit}
           stacked={true}
-          renderXLabel={renderDateLabels(unit, locale)}
+          renderXLabel={renderXLabel}
           height="400px"
         />
       )}
