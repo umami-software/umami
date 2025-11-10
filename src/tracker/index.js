@@ -1,4 +1,9 @@
 (window => {
+  // Prevent multiple executions
+  if (window.umami && window.umami.version) {
+    return;
+  }
+  
   const {
     screen: { width, height },
     navigator: { language, doNotTrack: ndnt, msDoNotTrack: msdnt },
@@ -35,6 +40,8 @@
   const eventRegex = /data-umami-event-([\w-_]+)/;
   const eventNameAttribute = _data + 'umami-event';
   const delayDuration = 300;
+  // Add credentials option
+  const credentials = attr(_data + 'credentials') || 'omit'; // Default to 'omit' for security
 
   /* Helper functions */
 
@@ -165,7 +172,7 @@
           'Content-Type': 'application/json',
           ...(typeof cache !== 'undefined' && { 'x-umami-cache': cache }),
         },
-        credentials: 'omit',
+        credentials, // Use configurable credentials instead of hardcoded 'omit'
       });
 
       const data = await res.json();
@@ -216,11 +223,17 @@
     window.umami = {
       track,
       identify,
+      version: '1.0.0' // Add version to indicate initialization
     };
+  } else {
+    // If umami exists but without version, add the functions
+    window.umami.track = window.umami.track || track;
+    window.umami.identify = window.umami.identify || identify;
+    window.umami.version = '1.0.0';
   }
 
   let currentUrl = normalize(href);
-  let currentRef = normalize(referrer.startsWith(origin) ? '' : referrer);
+  let currentRef = referrer && referrer.startsWith(origin) ? '' : normalize(referrer);
 
   let initialized = false;
   let disabled = false;
