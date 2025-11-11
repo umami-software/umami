@@ -46,6 +46,7 @@ export function LoginForm() {
         >
           <TextField autoComplete="username" />
         </FormField>
+
         <FormField
           label={formatMessage(labels.password)}
           data-test="input-password"
