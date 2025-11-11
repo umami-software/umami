@@ -24,15 +24,22 @@ DATABASE_URL=postgresql://user:password@host.pooler.supabase.com:6543/postgres?p
 #### 2. DIRECT_DATABASE_URL (Direct Connection)
 This URL connects directly to the database, bypassing pgbouncer.
 
-**Format:**
+**For Vercel deployments, you have two options:**
+
+**Option A: Use pooler for direct connection (Recommended for Vercel)**
+```
+DIRECT_DATABASE_URL=postgresql://user:password@host.pooler.supabase.com:6543/postgres
+```
+Note: Same as DATABASE_URL but without the `?pgbouncer=true&connect_timeout=15` parameters
+
+**Option B: Use true direct connection (requires Supabase port 5432 access)**
 ```
 DIRECT_DATABASE_URL=postgresql://user:password@host.supabase.com:5432/postgres
 ```
 
 **Important notes:**
-- Use port `5432` (direct postgres port)
-- Do **NOT** include pgbouncer parameters
-- Host should end with `.supabase.com` (without `.pooler`)
+- If port 5432 is not accessible from Vercel, use Option A
+- Port 5432 may need to be enabled in Supabase dashboard under Settings > Database > Connection Pooling
 
 ### For Other PostgreSQL Providers
 
@@ -51,6 +58,22 @@ Make sure you also have:
 ```
 APP_SECRET=your-random-secret-key
 ```
+
+### Optional: Skip Database Migrations
+
+If your database is already set up with migrations applied, you can skip migrations during build:
+```
+SKIP_DB_MIGRATION=true
+```
+
+**When to use this:**
+- Database is already migrated
+- You're doing a rebuild/redeploy
+- Port 5432 is not accessible and you don't need migrations
+
+**When NOT to use this:**
+- First deployment with a new database
+- After pulling code with new migrations
 
 ## Vercel Configuration
 
