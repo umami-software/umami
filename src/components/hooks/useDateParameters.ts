@@ -5,7 +5,7 @@ export function useDateParameters() {
   const {
     dateRange: { startDate, endDate, unit },
   } = useDateRange();
-  const { timezone, toUtc } = useTimezone();
+  const { timezone, toUtc, canonicalizeTimezone } = useTimezone();
 
   return {
     startAt: +toUtc(startDate),
@@ -13,6 +13,6 @@ export function useDateParameters() {
     startDate: toUtc(startDate).toISOString(),
     endDate: toUtc(endDate).toISOString(),
     unit,
-    timezone,
+    timezone: canonicalizeTimezone(timezone),
   };
 }
