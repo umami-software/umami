@@ -56,9 +56,9 @@ APP_SECRET=your-random-secret-key
 
 The `vercel.json` file has been configured with:
 - **Custom build command**: Uses the standard `npm run build` which includes database setup
-- **Install command**: Ensures all dependencies are properly installed
+- **Install command**: Uses `npm install --legacy-peer-deps` to handle React 19 peer dependency conflicts
 
-Note: Vercel automatically handles function timeouts based on your plan tier.
+Note: The `--legacy-peer-deps` flag is required because the project uses React 19, but some dependencies still expect React 18.
 
 ## Troubleshooting
 
