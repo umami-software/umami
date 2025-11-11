@@ -166,6 +166,7 @@
           ...(typeof cache !== 'undefined' && { 'x-umami-cache': cache }),
         },
         credentials: 'omit',
+        priority: 'low',
       });
 
       const data = await res.json();
