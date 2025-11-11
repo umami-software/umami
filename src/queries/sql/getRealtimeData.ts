@@ -14,10 +14,16 @@ function increment(data: object, key: string) {
 }
 
 export async function getRealtimeData(websiteId: string, filters: QueryFilters) {
+  // Extract timezone from filters to ensure consistent timezone usage
+  const { timezone = 'utc' } = filters;
+  
+  // Pass timezone to the stats functions to ensure consistent time formatting
+  const statsFilters = { ...filters, timezone };
+  
   const [activity, pageviews, sessions] = await Promise.all([
     getRealtimeActivity(websiteId, filters),
-    getPageviewStats(websiteId, filters),
-    getSessionStats(websiteId, filters),
+    getPageviewStats(websiteId, statsFilters),
+    getSessionStats(websiteId, statsFilters),
   ]);
 
   const uniques = new Set();
