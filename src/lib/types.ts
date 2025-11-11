@@ -116,3 +116,23 @@ export interface PageResult<T> {
   sortDescending?: boolean;
   search?: string;
 }
+
+export interface RealtimeData {
+  countries: Record<string, number>;
+  events: any[];
+  pageviews: any[];
+  referrers: Record<string, number>;
+  timestamp: number;
+  series: {
+    views: any[];
+    visitors: any[];
+  };
+  totals: {
+    views: number;
+    visitors: number;
+    events: number;
+    countries: number;
+  };
+  urls: Record<string, number>;
+  visitors: any[];
+}
