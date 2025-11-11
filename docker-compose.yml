@@ -8,6 +8,7 @@ services:
       DATABASE_URL: postgresql://umami:umami@db:5432/umami
       DATABASE_TYPE: postgresql
       APP_SECRET: replace-me-with-a-random-string
+      NEXT_SERVER_ACTIONS_ENCRYPTION_KEY: replace-me-with-a-64-character-hex-string
     depends_on:
       db:
         condition: service_healthy

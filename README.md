@@ -54,10 +54,22 @@ Create an `.env` file with the following:
 DATABASE_URL=connection-url
 ```
 
+If you are running Umami v3 or newer you must also set the encryption key required by Next.js Server Actions:
+
+```bash
+NEXT_SERVER_ACTIONS_ENCRYPTION_KEY=your-64-character-hex-string
+```
+
 The connection URL format:
 
 ```bash
 postgresql://username:mypassword@localhost:5432/mydb
+```
+
+You can generate a secure 64-character hex encryption key (32 random bytes) with:
+
+```bash
+openssl rand -hex 32
 ```
 
 ### Build the Application
