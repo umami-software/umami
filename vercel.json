@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 300
+    }
+  },
+  "buildCommand": "npm run build-db && npm run build"
+}
