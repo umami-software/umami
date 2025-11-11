@@ -1,5 +1,5 @@
 import { setItem } from '@/lib/storage';
-import { TIMEZONE_CONFIG, TIMEZONE_LEGACY } from '@/lib/constants';
+import { TIMEZONE_CONFIG } from '@/lib/constants';
 import { formatInTimeZone, zonedTimeToUtc, utcToZonedTime } from 'date-fns-tz';
 import { useApp, setTimezone } from '@/store/app';
 import { useLocale } from './useLocale';
@@ -34,16 +34,5 @@ export function useTimezone() {
     return utcToZonedTime(date, timezone);
   };
 
-  const canonicalizeTimezone = (timezone: string): string => {
-    return TIMEZONE_LEGACY[timezone] ?? timezone;
-  };
-
-  return {
-    timezone,
-    saveTimezone,
-    formatTimezoneDate,
-    toUtc,
-    fromUtc,
-    canonicalizeTimezone,
-  };
+  return { timezone, saveTimezone, formatTimezoneDate, toUtc, fromUtc };
 }
