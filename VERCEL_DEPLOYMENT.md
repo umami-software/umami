@@ -55,8 +55,10 @@ APP_SECRET=your-random-secret-key
 ## Vercel Configuration
 
 The `vercel.json` file has been configured with:
-- **Function timeout**: 300 seconds (5 minutes) to prevent build timeouts
-- **Custom build command**: Ensures database migrations run before the build
+- **Custom build command**: Uses the standard `npm run build` which includes database setup
+- **Install command**: Ensures all dependencies are properly installed
+
+Note: Vercel automatically handles function timeouts based on your plan tier.
 
 ## Troubleshooting
 
