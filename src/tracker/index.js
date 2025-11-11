@@ -45,7 +45,7 @@
       if (excludeSearch) u.search = '';
       if (excludeHash) u.hash = '';
       return u.toString();
-    } catch (e) {
+    } catch {
       return raw;
     }
   };
