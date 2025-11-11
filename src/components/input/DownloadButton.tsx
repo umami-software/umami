@@ -14,9 +14,6 @@ export function DownloadButton({
   const { formatMessage, labels } = useMessages();
 
   const handleClick = async () => {
-  const handleClick = async () => {
-    downloadCsv(`${filename}.csv`, Papa.unparse(data));
-  };
     downloadCsv(`${filename}.csv`, Papa.unparse(data));
   };
 
