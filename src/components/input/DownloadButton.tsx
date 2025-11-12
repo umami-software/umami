@@ -19,7 +19,7 @@ export function DownloadButton({
 
   return (
     <TooltipTrigger delay={0}>
-      <Button variant="quiet" onClick={handleClick} isDisabled={!data}>
+      <Button variant="quiet" onClick={handleClick} isDisabled={!data || data.length === 0}>
         <Icon>
           <Download />
         </Icon>
