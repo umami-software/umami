@@ -45,10 +45,16 @@ const downloadCompressed = url =>
   });
 
 // Download handler for direct .mmdb files
-const downloadDirect = url =>
+const downloadDirect = (url, originalUrl) =>
   new Promise((resolve, reject) => {
     https.get(url, res => {
-      const filename = path.join(dest, path.basename(url));
+      // Follow redirects
+      if (res.statusCode === 301 || res.statusCode === 302) {
+        downloadDirect(res.headers.location, originalUrl || url).then(resolve).catch(reject);
+        return;
+      }
+      
+      const filename = path.join(dest, path.basename(originalUrl || url));
       const fileStream = fs.createWriteStream(filename);
       
       res.pipe(fileStream);
