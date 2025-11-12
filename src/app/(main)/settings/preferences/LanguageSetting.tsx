@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Button, Select, ListItem, Row } from '@umami/react-zen';
-import { useLocale, useMessages } from '@/components/hooks';
+import { useLocale, useMessages, usePreferences } from '@/components/hooks';
 import { DEFAULT_LOCALE } from '@/lib/constants';
 import { languages } from '@/lib/lang';
 
 export function LanguageSetting() {
   const [search, setSearch] = useState('');
   const { formatMessage, labels } = useMessages();
+  const { updatePreferences } = usePreferences();
   const { locale, saveLocale } = useLocale();
   const items = search
     ? Object.keys(languages).filter(n => {
@@ -17,7 +18,15 @@ export function LanguageSetting() {
       })
     : Object.keys(languages);
 
-  const handleReset = () => saveLocale(DEFAULT_LOCALE);
+  const handleChange = (value: string) => {
+    saveLocale(value);
+    updatePreferences({ language: value });
+  };
+
+  const handleReset = () => {
+    saveLocale(DEFAULT_LOCALE);
+    updatePreferences({ language: null });
+  };
 
   const handleOpen = (isOpen: boolean) => {
     if (isOpen) {
@@ -29,7 +38,7 @@ export function LanguageSetting() {
     <Row gap>
       <Select
         value={locale}
-        onChange={val => saveLocale(val as string)}
+        onChange={handleChange}
         allowSearch
         onSearch={setSearch}
         onOpenChange={handleOpen}

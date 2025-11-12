@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useApi } from '@/components/hooks';
 import { setUser } from '@/store/app';
-import { removeClientAuthToken } from '@/lib/client';
+import { removeClientAuthToken, removeClientPreferences } from '@/lib/client';
 
 export function LogoutPage() {
   const router = useRouter();
@@ -17,6 +17,7 @@ export function LogoutPage() {
     }
 
     removeClientAuthToken();
+    removeClientPreferences();
     setUser(null);
     logout();
   }, [router, post]);

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { createSecureToken } from '@/lib/jwt';
 import redis from '@/lib/redis';
-import { getUserByUsername } from '@/queries/prisma';
+import { getUserByUsername, getUserPreferences } from '@/queries/prisma';
 import { json, unauthorized } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
 import { saveAuth } from '@/lib/auth';
@@ -39,8 +39,10 @@ export async function POST(request: Request) {
     token = createSecureToken({ userId: user.id, role }, secret());
   }
 
+  const preferences = await getUserPreferences(id);
+
   return json({
     token,
-    user: { id, username, role, createdAt, isAdmin: role === ROLES.admin },
+    user: { id, username, role, createdAt, isAdmin: role === ROLES.admin, preferences },
   });
 }
