@@ -1,5 +1,6 @@
 'use client';
 import { Grid, Loading, Column, Row } from '@umami/react-zen';
+import { useEffect, useRef } from 'react';
 import Script from 'next/script';
 import { UpdateNotice } from './UpdateNotice';
 import { SideNav } from '@/app/(main)/SideNav';
@@ -11,16 +12,27 @@ export function App({ children }) {
   const config = useConfig();
   const { pathname, router } = useNavigation();
 
+  // Avoid navigation during render; perform redirect after commit.
+  const redirectedRef = useRef(false);
+  useEffect(() => {
+    if (redirectedRef.current) return;
+    if (isLoading) return;
+    if (error) {
+      redirectedRef.current = true;
+      if (process.env.cloudMode) {
+        window.location.assign('/login');
+      } else {
+        router.replace('/login');
+      }
+    }
+  }, [isLoading, error, router]);
+
   if (isLoading || !config) {
     return <Loading placement="absolute" />;
   }
 
   if (error) {
-    if (process.env.cloudMode) {
-      window.location.href = '/login';
-    } else {
-      router.push('/login');
-    }
+    // Navigation handled in effect to prevent React warning in dev.
     return null;
   }
 
