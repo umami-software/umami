@@ -1,7 +1,8 @@
+import { User } from '@/generated/prisma/client';
 import { useApi } from './useApi';
 import { useApp } from '@/store/app';
 
-const userSelector = (state: { user: any }) => state.user;
+const userSelector = (state: { user: User }) => state.user;
 
 export function usePreferences() {
   const { post } = useApi();

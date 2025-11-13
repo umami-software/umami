@@ -67,5 +67,6 @@ export function setClientPreferences(preferences: {
 export function removeClientPreferences() {
   removeItem(DATE_RANGE_CONFIG);
   removeItem(TIMEZONE_CONFIG);
+  removeItem(LOCALE_CONFIG);
   removeItem(THEME_CONFIG);
 }

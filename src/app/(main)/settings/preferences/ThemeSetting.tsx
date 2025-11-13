@@ -1,6 +1,7 @@
 import { Row, Button, Icon, useTheme } from '@umami/react-zen';
 import { useMessages, usePreferences } from '@/components/hooks';
 import { Sun, Moon } from '@/components/icons';
+import { DEFAULT_THEME } from '@/lib/constants';
 
 export function ThemeSetting() {
   const { theme, setTheme } = useTheme();
@@ -13,7 +14,7 @@ export function ThemeSetting() {
   };
 
   const handleReset = () => {
-    setTheme('light');
+    setTheme(DEFAULT_THEME);
     updatePreferences({ theme: null });
   };
 
