@@ -51,12 +51,12 @@ function getUTCString(date?: Date | string | number) {
   return formatInTimeZone(date || new Date(), 'UTC', 'yyyy-MM-dd HH:mm:ss');
 }
 
-function getDateStringSQL(data: any, unit: string = 'utc', timezone?: string) {
+function getDateStringSQL(field: string, unit: string, timezone?: string) {
   if (timezone) {
-    return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}', '${timezone}')`;
+    return `formatDateTime(${field}, '${CLICKHOUSE_DATE_FORMATS[unit]}', '${timezone}')`;
   }
 
-  return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}')`;
+  return `formatDateTime(${field}, '${CLICKHOUSE_DATE_FORMATS[unit]}')`;
 }
 
 function getDateSQL(field: string, unit: string, timezone?: string) {

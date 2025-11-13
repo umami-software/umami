@@ -27,6 +27,14 @@ const DATE_FORMATS = {
   year: 'YYYY-01-01 HH24:00:00',
 };
 
+const DATE_FORMATS_UTC = {
+  minute: 'YYYY-MM-DD"T"HH24:MI:00"Z"',
+  hour: 'YYYY-MM-DD"T"HH24:00:00"Z"',
+  day: 'YYYY-MM-DD"T"HH24:00:00"Z"',
+  month: 'YYYY-MM-01"T"HH24:00:00"Z"',
+  year: 'YYYY-01-01"T"HH24:00:00"Z"',
+};
+
 function getAddIntervalQuery(field: string, interval: string): string {
   return `${field} + interval '${interval}'`;
 }
@@ -40,11 +48,11 @@ function getCastColumnQuery(field: string, type: string): string {
 }
 
 function getDateSQL(field: string, unit: string, timezone?: string): string {
-  if (timezone) {
+  if (timezone && timezone !== 'utc') {
     return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${DATE_FORMATS[unit]}')`;
   }
 
-  return `to_char(date_trunc('${unit}', ${field}), '${DATE_FORMATS[unit]}')`;
+  return `to_char(date_trunc('${unit}', ${field}), '${DATE_FORMATS_UTC[unit]}')`;
 }
 
 function getDateWeeklySQL(field: string, timezone?: string) {
