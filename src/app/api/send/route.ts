@@ -146,6 +146,7 @@ export async function POST(request: Request) {
         region,
         city,
         distinctId: id,
+        createdAt,
       });
     }
 

@@ -45,7 +45,7 @@ async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
-  const { timezone = 'utc', unit = 'day' } = filters;
+  const { timezone = 'UTC', unit = 'day' } = filters;
   const { parseFilters, rawQuery, getDateSQL } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
