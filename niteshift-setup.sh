@@ -98,12 +98,16 @@ fi
 # - build-tracker: bundles tracker script (needed for tracking functionality)
 # - build-geo: processes geographic data (needed for geo features)
 # We skip build-app (production Next.js build) since dev mode compiles on-the-fly
-log "Validating environment..."
-if ! pnpm run check-env; then
-  log_error "Environment validation failed"
-  exit 1
+if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
+  log "Validating environment..."
+  if ! pnpm run check-env; then
+    log_error "Environment validation failed"
+    exit 1
+  fi
+  log "✓ Environment validated"
+else
+  log "Skipping check-env (prebaked fast path)"
 fi
-log "✓ Environment validated"
 
 if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
   log "Building database client..."
@@ -116,12 +120,16 @@ else
   log "Skipping build-db (prebaked Prisma client detected)"
 fi
 
-log "Checking database and applying migrations..."
-if ! pnpm run check-db; then
-  log_error "Database check failed"
-  exit 1
+if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
+  log "Checking database and applying migrations..."
+  if ! pnpm run check-db; then
+    log_error "Database check failed"
+    exit 1
+  fi
+  log "✓ Database migrations applied"
+else
+  log "Skipping check-db (prebaked fast path)"
 fi
-log "✓ Database migrations applied"
 
 if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
   log "Building tracker script..."
