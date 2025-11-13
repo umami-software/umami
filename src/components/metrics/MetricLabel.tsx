@@ -25,16 +25,16 @@ export function MetricLabel({ type, data }: MetricLabelProps) {
   const { getRegionName } = useRegionNames(locale);
 
   const { label, country, domain } = data;
-  const isType = ['browser', 'country', 'device', 'os'].includes(type);
 
   switch (type) {
     case 'browser':
+    case 'os':
       return (
         <FilterLink
-          type="browser"
+          type={type}
           value={label}
-          label={formatValue(label, 'browser')}
-          icon={<TypeIcon type="browser" value={label} />}
+          label={formatValue(label, type)}
+          icon={<TypeIcon type={type} value={label} />}
         />
       );
 
@@ -100,7 +100,7 @@ export function MetricLabel({ type, data }: MetricLabelProps) {
           type="device"
           value={labels[label] && label}
           label={formatValue(label, 'device')}
-          icon={<TypeIcon type="device" value={label?.toLowerCase()} />}
+          icon={<TypeIcon type="device" value={label} />}
         />
       );
 
@@ -141,14 +141,6 @@ export function MetricLabel({ type, data }: MetricLabelProps) {
         <FilterLink
           type={type}
           value={label}
-          icon={
-            isType && (
-              <TypeIcon
-                type={type as 'browser' | 'country' | 'device' | 'os'}
-                value={label?.toLowerCase()?.replaceAll(/\W/g, '-')}
-              />
-            )
-          }
         />
       );
   }
