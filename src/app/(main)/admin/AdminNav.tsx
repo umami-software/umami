@@ -1,6 +1,6 @@
 import { SideMenu } from '@/components/common/SideMenu';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { Globe, User, Users } from '@/components/icons';
+import { Globe, User, Users, Activity } from '@/components/icons';
 
 export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
   const { formatMessage, labels } = useMessages();
@@ -27,6 +27,12 @@ export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
           label: formatMessage(labels.teams),
           path: '/admin/teams',
           icon: <Users />,
+        },
+        {
+          id: 'status',
+          label: formatMessage(labels.systemStatus),
+          path: '/admin/status',
+          icon: <Activity />,
         },
       ],
     },
