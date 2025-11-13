@@ -6,7 +6,7 @@ export const IP_ADDRESS_HEADERS = [
   'fastly-client-ip', // Fastly
   'x-nf-client-connection-ip', // Netlify
   'do-connecting-ip', // Digital Ocean
-  'x-appengine-user-ip', // Google App Ending
+  'x-appengine-user-ip', // Google App Engine
   'x-client-ip',
   'x-cluster-client-ip',
   'x-forwarded',

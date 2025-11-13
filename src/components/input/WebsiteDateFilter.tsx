@@ -28,6 +28,7 @@ export function WebsiteDateFilter({
     query: { compare = 'prev', offset = 0 },
   } = useNavigation();
   const disableForward = isAllTime || isAfter(dateRange.endDate, new Date());
+  const showCompare = allowCompare && !isAllTime;
 
   const websiteDateRange = useDateRangeQuery(websiteId);
 
@@ -62,7 +63,7 @@ export function WebsiteDateFilter({
   }, [dateRange]);
 
   return (
-    <Row gap>
+    <Row wrap="wrap" gap>
       {showButtons && !isAllTime && !isCustomRange && (
         <Row gap="1">
           <Button onPress={() => handleIncrement(-1)} variant="outline">
@@ -85,7 +86,7 @@ export function WebsiteDateFilter({
           renderDate={+offset !== 0}
         />
       </Row>
-      {allowCompare && !isAllTime && (
+      {showCompare && (
         <Row alignItems="center" gap>
           <Text weight="bold">VS</Text>
           <Row width="200px">

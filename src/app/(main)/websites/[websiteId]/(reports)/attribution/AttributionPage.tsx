@@ -17,7 +17,7 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
   return (
     <Column gap="6">
       <WebsiteControls websiteId={websiteId} />
-      <Grid columns="1fr 1fr 1fr" gap>
+      <Grid columns={{ xs: '1fr', md: '1fr 1fr 1fr' }} gap>
         <Column>
           <Select
             label={formatMessage(labels.model)}

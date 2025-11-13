@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Heading, Icon, Row, RowProps, Text, Column } from '@umami/react-zen';
+import { Heading, Icon, Row, Text, Column, Grid } from '@umami/react-zen';
 
 export function PageHeader({
   title,
@@ -8,7 +8,6 @@ export function PageHeader({
   icon,
   showBorder = true,
   children,
-  ...props
 }: {
   title: string;
   description?: string;
@@ -18,16 +17,13 @@ export function PageHeader({
   allowEdit?: boolean;
   className?: string;
   children?: ReactNode;
-} & RowProps) {
+}) {
   return (
-    <Row
-      justifyContent="space-between"
-      alignItems="center"
+    <Grid
+      columns={{ xs: '1fr', md: '1fr 1fr' }}
       paddingY="6"
       marginBottom="6"
       border={showBorder ? 'bottom' : undefined}
-      width="100%"
-      {...props}
     >
       <Column gap="2">
         {label}
@@ -46,6 +42,6 @@ export function PageHeader({
         )}
       </Column>
       <Row justifyContent="flex-end">{children}</Row>
-    </Row>
+    </Grid>
   );
 }
