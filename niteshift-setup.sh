@@ -77,7 +77,17 @@ if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
   fi
   log "✓ Dependencies installed"
 else
-  log "Skipping pnpm install (prebaked dependencies in place)"
+  log "Linking dependencies from prebaked pnpm store..."
+  if pnpm install --frozen-lockfile --offline; then
+    log "✓ Dependencies installed (offline)"
+  else
+    log_error "Offline install failed, falling back to full pnpm install"
+    if ! pnpm install --frozen-lockfile; then
+      log_error "Failed to install dependencies even after fallback"
+      exit 1
+    fi
+    log "✓ Dependencies installed via fallback"
+  fi
 fi
 
 # 5. Build only what's needed for dev (skip production Next.js build)
