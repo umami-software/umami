@@ -82,3 +82,4 @@ export * from './useRegionNames';
 export * from './useSlug';
 export * from './useSticky';
 export * from './useTimezone';
+export * from './usePreferences';
