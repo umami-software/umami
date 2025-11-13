@@ -20,6 +20,21 @@ log_error() {
 # Pre-flight checks
 log "Starting niteshift setup for umami..."
 
+USE_PREBAKED_SETUP=0
+if [[ "${UMAMI_PREBAKED:-0}" == "1" ]]; then
+  if command -v umami-prebake-sync >/dev/null 2>&1; then
+    log "Prebaked Modal image detected, syncing cached artifacts..."
+    if umami-prebake-sync "$(pwd)"; then
+      USE_PREBAKED_SETUP=1
+      log "✓ Prebaked dependencies and artifacts restored"
+    else
+      log_error "Prebaked sync failed, falling back to full setup"
+    fi
+  else
+    log_error "UMAMI_PREBAKED=1 but umami-prebake-sync is missing; falling back to full setup"
+  fi
+fi
+
 # 1. Check DATABASE_URL is set
 if [ -z "${DATABASE_URL:-}" ]; then
   log_error "DATABASE_URL environment variable is not set"
@@ -54,12 +69,26 @@ fi
 log "✓ pnpm is available"
 
 # 4. Install dependencies
-log "Installing dependencies with pnpm..."
-if ! pnpm install --frozen-lockfile; then
-  log_error "Failed to install dependencies"
-  exit 1
+if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
+  log "Installing dependencies with pnpm..."
+  if ! pnpm install --frozen-lockfile; then
+    log_error "Failed to install dependencies"
+    exit 1
+  fi
+  log "✓ Dependencies installed"
+else
+  log "Linking dependencies from prebaked pnpm store..."
+  if pnpm install --frozen-lockfile --offline; then
+    log "✓ Dependencies installed (offline)"
+  else
+    log_error "Offline install failed, falling back to full pnpm install"
+    if ! pnpm install --frozen-lockfile; then
+      log_error "Failed to install dependencies even after fallback"
+      exit 1
+    fi
+    log "✓ Dependencies installed via fallback"
+  fi
 fi
-log "✓ Dependencies installed"
 
 # 5. Build only what's needed for dev (skip production Next.js build)
 # For dev mode we need:
@@ -69,40 +98,60 @@ log "✓ Dependencies installed"
 # - build-tracker: bundles tracker script (needed for tracking functionality)
 # - build-geo: processes geographic data (needed for geo features)
 # We skip build-app (production Next.js build) since dev mode compiles on-the-fly
-log "Validating environment..."
-if ! pnpm run check-env; then
-  log_error "Environment validation failed"
-  exit 1
+if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
+  log "Validating environment..."
+  if ! pnpm run check-env; then
+    log_error "Environment validation failed"
+    exit 1
+  fi
+  log "✓ Environment validated"
+else
+  log "Skipping check-env (prebaked fast path)"
 fi
-log "✓ Environment validated"
 
-log "Building database client..."
-if ! pnpm run build-db; then
-  log_error "Database client build failed"
-  exit 1
+if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
+  log "Building database client..."
+  if ! pnpm run build-db; then
+    log_error "Database client build failed"
+    exit 1
+  fi
+  log "✓ Database client built"
+else
+  log "Skipping build-db (prebaked Prisma client detected)"
 fi
-log "✓ Database client built"
 
-log "Checking database and applying migrations..."
-if ! pnpm run check-db; then
-  log_error "Database check failed"
-  exit 1
+if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
+  log "Checking database and applying migrations..."
+  if ! pnpm run check-db; then
+    log_error "Database check failed"
+    exit 1
+  fi
+  log "✓ Database migrations applied"
+else
+  log "Skipping check-db (prebaked fast path)"
 fi
-log "✓ Database migrations applied"
 
-log "Building tracker script..."
-if ! pnpm run build-tracker; then
-  log_error "Tracker build failed"
-  exit 1
+if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
+  log "Building tracker script..."
+  if ! pnpm run build-tracker; then
+    log_error "Tracker build failed"
+    exit 1
+  fi
+  log "✓ Tracker script built"
+else
+  log "Skipping tracker build (prebaked bundle detected)"
 fi
-log "✓ Tracker script built"
 
-log "Building geo database..."
-if ! pnpm run build-geo; then
-  log_error "Geo build failed"
-  exit 1
+if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
+  log "Building geo database..."
+  if ! pnpm run build-geo; then
+    log_error "Geo build failed"
+    exit 1
+  fi
+  log "✓ Geo database built"
+else
+  log "Skipping geo build (prebaked GeoLite database detected)"
 fi
-log "✓ Geo database built"
 
 # 6. Start the dev server in the background
 log "Starting development server on port 3001 (with hot reload)..."
