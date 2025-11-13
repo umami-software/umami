@@ -49,7 +49,7 @@ export function Providers({ children }) {
   }
 
   return (
-    <ZenProvider colorScheme="system">
+    <ZenProvider theme="light">
       <RouterProvider navigate={navigate}>
         <MessagesProvider>
           <QueryClientProvider client={client}>
