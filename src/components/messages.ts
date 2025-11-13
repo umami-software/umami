@@ -363,6 +363,10 @@ export const labels = defineMessages({
   support: { id: 'label.support', defaultMessage: 'Support' },
   documentation: { id: 'label.documentation', defaultMessage: 'Documentation' },
   switchAccount: { id: 'label.switch-account', defaultMessage: 'Switch account' },
+  systemStatus: { id: 'label.system-status', defaultMessage: 'System Status' },
+  database: { id: 'label.database', defaultMessage: 'Database' },
+  storage: { id: 'label.storage', defaultMessage: 'Storage' },
+  updates: { id: 'label.updates', defaultMessage: 'Updates' },
 });
 
 export const messages = defineMessages({
