@@ -3,7 +3,7 @@ import { json, unauthorized } from '@/lib/response';
 import { canViewUsers } from '@/permissions';
 import prisma from '@/lib/prisma';
 import { CURRENT_VERSION, UPDATES_URL } from '@/lib/constants';
-import { execSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { statfs } from 'node:fs/promises';
@@ -76,7 +76,7 @@ async function checkStorage(): Promise<StorageStatus> {
         if (dbUrl.hostname === 'localhost' || dbUrl.hostname === '127.0.0.1') {
           // Try to get PostgreSQL data directory
           try {
-            const pgDataDir = execSync('pg_config --sharedir', { encoding: 'utf-8', stdio: 'pipe' }).trim();
+            const pgDataDir = execFileSync('pg_config', ['--sharedir'], { encoding: 'utf-8', stdio: 'pipe' }).trim();
             path = join(pgDataDir, '../data');
           } catch {
             // Fallback to current directory
@@ -109,7 +109,7 @@ async function checkStorage(): Promise<StorageStatus> {
     } catch {
       // Fallback: Try to use df command on Unix systems
       try {
-        const dfOutput = execSync(`df -k "${path}"`, { encoding: 'utf-8', stdio: 'pipe' });
+        const dfOutput = execFileSync('df', ['-k', path], { encoding: 'utf-8', stdio: 'pipe' });
         const lines = dfOutput.trim().split('\n');
         if (lines.length > 1) {
           const parts = lines[1].split(/\s+/);
@@ -190,7 +190,7 @@ async function checkUpdates(): Promise<UpdateStatus> {
     }
 
     // Use semver for proper version comparison
-    const updateAvailable = semver.gt(latest, current);
+    const updateAvailable = semver.valid(latest) && semver.valid(current) ? semver.gt(latest, current) : false;
 
     return {
       current,
