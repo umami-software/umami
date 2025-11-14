@@ -369,3 +369,7 @@ export function getDateRangeValue(startDate: Date, endDate: Date) {
 export function getMonthDateRangeValue(date: Date) {
   return getDateRangeValue(startOfMonth(date), endOfMonth(date));
 }
+
+export function isInvalidDate(date: any) {
+  return date instanceof Date && isNaN(date.getTime());
+}
