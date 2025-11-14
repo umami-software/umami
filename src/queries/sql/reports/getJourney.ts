@@ -73,7 +73,7 @@ async function relationalQuery(
     for (let i = 1; i <= steps; i++) {
       const endQuery = i < steps ? ',' : '';
       selectQuery += `s.e${i},`;
-      maxQuery += `\nmax(CASE WHEN event_number = ${i} THEN event ELSE NULL END) AS e${i}${endQuery}`;
+      maxQuery += `\nmax(CASE WHEN event_number = ${i} THEN "event" ELSE NULL END) AS e${i}${endQuery}`;
       groupByQuery += `s.e${i}${endQuery} `;
     }
 
@@ -185,7 +185,7 @@ async function clickhouseQuery(
     for (let i = 1; i <= steps; i++) {
       const endQuery = i < steps ? ',' : '';
       selectQuery += `s.e${i},`;
-      maxQuery += `\nmax(CASE WHEN event_number = ${i} THEN event ELSE NULL END) AS e${i}${endQuery}`;
+      maxQuery += `\nmax(CASE WHEN event_number = ${i} THEN "event" ELSE NULL END) AS e${i}${endQuery}`;
       groupByQuery += `s.e${i}${endQuery} `;
     }
 
@@ -230,7 +230,7 @@ async function clickhouseQuery(
     WITH events AS (
       select distinct
           visit_id,
-          coalesce(nullIf(event_name, ''), url_path) event,
+          coalesce(nullIf(event_name, ''), url_path) "event",
           row_number() OVER (PARTITION BY visit_id ORDER BY created_at) AS event_number
       from website_event
       ${cohortQuery}
