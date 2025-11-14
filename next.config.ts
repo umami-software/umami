@@ -9,6 +9,7 @@ const cloudUrl = process.env.CLOUD_URL || '';
 const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT || '';
 const corsMaxAge = process.env.CORS_MAX_AGE || '';
 const defaultLocale = process.env.DEFAULT_LOCALE || '';
+const disableAuth = process.env.DISABLE_AUTH || '';
 const forceSSL = process.env.FORCE_SSL || '';
 const frameAncestors = process.env.ALLOWED_FRAME_URLS || '';
 const trackerScriptName = process.env.TRACKER_SCRIPT_NAME || '';
@@ -171,6 +172,7 @@ export default {
     cloudUrl,
     currentVersion: pkg.version,
     defaultLocale,
+    disableAuth,
   },
   basePath,
   output: 'standalone',

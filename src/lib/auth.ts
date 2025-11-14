@@ -16,6 +16,21 @@ export function getBearerToken(request: Request) {
 }
 
 export async function checkAuth(request: Request) {
+  // If auth is disabled, return admin user
+  if (process.env.disableAuth) {
+    const adminUser = await getUser('41e2b680-648e-4b09-bcd7-3e2b10c06264');
+    if (adminUser) {
+      adminUser.isAdmin = true;
+      log('Auth disabled, returning admin user');
+      return {
+        token: null,
+        authKey: null,
+        shareToken: null,
+        user: adminUser,
+      };
+    }
+  }
+
   const token = getBearerToken(request);
   const payload = parseSecureToken(token, secret());
   const shareToken = await parseShareToken(request);
