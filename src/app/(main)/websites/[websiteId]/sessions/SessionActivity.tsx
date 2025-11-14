@@ -42,6 +42,19 @@ export function SessionActivity({
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
       <Column gap>
         {data?.map(({ eventId, createdAt, urlPath, eventName, visitId, hasData }) => {
+          if (!createdAt) {
+            if (process.env.NODE_ENV !== 'production') {
+              // eslint-disable-next-line no-console
+              console.error('[SessionActivity] Event missing createdAt', {
+                eventId,
+                visitId,
+                urlPath,
+                eventName,
+              });
+            }
+            return null;
+          }
+
           const showHeader = !lastDay || !isSameDay(new Date(lastDay), new Date(createdAt));
           lastDay = createdAt;
 

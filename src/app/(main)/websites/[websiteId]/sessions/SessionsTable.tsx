@@ -51,7 +51,20 @@ export function SessionsTable(props: DataTableProps) {
         )}
       </DataColumn>
       <DataColumn id="lastAt" label={formatMessage(labels.lastSeen)}>
-        {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
+        {(row: any) => {
+          if (!row.createdAt) {
+            if (process.env.NODE_ENV !== 'production') {
+              // eslint-disable-next-line no-console
+              console.error('[SessionsTable] Session missing createdAt', {
+                sessionId: row.id,
+                visits: row.visits,
+                views: row.views,
+              });
+            }
+            return '—';
+          }
+          return <DateDistance date={new Date(row.createdAt)} />;
+        }}
       </DataColumn>
     </DataTable>
   );
