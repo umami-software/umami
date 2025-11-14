@@ -179,6 +179,14 @@ while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
   sleep 1
 done
 
+# 8. Warm up the main application routes
+log "Warming up main application routes..."
+if curl -s -o /dev/null --max-time 30 http://localhost:3001/ 2>/dev/null; then
+  log "✓ Main routes pre-compiled"
+else
+  log "Warning: Route warm-up timed out or failed (non-critical)"
+fi
+
 log ""
 log "================================================================"
 log "Setup complete! Umami dev server is running on http://localhost:3001"
