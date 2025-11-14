@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Button, ButtonGroup, Calendar } from 'react-basics';
+import { Button, Row, Column, Calendar, ToggleGroup, ToggleGroupItem } from '@umami/react-zen';
 import { isAfter, isBefore, isSameDay, startOfDay, endOfDay } from 'date-fns';
-import { useLocale } from '@/components/hooks';
-import { FILTER_DAY, FILTER_RANGE } from '@/lib/constants';
 import { useMessages } from '@/components/hooks';
-import styles from './DatePickerForm.module.css';
+
+const FILTER_DAY = 'filter-day';
+const FILTER_RANGE = 'filter-range';
 
 export function DatePickerForm({
   startDate: defaultStartDate,
@@ -14,73 +14,61 @@ export function DatePickerForm({
   onChange,
   onClose,
 }) {
-  const [selected, setSelected] = useState(
+  const [selected, setSelected] = useState<any>([
     isSameDay(defaultStartDate, defaultEndDate) ? FILTER_DAY : FILTER_RANGE,
-  );
-  const [singleDate, setSingleDate] = useState(defaultStartDate);
-  const [startDate, setStartDate] = useState(defaultStartDate);
-  const [endDate, setEndDate] = useState(defaultEndDate);
-  const { dateLocale } = useLocale();
+  ]);
+  const [date, setDate] = useState(defaultStartDate || new Date());
+  const [startDate, setStartDate] = useState(defaultStartDate || new Date());
+  const [endDate, setEndDate] = useState(defaultEndDate || new Date());
   const { formatMessage, labels } = useMessages();
 
-  const disabled =
-    selected === FILTER_DAY
-      ? isAfter(minDate, singleDate) && isBefore(maxDate, singleDate)
-      : isAfter(startDate, endDate);
+  const disabled = selected.includes(FILTER_DAY)
+    ? isAfter(minDate, date) && isBefore(maxDate, date)
+    : isAfter(startDate, endDate);
 
   const handleSave = () => {
-    if (selected === FILTER_DAY) {
-      onChange(`range:${startOfDay(singleDate).getTime()}:${endOfDay(singleDate).getTime()}`);
+    if (selected.includes(FILTER_DAY)) {
+      onChange(`range:${startOfDay(date).getTime()}:${endOfDay(date).getTime()}`);
     } else {
       onChange(`range:${startOfDay(startDate).getTime()}:${endOfDay(endDate).getTime()}`);
     }
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.filter}>
-        <ButtonGroup selectedKey={selected} onSelect={key => setSelected(key as any)}>
-          <Button key={FILTER_DAY}>{formatMessage(labels.singleDay)}</Button>
-          <Button key={FILTER_RANGE}>{formatMessage(labels.dateRange)}</Button>
-        </ButtonGroup>
-      </div>
-      <div className={styles.calendars}>
-        {selected === FILTER_DAY && (
-          <Calendar
-            date={singleDate}
-            minDate={minDate}
-            maxDate={maxDate}
-            locale={dateLocale}
-            onChange={setSingleDate}
-          />
+    <Column gap>
+      <Row justifyContent="center">
+        <ToggleGroup disallowEmptySelection value={selected} onChange={setSelected}>
+          <ToggleGroupItem id={FILTER_DAY}>{formatMessage(labels.singleDay)}</ToggleGroupItem>
+          <ToggleGroupItem id={FILTER_RANGE}>{formatMessage(labels.dateRange)}</ToggleGroupItem>
+        </ToggleGroup>
+      </Row>
+      <Column>
+        {selected.includes(FILTER_DAY) && (
+          <Calendar value={date} minValue={minDate} maxValue={maxDate} onChange={setDate} />
         )}
-        {selected === FILTER_RANGE && (
-          <>
+        {selected.includes(FILTER_RANGE) && (
+          <Row gap wrap="wrap" style={{ margin: '0 auto' }}>
             <Calendar
-              date={startDate}
-              minDate={minDate}
-              maxDate={endDate}
-              locale={dateLocale}
+              value={startDate}
+              minValue={minDate}
+              maxValue={endDate}
               onChange={setStartDate}
             />
             <Calendar
-              date={endDate}
-              minDate={startDate}
-              maxDate={maxDate}
-              locale={dateLocale}
+              value={endDate}
+              minValue={startDate}
+              maxValue={maxDate}
               onChange={setEndDate}
             />
-          </>
+          </Row>
         )}
-      </div>
-      <div className={styles.buttons}>
-        <Button variant="primary" onClick={handleSave} disabled={disabled}>
-          {formatMessage(labels.save)}
+      </Column>
+      <Row justifyContent="end" gap>
+        <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
+        <Button variant="primary" onPress={handleSave} isDisabled={disabled}>
+          {formatMessage(labels.apply)}
         </Button>
-        <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
-      </div>
-    </div>
+      </Row>
+    </Column>
   );
 }
-
-export default DatePickerForm;

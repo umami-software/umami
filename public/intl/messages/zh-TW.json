@@ -23,6 +23,12 @@
       "value": "新增"
     }
   ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "新增看板"
+    }
+  ],
   "label.add-description": [
     {
       "type": 0,
@@ -53,6 +59,12 @@
       "value": "管理員"
     }
   ],
+  "label.affiliate": [
+    {
+      "type": 0,
+      "value": "聯盟"
+    }
+  ],
   "label.after": [
     {
       "type": 0,
@@ -77,6 +89,24 @@
       "value": "分析"
     }
   ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "套用"
+    }
+  ],
+  "label.attribution": [
+    {
+      "type": 0,
+      "value": "歸因"
+    }
+  ],
+  "label.attribution-description": [
+    {
+      "type": 0,
+      "value": "查看使用者如何與您的行銷互動，以及什麼促成了轉換。"
+    }
+  ],
   "label.average": [
     {
       "type": 0,
@@ -93,6 +123,12 @@
     {
       "type": 0,
       "value": "之前"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "看板"
     }
   ],
   "label.bounce-rate": [
@@ -119,6 +155,12 @@
       "value": "瀏覽器"
     }
   ],
+  "label.campaigns": [
+    {
+      "type": 0,
+      "value": "活動"
+    }
+  ],
   "label.cancel": [
     {
       "type": 0,
@@ -129,6 +171,12 @@
     {
       "type": 0,
       "value": "更改密碼"
+    }
+  ],
+  "label.channels": [
+    {
+      "type": 0,
+      "value": "Channels"
     }
   ],
   "label.cities": [
@@ -149,10 +197,22 @@
       "value": "全部清除"
     }
   ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "群組"
+    }
+  ],
   "label.compare": [
     {
       "type": 0,
       "value": "比較"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "比較日期"
     }
   ],
   "label.confirm": [
@@ -173,10 +233,34 @@
       "value": "包含"
     }
   ],
+  "label.content": [
+    {
+      "type": 0,
+      "value": "內容"
+    }
+  ],
   "label.continue": [
     {
       "type": 0,
       "value": "繼續"
+    }
+  ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "轉換"
+    }
+  ],
+  "label.conversion-rate": [
+    {
+      "type": 0,
+      "value": "轉換率"
+    }
+  ],
+  "label.conversion-step": [
+    {
+      "type": 0,
+      "value": "轉換步驟"
     }
   ],
   "label.count": [
@@ -231,6 +315,12 @@
     {
       "type": 0,
       "value": "建立者"
+    }
+  ],
+  "label.currency": [
+    {
+      "type": 0,
+      "value": "Currency"
     }
   ],
   "label.current": [
@@ -347,16 +437,40 @@
       "value": "裝置"
     }
   ],
+  "label.direct": [
+    {
+      "type": 0,
+      "value": "Direct"
+    }
+  ],
   "label.dismiss": [
     {
       "type": 0,
       "value": "關閉"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "Distinct ID"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
       "value": "不包含"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "Does not include"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "Does not exist"
     }
   ],
   "label.domain": [
@@ -389,6 +503,12 @@
       "value": "編輯成員"
     }
   ],
+  "label.email": [
+    {
+      "type": 0,
+      "value": "Email"
+    }
+  ],
   "label.enable-share-url": [
     {
       "type": 0,
@@ -419,10 +539,22 @@
       "value": "事件資料"
     }
   ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "Event name"
+    }
+  ],
   "label.events": [
     {
       "type": 0,
       "value": "事件"
+    }
+  ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "Exists"
     }
   ],
   "label.exit": [
@@ -473,6 +605,12 @@
       "value": "篩選條件"
     }
   ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "First click"
+    }
+  ],
   "label.first-seen": [
     {
       "type": 0,
@@ -489,6 +627,12 @@
     {
       "type": 0,
       "value": "瞭解使用者的轉換率與流失率。"
+    }
+  ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "Funnels"
     }
   ],
   "label.goal": [
@@ -521,16 +665,28 @@
       "value": "大於或等於"
     }
   ],
-  "label.host": [
+  "label.grouped": [
     {
       "type": 0,
-      "value": "主機名稱"
+      "value": "Grouped"
     }
   ],
-  "label.hosts": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "主機名稱"
+      "value": "Hostname"
+    }
+  ],
+  "label.includes": [
+    {
+      "type": 0,
+      "value": "Includes"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "Insight"
     }
   ],
   "label.insights": [
@@ -551,6 +707,12 @@
       "value": "是"
     }
   ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "Is false"
+    }
+  ],
   "label.is-not": [
     {
       "type": 0,
@@ -567,6 +729,12 @@
     {
       "type": 0,
       "value": "已設定"
+    }
+  ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "Is true"
     }
   ],
   "label.join": [
@@ -593,6 +761,12 @@
       "value": "瞭解使用者如何瀏覽您的網站。"
     }
   ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "Journeys"
+    }
+  ],
   "label.language": [
     {
       "type": 0,
@@ -609,6 +783,12 @@
     {
       "type": 0,
       "value": "筆記型電腦"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "Last click"
     }
   ],
   "label.last-days": [
@@ -683,6 +863,12 @@
       "value": "小於或等於"
     }
   ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "Links"
+    }
+  ],
   "label.login": [
     {
       "type": 0,
@@ -713,6 +899,18 @@
       "value": "最大值"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Expand"
+    }
+  ],
+  "label.medium": [
+    {
+      "type": 0,
+      "value": "Medium"
+    }
+  ],
   "label.member": [
     {
       "type": 0,
@@ -735,6 +933,12 @@
     {
       "type": 0,
       "value": "行動裝置"
+    }
+  ],
+  "label.model": [
+    {
+      "type": 0,
+      "value": "Model"
     }
   ],
   "label.more": [
@@ -789,10 +993,46 @@
       "value": "OK"
     }
   ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
+    }
+  ],
+  "label.organic-search": [
+    {
+      "type": 0,
+      "value": "Organic search"
+    }
+  ],
+  "label.organic-shopping": [
+    {
+      "type": 0,
+      "value": "Organic shopping"
+    }
+  ],
+  "label.organic-social": [
+    {
+      "type": 0,
+      "value": "Organic social"
+    }
+  ],
+  "label.organic-video": [
+    {
+      "type": 0,
+      "value": "Organic video"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
       "value": "作業系統"
+    }
+  ],
+  "label.other": [
+    {
+      "type": 0,
+      "value": "Other"
     }
   ],
   "label.overview": [
@@ -805,6 +1045,12 @@
     {
       "type": 0,
       "value": "擁有者"
+    }
+  ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "Page"
     }
   ],
   "label.page-of": [
@@ -847,6 +1093,36 @@
       "value": "網頁"
     }
   ],
+  "label.paid-ads": [
+    {
+      "type": 0,
+      "value": "Paid ads"
+    }
+  ],
+  "label.paid-search": [
+    {
+      "type": 0,
+      "value": "Paid search"
+    }
+  ],
+  "label.paid-shopping": [
+    {
+      "type": 0,
+      "value": "Paid shopping"
+    }
+  ],
+  "label.paid-social": [
+    {
+      "type": 0,
+      "value": "Paid social"
+    }
+  ],
+  "label.paid-video": [
+    {
+      "type": 0,
+      "value": "Paid video"
+    }
+  ],
   "label.password": [
     {
       "type": 0,
@@ -863,6 +1139,12 @@
     {
       "type": 0,
       "value": "路徑"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "Pixels"
     }
   ],
   "label.powered-by": [
@@ -939,6 +1221,12 @@
       "value": "即時"
     }
   ],
+  "label.referral": [
+    {
+      "type": 0,
+      "value": "Referral"
+    }
+  ],
   "label.referrer": [
     {
       "type": 0,
@@ -973,6 +1261,12 @@
     {
       "type": 0,
       "value": "地區"
+    }
+  ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "Remaining"
     }
   ],
   "label.remove": [
@@ -1035,12 +1329,6 @@
       "value": "查看您的營收趨勢。"
     }
   ],
-  "label.revenue-property": [
-    {
-      "type": 0,
-      "value": "營收屬性"
-    }
-  ],
   "label.role": [
     {
       "type": 0,
@@ -1083,6 +1371,12 @@
       "value": "選取日期"
     }
   ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "Select filter"
+    }
+  ],
   "label.select-role": [
     {
       "type": 0,
@@ -1101,6 +1395,12 @@
       "value": "工作階段"
     }
   ],
+  "label.session-data": [
+    {
+      "type": 0,
+      "value": "Session data"
+    }
+  ],
   "label.sessions": [
     {
       "type": 0,
@@ -1113,6 +1413,12 @@
       "value": "設定"
     }
   ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "Share"
+    }
+  ],
   "label.share-url": [
     {
       "type": 0,
@@ -1123,6 +1429,18 @@
     {
       "type": 0,
       "value": "單日"
+    }
+  ],
+  "label.sms": [
+    {
+      "type": 0,
+      "value": "SMS"
+    }
+  ],
+  "label.sources": [
+    {
+      "type": 0,
+      "value": "Sources"
     }
   ],
   "label.start-step": [
@@ -1147,6 +1465,18 @@
     {
       "type": 0,
       "value": "平板"
+    }
+  ],
+  "label.tag": [
+    {
+      "type": 0,
+      "value": "Tag"
+    }
+  ],
+  "label.tags": [
+    {
+      "type": 0,
+      "value": "Tags"
     }
   ],
   "label.team": [
@@ -1185,6 +1515,12 @@
       "value": "團隊擁有者"
     }
   ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "Team settings"
+    }
+  ],
   "label.team-view-only": [
     {
       "type": 0,
@@ -1201,6 +1537,12 @@
     {
       "type": 0,
       "value": "團隊"
+    }
+  ],
+  "label.terms": [
+    {
+      "type": 0,
+      "value": "Terms"
     }
   ],
   "label.theme": [
@@ -1335,28 +1677,10 @@
       "value": "更新"
     }
   ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "網址"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "網址"
-    }
-  ],
   "label.user": [
     {
       "type": 0,
       "value": "使用者"
-    }
-  ],
-  "label.user-property": [
-    {
-      "type": 0,
-      "value": "使用者屬性"
     }
   ],
   "label.username": [
@@ -1495,6 +1819,12 @@
       "value": " 位訪客"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
@@ -1593,6 +1923,12 @@
       "value": "event"
     }
   ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
+    }
+  ],
   "message.go-to-settings": [
     {
       "type": 0,
@@ -1687,6 +2023,18 @@
       "value": "您尚未設定任何網站。"
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1717,6 +2065,12 @@
     {
       "type": 0,
       "value": "已儲存。"
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1787,6 +2141,12 @@
       "value": "已觸發的事件"
     }
   ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
@@ -1835,12 +2195,6 @@
     {
       "type": 0,
       "value": " 瀏覽。"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "訪客已離開"
     }
   ]
 }

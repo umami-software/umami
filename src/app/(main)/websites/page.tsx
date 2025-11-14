@@ -1,4 +1,4 @@
-import WebsitesPage from './WebsitesPage';
+import { WebsitesPage } from './WebsitesPage';
 import { Metadata } from 'next';
 
 export default function () {

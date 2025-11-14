@@ -1,8 +1,6 @@
-import { StatusLight } from 'react-basics';
+import { Row, StatusLight, Text } from '@umami/react-zen';
 import { colord } from 'colord';
-import classNames from 'classnames';
 import { LegendItem } from 'chart.js/auto';
-import styles from './Legend.module.css';
 
 export function Legend({
   items = [],
@@ -16,23 +14,21 @@ export function Legend({
   }
 
   return (
-    <div className={styles.legend}>
+    <Row gap wrap="wrap" justifyContent="center">
       {items.map(item => {
         const { text, fillStyle, hidden } = item;
         const color = colord(fillStyle);
 
         return (
-          <div
-            key={text}
-            className={classNames(styles.label, { [styles.hidden]: hidden })}
-            onClick={() => onClick(item)}
-          >
-            <StatusLight color={color.alpha(color.alpha() + 0.2).toHex()}>{text}</StatusLight>
-          </div>
+          <Row key={text} onClick={() => onClick(item)}>
+            <StatusLight color={color.alpha(color.alpha() + 0.2).toHex()}>
+              <Text size="2" color={hidden ? 'disabled' : undefined} wrap="nowrap">
+                {text}
+              </Text>
+            </StatusLight>
+          </Row>
         );
       })}
-    </div>
+    </Row>
   );
 }
-
-export default Legend;

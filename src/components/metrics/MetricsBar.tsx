@@ -1,31 +1,14 @@
 import { ReactNode } from 'react';
-import { Loading, cloneChildren } from 'react-basics';
-import ErrorMessage from '@/components/common/ErrorMessage';
-import { formatLongNumber } from '@/lib/format';
-import styles from './MetricsBar.module.css';
+import { Grid, GridProps } from '@umami/react-zen';
 
-export interface MetricsBarProps {
-  isLoading?: boolean;
-  isFetched?: boolean;
-  error?: unknown;
+export interface MetricsBarProps extends GridProps {
   children?: ReactNode;
 }
 
-export function MetricsBar({ children, isLoading, isFetched, error }: MetricsBarProps) {
-  const formatFunc = n => (n >= 0 ? formatLongNumber(n) : `-${formatLongNumber(Math.abs(n))}`);
-
+export function MetricsBar({ children, ...props }: MetricsBarProps) {
   return (
-    <div className={styles.bar}>
-      {isLoading && !isFetched && <Loading icon="dots" />}
-      {error && <ErrorMessage />}
-      {!isLoading &&
-        !error &&
-        isFetched &&
-        cloneChildren(children, child => {
-          return { format: child.props.format || formatFunc };
-        })}
-    </div>
+    <Grid columns="repeat(auto-fit, minmax(160px, 1fr))" gap {...props}>
+      {children}
+    </Grid>
   );
 }
-
-export default MetricsBar;

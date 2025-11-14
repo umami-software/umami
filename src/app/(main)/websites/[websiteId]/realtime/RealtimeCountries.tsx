@@ -1,9 +1,8 @@
 import { useCallback } from 'react';
-import ListTable from '@/components/metrics/ListTable';
+import { IconLabel } from '@umami/react-zen';
+import { ListTable } from '@/components/metrics/ListTable';
 import { useLocale, useCountryNames, useMessages } from '@/components/hooks';
-import classNames from 'classnames';
-import styles from './RealtimeCountries.module.css';
-import TypeIcon from '@/components/common/TypeIcon';
+import { TypeIcon } from '@/components/common/TypeIcon';
 
 export function RealtimeCountries({ data }) {
   const { formatMessage, labels } = useMessages();
@@ -11,11 +10,8 @@ export function RealtimeCountries({ data }) {
   const { countryNames } = useCountryNames(locale);
 
   const renderCountryName = useCallback(
-    ({ x: code }) => (
-      <span className={classNames(styles.row)}>
-        <TypeIcon type="country" value={code?.toLowerCase()} />
-        {countryNames[code]}
-      </span>
+    ({ label: code }) => (
+      <IconLabel icon={<TypeIcon type="country" value={code} />} label={countryNames[code]} />
     ),
     [countryNames, locale],
   );
@@ -24,10 +20,12 @@ export function RealtimeCountries({ data }) {
     <ListTable
       title={formatMessage(labels.countries)}
       metric={formatMessage(labels.visitors)}
-      data={data}
+      data={data.map(({ x, y, z }: { x: string; y: number; z: number }) => ({
+        label: x,
+        count: y,
+        percent: z,
+      }))}
       renderLabel={renderCountryName}
     />
   );
 }
-
-export default RealtimeCountries;

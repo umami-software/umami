@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
-require('dotenv').config();
-const fs = require('fs');
-const path = require('path');
+import 'dotenv/config';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const endPoint = process.env.COLLECT_API_ENDPOINT;
 
 if (endPoint) {
-  const file = path.resolve(__dirname, '../public/script.js');
+  const file = path.resolve(process.cwd(), 'public/script.js');
 
   const tracker = fs.readFileSync(file);
 

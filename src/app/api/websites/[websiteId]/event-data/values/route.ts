@@ -1,8 +1,9 @@
 import { z } from 'zod';
-import { parseRequest } from '@/lib/request';
+import { getQueryFilters, parseRequest } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
-import { canViewWebsite } from '@/lib/auth';
-import { getEventDataValues } from '@/queries';
+import { canViewWebsite } from '@/permissions';
+import { getEventDataValues } from '@/queries/sql';
+import { filterParams } from '@/lib/schema';
 
 export async function GET(
   request: Request,
@@ -11,8 +12,9 @@ export async function GET(
   const schema = z.object({
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
-    eventName: z.string().optional(),
-    propertyName: z.string().optional(),
+    event: z.string(),
+    propertyName: z.string(),
+    ...filterParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -22,19 +24,16 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { startAt, endAt, eventName, propertyName } = query;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const startDate = new Date(+startAt);
-  const endDate = new Date(+endAt);
+  const { propertyName } = query;
+  const filters = await getQueryFilters(query, websiteId);
 
   const data = await getEventDataValues(websiteId, {
-    startDate,
-    endDate,
-    eventName,
+    ...filters,
     propertyName,
   });
 

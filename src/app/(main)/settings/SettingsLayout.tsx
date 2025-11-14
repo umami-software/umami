@@ -1,25 +1,25 @@
 'use client';
+import { PageBody } from '@/components/common/PageBody';
+import { Column, Grid } from '@umami/react-zen';
 import { ReactNode } from 'react';
-import { useLogin, useMessages } from '@/components/hooks';
-import MenuLayout from '@/components/layout/MenuLayout';
+import { SettingsNav } from './SettingsNav';
 
-export default function SettingsLayout({ children }: { children: ReactNode }) {
-  const { user } = useLogin();
-  const { formatMessage, labels } = useMessages();
-
-  const items = [
-    {
-      key: 'websites',
-      label: formatMessage(labels.websites),
-      url: '/settings/websites',
-    },
-    { key: 'teams', label: formatMessage(labels.teams), url: '/settings/teams' },
-    user.isAdmin && {
-      key: 'users',
-      label: formatMessage(labels.users),
-      url: '/settings/users',
-    },
-  ].filter(n => n);
-
-  return <MenuLayout items={items}>{children}</MenuLayout>;
+export function SettingsLayout({ children }: { children: ReactNode }) {
+  return (
+    <Grid columns={{ xs: '1fr', lg: 'auto 1fr' }} width="100%" height="100%">
+      <Column
+        display={{ xs: 'none', lg: 'flex' }}
+        width="240px"
+        height="100%"
+        border="right"
+        backgroundColor
+        marginRight="2"
+      >
+        <SettingsNav />
+      </Column>
+      <Column gap="6" margin="2">
+        <PageBody>{children}</PageBody>
+      </Column>
+    </Grid>
+  );
 }

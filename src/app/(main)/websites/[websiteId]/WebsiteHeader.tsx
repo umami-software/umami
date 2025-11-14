@@ -1,102 +1,51 @@
-import classNames from 'classnames';
-import Favicon from '@/components/common/Favicon';
-import { useMessages, useTeamUrl, useWebsite } from '@/components/hooks';
-import Icons from '@/components/icons';
-import ActiveUsers from '@/components/metrics/ActiveUsers';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { ReactNode } from 'react';
-import { Button, Icon, Text } from 'react-basics';
-import Lightning from '@/assets/lightning.svg';
-import styles from './WebsiteHeader.module.css';
+import { Icon, Text, Row } from '@umami/react-zen';
+import { PageHeader } from '@/components/common/PageHeader';
+import { Share, Edit } from '@/components/icons';
+import { Favicon } from '@/components/common/Favicon';
+import { ActiveUsers } from '@/components/metrics/ActiveUsers';
+import { WebsiteShareForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteShareForm';
+import { useMessages, useNavigation, useWebsite } from '@/components/hooks';
+import { LinkButton } from '@/components/common/LinkButton';
+import { DialogButton } from '@/components/input/DialogButton';
 
-export function WebsiteHeader({
-  websiteId,
-  showLinks = true,
-  children,
-}: {
-  websiteId: string;
-  showLinks?: boolean;
-  children?: ReactNode;
-}) {
-  const { formatMessage, labels } = useMessages();
-  const { renderTeamUrl } = useTeamUrl();
-  const pathname = usePathname();
-  const { data: website } = useWebsite(websiteId);
-  const { name, domain } = website || {};
+export function WebsiteHeader({ showActions }: { showActions?: boolean }) {
+  const website = useWebsite();
+  const { renderUrl, pathname } = useNavigation();
+  const isSettings = pathname.endsWith('/settings');
 
-  const links = [
-    {
-      label: formatMessage(labels.overview),
-      icon: <Icons.Overview />,
-      path: '',
-    },
-    {
-      label: formatMessage(labels.events),
-      icon: <Lightning />,
-      path: '/events',
-    },
-    {
-      label: formatMessage(labels.sessions),
-      icon: <Icons.User />,
-      path: '/sessions',
-    },
-    {
-      label: formatMessage(labels.realtime),
-      icon: <Icons.Clock />,
-      path: '/realtime',
-    },
-    {
-      label: formatMessage(labels.compare),
-      icon: <Icons.Compare />,
-      path: '/compare',
-    },
-    {
-      label: formatMessage(labels.reports),
-      icon: <Icons.Reports />,
-      path: '/reports',
-    },
-  ];
+  if (isSettings) {
+    return null;
+  }
 
   return (
-    <div className={styles.header}>
-      <div className={styles.title}>
-        <Favicon domain={domain} />
-        <Text>{name}</Text>
-        <ActiveUsers websiteId={websiteId} />
-      </div>
-      <div className={styles.actions}>
-        {showLinks && (
-          <div className={styles.links}>
-            {links.map(({ label, icon, path }) => {
-              const selected = path
-                ? pathname.includes(path)
-                : pathname.match(/^\/websites\/[\w-]+$/);
+    <PageHeader title={website.name} icon={<Favicon domain={website.domain} />} marginBottom="3">
+      <Row alignItems="center" gap="6" wrap="wrap">
+        <ActiveUsers websiteId={website.id} />
 
-              return (
-                <Link
-                  key={label}
-                  href={renderTeamUrl(`/websites/${websiteId}${path}`)}
-                  shallow={true}
-                >
-                  <Button
-                    variant="quiet"
-                    className={classNames({
-                      [styles.selected]: selected,
-                    })}
-                  >
-                    <Icon className={styles.icon}>{icon}</Icon>
-                    <Text className={styles.label}>{label}</Text>
-                  </Button>
-                </Link>
-              );
-            })}
-          </div>
+        {showActions && (
+          <Row alignItems="center" gap>
+            <ShareButton websiteId={website.id} shareId={website.shareId} />
+            <LinkButton href={renderUrl(`/websites/${website.id}/settings`, false)}>
+              <Icon>
+                <Edit />
+              </Icon>
+              <Text>Edit</Text>
+            </LinkButton>
+          </Row>
         )}
-        {children}
-      </div>
-    </div>
+      </Row>
+    </PageHeader>
   );
 }
 
-export default WebsiteHeader;
+const ShareButton = ({ websiteId, shareId }) => {
+  const { formatMessage, labels } = useMessages();
+
+  return (
+    <DialogButton icon={<Share />} label={formatMessage(labels.share)} width="800px">
+      {({ close }) => {
+        return <WebsiteShareForm websiteId={websiteId} shareId={shareId} onClose={close} />;
+      }}
+    </DialogButton>
+  );
+};

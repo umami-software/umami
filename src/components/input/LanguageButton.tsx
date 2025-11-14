@@ -1,53 +1,41 @@
-import { Icon, Button, PopupTrigger, Popup } from 'react-basics';
-import classNames from 'classnames';
+import { Icon, Button, MenuTrigger, Popover, Grid, Text, Dialog } from '@umami/react-zen';
 import { languages } from '@/lib/lang';
 import { useLocale } from '@/components/hooks';
-import Icons from '@/components/icons';
-import styles from './LanguageButton.module.css';
+import { Globe } from 'lucide-react';
 
 export function LanguageButton() {
-  const { locale, saveLocale, dir } = useLocale();
+  const { locale, saveLocale } = useLocale();
   const items = Object.keys(languages).map(key => ({ ...languages[key], value: key }));
 
-  function handleSelect(value: string, close: () => void, e: MouseEvent) {
-    e.stopPropagation();
+  function handleSelect(value: string) {
     saveLocale(value);
-    close();
   }
 
   return (
-    <PopupTrigger>
+    <MenuTrigger key="language">
       <Button variant="quiet">
         <Icon>
-          <Icons.Globe />
+          <Globe />
         </Icon>
       </Button>
-      <Popup position="bottom" alignment={dir === 'rtl' ? 'start' : 'end'}>
-        {(close: () => void) => {
-          return (
-            <div className={styles.menu}>
-              {items.map(({ value, label }) => {
-                return (
-                  <div
-                    key={value}
-                    className={classNames(styles.item, { [styles.selected]: value === locale })}
-                    onClick={(e: any) => handleSelect(value, close, e)}
+      <Popover placement="bottom end">
+        <Dialog variant="menu">
+          <Grid columns="repeat(3, minmax(200px, 1fr))" overflow="hidden">
+            {items.map(({ value, label }) => {
+              return (
+                <Button key={value} variant="quiet" onPress={() => handleSelect(value)}>
+                  <Text
+                    weight={value === locale ? 'bold' : 'medium'}
+                    color={value === locale ? undefined : 'muted'}
                   >
-                    <span lang={value}>{label}</span>
-                    {value === locale && (
-                      <Icon className={styles.icon}>
-                        <Icons.Check />
-                      </Icon>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        }}
-      </Popup>
-    </PopupTrigger>
+                    {label}
+                  </Text>
+                </Button>
+              );
+            })}
+          </Grid>
+        </Dialog>
+      </Popover>
+    </MenuTrigger>
   );
 }
-
-export default LanguageButton;

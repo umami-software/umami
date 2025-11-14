@@ -1,18 +1,19 @@
 import { z } from 'zod';
-import { parseRequest } from '@/lib/request';
+import { getQueryFilters, parseRequest } from '@/lib/request';
 import { unauthorized, json } from '@/lib/response';
-import { canViewWebsite } from '@/lib/auth';
-import { pagingParams } from '@/lib/schema';
-import { getWebsiteSessions } from '@/queries';
+import { canViewWebsite } from '@/permissions';
+import { dateRangeParams, filterParams, pagingParams, searchParams } from '@/lib/schema';
+import { getWebsiteSessions } from '@/queries/sql';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
-    startAt: z.coerce.number().int(),
-    endAt: z.coerce.number().int(),
+    ...dateRangeParams,
+    ...filterParams,
     ...pagingParams,
+    ...searchParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -22,16 +23,14 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { startAt, endAt } = query;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const startDate = new Date(+startAt);
-  const endDate = new Date(+endAt);
+  const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getWebsiteSessions(websiteId, { startDate, endDate }, query);
+  const data = await getWebsiteSessions(websiteId, filters);
 
   return json(data);
 }

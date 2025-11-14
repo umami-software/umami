@@ -1,6 +1,6 @@
-import { canViewWebsite } from '@/lib/auth';
+import { canViewWebsite } from '@/permissions';
 import { json, unauthorized } from '@/lib/response';
-import { getActiveVisitors } from '@/queries';
+import { getActiveVisitors } from '@/queries/sql';
 import { parseRequest } from '@/lib/request';
 
 export async function GET(
@@ -19,7 +19,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const result = await getActiveVisitors(websiteId);
+  const visitors = await getActiveVisitors(websiteId);
 
-  return json(result);
+  return json(visitors);
 }

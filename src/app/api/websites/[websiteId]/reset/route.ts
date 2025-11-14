@@ -1,5 +1,5 @@
-import { canUpdateWebsite } from '@/lib/auth';
-import { resetWebsite } from '@/queries';
+import { canUpdateWebsite } from '@/permissions';
+import { resetWebsite } from '@/queries/prisma';
 import { unauthorized, ok } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
 

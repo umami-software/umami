@@ -1,38 +1,17 @@
-import MetricCard from '@/components/metrics/MetricCard';
+import { MetricCard } from '@/components/metrics/MetricCard';
 import { useMessages } from '@/components/hooks';
-import { RealtimeData } from '@/lib/types';
-import styles from './RealtimeHeader.module.css';
+import { MetricsBar } from '@/components/metrics/MetricsBar';
 
-export function RealtimeHeader({ data }: { data: RealtimeData }) {
+export function RealtimeHeader({ data }: { data: any }) {
   const { formatMessage, labels } = useMessages();
   const { totals }: any = data || {};
 
   return (
-    <div className={styles.header}>
-      <div className={styles.metrics}>
-        <MetricCard
-          className={styles.card}
-          label={formatMessage(labels.views)}
-          value={totals.views}
-        />
-        <MetricCard
-          className={styles.card}
-          label={formatMessage(labels.visitors)}
-          value={totals.visitors}
-        />
-        <MetricCard
-          className={styles.card}
-          label={formatMessage(labels.events)}
-          value={totals.events}
-        />
-        <MetricCard
-          className={styles.card}
-          label={formatMessage(labels.countries)}
-          value={totals.countries}
-        />
-      </div>
-    </div>
+    <MetricsBar>
+      <MetricCard label={formatMessage(labels.views)} value={totals.views} />
+      <MetricCard label={formatMessage(labels.visitors)} value={totals.visitors} />
+      <MetricCard label={formatMessage(labels.events)} value={totals.events} />
+      <MetricCard label={formatMessage(labels.countries)} value={totals.countries} />
+    </MetricsBar>
   );
 }
-
-export default RealtimeHeader;

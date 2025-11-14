@@ -18,6 +18,7 @@
   const _false = 'false';
   const _true = 'true';
   const attr = currentScript.getAttribute.bind(currentScript);
+
   const website = attr(_data + 'website-id');
   const hostUrl = attr(_data + 'host-url');
   const beforeSend = attr(_data + 'before-send');
@@ -27,6 +28,8 @@
   const excludeSearch = attr(_data + 'exclude-search') === _true;
   const excludeHash = attr(_data + 'exclude-hash') === _true;
   const domain = attr(_data + 'domains') || '';
+  const credentials = attr(_data + 'fetch-credentials') || 'omit';
+
   const domains = domain.split(',').map(n => n.trim());
   const host =
     hostUrl || '__COLLECT_API_HOST__' || currentScript.src.split('/').slice(0, -1).join('/');
@@ -45,7 +48,7 @@
       if (excludeSearch) u.search = '';
       if (excludeHash) u.hash = '';
       return u.toString();
-    } catch (e) {
+    } catch {
       return raw;
     }
   };
@@ -151,7 +154,7 @@
     const callback = window[beforeSend];
 
     if (typeof callback === 'function') {
-      payload = callback(type, payload);
+      payload = await Promise.resolve(callback(type, payload));
     }
 
     if (!payload) return;
@@ -165,7 +168,7 @@
           'Content-Type': 'application/json',
           ...(typeof cache !== 'undefined' && { 'x-umami-cache': cache }),
         },
-        credentials: 'omit',
+        credentials,
       });
 
       const data = await res.json();
@@ -173,6 +176,7 @@
         disabled = !!data.disabled;
         cache = data.cache;
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       /* no-op */
     }
