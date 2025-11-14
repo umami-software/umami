@@ -245,9 +245,41 @@ Essential hooks in `src/components/hooks/`:
 - **`useLocale()`**: Current locale
 - **`useFormat()`**: Number, date, and value formatting
 - **`useMobile()`**: Mobile device detection
-- **`useNavigation()`**: Next.js navigation helpers
+- **`useNavigation()`**: Next.js navigation helpers (see below for detailed usage)
 - **`useEscapeKey()`**: ESC key handler
 - **`useDocumentClick()`**: Click outside handler
+
+##### `useNavigation()` Hook Details
+
+The `useNavigation()` hook is essential for handling URL query parameters and navigation in the app:
+
+```typescript
+import { useNavigation } from '@/components/hooks';
+
+export function MyComponent() {
+  const { router, pathname, query, updateParams, replaceParams } = useNavigation();
+
+  // updateParams() - Merges new params with existing ones, returns URL
+  const newUrl = updateParams({ country: 'eq.US' }); // Keeps other filters
+
+  // IMPORTANT: To actually navigate, use router.replace() with the URL:
+  const handleFilterClick = (countryCode) => {
+    router.replace(updateParams({ country: `eq.${countryCode}` }));
+  };
+
+  // replaceParams() - Replaces all params, returns URL
+  const resetUrl = replaceParams({ page: 1 }); // Only page param
+
+  // Access current query params
+  console.log(query); // { country: 'eq.US', browser: 'eq.Chrome' }
+}
+```
+
+**Key points:**
+- `updateParams()` returns a URL string - it doesn't navigate automatically
+- Always call `router.replace()` with the URL to actually navigate
+- Use `router.replace()` instead of `router.push()` to replace the current history entry
+- `updateParams()` preserves existing filters, `replaceParams()` clears them
 
 #### Context Hooks
 These hooks provide access to React Context values for specific entities:
