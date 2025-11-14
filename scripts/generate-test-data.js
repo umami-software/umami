@@ -1128,7 +1128,8 @@ async function main() {
 
     // Generate data
     console.log('🎲 Generating test data...');
-    const startDate = subDays(new Date(), scale.days);
+    const now = new Date();
+    const startDate = subDays(startOfDay(now), scale.days - 1);
 
     const allSessions = [];
     const allEvents = [];
@@ -1138,10 +1139,14 @@ async function main() {
     let totalSessionsGenerated = 0;
     const totalDays = scale.days;
 
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+
     for (let day = 0; day < scale.days; day++) {
-      const currentDay = addHours(startOfDay(startDate), day * 24);
+      const currentDay = addHours(startDate, day * 24);
       const dayOfWeek = currentDay.getDay();
       const weekNum = Math.floor(day / 7);
+      const isToday = day === scale.days - 1;
 
       const weekMultiplier = getWeekMultiplier(weekNum, Math.ceil(totalDays / 7));
       const dayMultiplier = getWeekdayMultiplier(dayOfWeek);
@@ -1149,9 +1154,15 @@ async function main() {
 
       for (let sessionIdx = 0; sessionIdx < sessionsToday; sessionIdx++) {
         // Distribute sessions across 24 hours with realistic pattern
-        const hour = randomInt(0, 23);
-        const minute = randomInt(0, 59);
+        // For today, only generate up to current time
+        const maxHour = isToday ? currentHour : 23;
+        const hour = randomInt(0, maxHour);
+        const maxMinute = isToday && hour === currentHour ? currentMinute : 59;
+        const minute = randomInt(0, maxMinute);
         const sessionTime = addHours(currentDay, hour + minute / 60);
+
+        // Skip if session time is in the future
+        if (sessionTime > now) continue;
 
         const hourMultiplier = getHourlyMultiplier(hour);
         if (Math.random() > hourMultiplier) continue; // Skip this session based on hour
