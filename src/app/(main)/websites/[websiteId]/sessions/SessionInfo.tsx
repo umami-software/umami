@@ -11,6 +11,18 @@ export function SessionInfo({ data }) {
   const { formatValue } = useFormat();
   const { getRegionName } = useRegionNames(locale);
 
+  if (process.env.NODE_ENV !== 'production') {
+    if (!data.lastAt || !data.firstAt) {
+      // eslint-disable-next-line no-console
+      console.error('[SessionInfo] Session missing date fields', {
+        sessionId: data.id,
+        hasLastAt: !!data.lastAt,
+        hasFirstAt: !!data.firstAt,
+        distinctId: data.distinctId,
+      });
+    }
+  }
+
   return (
     <Grid columns="repeat(auto-fit, minmax(200px, 1fr)" gap>
       <Info label={formatMessage(labels.distinctId)} icon={<KeyRound />}>
@@ -18,11 +30,11 @@ export function SessionInfo({ data }) {
       </Info>
 
       <Info label={formatMessage(labels.lastSeen)} icon={<Calendar />}>
-        <DateDistance date={new Date(data.lastAt)} />
+        {data.lastAt ? <DateDistance date={new Date(data.lastAt)} /> : '—'}
       </Info>
 
       <Info label={formatMessage(labels.firstSeen)} icon={<Calendar />}>
-        <DateDistance date={new Date(data.firstAt)} />
+        {data.firstAt ? <DateDistance date={new Date(data.firstAt)} /> : '—'}
       </Info>
 
       <Info
