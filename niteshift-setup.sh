@@ -71,18 +71,18 @@ log "✓ pnpm is available"
 # 4. Install dependencies
 if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
   log "Installing dependencies with pnpm..."
-  if ! pnpm install --frozen-lockfile; then
+  if ! pnpm install --package-import-method=copy --frozen-lockfile; then
     log_error "Failed to install dependencies"
     exit 1
   fi
   log "✓ Dependencies installed"
 else
   log "Linking dependencies from prebaked pnpm store..."
-  if pnpm install --frozen-lockfile --offline; then
+  if pnpm install --package-import-method=copy --frozen-lockfile --offline; then
     log "✓ Dependencies installed (offline)"
   else
     log_error "Offline install failed, falling back to full pnpm install"
-    if ! pnpm install --frozen-lockfile; then
+    if ! pnpm install --package-import-method=copy --frozen-lockfile; then
       log_error "Failed to install dependencies even after fallback"
       exit 1
     fi
