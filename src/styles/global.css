@@ -41,3 +41,13 @@ a:hover {
   border: 4px solid rgba(0, 0, 0, 0);
   background-clip: padding-box;
 }
+
+/* Remove autofill background color - matches react-zen TextField structure */
+.TextField_field__YzU1O input:-webkit-autofill,
+.TextField_field__YzU1O input:-webkit-autofill:hover,
+.TextField_field__YzU1O input:-webkit-autofill:focus,
+.TextField_field__YzU1O input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px var(--background-color) inset !important;
+  -webkit-text-fill-color: var(--font-color) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
