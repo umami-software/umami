@@ -44,15 +44,16 @@ export function LoginForm() {
           name="username"
           rules={{ required: formatMessage(labels.required) }}
         >
-          <TextField autoComplete="off" />
+          <TextField autoComplete="username" />
         </FormField>
+
         <FormField
           label={formatMessage(labels.password)}
           data-test="input-password"
           name="password"
           rules={{ required: formatMessage(labels.required) }}
         >
-          <PasswordField />
+          <PasswordField autoComplete="current-password" />
         </FormField>
         <FormButtons>
           <FormSubmitButton

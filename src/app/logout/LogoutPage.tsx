@@ -13,7 +13,7 @@ export function LogoutPage() {
     async function logout() {
       await post('/auth/logout');
 
-      router.push('/login');
+      window.location.href = `${process.env.basePath || ''}/login`;
     }
 
     removeClientAuthToken();

@@ -45,7 +45,11 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       browser as browser,
       page_title as "pageTitle",
       website_event.event_type as "eventType",
-      website_event.event_name as "eventName"
+      website_event.event_name as "eventName",
+      event_id IN (select website_event_id 
+                   from event_data
+                   where website_id = {{websiteId::uuid}}
+                      and created_at between {{startDate}} and {{endDate}}) AS "hasData"
     from website_event
     ${cohortQuery}
     join session on session.session_id = website_event.session_id 

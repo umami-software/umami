@@ -5,6 +5,7 @@ export const TIMEZONE_CONFIG = 'umami.timezone';
 export const DATE_RANGE_CONFIG = 'umami.date-range';
 export const THEME_CONFIG = 'umami.theme';
 export const DASHBOARD_CONFIG = 'umami.dashboard';
+export const LAST_TEAM_CONFIG = 'umami.last-team';
 export const VERSION_CHECK = 'umami.version-check';
 export const SHARE_TOKEN_HEADER = 'x-umami-share-token';
 export const HOMEPAGE_URL = 'https://umami.is';
@@ -658,3 +659,24 @@ export const CURRENCIES = [
   { id: 'OMR', name: 'Omani Rial' },
   { id: 'GHS', name: 'Ghanaian Cedi' },
 ];
+
+export const TIMEZONE_LEGACY: Record<string, string> = {
+  'Asia/Batavia': 'Asia/Jakarta',
+  'Asia/Calcutta': 'Asia/Kolkata',
+  'Asia/Chongqing': 'Asia/Shanghai',
+  'Asia/Harbin': 'Asia/Shanghai',
+  'Asia/Jayapura': 'Asia/Pontianak',
+  'Asia/Katmandu': 'Asia/Kathmandu',
+  'Asia/Macao': 'Asia/Macau',
+  'Asia/Rangoon': 'Asia/Yangon',
+  'Asia/Saigon': 'Asia/Ho_Chi_Minh',
+  'Europe/Kiev': 'Europe/Kyiv',
+  'Europe/Zaporozhye': 'Europe/Kyiv',
+  'Etc/UTC': 'UTC',
+  'US/Arizona': 'America/Phoenix',
+  'US/Central': 'America/Chicago',
+  'US/Eastern': 'America/New_York',
+  'US/Mountain': 'America/Denver',
+  'US/Pacific': 'America/Los_Angeles',
+  'US/Samoa': 'Pacific/Pago_Pago',
+};

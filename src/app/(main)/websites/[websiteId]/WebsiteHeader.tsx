@@ -19,15 +19,11 @@ export function WebsiteHeader({ showActions }: { showActions?: boolean }) {
 
   return (
     <PageHeader title={website.name} icon={<Favicon domain={website.domain} />} marginBottom="3">
-      <Row alignItems="center" gap="6">
+      <Row alignItems="center" gap="6" wrap="wrap">
         <ActiveUsers websiteId={website.id} />
 
         {showActions && (
-          <Row
-            display={{ xs: 'none', sm: 'none', md: 'none', lg: 'flex', xl: 'flex' }}
-            alignItems="center"
-            gap
-          >
+          <Row alignItems="center" gap>
             <ShareButton websiteId={website.id} shareId={website.shareId} />
             <LinkButton href={renderUrl(`/websites/${website.id}/settings`, false)}>
               <Icon>
