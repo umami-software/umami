@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Row, Select, ListItem, Button } from '@umami/react-zen';
-import { useTimezone, useMessages } from '@/components/hooks';
+import { useTimezone, useMessages, usePreferences } from '@/components/hooks';
 import { getTimezone } from '@/lib/date';
 
 const timezones = Intl.supportedValuesOf('timeZone');
@@ -8,12 +8,21 @@ const timezones = Intl.supportedValuesOf('timeZone');
 export function TimezoneSetting() {
   const [search, setSearch] = useState('');
   const { formatMessage, labels } = useMessages();
+  const { updatePreferences } = usePreferences();
   const { timezone, saveTimezone } = useTimezone();
   const items = search
     ? timezones.filter(n => n.toLowerCase().includes(search.toLowerCase()))
     : timezones;
 
-  const handleReset = () => saveTimezone(getTimezone());
+  const handleChange = (value: string) => {
+    saveTimezone(value);
+    updatePreferences({ timezone: value });
+  };
+
+  const handleReset = () => {
+    saveTimezone(getTimezone());
+    updatePreferences({ timezone: null });
+  };
 
   const handleOpen = isOpen => {
     if (isOpen) {
@@ -25,7 +34,7 @@ export function TimezoneSetting() {
     <Row gap>
       <Select
         value={timezone}
-        onChange={(value: any) => saveTimezone(value)}
+        onChange={handleChange}
         allowSearch={true}
         onSearch={setSearch}
         onOpenChange={handleOpen}

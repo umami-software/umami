@@ -1,6 +1,6 @@
 import { parseRequest } from '@/lib/request';
 import { json } from '@/lib/response';
-import { getAllUserTeams } from '@/queries/prisma';
+import { getAllUserTeams, getUserPreferences } from '@/queries/prisma';
 
 export async function POST(request: Request) {
   const { auth, error } = await parseRequest(request);
@@ -10,6 +10,7 @@ export async function POST(request: Request) {
   }
 
   const teams = await getAllUserTeams(auth.user.id);
+  const preferences = await getUserPreferences(auth.user.id);
 
-  return json({ ...auth.user, teams });
+  return json({ ...auth.user, teams, preferences });
 }
