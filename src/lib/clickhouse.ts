@@ -61,7 +61,7 @@ function getDateStringSQL(data: any, unit: string = 'utc', timezone?: string) {
 
 function getDateSQL(field: string, unit: string, timezone?: string) {
   if (timezone) {
-    return `toDateTime(date_trunc('${unit}', ${field}, '${timezone}'), '${timezone}')`;
+    return `toDateTime(date_trunc('${unit}', ${field}, '${timezone}'))`;
   }
   return `toDateTime(date_trunc('${unit}', ${field}))`;
 }

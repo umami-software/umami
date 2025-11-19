@@ -5,7 +5,7 @@ import { useLocale } from '@/components/hooks/useLocale';
 import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE_VALUE } from '@/lib/constants';
 import { getItem } from '@/lib/storage';
 
-export function useDateRange(options: { ignoreOffset?: boolean } = {}) {
+export function useDateRange(options: { ignoreOffset?: boolean; timezone?: string } = {}) {
   const {
     query: { date = '', offset = 0, compare = 'prev' },
   } = useNavigation();
@@ -15,6 +15,7 @@ export function useDateRange(options: { ignoreOffset?: boolean } = {}) {
     const dateRangeObject = parseDateRange(
       date || getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE_VALUE,
       locale,
+      options.timezone,
     );
 
     return !options.ignoreOffset && offset

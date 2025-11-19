@@ -23,10 +23,10 @@ export function WebsiteControls({
   return (
     <Column gap>
       <Grid columns={{ xs: '1fr', md: 'auto 1fr' }} gap>
-        <Row alignItems="center" justifyContent="flex-end">
+        <Row alignItems="center" justifyContent="flex-start">
           {allowFilter ? <WebsiteFilterButton websiteId={websiteId} /> : <div />}
         </Row>
-        <Row alignItems="center" justifyContent="flex-end">
+        <Row alignItems="center" justifyContent={{ xs: 'flex-start', md: 'flex-end' }}>
           {allowDateFilter && (
             <WebsiteDateFilter websiteId={websiteId} allowCompare={allowCompare} />
           )}

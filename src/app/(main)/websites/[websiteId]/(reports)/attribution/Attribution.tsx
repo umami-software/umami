@@ -95,7 +95,7 @@ export function Attribution({
             })}
           </MetricsBar>
           <SectionHeader title={formatMessage(labels.sources)} />
-          <Grid columns="1fr 1fr" gap>
+          <Grid columns={{ xs: '1fr', md: '1fr 1fr' }} gap>
             <Panel>
               <AttributionTable data={data?.['referrer']} title={formatMessage(labels.referrer)} />
             </Panel>
@@ -104,7 +104,7 @@ export function Attribution({
             </Panel>
           </Grid>
           <SectionHeader title="UTM" />
-          <Grid columns="1fr 1fr" gap>
+          <Grid columns={{ xs: '1fr', md: '1fr 1fr' }} gap>
             <Panel>
               <AttributionTable data={data?.['utm_source']} title={formatMessage(labels.sources)} />
             </Panel>

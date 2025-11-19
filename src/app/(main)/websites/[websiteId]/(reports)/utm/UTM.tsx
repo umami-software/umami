@@ -43,7 +43,7 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
 
             return (
               <Panel key={param}>
-                <Grid columns="1fr 1fr">
+                <Grid columns={{ xs: '1fr', md: '1fr 1fr' }} gap="6">
                   <Column>
                     <Heading>
                       <Text transform="capitalize">{param.replace(/^utm_/, '')}</Text>

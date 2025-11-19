@@ -5,22 +5,29 @@ import { UpdateNotice } from './UpdateNotice';
 import { SideNav } from '@/app/(main)/SideNav';
 import { useLoginQuery, useConfig, useNavigation } from '@/components/hooks';
 import { MobileNav } from '@/app/(main)/MobileNav';
+import { useEffect } from 'react';
+import { removeItem, setItem } from '@/lib/storage';
+import { LAST_TEAM_CONFIG } from '@/lib/constants';
 
 export function App({ children }) {
   const { user, isLoading, error } = useLoginQuery();
   const config = useConfig();
-  const { pathname, router } = useNavigation();
+  const { pathname, teamId } = useNavigation();
+
+  useEffect(() => {
+    if (teamId) {
+      setItem(LAST_TEAM_CONFIG, teamId);
+    } else {
+      removeItem(LAST_TEAM_CONFIG);
+    }
+  }, [teamId]);
 
   if (isLoading || !config) {
     return <Loading placement="absolute" />;
   }
 
   if (error) {
-    if (process.env.cloudMode) {
-      window.location.href = '/login';
-    } else {
-      router.push('/login');
-    }
+    window.location.href = `${process.env.basePath || ''}/login`;
     return null;
   }
 

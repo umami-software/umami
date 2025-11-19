@@ -135,26 +135,31 @@ export async function resetWebsite(websiteId: string) {
   const { client, transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
-  return transaction([
-    client.eventData.deleteMany({
-      where: { websiteId },
-    }),
-    client.sessionData.deleteMany({
-      where: { websiteId },
-    }),
-    client.websiteEvent.deleteMany({
-      where: { websiteId },
-    }),
-    client.session.deleteMany({
-      where: { websiteId },
-    }),
-    client.website.update({
-      where: { id: websiteId },
-      data: {
-        resetAt: new Date(),
-      },
-    }),
-  ]).then(async data => {
+  return transaction(
+    [
+      client.eventData.deleteMany({
+        where: { websiteId },
+      }),
+      client.sessionData.deleteMany({
+        where: { websiteId },
+      }),
+      client.websiteEvent.deleteMany({
+        where: { websiteId },
+      }),
+      client.session.deleteMany({
+        where: { websiteId },
+      }),
+      client.website.update({
+        where: { id: websiteId },
+        data: {
+          resetAt: new Date(),
+        },
+      }),
+    ],
+    {
+      timeout: 30000,
+    },
+  ).then(async data => {
     if (cloudMode) {
       await redis.client.set(
         `website:${websiteId}`,

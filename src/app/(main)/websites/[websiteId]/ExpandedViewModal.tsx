@@ -34,6 +34,7 @@ export function ExpandedViewModal({
           maxWidth: 1320,
           width: '100vw',
           height: isMobile ? '100dvh' : 'calc(100dvh - 40px)',
+          overflow: 'hidden',
         }}
       >
         {({ close }) => {

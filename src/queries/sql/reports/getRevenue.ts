@@ -41,6 +41,15 @@ async function relationalQuery(
     currency,
   });
 
+  const joinQuery = filterQuery
+    ? `join website_event
+      on website_event.website_id = revenue.website_id
+        and website_event.session_id = revenue.session_id
+        and website_event.event_id = revenue.event_id
+        and website_event.website_id = {{websiteId::uuid}}
+        and website_event.created_at between {{startDate}} and {{endDate}}`
+    : '';
+
   const chart = await rawQuery(
     `
     select
@@ -48,17 +57,12 @@ async function relationalQuery(
       ${getDateSQL('revenue.created_at', unit, timezone)} t,
       sum(revenue.revenue) y
     from revenue
-    join website_event
-      on website_event.website_id = revenue.website_id
-        and website_event.session_id = revenue.session_id
-        and website_event.event_id = revenue.event_id
-        and website_event.website_id = {{websiteId::uuid}}
-        and website_event.created_at between {{startDate}} and {{endDate}}
+    ${joinQuery}
     ${cohortQuery}
     ${joinSessionQuery}
     where revenue.website_id = {{websiteId::uuid}}
       and revenue.created_at between {{startDate}} and {{endDate}}
-      and revenue.currency like {{currency}}
+      and revenue.currency ilike {{currency}}
       ${filterQuery}
     group by  x, t
     order by t
@@ -72,19 +76,14 @@ async function relationalQuery(
       session.country as name,
       sum(revenue) value
     from revenue 
-    join website_event
-      on website_event.website_id = revenue.website_id
-        and website_event.session_id = revenue.session_id
-        and website_event.event_id = revenue.event_id
-        and website_event.website_id = {{websiteId::uuid}}
-        and website_event.created_at between {{startDate}} and {{endDate}}
+    ${joinQuery}
     join session 
       on session.website_id = revenue.website_id
         and session.session_id = revenue.session_id
     ${cohortQuery}
     where revenue.website_id = {{websiteId::uuid}}
       and revenue.created_at between {{startDate}} and {{endDate}}
-      and revenue.currency = {{currency}}
+      and revenue.currency ilike {{currency}}
       ${filterQuery}
     group by session.country
     `,
@@ -98,23 +97,18 @@ async function relationalQuery(
       count(distinct revenue.event_id) as count,
       count(distinct revenue.session_id) as unique_count
     from revenue
-    join website_event
-      on website_event.website_id = revenue.website_id
-        and website_event.session_id = revenue.session_id
-        and website_event.event_id = revenue.event_id
-        and website_event.website_id = {{websiteId::uuid}}
-        and website_event.created_at between {{startDate}} and {{endDate}}
+    ${joinQuery}
     ${cohortQuery}
     ${joinSessionQuery}
     where revenue.website_id = {{websiteId::uuid}}
       and revenue.created_at between {{startDate}} and {{endDate}}
-      and revenue.currency = {{currency}}
+      and revenue.currency ilike {{currency}}
       ${filterQuery}
   `,
     queryParams,
   ).then(result => result?.[0]);
 
-  total.average = total.count > 0 ? total.sum / total.count : 0;
+  total.average = total.count > 0 ? Number(total.sum) / Number(total.count) : 0;
 
   return { chart, country, total };
 }
