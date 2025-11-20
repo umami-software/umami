@@ -18,7 +18,7 @@ export const PIXELS_URL = `${globalThis?.location?.origin}/p`;
 
 export const DEFAULT_LOCALE = 'en-US';
 export const DEFAULT_THEME = 'light';
-export const DEFAULT_ANIMATION_DURATION = 300;
+export const DEFAULT_ANIMATION_DURATION = 0;
 export const DEFAULT_DATE_RANGE_VALUE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
 export const DEFAULT_RESET_DATE = '2000-01-01';
