@@ -137,7 +137,7 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
                 metric={formatMessage(labels.revenue)}
                 data={data?.country.map(({ name, value }: { name: string; value: number }) => ({
                   label: name,
-                  count: value,
+                  count: Number(value),
                   percent: (value / data?.total.sum) * 100,
                 }))}
                 currency={currency}
