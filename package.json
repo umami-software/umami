@@ -42,24 +42,18 @@
     "download-country-names": "node scripts/download-country-names.js",
     "download-language-names": "node scripts/download-language-names.js",
     "change-password": "node scripts/change-password.js",
-    "lint": "next lint --quiet",
     "prepare": "node -e \"if (process.env.NODE_ENV !== 'production'){process.exit(1)} \" || husky install",
     "postbuild": "node scripts/postbuild.js",
     "test": "jest",
     "cypress-open": "cypress open cypress run",
-    "cypress-run": "cypress run cypress run"
+    "cypress-run": "cypress run cypress run",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check": "biome check --apply"
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint"
-    ],
-    "**/*.css": [
-      "stylelint --fix",
-      "prettier --write"
-    ],
-    "**/*.json": [
-      "prettier --write"
+    "**/*.{js,jsx,ts,tsx,json,css}": [
+      "npm run format"
     ]
   },
   "cacheDirectories": [
@@ -78,7 +72,7 @@
     "@react-spring/web": "^10.0.3",
     "@svgr/cli": "^8.1.0",
     "@tanstack/react-query": "^5.90.5",
-    "@umami/react-zen": "^0.207.0",
+    "@umami/react-zen": "^0.208.0",
     "@umami/redis-client": "^0.29.0",
     "bcryptjs": "^3.0.2",
     "chalk": "^5.6.2",
@@ -132,6 +126,7 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.3.6",
     "@formatjs/cli": "^4.2.29",
     "@netlify/plugin-nextjs": "^5.14.4",
     "@rollup/plugin-alias": "^5.0.0",
@@ -151,15 +146,6 @@
     "babel-plugin-react-compiler": "19.1.0-rc.2",
     "cross-env": "^10.1.0",
     "cypress": "^13.6.6",
-    "eslint": "^8.33.0",
-    "eslint-config-next": "^14.2.33",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-import-resolver-alias": "^1.1.2",
-    "eslint-plugin-css-modules": "^2.12.0",
-    "eslint-plugin-cypress": "^2.15.1",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-jest": "^27.9.0",
-    "eslint-plugin-prettier": "^5.5.3",
     "extract-react-intl-messages": "^4.1.1",
     "husky": "^9.1.7",
     "jest": "^29.7.0",
@@ -168,7 +154,6 @@
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^15.1.0",
     "postcss-preset-env": "7.8.3",
-    "prettier": "^3.6.2",
     "prompts": "2.4.2",
     "rollup": "^4.52.5",
     "rollup-plugin-copy": "^3.4.0",
