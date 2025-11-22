@@ -137,11 +137,6 @@ export function MetricLabel({ type, data }: MetricLabelProps) {
       return formatValue(label, 'language');
 
     default:
-      return (
-        <FilterLink
-          type={type}
-          value={label}
-        />
-      );
+      return <FilterLink type={type} value={label} />;
   }
 }

@@ -50,21 +50,23 @@ const downloadDirect = (url, originalUrl) =>
     https.get(url, res => {
       // Follow redirects
       if (res.statusCode === 301 || res.statusCode === 302) {
-        downloadDirect(res.headers.location, originalUrl || url).then(resolve).catch(reject);
+        downloadDirect(res.headers.location, originalUrl || url)
+          .then(resolve)
+          .catch(reject);
         return;
       }
-      
+
       const filename = path.join(dest, path.basename(originalUrl || url));
       const fileStream = fs.createWriteStream(filename);
-      
+
       res.pipe(fileStream);
-      
+
       fileStream.on('finish', () => {
         fileStream.close();
         console.log('Saved geo database:', filename);
         resolve();
       });
-      
+
       fileStream.on('error', e => {
         reject(e);
       });
@@ -78,27 +80,29 @@ if (isDirectMmdb) {
     process.exit(1);
   });
 } else {
-  downloadCompressed(url).then(
-    res =>
-      new Promise((resolve, reject) => {
-        res.on('entry', entry => {
-          if (entry.path.endsWith('.mmdb')) {
-            const filename = path.join(dest, path.basename(entry.path));
-            entry.pipe(fs.createWriteStream(filename));
+  downloadCompressed(url)
+    .then(
+      res =>
+        new Promise((resolve, reject) => {
+          res.on('entry', entry => {
+            if (entry.path.endsWith('.mmdb')) {
+              const filename = path.join(dest, path.basename(entry.path));
+              entry.pipe(fs.createWriteStream(filename));
 
-            console.log('Saved geo database:', filename);
-          }
-        });
+              console.log('Saved geo database:', filename);
+            }
+          });
 
-        res.on('error', e => {
-          reject(e);
-        });
-        res.on('finish', () => {
-          resolve();
-        });
-      }),
-  ).catch(e => {
-    console.error('Failed to download geo database:', e);
-    process.exit(1);
-  });
+          res.on('error', e => {
+            reject(e);
+          });
+          res.on('finish', () => {
+            resolve();
+          });
+        }),
+    )
+    .catch(e => {
+      console.error('Failed to download geo database:', e);
+      process.exit(1);
+    });
 }
