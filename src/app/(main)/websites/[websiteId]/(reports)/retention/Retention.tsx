@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
-import { Grid, Row, Column, Text, Icon } from '@umami/react-zen';
+import { Column, Grid, Icon, Row, Text } from '@umami/react-zen';
+import type { ReactNode } from 'react';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { Panel } from '@/components/common/Panel';
+import { useLocale, useMessages, useResultQuery } from '@/components/hooks';
 import { Users } from '@/components/icons';
-import { useMessages, useLocale, useResultQuery } from '@/components/hooks';
 import { formatDate } from '@/lib/date';
 import { formatLongNumber } from '@/lib/format';
-import { Panel } from '@/components/common/Panel';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
 
 const DAYS = [1, 2, 3, 4, 5, 6, 7, 14, 21, 28];
 

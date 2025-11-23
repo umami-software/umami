@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import fs from 'node:fs';
 import path from 'node:path';
-import prettier from 'prettier';
 import { createRequire } from 'module';
+import prettier from 'prettier';
 
 const require = createRequire(import.meta.url);
 

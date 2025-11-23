@@ -1,10 +1,10 @@
 import { Column } from '@umami/react-zen';
+import { Panel } from '@/components/common/Panel';
 import { useWebsite } from '@/components/hooks';
-import { WebsiteShareForm } from './WebsiteShareForm';
-import { WebsiteTrackingCode } from './WebsiteTrackingCode';
 import { WebsiteData } from './WebsiteData';
 import { WebsiteEditForm } from './WebsiteEditForm';
-import { Panel } from '@/components/common/Panel';
+import { WebsiteShareForm } from './WebsiteShareForm';
+import { WebsiteTrackingCode } from './WebsiteTrackingCode';
 
 export function WebsiteSettings({ websiteId }: { websiteId: string; openExternal?: boolean }) {
   const website = useWebsite();

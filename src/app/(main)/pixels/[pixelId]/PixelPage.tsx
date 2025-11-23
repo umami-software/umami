@@ -1,14 +1,14 @@
 'use client';
-import { PageBody } from '@/components/common/PageBody';
-import { PixelProvider } from '@/app/(main)/pixels/PixelProvider';
-import { PixelHeader } from '@/app/(main)/pixels/[pixelId]/PixelHeader';
-import { Panel } from '@/components/common/Panel';
-import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
-import { PixelMetricsBar } from '@/app/(main)/pixels/[pixelId]/PixelMetricsBar';
-import { PixelControls } from '@/app/(main)/pixels/[pixelId]/PixelControls';
-import { PixelPanels } from '@/app/(main)/pixels/[pixelId]/PixelPanels';
 import { Column, Grid } from '@umami/react-zen';
+import { PixelControls } from '@/app/(main)/pixels/[pixelId]/PixelControls';
+import { PixelHeader } from '@/app/(main)/pixels/[pixelId]/PixelHeader';
+import { PixelMetricsBar } from '@/app/(main)/pixels/[pixelId]/PixelMetricsBar';
+import { PixelPanels } from '@/app/(main)/pixels/[pixelId]/PixelPanels';
+import { PixelProvider } from '@/app/(main)/pixels/PixelProvider';
 import { ExpandedViewModal } from '@/app/(main)/websites/[websiteId]/ExpandedViewModal';
+import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
+import { PageBody } from '@/components/common/PageBody';
+import { Panel } from '@/components/common/Panel';
 
 const excludedIds = ['path', 'entry', 'exit', 'title', 'language', 'screen', 'event'];
 

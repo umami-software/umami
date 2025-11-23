@@ -1,5 +1,5 @@
-import { useCountryNames } from './useCountryNames';
 import regions from '../../../public/iso-3166-2.json';
+import { useCountryNames } from './useCountryNames';
 
 export function useRegionNames(locale: string) {
   const { countryNames } = useCountryNames(locale);

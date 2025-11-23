@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { canUpdateUser, canViewUser, canDeleteUser } from '@/permissions';
-import { getUser, getUserByUsername, updateUser, deleteUser } from '@/queries/prisma';
-import { json, unauthorized, badRequest, ok } from '@/lib/response';
 import { hashPassword } from '@/lib/password';
 import { parseRequest } from '@/lib/request';
+import { badRequest, json, ok, unauthorized } from '@/lib/response';
 import { userRoleParam } from '@/lib/schema';
+import { canDeleteUser, canUpdateUser, canViewUser } from '@/permissions';
+import { deleteUser, getUser, getUserByUsername, updateUser } from '@/queries/prisma';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const { auth, error } = await parseRequest(request);

@@ -1,14 +1,14 @@
 import { Row } from '@umami/react-zen';
+import { Favicon } from '@/components/common/Favicon';
+import { FilterLink } from '@/components/common/FilterLink';
+import { TypeIcon } from '@/components/common/TypeIcon';
 import {
   useCountryNames,
+  useFormat,
   useLocale,
   useMessages,
   useRegionNames,
-  useFormat,
 } from '@/components/hooks';
-import { FilterLink } from '@/components/common/FilterLink';
-import { TypeIcon } from '@/components/common/TypeIcon';
-import { Favicon } from '@/components/common/Favicon';
 import { GROUPED_DOMAINS } from '@/lib/constants';
 
 export interface MetricLabelProps {

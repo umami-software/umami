@@ -1,8 +1,8 @@
-import { Edit } from '@/components/icons';
 import { useMessages } from '@/components/hooks';
-import { SegmentEditForm } from './SegmentEditForm';
-import { Filter } from '@/lib/types';
+import { Edit } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
+import type { Filter } from '@/lib/types';
+import { SegmentEditForm } from './SegmentEditForm';
 
 export function SegmentEditButton({
   segmentId,

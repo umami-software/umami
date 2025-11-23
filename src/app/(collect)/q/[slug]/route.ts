@@ -1,11 +1,11 @@
 export const dynamic = 'force-dynamic';
 
 import { NextResponse } from 'next/server';
+import { POST } from '@/app/api/send/route';
+import type { Link } from '@/generated/prisma/client';
+import redis from '@/lib/redis';
 import { notFound } from '@/lib/response';
 import { findLink } from '@/queries/prisma';
-import { POST } from '@/app/api/send/route';
-import { Link } from '@/generated/prisma/client';
-import redis from '@/lib/redis';
 
 export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

@@ -1,8 +1,8 @@
-import { usePixel, useMessages, useSlug } from '@/components/hooks';
-import { PageHeader } from '@/components/common/PageHeader';
 import { Icon, Text } from '@umami/react-zen';
-import { ExternalLink, Grid2x2 } from '@/components/icons';
 import { LinkButton } from '@/components/common/LinkButton';
+import { PageHeader } from '@/components/common/PageHeader';
+import { useMessages, usePixel, useSlug } from '@/components/hooks';
+import { ExternalLink, Grid2x2 } from '@/components/icons';
 
 export function PixelHeader() {
   const { formatMessage, labels } = useMessages();

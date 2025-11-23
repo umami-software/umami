@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { httpGet } from '@/lib/fetch';
 import enUS from '../../../public/intl/language/en-US.json';
 

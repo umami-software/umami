@@ -1,7 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
+import type { QueryFilters } from '@/lib/types';
 
 export interface JourneyParameters {
   startDate: Date;
@@ -91,7 +91,7 @@ async function relationalQuery(
     // create start Step params query
     if (startStep) {
       startStepQuery = `and e1 = {{startStep}}`;
-      params['startStep'] = startStep;
+      params.startStep = startStep;
     }
 
     // create end Step params query
@@ -102,7 +102,7 @@ async function relationalQuery(
       }
       endStepQuery += `\nor (e${steps} = {{endStep}}))`;
 
-      params['endStep'] = endStep;
+      params.endStep = endStep;
     }
 
     return {
@@ -203,7 +203,7 @@ async function clickhouseQuery(
     // create start Step params query
     if (startStep) {
       startStepQuery = `and e1 = {startStep:String}`;
-      params['startStep'] = startStep;
+      params.startStep = startStep;
     }
 
     // create end Step params query
@@ -214,7 +214,7 @@ async function clickhouseQuery(
       }
       endStepQuery += `\nor (e${steps} = {endStep:String}))`;
 
-      params['endStep'] = endStep;
+      params.endStep = endStep;
     }
 
     return {

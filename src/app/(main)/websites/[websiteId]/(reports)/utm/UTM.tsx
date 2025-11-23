@@ -1,10 +1,10 @@
+import { Column, Grid, Heading, Text } from '@umami/react-zen';
 import { PieChart } from '@/components/charts/PieChart';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 import { useMessages, useResultQuery } from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
 import { CHART_COLORS, UTM_PARAMS } from '@/lib/constants';
-import { Column, Grid, Heading, Text } from '@umami/react-zen';
 
 export interface UTMProps {
   websiteId: string;

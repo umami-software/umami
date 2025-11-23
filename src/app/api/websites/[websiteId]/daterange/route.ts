@@ -1,7 +1,7 @@
+import { parseRequest } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
 import { canViewWebsite } from '@/permissions';
 import { getWebsiteDateRange } from '@/queries/sql';
-import { json, unauthorized } from '@/lib/response';
-import { parseRequest } from '@/lib/request';
 
 export async function GET(
   request: Request,

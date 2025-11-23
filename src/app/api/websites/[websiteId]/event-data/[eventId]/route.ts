@@ -1,5 +1,5 @@
 import { parseRequest } from '@/lib/request';
-import { unauthorized, json } from '@/lib/response';
+import { json, unauthorized } from '@/lib/response';
 import { canViewWebsite } from '@/permissions';
 import { getEventData } from '@/queries/sql/events/getEventData';
 

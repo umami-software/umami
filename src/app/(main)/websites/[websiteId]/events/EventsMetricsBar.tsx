@@ -1,9 +1,9 @@
+import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages } from '@/components/hooks';
 import { useWebsiteSessionStatsQuery } from '@/components/hooks/queries/useWebsiteSessionStatsQuery';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatLongNumber } from '@/lib/format';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
 
 export function EventsMetricsBar({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();

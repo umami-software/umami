@@ -26,8 +26,13 @@
       "style": {
         "noDescendingSpecificity": "off"
       },
+      "complexity": {
+        "noImportantStyles": "off"
+      },
       "suspicious": {
-        "noExplicitAny": "off"
+        "noArrayIndexKey": "off",
+        "noExplicitAny": "off",
+        "noImplicitAnyLet": "off"
       },
       "performance": {
         "noImgElement": "off"

@@ -1,18 +1,19 @@
 import {
-  Text,
+  Column,
   Icon,
+  IconLabel,
   Menu,
   MenuItem,
-  MenuTrigger,
   MenuSection,
   MenuSeparator,
-  SubmenuTrigger,
+  MenuTrigger,
   Popover,
-  Row,
-  Column,
   Pressable,
-  IconLabel,
+  Row,
+  SubmenuTrigger,
+  Text,
 } from '@umami/react-zen';
+import { ArrowRight } from 'lucide-react';
 import {
   useConfig,
   useLoginQuery,
@@ -33,7 +34,6 @@ import {
 } from '@/components/icons';
 import { Switch } from '@/components/svg';
 import { DOCS_URL } from '@/lib/constants';
-import { ArrowRight } from 'lucide-react';
 
 export interface TeamsButtonProps {
   showText?: boolean;

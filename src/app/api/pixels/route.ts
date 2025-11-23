@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
-import { json, unauthorized } from '@/lib/response';
 import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams } from '@/lib/schema';
+import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createPixel, getUserPixels } from '@/queries/prisma';
 
 export async function GET(request: Request) {

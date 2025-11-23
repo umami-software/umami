@@ -1,8 +1,8 @@
-import { Text, Column, Row, Label, Box } from '@umami/react-zen';
-import { useSessionDataQuery } from '@/components/hooks';
+import { Box, Column, Label, Row, Text } from '@umami/react-zen';
 import { Empty } from '@/components/common/Empty';
-import { DATA_TYPES } from '@/lib/constants';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { useSessionDataQuery } from '@/components/hooks';
+import { DATA_TYPES } from '@/lib/constants';
 
 export function SessionData({ websiteId, sessionId }: { websiteId: string; sessionId: string }) {
   const { data, isLoading, error } = useSessionDataQuery(websiteId, sessionId);

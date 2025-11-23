@@ -1,10 +1,10 @@
-import { useEffect, useCallback, useState } from 'react';
-import { Button, AlertBanner, Column, Row } from '@umami/react-zen';
-import { setItem } from '@/lib/storage';
-import { useVersion, checkVersion } from '@/store/version';
-import { REPO_URL, VERSION_CHECK } from '@/lib/constants';
-import { useMessages } from '@/components/hooks';
+import { AlertBanner, Button, Column, Row } from '@umami/react-zen';
 import { usePathname } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { useMessages } from '@/components/hooks';
+import { REPO_URL, VERSION_CHECK } from '@/lib/constants';
+import { setItem } from '@/lib/storage';
+import { checkVersion, useVersion } from '@/store/version';
 
 export function UpdateNotice({ user, config }) {
   const { formatMessage, labels, messages } = useMessages();

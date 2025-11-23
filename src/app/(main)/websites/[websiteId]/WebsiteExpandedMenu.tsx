@@ -1,24 +1,24 @@
-import { useMessages, useNavigation } from '@/components/hooks';
 import { SideMenu } from '@/components/common/SideMenu';
+import { useMessages, useNavigation } from '@/components/hooks';
 import {
-  LogOut,
-  LogIn,
-  Search,
-  Type,
-  SquareSlash,
-  Share2,
-  Megaphone,
+  AppWindow,
+  Cpu,
   Earth,
   Globe,
   Landmark,
-  MapPin,
-  AppWindow,
-  Laptop,
   Languages,
+  Laptop,
+  LogIn,
+  LogOut,
+  MapPin,
+  Megaphone,
   Monitor,
-  Cpu,
   Network,
+  Search,
+  Share2,
+  SquareSlash,
   Tag,
+  Type,
 } from '@/components/icons';
 import { Lightning } from '@/components/svg';
 

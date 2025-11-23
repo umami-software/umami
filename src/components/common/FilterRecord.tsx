@@ -1,9 +1,9 @@
+import { Button, Column, Grid, Icon, Label, ListItem, Select, TextField } from '@umami/react-zen';
 import { useState } from 'react';
-import { Grid, Column, TextField, Label, Select, Icon, Button, ListItem } from '@umami/react-zen';
+import { Empty } from '@/components/common/Empty';
 import { useFilters, useFormat, useWebsiteValuesQuery } from '@/components/hooks';
 import { X } from '@/components/icons';
 import { isSearchOperator } from '@/lib/params';
-import { Empty } from '@/components/common/Empty';
 
 export interface FilterRecordProps {
   websiteId: string;

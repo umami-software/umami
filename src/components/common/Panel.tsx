@@ -1,16 +1,16 @@
-import { useState } from 'react';
 import {
+  Button,
   Column,
   type ColumnProps,
-  Row,
-  Icon,
-  Button,
-  TooltipTrigger,
-  Tooltip,
   Heading,
+  Icon,
+  Row,
+  Tooltip,
+  TooltipTrigger,
 } from '@umami/react-zen';
-import { Maximize, X } from '@/components/icons';
+import { useState } from 'react';
 import { useMessages } from '@/components/hooks';
+import { Maximize, X } from '@/components/icons';
 
 export interface PanelProps extends ColumnProps {
   title?: string;

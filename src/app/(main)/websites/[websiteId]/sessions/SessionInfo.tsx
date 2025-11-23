@@ -1,9 +1,9 @@
-import { ReactNode } from 'react';
-import { Icon, Grid, Column, Row, Label } from '@umami/react-zen';
-import { useFormat, useLocale, useMessages, useRegionNames } from '@/components/hooks';
-import { TypeIcon } from '@/components/common/TypeIcon';
-import { KeyRound, Calendar, MapPin, Landmark } from '@/components/icons';
+import { Column, Grid, Icon, Label, Row } from '@umami/react-zen';
+import type { ReactNode } from 'react';
 import { DateDistance } from '@/components/common/DateDistance';
+import { TypeIcon } from '@/components/common/TypeIcon';
+import { useFormat, useLocale, useMessages, useRegionNames } from '@/components/hooks';
+import { Calendar, KeyRound, Landmark, MapPin } from '@/components/icons';
 
 export function SessionInfo({ data }) {
   const { locale } = useLocale();

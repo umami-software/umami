@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
-import fs from 'fs-extra';
+
 import path from 'node:path';
-import https from 'https';
 import chalk from 'chalk';
+import fs from 'fs-extra';
+import https from 'https';
 
 const src = path.resolve(process.cwd(), 'src/lang');
 const dest = path.resolve(process.cwd(), 'public/intl/language');

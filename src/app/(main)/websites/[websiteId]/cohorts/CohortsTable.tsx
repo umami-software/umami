@@ -1,10 +1,10 @@
-import { DataTable, DataColumn, Row, DataTableProps } from '@umami/react-zen';
-import { useMessages, useNavigation } from '@/components/hooks';
-import { DateDistance } from '@/components/common/DateDistance';
-import { filtersObjectToArray } from '@/lib/params';
-import { CohortEditButton } from '@/app/(main)/websites/[websiteId]/cohorts/CohortEditButton';
-import { CohortDeleteButton } from '@/app/(main)/websites/[websiteId]/cohorts/CohortDeleteButton';
+import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
 import Link from 'next/link';
+import { CohortDeleteButton } from '@/app/(main)/websites/[websiteId]/cohorts/CohortDeleteButton';
+import { CohortEditButton } from '@/app/(main)/websites/[websiteId]/cohorts/CohortEditButton';
+import { DateDistance } from '@/components/common/DateDistance';
+import { useMessages, useNavigation } from '@/components/hooks';
+import { filtersObjectToArray } from '@/lib/params';
 
 export function CohortsTable(props: DataTableProps) {
   const { formatMessage, labels } = useMessages();

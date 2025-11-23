@@ -1,9 +1,9 @@
-import { Grid, Tabs, Tab, TabList, TabPanel, Heading } from '@umami/react-zen';
+import { Grid, Heading, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
 import { GridRow } from '@/components/common/GridRow';
 import { Panel } from '@/components/common/Panel';
-import { WorldMap } from '@/components/metrics/WorldMap';
-import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { useMessages } from '@/components/hooks';
+import { MetricsTable } from '@/components/metrics/MetricsTable';
+import { WorldMap } from '@/components/metrics/WorldMap';
 
 export function PixelPanels({ pixelId }: { pixelId: string }) {
   const { formatMessage, labels } = useMessages();

@@ -1,5 +1,5 @@
-import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { TypeConfirmationForm } from '@/components/common/TypeConfirmationForm';
+import { useMessages, useUpdateQuery } from '@/components/hooks';
 
 const CONFIRM_VALUE = 'RESET';
 

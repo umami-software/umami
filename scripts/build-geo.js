@@ -3,8 +3,8 @@ import 'dotenv/config';
 import fs from 'node:fs';
 import path from 'node:path';
 import https from 'https';
-import zlib from 'zlib';
 import tar from 'tar';
+import zlib from 'zlib';
 
 if (process.env.VERCEL && !process.env.BUILD_GEO) {
   console.log('Vercel environment detected. Skipping geo setup.');

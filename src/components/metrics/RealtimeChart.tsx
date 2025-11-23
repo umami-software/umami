@@ -1,9 +1,9 @@
+import { isBefore, startOfMinute, subMinutes } from 'date-fns';
 import { useMemo, useRef } from 'react';
-import { startOfMinute, subMinutes, isBefore } from 'date-fns';
-import { PageviewsChart } from './PageviewsChart';
-import { DEFAULT_ANIMATION_DURATION, REALTIME_RANGE } from '@/lib/constants';
-import { RealtimeData } from '@/lib/types';
 import { useTimezone } from '@/components/hooks';
+import { DEFAULT_ANIMATION_DURATION, REALTIME_RANGE } from '@/lib/constants';
+import type { RealtimeData } from '@/lib/types';
+import { PageviewsChart } from './PageviewsChart';
 
 export interface RealtimeChartProps {
   data: RealtimeData;

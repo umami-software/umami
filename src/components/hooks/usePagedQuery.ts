@@ -1,7 +1,7 @@
-import { UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
+import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
+import type { PageResult } from '@/lib/types';
 import { useApi } from './useApi';
 import { useNavigation } from './useNavigation';
-import { PageResult } from '@/lib/types';
 
 export function usePagedQuery<TData = any, TError = Error>({
   queryKey,
