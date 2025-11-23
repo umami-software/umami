@@ -17,6 +17,8 @@ log_error() {
   echo "ERROR: $*" >&2
 }
 
+DB_SETUP_SENTINEL="${DB_SETUP_SENTINEL:-$(pwd)/.niteshift-db-setup-complete}"
+
 # Pre-flight checks
 log "Starting niteshift setup for umami..."
 
@@ -111,6 +113,11 @@ else
   log "Skipping check-env (prebaked fast path)"
 fi
 
+PREBAKED_DB_SETUP_DONE=0
+if [[ "$USE_PREBAKED_SETUP" -eq 1 ]] && [ -f "$DB_SETUP_SENTINEL" ]; then
+  PREBAKED_DB_SETUP_DONE=1
+fi
+
 if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
   log "Building database client..."
   if ! pnpm run build-db; then
@@ -119,7 +126,16 @@ if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
   fi
   log "✓ Database client built"
 else
-  log "Skipping build-db (prebaked Prisma client detected)"
+  if [[ "$PREBAKED_DB_SETUP_DONE" -eq 1 ]]; then
+    log "Skipping build-db (prebaked Prisma client detected; db setup already done)"
+  else
+    log "Building database client (prebaked image, first run)..."
+    if ! pnpm run build-db; then
+      log_error "Database client build failed"
+      exit 1
+    fi
+    log "✓ Database client built"
+  fi
 fi
 
 if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
@@ -130,7 +146,21 @@ if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
   fi
   log "✓ Database migrations applied"
 else
-  log "Skipping check-db (prebaked fast path)"
+  if [[ "$PREBAKED_DB_SETUP_DONE" -eq 1 ]]; then
+    log "Skipping check-db (prebaked fast path; db setup already done)"
+  else
+    log "Checking database and applying migrations (prebaked image, first run)..."
+    if ! pnpm run check-db; then
+      log_error "Database check failed"
+      exit 1
+    fi
+    log "✓ Database migrations applied"
+    if ! touch "$DB_SETUP_SENTINEL"; then
+      log_error "Failed to write db setup sentinel at $DB_SETUP_SENTINEL"
+      exit 1
+    fi
+    PREBAKED_DB_SETUP_DONE=1
+  fi
 fi
 
 if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
