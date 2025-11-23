@@ -78,7 +78,9 @@ if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
   log "✓ Dependencies installed"
 else
   log "Linking dependencies from prebaked pnpm store..."
-  if pnpm install --package-import-method=copy --frozen-lockfile --offline; then
+  if [ -d node_modules ]; then
+    log "node_modules already present, skipping pnpm install for prebaked setup"
+  elif pnpm install --package-import-method=copy --frozen-lockfile --offline; then
     log "✓ Dependencies installed (offline)"
   else
     log_error "Offline install failed, falling back to full pnpm install"
