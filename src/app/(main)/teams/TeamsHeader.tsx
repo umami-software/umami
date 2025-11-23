@@ -18,7 +18,7 @@ export function TeamsHeader({
   return (
     <PageHeader title={formatMessage(labels.teams)}>
       <Row gap="3">
-        {allowJoin && user.role !== ROLES.viewOnly && <TeamsJoinButton />}
+        {allowJoin && <TeamsJoinButton />}
         {allowCreate && user.role !== ROLES.viewOnly && <TeamsAddButton />}
       </Row>
     </PageHeader>
