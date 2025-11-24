@@ -192,26 +192,7 @@ pnpm run dev >> "$LOG_FILE" 2>&1 &
 SERVER_PID=$!
 log "✓ Dev server started with PID $SERVER_PID"
 
-# 7. Wait for dev server to be ready
-log "Waiting for dev server to be ready (this may take 30-60 seconds on first run)..."
-MAX_ATTEMPTS=60
-ATTEMPT=0
-while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
-  if curl -s -o /dev/null -w "%{http_code}" http://localhost:3001/api/heartbeat 2>/dev/null | grep -q "200"; then
-    log "✓ Dev server is ready and responding"
-    break
-  fi
-  ATTEMPT=$((ATTEMPT + 1))
-  if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
-    log_error "Dev server failed to start within 60 seconds"
-    log_error "Check the log file for details: $LOG_FILE"
-    kill $SERVER_PID 2>/dev/null || true
-    exit 1
-  fi
-  sleep 1
-done
-
-# 8. Warm up the main application routes
+# 7. Warm up the main application routes
 log "Warming up main application routes..."
 if curl -s -o /dev/null --max-time 30 http://localhost:3001/ 2>/dev/null; then
   log "✓ Main routes pre-compiled"
