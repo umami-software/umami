@@ -18,17 +18,24 @@ log_error() {
 }
 
 DB_SETUP_SENTINEL="${DB_SETUP_SENTINEL:-$(pwd)/.niteshift-db-setup-complete}"
+PREBAKE_SYNC_SENTINEL="${PREBAKE_SYNC_SENTINEL:-$(pwd)/.niteshift-prebake-sync-complete}"
 
 # Pre-flight checks
 log "Starting niteshift setup for umami..."
 
 USE_PREBAKED_SETUP=0
 if [[ "${UMAMI_PREBAKED:-0}" == "1" ]]; then
-  if command -v umami-prebake-sync >/dev/null 2>&1; then
+  if [[ -f "$PREBAKE_SYNC_SENTINEL" ]]; then
+    USE_PREBAKED_SETUP=1
+    log "Prebaked sync sentinel detected, skipping umami-prebake-sync"
+  elif command -v umami-prebake-sync >/dev/null 2>&1; then
     log "Prebaked Modal image detected, syncing cached artifacts..."
     if umami-prebake-sync "$(pwd)"; then
       USE_PREBAKED_SETUP=1
       log "✓ Prebaked dependencies and artifacts restored"
+      if ! touch "$PREBAKE_SYNC_SENTINEL"; then
+        log_error "Failed to write prebake sync sentinel at $PREBAKE_SYNC_SENTINEL"
+      fi
     else
       log_error "Prebaked sync failed, falling back to full setup"
     fi
