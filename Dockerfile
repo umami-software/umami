@@ -34,6 +34,10 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_OPTIONS=$NODE_OPTIONS
 
+RUN echo "172.66.156.100 binaries.prisma.sh" >> /etc/hosts && \
+    echo "172.66.156.100 binaries.prisma.sh" >> /etc/hosts && \
+    echo "172.66.156.100 binaries.prisma.sh" >> /etc/hosts && \
+    echo "172.66.156.100 binaries.prisma.sh" >> /etc/hosts
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 RUN npm install -g pnpm
