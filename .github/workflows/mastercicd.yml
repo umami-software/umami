@@ -1,0 +1,70 @@
+on:
+  push:
+    branches:
+      - master
+
+name: Website CI on AWS S3
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: 18.18.1
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install awscli
+
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 18.18.1
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Set env variables
+      id: vars
+      shell: bash
+      run: |
+        echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        echo "::set-output name=aws_account_id::$(aws sts get-caller-identity --query Account --output text)"
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push the web image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
+        IMAGE_TAG: ${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }}
+        ACCOUNT_ID: ${{ steps.vars.outputs.aws_account_id }}
+        CLUSTER_NAME: ${{ secrets.CLUSTER_NAME }}
+        AWS_REGION: us-east-1
+      run: |
+        docker build --no-cache --build-arg PUBLIC_URL=https://analytics.lloydsbank.planna.co -t 941283148711.dkr.ecr.us-east-1.amazonaws.com/umami:$IMAGE_TAG .
+        docker push 941283148711.dkr.ecr.us-east-1.amazonaws.com/umami:$IMAGE_TAG
+        curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.28.1/2023-09-14/bin/linux/amd64/kubectl
+        chmod +x ./kubectl
+        mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+        echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+        echo Authenticate with EKS-Cluster ...
+        aws eks --region $AWS_REGION update-kubeconfig --name eks-prod-406
+        kubectl set image deployment lloyds-umami lloyds-umami=941283148711.dkr.ecr.us-east-1.amazonaws.com/umami:$IMAGE_TAG -n lloyds
+        aws ssm put-parameter --name "/lloyds/lloyds-umami/successful-deployed" --value "$IMAGE_TAG" --type "String" --overwrite
