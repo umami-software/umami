@@ -34,10 +34,6 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_OPTIONS=$NODE_OPTIONS
 
-RUN echo "172.66.156.100 binaries.prisma.sh" >> /etc/hosts && \
-    echo "172.66.156.100 binaries.prisma.sh" >> /etc/hosts && \
-    echo "172.66.156.100 binaries.prisma.sh" >> /etc/hosts && \
-    echo "172.66.156.100 binaries.prisma.sh" >> /etc/hosts
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 RUN npm install -g pnpm
@@ -45,6 +41,17 @@ RUN npm install -g pnpm
 RUN set -x \
     && apk add --no-cache curl
 
+RUN apk add --no-cache curl
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# TẢI SẴN PRISMA BINARY TRONG BUILD → KHÔNG BAO GIỜ CẦN INTERNET LÚC MIGRATE
+RUN mkdir -p /app/node_modules/.prisma/client
+RUN wget -q https://binaries.prisma.sh/all_commits/34b5a692b7bd79939a9a2c3ef97d816e749cda2f/linux-musl-openssl-3.0.x/query-engine.gz \
+         -O /app/node_modules/.prisma/client/query-engine.gz && \
+    wget -q https://binaries.prisma.sh/all_commits/34b5a692b7bd79939a9a2c3ef97d816e749cda2f/linux-musl-openssl-3.0.x/schema-engine.gz \
+         -O /app/node_modules/.prisma/client/schema-engine.gz && \
+    gunzip /app/node_modules/.prisma/client/*.gz && \
+    chmod +x /app/node_modules/.prisma/client/query-engine*
 # Script dependencies
 RUN pnpm add npm-run-all dotenv chalk semver prisma@6.18.0 @prisma/adapter-pg@6.18.0
 
