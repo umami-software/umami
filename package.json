@@ -47,7 +47,8 @@
     "postbuild": "node scripts/postbuild.js",
     "test": "jest",
     "cypress-open": "cypress open cypress run",
-    "cypress-run": "cypress run cypress run"
+    "cypress-run": "cypress run cypress run",
+    "build:vercel": "npm-run-all build-tracker build-app"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
