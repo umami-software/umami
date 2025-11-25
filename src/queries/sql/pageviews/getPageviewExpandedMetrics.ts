@@ -86,7 +86,7 @@ async function relationalQuery(
       sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime"
     from (
       select
-        ${column} name,
+        ${column} as name,
         website_event.session_id,
         website_event.visit_id,
         count(*) as "c",
@@ -101,7 +101,7 @@ async function relationalQuery(
       and website_event.event_type != 2
         ${excludeDomain}
         ${filterQuery}
-      group by name, website_event.session_id, website_event.visit_id
+      group by ${column}, website_event.session_id, website_event.visit_id
     ) as t
     where name != ''
     group by name 
