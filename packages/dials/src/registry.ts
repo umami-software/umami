@@ -25,12 +25,13 @@ function getStorageKey(projectId?: string): string {
     : `${STORAGE_KEY_PREFIX}-v${STORAGE_VERSION}`;
 }
 
+/** Key for storing registry on window to survive HMR */
+const REGISTRY_KEY = '__NITESHIFT_DIALS_REGISTRY__';
+
 /**
  * Singleton registry for all dials
  */
 class DialRegistry {
-  private static instance: DialRegistry | null = null;
-
   /** All registered dials */
   private dials = new Map<string, DialRegistration>();
 
@@ -43,19 +44,9 @@ class DialRegistry {
   /** Project ID for storage scoping */
   private projectId?: string;
 
-  private constructor() {
+  constructor() {
     // Load persisted values on initialization
     this.loadFromStorage();
-  }
-
-  /**
-   * Get the singleton instance
-   */
-  static getInstance(): DialRegistry {
-    if (!DialRegistry.instance) {
-      DialRegistry.instance = new DialRegistry();
-    }
-    return DialRegistry.instance;
   }
 
   /**
@@ -310,5 +301,26 @@ class DialRegistry {
   }
 }
 
+/**
+ * Get the singleton registry instance
+ * Uses window storage to survive HMR module re-evaluation
+ */
+function getGlobalRegistry(): DialRegistry {
+  if (typeof window !== 'undefined') {
+    if (!(window as any)[REGISTRY_KEY]) {
+      (window as any)[REGISTRY_KEY] = new DialRegistry();
+    }
+    return (window as any)[REGISTRY_KEY];
+  }
+  // SSR fallback - module-level instance
+  if (!ssrInstance) {
+    ssrInstance = new DialRegistry();
+  }
+  return ssrInstance;
+}
+
+/** SSR fallback instance */
+let ssrInstance: DialRegistry | null = null;
+
 // Export singleton instance getter
-export const getDialRegistry = () => DialRegistry.getInstance();
+export const getDialRegistry = getGlobalRegistry;
