@@ -4,6 +4,8 @@ import { IntlProvider } from 'react-intl';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ZenProvider, RouterProvider } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
+import { DialsProvider, DialsOverlay } from '@niteshift/dials';
+import { designManifest } from '@/config/niteshift-manifest';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { useLocale } from '@/components/hooks';
 import 'chartjs-adapter-date-fns';
@@ -53,7 +55,10 @@ export function Providers({ children }) {
       <RouterProvider navigate={navigate}>
         <MessagesProvider>
           <QueryClientProvider client={client}>
-            <ErrorBoundary>{children}</ErrorBoundary>
+            <DialsProvider manifest={designManifest}>
+              <ErrorBoundary>{children}</ErrorBoundary>
+              <DialsOverlay defaultVisible={false} position="bottom-left" />
+            </DialsProvider>
           </QueryClientProvider>
         </MessagesProvider>
       </RouterProvider>

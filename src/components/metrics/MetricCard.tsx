@@ -13,6 +13,12 @@ export interface MetricCardProps {
   formatValue?: (n: any) => string;
   showLabel?: boolean;
   showChange?: boolean;
+  labelSize?: '0' | '1' | '2' | '3' | '4';
+  valueSize?: '4' | '5' | '6' | '7' | '8' | '9';
+  labelWeight?: 'normal' | 'medium' | 'semibold' | 'bold';
+  valueWeight?: 'normal' | 'medium' | 'semibold' | 'bold';
+  labelColor?: string;
+  valueColor?: string;
 }
 
 export const MetricCard = ({
@@ -23,6 +29,12 @@ export const MetricCard = ({
   formatValue = formatNumber,
   showLabel = true,
   showChange = false,
+  labelSize,
+  valueSize,
+  labelWeight,
+  valueWeight,
+  labelColor,
+  valueColor,
 }: MetricCardProps) => {
   const diff = value - change;
   const pct = ((value - diff) / diff) * 100;
@@ -39,11 +51,21 @@ export const MetricCard = ({
       border
     >
       {showLabel && (
-        <Text weight="bold" wrap="nowrap">
+        <Text
+          {...(labelSize && { size: labelSize })}
+          weight={labelWeight || 'bold'}
+          wrap="nowrap"
+          {...(labelColor && { style: { color: labelColor } })}
+        >
           {label}
         </Text>
       )}
-      <Text size="8" weight="bold" wrap="nowrap">
+      <Text
+        size={valueSize || '8'}
+        weight={valueWeight || 'bold'}
+        wrap="nowrap"
+        {...(valueColor && { style: { color: valueColor } })}
+      >
         <AnimatedDiv title={value?.toString()}>{props?.x?.to(x => formatValue(x))}</AnimatedDiv>
       </Text>
       {showChange && (

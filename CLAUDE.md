@@ -462,6 +462,362 @@ export default function MyPage() {
 7. **TypeScript**: Leverage type inference - the codebase has strong typing
 8. **Component library first**: Always check if `@umami/react-zen` has what you need before writing custom UI
 
+## Niteshift Dials SDK
+
+**New capability for design prototyping!** The Dials SDK allows you to expose design parameters as runtime-adjustable "dials" that users can tweak via an overlay UI. This gives designers and PMs fine-grained control without requiring code changes.
+
+### Setup and Installation
+
+The Dials SDK lives in `packages/dials/` and is automatically built when you run `pnpm install` via the repo’s postinstall script. **Do not edit the SDK source or build pipeline unless the user explicitly instructs you to do so.** Your default interaction with dials should be importing the provided hooks inside app components.
+
+**Key files:**
+- `packages/dials/src/` – SDK source **(hands-off unless asked)**
+- `packages/dials/dist/` – Built package (gitignored, auto-generated)
+- `src/config/niteshift-manifest.ts` – Umami’s design system manifest for reference in app code
+
+If—*and only if*—a user asks you to modify the SDK internals, rebuild with:
+```bash
+pnpm --filter @niteshift/dials build
+```
+
+### When to Use Dials
+
+Only add dials when the user explicitly says they want “dials” (or otherwise asks for adjustable controls). When they do, prioritize these scenarios:
+- Subjective color/spacing/typography tweaks tied to design-system tokens
+- Layout variants or experimental sections the user wants to tune live
+- Feature toggles the user specifically calls out for dial-based control
+
+**Key principle**: Follow the user's direction—never invent dials on your own; create them only when requested, and let the user decide which values need adjustment.
+
+### Critical: Preserving Original Appearance
+
+**⚠️ EXTREMELY IMPORTANT: When adding dials to existing code, the defaults MUST ALWAYS preserve the exact original appearance.**
+
+Before adding dials to any component:
+
+1. **Document the original values** - Record what props/styles existed before dials
+2. **Match defaults exactly** - Dial defaults must produce identical output to pre-dial code
+3. **Use empty string for "no prop"** - If original had no prop, use `default: ''` not `'inherit'` or a value
+4. **Conditionally spread props** - Only pass props when they have truthy values
+
+**Example - WRONG approach:**
+```typescript
+// Original code (before dials):
+<Text weight="bold">{label}</Text>  // No size prop!
+
+// ❌ WRONG - adds size prop that wasn't there:
+const labelSize = useDynamicVariant('label-size', {
+  default: '1',  // ❌ Original had NO size, this changes appearance!
+  options: ['0', '1', '2', '3'] as const,
+});
+<Text size={labelSize} weight="bold">{label}</Text>
+```
+
+**Example - CORRECT approach:**
+```typescript
+// Original code (before dials):
+<Text weight="bold">{label}</Text>  // No size prop!
+
+// ✅ CORRECT - empty string means "no change":
+const labelSize = useDynamicVariant('label-size', {
+  default: '',  // ✅ Empty string = no size prop = matches original
+  options: ['', '0', '1', '2', '3'] as const,  // First option is "default/none"
+});
+
+// ✅ CORRECT - only pass size if truthy:
+<Text
+  {...(labelSize && { size: labelSize })}
+  weight="bold"
+>
+  {label}
+</Text>
+```
+
+**Why this matters:**
+- Users expect dials at default = original appearance
+- Dials should enable exploration, not force changes
+- Breaking the original look confuses users and defeats the purpose
+
+**Testing your defaults:**
+1. Add dials with defaults
+2. View the page - should look IDENTICAL to before dials
+3. Reset All in dials overlay - should look IDENTICAL to before dials
+4. Only when adjusting dials should appearance change
+
+### Design System Manifest
+
+The design system manifest is defined in `src/config/niteshift-manifest.ts` as a TypeScript module:
+- Colors (primary, base, accent, semantic)
+- Spacing scale (4px to 128px)
+- Typography (fonts, sizes, weights)
+- Border radius, shadows
+
+**Benefits of TypeScript manifest:**
+- Type-safe with full IDE autocomplete
+- Bundled with app (not publicly accessible)
+- No runtime HTTP fetch (faster)
+- Hot reload compatible
+
+Reference these tokens in dial configs to provide users with design system-aligned options.
+
+### Manifest-Powered Defaults
+
+**Smart defaults from the design system!** When you omit the `options` parameter in color and spacing dials, the SDK automatically pulls values from the design manifest. This reduces boilerplate and ensures consistency with your design system.
+
+**Color dials (design system defaults)**
+```typescript
+import { useDynamicColor } from '@niteshift/dials';
+
+const badgeColor = useDynamicColor('hero-badge-color', {
+  label: 'Hero Badge Color',
+  group: 'Hero Section',
+  default: 'var(--primary-color)',
+  manifestCategory: 'primary', // pulls tokens from designManifest.colors.primary
+  allowCustom: true,
+});
+
+return <Badge style={{ backgroundColor: badgeColor }}>Top Performer</Badge>;
+```
+
+**Spacing dials (design system defaults)**
+```typescript
+import { useDynamicSpacing } from '@niteshift/dials';
+
+const cardPadding = useDynamicSpacing('hero-card-padding', {
+  label: 'Hero Card Padding',
+  group: 'Hero Section',
+  default: 'var(--spacing-5)',
+  manifestCategory: 'spacing',
+});
+
+return <Card style={{ padding: cardPadding }}>{children}</Card>;
+```
+
+// Manifest defaults (automatic - uses full spacing scale):
+const margin2 = useDynamicSpacing('margin-2', {
+  label: 'Margin',
+  default: '24px',
+  // options omitted - uses designManifest.spacing.values (4px to 128px)
+});
+```
+
+**When to use manifest defaults:**
+- ✅ You want design system consistency
+- ✅ You're prototyping and want quick setup
+- ✅ The default color category (accent) or spacing scale fits your needs
+- ❌ You need a specific subset of values
+- ❌ You're using custom values outside the design system
+
+### Available Dial Types
+
+#### Color Dials
+For any color value (backgrounds, text, borders, etc.):
+```typescript
+import { useDynamicColor } from '@niteshift/dials';
+
+const bgColor = useDynamicColor('hero-background', {
+  label: 'Hero Background Color',
+  description: 'Background color for the hero section',
+  group: 'Hero Section',
+  default: '#1a1a1a',
+  options: ['#1a1a1a', '#2d2d2d', '#404040', '#525252'], // From design system
+  allowCustom: true  // Allows custom hex input
+});
+
+<div style={{ backgroundColor: bgColor }}>...</div>
+```
+
+#### Spacing Dials
+For padding, margin, gap, dimensions:
+```typescript
+import { useDynamicSpacing } from '@niteshift/dials';
+
+const padding = useDynamicSpacing('card-padding', {
+  label: 'Card Padding',
+  group: 'Card Component',
+  default: '1.5rem',
+  options: ['0.5rem', '1rem', '1.5rem', '2rem', '3rem'],
+  allowCustom: true
+});
+
+<div style={{ padding }}>...</div>
+```
+
+#### Variant Dials
+For discrete choices (layouts, styles, chart types):
+```typescript
+import { useDynamicVariant } from '@niteshift/dials';
+
+const layout = useDynamicVariant('dashboard-layout', {
+  label: 'Dashboard Layout',
+  group: 'Dashboard',
+  default: 'grid',
+  options: ['grid', 'list', 'compact'] as const
+});
+
+{layout === 'grid' && <GridView />}
+{layout === 'list' && <ListView />}
+{layout === 'compact' && <CompactView />}
+```
+
+#### Boolean Dials
+For toggles, feature flags, show/hide:
+```typescript
+import { useDynamicBoolean } from '@niteshift/dials';
+
+const showDelta = useDynamicBoolean('show-metrics-delta', {
+  label: 'Show Change Indicators',
+  description: 'Display +/- changes in metrics',
+  default: true,
+  trueLabel: 'Visible',
+  falseLabel: 'Hidden',
+  group: 'Metrics Bar'
+});
+
+{showDelta && <DeltaIndicator value={change} />}
+```
+
+#### Number Dials
+For numeric values with constraints:
+```typescript
+import { useDynamicNumber } from '@niteshift/dials';
+
+const chartHeight = useDynamicNumber('chart-height', {
+  label: 'Chart Height',
+  default: 400,
+  min: 200,
+  max: 800,
+  step: 50,
+  unit: 'px',
+  options: [300, 400, 500, 600], // Preset options
+  group: 'Chart'
+});
+
+<Chart height={chartHeight} />
+```
+
+### Advanced Use Cases
+
+**Layout Controls:**
+```typescript
+const columns = useDynamicVariant('metrics-columns', {
+  label: 'Metrics Layout',
+  default: '4',
+  options: ['2', '3', '4', '6'] as const,
+  group: 'Dashboard'
+});
+
+<Grid columns={Number(columns)}>
+  {metrics.map(m => <MetricCard key={m.id} {...m} />)}
+</Grid>
+```
+
+**Chart Type Selection:**
+```typescript
+const chartType = useDynamicVariant('analytics-chart', {
+  label: 'Visualization Type',
+  default: 'line',
+  options: ['line', 'bar', 'area'] as const,
+  group: 'Analytics'
+});
+
+{chartType === 'line' && <LineChart data={data} />}
+{chartType === 'bar' && <BarChart data={data} />}
+{chartType === 'area' && <AreaChart data={data} />}
+```
+
+**Feature Flags:**
+```typescript
+const showSparklines = useDynamicBoolean('show-sparklines', {
+  label: 'Show Sparklines',
+  default: false,
+  group: 'Metrics Display'
+});
+
+<MetricsBar data={metrics} showSparklines={showSparklines} />
+```
+
+**Icon Selection:**
+```typescript
+const emptyIcon = useDynamicVariant('empty-state-icon', {
+  label: 'Empty State Icon',
+  default: 'inbox',
+  options: ['inbox', 'folder', 'archive', 'alert'] as const,
+  group: 'Empty States'
+});
+
+const icons = { inbox: <Inbox />, folder: <Folder />, archive: <Archive />, alert: <Alert /> };
+<EmptyState icon={icons[emptyIcon]} />
+```
+
+### Best Practices
+
+1. **Use semantic IDs**: e.g., `'hero-background'` not `'color-1'`
+2. **Provide design system options first**: Always include tokens from `.niteshift-manifest`
+3. **Group related dials**: Use the `group` property to organize by component/section
+4. **Add helpful labels**: Make labels clear for non-technical users
+5. **Set sensible defaults**: Choose the best option; users can refine later
+6. **Reference manifest colors**: Pull from design system categories:
+   ```typescript
+   // Colors from .niteshift-manifest
+   options: ['#147af3', '#2680eb', '#0090ff', '#3e63dd'] // Primary colors
+   ```
+
+### Communicating with Users
+
+After creating dials, tell the user:
+> "I've made [X, Y, Z] adjustable via design dials. Press **Ctrl+D** on macOS (use the Control key, not Command) or **Ctrl+Alt+D** on Windows/Linux to open the panel and fine-tune these values. You can select from design system options or enter custom values."
+
+### Accessing the Overlay
+
+- **Keyboard shortcut**: `Ctrl+D` on macOS, `Ctrl+Alt+D` on Windows/Linux toggles the dials overlay
+- **Location**: Bottom-left floating panel
+- **Persistence**: Visibility state and dial values persist across reloads (localStorage)
+- **Features**:
+  - Search/filter dials
+  - Grouped by component/section
+  - Reset individual dials or all at once
+  - Keyboard shortcut hint shown in overlay header
+
+### Examples from Umami
+
+**WebsitePage with dynamic chart:**
+```typescript
+const chartHeight = useDynamicNumber('website-chart-height', {
+  label: 'Chart Height',
+  default: 520,
+  options: [400, 520, 640, 760],
+  allowCustom: true,
+  unit: 'px',
+  group: 'Website Analytics'
+});
+
+<Panel minHeight={`${chartHeight}px`}>
+  <WebsiteChart websiteId={websiteId} />
+</Panel>
+```
+
+**Dashboard with layout options:**
+```typescript
+const layout = useDynamicVariant('dashboard-layout', {
+  label: 'Board Layout',
+  default: 'grid',
+  options: ['grid', 'list', 'masonry'] as const,
+  group: 'Dashboard'
+});
+
+{layout === 'grid' && <GridLayout boards={boards} />}
+{layout === 'list' && <ListView boards={boards} />}
+{layout === 'masonry' && <MasonryLayout boards={boards} />}
+```
+
+### Implementation Notes
+
+- Dials are already integrated into the app via `DialsProvider` in `src/app/Providers.tsx`
+- The overlay (`DialsOverlay`) is automatically rendered
+- Values are persisted to localStorage and survive hot reloads
+- No additional setup required - just import and use the hooks!
+
 ## Project Architecture
 
 ### Directory Structure

@@ -1,0 +1,4 @@
+*.test.ts
+*.test.tsx
+*.config.ts
+__tests__/

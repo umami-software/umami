@@ -1,0 +1,198 @@
+/**
+ * Niteshift Dials Design System Manifest
+ *
+ * This file defines the available design tokens for the Umami design system.
+ * These tokens are used by the Dials SDK to provide preset options for
+ * color, spacing, typography, and other design parameters.
+ */
+
+import type { DesignManifest } from '@niteshift/dials';
+
+export const designManifest: DesignManifest = {
+  name: 'Umami Design System',
+  version: '1.0.0',
+  colors: {
+    primary: {
+      label: 'Primary Colors',
+      values: ['#147af3', '#2680eb', '#0090ff', '#3e63dd', '#5b5bd6'],
+    },
+    base: {
+      label: 'Base Colors (Light Theme)',
+      values: [
+        '#fcfcfc',
+        '#f9f9f9',
+        '#f0f0f0',
+        '#e8e8e8',
+        '#e0e0e0',
+        '#d9d9d9',
+        '#cecece',
+        '#bbbbbb',
+        '#8d8d8d',
+        '#838383',
+        '#646464',
+        '#202020',
+      ],
+    },
+    baseDark: {
+      label: 'Base Colors (Dark Theme)',
+      values: [
+        '#111111',
+        '#191919',
+        '#222222',
+        '#2a2a2a',
+        '#313131',
+        '#3a3a3a',
+        '#484848',
+        '#606060',
+        '#6e6e6e',
+        '#7b7b7b',
+        '#b4b4b4',
+        '#eeeeee',
+      ],
+    },
+    accent: {
+      label: 'Accent Colors',
+      values: {
+        gray: '#8d8d8d',
+        blue: '#0090ff',
+        indigo: '#3e63dd',
+        purple: '#8e4ec6',
+        violet: '#6e56cf',
+        pink: '#d6409f',
+        red: '#e5484d',
+        orange: '#f76b15',
+        amber: '#ffc53d',
+        yellow: '#ffe629',
+        green: '#30a46c',
+        teal: '#12a594',
+        cyan: '#00a2c7',
+      },
+    },
+    semantic: {
+      label: 'Semantic Colors',
+      values: {
+        success: '#30a46c',
+        danger: '#e5484d',
+        warning: '#f76b15',
+        info: '#0090ff',
+      },
+    },
+  },
+  spacing: {
+    label: 'Spacing Scale',
+    values: [
+      '4px',
+      '8px',
+      '12px',
+      '16px',
+      '24px',
+      '32px',
+      '40px',
+      '48px',
+      '64px',
+      '80px',
+      '96px',
+      '128px',
+    ],
+    variables: [
+      'var(--spacing-1)',
+      'var(--spacing-2)',
+      'var(--spacing-3)',
+      'var(--spacing-4)',
+      'var(--spacing-5)',
+      'var(--spacing-6)',
+      'var(--spacing-7)',
+      'var(--spacing-8)',
+      'var(--spacing-9)',
+      'var(--spacing-10)',
+      'var(--spacing-11)',
+      'var(--spacing-12)',
+    ],
+  },
+  typography: {
+    fontFamilies: {
+      label: 'Font Families',
+      values: ['Inter', 'system-ui', '-apple-system', 'JetBrains Mono'],
+    },
+    fontSizes: {
+      label: 'Font Sizes',
+      values: [
+        '11px',
+        '12px',
+        '14px',
+        '16px',
+        '18px',
+        '24px',
+        '30px',
+        '36px',
+        '48px',
+        '60px',
+        '72px',
+        '96px',
+      ],
+      variables: [
+        'var(--font-size-1)',
+        'var(--font-size-2)',
+        'var(--font-size-3)',
+        'var(--font-size-4)',
+        'var(--font-size-5)',
+        'var(--font-size-6)',
+        'var(--font-size-7)',
+        'var(--font-size-8)',
+        'var(--font-size-9)',
+        'var(--font-size-10)',
+        'var(--font-size-11)',
+        'var(--font-size-12)',
+      ],
+    },
+    fontWeights: {
+      label: 'Font Weights',
+      values: ['300', '400', '500', '600', '700', '800', '900'],
+      labels: ['Light', 'Regular', 'Medium', 'Semi Bold', 'Bold', 'Extra Bold', 'Black'],
+    },
+    headingSizes: {
+      label: 'Heading Sizes',
+      values: ['16px', '20px', '24px', '32px', '42px', '60px'],
+      variables: [
+        'var(--heading-size-1)',
+        'var(--heading-size-2)',
+        'var(--heading-size-3)',
+        'var(--heading-size-4)',
+        'var(--heading-size-5)',
+        'var(--heading-size-6)',
+      ],
+    },
+  },
+  borderRadius: {
+    label: 'Border Radius',
+    values: ['2px', '4px', '8px', '16px', '9999px'],
+    variables: [
+      'var(--border-radius-1)',
+      'var(--border-radius-2)',
+      'var(--border-radius-3)',
+      'var(--border-radius-4)',
+      'var(--border-radius-full)',
+    ],
+    labels: ['Small', 'Default', 'Medium', 'Large', 'Full'],
+  },
+  shadows: {
+    label: 'Box Shadows',
+    values: [
+      '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+      '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+      '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+      '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+      '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+      '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    ],
+    variables: [
+      'var(--box-shadow-1)',
+      'var(--box-shadow-2)',
+      'var(--box-shadow-3)',
+      'var(--box-shadow-4)',
+      'var(--box-shadow-5)',
+      'var(--box-shadow-6)',
+    ],
+    labels: ['Extra Small', 'Small', 'Medium', 'Large', 'Extra Large', '2XL'],
+  },
+};

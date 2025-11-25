@@ -4,6 +4,8 @@ import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatShortTime, formatLongNumber } from '@/lib/format';
 import { useWebsiteStatsQuery } from '@/components/hooks/queries/useWebsiteStatsQuery';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { useContext } from 'react';
+import { TypographyContext } from './WebsitePage';
 
 export function WebsiteMetricsBar({
   websiteId,
@@ -12,6 +14,7 @@ export function WebsiteMetricsBar({
   showChange?: boolean;
   compareMode?: boolean;
 }) {
+  const typography = useContext(TypographyContext);
   const { isAllTime } = useDateRange();
   const { formatMessage, labels, getErrorMessage } = useMessages();
   const { data, isLoading, isFetching, error } = useWebsiteStatsQuery(websiteId);
@@ -79,6 +82,12 @@ export function WebsiteMetricsBar({
               formatValue={formatValue}
               reverseColors={reverseColors}
               showChange={!isAllTime}
+              labelSize={typography.metricLabelSize as any}
+              valueSize={typography.metricValueSize as any}
+              labelWeight={typography.metricLabelWeight as any}
+              valueWeight={typography.metricValueWeight as any}
+              labelColor={typography.metricLabelColor}
+              valueColor={typography.metricValueColor}
             />
           );
         })}

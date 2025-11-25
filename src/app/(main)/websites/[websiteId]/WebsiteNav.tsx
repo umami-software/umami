@@ -8,6 +8,7 @@ import {
   ChartPie,
   UserPlus,
   AlignEndHorizontal,
+  Sparkles,
 } from '@/components/icons';
 import { Lightning, Path, Money, Target, Funnel, Magnet, Network } from '@/components/svg';
 import { useMessages, useNavigation } from '@/components/hooks';
@@ -40,6 +41,12 @@ export function WebsiteNav({
           label: formatMessage(labels.overview),
           icon: <Eye />,
           path: renderPath(''),
+        },
+        {
+          id: 'overview-alt',
+          label: 'Overview Alt',
+          icon: <Sparkles />,
+          path: renderPath('/overview-alt'),
         },
         {
           id: 'events',
