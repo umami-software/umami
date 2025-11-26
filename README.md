@@ -72,19 +72,28 @@ _By default, this will launch the application on `http://localhost:3000`. You wi
 
 ## 🐳 Installing with Docker
 
-To build the Umami container and start up a Postgres database, run:
+To run Umami using Docker, follow these steps:
 
-```bash
+1. **Make sure Docker and Docker Compose are installed** on your machine.
+   - You can download Docker from [https://www.docker.com](https://www.docker.com)
+
+2. **Clone the Umami repository**:
+   ```bash
+   git clone https://github.com/umami-software/umami.git
+   cd umami
+
+3.**start the application and PostgreSQL database:
 docker compose up -d
-```
 
-Alternatively, to pull just the Umami Docker image with PostgreSQL support:
-
-```bash
+4. **- Access Umami in your browser:
+http://localhost:3000
+- 
+- Default login credentials:
+- Username: admin
+- Password: umami
+Alternatively, if you just want to pull the Docker image:
 docker pull docker.umami.is/umami-software/umami:latest
-```
 
----
 
 ## 🔄 Getting Updates
 > [!WARNING]  
@@ -99,14 +108,7 @@ pnpm install
 pnpm run build
 ```
 
-To update the Docker image, simply pull the new images and rebuild:
 
-```bash
-docker compose pull
-docker compose up --force-recreate -d
-```
-
----
 
 ## 🛟 Support
 
