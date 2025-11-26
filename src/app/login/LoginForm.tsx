@@ -9,6 +9,7 @@ import {
   Column,
   Heading,
 } from '@umami/react-zen';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { setUser } from '@/store/app';
@@ -18,6 +19,7 @@ import { Logo } from '@/components/svg';
 export function LoginForm() {
   const { formatMessage, labels, getErrorMessage } = useMessages();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { mutateAsync, error } = useUpdateQuery('/auth/login');
 
   const handleSubmit = async (data: any) => {
@@ -25,6 +27,9 @@ export function LoginForm() {
       onSuccess: async ({ token, user }) => {
         setClientAuthToken(token);
         setUser(user);
+
+        // Seed React Query cache to prevent race condition
+        queryClient.setQueryData(['login'], user);
 
         router.push('/websites');
       },
