@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { Icon, Grid, Column, Row, Label } from '@umami/react-zen';
 import { useFormat, useLocale, useMessages, useRegionNames } from '@/components/hooks';
 import { TypeIcon } from '@/components/common/TypeIcon';
+import { Favicon } from '@/components/common/Favicon';
 import { KeyRound, Calendar, MapPin, Landmark } from '@/components/icons';
 import { DateDistance } from '@/components/common/DateDistance';
 
@@ -59,6 +60,10 @@ export function SessionInfo({ data }) {
         icon={<TypeIcon type="device" value={data?.device} />}
       >
         {formatValue(data?.device, 'device')}
+      </Info>
+
+      <Info label={formatMessage(labels.referrer)} icon={<Favicon domain={data?.referrerDomain} />}>
+        {data?.referrerDomain}
       </Info>
     </Grid>
   );
