@@ -16,6 +16,7 @@ export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
   const endDate = startOfMinute(new Date());
   const startDate = subMinutes(endDate, REALTIME_RANGE);
   const prevEndDate = useRef(endDate);
+  const prevData = useRef<string | null>(null);
 
   const chartData = useMemo(() => {
     if (!data) {
@@ -28,14 +29,22 @@ export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
     };
   }, [data, startDate, endDate, unit]);
 
-  // Don't animate the bars shifting over because it looks weird
   const animationDuration = useMemo(() => {
+    // Don't animate the bars shifting over because it looks weird
     if (isBefore(prevEndDate.current, endDate)) {
       prevEndDate.current = endDate;
       return 0;
     }
+
+    // Don't animate when data hasn't changed
+    const serialized = JSON.stringify(chartData);
+    if (prevData.current === serialized) {
+      return 0;
+    }
+    prevData.current = serialized;
+
     return DEFAULT_ANIMATION_DURATION;
-  }, [endDate]);
+  }, [endDate, chartData]);
 
   return (
     <PageviewsChart
