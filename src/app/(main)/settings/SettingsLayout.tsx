@@ -14,6 +14,7 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
         border="right"
         backgroundColor
         marginRight="2"
+        padding="3"
       >
         <SettingsNav />
       </Column>

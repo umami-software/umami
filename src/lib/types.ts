@@ -136,3 +136,8 @@ export interface RealtimeData {
   urls: Record<string, number>;
   visitors: any[];
 }
+
+export interface ApiError extends Error {
+  code?: string;
+  message: string;
+}

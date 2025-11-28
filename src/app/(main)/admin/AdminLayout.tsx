@@ -21,6 +21,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         border="right"
         backgroundColor
         marginRight="2"
+        padding="3"
       >
         <AdminNav />
       </Column>

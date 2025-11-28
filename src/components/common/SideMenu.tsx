@@ -51,7 +51,7 @@ export function SideMenu({
   };
 
   return (
-    <Column gap overflowY="auto" justifyContent="space-between">
+    <Column gap overflowY="auto" justifyContent="space-between" position="sticky" top="20px">
       {title && (
         <Row padding>
           <Heading size="1">{title}</Heading>

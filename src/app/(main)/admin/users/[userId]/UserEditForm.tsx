@@ -50,7 +50,7 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
           label={formatMessage(labels.role)}
           rules={{ required: formatMessage(labels.required) }}
         >
-          <Select defaultSelectedKey={user.role}>
+          <Select defaultValue={user.role}>
             <ListItem id={ROLES.viewOnly} data-test="dropdown-item-viewOnly">
               {formatMessage(labels.viewOnly)}
             </ListItem>
