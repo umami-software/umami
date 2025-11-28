@@ -93,7 +93,7 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
                 <Column minWidth="300px">
                   <Menu selectionMode="single" selectedKeys={selectedKeys}>
                     <MenuSection title={formatMessage(labels.myAccount)}>
-                      <MenuItem id="user" href={getUrl('/')}>
+                      <MenuItem id="user" href={getUrl('/websites')}>
                         <IconLabel icon={<User />} label={user.username} />
                       </MenuItem>
                     </MenuSection>
