@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import 'dotenv/config';
-import { PrismaClient } from '../generated/prisma/client.js';
+import { PrismaClient } from '../src/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { v4 as uuidv4, v5 as uuidv5 } from 'uuid';
 import crypto from 'crypto';
@@ -102,97 +102,109 @@ const LANGUAGES = [
 ];
 
 const PAGES = [
-  { path: '/', title: 'Niteshift - Cloud Dev Environments', weight: 30, isEntry: true },
-  { path: '/features', title: 'Features - Niteshift', weight: 15, isEntry: false },
-  { path: '/pricing', title: 'Pricing - Niteshift', weight: 12, isEntry: true },
-  { path: '/docs', title: 'Documentation - Niteshift', weight: 10, isEntry: true },
+  { path: '/', title: 'Hulu - Stream TV and Movies', weight: 30, isEntry: true },
+  { path: '/welcome', title: 'Welcome to Hulu', weight: 15, isEntry: true },
+  { path: '/plans', title: 'Plans - Hulu', weight: 12, isEntry: true },
+  { path: '/browse', title: 'Browse - Hulu', weight: 18, isEntry: true },
+  { path: '/browse/movies', title: 'Movies - Hulu', weight: 10, isEntry: false },
+  { path: '/browse/tv-shows', title: 'TV Shows - Hulu', weight: 12, isEntry: false },
+  { path: '/browse/originals', title: 'Hulu Originals', weight: 8, isEntry: false },
+  { path: '/browse/sports', title: 'Sports - Hulu', weight: 6, isEntry: false },
+  { path: '/watch/the-bear', title: 'The Bear - Hulu', weight: 8, isEntry: true },
+  { path: '/watch/shogun', title: 'Shogun - Hulu', weight: 7, isEntry: true },
+  { path: '/watch/abbott-elementary', title: 'Abbott Elementary - Hulu', weight: 6, isEntry: true },
   {
-    path: '/docs/getting-started',
-    title: 'Getting Started - Niteshift Docs',
-    weight: 6,
-    isEntry: false,
-  },
-  {
-    path: '/docs/api-reference',
-    title: 'API Reference - Niteshift Docs',
-    weight: 4,
-    isEntry: false,
-  },
-  {
-    path: '/docs/deployment',
-    title: 'Deployment Guide - Niteshift Docs',
-    weight: 3,
-    isEntry: false,
-  },
-  { path: '/blog', title: 'Blog - Niteshift', weight: 8, isEntry: true },
-  {
-    path: '/blog/introducing-niteshift',
-    title: 'Introducing Niteshift - Niteshift Blog',
+    path: '/watch/the-handmaids-tale',
+    title: "The Handmaid's Tale - Hulu",
     weight: 5,
     isEntry: true,
   },
-  {
-    path: '/blog/dev-environments-best-practices',
-    title: 'Dev Environment Best Practices - Niteshift Blog',
-    weight: 3,
-    isEntry: true,
-  },
-  { path: '/about', title: 'About Us - Niteshift', weight: 3, isEntry: false },
-  { path: '/contact', title: 'Contact - Niteshift', weight: 2, isEntry: false },
-  { path: '/signup', title: 'Sign Up - Niteshift', weight: 6, isEntry: false },
-  { path: '/dashboard', title: 'Dashboard - Niteshift', weight: 1, isEntry: false },
+  { path: '/watch/futurama', title: 'Futurama - Hulu', weight: 4, isEntry: true },
+  { path: '/watch/greys-anatomy', title: "Grey's Anatomy - Hulu", weight: 4, isEntry: false },
+  { path: '/my-stuff', title: 'My Stuff - Hulu', weight: 5, isEntry: false },
+  { path: '/search', title: 'Search - Hulu', weight: 4, isEntry: false },
+  { path: '/account', title: 'Account - Hulu', weight: 3, isEntry: false },
+  { path: '/signup', title: 'Sign Up - Hulu', weight: 8, isEntry: false },
+  { path: '/subscribe', title: 'Subscribe - Hulu', weight: 4, isEntry: false },
 ];
 
 const REFERRERS = [
-  { type: 'direct', domain: '', weight: 35 },
+  { type: 'direct', domain: '', weight: 30 },
+  // Search engines
   { type: 'search', domain: 'google.com', weight: 25 },
-  { type: 'search', domain: 'bing.com', weight: 3 },
-  { type: 'search', domain: 'duckduckgo.com', weight: 2 },
-  { type: 'social', domain: 'twitter.com', weight: 6 },
-  { type: 'social', domain: 'linkedin.com', weight: 5 },
+  { type: 'search', domain: 'bing.com', weight: 4 },
+  { type: 'search', domain: 'yahoo.com', weight: 2 },
+  { type: 'search', domain: 'duckduckgo.com', weight: 1 },
+  // Social media
+  { type: 'social', domain: 'facebook.com', weight: 8 },
+  { type: 'social', domain: 'twitter.com', weight: 4 },
+  { type: 'social', domain: 'instagram.com', weight: 3 },
+  { type: 'social', domain: 'tiktok.com', weight: 3 },
   { type: 'social', domain: 'reddit.com', weight: 2 },
-  { type: 'social', domain: 'news.ycombinator.com', weight: 2 },
-  { type: 'referral', domain: 'dev.to', weight: 3 },
-  { type: 'referral', domain: 'medium.com', weight: 2 },
-  { type: 'referral', domain: 'indiehackers.com', weight: 2 },
-  { type: 'referral', domain: 'producthunt.com', weight: 2 },
+  { type: 'social', domain: 'youtube.com', weight: 2 },
+  // Review & comparison sites
+  { type: 'referral', domain: 'cnet.com', weight: 2 },
+  { type: 'referral', domain: 'techradar.com', weight: 1 },
+  { type: 'referral', domain: 'tomsguide.com', weight: 1 },
+  { type: 'referral', domain: 'pcmag.com', weight: 1 },
+  { type: 'referral', domain: 'theverge.com', weight: 1 },
+  // Entertainment news
+  { type: 'referral', domain: 'ew.com', weight: 1 },
+  { type: 'referral', domain: 'variety.com', weight: 1 },
+  { type: 'referral', domain: 'deadline.com', weight: 1 },
+  { type: 'referral', domain: 'tvline.com', weight: 1 },
+  // Deal sites
+  { type: 'referral', domain: 'slickdeals.net', weight: 2 },
+  { type: 'referral', domain: 'retailmenot.com', weight: 1 },
+  // Aggregators
+  { type: 'referral', domain: 'justwatch.com', weight: 2 },
+  { type: 'referral', domain: 'reelgood.com', weight: 1 },
 ];
 
 const UTM_CAMPAIGNS = [
   {
     source: 'google',
     medium: 'cpc',
-    campaign: 'dev_tools_2025',
+    campaign: 'streaming_2025',
     content: ['ad_variant_1', 'ad_variant_2'],
-    term: ['cloud dev', 'dev environment', 'remote development'],
+    term: ['stream tv', 'watch movies online', 'hulu subscription'],
     weight: 40,
   },
   {
-    source: 'producthunt',
+    source: 'facebook',
     medium: 'social',
-    campaign: 'ph_launch',
-    content: null,
+    campaign: 'new_shows_promo',
+    content: ['the_bear', 'shogun'],
     term: null,
-    weight: 35,
+    weight: 30,
   },
   {
     source: 'newsletter',
     medium: 'email',
-    campaign: 'feature_announcement',
+    campaign: 'new_releases',
     content: null,
     term: null,
-    weight: 25,
+    weight: 20,
+  },
+  {
+    source: 'tiktok',
+    medium: 'social',
+    campaign: 'viral_clips',
+    content: null,
+    term: null,
+    weight: 10,
   },
 ];
 
 const CUSTOM_EVENTS = [
-  { name: 'click_cta_hero', frequency: 0.4 }, // 40% of homepage visits
-  { name: 'click_start_free_trial', frequency: 0.3 }, // 30% of pricing page visits
-  { name: 'download_whitepaper', frequency: 0.15 },
-  { name: 'play_demo_video', frequency: 0.2 },
-  { name: 'submit_contact_form', frequency: 0.1 },
-  { name: 'click_docs_search', frequency: 0.25 },
-  { name: 'share_social', frequency: 0.08 },
+  { name: 'click_start_trial', frequency: 0.4 }, // 40% of homepage visits
+  { name: 'click_subscribe', frequency: 0.3 }, // 30% of plans page visits
+  { name: 'play_video', frequency: 0.5 }, // Video plays
+  { name: 'add_to_my_stuff', frequency: 0.25 },
+  { name: 'search_content', frequency: 0.3 },
+  { name: 'share_show', frequency: 0.08 },
+  { name: 'complete_episode', frequency: 0.35 },
+  { name: 'pause_video', frequency: 0.4 },
 ];
 
 // ============================================================================
@@ -355,10 +367,51 @@ function generateUserJourney(session, websiteId, startTime) {
     urlQuery =
       'q=' +
       encodeURIComponent(
-        ['cloud dev', 'dev environment', 'remote development', 'niteshift'][randomInt(0, 3)],
+        [
+          'hulu',
+          'hulu free trial',
+          'stream tv online',
+          'watch movies online',
+          'the bear hulu',
+          'hulu subscription',
+          'hulu vs netflix',
+          'best streaming service',
+          'hulu plans',
+          'shogun where to watch',
+        ][randomInt(0, 9)],
       );
   } else if (referrer.type === 'social') {
-    referrerPath = referrer.domain === 'news.ycombinator.com' ? '/item?id=123456' : '/posts/123';
+    // Different paths for different social platforms
+    if (referrer.domain === 'reddit.com') {
+      referrerPath = ['/r/cordcutters', '/r/television', '/r/Hulu', '/r/streaming'][
+        randomInt(0, 3)
+      ];
+    } else if (referrer.domain === 'youtube.com') {
+      referrerPath = '/watch?v=' + Math.random().toString(36).substring(2, 13);
+    } else if (referrer.domain === 'tiktok.com') {
+      referrerPath = '/@hulureviews/video/' + randomInt(1000000, 9999999);
+    } else {
+      referrerPath = '/posts/' + randomInt(100000, 999999);
+    }
+  } else if (referrer.type === 'referral') {
+    // Different paths for different referral sites
+    if (referrer.domain === 'justwatch.com' || referrer.domain === 'reelgood.com') {
+      referrerPath = ['/us/provider/hulu', '/us/movie/the-bear', '/us/tv-show/shogun'][
+        randomInt(0, 2)
+      ];
+    } else if (referrer.domain.includes('slickdeals') || referrer.domain.includes('retailmenot')) {
+      referrerPath = '/coupons/hulu';
+    } else {
+      // News/review sites - article paths
+      referrerPath =
+        '/streaming/' +
+        [
+          'hulu-review',
+          'best-streaming-services-2025',
+          'hulu-vs-netflix',
+          'the-bear-season-3-review',
+        ][randomInt(0, 3)];
+    }
   }
 
   let currentTime = new Date(startTime);
@@ -389,7 +442,7 @@ function generateUserJourney(session, websiteId, startTime) {
     pageTitle: currentPage.title,
     eventType: 1, // pageview
     eventName: null,
-    hostname: 'niteshift.dev',
+    hostname: 'hulu.com',
     ...utmParams,
     createdAt: currentTime,
   });
@@ -401,8 +454,9 @@ function generateUserJourney(session, websiteId, startTime) {
 
   // Generate custom event for entry page
   const entryEvent = CUSTOM_EVENTS.find(e => {
-    if (currentPage.path === '/' && e.name === 'click_cta_hero') return true;
-    if (currentPage.path === '/pricing' && e.name === 'click_start_free_trial') return true;
+    if (currentPage.path === '/' && e.name === 'click_start_trial') return true;
+    if (currentPage.path === '/plans' && e.name === 'click_subscribe') return true;
+    if (currentPage.path.startsWith('/watch/') && e.name === 'play_video') return true;
     return false;
   });
 
@@ -421,7 +475,7 @@ function generateUserJourney(session, websiteId, startTime) {
       pageTitle: null,
       eventType: 2, // custom event
       eventName: entryEvent.name,
-      hostname: 'niteshift.dev',
+      hostname: 'hulu.com',
       createdAt: currentTime,
     });
   }
@@ -432,26 +486,60 @@ function generateUserJourney(session, websiteId, startTime) {
   for (let i = 0; i < additionalPages; i++) {
     currentTime = addSeconds(currentTime, randomInt(30, 180)); // 30s - 3min between pages
 
-    // Simple funnel logic
+    // Hulu-style funnel logic
     if (currentPage.path === '/') {
-      currentPage =
-        Math.random() < 0.5 ? PAGES.find(p => p.path === '/features') : weightedRandom(PAGES);
-    } else if (currentPage.path === '/features') {
-      currentPage =
-        Math.random() < 0.4 ? PAGES.find(p => p.path === '/pricing') : weightedRandom(PAGES);
-    } else if (currentPage.path === '/pricing') {
-      currentPage =
-        Math.random() < 0.3 ? PAGES.find(p => p.path === '/signup') : weightedRandom(PAGES);
-    } else if (currentPage.path === '/signup') {
-      // 60% convert to dashboard
+      // From homepage, users go to browse, plans, or watch content
+      const rand = Math.random();
+      if (rand < 0.4) {
+        currentPage = PAGES.find(p => p.path === '/browse');
+      } else if (rand < 0.6) {
+        currentPage = PAGES.find(p => p.path === '/plans');
+      } else {
+        currentPage = weightedRandom(PAGES);
+      }
+    } else if (currentPage.path === '/browse') {
+      // From browse, drill into categories or watch content
+      const rand = Math.random();
+      if (rand < 0.3) {
+        currentPage = PAGES.find(p => p.path === '/browse/tv-shows');
+      } else if (rand < 0.5) {
+        currentPage = PAGES.find(p => p.path === '/browse/movies');
+      } else if (rand < 0.7) {
+        currentPage = weightedRandom(PAGES.filter(p => p.path.startsWith('/watch/')));
+      } else {
+        currentPage = weightedRandom(PAGES);
+      }
+    } else if (currentPage.path.startsWith('/browse/')) {
+      // From category pages, watch content
       if (Math.random() < 0.6) {
-        currentPage = PAGES.find(p => p.path === '/dashboard');
+        currentPage = weightedRandom(PAGES.filter(p => p.path.startsWith('/watch/')));
+      } else {
+        currentPage = weightedRandom(PAGES);
+      }
+    } else if (currentPage.path === '/plans') {
+      // From plans, go to signup
+      if (Math.random() < 0.4) {
+        currentPage = PAGES.find(p => p.path === '/signup');
+      } else {
+        currentPage = weightedRandom(PAGES);
+      }
+    } else if (currentPage.path === '/signup') {
+      // 50% convert to subscribe
+      if (Math.random() < 0.5) {
+        currentPage = PAGES.find(p => p.path === '/subscribe');
       } else {
         break; // Exit funnel
       }
-    } else if (currentPage.path === '/dashboard') {
-      // End of conversion funnel
+    } else if (currentPage.path === '/subscribe') {
+      // End of conversion funnel - they subscribed!
       break;
+    } else if (currentPage.path.startsWith('/watch/')) {
+      // From watching, go to my-stuff or browse more
+      if (Math.random() < 0.3) {
+        currentPage = PAGES.find(p => p.path === '/my-stuff');
+      } else {
+        currentPage = weightedRandom(PAGES);
+      }
     } else {
       currentPage = weightedRandom(PAGES);
     }
@@ -468,7 +556,7 @@ function generateUserJourney(session, websiteId, startTime) {
       pageTitle: currentPage.title,
       eventType: 1,
       eventName: null,
-      hostname: 'niteshift.dev',
+      hostname: 'hulu.com',
       createdAt: currentTime,
     });
 
@@ -488,7 +576,7 @@ function generateUserJourney(session, websiteId, startTime) {
         pageTitle: null,
         eventType: 2,
         eventName: evt.name,
-        hostname: 'niteshift.dev',
+        hostname: 'hulu.com',
         createdAt: currentTime,
       });
     }
@@ -501,16 +589,25 @@ function generateEventData(event) {
   if (event.eventType !== 2 || !event.eventName) return null;
 
   const data = [];
+  const shows = [
+    'the-bear',
+    'shogun',
+    'abbott-elementary',
+    'the-handmaids-tale',
+    'futurama',
+    'greys-anatomy',
+  ];
+  const genres = ['drama', 'comedy', 'action', 'thriller', 'documentary', 'sci-fi', 'romance'];
 
   switch (event.eventName) {
-    case 'click_cta_hero':
+    case 'click_start_trial':
       data.push(
         {
           id: uuidv4(),
           websiteId: event.websiteId,
           websiteEventId: event.id,
           dataKey: 'button_text',
-          stringValue: 'Start Free Trial',
+          stringValue: 'Start Your Free Trial',
           dataType: 1,
         },
         {
@@ -518,39 +615,29 @@ function generateEventData(event) {
           websiteId: event.websiteId,
           websiteEventId: event.id,
           dataKey: 'position',
-          stringValue: 'above_fold',
+          stringValue: 'hero',
           dataType: 1,
         },
       );
       break;
-    case 'click_start_free_trial':
+    case 'click_subscribe':
       data.push({
         id: uuidv4(),
         websiteId: event.websiteId,
         websiteEventId: event.id,
-        dataKey: 'button_text',
-        stringValue: 'Start Trial',
+        dataKey: 'plan_type',
+        stringValue: ['basic', 'premium', 'bundle'][randomInt(0, 2)],
         dataType: 1,
       });
       break;
-    case 'download_whitepaper':
-      data.push({
-        id: uuidv4(),
-        websiteId: event.websiteId,
-        websiteEventId: event.id,
-        dataKey: 'document',
-        stringValue: 'dev-tools-guide-2025.pdf',
-        dataType: 1,
-      });
-      break;
-    case 'play_demo_video':
+    case 'play_video':
       data.push(
         {
           id: uuidv4(),
           websiteId: event.websiteId,
           websiteEventId: event.id,
-          dataKey: 'video_id',
-          stringValue: 'intro_v2',
+          dataKey: 'content_id',
+          stringValue: shows[randomInt(0, shows.length - 1)],
           dataType: 1,
         },
         {
@@ -558,20 +645,60 @@ function generateEventData(event) {
           websiteId: event.websiteId,
           websiteEventId: event.id,
           dataKey: 'duration_watched',
-          numberValue: randomInt(15, 120),
+          numberValue: randomInt(60, 3600), // 1 min to 1 hour
           dataType: 2,
+        },
+        {
+          id: uuidv4(),
+          websiteId: event.websiteId,
+          websiteEventId: event.id,
+          dataKey: 'genre',
+          stringValue: genres[randomInt(0, genres.length - 1)],
+          dataType: 1,
         },
       );
       break;
-    case 'submit_contact_form':
+    case 'add_to_my_stuff':
       data.push({
         id: uuidv4(),
         websiteId: event.websiteId,
         websiteEventId: event.id,
-        dataKey: 'form_type',
-        stringValue: 'contact',
+        dataKey: 'content_id',
+        stringValue: shows[randomInt(0, shows.length - 1)],
         dataType: 1,
       });
+      break;
+    case 'search_content':
+      data.push({
+        id: uuidv4(),
+        websiteId: event.websiteId,
+        websiteEventId: event.id,
+        dataKey: 'search_term',
+        stringValue: ['action movies', 'comedy series', 'new releases', 'the bear'][
+          randomInt(0, 3)
+        ],
+        dataType: 1,
+      });
+      break;
+    case 'complete_episode':
+      data.push(
+        {
+          id: uuidv4(),
+          websiteId: event.websiteId,
+          websiteEventId: event.id,
+          dataKey: 'content_id',
+          stringValue: shows[randomInt(0, shows.length - 1)],
+          dataType: 1,
+        },
+        {
+          id: uuidv4(),
+          websiteId: event.websiteId,
+          websiteEventId: event.id,
+          dataKey: 'episode_number',
+          numberValue: randomInt(1, 10),
+          dataType: 2,
+        },
+      );
       break;
   }
 
@@ -579,14 +706,14 @@ function generateEventData(event) {
 }
 
 function generateRevenue(event, session) {
-  // Only generate revenue for dashboard conversions
-  if (event.urlPath !== '/dashboard') return null;
+  // Only generate revenue for subscribe conversions
+  if (event.urlPath !== '/subscribe') return null;
 
-  // Revenue tiers
+  // Hulu subscription tiers
   const tiers = [
-    { revenue: 29, currency: 'USD', weight: 60 },
-    { revenue: 79, currency: 'USD', weight: 30 },
-    { revenue: 199, currency: 'USD', weight: 10 },
+    { revenue: 7.99, currency: 'USD', weight: 40, name: 'basic' }, // Hulu Basic (with ads)
+    { revenue: 17.99, currency: 'USD', weight: 35, name: 'premium' }, // Hulu (No Ads)
+    { revenue: 76.99, currency: 'USD', weight: 25, name: 'bundle' }, // Disney Bundle
   ];
 
   // Different currencies based on country
@@ -724,18 +851,17 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       userId,
       websiteId,
       type: 'funnel',
-      name: 'Signup Conversion Funnel',
-      description: 'Track users from homepage to signup completion',
+      name: 'Subscription Conversion Funnel',
+      description: 'Track users from homepage to subscription',
       parameters: {
         startDate: thirtyDaysAgo.toISOString(),
         endDate: now.toISOString(),
         window: 30, // 30 minutes to complete
         steps: [
           { type: 'path', value: '/' },
-          { type: 'path', value: '/features' },
-          { type: 'path', value: '/pricing' },
+          { type: 'path', value: '/plans' },
           { type: 'path', value: '/signup' },
-          { type: 'path', value: '/dashboard' },
+          { type: 'path', value: '/subscribe' },
         ],
       },
       createdAt: now,
@@ -746,16 +872,16 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       userId,
       websiteId,
       type: 'funnel',
-      name: 'Documentation Journey',
-      description: 'How users navigate through documentation',
+      name: 'Content Discovery Journey',
+      description: 'How users find and watch content',
       parameters: {
         startDate: thirtyDaysAgo.toISOString(),
         endDate: now.toISOString(),
         window: 60, // 60 minutes to complete
         steps: [
-          { type: 'path', value: '/docs' },
-          { type: 'path', value: '/docs/getting-started' },
-          { type: 'path', value: '/docs/api-reference' },
+          { type: 'path', value: '/browse' },
+          { type: 'path', value: '/browse/tv-shows' },
+          { type: 'path', value: '/watch/*' },
         ],
       },
       createdAt: now,
@@ -766,16 +892,16 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       userId,
       websiteId,
       type: 'funnel',
-      name: 'Blog Engagement Flow',
-      description: 'From blog discovery to documentation',
+      name: 'Browse to Watch Flow',
+      description: 'From browsing to actually watching',
       parameters: {
         startDate: thirtyDaysAgo.toISOString(),
         endDate: now.toISOString(),
         window: 45,
         steps: [
-          { type: 'path', value: '/blog' },
-          { type: 'path', value: '/blog/*' }, // Any blog post
-          { type: 'path', value: '/docs' },
+          { type: 'path', value: '/browse' },
+          { type: 'path', value: '/watch/*' },
+          { type: 'event', value: 'play_video' },
         ],
       },
       createdAt: now,
@@ -786,16 +912,16 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       userId,
       websiteId,
       type: 'funnel',
-      name: 'CTA Click to Conversion',
-      description: 'Track CTA effectiveness',
+      name: 'Trial to Subscription',
+      description: 'Track trial CTA to subscription',
       parameters: {
         startDate: thirtyDaysAgo.toISOString(),
         endDate: now.toISOString(),
         window: 20,
         steps: [
-          { type: 'event', value: 'click_cta_hero' },
-          { type: 'path', value: '/pricing' },
-          { type: 'path', value: '/signup' },
+          { type: 'event', value: 'click_start_trial' },
+          { type: 'path', value: '/plans' },
+          { type: 'path', value: '/subscribe' },
         ],
       },
       createdAt: now,
@@ -812,7 +938,7 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       id: uuidv4(),
       websiteId,
       type: 'segment',
-      name: 'US Mobile Users',
+      name: 'US Mobile Streamers',
       parameters: {
         filters: [
           { name: 'country', operator: 'eq', value: 'US' },
@@ -826,11 +952,11 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       id: uuidv4(),
       websiteId,
       type: 'segment',
-      name: 'Chrome Desktop Users',
+      name: 'Smart TV Users',
       parameters: {
         filters: [
-          { name: 'browser', operator: 'eq', value: 'Chrome' },
           { name: 'device', operator: 'eq', value: 'desktop' },
+          { name: 'screen', operator: 'eq', value: '1920x1080' },
         ],
       },
       createdAt: now,
@@ -840,9 +966,9 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       id: uuidv4(),
       websiteId,
       type: 'segment',
-      name: 'Blog Readers',
+      name: 'Content Watchers',
       parameters: {
-        filters: [{ name: 'path', operator: 'c', value: '/blog/' }],
+        filters: [{ name: 'path', operator: 'c', value: '/watch/' }],
       },
       createdAt: now,
       updatedAt: now,
@@ -851,7 +977,7 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       id: uuidv4(),
       websiteId,
       type: 'segment',
-      name: 'European Visitors',
+      name: 'International Viewers',
       parameters: {
         filters: [
           {
@@ -868,9 +994,9 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       id: uuidv4(),
       websiteId,
       type: 'segment',
-      name: 'Documentation Users',
+      name: 'Browse Users',
       parameters: {
-        filters: [{ name: 'path', operator: 'c', value: '/docs' }],
+        filters: [{ name: 'path', operator: 'c', value: '/browse' }],
       },
       createdAt: now,
       updatedAt: now,
@@ -879,13 +1005,13 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       id: uuidv4(),
       websiteId,
       type: 'segment',
-      name: 'High-Res Screens',
+      name: 'Tablet Streamers',
       parameters: {
         filters: [
           {
-            name: 'screen',
+            name: 'device',
             operator: 'eq',
-            value: '1920x1080,2560x1440',
+            value: 'tablet',
           },
         ],
       },
@@ -903,15 +1029,15 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       id: uuidv4(),
       websiteId,
       type: 'cohort',
-      name: 'January Signups',
+      name: 'November Subscribers',
       parameters: {
         dateRange: {
-          startDate: '2025-01-01T00:00:00.000Z',
-          endDate: '2025-01-31T23:59:59.999Z',
+          startDate: '2025-11-01T00:00:00.000Z',
+          endDate: '2025-11-30T23:59:59.999Z',
         },
         action: {
           type: 'path',
-          value: '/dashboard',
+          value: '/subscribe',
         },
         filters: [],
       },
@@ -922,7 +1048,7 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       id: uuidv4(),
       websiteId,
       type: 'cohort',
-      name: 'Product Hunt Traffic',
+      name: 'Social Media Traffic',
       parameters: {
         dateRange: {
           startDate: thirtyDaysAgo.toISOString(),
@@ -932,7 +1058,7 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
           type: 'path',
           value: '/',
         },
-        filters: [{ name: 'referrer', operator: 'c', value: 'producthunt' }],
+        filters: [{ name: 'referrer', operator: 'c', value: 'facebook' }],
       },
       createdAt: now,
       updatedAt: now,
@@ -941,7 +1067,7 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       id: uuidv4(),
       websiteId,
       type: 'cohort',
-      name: 'Google Ads Converters',
+      name: 'Google Ads Subscribers',
       parameters: {
         dateRange: {
           startDate: thirtyDaysAgo.toISOString(),
@@ -949,7 +1075,7 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
         },
         action: {
           type: 'path',
-          value: '/dashboard',
+          value: '/subscribe',
         },
         filters: [{ name: 'query', operator: 'c', value: 'utm_source=google' }],
       },
@@ -960,7 +1086,7 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       id: uuidv4(),
       websiteId,
       type: 'cohort',
-      name: 'Blog Engaged Users',
+      name: 'Active Viewers',
       parameters: {
         dateRange: {
           startDate: subDays(now, 14).toISOString(), // Last 2 weeks
@@ -968,9 +1094,9 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
         },
         action: {
           type: 'event',
-          value: 'click_cta_hero',
+          value: 'play_video',
         },
-        filters: [{ name: 'path', operator: 'c', value: '/blog' }],
+        filters: [{ name: 'path', operator: 'c', value: '/watch' }],
       },
       createdAt: now,
       updatedAt: now,
@@ -987,8 +1113,8 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       userId,
       websiteId,
       type: 'retention',
-      name: 'User Retention Analysis',
-      description: 'Track returning visitors over 30 days',
+      name: 'Viewer Retention Analysis',
+      description: 'Track returning viewers over 30 days',
       parameters: {
         startDate: thirtyDaysAgo.toISOString(),
         endDate: now.toISOString(),
@@ -1001,8 +1127,8 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       userId,
       websiteId,
       type: 'journey',
-      name: 'Top User Journeys',
-      description: 'Most common navigation paths (5 steps)',
+      name: 'Top Viewer Journeys',
+      description: 'Most common content discovery paths (5 steps)',
       parameters: {
         startDate: thirtyDaysAgo.toISOString(),
         endDate: now.toISOString(),
@@ -1030,7 +1156,7 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       userId,
       websiteId,
       type: 'revenue',
-      name: 'Revenue by Country',
+      name: 'Subscription Revenue by Country',
       description: 'Revenue breakdown by geographic location',
       parameters: {
         startDate: thirtyDaysAgo.toISOString(),
@@ -1046,12 +1172,12 @@ async function createDemoReportsAndSegments(prisma, websiteId, userId) {
       websiteId,
       type: 'goal',
       name: 'Video Play Goal',
-      description: 'Track video engagement',
+      description: 'Track video streaming engagement',
       parameters: {
         startDate: thirtyDaysAgo.toISOString(),
         endDate: now.toISOString(),
         type: 'event',
-        value: 'play_demo_video',
+        value: 'play_video',
       },
       createdAt: now,
       updatedAt: now,
@@ -1100,7 +1226,7 @@ async function main() {
   try {
     // Get website
     console.log('🔍 Looking up website...');
-    const website = await getWebsite(prisma, 'niteshift.dev');
+    const website = await getWebsite(prisma, 'hulu.com');
     console.log(`✓ Found website: ${website.name} (${website.id})\n`);
 
     // Get admin user for reports
