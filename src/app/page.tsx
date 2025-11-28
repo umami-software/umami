@@ -10,9 +10,9 @@ export default function RootPage() {
 
     if (lastTeam) {
       redirect(`/teams/${lastTeam}/websites`);
+    } else {
+      redirect(`/websites`);
     }
-
-    redirect(`/websites`);
   }, []);
 
   return null;
