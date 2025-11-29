@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { Heading, Icon, Row, Text, Column, Grid } from '@umami/react-zen';
+import { LinkButton } from './LinkButton';
 
 export function PageHeader({
   title,
@@ -7,6 +8,7 @@ export function PageHeader({
   label,
   icon,
   showBorder = true,
+  titleHref,
   children,
 }: {
   title: string;
@@ -14,6 +16,7 @@ export function PageHeader({
   label?: ReactNode;
   icon?: ReactNode;
   showBorder?: boolean;
+  titleHref?: string;
   allowEdit?: boolean;
   className?: string;
   children?: ReactNode;
@@ -33,7 +36,13 @@ export function PageHeader({
               {icon}
             </Icon>
           )}
-          {title && <Heading size={{ xs: '2', md: '3', lg: '4' }}>{title}</Heading>}
+          {title && titleHref ? (
+            <LinkButton href={titleHref} variant="quiet">
+              <Heading size={{ xs: '2', md: '3', lg: '4' }}>{title}</Heading>
+            </LinkButton>
+          ) : (
+            title && <Heading size={{ xs: '2', md: '3', lg: '4' }}>{title}</Heading>
+          )}
         </Row>
         {description && (
           <Text color="muted" truncate style={{ maxWidth: 600 }} title={description}>
