@@ -26,7 +26,7 @@ export function LoginForm() {
         setClientAuthToken(token);
         setUser(user);
 
-        router.push('/websites');
+        router.push('/');
       },
     });
   };
