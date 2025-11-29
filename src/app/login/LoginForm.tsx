@@ -8,22 +8,33 @@ import {
   Icon,
   Column,
   Heading,
+  useTheme,
 } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { setUser } from '@/store/app';
-import { setClientAuthToken } from '@/lib/client';
+import { setClientAuthToken, setClientPreferences } from '@/lib/client';
 import { Logo } from '@/components/svg';
+import { DEFAULT_THEME } from '@/lib/constants';
 
 export function LoginForm() {
   const { formatMessage, labels, getErrorMessage } = useMessages();
   const router = useRouter();
   const { mutateAsync, error } = useUpdateQuery('/auth/login');
+  const { setTheme } = useTheme();
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
       onSuccess: async ({ token, user }) => {
         setClientAuthToken(token);
+
+        if (user.preferences) {
+          setClientPreferences(user.preferences);
+
+          const themeValue = user.preferences.theme || DEFAULT_THEME;
+          setTheme(themeValue);
+        }
+
         setUser(user);
 
         router.push('/websites');

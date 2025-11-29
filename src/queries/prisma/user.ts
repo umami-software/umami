@@ -203,3 +203,40 @@ export async function deleteUser(userId: string) {
     }),
   ]);
 }
+
+export async function getUserPreferences(userId: string) {
+  return prisma.client.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      dateRange: true,
+      timezone: true,
+      language: true,
+      theme: true,
+    },
+  });
+}
+
+export async function updateUserPreferences(
+  userId: string,
+  data: {
+    dateRange?: string;
+    timezone?: string;
+    language?: string;
+    theme?: string;
+  },
+) {
+  return prisma.client.user.update({
+    where: {
+      id: userId,
+    },
+    data,
+    select: {
+      dateRange: true,
+      timezone: true,
+      language: true,
+      theme: true,
+    },
+  });
+}
