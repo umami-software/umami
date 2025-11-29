@@ -16,7 +16,7 @@ export function BoardAddButton() {
 
   return (
     <DialogTrigger>
-      <Button data-test="button-website-add" variant="primary">
+      <Button data-test="button-board-add" variant="primary">
         <Icon>
           <Plus />
         </Icon>

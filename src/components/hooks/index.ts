@@ -9,6 +9,7 @@ export * from './context/useWebsite';
 
 // Query hooks
 export * from './queries/useActiveUsersQuery';
+export * from './queries/useBoardsQuery';
 export * from './queries/useDateRangeQuery';
 export * from './queries/useDeleteQuery';
 export * from './queries/useEventDataEventsQuery';

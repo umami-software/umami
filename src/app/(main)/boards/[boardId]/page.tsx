@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import { Board } from './Board';
+import { BoardPage } from './BoardPage';
 
 export default async function ({ params }: { params: Promise<{ boardId: string }> }) {
   const { boardId } = await params;
 
-  return <Board boardId={boardId} />;
+  return <BoardPage boardId={boardId} />;
 }
 
 export const metadata: Metadata = {

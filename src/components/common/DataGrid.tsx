@@ -76,7 +76,7 @@ export function DataGrid({
         </Row>
       )}
       <LoadingPanel
-        data={data}
+        data={data?.data}
         isLoading={isLoading}
         isFetching={isFetching}
         error={error}
