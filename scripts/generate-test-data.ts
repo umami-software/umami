@@ -23,9 +23,9 @@ const SCALES = {
     description: '14 days, ~10,000 events (~5 min)',
   },
   full: {
-    days: 30,
-    avgSessionsPerDay: 666, // ~50,000 total events
-    description: '30 days, ~50,000 events (~15-20 min)',
+    days: 60,
+    avgSessionsPerDay: 500, // ~75,000 total events
+    description: '60 days, ~75,000 events (~20-25 min)',
   },
 };
 
