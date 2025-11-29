@@ -13,6 +13,8 @@ export function WebsiteHeader({ showActions }: { showActions?: boolean }) {
   const { renderUrl, pathname } = useNavigation();
   const isSettings = pathname.endsWith('/settings');
 
+  const { formatMessage, labels } = useMessages();
+
   if (isSettings) {
     return null;
   }
@@ -29,7 +31,7 @@ export function WebsiteHeader({ showActions }: { showActions?: boolean }) {
               <Icon>
                 <Edit />
               </Icon>
-              <Text>Edit</Text>
+              <Text>{formatMessage(labels.edit)}</Text>
             </LinkButton>
           </Row>
         )}
