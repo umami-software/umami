@@ -289,6 +289,7 @@
   "label.websites": "Sitios web",
   "label.window": "Ventá",
   "label.yesterday": "Onte",
+  "label.behavior": "Comportamento",
   "message.action-confirmation": "Escribe {confirmation} na caixa de embaixo para confirmar.",
   "message.active-users": "{x} actual {x, plural, one {visitante} other {visitantes}}",
   "message.bad-request": "Bad request",

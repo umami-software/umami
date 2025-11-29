@@ -290,6 +290,7 @@
   "label.websites": "Sitios web",
   "label.window": "Ventana",
   "label.yesterday": "Ayer",
+  "label.behavior": "Comportamiento",
   "message.action-confirmation": "Escriba {confirmation} en el cuadro a continuación para confirmar.",
   "message.active-users": "{x} {x, plural, one {activo} other {activos}}",
   "message.bad-request": "Bad request",

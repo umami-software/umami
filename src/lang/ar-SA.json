@@ -289,6 +289,7 @@
   "label.websites": "المواقع",
   "label.window": "النافذة",
   "label.yesterday": "الأمس",
+  "label.behavior": "السلوك",
   "message.action-confirmation": "اكتب {confirmation} في المربع أدناه للتأكيد.",
   "message.active-users": "{x} حاليا {x, plural, one {زائر واحد} other {زوار}}",
   "message.bad-request": "Bad request",
