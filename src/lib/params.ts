@@ -1,5 +1,5 @@
 import { FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
-import { Filter, QueryFilters, QueryOptions } from '@/lib/types';
+import type { Filter, QueryFilters, QueryOptions } from '@/lib/types';
 
 export function parseFilterValue(param: any) {
   if (typeof param === 'string') {

@@ -1,6 +1,6 @@
+import { StatusLight, Text } from '@umami/react-zen';
 import { useMemo } from 'react';
-import { Text, StatusLight } from '@umami/react-zen';
-import { useMessages, useActyiveUsersQuery } from '@/components/hooks';
+import { useActyiveUsersQuery, useMessages } from '@/components/hooks';
 
 export function ActiveUsers({
   websiteId,

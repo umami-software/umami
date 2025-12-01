@@ -1,19 +1,19 @@
 import {
+  Button,
+  Column,
   Form,
   FormButtons,
-  TextField,
-  Button,
-  Switch,
   FormSubmitButton,
-  Column,
+  IconLabel,
   Label,
   Row,
-  IconLabel,
+  Switch,
+  TextField,
 } from '@umami/react-zen';
-import { useState } from 'react';
-import { getRandomChars } from '@/lib/generate';
-import { useMessages, useUpdateQuery, useConfig } from '@/components/hooks';
 import { RefreshCcw } from 'lucide-react';
+import { useState } from 'react';
+import { useConfig, useMessages, useUpdateQuery } from '@/components/hooks';
+import { getRandomChars } from '@/lib/generate';
 
 const generateId = () => getRandomChars(16);
 

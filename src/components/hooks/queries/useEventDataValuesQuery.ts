@@ -1,4 +1,4 @@
-import { ReactQueryOptions } from '@/lib/types';
+import type { ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
 import { useDateParameters } from '../useDateParameters';
 import { useFilterParameters } from '../useFilterParameters';

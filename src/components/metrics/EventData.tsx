@@ -1,6 +1,6 @@
-import { Grid, Column, Text, Label } from '@umami/react-zen';
-import { useEventDataQuery } from '@/components/hooks';
+import { Column, Grid, Label, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { useEventDataQuery } from '@/components/hooks';
 
 export function EventData({ websiteId, eventId }: { websiteId: string; eventId: string }) {
   const { data, isLoading, error } = useEventDataQuery(websiteId, eventId);

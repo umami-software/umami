@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { WebsiteLayout } from '@/app/(main)/websites/[websiteId]/WebsiteLayout';
 
 export default async function ({

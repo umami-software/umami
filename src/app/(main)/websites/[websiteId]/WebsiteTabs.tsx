@@ -1,6 +1,6 @@
-import { Tabs, TabList, Tab, Icon, Text, Row } from '@umami/react-zen';
+import { Icon, Row, Tab, TabList, Tabs, Text } from '@umami/react-zen';
 import { useMessages, useNavigation, useWebsite } from '@/components/hooks';
-import { Clock, Eye, User, ChartPie } from '@/components/icons';
+import { ChartPie, Clock, Eye, User } from '@/components/icons';
 import { Lightning } from '@/components/svg';
 
 export function WebsiteTabs() {

@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { LogoutPage } from './LogoutPage';
 
 export default function () {

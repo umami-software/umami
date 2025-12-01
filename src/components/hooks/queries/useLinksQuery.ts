@@ -1,7 +1,7 @@
+import type { ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
-import { usePagedQuery } from '../usePagedQuery';
 import { useModified } from '../useModified';
-import { ReactQueryOptions } from '@/lib/types';
+import { usePagedQuery } from '../usePagedQuery';
 
 export function useLinksQuery({ teamId }: { teamId?: string }, options?: ReactQueryOptions) {
   const { modified } = useModified('links');

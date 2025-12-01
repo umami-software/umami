@@ -1,10 +1,10 @@
+import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
 import Link from 'next/link';
-import { DataTable, DataColumn, Row, DataTableProps } from '@umami/react-zen';
-import { useMessages, useNavigation, useSlug } from '@/components/hooks';
 import { DateDistance } from '@/components/common/DateDistance';
 import { ExternalLink } from '@/components/common/ExternalLink';
-import { LinkEditButton } from './LinkEditButton';
+import { useMessages, useNavigation, useSlug } from '@/components/hooks';
 import { LinkDeleteButton } from './LinkDeleteButton';
+import { LinkEditButton } from './LinkEditButton';
 
 export function LinksTable(props: DataTableProps) {
   const { formatMessage, labels } = useMessages();

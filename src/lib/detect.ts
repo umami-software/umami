@@ -1,11 +1,11 @@
 import path from 'node:path';
-import { UAParser } from 'ua-parser-js';
 import { browserName, detectOS } from 'detect-browser';
-import isLocalhost from 'is-localhost-ip';
 import ipaddr from 'ipaddr.js';
+import isLocalhost from 'is-localhost-ip';
 import maxmind from 'maxmind';
+import { UAParser } from 'ua-parser-js';
+import { getIpAddress, stripPort } from '@/lib/ip';
 import { safeDecodeURIComponent } from '@/lib/url';
-import { stripPort, getIpAddress } from '@/lib/ip';
 
 const MAXMIND = 'maxmind';
 
@@ -145,6 +145,8 @@ export function hasBlockedIp(clientIp: string) {
           return true;
         }
       }
+
+      return false;
     });
   }
 

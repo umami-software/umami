@@ -1,6 +1,11 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
-import { Box, Column, BoxProps } from '@umami/react-zen';
-import ChartJS, { LegendItem, ChartOptions, ChartData, UpdateMode } from 'chart.js/auto';
+import { Box, type BoxProps, Column } from '@umami/react-zen';
+import ChartJS, {
+  type ChartData,
+  type ChartOptions,
+  type LegendItem,
+  type UpdateMode,
+} from 'chart.js/auto';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Legend } from '@/components/metrics/Legend';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
 

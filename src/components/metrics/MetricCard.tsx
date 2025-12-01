@@ -1,8 +1,8 @@
-import { Text, Column } from '@umami/react-zen';
 import { useSpring } from '@react-spring/web';
-import { formatNumber } from '@/lib/format';
+import { Column, Text } from '@umami/react-zen';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
+import { formatNumber } from '@/lib/format';
 
 export interface MetricCardProps {
   value: number;

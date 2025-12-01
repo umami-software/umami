@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { EventsPage } from './EventsPage';
 
 export default async function ({ params }: { params: Promise<{ websiteId: string }> }) {

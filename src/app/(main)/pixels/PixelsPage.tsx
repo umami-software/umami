@@ -1,11 +1,11 @@
 'use client';
-import { PageBody } from '@/components/common/PageBody';
 import { Column } from '@umami/react-zen';
+import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
-import { PixelAddButton } from './PixelAddButton';
-import { useMessages, useNavigation } from '@/components/hooks';
-import { PixelsDataTable } from './PixelsDataTable';
 import { Panel } from '@/components/common/Panel';
+import { useMessages, useNavigation } from '@/components/hooks';
+import { PixelAddButton } from './PixelAddButton';
+import { PixelsDataTable } from './PixelsDataTable';
 
 export function PixelsPage() {
   const { formatMessage, labels } = useMessages();

@@ -1,13 +1,13 @@
 'use client';
-import { Key, useState } from 'react';
-import { TabList, Tab, Tabs, TabPanel, Column } from '@umami/react-zen';
-import { SessionsDataTable } from './SessionsDataTable';
-import { SessionProperties } from './SessionProperties';
-import { useMessages } from '@/components/hooks';
-import { Panel } from '@/components/common/Panel';
-import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
-import { getItem, setItem } from '@/lib/storage';
+import { Column, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { type Key, useState } from 'react';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
+import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
+import { Panel } from '@/components/common/Panel';
+import { useMessages } from '@/components/hooks';
+import { getItem, setItem } from '@/lib/storage';
+import { SessionProperties } from './SessionProperties';
+import { SessionsDataTable } from './SessionsDataTable';
 
 const KEY_NAME = 'umami.sessions.tab';
 

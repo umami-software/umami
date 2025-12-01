@@ -1,5 +1,5 @@
+import type { Metadata } from 'next';
 import { LinkPage } from './LinkPage';
-import { Metadata } from 'next';
 
 export default async function ({ params }: { params: Promise<{ linkId: string }> }) {
   const { linkId } = await params;

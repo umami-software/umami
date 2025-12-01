@@ -1,9 +1,9 @@
 import { Column, Label } from '@umami/react-zen';
 import { useLoginQuery, useMessages } from '@/components/hooks';
-import { TimezoneSetting } from './TimezoneSetting';
 import { DateRangeSetting } from './DateRangeSetting';
 import { LanguageSetting } from './LanguageSetting';
 import { ThemeSetting } from './ThemeSetting';
+import { TimezoneSetting } from './TimezoneSetting';
 
 export function PreferenceSettings() {
   const { user } = useLoginQuery();

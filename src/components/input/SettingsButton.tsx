@@ -1,23 +1,23 @@
-import { Key } from 'react';
 import {
-  Icon,
   Button,
-  MenuTrigger,
-  Popover,
+  Icon,
   Menu,
   MenuItem,
-  MenuSeparator,
   MenuSection,
+  MenuSeparator,
+  MenuTrigger,
+  Popover,
 } from '@umami/react-zen';
-import { useMessages, useLoginQuery, useNavigation, useConfig } from '@/components/hooks';
+import type { Key } from 'react';
+import { useConfig, useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
 import {
-  LogOut,
-  LockKeyhole,
-  Settings,
-  UserCircle,
-  LifeBuoy,
   BookText,
   ExternalLink,
+  LifeBuoy,
+  LockKeyhole,
+  LogOut,
+  Settings,
+  UserCircle,
 } from '@/components/icons';
 import { DOCS_URL } from '@/lib/constants';
 

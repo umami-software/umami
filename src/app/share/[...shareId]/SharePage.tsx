@@ -1,12 +1,12 @@
 'use client';
 import { Column } from '@umami/react-zen';
-import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
-import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
-import { useShareTokenQuery } from '@/components/hooks';
-import { PageBody } from '@/components/common/PageBody';
-import { Header } from './Header';
-import { Footer } from './Footer';
 import { WebsiteHeader } from '@/app/(main)/websites/[websiteId]/WebsiteHeader';
+import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
+import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
+import { PageBody } from '@/components/common/PageBody';
+import { useShareTokenQuery } from '@/components/hooks';
+import { Footer } from './Footer';
+import { Header } from './Header';
 
 export function SharePage({ shareId }) {
   const { shareToken, isLoading } = useShareTokenQuery(shareId);

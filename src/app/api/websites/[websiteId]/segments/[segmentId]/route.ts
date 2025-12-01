@@ -1,9 +1,9 @@
-import { canDeleteWebsite, canUpdateWebsite, canViewWebsite } from '@/permissions';
+import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { json, notFound, ok, unauthorized } from '@/lib/response';
 import { anyObjectParam, segmentTypeParam } from '@/lib/schema';
+import { canDeleteWebsite, canUpdateWebsite, canViewWebsite } from '@/permissions';
 import { deleteSegment, getSegment, updateSegment } from '@/queries/prisma';
-import { z } from 'zod';
 
 export async function GET(
   request: Request,

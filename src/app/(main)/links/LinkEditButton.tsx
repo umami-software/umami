@@ -1,7 +1,7 @@
-import { Edit } from '@/components/icons';
-import { LinkEditForm } from './LinkEditForm';
 import { useMessages } from '@/components/hooks';
+import { Edit } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
+import { LinkEditForm } from './LinkEditForm';
 
 export function LinkEditButton({ linkId }: { linkId: string }) {
   const { formatMessage, labels } = useMessages();

@@ -1,5 +1,5 @@
-import { Button, Icon, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
-import { useMessages, useLoginQuery } from '@/components/hooks';
+import { Button, Dialog, DialogTrigger, Icon, Modal, Text } from '@umami/react-zen';
+import { useLoginQuery, useMessages } from '@/components/hooks';
 import { Trash } from '@/components/icons';
 import { UserDeleteForm } from './UserDeleteForm';
 

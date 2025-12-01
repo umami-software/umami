@@ -1,11 +1,11 @@
 import { z } from 'zod';
-import { getRandomChars } from '@/lib/generate';
-import { unauthorized, json } from '@/lib/response';
-import { canCreateTeam } from '@/permissions';
 import { uuid } from '@/lib/crypto';
+import { getRandomChars } from '@/lib/generate';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { createTeam, getUserTeams } from '@/queries/prisma';
+import { json, unauthorized } from '@/lib/response';
 import { pagingParams } from '@/lib/schema';
+import { canCreateTeam } from '@/permissions';
+import { createTeam, getUserTeams } from '@/queries/prisma';
 
 export async function GET(request: Request) {
   const schema = z.object({

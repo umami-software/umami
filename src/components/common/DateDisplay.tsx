@@ -15,7 +15,7 @@ export function DateDisplay({ startDate, endDate }) {
       </Icon>
       <Text wrap="nowrap">
         {isSingleDate ? (
-          <>{formatDate(startDate, 'PP', locale)}</>
+          formatDate(startDate, 'PP', locale)
         ) : (
           <>
             {formatDate(startDate, 'PP', locale)}

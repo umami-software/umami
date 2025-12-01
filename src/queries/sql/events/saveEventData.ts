@@ -1,11 +1,11 @@
+import clickhouse from '@/lib/clickhouse';
 import { DATA_TYPE } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import { flattenJSON, getStringValue } from '@/lib/data';
-import clickhouse from '@/lib/clickhouse';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import kafka from '@/lib/kafka';
 import prisma from '@/lib/prisma';
-import { DynamicData } from '@/lib/types';
+import type { DynamicData } from '@/lib/types';
 
 export interface SaveEventDataArgs {
   websiteId: string;

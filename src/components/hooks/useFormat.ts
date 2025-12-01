@@ -1,9 +1,9 @@
-import { useMessages } from './useMessages';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
-import { useLocale } from './useLocale';
+import regions from '../../../public/iso-3166-2.json';
 import { useCountryNames } from './useCountryNames';
 import { useLanguageNames } from './useLanguageNames';
-import regions from '../../../public/iso-3166-2.json';
+import { useLocale } from './useLocale';
+import { useMessages } from './useMessages';
 
 export function useFormat() {
   const { formatMessage, labels } = useMessages();

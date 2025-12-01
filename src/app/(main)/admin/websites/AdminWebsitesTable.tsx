@@ -1,12 +1,11 @@
-import { useState } from 'react';
+import { DataColumn, DataTable, Dialog, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
 import Link from 'next/link';
-import { Row, Text, Icon, DataTable, DataColumn, MenuItem, Modal, Dialog } from '@umami/react-zen';
-import { Trash, Users } from '@/components/icons';
-import { useMessages } from '@/components/hooks';
-import { Edit } from '@/components/icons';
-import { MenuButton } from '@/components/input/MenuButton';
-import { DateDistance } from '@/components/common/DateDistance';
+import { useState } from 'react';
 import { WebsiteDeleteForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteDeleteForm';
+import { DateDistance } from '@/components/common/DateDistance';
+import { useMessages } from '@/components/hooks';
+import { Edit, Trash, Users } from '@/components/icons';
+import { MenuButton } from '@/components/input/MenuButton';
 
 export function AdminWebsitesTable({ data = [] }: { data: any[] }) {
   const { formatMessage, labels } = useMessages();

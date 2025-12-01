@@ -31,13 +31,13 @@ export * from './queries/useSessionDataValuesQuery';
 export * from './queries/useShareTokenQuery';
 export * from './queries/useTeamMembersQuery';
 export * from './queries/useTeamQuery';
-export * from './queries/useTeamWebsitesQuery';
 export * from './queries/useTeamsQuery';
+export * from './queries/useTeamWebsitesQuery';
 export * from './queries/useUpdateQuery';
 export * from './queries/useUserQuery';
+export * from './queries/useUsersQuery';
 export * from './queries/useUserTeamsQuery';
 export * from './queries/useUserWebsitesQuery';
-export * from './queries/useUsersQuery';
 export * from './queries/useWebsiteCohortQuery';
 export * from './queries/useWebsiteCohortsQuery';
 export * from './queries/useWebsiteEventsQuery';
@@ -51,10 +51,10 @@ export * from './queries/useWebsiteSegmentsQuery';
 export * from './queries/useWebsiteSessionQuery';
 export * from './queries/useWebsiteSessionStatsQuery';
 export * from './queries/useWebsiteSessionsQuery';
-export * from './queries/useWeeklyTrafficQuery';
 export * from './queries/useWebsiteStatsQuery';
-export * from './queries/useWebsiteValuesQuery';
 export * from './queries/useWebsitesQuery';
+export * from './queries/useWebsiteValuesQuery';
+export * from './queries/useWeeklyTrafficQuery';
 
 // Regular hooks
 export * from './useApi';

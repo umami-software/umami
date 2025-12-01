@@ -1,8 +1,8 @@
-import { canViewWebsite } from '@/permissions';
-import { unauthorized, json } from '@/lib/response';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { getJourney } from '@/queries/sql';
+import { json, unauthorized } from '@/lib/response';
 import { reportResultSchema } from '@/lib/schema';
+import { canViewWebsite } from '@/permissions';
+import { getJourney } from '@/queries/sql';
 
 export async function POST(request: Request) {
   const { auth, body, error } = await parseRequest(request, reportResultSchema);
