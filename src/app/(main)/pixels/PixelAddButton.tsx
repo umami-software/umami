@@ -1,7 +1,7 @@
 import { useMessages } from '@/components/hooks';
 import { Plus } from '@/components/icons';
-import { PixelEditForm } from './PixelEditForm';
 import { DialogButton } from '@/components/input/DialogButton';
+import { PixelEditForm } from './PixelEditForm';
 
 export function PixelAddButton({ teamId }: { teamId?: string }) {
   const { formatMessage, labels } = useMessages();

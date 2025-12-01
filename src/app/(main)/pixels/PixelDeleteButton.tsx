@@ -1,8 +1,8 @@
-import { Trash } from '@/components/icons';
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
-import { messages } from '@/components/messages';
 import { useDeleteQuery, useMessages, useModified } from '@/components/hooks';
+import { Trash } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
+import { messages } from '@/components/messages';
 
 export function PixelDeleteButton({
   pixelId,

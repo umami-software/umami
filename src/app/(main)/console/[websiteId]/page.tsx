@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { TestConsolePage } from './TestConsolePage';
 
 async function getEnabled() {

@@ -1,11 +1,11 @@
-import { useMemo, useState } from 'react';
 import { useTheme } from '@umami/react-zen';
+import { useMemo, useState } from 'react';
+import { Chart, type ChartProps } from '@/components/charts/Chart';
 import { ChartTooltip } from '@/components/charts/ChartTooltip';
-import { Chart, ChartProps } from '@/components/charts/Chart';
 import { useLocale } from '@/components/hooks';
 import { renderNumberLabels } from '@/lib/charts';
 import { getThemeColors } from '@/lib/colors';
-import { formatDate, DATE_FORMATS } from '@/lib/date';
+import { DATE_FORMATS, formatDate } from '@/lib/date';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
 
 const dateFormats = {
@@ -52,7 +52,7 @@ export function BarChart({
 
   const chartOptions: any = useMemo(() => {
     return {
-      __id: new Date().getTime(),
+      __id: Date.now(),
       scales: {
         x: {
           type: XAxisType,

@@ -9,8 +9,8 @@ import {
   Text,
 } from '@umami/react-zen';
 import { Fragment } from 'react';
-import { More, Share, Edit } from '@/components/icons';
 import { useMessages, useNavigation } from '@/components/hooks';
+import { Edit, More, Share } from '@/components/icons';
 
 export function WebsiteMenu({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();

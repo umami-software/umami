@@ -1,11 +1,11 @@
+import { Column, Grid, Heading, ListItem, Row, Select } from '@umami/react-zen';
+import { useState } from 'react';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { Panel } from '@/components/common/Panel';
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { formatNumber } from '@/lib/format';
-import { Column, Grid, Heading, ListItem, Row, Select } from '@umami/react-zen';
-import { useState } from 'react';
 
 export function CompareTables({ websiteId }: { websiteId: string }) {
   const [data, setData] = useState([]);
@@ -106,7 +106,7 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
     const change = Math.abs(((count - prev) / prev) * 100);
 
     return (
-      !isNaN(change) && (
+      !Number.isNaN(change) && (
         <Row alignItems="center" marginRight="3">
           <ChangeLabel value={value}>{formatNumber(change)}%</ChangeLabel>
         </Row>

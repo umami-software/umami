@@ -1,7 +1,7 @@
 'use client';
-import { useEffect } from 'react';
 import { Loading } from '@umami/react-zen';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 import { setClientAuthToken } from '@/lib/client';
 
 export function SSOPage() {

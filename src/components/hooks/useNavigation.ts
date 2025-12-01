@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { buildPath } from '@/lib/url';
 
 export function useNavigation() {

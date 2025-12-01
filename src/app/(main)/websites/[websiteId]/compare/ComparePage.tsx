@@ -1,10 +1,10 @@
 'use client';
 import { Column } from '@umami/react-zen';
-import { CompareTables } from './CompareTables';
+import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { WebsiteMetricsBar } from '@/app/(main)/websites/[websiteId]/WebsiteMetricsBar';
 import { Panel } from '@/components/common/Panel';
-import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
+import { CompareTables } from './CompareTables';
 
 export function ComparePage({ websiteId }: { websiteId: string }) {
   return (

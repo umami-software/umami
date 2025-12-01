@@ -116,8 +116,8 @@ export const goalReportSchema = z.object({
       property: z.string().optional(),
     })
     .refine(data => {
-      if (data['type'] === 'event' && data['property']) {
-        return data['operator'] && data['property'];
+      if (data.type === 'event' && data.property) {
+        return data.operator && data.property;
       }
       return true;
     }),

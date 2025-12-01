@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { parseRequest, getQueryFilters } from '@/lib/request';
-import { unauthorized, json } from '@/lib/response';
-import { canViewWebsite } from '@/permissions';
+import { getQueryFilters, parseRequest } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
 import { filterParams } from '@/lib/schema';
+import { canViewWebsite } from '@/permissions';
 import { getWebsiteSessionStats } from '@/queries/sql';
 
 export async function GET(

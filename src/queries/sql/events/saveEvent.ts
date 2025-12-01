@@ -1,7 +1,7 @@
-import { uuid } from '@/lib/crypto';
-import { EVENT_NAME_LENGTH, URL_LENGTH, PAGE_TITLE_LENGTH } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import clickhouse from '@/lib/clickhouse';
+import { EVENT_NAME_LENGTH, PAGE_TITLE_LENGTH, URL_LENGTH } from '@/lib/constants';
+import { uuid } from '@/lib/crypto';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import kafka from '@/lib/kafka';
 import prisma from '@/lib/prisma';
 import { saveEventData } from './saveEventData';

@@ -1,7 +1,7 @@
-import { CURRENCIES } from '@/lib/constants';
 import { ListItem, Select } from '@umami/react-zen';
 import { useState } from 'react';
 import { useMessages } from '@/components/hooks';
+import { CURRENCIES } from '@/lib/constants';
 
 export function CurrencySelect({ value, onChange }) {
   const { formatMessage, labels } = useMessages();

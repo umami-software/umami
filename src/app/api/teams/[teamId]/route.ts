@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { unauthorized, json, notFound, ok } from '@/lib/response';
-import { canDeleteTeam, canUpdateTeam, canViewTeam } from '@/permissions';
 import { parseRequest } from '@/lib/request';
+import { json, notFound, ok, unauthorized } from '@/lib/response';
+import { canDeleteTeam, canUpdateTeam, canViewTeam } from '@/permissions';
 import { deleteTeam, getTeam, updateTeam } from '@/queries/prisma';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {

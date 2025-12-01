@@ -1,6 +1,6 @@
-import { usePixelsQuery, useNavigation } from '@/components/hooks';
-import { PixelsTable } from './PixelsTable';
 import { DataGrid } from '@/components/common/DataGrid';
+import { useNavigation, usePixelsQuery } from '@/components/hooks';
+import { PixelsTable } from './PixelsTable';
 
 export function PixelsDataTable() {
   const { teamId } = useNavigation();

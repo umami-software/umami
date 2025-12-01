@@ -1,8 +1,8 @@
-import { canViewWebsite } from '@/permissions';
-import { unauthorized, json } from '@/lib/response';
-import { parseRequest, getQueryFilters, setWebsiteDate } from '@/lib/request';
+import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
 import { reportResultSchema } from '@/lib/schema';
-import { getRevenue, RevenuParameters } from '@/queries/sql/reports/getRevenue';
+import { canViewWebsite } from '@/permissions';
+import { getRevenue, type RevenuParameters } from '@/queries/sql/reports/getRevenue';
 
 export async function POST(request: Request) {
   const { auth, body, error } = await parseRequest(request, reportResultSchema);

@@ -1,6 +1,6 @@
-import { Text, DataTable, DataColumn, Column } from '@umami/react-zen';
-import { useMessages, useResultQuery, useFormat, useFields } from '@/components/hooks';
+import { Column, DataColumn, DataTable, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { useFields, useFormat, useMessages, useResultQuery } from '@/components/hooks';
 import { formatShortTime } from '@/lib/format';
 
 export interface BreakdownProps {
@@ -54,13 +54,13 @@ export function Breakdown({ websiteId, selectedFields = [], startDate, endDate }
             align="end"
             width="120px"
           >
-            {row => row?.['visitors']?.toLocaleString()}
+            {row => row?.visitors?.toLocaleString()}
           </DataColumn>
           <DataColumn id="visits" label={formatMessage(labels.visits)} align="end" width="120px">
-            {row => row?.['visits']?.toLocaleString()}
+            {row => row?.visits?.toLocaleString()}
           </DataColumn>
           <DataColumn id="views" label={formatMessage(labels.views)} align="end" width="120px">
-            {row => row?.['views']?.toLocaleString()}
+            {row => row?.views?.toLocaleString()}
           </DataColumn>
           <DataColumn
             id="bounceRate"
@@ -69,8 +69,8 @@ export function Breakdown({ websiteId, selectedFields = [], startDate, endDate }
             width="120px"
           >
             {row => {
-              const n = (Math.min(row?.['visits'], row?.['bounces']) / row?.['visits']) * 100;
-              return Math.round(+n) + '%';
+              const n = (Math.min(row?.visits, row?.bounces) / row?.visits) * 100;
+              return `${Math.round(+n)}%`;
             }}
           </DataColumn>
           <DataColumn
@@ -80,7 +80,7 @@ export function Breakdown({ websiteId, selectedFields = [], startDate, endDate }
             width="120px"
           >
             {row => {
-              const n = row?.['totaltime'] / row?.['visits'];
+              const n = row?.totaltime / row?.visits;
               return `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`;
             }}
           </DataColumn>

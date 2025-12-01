@@ -1,9 +1,9 @@
 import { Row } from '@umami/react-zen';
 import { PageHeader } from '@/components/common/PageHeader';
-import { ROLES } from '@/lib/constants';
 import { useLoginQuery, useMessages } from '@/components/hooks';
-import { TeamsJoinButton } from './TeamsJoinButton';
+import { ROLES } from '@/lib/constants';
 import { TeamsAddButton } from './TeamsAddButton';
+import { TeamsJoinButton } from './TeamsJoinButton';
 
 export function TeamsHeader({
   allowCreate = true,
@@ -18,7 +18,7 @@ export function TeamsHeader({
   return (
     <PageHeader title={formatMessage(labels.teams)}>
       <Row gap="3">
-        {allowJoin && user.role !== ROLES.viewOnly && <TeamsJoinButton />}
+        {allowJoin && <TeamsJoinButton />}
         {allowCreate && user.role !== ROLES.viewOnly && <TeamsAddButton />}
       </Row>
     </PageHeader>

@@ -1,6 +1,6 @@
 import path from 'node:path';
-import fs from 'fs-extra';
 import del from 'del';
+import fs from 'fs-extra';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);

@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { WebsitesTable } from './WebsitesTable';
 import { DataGrid } from '@/components/common/DataGrid';
 import { useLoginQuery, useNavigation, useUserWebsitesQuery } from '@/components/hooks';
+import { WebsitesTable } from './WebsitesTable';
 
 export function WebsitesDataTable({
   userId,

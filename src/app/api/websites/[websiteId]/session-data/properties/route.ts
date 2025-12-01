@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { unauthorized, json } from '@/lib/response';
+import { json, unauthorized } from '@/lib/response';
+import { filterParams } from '@/lib/schema';
 import { canViewWebsite } from '@/permissions';
 import { getSessionDataProperties } from '@/queries/sql';
-import { filterParams } from '@/lib/schema';
 
 export async function GET(
   request: Request,

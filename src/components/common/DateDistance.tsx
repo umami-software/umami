@@ -7,7 +7,7 @@ export function DateDistance({ date }: { date: Date }) {
   const { formatTimezoneDate } = useTimezone();
   const { dateLocale } = useLocale();
 
-  if (!isInvalidDate(date)) {
+  if (isInvalidDate(date)) {
     return null;
   }
 

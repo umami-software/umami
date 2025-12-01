@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { canUpdatePixel, canDeletePixel, canViewPixel } from '@/permissions';
 import { parseRequest } from '@/lib/request';
-import { ok, json, unauthorized, serverError, badRequest } from '@/lib/response';
+import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
+import { canDeletePixel, canUpdatePixel, canViewPixel } from '@/permissions';
 import { deletePixel, getPixel, updatePixel } from '@/queries/prisma';
 
 export async function GET(request: Request, { params }: { params: Promise<{ pixelId: string }> }) {

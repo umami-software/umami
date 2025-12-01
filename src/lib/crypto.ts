@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 import { v4, v5, v7 } from 'uuid';
 
 const ALGORITHM = 'aes-256-gcm';

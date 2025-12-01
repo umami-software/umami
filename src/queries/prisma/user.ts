@@ -1,8 +1,9 @@
 import { Prisma } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
-import prisma from '@/lib/prisma';
-import { Role, QueryFilters } from '@/lib/types';
 import { getRandomChars } from '@/lib/generate';
+import prisma from '@/lib/prisma';
+import type { QueryFilters, Role } from '@/lib/types';
+
 import UserFindManyArgs = Prisma.UserFindManyArgs;
 
 export interface GetUserOptions {
