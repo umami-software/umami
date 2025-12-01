@@ -5,3 +5,5 @@ Dockerfile
 .DS_Store
 node_modules
 .idea
+.env
+.env.*

@@ -1,9 +1,8 @@
-import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
-import { deleteReport, getReport, updateReport } from '@/queries';
-import { canDeleteReport, canUpdateReport, canViewReport } from '@/lib/auth';
-import { unauthorized, json, notFound, ok } from '@/lib/response';
-import { reportTypeParam } from '@/lib/schema';
+import { json, notFound, ok, unauthorized } from '@/lib/response';
+import { reportSchema } from '@/lib/schema';
+import { canDeleteWebsite, canUpdateWebsite, canViewReport } from '@/permissions';
+import { deleteReport, getReport, updateReport } from '@/queries/prisma';
 
 export async function GET(request: Request, { params }: { params: Promise<{ reportId: string }> }) {
   const { auth, error } = await parseRequest(request);
@@ -27,15 +26,7 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ reportId: string }> },
 ) {
-  const schema = z.object({
-    websiteId: z.string().uuid(),
-    type: reportTypeParam,
-    name: z.string().max(200),
-    description: z.string().max(500),
-    parameters: z.object({}).passthrough(),
-  });
-
-  const { auth, body, error } = await parseRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, reportSchema);
 
   if (error) {
     return error();
@@ -50,7 +41,7 @@ export async function POST(
     return notFound();
   }
 
-  if (!(await canUpdateReport(auth, report))) {
+  if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
@@ -60,7 +51,7 @@ export async function POST(
     type,
     name,
     description,
-    parameters: parameters,
+    parameters,
   } as any);
 
   return json(result);
@@ -79,7 +70,7 @@ export async function DELETE(
   const { reportId } = await params;
   const report = await getReport(reportId);
 
-  if (!(await canDeleteReport(auth, report))) {
+  if (!(await canDeleteWebsite(auth, report.websiteId))) {
     return unauthorized();
   }
 

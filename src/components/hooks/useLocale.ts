@@ -3,7 +3,7 @@ import { httpGet } from '@/lib/fetch';
 import { setItem } from '@/lib/storage';
 import { LOCALE_CONFIG } from '@/lib/constants';
 import { getDateLocale, getTextDirection } from '@/lib/lang';
-import useStore, { setLocale } from '@/store/app';
+import { useApp, setLocale } from '@/store/app';
 import { useForceUpdate } from './useForceUpdate';
 import enUS from '../../../public/intl/country/en-US.json';
 
@@ -11,10 +11,10 @@ const messages = {
   'en-US': enUS,
 };
 
-const selector = (state: { locale: any }) => state.locale;
+const selector = (state: { locale: string }) => state.locale;
 
 export function useLocale() {
-  const locale = useStore(selector);
+  const locale = useApp(selector);
   const forceUpdate = useForceUpdate();
   const dir = getTextDirection(locale);
   const dateLocale = getDateLocale(locale);
@@ -58,5 +58,3 @@ export function useLocale() {
 
   return { locale, saveLocale, messages, dir, dateLocale };
 }
-
-export default useLocale;

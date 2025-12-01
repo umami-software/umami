@@ -1,12 +1,13 @@
 import { z } from 'zod';
 import { pagingParams } from '@/lib/schema';
-import { getUserWebsites } from '@/queries';
+import { getAllUserWebsitesIncludingTeamOwner, getUserWebsites } from '@/queries/prisma';
 import { json } from '@/lib/response';
-import { parseRequest } from '@/lib/request';
+import { parseRequest, getQueryFilters } from '@/lib/request';
 
 export async function GET(request: Request) {
   const schema = z.object({
     ...pagingParams,
+    includeTeams: z.string().optional(),
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -15,7 +16,11 @@ export async function GET(request: Request) {
     return error();
   }
 
-  const websites = await getUserWebsites(auth.user.id, query);
+  const filters = await getQueryFilters(query);
 
-  return json(websites);
+  if (query.includeTeams) {
+    return json(await getAllUserWebsitesIncludingTeamOwner(auth.user.id, filters));
+  }
+
+  return json(await getUserWebsites(auth.user.id, filters));
 }

@@ -9,7 +9,11 @@ export function getItem(key: string, session?: boolean): any {
     const value = (session ? sessionStorage : localStorage).getItem(key);
 
     if (value !== 'undefined' && value !== null) {
-      return JSON.parse(value);
+      try {
+        return JSON.parse(value);
+      } catch {
+        return null;
+      }
     }
   }
 }

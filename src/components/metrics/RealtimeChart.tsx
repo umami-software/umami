@@ -1,8 +1,9 @@
 import { useMemo, useRef } from 'react';
 import { startOfMinute, subMinutes, isBefore } from 'date-fns';
-import PageviewsChart from './PageviewsChart';
+import { PageviewsChart } from './PageviewsChart';
 import { DEFAULT_ANIMATION_DURATION, REALTIME_RANGE } from '@/lib/constants';
 import { RealtimeData } from '@/lib/types';
+import { useTimezone } from '@/components/hooks';
 
 export interface RealtimeChartProps {
   data: RealtimeData;
@@ -11,6 +12,7 @@ export interface RealtimeChartProps {
 }
 
 export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
+  const { formatSeriesTimezone, fromUtc, timezone } = useTimezone();
   const endDate = startOfMinute(new Date());
   const startDate = subMinutes(endDate, REALTIME_RANGE);
   const prevEndDate = useRef(endDate);
@@ -21,8 +23,8 @@ export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
     }
 
     return {
-      pageviews: data.series.views,
-      sessions: data.series.visitors,
+      pageviews: formatSeriesTimezone(data.series.views, 'x', timezone),
+      sessions: formatSeriesTimezone(data.series.visitors, 'x', timezone),
     };
   }, [data, startDate, endDate, unit]);
 
@@ -38,13 +40,11 @@ export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
   return (
     <PageviewsChart
       {...props}
-      minDate={startDate.toISOString()}
-      maxDate={endDate.toISOString()}
+      minDate={fromUtc(startDate)}
+      maxDate={fromUtc(endDate)}
       unit={unit}
       data={chartData}
       animationDuration={animationDuration}
     />
   );
 }
-
-export default RealtimeChart;

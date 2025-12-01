@@ -1,50 +1,26 @@
-import { canViewWebsite } from '@/lib/auth';
-import { parseRequest } from '@/lib/request';
+import { canViewWebsite } from '@/permissions';
+import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { reportParms } from '@/lib/schema';
-import { getAttribution } from '@/queries/sql/reports/getAttribution';
-import { z } from 'zod';
+import { reportResultSchema } from '@/lib/schema';
+import { AttributionParameters, getAttribution } from '@/queries/sql/reports/getAttribution';
 
 export async function POST(request: Request) {
-  const schema = z.object({
-    ...reportParms,
-    model: z.string().regex(/firstClick|lastClick/i),
-    steps: z
-      .array(
-        z.object({
-          type: z.string(),
-          value: z.string(),
-        }),
-      )
-      .min(1),
-    currency: z.string().optional(),
-  });
-
-  const { auth, body, error } = await parseRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, reportResultSchema);
 
   if (error) {
     return error();
   }
 
-  const {
-    websiteId,
-    model,
-    steps,
-    currency,
-    dateRange: { startDate, endDate },
-  } = body;
+  const { websiteId } = body;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const data = await getAttribution(websiteId, {
-    startDate: new Date(startDate),
-    endDate: new Date(endDate),
-    model: model,
-    steps,
-    currency,
-  });
+  const parameters = await setWebsiteDate(websiteId, body.parameters);
+  const filters = await getQueryFilters(body.filters, websiteId);
+
+  const data = await getAttribution(websiteId, parameters as AttributionParameters, filters);
 
   return json(data);
 }

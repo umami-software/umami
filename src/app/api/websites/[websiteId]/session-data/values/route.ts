@@ -1,8 +1,9 @@
-import { canViewWebsite } from '@/lib/auth';
-import { parseRequest } from '@/lib/request';
+import { canViewWebsite } from '@/permissions';
+import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { getSessionDataValues } from '@/queries';
+import { getSessionDataValues } from '@/queries/sql';
 import { z } from 'zod';
+import { filterParams } from '@/lib/schema';
 
 export async function GET(
   request: Request,
@@ -12,6 +13,7 @@ export async function GET(
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
     propertyName: z.string().optional(),
+    ...filterParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -20,19 +22,17 @@ export async function GET(
     return error();
   }
 
-  const { startAt, endAt, propertyName } = query;
   const { websiteId } = await params;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const startDate = new Date(+startAt);
-  const endDate = new Date(+endAt);
+  const { propertyName } = query;
+  const filters = await getQueryFilters(query, websiteId);
 
   const data = await getSessionDataValues(websiteId, {
-    startDate,
-    endDate,
+    ...filters,
     propertyName,
   });
 

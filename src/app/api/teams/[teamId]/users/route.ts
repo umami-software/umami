@@ -1,13 +1,14 @@
+import { getQueryFilters, parseRequest } from '@/lib/request';
+import { badRequest, json, unauthorized } from '@/lib/response';
+import { pagingParams, searchParams, teamRoleParam } from '@/lib/schema';
+import { canUpdateTeam, canViewTeam } from '@/permissions';
+import { createTeamUser, getTeamUser, getTeamUsers } from '@/queries/prisma';
 import { z } from 'zod';
-import { unauthorized, json, badRequest } from '@/lib/response';
-import { canAddUserToTeam, canViewTeam } from '@/lib/auth';
-import { parseRequest } from '@/lib/request';
-import { pagingParams, roleParam } from '@/lib/schema';
-import { createTeamUser, getTeamUser, getTeamUsers } from '@/queries';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const schema = z.object({
     ...pagingParams,
+    ...searchParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -19,8 +20,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
   const { teamId } = await params;
 
   if (!(await canViewTeam(auth, teamId))) {
-    return unauthorized('You must be the owner of this team.');
+    return unauthorized({ message: 'You must be a member of this team.' });
   }
+
+  const filters = await getQueryFilters(query);
 
   const users = await getTeamUsers(
     {
@@ -38,8 +41,11 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
           },
         },
       },
+      orderBy: {
+        createdAt: 'asc',
+      },
     },
-    query,
+    filters,
   );
 
   return json(users);
@@ -47,8 +53,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
 
 export async function POST(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const schema = z.object({
-    userId: z.string().uuid(),
-    role: roleParam,
+    userId: z.uuid(),
+    role: teamRoleParam,
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -59,8 +65,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
 
   const { teamId } = await params;
 
-  if (!(await canAddUserToTeam(auth))) {
-    return unauthorized();
+  if (!(await canUpdateTeam(auth, teamId))) {
+    return unauthorized({ message: 'You must be the owner/manager of this team.' });
   }
 
   const { userId, role } = body;
@@ -68,7 +74,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
   const teamUser = await getTeamUser(teamId, userId);
 
   if (teamUser) {
-    return badRequest('User is already a member of the Team.');
+    return badRequest({ message: 'User is already a member of the Team.' });
   }
 
   const users = await createTeamUser(userId, teamId, role);

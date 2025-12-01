@@ -44,6 +44,7 @@ import {
   ca,
   hu,
   vi,
+  uz,
 } from 'date-fns/locale';
 
 export const languages = {
@@ -95,6 +96,7 @@ export const languages = {
   'tr-TR': { label: 'Türkçe', dateLocale: tr },
   'uk-UA': { label: 'українська', dateLocale: uk },
   'ur-PK': { label: 'Urdu (Pakistan)', dateLocale: uk, dir: 'rtl' },
+  'uz-UZ': { label: 'O‘zbekcha', dateLocale: uz },
   'vi-VN': { label: 'Tiếng Việt', dateLocale: vi },
   'zh-CN': { label: '中文', dateLocale: zhCN },
   'zh-TW': { label: '中文(繁體)', dateLocale: zhTW },

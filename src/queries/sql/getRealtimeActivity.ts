@@ -3,6 +3,8 @@ import clickhouse from '@/lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from '@/lib/db';
 import { QueryFilters } from '@/lib/types';
 
+const FUNCTION_NAME = 'getRealtimeActivity';
+
 export async function getRealtimeActivity(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -12,7 +14,10 @@ export async function getRealtimeActivity(...args: [websiteId: string, filters: 
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
-  const { params, filterQuery, cohortQuery, dateQuery } = await parseFilters(websiteId, filters);
+  const { queryParams, filterQuery, cohortQuery, dateQuery } = parseFilters({
+    ...filters,
+    websiteId,
+  });
 
   return rawQuery(
     `
@@ -30,19 +35,24 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     ${cohortQuery}
     inner join session
       on session.session_id = website_event.session_id
+        and session.website_id = website_event.website_id
     where website_event.website_id = {{websiteId::uuid}}
     ${filterQuery}
     ${dateQuery}
     order by website_event.created_at desc
     limit 100
     `,
-    params,
+    queryParams,
+    FUNCTION_NAME,
   );
 }
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters): Promise<{ x: number }> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { params, filterQuery, cohortQuery, dateQuery } = await parseFilters(websiteId, filters);
+  const { queryParams, filterQuery, cohortQuery, dateQuery } = parseFilters({
+    ...filters,
+    websiteId,
+  });
 
   return rawQuery(
     `
@@ -64,6 +74,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters): Promis
         order by createdAt desc
         limit 100
     `,
-    params,
+    queryParams,
+    FUNCTION_NAME,
   );
 }

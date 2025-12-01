@@ -12,6 +12,7 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+COPY docker/middleware.ts ./src
 
 ARG DATABASE_TYPE
 ARG BASE_PATH
@@ -41,7 +42,7 @@ RUN set -x \
     && apk add --no-cache curl
 
 # Script dependencies
-RUN pnpm add npm-run-all dotenv prisma@6.7.0
+RUN pnpm add npm-run-all dotenv chalk semver prisma@6.18.0 @prisma/adapter-pg@6.18.0
 
 # Permissions for prisma
 RUN chown -R nextjs:nodejs node_modules/.pnpm/
@@ -49,14 +50,12 @@ RUN chown -R nextjs:nodejs node_modules/.pnpm/
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/scripts ./scripts
+COPY --from=builder /app/generated ./generated
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# Custom routes
-RUN mv ./.next/routes-manifest.json ./.next/routes-manifest-orig.json
 
 USER nextjs
 

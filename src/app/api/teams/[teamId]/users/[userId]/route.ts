@@ -1,8 +1,9 @@
-import { canDeleteTeamUser, canUpdateTeam } from '@/lib/auth';
+import { canDeleteTeamUser, canUpdateTeam } from '@/permissions';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, ok, unauthorized } from '@/lib/response';
-import { deleteTeamUser, getTeamUser, updateTeamUser } from '@/queries';
+import { deleteTeamUser, getTeamUser, updateTeamUser } from '@/queries/prisma';
 import { z } from 'zod';
+import { teamRoleParam } from '@/lib/schema';
 
 export async function GET(
   request: Request,
@@ -17,7 +18,7 @@ export async function GET(
   const { teamId, userId } = await params;
 
   if (!(await canUpdateTeam(auth, teamId))) {
-    return unauthorized('You must be the owner of this team.');
+    return unauthorized({ message: 'You must be the owner/manager of this team.' });
   }
 
   const teamUser = await getTeamUser(teamId, userId);
@@ -30,7 +31,7 @@ export async function POST(
   { params }: { params: Promise<{ teamId: string; userId: string }> },
 ) {
   const schema = z.object({
-    role: z.string().regex(/team-member|team-view-only|team-manager/),
+    role: teamRoleParam,
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -42,13 +43,13 @@ export async function POST(
   const { teamId, userId } = await params;
 
   if (!(await canUpdateTeam(auth, teamId))) {
-    return unauthorized('You must be the owner of this team.');
+    return unauthorized({ message: 'You must be the owner/manager of this team.' });
   }
 
   const teamUser = await getTeamUser(teamId, userId);
 
   if (!teamUser) {
-    return badRequest('The User does not exists on this team.');
+    return badRequest({ message: 'The User does not exists on this team.' });
   }
 
   const user = await updateTeamUser(teamUser.id, body);
@@ -69,13 +70,13 @@ export async function DELETE(
   const { teamId, userId } = await params;
 
   if (!(await canDeleteTeamUser(auth, teamId, userId))) {
-    return unauthorized('You must be the owner of this team.');
+    return unauthorized({ message: 'You must be the owner/manager of this team.' });
   }
 
   const teamUser = await getTeamUser(teamId, userId);
 
   if (!teamUser) {
-    return badRequest('The User does not exists on this team.');
+    return badRequest({ message: 'The User does not exists on this team.' });
   }
 
   await deleteTeamUser(teamId, userId);

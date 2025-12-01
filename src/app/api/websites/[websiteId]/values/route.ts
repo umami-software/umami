@@ -1,19 +1,20 @@
-import { canViewWebsite } from '@/lib/auth';
-import { EVENT_COLUMNS, FILTER_COLUMNS, FILTER_GROUPS, SESSION_COLUMNS } from '@/lib/constants';
-import { getRequestDateRange, parseRequest } from '@/lib/request';
+import { canViewWebsite } from '@/permissions';
+import { EVENT_COLUMNS, FILTER_COLUMNS, SEGMENT_TYPES, SESSION_COLUMNS } from '@/lib/constants';
+import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
-import { getWebsiteSegments, getValues } from '@/queries';
+import { getValues } from '@/queries/sql';
+import { getWebsiteSegments } from '@/queries/prisma';
 import { z } from 'zod';
+import { dateRangeParams, fieldsParam, searchParams } from '@/lib/schema';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
-    type: z.string(),
-    startAt: z.coerce.number().int(),
-    endAt: z.coerce.number().int(),
-    search: z.string().optional(),
+    type: fieldsParam,
+    ...dateRangeParams,
+    ...searchParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -23,23 +24,26 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { type, search } = query;
-  const { startDate, endDate } = await getRequestDateRange(query);
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  if (!SESSION_COLUMNS.includes(type) && !EVENT_COLUMNS.includes(type) && !FILTER_GROUPS[type]) {
-    return badRequest('Invalid type.');
+  const { type } = query;
+
+  if (!SESSION_COLUMNS.includes(type) && !EVENT_COLUMNS.includes(type) && !SEGMENT_TYPES[type]) {
+    return badRequest();
   }
 
-  let values;
+  let values: any[];
 
-  if (FILTER_GROUPS[type]) {
-    values = (await getWebsiteSegments(websiteId, type)).map(segment => ({ value: segment.name }));
+  if (SEGMENT_TYPES[type]) {
+    values = (await getWebsiteSegments(websiteId, type))?.data?.map(segment => ({
+      value: segment.name,
+    }));
   } else {
-    values = await getValues(websiteId, FILTER_COLUMNS[type], startDate, endDate, search);
+    const filters = await getQueryFilters(query, websiteId);
+    values = await getValues(websiteId, FILTER_COLUMNS[type], filters);
   }
 
   return json(values.filter(n => n).sort());
