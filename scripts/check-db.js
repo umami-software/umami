@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import 'dotenv/config';
 import { execSync } from 'node:child_process';
+import { PrismaPg } from '@prisma/adapter-pg';
 import chalk from 'chalk';
 import semver from 'semver';
 import { PrismaClient } from '../generated/prisma/client.js';
-import { PrismaPg } from '@prisma/adapter-pg';
 
 const MIN_VERSION = '9.4.0';
 

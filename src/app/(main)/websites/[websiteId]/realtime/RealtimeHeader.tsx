@@ -1,5 +1,5 @@
-import { MetricCard } from '@/components/metrics/MetricCard';
 import { useMessages } from '@/components/hooks';
+import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 
 export function RealtimeHeader({ data }: { data: any }) {

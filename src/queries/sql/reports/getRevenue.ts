@@ -1,7 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
+import type { QueryFilters } from '@/lib/types';
 
 export interface RevenuParameters {
   startDate: Date;
@@ -62,7 +62,7 @@ async function relationalQuery(
     ${joinSessionQuery}
     where revenue.website_id = {{websiteId::uuid}}
       and revenue.created_at between {{startDate}} and {{endDate}}
-      and revenue.currency ilike {{currency}}
+      and revenue.currency = upper({{currency}})
       ${filterQuery}
     group by  x, t
     order by t
@@ -83,7 +83,7 @@ async function relationalQuery(
     ${cohortQuery}
     where revenue.website_id = {{websiteId::uuid}}
       and revenue.created_at between {{startDate}} and {{endDate}}
-      and revenue.currency ilike {{currency}}
+      and revenue.currency = upper({{currency}})
       ${filterQuery}
     group by session.country
     `,
@@ -102,7 +102,7 @@ async function relationalQuery(
     ${joinSessionQuery}
     where revenue.website_id = {{websiteId::uuid}}
       and revenue.created_at between {{startDate}} and {{endDate}}
-      and revenue.currency ilike {{currency}}
+      and revenue.currency = upper({{currency}})
       ${filterQuery}
   `,
     queryParams,
@@ -154,7 +154,7 @@ async function clickhouseQuery(
     ${cohortQuery}
     where website_revenue.website_id = {websiteId:UUID}
       and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and website_revenue.currency = {currency:String}
+      and website_revenue.currency = upper({currency:String})
       ${filterQuery}
     group by  x, t
     order by t
@@ -182,7 +182,7 @@ async function clickhouseQuery(
       ${cohortQuery}
       where website_revenue.website_id = {websiteId:UUID}
         and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and website_revenue.currency = {currency:String}
+        and website_revenue.currency = upper({currency:String})
         ${filterQuery}
       group by website_event.country
       order by value desc
@@ -205,7 +205,7 @@ async function clickhouseQuery(
     ${cohortQuery}
     where website_revenue.website_id = {websiteId:UUID}
       and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and website_revenue.currency = {currency:String}
+      and website_revenue.currency = upper({currency:String})
       ${filterQuery}
     `,
     queryParams,

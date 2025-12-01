@@ -1,16 +1,16 @@
 import {
   Children,
   cloneElement,
-  FC,
+  type FC,
   Fragment,
   isValidElement,
-  ReactElement,
-  ReactNode,
+  type ReactElement,
+  type ReactNode,
 } from 'react';
 
 export function getFragmentChildren(children: ReactNode) {
   return (children as ReactElement)?.type === Fragment
-    ? (children as ReactElement).props['children']
+    ? (children as ReactElement).props.children
     : children;
 }
 

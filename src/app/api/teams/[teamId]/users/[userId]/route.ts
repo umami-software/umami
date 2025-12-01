@@ -1,9 +1,9 @@
-import { canDeleteTeamUser, canUpdateTeam } from '@/permissions';
+import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, ok, unauthorized } from '@/lib/response';
-import { deleteTeamUser, getTeamUser, updateTeamUser } from '@/queries/prisma';
-import { z } from 'zod';
 import { teamRoleParam } from '@/lib/schema';
+import { canDeleteTeamUser, canUpdateTeam } from '@/permissions';
+import { deleteTeamUser, getTeamUser, updateTeamUser } from '@/queries/prisma';
 
 export async function GET(
   request: Request,

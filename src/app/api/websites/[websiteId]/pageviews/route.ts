@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { canViewWebsite } from '@/permissions';
-import { getQueryFilters, parseRequest } from '@/lib/request';
-import { dateRangeParams, filterParams } from '@/lib/schema';
 import { getCompareDate } from '@/lib/date';
-import { unauthorized, json } from '@/lib/response';
+import { getQueryFilters, parseRequest } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
+import { dateRangeParams, filterParams } from '@/lib/schema';
+import { canViewWebsite } from '@/permissions';
 import { getPageviewStats, getSessionStats } from '@/queries/sql';
 
 export async function GET(

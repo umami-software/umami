@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { canUpdateLink, canDeleteLink, canViewLink } from '@/permissions';
 import { parseRequest } from '@/lib/request';
-import { ok, json, unauthorized, serverError, badRequest } from '@/lib/response';
+import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
+import { canDeleteLink, canUpdateLink, canViewLink } from '@/permissions';
 import { deleteLink, getLink, updateLink } from '@/queries/prisma';
 
 export async function GET(request: Request, { params }: { params: Promise<{ linkId: string }> }) {

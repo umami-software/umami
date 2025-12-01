@@ -1,8 +1,8 @@
-import { Prisma } from '@/generated/prisma/client';
-import redis from '@/lib/redis';
-import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
+import type { Prisma } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
+import prisma from '@/lib/prisma';
+import redis from '@/lib/redis';
+import type { QueryFilters } from '@/lib/types';
 
 export async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs) {
   return prisma.client.website.findUnique(criteria);

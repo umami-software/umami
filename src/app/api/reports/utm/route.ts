@@ -1,9 +1,9 @@
-import { canViewWebsite } from '@/permissions';
-import { unauthorized, json } from '@/lib/response';
-import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
-import { getUTM, UTMParameters } from '@/queries/sql';
-import { reportResultSchema } from '@/lib/schema';
 import { UTM_PARAMS } from '@/lib/constants';
+import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
+import { reportResultSchema } from '@/lib/schema';
+import { canViewWebsite } from '@/permissions';
+import { getUTM, type UTMParameters } from '@/queries/sql';
 
 export async function POST(request: Request) {
   const { auth, body, error } = await parseRequest(request, reportResultSchema);

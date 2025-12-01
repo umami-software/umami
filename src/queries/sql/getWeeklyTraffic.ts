@@ -1,8 +1,8 @@
-import prisma from '@/lib/prisma';
 import clickhouse from '@/lib/clickhouse';
-import { runQuery, PRISMA, CLICKHOUSE } from '@/lib/db';
-import { QueryFilters } from '@/lib/types';
 import { EVENT_COLUMNS } from '@/lib/constants';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import prisma from '@/lib/prisma';
+import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getWeeklyTraffic';
 

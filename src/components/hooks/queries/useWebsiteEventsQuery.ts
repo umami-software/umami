@@ -1,8 +1,8 @@
+import type { ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
-import { useFilterParameters } from '../useFilterParameters';
 import { useDateParameters } from '../useDateParameters';
+import { useFilterParameters } from '../useFilterParameters';
 import { usePagedQuery } from '../usePagedQuery';
-import { ReactQueryOptions } from '@/lib/types';
 
 const EVENT_TYPES = {
   views: 1,

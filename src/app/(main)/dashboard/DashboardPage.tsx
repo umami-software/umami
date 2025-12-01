@@ -1,8 +1,8 @@
 'use client';
 import { Column } from '@umami/react-zen';
+import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
 import { useMessages } from '@/components/hooks';
-import { PageBody } from '@/components/common/PageBody';
 
 export function DashboardPage() {
   const { formatMessage, labels } = useMessages();

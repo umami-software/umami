@@ -1,6 +1,6 @@
+import type { Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
-import { Prisma } from '@/generated/prisma/client';
-import { QueryFilters } from '@/lib/types';
+import type { QueryFilters } from '@/lib/types';
 
 async function findSegment(criteria: Prisma.SegmentFindUniqueArgs) {
   return prisma.client.segment.findUnique(criteria);

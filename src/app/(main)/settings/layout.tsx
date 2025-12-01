@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { SettingsLayout } from './SettingsLayout';
 
 export default function ({ children }) {

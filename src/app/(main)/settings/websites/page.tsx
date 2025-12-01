@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { WebsitesSettingsPage } from './WebsitesSettingsPage';
 
 export default async function ({ params }: { params: Promise<{ teamId: string }> }) {

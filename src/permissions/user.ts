@@ -1,4 +1,4 @@
-import { Auth } from '@/lib/types';
+import type { Auth } from '@/lib/types';
 
 export async function canCreateUser({ user }: Auth) {
   return user.isAdmin;

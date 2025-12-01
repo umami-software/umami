@@ -1,17 +1,17 @@
-import { FloatingTooltip, Column, useTheme, ColumnProps } from '@umami/react-zen';
-import { useState, useMemo } from 'react';
-import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
+import { Column, type ColumnProps, FloatingTooltip, useTheme } from '@umami/react-zen';
 import { colord } from 'colord';
-import { ISO_COUNTRIES, MAP_FILE } from '@/lib/constants';
+import { useMemo, useState } from 'react';
+import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import {
-  useWebsiteMetricsQuery,
   useCountryNames,
   useLocale,
   useMessages,
+  useWebsiteMetricsQuery,
 } from '@/components/hooks';
-import { formatLongNumber } from '@/lib/format';
-import { percentFilter } from '@/lib/filters';
 import { getThemeColors } from '@/lib/colors';
+import { ISO_COUNTRIES, MAP_FILE } from '@/lib/constants';
+import { percentFilter } from '@/lib/filters';
+import { formatLongNumber } from '@/lib/format';
 
 export interface WorldMapProps extends ColumnProps {
   websiteId?: string;

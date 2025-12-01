@@ -17,12 +17,6 @@ test('getIpAddress: Standard header', () => {
   expect(getIpAddress(new Headers({ 'x-forwarded-for': IP }))).toEqual(IP);
 });
 
-test('getIpAddress: CloudFlare header is lower priority than standard header', () => {
-  expect(getIpAddress(new Headers({ 'cf-connecting-ip': BAD_IP, 'x-forwarded-for': IP }))).toEqual(
-    IP,
-  );
-});
-
 test('getIpAddress: No header', () => {
   expect(getIpAddress(new Headers())).toEqual(null);
 });

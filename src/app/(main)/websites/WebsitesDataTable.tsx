@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { WebsitesTable } from './WebsitesTable';
 import { DataGrid } from '@/components/common/DataGrid';
 import { useLoginQuery, useNavigation, useUserWebsitesQuery } from '@/components/hooks';
 import { Favicon } from '@/index';
 import { Icon, Row } from '@umami/react-zen';
+import { WebsitesTable } from './WebsitesTable';
 
 export function WebsitesDataTable({
   userId,

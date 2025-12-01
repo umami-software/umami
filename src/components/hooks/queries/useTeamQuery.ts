@@ -1,7 +1,7 @@
+import { keepPreviousData } from '@tanstack/react-query';
+import type { ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
 import { useModified } from '../useModified';
-import { keepPreviousData } from '@tanstack/react-query';
-import { ReactQueryOptions } from '@/lib/types';
 
 export function useTeamQuery(teamId: string, options?: ReactQueryOptions) {
   const { get, useQuery } = useApi();

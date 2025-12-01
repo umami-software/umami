@@ -1,4 +1,3 @@
-import { useMessages, useUpdateQuery } from '@/components/hooks';
 import {
   Button,
   Form,
@@ -7,6 +6,7 @@ import {
   FormSubmitButton,
   TextField,
 } from '@umami/react-zen';
+import { useMessages, useUpdateQuery } from '@/components/hooks';
 
 export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
   const { formatMessage, labels, getErrorMessage } = useMessages();

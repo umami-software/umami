@@ -1,5 +1,5 @@
+import { Box, ToggleGroup, ToggleGroupItem } from '@umami/react-zen';
 import { useState } from 'react';
-import { ToggleGroup, ToggleGroupItem, Box } from '@umami/react-zen';
 
 export interface FilterButtonsProps {
   items: { id: string; label: string }[];

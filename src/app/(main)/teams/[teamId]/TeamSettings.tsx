@@ -1,13 +1,13 @@
 import { Column } from '@umami/react-zen';
-import { useLoginQuery, useNavigation, useTeam } from '@/components/hooks';
-import { ROLES } from '@/lib/constants';
-import { Users } from '@/components/icons';
 import { TeamLeaveButton } from '@/app/(main)/teams/TeamLeaveButton';
-import { TeamManage } from './TeamManage';
-import { TeamEditForm } from './TeamEditForm';
-import { TeamMembersDataTable } from './TeamMembersDataTable';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
+import { useLoginQuery, useNavigation, useTeam } from '@/components/hooks';
+import { Users } from '@/components/icons';
+import { ROLES } from '@/lib/constants';
+import { TeamEditForm } from './TeamEditForm';
+import { TeamManage } from './TeamManage';
+import { TeamMembersDataTable } from './TeamMembersDataTable';
 
 export function TeamSettings({ teamId }: { teamId: string }) {
   const team: any = useTeam();

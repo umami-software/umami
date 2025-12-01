@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { canUpdateWebsite, canDeleteWebsite, canViewWebsite } from '@/permissions';
 import { SHARE_ID_REGEX } from '@/lib/constants';
 import { parseRequest } from '@/lib/request';
-import { ok, json, unauthorized, serverError, badRequest } from '@/lib/response';
+import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
+import { canDeleteWebsite, canUpdateWebsite, canViewWebsite } from '@/permissions';
 import { deleteWebsite, getWebsite, updateWebsite } from '@/queries/prisma';
 
 export async function GET(

@@ -1,4 +1,6 @@
-import { BarChart, BarChartProps } from '@/components/charts/BarChart';
+import { colord } from 'colord';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { BarChart, type BarChartProps } from '@/components/charts/BarChart';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
   useDateRange,
@@ -9,8 +11,6 @@ import {
 import { renderDateLabels } from '@/lib/charts';
 import { CHART_COLORS } from '@/lib/constants';
 import { generateTimeSeries } from '@/lib/date';
-import { colord } from 'colord';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export interface EventsChartProps extends BarChartProps {
   websiteId: string;

@@ -19,16 +19,16 @@
   const _true = 'true';
   const attr = currentScript.getAttribute.bind(currentScript);
 
-  const website = attr(_data + 'website-id');
-  const hostUrl = attr(_data + 'host-url');
-  const beforeSend = attr(_data + 'before-send');
-  const tag = attr(_data + 'tag') || undefined;
-  const autoTrack = attr(_data + 'auto-track') !== _false;
-  const dnt = attr(_data + 'do-not-track') === _true;
-  const excludeSearch = attr(_data + 'exclude-search') === _true;
-  const excludeHash = attr(_data + 'exclude-hash') === _true;
-  const domain = attr(_data + 'domains') || '';
-  const credentials = attr(_data + 'fetch-credentials') || 'omit';
+  const website = attr(`${_data}website-id`);
+  const hostUrl = attr(`${_data}host-url`);
+  const beforeSend = attr(`${_data}before-send`);
+  const tag = attr(`${_data}tag`) || undefined;
+  const autoTrack = attr(`${_data}auto-track`) !== _false;
+  const dnt = attr(`${_data}do-not-track`) === _true;
+  const excludeSearch = attr(`${_data}exclude-search`) === _true;
+  const excludeHash = attr(`${_data}exclude-hash`) === _true;
+  const domain = attr(`${_data}domains`) || '';
+  const credentials = attr(`${_data}fetch-credentials`) || 'omit';
 
   const domains = domain.split(',').map(n => n.trim());
   const host =
@@ -36,7 +36,7 @@
   const endpoint = `${host.replace(/\/$/, '')}__COLLECT_API_ENDPOINT__`;
   const screen = `${width}x${height}`;
   const eventRegex = /data-umami-event-([\w-_]+)/;
-  const eventNameAttribute = _data + 'umami-event';
+  const eventNameAttribute = `${_data}umami-event`;
   const delayDuration = 300;
 
   /* Helper functions */
@@ -144,7 +144,7 @@
   const trackingDisabled = () =>
     disabled ||
     !website ||
-    (localStorage && localStorage.getItem('umami.disabled')) ||
+    localStorage?.getItem('umami.disabled') ||
     (domain && !domains.includes(hostname)) ||
     (dnt && hasDoNotTrack());
 
@@ -177,7 +177,7 @@
         cache = data.cache;
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (e) {
+    } catch (_e) {
       /* no-op */
     }
   };

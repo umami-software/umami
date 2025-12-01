@@ -1,24 +1,24 @@
 import {
   Button,
-  Icon,
-  Text,
-  Row,
-  TooltipTrigger,
-  Tooltip,
-  Modal,
   Dialog,
   DialogTrigger,
+  Icon,
+  Modal,
+  Row,
+  Text,
+  Tooltip,
+  TooltipTrigger,
 } from '@umami/react-zen';
+import { SegmentEditForm } from '@/app/(main)/websites/[websiteId]/segments/SegmentEditForm';
 import {
-  useNavigation,
-  useMessages,
-  useFormat,
   useFilters,
+  useFormat,
+  useMessages,
+  useNavigation,
   useWebsiteSegmentQuery,
 } from '@/components/hooks';
-import { X, Bookmark } from '@/components/icons';
+import { Bookmark, X } from '@/components/icons';
 import { isSearchOperator } from '@/lib/params';
-import { SegmentEditForm } from '@/app/(main)/websites/[websiteId]/segments/SegmentEditForm';
 
 export function FilterBar({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();

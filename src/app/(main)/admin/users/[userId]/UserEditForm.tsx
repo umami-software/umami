@@ -1,12 +1,12 @@
 import {
-  Select,
-  ListItem,
   Form,
-  FormField,
   FormButtons,
-  TextField,
+  FormField,
   FormSubmitButton,
+  ListItem,
   PasswordField,
+  Select,
+  TextField,
 } from '@umami/react-zen';
 import { useLoginQuery, useMessages, useUpdateQuery, useUser } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
@@ -30,7 +30,7 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={getMessage(error?.['code'])} values={user}>
+    <Form onSubmit={handleSubmit} error={getMessage(error?.code)} values={user}>
       <FormField name="username" label={formatMessage(labels.username)}>
         <TextField data-test="input-username" />
       </FormField>

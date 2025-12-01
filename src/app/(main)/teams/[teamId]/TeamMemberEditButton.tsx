@@ -1,8 +1,8 @@
-import { useMessages, useModified } from '@/components/hooks';
 import { useToast } from '@umami/react-zen';
-import { TeamMemberEditForm } from './TeamMemberEditForm';
-import { DialogButton } from '@/components/input/DialogButton';
+import { useMessages, useModified } from '@/components/hooks';
 import { Edit } from '@/components/icons';
+import { DialogButton } from '@/components/input/DialogButton';
+import { TeamMemberEditForm } from './TeamMemberEditForm';
 
 export function TeamMemberEditButton({
   teamId,

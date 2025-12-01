@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { EVENT_COLUMNS, EVENT_TYPE, SESSION_COLUMNS } from '@/lib/constants';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
@@ -9,7 +10,6 @@ import {
   getPageviewMetrics,
   getSessionMetrics,
 } from '@/queries/sql';
-import { z } from 'zod';
 
 export async function GET(
   request: Request,

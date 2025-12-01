@@ -1,12 +1,12 @@
+import { z } from 'zod';
 import { checkAuth } from '@/lib/auth';
 import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS } from '@/lib/constants';
 import { getAllowedUnits, getMinimumUnit, maxDate, parseDateRange } from '@/lib/date';
 import { fetchWebsite } from '@/lib/load';
 import { filtersArrayToObject } from '@/lib/params';
 import { badRequest, unauthorized } from '@/lib/response';
-import { QueryFilters } from '@/lib/types';
+import type { QueryFilters } from '@/lib/types';
 import { getWebsiteSegment } from '@/queries/prisma';
-import { z } from 'zod';
 
 export async function parseRequest(
   request: Request,
@@ -16,7 +16,7 @@ export async function parseRequest(
   const url = new URL(request.url);
   let query = Object.fromEntries(url.searchParams);
   let body = await getJsonBody(request);
-  let error: () => void | undefined;
+  let error: () => undefined | undefined;
   let auth = null;
 
   if (schema) {

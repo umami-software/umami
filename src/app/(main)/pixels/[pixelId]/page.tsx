@@ -1,5 +1,5 @@
+import type { Metadata } from 'next';
 import { PixelPage } from './PixelPage';
-import { Metadata } from 'next';
 
 export default async function ({ params }: { params: { pixelId: string } }) {
   const { pixelId } = await params;
