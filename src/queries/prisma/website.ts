@@ -137,6 +137,9 @@ export async function resetWebsite(websiteId: string) {
 
   return transaction(
     [
+      client.revenue.deleteMany({
+        where: { websiteId },
+      }),
       client.eventData.deleteMany({
         where: { websiteId },
       }),
@@ -175,35 +178,44 @@ export async function deleteWebsite(websiteId: string) {
   const { client, transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
-  return transaction([
-    client.eventData.deleteMany({
-      where: { websiteId },
-    }),
-    client.sessionData.deleteMany({
-      where: { websiteId },
-    }),
-    client.websiteEvent.deleteMany({
-      where: { websiteId },
-    }),
-    client.session.deleteMany({
-      where: { websiteId },
-    }),
-    client.report.deleteMany({
-      where: {
-        websiteId,
-      },
-    }),
-    cloudMode
-      ? client.website.update({
-          data: {
-            deletedAt: new Date(),
-          },
-          where: { id: websiteId },
-        })
-      : client.website.delete({
-          where: { id: websiteId },
-        }),
-  ]).then(async data => {
+  return transaction(
+    [
+      client.revenue.deleteMany({
+        where: { websiteId },
+      }),
+      client.eventData.deleteMany({
+        where: { websiteId },
+      }),
+      client.sessionData.deleteMany({
+        where: { websiteId },
+      }),
+      client.websiteEvent.deleteMany({
+        where: { websiteId },
+      }),
+      client.session.deleteMany({
+        where: { websiteId },
+      }),
+      client.report.deleteMany({
+        where: { websiteId },
+      }),
+      client.segment.deleteMany({
+        where: { websiteId },
+      }),
+      cloudMode
+        ? client.website.update({
+            data: {
+              deletedAt: new Date(),
+            },
+            where: { id: websiteId },
+          })
+        : client.website.delete({
+            where: { id: websiteId },
+          }),
+    ],
+    {
+      timeout: 30000,
+    },
+  ).then(async data => {
     if (cloudMode) {
       await redis.client.del(`website:${websiteId}`);
     }
