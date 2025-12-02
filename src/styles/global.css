@@ -42,7 +42,11 @@ a:hover {
   background-clip: padding-box;
 }
 
-/* TODO add in https://github.com/umami-software/react-zen as default */
+/* 
+ TODO remove hacky rule when  https://github.com/umami-software/react-zen/pull/7
+ in https://github.com/umami-software/react-zen was merged 
+ also remove in \src\app\(main)\websites\[websiteId]\events\EventProperties.tsx
+ */
 .scrollable-select-menu-list {
   max-height: 42vh;
   overflow-y: auto;
