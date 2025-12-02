@@ -1,6 +1,5 @@
 'use client';
 import { redirect } from 'next/navigation';
-import { getItem } from '@/lib/storage';
 import { useEffect } from 'react';
 import { LAST_TEAM_CONFIG } from '@/lib/constants';
 import { getItem } from '@/lib/storage';
