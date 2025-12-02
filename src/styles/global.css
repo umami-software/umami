@@ -41,3 +41,9 @@ a:hover {
   border: 4px solid rgba(0, 0, 0, 0);
   background-clip: padding-box;
 }
+
+/* TODO add in https://github.com/umami-software/react-zen as default */
+.scrollable-select-menu-list {
+  max-height: 42vh;
+  overflow-y: auto;
+}
