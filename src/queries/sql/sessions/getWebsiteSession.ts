@@ -32,7 +32,13 @@ async function relationalQuery(websiteId: string, sessionId: string) {
       count(distinct visit_id) as visits,
       sum(views) as views,
       sum(events) as events,
-      sum(${getTimestampDiffSQL('min_time', 'max_time')}) as "totaltime" 
+      sum(${getTimestampDiffSQL('min_time', 'max_time')}) as "totaltime",
+      (select referrer_domain
+       from website_event
+       where website_id = {{websiteId::uuid}}
+         and session_id = {{sessionId::uuid}}
+       order by created_at asc
+       limit 1) as "referrerDomain"
     from (select
           session.session_id as id,
           session.distinct_id,
@@ -83,7 +89,13 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
       uniq(visit_id) visits,
       sum(views) as views,
       sum(events) as events,
-      sum(max_time-min_time) as totaltime
+      sum(max_time-min_time) as totaltime,
+      (select referrer_domain
+       from website_event
+       where website_id = {websiteId:UUID}
+         and session_id = {sessionId:UUID}
+       order by created_at asc
+       limit 1) as referrerDomain
     from (select
               session_id as id,
               distinct_id as distinctId,
