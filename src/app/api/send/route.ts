@@ -41,6 +41,9 @@ const schema = z.object({
       userAgent: z.string().optional(),
       timestamp: z.coerce.number().int().optional(),
       id: z.string().optional(),
+      browser: z.string().optional(),
+      os: z.string().optional(),
+      device: z.string().optional(),
     })
     .refine(
       data => {
