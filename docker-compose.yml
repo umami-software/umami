@@ -1,7 +1,12 @@
----
 services:
   umami:
-    image: ghcr.io/umami-software/umami:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URL: postgresql://umami:umami@db:5432/umami
+        DATABASE_TYPE: postgresql
+        BASE_PATH: ""
     ports:
       - "3000:3000"
     environment:
@@ -13,10 +18,11 @@ services:
     init: true
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "curl http://localhost:3000/api/heartbeat"]
+      test: ["CMD-SHELL", "curl -fsS http://localhost:3000/api/heartbeat >/dev/null || exit 1"]
       interval: 5s
       timeout: 5s
       retries: 5
+
   db:
     image: postgres:15-alpine
     environment:
@@ -31,5 +37,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
 volumes:
   umami-db-data:
