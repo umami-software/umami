@@ -47,6 +47,7 @@
     "test": "jest",
     "cypress-open": "cypress open cypress run",
     "cypress-run": "cypress run cypress run",
+    "seed-data": "tsx scripts/seed-data.ts"
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check --write"
@@ -167,6 +168,7 @@
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.1",
     "tsup": "^8.5.0",
+    "tsx": "^4.19.0",
     "typescript": "^5.9.3"
   }
 }

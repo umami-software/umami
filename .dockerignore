@@ -7,3 +7,5 @@ node_modules
 .idea
 .env
 .env.*
+scripts/seed
+scripts/seed-data.ts
