@@ -84,7 +84,7 @@ async function clickhouseQuery(
     sql = `
     select
       sum(t.c) as "pageviews",
-      uniq(coalesce(t.resolved_identity, t.session_id)) as "visitors",
+      uniq(coalesce(t.resolved_identity, toString(t.session_id))) as "visitors",
       uniq(t.visit_id) as "visits",
       sum(if(t.c = 1, 1, 0)) as "bounces",
       sum(max_time-min_time) as "totaltime"
@@ -98,7 +98,7 @@ async function clickhouseQuery(
         max(we.created_at) max_time
       from website_event we
       ${cohortQuery}
-      left join identity_link il on il.visitor_id = we.visitor_id
+      left join identity_link final il on il.visitor_id = we.visitor_id
         and il.website_id = we.website_id
       where we.website_id = {websiteId:UUID}
         and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
@@ -111,7 +111,7 @@ async function clickhouseQuery(
     sql = `
     select
       sum(t.c) as "pageviews",
-      uniq(coalesce(resolved_identity, session_id)) as "visitors",
+      uniq(coalesce(resolved_identity, toString(session_id))) as "visitors",
       uniq(visit_id) as "visits",
       sumIf(1, t.c = 1) as "bounces",
       sum(max_time-min_time) as "totaltime"
@@ -124,7 +124,7 @@ async function clickhouseQuery(
             max(we.max_time) max_time
         from website_event_stats_hourly we
         ${cohortQuery}
-        left join identity_link il on il.visitor_id = we.visitor_id
+        left join identity_link final il on il.visitor_id = we.visitor_id
           and il.website_id = we.website_id
     where we.website_id = {websiteId:UUID}
       and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}

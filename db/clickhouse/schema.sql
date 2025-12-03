@@ -293,6 +293,7 @@ CREATE TABLE umami.identity_link
     website_id UUID,
     visitor_id String,
     distinct_id String,
+    created_at DateTime('UTC'),
     linked_at DateTime('UTC')
 )
 ENGINE = ReplacingMergeTree(linked_at)

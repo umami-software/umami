@@ -1,3 +1,18 @@
+/**
+ * Identity Stitching - Links anonymous browser sessions to authenticated user identities
+ *
+ * Design decisions:
+ * - One visitor can link to multiple distinct_ids (user logs into different accounts)
+ * - One distinct_id can link to multiple visitors (user on multiple devices/browsers)
+ * - Links are additive and never invalidated (preserves historical journey)
+ * - Uses ReplacingMergeTree in ClickHouse with linked_at for deduplication
+ * - Upsert pattern ensures idempotency for repeated identify() calls
+ *
+ * Edge cases handled:
+ * - Safari private browsing: visitorId will be undefined, no link created
+ * - localStorage cleared: new visitorId generated, creates new link
+ * - Multiple tabs: same visitorId shared via localStorage
+ */
 import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
 import clickhouse from '@/lib/clickhouse';
@@ -44,11 +59,13 @@ async function clickhouseQuery({ websiteId, visitorId, distinctId }: CreateIdent
   const { insert, getUTCString } = clickhouse;
   const { sendMessage } = kafka;
 
+  const now = getUTCString(new Date());
   const message = {
     website_id: websiteId,
     visitor_id: visitorId,
     distinct_id: distinctId,
-    linked_at: getUTCString(new Date()),
+    created_at: now,
+    linked_at: now,
   };
 
   if (kafka.enabled) {

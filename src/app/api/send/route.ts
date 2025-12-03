@@ -271,11 +271,15 @@ export async function POST(request: Request) {
       }
 
       // Create identity link when both visitorId and distinctId are present
+      // Fire-and-forget to avoid adding latency to the tracking endpoint
       if (visitorId && id && websiteId) {
-        await createIdentityLink({
+        createIdentityLink({
           websiteId,
           visitorId,
           distinctId: id,
+        }).catch(e => {
+          // eslint-disable-next-line no-console
+          console.error('Failed to create identity link:', e);
         });
       }
     }

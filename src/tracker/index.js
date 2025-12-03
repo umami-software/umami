@@ -42,6 +42,11 @@
 
   /* Helper functions */
 
+  /**
+   * Identity Stitching: Generates a persistent visitor ID stored in localStorage.
+   * When combined with identify(), links anonymous sessions to authenticated users.
+   * Gracefully degrades when localStorage is unavailable (Safari private browsing).
+   */
   const generateUUID = () =>
     'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
       const r = (Math.random() * 16) | 0;
@@ -51,15 +56,20 @@
   const getVisitorId = () => {
     if (!identityStitching || !localStorage) return undefined;
 
-    const storageKey = 'umami.visitor';
-    let vid = localStorage.getItem(storageKey);
+    try {
+      const storageKey = 'umami.visitor';
+      let vid = localStorage.getItem(storageKey);
 
-    if (!vid) {
-      vid = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : generateUUID();
-      localStorage.setItem(storageKey, vid);
+      if (!vid) {
+        vid = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : generateUUID();
+        localStorage.setItem(storageKey, vid);
+      }
+
+      return vid;
+    } catch {
+      // localStorage access throws in Safari private browsing
+      return undefined;
     }
-
-    return vid;
   };
 
   const visitorId = getVisitorId();
@@ -165,12 +175,21 @@
 
   /* Tracking functions */
 
-  const trackingDisabled = () =>
-    disabled ||
-    !website ||
-    (localStorage && localStorage.getItem('umami.disabled')) ||
-    (domain && !domains.includes(hostname)) ||
-    (dnt && hasDoNotTrack());
+  const trackingDisabled = () => {
+    let storageDisabled = false;
+    try {
+      storageDisabled = localStorage && localStorage.getItem('umami.disabled');
+    } catch {
+      // localStorage throws in Safari private browsing
+    }
+    return (
+      disabled ||
+      !website ||
+      storageDisabled ||
+      (domain && !domains.includes(hostname)) ||
+      (dnt && hasDoNotTrack())
+    );
+  };
 
   const send = async (payload, type = 'event') => {
     if (trackingDisabled()) return;

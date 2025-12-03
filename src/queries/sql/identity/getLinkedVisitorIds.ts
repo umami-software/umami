@@ -1,3 +1,13 @@
+/**
+ * Resolves all visitor IDs linked to a given distinct_id (authenticated user)
+ *
+ * Use cases (for future implementation):
+ * - User journey reports: aggregate sessions across devices
+ * - Cohort analysis: include all linked sessions
+ * - Retroactive attribution: credit conversions to original anonymous session
+ *
+ * Note: Uses FINAL keyword in ClickHouse to ensure deduplication from ReplacingMergeTree
+ */
 import prisma from '@/lib/prisma';
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';

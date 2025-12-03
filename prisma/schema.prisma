@@ -321,11 +321,12 @@ model Pixel {
 }
 
 model IdentityLink {
-  id         String   @id @unique @map("identity_link_id") @db.Uuid
-  websiteId  String   @map("website_id") @db.Uuid
-  visitorId  String   @map("visitor_id") @db.VarChar(50)
-  distinctId String   @map("distinct_id") @db.VarChar(50)
-  linkedAt   DateTime @default(now()) @map("linked_at") @db.Timestamptz(6)
+  id         String    @id @unique @map("identity_link_id") @db.Uuid
+  websiteId  String    @map("website_id") @db.Uuid
+  visitorId  String    @map("visitor_id") @db.VarChar(50)
+  distinctId String    @map("distinct_id") @db.VarChar(50)
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  linkedAt   DateTime  @default(now()) @updatedAt @map("linked_at") @db.Timestamptz(6)
 
   website Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
 
