@@ -5,27 +5,20 @@ import { WebsiteHeader } from '@/app/(main)/websites/[websiteId]/WebsiteHeader';
 import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
 import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
 import { PageBody } from '@/components/common/PageBody';
-import { useLocale, useShareTokenQuery } from '@/components/hooks';
-import { languages } from '@/lib/lang';
+import { useShareTokenQuery } from '@/components/hooks';
 import { Footer } from './Footer';
 import { Header } from './Header';
 
 export function SharePage({ shareId }) {
   const { shareToken, isLoading } = useShareTokenQuery(shareId);
   const { setTheme } = useTheme();
-  const { saveLocale } = useLocale();
 
   useEffect(() => {
     const url = new URL(window?.location?.href);
     const theme = url.searchParams.get('theme');
-    const locale = url.searchParams.get('locale');
 
     if (theme === 'light' || theme === 'dark') {
       setTheme(theme);
-    }
-
-    if (Object.keys(languages).includes(locale)) {
-      saveLocale(locale);
     }
   }, []);
 
