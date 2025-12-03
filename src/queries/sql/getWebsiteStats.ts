@@ -37,7 +37,7 @@ async function relationalQuery(
     `
     select
       cast(coalesce(sum(t.c), 0) as bigint) as "pageviews",
-      count(distinct t.session_id) as "visitors",
+      count(distinct coalesce(t.resolved_identity, t.session_id::text)) as "visitors",
       count(distinct t.visit_id) as "visits",
       coalesce(sum(case when t.c = 1 then 1 else 0 end), 0) as "bounces",
       cast(coalesce(sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}), 0) as bigint) as "totaltime"
@@ -45,17 +45,22 @@ async function relationalQuery(
       select
         website_event.session_id,
         website_event.visit_id,
+        il.distinct_id as "resolved_identity",
         count(*) as "c",
         min(website_event.created_at) as "min_time",
         max(website_event.created_at) as "max_time"
       from website_event
       ${cohortQuery}
-      ${joinSessionQuery}  
+      ${joinSessionQuery}
+      left join session on session.session_id = website_event.session_id
+        and session.website_id = website_event.website_id
+      left join identity_link il on il.visitor_id = session.visitor_id
+        and il.website_id = session.website_id
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
         and website_event.event_type != 2
         ${filterQuery}
-      group by 1, 2
+      group by 1, 2, 3
     ) as t
     `,
     queryParams,
@@ -79,47 +84,53 @@ async function clickhouseQuery(
     sql = `
     select
       sum(t.c) as "pageviews",
-      uniq(t.session_id) as "visitors",
+      uniq(coalesce(t.resolved_identity, t.session_id)) as "visitors",
       uniq(t.visit_id) as "visits",
       sum(if(t.c = 1, 1, 0)) as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (
       select
-        session_id,
-        visit_id,
+        we.session_id,
+        we.visit_id,
+        il.distinct_id as resolved_identity,
         count(*) c,
-        min(created_at) min_time,
-        max(created_at) max_time
-      from website_event
+        min(we.created_at) min_time,
+        max(we.created_at) max_time
+      from website_event we
       ${cohortQuery}
-      where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type != 2
+      left join identity_link il on il.visitor_id = we.visitor_id
+        and il.website_id = we.website_id
+      where we.website_id = {websiteId:UUID}
+        and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and we.event_type != 2
         ${filterQuery}
-      group by session_id, visit_id
+      group by we.session_id, we.visit_id, il.distinct_id
     ) as t;
     `;
   } else {
     sql = `
     select
       sum(t.c) as "pageviews",
-      uniq(session_id) as "visitors",
+      uniq(coalesce(resolved_identity, session_id)) as "visitors",
       uniq(visit_id) as "visits",
       sumIf(1, t.c = 1) as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (select
-            session_id,
-            visit_id,
-            sum(views) c,
-            min(min_time) min_time,
-            max(max_time) max_time
-        from website_event_stats_hourly "website_event"
+            we.session_id,
+            we.visit_id,
+            il.distinct_id as resolved_identity,
+            sum(we.views) c,
+            min(we.min_time) min_time,
+            max(we.max_time) max_time
+        from website_event_stats_hourly we
         ${cohortQuery}
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type != 2
+        left join identity_link il on il.visitor_id = we.visitor_id
+          and il.website_id = we.website_id
+    where we.website_id = {websiteId:UUID}
+      and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and we.event_type != 2
       ${filterQuery}
-      group by session_id, visit_id
+      group by we.session_id, we.visit_id, il.distinct_id
     ) as t;
     `;
   }

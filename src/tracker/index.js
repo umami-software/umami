@@ -29,6 +29,7 @@
   const excludeHash = attr(_data + 'exclude-hash') === _true;
   const domain = attr(_data + 'domains') || '';
   const credentials = attr(_data + 'fetch-credentials') || 'omit';
+  const identityStitching = attr(_data + 'identity-stitching') !== _false;
 
   const domains = domain.split(',').map(n => n.trim());
   const host =
@@ -40,6 +41,28 @@
   const delayDuration = 300;
 
   /* Helper functions */
+
+  const generateUUID = () =>
+    'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = (Math.random() * 16) | 0;
+      return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+    });
+
+  const getVisitorId = () => {
+    if (!identityStitching || !localStorage) return undefined;
+
+    const storageKey = 'umami.visitor';
+    let vid = localStorage.getItem(storageKey);
+
+    if (!vid) {
+      vid = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : generateUUID();
+      localStorage.setItem(storageKey, vid);
+    }
+
+    return vid;
+  };
+
+  const visitorId = getVisitorId();
 
   const normalize = raw => {
     if (!raw) return raw;
@@ -63,6 +86,7 @@
     referrer: currentRef,
     tag,
     id: identity ? identity : undefined,
+    vid: visitorId,
   });
 
   const hasDoNotTrack = () => {

@@ -43,6 +43,7 @@ model Session {
   region     String?   @db.VarChar(20)
   city       String?   @db.VarChar(50)
   distinctId String?   @map("distinct_id") @db.VarChar(50)
+  visitorId  String?   @map("visitor_id") @db.VarChar(50)
   createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
 
   websiteEvents WebsiteEvent[]
@@ -60,6 +61,7 @@ model Session {
   @@index([websiteId, createdAt, country])
   @@index([websiteId, createdAt, region])
   @@index([websiteId, createdAt, city])
+  @@index([websiteId, visitorId])
   @@map("session")
 }
 
@@ -76,14 +78,15 @@ model Website {
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  user        User?         @relation("user", fields: [userId], references: [id])
-  createUser  User?         @relation("createUser", fields: [createdBy], references: [id])
-  team        Team?         @relation(fields: [teamId], references: [id])
-  eventData   EventData[]
-  reports     Report[]
-  revenue     Revenue[]
-  segments    Segment[]
-  sessionData SessionData[]
+  user          User?          @relation("user", fields: [userId], references: [id])
+  createUser    User?          @relation("createUser", fields: [createdBy], references: [id])
+  team          Team?          @relation(fields: [teamId], references: [id])
+  eventData     EventData[]
+  reports       Report[]
+  revenue       Revenue[]
+  segments      Segment[]
+  sessionData   SessionData[]
+  identityLinks IdentityLink[]
 
   @@index([userId])
   @@index([teamId])
@@ -315,4 +318,19 @@ model Pixel {
   @@index([teamId])
   @@index([createdAt])
   @@map("pixel")
+}
+
+model IdentityLink {
+  id         String   @id @unique @map("identity_link_id") @db.Uuid
+  websiteId  String   @map("website_id") @db.Uuid
+  visitorId  String   @map("visitor_id") @db.VarChar(50)
+  distinctId String   @map("distinct_id") @db.VarChar(50)
+  linkedAt   DateTime @default(now()) @map("linked_at") @db.Timestamptz(6)
+
+  website Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  @@unique([websiteId, visitorId, distinctId])
+  @@index([websiteId, distinctId])
+  @@index([websiteId, visitorId])
+  @@map("identity_link")
 }

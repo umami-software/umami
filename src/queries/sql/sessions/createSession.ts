@@ -20,6 +20,7 @@ export async function createSession(data: Prisma.SessionCreateInput) {
       region,
       city,
       distinct_id,
+      visitor_id,
       created_at
     )
     values (
@@ -34,6 +35,7 @@ export async function createSession(data: Prisma.SessionCreateInput) {
       {{region}},
       {{city}},
       {{distinctId}},
+      {{visitorId}},
       {{createdAt}}
     )
     on conflict (session_id) do nothing

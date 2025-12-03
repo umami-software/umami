@@ -39,3 +39,5 @@ export * from './getValues';
 export * from './getWebsiteDateRange';
 export * from './getWebsiteStats';
 export * from './getWeeklyTraffic';
+export * from './identity/createIdentityLink';
+export * from './identity/getLinkedVisitorIds';
