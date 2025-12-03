@@ -50,7 +50,9 @@ export function PageHeader({
           </Text>
         )}
       </Column>
-      <Row justifyContent="flex-end">{children}</Row>
+      <Row justifyContent="flex-end" alignItems="center">
+        {children}
+      </Row>
     </Grid>
   );
 }

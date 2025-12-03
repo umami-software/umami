@@ -23,7 +23,6 @@ export function WebsiteHeader({ showActions }: { showActions?: boolean }) {
     <PageHeader
       title={website.name}
       icon={<Favicon domain={website.domain} />}
-      marginBottom="3"
       titleHref={renderUrl(`/websites/${website.id}`, false)}
     >
       <Row alignItems="center" gap="6" wrap="wrap">
