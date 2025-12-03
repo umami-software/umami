@@ -1,4 +1,4 @@
-import { Dialog, DialogTrigger, Button, Icon, Modal, DialogProps } from '@umami/react-zen';
+import { Button, Dialog, type DialogProps, DialogTrigger, Icon, Modal } from '@umami/react-zen';
 import { Menu } from '@/components/icons';
 
 export function MobileMenuButton(props: DialogProps) {

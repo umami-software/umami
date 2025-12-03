@@ -1,4 +1,4 @@
-import { useEffect, useCallback, KeyboardEvent } from 'react';
+import { type KeyboardEvent, useCallback, useEffect } from 'react';
 
 export function useEscapeKey(handler: (event: KeyboardEvent) => void) {
   const escFunction = useCallback((event: KeyboardEvent) => {

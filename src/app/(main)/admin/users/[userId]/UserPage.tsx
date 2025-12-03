@@ -1,9 +1,9 @@
 'use client';
 import { Column } from '@umami/react-zen';
-import { UserSettings } from './UserSettings';
-import { UserProvider } from './UserProvider';
 import { UserHeader } from '@/app/(main)/admin/users/[userId]/UserHeader';
 import { Panel } from '@/components/common/Panel';
+import { UserProvider } from './UserProvider';
+import { UserSettings } from './UserSettings';
 
 export function UserPage({ userId }: { userId: string }) {
   return (

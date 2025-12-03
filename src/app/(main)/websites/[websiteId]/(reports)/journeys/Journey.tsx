@@ -1,13 +1,13 @@
-import { useMemo, useState } from 'react';
-import { TooltipTrigger, Tooltip, Focusable, Icon, Text, Row, Column } from '@umami/react-zen';
-import { firstBy } from 'thenby';
+import { Column, Focusable, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import classNames from 'classnames';
+import { useMemo, useState } from 'react';
+import { firstBy } from 'thenby';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useEscapeKey, useMessages, useResultQuery } from '@/components/hooks';
 import { File } from '@/components/icons';
 import { Lightning } from '@/components/svg';
 import { objectToArray } from '@/lib/data';
 import { formatLongNumber } from '@/lib/format';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
 import styles from './Journey.module.css';
 
 const NODE_HEIGHT = 60;

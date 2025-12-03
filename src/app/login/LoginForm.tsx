@@ -1,19 +1,19 @@
 import {
+  Column,
   Form,
   FormButtons,
   FormField,
   FormSubmitButton,
-  TextField,
-  PasswordField,
-  Icon,
-  Column,
   Heading,
+  Icon,
+  PasswordField,
+  TextField,
 } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
-import { setUser } from '@/store/app';
-import { setClientAuthToken } from '@/lib/client';
 import { Logo } from '@/components/svg';
+import { setClientAuthToken } from '@/lib/client';
+import { setUser } from '@/store/app';
 
 export function LoginForm() {
   const { formatMessage, labels, getErrorMessage } = useMessages();
@@ -25,8 +25,7 @@ export function LoginForm() {
       onSuccess: async ({ token, user }) => {
         setClientAuthToken(token);
         setUser(user);
-
-        router.push('/websites');
+        router.push('/');
       },
     });
   };

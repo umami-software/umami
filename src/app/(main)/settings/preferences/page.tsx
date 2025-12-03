@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { PreferencesPage } from './PreferencesPage';
 
 export default function () {

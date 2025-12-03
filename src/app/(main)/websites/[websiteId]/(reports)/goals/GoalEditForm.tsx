@@ -1,18 +1,18 @@
 import {
-  Form,
-  FormField,
-  TextField,
-  Grid,
-  FormButtons,
-  FormSubmitButton,
   Button,
-  Loading,
   Column,
+  Form,
+  FormButtons,
+  FormField,
+  FormSubmitButton,
+  Grid,
   Label,
+  Loading,
+  TextField,
 } from '@umami/react-zen';
 import { useMessages, useReportQuery, useUpdateQuery } from '@/components/hooks';
-import { LookupField } from '@/components/input/LookupField';
 import { ActionSelect } from '@/components/input/ActionSelect';
+import { LookupField } from '@/components/input/LookupField';
 
 export function GoalEditForm({
   id,

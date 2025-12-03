@@ -1,10 +1,10 @@
-import { canUpdateWebsite, canViewWebsite } from '@/permissions';
+import { z } from 'zod';
 import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { segmentTypeParam, searchParams, anyObjectParam } from '@/lib/schema';
+import { anyObjectParam, searchParams, segmentTypeParam } from '@/lib/schema';
+import { canUpdateWebsite, canViewWebsite } from '@/permissions';
 import { createSegment, getWebsiteSegments } from '@/queries/prisma';
-import { z } from 'zod';
 
 export async function GET(
   request: Request,

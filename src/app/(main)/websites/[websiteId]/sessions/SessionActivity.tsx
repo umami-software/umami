@@ -1,21 +1,21 @@
-import { isSameDay } from 'date-fns';
 import {
-  Icon,
-  StatusLight,
-  Column,
-  Row,
-  Heading,
-  Text,
   Button,
-  DialogTrigger,
-  Popover,
+  Column,
   Dialog,
+  DialogTrigger,
+  Heading,
+  Icon,
+  Popover,
+  Row,
+  StatusLight,
+  Text,
 } from '@umami/react-zen';
+import { isSameDay } from 'date-fns';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { Eye, FileText } from '@/components/icons';
-import { Lightning } from '@/components/svg';
 import { useMessages, useMobile, useSessionActivityQuery, useTimezone } from '@/components/hooks';
+import { Eye, FileText } from '@/components/icons';
 import { EventData } from '@/components/metrics/EventData';
+import { Lightning } from '@/components/svg';
 
 export function SessionActivity({
   websiteId,

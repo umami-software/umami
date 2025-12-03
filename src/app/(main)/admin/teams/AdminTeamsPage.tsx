@@ -1,9 +1,9 @@
 'use client';
-import { AdminTeamsDataTable } from './AdminTeamsDataTable';
 import { Column } from '@umami/react-zen';
-import { useMessages } from '@/components/hooks';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
+import { useMessages } from '@/components/hooks';
+import { AdminTeamsDataTable } from './AdminTeamsDataTable';
 
 export function AdminTeamsPage() {
   const { formatMessage, labels } = useMessages();

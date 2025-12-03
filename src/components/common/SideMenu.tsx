@@ -1,12 +1,12 @@
 import {
-  Heading,
-  NavMenu,
-  NavMenuItem,
-  Row,
   Column,
-  NavMenuGroup,
-  NavMenuProps,
+  Heading,
   IconLabel,
+  NavMenu,
+  NavMenuGroup,
+  NavMenuItem,
+  type NavMenuProps,
+  Row,
 } from '@umami/react-zen';
 import Link from 'next/link';
 
@@ -72,6 +72,7 @@ export function SideMenu({
               </NavMenuGroup>
             );
           }
+          return null;
         })}
       </NavMenu>
     </Column>

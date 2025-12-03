@@ -1,7 +1,7 @@
-import { Auth } from '@/lib/types';
-import { getPixel, getTeamUser } from '@/queries/prisma';
 import { hasPermission } from '@/lib/auth';
 import { PERMISSIONS } from '@/lib/constants';
+import type { Auth } from '@/lib/types';
+import { getPixel, getTeamUser } from '@/queries/prisma';
 
 export async function canViewPixel({ user }: Auth, pixelId: string) {
   if (user?.isAdmin) {

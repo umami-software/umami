@@ -1,10 +1,10 @@
 'use client';
+import { Column, Grid, ListItem, SearchField, Select } from '@umami/react-zen';
 import { useState } from 'react';
-import { ListItem, Select, Column, Grid, SearchField } from '@umami/react-zen';
-import { useDateRange, useMessages } from '@/components/hooks';
-import { Panel } from '@/components/common/Panel';
-import { Journey } from './Journey';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
+import { Panel } from '@/components/common/Panel';
+import { useDateRange, useMessages } from '@/components/hooks';
+import { Journey } from './Journey';
 
 const JOURNEY_STEPS = [2, 3, 4, 5, 6, 7];
 const DEFAULT_STEP = 3;

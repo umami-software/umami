@@ -1,6 +1,6 @@
-import { Prisma } from '@/generated/prisma/client';
+import type { Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
+import type { QueryFilters } from '@/lib/types';
 
 export async function findPixel(criteria: Prisma.PixelFindUniqueArgs) {
   return prisma.client.pixel.findUnique(criteria);

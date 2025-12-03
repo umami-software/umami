@@ -1,7 +1,7 @@
+import { useDateParameters } from '@/components/hooks/useDateParameters';
+import type { ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
 import { useFilterParameters } from '../useFilterParameters';
-import { ReactQueryOptions } from '@/lib/types';
-import { useDateParameters } from '@/components/hooks/useDateParameters';
 
 export function useResultQuery<T = any>(
   type: string,

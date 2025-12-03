@@ -1,8 +1,8 @@
 import { z } from 'zod';
+import { getQueryFilters, parseRequest } from '@/lib/request';
+import { json } from '@/lib/response';
 import { pagingParams } from '@/lib/schema';
 import { getAllUserWebsitesIncludingTeamOwner, getUserWebsites } from '@/queries/prisma';
-import { json } from '@/lib/response';
-import { parseRequest, getQueryFilters } from '@/lib/request';
 
 export async function GET(request: Request) {
   const schema = z.object({

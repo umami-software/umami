@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { httpGet } from '@/lib/fetch';
-import { setItem } from '@/lib/storage';
 import { LOCALE_CONFIG } from '@/lib/constants';
+import { httpGet } from '@/lib/fetch';
 import { getDateLocale, getTextDirection } from '@/lib/lang';
-import { useApp, setLocale } from '@/store/app';
-import { useForceUpdate } from './useForceUpdate';
+import { setItem } from '@/lib/storage';
+import { setLocale, useApp } from '@/store/app';
 import enUS from '../../../public/intl/country/en-US.json';
+import { useForceUpdate } from './useForceUpdate';
 
 const messages = {
   'en-US': enUS,

@@ -1,7 +1,9 @@
 import Link from 'next/link';
-import { WebsitesTable } from './WebsitesTable';
 import { DataGrid } from '@/components/common/DataGrid';
 import { useLoginQuery, useNavigation, useUserWebsitesQuery } from '@/components/hooks';
+import { Favicon } from '@/index';
+import { Icon, Row } from '@umami/react-zen';
+import { WebsitesTable } from './WebsitesTable';
 
 export function WebsitesDataTable({
   userId,
@@ -21,7 +23,12 @@ export function WebsitesDataTable({
   const { renderUrl } = useNavigation();
 
   const renderLink = (row: any) => (
-    <Link href={renderUrl(`/websites/${row.id}`, false)}>{row.name}</Link>
+    <Row alignItems="center" gap="3">
+      <Icon size="md" color="muted">
+        <Favicon domain={row.domain} />
+      </Icon>
+      <Link href={renderUrl(`/websites/${row.id}`, false)}>{row.name}</Link>
+    </Row>
   );
 
   return (

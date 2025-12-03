@@ -1,11 +1,11 @@
-import { canViewWebsite } from '@/permissions';
+import { z } from 'zod';
 import { EVENT_COLUMNS, FILTER_COLUMNS, SEGMENT_TYPES, SESSION_COLUMNS } from '@/lib/constants';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
-import { getValues } from '@/queries/sql';
-import { getWebsiteSegments } from '@/queries/prisma';
-import { z } from 'zod';
 import { dateRangeParams, fieldsParam, searchParams } from '@/lib/schema';
+import { canViewWebsite } from '@/permissions';
+import { getWebsiteSegments } from '@/queries/prisma';
+import { getValues } from '@/queries/sql';
 
 export async function GET(
   request: Request,

@@ -1,9 +1,9 @@
-import { DataTable, DataColumn, Row, DataTableProps } from '@umami/react-zen';
-import { useMessages, useNavigation } from '@/components/hooks';
-import { DateDistance } from '@/components/common/DateDistance';
-import { SegmentEditButton } from '@/app/(main)/websites/[websiteId]/segments/SegmentEditButton';
-import { SegmentDeleteButton } from '@/app/(main)/websites/[websiteId]/segments/SegmentDeleteButton';
+import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
 import Link from 'next/link';
+import { SegmentDeleteButton } from '@/app/(main)/websites/[websiteId]/segments/SegmentDeleteButton';
+import { SegmentEditButton } from '@/app/(main)/websites/[websiteId]/segments/SegmentEditButton';
+import { DateDistance } from '@/components/common/DateDistance';
+import { useMessages, useNavigation } from '@/components/hooks';
 
 export function SegmentsTable(props: DataTableProps) {
   const { formatMessage, labels } = useMessages();

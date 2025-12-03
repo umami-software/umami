@@ -1,8 +1,8 @@
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 import { useDeleteQuery, useMessages, useModified } from '@/components/hooks';
-import { messages } from '@/components/messages';
 import { Trash } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
+import { messages } from '@/components/messages';
 
 export function TeamMemberRemoveButton({
   teamId,

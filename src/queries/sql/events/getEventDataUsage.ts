@@ -1,6 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery, notImplemented } from '@/lib/db';
-import { QueryFilters } from '@/lib/types';
+import { CLICKHOUSE, notImplemented, PRISMA, runQuery } from '@/lib/db';
+import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getEventDataUsage';
 

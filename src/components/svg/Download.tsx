@@ -1,5 +1,5 @@
-import * as React from 'react';
 import type { SVGProps } from 'react';
+
 const SvgDownload = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" {...props}>
     <path d="M97.5 82.656V71.357a3.545 3.545 0 0 0-3.545-3.544H89.17a3.545 3.545 0 0 0-3.545 3.544v11.3c0 1.639-1.33 2.968-2.969 2.968H17.344a2.97 2.97 0 0 1-2.969-2.969V71.357a3.545 3.545 0 0 0-3.545-3.545H6.045A3.545 3.545 0 0 0 2.5 71.357v11.3C2.5 90.853 9.146 97.5 17.344 97.5h65.312c8.198 0 14.844-6.646 14.844-14.844" />
