@@ -27,7 +27,6 @@ model User {
   pixels    Pixel[]    @relation("user")
   teams     TeamUser[]
   reports   Report[]
-  boards    Board[]    @relation("user")
 
   @@map("user")
 }
@@ -100,23 +99,23 @@ model WebsiteEvent {
   sessionId      String    @map("session_id") @db.Uuid
   visitId        String    @map("visit_id") @db.Uuid
   createdAt      DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  urlPath        String    @map("url_path") @db.VarChar(1024)
-  urlQuery       String?   @map("url_query") @db.VarChar(1024)
-  utmSource      String?   @map("utm_source") @db.VarChar(512)
-  utmMedium      String?   @map("utm_medium") @db.VarChar(512)
-  utmCampaign    String?   @map("utm_campaign") @db.VarChar(512)
-  utmContent     String?   @map("utm_content") @db.VarChar(512)
-  utmTerm        String?   @map("utm_term") @db.VarChar(512)
-  referrerPath   String?   @map("referrer_path") @db.VarChar(1024)
-  referrerQuery  String?   @map("referrer_query") @db.VarChar(1024)
+  urlPath        String    @map("url_path") @db.VarChar(500)
+  urlQuery       String?   @map("url_query") @db.VarChar(500)
+  utmSource      String?   @map("utm_source") @db.VarChar(255)
+  utmMedium      String?   @map("utm_medium") @db.VarChar(255)
+  utmCampaign    String?   @map("utm_campaign") @db.VarChar(255)
+  utmContent     String?   @map("utm_content") @db.VarChar(255)
+  utmTerm        String?   @map("utm_term") @db.VarChar(255)
+  referrerPath   String?   @map("referrer_path") @db.VarChar(500)
+  referrerQuery  String?   @map("referrer_query") @db.VarChar(500)
   referrerDomain String?   @map("referrer_domain") @db.VarChar(500)
   pageTitle      String?   @map("page_title") @db.VarChar(500)
-  gclid          String?   @db.VarChar(1024)
-  fbclid         String?   @db.VarChar(1024)
-  msclkid        String?   @db.VarChar(1024)
-  ttclid         String?   @db.VarChar(1024)
-  lifatid        String?   @map("li_fat_id") @db.VarChar(1024)
-  twclid         String?   @db.VarChar(1024)
+  gclid          String?   @db.VarChar(255)
+  fbclid         String?   @db.VarChar(255)
+  msclkid        String?   @db.VarChar(255)
+  ttclid         String?   @db.VarChar(255)
+  lifatid        String?   @map("li_fat_id") @db.VarChar(255)
+  twclid         String?   @db.VarChar(255)
   eventType      Int       @default(1) @map("event_type") @db.Integer
   eventName      String?   @map("event_name") @db.VarChar(50)
   tag            String?   @db.VarChar(50)
@@ -200,7 +199,6 @@ model Team {
   members  TeamUser[]
   links    Link[]
   pixels   Pixel[]
-  boards   Board[]
 
   @@index([accessCode])
   @@map("team")
@@ -317,26 +315,4 @@ model Pixel {
   @@index([teamId])
   @@index([createdAt])
   @@map("pixel")
-}
-
-model Board {
-  id          String    @id() @unique() @map("board_id") @db.Uuid
-  type        String    @db.VarChar(50)
-  name        String    @db.VarChar(200)
-  description String    @db.VarChar(500)
-  parameters  Json
-  slug        String    @unique() @db.VarChar(100)
-  userId      String?   @map("user_id") @db.Uuid
-  teamId      String?   @map("team_id") @db.Uuid
-  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
-
-  user User? @relation("user", fields: [userId], references: [id])
-  team Team? @relation(fields: [teamId], references: [id])
-
-  @@index([slug])
-  @@index([userId])
-  @@index([teamId])
-  @@index([createdAt])
-  @@map("board")
 }
