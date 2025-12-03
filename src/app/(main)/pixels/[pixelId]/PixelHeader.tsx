@@ -10,7 +10,7 @@ export function PixelHeader() {
   const pixel = usePixel();
 
   return (
-    <PageHeader title={pixel.name} icon={<Grid2x2 />} marginBottom="3">
+    <PageHeader title={pixel.name} icon={<Grid2x2 />}>
       <LinkButton href={getSlugUrl(pixel.slug)} target="_blank" prefetch={false}>
         <Icon>
           <ExternalLink />
