@@ -37,7 +37,7 @@ async function relationalQuery(
     `
     select
       cast(coalesce(sum(t.c), 0) as bigint) as "pageviews",
-      count(distinct coalesce(t.resolved_identity, t.session_id::text)) as "visitors",
+      count(distinct coalesce(t.resolved_identity, t.visitor_id, t.session_id::text)) as "visitors",
       count(distinct t.visit_id) as "visits",
       coalesce(sum(case when t.c = 1 then 1 else 0 end), 0) as "bounces",
       cast(coalesce(sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}), 0) as bigint) as "totaltime"
@@ -45,6 +45,7 @@ async function relationalQuery(
       select
         website_event.session_id,
         website_event.visit_id,
+        session.visitor_id,
         il.distinct_id as "resolved_identity",
         count(*) as "c",
         min(website_event.created_at) as "min_time",
@@ -60,7 +61,7 @@ async function relationalQuery(
         and website_event.created_at between {{startDate}} and {{endDate}}
         and website_event.event_type != 2
         ${filterQuery}
-      group by 1, 2, 3
+      group by 1, 2, 3, 4
     ) as t
     `,
     queryParams,
@@ -84,7 +85,7 @@ async function clickhouseQuery(
     sql = `
     select
       sum(t.c) as "pageviews",
-      uniq(coalesce(t.resolved_identity, toString(t.session_id))) as "visitors",
+      uniq(coalesce(t.resolved_identity, t.visitor_id, toString(t.session_id))) as "visitors",
       uniq(t.visit_id) as "visits",
       sum(if(t.c = 1, 1, 0)) as "bounces",
       sum(max_time-min_time) as "totaltime"
@@ -92,6 +93,7 @@ async function clickhouseQuery(
       select
         we.session_id,
         we.visit_id,
+        we.visitor_id,
         il.distinct_id as resolved_identity,
         count(*) c,
         min(we.created_at) min_time,
@@ -104,20 +106,21 @@ async function clickhouseQuery(
         and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and we.event_type != 2
         ${filterQuery}
-      group by we.session_id, we.visit_id, il.distinct_id
+      group by we.session_id, we.visit_id, we.visitor_id, il.distinct_id
     ) as t;
     `;
   } else {
     sql = `
     select
       sum(t.c) as "pageviews",
-      uniq(coalesce(resolved_identity, toString(session_id))) as "visitors",
+      uniq(coalesce(resolved_identity, visitor_id, toString(session_id))) as "visitors",
       uniq(visit_id) as "visits",
       sumIf(1, t.c = 1) as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (select
             we.session_id,
             we.visit_id,
+            we.visitor_id,
             il.distinct_id as resolved_identity,
             sum(we.views) c,
             min(we.min_time) min_time,
@@ -130,7 +133,7 @@ async function clickhouseQuery(
       and we.created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and we.event_type != 2
       ${filterQuery}
-      group by we.session_id, we.visit_id, il.distinct_id
+      group by we.session_id, we.visit_id, we.visitor_id, il.distinct_id
     ) as t;
     `;
   }
