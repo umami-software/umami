@@ -47,7 +47,7 @@
     "test": "jest",
     "cypress-open": "cypress open cypress run",
     "cypress-run": "cypress run cypress run",
-    "seed-data": "tsx scripts/seed-data.ts"
+    "seed-data": "tsx scripts/seed-data.ts",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check --write"

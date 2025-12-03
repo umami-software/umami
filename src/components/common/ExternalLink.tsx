@@ -1,8 +1,13 @@
 import { Icon, Row, Text } from '@umami/react-zen';
-import Link from 'next/link';
+import Link, { type LinkProps } from 'next/link';
+import type { ReactNode } from 'react';
 import { ExternalLink as LinkIcon } from '@/components/icons';
 
-export function ExternalLink({ href, children, ...props }) {
+export function ExternalLink({
+  href,
+  children,
+  ...props
+}: LinkProps & { href: string; children: ReactNode }) {
   return (
     <Row alignItems="center" overflow="hidden" gap>
       <Text title={href} truncate>

@@ -21,7 +21,11 @@ export function PixelsTable(props: DataTableProps) {
       <DataColumn id="url" label="URL">
         {({ slug }: any) => {
           const url = getSlugUrl(slug);
-          return <ExternalLink href={url}>{url}</ExternalLink>;
+          return (
+            <ExternalLink href={url} prefetch={false}>
+              {url}
+            </ExternalLink>
+          );
         }}
       </DataColumn>
       <DataColumn id="created" label={formatMessage(labels.created)}>
