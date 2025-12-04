@@ -16,13 +16,11 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 COPY docker/middleware.ts ./src
 
-ARG DATABASE_TYPE
 ARG BASE_PATH
 
-ENV DATABASE_TYPE=$DATABASE_TYPE
 ENV BASE_PATH=$BASE_PATH
-
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV DATABASE_URL="postgresql://user:pass@localhost:5432/dummy"
 
 RUN npm run build-docker
 
