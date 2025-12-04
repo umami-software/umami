@@ -1,6 +1,6 @@
 import { Button, Icon, ListItem, Row, Select, Text } from '@umami/react-zen';
 import { isAfter } from 'date-fns';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useDateRange, useDateRangeQuery, useMessages, useNavigation } from '@/components/hooks';
 import { ChevronRight } from '@/components/icons';
 import { getDateRangeValue } from '@/lib/date';
@@ -45,13 +45,9 @@ export function WebsiteDateFilter({
     }
   };
 
-  const handleIncrement = useCallback(
-    (increment: number) => {
-      router.push(updateParams({ offset: +offset + increment }));
-    },
-    [offset],
-  );
-
+  const handleIncrement = increment => {
+    router.push(updateParams({ offset: Number(offset) + increment }));
+  };
   const handleSelect = (compare: any) => {
     router.push(updateParams({ compare }));
   };
