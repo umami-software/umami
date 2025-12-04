@@ -211,26 +211,16 @@ SERVER_PID=$!
 log "✓ Dev server started with PID $SERVER_PID"
 
 # 7. Warm up the main application routes
-# We poll until the dev server responds, up to a configurable timeout. This
-# gives us a concrete "dev run -> preview ready" duration that callers can
-# use for more granular sandbox timing analysis.
+# Use a single blocking curl to capture an accurate "dev run -> preview ready"
+# duration while still honoring a configurable max wait.
 MAX_DEV_WAIT_SECONDS=${UMAMI_DEV_WAIT_SECONDS:-60}
-log "Warming up main application routes (up to ${MAX_DEV_WAIT_SECONDS}s)..."
-DEV_SERVER_READY=0
-for ((i=1; i<=MAX_DEV_WAIT_SECONDS; i++)); do
-  if curl -s -o /dev/null --max-time 5 http://localhost:3001/ 2>/dev/null; then
-    DEV_SERVER_READY=1
-    break
-  fi
-  sleep 1
-done
-
-DEV_SERVER_TO_PREVIEW_DURATION_S=$((SECONDS - DEV_PHASE_START_SECONDS))
-
-if [[ "$DEV_SERVER_READY" -eq 1 ]]; then
+log "Warming up main application routes (max ${MAX_DEV_WAIT_SECONDS}s)..."
+if curl -s -o /dev/null --max-time "${MAX_DEV_WAIT_SECONDS}" http://localhost:3001/ 2>/dev/null; then
+  DEV_SERVER_TO_PREVIEW_DURATION_S=$((SECONDS - DEV_PHASE_START_SECONDS))
   log "✓ Main routes pre-compiled (ready after ${DEV_SERVER_TO_PREVIEW_DURATION_S}s)"
 else
-  log "Warning: Route warm-up timed out after ${DEV_SERVER_TO_PREVIEW_DURATION_S}s (non-critical)"
+  DEV_SERVER_TO_PREVIEW_DURATION_S=$((SECONDS - DEV_PHASE_START_SECONDS))
+  log "Warning: Route warm-up failed or timed out after ${DEV_SERVER_TO_PREVIEW_DURATION_S}s (non-critical)"
 fi
 
 log ""
