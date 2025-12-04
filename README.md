@@ -80,7 +80,7 @@ Docker image:
 docker pull docker.umami.is/umami-software/umami:latest
 ```
 
-Docker compose to run Umami with a Postgres database, run:
+Docker compose (Runs Umami with a PostgreSQL database):
 
 ```bash
 docker compose up -d
