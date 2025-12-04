@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
+import { config, useSpring } from '@react-spring/web';
+import { Column, Grid, Row, Text } from '@umami/react-zen';
+import type { ReactNode } from 'react';
 import { FixedSizeList } from 'react-window';
-import { useSpring, config } from '@react-spring/web';
-import { Grid, Row, Column, Text } from '@umami/react-zen';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { Empty } from '@/components/common/Empty';
 import { useMessages, useMobile } from '@/components/hooks';
@@ -105,7 +105,7 @@ const AnimatedRow = ({
 }) => {
   const props = useSpring({
     width: percent,
-    y: !isNaN(value) ? value : 0,
+    y: !Number.isNaN(value) ? value : 0,
     from: { width: 0, y: 0 },
     config: animate ? config.default : { duration: 0 },
   });

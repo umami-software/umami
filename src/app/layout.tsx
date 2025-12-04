@@ -1,5 +1,5 @@
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { Metadata } from 'next';
 import { Providers } from './Providers';
 import '@fontsource/inter/300.css';
 import '@fontsource/inter/400.css';

@@ -1,7 +1,7 @@
+import { parseRequest } from '@/lib/request';
+import { ok, unauthorized } from '@/lib/response';
 import { canUpdateWebsite } from '@/permissions';
 import { resetWebsite } from '@/queries/prisma';
-import { unauthorized, ok } from '@/lib/response';
-import { parseRequest } from '@/lib/request';
 
 export async function POST(
   request: Request,

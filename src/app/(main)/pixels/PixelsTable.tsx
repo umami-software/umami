@@ -1,10 +1,10 @@
+import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
 import Link from 'next/link';
-import { DataTable, DataColumn, Row, DataTableProps } from '@umami/react-zen';
-import { useMessages, useNavigation, useSlug } from '@/components/hooks';
 import { DateDistance } from '@/components/common/DateDistance';
-import { PixelEditButton } from './PixelEditButton';
-import { PixelDeleteButton } from './PixelDeleteButton';
 import { ExternalLink } from '@/components/common/ExternalLink';
+import { useMessages, useNavigation, useSlug } from '@/components/hooks';
+import { PixelDeleteButton } from './PixelDeleteButton';
+import { PixelEditButton } from './PixelEditButton';
 
 export function PixelsTable(props: DataTableProps) {
   const { formatMessage, labels } = useMessages();
@@ -21,7 +21,11 @@ export function PixelsTable(props: DataTableProps) {
       <DataColumn id="url" label="URL">
         {({ slug }: any) => {
           const url = getSlugUrl(slug);
-          return <ExternalLink href={url}>{url}</ExternalLink>;
+          return (
+            <ExternalLink href={url} prefetch={false}>
+              {url}
+            </ExternalLink>
+          );
         }}
       </DataColumn>
       <DataColumn id="created" label={formatMessage(labels.created)}>

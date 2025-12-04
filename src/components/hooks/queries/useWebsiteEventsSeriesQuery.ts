@@ -1,7 +1,7 @@
+import type { ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
-import { useFilterParameters } from '../useFilterParameters';
 import { useDateParameters } from '../useDateParameters';
-import { ReactQueryOptions } from '@/lib/types';
+import { useFilterParameters } from '../useFilterParameters';
 
 export function useWebsiteEventsSeriesQuery(websiteId: string, options?: ReactQueryOptions) {
   const { get, useQuery } = useApi();

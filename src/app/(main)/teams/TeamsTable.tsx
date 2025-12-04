@@ -1,7 +1,7 @@
-import { DataColumn, DataTable, DataTableProps } from '@umami/react-zen';
+import { DataColumn, DataTable, type DataTableProps } from '@umami/react-zen';
+import type { ReactNode } from 'react';
 import { useMessages } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
-import { ReactNode } from 'react';
 
 export interface TeamsTableProps extends DataTableProps {
   renderLink?: (row: any) => ReactNode;

@@ -1,7 +1,7 @@
 'use client';
-import { PageBody } from '@/components/common/PageBody';
 import { Column, Grid } from '@umami/react-zen';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { PageBody } from '@/components/common/PageBody';
 import { SettingsNav } from './SettingsNav';
 
 export function SettingsLayout({ children }: { children: ReactNode }) {
@@ -14,6 +14,7 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
         border="right"
         backgroundColor
         marginRight="2"
+        padding="3"
       >
         <SettingsNav />
       </Column>

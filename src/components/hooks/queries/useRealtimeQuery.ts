@@ -1,6 +1,6 @@
 import { REALTIME_INTERVAL } from '@/lib/constants';
+import type { RealtimeData } from '@/lib/types';
 import { useApi } from '../useApi';
-import { RealtimeData } from '@/lib/types';
 
 export function useRealtimeQuery(websiteId: string) {
   const { get, useQuery } = useApi();

@@ -1,5 +1,5 @@
-import { useDeleteQuery, useMessages, useModified } from '@/components/hooks';
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
+import { useDeleteQuery, useMessages, useModified } from '@/components/hooks';
 
 export function TeamLeaveForm({
   teamId,

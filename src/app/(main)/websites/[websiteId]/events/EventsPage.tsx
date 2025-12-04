@@ -1,15 +1,15 @@
 'use client';
-import { TabList, Tab, Tabs, TabPanel, Column } from '@umami/react-zen';
-import { MetricsTable } from '@/components/metrics/MetricsTable';
-import { useState, Key } from 'react';
-import { EventsDataTable } from './EventsDataTable';
-import { Panel } from '@/components/common/Panel';
-import { EventsChart } from '@/components/metrics/EventsChart';
-import { useMessages } from '@/components/hooks';
-import { EventProperties } from './EventProperties';
-import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
-import { getItem, setItem } from '@/lib/storage';
+import { Column, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { type Key, useState } from 'react';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
+import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
+import { Panel } from '@/components/common/Panel';
+import { useMessages } from '@/components/hooks';
+import { EventsChart } from '@/components/metrics/EventsChart';
+import { MetricsTable } from '@/components/metrics/MetricsTable';
+import { getItem, setItem } from '@/lib/storage';
+import { EventProperties } from './EventProperties';
+import { EventsDataTable } from './EventsDataTable';
 
 const KEY_NAME = 'umami.events.tab';
 

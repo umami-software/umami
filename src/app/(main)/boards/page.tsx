@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { BoardsPage } from './BoardsPage';
 
 export default function () {

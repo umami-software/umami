@@ -1,9 +1,9 @@
 'use client';
+import { Column } from '@umami/react-zen';
 import { TeamsDataTable } from '@/app/(main)/teams/TeamsDataTable';
 import { TeamsHeader } from '@/app/(main)/teams/TeamsHeader';
-import { Column } from '@umami/react-zen';
-import { Panel } from '@/components/common/Panel';
 import { PageBody } from '@/components/common/PageBody';
+import { Panel } from '@/components/common/Panel';
 
 export function TeamsPage() {
   return (

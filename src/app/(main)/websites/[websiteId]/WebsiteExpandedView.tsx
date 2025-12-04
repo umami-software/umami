@@ -1,8 +1,8 @@
-import { Grid, Column, Row } from '@umami/react-zen';
-import { useMessages, useNavigation } from '@/components/hooks';
-import { MetricsExpandedTable } from '@/components/metrics/MetricsExpandedTable';
+import { Column, Grid, Row } from '@umami/react-zen';
 import { WebsiteExpandedMenu } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedMenu';
+import { useMessages, useNavigation } from '@/components/hooks';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
+import { MetricsExpandedTable } from '@/components/metrics/MetricsExpandedTable';
 
 export function WebsiteExpandedView({
   websiteId,

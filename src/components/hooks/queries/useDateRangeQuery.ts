@@ -1,5 +1,5 @@
+import type { ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
-import { ReactQueryOptions } from '@/lib/types';
 
 type DateRange = {
   startDate?: string;

@@ -1,7 +1,7 @@
 import { useMessages } from '@/components/hooks';
 import { Plus } from '@/components/icons';
-import { SegmentEditForm } from './SegmentEditForm';
 import { DialogButton } from '@/components/input/DialogButton';
+import { SegmentEditForm } from './SegmentEditForm';
 
 export function SegmentAddButton({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();

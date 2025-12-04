@@ -1,6 +1,6 @@
+import { WebsitesTable } from '@/app/(main)/websites/WebsitesTable';
 import { DataGrid } from '@/components/common/DataGrid';
 import { useUserWebsitesQuery } from '@/components/hooks';
-import { WebsitesTable } from '@/app/(main)/websites/WebsitesTable';
 
 export function UserWebsites({ userId }) {
   const queryResult = useUserWebsitesQuery({ userId });

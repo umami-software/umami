@@ -1,10 +1,11 @@
+import { Column, Heading, IconLabel, Row, SearchField, Text } from '@umami/react-zen';
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { FixedSizeList } from 'react-window';
-import { SearchField, Text, Column, Row, IconLabel, Heading } from '@umami/react-zen';
-import Link from 'next/link';
+import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { useFormat } from '@/components//hooks/useFormat';
+import { Avatar } from '@/components/common/Avatar';
 import { Empty } from '@/components/common/Empty';
-import { FilterButtons } from '@/components/input/FilterButtons';
 import {
   useCountryNames,
   useLocale,
@@ -15,10 +16,9 @@ import {
   useWebsite,
 } from '@/components/hooks';
 import { Eye, User } from '@/components/icons';
+import { FilterButtons } from '@/components/input/FilterButtons';
 import { Lightning } from '@/components/svg';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
-import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
-import { Avatar } from '@/components/common/Avatar';
 
 const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';

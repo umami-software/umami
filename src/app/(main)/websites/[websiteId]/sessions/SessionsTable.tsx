@@ -1,9 +1,9 @@
+import { DataColumn, DataTable, type DataTableProps } from '@umami/react-zen';
 import Link from 'next/link';
-import { DataColumn, DataTable, DataTableProps } from '@umami/react-zen';
-import { useFormat, useMessages, useNavigation } from '@/components/hooks';
 import { Avatar } from '@/components/common/Avatar';
-import { TypeIcon } from '@/components/common/TypeIcon';
 import { DateDistance } from '@/components/common/DateDistance';
+import { TypeIcon } from '@/components/common/TypeIcon';
+import { useFormat, useMessages, useNavigation } from '@/components/hooks';
 
 export function SessionsTable(props: DataTableProps) {
   const { formatMessage, labels } = useMessages();

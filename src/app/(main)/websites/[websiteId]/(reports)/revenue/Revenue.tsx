@@ -1,3 +1,7 @@
+import { Column, Grid, Row, Text } from '@umami/react-zen';
+import classNames from 'classnames';
+import { colord } from 'colord';
+import { useCallback, useMemo, useState } from 'react';
 import { BarChart } from '@/components/charts/BarChart';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
@@ -11,10 +15,6 @@ import { renderDateLabels } from '@/lib/charts';
 import { CHART_COLORS } from '@/lib/constants';
 import { generateTimeSeries } from '@/lib/date';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
-import { Column, Grid, Row, Text } from '@umami/react-zen';
-import classNames from 'classnames';
-import { colord } from 'colord';
-import { useCallback, useMemo, useState } from 'react';
 
 export interface RevenueProps {
   websiteId: string;
@@ -137,7 +137,7 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
                 metric={formatMessage(labels.revenue)}
                 data={data?.country.map(({ name, value }: { name: string; value: number }) => ({
                   label: name,
-                  count: value,
+                  count: Number(value),
                   percent: (value / data?.total.sum) * 100,
                 }))}
                 currency={currency}

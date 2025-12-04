@@ -1,5 +1,5 @@
-import { Auth } from '@/lib/types';
-import { Report } from '@/generated/prisma/client';
+import type { Report } from '@/generated/prisma/client';
+import type { Auth } from '@/lib/types';
 import { canViewWebsite } from './website';
 
 export async function canViewReport(auth: Auth, report: Report) {
@@ -7,7 +7,7 @@ export async function canViewReport(auth: Auth, report: Report) {
     return true;
   }
 
-  if (auth.user.id == report.userId) {
+  if (auth.user.id === report.userId) {
     return true;
   }
 
@@ -19,7 +19,7 @@ export async function canUpdateReport({ user }: Auth, report: Report) {
     return true;
   }
 
-  return user.id == report.userId;
+  return user.id === report.userId;
 }
 
 export async function canDeleteReport(auth: Auth, report: Report) {

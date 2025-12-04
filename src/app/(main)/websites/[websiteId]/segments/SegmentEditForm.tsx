@@ -4,12 +4,12 @@ import {
   FormButtons,
   FormField,
   FormSubmitButton,
-  TextField,
-  Loading,
   Label,
+  Loading,
+  TextField,
 } from '@umami/react-zen';
-import { FieldFilters } from '@/components/input/FieldFilters';
 import { useMessages, useUpdateQuery, useWebsiteSegmentQuery } from '@/components/hooks';
+import { FieldFilters } from '@/components/input/FieldFilters';
 import { messages } from '@/components/messages';
 
 export function SegmentEditForm({

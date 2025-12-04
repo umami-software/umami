@@ -1,5 +1,5 @@
-import { Icon, Text, Row, RowProps } from '@umami/react-zen';
-import { ReactNode } from 'react';
+import { Icon, Row, type RowProps, Text } from '@umami/react-zen';
+import type { ReactNode } from 'react';
 import { ArrowRight } from '@/components/icons';
 
 const STYLES = {
@@ -33,7 +33,7 @@ export function ChangeLabel({
 } & RowProps) {
   const positive = value >= 0;
   const negative = value < 0;
-  const neutral = value === 0 || isNaN(value);
+  const neutral = value === 0 || Number.isNaN(value);
   const good = reverseColors ? negative : positive;
 
   const style =

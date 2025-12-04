@@ -1,8 +1,8 @@
 'use client';
+import { Column, Grid } from '@umami/react-zen';
+import type { ReactNode } from 'react';
 import { PageBody } from '@/components/common/PageBody';
 import { useLoginQuery } from '@/components/hooks';
-import { Column, Grid } from '@umami/react-zen';
-import { ReactNode } from 'react';
 import { AdminNav } from './AdminNav';
 
 export function AdminLayout({ children }: { children: ReactNode }) {
@@ -21,6 +21,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         border="right"
         backgroundColor
         marginRight="2"
+        padding="3"
       >
         <AdminNav />
       </Column>

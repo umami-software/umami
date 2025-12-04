@@ -1,7 +1,7 @@
 import { subMinutes } from 'date-fns';
-import prisma from '@/lib/prisma';
 import clickhouse from '@/lib/clickhouse';
-import { runQuery, CLICKHOUSE, PRISMA } from '@/lib/db';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import prisma from '@/lib/prisma';
 
 const FUNCTION_NAME = 'getActiveVisitors';
 

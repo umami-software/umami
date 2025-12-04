@@ -1,14 +1,14 @@
+import { Column, Grid, ListItem, Select } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
-import { Select, ListItem, Grid, Column } from '@umami/react-zen';
+import { PieChart } from '@/components/charts/PieChart';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
   useMessages,
   useSessionDataPropertiesQuery,
   useSessionDataValuesQuery,
 } from '@/components/hooks';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { PieChart } from '@/components/charts/PieChart';
-import { CHART_COLORS } from '@/lib/constants';
 import { ListTable } from '@/components/metrics/ListTable';
+import { CHART_COLORS } from '@/lib/constants';
 
 export function SessionProperties({ websiteId }: { websiteId: string }) {
   const [propertyName, setPropertyName] = useState('');

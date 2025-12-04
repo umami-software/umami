@@ -1,24 +1,24 @@
 import {
-  DataTable,
-  DataColumn,
-  Row,
-  Text,
-  DataTableProps,
-  IconLabel,
   Button,
+  DataColumn,
+  DataTable,
+  type DataTableProps,
   Dialog,
   DialogTrigger,
   Icon,
+  IconLabel,
   Popover,
+  Row,
+  Text,
 } from '@umami/react-zen';
-import { useFormat, useMessages, useNavigation } from '@/components/hooks';
-import { Avatar } from '@/components/common/Avatar';
 import Link from 'next/link';
-import { Eye, FileText } from '@/components/icons';
-import { Lightning } from '@/components/svg';
+import { Avatar } from '@/components/common/Avatar';
 import { DateDistance } from '@/components/common/DateDistance';
 import { TypeIcon } from '@/components/common/TypeIcon';
+import { useFormat, useMessages, useNavigation } from '@/components/hooks';
+import { Eye, FileText } from '@/components/icons';
 import { EventData } from '@/components/metrics/EventData';
+import { Lightning } from '@/components/svg';
 
 export function EventsTable(props: DataTableProps) {
   const { formatMessage, labels } = useMessages();

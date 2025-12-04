@@ -1,7 +1,7 @@
 import thenby from 'thenby';
-import { percentFilter } from '@/lib/filters';
-import { ListTable } from '@/components/metrics/ListTable';
 import { useMessages, useWebsite } from '@/components/hooks';
+import { ListTable } from '@/components/metrics/ListTable';
+import { percentFilter } from '@/lib/filters';
 
 export function RealtimeReferrers({ data }: { data: any }) {
   const website = useWebsite();

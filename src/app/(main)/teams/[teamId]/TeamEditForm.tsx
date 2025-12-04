@@ -1,16 +1,16 @@
 import {
-  Form,
-  FormField,
-  FormButtons,
-  FormSubmitButton,
-  TextField,
   Button,
+  Form,
+  FormButtons,
+  FormField,
+  FormSubmitButton,
   IconLabel,
   Row,
+  TextField,
 } from '@umami/react-zen';
-import { getRandomChars } from '@/lib/generate';
 import { useMessages, useTeam, useUpdateQuery } from '@/components/hooks';
 import { RefreshCw } from '@/components/icons';
+import { getRandomChars } from '@/lib/generate';
 
 const generateId = () => `team_${getRandomChars(16)}`;
 

@@ -1,7 +1,7 @@
+import type { ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
-import { usePagedQuery } from '../usePagedQuery';
 import { useModified } from '../useModified';
-import { ReactQueryOptions } from '@/lib/types';
+import { usePagedQuery } from '../usePagedQuery';
 
 export function useUserWebsitesQuery(
   { userId, teamId }: { userId?: string; teamId?: string },

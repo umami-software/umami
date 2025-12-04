@@ -1,6 +1,6 @@
-import { useLoginQuery, useMessages, useModified } from '@/components/hooks';
+import { Button, Dialog, DialogTrigger, Icon, Modal, Text } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
-import { Button, Icon, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
+import { useLoginQuery, useMessages, useModified } from '@/components/hooks';
 import { LogOut } from '@/components/icons';
 import { TeamLeaveForm } from './TeamLeaveForm';
 

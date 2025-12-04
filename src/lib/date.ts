@@ -1,5 +1,3 @@
-import { getDateLocale } from '@/lib/lang';
-import { DateRange } from '@/lib/types';
 import {
   addDays,
   addHours,
@@ -40,6 +38,8 @@ import {
   subYears,
 } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
+import { getDateLocale } from '@/lib/lang';
+import type { DateRange } from '@/lib/types';
 
 export const TIME_UNIT = {
   minute: 'minute',
@@ -371,5 +371,5 @@ export function getMonthDateRangeValue(date: Date) {
 }
 
 export function isInvalidDate(date: any) {
-  return date instanceof Date && isNaN(date.getTime());
+  return date instanceof Date && Number.isNaN(date.getTime());
 }

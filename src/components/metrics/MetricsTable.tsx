@@ -1,12 +1,12 @@
+import { Grid, Icon, Row, Text } from '@umami/react-zen';
 import { useEffect, useMemo } from 'react';
-import { Icon, Text, Row, Grid } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useNavigation, useWebsiteMetricsQuery } from '@/components/hooks';
 import { Maximize } from '@/components/icons';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
 import { percentFilter } from '@/lib/filters';
-import { ListTable, ListTableProps } from './ListTable';
+import { ListTable, type ListTableProps } from './ListTable';
 
 export interface MetricsTableProps extends ListTableProps {
   websiteId: string;

@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { Heading, Icon, Row, Text, Column, Grid } from '@umami/react-zen';
+import { Column, Grid, Heading, Icon, Row, Text } from '@umami/react-zen';
+import type { ReactNode } from 'react';
 import { LinkButton } from './LinkButton';
 
 export function PageHeader({
@@ -50,7 +50,9 @@ export function PageHeader({
           </Text>
         )}
       </Column>
-      <Row justifyContent="flex-end">{children}</Row>
+      <Row justifyContent="flex-end" alignItems="center">
+        {children}
+      </Row>
     </Grid>
   );
 }

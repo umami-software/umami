@@ -1,11 +1,11 @@
 'use client';
 import { Column } from '@umami/react-zen';
+import { ExpandedViewModal } from '@/app/(main)/websites/[websiteId]/ExpandedViewModal';
 import { Panel } from '@/components/common/Panel';
 import { WebsiteChart } from './WebsiteChart';
+import { WebsiteControls } from './WebsiteControls';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
 import { WebsitePanels } from './WebsitePanels';
-import { WebsiteControls } from './WebsiteControls';
-import { ExpandedViewModal } from '@/app/(main)/websites/[websiteId]/ExpandedViewModal';
 
 export function WebsitePage({ websiteId }: { websiteId: string }) {
   return (
