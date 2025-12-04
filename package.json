@@ -33,7 +33,7 @@
     "check-db": "node scripts/check-db.js",
     "check-env": "node scripts/check-env.js",
     "copy-db-files": "node scripts/copy-db-files.js",
-    "generate-test-data": "node scripts/generate-test-data.js",
+    "generate-test-data": "npx tsx scripts/generate-test-data.ts",
     "extract-messages": "formatjs extract \"src/components/messages.ts\" --out-file build/extracted-messages.json",
     "merge-messages": "node scripts/merge-messages.js",
     "generate-lang": "npm-run-all extract-messages merge-messages",
