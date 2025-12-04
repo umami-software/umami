@@ -27,10 +27,10 @@ A detailed getting started guide can be found at [umami.is/docs](https://umami.i
 
 ### Requirements
 
-- A server with Node.js version 18.18 or newer
-- A database. Umami supports [PostgreSQL](https://www.postgresql.org/) (minimum v12.14) databases.
+- A server with Node.js version 18.18+.
+- A PostgreSQL database version v12.14+.
 
-### Get the Source Code and Install Packages
+### Get the source code and install packages
 
 ```bash
 git clone https://github.com/umami-software/umami.git
@@ -58,7 +58,7 @@ postgresql://username:mypassword@localhost:5432/mydb
 pnpm run build
 ```
 
-_The build step will create tables in your database if you are installing for the first time. It will also create a login user with username **admin** and password **umami**._
+The build step will create tables in your database if you are installing for the first time. It will also create a login user with username **admin** and password **umami**.
 
 ### Start the Application
 
@@ -66,37 +66,36 @@ _The build step will create tables in your database if you are installing for th
 pnpm run start
 ```
 
-_By default, this will launch the application on `http://localhost:3000`. You will need to either [proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly._
+By default, this will launch the application on `http://localhost:3000`. You will need to either [proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly.
 
 ---
 
 ## 🐳 Installing with Docker
 
-To build the Umami container and start up a Postgres database, run:
+Umami provides Docker images as well as a Docker compose file for easy deployment.
 
-```bash
-docker compose up -d
-```
-
-Alternatively, to pull just the Umami Docker image with PostgreSQL support:
+Docker image:
 
 ```bash
 docker pull docker.umami.is/umami-software/umami:latest
 ```
 
+Docker compose to run Umami with a Postgres database, run:
+
+```bash
+docker compose up -d
+```
+
 ---
 
 ## 🔄 Getting Updates
-> [!WARNING]  
-> If you are updating from Umami V2, image "postgresql-latest" is deprecated. You must change it to "latest".
-> e.g., rename `docker.umami.is/umami-software/umami:postgresql-latest` to `docker.umami.is/umami-software/umami:latest`.
 
 To get the latest features, simply do a pull, install any new dependencies, and rebuild:
 
 ```bash
 git pull
 pnpm install
-pnpm run build
+pnpm build
 ```
 
 To update the Docker image, simply pull the new images and rebuild:
