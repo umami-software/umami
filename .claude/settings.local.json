@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": ["Bash(pnpm --filter @niteshift/dials build:*)"],
-    "deny": [],
-    "ask": []
-  }
-}
