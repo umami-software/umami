@@ -215,7 +215,14 @@ log "✓ Dev server started with PID $SERVER_PID"
 # duration while still honoring a configurable max wait.
 MAX_DEV_WAIT_SECONDS=${UMAMI_DEV_WAIT_SECONDS:-60}
 log "Warming up main application routes (max ${MAX_DEV_WAIT_SECONDS}s)..."
-if curl -s -o /dev/null --max-time "${MAX_DEV_WAIT_SECONDS}" http://localhost:3001/ 2>/dev/null; then
+DEV_WARMUP_START_SECONDS=$SECONDS
+if curl \
+  --retry-connrefused \
+  --retry "${MAX_DEV_WAIT_SECONDS}" \
+  --retry-delay 1 \
+  --retry-max-time "${MAX_DEV_WAIT_SECONDS}" \
+  --max-time "${MAX_DEV_WAIT_SECONDS}" \
+  -s -o /dev/null http://localhost:3001/ 2>/dev/null; then
   DEV_SERVER_TO_PREVIEW_DURATION_S=$((SECONDS - DEV_PHASE_START_SECONDS))
   log "✓ Main routes pre-compiled (ready after ${DEV_SERVER_TO_PREVIEW_DURATION_S}s)"
 else
