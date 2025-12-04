@@ -46,6 +46,14 @@
       "arrowParentheses": "asNeeded"
     }
   },
+  "css": {
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "lineEnding": "lf"
+    }
+  },
   "assist": {
     "enabled": true,
     "actions": {

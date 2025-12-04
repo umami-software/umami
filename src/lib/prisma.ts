@@ -303,9 +303,7 @@ function getClient() {
   const url = process.env.DATABASE_URL;
   const replicaUrl = process.env.DATABASE_REPLICA_URL;
   const logQuery = process.env.LOG_QUERY;
-
-  const connectionUrl = new URL(url);
-  const schema = connectionUrl.searchParams.get('schema') ?? undefined;
+  const schema = getSchema();
 
   const baseAdapter = new PrismaPg({ connectionString: url }, { schema });
 
