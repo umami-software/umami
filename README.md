@@ -107,6 +107,164 @@ docker compose up --force-recreate -d
 ```
 
 ---
+## Database ERD
+```mermaid
+erDiagram
+
+    WEBSITE_EVENT {
+        uuid website_id
+        uuid session_id
+        uuid visit_id
+        uuid event_id
+
+        string hostname
+        string browser
+        string os
+        string device
+        string screen
+        string language
+        string country
+        string region
+        string city
+
+        string url_path
+        string url_query
+        string utm_source
+        string utm_medium
+        string utm_campaign
+        string utm_content
+        string utm_term
+        string referrer_path
+        string referrer_query
+        string referrer_domain
+        string page_title
+
+        string gclid
+        string fbclid
+        string msclkid
+        string ttclid
+        string li_fat_id
+        string twclid
+
+        uint event_type
+        string event_name
+        string tag
+        string distinct_id
+
+        datetime created_at
+        uuid job_id
+    }
+
+    EVENT_DATA {
+        uuid website_id
+        uuid session_id
+        uuid event_id
+
+        string url_path
+        string event_name
+        string data_key
+
+        string string_value
+        decimal number_value
+        datetime date_value
+
+        uint data_type
+        datetime created_at
+        uuid job_id
+    }
+
+    SESSION_DATA {
+        uuid website_id
+        uuid session_id
+
+        string data_key
+        string string_value
+        decimal number_value
+        datetime date_value
+
+        uint data_type
+        string distinct_id
+        datetime created_at
+        uuid job_id
+    }
+
+    WEBSITE_EVENT_STATS_HOURLY {
+        uuid website_id
+        uuid session_id
+        uuid visit_id
+
+        string[] hostname
+        string browser
+        string os
+        string device
+        string screen
+        string language
+        string country
+        string region
+        string city
+
+        string entry_url
+        string exit_url
+
+        string[] url_path
+        string[] url_query
+        string[] utm_source
+        string[] utm_medium
+        string[] utm_campaign
+        string[] utm_content
+        string[] utm_term
+        string[] referrer_domain
+        string[] page_title
+        string[] gclid
+        string[] fbclid
+        string[] msclkid
+        string[] ttclid
+        string[] li_fat_id
+        string[] twclid
+
+        uint event_type
+        string[] event_name
+        uint views
+        datetime min_time
+        datetime max_time
+        string[] tag
+        string distinct_id
+
+        datetime created_at
+    }
+
+    WEBSITE_REVENUE {
+        uuid website_id
+        uuid session_id
+        uuid event_id
+
+        string event_name
+        string currency
+        decimal revenue
+
+        datetime created_at
+    }
+
+    %% RELATIONSHIPS
+
+    %% One website_event can have many event_data rows (KV payload for events)
+    WEBSITE_EVENT ||--o{ EVENT_DATA : "has event data"
+
+    %% One session (via website_event) can have many session_data rows (session-level KV)
+    WEBSITE_EVENT ||--o{ SESSION_DATA : "has session data"
+
+    %% Hourly stats are aggregated from raw events
+    WEBSITE_EVENT ||--o{ WEBSITE_EVENT_STATS_HOURLY : "aggregated into"
+
+    %% Revenue is per event
+    WEBSITE_EVENT ||--o{ WEBSITE_REVENUE : "has revenue"
+
+    %% Revenue rows are derived from a subset of event_data rows
+    EVENT_DATA ||--o{ WEBSITE_REVENUE : "revenue from"
+
+```
+
+---
 
 ## 🛟 Support
 
