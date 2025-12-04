@@ -216,17 +216,19 @@ log "✓ Dev server started with PID $SERVER_PID"
 MAX_DEV_WAIT_SECONDS=${UMAMI_DEV_WAIT_SECONDS:-60}
 log "Warming up main application routes (max ${MAX_DEV_WAIT_SECONDS}s)..."
 DEV_WARMUP_START_SECONDS=$SECONDS
-if curl \
-  --retry-connrefused \
-  --retry "${MAX_DEV_WAIT_SECONDS}" \
-  --retry-delay 1 \
-  --retry-max-time "${MAX_DEV_WAIT_SECONDS}" \
-  --max-time "${MAX_DEV_WAIT_SECONDS}" \
-  -s -o /dev/null http://localhost:3001/ 2>/dev/null; then
-  DEV_SERVER_TO_PREVIEW_DURATION_S=$((SECONDS - DEV_PHASE_START_SECONDS))
+DEV_SERVER_READY=0
+for ((i=1; i<=MAX_DEV_WAIT_SECONDS; i++)); do
+  if curl -s -o /dev/null --max-time 5 http://localhost:3001/ 2>/dev/null; then
+    DEV_SERVER_READY=1
+    break
+  fi
+  sleep 1
+done
+
+DEV_SERVER_TO_PREVIEW_DURATION_S=$((SECONDS - DEV_PHASE_START_SECONDS))
+if [[ "$DEV_SERVER_READY" -eq 1 ]]; then
   log "✓ Main routes pre-compiled (ready after ${DEV_SERVER_TO_PREVIEW_DURATION_S}s)"
 else
-  DEV_SERVER_TO_PREVIEW_DURATION_S=$((SECONDS - DEV_PHASE_START_SECONDS))
   log "Warning: Route warm-up failed or timed out after ${DEV_SERVER_TO_PREVIEW_DURATION_S}s (non-critical)"
 fi
 
