@@ -166,6 +166,7 @@ if (cloudMode) {
 /** @type {import('next').NextConfig} */
 export default {
   reactStrictMode: false,
+  devIndicators: false,
   env: {
     basePath,
     cloudMode,

@@ -12,6 +12,8 @@ import { BooleanControl } from '../controls/BooleanControl';
 import { NumberControl } from '../controls/NumberControl';
 import type { DialRegistration } from '../types';
 
+type OverlayState = 'hidden' | 'collapsed' | 'expanded';
+
 export interface DialsOverlayProps {
   /** Initial visibility state */
   defaultVisible?: boolean;
@@ -35,47 +37,27 @@ export function DialsOverlay({
   defaultVisible = true,
   position = 'bottom-left',
 }: DialsOverlayProps) {
-  // Load visibility state from localStorage (avoiding hydration mismatch)
-  const [isVisible, setIsVisible] = useState(defaultVisible);
+  // Three states: hidden (nothing), collapsed (button only), expanded (full panel)
+  const [overlayState, setOverlayState] = useState<OverlayState>(
+    defaultVisible ? 'expanded' : 'collapsed',
+  );
 
   // Load from localStorage after mount to avoid hydration issues
   useEffect(() => {
-    const stored = localStorage.getItem('niteshift-dials-visible');
-    if (stored !== null) {
-      setIsVisible(stored === 'true');
+    const stored = localStorage.getItem('niteshift-dials-state');
+    if (stored !== null && ['hidden', 'collapsed', 'expanded'].includes(stored)) {
+      setOverlayState(stored as OverlayState);
     }
   }, []);
   const [searchTerm, setSearchTerm] = useState('');
   const [dials, setDials] = useState<DialRegistration[]>([]);
-  const [hasNextOverlay, setHasNextOverlay] = useState(false);
   const [isMacLike, setIsMacLike] = useState(false);
-  const [shortcutLabel, setShortcutLabel] = useState('Ctrl+D (macOS) / Ctrl+Alt+D (Win/Linux)');
   const registry = getDialRegistry();
 
-  // Persist visibility state to localStorage
+  // Persist state to localStorage
   useEffect(() => {
-    localStorage.setItem('niteshift-dials-visible', String(isVisible));
-  }, [isVisible]);
-
-  // Detect Next.js error overlay
-  useEffect(() => {
-    const checkNextOverlay = () => {
-      // Next.js error overlay has specific identifiers
-      const nextjsOverlay =
-        document.querySelector('nextjs-portal') ||
-        document.querySelector('[data-nextjs-dialog-overlay]') ||
-        document.querySelector('[data-nextjs-toast]');
-      setHasNextOverlay(!!nextjsOverlay);
-    };
-
-    // Check on mount and set up observer
-    checkNextOverlay();
-
-    const observer = new MutationObserver(checkNextOverlay);
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    return () => observer.disconnect();
-  }, []);
+    localStorage.setItem('niteshift-dials-state', overlayState);
+  }, [overlayState]);
 
   // Subscribe to registry changes
   useEffect(() => {
@@ -99,22 +81,28 @@ export function DialsOverlay({
     setIsMacLike(isMac);
   }, []);
 
-  useEffect(() => {
-    setShortcutLabel(isMacLike ? 'Ctrl+D (macOS)' : 'Ctrl+Alt+D (Windows/Linux)');
-  }, [isMacLike]);
-
   // Keyboard shortcut to toggle visibility
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
+      // Guard against undefined or null key (can happen with some special key events)
+      if (!e.key) return;
+
       const key = e.key.toLowerCase();
       if (key !== 'd') return;
 
       const macCombo = isMacLike && e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey;
       const otherCombo = !isMacLike && e.ctrlKey && e.altKey && !e.metaKey && !e.shiftKey;
+      // Ctrl+Shift+D to hide entirely on any platform
+      const hideCombo = e.ctrlKey && e.shiftKey && !e.metaKey && !e.altKey;
 
-      if (macCombo || otherCombo) {
+      if (hideCombo) {
+        // Ctrl+Shift+D: toggle between hidden and collapsed
         e.preventDefault();
-        setIsVisible(prev => !prev);
+        setOverlayState(prev => (prev === 'hidden' ? 'collapsed' : 'hidden'));
+      } else if (macCombo || otherCombo) {
+        // Ctrl+D / Ctrl+Alt+D: toggle between collapsed and expanded
+        e.preventDefault();
+        setOverlayState(prev => (prev === 'expanded' ? 'collapsed' : 'expanded'));
       }
     };
 
@@ -163,20 +151,21 @@ export function DialsOverlay({
     }
   };
 
-  // Calculate bottom position based on Next.js overlay presence
-  const bottomPosition = hasNextOverlay ? '140px' : '20px';
+  // Hidden state: render nothing
+  if (overlayState === 'hidden') {
+    return null;
+  }
 
-  if (!isVisible) {
+  // Collapsed state: render button only
+  if (overlayState === 'collapsed') {
     return (
       <button
         className="dials-toggle-button"
-        onClick={() => setIsVisible(true)}
-        title={`Show Dials (${shortcutLabel})`}
+        onClick={() => setOverlayState('expanded')}
+        title="Show Dials (Ctrl+D)"
         style={{
           position: 'fixed',
-          [position.includes('bottom') ? 'bottom' : 'top']: position.includes('bottom')
-            ? bottomPosition
-            : '20px',
+          [position.includes('bottom') ? 'bottom' : 'top']: '20px',
           [position.includes('right') ? 'right' : 'left']: '20px',
           width: '48px',
           height: '48px',
@@ -202,9 +191,7 @@ export function DialsOverlay({
       className="dials-overlay"
       style={{
         position: 'fixed',
-        [position.includes('bottom') ? 'bottom' : 'top']: position.includes('bottom')
-          ? bottomPosition
-          : '20px',
+        [position.includes('bottom') ? 'bottom' : 'top']: '20px',
         [position.includes('right') ? 'right' : 'left']: '20px',
         width: '320px',
         maxHeight: '80vh',
@@ -236,12 +223,12 @@ export function DialsOverlay({
               Design Dials
             </h3>
             <div style={{ fontSize: '10px', color: '#8c92a4', marginTop: '2px' }}>
-              {shortcutLabel}
+              Ctrl+D toggle · Ctrl+Shift+D hide
             </div>
           </div>
         </div>
         <button
-          onClick={() => setIsVisible(false)}
+          onClick={() => setOverlayState('collapsed')}
           style={{
             background: 'none',
             border: 'none',
@@ -251,7 +238,7 @@ export function DialsOverlay({
             lineHeight: 1,
             color: '#8c92a4',
           }}
-          title="Close (Shift+Cmd/Ctrl+D)"
+          title="Collapse (Ctrl+D)"
         >
           ×
         </button>
