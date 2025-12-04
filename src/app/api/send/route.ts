@@ -11,7 +11,7 @@ import { secret, uuid, hash } from '@/lib/crypto';
 import { COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
+import { createSession, saveEvent, saveSessionData, createIdentityLink } from '@/queries/sql';
 import { serializeError } from 'serialize-error';
 
 interface Cache {
@@ -41,6 +41,7 @@ const schema = z.object({
       userAgent: z.string().optional(),
       timestamp: z.coerce.number().int().optional(),
       id: z.string().optional(),
+      vid: z.string().max(50).optional(),
     })
     .refine(
       data => {
@@ -80,6 +81,7 @@ export async function POST(request: Request) {
       tag,
       timestamp,
       id,
+      vid: visitorId,
     } = payload;
 
     const sourceId = websiteId || pixelId || linkId;
@@ -146,6 +148,7 @@ export async function POST(request: Request) {
         region,
         city,
         distinctId: id,
+        visitorId,
         createdAt,
       });
     }
@@ -226,6 +229,7 @@ export async function POST(request: Request) {
 
         // Session
         distinctId: id,
+        visitorId,
         browser,
         os,
         device,
@@ -263,6 +267,19 @@ export async function POST(request: Request) {
           sessionData: data,
           distinctId: id,
           createdAt,
+        });
+      }
+
+      // Create identity link when both visitorId and distinctId are present
+      // Fire-and-forget to avoid adding latency to the tracking endpoint
+      if (visitorId && id && websiteId) {
+        createIdentityLink({
+          websiteId,
+          visitorId,
+          distinctId: id,
+        }).catch(e => {
+          // eslint-disable-next-line no-console
+          console.error('Failed to create identity link:', e);
         });
       }
     }

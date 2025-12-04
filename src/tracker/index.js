@@ -29,6 +29,7 @@
   const excludeHash = attr(_data + 'exclude-hash') === _true;
   const domain = attr(_data + 'domains') || '';
   const credentials = attr(_data + 'fetch-credentials') || 'omit';
+  const identityStitching = attr(_data + 'identity-stitching') !== _false;
 
   const domains = domain.split(',').map(n => n.trim());
   const host =
@@ -40,6 +41,38 @@
   const delayDuration = 300;
 
   /* Helper functions */
+
+  /**
+   * Identity Stitching: Generates a persistent visitor ID stored in localStorage.
+   * When combined with identify(), links anonymous sessions to authenticated users.
+   * Gracefully degrades when localStorage is unavailable (Safari private browsing).
+   */
+  const generateUUID = () =>
+    'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = (Math.random() * 16) | 0;
+      return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+    });
+
+  const getVisitorId = () => {
+    if (!identityStitching || !localStorage) return undefined;
+
+    try {
+      const storageKey = 'umami.visitor';
+      let vid = localStorage.getItem(storageKey);
+
+      if (!vid) {
+        vid = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : generateUUID();
+        localStorage.setItem(storageKey, vid);
+      }
+
+      return vid;
+    } catch {
+      // localStorage access throws in Safari private browsing
+      return undefined;
+    }
+  };
+
+  const visitorId = getVisitorId();
 
   const normalize = raw => {
     if (!raw) return raw;
@@ -63,6 +96,7 @@
     referrer: currentRef,
     tag,
     id: identity ? identity : undefined,
+    vid: visitorId,
   });
 
   const hasDoNotTrack = () => {
@@ -141,12 +175,21 @@
 
   /* Tracking functions */
 
-  const trackingDisabled = () =>
-    disabled ||
-    !website ||
-    (localStorage && localStorage.getItem('umami.disabled')) ||
-    (domain && !domains.includes(hostname)) ||
-    (dnt && hasDoNotTrack());
+  const trackingDisabled = () => {
+    let storageDisabled = false;
+    try {
+      storageDisabled = localStorage && localStorage.getItem('umami.disabled');
+    } catch {
+      // localStorage throws in Safari private browsing
+    }
+    return (
+      disabled ||
+      !website ||
+      storageDisabled ||
+      (domain && !domains.includes(hostname)) ||
+      (dnt && hasDoNotTrack())
+    );
+  };
 
   const send = async (payload, type = 'event') => {
     if (trackingDisabled()) return;
