@@ -25,8 +25,7 @@ export function LoginForm() {
       onSuccess: async ({ token, user }) => {
         setClientAuthToken(token);
         setUser(user);
-
-        router.push('/websites');
+        router.push('/');
       },
     });
   };

@@ -21,7 +21,11 @@ export function LinksTable(props: DataTableProps) {
       <DataColumn id="slug" label={formatMessage(labels.link)}>
         {({ slug }: any) => {
           const url = getSlugUrl(slug);
-          return <ExternalLink href={url}>{url}</ExternalLink>;
+          return (
+            <ExternalLink href={url} prefetch={false}>
+              {url}
+            </ExternalLink>
+          );
         }}
       </DataColumn>
       <DataColumn id="url" label={formatMessage(labels.destinationUrl)}>

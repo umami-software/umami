@@ -1,5 +1,6 @@
 'use client';
-import { Column } from '@umami/react-zen';
+import { Column, useTheme } from '@umami/react-zen';
+import { useEffect } from 'react';
 import { WebsiteHeader } from '@/app/(main)/websites/[websiteId]/WebsiteHeader';
 import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
 import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
@@ -10,6 +11,16 @@ import { Header } from './Header';
 
 export function SharePage({ shareId }) {
   const { shareToken, isLoading } = useShareTokenQuery(shareId);
+  const { setTheme } = useTheme();
+
+  useEffect(() => {
+    const url = new URL(window?.location?.href);
+    const theme = url.searchParams.get('theme');
+
+    if (theme === 'light' || theme === 'dark') {
+      setTheme(theme);
+    }
+  }, []);
 
   if (isLoading || !shareToken) {
     return null;
