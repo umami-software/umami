@@ -17,6 +17,13 @@ log_error() {
   echo "ERROR: $*" >&2
 }
 
+# Track high-level phase durations using bash's SECONDS counter.
+# SECONDS starts at 0 for each shell, so this gives us simple per-run timings
+# without relying on external time utilities inside the sandbox image.
+SCRIPT_START_SECONDS=${SECONDS:-0}
+PNPM_INSTALL_DURATION_S=0
+DEV_SERVER_TO_PREVIEW_DURATION_S=0
+
 DB_SETUP_SENTINEL="${DB_SETUP_SENTINEL:-$(pwd)/.niteshift-db-setup-complete}"
 PREBAKE_SYNC_SENTINEL="${PREBAKE_SYNC_SENTINEL:-$(pwd)/.niteshift-prebake-sync-complete}"
 
@@ -78,6 +85,7 @@ fi
 log "✓ pnpm is available"
 
 # 4. Install dependencies
+PNPM_INSTALL_START_SECONDS=$SECONDS
 if [[ "$USE_PREBAKED_SETUP" -eq 0 ]]; then
   log "Installing dependencies with pnpm..."
   if ! pnpm install --package-import-method=copy --frozen-lockfile; then
@@ -100,6 +108,8 @@ else
     log "✓ Dependencies installed via fallback"
   fi
 fi
+PNPM_INSTALL_DURATION_S=$((SECONDS - PNPM_INSTALL_START_SECONDS))
+log "pnpm install phase duration: ${PNPM_INSTALL_DURATION_S}s"
 
 # 5. Build only what's needed for dev (skip production Next.js build)
 # For dev mode we need:
@@ -193,6 +203,7 @@ else
 fi
 
 # 6. Start the dev server in the background
+DEV_PHASE_START_SECONDS=$SECONDS
 log "Starting development server on port 3001 (with hot reload)..."
 # Log dev server output to NITESHIFT_LOG_FILE (or stdout if not set)
 pnpm run dev >> "$LOG_FILE" 2>&1 &
@@ -200,11 +211,26 @@ SERVER_PID=$!
 log "✓ Dev server started with PID $SERVER_PID"
 
 # 7. Warm up the main application routes
-log "Warming up main application routes..."
-if curl -s -o /dev/null --max-time 30 http://localhost:3001/ 2>/dev/null; then
-  log "✓ Main routes pre-compiled"
+# We poll until the dev server responds, up to a configurable timeout. This
+# gives us a concrete "dev run -> preview ready" duration that callers can
+# use for more granular sandbox timing analysis.
+MAX_DEV_WAIT_SECONDS=${UMAMI_DEV_WAIT_SECONDS:-60}
+log "Warming up main application routes (up to ${MAX_DEV_WAIT_SECONDS}s)..."
+DEV_SERVER_READY=0
+for ((i=1; i<=MAX_DEV_WAIT_SECONDS; i++)); do
+  if curl -s -o /dev/null --max-time 5 http://localhost:3001/ 2>/dev/null; then
+    DEV_SERVER_READY=1
+    break
+  fi
+  sleep 1
+done
+
+DEV_SERVER_TO_PREVIEW_DURATION_S=$((SECONDS - DEV_PHASE_START_SECONDS))
+
+if [[ "$DEV_SERVER_READY" -eq 1 ]]; then
+  log "✓ Main routes pre-compiled (ready after ${DEV_SERVER_TO_PREVIEW_DURATION_S}s)"
 else
-  log "Warning: Route warm-up timed out or failed (non-critical)"
+  log "Warning: Route warm-up timed out after ${DEV_SERVER_TO_PREVIEW_DURATION_S}s (non-critical)"
 fi
 
 log ""
@@ -225,3 +251,13 @@ log "Hot reload is enabled - changes will be reflected automatically"
 log ""
 log "To stop the server: kill $SERVER_PID"
 log ""
+
+# Emit a final structured timing summary that external tools (like the
+# Niteshift benchmark CLI) can parse from logs to build a detailed timing
+# table for sandbox provisioning and runtime behavior.
+SCRIPT_TOTAL_DURATION_S=$((SECONDS - SCRIPT_START_SECONDS))
+TIMING_JSON=$(printf '{"pnpm_install_s":%s,"dev_run_to_preview_s":%s,"script_total_s":%s}' \
+  "${PNPM_INSTALL_DURATION_S:-0}" \
+  "${DEV_SERVER_TO_PREVIEW_DURATION_S:-0}" \
+  "${SCRIPT_TOTAL_DURATION_S}")
+log "NITESHIFT_TIMING_JSON=${TIMING_JSON}"
