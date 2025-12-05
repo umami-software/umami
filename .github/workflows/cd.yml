@@ -25,13 +25,12 @@ jobs:
           echo "tag_patch=$(echo ${{ matrix.db-type }})-${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
           echo "tag_minor=$(echo ${{ matrix.db-type }})-$(echo ${GITHUB_REF#refs/tags/} | cut -d. -f1,2)" >> $GITHUB_ENV
           echo "tag_major=$(echo ${{ matrix.db-type }})-$(echo ${GITHUB_REF#refs/tags/} | cut -d. -f1)" >> $GITHUB_ENV
-          echo "tag_latest=$(echo ${{ matrix.db-type }})-latest" >> $GITHUB_ENV
 
       - uses: mr-smithers-excellent/docker-build-push@v6
         name: Build & push Docker image to ghcr.io for ${{ matrix.db-type }}
         with:
           image: umami
-          tags: ${{ env.tag_major }}, ${{ env.tag_minor }}, ${{ env.tag_patch }}, ${{ env.tag_latest }}
+          tags: ${{ env.tag_major }}, ${{ env.tag_minor }}, ${{ env.tag_patch }}
           buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: ghcr.io
           multiPlatform: true
@@ -43,7 +42,7 @@ jobs:
         name: Build & push Docker image to docker.io for ${{ matrix.db-type }}
         with:
           image: umamisoftware/umami
-          tags: ${{ env.tag_major }}, ${{ env.tag_minor }}, ${{ env.tag_patch }}, ${{ env.tag_latest }}
+          tags: ${{ env.tag_major }}, ${{ env.tag_minor }}, ${{ env.tag_patch }}
           buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
