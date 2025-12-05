@@ -205,7 +205,7 @@ async function clickhouseQuery(
     ${cohortQuery}
     where website_revenue.website_id = {websiteId:UUID}
       and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      aand upper(website_revenue.currency) = {currency:String}
+      and upper(website_revenue.currency) = {currency:String}
       ${filterQuery}
     `,
     queryParams,
