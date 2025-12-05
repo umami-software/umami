@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "2.19.0",
+  "version": "2.19.1",
   "description": "A modern, privacy-focused alternative to Google Analytics.",
   "author": "Umami Software, Inc. <hello@umami.is>",
   "license": "MIT",
@@ -104,7 +104,7 @@
     "kafkajs": "^2.1.0",
     "maxmind": "^4.3.24",
     "md5": "^2.3.0",
-    "next": "15.3.3",
+    "next": "15.5.7",
     "node-fetch": "^3.2.8",
     "npm-run-all": "^4.1.5",
     "papaparse": "^5.5.3",
