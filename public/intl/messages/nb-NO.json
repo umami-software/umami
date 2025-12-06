@@ -23,6 +23,12 @@
       "value": "Legg til"
     }
   ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "Legg til tavle"
+    }
+  ],
   "label.add-description": [
     {
       "type": 0,
@@ -53,6 +59,12 @@
       "value": "Administrator"
     }
   ],
+  "label.affiliate": [
+    {
+      "type": 0,
+      "value": "Tilknyttet"
+    }
+  ],
   "label.after": [
     {
       "type": 0,
@@ -74,7 +86,25 @@
   "label.analytics": [
     {
       "type": 0,
-      "value": "Analytics"
+      "value": "Analyse"
+    }
+  ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "Bruk"
+    }
+  ],
+  "label.attribution": [
+    {
+      "type": 0,
+      "value": "Attribusjon"
+    }
+  ],
+  "label.attribution-description": [
+    {
+      "type": 0,
+      "value": "Se hvordan brukere engasjerer seg i markedsføringen din og hva som driver konverteringer."
     }
   ],
   "label.average": [
@@ -93,6 +123,12 @@
     {
       "type": 0,
       "value": "Før"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "Tavler"
     }
   ],
   "label.bounce-rate": [
@@ -119,6 +155,12 @@
       "value": "Nettlesere"
     }
   ],
+  "label.campaigns": [
+    {
+      "type": 0,
+      "value": "Kampanjer"
+    }
+  ],
   "label.cancel": [
     {
       "type": 0,
@@ -129,6 +171,12 @@
     {
       "type": 0,
       "value": "Bytt passord"
+    }
+  ],
+  "label.channels": [
+    {
+      "type": 0,
+      "value": "Kanaler"
     }
   ],
   "label.cities": [
@@ -149,10 +197,22 @@
       "value": "Tøm alle"
     }
   ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "Kohort"
+    }
+  ],
   "label.compare": [
     {
       "type": 0,
       "value": "Sammenlign"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "Sammenlign datoer"
     }
   ],
   "label.confirm": [
@@ -173,10 +233,34 @@
       "value": "Inneholder"
     }
   ],
+  "label.content": [
+    {
+      "type": 0,
+      "value": "Innhold"
+    }
+  ],
   "label.continue": [
     {
       "type": 0,
       "value": "Fortsett"
+    }
+  ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "Konvertering"
+    }
+  ],
+  "label.conversion-rate": [
+    {
+      "type": 0,
+      "value": "Konverteringsrate"
+    }
+  ],
+  "label.conversion-step": [
+    {
+      "type": 0,
+      "value": "Konverteringssteg"
     }
   ],
   "label.count": [
@@ -231,6 +315,12 @@
     {
       "type": 0,
       "value": "Opprettet av"
+    }
+  ],
+  "label.currency": [
+    {
+      "type": 0,
+      "value": "Valuta"
     }
   ],
   "label.current": [
@@ -296,19 +386,19 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "Slett rapport"
     }
   ],
   "label.delete-team": [
     {
       "type": 0,
-      "value": "Delete team"
+      "value": "Slett team"
     }
   ],
   "label.delete-user": [
     {
       "type": 0,
-      "value": "Delete user"
+      "value": "Slett bruker"
     }
   ],
   "label.delete-website": [
@@ -320,7 +410,7 @@
   "label.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "Beskrivelse"
     }
   ],
   "label.desktop": [
@@ -347,16 +437,40 @@
       "value": "Enheter"
     }
   ],
+  "label.direct": [
+    {
+      "type": 0,
+      "value": "Direkte"
+    }
+  ],
   "label.dismiss": [
     {
       "type": 0,
       "value": "Avbryt"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "Unik ID"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
       "value": "Innholder ikke"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "Inkluderer ikke"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "Eksisterer ikke"
     }
   ],
   "label.domain": [
@@ -389,6 +503,12 @@
       "value": "Rediger bruker"
     }
   ],
+  "label.email": [
+    {
+      "type": 0,
+      "value": "Email"
+    }
+  ],
   "label.enable-share-url": [
     {
       "type": 0,
@@ -419,10 +539,22 @@
       "value": "Hendelsesdata"
     }
   ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "Hendelsesnavn"
+    }
+  ],
   "label.events": [
     {
       "type": 0,
       "value": "Hendelser"
+    }
+  ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "Eksisterer"
     }
   ],
   "label.exit": [
@@ -473,6 +605,12 @@
       "value": "Filter"
     }
   ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "Første klikk"
+    }
+  ],
   "label.first-seen": [
     {
       "type": 0,
@@ -489,6 +627,12 @@
     {
       "type": 0,
       "value": "Forstå konverteringen og drop-off frafallsfrekvens av brukere."
+    }
+  ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "Trakter"
     }
   ],
   "label.goal": [
@@ -521,16 +665,28 @@
       "value": "Mer enn eller lik"
     }
   ],
-  "label.host": [
+  "label.grouped": [
     {
       "type": 0,
-      "value": "Vert"
+      "value": "Gruppert"
     }
   ],
-  "label.hosts": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "Verter"
+      "value": "Vertsnavn"
+    }
+  ],
+  "label.includes": [
+    {
+      "type": 0,
+      "value": "Inkluderer"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "Innsikt"
     }
   ],
   "label.insights": [
@@ -551,6 +707,12 @@
       "value": "Er"
     }
   ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "Er usant"
+    }
+  ],
   "label.is-not": [
     {
       "type": 0,
@@ -567,6 +729,12 @@
     {
       "type": 0,
       "value": "Er satt"
+    }
+  ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "Er sant"
     }
   ],
   "label.join": [
@@ -593,6 +761,12 @@
       "value": "Forstå hvordan brukerene navigerer gjennom din side."
     }
   ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "Reiser"
+    }
+  ],
   "label.language": [
     {
       "type": 0,
@@ -609,6 +783,12 @@
     {
       "type": 0,
       "value": "Bærbar"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "Siste klikk"
     }
   ],
   "label.last-days": [
@@ -683,6 +863,12 @@
       "value": "Mindre enn eller lik"
     }
   ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "Lenker"
+    }
+  ],
   "label.login": [
     {
       "type": 0,
@@ -713,6 +899,18 @@
       "value": "Maks"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Utvid"
+    }
+  ],
+  "label.medium": [
+    {
+      "type": 0,
+      "value": "Medium"
+    }
+  ],
   "label.member": [
     {
       "type": 0,
@@ -735,6 +933,12 @@
     {
       "type": 0,
       "value": "Mobiltelefon"
+    }
+  ],
+  "label.model": [
+    {
+      "type": 0,
+      "value": "Modell"
     }
   ],
   "label.more": [
@@ -813,10 +1017,46 @@
       "value": "OK"
     }
   ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
+    }
+  ],
+  "label.organic-search": [
+    {
+      "type": 0,
+      "value": "Organisk søk"
+    }
+  ],
+  "label.organic-shopping": [
+    {
+      "type": 0,
+      "value": "Organisk handel"
+    }
+  ],
+  "label.organic-social": [
+    {
+      "type": 0,
+      "value": "Organisk sosial"
+    }
+  ],
+  "label.organic-video": [
+    {
+      "type": 0,
+      "value": "Organisk video"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
       "value": "OS"
+    }
+  ],
+  "label.other": [
+    {
+      "type": 0,
+      "value": "Annet"
     }
   ],
   "label.overview": [
@@ -829,6 +1069,12 @@
     {
       "type": 0,
       "value": "Eier"
+    }
+  ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "Side"
     }
   ],
   "label.page-of": [
@@ -867,6 +1113,36 @@
       "value": "Sider"
     }
   ],
+  "label.paid-ads": [
+    {
+      "type": 0,
+      "value": "Betalte annonser"
+    }
+  ],
+  "label.paid-search": [
+    {
+      "type": 0,
+      "value": "Betalt søk"
+    }
+  ],
+  "label.paid-shopping": [
+    {
+      "type": 0,
+      "value": "Betalt handel"
+    }
+  ],
+  "label.paid-social": [
+    {
+      "type": 0,
+      "value": "Betalt sosial"
+    }
+  ],
+  "label.paid-video": [
+    {
+      "type": 0,
+      "value": "Betalt video"
+    }
+  ],
   "label.password": [
     {
       "type": 0,
@@ -883,6 +1159,12 @@
     {
       "type": 0,
       "value": "Stier"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "Piksler"
     }
   ],
   "label.powered-by": [
@@ -955,6 +1237,12 @@
       "value": "Sanntid"
     }
   ],
+  "label.referral": [
+    {
+      "type": 0,
+      "value": "Referral"
+    }
+  ],
   "label.referrer": [
     {
       "type": 0,
@@ -989,6 +1277,12 @@
     {
       "type": 0,
       "value": "Regioner"
+    }
+  ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "Gjenstår"
     }
   ],
   "label.remove": [
@@ -1051,12 +1345,6 @@
       "value": "Se på inntektene dine over tid."
     }
   ],
-  "label.revenue-property": [
-    {
-      "type": 0,
-      "value": "Inntektegenskaper"
-    }
-  ],
   "label.role": [
     {
       "type": 0,
@@ -1099,6 +1387,12 @@
       "value": "Velg dato"
     }
   ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "Velg filter"
+    }
+  ],
   "label.select-role": [
     {
       "type": 0,
@@ -1117,6 +1411,12 @@
       "value": "Økt"
     }
   ],
+  "label.session-data": [
+    {
+      "type": 0,
+      "value": "Øktdata"
+    }
+  ],
   "label.sessions": [
     {
       "type": 0,
@@ -1129,6 +1429,12 @@
       "value": "Innstillinger"
     }
   ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "Del"
+    }
+  ],
   "label.share-url": [
     {
       "type": 0,
@@ -1139,6 +1445,18 @@
     {
       "type": 0,
       "value": "Enkeltdag"
+    }
+  ],
+  "label.sms": [
+    {
+      "type": 0,
+      "value": "SMS"
+    }
+  ],
+  "label.sources": [
+    {
+      "type": 0,
+      "value": "Kilder"
     }
   ],
   "label.start-step": [
@@ -1163,6 +1481,18 @@
     {
       "type": 0,
       "value": "Nettbrett"
+    }
+  ],
+  "label.tag": [
+    {
+      "type": 0,
+      "value": "Tagg"
+    }
+  ],
+  "label.tags": [
+    {
+      "type": 0,
+      "value": "Tagger"
     }
   ],
   "label.team": [
@@ -1201,6 +1531,12 @@
       "value": "Teameier"
     }
   ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "Teaminnstillinger"
+    }
+  ],
   "label.team-view-only": [
     {
       "type": 0,
@@ -1217,6 +1553,12 @@
     {
       "type": 0,
       "value": "Team"
+    }
+  ],
+  "label.terms": [
+    {
+      "type": 0,
+      "value": "Vilkår"
     }
   ],
   "label.theme": [
@@ -1351,28 +1693,10 @@
       "value": "Oppdater"
     }
   ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "URL"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "URL-er"
-    }
-  ],
   "label.user": [
     {
       "type": 0,
       "value": "Bruker"
-    }
-  ],
-  "label.user-property": [
-    {
-      "type": 0,
-      "value": "Brukeregenskap"
     }
   ],
   "label.username": [
@@ -1535,6 +1859,12 @@
       "value": " nå"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
@@ -1627,6 +1957,12 @@
     {
       "type": 1,
       "value": "url"
+    }
+  ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
     }
   ],
   "message.go-to-settings": [
@@ -1723,6 +2059,18 @@
       "value": "Du har ikke satt opp noen nettsteder."
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1753,6 +2101,12 @@
     {
       "type": 0,
       "value": "Lagret!"
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1817,6 +2171,12 @@
       "value": "Utløst hendelse"
     }
   ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
@@ -1861,12 +2221,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "Besøkende falt fra"
     }
   ]
 }

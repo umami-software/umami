@@ -1,7 +1,7 @@
-import { canViewWebsite } from '@/lib/auth';
-import { getWebsiteDateRange } from '@/queries';
-import { json, unauthorized } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
+import { canViewWebsite } from '@/permissions';
+import { getWebsiteDateRange } from '@/queries/sql';
 
 export async function GET(
   request: Request,
@@ -19,7 +19,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const result = await getWebsiteDateRange(websiteId);
+  const dateRange = await getWebsiteDateRange(websiteId);
 
-  return json(result);
+  return json(dateRange);
 }

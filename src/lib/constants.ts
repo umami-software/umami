@@ -5,44 +5,43 @@ export const TIMEZONE_CONFIG = 'umami.timezone';
 export const DATE_RANGE_CONFIG = 'umami.date-range';
 export const THEME_CONFIG = 'umami.theme';
 export const DASHBOARD_CONFIG = 'umami.dashboard';
+export const LAST_TEAM_CONFIG = 'umami.last-team';
 export const VERSION_CHECK = 'umami.version-check';
 export const SHARE_TOKEN_HEADER = 'x-umami-share-token';
 export const HOMEPAGE_URL = 'https://umami.is';
+export const DOCS_URL = 'https://umami.is/docs';
 export const REPO_URL = 'https://github.com/umami-software/umami';
 export const UPDATES_URL = 'https://api.umami.is/v1/updates';
 export const TELEMETRY_PIXEL = 'https://i.umami.is/a.png';
 export const FAVICON_URL = 'https://icons.duckduckgo.com/ip3/{{domain}}.ico';
+export const LINKS_URL = `${globalThis?.location?.origin}/q`;
+export const PIXELS_URL = `${globalThis?.location?.origin}/p`;
 
 export const DEFAULT_LOCALE = 'en-US';
 export const DEFAULT_THEME = 'light';
 export const DEFAULT_ANIMATION_DURATION = 300;
-export const DEFAULT_DATE_RANGE = '24hour';
+export const DEFAULT_DATE_RANGE_VALUE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
 export const DEFAULT_RESET_DATE = '2000-01-01';
-export const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_DATE_COMPARE = 'prev';
 
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 10000;
 
-export const FILTER_COMBINED = 'filter-combined';
-export const FILTER_RAW = 'filter-raw';
-export const FILTER_DAY = 'filter-day';
-export const FILTER_RANGE = 'filter-range';
-export const FILTER_REFERRERS = 'filter-referrers';
-export const FILTER_PAGES = 'filter-pages';
-
 export const UNIT_TYPES = ['year', 'month', 'hour', 'day', 'minute'];
+
 export const EVENT_COLUMNS = [
-  'url',
+  'path',
   'entry',
   'exit',
   'referrer',
+  'domain',
   'title',
   'query',
   'event',
   'tag',
-  'host',
+  'hostname',
 ];
 
 export const SESSION_COLUMNS = [
@@ -56,17 +55,18 @@ export const SESSION_COLUMNS = [
   'region',
 ];
 
-export const FILTER_GROUPS = {
+export const SEGMENT_TYPES = {
   segment: 'segment',
   cohort: 'cohort',
 };
 
 export const FILTER_COLUMNS = {
-  url: 'url_path',
+  path: 'url_path',
   entry: 'url_path',
   exit: 'url_path',
   referrer: 'referrer_domain',
-  host: 'hostname',
+  domain: 'referrer_domain',
+  hostname: 'hostname',
   title: 'page_title',
   query: 'url_query',
   os: 'os',
@@ -78,16 +78,19 @@ export const FILTER_COLUMNS = {
   language: 'language',
   event: 'event_name',
   tag: 'tag',
+  eventType: 'event_type',
 };
 
 export const COLLECTION_TYPE = {
   event: 'event',
   identify: 'identify',
-};
+} as const;
 
 export const EVENT_TYPE = {
   pageView: 1,
   customEvent: 2,
+  linkEvent: 3,
+  pixelEvent: 4,
 } as const;
 
 export const DATA_TYPE = {
@@ -115,51 +118,22 @@ export const OPERATORS = {
   after: 'af',
 } as const;
 
-export const OPERATOR_PREFIXES = {
-  [OPERATORS.equals]: '',
-  [OPERATORS.notEquals]: '!',
-  [OPERATORS.contains]: '~',
-  [OPERATORS.doesNotContain]: '!~',
-};
-
 export const DATA_TYPES = {
   [DATA_TYPE.string]: 'string',
   [DATA_TYPE.number]: 'number',
   [DATA_TYPE.boolean]: 'boolean',
   [DATA_TYPE.date]: 'date',
   [DATA_TYPE.array]: 'array',
-};
-
-export const REPORT_TYPES = {
-  funnel: 'funnel',
-  goals: 'goals',
-  insights: 'insights',
-  retention: 'retention',
-  utm: 'utm',
-  journey: 'journey',
-  revenue: 'revenue',
-  attribution: 'attribution',
-} as const;
-
-export const REPORT_PARAMETERS = {
-  fields: 'fields',
-  filters: 'filters',
-  groups: 'groups',
-} as const;
-
-export const KAFKA_TOPIC = {
-  event: 'event',
-  eventData: 'event_data',
 } as const;
 
 export const ROLES = {
   admin: 'admin',
-  teamManager: 'team-manager',
-  teamMember: 'team-member',
-  teamOwner: 'team-owner',
-  teamViewOnly: 'team-view-only',
   user: 'user',
   viewOnly: 'view-only',
+  teamOwner: 'team-owner',
+  teamManager: 'team-manager',
+  teamMember: 'team-member',
+  teamViewOnly: 'team-view-only',
 } as const;
 
 export const PERMISSIONS = {
@@ -210,33 +184,17 @@ export const ROLE_PERMISSIONS = {
 export const THEME_COLORS = {
   light: {
     primary: '#2680eb',
-    gray50: '#ffffff',
-    gray75: '#fafafa',
-    gray100: '#f5f5f5',
-    gray200: '#eaeaea',
-    gray300: '#e1e1e1',
-    gray400: '#cacaca',
-    gray500: '#b3b3b3',
-    gray600: '#8e8e8e',
-    gray700: '#6e6e6e',
-    gray800: '#4b4b4b',
-    gray900: '#2c2c2c',
+    text: '#838383',
+    line: '#d9d9d9',
+    fill: '#f9f9f9',
   },
   dark: {
     primary: '#2680eb',
-    gray50: '#252525',
-    gray75: '#2f2f2f',
-    gray100: '#323232',
-    gray200: '#3e3e3e',
-    gray300: '#4a4a4a',
-    gray400: '#5a5a5a',
-    gray500: '#6e6e6e',
-    gray600: '#909090',
-    gray700: '#b9b9b9',
-    gray800: '#e3e3e3',
-    gray900: '#ffffff',
+    text: '#7b7b7b',
+    line: '#3a3a3a',
+    fill: '#191919',
   },
-};
+} as const;
 
 export const CHART_COLORS = [
   '#2680eb',
@@ -255,13 +213,9 @@ export const CHART_COLORS = [
 
 export const DOMAIN_REGEX =
   /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-_]{1,63}\.)(xn--)?[a-z0-9-_]+(-[a-z0-9-_]+)*\.)+(xn--)?[a-z0-9-_]{2,63})$/;
-export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{8,16}$/;
+export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{8,50}$/;
 export const DATETIME_REGEX =
   /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{3}(Z|\+[0-9]{2}:[0-9]{2})?)?$/;
-
-export const DESKTOP_SCREEN_WIDTH = 1920;
-export const LAPTOP_SCREEN_WIDTH = 1024;
-export const MOBILE_SCREEN_WIDTH = 479;
 
 export const URL_LENGTH = 500;
 export const PAGE_TITLE_LENGTH = 500;
@@ -269,38 +223,13 @@ export const EVENT_NAME_LENGTH = 50;
 
 export const UTM_PARAMS = ['utm_campaign', 'utm_content', 'utm_medium', 'utm_source', 'utm_term'];
 
-export const DESKTOP_OS = [
-  'BeOS',
-  'Chrome OS',
-  'Linux',
-  'Mac OS',
-  'Open BSD',
-  'OS/2',
-  'QNX',
-  'Sun OS',
-  'Windows 10',
-  'Windows 2000',
-  'Windows 3.11',
-  'Windows 7',
-  'Windows 8',
-  'Windows 8.1',
-  'Windows 95',
-  'Windows 98',
-  'Windows ME',
-  'Windows Server 2003',
-  'Windows Vista',
-  'Windows XP',
-];
-
-export const MOBILE_OS = ['Amazon OS', 'Android OS', 'BlackBerry OS', 'iOS', 'Windows Mobile'];
-
 export const OS_NAMES = {
   'Android OS': 'Android',
   'Chrome OS': 'ChromeOS',
   'Mac OS': 'macOS',
   'Sun OS': 'SunOS',
   'Windows 10': 'Windows 10/11',
-};
+} as const;
 
 export const BROWSERS = {
   android: 'Android',
@@ -331,25 +260,7 @@ export const BROWSERS = {
   searchbot: 'Searchbot',
   silk: 'Silk',
   yandexbrowser: 'Yandex',
-};
-
-// The order here is important and influences how IPs are detected by lib/detect.ts
-// Please do not change the order unless you know exactly what you're doing - read https://developers.cloudflare.com/fundamentals/reference/http-headers/
-export const IP_ADDRESS_HEADERS = [
-  'x-client-ip',
-  'x-forwarded-for',
-  'cf-connecting-ip', // This should be *after* x-forwarded-for, so that x-forwarded-for is respected if present
-  'do-connecting-ip',
-  'fastly-client-ip',
-  'true-client-ip',
-  'x-real-ip',
-  'x-cluster-client-ip',
-  'x-forwarded',
-  'forwarded',
-  'x-appengine-user-ip',
-  'x-nf-client-connection-ip',
-  'x-real-ip',
-];
+} as const;
 
 export const SOCIAL_DOMAINS = [
   'bsky.app',
@@ -427,6 +338,7 @@ export const PAID_AD_PARAMS = [
 ];
 
 export const GROUPED_DOMAINS = [
+  { name: 'Baidu', domain: 'baidu.com', match: 'baidu.' },
   { name: 'Bing', domain: 'bing.com', match: 'bing.' },
   { name: 'Brave', domain: 'brave.com', match: 'brave.' },
   { name: 'ChatGPT', domain: 'chatgpt.com', match: 'chatgpt.' },
@@ -441,6 +353,8 @@ export const GROUPED_DOMAINS = [
   { name: 'Reddit', domain: 'reddit.com', match: 'reddit.' },
   { name: 'Snapchat', domain: 'snapchat.com', match: 'snapchat.' },
   { name: 'Twitter', domain: 'twitter.com', match: ['twitter.', 't.co', 'x.com'] },
+  { name: 'Yahoo', domain: 'yahoo.com', match: 'yahoo.' },
+  { name: 'Yandex', domain: 'yandex.ru', match: 'yandex.' },
 ];
 
 export const MAP_FILE = '/datamaps.world.json';
@@ -691,4 +605,78 @@ export const ISO_COUNTRIES = {
   ZAF: 'ZA',
   ZMB: 'ZM',
   ZWE: 'ZW',
+};
+
+export const CURRENCIES = [
+  { id: 'USD', name: 'US Dollar' },
+  { id: 'EUR', name: 'Euro' },
+  { id: 'GBP', name: 'British Pound' },
+  { id: 'JPY', name: 'Japanese Yen' },
+  { id: 'CNY', name: 'Chinese Renminbi (Yuan)' },
+  { id: 'CAD', name: 'Canadian Dollar' },
+  { id: 'HKD', name: 'Hong Kong Dollar' },
+  { id: 'AUD', name: 'Australian Dollar' },
+  { id: 'SGD', name: 'Singapore Dollar' },
+  { id: 'CHF', name: 'Swiss Franc' },
+  { id: 'SEK', name: 'Swedish Krona' },
+  { id: 'PLN', name: 'Polish Złoty' },
+  { id: 'NOK', name: 'Norwegian Krone' },
+  { id: 'DKK', name: 'Danish Krone' },
+  { id: 'NZD', name: 'New Zealand Dollar' },
+  { id: 'ZAR', name: 'South African Rand' },
+  { id: 'MXN', name: 'Mexican Peso' },
+  { id: 'THB', name: 'Thai Baht' },
+  { id: 'HUF', name: 'Hungarian Forint' },
+  { id: 'MYR', name: 'Malaysian Ringgit' },
+  { id: 'INR', name: 'Indian Rupee' },
+  { id: 'KRW', name: 'South Korean Won' },
+  { id: 'BRL', name: 'Brazilian Real' },
+  { id: 'TRY', name: 'Turkish Lira' },
+  { id: 'CZK', name: 'Czech Koruna' },
+  { id: 'ILS', name: 'Israeli New Shekel' },
+  { id: 'RUB', name: 'Russian Ruble' },
+  { id: 'AED', name: 'United Arab Emirates Dirham' },
+  { id: 'IDR', name: 'Indonesian Rupiah' },
+  { id: 'PHP', name: 'Philippine Peso' },
+  { id: 'RON', name: 'Romanian Leu' },
+  { id: 'COP', name: 'Colombian Peso' },
+  { id: 'SAR', name: 'Saudi Riyal' },
+  { id: 'ARS', name: 'Argentine Peso' },
+  { id: 'VND', name: 'Vietnamese Dong' },
+  { id: 'CLP', name: 'Chilean Peso' },
+  { id: 'EGP', name: 'Egyptian Pound' },
+  { id: 'KWD', name: 'Kuwaiti Dinar' },
+  { id: 'PKR', name: 'Pakistani Rupee' },
+  { id: 'QAR', name: 'Qatari Riyal' },
+  { id: 'BHD', name: 'Bahraini Dinar' },
+  { id: 'UAH', name: 'Ukrainian Hryvnia' },
+  { id: 'PEN', name: 'Peruvian Sol' },
+  { id: 'BDT', name: 'Bangladeshi Taka' },
+  { id: 'MAD', name: 'Moroccan Dirham' },
+  { id: 'KES', name: 'Kenyan Shilling' },
+  { id: 'NGN', name: 'Nigerian Naira' },
+  { id: 'TND', name: 'Tunisian Dinar' },
+  { id: 'OMR', name: 'Omani Rial' },
+  { id: 'GHS', name: 'Ghanaian Cedi' },
+];
+
+export const TIMEZONE_LEGACY: Record<string, string> = {
+  'Asia/Batavia': 'Asia/Jakarta',
+  'Asia/Calcutta': 'Asia/Kolkata',
+  'Asia/Chongqing': 'Asia/Shanghai',
+  'Asia/Harbin': 'Asia/Shanghai',
+  'Asia/Jayapura': 'Asia/Pontianak',
+  'Asia/Katmandu': 'Asia/Kathmandu',
+  'Asia/Macao': 'Asia/Macau',
+  'Asia/Rangoon': 'Asia/Yangon',
+  'Asia/Saigon': 'Asia/Ho_Chi_Minh',
+  'Europe/Kiev': 'Europe/Kyiv',
+  'Europe/Zaporozhye': 'Europe/Kyiv',
+  'Etc/UTC': 'UTC',
+  'US/Arizona': 'America/Phoenix',
+  'US/Central': 'America/Chicago',
+  'US/Eastern': 'America/New_York',
+  'US/Mountain': 'America/Denver',
+  'US/Pacific': 'America/Los_Angeles',
+  'US/Samoa': 'Pacific/Pago_Pago',
 };
