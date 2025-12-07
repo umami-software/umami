@@ -25,7 +25,7 @@ importers:
         version: 4.5.15
       '@hello-pangea/dnd':
         specifier: ^17.0.0
-        version: 17.0.0(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 17.0.0(@types/react@19.1.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@prisma/client':
         specifier: 6.7.0
         version: 6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3)
@@ -34,10 +34,10 @@ importers:
         version: 0.4.1(@prisma/client@6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3))
       '@react-spring/web':
         specifier: ^9.7.3
-        version: 9.7.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 9.7.5(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@tanstack/react-query':
         specifier: ^5.28.6
-        version: 5.83.0(react@19.1.0)
+        version: 5.83.0(react@19.2.1)
       '@umami/redis-client':
         specifier: ^0.26.0
         version: 0.26.0
@@ -124,7 +124,7 @@ importers:
         version: 2.3.0
       next:
         specifier: 15.5.7
-        version: 15.5.7(@babel/core@7.28.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 15.5.7(@babel/core@7.28.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       node-fetch:
         specifier: ^3.2.8
         version: 3.3.2
@@ -141,29 +141,29 @@ importers:
         specifier: ^6.1.0
         version: 6.1.0
       react:
-        specifier: ^19.0.0
-        version: 19.1.0
+        specifier: ^19.2.1
+        version: 19.2.1
       react-basics:
         specifier: ^0.126.0
-        version: 0.126.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 0.126.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react-dom:
-        specifier: ^19.0.0
-        version: 19.1.0(react@19.1.0)
+        specifier: ^19.2.1
+        version: 19.2.1(react@19.2.1)
       react-error-boundary:
         specifier: ^4.0.4
-        version: 4.1.2(react@19.1.0)
+        version: 4.1.2(react@19.2.1)
       react-intl:
         specifier: ^6.5.5
-        version: 6.8.9(react@19.1.0)(typescript@5.8.3)
+        version: 6.8.9(react@19.2.1)(typescript@5.8.3)
       react-simple-maps:
         specifier: ^2.3.0
-        version: 2.3.0(prop-types@15.8.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 2.3.0(prop-types@15.8.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react-use-measure:
         specifier: ^2.0.4
-        version: 2.1.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 2.1.7(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react-window:
         specifier: ^1.8.6
-        version: 1.8.11(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 1.8.11(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       request-ip:
         specifier: ^3.3.0
         version: 3.3.0
@@ -184,7 +184,7 @@ importers:
         version: 3.25.76
       zustand:
         specifier: ^4.5.5
-        version: 4.5.7(@types/react@19.1.8)(immer@9.0.21)(react@19.1.0)
+        version: 4.5.7(@types/react@19.1.8)(immer@9.0.21)(react@19.2.1)
     devDependencies:
       '@formatjs/cli':
         specifier: ^4.2.29
@@ -5708,10 +5708,10 @@ packages:
       react: ^18.2.0
       react-dom: ^18.2.0
 
-  react-dom@19.1.0:
-    resolution: {integrity: sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==}
+  react-dom@19.2.1:
+    resolution: {integrity: sha512-ibrK8llX2a4eOskq1mXKu/TGZj9qzomO+sNfO98M6d9zIPOEhlBkMkBUBLd1vgS0gQsLDBzA+8jJBVXDnfHmJg==}
     peerDependencies:
-      react: ^19.1.0
+      react: ^19.2.1
 
   react-error-boundary@4.1.2:
     resolution: {integrity: sha512-GQDxZ5Jd+Aq/qUxbCm1UtzmL/s++V7zKgE8yMktJiCQXCCFZnMZh9ng+6/Ne6PjNSXH0L9CjeOEREfRnq6Duag==}
@@ -5774,8 +5774,8 @@ packages:
       react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  react@19.1.0:
-    resolution: {integrity: sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==}
+  react@19.2.1:
+    resolution: {integrity: sha512-DGrYcCWK7tvYMnWh79yrPHt+vdx9tY+1gPZa7nJQtO/p8bLTDaHp4dzwEhQB7pZ4Xe3ok4XKuEPrVuc+wlpkmw==}
     engines: {node: '>=0.10.0'}
 
   read-babelrc-up@1.1.0:
@@ -5984,8 +5984,8 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  scheduler@0.26.0:
-    resolution: {integrity: sha512-NlHwttCI/l5gCPR3D1nNXtWABUmBwvZpEQiD4IXSbIDq8BzLIK/7Ir5gTFSGZDUu37K5cMNp0hFtzO38sC7gWA==}
+  scheduler@0.27.0:
+    resolution: {integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==}
 
   schema-utils@2.7.1:
     resolution: {integrity: sha512-SHiNtMOUGWBQJwzISiVYKu82GiV4QYGePp3odlY1tuKO7gPtphAT5R/py0fA6xtbgLL/RvtJZnU9b8s0F1q0Xg==}
@@ -8108,17 +8108,17 @@ snapshots:
     optionalDependencies:
       ts-jest: 29.4.0(@babel/core@7.28.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.0))(esbuild@0.25.8)(jest-util@29.7.0)(jest@29.7.0(@types/node@22.16.5)(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.8.3)))(typescript@5.8.3)
 
-  '@hello-pangea/dnd@17.0.0(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@hello-pangea/dnd@17.0.0(@types/react@19.1.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
       '@babel/runtime': 7.27.6
       css-box-model: 1.2.1
       memoize-one: 6.0.0
       raf-schd: 4.0.3
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
-      react-redux: 9.2.0(@types/react@19.1.8)(react@19.1.0)(redux@5.0.1)
+      react: 19.2.1
+      react-dom: 19.2.1(react@19.2.1)
+      react-redux: 9.2.0(@types/react@19.1.8)(react@19.2.1)(redux@5.0.1)
       redux: 5.0.1
-      use-memo-one: 1.1.3(react@19.1.0)
+      use-memo-one: 1.1.3(react@19.2.1)
     transitivePeerDependencies:
       - '@types/react'
 
@@ -8526,37 +8526,37 @@ snapshots:
     dependencies:
       '@prisma/debug': 6.7.0
 
-  '@react-spring/animated@9.7.5(react@19.1.0)':
+  '@react-spring/animated@9.7.5(react@19.2.1)':
     dependencies:
-      '@react-spring/shared': 9.7.5(react@19.1.0)
+      '@react-spring/shared': 9.7.5(react@19.2.1)
       '@react-spring/types': 9.7.5
-      react: 19.1.0
+      react: 19.2.1
 
-  '@react-spring/core@9.7.5(react@19.1.0)':
+  '@react-spring/core@9.7.5(react@19.2.1)':
     dependencies:
-      '@react-spring/animated': 9.7.5(react@19.1.0)
-      '@react-spring/shared': 9.7.5(react@19.1.0)
+      '@react-spring/animated': 9.7.5(react@19.2.1)
+      '@react-spring/shared': 9.7.5(react@19.2.1)
       '@react-spring/types': 9.7.5
-      react: 19.1.0
+      react: 19.2.1
 
   '@react-spring/rafz@9.7.5': {}
 
-  '@react-spring/shared@9.7.5(react@19.1.0)':
+  '@react-spring/shared@9.7.5(react@19.2.1)':
     dependencies:
       '@react-spring/rafz': 9.7.5
       '@react-spring/types': 9.7.5
-      react: 19.1.0
+      react: 19.2.1
 
   '@react-spring/types@9.7.5': {}
 
-  '@react-spring/web@9.7.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@react-spring/web@9.7.5(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
-      '@react-spring/animated': 9.7.5(react@19.1.0)
-      '@react-spring/core': 9.7.5(react@19.1.0)
-      '@react-spring/shared': 9.7.5(react@19.1.0)
+      '@react-spring/animated': 9.7.5(react@19.2.1)
+      '@react-spring/core': 9.7.5(react@19.2.1)
+      '@react-spring/shared': 9.7.5(react@19.2.1)
       '@react-spring/types': 9.7.5
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
+      react: 19.2.1
+      react-dom: 19.2.1(react@19.2.1)
 
   '@redis/bloom@1.2.0(@redis/client@1.6.1)':
     dependencies:
@@ -8767,10 +8767,10 @@ snapshots:
 
   '@tanstack/query-core@5.83.0': {}
 
-  '@tanstack/react-query@5.83.0(react@19.1.0)':
+  '@tanstack/react-query@5.83.0(react@19.2.1)':
     dependencies:
       '@tanstack/query-core': 5.83.0
-      react: 19.1.0
+      react: 19.2.1
 
   '@trysound/sax@0.2.0': {}
 
@@ -12070,15 +12070,15 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  next@15.5.7(@babel/core@7.28.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  next@15.5.7(@babel/core@7.28.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
     dependencies:
       '@next/env': 15.5.7
       '@swc/helpers': 0.5.15
       caniuse-lite: 1.0.30001727
       postcss: 8.4.31
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
-      styled-jsx: 5.1.6(@babel/core@7.28.0)(react@19.1.0)
+      react: 19.2.1
+      react-dom: 19.2.1(react@19.2.1)
+      styled-jsx: 5.1.6(@babel/core@7.28.0)(react@19.2.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 15.5.7
       '@next/swc-darwin-x64': 15.5.7
@@ -12822,31 +12822,31 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  react-basics@0.126.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  react-basics@0.126.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
     dependencies:
-      '@react-spring/web': 9.7.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@react-spring/web': 9.7.5(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       classnames: 2.5.1
       date-fns: 2.30.0
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
-      react-hook-form: 7.60.0(react@19.1.0)
-      react-window: 1.8.11(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react: 19.2.1
+      react-dom: 19.2.1(react@19.2.1)
+      react-hook-form: 7.60.0(react@19.2.1)
+      react-window: 1.8.11(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
 
-  react-dom@19.1.0(react@19.1.0):
+  react-dom@19.2.1(react@19.2.1):
     dependencies:
-      react: 19.1.0
-      scheduler: 0.26.0
+      react: 19.2.1
+      scheduler: 0.27.0
 
-  react-error-boundary@4.1.2(react@19.1.0):
+  react-error-boundary@4.1.2(react@19.2.1):
     dependencies:
       '@babel/runtime': 7.27.6
-      react: 19.1.0
+      react: 19.2.1
 
-  react-hook-form@7.60.0(react@19.1.0):
+  react-hook-form@7.60.0(react@19.2.1):
     dependencies:
-      react: 19.1.0
+      react: 19.2.1
 
-  react-intl@6.8.9(react@19.1.0)(typescript@5.8.3):
+  react-intl@6.8.9(react@19.2.1)(typescript@5.8.3):
     dependencies:
       '@formatjs/ecma402-abstract': 2.2.4
       '@formatjs/icu-messageformat-parser': 2.9.4
@@ -12857,7 +12857,7 @@ snapshots:
       '@types/react': 18.3.23
       hoist-non-react-statics: 3.3.2
       intl-messageformat: 10.7.7
-      react: 19.1.0
+      react: 19.2.1
       tslib: 2.8.1
     optionalDependencies:
       typescript: 5.8.3
@@ -12866,39 +12866,39 @@ snapshots:
 
   react-is@18.3.1: {}
 
-  react-redux@9.2.0(@types/react@19.1.8)(react@19.1.0)(redux@5.0.1):
+  react-redux@9.2.0(@types/react@19.1.8)(react@19.2.1)(redux@5.0.1):
     dependencies:
       '@types/use-sync-external-store': 0.0.6
-      react: 19.1.0
-      use-sync-external-store: 1.5.0(react@19.1.0)
+      react: 19.2.1
+      use-sync-external-store: 1.5.0(react@19.2.1)
     optionalDependencies:
       '@types/react': 19.1.8
       redux: 5.0.1
 
-  react-simple-maps@2.3.0(prop-types@15.8.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  react-simple-maps@2.3.0(prop-types@15.8.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
     dependencies:
       d3-geo: 2.0.2
       d3-selection: 2.0.0
       d3-zoom: 2.0.0
       prop-types: 15.8.1
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
+      react: 19.2.1
+      react-dom: 19.2.1(react@19.2.1)
       topojson-client: 3.1.0
 
-  react-use-measure@2.1.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  react-use-measure@2.1.7(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
     dependencies:
-      react: 19.1.0
+      react: 19.2.1
     optionalDependencies:
-      react-dom: 19.1.0(react@19.1.0)
+      react-dom: 19.2.1(react@19.2.1)
 
-  react-window@1.8.11(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  react-window@1.8.11(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
     dependencies:
       '@babel/runtime': 7.27.6
       memoize-one: 5.2.1
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
+      react: 19.2.1
+      react-dom: 19.2.1(react@19.2.1)
 
-  react@19.1.0: {}
+  react@19.2.1: {}
 
   read-babelrc-up@1.1.0:
     dependencies:
@@ -13164,7 +13164,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  scheduler@0.26.0: {}
+  scheduler@0.27.0: {}
 
   schema-utils@2.7.1:
     dependencies:
@@ -13490,10 +13490,10 @@ snapshots:
 
   style-search@0.1.0: {}
 
-  styled-jsx@5.1.6(@babel/core@7.28.0)(react@19.1.0):
+  styled-jsx@5.1.6(@babel/core@7.28.0)(react@19.2.1):
     dependencies:
       client-only: 0.0.1
-      react: 19.1.0
+      react: 19.2.1
     optionalDependencies:
       '@babel/core': 7.28.0
 
@@ -13880,13 +13880,13 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  use-memo-one@1.1.3(react@19.1.0):
+  use-memo-one@1.1.3(react@19.2.1):
     dependencies:
-      react: 19.1.0
+      react: 19.2.1
 
-  use-sync-external-store@1.5.0(react@19.1.0):
+  use-sync-external-store@1.5.0(react@19.2.1):
     dependencies:
-      react: 19.1.0
+      react: 19.2.1
 
   util-deprecate@1.0.2: {}
 
@@ -14068,10 +14068,10 @@ snapshots:
 
   zod@3.25.76: {}
 
-  zustand@4.5.7(@types/react@19.1.8)(immer@9.0.21)(react@19.1.0):
+  zustand@4.5.7(@types/react@19.1.8)(immer@9.0.21)(react@19.2.1):
     dependencies:
-      use-sync-external-store: 1.5.0(react@19.1.0)
+      use-sync-external-store: 1.5.0(react@19.2.1)
     optionalDependencies:
       '@types/react': 19.1.8
       immer: 9.0.21
-      react: 19.1.0
+      react: 19.2.1
