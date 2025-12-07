@@ -13,6 +13,7 @@ import { X } from 'lucide-react';
 import { Avatar } from '@/components/common/Avatar';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useWebsiteSessionQuery } from '@/components/hooks';
+import { isLikelyBot } from '@/lib/botDetection';
 import { SessionActivity } from './SessionActivity';
 import { SessionData } from './SessionData';
 import { SessionInfo } from './SessionInfo';
@@ -51,7 +52,7 @@ export function SessionProfile({
           )}
           <Column gap="6">
             <Row justifyContent="center" alignItems="center" gap="6">
-              <Avatar seed={data?.id} size={128} />
+              <Avatar seed={data?.id} size={128} isBot={isLikelyBot(data)} />
               <Column width="360px">
                 <TextField label="ID" value={data?.id} allowCopy />
               </Column>
