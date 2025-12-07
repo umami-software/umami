@@ -16,12 +16,11 @@ const UniqueSessions = ({ websiteId }) => {
   return (
     <Container className="flex items-center gap-8">
       <Text size="5" color="gray">
-        {' '}
-        Unique Sessions:{' '}
+        Unique Sessions:
       </Text>
-      <Text size="5" className="text-white" weight="bold">
+      <Text size="5" className="text-white mr-3" weight="bold">
         {' '}
-        {uniqueSessionCount}{' '}
+        {uniqueSessionCount}
       </Text>
     </Container>
   );
