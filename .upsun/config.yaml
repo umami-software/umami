@@ -1,0 +1,58 @@
+# Upsun Konfiguration für Umami Analytics
+# https://docs.upsun.com/configuration.html
+
+applications:
+    app:
+        # Die Anwendung verwendet Node.js 22
+        stack:
+            - 'nodejs:22'
+
+        # Build-Konfiguration
+        build:
+            flavor: none
+
+        # Build- und Deploy-Hooks
+        hooks:
+            build: |
+                set -e
+                corepack enable
+                corepack prepare pnpm@latest --activate
+                pnpm install --frozen-lockfile
+                pnpm build
+            deploy: |
+                set -e
+                pnpm update-db
+
+        # Writable Mounts für Uploads
+        mounts:
+            'web/uploads':
+                source: storage
+                source_path: uploads
+
+        # Webserver-Konfiguration
+        web:
+            commands:
+                start: 'pnpm start'
+
+        # Beziehung zur PostgreSQL-Datenbank
+        relationships:
+            postgresdatabase: 'dbpostgres:postgresql'
+
+# Service-Definitionen
+services:
+    dbpostgres:
+        type: postgresql:16
+        configuration:
+            resources:
+                disk: 5120
+
+# Routen-Konfiguration
+routes:
+    'https://{default}/':
+        type: upstream
+        upstream: 'app:http'
+
+    # Optional: www-Redirect aktivieren
+    # 'https://www.{default}/':
+    #     type: redirect
+    #     to: 'https://{default}/'

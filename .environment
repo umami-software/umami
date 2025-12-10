@@ -1,30 +1,32 @@
 #!/bin/bash
-# This script can be a starting point to convert
-# PLATFORM_RELATIONSHIPS into another environment variable
-# Many CMS systems use a DATABASE_URL to connect to the database
-# Feel free to use this as inspiration
+# Upsun Environment Configuration
+# Dieses Script erstellt die DATABASE_URL aus den Upsun-Umgebungsvariablen
 
-getRelationshipInfo() {
-    RELATIONSHIP_NAME="$1"
-    PROPERTY="$2"
-    JQ_STR="to_entries[] | select(.key==\"$RELATIONSHIP_NAME\") | .value[].$PROPERTY"
-    CMD="echo $PLATFORM_RELATIONSHIPS | base64 -d | jq -r '$JQ_STR'"
-    eval $CMD
-}
+# Upsun stellt Relationship-Informationen über Umgebungsvariablen bereit
+# Format: <RELATIONSHIP_NAME>_<PROPERTY> (uppercase, - wird zu _)
+# Beispiel: POSTGRESDATABASE_HOST, POSTGRESDATABASE_PORT, etc.
 
-# choose the name of the relationship to parse, feel free to alter this
-RELATIONSHIP="postgresdatabase"
-DB_DATABASE="main"
+# Prüfen ob wir auf Upsun/Platform.sh laufen
+if [ -n "$PLATFORM_RELATIONSHIPS" ]; then
+    # Upsun/Platform.sh Umgebung - Relationships parsen
+    getRelationshipInfo() {
+        RELATIONSHIP_NAME="$1"
+        PROPERTY="$2"
+        JQ_STR="to_entries[] | select(.key==\"$RELATIONSHIP_NAME\") | .value[].$PROPERTY"
+        CMD="echo $PLATFORM_RELATIONSHIPS | base64 -d | jq -r '$JQ_STR'"
+        eval $CMD
+    }
 
-# Extract the information we need
-DB_TYPE=$(getRelationshipInfo "$RELATIONSHIP" 'scheme')
-DB_USERNAME=$(getRelationshipInfo "$RELATIONSHIP" 'username')
-DB_HOST=$(getRelationshipInfo "$RELATIONSHIP" 'host')
-DB_PASS=$(getRelationshipInfo "$RELATIONSHIP" 'password')
-DB_PORT=$(getRelationshipInfo "$RELATIONSHIP" 'port')
+    RELATIONSHIP="postgresdatabase"
+    DB_DATABASE="main"
 
-# Create your DATABASE_URL variable here
-export DATABASE_URL="postgresql://$DB_USERNAME:$DB_PASS@$DB_HOST:$DB_PORT/$DB_DATABASE"
+    DB_USERNAME=$(getRelationshipInfo "$RELATIONSHIP" 'username')
+    DB_HOST=$(getRelationshipInfo "$RELATIONSHIP" 'host')
+    DB_PASS=$(getRelationshipInfo "$RELATIONSHIP" 'password')
+    DB_PORT=$(getRelationshipInfo "$RELATIONSHIP" 'port')
 
-# So now we have postgresql://user:@db_mysql.internal:3306/main
-# echo "$DATABASE_URL" #only echo to test since it will expose the credentials
+    export DATABASE_URL="postgresql://$DB_USERNAME:$DB_PASS@$DB_HOST:$DB_PORT/$DB_DATABASE"
+fi
+
+# Hinweis: Die DATABASE_URL kann auch direkt in den Upsun-Projekteinstellungen
+# als Umgebungsvariable gesetzt werden, was die bevorzugte Methode ist.
