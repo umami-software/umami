@@ -152,7 +152,7 @@ export async function POST(request: Request) {
         distinctId: id,
         createdAt,
       });
-      emitSessionCreated(sourceId, sessionId);
+      await emitSessionCreated(sourceId, sessionId);
     }
 
     // Visit info
