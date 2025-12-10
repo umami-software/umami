@@ -20,25 +20,31 @@
   "label.add": [
     {
       "type": 0,
-      "value": "Add"
+      "value": "Добавить"
+    }
+  ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "Добавить доску"
     }
   ],
   "label.add-description": [
     {
       "type": 0,
-      "value": "Add description"
+      "value": "Добавить описание"
     }
   ],
   "label.add-member": [
     {
       "type": 0,
-      "value": "Add member"
+      "value": "Добавить участника"
     }
   ],
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "Добавить шаг"
     }
   ],
   "label.add-website": [
@@ -53,10 +59,16 @@
       "value": "Администратор"
     }
   ],
+  "label.affiliate": [
+    {
+      "type": 0,
+      "value": "Партнер"
+    }
+  ],
   "label.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "После"
     }
   ],
   "label.all": [
@@ -77,10 +89,28 @@
       "value": "Аналитика"
     }
   ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "Применить"
+    }
+  ],
+  "label.attribution": [
+    {
+      "type": 0,
+      "value": "Атрибуция"
+    }
+  ],
+  "label.attribution-description": [
+    {
+      "type": 0,
+      "value": "Посмотрите, как пользователи взаимодействуют с вашим маркетингом и что приводит к конверсиям."
+    }
+  ],
   "label.average": [
     {
       "type": 0,
-      "value": "Average"
+      "value": "Средний"
     }
   ],
   "label.back": [
@@ -92,7 +122,13 @@
   "label.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "До"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "Доски"
     }
   ],
   "label.bounce-rate": [
@@ -104,19 +140,25 @@
   "label.breakdown": [
     {
       "type": 0,
-      "value": "Breakdown"
+      "value": "Авария"
     }
   ],
   "label.browser": [
     {
       "type": 0,
-      "value": "Browser"
+      "value": "Браузер"
     }
   ],
   "label.browsers": [
     {
       "type": 0,
       "value": "Браузеры"
+    }
+  ],
+  "label.campaigns": [
+    {
+      "type": 0,
+      "value": "Кампании"
     }
   ],
   "label.cancel": [
@@ -131,6 +173,12 @@
       "value": "Изменить пароль"
     }
   ],
+  "label.channels": [
+    {
+      "type": 0,
+      "value": "Каналы"
+    }
+  ],
   "label.cities": [
     {
       "type": 0,
@@ -140,7 +188,7 @@
   "label.city": [
     {
       "type": 0,
-      "value": "City"
+      "value": "Город"
     }
   ],
   "label.clear-all": [
@@ -149,10 +197,22 @@
       "value": "Очистить все"
     }
   ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "Когорта"
+    }
+  ],
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "Сравнить"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "Сравнить даты"
     }
   ],
   "label.confirm": [
@@ -170,7 +230,13 @@
   "label.contains": [
     {
       "type": 0,
-      "value": "Contains"
+      "value": "Содержит"
+    }
+  ],
+  "label.content": [
+    {
+      "type": 0,
+      "value": "Контент"
     }
   ],
   "label.continue": [
@@ -179,10 +245,28 @@
       "value": "Продолжить"
     }
   ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "Конверсия"
+    }
+  ],
+  "label.conversion-rate": [
+    {
+      "type": 0,
+      "value": "Коэффициент конверсии"
+    }
+  ],
+  "label.conversion-step": [
+    {
+      "type": 0,
+      "value": "Шаг конверсии"
+    }
+  ],
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "Считать"
     }
   ],
   "label.countries": [
@@ -194,19 +278,19 @@
   "label.country": [
     {
       "type": 0,
-      "value": "Country"
+      "value": "Страна"
     }
   ],
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "Создать"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "Create report"
+      "value": "Создать отчет"
     }
   ],
   "label.create-team": [
@@ -230,13 +314,19 @@
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "Создано"
+    }
+  ],
+  "label.currency": [
+    {
+      "type": 0,
+      "value": "Валюта"
     }
   ],
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "Текущий"
     }
   ],
   "label.current-password": [
@@ -266,7 +356,7 @@
   "label.date": [
     {
       "type": 0,
-      "value": "Date"
+      "value": "Дата"
     }
   ],
   "label.date-range": [
@@ -278,7 +368,7 @@
   "label.day": [
     {
       "type": 0,
-      "value": "Day"
+      "value": "День"
     }
   ],
   "label.default-date-range": [
@@ -296,7 +386,7 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "Удалить отчет"
     }
   ],
   "label.delete-team": [
@@ -320,7 +410,7 @@
   "label.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "Описание"
     }
   ],
   "label.desktop": [
@@ -338,7 +428,7 @@
   "label.device": [
     {
       "type": 0,
-      "value": "Device"
+      "value": "Устройство"
     }
   ],
   "label.devices": [
@@ -347,16 +437,40 @@
       "value": "Устройства"
     }
   ],
+  "label.direct": [
+    {
+      "type": 0,
+      "value": "Direct"
+    }
+  ],
   "label.dismiss": [
     {
       "type": 0,
       "value": "Отклонить"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "Distinct ID"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
-      "value": "Does not contain"
+      "value": "Не содержит"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "Не включает"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "Не существует"
     }
   ],
   "label.domain": [
@@ -368,7 +482,7 @@
   "label.dropoff": [
     {
       "type": 0,
-      "value": "Dropoff"
+      "value": "Высадка"
     }
   ],
   "label.edit": [
@@ -386,7 +500,13 @@
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "Редактировать участника"
+    }
+  ],
+  "label.email": [
+    {
+      "type": 0,
+      "value": "Email"
     }
   ],
   "label.enable-share-url": [
@@ -398,25 +518,31 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "Конечный шаг"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "URL-адрес входа"
     }
   ],
   "label.event": [
     {
       "type": 0,
-      "value": "Event"
+      "value": "Событие"
     }
   ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "Данные о событии"
+    }
+  ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "Название события"
     }
   ],
   "label.events": [
@@ -425,34 +551,40 @@
       "value": "События"
     }
   ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "Существует"
+    }
+  ],
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "URL-адрес выхода"
     }
   ],
   "label.false": [
     {
       "type": 0,
-      "value": "False"
+      "value": "Ложь"
     }
   ],
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "Поле"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Fields"
+      "value": "Поля"
     }
   ],
   "label.filter": [
     {
       "type": 0,
-      "value": "Filter"
+      "value": "Фильтр"
     }
   ],
   "label.filter-combined": [
@@ -470,103 +602,139 @@
   "label.filters": [
     {
       "type": 0,
-      "value": "Filters"
+      "value": "Фильтры"
+    }
+  ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "Первый клик"
     }
   ],
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "Первый вход"
     }
   ],
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Воронка"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "Изучите коэффициент конверсии и ухода пользователей."
+    }
+  ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "Воронки"
     }
   ],
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "Цель"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "Цели"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "Отслеживайте свои цели по просмотрам страниц и событиям."
     }
   ],
   "label.greater-than": [
     {
       "type": 0,
-      "value": "Greater than"
+      "value": "Больше, чем"
     }
   ],
   "label.greater-than-equals": [
     {
       "type": 0,
-      "value": "Greater than or equals"
+      "value": "Больше или равно"
     }
   ],
-  "label.host": [
+  "label.grouped": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "Группировано"
     }
   ],
-  "label.hosts": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "Имя хоста"
+    }
+  ],
+  "label.includes": [
+    {
+      "type": 0,
+      "value": "Включает"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "Инсайт"
     }
   ],
   "label.insights": [
     {
       "type": 0,
-      "value": "Insights"
+      "value": "Информация"
     }
   ],
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "Погрузитесь глубже в свои данные с помощью сегментов и фильтров."
     }
   ],
   "label.is": [
     {
       "type": 0,
-      "value": "Is"
+      "value": "Является"
+    }
+  ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "Ложно"
     }
   ],
   "label.is-not": [
     {
       "type": 0,
-      "value": "Is not"
+      "value": "Не установлен"
     }
   ],
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Is not set"
+      "value": "Не установлено"
     }
   ],
   "label.is-set": [
     {
       "type": 0,
-      "value": "Is set"
+      "value": "Установлен"
+    }
+  ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "Истинно"
     }
   ],
   "label.join": [
@@ -590,7 +758,13 @@
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users navigate through your website."
+      "value": "Поймите, как пользователи перемещаются по вашему сайту."
+    }
+  ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "Пути"
     }
   ],
   "label.language": [
@@ -609,6 +783,12 @@
     {
       "type": 0,
       "value": "Ноутбук"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "Последний клик"
     }
   ],
   "label.last-days": [
@@ -642,7 +822,7 @@
   "label.last-months": [
     {
       "type": 0,
-      "value": "Last "
+      "value": "Последние "
     },
     {
       "type": 1,
@@ -650,13 +830,13 @@
     },
     {
       "type": 0,
-      "value": " months"
+      "value": " месяцев"
     }
   ],
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "Последний вход"
     }
   ],
   "label.leave": [
@@ -674,13 +854,19 @@
   "label.less-than": [
     {
       "type": 0,
-      "value": "Less than"
+      "value": "Меньше, чем"
     }
   ],
   "label.less-than-equals": [
     {
       "type": 0,
-      "value": "Less than or equals"
+      "value": "Меньше или равно"
+    }
+  ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "Ссылки"
     }
   ],
   "label.login": [
@@ -698,25 +884,37 @@
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "Управление"
     }
   ],
   "label.manager": [
     {
       "type": 0,
-      "value": "Manager"
+      "value": "Менеджер"
     }
   ],
   "label.max": [
     {
       "type": 0,
-      "value": "Max"
+      "value": "Максимум"
+    }
+  ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Развернуть"
+    }
+  ],
+  "label.medium": [
+    {
+      "type": 0,
+      "value": "Средний"
     }
   ],
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "Участник"
     }
   ],
   "label.members": [
@@ -728,13 +926,19 @@
   "label.min": [
     {
       "type": 0,
-      "value": "Min"
+      "value": "Минимум"
     }
   ],
   "label.mobile": [
     {
       "type": 0,
       "value": "Смартфон"
+    }
+  ],
+  "label.model": [
+    {
+      "type": 0,
+      "value": "Модель"
     }
   ],
   "label.more": [
@@ -746,13 +950,13 @@
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "Мой профиль"
     }
   ],
   "label.my-websites": [
     {
       "type": 0,
-      "value": "My websites"
+      "value": "Мои сайты"
     }
   ],
   "label.name": [
@@ -789,7 +993,7 @@
           "value": [
             {
               "type": 0,
-              "value": "record"
+              "value": "запись"
             }
           ]
         },
@@ -797,7 +1001,7 @@
           "value": [
             {
               "type": 0,
-              "value": "records"
+              "value": "записи"
             }
           ]
         }
@@ -813,16 +1017,52 @@
       "value": "OK"
     }
   ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
+    }
+  ],
+  "label.organic-search": [
+    {
+      "type": 0,
+      "value": "Органический поиск"
+    }
+  ],
+  "label.organic-shopping": [
+    {
+      "type": 0,
+      "value": "Органические покупки"
+    }
+  ],
+  "label.organic-social": [
+    {
+      "type": 0,
+      "value": "Органические соцсети"
+    }
+  ],
+  "label.organic-video": [
+    {
+      "type": 0,
+      "value": "Органическое видео"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
       "value": "OS"
     }
   ],
+  "label.other": [
+    {
+      "type": 0,
+      "value": "Другое"
+    }
+  ],
   "label.overview": [
     {
       "type": 0,
-      "value": "Overview"
+      "value": "Обзор"
     }
   ],
   "label.owner": [
@@ -831,10 +1071,16 @@
       "value": "Владелец"
     }
   ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "Страница"
+    }
+  ],
   "label.page-of": [
     {
       "type": 0,
-      "value": "Page "
+      "value": "Страница "
     },
     {
       "type": 1,
@@ -842,7 +1088,7 @@
     },
     {
       "type": 0,
-      "value": " of "
+      "value": " из "
     },
     {
       "type": 1,
@@ -858,13 +1104,43 @@
   "label.pageTitle": [
     {
       "type": 0,
-      "value": "Page title"
+      "value": "Название страницы"
     }
   ],
   "label.pages": [
     {
       "type": 0,
       "value": "Страницы"
+    }
+  ],
+  "label.paid-ads": [
+    {
+      "type": 0,
+      "value": "Платная реклама"
+    }
+  ],
+  "label.paid-search": [
+    {
+      "type": 0,
+      "value": "Платный поиск"
+    }
+  ],
+  "label.paid-shopping": [
+    {
+      "type": 0,
+      "value": "Платные покупки"
+    }
+  ],
+  "label.paid-social": [
+    {
+      "type": 0,
+      "value": "Платные соцсети"
+    }
+  ],
+  "label.paid-video": [
+    {
+      "type": 0,
+      "value": "Платное видео"
     }
   ],
   "label.password": [
@@ -876,13 +1152,19 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "Путь"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "Пути"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "Пиксели"
     }
   ],
   "label.powered-by": [
@@ -898,19 +1180,19 @@
   "label.previous": [
     {
       "type": 0,
-      "value": "Previous"
+      "value": "Предыдущий"
     }
   ],
   "label.previous-period": [
     {
       "type": 0,
-      "value": "Previous period"
+      "value": "Предыдущий период"
     }
   ],
   "label.previous-year": [
     {
       "type": 0,
-      "value": "Previous year"
+      "value": "Предыдущий год"
     }
   ],
   "label.profile": [
@@ -922,13 +1204,13 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "Свойства"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "Свойство"
     }
   ],
   "label.queries": [
@@ -940,7 +1222,7 @@
   "label.query": [
     {
       "type": 0,
-      "value": "Query"
+      "value": "Запрос"
     }
   ],
   "label.query-parameters": [
@@ -955,10 +1237,16 @@
       "value": "Реальное время"
     }
   ],
+  "label.referral": [
+    {
+      "type": 0,
+      "value": "Referral"
+    }
+  ],
   "label.referrer": [
     {
       "type": 0,
-      "value": "Referrer"
+      "value": "Реферер"
     }
   ],
   "label.referrers": [
@@ -982,13 +1270,19 @@
   "label.region": [
     {
       "type": 0,
-      "value": "Region"
+      "value": "Регион"
     }
   ],
   "label.regions": [
     {
       "type": 0,
       "value": "Регионы"
+    }
+  ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "Осталось"
     }
   ],
   "label.remove": [
@@ -1000,13 +1294,13 @@
   "label.remove-member": [
     {
       "type": 0,
-      "value": "Remove member"
+      "value": "Удалить участника"
     }
   ],
   "label.reports": [
     {
       "type": 0,
-      "value": "Reports"
+      "value": "Отчеты"
     }
   ],
   "label.required": [
@@ -1030,31 +1324,25 @@
   "label.retention": [
     {
       "type": 0,
-      "value": "Retention"
+      "value": "Удержание"
     }
   ],
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
+      "value": "Измерьте «прилипаемость» вашего сайта, отслеживая, как часто пользователи возвращаются на него."
     }
   ],
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "Выручка"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
-    }
-  ],
-  "label.revenue-property": [
-    {
-      "type": 0,
-      "value": "Revenue Property"
+      "value": "Изучите свои доходы за определенное время."
     }
   ],
   "label.role": [
@@ -1066,7 +1354,7 @@
   "label.run-query": [
     {
       "type": 0,
-      "value": "Run query"
+      "value": "Выполнить запрос"
     }
   ],
   "label.save": [
@@ -1084,25 +1372,31 @@
   "label.search": [
     {
       "type": 0,
-      "value": "Search"
+      "value": "Поиск"
     }
   ],
   "label.select": [
     {
       "type": 0,
-      "value": "Select"
+      "value": "Выберите"
     }
   ],
   "label.select-date": [
     {
       "type": 0,
-      "value": "Select date"
+      "value": "Выберите дату"
+    }
+  ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "Выберите фильтр"
     }
   ],
   "label.select-role": [
     {
       "type": 0,
-      "value": "Select role"
+      "value": "Выберите роль"
     }
   ],
   "label.select-website": [
@@ -1114,7 +1408,13 @@
   "label.session": [
     {
       "type": 0,
-      "value": "Session"
+      "value": "Сессия"
+    }
+  ],
+  "label.session-data": [
+    {
+      "type": 0,
+      "value": "Данные сессии"
     }
   ],
   "label.sessions": [
@@ -1129,6 +1429,12 @@
       "value": "Настройки"
     }
   ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "Поделиться"
+    }
+  ],
   "label.share-url": [
     {
       "type": 0,
@@ -1141,28 +1447,52 @@
       "value": "Один день"
     }
   ],
+  "label.sms": [
+    {
+      "type": 0,
+      "value": "SMS"
+    }
+  ],
+  "label.sources": [
+    {
+      "type": 0,
+      "value": "Источники"
+    }
+  ],
   "label.start-step": [
     {
       "type": 0,
-      "value": "Start Step"
+      "value": "Начальный этап"
     }
   ],
   "label.steps": [
     {
       "type": 0,
-      "value": "Steps"
+      "value": "Шаги"
     }
   ],
   "label.sum": [
     {
       "type": 0,
-      "value": "Sum"
+      "value": "Сумма"
     }
   ],
   "label.tablet": [
     {
       "type": 0,
       "value": "Планшет"
+    }
+  ],
+  "label.tag": [
+    {
+      "type": 0,
+      "value": "Тег"
+    }
+  ],
+  "label.tags": [
+    {
+      "type": 0,
+      "value": "Теги"
     }
   ],
   "label.team": [
@@ -1180,7 +1510,7 @@
   "label.team-manager": [
     {
       "type": 0,
-      "value": "Team manager"
+      "value": "Менеджер команды"
     }
   ],
   "label.team-member": [
@@ -1192,7 +1522,7 @@
   "label.team-name": [
     {
       "type": 0,
-      "value": "Team name"
+      "value": "Название команды"
     }
   ],
   "label.team-owner": [
@@ -1201,22 +1531,34 @@
       "value": "Владелец команды"
     }
   ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "Настройки команды"
+    }
+  ],
   "label.team-view-only": [
     {
       "type": 0,
-      "value": "Team view only"
+      "value": "Только командный просмотр"
     }
   ],
   "label.team-websites": [
     {
       "type": 0,
-      "value": "Team websites"
+      "value": "Веб-сайты команды"
     }
   ],
   "label.teams": [
     {
       "type": 0,
       "value": "Команды"
+    }
+  ],
+  "label.terms": [
+    {
+      "type": 0,
+      "value": "Условия"
     }
   ],
   "label.theme": [
@@ -1270,13 +1612,13 @@
   "label.total": [
     {
       "type": 0,
-      "value": "Total"
+      "value": "Всего"
     }
   ],
   "label.total-records": [
     {
       "type": 0,
-      "value": "Total records"
+      "value": "Всего записей"
     }
   ],
   "label.tracking-code": [
@@ -1288,37 +1630,37 @@
   "label.transactions": [
     {
       "type": 0,
-      "value": "Transactions"
+      "value": "Транзакции"
     }
   ],
   "label.transfer": [
     {
       "type": 0,
-      "value": "Transfer"
+      "value": "Передача"
     }
   ],
   "label.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website"
+      "value": "Передать сайт"
     }
   ],
   "label.true": [
     {
       "type": 0,
-      "value": "True"
+      "value": "Правда"
     }
   ],
   "label.type": [
     {
       "type": 0,
-      "value": "Type"
+      "value": "Тип"
     }
   ],
   "label.unique": [
     {
       "type": 0,
-      "value": "Unique"
+      "value": "Уникальный"
     }
   ],
   "label.unique-visitors": [
@@ -1330,7 +1672,7 @@
   "label.uniqueCustomers": [
     {
       "type": 0,
-      "value": "Unique Customers"
+      "value": "Уникальные клиенты"
     }
   ],
   "label.unknown": [
@@ -1342,37 +1684,19 @@
   "label.untitled": [
     {
       "type": 0,
-      "value": "Untitled"
+      "value": "Без названия"
     }
   ],
   "label.update": [
     {
       "type": 0,
-      "value": "Update"
-    }
-  ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "URL"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "URLs"
+      "value": "Обновление"
     }
   ],
   "label.user": [
     {
       "type": 0,
       "value": "Пользователь"
-    }
-  ],
-  "label.user-property": [
-    {
-      "type": 0,
-      "value": "User Property"
     }
   ],
   "label.username": [
@@ -1396,13 +1720,13 @@
   "label.utm-description": [
     {
       "type": 0,
-      "value": "Track your campaigns through UTM parameters."
+      "value": "Отслеживайте свои кампании с помощью UTM-параметров."
     }
   ],
   "label.value": [
     {
       "type": 0,
-      "value": "Value"
+      "value": "Значение"
     }
   ],
   "label.view": [
@@ -1420,7 +1744,7 @@
   "label.view-only": [
     {
       "type": 0,
-      "value": "View only"
+      "value": "Только просмотр"
     }
   ],
   "label.views": [
@@ -1432,7 +1756,7 @@
   "label.views-per-visit": [
     {
       "type": 0,
-      "value": "Views per visit"
+      "value": "Просмотров за посещение"
     }
   ],
   "label.visit-duration": [
@@ -1450,13 +1774,13 @@
   "label.visits": [
     {
       "type": 0,
-      "value": "Visits"
+      "value": "Посещения"
     }
   ],
   "label.website": [
     {
       "type": 0,
-      "value": "Website"
+      "value": "Сайт"
     }
   ],
   "label.website-id": [
@@ -1474,7 +1798,7 @@
   "label.window": [
     {
       "type": 0,
-      "value": "Window"
+      "value": "Окно"
     }
   ],
   "label.yesterday": [
@@ -1486,7 +1810,7 @@
   "message.action-confirmation": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Введите "
     },
     {
       "type": 1,
@@ -1494,7 +1818,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " в поле ниже, чтобы подтвердить."
     }
   ],
   "message.active-users": [
@@ -1507,10 +1831,16 @@
       "value": " текущих посетителей"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
-      "value": "Collected data"
+      "value": "Собранные данные"
     }
   ],
   "message.confirm-delete": [
@@ -1544,7 +1874,7 @@
   "message.confirm-remove": [
     {
       "type": 0,
-      "value": "Are you sure you want to remove "
+      "value": "Вы уверены, что хотите удалить "
     },
     {
       "type": 1,
@@ -1572,7 +1902,7 @@
   "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "Deleting a team will also delete all team websites."
+      "value": "При удалении команды будут удалены и все ее веб-сайты."
     }
   ],
   "message.delete-website-warning": [
@@ -1594,11 +1924,17 @@
     },
     {
       "type": 0,
-      "value": " on "
+      "value": " на "
     },
     {
       "type": 1,
       "value": "url"
+    }
+  ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
     }
   ],
   "message.go-to-settings": [
@@ -1636,7 +1972,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "A new version of Umami "
+      "value": "Вышла новая версия Umami "
     },
     {
       "type": 1,
@@ -1644,7 +1980,7 @@
     },
     {
       "type": 0,
-      "value": " is available!"
+      "value": "!"
     }
   ],
   "message.no-data-available": [
@@ -1656,7 +1992,7 @@
   "message.no-event-data": [
     {
       "type": 0,
-      "value": "No event data is available."
+      "value": "Данные о событиях отсутствуют."
     }
   ],
   "message.no-match-password": [
@@ -1668,7 +2004,7 @@
   "message.no-results-found": [
     {
       "type": 0,
-      "value": "No results were found."
+      "value": "Результаты не найдены."
     }
   ],
   "message.no-team-websites": [
@@ -1695,6 +2031,18 @@
       "value": "У вас нет настроенных сайтов."
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1717,6 +2065,12 @@
     {
       "type": 0,
       "value": "Успешно сохранено."
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1760,25 +2114,31 @@
   "message.transfer-team-website-to-user": [
     {
       "type": 0,
-      "value": "Transfer this website to your account?"
+      "value": "Перенести этот сайт в свой прфоиль?"
     }
   ],
   "message.transfer-user-website-to-team": [
     {
       "type": 0,
-      "value": "Select the team to transfer this website to."
+      "value": "Выберите команду, которой нужно передать этот сайт."
     }
   ],
   "message.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website ownership to your account or another team."
+      "value": "Передайте право владения сайтом своей учетной записи или другой команде."
     }
   ],
   "message.triggered-event": [
     {
       "type": 0,
-      "value": "Triggered event"
+      "value": "Запущенное событие"
+    }
+  ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
     }
   ],
   "message.user-deleted": [
@@ -1790,7 +2150,7 @@
   "message.viewed-page": [
     {
       "type": 0,
-      "value": "Viewed page"
+      "value": "Просмотренная страница"
     }
   ],
   "message.visitor-log": [
@@ -1825,12 +2185,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "Visitors dropped off"
     }
   ]
 }

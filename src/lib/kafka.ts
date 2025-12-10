@@ -1,9 +1,13 @@
+import type * as tls from 'node:tls';
 import debug from 'debug';
-import { Kafka, Mechanism, Producer, RecordMetadata, SASLOptions, logLevel } from 'kafkajs';
-import { KAFKA, KAFKA_PRODUCER } from 'lib/db';
-import * as tls from 'tls';
+import { Kafka, logLevel, type Producer, type RecordMetadata, type SASLOptions } from 'kafkajs';
+import { serializeError } from 'serialize-error';
+import { KAFKA, KAFKA_PRODUCER } from '@/lib/db';
 
 const log = debug('umami:kafka');
+const CONNECT_TIMEOUT = 5000;
+const SEND_TIMEOUT = 3000;
+const ACKS = 1;
 
 let kafka: Kafka;
 let producer: Producer;
@@ -12,13 +16,17 @@ const enabled = Boolean(process.env.KAFKA_URL && process.env.KAFKA_BROKER);
 function getClient() {
   const { username, password } = new URL(process.env.KAFKA_URL);
   const brokers = process.env.KAFKA_BROKER.split(',');
+  const mechanism =
+    (process.env.KAFKA_SASL_MECHANISM as 'plain' | 'scram-sha-256' | 'scram-sha-512') || 'plain';
 
-  const ssl: { ssl?: tls.ConnectionOptions | boolean; sasl?: SASLOptions | Mechanism } =
+  const ssl: { ssl?: tls.ConnectionOptions | boolean; sasl?: SASLOptions } =
     username && password
       ? {
-          ssl: true,
+          ssl: {
+            rejectUnauthorized: false,
+          },
           sasl: {
-            mechanism: 'scram-sha-256',
+            mechanism,
             username,
             password,
           },
@@ -28,13 +36,13 @@ function getClient() {
   const client: Kafka = new Kafka({
     clientId: 'umami',
     brokers: brokers,
-    connectionTimeout: 3000,
+    connectionTimeout: CONNECT_TIMEOUT,
     logLevel: logLevel.ERROR,
     ...ssl,
   });
 
   if (process.env.NODE_ENV !== 'production') {
-    global[KAFKA] = client;
+    globalThis[KAFKA] = client;
   }
 
   log('Kafka initialized');
@@ -47,7 +55,7 @@ async function getProducer(): Promise<Producer> {
   await producer.connect();
 
   if (process.env.NODE_ENV !== 'production') {
-    global[KAFKA_PRODUCER] = producer;
+    globalThis[KAFKA_PRODUCER] = producer;
   }
 
   log('Kafka producer initialized');
@@ -57,39 +65,37 @@ async function getProducer(): Promise<Producer> {
 
 async function sendMessage(
   topic: string,
-  message: { [key: string]: string | number },
+  message: Record<string, string | number> | Record<string, string | number>[],
 ): Promise<RecordMetadata[]> {
-  await connect();
+  try {
+    await connect();
 
-  return producer.send({
-    topic,
-    messages: [
-      {
-        value: JSON.stringify(message),
-      },
-    ],
-    acks: -1,
-  });
-}
-
-async function sendMessages(topic: string, messages: { [key: string]: string | number }[]) {
-  await connect();
-
-  await producer.send({
-    topic,
-    messages: messages.map(a => {
-      return { value: JSON.stringify(a) };
-    }),
-    acks: 1,
-  });
+    return producer.send({
+      topic,
+      messages: Array.isArray(message)
+        ? message.map(a => {
+            return { value: JSON.stringify(a) };
+          })
+        : [
+            {
+              value: JSON.stringify(message),
+            },
+          ],
+      timeout: SEND_TIMEOUT,
+      acks: ACKS,
+    });
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log('KAFKA ERROR:', serializeError(e));
+  }
 }
 
 async function connect(): Promise<Kafka> {
   if (!kafka) {
-    kafka = process.env.KAFKA_URL && process.env.KAFKA_BROKER && (global[KAFKA] || getClient());
+    kafka = process.env.KAFKA_URL && process.env.KAFKA_BROKER && (globalThis[KAFKA] || getClient());
 
     if (kafka) {
-      producer = global[KAFKA_PRODUCER] || (await getProducer());
+      producer = globalThis[KAFKA_PRODUCER] || (await getProducer());
     }
   }
 
@@ -103,5 +109,4 @@ export default {
   log,
   connect,
   sendMessage,
-  sendMessages,
 };

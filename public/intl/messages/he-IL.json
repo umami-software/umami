@@ -2,7 +2,7 @@
   "label.access-code": [
     {
       "type": 0,
-      "value": "Access code"
+      "value": "קוד גישה"
     }
   ],
   "label.actions": [
@@ -14,31 +14,37 @@
   "label.activity": [
     {
       "type": 0,
-      "value": "Activity log"
+      "value": "יומן פעילות"
     }
   ],
   "label.add": [
     {
       "type": 0,
-      "value": "Add"
+      "value": "הוסף"
+    }
+  ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "הוסף לוח"
     }
   ],
   "label.add-description": [
     {
       "type": 0,
-      "value": "Add description"
+      "value": "הוסף תיאור"
     }
   ],
   "label.add-member": [
     {
       "type": 0,
-      "value": "Add member"
+      "value": "הוסף חבר"
     }
   ],
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "הוסף שלב"
     }
   ],
   "label.add-website": [
@@ -53,10 +59,16 @@
       "value": "מנהל"
     }
   ],
+  "label.affiliate": [
+    {
+      "type": 0,
+      "value": "שותף"
+    }
+  ],
   "label.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "אחרי"
     }
   ],
   "label.all": [
@@ -68,19 +80,37 @@
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "כל הזמנים"
     }
   ],
   "label.analytics": [
     {
       "type": 0,
-      "value": "Analytics"
+      "value": "אנליטיקה"
+    }
+  ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "החל"
+    }
+  ],
+  "label.attribution": [
+    {
+      "type": 0,
+      "value": "שיוך"
+    }
+  ],
+  "label.attribution-description": [
+    {
+      "type": 0,
+      "value": "צפה כיצד משתמשים מתקשרים עם השיווק שלך ומה מניע המרות."
     }
   ],
   "label.average": [
     {
       "type": 0,
-      "value": "Average"
+      "value": "ממוצע"
     }
   ],
   "label.back": [
@@ -92,31 +122,43 @@
   "label.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "לפני"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "לוחות"
     }
   ],
   "label.bounce-rate": [
     {
       "type": 0,
-      "value": "Bounce rate"
+      "value": "שיעור נטישה"
     }
   ],
   "label.breakdown": [
     {
       "type": 0,
-      "value": "Breakdown"
+      "value": "פירוט"
     }
   ],
   "label.browser": [
     {
       "type": 0,
-      "value": "Browser"
+      "value": "דפדפן"
     }
   ],
   "label.browsers": [
     {
       "type": 0,
       "value": "דפדפנים"
+    }
+  ],
+  "label.campaigns": [
+    {
+      "type": 0,
+      "value": "קמפיינים"
     }
   ],
   "label.cancel": [
@@ -131,34 +173,52 @@
       "value": "שינוי סיסמה"
     }
   ],
+  "label.channels": [
+    {
+      "type": 0,
+      "value": "ערוצים"
+    }
+  ],
   "label.cities": [
     {
       "type": 0,
-      "value": "Cities"
+      "value": "ערים"
     }
   ],
   "label.city": [
     {
       "type": 0,
-      "value": "City"
+      "value": "עיר"
     }
   ],
   "label.clear-all": [
     {
       "type": 0,
-      "value": "Clear all"
+      "value": "נקה הכל"
+    }
+  ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "קבוצה"
     }
   ],
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "השווה"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "השווה תאריכים"
     }
   ],
   "label.confirm": [
     {
       "type": 0,
-      "value": "Confirm"
+      "value": "אשר"
     }
   ],
   "label.confirm-password": [
@@ -173,16 +233,40 @@
       "value": "Contains"
     }
   ],
+  "label.content": [
+    {
+      "type": 0,
+      "value": "תוכן"
+    }
+  ],
   "label.continue": [
     {
       "type": 0,
-      "value": "Continue"
+      "value": "המשך"
+    }
+  ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "המרה"
+    }
+  ],
+  "label.conversion-rate": [
+    {
+      "type": 0,
+      "value": "שיעור המרה"
+    }
+  ],
+  "label.conversion-step": [
+    {
+      "type": 0,
+      "value": "שלב המרה"
     }
   ],
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "ספירה"
     }
   ],
   "label.countries": [
@@ -194,49 +278,55 @@
   "label.country": [
     {
       "type": 0,
-      "value": "Country"
+      "value": "מדינה"
     }
   ],
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "צור"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "Create report"
+      "value": "צור דוח"
     }
   ],
   "label.create-team": [
     {
       "type": 0,
-      "value": "Create team"
+      "value": "צור צוות"
     }
   ],
   "label.create-user": [
     {
       "type": 0,
-      "value": "Create user"
+      "value": "צור משתמש"
     }
   ],
   "label.created": [
     {
       "type": 0,
-      "value": "Created"
+      "value": "נוצר"
     }
   ],
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "נוצר על ידי"
+    }
+  ],
+  "label.currency": [
+    {
+      "type": 0,
+      "value": "מטבע"
     }
   ],
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "נוכחי"
     }
   ],
   "label.current-password": [
@@ -260,13 +350,13 @@
   "label.data": [
     {
       "type": 0,
-      "value": "Data"
+      "value": "נתונים"
     }
   ],
   "label.date": [
     {
       "type": 0,
-      "value": "Date"
+      "value": "תאריך"
     }
   ],
   "label.date-range": [
@@ -278,7 +368,7 @@
   "label.day": [
     {
       "type": 0,
-      "value": "Day"
+      "value": "יום"
     }
   ],
   "label.default-date-range": [
@@ -296,19 +386,19 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "מחק דוח"
     }
   ],
   "label.delete-team": [
     {
       "type": 0,
-      "value": "Delete team"
+      "value": "מחק צוות"
     }
   ],
   "label.delete-user": [
     {
       "type": 0,
-      "value": "Delete user"
+      "value": "מחק משתמש"
     }
   ],
   "label.delete-website": [
@@ -320,25 +410,25 @@
   "label.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "תיאור"
     }
   ],
   "label.desktop": [
     {
       "type": 0,
-      "value": "דסקטופ"
+      "value": "מחשב שולחני"
     }
   ],
   "label.details": [
     {
       "type": 0,
-      "value": "Details"
+      "value": "פרטים"
     }
   ],
   "label.device": [
     {
       "type": 0,
-      "value": "Device"
+      "value": "מכשיר"
     }
   ],
   "label.devices": [
@@ -347,16 +437,40 @@
       "value": "מכשירים"
     }
   ],
+  "label.direct": [
+    {
+      "type": 0,
+      "value": "ישיר"
+    }
+  ],
   "label.dismiss": [
     {
       "type": 0,
       "value": "שיחרור"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "מזהה ייחודי"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
-      "value": "Does not contain"
+      "value": "לא מכיל"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "לא כולל"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "לא קיים"
     }
   ],
   "label.domain": [
@@ -368,7 +482,7 @@
   "label.dropoff": [
     {
       "type": 0,
-      "value": "Dropoff"
+      "value": "עזיבה"
     }
   ],
   "label.edit": [
@@ -380,13 +494,19 @@
   "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "ערוך לוח מחוונים"
     }
   ],
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "ערוך חבר"
+    }
+  ],
+  "label.email": [
+    {
+      "type": 0,
+      "value": "אימייל"
     }
   ],
   "label.enable-share-url": [
@@ -398,25 +518,31 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "שלב סיום"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "כתובת כניסה"
     }
   ],
   "label.event": [
     {
       "type": 0,
-      "value": "Event"
+      "value": "אירוע"
     }
   ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "נתוני אירוע"
+    }
+  ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "שם האירוע"
     }
   ],
   "label.events": [
@@ -425,28 +551,34 @@
       "value": "אירועים"
     }
   ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "קיים"
+    }
+  ],
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "כתובת יציאה"
     }
   ],
   "label.false": [
     {
       "type": 0,
-      "value": "False"
+      "value": "שקר"
     }
   ],
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "שדה"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Fields"
+      "value": "שדות"
     }
   ],
   "label.filter": [
@@ -470,127 +602,169 @@
   "label.filters": [
     {
       "type": 0,
-      "value": "Filters"
+      "value": "מסננים"
+    }
+  ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "קליק ראשון"
     }
   ],
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "נראה לראשונה"
     }
   ],
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "משפך"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "הבן את שיעור ההמרה והעזיבה של המשתמשים."
+    }
+  ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "משפכים"
     }
   ],
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "מטרה"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "מטרות"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "עקוב אחרי המטרות שלך לצפיות בדף ואירועים."
     }
   ],
   "label.greater-than": [
     {
       "type": 0,
-      "value": "Greater than"
+      "value": "גדול מ-"
     }
   ],
   "label.greater-than-equals": [
     {
       "type": 0,
-      "value": "Greater than or equals"
+      "value": "גדול או שווה ל-"
     }
   ],
-  "label.host": [
+  "label.grouped": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "מקובץ"
     }
   ],
-  "label.hosts": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "שם מארח"
+    }
+  ],
+  "label.includes": [
+    {
+      "type": 0,
+      "value": "כולל"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "תובנה"
     }
   ],
   "label.insights": [
     {
       "type": 0,
-      "value": "Insights"
+      "value": "תובנות"
     }
   ],
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "צלול עמוק יותר לנתונים שלך באמצעות פילוחים ומסננים."
     }
   ],
   "label.is": [
     {
       "type": 0,
-      "value": "Is"
+      "value": "הוא"
+    }
+  ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "הוא שקר"
     }
   ],
   "label.is-not": [
     {
       "type": 0,
-      "value": "Is not"
+      "value": "אינו"
     }
   ],
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Is not set"
+      "value": "לא הוגדר"
     }
   ],
   "label.is-set": [
     {
       "type": 0,
-      "value": "Is set"
+      "value": "הוגדר"
+    }
+  ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "הוא אמת"
     }
   ],
   "label.join": [
     {
       "type": 0,
-      "value": "Join"
+      "value": "הצטרף"
     }
   ],
   "label.join-team": [
     {
       "type": 0,
-      "value": "Join team"
+      "value": "הצטרף לצוות"
     }
   ],
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "מסע"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users navigate through your website."
+      "value": "הבן כיצד משתמשים מנווטים באתר שלך."
+    }
+  ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "מסעות"
     }
   ],
   "label.language": [
@@ -609,6 +783,12 @@
     {
       "type": 0,
       "value": "לפטופ"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "קליק אחרון"
     }
   ],
   "label.last-days": [
@@ -633,46 +813,48 @@
   ],
   "label.last-months": [
     {
-      "type": 0,
-      "value": "Last "
-    },
-    {
       "type": 1,
       "value": "x"
     },
     {
       "type": 0,
-      "value": " months"
+      "value": " חודשים אחרונים"
     }
   ],
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "נראה לאחרונה"
     }
   ],
   "label.leave": [
     {
       "type": 0,
-      "value": "Leave"
+      "value": "עזוב"
     }
   ],
   "label.leave-team": [
     {
       "type": 0,
-      "value": "Leave team"
+      "value": "עזוב צוות"
     }
   ],
   "label.less-than": [
     {
       "type": 0,
-      "value": "Less than"
+      "value": "פחות מ-"
     }
   ],
   "label.less-than-equals": [
     {
       "type": 0,
-      "value": "Less than or equals"
+      "value": "פחות או שווה ל-"
+    }
+  ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "קישורים"
     }
   ],
   "label.login": [
@@ -690,43 +872,61 @@
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "נהל"
     }
   ],
   "label.manager": [
     {
       "type": 0,
-      "value": "Manager"
+      "value": "מנהל"
     }
   ],
   "label.max": [
     {
       "type": 0,
-      "value": "Max"
+      "value": "מקסימום"
+    }
+  ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "הרחב"
+    }
+  ],
+  "label.medium": [
+    {
+      "type": 0,
+      "value": "בינוני"
     }
   ],
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "חבר"
     }
   ],
   "label.members": [
     {
       "type": 0,
-      "value": "Members"
+      "value": "חברים"
     }
   ],
   "label.min": [
     {
       "type": 0,
-      "value": "Min"
+      "value": "מינימום"
     }
   ],
   "label.mobile": [
     {
       "type": 0,
       "value": "מובייל"
+    }
+  ],
+  "label.model": [
+    {
+      "type": 0,
+      "value": "Model"
     }
   ],
   "label.more": [
@@ -738,13 +938,13 @@
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "החשבון שלי"
     }
   ],
   "label.my-websites": [
     {
       "type": 0,
-      "value": "My websites"
+      "value": "האתרים שלי"
     }
   ],
   "label.name": [
@@ -762,7 +962,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "ללא"
     }
   ],
   "label.number-of-records": [
@@ -781,7 +981,7 @@
           "value": [
             {
               "type": 0,
-              "value": "record"
+              "value": "רשומה"
             }
           ]
         },
@@ -789,7 +989,7 @@
           "value": [
             {
               "type": 0,
-              "value": "records"
+              "value": "רשומות"
             }
           ]
         }
@@ -805,28 +1005,70 @@
       "value": "OK"
     }
   ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
+    }
+  ],
+  "label.organic-search": [
+    {
+      "type": 0,
+      "value": "חיפוש אורגני"
+    }
+  ],
+  "label.organic-shopping": [
+    {
+      "type": 0,
+      "value": "קניות אורגניות"
+    }
+  ],
+  "label.organic-social": [
+    {
+      "type": 0,
+      "value": "רשת חברתית אורגנית"
+    }
+  ],
+  "label.organic-video": [
+    {
+      "type": 0,
+      "value": "וידאו אורגני"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
       "value": "OS"
     }
   ],
+  "label.other": [
+    {
+      "type": 0,
+      "value": "אחר"
+    }
+  ],
   "label.overview": [
     {
       "type": 0,
-      "value": "Overview"
+      "value": "סקירה כללית"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "בעלים"
+    }
+  ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "דף"
     }
   ],
   "label.page-of": [
     {
       "type": 0,
-      "value": "Page "
+      "value": "דף "
     },
     {
       "type": 1,
@@ -834,7 +1076,7 @@
     },
     {
       "type": 0,
-      "value": " of "
+      "value": " מתוך "
     },
     {
       "type": 1,
@@ -859,6 +1101,36 @@
       "value": "דפים"
     }
   ],
+  "label.paid-ads": [
+    {
+      "type": 0,
+      "value": "מודעות בתשלום"
+    }
+  ],
+  "label.paid-search": [
+    {
+      "type": 0,
+      "value": "חיפוש בתשלום"
+    }
+  ],
+  "label.paid-shopping": [
+    {
+      "type": 0,
+      "value": "קניות בתשלום"
+    }
+  ],
+  "label.paid-social": [
+    {
+      "type": 0,
+      "value": "רשת חברתית בתשלום"
+    }
+  ],
+  "label.paid-video": [
+    {
+      "type": 0,
+      "value": "וידאו בתשלום"
+    }
+  ],
   "label.password": [
     {
       "type": 0,
@@ -868,13 +1140,19 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "נתיב"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "נתיבים"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "פיקסלים"
     }
   ],
   "label.powered-by": [
@@ -914,37 +1192,43 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "מאפיינים"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "מאפיין"
     }
   ],
   "label.queries": [
     {
       "type": 0,
-      "value": "Queries"
+      "value": "שאילתות"
     }
   ],
   "label.query": [
     {
       "type": 0,
-      "value": "Query"
+      "value": "שאילתה"
     }
   ],
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "פרמטרי שאילתה"
     }
   ],
   "label.realtime": [
     {
       "type": 0,
       "value": "זמן אמת"
+    }
+  ],
+  "label.referral": [
+    {
+      "type": 0,
+      "value": "הפניה"
     }
   ],
   "label.referrer": [
@@ -981,6 +1265,12 @@
     {
       "type": 0,
       "value": "Regions"
+    }
+  ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "נותר"
     }
   ],
   "label.remove": [
@@ -1034,19 +1324,13 @@
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "הכנסה"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
-    }
-  ],
-  "label.revenue-property": [
-    {
-      "type": 0,
-      "value": "Revenue Property"
+      "value": "בדוק את ההכנסות שלך לאורך זמן."
     }
   ],
   "label.role": [
@@ -1070,7 +1354,7 @@
   "label.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "מסכים"
     }
   ],
   "label.search": [
@@ -1091,6 +1375,12 @@
       "value": "Select date"
     }
   ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "בחר מסנן"
+    }
+  ],
   "label.select-role": [
     {
       "type": 0,
@@ -1106,7 +1396,13 @@
   "label.session": [
     {
       "type": 0,
-      "value": "Session"
+      "value": "סשן"
+    }
+  ],
+  "label.session-data": [
+    {
+      "type": 0,
+      "value": "נתוני סשן"
     }
   ],
   "label.sessions": [
@@ -1121,6 +1417,12 @@
       "value": "הגדרות"
     }
   ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "שתף"
+    }
+  ],
   "label.share-url": [
     {
       "type": 0,
@@ -1133,16 +1435,28 @@
       "value": "יום בודד"
     }
   ],
+  "label.sms": [
+    {
+      "type": 0,
+      "value": "SMS"
+    }
+  ],
+  "label.sources": [
+    {
+      "type": 0,
+      "value": "מקורות"
+    }
+  ],
   "label.start-step": [
     {
       "type": 0,
-      "value": "Start Step"
+      "value": "שלב התחלה"
     }
   ],
   "label.steps": [
     {
       "type": 0,
-      "value": "Steps"
+      "value": "שלבים"
     }
   ],
   "label.sum": [
@@ -1155,6 +1469,18 @@
     {
       "type": 0,
       "value": "טאבלט"
+    }
+  ],
+  "label.tag": [
+    {
+      "type": 0,
+      "value": "תגית"
+    }
+  ],
+  "label.tags": [
+    {
+      "type": 0,
+      "value": "תגיות"
     }
   ],
   "label.team": [
@@ -1193,6 +1519,12 @@
       "value": "Team owner"
     }
   ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "הגדרות צוות"
+    }
+  ],
   "label.team-view-only": [
     {
       "type": 0,
@@ -1209,6 +1541,12 @@
     {
       "type": 0,
       "value": "Teams"
+    }
+  ],
+  "label.terms": [
+    {
+      "type": 0,
+      "value": "תנאים"
     }
   ],
   "label.theme": [
@@ -1343,28 +1681,10 @@
       "value": "Update"
     }
   ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "URL"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "URLs"
-    }
-  ],
   "label.user": [
     {
       "type": 0,
       "value": "User"
-    }
-  ],
-  "label.user-property": [
-    {
-      "type": 0,
-      "value": "User Property"
     }
   ],
   "label.username": [
@@ -1523,6 +1843,12 @@
       "value": "x"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
@@ -1615,6 +1941,12 @@
     {
       "type": 1,
       "value": "url"
+    }
+  ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
     }
   ],
   "message.go-to-settings": [
@@ -1711,6 +2043,18 @@
       "value": "לא מוגדרים אתרים"
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1741,6 +2085,12 @@
     {
       "type": 0,
       "value": "נשמר בהצלחה"
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1801,6 +2151,12 @@
       "value": "Triggered event"
     }
   ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
@@ -1845,12 +2201,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "Visitors dropped off"
     }
   ]
 }

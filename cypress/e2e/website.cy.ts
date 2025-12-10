@@ -10,10 +10,10 @@ describe('Website tests', () => {
     cy.visit('/settings/websites');
     cy.getDataTest('button-website-add').click();
     cy.contains(/Add website/i).should('be.visible');
-    cy.getDataTest('input-name').find('input').click();
-    cy.getDataTest('input-name').find('input').type('Add test', { delay: 50 });
+    cy.getDataTest('input-name').find('input').as('inputUsername').click();
+    cy.getDataTest('input-name').find('input').type('Add test', { delay: 0 });
     cy.getDataTest('input-domain').find('input').click();
-    cy.getDataTest('input-domain').find('input').type('addtest.com', { delay: 50 });
+    cy.getDataTest('input-domain').find('input').type('addtest.com', { delay: 0 });
     cy.getDataTest('button-submit').click();
     cy.get('td[label="Name"]').should('contain.text', 'Add test');
     cy.get('td[label="Domain"]').should('contain.text', 'addtest.com');
@@ -41,10 +41,10 @@ describe('Website tests', () => {
     cy.contains(/Details/i).should('be.visible');
     cy.getDataTest('input-name').find('input').click();
     cy.getDataTest('input-name').find('input').clear();
-    cy.getDataTest('input-name').find('input').type('Updated website', { delay: 50 });
+    cy.getDataTest('input-name').find('input').type('Updated website', { delay: 0 });
     cy.getDataTest('input-domain').find('input').click();
     cy.getDataTest('input-domain').find('input').clear();
-    cy.getDataTest('input-domain').find('input').type('updatedwebsite.com', { delay: 50 });
+    cy.getDataTest('input-domain').find('input').type('updatedwebsite.com', { delay: 0 });
     cy.getDataTest('button-submit').click({ force: true });
     cy.getDataTest('input-name').find('input').should('have.value', 'Updated website');
     cy.getDataTest('input-domain').find('input').should('have.value', 'updatedwebsite.com');

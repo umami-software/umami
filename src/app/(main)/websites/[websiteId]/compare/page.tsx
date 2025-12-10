@@ -1,10 +1,12 @@
-import WebsiteComparePage from './WebsiteComparePage';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
+import { ComparePage } from './ComparePage';
 
-export default function ({ params: { websiteId } }) {
-  return <WebsiteComparePage websiteId={websiteId} />;
+export default async function ({ params }: { params: Promise<{ websiteId: string }> }) {
+  const { websiteId } = await params;
+
+  return <ComparePage websiteId={websiteId} />;
 }
 
 export const metadata: Metadata = {
-  title: 'Website Comparison',
+  title: 'Compare',
 };

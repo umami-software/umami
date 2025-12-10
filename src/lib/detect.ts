@@ -1,62 +1,47 @@
-import path from 'path';
-import { getClientIp } from 'request-ip';
+import path from 'node:path';
 import { browserName, detectOS } from 'detect-browser';
-import isLocalhost from 'is-localhost-ip';
 import ipaddr from 'ipaddr.js';
+import isLocalhost from 'is-localhost-ip';
 import maxmind from 'maxmind';
-import { safeDecodeURIComponent } from 'next-basics';
-import {
-  DESKTOP_OS,
-  MOBILE_OS,
-  DESKTOP_SCREEN_WIDTH,
-  LAPTOP_SCREEN_WIDTH,
-  MOBILE_SCREEN_WIDTH,
-} from './constants';
-import { NextApiRequestCollect } from 'pages/api/send';
+import { UAParser } from 'ua-parser-js';
+import { getIpAddress, stripPort } from '@/lib/ip';
+import { safeDecodeURIComponent } from '@/lib/url';
 
-let lookup;
+const MAXMIND = 'maxmind';
 
-export function getIpAddress(req: NextApiRequestCollect) {
-  const customHeader = String(process.env.CLIENT_IP_HEADER).toLowerCase();
+const PROVIDER_HEADERS = [
+  // Cloudflare headers
+  {
+    countryHeader: 'cf-ipcountry',
+    regionHeader: 'cf-region-code',
+    cityHeader: 'cf-ipcity',
+  },
+  // Vercel headers
+  {
+    countryHeader: 'x-vercel-ip-country',
+    regionHeader: 'x-vercel-ip-country-region',
+    cityHeader: 'x-vercel-ip-city',
+  },
+  // CloudFront headers
+  {
+    countryHeader: 'cloudfront-viewer-country',
+    regionHeader: 'cloudfront-viewer-country-region',
+    cityHeader: 'cloudfront-viewer-city',
+  },
+];
 
-  // Custom header
-  if (customHeader !== 'undefined' && req.headers[customHeader]) {
-    return req.headers[customHeader];
-  }
-  // Cloudflare
-  else if (req.headers['cf-connecting-ip']) {
-    return req.headers['cf-connecting-ip'];
-  }
-
-  return getClientIp(req);
-}
-
-export function getDevice(screen: string, os: string) {
-  if (!screen) return;
+export function getDevice(userAgent: string, screen: string = '') {
+  const { device } = UAParser(userAgent);
 
   const [width] = screen.split('x');
 
-  if (DESKTOP_OS.includes(os)) {
-    if (os === 'Chrome OS' || +width < DESKTOP_SCREEN_WIDTH) {
-      return 'laptop';
-    }
-    return 'desktop';
-  } else if (MOBILE_OS.includes(os)) {
-    if (os === 'Amazon OS' || +width > MOBILE_SCREEN_WIDTH) {
-      return 'tablet';
-    }
-    return 'mobile';
+  const type = device?.type || 'desktop';
+
+  if (type === 'desktop' && screen && +width <= 1920) {
+    return 'laptop';
   }
 
-  if (+width >= DESKTOP_SCREEN_WIDTH) {
-    return 'desktop';
-  } else if (+width >= LAPTOP_SCREEN_WIDTH) {
-    return 'laptop';
-  } else if (+width >= MOBILE_SCREEN_WIDTH) {
-    return 'tablet';
-  } else {
-    return 'mobile';
-  }
+  return type;
 }
 
 function getRegionCode(country: string, region: string) {
@@ -67,78 +52,76 @@ function getRegionCode(country: string, region: string) {
   return region.includes('-') ? region : `${country}-${region}`;
 }
 
-export async function getLocation(ip: string, req: NextApiRequestCollect) {
+function decodeHeader(s: string | undefined | null): string | undefined | null {
+  if (s === undefined || s === null) {
+    return s;
+  }
+
+  return Buffer.from(s, 'latin1').toString('utf-8');
+}
+
+export async function getLocation(ip: string = '', headers: Headers, hasPayloadIP: boolean) {
   // Ignore local ips
-  if (await isLocalhost(ip)) {
-    return;
+  if (!ip || (await isLocalhost(ip))) {
+    return null;
   }
 
-  // Cloudflare headers
-  if (req.headers['cf-ipcountry']) {
-    const country = safeDecodeURIComponent(req.headers['cf-ipcountry']);
-    const subdivision1 = safeDecodeURIComponent(req.headers['cf-region-code']);
-    const city = safeDecodeURIComponent(req.headers['cf-ipcity']);
+  if (!hasPayloadIP && !process.env.SKIP_LOCATION_HEADERS) {
+    for (const provider of PROVIDER_HEADERS) {
+      const countryHeader = headers.get(provider.countryHeader);
+      if (countryHeader) {
+        const country = decodeHeader(countryHeader);
+        const region = decodeHeader(headers.get(provider.regionHeader));
+        const city = decodeHeader(headers.get(provider.cityHeader));
 
-    return {
-      country,
-      subdivision1: getRegionCode(country, subdivision1),
-      city,
-    };
-  }
-
-  // Vercel headers
-  if (req.headers['x-vercel-ip-country']) {
-    const country = safeDecodeURIComponent(req.headers['x-vercel-ip-country']);
-    const subdivision1 = safeDecodeURIComponent(req.headers['x-vercel-ip-country-region']);
-    const city = safeDecodeURIComponent(req.headers['x-vercel-ip-city']);
-
-    return {
-      country,
-      subdivision1: getRegionCode(country, subdivision1),
-      city,
-    };
+        return {
+          country,
+          region: getRegionCode(country, region),
+          city,
+        };
+      }
+    }
   }
 
   // Database lookup
-  if (!lookup) {
+  if (!globalThis[MAXMIND]) {
     const dir = path.join(process.cwd(), 'geo');
 
-    lookup = await maxmind.open(path.resolve(dir, 'GeoLite2-City.mmdb'));
+    globalThis[MAXMIND] = await maxmind.open(
+      process.env.GEOLITE_DB_PATH || path.resolve(dir, 'GeoLite2-City.mmdb'),
+    );
   }
 
-  const result = lookup.get(ip);
+  const result = globalThis[MAXMIND]?.get(stripPort(ip));
 
   if (result) {
     const country = result.country?.iso_code ?? result?.registered_country?.iso_code;
-    const subdivision1 = result.subdivisions?.[0]?.iso_code;
-    const subdivision2 = result.subdivisions?.[1]?.names?.en;
+    const region = result.subdivisions?.[0]?.iso_code;
     const city = result.city?.names?.en;
 
     return {
       country,
-      subdivision1: getRegionCode(country, subdivision1),
-      subdivision2,
+      region: getRegionCode(country, region),
       city,
     };
   }
 }
 
-export async function getClientInfo(req: NextApiRequestCollect) {
-  const userAgent = req.headers['user-agent'];
-  const ip = req.body?.payload?.ip || getIpAddress(req);
-  const location = await getLocation(ip, req);
-  const country = location?.country;
-  const subdivision1 = location?.subdivision1;
-  const subdivision2 = location?.subdivision2;
-  const city = location?.city;
-  const browser = browserName(userAgent);
-  const os = detectOS(userAgent) as string;
-  const device = getDevice(req.body?.payload?.screen, os);
+export async function getClientInfo(request: Request, payload: Record<string, any>) {
+  const userAgent = payload?.userAgent || request.headers.get('user-agent');
+  const ip = payload?.ip || getIpAddress(request.headers);
+  const location = await getLocation(ip, request.headers, !!payload?.ip);
+  const country = safeDecodeURIComponent(location?.country);
+  const region = safeDecodeURIComponent(location?.region);
+  const city = safeDecodeURIComponent(location?.city);
+  const browser = payload?.browser ?? browserName(userAgent);
+  const os = payload?.os ?? (detectOS(userAgent) as string);
+  const device = payload?.device ?? getDevice(userAgent, payload?.screen);
 
-  return { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device };
+  return { userAgent, browser, os, ip, country, region, city, device };
 }
 
-export function hasBlockedIp(req: NextApiRequestCollect) {
+export function hasBlockedIp(clientIp: string) {
   const ignoreIps = process.env.IGNORE_IP;
 
   if (ignoreIps) {
@@ -148,18 +131,22 @@ export function hasBlockedIp(req: NextApiRequestCollect) {
       ips.push(...ignoreIps.split(',').map(n => n.trim()));
     }
 
-    const clientIp = getIpAddress(req);
-
     return ips.find(ip => {
-      if (ip === clientIp) return true;
+      if (ip === clientIp) {
+        return true;
+      }
 
       // CIDR notation
       if (ip.indexOf('/') > 0) {
         const addr = ipaddr.parse(clientIp);
         const range = ipaddr.parseCIDR(ip);
 
-        if (addr.kind() === range[0].kind() && addr.match(range)) return true;
+        if (addr.kind() === range[0].kind() && addr.match(range)) {
+          return true;
+        }
       }
+
+      return false;
     });
   }
 

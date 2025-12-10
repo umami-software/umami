@@ -1,0 +1,1858 @@
+{
+  "label.access-code": [
+    {
+      "type": 0,
+      "value": "Kirish kodi"
+    }
+  ],
+  "label.actions": [
+    {
+      "type": 0,
+      "value": "Amallar"
+    }
+  ],
+  "label.activity": [
+    {
+      "type": 0,
+      "value": "Faoliyat"
+    }
+  ],
+  "label.add": [
+    {
+      "type": 0,
+      "value": "Qoʻshish"
+    }
+  ],
+  "label.add-description": [
+    {
+      "type": 0,
+      "value": "Tavsif qoʻshish"
+    }
+  ],
+  "label.add-member": [
+    {
+      "type": 0,
+      "value": "A'zo qoʻshish"
+    }
+  ],
+  "label.add-step": [
+    {
+      "type": 0,
+      "value": "Qadam qoʻshish"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "Veb-sayt qoʻshish"
+    }
+  ],
+  "label.admin": [
+    {
+      "type": 0,
+      "value": "Administrator"
+    }
+  ],
+  "label.after": [
+    {
+      "type": 0,
+      "value": "Keyin"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "Barchasi"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "Barcha vaqtlar"
+    }
+  ],
+  "label.analytics": [
+    {
+      "type": 0,
+      "value": "Tahlil"
+    }
+  ],
+  "label.average": [
+    {
+      "type": 0,
+      "value": "Oʻrtacha"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "Orqaga"
+    }
+  ],
+  "label.before": [
+    {
+      "type": 0,
+      "value": "Oldin"
+    }
+  ],
+  "label.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Chiqib ketish darajasi"
+    }
+  ],
+  "label.breakdown": [
+    {
+      "type": 0,
+      "value": "Tahlil"
+    }
+  ],
+  "label.browser": [
+    {
+      "type": 0,
+      "value": "Brauzer"
+    }
+  ],
+  "label.browsers": [
+    {
+      "type": 0,
+      "value": "Brauzerlar"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "Bekor qilish"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "Parolni oʻzgartirish"
+    }
+  ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "Shaharlar"
+    }
+  ],
+  "label.city": [
+    {
+      "type": 0,
+      "value": "Shahar"
+    }
+  ],
+  "label.clear-all": [
+    {
+      "type": 0,
+      "value": "Barchasini tozalash"
+    }
+  ],
+  "label.compare": [
+    {
+      "type": 0,
+      "value": "Taqqoslash"
+    }
+  ],
+  "label.confirm": [
+    {
+      "type": 0,
+      "value": "Tasdiqlash"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "Parolni tasdiqlash"
+    }
+  ],
+  "label.contains": [
+    {
+      "type": 0,
+      "value": "Oʻz ichiga oladi"
+    }
+  ],
+  "label.continue": [
+    {
+      "type": 0,
+      "value": "Davom etish"
+    }
+  ],
+  "label.count": [
+    {
+      "type": 0,
+      "value": "Soni"
+    }
+  ],
+  "label.countries": [
+    {
+      "type": 0,
+      "value": "Davlatlar"
+    }
+  ],
+  "label.country": [
+    {
+      "type": 0,
+      "value": "Davlat"
+    }
+  ],
+  "label.create": [
+    {
+      "type": 0,
+      "value": "Yaratish"
+    }
+  ],
+  "label.create-report": [
+    {
+      "type": 0,
+      "value": "Hisobot yaratish"
+    }
+  ],
+  "label.create-team": [
+    {
+      "type": 0,
+      "value": "Jamoa yaratish"
+    }
+  ],
+  "label.create-user": [
+    {
+      "type": 0,
+      "value": "Foydalanuvchi yaratish"
+    }
+  ],
+  "label.created": [
+    {
+      "type": 0,
+      "value": "Yaratilgan"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Kim tomonidan yaratilgan"
+    }
+  ],
+  "label.current": [
+    {
+      "type": 0,
+      "value": "Joriy"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "Joriy parol"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "Maxsus oraliq"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "Boshqaruv paneli"
+    }
+  ],
+  "label.data": [
+    {
+      "type": 0,
+      "value": "Ma'lumotlar"
+    }
+  ],
+  "label.date": [
+    {
+      "type": 0,
+      "value": "Sana"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "Sana oraligʻi"
+    }
+  ],
+  "label.day": [
+    {
+      "type": 0,
+      "value": "Kun"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "Standart sana oraligʻi"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "Oʻchirish"
+    }
+  ],
+  "label.delete-report": [
+    {
+      "type": 0,
+      "value": "Hisobotni oʻchirish"
+    }
+  ],
+  "label.delete-team": [
+    {
+      "type": 0,
+      "value": "Jamoani oʻchirish"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "Foydalanuvchini oʻchirish"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "Veb-saytni oʻchirish"
+    }
+  ],
+  "label.description": [
+    {
+      "type": 0,
+      "value": "Tavsif"
+    }
+  ],
+  "label.desktop": [
+    {
+      "type": 0,
+      "value": "Ish stoli"
+    }
+  ],
+  "label.details": [
+    {
+      "type": 0,
+      "value": "Batafsil ma'lumot"
+    }
+  ],
+  "label.device": [
+    {
+      "type": 0,
+      "value": "Qurilma"
+    }
+  ],
+  "label.devices": [
+    {
+      "type": 0,
+      "value": "Qurilmalar"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "Yopish"
+    }
+  ],
+  "label.does-not-contain": [
+    {
+      "type": 0,
+      "value": "Oʻz ichiga olmaydi"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "Domen"
+    }
+  ],
+  "label.dropoff": [
+    {
+      "type": 0,
+      "value": "Tashlab ketish"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "Tahrirlash"
+    }
+  ],
+  "label.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Boshqaruv panelini tahrirlash"
+    }
+  ],
+  "label.edit-member": [
+    {
+      "type": 0,
+      "value": "A'zoni tahrirlash"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "Ulashish URL'ini yoqish"
+    }
+  ],
+  "label.end-step": [
+    {
+      "type": 0,
+      "value": "Yakuniy qadam"
+    }
+  ],
+  "label.entry": [
+    {
+      "type": 0,
+      "value": "Kirish yoʻli"
+    }
+  ],
+  "label.event": [
+    {
+      "type": 0,
+      "value": "Hodisa"
+    }
+  ],
+  "label.event-data": [
+    {
+      "type": 0,
+      "value": "Hodisa ma'lumotlari"
+    }
+  ],
+  "label.events": [
+    {
+      "type": 0,
+      "value": "Hodisalar"
+    }
+  ],
+  "label.exit": [
+    {
+      "type": 0,
+      "value": "Chiqish yoʻli"
+    }
+  ],
+  "label.false": [
+    {
+      "type": 0,
+      "value": "Yolgʻon"
+    }
+  ],
+  "label.field": [
+    {
+      "type": 0,
+      "value": "Maydon"
+    }
+  ],
+  "label.fields": [
+    {
+      "type": 0,
+      "value": "Maydonlar"
+    }
+  ],
+  "label.filter": [
+    {
+      "type": 0,
+      "value": "Filtr"
+    }
+  ],
+  "label.filter-combined": [
+    {
+      "type": 0,
+      "value": "Birlashtirilgan"
+    }
+  ],
+  "label.filter-raw": [
+    {
+      "type": 0,
+      "value": "Xom"
+    }
+  ],
+  "label.filters": [
+    {
+      "type": 0,
+      "value": "Filtrlar"
+    }
+  ],
+  "label.first-seen": [
+    {
+      "type": 0,
+      "value": "Birinchi koʻrilgan"
+    }
+  ],
+  "label.funnel": [
+    {
+      "type": 0,
+      "value": "Voronka"
+    }
+  ],
+  "label.funnel-description": [
+    {
+      "type": 0,
+      "value": "Foydalanuvchilarning konversiya va tashlab ketish darajasini tushunish."
+    }
+  ],
+  "label.goal": [
+    {
+      "type": 0,
+      "value": "Maqsad"
+    }
+  ],
+  "label.goals": [
+    {
+      "type": 0,
+      "value": "Maqsadlar"
+    }
+  ],
+  "label.goals-description": [
+    {
+      "type": 0,
+      "value": "Sahifa koʻrishlari va hodisalar uchun maqsadlaringizni kuzatib boring."
+    }
+  ],
+  "label.greater-than": [
+    {
+      "type": 0,
+      "value": "Kattaroq"
+    }
+  ],
+  "label.greater-than-equals": [
+    {
+      "type": 0,
+      "value": "Kattaroq yoki teng"
+    }
+  ],
+  "label.host": [
+    {
+      "type": 0,
+      "value": "Xost"
+    }
+  ],
+  "label.hosts": [
+    {
+      "type": 0,
+      "value": "Xostlar"
+    }
+  ],
+  "label.insights": [
+    {
+      "type": 0,
+      "value": "Tushunchalar"
+    }
+  ],
+  "label.insights-description": [
+    {
+      "type": 0,
+      "value": "Segmentlar va filtrlardan foydalanib ma'lumotlaringizga chuqurroq kiring."
+    }
+  ],
+  "label.is": [
+    {
+      "type": 0,
+      "value": "Teng"
+    }
+  ],
+  "label.is-not": [
+    {
+      "type": 0,
+      "value": "Teng emas"
+    }
+  ],
+  "label.is-not-set": [
+    {
+      "type": 0,
+      "value": "Oʻrnatilmagan"
+    }
+  ],
+  "label.is-set": [
+    {
+      "type": 0,
+      "value": "Oʻrnatilgan"
+    }
+  ],
+  "label.join": [
+    {
+      "type": 0,
+      "value": "Qoʻshilish"
+    }
+  ],
+  "label.join-team": [
+    {
+      "type": 0,
+      "value": "Jamoaga qoʻshilish"
+    }
+  ],
+  "label.journey": [
+    {
+      "type": 0,
+      "value": "Sayohat"
+    }
+  ],
+  "label.journey-description": [
+    {
+      "type": 0,
+      "value": "Foydalanuvchilar veb-saytingizda qanday harakat qilishlarini tushunish."
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Til"
+    }
+  ],
+  "label.languages": [
+    {
+      "type": 0,
+      "value": "Tillar"
+    }
+  ],
+  "label.laptop": [
+    {
+      "type": 0,
+      "value": "Noutbuk"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "Oxirgi "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " kun"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "Oxirgi "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " soat"
+    }
+  ],
+  "label.last-months": [
+    {
+      "type": 0,
+      "value": "Oxirgi "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " oy"
+    }
+  ],
+  "label.last-seen": [
+    {
+      "type": 0,
+      "value": "Oxirgi koʻrilgan"
+    }
+  ],
+  "label.leave": [
+    {
+      "type": 0,
+      "value": "Tark etish"
+    }
+  ],
+  "label.leave-team": [
+    {
+      "type": 0,
+      "value": "Jamoani tark etish"
+    }
+  ],
+  "label.less-than": [
+    {
+      "type": 0,
+      "value": "Kichikroq"
+    }
+  ],
+  "label.less-than-equals": [
+    {
+      "type": 0,
+      "value": "Kichikroq yoki teng"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Kirish"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "Chiqish"
+    }
+  ],
+  "label.manage": [
+    {
+      "type": 0,
+      "value": "Boshqarish"
+    }
+  ],
+  "label.manager": [
+    {
+      "type": 0,
+      "value": "Menejer"
+    }
+  ],
+  "label.max": [
+    {
+      "type": 0,
+      "value": "Maksimal"
+    }
+  ],
+  "label.member": [
+    {
+      "type": 0,
+      "value": "A'zo"
+    }
+  ],
+  "label.members": [
+    {
+      "type": 0,
+      "value": "A'zolar"
+    }
+  ],
+  "label.min": [
+    {
+      "type": 0,
+      "value": "Minimal"
+    }
+  ],
+  "label.mobile": [
+    {
+      "type": 0,
+      "value": "Mobil"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "Koʻproq"
+    }
+  ],
+  "label.my-account": [
+    {
+      "type": 0,
+      "value": "Mening hisobim"
+    }
+  ],
+  "label.my-websites": [
+    {
+      "type": 0,
+      "value": "Mening veb-saytlarim"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "Ism"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "Yangi parol"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "Hech biri"
+    }
+  ],
+  "label.number-of-records": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " yozuv"
+    }
+  ],
+  "label.ok": [
+    {
+      "type": 0,
+      "value": "OK"
+    }
+  ],
+  "label.os": [
+    {
+      "type": 0,
+      "value": "OT (Operatsion tizim)"
+    }
+  ],
+  "label.overview": [
+    {
+      "type": 0,
+      "value": "Umumiy koʻrinish"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Egasi"
+    }
+  ],
+  "label.page-of": [
+    {
+      "type": 0,
+      "value": "Sahifa "
+    },
+    {
+      "type": 1,
+      "value": "current"
+    },
+    {
+      "type": 0,
+      "value": " dan "
+    },
+    {
+      "type": 1,
+      "value": "total"
+    }
+  ],
+  "label.page-views": [
+    {
+      "type": 0,
+      "value": "Sahifa koʻrishlari"
+    }
+  ],
+  "label.pageTitle": [
+    {
+      "type": 0,
+      "value": "Sahifa sarlavhasi"
+    }
+  ],
+  "label.pages": [
+    {
+      "type": 0,
+      "value": "Sahifalar"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "Parol"
+    }
+  ],
+  "label.path": [
+    {
+      "type": 0,
+      "value": "Yoʻl"
+    }
+  ],
+  "label.paths": [
+    {
+      "type": 0,
+      "value": "Yoʻllar"
+    }
+  ],
+  "label.powered-by": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " tomonidan quvvatlanadi"
+    }
+  ],
+  "label.previous": [
+    {
+      "type": 0,
+      "value": "Oldingi"
+    }
+  ],
+  "label.previous-period": [
+    {
+      "type": 0,
+      "value": "Oldingi davr"
+    }
+  ],
+  "label.previous-year": [
+    {
+      "type": 0,
+      "value": "Oldingi yil"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "Profil"
+    }
+  ],
+  "label.properties": [
+    {
+      "type": 0,
+      "value": "Xususiyatlar"
+    }
+  ],
+  "label.property": [
+    {
+      "type": 0,
+      "value": "Xususiyat"
+    }
+  ],
+  "label.queries": [
+    {
+      "type": 0,
+      "value": "Soʻrovlar"
+    }
+  ],
+  "label.query": [
+    {
+      "type": 0,
+      "value": "Soʻrov"
+    }
+  ],
+  "label.query-parameters": [
+    {
+      "type": 0,
+      "value": "Soʻrov parametrlari"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "Haqiqiy vaqt"
+    }
+  ],
+  "label.referrer": [
+    {
+      "type": 0,
+      "value": "Tavsiya etuvchi"
+    }
+  ],
+  "label.referrers": [
+    {
+      "type": 0,
+      "value": "Tavsiya etuvchilar"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "Yangilash"
+    }
+  ],
+  "label.regenerate": [
+    {
+      "type": 0,
+      "value": "Qayta yaratish"
+    }
+  ],
+  "label.region": [
+    {
+      "type": 0,
+      "value": "Viloyat/Mintaqa"
+    }
+  ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "Viloyatlar/Mintaqalar"
+    }
+  ],
+  "label.remove": [
+    {
+      "type": 0,
+      "value": "Olib tashlash"
+    }
+  ],
+  "label.remove-member": [
+    {
+      "type": 0,
+      "value": "A'zoni olib tashlash"
+    }
+  ],
+  "label.reports": [
+    {
+      "type": 0,
+      "value": "Hisobotlar"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "Majburiy"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "Qayta tiklash"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Veb-saytni qayta tiklash"
+    }
+  ],
+  "label.retention": [
+    {
+      "type": 0,
+      "value": "Saqlanish"
+    }
+  ],
+  "label.retention-description": [
+    {
+      "type": 0,
+      "value": "Foydalanuvchilarning qaytish chastotasini kuzatib, veb-saytingizning jozibadorligini oʻlchang."
+    }
+  ],
+  "label.revenue": [
+    {
+      "type": 0,
+      "value": "Daromad"
+    }
+  ],
+  "label.revenue-description": [
+    {
+      "type": 0,
+      "value": "Vaqt oʻtishi bilan daromadingizni tekshiring."
+    }
+  ],
+  "label.revenue-property": [
+    {
+      "type": 0,
+      "value": "Daromad xususiyati"
+    }
+  ],
+  "label.role": [
+    {
+      "type": 0,
+      "value": "Rol"
+    }
+  ],
+  "label.run-query": [
+    {
+      "type": 0,
+      "value": "Soʻrovni ishga tushirish"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "Saqlash"
+    }
+  ],
+  "label.screens": [
+    {
+      "type": 0,
+      "value": "Ekranlar"
+    }
+  ],
+  "label.search": [
+    {
+      "type": 0,
+      "value": "Qidiruv"
+    }
+  ],
+  "label.select": [
+    {
+      "type": 0,
+      "value": "Tanlash"
+    }
+  ],
+  "label.select-date": [
+    {
+      "type": 0,
+      "value": "Sanani tanlash"
+    }
+  ],
+  "label.select-role": [
+    {
+      "type": 0,
+      "value": "Rolni tanlash"
+    }
+  ],
+  "label.select-website": [
+    {
+      "type": 0,
+      "value": "Veb-saytni tanlash"
+    }
+  ],
+  "label.session": [
+    {
+      "type": 0,
+      "value": "Sessiya"
+    }
+  ],
+  "label.sessions": [
+    {
+      "type": 0,
+      "value": "Sessiyalar"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "Sozlamalar"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "Ulashish URL'i"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "Bir kun"
+    }
+  ],
+  "label.start-step": [
+    {
+      "type": 0,
+      "value": "Boshlanish qadami"
+    }
+  ],
+  "label.steps": [
+    {
+      "type": 0,
+      "value": "Qadamlar"
+    }
+  ],
+  "label.sum": [
+    {
+      "type": 0,
+      "value": "Yigʻindi"
+    }
+  ],
+  "label.tablet": [
+    {
+      "type": 0,
+      "value": "Planshet"
+    }
+  ],
+  "label.team": [
+    {
+      "type": 0,
+      "value": "Jamoa"
+    }
+  ],
+  "label.team-id": [
+    {
+      "type": 0,
+      "value": "Jamoa ID'si"
+    }
+  ],
+  "label.team-manager": [
+    {
+      "type": 0,
+      "value": "Jamoa menejeri"
+    }
+  ],
+  "label.team-member": [
+    {
+      "type": 0,
+      "value": "Jamoa a'zosi"
+    }
+  ],
+  "label.team-name": [
+    {
+      "type": 0,
+      "value": "Jamoa nomi"
+    }
+  ],
+  "label.team-owner": [
+    {
+      "type": 0,
+      "value": "Jamoa egasi"
+    }
+  ],
+  "label.team-view-only": [
+    {
+      "type": 0,
+      "value": "Jamoa faqat koʻrish"
+    }
+  ],
+  "label.team-websites": [
+    {
+      "type": 0,
+      "value": "Jamoa veb-saytlari"
+    }
+  ],
+  "label.teams": [
+    {
+      "type": 0,
+      "value": "Jamoalar"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Mavzu"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "Shu oy"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "Shu hafta"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "Shu yil"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "Vaqt zonasi"
+    }
+  ],
+  "label.title": [
+    {
+      "type": 0,
+      "value": "Sarlavha"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "Bugun"
+    }
+  ],
+  "label.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Grafiklarni almashtirish"
+    }
+  ],
+  "label.total": [
+    {
+      "type": 0,
+      "value": "Jami"
+    }
+  ],
+  "label.total-records": [
+    {
+      "type": 0,
+      "value": "Jami yozuvlar"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "Kuzatuv kodi"
+    }
+  ],
+  "label.transactions": [
+    {
+      "type": 0,
+      "value": "Tranzaksiyalar"
+    }
+  ],
+  "label.transfer": [
+    {
+      "type": 0,
+      "value": "Oʻtkazish"
+    }
+  ],
+  "label.transfer-website": [
+    {
+      "type": 0,
+      "value": "Veb-saytni oʻtkazish"
+    }
+  ],
+  "label.true": [
+    {
+      "type": 0,
+      "value": "Rost"
+    }
+  ],
+  "label.type": [
+    {
+      "type": 0,
+      "value": "Tur"
+    }
+  ],
+  "label.unique": [
+    {
+      "type": 0,
+      "value": "Noyob"
+    }
+  ],
+  "label.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Noyob tashrif buyuruvchilar"
+    }
+  ],
+  "label.uniqueCustomers": [
+    {
+      "type": 0,
+      "value": "Noyob mijozlar"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "Noma'lum"
+    }
+  ],
+  "label.untitled": [
+    {
+      "type": 0,
+      "value": "Sarlavhasiz"
+    }
+  ],
+  "label.update": [
+    {
+      "type": 0,
+      "value": "Yangilash"
+    }
+  ],
+  "label.url": [
+    {
+      "type": 0,
+      "value": "URL"
+    }
+  ],
+  "label.urls": [
+    {
+      "type": 0,
+      "value": "URL'lar"
+    }
+  ],
+  "label.user": [
+    {
+      "type": 0,
+      "value": "Foydalanuvchi"
+    }
+  ],
+  "label.user-property": [
+    {
+      "type": 0,
+      "value": "Foydalanuvchi xususiyati"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "Foydalanuvchi nomi"
+    }
+  ],
+  "label.users": [
+    {
+      "type": 0,
+      "value": "Foydalanuvchilar"
+    }
+  ],
+  "label.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "label.utm-description": [
+    {
+      "type": 0,
+      "value": "UTM parametrlari orqali kampaniyalaringizni kuzatib boring."
+    }
+  ],
+  "label.value": [
+    {
+      "type": 0,
+      "value": "Qiymat"
+    }
+  ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "Koʻrish"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "Batafsil koʻrish"
+    }
+  ],
+  "label.view-only": [
+    {
+      "type": 0,
+      "value": "Faqat koʻrish"
+    }
+  ],
+  "label.views": [
+    {
+      "type": 0,
+      "value": "Koʻrishlar"
+    }
+  ],
+  "label.views-per-visit": [
+    {
+      "type": 0,
+      "value": "Tashrifga koʻrishlar soni"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "Tashrif davomiyligi"
+    }
+  ],
+  "label.visitors": [
+    {
+      "type": 0,
+      "value": "Tashrif buyuruvchilar"
+    }
+  ],
+  "label.visits": [
+    {
+      "type": 0,
+      "value": "Tashriflar"
+    }
+  ],
+  "label.website": [
+    {
+      "type": 0,
+      "value": "Veb-sayt"
+    }
+  ],
+  "label.website-id": [
+    {
+      "type": 0,
+      "value": "Veb-sayt ID'si"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "Veb-saytlar"
+    }
+  ],
+  "label.window": [
+    {
+      "type": 0,
+      "value": "Oyna"
+    }
+  ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Kecha"
+    }
+  ],
+  "message.action-confirmation": [
+    {
+      "type": 0,
+      "value": "Tasdiqlash uchun pastdagi qutiga **"
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": "** yozing."
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " joriy "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "tashrif buyuruvchi"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "tashrif buyuruvchilar"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "message.collected-data": [
+    {
+      "type": 0,
+      "value": "Yigʻilgan ma'lumotlar"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "**"
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "** ni oʻchirmoqchi ekanligingizga ishonchingiz komilmi?"
+    }
+  ],
+  "message.confirm-leave": [
+    {
+      "type": 0,
+      "value": "**"
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "** ni tark etmoqchi ekanligingizga ishonchingiz komilmi?"
+    }
+  ],
+  "message.confirm-remove": [
+    {
+      "type": 0,
+      "value": "**"
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "** ni olib tashlamoqchi ekanligingizga ishonchingiz komilmi?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "**"
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "** ni qayta tiklamoqchi ekanligingizga ishonchingiz komilmi?"
+    }
+  ],
+  "message.delete-team-warning": [
+    {
+      "type": 0,
+      "value": "Jamoani oʻchirish, shuningdek, barcha jamoa veb-saytlarini ham oʻchiradi."
+    }
+  ],
+  "message.delete-website-warning": [
+    {
+      "type": 0,
+      "value": "Barcha veb-sayt ma'lumotlari oʻchiriladi."
+    }
+  ],
+  "message.error": [
+    {
+      "type": 0,
+      "value": "Nimadir xato ketdi."
+    }
+  ],
+  "message.event-log": [
+    {
+      "type": 0,
+      "value": "**"
+    },
+    {
+      "type": 1,
+      "value": "url"
+    },
+    {
+      "type": 0,
+      "value": "** da **"
+    },
+    {
+      "type": 1,
+      "value": "event"
+    },
+    {
+      "type": 0,
+      "value": "** hodisasi"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "Sozlamalarga oʻtish"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "Notoʻgʻri foydalanuvchi nomi va/yoki parol."
+    }
+  ],
+  "message.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Notoʻgʻri domen. http/https qoʻshmang."
+    }
+  ],
+  "message.min-password-length": [
+    {
+      "type": 0,
+      "value": "Minimal uzunligi "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " belgidan"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "Umami'ning yangi **"
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": "** versiyasi mavjud!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Ma'lumotlar mavjud emas."
+    }
+  ],
+  "message.no-event-data": [
+    {
+      "type": 0,
+      "value": "Hodisa ma'lumotlari mavjud emas."
+    }
+  ],
+  "message.no-match-password": [
+    {
+      "type": 0,
+      "value": "Parollar mos kelmadi."
+    }
+  ],
+  "message.no-results-found": [
+    {
+      "type": 0,
+      "value": "Hech qanday natija topilmadi."
+    }
+  ],
+  "message.no-team-websites": [
+    {
+      "type": 0,
+      "value": "Bu jamoada hech qanday veb-sayt yoʻq."
+    }
+  ],
+  "message.no-teams": [
+    {
+      "type": 0,
+      "value": "Siz hech qanday jamoa yaratmagansiz."
+    }
+  ],
+  "message.no-users": [
+    {
+      "type": 0,
+      "value": "Hech qanday foydalanuvchi yoʻq."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Sizda hech qanday veb-sayt sozlanmagan."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Sahifa topilmadi"
+    }
+  ],
+  "message.reset-website": [
+    {
+      "type": 0,
+      "value": "Bu veb-saytni qayta tiklash uchun tasdiqlash uchun pastdagi qutiga **"
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": "** yozing."
+    }
+  ],
+  "message.reset-website-warning": [
+    {
+      "type": 0,
+      "value": "Bu veb-sayt uchun barcha statistik ma'lumotlar oʻchiriladi, lekin sozlamalaringiz saqlanib qoladi."
+    }
+  ],
+  "message.saved": [
+    {
+      "type": 0,
+      "value": "Saqlandi."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Sizning veb-sayt statistikalaringiz quyidagi URL'da ochiqdir:"
+    }
+  ],
+  "message.team-already-member": [
+    {
+      "type": 0,
+      "value": "Siz allaqachon jamoa a'zosisiz."
+    }
+  ],
+  "message.team-not-found": [
+    {
+      "type": 0,
+      "value": "Jamoa topilmadi."
+    }
+  ],
+  "message.team-websites-info": [
+    {
+      "type": 0,
+      "value": "Veb-saytlarni jamoaning har bir a'zosi koʻrishi mumkin."
+    }
+  ],
+  "message.tracking-code": [
+    {
+      "type": 0,
+      "value": "Bu veb-sayt uchun statistikani kuzatish uchun quyidagi kodni HTML'ingizdagi **"
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "..."
+        }
+      ],
+      "type": 8,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": "** qismiga joylashtiring."
+    }
+  ],
+  "message.transfer-team-website-to-user": [
+    {
+      "type": 0,
+      "value": "Bu veb-saytni oʻz hisobingizga oʻtkazasizmi?"
+    }
+  ],
+  "message.transfer-user-website-to-team": [
+    {
+      "type": 0,
+      "value": "Bu veb-saytni oʻtkazish uchun jamoani tanlang."
+    }
+  ],
+  "message.transfer-website": [
+    {
+      "type": 0,
+      "value": "Veb-sayt egaligini oʻz hisobingizga yoki boshqa jamoaga oʻtkazish."
+    }
+  ],
+  "message.triggered-event": [
+    {
+      "type": 0,
+      "value": "Hodisa ishga tushirildi"
+    }
+  ],
+  "message.user-deleted": [
+    {
+      "type": 0,
+      "value": "Foydalanuvchi oʻchirildi."
+    }
+  ],
+  "message.viewed-page": [
+    {
+      "type": 0,
+      "value": "Sahifa koʻrildi"
+    }
+  ],
+  "message.visitor-log": [
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    },
+    {
+      "type": 0,
+      "value": " da "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " dan foydalanayotgan "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " dan tashrif buyuruvchi"
+    }
+  ],
+  "message.visitors-dropped-off": [
+    {
+      "type": 0,
+      "value": "Tashrif buyuruvchilar tashlab ketishdi"
+    }
+  ]
+}

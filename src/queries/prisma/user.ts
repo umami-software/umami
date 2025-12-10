@@ -1,8 +1,9 @@
-import { Prisma } from '@prisma/client';
-import { ROLES } from 'lib/constants';
-import prisma from 'lib/prisma';
-import { PageResult, Role, User, PageParams } from 'lib/types';
-import { getRandomChars } from 'next-basics';
+import { Prisma } from '@/generated/prisma/client';
+import { ROLES } from '@/lib/constants';
+import { getRandomChars } from '@/lib/generate';
+import prisma from '@/lib/prisma';
+import type { QueryFilters, Role } from '@/lib/types';
+
 import UserFindManyArgs = Prisma.UserFindManyArgs;
 
 export interface GetUserOptions {
@@ -10,10 +11,7 @@ export interface GetUserOptions {
   showDeleted?: boolean;
 }
 
-async function findUser(
-  criteria: Prisma.UserFindUniqueArgs,
-  options: GetUserOptions = {},
-): Promise<User> {
+async function findUser(criteria: Prisma.UserFindUniqueArgs, options: GetUserOptions = {}) {
   const { includePassword = false, showDeleted = false } = options;
 
   return prisma.client.user.findUnique({
@@ -47,15 +45,12 @@ export async function getUserByUsername(username: string, options: GetUserOption
   return findUser({ where: { username } }, options);
 }
 
-export async function getUsers(
-  criteria: UserFindManyArgs,
-  pageParams?: PageParams,
-): Promise<PageResult<User[]>> {
-  const { query } = pageParams;
+export async function getUsers(criteria: UserFindManyArgs, filters: QueryFilters = {}) {
+  const { search } = filters;
 
   const where: Prisma.UserWhereInput = {
     ...criteria.where,
-    ...prisma.getSearchParameters(query, [{ username: 'contains' }]),
+    ...prisma.getSearchParameters(search, [{ username: 'contains' }]),
     deletedAt: null,
   };
 
@@ -68,7 +63,7 @@ export async function getUsers(
     {
       orderBy: 'createdAt',
       sortDescending: true,
-      ...pageParams,
+      ...filters,
     },
   );
 }
@@ -78,11 +73,7 @@ export async function createUser(data: {
   username: string;
   password: string;
   role: Role;
-}): Promise<{
-  id: string;
-  username: string;
-  role: string;
-}> {
+}) {
   return prisma.client.user.create({
     data,
     select: {
@@ -93,7 +84,7 @@ export async function createUser(data: {
   });
 }
 
-export async function updateUser(userId: string, data: Prisma.UserUpdateInput): Promise<User> {
+export async function updateUser(userId: string, data: Prisma.UserUpdateInput) {
   return prisma.client.user.update({
     where: {
       id: userId,
@@ -108,21 +99,9 @@ export async function updateUser(userId: string, data: Prisma.UserUpdateInput): 
   });
 }
 
-export async function deleteUser(
-  userId: string,
-): Promise<
-  [
-    Prisma.BatchPayload,
-    Prisma.BatchPayload,
-    Prisma.BatchPayload,
-    Prisma.BatchPayload,
-    Prisma.BatchPayload,
-    Prisma.BatchPayload,
-    User,
-  ]
-> {
+export async function deleteUser(userId: string) {
   const { client, transaction } = prisma;
-  const cloudMode = process.env.CLOUD_MODE;
+  const cloudMode = !!process.env.CLOUD_MODE;
 
   const websites = await client.website.findMany({
     where: { userId },
@@ -136,7 +115,7 @@ export async function deleteUser(
 
   const teams = await client.team.findMany({
     where: {
-      teamUser: {
+      members: {
         some: {
           userId,
           role: ROLES.teamOwner,
@@ -169,6 +148,9 @@ export async function deleteUser(
 
   return transaction([
     client.eventData.deleteMany({
+      where: { websiteId: { in: websiteIds } },
+    }),
+    client.sessionData.deleteMany({
       where: { websiteId: { in: websiteIds } },
     }),
     client.websiteEvent.deleteMany({

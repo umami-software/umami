@@ -1,31 +1,28 @@
 import { useEffect } from 'react';
-import { httpGet, setItem } from 'next-basics';
-import { LOCALE_CONFIG } from 'lib/constants';
-import { getDateLocale, getTextDirection } from 'lib/lang';
-import useStore, { setLocale } from 'store/app';
-import { useForceUpdate } from './useForceUpdate';
+import { LOCALE_CONFIG } from '@/lib/constants';
+import { httpGet } from '@/lib/fetch';
+import { getDateLocale, getTextDirection } from '@/lib/lang';
+import { setItem } from '@/lib/storage';
+import { setLocale, useApp } from '@/store/app';
 import enUS from '../../../public/intl/country/en-US.json';
+import { useForceUpdate } from './useForceUpdate';
 
 const messages = {
   'en-US': enUS,
 };
 
-const selector = (state: { locale: any }) => state.locale;
+const selector = (state: { locale: string }) => state.locale;
 
 export function useLocale() {
-  const locale = useStore(selector);
+  const locale = useApp(selector);
   const forceUpdate = useForceUpdate();
   const dir = getTextDirection(locale);
   const dateLocale = getDateLocale(locale);
 
   async function loadMessages(locale: string) {
-    const { ok, data } = await httpGet(
-      `${process.env.basePath || ''}/intl/messages/${locale}.json`,
-    );
+    const { data } = await httpGet(`${process.env.basePath || ''}/intl/messages/${locale}.json`);
 
-    if (ok) {
-      messages[locale] = data;
-    }
+    messages[locale] = data;
   }
 
   async function saveLocale(value: string) {
@@ -61,5 +58,3 @@ export function useLocale() {
 
   return { locale, saveLocale, messages, dir, dateLocale };
 }
-
-export default useLocale;

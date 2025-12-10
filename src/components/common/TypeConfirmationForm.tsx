@@ -2,12 +2,11 @@ import {
   Button,
   Form,
   FormButtons,
-  FormRow,
-  FormInput,
+  FormField,
+  FormSubmitButton,
   TextField,
-  SubmitButton,
-} from 'react-basics';
-import { useMessages } from 'components/hooks';
+} from '@umami/react-zen';
+import { useMessages } from '@/components/hooks';
 
 export function TypeConfirmationForm({
   confirmationValue,
@@ -20,39 +19,37 @@ export function TypeConfirmationForm({
 }: {
   confirmationValue: string;
   buttonLabel?: string;
-  buttonVariant?: 'none' | 'primary' | 'secondary' | 'quiet' | 'danger';
+  buttonVariant?: 'primary' | 'outline' | 'quiet' | 'danger' | 'zero';
   isLoading?: boolean;
   error?: string | Error;
   onConfirm?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels, messages, FormattedMessage } = useMessages();
-
+  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
   if (!confirmationValue) {
     return null;
   }
 
   return (
-    <Form onSubmit={onConfirm} error={error}>
+    <Form onSubmit={onConfirm} error={getErrorMessage(error)}>
       <p>
-        <FormattedMessage
-          {...messages.actionConfirmation}
-          values={{ confirmation: <b>{confirmationValue}</b> }}
-        />
+        {formatMessage(messages.actionConfirmation, {
+          confirmation: confirmationValue,
+        })}
       </p>
-      <FormRow label={formatMessage(labels.confirm)}>
-        <FormInput name="confirm" rules={{ validate: value => value === confirmationValue }}>
-          <TextField autoComplete="off" />
-        </FormInput>
-      </FormRow>
-      <FormButtons flex>
-        <SubmitButton isLoading={isLoading} variant={buttonVariant}>
+      <FormField
+        label={formatMessage(labels.confirm)}
+        name="confirm"
+        rules={{ validate: value => value === confirmationValue }}
+      >
+        <TextField autoComplete="off" />
+      </FormField>
+      <FormButtons>
+        <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
+        <FormSubmitButton isLoading={isLoading} variant={buttonVariant}>
           {buttonLabel || formatMessage(labels.ok)}
-        </SubmitButton>
-        <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
+        </FormSubmitButton>
       </FormButtons>
     </Form>
   );
 }
-
-export default TypeConfirmationForm;

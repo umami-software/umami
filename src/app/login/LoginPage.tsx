@@ -1,17 +1,11 @@
 'use client';
-import LoginForm from './LoginForm';
-import styles from './LoginPage.module.css';
+import { Column } from '@umami/react-zen';
+import { LoginForm } from './LoginForm';
 
 export function LoginPage() {
-  if (process.env.disableLogin) {
-    return null;
-  }
-
   return (
-    <div className={styles.page}>
+    <Column alignItems="center" height="100vh" backgroundColor="2" paddingTop="12">
       <LoginForm />
-    </div>
+    </Column>
   );
 }
-
-export default LoginPage;

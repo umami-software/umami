@@ -1,16 +1,25 @@
-import { Metadata } from 'next';
-import Providers from './Providers';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
+import { Providers } from './Providers';
+import '@fontsource/inter/300.css';
 import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
 import '@fontsource/inter/700.css';
-import '@fontsource/inter/800.css';
-import 'react-basics/dist/styles.css';
-import 'styles/locale.css';
-import 'styles/index.css';
-import 'styles/variables.css';
+import '@umami/react-zen/styles.css';
+import '@/styles/global.css';
+import '@/styles/variables.css';
 
 export default function ({ children }) {
+  if (process.env.DISABLE_UI) {
+    return (
+      <html>
+        <body></body>
+      </html>
+    );
+  }
+
   return (
-    <html lang="en" data-scroll="0">
+    <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -24,7 +33,9 @@ export default function ({ children }) {
         <meta name="robots" content="noindex,nofollow" />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Suspense>
+          <Providers>{children}</Providers>
+        </Suspense>
       </body>
     </html>
   );
