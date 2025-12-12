@@ -12,7 +12,13 @@
   if (!currentScript) return;
 
   const { hostname, href, origin } = location;
-  const localStorage = href.startsWith('data:') ? undefined : window.localStorage;
+
+  let localStorage;
+  try {
+    localStorage = href.startsWith('data:') ? undefined : window.localStorage;
+  } catch {
+    /* (DOMException) SecurityError: Access is denied for this document. */
+  }
 
   const _data = 'data-';
   const _false = 'false';
