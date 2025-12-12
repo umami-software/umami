@@ -27,6 +27,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -88,24 +91,25 @@ jobs:
           echo "tags=$TAGS" >> $GITHUB_OUTPUT
           echo "Computed tags: $TAGS"
 
-      - name: Build and push Docker image
-        run: |
-          TAGS="${{ steps.compute.outputs.tags }}"
+      - name: Build and push to GHCR
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: ${{ github.repository }}
+          tags: ${{ steps.compute.outputs.tags }}
+          registry: ghcr.io
+          multiPlatform: true
+          platform: linux/amd64,linux/arm64
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-          # Set image targets conditionally
-          if [[ "${{ github.repository }}" == "umami-software/umami" ]]; then
-            IMAGES=("umamisoftware/umami" "ghcr.io/${{ github.repository }}")
-          else
-            IMAGES=("ghcr.io/${{ github.repository }}")
-          fi
-
-          for IMAGE in "${IMAGES[@]}"; do
-            echo "Building and pushing $IMAGE with tags: $TAGS"
-            docker buildx build \
-              --platform linux/amd64,linux/arm64 \
-              --push \
-              $(echo "$TAGS" | tr ',' '\n' | sed "s|^|--tag ${IMAGE}:|") \
-              --cache-from type=gha \
-              --cache-to type=gha,mode=max \
-              .
-          done
+      - name: Build and push to Docker Hub
+        if: github.repository == 'umami-software/umami'
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: umamisoftware/umami
+          tags: ${{ steps.compute.outputs.tags }}
+          registry: docker.io
+          multiPlatform: true
+          platform: linux/amd64,linux/arm64
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
