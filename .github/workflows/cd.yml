@@ -65,7 +65,8 @@ jobs:
             VERSION=""
           fi
 
-          TAGS=""
+          GHCR_TAGS=""
+          DOCKER_TAGS=""
 
           if [[ -n "$VERSION" ]]; then
             MAJOR=$(echo "$VERSION" | cut -d. -f1)
@@ -73,43 +74,54 @@ jobs:
 
             if [[ "$VERSION" == *-* ]]; then
               # prerelease: only version tag
-              TAGS="$VERSION"
+              GHCR_TAGS="ghcr.io/${{ github.repository }}:$VERSION"
+              DOCKER_TAGS="umamisoftware/umami:$VERSION"
             else
               # stable release: version + hierarchy
-              TAGS="$VERSION,${MAJOR}.${MINOR},${MAJOR},postgresql-latest"
-              
+              GHCR_TAGS="ghcr.io/${{ github.repository }}:$VERSION"
+              GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:${MAJOR}.${MINOR}"
+              GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:${MAJOR}"
+              GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:postgresql-latest"
+          
+              DOCKER_TAGS="umamisoftware/umami:$VERSION"
+              DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:${MAJOR}.${MINOR}"
+              DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:${MAJOR}"
+              DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:postgresql-latest"
+          
               # Add latest tag based on trigger and input
               if [[ "$REF_TYPE" == "tag" ]] || [[ "$INCLUDE_LATEST" == "true" ]]; then
-                TAGS="${TAGS},latest"
+                GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:latest"
+                DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:latest"
               fi
             fi
           else
             # Non-tag build (e.g. from main branch)
-            TAGS="${REF_NAME}"
+            GHCR_TAGS="ghcr.io/${{ github.repository }}:${REF_NAME}"
+            DOCKER_TAGS="umamisoftware/umami:${REF_NAME}"
           fi
 
-          echo "tags=$TAGS" >> $GITHUB_OUTPUT
-          echo "Computed tags: $TAGS"
+          echo "ghcr_tags=$GHCR_TAGS" >> $GITHUB_OUTPUT
+          echo "docker_tags=$DOCKER_TAGS" >> $GITHUB_OUTPUT
+          echo "Computed GHCR tags: $GHCR_TAGS"
+          echo "Computed Docker Hub tags: $DOCKER_TAGS"
 
       - name: Build and push to GHCR
-        uses: mr-smithers-excellent/docker-build-push@v6
+        uses: docker/build-push-action@v5
         with:
-          image: ${{ github.repository }}
-          tags: ${{ steps.compute.outputs.tags }}
-          registry: ghcr.io
-          multiPlatform: true
-          platform: linux/amd64,linux/arm64
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.compute.outputs.ghcr_tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Build and push to Docker Hub
         if: github.repository == 'umami-software/umami'
-        uses: mr-smithers-excellent/docker-build-push@v6
+        uses: docker/build-push-action@v5
         with:
-          image: umamisoftware/umami
-          tags: ${{ steps.compute.outputs.tags }}
-          registry: docker.io
-          multiPlatform: true
-          platform: linux/amd64,linux/arm64
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.compute.outputs.docker_tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
