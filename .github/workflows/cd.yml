@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag to build (e.g., v2.10.0, 2.10.0, v2.10, v2)'
+        description: 'Tag to build (e.g., v2.10.0, v2.10, v2)'
         required: true
         type: string
 
@@ -43,28 +43,27 @@ jobs:
             TAG=${GITHUB_REF#refs/tags/}
           fi
           
-          # Remove 'v' prefix if present
+          # Ensure tag starts with 'v'
+          if [[ ! $TAG =~ ^v ]]; then
+            TAG="v${TAG}"
+          fi
+          
+          # Remove 'v' prefix for splitting
           VERSION=${TAG#v}
           
           # Split version into parts
           IFS='.' read -ra PARTS <<< "$VERSION"
           
-          # Generate tags based on number of version parts
+          # Generate tags based on number of version parts (keeping 'v' prefix)
           if [ ${#PARTS[@]} -eq 1 ]; then
-            # Only major version (e.g., v2 or 2)
-            echo "tag_major=$(echo ${{ matrix.db-type }})-${PARTS[0]}" >> $GITHUB_ENV
-            echo "TAGS=${{ matrix.db-type }}-${PARTS[0]}" >> $GITHUB_ENV
+            # Only major version (e.g., v2)
+            echo "TAGS=${{ matrix.db-type }}-v${PARTS[0]}" >> $GITHUB_ENV
           elif [ ${#PARTS[@]} -eq 2 ]; then
-            # Major.minor version (e.g., v2.10 or 2.10)
-            echo "tag_major=$(echo ${{ matrix.db-type }})-${PARTS[0]}" >> $GITHUB_ENV
-            echo "tag_minor=$(echo ${{ matrix.db-type }})-${PARTS[0]}.${PARTS[1]}" >> $GITHUB_ENV
-            echo "TAGS=${{ matrix.db-type }}-${PARTS[0]}, ${{ matrix.db-type }}-${PARTS[0]}.${PARTS[1]}" >> $GITHUB_ENV
+            # Major.minor version (e.g., v2.10)
+            echo "TAGS=${{ matrix.db-type }}-v${PARTS[0]}, ${{ matrix.db-type }}-v${PARTS[0]}.${PARTS[1]}" >> $GITHUB_ENV
           else
-            # Full version (e.g., v2.10.0 or 2.10.0)
-            echo "tag_major=$(echo ${{ matrix.db-type }})-${PARTS[0]}" >> $GITHUB_ENV
-            echo "tag_minor=$(echo ${{ matrix.db-type }})-${PARTS[0]}.${PARTS[1]}" >> $GITHUB_ENV
-            echo "tag_patch=$(echo ${{ matrix.db-type }})-${VERSION}" >> $GITHUB_ENV
-            echo "TAGS=${{ matrix.db-type }}-${PARTS[0]}, ${{ matrix.db-type }}-${PARTS[0]}.${PARTS[1]}, ${{ matrix.db-type }}-${VERSION}" >> $GITHUB_ENV
+            # Full version (e.g., v2.10.0)
+            echo "TAGS=${{ matrix.db-type }}-v${PARTS[0]}, ${{ matrix.db-type }}-v${PARTS[0]}.${PARTS[1]}, ${{ matrix.db-type }}-v${VERSION}" >> $GITHUB_ENV
           fi
 
       - uses: mr-smithers-excellent/docker-build-push@v6
