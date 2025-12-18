@@ -17,7 +17,7 @@ export async function parseRequest(
   const url = new URL(request.url);
   let query = Object.fromEntries(url.searchParams);
   let body = await getJsonBody(request);
-  let error: () => undefined | undefined;
+  let error: () => undefined | undefined | Response;
   let auth = null;
 
   if (schema) {
@@ -81,12 +81,12 @@ export function getRequestFilters(query: Record<string, any>) {
   return result;
 }
 
-export async function setWebsiteDate(websiteId: string, data: Record<string, any>) {
+export async function setWebsiteDate(websiteId: string, userId: string, data: Record<string, any>) {
   const website = await fetchWebsite(websiteId);
   const cloudMode = !!process.env.CLOUD_MODE;
 
-  if (cloudMode) {
-    const account = await fetchAccount(websiteId);
+  if (cloudMode && !website.teamId) {
+    const account = await fetchAccount(userId);
 
     if (!account?.hasSubscription) {
       data.startDate = maxDate(data.startDate, startOfMonth(subMonths(new Date(), 6)));
@@ -103,12 +103,13 @@ export async function setWebsiteDate(websiteId: string, data: Record<string, any
 export async function getQueryFilters(
   params: Record<string, any>,
   websiteId?: string,
+  userId?: string,
 ): Promise<QueryFilters> {
   const dateRange = getRequestDateRange(params);
   const filters = getRequestFilters(params);
 
   if (websiteId) {
-    await setWebsiteDate(websiteId, dateRange);
+    await setWebsiteDate(websiteId, userId, dateRange);
 
     if (params.segment) {
       const segmentParams = (await getWebsiteSegment(websiteId, params.segment))

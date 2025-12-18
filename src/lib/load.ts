@@ -39,14 +39,8 @@ export async function fetchSession(websiteId: string, sessionId: string): Promis
   return session;
 }
 
-export async function fetchAccount(websiteId: string) {
-  let account = null;
-
-  const cache = await redis.client.get(`cache:website:${websiteId}`);
-
-  if (cache) {
-    account = await redis.client.get(`account:${cache.account_id}`);
-  }
+export async function fetchAccount(userId: string) {
+  const account = await redis.client.get(`account:${userId}`);
 
   return account;
 }
