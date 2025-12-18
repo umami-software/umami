@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   }
 
   const parameters = await setWebsiteDate(websiteId, auth.user.id, body.parameters);
-  const filters = await getQueryFilters(body.filters, websiteId, auth.user.id);
+  const filters = await getQueryFilters(body.filters, websiteId, auth.user?.id);
 
   const data = await getRevenue(websiteId, parameters as RevenuParameters, filters);
 
