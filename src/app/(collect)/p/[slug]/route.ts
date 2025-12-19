@@ -1,11 +1,11 @@
 export const dynamic = 'force-dynamic';
 
 import { NextResponse } from 'next/server';
-import { notFound } from '@/lib/response';
-import redis from '@/lib/redis';
-import { findPixel } from '@/queries/prisma';
-import { Pixel } from '@/generated/prisma/client';
 import { POST } from '@/app/api/send/route';
+import type { Pixel } from '@/generated/prisma/client';
+import redis from '@/lib/redis';
+import { notFound } from '@/lib/response';
+import { findPixel } from '@/queries/prisma';
 
 const image = Buffer.from('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw', 'base64');
 

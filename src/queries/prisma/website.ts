@@ -1,8 +1,8 @@
-import { Prisma } from '@/generated/prisma/client';
-import redis from '@/lib/redis';
-import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
+import type { Prisma } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
+import prisma from '@/lib/prisma';
+import redis from '@/lib/redis';
+import type { QueryFilters } from '@/lib/types';
 
 export async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs) {
   return prisma.client.website.findUnique(criteria);
@@ -135,26 +135,34 @@ export async function resetWebsite(websiteId: string) {
   const { client, transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
-  return transaction([
-    client.eventData.deleteMany({
-      where: { websiteId },
-    }),
-    client.sessionData.deleteMany({
-      where: { websiteId },
-    }),
-    client.websiteEvent.deleteMany({
-      where: { websiteId },
-    }),
-    client.session.deleteMany({
-      where: { websiteId },
-    }),
-    client.website.update({
-      where: { id: websiteId },
-      data: {
-        resetAt: new Date(),
-      },
-    }),
-  ]).then(async data => {
+  return transaction(
+    [
+      client.revenue.deleteMany({
+        where: { websiteId },
+      }),
+      client.eventData.deleteMany({
+        where: { websiteId },
+      }),
+      client.sessionData.deleteMany({
+        where: { websiteId },
+      }),
+      client.websiteEvent.deleteMany({
+        where: { websiteId },
+      }),
+      client.session.deleteMany({
+        where: { websiteId },
+      }),
+      client.website.update({
+        where: { id: websiteId },
+        data: {
+          resetAt: new Date(),
+        },
+      }),
+    ],
+    {
+      timeout: 30000,
+    },
+  ).then(async data => {
     if (cloudMode) {
       await redis.client.set(
         `website:${websiteId}`,
@@ -170,35 +178,44 @@ export async function deleteWebsite(websiteId: string) {
   const { client, transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
-  return transaction([
-    client.eventData.deleteMany({
-      where: { websiteId },
-    }),
-    client.sessionData.deleteMany({
-      where: { websiteId },
-    }),
-    client.websiteEvent.deleteMany({
-      where: { websiteId },
-    }),
-    client.session.deleteMany({
-      where: { websiteId },
-    }),
-    client.report.deleteMany({
-      where: {
-        websiteId,
-      },
-    }),
-    cloudMode
-      ? client.website.update({
-          data: {
-            deletedAt: new Date(),
-          },
-          where: { id: websiteId },
-        })
-      : client.website.delete({
-          where: { id: websiteId },
-        }),
-  ]).then(async data => {
+  return transaction(
+    [
+      client.revenue.deleteMany({
+        where: { websiteId },
+      }),
+      client.eventData.deleteMany({
+        where: { websiteId },
+      }),
+      client.sessionData.deleteMany({
+        where: { websiteId },
+      }),
+      client.websiteEvent.deleteMany({
+        where: { websiteId },
+      }),
+      client.session.deleteMany({
+        where: { websiteId },
+      }),
+      client.report.deleteMany({
+        where: { websiteId },
+      }),
+      client.segment.deleteMany({
+        where: { websiteId },
+      }),
+      cloudMode
+        ? client.website.update({
+            data: {
+              deletedAt: new Date(),
+            },
+            where: { id: websiteId },
+          })
+        : client.website.delete({
+            where: { id: websiteId },
+          }),
+    ],
+    {
+      timeout: 30000,
+    },
+  ).then(async data => {
     if (cloudMode) {
       await redis.client.del(`website:${websiteId}`);
     }

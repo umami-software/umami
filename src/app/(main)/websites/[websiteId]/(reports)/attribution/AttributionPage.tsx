@@ -1,9 +1,9 @@
 'use client';
+import { Column, Grid, ListItem, SearchField, Select } from '@umami/react-zen';
 import { useState } from 'react';
-import { Column, Grid, Select, ListItem, SearchField } from '@umami/react-zen';
-import { Attribution } from './Attribution';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { useDateRange, useMessages } from '@/components/hooks';
+import { Attribution } from './Attribution';
 
 export function AttributionPage({ websiteId }: { websiteId: string }) {
   const [model, setModel] = useState('first-click');
@@ -17,7 +17,7 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
   return (
     <Column gap="6">
       <WebsiteControls websiteId={websiteId} />
-      <Grid columns="1fr 1fr 1fr" gap>
+      <Grid columns={{ xs: '1fr', md: '1fr 1fr 1fr' }} gap>
         <Column>
           <Select
             label={formatMessage(labels.model)}

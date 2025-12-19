@@ -1,8 +1,9 @@
-import { uuid } from '@/lib/crypto';
-import { Prisma, Team } from '@/generated/prisma/client';
+import { Prisma, type Team } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
+import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
-import { PageResult, QueryFilters } from '@/lib/types';
+import type { PageResult, QueryFilters } from '@/lib/types';
+
 import TeamFindManyArgs = Prisma.TeamFindManyArgs;
 
 export async function findTeam(criteria: Prisma.TeamFindUniqueArgs): Promise<Team> {

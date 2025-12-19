@@ -1,18 +1,18 @@
-import { Fragment } from 'react';
 import {
-  Icon,
   Button,
-  MenuTrigger,
-  Popover,
+  Icon,
   Menu,
   MenuItem,
-  MenuSeparator,
   MenuSection,
-  Text,
+  MenuSeparator,
+  MenuTrigger,
+  Popover,
   Row,
+  Text,
 } from '@umami/react-zen';
-import { useMessages, useLoginQuery, useNavigation } from '@/components/hooks';
-import { LogOut, UserCircle, LockKeyhole } from '@/components/icons';
+import { Fragment } from 'react';
+import { useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
+import { LockKeyhole, LogOut, UserCircle } from '@/components/icons';
 
 export function ProfileButton() {
   const { formatMessage, labels } = useMessages();

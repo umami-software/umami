@@ -1,8 +1,8 @@
-import { useCallback } from 'react';
 import { IconLabel } from '@umami/react-zen';
-import { ListTable } from '@/components/metrics/ListTable';
-import { useLocale, useCountryNames, useMessages } from '@/components/hooks';
+import { useCallback } from 'react';
 import { TypeIcon } from '@/components/common/TypeIcon';
+import { useCountryNames, useLocale, useMessages } from '@/components/hooks';
+import { ListTable } from '@/components/metrics/ListTable';
 
 export function RealtimeCountries({ data }) {
   const { formatMessage, labels } = useMessages();

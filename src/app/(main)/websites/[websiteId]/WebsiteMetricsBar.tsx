@@ -1,10 +1,10 @@
+import { useContext } from 'react';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useDateRange, useMessages } from '@/components/hooks';
+import { useWebsiteStatsQuery } from '@/components/hooks/queries/useWebsiteStatsQuery';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
-import { formatShortTime, formatLongNumber } from '@/lib/format';
-import { useWebsiteStatsQuery } from '@/components/hooks/queries/useWebsiteStatsQuery';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useContext } from 'react';
+import { formatLongNumber, formatShortTime } from '@/lib/format';
 import { TypographyContext } from './WebsitePage';
 
 export function WebsiteMetricsBar({
@@ -48,7 +48,7 @@ export function WebsiteMetricsBar({
           change:
             (Math.min(visits, bounces) / visits) * 100 -
             (Math.min(comparison.visits, comparison.bounces) / comparison.visits) * 100,
-          formatValue: n => Math.round(+n) + '%',
+          formatValue: n => `${Math.round(+n)}%`,
           reverseColors: true,
         },
         {

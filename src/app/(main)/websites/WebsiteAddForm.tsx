@@ -1,7 +1,6 @@
-import { Form, FormField, FormSubmitButton, Row, TextField, Button } from '@umami/react-zen';
-import { useUpdateQuery } from '@/components/hooks';
+import { Button, Form, FormField, FormSubmitButton, Row, TextField } from '@umami/react-zen';
+import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { DOMAIN_REGEX } from '@/lib/constants';
-import { useMessages } from '@/components/hooks';
 
 export function WebsiteAddForm({
   teamId,

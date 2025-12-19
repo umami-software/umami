@@ -1,11 +1,24 @@
-import { DataTable, DataColumn, Row, Text, DataTableProps, IconLabel } from '@umami/react-zen';
-import { useFormat, useMessages, useNavigation } from '@/components/hooks';
-import { Avatar } from '@/components/common/Avatar';
+import {
+  Button,
+  DataColumn,
+  DataTable,
+  type DataTableProps,
+  Dialog,
+  DialogTrigger,
+  Icon,
+  IconLabel,
+  Popover,
+  Row,
+  Text,
+} from '@umami/react-zen';
 import Link from 'next/link';
-import { Eye } from '@/components/icons';
-import { Lightning } from '@/components/svg';
+import { Avatar } from '@/components/common/Avatar';
 import { DateDistance } from '@/components/common/DateDistance';
 import { TypeIcon } from '@/components/common/TypeIcon';
+import { useFormat, useMessages, useNavigation } from '@/components/hooks';
+import { Eye, FileText } from '@/components/icons';
+import { EventData } from '@/components/metrics/EventData';
+import { Lightning } from '@/components/svg';
 
 export function EventsTable(props: DataTableProps) {
   const { formatMessage, labels } = useMessages();
@@ -32,6 +45,7 @@ export function EventsTable(props: DataTableProps) {
               >
                 {row.eventName || row.urlPath}
               </Text>
+              {row.hasData > 0 && <PropertiesButton websiteId={row.websiteId} eventId={row.id} />}
             </Row>
           );
         }}
@@ -72,3 +86,22 @@ export function EventsTable(props: DataTableProps) {
     </DataTable>
   );
 }
+
+const PropertiesButton = props => {
+  return (
+    <DialogTrigger>
+      <Button variant="quiet">
+        <Row alignItems="center" gap>
+          <Icon>
+            <FileText />
+          </Icon>
+        </Row>
+      </Button>
+      <Popover placement="right">
+        <Dialog>
+          <EventData {...props} />
+        </Dialog>
+      </Popover>
+    </DialogTrigger>
+  );
+};

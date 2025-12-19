@@ -2,7 +2,7 @@ import clickhouse from '@/lib/clickhouse';
 import { EVENT_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
+import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getWebsiteStats';
 
@@ -36,11 +36,11 @@ async function relationalQuery(
   return rawQuery(
     `
     select
-      sum(t.c) as "pageviews",
+      cast(coalesce(sum(t.c), 0) as bigint) as "pageviews",
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
-      sum(case when t.c = 1 then 1 else 0 end) as "bounces",
-      sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime"
+      coalesce(sum(case when t.c = 1 then 1 else 0 end), 0) as "bounces",
+      cast(coalesce(sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}), 0) as bigint) as "totaltime"
     from (
       select
         website_event.session_id,

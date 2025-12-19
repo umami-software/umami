@@ -1,7 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
+import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getSessionActivity';
 
@@ -29,10 +29,10 @@ async function relationalQuery(websiteId: string, sessionId: string, filters: Qu
       event_type as "eventType",
       event_name as "eventName",
       visit_id as "visitId",
-      event_id IN (select event_id 
+      event_id IN (select website_event_id 
                    from event_data
                    where website_id = {{websiteId::uuid}}
-                    and session_id = {{sessionId::uuid}}) AS "hasData"
+                      and created_at between {{startDate}} and {{endDate}}) AS "hasData"
     from website_event
     where website_id = {{websiteId::uuid}}
       and session_id = {{sessionId::uuid}}

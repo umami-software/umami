@@ -1,12 +1,12 @@
+import { ListItem, Row, Select, type SelectProps, Text } from '@umami/react-zen';
 import { useState } from 'react';
-import { Select, SelectProps, ListItem, Text, Row } from '@umami/react-zen';
+import { Empty } from '@/components/common/Empty';
 import {
-  useUserWebsitesQuery,
-  useMessages,
   useLoginQuery,
+  useMessages,
+  useUserWebsitesQuery,
   useWebsiteQuery,
 } from '@/components/hooks';
-import { Empty } from '@/components/common/Empty';
 
 export function WebsiteSelect({
   websiteId,
@@ -28,7 +28,7 @@ export function WebsiteSelect({
     { userId: user?.id, teamId },
     { search, pageSize: 10, includeTeams },
   );
-  const listItems: { id: string; name: string }[] = data?.['data'] || [];
+  const listItems: { id: string; name: string }[] = data?.data || [];
 
   const handleSearch = (value: string) => {
     setSearch(value);

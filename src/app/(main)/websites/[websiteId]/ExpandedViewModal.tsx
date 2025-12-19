@@ -1,6 +1,6 @@
 import { Dialog, Modal } from '@umami/react-zen';
 import { WebsiteExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedView';
-import { useNavigation, useMobile } from '@/components/hooks';
+import { useMobile, useNavigation } from '@/components/hooks';
 
 export function ExpandedViewModal({
   websiteId,
@@ -34,6 +34,7 @@ export function ExpandedViewModal({
           maxWidth: 1320,
           width: '100vw',
           height: isMobile ? '100dvh' : 'calc(100dvh - 40px)',
+          overflow: 'hidden',
         }}
       >
         {({ close }) => {

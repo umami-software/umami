@@ -1,8 +1,8 @@
-import { Trash } from '@/components/icons';
-import { messages } from '@/components/messages';
-import { useDeleteQuery, useMessages } from '@/components/hooks';
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
+import { useDeleteQuery, useMessages } from '@/components/hooks';
+import { Trash } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
+import { messages } from '@/components/messages';
 
 export function CohortDeleteButton({
   cohortId,

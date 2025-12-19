@@ -1,8 +1,8 @@
 import { FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import { safeDecodeURIComponent } from '@/lib/url';
+import { useFields } from './useFields';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
-import { useFields } from './useFields';
 
 export function useFilters() {
   const { formatMessage, labels } = useMessages();

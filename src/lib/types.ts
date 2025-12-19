@@ -1,6 +1,6 @@
-import { UseQueryOptions } from '@tanstack/react-query';
-import { DATA_TYPE, ROLES, OPERATORS } from './constants';
-import { TIME_UNIT } from './date';
+import type { UseQueryOptions } from '@tanstack/react-query';
+import type { DATA_TYPE, OPERATORS, ROLES } from './constants';
+import type { TIME_UNIT } from './date';
 
 export type ObjectValues<T> = T[keyof T];
 
@@ -115,4 +115,29 @@ export interface PageResult<T> {
   orderBy?: string;
   sortDescending?: boolean;
   search?: string;
+}
+
+export interface RealtimeData {
+  countries: Record<string, number>;
+  events: any[];
+  pageviews: any[];
+  referrers: Record<string, number>;
+  timestamp: number;
+  series: {
+    views: any[];
+    visitors: any[];
+  };
+  totals: {
+    views: number;
+    visitors: number;
+    events: number;
+    countries: number;
+  };
+  urls: Record<string, number>;
+  visitors: any[];
+}
+
+export interface ApiError extends Error {
+  code?: string;
+  message: string;
 }

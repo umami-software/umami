@@ -1,6 +1,6 @@
-import { ErrorInfo, ReactNode } from 'react';
-import { ErrorBoundary as Boundary } from 'react-error-boundary';
 import { Button, Column } from '@umami/react-zen';
+import type { ErrorInfo, ReactNode } from 'react';
+import { ErrorBoundary as Boundary } from 'react-error-boundary';
 import { useMessages } from '@/components/hooks';
 
 const logError = (error: Error, info: ErrorInfo) => {

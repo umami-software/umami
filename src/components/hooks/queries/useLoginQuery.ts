@@ -1,4 +1,4 @@
-import { useApp, setUser } from '@/store/app';
+import { setUser, useApp } from '@/store/app';
 import { useApi } from '../useApi';
 
 const selector = (state: { user: any }) => state.user;

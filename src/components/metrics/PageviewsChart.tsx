@@ -1,6 +1,6 @@
-import { useCallback, useMemo } from 'react';
 import { useTheme } from '@umami/react-zen';
-import { BarChart, BarChartProps } from '@/components/charts/BarChart';
+import { useCallback, useMemo } from 'react';
+import { BarChart, type BarChartProps } from '@/components/charts/BarChart';
 import { useLocale, useMessages } from '@/components/hooks';
 import { renderDateLabels } from '@/lib/charts';
 import { getThemeColors } from '@/lib/colors';
@@ -28,7 +28,7 @@ export function PageviewsChart({ data, unit, minDate, maxDate, ...props }: Pagev
     if (!data) return;
 
     return {
-      __id: new Date().getTime(),
+      __id: Date.now(),
       datasets: [
         {
           type: 'bar',

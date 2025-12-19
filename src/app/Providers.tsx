@@ -1,13 +1,13 @@
 'use client';
+import { DialsOverlay, DialsProvider } from '@niteshift/dials';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { RouterProvider, ZenProvider } from '@umami/react-zen';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { IntlProvider } from 'react-intl';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ZenProvider, RouterProvider } from '@umami/react-zen';
-import { useRouter } from 'next/navigation';
-import { DialsProvider, DialsOverlay } from '@niteshift/dials';
-import { designManifest } from '@/config/niteshift-manifest';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { useLocale } from '@/components/hooks';
+import { designManifest } from '@/config/niteshift-manifest';
 import 'chartjs-adapter-date-fns';
 
 const client = new QueryClient({

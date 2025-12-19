@@ -1,20 +1,20 @@
 import {
+  Button,
+  Column,
   Form,
+  FormButtons,
   FormField,
   FormFieldArray,
-  TextField,
-  Grid,
-  FormButtons,
   FormSubmitButton,
-  Button,
-  Text,
+  Grid,
   Icon,
-  Row,
   Loading,
-  Column,
+  Row,
+  Text,
+  TextField,
 } from '@umami/react-zen';
 import { useMessages, useReportQuery, useUpdateQuery } from '@/components/hooks';
-import { X, Plus } from '@/components/icons';
+import { Plus, X } from '@/components/icons';
 import { ActionSelect } from '@/components/input/ActionSelect';
 import { LookupField } from '@/components/input/LookupField';
 
@@ -56,7 +56,7 @@ export function FunnelEditForm({
   const defaultValues = {
     name: data?.name || '',
     window: data?.parameters?.window || 60,
-    steps: data?.parameters?.steps || [{ type: 'path', value: '/' }],
+    steps: data?.parameters?.steps || [{ type: 'path', value: '' }],
   };
 
   return (
@@ -82,12 +82,10 @@ export function FunnelEditForm({
           validate: value => value.length > 1 || 'At least two steps are required',
         }}
       >
-        {({ fields, append, remove, getValues }) => {
+        {({ fields, append, remove }) => {
           return (
             <Grid gap>
               {fields.map(({ id }: { id: string }, index: number) => {
-                const type = getValues(`steps.${index}.type`);
-
                 return (
                   <Grid key={id} columns="260px 1fr auto" gap>
                     <Column>
@@ -103,7 +101,8 @@ export function FunnelEditForm({
                         name={`steps.${index}.value`}
                         rules={{ required: formatMessage(labels.required) }}
                       >
-                        {({ field }) => {
+                        {({ field, context }) => {
+                          const type = context.watch(`steps.${index}.type`);
                           return <LookupField websiteId={websiteId} type={type} {...field} />;
                         }}
                       </FormField>
@@ -118,7 +117,7 @@ export function FunnelEditForm({
               })}
               <Row>
                 <Button
-                  onPress={() => append({ type: 'path', value: '/' })}
+                  onPress={() => append({ type: 'path', value: '' })}
                   isDisabled={fields.length >= FUNNEL_STEPS_MAX}
                 >
                   <Icon>

@@ -1,8 +1,8 @@
 'use client';
-import { createContext, ReactNode } from 'react';
 import { Loading } from '@umami/react-zen';
-import { Website } from '@/generated/prisma/client';
+import { createContext, type ReactNode } from 'react';
 import { useWebsiteQuery } from '@/components/hooks/queries/useWebsiteQuery';
+import type { Website } from '@/generated/prisma/client';
 
 export const WebsiteContext = createContext<Website>(null);
 

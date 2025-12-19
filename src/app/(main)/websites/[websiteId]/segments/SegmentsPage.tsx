@@ -1,8 +1,8 @@
 'use client';
 import { Column } from '@umami/react-zen';
-import { SegmentsDataTable } from './SegmentsDataTable';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Panel } from '@/components/common/Panel';
+import { SegmentsDataTable } from './SegmentsDataTable';
 
 export function SegmentsPage({ websiteId }) {
   return (

@@ -1,8 +1,8 @@
-import { serializeError } from 'serialize-error';
+import type * as tls from 'node:tls';
 import debug from 'debug';
-import { Kafka, Producer, RecordMetadata, SASLOptions, logLevel } from 'kafkajs';
+import { Kafka, logLevel, type Producer, type RecordMetadata, type SASLOptions } from 'kafkajs';
+import { serializeError } from 'serialize-error';
 import { KAFKA, KAFKA_PRODUCER } from '@/lib/db';
-import * as tls from 'tls';
 
 const log = debug('umami:kafka');
 const CONNECT_TIMEOUT = 5000;

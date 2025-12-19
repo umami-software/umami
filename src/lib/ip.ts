@@ -1,16 +1,16 @@
 export const IP_ADDRESS_HEADERS = [
   'true-client-ip', // CDN
-  'x-real-ip', // Reverse proxy
-  'x-forwarded-for',
   'cf-connecting-ip', // Cloudflare
   'fastly-client-ip', // Fastly
   'x-nf-client-connection-ip', // Netlify
   'do-connecting-ip', // Digital Ocean
-  'x-appengine-user-ip', // Google App Ending
+  'x-real-ip', // Reverse proxy
+  'x-appengine-user-ip', // Google App Engine
+  'x-forwarded-for',
+  'forwarded',
   'x-client-ip',
   'x-cluster-client-ip',
   'x-forwarded',
-  'forwarded',
 ];
 
 export function getIpAddress(headers: Headers) {

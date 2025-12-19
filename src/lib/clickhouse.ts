@@ -1,10 +1,10 @@
-import { ClickHouseClient, createClient } from '@clickhouse/client';
+import { type ClickHouseClient, createClient } from '@clickhouse/client';
 import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
 import { CLICKHOUSE } from '@/lib/db';
 import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from './constants';
 import { filtersObjectToArray } from './params';
-import { QueryFilters, QueryOptions } from './types';
+import type { QueryFilters, QueryOptions } from './types';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   utc: '%Y-%m-%dT%H:%i:%SZ',
@@ -61,7 +61,7 @@ function getDateStringSQL(data: any, unit: string = 'utc', timezone?: string) {
 
 function getDateSQL(field: string, unit: string, timezone?: string) {
   if (timezone) {
-    return `toDateTime(date_trunc('${unit}', ${field}, '${timezone}'), '${timezone}')`;
+    return `toDateTime(date_trunc('${unit}', ${field}, '${timezone}'))`;
   }
   return `toDateTime(date_trunc('${unit}', ${field}))`;
 }

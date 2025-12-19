@@ -8,8 +8,8 @@ import {
   THEME_CONFIG,
   TIMEZONE_CONFIG,
 } from '@/lib/constants';
-import { getItem } from '@/lib/storage';
 import { getTimezone } from '@/lib/date';
+import { getItem } from '@/lib/storage';
 
 const initialState = {
   locale: getItem(LOCALE_CONFIG) || process.env.defaultLocale || DEFAULT_LOCALE,

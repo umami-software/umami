@@ -1,5 +1,6 @@
-import { ReactNode } from 'react';
-import { Heading, Icon, Row, RowProps, Text, Column } from '@umami/react-zen';
+import { Column, Grid, Heading, Icon, Row, Text } from '@umami/react-zen';
+import type { ReactNode } from 'react';
+import { LinkButton } from './LinkButton';
 
 export function PageHeader({
   title,
@@ -7,27 +8,25 @@ export function PageHeader({
   label,
   icon,
   showBorder = true,
+  titleHref,
   children,
-  ...props
 }: {
   title: string;
   description?: string;
   label?: ReactNode;
   icon?: ReactNode;
   showBorder?: boolean;
+  titleHref?: string;
   allowEdit?: boolean;
   className?: string;
   children?: ReactNode;
-} & RowProps) {
+}) {
   return (
-    <Row
-      justifyContent="space-between"
-      alignItems="center"
+    <Grid
+      columns={{ xs: '1fr', md: '1fr 1fr' }}
       paddingY="6"
       marginBottom="6"
       border={showBorder ? 'bottom' : undefined}
-      width="100%"
-      {...props}
     >
       <Column gap="2">
         {label}
@@ -37,7 +36,13 @@ export function PageHeader({
               {icon}
             </Icon>
           )}
-          {title && <Heading size={{ xs: '2', md: '3', lg: '4' }}>{title}</Heading>}
+          {title && titleHref ? (
+            <LinkButton href={titleHref} variant="quiet">
+              <Heading size={{ xs: '2', md: '3', lg: '4' }}>{title}</Heading>
+            </LinkButton>
+          ) : (
+            title && <Heading size={{ xs: '2', md: '3', lg: '4' }}>{title}</Heading>
+          )}
         </Row>
         {description && (
           <Text color="muted" truncate style={{ maxWidth: 600 }} title={description}>
@@ -45,7 +50,9 @@ export function PageHeader({
           </Text>
         )}
       </Column>
-      <Row justifyContent="flex-end">{children}</Row>
-    </Row>
+      <Row justifyContent="flex-end" alignItems="center">
+        {children}
+      </Row>
+    </Grid>
   );
 }

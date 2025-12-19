@@ -1,5 +1,5 @@
-import { Chart, ChartProps } from '@/components/charts/Chart';
 import { useState } from 'react';
+import { Chart, type ChartProps } from '@/components/charts/Chart';
 import { ChartTooltip } from '@/components/charts/ChartTooltip';
 
 export interface BubbleChartProps extends ChartProps {

@@ -2,7 +2,7 @@ import clickhouse from '@/lib/clickhouse';
 import { EVENT_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
+import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getPageviewStats';
 
@@ -45,7 +45,7 @@ async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
-  const { timezone = 'utc', unit = 'day' } = filters;
+  const { timezone = 'UTC', unit = 'day' } = filters;
   const { parseFilters, rawQuery, getDateSQL } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,

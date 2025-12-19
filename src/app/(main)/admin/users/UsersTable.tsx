@@ -1,13 +1,12 @@
-import { useState } from 'react';
-import { Row, Text, Icon, DataTable, DataColumn, MenuItem, Modal } from '@umami/react-zen';
+import { DataColumn, DataTable, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
 import Link from 'next/link';
-import { ROLES } from '@/lib/constants';
-import { Trash } from '@/components/icons';
-import { useMessages } from '@/components/hooks';
-import { Edit } from '@/components/icons';
-import { MenuButton } from '@/components/input/MenuButton';
-import { UserDeleteForm } from './UserDeleteForm';
+import { useState } from 'react';
 import { DateDistance } from '@/components/common/DateDistance';
+import { useMessages } from '@/components/hooks';
+import { Edit, Trash } from '@/components/icons';
+import { MenuButton } from '@/components/input/MenuButton';
+import { ROLES } from '@/lib/constants';
+import { UserDeleteForm } from './UserDeleteForm';
 
 export function UsersTable({
   data = [],

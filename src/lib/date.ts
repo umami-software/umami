@@ -1,44 +1,45 @@
 import {
-  addMinutes,
-  addHours,
   addDays,
+  addHours,
+  addMinutes,
   addMonths,
+  addWeeks,
   addYears,
-  subMinutes,
-  subHours,
-  subDays,
-  subMonths,
-  subYears,
-  startOfMinute,
-  startOfHour,
-  startOfDay,
-  startOfWeek,
-  startOfMonth,
-  startOfYear,
-  endOfHour,
-  endOfDay,
-  endOfWeek,
-  endOfMonth,
-  endOfYear,
-  differenceInMinutes,
-  differenceInHours,
   differenceInCalendarDays,
-  differenceInCalendarWeeks,
   differenceInCalendarMonths,
+  differenceInCalendarWeeks,
   differenceInCalendarYears,
+  differenceInHours,
+  differenceInMinutes,
+  endOfDay,
+  endOfHour,
+  endOfMinute,
+  endOfMonth,
+  endOfWeek,
+  endOfYear,
   format,
+  isBefore,
+  isDate,
+  isEqual,
+  isSameDay,
   max,
   min,
-  isDate,
-  addWeeks,
+  startOfDay,
+  startOfHour,
+  startOfMinute,
+  startOfMonth,
+  startOfWeek,
+  startOfYear,
+  subDays,
+  subHours,
+  subMinutes,
+  subMonths,
   subWeeks,
-  endOfMinute,
-  isSameDay,
-  isBefore,
-  isEqual,
+  subYears,
 } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
 import { getDateLocale } from '@/lib/lang';
-import { DateRange } from '@/lib/types';
+import type { DateRange } from '@/lib/types';
 
 export const TIME_UNIT = {
   minute: 'minute',
@@ -135,7 +136,7 @@ export function parseDateValue(value: string) {
   return { num: +num, unit };
 }
 
-export function parseDateRange(value: string, locale = 'en-US'): DateRange {
+export function parseDateRange(value: string, locale = 'en-US', timezone?: string): DateRange {
   if (typeof value !== 'string') {
     return null;
   }
@@ -156,7 +157,8 @@ export function parseDateRange(value: string, locale = 'en-US'): DateRange {
     };
   }
 
-  const now = new Date();
+  const date = new Date();
+  const now = timezone ? utcToZonedTime(date, timezone) : date;
   const dateLocale = getDateLocale(locale);
   const { num = 1, unit } = parseDateValue(value);
 
@@ -366,4 +368,8 @@ export function getDateRangeValue(startDate: Date, endDate: Date) {
 
 export function getMonthDateRangeValue(date: Date) {
   return getDateRangeValue(startOfMonth(date), endOfMonth(date));
+}
+
+export function isInvalidDate(date: any) {
+  return date instanceof Date && Number.isNaN(date.getTime());
 }

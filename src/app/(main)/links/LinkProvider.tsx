@@ -1,8 +1,8 @@
 'use client';
-import { createContext, ReactNode } from 'react';
 import { Loading } from '@umami/react-zen';
-import { Link } from '@/generated/prisma/client';
+import { createContext, type ReactNode } from 'react';
 import { useLinkQuery } from '@/components/hooks/queries/useLinkQuery';
+import type { Link } from '@/generated/prisma/client';
 
 export const LinkContext = createContext<Link>(null);
 

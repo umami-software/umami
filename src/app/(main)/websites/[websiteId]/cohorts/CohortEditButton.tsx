@@ -1,8 +1,8 @@
-import { Edit } from '@/components/icons';
 import { CohortEditForm } from '@/app/(main)/websites/[websiteId]/cohorts/CohortEditForm';
 import { useMessages } from '@/components/hooks';
-import { Filter } from '@/lib/types';
+import { Edit } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
+import type { Filter } from '@/lib/types';
 
 export function CohortEditButton({
   cohortId,
