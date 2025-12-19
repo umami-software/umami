@@ -85,7 +85,7 @@ export async function setWebsiteDate(websiteId: string, userId: string, data: Re
   const website = await fetchWebsite(websiteId);
   const cloudMode = !!process.env.CLOUD_MODE;
 
-  if (cloudMode && !website.teamId) {
+  if (cloudMode && website && !website.teamId) {
     const account = await fetchAccount(userId);
 
     if (!account?.hasSubscription) {
