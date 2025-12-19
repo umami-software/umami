@@ -41,14 +41,15 @@ async function relationalQuery(
     currency,
   });
 
-  const joinQuery = filterQuery
-    ? `join website_event
+  const joinQuery =
+    filterQuery || cohortQuery
+      ? `join website_event
       on website_event.website_id = revenue.website_id
         and website_event.session_id = revenue.session_id
         and website_event.event_id = revenue.event_id
         and website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}`
-    : '';
+      : '';
 
   const chart = await rawQuery(
     `
