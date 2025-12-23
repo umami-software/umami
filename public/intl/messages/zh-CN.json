@@ -770,7 +770,7 @@
   "label.growth": [
     {
       "type": 0,
-      "value": "Growth"
+      "value": "增长"
     }
   ],
   "label.hostname": [
@@ -1512,13 +1512,13 @@
   "label.save-cohort": [
     {
       "type": 0,
-      "value": "Save as cohort"
+      "value": "保存为群组"
     }
   ],
   "label.save-segment": [
     {
       "type": 0,
-      "value": "Save as segment"
+      "value": "保存为细分"
     }
   ],
   "label.screen": [
@@ -1668,7 +1668,7 @@
   "label.table": [
     {
       "type": 0,
-      "value": "平板"
+      "value": "表格"
     }
   ],
   "label.tablet": [
