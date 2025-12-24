@@ -1,10 +1,16 @@
-import { useMemo, useState, useEffect } from 'react';
 import { colord } from 'colord';
-import { BarChart, BarChartProps } from '@/components/charts/BarChart';
-import { useDateRange, useLocale, useWebsiteEventsSeriesQuery } from '@/components/hooks';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { BarChart, type BarChartProps } from '@/components/charts/BarChart';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
+import {
+  useDateRange,
+  useLocale,
+  useTimezone,
+  useWebsiteEventsSeriesQuery,
+} from '@/components/hooks';
 import { renderDateLabels } from '@/lib/charts';
 import { CHART_COLORS } from '@/lib/constants';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { generateTimeSeries } from '@/lib/date';
 
 export interface EventsChartProps extends BarChartProps {
   websiteId: string;
@@ -12,10 +18,11 @@ export interface EventsChartProps extends BarChartProps {
 }
 
 export function EventsChart({ websiteId, focusLabel }: EventsChartProps) {
+  const { timezone } = useTimezone();
   const {
     dateRange: { startDate, endDate, unit },
-  } = useDateRange();
-  const { locale } = useLocale();
+  } = useDateRange({ timezone: timezone });
+  const { locale, dateLocale } = useLocale();
   const { data, isLoading, error } = useWebsiteEventsSeriesQuery(websiteId);
   const [label, setLabel] = useState<string>(focusLabel);
 
@@ -32,20 +39,32 @@ export function EventsChart({ websiteId, focusLabel }: EventsChartProps) {
       return obj;
     }, {});
 
-    return {
-      datasets: Object.keys(map).map((key, index) => {
-        const color = colord(CHART_COLORS[index % CHART_COLORS.length]);
-        return {
-          label: key,
-          data: map[key],
-          lineTension: 0,
-          backgroundColor: color.alpha(0.6).toRgbString(),
-          borderColor: color.alpha(0.7).toRgbString(),
-          borderWidth: 1,
-        };
-      }),
-      focusLabel,
-    };
+    if (!map || Object.keys(map).length === 0) {
+      return {
+        datasets: [
+          {
+            data: generateTimeSeries([], startDate, endDate, unit, dateLocale),
+            lineTension: 0,
+            borderWidth: 1,
+          },
+        ],
+      };
+    } else {
+      return {
+        datasets: Object.keys(map).map((key, index) => {
+          const color = colord(CHART_COLORS[index % CHART_COLORS.length]);
+          return {
+            label: key,
+            data: generateTimeSeries(map[key], startDate, endDate, unit, dateLocale),
+            lineTension: 0,
+            backgroundColor: color.alpha(0.6).toRgbString(),
+            borderColor: color.alpha(0.7).toRgbString(),
+            borderWidth: 1,
+          };
+        }),
+        focusLabel,
+      };
+    }
   }, [data, startDate, endDate, unit, focusLabel]);
 
   useEffect(() => {
@@ -53,6 +72,8 @@ export function EventsChart({ websiteId, focusLabel }: EventsChartProps) {
       setLabel(focusLabel);
     }
   }, [focusLabel]);
+
+  const renderXLabel = useCallback(renderDateLabels(unit, locale), [unit, locale]);
 
   return (
     <LoadingPanel isLoading={isLoading} error={error} minHeight="400px">
@@ -63,7 +84,7 @@ export function EventsChart({ websiteId, focusLabel }: EventsChartProps) {
           maxDate={endDate}
           unit={unit}
           stacked={true}
-          renderXLabel={renderDateLabels(unit, locale)}
+          renderXLabel={renderXLabel}
           height="400px"
         />
       )}

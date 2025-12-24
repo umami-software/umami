@@ -1,10 +1,10 @@
-import debug from 'debug';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
+import debug from 'debug';
 import { PrismaClient } from '@/generated/prisma/client';
-import { SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE, FILTER_COLUMNS } from './constants';
-import { QueryOptions, QueryFilters, Operator } from './types';
+import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
 import { filtersObjectToArray } from './params';
+import type { Operator, QueryFilters, QueryOptions } from './types';
 
 const log = debug('umami:prisma');
 
@@ -27,6 +27,14 @@ const DATE_FORMATS = {
   year: 'YYYY-01-01 HH24:00:00',
 };
 
+const DATE_FORMATS_UTC = {
+  minute: 'YYYY-MM-DD"T"HH24:MI:00"Z"',
+  hour: 'YYYY-MM-DD"T"HH24:00:00"Z"',
+  day: 'YYYY-MM-DD"T"HH24:00:00"Z"',
+  month: 'YYYY-MM-01"T"HH24:00:00"Z"',
+  year: 'YYYY-01-01"T"HH24:00:00"Z"',
+};
+
 function getAddIntervalQuery(field: string, interval: string): string {
   return `${field} + interval '${interval}'`;
 }
@@ -40,11 +48,11 @@ function getCastColumnQuery(field: string, type: string): string {
 }
 
 function getDateSQL(field: string, unit: string, timezone?: string): string {
-  if (timezone) {
+  if (timezone && timezone !== 'utc') {
     return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${DATE_FORMATS[unit]}')`;
   }
 
-  return `to_char(date_trunc('${unit}', ${field}), '${DATE_FORMATS[unit]}')`;
+  return `to_char(date_trunc('${unit}', ${field}), '${DATE_FORMATS_UTC[unit]}')`;
 }
 
 function getDateWeeklySQL(field: string, timezone?: string) {
@@ -198,6 +206,10 @@ async function rawQuery(sql: string, data: Record<string, any>, name?: string): 
     return `$${params.length}${type ?? ''}`;
   });
 
+  if (process.env.DATABASE_REPLICA_URL && '$replica' in client) {
+    return client.$replica().$queryRawUnsafe(query, ...params);
+  }
+
   return client.$queryRawUnsafe(query, ...params);
 }
 
@@ -288,54 +300,54 @@ function getSchema() {
 }
 
 function getClient() {
-  if (!process.env.DATABASE_URL) {
-    return null;
-  }
-
   const url = process.env.DATABASE_URL;
   const replicaUrl = process.env.DATABASE_REPLICA_URL;
   const logQuery = process.env.LOG_QUERY;
+  const schema = getSchema();
 
-  const connectionUrl = new URL(url);
-  const schema = connectionUrl.searchParams.get('schema') ?? undefined;
+  const baseAdapter = new PrismaPg({ connectionString: url }, { schema });
 
-  const adapter = new PrismaPg({ connectionString: url.toString() }, { schema });
-
-  const prisma = new PrismaClient({
-    adapter,
+  const baseClient = new PrismaClient({
+    adapter: baseAdapter,
     errorFormat: 'pretty',
     ...(logQuery ? PRISMA_LOG_OPTIONS : {}),
   });
 
-  if (replicaUrl) {
-    const replicaAdapter = new PrismaPg({ connectionString: replicaUrl.toString() }, { schema });
-
-    const replicaClient = new PrismaClient({
-      adapter: replicaAdapter,
-      ...(logQuery ? PRISMA_LOG_OPTIONS : {}),
-    });
-
-    prisma.$extends(
-      readReplicas({
-        replicas: [replicaClient],
-      }),
-    );
+  if (logQuery) {
+    baseClient.$on('query', log);
   }
+
+  if (!replicaUrl) {
+    log('Prisma initialized');
+    globalThis[PRISMA] ??= baseClient;
+    return baseClient;
+  }
+
+  const replicaAdapter = new PrismaPg({ connectionString: replicaUrl }, { schema });
+
+  const replicaClient = new PrismaClient({
+    adapter: replicaAdapter,
+    errorFormat: 'pretty',
+    ...(logQuery ? PRISMA_LOG_OPTIONS : {}),
+  });
 
   if (logQuery) {
-    prisma.$on('query' as never, log);
+    replicaClient.$on('query', log);
   }
 
-  log('Prisma initialized');
+  const extended = baseClient.$extends(
+    readReplicas({
+      replicas: [replicaClient],
+    }),
+  );
 
-  if (!globalThis[PRISMA]) {
-    globalThis[PRISMA] = prisma;
-  }
+  log('Prisma initialized (with replica)');
+  globalThis[PRISMA] ??= extended;
 
-  return prisma;
+  return extended;
 }
 
-const client: PrismaClient = globalThis[PRISMA] || getClient();
+const client = (globalThis[PRISMA] || getClient()) as ReturnType<typeof getClient>;
 
 export default {
   client,

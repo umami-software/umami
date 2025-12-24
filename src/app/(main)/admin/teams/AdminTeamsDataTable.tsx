@@ -1,7 +1,7 @@
+import type { ReactNode } from 'react';
 import { DataGrid } from '@/components/common/DataGrid';
 import { useTeamsQuery } from '@/components/hooks';
 import { AdminTeamsTable } from './AdminTeamsTable';
-import { ReactNode } from 'react';
 
 export function AdminTeamsDataTable({
   showActions,

@@ -1,38 +1,35 @@
 'use client';
-import { Grid, Loading, Column, Row } from '@umami/react-zen';
-import { useEffect, useRef } from 'react';
+import { Column, Grid, Loading, Row } from '@umami/react-zen';
 import Script from 'next/script';
-import { UpdateNotice } from './UpdateNotice';
-import { SideNav } from '@/app/(main)/SideNav';
-import { useLoginQuery, useConfig, useNavigation } from '@/components/hooks';
+import { useEffect } from 'react';
 import { MobileNav } from '@/app/(main)/MobileNav';
+import { SideNav } from '@/app/(main)/SideNav';
+import { useConfig, useLoginQuery, useNavigation } from '@/components/hooks';
+import { LAST_TEAM_CONFIG } from '@/lib/constants';
+import { removeItem, setItem } from '@/lib/storage';
+import { UpdateNotice } from './UpdateNotice';
 
 export function App({ children }) {
   const { user, isLoading, error } = useLoginQuery();
   const config = useConfig();
-  const { pathname, router } = useNavigation();
+  const { pathname, teamId } = useNavigation();
 
-  // Avoid navigation during render; perform redirect after commit.
-  const redirectedRef = useRef(false);
   useEffect(() => {
-    if (redirectedRef.current) return;
-    if (isLoading) return;
-    if (error) {
-      redirectedRef.current = true;
-      if (process.env.cloudMode) {
-        window.location.assign('/login');
-      } else {
-        router.replace('/login');
-      }
+    if (teamId) {
+      setItem(LAST_TEAM_CONFIG, teamId);
+    } else {
+      removeItem(LAST_TEAM_CONFIG);
     }
-  }, [isLoading, error, router]);
+  }, [teamId]);
 
   if (isLoading || !config) {
     return <Loading placement="absolute" />;
   }
 
   if (error) {
-    // Navigation handled in effect to prevent React warning in dev.
+    window.location.href = config.cloudMode
+      ? `${process.env.cloudUrl}/login`
+      : `${process.env.basePath || ''}/login`;
     return null;
   }
 

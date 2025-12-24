@@ -1,7 +1,7 @@
-import { UseQueryOptions } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
+import { useDateParameters } from '@/components/hooks/useDateParameters';
 import { useApi } from '../useApi';
 import { useFilterParameters } from '../useFilterParameters';
-import { useDateParameters } from '@/components/hooks/useDateParameters';
 
 export interface WebsiteStatsData {
   pageviews: number;

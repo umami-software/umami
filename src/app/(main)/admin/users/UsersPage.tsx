@@ -1,10 +1,10 @@
 'use client';
-import { UsersDataTable } from './UsersDataTable';
 import { Column } from '@umami/react-zen';
-import { useMessages } from '@/components/hooks';
-import { UserAddButton } from './UserAddButton';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
+import { useMessages } from '@/components/hooks';
+import { UserAddButton } from './UserAddButton';
+import { UsersDataTable } from './UsersDataTable';
 
 export function UsersPage() {
   const { formatMessage, labels } = useMessages();

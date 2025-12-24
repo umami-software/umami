@@ -1,8 +1,8 @@
-import { useCallback, useMemo } from 'react';
-import { Button, Icon, Row, Text, Select, ListItem } from '@umami/react-zen';
+import { Button, Icon, ListItem, Row, Select, Text } from '@umami/react-zen';
 import { isAfter } from 'date-fns';
-import { ChevronRight } from '@/components/icons';
+import { useMemo } from 'react';
 import { useDateRange, useDateRangeQuery, useMessages, useNavigation } from '@/components/hooks';
+import { ChevronRight } from '@/components/icons';
 import { getDateRangeValue } from '@/lib/date';
 import { DateFilter } from './DateFilter';
 
@@ -28,6 +28,7 @@ export function WebsiteDateFilter({
     query: { compare = 'prev', offset = 0 },
   } = useNavigation();
   const disableForward = isAllTime || isAfter(dateRange.endDate, new Date());
+  const showCompare = allowCompare && !isAllTime;
 
   const websiteDateRange = useDateRangeQuery(websiteId);
 
@@ -44,13 +45,9 @@ export function WebsiteDateFilter({
     }
   };
 
-  const handleIncrement = useCallback(
-    (increment: number) => {
-      router.push(updateParams({ offset: +offset + increment }));
-    },
-    [offset],
-  );
-
+  const handleIncrement = increment => {
+    router.push(updateParams({ offset: Number(offset) + increment }));
+  };
   const handleSelect = (compare: any) => {
     router.push(updateParams({ compare }));
   };
@@ -62,7 +59,7 @@ export function WebsiteDateFilter({
   }, [dateRange]);
 
   return (
-    <Row gap>
+    <Row wrap="wrap" gap>
       {showButtons && !isAllTime && !isCustomRange && (
         <Row gap="1">
           <Button onPress={() => handleIncrement(-1)} variant="outline">
@@ -85,7 +82,7 @@ export function WebsiteDateFilter({
           renderDate={+offset !== 0}
         />
       </Row>
-      {allowCompare && !isAllTime && (
+      {showCompare && (
         <Row alignItems="center" gap>
           <Text weight="bold">VS</Text>
           <Row width="200px">

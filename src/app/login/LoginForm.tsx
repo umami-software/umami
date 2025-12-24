@@ -1,20 +1,20 @@
+import { useQueryClient } from '@tanstack/react-query';
 import {
+  Column,
   Form,
   FormButtons,
   FormField,
   FormSubmitButton,
-  TextField,
-  PasswordField,
-  Icon,
-  Column,
   Heading,
+  Icon,
+  PasswordField,
+  TextField,
 } from '@umami/react-zen';
-import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
-import { setUser } from '@/store/app';
-import { setClientAuthToken } from '@/lib/client';
 import { Logo } from '@/components/svg';
+import { setClientAuthToken } from '@/lib/client';
+import { setUser } from '@/store/app';
 
 export function LoginForm() {
   const { formatMessage, labels, getErrorMessage } = useMessages();
@@ -49,15 +49,16 @@ export function LoginForm() {
           name="username"
           rules={{ required: formatMessage(labels.required) }}
         >
-          <TextField autoComplete="off" />
+          <TextField autoComplete="username" />
         </FormField>
+
         <FormField
           label={formatMessage(labels.password)}
           data-test="input-password"
           name="password"
           rules={{ required: formatMessage(labels.required) }}
         >
-          <PasswordField />
+          <PasswordField autoComplete="current-password" />
         </FormField>
         <FormButtons>
           <FormSubmitButton

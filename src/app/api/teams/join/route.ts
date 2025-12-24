@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { json, badRequest, notFound } from '@/lib/response';
-import { parseRequest } from '@/lib/request';
 import { ROLES } from '@/lib/constants';
+import { parseRequest } from '@/lib/request';
+import { badRequest, json, notFound } from '@/lib/response';
 import { createTeamUser, findTeam, getTeamUser } from '@/queries/prisma';
 
 export async function POST(request: Request) {

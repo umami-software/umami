@@ -1,7 +1,7 @@
 import { IconLabel, List, ListItem } from '@umami/react-zen';
-import { useWebsiteSegmentsQuery } from '@/components/hooks';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Empty } from '@/components/common/Empty';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { useWebsiteSegmentsQuery } from '@/components/hooks';
 import { ChartPie, UserPlus } from '@/components/icons';
 
 export interface SegmentFiltersProps {

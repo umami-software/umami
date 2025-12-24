@@ -3,13 +3,18 @@ name: Create docker images
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
   workflow_dispatch:
     inputs:
       version:
-        description: 'Optional image version (e.g. 3.0.0, v3.0.0, or 3.0.0-beta.1)'
+        description: "Optional image version (e.g. 3.0.0, v3.0.0, or 3.0.0-beta.1)"
         required: false
-        default: ''
+        default: ""
+      include_latest:
+        description: "Include latest tag"
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   build:
@@ -21,6 +26,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -46,6 +54,7 @@ jobs:
           INPUT="${{ github.event.inputs.version }}"
           REF_TYPE="${{ github.ref_type }}"
           REF_NAME="${{ github.ref_name }}"
+          INCLUDE_LATEST="${{ github.event.inputs.include_latest }}"
 
           # Determine version source
           if [[ -n "$INPUT" ]]; then
@@ -56,7 +65,8 @@ jobs:
             VERSION=""
           fi
 
-          TAGS=""
+          GHCR_TAGS=""
+          DOCKER_TAGS=""
 
           if [[ -n "$VERSION" ]]; then
             MAJOR=$(echo "$VERSION" | cut -d. -f1)
@@ -64,37 +74,54 @@ jobs:
 
             if [[ "$VERSION" == *-* ]]; then
               # prerelease: only version tag
-              TAGS="$VERSION"
+              GHCR_TAGS="ghcr.io/${{ github.repository }}:$VERSION"
+              DOCKER_TAGS="umamisoftware/umami:$VERSION"
             else
-              # stable release: version + hierarchy + latest
-              TAGS="$VERSION,${MAJOR}.${MINOR},${MAJOR},postgresql-latest,latest"
+              # stable release: version + hierarchy
+              GHCR_TAGS="ghcr.io/${{ github.repository }}:$VERSION"
+              GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:${MAJOR}.${MINOR}"
+              GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:${MAJOR}"
+              GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:postgresql-latest"
+          
+              DOCKER_TAGS="umamisoftware/umami:$VERSION"
+              DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:${MAJOR}.${MINOR}"
+              DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:${MAJOR}"
+              DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:postgresql-latest"
+          
+              # Add latest tag based on trigger and input
+              if [[ "$REF_TYPE" == "tag" ]] || [[ "$INCLUDE_LATEST" == "true" ]]; then
+                GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:latest"
+                DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:latest"
+              fi
             fi
           else
             # Non-tag build (e.g. from main branch)
-            TAGS="${REF_NAME}"
+            GHCR_TAGS="ghcr.io/${{ github.repository }}:${REF_NAME}"
+            DOCKER_TAGS="umamisoftware/umami:${REF_NAME}"
           fi
 
-          echo "tags=$TAGS" >> $GITHUB_OUTPUT
-          echo "Computed tags: $TAGS"
+          echo "ghcr_tags=$GHCR_TAGS" >> $GITHUB_OUTPUT
+          echo "docker_tags=$DOCKER_TAGS" >> $GITHUB_OUTPUT
+          echo "Computed GHCR tags: $GHCR_TAGS"
+          echo "Computed Docker Hub tags: $DOCKER_TAGS"
 
-      - name: Build and push Docker image
-        run: |
-          TAGS="${{ steps.compute.outputs.tags }}"
+      - name: Build and push to GHCR
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.compute.outputs.ghcr_tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-          # Set image targets conditionally
-          if [[ "${{ github.repository }}" == "umami-software/umami" ]]; then
-            IMAGES=("umamisoftware/umami" "ghcr.io/${{ github.repository }}")
-          else
-            IMAGES=("ghcr.io/${{ github.repository }}")
-          fi
-
-          for IMAGE in "${IMAGES[@]}"; do
-            echo "Building and pushing $IMAGE with tags: $TAGS"
-            docker buildx build \
-              --platform linux/amd64,linux/arm64 \
-              --push \
-              $(echo "$TAGS" | tr ',' '\n' | sed "s|^|--tag ${IMAGE}:|") \
-              --cache-from type=gha \
-              --cache-to type=gha,mode=max \
-              .
-          done
+      - name: Build and push to Docker Hub
+        if: github.repository == 'umami-software/umami'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.compute.outputs.docker_tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

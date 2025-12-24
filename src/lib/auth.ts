@@ -3,8 +3,8 @@ import { ROLE_PERMISSIONS, ROLES, SHARE_TOKEN_HEADER } from '@/lib/constants';
 import { secret } from '@/lib/crypto';
 import { getRandomChars } from '@/lib/generate';
 import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
-import { ensureArray } from '@/lib/utils';
 import redis from '@/lib/redis';
+import { ensureArray } from '@/lib/utils';
 import { getUser } from '@/queries/prisma/user';
 
 const log = debug('umami:auth');

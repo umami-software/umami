@@ -1,13 +1,13 @@
 'use client';
+import { useDynamicColor, useDynamicVariant } from '@niteshift/dials';
 import { Column } from '@umami/react-zen';
+import { createContext } from 'react';
+import { ExpandedViewModal } from '@/app/(main)/websites/[websiteId]/ExpandedViewModal';
 import { Panel } from '@/components/common/Panel';
 import { WebsiteChart } from './WebsiteChart';
+import { WebsiteControls } from './WebsiteControls';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
 import { WebsitePanels } from './WebsitePanels';
-import { WebsiteControls } from './WebsiteControls';
-import { ExpandedViewModal } from '@/app/(main)/websites/[websiteId]/ExpandedViewModal';
-import { useDynamicVariant, useDynamicColor } from '@niteshift/dials';
-import { createContext } from 'react';
 
 export const TypographyContext = createContext<{
   metricLabelSize?: string;

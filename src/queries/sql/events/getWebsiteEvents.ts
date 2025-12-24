@@ -1,7 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
+import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getWebsiteEvents';
 
@@ -45,7 +45,11 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       browser as browser,
       page_title as "pageTitle",
       website_event.event_type as "eventType",
-      website_event.event_name as "eventName"
+      website_event.event_name as "eventName",
+      event_id IN (select website_event_id 
+                   from event_data
+                   where website_id = {{websiteId::uuid}}
+                      and created_at between {{startDate}} and {{endDate}}) AS "hasData"
     from website_event
     ${cohortQuery}
     join session on session.session_id = website_event.session_id 

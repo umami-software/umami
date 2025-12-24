@@ -1,18 +1,18 @@
-import { z } from 'zod';
-import { isbot } from 'isbot';
 import { startOfHour, startOfMonth } from 'date-fns';
+import { isbot } from 'isbot';
+import { serializeError } from 'serialize-error';
+import { z } from 'zod';
 import clickhouse from '@/lib/clickhouse';
-import { parseRequest } from '@/lib/request';
-import { badRequest, json, forbidden, serverError } from '@/lib/response';
-import { fetchWebsite } from '@/lib/load';
+import { COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
+import { hash, secret, uuid } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { createToken, parseToken } from '@/lib/jwt';
-import { secret, uuid, hash } from '@/lib/crypto';
-import { COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
+import { fetchWebsite } from '@/lib/load';
+import { parseRequest } from '@/lib/request';
+import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
 import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
-import { serializeError } from 'serialize-error';
 
 interface Cache {
   websiteId: string;
@@ -41,6 +41,9 @@ const schema = z.object({
       userAgent: z.string().optional(),
       timestamp: z.coerce.number().int().optional(),
       id: z.string().optional(),
+      browser: z.string().optional(),
+      os: z.string().optional(),
+      device: z.string().optional(),
     })
     .refine(
       data => {
@@ -125,7 +128,7 @@ export async function POST(request: Request) {
     }
 
     const createdAt = timestamp ? new Date(timestamp * 1000) : new Date();
-    const now = Math.floor(new Date().getTime() / 1000);
+    const now = Math.floor(Date.now() / 1000);
 
     const sessionSalt = hash(startOfMonth(createdAt).toUTCString());
     const visitSalt = hash(startOfHour(createdAt).toUTCString());
@@ -146,6 +149,7 @@ export async function POST(request: Request) {
         region,
         city,
         distinctId: id,
+        createdAt,
       });
     }
 

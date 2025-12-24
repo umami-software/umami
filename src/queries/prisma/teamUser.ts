@@ -1,7 +1,8 @@
-import { uuid } from '@/lib/crypto';
 import { Prisma } from '@/generated/prisma/client';
+import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
+import type { QueryFilters } from '@/lib/types';
+
 import TeamUserFindManyArgs = Prisma.TeamUserFindManyArgs;
 
 export async function findTeamUser(criteria: Prisma.TeamUserFindUniqueArgs) {

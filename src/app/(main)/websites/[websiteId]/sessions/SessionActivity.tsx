@@ -1,21 +1,21 @@
-import { isSameDay } from 'date-fns';
 import {
-  Icon,
-  StatusLight,
-  Column,
-  Row,
-  Heading,
-  Text,
   Button,
-  DialogTrigger,
-  Popover,
+  Column,
   Dialog,
+  DialogTrigger,
+  Heading,
+  Icon,
+  Popover,
+  Row,
+  StatusLight,
+  Text,
 } from '@umami/react-zen';
+import { isSameDay } from 'date-fns';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { useMessages, useMobile, useSessionActivityQuery, useTimezone } from '@/components/hooks';
 import { Eye, FileText } from '@/components/icons';
-import { Lightning } from '@/components/svg';
-import { useMessages, useSessionActivityQuery, useTimezone } from '@/components/hooks';
 import { EventData } from '@/components/metrics/EventData';
+import { Lightning } from '@/components/svg';
 
 export function SessionActivity({
   websiteId,
@@ -36,6 +36,7 @@ export function SessionActivity({
     startDate,
     endDate,
   );
+  const { isMobile } = useMobile();
   let lastDay = null;
 
   return (
@@ -50,16 +51,16 @@ export function SessionActivity({
               {showHeader && <Heading size="1">{formatTimezoneDate(createdAt, 'PPPP')}</Heading>}
               <Row alignItems="center" gap="6" height="40px">
                 <StatusLight color={`#${visitId?.substring(0, 6)}`}>
-                  {formatTimezoneDate(createdAt, 'pp')}
+                  <Text wrap="nowrap">{formatTimezoneDate(createdAt, 'pp')}</Text>
                 </StatusLight>
                 <Row alignItems="center" gap="2">
                   <Icon>{eventName ? <Lightning /> : <Eye />}</Icon>
-                  <Text>
+                  <Text wrap="nowrap">
                     {eventName
                       ? formatMessage(labels.triggeredEvent)
                       : formatMessage(labels.viewedPage)}
                   </Text>
-                  <Text weight="bold" style={{ maxWidth: '400px' }} truncate>
+                  <Text weight="bold" style={{ maxWidth: isMobile ? '400px' : null }} truncate>
                     {eventName || urlPath}
                   </Text>
                   {hasData > 0 && <PropertiesButton websiteId={websiteId} eventId={eventId} />}

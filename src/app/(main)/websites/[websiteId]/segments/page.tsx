@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { SegmentsPage } from './SegmentsPage';
 
 export default async function ({ params }: { params: Promise<{ websiteId: string }> }) {

@@ -1,6 +1,6 @@
+import { DataGrid } from '@/components/common/DataGrid';
 import { useWebsiteSessionsQuery } from '@/components/hooks';
 import { SessionsTable } from './SessionsTable';
-import { DataGrid } from '@/components/common/DataGrid';
 
 export function SessionsDataTable({ websiteId }: { websiteId?: string; teamId?: string }) {
   const queryResult = useWebsiteSessionsQuery(websiteId);

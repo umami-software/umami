@@ -1,8 +1,8 @@
-import { Grid, Column, Row } from '@umami/react-zen';
-import { useMessages, useNavigation } from '@/components/hooks';
-import { MetricsExpandedTable } from '@/components/metrics/MetricsExpandedTable';
+import { Column, Grid, Row } from '@umami/react-zen';
 import { WebsiteExpandedMenu } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedMenu';
+import { useMessages, useNavigation } from '@/components/hooks';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
+import { MetricsExpandedTable } from '@/components/metrics/MetricsExpandedTable';
 
 export function WebsiteExpandedView({
   websiteId,
@@ -19,17 +19,23 @@ export function WebsiteExpandedView({
   } = useNavigation();
 
   return (
-    <Column gap>
-      <Row display={{ xs: 'flex', md: 'none' }}>
+    <Column height="100%" overflow="hidden" gap>
+      <Row id="expanded-mobile-menu-button" display={{ xs: 'flex', md: 'none' }}>
         <MobileMenuButton>
           {({ close }) => {
-            return <WebsiteExpandedMenu excludedIds={excludedIds} onItemClick={close} />;
+            return (
+              <Column padding="3">
+                <WebsiteExpandedMenu excludedIds={excludedIds} onItemClick={close} />
+              </Column>
+            );
           }}
         </MobileMenuButton>
       </Row>
-      <Grid columns={{ xs: '1fr', md: 'auto 1fr' }} gap="6" height="100%" overflow="hidden">
+      <Grid columns={{ xs: '1fr', md: 'auto 1fr' }} gap="6" overflow="hidden">
         <Column
+          id="metrics-expanded-menu"
           display={{ xs: 'none', md: 'flex' }}
+          width="240px"
           gap="6"
           border="right"
           paddingRight="3"
@@ -37,7 +43,7 @@ export function WebsiteExpandedView({
         >
           <WebsiteExpandedMenu excludedIds={excludedIds} />
         </Column>
-        <Column overflow="hidden">
+        <Column id="metrics-expanded-table" overflow="hidden">
           <MetricsExpandedTable
             title={formatMessage(labels[view])}
             type={view}

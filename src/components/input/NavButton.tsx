@@ -1,18 +1,20 @@
 import {
-  Text,
+  Column,
   Icon,
+  IconLabel,
   Menu,
   MenuItem,
-  MenuTrigger,
   MenuSection,
   MenuSeparator,
-  SubmenuTrigger,
+  MenuTrigger,
   Popover,
-  Row,
-  Column,
   Pressable,
-  IconLabel,
+  Row,
+  SubmenuTrigger,
+  Text,
 } from '@umami/react-zen';
+import { ArrowRight } from 'lucide-react';
+import type { Key } from 'react';
 import {
   useConfig,
   useLoginQuery,
@@ -32,8 +34,8 @@ import {
   Users,
 } from '@/components/icons';
 import { Switch } from '@/components/svg';
-import { DOCS_URL } from '@/lib/constants';
-import { ArrowRight } from 'lucide-react';
+import { DOCS_URL, LAST_TEAM_CONFIG } from '@/lib/constants';
+import { removeItem } from '@/lib/storage';
 
 export interface TeamsButtonProps {
   showText?: boolean;
@@ -44,7 +46,7 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
   const { user } = useLoginQuery();
   const { cloudMode } = useConfig();
   const { formatMessage, labels } = useMessages();
-  const { teamId } = useNavigation();
+  const { teamId, router } = useNavigation();
   const { isMobile } = useMobile();
   const team = user?.teams?.find(({ id }) => id === teamId);
   const selectedKeys = new Set([teamId || 'user']);
@@ -54,7 +56,16 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
     return cloudMode ? `${process.env.cloudUrl}${url}` : url;
   };
 
-  const handleAction = async () => {};
+  const handleAction = async (key: Key) => {
+    if (key === 'user') {
+      removeItem(LAST_TEAM_CONFIG);
+      if (cloudMode) {
+        window.location.href = '/';
+      } else {
+        router.push('/');
+      }
+    }
+  };
 
   return (
     <MenuTrigger>
@@ -84,16 +95,16 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
       </Pressable>
       <Popover placement="bottom start">
         <Column minWidth="300px">
-          <Menu autoFocus="last" onAction={handleAction}>
+          <Menu autoFocus="last">
             <SubmenuTrigger>
               <MenuItem id="teams" showChecked={false} showSubMenuIcon>
                 <IconLabel icon={<Switch />} label={formatMessage(labels.switchAccount)} />
               </MenuItem>
               <Popover placement={isMobile ? 'bottom start' : 'right top'}>
                 <Column minWidth="300px">
-                  <Menu selectionMode="single" selectedKeys={selectedKeys}>
+                  <Menu selectionMode="single" selectedKeys={selectedKeys} onAction={handleAction}>
                     <MenuSection title={formatMessage(labels.myAccount)}>
-                      <MenuItem id="user" href={getUrl('/')}>
+                      <MenuItem id="user">
                         <IconLabel icon={<User />} label={user.username} />
                       </MenuItem>
                     </MenuSection>

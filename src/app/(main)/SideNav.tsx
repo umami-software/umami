@@ -1,20 +1,20 @@
-import { Key } from 'react';
-import Link from 'next/link';
 import {
-  Sidebar,
-  SidebarSection,
-  SidebarItem,
-  SidebarHeader,
   Row,
-  SidebarProps,
+  Sidebar,
+  SidebarHeader,
+  SidebarItem,
+  type SidebarProps,
+  SidebarSection,
   ThemeButton,
 } from '@umami/react-zen';
-import { Globe, LinkIcon, Grid2x2, PanelLeft } from '@/components/icons';
-import { Logo } from '@/components/svg';
-import { useMessages, useNavigation, useGlobalState } from '@/components/hooks';
+import Link from 'next/link';
+import type { Key } from 'react';
+import { useGlobalState, useMessages, useNavigation } from '@/components/hooks';
+import { Globe, Grid2x2, LinkIcon, PanelLeft } from '@/components/icons';
+import { LanguageButton } from '@/components/input/LanguageButton';
 import { NavButton } from '@/components/input/NavButton';
 import { PanelButton } from '@/components/input/PanelButton';
-import { LanguageButton } from '@/components/input/LanguageButton';
+import { Logo } from '@/components/svg';
 
 export function SideNav(props: SidebarProps) {
   const { formatMessage, labels } = useMessages();

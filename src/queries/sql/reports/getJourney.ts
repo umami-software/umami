@@ -1,7 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
+import type { QueryFilters } from '@/lib/types';
 
 export interface JourneyParameters {
   startDate: Date;
@@ -73,7 +73,7 @@ async function relationalQuery(
     for (let i = 1; i <= steps; i++) {
       const endQuery = i < steps ? ',' : '';
       selectQuery += `s.e${i},`;
-      maxQuery += `\nmax(CASE WHEN event_number = ${i} THEN event ELSE NULL END) AS e${i}${endQuery}`;
+      maxQuery += `\nmax(CASE WHEN event_number = ${i} THEN "event" ELSE NULL END) AS e${i}${endQuery}`;
       groupByQuery += `s.e${i}${endQuery} `;
     }
 
@@ -91,7 +91,7 @@ async function relationalQuery(
     // create start Step params query
     if (startStep) {
       startStepQuery = `and e1 = {{startStep}}`;
-      params['startStep'] = startStep;
+      params.startStep = startStep;
     }
 
     // create end Step params query
@@ -102,7 +102,7 @@ async function relationalQuery(
       }
       endStepQuery += `\nor (e${steps} = {{endStep}}))`;
 
-      params['endStep'] = endStep;
+      params.endStep = endStep;
     }
 
     return {
@@ -185,7 +185,7 @@ async function clickhouseQuery(
     for (let i = 1; i <= steps; i++) {
       const endQuery = i < steps ? ',' : '';
       selectQuery += `s.e${i},`;
-      maxQuery += `\nmax(CASE WHEN event_number = ${i} THEN event ELSE NULL END) AS e${i}${endQuery}`;
+      maxQuery += `\nmax(CASE WHEN event_number = ${i} THEN "event" ELSE NULL END) AS e${i}${endQuery}`;
       groupByQuery += `s.e${i}${endQuery} `;
     }
 
@@ -203,7 +203,7 @@ async function clickhouseQuery(
     // create start Step params query
     if (startStep) {
       startStepQuery = `and e1 = {startStep:String}`;
-      params['startStep'] = startStep;
+      params.startStep = startStep;
     }
 
     // create end Step params query
@@ -214,7 +214,7 @@ async function clickhouseQuery(
       }
       endStepQuery += `\nor (e${steps} = {endStep:String}))`;
 
-      params['endStep'] = endStep;
+      params.endStep = endStep;
     }
 
     return {
@@ -230,7 +230,7 @@ async function clickhouseQuery(
     WITH events AS (
       select distinct
           visit_id,
-          coalesce(nullIf(event_name, ''), url_path) event,
+          coalesce(nullIf(event_name, ''), url_path) "event",
           row_number() OVER (PARTITION BY visit_id ORDER BY created_at) AS event_number
       from website_event
       ${cohortQuery}

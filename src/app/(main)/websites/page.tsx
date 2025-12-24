@@ -1,5 +1,5 @@
+import type { Metadata } from 'next';
 import { WebsitesPage } from './WebsitesPage';
-import { Metadata } from 'next';
 
 export default function () {
   return <WebsitesPage />;

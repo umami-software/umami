@@ -1,6 +1,7 @@
 import { Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
+import type { QueryFilters } from '@/lib/types';
+
 import ReportFindManyArgs = Prisma.ReportFindManyArgs;
 
 async function findReport(criteria: Prisma.ReportFindUniqueArgs) {

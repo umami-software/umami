@@ -1,12 +1,12 @@
-import { ReactNode, useState } from 'react';
 import { Button, Column, DataColumn, DataTable, Icon, Row, SearchField } from '@umami/react-zen';
+import { type ReactNode, useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useWebsiteExpandedMetricsQuery } from '@/components/hooks';
 import { X } from '@/components/icons';
 import { DownloadButton } from '@/components/input/DownloadButton';
-import { formatShortTime } from '@/lib/format';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
 import { SESSION_COLUMNS } from '@/lib/constants';
+import { formatShortTime } from '@/lib/format';
 
 export interface MetricsExpandedTableProps {
   websiteId: string;
@@ -85,7 +85,7 @@ export function MetricsExpandedTable({
                 align="end"
                 width="120px"
               >
-                {row => row?.['visitors']?.toLocaleString()}
+                {row => row?.visitors?.toLocaleString()}
               </DataColumn>
               <DataColumn
                 id="visits"
@@ -93,7 +93,7 @@ export function MetricsExpandedTable({
                 align="end"
                 width="120px"
               >
-                {row => row?.['visits']?.toLocaleString()}
+                {row => row?.visits?.toLocaleString()}
               </DataColumn>
               <DataColumn
                 id="pageviews"
@@ -101,7 +101,7 @@ export function MetricsExpandedTable({
                 align="end"
                 width="120px"
               >
-                {row => row?.['pageviews']?.toLocaleString()}
+                {row => row?.pageviews?.toLocaleString()}
               </DataColumn>
               {showBounceDuration && [
                 <DataColumn
@@ -112,8 +112,8 @@ export function MetricsExpandedTable({
                   width="120px"
                 >
                   {row => {
-                    const n = (Math.min(row?.['visits'], row?.['bounces']) / row?.['visits']) * 100;
-                    return Math.round(+n) + '%';
+                    const n = (Math.min(row?.visits, row?.bounces) / row?.visits) * 100;
+                    return `${Math.round(+n)}%`;
                   }}
                 </DataColumn>,
 
@@ -125,7 +125,7 @@ export function MetricsExpandedTable({
                   width="120px"
                 >
                   {row => {
-                    const n = row?.['totaltime'] / row?.['visits'];
+                    const n = row?.totaltime / row?.visits;
                     return `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`;
                   }}
                 </DataColumn>,

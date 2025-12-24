@@ -1,11 +1,11 @@
 import path from 'node:path';
-import { UAParser } from 'ua-parser-js';
 import { browserName, detectOS } from 'detect-browser';
-import isLocalhost from 'is-localhost-ip';
 import ipaddr from 'ipaddr.js';
+import isLocalhost from 'is-localhost-ip';
 import maxmind from 'maxmind';
+import { UAParser } from 'ua-parser-js';
+import { getIpAddress, stripPort } from '@/lib/ip';
 import { safeDecodeURIComponent } from '@/lib/url';
-import { stripPort, getIpAddress } from '@/lib/ip';
 
 const MAXMIND = 'maxmind';
 
@@ -114,9 +114,9 @@ export async function getClientInfo(request: Request, payload: Record<string, an
   const country = safeDecodeURIComponent(location?.country);
   const region = safeDecodeURIComponent(location?.region);
   const city = safeDecodeURIComponent(location?.city);
-  const browser = browserName(userAgent);
-  const os = detectOS(userAgent) as string;
-  const device = getDevice(userAgent, payload?.screen);
+  const browser = payload?.browser ?? browserName(userAgent);
+  const os = payload?.os ?? (detectOS(userAgent) as string);
+  const device = payload?.device ?? getDevice(userAgent, payload?.screen);
 
   return { userAgent, browser, os, ip, country, region, city, device };
 }
@@ -145,6 +145,8 @@ export function hasBlockedIp(clientIp: string) {
           return true;
         }
       }
+
+      return false;
     });
   }
 

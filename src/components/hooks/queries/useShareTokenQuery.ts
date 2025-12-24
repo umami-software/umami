@@ -1,4 +1,4 @@
-import { useApp, setShareToken } from '@/store/app';
+import { setShareToken, useApp } from '@/store/app';
 import { useApi } from '../useApi';
 
 const selector = (state: { shareToken: string }) => state.shareToken;

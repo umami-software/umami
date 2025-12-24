@@ -1,7 +1,7 @@
-import { useMessages, useModified } from '@/components/hooks';
+import { Button, Dialog, DialogTrigger, Modal } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
-import { Button, Modal, DialogTrigger, Dialog } from '@umami/react-zen';
 import { ActionForm } from '@/components/common/ActionForm';
+import { useMessages, useModified } from '@/components/hooks';
 import { TeamDeleteForm } from './TeamDeleteForm';
 
 export function TeamManage({ teamId }: { teamId: string }) {

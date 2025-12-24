@@ -1,19 +1,19 @@
-import { Text, Column } from '@umami/react-zen';
-import {
-  Eye,
-  User,
-  Clock,
-  Sheet,
-  Tag,
-  ChartPie,
-  UserPlus,
-  AlignEndHorizontal,
-  Sparkles,
-} from '@/components/icons';
-import { Lightning, Path, Money, Target, Funnel, Magnet, Network } from '@/components/svg';
-import { useMessages, useNavigation } from '@/components/hooks';
+import { Column, Text } from '@umami/react-zen';
 import { SideMenu } from '@/components/common/SideMenu';
+import { useMessages, useNavigation } from '@/components/hooks';
+import {
+  AlignEndHorizontal,
+  ChartPie,
+  Clock,
+  Eye,
+  Sheet,
+  Sparkles,
+  Tag,
+  User,
+  UserPlus,
+} from '@/components/icons';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
+import { Funnel, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
 
 export function WebsiteNav({
   websiteId,

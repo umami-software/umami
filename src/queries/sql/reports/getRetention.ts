@@ -1,7 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { QueryFilters } from '@/lib/types';
+import type { QueryFilters } from '@/lib/types';
 
 export interface RetentionParameters {
   startDate: Date;
@@ -133,7 +133,7 @@ async function clickhouseQuery(
     user_activities AS (
       select distinct
         website_event.session_id,
-        (${getDateSQL('created_at', unit, timezone)} - cohort_items.cohort_date) / 86400 as day_number
+        toInt32((${getDateSQL('created_at', unit, timezone)} - cohort_items.cohort_date) / 86400) as day_number
       from website_event
       join cohort_items
       on website_event.session_id = cohort_items.session_id

@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { parseRequest, getQueryFilters } from '@/lib/request';
-import { unauthorized, json } from '@/lib/response';
-import { canViewWebsite } from '@/permissions';
-import { dateRangeParams, filterParams } from '@/lib/schema';
-import { getWebsiteStats } from '@/queries/sql';
 import { getCompareDate } from '@/lib/date';
+import { getQueryFilters, parseRequest } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
+import { dateRangeParams, filterParams } from '@/lib/schema';
+import { canViewWebsite } from '@/permissions';
+import { getWebsiteStats } from '@/queries/sql';
 
 export async function GET(
   request: Request,
