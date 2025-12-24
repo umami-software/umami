@@ -23,6 +23,12 @@
       "value": "Ajouter"
     }
   ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "Ajouter un tableau"
+    }
+  ],
   "label.add-description": [
     {
       "type": 0,
@@ -53,6 +59,12 @@
       "value": "Administrateur"
     }
   ],
+  "label.affiliate": [
+    {
+      "type": 0,
+      "value": "Affiliation"
+    }
+  ],
   "label.after": [
     {
       "type": 0,
@@ -74,7 +86,25 @@
   "label.analytics": [
     {
       "type": 0,
-      "value": "Analytics"
+      "value": "Analytique"
+    }
+  ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "Appliquer"
+    }
+  ],
+  "label.attribution": [
+    {
+      "type": 0,
+      "value": "Attribution"
+    }
+  ],
+  "label.attribution-description": [
+    {
+      "type": 0,
+      "value": "Découvrez comment les utilisateurs s'engagent avec votre marketing et ce qui génère des conversions."
     }
   ],
   "label.average": [
@@ -93,6 +123,12 @@
     {
       "type": 0,
       "value": "Avant"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "Tableaux"
     }
   ],
   "label.bounce-rate": [
@@ -119,6 +155,12 @@
       "value": "Navigateurs"
     }
   ],
+  "label.campaigns": [
+    {
+      "type": 0,
+      "value": "Campagnes"
+    }
+  ],
   "label.cancel": [
     {
       "type": 0,
@@ -129,6 +171,12 @@
     {
       "type": 0,
       "value": "Changer le mot de passe"
+    }
+  ],
+  "label.channels": [
+    {
+      "type": 0,
+      "value": "Canaux"
     }
   ],
   "label.cities": [
@@ -149,10 +197,22 @@
       "value": "Réinitialiser"
     }
   ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "Cohorte"
+    }
+  ],
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "Comparer"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "Comparer les dates"
     }
   ],
   "label.confirm": [
@@ -173,16 +233,40 @@
       "value": "Contient"
     }
   ],
+  "label.content": [
+    {
+      "type": 0,
+      "value": "Contenu"
+    }
+  ],
   "label.continue": [
     {
       "type": 0,
       "value": "Continuer"
     }
   ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "Conversion"
+    }
+  ],
+  "label.conversion-rate": [
+    {
+      "type": 0,
+      "value": "Taux de conversion"
+    }
+  ],
+  "label.conversion-step": [
+    {
+      "type": 0,
+      "value": "Étape de conversion"
+    }
+  ],
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "Compte"
     }
   ],
   "label.countries": [
@@ -230,13 +314,19 @@
   "label.created-by": [
     {
       "type": 0,
-      "value": "Crée par"
+      "value": "Créé par"
+    }
+  ],
+  "label.currency": [
+    {
+      "type": 0,
+      "value": "Devise"
     }
   ],
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "Actuel"
     }
   ],
   "label.current-password": [
@@ -347,16 +437,40 @@
       "value": "Appareils"
     }
   ],
+  "label.direct": [
+    {
+      "type": 0,
+      "value": "Direct"
+    }
+  ],
   "label.dismiss": [
     {
       "type": 0,
       "value": "Ignorer"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "ID distinct"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
       "value": "Ne contient pas"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "N'inclut pas"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "N'existe pas"
     }
   ],
   "label.domain": [
@@ -389,6 +503,12 @@
       "value": "Modifier le membre"
     }
   ],
+  "label.email": [
+    {
+      "type": 0,
+      "value": "E-mail"
+    }
+  ],
   "label.enable-share-url": [
     {
       "type": 0,
@@ -398,13 +518,13 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "Étape de fin"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "URL d'entrée"
+      "value": "Chemin d'entrée"
     }
   ],
   "label.event": [
@@ -419,16 +539,28 @@
       "value": "Données d'évènements"
     }
   ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "Nom de l'évènement"
+    }
+  ],
   "label.events": [
     {
       "type": 0,
       "value": "Évènements"
     }
   ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "Existe"
+    }
+  ],
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "Chemin de sortie"
     }
   ],
   "label.false": [
@@ -473,6 +605,12 @@
       "value": "Filtres"
     }
   ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "Premier clic"
+    }
+  ],
   "label.first-seen": [
     {
       "type": 0,
@@ -488,19 +626,25 @@
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Suivi des conversions et des taux d'abandons."
+      "value": "Comprenez les taux de conversions et d'abandons des utilisateurs."
+    }
+  ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "Entonnoirs"
     }
   ],
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "Objectif"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "Objectifs"
     }
   ],
   "label.goals-description": [
@@ -521,34 +665,52 @@
       "value": "Supérieur ou égal à"
     }
   ],
-  "label.host": [
+  "label.grouped": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "Groupé"
     }
   ],
-  "label.hosts": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "Nom d'hôte"
+    }
+  ],
+  "label.includes": [
+    {
+      "type": 0,
+      "value": "Inclut"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "Aperçu"
     }
   ],
   "label.insights": [
     {
       "type": 0,
-      "value": "Insights"
+      "value": "Aperçus"
     }
   ],
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Analyse précise des données en utilisant des segments et des filtres."
+      "value": "Analysez précisément vos données en utilisant des segments et des filtres."
     }
   ],
   "label.is": [
     {
       "type": 0,
       "value": "Est"
+    }
+  ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "Est faux"
     }
   ],
   "label.is-not": [
@@ -569,6 +731,12 @@
       "value": "Est défini"
     }
   ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "Est vrai"
+    }
+  ],
   "label.join": [
     {
       "type": 0,
@@ -584,13 +752,19 @@
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "Parcours"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Comprendre comment les utilisateurs naviguent sur votre site web."
+      "value": "Comprennez comment les utilisateurs naviguent sur votre site."
+    }
+  ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "Parcours"
     }
   ],
   "label.language": [
@@ -609,6 +783,12 @@
     {
       "type": 0,
       "value": "Portable"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "Dernier clic"
     }
   ],
   "label.last-days": [
@@ -644,7 +824,7 @@
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "Vu pour la dernière fois"
     }
   ],
   "label.leave": [
@@ -671,6 +851,12 @@
       "value": "Inférieur ou égal à"
     }
   ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "Liens"
+    }
+  ],
   "label.login": [
     {
       "type": 0,
@@ -692,13 +878,25 @@
   "label.manager": [
     {
       "type": 0,
-      "value": "Manager"
+      "value": "Gestionnaire"
     }
   ],
   "label.max": [
     {
       "type": 0,
       "value": "Max"
+    }
+  ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Développer"
+    }
+  ],
+  "label.medium": [
+    {
+      "type": 0,
+      "value": "Moyen"
     }
   ],
   "label.member": [
@@ -723,6 +921,12 @@
     {
       "type": 0,
       "value": "Téléphone"
+    }
+  ],
+  "label.model": [
+    {
+      "type": 0,
+      "value": "Modèle"
     }
   ],
   "label.more": [
@@ -801,10 +1005,46 @@
       "value": "OK"
     }
   ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
+    }
+  ],
+  "label.organic-search": [
+    {
+      "type": 0,
+      "value": "Recherche organique"
+    }
+  ],
+  "label.organic-shopping": [
+    {
+      "type": 0,
+      "value": "Achat organique"
+    }
+  ],
+  "label.organic-social": [
+    {
+      "type": 0,
+      "value": "Réseau social organique"
+    }
+  ],
+  "label.organic-video": [
+    {
+      "type": 0,
+      "value": "Vidéo organique"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
       "value": "OS"
+    }
+  ],
+  "label.other": [
+    {
+      "type": 0,
+      "value": "Autre"
     }
   ],
   "label.overview": [
@@ -817,6 +1057,12 @@
     {
       "type": 0,
       "value": "Propriétaire"
+    }
+  ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "Page"
     }
   ],
   "label.page-of": [
@@ -855,6 +1101,36 @@
       "value": "Pages"
     }
   ],
+  "label.paid-ads": [
+    {
+      "type": 0,
+      "value": "Publicités payantes"
+    }
+  ],
+  "label.paid-search": [
+    {
+      "type": 0,
+      "value": "Recherche payante"
+    }
+  ],
+  "label.paid-shopping": [
+    {
+      "type": 0,
+      "value": "Achat payant"
+    }
+  ],
+  "label.paid-social": [
+    {
+      "type": 0,
+      "value": "Réseau social payant"
+    }
+  ],
+  "label.paid-video": [
+    {
+      "type": 0,
+      "value": "Vidéo payante"
+    }
+  ],
   "label.password": [
     {
       "type": 0,
@@ -864,13 +1140,19 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "Chemin"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "Chemins"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "Pixels"
     }
   ],
   "label.powered-by": [
@@ -943,6 +1225,12 @@
       "value": "Temps réel"
     }
   ],
+  "label.referral": [
+    {
+      "type": 0,
+      "value": "Référent"
+    }
+  ],
   "label.referrer": [
     {
       "type": 0,
@@ -977,6 +1265,12 @@
     {
       "type": 0,
       "value": "Régions"
+    }
+  ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "Restant"
     }
   ],
   "label.remove": [
@@ -1024,25 +1318,19 @@
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Mesure de l'attractivité du site en visualisant les taux de visiteurs qui reviennent."
+      "value": "Mesurez l'attractivité de votre site en suivant la fréquence de retour des utilisateurs."
     }
   ],
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "Revenus"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Examinez vos revenus au fil du temps."
-    }
-  ],
-  "label.revenue-property": [
-    {
-      "type": 0,
-      "value": "Propriétés des revenues"
+      "value": "Consultez vos revenus au fil du temps."
     }
   ],
   "label.role": [
@@ -1054,7 +1342,7 @@
   "label.run-query": [
     {
       "type": 0,
-      "value": "Éxécuter la requête"
+      "value": "Exécuter la requête"
     }
   ],
   "label.save": [
@@ -1066,7 +1354,7 @@
   "label.screens": [
     {
       "type": 0,
-      "value": "Résolutions d'écran"
+      "value": "Écrans"
     }
   ],
   "label.search": [
@@ -1078,13 +1366,19 @@
   "label.select": [
     {
       "type": 0,
-      "value": "Selectionner"
+      "value": "Sélectionner"
     }
   ],
   "label.select-date": [
     {
       "type": 0,
       "value": "Choisir une période"
+    }
+  ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "Sélectionner un filtre"
     }
   ],
   "label.select-role": [
@@ -1105,6 +1399,12 @@
       "value": "Session"
     }
   ],
+  "label.session-data": [
+    {
+      "type": 0,
+      "value": "Données de session"
+    }
+  ],
   "label.sessions": [
     {
       "type": 0,
@@ -1115,6 +1415,12 @@
     {
       "type": 0,
       "value": "Paramètres"
+    }
+  ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "Partager"
     }
   ],
   "label.share-url": [
@@ -1129,10 +1435,22 @@
       "value": "Journée"
     }
   ],
+  "label.sms": [
+    {
+      "type": 0,
+      "value": "SMS"
+    }
+  ],
+  "label.sources": [
+    {
+      "type": 0,
+      "value": "Sources"
+    }
+  ],
   "label.start-step": [
     {
       "type": 0,
-      "value": "Etape de démarrage"
+      "value": "Étape de départ"
     }
   ],
   "label.steps": [
@@ -1151,6 +1469,18 @@
     {
       "type": 0,
       "value": "Tablette"
+    }
+  ],
+  "label.tag": [
+    {
+      "type": 0,
+      "value": "Étiquette"
+    }
+  ],
+  "label.tags": [
+    {
+      "type": 0,
+      "value": "Étiquettes"
     }
   ],
   "label.team": [
@@ -1189,6 +1519,12 @@
       "value": "Propriétaire de l'équipe"
     }
   ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "Team settings"
+    }
+  ],
   "label.team-view-only": [
     {
       "type": 0,
@@ -1205,6 +1541,12 @@
     {
       "type": 0,
       "value": "Équipes"
+    }
+  ],
+  "label.terms": [
+    {
+      "type": 0,
+      "value": "Mots clés"
     }
   ],
   "label.theme": [
@@ -1339,28 +1681,10 @@
       "value": "Modifier"
     }
   ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "URL"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "URLs"
-    }
-  ],
   "label.user": [
     {
       "type": 0,
       "value": "Utilisateur"
-    }
-  ],
-  "label.user-property": [
-    {
-      "type": 0,
-      "value": "Propriétés d'utilisateurs"
     }
   ],
   "label.username": [
@@ -1384,7 +1708,7 @@
   "label.utm-description": [
     {
       "type": 0,
-      "value": "Suivi de campagnes via les paramètres UTM."
+      "value": "Suivez vos campagnes via les paramètres UTM."
     }
   ],
   "label.value": [
@@ -1426,7 +1750,7 @@
   "label.visit-duration": [
     {
       "type": 0,
-      "value": "Temps de visite moyen"
+      "value": "Temps de visite"
     }
   ],
   "label.visitors": [
@@ -1523,10 +1847,16 @@
       "value": " actuellement"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
-      "value": "Collected data"
+      "value": "Donnée collectée"
     }
   ],
   "message.confirm-delete": [
@@ -1615,6 +1945,12 @@
     {
       "type": 1,
       "value": "url"
+    }
+  ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
     }
   ],
   "message.go-to-settings": [
@@ -1711,6 +2047,18 @@
       "value": "Vous n'avez pas configuré de site."
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1741,6 +2089,12 @@
     {
       "type": 0,
       "value": "Enregistré."
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1797,6 +2151,12 @@
       "value": "Évènement déclenché"
     }
   ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
@@ -1841,12 +2201,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "Visiteurs ont abandonné"
     }
   ]
 }

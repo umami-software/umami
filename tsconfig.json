@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
     "target": "es2022",
-    "outDir": "./build",
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -21,8 +20,8 @@
     "noEmit": true,
     "jsx": "preserve",
     "incremental": false,
-    "types": ["jest"],
-    "typeRoots": ["node_modules/@types"],
+    "baseUrl": ".",
+    "outDir": "./build",
     "paths": {
       "@/*": ["./src/*"]
     },

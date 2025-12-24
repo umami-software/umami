@@ -1,36 +1,28 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
 name: Node.js CI
 
 on: [push]
 
 env:
-  DATABASE_TYPE: postgresql
+  DATABASE_URL: "postgresql://user:pass@localhost:5432/dummy"
   SKIP_DB_CHECK: 1
 
 jobs:
   build:
+    if: github.repository == 'umami-software/umami'
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        include:
-        - node-version: 18.18
-          db-type: postgresql
-        - node-version: 18.18
-          db-type: mysql
-
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
-      env:
-        DATABASE_TYPE: ${{ matrix.db-type }}
-    - run: npm install --global yarn
-    - run: yarn install
-    - run: yarn test
-    - run: yarn build
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+      - name: Use Node.js 18.18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.18
+          cache: "pnpm"
+      - run: npm install --global pnpm
+      - run: pnpm install
+      - run: pnpm test
+      - run: pnpm build

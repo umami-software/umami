@@ -1,18 +1,24 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, getDatabaseType, POSTGRESQL, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import type { QueryFilters } from '@/lib/types';
+
+export interface RevenuParameters {
+  startDate: Date;
+  endDate: Date;
+  unit: string;
+  timezone: string;
+  currency: string;
+}
+
+export interface RevenueResult {
+  chart: { x: string; t: string; y: number }[];
+  country: { name: string; value: number }[];
+  total: { sum: number; count: number; average: number; unique_count: number };
+}
 
 export async function getRevenue(
-  ...args: [
-    websiteId: string,
-    criteria: {
-      startDate: Date;
-      endDate: Date;
-      unit: string;
-      timezone: string;
-      currency: string;
-    },
-  ]
+  ...args: [websiteId: string, parameters: RevenuParameters, filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -22,146 +28,116 @@ export async function getRevenue(
 
 async function relationalQuery(
   websiteId: string,
-  criteria: {
-    startDate: Date;
-    endDate: Date;
-    unit: string;
-    timezone: string;
-    currency: string;
-  },
-): Promise<{
-  chart: { x: string; t: string; y: number }[];
-  country: { name: string; value: number }[];
-  total: { sum: number; count: number; unique_count: number };
-  table: {
-    currency: string;
-    sum: number;
-    count: number;
-    unique_count: number;
-  }[];
-}> {
-  const { startDate, endDate, timezone = 'UTC', unit = 'day', currency } = criteria;
-  const { getDateSQL, rawQuery } = prisma;
-  const db = getDatabaseType();
-  const like = db === POSTGRESQL ? 'ilike' : 'like';
+  parameters: RevenuParameters,
+  filters: QueryFilters,
+): Promise<RevenueResult> {
+  const { startDate, endDate, unit = 'day', timezone = 'utc', currency } = parameters;
+  const { getDateSQL, rawQuery, parseFilters } = prisma;
+  const { queryParams, filterQuery, cohortQuery, joinSessionQuery } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+    currency,
+  });
 
-  const chartRes = await rawQuery(
+  const joinQuery = filterQuery
+    ? `join website_event
+      on website_event.website_id = revenue.website_id
+        and website_event.session_id = revenue.session_id
+        and website_event.event_id = revenue.event_id
+        and website_event.website_id = {{websiteId::uuid}}
+        and website_event.created_at between {{startDate}} and {{endDate}}`
+    : '';
+
+  const chart = await rawQuery(
     `
     select
-      we.event_name x,
-      ${getDateSQL('ed.created_at', unit, timezone)} t,
-      sum(coalesce(cast(number_value as decimal(10,2)), cast(string_value as decimal(10,2)))) y
-    from event_data ed
-    join website_event we
-    on we.event_id = ed.website_event_id
-    join (select website_event_id
-          from event_data
-          where data_key ${like} '%currency%'
-            and string_value = {{currency}}) currency
-    on currency.website_event_id = ed.website_event_id
-    where ed.website_id = {{websiteId::uuid}}
-      and ed.created_at between {{startDate}} and {{endDate}}
-      and ed.data_key ${like} '%revenue%'
+      revenue.event_name x,
+      ${getDateSQL('revenue.created_at', unit, timezone)} t,
+      sum(revenue.revenue) y
+    from revenue
+    ${joinQuery}
+    ${cohortQuery}
+    ${joinSessionQuery}
+    where revenue.website_id = {{websiteId::uuid}}
+      and revenue.created_at between {{startDate}} and {{endDate}}
+      and revenue.currency = upper({{currency}})
+      ${filterQuery}
     group by  x, t
     order by t
     `,
-    { websiteId, startDate, endDate, unit, timezone, currency },
+    queryParams,
   );
 
-  const countryRes = await rawQuery(
+  const country = await rawQuery(
     `
     select
-      s.country as name,
-      sum(coalesce(cast(number_value as decimal(10,2)), cast(string_value as decimal(10,2)))) value
-    from event_data ed
-    join website_event we
-    on we.event_id = ed.website_event_id
-    join session s
-    on s.session_id = we.session_id
-    join (select website_event_id
-          from event_data
-          where data_key ${like} '%currency%'
-            and string_value = {{currency}}) currency
-    on currency.website_event_id = ed.website_event_id
-    where ed.website_id = {{websiteId::uuid}}
-      and ed.created_at between {{startDate}} and {{endDate}}
-      and ed.data_key ${like} '%revenue%'
-    group by s.country
+      session.country as name,
+      sum(revenue) value
+    from revenue 
+    ${joinQuery}
+    join session 
+      on session.website_id = revenue.website_id
+        and session.session_id = revenue.session_id
+    ${cohortQuery}
+    where revenue.website_id = {{websiteId::uuid}}
+      and revenue.created_at between {{startDate}} and {{endDate}}
+      and revenue.currency = upper({{currency}})
+      ${filterQuery}
+    group by session.country
     `,
-    { websiteId, startDate, endDate, currency },
+    queryParams,
   );
 
-  const totalRes = await rawQuery(
+  const total = await rawQuery(
     `
     select
-      sum(coalesce(cast(number_value as decimal(10,2)), cast(string_value as decimal(10,2)))) as sum,
-      count(distinct event_id) as count,
-      count(distinct session_id) as unique_count
-    from event_data ed
-    join website_event we
-    on we.event_id = ed.website_event_id
-    join (select website_event_id
-          from event_data
-          where data_key ${like} '%currency%'
-            and string_value = {{currency}}) currency
-      on currency.website_event_id = ed.website_event_id
-    where ed.website_id = {{websiteId::uuid}}
-      and ed.created_at between {{startDate}} and {{endDate}}
-      and ed.data_key ${like} '%revenue%'
+      sum(revenue.revenue) as sum,
+      count(distinct revenue.event_id) as count,
+      count(distinct revenue.session_id) as unique_count
+    from revenue
+    ${joinQuery}
+    ${cohortQuery}
+    ${joinSessionQuery}
+    where revenue.website_id = {{websiteId::uuid}}
+      and revenue.created_at between {{startDate}} and {{endDate}}
+      and revenue.currency = upper({{currency}})
+      ${filterQuery}
   `,
-    { websiteId, startDate, endDate, currency },
+    queryParams,
   ).then(result => result?.[0]);
 
-  const tableRes = await rawQuery(
-    `
-    select
-      c.currency,
-      sum(coalesce(cast(number_value as decimal(10,2)), cast(string_value as decimal(10,2)))) as sum,
-      count(distinct ed.website_event_id) as count,
-      count(distinct we.session_id) as unique_count
-    from event_data ed
-    join website_event we
-      on we.event_id = ed.website_event_id
-    join (select website_event_id, string_value as currency
-          from event_data
-          where data_key ${like} '%currency%') c
-      on c.website_event_id = ed.website_event_id
-    where ed.website_id = {{websiteId::uuid}}
-      and ed.created_at between {{startDate}} and {{endDate}}
-      and ed.data_key ${like} '%revenue%'
-    group by c.currency
-    order by sum desc;
-    `,
-    { websiteId, startDate, endDate, unit, timezone, currency },
-  );
+  total.average = total.count > 0 ? Number(total.sum) / Number(total.count) : 0;
 
-  return { chart: chartRes, country: countryRes, total: totalRes, table: tableRes };
+  return { chart, country, total };
 }
 
 async function clickhouseQuery(
   websiteId: string,
-  criteria: {
-    startDate: Date;
-    endDate: Date;
-    unit: string;
-    timezone: string;
-    currency: string;
-  },
-): Promise<{
-  chart: { x: string; t: string; y: number }[];
-  country: { name: string; value: number }[];
-  total: { sum: number; count: number; unique_count: number };
-  table: {
-    currency: string;
-    sum: number;
-    count: number;
-    unique_count: number;
-  }[];
-}> {
-  const { startDate, endDate, timezone = 'UTC', unit = 'day', currency } = criteria;
-  const { getDateSQL, rawQuery } = clickhouse;
+  parameters: RevenuParameters,
+  filters: QueryFilters,
+): Promise<RevenueResult> {
+  const { startDate, endDate, unit = 'day', timezone = 'utc', currency } = parameters;
+  const { getDateSQL, rawQuery, parseFilters } = clickhouse;
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+    currency,
+  });
 
-  const chartRes = await rawQuery<
+  const joinQuery = filterQuery
+    ? `join website_event
+   on website_event.website_id = website_revenue.website_id
+    and website_event.session_id = website_revenue.session_id
+    and website_event.event_id = website_revenue.event_id
+    and website_event.website_id = {websiteId:UUID}
+    and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}`
+    : '';
+
+  const chart = await rawQuery<
     {
       x: string;
       t: string;
@@ -170,105 +146,72 @@ async function clickhouseQuery(
   >(
     `
     select
-      event_name x,
-      ${getDateSQL('created_at', unit, timezone)} t,
-      sum(coalesce(toDecimal64(number_value, 2), toDecimal64(string_value, 2))) y
-    from event_data
-    join (select event_id 
-          from event_data
-          where positionCaseInsensitive(data_key, 'currency') > 0
-            and string_value = {currency:String}) currency
-      on currency.event_id = event_data.event_id
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and positionCaseInsensitive(data_key, 'revenue') > 0
+      website_revenue.event_name x,
+      ${getDateSQL('website_revenue.created_at', unit, timezone)} t,
+      sum(website_revenue.revenue) y
+    from website_revenue
+    ${joinQuery}
+    ${cohortQuery}
+    where website_revenue.website_id = {websiteId:UUID}
+      and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and website_revenue.currency = upper({currency:String})
+      ${filterQuery}
     group by  x, t
     order by t
     `,
-    { websiteId, startDate, endDate, unit, timezone, currency },
+    queryParams,
   );
 
-  const countryRes = await rawQuery<
+  const country = await rawQuery<
     {
       name: string;
       value: number;
     }[]
   >(
     `
-    select
-      s.country as name,
-      sum(coalesce(toDecimal64(number_value, 2), toDecimal64(string_value, 2))) as value
-    from event_data ed
-    join (select event_id
-          from event_data
-          where positionCaseInsensitive(data_key, 'currency') > 0
-            and string_value = {currency:String}) c
-      on c.event_id = ed.event_id
-    join (select distinct website_id, session_id, country
-          from website_event_stats_hourly
-          where website_id = {websiteId:UUID}) s
-      on ed.website_id = s.website_id
-        and ed.session_id = s.session_id
-   where ed.website_id = {websiteId:UUID}
-      and ed.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and positionCaseInsensitive(ed.data_key, 'revenue') > 0
-    group by s.country
+      select
+        website_event.country as name,
+        sum(website_revenue.revenue) as value
+      from website_revenue
+      join website_event
+      on website_event.website_id = website_revenue.website_id
+        and website_event.session_id = website_revenue.session_id
+        and website_event.event_id = website_revenue.event_id
+        and website_event.website_id = {websiteId:UUID}
+        and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      ${cohortQuery}
+      where website_revenue.website_id = {websiteId:UUID}
+        and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and website_revenue.currency = upper({currency:String})
+        ${filterQuery}
+      group by website_event.country
+      order by value desc
     `,
-    { websiteId, startDate, endDate, currency },
+    queryParams,
   );
 
-  const totalRes = await rawQuery<{
+  const total = await rawQuery<{
     sum: number;
-    avg: number;
     count: number;
     unique_count: number;
   }>(
     `
     select
-      sum(coalesce(toDecimal64(number_value, 2), toDecimal64(string_value, 2))) as sum,
-      uniqExact(event_id) as count,
-      uniqExact(session_id) as unique_count
-    from event_data
-    join (select event_id 
-          from event_data
-          where positionCaseInsensitive(data_key, 'currency') > 0
-            and string_value = {currency:String}) currency
-      on currency.event_id = event_data.event_id
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and positionCaseInsensitive(data_key, 'revenue') > 0
+      sum(website_revenue.revenue) as sum,
+      uniqExact(website_revenue.event_id) as count,
+      uniqExact(website_revenue.session_id) as unique_count
+    from website_revenue
+    ${joinQuery}
+    ${cohortQuery}
+    where website_revenue.website_id = {websiteId:UUID}
+      and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and website_revenue.currency = upper({currency:String})
+      ${filterQuery}
     `,
-    { websiteId, startDate, endDate, currency },
+    queryParams,
   ).then(result => result?.[0]);
 
-  const tableRes = await rawQuery<
-    {
-      currency: string;
-      sum: number;
-      avg: number;
-      count: number;
-      unique_count: number;
-    }[]
-  >(
-    `
-    select
-      c.currency,
-      sum(coalesce(toDecimal64(ed.number_value, 2), toDecimal64(ed.string_value, 2))) as sum,
-      uniqExact(ed.event_id) as count,
-      uniqExact(ed.session_id) as unique_count
-    from event_data ed
-    join (select event_id, string_value as currency
-          from event_data
-          where positionCaseInsensitive(data_key, 'currency') > 0) c
-      on c.event_id = ed.event_id
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and positionCaseInsensitive(data_key, 'revenue') > 0
-    group by c.currency
-    order by sum desc;
-    `,
-    { websiteId, startDate, endDate, unit, timezone, currency },
-  );
+  total.average = total.count > 0 ? total.sum / total.count : 0;
 
-  return { chart: chartRes, country: countryRes, total: totalRes, table: tableRes };
+  return { chart, country, total };
 }

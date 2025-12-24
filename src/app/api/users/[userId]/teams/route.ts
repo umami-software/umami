@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { pagingParams } from '@/lib/schema';
-import { getUserTeams } from '@/queries';
-import { unauthorized, json } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
+import { pagingParams } from '@/lib/schema';
+import { getUserTeams } from '@/queries/prisma';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const schema = z.object({
