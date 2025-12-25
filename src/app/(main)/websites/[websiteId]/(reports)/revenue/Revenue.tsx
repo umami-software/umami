@@ -12,9 +12,10 @@ import { ListTable } from '@/components/metrics/ListTable';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { renderDateLabels } from '@/lib/charts';
-import { CHART_COLORS } from '@/lib/constants';
+import { CHART_COLORS, CURRENCY_CONFIG, DEFAULT_CURRENCY } from '@/lib/constants';
 import { generateTimeSeries } from '@/lib/date';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
+import { getItem, setItem } from '@/lib/storage';
 
 export interface RevenueProps {
   websiteId: string;
@@ -24,7 +25,15 @@ export interface RevenueProps {
 }
 
 export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
-  const [currency, setCurrency] = useState('USD');
+  const [currency, setCurrency] = useState(
+    getItem(CURRENCY_CONFIG) || process.env.defaultCurrency || DEFAULT_CURRENCY,
+  );
+
+  const handleCurrencyChange = (value: string) => {
+    setCurrency(value);
+    setItem(CURRENCY_CONFIG, value);
+  };
+
   const { formatMessage, labels } = useMessages();
   const { locale, dateLocale } = useLocale();
   const { countryNames } = useCountryNames(locale);
@@ -107,7 +116,7 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
   return (
     <Column gap>
       <Grid columns="280px" gap>
-        <CurrencySelect value={currency} onChange={setCurrency} />
+        <CurrencySelect value={currency} onChange={handleCurrencyChange} />
       </Grid>
       <LoadingPanel data={data} isLoading={isLoading} error={error}>
         {data && (
