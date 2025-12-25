@@ -1,31 +1,8 @@
 'use client';
 
 import { Text } from '@umami/react-zen';
-import { useEffect, useState } from 'react';
+import { CURRENT_VERSION } from '@/lib/constants';
 
 export function VersionSetting() {
-  const [version, setVersion] = useState<string>('');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchVersion = async () => {
-      try {
-        const response = await fetch('/api/version');
-        const data = await response.json();
-        setVersion(data.version || 'unknown');
-      } catch (error) {
-        setVersion('unknown');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchVersion();
-  }, []);
-
-  if (loading) {
-    return <Text>Loading...</Text>;
-  }
-
-  return <Text>{version}</Text>;
+  return <Text>{CURRENT_VERSION}</Text>;
 }
