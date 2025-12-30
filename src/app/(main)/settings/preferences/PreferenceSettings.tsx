@@ -4,6 +4,7 @@ import { DateRangeSetting } from './DateRangeSetting';
 import { LanguageSetting } from './LanguageSetting';
 import { ThemeSetting } from './ThemeSetting';
 import { TimezoneSetting } from './TimezoneSetting';
+import { VersionSetting } from './VersionSetting';
 
 export function PreferenceSettings() {
   const { user } = useLoginQuery();
@@ -30,6 +31,10 @@ export function PreferenceSettings() {
       <Column>
         <Label>{formatMessage(labels.theme)}</Label>
         <ThemeSetting />
+      </Column>
+      <Column>
+        <Label>{formatMessage(labels.version)}</Label>
+        <VersionSetting />
       </Column>
     </Column>
   );
