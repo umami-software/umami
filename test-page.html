@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stackpine Test Page</title>
+
+    <!-- REPLACE THIS with your actual tracking script from the Umami dashboard -->
+    <script defer src="http://localhost:3000/script.js" data-website-id="YOUR_WEBSITE_ID_HERE"></script>
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 { color: #333; }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        button {
+            background: #4F46E5;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover { background: #4338CA; }
+        a { color: #4F46E5; }
+    </style>
+</head>
+<body>
+    <h1>Stackpine Analytics Test Page</h1>
+
+    <div class="card">
+        <h2>Page View Test</h2>
+        <p>Just loading this page sends a pageview event to your analytics!</p>
+        <p>Current page: <code>/test-page.html</code></p>
+    </div>
+
+    <div class="card">
+        <h2>Event Tracking Test</h2>
+        <p>Click these buttons to test custom event tracking:</p>
+        <button onclick="umami.track('button-click', { button: 'signup' })">
+            Signup Button
+        </button>
+        <button onclick="umami.track('button-click', { button: 'download' })">
+            Download Button
+        </button>
+        <button onclick="umami.track('purchase', { product: 'Pro Plan', price: 29 })">
+            Purchase Event
+        </button>
+    </div>
+
+    <div class="card">
+        <h2>Link Tracking Test</h2>
+        <p>External links are automatically tracked:</p>
+        <a href="https://example.com" target="_blank">Visit Example.com</a>
+    </div>
+
+    <div class="card">
+        <h2>Instructions</h2>
+        <ol>
+            <li>Go to <a href="http://localhost:3000" target="_blank">localhost:3000</a></li>
+            <li>Add a website with domain <code>localhost</code></li>
+            <li>Copy the tracking code</li>
+            <li>Replace <code>YOUR_WEBSITE_ID_HERE</code> in this file with your actual ID</li>
+            <li>Open this page in your browser</li>
+            <li>Check the Umami dashboard - you should see your visit!</li>
+        </ol>
+    </div>
+</body>
+</html>
