@@ -351,6 +351,7 @@ export const labels = defineMessages({
   growth: { id: 'label.growth', defaultMessage: 'Growth' },
   account: { id: 'label.account', defaultMessage: 'Account' },
   application: { id: 'label.application', defaultMessage: 'Application' },
+  version: { id: 'label.version', defaultMessage: 'Version' },
   saveSegment: { id: 'label.save-segment', defaultMessage: 'Save as segment' },
   saveCohort: { id: 'label.save-cohort', defaultMessage: 'Save as cohort' },
   analysis: { id: 'label.analysis', defaultMessage: 'Analysis' },

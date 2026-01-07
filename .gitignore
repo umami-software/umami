@@ -21,6 +21,7 @@ package-lock.json
 /dist
 /generated
 /src/generated
+pm2.yml
 
 # misc
 .DS_Store

@@ -119,7 +119,7 @@ async function relationalQuery(
       select distinct
           website_event.visit_id,
           website_event.referrer_path,
-          coalesce(nullIf(website_event.event_name, ''), website_event.url_path) event,
+          coalesce(nullIf(website_event.event_name, ''), website_event.url_path) "event",
           row_number() OVER (PARTITION BY visit_id ORDER BY website_event.created_at) AS event_number
       from website_event
       ${cohortQuery}

@@ -132,42 +132,46 @@ export async function updateWebsite(
 }
 
 export async function resetWebsite(websiteId: string) {
-  const { client, transaction } = prisma;
+  const { transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
   return transaction(
-    [
-      client.revenue.deleteMany({
+    async tx => {
+      await tx.revenue.deleteMany({
         where: { websiteId },
-      }),
-      client.eventData.deleteMany({
+      });
+
+      await tx.eventData.deleteMany({
         where: { websiteId },
-      }),
-      client.sessionData.deleteMany({
+      });
+
+      await tx.sessionData.deleteMany({
         where: { websiteId },
-      }),
-      client.websiteEvent.deleteMany({
+      });
+
+      await tx.websiteEvent.deleteMany({
         where: { websiteId },
-      }),
-      client.session.deleteMany({
+      });
+
+      await tx.session.deleteMany({
         where: { websiteId },
-      }),
-      client.website.update({
+      });
+
+      const website = await tx.website.update({
         where: { id: websiteId },
         data: {
           resetAt: new Date(),
         },
-      }),
-    ],
+      });
+
+      return website;
+    },
     {
       timeout: 30000,
     },
   ).then(async data => {
     if (cloudMode) {
-      await redis.client.set(
-        `website:${websiteId}`,
-        data.find(website => website.id),
-      );
+      await redis.client.set(`website:${websiteId}`, data);
     }
 
     return data;
@@ -175,43 +179,52 @@ export async function resetWebsite(websiteId: string) {
 }
 
 export async function deleteWebsite(websiteId: string) {
-  const { client, transaction } = prisma;
+  const { transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
   return transaction(
-    [
-      client.revenue.deleteMany({
+    async tx => {
+      await tx.revenue.deleteMany({
         where: { websiteId },
-      }),
-      client.eventData.deleteMany({
+      });
+
+      await tx.eventData.deleteMany({
         where: { websiteId },
-      }),
-      client.sessionData.deleteMany({
+      });
+
+      await tx.sessionData.deleteMany({
         where: { websiteId },
-      }),
-      client.websiteEvent.deleteMany({
+      });
+
+      await tx.websiteEvent.deleteMany({
         where: { websiteId },
-      }),
-      client.session.deleteMany({
+      });
+
+      await tx.session.deleteMany({
         where: { websiteId },
-      }),
-      client.report.deleteMany({
+      });
+
+      await tx.report.deleteMany({
         where: { websiteId },
-      }),
-      client.segment.deleteMany({
+      });
+
+      await tx.segment.deleteMany({
         where: { websiteId },
-      }),
-      cloudMode
-        ? client.website.update({
+      });
+
+      const website = cloudMode
+        ? await tx.website.update({
             data: {
               deletedAt: new Date(),
             },
             where: { id: websiteId },
           })
-        : client.website.delete({
+        : await tx.website.delete({
             where: { id: websiteId },
-          }),
-    ],
+          });
+
+      return website;
+    },
     {
       timeout: 30000,
     },

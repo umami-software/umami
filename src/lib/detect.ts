@@ -28,6 +28,12 @@ const PROVIDER_HEADERS = [
     regionHeader: 'cloudfront-viewer-country-region',
     cityHeader: 'cloudfront-viewer-city',
   },
+  // EdgeOne headers (requires custom request headers in Rule Priorities, see: https://edgeone.ai/document/46151)
+  {
+    countryHeader: 'eo-ipcountry',
+    regionHeader: 'eo-region-code',
+    cityHeader: 'eo-ipcity',
+  },
 ];
 
 export function getDevice(userAgent: string, screen: string = '') {
