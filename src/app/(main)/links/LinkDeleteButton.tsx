@@ -1,5 +1,5 @@
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
-import { useDeleteQuery, useMessages } from '@/components/hooks';
+import { useDeleteQuery, useMessages, useModified } from '@/components/hooks';
 import { Trash } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
 import { messages } from '@/components/messages';
@@ -15,7 +15,8 @@ export function LinkDeleteButton({
   onSave?: () => void;
 }) {
   const { formatMessage, labels, getErrorMessage, FormattedMessage } = useMessages();
-  const { mutateAsync, isPending, error, touch } = useDeleteQuery(`/links/${linkId}`);
+  const { mutateAsync, isPending, error } = useDeleteQuery(`/links/${linkId}`);
+  const { touch } = useModified();
 
   const handleConfirm = async (close: () => void) => {
     await mutateAsync(null, {
