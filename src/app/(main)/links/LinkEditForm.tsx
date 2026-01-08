@@ -101,26 +101,28 @@ export function LinkEditForm({
               <TextField placeholder="https://example.com" autoComplete="off" />
             </FormField>
 
-            <FormField
-              name="slug"
-              rules={{
-                required: formatMessage(labels.required),
-              }}
-              style={{ display: 'none' }}
-            >
-              <input type="hidden" />
+            <FormField label={formatMessage(labels.title)} name="title">
+              <TextField autoComplete="off" />
+            </FormField>
+
+            <FormField label={formatMessage(labels.description)} name="description">
+              <TextField autoComplete="off" />
+            </FormField>
+
+            <FormField label="OG Image URL" name="image">
+              <TextField autoComplete="off" />
             </FormField>
 
             <Column>
               <Label>{formatMessage(labels.link)}</Label>
               <Row alignItems="center" gap>
-                <TextField
-                  value={`${hostUrl}/${slug}`}
-                  autoComplete="off"
-                  isReadOnly
-                  allowCopy
+                <FormField
+                  name="slug"
+                  rules={{ required: formatMessage(labels.required) }}
                   style={{ width: '100%' }}
-                />
+                >
+                  <TextField autoComplete="off" />
+                </FormField>
                 <Button
                   variant="quiet"
                   onPress={() => setValue('slug', handleSlug(), { shouldDirty: true })}

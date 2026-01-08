@@ -281,6 +281,9 @@ model Link {
   name      String    @db.VarChar(100)
   url       String    @db.VarChar(500)
   slug      String    @unique() @db.VarChar(100)
+  title     String?   @db.VarChar(500)
+  description String? @db.VarChar(500)
+  image     String?   @db.VarChar(500)
   userId    String?   @map("user_id") @db.Uuid
   teamId    String?   @map("team_id") @db.Uuid
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)

@@ -27,6 +27,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ lin
     name: z.string().optional(),
     url: z.string().optional(),
     slug: z.string().min(8).optional(),
+    title: z.string().max(500).optional(),
+    description: z.string().max(500).optional(),
+    image: z.string().max(500).optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -36,14 +39,14 @@ export async function POST(request: Request, { params }: { params: Promise<{ lin
   }
 
   const { linkId } = await params;
-  const { name, url, slug } = body;
+  const { name, url, slug, title, description, image } = body;
 
   if (!(await canUpdateLink(auth, linkId))) {
     return unauthorized();
   }
 
   try {
-    const result = await updateLink(linkId, { name, url, slug });
+    const result = await updateLink(linkId, { name, url, slug, title, description, image });
 
     return Response.json(result);
   } catch (e: any) {

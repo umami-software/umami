@@ -30,6 +30,9 @@ export async function POST(request: Request) {
     name: z.string().max(100),
     url: z.string().max(500),
     slug: z.string().max(100),
+    title: z.string().max(500).optional(),
+    description: z.string().max(500).optional(),
+    image: z.string().max(500).optional(),
     teamId: z.string().nullable().optional(),
     id: z.uuid().nullable().optional(),
   });
@@ -40,7 +43,7 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const { id, name, url, slug, teamId } = body;
+  const { id, name, url, slug, title, description, image, teamId } = body;
 
   if ((teamId && !(await canCreateTeamWebsite(auth, teamId))) || !(await canCreateWebsite(auth))) {
     return unauthorized();
@@ -51,6 +54,9 @@ export async function POST(request: Request) {
     name,
     url,
     slug,
+    title,
+    description,
+    image,
     teamId,
   };
 
