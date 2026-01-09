@@ -20,7 +20,7 @@ export const dateRangeParams = {
   endDate: z.coerce.date().optional(),
   timezone: timezoneParam.optional(),
   unit: unitParam.optional(),
-  compare: z.string().optional(),
+  compare: z.enum(['prev', 'yoy']).optional(),
 };
 
 export const filterParams = {

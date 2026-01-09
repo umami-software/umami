@@ -31,7 +31,7 @@ export async function GET(
 
   const data = await getWebsiteStats(websiteId, filters);
 
-  const compare = filters.compare === 'yoy' ? 'yoy' : 'prev';
+  const compare = filters.compare ?? 'prev';
 
   const { startDate, endDate } = getCompareDate(compare, filters.startDate, filters.endDate);
 
