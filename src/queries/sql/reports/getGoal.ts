@@ -29,14 +29,34 @@ async function relationalQuery(
 ) {
   const { startDate, endDate, type, value } = parameters;
   const { rawQuery, parseFilters } = prisma;
+  const eventType = type === 'path' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'path' ? 'url_path' : 'event_name';
-  const { filterQuery, dateQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
+
+  // Filters WITHOUT eventType for total count (all sessions)
+  const {
+    filterQuery: baseFilterQuery,
+    dateQuery,
+    joinSessionQuery,
+    cohortQuery,
+    queryParams: baseQueryParams,
+  } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+  });
+
+  // Filters WITH eventType for goal-specific count
+  const { filterQuery: goalFilterQuery, queryParams: goalQueryParams } = parseFilters({
     ...filters,
     websiteId,
     value,
     startDate,
     endDate,
+    eventType,
   });
+
+  const queryParams = { ...baseQueryParams, ...goalQueryParams };
 
   return rawQuery(
     `
@@ -48,7 +68,7 @@ async function relationalQuery(
       ${joinSessionQuery}
       where website_event.website_id = {{websiteId::uuid}}
       ${dateQuery}
-      ${filterQuery}
+      ${baseFilterQuery}
     ) as total
     from website_event
     ${cohortQuery}
@@ -56,7 +76,7 @@ async function relationalQuery(
     where website_event.website_id = {{websiteId::uuid}}
       and ${column} = {{value}}
       ${dateQuery}
-      ${filterQuery}
+      ${goalFilterQuery}
     `,
     queryParams,
   ).then(results => results?.[0]);
@@ -69,14 +89,33 @@ async function clickhouseQuery(
 ) {
   const { startDate, endDate, type, value } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
+  const eventType = type === 'path' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'path' ? 'url_path' : 'event_name';
-  const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({
+
+  // Filters WITHOUT eventType for total count (all sessions)
+  const {
+    filterQuery: baseFilterQuery,
+    dateQuery,
+    cohortQuery,
+    queryParams: baseQueryParams,
+  } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+  });
+
+  // Filters WITH eventType for goal-specific count
+  const { filterQuery: goalFilterQuery, queryParams: goalQueryParams } = parseFilters({
     ...filters,
     websiteId,
     value,
     startDate,
     endDate,
+    eventType,
   });
+
+  const queryParams = { ...baseQueryParams, ...goalQueryParams };
 
   return rawQuery(
     `
@@ -87,14 +126,14 @@ async function clickhouseQuery(
       ${cohortQuery}
       where website_id = {websiteId:UUID}
         ${dateQuery}
-        ${filterQuery}
+        ${baseFilterQuery}
     ) as total
     from website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}
       and ${column} = {value:String}
       ${dateQuery}
-      ${filterQuery}
+      ${goalFilterQuery}
     `,
     queryParams,
   ).then(results => results?.[0]);
