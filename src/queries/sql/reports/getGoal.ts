@@ -29,7 +29,6 @@ async function relationalQuery(
 ) {
   const { startDate, endDate, type, value } = parameters;
   const { rawQuery, parseFilters } = prisma;
-  const eventType = type === 'path' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'path' ? 'url_path' : 'event_name';
   const { filterQuery, dateQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
@@ -37,7 +36,6 @@ async function relationalQuery(
     value,
     startDate,
     endDate,
-    eventType,
   });
 
   return rawQuery(
@@ -71,7 +69,6 @@ async function clickhouseQuery(
 ) {
   const { startDate, endDate, type, value } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
-  const eventType = type === 'path' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'path' ? 'url_path' : 'event_name';
   const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
@@ -79,7 +76,6 @@ async function clickhouseQuery(
     value,
     startDate,
     endDate,
-    eventType,
   });
 
   return rawQuery(
