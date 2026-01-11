@@ -40,21 +40,25 @@ export function MetricsTable({
 
   const filteredData = useMemo(() => {
     if (data) {
-      let items = data as any[];
+      // Handle both old format (array) and new format ({ data, total })
+      const items = Array.isArray(data) ? data : data.data;
+      const total = Array.isArray(data) ? undefined : data.total;
+
+      let filtered = items as any[];
 
       if (dataFilter) {
         if (Array.isArray(dataFilter)) {
-          items = dataFilter.reduce((arr, filter) => {
+          filtered = dataFilter.reduce((arr, filter) => {
             return filter(arr);
-          }, items);
+          }, filtered);
         } else {
-          items = dataFilter(items);
+          filtered = dataFilter(filtered);
         }
       }
 
-      items = percentFilter(items);
+      filtered = percentFilter(filtered, total);
 
-      return items.map(({ x, y, z, ...props }) => ({ label: x, count: y, percent: z, ...props }));
+      return filtered.map(({ x, y, z, ...props }) => ({ label: x, count: y, percent: z, ...props }));
     }
     return [];
   }, [data, dataFilter, limit, type]);
