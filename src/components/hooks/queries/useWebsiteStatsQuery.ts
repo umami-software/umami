@@ -1,5 +1,6 @@
 import type { UseQueryOptions } from '@tanstack/react-query';
 import { useDateParameters } from '@/components/hooks/useDateParameters';
+import { useDateRange } from '@/components/hooks/useDateRange';
 import { useApi } from '../useApi';
 import { useFilterParameters } from '../useFilterParameters';
 
@@ -24,12 +25,16 @@ export function useWebsiteStatsQuery(
 ) {
   const { get, useQuery } = useApi();
   const { startAt, endAt, unit, timezone } = useDateParameters();
+  const { compare } = useDateRange();
   const filters = useFilterParameters();
 
   return useQuery<WebsiteStatsData>({
-    queryKey: ['websites:stats', { websiteId, startAt, endAt, unit, timezone, ...filters }],
+    queryKey: [
+      'websites:stats',
+      { websiteId, startAt, endAt, unit, timezone, compare, ...filters },
+    ],
     queryFn: () =>
-      get(`/websites/${websiteId}/stats`, { startAt, endAt, unit, timezone, ...filters }),
+      get(`/websites/${websiteId}/stats`, { startAt, endAt, unit, timezone, compare, ...filters }),
     enabled: !!websiteId,
     ...options,
   });
