@@ -42,7 +42,7 @@ export async function GET(
       value: segment.name,
     }));
   } else {
-    const filters = await getQueryFilters(query, websiteId, auth.user?.id);
+    const filters = await getQueryFilters(query, websiteId);
     values = await getValues(websiteId, FILTER_COLUMNS[type], filters);
   }
 
