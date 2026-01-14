@@ -81,12 +81,12 @@ export function getRequestFilters(query: Record<string, any>) {
   return result;
 }
 
-export async function setWebsiteDate(websiteId: string, userId: string, data: Record<string, any>) {
+export async function setWebsiteDate(websiteId: string, data: Record<string, any>) {
   const website = await fetchWebsite(websiteId);
   const cloudMode = !!process.env.CLOUD_MODE;
 
   if (cloudMode && website && !website.teamId) {
-    const account = await fetchAccount(userId);
+    const account = await fetchAccount(website.userId);
 
     if (!account?.hasSubscription) {
       data.startDate = maxDate(data.startDate, startOfMonth(subMonths(new Date(), 6)));
@@ -103,13 +103,12 @@ export async function setWebsiteDate(websiteId: string, userId: string, data: Re
 export async function getQueryFilters(
   params: Record<string, any>,
   websiteId?: string,
-  userId?: string,
 ): Promise<QueryFilters> {
   const dateRange = getRequestDateRange(params);
   const filters = getRequestFilters(params);
 
   if (websiteId) {
-    await setWebsiteDate(websiteId, userId, dateRange);
+    await setWebsiteDate(websiteId, dateRange);
 
     if (params.segment) {
       const segmentParams = (await getWebsiteSegment(websiteId, params.segment))

@@ -29,7 +29,7 @@ export async function GET(
   }
 
   const { propertyName } = query;
-  const filters = await getQueryFilters(query, websiteId, auth.user?.id);
+  const filters = await getQueryFilters(query, websiteId);
 
   const data = await getSessionDataValues(websiteId, {
     ...filters,
