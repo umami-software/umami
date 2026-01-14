@@ -67,7 +67,6 @@ model Website {
   id        String    @id @unique @map("website_id") @db.Uuid
   name      String    @db.VarChar(100)
   domain    String?   @db.VarChar(500)
-  shareId   String?   @unique @map("share_id") @db.VarChar(50)
   resetAt   DateTime? @map("reset_at") @db.Timestamptz(6)
   userId    String?   @map("user_id") @db.Uuid
   teamId    String?   @map("team_id") @db.Uuid
@@ -88,7 +87,6 @@ model Website {
   @@index([userId])
   @@index([teamId])
   @@index([createdAt])
-  @@index([shareId])
   @@index([createdBy])
   @@map("website")
 }
@@ -315,4 +313,17 @@ model Pixel {
   @@index([teamId])
   @@index([createdAt])
   @@map("pixel")
+}
+
+model Share {
+  id         String    @id() @unique() @map("share_id") @db.Uuid
+  entityId   String    @map("entity_id") @db.Uuid
+  shareType  Int       @map("share_type") @db.Integer
+  shareCode  String?   @unique @map("share_code") @db.VarChar(50)
+  parameters Json
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([entityId])
+  @@map("share")
 }

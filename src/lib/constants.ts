@@ -95,6 +95,13 @@ export const EVENT_TYPE = {
   pixelEvent: 4,
 } as const;
 
+export const ENTITY_TYPE = {
+  website: 1,
+  link: 2,
+  pixel: 3,
+  board: 4,
+} as const;
+
 export const DATA_TYPE = {
   string: 1,
   number: 2,
