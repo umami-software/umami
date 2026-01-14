@@ -27,7 +27,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const filters = await getQueryFilters(query, websiteId, auth.user?.id);
+  const filters = await getQueryFilters(query, websiteId);
 
   const data = await getSessionDataProperties(websiteId, filters);
 

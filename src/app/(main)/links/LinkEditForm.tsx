@@ -50,6 +50,7 @@ export function LinkEditForm({
       onSuccess: async () => {
         toast(formatMessage(messages.saved));
         touch('links');
+        touch(`link:${linkId}`);
         onSave?.();
         onClose?.();
       },
