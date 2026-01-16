@@ -3,7 +3,7 @@ CREATE TABLE "share" (
     "share_id" UUID NOT NULL,
     "entity_id" UUID NOT NULL,
     "share_type" INTEGER NOT NULL,
-    "share_code" VARCHAR(50),
+    "slug" VARCHAR(100) NOT NULL,
     "parameters" JSONB NOT NULL,
     "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ(6),
@@ -15,13 +15,13 @@ CREATE TABLE "share" (
 CREATE UNIQUE INDEX "share_share_id_key" ON "share"("share_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "share_share_code_key" ON "share"("share_code");
+CREATE UNIQUE INDEX "share_slug_key" ON "share"("slug");
 
 -- CreateIndex
 CREATE INDEX "share_entity_id_idx" ON "share"("entity_id");
 
 -- MigrateData
-INSERT INTO "share" (share_id, entity_id, share_type, share_code, parameters, created_at)
+INSERT INTO "share" (share_id, entity_id, share_type, slug, parameters, created_at)
 SELECT gen_random_uuid(),
        website_id,
        1,

@@ -319,7 +319,7 @@ model Share {
   id         String    @id() @unique() @map("share_id") @db.Uuid
   entityId   String    @map("entity_id") @db.Uuid
   shareType  Int       @map("share_type") @db.Integer
-  shareCode  String?   @unique @map("share_code") @db.VarChar(50)
+  slug       String    @unique() @db.VarChar(100)
   parameters Json
   createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt  DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
