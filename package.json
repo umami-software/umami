@@ -164,7 +164,7 @@
     "stylelint-config-css-modules": "^4.5.1",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-recommended": "^14.0.0",
-    "tar": "^6.1.2",
+    "tar": "^7.5.3",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.1",
     "tsup": "^8.5.0",
