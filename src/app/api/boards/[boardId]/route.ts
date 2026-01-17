@@ -26,7 +26,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ boar
 export async function POST(request: Request, { params }: { params: Promise<{ boardId: string }> }) {
   const schema = z.object({
     name: z.string().optional(),
-    domain: z.string().optional(),
+    description: z.string().optional(),
     shareId: z.string().regex(SHARE_ID_REGEX).nullable().optional(),
   });
 
@@ -37,14 +37,14 @@ export async function POST(request: Request, { params }: { params: Promise<{ boa
   }
 
   const { boardId } = await params;
-  const { name, domain, shareId } = body;
+  const { name, description, shareId } = body;
 
   if (!(await canUpdateBoard(auth, boardId))) {
     return unauthorized();
   }
 
   try {
-    const board = await updateBoard(boardId, { name, domain, shareId });
+    const board = await updateBoard(boardId, { name, description, shareId });
 
     return Response.json(board);
   } catch (e: any) {

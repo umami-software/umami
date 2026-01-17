@@ -1,21 +1,48 @@
-import { Button, Column, Grid, Heading, Row, TextField } from '@umami/react-zen';
-import { useMessages } from '@/components/hooks';
+import { Column, Grid, Heading, LoadingButton, Row, TextField, useToast } from '@umami/react-zen';
+import { useState } from 'react';
+import { useApi, useBoard, useMessages, useModified, useNavigation } from '@/components/hooks';
 
 export function BoardHeader() {
-  const { formatMessage, labels } = useMessages();
+  const board = useBoard();
+  const { formatMessage, labels, messages } = useMessages();
+  const { post, useMutation } = useApi();
+  const { touch } = useModified();
+  const { router, renderUrl } = useNavigation();
+  const { toast } = useToast();
   const defaultName = formatMessage(labels.untitled);
-  const name = '';
-  const description = '';
 
-  const handleNameChange = (name: string) => {
-    //updateReport({ name: name || defaultName });
+  const [name, setName] = useState(board?.name ?? '');
+  const [description, setDescription] = useState(board?.description ?? '');
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: (data: { name: string; description: string }) => {
+      if (board) {
+        return post(`/boards/${board.id}`, data);
+      }
+      return post('/boards', { ...data, type: 'dashboard', slug: '' });
+    },
+  });
+
+  const handleNameChange = (value: string) => {
+    setName(value);
   };
 
-  const handleDescriptionChange = (description: string) => {
-    //updateReport({ description });
+  const handleDescriptionChange = (value: string) => {
+    setDescription(value);
   };
 
-  return <h1>asdgfviybiyu8oaero8g9873qrgb875qh0g8</h1>;
+  const handleSave = async () => {
+    const result = await mutateAsync({ name: name || defaultName, description });
+
+    toast(formatMessage(messages.saved));
+    touch('boards');
+
+    if (board) {
+      touch(`board:${board.id}`);
+    } else if (result?.id) {
+      router.push(renderUrl(`/boards/${result.id}`));
+    }
+  };
 
   return (
     <Grid
@@ -25,14 +52,12 @@ export function BoardHeader() {
       border="bottom"
       gapX="6"
     >
-      asdfasdfds
       <Column>
         <Row>
           <TextField
             variant="quiet"
             name="name"
             value={name}
-            defaultValue={name}
             placeholder={defaultName}
             onChange={handleNameChange}
             autoComplete="off"
@@ -46,7 +71,6 @@ export function BoardHeader() {
             variant="quiet"
             name="description"
             value={description}
-            defaultValue={description}
             placeholder={`+ ${formatMessage(labels.addDescription)}`}
             autoComplete="off"
             onChange={handleDescriptionChange}
@@ -57,7 +81,9 @@ export function BoardHeader() {
         </Row>
       </Column>
       <Column justifyContent="center" alignItems="flex-end">
-        <Button variant="primary">{formatMessage(labels.save)}</Button>
+        <LoadingButton variant="primary" onPress={handleSave} isLoading={isPending}>
+          {formatMessage(labels.save)}
+        </LoadingButton>
       </Column>
     </Grid>
   );

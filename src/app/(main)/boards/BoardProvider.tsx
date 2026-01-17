@@ -13,9 +13,5 @@ export function BoardProvider({ boardId, children }: { boardId: string; children
     return <Loading placement="absolute" />;
   }
 
-  if (!board) {
-    return null;
-  }
-
   return <BoardContext.Provider value={board}>{children}</BoardContext.Provider>;
 }
