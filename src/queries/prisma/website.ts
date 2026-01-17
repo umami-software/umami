@@ -16,15 +16,6 @@ export async function getWebsite(websiteId: string) {
   });
 }
 
-export async function getSharedWebsite(shareId: string) {
-  return findWebsite({
-    where: {
-      shareId,
-      deletedAt: null,
-    },
-  });
-}
-
 export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters: QueryFilters) {
   const { search } = filters;
   const { getSearchParameters, pagedQuery } = prisma;
