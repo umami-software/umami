@@ -1,47 +1,21 @@
-import { Column, Grid, Heading, LoadingButton, Row, TextField, useToast } from '@umami/react-zen';
-import { useState } from 'react';
-import { useApi, useBoard, useMessages, useModified, useNavigation } from '@/components/hooks';
+import { Column, Grid, Heading, LoadingButton, Row, TextField } from '@umami/react-zen';
+import { useBoard, useMessages } from '@/components/hooks';
 
 export function BoardHeader() {
-  const board = useBoard();
-  const { formatMessage, labels, messages } = useMessages();
-  const { post, useMutation } = useApi();
-  const { touch } = useModified();
-  const { router, renderUrl } = useNavigation();
-  const { toast } = useToast();
+  const { board, updateBoard, saveBoard, isPending } = useBoard();
+  const { formatMessage, labels } = useMessages();
   const defaultName = formatMessage(labels.untitled);
 
-  const [name, setName] = useState(board?.name ?? '');
-  const [description, setDescription] = useState(board?.description ?? '');
-
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: (data: { name: string; description: string }) => {
-      if (board) {
-        return post(`/boards/${board.id}`, data);
-      }
-      return post('/boards', { ...data, type: 'dashboard', slug: '' });
-    },
-  });
-
   const handleNameChange = (value: string) => {
-    setName(value);
+    updateBoard({ name: value });
   };
 
   const handleDescriptionChange = (value: string) => {
-    setDescription(value);
+    updateBoard({ description: value });
   };
 
-  const handleSave = async () => {
-    const result = await mutateAsync({ name: name || defaultName, description });
-
-    toast(formatMessage(messages.saved));
-    touch('boards');
-
-    if (board) {
-      touch(`board:${board.id}`);
-    } else if (result?.id) {
-      router.push(renderUrl(`/boards/${result.id}`));
-    }
+  const handleSave = () => {
+    saveBoard();
   };
 
   return (
@@ -57,26 +31,26 @@ export function BoardHeader() {
           <TextField
             variant="quiet"
             name="name"
-            value={name}
+            value={board?.name ?? ''}
             placeholder={defaultName}
             onChange={handleNameChange}
             autoComplete="off"
             style={{ fontSize: '2rem', fontWeight: 700, width: '100%' }}
           >
-            <Heading size="4">{name}</Heading>
+            <Heading size="4">{board?.name}</Heading>
           </TextField>
         </Row>
         <Row>
           <TextField
             variant="quiet"
             name="description"
-            value={description}
+            value={board?.description ?? ''}
             placeholder={`+ ${formatMessage(labels.addDescription)}`}
             autoComplete="off"
             onChange={handleDescriptionChange}
             style={{ width: '100%' }}
           >
-            {description}
+            {board?.description}
           </TextField>
         </Row>
       </Column>

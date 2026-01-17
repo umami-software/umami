@@ -141,3 +141,7 @@ export interface ApiError extends Error {
   code?: string;
   message: string;
 }
+
+export interface BoardData {
+  rows: { id: string; name: string; value: number }[];
+}

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { BoardContext } from '@/app/(main)/boards/BoardProvider';
+import { BoardContext, type BoardContextValue } from '@/app/(main)/boards/BoardProvider';
 
-export function useBoard() {
+export function useBoard(): BoardContextValue {
   return useContext(BoardContext);
 }
