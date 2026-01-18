@@ -3,7 +3,7 @@ import { Loading, useToast } from '@umami/react-zen';
 import { createContext, type ReactNode, useCallback, useEffect, useState } from 'react';
 import { useApi, useMessages, useModified, useNavigation } from '@/components/hooks';
 import { useBoardQuery } from '@/components/hooks/queries/useBoardQuery';
-import type { Board } from '@/generated/prisma/client';
+import type { Board } from '@/lib/types';
 
 export interface BoardContextValue {
   board: Partial<Board>;
@@ -17,6 +17,7 @@ export const BoardContext = createContext<BoardContextValue>(null);
 const defaultBoard: Partial<Board> = {
   name: '',
   description: '',
+  parameters: { rows: [] },
 };
 
 export function BoardProvider({ boardId, children }: { boardId?: string; children: ReactNode }) {

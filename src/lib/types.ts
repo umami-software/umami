@@ -1,4 +1,6 @@
 import type { UseQueryOptions } from '@tanstack/react-query';
+import type { ReactElement } from 'react';
+import type { Board as PrismaBoard } from '@/generated/prisma/client';
 import type { DATA_TYPE, OPERATORS, ROLES } from './constants';
 import type { TIME_UNIT } from './date';
 
@@ -142,6 +144,26 @@ export interface ApiError extends Error {
   message: string;
 }
 
-export interface BoardData {
-  rows: { id: string; name: string; value: number }[];
+export interface BoardComponent {
+  id: string;
+  type: string;
+  value: string;
+}
+
+export interface BoardColumn {
+  id: string;
+  component?: ReactElement;
+}
+
+export interface BoardRow {
+  id: string;
+  columns: BoardColumn[];
+}
+
+export interface BoardParameters {
+  rows?: BoardRow[];
+}
+
+export interface Board extends Omit<PrismaBoard, 'parameters'> {
+  parameters: BoardParameters;
 }

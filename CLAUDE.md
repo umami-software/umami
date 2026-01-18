@@ -90,3 +90,7 @@ DEBUG                     # Debug namespaces (e.g., umami:*)
 - Node.js 18.18+
 - PostgreSQL 12.14+
 - pnpm (package manager)
+
+## Git Workflow
+
+Always ask for confirmation before running `git commit` or `git push`.

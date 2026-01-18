@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { SHARE_ID_REGEX } from '@/lib/constants';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
 import { canDeleteBoard, canUpdateBoard, canViewBoard } from '@/permissions';
@@ -27,7 +26,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ boa
   const schema = z.object({
     name: z.string().optional(),
     description: z.string().optional(),
-    shareId: z.string().regex(SHARE_ID_REGEX).nullable().optional(),
+    parameters: z.object({}).passthrough().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -37,14 +36,14 @@ export async function POST(request: Request, { params }: { params: Promise<{ boa
   }
 
   const { boardId } = await params;
-  const { name, description, shareId } = body;
+  const { name, description, parameters } = body;
 
   if (!(await canUpdateBoard(auth, boardId))) {
     return unauthorized();
   }
 
   try {
-    const board = await updateBoard(boardId, { name, description, shareId });
+    const board = await updateBoard(boardId, { name, description, parameters });
 
     return Response.json(board);
   } catch (e: any) {
