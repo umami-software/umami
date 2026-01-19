@@ -5,6 +5,7 @@ import {
   Heading,
   Icon,
   Row,
+  Text,
   Tooltip,
   TooltipTrigger,
 } from '@umami/react-zen';
@@ -38,10 +39,10 @@ export function Panel({ title, allowFullscreen, style, children, ...props }: Pan
   return (
     <Column
       paddingY="6"
-      paddingX={{ xs: '3', md: '6' }}
+      paddingX={{ base: '3', md: '6' }}
       border
-      borderRadius="3"
-      backgroundColor
+      borderRadius
+      backgroundColor="surface-base"
       position="relative"
       gap
       {...props}

@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
 import { Providers } from './Providers';
-import '@fontsource/inter/300.css';
-import '@fontsource/inter/400.css';
-import '@fontsource/inter/500.css';
-import '@fontsource/inter/700.css';
-import '@umami/react-zen/styles.css';
-import '@/styles/global.css';
-import '@/styles/variables.css';
+import './global.css';
+import '@umami/react-zen/styles.full.css';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 export default function ({ children }) {
   if (process.env.DISABLE_UI) {
@@ -19,7 +21,7 @@ export default function ({ children }) {
   }
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.className} ${inter.variable}`}>
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />

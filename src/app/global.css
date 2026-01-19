@@ -1,0 +1,20 @@
+html,
+body {
+  font-family: var(--font-family), sans-serif;
+  color: var(--text-base);
+  font-size: 14px;
+  background-color: var(--surface-raised);
+  width: 100%;
+  min-height: 100vh;
+}
+
+html[style*="padding-right"] {
+  padding-right: 0 !important;
+}
+
+a,
+a:active,
+a:hover {
+  color: var(--text-base);
+  text-decoration: none;
+}
