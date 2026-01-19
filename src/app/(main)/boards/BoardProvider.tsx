@@ -1,15 +1,18 @@
 'use client';
 import { Loading, useToast } from '@umami/react-zen';
-import { createContext, type ReactNode, useCallback, useEffect, useState } from 'react';
+import { createContext, type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { useApi, useMessages, useModified, useNavigation } from '@/components/hooks';
 import { useBoardQuery } from '@/components/hooks/queries/useBoardQuery';
-import type { Board } from '@/lib/types';
+import type { Board, BoardParameters } from '@/lib/types';
+
+export type LayoutGetter = () => Partial<BoardParameters> | null;
 
 export interface BoardContextValue {
   board: Partial<Board>;
   updateBoard: (data: Partial<Board>) => void;
   saveBoard: () => Promise<Board>;
   isPending: boolean;
+  registerLayoutGetter: (getter: LayoutGetter) => void;
 }
 
 export const BoardContext = createContext<BoardContextValue>(null);
@@ -29,6 +32,11 @@ export function BoardProvider({ boardId, children }: { boardId?: string; childre
   const { router, renderUrl } = useNavigation();
 
   const [board, setBoard] = useState<Partial<Board>>(data ?? defaultBoard);
+  const layoutGetterRef = useRef<LayoutGetter | null>(null);
+
+  const registerLayoutGetter = useCallback((getter: LayoutGetter) => {
+    layoutGetterRef.current = getter;
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -51,7 +59,18 @@ export function BoardProvider({ boardId, children }: { boardId?: string; childre
 
   const saveBoard = useCallback(async () => {
     const defaultName = formatMessage(labels.untitled);
-    const result = await mutateAsync({ ...board, name: board.name || defaultName });
+
+    // Get current layout sizes from BoardBody if registered
+    const layoutData = layoutGetterRef.current?.();
+    console.log('layoutData from getter:', layoutData);
+    const parameters = layoutData ? { ...board.parameters, ...layoutData } : board.parameters;
+    console.log('parameters to save:', parameters);
+
+    const result = await mutateAsync({
+      ...board,
+      name: board.name || defaultName,
+      parameters,
+    });
 
     toast(formatMessage(messages.saved));
     touch('boards');
@@ -80,7 +99,9 @@ export function BoardProvider({ boardId, children }: { boardId?: string; childre
   }
 
   return (
-    <BoardContext.Provider value={{ board, updateBoard, saveBoard, isPending }}>
+    <BoardContext.Provider
+      value={{ board, updateBoard, saveBoard, isPending, registerLayoutGetter }}
+    >
       {children}
     </BoardContext.Provider>
   );

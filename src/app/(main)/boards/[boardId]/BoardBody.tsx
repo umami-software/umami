@@ -1,7 +1,7 @@
 import { Box, Button, Column, Icon, Row, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { produce } from 'immer';
-import { Fragment, type ReactElement } from 'react';
-import { Group, Panel, Separator } from 'react-resizable-panels';
+import { Fragment, type ReactElement, useEffect, useRef } from 'react';
+import { Group, type GroupImperativeHandle, Panel, Separator } from 'react-resizable-panels';
 import { v4 as uuid } from 'uuid';
 import { useBoard } from '@/components/hooks';
 import { ChevronDown, Minus, Plus, X } from '@/components/icons';
@@ -21,7 +21,52 @@ const BUTTON_ROW_HEIGHT = 60;
 const MAX_COLUMNS = 4;
 
 export function BoardBody() {
-  const { board, updateBoard, saveBoard, isPending } = useBoard();
+  const { board, updateBoard, saveBoard, isPending, registerLayoutGetter } = useBoard();
+  const rowGroupRef = useRef<GroupImperativeHandle>(null);
+  const columnGroupRefs = useRef<Map<string, GroupImperativeHandle>>(new Map());
+
+  // Register a function to get current layout sizes on save
+  useEffect(() => {
+    registerLayoutGetter(() => {
+      const rows = board?.parameters?.rows;
+      console.log('Layout getter called, rows:', rows);
+      console.log('rowGroupRef.current:', rowGroupRef.current);
+      console.log('columnGroupRefs.current:', columnGroupRefs.current);
+
+      if (!rows?.length) return null;
+
+      const rowLayout = rowGroupRef.current?.getLayout();
+      console.log('rowLayout:', rowLayout);
+
+      const updatedRows = rows.map(row => {
+        const columnGroupRef = columnGroupRefs.current.get(row.id);
+        const columnLayout = columnGroupRef?.getLayout();
+        console.log(`Row ${row.id} columnLayout:`, columnLayout);
+
+        const updatedColumns = row.columns.map(col => ({
+          ...col,
+          size: columnLayout?.[col.id],
+        }));
+
+        return {
+          ...row,
+          size: rowLayout?.[row.id],
+          columns: updatedColumns,
+        };
+      });
+
+      console.log('updatedRows:', updatedRows);
+      return { rows: updatedRows };
+    });
+  }, [registerLayoutGetter, board?.parameters?.rows]);
+
+  const registerColumnGroupRef = (rowId: string, ref: GroupImperativeHandle | null) => {
+    if (ref) {
+      columnGroupRefs.current.set(rowId, ref);
+    } else {
+      columnGroupRefs.current.delete(rowId);
+    }
+  };
 
   console.log({ board });
 
@@ -82,10 +127,15 @@ export function BoardBody() {
   const minHeight = (rows?.length || 1) * MAX_ROW_HEIGHT + BUTTON_ROW_HEIGHT;
 
   return (
-    <Group orientation="vertical" style={{ minHeight }}>
+    <Group groupRef={rowGroupRef} orientation="vertical" style={{ minHeight }}>
       {rows.map((row, index) => (
         <Fragment key={row.id}>
-          <Panel minSize={MIN_ROW_HEIGHT} maxSize={MAX_ROW_HEIGHT}>
+          <Panel
+            id={row.id}
+            minSize={MIN_ROW_HEIGHT}
+            maxSize={MAX_ROW_HEIGHT}
+            defaultSize={row.size}
+          >
             <BoardRow
               {...row}
               rowId={row.id}
@@ -94,6 +144,7 @@ export function BoardBody() {
               onRemove={handleRemoveRow}
               onMoveUp={handleMoveRowUp}
               onMoveDown={handleMoveRowDown}
+              onRegisterRef={registerColumnGroupRef}
             />
           </Panel>
           {index < rows?.length - 1 && <Separator />}
@@ -123,6 +174,7 @@ function BoardRow({
   onRemove,
   onMoveUp,
   onMoveDown,
+  onRegisterRef,
 }: {
   rowId: string;
   rowIndex: number;
@@ -131,8 +183,13 @@ function BoardRow({
   onRemove?: (id: string) => void;
   onMoveUp?: (id: string) => void;
   onMoveDown?: (id: string) => void;
+  onRegisterRef?: (rowId: string, ref: GroupImperativeHandle | null) => void;
 }) {
   const { board, updateBoard } = useBoard();
+
+  const handleGroupRef = (ref: GroupImperativeHandle | null) => {
+    onRegisterRef?.(rowId, ref);
+  };
 
   const handleAddColumn = () => {
     updateBoard({
@@ -160,10 +217,10 @@ function BoardRow({
   };
 
   return (
-    <Group style={{ height: '100%' }}>
+    <Group groupRef={handleGroupRef} style={{ height: '100%' }}>
       {columns?.map((column, index) => (
         <Fragment key={column.id}>
-          <Panel minSize={MIN_COLUMN_WIDTH}>
+          <Panel id={column.id} minSize={MIN_COLUMN_WIDTH} defaultSize={column.size}>
             <BoardColumn {...column} onRemove={handleRemoveColumn} />
           </Panel>
           {index < columns?.length - 1 && <Separator />}
