@@ -4,7 +4,7 @@ import { Fragment, type ReactElement } from 'react';
 import { Group, Panel, Separator } from 'react-resizable-panels';
 import { v4 as uuid } from 'uuid';
 import { useBoard } from '@/components/hooks';
-import { ChevronDown, Minus, Plus } from '@/components/icons';
+import { ChevronDown, Minus, Plus, X } from '@/components/icons';
 import type { BoardColumn as BoardColumnType } from '@/lib/types';
 
 const CATALOG = {
@@ -15,9 +15,6 @@ const CATALOG = {
 };
 
 const MIN_HEIGHT = 300;
-const MAX_HEIGHT = 600;
-const MIN_WIDTH = 300;
-const MARGIN = 10;
 const MAX_COLUMNS = 4;
 
 export function BoardBody() {
@@ -79,8 +76,7 @@ export function BoardBody() {
   };
 
   const rows = board?.parameters?.rows ?? [];
-  const rowCount = (rows.length || 1) + 1;
-  const minHeight = (MAX_HEIGHT + MARGIN) * rowCount;
+  const minHeight = (rows.length + 1) * MIN_HEIGHT;
 
   return (
     <Group orientation="vertical" style={{ minHeight }}>
@@ -149,12 +145,23 @@ function BoardRow({
     });
   };
 
+  const handleRemoveColumn = (columnId: string) => {
+    updateBoard({
+      parameters: produce(board.parameters, draft => {
+        const row = draft.rows.find(row => row.id === rowId);
+        if (row) {
+          row.columns = row.columns.filter(col => col.id !== columnId);
+        }
+      }),
+    });
+  };
+
   return (
     <Group style={{ height: '100%' }}>
       {columns?.map((column, index) => (
         <Fragment key={column.id}>
           <Panel minSize={MIN_HEIGHT}>
-            <BoardColumn {...column} />
+            <BoardColumn {...column} onRemove={handleRemoveColumn} />
           </Panel>
           {index < columns.length - 1 && <Separator />}
         </Fragment>
@@ -205,7 +212,15 @@ function BoardRow({
   );
 }
 
-function BoardColumn({ id, component }: { id: string; component?: ReactElement }) {
+function BoardColumn({
+  id,
+  component,
+  onRemove,
+}: {
+  id: string;
+  component?: ReactElement;
+  onRemove?: (id: string) => void;
+}) {
   const handleAddComponent = () => {};
 
   return (
@@ -217,7 +232,18 @@ function BoardColumn({ id, component }: { id: string; component?: ReactElement }
       alignItems="center"
       justifyContent="center"
       backgroundColor="3"
+      position="relative"
     >
+      <Box position="absolute" top="10px" right="20px" zIndex={100}>
+        <TooltipTrigger delay={0}>
+          <Button variant="quiet" onPress={() => onRemove?.(id)}>
+            <Icon size="sm">
+              <X />
+            </Icon>
+          </Button>
+          <Tooltip>Remove column</Tooltip>
+        </TooltipTrigger>
+      </Box>
       <Button variant="outline" onPress={handleAddComponent}>
         <Icon>
           <Plus />
