@@ -1,6 +1,7 @@
 'use client';
 import { Loading, useToast } from '@umami/react-zen';
 import { createContext, type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { v4 as uuid } from 'uuid';
 import { useApi, useMessages, useModified, useNavigation } from '@/components/hooks';
 import { useBoardQuery } from '@/components/hooks/queries/useBoardQuery';
 import type { Board, BoardParameters } from '@/lib/types';
@@ -17,11 +18,13 @@ export interface BoardContextValue {
 
 export const BoardContext = createContext<BoardContextValue>(null);
 
-const defaultBoard: Partial<Board> = {
+const createDefaultBoard = (): Partial<Board> => ({
   name: '',
   description: '',
-  parameters: { rows: [] },
-};
+  parameters: {
+    rows: [{ id: uuid(), columns: [{ id: uuid(), component: null }] }],
+  },
+});
 
 export function BoardProvider({ boardId, children }: { boardId?: string; children: ReactNode }) {
   const { data, isFetching, isLoading } = useBoardQuery(boardId);
@@ -31,7 +34,7 @@ export function BoardProvider({ boardId, children }: { boardId?: string; childre
   const { formatMessage, labels, messages } = useMessages();
   const { router, renderUrl } = useNavigation();
 
-  const [board, setBoard] = useState<Partial<Board>>(data ?? defaultBoard);
+  const [board, setBoard] = useState<Partial<Board>>(data ?? createDefaultBoard());
   const layoutGetterRef = useRef<LayoutGetter | null>(null);
 
   const registerLayoutGetter = useCallback((getter: LayoutGetter) => {

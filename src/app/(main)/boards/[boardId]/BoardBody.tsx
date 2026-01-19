@@ -221,7 +221,11 @@ function BoardRow({
       {columns?.map((column, index) => (
         <Fragment key={column.id}>
           <Panel id={column.id} minSize={MIN_COLUMN_WIDTH} defaultSize={column.size}>
-            <BoardColumn {...column} onRemove={handleRemoveColumn} />
+            <BoardColumn
+              {...column}
+              onRemove={handleRemoveColumn}
+              canRemove={columns?.length > 1}
+            />
           </Panel>
           {index < columns?.length - 1 && <Separator />}
         </Fragment>
@@ -276,10 +280,12 @@ function BoardColumn({
   id,
   component,
   onRemove,
+  canRemove = true,
 }: {
   id: string;
   component?: ReactElement;
   onRemove?: (id: string) => void;
+  canRemove?: boolean;
 }) {
   const handleAddComponent = () => {};
 
@@ -294,16 +300,18 @@ function BoardColumn({
       backgroundColor="3"
       position="relative"
     >
-      <Box position="absolute" top="10px" right="20px" zIndex={100}>
-        <TooltipTrigger delay={0}>
-          <Button variant="quiet" onPress={() => onRemove?.(id)}>
-            <Icon size="sm">
-              <X />
-            </Icon>
-          </Button>
-          <Tooltip>Remove column</Tooltip>
-        </TooltipTrigger>
-      </Box>
+      {canRemove && (
+        <Box position="absolute" top="10px" right="20px" zIndex={100}>
+          <TooltipTrigger delay={0}>
+            <Button variant="quiet" onPress={() => onRemove?.(id)}>
+              <Icon size="sm">
+                <X />
+              </Icon>
+            </Button>
+            <Tooltip>Remove column</Tooltip>
+          </TooltipTrigger>
+        </Box>
+      )}
       <Button variant="outline" onPress={handleAddComponent}>
         <Icon>
           <Plus />
