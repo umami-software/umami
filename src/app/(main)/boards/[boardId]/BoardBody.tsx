@@ -14,7 +14,10 @@ const CATALOG = {
   },
 };
 
-const MIN_HEIGHT = 300;
+const MIN_ROW_HEIGHT = 300;
+const MAX_ROW_HEIGHT = 600;
+const MIN_COLUMN_WIDTH = 300;
+const BUTTON_ROW_HEIGHT = 60;
 const MAX_COLUMNS = 4;
 
 export function BoardBody() {
@@ -76,27 +79,27 @@ export function BoardBody() {
   };
 
   const rows = board?.parameters?.rows ?? [];
-  const minHeight = (rows.length + 1) * MIN_HEIGHT;
+  const minHeight = (rows?.length || 1) * MAX_ROW_HEIGHT + BUTTON_ROW_HEIGHT;
 
   return (
     <Group orientation="vertical" style={{ minHeight }}>
       {rows.map((row, index) => (
         <Fragment key={row.id}>
-          <Panel minSize={MIN_HEIGHT}>
+          <Panel minSize={MIN_ROW_HEIGHT} maxSize={MAX_ROW_HEIGHT}>
             <BoardRow
               {...row}
               rowId={row.id}
               rowIndex={index}
-              rowCount={rows.length}
+              rowCount={rows?.length}
               onRemove={handleRemoveRow}
               onMoveUp={handleMoveRowUp}
               onMoveDown={handleMoveRowDown}
             />
           </Panel>
-          {index < rows.length - 1 && <Separator />}
+          {index < rows?.length - 1 && <Separator />}
         </Fragment>
       ))}
-      <Panel>
+      <Panel minSize={BUTTON_ROW_HEIGHT}>
         <Row padding="3">
           <TooltipTrigger delay={0}>
             <Button variant="outline" onPress={handleAddRow}>
@@ -160,10 +163,10 @@ function BoardRow({
     <Group style={{ height: '100%' }}>
       {columns?.map((column, index) => (
         <Fragment key={column.id}>
-          <Panel minSize={MIN_HEIGHT}>
+          <Panel minSize={MIN_COLUMN_WIDTH}>
             <BoardColumn {...column} onRemove={handleRemoveColumn} />
           </Panel>
-          {index < columns.length - 1 && <Separator />}
+          {index < columns?.length - 1 && <Separator />}
         </Fragment>
       ))}
       <Column alignSelf="center" padding="3" gap="1">
@@ -179,7 +182,7 @@ function BoardRow({
           <Button
             variant="outline"
             onPress={handleAddColumn}
-            isDisabled={columns.length >= MAX_COLUMNS}
+            isDisabled={columns?.length >= MAX_COLUMNS}
           >
             <Icon>
               <Plus />

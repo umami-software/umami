@@ -153,11 +153,13 @@ export interface BoardComponent {
 export interface BoardColumn {
   id: string;
   component?: ReactElement;
+  size?: number;
 }
 
 export interface BoardRow {
   id: string;
   columns: BoardColumn[];
+  size?: number;
 }
 
 export interface BoardParameters {
