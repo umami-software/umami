@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { EVENT_COLUMNS, EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
@@ -52,6 +52,31 @@ async function relationalQuery(
 
   if (type === 'entry' || type === 'exit') {
     const order = type === 'entry' ? 'asc' : 'desc';
+
+    if (!filterQuery && !cohortQuery) {
+      return rawQuery(
+        `
+        select x.url_path as x,
+          count(*) as y
+        from (
+          select distinct on (visit_id)
+            url_path
+          from website_event
+          where website_id = {{websiteId::uuid}}
+            and created_at between {{startDate}} and {{endDate}}
+            and event_type = {{eventType}}
+          order by visit_id, created_at ${order}
+        ) as x
+        group by 1
+        order by 2 desc
+        limit ${limit}
+        offset ${offset}
+        `,
+        { ...queryParams, ...parameters, eventType: EVENT_TYPE.pageView },
+        FUNCTION_NAME,
+      );
+    }
+
     column = `x.${column}`;
 
     entryExitQuery = `
@@ -62,7 +87,7 @@ async function relationalQuery(
         from website_event
         where website_event.website_id = {{websiteId::uuid}}
           and website_event.created_at between {{startDate}} and {{endDate}}
-          and website_event.event_type != 2
+          and website_event.event_type = {{eventType}}
         order by visit_id, created_at ${order}
       ) x
       on x.visit_id = website_event.visit_id
@@ -79,7 +104,7 @@ async function relationalQuery(
     ${entryExitQuery}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
-      and website_event.event_type != 2
+      and website_event.event_type = {{eventType}}
       ${excludeDomain}
       ${filterQuery}
     group by 1
@@ -87,7 +112,7 @@ async function relationalQuery(
     limit ${limit}
     offset ${offset}
     `,
-    { ...queryParams, ...parameters },
+    { ...queryParams, ...parameters, eventType: EVENT_TYPE.pageView },
     FUNCTION_NAME,
   );
 }
