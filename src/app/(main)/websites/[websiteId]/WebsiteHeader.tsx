@@ -1,4 +1,4 @@
-import { Icon, Row, Text } from '@umami/react-zen';
+import { IconLabel, Row } from '@umami/react-zen';
 import { WebsiteShareForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteShareForm';
 import { Favicon } from '@/components/common/Favicon';
 import { LinkButton } from '@/components/common/LinkButton';
@@ -30,12 +30,9 @@ export function WebsiteHeader({ showActions }: { showActions?: boolean }) {
 
         {showActions && (
           <Row alignItems="center" gap>
-            <ShareButton websiteId={website.id} shareId={website.shareId} />
+            <ShareButton websiteId={website?.id} shareId={website?.shareId} />
             <LinkButton href={renderUrl(`/websites/${website.id}/settings`, false)}>
-              <Icon>
-                <Edit />
-              </Icon>
-              <Text>{formatMessage(labels.edit)}</Text>
+              <IconLabel icon={<Edit />}>{formatMessage(labels.edit)}</IconLabel>
             </LinkButton>
           </Row>
         )}
