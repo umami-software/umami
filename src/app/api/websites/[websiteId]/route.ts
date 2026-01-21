@@ -1,7 +1,6 @@
 import { z } from 'zod';
-import { SHARE_ID_REGEX } from '@/lib/constants';
 import { parseRequest } from '@/lib/request';
-import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
+import { json, ok, unauthorized } from '@/lib/response';
 import { canDeleteWebsite, canUpdateWebsite, canViewWebsite } from '@/permissions';
 import { deleteWebsite, getWebsite, updateWebsite } from '@/queries/prisma';
 
@@ -33,7 +32,6 @@ export async function POST(
   const schema = z.object({
     name: z.string().optional(),
     domain: z.string().optional(),
-    shareId: z.string().regex(SHARE_ID_REGEX).nullable().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -43,23 +41,15 @@ export async function POST(
   }
 
   const { websiteId } = await params;
-  const { name, domain, shareId } = body;
+  const { name, domain } = body;
 
   if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  try {
-    const website = await updateWebsite(websiteId, { name, domain, shareId });
+  const website = await updateWebsite(websiteId, { name, domain });
 
-    return Response.json(website);
-  } catch (e: any) {
-    if (e.message.toLowerCase().includes('unique constraint') && e.message.includes('share_id')) {
-      return badRequest({ message: 'That share ID is already taken.' });
-    }
-
-    return serverError(e);
-  }
+  return Response.json(website);
 }
 
 export async function DELETE(
