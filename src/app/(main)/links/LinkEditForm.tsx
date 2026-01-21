@@ -101,15 +101,15 @@ export function LinkEditForm({
               <TextField placeholder="https://example.com" autoComplete="off" />
             </FormField>
 
-            <FormField label={formatMessage(labels.title)} name="title">
+            <FormField label="Title" name="ogTitle">
               <TextField autoComplete="off" />
             </FormField>
 
-            <FormField label={formatMessage(labels.description)} name="description">
+            <FormField label="Description" name="ogDescription">
               <TextField autoComplete="off" />
             </FormField>
 
-            <FormField label="OG Image URL" name="image">
+            <FormField label="Image URL" name="ogImageUrl">
               <TextField autoComplete="off" />
             </FormField>
 

@@ -29,10 +29,10 @@ export async function POST(request: Request) {
   const schema = z.object({
     name: z.string().max(100),
     url: z.string().max(500),
-    slug: z.string().max(100),
-    title: z.string().max(500).optional(),
-    description: z.string().max(500).optional(),
-    image: z.string().max(500).optional(),
+    slug: z.string().min(4).max(100),
+    ogTitle: z.string().max(500).optional(),
+    ogDescription: z.string().max(500).optional(),
+    ogImageUrl: z.url().max(500).optional().or(z.literal('')),
     teamId: z.string().nullable().optional(),
     id: z.uuid().nullable().optional(),
   });
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const { id, name, url, slug, title, description, image, teamId } = body;
+  const { id, name, url, slug, ogTitle, ogDescription, ogImageUrl, teamId } = body;
 
   if ((teamId && !(await canCreateTeamWebsite(auth, teamId))) || !(await canCreateWebsite(auth))) {
     return unauthorized();
@@ -54,9 +54,9 @@ export async function POST(request: Request) {
     name,
     url,
     slug,
-    title,
-    description,
-    image,
+    ogTitle,
+    ogDescription,
+    ogImageUrl,
     teamId,
   };
 

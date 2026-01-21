@@ -277,18 +277,18 @@ model Revenue {
 }
 
 model Link {
-  id        String    @id() @unique() @map("link_id") @db.Uuid
-  name      String    @db.VarChar(100)
-  url       String    @db.VarChar(500)
-  slug      String    @unique() @db.VarChar(100)
-  title     String?   @db.VarChar(500)
-  description String? @db.VarChar(500)
-  image     String?   @db.VarChar(500)
-  userId    String?   @map("user_id") @db.Uuid
-  teamId    String?   @map("team_id") @db.Uuid
-  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
-  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
+  id             String    @id() @unique() @map("link_id") @db.Uuid
+  name           String    @db.VarChar(100)
+  url            String    @db.VarChar(500)
+  slug           String    @unique() @db.VarChar(100)
+  ogTitle        String?   @map("og_title") @db.VarChar(500)
+  ogDescription  String?   @map("og_description") @db.VarChar(500)
+  ogImageUrl     String?   @map("og_image_url") @db.VarChar(500)
+  userId         String?   @map("user_id") @db.Uuid
+  teamId         String?   @map("team_id") @db.Uuid
+  createdAt      DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt      DateTime? @map("deleted_at") @db.Timestamptz(6)
 
   user User? @relation("user", fields: [userId], references: [id])
   team Team? @relation(fields: [teamId], references: [id])
