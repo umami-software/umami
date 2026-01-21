@@ -57,7 +57,7 @@ export function ShareEditForm({
     const parameters: Record<string, boolean> = {};
     SHARE_NAV_ITEMS.forEach(section => {
       section.items.forEach(item => {
-        parameters[item.id] = data[item.id] ?? true;
+        parameters[item.id] = data[item.id] ?? false;
       });
     });
 
@@ -84,7 +84,8 @@ export function ShareEditForm({
   const defaultValues: Record<string, boolean> = {};
   SHARE_NAV_ITEMS.forEach(section => {
     section.items.forEach(item => {
-      defaultValues[item.id] = share?.parameters?.[item.id] ?? true;
+      const defaultSelected = item.id === 'overview' || item.id === 'events';
+      defaultValues[item.id] = share?.parameters?.[item.id] ?? defaultSelected;
     });
   });
 
@@ -97,9 +98,7 @@ export function ShareEditForm({
         </Column>
         {SHARE_NAV_ITEMS.map(section => (
           <Column key={section.section} gap="1">
-            <Text size="2" weight="bold">
-              {formatMessage((labels as any)[section.section])}
-            </Text>
+            <Text weight="bold">{formatMessage((labels as any)[section.section])}</Text>
             <Column gap="1">
               {section.items.map(item => (
                 <FormField key={item.id} name={item.id}>
