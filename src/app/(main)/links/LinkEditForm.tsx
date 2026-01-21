@@ -13,7 +13,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useConfig, useLinkQuery, useMessages } from '@/components/hooks';
 import { useUpdateQuery } from '@/components/hooks/queries/useUpdateQuery';
-import { RefreshCw } from '@/components/icons';
+import { ChevronDown, ChevronRight, RefreshCw } from '@/components/icons';
 import { LINKS_URL } from '@/lib/constants';
 import { getRandomChars } from '@/lib/generate';
 import { isValidUrl } from '@/lib/url';
@@ -43,6 +43,7 @@ export function LinkEditForm({
   const hostUrl = linksUrl || LINKS_URL;
   const { data, isLoading } = useLinkQuery(linkId);
   const [slug, setSlug] = useState(generateId());
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
@@ -81,7 +82,17 @@ export function LinkEditForm({
   }
 
   return (
-    <Form onSubmit={handleSubmit} error={getErrorMessage(error)} defaultValues={{ slug, ...data }}>
+    <Form
+      onSubmit={handleSubmit}
+      error={getErrorMessage(error)}
+      defaultValues={{
+        slug,
+        ...data,
+        ogTitle: data?.ogTitle || '',
+        ogDescription: data?.ogDescription || '',
+        ogImageUrl: data?.ogImageUrl || '',
+      }}
+    >
       {({ setValue }) => {
         return (
           <>
@@ -101,28 +112,16 @@ export function LinkEditForm({
               <TextField placeholder="https://example.com" autoComplete="off" />
             </FormField>
 
-            <FormField label="Title" name="ogTitle">
-              <TextField autoComplete="off" />
-            </FormField>
-
-            <FormField label="Description" name="ogDescription">
-              <TextField autoComplete="off" />
-            </FormField>
-
-            <FormField label="Image URL" name="ogImageUrl">
-              <TextField autoComplete="off" />
-            </FormField>
-
             <Column>
               <Label>{formatMessage(labels.link)}</Label>
               <Row alignItems="center" gap>
-                <FormField
-                  name="slug"
-                  rules={{ required: formatMessage(labels.required) }}
-                  style={{ width: '100%' }}
-                >
-                  <TextField autoComplete="off" />
-                </FormField>
+                <TextField
+                  value={`${hostUrl}/${slug}`}
+                  autoComplete="off"
+                  isReadOnly
+                  allowCopy
+                  style={{ flex: 1 }}
+                />
                 <Button
                   variant="quiet"
                   onPress={() => setValue('slug', handleSlug(), { shouldDirty: true })}
@@ -133,6 +132,44 @@ export function LinkEditForm({
                 </Button>
               </Row>
             </Column>
+
+            <Row
+              alignItems="center"
+              gap="2"
+              style={{ cursor: 'pointer', userSelect: 'none' }}
+              onClick={() => setShowAdvanced(!showAdvanced)}
+            >
+              <Icon size="sm">{showAdvanced ? <ChevronDown /> : <ChevronRight />}</Icon>
+              <Label style={{ cursor: 'pointer' }}>{formatMessage(labels.advanced)}</Label>
+            </Row>
+
+            {showAdvanced && (
+              <Column gap="3">
+                <FormField label="Title" name="ogTitle">
+                  <TextField autoComplete="off" />
+                </FormField>
+
+                <FormField label="Description" name="ogDescription">
+                  <TextField autoComplete="off" />
+                </FormField>
+
+                <FormField label="Image URL" name="ogImageUrl">
+                  <TextField autoComplete="off" />
+                </FormField>
+
+                <Column>
+                  <Label>{formatMessage(labels.path)}</Label>
+                  <TextField
+                    value={slug}
+                    onChange={(value: string) => {
+                      setSlug(value);
+                      setValue('slug', value, { shouldDirty: true });
+                    }}
+                    autoComplete="off"
+                  />
+                </Column>
+              </Column>
+            )}
 
             <Row justifyContent="flex-end" paddingTop="3" gap="3">
               {onClose && (
