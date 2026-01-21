@@ -12,7 +12,11 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     return notFound();
   }
 
-  const data = { shareId: share.id };
+  const data = {
+    shareId: share.id,
+    websiteId: share.entityId,
+    parameters: share.parameters,
+  };
   const token = createToken(data, secret());
 
   return json({ ...data, token });

@@ -1,6 +1,18 @@
 'use client';
-import { Column, useTheme } from '@umami/react-zen';
+import { Column, Grid, useTheme } from '@umami/react-zen';
 import { useEffect } from 'react';
+import { AttributionPage } from '@/app/(main)/websites/[websiteId]/(reports)/attribution/AttributionPage';
+import { BreakdownPage } from '@/app/(main)/websites/[websiteId]/(reports)/breakdown/BreakdownPage';
+import { FunnelsPage } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/FunnelsPage';
+import { GoalsPage } from '@/app/(main)/websites/[websiteId]/(reports)/goals/GoalsPage';
+import { JourneysPage } from '@/app/(main)/websites/[websiteId]/(reports)/journeys/JourneysPage';
+import { RetentionPage } from '@/app/(main)/websites/[websiteId]/(reports)/retention/RetentionPage';
+import { RevenuePage } from '@/app/(main)/websites/[websiteId]/(reports)/revenue/RevenuePage';
+import { UTMPage } from '@/app/(main)/websites/[websiteId]/(reports)/utm/UTMPage';
+import { ComparePage } from '@/app/(main)/websites/[websiteId]/compare/ComparePage';
+import { EventsPage } from '@/app/(main)/websites/[websiteId]/events/EventsPage';
+import { RealtimePage } from '@/app/(main)/websites/[websiteId]/realtime/RealtimePage';
+import { SessionsPage } from '@/app/(main)/websites/[websiteId]/sessions/SessionsPage';
 import { WebsiteHeader } from '@/app/(main)/websites/[websiteId]/WebsiteHeader';
 import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
 import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
@@ -8,8 +20,26 @@ import { PageBody } from '@/components/common/PageBody';
 import { useShareTokenQuery } from '@/components/hooks';
 import { Footer } from './Footer';
 import { Header } from './Header';
+import { ShareNav } from './ShareNav';
 
-export function SharePage({ shareId }) {
+const PAGE_COMPONENTS: Record<string, React.ComponentType<{ websiteId: string }>> = {
+  '': WebsitePage,
+  overview: WebsitePage,
+  events: EventsPage,
+  sessions: SessionsPage,
+  realtime: RealtimePage,
+  compare: ComparePage,
+  breakdown: BreakdownPage,
+  goals: GoalsPage,
+  funnels: FunnelsPage,
+  journeys: JourneysPage,
+  retention: RetentionPage,
+  utm: UTMPage,
+  revenue: RevenuePage,
+  attribution: AttributionPage,
+};
+
+export function SharePage({ shareId, path = '' }: { shareId: string; path?: string }) {
   const { shareToken, isLoading } = useShareTokenQuery(shareId);
   const { setTheme } = useTheme();
 
@@ -26,16 +56,42 @@ export function SharePage({ shareId }) {
     return null;
   }
 
+  const { websiteId, parameters = {} } = shareToken;
+
+  // Check if the requested path is allowed
+  const pageKey = path || '';
+  const isAllowed = pageKey === '' || pageKey === 'overview' || parameters[pageKey] !== false;
+
+  if (!isAllowed) {
+    return null;
+  }
+
+  const PageComponent = PAGE_COMPONENTS[pageKey] || WebsitePage;
+
   return (
     <Column backgroundColor="2">
-      <PageBody gap>
-        <Header />
-        <WebsiteProvider websiteId={shareToken.websiteId}>
-          <WebsiteHeader showActions={false} />
-          <WebsitePage websiteId={shareToken.websiteId} />
-        </WebsiteProvider>
-        <Footer />
-      </PageBody>
+      <Header />
+      <Grid columns={{ xs: '1fr', lg: 'auto 1fr' }} width="100%" height="100%">
+        <Column
+          display={{ xs: 'none', lg: 'flex' }}
+          width="240px"
+          height="100%"
+          border="right"
+          backgroundColor
+          marginRight="2"
+        >
+          <ShareNav shareId={shareId} parameters={parameters} />
+        </Column>
+        <PageBody gap>
+          <WebsiteProvider websiteId={websiteId}>
+            <WebsiteHeader showActions={false} />
+            <Column>
+              <PageComponent websiteId={websiteId} />
+            </Column>
+          </WebsiteProvider>
+        </PageBody>
+      </Grid>
+      <Footer />
     </Column>
   );
 }
