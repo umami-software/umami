@@ -1,6 +1,8 @@
-import { Button, Column, Heading, Row, Text } from '@umami/react-zen';
+import { Column, Heading, Row, Text } from '@umami/react-zen';
 import { Plus } from 'lucide-react';
-import { useApi, useMessages, useModified, useWebsiteSharesQuery } from '@/components/hooks';
+import { useMessages, useWebsiteSharesQuery } from '@/components/hooks';
+import { DialogButton } from '@/components/input/DialogButton';
+import { ShareCreateForm } from './ShareCreateForm';
 import { SharesTable } from './SharesTable';
 
 export interface WebsiteShareFormProps {
@@ -10,13 +12,6 @@ export interface WebsiteShareFormProps {
 export function WebsiteShareForm({ websiteId }: WebsiteShareFormProps) {
   const { formatMessage, labels, messages } = useMessages();
   const { data, isLoading } = useWebsiteSharesQuery({ websiteId });
-  const { post } = useApi();
-  const { touch } = useModified();
-
-  const handleCreate = async () => {
-    await post(`/websites/${websiteId}/shares`, { parameters: {} });
-    touch('shares');
-  };
 
   const shares = data?.data || [];
   const hasShares = shares.length > 0;
@@ -25,10 +20,15 @@ export function WebsiteShareForm({ websiteId }: WebsiteShareFormProps) {
     <Column gap="4">
       <Row justifyContent="space-between" alignItems="center">
         <Heading>{formatMessage(labels.share)}</Heading>
-        <Button variant="primary" onPress={handleCreate}>
-          <Plus size={16} />
-          <Text>{formatMessage(labels.add)}</Text>
-        </Button>
+        <DialogButton
+          icon={<Plus size={16} />}
+          label={formatMessage(labels.add)}
+          title={formatMessage(labels.share)}
+          variant="primary"
+          width="400px"
+        >
+          {({ close }) => <ShareCreateForm websiteId={websiteId} onClose={close} />}
+        </DialogButton>
       </Row>
       {hasShares ? (
         <>
