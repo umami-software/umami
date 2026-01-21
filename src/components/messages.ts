@@ -364,6 +364,7 @@ export const labels = defineMessages({
   documentation: { id: 'label.documentation', defaultMessage: 'Documentation' },
   switchAccount: { id: 'label.switch-account', defaultMessage: 'Switch account' },
   advanced: { id: 'label.advanced', defaultMessage: 'Advanced' },
+  copied: { id: 'label.copied', defaultMessage: 'Copied to clipboard' },
 });
 
 export const messages = defineMessages({

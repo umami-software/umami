@@ -1,0 +1,14 @@
+.link {
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.iconLink {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--base-color-10);
+}
