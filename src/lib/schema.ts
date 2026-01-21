@@ -174,6 +174,7 @@ export const revenueReportSchema = z.object({
   parameters: z.object({
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
+    unit: unitParam.optional(),
     timezone: z.string().optional(),
     currency: z.string(),
   }),
