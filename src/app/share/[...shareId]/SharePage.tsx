@@ -26,15 +26,17 @@ export function SharePage({ shareId }) {
     return null;
   }
 
+  const { whiteLabel } = shareToken;
+
   return (
     <Column backgroundColor="2">
       <PageBody gap>
-        <Header />
+        <Header whiteLabel={whiteLabel} />
         <WebsiteProvider websiteId={shareToken.websiteId}>
           <WebsiteHeader showActions={false} />
           <WebsitePage websiteId={shareToken.websiteId} />
         </WebsiteProvider>
-        <Footer />
+        <Footer whiteLabel={whiteLabel} />
       </PageBody>
     </Column>
   );

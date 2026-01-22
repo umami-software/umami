@@ -30,6 +30,7 @@ package-lock.json
 *.log
 .vscode
 .tool-versions
+.claude
 
 # debug
 npm-debug.log*
