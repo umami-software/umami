@@ -33,7 +33,7 @@ export function SharePage({ shareId }) {
       <PageBody gap>
         <Header whiteLabel={whiteLabel} />
         <WebsiteProvider websiteId={shareToken.websiteId}>
-          <WebsiteHeader showActions={false} />
+          <WebsiteHeader showActions={false} allowLink={false} />
           <WebsitePage websiteId={shareToken.websiteId} />
         </WebsiteProvider>
         <Footer whiteLabel={whiteLabel} />
