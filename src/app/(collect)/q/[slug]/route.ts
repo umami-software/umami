@@ -55,11 +55,22 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
       userAgent,
     );
 
-  if (isBot && (link.ogTitle || link.ogDescription || link.ogImageUrl)) {
+  if (isBot) {
     const ogTitle = escapeHtml(link.ogTitle || link.name);
     const ogDescription = escapeHtml(link.ogDescription || '');
     const ogImageUrl = escapeHtml(link.ogImageUrl || '');
-    const url = escapeHtml(link.url);
+    const ogDescriptionTag = ogDescription
+      ? `<meta property="og:description" content="${ogDescription}">`
+      : '';
+    const ogImageTag = ogImageUrl ? `<meta property="og:image" content="${ogImageUrl}">` : '';
+    const twitterCard = ogImageUrl ? 'summary_large_image' : 'summary';
+    const metaDescriptionTag = ogDescription
+      ? `<meta name="description" content="${ogDescription}">`
+      : '';
+    const twitterDescriptionTag = ogDescription
+      ? `<meta name="twitter:description" content="${ogDescription}">`
+      : '';
+    const twitterImageTag = ogImageUrl ? `<meta name="twitter:image" content="${ogImageUrl}">` : '';
 
     return new Response(
       `
@@ -68,14 +79,21 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
       <head>
         <meta charset="utf-8">
         <title>${ogTitle}</title>
+
+        <meta name="title" content="${ogTitle}">
+        ${metaDescriptionTag}
+
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="Umami">
         <meta property="og:title" content="${ogTitle}">
-        <meta property="og:description" content="${ogDescription}">
-        <meta property="og:image" content="${ogImageUrl}">
-        <meta property="og:url" content="${url}">
-        <meta name="twitter:card" content="summary_large_image">
+        <meta property="og:url" content="${request.url}">
+        ${ogDescriptionTag}
+        ${ogImageTag}
+
+        <meta name="twitter:card" content="${twitterCard}">
         <meta name="twitter:title" content="${ogTitle}">
-        <meta name="twitter:description" content="${ogDescription}">
-        <meta name="twitter:image" content="${ogImageUrl}">
+        ${twitterDescriptionTag}
+        ${twitterImageTag}
       </head>
       <body></body>
       </html>
