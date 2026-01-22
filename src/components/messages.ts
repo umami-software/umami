@@ -355,6 +355,7 @@ export const labels = defineMessages({
   saveCohort: { id: 'label.save-cohort', defaultMessage: 'Save as cohort' },
   analysis: { id: 'label.analysis', defaultMessage: 'Analysis' },
   destinationUrl: { id: 'label.destination-url', defaultMessage: 'Destination URL' },
+  imageUrl: { id: 'label.image-url', defaultMessage: 'Image URL' },
   audience: { id: 'label.audience', defaultMessage: 'Audience' },
   invalidUrl: { id: 'label.invalid-url', defaultMessage: 'Invalid URL' },
   environment: { id: 'label.environment', defaultMessage: 'Environment' },

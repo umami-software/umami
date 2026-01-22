@@ -145,15 +145,15 @@ export function LinkEditForm({
 
             {showAdvanced && (
               <Column gap="3">
-                <FormField label="Title" name="ogTitle">
+                <FormField label={formatMessage(labels.title)} name="ogTitle">
                   <TextField autoComplete="off" />
                 </FormField>
 
-                <FormField label="Description" name="ogDescription">
+                <FormField label={formatMessage(labels.description)} name="ogDescription">
                   <TextField autoComplete="off" />
                 </FormField>
 
-                <FormField label="Image URL" name="ogImageUrl">
+                <FormField label={formatMessage(labels.imageUrl)} name="ogImageUrl">
                   <TextField autoComplete="off" />
                 </FormField>
 
