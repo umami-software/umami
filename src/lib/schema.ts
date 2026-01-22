@@ -157,7 +157,7 @@ export const retentionReportSchema = z.object({
   parameters: z.object({
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
-    timezone: z.string().optional(),
+    timezone: timezoneParam.optional(),
   }),
 });
 
@@ -175,7 +175,7 @@ export const revenueReportSchema = z.object({
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
     unit: unitParam.optional(),
-    timezone: z.string().optional(),
+    timezone: timezoneParam.optional(),
     currency: z.string(),
   }),
 });
