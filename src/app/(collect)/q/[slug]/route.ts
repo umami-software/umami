@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic';
 
+import { isbot } from 'isbot';
 import { NextResponse } from 'next/server';
 import { POST } from '@/app/api/send/route';
 import type { Link } from '@/generated/prisma/client';
@@ -14,6 +15,14 @@ function escapeHtml(str: string): string {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/'/g, '&#39;');
+}
+
+function metaTag(property: string, content: string | undefined, isName = false): string {
+  if (!content) return '';
+  const escaped = escapeHtml(content);
+  return isName
+    ? `<meta name="${property}" content="${escaped}">`
+    : `<meta property="${property}" content="${escaped}">`;
 }
 
 export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
@@ -50,27 +59,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
   }
 
   const userAgent = request.headers.get('user-agent') || '';
-  const isBot =
-    /facebookexternalhit|twitterbot|linkedinbot|whatsapp|slackbot|discordbot|telegrambot|applebot|bingbot|googlebot/i.test(
-      userAgent,
-    );
 
-  if (isBot) {
-    const ogTitle = escapeHtml(link.ogTitle || link.name);
-    const ogDescription = escapeHtml(link.ogDescription || '');
-    const ogImageUrl = escapeHtml(link.ogImageUrl || '');
-    const ogDescriptionTag = ogDescription
-      ? `<meta property="og:description" content="${ogDescription}">`
-      : '';
-    const ogImageTag = ogImageUrl ? `<meta property="og:image" content="${ogImageUrl}">` : '';
+  if (isbot(userAgent)) {
+    const ogTitle = link.ogTitle || link.name;
+    const ogDescription = link.ogDescription || undefined;
+    const ogImageUrl = link.ogImageUrl || undefined;
     const twitterCard = ogImageUrl ? 'summary_large_image' : 'summary';
-    const metaDescriptionTag = ogDescription
-      ? `<meta name="description" content="${ogDescription}">`
-      : '';
-    const twitterDescriptionTag = ogDescription
-      ? `<meta name="twitter:description" content="${ogDescription}">`
-      : '';
-    const twitterImageTag = ogImageUrl ? `<meta name="twitter:image" content="${ogImageUrl}">` : '';
 
     return new Response(
       `
@@ -78,29 +72,29 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
       <html lang="en">
       <head>
         <meta charset="utf-8">
-        <title>${ogTitle}</title>
-
-        <meta name="title" content="${ogTitle}">
-        ${metaDescriptionTag}
-
-        <meta property="og:type" content="website">
-        <meta property="og:site_name" content="Umami">
-        <meta property="og:title" content="${ogTitle}">
-        <meta property="og:url" content="${request.url}">
-        ${ogDescriptionTag}
-        ${ogImageTag}
-
+        <title>${escapeHtml(ogTitle)}</title>
+        ${metaTag('title', ogTitle, true)}
+        ${metaTag('description', ogDescription, true)}
+        ${metaTag('og:type', 'website')}
+        ${metaTag('og:site_name', 'Umami')}
+        ${metaTag('og:title', ogTitle)}
+        ${metaTag('og:url', request.url)}
+        ${metaTag('og:description', ogDescription)}
+        ${metaTag('og:image', ogImageUrl)}
         <meta name="twitter:card" content="${twitterCard}">
-        <meta name="twitter:title" content="${ogTitle}">
-        ${twitterDescriptionTag}
-        ${twitterImageTag}
+        ${metaTag('twitter:title', ogTitle, true)}
+        ${metaTag('twitter:description', ogDescription, true)}
+        ${metaTag('twitter:image', ogImageUrl, true)}
       </head>
-      <body></body>
+      <body>
+        <p>Redirecting to ${escapeHtml(link.url)}...</p>
+      </body>
       </html>
-    `,
+      `,
       {
         headers: {
           'content-type': 'text/html',
+          'cache-control': 's-maxage=300, stale-while-revalidate',
         },
       },
     );
