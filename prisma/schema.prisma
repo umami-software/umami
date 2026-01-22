@@ -342,6 +342,7 @@ model Board {
 model Share {
   id         String    @id() @map("share_id") @db.Uuid
   entityId   String    @map("entity_id") @db.Uuid
+  name       String    @db.VarChar(200)
   shareType  Int       @map("share_type") @db.Integer
   slug       String    @unique() @db.VarChar(100)
   parameters Json
