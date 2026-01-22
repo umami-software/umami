@@ -16,7 +16,7 @@ export async function canCreateTeam({ user }: Auth) {
     return true;
   }
 
-  return !!user;
+  return hasPermission(user.role, PERMISSIONS.teamCreate);
 }
 
 export async function canUpdateTeam({ user }: Auth, teamId: string) {
