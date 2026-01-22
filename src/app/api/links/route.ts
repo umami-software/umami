@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     slug: z.string().min(4).max(100),
     ogTitle: z.string().max(500).optional(),
     ogDescription: z.string().max(500).optional(),
-    ogImageUrl: z.url().max(500).optional().or(z.literal('')),
+    ogImageUrl: z.union([z.string().max(500).pipe(z.url()), z.literal('')]).optional(),
     teamId: z.string().nullable().optional(),
     id: z.uuid().nullable().optional(),
   });

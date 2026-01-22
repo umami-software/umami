@@ -29,7 +29,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ lin
     slug: z.string().min(4).optional(),
     ogTitle: z.string().max(500).optional(),
     ogDescription: z.string().max(500).optional(),
-    ogImageUrl: z.url().max(500).optional().or(z.literal('')),
+    ogImageUrl: z.union([z.string().max(500).pipe(z.url()), z.literal('')]).optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
