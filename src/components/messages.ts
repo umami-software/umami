@@ -4,6 +4,8 @@ export const labels = defineMessages({
   ok: { id: 'label.ok', defaultMessage: 'OK' },
   unknown: { id: 'label.unknown', defaultMessage: 'Unknown' },
   required: { id: 'label.required', defaultMessage: 'Required' },
+  tooShort: { id: 'label.too-short', defaultMessage: 'Too short' },
+  tooLong: { id: 'label.too-long', defaultMessage: 'Too long' },
   save: { id: 'label.save', defaultMessage: 'Save' },
   cancel: { id: 'label.cancel', defaultMessage: 'Cancel' },
   continue: { id: 'label.continue', defaultMessage: 'Continue' },
