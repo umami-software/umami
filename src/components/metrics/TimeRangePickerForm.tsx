@@ -36,7 +36,7 @@ export function TimeRangePickerForm({
 
   const handleSave = () => {
     const start = setMinutes(setHours(startOfDay(date), startHour), 0);
-    const end = setMinutes(setHours(startOfDay(date), endHour), 59);
+    const end = setMinutes(setHours(startOfDay(date), endHour + 1), 0);
     onChange(`range:${start.getTime()}:${end.getTime()}`);
   };
 
