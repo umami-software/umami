@@ -249,7 +249,7 @@ export const reportResultSchema = z.intersection(
 
 export const segmentTypeParam = z.enum(['segment', 'cohort']);
 
-export const segmentParametersSchema = z.object({
+export const segmentParamSchema = z.object({
   filters: z
     .array(
       z.object({
