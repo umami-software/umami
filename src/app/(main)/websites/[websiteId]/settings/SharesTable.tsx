@@ -18,6 +18,9 @@ export function SharesTable(props: DataTableProps) {
 
   return (
     <DataTable {...props}>
+      <DataColumn id="name" label={formatMessage(labels.name)}>
+        {({ name }: any) => name}
+      </DataColumn>
       <DataColumn id="slug" label={formatMessage(labels.shareUrl)}>
         {({ slug }: any) => {
           const url = getUrl(slug);

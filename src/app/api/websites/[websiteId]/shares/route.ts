@@ -44,6 +44,7 @@ export async function POST(
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
+    name: z.string().max(200),
     parameters: anyObjectParam.optional(),
   });
 
@@ -54,7 +55,8 @@ export async function POST(
   }
 
   const { websiteId } = await params;
-  const { parameters = {} } = body;
+  const { name, parameters } = body;
+  const shareParameters = parameters ?? {};
 
   if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
@@ -66,8 +68,9 @@ export async function POST(
     id: uuid(),
     entityId: websiteId,
     shareType: ENTITY_TYPE.website,
+    name,
     slug,
-    parameters,
+    parameters: shareParameters,
   });
 
   return json(share);

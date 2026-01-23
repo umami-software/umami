@@ -7,6 +7,7 @@ import {
   FormSubmitButton,
   Row,
   Text,
+  TextField,
 } from '@umami/react-zen';
 import { useState } from 'react';
 import { useApi, useMessages, useModified } from '@/components/hooks';
@@ -32,6 +33,9 @@ export function ShareCreateForm({ websiteId, onSave, onClose }: ShareCreateFormP
     });
   });
 
+  // Get all item ids for validation
+  const allItemIds = SHARE_NAV_ITEMS.flatMap(section => section.items.map(item => item.id));
+
   const handleSubmit = async (data: any) => {
     setIsPending(true);
     try {
@@ -41,7 +45,7 @@ export function ShareCreateForm({ websiteId, onSave, onClose }: ShareCreateFormP
           parameters[item.id] = data[item.id] ?? false;
         });
       });
-      await post(`/websites/${websiteId}/shares`, { parameters });
+      await post(`/websites/${websiteId}/shares`, { name: data.name, parameters });
       touch('shares');
       onSave?.();
       onClose?.();
@@ -52,30 +56,46 @@ export function ShareCreateForm({ websiteId, onSave, onClose }: ShareCreateFormP
 
   return (
     <Form onSubmit={handleSubmit} defaultValues={defaultValues}>
-      <Column gap="3">
-        {SHARE_NAV_ITEMS.map(section => (
-          <Column key={section.section} gap="1">
-            <Text size="2" weight="bold">
-              {formatMessage((labels as any)[section.section])}
-            </Text>
-            <Column gap="1">
-              {section.items.map(item => (
-                <FormField key={item.id} name={item.id}>
-                  <Checkbox>{formatMessage((labels as any)[item.label])}</Checkbox>
-                </FormField>
-              ))}
-            </Column>
+      {({ watch }) => {
+        const values = watch();
+        const hasSelection = allItemIds.some(id => values[id]);
+
+        return (
+          <Column gap="3">
+            <FormField
+              label={formatMessage(labels.name)}
+              name="name"
+              rules={{ required: formatMessage(labels.required) }}
+            >
+              <TextField autoComplete="off" autoFocus />
+            </FormField>
+            {SHARE_NAV_ITEMS.map(section => (
+              <Column key={section.section} gap="1">
+                <Text size="2" weight="bold">
+                  {formatMessage((labels as any)[section.section])}
+                </Text>
+                <Column gap="1">
+                  {section.items.map(item => (
+                    <FormField key={item.id} name={item.id}>
+                      <Checkbox>{formatMessage((labels as any)[item.label])}</Checkbox>
+                    </FormField>
+                  ))}
+                </Column>
+              </Column>
+            ))}
+            <Row justifyContent="flex-end" paddingTop="3" gap="3">
+              {onClose && (
+                <Button isDisabled={isPending} onPress={onClose}>
+                  {formatMessage(labels.cancel)}
+                </Button>
+              )}
+              <FormSubmitButton isDisabled={isPending || !hasSelection}>
+                {formatMessage(labels.save)}
+              </FormSubmitButton>
+            </Row>
           </Column>
-        ))}
-        <Row justifyContent="flex-end" paddingTop="3" gap="3">
-          {onClose && (
-            <Button isDisabled={isPending} onPress={onClose}>
-              {formatMessage(labels.cancel)}
-            </Button>
-          )}
-          <FormSubmitButton isDisabled={isPending}>{formatMessage(labels.save)}</FormSubmitButton>
-        </Row>
-      </Column>
+        );
+      }}
     </Form>
   );
 }

@@ -25,6 +25,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ shar
 
 export async function POST(request: Request, { params }: { params: Promise<{ shareId: string }> }) {
   const schema = z.object({
+    name: z.string().max(200),
     slug: z.string().max(100),
     parameters: anyObjectParam,
   });
@@ -36,7 +37,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ sha
   }
 
   const { shareId } = await params;
-  const { slug, parameters } = body;
+  const { name, slug, parameters } = body;
 
   const share = await getShare(shareId);
 
@@ -49,6 +50,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ sha
   }
 
   const result = await updateShare(shareId, {
+    name,
     slug,
     parameters,
   } as any);

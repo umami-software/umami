@@ -5,6 +5,7 @@ import {
   Form,
   FormField,
   FormSubmitButton,
+  Grid,
   Label,
   Loading,
   Row,
@@ -62,7 +63,7 @@ export function ShareEditForm({
     });
 
     await mutateAsync(
-      { slug: share.slug, parameters },
+      { name: data.name, slug: share.slug, parameters },
       {
         onSuccess: async () => {
           toast(formatMessage(messages.saved));
@@ -81,7 +82,9 @@ export function ShareEditForm({
   const url = getUrl(share?.slug || '');
 
   // Build default values from share parameters
-  const defaultValues: Record<string, boolean> = {};
+  const defaultValues: Record<string, any> = {
+    name: share?.name || '',
+  };
   SHARE_NAV_ITEMS.forEach(section => {
     section.items.forEach(item => {
       const defaultSelected = item.id === 'overview' || item.id === 'events';
@@ -89,34 +92,55 @@ export function ShareEditForm({
     });
   });
 
+  // Get all item ids for validation
+  const allItemIds = SHARE_NAV_ITEMS.flatMap(section => section.items.map(item => item.id));
+
   return (
     <Form onSubmit={handleSubmit} error={getErrorMessage(error)} defaultValues={defaultValues}>
-      <Column gap="3">
-        <Column>
-          <Label>{formatMessage(labels.shareUrl)}</Label>
-          <TextField value={url} isReadOnly allowCopy />
-        </Column>
-        {SHARE_NAV_ITEMS.map(section => (
-          <Column key={section.section} gap="1">
-            <Text weight="bold">{formatMessage((labels as any)[section.section])}</Text>
-            <Column gap="1">
-              {section.items.map(item => (
-                <FormField key={item.id} name={item.id}>
-                  <Checkbox>{formatMessage((labels as any)[item.label])}</Checkbox>
-                </FormField>
-              ))}
+      {({ watch }) => {
+        const values = watch();
+        const hasSelection = allItemIds.some(id => values[id]);
+
+        return (
+          <Column gap="6">
+            <Column>
+              <Label>{formatMessage(labels.shareUrl)}</Label>
+              <TextField value={url} isReadOnly allowCopy />
             </Column>
+            <FormField
+              label={formatMessage(labels.name)}
+              name="name"
+              rules={{ required: formatMessage(labels.required) }}
+            >
+              <TextField autoComplete="off" />
+            </FormField>
+            <Grid columns="repeat(auto-fit, minmax(150px, 1fr))" gap="3">
+              {SHARE_NAV_ITEMS.map(section => (
+                <Column key={section.section} gap="3">
+                  <Text weight="bold">{formatMessage((labels as any)[section.section])}</Text>
+                  <Column gap="1">
+                    {section.items.map(item => (
+                      <FormField key={item.id} name={item.id}>
+                        <Checkbox>{formatMessage((labels as any)[item.label])}</Checkbox>
+                      </FormField>
+                    ))}
+                  </Column>
+                </Column>
+              ))}
+            </Grid>
+            <Row justifyContent="flex-end" paddingTop="3" gap="3">
+              {onClose && (
+                <Button isDisabled={isPending} onPress={onClose}>
+                  {formatMessage(labels.cancel)}
+                </Button>
+              )}
+              <FormSubmitButton variant="primary" isDisabled={!hasSelection || !values.name}>
+                {formatMessage(labels.save)}
+              </FormSubmitButton>
+            </Row>
           </Column>
-        ))}
-        <Row justifyContent="flex-end" paddingTop="3" gap="3">
-          {onClose && (
-            <Button isDisabled={isPending} onPress={onClose}>
-              {formatMessage(labels.cancel)}
-            </Button>
-          )}
-          <FormSubmitButton variant="primary">{formatMessage(labels.save)}</FormSubmitButton>
-        </Row>
-      </Column>
+        );
+      }}
     </Form>
   );
 }
