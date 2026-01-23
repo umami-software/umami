@@ -1,12 +1,13 @@
 import { Loading, Row, Text } from '@umami/react-zen';
-import { useWebsiteStatsQuery } from '@/components/hooks';
+import { useMessages, useWebsiteStatsQuery } from '@/components/hooks';
 
-interface UniqueSessionsProps {
+interface UniqueVisitorsProps {
   websiteId: string;
 }
 
-const UniqueSessions = ({ websiteId }: UniqueSessionsProps) => {
+const UniqueVisitors = ({ websiteId }: UniqueVisitorsProps) => {
   const { data, isLoading, error } = useWebsiteStatsQuery(websiteId);
+  const { formatMessage, labels } = useMessages();
 
   const renderContent = () => {
     if (isLoading) {
@@ -38,4 +39,4 @@ const UniqueSessions = ({ websiteId }: UniqueSessionsProps) => {
   );
 };
 
-export default UniqueSessions;
+export default UniqueVisitors;

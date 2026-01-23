@@ -4,7 +4,7 @@ import { FilterBar } from '@/components/input/FilterBar';
 import { MonthFilter } from '@/components/input/MonthFilter';
 import { WebsiteDateFilter } from '@/components/input/WebsiteDateFilter';
 import { WebsiteFilterButton } from '@/components/input/WebsiteFilterButton';
-import UniqueSessions from '@/components/metrics/UniqueSessions';
+import UniqueVisitors from '@/components/metrics/UniqueVisitors';
 
 export function WebsiteControls({
   websiteId,
@@ -26,7 +26,7 @@ export function WebsiteControls({
       <Grid columns={{ xs: '1fr', md: 'auto 1fr' }} gap>
         <Row alignItems="center" justifyContent="flex-start" gap="4">
           {allowFilter ? <WebsiteFilterButton websiteId={websiteId} /> : <div />}
-          <UniqueSessions websiteId={websiteId} />
+          <UniqueVisitors websiteId={websiteId} />
         </Row>
         <Row alignItems="center" justifyContent={{ xs: 'flex-start', md: 'flex-end' }}>
           {allowDateFilter && (
