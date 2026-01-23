@@ -1,4 +1,4 @@
-import { Container, Loading, Text } from '@umami/react-zen';
+import { Loading, Row, Text } from '@umami/react-zen';
 import { useWebsiteStatsQuery } from '@/components/hooks';
 
 interface UniqueSessionsProps {
@@ -22,19 +22,19 @@ const UniqueSessions = ({ websiteId }: UniqueSessionsProps) => {
     }
 
     return (
-      <Text size="5" className="text-white mr-3" weight="bold">
+      <Text size="5" weight="bold">
         {data?.visitors ?? 0}
       </Text>
     );
   };
 
   return (
-    <Container className="flex items-center gap-8">
+    <Row alignItems="center" gap="3">
       <Text size="5" color="gray">
         Unique Sessions:
       </Text>
       {renderContent()}
-    </Container>
+    </Row>
   );
 };
 
