@@ -6,7 +6,13 @@ import { useMessages, useNavigation, useWebsite } from '@/components/hooks';
 import { Edit } from '@/components/icons';
 import { ActiveUsers } from '@/components/metrics/ActiveUsers';
 
-export function WebsiteHeader({ showActions }: { showActions?: boolean }) {
+export function WebsiteHeader({
+  showActions,
+  allowLink = true,
+}: {
+  showActions?: boolean;
+  allowLink?: boolean;
+}) {
   const website = useWebsite();
   const { renderUrl, pathname } = useNavigation();
   const isSettings = pathname.endsWith('/settings');
@@ -21,7 +27,7 @@ export function WebsiteHeader({ showActions }: { showActions?: boolean }) {
     <PageHeader
       title={website.name}
       icon={<Favicon domain={website.domain} />}
-      titleHref={renderUrl(`/websites/${website.id}`, false)}
+      titleHref={allowLink ? renderUrl(`/websites/${website.id}`, false) : undefined}
     >
       <Row alignItems="center" gap="6" wrap="wrap">
         <ActiveUsers websiteId={website.id} />

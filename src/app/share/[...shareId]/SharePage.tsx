@@ -56,7 +56,7 @@ export function SharePage({ shareId, path = '' }: { shareId: string; path?: stri
     return null;
   }
 
-  const { websiteId, parameters = {} } = shareToken;
+  const { websiteId, parameters = {}, whiteLabel } = shareToken;
 
   // Check if the requested path is allowed
   const pageKey = path || '';
@@ -84,10 +84,11 @@ export function SharePage({ shareId, path = '' }: { shareId: string; path?: stri
         </Column>
         <PageBody gap>
           <WebsiteProvider websiteId={websiteId}>
-            <WebsiteHeader showActions={false} />
+            <Header whiteLabel={whiteLabel} />
             <Column>
               <PageComponent websiteId={websiteId} />
             </Column>
+            <Footer whiteLabel={whiteLabel} />
           </WebsiteProvider>
         </PageBody>
       </Grid>
