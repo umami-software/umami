@@ -76,8 +76,8 @@ async function relationalQuery(
   const country = await rawQuery(
     `
     select
-      session.country as name,
-      sum(revenue) value
+      session.country as "name",
+      sum(revenue) as "value"
     from revenue 
     ${joinQuery}
     join session 
@@ -176,8 +176,8 @@ async function clickhouseQuery(
   >(
     `
       select
-        website_event.country as name,
-        sum(website_revenue.revenue) as value
+        website_event.country as "name",
+        sum(website_revenue.revenue) as "value"
       from website_revenue
       any left join (
       select * 
