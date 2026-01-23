@@ -292,7 +292,7 @@ export function getMinimumUnit(
       : differenceInDays(endDate, startDate) <= 30
   ) {
     return 'hour';
-  } else if (differenceInCalendarMonths(endDate, startDate) <= 6) {
+  } else if (differenceInCalendarMonths(endDate, startDate) <= 7) {
     return 'day';
   } else if (differenceInCalendarMonths(endDate, startDate) <= 24) {
     return 'month';
