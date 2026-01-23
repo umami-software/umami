@@ -2,8 +2,8 @@
 CREATE TABLE "share" (
     "share_id" UUID NOT NULL,
     "entity_id" UUID NOT NULL,
-    "share_type" INTEGER NOT NULL,
     "name" VARCHAR(200) NOT NULL,
+    "share_type" INTEGER NOT NULL,
     "slug" VARCHAR(100) NOT NULL,
     "parameters" JSONB NOT NULL,
     "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
@@ -11,9 +11,6 @@ CREATE TABLE "share" (
 
     CONSTRAINT "share_pkey" PRIMARY KEY ("share_id")
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "share_share_id_key" ON "share"("share_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "share_slug_key" ON "share"("slug");
@@ -28,7 +25,7 @@ SELECT gen_random_uuid(),
        name,
        1,
        share_id,
-       '{}'::jsonb,
+       '{"overview":true}'::jsonb,
        now()
 FROM "website"
 WHERE share_id IS NOT NULL;

@@ -1,7 +1,4 @@
 -- DropIndex
-DROP INDEX "board_board_id_key";
-
--- DropIndex
 DROP INDEX "link_link_id_key";
 
 -- DropIndex
@@ -18,9 +15,6 @@ DROP INDEX "segment_segment_id_key";
 
 -- DropIndex
 DROP INDEX "session_session_id_key";
-
--- DropIndex
-DROP INDEX "share_share_id_key";
 
 -- DropIndex
 DROP INDEX "team_team_id_key";
