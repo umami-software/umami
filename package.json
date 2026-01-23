@@ -111,6 +111,8 @@
     "pure-rand": "^7.0.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "openid-client": "^6.3.4",
+    "react-basics": "^0.126.0",
     "react-error-boundary": "^4.0.4",
     "react-intl": "^7.1.14",
     "react-simple-maps": "^2.3.0",
