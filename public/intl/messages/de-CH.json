@@ -23,6 +23,12 @@
       "value": "hinzuefüege"
     }
   ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "Board hinzuefüege"
+    }
+  ],
   "label.add-description": [
     {
       "type": 0,
@@ -53,6 +59,12 @@
       "value": "Administrator"
     }
   ],
+  "label.affiliate": [
+    {
+      "type": 0,
+      "value": "Partnerprogramm"
+    }
+  ],
   "label.after": [
     {
       "type": 0,
@@ -74,7 +86,25 @@
   "label.analytics": [
     {
       "type": 0,
-      "value": "Analytics"
+      "value": "Analytik"
+    }
+  ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "Aawände"
+    }
+  ],
+  "label.attribution": [
+    {
+      "type": 0,
+      "value": "Zuordnig"
+    }
+  ],
+  "label.attribution-description": [
+    {
+      "type": 0,
+      "value": "Lueg wie d'Benutzer mit dim Marketing interagiere und was zu Umwandlige führt."
     }
   ],
   "label.average": [
@@ -93,6 +123,12 @@
     {
       "type": 0,
       "value": "Vor"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "Boards"
     }
   ],
   "label.bounce-rate": [
@@ -119,6 +155,12 @@
       "value": "Browser"
     }
   ],
+  "label.campaigns": [
+    {
+      "type": 0,
+      "value": "Kampagne"
+    }
+  ],
   "label.cancel": [
     {
       "type": 0,
@@ -129,6 +171,12 @@
     {
       "type": 0,
       "value": "Passwort ändere"
+    }
+  ],
+  "label.channels": [
+    {
+      "type": 0,
+      "value": "Kanäle"
     }
   ],
   "label.cities": [
@@ -149,10 +197,22 @@
       "value": "Alles lösche"
     }
   ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "Gruppe"
+    }
+  ],
   "label.compare": [
     {
       "type": 0,
       "value": "Vergliiche"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "Datum vergleiche"
     }
   ],
   "label.confirm": [
@@ -173,10 +233,34 @@
       "value": "Enthaltet"
     }
   ],
+  "label.content": [
+    {
+      "type": 0,
+      "value": "Inhalt"
+    }
+  ],
   "label.continue": [
     {
       "type": 0,
       "value": "Wiiter"
+    }
+  ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "Umwandlig"
+    }
+  ],
+  "label.conversion-rate": [
+    {
+      "type": 0,
+      "value": "Umwandligsrate"
+    }
+  ],
+  "label.conversion-step": [
+    {
+      "type": 0,
+      "value": "Umwandligsschritt"
     }
   ],
   "label.count": [
@@ -230,7 +314,13 @@
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "Erstellt vo"
+    }
+  ],
+  "label.currency": [
+    {
+      "type": 0,
+      "value": "Währung"
     }
   ],
   "label.current": [
@@ -347,16 +437,40 @@
       "value": "Grät"
     }
   ],
+  "label.direct": [
+    {
+      "type": 0,
+      "value": "Direkt"
+    }
+  ],
   "label.dismiss": [
     {
       "type": 0,
       "value": "Verwärfe"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "Eindeutigi ID"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
       "value": "Enthaltet nid"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "Isch nid debii"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "Existiert nid"
     }
   ],
   "label.domain": [
@@ -389,6 +503,12 @@
       "value": "Mitglied bearbeite"
     }
   ],
+  "label.email": [
+    {
+      "type": 0,
+      "value": "Email"
+    }
+  ],
   "label.enable-share-url": [
     {
       "type": 0,
@@ -419,10 +539,22 @@
       "value": "Ereigniss Date"
     }
   ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "Ereignissname"
+    }
+  ],
   "label.events": [
     {
       "type": 0,
       "value": "Ereigniss"
+    }
+  ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "Existiert"
     }
   ],
   "label.exit": [
@@ -473,6 +605,12 @@
       "value": "Filters"
     }
   ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "Erste Klick"
+    }
+  ],
   "label.first-seen": [
     {
       "type": 0,
@@ -489,6 +627,12 @@
     {
       "type": 0,
       "value": "Verstönd Sie d Konversions- und Abspruungsrate vo Nutzer."
+    }
+  ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "Funnels"
     }
   ],
   "label.goal": [
@@ -521,16 +665,28 @@
       "value": "Grösser oder gliich"
     }
   ],
-  "label.host": [
+  "label.grouped": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "Gruppiert"
     }
   ],
-  "label.hosts": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "Hostnam"
+    }
+  ],
+  "label.includes": [
+    {
+      "type": 0,
+      "value": "Isch debii"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "Iiblick"
     }
   ],
   "label.insights": [
@@ -551,6 +707,12 @@
       "value": "Isch"
     }
   ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "Isch falsch"
+    }
+  ],
   "label.is-not": [
     {
       "type": 0,
@@ -567,6 +729,12 @@
     {
       "type": 0,
       "value": "Isch gsetzt"
+    }
+  ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "Isch wahr"
     }
   ],
   "label.join": [
@@ -593,6 +761,12 @@
       "value": "Verstönd Sie, wie Nutzer dur Ihri Website navigiered."
     }
   ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "Reise"
+    }
+  ],
   "label.language": [
     {
       "type": 0,
@@ -609,6 +783,12 @@
     {
       "type": 0,
       "value": "Laptop"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "Letzte Klick"
     }
   ],
   "label.last-days": [
@@ -683,6 +863,12 @@
       "value": "Kliiner oder gliich"
     }
   ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "Links"
+    }
+  ],
   "label.login": [
     {
       "type": 0,
@@ -713,6 +899,18 @@
       "value": "Max"
     }
   ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Uusklappe"
+    }
+  ],
+  "label.medium": [
+    {
+      "type": 0,
+      "value": "Medium"
+    }
+  ],
   "label.member": [
     {
       "type": 0,
@@ -735,6 +933,12 @@
     {
       "type": 0,
       "value": "Händy"
+    }
+  ],
+  "label.model": [
+    {
+      "type": 0,
+      "value": "Model"
     }
   ],
   "label.more": [
@@ -813,10 +1017,46 @@
       "value": "OK"
     }
   ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
+    }
+  ],
+  "label.organic-search": [
+    {
+      "type": 0,
+      "value": "Organischi Suechi"
+    }
+  ],
+  "label.organic-shopping": [
+    {
+      "type": 0,
+      "value": "Organischi Iikauf"
+    }
+  ],
+  "label.organic-social": [
+    {
+      "type": 0,
+      "value": "Organischi Social Media"
+    }
+  ],
+  "label.organic-video": [
+    {
+      "type": 0,
+      "value": "Organischi Video"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
       "value": "OS"
+    }
+  ],
+  "label.other": [
+    {
+      "type": 0,
+      "value": "Anderi"
     }
   ],
   "label.overview": [
@@ -829,6 +1069,12 @@
     {
       "type": 0,
       "value": "Bsitzer"
+    }
+  ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "Siite"
     }
   ],
   "label.page-of": [
@@ -867,6 +1113,36 @@
       "value": "Siite"
     }
   ],
+  "label.paid-ads": [
+    {
+      "type": 0,
+      "value": "Bezahlti Werbung"
+    }
+  ],
+  "label.paid-search": [
+    {
+      "type": 0,
+      "value": "Bezahlti Suechi"
+    }
+  ],
+  "label.paid-shopping": [
+    {
+      "type": 0,
+      "value": "Bezahlti Iikauf"
+    }
+  ],
+  "label.paid-social": [
+    {
+      "type": 0,
+      "value": "Bezahlti Social Media"
+    }
+  ],
+  "label.paid-video": [
+    {
+      "type": 0,
+      "value": "Bezahlti Video"
+    }
+  ],
   "label.password": [
     {
       "type": 0,
@@ -883,6 +1159,12 @@
     {
       "type": 0,
       "value": "Pfade"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "Pixel"
     }
   ],
   "label.powered-by": [
@@ -922,13 +1204,13 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "Eigeschafte"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "Eigeschafte"
     }
   ],
   "label.queries": [
@@ -953,6 +1235,12 @@
     {
       "type": 0,
       "value": "Echtzit"
+    }
+  ],
+  "label.referral": [
+    {
+      "type": 0,
+      "value": "Empfehlig"
     }
   ],
   "label.referrer": [
@@ -989,6 +1277,12 @@
     {
       "type": 0,
       "value": "Regionä"
+    }
+  ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "Verblibe"
     }
   ],
   "label.remove": [
@@ -1051,12 +1345,6 @@
       "value": "Lueged Sie sich Ihre Umsatz im Lauf vor Ziit a."
     }
   ],
-  "label.revenue-property": [
-    {
-      "type": 0,
-      "value": "Umsatzeigenschafte"
-    }
-  ],
   "label.role": [
     {
       "type": 0,
@@ -1099,6 +1387,12 @@
       "value": "Datä uuswähle"
     }
   ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "Filter uuswähle"
+    }
+  ],
   "label.select-role": [
     {
       "type": 0,
@@ -1117,6 +1411,12 @@
       "value": "Sitzig"
     }
   ],
+  "label.session-data": [
+    {
+      "type": 0,
+      "value": "Sitzigsdate"
+    }
+  ],
   "label.sessions": [
     {
       "type": 0,
@@ -1129,6 +1429,12 @@
       "value": "Istellige"
     }
   ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "Teile"
+    }
+  ],
   "label.share-url": [
     {
       "type": 0,
@@ -1139,6 +1445,18 @@
     {
       "type": 0,
       "value": "Ein Tag"
+    }
+  ],
+  "label.sms": [
+    {
+      "type": 0,
+      "value": "SMS"
+    }
+  ],
+  "label.sources": [
+    {
+      "type": 0,
+      "value": "Quälle"
     }
   ],
   "label.start-step": [
@@ -1163,6 +1481,18 @@
     {
       "type": 0,
       "value": "Tablet"
+    }
+  ],
+  "label.tag": [
+    {
+      "type": 0,
+      "value": "Tag"
+    }
+  ],
+  "label.tags": [
+    {
+      "type": 0,
+      "value": "Stichwort"
     }
   ],
   "label.team": [
@@ -1201,6 +1531,12 @@
       "value": "Team Bsitzer"
     }
   ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "Team Istellige"
+    }
+  ],
   "label.team-view-only": [
     {
       "type": 0,
@@ -1217,6 +1553,12 @@
     {
       "type": 0,
       "value": "Teams"
+    }
+  ],
+  "label.terms": [
+    {
+      "type": 0,
+      "value": "Bedingige"
     }
   ],
   "label.theme": [
@@ -1351,28 +1693,10 @@
       "value": "Update"
     }
   ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "URL"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "URLs"
-    }
-  ],
   "label.user": [
     {
       "type": 0,
       "value": "Benutzer"
-    }
-  ],
-  "label.user-property": [
-    {
-      "type": 0,
-      "value": "Benutzereigeschafte"
     }
   ],
   "label.username": [
@@ -1531,6 +1855,12 @@
       "value": "x"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
@@ -1623,6 +1953,12 @@
     {
       "type": 1,
       "value": "url"
+    }
+  ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
     }
   ],
   "message.go-to-settings": [
@@ -1719,6 +2055,18 @@
       "value": "Es isch kei Websiite vorhande."
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1749,6 +2097,12 @@
     {
       "type": 0,
       "value": "Erfolgrich gspeichert."
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1805,6 +2159,12 @@
       "value": "Usglösts Ereigniss"
     }
   ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
@@ -1849,12 +2209,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "Bsuercher verlore"
     }
   ]
 }

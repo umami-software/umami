@@ -1,28 +1,26 @@
 import {
+  Column,
   Form,
-  FormRow,
-  FormInput,
   FormButtons,
-  TextField,
-  PasswordField,
-  SubmitButton,
+  FormField,
+  FormSubmitButton,
+  Heading,
   Icon,
+  PasswordField,
+  TextField,
   Button,
-} from 'react-basics';
+} from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
-import { useApi, useMessages } from '@/components/hooks';
-import { setUser } from '@/store/app';
+import { useApi, useMessages, useUpdateQuery } from '@/components/hooks';
+import { Logo } from '@/components/svg';
 import { setClientAuthToken } from '@/lib/client';
-import Logo from '@/assets/logo.svg';
-import styles from './LoginForm.module.css';
+import { setUser } from '@/store/app';
 
 export function LoginForm() {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, getErrorMessage } = useMessages();
   const router = useRouter();
-  const { post, useMutation } = useApi();
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) => post('/auth/login', data),
-  });
+  const { mutateAsync, error } = useUpdateQuery('/auth/login');
+  const { useMutation } = useApi();
   const { mutate: startOIDC, isPending: isOIDC } = useMutation({
     mutationFn: async (returnUrl?: string) => {
       const res = await fetch(
@@ -37,62 +35,58 @@ export function LoginForm() {
   });
 
   const handleSubmit = async (data: any) => {
-    mutate(data, {
+    await mutateAsync(data, {
       onSuccess: async ({ token, user }) => {
         setClientAuthToken(token);
         setUser(user);
-
-        router.push('/dashboard');
+        router.push('/');
       },
     });
   };
 
   return (
-    <div className={styles.login}>
-      <Icon className={styles.icon} size="xl">
+    <Column justifyContent="center" alignItems="center" gap="6">
+      <Icon size="lg">
         <Logo />
       </Icon>
-      <div className={styles.title}>umami</div>
-      <Form className={styles.form} onSubmit={handleSubmit} error={error}>
-        <FormRow label={formatMessage(labels.username)}>
-          <FormInput
-            data-test="input-username"
-            name="username"
-            rules={{ required: formatMessage(labels.required) }}
-          >
-            <TextField autoComplete="off" />
-          </FormInput>
-        </FormRow>
-        <FormRow label={formatMessage(labels.password)}>
-          <FormInput
-            data-test="input-password"
-            name="password"
-            rules={{ required: formatMessage(labels.required) }}
-          >
-            <PasswordField />
-          </FormInput>
-        </FormRow>
+      <Heading>umami</Heading>
+      <Form onSubmit={handleSubmit} error={getErrorMessage(error)}>
+        <FormField
+          label={formatMessage(labels.username)}
+          data-test="input-username"
+          name="username"
+          rules={{ required: formatMessage(labels.required) }}
+        >
+          <TextField autoComplete="username" />
+        </FormField>
+
+        <FormField
+          label={formatMessage(labels.password)}
+          data-test="input-password"
+          name="password"
+          rules={{ required: formatMessage(labels.required) }}
+        >
+          <PasswordField autoComplete="current-password" />
+        </FormField>
         <FormButtons>
-          <SubmitButton
+          <FormSubmitButton
             data-test="button-submit"
-            className={styles.button}
             variant="primary"
-            disabled={isPending}
+            style={{ flex: 1 }}
+            isDisabled={false}
           >
             {formatMessage(labels.login)}
-          </SubmitButton>
+          </FormSubmitButton>
           <Button
             variant="secondary"
             onClick={() => startOIDC('/dashboard')}
-            disabled={isOIDC}
-            className={styles.button}
+            isDisabled={isOIDC}
+            style={{ flex: 1 }}
           >
             Se connecter avec OIDC
           </Button>
         </FormButtons>
       </Form>
-    </div>
+    </Column>
   );
 }
-
-export default LoginForm;

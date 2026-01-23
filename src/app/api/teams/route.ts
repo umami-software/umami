@@ -1,10 +1,29 @@
 import { z } from 'zod';
-import { getRandomChars } from '@/lib/crypto';
-import { unauthorized, json } from '@/lib/response';
-import { canCreateTeam } from '@/lib/auth';
 import { uuid } from '@/lib/crypto';
-import { parseRequest } from '@/lib/request';
-import { createTeam } from '@/queries';
+import { getRandomChars } from '@/lib/generate';
+import { getQueryFilters, parseRequest } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
+import { pagingParams } from '@/lib/schema';
+import { canCreateTeam } from '@/permissions';
+import { createTeam, getUserTeams } from '@/queries/prisma';
+
+export async function GET(request: Request) {
+  const schema = z.object({
+    ...pagingParams,
+  });
+
+  const { auth, query, error } = await parseRequest(request, schema);
+
+  if (error) {
+    return error();
+  }
+
+  const filters = await getQueryFilters(query);
+
+  const teams = await getUserTeams(auth.user.id, filters);
+
+  return json(teams);
+}
 
 export async function POST(request: Request) {
   const schema = z.object({

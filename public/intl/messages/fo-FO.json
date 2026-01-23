@@ -2,7 +2,7 @@
   "label.access-code": [
     {
       "type": 0,
-      "value": "Access code"
+      "value": "Aðgangskoda"
     }
   ],
   "label.actions": [
@@ -20,25 +20,31 @@
   "label.add": [
     {
       "type": 0,
-      "value": "Add"
+      "value": "Legg afturat"
+    }
+  ],
+  "label.add-board": [
+    {
+      "type": 0,
+      "value": "Legg borð afturat"
     }
   ],
   "label.add-description": [
     {
       "type": 0,
-      "value": "Add description"
+      "value": "Legg lýsing afturat"
     }
   ],
   "label.add-member": [
     {
       "type": 0,
-      "value": "Add member"
+      "value": "Legg lim afturat"
     }
   ],
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "Legg stig afturat"
     }
   ],
   "label.add-website": [
@@ -53,10 +59,16 @@
       "value": "Fyrisitari"
     }
   ],
+  "label.affiliate": [
+    {
+      "type": 0,
+      "value": "Samband"
+    }
+  ],
   "label.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "Eftir"
     }
   ],
   "label.all": [
@@ -68,19 +80,37 @@
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "Allur tíðin"
     }
   ],
   "label.analytics": [
     {
       "type": 0,
-      "value": "Analytics"
+      "value": "Greining"
+    }
+  ],
+  "label.apply": [
+    {
+      "type": 0,
+      "value": "Nýt"
+    }
+  ],
+  "label.attribution": [
+    {
+      "type": 0,
+      "value": "Áseting"
+    }
+  ],
+  "label.attribution-description": [
+    {
+      "type": 0,
+      "value": "Síggj hvussu brúkarar samskifta við marknaðarføringina og hvat førir til umvendingar."
     }
   ],
   "label.average": [
     {
       "type": 0,
-      "value": "Average"
+      "value": "Miðal"
     }
   ],
   "label.back": [
@@ -92,7 +122,13 @@
   "label.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "Áðrenn"
+    }
+  ],
+  "label.boards": [
+    {
+      "type": 0,
+      "value": "Borð"
     }
   ],
   "label.bounce-rate": [
@@ -104,19 +140,25 @@
   "label.breakdown": [
     {
       "type": 0,
-      "value": "Breakdown"
+      "value": "Sundurgreining"
     }
   ],
   "label.browser": [
     {
       "type": 0,
-      "value": "Browser"
+      "value": "Kagi"
     }
   ],
   "label.browsers": [
     {
       "type": 0,
       "value": "Kagar"
+    }
+  ],
+  "label.campaigns": [
+    {
+      "type": 0,
+      "value": "Herferðir"
     }
   ],
   "label.cancel": [
@@ -131,34 +173,52 @@
       "value": "Skift loyniorð"
     }
   ],
+  "label.channels": [
+    {
+      "type": 0,
+      "value": "Rásir"
+    }
+  ],
   "label.cities": [
     {
       "type": 0,
-      "value": "Cities"
+      "value": "Býir"
     }
   ],
   "label.city": [
     {
       "type": 0,
-      "value": "City"
+      "value": "Býur"
     }
   ],
   "label.clear-all": [
     {
       "type": 0,
-      "value": "Clear all"
+      "value": "Tøm alt"
+    }
+  ],
+  "label.cohort": [
+    {
+      "type": 0,
+      "value": "Bólkur"
     }
   ],
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "Samanber"
+    }
+  ],
+  "label.compare-dates": [
+    {
+      "type": 0,
+      "value": "Samanber dato"
     }
   ],
   "label.confirm": [
     {
       "type": 0,
-      "value": "Confirm"
+      "value": "Staðfest"
     }
   ],
   "label.confirm-password": [
@@ -170,19 +230,43 @@
   "label.contains": [
     {
       "type": 0,
-      "value": "Contains"
+      "value": "Inniheldur"
+    }
+  ],
+  "label.content": [
+    {
+      "type": 0,
+      "value": "Innihald"
     }
   ],
   "label.continue": [
     {
       "type": 0,
-      "value": "Continue"
+      "value": "Halt fram"
+    }
+  ],
+  "label.conversion": [
+    {
+      "type": 0,
+      "value": "Umvending"
+    }
+  ],
+  "label.conversion-rate": [
+    {
+      "type": 0,
+      "value": "Umvendingarprosent"
+    }
+  ],
+  "label.conversion-step": [
+    {
+      "type": 0,
+      "value": "Umvendingarstigur"
     }
   ],
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "Tal"
     }
   ],
   "label.countries": [
@@ -194,49 +278,55 @@
   "label.country": [
     {
       "type": 0,
-      "value": "Country"
+      "value": "Land"
     }
   ],
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "Stovna"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "Create report"
+      "value": "Stovna frágreiðing"
     }
   ],
   "label.create-team": [
     {
       "type": 0,
-      "value": "Create team"
+      "value": "Stovna lið"
     }
   ],
   "label.create-user": [
     {
       "type": 0,
-      "value": "Create user"
+      "value": "Stovna brúkara"
     }
   ],
   "label.created": [
     {
       "type": 0,
-      "value": "Created"
+      "value": "Stovnaður"
     }
   ],
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "Stovnaður av"
+    }
+  ],
+  "label.currency": [
+    {
+      "type": 0,
+      "value": "Gjaldoyra"
     }
   ],
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "Núverandi"
     }
   ],
   "label.current-password": [
@@ -260,13 +350,13 @@
   "label.data": [
     {
       "type": 0,
-      "value": "Data"
+      "value": "Dáta"
     }
   ],
   "label.date": [
     {
       "type": 0,
-      "value": "Date"
+      "value": "Dato"
     }
   ],
   "label.date-range": [
@@ -278,7 +368,7 @@
   "label.day": [
     {
       "type": 0,
-      "value": "Day"
+      "value": "Dagur"
     }
   ],
   "label.default-date-range": [
@@ -296,19 +386,19 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "Strika frágreiðing"
     }
   ],
   "label.delete-team": [
     {
       "type": 0,
-      "value": "Delete team"
+      "value": "Strika lið"
     }
   ],
   "label.delete-user": [
     {
       "type": 0,
-      "value": "Delete user"
+      "value": "Strika brúkara"
     }
   ],
   "label.delete-website": [
@@ -320,7 +410,7 @@
   "label.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "Lýsing"
     }
   ],
   "label.desktop": [
@@ -332,13 +422,13 @@
   "label.details": [
     {
       "type": 0,
-      "value": "Details"
+      "value": "Nærri upplýsingar"
     }
   ],
   "label.device": [
     {
       "type": 0,
-      "value": "Device"
+      "value": "Tól"
     }
   ],
   "label.devices": [
@@ -347,16 +437,40 @@
       "value": "Tóleindir"
     }
   ],
+  "label.direct": [
+    {
+      "type": 0,
+      "value": "Beinleiðis"
+    }
+  ],
   "label.dismiss": [
     {
       "type": 0,
       "value": "Lat fara"
     }
   ],
+  "label.distinct-id": [
+    {
+      "type": 0,
+      "value": "Sermerkt ID"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
-      "value": "Does not contain"
+      "value": "Inniheldur ikki"
+    }
+  ],
+  "label.does-not-include": [
+    {
+      "type": 0,
+      "value": "Er ikki við"
+    }
+  ],
+  "label.doest-not-exist": [
+    {
+      "type": 0,
+      "value": "Er ikki til"
     }
   ],
   "label.domain": [
@@ -380,13 +494,19 @@
   "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Ritstjórna yvirlitsskíggja"
     }
   ],
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "Ritstjórna lim"
+    }
+  ],
+  "label.email": [
+    {
+      "type": 0,
+      "value": "Teldupostur"
     }
   ],
   "label.enable-share-url": [
@@ -398,25 +518,31 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "Endastigur"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "Inngangs URL"
     }
   ],
   "label.event": [
     {
       "type": 0,
-      "value": "Event"
+      "value": "Tiltak"
     }
   ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "Tiltaksdata"
+    }
+  ],
+  "label.event-name": [
+    {
+      "type": 0,
+      "value": "Tiltaksnavn"
     }
   ],
   "label.events": [
@@ -425,34 +551,40 @@
       "value": "Hendingar/tiltøk"
     }
   ],
+  "label.exists": [
+    {
+      "type": 0,
+      "value": "Er til"
+    }
+  ],
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "Útgangs URL"
     }
   ],
   "label.false": [
     {
       "type": 0,
-      "value": "False"
+      "value": "Falskt"
     }
   ],
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "Øki"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Fields"
+      "value": "Øki"
     }
   ],
   "label.filter": [
     {
       "type": 0,
-      "value": "Filter"
+      "value": "Sía"
     }
   ],
   "label.filter-combined": [
@@ -470,145 +602,193 @@
   "label.filters": [
     {
       "type": 0,
-      "value": "Filters"
+      "value": "Síur"
+    }
+  ],
+  "label.first-click": [
+    {
+      "type": 0,
+      "value": "Fyrsta trýst"
     }
   ],
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "Fyrst sæddur"
     }
   ],
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Traktari"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "Fá yvirlit yvir umvendingar og fráfall hjá brúkarum."
+    }
+  ],
+  "label.funnels": [
+    {
+      "type": 0,
+      "value": "Traktarar"
     }
   ],
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "Mál"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "Mál"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "Fylg við málum fyri síðuvísingar og tiltøk."
     }
   ],
   "label.greater-than": [
     {
       "type": 0,
-      "value": "Greater than"
+      "value": "Størri enn"
     }
   ],
   "label.greater-than-equals": [
     {
       "type": 0,
-      "value": "Greater than or equals"
+      "value": "Størri ella javnt"
     }
   ],
-  "label.host": [
+  "label.grouped": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "Bólkað"
     }
   ],
-  "label.hosts": [
+  "label.hostname": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "Vertnavn"
+    }
+  ],
+  "label.includes": [
+    {
+      "type": 0,
+      "value": "Inniheldur"
+    }
+  ],
+  "label.insight": [
+    {
+      "type": 0,
+      "value": "Innlit"
     }
   ],
   "label.insights": [
     {
       "type": 0,
-      "value": "Insights"
+      "value": "Innlit"
     }
   ],
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "Fá meira innlit í tínar dátur við at brúka bólkar og síur."
     }
   ],
   "label.is": [
     {
       "type": 0,
-      "value": "Is"
+      "value": "Er"
+    }
+  ],
+  "label.is-false": [
+    {
+      "type": 0,
+      "value": "Er falskt"
     }
   ],
   "label.is-not": [
     {
       "type": 0,
-      "value": "Is not"
+      "value": "Er ikki"
     }
   ],
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Is not set"
+      "value": "Er ikki sett"
     }
   ],
   "label.is-set": [
     {
       "type": 0,
-      "value": "Is set"
+      "value": "Er sett"
+    }
+  ],
+  "label.is-true": [
+    {
+      "type": 0,
+      "value": "Er satt"
     }
   ],
   "label.join": [
     {
       "type": 0,
-      "value": "Join"
+      "value": "Luttak"
     }
   ],
   "label.join-team": [
     {
       "type": 0,
-      "value": "Join team"
+      "value": "Luttak í liði"
     }
   ],
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "Ferð"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users navigate through your website."
+      "value": "Fá yvirlit yvir hvussu brúkarar ferðast á heimasíðuni."
+    }
+  ],
+  "label.journeys": [
+    {
+      "type": 0,
+      "value": "Ferðir"
     }
   ],
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "Mál"
     }
   ],
   "label.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "Mál"
     }
   ],
   "label.laptop": [
     {
       "type": 0,
       "value": "Fartelda"
+    }
+  ],
+  "label.last-click": [
+    {
+      "type": 0,
+      "value": "Seinasta trýst"
     }
   ],
   "label.last-days": [
@@ -642,7 +822,7 @@
   "label.last-months": [
     {
       "type": 0,
-      "value": "Last "
+      "value": "Seinastu "
     },
     {
       "type": 1,
@@ -650,37 +830,43 @@
     },
     {
       "type": 0,
-      "value": " months"
+      "value": " mánaðirnar"
     }
   ],
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "Síðst sæddur"
     }
   ],
   "label.leave": [
     {
       "type": 0,
-      "value": "Leave"
+      "value": "Far burtur"
     }
   ],
   "label.leave-team": [
     {
       "type": 0,
-      "value": "Leave team"
+      "value": "Far úr liði"
     }
   ],
   "label.less-than": [
     {
       "type": 0,
-      "value": "Less than"
+      "value": "Minni enn"
     }
   ],
   "label.less-than-equals": [
     {
       "type": 0,
-      "value": "Less than or equals"
+      "value": "Minni ella javnt"
+    }
+  ],
+  "label.links": [
+    {
+      "type": 0,
+      "value": "Leinkjur"
     }
   ],
   "label.login": [
@@ -698,43 +884,61 @@
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "Stýra"
     }
   ],
   "label.manager": [
     {
       "type": 0,
-      "value": "Manager"
+      "value": "Stjóri"
     }
   ],
   "label.max": [
     {
       "type": 0,
-      "value": "Max"
+      "value": "Mest"
+    }
+  ],
+  "label.maximize": [
+    {
+      "type": 0,
+      "value": "Víðka"
+    }
+  ],
+  "label.medium": [
+    {
+      "type": 0,
+      "value": "Miðal"
     }
   ],
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "Limur"
     }
   ],
   "label.members": [
     {
       "type": 0,
-      "value": "Members"
+      "value": "Limir"
     }
   ],
   "label.min": [
     {
       "type": 0,
-      "value": "Min"
+      "value": "Minst"
     }
   ],
   "label.mobile": [
     {
       "type": 0,
       "value": "Telefon"
+    }
+  ],
+  "label.model": [
+    {
+      "type": 0,
+      "value": "Model"
     }
   ],
   "label.more": [
@@ -746,13 +950,13 @@
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "Mín konto"
     }
   ],
   "label.my-websites": [
     {
       "type": 0,
-      "value": "My websites"
+      "value": "Mínar heimasíður"
     }
   ],
   "label.name": [
@@ -770,7 +974,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "Eingin"
     }
   ],
   "label.number-of-records": [
@@ -813,28 +1017,70 @@
       "value": "OK"
     }
   ],
+  "label.online": [
+    {
+      "type": 0,
+      "value": "Online"
+    }
+  ],
+  "label.organic-search": [
+    {
+      "type": 0,
+      "value": "Organisk leiting"
+    }
+  ],
+  "label.organic-shopping": [
+    {
+      "type": 0,
+      "value": "Organisk keyp"
+    }
+  ],
+  "label.organic-social": [
+    {
+      "type": 0,
+      "value": "Organisk sosial miðla"
+    }
+  ],
+  "label.organic-video": [
+    {
+      "type": 0,
+      "value": "Organisk video"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
       "value": "OS"
     }
   ],
+  "label.other": [
+    {
+      "type": 0,
+      "value": "Annað"
+    }
+  ],
   "label.overview": [
     {
       "type": 0,
-      "value": "Overview"
+      "value": "Yvirlit"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "Eigari"
+    }
+  ],
+  "label.page": [
+    {
+      "type": 0,
+      "value": "Síða"
     }
   ],
   "label.page-of": [
     {
       "type": 0,
-      "value": "Page "
+      "value": "Síða "
     },
     {
       "type": 1,
@@ -842,7 +1088,7 @@
     },
     {
       "type": 0,
-      "value": " of "
+      "value": " av "
     },
     {
       "type": 1,
@@ -858,13 +1104,43 @@
   "label.pageTitle": [
     {
       "type": 0,
-      "value": "Page title"
+      "value": "Síðuheiti"
     }
   ],
   "label.pages": [
     {
       "type": 0,
       "value": "Síðir"
+    }
+  ],
+  "label.paid-ads": [
+    {
+      "type": 0,
+      "value": "Goldnar lýsingar"
+    }
+  ],
+  "label.paid-search": [
+    {
+      "type": 0,
+      "value": "Goldin leiting"
+    }
+  ],
+  "label.paid-shopping": [
+    {
+      "type": 0,
+      "value": "Goldið keyp"
+    }
+  ],
+  "label.paid-social": [
+    {
+      "type": 0,
+      "value": "Goldin sosial miðla"
+    }
+  ],
+  "label.paid-video": [
+    {
+      "type": 0,
+      "value": "Goldið video"
     }
   ],
   "label.password": [
@@ -876,19 +1152,25 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "Leið"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "Leiðir"
+    }
+  ],
+  "label.pixels": [
+    {
+      "type": 0,
+      "value": "Pikslur"
     }
   ],
   "label.powered-by": [
     {
       "type": 0,
-      "value": "Powered by "
+      "value": "Rikið av "
     },
     {
       "type": 1,
@@ -898,19 +1180,19 @@
   "label.previous": [
     {
       "type": 0,
-      "value": "Previous"
+      "value": "Fyrra"
     }
   ],
   "label.previous-period": [
     {
       "type": 0,
-      "value": "Previous period"
+      "value": "Fyrra tíðarskeið"
     }
   ],
   "label.previous-year": [
     {
       "type": 0,
-      "value": "Previous year"
+      "value": "Fyrra ár"
     }
   ],
   "label.profile": [
@@ -922,31 +1204,31 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "Eginleikar"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "Eginleiki"
     }
   ],
   "label.queries": [
     {
       "type": 0,
-      "value": "Queries"
+      "value": "Fyrispurningar"
     }
   ],
   "label.query": [
     {
       "type": 0,
-      "value": "Query"
+      "value": "Fyrispurningur"
     }
   ],
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "Fyrispurningsparametrar"
     }
   ],
   "label.realtime": [
@@ -955,10 +1237,16 @@
       "value": "Beinleiðis"
     }
   ],
+  "label.referral": [
+    {
+      "type": 0,
+      "value": "Ávísing"
+    }
+  ],
   "label.referrer": [
     {
       "type": 0,
-      "value": "Referrer"
+      "value": "Ávísari"
     }
   ],
   "label.referrers": [
@@ -970,49 +1258,55 @@
   "label.refresh": [
     {
       "type": 0,
-      "value": "Endurskapa"
+      "value": "Dagfør"
     }
   ],
   "label.regenerate": [
     {
       "type": 0,
-      "value": "Regenerate"
+      "value": "Endurskapa"
     }
   ],
   "label.region": [
     {
       "type": 0,
-      "value": "Region"
+      "value": "Øki"
     }
   ],
   "label.regions": [
     {
       "type": 0,
-      "value": "Regions"
+      "value": "Øki"
+    }
+  ],
+  "label.remaining": [
+    {
+      "type": 0,
+      "value": "Eftir"
     }
   ],
   "label.remove": [
     {
       "type": 0,
-      "value": "Remove"
+      "value": "Fjern"
     }
   ],
   "label.remove-member": [
     {
       "type": 0,
-      "value": "Remove member"
+      "value": "Fjern lim"
     }
   ],
   "label.reports": [
     {
       "type": 0,
-      "value": "Reports"
+      "value": "Frágreiðingar"
     }
   ],
   "label.required": [
     {
       "type": 0,
-      "value": "Kravt"
+      "value": "Kravið"
     }
   ],
   "label.reset": [
@@ -1024,49 +1318,43 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "Nulstilla heimasíðu"
     }
   ],
   "label.retention": [
     {
       "type": 0,
-      "value": "Retention"
+      "value": "Hald"
     }
   ],
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
+      "value": "Mát hvussu ofta brúkarar koma aftur á tína síðu."
     }
   ],
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "Inntøka"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
-    }
-  ],
-  "label.revenue-property": [
-    {
-      "type": 0,
-      "value": "Revenue Property"
+      "value": "Fá yvirlit yvir inntøku yvir tíð."
     }
   ],
   "label.role": [
     {
       "type": 0,
-      "value": "Role"
+      "value": "Leiklutur"
     }
   ],
   "label.run-query": [
     {
       "type": 0,
-      "value": "Run query"
+      "value": "Koyr fyrispurning"
     }
   ],
   "label.save": [
@@ -1078,55 +1366,73 @@
   "label.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "Skíggjar"
     }
   ],
   "label.search": [
     {
       "type": 0,
-      "value": "Search"
+      "value": "Leita"
     }
   ],
   "label.select": [
     {
       "type": 0,
-      "value": "Select"
+      "value": "Vel"
     }
   ],
   "label.select-date": [
     {
       "type": 0,
-      "value": "Select date"
+      "value": "Vel dato"
+    }
+  ],
+  "label.select-filter": [
+    {
+      "type": 0,
+      "value": "Vel síu"
     }
   ],
   "label.select-role": [
     {
       "type": 0,
-      "value": "Select role"
+      "value": "Vel leiklut"
     }
   ],
   "label.select-website": [
     {
       "type": 0,
-      "value": "Select website"
+      "value": "Vel heimasíðu"
     }
   ],
   "label.session": [
     {
       "type": 0,
-      "value": "Session"
+      "value": "Seta"
+    }
+  ],
+  "label.session-data": [
+    {
+      "type": 0,
+      "value": "Setudáta"
     }
   ],
   "label.sessions": [
     {
       "type": 0,
-      "value": "Sessions"
+      "value": "Setur"
     }
   ],
   "label.settings": [
     {
       "type": 0,
       "value": "Stillingar"
+    }
+  ],
+  "label.share": [
+    {
+      "type": 0,
+      "value": "Deil"
     }
   ],
   "label.share-url": [
@@ -1141,22 +1447,34 @@
       "value": "Einkultur dagur"
     }
   ],
+  "label.sms": [
+    {
+      "type": 0,
+      "value": "SMS"
+    }
+  ],
+  "label.sources": [
+    {
+      "type": 0,
+      "value": "Keldur"
+    }
+  ],
   "label.start-step": [
     {
       "type": 0,
-      "value": "Start Step"
+      "value": "Byrjanarstigur"
     }
   ],
   "label.steps": [
     {
       "type": 0,
-      "value": "Steps"
+      "value": "Stig"
     }
   ],
   "label.sum": [
     {
       "type": 0,
-      "value": "Sum"
+      "value": "Samanlagt"
     }
   ],
   "label.tablet": [
@@ -1165,64 +1483,88 @@
       "value": "Teldil"
     }
   ],
+  "label.tag": [
+    {
+      "type": 0,
+      "value": "Merki"
+    }
+  ],
+  "label.tags": [
+    {
+      "type": 0,
+      "value": "Merki"
+    }
+  ],
   "label.team": [
     {
       "type": 0,
-      "value": "Team"
+      "value": "Lið"
     }
   ],
   "label.team-id": [
     {
       "type": 0,
-      "value": "Team ID"
+      "value": "Lið ID"
     }
   ],
   "label.team-manager": [
     {
       "type": 0,
-      "value": "Team manager"
+      "value": "Liðleiðari"
     }
   ],
   "label.team-member": [
     {
       "type": 0,
-      "value": "Team member"
+      "value": "Liðlimur"
     }
   ],
   "label.team-name": [
     {
       "type": 0,
-      "value": "Team name"
+      "value": "Liðnavn"
     }
   ],
   "label.team-owner": [
     {
       "type": 0,
-      "value": "Team owner"
+      "value": "Liðeigari"
+    }
+  ],
+  "label.team-settings": [
+    {
+      "type": 0,
+      "value": "Liðstillingar"
     }
   ],
   "label.team-view-only": [
     {
       "type": 0,
-      "value": "Team view only"
+      "value": "Bert til at síggja lið"
     }
   ],
   "label.team-websites": [
     {
       "type": 0,
-      "value": "Team websites"
+      "value": "Lið heimasíður"
     }
   ],
   "label.teams": [
     {
       "type": 0,
-      "value": "Teams"
+      "value": "Lið"
+    }
+  ],
+  "label.terms": [
+    {
+      "type": 0,
+      "value": "Treytir"
     }
   ],
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "Evni"
     }
   ],
   "label.this-month": [
@@ -1351,28 +1693,10 @@
       "value": "Update"
     }
   ],
-  "label.url": [
-    {
-      "type": 0,
-      "value": "URL"
-    }
-  ],
-  "label.urls": [
-    {
-      "type": 0,
-      "value": "URLs"
-    }
-  ],
   "label.user": [
     {
       "type": 0,
       "value": "User"
-    }
-  ],
-  "label.user-property": [
-    {
-      "type": 0,
-      "value": "User Property"
     }
   ],
   "label.username": [
@@ -1531,6 +1855,12 @@
       "value": "x"
     }
   ],
+  "message.bad-request": [
+    {
+      "type": 0,
+      "value": "Bad request"
+    }
+  ],
   "message.collected-data": [
     {
       "type": 0,
@@ -1623,6 +1953,12 @@
     {
       "type": 1,
       "value": "url"
+    }
+  ],
+  "message.forbidden": [
+    {
+      "type": 0,
+      "value": "Forbidden"
     }
   ],
   "message.go-to-settings": [
@@ -1719,6 +2055,18 @@
       "value": "Tú hevur ongar heimasíður stillaða til."
     }
   ],
+  "message.not-found": [
+    {
+      "type": 0,
+      "value": "Not found"
+    }
+  ],
+  "message.nothing-selected": [
+    {
+      "type": 0,
+      "value": "Nothing selected."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1749,6 +2097,12 @@
     {
       "type": 0,
       "value": "Goymt."
+    }
+  ],
+  "message.sever-error": [
+    {
+      "type": 0,
+      "value": "Server error"
     }
   ],
   "message.share-url": [
@@ -1813,6 +2167,12 @@
       "value": "Triggered event"
     }
   ],
+  "message.unauthorized": [
+    {
+      "type": 0,
+      "value": "Unauthorized"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
@@ -1857,12 +2217,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "message.visitors-dropped-off": [
-    {
-      "type": 0,
-      "value": "Visitors dropped off"
     }
   ]
 }

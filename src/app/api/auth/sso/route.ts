@@ -1,6 +1,8 @@
-import { json } from '@/lib/response';
-import { parseRequest } from '@/lib/request';
+
 import { saveAuth } from '@/lib/auth';
+import redis from '@/lib/redis';
+import { parseRequest } from '@/lib/request';
+import { json } from '@/lib/response';
 
 export async function POST(request: Request) {
   const { auth, error } = await parseRequest(request);

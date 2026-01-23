@@ -1,8 +1,17 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import type { QueryFilters } from '@/lib/types';
 
-interface JourneyResult {
+export interface JourneyParameters {
+  startDate: Date;
+  endDate: Date;
+  steps: number;
+  startStep?: string;
+  endStep?: string;
+}
+
+export interface JourneyResult {
   e1: string;
   e2: string;
   e3: string;
@@ -14,16 +23,7 @@ interface JourneyResult {
 }
 
 export async function getJourney(
-  ...args: [
-    websiteId: string,
-    filters: {
-      startDate: Date;
-      endDate: Date;
-      steps: number;
-      startStep?: string;
-      endStep?: string;
-    },
-  ]
+  ...args: [websiteId: string, parameters: JourneyParameters, filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -33,21 +33,22 @@ export async function getJourney(
 
 async function relationalQuery(
   websiteId: string,
-  filters: {
-    startDate: Date;
-    endDate: Date;
-    steps: number;
-    startStep?: string;
-    endStep?: string;
-  },
+  parameters: JourneyParameters,
+  filters: QueryFilters,
 ): Promise<JourneyResult[]> {
-  const { startDate, endDate, steps, startStep, endStep } = filters;
-  const { rawQuery } = prisma;
+  const { startDate, endDate, steps, startStep, endStep } = parameters;
+  const { rawQuery, parseFilters } = prisma;
   const { sequenceQuery, startStepQuery, endStepQuery, params } = getJourneyQuery(
     steps,
     startStep,
     endStep,
   );
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+  });
 
   function getJourneyQuery(
     steps: number,
@@ -57,7 +58,7 @@ async function relationalQuery(
     sequenceQuery: string;
     startStepQuery: string;
     endStepQuery: string;
-    params: { [key: string]: string };
+    params: Record<string, string>;
   } {
     const params = {};
     let sequenceQuery = '';
@@ -72,7 +73,7 @@ async function relationalQuery(
     for (let i = 1; i <= steps; i++) {
       const endQuery = i < steps ? ',' : '';
       selectQuery += `s.e${i},`;
-      maxQuery += `\nmax(CASE WHEN event_number = ${i} THEN event ELSE NULL END) AS e${i}${endQuery}`;
+      maxQuery += `\nmax(CASE WHEN event_number = ${i} THEN "event" ELSE NULL END) AS e${i}${endQuery}`;
       groupByQuery += `s.e${i}${endQuery} `;
     }
 
@@ -90,7 +91,7 @@ async function relationalQuery(
     // create start Step params query
     if (startStep) {
       startStepQuery = `and e1 = {{startStep}}`;
-      params['startStep'] = startStep;
+      params.startStep = startStep;
     }
 
     // create end Step params query
@@ -101,7 +102,7 @@ async function relationalQuery(
       }
       endStepQuery += `\nor (e${steps} = {{endStep}}))`;
 
-      params['endStep'] = endStep;
+      params.endStep = endStep;
     }
 
     return {
@@ -116,13 +117,16 @@ async function relationalQuery(
     `
     WITH events AS (
       select distinct
-          visit_id,
-          referrer_path,
-          coalesce(nullIf(event_name, ''), url_path) event,
-          row_number() OVER (PARTITION BY visit_id ORDER BY created_at) AS event_number
+          website_event.visit_id,
+          website_event.referrer_path,
+          coalesce(nullIf(website_event.event_name, ''), website_event.url_path) event,
+          row_number() OVER (PARTITION BY visit_id ORDER BY website_event.created_at) AS event_number
       from website_event
-      where website_id = {{websiteId::uuid}}
-        and created_at between {{startDate}} and {{endDate}}),
+      ${cohortQuery}
+      ${joinSessionQuery}
+      where website_event.website_id = {{websiteId::uuid}}
+        and website_event.created_at between {{startDate}} and {{endDate}}
+        ${filterQuery}),
     ${sequenceQuery}
     select *
     from sequences
@@ -133,31 +137,30 @@ async function relationalQuery(
     limit 100
     `,
     {
-      websiteId,
-      startDate,
-      endDate,
       ...params,
+      ...queryParams,
     },
   ).then(parseResult);
 }
 
 async function clickhouseQuery(
   websiteId: string,
-  filters: {
-    startDate: Date;
-    endDate: Date;
-    steps: number;
-    startStep?: string;
-    endStep?: string;
-  },
+  parameters: JourneyParameters,
+  filters: QueryFilters,
 ): Promise<JourneyResult[]> {
-  const { startDate, endDate, steps, startStep, endStep } = filters;
-  const { rawQuery } = clickhouse;
+  const { startDate, endDate, steps, startStep, endStep } = parameters;
+  const { rawQuery, parseFilters } = clickhouse;
   const { sequenceQuery, startStepQuery, endStepQuery, params } = getJourneyQuery(
     steps,
     startStep,
     endStep,
   );
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+  });
 
   function getJourneyQuery(
     steps: number,
@@ -167,7 +170,7 @@ async function clickhouseQuery(
     sequenceQuery: string;
     startStepQuery: string;
     endStepQuery: string;
-    params: { [key: string]: string };
+    params: Record<string, string>;
   } {
     const params = {};
     let sequenceQuery = '';
@@ -182,7 +185,7 @@ async function clickhouseQuery(
     for (let i = 1; i <= steps; i++) {
       const endQuery = i < steps ? ',' : '';
       selectQuery += `s.e${i},`;
-      maxQuery += `\nmax(CASE WHEN event_number = ${i} THEN event ELSE NULL END) AS e${i}${endQuery}`;
+      maxQuery += `\nmax(CASE WHEN event_number = ${i} THEN "event" ELSE NULL END) AS e${i}${endQuery}`;
       groupByQuery += `s.e${i}${endQuery} `;
     }
 
@@ -200,7 +203,7 @@ async function clickhouseQuery(
     // create start Step params query
     if (startStep) {
       startStepQuery = `and e1 = {startStep:String}`;
-      params['startStep'] = startStep;
+      params.startStep = startStep;
     }
 
     // create end Step params query
@@ -211,7 +214,7 @@ async function clickhouseQuery(
       }
       endStepQuery += `\nor (e${steps} = {endStep:String}))`;
 
-      params['endStep'] = endStep;
+      params.endStep = endStep;
     }
 
     return {
@@ -227,10 +230,12 @@ async function clickhouseQuery(
     WITH events AS (
       select distinct
           visit_id,
-          coalesce(nullIf(event_name, ''), url_path) event,
+          coalesce(nullIf(event_name, ''), url_path) "event",
           row_number() OVER (PARTITION BY visit_id ORDER BY created_at) AS event_number
       from website_event
+      ${cohortQuery}
       where website_id = {websiteId:UUID}
+        ${filterQuery}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}),
     ${sequenceQuery}
     select *
@@ -242,10 +247,8 @@ async function clickhouseQuery(
     limit 100
     `,
     {
-      websiteId,
-      startDate,
-      endDate,
       ...params,
+      ...queryParams,
     },
   ).then(parseResult);
 }
