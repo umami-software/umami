@@ -31,7 +31,7 @@ const UniqueSessions = ({ websiteId }: UniqueSessionsProps) => {
   return (
     <Row alignItems="center" gap="3">
       <Text size="5" color="gray">
-        Unique Sessions:
+        {formatMessage(labels.visitors)}:
       </Text>
       {renderContent()}
     </Row>
