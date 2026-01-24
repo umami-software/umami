@@ -10,6 +10,12 @@ import { safeDecodeURIComponent } from '@/lib/url';
 const MAXMIND = 'maxmind';
 
 const PROVIDER_HEADERS = [
+  // Umami custom headers
+  {
+    countryHeader: 'x-umami-client-country',
+    regionHeader: 'x-umami-client-region',
+    cityHeader: 'x-umami-client-city',
+  },
   // Cloudflare headers
   {
     countryHeader: 'cf-ipcountry',
@@ -60,13 +66,13 @@ function decodeHeader(s: string | undefined | null): string | undefined | null {
   return Buffer.from(s, 'latin1').toString('utf-8');
 }
 
-export async function getLocation(ip: string = '', headers: Headers, hasPayloadIP: boolean) {
+export async function getLocation(ip: string = '', headers: Headers, skipHeaders: boolean) {
   // Ignore local ips
   if (!ip || (await isLocalhost(ip))) {
     return null;
   }
 
-  if (!hasPayloadIP && !process.env.SKIP_LOCATION_HEADERS) {
+  if (!skipHeaders && !process.env.SKIP_LOCATION_HEADERS) {
     for (const provider of PROVIDER_HEADERS) {
       const countryHeader = headers.get(provider.countryHeader);
       if (countryHeader) {

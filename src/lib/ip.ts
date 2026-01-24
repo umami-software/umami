@@ -1,4 +1,5 @@
 export const IP_ADDRESS_HEADERS = [
+  'x-umami-client-ip', // Umami custom header
   'true-client-ip', // CDN
   'cf-connecting-ip', // Cloudflare
   'fastly-client-ip', // Fastly
@@ -31,7 +32,7 @@ export function getIpAddress(headers: Headers) {
   }
 
   if (header === 'forwarded') {
-    const match = ip.match(/for=(\[?[0-9a-fA-F:.]+\]?)/);
+    const match = ip.match(/for=(\[?[0-9a-fA-F:.]+]?)/);
 
     if (match) {
       return match[1];
