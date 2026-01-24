@@ -4,13 +4,8 @@ import { createToken } from '@/lib/jwt';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { json, notFound } from '@/lib/response';
+import type { WhiteLabel } from '@/lib/types';
 import { getShareByCode, getWebsite } from '@/queries/prisma';
-
-export interface WhiteLabel {
-  name: string;
-  url: string;
-  image: string;
-}
 
 async function getAccountId(website: { userId?: string; teamId?: string }): Promise<string | null> {
   if (website.userId) {

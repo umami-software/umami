@@ -2,7 +2,7 @@ import { Column, Heading, Row, Text } from '@umami/react-zen';
 import { Plus } from 'lucide-react';
 import { useMessages, useWebsiteSharesQuery } from '@/components/hooks';
 import { DialogButton } from '@/components/input/DialogButton';
-import { ShareCreateForm } from './ShareCreateForm';
+import { ShareEditForm } from './ShareEditForm';
 import { SharesTable } from './SharesTable';
 
 export interface WebsiteShareFormProps {
@@ -25,9 +25,9 @@ export function WebsiteShareForm({ websiteId }: WebsiteShareFormProps) {
           label={formatMessage(labels.add)}
           title={formatMessage(labels.share)}
           variant="primary"
-          width="400px"
+          width="600px"
         >
-          {({ close }) => <ShareCreateForm websiteId={websiteId} onClose={close} />}
+          {({ close }) => <ShareEditForm websiteId={websiteId} onClose={close} />}
         </DialogButton>
       </Row>
       {hasShares ? (

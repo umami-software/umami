@@ -1,8 +1,8 @@
 import { Row, Text } from '@umami/react-zen';
-import type { WhiteLabel } from '@/app/api/share/[shareId]/route';
 import { CURRENT_VERSION, HOMEPAGE_URL } from '@/lib/constants';
+import type { WhiteLabel } from '@/lib/types';
 
-export function Footer({ whiteLabel }: { whiteLabel?: WhiteLabel }) {
+export function ShareFooter({ whiteLabel }: { whiteLabel?: WhiteLabel }) {
   if (whiteLabel) {
     return (
       <Row as="footer" paddingY="6" justifyContent="flex-end">

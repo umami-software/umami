@@ -1,10 +1,10 @@
 import { Icon, Row, Text, ThemeButton } from '@umami/react-zen';
-import type { WhiteLabel } from '@/app/api/share/[shareId]/route';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { PreferencesButton } from '@/components/input/PreferencesButton';
 import { Logo } from '@/components/svg';
+import type { WhiteLabel } from '@/lib/types';
 
-export function Header({ whiteLabel }: { whiteLabel?: WhiteLabel }) {
+export function ShareHeader({ whiteLabel }: { whiteLabel?: WhiteLabel }) {
   const logoUrl = whiteLabel?.url || 'https://umami.is';
   const logoName = whiteLabel?.name || 'umami';
   const logoImage = whiteLabel?.image;

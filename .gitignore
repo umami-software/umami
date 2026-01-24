@@ -32,6 +32,7 @@ pm2.yml
 .vscode
 .tool-versions
 .claude
+nul
 
 # debug
 npm-debug.log*

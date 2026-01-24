@@ -115,7 +115,7 @@ export function SharePage({ shareId, path = '' }: { shareId: string; path?: stri
   const PageComponent = PAGE_COMPONENTS[pageKey] || WebsitePage;
 
   return (
-    <Column backgroundColor="2" minHeight="100%">
+    <Column backgroundColor="2">
       <Grid columns={{ xs: '1fr', lg: 'auto 1fr' }} width="100%" height="100%">
         <Column
           display={{ xs: 'none', lg: 'flex' }}

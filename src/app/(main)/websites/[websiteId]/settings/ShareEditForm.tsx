@@ -14,25 +14,30 @@ import {
 } from '@umami/react-zen';
 import { useEffect, useState } from 'react';
 import { useApi, useConfig, useMessages, useModified } from '@/components/hooks';
-import { useUpdateQuery } from '@/components/hooks/queries/useUpdateQuery';
 import { SHARE_NAV_ITEMS } from './constants';
 
 export function ShareEditForm({
   shareId,
+  websiteId,
   onSave,
   onClose,
 }: {
-  shareId: string;
+  shareId?: string;
+  websiteId?: string;
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
-  const { mutateAsync, error, isPending, touch, toast } = useUpdateQuery(`/share/id/${shareId}`);
+  const { formatMessage, labels, getErrorMessage } = useMessages();
   const { cloudMode } = useConfig();
-  const { get } = useApi();
+  const { get, post } = useApi();
+  const { touch } = useModified();
   const { modified } = useModified('shares');
   const [share, setShare] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!!shareId);
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState<any>(null);
+
+  const isEditing = !!shareId;
 
   const getUrl = (slug: string) => {
     if (cloudMode) {
@@ -42,6 +47,8 @@ export function ShareEditForm({
   };
 
   useEffect(() => {
+    if (!shareId) return;
+
     const loadShare = async () => {
       setIsLoading(true);
       try {
@@ -62,24 +69,30 @@ export function ShareEditForm({
       });
     });
 
-    await mutateAsync(
-      { name: data.name, slug: share.slug, parameters },
-      {
-        onSuccess: async () => {
-          toast(formatMessage(messages.saved));
-          touch('shares');
-          onSave?.();
-          onClose?.();
-        },
-      },
-    );
+    setIsPending(true);
+    setError(null);
+
+    try {
+      if (isEditing) {
+        await post(`/share/id/${shareId}`, { name: data.name, slug: share.slug, parameters });
+      } else {
+        await post(`/websites/${websiteId}/shares`, { name: data.name, parameters });
+      }
+      touch('shares');
+      onSave?.();
+      onClose?.();
+    } catch (e) {
+      setError(e);
+    } finally {
+      setIsPending(false);
+    }
   };
 
   if (isLoading) {
     return <Loading placement="absolute" />;
   }
 
-  const url = getUrl(share?.slug || '');
+  const url = isEditing ? getUrl(share?.slug || '') : null;
 
   // Build default values from share parameters
   const defaultValues: Record<string, any> = {
@@ -103,16 +116,18 @@ export function ShareEditForm({
 
         return (
           <Column gap="6">
-            <Column>
-              <Label>{formatMessage(labels.shareUrl)}</Label>
-              <TextField value={url} isReadOnly allowCopy />
-            </Column>
+            {url && (
+              <Column>
+                <Label>{formatMessage(labels.shareUrl)}</Label>
+                <TextField value={url} isReadOnly allowCopy />
+              </Column>
+            )}
             <FormField
               label={formatMessage(labels.name)}
               name="name"
               rules={{ required: formatMessage(labels.required) }}
             >
-              <TextField autoComplete="off" />
+              <TextField autoComplete="off" autoFocus={!isEditing} />
             </FormField>
             <Grid columns="repeat(auto-fit, minmax(150px, 1fr))" gap="3">
               {SHARE_NAV_ITEMS.map(section => (
@@ -134,7 +149,10 @@ export function ShareEditForm({
                   {formatMessage(labels.cancel)}
                 </Button>
               )}
-              <FormSubmitButton variant="primary" isDisabled={!hasSelection || !values.name}>
+              <FormSubmitButton
+                variant="primary"
+                isDisabled={isPending || !hasSelection || !values.name}
+              >
                 {formatMessage(labels.save)}
               </FormSubmitButton>
             </Row>
