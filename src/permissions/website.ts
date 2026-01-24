@@ -45,6 +45,10 @@ export async function canCreateWebsite({ user }: Auth) {
 }
 
 export async function canUpdateWebsite({ user }: Auth, websiteId: string) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }
@@ -69,6 +73,10 @@ export async function canUpdateWebsite({ user }: Auth, websiteId: string) {
 }
 
 export async function canDeleteWebsite({ user }: Auth, websiteId: string) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }
