@@ -166,6 +166,7 @@ export const journeyReportSchema = z.object({
     steps: z.coerce.number().min(2).max(7),
     startStep: z.string().optional(),
     endStep: z.string().optional(),
+    eventType: z.coerce.number().int().positive().optional(),
   }),
 });
 
