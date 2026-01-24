@@ -1,6 +1,7 @@
 'use client';
 import { Column, Grid, useTheme } from '@umami/react-zen';
-import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo } from 'react';
 import { AttributionPage } from '@/app/(main)/websites/[websiteId]/(reports)/attribution/AttributionPage';
 import { BreakdownPage } from '@/app/(main)/websites/[websiteId]/(reports)/breakdown/BreakdownPage';
 import { FunnelsPage } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/FunnelsPage';
@@ -18,8 +19,8 @@ import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
 import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
 import { PageBody } from '@/components/common/PageBody';
 import { useShareTokenQuery } from '@/components/hooks';
-import { Footer } from './Footer';
-import { Header } from './Header';
+import { ShareFooter } from './ShareFooter';
+import { ShareHeader } from './ShareHeader';
 import { ShareNav } from './ShareNav';
 
 const PAGE_COMPONENTS: Record<string, React.ComponentType<{ websiteId: string }>> = {
@@ -39,9 +40,34 @@ const PAGE_COMPONENTS: Record<string, React.ComponentType<{ websiteId: string }>
   attribution: AttributionPage,
 };
 
+// All section IDs that can be enabled/disabled via parameters
+const ALL_SECTION_IDS = [
+  'overview',
+  'events',
+  'sessions',
+  'realtime',
+  'compare',
+  'breakdown',
+  'goals',
+  'funnels',
+  'journeys',
+  'retention',
+  'utm',
+  'revenue',
+  'attribution',
+];
+
 export function SharePage({ shareId, path = '' }: { shareId: string; path?: string }) {
   const { shareToken, isLoading } = useShareTokenQuery(shareId);
   const { setTheme } = useTheme();
+  const router = useRouter();
+
+  // Calculate allowed sections
+  const allowedSections = useMemo(() => {
+    if (!shareToken?.parameters) return [];
+    const params = shareToken.parameters;
+    return ALL_SECTION_IDS.filter(id => params[id] !== false);
+  }, [shareToken?.parameters]);
 
   useEffect(() => {
     const url = new URL(window?.location?.href);
@@ -52,11 +78,31 @@ export function SharePage({ shareId, path = '' }: { shareId: string; path?: stri
     }
   }, []);
 
+  // Redirect to the only allowed section if there's just one and we're on the base path
+  useEffect(() => {
+    if (
+      allowedSections.length === 1 &&
+      allowedSections[0] !== 'overview' &&
+      (path === '' || path === 'overview')
+    ) {
+      router.replace(`/share/${shareId}/${allowedSections[0]}`);
+    }
+  }, [allowedSections, shareId, path, router]);
+
   if (isLoading || !shareToken) {
     return null;
   }
 
   const { websiteId, parameters = {}, whiteLabel } = shareToken;
+
+  // Redirect to only allowed section - return null while redirecting
+  if (
+    allowedSections.length === 1 &&
+    allowedSections[0] !== 'overview' &&
+    (path === '' || path === 'overview')
+  ) {
+    return null;
+  }
 
   // Check if the requested path is allowed
   const pageKey = path || '';
@@ -69,8 +115,7 @@ export function SharePage({ shareId, path = '' }: { shareId: string; path?: stri
   const PageComponent = PAGE_COMPONENTS[pageKey] || WebsitePage;
 
   return (
-    <Column backgroundColor="2">
-      <Header />
+    <Column backgroundColor="2" minHeight="100%">
       <Grid columns={{ xs: '1fr', lg: 'auto 1fr' }} width="100%" height="100%">
         <Column
           display={{ xs: 'none', lg: 'flex' }}
@@ -84,15 +129,14 @@ export function SharePage({ shareId, path = '' }: { shareId: string; path?: stri
         </Column>
         <PageBody gap>
           <WebsiteProvider websiteId={websiteId}>
-            <Header whiteLabel={whiteLabel} />
+            <ShareHeader whiteLabel={whiteLabel} />
             <Column>
               <PageComponent websiteId={websiteId} />
             </Column>
-            <Footer whiteLabel={whiteLabel} />
+            <ShareFooter whiteLabel={whiteLabel} />
           </WebsiteProvider>
         </PageBody>
       </Grid>
-      <Footer />
     </Column>
   );
 }
