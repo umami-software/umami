@@ -15,7 +15,7 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
 
   const entity = await getEntity(websiteId);
 
-  if (!entity) {
+  if (!entity || !user) {
     return false;
   }
 
@@ -33,10 +33,14 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
 }
 
 export async function canViewAllWebsites({ user }: Auth) {
-  return user.isAdmin;
+  return user?.isAdmin ?? false;
 }
 
 export async function canCreateWebsite({ user }: Auth) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }
@@ -101,6 +105,10 @@ export async function canDeleteWebsite({ user }: Auth, websiteId: string) {
 }
 
 export async function canTransferWebsiteToUser({ user }: Auth, websiteId: string, userId: string) {
+  if (!user) {
+    return false;
+  }
+
   const website = await getWebsite(websiteId);
 
   if (!website) {
@@ -117,6 +125,10 @@ export async function canTransferWebsiteToUser({ user }: Auth, websiteId: string
 }
 
 export async function canTransferWebsiteToTeam({ user }: Auth, websiteId: string, teamId: string) {
+  if (!user) {
+    return false;
+  }
+
   const website = await getWebsite(websiteId);
 
   if (!website) {
