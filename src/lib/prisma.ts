@@ -20,6 +20,14 @@ const PRISMA_LOG_OPTIONS = {
 };
 
 const DATE_FORMATS = {
+  minute: 'YYYY-MM-DD HH24:MI:00',
+  hour: 'YYYY-MM-DD HH24:00:00',
+  day: 'YYYY-MM-DD HH24:00:00',
+  month: 'YYYY-MM-01 HH24:00:00',
+  year: 'YYYY-01-01 HH24:00:00',
+};
+
+const DATE_FORMATS_UTC = {
   minute: 'YYYY-MM-DD"T"HH24:MI:00"Z"',
   hour: 'YYYY-MM-DD"T"HH24:00:00"Z"',
   day: 'YYYY-MM-DD"T"HH24:00:00"Z"',
@@ -44,7 +52,7 @@ function getDateSQL(field: string, unit: string, timezone?: string): string {
     return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${DATE_FORMATS[unit]}')`;
   }
 
-  return `to_char(date_trunc('${unit}', ${field}), '${DATE_FORMATS[unit]}')`;
+  return `to_char(date_trunc('${unit}', ${field}), '${DATE_FORMATS_UTC[unit]}')`;
 }
 
 function getDateWeeklySQL(field: string, timezone?: string) {
