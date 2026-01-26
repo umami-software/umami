@@ -131,5 +131,5 @@ function parseFields(fields: string[]) {
 }
 
 function parseFieldsByName(fields: string[]) {
-  return `${fields.map(name => name).join(',')}`;
+  return `${fields.map(name => `"${name}"`).join(',')}`;
 }
