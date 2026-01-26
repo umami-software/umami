@@ -2,12 +2,13 @@ import { Button, Dialog, DialogTrigger, Icon, Modal, Text, useToast } from '@uma
 import { useMessages, useModified } from '@/components/hooks';
 import { Plus } from '@/components/icons';
 import { messages } from '@/components/messages';
-import { TeamAddForm } from './TeamAddForm';
+import { TeamMemberAddForm } from './TeamMemberAddForm';
 
-export function TeamsAddButton({
+export function TeamsMemberAddButton({
+  teamId,
   onSave,
-  isAdmin = false,
 }: {
+  teamId: string;
   onSave?: () => void;
   isAdmin?: boolean;
 }) {
@@ -17,21 +18,21 @@ export function TeamsAddButton({
 
   const handleSave = async () => {
     toast(formatMessage(messages.saved));
-    touch('teams');
+    touch('teams:members');
     onSave?.();
   };
 
   return (
     <DialogTrigger>
-      <Button variant="primary">
+      <Button>
         <Icon>
           <Plus />
         </Icon>
-        <Text>{formatMessage(labels.createTeam)}</Text>
+        <Text>{formatMessage(labels.addMember)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.createTeam)} style={{ width: 400 }}>
-          {({ close }) => <TeamAddForm onSave={handleSave} onClose={close} isAdmin={isAdmin} />}
+        <Dialog title={formatMessage(labels.addMember)} style={{ width: 400 }}>
+          {({ close }) => <TeamMemberAddForm teamId={teamId} onSave={handleSave} onClose={close} />}
         </Dialog>
       </Modal>
     </DialogTrigger>
