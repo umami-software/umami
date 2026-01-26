@@ -72,6 +72,7 @@ async function relationalQuery(
         ${filterQuery}
       group by name, website_event.session_id, website_event.visit_id
     ) as t
+    where name != ''
     group by name 
     order by visitors desc, visits desc
     limit ${limit}

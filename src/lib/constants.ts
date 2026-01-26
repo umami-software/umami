@@ -55,6 +55,7 @@ export const SESSION_COLUMNS = [
   'country',
   'city',
   'region',
+  'distinctId',
 ];
 
 export const SEGMENT_TYPES = {
@@ -69,6 +70,7 @@ export const FILTER_COLUMNS = {
   referrer: 'referrer_domain',
   domain: 'referrer_domain',
   hostname: 'hostname',
+  distinctId: 'distinct_id',
   title: 'page_title',
   query: 'url_query',
   os: 'os',

@@ -61,7 +61,9 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
               websiteId={websiteId}
               value={currentFilters}
               onChange={setCurrentFilters}
-              exclude={excludeFilters ? ['path', 'title', 'hostname', 'tag', 'event'] : []}
+              exclude={
+                excludeFilters ? ['path', 'title', 'hostname', 'distinctId', 'tag', 'event'] : []
+              }
             />
           </TabPanel>
           <TabPanel id="segments">
