@@ -12,9 +12,14 @@ export async function POST(request: Request) {
   }
 
   const { websiteId, parameters, filters } = body;
+  const { eventType } = parameters;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
+  }
+
+  if (eventType) {
+    filters.eventType = eventType;
   }
 
   const queryFilters = await getQueryFilters(filters, websiteId);

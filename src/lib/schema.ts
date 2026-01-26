@@ -36,6 +36,7 @@ export const filterParams = {
   city: z.string().optional(),
   tag: z.string().optional(),
   hostname: z.string().optional(),
+  distinctId: z.string().optional(),
   language: z.string().optional(),
   event: z.string().optional(),
   segment: z.uuid().optional(),
@@ -89,6 +90,7 @@ export const fieldsParam = z.enum([
   'city',
   'tag',
   'hostname',
+  'distinctId',
   'language',
   'event',
 ]);
@@ -166,6 +168,7 @@ export const journeyReportSchema = z.object({
     steps: z.coerce.number().min(2).max(7),
     startStep: z.string().optional(),
     endStep: z.string().optional(),
+    eventType: z.coerce.number().int().positive().optional(),
   }),
 });
 
