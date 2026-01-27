@@ -14,7 +14,6 @@ export function PixelsTable({ showActions, ...props }: PixelsTableProps) {
   const { formatMessage, labels } = useMessages();
   const { renderUrl } = useNavigation();
   const { getSlugUrl } = useSlug('pixel');
-  console.log(showActions);
 
   return (
     <DataTable {...props}>
