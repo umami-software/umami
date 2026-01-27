@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useConfig } from '@/components/hooks';
 import { FAVICON_URL, GROUPED_DOMAINS } from '@/lib/constants';
 
@@ -16,24 +16,34 @@ export function Favicon({ domain, ...props }) {
 
   const hostName = domain ? getHostName(domain) : null;
   const domainName = hostName ? GROUPED_DOMAINS[hostName]?.domain || hostName : null;
-  const primaryUrl = hostName
-    ? config?.faviconUrl
-        ? config.faviconUrl.replace(/\{\{\s*domain\s*}}/, domainName)
-        : `https://${domainName}/favicon.ico`
-    : null;
-  const fallbackUrl = hostName
-    ? FAVICON_URL.replace(/\{\{\s*domain\s*}}/, domainName)
-    : null;
-  const [src, setSrc] = useState(primaryUrl);
+  const candidates = useMemo(() => {
+    if (!domainName) {
+      return [];
+    }
+
+    const urls = [`https://${domainName}/favicon.ico`];
+
+    if (globalThis?.location?.protocol !== 'https:') {
+      urls.push(`http://${domainName}/favicon.ico`);
+    }
+
+    if (config?.faviconUrl) {
+      urls.push(config.faviconUrl.replace(/\{\{\s*domain\s*}}/, domainName));
+    }
+
+    urls.push(FAVICON_URL.replace(/\{\{\s*domain\s*}}/, domainName));
+
+    return urls;
+  }, [config?.faviconUrl, domainName]);
+  const [index, setIndex] = useState(0);
+  const src = candidates[index] || null;
 
   useEffect(() => {
-    setSrc(primaryUrl);
-  }, [primaryUrl]);
+    setIndex(0);
+  }, [candidates.join('|')]);
 
   function handleError() {
-    if (src && fallbackUrl && src !== fallbackUrl) {
-      setSrc(fallbackUrl);
-    }
+    setIndex(current => (current + 1 < candidates.length ? current + 1 : current));
   }
 
   return hostName && src ? (
