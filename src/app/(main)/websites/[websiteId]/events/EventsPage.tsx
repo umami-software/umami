@@ -1,14 +1,16 @@
 'use client';
 import { Column, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
 import locale from 'date-fns/locale/af';
-import { LoadingPanel, MetricCard, MetricsBar } from 'dist';
 import { type Key, useMemo, useState } from 'react';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 import { useMessages } from '@/components/hooks';
 import { useEventStatsQuery } from '@/components/hooks/queries/useEventStatsQuery';
 import { EventsChart } from '@/components/metrics/EventsChart';
+import { MetricCard } from '@/components/metrics/MetricCard';
+import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { formatLongNumber } from '@/lib/format';
 import { getItem, setItem } from '@/lib/storage';
