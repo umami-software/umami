@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useConfig } from '@/components/hooks';
 import { FAVICON_URL, GROUPED_DOMAINS } from '@/lib/constants';
 
@@ -13,10 +14,29 @@ export function Favicon({ domain, ...props }) {
     return null;
   }
 
-  const url = config?.faviconUrl || FAVICON_URL;
   const hostName = domain ? getHostName(domain) : null;
-  const domainName = GROUPED_DOMAINS[hostName]?.domain || hostName;
-  const src = hostName ? url.replace(/\{\{\s*domain\s*}}/, domainName) : null;
+  const domainName = hostName ? GROUPED_DOMAINS[hostName]?.domain || hostName : null;
+  const primaryUrl = hostName
+    ? config?.faviconUrl
+        ? config.faviconUrl.replace(/\{\{\s*domain\s*}}/, domainName)
+        : `https://${domainName}/favicon.ico`
+    : null;
+  const fallbackUrl = hostName
+    ? FAVICON_URL.replace(/\{\{\s*domain\s*}}/, domainName)
+    : null;
+  const [src, setSrc] = useState(primaryUrl);
 
-  return hostName ? <img src={src} width={16} height={16} alt="" {...props} /> : null;
+  useEffect(() => {
+    setSrc(primaryUrl);
+  }, [primaryUrl]);
+
+  function handleError() {
+    if (src && fallbackUrl && src !== fallbackUrl) {
+      setSrc(fallbackUrl);
+    }
+  }
+
+  return hostName && src ? (
+    <img src={src} width={16} height={16} alt="" onError={handleError} {...props} />
+  ) : null;
 }
