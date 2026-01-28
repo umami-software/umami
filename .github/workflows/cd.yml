@@ -23,6 +23,15 @@ jobs:
     permissions:
       contents: read
       packages: write
+    strategy:
+      matrix:
+        include:
+          - type: standard
+            base_path: ""
+            suffix: ""
+          - type: base
+            base_path: "/umami"
+            suffix: "-base"
 
     steps:
       - uses: actions/checkout@v5
@@ -55,6 +64,7 @@ jobs:
           REF_TYPE="${{ github.ref_type }}"
           REF_NAME="${{ github.ref_name }}"
           INCLUDE_LATEST="${{ github.event.inputs.include_latest }}"
+          SUFFIX="${{ matrix.suffix }}"
 
           # Determine version source
           if [[ -n "$INPUT" ]]; then
@@ -74,30 +84,30 @@ jobs:
 
             if [[ "$VERSION" == *-* ]]; then
               # prerelease: only version tag
-              GHCR_TAGS="ghcr.io/${{ github.repository }}:$VERSION"
-              DOCKER_TAGS="umamisoftware/umami:$VERSION"
+              GHCR_TAGS="ghcr.io/${{ github.repository }}:$VERSION$SUFFIX"
+              DOCKER_TAGS="umamisoftware/umami:$VERSION$SUFFIX"
             else
               # stable release: version + hierarchy
-              GHCR_TAGS="ghcr.io/${{ github.repository }}:$VERSION"
-              GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:${MAJOR}.${MINOR}"
-              GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:${MAJOR}"
-              GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:postgresql-latest"
+              GHCR_TAGS="ghcr.io/${{ github.repository }}:$VERSION$SUFFIX"
+              GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:${MAJOR}.${MINOR}$SUFFIX"
+              GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:${MAJOR}$SUFFIX"
+              GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:postgresql-latest$SUFFIX"
           
-              DOCKER_TAGS="umamisoftware/umami:$VERSION"
-              DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:${MAJOR}.${MINOR}"
-              DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:${MAJOR}"
-              DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:postgresql-latest"
+              DOCKER_TAGS="umamisoftware/umami:$VERSION$SUFFIX"
+              DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:${MAJOR}.${MINOR}$SUFFIX"
+              DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:${MAJOR}$SUFFIX"
+              DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:postgresql-latest$SUFFIX"
           
               # Add latest tag based on trigger and input
               if [[ "$REF_TYPE" == "tag" ]] || [[ "$INCLUDE_LATEST" == "true" ]]; then
-                GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:latest"
-                DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:latest"
+                GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:latest$SUFFIX"
+                DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:latest$SUFFIX"
               fi
             fi
           else
             # Non-tag build (e.g. from main branch)
-            GHCR_TAGS="ghcr.io/${{ github.repository }}:${REF_NAME}"
-            DOCKER_TAGS="umamisoftware/umami:${REF_NAME}"
+            GHCR_TAGS="ghcr.io/${{ github.repository }}:${REF_NAME}$SUFFIX"
+            DOCKER_TAGS="umamisoftware/umami:${REF_NAME}$SUFFIX"
           fi
 
           echo "ghcr_tags=$GHCR_TAGS" >> $GITHUB_OUTPUT
@@ -112,6 +122,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.compute.outputs.ghcr_tags }}
+          build-args: |
+            BASE_PATH=${{ matrix.base_path }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -123,5 +135,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.compute.outputs.docker_tags }}
+          build-args: |
+            BASE_PATH=${{ matrix.base_path }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
