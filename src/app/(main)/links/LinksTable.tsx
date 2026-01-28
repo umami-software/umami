@@ -6,7 +6,11 @@ import { useMessages, useNavigation, useSlug } from '@/components/hooks';
 import { LinkDeleteButton } from './LinkDeleteButton';
 import { LinkEditButton } from './LinkEditButton';
 
-export function LinksTable(props: DataTableProps) {
+export interface LinksTableProps extends DataTableProps {
+  showActions?: boolean;
+}
+
+export function LinksTable({ showActions, ...props }: LinksTableProps) {
   const { formatMessage, labels } = useMessages();
   const { websiteId, renderUrl } = useNavigation();
   const { getSlugUrl } = useSlug('link');
@@ -36,16 +40,18 @@ export function LinksTable(props: DataTableProps) {
       <DataColumn id="created" label={formatMessage(labels.created)} width="200px">
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
-      <DataColumn id="action" align="end" width="100px">
-        {({ id, name }: any) => {
-          return (
-            <Row>
-              <LinkEditButton linkId={id} />
-              <LinkDeleteButton linkId={id} websiteId={websiteId} name={name} />
-            </Row>
-          );
-        }}
-      </DataColumn>
+      {showActions && (
+        <DataColumn id="action" align="end" width="100px">
+          {({ id, name }: any) => {
+            return (
+              <Row>
+                <LinkEditButton linkId={id} />
+                <LinkDeleteButton linkId={id} websiteId={websiteId} name={name} />
+              </Row>
+            );
+          }}
+        </DataColumn>
+      )}
     </DataTable>
   );
 }

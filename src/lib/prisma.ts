@@ -74,15 +74,21 @@ function getSearchSQL(column: string, param: string = 'search'): string {
 function mapFilter(column: string, operator: string, name: string, type: string = '') {
   const value = `{{${name}${type ? `::${type}` : ''}}}`;
 
+  if (name.startsWith('cohort_')) {
+    name = name.slice('cohort_'.length);
+  }
+
+  const table = SESSION_COLUMNS.includes(name) ? 'session' : 'website_event';
+
   switch (operator) {
     case OPERATORS.equals:
-      return `${column} = ${value}`;
+      return `${table}.${column} = ${value}`;
     case OPERATORS.notEquals:
-      return `${column} != ${value}`;
+      return `${table}.${column} != ${value}`;
     case OPERATORS.contains:
-      return `${column} ilike ${value}`;
+      return `${table}.${column} ilike ${value}`;
     case OPERATORS.doesNotContain:
-      return `${column} not ilike ${value}`;
+      return `${table}.${column} not ilike ${value}`;
     default:
       return '';
   }

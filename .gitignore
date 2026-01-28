@@ -21,6 +21,7 @@ package-lock.json
 /dist
 /generated
 /src/generated
+pm2.yml
 
 # misc
 .DS_Store
@@ -30,6 +31,8 @@ package-lock.json
 *.log
 .vscode
 .tool-versions
+.claude
+nul
 
 # debug
 npm-debug.log*

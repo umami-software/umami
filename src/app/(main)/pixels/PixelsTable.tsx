@@ -6,7 +6,11 @@ import { useMessages, useNavigation, useSlug } from '@/components/hooks';
 import { PixelDeleteButton } from './PixelDeleteButton';
 import { PixelEditButton } from './PixelEditButton';
 
-export function PixelsTable(props: DataTableProps) {
+export interface PixelsTableProps extends DataTableProps {
+  showActions?: boolean;
+}
+
+export function PixelsTable({ showActions, ...props }: PixelsTableProps) {
   const { formatMessage, labels } = useMessages();
   const { renderUrl } = useNavigation();
   const { getSlugUrl } = useSlug('pixel');
@@ -31,18 +35,20 @@ export function PixelsTable(props: DataTableProps) {
       <DataColumn id="created" label={formatMessage(labels.created)}>
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
-      <DataColumn id="action" align="end" width="100px">
-        {(row: any) => {
-          const { id, name } = row;
+      {showActions && (
+        <DataColumn id="action" align="end" width="100px">
+          {(row: any) => {
+            const { id, name } = row;
 
-          return (
-            <Row>
-              <PixelEditButton pixelId={id} />
-              <PixelDeleteButton pixelId={id} name={name} />
-            </Row>
-          );
-        }}
-      </DataColumn>
+            return (
+              <Row>
+                <PixelEditButton pixelId={id} />
+                <PixelDeleteButton pixelId={id} name={name} />
+              </Row>
+            );
+          }}
+        </DataColumn>
+      )}
     </DataTable>
   );
 }

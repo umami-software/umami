@@ -141,3 +141,9 @@ export interface ApiError extends Error {
   code?: string;
   message: string;
 }
+
+export interface WhiteLabel {
+  name: string;
+  url: string;
+  image: string;
+}

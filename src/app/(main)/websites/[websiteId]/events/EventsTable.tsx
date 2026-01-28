@@ -25,6 +25,19 @@ export function EventsTable(props: DataTableProps) {
   const { updateParams } = useNavigation();
   const { formatValue } = useFormat();
 
+  const renderLink = (label: string, hostname: string) => {
+    return (
+      <a
+        href={`//${hostname}${label}`}
+        style={{ fontWeight: 'bold' }}
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        {label}
+      </a>
+    );
+  };
+
   return (
     <DataTable {...props}>
       <DataColumn id="event" label={formatMessage(labels.event)} width="2fr">
@@ -43,7 +56,7 @@ export function EventsTable(props: DataTableProps) {
                 title={row.eventName || row.urlPath}
                 truncate
               >
-                {row.eventName || row.urlPath}
+                {row.eventName || renderLink(row.urlPath, row.hostname)}
               </Text>
               {row.hasData > 0 && <PropertiesButton websiteId={row.websiteId} eventId={row.id} />}
             </Row>

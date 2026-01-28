@@ -26,7 +26,7 @@ export function WebsiteSelect({
   const { user } = useLoginQuery();
   const { data, isLoading } = useUserWebsitesQuery(
     { userId: user?.id, teamId },
-    { search, pageSize: 10, includeTeams },
+    { search, pageSize: 20, includeTeams },
   );
   const listItems: { id: string; name: string }[] = data?.data || [];
 
@@ -65,7 +65,7 @@ export function WebsiteSelect({
       renderValue={renderValue}
       listProps={{
         renderEmptyState: () => <Empty message={formatMessage(messages.noResultsFound)} />,
-        style: { maxHeight: '400px' },
+        style: { maxHeight: 'calc(42vh - 65px)' },
       }}
     >
       {({ id, name }: any) => <ListItem key={id}>{name}</ListItem>}

@@ -29,6 +29,7 @@ export function WebsiteNav({
       event: undefined,
       compare: undefined,
       view: undefined,
+      unit: undefined,
     });
 
   const items = [

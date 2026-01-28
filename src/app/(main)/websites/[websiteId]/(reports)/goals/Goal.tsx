@@ -1,6 +1,6 @@
 import { Column, Dialog, Grid, Icon, ProgressBar, Row, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, useResultQuery } from '@/components/hooks';
+import { useMessages, useNavigation, useResultQuery } from '@/components/hooks';
 import { File, User } from '@/components/icons';
 import { ReportEditButton } from '@/components/input/ReportEditButton';
 import { Lightning } from '@/components/svg';
@@ -25,6 +25,8 @@ export type GoalData = { num: number; total: number };
 
 export function Goal({ id, name, type, parameters, websiteId, startDate, endDate }: GoalProps) {
   const { formatMessage, labels } = useMessages();
+  const { pathname } = useNavigation();
+  const isSharePage = pathname.includes('/share/');
   const { data, error, isLoading, isFetching } = useResultQuery<GoalData>(type, {
     websiteId,
     startDate,
@@ -45,21 +47,23 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
                 </Text>
               </Row>
             </Column>
-            <Column>
-              <ReportEditButton id={id} name={name} type={type}>
-                {({ close }) => {
-                  return (
-                    <Dialog
-                      title={formatMessage(labels.goal)}
-                      variant="modal"
-                      style={{ minHeight: 300, minWidth: 400 }}
-                    >
-                      <GoalEditForm id={id} websiteId={websiteId} onClose={close} />
-                    </Dialog>
-                  );
-                }}
-              </ReportEditButton>
-            </Column>
+            {!isSharePage && (
+              <Column>
+                <ReportEditButton id={id} name={name} type={type}>
+                  {({ close }) => {
+                    return (
+                      <Dialog
+                        title={formatMessage(labels.goal)}
+                        variant="modal"
+                        style={{ minHeight: 300, minWidth: 400 }}
+                      >
+                        <GoalEditForm id={id} websiteId={websiteId} onClose={close} />
+                      </Dialog>
+                    );
+                  }}
+                </ReportEditButton>
+              </Column>
+            )}
           </Grid>
           <Row alignItems="center" justifyContent="space-between" gap>
             <Text color="muted">

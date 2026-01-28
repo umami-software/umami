@@ -38,3 +38,9 @@ export async function fetchSession(websiteId: string, sessionId: string): Promis
 
   return session;
 }
+
+export async function fetchAccount(userId: string) {
+  const account = await redis.client.get(`account:${userId}`);
+
+  return account;
+}

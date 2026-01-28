@@ -1,6 +1,6 @@
 import { Box, Column, Dialog, Grid, Icon, ProgressBar, Row, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, useResultQuery } from '@/components/hooks';
+import { useMessages, useNavigation, useResultQuery } from '@/components/hooks';
 import { File, User } from '@/components/icons';
 import { ReportEditButton } from '@/components/input/ReportEditButton';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
@@ -20,6 +20,8 @@ type FunnelResult = {
 
 export function Funnel({ id, name, type, parameters, websiteId }) {
   const { formatMessage, labels } = useMessages();
+  const { pathname } = useNavigation();
+  const isSharePage = pathname.includes('/share/');
   const { data, error, isLoading } = useResultQuery(type, {
     websiteId,
     ...parameters,
@@ -36,21 +38,22 @@ export function Funnel({ id, name, type, parameters, websiteId }) {
               </Text>
             </Row>
           </Column>
-          <Column>
-            <ReportEditButton id={id} name={name} type={type}>
-              {({ close }) => {
-                return (
-                  <Dialog
-                    title={formatMessage(labels.funnel)}
-                    variant="modal"
-                    style={{ minHeight: 300, minWidth: 400 }}
-                  >
-                    <FunnelEditForm id={id} websiteId={websiteId} onClose={close} />
-                  </Dialog>
-                );
-              }}
-            </ReportEditButton>
-          </Column>
+          {!isSharePage && (
+            <Column>
+              <ReportEditButton id={id} name={name} type={type}>
+                {({ close }) => {
+                  return (
+                    <Dialog
+                      title={formatMessage(labels.funnel)}
+                      style={{ minHeight: 300, minWidth: 400 }}
+                    >
+                      <FunnelEditForm id={id} websiteId={websiteId} onClose={close} />
+                    </Dialog>
+                  );
+                }}
+              </ReportEditButton>
+            </Column>
+          )}
         </Grid>
         {data?.map(
           (

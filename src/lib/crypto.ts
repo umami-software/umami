@@ -63,3 +63,7 @@ export function uuid(...args: any) {
 
   return process.env.USE_UUIDV7 ? v7() : v4();
 }
+
+export function createAuthKey() {
+  return crypto.randomBytes(16).toString('hex');
+}

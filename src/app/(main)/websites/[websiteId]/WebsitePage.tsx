@@ -1,7 +1,8 @@
 'use client';
-import { Column } from '@umami/react-zen';
+import { Column, Row } from '@umami/react-zen';
 import { ExpandedViewModal } from '@/app/(main)/websites/[websiteId]/ExpandedViewModal';
 import { Panel } from '@/components/common/Panel';
+import { UnitFilter } from '@/components/input/UnitFilter';
 import { WebsiteChart } from './WebsiteChart';
 import { WebsiteControls } from './WebsiteControls';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
@@ -13,6 +14,9 @@ export function WebsitePage({ websiteId }: { websiteId: string }) {
       <WebsiteControls websiteId={websiteId} />
       <WebsiteMetricsBar websiteId={websiteId} showChange={true} />
       <Panel minHeight="520px">
+        <Row justifyContent="end">
+          <UnitFilter />
+        </Row>
         <WebsiteChart websiteId={websiteId} />
       </Panel>
       <WebsitePanels websiteId={websiteId} />

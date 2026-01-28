@@ -39,10 +39,23 @@ export function SessionActivity({
   const { isMobile } = useMobile();
   let lastDay = null;
 
+  const renderLink = (label: string, hostname: string) => {
+    return (
+      <a
+        href={`//${hostname}${label}`}
+        style={{ fontWeight: 'bold' }}
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        {label}
+      </a>
+    );
+  };
+
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
       <Column gap>
-        {data?.map(({ eventId, createdAt, urlPath, eventName, visitId, hasData }) => {
+        {data?.map(({ eventId, createdAt, urlPath, eventName, visitId, hostname, hasData }) => {
           const showHeader = !lastDay || !isSameDay(new Date(lastDay), new Date(createdAt));
           lastDay = createdAt;
 
@@ -61,7 +74,7 @@ export function SessionActivity({
                       : formatMessage(labels.viewedPage)}
                   </Text>
                   <Text weight="bold" style={{ maxWidth: isMobile ? '400px' : null }} truncate>
-                    {eventName || urlPath}
+                    {eventName || renderLink(urlPath, hostname)}
                   </Text>
                   {hasData > 0 && <PropertiesButton websiteId={websiteId} eventId={eventId} />}
                 </Row>

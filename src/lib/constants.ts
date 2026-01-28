@@ -4,6 +4,7 @@ export const LOCALE_CONFIG = 'umami.locale';
 export const TIMEZONE_CONFIG = 'umami.timezone';
 export const DATE_RANGE_CONFIG = 'umami.date-range';
 export const THEME_CONFIG = 'umami.theme';
+export const CURRENCY_CONFIG = 'umami.currency';
 export const DASHBOARD_CONFIG = 'umami.dashboard';
 export const LAST_TEAM_CONFIG = 'umami.last-team';
 export const VERSION_CHECK = 'umami.version-check';
@@ -25,6 +26,7 @@ export const DEFAULT_WEBSITE_LIMIT = 10;
 export const DEFAULT_RESET_DATE = '2000-01-01';
 export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_DATE_COMPARE = 'prev';
+export const DEFAULT_CURRENCY = 'USD';
 
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 10000;
@@ -53,6 +55,7 @@ export const SESSION_COLUMNS = [
   'country',
   'city',
   'region',
+  'distinctId',
 ];
 
 export const SEGMENT_TYPES = {
@@ -67,6 +70,7 @@ export const FILTER_COLUMNS = {
   referrer: 'referrer_domain',
   domain: 'referrer_domain',
   hostname: 'hostname',
+  distinctId: 'distinct_id',
   title: 'page_title',
   query: 'url_query',
   os: 'os',
@@ -91,6 +95,13 @@ export const EVENT_TYPE = {
   customEvent: 2,
   linkEvent: 3,
   pixelEvent: 4,
+} as const;
+
+export const ENTITY_TYPE = {
+  website: 1,
+  link: 2,
+  pixel: 3,
+  board: 4,
 } as const;
 
 export const DATA_TYPE = {
