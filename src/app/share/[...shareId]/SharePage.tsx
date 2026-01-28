@@ -1,5 +1,5 @@
 'use client';
-import { Column, Grid, useTheme } from '@umami/react-zen';
+import { Column, Grid, Icon, Row, Text, useTheme } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { AttributionPage } from '@/app/(main)/websites/[websiteId]/(reports)/attribution/AttributionPage';
@@ -19,6 +19,8 @@ import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
 import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
 import { PageBody } from '@/components/common/PageBody';
 import { useShareTokenQuery } from '@/components/hooks';
+import { MobileMenuButton } from '@/components/input/MobileMenuButton';
+import { Logo } from '@/components/svg';
 import { ShareFooter } from './ShareFooter';
 import { ShareHeader } from './ShareHeader';
 import { ShareNav } from './ShareNav';
@@ -94,6 +96,8 @@ export function SharePage({ shareId, path = '' }: { shareId: string; path?: stri
   }
 
   const { websiteId, parameters = {}, whiteLabel } = shareToken;
+  const logoName = whiteLabel?.name || 'umami';
+  const logoImage = whiteLabel?.image;
 
   // Redirect to only allowed section - return null while redirecting
   if (
@@ -117,6 +121,25 @@ export function SharePage({ shareId, path = '' }: { shareId: string; path?: stri
   return (
     <Column backgroundColor="2">
       <Grid columns={{ xs: '1fr', lg: 'auto 1fr' }} width="100%" height="100%">
+        <Row display={{ xs: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
+          <Grid columns="auto 1fr" flexGrow={1} backgroundColor="3" borderRadius>
+            <MobileMenuButton>
+              {({ close }) => {
+                return <ShareNav shareId={shareId} parameters={parameters} onItemClick={close} />;
+              }}
+            </MobileMenuButton>
+            <Row alignItems="center" justifyContent="center" gap>
+              {whiteLabel?.image ? (
+                <img src={logoImage} alt={logoName} style={{ height: 24 }} />
+              ) : (
+                <Icon>
+                  <Logo />
+                </Icon>
+              )}
+              <Text weight="bold">{logoName}</Text>
+            </Row>
+          </Grid>
+        </Row>
         <Column
           display={{ xs: 'none', lg: 'flex' }}
           width="240px"
@@ -125,7 +148,9 @@ export function SharePage({ shareId, path = '' }: { shareId: string; path?: stri
           backgroundColor
           marginRight="2"
         >
-          <ShareNav shareId={shareId} parameters={parameters} />
+          <Column display={{ xs: 'none', lg: 'flex' }}>
+            <ShareNav shareId={shareId} parameters={parameters} />
+          </Column>
         </Column>
         <PageBody gap>
           <WebsiteProvider websiteId={websiteId}>
