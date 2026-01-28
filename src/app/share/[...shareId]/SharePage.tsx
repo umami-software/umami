@@ -131,6 +131,7 @@ export function SharePage({ shareId, path = '' }: { shareId: string; path?: stri
           <WebsiteProvider websiteId={websiteId}>
             <ShareHeader whiteLabel={whiteLabel} />
             <Column>
+              <WebsiteHeader showActions={false} />
               <PageComponent websiteId={websiteId} />
             </Column>
             <ShareFooter whiteLabel={whiteLabel} />
