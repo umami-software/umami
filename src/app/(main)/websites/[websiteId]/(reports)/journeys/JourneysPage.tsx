@@ -1,10 +1,10 @@
 'use client';
 import { Column, Grid, ListItem, Row, SearchField, Select } from '@umami/react-zen';
-import { FilterButtons } from 'dist';
 import { useState } from 'react';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Panel } from '@/components/common/Panel';
 import { useDateRange, useMessages } from '@/components/hooks';
+import { FilterButtons } from '@/components/input/FilterButtons';
 import { Journey } from './Journey';
 
 const JOURNEY_STEPS = [2, 3, 4, 5, 6, 7];
