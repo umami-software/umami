@@ -1,5 +1,5 @@
 'use client';
-import { Column, Grid, Icon, Row, Text, useTheme } from '@umami/react-zen';
+import { Column, Grid, Row, useTheme } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { AttributionPage } from '@/app/(main)/websites/[websiteId]/(reports)/attribution/AttributionPage';
@@ -20,7 +20,6 @@ import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
 import { PageBody } from '@/components/common/PageBody';
 import { useShareTokenQuery } from '@/components/hooks';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
-import { Logo } from '@/components/svg';
 import { ShareFooter } from './ShareFooter';
 import { ShareHeader } from './ShareHeader';
 import { ShareNav } from './ShareNav';
