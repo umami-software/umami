@@ -137,5 +137,5 @@ jobs:
           tags: ${{ steps.compute.outputs.docker_tags }}
           build-args: |
             BASE_PATH=${{ matrix.base_path }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=${{ matrix.type }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.type }}
