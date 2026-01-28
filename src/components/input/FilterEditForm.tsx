@@ -22,6 +22,7 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
   const [currentCohort, setCurrentCohort] = useState(cohort);
   const { isMobile } = useMobile();
   const excludeFilters = pathname.includes('/pixels') || pathname.includes('/links');
+  const excludeEvent = !pathname.endsWith('/events');
 
   const handleReset = () => {
     setCurrentFilters([]);
@@ -62,7 +63,11 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
               value={currentFilters}
               onChange={setCurrentFilters}
               exclude={
-                excludeFilters ? ['path', 'title', 'hostname', 'distinctId', 'tag', 'event'] : []
+                excludeFilters
+                  ? ['path', 'title', 'hostname', 'distinctId', 'tag', 'event']
+                  : excludeEvent
+                    ? ['event']
+                    : []
               }
             />
           </TabPanel>

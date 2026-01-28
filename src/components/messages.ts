@@ -146,6 +146,7 @@ export const labels = defineMessages({
   poweredBy: { id: 'label.powered-by', defaultMessage: 'Powered by {name}' },
   pageViews: { id: 'label.page-views', defaultMessage: 'Page views' },
   uniqueVisitors: { id: 'label.unique-visitors', defaultMessage: 'Unique visitors' },
+  uniqueEvents: { id: 'label.unique-events', defaultMessage: 'Unique Events' },
   bounceRate: { id: 'label.bounce-rate', defaultMessage: 'Bounce rate' },
   viewsPerVisit: { id: 'label.views-per-visit', defaultMessage: 'Views per visit' },
   visitDuration: { id: 'label.visit-duration', defaultMessage: 'Visit duration' },
