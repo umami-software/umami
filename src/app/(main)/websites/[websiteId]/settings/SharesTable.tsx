@@ -1,13 +1,14 @@
 import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
 import { DateDistance } from '@/components/common/DateDistance';
 import { ExternalLink } from '@/components/common/ExternalLink';
-import { useConfig, useMessages } from '@/components/hooks';
+import { useConfig, useMessages, useMobile } from '@/components/hooks';
 import { ShareDeleteButton } from './ShareDeleteButton';
 import { ShareEditButton } from './ShareEditButton';
 
 export function SharesTable(props: DataTableProps) {
   const { formatMessage, labels } = useMessages();
   const { cloudMode } = useConfig();
+  const { isMobile } = useMobile();
 
   const getUrl = (slug: string) => {
     return `${cloudMode ? process.env.cloudUrl : window?.location.origin}${process.env.basePath || ''}/share/${slug}`;
@@ -18,7 +19,7 @@ export function SharesTable(props: DataTableProps) {
       <DataColumn id="name" label={formatMessage(labels.name)}>
         {({ name }: any) => name}
       </DataColumn>
-      <DataColumn id="slug" label={formatMessage(labels.shareUrl)}>
+      <DataColumn id="slug" label={formatMessage(labels.shareUrl)} width="2fr">
         {({ slug }: any) => {
           const url = getUrl(slug);
           return (
@@ -28,9 +29,11 @@ export function SharesTable(props: DataTableProps) {
           );
         }}
       </DataColumn>
-      <DataColumn id="created" label={formatMessage(labels.created)} width="200px">
-        {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
-      </DataColumn>
+      {!isMobile && (
+        <DataColumn id="created" label={formatMessage(labels.created)}>
+          {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
+        </DataColumn>
+      )}
       <DataColumn id="action" align="end" width="100px">
         {({ id, slug }: any) => {
           return (

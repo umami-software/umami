@@ -11,7 +11,7 @@ export interface WebsiteShareFormProps {
 
 export function WebsiteShareForm({ websiteId }: WebsiteShareFormProps) {
   const { formatMessage, labels, messages } = useMessages();
-  const { data, isLoading } = useWebsiteSharesQuery({ websiteId });
+  const { data } = useWebsiteSharesQuery({ websiteId });
 
   const shares = data?.data || [];
   const hasShares = shares.length > 0;
