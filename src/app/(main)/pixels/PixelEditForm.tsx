@@ -48,6 +48,7 @@ export function PixelEditForm({
       onSuccess: async () => {
         toast(formatMessage(messages.saved));
         touch('pixels');
+        touch(`pixel:${pixelId}`);
         onSave?.();
         onClose?.();
       },

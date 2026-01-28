@@ -5,6 +5,18 @@
       "value": "访问代码"
     }
   ],
+  "label.account": [
+    {
+      "type": 0,
+      "value": "账户"
+    }
+  ],
+  "label.action": [
+    {
+      "type": 0,
+      "value": "行为"
+    }
+  ],
   "label.actions": [
     {
       "type": 0,
@@ -35,10 +47,22 @@
       "value": "添加描述"
     }
   ],
+  "label.add-link": [
+    {
+      "type": 0,
+      "value": "添加链接"
+    }
+  ],
   "label.add-member": [
     {
       "type": 0,
       "value": "添加成员"
+    }
+  ],
+  "label.add-pixel": [
+    {
+      "type": 0,
+      "value": "添加像素"
     }
   ],
   "label.add-step": [
@@ -83,10 +107,22 @@
       "value": "所有时间段"
     }
   ],
+  "label.analysis": [
+    {
+      "type": 0,
+      "value": "分析"
+    }
+  ],
   "label.analytics": [
     {
       "type": 0,
       "value": "分析"
+    }
+  ],
+  "label.application": [
+    {
+      "type": 0,
+      "value": "应用"
     }
   ],
   "label.apply": [
@@ -107,6 +143,12 @@
       "value": "查看用户如何与您的营销互动，以及是什么促成了转化。"
     }
   ],
+  "label.audience": [
+    {
+      "type": 0,
+      "value": "受众"
+    }
+  ],
   "label.average": [
     {
       "type": 0,
@@ -123,6 +165,12 @@
     {
       "type": 0,
       "value": "之前"
+    }
+  ],
+  "label.behavior": [
+    {
+      "type": 0,
+      "value": "行为"
     }
   ],
   "label.boards": [
@@ -173,10 +221,22 @@
       "value": "修改密码"
     }
   ],
+  "label.channel": [
+    {
+      "type": 0,
+      "value": "渠道"
+    }
+  ],
   "label.channels": [
     {
       "type": 0,
       "value": "渠道"
+    }
+  ],
+  "label.chart": [
+    {
+      "type": 0,
+      "value": "图表"
     }
   ],
   "label.cities": [
@@ -198,6 +258,12 @@
     }
   ],
   "label.cohort": [
+    {
+      "type": 0,
+      "value": "队列"
+    }
+  ],
+  "label.cohorts": [
     {
       "type": 0,
       "value": "队列"
@@ -317,6 +383,12 @@
       "value": "创建者"
     }
   ],
+  "label.criteria": [
+    {
+      "type": 0,
+      "value": "条件"
+    }
+  ],
   "label.currency": [
     {
       "type": 0,
@@ -419,6 +491,12 @@
       "value": "台式机"
     }
   ],
+  "label.destination-url": [
+    {
+      "type": 0,
+      "value": "目标URL"
+    }
+  ],
   "label.details": [
     {
       "type": 0,
@@ -455,6 +533,12 @@
       "value": "唯一ID"
     }
   ],
+  "label.documentation": [
+    {
+      "type": 0,
+      "value": "文档"
+    }
+  ],
   "label.does-not-contain": [
     {
       "type": 0,
@@ -477,6 +561,12 @@
     {
       "type": 0,
       "value": "域名"
+    }
+  ],
+  "label.download": [
+    {
+      "type": 0,
+      "value": "下载"
     }
   ],
   "label.dropoff": [
@@ -506,7 +596,7 @@
   "label.email": [
     {
       "type": 0,
-      "value": "Email"
+      "value": "邮箱"
     }
   ],
   "label.enable-share-url": [
@@ -525,6 +615,12 @@
     {
       "type": 0,
       "value": "入口 URL"
+    }
+  ],
+  "label.environment": [
+    {
+      "type": 0,
+      "value": "环境"
     }
   ],
   "label.event": [
@@ -671,6 +767,12 @@
       "value": "分组"
     }
   ],
+  "label.growth": [
+    {
+      "type": 0,
+      "value": "增长"
+    }
+  ],
   "label.hostname": [
     {
       "type": 0,
@@ -699,6 +801,12 @@
     {
       "type": 0,
       "value": "通过使用筛选器和划分时间段来更深入地研究数据。"
+    }
+  ],
+  "label.invalid-url": [
+    {
+      "type": 0,
+      "value": "无效URL"
     }
   ],
   "label.is": [
@@ -863,10 +971,22 @@
       "value": "少于等于"
     }
   ],
+  "label.link": [
+    {
+      "type": 0,
+      "value": "链接"
+    }
+  ],
   "label.links": [
     {
       "type": 0,
       "value": "链接"
+    }
+  ],
+  "label.location": [
+    {
+      "type": 0,
+      "value": "位置"
     }
   ],
   "label.login": [
@@ -1020,7 +1140,7 @@
   "label.online": [
     {
       "type": 0,
-      "value": "Online"
+      "value": "在线"
     }
   ],
   "label.organic-search": [
@@ -1165,6 +1285,12 @@
       "value": "路径"
     }
   ],
+  "label.pixel": [
+    {
+      "type": 0,
+      "value": "像素"
+    }
+  ],
   "label.pixels": [
     {
       "type": 0,
@@ -1183,6 +1309,12 @@
     {
       "type": 0,
       "value": " 提供支持"
+    }
+  ],
+  "label.preferences": [
+    {
+      "type": 0,
+      "value": "偏好"
     }
   ],
   "label.previous": [
@@ -1204,6 +1336,12 @@
     }
   ],
   "label.profile": [
+    {
+      "type": 0,
+      "value": "个人资料"
+    }
+  ],
+  "label.profiles": [
     {
       "type": 0,
       "value": "个人资料"
@@ -1248,7 +1386,7 @@
   "label.referral": [
     {
       "type": 0,
-      "value": "Referral"
+      "value": "来源"
     }
   ],
   "label.referrer": [
@@ -1371,6 +1509,24 @@
       "value": "保存"
     }
   ],
+  "label.save-cohort": [
+    {
+      "type": 0,
+      "value": "保存为群组"
+    }
+  ],
+  "label.save-segment": [
+    {
+      "type": 0,
+      "value": "保存为细分"
+    }
+  ],
+  "label.screen": [
+    {
+      "type": 0,
+      "value": "屏幕"
+    }
+  ],
   "label.screens": [
     {
       "type": 0,
@@ -1381,6 +1537,18 @@
     {
       "type": 0,
       "value": "搜索"
+    }
+  ],
+  "label.segment": [
+    {
+      "type": 0,
+      "value": "细分"
+    }
+  ],
+  "label.segments": [
+    {
+      "type": 0,
+      "value": "细分"
     }
   ],
   "label.select": [
@@ -1483,6 +1651,24 @@
     {
       "type": 0,
       "value": "总和"
+    }
+  ],
+  "label.support": [
+    {
+      "type": 0,
+      "value": "支持"
+    }
+  ],
+  "label.switch-account": [
+    {
+      "type": 0,
+      "value": "切换账户"
+    }
+  ],
+  "label.table": [
+    {
+      "type": 0,
+      "value": "表格"
     }
   ],
   "label.tablet": [
@@ -1633,6 +1819,12 @@
     {
       "type": 0,
       "value": "跟踪代码"
+    }
+  ],
+  "label.traffic": [
+    {
+      "type": 0,
+      "value": "流量"
     }
   ],
   "label.transactions": [
@@ -1846,7 +2038,7 @@
   "message.bad-request": [
     {
       "type": 0,
-      "value": "Bad request"
+      "value": "请求错误"
     }
   ],
   "message.collected-data": [
@@ -1946,7 +2138,7 @@
   "message.forbidden": [
     {
       "type": 0,
-      "value": "Forbidden"
+      "value": "禁止访问"
     }
   ],
   "message.go-to-settings": [
@@ -2046,13 +2238,13 @@
   "message.not-found": [
     {
       "type": 0,
-      "value": "Not found"
+      "value": "未找到"
     }
   ],
   "message.nothing-selected": [
     {
       "type": 0,
-      "value": "Nothing selected."
+      "value": "未选择"
     }
   ],
   "message.page-not-found": [
@@ -2090,7 +2282,7 @@
   "message.sever-error": [
     {
       "type": 0,
-      "value": "Server error"
+      "value": "服务器错误"
     }
   ],
   "message.share-url": [
@@ -2158,7 +2350,7 @@
   "message.unauthorized": [
     {
       "type": 0,
-      "value": "Unauthorized"
+      "value": "未授权"
     }
   ],
   "message.user-deleted": [

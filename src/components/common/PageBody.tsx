@@ -31,6 +31,7 @@ export function PageBody({
     <Column
       {...props}
       width="100%"
+      minHeight="100vh"
       paddingBottom="6"
       maxWidth={maxWidth}
       paddingX={{ xs: '3', md: '6' }}

@@ -94,6 +94,11 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
       path: renderPath('hostname'),
     },
     {
+      id: 'distinctId',
+      label: formatMessage(labels.distinctId),
+      path: renderPath('distinctId'),
+    },
+    {
       id: 'tag',
       label: formatMessage(labels.tags),
       path: renderPath('tag'),

@@ -46,31 +46,23 @@ export async function relationalQuery({
     createdAt,
   }));
 
-  const existing = await client.sessionData.findMany({
-    where: {
-      sessionId,
-    },
-    select: {
-      id: true,
-      sessionId: true,
-      dataKey: true,
-    },
-  });
-
   for (const data of flattenedData) {
     const { sessionId, dataKey, ...props } = data;
-    const record = existing.find(e => e.sessionId === sessionId && e.dataKey === dataKey);
 
-    if (record) {
-      await client.sessionData.update({
-        where: {
-          id: record.id,
-        },
-        data: {
-          ...props,
-        },
-      });
-    } else {
+    // Try to update existing record using compound where clause
+    // This is safer than using id from a previous query due to race conditions
+    const updateResult = await client.sessionData.updateMany({
+      where: {
+        sessionId,
+        dataKey,
+      },
+      data: {
+        ...props,
+      },
+    });
+
+    // If no record was updated, create a new one
+    if (updateResult.count === 0) {
       await client.sessionData.create({
         data,
       });

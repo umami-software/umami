@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { uuid } from '@/lib/crypto';
-import redis from '@/lib/redis';
+import { fetchAccount } from '@/lib/load';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams } from '@/lib/schema';
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
   const { id, name, domain, shareId, teamId } = body;
 
   if (process.env.CLOUD_MODE && !teamId) {
-    const account = await redis.client.get(`account:${auth.user.id}`);
+    const account = await fetchAccount(auth.user.id);
 
     if (!account?.hasSubscription) {
       const count = await getWebsiteCount(auth.user.id);

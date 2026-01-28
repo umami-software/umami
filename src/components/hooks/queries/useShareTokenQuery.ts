@@ -3,7 +3,7 @@ import { useApi } from '../useApi';
 
 const selector = (state: { shareToken: string }) => state.shareToken;
 
-export function useShareTokenQuery(shareId: string): {
+export function useShareTokenQuery(slug: string): {
   shareToken: any;
   isLoading?: boolean;
   error?: Error;
@@ -11,9 +11,9 @@ export function useShareTokenQuery(shareId: string): {
   const shareToken = useApp(selector);
   const { get, useQuery } = useApi();
   const { isLoading, error } = useQuery({
-    queryKey: ['share', shareId],
+    queryKey: ['share', slug],
     queryFn: async () => {
-      const data = await get(`/share/${shareId}`);
+      const data = await get(`/share/${slug}`);
 
       setShareToken(data);
 

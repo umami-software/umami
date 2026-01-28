@@ -170,6 +170,12 @@ export function WebsiteExpandedMenu({
           icon: <Network />,
         },
         {
+          id: 'distinctId',
+          label: formatMessage(labels.distinctId),
+          path: updateParams({ view: 'distinctId' }),
+          icon: <Tag />,
+        },
+        {
           id: 'tag',
           label: formatMessage(labels.tag),
           path: updateParams({ view: 'tag' }),

@@ -4,7 +4,13 @@ import { Plus } from '@/components/icons';
 import { messages } from '@/components/messages';
 import { TeamAddForm } from './TeamAddForm';
 
-export function TeamsAddButton({ onSave }: { onSave?: () => void }) {
+export function TeamsAddButton({
+  onSave,
+  isAdmin = false,
+}: {
+  onSave?: () => void;
+  isAdmin?: boolean;
+}) {
   const { formatMessage, labels } = useMessages();
   const { toast } = useToast();
   const { touch } = useModified();
@@ -25,7 +31,7 @@ export function TeamsAddButton({ onSave }: { onSave?: () => void }) {
       </Button>
       <Modal>
         <Dialog title={formatMessage(labels.createTeam)} style={{ width: 400 }}>
-          {({ close }) => <TeamAddForm onSave={handleSave} onClose={close} />}
+          {({ close }) => <TeamAddForm onSave={handleSave} onClose={close} isAdmin={isAdmin} />}
         </Dialog>
       </Modal>
     </DialogTrigger>

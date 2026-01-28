@@ -8,6 +8,7 @@ const cloudMode = process.env.CLOUD_MODE || '';
 const cloudUrl = process.env.CLOUD_URL || '';
 const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT || '';
 const corsMaxAge = process.env.CORS_MAX_AGE || '';
+const defaultCurrency = process.env.DEFAULT_CURRENCY || '';
 const defaultLocale = process.env.DEFAULT_LOCALE || '';
 const forceSSL = process.env.FORCE_SSL || '';
 const frameAncestors = process.env.ALLOWED_FRAME_URLS || '';
@@ -170,6 +171,7 @@ export default {
     cloudMode,
     cloudUrl,
     currentVersion: pkg.version,
+    defaultCurrency,
     defaultLocale,
   },
   basePath,

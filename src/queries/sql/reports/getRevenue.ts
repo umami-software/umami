@@ -41,14 +41,17 @@ async function relationalQuery(
     currency,
   });
 
-  const joinQuery = filterQuery
-    ? `join website_event
-      on website_event.website_id = revenue.website_id
-        and website_event.session_id = revenue.session_id
-        and website_event.event_id = revenue.event_id
-        and website_event.website_id = {{websiteId::uuid}}
-        and website_event.created_at between {{startDate}} and {{endDate}}`
-    : '';
+  const joinQuery =
+    filterQuery || cohortQuery
+      ? `join (select *
+               from website_event
+               where website_id = {{websiteId::uuid}}
+                  and created_at between {{startDate}} and {{endDate}}
+                  and event_type = 2) website_event
+        on website_event.website_id = revenue.website_id
+          and website_event.session_id = revenue.session_id
+          and website_event.event_id = revenue.event_id`
+      : '';
 
   const chart = await rawQuery(
     `
@@ -62,7 +65,7 @@ async function relationalQuery(
     ${joinSessionQuery}
     where revenue.website_id = {{websiteId::uuid}}
       and revenue.created_at between {{startDate}} and {{endDate}}
-      and revenue.currency = upper({{currency}})
+      and upper(revenue.currency) = {{currency}}
       ${filterQuery}
     group by  x, t
     order by t
@@ -73,8 +76,8 @@ async function relationalQuery(
   const country = await rawQuery(
     `
     select
-      session.country as name,
-      sum(revenue) value
+      session.country as "name",
+      sum(revenue) as "value"
     from revenue 
     ${joinQuery}
     join session 
@@ -83,7 +86,7 @@ async function relationalQuery(
     ${cohortQuery}
     where revenue.website_id = {{websiteId::uuid}}
       and revenue.created_at between {{startDate}} and {{endDate}}
-      and revenue.currency = upper({{currency}})
+      and upper(revenue.currency) = {{currency}}
       ${filterQuery}
     group by session.country
     `,
@@ -102,7 +105,7 @@ async function relationalQuery(
     ${joinSessionQuery}
     where revenue.website_id = {{websiteId::uuid}}
       and revenue.created_at between {{startDate}} and {{endDate}}
-      and revenue.currency = upper({{currency}})
+      and upper(revenue.currency) = {{currency}}
       ${filterQuery}
   `,
     queryParams,
@@ -129,12 +132,15 @@ async function clickhouseQuery(
   });
 
   const joinQuery = filterQuery
-    ? `join website_event
-   on website_event.website_id = website_revenue.website_id
-    and website_event.session_id = website_revenue.session_id
-    and website_event.event_id = website_revenue.event_id
-    and website_event.website_id = {websiteId:UUID}
-    and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}`
+    ? `any left join (
+      select * 
+      from website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = 2) website_event
+    on website_event.website_id = website_revenue.website_id
+      and website_event.session_id = website_revenue.session_id
+      and website_event.event_id = website_revenue.event_id`
     : '';
 
   const chart = await rawQuery<
@@ -154,7 +160,7 @@ async function clickhouseQuery(
     ${cohortQuery}
     where website_revenue.website_id = {websiteId:UUID}
       and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and website_revenue.currency = upper({currency:String})
+      and upper(website_revenue.currency) = {currency:String}
       ${filterQuery}
     group by  x, t
     order by t
@@ -170,19 +176,22 @@ async function clickhouseQuery(
   >(
     `
       select
-        website_event.country as name,
-        sum(website_revenue.revenue) as value
+        website_event.country as "name",
+        sum(website_revenue.revenue) as "value"
       from website_revenue
-      join website_event
+      any left join (
+      select * 
+      from website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = 2) website_event
       on website_event.website_id = website_revenue.website_id
         and website_event.session_id = website_revenue.session_id
         and website_event.event_id = website_revenue.event_id
-        and website_event.website_id = {websiteId:UUID}
-        and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
       ${cohortQuery}
       where website_revenue.website_id = {websiteId:UUID}
         and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and website_revenue.currency = upper({currency:String})
+        and upper(website_revenue.currency) = {currency:String}
         ${filterQuery}
       group by website_event.country
       order by value desc
@@ -205,7 +214,7 @@ async function clickhouseQuery(
     ${cohortQuery}
     where website_revenue.website_id = {websiteId:UUID}
       and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and website_revenue.currency = upper({currency:String})
+      and upper(website_revenue.currency) = {currency:String}
       ${filterQuery}
     `,
     queryParams,
