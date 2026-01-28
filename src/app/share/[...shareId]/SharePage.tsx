@@ -96,8 +96,6 @@ export function SharePage({ shareId, path = '' }: { shareId: string; path?: stri
   }
 
   const { websiteId, parameters = {}, whiteLabel } = shareToken;
-  const logoName = whiteLabel?.name || 'umami';
-  const logoImage = whiteLabel?.image;
 
   // Redirect to only allowed section - return null while redirecting
   if (
@@ -128,16 +126,6 @@ export function SharePage({ shareId, path = '' }: { shareId: string; path?: stri
                 return <ShareNav shareId={shareId} parameters={parameters} onItemClick={close} />;
               }}
             </MobileMenuButton>
-            <Row alignItems="center" justifyContent="center" gap>
-              {whiteLabel?.image ? (
-                <img src={logoImage} alt={logoName} style={{ height: 24 }} />
-              ) : (
-                <Icon>
-                  <Logo />
-                </Icon>
-              )}
-              <Text weight="bold">{logoName}</Text>
-            </Row>
           </Grid>
         </Row>
         <Column
