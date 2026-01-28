@@ -10,10 +10,7 @@ export function SharesTable(props: DataTableProps) {
   const { cloudMode } = useConfig();
 
   const getUrl = (slug: string) => {
-    if (cloudMode) {
-      return `${process.env.cloudUrl}/share/${slug}`;
-    }
-    return `${window?.location.origin}${process.env.basePath || ''}/share/${slug}`;
+    return `${cloudMode ? process.env.cloudUrl : window?.location.origin}${process.env.basePath || ''}/share/${slug}`;
   };
 
   return (
