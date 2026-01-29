@@ -1,6 +1,6 @@
 'use client';
 import { Column, Grid, Row, useTheme } from '@umami/react-zen';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import { AttributionPage } from '@/app/(main)/websites/[websiteId]/(reports)/attribution/AttributionPage';
 import { BreakdownPage } from '@/app/(main)/websites/[websiteId]/(reports)/breakdown/BreakdownPage';
@@ -18,10 +18,8 @@ import { WebsiteHeader } from '@/app/(main)/websites/[websiteId]/WebsiteHeader';
 import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
 import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
 import { PageBody } from '@/components/common/PageBody';
-import { useShareTokenQuery } from '@/components/hooks';
+import { useShare } from '@/components/hooks';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
-import { ShareFooter } from './ShareFooter';
-import { ShareHeader } from './ShareHeader';
 import { ShareNav } from './ShareNav';
 
 const PAGE_COMPONENTS: Record<string, React.ComponentType<{ websiteId: string }>> = {
@@ -58,17 +56,20 @@ const ALL_SECTION_IDS = [
   'attribution',
 ];
 
-export function SharePage({ shareId, path = '' }: { shareId: string; path?: string }) {
-  const { shareToken, isLoading } = useShareTokenQuery(shareId);
+export function SharePage({ shareId }: { shareId: string }) {
+  const share = useShare();
   const { setTheme } = useTheme();
   const router = useRouter();
+  const pathname = usePathname();
+  const path = pathname.split('/')[3];
+  const { websiteId, parameters = {} } = share;
 
   // Calculate allowed sections
   const allowedSections = useMemo(() => {
-    if (!shareToken?.parameters) return [];
-    const params = shareToken.parameters;
+    if (!share?.parameters) return [];
+    const params = share.parameters;
     return ALL_SECTION_IDS.filter(id => params[id] !== false);
-  }, [shareToken?.parameters]);
+  }, [share?.parameters]);
 
   useEffect(() => {
     const url = new URL(window?.location?.href);
@@ -90,12 +91,6 @@ export function SharePage({ shareId, path = '' }: { shareId: string; path?: stri
     }
   }, [allowedSections, shareId, path, router]);
 
-  if (isLoading || !shareToken) {
-    return null;
-  }
-
-  const { websiteId, parameters = {}, whiteLabel } = shareToken;
-
   // Redirect to only allowed section - return null while redirecting
   if (
     allowedSections.length === 1 &&
@@ -116,40 +111,25 @@ export function SharePage({ shareId, path = '' }: { shareId: string; path?: stri
   const PageComponent = PAGE_COMPONENTS[pageKey] || WebsitePage;
 
   return (
-    <Column backgroundColor="2">
-      <Grid columns={{ xs: '1fr', lg: 'auto 1fr' }} width="100%" height="100%">
-        <Row display={{ xs: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
-          <Grid columns="auto 1fr" flexGrow={1} backgroundColor="3" borderRadius>
-            <MobileMenuButton>
-              {({ close }) => {
-                return <ShareNav shareId={shareId} parameters={parameters} onItemClick={close} />;
-              }}
-            </MobileMenuButton>
-          </Grid>
-        </Row>
-        <Column
-          display={{ xs: 'none', lg: 'flex' }}
-          width="240px"
-          height="100%"
-          border="right"
-          backgroundColor
-          marginRight="2"
-        >
-          <Column display={{ xs: 'none', lg: 'flex' }}>
-            <ShareNav shareId={shareId} parameters={parameters} />
+    <Grid columns={{ xs: '1fr', lg: '240px 1fr' }} width="100%">
+      <Row display={{ xs: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
+        <MobileMenuButton>
+          {({ close }) => {
+            return <ShareNav onItemClick={close} />;
+          }}
+        </MobileMenuButton>
+      </Row>
+      <Column display={{ xs: 'none', lg: 'flex' }} marginRight="2">
+        <ShareNav />
+      </Column>
+      <PageBody gap>
+        <WebsiteProvider websiteId={websiteId}>
+          <Column>
+            <WebsiteHeader showActions={false} />
+            <PageComponent websiteId={websiteId} />
           </Column>
-        </Column>
-        <PageBody gap>
-          <WebsiteProvider websiteId={websiteId}>
-            <ShareHeader whiteLabel={whiteLabel} />
-            <Column>
-              <WebsiteHeader showActions={false} />
-              <PageComponent websiteId={websiteId} />
-            </Column>
-            <ShareFooter whiteLabel={whiteLabel} />
-          </WebsiteProvider>
-        </PageBody>
-      </Grid>
-    </Column>
+        </WebsiteProvider>
+      </PageBody>
+    </Grid>
   );
 }

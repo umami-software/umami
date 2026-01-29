@@ -1,21 +1,20 @@
-'use client';
-import { Column } from '@umami/react-zen';
+import { Column, Icon, Row, Text, ThemeButton } from '@umami/react-zen';
 import { SideMenu } from '@/components/common/SideMenu';
-import { useMessages, useNavigation } from '@/components/hooks';
+import { useMessages, useNavigation, useShare } from '@/components/hooks';
 import { AlignEndHorizontal, Clock, Eye, Sheet, Tag, User } from '@/components/icons';
-import { Funnel, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import { LanguageButton } from '@/components/input/LanguageButton';
+import { PreferencesButton } from '@/components/input/PreferencesButton';
+import { Funnel, Lightning, Logo, Magnet, Money, Network, Path, Target } from '@/components/svg';
 
-export function ShareNav({
-  shareId,
-  parameters,
-  onItemClick,
-}: {
-  shareId: string;
-  parameters: Record<string, boolean>;
-  onItemClick?: () => void;
-}) {
+export function ShareNav({ onItemClick }: { onItemClick?: () => void }) {
+  const share = useShare();
   const { formatMessage, labels } = useMessages();
   const { pathname } = useNavigation();
+  const { shareId, parameters, whiteLabel } = share;
+
+  const logoUrl = whiteLabel?.url || 'https://umami.is';
+  const logoName = whiteLabel?.name || 'umami';
+  const logoImage = whiteLabel?.image;
 
   const renderPath = (path: string) => `/share/${shareId}${path}`;
 
@@ -131,13 +130,36 @@ export function ShareNav({
     .find(({ path }) => path && pathname.endsWith(path.split('?')[0]))?.id;
 
   return (
-    <Column padding="3" position="sticky" top="0" gap>
-      <SideMenu
-        items={items}
-        selectedKey={selectedKey}
-        allowMinimize={false}
-        onItemClick={onItemClick}
-      />
+    <Column position="fixed" padding="3" width="240px" maxHeight="100vh" height="100vh">
+      <Row as="header" gap alignItems="center" paddingY="3" marginLeft="3">
+        <a href={logoUrl} target="_blank" rel="noopener">
+          <Row alignItems="center" gap>
+            {logoImage ? (
+              <img src={logoImage} alt={logoName} style={{ height: 24 }} />
+            ) : (
+              <Icon>
+                <Logo />
+              </Icon>
+            )}
+            <Text weight="bold">{logoName}</Text>
+          </Row>
+        </a>
+      </Row>
+      <Column>
+        <SideMenu
+          items={items}
+          selectedKey={selectedKey}
+          allowMinimize={false}
+          onItemClick={onItemClick}
+        />
+      </Column>
+      <Column flexGrow={1} justifyContent="flex-end">
+        <Row>
+          <ThemeButton />
+          <LanguageButton />
+          <PreferencesButton />
+        </Row>
+      </Column>
     </Column>
   );
 }

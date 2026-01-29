@@ -16,7 +16,7 @@ const initialState = {
   theme: getItem(THEME_CONFIG) || DEFAULT_THEME,
   timezone: getItem(TIMEZONE_CONFIG) || getTimezone(),
   dateRangeValue: getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE_VALUE,
-  shareToken: null,
+  share: null,
   user: null,
   config: null,
 };
@@ -31,8 +31,8 @@ export function setLocale(locale: string) {
   store.setState({ locale });
 }
 
-export function setShareToken(shareToken: string) {
-  store.setState({ shareToken });
+export function setShare(share: object) {
+  store.setState({ share });
 }
 
 export function setUser(user: object) {

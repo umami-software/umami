@@ -7,6 +7,7 @@ import {
   NavMenuItem,
   type NavMenuProps,
   Row,
+  Text,
 } from '@umami/react-zen';
 import Link from 'next/link';
 
@@ -42,9 +43,11 @@ export function SideMenu({
 
       return (
         <Link key={id} href={path}>
-          <NavMenuItem isSelected={isSelected}>
-            <IconLabel icon={icon}>{label}</IconLabel>
-          </NavMenuItem>
+          <Row padding hoverBackgroundColor="3">
+            <IconLabel icon={icon}>
+              <Text weight={isSelected ? 'bold' : undefined}>{label}</Text>
+            </IconLabel>
+          </Row>
         </Link>
       );
     });

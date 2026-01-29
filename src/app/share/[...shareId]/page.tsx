@@ -1,8 +1,13 @@
+import { ShareProvider } from '@/app/share/ShareProvider';
 import { SharePage } from './SharePage';
 
 export default async function ({ params }: { params: Promise<{ shareId: string[] }> }) {
   const { shareId } = await params;
-  const [slug, ...path] = shareId;
+  const [slug] = shareId;
 
-  return <SharePage shareId={slug} path={path.join('/')} />;
+  return (
+    <ShareProvider shareId={slug}>
+      <SharePage shareId={slug} />
+    </ShareProvider>
+  );
 }
