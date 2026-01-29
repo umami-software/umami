@@ -162,11 +162,13 @@ export function ShareNav({
             </Row>
           </a>
         )}
-        <Button variant="quiet" onPress={() => onCollapse?.(!collapsed)}>
-          <Icon color="muted">
-            <PanelLeft />
-          </Icon>
-        </Button>
+        {!onItemClick && (
+          <Button variant="quiet" onPress={() => onCollapse?.(!collapsed)}>
+            <Icon color="muted">
+              <PanelLeft />
+            </Icon>
+          </Button>
+        )}
       </Row>
       {!collapsed && (
         <Column flexGrow={1} overflowY="auto">
