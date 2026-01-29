@@ -10,13 +10,13 @@ export function ShareNav({ onItemClick }: { onItemClick?: () => void }) {
   const share = useShare();
   const { formatMessage, labels } = useMessages();
   const { pathname } = useNavigation();
-  const { shareId, parameters, whiteLabel } = share;
+  const { slug, parameters, whiteLabel } = share;
 
   const logoUrl = whiteLabel?.url || 'https://umami.is';
   const logoName = whiteLabel?.name || 'umami';
   const logoImage = whiteLabel?.image;
 
-  const renderPath = (path: string) => `/share/${shareId}${path}`;
+  const renderPath = (path: string) => `/share/${slug}${path}`;
 
   const allItems = [
     {

@@ -7,6 +7,7 @@ import type { WhiteLabel } from '@/lib/types';
 
 export interface ShareData {
   shareId: string;
+  slug: string;
   websiteId: string;
   parameters: any;
   token: string;
@@ -31,8 +32,8 @@ const ALL_SECTION_IDS = [
   'attribution',
 ];
 
-export function ShareProvider({ shareId, children }: { shareId: string; children: ReactNode }) {
-  const { share, isLoading, isFetching } = useShareTokenQuery(shareId);
+export function ShareProvider({ slug, children }: { slug: string; children: ReactNode }) {
+  const { share, isLoading, isFetching } = useShareTokenQuery(slug);
   const router = useRouter();
   const pathname = usePathname();
   const path = pathname.split('/')[3];
@@ -48,9 +49,9 @@ export function ShareProvider({ shareId, children }: { shareId: string; children
 
   useEffect(() => {
     if (shouldRedirect) {
-      router.replace(`/share/${shareId}/${allowedSections[0]}`);
+      router.replace(`/share/${slug}/${allowedSections[0]}`);
     }
-  }, [shouldRedirect, shareId, allowedSections, router]);
+  }, [shouldRedirect, slug, allowedSections, router]);
 
   if (isFetching && isLoading) {
     return <Loading placement="absolute" />;
@@ -60,5 +61,5 @@ export function ShareProvider({ shareId, children }: { shareId: string; children
     return null;
   }
 
-  return <ShareContext.Provider value={share}>{children}</ShareContext.Provider>;
+  return <ShareContext.Provider value={{ ...share, slug }}>{children}</ShareContext.Provider>;
 }
