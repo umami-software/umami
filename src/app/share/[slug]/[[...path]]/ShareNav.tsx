@@ -178,9 +178,9 @@ export function ShareNav({
           />
         </Column>
       )}
-      <Column flexGrow={1} justifyContent="flex-end">
+      <Column flexGrow={1} justifyContent="flex-end" alignItems={collapsed ? 'center' : undefined}>
         {collapsed ? (
-          <Column gap="2">
+          <Column gap="2" alignItems="center">
             <ThemeButton />
             <LanguageButton />
             <PreferencesButton />
