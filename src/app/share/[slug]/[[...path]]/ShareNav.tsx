@@ -137,15 +137,17 @@ export function ShareNav({
     .flatMap(e => e.items)
     .find(({ path }) => path && pathname.endsWith(path.split('?')[0]))?.id;
 
+  const isMobile = !!onItemClick;
+
   return (
     <Column
-      position="fixed"
+      position={isMobile ? undefined : 'fixed'}
       padding="3"
-      width={collapsed ? '60px' : '240px'}
+      width={isMobile ? '100%' : collapsed ? '60px' : '240px'}
       maxHeight="100vh"
       height="100vh"
-      border="right"
-      borderColor="4"
+      border={isMobile ? undefined : 'right'}
+      borderColor={isMobile ? undefined : '4'}
     >
       <Row as="header" gap alignItems="center" paddingY="3" justifyContent="space-between">
         {!collapsed && (
