@@ -39,11 +39,23 @@ const PAGE_COMPONENTS: Record<string, React.ComponentType<{ websiteId: string }>
   attribution: AttributionPage,
 };
 
+function getSharePath(pathname: string) {
+  const segments = pathname.split('/');
+  const firstSegment = segments[3];
+
+  // If first segment looks like a domain name, skip it
+  if (firstSegment?.includes('.')) {
+    return segments[4];
+  }
+
+  return firstSegment;
+}
+
 export function SharePage() {
   const share = useShare();
   const { setTheme } = useTheme();
   const pathname = usePathname();
-  const path = pathname.split('/')[3];
+  const path = getSharePath(pathname);
   const { websiteId, parameters = {} } = share;
 
   useEffect(() => {
