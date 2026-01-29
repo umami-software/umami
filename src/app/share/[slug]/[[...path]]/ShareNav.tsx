@@ -169,7 +169,7 @@ export function ShareNav({
         </Button>
       </Row>
       {!collapsed && (
-        <Column>
+        <Column flexGrow={1} overflowY="auto">
           <SideMenu
             items={items}
             selectedKey={selectedKey}
@@ -178,7 +178,11 @@ export function ShareNav({
           />
         </Column>
       )}
-      <Column flexGrow={1} justifyContent="flex-end" alignItems={collapsed ? 'center' : undefined}>
+      <Column
+        flexGrow={collapsed ? 1 : undefined}
+        justifyContent="flex-end"
+        alignItems={collapsed ? 'center' : undefined}
+      >
         {collapsed ? (
           <Column gap="2" alignItems="center">
             <ThemeButton />
