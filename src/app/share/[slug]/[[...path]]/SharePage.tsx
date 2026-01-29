@@ -1,7 +1,7 @@
 'use client';
 import { Column, Grid, Row, useTheme } from '@umami/react-zen';
 import { usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AttributionPage } from '@/app/(main)/websites/[websiteId]/(reports)/attribution/AttributionPage';
 import { BreakdownPage } from '@/app/(main)/websites/[websiteId]/(reports)/breakdown/BreakdownPage';
 import { FunnelsPage } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/FunnelsPage';
@@ -52,6 +52,7 @@ function getSharePath(pathname: string) {
 }
 
 export function SharePage() {
+  const [navCollapsed, setNavCollapsed] = useState(false);
   const share = useShare();
   const { setTheme } = useTheme();
   const pathname = usePathname();
@@ -78,7 +79,7 @@ export function SharePage() {
   const PageComponent = PAGE_COMPONENTS[pageKey] || WebsitePage;
 
   return (
-    <Grid columns={{ xs: '1fr', lg: '240px 1fr' }} width="100%">
+    <Grid columns={{ xs: '1fr', lg: `${navCollapsed ? '60px' : '240px'} 1fr` }} width="100%">
       <Row display={{ xs: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
         <MobileMenuButton>
           {({ close }) => {
@@ -87,7 +88,7 @@ export function SharePage() {
         </MobileMenuButton>
       </Row>
       <Column display={{ xs: 'none', lg: 'flex' }} marginRight="2">
-        <ShareNav />
+        <ShareNav collapsed={navCollapsed} onCollapse={setNavCollapsed} />
       </Column>
       <PageBody gap>
         <WebsiteProvider websiteId={websiteId}>

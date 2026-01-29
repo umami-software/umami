@@ -1,12 +1,29 @@
-import { Column, Icon, Row, Text, ThemeButton } from '@umami/react-zen';
+import { Button, Column, Icon, Row, Text, ThemeButton } from '@umami/react-zen';
 import { SideMenu } from '@/components/common/SideMenu';
 import { useMessages, useNavigation, useShare } from '@/components/hooks';
-import { AlignEndHorizontal, Clock, Eye, Sheet, Tag, User } from '@/components/icons';
+import {
+  AlignEndHorizontal,
+  Clock,
+  Eye,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Sheet,
+  Tag,
+  User,
+} from '@/components/icons';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { PreferencesButton } from '@/components/input/PreferencesButton';
 import { Funnel, Lightning, Logo, Magnet, Money, Network, Path, Target } from '@/components/svg';
 
-export function ShareNav({ onItemClick }: { onItemClick?: () => void }) {
+export function ShareNav({
+  collapsed,
+  onCollapse,
+  onItemClick,
+}: {
+  collapsed?: boolean;
+  onCollapse?: (collapsed: boolean) => void;
+  onItemClick?: () => void;
+}) {
   const share = useShare();
   const { formatMessage, labels } = useMessages();
   const { pathname } = useNavigation();
@@ -130,35 +147,56 @@ export function ShareNav({ onItemClick }: { onItemClick?: () => void }) {
     .find(({ path }) => path && pathname.endsWith(path.split('?')[0]))?.id;
 
   return (
-    <Column position="fixed" padding="3" width="240px" maxHeight="100vh" height="100vh">
-      <Row as="header" gap alignItems="center" paddingY="3" marginLeft="3">
-        <a href={logoUrl} target="_blank" rel="noopener">
-          <Row alignItems="center" gap>
-            {logoImage ? (
-              <img src={logoImage} alt={logoName} style={{ height: 24 }} />
-            ) : (
-              <Icon>
-                <Logo />
-              </Icon>
-            )}
-            <Text weight="bold">{logoName}</Text>
-          </Row>
-        </a>
+    <Column
+      position="fixed"
+      padding="3"
+      width={collapsed ? '60px' : '240px'}
+      maxHeight="100vh"
+      height="100vh"
+      border="right"
+      borderColor="4"
+    >
+      <Row
+        as="header"
+        gap
+        alignItems="center"
+        paddingY="3"
+        justifyContent={collapsed ? 'center' : undefined}
+      >
+        {!collapsed && (
+          <a href={logoUrl} target="_blank" rel="noopener" style={{ marginLeft: 12 }}>
+            <Row alignItems="center" gap>
+              {logoImage ? (
+                <img src={logoImage} alt={logoName} style={{ height: 24 }} />
+              ) : (
+                <Icon>
+                  <Logo />
+                </Icon>
+              )}
+              <Text weight="bold">{logoName}</Text>
+            </Row>
+          </a>
+        )}
+        <Button variant="quiet" onPress={() => onCollapse?.(!collapsed)}>
+          <Icon>{collapsed ? <PanelLeftOpen /> : <PanelLeftClose />}</Icon>
+        </Button>
       </Row>
-      <Column>
-        <SideMenu
-          items={items}
-          selectedKey={selectedKey}
-          allowMinimize={false}
-          onItemClick={onItemClick}
-        />
-      </Column>
+      {!collapsed && (
+        <Column>
+          <SideMenu
+            items={items}
+            selectedKey={selectedKey}
+            allowMinimize={false}
+            onItemClick={onItemClick}
+          />
+        </Column>
+      )}
       <Column flexGrow={1} justifyContent="flex-end">
-        <Row>
+        <Column gap="2">
           <ThemeButton />
           <LanguageButton />
           <PreferencesButton />
-        </Row>
+        </Column>
       </Column>
     </Column>
   );
