@@ -129,7 +129,7 @@ export function ShareNav({
   const items = allItems
     .map(section => ({
       label: section.label,
-      items: section.items.filter(item => parameters[item.id] !== false),
+      items: section.items.filter(item => parameters[item.id] === true),
     }))
     .filter(section => section.items.length > 0);
 
