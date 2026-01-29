@@ -144,12 +144,12 @@ export function ShareNav({
       position={isMobile ? undefined : 'fixed'}
       padding="3"
       width={isMobile ? '100%' : collapsed ? '60px' : '240px'}
-      maxHeight="100vh"
-      height="100vh"
+      maxHeight="100dvh"
+      height="100dvh"
       border={isMobile ? undefined : 'right'}
       borderColor={isMobile ? undefined : '4'}
     >
-      <Row as="header" gap alignItems="center" paddingY="3" justifyContent="space-between">
+      <Row as="header" gap alignItems="center" justifyContent="space-between">
         {!collapsed && (
           <a href={logoUrl} target="_blank" rel="noopener" style={{ marginLeft: 12 }}>
             <Row alignItems="center" gap>

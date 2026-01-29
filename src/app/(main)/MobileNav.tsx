@@ -42,7 +42,7 @@ export function MobileNav() {
         {({ close }) => {
           return (
             <>
-              <NavMenu padding="3" onItemClick={close} border="bottom">
+              <NavMenu padding="3" onItemClick={close} border="bottom" width="100%">
                 <NavButton />
                 {links.map(link => {
                   return (
