@@ -1,16 +1,7 @@
 import { Button, Column, Icon, Row, Text, ThemeButton } from '@umami/react-zen';
 import { SideMenu } from '@/components/common/SideMenu';
 import { useMessages, useNavigation, useShare } from '@/components/hooks';
-import {
-  AlignEndHorizontal,
-  Clock,
-  Eye,
-  PanelLeftClose,
-  PanelLeftOpen,
-  Sheet,
-  Tag,
-  User,
-} from '@/components/icons';
+import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User } from '@/components/icons';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { PreferencesButton } from '@/components/input/PreferencesButton';
 import { Funnel, Lightning, Logo, Magnet, Money, Network, Path, Target } from '@/components/svg';
@@ -156,13 +147,7 @@ export function ShareNav({
       border="right"
       borderColor="4"
     >
-      <Row
-        as="header"
-        gap
-        alignItems="center"
-        paddingY="3"
-        justifyContent={collapsed ? 'center' : undefined}
-      >
+      <Row as="header" gap alignItems="center" paddingY="3" justifyContent="space-between">
         {!collapsed && (
           <a href={logoUrl} target="_blank" rel="noopener" style={{ marginLeft: 12 }}>
             <Row alignItems="center" gap>
@@ -178,7 +163,9 @@ export function ShareNav({
           </a>
         )}
         <Button variant="quiet" onPress={() => onCollapse?.(!collapsed)}>
-          <Icon>{collapsed ? <PanelLeftOpen /> : <PanelLeftClose />}</Icon>
+          <Icon color="muted">
+            <PanelLeft />
+          </Icon>
         </Button>
       </Row>
       {!collapsed && (
@@ -192,11 +179,19 @@ export function ShareNav({
         </Column>
       )}
       <Column flexGrow={1} justifyContent="flex-end">
-        <Column gap="2">
-          <ThemeButton />
-          <LanguageButton />
-          <PreferencesButton />
-        </Column>
+        {collapsed ? (
+          <Column gap="2">
+            <ThemeButton />
+            <LanguageButton />
+            <PreferencesButton />
+          </Column>
+        ) : (
+          <Row>
+            <ThemeButton />
+            <LanguageButton />
+            <PreferencesButton />
+          </Row>
+        )}
       </Column>
     </Column>
   );
