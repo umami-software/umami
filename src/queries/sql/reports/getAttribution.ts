@@ -142,7 +142,7 @@ async function relationalQuery(
     ${
       currency
         ? ''
-        : `and we.referrer_domain != hostname
+        : `and we.referrer_domain != regexp_replace(we.hostname, '^www.', '')
       and we.referrer_domain != ''`
     }  
     group by 1

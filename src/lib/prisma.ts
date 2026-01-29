@@ -108,7 +108,7 @@ function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}
 
         if (name === 'referrer') {
           arr.push(
-            `and (website_event.referrer_domain != website_event.hostname or website_event.referrer_domain is null)`,
+            `and (website_event.referrer_domain != regexp_replace(website_event.hostname, '^www.', '') or website_event.referrer_domain is null)`,
           );
         }
       }

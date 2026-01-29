@@ -50,7 +50,7 @@ async function relationalQuery(
   let excludeDomain = '';
 
   if (column === 'referrer_domain') {
-    excludeDomain = `and website_event.referrer_domain != website_event.hostname
+    excludeDomain = `and website_event.referrer_domain != regexp_replace(website_event.hostname, '^www.', '')
       and website_event.referrer_domain != ''`;
     if (type === 'domain') {
       column = toPostgresGroupedReferrer(GROUPED_DOMAINS);
