@@ -7,7 +7,7 @@ export default async function ({ params }: { params: Promise<{ shareId: string[]
 
   return (
     <ShareProvider shareId={slug}>
-      <SharePage shareId={slug} />
+      <SharePage />
     </ShareProvider>
   );
 }

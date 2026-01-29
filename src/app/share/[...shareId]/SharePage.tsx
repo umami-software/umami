@@ -1,7 +1,7 @@
 'use client';
 import { Column, Grid, Row, useTheme } from '@umami/react-zen';
-import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useMemo } from 'react';
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 import { AttributionPage } from '@/app/(main)/websites/[websiteId]/(reports)/attribution/AttributionPage';
 import { BreakdownPage } from '@/app/(main)/websites/[websiteId]/(reports)/breakdown/BreakdownPage';
 import { FunnelsPage } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/FunnelsPage';
@@ -39,37 +39,12 @@ const PAGE_COMPONENTS: Record<string, React.ComponentType<{ websiteId: string }>
   attribution: AttributionPage,
 };
 
-// All section IDs that can be enabled/disabled via parameters
-const ALL_SECTION_IDS = [
-  'overview',
-  'events',
-  'sessions',
-  'realtime',
-  'compare',
-  'breakdown',
-  'goals',
-  'funnels',
-  'journeys',
-  'retention',
-  'utm',
-  'revenue',
-  'attribution',
-];
-
-export function SharePage({ shareId }: { shareId: string }) {
+export function SharePage() {
   const share = useShare();
   const { setTheme } = useTheme();
-  const router = useRouter();
   const pathname = usePathname();
   const path = pathname.split('/')[3];
   const { websiteId, parameters = {} } = share;
-
-  // Calculate allowed sections
-  const allowedSections = useMemo(() => {
-    if (!share?.parameters) return [];
-    const params = share.parameters;
-    return ALL_SECTION_IDS.filter(id => params[id] !== false);
-  }, [share?.parameters]);
 
   useEffect(() => {
     const url = new URL(window?.location?.href);
@@ -79,26 +54,6 @@ export function SharePage({ shareId }: { shareId: string }) {
       setTheme(theme);
     }
   }, []);
-
-  // Redirect to the only allowed section if there's just one and we're on the base path
-  useEffect(() => {
-    if (
-      allowedSections.length === 1 &&
-      allowedSections[0] !== 'overview' &&
-      (path === '' || path === 'overview')
-    ) {
-      router.replace(`/share/${shareId}/${allowedSections[0]}`);
-    }
-  }, [allowedSections, shareId, path, router]);
-
-  // Redirect to only allowed section - return null while redirecting
-  if (
-    allowedSections.length === 1 &&
-    allowedSections[0] !== 'overview' &&
-    (path === '' || path === 'overview')
-  ) {
-    return null;
-  }
 
   // Check if the requested path is allowed
   const pageKey = path || '';
