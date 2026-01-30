@@ -42,6 +42,7 @@ export const filterParams = {
   segment: z.uuid().optional(),
   cohort: z.uuid().optional(),
   eventType: z.coerce.number().int().positive().optional(),
+  excludeBounce: z.string().optional(),
 };
 
 export const searchParams = {

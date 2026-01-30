@@ -111,6 +111,7 @@ export const labels = defineMessages({
   event: { id: 'label.event', defaultMessage: 'Event' },
   events: { id: 'label.events', defaultMessage: 'Events' },
   eventName: { id: 'label.event-name', defaultMessage: 'Event name' },
+  excludeBounce: { id: 'label.exclude-bounce', defaultMessage: 'Exclude bounces' },
   query: { id: 'label.query', defaultMessage: 'Query' },
   queryParameters: { id: 'label.query-parameters', defaultMessage: 'Query parameters' },
   back: { id: 'label.back', defaultMessage: 'Back' },

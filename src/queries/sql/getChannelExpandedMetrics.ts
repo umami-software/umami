@@ -41,10 +41,11 @@ async function relationalQuery(
   filters: QueryFilters,
 ): Promise<ChannelExpandedMetricsData[]> {
   const { rawQuery, parseFilters, getTimestampDiffSQL } = prisma;
-  const { queryParams, filterQuery, joinSessionQuery, cohortQuery, dateQuery } = parseFilters({
-    ...filters,
-    websiteId,
-  });
+  const { queryParams, filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, dateQuery } =
+    parseFilters({
+      ...filters,
+      websiteId,
+    });
 
   return rawQuery(
     `
@@ -64,6 +65,7 @@ async function relationalQuery(
             max(website_event.created_at) max_time
         from website_event
         ${cohortQuery}
+        ${excludeBounceQuery}
         ${joinSessionQuery}
         where website_event.website_id = {{websiteId::uuid}}
           and website_event.event_type != 2
@@ -119,7 +121,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<ChannelExpandedMetricsData[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { queryParams, filterQuery, cohortQuery } = parseFilters({
+  const { queryParams, filterQuery, cohortQuery, excludeBounceQuery } = parseFilters({
     ...filters,
     websiteId,
   });
@@ -166,6 +168,7 @@ async function clickhouseQuery(
         max(created_at) max_time
       from website_event
       ${cohortQuery}
+      ${excludeBounceQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type != 2

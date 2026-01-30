@@ -140,6 +140,10 @@ export async function getQueryFilters(
         cohort_endDate: endDate,
       });
     }
+
+    if (params.excludeBounce) {
+      Object.assign(filters, { excludeBounce: true });
+    }
   }
 
   return {

@@ -30,6 +30,7 @@ export function WebsiteNav({
       compare: undefined,
       view: undefined,
       unit: undefined,
+      excludeBounce: undefined,
     });
 
   const items = [

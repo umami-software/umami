@@ -141,6 +141,25 @@ function getCohortQuery(filters: QueryFilters = {}) {
     `;
 }
 
+function getExcludeBounceQuery(filters: Record<string, any>) {
+  if (!filters.excludeBounce === true) {
+    return '';
+  }
+
+  return `join
+    (select distinct session_id, visit_id
+    from website_event
+    where website_id = {{websiteId}}
+      and created_at between {{startDate}} and {{endDate}}
+      and event_type = 1
+    group by session_id, visit_id
+    having count(*) > 1
+    ) excludeBounce
+    on excludeBounce.session_id = website_event.session_id
+      and excludeBounce.visit_id = website_event.visit_id
+    `;
+}
+
 function getDateQuery(filters: Record<string, any>) {
   const { startDate, endDate } = filters;
 
@@ -186,6 +205,7 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
     filterQuery: getFilterQuery(filters, options),
     queryParams: getQueryParams(filters),
     cohortQuery: getCohortQuery(cohortFilters),
+    excludeBounceQuery: getExcludeBounceQuery(filters),
   };
 }
 

@@ -24,6 +24,7 @@ export function useFilterParameters() {
       search,
       segment,
       cohort,
+      excludeBounce,
     },
   } = useNavigation();
 
@@ -47,6 +48,7 @@ export function useFilterParameters() {
       search,
       segment,
       cohort,
+      excludeBounce,
     };
   }, [
     path,
@@ -69,5 +71,6 @@ export function useFilterParameters() {
     search,
     segment,
     cohort,
+    excludeBounce,
   ]);
 }

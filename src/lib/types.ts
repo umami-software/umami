@@ -90,6 +90,7 @@ export interface FilterParams {
   segment?: string;
   cohort?: string;
   compare?: string;
+  excludeBounce?: boolean;
 }
 
 export interface SortParams {

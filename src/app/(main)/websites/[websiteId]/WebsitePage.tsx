@@ -11,7 +11,7 @@ import { WebsitePanels } from './WebsitePanels';
 export function WebsitePage({ websiteId }: { websiteId: string }) {
   return (
     <Column gap>
-      <WebsiteControls websiteId={websiteId} />
+      <WebsiteControls websiteId={websiteId} allowBounceFilter={true} />
       <WebsiteMetricsBar websiteId={websiteId} showChange={true} />
       <Panel minHeight="520px">
         <Row justifyContent="end">
