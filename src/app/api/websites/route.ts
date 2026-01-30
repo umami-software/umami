@@ -38,7 +38,6 @@ export async function POST(request: Request) {
   const schema = z.object({
     name: z.string().max(100),
     domain: z.string().max(500),
-    shareId: z.string().max(50).nullable().optional(),
     teamId: z.uuid().nullable().optional(),
     id: z.uuid().nullable().optional(),
   });
@@ -49,7 +48,7 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const { id, name, domain, shareId, teamId } = body;
+  const { id, name, domain, teamId } = body;
 
   if (process.env.CLOUD_MODE && !teamId) {
     const account = await fetchAccount(auth.user.id);
@@ -72,7 +71,6 @@ export async function POST(request: Request) {
     createdBy: auth.user.id,
     name,
     domain,
-    shareId,
     teamId,
   };
 
