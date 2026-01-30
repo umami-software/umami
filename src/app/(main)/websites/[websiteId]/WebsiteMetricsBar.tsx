@@ -25,18 +25,21 @@ export function WebsiteMetricsBar({
           label: formatMessage(labels.visitors),
           change: visitors - comparison.visitors,
           formatValue: formatLongNumber,
+          tooltip: 'Number of unique visitors to your website',
         },
         {
           value: visits,
           label: formatMessage(labels.visits),
           change: visits - comparison.visits,
           formatValue: formatLongNumber,
+          tooltip: 'Total number of sessions on your website',
         },
         {
           value: pageviews,
           label: formatMessage(labels.views),
           change: pageviews - comparison.pageviews,
           formatValue: formatLongNumber,
+          tooltip: 'Total number of pages viewed',
         },
         {
           label: formatMessage(labels.bounceRate),
@@ -47,6 +50,7 @@ export function WebsiteMetricsBar({
             (Math.min(comparison.visits, comparison.bounces) / comparison.visits) * 100,
           formatValue: n => `${Math.round(+n)}%`,
           reverseColors: true,
+          tooltip: 'Percentage of visits that leave after viewing only one page',
         },
         {
           label: formatMessage(labels.visitDuration),
@@ -55,6 +59,7 @@ export function WebsiteMetricsBar({
           change: totaltime / visits - comparison.totaltime / comparison.visits,
           formatValue: n =>
             `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`,
+          tooltip: 'Average time spent on your website per visit',
         },
       ]
     : null;
@@ -68,7 +73,7 @@ export function WebsiteMetricsBar({
       minHeight="136px"
     >
       <MetricsBar>
-        {metrics?.map(({ label, value, prev, change, formatValue, reverseColors }) => {
+        {metrics?.map(({ label, value, prev, change, formatValue, reverseColors, tooltip }) => {
           return (
             <MetricCard
               key={label}
@@ -79,6 +84,7 @@ export function WebsiteMetricsBar({
               formatValue={formatValue}
               reverseColors={reverseColors}
               showChange={!isAllTime}
+              tooltip={tooltip}
             />
           );
         })}
