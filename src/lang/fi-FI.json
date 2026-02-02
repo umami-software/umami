@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "Vierailija maasta {country} selaimella {browser} laitteella {os} {device}"
+  "message.visitor-log": "Vierailija maasta {country} selaimella {browser} laitteella {os} {device}",
+  "message.visitors-tooltip": "Verkkosivustosi yksilöllisten kävijöiden määrä",
+  "message.visits-tooltip": "Verkkosivustosi kokonaisistuntojen määrä",
+  "message.page-views-tooltip": "Sivunäyttöjen kokonaismäärä",
+  "message.bounce-rate-tooltip": "Käyntien prosenttiosuus, jotka poistuvat nähtyään vain yhden sivun",
+  "message.visit-duration-tooltip": "Keskimääräinen aika, jonka vierailija viettää verkkosivustollasi per käynti"
 }

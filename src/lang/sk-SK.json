@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "Návštevník z {country} s prehliadačom {browser} na {os} {device}"
+  "message.visitor-log": "Návštevník z {country} s prehliadačom {browser} na {os} {device}",
+  "message.visitors-tooltip": "Počet unikátnych návštevníkov vašej webovej stránky",
+  "message.visits-tooltip": "Celkový počet relácií na vašej webovej stránke",
+  "message.page-views-tooltip": "Celkový počet zobrazení stránok",
+  "message.bounce-rate-tooltip": "Percento návštev, ktoré opustia stránku po zobrazení iba jednej stránky",
+  "message.visit-duration-tooltip": "Priemerný čas strávený na vašej webovej stránke počas jednej návštevy"
 }

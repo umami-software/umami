@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "Användaren har raderats.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "Besökare från {country} med {browser} på {os} {device}"
+  "message.visitor-log": "Besökare från {country} med {browser} på {os} {device}",
+  "message.visitors-tooltip": "Antal unika besökare på din webbplats",
+  "message.visits-tooltip": "Totalt antal sessioner på din webbplats",
+  "message.page-views-tooltip": "Totalt antal sidvisningar",
+  "message.bounce-rate-tooltip": "Andel besök som lämnar efter att endast ha sett en sida",
+  "message.visit-duration-tooltip": "Genomsnittlig tid som spenderas på din webbplats per besök"
 }

@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "{country} থেকে একজন ভিসিটর {ব্রাউজার}, ব্যবহার করছেন {os} {device} এর মধ্যে।"
+  "message.visitor-log": "{country} থেকে একজন ভিসিটর {ব্রাউজার}, ব্যবহার করছেন {os} {device} এর মধ্যে।",
+  "message.visitors-tooltip": "আপনার ওয়েবসাইটে অনন্য দর্শনার্থীর সংখ্যা",
+  "message.visits-tooltip": "আপনার ওয়েবসাইটে মোট সেশনের সংখ্যা",
+  "message.page-views-tooltip": "মোট পৃষ্ঠা দেখার সংখ্যা",
+  "message.bounce-rate-tooltip": "শুধু একটি পৃষ্ঠা দেখার পর ওয়েবসাইট ত্যাগ করা ভিজিটের শতাংশ",
+  "message.visit-duration-tooltip": "প্রতি ভিজিটে আপনার ওয়েবসাইটে গড়ে ব্যয় করা সময়"
 }

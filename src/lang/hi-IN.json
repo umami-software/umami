@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "{country} का आगंतुक, जो {browser} का उपयोग करता है, {os} यन्त्र पर"
+  "message.visitor-log": "{country} का आगंतुक, जो {browser} का उपयोग करता है, {os} यन्त्र पर",
+  "message.visitors-tooltip": "आपकी वेबसाइट पर अनूठे विज़िटर की संख्या",
+  "message.visits-tooltip": "आपकी वेबसाइट पर कुल सत्रों की संख्या",
+  "message.page-views-tooltip": "कुल पृष्ठ दृश्य",
+  "message.bounce-rate-tooltip": "उन विज़िट का प्रतिशत जो केवल एक पृष्ठ देखने के बाद साइट छोड़ देते हैं",
+  "message.visit-duration-tooltip": "प्रति विज़िट आपकी वेबसाइट पर औसत समय"
 }

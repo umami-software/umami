@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "کاربر حذف شد.",
   "message.viewed-page": "صفحه مشاهده شد",
-  "message.visitor-log": "بازدیدکننده از کشور {country} با مروگر {browser} در {os} {device}"
+  "message.visitor-log": "بازدیدکننده از کشور {country} با مروگر {browser} در {os} {device}",
+  "message.visitors-tooltip": "تعداد بازدیدکنندگان یکتا از وب‌سایت شما",
+  "message.visits-tooltip": "کل تعداد جلسات در وب‌سایت شما",
+  "message.page-views-tooltip": "کل تعداد بازدید صفحات",
+  "message.bounce-rate-tooltip": "درصد بازدیدهایی که پس از مشاهده تنها یک صفحه ترک می‌شوند",
+  "message.visit-duration-tooltip": "میانگین زمان صرف شده در وب‌سایت شما به ازای هر بازدید"
 }

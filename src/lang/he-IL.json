@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "מבקר ממדינת {country} משתמבש בדפדפן {browser} ב-{os} {device}"
+  "message.visitor-log": "מבקר ממדינת {country} משתמבש בדפדפן {browser} ב-{os} {device}",
+  "message.visitors-tooltip": "מספר מבקרים ייחודיים באתר שלך",
+  "message.visits-tooltip": "סך כל הביקורים באתר שלך",
+  "message.page-views-tooltip": "סך כל הצפיות בדפים",
+  "message.bounce-rate-tooltip": "אחוז הביקורים שעוזבים לאחר צפייה בדף אחד בלבד",
+  "message.visit-duration-tooltip": "זמן ממוצע שמבקר מבלה באתר שלך לכל ביקור"
 }

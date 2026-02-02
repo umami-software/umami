@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "Visitor from {country} using {browser} on {os} {device}"
+  "message.visitor-log": "Visitor from {country} using {browser} on {os} {device}",
+  "message.visitors-tooltip": "ඔබේ වෙබ් අඩවියට අනන්‍ය අමුත්තා සංඛ්‍යාව",
+  "message.visits-tooltip": "ඔබේ වෙබ් අඩවියේ සම්පූර්ණ සැසි ගණන",
+  "message.page-views-tooltip": "සම්පූර්ණ පිටු නරඹීම් ගණන",
+  "message.bounce-rate-tooltip": "පිටුවක් පමණක් නරඹා පිටව ගිය සංචාර වල ප්‍රතිශතය",
+  "message.visit-duration-tooltip": "එක් සංචාරයකදී ඔබේ වෙබ් අඩවියෙහි ගත කරන සාමාන්‍ය කාලය"
 }

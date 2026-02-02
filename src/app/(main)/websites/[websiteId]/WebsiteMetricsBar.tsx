@@ -1,6 +1,7 @@
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useDateRange, useMessages } from '@/components/hooks';
 import { useWebsiteStatsQuery } from '@/components/hooks/queries/useWebsiteStatsQuery';
+import { messages } from '@/components/messages';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatLongNumber, formatShortTime } from '@/lib/format';
@@ -13,6 +14,7 @@ export function WebsiteMetricsBar({
   compareMode?: boolean;
 }) {
   const { isAllTime } = useDateRange();
+
   const { formatMessage, labels, getErrorMessage } = useMessages();
   const { data, isLoading, isFetching, error } = useWebsiteStatsQuery(websiteId);
 
@@ -25,21 +27,21 @@ export function WebsiteMetricsBar({
           label: formatMessage(labels.visitors),
           change: visitors - comparison.visitors,
           formatValue: formatLongNumber,
-          tooltip: 'Number of unique visitors to your website',
+          tooltipMessageId: messages.visitorsTooltip,
         },
         {
           value: visits,
           label: formatMessage(labels.visits),
           change: visits - comparison.visits,
           formatValue: formatLongNumber,
-          tooltip: 'Total number of sessions on your website',
+          tooltipMessageId: messages.visitsTooltip,
         },
         {
           value: pageviews,
           label: formatMessage(labels.views),
           change: pageviews - comparison.pageviews,
           formatValue: formatLongNumber,
-          tooltip: 'Total number of pages viewed',
+          tooltipMessageId: messages.pageViewsTooltip,
         },
         {
           label: formatMessage(labels.bounceRate),
@@ -50,7 +52,7 @@ export function WebsiteMetricsBar({
             (Math.min(comparison.visits, comparison.bounces) / comparison.visits) * 100,
           formatValue: n => `${Math.round(+n)}%`,
           reverseColors: true,
-          tooltip: 'Percentage of visits that leave after viewing only one page',
+          tooltipMessageId: messages.bounceRateTooltip,
         },
         {
           label: formatMessage(labels.visitDuration),
@@ -59,7 +61,7 @@ export function WebsiteMetricsBar({
           change: totaltime / visits - comparison.totaltime / comparison.visits,
           formatValue: n =>
             `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`,
-          tooltip: 'Average time spent on your website per visit',
+          tooltipMessageId: messages.visitDurationTooltip,
         },
       ]
     : null;
@@ -73,21 +75,23 @@ export function WebsiteMetricsBar({
       minHeight="136px"
     >
       <MetricsBar>
-        {metrics?.map(({ label, value, prev, change, formatValue, reverseColors, tooltip }) => {
-          return (
-            <MetricCard
-              key={label}
-              value={value}
-              previousValue={prev}
-              label={label}
-              change={change}
-              formatValue={formatValue}
-              reverseColors={reverseColors}
-              showChange={!isAllTime}
-              tooltip={tooltip}
-            />
-          );
-        })}
+        {metrics?.map(
+          ({ label, value, prev, change, formatValue, reverseColors, tooltipMessageId }) => {
+            return (
+              <MetricCard
+                key={label}
+                value={value}
+                previousValue={prev}
+                label={label}
+                change={change}
+                formatValue={formatValue}
+                reverseColors={reverseColors}
+                showChange={!isAllTime}
+                tooltip={tooltipMessageId ? formatMessage(tooltipMessageId) : undefined}
+              />
+            );
+          },
+        )}
       </MetricsBar>
     </LoadingPanel>
   );

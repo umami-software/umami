@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "تم حذف المستخدم.",
   "message.viewed-page": "شوهدت الصفحة",
-  "message.visitor-log": "زائر من {country} يستخدم {browser} على {os} {device}"
+  "message.visitor-log": "زائر من {country} يستخدم {browser} على {os} {device}",
+  "message.visitors-tooltip": "عدد الزوار الفريدين لموقعك الإلكتروني",
+  "message.visits-tooltip": "إجمالي عدد الجلسات على موقعك الإلكتروني",
+  "message.page-views-tooltip": "إجمالي عدد الصفحات التي تم عرضها",
+  "message.bounce-rate-tooltip": "نسبة الزيارات التي تغادر الموقع بعد مشاهدة صفحة واحدة فقط",
+  "message.visit-duration-tooltip": "متوسط الوقت الذي يقضيه الزائر في موقعك الإلكتروني لكل زيارة"
 }

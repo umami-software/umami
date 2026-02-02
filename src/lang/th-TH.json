@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "ผู้เข้าชมจาก {country} กำลังใช้งานผ่าน {browser} บน {os} {device}"
+  "message.visitor-log": "ผู้เข้าชมจาก {country} กำลังใช้งานผ่าน {browser} บน {os} {device}",
+  "message.visitors-tooltip": "จำนวนผู้เข้าชมที่ไม่ซ้ำกันบนเว็บไซต์ของคุณ",
+  "message.visits-tooltip": "จำนวนเซสชันทั้งหมดบนเว็บไซต์ของคุณ",
+  "message.page-views-tooltip": "จำนวนการเข้าชมหน้าทั้งหมด",
+  "message.bounce-rate-tooltip": "เปอร์เซ็นต์ของการเข้าชมที่ออกหลังจากดูเพียงหน้าเดียว",
+  "message.visit-duration-tooltip": "เวลาที่ใช้บนเว็บไซต์ของคุณเฉลี่ยต่อการเข้าชม"
 }

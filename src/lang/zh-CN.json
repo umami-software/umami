@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "用户已删除。",
   "message.viewed-page": "已浏览页面",
-  "message.visitor-log": "来自 {country} 的访客在搭载 {os} 的 {device} 上使用 {browser} 浏览器进行访问。"
+  "message.visitor-log": "来自 {country} 的访客在搭载 {os} 的 {device} 上使用 {browser} 浏览器进行访问。",
+  "message.visitors-tooltip": "您网站的独立访客数量",
+  "message.visits-tooltip": "您网站的总会话数",
+  "message.page-views-tooltip": "总页面浏览量",
+  "message.bounce-rate-tooltip": "仅浏览一个页面就离开的访问百分比",
+  "message.visit-duration-tooltip": "每次访问在您网站上平均停留时间"
 }

@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "사용자를 삭제했습니다.",
   "message.viewed-page": "조회한 페이지",
-  "message.visitor-log": "{os} {device}에서 {browser}을(를) 사용하는 {country}의 방문자"
+  "message.visitor-log": "{os} {device}에서 {browser}을(를) 사용하는 {country}의 방문자",
+  "message.visitors-tooltip": "웹사이트의 고유 방문자 수",
+  "message.visits-tooltip": "웹사이트의 총 세션 수",
+  "message.page-views-tooltip": "총 페이지 조회수",
+  "message.bounce-rate-tooltip": "한 페이지만 보고 사이트를 떠난 방문 비율",
+  "message.visit-duration-tooltip": "방문당 웹사이트에서 머문 평균 시간"
 }
