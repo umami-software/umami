@@ -34,13 +34,16 @@ async function relationalQuery(
       websiteId,
     });
 
+  const { excludeBounce } = filters;
+  const bounceQuery = excludeBounce ? '0' : 'coalesce(sum(case when t.c = 1 then 1 else 0 end), 0)';
+
   return rawQuery(
     `
     select
       cast(coalesce(sum(t.c), 0) as bigint) as "pageviews",
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
-      coalesce(sum(case when t.c = 1 then 1 else 0 end), 0) as "bounces",
+      ${bounceQuery} as "bounces",
       cast(coalesce(sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}), 0) as bigint) as "totaltime"
     from (
       select
@@ -77,6 +80,8 @@ async function clickhouseQuery(
   });
 
   let sql = '';
+  const { excludeBounce } = filters;
+  const bounceQuery = excludeBounce ? '0' : 'sumIf(1, t.c = 1)';
 
   if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
     sql = `
@@ -84,7 +89,7 @@ async function clickhouseQuery(
       sum(t.c) as "pageviews",
       uniq(t.session_id) as "visitors",
       uniq(t.visit_id) as "visits",
-      sum(if(t.c = 1, 1, 0)) as "bounces",
+      ${bounceQuery} as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (
       select
@@ -109,7 +114,7 @@ async function clickhouseQuery(
       sum(t.c) as "pageviews",
       uniq(session_id) as "visitors",
       uniq(visit_id) as "visits",
-      sumIf(1, t.c = 1) as "bounces",
+      ${bounceQuery} as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (select
             session_id,
