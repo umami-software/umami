@@ -1,4 +1,4 @@
-import type { Prisma } from '@/generated/prisma/client';
+import type { Prisma, Website } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
@@ -9,11 +9,13 @@ export async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs) {
 }
 
 export async function getWebsite(websiteId: string) {
-  return findWebsite({
+  const website = await findWebsite({
     where: {
       id: websiteId,
     },
   });
+
+  return attachShareIdToWebsite(website);
 }
 
 export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters: QueryFilters) {
@@ -31,7 +33,9 @@ export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters:
     deletedAt: null,
   };
 
-  return pagedQuery('website', { ...criteria, where }, filters);
+  const websites = await pagedQuery('website', { ...criteria, where }, filters);
+
+  return attachShareIdToWebsites(websites);
 }
 
 export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filters?: QueryFilters) {
@@ -203,6 +207,10 @@ export async function deleteWebsite(websiteId: string) {
         where: { websiteId },
       });
 
+      await tx.share.deleteMany({
+        where: { entityId: websiteId },
+      });
+
       const website = cloudMode
         ? await tx.website.update({
             data: {
@@ -235,4 +243,61 @@ export async function getWebsiteCount(userId: string) {
       deletedAt: null,
     },
   });
+}
+
+export async function attachShareIdToWebsite(website: Website) {
+  const share = await prisma.client.share.findFirst({
+    where: {
+      entityId: website.id,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    select: {
+      slug: true,
+    },
+  });
+
+  return {
+    ...website,
+    shareId: share?.slug ?? null,
+  };
+}
+
+export async function attachShareIdToWebsites(websites: {
+  data: any;
+  count: any;
+  page: number;
+  pageSize: number;
+  orderBy: string;
+  search: string;
+}) {
+  const websiteIds = websites.data.map(website => website.id);
+
+  if (websiteIds.length === 0) {
+    return {
+      ...websites,
+      data: websites.data.map(website => ({ ...website, shareId: null })),
+    };
+  }
+
+  const shares = await prisma.client.share.findMany({
+    where: {
+      entityId: { in: websiteIds },
+    },
+    distinct: ['entityId'],
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  const shareByWebsiteId = new Map(shares.map(share => [share.entityId, share.slug]));
+
+  return {
+    ...websites,
+    data: websites.data.map(website => ({
+      ...website,
+      shareId: shareByWebsiteId.get(website.id) ?? null,
+    })),
+  };
 }

@@ -22,6 +22,17 @@ export async function getShareByCode(slug: string) {
   });
 }
 
+export async function getShareByEntityId(entityId: string) {
+  return prisma.client.share.findFirst({
+    where: {
+      entityId,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+}
+
 export async function getSharesByEntityId(entityId: string, filters?: QueryFilters) {
   const { pagedQuery } = prisma;
 
@@ -61,4 +72,12 @@ export async function updateShare(
 
 export async function deleteShare(shareId: string) {
   return prisma.client.share.delete({ where: { id: shareId } });
+}
+
+export async function deleteSharesByEntityId(entityId: string) {
+  return prisma.client.share.deleteMany({
+    where: {
+      entityId,
+    },
+  });
 }

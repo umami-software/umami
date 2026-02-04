@@ -1,8 +1,17 @@
 import { z } from 'zod';
+import { ENTITY_TYPE } from '@/lib/constants';
+import { uuid } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';
-import { json, ok, unauthorized } from '@/lib/response';
+import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
 import { canDeleteWebsite, canUpdateWebsite, canViewWebsite } from '@/permissions';
-import { deleteWebsite, getWebsite, updateWebsite } from '@/queries/prisma';
+import {
+  createShare,
+  deleteSharesByEntityId,
+  deleteWebsite,
+  getShareByEntityId,
+  getWebsite,
+  updateWebsite,
+} from '@/queries/prisma';
 
 export async function GET(
   request: Request,
@@ -32,6 +41,7 @@ export async function POST(
   const schema = z.object({
     name: z.string().optional(),
     domain: z.string().optional(),
+    shareId: z.string().max(50).nullable().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -41,15 +51,41 @@ export async function POST(
   }
 
   const { websiteId } = await params;
-  const { name, domain } = body;
+  const { name, domain, shareId } = body;
 
   if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const website = await updateWebsite(websiteId, { name, domain });
+  try {
+    const website = await updateWebsite(websiteId, { name, domain });
 
-  return Response.json(website);
+    if (shareId === null) {
+      await deleteSharesByEntityId(website.id);
+    }
+
+    const share = shareId
+      ? await createShare({
+          id: uuid(),
+          entityId: websiteId,
+          shareType: ENTITY_TYPE.website,
+          name: website.name,
+          slug: shareId,
+          parameters: { overview: true, events: true },
+        })
+      : await getShareByEntityId(websiteId);
+
+    return json({
+      ...website,
+      shareId: share?.slug ?? null,
+    });
+  } catch (e: any) {
+    if (e.message.toLowerCase().includes('unique constraint')) {
+      return badRequest({ message: 'That share ID is already taken.' });
+    }
+
+    return serverError(e);
+  }
 }
 
 export async function DELETE(
