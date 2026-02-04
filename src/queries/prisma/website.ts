@@ -15,6 +15,10 @@ export async function getWebsite(websiteId: string) {
     },
   });
 
+  if (!website) {
+    return null;
+  }
+
   return attachShareIdToWebsite(website);
 }
 
