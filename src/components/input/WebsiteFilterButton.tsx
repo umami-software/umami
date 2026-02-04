@@ -14,8 +14,9 @@ export function WebsiteFilterButton({
   alignment?: 'end' | 'center' | 'start';
 }) {
   const { formatMessage, labels } = useMessages();
-  const { updateParams, router, query } = useNavigation();
+  const { updateParams, pathname, router, query } = useNavigation();
   const [excludeBounce, setExcludeBounce] = useState(!!query.excludeBounce);
+  const isOverview = /^\/teams\/[^/]+\/websites\/[^/]+$/.test(pathname);
 
   const handleChange = ({ filters, segment, cohort }: any) => {
     const params = filtersArrayToObject(filters);
@@ -35,13 +36,17 @@ export function WebsiteFilterButton({
       {({ close }) => {
         return (
           <>
-            <Row position="absolute" top="30px" right="30px">
-              <Row alignItems="center" gap>
-                <Checkbox value={excludeBounce ? 'true' : ''} onChange={setExcludeBounce}>
+            {isOverview && (
+              <Row position="absolute" top="30px" right="30px">
+                <Checkbox
+                  value={excludeBounce ? 'true' : ''}
+                  onChange={setExcludeBounce}
+                  style={{ marginTop: '3px' }}
+                >
                   {formatMessage(labels.excludeBounce)}
                 </Checkbox>
               </Row>
-            </Row>
+            )}
             <FilterEditForm websiteId={websiteId} onChange={handleChange} onClose={close} />
           </>
         );
