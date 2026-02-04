@@ -1,6 +1,6 @@
 import { Column, Heading, Row, Text } from '@umami/react-zen';
-import { LoadingPanel } from 'dist';
 import { Plus } from 'lucide-react';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useWebsiteSharesQuery } from '@/components/hooks';
 import { DialogButton } from '@/components/input/DialogButton';
 import { ShareEditForm } from './ShareEditForm';
