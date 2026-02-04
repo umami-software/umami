@@ -16,7 +16,8 @@ export function WebsiteFilterButton({
   const { formatMessage, labels } = useMessages();
   const { updateParams, pathname, router, query } = useNavigation();
   const [excludeBounce, setExcludeBounce] = useState(!!query.excludeBounce);
-  const isOverview = /^\/teams\/[^/]+\/websites\/[^/]+$/.test(pathname);
+  const isOverview =
+    /^\/teams\/[^/]+\/websites\/[^/]+$/.test(pathname) || /^\/share\/[^/]+$/.test(pathname);
 
   const handleChange = ({ filters, segment, cohort }: any) => {
     const params = filtersArrayToObject(filters);
