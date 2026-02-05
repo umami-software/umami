@@ -11,7 +11,10 @@ export function SharesTable(props: DataTableProps) {
   const { isMobile } = useMobile();
 
   const getUrl = (slug: string) => {
-    return `${cloudMode ? process.env.cloudUrl : window?.location.origin}${process.env.basePath || ''}/share/${slug}`;
+    if (cloudMode) {
+      return `${process.env.cloudUrl}/share/${slug}`;
+    }
+    return `${window?.location.origin}${process.env.basePath || ''}/share/${slug}`;
   };
 
   return (

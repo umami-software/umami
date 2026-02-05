@@ -40,7 +40,10 @@ export function ShareEditForm({
   const isEditing = !!shareId;
 
   const getUrl = (slug: string) => {
-    return `${cloudMode ? process.env.cloudUrl : window?.location.origin}${process.env.basePath || ''}/share/${slug}`;
+    if (cloudMode) {
+      return `${process.env.cloudUrl}/share/${slug}`;
+    }
+    return `${window?.location.origin}${process.env.basePath || ''}/share/${slug}`;
   };
 
   useEffect(() => {
