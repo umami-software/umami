@@ -40,10 +40,7 @@ export function ShareEditForm({
   const isEditing = !!shareId;
 
   const getUrl = (slug: string) => {
-    if (cloudMode) {
-      return `${process.env.cloudUrl}/share/${slug}`;
-    }
-    return `${window?.location.origin}${process.env.basePath || ''}/share/${slug}`;
+    return `${cloudMode ? process.env.cloudUrl : window?.location.origin}${process.env.basePath || ''}/share/${slug}`;
   };
 
   useEffect(() => {
@@ -74,9 +71,16 @@ export function ShareEditForm({
 
     try {
       if (isEditing) {
-        await post(`/share/id/${shareId}`, { name: data.name, slug: share.slug, parameters });
+        await post(`/share/id/${shareId}`, {
+          name: data.name,
+          slug: share.slug,
+          parameters,
+        });
       } else {
-        await post(`/websites/${websiteId}/shares`, { name: data.name, parameters });
+        await post(`/websites/${websiteId}/shares`, {
+          name: data.name,
+          parameters,
+        });
       }
       touch('shares');
       onSave?.();
