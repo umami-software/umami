@@ -1,4 +1,4 @@
-import { setShare, useApp } from '@/store/app';
+import { setShare, setShareToken, useApp } from '@/store/app';
 import { useApi } from '../useApi';
 
 const selector = state => state.share;
@@ -12,6 +12,7 @@ export function useShareTokenQuery(slug: string) {
       const data = await get(`/share/${slug}`);
 
       setShare(data);
+      setShareToken({ token: data?.token });
 
       return data;
     },

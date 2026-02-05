@@ -17,6 +17,7 @@ const initialState = {
   timezone: getItem(TIMEZONE_CONFIG) || getTimezone(),
   dateRangeValue: getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE_VALUE,
   share: null,
+  shareToken: null,
   user: null,
   config: null,
 };
@@ -33,6 +34,10 @@ export function setLocale(locale: string) {
 
 export function setShare(share: object) {
   store.setState({ share });
+}
+
+export function setShareToken(shareToken: { token?: string } | null) {
+  store.setState({ shareToken });
 }
 
 export function setUser(user: object) {
