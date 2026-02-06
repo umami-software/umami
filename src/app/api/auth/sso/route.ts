@@ -1,3 +1,4 @@
+
 import { saveAuth } from '@/lib/auth';
 import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
@@ -10,9 +11,6 @@ export async function POST(request: Request) {
     return error();
   }
 
-  if (redis.enabled) {
-    const token = await saveAuth({ userId: auth.user.id }, 86400);
-
-    return json({ user: auth.user, token });
-  }
+  const token = await saveAuth({ userId: auth.user.id }, 86400);
+  return json({ user: auth.user, token });
 }
