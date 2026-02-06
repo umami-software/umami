@@ -111,7 +111,14 @@ const AnimatedRow = ({
   });
 
   return (
-    <Grid columns="1fr 50px 50px" paddingLeft="2" alignItems="center" borderRadius gap>
+    <Grid
+      columns="1fr 50px 50px"
+      paddingLeft="2"
+      alignItems="center"
+      borderRadius
+      gap
+      hover={{ backgroundColor: 'surface-sunken' }}
+    >
       <Row alignItems="center">
         <Text truncate={true} style={{ maxWidth: isPhone ? '200px' : '400px' }}>
           {label}
