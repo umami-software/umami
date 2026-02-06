@@ -4,10 +4,14 @@ import {
   AppWindow,
   Cpu,
   Earth,
+  Fingerprint,
   Globe,
+  KeyRound,
   Landmark,
   Languages,
   Laptop,
+  Layers,
+  Link2,
   LogIn,
   LogOut,
   MapPin,
@@ -15,9 +19,11 @@ import {
   Monitor,
   Network,
   Search,
+  Send,
   Share2,
   SquareSlash,
   Tag,
+  Target,
   Type,
 } from '@/components/icons';
 import { Lightning } from '@/components/svg';
@@ -155,6 +161,41 @@ export function WebsiteExpandedMenu({
       ].filter(filterExcluded),
     },
     {
+      label: formatMessage(labels.utm),
+      items: [
+        {
+          id: 'utmSource',
+          label: formatMessage(labels.source),
+          path: updateParams({ view: 'utmSource' }),
+          icon: <Link2 />,
+        },
+        {
+          id: 'utmMedium',
+          label: formatMessage(labels.medium),
+          path: updateParams({ view: 'utmMedium' }),
+          icon: <Send />,
+        },
+        {
+          id: 'utmCampaign',
+          label: formatMessage(labels.campaign),
+          path: updateParams({ view: 'utmCampaign' }),
+          icon: <Target />,
+        },
+        {
+          id: 'utmContent',
+          label: formatMessage(labels.content),
+          path: updateParams({ view: 'utmContent' }),
+          icon: <Layers />,
+        },
+        {
+          id: 'utmTerm',
+          label: formatMessage(labels.term),
+          path: updateParams({ view: 'utmTerm' }),
+          icon: <KeyRound />,
+        },
+      ].filter(filterExcluded),
+    },
+    {
       label: formatMessage(labels.other),
       items: [
         {
@@ -173,7 +214,7 @@ export function WebsiteExpandedMenu({
           id: 'distinctId',
           label: formatMessage(labels.distinctId),
           path: updateParams({ view: 'distinctId' }),
-          icon: <Tag />,
+          icon: <Fingerprint />,
         },
         {
           id: 'tag',

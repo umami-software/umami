@@ -71,7 +71,7 @@ async function relationalQuery(
         website_event.session_id, website_event.visit_id
     ) as t
     group by ${parseFieldsByName(fields)}
-    order by 1 desc, 2 desc
+    order by 2 desc, 1 desc
     limit 500
     `,
     queryParams,
@@ -119,7 +119,7 @@ async function clickhouseQuery(
         session_id, visit_id
     ) as t
     group by ${parseFieldsByName(fields)}
-    order by 1 desc, 2 desc
+    order by 2 desc, 1 desc
     limit 500
     `,
     queryParams,

@@ -39,6 +39,11 @@ export const filterParams = {
   distinctId: z.string().optional(),
   language: z.string().optional(),
   event: z.string().optional(),
+  utmSource: z.string().optional(),
+  utmMedium: z.string().optional(),
+  utmCampaign: z.string().optional(),
+  utmContent: z.string().optional(),
+  utmTerm: z.string().optional(),
   segment: z.uuid().optional(),
   cohort: z.uuid().optional(),
   eventType: z.coerce.number().int().positive().optional(),
@@ -94,6 +99,11 @@ export const fieldsParam = z.enum([
   'distinctId',
   'language',
   'event',
+  'utmSource',
+  'utmMedium',
+  'utmCampaign',
+  'utmContent',
+  'utmTerm',
 ]);
 
 export const reportTypeParam = z.enum([

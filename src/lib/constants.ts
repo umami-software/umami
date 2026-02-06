@@ -44,6 +44,11 @@ export const EVENT_COLUMNS = [
   'event',
   'tag',
   'hostname',
+  'utmSource',
+  'utmMedium',
+  'utmCampaign',
+  'utmContent',
+  'utmTerm',
 ];
 
 export const SESSION_COLUMNS = [
@@ -83,6 +88,11 @@ export const FILTER_COLUMNS = {
   event: 'event_name',
   tag: 'tag',
   eventType: 'event_type',
+  utmSource: 'utm_source',
+  utmMedium: 'utm_medium',
+  utmCampaign: 'utm_campaign',
+  utmContent: 'utm_content',
+  utmTerm: 'utm_term',
 };
 
 export const COLLECTION_TYPE = {

@@ -89,6 +89,31 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
       path: renderPath('event'),
     },
     {
+      id: 'utmSource',
+      label: formatMessage(labels.utmSource),
+      path: renderPath('utmSource'),
+    },
+    {
+      id: 'utmMedium',
+      label: formatMessage(labels.utmMedium),
+      path: renderPath('utmMedium'),
+    },
+    {
+      id: 'utmCampaign',
+      label: formatMessage(labels.utmCampaign),
+      path: renderPath('utmCampaign'),
+    },
+    {
+      id: 'utmContent',
+      label: formatMessage(labels.utmContent),
+      path: renderPath('utmContent'),
+    },
+    {
+      id: 'utmTerm',
+      label: formatMessage(labels.utmTerm),
+      path: renderPath('utmTerm'),
+    },
+    {
       id: 'hostname',
       label: formatMessage(labels.hostname),
       path: renderPath('hostname'),
