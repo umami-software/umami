@@ -7,6 +7,7 @@ import {
   Tag,
   User,
   UserPlus,
+  Video,
 } from '@/components/icons';
 import { Funnel, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
 import { useMessages } from './useMessages';
@@ -93,6 +94,12 @@ export function useWebsiteNavItems(websiteId: string) {
           label: formatMessage(labels.retention),
           icon: <Magnet />,
           path: renderPath('/retention'),
+        },
+        {
+          id: 'recordings',
+          label: formatMessage(labels.recordings),
+          icon: <Video />,
+          path: renderPath('/recordings'),
         },
       ],
     },

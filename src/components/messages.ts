@@ -378,6 +378,21 @@ export const labels = defineMessages({
   support: { id: 'label.support', defaultMessage: 'Support' },
   documentation: { id: 'label.documentation', defaultMessage: 'Documentation' },
   switchAccount: { id: 'label.switch-account', defaultMessage: 'Switch account' },
+  recordings: { id: 'label.recordings', defaultMessage: 'Recordings' },
+  recording: { id: 'label.recording', defaultMessage: 'Recording' },
+  playRecording: { id: 'label.play-recording', defaultMessage: 'Play recording' },
+  recordingEnabled: { id: 'label.recording-enabled', defaultMessage: 'Recording enabled' },
+  sampleRate: { id: 'label.sample-rate', defaultMessage: 'Sample rate' },
+  maskLevel: { id: 'label.mask-level', defaultMessage: 'Mask level' },
+  maxDuration: { id: 'label.max-duration', defaultMessage: 'Max duration' },
+  retentionDays: { id: 'label.retention-days', defaultMessage: 'Retention days' },
+  duration: { id: 'label.duration', defaultMessage: 'Duration' },
+  recordedAt: { id: 'label.recorded-at', defaultMessage: 'Recorded at' },
+  noRecordings: { id: 'label.no-recordings', defaultMessage: 'No recordings' },
+  strict: { id: 'label.strict', defaultMessage: 'Strict' },
+  moderate: { id: 'label.moderate', defaultMessage: 'Moderate' },
+  relaxed: { id: 'label.relaxed', defaultMessage: 'Relaxed' },
+  blockSelector: { id: 'label.block-selector', defaultMessage: 'Block selector' },
 });
 
 export const messages = defineMessages({

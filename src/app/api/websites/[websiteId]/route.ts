@@ -42,6 +42,17 @@ export async function POST(
     name: z.string().optional(),
     domain: z.string().optional(),
     shareId: z.string().max(50).nullable().optional(),
+    recordingEnabled: z.boolean().optional(),
+    recordingConfig: z
+      .object({
+        sampleRate: z.number().min(0).max(1).optional(),
+        maskLevel: z.enum(['strict', 'moderate', 'relaxed']).optional(),
+        maxDuration: z.number().int().positive().optional(),
+        blockSelector: z.string().optional(),
+        retentionDays: z.number().int().positive().optional(),
+      })
+      .nullable()
+      .optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -51,14 +62,19 @@ export async function POST(
   }
 
   const { websiteId } = await params;
-  const { name, domain, shareId } = body;
+  const { name, domain, shareId, recordingEnabled, recordingConfig } = body;
 
   if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
   try {
-    const website = await updateWebsite(websiteId, { name, domain });
+    const website = await updateWebsite(websiteId, {
+      name,
+      domain,
+      ...(recordingEnabled !== undefined && { recordingEnabled }),
+      ...(recordingConfig !== undefined && { recordingConfig }),
+    });
 
     if (shareId === null) {
       await deleteSharesByEntityId(website.id);

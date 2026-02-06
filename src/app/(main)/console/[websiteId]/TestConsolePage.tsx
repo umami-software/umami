@@ -116,6 +116,11 @@ export function TestConsolePage({ websiteId }: { websiteId: string }) {
           src={`${process.env.basePath || ''}/script.js`}
           data-cache="true"
         />
+        <Script
+          async
+          data-website-id={websiteId}
+          src={`${process.env.basePath || ''}/recorder.js`}
+        />
         <Panel>
           <Grid columns="1fr 1fr 1fr" gap>
             <Column gap>

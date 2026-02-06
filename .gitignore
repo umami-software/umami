@@ -17,6 +17,7 @@ package-lock.json
 # production
 /build
 /public/script.js
+/public/recorder.js
 /geo
 /dist
 /generated

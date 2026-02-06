@@ -75,14 +75,18 @@ model Website {
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  user        User?         @relation("user", fields: [userId], references: [id])
-  createUser  User?         @relation("createUser", fields: [createdBy], references: [id])
-  team        Team?         @relation(fields: [teamId], references: [id])
-  eventData   EventData[]
-  reports     Report[]
-  revenue     Revenue[]
-  segments    Segment[]
-  sessionData SessionData[]
+  recordingEnabled Boolean   @default(false) @map("recording_enabled")
+  recordingConfig  Json?     @map("recording_config")
+
+  user              User?               @relation("user", fields: [userId], references: [id])
+  createUser        User?               @relation("createUser", fields: [createdBy], references: [id])
+  team              Team?               @relation(fields: [teamId], references: [id])
+  eventData         EventData[]
+  reports           Report[]
+  revenue           Revenue[]
+  segments          Segment[]
+  sessionData       SessionData[]
+  sessionRecordings SessionRecording[]
 
   @@index([userId])
   @@index([teamId])
@@ -349,4 +353,25 @@ model Share {
 
   @@index([entityId])
   @@map("share")
+}
+
+model SessionRecording {
+  id         String    @id() @map("recording_id") @db.Uuid
+  websiteId  String    @map("website_id") @db.Uuid
+  sessionId  String    @map("session_id") @db.Uuid
+  chunkIndex Int       @map("chunk_index") @db.Integer
+  events     Bytes     @map("events")
+  eventCount Int       @map("event_count") @db.Integer
+  startedAt  DateTime  @map("started_at") @db.Timestamptz(6)
+  endedAt    DateTime  @map("ended_at") @db.Timestamptz(6)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  website Website @relation(fields: [websiteId], references: [id])
+
+  @@index([websiteId])
+  @@index([sessionId])
+  @@index([websiteId, sessionId])
+  @@index([websiteId, createdAt])
+  @@index([sessionId, chunkIndex])
+  @@map("session_recording")
 }
