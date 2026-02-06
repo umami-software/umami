@@ -12,7 +12,7 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
         width="240px"
         height="100%"
         border="right"
-        backgroundColor
+        backgroundColor={'surface-raised'}
         marginRight="2"
         padding="3"
       >

@@ -34,6 +34,7 @@ export function LanguageSetting() {
         onSearch={setSearch}
         onOpenChange={handleOpen}
         listProps={{ style: { maxHeight: 300 } }}
+        style={{ minWidth: '250px' }}
       >
         {items.map(item => (
           <ListItem key={item} id={item}>

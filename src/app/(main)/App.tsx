@@ -49,8 +49,8 @@ export function App({ children }) {
       <Column display={{ base: 'none', lg: 'flex' }}>
         <SideNav />
       </Column>
-      <Column alignItems="center" overflowY="auto" overflowX="hidden" position="relative">
-        {children}
+      <Column overflowX="hidden" position="relative">
+        <Column alignItems="center">{children}</Column>
       </Column>
       <UpdateNotice user={user} config={config} />
       {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (

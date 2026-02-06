@@ -55,7 +55,7 @@ export function NavMenu({
     <Column gap overflowY="auto" justifyContent="space-between" position="sticky">
       {title && (
         <Row padding>
-          <Heading size="sm">{title}</Heading>
+          <Heading size="lg">{title}</Heading>
         </Row>
       )}
       <Column gap="6" {...props}>

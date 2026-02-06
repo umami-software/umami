@@ -21,7 +21,12 @@ export function DateRangeSetting() {
 
   return (
     <Row gap="3">
-      <DateFilter value={date} onChange={handleChange} placement="bottom start" />
+      <DateFilter
+        value={date}
+        onChange={handleChange}
+        placement="bottom start"
+        style={{ minWidth: '250px' }}
+      />
       <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
     </Row>
   );
