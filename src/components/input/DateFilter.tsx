@@ -110,7 +110,7 @@ export function DateFilter({
         placeholder={formatMessage(labels.selectDate)}
         onChange={handleChange}
         renderValue={renderValue}
-        popoverProps={{ placement }}
+        popoverProps={{ placement, style: { minWidth: 200 } }}
         isFullscreen={isMobile}
       >
         {options.map(({ label, value, divider }: any) => {

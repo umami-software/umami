@@ -76,14 +76,13 @@ export function WebsiteDateFilter({
           </Button>
         </Row>
       )}
-      <Row minWidth="200px">
-        <DateFilter
-          value={dateValue}
-          onChange={handleChange}
-          showAllTime={hasData && showAllTime}
-          renderDate={+offset !== 0}
-        />
-      </Row>
+      <DateFilter
+        className="min-w-[200px]"
+        value={dateValue}
+        onChange={handleChange}
+        showAllTime={hasData && showAllTime}
+        renderDate={+offset !== 0}
+      />
       {showCompare && (
         <Row alignItems="center" gap>
           <Text weight="bold">VS</Text>
