@@ -1,24 +1,12 @@
-import { Box, Button, Column, Icon, Row, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Button, Icon, Row, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { produce } from 'immer';
-import { Fragment, type ReactElement, useEffect, useRef } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import { Group, type GroupImperativeHandle, Panel, Separator } from 'react-resizable-panels';
 import { v4 as uuid } from 'uuid';
 import { useBoard } from '@/components/hooks';
-import { ChevronDown, Minus, Plus, X } from '@/components/icons';
-import type { BoardColumn as BoardColumnType } from '@/lib/types';
-
-const CATALOG = {
-  text: {
-    label: 'Text',
-    component: BoardColumn,
-  },
-};
-
-const MIN_ROW_HEIGHT = 300;
-const MAX_ROW_HEIGHT = 600;
-const MIN_COLUMN_WIDTH = 300;
-const BUTTON_ROW_HEIGHT = 60;
-const MAX_COLUMNS = 4;
+import { Plus } from '@/components/icons';
+import { BoardRow } from './BoardRow';
+import { BUTTON_ROW_HEIGHT, MAX_ROW_HEIGHT, MIN_ROW_HEIGHT } from './boardConstants';
 
 export function BoardBody() {
   const { board, editing, updateBoard, saveBoard, isPending, registerLayoutGetter } = useBoard();
@@ -29,19 +17,14 @@ export function BoardBody() {
   useEffect(() => {
     registerLayoutGetter(() => {
       const rows = board?.parameters?.rows;
-      console.log('Layout getter called, rows:', rows);
-      console.log('rowGroupRef.current:', rowGroupRef.current);
-      console.log('columnGroupRefs.current:', columnGroupRefs.current);
 
       if (!rows?.length) return null;
 
       const rowLayout = rowGroupRef.current?.getLayout();
-      console.log('rowLayout:', rowLayout);
 
       const updatedRows = rows.map(row => {
         const columnGroupRef = columnGroupRefs.current.get(row.id);
         const columnLayout = columnGroupRef?.getLayout();
-        console.log(`Row ${row.id} columnLayout:`, columnLayout);
 
         const updatedColumns = row.columns.map(col => ({
           ...col,
@@ -55,7 +38,6 @@ export function BoardBody() {
         };
       });
 
-      console.log('updatedRows:', updatedRows);
       return { rows: updatedRows };
     });
   }, [registerLayoutGetter, board?.parameters?.rows]);
@@ -67,8 +49,6 @@ export function BoardBody() {
       columnGroupRefs.current.delete(rowId);
     }
   };
-
-  console.log({ board });
 
   const handleAddRow = () => {
     updateBoard({
@@ -166,169 +146,5 @@ export function BoardBody() {
         </Panel>
       )}
     </Group>
-  );
-}
-
-function BoardRow({
-  rowId,
-  rowIndex,
-  rowCount,
-  columns,
-  editing = false,
-  onRemove,
-  onMoveUp,
-  onMoveDown,
-  onRegisterRef,
-}: {
-  rowId: string;
-  rowIndex: number;
-  rowCount: number;
-  columns: BoardColumnType[];
-  editing?: boolean;
-  onRemove?: (id: string) => void;
-  onMoveUp?: (id: string) => void;
-  onMoveDown?: (id: string) => void;
-  onRegisterRef?: (rowId: string, ref: GroupImperativeHandle | null) => void;
-}) {
-  const { board, updateBoard } = useBoard();
-
-  const handleGroupRef = (ref: GroupImperativeHandle | null) => {
-    onRegisterRef?.(rowId, ref);
-  };
-
-  const handleAddColumn = () => {
-    updateBoard({
-      parameters: produce(board.parameters, draft => {
-        const rowIndex = draft.rows.findIndex(row => row.id === rowId);
-        const row = draft.rows[rowIndex];
-
-        if (!row) {
-          draft.rows[rowIndex] = { id: uuid(), columns: [] };
-        }
-        row.columns.push({ id: uuid(), component: null });
-      }),
-    });
-  };
-
-  const handleRemoveColumn = (columnId: string) => {
-    updateBoard({
-      parameters: produce(board.parameters, draft => {
-        const row = draft.rows.find(row => row.id === rowId);
-        if (row) {
-          row.columns = row.columns.filter(col => col.id !== columnId);
-        }
-      }),
-    });
-  };
-
-  return (
-    <Group groupRef={handleGroupRef} style={{ height: '100%' }}>
-      {columns?.map((column, index) => (
-        <Fragment key={column.id}>
-          <Panel id={column.id} minSize={MIN_COLUMN_WIDTH} defaultSize={column.size}>
-            <BoardColumn
-              {...column}
-              editing={editing}
-              onRemove={handleRemoveColumn}
-              canRemove={columns?.length > 1}
-            />
-          </Panel>
-          {index < columns?.length - 1 && <Separator />}
-        </Fragment>
-      ))}
-      {editing && (
-        <Column alignSelf="center" padding="3" gap="1">
-          <TooltipTrigger delay={0}>
-            <Button variant="outline" onPress={() => onMoveUp?.(rowId)} isDisabled={rowIndex === 0}>
-              <Icon rotate={180}>
-                <ChevronDown />
-              </Icon>
-            </Button>
-            <Tooltip placement="top">Move row up</Tooltip>
-          </TooltipTrigger>
-          <TooltipTrigger delay={0}>
-            <Button
-              variant="outline"
-              onPress={handleAddColumn}
-              isDisabled={columns?.length >= MAX_COLUMNS}
-            >
-              <Icon>
-                <Plus />
-              </Icon>
-            </Button>
-            <Tooltip placement="left">Add column</Tooltip>
-          </TooltipTrigger>
-          <TooltipTrigger delay={0}>
-            <Button variant="outline" onPress={() => onRemove?.(rowId)}>
-              <Icon>
-                <Minus />
-              </Icon>
-            </Button>
-            <Tooltip placement="left">Remove row</Tooltip>
-          </TooltipTrigger>
-          <TooltipTrigger delay={0}>
-            <Button
-              variant="outline"
-              onPress={() => onMoveDown?.(rowId)}
-              isDisabled={rowIndex === rowCount - 1}
-            >
-              <Icon>
-                <ChevronDown />
-              </Icon>
-            </Button>
-            <Tooltip placement="bottom">Move row down</Tooltip>
-          </TooltipTrigger>
-        </Column>
-      )}
-    </Group>
-  );
-}
-
-function BoardColumn({
-  id,
-  component,
-  editing = false,
-  onRemove,
-  canRemove = true,
-}: {
-  id: string;
-  component?: ReactElement;
-  editing?: boolean;
-  onRemove?: (id: string) => void;
-  canRemove?: boolean;
-}) {
-  const handleAddComponent = () => {};
-
-  return (
-    <Column
-      marginTop="3"
-      marginLeft="3"
-      width="100%"
-      height="100%"
-      alignItems="center"
-      justifyContent="center"
-      backgroundColor="surface-sunken"
-      position="relative"
-    >
-      {editing && canRemove && (
-        <Box position="absolute" top="10px" right="20px" zIndex={100}>
-          <TooltipTrigger delay={0}>
-            <Button variant="quiet" onPress={() => onRemove?.(id)}>
-              <Icon size="sm">
-                <X />
-              </Icon>
-            </Button>
-            <Tooltip>Remove column</Tooltip>
-          </TooltipTrigger>
-        </Box>
-      )}
-      {editing && (
-        <Button variant="outline" onPress={handleAddComponent}>
-          <Icon>
-            <Plus />
-          </Icon>
-        </Button>
-      )}
-    </Column>
   );
 }

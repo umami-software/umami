@@ -74,9 +74,7 @@ export function BoardProvider({
 
     // Get current layout sizes from BoardBody if registered
     const layoutData = layoutGetterRef.current?.();
-    console.log('layoutData from getter:', layoutData);
     const parameters = layoutData ? { ...board.parameters, ...layoutData } : board.parameters;
-    console.log('parameters to save:', parameters);
 
     const result = await mutateAsync({
       ...board,
