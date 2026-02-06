@@ -133,7 +133,7 @@ const AnimatedRow = ({
           justifyContent="flex-start"
           position="relative"
           border="left"
-          borderColor="8"
+          borderColor="strong"
           color="muted"
           paddingLeft="3"
         >

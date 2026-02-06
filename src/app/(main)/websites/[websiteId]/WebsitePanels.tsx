@@ -21,7 +21,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
     <Grid gap="3">
       <GridRow layout="two" {...rowProps}>
         <Panel>
-          <Heading size="2">{formatMessage(labels.pages)}</Heading>
+          <Heading size="base">{formatMessage(labels.pages)}</Heading>
           <Tabs>
             <TabList>
               <Tab id="path">{formatMessage(labels.path)}</Tab>
@@ -40,7 +40,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
           </Tabs>
         </Panel>
         <Panel>
-          <Heading size="2">{formatMessage(labels.sources)}</Heading>
+          <Heading size="base">{formatMessage(labels.sources)}</Heading>
           <Tabs>
             <TabList>
               <Tab id="referrer">{formatMessage(labels.referrers)}</Tab>
@@ -62,7 +62,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
 
       <GridRow layout="two" {...rowProps}>
         <Panel>
-          <Heading size="2">{formatMessage(labels.environment)}</Heading>
+          <Heading size="base">{formatMessage(labels.environment)}</Heading>
           <Tabs>
             <TabList>
               <Tab id="browser">{formatMessage(labels.browsers)}</Tab>
@@ -82,7 +82,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
         </Panel>
 
         <Panel>
-          <Heading size="2">{formatMessage(labels.location)}</Heading>
+          <Heading size="base">{formatMessage(labels.location)}</Heading>
           <Tabs>
             <TabList>
               <Tab id="country">{formatMessage(labels.countries)}</Tab>
@@ -108,7 +108,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
         </Panel>
 
         <Panel>
-          <Heading size="2">{formatMessage(labels.traffic)}</Heading>
+          <Heading size="base">{formatMessage(labels.traffic)}</Heading>
           <Row border="bottom" marginBottom="4" />
           <WeeklyTraffic websiteId={websiteId} />
         </Panel>

@@ -93,7 +93,7 @@ function BoardEditHeader() {
             autoComplete="off"
             style={{ fontSize: '2rem', fontWeight: 700, width: '100%' }}
           >
-            <Heading size="4">{board?.name}</Heading>
+            <Heading size="xl">{board?.name}</Heading>
           </TextField>
         </Row>
         <Row>

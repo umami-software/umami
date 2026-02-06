@@ -169,7 +169,7 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
         <Grid columns={{ xs: '1fr', lg: '1fr 1fr' }} gap="6" height="100%">
           <Column gap="6">
             <Row alignItems="center" justifyContent="space-between">
-              <Heading size="2">{formatMessage(labels.previous)}</Heading>
+              <Heading size="base">{formatMessage(labels.previous)}</Heading>
               <DateDisplay startDate={startDate} endDate={endDate} />
             </Row>
             <MetricsTable
@@ -183,7 +183,7 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
           </Column>
           <Column border="left" paddingLeft="6" gap="6">
             <Row alignItems="center" justifyContent="space-between">
-              <Heading size="2"> {formatMessage(labels.current)}</Heading>
+              <Heading size="base"> {formatMessage(labels.current)}</Heading>
               <DateDisplay startDate={dateRange.startDate} endDate={dateRange.endDate} />
             </Row>
             <MetricsTable

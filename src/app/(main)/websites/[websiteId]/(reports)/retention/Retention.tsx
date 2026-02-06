@@ -131,7 +131,7 @@ const Cell = ({ children }: { children: ReactNode }) => {
       alignItems="center"
       width="100px"
       height="100px"
-      backgroundColor="2"
+      backgroundColor="surface-raised"
       borderRadius
     >
       {children}

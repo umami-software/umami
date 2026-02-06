@@ -61,7 +61,7 @@ export function SessionActivity({
 
           return (
             <Column key={eventId} gap>
-              {showHeader && <Heading size="1">{formatTimezoneDate(createdAt, 'PPPP')}</Heading>}
+              {showHeader && <Heading size="sm">{formatTimezoneDate(createdAt, 'PPPP')}</Heading>}
               <Row alignItems="center" gap="6" height="40px">
                 <StatusLight color={`#${visitId?.substring(0, 6)}`}>
                   <Text wrap="nowrap">{formatTimezoneDate(createdAt, 'pp')}</Text>

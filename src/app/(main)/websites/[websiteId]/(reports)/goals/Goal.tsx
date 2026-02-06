@@ -42,7 +42,7 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
           <Grid columns="1fr auto" gap>
             <Column gap>
               <Row>
-                <Text size="4" weight="bold">
+                <Text size="lg" weight="bold">
                   {name}
                 </Text>
               </Row>
@@ -92,7 +92,7 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
               maxValue={data?.total || 1}
               style={{ width: '100%' }}
             />
-            <Text weight="bold" size="7">
+            <Text weight="bold" size="4xl">
               {data?.total ? Math.round((+data?.num / +data?.total) * 100) : '0'}%
             </Text>
           </Row>

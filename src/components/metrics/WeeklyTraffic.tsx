@@ -49,7 +49,7 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                   });
                   return (
                     <Row key={i} justifyContent="flex-end">
-                      <Text color="muted" size="2">
+                      <Text color="muted" size="sm">
                         {label}
                       </Text>
                     </Row>
@@ -79,7 +79,7 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                           <Row
                             alignItems="center"
                             justifyContent="center"
-                            backgroundColor="2"
+                            backgroundColor="surface-raised"
                             width="16px"
                             height="16px"
                             borderRadius="full"

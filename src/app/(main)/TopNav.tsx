@@ -16,7 +16,12 @@ export function TopNav() {
       style={{ position: 'sticky', top: 0 }}
       zIndex={1}
     >
-      <Row alignItems="center" justifyContent="flex-end" backgroundColor="2" borderRadius>
+      <Row
+        alignItems="center"
+        justifyContent="flex-end"
+        backgroundColor="surface-raised"
+        borderRadius
+      >
         <ThemeButton />
         <LanguageButton />
         <ProfileButton />

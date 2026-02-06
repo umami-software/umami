@@ -183,7 +183,7 @@ export function RealtimeLog({ data }: { data: any }) {
 
   return (
     <Column gap>
-      <Heading size="2">{formatMessage(labels.activity)}</Heading>
+      <Heading size="base">{formatMessage(labels.activity)}</Heading>
       {isPhone ? (
         <>
           <Row>

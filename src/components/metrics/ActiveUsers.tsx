@@ -30,7 +30,7 @@ export function ActiveUsers({
   return (
     <LinkButton href={`/websites/${websiteId}/realtime`} variant="quiet">
       <StatusLight variant="success">
-        <Text size="2" weight="medium">
+        <Text size="sm" weight="medium">
           {count} {formatMessage(labels.online)}
         </Text>
       </StatusLight>

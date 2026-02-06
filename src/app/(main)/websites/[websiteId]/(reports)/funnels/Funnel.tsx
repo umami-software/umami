@@ -33,7 +33,7 @@ export function Funnel({ id, name, type, parameters, websiteId }) {
         <Grid columns="1fr auto" gap>
           <Column gap>
             <Row>
-              <Text size="4" weight="bold">
+              <Text size="lg" weight="bold">
                 {name}
               </Text>
             </Row>
@@ -66,21 +66,21 @@ export function Funnel({ id, name, type, parameters, websiteId }) {
                 <Column alignItems="center" position="relative">
                   <Row
                     borderRadius="full"
-                    backgroundColor="3"
+                    backgroundColor="surface-sunken"
                     width="40px"
                     height="40px"
                     justifyContent="center"
                     alignItems="center"
                     style={{ zIndex: 1 }}
                   >
-                    <Text weight="bold" size="3">
+                    <Text weight="bold" size="base">
                       {index + 1}
                     </Text>
                   </Row>
                   {index > 0 && (
                     <Box
                       position="absolute"
-                      backgroundColor="3"
+                      backgroundColor="surface-sunken"
                       width="2px"
                       height="120px"
                       top="-100%"
@@ -121,7 +121,7 @@ export function Funnel({ id, name, type, parameters, websiteId }) {
                       style={{ width: '100%' }}
                     />
                     <Row minWidth="90px" justifyContent="end">
-                      <Text weight="bold" size="7">
+                      <Text weight="bold" size="4xl">
                         {Math.round(remaining * 100)}%
                       </Text>
                     </Row>

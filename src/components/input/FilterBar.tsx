@@ -51,7 +51,13 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
   }
 
   return (
-    <Row gap alignItems="center" justifyContent="space-between" padding="2" backgroundColor="3">
+    <Row
+      gap
+      alignItems="center"
+      justifyContent="space-between"
+      padding="2"
+      backgroundColor="surface-sunken"
+    >
       <Row alignItems="center" gap="2" wrap="wrap">
         {segment && !isLoading && (
           <FilterItem
@@ -138,11 +144,11 @@ const FilterItem = ({ name, label, operator, value, onRemove }) => {
     >
       <Row alignItems="center" gap="4">
         <Row alignItems="center" gap="2">
-          <Text color="12" weight="bold">
+          <Text color="primary" weight="bold">
             {label}
           </Text>
-          <Text color="11">{operator}</Text>
-          <Text color="12" weight="bold">
+          <Text color="muted">{operator}</Text>
+          <Text color="primary" weight="bold">
             {value}
           </Text>
         </Row>
