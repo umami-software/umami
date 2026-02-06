@@ -22,10 +22,11 @@ export async function getChannelMetrics(...args: [websiteId: string, filters?: Q
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
-  const { queryParams, filterQuery, joinSessionQuery, cohortQuery, dateQuery } = parseFilters({
-    ...filters,
-    websiteId,
-  });
+  const { queryParams, filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, dateQuery } =
+    parseFilters({
+      ...filters,
+      websiteId,
+    });
 
   return rawQuery(
     `
@@ -41,6 +42,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
           website_event.session_id
       from website_event
       ${cohortQuery}
+      ${excludeBounceQuery}
       ${joinSessionQuery}
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.event_type != 2
@@ -81,7 +83,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { queryParams, filterQuery, cohortQuery, dateQuery } = parseFilters({
+  const { queryParams, filterQuery, cohortQuery, excludeBounceQuery, dateQuery } = parseFilters({
     ...filters,
     websiteId,
   });
@@ -116,6 +118,7 @@ async function clickhouseQuery(
         count(distinct session_id) y
       from website_event
       ${cohortQuery}
+      ${excludeBounceQuery}
       where website_id = {websiteId:UUID}
         and event_type != 2
         ${dateQuery}

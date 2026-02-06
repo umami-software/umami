@@ -5,7 +5,11 @@ import type { Auth } from '@/lib/types';
 import { getTeamUser } from '@/queries/prisma';
 
 export async function canViewEntity({ user }: Auth, entityId: string) {
-  if (user?.isAdmin) {
+  if (!user) {
+    return false;
+  }
+
+  if (user.isAdmin) {
     return true;
   }
 
@@ -25,6 +29,10 @@ export async function canViewEntity({ user }: Auth, entityId: string) {
 }
 
 export async function canUpdateEntity({ user }: Auth, entityId: string) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }
@@ -45,6 +53,10 @@ export async function canUpdateEntity({ user }: Auth, entityId: string) {
 }
 
 export async function canDeleteEntity({ user }: Auth, entityId: string) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }

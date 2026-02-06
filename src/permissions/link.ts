@@ -4,7 +4,11 @@ import type { Auth } from '@/lib/types';
 import { getLink, getTeamUser } from '@/queries/prisma';
 
 export async function canViewLink({ user }: Auth, linkId: string) {
-  if (user?.isAdmin) {
+  if (!user) {
+    return false;
+  }
+
+  if (user.isAdmin) {
     return true;
   }
 
@@ -24,6 +28,10 @@ export async function canViewLink({ user }: Auth, linkId: string) {
 }
 
 export async function canUpdateLink({ user }: Auth, linkId: string) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }
@@ -44,6 +52,10 @@ export async function canUpdateLink({ user }: Auth, linkId: string) {
 }
 
 export async function canDeleteLink({ user }: Auth, linkId: string) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }

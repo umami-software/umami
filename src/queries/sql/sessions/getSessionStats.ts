@@ -16,10 +16,11 @@ export async function getSessionStats(...args: [websiteId: string, filters: Quer
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { timezone = 'utc', unit = 'day' } = filters;
   const { getDateSQL, parseFilters, rawQuery } = prisma;
-  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
-    ...filters,
-    websiteId,
-  });
+  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } =
+    parseFilters({
+      ...filters,
+      websiteId,
+    });
 
   return rawQuery(
     `
@@ -28,6 +29,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       count(distinct website_event.session_id) y
     from website_event
     ${cohortQuery}
+    ${excludeBounceQuery}
     ${joinSessionQuery}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
@@ -47,7 +49,7 @@ async function clickhouseQuery(
 ): Promise<{ x: string; y: number }[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
   const { parseFilters, rawQuery, getDateSQL } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+  const { filterQuery, cohortQuery, excludeBounceQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
@@ -65,6 +67,7 @@ async function clickhouseQuery(
         count(distinct session_id) as y
       from website_event
       ${cohortQuery}
+      ${excludeBounceQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type != 2
@@ -84,6 +87,7 @@ async function clickhouseQuery(
         uniq(session_id) as y
       from website_event_stats_hourly as website_event
       ${cohortQuery}
+      ${excludeBounceQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type != 2

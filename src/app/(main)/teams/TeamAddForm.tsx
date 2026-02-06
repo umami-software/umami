@@ -7,8 +7,17 @@ import {
   TextField,
 } from '@umami/react-zen';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
+import { UserSelect } from '@/components/input/UserSelect';
 
-export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
+export function TeamAddForm({
+  onSave,
+  onClose,
+  isAdmin,
+}: {
+  onSave: () => void;
+  onClose: () => void;
+  isAdmin: boolean;
+}) {
   const { formatMessage, labels, getErrorMessage } = useMessages();
   const { mutateAsync, error, isPending } = useUpdateQuery('/teams');
 
@@ -26,6 +35,11 @@ export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: 
       <FormField name="name" label={formatMessage(labels.name)}>
         <TextField autoComplete="off" />
       </FormField>
+      {isAdmin && (
+        <FormField name="ownerId" label={formatMessage(labels.teamOwner)}>
+          <UserSelect buttonProps={{ style: { outline: 'none' } }} />
+        </FormField>
+      )}
       <FormButtons>
         <Button isDisabled={isPending} onPress={onClose}>
           {formatMessage(labels.cancel)}

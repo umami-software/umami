@@ -31,9 +31,11 @@ export function WebsiteDateFilter({
   const showCompare = allowCompare && !isAllTime;
 
   const websiteDateRange = useDateRangeQuery(websiteId);
+  const { startDate, endDate } = websiteDateRange;
+  const hasData = startDate && endDate;
 
   const handleChange = (date: string) => {
-    if (date === 'all') {
+    if (date === 'all' && hasData) {
       router.push(
         updateParams({
           date: `${getDateRangeValue(websiteDateRange.startDate, websiteDateRange.endDate)}:all`,
@@ -41,7 +43,7 @@ export function WebsiteDateFilter({
         }),
       );
     } else {
-      router.push(updateParams({ date, offset: undefined }));
+      router.push(updateParams({ date, offset: undefined, unit: undefined }));
     }
   };
 
@@ -78,7 +80,7 @@ export function WebsiteDateFilter({
         <DateFilter
           value={dateValue}
           onChange={handleChange}
-          showAllTime={showAllTime}
+          showAllTime={hasData && showAllTime}
           renderDate={+offset !== 0}
         />
       </Row>

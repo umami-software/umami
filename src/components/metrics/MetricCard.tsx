@@ -25,7 +25,7 @@ export const MetricCard = ({
   showChange = false,
 }: MetricCardProps) => {
   const diff = value - change;
-  const pct = ((value - diff) / diff) * 100;
+  const pct = diff !== 0 ? ((value - diff) / diff) * 100 : value !== 0 ? 100 : 0;
   const props = useSpring({ x: Number(value) || 0, from: { x: 0 } });
   const changeProps = useSpring({ x: Number(pct) || 0, from: { x: 0 } });
 

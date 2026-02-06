@@ -4,6 +4,7 @@
 export * from './context/useBoard';
 export * from './context/useLink';
 export * from './context/usePixel';
+export * from './context/useShare';
 export * from './context/useTeam';
 export * from './context/useUser';
 export * from './context/useWebsite';
@@ -54,6 +55,7 @@ export * from './queries/useWebsiteSegmentsQuery';
 export * from './queries/useWebsiteSessionQuery';
 export * from './queries/useWebsiteSessionStatsQuery';
 export * from './queries/useWebsiteSessionsQuery';
+export * from './queries/useWebsiteSharesQuery';
 export * from './queries/useWebsiteStatsQuery';
 export * from './queries/useWebsitesQuery';
 export * from './queries/useWebsiteValuesQuery';

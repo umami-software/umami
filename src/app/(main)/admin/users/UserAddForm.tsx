@@ -10,6 +10,7 @@ import {
   TextField,
 } from '@umami/react-zen';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
+import { messages } from '@/components/messages';
 import { ROLES } from '@/lib/constants';
 
 export function UserAddForm({ onSave, onClose }) {
@@ -37,7 +38,10 @@ export function UserAddForm({ onSave, onClose }) {
       <FormField
         label={formatMessage(labels.password)}
         name="password"
-        rules={{ required: formatMessage(labels.required) }}
+        rules={{
+          required: formatMessage(labels.required),
+          minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: '8' }) },
+        }}
       >
         <PasswordField autoComplete="new-password" data-test="input-password" />
       </FormField>

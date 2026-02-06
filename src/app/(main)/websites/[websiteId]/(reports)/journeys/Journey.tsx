@@ -21,9 +21,15 @@ export interface JourneyProps {
   steps: number;
   startStep?: string;
   endStep?: string;
+  view: string;
 }
 
-export function Journey({ websiteId, steps, startStep, endStep }: JourneyProps) {
+const EVENT_TYPES = {
+  views: 1,
+  events: 2,
+};
+
+export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyProps) {
   const [selectedNode, setSelectedNode] = useState(null);
   const [activeNode, setActiveNode] = useState(null);
   const { formatMessage, labels } = useMessages();
@@ -32,6 +38,8 @@ export function Journey({ websiteId, steps, startStep, endStep }: JourneyProps) 
     steps,
     startStep,
     endStep,
+    view,
+    eventType: EVENT_TYPES[view],
   });
 
   useEscapeKey(() => setSelectedNode(null));

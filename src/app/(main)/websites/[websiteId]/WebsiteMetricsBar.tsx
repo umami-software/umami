@@ -7,14 +7,18 @@ import { formatLongNumber, formatShortTime } from '@/lib/format';
 
 export function WebsiteMetricsBar({
   websiteId,
+  compareMode,
 }: {
   websiteId: string;
   showChange?: boolean;
   compareMode?: boolean;
 }) {
-  const { isAllTime } = useDateRange();
+  const { isAllTime, dateCompare } = useDateRange();
   const { formatMessage, labels, getErrorMessage } = useMessages();
-  const { data, isLoading, isFetching, error } = useWebsiteStatsQuery(websiteId);
+  const { data, isLoading, isFetching, error } = useWebsiteStatsQuery({
+    websiteId,
+    compare: compareMode ? dateCompare?.compare : undefined,
+  });
 
   const { pageviews, visitors, visits, bounces, totaltime, comparison } = data || {};
 

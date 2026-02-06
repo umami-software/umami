@@ -1,25 +1,22 @@
-import { setShareToken, useApp } from '@/store/app';
+import { setShare, setShareToken, useApp } from '@/store/app';
 import { useApi } from '../useApi';
 
-const selector = (state: { shareToken: string }) => state.shareToken;
+const selector = state => state.share;
 
-export function useShareTokenQuery(slug: string): {
-  shareToken: any;
-  isLoading?: boolean;
-  error?: Error;
-} {
-  const shareToken = useApp(selector);
+export function useShareTokenQuery(slug: string) {
+  const share = useApp(selector);
   const { get, useQuery } = useApi();
-  const { isLoading, error } = useQuery({
+  const query = useQuery({
     queryKey: ['share', slug],
     queryFn: async () => {
       const data = await get(`/share/${slug}`);
 
-      setShareToken(data);
+      setShare(data);
+      setShareToken({ token: data?.token });
 
       return data;
     },
   });
 
-  return { shareToken, isLoading, error };
+  return { share, ...query };
 }

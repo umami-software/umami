@@ -1,3 +1,5 @@
+import { Checkbox, Row } from '@umami/react-zen';
+import { useState } from 'react';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { ListFilter } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
@@ -12,12 +14,20 @@ export function WebsiteFilterButton({
   alignment?: 'end' | 'center' | 'start';
 }) {
   const { formatMessage, labels } = useMessages();
-  const { updateParams, router } = useNavigation();
+  const { updateParams, pathname, router, query } = useNavigation();
+  const [excludeBounce, setExcludeBounce] = useState(!!query.excludeBounce);
+  const isOverview =
+    /^\/teams\/[^/]+\/websites\/[^/]+$/.test(pathname) || /^\/share\/[^/]+$/.test(pathname);
 
   const handleChange = ({ filters, segment, cohort }: any) => {
     const params = filtersArrayToObject(filters);
 
-    const url = updateParams({ ...params, segment, cohort });
+    const url = updateParams({
+      ...params,
+      segment,
+      cohort,
+      excludeBounce: excludeBounce ? 'true' : undefined,
+    });
 
     router.push(url);
   };
@@ -25,7 +35,22 @@ export function WebsiteFilterButton({
   return (
     <DialogButton icon={<ListFilter />} label={formatMessage(labels.filter)} variant="outline">
       {({ close }) => {
-        return <FilterEditForm websiteId={websiteId} onChange={handleChange} onClose={close} />;
+        return (
+          <>
+            {isOverview && (
+              <Row position="absolute" top="30px" right="30px">
+                <Checkbox
+                  value={excludeBounce ? 'true' : ''}
+                  onChange={setExcludeBounce}
+                  style={{ marginTop: '3px' }}
+                >
+                  {formatMessage(labels.excludeBounce)}
+                </Checkbox>
+              </Row>
+            )}
+            <FilterEditForm websiteId={websiteId} onChange={handleChange} onClose={close} />
+          </>
+        );
       }}
     </DialogButton>
   );

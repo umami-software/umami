@@ -3,11 +3,11 @@ import type { Auth } from '@/lib/types';
 import { canViewWebsite } from './website';
 
 export async function canViewReport(auth: Auth, report: Report) {
-  if (auth.user.isAdmin) {
+  if (auth.user?.isAdmin) {
     return true;
   }
 
-  if (auth.user.id === report.userId) {
+  if (auth.user?.id === report.userId) {
     return true;
   }
 
@@ -15,6 +15,10 @@ export async function canViewReport(auth: Auth, report: Report) {
 }
 
 export async function canUpdateReport({ user }: Auth, report: Report) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }

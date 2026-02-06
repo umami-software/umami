@@ -14,12 +14,13 @@ export async function getWeeklyTraffic(...args: [websiteId: string, filters: Que
 }
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
-  const timezone = 'utc';
+  const { timezone = 'utc' } = filters;
   const { rawQuery, getDateWeeklySQL, parseFilters } = prisma;
-  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
-    ...filters,
-    websiteId,
-  });
+  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } =
+    parseFilters({
+      ...filters,
+      websiteId,
+    });
 
   return rawQuery(
     `
@@ -28,12 +29,14 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       count(distinct website_event.session_id) as value
     from website_event
     ${cohortQuery}
+    ${excludeBounceQuery}
     ${joinSessionQuery}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
+      and website_event.event_type != 2
       ${filterQuery}
     group by time
-    order by 2
+    order by 1
     `,
     queryParams,
     FUNCTION_NAME,
@@ -43,7 +46,10 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   const { timezone = 'utc' } = filters;
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = await parseFilters({ ...filters, websiteId });
+  const { filterQuery, cohortQuery, excludeBounceQuery, queryParams } = await parseFilters({
+    ...filters,
+    websiteId,
+  });
 
   let sql = '';
 
@@ -54,8 +60,10 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       count(distinct session_id) as value
     from website_event
     ${cohortQuery}
+    ${excludeBounceQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_type != 2
       ${filterQuery}
     group by time
     order by time
@@ -67,8 +75,10 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       count(distinct session_id) as value
     from website_event_stats_hourly website_event
     ${cohortQuery}
+    ${excludeBounceQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_type != 2
       ${filterQuery}
     group by time
     order by time

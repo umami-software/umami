@@ -1,14 +1,15 @@
 import type { Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
+import type { QueryFilters } from '@/lib/types';
 
 export async function findShare(criteria: Prisma.ShareFindUniqueArgs) {
   return prisma.client.share.findUnique(criteria);
 }
 
-export async function getShare(entityId: string) {
+export async function getShare(shareId: string) {
   return findShare({
     where: {
-      id: entityId,
+      id: shareId,
     },
   });
 }
@@ -19,6 +20,34 @@ export async function getShareByCode(slug: string) {
       slug,
     },
   });
+}
+
+export async function getShareByEntityId(entityId: string) {
+  return prisma.client.share.findFirst({
+    where: {
+      entityId,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+}
+
+export async function getSharesByEntityId(entityId: string, filters?: QueryFilters) {
+  const { pagedQuery } = prisma;
+
+  return pagedQuery(
+    'share',
+    {
+      where: {
+        entityId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    },
+    filters,
+  );
 }
 
 export async function createShare(
@@ -43,4 +72,12 @@ export async function updateShare(
 
 export async function deleteShare(shareId: string) {
   return prisma.client.share.delete({ where: { id: shareId } });
+}
+
+export async function deleteSharesByEntityId(entityId: string) {
+  return prisma.client.share.deleteMany({
+    where: {
+      entityId,
+    },
+  });
 }

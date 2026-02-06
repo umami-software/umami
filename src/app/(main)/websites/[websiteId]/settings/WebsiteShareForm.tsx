@@ -1,93 +1,47 @@
-import {
-  Button,
-  Column,
-  Form,
-  FormButtons,
-  FormSubmitButton,
-  Label,
-  Row,
-  Switch,
-  TextField,
-} from '@umami/react-zen';
-import { RefreshCcw } from 'lucide-react';
-import { useState } from 'react';
-import { IconLabel } from '@/components/common/IconLabel';
-import { useConfig, useMessages, useUpdateQuery } from '@/components/hooks';
-import { getRandomChars } from '@/lib/generate';
-
-const generateId = () => getRandomChars(16);
+import { Column, Heading, Row, Text } from '@umami/react-zen';
+import { Plus } from 'lucide-react';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { useMessages, useWebsiteSharesQuery } from '@/components/hooks';
+import { DialogButton } from '@/components/input/DialogButton';
+import { ShareEditForm } from './ShareEditForm';
+import { SharesTable } from './SharesTable';
 
 export interface WebsiteShareFormProps {
   websiteId: string;
-  shareId?: string;
-  onSave?: () => void;
-  onClose?: () => void;
 }
 
-export function WebsiteShareForm({ websiteId, shareId, onSave, onClose }: WebsiteShareFormProps) {
-  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
-  const [currentId, setCurrentId] = useState(shareId);
-  const { mutateAsync, error, touch, toast } = useUpdateQuery(`/websites/${websiteId}`);
-  const { cloudMode } = useConfig();
+export function WebsiteShareForm({ websiteId }: WebsiteShareFormProps) {
+  const { formatMessage, labels, messages } = useMessages();
+  const { data, error, isLoading } = useWebsiteSharesQuery({ websiteId });
 
-  const getUrl = (shareId: string) => {
-    if (cloudMode) {
-      return `${process.env.cloudUrl}/share/${shareId}`;
-    }
-
-    return `${window?.location.origin}${process.env.basePath || ''}/share/${shareId}`;
-  };
-
-  const url = getUrl(currentId);
-
-  const handleGenerate = () => {
-    setCurrentId(generateId());
-  };
-
-  const handleSwitch = () => {
-    setCurrentId(currentId ? null : generateId());
-  };
-
-  const handleSave = async () => {
-    const data = {
-      shareId: currentId,
-    };
-    await mutateAsync(data, {
-      onSuccess: async () => {
-        toast(formatMessage(messages.saved));
-        touch(`website:${websiteId}`);
-        onSave?.();
-        onClose?.();
-      },
-    });
-  };
+  const shares = data?.data || [];
+  const hasShares = shares.length > 0;
 
   return (
-    <Form onSubmit={handleSave} error={getErrorMessage(error)} values={{ url }}>
-      <Column gap>
-        <Switch isSelected={!!currentId} onChange={handleSwitch}>
-          {formatMessage(labels.enableShareUrl)}
-        </Switch>
-        {currentId && (
-          <Row alignItems="flex-end" gap>
-            <Column flexGrow={1}>
-              <Label>{formatMessage(labels.shareUrl)}</Label>
-              <TextField value={url} isReadOnly allowCopy />
-            </Column>
-            <Column>
-              <Button onPress={handleGenerate}>
-                <IconLabel icon={<RefreshCcw />} label={formatMessage(labels.regenerate)} />
-              </Button>
-            </Column>
-          </Row>
+    <LoadingPanel data={data} isLoading={isLoading} error={error}>
+      <Column gap="4">
+        <Row justifyContent="space-between" alignItems="center">
+          <Heading>{formatMessage(labels.share)}</Heading>
+          <DialogButton
+            icon={<Plus size={16} />}
+            label={formatMessage(labels.add)}
+            title={formatMessage(labels.share)}
+            variant="primary"
+            width="600px"
+          >
+            {({ close }) => <ShareEditForm websiteId={websiteId} onClose={close} />}
+          </DialogButton>
+        </Row>
+        {hasShares ? (
+          <>
+            <Text>{formatMessage(messages.shareUrl)}</Text>
+
+            <SharesTable data={shares} />
+          </>
+        ) : (
+          <Text color="muted">{formatMessage(messages.noDataAvailable)}</Text>
         )}
-        <FormButtons justifyContent="flex-end">
-          <Row alignItems="center" gap>
-            {onClose && <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>}
-            <FormSubmitButton isDisabled={false}>{formatMessage(labels.save)}</FormSubmitButton>
-          </Row>
-        </FormButtons>
       </Column>
-    </Form>
+    </LoadingPanel>
   );
 }

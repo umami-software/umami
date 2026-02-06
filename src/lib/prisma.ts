@@ -108,7 +108,7 @@ function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}
 
         if (name === 'referrer') {
           arr.push(
-            `and (website_event.referrer_domain != website_event.hostname or website_event.referrer_domain is null)`,
+            `and (website_event.referrer_domain != regexp_replace(website_event.hostname, '^www.', '') or website_event.referrer_domain is null)`,
           );
         }
       }
@@ -138,6 +138,25 @@ function getCohortQuery(filters: QueryFilters = {}) {
       ${filterQuery}
     ) cohort
     on cohort.session_id = website_event.session_id
+    `;
+}
+
+function getExcludeBounceQuery(filters: Record<string, any>) {
+  if (!filters.excludeBounce === true) {
+    return '';
+  }
+
+  return `join
+    (select distinct session_id, visit_id
+    from website_event
+    where website_id = {{websiteId}}
+      and created_at between {{startDate}} and {{endDate}}
+      and event_type = 1
+    group by session_id, visit_id
+    having count(*) > 1
+    ) excludeBounce
+    on excludeBounce.session_id = website_event.session_id
+      and excludeBounce.visit_id = website_event.visit_id
     `;
 }
 
@@ -186,6 +205,7 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
     filterQuery: getFilterQuery(filters, options),
     queryParams: getQueryParams(filters),
     cohortQuery: getCohortQuery(cohortFilters),
+    excludeBounceQuery: getExcludeBounceQuery(filters),
   };
 }
 

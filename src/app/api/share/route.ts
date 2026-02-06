@@ -1,5 +1,6 @@
 import z from 'zod';
 import { uuid } from '@/lib/crypto';
+import { getRandomChars } from '@/lib/generate';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { anyObjectParam } from '@/lib/schema';
@@ -10,7 +11,8 @@ export async function POST(request: Request) {
   const schema = z.object({
     entityId: z.uuid(),
     shareType: z.coerce.number().int(),
-    slug: z.string().max(100),
+    name: z.string().max(200),
+    slug: z.string().max(100).optional(),
     parameters: anyObjectParam,
   });
 
@@ -20,7 +22,8 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const { entityId, shareType, slug, parameters } = body;
+  const { entityId, shareType, name, slug, parameters } = body;
+  const shareParameters = parameters ?? {};
 
   if (!(await canUpdateEntity(auth, entityId))) {
     return unauthorized();
@@ -30,8 +33,9 @@ export async function POST(request: Request) {
     id: uuid(),
     entityId,
     shareType,
-    slug,
-    parameters,
+    name,
+    slug: slug || getRandomChars(16),
+    parameters: shareParameters,
   });
 
   return json(share);

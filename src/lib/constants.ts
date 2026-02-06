@@ -44,6 +44,11 @@ export const EVENT_COLUMNS = [
   'event',
   'tag',
   'hostname',
+  'utmSource',
+  'utmMedium',
+  'utmCampaign',
+  'utmContent',
+  'utmTerm',
 ];
 
 export const SESSION_COLUMNS = [
@@ -55,6 +60,7 @@ export const SESSION_COLUMNS = [
   'country',
   'city',
   'region',
+  'distinctId',
 ];
 
 export const SEGMENT_TYPES = {
@@ -69,6 +75,7 @@ export const FILTER_COLUMNS = {
   referrer: 'referrer_domain',
   domain: 'referrer_domain',
   hostname: 'hostname',
+  distinctId: 'distinct_id',
   title: 'page_title',
   query: 'url_query',
   os: 'os',
@@ -81,6 +88,11 @@ export const FILTER_COLUMNS = {
   event: 'event_name',
   tag: 'tag',
   eventType: 'event_type',
+  utmSource: 'utm_source',
+  utmMedium: 'utm_medium',
+  utmCampaign: 'utm_campaign',
+  utmContent: 'utm_content',
+  utmTerm: 'utm_term',
 };
 
 export const COLLECTION_TYPE = {

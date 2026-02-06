@@ -2,6 +2,7 @@
 CREATE TABLE "share" (
     "share_id" UUID NOT NULL,
     "entity_id" UUID NOT NULL,
+    "name" VARCHAR(200) NOT NULL,
     "share_type" INTEGER NOT NULL,
     "slug" VARCHAR(100) NOT NULL,
     "parameters" JSONB NOT NULL,
@@ -12,21 +13,19 @@ CREATE TABLE "share" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "share_share_id_key" ON "share"("share_id");
-
--- CreateIndex
 CREATE UNIQUE INDEX "share_slug_key" ON "share"("slug");
 
 -- CreateIndex
 CREATE INDEX "share_entity_id_idx" ON "share"("entity_id");
 
 -- MigrateData
-INSERT INTO "share" (share_id, entity_id, share_type, slug, parameters, created_at)
+INSERT INTO "share" (share_id, entity_id, name, share_type, slug, parameters, created_at)
 SELECT gen_random_uuid(),
        website_id,
+       name,
        1,
        share_id,
-       '{}'::jsonb,
+       '{"overview":true}'::jsonb,
        now()
 FROM "website"
 WHERE share_id IS NOT NULL;

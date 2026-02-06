@@ -92,6 +92,7 @@ export interface FilterParams {
   segment?: string;
   cohort?: string;
   compare?: string;
+  excludeBounce?: boolean;
 }
 
 export interface SortParams {
@@ -168,4 +169,10 @@ export interface BoardParameters {
 
 export interface Board extends Omit<PrismaBoard, 'parameters'> {
   parameters: BoardParameters;
+}
+
+export interface WhiteLabel {
+  name: string;
+  url: string;
+  image: string;
 }
