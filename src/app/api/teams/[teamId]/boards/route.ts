@@ -3,7 +3,7 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams } from '@/lib/schema';
 import { canViewTeam } from '@/permissions';
-import { getTeamPixels } from '@/queries/prisma';
+import { getTeamBoards } from '@/queries/prisma';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const schema = z.object({
@@ -23,7 +23,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
 
   const filters = await getQueryFilters(query);
 
-  const websites = await getTeamPixels(teamId, filters);
+  const boards = await getTeamBoards(teamId, filters);
 
-  return json(websites);
+  return json(boards);
 }
