@@ -276,5 +276,10 @@
   "message.user-deleted": "Foydalanuvchi oʻchirildi.",
   "message.viewed-page": "Sahifa koʻrildi",
   "message.visitor-log": "{os} {device} da {browser} dan foydalanayotgan {country} dan tashrif buyuruvchi",
-  "message.visitors-dropped-off": "Tashrif buyuruvchilar tashlab ketishdi"
+  "message.visitors-dropped-off": "Tashrif buyuruvchilar tashlab ketishdi",
+  "message.visitors-tooltip": "Saytingizga tashrif buyurgan noyob foydalanuvchilar soni",
+  "message.visits-tooltip": "Saytingizdagi umumiy sessiyalar soni",
+  "message.page-views-tooltip": "Sahifa ko‘rinishlari umumiy soni",
+  "message.bounce-rate-tooltip": "Faqat bitta sahifani ko‘rib chiqib ketgan tashriflar foizi",
+  "message.visit-duration-tooltip": "Har bir tashrifda saytingizda sarflangan o‘rtacha vaqt"
 }

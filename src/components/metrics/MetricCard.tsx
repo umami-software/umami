@@ -1,5 +1,6 @@
 import { useSpring } from '@react-spring/web';
-import { Column, Text } from '@umami/react-zen';
+import { Column, Focusable, Icon, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Info } from 'lucide-react';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { formatNumber } from '@/lib/format';
@@ -13,6 +14,7 @@ export interface MetricCardProps {
   formatValue?: (n: any) => string;
   showLabel?: boolean;
   showChange?: boolean;
+  tooltip?: string;
 }
 
 export const MetricCard = ({
@@ -23,6 +25,7 @@ export const MetricCard = ({
   formatValue = formatNumber,
   showLabel = true,
   showChange = false,
+  tooltip,
 }: MetricCardProps) => {
   const diff = value - change;
   const pct = ((value - diff) / diff) * 100;
@@ -39,8 +42,22 @@ export const MetricCard = ({
       border
     >
       {showLabel && (
-        <Text weight="bold" wrap="nowrap">
+        <Text
+          weight="bold"
+          wrap="nowrap"
+          style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+        >
           {label}
+          {tooltip && (
+            <TooltipTrigger delay={0}>
+              <Focusable aria-label="More info">
+                <Icon size="xs" style={{ cursor: 'pointer' }}>
+                  <Info />
+                </Icon>
+              </Focusable>
+              <Tooltip>{tooltip}</Tooltip>
+            </TooltipTrigger>
+          )}
         </Text>
       )}
       <Text size="8" weight="bold" wrap="nowrap">

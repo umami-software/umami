@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "{country}வில் இருந்து பார்வையாளர் {browser} ஐ {os} {device}லில் பயன்படுத்துகிறார்"
+  "message.visitor-log": "{country}வில் இருந்து பார்வையாளர் {browser} ஐ {os} {device}லில் பயன்படுத்துகிறார்",
+  "message.visitors-tooltip": "உங்கள் வலைத்தளத்திற்கு வந்த தனித்துவமான பயணிகளின் எண்ணிக்கை",
+  "message.visits-tooltip": "உங்கள் வலைத்தளத்தின் மொத்த அமர்வுகள்",
+  "message.page-views-tooltip": "மொத்த பக்கக் காண்பிப்புகள்",
+  "message.bounce-rate-tooltip": "ஒரு பக்கத்தையே பார்த்து வெளியேறிய பயணங்களின் சதவீதம்",
+  "message.visit-duration-tooltip": "ஒரு பயணத்திற்கு உங்கள் வலைத்தளத்தில் செலவிடப்படும் சராசரி நேரம்"
 }

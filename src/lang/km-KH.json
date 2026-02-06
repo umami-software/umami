@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "អ្នកប្រើប្រាស់ត្រូវបានលុបចោល។",
   "message.viewed-page": "ទំព័រដែលបានមើល",
-  "message.visitor-log": "អ្នកមើលពីប្រទេស {country} ប្រើប្រាស់កម្មវិធី {browser} លើឧបករណ៍ {os} {device}"
+  "message.visitor-log": "អ្នកមើលពីប្រទេស {country} ប្រើប្រាស់កម្មវិធី {browser} លើឧបករណ៍ {os} {device}",
+  "message.visitors-tooltip": "ចំនួនអ្នកទស្សនាឯកតាមគេហទំព័ររបស់អ្នក",
+  "message.visits-tooltip": "ចំនួនសម័យសរុបលើគេហទំព័ររបស់អ្នក",
+  "message.page-views-tooltip": "ចំនួនទំព័រត្រូវបានមើលសរុប",
+  "message.bounce-rate-tooltip": "ភាគរយនៃការទស្សនាដែលចាកចេញបន្ទាប់ពីមើលតែទំព័រតែមួយ",
+  "message.visit-duration-tooltip": "ពេលវេលាមធ្យមដែលបានចំណាយលើគេហទំព័ររបស់អ្នកក្នុងមួយការទស្សនា"
 }

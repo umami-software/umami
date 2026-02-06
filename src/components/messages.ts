@@ -515,4 +515,24 @@ export const messages = defineMessages({
     id: 'message.sever-error',
     defaultMessage: 'Server error',
   },
+  visitorsTooltip: {
+    id: 'message.visitors-tooltip',
+    defaultMessage: 'Number of unique visitors to your website',
+  },
+  visitsTooltip: {
+    id: 'message.visits-tooltip',
+    defaultMessage: 'Total number of sessions on your website',
+  },
+  pageViewsTooltip: {
+    id: 'message.page-views-tooltip',
+    defaultMessage: 'Total number of pages viewed',
+  },
+  bounceRateTooltip: {
+    id: 'message.bounce-rate-tooltip',
+    defaultMessage: 'Percentage of visits that leave after viewing only one page',
+  },
+  visitDurationTooltip: {
+    id: 'message.visit-duration-tooltip',
+    defaultMessage: 'Average time spent on your website per visit',
+  },
 });

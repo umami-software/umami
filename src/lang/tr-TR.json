@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "Kullanıcı silindi.",
   "message.viewed-page": "Görüntülenen sayfa",
-  "message.visitor-log": "Yeni ziyaretçi: {country}, {os}, {device}, {browser}"
+  "message.visitor-log": "Yeni ziyaretçi: {country}, {os}, {device}, {browser}",
+  "message.visitors-tooltip": "Web sitenizi ziyaret eden benzersiz kullanıcı sayısı",
+  "message.visits-tooltip": "Web sitenizdeki toplam oturum sayısı",
+  "message.page-views-tooltip": "Toplam sayfa görüntüleme sayısı",
+  "message.bounce-rate-tooltip": "Sadece bir sayfa görüntüledikten sonra siteyi terk eden ziyaretlerin yüzdesi",
+  "message.visit-duration-tooltip": "Ziyaret başına web sitenizde geçirilen ortalama süre"
 }

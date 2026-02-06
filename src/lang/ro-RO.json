@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "Utilizator șters.",
   "message.viewed-page": "Pagină vizualizată",
-  "message.visitor-log": "Vizitator din {country} folosind {browser} pe {os} {device}"
+  "message.visitor-log": "Vizitator din {country} folosind {browser} pe {os} {device}",
+  "message.visitors-tooltip": "Numărul de vizitatori unici ai site-ului dvs.",
+  "message.visits-tooltip": "Numărul total de sesiuni pe site-ul dvs.",
+  "message.page-views-tooltip": "Numărul total de vizualizări de pagini",
+  "message.bounce-rate-tooltip": "Procentul vizitelor care părăsesc site-ul după ce au vizualizat doar o pagină",
+  "message.visit-duration-tooltip": "Timpul mediu petrecut pe site-ul dvs. per vizită"
 }

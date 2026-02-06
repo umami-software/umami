@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "Użytkownik usunięty.",
   "message.viewed-page": "Obejrzana strona",
-  "message.visitor-log": "Odwiedzający z {country} używa {browser} na {os} {device}"
+  "message.visitor-log": "Odwiedzający z {country} używa {browser} na {os} {device}",
+  "message.visitors-tooltip": "Liczba unikalnych odwiedzających Twoją stronę",
+  "message.visits-tooltip": "Łączna liczba sesji na Twojej stronie",
+  "message.page-views-tooltip": "Łączna liczba wyświetleń stron",
+  "message.bounce-rate-tooltip": "Procent wizyt, które kończą się po obejrzeniu tylko jednej strony",
+  "message.visit-duration-tooltip": "Średni czas spędzony na stronie podczas jednej wizyty"
 }

@@ -314,5 +314,10 @@
   "message.user-deleted": "Uporabnik je izbrisan.",
   "message.viewed-page": "Ogledana stran",
   "message.visitor-log": "Obiskovalec iz {country} uporablja {browser} na {os} {device}",
-  "message.visitors-dropped-off": "Osip obiskovalcev"
+  "message.visitors-dropped-off": "Osip obiskovalcev",
+  "message.visitors-tooltip": "Število edinstvenih obiskovalcev vaše spletne strani",
+  "message.visits-tooltip": "Skupno število sej na vaši spletni strani",
+  "message.page-views-tooltip": "Skupno število ogledov strani",
+  "message.bounce-rate-tooltip": "Odstotek obiskov, ki zapustijo stran po ogledu le ene strani",
+  "message.visit-duration-tooltip": "Povprečni čas, preživet na vaši spletni strani na obisk"
 }

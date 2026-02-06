@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "Vartotojas ištrintas.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "Lankytojas iš {country}, naudojantis {browser} sistemoje {os} {device}"
+  "message.visitor-log": "Lankytojas iš {country}, naudojantis {browser} sistemoje {os} {device}",
+  "message.visitors-tooltip": "Unikalių jūsų svetainės lankytojų skaičius",
+  "message.visits-tooltip": "Bendras sesijų skaičius jūsų svetainėje",
+  "message.page-views-tooltip": "Bendras peržiūrėtų puslapių skaičius",
+  "message.bounce-rate-tooltip": "Procentas lankytojų, kurie išeina po vieno puslapio peržiūros",
+  "message.visit-duration-tooltip": "Vidutinis laikas, praleistas jūsų svetainėje per vizitą"
 }

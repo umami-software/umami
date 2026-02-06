@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "Pelawat dari {country} mengguna {browser} pada {os} {device}"
+  "message.visitor-log": "Pelawat dari {country} mengguna {browser} pada {os} {device}",
+  "message.visitors-tooltip": "Bilangan pelawat unik ke laman web anda",
+  "message.visits-tooltip": "Jumlah sesi di laman web anda",
+  "message.page-views-tooltip": "Jumlah keseluruhan paparan halaman",
+  "message.bounce-rate-tooltip": "Peratusan lawatan yang meninggalkan laman selepas melihat hanya satu halaman",
+  "message.visit-duration-tooltip": "Purata masa yang dihabiskan di laman web anda setiap lawatan"
 }
