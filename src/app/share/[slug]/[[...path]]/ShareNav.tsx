@@ -1,5 +1,5 @@
 import { Button, Column, Icon, Row, Text, ThemeButton } from '@umami/react-zen';
-import { SideMenu } from '@/components/common/SideMenu';
+import { NavMenu } from '@/components/common/NavMenu';
 import { useMessages, useNavigation, useShare } from '@/components/hooks';
 import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User } from '@/components/icons';
 import { LanguageButton } from '@/components/input/LanguageButton';
@@ -147,7 +147,6 @@ export function ShareNav({
       maxHeight="100dvh"
       height="100dvh"
       border={isMobile ? undefined : 'right'}
-      borderColor={isMobile ? undefined : '4'}
     >
       <Row as="header" gap alignItems="center" justifyContent="space-between">
         {!collapsed && (
@@ -174,7 +173,7 @@ export function ShareNav({
       </Row>
       {!collapsed && (
         <Column flexGrow={1} overflowY="auto">
-          <SideMenu
+          <NavMenu
             items={items}
             selectedKey={selectedKey}
             allowMinimize={false}

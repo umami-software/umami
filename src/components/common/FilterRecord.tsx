@@ -65,7 +65,7 @@ export function FilterRecord({
     <Column>
       <Label>{fields.find(f => f.name === name)?.label}</Label>
       <Grid columns="1fr auto" gap>
-        <Grid columns={{ xs: '1fr', md: '200px 1fr' }} gap>
+        <Grid columns={{ base: '1fr', md: '200px 1fr' }} gap>
           <Select
             items={operators.filter(({ type }) => type === 'string')}
             value={operator}

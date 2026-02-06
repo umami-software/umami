@@ -34,7 +34,7 @@ export function PageBody({
       minHeight="100vh"
       paddingBottom="6"
       maxWidth={maxWidth}
-      paddingX={{ xs: '3', md: '6' }}
+      paddingX={{ base: '3', md: '6' }}
       style={{ margin: '0 auto' }}
     >
       {children}

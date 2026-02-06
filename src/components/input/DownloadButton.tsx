@@ -1,4 +1,4 @@
-import { Button, Icon, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Button, Icon, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import Papa from 'papaparse';
 import { useMessages } from '@/components/hooks';
 import { Download } from '@/components/icons';
@@ -24,7 +24,9 @@ export function DownloadButton({
           <Download />
         </Icon>
       </Button>
-      <Tooltip>{formatMessage(labels.download)}</Tooltip>
+      <Tooltip>
+        <Text size="sm">{formatMessage(labels.download)}</Text>
+      </Tooltip>
     </TooltipTrigger>
   );
 }

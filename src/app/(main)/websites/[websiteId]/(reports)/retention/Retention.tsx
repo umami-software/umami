@@ -53,7 +53,7 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
         <Panel allowFullscreen height="900px">
           <Column
             paddingY="6"
-            paddingX={{ xs: '3', md: '6' }}
+            paddingX={{ base: '3', md: '6' }}
             position="absolute"
             top="40px"
             left="0"

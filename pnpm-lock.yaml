@@ -42,8 +42,8 @@ importers:
         specifier: ^5.90.20
         version: 5.90.20(react@19.2.4)
       '@umami/react-zen':
-        specifier: ^0.239.0
-        version: 0.239.0(@types/react@19.2.13)(immer@10.2.0)(react-aria-components@1.14.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.2.4))
+        specifier: ^0.242.0
+        version: 0.242.0(@types/react@19.2.13)(immer@10.2.0)(react-aria-components@1.14.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.2.4))
       '@umami/redis-client':
         specifier: ^0.30.0
         version: 0.30.0
@@ -1469,9 +1469,6 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@internationalized/date@3.10.1':
-    resolution: {integrity: sha512-oJrXtQiAXLvT9clCf1K4kxp3eKsQhIaZqxEyowkBcsvZDdZkbWrVmnGknxs5flTD0VGsxrxKgBCZty1EzoiMzA==}
-
   '@internationalized/date@3.11.0':
     resolution: {integrity: sha512-BOx5huLAWhicM9/ZFs84CzP+V3gBW6vlpM02yzsdYC7TGlZJX1OJiEEHcSayF00Z+3jLlm4w79amvSt6RqKN3Q==}
 
@@ -1834,12 +1831,6 @@ packages:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
-  '@react-aria/focus@3.21.3':
-    resolution: {integrity: sha512-FsquWvjSCwC2/sBk4b+OqJyONETUIXQ2vM0YdPAuC+QFQh2DT6TIBo6dOZVSezlhudDla69xFBd6JvCFq1AbUw==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-
   '@react-aria/focus@3.21.4':
     resolution: {integrity: sha512-6gz+j9ip0/vFRTKJMl3R30MHopn4i19HqqLfSQfElxJD+r9hBnYG1Q6Wd/kl/WRR1+CALn2F+rn06jUnf5sT8Q==}
     peerDependencies:
@@ -1866,12 +1857,6 @@ packages:
 
   '@react-aria/i18n@3.12.15':
     resolution: {integrity: sha512-3CrAN7ORVHrckvTmbPq76jFZabqq+rScosGT5+ElircJ5rF5+JcdT99Hp5Xg6R10jk74e8G3xiqdYsUd+7iJMA==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-
-  '@react-aria/interactions@3.26.0':
-    resolution: {integrity: sha512-AAEcHiltjfbmP1i9iaVw34Mb7kbkiHpYdqieWufldh4aplWgsF11YQZOfaCJW4QoR2ML4Zzoa9nfFwLXA52R7Q==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
@@ -2049,12 +2034,6 @@ packages:
 
   '@react-aria/tree@3.1.6':
     resolution: {integrity: sha512-igLX+OQrbXCBLrtPWgUevU0iDrgTSAJh1ncHoPzfD/YDcyTDLqKdy2nZhNbJ/IdHCwTyzIknhFJ700K20Ymw9A==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-
-  '@react-aria/utils@3.32.0':
-    resolution: {integrity: sha512-/7Rud06+HVBIlTwmwmJa2W8xVtgxgzm0+kLbuFooZRzKDON6hhozS1dOMR/YLMxyJOaYOTpImcP4vRR9gL1hEg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
@@ -2388,11 +2367,6 @@ packages:
 
   '@react-types/select@3.12.1':
     resolution: {integrity: sha512-PtIUymvQNIIzgr+piJtK/8gbH7akWtbswIbfoADPSxtZEd1/vfUIO0s8c750s3XYNlmx/4DrhugQsLYwgC35yg==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-
-  '@react-types/shared@3.32.1':
-    resolution: {integrity: sha512-famxyD5emrGGpFuUlgOP6fVW2h/ZaF405G5KDi3zPHzyjAWys/8W6NAVJtNbkCkhedmvL0xOhvt8feGXyXaw5w==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
@@ -2914,8 +2888,8 @@ packages:
   '@types/yauzl@2.10.3':
     resolution: {integrity: sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==}
 
-  '@umami/react-zen@0.239.0':
-    resolution: {integrity: sha512-6CSPYPnpCnau+Ie8nyC1BDVFrNoes5XOuy+b6hb6htDTvqTKIB8nvky0hJHe6kLz6Kp7xTbknjP+PQ5EnLBC6w==}
+  '@umami/react-zen@0.242.0':
+    resolution: {integrity: sha512-dahKoYDrFg1MVjww6M0RpUacFidHoXBRuFKOe68AZ9PWQaXX/kUweo/5m1YzmUMcnouwwCer/rAzCfHJ2Vso9w==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-aria-components: ^1.0.0
@@ -8181,10 +8155,6 @@ snapshots:
   '@img/sharp-win32-x64@0.34.5':
     optional: true
 
-  '@internationalized/date@3.10.1':
-    dependencies:
-      '@swc/helpers': 0.5.18
-
   '@internationalized/date@3.11.0':
     dependencies:
       '@swc/helpers': 0.5.18
@@ -8768,16 +8738,6 @@ snapshots:
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
-  '@react-aria/focus@3.21.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
-    dependencies:
-      '@react-aria/interactions': 3.26.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@react-aria/utils': 3.32.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@react-types/shared': 3.32.1(react@19.2.4)
-      '@swc/helpers': 0.5.18
-      clsx: 2.1.1
-      react: 19.2.4
-      react-dom: 19.2.4(react@19.2.4)
-
   '@react-aria/focus@3.21.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@react-aria/interactions': 3.27.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -8840,16 +8800,6 @@ snapshots:
       '@react-aria/ssr': 3.9.10(react@19.2.4)
       '@react-aria/utils': 3.33.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@react-types/shared': 3.33.0(react@19.2.4)
-      '@swc/helpers': 0.5.18
-      react: 19.2.4
-      react-dom: 19.2.4(react@19.2.4)
-
-  '@react-aria/interactions@3.26.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
-    dependencies:
-      '@react-aria/ssr': 3.9.10(react@19.2.4)
-      '@react-aria/utils': 3.32.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@react-stately/flags': 3.1.2
-      '@react-types/shared': 3.32.1(react@19.2.4)
       '@swc/helpers': 0.5.18
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
@@ -9213,17 +9163,6 @@ snapshots:
       '@react-types/button': 3.15.0(react@19.2.4)
       '@react-types/shared': 3.33.0(react@19.2.4)
       '@swc/helpers': 0.5.18
-      react: 19.2.4
-      react-dom: 19.2.4(react@19.2.4)
-
-  '@react-aria/utils@3.32.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
-    dependencies:
-      '@react-aria/ssr': 3.9.10(react@19.2.4)
-      '@react-stately/flags': 3.1.2
-      '@react-stately/utils': 3.11.0(react@19.2.4)
-      '@react-types/shared': 3.32.1(react@19.2.4)
-      '@swc/helpers': 0.5.18
-      clsx: 2.1.1
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
@@ -9696,10 +9635,6 @@ snapshots:
       '@react-types/shared': 3.33.0(react@19.2.4)
       react: 19.2.4
 
-  '@react-types/shared@3.32.1(react@19.2.4)':
-    dependencies:
-      react: 19.2.4
-
   '@react-types/shared@3.33.0(react@19.2.4)':
     dependencies:
       react: 19.2.4
@@ -10157,10 +10092,10 @@ snapshots:
       '@types/node': 24.10.11
     optional: true
 
-  '@umami/react-zen@0.239.0(@types/react@19.2.13)(immer@10.2.0)(react-aria-components@1.14.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.2.4))':
+  '@umami/react-zen@0.242.0(@types/react@19.2.13)(immer@10.2.0)(react-aria-components@1.14.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.2.4))':
     dependencies:
-      '@internationalized/date': 3.10.1
-      '@react-aria/focus': 3.21.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@internationalized/date': 3.11.0
+      '@react-aria/focus': 3.21.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@react-spring/web': 9.7.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       clsx: 2.1.1
       lucide-react: 0.555.0(react@19.2.4)

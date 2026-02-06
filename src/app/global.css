@@ -1,5 +1,7 @@
 :root {
   --font-family: var(--font-inter), sans-serif;
+  --primary: oklch(62.3% 0.214 259.815);
+  --primary-foreground: oklch(98.5% 0 0);
 }
 
 html,

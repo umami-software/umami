@@ -1,4 +1,4 @@
-import { SideMenu } from '@/components/common/SideMenu';
+import { NavMenu } from '@/components/common/NavMenu';
 import { useMessages, useNavigation } from '@/components/hooks';
 import {
   AppWindow,
@@ -226,5 +226,5 @@ export function WebsiteExpandedMenu({
     },
   ];
 
-  return <SideMenu items={items} selectedKey={view} onItemClick={onItemClick} />;
+  return <NavMenu items={items} selectedKey={view} onItemClick={onItemClick} />;
 }

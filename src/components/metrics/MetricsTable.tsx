@@ -1,5 +1,6 @@
-import { Grid, Icon, Row, Text } from '@umami/react-zen';
+import { Grid, Row } from '@umami/react-zen';
 import { useEffect, useMemo } from 'react';
+import { IconLabel } from '@/components/common/IconLabel';
 import { LinkButton } from '@/components/common/LinkButton';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useNavigation, useWebsiteMetricsQuery } from '@/components/hooks';
@@ -82,10 +83,7 @@ export function MetricsTable({
         {showMore && limit && (
           <Row justifyContent="center" alignItems="flex-end">
             <LinkButton href={updateParams({ view: type })} variant="quiet">
-              <Icon size="sm">
-                <Maximize />
-              </Icon>
-              <Text>{formatMessage(labels.more)}</Text>
+              <IconLabel icon={<Maximize />}>{formatMessage(labels.more)}</IconLabel>
             </LinkButton>
           </Row>
         )}

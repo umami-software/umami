@@ -1,5 +1,5 @@
 import { Column, Text } from '@umami/react-zen';
-import { SideMenu } from '@/components/common/SideMenu';
+import { NavMenu } from '@/components/common/NavMenu';
 import { useMessages, useNavigation } from '@/components/hooks';
 import {
   AlignEndHorizontal,
@@ -163,7 +163,7 @@ export function WebsiteNav({
     .find(({ path }) => path && pathname.endsWith(path.split('?')[0]))?.id;
 
   return (
-    <Column padding="2" position="sticky" top="0" gap backgroundColor="transparent">
+    <Column padding="2" position="sticky" top="0" gap>
       <WebsiteSelect
         websiteId={websiteId}
         teamId={teamId}
@@ -171,7 +171,7 @@ export function WebsiteNav({
         renderValue={renderValue}
         buttonProps={{ style: { outline: 'none' } }}
       />
-      <SideMenu
+      <NavMenu
         items={items}
         selectedKey={selectedKey}
         allowMinimize={false}

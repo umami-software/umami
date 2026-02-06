@@ -26,7 +26,7 @@ export function GoalsPage({ websiteId }: { websiteId: string }) {
       )}
       <LoadingPanel data={data} isLoading={isLoading} error={error}>
         {data && (
-          <Grid columns={{ xs: '1fr', md: '1fr 1fr' }} gap>
+          <Grid columns={{ base: '1fr', md: '1fr 1fr' }} gap>
             {data.data.map((report: any) => (
               <Panel key={report.id}>
                 <Goal {...report} startDate={startDate} endDate={endDate} />

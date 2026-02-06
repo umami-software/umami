@@ -79,15 +79,15 @@ export function SharePage() {
   const PageComponent = PAGE_COMPONENTS[pageKey] || WebsitePage;
 
   return (
-    <Grid columns={{ xs: '1fr', lg: `${navCollapsed ? '60px' : '240px'} 1fr` }} width="100%">
-      <Row display={{ xs: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
+    <Grid columns={{ base: '1fr', lg: `${navCollapsed ? '60px' : '240px'} 1fr` }} width="100%">
+      <Row display={{ base: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
         <MobileMenuButton>
           {({ close }) => {
             return <ShareNav onItemClick={close} />;
           }}
         </MobileMenuButton>
       </Row>
-      <Column display={{ xs: 'none', lg: 'flex' }} marginRight="2">
+      <Column display={{ base: 'none', lg: 'flex' }} marginRight="2">
         <ShareNav collapsed={navCollapsed} onCollapse={setNavCollapsed} />
       </Column>
       <PageBody gap>

@@ -166,7 +166,7 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
         </Select>
       </Row>
       <Panel minHeight="300px">
-        <Grid columns={{ xs: '1fr', lg: '1fr 1fr' }} gap="6" height="100%">
+        <Grid columns={{ base: '1fr', lg: '1fr 1fr' }} gap="6" height="100%">
           <Column gap="6">
             <Row alignItems="center" justifyContent="space-between">
               <Heading size="base">{formatMessage(labels.previous)}</Heading>

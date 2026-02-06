@@ -1,4 +1,4 @@
-import { Column, type ColumnProps, FloatingTooltip, useTheme } from '@umami/react-zen';
+import { Box, Column, type ColumnProps, FloatingTooltip, Text, useTheme } from '@umami/react-zen';
 import { colord } from 'colord';
 import { useMemo, useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
@@ -99,7 +99,13 @@ export function WorldMap({ websiteId, data, ...props }: WorldMapProps) {
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
-      {tooltip && <FloatingTooltip>{tooltip}</FloatingTooltip>}
+      {tooltip && (
+        <FloatingTooltip>
+          <Box backgroundColor="surface-inverted" color="inverted" padding borderRadius="md">
+            <Text size="sm">{tooltip}</Text>
+          </Box>
+        </FloatingTooltip>
+      )}
     </Column>
   );
 }

@@ -1,7 +1,7 @@
 import { Grid, Heading, Row, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
 import { GridRow } from '@/components/common/GridRow';
 import { Panel } from '@/components/common/Panel';
-import { useMessages } from '@/components/hooks';
+import { useMessages, useMobile } from '@/components/hooks';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { WeeklyTraffic } from '@/components/metrics/WeeklyTraffic';
 import { WorldMap } from '@/components/metrics/WorldMap';
@@ -16,6 +16,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
     metric: formatMessage(labels.visitors),
   };
   const rowProps = { minHeight: '570px' };
+  const { isMobile } = useMobile();
 
   return (
     <Grid gap="3">
@@ -103,7 +104,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
       </GridRow>
 
       <GridRow layout="two-one" {...rowProps}>
-        <Panel gridColumn={{ xs: 'span 1', md: 'span 2' }} paddingX="0" paddingY="0">
+        <Panel paddingX="0" paddingY="0" style={{ gridColumn: isMobile ? 'span 1' : 'span 2' }}>
           <WorldMap websiteId={websiteId} />
         </Panel>
 

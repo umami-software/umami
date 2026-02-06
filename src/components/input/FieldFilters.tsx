@@ -69,8 +69,8 @@ export function FieldFilters({ websiteId, value, exclude = [], onChange }: Field
   };
 
   return (
-    <Grid columns={{ xs: '1fr', md: '180px 1fr' }} overflow="hidden" gapY="6">
-      <Row display={{ xs: 'flex', md: 'none' }}>
+    <Grid columns={{ base: '1fr', md: '180px 1fr' }} overflow="hidden" gapY="6">
+      <Row display={{ base: 'flex', md: 'none' }}>
         <MenuTrigger>
           <Button>
             <Icon>
@@ -101,7 +101,12 @@ export function FieldFilters({ websiteId, value, exclude = [], onChange }: Field
           </Popover>
         </MenuTrigger>
       </Row>
-      <Column display={{ xs: 'none', md: 'flex' }} border="right" paddingRight="3" marginRight="6">
+      <Column
+        display={{ base: 'none', md: 'flex' }}
+        border="right"
+        paddingRight="3"
+        marginRight="6"
+      >
         <List onAction={handleAdd}>
           {groupLabels.map(({ key: groupKey, label }) => {
             const groupFields = groupedFields[groupKey];

@@ -2,39 +2,46 @@ import { Column, Heading, Row, Text } from '@umami/react-zen';
 import Link from 'next/link';
 import { IconLabel } from '@/components/common/IconLabel';
 
-interface SideMenuData {
+interface NavMenuData {
   id: string;
   label: string;
   icon?: any;
   path: string;
 }
 
-interface SideMenuItems {
+interface NavMenuItems {
   label?: string;
-  items: SideMenuData[];
+  items: NavMenuData[];
 }
 
-export interface SideMenuProps {
-  items: SideMenuItems[];
+export interface NavMenuProps {
+  items: NavMenuItems[];
   title?: string;
   selectedKey?: string;
   allowMinimize?: boolean;
+  onItemClick?: () => void;
 }
 
-export function SideMenu({
+export function NavMenu({
   items = [],
   title,
   selectedKey,
   allowMinimize,
+  onItemClick,
   ...props
-}: SideMenuProps) {
-  const renderItems = (items: SideMenuData[]) => {
+}: NavMenuProps) {
+  const renderItems = (items: NavMenuData[]) => {
     return items?.map(({ id, label, icon, path }) => {
       const isSelected = selectedKey === id;
 
       return (
-        <Link key={id} href={path}>
-          <Row padding borderRadius hover={{ backgroundColor: 'surface-raised' }}>
+        <Link key={id} href={path} onClick={onItemClick}>
+          <Row
+            padding
+            borderRadius
+            hover={{ backgroundColor: 'surface-sunken' }}
+            backgroundColor={isSelected ? 'surface-sunken' : undefined}
+          >
             <IconLabel icon={icon}>
               <Text weight={isSelected ? 'bold' : 'normal'}>{label}</Text>
             </IconLabel>
@@ -45,13 +52,7 @@ export function SideMenu({
   };
 
   return (
-    <Column
-      gap
-      overflowY="auto"
-      justifyContent="space-between"
-      position="sticky"
-      backgroundColor="surface-base"
-    >
+    <Column gap overflowY="auto" justifyContent="space-between" position="sticky">
       {title && (
         <Row padding>
           <Heading size="sm">{title}</Heading>
@@ -61,13 +62,10 @@ export function SideMenu({
         {items?.map(({ label, items }, index) => {
           if (label) {
             return (
-              <Column
-                title={label}
-                key={`${label}${index}`}
-                gap="1"
-                marginBottom="3"
-                minHeight="40px"
-              >
+              <Column key={`${label}${index}`} gap="1" marginBottom="3" minHeight="40px">
+                <Row padding>
+                  <Text weight="bold">{label}</Text>
+                </Row>
                 {renderItems(items)}
               </Column>
             );

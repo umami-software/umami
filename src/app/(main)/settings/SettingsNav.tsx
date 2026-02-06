@@ -1,4 +1,4 @@
-import { SideMenu } from '@/components/common/SideMenu';
+import { NavMenu } from '@/components/common/NavMenu';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { Settings2, UserCircle, Users } from '@/components/icons';
 
@@ -42,7 +42,7 @@ export function SettingsNav({ onItemClick }: { onItemClick?: () => void }) {
     .find(({ path }) => path && pathname.includes(path.split('?')[0]))?.id;
 
   return (
-    <SideMenu
+    <NavMenu
       items={items}
       title={formatMessage(labels.settings)}
       selectedKey={selectedKey}

@@ -9,14 +9,8 @@ import { WebsiteNav } from './WebsiteNav';
 export function WebsiteLayout({ websiteId, children }: { websiteId: string; children: ReactNode }) {
   return (
     <WebsiteProvider websiteId={websiteId}>
-      <Grid columns={{ xs: '1fr', lg: 'auto 1fr' }} width="100%">
-        <Column
-          display={{ xs: 'none', lg: 'flex' }}
-          width="240px"
-          border="right"
-          backgroundColor
-          marginRight="2"
-        >
+      <Grid columns={{ base: '1fr', lg: 'auto 1fr' }} width="100%">
+        <Column display={{ base: 'none', lg: 'flex' }} width="240px" border="right" marginRight="2">
           <WebsiteNav websiteId={websiteId} />
         </Column>
         <PageBody gap>

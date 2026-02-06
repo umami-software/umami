@@ -1,4 +1,4 @@
-import { SideMenu } from '@/components/common/SideMenu';
+import { NavMenu } from '@/components/common/NavMenu';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { Globe, User, Users } from '@/components/icons';
 
@@ -37,7 +37,7 @@ export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
     ?.find(({ path }) => path && pathname.startsWith(path))?.id;
 
   return (
-    <SideMenu
+    <NavMenu
       items={items}
       title={formatMessage(labels.admin)}
       selectedKey={selectedKey}

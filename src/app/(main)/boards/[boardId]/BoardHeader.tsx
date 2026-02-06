@@ -76,7 +76,7 @@ function BoardEditHeader() {
 
   return (
     <Grid
-      columns={{ xs: '1fr', md: '1fr 1fr' }}
+      columns={{ base: '1fr', md: '1fr 1fr' }}
       paddingY="4"
       marginBottom="6"
       border="bottom"
