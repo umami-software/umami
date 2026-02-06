@@ -10,6 +10,7 @@ export type LayoutGetter = () => Partial<BoardParameters> | null;
 
 export interface BoardContextValue {
   board: Partial<Board>;
+  editing: boolean;
   updateBoard: (data: Partial<Board>) => void;
   saveBoard: () => Promise<Board>;
   isPending: boolean;
@@ -26,7 +27,15 @@ const createDefaultBoard = (): Partial<Board> => ({
   },
 });
 
-export function BoardProvider({ boardId, children }: { boardId?: string; children: ReactNode }) {
+export function BoardProvider({
+  boardId,
+  editing = false,
+  children,
+}: {
+  boardId?: string;
+  editing?: boolean;
+  children: ReactNode;
+}) {
   const { data, isFetching, isLoading } = useBoardQuery(boardId);
   const { post, useMutation } = useApi();
   const { touch } = useModified();
@@ -103,7 +112,7 @@ export function BoardProvider({ boardId, children }: { boardId?: string; childre
 
   return (
     <BoardContext.Provider
-      value={{ board, updateBoard, saveBoard, isPending, registerLayoutGetter }}
+      value={{ board, editing, updateBoard, saveBoard, isPending, registerLayoutGetter }}
     >
       {children}
     </BoardContext.Provider>

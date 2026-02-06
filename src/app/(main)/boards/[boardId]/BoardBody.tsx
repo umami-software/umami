@@ -21,7 +21,7 @@ const BUTTON_ROW_HEIGHT = 60;
 const MAX_COLUMNS = 4;
 
 export function BoardBody() {
-  const { board, updateBoard, saveBoard, isPending, registerLayoutGetter } = useBoard();
+  const { board, editing, updateBoard, saveBoard, isPending, registerLayoutGetter } = useBoard();
   const rowGroupRef = useRef<GroupImperativeHandle>(null);
   const columnGroupRefs = useRef<Map<string, GroupImperativeHandle>>(new Map());
 
@@ -141,6 +141,7 @@ export function BoardBody() {
               rowId={row.id}
               rowIndex={index}
               rowCount={rows?.length}
+              editing={editing}
               onRemove={handleRemoveRow}
               onMoveUp={handleMoveRowUp}
               onMoveDown={handleMoveRowDown}
@@ -150,18 +151,20 @@ export function BoardBody() {
           {index < rows?.length - 1 && <Separator />}
         </Fragment>
       ))}
-      <Panel minSize={BUTTON_ROW_HEIGHT}>
-        <Row padding="3">
-          <TooltipTrigger delay={0}>
-            <Button variant="outline" onPress={handleAddRow}>
-              <Icon>
-                <Plus />
-              </Icon>
-            </Button>
-            <Tooltip placement="bottom">Add row</Tooltip>
-          </TooltipTrigger>
-        </Row>
-      </Panel>
+      {editing && (
+        <Panel minSize={BUTTON_ROW_HEIGHT}>
+          <Row padding="3">
+            <TooltipTrigger delay={0}>
+              <Button variant="outline" onPress={handleAddRow}>
+                <Icon>
+                  <Plus />
+                </Icon>
+              </Button>
+              <Tooltip placement="bottom">Add row</Tooltip>
+            </TooltipTrigger>
+          </Row>
+        </Panel>
+      )}
     </Group>
   );
 }
@@ -171,6 +174,7 @@ function BoardRow({
   rowIndex,
   rowCount,
   columns,
+  editing = false,
   onRemove,
   onMoveUp,
   onMoveDown,
@@ -180,6 +184,7 @@ function BoardRow({
   rowIndex: number;
   rowCount: number;
   columns: BoardColumnType[];
+  editing?: boolean;
   onRemove?: (id: string) => void;
   onMoveUp?: (id: string) => void;
   onMoveDown?: (id: string) => void;
@@ -223,6 +228,7 @@ function BoardRow({
           <Panel id={column.id} minSize={MIN_COLUMN_WIDTH} defaultSize={column.size}>
             <BoardColumn
               {...column}
+              editing={editing}
               onRemove={handleRemoveColumn}
               canRemove={columns?.length > 1}
             />
@@ -230,48 +236,50 @@ function BoardRow({
           {index < columns?.length - 1 && <Separator />}
         </Fragment>
       ))}
-      <Column alignSelf="center" padding="3" gap="1">
-        <TooltipTrigger delay={0}>
-          <Button variant="outline" onPress={() => onMoveUp?.(rowId)} isDisabled={rowIndex === 0}>
-            <Icon rotate={180}>
-              <ChevronDown />
-            </Icon>
-          </Button>
-          <Tooltip placement="top">Move row up</Tooltip>
-        </TooltipTrigger>
-        <TooltipTrigger delay={0}>
-          <Button
-            variant="outline"
-            onPress={handleAddColumn}
-            isDisabled={columns?.length >= MAX_COLUMNS}
-          >
-            <Icon>
-              <Plus />
-            </Icon>
-          </Button>
-          <Tooltip placement="left">Add column</Tooltip>
-        </TooltipTrigger>
-        <TooltipTrigger delay={0}>
-          <Button variant="outline" onPress={() => onRemove?.(rowId)}>
-            <Icon>
-              <Minus />
-            </Icon>
-          </Button>
-          <Tooltip placement="left">Remove row</Tooltip>
-        </TooltipTrigger>
-        <TooltipTrigger delay={0}>
-          <Button
-            variant="outline"
-            onPress={() => onMoveDown?.(rowId)}
-            isDisabled={rowIndex === rowCount - 1}
-          >
-            <Icon>
-              <ChevronDown />
-            </Icon>
-          </Button>
-          <Tooltip placement="bottom">Move row down</Tooltip>
-        </TooltipTrigger>
-      </Column>
+      {editing && (
+        <Column alignSelf="center" padding="3" gap="1">
+          <TooltipTrigger delay={0}>
+            <Button variant="outline" onPress={() => onMoveUp?.(rowId)} isDisabled={rowIndex === 0}>
+              <Icon rotate={180}>
+                <ChevronDown />
+              </Icon>
+            </Button>
+            <Tooltip placement="top">Move row up</Tooltip>
+          </TooltipTrigger>
+          <TooltipTrigger delay={0}>
+            <Button
+              variant="outline"
+              onPress={handleAddColumn}
+              isDisabled={columns?.length >= MAX_COLUMNS}
+            >
+              <Icon>
+                <Plus />
+              </Icon>
+            </Button>
+            <Tooltip placement="left">Add column</Tooltip>
+          </TooltipTrigger>
+          <TooltipTrigger delay={0}>
+            <Button variant="outline" onPress={() => onRemove?.(rowId)}>
+              <Icon>
+                <Minus />
+              </Icon>
+            </Button>
+            <Tooltip placement="left">Remove row</Tooltip>
+          </TooltipTrigger>
+          <TooltipTrigger delay={0}>
+            <Button
+              variant="outline"
+              onPress={() => onMoveDown?.(rowId)}
+              isDisabled={rowIndex === rowCount - 1}
+            >
+              <Icon>
+                <ChevronDown />
+              </Icon>
+            </Button>
+            <Tooltip placement="bottom">Move row down</Tooltip>
+          </TooltipTrigger>
+        </Column>
+      )}
     </Group>
   );
 }
@@ -279,11 +287,13 @@ function BoardRow({
 function BoardColumn({
   id,
   component,
+  editing = false,
   onRemove,
   canRemove = true,
 }: {
   id: string;
   component?: ReactElement;
+  editing?: boolean;
   onRemove?: (id: string) => void;
   canRemove?: boolean;
 }) {
@@ -297,10 +307,10 @@ function BoardColumn({
       height="100%"
       alignItems="center"
       justifyContent="center"
-      backgroundColor="3"
+      backgroundColor="surface-sunken"
       position="relative"
     >
-      {canRemove && (
+      {editing && canRemove && (
         <Box position="absolute" top="10px" right="20px" zIndex={100}>
           <TooltipTrigger delay={0}>
             <Button variant="quiet" onPress={() => onRemove?.(id)}>
@@ -312,11 +322,13 @@ function BoardColumn({
           </TooltipTrigger>
         </Box>
       )}
-      <Button variant="outline" onPress={handleAddComponent}>
-        <Icon>
-          <Plus />
-        </Icon>
-      </Button>
+      {editing && (
+        <Button variant="outline" onPress={handleAddComponent}>
+          <Icon>
+            <Plus />
+          </Icon>
+        </Button>
+      )}
     </Column>
   );
 }
