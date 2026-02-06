@@ -4,6 +4,7 @@ import { Avatar } from '@/components/common/Avatar';
 import { DateDistance } from '@/components/common/DateDistance';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { useFormat, useMessages, useNavigation } from '@/components/hooks';
+import { isLikelyBot } from '@/lib/botDetection';
 
 export function SessionsTable(props: DataTableProps) {
   const { formatMessage, labels } = useMessages();
@@ -15,7 +16,7 @@ export function SessionsTable(props: DataTableProps) {
       <DataColumn id="id" label={formatMessage(labels.session)} width="100px">
         {(row: any) => (
           <Link href={updateParams({ session: row.id })}>
-            <Avatar seed={row.id} size={32} />
+            <Avatar seed={row.id} size={32} isBot={isLikelyBot(row)} />
           </Link>
         )}
       </DataColumn>
