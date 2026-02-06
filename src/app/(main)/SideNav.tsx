@@ -23,7 +23,7 @@ import { Logo } from '@/components/svg';
 export function SideNav(props: any) {
   const { formatMessage, labels } = useMessages();
   const { pathname, renderUrl, websiteId, router } = useNavigation();
-  const [isCollapsed, setIsCollapsed] = useGlobalState('sidenav-collapsed');
+  const [isCollapsed, setIsCollapsed] = useGlobalState('sidenav-collapsed', false);
 
   const hasNav = !!(websiteId || pathname.startsWith('/admin') || pathname.includes('/settings'));
 
@@ -135,7 +135,7 @@ export function SideNav(props: any) {
 }
 
 const PanelButton = (props: ButtonProps) => {
-  const [isCollapsed, setIsCollapsed] = useGlobalState('sidenav-collapsed');
+  const [isCollapsed, setIsCollapsed] = useGlobalState('sidenav-collapsed', false);
   return (
     <Button
       onPress={() => setIsCollapsed(!isCollapsed)}
