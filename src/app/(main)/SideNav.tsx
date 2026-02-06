@@ -85,7 +85,7 @@ export function SideNav(props: any) {
           </Row>
         </Row>
         <Row marginBottom="4">
-          <NavButton showText={!hasNav && !isCollapsed} onAction={handleSelect} />
+          <NavButton showText={!isCollapsed} onAction={handleSelect} />
         </Row>
         <Column gap="2">
           {links.map(({ id, path, label, icon }) => {
