@@ -93,7 +93,12 @@ export function WebsiteNav({
                         borderRadius
                         minHeight="40px"
                       >
-                        <IconLabel icon={icon} label={isCollapsed ? '' : label} padding />
+                        <IconLabel
+                          icon={icon}
+                          label={isCollapsed ? '' : label}
+                          weight={isSelected ? 'bold' : undefined}
+                          padding
+                        />
                       </Row>
                     </Focusable>
                     <Tooltip placement="right">{label}</Tooltip>

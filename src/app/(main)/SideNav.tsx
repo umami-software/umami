@@ -98,6 +98,7 @@ export function SideNav(props: any) {
         ) : (
           <Column gap="2">
             {links.map(({ id, path, label, icon }) => {
+              const isSelected = pathname.startsWith(renderUrl(path, false));
               return (
                 <Link key={id} href={renderUrl(path, false)} role="button">
                   <TooltipTrigger isDisabled={!isCollapsed} delay={0}>
@@ -105,10 +106,16 @@ export function SideNav(props: any) {
                       <Row
                         alignItems="center"
                         hover={{ backgroundColor: 'surface-sunken' }}
+                        backgroundColor={isSelected ? 'surface-sunken' : undefined}
                         borderRadius
                         minHeight="40px"
                       >
-                        <IconLabel icon={icon} label={isCollapsed ? '' : label} padding />
+                        <IconLabel
+                          icon={icon}
+                          label={isCollapsed ? '' : label}
+                          weight={isSelected ? 'bold' : undefined}
+                          padding
+                        />
                       </Row>
                     </Focusable>
                     <Tooltip placement="right">{label}</Tooltip>
