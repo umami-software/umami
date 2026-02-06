@@ -37,6 +37,7 @@ export const MetricCard = ({
       borderRadius
       backgroundColor="surface-base"
       border
+      gap="4"
     >
       {showLabel && (
         <Text weight="bold" wrap="nowrap">

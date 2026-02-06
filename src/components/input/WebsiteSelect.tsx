@@ -66,6 +66,7 @@ export function WebsiteSelect({
         renderEmptyState: () => <Empty message={formatMessage(messages.noResultsFound)} />,
         style: { maxHeight: 'calc(42vh - 65px)', width: 280 },
       }}
+      buttonProps={{ style: { minHeight: 40 } }}
     >
       {listItems.map(({ id, name }) => (
         <ListItem key={id} id={id}>

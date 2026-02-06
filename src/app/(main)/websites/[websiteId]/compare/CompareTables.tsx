@@ -156,6 +156,8 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
           value={view}
           defaultValue={view}
           onChange={handleChange}
+          style={{ width: 200 }}
+          popoverProps={{ style: { width: 200 } }}
         >
           {items.map(({ id, label }) => (
             <ListItem key={id} id={id}>
