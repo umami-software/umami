@@ -164,6 +164,7 @@ export interface BoardRow {
 }
 
 export interface BoardParameters {
+  websiteId?: string;
   rows?: BoardRow[];
 }
 

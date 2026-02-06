@@ -1,9 +1,19 @@
-import { Button, Column, Grid, Heading, LoadingButton, Row, TextField } from '@umami/react-zen';
+import {
+  Button,
+  Column,
+  Grid,
+  Heading,
+  LoadingButton,
+  Row,
+  Text,
+  TextField,
+} from '@umami/react-zen';
 import { IconLabel } from '@/components/common/IconLabel';
 import { LinkButton } from '@/components/common/LinkButton';
 import { PageHeader } from '@/components/common/PageHeader';
-import { useBoard, useMessages, useNavigation } from '@/components/hooks';
+import { useBoard, useMessages, useNavigation, useWebsiteQuery } from '@/components/hooks';
 import { Edit } from '@/components/icons';
+import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 
 export function BoardHeader() {
   const { board, editing } = useBoard();
@@ -19,9 +29,11 @@ function BoardViewHeader() {
   const { board } = useBoard();
   const { renderUrl } = useNavigation();
   const { formatMessage, labels } = useMessages();
+  const { data: website } = useWebsiteQuery(board?.parameters?.websiteId);
 
   return (
     <PageHeader title={board?.name} description={board?.description}>
+      {website?.name && <Text>{website.name}</Text>}
       <LinkButton href={renderUrl(`/boards/${board?.id}/edit`, false)}>
         <IconLabel icon={<Edit />}>{formatMessage(labels.edit)}</IconLabel>
       </LinkButton>
@@ -41,6 +53,10 @@ function BoardEditHeader() {
 
   const handleDescriptionChange = (value: string) => {
     updateBoard({ description: value });
+  };
+
+  const handleWebsiteChange = (websiteId: string) => {
+    updateBoard({ parameters: { ...board.parameters, websiteId } });
   };
 
   const handleSave = async () => {
@@ -92,6 +108,10 @@ function BoardEditHeader() {
           >
             {board?.description}
           </TextField>
+        </Row>
+        <Row alignItems="center" gap="3">
+          <Text>{formatMessage(labels.website)}</Text>
+          <WebsiteSelect websiteId={board?.parameters?.websiteId} onChange={handleWebsiteChange} />
         </Row>
       </Column>
       <Column justifyContent="center" alignItems="flex-end">

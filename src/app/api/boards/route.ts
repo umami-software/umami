@@ -33,6 +33,7 @@ export async function POST(request: Request) {
     slug: z.string().max(100),
     userId: z.uuid().nullable().optional(),
     teamId: z.uuid().nullable().optional(),
+    parameters: z.object({ websiteId: z.uuid().optional() }).passthrough().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -50,7 +51,7 @@ export async function POST(request: Request) {
   const data = {
     ...body,
     id: uuid(),
-    parameters: {},
+    parameters: body.parameters ?? {},
     slug: uuid(),
     userId: !teamId ? auth.user.id : undefined,
   };
