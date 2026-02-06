@@ -40,7 +40,6 @@ export function JourneysPage({ websiteId }: { websiteId: string }) {
       <WebsiteControls websiteId={websiteId} />
       <Grid columns="repeat(3, 1fr)" gap>
         <Select
-          items={JOURNEY_STEPS}
           label={formatMessage(labels.steps)}
           value={steps}
           defaultValue={steps}

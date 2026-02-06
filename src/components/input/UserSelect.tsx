@@ -51,7 +51,6 @@ export function UserSelect({
   return (
     <Select
       {...props}
-      items={listItems}
       value={username}
       isLoading={usersLoading || (teamId && teamMembersLoading)}
       allowSearch={true}
@@ -65,7 +64,11 @@ export function UserSelect({
         style: { maxHeight: 'calc(42vh - 65px)' },
       }}
     >
-      {({ id, username }: any) => <ListItem key={id}>{username}</ListItem>}
+      {listItems.map(({ id, username }) => (
+        <ListItem key={id} id={id}>
+          {username}
+        </ListItem>
+      ))}
     </Select>
   );
 }

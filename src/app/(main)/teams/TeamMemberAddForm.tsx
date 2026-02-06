@@ -55,7 +55,7 @@ export function TeamMemberAddForm({
         <UserSelect teamId={teamId} />
       </FormField>
       <FormField name="role" label={formatMessage(labels.role)} rules={{ required: 'Required' }}>
-        <Select items={roles} renderValue={value => renderRole(value as any)}>
+        <Select renderValue={value => renderRole(value as any)}>
           {roles.map(value => (
             <ListItem key={value} id={value}>
               {renderRole(value)}

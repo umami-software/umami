@@ -54,7 +54,6 @@ export function WebsiteSelect({
   return (
     <Select
       {...props}
-      items={listItems}
       value={websiteId}
       isLoading={isLoading}
       allowSearch={true}
@@ -65,10 +64,14 @@ export function WebsiteSelect({
       renderValue={renderValue}
       listProps={{
         renderEmptyState: () => <Empty message={formatMessage(messages.noResultsFound)} />,
-        style: { maxHeight: 'calc(42vh - 65px)' },
+        style: { maxHeight: 'calc(42vh - 65px)', width: 280 },
       }}
     >
-      {({ id, name }: any) => <ListItem key={id}>{name}</ListItem>}
+      {listItems.map(({ id, name }) => (
+        <ListItem key={id} id={id}>
+          {name}
+        </ListItem>
+      ))}
     </Select>
   );
 }

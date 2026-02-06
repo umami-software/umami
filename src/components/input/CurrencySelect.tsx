@@ -9,7 +9,6 @@ export function CurrencySelect({ value, onChange }) {
 
   return (
     <Select
-      items={CURRENCIES}
       label={formatMessage(labels.currency)}
       value={value}
       defaultValue={value}

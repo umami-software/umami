@@ -152,7 +152,6 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
     <>
       <Row width="300px">
         <Select
-          items={items}
           label={formatMessage(labels.compare)}
           value={view}
           defaultValue={view}

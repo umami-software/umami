@@ -66,25 +66,20 @@ export function FilterRecord({
       <Label>{fields.find(f => f.name === name)?.label}</Label>
       <Grid columns="1fr auto" gap>
         <Grid columns={{ base: '1fr', md: '200px 1fr' }} gap>
-          <Select
-            items={operators.filter(({ type }) => type === 'string')}
-            value={operator}
-            onChange={handleSelectOperator}
-          >
-            {({ name, label }: any) => {
-              return (
+          <Select value={operator} onChange={handleSelectOperator}>
+            {operators
+              .filter(({ type }) => type === 'string')
+              .map(({ name, label }: any) => (
                 <ListItem key={name} id={name}>
                   {label}
                 </ListItem>
-              );
-            }}
+              ))}
           </Select>
           {isSearch && (
             <TextField value={selected} defaultValue={selected} onChange={handleSelectValue} />
           )}
           {!isSearch && (
             <Select
-              items={items}
               value={selected}
               onChange={handleSelectValue}
               searchValue={search}
