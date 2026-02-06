@@ -21,6 +21,6 @@ html[style*="padding-right"] {
 a,
 a:active,
 a:hover {
-  color: var(--text-base);
+  color: var(--text-primary);
   text-decoration: none;
 }
