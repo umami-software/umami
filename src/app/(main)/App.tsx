@@ -39,15 +39,14 @@ export function App({ children }) {
 
   return (
     <Grid
-      columns={{ xs: '1fr', lg: 'auto 1fr' }}
-      rows={{ xs: 'auto 1fr', lg: '1fr' }}
-      height={{ xs: 'auto', lg: '100vh' }}
-      width="100%"
+      columns={{ base: '1fr', lg: 'auto 1fr' }}
+      rows={{ base: 'auto 1fr', lg: '1fr' }}
+      height="screen"
     >
-      <Row display={{ xs: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
+      <Row display={{ base: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
         <MobileNav />
       </Row>
-      <Column display={{ xs: 'none', lg: 'flex' }}>
+      <Column display={{ base: 'none', lg: 'flex' }}>
         <SideNav />
       </Column>
       <Column alignItems="center" overflowY="auto" overflowX="hidden" position="relative">

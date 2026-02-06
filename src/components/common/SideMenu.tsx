@@ -1,14 +1,6 @@
-import {
-  Column,
-  Heading,
-  IconLabel,
-  NavMenu,
-  NavMenuGroup,
-  NavMenuItem,
-  type NavMenuProps,
-  Row,
-} from '@umami/react-zen';
+import { Column, Heading, Row, Text } from '@umami/react-zen';
 import Link from 'next/link';
+import { IconLabel } from '@/components/common/IconLabel';
 
 interface SideMenuData {
   id: string;
@@ -22,7 +14,7 @@ interface SideMenuItems {
   items: SideMenuData[];
 }
 
-export interface SideMenuProps extends NavMenuProps {
+export interface SideMenuProps {
   items: SideMenuItems[];
   title?: string;
   selectedKey?: string;
@@ -42,39 +34,47 @@ export function SideMenu({
 
       return (
         <Link key={id} href={path}>
-          <NavMenuItem isSelected={isSelected}>
-            <IconLabel icon={icon}>{label}</IconLabel>
-          </NavMenuItem>
+          <Row padding borderRadius hover={{ backgroundColor: 'surface-raised' }}>
+            <IconLabel icon={icon}>
+              <Text weight={isSelected ? 'bold' : 'normal'}>{label}</Text>
+            </IconLabel>
+          </Row>
         </Link>
       );
     });
   };
 
   return (
-    <Column gap overflowY="auto" justifyContent="space-between" position="sticky" top="20px">
+    <Column
+      gap
+      overflowY="auto"
+      justifyContent="space-between"
+      position="sticky"
+      backgroundColor="surface-base"
+    >
       {title && (
         <Row padding>
-          <Heading size="1">{title}</Heading>
+          <Heading size="sm">{title}</Heading>
         </Row>
       )}
-      <NavMenu gap="6" {...props}>
+      <Column gap="6" {...props}>
         {items?.map(({ label, items }, index) => {
           if (label) {
             return (
-              <NavMenuGroup
+              <Column
                 title={label}
                 key={`${label}${index}`}
                 gap="1"
-                allowMinimize={allowMinimize}
                 marginBottom="3"
+                minHeight="40px"
               >
                 {renderItems(items)}
-              </NavMenuGroup>
+              </Column>
             );
           }
           return null;
         })}
-      </NavMenu>
+      </Column>
     </Column>
   );
 }

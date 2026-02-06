@@ -1,7 +1,6 @@
 import {
   Column,
   Icon,
-  IconLabel,
   Menu,
   MenuItem,
   MenuSection,
@@ -15,6 +14,7 @@ import {
 } from '@umami/react-zen';
 import { ArrowRight } from 'lucide-react';
 import type { Key } from 'react';
+import { IconLabel } from '@/components/common/IconLabel';
 import {
   useConfig,
   useLoginQuery,
@@ -77,8 +77,8 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
           padding
           border
           borderRadius
-          shadow="1"
-          maxHeight="40px"
+          shadow="sm"
+          minHeight="40px"
           role="button"
           style={{ cursor: 'pointer', textWrap: 'nowrap', overflow: 'hidden', outline: 'none' }}
         >

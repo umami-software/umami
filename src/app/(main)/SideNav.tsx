@@ -1,22 +1,26 @@
 import {
+  Box,
+  Button,
+  type ButtonProps,
+  Column,
+  Focusable,
+  Icon,
   Row,
-  Sidebar,
-  SidebarHeader,
-  SidebarItem,
-  type SidebarProps,
-  SidebarSection,
+  Text,
   ThemeButton,
+  Tooltip,
+  TooltipTrigger,
 } from '@umami/react-zen';
 import Link from 'next/link';
 import type { Key } from 'react';
+import { IconLabel } from '@/components/common/IconLabel';
 import { useGlobalState, useMessages, useNavigation } from '@/components/hooks';
 import { Globe, Grid2x2, LayoutDashboard, LinkIcon, PanelLeft } from '@/components/icons';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { NavButton } from '@/components/input/NavButton';
-import { PanelButton } from '@/components/input/PanelButton';
 import { Logo } from '@/components/svg';
 
-export function SideNav(props: SidebarProps) {
+export function SideNav(props: any) {
   const { formatMessage, labels } = useMessages();
   const { pathname, renderUrl, websiteId, router } = useNavigation();
   const [isCollapsed, setIsCollapsed] = useGlobalState('sidenav-collapsed');
@@ -55,39 +59,76 @@ export function SideNav(props: SidebarProps) {
   };
 
   return (
-    <Sidebar {...props} isCollapsed={isCollapsed || hasNav} backgroundColor>
-      <SidebarSection onClick={() => setIsCollapsed(false)}>
-        <SidebarHeader
-          label="umami"
-          icon={isCollapsed && !hasNav ? <PanelLeft /> : <Logo />}
-          style={{ maxHeight: 40 }}
-        >
-          {!isCollapsed && !hasNav && <PanelButton />}
-        </SidebarHeader>
-      </SidebarSection>
-      <SidebarSection paddingTop="0" paddingBottom="0" justifyContent="center">
-        <NavButton showText={!hasNav && !isCollapsed} onAction={handleSelect} />
-      </SidebarSection>
-      <SidebarSection flexGrow={1}>
-        {links.map(({ id, path, label, icon }) => {
-          return (
-            <Link key={id} href={renderUrl(path, false)} role="button">
-              <SidebarItem
-                label={label}
-                icon={icon}
-                isSelected={pathname.includes(path)}
-                role="button"
-              />
-            </Link>
-          );
-        })}
-      </SidebarSection>
-      <SidebarSection justifyContent="flex-start">
-        <Row wrap="wrap">
-          <LanguageButton />
-          <ThemeButton />
+    <Column
+      {...props}
+      backgroundColor="surface-base"
+      justifyContent="space-between"
+      border
+      borderRadius
+      paddingX="2"
+      height="100%"
+      margin="2"
+      style={{
+        width: isCollapsed ? '55px' : '240px',
+        transition: 'width 0.2s ease-in-out',
+      }}
+    >
+      <Column>
+        <Row alignItems="center" justifyContent="space-between" height="60px">
+          <Row paddingX="3" alignItems="center" justifyContent="space-between" flexGrow={1}>
+            {!isCollapsed && (
+              <IconLabel icon={<Logo />}>
+                <Text weight="bold">umami</Text>
+              </IconLabel>
+            )}
+            <PanelButton />
+          </Row>
         </Row>
-      </SidebarSection>
-    </Sidebar>
+        <Row marginBottom="4">
+          <NavButton showText={!hasNav && !isCollapsed} onAction={handleSelect} />
+        </Row>
+        <Column gap="2">
+          {links.map(({ id, path, label, icon }) => {
+            return (
+              <Link key={id} href={renderUrl(path, false)} role="button">
+                <TooltipTrigger isDisabled={!isCollapsed} delay={0}>
+                  <Focusable>
+                    <Row
+                      alignItems="center"
+                      hover={{ backgroundColor: 'surface-sunken' }}
+                      borderRadius
+                      minHeight="40px"
+                    >
+                      <IconLabel icon={icon} label={isCollapsed ? '' : label} padding />
+                    </Row>
+                  </Focusable>
+                  <Tooltip placement="right">{label}</Tooltip>
+                </TooltipTrigger>
+              </Link>
+            );
+          })}
+        </Column>
+      </Column>
+      <Row alignItems="center" justifyContent="center" wrap="wrap" marginBottom="4" gap>
+        <LanguageButton />
+        <ThemeButton />
+      </Row>
+    </Column>
   );
 }
+
+const PanelButton = (props: ButtonProps) => {
+  const [isCollapsed, setIsCollapsed] = useGlobalState('sidenav-collapsed');
+  return (
+    <Button
+      onPress={() => setIsCollapsed(!isCollapsed)}
+      variant="zero"
+      {...props}
+      style={{ padding: 0 }}
+    >
+      <Icon strokeColor="muted">
+        <PanelLeft />
+      </Icon>
+    </Button>
+  );
+};

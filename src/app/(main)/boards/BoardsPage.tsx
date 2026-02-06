@@ -1,5 +1,6 @@
 'use client';
-import { Column, IconLabel } from '@umami/react-zen';
+import { Column } from '@umami/react-zen';
+import { IconLabel } from '@/components/common/IconLabel';
 import { LinkButton } from '@/components/common/LinkButton';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';

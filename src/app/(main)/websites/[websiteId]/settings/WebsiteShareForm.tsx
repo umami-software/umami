@@ -4,7 +4,6 @@ import {
   Form,
   FormButtons,
   FormSubmitButton,
-  IconLabel,
   Label,
   Row,
   Switch,
@@ -12,6 +11,7 @@ import {
 } from '@umami/react-zen';
 import { RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
+import { IconLabel } from '@/components/common/IconLabel';
 import { useConfig, useMessages, useUpdateQuery } from '@/components/hooks';
 import { getRandomChars } from '@/lib/generate';
 

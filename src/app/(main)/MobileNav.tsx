@@ -1,6 +1,7 @@
-import { Grid, IconLabel, NavMenu, NavMenuItem, Row, Text } from '@umami/react-zen';
+import { Grid, Row, Text } from '@umami/react-zen';
 import Link from 'next/link';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
+import { IconLabel } from '@/components/common/IconLabel';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { Globe, Grid2x2, LinkIcon } from '@/components/icons';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
@@ -42,18 +43,16 @@ export function MobileNav() {
         {({ close }) => {
           return (
             <>
-              <NavMenu padding="3" onItemClick={close} border="bottom">
+              <Row padding="3" onClick={close} border="bottom">
                 <NavButton />
                 {links.map(link => {
                   return (
                     <Link key={link.id} href={renderUrl(link.path)}>
-                      <NavMenuItem>
-                        <IconLabel icon={link.icon} label={link.label} />
-                      </NavMenuItem>
+                      <IconLabel icon={link.icon} label={link.label} />
                     </Link>
                   );
                 })}
-              </NavMenu>
+              </Row>
               {websiteId && <WebsiteNav websiteId={websiteId} onItemClick={close} />}
               {isAdmin && <AdminNav onItemClick={close} />}
               {isSettings && <SettingsNav onItemClick={close} />}

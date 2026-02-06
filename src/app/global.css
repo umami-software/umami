@@ -1,13 +1,12 @@
 :root {
   --font-family: var(--font-inter), sans-serif;
-  --text-primary: oklch(68.5% 0.169 237.323);
 }
 
 html,
 body {
   font-family: var(--font-family), sans-serif;
-  color: var(--text-base);
   font-size: 14px;
+  color: var(--text-primary);
   background-color: var(--surface-raised);
   width: 100%;
   min-height: 100vh;

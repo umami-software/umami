@@ -1,6 +1,7 @@
-import { IconLabel, Row } from '@umami/react-zen';
+import { Row } from '@umami/react-zen';
 import { WebsiteShareForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteShareForm';
 import { Favicon } from '@/components/common/Favicon';
+import { IconLabel } from '@/components/common/IconLabel';
 import { LinkButton } from '@/components/common/LinkButton';
 import { PageHeader } from '@/components/common/PageHeader';
 import { useMessages, useNavigation, useWebsite } from '@/components/hooks';

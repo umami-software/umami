@@ -6,7 +6,6 @@ import {
   Dialog,
   DialogTrigger,
   Icon,
-  IconLabel,
   Popover,
   Row,
   Text,
@@ -14,6 +13,7 @@ import {
 import Link from 'next/link';
 import { Avatar } from '@/components/common/Avatar';
 import { DateDistance } from '@/components/common/DateDistance';
+import { IconLabel } from '@/components/common/IconLabel';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { useFormat, useMessages, useNavigation } from '@/components/hooks';
 import { Eye, FileText } from '@/components/icons';

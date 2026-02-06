@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Umami is a privacy-focused web analytics platform built with Next.js 15, React 19, and TypeScript. It serves as an alternative to Google Analytics, storing data in PostgreSQL (primary) with optional ClickHouse for time-series analytics.
 
+## Development
+
+Assume a dev server is always running on port 3001. Do not start the dev server.
+
 ## Common Commands
 
 ```bash

@@ -4,10 +4,10 @@ import {
   FormButtons,
   FormField,
   FormSubmitButton,
-  IconLabel,
   Row,
   TextField,
 } from '@umami/react-zen';
+import { IconLabel } from '@/components/common/IconLabel';
 import { useMessages, useTeam, useUpdateQuery } from '@/components/hooks';
 import { RefreshCw } from '@/components/icons';
 import { getRandomChars } from '@/lib/generate';

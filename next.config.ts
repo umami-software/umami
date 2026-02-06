@@ -182,6 +182,7 @@ export default {
   typescript: {
     ignoreBuildErrors: true,
   },
+  devIndicators: false,
   async headers() {
     return headers;
   },
