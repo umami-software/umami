@@ -13,7 +13,7 @@ interface UseMessages {
   messages: typeof messages;
   labels: typeof labels;
   getMessage: (id: string) => string;
-  getErrorMessage: (error: ApiError) => string | undefined;
+  getErrorMessage: (error: string | Error | ApiError) => string | undefined;
   FormattedMessage: typeof FormattedMessage;
 }
 
@@ -26,12 +26,16 @@ export function useMessages(): UseMessages {
     return message ? formatMessage(message) : id;
   };
 
-  const getErrorMessage = (error: ApiError) => {
+  const getErrorMessage = (error: string | Error | ApiError) => {
     if (!error) {
       return undefined;
     }
 
-    const code = error?.code;
+    if (typeof error === 'string') {
+      return error;
+    }
+
+    const code = (error as ApiError)?.code;
 
     return code ? getMessage(code) : error?.message || 'Unknown error';
   };

@@ -16,7 +16,7 @@ export function FunnelAddButton({ websiteId }: { websiteId: string }) {
       </Button>
       <Modal>
         <Dialog
-          variant="modal"
+          variant="sheet"
           title={formatMessage(labels.funnel)}
           style={{ minHeight: 375, minWidth: 600 }}
         >
