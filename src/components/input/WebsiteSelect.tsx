@@ -46,7 +46,7 @@ export function WebsiteSelect({
   const renderValue = () => {
     return (
       <Row maxWidth="160px">
-        <Text truncate>{name}</Text>
+        <Text truncate>{name ?? website?.name}</Text>
       </Row>
     );
   };
