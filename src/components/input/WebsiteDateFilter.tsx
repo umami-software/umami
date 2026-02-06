@@ -90,6 +90,7 @@ export function WebsiteDateFilter({
             <Select
               value={compare}
               onChange={handleSelect}
+              style={{ width: 200 }}
               popoverProps={{ style: { width: 200 } }}
             >
               <ListItem id="prev">{formatMessage(labels.previousPeriod)}</ListItem>
