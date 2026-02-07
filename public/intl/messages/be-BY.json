@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Сабраныя дадзеныя",
     "confirm-delete": "Вы дакладна хочаце выдаліць {target}?",
-    "confirm-leave": "Вы дакладна хочаце пакінуць {target}?",
-    "confirm-remove": "Вы дакладна хочаце выдаліць {target}?",
+    "confirm-leave": "Вы дакладна хочаце пакінуць <b>{target}</b>?",
+    "confirm-remove": "Вы дакладна хочаце выдаліць <b>{target}</b>?",
     "confirm-reset": "Вы дакладна хочаце скінуць {target} статыстыку?",
     "delete-team-warning": "Выдаленне каманды таксама выдаліць усе сайты каманды.",
     "delete-website-warning": "Усе асацыяваныя дадзеныя будуць таксама выдалены.",
     "error": "Нешта пайшло не так.",
-    "event-log": "{event} на {url}",
+    "event-log": "<b>{event}</b> на <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Да налад",
     "incorrect-username-password": "Некарэктнае імя карыстальніка/пароль.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "Карыстальнік выдалены.",
     "viewed-page": "Праглядзеў старонку",
-    "visitor-log": "Наведвальнік з {country} праз {browser} на {os} {device}"
+    "visitor-log": "Наведвальнік з <b>{country}</b> праз <b>{browser}</b> на <b>{os}</b> <b>{device}</b>"
   }
 }

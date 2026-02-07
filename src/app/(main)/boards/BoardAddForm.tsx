@@ -12,7 +12,7 @@ export function BoardAddForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { mutateAsync, error, isPending } = useUpdateQuery('/boards', { teamId });
   const [websiteId, setWebsiteId] = useState<string>();
 
@@ -30,34 +30,30 @@ export function BoardAddForm({
 
   return (
     <Form onSubmit={handleSubmit} error={error?.message}>
-      <FormField
-        label={formatMessage(labels.name)}
-        name="name"
-        rules={{ required: formatMessage(labels.required) }}
-      >
+      <FormField label={t(labels.name)} name="name" rules={{ required: t(labels.required) }}>
         <TextField autoComplete="off" />
       </FormField>
       <FormField
-        label={formatMessage(labels.description)}
+        label={t(labels.description)}
         name="description"
         rules={{
-          required: formatMessage(labels.required),
+          required: t(labels.required),
         }}
       >
         <TextField asTextArea autoComplete="off" />
       </FormField>
       <Row alignItems="center" gap="3" paddingTop="3">
-        <Text>{formatMessage(labels.website)}</Text>
+        <Text>{t(labels.website)}</Text>
         <WebsiteSelect websiteId={websiteId} teamId={teamId} onChange={setWebsiteId} />
       </Row>
       <Row justifyContent="flex-end" paddingTop="3" gap="3">
         {onClose && (
           <Button isDisabled={isPending} onPress={onClose}>
-            {formatMessage(labels.cancel)}
+            {t(labels.cancel)}
           </Button>
         )}
         <FormSubmitButton data-test="button-submit" isDisabled={false}>
-          {formatMessage(labels.save)}
+          {t(labels.save)}
         </FormSubmitButton>
       </Row>
     </Form>

@@ -243,13 +243,13 @@
     "active-users": "{x} joriy {x, plural, one {tashrif buyuruvchi} other {tashrif buyuruvchilar}}",
     "collected-data": "Yigʻilgan ma'lumotlar",
     "confirm-delete": "**{target}** ni oʻchirmoqchi ekanligingizga ishonchingiz komilmi?",
-    "confirm-leave": "**{target}** ni tark etmoqchi ekanligingizga ishonchingiz komilmi?",
-    "confirm-remove": "**{target}** ni olib tashlamoqchi ekanligingizga ishonchingiz komilmi?",
+    "confirm-leave": "**<b>{target}</b>** ni tark etmoqchi ekanligingizga ishonchingiz komilmi?",
+    "confirm-remove": "**<b>{target}</b>** ni olib tashlamoqchi ekanligingizga ishonchingiz komilmi?",
     "confirm-reset": "**{target}** ni qayta tiklamoqchi ekanligingizga ishonchingiz komilmi?",
     "delete-team-warning": "Jamoani oʻchirish, shuningdek, barcha jamoa veb-saytlarini ham oʻchiradi.",
     "delete-website-warning": "Barcha veb-sayt ma'lumotlari oʻchiriladi.",
     "error": "Nimadir xato ketdi.",
-    "event-log": "**{url}** da **{event}** hodisasi",
+    "event-log": "**<a>{url}</a>** da **<b>{event}</b>** hodisasi",
     "go-to-settings": "Sozlamalarga oʻtish",
     "incorrect-username-password": "Notoʻgʻri foydalanuvchi nomi va/yoki parol.",
     "invalid-domain": "Notoʻgʻri domen. http/https qoʻshmang.",
@@ -278,7 +278,7 @@
     "triggered-event": "Hodisa ishga tushirildi",
     "user-deleted": "Foydalanuvchi oʻchirildi.",
     "viewed-page": "Sahifa koʻrildi",
-    "visitor-log": "{os} {device} da {browser} dan foydalanayotgan {country} dan tashrif buyuruvchi",
+    "visitor-log": "<b>{os}</b> <b>{device}</b> da <b>{browser}</b> dan foydalanayotgan <b>{country}</b> dan tashrif buyuruvchi",
     "visitors-dropped-off": "Tashrif buyuruvchilar tashlab ketishdi"
   }
 }

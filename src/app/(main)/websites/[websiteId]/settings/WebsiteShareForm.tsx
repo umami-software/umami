@@ -11,7 +11,7 @@ export interface WebsiteShareFormProps {
 }
 
 export function WebsiteShareForm({ websiteId }: WebsiteShareFormProps) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { data, error, isLoading } = useWebsiteSharesQuery({ websiteId });
 
   const shares = data?.data || [];
@@ -21,11 +21,11 @@ export function WebsiteShareForm({ websiteId }: WebsiteShareFormProps) {
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
       <Column gap="4">
         <Row justifyContent="space-between" alignItems="center">
-          <Heading>{formatMessage(labels.share)}</Heading>
+          <Heading>{t(labels.share)}</Heading>
           <DialogButton
             icon={<Plus size={16} />}
-            label={formatMessage(labels.add)}
-            title={formatMessage(labels.share)}
+            label={t(labels.add)}
+            title={t(labels.share)}
             variant="primary"
             width="600px"
           >
@@ -34,12 +34,12 @@ export function WebsiteShareForm({ websiteId }: WebsiteShareFormProps) {
         </Row>
         {hasShares ? (
           <>
-            <Text>{formatMessage(messages.shareUrl)}</Text>
+            <Text>{t(messages.shareUrl)}</Text>
 
             <SharesTable data={shares} />
           </>
         ) : (
-          <Text color="muted">{formatMessage(messages.noDataAvailable)}</Text>
+          <Text color="muted">{t(messages.noDataAvailable)}</Text>
         )}
       </Column>
     </LoadingPanel>

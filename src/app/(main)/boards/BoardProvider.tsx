@@ -40,7 +40,7 @@ export function BoardProvider({
   const { post, useMutation } = useApi();
   const { touch } = useModified();
   const { toast } = useToast();
-  const { formatMessage, labels, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { router, renderUrl } = useNavigation();
 
   const [board, setBoard] = useState<Partial<Board>>(data ?? createDefaultBoard());
@@ -70,7 +70,7 @@ export function BoardProvider({
   }, []);
 
   const saveBoard = useCallback(async () => {
-    const defaultName = formatMessage(labels.untitled);
+    const defaultName = t(labels.untitled);
 
     // Get current layout sizes from BoardBody if registered
     const layoutData = layoutGetterRef.current?.();
@@ -82,7 +82,7 @@ export function BoardProvider({
       parameters,
     });
 
-    toast(formatMessage(messages.saved));
+    toast(t(messages.saved));
     touch('boards');
 
     if (board.id) {
@@ -92,17 +92,7 @@ export function BoardProvider({
     }
 
     return result;
-  }, [
-    board,
-    mutateAsync,
-    toast,
-    formatMessage,
-    labels.untitled,
-    messages.saved,
-    touch,
-    router,
-    renderUrl,
-  ]);
+  }, [board, mutateAsync, toast, t, labels.untitled, messages.saved, touch, router, renderUrl]);
 
   if (boardId && isFetching && isLoading) {
     return <Loading placement="absolute" />;

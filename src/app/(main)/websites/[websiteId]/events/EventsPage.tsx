@@ -21,7 +21,7 @@ const KEY_NAME = 'umami.events.tab';
 
 export function EventsPage({ websiteId }) {
   const [tab, setTab] = useState(getItem(KEY_NAME) || 'chart');
-  const { formatMessage, labels, getErrorMessage } = useMessages();
+  const { t, labels, getErrorMessage } = useMessages();
   const { data, isLoading, isFetching, error } = useEventStatsQuery({
     websiteId,
   });
@@ -39,22 +39,22 @@ export function EventsPage({ websiteId }) {
     return [
       {
         value: visitors,
-        label: formatMessage(labels.visitors),
+        label: t(labels.visitors),
         formatValue: formatLongNumber,
       },
       {
         value: visits,
-        label: formatMessage(labels.visits),
+        label: t(labels.visits),
         formatValue: formatLongNumber,
       },
       {
         value: events,
-        label: formatMessage(labels.events),
+        label: t(labels.events),
         formatValue: formatLongNumber,
       },
       {
         value: uniqueEvents,
-        label: formatMessage(labels.uniqueEvents),
+        label: t(labels.uniqueEvents),
         formatValue: formatLongNumber,
       },
     ] as any;
@@ -79,9 +79,9 @@ export function EventsPage({ websiteId }) {
       <Panel>
         <Tabs selectedKey={tab} onSelectionChange={key => handleSelect(key)}>
           <TabList>
-            <Tab id="chart">{formatMessage(labels.chart)}</Tab>
-            <Tab id="activity">{formatMessage(labels.activity)}</Tab>
-            <Tab id="properties">{formatMessage(labels.properties)}</Tab>
+            <Tab id="chart">{t(labels.chart)}</Tab>
+            <Tab id="activity">{t(labels.activity)}</Tab>
+            <Tab id="properties">{t(labels.properties)}</Tab>
           </TabList>
           <TabPanel id="activity">
             <EventsDataTable websiteId={websiteId} />
@@ -94,8 +94,8 @@ export function EventsPage({ websiteId }) {
               <MetricsTable
                 websiteId={websiteId}
                 type="event"
-                title={formatMessage(labels.event)}
-                metric={formatMessage(labels.count)}
+                title={t(labels.event)}
+                metric={t(labels.count)}
               />
             </Column>
           </TabPanel>

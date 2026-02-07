@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Dades recol·lectades",
     "confirm-delete": "Segur que vol esborrar {target}?",
-    "confirm-leave": "Segur que vol abandonar {target}?",
-    "confirm-remove": "Segur que vol eliminar {target}?",
+    "confirm-leave": "Segur que vol abandonar <b>{target}</b>?",
+    "confirm-remove": "Segur que vol eliminar <b>{target}</b>?",
     "confirm-reset": "Segur que vol restablir les estadístiques de {target}?",
     "delete-team-warning": "Al eliminar un equip també s'eliminaran tots els llocs web de l'equip.",
     "delete-website-warning": "També s'esborraran totes les dades relacionades.",
     "error": "S'ha produït un error.",
-    "event-log": "{event} a {url}",
+    "event-log": "<b>{event}</b> a <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Vés a la configuració",
     "incorrect-username-password": "Nom d'usuari o contrasenya incorrectes.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "Usuari eliminat.",
     "viewed-page": "Pàgina vista",
-    "visitor-log": "Visitant de {country} usant {browser} a {os} {device}"
+    "visitor-log": "Visitant de <b>{country}</b> usant <b>{browser}</b> a <b>{os}</b> <b>{device}</b>"
   }
 }

@@ -3,28 +3,28 @@ import { useMessages, useNavigation } from '@/components/hooks';
 import { Globe, User, Users } from '@/components/icons';
 
 export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { pathname } = useNavigation();
 
   const items = [
     {
-      label: formatMessage(labels.manage),
+      label: t(labels.manage),
       items: [
         {
           id: 'users',
-          label: formatMessage(labels.users),
+          label: t(labels.users),
           path: '/admin/users',
           icon: <User />,
         },
         {
           id: 'websites',
-          label: formatMessage(labels.websites),
+          label: t(labels.websites),
           path: '/admin/websites',
           icon: <Globe />,
         },
         {
           id: 'teams',
-          label: formatMessage(labels.teams),
+          label: t(labels.teams),
           path: '/admin/teams',
           icon: <Users />,
         },
@@ -39,7 +39,7 @@ export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
   return (
     <NavMenu
       items={items}
-      title={formatMessage(labels.admin)}
+      title={t(labels.admin)}
       selectedKey={selectedKey}
       allowMinimize={false}
       onItemClick={onItemClick}

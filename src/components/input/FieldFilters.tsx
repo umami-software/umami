@@ -28,7 +28,7 @@ export interface FieldFiltersProps {
 }
 
 export function FieldFilters({ websiteId, value, exclude = [], onChange }: FieldFiltersProps) {
-  const { formatMessage, messages } = useMessages();
+  const { t, messages } = useMessages();
   const { fields, groupLabels } = useFields();
   const startDate = subMonths(endOfDay(new Date()), 6);
   const endDate = endOfDay(new Date());
@@ -143,7 +143,7 @@ export function FieldFilters({ websiteId, value, exclude = [], onChange }: Field
             />
           );
         })}
-        {!value.length && <Empty message={formatMessage(messages.nothingSelected)} />}
+        {!value.length && <Empty message={t(messages.nothingSelected)} />}
       </Column>
     </Grid>
   );

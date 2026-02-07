@@ -11,7 +11,7 @@ import { AdminNav } from './admin/AdminNav';
 import { SettingsNav } from './settings/SettingsNav';
 
 export function MobileNav() {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { pathname, websiteId, renderUrl } = useNavigation();
   const isAdmin = pathname.includes('/admin');
   const isSettings = pathname.includes('/settings');
@@ -19,19 +19,19 @@ export function MobileNav() {
   const links = [
     {
       id: 'websites',
-      label: formatMessage(labels.websites),
+      label: t(labels.websites),
       path: '/websites',
       icon: <Globe />,
     },
     {
       id: 'links',
-      label: formatMessage(labels.links),
+      label: t(labels.links),
       path: '/links',
       icon: <LinkIcon />,
     },
     {
       id: 'pixels',
-      label: formatMessage(labels.pixels),
+      label: t(labels.pixels),
       path: '/pixels',
       icon: <Grid2x2 />,
     },

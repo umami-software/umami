@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Collected data",
     "confirm-delete": "আপনি কি নিশ্চিত যে আপনি {target} মুছতে চান?",
-    "confirm-leave": "Are you sure you want to leave {target}?",
-    "confirm-remove": "Are you sure you want to remove {target}?",
+    "confirm-leave": "Are you sure you want to leave <b>{target}</b>?",
+    "confirm-remove": "Are you sure you want to remove <b>{target}</b>?",
     "confirm-reset": "আপনি কি নিশ্চিত যে আপনি {target} এর পরিসংখ্যান পুনরায় সেট করতে চান?",
     "delete-team-warning": "Deleting a team will also delete all team websites.",
     "delete-website-warning": "সমস্ত সম্পর্কিত ডেটা পাশাপাশি মুছে ফেলা হবে।",
     "error": "কিছু ভুল হয়েছে।",
-    "event-log": "{event} on {url}",
+    "event-log": "<b>{event}</b> on <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "সেটিংস এ যান",
     "incorrect-username-password": "ভুল ব্যবহারকারীর নাম/পাসওয়ার্ড।",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "User deleted.",
     "viewed-page": "Viewed page",
-    "visitor-log": "{country} থেকে একজন ভিসিটর {ব্রাউজার}, ব্যবহার করছেন {os} {device} এর মধ্যে।"
+    "visitor-log": "<b>{country}</b> থেকে একজন ভিসিটর {ব্রাউজার}, ব্যবহার করছেন <b>{os}</b> <b>{device}</b> এর মধ্যে।"
   }
 }

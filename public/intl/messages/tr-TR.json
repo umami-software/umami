@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Collected data",
     "confirm-delete": "{target} kaydını silmek istediğinizden emin misiniz?",
-    "confirm-leave": "{target} kaydından ayrılmak istediğinizden emin misiniz?",
-    "confirm-remove": "{target} kaydını kaldırmak istediğinizden emin misiniz?",
+    "confirm-leave": "<b>{target}</b> kaydından ayrılmak istediğinizden emin misiniz?",
+    "confirm-remove": "<b>{target}</b> kaydını kaldırmak istediğinizden emin misiniz?",
     "confirm-reset": "{target} istatistiklerini sıfırlamak istediğinizden emin misiniz?",
     "delete-team-warning": "Bir takımı silmek tüm takım web sitelerini de silecektir.",
     "delete-website-warning": "İlişkili tüm veriler de silinecektir.",
     "error": "Bir şeyler ters gitti!",
-    "event-log": "{event} on {url}",
+    "event-log": "<b>{event}</b> on <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Ayarlara git",
     "incorrect-username-password": "Hatalı kullanıcı adı ya da parola.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "Kullanıcı silindi.",
     "viewed-page": "Görüntülenen sayfa",
-    "visitor-log": "Yeni ziyaretçi: {country}, {os}, {device}, {browser}"
+    "visitor-log": "Yeni ziyaretçi: <b>{country}</b>, <b>{os}</b>, <b>{device}</b>, <b>{browser}</b>"
   }
 }

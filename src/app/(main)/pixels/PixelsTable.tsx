@@ -11,13 +11,13 @@ export interface PixelsTableProps extends DataTableProps {
 }
 
 export function PixelsTable({ showActions, ...props }: PixelsTableProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { renderUrl } = useNavigation();
   const { getSlugUrl } = useSlug('pixel');
 
   return (
     <DataTable {...props}>
-      <DataColumn id="name" label={formatMessage(labels.name)}>
+      <DataColumn id="name" label={t(labels.name)}>
         {({ id, name }: any) => {
           return <Link href={renderUrl(`/pixels/${id}`)}>{name}</Link>;
         }}
@@ -32,7 +32,7 @@ export function PixelsTable({ showActions, ...props }: PixelsTableProps) {
           );
         }}
       </DataColumn>
-      <DataColumn id="created" label={formatMessage(labels.created)}>
+      <DataColumn id="created" label={t(labels.created)}>
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
       {showActions && (

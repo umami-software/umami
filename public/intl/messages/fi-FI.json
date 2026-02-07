@@ -298,13 +298,13 @@
     "bad-request": "Virheellinen pyyntö",
     "collected-data": "Kerätty data",
     "confirm-delete": "Haluatko varmasti poistaa sivuston {target}?",
-    "confirm-leave": "Haluatko varmasti poistua {target}?",
-    "confirm-remove": "Haluatko varmasti poistaa {target}?",
+    "confirm-leave": "Haluatko varmasti poistua <b>{target}</b>?",
+    "confirm-remove": "Haluatko varmasti poistaa <b>{target}</b>?",
     "confirm-reset": "Haluatko varmasti poistaa sivuston {target} tilastot?",
     "delete-team-warning": "Tiimin poistaminen poistaa myös kaikki tiimin sivustot.",
     "delete-website-warning": "Kaikki siihen liittyvät tiedot poistetaan.",
     "error": "Jotain meni pieleen.",
-    "event-log": "{event} on {url}",
+    "event-log": "<b>{event}</b> on <a>{url}</a>",
     "forbidden": "Kielletty",
     "go-to-settings": "Mene asetuksiin",
     "incorrect-username-password": "Väärä käyttäjänimi/salasana.",
@@ -338,6 +338,6 @@
     "unauthorized": "Ei oikeuksia",
     "user-deleted": "Käyttäjä poistettu.",
     "viewed-page": "Katsottu sivu",
-    "visitor-log": "Vierailija maasta {country} selaimella {browser} laitteella {os} {device}"
+    "visitor-log": "Vierailija maasta <b>{country}</b> selaimella <b>{browser}</b> laitteella <b>{os}</b> <b>{device}</b>"
   }
 }

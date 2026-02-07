@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "已蒐集的資料",
     "confirm-delete": "您確定要刪除 {target} 嗎？",
-    "confirm-leave": "您確定要離開 {target} 嗎？",
-    "confirm-remove": "您確定要移除 {target} 嗎？",
+    "confirm-leave": "您確定要離開 <b>{target}</b> 嗎？",
+    "confirm-remove": "您確定要移除 <b>{target}</b> 嗎？",
     "confirm-reset": "您確定要重設 {target} 的統計資料嗎？",
     "delete-team-warning": "刪除團隊的同時也會刪除所有團隊的網站。",
     "delete-website-warning": "所有網站資料都將被刪除。",
     "error": "發生錯誤。",
-    "event-log": "在 {url} 上的 {event}",
+    "event-log": "在 <a>{url}</a> 上的 <b>{event}</b>",
     "forbidden": "Forbidden",
     "go-to-settings": "前往設定",
     "incorrect-username-password": "使用者名稱或密碼不正確。",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "使用者已刪除。",
     "viewed-page": "已瀏覽的網頁",
-    "visitor-log": "來自 {country} 的訪客在 {device} 上的 {os} 使用 {browser} 瀏覽。"
+    "visitor-log": "來自 <b>{country}</b> 的訪客在 <b>{device}</b> 上的 <b>{os}</b> 使用 <b>{browser}</b> 瀏覽。"
   }
 }

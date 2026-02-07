@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "収集されたデータ",
     "confirm-delete": "{target}を削除してもよろしいですか？",
-    "confirm-leave": "{target}から離脱してもよろしいですか？",
-    "confirm-remove": "{target}を削除してもよろしいですか？",
+    "confirm-leave": "<b>{target}</b>から離脱してもよろしいですか？",
+    "confirm-remove": "<b>{target}</b>を削除してもよろしいですか？",
     "confirm-reset": "{target}をリセットしてもよろしいですか？",
     "delete-team-warning": "チームを削除すると、そのチームが管理しているWebサイトもすべて削除されます。",
     "delete-website-warning": "Webサイトのデータがすべて削除されます。",
     "error": "未知のエラーが発生しました。",
-    "event-log": "{url}の{event}",
+    "event-log": "<a>{url}</a>の<b>{event}</b>",
     "forbidden": "Forbidden",
     "go-to-settings": "設定に移動する",
     "incorrect-username-password": "ユーザー名またはパスワードが間違っています。",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "ユーザーが削除されました。",
     "viewed-page": "閲覧されたページ",
-    "visitor-log": "{os}({device})で{browser}を使用している{country}からの訪問者"
+    "visitor-log": "<b>{os}</b>(<b>{device}</b>)で<b>{browser}</b>を使用している<b>{country}</b>からの訪問者"
   }
 }

@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Innsamlede data",
     "confirm-delete": "Er du sikker på at du vil slette {target}?",
-    "confirm-leave": "Er du sikker på at du vil forlate {target}?",
-    "confirm-remove": "Er du sikker på at du vil fjerne {target}?",
+    "confirm-leave": "Er du sikker på at du vil forlate <b>{target}</b>?",
+    "confirm-remove": "Er du sikker på at du vil fjerne <b>{target}</b>?",
     "confirm-reset": "Er du sikker på at du vil nullstille statistikken til {target}?",
     "delete-team-warning": "Å slette et team vil også slette alle teamets nettsteder.",
     "delete-website-warning": "Alle tilknyttede data vil også bli slettet.",
     "error": "Noe gikk galt.",
-    "event-log": "{event} på {url}",
+    "event-log": "<b>{event}</b> på <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Gå til innstillinger",
     "incorrect-username-password": "Ugyldig brukernavn/passord.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "Bruker slettet.",
     "viewed-page": "Vist side",
-    "visitor-log": "Besøkende fra {country} med {browser} på {os} {device}"
+    "visitor-log": "Besøkende fra <b>{country}</b> med <b>{browser}</b> på <b>{os}</b> <b>{device}</b>"
   }
 }

@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Collected data",
     "confirm-delete": "کیا آپ واقعی {target} کو حذف کرنا چاہتے ہیں؟",
-    "confirm-leave": "Are you sure you want to leave {target}?",
-    "confirm-remove": "Are you sure you want to remove {target}?",
+    "confirm-leave": "Are you sure you want to leave <b>{target}</b>?",
+    "confirm-remove": "Are you sure you want to remove <b>{target}</b>?",
     "confirm-reset": "کیا آپ واقعی {target} کے اعدادوشمار کو دوبارہ ترتیب دینا چاہتے ہیں؟",
     "delete-team-warning": "Deleting a team will also delete all team websites.",
     "delete-website-warning": "تمام متعلقہ ڈیٹا بھی حذف کر دیا جائے گا۔",
     "error": "کچھ غلط ہو گیا.",
-    "event-log": "{event} on {url}",
+    "event-log": "<b>{event}</b> on <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "ترتیبات پر جائیں",
     "incorrect-username-password": "غلط صارف نام/پاس ورڈ۔",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "User deleted.",
     "viewed-page": "Viewed page",
-    "visitor-log": "{os} {device} پر {browser} کا استعمال کرتے ہوئے {country} سے آنے والا"
+    "visitor-log": "<b>{os}</b> <b>{device}</b> پر <b>{browser}</b> کا استعمال کرتے ہوئے <b>{country}</b> سے آنے والا"
   }
 }

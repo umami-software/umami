@@ -329,13 +329,13 @@
     "bad-request": "请求错误",
     "collected-data": "已收集的数据",
     "confirm-delete": "你确定要删除 {target} 吗？",
-    "confirm-leave": "你确定要离开 {target} 吗？",
-    "confirm-remove": "您确定要移除 {target} ？",
+    "confirm-leave": "你确定要离开 <b>{target}</b> 吗？",
+    "confirm-remove": "您确定要移除 <b>{target}</b> ？",
     "confirm-reset": "您确定要重置 {target} 的数据吗？",
     "delete-team-warning": "删除团队也会删除所有团队网站。",
     "delete-website-warning": "所有相关数据将会被删除。",
     "error": "发生错误。",
-    "event-log": "{url} 上的 {event}",
+    "event-log": "<a>{url}</a> 上的 <b>{event}</b>",
     "forbidden": "禁止访问",
     "go-to-settings": "去设置",
     "incorrect-username-password": "用户名或密码不正确。",
@@ -369,6 +369,6 @@
     "unauthorized": "未授权",
     "user-deleted": "用户已删除。",
     "viewed-page": "已浏览页面",
-    "visitor-log": "来自 {country} 的访客在搭载 {os} 的 {device} 上使用 {browser} 浏览器进行访问。"
+    "visitor-log": "来自 <b>{country}</b> 的访客在搭载 <b>{os}</b> 的 <b>{device}</b> 上使用 <b>{browser}</b> 浏览器进行访问。"
   }
 }

@@ -31,7 +31,7 @@ export function FunnelEditForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { data } = useReportQuery(id);
   const { mutateAsync, error, isPending, touch } = useUpdateQuery(`/reports${id ? `/${id}` : ''}`);
 
@@ -61,23 +61,15 @@ export function FunnelEditForm({
 
   return (
     <Form onSubmit={handleSubmit} error={error?.message} defaultValues={defaultValues}>
-      <FormField
-        name="name"
-        label={formatMessage(labels.name)}
-        rules={{ required: formatMessage(labels.required) }}
-      >
+      <FormField name="name" label={t(labels.name)} rules={{ required: t(labels.required) }}>
         <TextField autoFocus />
       </FormField>
-      <FormField
-        name="window"
-        label={formatMessage(labels.window)}
-        rules={{ required: formatMessage(labels.required) }}
-      >
+      <FormField name="window" label={t(labels.window)} rules={{ required: t(labels.required) }}>
         <TextField />
       </FormField>
       <FormFieldArray
         name="steps"
-        label={formatMessage(labels.steps)}
+        label={t(labels.steps)}
         rules={{
           validate: value => value.length > 1 || 'At least two steps are required',
         }}
@@ -91,7 +83,7 @@ export function FunnelEditForm({
                     <Column>
                       <FormField
                         name={`steps.${index}.type`}
-                        rules={{ required: formatMessage(labels.required) }}
+                        rules={{ required: t(labels.required) }}
                       >
                         <ActionSelect />
                       </FormField>
@@ -99,7 +91,7 @@ export function FunnelEditForm({
                     <Column>
                       <FormField
                         name={`steps.${index}.value`}
-                        rules={{ required: formatMessage(labels.required) }}
+                        rules={{ required: t(labels.required) }}
                       >
                         {({ field, context }) => {
                           const type = context.watch(`steps.${index}.type`);
@@ -123,7 +115,7 @@ export function FunnelEditForm({
                   <Icon>
                     <Plus />
                   </Icon>
-                  <Text>{formatMessage(labels.add)}</Text>
+                  <Text>{t(labels.add)}</Text>
                 </Button>
               </Row>
             </Grid>
@@ -132,9 +124,9 @@ export function FunnelEditForm({
       </FormFieldArray>
       <FormButtons>
         <Button onPress={onClose} isDisabled={isPending}>
-          {formatMessage(labels.cancel)}
+          {t(labels.cancel)}
         </Button>
-        <FormSubmitButton>{formatMessage(labels.save)}</FormSubmitButton>
+        <FormSubmitButton>{t(labels.save)}</FormSubmitButton>
       </FormButtons>
     </Form>
   );

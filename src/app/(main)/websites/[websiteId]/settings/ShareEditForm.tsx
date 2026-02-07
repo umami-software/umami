@@ -27,7 +27,7 @@ export function ShareEditForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels, getErrorMessage } = useMessages();
+  const { t, labels, getErrorMessage } = useMessages();
   const { cloudMode } = useConfig();
   const { get, post } = useApi();
   const { touch } = useModified();
@@ -125,25 +125,21 @@ export function ShareEditForm({
           <Column gap="6">
             {url && (
               <Column>
-                <Label>{formatMessage(labels.shareUrl)}</Label>
+                <Label>{t(labels.shareUrl)}</Label>
                 <TextField value={url} isReadOnly allowCopy />
               </Column>
             )}
-            <FormField
-              label={formatMessage(labels.name)}
-              name="name"
-              rules={{ required: formatMessage(labels.required) }}
-            >
+            <FormField label={t(labels.name)} name="name" rules={{ required: t(labels.required) }}>
               <TextField autoComplete="off" autoFocus={!isEditing} />
             </FormField>
             <Grid columns="repeat(auto-fit, minmax(150px, 1fr))" gap="3">
               {SHARE_NAV_ITEMS.map(section => (
                 <Column key={section.section} gap="3">
-                  <Text weight="bold">{formatMessage((labels as any)[section.section])}</Text>
+                  <Text weight="bold">{t((labels as any)[section.section])}</Text>
                   <Column gap="1">
                     {section.items.map(item => (
                       <FormField key={item.id} name={item.id}>
-                        <Checkbox>{formatMessage((labels as any)[item.label])}</Checkbox>
+                        <Checkbox>{t((labels as any)[item.label])}</Checkbox>
                       </FormField>
                     ))}
                   </Column>
@@ -153,14 +149,14 @@ export function ShareEditForm({
             <Row justifyContent="flex-end" paddingTop="3" gap="3">
               {onClose && (
                 <Button isDisabled={isPending} onPress={onClose}>
-                  {formatMessage(labels.cancel)}
+                  {t(labels.cancel)}
                 </Button>
               )}
               <FormSubmitButton
                 variant="primary"
                 isDisabled={isPending || !hasSelection || !values.name}
               >
-                {formatMessage(labels.save)}
+                {t(labels.save)}
               </FormSubmitButton>
             </Row>
           </Column>

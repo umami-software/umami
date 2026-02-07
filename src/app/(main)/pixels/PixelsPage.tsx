@@ -10,7 +10,7 @@ import { PixelsDataTable } from './PixelsDataTable';
 
 export function PixelsPage() {
   const { user } = useLoginQuery();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { teamId } = useNavigation();
   const { data } = useTeamMembersQuery(teamId);
 
@@ -23,7 +23,7 @@ export function PixelsPage() {
   return (
     <PageBody>
       <Column gap="6" margin="2">
-        <PageHeader title={formatMessage(labels.pixels)}>
+        <PageHeader title={t(labels.pixels)}>
           {showActions && <PixelAddButton teamId={teamId} />}
         </PageHeader>
         <Panel>

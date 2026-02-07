@@ -31,7 +31,7 @@ export function WebsiteTransferForm({
   const { user } = useLoginQuery();
   const website = useWebsite();
   const [teamId, setTeamId] = useState<string>(null);
-  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
+  const { t, labels, messages, getErrorMessage } = useMessages();
   const { mutateAsync, error, isPending } = useUpdateQuery(`/websites/${websiteId}/transfer`);
   const { data: teams, isLoading } = useUserTeamsQuery(user.id);
   const isTeamWebsite = !!website?.teamId;
@@ -70,9 +70,7 @@ export function WebsiteTransferForm({
   return (
     <Form onSubmit={handleSubmit} error={getErrorMessage(error)} values={{ teamId }}>
       <Text>
-        {formatMessage(
-          isTeamWebsite ? messages.transferTeamWebsiteToUser : messages.transferUserWebsiteToTeam,
-        )}
+        {t(isTeamWebsite ? messages.transferTeamWebsiteToUser : messages.transferUserWebsiteToTeam)}
       </Text>
       <FormField name="teamId">
         {!isTeamWebsite && (
@@ -88,13 +86,13 @@ export function WebsiteTransferForm({
         )}
       </FormField>
       <FormButtons>
-        <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
+        <Button onPress={onClose}>{t(labels.cancel)}</Button>
         <FormSubmitButton
           variant="primary"
           isPending={isPending}
           isDisabled={!isTeamWebsite && !teamId}
         >
-          {formatMessage(labels.transfer)}
+          {t(labels.transfer)}
         </FormSubmitButton>
       </FormButtons>
     </Form>

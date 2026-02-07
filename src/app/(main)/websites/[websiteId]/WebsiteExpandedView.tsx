@@ -13,7 +13,7 @@ export function WebsiteExpandedView({
   excludedIds?: string[];
   onClose?: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const {
     query: { view },
   } = useNavigation();
@@ -45,7 +45,7 @@ export function WebsiteExpandedView({
         </Column>
         <Column id="metrics-expanded-table" overflow="hidden">
           <MetricsExpandedTable
-            title={formatMessage(labels[view])}
+            title={t(labels[view])}
             type={view}
             websiteId={websiteId}
             onClose={onClose}

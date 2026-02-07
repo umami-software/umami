@@ -298,13 +298,13 @@
     "bad-request": "Невалидна заявка",
     "collected-data": "Събрани данни",
     "confirm-delete": "Сигурни ли сте, че искате да изтриете {target}?",
-    "confirm-leave": "Сигурни ли сте, че искате да напуснете {target}?",
-    "confirm-remove": "Сигурни ли сте, че искате да премахнете {target}?",
+    "confirm-leave": "Сигурни ли сте, че искате да напуснете <b>{target}</b>?",
+    "confirm-remove": "Сигурни ли сте, че искате да премахнете <b>{target}</b>?",
     "confirm-reset": "Сигурни ли сте, че искате да нулирате {target}?",
     "delete-team-warning": "Изтриването на екип ще изтрие и всички уебсайтове създадени от екипа.",
     "delete-website-warning": "Всички данни за уебсайта ще бъдат изтрити.",
     "error": "Възникна грешка.",
-    "event-log": "{event} на {url}",
+    "event-log": "<b>{event}</b> на <a>{url}</a>",
     "forbidden": "Забранено",
     "go-to-settings": "Отидете в настройките",
     "incorrect-username-password": "Неправилно потребителско име и/или парола.",
@@ -338,6 +338,6 @@
     "unauthorized": "Неоторизиран достъп",
     "user-deleted": "Потребителят е изтрит.",
     "viewed-page": "Страницата е видяна",
-    "visitor-log": "Посетител от {country}, използващ {browser} на {os} {device}"
+    "visitor-log": "Посетител от <b>{country}</b>, използващ <b>{browser}</b> на <b>{os}</b> <b>{device}</b>"
   }
 }

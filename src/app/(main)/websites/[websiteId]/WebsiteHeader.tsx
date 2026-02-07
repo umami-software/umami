@@ -18,7 +18,7 @@ export function WebsiteHeader({
   const { renderUrl, pathname } = useNavigation();
   const isSettings = pathname.endsWith('/settings');
 
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   if (isSettings) {
     return null;
@@ -35,7 +35,7 @@ export function WebsiteHeader({
 
         {showActions && (
           <LinkButton href={renderUrl(`/websites/${website.id}/settings`, false)}>
-            <IconLabel icon={<Edit />}>{formatMessage(labels.edit)}</IconLabel>
+            <IconLabel icon={<Edit />}>{t(labels.edit)}</IconLabel>
           </LinkButton>
         )}
       </Row>

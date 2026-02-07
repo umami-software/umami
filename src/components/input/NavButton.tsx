@@ -45,7 +45,7 @@ export interface TeamsButtonProps {
 export function NavButton({ showText = true }: TeamsButtonProps) {
   const { user } = useLoginQuery();
   const { cloudMode } = useConfig();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { teamId, router } = useNavigation();
   const { isMobile } = useMobile();
   const team = user?.teams?.find(({ id }) => id === teamId);
@@ -98,18 +98,18 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
           <Menu autoFocus="last">
             <SubmenuTrigger>
               <MenuItem id="teams" showChecked={false} showSubMenuIcon>
-                <IconLabel icon={<Switch />} label={formatMessage(labels.switchAccount)} />
+                <IconLabel icon={<Switch />} label={t(labels.switchAccount)} />
               </MenuItem>
               <Popover placement={isMobile ? 'bottom start' : 'right top'}>
                 <Column minWidth="300px">
                   <Menu selectionMode="single" selectedKeys={selectedKeys} onAction={handleAction}>
-                    <MenuSection title={formatMessage(labels.myAccount)}>
+                    <MenuSection title={t(labels.myAccount)}>
                       <MenuItem id="user">
                         <IconLabel icon={<User />} label={user.username} />
                       </MenuItem>
                     </MenuSection>
                     <MenuSeparator />
-                    <MenuSection title={formatMessage(labels.teams)}>
+                    <MenuSection title={t(labels.teams)}>
                       {user?.teams?.map(({ id, name }) => (
                         <MenuItem key={id} id={id} href={getUrl(`/teams/${id}`)}>
                           <IconLabel icon={<Users />}>
@@ -139,7 +139,7 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
               id="settings"
               href={getUrl('/settings')}
               icon={<Settings />}
-              label={formatMessage(labels.settings)}
+              label={t(labels.settings)}
             />
             {cloudMode && (
               <>
@@ -148,7 +148,7 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
                   href={DOCS_URL}
                   target="_blank"
                   icon={<BookText />}
-                  label={formatMessage(labels.documentation)}
+                  label={t(labels.documentation)}
                 >
                   <Icon color="muted">
                     <ExternalLink />
@@ -158,7 +158,7 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
                   id="support"
                   href={getUrl('/settings/support')}
                   icon={<LifeBuoy />}
-                  label={formatMessage(labels.support)}
+                  label={t(labels.support)}
                 />
               </>
             )}
@@ -169,7 +169,7 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
                   id="/admin"
                   href="/admin"
                   icon={<LockKeyhole />}
-                  label={formatMessage(labels.admin)}
+                  label={t(labels.admin)}
                 />
               </>
             )}
@@ -178,7 +178,7 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
               id="logout"
               href={getUrl('/logout')}
               icon={<LogOut />}
-              label={formatMessage(labels.logout)}
+              label={t(labels.logout)}
             />
           </Menu>
         </Column>

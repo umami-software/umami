@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Collected data",
     "confirm-delete": "Jeste li sigurni da želite obrisati {target}?",
-    "confirm-leave": "Jeste li sigurni da želite napustiti {target}?",
-    "confirm-remove": "Jeste li sigurni da želite ukloniti {target}?",
+    "confirm-leave": "Jeste li sigurni da želite napustiti <b>{target}</b>?",
+    "confirm-remove": "Jeste li sigurni da želite ukloniti <b>{target}</b>?",
     "confirm-reset": "Jeste li sigurni da želite resetovati {target}?",
     "delete-team-warning": "Brisanje tima će također obrisati sve web stranice tima.",
     "delete-website-warning": "Svi podaci web stranice biće obrisani.",
     "error": "Nešto je pošlo po zlu.",
-    "event-log": "{event} na {url}",
+    "event-log": "<b>{event}</b> na <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Idi na postavke",
     "incorrect-username-password": "Pogrešno korisničko ime i/ili šifra.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "Korisnik obrisan.",
     "viewed-page": "Pogledana stranica",
-    "visitor-log": "Posjetitelj iz {country} koristi {browser} na {os} {device}"
+    "visitor-log": "Posjetitelj iz <b>{country}</b> koristi <b>{browser}</b> na <b>{os}</b> <b>{device}</b>"
   }
 }

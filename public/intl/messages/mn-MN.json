@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Цуглуулсан өгөгдөл",
     "confirm-delete": "Та {target}-г устгахдаа итгэлтэй байна уу?",
-    "confirm-leave": "Та {target}-с гарахдаа итгэлтэй байна уу?",
-    "confirm-remove": "Та {target}-г устгахдаа итгэлтэй байна уу?",
+    "confirm-leave": "Та <b>{target}</b>-с гарахдаа итгэлтэй байна уу?",
+    "confirm-remove": "Та <b>{target}</b>-г устгахдаа итгэлтэй байна уу?",
     "confirm-reset": "Та {target}-н тоон үзүүлэлтүүдийг устгахдаа итгэлтэй байна уу?",
     "delete-team-warning": "Баг устгах нь мөн түүнд харъяалагдах вебүүдийг устгах болно.",
     "delete-website-warning": "Энэ вебтэй холбоотой бүх өгөгдөл устах болно.",
     "error": "Ямар нэг зүйл буруу боллоо.",
-    "event-log": "{url}-д {event}",
+    "event-log": "<a>{url}</a>-д <b>{event}</b>",
     "forbidden": "Forbidden",
     "go-to-settings": "Тохиргоо руу очих",
     "incorrect-username-password": "Буруу хэрэглэгчийн нэр/нууц үг.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "Хэрэглэгч устсан.",
     "viewed-page": "Үзсэн хуудас",
-    "visitor-log": "{country} улсаас {os} {device} дээр {browser} хөтөч ашиглан орсон"
+    "visitor-log": "<b>{country}</b> улсаас <b>{os}</b> <b>{device}</b> дээр <b>{browser}</b> хөтөч ашиглан орсон"
   }
 }

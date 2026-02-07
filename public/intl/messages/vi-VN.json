@@ -243,13 +243,13 @@
     "active-users": "{x} {x, plural, one {người dùng} other {người dùng}} đang hoạt động",
     "collected-data": "Dữ liệu đã thu thập",
     "confirm-delete": "Bạn có chắc chắn muốn xóa {target}?",
-    "confirm-leave": "Bạn có chắc chắn muốn rời {target}?",
-    "confirm-remove": "Bạn có chắc chắn muốn xóa {target}?",
+    "confirm-leave": "Bạn có chắc chắn muốn rời <b>{target}</b>?",
+    "confirm-remove": "Bạn có chắc chắn muốn xóa <b>{target}</b>?",
     "confirm-reset": "Bạn có chắc chắn muốn đặt lại thống kê {target}?",
     "delete-team-warning": "Việc xóa một nhóm cũng sẽ xóa tất cả các website của nhóm.",
     "delete-website-warning": "Tất cả dữ liệu liên quan cũng sẽ bị xóa.",
     "error": "Đã xảy ra lỗi.",
-    "event-log": "{event} trên {url}",
+    "event-log": "<b>{event}</b> trên <a>{url}</a>",
     "go-to-settings": "Chuyển đến cài đặt",
     "incorrect-username-password": "Sai tên đăng nhập/mật khẩu.",
     "invalid-domain": "Tên miền không hợp lệ",
@@ -278,7 +278,7 @@
     "triggered-event": "Sự kiện được kích hoạt",
     "user-deleted": "Người dùng đã bị xóa.",
     "viewed-page": "Đã xem trang",
-    "visitor-log": "Khách từ {country} đang sử dụng {browser} trên {os} {device}",
+    "visitor-log": "Khách từ <b>{country}</b> đang sử dụng <b>{browser}</b> trên <b>{os}</b> <b>{device}</b>",
     "visitors-dropped-off": "Khách truy cập đã rời đi"
   }
 }

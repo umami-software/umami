@@ -10,7 +10,7 @@ import { LinkAddButton } from './LinkAddButton';
 
 export function LinksPage() {
   const { user } = useLoginQuery();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { teamId } = useNavigation();
   const { data } = useTeamMembersQuery(teamId);
 
@@ -23,7 +23,7 @@ export function LinksPage() {
   return (
     <PageBody>
       <Column gap="6" margin="2">
-        <PageHeader title={formatMessage(labels.links)}>
+        <PageHeader title={t(labels.links)}>
           {showActions && <LinkAddButton teamId={teamId} />}
         </PageHeader>
         <Panel>

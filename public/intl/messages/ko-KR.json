@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "수집된 데이터",
     "confirm-delete": "{target}을(를) 삭제하시겠습니까?",
-    "confirm-leave": "{target}을(를) 떠나시겠습니까?",
-    "confirm-remove": "{target}을(를) 제거하시겠습니까?",
+    "confirm-leave": "<b>{target}</b>을(를) 떠나시겠습니까?",
+    "confirm-remove": "<b>{target}</b>을(를) 제거하시겠습니까?",
     "confirm-reset": "{target}을(를) 초기화하시겠습니까?",
     "delete-team-warning": "팀을 삭제하면 팀에 등록된 모든 웹사이트도 삭제됩니다.",
     "delete-website-warning": "관련된 모든 데이터가 삭제됩니다.",
     "error": "문제가 발생했습니다.",
-    "event-log": "{event} - {url}",
+    "event-log": "<b>{event}</b> - <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "설정으로 이동",
     "incorrect-username-password": "사용자 이름 또는 비밀번호를 잘못 입력했습니다.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "사용자를 삭제했습니다.",
     "viewed-page": "조회한 페이지",
-    "visitor-log": "{os} {device}에서 {browser}을(를) 사용하는 {country}의 방문자"
+    "visitor-log": "<b>{os}</b> <b>{device}</b>에서 <b>{browser}</b>을(를) 사용하는 <b>{country}</b>의 방문자"
   }
 }

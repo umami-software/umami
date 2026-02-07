@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Data dikumpulkan",
     "confirm-delete": "Apakah kamu yakin ingin menghapus {target}?",
-    "confirm-leave": "Apakah Anda yakin ingin meninggalkan {target}?",
-    "confirm-remove": "Apakah Anda yakin ingin menghapus {target}?",
+    "confirm-leave": "Apakah Anda yakin ingin meninggalkan <b>{target}</b>?",
+    "confirm-remove": "Apakah Anda yakin ingin menghapus <b>{target}</b>?",
     "confirm-reset": "Anda yakin ingin mengatur ulang statistik {target}?",
     "delete-team-warning": "Menghapus tim juga akan menghapus semua situs web yang terkait.",
     "delete-website-warning": "Semua data terkait juga akan dihapus.",
     "error": "Ada yang salah.",
-    "event-log": "{event} on {url}",
+    "event-log": "<b>{event}</b> on <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Pergi ke pengaturan",
     "incorrect-username-password": "Nama pengguna/kata sandi salah.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "Pengguna telah dihapus.",
     "viewed-page": "Halaman dilihat",
-    "visitor-log": "Pengunjung dari {country} dengan {browser} di {device} {os}"
+    "visitor-log": "Pengunjung dari <b>{country}</b> dengan <b>{browser}</b> di <b>{device}</b> <b>{os}</b>"
   }
 }

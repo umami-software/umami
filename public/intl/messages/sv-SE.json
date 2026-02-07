@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Collected data",
     "confirm-delete": "Är du säker på att du vill radera {target}?",
-    "confirm-leave": "Är du säker på att du vill lämna {target}?",
-    "confirm-remove": "Are you sure you want to remove {target}?",
+    "confirm-leave": "Är du säker på att du vill lämna <b>{target}</b>?",
+    "confirm-remove": "Are you sure you want to remove <b>{target}</b>?",
     "confirm-reset": "Är du säker på att du vill återställa statistiken för {target}?",
     "delete-team-warning": "Deleting a team will also delete all team websites.",
     "delete-website-warning": "All tillhörande data kommer också att raderas.",
     "error": "Något gick fel.",
-    "event-log": "{event} på {url}",
+    "event-log": "<b>{event}</b> på <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Gå till inställningar",
     "incorrect-username-password": "Felaktigt användarnamn/lösenord.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "Användaren har raderats.",
     "viewed-page": "Viewed page",
-    "visitor-log": "Besökare från {country} med {browser} på {os} {device}"
+    "visitor-log": "Besökare från <b>{country}</b> med <b>{browser}</b> på <b>{os}</b> <b>{device}</b>"
   }
 }

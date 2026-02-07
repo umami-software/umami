@@ -6,7 +6,7 @@ export interface EmptyProps {
 }
 
 export function Empty({ message }: EmptyProps) {
-  const { formatMessage, messages } = useMessages();
+  const { t, messages } = useMessages();
 
   return (
     <Row
@@ -18,7 +18,7 @@ export function Empty({ message }: EmptyProps) {
       minHeight="70px"
       flexGrow={1}
     >
-      {message || formatMessage(messages.noDataAvailable)}
+      {message || t(messages.noDataAvailable)}
     </Row>
   );
 }

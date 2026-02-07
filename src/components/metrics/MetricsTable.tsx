@@ -32,7 +32,7 @@ export function MetricsTable({
   ...props
 }: MetricsTableProps) {
   const { updateParams } = useNavigation();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { data, isLoading, isFetching, error } = useWebsiteMetricsQuery(websiteId, {
     type,
     limit,
@@ -83,7 +83,7 @@ export function MetricsTable({
         {showMore && limit && (
           <Row justifyContent="center" alignItems="flex-end" paddingTop="4">
             <LinkButton href={updateParams({ view: type })} variant="quiet">
-              <IconLabel icon={<Maximize />}>{formatMessage(labels.more)}</IconLabel>
+              <IconLabel icon={<Maximize />}>{t(labels.more)}</IconLabel>
             </LinkButton>
           </Row>
         )}

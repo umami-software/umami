@@ -21,7 +21,7 @@ import { NavButton } from '@/components/input/NavButton';
 import { Logo } from '@/components/svg';
 
 export function SideNav(props: any) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { pathname, renderUrl, websiteId, router } = useNavigation();
   const [isCollapsed, setIsCollapsed] = useGlobalState('sidenav-collapsed', false);
 
@@ -30,25 +30,25 @@ export function SideNav(props: any) {
   const links = [
     {
       id: 'boards',
-      label: formatMessage(labels.boards),
+      label: t(labels.boards),
       path: '/boards',
       icon: <LayoutDashboard />,
     },
     {
       id: 'websites',
-      label: formatMessage(labels.websites),
+      label: t(labels.websites),
       path: '/websites',
       icon: <Globe />,
     },
     {
       id: 'links',
-      label: formatMessage(labels.links),
+      label: t(labels.links),
       path: '/links',
       icon: <LinkIcon />,
     },
     {
       id: 'pixels',
-      label: formatMessage(labels.pixels),
+      label: t(labels.pixels),
       path: '/pixels',
       icon: <Grid2x2 />,
     },

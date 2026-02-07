@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Collected data",
     "confirm-delete": "நீங்கள் நிச்சயமாக {target} நீக்க விரும்புகிறீர்களா?",
-    "confirm-leave": "Are you sure you want to leave {target}?",
-    "confirm-remove": "Are you sure you want to remove {target}?",
+    "confirm-leave": "Are you sure you want to leave <b>{target}</b>?",
+    "confirm-remove": "Are you sure you want to remove <b>{target}</b>?",
     "confirm-reset": "Are your sure you want to reset {target}'s statistics?",
     "delete-team-warning": "Deleting a team will also delete all team websites.",
     "delete-website-warning": "தொடர்புடைய எல்லா தரவும் நீக்கப்படும்.",
     "error": "ஏதோ தவறு நடந்துவிட்டது.",
-    "event-log": "{event} on {url}",
+    "event-log": "<b>{event}</b> on <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "அமைப்புகளுக்குச் செல்லவும்",
     "incorrect-username-password": "தவறான பயனர்பெயர் / கடவுச்சொல்.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "User deleted.",
     "viewed-page": "Viewed page",
-    "visitor-log": "{country}வில் இருந்து பார்வையாளர் {browser} ஐ {os} {device}லில் பயன்படுத்துகிறார்"
+    "visitor-log": "<b>{country}</b>வில் இருந்து பார்வையாளர் <b>{browser}</b> ஐ <b>{os}</b> <b>{device}</b>லில் பயன்படுத்துகிறார்"
   }
 }

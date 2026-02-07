@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Gsammleti Date",
     "confirm-delete": "Sind Sie sich sicher, {target} zlösche?",
-    "confirm-leave": "Sind Sie sich sicher, {target} zverlah?",
-    "confirm-remove": "Sind Sie sich sicher, dass Sie {target} wänd entferne?",
+    "confirm-leave": "Sind Sie sich sicher, <b>{target}</b> zverlah?",
+    "confirm-remove": "Sind Sie sich sicher, dass Sie <b>{target}</b> wänd entferne?",
     "confirm-reset": "Sind Sie sicher, dass Sie d Statistike vo {target} zruggsetze wänd?",
     "delete-team-warning": "Es Team lösche dued ebefalls alli team Websiite lösche.",
     "delete-website-warning": "Alli dezueghörige Date werded ebefalls glöscht.",
     "error": "Es isch en Fehler ufträte.",
-    "event-log": "{event} uf {url}",
+    "event-log": "<b>{event}</b> uf <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Zu de Istellige",
     "incorrect-username-password": "Falsches Passwort oder Benutzername.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "Bnutzer glöscht.",
     "viewed-page": "Siite agluegt",
-    "visitor-log": "Bsuecher us {country} nutzt {browser} uf {os} {device}"
+    "visitor-log": "Bsuecher us <b>{country}</b> nutzt <b>{browser}</b> uf <b>{os}</b> <b>{device}</b>"
   }
 }

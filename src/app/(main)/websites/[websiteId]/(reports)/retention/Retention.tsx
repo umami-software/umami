@@ -17,7 +17,7 @@ export interface RetentionProps {
 }
 
 export function Retention({ websiteId, days = DAYS, startDate, endDate }: RetentionProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { locale } = useLocale();
   const { data, error, isLoading } = useResultQuery('retention', {
     websiteId,
@@ -72,13 +72,13 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
               >
                 <Column>
                   <Text weight="bold" align="center">
-                    {formatMessage(labels.cohort)}
+                    {t(labels.cohort)}
                   </Text>
                 </Column>
                 {days.map(n => (
                   <Column key={n}>
                     <Text weight="bold" align="center" wrap="nowrap">
-                      {formatMessage(labels.day)} {n}
+                      {t(labels.day)} {n}
                     </Text>
                   </Column>
                 ))}

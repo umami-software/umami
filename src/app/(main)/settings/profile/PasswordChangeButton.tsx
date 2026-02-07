@@ -4,11 +4,11 @@ import { LockKeyhole } from '@/components/icons';
 import { PasswordEditForm } from './PasswordEditForm';
 
 export function PasswordChangeButton() {
-  const { formatMessage, labels, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { toast } = useToast();
 
   const handleSave = () => {
-    toast(formatMessage(messages.saved));
+    toast(t(messages.saved));
   };
 
   return (
@@ -17,10 +17,10 @@ export function PasswordChangeButton() {
         <Icon>
           <LockKeyhole />
         </Icon>
-        <Text>{formatMessage(labels.changePassword)}</Text>
+        <Text>{t(labels.changePassword)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.changePassword)} style={{ width: 400 }}>
+        <Dialog title={t(labels.changePassword)} style={{ width: 400 }}>
           {({ close }) => <PasswordEditForm onSave={handleSave} onClose={close} />}
         </Dialog>
       </Modal>

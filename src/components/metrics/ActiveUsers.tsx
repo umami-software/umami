@@ -12,7 +12,7 @@ export function ActiveUsers({
   value?: number;
   refetchInterval?: number;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { data } = useActyiveUsersQuery(websiteId, { refetchInterval });
 
   const count = useMemo(() => {
@@ -31,7 +31,7 @@ export function ActiveUsers({
     <LinkButton href={`/websites/${websiteId}/realtime`} variant="quiet">
       <StatusLight variant="success">
         <Text size="sm" weight="medium">
-          {count} {formatMessage(labels.online)}
+          {count} {t(labels.online)}
         </Text>
       </StatusLight>
     </LinkButton>

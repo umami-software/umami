@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Date colectate",
     "confirm-delete": "Ești sigur că vrei să ștergi {target}?",
-    "confirm-leave": "Ești sigur că vrei să părăsești {target}?",
-    "confirm-remove": "Ești sigur că vrei să ștergi {target}?",
+    "confirm-leave": "Ești sigur că vrei să părăsești <b>{target}</b>?",
+    "confirm-remove": "Ești sigur că vrei să ștergi <b>{target}</b>?",
     "confirm-reset": "Ești sigur că vrei să resetezi statisticile pentru {target}?",
     "delete-team-warning": "Ștergerea unei echipe va șterge și toate website-urile echipei.",
     "delete-website-warning": "Toate datele asociate vor fi șterse, de asemenea.",
     "error": "Ceva n-a mers bine.",
-    "event-log": "{event} la {url}",
+    "event-log": "<b>{event}</b> la <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Mergi la Setări",
     "incorrect-username-password": "Nume utilizator / parolă incorecte.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "Utilizator șters.",
     "viewed-page": "Pagină vizualizată",
-    "visitor-log": "Vizitator din {country} folosind {browser} pe {os} {device}"
+    "visitor-log": "Vizitator din <b>{country}</b> folosind <b>{browser}</b> pe <b>{os}</b> <b>{device}</b>"
   }
 }

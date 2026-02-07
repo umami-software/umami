@@ -10,12 +10,11 @@ import {
   TextField,
 } from '@umami/react-zen';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
-import { messages } from '@/components/messages';
 import { ROLES } from '@/lib/constants';
 
 export function UserAddForm({ onSave, onClose }) {
   const { mutateAsync, error, isPending } = useUpdateQuery(`/users`);
-  const { formatMessage, labels, getErrorMessage } = useMessages();
+  const { t, labels, messages, getErrorMessage } = useMessages();
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
@@ -29,45 +28,41 @@ export function UserAddForm({ onSave, onClose }) {
   return (
     <Form onSubmit={handleSubmit} error={getErrorMessage(error)}>
       <FormField
-        label={formatMessage(labels.username)}
+        label={t(labels.username)}
         name="username"
-        rules={{ required: formatMessage(labels.required) }}
+        rules={{ required: t(labels.required) }}
       >
         <TextField autoComplete="new-username" data-test="input-username" />
       </FormField>
       <FormField
-        label={formatMessage(labels.password)}
+        label={t(labels.password)}
         name="password"
         rules={{
-          required: formatMessage(labels.required),
-          minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: '8' }) },
+          required: t(labels.required),
+          minLength: { value: 8, message: t(messages.minPasswordLength, { n: '8' }) },
         }}
       >
         <PasswordField autoComplete="new-password" data-test="input-password" />
       </FormField>
-      <FormField
-        label={formatMessage(labels.role)}
-        name="role"
-        rules={{ required: formatMessage(labels.required) }}
-      >
+      <FormField label={t(labels.role)} name="role" rules={{ required: t(labels.required) }}>
         <Select>
           <ListItem id={ROLES.viewOnly} data-test="dropdown-item-viewOnly">
-            {formatMessage(labels.viewOnly)}
+            {t(labels.viewOnly)}
           </ListItem>
           <ListItem id={ROLES.user} data-test="dropdown-item-user">
-            {formatMessage(labels.user)}
+            {t(labels.user)}
           </ListItem>
           <ListItem id={ROLES.admin} data-test="dropdown-item-admin">
-            {formatMessage(labels.admin)}
+            {t(labels.admin)}
           </ListItem>
         </Select>
       </FormField>
       <FormButtons>
         <Button isDisabled={isPending} onPress={onClose}>
-          {formatMessage(labels.cancel)}
+          {t(labels.cancel)}
         </Button>
         <FormSubmitButton variant="primary" data-test="button-submit" isDisabled={false}>
-          {formatMessage(labels.save)}
+          {t(labels.save)}
         </FormSubmitButton>
       </FormButtons>
     </Form>

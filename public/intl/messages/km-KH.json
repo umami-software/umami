@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "ទិន្នន័យដែលបានប្រមូលទុក",
     "confirm-delete": "តើអ្នកប្រាកដថាចង់លុប {target} ទេ?",
-    "confirm-leave": "តើអ្នកប្រាកដថាចង់ចាកចេញ {target} ទេ?",
-    "confirm-remove": "តើអ្នកប្រាកដថាចង់លុប {target} ទេ?",
+    "confirm-leave": "តើអ្នកប្រាកដថាចង់ចាកចេញ <b>{target}</b> ទេ?",
+    "confirm-remove": "តើអ្នកប្រាកដថាចង់លុប <b>{target}</b> ទេ?",
     "confirm-reset": "តើអ្នកប្រាកដថាចង់កំណត់ស្ថិតិរបស់ {target} ឡើងវិញទេ?",
     "delete-team-warning": "ពេលលុបក្រុម គេហទំព័ររបស់ក្រុមក៏នឹងត្រូវលប់ចោលទាំងអស់ផងដែរ។",
     "delete-website-warning": "ទិន្នន័យរបស់គេហទំព័រទាំងអស់នឹងត្រូវលុបចោល។",
     "error": "មាន​អ្វីមួយ​មិន​ប្រក្រតី។",
-    "event-log": "{event} on {url}",
+    "event-log": "<b>{event}</b> on <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "ការកំណត់",
     "incorrect-username-password": "ឈ្មោះអ្នកប្រើឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "អ្នកប្រើប្រាស់ត្រូវបានលុបចោល។",
     "viewed-page": "ទំព័រដែលបានមើល",
-    "visitor-log": "អ្នកមើលពីប្រទេស {country} ប្រើប្រាស់កម្មវិធី {browser} លើឧបករណ៍ {os} {device}"
+    "visitor-log": "អ្នកមើលពីប្រទេស <b>{country}</b> ប្រើប្រាស់កម្មវិធី <b>{browser}</b> លើឧបករណ៍ <b>{os}</b> <b>{device}</b>"
   }
 }

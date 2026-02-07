@@ -11,7 +11,7 @@ import { WebsitesDataTable } from './WebsitesDataTable';
 export function WebsitesPage() {
   const { user } = useLoginQuery();
   const { teamId } = useNavigation();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { data } = useTeamMembersQuery(teamId);
 
   const showActions =
@@ -23,7 +23,7 @@ export function WebsitesPage() {
   return (
     <PageBody>
       <Column gap="6" margin="2">
-        <PageHeader title={formatMessage(labels.websites)}>
+        <PageHeader title={t(labels.websites)}>
           {showActions && <WebsiteAddButton teamId={teamId} />}
         </PageHeader>
         <Panel>

@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "البيانات المجمعة",
     "confirm-delete": "هل أنت متأكد من حذف {target}?",
-    "confirm-leave": "هل أنت متأكد من مغادرة {target}?",
-    "confirm-remove": "هل انت متأكد من حذف {target}?",
+    "confirm-leave": "هل أنت متأكد من مغادرة <b>{target}</b>?",
+    "confirm-remove": "هل انت متأكد من حذف <b>{target}</b>?",
     "confirm-reset": "هل أنت متأكد من اعادة تعيين الإحصائيات لـ {target}؟",
     "delete-team-warning": "سيؤدي حذف الفريق أيضًا إلى حذف كافة مواقع الفريق",
     "delete-website-warning": "سيتم حذف كافة بيانات الموقع.",
     "error": "حدث خطأ ما.",
-    "event-log": "{event} في {url}",
+    "event-log": "<b>{event}</b> في <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "الذهاب إلى الإعدادات",
     "incorrect-username-password": "اسم المستخدم او كلمة المرور غير صحيحة.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "تم حذف المستخدم.",
     "viewed-page": "شوهدت الصفحة",
-    "visitor-log": "زائر من {country} يستخدم {browser} على {os} {device}"
+    "visitor-log": "زائر من <b>{country}</b> يستخدم <b>{browser}</b> على <b>{os}</b> <b>{device}</b>"
   }
 }

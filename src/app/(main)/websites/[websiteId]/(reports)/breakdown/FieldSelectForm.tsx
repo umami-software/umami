@@ -12,7 +12,7 @@ export function FieldSelectForm({
   onClose?: () => void;
 }) {
   const [selected, setSelected] = useState(selectedFields);
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { fields, groupLabels } = useFields();
 
   const handleChange = (value: string[]) => {
@@ -57,9 +57,9 @@ export function FieldSelectForm({
         </List>
       </Column>
       <Grid columns="1fr 1fr" gap>
-        <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
+        <Button onPress={onClose}>{t(labels.cancel)}</Button>
         <Button onPress={handleApply} variant="primary">
-          {formatMessage(labels.apply)}
+          {t(labels.apply)}
         </Button>
       </Grid>
     </Column>

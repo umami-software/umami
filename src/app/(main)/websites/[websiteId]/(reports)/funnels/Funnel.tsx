@@ -19,7 +19,7 @@ type FunnelResult = {
 };
 
 export function Funnel({ id, name, type, parameters, websiteId }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { pathname } = useNavigation();
   const isSharePage = pathname.includes('/share/');
   const { data, error, isLoading } = useResultQuery(type, {
@@ -43,10 +43,7 @@ export function Funnel({ id, name, type, parameters, websiteId }) {
               <ReportEditButton id={id} name={name} type={type}>
                 {({ close }) => {
                   return (
-                    <Dialog
-                      title={formatMessage(labels.funnel)}
-                      style={{ minHeight: 300, minWidth: 400 }}
-                    >
+                    <Dialog title={t(labels.funnel)} style={{ minHeight: 300, minWidth: 400 }}>
                       <FunnelEditForm id={id} websiteId={websiteId} onClose={close} />
                     </Dialog>
                   );
@@ -90,9 +87,9 @@ export function Funnel({ id, name, type, parameters, websiteId }) {
                 <Column gap>
                   <Row alignItems="center" justifyContent="space-between" gap>
                     <Text color="muted">
-                      {formatMessage(isPage ? labels.viewedPage : labels.triggeredEvent)}
+                      {t(isPage ? labels.viewedPage : labels.triggeredEvent)}
                     </Text>
-                    <Text color="muted">{formatMessage(labels.conversionRate)}</Text>
+                    <Text color="muted">{t(labels.conversionRate)}</Text>
                   </Row>
                   <Row alignItems="center" justifyContent="space-between" gap>
                     <Row alignItems="center" gap>
@@ -109,7 +106,7 @@ export function Funnel({ id, name, type, parameters, websiteId }) {
                         <User />
                       </Icon>
                       <Text title={visitors.toString()} transform="lowercase">
-                        {`${formatLongNumber(visitors)} ${formatMessage(labels.visitors)}`}
+                        {`${formatLongNumber(visitors)} ${t(labels.visitors)}`}
                       </Text>
                     </Row>
                   </Row>

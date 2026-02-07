@@ -19,7 +19,7 @@ export interface PageviewsChartProps extends BarChartProps {
 }
 
 export function PageviewsChart({ data, unit, minDate, maxDate, ...props }: PageviewsChartProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { theme } = useTheme();
   const { locale, dateLocale } = useLocale();
   const { colors } = useMemo(() => getThemeColors(theme), [theme]);
@@ -32,7 +32,7 @@ export function PageviewsChart({ data, unit, minDate, maxDate, ...props }: Pagev
       datasets: [
         {
           type: 'bar',
-          label: formatMessage(labels.visitors),
+          label: t(labels.visitors),
           data: generateTimeSeries(data.sessions, minDate, maxDate, unit, dateLocale),
           borderWidth: 1,
           barPercentage: 0.9,
@@ -42,7 +42,7 @@ export function PageviewsChart({ data, unit, minDate, maxDate, ...props }: Pagev
         },
         {
           type: 'bar',
-          label: formatMessage(labels.views),
+          label: t(labels.views),
           data: generateTimeSeries(data.pageviews, minDate, maxDate, unit, dateLocale),
           barPercentage: 0.9,
           categoryPercentage: 0.9,
@@ -54,7 +54,7 @@ export function PageviewsChart({ data, unit, minDate, maxDate, ...props }: Pagev
           ? [
               {
                 type: 'line',
-                label: `${formatMessage(labels.views)} (${formatMessage(labels.previous)})`,
+                label: `${t(labels.views)} (${t(labels.previous)})`,
                 data: generateTimeSeries(
                   data.compare.pageviews,
                   minDate,
@@ -69,7 +69,7 @@ export function PageviewsChart({ data, unit, minDate, maxDate, ...props }: Pagev
               },
               {
                 type: 'line',
-                label: `${formatMessage(labels.visitors)} (${formatMessage(labels.previous)})`,
+                label: `${t(labels.visitors)} (${t(labels.previous)})`,
                 data: generateTimeSeries(data.compare.sessions, minDate, maxDate, unit, dateLocale),
                 borderWidth: 2,
                 backgroundColor: '#f15bb5',

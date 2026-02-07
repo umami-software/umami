@@ -34,7 +34,7 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
     setItem(CURRENCY_CONFIG, value);
   };
 
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { locale, dateLocale } = useLocale();
   const { countryNames } = useCountryNames(locale);
   const { data, error, isLoading } = useResultQuery<any>('revenue', {
@@ -48,7 +48,7 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
     ({ label: code }) => (
       <Row className={classNames(locale)} gap>
         <TypeIcon type="country" value={code} />
-        <Text>{countryNames[code] || formatMessage(labels.unknown)}</Text>
+        <Text>{countryNames[code] || t(labels.unknown)}</Text>
       </Row>
     ),
     [countryNames, locale],
@@ -90,22 +90,22 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
     return [
       {
         value: sum,
-        label: formatMessage(labels.total),
+        label: t(labels.total),
         formatValue: n => formatLongCurrency(n, currency),
       },
       {
         value: count ? sum / count : 0,
-        label: formatMessage(labels.average),
+        label: t(labels.average),
         formatValue: n => formatLongCurrency(n, currency),
       },
       {
         value: count,
-        label: formatMessage(labels.transactions),
+        label: t(labels.transactions),
         formatValue: formatLongNumber,
       },
       {
         value: unique_count,
-        label: formatMessage(labels.uniqueCustomers),
+        label: t(labels.uniqueCustomers),
         formatValue: formatLongNumber,
       },
     ] as any;
@@ -142,8 +142,8 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
             </Panel>
             <Panel>
               <ListTable
-                title={formatMessage(labels.country)}
-                metric={formatMessage(labels.revenue)}
+                title={t(labels.country)}
+                metric={t(labels.revenue)}
                 data={data?.country.map(({ name, value }: { name: string; value: number }) => ({
                   label: name,
                   count: Number(value),

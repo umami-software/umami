@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Собранные данные",
     "confirm-delete": "Вы уверены, что хотите удалить {target}?",
-    "confirm-leave": "Вы уверены, что хотите уйти {target}?",
-    "confirm-remove": "Вы уверены, что хотите удалить {target}?",
+    "confirm-leave": "Вы уверены, что хотите уйти <b>{target}</b>?",
+    "confirm-remove": "Вы уверены, что хотите удалить <b>{target}</b>?",
     "confirm-reset": "Вы уверены, что хотите сбросить статистику {target}?",
     "delete-team-warning": "При удалении команды будут удалены и все ее веб-сайты.",
     "delete-website-warning": "Все связанные данные будут также удалены.",
     "error": "Что-то пошло не так.",
-    "event-log": "{event} на {url}",
+    "event-log": "<b>{event}</b> на <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Перейти к настройкам",
     "incorrect-username-password": "Неверное имя пользователя/пароль.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "Пользователь удален.",
     "viewed-page": "Просмотренная страница",
-    "visitor-log": "Посетитель из {country} используя {browser} на {os} {device}"
+    "visitor-log": "Посетитель из <b>{country}</b> используя <b>{browser}</b> на <b>{os}</b> <b>{device}</b>"
   }
 }

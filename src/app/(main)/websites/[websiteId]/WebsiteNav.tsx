@@ -24,7 +24,7 @@ export function WebsiteNav({
   isCollapsed?: boolean;
   onItemClick?: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { teamId, router, renderUrl } = useNavigation();
   const { items, selectedKey } = useWebsiteNavItems(websiteId);
 
@@ -52,14 +52,10 @@ export function WebsiteNav({
                 borderRadius
                 minHeight="40px"
               >
-                <IconLabel
-                  icon={<ArrowLeft />}
-                  label={isCollapsed ? '' : formatMessage(labels.back)}
-                  padding
-                />
+                <IconLabel icon={<ArrowLeft />} label={isCollapsed ? '' : t(labels.back)} padding />
               </Row>
             </Focusable>
-            <Tooltip placement="right">{formatMessage(labels.back)}</Tooltip>
+            <Tooltip placement="right">{t(labels.back)}</Tooltip>
           </TooltipTrigger>
         </Link>
         {!isCollapsed && (

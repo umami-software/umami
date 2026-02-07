@@ -299,13 +299,13 @@
     "bad-request": "Bad request",
     "collected-data": "Datos obtenidos",
     "confirm-delete": "¿Seguro que quieres eliminar {target}?",
-    "confirm-leave": "¿Seguro que quieres abandonar {target}?",
-    "confirm-remove": "¿Estás seguro de que desea eliminar {target}?",
+    "confirm-leave": "¿Seguro que quieres abandonar <b>{target}</b>?",
+    "confirm-remove": "¿Estás seguro de que desea eliminar <b>{target}</b>?",
     "confirm-reset": "¿Seguro que quieres BORRAR las analíticas de {target}?",
     "delete-team-warning": "Al eliminar un equipo, también se eliminarán todos los sitios web del equipo.",
     "delete-website-warning": "Toda la información relacionada será eliminada.",
     "error": "Algo falló.",
-    "event-log": "{event} en {url}",
+    "event-log": "<b>{event}</b> en <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Ir a la configuración",
     "incorrect-username-password": "Nombre de usuario o contraseña incorrectos.",
@@ -339,6 +339,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "Usuario eliminado.",
     "viewed-page": "Página vista",
-    "visitor-log": "Visitante desde {country} usando {browser} en {os} {device}"
+    "visitor-log": "Visitante desde <b>{country}</b> usando <b>{browser}</b> en <b>{os}</b> <b>{device}</b>"
   }
 }

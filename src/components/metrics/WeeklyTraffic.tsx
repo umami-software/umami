@@ -7,7 +7,7 @@ import { getDayOfWeekAsDate } from '@/lib/date';
 export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
   const { data, isLoading, error } = useWeeklyTrafficQuery(websiteId);
   const { dateLocale } = useLocale();
-  const { labels, formatMessage } = useMessages();
+  const { labels, t } = useMessages();
   const { weekStartsOn } = dateLocale.options;
   const daysOfWeek = Array(7)
     .fill(weekStartsOn)
@@ -96,7 +96,7 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                           </Row>
                         </Focusable>
                         <Tooltip placement="right">
-                          <Text>{`${formatMessage(labels.visitors)}: ${count}`}</Text>
+                          <Text size="base">{`${t(labels.visitors)}: ${count}`}</Text>
                         </Tooltip>
                       </TooltipTrigger>
                     );

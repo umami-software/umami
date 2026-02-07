@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Collected data",
     "confirm-delete": "Ar esate tikri, jog norite ištrinti svetainę {target}?",
-    "confirm-leave": "Ar esate tikri, jog norite palikti {target}?",
-    "confirm-remove": "Ar esate tikri, jog norite ištrinti {target}?",
+    "confirm-leave": "Ar esate tikri, jog norite palikti <b>{target}</b>?",
+    "confirm-remove": "Ar esate tikri, jog norite ištrinti <b>{target}</b>?",
     "confirm-reset": "Are esate tikri, jog norite atstatyti svetainės {target} statistikos duomenis?",
     "delete-team-warning": "Ištrinant komandą bus ištrintos ir visos komandos svetainės.",
     "delete-website-warning": "Visi susiję duomenys taip pat bus ištrinti.",
     "error": "Kažkas įvyko ne taip.",
-    "event-log": "{event} on {url}",
+    "event-log": "<b>{event}</b> on <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Eiti į nustatymus",
     "incorrect-username-password": "Neteisingas vartotojo vardas/slaptažodis.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "Vartotojas ištrintas.",
     "viewed-page": "Viewed page",
-    "visitor-log": "Lankytojas iš {country}, naudojantis {browser} sistemoje {os} {device}"
+    "visitor-log": "Lankytojas iš <b>{country}</b>, naudojantis <b>{browser}</b> sistemoje <b>{os}</b> <b>{device}</b>"
   }
 }

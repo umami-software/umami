@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Gesammelte Daten",
     "confirm-delete": "Sind Sie sich sicher, {target} zu löschen?",
-    "confirm-leave": "Sind Sie sicher, dass die {target} verlassen möchten?",
-    "confirm-remove": "Sind Sie sicher, {target} zu entfernen?",
+    "confirm-leave": "Sind Sie sicher, dass die <b>{target}</b> verlassen möchten?",
+    "confirm-remove": "Sind Sie sicher, <b>{target}</b> zu entfernen?",
     "confirm-reset": "Sind Sie sicher, dass Sie die Statistiken von {target} zurücksetzen wollen?",
     "delete-team-warning": "Ein Team zu löschen, wird auch alle Team-Websites löschen.",
     "delete-website-warning": "Alle zugehörigen Daten werden ebenfalls gelöscht.",
     "error": "Es ist ein Fehler aufgetreten.",
-    "event-log": "{event} auf {url}",
+    "event-log": "<b>{event}</b> auf <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Zu den Einstellungen",
     "incorrect-username-password": "Falsches Passwort oder Benutzername.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "Benutzer gelöscht.",
     "viewed-page": "Seite besucht",
-    "visitor-log": "Besucher aus {country} benutzt {browser} auf {os} {device}"
+    "visitor-log": "Besucher aus <b>{country}</b> benutzt <b>{browser}</b> auf <b>{os}</b> <b>{device}</b>"
   }
 }

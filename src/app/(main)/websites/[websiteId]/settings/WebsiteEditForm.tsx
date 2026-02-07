@@ -4,13 +4,13 @@ import { DOMAIN_REGEX } from '@/lib/constants';
 
 export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
   const website = useWebsite();
-  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
+  const { t, labels, messages, getErrorMessage } = useMessages();
   const { mutateAsync, error, touch, toast } = useUpdateQuery(`/websites/${websiteId}`);
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
       onSuccess: async () => {
-        toast(formatMessage(messages.saved));
+        toast(t(messages.saved));
         touch('websites');
         touch(`website:${website.id}`);
         onSave?.();
@@ -20,26 +20,26 @@ export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSa
 
   return (
     <Form onSubmit={handleSubmit} error={getErrorMessage(error)} values={website}>
-      <FormField name="id" label={formatMessage(labels.websiteId)}>
+      <FormField name="id" label={t(labels.websiteId)}>
         <TextField data-test="text-field-websiteId" value={website?.id} isReadOnly allowCopy />
       </FormField>
       <FormField
-        label={formatMessage(labels.name)}
+        label={t(labels.name)}
         data-test="input-name"
         name="name"
-        rules={{ required: formatMessage(labels.required) }}
+        rules={{ required: t(labels.required) }}
       >
         <TextField />
       </FormField>
       <FormField
-        label={formatMessage(labels.domain)}
+        label={t(labels.domain)}
         data-test="input-domain"
         name="domain"
         rules={{
-          required: formatMessage(labels.required),
+          required: t(labels.required),
           pattern: {
             value: DOMAIN_REGEX,
-            message: formatMessage(messages.invalidDomain),
+            message: t(messages.invalidDomain),
           },
         }}
       >
@@ -47,7 +47,7 @@ export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSa
       </FormField>
       <FormButtons>
         <FormSubmitButton data-test="button-submit" variant="primary">
-          {formatMessage(labels.save)}
+          {t(labels.save)}
         </FormSubmitButton>
       </FormButtons>
     </Form>

@@ -277,13 +277,13 @@
     "active-users": "{x} trenutni {x, plural, one {obiskovalec} other {obiskovalcev}}",
     "collected-data": "Zbrani podatki",
     "confirm-delete": "Ste prepričani, da želite izbrisati {target}?",
-    "confirm-leave": "Ste prepričani, da želite zapustiti {target}?",
-    "confirm-remove": "Ali ste prepričani, da želite odstraniti {target}?",
+    "confirm-leave": "Ste prepričani, da želite zapustiti <b>{target}</b>?",
+    "confirm-remove": "Ali ste prepričani, da želite odstraniti <b>{target}</b>?",
     "confirm-reset": "Ste prepričani, da želite ponastaviti statistiko {target}?",
     "delete-team-warning": "Brisanje ekipe bo izbrisalo tudi vsa spletna mesta ekipe.",
     "delete-website-warning": "Izbrisani bodo tudi vsi pripadajoči podatki.",
     "error": "Nekaj je šlo narobe.",
-    "event-log": "{event} na {url}",
+    "event-log": "<b>{event}</b> na <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Pojdi v nastavitve",
     "incorrect-username-password": "Nepravilno uporabniško ime/geslo.",
@@ -316,7 +316,7 @@
     "triggered-event": "Sprožen dogodek",
     "user-deleted": "Uporabnik je izbrisan.",
     "viewed-page": "Ogledana stran",
-    "visitor-log": "Obiskovalec iz {country} uporablja {browser} na {os} {device}",
+    "visitor-log": "Obiskovalec iz <b>{country}</b> uporablja <b>{browser}</b> na <b>{os}</b> <b>{device}</b>",
     "visitors-dropped-off": "Osip obiskovalcev"
   }
 }

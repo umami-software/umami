@@ -41,7 +41,7 @@ export function ListTable({
   itemCount = 10,
   currency,
 }: ListTableProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { isPhone } = useMobile();
 
   const getRow = (row: ListData, index: number) => {
@@ -50,7 +50,7 @@ export function ListTable({
     return (
       <AnimatedRow
         key={`${label}${index}`}
-        label={renderLabel ? renderLabel(row, index) : (label ?? formatMessage(labels.unknown))}
+        label={renderLabel ? renderLabel(row, index) : (label ?? t(labels.unknown))}
         value={count}
         percent={percent}
         animate={animate && !virtualize}

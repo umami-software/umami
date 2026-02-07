@@ -19,7 +19,7 @@ export function WebsiteSelect({
   teamId?: string;
   includeTeams?: boolean;
 } & SelectProps) {
-  const { formatMessage, messages } = useMessages();
+  const { t, messages } = useMessages();
   const { data: website } = useWebsiteQuery(websiteId);
   const [name, setName] = useState<string>(website?.name);
   const [search, setSearch] = useState('');
@@ -63,7 +63,7 @@ export function WebsiteSelect({
       onOpenChange={handleOpenChange}
       renderValue={renderValue}
       listProps={{
-        renderEmptyState: () => <Empty message={formatMessage(messages.noResultsFound)} />,
+        renderEmptyState: () => <Empty message={t(messages.noResultsFound)} />,
         style: { maxHeight: 'calc(42vh - 65px)', width: 280 },
       }}
       buttonProps={{ style: { minHeight: 40 } }}

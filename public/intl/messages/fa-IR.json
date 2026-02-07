@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "داده‌های جمع‌آوری شده",
     "confirm-delete": "آیا مطمئن هستید می‌خواهید {target} را حذف کنید؟",
-    "confirm-leave": "آیا مطمئن هستید می‌خواهید از {target} خارج شوید؟",
-    "confirm-remove": "آیا مطمئن هستید می‌خواهید {target} را حذف کنید؟",
+    "confirm-leave": "آیا مطمئن هستید می‌خواهید از <b>{target}</b> خارج شوید؟",
+    "confirm-remove": "آیا مطمئن هستید می‌خواهید <b>{target}</b> را حذف کنید؟",
     "confirm-reset": "آیا مطمئن هستید می‌خواهید {target} را بازنشانی کنید؟",
     "delete-team-warning": "با حذف تیم، تمامی وب‌سایت‌های تیم هم حذف خواهند شد.",
     "delete-website-warning": "همه‌ی داده‌های وب‌سایت هم حذف خواهد شد.",
     "error": "مشکلی پیش آمده است.",
-    "event-log": "{event} در {url}",
+    "event-log": "<b>{event}</b> در <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "رفتن به تنظیمات",
     "incorrect-username-password": "نام کاربری / رمز نادرست است.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "کاربر حذف شد.",
     "viewed-page": "صفحه مشاهده شد",
-    "visitor-log": "بازدیدکننده از کشور {country} با مروگر {browser} در {os} {device}"
+    "visitor-log": "بازدیدکننده از کشور <b>{country}</b> با مروگر <b>{browser}</b> در <b>{os}</b> <b>{device}</b>"
   }
 }

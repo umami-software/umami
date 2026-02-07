@@ -26,14 +26,14 @@ export function TeamEditForm({
   onSave?: () => void;
 }) {
   const team = useTeam();
-  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
+  const { t, labels, messages, getErrorMessage } = useMessages();
 
   const { mutateAsync, error, isPending, touch, toast } = useUpdateQuery(`/teams/${teamId}`);
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
       onSuccess: async () => {
-        toast(formatMessage(messages.saved));
+        toast(t(messages.saved));
         touch('teams');
         touch(`teams:${teamId}`);
         onSave?.();
@@ -46,30 +46,22 @@ export function TeamEditForm({
       {({ setValue }) => {
         return (
           <>
-            <FormField name="id" label={formatMessage(labels.teamId)}>
+            <FormField name="id" label={t(labels.teamId)}>
               <TextField isReadOnly allowCopy />
             </FormField>
-            <FormField
-              name="name"
-              label={formatMessage(labels.name)}
-              rules={{ required: formatMessage(labels.required) }}
-            >
+            <FormField name="name" label={t(labels.name)} rules={{ required: t(labels.required) }}>
               <TextField isReadOnly={!allowEdit} />
             </FormField>
             {showAccessCode && (
               <Row alignItems="flex-end" gap>
-                <FormField
-                  name="accessCode"
-                  label={formatMessage(labels.accessCode)}
-                  style={{ flex: 1 }}
-                >
+                <FormField name="accessCode" label={t(labels.accessCode)} style={{ flex: 1 }}>
                   <TextField isReadOnly allowCopy />
                 </FormField>
                 {allowEdit && (
                   <Button
                     onPress={() => setValue('accessCode', generateId(), { shouldDirty: true })}
                   >
-                    <IconLabel icon={<RefreshCw />} label={formatMessage(labels.regenerate)} />
+                    <IconLabel icon={<RefreshCw />} label={t(labels.regenerate)} />
                   </Button>
                 )}
               </Row>
@@ -77,7 +69,7 @@ export function TeamEditForm({
             {allowEdit && (
               <FormButtons justifyContent="flex-end">
                 <FormSubmitButton variant="primary" isPending={isPending}>
-                  {formatMessage(labels.save)}
+                  {t(labels.save)}
                 </FormSubmitButton>
               </FormButtons>
             )}

@@ -13,9 +13,9 @@ import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 
 export function BoardEditHeader() {
   const { board, updateBoard, saveBoard, isPending } = useBoard();
-  const { formatMessage, labels } = useMessages();
-  const { teamId, router, renderUrl } = useNavigation();
-  const defaultName = formatMessage(labels.untitled);
+  const { t, labels } = useMessages();
+  const { router, renderUrl } = useNavigation();
+  const defaultName = t(labels.untitled);
 
   const handleNameChange = (value: string) => {
     updateBoard({ name: value });
@@ -71,7 +71,7 @@ export function BoardEditHeader() {
             variant="quiet"
             name="description"
             value={board?.description ?? ''}
-            placeholder={`+ ${formatMessage(labels.addDescription)}`}
+            placeholder={`+ ${t(labels.addDescription)}`}
             autoComplete="off"
             onChange={handleDescriptionChange}
             style={{ width: '100%' }}
@@ -80,21 +80,17 @@ export function BoardEditHeader() {
           </TextField>
         </Row>
         <Row alignItems="center" gap="3">
-          <Text>{formatMessage(labels.website)}</Text>
-          <WebsiteSelect
-            websiteId={board?.parameters?.websiteId}
-            teamId={teamId}
-            onChange={handleWebsiteChange}
-          />
+          <Text>{t(labels.website)}</Text>
+          <WebsiteSelect websiteId={board?.parameters?.websiteId} onChange={handleWebsiteChange} />
         </Row>
       </Column>
       <Column justifyContent="center" alignItems="flex-end">
         <Row gap="3">
           <Button variant="quiet" onPress={handleCancel}>
-            {formatMessage(labels.cancel)}
+            {t(labels.cancel)}
           </Button>
           <LoadingButton variant="primary" onPress={handleSave} isLoading={isPending}>
-            {formatMessage(labels.save)}
+            {t(labels.save)}
           </LoadingButton>
         </Row>
       </Column>

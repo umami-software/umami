@@ -4,13 +4,13 @@ import { Plus } from '@/components/icons';
 import { BoardAddForm } from './BoardAddForm';
 
 export function BoardAddButton() {
-  const { formatMessage, labels, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { toast } = useToast();
   const { touch } = useModified();
   const { teamId } = useNavigation();
 
   const handleSave = async () => {
-    toast(formatMessage(messages.saved));
+    toast(t(messages.saved));
     touch('boards');
   };
 
@@ -20,10 +20,10 @@ export function BoardAddButton() {
         <Icon>
           <Plus />
         </Icon>
-        <Text>{formatMessage(labels.addBoard)}</Text>
+        <Text>{t(labels.addBoard)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.addBoard)} style={{ width: 400 }}>
+        <Dialog title={t(labels.addBoard)} style={{ width: 400 }}>
           {({ close }) => <BoardAddForm teamId={teamId} onSave={handleSave} onClose={close} />}
         </Dialog>
       </Modal>

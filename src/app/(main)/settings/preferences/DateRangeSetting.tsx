@@ -6,7 +6,7 @@ import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE_VALUE } from '@/lib/constants';
 import { getItem, setItem } from '@/lib/storage';
 
 export function DateRangeSetting() {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const [date, setDate] = useState(getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE_VALUE);
 
   const handleChange = (value: string) => {
@@ -27,7 +27,7 @@ export function DateRangeSetting() {
         placement="bottom start"
         style={{ minWidth: '250px' }}
       />
-      <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
+      <Button onPress={handleReset}>{t(labels.reset)}</Button>
     </Row>
   );
 }

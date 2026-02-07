@@ -10,7 +10,7 @@ export function UserSelect({
 }: {
   teamId?: string;
 } & SelectProps) {
-  const { formatMessage, messages } = useMessages();
+  const { t, messages } = useMessages();
   const { data: users, isLoading: usersLoading } = useUsersQuery();
   const { data: teamMembers, isLoading: teamMembersLoading } = useTeamMembersQuery(teamId);
   const [username, setUsername] = useState<string>();
@@ -51,7 +51,7 @@ export function UserSelect({
       onChange={handleChange}
       onOpenChange={handleOpenChange}
       listProps={{
-        renderEmptyState: () => <Empty message={formatMessage(messages.noResultsFound)} />,
+        renderEmptyState: () => <Empty message={t(messages.noResultsFound)} />,
         style: { maxHeight: 'calc(42vh - 65px)' },
       }}
     >

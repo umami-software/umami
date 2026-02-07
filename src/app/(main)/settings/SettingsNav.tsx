@@ -3,33 +3,33 @@ import { useMessages, useNavigation } from '@/components/hooks';
 import { Settings2, UserCircle, Users } from '@/components/icons';
 
 export function SettingsNav({ onItemClick }: { onItemClick?: () => void }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { renderUrl, pathname } = useNavigation();
 
   const items = [
     {
-      label: formatMessage(labels.application),
+      label: t(labels.application),
       items: [
         {
           id: 'preferences',
-          label: formatMessage(labels.preferences),
+          label: t(labels.preferences),
           path: renderUrl('/settings/preferences'),
           icon: <Settings2 />,
         },
       ],
     },
     {
-      label: formatMessage(labels.account),
+      label: t(labels.account),
       items: [
         {
           id: 'profile',
-          label: formatMessage(labels.profile),
+          label: t(labels.profile),
           path: renderUrl('/settings/profile'),
           icon: <UserCircle />,
         },
         {
           id: 'teams',
-          label: formatMessage(labels.teams),
+          label: t(labels.teams),
           path: renderUrl('/settings/teams'),
           icon: <Users />,
         },
@@ -44,7 +44,7 @@ export function SettingsNav({ onItemClick }: { onItemClick?: () => void }) {
   return (
     <NavMenu
       items={items}
-      title={formatMessage(labels.settings)}
+      title={t(labels.settings)}
       selectedKey={selectedKey}
       allowMinimize={false}
       onItemClick={onItemClick}

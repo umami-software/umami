@@ -24,7 +24,7 @@ export interface GoalProps {
 export type GoalData = { num: number; total: number };
 
 export function Goal({ id, name, type, parameters, websiteId, startDate, endDate }: GoalProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { pathname } = useNavigation();
   const isSharePage = pathname.includes('/share/');
   const { data, error, isLoading, isFetching } = useResultQuery<GoalData>(type, {
@@ -53,7 +53,7 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
                   {({ close }) => {
                     return (
                       <Dialog
-                        title={formatMessage(labels.goal)}
+                        title={t(labels.goal)}
                         variant="modal"
                         style={{ minHeight: 300, minWidth: 400 }}
                       >
@@ -66,10 +66,8 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
             )}
           </Grid>
           <Row alignItems="center" justifyContent="space-between" gap>
-            <Text color="muted">
-              {formatMessage(isPage ? labels.viewedPage : labels.triggeredEvent)}
-            </Text>
-            <Text color="muted">{formatMessage(labels.conversionRate)}</Text>
+            <Text color="muted">{t(isPage ? labels.viewedPage : labels.triggeredEvent)}</Text>
+            <Text color="muted">{t(labels.conversionRate)}</Text>
           </Row>
           <Row alignItems="center" justifyContent="space-between" gap>
             <Row alignItems="center" gap>

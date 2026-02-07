@@ -28,7 +28,7 @@ export function SessionActivity({
   startDate: Date;
   endDate: Date;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { formatTimezoneDate } = useTimezone();
   const { data, isLoading, error } = useSessionActivityQuery(
     websiteId,
@@ -69,9 +69,7 @@ export function SessionActivity({
                 <Row alignItems="center" gap="2">
                   <Icon>{eventName ? <Lightning /> : <Eye />}</Icon>
                   <Text wrap="nowrap">
-                    {eventName
-                      ? formatMessage(labels.triggeredEvent)
-                      : formatMessage(labels.viewedPage)}
+                    {eventName ? t(labels.triggeredEvent) : t(labels.viewedPage)}
                   </Text>
                   <Text weight="bold" style={{ maxWidth: isMobile ? '400px' : null }} truncate>
                     {eventName || renderLink(urlPath, hostname)}

@@ -36,7 +36,7 @@ export function Panel({
   width,
   ...props
 }: PanelProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const handleFullscreen = () => {
@@ -62,7 +62,7 @@ export function Panel({
             <Button size="sm" variant="quiet" onPress={handleFullscreen}>
               <Icon>{isFullscreen ? <X /> : <Maximize />}</Icon>
             </Button>
-            <Tooltip>{formatMessage(labels.maximize)}</Tooltip>
+            <Tooltip>{t(labels.maximize)}</Tooltip>
           </TooltipTrigger>
         </Row>
       )}

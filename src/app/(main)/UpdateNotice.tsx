@@ -7,7 +7,7 @@ import { setItem } from '@/lib/storage';
 import { checkVersion, useVersion } from '@/store/version';
 
 export function UpdateNotice({ user, config }) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { latest, checked, hasUpdate, releaseUrl } = useVersion();
   const pathname = usePathname();
   const [dismissed, setDismissed] = useState(checked);
@@ -49,11 +49,11 @@ export function UpdateNotice({ user, config }) {
   return (
     <Column justifyContent="center" alignItems="center" position="fixed" top="10px" width="100%">
       <Row width="600px">
-        <AlertBanner title={formatMessage(messages.newVersionAvailable, { version: `v${latest}` })}>
+        <AlertBanner title={t(messages.newVersionAvailable, { version: `v${latest}` })}>
           <Button variant="primary" onPress={handleViewClick}>
-            {formatMessage(labels.viewDetails)}
+            {t(labels.viewDetails)}
           </Button>
-          <Button onPress={handleDismissClick}>{formatMessage(labels.dismiss)}</Button>
+          <Button onPress={handleDismissClick}>{t(labels.dismiss)}</Button>
         </AlertBanner>
       </Row>
     </Column>

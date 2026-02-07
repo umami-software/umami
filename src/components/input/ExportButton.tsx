@@ -7,7 +7,7 @@ import { useFilterParameters } from '@/components/hooks/useFilterParameters';
 import { Download } from '@/components/icons';
 
 export function ExportButton({ websiteId }: { websiteId: string }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const [isLoading, setIsLoading] = useState(false);
   const date = useDateParameters();
   const filters = useFilterParameters();
@@ -41,7 +41,7 @@ export function ExportButton({ websiteId }: { websiteId: string }) {
           <Download />
         </Icon>
       </LoadingButton>
-      <Tooltip>{formatMessage(labels.download)}</Tooltip>
+      <Tooltip>{t(labels.download)}</Tooltip>
     </TooltipTrigger>
   );
 }

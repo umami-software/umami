@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Collected data",
     "confirm-delete": "คุณแน่ใจหรือไม่ว่าต้องการลบ {target} ?",
-    "confirm-leave": "Are you sure you want to leave {target}?",
-    "confirm-remove": "Are you sure you want to remove {target}?",
+    "confirm-leave": "Are you sure you want to leave <b>{target}</b>?",
+    "confirm-remove": "Are you sure you want to remove <b>{target}</b>?",
     "confirm-reset": "คุณแน่ใจหรือไม่ว่าต้องการรีเซตข้อมูลสถิติของ {target} ?",
     "delete-team-warning": "Deleting a team will also delete all team websites.",
     "delete-website-warning": "ข้อมูลที่เกี่ยวข้องทั้งหมดจะถูกลบ.",
     "error": "เกิดข้อผิดพลาด.",
-    "event-log": "{event} on {url}",
+    "event-log": "<b>{event}</b> on <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "ไปที่การตั้งค่า",
     "incorrect-username-password": "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "User deleted.",
     "viewed-page": "Viewed page",
-    "visitor-log": "ผู้เข้าชมจาก {country} กำลังใช้งานผ่าน {browser} บน {os} {device}"
+    "visitor-log": "ผู้เข้าชมจาก <b>{country}</b> กำลังใช้งานผ่าน <b>{browser}</b> บน <b>{os}</b> <b>{device}</b>"
   }
 }

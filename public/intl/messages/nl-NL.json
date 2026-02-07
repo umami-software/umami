@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Collected data",
     "confirm-delete": "Weet je zeker dat je {target} wilt verwijderen?",
-    "confirm-leave": "Weet je zeker dat je {target} wilt verlaten?",
-    "confirm-remove": "Weet je zeker dat je {target} wilt verwijderen?",
+    "confirm-leave": "Weet je zeker dat je <b>{target}</b> wilt verlaten?",
+    "confirm-remove": "Weet je zeker dat je <b>{target}</b> wilt verwijderen?",
     "confirm-reset": "Weet je zeker dat je de statistieken van {target} opnieuw wilt instellen?",
     "delete-team-warning": "Als een team wordt verwijderd, worden ook alle websites van dat team verwijderd.",
     "delete-website-warning": "Alle verwante gegevens zullen ook verwijderd worden.",
     "error": "Er is iets misgegaan.",
-    "event-log": "{event} op {url}",
+    "event-log": "<b>{event}</b> op <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Naar instellingen",
     "incorrect-username-password": "Incorrecte gebruikersnaam/wachtwoord.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "Gebruiker verwijderd",
     "viewed-page": "Bekeken pagina",
-    "visitor-log": "Bezoeker uit {country} met {browser} op een {os} {device}"
+    "visitor-log": "Bezoeker uit <b>{country}</b> met <b>{browser}</b> op een <b>{os}</b> <b>{device}</b>"
   }
 }

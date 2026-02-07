@@ -5,7 +5,7 @@ import { percentFilter } from '@/lib/filters';
 
 export function RealtimeReferrers({ data }: { data: any }) {
   const website = useWebsite();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { referrers } = data || {};
   const limit = 15;
 
@@ -32,8 +32,8 @@ export function RealtimeReferrers({ data }: { data: any }) {
 
   return (
     <ListTable
-      title={formatMessage(labels.referrers)}
-      metric={formatMessage(labels.views)}
+      title={t(labels.referrers)}
+      metric={t(labels.views)}
       renderLabel={renderLink}
       data={domains.map(({ x, y, z }: { x: string; y: number; z: number }) => ({
         label: x,

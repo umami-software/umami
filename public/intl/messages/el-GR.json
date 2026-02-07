@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Collected data",
     "confirm-delete": "Είστε βέβαιοι ότι θέλετε να διαγράψετε το {target};",
-    "confirm-leave": "Are you sure you want to leave {target}?",
-    "confirm-remove": "Are you sure you want to remove {target}?",
+    "confirm-leave": "Are you sure you want to leave <b>{target}</b>?",
+    "confirm-remove": "Are you sure you want to remove <b>{target}</b>?",
     "confirm-reset": "Are your sure you want to reset {target}'s statistics?",
     "delete-team-warning": "Deleting a team will also delete all team websites.",
     "delete-website-warning": "Όλα τα σχετικά δεδομένα θα διαγραφούν επίσης.",
     "error": "Κάτι πήγε στραβά.",
-    "event-log": "{event} on {url}",
+    "event-log": "<b>{event}</b> on <a>{url}</a>",
     "forbidden": "Forbidden",
     "go-to-settings": "Μεταβείτε στις ρυθμίσεις",
     "incorrect-username-password": "Εσφαλμένο όνομα χρήστη / κωδικός πρόσβασης.",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "User deleted.",
     "viewed-page": "Viewed page",
-    "visitor-log": "Visitor from {country} using {browser} on {os} {device}"
+    "visitor-log": "Visitor from <b>{country}</b> using <b>{browser}</b> on <b>{os}</b> <b>{device}</b>"
   }
 }

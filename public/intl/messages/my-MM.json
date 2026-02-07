@@ -298,13 +298,13 @@
     "bad-request": "Bad request",
     "collected-data": "Collected data",
     "confirm-delete": "{target} ကို ဖျက်ရန် သေချာပါသလား?",
-    "confirm-leave": "{target} ကို ထွက်ရန် သေချာပါသလား?",
-    "confirm-remove": "Are you sure you want to remove {target}?",
+    "confirm-leave": "<b>{target}</b> ကို ထွက်ရန် သေချာပါသလား?",
+    "confirm-remove": "Are you sure you want to remove <b>{target}</b>?",
     "confirm-reset": "{target} ကို ဖျက်၍ပြန်စလုပ်ရန် သေချာပါသလား?",
     "delete-team-warning": "Deleting a team will also delete all team websites.",
     "delete-website-warning": "ဝက်ဘ်ဆိုဒ် ဒေတာအကုန် ဖျက်မည်",
     "error": "မှားယွင်းမှုတစ်ခု ရှိသွားပါသည်",
-    "event-log": "{url} တွင် {event}",
+    "event-log": "<a>{url}</a> တွင် <b>{event}</b>",
     "forbidden": "Forbidden",
     "go-to-settings": "ဆက်တင်သို့ သွားရန်",
     "incorrect-username-password": "အသုံးပြုသူအမည် သို့မဟုတ် စကားဝှက် မှားနေသည်",
@@ -338,6 +338,6 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "အသုံးပြုသူ ဖျက်ပြီးပါပြီ",
     "viewed-page": "Viewed page",
-    "visitor-log": "{country} မှ {browser} ဖြင့် {os} {device} တွင် ဝင်ရောက်ကြည့်ရှုသူ"
+    "visitor-log": "<b>{country}</b> မှ <b>{browser}</b> ဖြင့် <b>{os}</b> <b>{device}</b> တွင် ဝင်ရောက်ကြည့်ရှုသူ"
   }
 }

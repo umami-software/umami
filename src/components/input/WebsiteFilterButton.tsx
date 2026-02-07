@@ -13,7 +13,7 @@ export function WebsiteFilterButton({
   position?: 'bottom' | 'top' | 'left' | 'right';
   alignment?: 'end' | 'center' | 'start';
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { updateParams, pathname, router, query } = useNavigation();
   const [excludeBounce, setExcludeBounce] = useState(!!query.excludeBounce);
   const isOverview =
@@ -33,7 +33,7 @@ export function WebsiteFilterButton({
   };
 
   return (
-    <DialogButton icon={<ListFilter />} label={formatMessage(labels.filter)} variant="outline">
+    <DialogButton icon={<ListFilter />} label={t(labels.filter)} variant="outline">
       {({ close }) => {
         return (
           <>
@@ -44,7 +44,7 @@ export function WebsiteFilterButton({
                   onChange={setExcludeBounce}
                   style={{ marginTop: '3px' }}
                 >
-                  {formatMessage(labels.excludeBounce)}
+                  {t(labels.excludeBounce)}
                 </Checkbox>
               </Row>
             )}

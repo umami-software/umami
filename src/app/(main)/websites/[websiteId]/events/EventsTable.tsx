@@ -21,7 +21,7 @@ import { EventData } from '@/components/metrics/EventData';
 import { Lightning } from '@/components/svg';
 
 export function EventsTable(props: DataTableProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { updateParams } = useNavigation();
   const { formatValue } = useFormat();
 
@@ -40,14 +40,14 @@ export function EventsTable(props: DataTableProps) {
 
   return (
     <DataTable {...props}>
-      <DataColumn id="event" label={formatMessage(labels.event)} width="2fr">
+      <DataColumn id="event" label={t(labels.event)} width="2fr">
         {(row: any) => {
           return (
             <Row alignItems="center" wrap="wrap" gap>
               <Row>
                 <IconLabel
                   icon={row.eventName ? <Lightning /> : <Eye />}
-                  label={formatMessage(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
+                  label={t(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
                 />
               </Row>
               <Text
@@ -63,7 +63,7 @@ export function EventsTable(props: DataTableProps) {
           );
         }}
       </DataColumn>
-      <DataColumn id="session" label={formatMessage(labels.session)} width="80px">
+      <DataColumn id="session" label={t(labels.session)} width="80px">
         {(row: any) => {
           return (
             <Link href={updateParams({ session: row.sessionId })}>
@@ -72,21 +72,21 @@ export function EventsTable(props: DataTableProps) {
           );
         }}
       </DataColumn>
-      <DataColumn id="location" label={formatMessage(labels.location)}>
+      <DataColumn id="location" label={t(labels.location)}>
         {(row: any) => (
           <TypeIcon type="country" value={row.country}>
             {row.city ? `${row.city}, ` : ''} {formatValue(row.country, 'country')}
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="browser" label={formatMessage(labels.browser)} width="140px">
+      <DataColumn id="browser" label={t(labels.browser)} width="140px">
         {(row: any) => (
           <TypeIcon type="browser" value={row.browser}>
             {formatValue(row.browser, 'browser')}
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="device" label={formatMessage(labels.device)} width="120px">
+      <DataColumn id="device" label={t(labels.device)} width="120px">
         {(row: any) => (
           <TypeIcon type="device" value={row.device}>
             {formatValue(row.device, 'device')}
