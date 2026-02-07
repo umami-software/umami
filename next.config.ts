@@ -1,5 +1,8 @@
 import 'dotenv/config';
+import createNextIntlPlugin from 'next-intl/plugin';
 import pkg from './package.json' with { type: 'json' };
+
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const TRACKER_SCRIPT = '/script.js';
 
@@ -164,7 +167,7 @@ if (cloudMode) {
 }
 
 /** @type {import('next').NextConfig} */
-export default {
+export default withNextIntl({
   reactStrictMode: false,
   env: {
     basePath,
@@ -202,4 +205,4 @@ export default {
   async redirects() {
     return [...redirects];
   },
-};
+});

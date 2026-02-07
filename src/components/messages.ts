@@ -1,6 +1,9 @@
-import { defineMessages } from 'react-intl';
+export interface MessageDescriptor {
+  id: string;
+  defaultMessage: string;
+}
 
-export const labels = defineMessages({
+export const labels: Record<string, MessageDescriptor> = {
   ok: { id: 'label.ok', defaultMessage: 'OK' },
   unknown: { id: 'label.unknown', defaultMessage: 'Unknown' },
   required: { id: 'label.required', defaultMessage: 'Required' },
@@ -378,9 +381,9 @@ export const labels = defineMessages({
   support: { id: 'label.support', defaultMessage: 'Support' },
   documentation: { id: 'label.documentation', defaultMessage: 'Documentation' },
   switchAccount: { id: 'label.switch-account', defaultMessage: 'Switch account' },
-});
+};
 
-export const messages = defineMessages({
+export const messages: Record<string, MessageDescriptor> = {
   error: { id: 'message.error', defaultMessage: 'Something went wrong.' },
   saved: { id: 'message.saved', defaultMessage: 'Saved successfully.' },
   noUsers: { id: 'message.no-users', defaultMessage: 'There are no users.' },
@@ -530,4 +533,4 @@ export const messages = defineMessages({
     id: 'message.sever-error',
     defaultMessage: 'Server error',
   },
-});
+};
