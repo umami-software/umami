@@ -96,10 +96,10 @@ export function useWebsiteNavItems(websiteId: string) {
           path: renderPath('/retention'),
         },
         {
-          id: 'recordings',
-          label: formatMessage(labels.recordings),
+          id: 'replays',
+          label: formatMessage(labels.replays),
           icon: <Video />,
-          path: renderPath('/recordings'),
+          path: renderPath('/replays'),
         },
       ],
     },

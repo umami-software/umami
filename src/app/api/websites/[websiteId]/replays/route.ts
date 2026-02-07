@@ -3,7 +3,7 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { dateRangeParams, pagingParams, searchParams } from '@/lib/schema';
 import { canViewWebsite } from '@/permissions';
-import { getSessionRecordings } from '@/queries/sql';
+import { getSessionReplays } from '@/queries/sql';
 
 export async function GET(
   request: Request,
@@ -29,7 +29,7 @@ export async function GET(
 
   const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getSessionRecordings(websiteId, filters);
+  const data = await getSessionReplays(websiteId, filters);
 
   return json(data);
 }

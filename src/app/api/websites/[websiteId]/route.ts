@@ -42,8 +42,8 @@ export async function POST(
     name: z.string().optional(),
     domain: z.string().optional(),
     shareId: z.string().max(50).nullable().optional(),
-    recordingEnabled: z.boolean().optional(),
-    recordingConfig: z
+    replayEnabled: z.boolean().optional(),
+    replayConfig: z
       .object({
         sampleRate: z.number().min(0).max(1).optional(),
         maskLevel: z.enum(['strict', 'moderate', 'relaxed']).optional(),
@@ -62,7 +62,7 @@ export async function POST(
   }
 
   const { websiteId } = await params;
-  const { name, domain, shareId, recordingEnabled, recordingConfig } = body;
+  const { name, domain, shareId, replayEnabled, replayConfig } = body;
 
   if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
@@ -72,8 +72,8 @@ export async function POST(
     const website = await updateWebsite(websiteId, {
       name,
       domain,
-      ...(recordingEnabled !== undefined && { recordingEnabled }),
-      ...(recordingConfig !== undefined && { recordingConfig }),
+      ...(replayEnabled !== undefined && { replayEnabled }),
+      ...(replayConfig !== undefined && { replayConfig }),
     });
 
     if (shareId === null) {

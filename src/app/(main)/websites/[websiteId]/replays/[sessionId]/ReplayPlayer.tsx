@@ -3,7 +3,7 @@ import { Column } from '@umami/react-zen';
 import { useEffect, useRef, useState } from 'react';
 import 'rrweb-player/dist/style.css';
 
-export function RecordingPlayer({ events }: { events: any[] }) {
+export function ReplayPlayer({ events }: { events: any[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
   const [loaded, setLoaded] = useState(false);
@@ -17,14 +17,14 @@ export function RecordingPlayer({ events }: { events: any[] }) {
       typeCounts[e.type] = (typeCounts[e.type] || 0) + 1;
     });
     const timestamps = events.map((e: any) => e.timestamp).filter(Boolean);
-    console.log('[RecordingPlayer] Events:', events.length, 'Types:', typeCounts);
+    console.log('[ReplayPlayer] Events:', events.length, 'Types:', typeCounts);
     console.log(
-      '[RecordingPlayer] Time range:',
+      '[ReplayPlayer] Time range:',
       timestamps.length
         ? `${Math.min(...timestamps)} - ${Math.max(...timestamps)} (${Math.max(...timestamps) - Math.min(...timestamps)}ms)`
         : 'no timestamps',
     );
-    console.log('[RecordingPlayer] First 3 events:', events.slice(0, 3));
+    console.log('[ReplayPlayer] First 3 events:', events.slice(0, 3));
 
     // Dynamically import rrweb-player to avoid SSR issues
     import('rrweb-player').then(mod => {

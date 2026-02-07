@@ -2,14 +2,14 @@
 import { Column } from '@umami/react-zen';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Panel } from '@/components/common/Panel';
-import { RecordingsDataTable } from './RecordingsDataTable';
+import { ReplaysDataTable } from './ReplaysDataTable';
 
-export function RecordingsPage({ websiteId }: { websiteId: string }) {
+export function ReplaysPage({ websiteId }: { websiteId: string }) {
   return (
     <Column gap="3">
       <WebsiteControls websiteId={websiteId} />
       <Panel>
-        <RecordingsDataTable websiteId={websiteId} />
+        <ReplaysDataTable websiteId={websiteId} />
       </Panel>
     </Column>
   );

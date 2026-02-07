@@ -13,7 +13,7 @@ function formatDuration(ms: number) {
   return `${minutes}:${secs.toString().padStart(2, '0')}`;
 }
 
-export function RecordingsTable({ websiteId, ...props }: DataTableProps & { websiteId: string }) {
+export function ReplaysTable({ websiteId, ...props }: DataTableProps & { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
 
@@ -52,7 +52,7 @@ export function RecordingsTable({ websiteId, ...props }: DataTableProps & { webs
       </DataColumn>
       <DataColumn id="play" label="" width="80px">
         {(row: any) => (
-          <Link href={`/websites/${websiteId}/recordings/${row.id}`}>
+          <Link href={`/websites/${websiteId}/replays/${row.id}`}>
             <Button variant="quiet">
               <Icon>
                 <Play />

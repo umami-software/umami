@@ -2,7 +2,7 @@ import { gunzipSync } from 'node:zlib';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { canViewWebsite } from '@/permissions';
-import { getRecordingChunks } from '@/queries/sql';
+import { getReplayChunks } from '@/queries/sql';
 
 export async function GET(
   request: Request,
@@ -20,7 +20,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const chunks = await getRecordingChunks(websiteId, sessionId);
+  const chunks = await getReplayChunks(websiteId, sessionId);
 
   // Decompress and concatenate all chunks
   const allEvents = chunks.flatMap(chunk => {

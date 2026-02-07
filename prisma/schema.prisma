@@ -75,8 +75,8 @@ model Website {
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  recordingEnabled Boolean   @default(false) @map("recording_enabled")
-  recordingConfig  Json?     @map("recording_config")
+  replayEnabled Boolean   @default(false) @map("replay_enabled")
+  replayConfig  Json?     @map("replay_config")
 
   user              User?               @relation("user", fields: [userId], references: [id])
   createUser        User?               @relation("createUser", fields: [createdBy], references: [id])
@@ -86,7 +86,7 @@ model Website {
   revenue           Revenue[]
   segments          Segment[]
   sessionData       SessionData[]
-  sessionRecordings SessionRecording[]
+  sessionReplays SessionReplay[]
 
   @@index([userId])
   @@index([teamId])
@@ -355,8 +355,8 @@ model Share {
   @@map("share")
 }
 
-model SessionRecording {
-  id         String    @id() @map("recording_id") @db.Uuid
+model SessionReplay {
+  id         String    @id() @map("replay_id") @db.Uuid
   websiteId  String    @map("website_id") @db.Uuid
   sessionId  String    @map("session_id") @db.Uuid
   chunkIndex Int       @map("chunk_index") @db.Integer
@@ -373,5 +373,5 @@ model SessionRecording {
   @@index([websiteId, sessionId])
   @@index([websiteId, createdAt])
   @@index([sessionId, chunkIndex])
-  @@map("session_recording")
+  @@map("session_replay")
 }

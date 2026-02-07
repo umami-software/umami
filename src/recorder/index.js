@@ -22,7 +22,7 @@ import { record } from 'rrweb';
 
   const host =
     hostUrl || '__COLLECT_API_HOST__' || currentScript.src.split('/').slice(0, -1).join('/');
-  const endpoint = `${host.replace(/\/$/, '')}__COLLECT_RECORDING_ENDPOINT__`;
+  const endpoint = `${host.replace(/\/$/, '')}__COLLECT_REPLAY_ENDPOINT__`;
 
   const FLUSH_EVENT_COUNT = 50;
   const FLUSH_INTERVAL = 10000;

@@ -10,10 +10,10 @@ import {
   TextField,
 } from '@umami/react-zen';
 import { X } from 'lucide-react';
-import { RecordingPlayer } from '@/app/(main)/websites/[websiteId]/recordings/[sessionId]/RecordingPlayer';
+import { ReplayPlayer } from '@/app/(main)/websites/[websiteId]/replays/[sessionId]/ReplayPlayer';
 import { Avatar } from '@/components/common/Avatar';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, useRecordingQuery, useWebsiteSessionQuery } from '@/components/hooks';
+import { useMessages, useReplayQuery, useWebsiteSessionQuery } from '@/components/hooks';
 import { SessionActivity } from './SessionActivity';
 import { SessionData } from './SessionData';
 import { SessionInfo } from './SessionInfo';
@@ -29,7 +29,7 @@ export function SessionProfile({
   onClose?: () => void;
 }) {
   const { data, isLoading, error } = useWebsiteSessionQuery(websiteId, sessionId);
-  const { data: recording } = useRecordingQuery(websiteId, sessionId);
+  const { data: replay } = useReplayQuery(websiteId, sessionId);
   const { formatMessage, labels } = useMessages();
 
   return (
@@ -65,8 +65,8 @@ export function SessionProfile({
               <TabList>
                 <Tab id="activity">{formatMessage(labels.activity)}</Tab>
                 <Tab id="properties">{formatMessage(labels.properties)}</Tab>
-                {recording?.events?.length > 0 && (
-                  <Tab id="recording">{formatMessage(labels.recording)}</Tab>
+                {replay?.events?.length > 0 && (
+                  <Tab id="replay">{formatMessage(labels.replay)}</Tab>
                 )}
               </TabList>
               <TabPanel id="activity">
@@ -80,9 +80,9 @@ export function SessionProfile({
               <TabPanel id="properties">
                 <SessionData sessionId={sessionId} websiteId={websiteId} />
               </TabPanel>
-              {recording?.events?.length > 0 && (
-                <TabPanel id="recording">
-                  <RecordingPlayer events={recording.events} />
+              {replay?.events?.length > 0 && (
+                <TabPanel id="replay">
+                  <ReplayPlayer events={replay.events} />
                 </TabPanel>
               )}
             </Tabs>

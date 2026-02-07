@@ -3,15 +3,15 @@ import { useDateParameters } from '../useDateParameters';
 import { useModified } from '../useModified';
 import { usePagedQuery } from '../usePagedQuery';
 
-export function useRecordingsQuery(websiteId: string, params?: Record<string, string | number>) {
+export function useReplaysQuery(websiteId: string, params?: Record<string, string | number>) {
   const { get } = useApi();
-  const { modified } = useModified('recordings');
+  const { modified } = useModified('replays');
   const { startAt, endAt, unit, timezone } = useDateParameters();
 
   return usePagedQuery({
-    queryKey: ['recordings', { websiteId, modified, startAt, endAt, unit, timezone, ...params }],
+    queryKey: ['replays', { websiteId, modified, startAt, endAt, unit, timezone, ...params }],
     queryFn: pageParams => {
-      return get(`/websites/${websiteId}/recordings`, {
+      return get(`/websites/${websiteId}/replays`, {
         startAt,
         endAt,
         unit,

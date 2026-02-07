@@ -15,7 +15,7 @@ export default {
     commonjs(),
     replace({
       __COLLECT_API_HOST__: process.env.COLLECT_API_HOST || '',
-      __COLLECT_RECORDING_ENDPOINT__: process.env.COLLECT_RECORDING_ENDPOINT || '/api/record',
+      __COLLECT_REPLAY_ENDPOINT__: process.env.COLLECT_REPLAY_ENDPOINT || '/api/record',
       delimiters: ['', ''],
       preventAssignment: true,
     }),

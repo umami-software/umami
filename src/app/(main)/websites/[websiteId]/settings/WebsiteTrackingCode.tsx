@@ -32,7 +32,7 @@ export function WebsiteTrackingCode({
 
   let code = `<script defer src="${url}" data-website-id="${websiteId}"></script>`;
 
-  if (website?.recordingEnabled) {
+  if (website?.replayEnabled) {
     const recorderUrl = getUrl(RECORDER_NAME);
     code += `\n<script defer src="${recorderUrl}" data-website-id="${websiteId}"></script>`;
   }

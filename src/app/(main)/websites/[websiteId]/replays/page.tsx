@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import { RecordingsPage } from './RecordingsPage';
+import { ReplaysPage } from './ReplaysPage';
 
 export default async function ({ params }: { params: Promise<{ websiteId: string }> }) {
   const { websiteId } = await params;
 
-  return <RecordingsPage websiteId={websiteId} />;
+  return <ReplaysPage websiteId={websiteId} />;
 }
 
 export const metadata: Metadata = {
-  title: 'Recordings',
+  title: 'Replays',
 };

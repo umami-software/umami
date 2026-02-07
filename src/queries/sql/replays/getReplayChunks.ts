@@ -1,11 +1,11 @@
 import prisma from '@/lib/prisma';
 
-export async function getRecordingChunks(websiteId: string, sessionId: string) {
+export async function getReplayChunks(websiteId: string, sessionId: string) {
   return relationalQuery(websiteId, sessionId);
 }
 
 async function relationalQuery(websiteId: string, sessionId: string) {
-  return prisma.client.sessionRecording.findMany({
+  return prisma.client.sessionReplay.findMany({
     where: {
       websiteId,
       sessionId,

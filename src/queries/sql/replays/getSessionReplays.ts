@@ -1,9 +1,9 @@
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
-const FUNCTION_NAME = 'getSessionRecordings';
+const FUNCTION_NAME = 'getSessionReplays';
 
-export async function getSessionRecordings(...args: [websiteId: string, filters: QueryFilters]) {
+export async function getSessionReplays(...args: [websiteId: string, filters: QueryFilters]) {
   return relationalQuery(...args);
 }
 
@@ -40,12 +40,12 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       session.country,
       session.city,
       sum(sr.event_count) as "eventCount",
-      count(sr.recording_id) as "chunkCount",
+      count(sr.replay_id) as "chunkCount",
       min(sr.started_at) as "startedAt",
       max(sr.ended_at) as "endedAt",
       (extract(epoch from max(sr.ended_at) - min(sr.started_at)) * 1000)::bigint as "duration",
       max(sr.created_at) as "createdAt"
-    from session_recording sr
+    from session_replay sr
     left join session on session.session_id = sr.session_id
       and session.website_id = sr.website_id
     where sr.website_id = {{websiteId::uuid}}

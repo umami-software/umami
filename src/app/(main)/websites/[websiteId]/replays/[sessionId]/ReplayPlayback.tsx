@@ -3,42 +3,36 @@ import { Column, Row, Text } from '@umami/react-zen';
 import { SessionInfo } from '@/app/(main)/websites/[websiteId]/sessions/SessionInfo';
 import { Avatar } from '@/components/common/Avatar';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, useRecordingQuery, useWebsiteSessionQuery } from '@/components/hooks';
-import { RecordingPlayer } from './RecordingPlayer';
+import { useMessages, useReplayQuery, useWebsiteSessionQuery } from '@/components/hooks';
+import { ReplayPlayer } from './ReplayPlayer';
 
-export function RecordingPlayback({
-  websiteId,
-  sessionId,
-}: {
-  websiteId: string;
-  sessionId: string;
-}) {
-  const { data: recording, isLoading, error } = useRecordingQuery(websiteId, sessionId);
+export function ReplayPlayback({ websiteId, sessionId }: { websiteId: string; sessionId: string }) {
+  const { data: replay, isLoading, error } = useReplayQuery(websiteId, sessionId);
   const { data: session } = useWebsiteSessionQuery(websiteId, sessionId);
   const { formatMessage, labels } = useMessages();
 
   return (
     <LoadingPanel
-      data={recording}
+      data={replay}
       isLoading={isLoading}
       error={error}
       loadingIcon="spinner"
       loadingPlacement="absolute"
     >
-      {recording && (
+      {replay && (
         <Column gap="6">
           {session && (
             <Row alignItems="center" gap="4">
               <Avatar seed={sessionId} size={48} />
               <Column>
-                <Text weight="bold">{formatMessage(labels.recording)}</Text>
+                <Text weight="bold">{formatMessage(labels.replay)}</Text>
                 <Text color="muted">
-                  {recording.eventCount} {formatMessage(labels.events).toLowerCase()}
+                  {replay.eventCount} {formatMessage(labels.events).toLowerCase()}
                 </Text>
               </Column>
             </Row>
           )}
-          <RecordingPlayer events={recording.events} />
+          <ReplayPlayer events={replay.events} />
           {session && <SessionInfo data={session} />}
         </Column>
       )}

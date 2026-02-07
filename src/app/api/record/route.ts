@@ -8,7 +8,7 @@ import { parseToken } from '@/lib/jwt';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { getWebsite } from '@/queries/prisma';
-import { saveRecordingChunk } from '@/queries/sql';
+import { saveReplayChunk } from '@/queries/sql';
 
 const schema = z.object({
   website: z.uuid(),
@@ -52,8 +52,8 @@ export async function POST(request: Request) {
       return badRequest({ message: 'Website not found.' });
     }
 
-    if (!website.recordingEnabled) {
-      return json({ ok: false, reason: 'recording_disabled' });
+    if (!website.replayEnabled) {
+      return json({ ok: false, reason: 'replay_disabled' });
     }
 
     // Client info for bot/IP checks
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
     // Use timestamp-based chunk index for ordering
     const chunkIndex = timestamp || Math.floor(Date.now() / 1000);
 
-    await saveRecordingChunk({
+    await saveReplayChunk({
       websiteId,
       sessionId,
       chunkIndex,

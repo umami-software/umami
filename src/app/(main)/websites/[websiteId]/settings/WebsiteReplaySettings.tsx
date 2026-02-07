@@ -11,7 +11,7 @@ import {
 import { useState } from 'react';
 import { useMessages, useUpdateQuery, useWebsite } from '@/components/hooks';
 
-interface RecordingConfig {
+interface ReplayConfig {
   sampleRate?: number;
   maskLevel?: string;
   maxDuration?: number;
@@ -19,19 +19,19 @@ interface RecordingConfig {
   retentionDays?: number;
 }
 
-export function WebsiteRecordingSettings({ websiteId }: { websiteId: string }) {
+export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const website = useWebsite();
   const { formatMessage, labels, messages } = useMessages();
   const { mutateAsync, error, touch, toast } = useUpdateQuery(`/websites/${websiteId}`);
-  const [enabled, setEnabled] = useState(website?.recordingEnabled ?? false);
+  const [enabled, setEnabled] = useState(website?.replayEnabled ?? false);
 
-  const config = (website?.recordingConfig as RecordingConfig) || {};
+  const config = (website?.replayConfig as ReplayConfig) || {};
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(
       {
-        recordingEnabled: enabled,
-        recordingConfig: {
+        replayEnabled: enabled,
+        replayConfig: {
           sampleRate: parseFloat(data.sampleRate) || 1,
           maskLevel: data.maskLevel || 'moderate',
           maxDuration: parseInt(data.maxDuration, 10) || 600000,
@@ -61,9 +61,9 @@ export function WebsiteRecordingSettings({ websiteId }: { websiteId: string }) {
       }}
     >
       <Column gap="4">
-        <Label>{formatMessage(labels.recordings)}</Label>
+        <Label>{formatMessage(labels.replays)}</Label>
         <Switch isSelected={enabled} onChange={setEnabled}>
-          {formatMessage(labels.recordingEnabled)}
+          {formatMessage(labels.replayEnabled)}
         </Switch>
         {enabled && (
           <>

@@ -1,7 +1,7 @@
 import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
 
-export interface SaveRecordingChunkArgs {
+export interface SaveReplayChunkArgs {
   websiteId: string;
   sessionId: string;
   chunkIndex: number;
@@ -11,7 +11,7 @@ export interface SaveRecordingChunkArgs {
   endedAt: Date;
 }
 
-export async function saveRecordingChunk(args: SaveRecordingChunkArgs) {
+export async function saveReplayChunk(args: SaveReplayChunkArgs) {
   return relationalQuery(args);
 }
 
@@ -23,8 +23,8 @@ async function relationalQuery({
   eventCount,
   startedAt,
   endedAt,
-}: SaveRecordingChunkArgs) {
-  return prisma.client.sessionRecording.create({
+}: SaveReplayChunkArgs) {
+  return prisma.client.sessionReplay.create({
     data: {
       id: uuid(),
       websiteId,
