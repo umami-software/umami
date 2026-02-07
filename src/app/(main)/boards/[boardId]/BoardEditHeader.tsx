@@ -14,7 +14,7 @@ import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 export function BoardEditHeader() {
   const { board, updateBoard, saveBoard, isPending } = useBoard();
   const { formatMessage, labels } = useMessages();
-  const { router, renderUrl } = useNavigation();
+  const { teamId, router, renderUrl } = useNavigation();
   const defaultName = formatMessage(labels.untitled);
 
   const handleNameChange = (value: string) => {
@@ -81,7 +81,11 @@ export function BoardEditHeader() {
         </Row>
         <Row alignItems="center" gap="3">
           <Text>{formatMessage(labels.website)}</Text>
-          <WebsiteSelect websiteId={board?.parameters?.websiteId} onChange={handleWebsiteChange} />
+          <WebsiteSelect
+            websiteId={board?.parameters?.websiteId}
+            teamId={teamId}
+            onChange={handleWebsiteChange}
+          />
         </Row>
       </Column>
       <Column justifyContent="center" alignItems="flex-end">
