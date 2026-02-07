@@ -78,10 +78,10 @@ export function MetricsTable({
       error={error}
       minHeight="400px"
     >
-      <Grid>
+      <Grid padding="2">
         {data && <ListTable {...props} data={filteredData} renderLabel={renderLabel} />}
         {showMore && limit && (
-          <Row justifyContent="center" alignItems="flex-end">
+          <Row justifyContent="center" alignItems="flex-end" paddingTop="4">
             <LinkButton href={updateParams({ view: type })} variant="quiet">
               <IconLabel icon={<Maximize />}>{formatMessage(labels.more)}</IconLabel>
             </LinkButton>

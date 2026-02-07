@@ -20,7 +20,7 @@ export function LinkPanels({ linkId }: { linkId: string }) {
     <Grid gap="3">
       <GridRow layout="two" {...rowProps}>
         <Panel>
-          <Heading size="base">{formatMessage(labels.sources)}</Heading>
+          <Heading size="2xl">{formatMessage(labels.sources)}</Heading>
           <Tabs>
             <TabList>
               <Tab id="referrer">{formatMessage(labels.referrers)}</Tab>
@@ -35,7 +35,7 @@ export function LinkPanels({ linkId }: { linkId: string }) {
           </Tabs>
         </Panel>
         <Panel>
-          <Heading size="base">{formatMessage(labels.environment)}</Heading>
+          <Heading size="2xl">{formatMessage(labels.environment)}</Heading>
           <Tabs>
             <TabList>
               <Tab id="browser">{formatMessage(labels.browsers)}</Tab>
@@ -59,7 +59,7 @@ export function LinkPanels({ linkId }: { linkId: string }) {
           <WorldMap websiteId={linkId} />
         </Panel>
         <Panel>
-          <Heading size="base">{formatMessage(labels.location)}</Heading>
+          <Heading size="2xl">{formatMessage(labels.location)}</Heading>
           <Tabs>
             <TabList>
               <Tab id="country">{formatMessage(labels.countries)}</Tab>
