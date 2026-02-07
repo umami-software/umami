@@ -5,7 +5,6 @@ import {
   Heading,
   Icon,
   Row,
-  Text,
   Tooltip,
   TooltipTrigger,
 } from '@umami/react-zen';
@@ -20,15 +19,23 @@ export interface PanelProps extends ColumnProps {
 
 const fullscreenStyles = {
   position: 'fixed',
-  width: '100%',
-  height: '100%',
+  width: '100vw',
+  height: '100vh',
   top: 0,
   left: 0,
   border: 'none',
   zIndex: 9999,
 } as any;
 
-export function Panel({ title, allowFullscreen, style, children, ...props }: PanelProps) {
+export function Panel({
+  title,
+  allowFullscreen,
+  style,
+  children,
+  height,
+  width,
+  ...props
+}: PanelProps) {
   const { formatMessage, labels } = useMessages();
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -46,7 +53,7 @@ export function Panel({ title, allowFullscreen, style, children, ...props }: Pan
       position="relative"
       gap
       {...props}
-      style={{ ...style, ...(isFullscreen ? fullscreenStyles : {}) }}
+      style={{ ...style, ...(isFullscreen ? fullscreenStyles : { height, width }) }}
     >
       {title && <Heading>{title}</Heading>}
       {allowFullscreen && (
