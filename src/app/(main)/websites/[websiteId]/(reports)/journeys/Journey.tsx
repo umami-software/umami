@@ -236,7 +236,7 @@ export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyP
                                   <div>{formatLongNumber(nodeCount)}</div>
                                 </Focusable>
                                 <Tooltip placement="top" offset={20} showArrow>
-                                  <Text transform="lowercase" color="ruby">
+                                  <Text transform="lowercase" color="red-700">
                                     {`${dropped}% ${formatMessage(labels.dropoff)}`}
                                   </Text>
                                   <Column>

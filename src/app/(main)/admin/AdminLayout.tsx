@@ -19,7 +19,6 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         width="240px"
         height="100%"
         border="right"
-        backgroundColor
         marginRight="2"
         padding="3"
       >

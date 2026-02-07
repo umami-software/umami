@@ -1,4 +1,4 @@
-import { ListItem, Row, Select, type SelectProps, Text } from '@umami/react-zen';
+import { ListItem, Select, type SelectProps } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 import { Empty } from '@/components/common/Empty';
 import { useMessages, useTeamMembersQuery, useUsersQuery } from '@/components/hooks';
@@ -40,14 +40,6 @@ export function UserSelect({
     onChange(id);
   };
 
-  const renderValue = () => {
-    return (
-      <Row maxWidth="160px">
-        <Text truncate>{username}</Text>
-      </Row>
-    );
-  };
-
   return (
     <Select
       {...props}
@@ -58,7 +50,6 @@ export function UserSelect({
       onSearch={handleSearch}
       onChange={handleChange}
       onOpenChange={handleOpenChange}
-      renderValue={renderValue}
       listProps={{
         renderEmptyState: () => <Empty message={formatMessage(messages.noResultsFound)} />,
         style: { maxHeight: 'calc(42vh - 65px)' },

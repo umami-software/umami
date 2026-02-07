@@ -57,10 +57,6 @@ export function FilterRecord({
     onChange?.(name, value);
   };
 
-  const renderValue = () => {
-    return formatValue(selected, type);
-  };
-
   return (
     <Column>
       <Label>{fields.find(f => f.name === name)?.label}</Label>
@@ -83,7 +79,6 @@ export function FilterRecord({
               value={selected}
               onChange={handleSelectValue}
               searchValue={search}
-              renderValue={renderValue}
               onSearch={handleSearch}
               isLoading={isLoading}
               listProps={{ renderEmptyState: () => <Empty /> }}
