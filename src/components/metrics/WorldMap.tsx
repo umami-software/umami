@@ -102,7 +102,7 @@ export function WorldMap({ websiteId, data, ...props }: WorldMapProps) {
       {tooltip && (
         <FloatingTooltip>
           <Box backgroundColor="surface-inverted" color="inverted" padding borderRadius="md">
-            <Text size="sm">{tooltip}</Text>
+            {tooltip}
           </Box>
         </FloatingTooltip>
       )}

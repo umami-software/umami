@@ -19,11 +19,9 @@ export function ChartTooltip({
         padding="4"
         borderRadius="md"
       >
-        {title && <Text size="sm">{title}</Text>}
+        {title}
         <Row alignItems="center">
-          <StatusLight color={color}>
-            <Text size="sm">{value}</Text>
-          </StatusLight>
+          <StatusLight color={color}>{value}</StatusLight>
         </Row>
       </Column>
     </FloatingTooltip>

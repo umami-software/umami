@@ -96,7 +96,7 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                           </Row>
                         </Focusable>
                         <Tooltip placement="right">
-                          <Text size="base">{`${formatMessage(labels.visitors)}: ${count}`}</Text>
+                          <Text>{`${formatMessage(labels.visitors)}: ${count}`}</Text>
                         </Tooltip>
                       </TooltipTrigger>
                     );
