@@ -1,2230 +1,343 @@
 {
-  "label.access-code": [
-    {
-      "type": 0,
-      "value": "Código de acceso"
-    }
-  ],
-  "label.actions": [
-    {
-      "type": 0,
-      "value": "Accións"
-    }
-  ],
-  "label.activity": [
-    {
-      "type": 0,
-      "value": "Rexistro de actividade"
-    }
-  ],
-  "label.add": [
-    {
-      "type": 0,
-      "value": "Engadir"
-    }
-  ],
-  "label.add-board": [
-    {
-      "type": 0,
-      "value": "Engadir taboleiro"
-    }
-  ],
-  "label.add-description": [
-    {
-      "type": 0,
-      "value": "Engadir descrición"
-    }
-  ],
-  "label.add-member": [
-    {
-      "type": 0,
-      "value": "Engadir membro"
-    }
-  ],
-  "label.add-step": [
-    {
-      "type": 0,
-      "value": "Engadir paso"
-    }
-  ],
-  "label.add-website": [
-    {
-      "type": 0,
-      "value": "Engadir sitio web"
-    }
-  ],
-  "label.admin": [
-    {
-      "type": 0,
-      "value": "Administrador/a"
-    }
-  ],
-  "label.affiliate": [
-    {
-      "type": 0,
-      "value": "Afiliado"
-    }
-  ],
-  "label.after": [
-    {
-      "type": 0,
-      "value": "Despois"
-    }
-  ],
-  "label.all": [
-    {
-      "type": 0,
-      "value": "Todo"
-    }
-  ],
-  "label.all-time": [
-    {
-      "type": 0,
-      "value": "Sempre"
-    }
-  ],
-  "label.analytics": [
-    {
-      "type": 0,
-      "value": "Analíticas"
-    }
-  ],
-  "label.apply": [
-    {
-      "type": 0,
-      "value": "Aplicar"
-    }
-  ],
-  "label.attribution": [
-    {
-      "type": 0,
-      "value": "Atribución"
-    }
-  ],
-  "label.attribution-description": [
-    {
-      "type": 0,
-      "value": "Vexa como os usuarios interactúan co seu márketing e que impulsa as conversións."
-    }
-  ],
-  "label.average": [
-    {
-      "type": 0,
-      "value": "Media"
-    }
-  ],
-  "label.back": [
-    {
-      "type": 0,
-      "value": "Atrás"
-    }
-  ],
-  "label.before": [
-    {
-      "type": 0,
-      "value": "Antes"
-    }
-  ],
-  "label.boards": [
-    {
-      "type": 0,
-      "value": "Taboleiros"
-    }
-  ],
-  "label.bounce-rate": [
-    {
-      "type": 0,
-      "value": "Proporción de rebote"
-    }
-  ],
-  "label.breakdown": [
-    {
-      "type": 0,
-      "value": "Desglose"
-    }
-  ],
-  "label.browser": [
-    {
-      "type": 0,
-      "value": "Navegador"
-    }
-  ],
-  "label.browsers": [
-    {
-      "type": 0,
-      "value": "Navegadores"
-    }
-  ],
-  "label.campaigns": [
-    {
-      "type": 0,
-      "value": "Campañas"
-    }
-  ],
-  "label.cancel": [
-    {
-      "type": 0,
-      "value": "Cancelar"
-    }
-  ],
-  "label.change-password": [
-    {
-      "type": 0,
-      "value": "Mudar contrasinal"
-    }
-  ],
-  "label.channels": [
-    {
-      "type": 0,
-      "value": "Canles"
-    }
-  ],
-  "label.cities": [
-    {
-      "type": 0,
-      "value": "Cidades"
-    }
-  ],
-  "label.city": [
-    {
-      "type": 0,
-      "value": "Cidade"
-    }
-  ],
-  "label.clear-all": [
-    {
-      "type": 0,
-      "value": "Limpar todo"
-    }
-  ],
-  "label.cohort": [
-    {
-      "type": 0,
-      "value": "Cohorte"
-    }
-  ],
-  "label.compare": [
-    {
-      "type": 0,
-      "value": "Comparar"
-    }
-  ],
-  "label.compare-dates": [
-    {
-      "type": 0,
-      "value": "Comparar datas"
-    }
-  ],
-  "label.confirm": [
-    {
-      "type": 0,
-      "value": "Confirmar"
-    }
-  ],
-  "label.confirm-password": [
-    {
-      "type": 0,
-      "value": "Confirmar contrasinal"
-    }
-  ],
-  "label.contains": [
-    {
-      "type": 0,
-      "value": "Contén"
-    }
-  ],
-  "label.content": [
-    {
-      "type": 0,
-      "value": "Contido"
-    }
-  ],
-  "label.continue": [
-    {
-      "type": 0,
-      "value": "Continuar"
-    }
-  ],
-  "label.conversion": [
-    {
-      "type": 0,
-      "value": "Conversión"
-    }
-  ],
-  "label.conversion-rate": [
-    {
-      "type": 0,
-      "value": "Taxa de conversión"
-    }
-  ],
-  "label.conversion-step": [
-    {
-      "type": 0,
-      "value": "Paso de conversión"
-    }
-  ],
-  "label.count": [
-    {
-      "type": 0,
-      "value": "Reconto"
-    }
-  ],
-  "label.countries": [
-    {
-      "type": 0,
-      "value": "Países"
-    }
-  ],
-  "label.country": [
-    {
-      "type": 0,
-      "value": "País"
-    }
-  ],
-  "label.create": [
-    {
-      "type": 0,
-      "value": "Crear"
-    }
-  ],
-  "label.create-report": [
-    {
-      "type": 0,
-      "value": "Crear informe"
-    }
-  ],
-  "label.create-team": [
-    {
-      "type": 0,
-      "value": "Crear equipo"
-    }
-  ],
-  "label.create-user": [
-    {
-      "type": 0,
-      "value": "Crear usuario"
-    }
-  ],
-  "label.created": [
-    {
-      "type": 0,
-      "value": "Creado"
-    }
-  ],
-  "label.created-by": [
-    {
-      "type": 0,
-      "value": "Creado por"
-    }
-  ],
-  "label.currency": [
-    {
-      "type": 0,
-      "value": "Moeda"
-    }
-  ],
-  "label.current": [
-    {
-      "type": 0,
-      "value": "Actual"
-    }
-  ],
-  "label.current-password": [
-    {
-      "type": 0,
-      "value": "Contrasinal actual"
-    }
-  ],
-  "label.custom-range": [
-    {
-      "type": 0,
-      "value": "Rango personalizado"
-    }
-  ],
-  "label.dashboard": [
-    {
-      "type": 0,
-      "value": "Taboleiro"
-    }
-  ],
-  "label.data": [
-    {
-      "type": 0,
-      "value": "Datos"
-    }
-  ],
-  "label.date": [
-    {
-      "type": 0,
-      "value": "Data"
-    }
-  ],
-  "label.date-range": [
-    {
-      "type": 0,
-      "value": "Rango temporal"
-    }
-  ],
-  "label.day": [
-    {
-      "type": 0,
-      "value": "Día"
-    }
-  ],
-  "label.default-date-range": [
-    {
-      "type": 0,
-      "value": "Rango temporal por defecto"
-    }
-  ],
-  "label.delete": [
-    {
-      "type": 0,
-      "value": "Eliminar"
-    }
-  ],
-  "label.delete-report": [
-    {
-      "type": 0,
-      "value": "Eliminar reporte"
-    }
-  ],
-  "label.delete-team": [
-    {
-      "type": 0,
-      "value": "Eliminar equipo"
-    }
-  ],
-  "label.delete-user": [
-    {
-      "type": 0,
-      "value": "Eliminar usuario"
-    }
-  ],
-  "label.delete-website": [
-    {
-      "type": 0,
-      "value": "Eliminar sitio web"
-    }
-  ],
-  "label.description": [
-    {
-      "type": 0,
-      "value": "Descripción"
-    }
-  ],
-  "label.desktop": [
-    {
-      "type": 0,
-      "value": "Escritorio"
-    }
-  ],
-  "label.details": [
-    {
-      "type": 0,
-      "value": "Detalles"
-    }
-  ],
-  "label.device": [
-    {
-      "type": 0,
-      "value": "Dispositivo"
-    }
-  ],
-  "label.devices": [
-    {
-      "type": 0,
-      "value": "Dispositivos"
-    }
-  ],
-  "label.direct": [
-    {
-      "type": 0,
-      "value": "Directo"
-    }
-  ],
-  "label.dismiss": [
-    {
-      "type": 0,
-      "value": "Desbotar"
-    }
-  ],
-  "label.distinct-id": [
-    {
-      "type": 0,
-      "value": "ID distinto"
-    }
-  ],
-  "label.does-not-contain": [
-    {
-      "type": 0,
-      "value": "Non contén"
-    }
-  ],
-  "label.does-not-include": [
-    {
-      "type": 0,
-      "value": "Non inclúe"
-    }
-  ],
-  "label.doest-not-exist": [
-    {
-      "type": 0,
-      "value": "Non existe"
-    }
-  ],
-  "label.domain": [
-    {
-      "type": 0,
-      "value": "Dominio"
-    }
-  ],
-  "label.dropoff": [
-    {
-      "type": 0,
-      "value": "Disminución"
-    }
-  ],
-  "label.edit": [
-    {
-      "type": 0,
-      "value": "Editar"
-    }
-  ],
-  "label.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "Editar taboleiro"
-    }
-  ],
-  "label.edit-member": [
-    {
-      "type": 0,
-      "value": "Editar membro"
-    }
-  ],
-  "label.email": [
-    {
-      "type": 0,
-      "value": "Correo electrónico"
-    }
-  ],
-  "label.enable-share-url": [
-    {
-      "type": 0,
-      "value": "Activar URL de compartición"
-    }
-  ],
-  "label.end-step": [
-    {
-      "type": 0,
-      "value": "Paso final"
-    }
-  ],
-  "label.entry": [
-    {
-      "type": 0,
-      "value": "URL de entrada"
-    }
-  ],
-  "label.event": [
-    {
-      "type": 0,
-      "value": "Evento"
-    }
-  ],
-  "label.event-data": [
-    {
-      "type": 0,
-      "value": "Datos do evento"
-    }
-  ],
-  "label.event-name": [
-    {
-      "type": 0,
-      "value": "Nome do evento"
-    }
-  ],
-  "label.events": [
-    {
-      "type": 0,
-      "value": "Eventos"
-    }
-  ],
-  "label.exists": [
-    {
-      "type": 0,
-      "value": "Existe"
-    }
-  ],
-  "label.exit": [
-    {
-      "type": 0,
-      "value": "URL de saída"
-    }
-  ],
-  "label.false": [
-    {
-      "type": 0,
-      "value": "Falso"
-    }
-  ],
-  "label.field": [
-    {
-      "type": 0,
-      "value": "Campo"
-    }
-  ],
-  "label.fields": [
-    {
-      "type": 0,
-      "value": "Campos"
-    }
-  ],
-  "label.filter": [
-    {
-      "type": 0,
-      "value": "Filtro"
-    }
-  ],
-  "label.filter-combined": [
-    {
-      "type": 0,
-      "value": "Combinado"
-    }
-  ],
-  "label.filter-raw": [
-    {
-      "type": 0,
-      "value": "Crú"
-    }
-  ],
-  "label.filters": [
-    {
-      "type": 0,
-      "value": "Filtros"
-    }
-  ],
-  "label.first-click": [
-    {
-      "type": 0,
-      "value": "Primeiro clic"
-    }
-  ],
-  "label.first-seen": [
-    {
-      "type": 0,
-      "value": "Primeira visita"
-    }
-  ],
-  "label.funnel": [
-    {
-      "type": 0,
-      "value": "Funil"
-    }
-  ],
-  "label.funnel-description": [
-    {
-      "type": 0,
-      "value": "Entende a taxa de conversión e de abandono dos usuarios."
-    }
-  ],
-  "label.funnels": [
-    {
-      "type": 0,
-      "value": "Funís"
-    }
-  ],
-  "label.goal": [
-    {
-      "type": 0,
-      "value": "Obxectivo"
-    }
-  ],
-  "label.goals": [
-    {
-      "type": 0,
-      "value": "Obxectivos"
-    }
-  ],
-  "label.goals-description": [
-    {
-      "type": 0,
-      "value": "Segue os teus obxectivos de visualizacións de páxinas e eventos."
-    }
-  ],
-  "label.greater-than": [
-    {
-      "type": 0,
-      "value": "Maior que"
-    }
-  ],
-  "label.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "Maior ou igual que"
-    }
-  ],
-  "label.grouped": [
-    {
-      "type": 0,
-      "value": "Agrupado"
-    }
-  ],
-  "label.hostname": [
-    {
-      "type": 0,
-      "value": "Nome do host"
-    }
-  ],
-  "label.includes": [
-    {
-      "type": 0,
-      "value": "Inclúe"
-    }
-  ],
-  "label.insight": [
-    {
-      "type": 0,
-      "value": "Información"
-    }
-  ],
-  "label.insights": [
-    {
-      "type": 0,
-      "value": "Informacións"
-    }
-  ],
-  "label.insights-description": [
-    {
-      "type": 0,
-      "value": "Afonda nos teus datos usando segmentos e filtros."
-    }
-  ],
-  "label.is": [
-    {
-      "type": 0,
-      "value": "É"
-    }
-  ],
-  "label.is-false": [
-    {
-      "type": 0,
-      "value": "É falso"
-    }
-  ],
-  "label.is-not": [
-    {
-      "type": 0,
-      "value": "Non é"
-    }
-  ],
-  "label.is-not-set": [
-    {
-      "type": 0,
-      "value": "Non está establecido"
-    }
-  ],
-  "label.is-set": [
-    {
-      "type": 0,
-      "value": "Está establecido"
-    }
-  ],
-  "label.is-true": [
-    {
-      "type": 0,
-      "value": "É verdadeiro"
-    }
-  ],
-  "label.join": [
-    {
-      "type": 0,
-      "value": "Unirse"
-    }
-  ],
-  "label.join-team": [
-    {
-      "type": 0,
-      "value": "Unirse ao equipo"
-    }
-  ],
-  "label.journey": [
-    {
-      "type": 0,
-      "value": "Traxectoria"
-    }
-  ],
-  "label.journey-description": [
-    {
-      "type": 0,
-      "value": "Entende como os usuarios navegan polo teu sitio web."
-    }
-  ],
-  "label.journeys": [
-    {
-      "type": 0,
-      "value": "Traxectorias"
-    }
-  ],
-  "label.language": [
-    {
-      "type": 0,
-      "value": "Idioma"
-    }
-  ],
-  "label.languages": [
-    {
-      "type": 0,
-      "value": "Idiomas"
-    }
-  ],
-  "label.laptop": [
-    {
-      "type": 0,
-      "value": "Portátil"
-    }
-  ],
-  "label.last-click": [
-    {
-      "type": 0,
-      "value": "Último clic"
-    }
-  ],
-  "label.last-days": [
-    {
-      "type": 0,
-      "value": "Últimos "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " días"
-    }
-  ],
-  "label.last-hours": [
-    {
-      "type": 0,
-      "value": "Últimas "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " horas"
-    }
-  ],
-  "label.last-months": [
-    {
-      "type": 0,
-      "value": "Últimos "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " meses"
-    }
-  ],
-  "label.last-seen": [
-    {
-      "type": 0,
-      "value": "Última visita"
-    }
-  ],
-  "label.leave": [
-    {
-      "type": 0,
-      "value": "Deixar"
-    }
-  ],
-  "label.leave-team": [
-    {
-      "type": 0,
-      "value": "Deixar o equipo"
-    }
-  ],
-  "label.less-than": [
-    {
-      "type": 0,
-      "value": "Menor que"
-    }
-  ],
-  "label.less-than-equals": [
-    {
-      "type": 0,
-      "value": "Menor ou igual que"
-    }
-  ],
-  "label.links": [
-    {
-      "type": 0,
-      "value": "Ligazóns"
-    }
-  ],
-  "label.login": [
-    {
-      "type": 0,
-      "value": "Acceder"
-    }
-  ],
-  "label.logout": [
-    {
-      "type": 0,
-      "value": "Pechar sesión"
-    }
-  ],
-  "label.manage": [
-    {
-      "type": 0,
-      "value": "Xestionar"
-    }
-  ],
-  "label.manager": [
-    {
-      "type": 0,
-      "value": "Xestor"
-    }
-  ],
-  "label.max": [
-    {
-      "type": 0,
-      "value": "Max"
-    }
-  ],
-  "label.maximize": [
-    {
-      "type": 0,
-      "value": "Expandir"
-    }
-  ],
-  "label.medium": [
-    {
-      "type": 0,
-      "value": "Medio"
-    }
-  ],
-  "label.member": [
-    {
-      "type": 0,
-      "value": "Membro"
-    }
-  ],
-  "label.members": [
-    {
-      "type": 0,
-      "value": "Membros"
-    }
-  ],
-  "label.min": [
-    {
-      "type": 0,
-      "value": "Min"
-    }
-  ],
-  "label.mobile": [
-    {
-      "type": 0,
-      "value": "Móbil"
-    }
-  ],
-  "label.model": [
-    {
-      "type": 0,
-      "value": "Modelo"
-    }
-  ],
-  "label.more": [
-    {
-      "type": 0,
-      "value": "Máis"
-    }
-  ],
-  "label.my-account": [
-    {
-      "type": 0,
-      "value": "A miña conta"
-    }
-  ],
-  "label.my-websites": [
-    {
-      "type": 0,
-      "value": "Os meus sitios web"
-    }
-  ],
-  "label.name": [
-    {
-      "type": 0,
-      "value": "Nome"
-    }
-  ],
-  "label.new-password": [
-    {
-      "type": 0,
-      "value": "Novo contrasinal"
-    }
-  ],
-  "label.none": [
-    {
-      "type": 0,
-      "value": "Ningún"
-    }
-  ],
-  "label.number-of-records": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "record"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "records"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "label.ok": [
-    {
-      "type": 0,
-      "value": "OK"
-    }
-  ],
-  "label.online": [
-    {
-      "type": 0,
-      "value": "Online"
-    }
-  ],
-  "label.organic-search": [
-    {
-      "type": 0,
-      "value": "Busca orgánica"
-    }
-  ],
-  "label.organic-shopping": [
-    {
-      "type": 0,
-      "value": "Compra orgánica"
-    }
-  ],
-  "label.organic-social": [
-    {
-      "type": 0,
-      "value": "Social orgánico"
-    }
-  ],
-  "label.organic-video": [
-    {
-      "type": 0,
-      "value": "Vídeo orgánico"
-    }
-  ],
-  "label.os": [
-    {
-      "type": 0,
-      "value": "Sistema operativo"
-    }
-  ],
-  "label.other": [
-    {
-      "type": 0,
-      "value": "Outro"
-    }
-  ],
-  "label.overview": [
-    {
-      "type": 0,
-      "value": "Resumo"
-    }
-  ],
-  "label.owner": [
-    {
-      "type": 0,
-      "value": "Propietario/a"
-    }
-  ],
-  "label.page": [
-    {
-      "type": 0,
-      "value": "Páxina"
-    }
-  ],
-  "label.page-of": [
-    {
-      "type": 0,
-      "value": "Páxina "
-    },
-    {
-      "type": 1,
-      "value": "current"
-    },
-    {
-      "type": 0,
-      "value": " de "
-    },
-    {
-      "type": 1,
-      "value": "total"
-    }
-  ],
-  "label.page-views": [
-    {
-      "type": 0,
-      "value": "Vistas de páxinas"
-    }
-  ],
-  "label.pageTitle": [
-    {
-      "type": 0,
-      "value": "Título da páxina"
-    }
-  ],
-  "label.pages": [
-    {
-      "type": 0,
-      "value": "Páxinas"
-    }
-  ],
-  "label.paid-ads": [
-    {
-      "type": 0,
-      "value": "Anuncios de pago"
-    }
-  ],
-  "label.paid-search": [
-    {
-      "type": 0,
-      "value": "Busca de pago"
-    }
-  ],
-  "label.paid-shopping": [
-    {
-      "type": 0,
-      "value": "Compra de pago"
-    }
-  ],
-  "label.paid-social": [
-    {
-      "type": 0,
-      "value": "Social de pago"
-    }
-  ],
-  "label.paid-video": [
-    {
-      "type": 0,
-      "value": "Vídeo de pago"
-    }
-  ],
-  "label.password": [
-    {
-      "type": 0,
-      "value": "Contrasinal"
-    }
-  ],
-  "label.path": [
-    {
-      "type": 0,
-      "value": "Ruta"
-    }
-  ],
-  "label.paths": [
-    {
-      "type": 0,
-      "value": "Rutas"
-    }
-  ],
-  "label.pixels": [
-    {
-      "type": 0,
-      "value": "Píxeles"
-    }
-  ],
-  "label.powered-by": [
-    {
-      "type": 0,
-      "value": "Funciona grazas a "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    }
-  ],
-  "label.previous": [
-    {
-      "type": 0,
-      "value": "Anterior"
-    }
-  ],
-  "label.previous-period": [
-    {
-      "type": 0,
-      "value": "Periodo anterior"
-    }
-  ],
-  "label.previous-year": [
-    {
-      "type": 0,
-      "value": "Ano anterior"
-    }
-  ],
-  "label.profile": [
-    {
-      "type": 0,
-      "value": "Perfil"
-    }
-  ],
-  "label.properties": [
-    {
-      "type": 0,
-      "value": "Propiedades"
-    }
-  ],
-  "label.property": [
-    {
-      "type": 0,
-      "value": "Propiedade"
-    }
-  ],
-  "label.queries": [
-    {
-      "type": 0,
-      "value": "Peticións"
-    }
-  ],
-  "label.query": [
-    {
-      "type": 0,
-      "value": "Petición"
-    }
-  ],
-  "label.query-parameters": [
-    {
-      "type": 0,
-      "value": "Parámetros da petición"
-    }
-  ],
-  "label.realtime": [
-    {
-      "type": 0,
-      "value": "Agora mesmo"
-    }
-  ],
-  "label.referral": [
-    {
-      "type": 0,
-      "value": "Referencia"
-    }
-  ],
-  "label.referrer": [
-    {
-      "type": 0,
-      "value": "Orixe"
-    }
-  ],
-  "label.referrers": [
-    {
-      "type": 0,
-      "value": "Orixes"
-    }
-  ],
-  "label.refresh": [
-    {
-      "type": 0,
-      "value": "Actualizar"
-    }
-  ],
-  "label.regenerate": [
-    {
-      "type": 0,
-      "value": "Rexenerar"
-    }
-  ],
-  "label.region": [
-    {
-      "type": 0,
-      "value": "Rexión"
-    }
-  ],
-  "label.regions": [
-    {
-      "type": 0,
-      "value": "Rexións"
-    }
-  ],
-  "label.remaining": [
-    {
-      "type": 0,
-      "value": "Restante"
-    }
-  ],
-  "label.remove": [
-    {
-      "type": 0,
-      "value": "Eliminar"
-    }
-  ],
-  "label.remove-member": [
-    {
-      "type": 0,
-      "value": "Eliminar membro"
-    }
-  ],
-  "label.reports": [
-    {
-      "type": 0,
-      "value": "Reportes"
-    }
-  ],
-  "label.required": [
-    {
-      "type": 0,
-      "value": "Requerido"
-    }
-  ],
-  "label.reset": [
-    {
-      "type": 0,
-      "value": "Restablecer"
-    }
-  ],
-  "label.reset-website": [
-    {
-      "type": 0,
-      "value": "Para restablecer este sitio web, escriba "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " na caixa de texto de embaixo para confirmar."
-    }
-  ],
-  "label.retention": [
-    {
-      "type": 0,
-      "value": "Retención"
-    }
-  ],
-  "label.retention-description": [
-    {
-      "type": 0,
-      "value": "Mide a fidelidade dos usuarios ao teu sitio web seguindo a frecuencia coa que volven."
-    }
-  ],
-  "label.revenue": [
-    {
-      "type": 0,
-      "value": "Ingresos"
-    }
-  ],
-  "label.revenue-description": [
-    {
-      "type": 0,
-      "value": "Consulta os teus ingresos ao longo do tempo."
-    }
-  ],
-  "label.role": [
-    {
-      "type": 0,
-      "value": "Rol"
-    }
-  ],
-  "label.run-query": [
-    {
-      "type": 0,
-      "value": "Executar petición"
-    }
-  ],
-  "label.save": [
-    {
-      "type": 0,
-      "value": "Gardar"
-    }
-  ],
-  "label.screens": [
-    {
-      "type": 0,
-      "value": "Pantallas"
-    }
-  ],
-  "label.search": [
-    {
-      "type": 0,
-      "value": "Buscar"
-    }
-  ],
-  "label.select": [
-    {
-      "type": 0,
-      "value": "Seleccionar"
-    }
-  ],
-  "label.select-date": [
-    {
-      "type": 0,
-      "value": "Seleccionar data"
-    }
-  ],
-  "label.select-filter": [
-    {
-      "type": 0,
-      "value": "Seleccionar filtro"
-    }
-  ],
-  "label.select-role": [
-    {
-      "type": 0,
-      "value": "Seleccionar rol"
-    }
-  ],
-  "label.select-website": [
-    {
-      "type": 0,
-      "value": "Seleccionar sitio web"
-    }
-  ],
-  "label.session": [
-    {
-      "type": 0,
-      "value": "Sesión"
-    }
-  ],
-  "label.session-data": [
-    {
-      "type": 0,
-      "value": "Datos da sesión"
-    }
-  ],
-  "label.sessions": [
-    {
-      "type": 0,
-      "value": "Sesións"
-    }
-  ],
-  "label.settings": [
-    {
-      "type": 0,
-      "value": "Axustes"
-    }
-  ],
-  "label.share": [
-    {
-      "type": 0,
-      "value": "Compartir"
-    }
-  ],
-  "label.share-url": [
-    {
-      "type": 0,
-      "value": "Compartir URL"
-    }
-  ],
-  "label.single-day": [
-    {
-      "type": 0,
-      "value": "Un só día"
-    }
-  ],
-  "label.sms": [
-    {
-      "type": 0,
-      "value": "SMS"
-    }
-  ],
-  "label.sources": [
-    {
-      "type": 0,
-      "value": "Fontes"
-    }
-  ],
-  "label.start-step": [
-    {
-      "type": 0,
-      "value": "Start Step"
-    }
-  ],
-  "label.steps": [
-    {
-      "type": 0,
-      "value": "Pasos"
-    }
-  ],
-  "label.sum": [
-    {
-      "type": 0,
-      "value": "Suma"
-    }
-  ],
-  "label.tablet": [
-    {
-      "type": 0,
-      "value": "Tableta"
-    }
-  ],
-  "label.tag": [
-    {
-      "type": 0,
-      "value": "Etiqueta"
-    }
-  ],
-  "label.tags": [
-    {
-      "type": 0,
-      "value": "Etiquetas"
-    }
-  ],
-  "label.team": [
-    {
-      "type": 0,
-      "value": "Equipo"
-    }
-  ],
-  "label.team-id": [
-    {
-      "type": 0,
-      "value": "ID do equipo"
-    }
-  ],
-  "label.team-manager": [
-    {
-      "type": 0,
-      "value": "Xestor do equipo"
-    }
-  ],
-  "label.team-member": [
-    {
-      "type": 0,
-      "value": "Membro do equipo"
-    }
-  ],
-  "label.team-name": [
-    {
-      "type": 0,
-      "value": "Nome do equipo"
-    }
-  ],
-  "label.team-owner": [
-    {
-      "type": 0,
-      "value": "Propietario do equipo"
-    }
-  ],
-  "label.team-settings": [
-    {
-      "type": 0,
-      "value": "Axustes do equipo"
-    }
-  ],
-  "label.team-view-only": [
-    {
-      "type": 0,
-      "value": "Equipo de só lectura"
-    }
-  ],
-  "label.team-websites": [
-    {
-      "type": 0,
-      "value": "Sitios web do equipo"
-    }
-  ],
-  "label.teams": [
-    {
-      "type": 0,
-      "value": "Equipos"
-    }
-  ],
-  "label.terms": [
-    {
-      "type": 0,
-      "value": "Termos"
-    }
-  ],
-  "label.theme": [
-    {
-      "type": 0,
-      "value": "Decorado"
-    }
-  ],
-  "label.this-month": [
-    {
-      "type": 0,
-      "value": "Este mes"
-    }
-  ],
-  "label.this-week": [
-    {
-      "type": 0,
-      "value": "Esta semana"
-    }
-  ],
-  "label.this-year": [
-    {
-      "type": 0,
-      "value": "Este ano"
-    }
-  ],
-  "label.timezone": [
-    {
-      "type": 0,
-      "value": "Zona horaria"
-    }
-  ],
-  "label.title": [
-    {
-      "type": 0,
-      "value": "Título"
-    }
-  ],
-  "label.today": [
-    {
-      "type": 0,
-      "value": "Hoxe"
-    }
-  ],
-  "label.toggle-charts": [
-    {
-      "type": 0,
-      "value": "Activación das gráficas"
-    }
-  ],
-  "label.total": [
-    {
-      "type": 0,
-      "value": "Total"
-    }
-  ],
-  "label.total-records": [
-    {
-      "type": 0,
-      "value": "Rexistros totais"
-    }
-  ],
-  "label.tracking-code": [
-    {
-      "type": 0,
-      "value": "Código de seguemento"
-    }
-  ],
-  "label.transactions": [
-    {
-      "type": 0,
-      "value": "Transaccións"
-    }
-  ],
-  "label.transfer": [
-    {
-      "type": 0,
-      "value": "Transferir"
-    }
-  ],
-  "label.transfer-website": [
-    {
-      "type": 0,
-      "value": "Transferir sitio web"
-    }
-  ],
-  "label.true": [
-    {
-      "type": 0,
-      "value": "Verdadeiro"
-    }
-  ],
-  "label.type": [
-    {
-      "type": 0,
-      "value": "Tipo"
-    }
-  ],
-  "label.unique": [
-    {
-      "type": 0,
-      "value": "Único"
-    }
-  ],
-  "label.unique-visitors": [
-    {
-      "type": 0,
-      "value": "Visitas únicas"
-    }
-  ],
-  "label.uniqueCustomers": [
-    {
-      "type": 0,
-      "value": "Clientes únicos"
-    }
-  ],
-  "label.unknown": [
-    {
-      "type": 0,
-      "value": "Descoñecido"
-    }
-  ],
-  "label.untitled": [
-    {
-      "type": 0,
-      "value": "Sen título"
-    }
-  ],
-  "label.update": [
-    {
-      "type": 0,
-      "value": "Actualizar"
-    }
-  ],
-  "label.user": [
-    {
-      "type": 0,
-      "value": "Usuario"
-    }
-  ],
-  "label.username": [
-    {
-      "type": 0,
-      "value": "Identificador"
-    }
-  ],
-  "label.users": [
-    {
-      "type": 0,
-      "value": "Usuarios"
-    }
-  ],
-  "label.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "label.utm-description": [
-    {
-      "type": 0,
-      "value": "Segue as túas campañas a través dos parámetros UTM."
-    }
-  ],
-  "label.value": [
-    {
-      "type": 0,
-      "value": "Valor"
-    }
-  ],
-  "label.view": [
-    {
-      "type": 0,
-      "value": "Vista"
-    }
-  ],
-  "label.view-details": [
-    {
-      "type": 0,
-      "value": "Ver detalles"
-    }
-  ],
-  "label.view-only": [
-    {
-      "type": 0,
-      "value": "Só lectura"
-    }
-  ],
-  "label.views": [
-    {
-      "type": 0,
-      "value": "Visualizacións"
-    }
-  ],
-  "label.views-per-visit": [
-    {
-      "type": 0,
-      "value": "Visualizacións por visita"
-    }
-  ],
-  "label.visit-duration": [
-    {
-      "type": 0,
-      "value": "Tempo medio de visita"
-    }
-  ],
-  "label.visitors": [
-    {
-      "type": 0,
-      "value": "Visitantes"
-    }
-  ],
-  "label.visits": [
-    {
-      "type": 0,
-      "value": "Visitas"
-    }
-  ],
-  "label.website": [
-    {
-      "type": 0,
-      "value": "Sitio web"
-    }
-  ],
-  "label.website-id": [
-    {
-      "type": 0,
-      "value": "ID do sitio web"
-    }
-  ],
-  "label.websites": [
-    {
-      "type": 0,
-      "value": "Sitios web"
-    }
-  ],
-  "label.window": [
-    {
-      "type": 0,
-      "value": "Ventá"
-    }
-  ],
-  "label.yesterday": [
-    {
-      "type": 0,
-      "value": "Onte"
-    }
-  ],
-  "message.action-confirmation": [
-    {
-      "type": 0,
-      "value": "Escribe "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " na caixa de embaixo para confirmar."
-    }
-  ],
-  "message.active-users": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " actual "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "visitante"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "visitantes"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "message.bad-request": [
-    {
-      "type": 0,
-      "value": "Bad request"
-    }
-  ],
-  "message.collected-data": [
-    {
-      "type": 0,
-      "value": "Datos recopilados"
-    }
-  ],
-  "message.confirm-delete": [
-    {
-      "type": 0,
-      "value": "Estás seguro/a de que queres eliminar "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-leave": [
-    {
-      "type": 0,
-      "value": "Estás seguro/a de que queres deixar "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-remove": [
-    {
-      "type": 0,
-      "value": "Estás seguro/a de que queres eliminar "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-reset": [
-    {
-      "type": 0,
-      "value": "Estás seguro/a de querer restablecer as estatísticas de "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.delete-team-warning": [
-    {
-      "type": 0,
-      "value": "Eliminar un equipo tamén eliminará tódolos sitios web do equipo."
-    }
-  ],
-  "message.delete-website-warning": [
-    {
-      "type": 0,
-      "value": "Tamén serán borrados tódolos datos asociados."
-    }
-  ],
-  "message.error": [
-    {
-      "type": 0,
-      "value": "Houbo un fallo."
-    }
-  ],
-  "message.event-log": [
-    {
-      "type": 1,
-      "value": "event"
-    },
-    {
-      "type": 0,
-      "value": " en "
-    },
-    {
-      "type": 1,
-      "value": "url"
-    }
-  ],
-  "message.forbidden": [
-    {
-      "type": 0,
-      "value": "Forbidden"
-    }
-  ],
-  "message.go-to-settings": [
-    {
-      "type": 0,
-      "value": "Ir aos axustes"
-    }
-  ],
-  "message.incorrect-username-password": [
-    {
-      "type": 0,
-      "value": "Credenciais incorrectas."
-    }
-  ],
-  "message.invalid-domain": [
-    {
-      "type": 0,
-      "value": "Dominio non válido"
-    }
-  ],
-  "message.min-password-length": [
-    {
-      "type": 0,
-      "value": "Lonxitude mínima de "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " caracteres"
-    }
-  ],
-  "message.new-version-available": [
-    {
-      "type": 0,
-      "value": "Unha nova versión de Umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " está dispoñible!"
-    }
-  ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "Sen datos dispoñibles."
-    }
-  ],
-  "message.no-event-data": [
-    {
-      "type": 0,
-      "value": "Sen datos de eventos dispoñibles."
-    }
-  ],
-  "message.no-match-password": [
-    {
-      "type": 0,
-      "value": "Non concordan os contrasinais"
-    }
-  ],
-  "message.no-results-found": [
-    {
-      "type": 0,
-      "value": "Non se atoparon resultados."
-    }
-  ],
-  "message.no-team-websites": [
-    {
-      "type": 0,
-      "value": "Este equipo non ten ningún sitio web."
-    }
-  ],
-  "message.no-teams": [
-    {
-      "type": 0,
-      "value": "Non creaches ningún equipo."
-    }
-  ],
-  "message.no-users": [
-    {
-      "type": 0,
-      "value": "Non hai usuarios."
-    }
-  ],
-  "message.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "Non tes sitios web configurados."
-    }
-  ],
-  "message.not-found": [
-    {
-      "type": 0,
-      "value": "Not found"
-    }
-  ],
-  "message.nothing-selected": [
-    {
-      "type": 0,
-      "value": "Nothing selected."
-    }
-  ],
-  "message.page-not-found": [
-    {
-      "type": 0,
-      "value": "Páxina non atopada."
-    }
-  ],
-  "message.reset-website": [
-    {
-      "type": 0,
-      "value": "Para restablecer este sitio web, escriba "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " na caixa de embaixo para confirmar."
-    }
-  ],
-  "message.reset-website-warning": [
-    {
-      "type": 0,
-      "value": "Vanse eliminar tódalas estatísticas deste sitio web, pero o código de seguimento permanecerá sen cambios."
-    }
-  ],
-  "message.saved": [
-    {
-      "type": 0,
-      "value": "Gardouse correctamente."
-    }
-  ],
-  "message.sever-error": [
-    {
-      "type": 0,
-      "value": "Server error"
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "Este é o URL da compartición pública de "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "."
-    }
-  ],
-  "message.team-already-member": [
-    {
-      "type": 0,
-      "value": "Xa es membro do equipo."
-    }
-  ],
-  "message.team-not-found": [
-    {
-      "type": 0,
-      "value": "Equipo non atopado."
-    }
-  ],
-  "message.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Os sitios web poden ser vistos por calquera membro do equipo."
-    }
-  ],
-  "message.tracking-code": [
-    {
-      "type": 0,
-      "value": "Código de seguimento"
-    }
-  ],
-  "message.transfer-team-website-to-user": [
-    {
-      "type": 0,
-      "value": "Transferir este sitio web á túa conta?"
-    }
-  ],
-  "message.transfer-user-website-to-team": [
-    {
-      "type": 0,
-      "value": "Selecciona o equipo ao que transferir este sitio web."
-    }
-  ],
-  "message.transfer-website": [
-    {
-      "type": 0,
-      "value": "Transferir propiedade do sitio web á túa conta ou a outro equipo."
-    }
-  ],
-  "message.triggered-event": [
-    {
-      "type": 0,
-      "value": "Activou o evento"
-    }
-  ],
-  "message.unauthorized": [
-    {
-      "type": 0,
-      "value": "Unauthorized"
-    }
-  ],
-  "message.user-deleted": [
-    {
-      "type": 0,
-      "value": "Usuario eliminado."
-    }
-  ],
-  "message.viewed-page": [
-    {
-      "type": 0,
-      "value": "Páxina vista"
-    }
-  ],
-  "message.visitor-log": [
-    {
-      "type": 0,
-      "value": "Visitante desde "
-    },
-    {
-      "type": 1,
-      "value": "country"
-    },
-    {
-      "type": 0,
-      "value": " usando "
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    },
-    {
-      "type": 0,
-      "value": " en "
-    },
-    {
-      "type": 1,
-      "value": "os"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "device"
-    }
-  ]
+  "label": {
+    "access-code": "Código de acceso",
+    "actions": "Accións",
+    "activity": "Rexistro de actividade",
+    "add": "Engadir",
+    "add-board": "Engadir taboleiro",
+    "add-description": "Engadir descrición",
+    "add-member": "Engadir membro",
+    "add-step": "Engadir paso",
+    "add-website": "Engadir sitio web",
+    "admin": "Administrador/a",
+    "affiliate": "Afiliado",
+    "after": "Despois",
+    "all": "Todo",
+    "all-time": "Sempre",
+    "analytics": "Analíticas",
+    "apply": "Aplicar",
+    "attribution": "Atribución",
+    "attribution-description": "Vexa como os usuarios interactúan co seu márketing e que impulsa as conversións.",
+    "average": "Media",
+    "back": "Atrás",
+    "before": "Antes",
+    "boards": "Taboleiros",
+    "bounce-rate": "Proporción de rebote",
+    "breakdown": "Desglose",
+    "browser": "Navegador",
+    "browsers": "Navegadores",
+    "campaigns": "Campañas",
+    "cancel": "Cancelar",
+    "change-password": "Mudar contrasinal",
+    "channels": "Canles",
+    "cities": "Cidades",
+    "city": "Cidade",
+    "clear-all": "Limpar todo",
+    "cohort": "Cohorte",
+    "compare": "Comparar",
+    "compare-dates": "Comparar datas",
+    "confirm": "Confirmar",
+    "confirm-password": "Confirmar contrasinal",
+    "contains": "Contén",
+    "content": "Contido",
+    "continue": "Continuar",
+    "conversion": "Conversión",
+    "conversion-rate": "Taxa de conversión",
+    "conversion-step": "Paso de conversión",
+    "count": "Reconto",
+    "countries": "Países",
+    "country": "País",
+    "create": "Crear",
+    "create-report": "Crear informe",
+    "create-team": "Crear equipo",
+    "create-user": "Crear usuario",
+    "created": "Creado",
+    "created-by": "Creado por",
+    "currency": "Moeda",
+    "current": "Actual",
+    "current-password": "Contrasinal actual",
+    "custom-range": "Rango personalizado",
+    "dashboard": "Taboleiro",
+    "data": "Datos",
+    "date": "Data",
+    "date-range": "Rango temporal",
+    "day": "Día",
+    "default-date-range": "Rango temporal por defecto",
+    "delete": "Eliminar",
+    "delete-report": "Eliminar reporte",
+    "delete-team": "Eliminar equipo",
+    "delete-user": "Eliminar usuario",
+    "delete-website": "Eliminar sitio web",
+    "description": "Descripción",
+    "desktop": "Escritorio",
+    "details": "Detalles",
+    "device": "Dispositivo",
+    "devices": "Dispositivos",
+    "direct": "Directo",
+    "dismiss": "Desbotar",
+    "distinct-id": "ID distinto",
+    "does-not-contain": "Non contén",
+    "does-not-include": "Non inclúe",
+    "doest-not-exist": "Non existe",
+    "domain": "Dominio",
+    "dropoff": "Disminución",
+    "edit": "Editar",
+    "edit-dashboard": "Editar taboleiro",
+    "edit-member": "Editar membro",
+    "email": "Correo electrónico",
+    "enable-share-url": "Activar URL de compartición",
+    "end-step": "Paso final",
+    "entry": "URL de entrada",
+    "event": "Evento",
+    "event-data": "Datos do evento",
+    "event-name": "Nome do evento",
+    "events": "Eventos",
+    "exists": "Existe",
+    "exit": "URL de saída",
+    "false": "Falso",
+    "field": "Campo",
+    "fields": "Campos",
+    "filter": "Filtro",
+    "filter-combined": "Combinado",
+    "filter-raw": "Crú",
+    "filters": "Filtros",
+    "first-click": "Primeiro clic",
+    "first-seen": "Primeira visita",
+    "funnel": "Funil",
+    "funnel-description": "Entende a taxa de conversión e de abandono dos usuarios.",
+    "funnels": "Funís",
+    "goal": "Obxectivo",
+    "goals": "Obxectivos",
+    "goals-description": "Segue os teus obxectivos de visualizacións de páxinas e eventos.",
+    "greater-than": "Maior que",
+    "greater-than-equals": "Maior ou igual que",
+    "grouped": "Agrupado",
+    "hostname": "Nome do host",
+    "includes": "Inclúe",
+    "insight": "Información",
+    "insights": "Informacións",
+    "insights-description": "Afonda nos teus datos usando segmentos e filtros.",
+    "is": "É",
+    "is-false": "É falso",
+    "is-not": "Non é",
+    "is-not-set": "Non está establecido",
+    "is-set": "Está establecido",
+    "is-true": "É verdadeiro",
+    "join": "Unirse",
+    "join-team": "Unirse ao equipo",
+    "journey": "Traxectoria",
+    "journey-description": "Entende como os usuarios navegan polo teu sitio web.",
+    "journeys": "Traxectorias",
+    "language": "Idioma",
+    "languages": "Idiomas",
+    "laptop": "Portátil",
+    "last-click": "Último clic",
+    "last-days": "Últimos {x} días",
+    "last-hours": "Últimas {x} horas",
+    "last-months": "Últimos {x} meses",
+    "last-seen": "Última visita",
+    "leave": "Deixar",
+    "leave-team": "Deixar o equipo",
+    "less-than": "Menor que",
+    "less-than-equals": "Menor ou igual que",
+    "links": "Ligazóns",
+    "login": "Acceder",
+    "logout": "Pechar sesión",
+    "manage": "Xestionar",
+    "manager": "Xestor",
+    "max": "Max",
+    "maximize": "Expandir",
+    "medium": "Medio",
+    "member": "Membro",
+    "members": "Membros",
+    "min": "Min",
+    "mobile": "Móbil",
+    "model": "Modelo",
+    "more": "Máis",
+    "my-account": "A miña conta",
+    "my-websites": "Os meus sitios web",
+    "name": "Nome",
+    "new-password": "Novo contrasinal",
+    "none": "Ningún",
+    "number-of-records": "{x} {x, plural, one {record} other {records}}",
+    "ok": "OK",
+    "online": "Online",
+    "organic-search": "Busca orgánica",
+    "organic-shopping": "Compra orgánica",
+    "organic-social": "Social orgánico",
+    "organic-video": "Vídeo orgánico",
+    "os": "Sistema operativo",
+    "other": "Outro",
+    "overview": "Resumo",
+    "owner": "Propietario/a",
+    "page": "Páxina",
+    "page-of": "Páxina {current} de {total}",
+    "page-views": "Vistas de páxinas",
+    "pageTitle": "Título da páxina",
+    "pages": "Páxinas",
+    "paid-ads": "Anuncios de pago",
+    "paid-search": "Busca de pago",
+    "paid-shopping": "Compra de pago",
+    "paid-social": "Social de pago",
+    "paid-video": "Vídeo de pago",
+    "password": "Contrasinal",
+    "path": "Ruta",
+    "paths": "Rutas",
+    "pixels": "Píxeles",
+    "powered-by": "Funciona grazas a {name}",
+    "previous": "Anterior",
+    "previous-period": "Periodo anterior",
+    "previous-year": "Ano anterior",
+    "profile": "Perfil",
+    "properties": "Propiedades",
+    "property": "Propiedade",
+    "queries": "Peticións",
+    "query": "Petición",
+    "query-parameters": "Parámetros da petición",
+    "realtime": "Agora mesmo",
+    "referral": "Referencia",
+    "referrer": "Orixe",
+    "referrers": "Orixes",
+    "refresh": "Actualizar",
+    "regenerate": "Rexenerar",
+    "region": "Rexión",
+    "regions": "Rexións",
+    "remaining": "Restante",
+    "remove": "Eliminar",
+    "remove-member": "Eliminar membro",
+    "reports": "Reportes",
+    "required": "Requerido",
+    "reset": "Restablecer",
+    "reset-website": "Para restablecer este sitio web, escriba {confirmation} na caixa de texto de embaixo para confirmar.",
+    "retention": "Retención",
+    "retention-description": "Mide a fidelidade dos usuarios ao teu sitio web seguindo a frecuencia coa que volven.",
+    "revenue": "Ingresos",
+    "revenue-description": "Consulta os teus ingresos ao longo do tempo.",
+    "role": "Rol",
+    "run-query": "Executar petición",
+    "save": "Gardar",
+    "screens": "Pantallas",
+    "search": "Buscar",
+    "select": "Seleccionar",
+    "select-date": "Seleccionar data",
+    "select-filter": "Seleccionar filtro",
+    "select-role": "Seleccionar rol",
+    "select-website": "Seleccionar sitio web",
+    "session": "Sesión",
+    "session-data": "Datos da sesión",
+    "sessions": "Sesións",
+    "settings": "Axustes",
+    "share": "Compartir",
+    "share-url": "Compartir URL",
+    "single-day": "Un só día",
+    "sms": "SMS",
+    "sources": "Fontes",
+    "start-step": "Start Step",
+    "steps": "Pasos",
+    "sum": "Suma",
+    "tablet": "Tableta",
+    "tag": "Etiqueta",
+    "tags": "Etiquetas",
+    "team": "Equipo",
+    "team-id": "ID do equipo",
+    "team-manager": "Xestor do equipo",
+    "team-member": "Membro do equipo",
+    "team-name": "Nome do equipo",
+    "team-owner": "Propietario do equipo",
+    "team-settings": "Axustes do equipo",
+    "team-view-only": "Equipo de só lectura",
+    "team-websites": "Sitios web do equipo",
+    "teams": "Equipos",
+    "terms": "Termos",
+    "theme": "Decorado",
+    "this-month": "Este mes",
+    "this-week": "Esta semana",
+    "this-year": "Este ano",
+    "timezone": "Zona horaria",
+    "title": "Título",
+    "today": "Hoxe",
+    "toggle-charts": "Activación das gráficas",
+    "total": "Total",
+    "total-records": "Rexistros totais",
+    "tracking-code": "Código de seguemento",
+    "transactions": "Transaccións",
+    "transfer": "Transferir",
+    "transfer-website": "Transferir sitio web",
+    "true": "Verdadeiro",
+    "type": "Tipo",
+    "unique": "Único",
+    "unique-visitors": "Visitas únicas",
+    "uniqueCustomers": "Clientes únicos",
+    "unknown": "Descoñecido",
+    "untitled": "Sen título",
+    "update": "Actualizar",
+    "user": "Usuario",
+    "username": "Identificador",
+    "users": "Usuarios",
+    "utm": "UTM",
+    "utm-description": "Segue as túas campañas a través dos parámetros UTM.",
+    "value": "Valor",
+    "view": "Vista",
+    "view-details": "Ver detalles",
+    "view-only": "Só lectura",
+    "views": "Visualizacións",
+    "views-per-visit": "Visualizacións por visita",
+    "visit-duration": "Tempo medio de visita",
+    "visitors": "Visitantes",
+    "visits": "Visitas",
+    "website": "Sitio web",
+    "website-id": "ID do sitio web",
+    "websites": "Sitios web",
+    "window": "Ventá",
+    "yesterday": "Onte",
+    "behavior": "Comportamento"
+  },
+  "message": {
+    "action-confirmation": "Escribe {confirmation} na caixa de embaixo para confirmar.",
+    "active-users": "{x} actual {x, plural, one {visitante} other {visitantes}}",
+    "bad-request": "Bad request",
+    "collected-data": "Datos recopilados",
+    "confirm-delete": "Estás seguro/a de que queres eliminar {target}?",
+    "confirm-leave": "Estás seguro/a de que queres deixar {target}?",
+    "confirm-remove": "Estás seguro/a de que queres eliminar {target}?",
+    "confirm-reset": "Estás seguro/a de querer restablecer as estatísticas de {target}?",
+    "delete-team-warning": "Eliminar un equipo tamén eliminará tódolos sitios web do equipo.",
+    "delete-website-warning": "Tamén serán borrados tódolos datos asociados.",
+    "error": "Houbo un fallo.",
+    "event-log": "{event} en {url}",
+    "forbidden": "Forbidden",
+    "go-to-settings": "Ir aos axustes",
+    "incorrect-username-password": "Credenciais incorrectas.",
+    "invalid-domain": "Dominio non válido",
+    "min-password-length": "Lonxitude mínima de {n} caracteres",
+    "new-version-available": "Unha nova versión de Umami {version} está dispoñible!",
+    "no-data-available": "Sen datos dispoñibles.",
+    "no-event-data": "Sen datos de eventos dispoñibles.",
+    "no-match-password": "Non concordan os contrasinais",
+    "no-results-found": "Non se atoparon resultados.",
+    "no-team-websites": "Este equipo non ten ningún sitio web.",
+    "no-teams": "Non creaches ningún equipo.",
+    "no-users": "Non hai usuarios.",
+    "no-websites-configured": "Non tes sitios web configurados.",
+    "not-found": "Not found",
+    "nothing-selected": "Nothing selected.",
+    "page-not-found": "Páxina non atopada.",
+    "reset-website": "Para restablecer este sitio web, escriba {confirmation} na caixa de embaixo para confirmar.",
+    "reset-website-warning": "Vanse eliminar tódalas estatísticas deste sitio web, pero o código de seguimento permanecerá sen cambios.",
+    "saved": "Gardouse correctamente.",
+    "sever-error": "Server error",
+    "share-url": "Este é o URL da compartición pública de {target}.",
+    "team-already-member": "Xa es membro do equipo.",
+    "team-not-found": "Equipo non atopado.",
+    "team-websites-info": "Os sitios web poden ser vistos por calquera membro do equipo.",
+    "tracking-code": "Código de seguimento",
+    "transfer-team-website-to-user": "Transferir este sitio web á túa conta?",
+    "transfer-user-website-to-team": "Selecciona o equipo ao que transferir este sitio web.",
+    "transfer-website": "Transferir propiedade do sitio web á túa conta ou a outro equipo.",
+    "triggered-event": "Activou o evento",
+    "unauthorized": "Unauthorized",
+    "user-deleted": "Usuario eliminado.",
+    "viewed-page": "Páxina vista",
+    "visitor-log": "Visitante desde {country} usando {browser} en {os} {device}"
+  }
 }

@@ -1,2198 +1,343 @@
 {
-  "label.access-code": [
-    {
-      "type": 0,
-      "value": "Код доступу"
-    }
-  ],
-  "label.actions": [
-    {
-      "type": 0,
-      "value": "Дії"
-    }
-  ],
-  "label.activity": [
-    {
-      "type": 0,
-      "value": "Журнал"
-    }
-  ],
-  "label.add": [
-    {
-      "type": 0,
-      "value": "Додати"
-    }
-  ],
-  "label.add-board": [
-    {
-      "type": 0,
-      "value": "Додати дошку"
-    }
-  ],
-  "label.add-description": [
-    {
-      "type": 0,
-      "value": "Додати опис"
-    }
-  ],
-  "label.add-member": [
-    {
-      "type": 0,
-      "value": "Додати учасника"
-    }
-  ],
-  "label.add-step": [
-    {
-      "type": 0,
-      "value": "Додати крок"
-    }
-  ],
-  "label.add-website": [
-    {
-      "type": 0,
-      "value": "Додати сайт"
-    }
-  ],
-  "label.admin": [
-    {
-      "type": 0,
-      "value": "Адміністратор"
-    }
-  ],
-  "label.affiliate": [
-    {
-      "type": 0,
-      "value": "Партнер"
-    }
-  ],
-  "label.after": [
-    {
-      "type": 0,
-      "value": "Після"
-    }
-  ],
-  "label.all": [
-    {
-      "type": 0,
-      "value": "Всі"
-    }
-  ],
-  "label.all-time": [
-    {
-      "type": 0,
-      "value": "Весь час"
-    }
-  ],
-  "label.analytics": [
-    {
-      "type": 0,
-      "value": "Аналітика"
-    }
-  ],
-  "label.apply": [
-    {
-      "type": 0,
-      "value": "Застосувати"
-    }
-  ],
-  "label.attribution": [
-    {
-      "type": 0,
-      "value": "Атрибуція"
-    }
-  ],
-  "label.attribution-description": [
-    {
-      "type": 0,
-      "value": "Дивіться, як користувачі взаємодіють з вашим маркетингом і що сприяє конверсіям."
-    }
-  ],
-  "label.average": [
-    {
-      "type": 0,
-      "value": "Середній"
-    }
-  ],
-  "label.back": [
-    {
-      "type": 0,
-      "value": "Назад"
-    }
-  ],
-  "label.before": [
-    {
-      "type": 0,
-      "value": "До"
-    }
-  ],
-  "label.boards": [
-    {
-      "type": 0,
-      "value": "Дошки"
-    }
-  ],
-  "label.bounce-rate": [
-    {
-      "type": 0,
-      "value": "Показник відмов"
-    }
-  ],
-  "label.breakdown": [
-    {
-      "type": 0,
-      "value": "Розподіл"
-    }
-  ],
-  "label.browser": [
-    {
-      "type": 0,
-      "value": "Браузер"
-    }
-  ],
-  "label.browsers": [
-    {
-      "type": 0,
-      "value": "Браузери"
-    }
-  ],
-  "label.campaigns": [
-    {
-      "type": 0,
-      "value": "Кампанії"
-    }
-  ],
-  "label.cancel": [
-    {
-      "type": 0,
-      "value": "Відмінити"
-    }
-  ],
-  "label.change-password": [
-    {
-      "type": 0,
-      "value": "Змінити пароль"
-    }
-  ],
-  "label.channels": [
-    {
-      "type": 0,
-      "value": "Канали"
-    }
-  ],
-  "label.cities": [
-    {
-      "type": 0,
-      "value": "Міста"
-    }
-  ],
-  "label.city": [
-    {
-      "type": 0,
-      "value": "Місто"
-    }
-  ],
-  "label.clear-all": [
-    {
-      "type": 0,
-      "value": "Очистити все"
-    }
-  ],
-  "label.cohort": [
-    {
-      "type": 0,
-      "value": "Когорта"
-    }
-  ],
-  "label.compare": [
-    {
-      "type": 0,
-      "value": "Порівняти"
-    }
-  ],
-  "label.compare-dates": [
-    {
-      "type": 0,
-      "value": "Порівняти дати"
-    }
-  ],
-  "label.confirm": [
-    {
-      "type": 0,
-      "value": "Підтвердити"
-    }
-  ],
-  "label.confirm-password": [
-    {
-      "type": 0,
-      "value": "Підтвердити пароль"
-    }
-  ],
-  "label.contains": [
-    {
-      "type": 0,
-      "value": "Містить"
-    }
-  ],
-  "label.content": [
-    {
-      "type": 0,
-      "value": "Вміст"
-    }
-  ],
-  "label.continue": [
-    {
-      "type": 0,
-      "value": "Продовжити"
-    }
-  ],
-  "label.conversion": [
-    {
-      "type": 0,
-      "value": "Конверсія"
-    }
-  ],
-  "label.conversion-rate": [
-    {
-      "type": 0,
-      "value": "Рівень конверсії"
-    }
-  ],
-  "label.conversion-step": [
-    {
-      "type": 0,
-      "value": "Крок конверсії"
-    }
-  ],
-  "label.count": [
-    {
-      "type": 0,
-      "value": "Кількість"
-    }
-  ],
-  "label.countries": [
-    {
-      "type": 0,
-      "value": "Країни"
-    }
-  ],
-  "label.country": [
-    {
-      "type": 0,
-      "value": "Країна"
-    }
-  ],
-  "label.create": [
-    {
-      "type": 0,
-      "value": "Створити"
-    }
-  ],
-  "label.create-report": [
-    {
-      "type": 0,
-      "value": "Створити звіт"
-    }
-  ],
-  "label.create-team": [
-    {
-      "type": 0,
-      "value": "Створити команду"
-    }
-  ],
-  "label.create-user": [
-    {
-      "type": 0,
-      "value": "Створити користувача"
-    }
-  ],
-  "label.created": [
-    {
-      "type": 0,
-      "value": "Створено"
-    }
-  ],
-  "label.created-by": [
-    {
-      "type": 0,
-      "value": "Створено"
-    }
-  ],
-  "label.currency": [
-    {
-      "type": 0,
-      "value": "Валюта"
-    }
-  ],
-  "label.current": [
-    {
-      "type": 0,
-      "value": "Поточний"
-    }
-  ],
-  "label.current-password": [
-    {
-      "type": 0,
-      "value": "Поточний пароль"
-    }
-  ],
-  "label.custom-range": [
-    {
-      "type": 0,
-      "value": "Довільний період"
-    }
-  ],
-  "label.dashboard": [
-    {
-      "type": 0,
-      "value": "Інформаційна панель"
-    }
-  ],
-  "label.data": [
-    {
-      "type": 0,
-      "value": "Дані"
-    }
-  ],
-  "label.date": [
-    {
-      "type": 0,
-      "value": "Дата"
-    }
-  ],
-  "label.date-range": [
-    {
-      "type": 0,
-      "value": "Діапазон дат"
-    }
-  ],
-  "label.day": [
-    {
-      "type": 0,
-      "value": "День"
-    }
-  ],
-  "label.default-date-range": [
-    {
-      "type": 0,
-      "value": "Діапазон дат за замовчуванням"
-    }
-  ],
-  "label.delete": [
-    {
-      "type": 0,
-      "value": "Видалити"
-    }
-  ],
-  "label.delete-report": [
-    {
-      "type": 0,
-      "value": "Видалити звіт"
-    }
-  ],
-  "label.delete-team": [
-    {
-      "type": 0,
-      "value": "Видалити команду"
-    }
-  ],
-  "label.delete-user": [
-    {
-      "type": 0,
-      "value": "Видалити користувача"
-    }
-  ],
-  "label.delete-website": [
-    {
-      "type": 0,
-      "value": "Видалити сайт"
-    }
-  ],
-  "label.description": [
-    {
-      "type": 0,
-      "value": "Опис"
-    }
-  ],
-  "label.desktop": [
-    {
-      "type": 0,
-      "value": "Настільний ПК"
-    }
-  ],
-  "label.details": [
-    {
-      "type": 0,
-      "value": "Деталі"
-    }
-  ],
-  "label.device": [
-    {
-      "type": 0,
-      "value": "Пристрій"
-    }
-  ],
-  "label.devices": [
-    {
-      "type": 0,
-      "value": "Пристрої"
-    }
-  ],
-  "label.direct": [
-    {
-      "type": 0,
-      "value": "Прямий"
-    }
-  ],
-  "label.dismiss": [
-    {
-      "type": 0,
-      "value": "Відхилити"
-    }
-  ],
-  "label.distinct-id": [
-    {
-      "type": 0,
-      "value": "Унікальний ID"
-    }
-  ],
-  "label.does-not-contain": [
-    {
-      "type": 0,
-      "value": "Не містить"
-    }
-  ],
-  "label.does-not-include": [
-    {
-      "type": 0,
-      "value": "Не включає"
-    }
-  ],
-  "label.doest-not-exist": [
-    {
-      "type": 0,
-      "value": "Не існує"
-    }
-  ],
-  "label.domain": [
-    {
-      "type": 0,
-      "value": "Домен"
-    }
-  ],
-  "label.dropoff": [
-    {
-      "type": 0,
-      "value": "Відсів"
-    }
-  ],
-  "label.edit": [
-    {
-      "type": 0,
-      "value": "Редагувати"
-    }
-  ],
-  "label.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "Редагувати панель"
-    }
-  ],
-  "label.edit-member": [
-    {
-      "type": 0,
-      "value": "Редагувати учасника"
-    }
-  ],
-  "label.email": [
-    {
-      "type": 0,
-      "value": "Email"
-    }
-  ],
-  "label.enable-share-url": [
-    {
-      "type": 0,
-      "value": "Увімкнути спільне посилання"
-    }
-  ],
-  "label.end-step": [
-    {
-      "type": 0,
-      "value": "Кінцевий крок"
-    }
-  ],
-  "label.entry": [
-    {
-      "type": 0,
-      "value": "Вхідний URL"
-    }
-  ],
-  "label.event": [
-    {
-      "type": 0,
-      "value": "Подія"
-    }
-  ],
-  "label.event-data": [
-    {
-      "type": 0,
-      "value": "Дані події"
-    }
-  ],
-  "label.event-name": [
-    {
-      "type": 0,
-      "value": "Назва події"
-    }
-  ],
-  "label.events": [
-    {
-      "type": 0,
-      "value": "Події"
-    }
-  ],
-  "label.exists": [
-    {
-      "type": 0,
-      "value": "Існує"
-    }
-  ],
-  "label.exit": [
-    {
-      "type": 0,
-      "value": "Exit URL"
-    }
-  ],
-  "label.false": [
-    {
-      "type": 0,
-      "value": "False"
-    }
-  ],
-  "label.field": [
-    {
-      "type": 0,
-      "value": "Поле"
-    }
-  ],
-  "label.fields": [
-    {
-      "type": 0,
-      "value": "Поля"
-    }
-  ],
-  "label.filter": [
-    {
-      "type": 0,
-      "value": "Фільтр"
-    }
-  ],
-  "label.filter-combined": [
-    {
-      "type": 0,
-      "value": "Об'єднані"
-    }
-  ],
-  "label.filter-raw": [
-    {
-      "type": 0,
-      "value": "Сирі дані"
-    }
-  ],
-  "label.filters": [
-    {
-      "type": 0,
-      "value": "Фільтри"
-    }
-  ],
-  "label.first-click": [
-    {
-      "type": 0,
-      "value": "Перший клік"
-    }
-  ],
-  "label.first-seen": [
-    {
-      "type": 0,
-      "value": "First seen"
-    }
-  ],
-  "label.funnel": [
-    {
-      "type": 0,
-      "value": "Воронка"
-    }
-  ],
-  "label.funnel-description": [
-    {
-      "type": 0,
-      "value": "Зрозуміти рівень конверсії та відсіву користувачів."
-    }
-  ],
-  "label.funnels": [
-    {
-      "type": 0,
-      "value": "Воронки"
-    }
-  ],
-  "label.goal": [
-    {
-      "type": 0,
-      "value": "Мета"
-    }
-  ],
-  "label.goals": [
-    {
-      "type": 0,
-      "value": "Мети"
-    }
-  ],
-  "label.goals-description": [
-    {
-      "type": 0,
-      "value": "Відстежуйте свої цілі для переглядів сторінок і подій."
-    }
-  ],
-  "label.greater-than": [
-    {
-      "type": 0,
-      "value": "Більше ніж"
-    }
-  ],
-  "label.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "Більше або рівно"
-    }
-  ],
-  "label.grouped": [
-    {
-      "type": 0,
-      "value": "Груповано"
-    }
-  ],
-  "label.hostname": [
-    {
-      "type": 0,
-      "value": "Ім'я хоста"
-    }
-  ],
-  "label.includes": [
-    {
-      "type": 0,
-      "value": "Включає"
-    }
-  ],
-  "label.insight": [
-    {
-      "type": 0,
-      "value": "Інсайт"
-    }
-  ],
-  "label.insights": [
-    {
-      "type": 0,
-      "value": "Інсайти"
-    }
-  ],
-  "label.insights-description": [
-    {
-      "type": 0,
-      "value": "Зануртеся глибше у свої дані за допомогою сегментів та фільтрів."
-    }
-  ],
-  "label.is": [
-    {
-      "type": 0,
-      "value": "Є"
-    }
-  ],
-  "label.is-false": [
-    {
-      "type": 0,
-      "value": "Хибно"
-    }
-  ],
-  "label.is-not": [
-    {
-      "type": 0,
-      "value": "Не є"
-    }
-  ],
-  "label.is-not-set": [
-    {
-      "type": 0,
-      "value": "Не встановлено"
-    }
-  ],
-  "label.is-set": [
-    {
-      "type": 0,
-      "value": "Встановлено"
-    }
-  ],
-  "label.is-true": [
-    {
-      "type": 0,
-      "value": "Правдиво"
-    }
-  ],
-  "label.join": [
-    {
-      "type": 0,
-      "value": "Приєднатись"
-    }
-  ],
-  "label.join-team": [
-    {
-      "type": 0,
-      "value": "Приєднатись до команди"
-    }
-  ],
-  "label.journey": [
-    {
-      "type": 0,
-      "value": "Шлях"
-    }
-  ],
-  "label.journey-description": [
-    {
-      "type": 0,
-      "value": "Зрозумійте, як користувачі переміщаються вашим сайтом."
-    }
-  ],
-  "label.journeys": [
-    {
-      "type": 0,
-      "value": "Шляхи"
-    }
-  ],
-  "label.language": [
-    {
-      "type": 0,
-      "value": "Мова"
-    }
-  ],
-  "label.languages": [
-    {
-      "type": 0,
-      "value": "Мови"
-    }
-  ],
-  "label.laptop": [
-    {
-      "type": 0,
-      "value": "Ноутбук"
-    }
-  ],
-  "label.last-click": [
-    {
-      "type": 0,
-      "value": "Останній клік"
-    }
-  ],
-  "label.last-days": [
-    {
-      "type": 0,
-      "value": "Останні "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " днів"
-    }
-  ],
-  "label.last-hours": [
-    {
-      "type": 0,
-      "value": "Останні "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " годин"
-    }
-  ],
-  "label.last-months": [
-    {
-      "type": 0,
-      "value": "Останні "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " місяців"
-    }
-  ],
-  "label.last-seen": [
-    {
-      "type": 0,
-      "value": "Останній перегляд"
-    }
-  ],
-  "label.leave": [
-    {
-      "type": 0,
-      "value": "Покинути"
-    }
-  ],
-  "label.leave-team": [
-    {
-      "type": 0,
-      "value": "Покинути команду"
-    }
-  ],
-  "label.less-than": [
-    {
-      "type": 0,
-      "value": "Менше ніж"
-    }
-  ],
-  "label.less-than-equals": [
-    {
-      "type": 0,
-      "value": "Менше або дорівнює"
-    }
-  ],
-  "label.links": [
-    {
-      "type": 0,
-      "value": "Посилання"
-    }
-  ],
-  "label.login": [
-    {
-      "type": 0,
-      "value": "Увійти"
-    }
-  ],
-  "label.logout": [
-    {
-      "type": 0,
-      "value": "Вийти"
-    }
-  ],
-  "label.manage": [
-    {
-      "type": 0,
-      "value": "Керувати"
-    }
-  ],
-  "label.manager": [
-    {
-      "type": 0,
-      "value": "Manager"
-    }
-  ],
-  "label.max": [
-    {
-      "type": 0,
-      "value": "Макс."
-    }
-  ],
-  "label.maximize": [
-    {
-      "type": 0,
-      "value": "Розгорнути"
-    }
-  ],
-  "label.medium": [
-    {
-      "type": 0,
-      "value": "Середній"
-    }
-  ],
-  "label.member": [
-    {
-      "type": 0,
-      "value": "Учасник"
-    }
-  ],
-  "label.members": [
-    {
-      "type": 0,
-      "value": "Учасники"
-    }
-  ],
-  "label.min": [
-    {
-      "type": 0,
-      "value": "Мін."
-    }
-  ],
-  "label.mobile": [
-    {
-      "type": 0,
-      "value": "Мобільний"
-    }
-  ],
-  "label.model": [
-    {
-      "type": 0,
-      "value": "Модель"
-    }
-  ],
-  "label.more": [
-    {
-      "type": 0,
-      "value": "Більше"
-    }
-  ],
-  "label.my-account": [
-    {
-      "type": 0,
-      "value": "Мій обліковий запис"
-    }
-  ],
-  "label.my-websites": [
-    {
-      "type": 0,
-      "value": "Мої сайти"
-    }
-  ],
-  "label.name": [
-    {
-      "type": 0,
-      "value": "Ім'я"
-    }
-  ],
-  "label.new-password": [
-    {
-      "type": 0,
-      "value": "Новий пароль"
-    }
-  ],
-  "label.none": [
-    {
-      "type": 0,
-      "value": "Нічого"
-    }
-  ],
-  "label.number-of-records": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "record"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "records"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "label.ok": [
-    {
-      "type": 0,
-      "value": "OK"
-    }
-  ],
-  "label.online": [
-    {
-      "type": 0,
-      "value": "Online"
-    }
-  ],
-  "label.organic-search": [
-    {
-      "type": 0,
-      "value": "Органічний пошук"
-    }
-  ],
-  "label.organic-shopping": [
-    {
-      "type": 0,
-      "value": "Органічні покупки"
-    }
-  ],
-  "label.organic-social": [
-    {
-      "type": 0,
-      "value": "Органічні соцмережі"
-    }
-  ],
-  "label.organic-video": [
-    {
-      "type": 0,
-      "value": "Органічне відео"
-    }
-  ],
-  "label.os": [
-    {
-      "type": 0,
-      "value": "ОС"
-    }
-  ],
-  "label.other": [
-    {
-      "type": 0,
-      "value": "Інше"
-    }
-  ],
-  "label.overview": [
-    {
-      "type": 0,
-      "value": "Огляд"
-    }
-  ],
-  "label.owner": [
-    {
-      "type": 0,
-      "value": "Власник"
-    }
-  ],
-  "label.page": [
-    {
-      "type": 0,
-      "value": "Сторінка"
-    }
-  ],
-  "label.page-of": [
-    {
-      "type": 0,
-      "value": "Сторінка "
-    },
-    {
-      "type": 1,
-      "value": "current"
-    },
-    {
-      "type": 0,
-      "value": " з "
-    },
-    {
-      "type": 1,
-      "value": "total"
-    }
-  ],
-  "label.page-views": [
-    {
-      "type": 0,
-      "value": "Перегляди сторінок"
-    }
-  ],
-  "label.pageTitle": [
-    {
-      "type": 0,
-      "value": "Заголовок сторінки"
-    }
-  ],
-  "label.pages": [
-    {
-      "type": 0,
-      "value": "Сторінки"
-    }
-  ],
-  "label.paid-ads": [
-    {
-      "type": 0,
-      "value": "Платна реклама"
-    }
-  ],
-  "label.paid-search": [
-    {
-      "type": 0,
-      "value": "Платний пошук"
-    }
-  ],
-  "label.paid-shopping": [
-    {
-      "type": 0,
-      "value": "Платні покупки"
-    }
-  ],
-  "label.paid-social": [
-    {
-      "type": 0,
-      "value": "Платні соцмережі"
-    }
-  ],
-  "label.paid-video": [
-    {
-      "type": 0,
-      "value": "Платне відео"
-    }
-  ],
-  "label.password": [
-    {
-      "type": 0,
-      "value": "Пароль"
-    }
-  ],
-  "label.path": [
-    {
-      "type": 0,
-      "value": "Path"
-    }
-  ],
-  "label.paths": [
-    {
-      "type": 0,
-      "value": "Paths"
-    }
-  ],
-  "label.pixels": [
-    {
-      "type": 0,
-      "value": "Пікселі"
-    }
-  ],
-  "label.powered-by": [
-    {
-      "type": 0,
-      "value": "На базі "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    }
-  ],
-  "label.previous": [
-    {
-      "type": 0,
-      "value": "Попередній"
-    }
-  ],
-  "label.previous-period": [
-    {
-      "type": 0,
-      "value": "Попередній період"
-    }
-  ],
-  "label.previous-year": [
-    {
-      "type": 0,
-      "value": "Попередній рік"
-    }
-  ],
-  "label.profile": [
-    {
-      "type": 0,
-      "value": "Профіль"
-    }
-  ],
-  "label.properties": [
-    {
-      "type": 0,
-      "value": "Властивості"
-    }
-  ],
-  "label.property": [
-    {
-      "type": 0,
-      "value": "Властивість"
-    }
-  ],
-  "label.queries": [
-    {
-      "type": 0,
-      "value": "Запити"
-    }
-  ],
-  "label.query": [
-    {
-      "type": 0,
-      "value": "Запит"
-    }
-  ],
-  "label.query-parameters": [
-    {
-      "type": 0,
-      "value": "Параметри запиту"
-    }
-  ],
-  "label.realtime": [
-    {
-      "type": 0,
-      "value": "У реальному часі"
-    }
-  ],
-  "label.referral": [
-    {
-      "type": 0,
-      "value": "Реферал"
-    }
-  ],
-  "label.referrer": [
-    {
-      "type": 0,
-      "value": "Джерело"
-    }
-  ],
-  "label.referrers": [
-    {
-      "type": 0,
-      "value": "Джерела"
-    }
-  ],
-  "label.refresh": [
-    {
-      "type": 0,
-      "value": "Оновити"
-    }
-  ],
-  "label.regenerate": [
-    {
-      "type": 0,
-      "value": "Згенерувати знову"
-    }
-  ],
-  "label.region": [
-    {
-      "type": 0,
-      "value": "Регіон"
-    }
-  ],
-  "label.regions": [
-    {
-      "type": 0,
-      "value": "Регіони"
-    }
-  ],
-  "label.remaining": [
-    {
-      "type": 0,
-      "value": "Залишилось"
-    }
-  ],
-  "label.remove": [
-    {
-      "type": 0,
-      "value": "Видалити"
-    }
-  ],
-  "label.remove-member": [
-    {
-      "type": 0,
-      "value": "Видалити користувача"
-    }
-  ],
-  "label.reports": [
-    {
-      "type": 0,
-      "value": "Звіти"
-    }
-  ],
-  "label.required": [
-    {
-      "type": 0,
-      "value": "Обов'язкове"
-    }
-  ],
-  "label.reset": [
-    {
-      "type": 0,
-      "value": "Скинути"
-    }
-  ],
-  "label.reset-website": [
-    {
-      "type": 0,
-      "value": "Скинути статистику сайту"
-    }
-  ],
-  "label.retention": [
-    {
-      "type": 0,
-      "value": "Липкість"
-    }
-  ],
-  "label.retention-description": [
-    {
-      "type": 0,
-      "value": "Виміряйте липкість вашого сайту, відстежуючи, як часто користувачі повертаються на нього."
-    }
-  ],
-  "label.revenue": [
-    {
-      "type": 0,
-      "value": "Дохід"
-    }
-  ],
-  "label.revenue-description": [
-    {
-      "type": 0,
-      "value": "Перегляньте свій дохід за певний період."
-    }
-  ],
-  "label.role": [
-    {
-      "type": 0,
-      "value": "Роль"
-    }
-  ],
-  "label.run-query": [
-    {
-      "type": 0,
-      "value": "Виконати запит"
-    }
-  ],
-  "label.save": [
-    {
-      "type": 0,
-      "value": "Зберегти"
-    }
-  ],
-  "label.screens": [
-    {
-      "type": 0,
-      "value": "Екрани"
-    }
-  ],
-  "label.search": [
-    {
-      "type": 0,
-      "value": "Пошук"
-    }
-  ],
-  "label.select": [
-    {
-      "type": 0,
-      "value": "Вибрати"
-    }
-  ],
-  "label.select-date": [
-    {
-      "type": 0,
-      "value": "Вибрати дату"
-    }
-  ],
-  "label.select-filter": [
-    {
-      "type": 0,
-      "value": "Вибрати фільтр"
-    }
-  ],
-  "label.select-role": [
-    {
-      "type": 0,
-      "value": "Вибрати роль"
-    }
-  ],
-  "label.select-website": [
-    {
-      "type": 0,
-      "value": "Вибрати сайт"
-    }
-  ],
-  "label.session": [
-    {
-      "type": 0,
-      "value": "Сесія"
-    }
-  ],
-  "label.session-data": [
-    {
-      "type": 0,
-      "value": "Дані сесії"
-    }
-  ],
-  "label.sessions": [
-    {
-      "type": 0,
-      "value": "Сесії"
-    }
-  ],
-  "label.settings": [
-    {
-      "type": 0,
-      "value": "Налаштування"
-    }
-  ],
-  "label.share": [
-    {
-      "type": 0,
-      "value": "Поділитися"
-    }
-  ],
-  "label.share-url": [
-    {
-      "type": 0,
-      "value": "Поділитися посилання"
-    }
-  ],
-  "label.single-day": [
-    {
-      "type": 0,
-      "value": "Один день"
-    }
-  ],
-  "label.sms": [
-    {
-      "type": 0,
-      "value": "SMS"
-    }
-  ],
-  "label.sources": [
-    {
-      "type": 0,
-      "value": "Джерела"
-    }
-  ],
-  "label.start-step": [
-    {
-      "type": 0,
-      "value": "Start Step"
-    }
-  ],
-  "label.steps": [
-    {
-      "type": 0,
-      "value": "Кроки"
-    }
-  ],
-  "label.sum": [
-    {
-      "type": 0,
-      "value": "Сума"
-    }
-  ],
-  "label.tablet": [
-    {
-      "type": 0,
-      "value": "Планшет"
-    }
-  ],
-  "label.tag": [
-    {
-      "type": 0,
-      "value": "Тег"
-    }
-  ],
-  "label.tags": [
-    {
-      "type": 0,
-      "value": "Теги"
-    }
-  ],
-  "label.team": [
-    {
-      "type": 0,
-      "value": "Команда"
-    }
-  ],
-  "label.team-id": [
-    {
-      "type": 0,
-      "value": "Ідентифікатор команди"
-    }
-  ],
-  "label.team-manager": [
-    {
-      "type": 0,
-      "value": "Менеджер команди"
-    }
-  ],
-  "label.team-member": [
-    {
-      "type": 0,
-      "value": "Учасник команди"
-    }
-  ],
-  "label.team-name": [
-    {
-      "type": 0,
-      "value": "Назва команди"
-    }
-  ],
-  "label.team-owner": [
-    {
-      "type": 0,
-      "value": "Власник команди"
-    }
-  ],
-  "label.team-settings": [
-    {
-      "type": 0,
-      "value": "Налаштування команди"
-    }
-  ],
-  "label.team-view-only": [
-    {
-      "type": 0,
-      "value": "Тільки для командного перегляду"
-    }
-  ],
-  "label.team-websites": [
-    {
-      "type": 0,
-      "value": "Сайти команди"
-    }
-  ],
-  "label.teams": [
-    {
-      "type": 0,
-      "value": "Команди"
-    }
-  ],
-  "label.terms": [
-    {
-      "type": 0,
-      "value": "Умови"
-    }
-  ],
-  "label.theme": [
-    {
-      "type": 0,
-      "value": "Тема"
-    }
-  ],
-  "label.this-month": [
-    {
-      "type": 0,
-      "value": "Цього місяця"
-    }
-  ],
-  "label.this-week": [
-    {
-      "type": 0,
-      "value": "Цього тижня"
-    }
-  ],
-  "label.this-year": [
-    {
-      "type": 0,
-      "value": "Цього ріку"
-    }
-  ],
-  "label.timezone": [
-    {
-      "type": 0,
-      "value": "Часовий пояс"
-    }
-  ],
-  "label.title": [
-    {
-      "type": 0,
-      "value": "Заголовок"
-    }
-  ],
-  "label.today": [
-    {
-      "type": 0,
-      "value": "Сьогодні"
-    }
-  ],
-  "label.toggle-charts": [
-    {
-      "type": 0,
-      "value": "Переключити графіки"
-    }
-  ],
-  "label.total": [
-    {
-      "type": 0,
-      "value": "Всього"
-    }
-  ],
-  "label.total-records": [
-    {
-      "type": 0,
-      "value": "Всього записів"
-    }
-  ],
-  "label.tracking-code": [
-    {
-      "type": 0,
-      "value": "Код для відслідковування"
-    }
-  ],
-  "label.transactions": [
-    {
-      "type": 0,
-      "value": "Transactions"
-    }
-  ],
-  "label.transfer": [
-    {
-      "type": 0,
-      "value": "Передати"
-    }
-  ],
-  "label.transfer-website": [
-    {
-      "type": 0,
-      "value": "Передати сайт"
-    }
-  ],
-  "label.true": [
-    {
-      "type": 0,
-      "value": "True"
-    }
-  ],
-  "label.type": [
-    {
-      "type": 0,
-      "value": "Тип"
-    }
-  ],
-  "label.unique": [
-    {
-      "type": 0,
-      "value": "Унікальний"
-    }
-  ],
-  "label.unique-visitors": [
-    {
-      "type": 0,
-      "value": "Унікальні відвідувачі"
-    }
-  ],
-  "label.uniqueCustomers": [
-    {
-      "type": 0,
-      "value": "Unique Customers"
-    }
-  ],
-  "label.unknown": [
-    {
-      "type": 0,
-      "value": "Невідомо"
-    }
-  ],
-  "label.untitled": [
-    {
-      "type": 0,
-      "value": "Без заголовку"
-    }
-  ],
-  "label.update": [
-    {
-      "type": 0,
-      "value": "Оновлення"
-    }
-  ],
-  "label.user": [
-    {
-      "type": 0,
-      "value": "Користувач"
-    }
-  ],
-  "label.username": [
-    {
-      "type": 0,
-      "value": "Ім'я користувача"
-    }
-  ],
-  "label.users": [
-    {
-      "type": 0,
-      "value": "Користувачі"
-    }
-  ],
-  "label.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "label.utm-description": [
-    {
-      "type": 0,
-      "value": "Відстежуйте свої кампанії за допомогою параметрів UTM."
-    }
-  ],
-  "label.value": [
-    {
-      "type": 0,
-      "value": "Значення"
-    }
-  ],
-  "label.view": [
-    {
-      "type": 0,
-      "value": "Перегляд"
-    }
-  ],
-  "label.view-details": [
-    {
-      "type": 0,
-      "value": "Переглянути деталі"
-    }
-  ],
-  "label.view-only": [
-    {
-      "type": 0,
-      "value": "Тільки для перегляду"
-    }
-  ],
-  "label.views": [
-    {
-      "type": 0,
-      "value": "Перегляди"
-    }
-  ],
-  "label.views-per-visit": [
-    {
-      "type": 0,
-      "value": "Перегляди за одне відвідування"
-    }
-  ],
-  "label.visit-duration": [
-    {
-      "type": 0,
-      "value": "Visit duration"
-    }
-  ],
-  "label.visitors": [
-    {
-      "type": 0,
-      "value": "Відвідувачі"
-    }
-  ],
-  "label.visits": [
-    {
-      "type": 0,
-      "value": "Відвідування"
-    }
-  ],
-  "label.website": [
-    {
-      "type": 0,
-      "value": "Сайт"
-    }
-  ],
-  "label.website-id": [
-    {
-      "type": 0,
-      "value": "Ідентифікатор сайту"
-    }
-  ],
-  "label.websites": [
-    {
-      "type": 0,
-      "value": "Сайти"
-    }
-  ],
-  "label.window": [
-    {
-      "type": 0,
-      "value": "Вікно"
-    }
-  ],
-  "label.yesterday": [
-    {
-      "type": 0,
-      "value": "Вчора"
-    }
-  ],
-  "message.action-confirmation": [
-    {
-      "type": 0,
-      "value": "Введіть "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " у полі нижче, щоб підтвердити."
-    }
-  ],
-  "message.active-users": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " поточних відвідувачів"
-    }
-  ],
-  "message.bad-request": [
-    {
-      "type": 0,
-      "value": "Bad request"
-    }
-  ],
-  "message.collected-data": [
-    {
-      "type": 0,
-      "value": "Collected data"
-    }
-  ],
-  "message.confirm-delete": [
-    {
-      "type": 0,
-      "value": "Ви впевнені, що бажаєте видалити "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-leave": [
-    {
-      "type": 0,
-      "value": "Ви впевнені, що бажаєте покинути "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-remove": [
-    {
-      "type": 0,
-      "value": "Ви впевнені, що бажаєте видалити "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-reset": [
-    {
-      "type": 0,
-      "value": "Ви впевнені, що бажаєте скинути статистику для "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.delete-team-warning": [
-    {
-      "type": 0,
-      "value": "Видалення команди також призведе до видалення всіх її веб-сайтів."
-    }
-  ],
-  "message.delete-website-warning": [
-    {
-      "type": 0,
-      "value": "Усі пов'язані дані будуть видалені також."
-    }
-  ],
-  "message.error": [
-    {
-      "type": 0,
-      "value": "Щось пішло не так."
-    }
-  ],
-  "message.event-log": [
-    {
-      "type": 1,
-      "value": "event"
-    },
-    {
-      "type": 0,
-      "value": " на "
-    },
-    {
-      "type": 1,
-      "value": "url"
-    }
-  ],
-  "message.forbidden": [
-    {
-      "type": 0,
-      "value": "Forbidden"
-    }
-  ],
-  "message.go-to-settings": [
-    {
-      "type": 0,
-      "value": "Перейти до налаштувань"
-    }
-  ],
-  "message.incorrect-username-password": [
-    {
-      "type": 0,
-      "value": "Невірне ім'я користувача або пароль."
-    }
-  ],
-  "message.invalid-domain": [
-    {
-      "type": 0,
-      "value": "Некоректний домен"
-    }
-  ],
-  "message.min-password-length": [
-    {
-      "type": 0,
-      "value": "Мінімальна довжина "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " символів"
-    }
-  ],
-  "message.new-version-available": [
-    {
-      "type": 0,
-      "value": "Вийшла нова версія Umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": "!"
-    }
-  ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "Немає даних."
-    }
-  ],
-  "message.no-event-data": [
-    {
-      "type": 0,
-      "value": "Дані про події відсутні."
-    }
-  ],
-  "message.no-match-password": [
-    {
-      "type": 0,
-      "value": "Паролі не співпадають"
-    }
-  ],
-  "message.no-results-found": [
-    {
-      "type": 0,
-      "value": "Не знайдено жодного результату."
-    }
-  ],
-  "message.no-team-websites": [
-    {
-      "type": 0,
-      "value": "У цієї команди немає жодного веб-сайту."
-    }
-  ],
-  "message.no-teams": [
-    {
-      "type": 0,
-      "value": "Ви не створили жодної команди."
-    }
-  ],
-  "message.no-users": [
-    {
-      "type": 0,
-      "value": "Немає жодного користувача."
-    }
-  ],
-  "message.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "У вас немає налаштованих сайтів."
-    }
-  ],
-  "message.not-found": [
-    {
-      "type": 0,
-      "value": "Not found"
-    }
-  ],
-  "message.nothing-selected": [
-    {
-      "type": 0,
-      "value": "Nothing selected."
-    }
-  ],
-  "message.page-not-found": [
-    {
-      "type": 0,
-      "value": "Сторінку не знайдено."
-    }
-  ],
-  "message.reset-website": [
-    {
-      "type": 0,
-      "value": "Щоб скинути налаштування цього веб-сайту, введіть "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " у полі нижче для підтвердження."
-    }
-  ],
-  "message.reset-website-warning": [
-    {
-      "type": 0,
-      "value": "Вся статистика для цього сайту буде видалена, проте код відслідковування буде продовжувати працювати."
-    }
-  ],
-  "message.saved": [
-    {
-      "type": 0,
-      "value": "Збережено успішно."
-    }
-  ],
-  "message.sever-error": [
-    {
-      "type": 0,
-      "value": "Server error"
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "Це публічне посилання для "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "."
-    }
-  ],
-  "message.team-already-member": [
-    {
-      "type": 0,
-      "value": "Ви вже є членом команди."
-    }
-  ],
-  "message.team-not-found": [
-    {
-      "type": 0,
-      "value": "Команду не знайдено."
-    }
-  ],
-  "message.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Веб-сайти може переглядати будь-хто з команди."
-    }
-  ],
-  "message.tracking-code": [
-    {
-      "type": 0,
-      "value": "Код для відслідковування"
-    }
-  ],
-  "message.transfer-team-website-to-user": [
-    {
-      "type": 0,
-      "value": "Перенести цей сайт до свого облікового запису?"
-    }
-  ],
-  "message.transfer-user-website-to-team": [
-    {
-      "type": 0,
-      "value": "Виберіть команду, до якої ви хочете передати цей веб-сайт."
-    }
-  ],
-  "message.transfer-website": [
-    {
-      "type": 0,
-      "value": "Передайте право власності на сайт своєму акаунту або іншій команді."
-    }
-  ],
-  "message.triggered-event": [
-    {
-      "type": 0,
-      "value": "Подія, що спрацювала"
-    }
-  ],
-  "message.unauthorized": [
-    {
-      "type": 0,
-      "value": "Unauthorized"
-    }
-  ],
-  "message.user-deleted": [
-    {
-      "type": 0,
-      "value": "Користувача видалено."
-    }
-  ],
-  "message.viewed-page": [
-    {
-      "type": 0,
-      "value": "Переглянута сторінка"
-    }
-  ],
-  "message.visitor-log": [
-    {
-      "type": 0,
-      "value": "Відвідувач з "
-    },
-    {
-      "type": 1,
-      "value": "country"
-    },
-    {
-      "type": 0,
-      "value": " використовуючи "
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    },
-    {
-      "type": 0,
-      "value": " на "
-    },
-    {
-      "type": 1,
-      "value": "os"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "device"
-    }
-  ]
+  "label": {
+    "access-code": "Код доступу",
+    "actions": "Дії",
+    "activity": "Журнал",
+    "add": "Додати",
+    "add-board": "Додати дошку",
+    "add-description": "Додати опис",
+    "add-member": "Додати учасника",
+    "add-step": "Додати крок",
+    "add-website": "Додати сайт",
+    "admin": "Адміністратор",
+    "affiliate": "Партнер",
+    "after": "Після",
+    "all": "Всі",
+    "all-time": "Весь час",
+    "analytics": "Аналітика",
+    "apply": "Застосувати",
+    "attribution": "Атрибуція",
+    "attribution-description": "Дивіться, як користувачі взаємодіють з вашим маркетингом і що сприяє конверсіям.",
+    "average": "Середній",
+    "back": "Назад",
+    "before": "До",
+    "behavior": "Поведінка",
+    "boards": "Дошки",
+    "bounce-rate": "Показник відмов",
+    "breakdown": "Розподіл",
+    "browser": "Браузер",
+    "browsers": "Браузери",
+    "campaigns": "Кампанії",
+    "cancel": "Відмінити",
+    "change-password": "Змінити пароль",
+    "channels": "Канали",
+    "cities": "Міста",
+    "city": "Місто",
+    "clear-all": "Очистити все",
+    "cohort": "Когорта",
+    "compare": "Порівняти",
+    "compare-dates": "Порівняти дати",
+    "confirm": "Підтвердити",
+    "confirm-password": "Підтвердити пароль",
+    "contains": "Містить",
+    "content": "Вміст",
+    "continue": "Продовжити",
+    "conversion": "Конверсія",
+    "conversion-rate": "Рівень конверсії",
+    "conversion-step": "Крок конверсії",
+    "count": "Кількість",
+    "countries": "Країни",
+    "country": "Країна",
+    "create": "Створити",
+    "create-report": "Створити звіт",
+    "create-team": "Створити команду",
+    "create-user": "Створити користувача",
+    "created": "Створено",
+    "created-by": "Створено",
+    "currency": "Валюта",
+    "current": "Поточний",
+    "current-password": "Поточний пароль",
+    "custom-range": "Довільний період",
+    "dashboard": "Інформаційна панель",
+    "data": "Дані",
+    "date": "Дата",
+    "date-range": "Діапазон дат",
+    "day": "День",
+    "default-date-range": "Діапазон дат за замовчуванням",
+    "delete": "Видалити",
+    "delete-report": "Видалити звіт",
+    "delete-team": "Видалити команду",
+    "delete-user": "Видалити користувача",
+    "delete-website": "Видалити сайт",
+    "description": "Опис",
+    "desktop": "Настільний ПК",
+    "details": "Деталі",
+    "device": "Пристрій",
+    "devices": "Пристрої",
+    "direct": "Прямий",
+    "dismiss": "Відхилити",
+    "distinct-id": "Унікальний ID",
+    "does-not-contain": "Не містить",
+    "does-not-include": "Не включає",
+    "doest-not-exist": "Не існує",
+    "domain": "Домен",
+    "dropoff": "Відсів",
+    "edit": "Редагувати",
+    "edit-dashboard": "Редагувати панель",
+    "edit-member": "Редагувати учасника",
+    "email": "Email",
+    "enable-share-url": "Увімкнути спільне посилання",
+    "end-step": "Кінцевий крок",
+    "entry": "Вхідний URL",
+    "event": "Подія",
+    "event-data": "Дані події",
+    "event-name": "Назва події",
+    "events": "Події",
+    "exists": "Існує",
+    "exit": "Exit URL",
+    "false": "False",
+    "field": "Поле",
+    "fields": "Поля",
+    "filter": "Фільтр",
+    "filter-combined": "Об'єднані",
+    "filter-raw": "Сирі дані",
+    "filters": "Фільтри",
+    "first-click": "Перший клік",
+    "first-seen": "First seen",
+    "funnel": "Воронка",
+    "funnel-description": "Зрозуміти рівень конверсії та відсіву користувачів.",
+    "funnels": "Воронки",
+    "goal": "Мета",
+    "goals": "Мети",
+    "goals-description": "Відстежуйте свої цілі для переглядів сторінок і подій.",
+    "greater-than": "Більше ніж",
+    "greater-than-equals": "Більше або рівно",
+    "grouped": "Груповано",
+    "hostname": "Ім'я хоста",
+    "includes": "Включає",
+    "insight": "Інсайт",
+    "insights": "Інсайти",
+    "insights-description": "Зануртеся глибше у свої дані за допомогою сегментів та фільтрів.",
+    "is": "Є",
+    "is-false": "Хибно",
+    "is-not": "Не є",
+    "is-not-set": "Не встановлено",
+    "is-set": "Встановлено",
+    "is-true": "Правдиво",
+    "join": "Приєднатись",
+    "join-team": "Приєднатись до команди",
+    "journey": "Шлях",
+    "journey-description": "Зрозумійте, як користувачі переміщаються вашим сайтом.",
+    "journeys": "Шляхи",
+    "language": "Мова",
+    "languages": "Мови",
+    "laptop": "Ноутбук",
+    "last-click": "Останній клік",
+    "last-days": "Останні {x} днів",
+    "last-hours": "Останні {x} годин",
+    "last-months": "Останні {x} місяців",
+    "last-seen": "Останній перегляд",
+    "leave": "Покинути",
+    "leave-team": "Покинути команду",
+    "less-than": "Менше ніж",
+    "less-than-equals": "Менше або дорівнює",
+    "links": "Посилання",
+    "login": "Увійти",
+    "logout": "Вийти",
+    "manage": "Керувати",
+    "manager": "Manager",
+    "max": "Макс.",
+    "maximize": "Розгорнути",
+    "medium": "Середній",
+    "member": "Учасник",
+    "members": "Учасники",
+    "min": "Мін.",
+    "mobile": "Мобільний",
+    "model": "Модель",
+    "more": "Більше",
+    "my-account": "Мій обліковий запис",
+    "my-websites": "Мої сайти",
+    "name": "Ім'я",
+    "new-password": "Новий пароль",
+    "none": "Нічого",
+    "number-of-records": "{x} {x, plural, one {record} other {records}}",
+    "ok": "OK",
+    "online": "Online",
+    "organic-search": "Органічний пошук",
+    "organic-shopping": "Органічні покупки",
+    "organic-social": "Органічні соцмережі",
+    "organic-video": "Органічне відео",
+    "os": "ОС",
+    "other": "Інше",
+    "overview": "Огляд",
+    "owner": "Власник",
+    "page": "Сторінка",
+    "page-of": "Сторінка {current} з {total}",
+    "page-views": "Перегляди сторінок",
+    "pageTitle": "Заголовок сторінки",
+    "pages": "Сторінки",
+    "paid-ads": "Платна реклама",
+    "paid-search": "Платний пошук",
+    "paid-shopping": "Платні покупки",
+    "paid-social": "Платні соцмережі",
+    "paid-video": "Платне відео",
+    "password": "Пароль",
+    "path": "Path",
+    "paths": "Paths",
+    "pixels": "Пікселі",
+    "powered-by": "На базі {name}",
+    "previous": "Попередній",
+    "previous-period": "Попередній період",
+    "previous-year": "Попередній рік",
+    "profile": "Профіль",
+    "properties": "Властивості",
+    "property": "Властивість",
+    "queries": "Запити",
+    "query": "Запит",
+    "query-parameters": "Параметри запиту",
+    "realtime": "У реальному часі",
+    "referral": "Реферал",
+    "referrer": "Джерело",
+    "referrers": "Джерела",
+    "refresh": "Оновити",
+    "regenerate": "Згенерувати знову",
+    "region": "Регіон",
+    "regions": "Регіони",
+    "remaining": "Залишилось",
+    "remove": "Видалити",
+    "remove-member": "Видалити користувача",
+    "reports": "Звіти",
+    "required": "Обов'язкове",
+    "reset": "Скинути",
+    "reset-website": "Скинути статистику сайту",
+    "retention": "Липкість",
+    "retention-description": "Виміряйте липкість вашого сайту, відстежуючи, як часто користувачі повертаються на нього.",
+    "revenue": "Дохід",
+    "revenue-description": "Перегляньте свій дохід за певний період.",
+    "role": "Роль",
+    "run-query": "Виконати запит",
+    "save": "Зберегти",
+    "screens": "Екрани",
+    "search": "Пошук",
+    "select": "Вибрати",
+    "select-date": "Вибрати дату",
+    "select-filter": "Вибрати фільтр",
+    "select-role": "Вибрати роль",
+    "select-website": "Вибрати сайт",
+    "session": "Сесія",
+    "session-data": "Дані сесії",
+    "sessions": "Сесії",
+    "settings": "Налаштування",
+    "share": "Поділитися",
+    "share-url": "Поділитися посилання",
+    "single-day": "Один день",
+    "sms": "SMS",
+    "sources": "Джерела",
+    "start-step": "Start Step",
+    "steps": "Кроки",
+    "sum": "Сума",
+    "tablet": "Планшет",
+    "tag": "Тег",
+    "tags": "Теги",
+    "team": "Команда",
+    "team-id": "Ідентифікатор команди",
+    "team-manager": "Менеджер команди",
+    "team-member": "Учасник команди",
+    "team-name": "Назва команди",
+    "team-owner": "Власник команди",
+    "team-settings": "Налаштування команди",
+    "team-view-only": "Тільки для командного перегляду",
+    "team-websites": "Сайти команди",
+    "teams": "Команди",
+    "terms": "Умови",
+    "theme": "Тема",
+    "this-month": "Цього місяця",
+    "this-week": "Цього тижня",
+    "this-year": "Цього ріку",
+    "timezone": "Часовий пояс",
+    "title": "Заголовок",
+    "today": "Сьогодні",
+    "toggle-charts": "Переключити графіки",
+    "total": "Всього",
+    "total-records": "Всього записів",
+    "tracking-code": "Код для відслідковування",
+    "transactions": "Transactions",
+    "transfer": "Передати",
+    "transfer-website": "Передати сайт",
+    "true": "True",
+    "type": "Тип",
+    "unique": "Унікальний",
+    "unique-visitors": "Унікальні відвідувачі",
+    "uniqueCustomers": "Unique Customers",
+    "unknown": "Невідомо",
+    "untitled": "Без заголовку",
+    "update": "Оновлення",
+    "user": "Користувач",
+    "username": "Ім'я користувача",
+    "users": "Користувачі",
+    "utm": "UTM",
+    "utm-description": "Відстежуйте свої кампанії за допомогою параметрів UTM.",
+    "value": "Значення",
+    "view": "Перегляд",
+    "view-details": "Переглянути деталі",
+    "view-only": "Тільки для перегляду",
+    "views": "Перегляди",
+    "views-per-visit": "Перегляди за одне відвідування",
+    "visit-duration": "Visit duration",
+    "visitors": "Відвідувачі",
+    "visits": "Відвідування",
+    "website": "Сайт",
+    "website-id": "Ідентифікатор сайту",
+    "websites": "Сайти",
+    "window": "Вікно",
+    "yesterday": "Вчора"
+  },
+  "message": {
+    "action-confirmation": "Введіть {confirmation} у полі нижче, щоб підтвердити.",
+    "active-users": "{x} поточних відвідувачів",
+    "bad-request": "Bad request",
+    "collected-data": "Collected data",
+    "confirm-delete": "Ви впевнені, що бажаєте видалити {target}?",
+    "confirm-leave": "Ви впевнені, що бажаєте покинути {target}?",
+    "confirm-remove": "Ви впевнені, що бажаєте видалити {target}?",
+    "confirm-reset": "Ви впевнені, що бажаєте скинути статистику для {target}?",
+    "delete-team-warning": "Видалення команди також призведе до видалення всіх її веб-сайтів.",
+    "delete-website-warning": "Усі пов'язані дані будуть видалені також.",
+    "error": "Щось пішло не так.",
+    "event-log": "{event} на {url}",
+    "forbidden": "Forbidden",
+    "go-to-settings": "Перейти до налаштувань",
+    "incorrect-username-password": "Невірне ім'я користувача або пароль.",
+    "invalid-domain": "Некоректний домен",
+    "min-password-length": "Мінімальна довжина {n} символів",
+    "new-version-available": "Вийшла нова версія Umami {version}!",
+    "no-data-available": "Немає даних.",
+    "no-event-data": "Дані про події відсутні.",
+    "no-match-password": "Паролі не співпадають",
+    "no-results-found": "Не знайдено жодного результату.",
+    "no-team-websites": "У цієї команди немає жодного веб-сайту.",
+    "no-teams": "Ви не створили жодної команди.",
+    "no-users": "Немає жодного користувача.",
+    "no-websites-configured": "У вас немає налаштованих сайтів.",
+    "not-found": "Not found",
+    "nothing-selected": "Nothing selected.",
+    "page-not-found": "Сторінку не знайдено.",
+    "reset-website": "Щоб скинути налаштування цього веб-сайту, введіть {confirmation} у полі нижче для підтвердження.",
+    "reset-website-warning": "Вся статистика для цього сайту буде видалена, проте код відслідковування буде продовжувати працювати.",
+    "saved": "Збережено успішно.",
+    "sever-error": "Server error",
+    "share-url": "Це публічне посилання для {target}.",
+    "team-already-member": "Ви вже є членом команди.",
+    "team-not-found": "Команду не знайдено.",
+    "team-websites-info": "Веб-сайти може переглядати будь-хто з команди.",
+    "tracking-code": "Код для відслідковування",
+    "transfer-team-website-to-user": "Перенести цей сайт до свого облікового запису?",
+    "transfer-user-website-to-team": "Виберіть команду, до якої ви хочете передати цей веб-сайт.",
+    "transfer-website": "Передайте право власності на сайт своєму акаунту або іншій команді.",
+    "triggered-event": "Подія, що спрацювала",
+    "unauthorized": "Unauthorized",
+    "user-deleted": "Користувача видалено.",
+    "viewed-page": "Переглянута сторінка",
+    "visitor-log": "Відвідувач з {country} використовуючи {browser} на {os} {device}"
+  }
 }
