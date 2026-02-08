@@ -26,7 +26,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ lin
   const schema = z.object({
     name: z.string().optional(),
     url: z.string().optional(),
-    slug: z.string().min(8).optional(),
+    slug: z.string().min(4).optional(),
+    ogTitle: z.string().max(500).optional(),
+    ogDescription: z.string().max(500).optional(),
+    ogImageUrl: z.union([z.string().max(500).pipe(z.url()), z.literal('')]).optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -36,14 +39,21 @@ export async function POST(request: Request, { params }: { params: Promise<{ lin
   }
 
   const { linkId } = await params;
-  const { name, url, slug } = body;
+  const { name, url, slug, ogTitle, ogDescription, ogImageUrl } = body;
 
   if (!(await canUpdateLink(auth, linkId))) {
     return unauthorized();
   }
 
   try {
-    const result = await updateLink(linkId, { name, url, slug });
+    const result = await updateLink(linkId, {
+      name,
+      url,
+      slug,
+      ogTitle,
+      ogDescription,
+      ogImageUrl,
+    });
 
     return Response.json(result);
   } catch (e: any) {

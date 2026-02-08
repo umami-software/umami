@@ -4,6 +4,8 @@ export const labels = defineMessages({
   ok: { id: 'label.ok', defaultMessage: 'OK' },
   unknown: { id: 'label.unknown', defaultMessage: 'Unknown' },
   required: { id: 'label.required', defaultMessage: 'Required' },
+  tooShort: { id: 'label.too-short', defaultMessage: 'Too short' },
+  tooLong: { id: 'label.too-long', defaultMessage: 'Too long' },
   save: { id: 'label.save', defaultMessage: 'Save' },
   cancel: { id: 'label.cancel', defaultMessage: 'Cancel' },
   continue: { id: 'label.continue', defaultMessage: 'Continue' },
@@ -355,6 +357,7 @@ export const labels = defineMessages({
   saveCohort: { id: 'label.save-cohort', defaultMessage: 'Save as cohort' },
   analysis: { id: 'label.analysis', defaultMessage: 'Analysis' },
   destinationUrl: { id: 'label.destination-url', defaultMessage: 'Destination URL' },
+  imageUrl: { id: 'label.image-url', defaultMessage: 'Image URL' },
   audience: { id: 'label.audience', defaultMessage: 'Audience' },
   invalidUrl: { id: 'label.invalid-url', defaultMessage: 'Invalid URL' },
   environment: { id: 'label.environment', defaultMessage: 'Environment' },
@@ -363,6 +366,8 @@ export const labels = defineMessages({
   support: { id: 'label.support', defaultMessage: 'Support' },
   documentation: { id: 'label.documentation', defaultMessage: 'Documentation' },
   switchAccount: { id: 'label.switch-account', defaultMessage: 'Switch account' },
+  advanced: { id: 'label.advanced', defaultMessage: 'Advanced' },
+  copied: { id: 'label.copied', defaultMessage: 'Copied to clipboard' },
 });
 
 export const messages = defineMessages({
