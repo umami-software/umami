@@ -1,4 +1,5 @@
-import { ListItem, Row, Select, type SelectProps, Text } from '@umami/react-zen';
+import { Icon, ListItem, Row, Select, type SelectProps, Text } from '@umami/react-zen';
+import { ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { Empty } from '@/components/common/Empty';
 import {
@@ -45,6 +46,10 @@ export function WebsiteSelect({
     onChange(id);
   };
 
+  const renderValue = () => {
+    return isCollapsed ? '' : name;
+  };
+
   return (
     <Select
       {...props}
@@ -55,11 +60,14 @@ export function WebsiteSelect({
       onSearch={handleSearch}
       onChange={handleChange}
       onOpenChange={handleOpenChange}
+      renderValue={renderValue}
       listProps={{
         renderEmptyState: () => <Empty message={t(messages.noResultsFound)} />,
         style: { maxHeight: 'calc(42vh - 65px)', width: 280 },
       }}
-      buttonProps={{ style: { minHeight: 40 } }}
+      buttonProps={{
+        style: { minHeight: 40, gap: 0, justifyContent: isCollapsed ? 'start' : undefined },
+      }}
     >
       {listItems.map(({ id, name }) => (
         <ListItem key={id} id={id}>

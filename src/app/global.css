@@ -18,13 +18,6 @@ html[style*="padding-right"] {
   padding-right: 0 !important;
 }
 
-a,
-a:active,
-a:hover {
-  color: var(--text-primary);
-  text-decoration: none;
-}
-
 ::-webkit-scrollbar {
   width: 15px;
   background: transparent;

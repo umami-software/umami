@@ -55,6 +55,7 @@ export function WebsiteNav({
           teamId={teamId}
           onChange={handleChange}
           buttonProps={{ style: { outline: 'none' } }}
+          isCollapsed={isCollapsed}
         />
       </Box>
       {items.map(({ label: sectionLabel, items: sectionItems }, index) => (
