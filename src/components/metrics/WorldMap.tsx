@@ -101,7 +101,12 @@ export function WorldMap({ websiteId, data, ...props }: WorldMapProps) {
       </ComposableMap>
       {tooltip && (
         <FloatingTooltip>
-          <Box backgroundColor="surface-inverted" color="inverted" padding borderRadius="md">
+          <Box
+            style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}
+            color="inverted"
+            padding
+            borderRadius="md"
+          >
             {tooltip}
           </Box>
         </FloatingTooltip>

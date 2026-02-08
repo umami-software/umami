@@ -14,10 +14,10 @@ export function ChartTooltip({
     <FloatingTooltip>
       <Column
         gap="3"
-        backgroundColor="surface-inverted"
         color="inverted"
         padding="4"
         borderRadius="md"
+        style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}
       >
         {title}
         <Row alignItems="center">
