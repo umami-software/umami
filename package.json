@@ -11,7 +11,7 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "next dev -p 3003 --turbo",
+    "dev": "dotenv next dev --turbo",
     "build": "npm-run-all check-env build-db check-db build-tracker build-geo build-app",
     "start": "next start",
     "build-docker": "npm-run-all build-db build-tracker build-geo build-app",
@@ -136,6 +136,7 @@
     "babel-plugin-react-compiler": "19.1.0-rc.2",
     "cross-env": "^10.1.0",
     "cypress": "^13.6.6",
+    "dotenv-cli": "^11.0.0",
     "husky": "^9.1.7",
     "jest": "^29.7.0",
     "lint-staged": "^16.2.6",
