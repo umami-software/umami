@@ -15,26 +15,10 @@ import {
 import { ArrowRight } from 'lucide-react';
 import type { Key } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
-import {
-  useConfig,
-  useLoginQuery,
-  useMessages,
-  useMobile,
-  useNavigation,
-} from '@/components/hooks';
-import {
-  BookText,
-  ChevronRight,
-  ExternalLink,
-  LifeBuoy,
-  LockKeyhole,
-  LogOut,
-  Settings,
-  User,
-  Users,
-} from '@/components/icons';
+import { useLoginQuery, useMessages, useMobile, useNavigation } from '@/components/hooks';
+import { ChevronRight, User, Users } from '@/components/icons';
 import { Switch } from '@/components/svg';
-import { DOCS_URL, LAST_TEAM_CONFIG } from '@/lib/constants';
+import { LAST_TEAM_CONFIG } from '@/lib/constants';
 import { removeItem } from '@/lib/storage';
 
 export interface TeamsButtonProps {
@@ -44,13 +28,13 @@ export interface TeamsButtonProps {
 
 export function NavButton({ showText = true }: TeamsButtonProps) {
   const { user } = useLoginQuery();
-  const { cloudMode } = useConfig();
   const { t, labels } = useMessages();
   const { teamId, router } = useNavigation();
   const { isMobile } = useMobile();
   const team = user?.teams?.find(({ id }) => id === teamId);
   const selectedKeys = new Set([teamId || 'user']);
   const label = teamId ? team?.name : user.username;
+  const cloudMode = !!process.env.cloudMode;
 
   const getUrl = (url: string) => {
     return cloudMode ? `${process.env.cloudUrl}${url}` : url;
@@ -134,52 +118,6 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
                 </Column>
               </Popover>
             </SubmenuTrigger>
-            <MenuSeparator />
-            <MenuItem
-              id="settings"
-              href={getUrl('/settings')}
-              icon={<Settings />}
-              label={t(labels.settings)}
-            />
-            {cloudMode && (
-              <>
-                <MenuItem
-                  id="docs"
-                  href={DOCS_URL}
-                  target="_blank"
-                  icon={<BookText />}
-                  label={t(labels.documentation)}
-                >
-                  <Icon color="muted">
-                    <ExternalLink />
-                  </Icon>
-                </MenuItem>
-                <MenuItem
-                  id="support"
-                  href={getUrl('/settings/support')}
-                  icon={<LifeBuoy />}
-                  label={t(labels.support)}
-                />
-              </>
-            )}
-            {!cloudMode && user.isAdmin && (
-              <>
-                <MenuSeparator />
-                <MenuItem
-                  id="/admin"
-                  href="/admin"
-                  icon={<LockKeyhole />}
-                  label={t(labels.admin)}
-                />
-              </>
-            )}
-            <MenuSeparator />
-            <MenuItem
-              id="logout"
-              href={getUrl('/logout')}
-              icon={<LogOut />}
-              label={t(labels.logout)}
-            />
           </Menu>
         </Column>
       </Popover>

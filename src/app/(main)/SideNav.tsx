@@ -6,26 +6,21 @@ import {
   Icon,
   Row,
   Text,
-  ThemeButton,
   Tooltip,
   TooltipTrigger,
 } from '@umami/react-zen';
 import Link from 'next/link';
-import type { Key } from 'react';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
 import { useGlobalState, useMessages, useNavigation } from '@/components/hooks';
 import { Globe, Grid2x2, LayoutDashboard, LinkIcon, PanelLeft } from '@/components/icons';
-import { LanguageButton } from '@/components/input/LanguageButton';
-import { NavButton } from '@/components/input/NavButton';
+import { UserButton } from '@/components/input/UserButton';
 import { Logo } from '@/components/svg';
 
 export function SideNav(props: any) {
   const { t, labels } = useMessages();
-  const { pathname, renderUrl, websiteId, router } = useNavigation();
-  const [isCollapsed, setIsCollapsed] = useGlobalState('sidenav-collapsed', false);
-
-  const hasNav = !!(websiteId || pathname.startsWith('/admin') || pathname.includes('/settings'));
+  const { pathname, renderUrl, websiteId } = useNavigation();
+  const [isCollapsed] = useGlobalState('sidenav-collapsed', false);
 
   const links = [
     {
@@ -53,10 +48,6 @@ export function SideNav(props: any) {
       icon: <Grid2x2 />,
     },
   ];
-
-  const handleSelect = (id: Key) => {
-    router.push(id === 'user' ? '/websites' : `/teams/${id}/websites`);
-  };
 
   return (
     <Column
@@ -89,9 +80,6 @@ export function SideNav(props: any) {
             )}
             <PanelButton />
           </Row>
-        </Row>
-        <Row marginBottom="4" style={{ flexShrink: 0 }}>
-          <NavButton showText={!isCollapsed} onAction={handleSelect} />
         </Row>
         {websiteId ? (
           <WebsiteNav websiteId={websiteId} isCollapsed={isCollapsed} />
@@ -126,9 +114,8 @@ export function SideNav(props: any) {
           </Column>
         )}
       </Column>
-      <Row alignItems="center" justifyContent="center" wrap="wrap" marginBottom="4" gap>
-        <LanguageButton />
-        <ThemeButton />
+      <Row marginBottom="4">
+        <UserButton showText={!isCollapsed} />
       </Row>
     </Column>
   );

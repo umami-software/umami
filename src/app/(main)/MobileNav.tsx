@@ -5,7 +5,7 @@ import { IconLabel } from '@/components/common/IconLabel';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { Globe, Grid2x2, LinkIcon } from '@/components/icons';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
-import { NavButton } from '@/components/input/NavButton';
+import { TeamsButton } from '@/components/input/TeamsButton';
 import { Logo } from '@/components/svg';
 import { AdminNav } from './admin/AdminNav';
 import { SettingsNav } from './settings/SettingsNav';
@@ -44,7 +44,7 @@ export function MobileNav() {
           return (
             <>
               <Row padding="3" onClick={close} border="bottom">
-                <NavButton />
+                <TeamsButton />
                 {links.map(link => {
                   return (
                     <Link key={link.id} href={renderUrl(link.path)}>

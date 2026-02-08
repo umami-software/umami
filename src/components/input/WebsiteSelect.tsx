@@ -13,11 +13,13 @@ export function WebsiteSelect({
   teamId,
   onChange,
   includeTeams,
+  isCollapsed,
   ...props
 }: {
   websiteId?: string;
   teamId?: string;
   includeTeams?: boolean;
+  isCollapsed?: boolean;
 } & SelectProps) {
   const { t, messages } = useMessages();
   const { data: website } = useWebsiteQuery(websiteId);
@@ -43,14 +45,6 @@ export function WebsiteSelect({
     onChange(id);
   };
 
-  const renderValue = () => {
-    return (
-      <Row maxWidth="160px">
-        <Text truncate>{name ?? website?.name}</Text>
-      </Row>
-    );
-  };
-
   return (
     <Select
       {...props}
@@ -61,7 +55,6 @@ export function WebsiteSelect({
       onSearch={handleSearch}
       onChange={handleChange}
       onOpenChange={handleOpenChange}
-      renderValue={renderValue}
       listProps={{
         renderEmptyState: () => <Empty message={t(messages.noResultsFound)} />,
         style: { maxHeight: 'calc(42vh - 65px)', width: 280 },
