@@ -41,7 +41,7 @@ export function BoardProvider({
   const { touch } = useModified();
   const { toast } = useToast();
   const { t, labels, messages } = useMessages();
-  const { router, renderUrl } = useNavigation();
+  const { router, renderUrl, teamId } = useNavigation();
 
   const [board, setBoard] = useState<Partial<Board>>(data ?? createDefaultBoard());
   const layoutGetterRef = useRef<LayoutGetter | null>(null);
@@ -61,7 +61,7 @@ export function BoardProvider({
       if (boardData.id) {
         return post(`/boards/${boardData.id}`, boardData);
       }
-      return post('/boards', { ...boardData, type: 'dashboard', slug: '' });
+      return post('/boards', { ...boardData, type: 'dashboard', slug: '', teamId });
     },
   });
 
