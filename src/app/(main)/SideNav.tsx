@@ -10,6 +10,7 @@ import {
   TooltipTrigger,
 } from '@umami/react-zen';
 import Link from 'next/link';
+import { SettingsNav } from '@/app/(main)/settings/SettingsNav';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
 import { useGlobalState, useMessages, useNavigation } from '@/components/hooks';
@@ -83,6 +84,8 @@ export function SideNav(props: any) {
         </Row>
         {websiteId ? (
           <WebsiteNav websiteId={websiteId} isCollapsed={isCollapsed} />
+        ) : pathname.includes('/settings') ? (
+          <SettingsNav isCollapsed={isCollapsed} />
         ) : (
           <Column gap="2">
             {links.map(({ id, path, label, icon }) => {

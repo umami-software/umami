@@ -47,9 +47,16 @@ export function TeamsButton() {
   return (
     <MenuTrigger>
       <Button variant="quiet">
-        <Row alignItems="center" position="relative" gap maxHeight="40px">
+        <Row
+          alignItems="center"
+          position="relative"
+          gap
+          maxHeight="40px"
+          minWidth="200px"
+          maxWidth="200px"
+        >
           <Icon>{teamId ? <Users /> : <User />}</Icon>
-          <Text>{label}</Text>
+          <Text truncate>{label}</Text>
         </Row>
         <Icon rotate={90} size="sm">
           <ChevronRight />
