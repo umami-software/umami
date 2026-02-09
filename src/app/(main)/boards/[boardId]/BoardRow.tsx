@@ -5,7 +5,7 @@ import { Group, type GroupImperativeHandle, Panel, Separator } from 'react-resiz
 import { v4 as uuid } from 'uuid';
 import { useBoard } from '@/components/hooks';
 import { ChevronDown, Minus, Plus } from '@/components/icons';
-import type { BoardColumn as BoardColumnType } from '@/lib/types';
+import type { BoardColumn as BoardColumnType, BoardComponentConfig } from '@/lib/types';
 import { BoardColumn } from './BoardColumn';
 import { MAX_COLUMNS, MIN_COLUMN_WIDTH } from './boardConstants';
 
@@ -61,6 +61,20 @@ export function BoardRow({
     });
   };
 
+  const handleSetComponent = (columnId: string, config: BoardComponentConfig | null) => {
+    updateBoard({
+      parameters: produce(board.parameters, draft => {
+        const row = draft.rows.find(row => row.id === rowId);
+        if (row) {
+          const col = row.columns.find(col => col.id === columnId);
+          if (col) {
+            col.component = config;
+          }
+        }
+      }),
+    });
+  };
+
   return (
     <Group groupRef={handleGroupRef} style={{ height: '100%' }}>
       {columns?.map((column, index) => (
@@ -70,6 +84,7 @@ export function BoardRow({
               {...column}
               editing={editing}
               onRemove={handleRemoveColumn}
+              onSetComponent={handleSetComponent}
               canRemove={columns?.length > 1}
             />
           </Panel>
