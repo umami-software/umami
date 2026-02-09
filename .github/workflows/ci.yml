@@ -12,16 +12,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v4
         with:
-          version: 10
-          run_install: false
-      - name: Use Node.js 18.18
-        uses: actions/setup-node@v4
+          version: latest
+      - name: Use Node.js 24
+        uses: actions/setup-node@v6
         with:
-          node-version: 18.18
-          cache: "pnpm"
+          node-version: 24
+          cache: pnpm
       - run: npm install --global pnpm
       - run: pnpm install
       - run: pnpm test
