@@ -22,10 +22,10 @@ export function BoardPage({ boardId, editing = false }: { boardId?: string; edit
 }
 
 function BoardControls() {
-  const { board, editing } = useBoard();
+  const { board } = useBoard();
   const websiteId = board?.parameters?.websiteId;
 
-  if (editing || !websiteId) {
+  if (!websiteId) {
     return null;
   }
 

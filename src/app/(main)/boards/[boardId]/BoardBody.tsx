@@ -103,6 +103,8 @@ export function BoardBody() {
     });
   };
 
+  const websiteId = board?.parameters?.websiteId;
+  const canEdit = editing && !!websiteId;
   const rows = board?.parameters?.rows ?? [];
   const minHeight = (rows?.length || 1) * MAX_ROW_HEIGHT + BUTTON_ROW_HEIGHT;
 
@@ -121,7 +123,7 @@ export function BoardBody() {
               rowId={row.id}
               rowIndex={index}
               rowCount={rows?.length}
-              editing={editing}
+              editing={canEdit}
               onRemove={handleRemoveRow}
               onMoveUp={handleMoveRowUp}
               onMoveDown={handleMoveRowDown}
@@ -131,7 +133,7 @@ export function BoardBody() {
           {index < rows?.length - 1 && <Separator />}
         </Fragment>
       ))}
-      {editing && (
+      {canEdit && (
         <Panel minSize={BUTTON_ROW_HEIGHT}>
           <Row padding="3">
             <TooltipTrigger delay={0}>

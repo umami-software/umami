@@ -1,15 +1,6 @@
-import {
-  Box,
-  Button,
-  Column,
-  Focusable,
-  Heading,
-  ListItem,
-  Row,
-  Select,
-  Text,
-} from '@umami/react-zen';
+import { Box, Button, Column, Focusable, ListItem, Row, Select, Text } from '@umami/react-zen';
 import { useState } from 'react';
+import { useMessages } from '@/components/hooks';
 import type { BoardComponentConfig } from '@/lib/types';
 import {
   CATEGORIES,
@@ -28,6 +19,7 @@ export function BoardComponentSelect({
   onSelect: (config: BoardComponentConfig) => void;
   onClose: () => void;
 }) {
+  const { t, labels, messages } = useMessages();
   const [selectedDef, setSelectedDef] = useState<ComponentDefinition | null>(null);
   const [configValues, setConfigValues] = useState<Record<string, any>>({});
 
@@ -79,13 +71,13 @@ export function BoardComponentSelect({
 
   return (
     <Column gap="4">
-      <Row gap="4" style={{ height: 500 }}>
+      <Row gap="4" style={{ height: 600 }}>
         <Column gap="1" style={{ width: 200, flexShrink: 0, overflowY: 'auto' }}>
           {CATEGORIES.map(cat => {
             const components = getComponentsByCategory(cat.key);
             return (
               <Column key={cat.key} gap="1" marginBottom="2">
-                <Heading size="md">{cat.name}</Heading>
+                <Text weight="bold">{cat.name}</Text>
                 {components.map(def => (
                   <Focusable key={def.type}>
                     <Row
@@ -155,7 +147,7 @@ export function BoardComponentSelect({
             ) : (
               <Column alignItems="center" justifyContent="center" height="100%">
                 <Text color="muted">
-                  {websiteId ? 'Select a component to preview' : 'Select a website first'}
+                  {websiteId ? t(messages.selectComponentPreview) : t(messages.selectWebsiteFirst)}
                 </Text>
               </Column>
             )}
@@ -164,10 +156,10 @@ export function BoardComponentSelect({
       </Row>
       <Row justifyContent="flex-end" gap="2" paddingTop="4" border="top">
         <Button variant="quiet" onPress={onClose}>
-          Cancel
+          {t(labels.cancel)}
         </Button>
         <Button variant="primary" onPress={handleAdd} isDisabled={!selectedDef}>
-          Add
+          {t(labels.add)}
         </Button>
       </Row>
     </Column>

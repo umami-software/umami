@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from '@umami/react-zen';
 import { useState } from 'react';
-import { useBoard } from '@/components/hooks';
+import { useBoard, useMessages } from '@/components/hooks';
 import { Pencil, Plus, X } from '@/components/icons';
 import type { BoardComponentConfig } from '@/lib/types';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
@@ -32,6 +32,7 @@ export function BoardColumn({
 }) {
   const [showSelect, setShowSelect] = useState(false);
   const { board } = useBoard();
+  const { t, labels } = useMessages();
   const websiteId = board?.parameters?.websiteId;
 
   const handleSelect = (config: BoardComponentConfig) => {
@@ -91,7 +92,7 @@ export function BoardColumn({
       )}
       <Modal isOpen={showSelect} onOpenChange={setShowSelect}>
         <Dialog
-          title="Add component"
+          title={t(labels.selectComponent)}
           style={{
             width: '750px',
             maxWidth: 'calc(100vw - 40px)',
