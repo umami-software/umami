@@ -23,6 +23,25 @@ export const dateRangeParams = {
   compare: z.enum(['prev', 'yoy']).optional(),
 };
 
+export function withDateRange<T extends z.ZodRawShape>(shape?: T) {
+  return z
+    .object({
+      ...dateRangeParams,
+      ...shape,
+    })
+    .superRefine((data: Record<string, unknown>, ctx) => {
+      const hasTimestamps = data.startAt != null && data.endAt != null;
+      const hasDates = data.startDate != null && data.endDate != null;
+
+      if (!hasTimestamps && !hasDates) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Either startAt+endAt or startDate+endDate must be provided',
+        });
+      }
+    });
+}
+
 export const filterParams = {
   path: z.string().optional(),
   referrer: z.string().optional(),
