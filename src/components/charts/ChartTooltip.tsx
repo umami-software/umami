@@ -19,9 +19,11 @@ export function ChartTooltip({
         borderRadius="md"
         style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}
       >
-        {title}
+        {title && <Text size="sm">{title}</Text>}
         <Row alignItems="center">
-          <StatusLight color={color}>{value}</StatusLight>
+          <StatusLight color={color}>
+            <Text size="sm">{value}</Text>
+          </StatusLight>
         </Row>
       </Column>
     </FloatingTooltip>
