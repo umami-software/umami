@@ -12,7 +12,7 @@ import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
+import { createSession, saveEvent, savePerformance, saveSessionData } from '@/queries/sql';
 
 interface Cache {
   websiteId: string;
@@ -22,7 +22,7 @@ interface Cache {
 }
 
 const schema = z.object({
-  type: z.enum(['event', 'identify']),
+  type: z.enum(['event', 'identify', 'performance']),
   payload: z
     .object({
       website: z.uuid().optional(),
@@ -44,6 +44,11 @@ const schema = z.object({
       browser: z.string().optional(),
       os: z.string().optional(),
       device: z.string().optional(),
+      lcp: z.number().nonnegative().max(60000).optional(),
+      inp: z.number().nonnegative().max(60000).optional(),
+      cls: z.number().nonnegative().max(100).optional(),
+      fcp: z.number().nonnegative().max(60000).optional(),
+      ttfb: z.number().nonnegative().max(60000).optional(),
     })
     .refine(
       data => {
@@ -83,6 +88,11 @@ export async function POST(request: Request) {
       tag,
       timestamp,
       id,
+      lcp,
+      inp,
+      cls,
+      fcp,
+      ttfb,
     } = payload;
 
     const sourceId = websiteId || pixelId || linkId;
@@ -269,6 +279,23 @@ export async function POST(request: Request) {
           createdAt,
         });
       }
+    } else if (type === COLLECTION_TYPE.performance) {
+      const base = hostname ? `https://${hostname}` : 'https://localhost';
+      const currentUrl = new URL(url, base);
+      const urlPath = currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname;
+
+      await savePerformance({
+        websiteId: sourceId,
+        sessionId,
+        visitId,
+        urlPath,
+        lcp,
+        inp,
+        cls,
+        fcp,
+        ttfb,
+        createdAt,
+      });
     }
 
     const token = createToken({ websiteId, sessionId, visitId, iat }, secret());

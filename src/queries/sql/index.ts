@@ -22,6 +22,8 @@ export * from './getWeeklyTraffic';
 export * from './pageviews/getPageviewExpandedMetrics';
 export * from './pageviews/getPageviewMetrics';
 export * from './pageviews/getPageviewStats';
+export * from './performance/getPerformanceStats';
+export * from './performance/savePerformance';
 export * from './reports/getBreakdown';
 export * from './reports/getFunnel';
 export * from './reports/getJourney';

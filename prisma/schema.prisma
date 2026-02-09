@@ -47,6 +47,7 @@ model Session {
 
   websiteEvents WebsiteEvent[]
   sessionData   SessionData[]
+  performance   Performance[]
   revenue       Revenue[]
 
   @@index([createdAt])
@@ -78,11 +79,12 @@ model Website {
   user        User?         @relation("user", fields: [userId], references: [id])
   createUser  User?         @relation("createUser", fields: [createdBy], references: [id])
   team        Team?         @relation(fields: [teamId], references: [id])
-  eventData   EventData[]
-  reports     Report[]
-  revenue     Revenue[]
-  segments    Segment[]
-  sessionData SessionData[]
+  eventData    EventData[]
+  performance  Performance[]
+  reports      Report[]
+  revenue      Revenue[]
+  segments     Segment[]
+  sessionData  SessionData[]
 
   @@index([userId])
   @@index([teamId])
@@ -336,6 +338,29 @@ model Board {
   @@index([teamId])
   @@index([createdAt])
   @@map("board")
+}
+
+model Performance {
+  id        String    @id() @map("performance_id") @db.Uuid
+  websiteId String    @map("website_id") @db.Uuid
+  sessionId String    @map("session_id") @db.Uuid
+  visitId   String    @map("visit_id") @db.Uuid
+  urlPath   String    @map("url_path") @db.VarChar(500)
+  lcp       Decimal?  @db.Decimal(10, 1)
+  inp       Decimal?  @db.Decimal(10, 1)
+  cls       Decimal?  @db.Decimal(10, 4)
+  fcp       Decimal?  @db.Decimal(10, 1)
+  ttfb      Decimal?  @db.Decimal(10, 1)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  website Website @relation(fields: [websiteId], references: [id])
+  session Session @relation(fields: [sessionId], references: [id])
+
+  @@index([websiteId])
+  @@index([sessionId])
+  @@index([websiteId, createdAt])
+  @@index([websiteId, urlPath, createdAt])
+  @@map("performance")
 }
 
 model Share {

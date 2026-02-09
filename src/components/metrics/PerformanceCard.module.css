@@ -1,0 +1,19 @@
+.card {
+  transition: box-shadow 0.2s;
+}
+
+.card.selected {
+  box-shadow: 0 0 0 2px var(--base-color-primary);
+}
+
+.good .rating {
+  color: #0cce6b;
+}
+
+.needs-improvement .rating {
+  color: #ffa400;
+}
+
+.poor .rating {
+  color: #ff4e42;
+}

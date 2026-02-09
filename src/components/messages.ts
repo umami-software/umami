@@ -340,6 +340,16 @@ export const labels: Record<string, string> = {
   support: 'label.support',
   documentation: 'label.documentation',
   switchAccount: 'label.switch-account',
+  performance: 'label.performance',
+  lcp: 'label.lcp',
+  inp: 'label.inp',
+  cls: 'label.cls',
+  fcp: 'label.fcp',
+  ttfb: 'label.ttfb',
+  good: 'label.good',
+  needsImprovement: 'label.needs-improvement',
+  poor: 'label.poor',
+  sampleSize: 'label.sample-size',
 };
 
 export const messages: Record<string, string> = {

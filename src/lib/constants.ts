@@ -98,6 +98,15 @@ export const FILTER_COLUMNS = {
 export const COLLECTION_TYPE = {
   event: 'event',
   identify: 'identify',
+  performance: 'performance',
+} as const;
+
+export const WEB_VITALS_THRESHOLDS = {
+  lcp: { good: 2500, poor: 4000, unit: 'ms' },
+  inp: { good: 200, poor: 500, unit: 'ms' },
+  cls: { good: 0.1, poor: 0.25, unit: '' },
+  fcp: { good: 1800, poor: 3000, unit: 'ms' },
+  ttfb: { good: 800, poor: 1800, unit: 'ms' },
 } as const;
 
 export const EVENT_TYPE = {

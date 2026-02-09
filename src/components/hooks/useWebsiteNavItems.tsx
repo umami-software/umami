@@ -8,7 +8,7 @@ import {
   User,
   UserPlus,
 } from '@/components/icons';
-import { Funnel, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
 
@@ -52,6 +52,12 @@ export function useWebsiteNavItems(websiteId: string) {
           label: t(labels.realtime),
           icon: <Clock />,
           path: renderPath('/realtime'),
+        },
+        {
+          id: 'performance',
+          label: t(labels.performance),
+          icon: <Gauge />,
+          path: renderPath('/performance'),
         },
         {
           id: 'compare',
