@@ -11,7 +11,7 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "dotenv next dev --turbo",
+    "dev": "next dev -p 3009 --turbo",
     "build": "npm-run-all check-env build-db check-db build-tracker build-geo build-app",
     "start": "next start",
     "build-docker": "npm-run-all build-db build-tracker build-geo build-app",

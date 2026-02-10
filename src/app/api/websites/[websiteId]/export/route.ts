@@ -1,9 +1,8 @@
 import JSZip from 'jszip';
 import Papa from 'papaparse';
-import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { dateRangeParams, pagingParams } from '@/lib/schema';
+import { pagingParams, withDateRange } from '@/lib/schema';
 import { canViewWebsite } from '@/permissions';
 import { getEventMetrics, getPageviewMetrics, getSessionMetrics } from '@/queries/sql';
 
@@ -11,8 +10,7 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
-  const schema = z.object({
-    ...dateRangeParams,
+  const schema = withDateRange({
     ...pagingParams,
   });
 
