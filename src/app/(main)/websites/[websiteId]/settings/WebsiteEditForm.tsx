@@ -8,7 +8,8 @@ export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSa
   const { mutateAsync, error, touch, toast } = useUpdateQuery(`/websites/${websiteId}`);
 
   const handleSubmit = async (data: any) => {
-    await mutateAsync(data, {
+    const { shareId, ...updateData } = data;
+    await mutateAsync(updateData, {
       onSuccess: async () => {
         toast(t(messages.saved));
         touch('websites');
