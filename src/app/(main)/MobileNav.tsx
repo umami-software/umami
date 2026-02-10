@@ -1,11 +1,11 @@
-import { Grid, Row, Text } from '@umami/react-zen';
+import { Column, Grid, Row, Text } from '@umami/react-zen';
 import Link from 'next/link';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { Globe, Grid2x2, LinkIcon } from '@/components/icons';
+import { Globe, Grid2x2, LayoutDashboard, LinkIcon } from '@/components/icons';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
-import { TeamsButton } from '@/components/input/TeamsButton';
+import { UserButton } from '@/components/input/UserButton';
 import { Logo } from '@/components/svg';
 import { AdminNav } from './admin/AdminNav';
 import { SettingsNav } from './settings/SettingsNav';
@@ -15,8 +15,15 @@ export function MobileNav() {
   const { pathname, websiteId, renderUrl } = useNavigation();
   const isAdmin = pathname.includes('/admin');
   const isSettings = pathname.includes('/settings');
+  const isMain = !websiteId && !isAdmin && !isSettings;
 
   const links = [
+    {
+      id: 'boards',
+      label: t(labels.boards),
+      path: '/boards',
+      icon: <LayoutDashboard />,
+    },
     {
       id: 'websites',
       label: t(labels.websites),
@@ -42,21 +49,24 @@ export function MobileNav() {
       <MobileMenuButton>
         {({ close }) => {
           return (
-            <>
-              <Row padding="3" onClick={close} border="bottom">
-                <TeamsButton />
-                {links.map(link => {
+            <Column gap="2" display="flex" flex-direction="column" height="100vh" padding="1">
+              {isMain &&
+                links.map(link => {
                   return (
-                    <Link key={link.id} href={renderUrl(link.path)}>
-                      <IconLabel icon={link.icon} label={link.label} />
-                    </Link>
+                    <Row key={link.id} padding>
+                      <Link href={renderUrl(link.path)} onClick={close}>
+                        <IconLabel icon={link.icon} label={link.label} />
+                      </Link>
+                    </Row>
                   );
                 })}
-              </Row>
               {websiteId && <WebsiteNav websiteId={websiteId} onItemClick={close} />}
               {isAdmin && <AdminNav onItemClick={close} />}
               {isSettings && <SettingsNav onItemClick={close} />}
-            </>
+              <Row onClick={close} style={{ marginTop: 'auto' }}>
+                <UserButton />
+              </Row>
+            </Column>
           );
         }}
       </MobileMenuButton>
