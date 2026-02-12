@@ -2,7 +2,7 @@
   <img src="https://content.umami.is/website/images/umami-logo.png" alt="Umami Logo" width="100">
 </p>
 
-<h1 align="center">Syncfuse</h1>
+<h1 align="center">Syncfuse a</h1>
 
 <p align="center">
   <i>Syncfuse is a simple, fast, privacy-focused alternative to Google Analytics.</i>
