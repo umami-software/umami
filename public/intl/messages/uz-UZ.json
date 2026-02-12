@@ -1,4 +1,4 @@
-{
+﻿{
   "label.access-code": [
     {
       "type": 0,
@@ -1644,7 +1644,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Umami'ning yangi **"
+      "value": "Syncfuse'ning yangi **"
     },
     {
       "type": 1,

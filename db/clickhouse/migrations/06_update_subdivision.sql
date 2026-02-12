@@ -1,35 +1,35 @@
 -- drop projections
-ALTER TABLE umami.website_event  DROP PROJECTION website_event_url_path_projection;
-ALTER TABLE umami.website_event  DROP PROJECTION website_event_referrer_domain_projection;
+ALTER TABLE syncfuse.website_event  DROP PROJECTION website_event_url_path_projection;
+ALTER TABLE syncfuse.website_event  DROP PROJECTION website_event_referrer_domain_projection;
 
 --drop view
-DROP TABLE umami.website_event_stats_hourly_mv;
+DROP TABLE syncfuse.website_event_stats_hourly_mv;
 
 -- rename columns
-ALTER TABLE umami.website_event RENAME COLUMN "subdivision1" TO "region";
-ALTER TABLE umami.website_event_stats_hourly RENAME COLUMN "subdivision1" TO "region";
+ALTER TABLE syncfuse.website_event RENAME COLUMN "subdivision1" TO "region";
+ALTER TABLE syncfuse.website_event_stats_hourly RENAME COLUMN "subdivision1" TO "region";
 
 -- drop columns
-ALTER TABLE umami.website_event DROP COLUMN "subdivision2";
+ALTER TABLE syncfuse.website_event DROP COLUMN "subdivision2";
 
 -- recreate projections
-ALTER TABLE umami.website_event 
+ALTER TABLE syncfuse.website_event 
 ADD PROJECTION website_event_url_path_projection (
 SELECT * ORDER BY toStartOfDay(created_at), website_id, url_path, created_at
 );
 
-ALTER TABLE umami.website_event MATERIALIZE PROJECTION website_event_url_path_projection;
+ALTER TABLE syncfuse.website_event MATERIALIZE PROJECTION website_event_url_path_projection;
 
-ALTER TABLE umami.website_event 
+ALTER TABLE syncfuse.website_event 
 ADD PROJECTION website_event_referrer_domain_projection (
 SELECT * ORDER BY toStartOfDay(created_at), website_id, referrer_domain, created_at
 );
 
-ALTER TABLE umami.website_event MATERIALIZE PROJECTION website_event_referrer_domain_projection;
+ALTER TABLE syncfuse.website_event MATERIALIZE PROJECTION website_event_referrer_domain_projection;
 
 -- recreate view
-CREATE MATERIALIZED VIEW umami.website_event_stats_hourly_mv
-TO umami.website_event_stats_hourly
+CREATE MATERIALIZED VIEW syncfuse.website_event_stats_hourly_mv
+TO syncfuse.website_event_stats_hourly
 AS
 SELECT
     website_id,
@@ -105,7 +105,7 @@ FROM (SELECT
     max(created_at) max_time,
     arrayFilter(x -> x != '', groupArray(tag)) tag,
     toStartOfHour(created_at) timestamp
-FROM umami.website_event
+FROM syncfuse.website_event
 GROUP BY website_id,
     session_id,
     visit_id,

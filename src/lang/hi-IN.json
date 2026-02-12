@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "ग़लत उपयोगकर्ता नाम / पासवर्ड।",
   "message.invalid-domain": "अमान्य डोमेन",
   "message.min-password-length": "Minimum length of {n} characters",
-  "message.new-version-available": "A new version of Umami {version} is available!",
+  "message.new-version-available": "A new version of Syncfuse {version} is available!",
   "message.no-data-available": "कोई डेटा उपलब्ध नहीं है।",
   "message.no-event-data": "No event data is available.",
   "message.no-match-password": "पासवर्ड मेल नहीं खाते",

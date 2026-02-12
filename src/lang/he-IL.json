@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "שם משתמש או סיסמה לא נכונים",
   "message.invalid-domain": "דומיין לא תקין",
   "message.min-password-length": "Minimum length of {n} characters",
-  "message.new-version-available": "A new version of Umami {version} is available!",
+  "message.new-version-available": "A new version of Syncfuse {version} is available!",
   "message.no-data-available": "אין מידע זמין",
   "message.no-event-data": "No event data is available.",
   "message.no-match-password": "סיסמאות לא תואמות",

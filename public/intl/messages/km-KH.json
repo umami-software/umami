@@ -1,4 +1,4 @@
-{
+﻿{
   "label.access-code": [
     {
       "type": 0,
@@ -1972,7 +1972,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Version ថ្មីនៃ Umami "
+      "value": "Version ថ្មីនៃ Syncfuse "
     },
     {
       "type": 1,

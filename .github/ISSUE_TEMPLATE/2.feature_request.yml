@@ -1,5 +1,5 @@
-name: '✨ Feature Request'
-description: Create a feature or enhancement request for Umami.
+name: "✨ Feature Request"
+description: Create a feature or enhancement request for Syncfuse.
 body:
   - type: textarea
     attributes:

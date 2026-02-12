@@ -1,4 +1,4 @@
-{
+﻿{
   "label.access-code": [
     {
       "type": 0,
@@ -1870,7 +1870,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Na voljo je nova verzija programa Umami "
+      "value": "Na voljo je nova verzija programa Syncfuse "
     },
     {
       "type": 1,

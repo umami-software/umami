@@ -35,7 +35,7 @@ export type TrackedProperties = {
    * Page title
    *
    * @description extracted from `document.querySelector('head > title')`
-   * @example 'umami'
+   * @example 'syncfuse'
    */
   title: string;
 
@@ -75,19 +75,17 @@ export type EventProperties = {
    */
   name: string;
   data?: EventData;
-} & WithRequired<TrackedProperties, 'website'>;
-export type PageViewProperties = WithRequired<TrackedProperties, 'website'>;
-export type CustomEventFunction = (
-  props: PageViewProperties,
-) => EventProperties | PageViewProperties;
+} & WithRequired<TrackedProperties, "website">;
+export type PageViewProperties = WithRequired<TrackedProperties, "website">;
+export type CustomEventFunction = (props: PageViewProperties) => EventProperties | PageViewProperties;
 
-export type UmamiTracker = {
+export type SyncfuseTracker = {
   track: {
     /**
      * Track a page view
      *
      * @example ```
-     * umami.track();
+     * syncfuse.track();
      * ```
      */
     (): Promise<string>;
@@ -98,7 +96,7 @@ export type UmamiTracker = {
      * NOTE: event names will be truncated past 50 characters
      *
      * @example ```
-     * umami.track('signup-button');
+     * syncfuse.track('signup-button');
      * ```
      */
     (eventName: string): Promise<string>;
@@ -111,7 +109,7 @@ export type UmamiTracker = {
      * When tracking events, the default properties are included in the payload. This is equivalent to running:
      *
      * ```js
-     * umami.track(props => ({
+     * syncfuse.track(props => ({
      *   ...props,
      *   name: 'signup-button',
      *   data: {
@@ -122,7 +120,7 @@ export type UmamiTracker = {
      * ```
      *
      * @example ```
-     * umami.track('signup-button', { name: 'newsletter', id: 123 });
+     * syncfuse.track('signup-button', { name: 'newsletter', id: 123 });
      * ```
      */
     (eventName: string, obj: EventData): Promise<string>;
@@ -131,7 +129,7 @@ export type UmamiTracker = {
      * Tracks a page view with custom properties
      *
      * @example ```
-     * umami.track({ website: 'e676c9b4-11e4-4ef1-a4d7-87001773e9f2', url: '/home', title: 'Home page' });
+     * syncfuse.track({ website: 'e676c9b4-11e4-4ef1-a4d7-87001773e9f2', url: '/home', title: 'Home page' });
      * ```
      */
     (properties: PageViewProperties): Promise<string>;
@@ -141,7 +139,7 @@ export type UmamiTracker = {
      * If you don't specify any `name` and/or `data`, it will be treated as a page view
      *
      * @example ```
-     * umami.track((props) => ({ ...props, url: path }));
+     * syncfuse.track((props) => ({ ...props, url: path }));
      * ```
      */
     (eventFunction: CustomEventFunction): Promise<string>;
@@ -149,5 +147,5 @@ export type UmamiTracker = {
 };
 
 export interface Window {
-  umami: UmamiTracker;
+  syncfuse: SyncfuseTracker;
 }

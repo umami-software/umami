@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Ugyldig brukernavn/passord.",
   "message.invalid-domain": "Ugyldig domene",
   "message.min-password-length": "Minimumslengde på {n} tegn",
-  "message.new-version-available": "En ny versjon av Umami {version} er tilgjengelig!",
+  "message.new-version-available": "En ny versjon av Syncfuse {version} er tilgjengelig!",
   "message.no-data-available": "Ingen data tilgjengelig.",
   "message.no-event-data": "Ingen hendelsesdata er tilgjengelig.",
   "message.no-match-password": "Passordene er ikke like",

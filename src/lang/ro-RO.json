@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Nume utilizator / parolă incorecte.",
   "message.invalid-domain": "Domeniul nu este valid",
   "message.min-password-length": "Lungimea minimă este de {n} caractere",
-  "message.new-version-available": "O nouă versiune de Umami {version} este disponibilă!",
+  "message.new-version-available": "O nouă versiune de Syncfuse {version} este disponibilă!",
   "message.no-data-available": "Nicio informație disponibilă.",
   "message.no-event-data": "Nu sunt disponibile date legate de eveniment.",
   "message.no-match-password": "Parolele nu se potrivesc",

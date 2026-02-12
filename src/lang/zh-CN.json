@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "用户名或密码不正确。",
   "message.invalid-domain": "无效域名",
   "message.min-password-length": "密码最短长度为 {n} 个字符",
-  "message.new-version-available": "Umami 新版本 {version} 已发布！",
+  "message.new-version-available": "Syncfuse 新版本 {version} 已发布！",
   "message.no-data-available": "暂无数据。",
   "message.no-event-data": "无可用事件。",
   "message.no-match-password": "密码不一致",

@@ -1,5 +1,5 @@
 -- Create Event
-CREATE TABLE umami.website_event_new
+CREATE TABLE syncfuse.website_event_new
 (
     website_id UUID,
     session_id UUID,
@@ -49,7 +49,7 @@ ENGINE = MergeTree
     SETTINGS index_granularity = 8192;
 
 -- stats hourly
-CREATE TABLE umami.website_event_stats_hourly_new
+CREATE TABLE syncfuse.website_event_stats_hourly_new
 (
     website_id UUID,
     session_id UUID,
@@ -99,8 +99,8 @@ ENGINE = AggregatingMergeTree
     )
     SAMPLE BY cityHash64(visit_id);
 
-CREATE MATERIALIZED VIEW umami.website_event_stats_hourly_mv_new
-TO umami.website_event_stats_hourly_new
+CREATE MATERIALIZED VIEW syncfuse.website_event_stats_hourly_mv_new
+TO syncfuse.website_event_stats_hourly_new
 AS
 SELECT
     website_id,
@@ -176,7 +176,7 @@ FROM (SELECT
     max(created_at) max_time,
     arrayFilter(x -> x != '', groupArray(tag)) tag,
     toStartOfHour(created_at) timestamp
-FROM umami.website_event_new
+FROM syncfuse.website_event_new
 GROUP BY website_id,
     session_id,
     visit_id,
@@ -193,22 +193,22 @@ GROUP BY website_id,
     timestamp);
 
 -- projections
-ALTER TABLE umami.website_event_new
+ALTER TABLE syncfuse.website_event_new
 ADD PROJECTION website_event_url_path_projection (
 SELECT * ORDER BY toStartOfDay(created_at), website_id, url_path, created_at
 );
 
-ALTER TABLE umami.website_event_new MATERIALIZE PROJECTION website_event_url_path_projection;
+ALTER TABLE syncfuse.website_event_new MATERIALIZE PROJECTION website_event_url_path_projection;
 
-ALTER TABLE umami.website_event_new
+ALTER TABLE syncfuse.website_event_new
 ADD PROJECTION website_event_referrer_domain_projection (
 SELECT * ORDER BY toStartOfDay(created_at), website_id, referrer_domain, created_at
 );
 
-ALTER TABLE umami.website_event_new MATERIALIZE PROJECTION website_event_referrer_domain_projection;
+ALTER TABLE syncfuse.website_event_new MATERIALIZE PROJECTION website_event_referrer_domain_projection;
 
 -- migration
-INSERT INTO umami.website_event_new
+INSERT INTO syncfuse.website_event_new
 SELECT website_id, session_id, visit_id, event_id, hostname, browser, os, device, screen, language, country, subdivision1, subdivision2, city, url_path, url_query,
     extract(url_query, 'utm_source=([^&]*)') AS utm_source,
     extract(url_query, 'utm_medium=([^&]*)') AS utm_medium,
@@ -223,23 +223,23 @@ SELECT website_id, session_id, visit_id, event_id, hostname, browser, os, device
     extract(url_query, 'li_fat_id=([^&]*)') li_fat_id,
     extract(url_query, 'twclid=([^&]*)') twclid,
     event_type, event_name, tag, created_at, job_id
-FROM umami.website_event
+FROM syncfuse.website_event
 
 -- rename tables
-RENAME TABLE umami.website_event TO umami.website_event_old;
-RENAME TABLE umami.website_event_new TO umami.website_event;
+RENAME TABLE syncfuse.website_event TO syncfuse.website_event_old;
+RENAME TABLE syncfuse.website_event_new TO syncfuse.website_event;
 
-RENAME TABLE umami.website_event_stats_hourly TO umami.website_event_stats_hourly_old;
-RENAME TABLE umami.website_event_stats_hourly_new TO umami.website_event_stats_hourly;
+RENAME TABLE syncfuse.website_event_stats_hourly TO syncfuse.website_event_stats_hourly_old;
+RENAME TABLE syncfuse.website_event_stats_hourly_new TO syncfuse.website_event_stats_hourly;
 
-RENAME TABLE umami.website_event_stats_hourly_mv TO umami.website_event_stats_hourly_mv_old;
-RENAME TABLE umami.website_event_stats_hourly_mv_new TO umami.website_event_stats_hourly_mv;
+RENAME TABLE syncfuse.website_event_stats_hourly_mv TO syncfuse.website_event_stats_hourly_mv_old;
+RENAME TABLE syncfuse.website_event_stats_hourly_mv_new TO syncfuse.website_event_stats_hourly_mv;
 
 -- recreate view
-DROP TABLE umami.website_event_stats_hourly_mv;
+DROP TABLE syncfuse.website_event_stats_hourly_mv;
 
-CREATE MATERIALIZED VIEW umami.website_event_stats_hourly_mv
-TO umami.website_event_stats_hourly
+CREATE MATERIALIZED VIEW syncfuse.website_event_stats_hourly_mv
+TO syncfuse.website_event_stats_hourly
 AS
 SELECT
     website_id,
@@ -315,7 +315,7 @@ FROM (SELECT
     max(created_at) max_time,
     arrayFilter(x -> x != '', groupArray(tag)) tag,
     toStartOfHour(created_at) timestamp
-FROM umami.website_event
+FROM syncfuse.website_event
 GROUP BY website_id,
     session_id,
     visit_id,

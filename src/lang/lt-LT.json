@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Neteisingas vartotojo vardas/slaptažodis.",
   "message.invalid-domain": "Klaidingas domenas",
   "message.min-password-length": "Reikia bent {n} simbolių",
-  "message.new-version-available": "Išleista nauja 'Umami' {version} versija!",
+  "message.new-version-available": "Išleista nauja 'Syncfuse' {version} versija!",
   "message.no-data-available": "Nėra jokių duomenų.",
   "message.no-event-data": "Jokių duomenų apie įvykius nėra.",
   "message.no-match-password": "Slaptažodžiai nesutampa",

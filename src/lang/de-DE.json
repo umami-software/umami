@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Falsches Passwort oder Benutzername.",
   "message.invalid-domain": "Ungültige Domain",
   "message.min-password-length": "Minimale Länge von {n} Zeichen",
-  "message.new-version-available": "Eine neue Version von Umami ist verfügbar: {version}",
+  "message.new-version-available": "Eine neue Version von Syncfuse ist verfügbar: {version}",
   "message.no-data-available": "Keine Daten vorhanden.",
   "message.no-event-data": "Es sind keine Ereignisdaten verfügbar.",
   "message.no-match-password": "Passwörter stimmen nicht überein",

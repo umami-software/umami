@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Неправилно потребителско име и/или парола.",
   "message.invalid-domain": "Невалиден домейн. Не включвайте http/https.",
   "message.min-password-length": "Минимална дължина от {n} символа",
-  "message.new-version-available": "Има нова версия на Umami {version}!",
+  "message.new-version-available": "Има нова версия на Syncfuse {version}!",
   "message.no-data-available": "Няма налични данни.",
   "message.no-event-data": "Няма налични данни за събитие.",
   "message.no-match-password": "Паролите не съвпадат.",

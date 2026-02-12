@@ -1,8 +1,8 @@
 {
-  "name": "umami",
+  "name": "syncfuse",
   "version": "3.0.3",
   "description": "A modern, privacy-focused alternative to Google Analytics.",
-  "author": "Umami Software, Inc. <hello@umami.is>",
+  "author": "Syncfuse Analytics",
   "license": "MIT",
   "homepage": "https://umami.is",
   "repository": {

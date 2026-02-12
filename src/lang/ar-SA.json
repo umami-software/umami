@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "اسم المستخدم او كلمة المرور غير صحيحة.",
   "message.invalid-domain": "النطاق غير صحيح",
   "message.min-password-length": "اقل عدد مسموح به {n} حرف/أحرف",
-  "message.new-version-available": "إصدار جديد من Umami {version} متاح!",
+  "message.new-version-available": "إصدار جديد من Syncfuse {version} متاح!",
   "message.no-data-available": "لا توجد بيانات متاحة.",
   "message.no-event-data": "لا توجد بيانات الحدث متاحة.",
   "message.no-match-password": "كلمة المرور غير متطابقة",

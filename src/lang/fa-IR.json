@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "نام کاربری / رمز نادرست است.",
   "message.invalid-domain": "دامنه نامعتبر است.",
   "message.min-password-length": "حداقل طول {n} کاراکتر است.",
-  "message.new-version-available": "نسخه‌ی جدیدی از Umami {version} در دسترس است.",
+  "message.new-version-available": "نسخه‌ی جدیدی از Syncfuse {version} در دسترس است.",,
   "message.no-data-available": "اطلاعاتی موجود نیست.",
   "message.no-event-data": "هیچ داده‌ای برای این رویداد وجود ندارد.",
   "message.no-match-password": "رمزها یکسان نیستند",

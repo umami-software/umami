@@ -1,4 +1,4 @@
-(window => {
+((window) => {
   const {
     screen: { width, height },
     navigator: { language, doNotTrack: ndnt, msDoNotTrack: msdnt },
@@ -12,11 +12,11 @@
   if (!currentScript) return;
 
   const { hostname, href, origin } = location;
-  const localStorage = href.startsWith('data:') ? undefined : window.localStorage;
+  const localStorage = href.startsWith("data:") ? undefined : window.localStorage;
 
-  const _data = 'data-';
-  const _false = 'false';
-  const _true = 'true';
+  const _data = "data-";
+  const _false = "false";
+  const _true = "true";
   const attr = currentScript.getAttribute.bind(currentScript);
 
   const website = attr(`${_data}website-id`);
@@ -27,26 +27,25 @@
   const dnt = attr(`${_data}do-not-track`) === _true;
   const excludeSearch = attr(`${_data}exclude-search`) === _true;
   const excludeHash = attr(`${_data}exclude-hash`) === _true;
-  const domain = attr(`${_data}domains`) || '';
-  const credentials = attr(`${_data}fetch-credentials`) || 'omit';
+  const domain = attr(`${_data}domains`) || "";
+  const credentials = attr(`${_data}fetch-credentials`) || "omit";
 
-  const domains = domain.split(',').map(n => n.trim());
-  const host =
-    hostUrl || '__COLLECT_API_HOST__' || currentScript.src.split('/').slice(0, -1).join('/');
-  const endpoint = `${host.replace(/\/$/, '')}__COLLECT_API_ENDPOINT__`;
+  const domains = domain.split(",").map((n) => n.trim());
+  const host = hostUrl || "__COLLECT_API_HOST__" || currentScript.src.split("/").slice(0, -1).join("/");
+  const endpoint = `${host.replace(/\/$/, "")}__COLLECT_API_ENDPOINT__`;
   const screen = `${width}x${height}`;
-  const eventRegex = /data-umami-event-([\w-_]+)/;
-  const eventNameAttribute = `${_data}umami-event`;
+  const eventRegex = /data-syncfuse-event-([\w-_]+)/;
+  const eventNameAttribute = `${_data}syncfuse-event`;
   const delayDuration = 300;
 
   /* Helper functions */
 
-  const normalize = raw => {
+  const normalize = (raw) => {
     if (!raw) return raw;
     try {
       const u = new URL(raw, location.href);
-      if (excludeSearch) u.search = '';
-      if (excludeHash) u.hash = '';
+      if (excludeSearch) u.search = "";
+      if (excludeHash) u.hash = "";
       return u.toString();
     } catch {
       return raw;
@@ -67,7 +66,7 @@
 
   const hasDoNotTrack = () => {
     const dnt = doNotTrack || ndnt || msdnt;
-    return dnt === 1 || dnt === '1' || dnt === 'yes';
+    return dnt === 1 || dnt === "1" || dnt === "yes";
   };
 
   /* Event handlers */
@@ -92,17 +91,17 @@
       };
     };
 
-    history.pushState = hook(history, 'pushState', handlePush);
-    history.replaceState = hook(history, 'replaceState', handlePush);
+    history.pushState = hook(history, "pushState", handlePush);
+    history.replaceState = hook(history, "replaceState", handlePush);
   };
 
   const handleClicks = () => {
-    const trackElement = async el => {
+    const trackElement = async (el) => {
       const eventName = el.getAttribute(eventNameAttribute);
       if (eventName) {
         const eventData = {};
 
-        el.getAttributeNames().forEach(name => {
+        el.getAttributeNames().forEach((name) => {
           const match = name.match(eventRegex);
           if (match) eventData[match[1]] = el.getAttribute(name);
         });
@@ -110,50 +109,40 @@
         return track(eventName, eventData);
       }
     };
-    const onClick = async e => {
+    const onClick = async (e) => {
       const el = e.target;
-      const parentElement = el.closest('a,button');
+      const parentElement = el.closest("a,button");
       if (!parentElement) return trackElement(el);
 
       const { href, target } = parentElement;
       if (!parentElement.getAttribute(eventNameAttribute)) return;
 
-      if (parentElement.tagName === 'BUTTON') {
+      if (parentElement.tagName === "BUTTON") {
         return trackElement(parentElement);
       }
-      if (parentElement.tagName === 'A' && href) {
-        const external =
-          target === '_blank' ||
-          e.ctrlKey ||
-          e.shiftKey ||
-          e.metaKey ||
-          (e.button && e.button === 1);
+      if (parentElement.tagName === "A" && href) {
+        const external = target === "_blank" || e.ctrlKey || e.shiftKey || e.metaKey || (e.button && e.button === 1);
         if (!external) e.preventDefault();
         return trackElement(parentElement).then(() => {
           if (!external) {
-            (target === '_top' ? top.location : location).href = href;
+            (target === "_top" ? top.location : location).href = href;
           }
         });
       }
     };
-    document.addEventListener('click', onClick, true);
+    document.addEventListener("click", onClick, true);
   };
 
   /* Tracking functions */
 
-  const trackingDisabled = () =>
-    disabled ||
-    !website ||
-    localStorage?.getItem('umami.disabled') ||
-    (domain && !domains.includes(hostname)) ||
-    (dnt && hasDoNotTrack());
+  const trackingDisabled = () => disabled || !website || localStorage?.getItem("syncfuse.disabled") || (domain && !domains.includes(hostname)) || (dnt && hasDoNotTrack());
 
-  const send = async (payload, type = 'event') => {
+  const send = async (payload, type = "event") => {
     if (trackingDisabled()) return;
 
     const callback = window[beforeSend];
 
-    if (typeof callback === 'function') {
+    if (typeof callback === "function") {
       payload = await Promise.resolve(callback(type, payload));
     }
 
@@ -162,11 +151,11 @@
     try {
       const res = await fetch(endpoint, {
         keepalive: true,
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify({ type, payload }),
         headers: {
-          'Content-Type': 'application/json',
-          ...(typeof cache !== 'undefined' && { 'x-umami-cache': cache }),
+          "Content-Type": "application/json",
+          ...(typeof cache !== "undefined" && { "x-syncfuse-cache": cache }),
         },
         credentials,
       });
@@ -192,38 +181,38 @@
   };
 
   const track = (name, data) => {
-    if (typeof name === 'string') return send({ ...getPayload(), name, data });
-    if (typeof name === 'object') return send({ ...name });
-    if (typeof name === 'function') return send(name(getPayload()));
+    if (typeof name === "string") return send({ ...getPayload(), name, data });
+    if (typeof name === "object") return send({ ...name });
+    if (typeof name === "function") return send(name(getPayload()));
     return send(getPayload());
   };
 
   const identify = (id, data) => {
-    if (typeof id === 'string') {
+    if (typeof id === "string") {
       identity = id;
     }
 
-    cache = '';
+    cache = "";
     return send(
       {
         ...getPayload(),
-        data: typeof id === 'object' ? id : data,
+        data: typeof id === "object" ? id : data,
       },
-      'identify',
+      "identify",
     );
   };
 
   /* Start */
 
-  if (!window.umami) {
-    window.umami = {
+  if (!window.syncfuse) {
+    window.syncfuse = {
       track,
       identify,
     };
   }
 
   let currentUrl = normalize(href);
-  let currentRef = normalize(referrer.startsWith(origin) ? '' : referrer);
+  let currentRef = normalize(referrer.startsWith(origin) ? "" : referrer);
 
   let initialized = false;
   let disabled = false;
@@ -231,10 +220,10 @@
   let identity;
 
   if (autoTrack && !trackingDisabled()) {
-    if (document.readyState === 'complete') {
+    if (document.readyState === "complete") {
       init();
     } else {
-      document.addEventListener('readystatechange', init, true);
+      document.addEventListener("readystatechange", init, true);
     }
   }
 })(window);

@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "தவறான பயனர்பெயர் / கடவுச்சொல்.",
   "message.invalid-domain": "தவறான கள முகவரி",
   "message.min-password-length": "Minimum length of {n} characters",
-  "message.new-version-available": "A new version of Umami {version} is available!",
+  "message.new-version-available": "A new version of Syncfuse {version} is available!",
   "message.no-data-available": "தரவு எதுவும் கிடைக்கவில்லை.",
   "message.no-event-data": "No event data is available.",
   "message.no-match-password": "இருக்கடவுச்சொல் பொருந்தவில்லை",

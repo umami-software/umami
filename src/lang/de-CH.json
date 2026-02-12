@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Falsches Passwort oder Benutzername.",
   "message.invalid-domain": "Ungültigi Domain",
   "message.min-password-length": "Miminamli längi vo {n} Zeiche",
-  "message.new-version-available": "Es isch en neue Version vo Umami {version} verfügbar!",
+  "message.new-version-available": "Es isch en neue Version vo Syncfuse {version} verfügbar!",
   "message.no-data-available": "Kei Date vorhande.",
   "message.no-event-data": "Es sind kei Event Date verfügbar.",
   "message.no-match-password": "Passwörter stimmed ned überi",

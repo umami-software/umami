@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Nesprávné meno/heslo.",
   "message.invalid-domain": "Neplatná doména",
   "message.min-password-length": "Minimum length of {n} characters",
-  "message.new-version-available": "A new version of Umami {version} is available!",
+  "message.new-version-available": "A new version of Syncfuse {version} is available!",
   "message.no-data-available": "Žiadne data.",
   "message.no-event-data": "No event data is available.",
   "message.no-match-password": "Hesla se nezhodujú",

@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "ឈ្មោះអ្នកប្រើឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។",
   "message.invalid-domain": "Domain មិន​ត្រឹមត្រូវ",
   "message.min-password-length": "តិចបំផុតដែលមានអក្សរ {n} តួអក្សរ",
-  "message.new-version-available": "Version ថ្មីនៃ Umami {version} អាចប្រើប្រាស់បានហើយ!",
+  "message.new-version-available": "Version ថ្មីនៃ Syncfuse {version} អាចប្រើប្រាស់បានហើយ!",
   "message.no-data-available": "មិនមានទិន្នន័យ។",
   "message.no-event-data": "មិនមានទិន្នន័យព្រឹត្តិការណ៍ទេ។",
   "message.no-match-password": "ពាក្យសម្ងាត់មិនត្រូវគ្នាទេ។",

@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Pogrešno korisničko ime i/ili šifra.",
   "message.invalid-domain": "Nevalidna domena. Ne uključujte http/https.",
   "message.min-password-length": "Minimalna dužina od {n} karaktera",
-  "message.new-version-available": "Nova verzija Umami {version} je dostupna!",
+  "message.new-version-available": "Nova verzija Syncfuse {version} je dostupna!",
   "message.no-data-available": "Nema dostupnih podataka.",
   "message.no-event-data": "Nema dostupnih podataka o događajima.",
   "message.no-match-password": "Šifre se ne poklapaju.",

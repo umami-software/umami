@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Nom d'usuari o contrasenya incorrectes.",
   "message.invalid-domain": "Domini invàlid",
   "message.min-password-length": "Longitud mínima de {n} caràcters",
-  "message.new-version-available": "Una nova versió d'Umami {version} està disponible!",
+  "message.new-version-available": "Una nova versió d'Syncfuse {version} està disponible!",
   "message.no-data-available": "No hi ha dades disponibles.",
   "message.no-event-data": "No hi ha dades d'esdeveniments disponibles.",
   "message.no-match-password": "Les contrasenyes no coincideixen",

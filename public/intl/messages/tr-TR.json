@@ -1,4 +1,4 @@
-{
+﻿{
   "label.access-code": [
     {
       "type": 0,
@@ -1956,7 +1956,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Yeni versiyon Umami "
+      "value": "Yeni versiyon Syncfuse "
     },
     {
       "type": 1,

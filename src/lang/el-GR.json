@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Εσφαλμένο όνομα χρήστη / κωδικός πρόσβασης.",
   "message.invalid-domain": "Μη έγκυρος τομέας",
   "message.min-password-length": "Minimum length of {n} characters",
-  "message.new-version-available": "A new version of Umami {version} is available!",
+  "message.new-version-available": "A new version of Syncfuse {version} is available!",
   "message.no-data-available": "Δεν υπάρχουν διαθέσιμα δεδομένα.",
   "message.no-event-data": "No event data is available.",
   "message.no-match-password": "Οι κωδικοί πρόσβασης δεν ταιριάζουν",

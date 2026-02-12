@@ -251,7 +251,7 @@
   "message.incorrect-username-password": "Notoʻgʻri foydalanuvchi nomi va/yoki parol.",
   "message.invalid-domain": "Notoʻgʻri domen. http/https qoʻshmang.",
   "message.min-password-length": "Minimal uzunligi {n} belgidan",
-  "message.new-version-available": "Umami'ning yangi **{version}** versiyasi mavjud!",
+  "message.new-version-available": "Syncfuse'ning yangi **{version}** versiyasi mavjud!",,
   "message.no-data-available": "Ma'lumotlar mavjud emas.",
   "message.no-event-data": "Hodisa ma'lumotlari mavjud emas.",
   "message.no-match-password": "Parollar mos kelmadi.",
