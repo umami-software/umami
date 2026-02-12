@@ -1,4 +1,4 @@
-{
+﻿{
   "label.access-code": [
     {
       "type": 0,
@@ -1972,7 +1972,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Вышла новая версия Umami "
+      "value": "Вышла новая версия Syncfuse "
     },
     {
       "type": 1,

@@ -1,4 +1,4 @@
-{
+﻿{
   "label.access-code": [
     {
       "type": 0,
@@ -2121,7 +2121,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Išleista nauja 'Umami' "
+      "value": "Išleista nauja 'Syncfuse' "
     },
     {
       "type": 1,

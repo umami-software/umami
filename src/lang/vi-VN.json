@@ -251,7 +251,7 @@
   "message.incorrect-username-password": "Sai tên đăng nhập/mật khẩu.",
   "message.invalid-domain": "Tên miền không hợp lệ",
   "message.min-password-length": "Độ dài tối thiểu {n} ký tự",
-  "message.new-version-available": "Có phiên bản mới của Umami {version}!",
+  "message.new-version-available": "Có phiên bản mới của Syncfuse {version}!",
   "message.no-data-available": "Không có dữ liệu.",
   "message.no-event-data": "Không có dữ liệu sự kiện.",
   "message.no-match-password": "Mật khẩu không khớp",

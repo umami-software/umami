@@ -1,4 +1,4 @@
-{
+﻿{
   "label.access-code": [
     {
       "type": 0,
@@ -1996,7 +1996,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "O nouă versiune de Umami "
+      "value": "O nouă versiune de Syncfuse "
     },
     {
       "type": 1,

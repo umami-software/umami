@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Nama pengguna/kata sandi salah.",
   "message.invalid-domain": "Domain tidak valid",
   "message.min-password-length": "Minimal {n} karakter",
-  "message.new-version-available": "Versi baru dari Umami {version} telah tersedia!",
+  "message.new-version-available": "Versi baru dari Syncfuse {version} telah tersedia!",
   "message.no-data-available": "Tidak ada data.",
   "message.no-event-data": "Tidak ada data peristiwa",
   "message.no-match-password": "Kata sandi tidak cocok",

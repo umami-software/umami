@@ -1,4 +1,4 @@
-{
+﻿{
   "label.access-code": [
     {
       "type": 0,
@@ -1652,7 +1652,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Có phiên bản mới của Umami "
+      "value": "Có phiên bản mới của Syncfuse "
     },
     {
       "type": 1,

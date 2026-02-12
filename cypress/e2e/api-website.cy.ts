@@ -1,194 +1,194 @@
-import { uuid } from '../../src/lib/crypto';
+import { uuid } from "../../src/lib/crypto";
 
-describe('Website API tests', () => {
+describe("Website API tests", () => {
   Cypress.session.clearAllSavedSessions();
 
   let websiteId;
   let teamId;
 
   before(() => {
-    cy.login(Cypress.env('umami_user'), Cypress.env('umami_password'));
-    cy.fixture('teams').then(data => {
+    cy.login(Cypress.env("syncfuse_user"), Cypress.env("syncfuse_password"));
+    cy.fixture("teams").then((data) => {
       const teamCreate = data.teamCreate;
       cy.request({
-        method: 'POST',
-        url: '/api/teams',
+        method: "POST",
+        url: "/api/teams",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: Cypress.env('authorization'),
+          "Content-Type": "application/json",
+          Authorization: Cypress.env("authorization"),
         },
         body: teamCreate,
-      }).then(response => {
+      }).then((response) => {
         teamId = response.body[0].id;
         expect(response.status).to.eq(200);
-        expect(response.body[0]).to.have.property('name', 'cypress');
-        expect(response.body[1]).to.have.property('role', 'team-owner');
+        expect(response.body[0]).to.have.property("name", "cypress");
+        expect(response.body[1]).to.have.property("role", "team-owner");
       });
     });
   });
 
-  it('Creates a website for user.', () => {
-    cy.fixture('websites').then(data => {
+  it("Creates a website for user.", () => {
+    cy.fixture("websites").then((data) => {
       const websiteCreate = data.websiteCreate;
       cy.request({
-        method: 'POST',
-        url: '/api/websites',
+        method: "POST",
+        url: "/api/websites",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: Cypress.env('authorization'),
+          "Content-Type": "application/json",
+          Authorization: Cypress.env("authorization"),
         },
         body: websiteCreate,
-      }).then(response => {
+      }).then((response) => {
         websiteId = response.body.id;
         expect(response.status).to.eq(200);
-        expect(response.body).to.have.property('name', 'Cypress Website');
-        expect(response.body).to.have.property('domain', 'cypress.com');
+        expect(response.body).to.have.property("name", "Cypress Website");
+        expect(response.body).to.have.property("domain", "cypress.com");
       });
     });
   });
 
-  it('Creates a website for team.', () => {
+  it("Creates a website for team.", () => {
     cy.request({
-      method: 'POST',
-      url: '/api/websites',
+      method: "POST",
+      url: "/api/websites",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: Cypress.env('authorization'),
+        "Content-Type": "application/json",
+        Authorization: Cypress.env("authorization"),
       },
       body: {
-        name: 'Team Website',
-        domain: 'teamwebsite.com',
+        name: "Team Website",
+        domain: "teamwebsite.com",
         teamId: teamId,
       },
-    }).then(response => {
+    }).then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body).to.have.property('name', 'Team Website');
-      expect(response.body).to.have.property('domain', 'teamwebsite.com');
+      expect(response.body).to.have.property("name", "Team Website");
+      expect(response.body).to.have.property("domain", "teamwebsite.com");
     });
   });
 
-  it('Creates a website with a fixed ID.', () => {
-    cy.fixture('websites').then(data => {
+  it("Creates a website with a fixed ID.", () => {
+    cy.fixture("websites").then((data) => {
       const websiteCreate = data.websiteCreate;
       const fixedId = uuid();
       cy.request({
-        method: 'POST',
-        url: '/api/websites',
+        method: "POST",
+        url: "/api/websites",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: Cypress.env('authorization'),
+          "Content-Type": "application/json",
+          Authorization: Cypress.env("authorization"),
         },
         body: { ...websiteCreate, id: fixedId },
-      }).then(response => {
+      }).then((response) => {
         expect(response.status).to.eq(200);
-        expect(response.body).to.have.property('id', fixedId);
-        expect(response.body).to.have.property('name', 'Cypress Website');
-        expect(response.body).to.have.property('domain', 'cypress.com');
+        expect(response.body).to.have.property("id", fixedId);
+        expect(response.body).to.have.property("name", "Cypress Website");
+        expect(response.body).to.have.property("domain", "cypress.com");
 
         // cleanup
         cy.request({
-          method: 'DELETE',
+          method: "DELETE",
           url: `/api/websites/${fixedId}`,
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: Cypress.env('authorization'),
+            "Content-Type": "application/json",
+            Authorization: Cypress.env("authorization"),
           },
         });
       });
     });
   });
 
-  it('Returns all tracked websites.', () => {
+  it("Returns all tracked websites.", () => {
     cy.request({
-      method: 'GET',
-      url: '/api/websites',
+      method: "GET",
+      url: "/api/websites",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: Cypress.env('authorization'),
+        "Content-Type": "application/json",
+        Authorization: Cypress.env("authorization"),
       },
-    }).then(response => {
+    }).then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body.data[0]).to.have.property('id');
-      expect(response.body.data[0]).to.have.property('name');
-      expect(response.body.data[0]).to.have.property('domain');
+      expect(response.body.data[0]).to.have.property("id");
+      expect(response.body.data[0]).to.have.property("name");
+      expect(response.body.data[0]).to.have.property("domain");
     });
   });
 
-  it('Gets a website by ID.', () => {
+  it("Gets a website by ID.", () => {
     cy.request({
-      method: 'GET',
+      method: "GET",
       url: `/api/websites/${websiteId}`,
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: Cypress.env('authorization'),
+        "Content-Type": "application/json",
+        Authorization: Cypress.env("authorization"),
       },
-    }).then(response => {
+    }).then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body).to.have.property('name', 'Cypress Website');
-      expect(response.body).to.have.property('domain', 'cypress.com');
+      expect(response.body).to.have.property("name", "Cypress Website");
+      expect(response.body).to.have.property("domain", "cypress.com");
     });
   });
 
-  it('Updates a website.', () => {
-    cy.fixture('websites').then(data => {
+  it("Updates a website.", () => {
+    cy.fixture("websites").then((data) => {
       const websiteUpdate = data.websiteUpdate;
       cy.request({
-        method: 'POST',
+        method: "POST",
         url: `/api/websites/${websiteId}`,
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: Cypress.env('authorization'),
+          "Content-Type": "application/json",
+          Authorization: Cypress.env("authorization"),
         },
         body: websiteUpdate,
-      }).then(response => {
+      }).then((response) => {
         websiteId = response.body.id;
         expect(response.status).to.eq(200);
-        expect(response.body).to.have.property('name', 'Cypress Website Updated');
-        expect(response.body).to.have.property('domain', 'cypressupdated.com');
+        expect(response.body).to.have.property("name", "Cypress Website Updated");
+        expect(response.body).to.have.property("domain", "cypressupdated.com");
       });
     });
   });
 
-  it('Updates a website with only shareId.', () => {
+  it("Updates a website with only shareId.", () => {
     cy.request({
-      method: 'POST',
+      method: "POST",
       url: `/api/websites/${websiteId}`,
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: Cypress.env('authorization'),
+        "Content-Type": "application/json",
+        Authorization: Cypress.env("authorization"),
       },
-      body: { shareId: 'ABCDEF' },
-    }).then(response => {
+      body: { shareId: "ABCDEF" },
+    }).then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body).to.have.property('shareId', 'ABCDEF');
+      expect(response.body).to.have.property("shareId", "ABCDEF");
     });
   });
 
-  it('Resets a website by removing all data related to the website.', () => {
+  it("Resets a website by removing all data related to the website.", () => {
     cy.request({
-      method: 'POST',
+      method: "POST",
       url: `/api/websites/${websiteId}/reset`,
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: Cypress.env('authorization'),
+        "Content-Type": "application/json",
+        Authorization: Cypress.env("authorization"),
       },
-    }).then(response => {
+    }).then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body).to.have.property('ok', true);
+      expect(response.body).to.have.property("ok", true);
     });
   });
 
-  it('Deletes a website.', () => {
+  it("Deletes a website.", () => {
     cy.request({
-      method: 'DELETE',
+      method: "DELETE",
       url: `/api/websites/${websiteId}`,
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: Cypress.env('authorization'),
+        "Content-Type": "application/json",
+        Authorization: Cypress.env("authorization"),
       },
-    }).then(response => {
+    }).then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body).to.have.property('ok', true);
+      expect(response.body).to.have.property("ok", true);
     });
   });
 

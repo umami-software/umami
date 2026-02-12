@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Буруу хэрэглэгчийн нэр/нууц үг.",
   "message.invalid-domain": "Буруу домэйн",
   "message.min-password-length": "Хамгийн багадаа {n} тэмдэгт",
-  "message.new-version-available": "Umami-н шинэ хувилбар {version} гарсан байна!",
+  "message.new-version-available": "Syncfuse-н шинэ хувилбар {version} гарсан байна!",,
   "message.no-data-available": "Өгөгдөл алга.",
   "message.no-event-data": "Үйлдлийн өгөгдөл алга.",
   "message.no-match-password": "Нууц үг тохирохгүй байна.",

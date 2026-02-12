@@ -1,8 +1,8 @@
 version: "3.8"
 
 services:
-  umami:
-    container_name: umami
+  syncfuse:
+    container_name: syncfuse
     image: ghcr.io/umami-software/umami:postgresql-latest
     ports:
       - "127.0.0.1:3000:3000"
@@ -22,14 +22,14 @@ services:
       retries: 5
 
   db:
-    container_name: umami-db
+    container_name: syncfuse-db
     image: docker.io/library/postgres:15-alpine
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - umami-db-data:/var/lib/postgresql/data:Z
+      - syncfuse-db-data:/var/lib/postgresql/data:Z
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]

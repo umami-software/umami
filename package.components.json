@@ -1,7 +1,7 @@
 {
-  "name": "@umami/components",
+  "name": "@syncfuse/components",
   "version": "0.130.0",
-  "description": "Umami React components.",
+  "description": "Syncfuse React components.",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
   "type": "module",

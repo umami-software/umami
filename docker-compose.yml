@@ -1,11 +1,11 @@
 ---
 services:
-  umami:
+  syncfuse:
     image: ghcr.io/umami-software/umami:latest
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: postgresql://umami:umami@db:5432/umami
+      DATABASE_URL: postgresql://syncfuse:syncfuse@db:5432/syncfuse
       APP_SECRET: replace-me-with-a-random-string
     depends_on:
       db:
@@ -20,11 +20,11 @@ services:
   db:
     image: postgres:15-alpine
     environment:
-      POSTGRES_DB: umami
-      POSTGRES_USER: umami
-      POSTGRES_PASSWORD: umami
+      POSTGRES_DB: syncfuse
+      POSTGRES_USER: syncfuse
+      POSTGRES_PASSWORD: syncfuse
     volumes:
-      - umami-db-data:/var/lib/postgresql/data
+      - syncfuse-db-data:/var/lib/postgresql/data
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
@@ -32,4 +32,4 @@ services:
       timeout: 5s
       retries: 5
 volumes:
-  umami-db-data:
+  syncfuse-db-data:

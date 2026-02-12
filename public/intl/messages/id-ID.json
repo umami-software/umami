@@ -1,4 +1,4 @@
-{
+﻿{
   "label.access-code": [
     {
       "type": 0,
@@ -1960,7 +1960,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Versi baru dari Umami "
+      "value": "Versi baru dari Syncfuse "
     },
     {
       "type": 1,

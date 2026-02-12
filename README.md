@@ -2,10 +2,10 @@
   <img src="https://content.umami.is/website/images/umami-logo.png" alt="Umami Logo" width="100">
 </p>
 
-<h1 align="center">Umami</h1>
+<h1 align="center">Syncfuse</h1>
 
 <p align="center">
-  <i>Umami is a simple, fast, privacy-focused alternative to Google Analytics.</i>
+  <i>Syncfuse is a simple, fast, privacy-focused alternative to Google Analytics.</i>
 </p>
 
 <p align="center">
@@ -38,7 +38,7 @@ cd umami
 pnpm install
 ```
 
-### Configure Umami
+### Configure Syncfuse
 
 Create an `.env` file with the following:
 
@@ -58,7 +58,7 @@ postgresql://username:mypassword@localhost:5432/mydb
 pnpm run build
 ```
 
-The build step will create tables in your database if you are installing for the first time. It will also create a login user with username **admin** and password **umami**.
+The build step will create tables in your database if you are installing for the first time. It will also create a login user with username **admin** and password **syncfuse**.
 
 ### Start the Application
 
@@ -72,7 +72,7 @@ By default, this will launch the application on `http://localhost:3000`. You wil
 
 ## 🐳 Installing with Docker
 
-Umami provides Docker images as well as a Docker compose file for easy deployment.
+Syncfuse provides Docker images as well as a Docker compose file for easy deployment.
 
 Docker image:
 
@@ -80,7 +80,7 @@ Docker image:
 docker pull docker.umami.is/umami-software/umami:latest
 ```
 
-Docker compose (Runs Umami with a PostgreSQL database):
+Docker compose (Runs Syncfuse with a PostgreSQL database):
 
 ```bash
 docker compose up -d

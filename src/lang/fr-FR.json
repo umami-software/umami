@@ -309,7 +309,7 @@
   "message.incorrect-username-password": "Nom d'utilisateur/Mot de passe incorrect.",
   "message.invalid-domain": "Domaine invalide",
   "message.min-password-length": "Taille minimale de {n} caractères",
-  "message.new-version-available": "Une nouvelle version d'Umami {version} est disponible !",
+  "message.new-version-available": "Une nouvelle version d'Syncfuse {version} est disponible !",
   "message.no-data-available": "Aucune donnée disponible.",
   "message.no-event-data": "Aucune donnée d'événement disponible.",
   "message.no-match-password": "Les mots de passe ne correspondent pas",

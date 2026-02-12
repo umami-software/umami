@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Incorrecte gebruikersnaam/wachtwoord.",
   "message.invalid-domain": "Ongeldig domein",
   "message.min-password-length": "Minimale lengte van {n} tekens",
-  "message.new-version-available": "Een nieuwe versie van Umami {version} is beschikbaar!",
+  "message.new-version-available": "Een nieuwe versie van Syncfuse {version} is beschikbaar!",
   "message.no-data-available": "Geen gegevens beschikbaar.",
   "message.no-event-data": "Geen gegevens over de gebeurtenis beschikbaar.",
   "message.no-match-password": "Wachtwoorden komen niet overeen",

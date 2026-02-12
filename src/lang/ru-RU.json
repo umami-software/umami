@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Неверное имя пользователя/пароль.",
   "message.invalid-domain": "Некорректный домен",
   "message.min-password-length": "Минимальная длина {n} символов",
-  "message.new-version-available": "Вышла новая версия Umami {version}!",
+  "message.new-version-available": "Вышла новая версия Syncfuse {version}!",
   "message.no-data-available": "Нет данных.",
   "message.no-event-data": "Данные о событиях отсутствуют.",
   "message.no-match-password": "Пароли не совпадают",

@@ -1,5 +1,5 @@
 -- Create Event
-CREATE TABLE umami.website_event
+CREATE TABLE syncfuse.website_event
 (
     website_id UUID,
     session_id UUID,
@@ -48,7 +48,7 @@ ENGINE = MergeTree
     PRIMARY KEY (toStartOfHour(created_at), website_id, session_id, visit_id)
     SETTINGS index_granularity = 8192;
 
-CREATE TABLE umami.event_data
+CREATE TABLE syncfuse.event_data
 (
     website_id UUID,
     session_id UUID,
@@ -67,7 +67,7 @@ ENGINE = MergeTree
     ORDER BY (website_id, event_id, data_key, created_at)
     SETTINGS index_granularity = 8192;
 
-CREATE TABLE umami.session_data
+CREATE TABLE syncfuse.session_data
 (
     website_id UUID,
     session_id UUID,
@@ -85,7 +85,7 @@ ENGINE = ReplacingMergeTree
     SETTINGS index_granularity = 8192;
 
 -- stats hourly
-CREATE TABLE umami.website_event_stats_hourly
+CREATE TABLE syncfuse.website_event_stats_hourly
 (
     website_id UUID,
     session_id UUID,
@@ -136,8 +136,8 @@ ENGINE = AggregatingMergeTree
     )
     SAMPLE BY cityHash64(visit_id);
 
-CREATE MATERIALIZED VIEW umami.website_event_stats_hourly_mv
-TO umami.website_event_stats_hourly
+CREATE MATERIALIZED VIEW syncfuse.website_event_stats_hourly_mv
+TO syncfuse.website_event_stats_hourly
 AS
 SELECT
     website_id,
@@ -215,7 +215,7 @@ FROM (SELECT
     arrayFilter(x -> x != '', groupArray(tag)) tag,
     distinct_id,
     toStartOfHour(created_at) timestamp
-FROM umami.website_event
+FROM syncfuse.website_event
 GROUP BY website_id,
     session_id,
     visit_id,
@@ -233,22 +233,22 @@ GROUP BY website_id,
     timestamp);
 
 -- projections
-ALTER TABLE umami.website_event 
+ALTER TABLE syncfuse.website_event 
 ADD PROJECTION website_event_url_path_projection (
 SELECT * ORDER BY toStartOfDay(created_at), website_id, url_path, created_at
 );
 
-ALTER TABLE umami.website_event MATERIALIZE PROJECTION website_event_url_path_projection;
+ALTER TABLE syncfuse.website_event MATERIALIZE PROJECTION website_event_url_path_projection;
 
-ALTER TABLE umami.website_event 
+ALTER TABLE syncfuse.website_event 
 ADD PROJECTION website_event_referrer_domain_projection (
 SELECT * ORDER BY toStartOfDay(created_at), website_id, referrer_domain, created_at
 );
 
-ALTER TABLE umami.website_event MATERIALIZE PROJECTION website_event_referrer_domain_projection;
+ALTER TABLE syncfuse.website_event MATERIALIZE PROJECTION website_event_referrer_domain_projection;
 
 -- revenue
-CREATE TABLE umami.website_revenue
+CREATE TABLE syncfuse.website_revenue
 (
     website_id UUID,
     session_id UUID,
@@ -264,8 +264,8 @@ ENGINE = MergeTree
     SETTINGS index_granularity = 8192;
 
 
-CREATE MATERIALIZED VIEW umami.website_revenue_mv
-TO umami.website_revenue
+CREATE MATERIALIZED VIEW syncfuse.website_revenue_mv
+TO syncfuse.website_revenue
 AS
 SELECT DISTINCT
     ed.website_id,
@@ -275,9 +275,9 @@ SELECT DISTINCT
     c.currency,
     coalesce(toDecimal64(ed.number_value, 2), toDecimal64(ed.string_value, 2)) revenue,
     ed.created_at
-FROM umami.event_data ed
+FROM syncfuse.event_data ed
 JOIN (SELECT event_id, string_value as currency
-        FROM umami.event_data
+        FROM syncfuse.event_data
         WHERE positionCaseInsensitive(data_key, 'currency') > 0) c
       ON c.event_id = ed.event_id
 WHERE positionCaseInsensitive(data_key, 'revenue') > 0;

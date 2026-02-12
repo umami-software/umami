@@ -1,4 +1,4 @@
-{
+﻿{
   "label.access-code": [
     {
       "type": 0,
@@ -1980,7 +1980,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Umamiの新しいバージョン"
+      "value": "Syncfuseの新しいバージョン"
     },
     {
       "type": 1,

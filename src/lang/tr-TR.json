@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Hatalı kullanıcı adı ya da parola.",
   "message.invalid-domain": "Geçersiz alan adı",
   "message.min-password-length": "Minimum {n} karakter uzunluğu",
-  "message.new-version-available": "Yeni versiyon Umami {version} mevcut!",
+  "message.new-version-available": "Yeni versiyon Syncfuse {version} mevcut!",
   "message.no-data-available": "Henüz hiç veri yok.",
   "message.no-event-data": "Hiçbir olay verisi mevcut değil.",
   "message.no-match-password": "Parolalar uyuşmuyor",

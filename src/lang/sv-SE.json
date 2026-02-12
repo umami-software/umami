@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Felaktigt användarnamn/lösenord.",
   "message.invalid-domain": "Ogiltig domän",
   "message.min-password-length": "Minst {n} tecken",
-  "message.new-version-available": "En ny version av Umami {version} är tillgänglig!",
+  "message.new-version-available": "En ny version av Syncfuse {version} är tillgänglig!",,
   "message.no-data-available": "Ingen data tillgänglig.",
   "message.no-event-data": "Ingen händelsedata är tillgänglig.",
   "message.no-match-password": "Lösenorden matchar inte",

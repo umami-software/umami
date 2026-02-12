@@ -1,18 +1,18 @@
-import debug from 'debug';
-import { ROLE_PERMISSIONS, ROLES, SHARE_TOKEN_HEADER } from '@/lib/constants';
-import { secret } from '@/lib/crypto';
-import { getRandomChars } from '@/lib/generate';
-import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
-import redis from '@/lib/redis';
-import { ensureArray } from '@/lib/utils';
-import { getUser } from '@/queries/prisma/user';
+import debug from "debug";
+import { ROLE_PERMISSIONS, ROLES, SHARE_TOKEN_HEADER } from "@/lib/constants";
+import { secret } from "@/lib/crypto";
+import { getRandomChars } from "@/lib/generate";
+import { createSecureToken, parseSecureToken, parseToken } from "@/lib/jwt";
+import redis from "@/lib/redis";
+import { ensureArray } from "@/lib/utils";
+import { getUser } from "@/queries/prisma/user";
 
-const log = debug('umami:auth');
+const log = debug("syncfuse:auth");
 
 export function getBearerToken(request: Request) {
-  const auth = request.headers.get('authorization');
+  const auth = request.headers.get("authorization");
 
-  return auth?.split(' ')[1];
+  return auth?.split(" ")[1];
 }
 
 export async function checkAuth(request: Request) {
@@ -36,7 +36,7 @@ export async function checkAuth(request: Request) {
   log({ token, payload, authKey, shareToken, user });
 
   if (!user?.id && !shareToken) {
-    log('User not authorized');
+    log("User not authorized");
     return null;
   }
 
@@ -67,7 +67,7 @@ export async function saveAuth(data: any, expire = 0) {
 }
 
 export async function hasPermission(role: string, permission: string | string[]) {
-  return ensureArray(permission).some(e => ROLE_PERMISSIONS[role]?.includes(e));
+  return ensureArray(permission).some((e) => ROLE_PERMISSIONS[role]?.includes(e));
 }
 
 export function parseShareToken(request: Request) {

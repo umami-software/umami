@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "ユーザー名またはパスワードが間違っています。",
   "message.invalid-domain": "無効なドメインです。http/httpsを含めないでください。",
   "message.min-password-length": "最小文字数は{n}文字です",
-  "message.new-version-available": "Umamiの新しいバージョン{version}が利用可能です！",
+  "message.new-version-available": "Syncfuseの新しいバージョン{version}が利用可能です！",
   "message.no-data-available": "データがありません。",
   "message.no-event-data": "イベントデータがありません。",
   "message.no-match-password": "パスワードが一致しません。",

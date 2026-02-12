@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "Невірне ім'я користувача або пароль.",
   "message.invalid-domain": "Некоректний домен",
   "message.min-password-length": "Мінімальна довжина {n} символів",
-  "message.new-version-available": "Вийшла нова версія Umami {version}!",
+  "message.new-version-available": "Вийшла нова версія Syncfuse {version}!",
   "message.no-data-available": "Немає даних.",
   "message.no-event-data": "Дані про події відсутні.",
   "message.no-match-password": "Паролі не співпадають",

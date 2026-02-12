@@ -307,7 +307,7 @@
   "message.incorrect-username-password": "使用者名稱或密碼不正確。",
   "message.invalid-domain": "無效的網域。請勿包含 http/https。",
   "message.min-password-length": "密碼長度至少需 {n} 個字元",
-  "message.new-version-available": "Umami {version} 的新版本已推出！",
+  "message.new-version-available": "Syncfuse {version} 的新版本已推出！",
   "message.no-data-available": "沒有可用的資料。",
   "message.no-event-data": "沒有可用的事件資料。",
   "message.no-match-password": "密碼不一致。",

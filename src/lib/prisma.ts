@@ -1,30 +1,30 @@
-import { PrismaPg } from '@prisma/adapter-pg';
-import { readReplicas } from '@prisma/extension-read-replicas';
-import debug from 'debug';
-import { PrismaClient } from '@/generated/prisma/client';
-import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
-import { filtersObjectToArray } from './params';
-import type { Operator, QueryFilters, QueryOptions } from './types';
+import { PrismaPg } from "@prisma/adapter-pg";
+import { readReplicas } from "@prisma/extension-read-replicas";
+import debug from "debug";
+import { PrismaClient } from "@/generated/prisma/client";
+import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from "./constants";
+import { filtersObjectToArray } from "./params";
+import type { Operator, QueryFilters, QueryOptions } from "./types";
 
-const log = debug('umami:prisma');
+const log = debug("syncfuse:prisma");
 
-const PRISMA = 'prisma';
+const PRISMA = "prisma";
 
 const PRISMA_LOG_OPTIONS = {
   log: [
     {
-      emit: 'event' as const,
-      level: 'query' as const,
+      emit: "event" as const,
+      level: "query" as const,
     },
   ],
 };
 
 const DATE_FORMATS = {
-  minute: 'YYYY-MM-DD HH24:MI:00',
-  hour: 'YYYY-MM-DD HH24:00:00',
-  day: 'YYYY-MM-DD HH24:00:00',
-  month: 'YYYY-MM-01 HH24:00:00',
-  year: 'YYYY-01-01 HH24:00:00',
+  minute: "YYYY-MM-DD HH24:MI:00",
+  hour: "YYYY-MM-DD HH24:00:00",
+  day: "YYYY-MM-DD HH24:00:00",
+  month: "YYYY-MM-01 HH24:00:00",
+  year: "YYYY-01-01 HH24:00:00",
 };
 
 const DATE_FORMATS_UTC = {
@@ -48,7 +48,7 @@ function getCastColumnQuery(field: string, type: string): string {
 }
 
 function getDateSQL(field: string, unit: string, timezone?: string): string {
-  if (timezone && timezone !== 'utc') {
+  if (timezone && timezone !== "utc") {
     return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${DATE_FORMATS[unit]}')`;
   }
 
@@ -67,12 +67,12 @@ function getTimestampDiffSQL(field1: string, field2: string): string {
   return `floor(extract(epoch from (${field2} - ${field1})))`;
 }
 
-function getSearchSQL(column: string, param: string = 'search'): string {
+function getSearchSQL(column: string, param: string = "search"): string {
   return `and ${column} ilike {{${param}}}`;
 }
 
-function mapFilter(column: string, operator: string, name: string, type: string = '') {
-  const value = `{{${name}${type ? `::${type}` : ''}}}`;
+function mapFilter(column: string, operator: string, name: string, type: string = "") {
+  const value = `{{${name}${type ? `::${type}` : ""}}}`;
 
   switch (operator) {
     case OPERATORS.equals:
@@ -84,40 +84,35 @@ function mapFilter(column: string, operator: string, name: string, type: string 
     case OPERATORS.doesNotContain:
       return `${column} not ilike ${value}`;
     default:
-      return '';
+      return "";
   }
 }
 
 function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}): string {
-  const query = filtersObjectToArray(filters, options).reduce(
-    (arr, { name, column, operator, prefix = '' }) => {
-      const isCohort = options?.isCohort;
+  const query = filtersObjectToArray(filters, options).reduce((arr, { name, column, operator, prefix = "" }) => {
+    const isCohort = options?.isCohort;
 
-      if (isCohort) {
-        column = FILTER_COLUMNS[name.slice('cohort_'.length)];
+    if (isCohort) {
+      column = FILTER_COLUMNS[name.slice("cohort_".length)];
+    }
+
+    if (column) {
+      arr.push(`and ${mapFilter(`${prefix}${column}`, operator, name)}`);
+
+      if (name === "referrer") {
+        arr.push(`and (website_event.referrer_domain != website_event.hostname or website_event.referrer_domain is null)`);
       }
+    }
 
-      if (column) {
-        arr.push(`and ${mapFilter(`${prefix}${column}`, operator, name)}`);
+    return arr;
+  }, []);
 
-        if (name === 'referrer') {
-          arr.push(
-            `and (website_event.referrer_domain != website_event.hostname or website_event.referrer_domain is null)`,
-          );
-        }
-      }
-
-      return arr;
-    },
-    [],
-  );
-
-  return query.join('\n');
+  return query.join("\n");
 }
 
 function getCohortQuery(filters: QueryFilters = {}) {
   if (!filters || Object.keys(filters).length === 0) {
-    return '';
+    return "";
   }
 
   const filterQuery = getFilterQuery(filters, { isCohort: true });
@@ -146,16 +141,14 @@ function getDateQuery(filters: Record<string, any>) {
     }
   }
 
-  return '';
+  return "";
 }
 
 function getQueryParams(filters: Record<string, any>) {
   return {
     ...filters,
     ...filtersObjectToArray(filters).reduce((obj, { name, operator, value }) => {
-      obj[name] = ([OPERATORS.contains, OPERATORS.doesNotContain] as Operator[]).includes(operator)
-        ? `%${value}%`
-        : value;
+      obj[name] = ([OPERATORS.contains, OPERATORS.doesNotContain] as Operator[]).includes(operator) ? `%${value}%` : value;
 
       return obj;
     }, {}),
@@ -163,19 +156,12 @@ function getQueryParams(filters: Record<string, any>) {
 }
 
 function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
-  const joinSession = Object.keys(filters).find(key =>
-    ['referrer', ...SESSION_COLUMNS].includes(key),
-  );
+  const joinSession = Object.keys(filters).find((key) => ["referrer", ...SESSION_COLUMNS].includes(key));
 
-  const cohortFilters = Object.fromEntries(
-    Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
-  );
+  const cohortFilters = Object.fromEntries(Object.entries(filters).filter(([key]) => key.startsWith("cohort_")));
 
   return {
-    joinSessionQuery:
-      options?.joinSession || joinSession
-        ? `inner join session on website_event.session_id = session.session_id and website_event.website_id = session.website_id`
-        : '',
+    joinSessionQuery: options?.joinSession || joinSession ? `inner join session on website_event.session_id = session.session_id and website_event.website_id = session.website_id` : "",
     dateQuery: getDateQuery(filters),
     filterQuery: getFilterQuery(filters, options),
     queryParams: getQueryParams(filters),
@@ -185,9 +171,9 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
 
 async function rawQuery(sql: string, data: Record<string, any>, name?: string): Promise<any> {
   if (process.env.LOG_QUERY) {
-    log('QUERY:\n', sql);
-    log('PARAMETERS:\n', data);
-    log('NAME:\n', name);
+    log("QUERY:\n", sql);
+    log("PARAMETERS:\n", data);
+    log("NAME:\n", name);
   }
   const params = [];
   const schema = getSchema();
@@ -203,10 +189,10 @@ async function rawQuery(sql: string, data: Record<string, any>, name?: string): 
 
     params.push(value);
 
-    return `$${params.length}${type ?? ''}`;
+    return `$${params.length}${type ?? ""}`;
   });
 
-  if (process.env.DATABASE_REPLICA_URL && '$replica' in client) {
+  if (process.env.DATABASE_REPLICA_URL && "$replica" in client) {
     return client.$replica().$queryRawUnsafe(query, ...params);
   }
 
@@ -224,7 +210,7 @@ async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters)
       ...(orderBy && {
         orderBy: [
           {
-            [orderBy]: sortDescending ? 'desc' : 'asc',
+            [orderBy]: sortDescending ? "desc" : "asc",
           },
         ],
       }),
@@ -236,27 +222,15 @@ async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters)
   return { data, count, page: +page, pageSize: size, orderBy, search };
 }
 
-async function pagedRawQuery(
-  query: string,
-  queryParams: Record<string, any>,
-  filters: QueryFilters,
-  name?: string,
-) {
+async function pagedRawQuery(query: string, queryParams: Record<string, any>, filters: QueryFilters, name?: string) {
   const { page = 1, pageSize, orderBy, sortDescending = false } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
-  const direction = sortDescending ? 'desc' : 'asc';
+  const direction = sortDescending ? "desc" : "asc";
 
-  const statements = [
-    orderBy && `order by ${orderBy} ${direction}`,
-    +size > 0 && `limit ${+size} offset ${offset}`,
-  ]
-    .filter(n => n)
-    .join('\n');
+  const statements = [orderBy && `order by ${orderBy} ${direction}`, +size > 0 && `limit ${+size} offset ${offset}`].filter((n) => n).join("\n");
 
-  const count = await rawQuery(`select count(*) as num from (${query}) t`, queryParams).then(
-    res => res[0].num,
-  );
+  const count = await rawQuery(`select count(*) as num from (${query}) t`, queryParams).then((res) => res[0].num);
 
   const data = await rawQuery(`${query}${statements}`, queryParams, name);
 
@@ -271,16 +245,16 @@ function getSearchParameters(query: string, filters: Record<string, any>[]) {
 
     return {
       [key]:
-        typeof value === 'string'
+        typeof value === "string"
           ? {
               [value]: query,
-              mode: 'insensitive',
+              mode: "insensitive",
             }
           : parseFilter(value),
     };
   };
 
-  const params = filters.map(filter => parseFilter(filter));
+  const params = filters.map((filter) => parseFilter(filter));
 
   return {
     AND: {
@@ -296,7 +270,7 @@ function transaction(input: any, options?: any) {
 function getSchema() {
   const connectionUrl = new URL(process.env.DATABASE_URL);
 
-  return connectionUrl.searchParams.get('schema');
+  return connectionUrl.searchParams.get("schema");
 }
 
 function getClient() {
@@ -309,16 +283,16 @@ function getClient() {
 
   const baseClient = new PrismaClient({
     adapter: baseAdapter,
-    errorFormat: 'pretty',
+    errorFormat: "pretty",
     ...(logQuery ? PRISMA_LOG_OPTIONS : {}),
   });
 
   if (logQuery) {
-    baseClient.$on('query', log);
+    baseClient.$on("query", log);
   }
 
   if (!replicaUrl) {
-    log('Prisma initialized');
+    log("Prisma initialized");
     globalThis[PRISMA] ??= baseClient;
     return baseClient;
   }
@@ -327,12 +301,12 @@ function getClient() {
 
   const replicaClient = new PrismaClient({
     adapter: replicaAdapter,
-    errorFormat: 'pretty',
+    errorFormat: "pretty",
     ...(logQuery ? PRISMA_LOG_OPTIONS : {}),
   });
 
   if (logQuery) {
-    replicaClient.$on('query', log);
+    replicaClient.$on("query", log);
   }
 
   const extended = baseClient.$extends(
@@ -341,7 +315,7 @@ function getClient() {
     }),
   );
 
-  log('Prisma initialized (with replica)');
+  log("Prisma initialized (with replica)");
   globalThis[PRISMA] ??= extended;
 
   return extended;

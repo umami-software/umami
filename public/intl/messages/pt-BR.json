@@ -1,4 +1,4 @@
-{
+﻿{
   "label.access-code": [
     {
       "type": 0,
@@ -1984,7 +1984,7 @@
     },
     {
       "type": 0,
-      "value": " do Umami está disponível!"
+      "value": " do Syncfuse está disponível!"
     }
   ],
   "message.no-data-available": [

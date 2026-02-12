@@ -1,23 +1,23 @@
-declare module '*.css';
-declare module '*.svg';
-declare module '*.json';
-declare module 'bcryptjs';
-declare module 'chartjs-adapter-date-fns';
-declare module 'cors';
-declare module 'date-fns-tz';
-declare module 'debug';
-declare module 'fs-extra';
-declare module 'jsonwebtoken';
-declare module 'md5';
-declare module 'papaparse';
-declare module 'prettier';
-declare module 'react-simple-maps';
-declare module 'semver';
-declare module 'tsup';
-declare module 'uuid';
-declare module '@umami/esbuild-plugin-css-modules';
+declare module "*.css";
+declare module "*.svg";
+declare module "*.json";
+declare module "bcryptjs";
+declare module "chartjs-adapter-date-fns";
+declare module "cors";
+declare module "date-fns-tz";
+declare module "debug";
+declare module "fs-extra";
+declare module "jsonwebtoken";
+declare module "md5";
+declare module "papaparse";
+declare module "prettier";
+declare module "react-simple-maps";
+declare module "semver";
+declare module "tsup";
+declare module "uuid";
+declare module "@umami/esbuild-plugin-css-modules";
 
-interface UmamiTracker {
+interface SyncfuseTracker {
   track: {
     (): Promise<string>;
     (eventName: string): Promise<string>;
@@ -29,5 +29,5 @@ interface UmamiTracker {
 }
 
 interface Window {
-  umami: UmamiTracker;
+  syncfuse: SyncfuseTracker;
 }

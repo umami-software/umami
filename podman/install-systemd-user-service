@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-service_name="umami"
+service_name="syncfuse"
 mkdir -p ~/.config/systemd/user
 cp $service_name.service ~/.config/systemd/user
 

@@ -1,5 +1,5 @@
 -- create new hourly table
-CREATE TABLE umami.website_event_stats_hourly_new
+CREATE TABLE syncfuse.website_event_stats_hourly_new
 (
     website_id UUID,
     session_id UUID,
@@ -51,8 +51,8 @@ ENGINE = AggregatingMergeTree
     SAMPLE BY cityHash64(visit_id);
 
 -- create view
-CREATE MATERIALIZED VIEW umami.website_event_stats_hourly_mv_new
-TO umami.website_event_stats_hourly_new
+CREATE MATERIALIZED VIEW syncfuse.website_event_stats_hourly_mv_new
+TO syncfuse.website_event_stats_hourly_new
 AS
 SELECT
     website_id,
@@ -130,7 +130,7 @@ FROM (SELECT
     arrayFilter(x -> x != '', groupArray(tag)) tag,
     distinct_id,
     toStartOfHour(created_at) timestamp
-FROM umami.website_event
+FROM syncfuse.website_event
 GROUP BY website_id,
     session_id,
     visit_id,
@@ -148,16 +148,16 @@ GROUP BY website_id,
     timestamp);
 
 -- rename tables
-RENAME TABLE umami.website_event_stats_hourly TO umami.website_event_stats_hourly_old;
-RENAME TABLE umami.website_event_stats_hourly_new TO umami.website_event_stats_hourly;
+RENAME TABLE syncfuse.website_event_stats_hourly TO syncfuse.website_event_stats_hourly_old;
+RENAME TABLE syncfuse.website_event_stats_hourly_new TO syncfuse.website_event_stats_hourly;
 
 -- drop views
-DROP TABLE umami.website_event_stats_hourly_mv;
-DROP TABLE umami.website_event_stats_hourly_mv_new;
+DROP TABLE syncfuse.website_event_stats_hourly_mv;
+DROP TABLE syncfuse.website_event_stats_hourly_mv_new;
 
 -- recreate view
-CREATE MATERIALIZED VIEW umami.website_event_stats_hourly_mv
-TO umami.website_event_stats_hourly
+CREATE MATERIALIZED VIEW syncfuse.website_event_stats_hourly_mv
+TO syncfuse.website_event_stats_hourly
 AS
 SELECT
     website_id,
@@ -235,7 +235,7 @@ FROM (SELECT
     arrayFilter(x -> x != '', groupArray(tag)) tag,
     distinct_id,
     toStartOfHour(created_at) timestamp
-FROM umami.website_event
+FROM syncfuse.website_event
 GROUP BY website_id,
     session_id,
     visit_id,
