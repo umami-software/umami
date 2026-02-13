@@ -48,6 +48,17 @@ export function BoardColumn({
     setShowSelect(false);
   };
 
+  const hasComponent = !!component;
+  const canRemoveAction = hasComponent || canRemove;
+
+  const handleRemove = () => {
+    if (hasComponent) {
+      onSetComponent?.(id, null);
+    } else {
+      onRemove?.(id);
+    }
+  };
+
   return (
     <Column
       width="100%"
@@ -58,7 +69,7 @@ export function BoardColumn({
       position="relative"
       className={styles.column}
     >
-      {editing && canRemove && (
+      {editing && canRemoveAction && (
         <Box
           className={styles.columnAction}
           position="absolute"
@@ -67,12 +78,12 @@ export function BoardColumn({
           zIndex={100}
         >
           <TooltipTrigger delay={0}>
-            <Button variant="outline" onPress={() => onRemove?.(id)}>
+            <Button variant="outline" onPress={handleRemove} isDisabled={!canRemoveAction}>
               <Icon size="sm">
                 <X />
               </Icon>
             </Button>
-            <Tooltip>Remove column</Tooltip>
+            <Tooltip>{hasComponent ? 'Remove component' : 'Remove column'}</Tooltip>
           </TooltipTrigger>
         </Box>
       )}
