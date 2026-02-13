@@ -110,12 +110,12 @@ export function BoardEditBody() {
   return (
     <Group groupRef={rowGroupRef} orientation="vertical" style={{ minHeight }}>
       {rows.map((row, index) => (
-        <Fragment key={row.id}>
+        <Fragment key={`${row.id}:${row.size ?? 'auto'}`}>
           <Panel
             id={row.id}
             minSize={MIN_ROW_HEIGHT}
             maxSize={MAX_ROW_HEIGHT}
-            defaultSize={row.size}
+            defaultSize={row.size != null ? `${row.size}%` : undefined}
           >
             <BoardEditRow
               {...row}

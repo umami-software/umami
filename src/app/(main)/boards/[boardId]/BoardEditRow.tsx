@@ -84,8 +84,12 @@ export function BoardEditRow({
   return (
     <Group groupRef={handleGroupRef} className={styles.rowGroup}>
       {columns?.map((column, index) => (
-        <Fragment key={column.id}>
-          <ResizablePanel id={column.id} minSize={MIN_COLUMN_WIDTH} defaultSize={column.size}>
+        <Fragment key={`${column.id}:${column.size ?? 'auto'}`}>
+          <ResizablePanel
+            id={column.id}
+            minSize={MIN_COLUMN_WIDTH}
+            defaultSize={column.size != null ? `${column.size}%` : undefined}
+          >
             <BoardEditColumn
               {...column}
               canEdit={canEdit}

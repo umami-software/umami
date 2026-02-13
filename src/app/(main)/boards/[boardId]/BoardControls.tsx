@@ -12,7 +12,7 @@ export function BoardControls() {
 
   return (
     <Box marginBottom="4">
-      <WebsiteControls websiteId={websiteId} allowCompare={true} />
+      <WebsiteControls websiteId={websiteId} />
     </Box>
   );
 }
