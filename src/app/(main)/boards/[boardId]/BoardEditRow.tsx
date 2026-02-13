@@ -138,11 +138,10 @@ export function BoardEditRow({
           padding="3"
           gap="1"
           position="absolute"
-          top="0"
-          bottom="0"
+          top="50%"
           right="12px"
           zIndex={20}
-          justifyContent="center"
+          style={{ transform: 'translateY(-50%)' }}
         >
           <TooltipTrigger delay={0}>
             <Button variant="outline" onPress={() => onMoveUp(rowId)} isDisabled={rowIndex === 0}>
