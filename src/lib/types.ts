@@ -146,6 +146,8 @@ export interface ApiError extends Error {
 
 export interface BoardComponentConfig {
   type: string;
+  title?: string;
+  description?: string;
   props?: Record<string, any>;
 }
 

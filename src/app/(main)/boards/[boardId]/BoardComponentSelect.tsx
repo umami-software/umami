@@ -1,5 +1,14 @@
-import { Button, Column, Focusable, ListItem, Row, Select, Text } from '@umami/react-zen';
-import { useState } from 'react';
+import {
+  Button,
+  Column,
+  Focusable,
+  ListItem,
+  Row,
+  Select,
+  Text,
+  TextField,
+} from '@umami/react-zen';
+import { useEffect, useMemo, useState } from 'react';
 import { Panel } from '@/components/common/Panel';
 import { useMessages } from '@/components/hooks';
 import type { BoardComponentConfig } from '@/lib/types';
@@ -13,29 +22,66 @@ import { BoardComponentRenderer } from './BoardComponentRenderer';
 
 export function BoardComponentSelect({
   websiteId,
+  initialConfig,
   onSelect,
   onClose,
 }: {
   websiteId: string;
+  initialConfig?: BoardComponentConfig;
   onSelect: (config: BoardComponentConfig) => void;
   onClose: () => void;
 }) {
   const { t, labels, messages } = useMessages();
   const [selectedDef, setSelectedDef] = useState<ComponentDefinition | null>(null);
   const [configValues, setConfigValues] = useState<Record<string, any>>({});
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
-  const handleSelectComponent = (def: ComponentDefinition) => {
-    setSelectedDef(def);
+  const allDefinitions = useMemo(
+    () => CATEGORIES.flatMap(category => getComponentsByCategory(category.key)),
+    [],
+  );
+
+  const getDefaultConfigValues = (def: ComponentDefinition, config?: BoardComponentConfig) => {
     const defaults: Record<string, any> = {};
-    if (def.configFields) {
-      for (const field of def.configFields) {
-        defaults[field.name] = field.defaultValue;
-      }
+
+    for (const field of def.configFields ?? []) {
+      defaults[field.name] = field.defaultValue;
     }
+
     if (def.defaultProps) {
       Object.assign(defaults, def.defaultProps);
     }
-    setConfigValues(defaults);
+
+    if (config?.props) {
+      Object.assign(defaults, config.props);
+    }
+
+    return defaults;
+  };
+
+  useEffect(() => {
+    if (!initialConfig) {
+      return;
+    }
+
+    const definition = allDefinitions.find(def => def.type === initialConfig.type);
+
+    if (!definition) {
+      return;
+    }
+
+    setSelectedDef(definition);
+    setConfigValues(getDefaultConfigValues(definition, initialConfig));
+    setTitle(initialConfig.title || definition.name);
+    setDescription(initialConfig.description || '');
+  }, [initialConfig, allDefinitions]);
+
+  const handleSelectComponent = (def: ComponentDefinition) => {
+    setSelectedDef(def);
+    setConfigValues(getDefaultConfigValues(def));
+    setTitle(def.name);
+    setDescription('');
   };
 
   const handleConfigChange = (name: string, value: any) => {
@@ -46,16 +92,25 @@ export function BoardComponentSelect({
     if (!selectedDef) return;
 
     const props: Record<string, any> = {};
+
     if (selectedDef.defaultProps) {
       Object.assign(props, selectedDef.defaultProps);
     }
+
     Object.assign(props, configValues);
 
-    if (props.limit) {
-      props.limit = Number(props.limit);
+    for (const field of selectedDef.configFields ?? []) {
+      if (field.type === 'number' && props[field.name] != null && props[field.name] !== '') {
+        props[field.name] = Number(props[field.name]);
+      }
     }
 
-    const config: BoardComponentConfig = { type: selectedDef.type };
+    const config: BoardComponentConfig = {
+      type: selectedDef.type,
+      title: title || selectedDef.name,
+      description,
+    };
+
     if (Object.keys(props).length > 0) {
       config.props = props;
     }
@@ -66,6 +121,8 @@ export function BoardComponentSelect({
   const previewConfig: BoardComponentConfig | null = selectedDef
     ? {
         type: selectedDef.type,
+        title,
+        description,
         props: { ...selectedDef.defaultProps, ...configValues },
       }
     : null;
@@ -73,12 +130,13 @@ export function BoardComponentSelect({
   return (
     <Column gap="4">
       <Row gap="4" style={{ height: 600 }}>
-        <Column gap="1" style={{ width: 200, flexShrink: 0, overflowY: 'auto' }}>
-          {CATEGORIES.map(cat => {
-            const components = getComponentsByCategory(cat.key);
+        <Column gap="1" style={{ width: 280, flexShrink: 0, overflowY: 'auto' }}>
+          {CATEGORIES.map(category => {
+            const components = getComponentsByCategory(category.key);
+
             return (
-              <Column key={cat.key} gap="1" marginBottom="2">
-                <Text weight="bold">{cat.name}</Text>
+              <Column key={category.key} gap="1" marginBottom="2">
+                <Text weight="bold">{category.name}</Text>
                 {components.map(def => (
                   <Focusable key={def.type}>
                     <Row
@@ -111,30 +169,8 @@ export function BoardComponentSelect({
             );
           })}
         </Column>
+
         <Column gap="3" flexGrow={1} style={{ minWidth: 0 }}>
-          {selectedDef?.configFields && selectedDef.configFields.length > 0 && (
-            <Row gap="3" alignItems="center" wrap="wrap">
-              {selectedDef.configFields.map((field: ConfigField) => (
-                <Row key={field.name} gap="2" alignItems="center">
-                  <Text size="sm" color="muted">
-                    {field.label}
-                  </Text>
-                  {field.type === 'select' && (
-                    <Select
-                      value={String(configValues[field.name] ?? field.defaultValue ?? '')}
-                      onChange={(value: string) => handleConfigChange(field.name, value)}
-                    >
-                      {field.options?.map(opt => (
-                        <ListItem key={opt.value} id={opt.value}>
-                          {opt.label}
-                        </ListItem>
-                      ))}
-                    </Select>
-                  )}
-                </Row>
-              ))}
-            </Row>
-          )}
           <Panel maxHeight="100%">
             {previewConfig && websiteId ? (
               <BoardComponentRenderer config={previewConfig} websiteId={websiteId} />
@@ -147,7 +183,66 @@ export function BoardComponentSelect({
             )}
           </Panel>
         </Column>
+
+        <Column gap="3" style={{ width: 320, flexShrink: 0, overflowY: 'auto' }}>
+          <Text weight="bold">{t(labels.properties)}</Text>
+
+          <Column gap="2">
+            <Text size="sm" color="muted">
+              {t(labels.title)}
+            </Text>
+            <TextField value={title} onChange={setTitle} autoComplete="off" />
+          </Column>
+
+          <Column gap="2">
+            <Text size="sm" color="muted">
+              {t(labels.description)}
+            </Text>
+            <TextField value={description} onChange={setDescription} autoComplete="off" />
+          </Column>
+
+          {selectedDef?.configFields && selectedDef.configFields.length > 0 && (
+            <Column gap="3">
+              {selectedDef.configFields.map((field: ConfigField) => (
+                <Column key={field.name} gap="2">
+                  <Text size="sm" color="muted">
+                    {field.label}
+                  </Text>
+
+                  {field.type === 'select' && (
+                    <Select
+                      value={String(configValues[field.name] ?? field.defaultValue ?? '')}
+                      onChange={(value: string) => handleConfigChange(field.name, value)}
+                    >
+                      {field.options?.map(option => (
+                        <ListItem key={option.value} id={option.value}>
+                          {option.label}
+                        </ListItem>
+                      ))}
+                    </Select>
+                  )}
+
+                  {field.type === 'text' && (
+                    <TextField
+                      value={String(configValues[field.name] ?? field.defaultValue ?? '')}
+                      onChange={(value: string) => handleConfigChange(field.name, value)}
+                    />
+                  )}
+
+                  {field.type === 'number' && (
+                    <TextField
+                      type="number"
+                      value={String(configValues[field.name] ?? field.defaultValue ?? '')}
+                      onChange={(value: string) => handleConfigChange(field.name, value)}
+                    />
+                  )}
+                </Column>
+              ))}
+            </Column>
+          )}
+        </Column>
       </Row>
+
       <Row justifyContent="flex-end" gap="2" paddingTop="4">
         <Button variant="quiet" onPress={onClose}>
           {t(labels.cancel)}

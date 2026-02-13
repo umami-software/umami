@@ -5,6 +5,7 @@ import {
   Heading,
   Icon,
   Row,
+  Text,
   Tooltip,
   TooltipTrigger,
 } from '@umami/react-zen';
@@ -14,6 +15,7 @@ import { Maximize, X } from '@/components/icons';
 
 export interface PanelProps extends ColumnProps {
   title?: string;
+  description?: string;
   allowFullscreen?: boolean;
 }
 
@@ -29,6 +31,7 @@ const fullscreenStyles = {
 
 export function Panel({
   title,
+  description,
   allowFullscreen,
   style,
   children,
@@ -56,6 +59,7 @@ export function Panel({
       style={{ ...style, ...(isFullscreen ? fullscreenStyles : { height, width }) }}
     >
       {title && <Heading>{title}</Heading>}
+      {description && <Text color="muted">{description}</Text>}
       {allowFullscreen && (
         <Row justifyContent="flex-end" alignItems="center">
           <TooltipTrigger delay={0} isDisabled={isFullscreen}>

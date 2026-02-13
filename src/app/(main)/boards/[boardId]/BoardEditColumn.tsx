@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, Icon, Modal, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Box, Button, Dialog, Icon, Modal, Row, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 import { Panel } from '@/components/common/Panel';
 import { useBoard, useMessages } from '@/components/hooks';
@@ -43,7 +43,9 @@ export function BoardEditColumn({
 
   const hasComponent = !!component;
   const canRemoveAction = hasComponent || canRemove;
-  const title = component ? getComponentDefinition(component.type)?.name : undefined;
+  const defaultTitle = component ? getComponentDefinition(component.type)?.name : undefined;
+  const title = component?.title || defaultTitle;
+  const description = component?.description;
 
   const handleRemove = () => {
     if (hasComponent) {
@@ -56,10 +58,9 @@ export function BoardEditColumn({
   return (
     <Panel
       title={title}
+      description={description}
       width="100%"
       height="100%"
-      alignItems="center"
-      justifyContent="center"
       position="relative"
       className={styles.column}
     >
@@ -67,51 +68,49 @@ export function BoardEditColumn({
         <Box
           className={styles.columnAction}
           position="absolute"
-          top="10px"
-          right="20px"
+          top="22px"
+          right="24px"
           zIndex={100}
         >
-          <TooltipTrigger delay={0}>
-            <Button variant="outline" onPress={handleRemove} isDisabled={!canRemoveAction}>
-              <Icon size="sm">
-                <X />
-              </Icon>
-            </Button>
-            <Tooltip>{hasComponent ? 'Remove component' : 'Remove column'}</Tooltip>
-          </TooltipTrigger>
-        </Box>
-      )}
-      {renderedComponent ? (
-        <>
-          <Box width="100%" height="100%" overflow="auto">
-            {renderedComponent}
-          </Box>
-          {canEdit && (
-            <Box
-              className={styles.columnAction}
-              position="absolute"
-              bottom="10px"
-              right="20px"
-              zIndex={100}
-            >
+          <Row gap="2">
+            {hasComponent && (
               <TooltipTrigger delay={0}>
                 <Button variant="outline" onPress={() => setShowSelect(true)}>
                   <Icon size="sm">
                     <Pencil />
                   </Icon>
                 </Button>
-                <Tooltip>Change component</Tooltip>
+                <Tooltip>{t(labels.edit)}</Tooltip>
               </TooltipTrigger>
-            </Box>
-          )}
-        </>
+            )}
+            <TooltipTrigger delay={0}>
+              <Button variant="outline" onPress={handleRemove} isDisabled={!canRemoveAction}>
+                <Icon size="sm">
+                  <X />
+                </Icon>
+              </Button>
+              <Tooltip>{t(labels.remove)}</Tooltip>
+            </TooltipTrigger>
+          </Row>
+        </Box>
+      )}
+      {renderedComponent ? (
+        <Box width="100%" height="100%" overflow="auto">
+          {renderedComponent}
+        </Box>
       ) : (
         canEdit && (
-          <Button variant="outline" onPress={() => setShowSelect(true)}>
-            <Icon>
-              <Plus />
-            </Icon>
-          </Button>
+          <Box
+            width="100%"
+            height="100%"
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            <Button variant="outline" onPress={() => setShowSelect(true)}>
+              <Icon>
+                <Plus />
+              </Icon>
+            </Button>
+          </Box>
         )
       )}
       <Modal isOpen={showSelect} onOpenChange={setShowSelect}>
@@ -127,6 +126,7 @@ export function BoardEditColumn({
           {() => (
             <BoardComponentSelect
               websiteId={websiteId}
+              initialConfig={component}
               onSelect={handleSelect}
               onClose={() => setShowSelect(false)}
             />
