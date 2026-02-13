@@ -73,14 +73,14 @@ export function BoardComponentSelect({
 
     setSelectedDef(definition);
     setConfigValues(getDefaultConfigValues(definition, initialConfig));
-    setTitle(initialConfig.title || definition.name);
+    setTitle(initialConfig.title ?? '');
     setDescription(initialConfig.description || '');
   }, [initialConfig, allDefinitions]);
 
   const handleSelectComponent = (def: ComponentDefinition) => {
     setSelectedDef(def);
     setConfigValues(getDefaultConfigValues(def));
-    setTitle(def.name);
+    setTitle('');
     setDescription('');
   };
 
@@ -107,7 +107,7 @@ export function BoardComponentSelect({
 
     const config: BoardComponentConfig = {
       type: selectedDef.type,
-      title: title || selectedDef.name,
+      title,
       description,
     };
 
@@ -248,7 +248,7 @@ export function BoardComponentSelect({
           {t(labels.cancel)}
         </Button>
         <Button variant="primary" onPress={handleAdd} isDisabled={!selectedDef}>
-          {t(labels.add)}
+          {t(labels.save)}
         </Button>
       </Row>
     </Column>

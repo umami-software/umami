@@ -1,6 +1,6 @@
-import { Button, Column, Icon, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Box, Button, Column, Icon, Row, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { produce } from 'immer';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import {
   Group,
   type GroupImperativeHandle,
@@ -12,7 +12,6 @@ import { useBoard } from '@/components/hooks';
 import { ChevronDown, GripVertical, Minus, Plus } from '@/components/icons';
 import type { BoardColumn as BoardColumnType, BoardComponentConfig } from '@/lib/types';
 import { BoardEditColumn } from './BoardEditColumn';
-import styles from './BoardEditLayout.module.css';
 import { MAX_COLUMNS, MIN_COLUMN_WIDTH } from './boardConstants';
 
 export function BoardEditRow({
@@ -37,6 +36,7 @@ export function BoardEditRow({
   onRegisterRef: (rowId: string, ref: GroupImperativeHandle | null) => void;
 }) {
   const { board, updateBoard } = useBoard();
+  const [showActions, setShowActions] = useState(false);
 
   const handleGroupRef = (ref: GroupImperativeHandle | null) => {
     onRegisterRef(rowId, ref);
@@ -82,35 +82,68 @@ export function BoardEditRow({
   };
 
   return (
-    <Group groupRef={handleGroupRef} className={styles.rowGroup}>
-      {columns?.map((column, index) => (
-        <Fragment key={`${column.id}:${column.size ?? 'auto'}`}>
-          <ResizablePanel
-            id={column.id}
-            minSize={MIN_COLUMN_WIDTH}
-            defaultSize={column.size != null ? `${column.size}%` : undefined}
-          >
-            <BoardEditColumn
-              {...column}
-              canEdit={canEdit}
-              onRemove={handleRemoveColumn}
-              onSetComponent={handleSetComponent}
-              canRemove={columns.length > 1}
-            />
-          </ResizablePanel>
-          {index < columns.length - 1 && (
-            <Separator className={styles.columnSeparator}>
-              <span className={styles.separatorHandle}>
-                <Icon size="sm">
-                  <GripVertical />
-                </Icon>
-              </span>
-            </Separator>
-          )}
-        </Fragment>
-      ))}
-      {canEdit && (
-        <Column className={styles.rowActions} padding="3" gap="1">
+    <Box
+      position="relative"
+      height="100%"
+      onMouseEnter={() => setShowActions(true)}
+      onMouseLeave={() => setShowActions(false)}
+    >
+      <Group groupRef={handleGroupRef}>
+        {columns?.map((column, index) => (
+          <Fragment key={`${column.id}:${column.size ?? 'auto'}`}>
+            <ResizablePanel
+              id={column.id}
+              minSize={MIN_COLUMN_WIDTH}
+              defaultSize={column.size != null ? `${column.size}%` : undefined}
+            >
+              <BoardEditColumn
+                {...column}
+                canEdit={canEdit}
+                onRemove={handleRemoveColumn}
+                onSetComponent={handleSetComponent}
+                canRemove={columns.length > 1}
+              />
+            </ResizablePanel>
+            {index < columns.length - 1 && (
+              <Separator
+                style={{
+                  width: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: 'none',
+                  outline: 'none',
+                  boxShadow: 'none',
+                  background: 'transparent',
+                }}
+              >
+                <Row
+                  width="100%"
+                  height="100%"
+                  alignItems="center"
+                  justifyContent="center"
+                  style={{ cursor: 'col-resize' }}
+                >
+                  <Icon size="sm">
+                    <GripVertical />
+                  </Icon>
+                </Row>
+              </Separator>
+            )}
+          </Fragment>
+        ))}
+      </Group>
+      {canEdit && showActions && (
+        <Column
+          padding="3"
+          gap="1"
+          position="absolute"
+          top="0"
+          bottom="0"
+          right="12px"
+          zIndex={20}
+          justifyContent="center"
+        >
           <TooltipTrigger delay={0}>
             <Button variant="outline" onPress={() => onMoveUp(rowId)} isDisabled={rowIndex === 0}>
               <Icon rotate={180}>
@@ -153,6 +186,6 @@ export function BoardEditRow({
           </TooltipTrigger>
         </Column>
       )}
-    </Group>
+    </Box>
   );
 }

@@ -13,7 +13,7 @@ export function BoardViewColumn({ component }: { component?: BoardComponentConfi
     return null;
   }
 
-  const title = component.title || getComponentDefinition(component.type)?.name;
+  const title = component.title ?? getComponentDefinition(component.type)?.name;
   const description = component.description;
 
   return (

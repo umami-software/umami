@@ -1,21 +1,22 @@
+import { Box, Row } from '@umami/react-zen';
 import type { BoardColumn } from '@/lib/types';
 import { BoardViewColumn } from './BoardViewColumn';
 import { MIN_COLUMN_WIDTH } from './boardConstants';
 
 export function BoardViewRow({ columns }: { columns: BoardColumn[] }) {
   return (
-    <div style={{ display: 'flex', gap: 12, width: '100%', overflowX: 'auto' }}>
+    <Row gap="3" width="100%" overflowX="auto">
       {columns.map(column => (
-        <div
+        <Box
           key={column.id}
-          style={{
-            flex: `${column.size ?? 1} 1 0%`,
-            minWidth: MIN_COLUMN_WIDTH,
-          }}
+          flexGrow={column.size ?? 1}
+          flexShrink={1}
+          flexBasis="0%"
+          minWidth={`${MIN_COLUMN_WIDTH}px`}
         >
           <BoardViewColumn component={column.component} />
-        </div>
+        </Box>
       ))}
-    </div>
+    </Row>
   );
 }

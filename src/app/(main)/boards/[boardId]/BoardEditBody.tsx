@@ -1,11 +1,10 @@
-import { Button, Icon, Row, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Box, Button, Icon, Row, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { produce } from 'immer';
 import { Fragment, useEffect, useRef } from 'react';
 import { Group, type GroupImperativeHandle, Panel, Separator } from 'react-resizable-panels';
 import { v4 as uuid } from 'uuid';
 import { useBoard } from '@/components/hooks';
 import { GripHorizontal, Plus } from '@/components/icons';
-import styles from './BoardEditLayout.module.css';
 import { BoardEditRow } from './BoardEditRow';
 import { BUTTON_ROW_HEIGHT, MAX_ROW_HEIGHT, MIN_ROW_HEIGHT } from './boardConstants';
 
@@ -108,52 +107,71 @@ export function BoardEditBody() {
   const minHeight = (rows.length || 1) * MAX_ROW_HEIGHT + BUTTON_ROW_HEIGHT;
 
   return (
-    <Group groupRef={rowGroupRef} orientation="vertical" style={{ minHeight }}>
-      {rows.map((row, index) => (
-        <Fragment key={`${row.id}:${row.size ?? 'auto'}`}>
-          <Panel
-            id={row.id}
-            minSize={MIN_ROW_HEIGHT}
-            maxSize={MAX_ROW_HEIGHT}
-            defaultSize={row.size != null ? `${row.size}%` : undefined}
-          >
-            <BoardEditRow
-              {...row}
-              rowId={row.id}
-              rowIndex={index}
-              rowCount={rows.length}
-              canEdit={!!websiteId}
-              onRemove={handleRemoveRow}
-              onMoveUp={handleMoveRowUp}
-              onMoveDown={handleMoveRowDown}
-              onRegisterRef={registerColumnGroupRef}
-            />
+    <Box minHeight={`${minHeight}px`}>
+      <Group groupRef={rowGroupRef} orientation="vertical">
+        {rows.map((row, index) => (
+          <Fragment key={`${row.id}:${row.size ?? 'auto'}`}>
+            <Panel
+              id={row.id}
+              minSize={MIN_ROW_HEIGHT}
+              maxSize={MAX_ROW_HEIGHT}
+              defaultSize={row.size != null ? `${row.size}%` : undefined}
+            >
+              <BoardEditRow
+                {...row}
+                rowId={row.id}
+                rowIndex={index}
+                rowCount={rows.length}
+                canEdit={!!websiteId}
+                onRemove={handleRemoveRow}
+                onMoveUp={handleMoveRowUp}
+                onMoveDown={handleMoveRowDown}
+                onRegisterRef={registerColumnGroupRef}
+              />
+            </Panel>
+            {index < rows.length - 1 && (
+              <Separator
+                style={{
+                  height: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: 'none',
+                  outline: 'none',
+                  boxShadow: 'none',
+                  background: 'transparent',
+                }}
+              >
+                <Row
+                  width="100%"
+                  height="100%"
+                  alignItems="center"
+                  justifyContent="center"
+                  style={{ cursor: 'row-resize' }}
+                >
+                  <Icon size="sm">
+                    <GripHorizontal />
+                  </Icon>
+                </Row>
+              </Separator>
+            )}
+          </Fragment>
+        ))}
+        {!!websiteId && (
+          <Panel minSize={BUTTON_ROW_HEIGHT}>
+            <Row padding="3">
+              <TooltipTrigger delay={0}>
+                <Button variant="outline" onPress={handleAddRow}>
+                  <Icon>
+                    <Plus />
+                  </Icon>
+                </Button>
+                <Tooltip placement="bottom">Add row</Tooltip>
+              </TooltipTrigger>
+            </Row>
           </Panel>
-          {index < rows.length - 1 && (
-            <Separator className={styles.rowSeparator}>
-              <span className={styles.separatorHandle}>
-                <Icon size="sm">
-                  <GripHorizontal />
-                </Icon>
-              </span>
-            </Separator>
-          )}
-        </Fragment>
-      ))}
-      {!!websiteId && (
-        <Panel minSize={BUTTON_ROW_HEIGHT}>
-          <Row padding="3">
-            <TooltipTrigger delay={0}>
-              <Button variant="outline" onPress={handleAddRow}>
-                <Icon>
-                  <Plus />
-                </Icon>
-              </Button>
-              <Tooltip placement="bottom">Add row</Tooltip>
-            </TooltipTrigger>
-          </Row>
-        </Panel>
-      )}
-    </Group>
+        )}
+      </Group>
+    </Box>
   );
 }
