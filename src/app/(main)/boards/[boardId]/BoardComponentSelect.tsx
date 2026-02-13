@@ -11,6 +11,7 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { Panel } from '@/components/common/Panel';
 import { useMessages } from '@/components/hooks';
+import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 import type { BoardComponentConfig } from '@/lib/types';
 import {
   CATEGORIES,
@@ -21,12 +22,16 @@ import {
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 
 export function BoardComponentSelect({
+  teamId,
   websiteId,
+  defaultWebsiteId,
   initialConfig,
   onSelect,
   onClose,
 }: {
-  websiteId: string;
+  teamId?: string;
+  websiteId?: string;
+  defaultWebsiteId?: string;
   initialConfig?: BoardComponentConfig;
   onSelect: (config: BoardComponentConfig) => void;
   onClose: () => void;
@@ -34,6 +39,9 @@ export function BoardComponentSelect({
   const { t, labels, messages } = useMessages();
   const [selectedDef, setSelectedDef] = useState<ComponentDefinition | null>(null);
   const [configValues, setConfigValues] = useState<Record<string, any>>({});
+  const [selectedWebsiteId, setSelectedWebsiteId] = useState(
+    initialConfig?.websiteId || websiteId || defaultWebsiteId,
+  );
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
@@ -73,9 +81,10 @@ export function BoardComponentSelect({
 
     setSelectedDef(definition);
     setConfigValues(getDefaultConfigValues(definition, initialConfig));
+    setSelectedWebsiteId(initialConfig.websiteId || websiteId || defaultWebsiteId);
     setTitle(initialConfig.title ?? '');
     setDescription(initialConfig.description || '');
-  }, [initialConfig, allDefinitions]);
+  }, [initialConfig, allDefinitions, websiteId, defaultWebsiteId]);
 
   const handleSelectComponent = (def: ComponentDefinition) => {
     setSelectedDef(def);
@@ -107,6 +116,7 @@ export function BoardComponentSelect({
 
     const config: BoardComponentConfig = {
       type: selectedDef.type,
+      websiteId: selectedWebsiteId,
       title,
       description,
     };
@@ -172,12 +182,14 @@ export function BoardComponentSelect({
 
         <Column gap="3" flexGrow={1} style={{ minWidth: 0 }}>
           <Panel maxHeight="100%">
-            {previewConfig && websiteId ? (
-              <BoardComponentRenderer config={previewConfig} websiteId={websiteId} />
+            {previewConfig && selectedWebsiteId ? (
+              <BoardComponentRenderer config={previewConfig} websiteId={selectedWebsiteId} />
             ) : (
               <Column alignItems="center" justifyContent="center" height="100%">
                 <Text color="muted">
-                  {websiteId ? t(messages.selectComponentPreview) : t(messages.selectWebsiteFirst)}
+                  {selectedWebsiteId
+                    ? t(messages.selectComponentPreview)
+                    : t(messages.selectWebsiteFirst)}
                 </Text>
               </Column>
             )}
@@ -186,6 +198,18 @@ export function BoardComponentSelect({
 
         <Column gap="3" style={{ width: 320, flexShrink: 0, overflowY: 'auto' }}>
           <Text weight="bold">{t(labels.properties)}</Text>
+
+          <Column gap="2">
+            <Text size="sm" color="muted">
+              {t(labels.website)}
+            </Text>
+            <WebsiteSelect
+              websiteId={selectedWebsiteId}
+              teamId={teamId}
+              placeholder={t(labels.selectWebsite)}
+              onChange={setSelectedWebsiteId}
+            />
+          </Column>
 
           <Column gap="2">
             <Text size="sm" color="muted">

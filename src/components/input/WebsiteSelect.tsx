@@ -24,7 +24,7 @@ export function WebsiteSelect({
   includeTeams?: boolean;
   isCollapsed?: boolean;
 } & SelectProps) {
-  const { t, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { data: website } = useWebsiteQuery(websiteId);
   const [name, setName] = useState<string>(website?.name);
   const [search, setSearch] = useState('');
@@ -57,12 +57,16 @@ export function WebsiteSelect({
       return '';
     }
 
+    const value = name || props.placeholder || t(labels.selectWebsite);
+
     return (
       <Row alignItems="center" gap>
         <Icon>
           <Globe />
         </Icon>
-        <Text truncate>{name}</Text>
+        <Text truncate color={name ? undefined : 'muted'}>
+          {value}
+        </Text>
       </Row>
     );
   };

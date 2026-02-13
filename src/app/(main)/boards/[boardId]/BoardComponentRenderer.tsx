@@ -8,7 +8,7 @@ function BoardComponentRendererComponent({
   websiteId,
 }: {
   config: BoardComponentConfig;
-  websiteId: string;
+  websiteId?: string;
 }) {
   const definition = getComponentDefinition(config.type);
 
@@ -21,6 +21,14 @@ function BoardComponentRendererComponent({
   }
 
   const Component = definition.component;
+
+  if (!websiteId) {
+    return (
+      <Column alignItems="center" justifyContent="center" width="100%" height="100%">
+        <Text color="muted">Select a website</Text>
+      </Column>
+    );
+  }
 
   return <Component websiteId={websiteId} {...config.props} />;
 }

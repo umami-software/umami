@@ -14,16 +14,33 @@ import { SettingsNav } from '@/app/(main)/settings/SettingsNav';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
 import { useGlobalState, useMessages, useNavigation } from '@/components/hooks';
-import { Globe, Grid2x2, LayoutDashboard, LinkIcon, PanelLeft } from '@/components/icons';
+import {
+  Globe,
+  Grid2x2,
+  LayoutDashboard,
+  LayoutGrid,
+  LinkIcon,
+  PanelLeft,
+} from '@/components/icons';
 import { UserButton } from '@/components/input/UserButton';
 import { Logo } from '@/components/svg';
 
 export function SideNav(props: any) {
   const { t, labels } = useMessages();
-  const { pathname, renderUrl, websiteId } = useNavigation();
+  const { pathname, renderUrl, websiteId, teamId } = useNavigation();
   const [isCollapsed] = useGlobalState('sidenav-collapsed', false);
 
   const links = [
+    ...(!teamId
+      ? [
+          {
+            id: 'dashboard',
+            label: t(labels.dashboard),
+            path: '/dashboard',
+            icon: <LayoutGrid />,
+          },
+        ]
+      : []),
     {
       id: 'boards',
       label: t(labels.boards),

@@ -6,7 +6,7 @@ import { BoardComponentRenderer } from './BoardComponentRenderer';
 
 export function BoardViewColumn({ component }: { component?: BoardComponentConfig }) {
   const { board } = useBoard();
-  const websiteId = board?.parameters?.websiteId;
+  const websiteId = component?.websiteId || board?.parameters?.websiteId;
 
   if (!component || !websiteId) {
     return null;

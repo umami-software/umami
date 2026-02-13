@@ -11,7 +11,7 @@ import {
 } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 import { Panel } from '@/components/common/Panel';
-import { useBoard, useMessages } from '@/components/hooks';
+import { useBoard, useMessages, useNavigation } from '@/components/hooks';
 import { Pencil, Plus, X } from '@/components/icons';
 import type { BoardComponentConfig } from '@/lib/types';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
@@ -36,7 +36,9 @@ export function BoardEditColumn({
   const [showActions, setShowActions] = useState(false);
   const { board } = useBoard();
   const { t, labels } = useMessages();
-  const websiteId = board?.parameters?.websiteId;
+  const { teamId } = useNavigation();
+  const boardWebsiteId = board?.parameters?.websiteId;
+  const websiteId = component?.websiteId || boardWebsiteId;
   const renderedComponent = useMemo(() => {
     if (!component || !websiteId) {
       return null;
@@ -126,7 +128,9 @@ export function BoardEditColumn({
         >
           {() => (
             <BoardComponentSelect
+              teamId={teamId}
               websiteId={websiteId}
+              defaultWebsiteId={boardWebsiteId}
               initialConfig={component}
               onSelect={handleSelect}
               onClose={() => setShowSelect(false)}

@@ -117,6 +117,16 @@ if (collectApiEndpoint) {
 
 const redirects = [
   {
+    source: '/teams/:id/dashboard/edit',
+    destination: '/dashboard/edit',
+    permanent: false,
+  },
+  {
+    source: '/teams/:id/dashboard',
+    destination: '/dashboard',
+    permanent: false,
+  },
+  {
     source: '/settings',
     destination: '/settings/preferences',
     permanent: false,
