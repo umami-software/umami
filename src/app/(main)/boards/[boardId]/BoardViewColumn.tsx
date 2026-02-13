@@ -18,8 +18,8 @@ export function BoardViewColumn({ component }: { component?: BoardComponentConfi
 
   return (
     <Panel title={title} description={description} height="100%">
-      <Column width="100%" height="100%">
-        <Box width="100%" overflow="auto">
+      <Column width="100%" height="100%" style={{ minHeight: 0 }}>
+        <Box width="100%" flexGrow={1} style={{ minHeight: 0 }}>
           <BoardComponentRenderer config={component} websiteId={websiteId} />
         </Box>
       </Column>

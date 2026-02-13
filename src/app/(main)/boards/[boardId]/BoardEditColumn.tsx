@@ -100,9 +100,11 @@ export function BoardEditColumn({
         </Box>
       )}
       {renderedComponent ? (
-        <Box width="100%" height="100%" overflow="auto">
-          {renderedComponent}
-        </Box>
+        <Column width="100%" height="100%" style={{ minHeight: 0 }}>
+          <Box width="100%" flexGrow={1} overflow="auto" style={{ minHeight: 0 }}>
+            {renderedComponent}
+          </Box>
+        </Column>
       ) : (
         canEdit && (
           <Column width="100%" height="100%" alignItems="center" justifyContent="center">
