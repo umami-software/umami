@@ -47,10 +47,10 @@ export function App({ children }) {
       <Row display={{ base: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
         <MobileNav />
       </Row>
-      <Column display={{ base: 'none', lg: 'flex' }}>
+      <Column display={{ base: 'none', lg: 'flex' }} minHeight="0" style={{ overflow: 'hidden' }}>
         <SideNav />
       </Column>
-      <Column overflowX="hidden" position="relative">
+      <Column overflowX="hidden" minHeight="0" position="relative">
         <TopNav />
         <Column alignItems="center">{children}</Column>
       </Column>

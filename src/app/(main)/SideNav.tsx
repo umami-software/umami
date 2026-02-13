@@ -54,11 +54,11 @@ export function SideNav(props: any) {
     <Column
       {...props}
       backgroundColor="surface-base"
-      justifyContent="space-between"
       border
       borderRadius
       paddingX="2"
-      height="100%"
+      flexGrow="1"
+      minHeight="0"
       margin="2"
       style={{
         width: isCollapsed ? '55px' : '240px',
@@ -66,22 +66,22 @@ export function SideNav(props: any) {
         overflow: 'hidden',
       }}
     >
-      <Column style={{ minHeight: 0, overflowY: 'auto', overflowX: 'hidden' }}>
-        <Row
-          alignItems="center"
-          justifyContent="space-between"
-          height="60px"
-          style={{ flexShrink: 0 }}
-        >
-          <Row paddingX="3" alignItems="center" justifyContent="space-between" flexGrow={1}>
-            {!isCollapsed && (
-              <IconLabel icon={<Logo />}>
-                <Text weight="bold">umami</Text>
-              </IconLabel>
-            )}
-            <PanelButton />
-          </Row>
+      <Row
+        alignItems="center"
+        justifyContent="space-between"
+        height="60px"
+        style={{ flexShrink: 0 }}
+      >
+        <Row paddingX="3" alignItems="center" justifyContent="space-between" flexGrow="1">
+          {!isCollapsed && (
+            <IconLabel icon={<Logo />}>
+              <Text weight="bold">umami</Text>
+            </IconLabel>
+          )}
+          <PanelButton />
         </Row>
+      </Row>
+      <Column flexGrow="1" minHeight="0" style={{ overflowY: 'auto', overflowX: 'hidden' }}>
         {websiteId ? (
           <WebsiteNav websiteId={websiteId} isCollapsed={isCollapsed} />
         ) : pathname.includes('/settings') ? (
@@ -117,7 +117,7 @@ export function SideNav(props: any) {
           </Column>
         )}
       </Column>
-      <Row marginBottom="4">
+      <Row marginBottom="4" style={{ flexShrink: 0 }}>
         <UserButton showText={!isCollapsed} />
       </Row>
     </Column>
