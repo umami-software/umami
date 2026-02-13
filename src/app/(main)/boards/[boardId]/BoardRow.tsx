@@ -1,7 +1,12 @@
 import { Button, Column, Icon, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { produce } from 'immer';
 import { Fragment } from 'react';
-import { Group, type GroupImperativeHandle, Panel, Separator } from 'react-resizable-panels';
+import {
+  Group,
+  type GroupImperativeHandle,
+  Panel as ResizeablePanel,
+  Separator,
+} from 'react-resizable-panels';
 import { v4 as uuid } from 'uuid';
 import { useBoard } from '@/components/hooks';
 import { ChevronDown, Minus, Plus } from '@/components/icons';
@@ -79,7 +84,7 @@ export function BoardRow({
     <Group groupRef={handleGroupRef} style={{ height: '100%' }}>
       {columns?.map((column, index) => (
         <Fragment key={column.id}>
-          <Panel id={column.id} minSize={MIN_COLUMN_WIDTH} defaultSize={column.size}>
+          <ResizeablePanel id={column.id} minSize={MIN_COLUMN_WIDTH} defaultSize={column.size}>
             <BoardColumn
               {...column}
               editing={editing}
@@ -87,7 +92,7 @@ export function BoardRow({
               onSetComponent={handleSetComponent}
               canRemove={columns?.length > 1}
             />
-          </Panel>
+          </ResizeablePanel>
           {index < columns?.length - 1 && <Separator />}
         </Fragment>
       ))}

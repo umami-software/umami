@@ -50,8 +50,6 @@ export function BoardColumn({
 
   return (
     <Column
-      marginTop="3"
-      marginLeft="3"
       width="100%"
       height="100%"
       alignItems="center"

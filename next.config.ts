@@ -179,9 +179,6 @@ export default withNextIntl({
   },
   basePath,
   output: 'standalone',
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
