@@ -1,5 +1,4 @@
 import { Icon, ListItem, Row, Select, type SelectProps, Text } from '@umami/react-zen';
-import { ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { Empty } from '@/components/common/Empty';
 import {
@@ -8,6 +7,7 @@ import {
   useUserWebsitesQuery,
   useWebsiteQuery,
 } from '@/components/hooks';
+import { Globe } from '@/components/icons';
 
 export function WebsiteSelect({
   websiteId,
@@ -15,6 +15,8 @@ export function WebsiteSelect({
   onChange,
   includeTeams,
   isCollapsed,
+  buttonProps,
+  listProps,
   ...props
 }: {
   websiteId?: string;
@@ -47,7 +49,18 @@ export function WebsiteSelect({
   };
 
   const renderValue = () => {
-    return isCollapsed ? '' : name;
+    if (isCollapsed) {
+      return '';
+    }
+
+    return (
+      <Row alignItems="center" gap>
+        <Icon>
+          <Globe />
+        </Icon>
+        <Text truncate>{name}</Text>
+      </Row>
+    );
   };
 
   return (
@@ -61,12 +74,24 @@ export function WebsiteSelect({
       onChange={handleChange}
       onOpenChange={handleOpenChange}
       renderValue={renderValue}
-      listProps={{
-        renderEmptyState: () => <Empty message={t(messages.noResultsFound)} />,
-        style: { maxHeight: 'calc(42vh - 65px)', width: 280 },
-      }}
       buttonProps={{
-        style: { minHeight: 40, gap: 0, justifyContent: isCollapsed ? 'start' : undefined },
+        ...buttonProps,
+        style: {
+          minHeight: 40,
+          gap: 0,
+          justifyContent: isCollapsed ? 'start' : undefined,
+          ...buttonProps?.style,
+        },
+      }}
+      listProps={{
+        ...listProps,
+        renderEmptyState:
+          listProps?.renderEmptyState || (() => <Empty message={t(messages.noResultsFound)} />),
+        style: {
+          maxHeight: 'calc(42vh - 65px)',
+          width: 280,
+          ...listProps?.style,
+        },
       }}
     >
       {listItems.map(({ id, name }) => (

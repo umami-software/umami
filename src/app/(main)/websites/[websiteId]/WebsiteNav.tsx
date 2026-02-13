@@ -1,19 +1,8 @@
-import {
-  Box,
-  Column,
-  Focusable,
-  Label,
-  Row,
-  Text,
-  Tooltip,
-  TooltipTrigger,
-} from '@umami/react-zen';
+import { Column, Focusable, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import Link from 'next/link';
 import { IconLabel } from '@/components/common/IconLabel';
-import { NavMenu } from '@/components/common/NavMenu';
 import { useMessages, useNavigation, useWebsiteNavItems } from '@/components/hooks';
 import { ArrowLeft } from '@/components/icons';
-import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 
 export function WebsiteNav({
   websiteId,
@@ -25,16 +14,12 @@ export function WebsiteNav({
   onItemClick?: () => void;
 }) {
   const { t, labels } = useMessages();
-  const { teamId, router, renderUrl } = useNavigation();
+  const { renderUrl } = useNavigation();
   const { items, selectedKey } = useWebsiteNavItems(websiteId);
-
-  const handleChange = (value: string) => {
-    router.push(renderUrl(`/websites/${value}`));
-  };
 
   return (
     <Column gap="2">
-      <Link href={renderUrl('/websites', false)} role="button">
+      <Link href={renderUrl('/websites', false)} role="button" onClick={onItemClick}>
         <TooltipTrigger isDisabled={!isCollapsed} delay={0}>
           <Focusable>
             <Row
@@ -49,15 +34,6 @@ export function WebsiteNav({
           <Tooltip placement="right">{t(labels.back)}</Tooltip>
         </TooltipTrigger>
       </Link>
-      <Box marginBottom="2">
-        <WebsiteSelect
-          websiteId={websiteId}
-          teamId={teamId}
-          onChange={handleChange}
-          buttonProps={{ style: { outline: 'none' } }}
-          isCollapsed={isCollapsed}
-        />
-      </Box>
       {items.map(({ label: sectionLabel, items: sectionItems }, index) => (
         <Column key={`${sectionLabel}${index}`} gap="1" marginBottom="1">
           {!isCollapsed && (
@@ -68,7 +44,7 @@ export function WebsiteNav({
           {sectionItems.map(({ id, path, label, icon }) => {
             const isSelected = selectedKey === id;
             return (
-              <Link key={id} href={path} role="button">
+              <Link key={id} href={path} role="button" onClick={onItemClick}>
                 <TooltipTrigger isDisabled={!isCollapsed} delay={0}>
                   <Focusable>
                     <Row

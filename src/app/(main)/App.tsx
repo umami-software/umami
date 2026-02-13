@@ -4,8 +4,8 @@ import Script from 'next/script';
 import { useEffect } from 'react';
 import { MobileNav } from '@/app/(main)/MobileNav';
 import { SideNav } from '@/app/(main)/SideNav';
+import { TopNav } from '@/app/(main)/TopNav';
 import { useConfig, useLoginQuery, useNavigation } from '@/components/hooks';
-import { TeamsButton } from '@/components/input/TeamsButton';
 import { LAST_TEAM_CONFIG } from '@/lib/constants';
 import { removeItem, setItem } from '@/lib/storage';
 import { UpdateNotice } from './UpdateNotice';
@@ -51,18 +51,7 @@ export function App({ children }) {
         <SideNav />
       </Column>
       <Column overflowX="hidden" position="relative">
-        <Row
-          position="sticky"
-          top="0"
-          alignItems="center"
-          justifyContent="space-between"
-          paddingY="2"
-          zIndex={100}
-        >
-          <Row backgroundColor="surface-raised">
-            <TeamsButton />
-          </Row>
-        </Row>
+        <TopNav />
         <Column alignItems="center">{children}</Column>
       </Column>
       <UpdateNotice user={user} config={config} />
