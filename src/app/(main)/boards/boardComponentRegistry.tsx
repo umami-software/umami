@@ -1,12 +1,4 @@
 import type { ComponentType } from 'react';
-import { Attribution } from '@/app/(main)/websites/[websiteId]/(reports)/attribution/Attribution';
-import { Breakdown } from '@/app/(main)/websites/[websiteId]/(reports)/breakdown/Breakdown';
-import { Funnel } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/Funnel';
-import { Goal } from '@/app/(main)/websites/[websiteId]/(reports)/goals/Goal';
-import { Journey } from '@/app/(main)/websites/[websiteId]/(reports)/journeys/Journey';
-import { Retention } from '@/app/(main)/websites/[websiteId]/(reports)/retention/Retention';
-import { Revenue } from '@/app/(main)/websites/[websiteId]/(reports)/revenue/Revenue';
-import { UTM } from '@/app/(main)/websites/[websiteId]/(reports)/utm/UTM';
 import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
 import { WebsiteMetricsBar } from '@/app/(main)/websites/[websiteId]/WebsiteMetricsBar';
 import { EventsChart } from '@/components/metrics/EventsChart';
@@ -36,7 +28,6 @@ export const CATEGORIES = [
   { key: 'overview', name: 'Overview' },
   { key: 'tables', name: 'Tables' },
   { key: 'visualization', name: 'Visualization' },
-  { key: 'reports', name: 'Reports' },
 ] as const;
 
 const METRIC_TYPES = [
@@ -129,64 +120,6 @@ const componentDefinitions: ComponentDefinition[] = [
     description: 'Custom events over time',
     category: 'visualization',
     component: EventsChart,
-  },
-
-  // Reports
-  {
-    type: 'Retention',
-    name: 'Retention',
-    description: 'User retention cohort analysis',
-    category: 'reports',
-    component: Retention,
-  },
-  {
-    type: 'Funnel',
-    name: 'Funnel',
-    description: 'Conversion funnel visualization',
-    category: 'reports',
-    component: Funnel,
-  },
-  {
-    type: 'Goal',
-    name: 'Goal',
-    description: 'Goal tracking and progress',
-    category: 'reports',
-    component: Goal,
-  },
-  {
-    type: 'Journey',
-    name: 'Journey',
-    description: 'User navigation flow',
-    category: 'reports',
-    component: Journey,
-  },
-  {
-    type: 'UTM',
-    name: 'UTM',
-    description: 'UTM campaign performance',
-    category: 'reports',
-    component: UTM,
-  },
-  {
-    type: 'Revenue',
-    name: 'Revenue',
-    description: 'Revenue analytics and trends',
-    category: 'reports',
-    component: Revenue,
-  },
-  {
-    type: 'Attribution',
-    name: 'Attribution',
-    description: 'Traffic source attribution',
-    category: 'reports',
-    component: Attribution,
-  },
-  {
-    type: 'Breakdown',
-    name: 'Breakdown',
-    description: 'Multi-dimensional data breakdown',
-    category: 'reports',
-    component: Breakdown,
   },
 ];
 
