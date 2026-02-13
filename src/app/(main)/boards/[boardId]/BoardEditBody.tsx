@@ -4,16 +4,16 @@ import { Fragment, useEffect, useRef } from 'react';
 import { Group, type GroupImperativeHandle, Panel, Separator } from 'react-resizable-panels';
 import { v4 as uuid } from 'uuid';
 import { useBoard } from '@/components/hooks';
-import { Plus } from '@/components/icons';
-import { BoardRow } from './BoardRow';
+import { GripHorizontal, Plus } from '@/components/icons';
+import styles from './BoardEditLayout.module.css';
+import { BoardEditRow } from './BoardEditRow';
 import { BUTTON_ROW_HEIGHT, MAX_ROW_HEIGHT, MIN_ROW_HEIGHT } from './boardConstants';
 
-export function BoardBody() {
-  const { board, editing, updateBoard, saveBoard, isPending, registerLayoutGetter } = useBoard();
+export function BoardEditBody() {
+  const { board, updateBoard, registerLayoutGetter } = useBoard();
   const rowGroupRef = useRef<GroupImperativeHandle>(null);
   const columnGroupRefs = useRef<Map<string, GroupImperativeHandle>>(new Map());
 
-  // Register a function to get current layout sizes on save
   useEffect(() => {
     registerLayoutGetter(() => {
       const rows = board?.parameters?.rows;
@@ -104,9 +104,8 @@ export function BoardBody() {
   };
 
   const websiteId = board?.parameters?.websiteId;
-  const canEdit = editing && !!websiteId;
   const rows = board?.parameters?.rows ?? [];
-  const minHeight = (rows?.length || 1) * MAX_ROW_HEIGHT + BUTTON_ROW_HEIGHT;
+  const minHeight = (rows.length || 1) * MAX_ROW_HEIGHT + BUTTON_ROW_HEIGHT;
 
   return (
     <Group groupRef={rowGroupRef} orientation="vertical" style={{ minHeight }}>
@@ -118,22 +117,30 @@ export function BoardBody() {
             maxSize={MAX_ROW_HEIGHT}
             defaultSize={row.size}
           >
-            <BoardRow
+            <BoardEditRow
               {...row}
               rowId={row.id}
               rowIndex={index}
-              rowCount={rows?.length}
-              editing={canEdit}
+              rowCount={rows.length}
+              canEdit={!!websiteId}
               onRemove={handleRemoveRow}
               onMoveUp={handleMoveRowUp}
               onMoveDown={handleMoveRowDown}
               onRegisterRef={registerColumnGroupRef}
             />
           </Panel>
-          {index < rows?.length - 1 && <Separator />}
+          {index < rows.length - 1 && (
+            <Separator className={styles.rowSeparator}>
+              <span className={styles.separatorHandle}>
+                <Icon size="sm">
+                  <GripHorizontal />
+                </Icon>
+              </span>
+            </Separator>
+          )}
         </Fragment>
       ))}
-      {canEdit && (
+      {!!websiteId && (
         <Panel minSize={BUTTON_ROW_HEIGHT}>
           <Row padding="3">
             <TooltipTrigger delay={0}>

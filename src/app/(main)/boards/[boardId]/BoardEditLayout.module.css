@@ -1,0 +1,46 @@
+.columnSeparator {
+  width: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: col-resize;
+}
+
+.rowSeparator {
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: row-resize;
+}
+
+.separatorHandle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-9);
+}
+
+.rowGroup {
+  position: relative;
+  height: 100%;
+}
+
+.rowActions {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  z-index: 20;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+.rowGroup:hover .rowActions,
+.rowGroup:focus-within .rowActions {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}

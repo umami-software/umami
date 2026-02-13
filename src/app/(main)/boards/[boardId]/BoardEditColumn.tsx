@@ -1,34 +1,27 @@
-import {
-  Box,
-  Button,
-  Column,
-  Dialog,
-  Icon,
-  Modal,
-  Tooltip,
-  TooltipTrigger,
-} from '@umami/react-zen';
+import { Box, Button, Dialog, Icon, Modal, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
+import { Panel } from '@/components/common/Panel';
 import { useBoard, useMessages } from '@/components/hooks';
 import { Pencil, Plus, X } from '@/components/icons';
 import type { BoardComponentConfig } from '@/lib/types';
+import { getComponentDefinition } from '../boardComponentRegistry';
 import styles from './BoardColumn.module.css';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 import { BoardComponentSelect } from './BoardComponentSelect';
 
-export function BoardColumn({
+export function BoardEditColumn({
   id,
   component,
-  editing = false,
+  canEdit,
   onRemove,
   onSetComponent,
   canRemove = true,
 }: {
   id: string;
   component?: BoardComponentConfig;
-  editing?: boolean;
-  onRemove?: (id: string) => void;
-  onSetComponent?: (id: string, config: BoardComponentConfig | null) => void;
+  canEdit: boolean;
+  onRemove: (id: string) => void;
+  onSetComponent: (id: string, config: BoardComponentConfig | null) => void;
   canRemove?: boolean;
 }) {
   const [showSelect, setShowSelect] = useState(false);
@@ -44,32 +37,33 @@ export function BoardColumn({
   }, [component, websiteId]);
 
   const handleSelect = (config: BoardComponentConfig) => {
-    onSetComponent?.(id, config);
+    onSetComponent(id, config);
     setShowSelect(false);
   };
 
   const hasComponent = !!component;
   const canRemoveAction = hasComponent || canRemove;
+  const title = component ? getComponentDefinition(component.type)?.name : undefined;
 
   const handleRemove = () => {
     if (hasComponent) {
-      onSetComponent?.(id, null);
+      onSetComponent(id, null);
     } else {
-      onRemove?.(id);
+      onRemove(id);
     }
   };
 
   return (
-    <Column
+    <Panel
+      title={title}
       width="100%"
       height="100%"
       alignItems="center"
       justifyContent="center"
-      backgroundColor="surface-sunken"
       position="relative"
       className={styles.column}
     >
-      {editing && canRemoveAction && (
+      {canEdit && canRemoveAction && (
         <Box
           className={styles.columnAction}
           position="absolute"
@@ -92,7 +86,7 @@ export function BoardColumn({
           <Box width="100%" height="100%" overflow="auto">
             {renderedComponent}
           </Box>
-          {editing && (
+          {canEdit && (
             <Box
               className={styles.columnAction}
               position="absolute"
@@ -112,7 +106,7 @@ export function BoardColumn({
           )}
         </>
       ) : (
-        editing && (
+        canEdit && (
           <Button variant="outline" onPress={() => setShowSelect(true)}>
             <Icon>
               <Plus />
@@ -139,6 +133,6 @@ export function BoardColumn({
           )}
         </Dialog>
       </Modal>
-    </Column>
+    </Panel>
   );
 }

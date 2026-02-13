@@ -4,22 +4,23 @@ import { Fragment } from 'react';
 import {
   Group,
   type GroupImperativeHandle,
-  Panel as ResizeablePanel,
+  Panel as ResizablePanel,
   Separator,
 } from 'react-resizable-panels';
 import { v4 as uuid } from 'uuid';
 import { useBoard } from '@/components/hooks';
-import { ChevronDown, Minus, Plus } from '@/components/icons';
+import { ChevronDown, GripVertical, Minus, Plus } from '@/components/icons';
 import type { BoardColumn as BoardColumnType, BoardComponentConfig } from '@/lib/types';
-import { BoardColumn } from './BoardColumn';
+import { BoardEditColumn } from './BoardEditColumn';
+import styles from './BoardEditLayout.module.css';
 import { MAX_COLUMNS, MIN_COLUMN_WIDTH } from './boardConstants';
 
-export function BoardRow({
+export function BoardEditRow({
   rowId,
   rowIndex,
   rowCount,
   columns,
-  editing = false,
+  canEdit,
   onRemove,
   onMoveUp,
   onMoveDown,
@@ -29,16 +30,16 @@ export function BoardRow({
   rowIndex: number;
   rowCount: number;
   columns: BoardColumnType[];
-  editing?: boolean;
-  onRemove?: (id: string) => void;
-  onMoveUp?: (id: string) => void;
-  onMoveDown?: (id: string) => void;
-  onRegisterRef?: (rowId: string, ref: GroupImperativeHandle | null) => void;
+  canEdit: boolean;
+  onRemove: (id: string) => void;
+  onMoveUp: (id: string) => void;
+  onMoveDown: (id: string) => void;
+  onRegisterRef: (rowId: string, ref: GroupImperativeHandle | null) => void;
 }) {
   const { board, updateBoard } = useBoard();
 
   const handleGroupRef = (ref: GroupImperativeHandle | null) => {
-    onRegisterRef?.(rowId, ref);
+    onRegisterRef(rowId, ref);
   };
 
   const handleAddColumn = () => {
@@ -81,25 +82,33 @@ export function BoardRow({
   };
 
   return (
-    <Group groupRef={handleGroupRef} style={{ height: '100%' }}>
+    <Group groupRef={handleGroupRef} className={styles.rowGroup}>
       {columns?.map((column, index) => (
         <Fragment key={column.id}>
-          <ResizeablePanel id={column.id} minSize={MIN_COLUMN_WIDTH} defaultSize={column.size}>
-            <BoardColumn
+          <ResizablePanel id={column.id} minSize={MIN_COLUMN_WIDTH} defaultSize={column.size}>
+            <BoardEditColumn
               {...column}
-              editing={editing}
+              canEdit={canEdit}
               onRemove={handleRemoveColumn}
               onSetComponent={handleSetComponent}
-              canRemove={columns?.length > 1}
+              canRemove={columns.length > 1}
             />
-          </ResizeablePanel>
-          {index < columns?.length - 1 && <Separator />}
+          </ResizablePanel>
+          {index < columns.length - 1 && (
+            <Separator className={styles.columnSeparator}>
+              <span className={styles.separatorHandle}>
+                <Icon size="sm">
+                  <GripVertical />
+                </Icon>
+              </span>
+            </Separator>
+          )}
         </Fragment>
       ))}
-      {editing && (
-        <Column alignSelf="center" padding="3" gap="1">
+      {canEdit && (
+        <Column className={styles.rowActions} padding="3" gap="1">
           <TooltipTrigger delay={0}>
-            <Button variant="outline" onPress={() => onMoveUp?.(rowId)} isDisabled={rowIndex === 0}>
+            <Button variant="outline" onPress={() => onMoveUp(rowId)} isDisabled={rowIndex === 0}>
               <Icon rotate={180}>
                 <ChevronDown />
               </Icon>
@@ -110,7 +119,7 @@ export function BoardRow({
             <Button
               variant="outline"
               onPress={handleAddColumn}
-              isDisabled={columns?.length >= MAX_COLUMNS}
+              isDisabled={columns.length >= MAX_COLUMNS}
             >
               <Icon>
                 <Plus />
@@ -119,7 +128,7 @@ export function BoardRow({
             <Tooltip placement="left">Add column</Tooltip>
           </TooltipTrigger>
           <TooltipTrigger delay={0}>
-            <Button variant="outline" onPress={() => onRemove?.(rowId)}>
+            <Button variant="outline" onPress={() => onRemove(rowId)}>
               <Icon>
                 <Minus />
               </Icon>
@@ -129,7 +138,7 @@ export function BoardRow({
           <TooltipTrigger delay={0}>
             <Button
               variant="outline"
-              onPress={() => onMoveDown?.(rowId)}
+              onPress={() => onMoveDown(rowId)}
               isDisabled={rowIndex === rowCount - 1}
             >
               <Icon>

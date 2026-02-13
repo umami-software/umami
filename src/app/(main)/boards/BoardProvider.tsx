@@ -99,7 +99,7 @@ export function BoardProvider({
   const saveBoard = useCallback(async () => {
     const defaultName = t(labels.untitled);
 
-    // Get current layout sizes from BoardBody if registered
+    // Get current layout sizes from BoardEditBody if registered
     const layoutData = layoutGetterRef.current?.();
     const parameters = sanitizeBoardParameters(
       layoutData ? { ...board.parameters, ...layoutData } : board.parameters,
