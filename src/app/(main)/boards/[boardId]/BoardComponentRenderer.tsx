@@ -1,8 +1,9 @@
 import { Column, Text } from '@umami/react-zen';
+import { memo } from 'react';
 import type { BoardComponentConfig } from '@/lib/types';
 import { getComponentDefinition } from '../boardComponentRegistry';
 
-export function BoardComponentRenderer({
+function BoardComponentRendererComponent({
   config,
   websiteId,
 }: {
@@ -23,3 +24,11 @@ export function BoardComponentRenderer({
 
   return <Component websiteId={websiteId} {...config.props} />;
 }
+
+export const BoardComponentRenderer = memo(
+  BoardComponentRendererComponent,
+  (prevProps, nextProps) =>
+    prevProps.websiteId === nextProps.websiteId && prevProps.config === nextProps.config,
+);
+
+BoardComponentRenderer.displayName = 'BoardComponentRenderer';
