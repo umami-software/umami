@@ -1,5 +1,6 @@
-import { Box, Button, Column, Focusable, ListItem, Row, Select, Text } from '@umami/react-zen';
+import { Button, Column, Focusable, ListItem, Row, Select, Text } from '@umami/react-zen';
 import { useState } from 'react';
+import { Panel } from '@/components/common/Panel';
 import { useMessages } from '@/components/hooks';
 import type { BoardComponentConfig } from '@/lib/types';
 import {
@@ -112,7 +113,7 @@ export function BoardComponentSelect({
         </Column>
         <Column gap="3" flexGrow={1} style={{ minWidth: 0 }}>
           {selectedDef?.configFields && selectedDef.configFields.length > 0 && (
-            <Row gap="3" alignItems="center" flexWrap="wrap">
+            <Row gap="3" alignItems="center" wrap="wrap">
               {selectedDef.configFields.map((field: ConfigField) => (
                 <Row key={field.name} gap="2" alignItems="center">
                   <Text size="sm" color="muted">
@@ -134,14 +135,7 @@ export function BoardComponentSelect({
               ))}
             </Row>
           )}
-          <Box
-            flexGrow={1}
-            border
-            borderRadius
-            overflow="auto"
-            position="relative"
-            style={{ minHeight: 0 }}
-          >
+          <Panel maxHeight="100%">
             {previewConfig && websiteId ? (
               <BoardComponentRenderer config={previewConfig} websiteId={websiteId} />
             ) : (
@@ -151,10 +145,10 @@ export function BoardComponentSelect({
                 </Text>
               </Column>
             )}
-          </Box>
+          </Panel>
         </Column>
       </Row>
-      <Row justifyContent="flex-end" gap="2" paddingTop="4" border="top">
+      <Row justifyContent="flex-end" gap="2" paddingTop="4">
         <Button variant="quiet" onPress={onClose}>
           {t(labels.cancel)}
         </Button>
