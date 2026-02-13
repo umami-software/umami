@@ -1,47 +1,32 @@
 import { Icon, ListItem, Row, Select, type SelectProps, Text } from '@umami/react-zen';
 import { useEffect, useState } from 'react';
 import { Empty } from '@/components/common/Empty';
-import {
-  useLoginQuery,
-  useMessages,
-  useUserWebsitesQuery,
-  useWebsiteQuery,
-} from '@/components/hooks';
-import { Globe } from '@/components/icons';
+import { useBoardQuery, useBoardsQuery, useMessages } from '@/components/hooks';
+import { LayoutDashboard } from '@/components/icons';
 
-export function WebsiteSelect({
-  websiteId,
+export function BoardSelect({
+  boardId,
   teamId,
   onChange,
-  includeTeams,
   isCollapsed,
   buttonProps,
   listProps,
   ...props
 }: {
-  websiteId?: string;
+  boardId?: string;
   teamId?: string;
-  includeTeams?: boolean;
   isCollapsed?: boolean;
 } & SelectProps) {
   const { t, messages } = useMessages();
-  const { data: website } = useWebsiteQuery(websiteId);
-  const [name, setName] = useState<string>(website?.name);
+  const { data: board } = useBoardQuery(boardId);
+  const [name, setName] = useState<string>(board?.name);
   const [search, setSearch] = useState('');
-  const { user } = useLoginQuery();
-  const { data, isLoading } = useUserWebsitesQuery(
-    { userId: user?.id, teamId },
-    { search, pageSize: 20, includeTeams },
-  );
+  const { data, isLoading } = useBoardsQuery({ teamId }, { search, pageSize: 20 });
   const listItems: { id: string; name: string }[] = data?.data || [];
 
   useEffect(() => {
-    setName(website?.name);
-  }, [website?.name]);
-
-  const handleSearch = (value: string) => {
-    setSearch(value);
-  };
+    setName(board?.name);
+  }, [board?.name]);
 
   const handleOpenChange = () => {
     setSearch('');
@@ -49,7 +34,7 @@ export function WebsiteSelect({
 
   const handleChange = (id: string) => {
     setName(listItems.find(item => item.id === id)?.name);
-    onChange(id);
+    onChange?.(id);
   };
 
   const renderValue = () => {
@@ -60,7 +45,7 @@ export function WebsiteSelect({
     return (
       <Row alignItems="center" gap>
         <Icon>
-          <Globe />
+          <LayoutDashboard />
         </Icon>
         <Text truncate>{name}</Text>
       </Row>
@@ -70,11 +55,11 @@ export function WebsiteSelect({
   return (
     <Select
       {...props}
-      value={websiteId}
+      value={boardId}
       isLoading={isLoading}
       allowSearch={true}
       searchValue={search}
-      onSearch={handleSearch}
+      onSearch={setSearch}
       onChange={handleChange}
       onOpenChange={handleOpenChange}
       renderValue={renderValue}
