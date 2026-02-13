@@ -14,7 +14,6 @@ import { Panel } from '@/components/common/Panel';
 import { useBoard, useMessages } from '@/components/hooks';
 import { Pencil, Plus, X } from '@/components/icons';
 import type { BoardComponentConfig } from '@/lib/types';
-import { getComponentDefinition } from '../boardComponentRegistry';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 import { BoardComponentSelect } from './BoardComponentSelect';
 
@@ -53,8 +52,7 @@ export function BoardEditColumn({
 
   const hasComponent = !!component;
   const canRemoveAction = hasComponent || canRemove;
-  const defaultTitle = component ? getComponentDefinition(component.type)?.name : undefined;
-  const title = component?.title ?? defaultTitle;
+  const title = component?.title;
   const description = component?.description;
 
   const handleRemove = () => {
