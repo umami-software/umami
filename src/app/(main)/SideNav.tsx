@@ -18,9 +18,9 @@ import {
   Globe,
   Grid2x2,
   LayoutDashboard,
-  LayoutGrid,
   LinkIcon,
   PanelLeft,
+  PanelsLeftBottom,
 } from '@/components/icons';
 import { UserButton } from '@/components/input/UserButton';
 import { Logo } from '@/components/svg';
@@ -37,7 +37,7 @@ export function SideNav(props: any) {
             id: 'dashboard',
             label: t(labels.dashboard),
             path: '/dashboard',
-            icon: <LayoutGrid />,
+            icon: <PanelsLeftBottom />,
           },
         ]
       : []),

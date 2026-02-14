@@ -2,7 +2,7 @@
 import { Column } from '@umami/react-zen';
 import { useEffect } from 'react';
 import { BoardViewBody } from '@/app/(main)/boards/[boardId]/BoardViewBody';
-import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
+import { Empty } from '@/components/common/Empty';
 import { PageBody } from '@/components/common/PageBody';
 import { useBoard, useMessages, useNavigation } from '@/components/hooks';
 import { DashboardProvider } from './DashboardProvider';
@@ -10,14 +10,12 @@ import { DashboardViewHeader } from './DashboardViewHeader';
 
 function DashboardContent() {
   const { board } = useBoard();
-  const { t, labels, messages } = useMessages();
+  const { t, messages } = useMessages();
   const rows = board?.parameters?.rows ?? [];
   const hasComponents = rows.some(row => row.columns?.some(column => !!column.component));
 
   if (!hasComponents) {
-    return (
-      <EmptyPlaceholder title={t(labels.dashboard)} description={t(messages.emptyDashboard)} />
-    );
+    return <Empty message={t(messages.emptyDashboard)} />;
   }
 
   return <BoardViewBody />;
