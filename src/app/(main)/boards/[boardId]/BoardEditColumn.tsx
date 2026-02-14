@@ -76,8 +76,8 @@ export function BoardEditColumn({
       onMouseLeave={() => setShowActions(false)}
     >
       {canEdit && canRemoveAction && showActions && (
-        <Box position="absolute" top="22px" right="24px" zIndex={100}>
-          <Row gap="2">
+        <Box position="absolute" top="12px" right="12px" zIndex={100}>
+          <Row gap="1" padding="2" borderRadius backgroundColor="surface-sunken">
             {hasComponent && (
               <TooltipTrigger delay={0}>
                 <Button variant="outline" onPress={() => setShowSelect(true)}>

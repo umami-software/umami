@@ -49,7 +49,7 @@ export function BoardEditBody({ requiresBoardWebsite = true }: { requiresBoardWe
     }
   };
 
-  const handleAddRow = () => {
+  const handle = () => {
     updateBoard({
       parameters: produce(board.parameters, draft => {
         if (!draft.rows) {
@@ -160,14 +160,16 @@ export function BoardEditBody({ requiresBoardWebsite = true }: { requiresBoardWe
         ))}
         {canEdit && (
           <Panel minSize={BUTTON_ROW_HEIGHT}>
-            <Row padding="3">
+            <Row paddingY="3">
               <TooltipTrigger delay={0}>
-                <Button variant="outline" onPress={handleAddRow}>
+                <Button variant="outline" onPress={handle}>
                   <Icon>
                     <Plus />
                   </Icon>
                 </Button>
-                <Tooltip placement="bottom">Add row</Tooltip>
+                <Tooltip placement="right" offset={8}>
+                  Add row
+                </Tooltip>
               </TooltipTrigger>
             </Row>
           </Panel>

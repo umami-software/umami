@@ -135,12 +135,14 @@ export function BoardEditRow({
       </Group>
       {canEdit && showActions && (
         <Column
-          padding="3"
+          padding="2"
           gap="1"
           position="absolute"
           top="50%"
           right="12px"
           zIndex={20}
+          backgroundColor="surface-sunken"
+          borderRadius
           style={{ transform: 'translateY(-50%)' }}
         >
           <TooltipTrigger delay={0}>

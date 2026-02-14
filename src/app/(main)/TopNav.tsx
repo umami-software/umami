@@ -38,8 +38,9 @@ export function TopNav() {
       paddingRight="5"
       width="100%"
       zIndex={100}
+      backgroundColor="surface-raised"
     >
-      <Row alignItems="center" backgroundColor="surface-raised" borderRadius>
+      <Row alignItems="center">
         <TeamsButton />
         {(websiteId || linkId || pixelId || boardId) && (
           <>
@@ -93,6 +94,17 @@ export function TopNav() {
           </>
         )}
       </Row>
+      <div
+        style={{
+          position: 'absolute',
+          bottom: -16,
+          left: 0,
+          right: 0,
+          height: 16,
+          background: 'linear-gradient(to bottom, var(--surface-raised), transparent)',
+          pointerEvents: 'none',
+        }}
+      />
     </Row>
   );
 }
