@@ -82,14 +82,14 @@ export function BoardComponentSelect({
     setSelectedDef(definition);
     setConfigValues(getDefaultConfigValues(definition, initialConfig));
     setSelectedWebsiteId(initialConfig.websiteId || websiteId || defaultWebsiteId);
-    setTitle(initialConfig.title ?? '');
+    setTitle(initialConfig.title ?? definition.name);
     setDescription(initialConfig.description || '');
   }, [initialConfig, allDefinitions, websiteId, defaultWebsiteId]);
 
   const handleSelectComponent = (def: ComponentDefinition) => {
     setSelectedDef(def);
     setConfigValues(getDefaultConfigValues(def));
-    setTitle('');
+    setTitle(def.name);
     setDescription('');
   };
 
