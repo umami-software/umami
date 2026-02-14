@@ -130,7 +130,7 @@ export function BoardEditBody({ requiresBoardWebsite = true }: { requiresBoardWe
                 onRegisterRef={registerColumnGroupRef}
               />
             </Panel>
-            {index < rows.length - 1 && (
+            {(index < rows.length - 1 || canEdit) && (
               <Separator
                 style={{
                   height: '12px',
