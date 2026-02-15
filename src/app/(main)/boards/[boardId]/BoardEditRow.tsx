@@ -37,6 +37,9 @@ export function BoardEditRow({
 }) {
   const { board, updateBoard } = useBoard();
   const [showActions, setShowActions] = useState(false);
+  const moveUpDisabled = rowIndex === 0;
+  const addColumnDisabled = columns.length >= MAX_COLUMNS;
+  const moveDownDisabled = rowIndex === rowCount - 1;
 
   const handleGroupRef = (ref: GroupImperativeHandle | null) => {
     onRegisterRef(rowId, ref);
@@ -146,8 +149,13 @@ export function BoardEditRow({
           style={{ transform: 'translateY(-50%)' }}
         >
           <TooltipTrigger delay={0}>
-            <Button variant="outline" onPress={() => onMoveUp(rowId)} isDisabled={rowIndex === 0}>
-              <Icon rotate={180}>
+            <Button
+              variant="outline"
+              onPress={() => onMoveUp(rowId)}
+              isDisabled={moveUpDisabled}
+              style={moveUpDisabled ? { pointerEvents: 'none' } : undefined}
+            >
+              <Icon rotate={180} color={moveUpDisabled ? 'muted' : undefined}>
                 <ChevronDown />
               </Icon>
             </Button>
@@ -157,9 +165,10 @@ export function BoardEditRow({
             <Button
               variant="outline"
               onPress={handleAddColumn}
-              isDisabled={columns.length >= MAX_COLUMNS}
+              isDisabled={addColumnDisabled}
+              style={addColumnDisabled ? { pointerEvents: 'none' } : undefined}
             >
-              <Icon>
+              <Icon color={addColumnDisabled ? 'muted' : undefined}>
                 <Plus />
               </Icon>
             </Button>
@@ -177,9 +186,10 @@ export function BoardEditRow({
             <Button
               variant="outline"
               onPress={() => onMoveDown(rowId)}
-              isDisabled={rowIndex === rowCount - 1}
+              isDisabled={moveDownDisabled}
+              style={moveDownDisabled ? { pointerEvents: 'none' } : undefined}
             >
-              <Icon>
+              <Icon color={moveDownDisabled ? 'muted' : undefined}>
                 <ChevronDown />
               </Icon>
             </Button>
