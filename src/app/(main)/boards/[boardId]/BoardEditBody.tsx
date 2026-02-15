@@ -167,9 +167,7 @@ export function BoardEditBody({ requiresBoardWebsite = true }: { requiresBoardWe
                     <Plus />
                   </Icon>
                 </Button>
-                <Tooltip placement="right" offset={8}>
-                  Add row
-                </Tooltip>
+                <Tooltip placement="right">Add row</Tooltip>
               </TooltipTrigger>
             </Row>
           </Panel>
