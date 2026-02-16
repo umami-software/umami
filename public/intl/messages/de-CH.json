@@ -1,2214 +1,388 @@
 {
-  "label.access-code": [
-    {
-      "type": 0,
-      "value": "Zuegangscode"
-    }
-  ],
-  "label.actions": [
-    {
-      "type": 0,
-      "value": "Aktione"
-    }
-  ],
-  "label.activity": [
-    {
-      "type": 0,
-      "value": "Aktivitätsverlauf"
-    }
-  ],
-  "label.add": [
-    {
-      "type": 0,
-      "value": "hinzuefüege"
-    }
-  ],
-  "label.add-board": [
-    {
-      "type": 0,
-      "value": "Board hinzuefüege"
-    }
-  ],
-  "label.add-description": [
-    {
-      "type": 0,
-      "value": "Beschriibig hinzuefüege"
-    }
-  ],
-  "label.add-member": [
-    {
-      "type": 0,
-      "value": "Mitglied hinzuefüege"
-    }
-  ],
-  "label.add-step": [
-    {
-      "type": 0,
-      "value": "Schritt hinzuefüege"
-    }
-  ],
-  "label.add-website": [
-    {
-      "type": 0,
-      "value": "Websiite hinzuefüege"
-    }
-  ],
-  "label.admin": [
-    {
-      "type": 0,
-      "value": "Administrator"
-    }
-  ],
-  "label.affiliate": [
-    {
-      "type": 0,
-      "value": "Partnerprogramm"
-    }
-  ],
-  "label.after": [
-    {
-      "type": 0,
-      "value": "Nach"
-    }
-  ],
-  "label.all": [
-    {
-      "type": 0,
-      "value": "Alli"
-    }
-  ],
-  "label.all-time": [
-    {
-      "type": 0,
-      "value": "Gsamte Zitruum"
-    }
-  ],
-  "label.analytics": [
-    {
-      "type": 0,
-      "value": "Analytik"
-    }
-  ],
-  "label.apply": [
-    {
-      "type": 0,
-      "value": "Aawände"
-    }
-  ],
-  "label.attribution": [
-    {
-      "type": 0,
-      "value": "Zuordnig"
-    }
-  ],
-  "label.attribution-description": [
-    {
-      "type": 0,
-      "value": "Lueg wie d'Benutzer mit dim Marketing interagiere und was zu Umwandlige führt."
-    }
-  ],
-  "label.average": [
-    {
-      "type": 0,
-      "value": "Durchschnitt"
-    }
-  ],
-  "label.back": [
-    {
-      "type": 0,
-      "value": "Zrugg"
-    }
-  ],
-  "label.before": [
-    {
-      "type": 0,
-      "value": "Vor"
-    }
-  ],
-  "label.boards": [
-    {
-      "type": 0,
-      "value": "Boards"
-    }
-  ],
-  "label.bounce-rate": [
-    {
-      "type": 0,
-      "value": "Absprungsrate"
-    }
-  ],
-  "label.breakdown": [
-    {
-      "type": 0,
-      "value": "Uufschlüsselig"
-    }
-  ],
-  "label.browser": [
-    {
-      "type": 0,
-      "value": "Browser"
-    }
-  ],
-  "label.browsers": [
-    {
-      "type": 0,
-      "value": "Browser"
-    }
-  ],
-  "label.campaigns": [
-    {
-      "type": 0,
-      "value": "Kampagne"
-    }
-  ],
-  "label.cancel": [
-    {
-      "type": 0,
-      "value": "Abbreche"
-    }
-  ],
-  "label.change-password": [
-    {
-      "type": 0,
-      "value": "Passwort ändere"
-    }
-  ],
-  "label.channels": [
-    {
-      "type": 0,
-      "value": "Kanäle"
-    }
-  ],
-  "label.cities": [
-    {
-      "type": 0,
-      "value": "Städt"
-    }
-  ],
-  "label.city": [
-    {
-      "type": 0,
-      "value": "Stadt"
-    }
-  ],
-  "label.clear-all": [
-    {
-      "type": 0,
-      "value": "Alles lösche"
-    }
-  ],
-  "label.cohort": [
-    {
-      "type": 0,
-      "value": "Gruppe"
-    }
-  ],
-  "label.compare": [
-    {
-      "type": 0,
-      "value": "Vergliiche"
-    }
-  ],
-  "label.compare-dates": [
-    {
-      "type": 0,
-      "value": "Datum vergleiche"
-    }
-  ],
-  "label.confirm": [
-    {
-      "type": 0,
-      "value": "Bestätige"
-    }
-  ],
-  "label.confirm-password": [
-    {
-      "type": 0,
-      "value": "Passwort widerhole"
-    }
-  ],
-  "label.contains": [
-    {
-      "type": 0,
-      "value": "Enthaltet"
-    }
-  ],
-  "label.content": [
-    {
-      "type": 0,
-      "value": "Inhalt"
-    }
-  ],
-  "label.continue": [
-    {
-      "type": 0,
-      "value": "Wiiter"
-    }
-  ],
-  "label.conversion": [
-    {
-      "type": 0,
-      "value": "Umwandlig"
-    }
-  ],
-  "label.conversion-rate": [
-    {
-      "type": 0,
-      "value": "Umwandligsrate"
-    }
-  ],
-  "label.conversion-step": [
-    {
-      "type": 0,
-      "value": "Umwandligsschritt"
-    }
-  ],
-  "label.count": [
-    {
-      "type": 0,
-      "value": "Azahl"
-    }
-  ],
-  "label.countries": [
-    {
-      "type": 0,
-      "value": "Länder"
-    }
-  ],
-  "label.country": [
-    {
-      "type": 0,
-      "value": "Land"
-    }
-  ],
-  "label.create": [
-    {
-      "type": 0,
-      "value": "Erstelle"
-    }
-  ],
-  "label.create-report": [
-    {
-      "type": 0,
-      "value": "Bricht erstelle"
-    }
-  ],
-  "label.create-team": [
-    {
-      "type": 0,
-      "value": "Team erstelle"
-    }
-  ],
-  "label.create-user": [
-    {
-      "type": 0,
-      "value": "Benutzer erstelle"
-    }
-  ],
-  "label.created": [
-    {
-      "type": 0,
-      "value": "Erstellt"
-    }
-  ],
-  "label.created-by": [
-    {
-      "type": 0,
-      "value": "Erstellt vo"
-    }
-  ],
-  "label.currency": [
-    {
-      "type": 0,
-      "value": "Währung"
-    }
-  ],
-  "label.current": [
-    {
-      "type": 0,
-      "value": "Aktuell"
-    }
-  ],
-  "label.current-password": [
-    {
-      "type": 0,
-      "value": "Aktuells Passwort"
-    }
-  ],
-  "label.custom-range": [
-    {
-      "type": 0,
-      "value": "Benutzerdefinierte Bereich"
-    }
-  ],
-  "label.dashboard": [
-    {
-      "type": 0,
-      "value": "Übersicht"
-    }
-  ],
-  "label.data": [
-    {
-      "type": 0,
-      "value": "Datä"
-    }
-  ],
-  "label.date": [
-    {
-      "type": 0,
-      "value": "Datum"
-    }
-  ],
-  "label.date-range": [
-    {
-      "type": 0,
-      "value": "Datumsbereich"
-    }
-  ],
-  "label.day": [
-    {
-      "type": 0,
-      "value": "Tag"
-    }
-  ],
-  "label.default-date-range": [
-    {
-      "type": 0,
-      "value": "Voriigstellte Datumsbereich"
-    }
-  ],
-  "label.delete": [
-    {
-      "type": 0,
-      "value": "Lösche"
-    }
-  ],
-  "label.delete-report": [
-    {
-      "type": 0,
-      "value": "Bricht lösche"
-    }
-  ],
-  "label.delete-team": [
-    {
-      "type": 0,
-      "value": "Team lösche"
-    }
-  ],
-  "label.delete-user": [
-    {
-      "type": 0,
-      "value": "Benutzer lösche"
-    }
-  ],
-  "label.delete-website": [
-    {
-      "type": 0,
-      "value": "Websiite lösche"
-    }
-  ],
-  "label.description": [
-    {
-      "type": 0,
-      "value": "Beschriibig"
-    }
-  ],
-  "label.desktop": [
-    {
-      "type": 0,
-      "value": "Desktop"
-    }
-  ],
-  "label.details": [
-    {
-      "type": 0,
-      "value": "Details"
-    }
-  ],
-  "label.device": [
-    {
-      "type": 0,
-      "value": "Grät"
-    }
-  ],
-  "label.devices": [
-    {
-      "type": 0,
-      "value": "Grät"
-    }
-  ],
-  "label.direct": [
-    {
-      "type": 0,
-      "value": "Direkt"
-    }
-  ],
-  "label.dismiss": [
-    {
-      "type": 0,
-      "value": "Verwärfe"
-    }
-  ],
-  "label.distinct-id": [
-    {
-      "type": 0,
-      "value": "Eindeutigi ID"
-    }
-  ],
-  "label.does-not-contain": [
-    {
-      "type": 0,
-      "value": "Enthaltet nid"
-    }
-  ],
-  "label.does-not-include": [
-    {
-      "type": 0,
-      "value": "Isch nid debii"
-    }
-  ],
-  "label.doest-not-exist": [
-    {
-      "type": 0,
-      "value": "Existiert nid"
-    }
-  ],
-  "label.domain": [
-    {
-      "type": 0,
-      "value": "Domain"
-    }
-  ],
-  "label.dropoff": [
-    {
-      "type": 0,
-      "value": "Absprung"
-    }
-  ],
-  "label.edit": [
-    {
-      "type": 0,
-      "value": "Bearbeite"
-    }
-  ],
-  "label.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "Dashboard bearbeite"
-    }
-  ],
-  "label.edit-member": [
-    {
-      "type": 0,
-      "value": "Mitglied bearbeite"
-    }
-  ],
-  "label.email": [
-    {
-      "type": 0,
-      "value": "Email"
-    }
-  ],
-  "label.enable-share-url": [
-    {
-      "type": 0,
-      "value": "Freigab-URL aktiviere"
-    }
-  ],
-  "label.end-step": [
-    {
-      "type": 0,
-      "value": "Schlussschritt"
-    }
-  ],
-  "label.entry": [
-    {
-      "type": 0,
-      "value": "Iigangs URL"
-    }
-  ],
-  "label.event": [
-    {
-      "type": 0,
-      "value": "Ereigniss"
-    }
-  ],
-  "label.event-data": [
-    {
-      "type": 0,
-      "value": "Ereigniss Date"
-    }
-  ],
-  "label.event-name": [
-    {
-      "type": 0,
-      "value": "Ereignissname"
-    }
-  ],
-  "label.events": [
-    {
-      "type": 0,
-      "value": "Ereigniss"
-    }
-  ],
-  "label.exists": [
-    {
-      "type": 0,
-      "value": "Existiert"
-    }
-  ],
-  "label.exit": [
-    {
-      "type": 0,
-      "value": "Uusgangs URL"
-    }
-  ],
-  "label.false": [
-    {
-      "type": 0,
-      "value": "Falsch"
-    }
-  ],
-  "label.field": [
-    {
-      "type": 0,
-      "value": "Fäld"
-    }
-  ],
-  "label.fields": [
-    {
-      "type": 0,
-      "value": "Fälder"
-    }
-  ],
-  "label.filter": [
-    {
-      "type": 0,
-      "value": "Filter"
-    }
-  ],
-  "label.filter-combined": [
-    {
-      "type": 0,
-      "value": "Kombiniert"
-    }
-  ],
-  "label.filter-raw": [
-    {
-      "type": 0,
-      "value": "Rohdate"
-    }
-  ],
-  "label.filters": [
-    {
-      "type": 0,
-      "value": "Filters"
-    }
-  ],
-  "label.first-click": [
-    {
-      "type": 0,
-      "value": "Erste Klick"
-    }
-  ],
-  "label.first-seen": [
-    {
-      "type": 0,
-      "value": "Erstmal gse"
-    }
-  ],
-  "label.funnel": [
-    {
-      "type": 0,
-      "value": "Tunnel"
-    }
-  ],
-  "label.funnel-description": [
-    {
-      "type": 0,
-      "value": "Verstönd Sie d Konversions- und Abspruungsrate vo Nutzer."
-    }
-  ],
-  "label.funnels": [
-    {
-      "type": 0,
-      "value": "Funnels"
-    }
-  ],
-  "label.goal": [
-    {
-      "type": 0,
-      "value": "Ziel"
-    }
-  ],
-  "label.goals": [
-    {
-      "type": 0,
-      "value": "Ziele"
-    }
-  ],
-  "label.goals-description": [
-    {
-      "type": 0,
-      "value": "verfolged Sie Ihri Ziel für Siitenufrüef und Ereigniss."
-    }
-  ],
-  "label.greater-than": [
-    {
-      "type": 0,
-      "value": "Grösser als"
-    }
-  ],
-  "label.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "Grösser oder gliich"
-    }
-  ],
-  "label.grouped": [
-    {
-      "type": 0,
-      "value": "Gruppiert"
-    }
-  ],
-  "label.hostname": [
-    {
-      "type": 0,
-      "value": "Hostnam"
-    }
-  ],
-  "label.includes": [
-    {
-      "type": 0,
-      "value": "Isch debii"
-    }
-  ],
-  "label.insight": [
-    {
-      "type": 0,
-      "value": "Iiblick"
-    }
-  ],
-  "label.insights": [
-    {
-      "type": 0,
-      "value": "Iiblick"
-    }
-  ],
-  "label.insights-description": [
-    {
-      "type": 0,
-      "value": "Vertüfed Sie sich i Ihri Date, mit Hilf vo Segment und Filter."
-    }
-  ],
-  "label.is": [
-    {
-      "type": 0,
-      "value": "Isch"
-    }
-  ],
-  "label.is-false": [
-    {
-      "type": 0,
-      "value": "Isch falsch"
-    }
-  ],
-  "label.is-not": [
-    {
-      "type": 0,
-      "value": "Isch nid"
-    }
-  ],
-  "label.is-not-set": [
-    {
-      "type": 0,
-      "value": "Isch ned gsetzt"
-    }
-  ],
-  "label.is-set": [
-    {
-      "type": 0,
-      "value": "Isch gsetzt"
-    }
-  ],
-  "label.is-true": [
-    {
-      "type": 0,
-      "value": "Isch wahr"
-    }
-  ],
-  "label.join": [
-    {
-      "type": 0,
-      "value": "Biträte"
-    }
-  ],
-  "label.join-team": [
-    {
-      "type": 0,
-      "value": "Team biträte"
-    }
-  ],
-  "label.journey": [
-    {
-      "type": 0,
-      "value": "Reis"
-    }
-  ],
-  "label.journey-description": [
-    {
-      "type": 0,
-      "value": "Verstönd Sie, wie Nutzer dur Ihri Website navigiered."
-    }
-  ],
-  "label.journeys": [
-    {
-      "type": 0,
-      "value": "Reise"
-    }
-  ],
-  "label.language": [
-    {
-      "type": 0,
-      "value": "Sprach"
-    }
-  ],
-  "label.languages": [
-    {
-      "type": 0,
-      "value": "Sprache"
-    }
-  ],
-  "label.laptop": [
-    {
-      "type": 0,
-      "value": "Laptop"
-    }
-  ],
-  "label.last-click": [
-    {
-      "type": 0,
-      "value": "Letzte Klick"
-    }
-  ],
-  "label.last-days": [
-    {
-      "type": 0,
-      "value": "Letzti "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " Täg"
-    }
-  ],
-  "label.last-hours": [
-    {
-      "type": 0,
-      "value": "Letzti "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " Stunde"
-    }
-  ],
-  "label.last-months": [
-    {
-      "type": 0,
-      "value": "Letzti "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " Mönet"
-    }
-  ],
-  "label.last-seen": [
-    {
-      "type": 0,
-      "value": "Zletzt gse"
-    }
-  ],
-  "label.leave": [
-    {
-      "type": 0,
-      "value": "Verlah"
-    }
-  ],
-  "label.leave-team": [
-    {
-      "type": 0,
-      "value": "Team verlah"
-    }
-  ],
-  "label.less-than": [
-    {
-      "type": 0,
-      "value": "Kliiner als"
-    }
-  ],
-  "label.less-than-equals": [
-    {
-      "type": 0,
-      "value": "Kliiner oder gliich"
-    }
-  ],
-  "label.links": [
-    {
-      "type": 0,
-      "value": "Links"
-    }
-  ],
-  "label.login": [
-    {
-      "type": 0,
-      "value": "Aamälde"
-    }
-  ],
-  "label.logout": [
-    {
-      "type": 0,
-      "value": "Abmälde"
-    }
-  ],
-  "label.manage": [
-    {
-      "type": 0,
-      "value": "Verwalte"
-    }
-  ],
-  "label.manager": [
-    {
-      "type": 0,
-      "value": "Manager"
-    }
-  ],
-  "label.max": [
-    {
-      "type": 0,
-      "value": "Max"
-    }
-  ],
-  "label.maximize": [
-    {
-      "type": 0,
-      "value": "Uusklappe"
-    }
-  ],
-  "label.medium": [
-    {
-      "type": 0,
-      "value": "Medium"
-    }
-  ],
-  "label.member": [
-    {
-      "type": 0,
-      "value": "Mitglied"
-    }
-  ],
-  "label.members": [
-    {
-      "type": 0,
-      "value": "Mitglieder"
-    }
-  ],
-  "label.min": [
-    {
-      "type": 0,
-      "value": "Min"
-    }
-  ],
-  "label.mobile": [
-    {
-      "type": 0,
-      "value": "Händy"
-    }
-  ],
-  "label.model": [
-    {
-      "type": 0,
-      "value": "Model"
-    }
-  ],
-  "label.more": [
-    {
-      "type": 0,
-      "value": "Meh"
-    }
-  ],
-  "label.my-account": [
-    {
-      "type": 0,
-      "value": "Min Account"
-    }
-  ],
-  "label.my-websites": [
-    {
-      "type": 0,
-      "value": "Mini Websiite"
-    }
-  ],
-  "label.name": [
-    {
-      "type": 0,
-      "value": "Name"
-    }
-  ],
-  "label.new-password": [
-    {
-      "type": 0,
-      "value": "Neus Passwort"
-    }
-  ],
-  "label.none": [
-    {
-      "type": 0,
-      "value": "Keis"
-    }
-  ],
-  "label.number-of-records": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "record"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "records"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "label.ok": [
-    {
-      "type": 0,
-      "value": "OK"
-    }
-  ],
-  "label.online": [
-    {
-      "type": 0,
-      "value": "Online"
-    }
-  ],
-  "label.organic-search": [
-    {
-      "type": 0,
-      "value": "Organischi Suechi"
-    }
-  ],
-  "label.organic-shopping": [
-    {
-      "type": 0,
-      "value": "Organischi Iikauf"
-    }
-  ],
-  "label.organic-social": [
-    {
-      "type": 0,
-      "value": "Organischi Social Media"
-    }
-  ],
-  "label.organic-video": [
-    {
-      "type": 0,
-      "value": "Organischi Video"
-    }
-  ],
-  "label.os": [
-    {
-      "type": 0,
-      "value": "OS"
-    }
-  ],
-  "label.other": [
-    {
-      "type": 0,
-      "value": "Anderi"
-    }
-  ],
-  "label.overview": [
-    {
-      "type": 0,
-      "value": "Übersicht"
-    }
-  ],
-  "label.owner": [
-    {
-      "type": 0,
-      "value": "Bsitzer"
-    }
-  ],
-  "label.page": [
-    {
-      "type": 0,
-      "value": "Siite"
-    }
-  ],
-  "label.page-of": [
-    {
-      "type": 0,
-      "value": "Siite "
-    },
-    {
-      "type": 1,
-      "value": "current"
-    },
-    {
-      "type": 0,
-      "value": " vo "
-    },
-    {
-      "type": 1,
-      "value": "total"
-    }
-  ],
-  "label.page-views": [
-    {
-      "type": 0,
-      "value": "Siitenufrüef"
-    }
-  ],
-  "label.pageTitle": [
-    {
-      "type": 0,
-      "value": "Siitetitel"
-    }
-  ],
-  "label.pages": [
-    {
-      "type": 0,
-      "value": "Siite"
-    }
-  ],
-  "label.paid-ads": [
-    {
-      "type": 0,
-      "value": "Bezahlti Werbung"
-    }
-  ],
-  "label.paid-search": [
-    {
-      "type": 0,
-      "value": "Bezahlti Suechi"
-    }
-  ],
-  "label.paid-shopping": [
-    {
-      "type": 0,
-      "value": "Bezahlti Iikauf"
-    }
-  ],
-  "label.paid-social": [
-    {
-      "type": 0,
-      "value": "Bezahlti Social Media"
-    }
-  ],
-  "label.paid-video": [
-    {
-      "type": 0,
-      "value": "Bezahlti Video"
-    }
-  ],
-  "label.password": [
-    {
-      "type": 0,
-      "value": "Passwort"
-    }
-  ],
-  "label.path": [
-    {
-      "type": 0,
-      "value": "Pfad"
-    }
-  ],
-  "label.paths": [
-    {
-      "type": 0,
-      "value": "Pfade"
-    }
-  ],
-  "label.pixels": [
-    {
-      "type": 0,
-      "value": "Pixel"
-    }
-  ],
-  "label.powered-by": [
-    {
-      "type": 0,
-      "value": "Betriibe dur "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    }
-  ],
-  "label.previous": [
-    {
-      "type": 0,
-      "value": "Vorherig"
-    }
-  ],
-  "label.previous-period": [
-    {
-      "type": 0,
-      "value": "Vorherigi Periode"
-    }
-  ],
-  "label.previous-year": [
-    {
-      "type": 0,
-      "value": "Vorherigs Jahr"
-    }
-  ],
-  "label.profile": [
-    {
-      "type": 0,
-      "value": "Profil"
-    }
-  ],
-  "label.properties": [
-    {
-      "type": 0,
-      "value": "Eigeschafte"
-    }
-  ],
-  "label.property": [
-    {
-      "type": 0,
-      "value": "Eigeschafte"
-    }
-  ],
-  "label.queries": [
-    {
-      "type": 0,
-      "value": "Abfrage"
-    }
-  ],
-  "label.query": [
-    {
-      "type": 0,
-      "value": "Abfrag"
-    }
-  ],
-  "label.query-parameters": [
-    {
-      "type": 0,
-      "value": "Abfragparameter"
-    }
-  ],
-  "label.realtime": [
-    {
-      "type": 0,
-      "value": "Echtzit"
-    }
-  ],
-  "label.referral": [
-    {
-      "type": 0,
-      "value": "Empfehlig"
-    }
-  ],
-  "label.referrer": [
-    {
-      "type": 0,
-      "value": "Verwiiser"
-    }
-  ],
-  "label.referrers": [
-    {
-      "type": 0,
-      "value": "Verwiisendi"
-    }
-  ],
-  "label.refresh": [
-    {
-      "type": 0,
-      "value": "Aktualisiere"
-    }
-  ],
-  "label.regenerate": [
-    {
-      "type": 0,
-      "value": "Erneuere"
-    }
-  ],
-  "label.region": [
-    {
-      "type": 0,
-      "value": "Region"
-    }
-  ],
-  "label.regions": [
-    {
-      "type": 0,
-      "value": "Regionä"
-    }
-  ],
-  "label.remaining": [
-    {
-      "type": 0,
-      "value": "Verblibe"
-    }
-  ],
-  "label.remove": [
-    {
-      "type": 0,
-      "value": "Entferne"
-    }
-  ],
-  "label.remove-member": [
-    {
-      "type": 0,
-      "value": "Mitglied entferne"
-    }
-  ],
-  "label.reports": [
-    {
-      "type": 0,
-      "value": "Brichte"
-    }
-  ],
-  "label.required": [
-    {
-      "type": 0,
-      "value": "Erforderlich"
-    }
-  ],
-  "label.reset": [
-    {
-      "type": 0,
-      "value": "Zruggsetze"
-    }
-  ],
-  "label.reset-website": [
-    {
-      "type": 0,
-      "value": "Statistik zruggsetze"
-    }
-  ],
-  "label.retention": [
-    {
-      "type": 0,
-      "value": "Retention"
-    }
-  ],
-  "label.retention-description": [
-    {
-      "type": 0,
-      "value": "Mässed Sie d Verwiilduur vo Ihrere Website, indem Sie verfolged wie oft ihri Nutzer zruggkehred."
-    }
-  ],
-  "label.revenue": [
-    {
-      "type": 0,
-      "value": "Umsatz"
-    }
-  ],
-  "label.revenue-description": [
-    {
-      "type": 0,
-      "value": "Lueged Sie sich Ihre Umsatz im Lauf vor Ziit a."
-    }
-  ],
-  "label.role": [
-    {
-      "type": 0,
-      "value": "Rollä"
-    }
-  ],
-  "label.run-query": [
-    {
-      "type": 0,
-      "value": "Abfrag starte"
-    }
-  ],
-  "label.save": [
-    {
-      "type": 0,
-      "value": "Speichere"
-    }
-  ],
-  "label.screens": [
-    {
-      "type": 0,
-      "value": "Bildschirmuflösige"
-    }
-  ],
-  "label.search": [
-    {
-      "type": 0,
-      "value": "Sueche"
-    }
-  ],
-  "label.select": [
-    {
-      "type": 0,
-      "value": "Auswähle"
-    }
-  ],
-  "label.select-date": [
-    {
-      "type": 0,
-      "value": "Datä uuswähle"
-    }
-  ],
-  "label.select-filter": [
-    {
-      "type": 0,
-      "value": "Filter uuswähle"
-    }
-  ],
-  "label.select-role": [
-    {
-      "type": 0,
-      "value": "Rollä uuswähle"
-    }
-  ],
-  "label.select-website": [
-    {
-      "type": 0,
-      "value": "Websiite uuswähle"
-    }
-  ],
-  "label.session": [
-    {
-      "type": 0,
-      "value": "Sitzig"
-    }
-  ],
-  "label.session-data": [
-    {
-      "type": 0,
-      "value": "Sitzigsdate"
-    }
-  ],
-  "label.sessions": [
-    {
-      "type": 0,
-      "value": "Sitzige"
-    }
-  ],
-  "label.settings": [
-    {
-      "type": 0,
-      "value": "Istellige"
-    }
-  ],
-  "label.share": [
-    {
-      "type": 0,
-      "value": "Teile"
-    }
-  ],
-  "label.share-url": [
-    {
-      "type": 0,
-      "value": "Freigab-URL"
-    }
-  ],
-  "label.single-day": [
-    {
-      "type": 0,
-      "value": "Ein Tag"
-    }
-  ],
-  "label.sms": [
-    {
-      "type": 0,
-      "value": "SMS"
-    }
-  ],
-  "label.sources": [
-    {
-      "type": 0,
-      "value": "Quälle"
-    }
-  ],
-  "label.start-step": [
-    {
-      "type": 0,
-      "value": "Startschritt"
-    }
-  ],
-  "label.steps": [
-    {
-      "type": 0,
-      "value": "Schritt"
-    }
-  ],
-  "label.sum": [
-    {
-      "type": 0,
-      "value": "Summe"
-    }
-  ],
-  "label.tablet": [
-    {
-      "type": 0,
-      "value": "Tablet"
-    }
-  ],
-  "label.tag": [
-    {
-      "type": 0,
-      "value": "Tag"
-    }
-  ],
-  "label.tags": [
-    {
-      "type": 0,
-      "value": "Stichwort"
-    }
-  ],
-  "label.team": [
-    {
-      "type": 0,
-      "value": "Team"
-    }
-  ],
-  "label.team-id": [
-    {
-      "type": 0,
-      "value": "Team ID"
-    }
-  ],
-  "label.team-manager": [
-    {
-      "type": 0,
-      "value": "Team Manager"
-    }
-  ],
-  "label.team-member": [
-    {
-      "type": 0,
-      "value": "Team Mitglied"
-    }
-  ],
-  "label.team-name": [
-    {
-      "type": 0,
-      "value": "Team Name"
-    }
-  ],
-  "label.team-owner": [
-    {
-      "type": 0,
-      "value": "Team Bsitzer"
-    }
-  ],
-  "label.team-settings": [
-    {
-      "type": 0,
-      "value": "Team Istellige"
-    }
-  ],
-  "label.team-view-only": [
-    {
-      "type": 0,
-      "value": "Nur für Teammitglieder sichtbar"
-    }
-  ],
-  "label.team-websites": [
-    {
-      "type": 0,
-      "value": "Team Websiite"
-    }
-  ],
-  "label.teams": [
-    {
-      "type": 0,
-      "value": "Teams"
-    }
-  ],
-  "label.terms": [
-    {
-      "type": 0,
-      "value": "Bedingige"
-    }
-  ],
-  "label.theme": [
-    {
-      "type": 0,
-      "value": "Thema"
-    }
-  ],
-  "label.this-month": [
-    {
-      "type": 0,
-      "value": "Dä Monet"
-    }
-  ],
-  "label.this-week": [
-    {
-      "type": 0,
-      "value": "Diä Wuuche"
-    }
-  ],
-  "label.this-year": [
-    {
-      "type": 0,
-      "value": "Das Johr"
-    }
-  ],
-  "label.timezone": [
-    {
-      "type": 0,
-      "value": "Ziitzone"
-    }
-  ],
-  "label.title": [
-    {
-      "type": 0,
-      "value": "Titel"
-    }
-  ],
-  "label.today": [
-    {
-      "type": 0,
-      "value": "Hüt"
-    }
-  ],
-  "label.toggle-charts": [
-    {
-      "type": 0,
-      "value": "Charts umschalte"
-    }
-  ],
-  "label.total": [
-    {
-      "type": 0,
-      "value": "Total"
-    }
-  ],
-  "label.total-records": [
-    {
-      "type": 0,
-      "value": "Gsamti Datesätz"
-    }
-  ],
-  "label.tracking-code": [
-    {
-      "type": 0,
-      "value": "Tracking Code"
-    }
-  ],
-  "label.transactions": [
-    {
-      "type": 0,
-      "value": "Transaktione"
-    }
-  ],
-  "label.transfer": [
-    {
-      "type": 0,
-      "value": "Transferiere"
-    }
-  ],
-  "label.transfer-website": [
-    {
-      "type": 0,
-      "value": "Websiite transferiere"
-    }
-  ],
-  "label.true": [
-    {
-      "type": 0,
-      "value": "Wahr"
-    }
-  ],
-  "label.type": [
-    {
-      "type": 0,
-      "value": "Typ"
-    }
-  ],
-  "label.unique": [
-    {
-      "type": 0,
-      "value": "Einzigartigi"
-    }
-  ],
-  "label.unique-visitors": [
-    {
-      "type": 0,
-      "value": "Einzigartigi Bsuecher"
-    }
-  ],
-  "label.uniqueCustomers": [
-    {
-      "type": 0,
-      "value": "Einzigartigi Kunde"
-    }
-  ],
-  "label.unknown": [
-    {
-      "type": 0,
-      "value": "Unbekannt"
-    }
-  ],
-  "label.untitled": [
-    {
-      "type": 0,
-      "value": "Unbennant"
-    }
-  ],
-  "label.update": [
-    {
-      "type": 0,
-      "value": "Update"
-    }
-  ],
-  "label.user": [
-    {
-      "type": 0,
-      "value": "Benutzer"
-    }
-  ],
-  "label.username": [
-    {
-      "type": 0,
-      "value": "Benutzername"
-    }
-  ],
-  "label.users": [
-    {
-      "type": 0,
-      "value": "Benutzer"
-    }
-  ],
-  "label.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "label.utm-description": [
-    {
-      "type": 0,
-      "value": "Tracked Sie Ihri Kampagnen mit UTM Parameters."
-    }
-  ],
-  "label.value": [
-    {
-      "type": 0,
-      "value": "Wärt"
-    }
-  ],
-  "label.view": [
-    {
-      "type": 0,
-      "value": "Azeige"
-    }
-  ],
-  "label.view-details": [
-    {
-      "type": 0,
-      "value": "Details azeige"
-    }
-  ],
-  "label.view-only": [
-    {
-      "type": 0,
-      "value": "Nume aluege"
-    }
-  ],
-  "label.views": [
-    {
-      "type": 0,
-      "value": "Ufrüef"
-    }
-  ],
-  "label.views-per-visit": [
-    {
-      "type": 0,
-      "value": "Ufrüef pro Bsuech"
-    }
-  ],
-  "label.visit-duration": [
-    {
-      "type": 0,
-      "value": "Durchschn. Bsuechsziit"
-    }
-  ],
-  "label.visitors": [
-    {
-      "type": 0,
-      "value": "Bsuecher"
-    }
-  ],
-  "label.visits": [
-    {
-      "type": 0,
-      "value": "Bsüech"
-    }
-  ],
-  "label.website": [
-    {
-      "type": 0,
-      "value": "Website"
-    }
-  ],
-  "label.website-id": [
-    {
-      "type": 0,
-      "value": "Websiite ID"
-    }
-  ],
-  "label.websites": [
-    {
-      "type": 0,
-      "value": "Websiite"
-    }
-  ],
-  "label.window": [
-    {
-      "type": 0,
-      "value": "Fenster"
-    }
-  ],
-  "label.yesterday": [
-    {
-      "type": 0,
-      "value": "Gester"
-    }
-  ],
-  "message.action-confirmation": [
-    {
-      "type": 0,
-      "value": "Typed Sie "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " is Feld underhalb um z bestätige."
-    }
-  ],
-  "message.active-users": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "aktive Bsuecher"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "aktivi Bsuecher"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "message.bad-request": [
-    {
-      "type": 0,
-      "value": "Bad request"
-    }
-  ],
-  "message.collected-data": [
-    {
-      "type": 0,
-      "value": "Gsammleti Date"
-    }
-  ],
-  "message.confirm-delete": [
-    {
-      "type": 0,
-      "value": "Sind Sie sich sicher, "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " zlösche?"
-    }
-  ],
-  "message.confirm-leave": [
-    {
-      "type": 0,
-      "value": "Sind Sie sich sicher, "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " zverlah?"
-    }
-  ],
-  "message.confirm-remove": [
-    {
-      "type": 0,
-      "value": "Sind Sie sich sicher, dass Sie "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " wänd entferne?"
-    }
-  ],
-  "message.confirm-reset": [
-    {
-      "type": 0,
-      "value": "Sind Sie sicher, dass Sie d Statistike vo "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " zruggsetze wänd?"
-    }
-  ],
-  "message.delete-team-warning": [
-    {
-      "type": 0,
-      "value": "Es Team lösche dued ebefalls alli team Websiite lösche."
-    }
-  ],
-  "message.delete-website-warning": [
-    {
-      "type": 0,
-      "value": "Alli dezueghörige Date werded ebefalls glöscht."
-    }
-  ],
-  "message.error": [
-    {
-      "type": 0,
-      "value": "Es isch en Fehler ufträte."
-    }
-  ],
-  "message.event-log": [
-    {
-      "type": 1,
-      "value": "event"
-    },
-    {
-      "type": 0,
-      "value": " uf "
-    },
-    {
-      "type": 1,
-      "value": "url"
-    }
-  ],
-  "message.forbidden": [
-    {
-      "type": 0,
-      "value": "Forbidden"
-    }
-  ],
-  "message.go-to-settings": [
-    {
-      "type": 0,
-      "value": "Zu de Istellige"
-    }
-  ],
-  "message.incorrect-username-password": [
-    {
-      "type": 0,
-      "value": "Falsches Passwort oder Benutzername."
-    }
-  ],
-  "message.invalid-domain": [
-    {
-      "type": 0,
-      "value": "Ungültigi Domain"
-    }
-  ],
-  "message.min-password-length": [
-    {
-      "type": 0,
-      "value": "Miminamli längi vo "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " Zeiche"
-    }
-  ],
-  "message.new-version-available": [
-    {
-      "type": 0,
-      "value": "Es isch en neue Version vo Umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " verfügbar!"
-    }
-  ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "Kei Date vorhande."
-    }
-  ],
-  "message.no-event-data": [
-    {
-      "type": 0,
-      "value": "Es sind kei Event Date verfügbar."
-    }
-  ],
-  "message.no-match-password": [
-    {
-      "type": 0,
-      "value": "Passwörter stimmed ned überi"
-    }
-  ],
-  "message.no-results-found": [
-    {
-      "type": 0,
-      "value": "Kei Ergäbnis gfunde."
-    }
-  ],
-  "message.no-team-websites": [
-    {
-      "type": 0,
-      "value": "Dem Team sind kei Websiite zuegordnet."
-    }
-  ],
-  "message.no-teams": [
-    {
-      "type": 0,
-      "value": "Bisher sind no kei Teams erstellt worde."
-    }
-  ],
-  "message.no-users": [
-    {
-      "type": 0,
-      "value": "Da gits kei Benutzer"
-    }
-  ],
-  "message.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "Es isch kei Websiite vorhande."
-    }
-  ],
-  "message.not-found": [
-    {
-      "type": 0,
-      "value": "Not found"
-    }
-  ],
-  "message.nothing-selected": [
-    {
-      "type": 0,
-      "value": "Nothing selected."
-    }
-  ],
-  "message.page-not-found": [
-    {
-      "type": 0,
-      "value": "Siite ned gfunde."
-    }
-  ],
-  "message.reset-website": [
-    {
-      "type": 0,
-      "value": "Um die Websiite zruggzsetze, typed Sie "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " is Feld unde dran."
-    }
-  ],
-  "message.reset-website-warning": [
-    {
-      "type": 0,
-      "value": "Alli Date für die Websiite werdet glöscht, nur de Tracking Code blibt bestah."
-    }
-  ],
-  "message.saved": [
-    {
-      "type": 0,
-      "value": "Erfolgrich gspeichert."
-    }
-  ],
-  "message.sever-error": [
-    {
-      "type": 0,
-      "value": "Server error"
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "Ihri Websiitestatistik isch under de folgende URL öffentlich zuegänglich:"
-    }
-  ],
-  "message.team-already-member": [
-    {
-      "type": 0,
-      "value": "Sie sind bereits es Mitglied vo däm Team."
-    }
-  ],
-  "message.team-not-found": [
-    {
-      "type": 0,
-      "value": "Team nöd gfunde."
-    }
-  ],
-  "message.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Websiite chöi vo jedem im Team agluegt werde"
-    }
-  ],
-  "message.tracking-code": [
-    {
-      "type": 0,
-      "value": "Tracking Code"
-    }
-  ],
-  "message.transfer-team-website-to-user": [
-    {
-      "type": 0,
-      "value": "Websiite uf zu Ihrem Account transferiere?"
-    }
-  ],
-  "message.transfer-user-website-to-team": [
-    {
-      "type": 0,
-      "value": "Wähled Sie s Team zum däm Websiite transferiert werde söll."
-    }
-  ],
-  "message.transfer-website": [
-    {
-      "type": 0,
-      "value": "Übertraged Sie d Websiite Eigetümerrecht uf Ihre Account oder uf es anders Team"
-    }
-  ],
-  "message.triggered-event": [
-    {
-      "type": 0,
-      "value": "Usglösts Ereigniss"
-    }
-  ],
-  "message.unauthorized": [
-    {
-      "type": 0,
-      "value": "Unauthorized"
-    }
-  ],
-  "message.user-deleted": [
-    {
-      "type": 0,
-      "value": "Bnutzer glöscht."
-    }
-  ],
-  "message.viewed-page": [
-    {
-      "type": 0,
-      "value": "Siite agluegt"
-    }
-  ],
-  "message.visitor-log": [
-    {
-      "type": 0,
-      "value": "Bsuecher us "
-    },
-    {
-      "type": 1,
-      "value": "country"
-    },
-    {
-      "type": 0,
-      "value": " nutzt "
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    },
-    {
-      "type": 0,
-      "value": " uf "
-    },
-    {
-      "type": 1,
-      "value": "os"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "device"
-    }
-  ]
+  "label": {
+    "access-code": "Zuegangscode",
+    "account": "Konto",
+    "action": "Aktion",
+    "actions": "Aktione",
+    "activity": "Aktivitätsverlauf",
+    "add": "hinzuefüege",
+    "add-board": "Board hinzuefüege",
+    "add-description": "Beschriibig hinzuefüege",
+    "add-link": "Link hinzufügen",
+    "add-member": "Mitglied hinzuefüege",
+    "add-pixel": "Pixel hinzufügen",
+    "add-step": "Schritt hinzuefüege",
+    "add-website": "Websiite hinzuefüege",
+    "admin": "Administrator",
+    "affiliate": "Partnerprogramm",
+    "after": "Nach",
+    "all": "Alli",
+    "all-time": "Gsamte Zitruum",
+    "analysis": "Analyse",
+    "analytics": "Analytik",
+    "application": "Anwendung",
+    "apply": "Aawände",
+    "attribution": "Zuordnig",
+    "attribution-description": "Lueg wie d'Benutzer mit dim Marketing interagiere und was zu Umwandlige führt.",
+    "audience": "Zielgruppe",
+    "average": "Durchschnitt",
+    "back": "Zrugg",
+    "before": "Vor",
+    "behavior": "Verhalte",
+    "boards": "Boards",
+    "bounce-rate": "Absprungsrate",
+    "breakdown": "Uufschlüsselig",
+    "browser": "Browser",
+    "browsers": "Browser",
+    "campaign": "Kampagne",
+    "campaigns": "Kampagne",
+    "cancel": "Abbreche",
+    "change-password": "Passwort ändere",
+    "channel": "Kanal",
+    "channels": "Kanäle",
+    "chart": "Diagramm",
+    "cities": "Städt",
+    "city": "Stadt",
+    "clear-all": "Alles lösche",
+    "cohort": "Gruppe",
+    "cohorts": "Kohorten",
+    "compare": "Vergliiche",
+    "compare-dates": "Datum vergleiche",
+    "confirm": "Bestätige",
+    "confirm-password": "Passwort widerhole",
+    "contains": "Enthaltet",
+    "content": "Inhalt",
+    "continue": "Wiiter",
+    "conversion": "Umwandlig",
+    "conversion-rate": "Umwandligsrate",
+    "conversion-step": "Umwandligsschritt",
+    "count": "Azahl",
+    "countries": "Länder",
+    "country": "Land",
+    "create": "Erstelle",
+    "create-report": "Bricht erstelle",
+    "create-team": "Team erstelle",
+    "create-user": "Benutzer erstelle",
+    "created": "Erstellt",
+    "created-by": "Erstellt vo",
+    "criteria": "Kriterien",
+    "currency": "Währung",
+    "current": "Aktuell",
+    "current-password": "Aktuells Passwort",
+    "custom-range": "Benutzerdefinierte Bereich",
+    "dashboard": "Übersicht",
+    "data": "Datä",
+    "date": "Datum",
+    "date-range": "Datumsbereich",
+    "day": "Tag",
+    "default-date-range": "Voriigstellte Datumsbereich",
+    "delete": "Lösche",
+    "delete-report": "Bricht lösche",
+    "delete-team": "Team lösche",
+    "delete-user": "Benutzer lösche",
+    "delete-website": "Websiite lösche",
+    "description": "Beschriibig",
+    "desktop": "Desktop",
+    "destination-url": "Ziel-URL",
+    "details": "Details",
+    "device": "Grät",
+    "devices": "Grät",
+    "direct": "Direkt",
+    "dismiss": "Verwärfe",
+    "distinct-id": "Eindeutigi ID",
+    "documentation": "Dokumentation",
+    "does-not-contain": "Enthaltet nid",
+    "does-not-include": "Isch nid debii",
+    "doest-not-exist": "Existiert nid",
+    "domain": "Domain",
+    "download": "Herunterladen",
+    "dropoff": "Absprung",
+    "edit": "Bearbeite",
+    "edit-member": "Mitglied bearbeite",
+    "email": "E-Mail",
+    "enable-share-url": "Freigab-URL aktiviere",
+    "end-step": "Schlussschritt",
+    "entry": "Iigangs URL",
+    "environment": "Umgebung",
+    "event": "Ereigniss",
+    "event-data": "Ereigniss Date",
+    "event-name": "Ereignissname",
+    "events": "Ereigniss",
+    "exclude-bounce": "Absprung ausschliessen",
+    "exists": "Existiert",
+    "exit": "Uusgangs URL",
+    "false": "Falsch",
+    "field": "Fäld",
+    "fields": "Fälder",
+    "filter": "Filter",
+    "filter-combined": "Kombiniert",
+    "filter-raw": "Rohdate",
+    "filters": "Filter",
+    "first-click": "Erste Klick",
+    "first-seen": "Erstmal gse",
+    "funnel": "Tunnel",
+    "funnel-description": "Verstönd Sie d Konversions- und Abspruungsrate vo Nutzer.",
+    "funnels": "Trichter",
+    "goal": "Ziel",
+    "goals": "Ziele",
+    "goals-description": "verfolged Sie Ihri Ziel für Siitenufrüef und Ereigniss.",
+    "greater-than": "Grösser als",
+    "greater-than-equals": "Grösser oder gliich",
+    "grouped": "Gruppiert",
+    "growth": "Wachstum",
+    "hostname": "Hostnam",
+    "hour": "Stunde",
+    "includes": "Isch debii",
+    "insight": "Iiblick",
+    "insights": "Iiblick",
+    "insights-description": "Vertüfed Sie sich i Ihri Date, mit Hilf vo Segment und Filter.",
+    "invalid-url": "Ungültige URL",
+    "is": "Isch",
+    "is-false": "Isch falsch",
+    "is-not": "Isch nid",
+    "is-not-set": "Isch ned gsetzt",
+    "is-set": "Isch gsetzt",
+    "is-true": "Isch wahr",
+    "join": "Biträte",
+    "join-team": "Team biträte",
+    "journey": "Reis",
+    "journey-description": "Verstönd Sie, wie Nutzer dur Ihri Website navigiered.",
+    "journeys": "Reise",
+    "language": "Sprach",
+    "languages": "Sprache",
+    "laptop": "Laptop",
+    "last-click": "Letzte Klick",
+    "last-days": "Letzti {x} Täg",
+    "last-hours": "Letzti {x} Stunde",
+    "last-months": "Letzti {x} Mönet",
+    "last-seen": "Zletzt gse",
+    "leave": "Verlah",
+    "leave-team": "Team verlah",
+    "less-than": "Kliiner als",
+    "less-than-equals": "Kliiner oder gliich",
+    "link": "Link",
+    "links": "Links",
+    "location": "Standort",
+    "login": "Aamälde",
+    "logout": "Abmälde",
+    "manage": "Verwalte",
+    "manager": "Verwalter",
+    "max": "Max",
+    "maximize": "Uusklappe",
+    "medium": "Medium",
+    "member": "Mitglied",
+    "members": "Mitglieder",
+    "min": "Min",
+    "minute": "Minute",
+    "mobile": "Händy",
+    "model": "Modell",
+    "month": "Monat",
+    "more": "Meh",
+    "my-account": "Min Account",
+    "my-websites": "Mini Websiite",
+    "name": "Name",
+    "new-password": "Neus Passwort",
+    "none": "Keis",
+    "number-of-records": "{x} {x, plural, one {Datensatz} other {Datensätze}}",
+    "ok": "OK",
+    "online": "Online",
+    "organic-search": "Organischi Suechi",
+    "organic-shopping": "Organischi Iikauf",
+    "organic-social": "Organischi Social Media",
+    "organic-video": "Organischi Video",
+    "os": "OS",
+    "other": "Anderi",
+    "overview": "Übersicht",
+    "owner": "Bsitzer",
+    "page": "Siite",
+    "page-of": "Siite {current} vo {total}",
+    "page-views": "Siitenufrüef",
+    "pageTitle": "Siitetitel",
+    "pages": "Siite",
+    "paid-ads": "Bezahlti Werbung",
+    "paid-search": "Bezahlti Suechi",
+    "paid-shopping": "Bezahlti Iikauf",
+    "paid-social": "Bezahlti Social Media",
+    "paid-video": "Bezahlti Video",
+    "password": "Passwort",
+    "path": "Pfad",
+    "paths": "Pfade",
+    "pixel": "Pixel",
+    "pixels": "Pixel",
+    "powered-by": "Betriibe dur {name}",
+    "preferences": "Einstellungen",
+    "previous": "Vorherig",
+    "previous-period": "Vorherigi Periode",
+    "previous-year": "Vorherigs Jahr",
+    "profile": "Profil",
+    "profiles": "Profile",
+    "properties": "Eigeschafte",
+    "property": "Eigeschafte",
+    "queries": "Abfrage",
+    "query": "Abfrag",
+    "query-parameters": "Abfragparameter",
+    "realtime": "Echtzit",
+    "referral": "Empfehlig",
+    "referrer": "Verwiiser",
+    "referrers": "Verwiisendi",
+    "refresh": "Aktualisiere",
+    "regenerate": "Erneuere",
+    "region": "Region",
+    "regions": "Regionä",
+    "remaining": "Verblibe",
+    "remove": "Entferne",
+    "remove-member": "Mitglied entferne",
+    "reports": "Brichte",
+    "required": "Erforderlich",
+    "reset": "Zruggsetze",
+    "reset-website": "Statistik zruggsetze",
+    "retention": "Retention",
+    "retention-description": "Mässed Sie d Verwiilduur vo Ihrere Website, indem Sie verfolged wie oft ihri Nutzer zruggkehred.",
+    "revenue": "Umsatz",
+    "revenue-description": "Lueged Sie sich Ihre Umsatz im Lauf vor Ziit a.",
+    "role": "Rollä",
+    "run-query": "Abfrag starte",
+    "save": "Speichere",
+    "save-cohort": "Kohorte speichern",
+    "save-segment": "Segment speichern",
+    "screen": "Bildschirm",
+    "screens": "Bildschirmuflösige",
+    "search": "Sueche",
+    "segment": "Segment",
+    "segments": "Segmente",
+    "select": "Auswähle",
+    "select-date": "Datä uuswähle",
+    "select-filter": "Filter uuswähle",
+    "select-role": "Rollä uuswähle",
+    "select-website": "Websiite uuswähle",
+    "session": "Sitzig",
+    "session-data": "Sitzigsdate",
+    "sessions": "Sitzige",
+    "settings": "Istellige",
+    "share": "Teile",
+    "share-url": "Freigab-URL",
+    "single-day": "Ein Tag",
+    "sms": "SMS",
+    "source": "Quelle",
+    "sources": "Quälle",
+    "start-step": "Startschritt",
+    "steps": "Schritt",
+    "sum": "Summe",
+    "support": "Support",
+    "switch-account": "Konto wechseln",
+    "table": "Tabelle",
+    "tablet": "Tablet",
+    "tag": "Tag",
+    "tags": "Stichwort",
+    "team": "Team",
+    "team-id": "Team-ID",
+    "team-manager": "Team Manager",
+    "team-member": "Team Mitglied",
+    "team-name": "Team Name",
+    "team-owner": "Team Bsitzer",
+    "team-settings": "Team Istellige",
+    "team-view-only": "Nur für Teammitglieder sichtbar",
+    "team-websites": "Team Websiite",
+    "teams": "Teams",
+    "term": "Suchbegriff",
+    "terms": "Bedingige",
+    "theme": "Thema",
+    "this-month": "Dä Monet",
+    "this-week": "Diä Wuuche",
+    "this-year": "Das Johr",
+    "timezone": "Ziitzone",
+    "title": "Titel",
+    "today": "Hüt",
+    "toggle-charts": "Charts umschalte",
+    "total": "Total",
+    "total-records": "Gsamti Datesätz",
+    "tracking-code": "Tracking Code",
+    "traffic": "Traffic",
+    "transactions": "Transaktione",
+    "transfer": "Transferiere",
+    "transfer-website": "Websiite transferiere",
+    "true": "Wahr",
+    "type": "Typ",
+    "unique": "Einzigartigi",
+    "unique-events": "Einzigartige Ereignisse",
+    "unique-visitors": "Einzigartigi Bsuecher",
+    "uniqueCustomers": "Einzigartigi Kunde",
+    "unknown": "Unbekannt",
+    "untitled": "Unbennant",
+    "update": "Aktualisieren",
+    "url": "URL",
+    "user": "Benutzer",
+    "username": "Benutzername",
+    "users": "Benutzer",
+    "utm": "UTM",
+    "utm-campaign": "UTM-Kampagne",
+    "utm-content": "UTM-Inhalt",
+    "utm-description": "Tracked Sie Ihri Kampagnen mit UTM Parameters.",
+    "utm-medium": "UTM-Medium",
+    "utm-source": "UTM-Quelle",
+    "utm-term": "UTM-Begriff",
+    "value": "Wärt",
+    "version": "Version",
+    "view": "Azeige",
+    "view-details": "Details azeige",
+    "view-only": "Nume aluege",
+    "views": "Ufrüef",
+    "views-per-visit": "Ufrüef pro Bsuech",
+    "visit-duration": "Durchschn. Bsuechsziit",
+    "visitors": "Bsuecher",
+    "visits": "Bsüech",
+    "website": "Website",
+    "website-id": "Websiite ID",
+    "websites": "Websiite",
+    "window": "Fenster",
+    "yesterday": "Gester"
+  },
+  "message": {
+    "action-confirmation": "Typed Sie {confirmation} is Feld underhalb um z bestätige.",
+    "active-users": "{x} {x, plural, one {aktive Bsuecher} other {aktivi Bsuecher}}",
+    "bad-request": "Ungültige Anfrage",
+    "collected-data": "Gsammleti Date",
+    "confirm-delete": "Sind Sie sich sicher, {target} zlösche?",
+    "confirm-leave": "Sind Sie sich sicher, <b>{target}</b> zverlah?",
+    "confirm-remove": "Sind Sie sich sicher, dass Sie <b>{target}</b> wänd entferne?",
+    "confirm-reset": "Sind Sie sicher, dass Sie d Statistike vo {target} zruggsetze wänd?",
+    "delete-team-warning": "Es Team lösche dued ebefalls alli team Websiite lösche.",
+    "delete-website-warning": "Alli dezueghörige Date werded ebefalls glöscht.",
+    "error": "Es isch en Fehler ufträte.",
+    "event-log": "<b>{event}</b> uf <a>{url}</a>",
+    "forbidden": "Verboten",
+    "go-to-settings": "Zu de Istellige",
+    "incorrect-username-password": "Falsches Passwort oder Benutzername.",
+    "invalid-domain": "Ungültigi Domain",
+    "min-password-length": "Miminamli längi vo {n} Zeiche",
+    "new-version-available": "Es isch en neue Version vo Umami {version} verfügbar!",
+    "no-data-available": "Kei Date vorhande.",
+    "no-event-data": "Es sind kei Event Date verfügbar.",
+    "no-match-password": "Passwörter stimmed ned überi",
+    "no-results-found": "Kei Ergäbnis gfunde.",
+    "no-team-websites": "Dem Team sind kei Websiite zuegordnet.",
+    "no-teams": "Bisher sind no kei Teams erstellt worde.",
+    "no-users": "Da gits kei Benutzer",
+    "no-websites-configured": "Es isch kei Websiite vorhande.",
+    "not-found": "Nicht gefunden",
+    "nothing-selected": "Nichts ausgewählt.",
+    "page-not-found": "Siite ned gfunde.",
+    "reset-website": "Um die Websiite zruggzsetze, typed Sie {confirmation} is Feld unde dran.",
+    "reset-website-warning": "Alli Date für die Websiite werdet glöscht, nur de Tracking Code blibt bestah.",
+    "saved": "Erfolgrich gspeichert.",
+    "sever-error": "Serverfehler",
+    "share-url": "Ihri Websiitestatistik isch under de folgende URL öffentlich zuegänglich:",
+    "team-already-member": "Sie sind bereits es Mitglied vo däm Team.",
+    "team-not-found": "Team nöd gfunde.",
+    "team-websites-info": "Websiite chöi vo jedem im Team agluegt werde",
+    "tracking-code": "Tracking Code",
+    "transfer-team-website-to-user": "Websiite uf zu Ihrem Account transferiere?",
+    "transfer-user-website-to-team": "Wähled Sie s Team zum däm Websiite transferiert werde söll.",
+    "transfer-website": "Übertraged Sie d Websiite Eigetümerrecht uf Ihre Account oder uf es anders Team",
+    "triggered-event": "Usglösts Ereigniss",
+    "unauthorized": "Nicht autorisiert",
+    "user-deleted": "Bnutzer glöscht.",
+    "viewed-page": "Siite agluegt",
+    "visitor-log": "Bsuecher us <b>{country}</b> nutzt <b>{browser}</b> uf <b>{os}</b> <b>{device}</b>"
+  }
 }

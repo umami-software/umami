@@ -5,19 +5,20 @@ import { LinkButton } from '@/components/common/LinkButton';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
-import { useMessages } from '@/components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
 import { Plus } from '@/components/icons';
 import { BoardsDataTable } from './BoardsDataTable';
 
 export function BoardsPage() {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
+  const { renderUrl } = useNavigation();
 
   return (
     <PageBody>
       <Column margin="2">
-        <PageHeader title={formatMessage(labels.boards)}>
-          <LinkButton href="/boards/create" variant="primary">
-            <IconLabel icon={<Plus />} label={formatMessage(labels.addBoard)} />
+        <PageHeader title={t(labels.boards)}>
+          <LinkButton href={renderUrl('/boards/create')} variant="primary">
+            <IconLabel icon={<Plus />} label={t(labels.addBoard)} />
           </LinkButton>
         </PageHeader>
         <Panel>

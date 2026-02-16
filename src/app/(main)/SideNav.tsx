@@ -6,67 +6,76 @@ import {
   Icon,
   Row,
   Text,
-  ThemeButton,
   Tooltip,
   TooltipTrigger,
 } from '@umami/react-zen';
 import Link from 'next/link';
-import type { Key } from 'react';
+import { SettingsNav } from '@/app/(main)/settings/SettingsNav';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
 import { useGlobalState, useMessages, useNavigation } from '@/components/hooks';
-import { Globe, Grid2x2, LayoutDashboard, LinkIcon, PanelLeft } from '@/components/icons';
-import { LanguageButton } from '@/components/input/LanguageButton';
-import { NavButton } from '@/components/input/NavButton';
+import {
+  Globe,
+  Grid2x2,
+  LayoutDashboard,
+  LinkIcon,
+  PanelLeft,
+  PanelsLeftBottom,
+} from '@/components/icons';
+import { UserButton } from '@/components/input/UserButton';
 import { Logo } from '@/components/svg';
 
 export function SideNav(props: any) {
-  const { formatMessage, labels } = useMessages();
-  const { pathname, renderUrl, websiteId, router } = useNavigation();
-  const [isCollapsed, setIsCollapsed] = useGlobalState('sidenav-collapsed', false);
-
-  const hasNav = !!(websiteId || pathname.startsWith('/admin') || pathname.includes('/settings'));
+  const { t, labels } = useMessages();
+  const { pathname, renderUrl, websiteId, teamId } = useNavigation();
+  const [isCollapsed] = useGlobalState('sidenav-collapsed', false);
 
   const links = [
+    ...(!teamId
+      ? [
+          {
+            id: 'dashboard',
+            label: t(labels.dashboard),
+            path: '/dashboard',
+            icon: <PanelsLeftBottom />,
+          },
+        ]
+      : []),
     {
       id: 'boards',
-      label: formatMessage(labels.boards),
+      label: t(labels.boards),
       path: '/boards',
       icon: <LayoutDashboard />,
     },
     {
       id: 'websites',
-      label: formatMessage(labels.websites),
+      label: t(labels.websites),
       path: '/websites',
       icon: <Globe />,
     },
     {
       id: 'links',
-      label: formatMessage(labels.links),
+      label: t(labels.links),
       path: '/links',
       icon: <LinkIcon />,
     },
     {
       id: 'pixels',
-      label: formatMessage(labels.pixels),
+      label: t(labels.pixels),
       path: '/pixels',
       icon: <Grid2x2 />,
     },
   ];
 
-  const handleSelect = (id: Key) => {
-    router.push(id === 'user' ? '/websites' : `/teams/${id}/websites`);
-  };
-
   return (
     <Column
       {...props}
       backgroundColor="surface-base"
-      justifyContent="space-between"
       border
       borderRadius
       paddingX="2"
-      height="100%"
+      flexGrow="1"
+      minHeight="0"
       margin="2"
       style={{
         width: isCollapsed ? '55px' : '240px',
@@ -74,27 +83,26 @@ export function SideNav(props: any) {
         overflow: 'hidden',
       }}
     >
-      <Column style={{ minHeight: 0, overflowY: 'auto', overflowX: 'hidden' }}>
-        <Row
-          alignItems="center"
-          justifyContent="space-between"
-          height="60px"
-          style={{ flexShrink: 0 }}
-        >
-          <Row paddingX="3" alignItems="center" justifyContent="space-between" flexGrow={1}>
-            {!isCollapsed && (
-              <IconLabel icon={<Logo />}>
-                <Text weight="bold">umami</Text>
-              </IconLabel>
-            )}
-            <PanelButton />
-          </Row>
+      <Row
+        alignItems="center"
+        justifyContent="space-between"
+        height="60px"
+        style={{ flexShrink: 0 }}
+      >
+        <Row paddingX="3" alignItems="center" justifyContent="space-between" flexGrow="1">
+          {!isCollapsed && (
+            <IconLabel icon={<Logo />}>
+              <Text weight="bold">umami</Text>
+            </IconLabel>
+          )}
+          <PanelButton />
         </Row>
-        <Row marginBottom="4" style={{ flexShrink: 0 }}>
-          <NavButton showText={!isCollapsed} onAction={handleSelect} />
-        </Row>
+      </Row>
+      <Column flexGrow="1" minHeight="0" style={{ overflowY: 'auto', overflowX: 'hidden' }}>
         {websiteId ? (
           <WebsiteNav websiteId={websiteId} isCollapsed={isCollapsed} />
+        ) : pathname.includes('/settings') ? (
+          <SettingsNav isCollapsed={isCollapsed} />
         ) : (
           <Column gap="2">
             {links.map(({ id, path, label, icon }) => {
@@ -126,9 +134,8 @@ export function SideNav(props: any) {
           </Column>
         )}
       </Column>
-      <Row alignItems="center" justifyContent="center" wrap="wrap" marginBottom="4" gap>
-        <LanguageButton />
-        <ThemeButton />
+      <Row marginBottom="4" style={{ flexShrink: 0 }}>
+        <UserButton showText={!isCollapsed} />
       </Row>
     </Column>
   );

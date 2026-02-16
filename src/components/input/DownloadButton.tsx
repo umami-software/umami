@@ -11,7 +11,7 @@ export function DownloadButton({
   data?: any;
   onClick?: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   const handleClick = async () => {
     downloadCsv(`${filename}.csv`, Papa.unparse(data));
@@ -25,7 +25,7 @@ export function DownloadButton({
         </Icon>
       </Button>
       <Tooltip>
-        <Text size="sm">{formatMessage(labels.download)}</Text>
+        <Text size="sm">{t(labels.download)}</Text>
       </Tooltip>
     </TooltipTrigger>
   );

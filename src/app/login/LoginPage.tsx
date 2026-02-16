@@ -4,7 +4,13 @@ import { LoginForm } from './LoginForm';
 
 export function LoginPage() {
   return (
-    <Column alignItems="center" height="100vh" backgroundColor="surface-raised" paddingTop="12">
+    <Column
+      alignItems="center"
+      justifyContent="flex-start"
+      height="100vh"
+      backgroundColor="surface-raised"
+      style={{ paddingTop: '15vh' }}
+    >
       <LoginForm />
     </Column>
   );

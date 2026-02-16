@@ -28,7 +28,7 @@ export function ReportEditButton({
   onDelete?: () => void;
   children: ({ close }: { close: () => void }) => ReactNode;
 }) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const { mutateAsync, touch } = useDeleteQuery(`/reports/${id}`);
@@ -70,13 +70,13 @@ export function ReportEditButton({
               <Icon>
                 <Edit />
               </Icon>
-              <Text>{formatMessage(labels.edit)}</Text>
+              <Text>{t(labels.edit)}</Text>
             </MenuItem>
             <MenuItem id="delete">
               <Icon>
                 <Trash />
               </Icon>
-              <Text>{formatMessage(labels.delete)}</Text>
+              <Text>{t(labels.delete)}</Text>
             </MenuItem>
           </Menu>
         </Popover>
@@ -85,12 +85,12 @@ export function ReportEditButton({
         {showEdit && children({ close: handleClose })}
         {showDelete && (
           <AlertDialog
-            title={formatMessage(labels.delete)}
+            title={t(labels.delete)}
             onConfirm={handleDelete}
             onCancel={handleClose}
             isDanger
           >
-            <Row gap="1">{formatMessage(messages.confirmDelete, { target: name })}</Row>
+            <Row gap="1">{t(messages.confirmDelete, { target: name })}</Row>
           </AlertDialog>
         )}
       </Modal>

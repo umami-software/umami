@@ -9,7 +9,7 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
   const [model, setModel] = useState('first-click');
   const [type, setType] = useState('path');
   const [step, setStep] = useState('/');
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const {
     dateRange: { startDate, endDate },
   } = useDateRange();
@@ -19,30 +19,20 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
       <WebsiteControls websiteId={websiteId} />
       <Grid columns={{ base: '1fr', md: '1fr 1fr 1fr' }} gap>
         <Column>
-          <Select
-            label={formatMessage(labels.model)}
-            value={model}
-            defaultValue={model}
-            onChange={setModel}
-          >
-            <ListItem id="first-click">{formatMessage(labels.firstClick)}</ListItem>
-            <ListItem id="last-click">{formatMessage(labels.lastClick)}</ListItem>
+          <Select label={t(labels.model)} value={model} defaultValue={model} onChange={setModel}>
+            <ListItem id="first-click">{t(labels.firstClick)}</ListItem>
+            <ListItem id="last-click">{t(labels.lastClick)}</ListItem>
           </Select>
         </Column>
         <Column>
-          <Select
-            label={formatMessage(labels.type)}
-            value={type}
-            defaultValue={type}
-            onChange={setType}
-          >
-            <ListItem id="path">{formatMessage(labels.viewedPage)}</ListItem>
-            <ListItem id="event">{formatMessage(labels.triggeredEvent)}</ListItem>
+          <Select label={t(labels.type)} value={type} defaultValue={type} onChange={setType}>
+            <ListItem id="path">{t(labels.viewedPage)}</ListItem>
+            <ListItem id="event">{t(labels.triggeredEvent)}</ListItem>
           </Select>
         </Column>
         <Column>
           <SearchField
-            label={formatMessage(labels.conversionStep)}
+            label={t(labels.conversionStep)}
             value={step}
             defaultValue={step}
             onSearch={setStep}

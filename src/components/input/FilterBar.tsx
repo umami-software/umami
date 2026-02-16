@@ -21,7 +21,7 @@ import { Bookmark, X } from '@/components/icons';
 import { isSearchOperator } from '@/lib/params';
 
 export function FilterBar({ websiteId }: { websiteId: string }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { formatValue } = useFormat();
   const {
     router,
@@ -62,7 +62,7 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
         {segment && !isLoading && (
           <FilterItem
             name="segment"
-            label={formatMessage(labels.segment)}
+            label={t(labels.segment)}
             value={data?.name || segment}
             operator={operatorLabels.eq}
             onRemove={() => handleSegmentRemove('segment')}
@@ -71,7 +71,7 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
         {cohort && !isLoading && (
           <FilterItem
             name="cohort"
-            label={formatMessage(labels.cohort)}
+            label={t(labels.cohort)}
             value={data?.name || cohort}
             operator={operatorLabels.eq}
             onRemove={() => handleSegmentRemove('cohort')}
@@ -103,12 +103,12 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
                 </Icon>
               </Button>
               <Tooltip>
-                <Text>{formatMessage(labels.saveSegment)}</Text>
+                <Text>{t(labels.saveSegment)}</Text>
               </Tooltip>
             </TooltipTrigger>
           )}
           <Modal>
-            <Dialog title={formatMessage(labels.segment)} style={{ width: 800, minHeight: 300 }}>
+            <Dialog title={t(labels.segment)} style={{ width: 800, minHeight: 300 }}>
               {({ close }) => {
                 return <SegmentEditForm websiteId={websiteId} onClose={close} filters={filters} />;
               }}
@@ -122,7 +122,7 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
             </Icon>
           </Button>
           <Tooltip>
-            <Text>{formatMessage(labels.clearAll)}</Text>
+            <Text>{t(labels.clearAll)}</Text>
           </Tooltip>
         </TooltipTrigger>
       </Row>

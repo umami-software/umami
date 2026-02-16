@@ -7,7 +7,7 @@ import { getDayOfWeekAsDate } from '@/lib/date';
 export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
   const { data, isLoading, error } = useWeeklyTrafficQuery(websiteId);
   const { dateLocale } = useLocale();
-  const { labels, formatMessage } = useMessages();
+  const { labels, t } = useMessages();
   const { weekStartsOn } = dateLocale.options;
   const daysOfWeek = Array(7)
     .fill(weekStartsOn)
@@ -39,8 +39,15 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
       <Grid columns="repeat(8, 1fr)" gap>
         {data && (
           <>
-            <Grid rows="repeat(25, 16px)" gap="1">
-              <Row>&nbsp;</Row>
+            <Row>&nbsp;</Row>
+            {daysOfWeek.map((index: number) => (
+              <Row key={index} alignItems="center" justifyContent="center">
+                <Text weight="bold" align="center">
+                  {format(getDayOfWeekAsDate(index), 'EEE', { locale: dateLocale })}
+                </Text>
+              </Row>
+            ))}
+            <Grid rows="repeat(24, 16px)" gap="1">
               {Array(24)
                 .fill(null)
                 .map((_, i) => {
@@ -66,11 +73,6 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                   key={index}
                   gap="1"
                 >
-                  <Row alignItems="center" justifyContent="center" marginBottom="3">
-                    <Text weight="bold" align="center">
-                      {format(getDayOfWeekAsDate(index), 'EEE', { locale: dateLocale })}
-                    </Text>
-                  </Row>
                   {day?.map((count: number, j) => {
                     const pct = max ? count / max : 0;
                     return (
@@ -95,8 +97,8 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                             />
                           </Row>
                         </Focusable>
-                        <Tooltip placement="right">
-                          <Text size="sm">{`${formatMessage(labels.visitors)}: ${count}`}</Text>
+                        <Tooltip placement="right" style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}>
+                          <Text size="base">{`${t(labels.visitors)}: ${count}`}</Text>
                         </Tooltip>
                       </TooltipTrigger>
                     );

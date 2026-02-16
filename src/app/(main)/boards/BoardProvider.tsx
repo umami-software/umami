@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 import { useApi, useMessages, useModified, useNavigation } from '@/components/hooks';
 import { useBoardQuery } from '@/components/hooks/queries/useBoardQuery';
 import type { Board, BoardParameters } from '@/lib/types';
+import { getComponentDefinition } from './boardComponentRegistry';
 
 export type LayoutGetter = () => Partial<BoardParameters> | null;
 
@@ -27,6 +28,29 @@ const createDefaultBoard = (): Partial<Board> => ({
   },
 });
 
+function sanitizeBoardParameters(parameters?: BoardParameters): BoardParameters | undefined {
+  if (!parameters?.rows) {
+    return parameters;
+  }
+
+  return {
+    ...parameters,
+    rows: parameters.rows.map(row => ({
+      ...row,
+      columns: row.columns.map(column => {
+        if (column.component && !getComponentDefinition(column.component.type)) {
+          return {
+            ...column,
+            component: null,
+          };
+        }
+
+        return column;
+      }),
+    })),
+  };
+}
+
 export function BoardProvider({
   boardId,
   editing = false,
@@ -40,8 +64,8 @@ export function BoardProvider({
   const { post, useMutation } = useApi();
   const { touch } = useModified();
   const { toast } = useToast();
-  const { formatMessage, labels, messages } = useMessages();
-  const { router, renderUrl } = useNavigation();
+  const { t, labels, messages } = useMessages();
+  const { router, renderUrl, teamId } = useNavigation();
 
   const [board, setBoard] = useState<Partial<Board>>(data ?? createDefaultBoard());
   const layoutGetterRef = useRef<LayoutGetter | null>(null);
@@ -52,7 +76,10 @@ export function BoardProvider({
 
   useEffect(() => {
     if (data) {
-      setBoard(data);
+      setBoard({
+        ...data,
+        parameters: sanitizeBoardParameters(data.parameters),
+      });
     }
   }, [data]);
 
@@ -61,7 +88,7 @@ export function BoardProvider({
       if (boardData.id) {
         return post(`/boards/${boardData.id}`, boardData);
       }
-      return post('/boards', { ...boardData, type: 'dashboard', slug: '' });
+      return post('/boards', { ...boardData, type: 'dashboard', slug: '', teamId });
     },
   });
 
@@ -70,11 +97,13 @@ export function BoardProvider({
   }, []);
 
   const saveBoard = useCallback(async () => {
-    const defaultName = formatMessage(labels.untitled);
+    const defaultName = t(labels.untitled);
 
-    // Get current layout sizes from BoardBody if registered
+    // Get current layout sizes from BoardEditBody if registered
     const layoutData = layoutGetterRef.current?.();
-    const parameters = layoutData ? { ...board.parameters, ...layoutData } : board.parameters;
+    const parameters = sanitizeBoardParameters(
+      layoutData ? { ...board.parameters, ...layoutData } : board.parameters,
+    );
 
     const result = await mutateAsync({
       ...board,
@@ -82,7 +111,7 @@ export function BoardProvider({
       parameters,
     });
 
-    toast(formatMessage(messages.saved));
+    toast(t(messages.saved));
     touch('boards');
 
     if (board.id) {
@@ -92,17 +121,7 @@ export function BoardProvider({
     }
 
     return result;
-  }, [
-    board,
-    mutateAsync,
-    toast,
-    formatMessage,
-    labels.untitled,
-    messages.saved,
-    touch,
-    router,
-    renderUrl,
-  ]);
+  }, [board, mutateAsync, toast, t, labels.untitled, messages.saved, touch, router, renderUrl]);
 
   if (boardId && isFetching && isLoading) {
     return <Loading placement="absolute" />;

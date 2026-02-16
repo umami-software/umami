@@ -4,7 +4,6 @@ import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
 import { useLoginQuery, useMessages, useNavigation, useTeam } from '@/components/hooks';
 import { Users } from '@/components/icons';
-import { labels } from '@/components/messages';
 import { ROLES } from '@/lib/constants';
 import { TeamsMemberAddButton } from '../TeamsMemberAddButton';
 import { TeamEditForm } from './TeamEditForm';
@@ -15,7 +14,7 @@ export function TeamSettings({ teamId }: { teamId: string }) {
   const team: any = useTeam();
   const { user } = useLoginQuery();
   const { pathname } = useNavigation();
-  const { formatMessage } = useMessages();
+  const { t, labels } = useMessages();
 
   const isAdmin = pathname.includes('/admin');
 
@@ -41,7 +40,7 @@ export function TeamSettings({ teamId }: { teamId: string }) {
       </Panel>
       <Panel>
         <Row alignItems="center" justifyContent="space-between">
-          <Heading size="base">{formatMessage(labels.members)}</Heading>
+          <Heading size="base">{t(labels.members)}</Heading>
           {isAdmin && <TeamsMemberAddButton teamId={teamId} />}
         </Row>
         <TeamMembersDataTable teamId={teamId} allowEdit={canEdit} />

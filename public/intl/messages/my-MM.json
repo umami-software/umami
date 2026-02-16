@@ -1,2202 +1,388 @@
 {
-  "label.access-code": [
-    {
-      "type": 0,
-      "value": "ဝင်ခွင့်ကုဒ်"
-    }
-  ],
-  "label.actions": [
-    {
-      "type": 0,
-      "value": "လုပ်ဆောင်ချက်များ"
-    }
-  ],
-  "label.activity": [
-    {
-      "type": 0,
-      "value": "လုပ်ဆောင်ချက်စာရင်း"
-    }
-  ],
-  "label.add": [
-    {
-      "type": 0,
-      "value": "ထပ်ထည့်မည်"
-    }
-  ],
-  "label.add-board": [
-    {
-      "type": 0,
-      "value": "Add board"
-    }
-  ],
-  "label.add-description": [
-    {
-      "type": 0,
-      "value": "အကြောင်းအရာဖော်ပြချက် ထည့်မည်"
-    }
-  ],
-  "label.add-member": [
-    {
-      "type": 0,
-      "value": "Add member"
-    }
-  ],
-  "label.add-step": [
-    {
-      "type": 0,
-      "value": "Add step"
-    }
-  ],
-  "label.add-website": [
-    {
-      "type": 0,
-      "value": "ဝက်ဘ်ဆိုဒ်ထည့်မည်"
-    }
-  ],
-  "label.admin": [
-    {
-      "type": 0,
-      "value": "အက်ဒမင်"
-    }
-  ],
-  "label.affiliate": [
-    {
-      "type": 0,
-      "value": "Affiliate"
-    }
-  ],
-  "label.after": [
-    {
-      "type": 0,
-      "value": "ပြီးနောက်"
-    }
-  ],
-  "label.all": [
-    {
-      "type": 0,
-      "value": "အားလုံး"
-    }
-  ],
-  "label.all-time": [
-    {
-      "type": 0,
-      "value": "အချိန်အစမှအခုထိ"
-    }
-  ],
-  "label.analytics": [
-    {
-      "type": 0,
-      "value": "အန်နလစ်တစ်"
-    }
-  ],
-  "label.apply": [
-    {
-      "type": 0,
-      "value": "Apply"
-    }
-  ],
-  "label.attribution": [
-    {
-      "type": 0,
-      "value": "Attribution"
-    }
-  ],
-  "label.attribution-description": [
-    {
-      "type": 0,
-      "value": "See how users engage with your marketing and what drives conversions."
-    }
-  ],
-  "label.average": [
-    {
-      "type": 0,
-      "value": "ပျမ်းမျှ"
-    }
-  ],
-  "label.back": [
-    {
-      "type": 0,
-      "value": "နောက်သို့"
-    }
-  ],
-  "label.before": [
-    {
-      "type": 0,
-      "value": "မတိုင်မီ"
-    }
-  ],
-  "label.boards": [
-    {
-      "type": 0,
-      "value": "Boards"
-    }
-  ],
-  "label.bounce-rate": [
-    {
-      "type": 0,
-      "value": "Bounce နှုန်း"
-    }
-  ],
-  "label.breakdown": [
-    {
-      "type": 0,
-      "value": "ခွဲခြမ်းစိတ်ဖြာမှု"
-    }
-  ],
-  "label.browser": [
-    {
-      "type": 0,
-      "value": "Browser"
-    }
-  ],
-  "label.browsers": [
-    {
-      "type": 0,
-      "value": "ဝက်ဘ်ဘရောင်ဇာများ"
-    }
-  ],
-  "label.campaigns": [
-    {
-      "type": 0,
-      "value": "Campaigns"
-    }
-  ],
-  "label.cancel": [
-    {
-      "type": 0,
-      "value": "မလုပ်တော့ပါ"
-    }
-  ],
-  "label.change-password": [
-    {
-      "type": 0,
-      "value": "စကားဝှက် ပြောင်းမည်"
-    }
-  ],
-  "label.channels": [
-    {
-      "type": 0,
-      "value": "Channels"
-    }
-  ],
-  "label.cities": [
-    {
-      "type": 0,
-      "value": "မြို့များ"
-    }
-  ],
-  "label.city": [
-    {
-      "type": 0,
-      "value": "City"
-    }
-  ],
-  "label.clear-all": [
-    {
-      "type": 0,
-      "value": "အားလုံးကိုဖျက်မည်"
-    }
-  ],
-  "label.cohort": [
-    {
-      "type": 0,
-      "value": "Cohort"
-    }
-  ],
-  "label.compare": [
-    {
-      "type": 0,
-      "value": "Compare"
-    }
-  ],
-  "label.compare-dates": [
-    {
-      "type": 0,
-      "value": "Compare dates"
-    }
-  ],
-  "label.confirm": [
-    {
-      "type": 0,
-      "value": "အတည်ပြုသည်"
-    }
-  ],
-  "label.confirm-password": [
-    {
-      "type": 0,
-      "value": "စကားဝှက်အတည်ပြုသည်"
-    }
-  ],
-  "label.contains": [
-    {
-      "type": 0,
-      "value": "ပါဝင်သည်"
-    }
-  ],
-  "label.content": [
-    {
-      "type": 0,
-      "value": "Content"
-    }
-  ],
-  "label.continue": [
-    {
-      "type": 0,
-      "value": "ဆက်သွားမည်"
-    }
-  ],
-  "label.conversion": [
-    {
-      "type": 0,
-      "value": "Conversion"
-    }
-  ],
-  "label.conversion-rate": [
-    {
-      "type": 0,
-      "value": "Conversion rate"
-    }
-  ],
-  "label.conversion-step": [
-    {
-      "type": 0,
-      "value": "Conversion step"
-    }
-  ],
-  "label.count": [
-    {
-      "type": 0,
-      "value": "Count"
-    }
-  ],
-  "label.countries": [
-    {
-      "type": 0,
-      "value": "နိုင်ငံများ"
-    }
-  ],
-  "label.country": [
-    {
-      "type": 0,
-      "value": "Country"
-    }
-  ],
-  "label.create": [
-    {
-      "type": 0,
-      "value": "Create"
-    }
-  ],
-  "label.create-report": [
-    {
-      "type": 0,
-      "value": "ရီပို့လုပ်မည်"
-    }
-  ],
-  "label.create-team": [
-    {
-      "type": 0,
-      "value": "Team ပြုလုပ်မည်"
-    }
-  ],
-  "label.create-user": [
-    {
-      "type": 0,
-      "value": "အသုံးပြုသူထည့်မည်"
-    }
-  ],
-  "label.created": [
-    {
-      "type": 0,
-      "value": "ပြုလုပ်ပြီးသော"
-    }
-  ],
-  "label.created-by": [
-    {
-      "type": 0,
-      "value": "Created By"
-    }
-  ],
-  "label.currency": [
-    {
-      "type": 0,
-      "value": "Currency"
-    }
-  ],
-  "label.current": [
-    {
-      "type": 0,
-      "value": "Current"
-    }
-  ],
-  "label.current-password": [
-    {
-      "type": 0,
-      "value": "လက်ရှိစကားဝှက်"
-    }
-  ],
-  "label.custom-range": [
-    {
-      "type": 0,
-      "value": "အချိန်အပိုင်းအခြားရွေးရန်"
-    }
-  ],
-  "label.dashboard": [
-    {
-      "type": 0,
-      "value": "ဒက်ရှ်ဘုတ်"
-    }
-  ],
-  "label.data": [
-    {
-      "type": 0,
-      "value": "ဒေတာ"
-    }
-  ],
-  "label.date": [
-    {
-      "type": 0,
-      "value": "Date"
-    }
-  ],
-  "label.date-range": [
-    {
-      "type": 0,
-      "value": "ရက်အပိုင်းအခြား"
-    }
-  ],
-  "label.day": [
-    {
-      "type": 0,
-      "value": "Day"
-    }
-  ],
-  "label.default-date-range": [
-    {
-      "type": 0,
-      "value": "ပုံသေ ရက်အပိုင်းအခြား"
-    }
-  ],
-  "label.delete": [
-    {
-      "type": 0,
-      "value": "ဖျက်မည်"
-    }
-  ],
-  "label.delete-report": [
-    {
-      "type": 0,
-      "value": "Delete report"
-    }
-  ],
-  "label.delete-team": [
-    {
-      "type": 0,
-      "value": "Team ကိုဖျက်မည်"
-    }
-  ],
-  "label.delete-user": [
-    {
-      "type": 0,
-      "value": "အသုံးပြုသူကိုဖျက်မည်"
-    }
-  ],
-  "label.delete-website": [
-    {
-      "type": 0,
-      "value": "ဝက်ဘ်ဆိုဒ်ကိုဖျက်မည်"
-    }
-  ],
-  "label.description": [
-    {
-      "type": 0,
-      "value": "ရှင်းပြချက်"
-    }
-  ],
-  "label.desktop": [
-    {
-      "type": 0,
-      "value": "စားပွဲတင်ကွန်ပျူတာ"
-    }
-  ],
-  "label.details": [
-    {
-      "type": 0,
-      "value": "အသေးစိတ်"
-    }
-  ],
-  "label.device": [
-    {
-      "type": 0,
-      "value": "Device"
-    }
-  ],
-  "label.devices": [
-    {
-      "type": 0,
-      "value": "အသုံးပြုသည့် ကိရိယာများ"
-    }
-  ],
-  "label.direct": [
-    {
-      "type": 0,
-      "value": "Direct"
-    }
-  ],
-  "label.dismiss": [
-    {
-      "type": 0,
-      "value": "ပိတ်ပါ"
-    }
-  ],
-  "label.distinct-id": [
-    {
-      "type": 0,
-      "value": "Distinct ID"
-    }
-  ],
-  "label.does-not-contain": [
-    {
-      "type": 0,
-      "value": "မပါဝင်ပါ"
-    }
-  ],
-  "label.does-not-include": [
-    {
-      "type": 0,
-      "value": "Does not include"
-    }
-  ],
-  "label.doest-not-exist": [
-    {
-      "type": 0,
-      "value": "Does not exist"
-    }
-  ],
-  "label.domain": [
-    {
-      "type": 0,
-      "value": "ဒိုမိန်း"
-    }
-  ],
-  "label.dropoff": [
-    {
-      "type": 0,
-      "value": "Dropoff"
-    }
-  ],
-  "label.edit": [
-    {
-      "type": 0,
-      "value": "ပြုပြင်မည်"
-    }
-  ],
-  "label.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "ဒက်ရှ်ဘုတ်ကို ပြုပြင်မည်"
-    }
-  ],
-  "label.edit-member": [
-    {
-      "type": 0,
-      "value": "Edit member"
-    }
-  ],
-  "label.email": [
-    {
-      "type": 0,
-      "value": "Email"
-    }
-  ],
-  "label.enable-share-url": [
-    {
-      "type": 0,
-      "value": "ဝေငှခြင်းကိုလင့်ကို ဖွင့်မည်"
-    }
-  ],
-  "label.end-step": [
-    {
-      "type": 0,
-      "value": "End Step"
-    }
-  ],
-  "label.entry": [
-    {
-      "type": 0,
-      "value": "Entry URL"
-    }
-  ],
-  "label.event": [
-    {
-      "type": 0,
-      "value": "အဖြစ်အပျက်"
-    }
-  ],
-  "label.event-data": [
-    {
-      "type": 0,
-      "value": "အဖြစ်အပျက် ဒေတာ"
-    }
-  ],
-  "label.event-name": [
-    {
-      "type": 0,
-      "value": "Event name"
-    }
-  ],
-  "label.events": [
-    {
-      "type": 0,
-      "value": "အဖြစ်အပျက်များ"
-    }
-  ],
-  "label.exists": [
-    {
-      "type": 0,
-      "value": "Exists"
-    }
-  ],
-  "label.exit": [
-    {
-      "type": 0,
-      "value": "Exit URL"
-    }
-  ],
-  "label.false": [
-    {
-      "type": 0,
-      "value": "မှားသည်"
-    }
-  ],
-  "label.field": [
-    {
-      "type": 0,
-      "value": "Field အမည်"
-    }
-  ],
-  "label.fields": [
-    {
-      "type": 0,
-      "value": "Field အမည်များ"
-    }
-  ],
-  "label.filter": [
-    {
-      "type": 0,
-      "value": "Filter"
-    }
-  ],
-  "label.filter-combined": [
-    {
-      "type": 0,
-      "value": "ပေါင်းစပ်ပြီး"
-    }
-  ],
-  "label.filter-raw": [
-    {
-      "type": 0,
-      "value": "အရှိအတိုင်း"
-    }
-  ],
-  "label.filters": [
-    {
-      "type": 0,
-      "value": "Filter များ"
-    }
-  ],
-  "label.first-click": [
-    {
-      "type": 0,
-      "value": "First click"
-    }
-  ],
-  "label.first-seen": [
-    {
-      "type": 0,
-      "value": "First seen"
-    }
-  ],
-  "label.funnel": [
-    {
-      "type": 0,
-      "value": "ဖန်နယ်"
-    }
-  ],
-  "label.funnel-description": [
-    {
-      "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
-    }
-  ],
-  "label.funnels": [
-    {
-      "type": 0,
-      "value": "Funnels"
-    }
-  ],
-  "label.goal": [
-    {
-      "type": 0,
-      "value": "Goal"
-    }
-  ],
-  "label.goals": [
-    {
-      "type": 0,
-      "value": "Goals"
-    }
-  ],
-  "label.goals-description": [
-    {
-      "type": 0,
-      "value": "Track your goals for pageviews and events."
-    }
-  ],
-  "label.greater-than": [
-    {
-      "type": 0,
-      "value": "ထက်ပို၍ကြီးသည်"
-    }
-  ],
-  "label.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "ထက်ပို၍ကြီးသည်သို့မဟုတ်တူသည်"
-    }
-  ],
-  "label.grouped": [
-    {
-      "type": 0,
-      "value": "Grouped"
-    }
-  ],
-  "label.hostname": [
-    {
-      "type": 0,
-      "value": "Hostname"
-    }
-  ],
-  "label.includes": [
-    {
-      "type": 0,
-      "value": "Includes"
-    }
-  ],
-  "label.insight": [
-    {
-      "type": 0,
-      "value": "Insight"
-    }
-  ],
-  "label.insights": [
-    {
-      "type": 0,
-      "value": "အသေးစိတ်သိမြင်နိုင်ရန်"
-    }
-  ],
-  "label.insights-description": [
-    {
-      "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
-    }
-  ],
-  "label.is": [
-    {
-      "type": 0,
-      "value": "Is"
-    }
-  ],
-  "label.is-false": [
-    {
-      "type": 0,
-      "value": "Is false"
-    }
-  ],
-  "label.is-not": [
-    {
-      "type": 0,
-      "value": "Is not"
-    }
-  ],
-  "label.is-not-set": [
-    {
-      "type": 0,
-      "value": "Is not set"
-    }
-  ],
-  "label.is-set": [
-    {
-      "type": 0,
-      "value": "Is set"
-    }
-  ],
-  "label.is-true": [
-    {
-      "type": 0,
-      "value": "Is true"
-    }
-  ],
-  "label.join": [
-    {
-      "type": 0,
-      "value": "ဝင်မည်"
-    }
-  ],
-  "label.join-team": [
-    {
-      "type": 0,
-      "value": "အသင်းဝင်မည်"
-    }
-  ],
-  "label.journey": [
-    {
-      "type": 0,
-      "value": "Journey"
-    }
-  ],
-  "label.journey-description": [
-    {
-      "type": 0,
-      "value": "Understand how users navigate through your website."
-    }
-  ],
-  "label.journeys": [
-    {
-      "type": 0,
-      "value": "Journeys"
-    }
-  ],
-  "label.language": [
-    {
-      "type": 0,
-      "value": "ဘာသာစကား"
-    }
-  ],
-  "label.languages": [
-    {
-      "type": 0,
-      "value": "ဘာသာစကားများ"
-    }
-  ],
-  "label.laptop": [
-    {
-      "type": 0,
-      "value": "လက်တော့ပ်"
-    }
-  ],
-  "label.last-click": [
-    {
-      "type": 0,
-      "value": "Last click"
-    }
-  ],
-  "label.last-days": [
-    {
-      "type": 0,
-      "value": "လွန်ခဲ့သော "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " ရက်က"
-    }
-  ],
-  "label.last-hours": [
-    {
-      "type": 0,
-      "value": "လွန်ခဲ့သော "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " နာရီက"
-    }
-  ],
-  "label.last-months": [
-    {
-      "type": 0,
-      "value": "Last "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " months"
-    }
-  ],
-  "label.last-seen": [
-    {
-      "type": 0,
-      "value": "Last seen"
-    }
-  ],
-  "label.leave": [
-    {
-      "type": 0,
-      "value": "ထွက်မည်"
-    }
-  ],
-  "label.leave-team": [
-    {
-      "type": 0,
-      "value": "အသင်းမှထွက်မည်"
-    }
-  ],
-  "label.less-than": [
-    {
-      "type": 0,
-      "value": "ထက်ပို၍ငယ်သည်"
-    }
-  ],
-  "label.less-than-equals": [
-    {
-      "type": 0,
-      "value": "ထက်ပို၍ငယ်သည်သို့မဟုတ်တူသည်"
-    }
-  ],
-  "label.links": [
-    {
-      "type": 0,
-      "value": "Links"
-    }
-  ],
-  "label.login": [
-    {
-      "type": 0,
-      "value": "လော့ဂ်အင်"
-    }
-  ],
-  "label.logout": [
-    {
-      "type": 0,
-      "value": "လော့ဂ်အောက်လုပ်မည်"
-    }
-  ],
-  "label.manage": [
-    {
-      "type": 0,
-      "value": "Manage"
-    }
-  ],
-  "label.manager": [
-    {
-      "type": 0,
-      "value": "Manager"
-    }
-  ],
-  "label.max": [
-    {
-      "type": 0,
-      "value": "အများဆုံး"
-    }
-  ],
-  "label.maximize": [
-    {
-      "type": 0,
-      "value": "Expand"
-    }
-  ],
-  "label.medium": [
-    {
-      "type": 0,
-      "value": "Medium"
-    }
-  ],
-  "label.member": [
-    {
-      "type": 0,
-      "value": "Member"
-    }
-  ],
-  "label.members": [
-    {
-      "type": 0,
-      "value": "အဖွဲ့ဝင်များ"
-    }
-  ],
-  "label.min": [
-    {
-      "type": 0,
-      "value": "အနည်းဆုံး"
-    }
-  ],
-  "label.mobile": [
-    {
-      "type": 0,
-      "value": "မိုဘိုင်း"
-    }
-  ],
-  "label.model": [
-    {
-      "type": 0,
-      "value": "Model"
-    }
-  ],
-  "label.more": [
-    {
-      "type": 0,
-      "value": "နောက်ထပ်"
-    }
-  ],
-  "label.my-account": [
-    {
-      "type": 0,
-      "value": "My account"
-    }
-  ],
-  "label.my-websites": [
-    {
-      "type": 0,
-      "value": "My websites"
-    }
-  ],
-  "label.name": [
-    {
-      "type": 0,
-      "value": "အမည်"
-    }
-  ],
-  "label.new-password": [
-    {
-      "type": 0,
-      "value": "စကားဝှက်အသစ်"
-    }
-  ],
-  "label.none": [
-    {
-      "type": 0,
-      "value": "မရှိပါ"
-    }
-  ],
-  "label.number-of-records": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "record"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "records"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "label.ok": [
-    {
-      "type": 0,
-      "value": "OK"
-    }
-  ],
-  "label.online": [
-    {
-      "type": 0,
-      "value": "Online"
-    }
-  ],
-  "label.organic-search": [
-    {
-      "type": 0,
-      "value": "Organic search"
-    }
-  ],
-  "label.organic-shopping": [
-    {
-      "type": 0,
-      "value": "Organic shopping"
-    }
-  ],
-  "label.organic-social": [
-    {
-      "type": 0,
-      "value": "Organic social"
-    }
-  ],
-  "label.organic-video": [
-    {
-      "type": 0,
-      "value": "Organic video"
-    }
-  ],
-  "label.os": [
-    {
-      "type": 0,
-      "value": "ကွန်ပျူတာလည်ပတ်မှုစနစ်"
-    }
-  ],
-  "label.other": [
-    {
-      "type": 0,
-      "value": "Other"
-    }
-  ],
-  "label.overview": [
-    {
-      "type": 0,
-      "value": "အပေါ်ယံမြင်ကွင်း"
-    }
-  ],
-  "label.owner": [
-    {
-      "type": 0,
-      "value": "ပိုင်ဆိုင်သူ"
-    }
-  ],
-  "label.page": [
-    {
-      "type": 0,
-      "value": "Page"
-    }
-  ],
-  "label.page-of": [
-    {
-      "type": 0,
-      "value": "Page "
-    },
-    {
-      "type": 1,
-      "value": "current"
-    },
-    {
-      "type": 0,
-      "value": " of "
-    },
-    {
-      "type": 1,
-      "value": "total"
-    }
-  ],
-  "label.page-views": [
-    {
-      "type": 0,
-      "value": "ဝင်ရောက်ကြည့်ရှုသူ"
-    }
-  ],
-  "label.pageTitle": [
-    {
-      "type": 0,
-      "value": "Page title"
-    }
-  ],
-  "label.pages": [
-    {
-      "type": 0,
-      "value": "စာမျက်နှာများ"
-    }
-  ],
-  "label.paid-ads": [
-    {
-      "type": 0,
-      "value": "Paid ads"
-    }
-  ],
-  "label.paid-search": [
-    {
-      "type": 0,
-      "value": "Paid search"
-    }
-  ],
-  "label.paid-shopping": [
-    {
-      "type": 0,
-      "value": "Paid shopping"
-    }
-  ],
-  "label.paid-social": [
-    {
-      "type": 0,
-      "value": "Paid social"
-    }
-  ],
-  "label.paid-video": [
-    {
-      "type": 0,
-      "value": "Paid video"
-    }
-  ],
-  "label.password": [
-    {
-      "type": 0,
-      "value": "စကားဝှက်"
-    }
-  ],
-  "label.path": [
-    {
-      "type": 0,
-      "value": "Path"
-    }
-  ],
-  "label.paths": [
-    {
-      "type": 0,
-      "value": "Paths"
-    }
-  ],
-  "label.pixels": [
-    {
-      "type": 0,
-      "value": "Pixels"
-    }
-  ],
-  "label.powered-by": [
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": " ထောက်ပံ့သည်"
-    }
-  ],
-  "label.previous": [
-    {
-      "type": 0,
-      "value": "Previous"
-    }
-  ],
-  "label.previous-period": [
-    {
-      "type": 0,
-      "value": "Previous period"
-    }
-  ],
-  "label.previous-year": [
-    {
-      "type": 0,
-      "value": "Previous year"
-    }
-  ],
-  "label.profile": [
-    {
-      "type": 0,
-      "value": "ပရိုဖိုင်း"
-    }
-  ],
-  "label.properties": [
-    {
-      "type": 0,
-      "value": "Properties"
-    }
-  ],
-  "label.property": [
-    {
-      "type": 0,
-      "value": "Property"
-    }
-  ],
-  "label.queries": [
-    {
-      "type": 0,
-      "value": "Queries (ကွာရီများ)"
-    }
-  ],
-  "label.query": [
-    {
-      "type": 0,
-      "value": "Query (ကွာရီ)"
-    }
-  ],
-  "label.query-parameters": [
-    {
-      "type": 0,
-      "value": "Query parameters (ကွာရီပါရာမီတာများ)"
-    }
-  ],
-  "label.realtime": [
-    {
-      "type": 0,
-      "value": "အချိန်နှင့်တပြေးညီ"
-    }
-  ],
-  "label.referral": [
-    {
-      "type": 0,
-      "value": "Referral"
-    }
-  ],
-  "label.referrer": [
-    {
-      "type": 0,
-      "value": "Referrer"
-    }
-  ],
-  "label.referrers": [
-    {
-      "type": 0,
-      "value": "ရည်ညွှန်းမှုများ"
-    }
-  ],
-  "label.refresh": [
-    {
-      "type": 0,
-      "value": "Refresh လုပ်မည်"
-    }
-  ],
-  "label.regenerate": [
-    {
-      "type": 0,
-      "value": "ပြန်ထုတ်မည်"
-    }
-  ],
-  "label.region": [
-    {
-      "type": 0,
-      "value": "Region"
-    }
-  ],
-  "label.regions": [
-    {
-      "type": 0,
-      "value": "ဒေသများ"
-    }
-  ],
-  "label.remaining": [
-    {
-      "type": 0,
-      "value": "Remaining"
-    }
-  ],
-  "label.remove": [
-    {
-      "type": 0,
-      "value": "ဖျက်မည်"
-    }
-  ],
-  "label.remove-member": [
-    {
-      "type": 0,
-      "value": "Remove member"
-    }
-  ],
-  "label.reports": [
-    {
-      "type": 0,
-      "value": "တင်ပြမှုများ"
-    }
-  ],
-  "label.required": [
-    {
-      "type": 0,
-      "value": "လိုအပ်သည်"
-    }
-  ],
-  "label.reset": [
-    {
-      "type": 0,
-      "value": "ပြန်စမည်"
-    }
-  ],
-  "label.reset-website": [
-    {
-      "type": 0,
-      "value": "ဝက်ဘ်ဆိုဒ်ဒေတာကိုဖျက်မည်"
-    }
-  ],
-  "label.retention": [
-    {
-      "type": 0,
-      "value": "Retention"
-    }
-  ],
-  "label.retention-description": [
-    {
-      "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
-    }
-  ],
-  "label.revenue": [
-    {
-      "type": 0,
-      "value": "Revenue"
-    }
-  ],
-  "label.revenue-description": [
-    {
-      "type": 0,
-      "value": "Look into your revenue across time."
-    }
-  ],
-  "label.role": [
-    {
-      "type": 0,
-      "value": "အခန်းကဏ္ဍ"
-    }
-  ],
-  "label.run-query": [
-    {
-      "type": 0,
-      "value": "Query ကိုလုပ်ဆောင်မည်"
-    }
-  ],
-  "label.save": [
-    {
-      "type": 0,
-      "value": "သိမ်းဆည်းမည်"
-    }
-  ],
-  "label.screens": [
-    {
-      "type": 0,
-      "value": "မြင်ကွင်းများ"
-    }
-  ],
-  "label.search": [
-    {
-      "type": 0,
-      "value": "Search"
-    }
-  ],
-  "label.select": [
-    {
-      "type": 0,
-      "value": "Select"
-    }
-  ],
-  "label.select-date": [
-    {
-      "type": 0,
-      "value": "ရက်ရွေးပါ"
-    }
-  ],
-  "label.select-filter": [
-    {
-      "type": 0,
-      "value": "Select filter"
-    }
-  ],
-  "label.select-role": [
-    {
-      "type": 0,
-      "value": "Select role"
-    }
-  ],
-  "label.select-website": [
-    {
-      "type": 0,
-      "value": "ဝဘက်ဘ်ဆိုဒ်ရွေးပါ"
-    }
-  ],
-  "label.session": [
-    {
-      "type": 0,
-      "value": "Session"
-    }
-  ],
-  "label.session-data": [
-    {
-      "type": 0,
-      "value": "Session data"
-    }
-  ],
-  "label.sessions": [
-    {
-      "type": 0,
-      "value": "ဆက်ရှင်များ"
-    }
-  ],
-  "label.settings": [
-    {
-      "type": 0,
-      "value": "ဆက်တင်များ"
-    }
-  ],
-  "label.share": [
-    {
-      "type": 0,
-      "value": "Share"
-    }
-  ],
-  "label.share-url": [
-    {
-      "type": 0,
-      "value": "URL ကိုရှဲမည်"
-    }
-  ],
-  "label.single-day": [
-    {
-      "type": 0,
-      "value": "တစ်ရက်အတွင်း"
-    }
-  ],
-  "label.sms": [
-    {
-      "type": 0,
-      "value": "SMS"
-    }
-  ],
-  "label.sources": [
-    {
-      "type": 0,
-      "value": "Sources"
-    }
-  ],
-  "label.start-step": [
-    {
-      "type": 0,
-      "value": "Start Step"
-    }
-  ],
-  "label.steps": [
-    {
-      "type": 0,
-      "value": "Steps"
-    }
-  ],
-  "label.sum": [
-    {
-      "type": 0,
-      "value": "ပေါင်းလဒ်"
-    }
-  ],
-  "label.tablet": [
-    {
-      "type": 0,
-      "value": "တက်ဘလက်"
-    }
-  ],
-  "label.tag": [
-    {
-      "type": 0,
-      "value": "Tag"
-    }
-  ],
-  "label.tags": [
-    {
-      "type": 0,
-      "value": "Tags"
-    }
-  ],
-  "label.team": [
-    {
-      "type": 0,
-      "value": "အသင်း"
-    }
-  ],
-  "label.team-id": [
-    {
-      "type": 0,
-      "value": "အသင်း အိုင်ဒီ"
-    }
-  ],
-  "label.team-manager": [
-    {
-      "type": 0,
-      "value": "Team manager"
-    }
-  ],
-  "label.team-member": [
-    {
-      "type": 0,
-      "value": "အသင်းဝင်"
-    }
-  ],
-  "label.team-name": [
-    {
-      "type": 0,
-      "value": "Team name"
-    }
-  ],
-  "label.team-owner": [
-    {
-      "type": 0,
-      "value": "အသင်းကိုပိုင်ဆိုင်သူ"
-    }
-  ],
-  "label.team-settings": [
-    {
-      "type": 0,
-      "value": "Team settings"
-    }
-  ],
-  "label.team-view-only": [
-    {
-      "type": 0,
-      "value": "Team view only"
-    }
-  ],
-  "label.team-websites": [
-    {
-      "type": 0,
-      "value": "Team websites"
-    }
-  ],
-  "label.teams": [
-    {
-      "type": 0,
-      "value": "အသင်းများ"
-    }
-  ],
-  "label.terms": [
-    {
-      "type": 0,
-      "value": "Terms"
-    }
-  ],
-  "label.theme": [
-    {
-      "type": 0,
-      "value": "Theme (အပြင်အဆင်)"
-    }
-  ],
-  "label.this-month": [
-    {
-      "type": 0,
-      "value": "ယခုလ"
-    }
-  ],
-  "label.this-week": [
-    {
-      "type": 0,
-      "value": "ယခုအပတ်"
-    }
-  ],
-  "label.this-year": [
-    {
-      "type": 0,
-      "value": "ယခုနှစ်"
-    }
-  ],
-  "label.timezone": [
-    {
-      "type": 0,
-      "value": "အချိန်ဇုန်"
-    }
-  ],
-  "label.title": [
-    {
-      "type": 0,
-      "value": "ခေါင်းစဥ်"
-    }
-  ],
-  "label.today": [
-    {
-      "type": 0,
-      "value": "ယနေ့"
-    }
-  ],
-  "label.toggle-charts": [
-    {
-      "type": 0,
-      "value": "ဇယားများကို အဖွင့်အပိတ်လုပ်မည်"
-    }
-  ],
-  "label.total": [
-    {
-      "type": 0,
-      "value": "စုစုပေါင်း"
-    }
-  ],
-  "label.total-records": [
-    {
-      "type": 0,
-      "value": "မှတ်တမ်းစုစုပေါင်း"
-    }
-  ],
-  "label.tracking-code": [
-    {
-      "type": 0,
-      "value": "ထရက်လုပ်သည့် ကုဒ်"
-    }
-  ],
-  "label.transactions": [
-    {
-      "type": 0,
-      "value": "Transactions"
-    }
-  ],
-  "label.transfer": [
-    {
-      "type": 0,
-      "value": "Transfer"
-    }
-  ],
-  "label.transfer-website": [
-    {
-      "type": 0,
-      "value": "Transfer website"
-    }
-  ],
-  "label.true": [
-    {
-      "type": 0,
-      "value": "မှန်သည်"
-    }
-  ],
-  "label.type": [
-    {
-      "type": 0,
-      "value": "အမျိုးအစား"
-    }
-  ],
-  "label.unique": [
-    {
-      "type": 0,
-      "value": "Unique"
-    }
-  ],
-  "label.unique-visitors": [
-    {
-      "type": 0,
-      "value": "ဝင်ရောက်သူ (ထပ်ခြင်းမရှိ)"
-    }
-  ],
-  "label.uniqueCustomers": [
-    {
-      "type": 0,
-      "value": "Unique Customers"
-    }
-  ],
-  "label.unknown": [
-    {
-      "type": 0,
-      "value": "မသိသော"
-    }
-  ],
-  "label.untitled": [
-    {
-      "type": 0,
-      "value": "ခေါင်းစဉ်မရှိ"
-    }
-  ],
-  "label.update": [
-    {
-      "type": 0,
-      "value": "Update"
-    }
-  ],
-  "label.user": [
-    {
-      "type": 0,
-      "value": "အသုံးပြုသူ"
-    }
-  ],
-  "label.username": [
-    {
-      "type": 0,
-      "value": "အသုံးပြုသူအမည်"
-    }
-  ],
-  "label.users": [
-    {
-      "type": 0,
-      "value": "အသုံးပြုသူများ"
-    }
-  ],
-  "label.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "label.utm-description": [
-    {
-      "type": 0,
-      "value": "Track your campaigns through UTM parameters."
-    }
-  ],
-  "label.value": [
-    {
-      "type": 0,
-      "value": "တန်ဖိုး"
-    }
-  ],
-  "label.view": [
-    {
-      "type": 0,
-      "value": "ဝင်ရောက်ကြည့်ရှုမှု"
-    }
-  ],
-  "label.view-details": [
-    {
-      "type": 0,
-      "value": "အသေးစိတ်ကို ကြည့်ရှုမည်"
-    }
-  ],
-  "label.view-only": [
-    {
-      "type": 0,
-      "value": "ဝင်ရောက်ကြည့်ရှုမှုများသာ"
-    }
-  ],
-  "label.views": [
-    {
-      "type": 0,
-      "value": "ဝင်ရောက်ကြည့်ရှုမှုများ"
-    }
-  ],
-  "label.views-per-visit": [
-    {
-      "type": 0,
-      "value": "Views per visit"
-    }
-  ],
-  "label.visit-duration": [
-    {
-      "type": 0,
-      "value": "ဝဘက်ဘ်ဆိုဒ်တွင် ပျမ်းမျှကုန်ဆုံးချိန်"
-    }
-  ],
-  "label.visitors": [
-    {
-      "type": 0,
-      "value": "ဝင်ရောက်ကြည့်ရှုသူများ"
-    }
-  ],
-  "label.visits": [
-    {
-      "type": 0,
-      "value": "Visits"
-    }
-  ],
-  "label.website": [
-    {
-      "type": 0,
-      "value": "ဝက်ဘ်ဆိုဒ်"
-    }
-  ],
-  "label.website-id": [
-    {
-      "type": 0,
-      "value": "ဝက်ဘ်ဆိုဒ် အိုင်ဒီ"
-    }
-  ],
-  "label.websites": [
-    {
-      "type": 0,
-      "value": "ဝက်ဘ်ဆိုဒ်များ"
-    }
-  ],
-  "label.window": [
-    {
-      "type": 0,
-      "value": "ဝင်းဒိုး"
-    }
-  ],
-  "label.yesterday": [
-    {
-      "type": 0,
-      "value": "မနေ့က"
-    }
-  ],
-  "message.action-confirmation": [
-    {
-      "type": 0,
-      "value": "Type "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " in the box below to confirm."
-    }
-  ],
-  "message.active-users": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " လက်ရှိအသုံးပြုနေသူ "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "ယောက်"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "ယောက်"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "message.bad-request": [
-    {
-      "type": 0,
-      "value": "Bad request"
-    }
-  ],
-  "message.collected-data": [
-    {
-      "type": 0,
-      "value": "Collected data"
-    }
-  ],
-  "message.confirm-delete": [
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " ကို ဖျက်ရန် သေချာပါသလား?"
-    }
-  ],
-  "message.confirm-leave": [
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " ကို ထွက်ရန် သေချာပါသလား?"
-    }
-  ],
-  "message.confirm-remove": [
-    {
-      "type": 0,
-      "value": "Are you sure you want to remove "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-reset": [
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " ကို ဖျက်၍ပြန်စလုပ်ရန် သေချာပါသလား?"
-    }
-  ],
-  "message.delete-team-warning": [
-    {
-      "type": 0,
-      "value": "Deleting a team will also delete all team websites."
-    }
-  ],
-  "message.delete-website-warning": [
-    {
-      "type": 0,
-      "value": "ဝက်ဘ်ဆိုဒ် ဒေတာအကုန် ဖျက်မည်"
-    }
-  ],
-  "message.error": [
-    {
-      "type": 0,
-      "value": "မှားယွင်းမှုတစ်ခု ရှိသွားပါသည်"
-    }
-  ],
-  "message.event-log": [
-    {
-      "type": 1,
-      "value": "url"
-    },
-    {
-      "type": 0,
-      "value": " တွင် "
-    },
-    {
-      "type": 1,
-      "value": "event"
-    }
-  ],
-  "message.forbidden": [
-    {
-      "type": 0,
-      "value": "Forbidden"
-    }
-  ],
-  "message.go-to-settings": [
-    {
-      "type": 0,
-      "value": "ဆက်တင်သို့ သွားရန်"
-    }
-  ],
-  "message.incorrect-username-password": [
-    {
-      "type": 0,
-      "value": "အသုံးပြုသူအမည် သို့မဟုတ် စကားဝှက် မှားနေသည်"
-    }
-  ],
-  "message.invalid-domain": [
-    {
-      "type": 0,
-      "value": "ဒိုမိန်း မမှန်ပါ http/https. မပါရပါ"
-    }
-  ],
-  "message.min-password-length": [
-    {
-      "type": 0,
-      "value": "အနည်းဆုံး "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " character ရှိရမည်"
-    }
-  ],
-  "message.new-version-available": [
-    {
-      "type": 0,
-      "value": "အူမာမီ "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " အသစ်ထွက်နေပါပြီ"
-    }
-  ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "ဒေတာ မရှိပါ"
-    }
-  ],
-  "message.no-event-data": [
-    {
-      "type": 0,
-      "value": "အဖြစ်အပျက်ဒေတာ မရှိပါ"
-    }
-  ],
-  "message.no-match-password": [
-    {
-      "type": 0,
-      "value": "စကားဝှက် မှားနေသည်"
-    }
-  ],
-  "message.no-results-found": [
-    {
-      "type": 0,
-      "value": "ရလဒ်မရှိပါ"
-    }
-  ],
-  "message.no-team-websites": [
-    {
-      "type": 0,
-      "value": "ဤအသင်းတွင် ဝက်ဘ်ဆိုက်မရှိသေးပါ"
-    }
-  ],
-  "message.no-teams": [
-    {
-      "type": 0,
-      "value": "အသင်း မပြုလုပ်ရသေးပါ"
-    }
-  ],
-  "message.no-users": [
-    {
-      "type": 0,
-      "value": "အသုံးပြုသူ မရှိသေးပါ"
-    }
-  ],
-  "message.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "ဝက်ဘ်ဆိုဒ်တစ်ခုမှ မထည့်ရသေးပါ"
-    }
-  ],
-  "message.not-found": [
-    {
-      "type": 0,
-      "value": "Not found"
-    }
-  ],
-  "message.nothing-selected": [
-    {
-      "type": 0,
-      "value": "Nothing selected."
-    }
-  ],
-  "message.page-not-found": [
-    {
-      "type": 0,
-      "value": "ဤစာမျက်နှာသည် မရှိပါ"
-    }
-  ],
-  "message.reset-website": [
-    {
-      "type": 0,
-      "value": "ဤ ဝက်ဘ်ဆိုဒ်ဒေတာကိုဖျက်၍ ပြန်စလုပ်ရန် အောက်တွင် "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " ကို ရိုက်ထည့်ပေးပါ"
-    }
-  ],
-  "message.reset-website-warning": [
-    {
-      "type": 0,
-      "value": "ဤဝက်ဘ်ဆိုဒ်က စာရင်းအချက်အလက်များကို ဖျက်မည်၊ ဆက်တင်ဒေတာများ မပါပါ"
-    }
-  ],
-  "message.saved": [
-    {
-      "type": 0,
-      "value": "မှတ်သားပြီး"
-    }
-  ],
-  "message.sever-error": [
-    {
-      "type": 0,
-      "value": "Server error"
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "သင့်ဝက်ဆိုဒ်ဘ်၏ စာရင်းအချက်အလက်များကို အောက်ပါ URL တွင် ဝင်ရောက်ကြည့်ရှုနိုင်သည်"
-    }
-  ],
-  "message.team-already-member": [
-    {
-      "type": 0,
-      "value": "ဤအသင်းတွင် ဝင်ပြီးသားဖြစ်နေသည်"
-    }
-  ],
-  "message.team-not-found": [
-    {
-      "type": 0,
-      "value": "အသင်း မရှိပါ"
-    }
-  ],
-  "message.team-websites-info": [
-    {
-      "type": 0,
-      "value": "ဤဝက်ဘ်ဆိုဒ်များကို အသင်းထဲမှ လူတိုင်းဝင်ကြည့်နိုင်သည်"
-    }
-  ],
-  "message.tracking-code": [
-    {
-      "type": 0,
-      "value": "ဤဝက်ဘ်ဆိုဒ်၏ ဒေတာကိုကောက်ခံရန် အောက်ပါ code ကို သင်၏ HTML တွင်ထည့်ပါ"
-    }
-  ],
-  "message.transfer-team-website-to-user": [
-    {
-      "type": 0,
-      "value": "Transfer this website to your account?"
-    }
-  ],
-  "message.transfer-user-website-to-team": [
-    {
-      "type": 0,
-      "value": "Select the team to transfer this website to."
-    }
-  ],
-  "message.transfer-website": [
-    {
-      "type": 0,
-      "value": "Transfer website ownership to your account or another team."
-    }
-  ],
-  "message.triggered-event": [
-    {
-      "type": 0,
-      "value": "Triggered event"
-    }
-  ],
-  "message.unauthorized": [
-    {
-      "type": 0,
-      "value": "Unauthorized"
-    }
-  ],
-  "message.user-deleted": [
-    {
-      "type": 0,
-      "value": "အသုံးပြုသူ ဖျက်ပြီးပါပြီ"
-    }
-  ],
-  "message.viewed-page": [
-    {
-      "type": 0,
-      "value": "Viewed page"
-    }
-  ],
-  "message.visitor-log": [
-    {
-      "type": 1,
-      "value": "country"
-    },
-    {
-      "type": 0,
-      "value": " မှ "
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    },
-    {
-      "type": 0,
-      "value": " ဖြင့် "
-    },
-    {
-      "type": 1,
-      "value": "os"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "device"
-    },
-    {
-      "type": 0,
-      "value": " တွင် ဝင်ရောက်ကြည့်ရှုသူ"
-    }
-  ]
+  "label": {
+    "access-code": "ဝင်ခွင့်ကုဒ်",
+    "account": "အကောင့်",
+    "action": "လုပ်ဆောင်ချက်",
+    "actions": "လုပ်ဆောင်ချက်များ",
+    "activity": "လုပ်ဆောင်ချက်စာရင်း",
+    "add": "ထပ်ထည့်မည်",
+    "add-board": "ဘုတ်ထည့်မည်",
+    "add-description": "အကြောင်းအရာဖော်ပြချက် ထည့်မည်",
+    "add-link": "လင့်ခ်ထည့်မည်",
+    "add-member": "အဖွဲ့ဝင်ထည့်မည်",
+    "add-pixel": "Pixel ထည့်မည်",
+    "add-step": "အဆင့်ထည့်မည်",
+    "add-website": "ဝက်ဘ်ဆိုဒ်ထည့်မည်",
+    "admin": "အက်ဒမင်",
+    "affiliate": "တွဲဖက်မိတ်ဖက်",
+    "after": "ပြီးနောက်",
+    "all": "အားလုံး",
+    "all-time": "အချိန်အစမှအခုထိ",
+    "analysis": "ခွဲခြမ်းစိတ်ဖြာမှု",
+    "analytics": "အန်နလစ်တစ်",
+    "application": "အပလီကေးရှင်း",
+    "apply": "အသုံးပြုမည်",
+    "attribution": "အရင်းအမြစ်ခွဲခြားခြင်း",
+    "attribution-description": "သင့်မားကတ်တင်းနှင့် အသုံးပြုသူများ မည်သို့ဆက်ဆံသည်နှင့် ပြောင်းလဲမှုကို မောင်းနှင်သည့်အရာများကို ကြည့်ပါ။",
+    "audience": "ပရိသတ်",
+    "average": "ပျမ်းမျှ",
+    "back": "နောက်သို့",
+    "before": "မတိုင်မီ",
+    "behavior": "အပြုအမူ",
+    "boards": "ဘုတ်များ",
+    "bounce-rate": "Bounce နှုန်း",
+    "breakdown": "ခွဲခြမ်းစိတ်ဖြာမှု",
+    "browser": "ဘရောင်ဇာ",
+    "browsers": "ဝက်ဘ်ဘရောင်ဇာများ",
+    "campaign": "ကမ်ပိန်း",
+    "campaigns": "ကမ်ပိန်းများ",
+    "cancel": "မလုပ်တော့ပါ",
+    "change-password": "စကားဝှက် ပြောင်းမည်",
+    "channel": "ချန်နယ်",
+    "channels": "ချန်နယ်များ",
+    "chart": "ဇယား",
+    "cities": "မြို့များ",
+    "city": "မြို့",
+    "clear-all": "အားလုံးကိုဖျက်မည်",
+    "cohort": "အုပ်စု",
+    "cohorts": "အုပ်စုများ",
+    "compare": "နှိုင်းယှဉ်မည်",
+    "compare-dates": "ရက်စွဲများ နှိုင်းယှဉ်မည်",
+    "confirm": "အတည်ပြုသည်",
+    "confirm-password": "စကားဝှက်အတည်ပြုသည်",
+    "contains": "ပါဝင်သည်",
+    "content": "အကြောင်းအရာ",
+    "continue": "ဆက်သွားမည်",
+    "conversion": "ပြောင်းလဲမှု",
+    "conversion-rate": "ပြောင်းလဲမှုနှုန်း",
+    "conversion-step": "ပြောင်းလဲမှုအဆင့်",
+    "count": "အရေအတွက်",
+    "countries": "နိုင်ငံများ",
+    "country": "နိုင်ငံ",
+    "create": "ဖန်တီးမည်",
+    "create-report": "ရီပို့လုပ်မည်",
+    "create-team": "Team ပြုလုပ်မည်",
+    "create-user": "အသုံးပြုသူထည့်မည်",
+    "created": "ပြုလုပ်ပြီးသော",
+    "created-by": "ဖန်တီးသူ",
+    "criteria": "စံသတ်မှတ်ချက်",
+    "currency": "ငွေကြေး",
+    "current": "လက်ရှိ",
+    "current-password": "လက်ရှိစကားဝှက်",
+    "custom-range": "အချိန်အပိုင်းအခြားရွေးရန်",
+    "dashboard": "ဒက်ရှ်ဘုတ်",
+    "data": "ဒေတာ",
+    "date": "ရက်စွဲ",
+    "date-range": "ရက်အပိုင်းအခြား",
+    "day": "ရက်",
+    "default-date-range": "ပုံသေ ရက်အပိုင်းအခြား",
+    "delete": "ဖျက်မည်",
+    "delete-report": "အစီရင်ခံစာ ဖျက်မည်",
+    "delete-team": "Team ကိုဖျက်မည်",
+    "delete-user": "အသုံးပြုသူကိုဖျက်မည်",
+    "delete-website": "ဝက်ဘ်ဆိုဒ်ကိုဖျက်မည်",
+    "description": "ရှင်းပြချက်",
+    "desktop": "စားပွဲတင်ကွန်ပျူတာ",
+    "destination-url": "ဦးတည်ရာ URL",
+    "details": "အသေးစိတ်",
+    "device": "ကိရိယာ",
+    "devices": "အသုံးပြုသည့် ကိရိယာများ",
+    "direct": "တိုက်ရိုက်",
+    "dismiss": "ပိတ်ပါ",
+    "distinct-id": "ထူးခြား ID",
+    "documentation": "စာရွက်စာတမ်း",
+    "does-not-contain": "မပါဝင်ပါ",
+    "does-not-include": "မပါဝင်ပါ",
+    "doest-not-exist": "မတည်ရှိပါ",
+    "domain": "ဒိုမိန်း",
+    "download": "ဒေါင်းလုဒ်လုပ်မည်",
+    "dropoff": "ထွက်ခွာမှု",
+    "edit": "ပြုပြင်မည်",
+    "edit-member": "အဖွဲ့ဝင် ပြင်ဆင်မည်",
+    "email": "အီးမေးလ်",
+    "enable-share-url": "ဝေငှခြင်းကိုလင့်ကို ဖွင့်မည်",
+    "end-step": "အဆုံးအဆင့်",
+    "entry": "Entry URL",
+    "environment": "ပတ်ဝန်းကျင်",
+    "event": "အဖြစ်အပျက်",
+    "event-data": "အဖြစ်အပျက် ဒေတာ",
+    "event-name": "အဖြစ်အပျက်အမည်",
+    "events": "အဖြစ်အပျက်များ",
+    "exclude-bounce": "Bounce ဖယ်ထုတ်မည်",
+    "exists": "တည်ရှိသည်",
+    "exit": "Exit URL",
+    "false": "မှားသည်",
+    "field": "Field အမည်",
+    "fields": "Field အမည်များ",
+    "filter": "စစ်ထုတ်မည်",
+    "filter-combined": "ပေါင်းစပ်ပြီး",
+    "filter-raw": "အရှိအတိုင်း",
+    "filters": "Filter များ",
+    "first-click": "ပထမဆုံးနှိပ်ချက်",
+    "first-seen": "ပထမဆုံးတွေ့ရှိချိန်",
+    "funnel": "ဖန်နယ်",
+    "funnel-description": "အသုံးပြုသူများ၏ ပြောင်းလဲမှုနှင့် ထွက်ခွာမှုနှုန်းကို နားလည်ပါ။",
+    "funnels": "ဖန်နယ်များ",
+    "goal": "ပန်းတိုင်",
+    "goals": "ပန်းတိုင်များ",
+    "goals-description": "စာမျက်နှာကြည့်ရှုမှုနှင့် အဖြစ်အပျက်များအတွက် ပန်းတိုင်များကို ခြေရာခံပါ။",
+    "greater-than": "ထက်ပို၍ကြီးသည်",
+    "greater-than-equals": "ထက်ပို၍ကြီးသည်သို့မဟုတ်တူသည်",
+    "grouped": "အုပ်စုဖွဲ့ထားသော",
+    "growth": "တိုးတက်မှု",
+    "hostname": "လက်ခံဆာဗာအမည်",
+    "hour": "နာရီ",
+    "includes": "ပါဝင်သည်",
+    "insight": "ထိုးထွင်းသိမြင်မှု",
+    "insights": "အသေးစိတ်သိမြင်နိုင်ရန်",
+    "insights-description": "အပိုင်းခွဲများနှင့် စစ်ထုတ်ချက်များကို အသုံးပြု၍ သင့်ဒေတာကို ပိုမိုနက်ရှိုင်းစွာ လေ့လာပါ။",
+    "invalid-url": "မမှန်ကန်သော URL",
+    "is": "ဖြစ်သည်",
+    "is-false": "မှားသည်",
+    "is-not": "မဟုတ်ပါ",
+    "is-not-set": "သတ်မှတ်မထားပါ",
+    "is-set": "သတ်မှတ်ထားသည်",
+    "is-true": "မှန်သည်",
+    "join": "ဝင်မည်",
+    "join-team": "အသင်းဝင်မည်",
+    "journey": "ခရီးလမ်း",
+    "journey-description": "အသုံးပြုသူများ သင့်ဝက်ဘ်ဆိုဒ်ကို မည်သို့လှည့်လည်သည်ကို နားလည်ပါ။",
+    "journeys": "ခရီးလမ်းများ",
+    "language": "ဘာသာစကား",
+    "languages": "ဘာသာစကားများ",
+    "laptop": "လက်တော့ပ်",
+    "last-click": "နောက်ဆုံးနှိပ်ချက်",
+    "last-days": "လွန်ခဲ့သော {x} ရက်က",
+    "last-hours": "လွန်ခဲ့သော {x} နာရီက",
+    "last-months": "လွန်ခဲ့သော {x} လက",
+    "last-seen": "နောက်ဆုံးတွေ့ရှိချိန်",
+    "leave": "ထွက်မည်",
+    "leave-team": "အသင်းမှထွက်မည်",
+    "less-than": "ထက်ပို၍ငယ်သည်",
+    "less-than-equals": "ထက်ပို၍ငယ်သည်သို့မဟုတ်တူသည်",
+    "link": "လင့်ခ်",
+    "links": "လင့်ခ်များ",
+    "location": "တည်နေရာ",
+    "login": "လော့ဂ်အင်",
+    "logout": "လော့ဂ်အောက်လုပ်မည်",
+    "manage": "စီမံမည်",
+    "manager": "မန်နေဂျာ",
+    "max": "အများဆုံး",
+    "maximize": "Expand",
+    "medium": "မီဒီယမ်",
+    "member": "အဖွဲ့ဝင်",
+    "members": "အဖွဲ့ဝင်များ",
+    "min": "အနည်းဆုံး",
+    "minute": "မိနစ်",
+    "mobile": "မိုဘိုင်း",
+    "model": "မော်ဒယ်",
+    "month": "လ",
+    "more": "နောက်ထပ်",
+    "my-account": "ကျွန်ုပ်၏အကောင့်",
+    "my-websites": "ကျွန်ုပ်၏ဝက်ဘ်ဆိုဒ်များ",
+    "name": "အမည်",
+    "new-password": "စကားဝှက်အသစ်",
+    "none": "မရှိပါ",
+    "number-of-records": "{x} {x, plural, one {မှတ်တမ်း} other {မှတ်တမ်းများ}}",
+    "ok": "OK",
+    "online": "အွန်လိုင်း",
+    "organic-search": "သဘာဝရှာဖွေမှု",
+    "organic-shopping": "သဘာဝစျေးဝယ်မှု",
+    "organic-social": "သဘာဝဆိုရှယ်",
+    "organic-video": "သဘာဝဗီဒီယို",
+    "os": "ကွန်ပျူတာလည်ပတ်မှုစနစ်",
+    "other": "အခြား",
+    "overview": "အပေါ်ယံမြင်ကွင်း",
+    "owner": "ပိုင်ဆိုင်သူ",
+    "page": "စာမျက်နှာ",
+    "page-of": "စာမျက်နှာ {current} / {total}",
+    "page-views": "ဝင်ရောက်ကြည့်ရှုသူ",
+    "pageTitle": "စာမျက်နှာခေါင်းစဥ်",
+    "pages": "စာမျက်နှာများ",
+    "paid-ads": "ငွေပေးကြော်ငြာ",
+    "paid-search": "ငွေပေးရှာဖွေမှု",
+    "paid-shopping": "ငွေပေးစျေးဝယ်မှု",
+    "paid-social": "ငွေပေးဆိုရှယ်",
+    "paid-video": "ငွေပေးဗီဒီယို",
+    "password": "စကားဝှက်",
+    "path": "လမ်းကြောင်း",
+    "paths": "လမ်းကြောင်းများ",
+    "pixel": "Pixel",
+    "pixels": "Pixel များ",
+    "powered-by": "{name} ထောက်ပံ့သည်",
+    "preferences": "စိတ်ကြိုက်ဆက်တင်များ",
+    "previous": "ယခင်",
+    "previous-period": "ယခင်ကာလ",
+    "previous-year": "ယခင်နှစ်",
+    "profile": "ပရိုဖိုင်း",
+    "profiles": "ပရိုဖိုင်းများ",
+    "properties": "ဂုဏ်သတ္တိများ",
+    "property": "ဂုဏ်သတ္တိ",
+    "queries": "Queries (ကွာရီများ)",
+    "query": "Query (ကွာရီ)",
+    "query-parameters": "Query parameters (ကွာရီပါရာမီတာများ)",
+    "realtime": "အချိန်နှင့်တပြေးညီ",
+    "referral": "ရည်ညွှန်းမှု",
+    "referrer": "ရည်ညွှန်းသူ",
+    "referrers": "ရည်ညွှန်းမှုများ",
+    "refresh": "Refresh လုပ်မည်",
+    "regenerate": "ပြန်ထုတ်မည်",
+    "region": "ဒေသ",
+    "regions": "ဒေသများ",
+    "remaining": "ကျန်ရှိနေသော",
+    "remove": "ဖျက်မည်",
+    "remove-member": "အဖွဲ့ဝင်ကို ဖယ်ရှားမည်",
+    "reports": "တင်ပြမှုများ",
+    "required": "လိုအပ်သည်",
+    "reset": "ပြန်စမည်",
+    "reset-website": "ဝက်ဘ်ဆိုဒ်ဒေတာကိုဖျက်မည်",
+    "retention": "ထိန်းသိမ်းနိုင်မှု",
+    "retention-description": "အသုံးပြုသူများ မည်မျှမကြာခဏ ပြန်လာသည်ကို ခြေရာခံ၍ သင့်ဝက်ဘ်ဆိုဒ်၏ ဆွဲဆောင်နိုင်မှုကို တိုင်းတာပါ။",
+    "revenue": "ဝင်ငွေ",
+    "revenue-description": "Look into your revenue across time.",
+    "role": "အခန်းကဏ္ဍ",
+    "run-query": "Query ကိုလုပ်ဆောင်မည်",
+    "save": "သိမ်းဆည်းမည်",
+    "save-cohort": "အုပ်စုသိမ်းမည်",
+    "save-segment": "အပိုင်းခွဲသိမ်းမည်",
+    "screen": "မျက်နှာပြင်",
+    "screens": "မြင်ကွင်းများ",
+    "search": "ရှာဖွေမည်",
+    "segment": "အပိုင်းခွဲ",
+    "segments": "အပိုင်းခွဲများ",
+    "select": "ရွေးချယ်မည်",
+    "select-date": "ရက်ရွေးပါ",
+    "select-filter": "စစ်ထုတ်ချက်ရွေးမည်",
+    "select-role": "အခန်းကဏ္ဍရွေးမည်",
+    "select-website": "ဝဘက်ဘ်ဆိုဒ်ရွေးပါ",
+    "session": "ဆက်ရှင်",
+    "session-data": "ဆက်ရှင်ဒေတာ",
+    "sessions": "ဆက်ရှင်များ",
+    "settings": "ဆက်တင်များ",
+    "share": "မျှဝေမည်",
+    "share-url": "URL ကိုရှဲမည်",
+    "single-day": "တစ်ရက်အတွင်း",
+    "sms": "SMS",
+    "source": "အရင်းအမြစ်",
+    "sources": "အရင်းအမြစ်များ",
+    "start-step": "စတင်အဆင့်",
+    "steps": "အဆင့်များ",
+    "sum": "ပေါင်းလဒ်",
+    "support": "ပံ့ပိုးကူညီမှု",
+    "switch-account": "အကောင့်ပြောင်းမည်",
+    "table": "ဇယား",
+    "tablet": "တက်ဘလက်",
+    "tag": "တဂ်",
+    "tags": "တဂ်များ",
+    "team": "အသင်း",
+    "team-id": "အသင်း အိုင်ဒီ",
+    "team-manager": "အသင်းမန်နေဂျာ",
+    "team-member": "အသင်းဝင်",
+    "team-name": "အသင်းအမည်",
+    "team-owner": "အသင်းကိုပိုင်ဆိုင်သူ",
+    "team-settings": "အသင်းဆက်တင်များ",
+    "team-view-only": "အသင်း ကြည့်ရှုမှုသာ",
+    "team-websites": "အသင်းဝက်ဘ်ဆိုဒ်များ",
+    "teams": "အသင်းများ",
+    "term": "စည်းကမ်း",
+    "terms": "စည်းကမ်းများ",
+    "theme": "Theme (အပြင်အဆင်)",
+    "this-month": "ယခုလ",
+    "this-week": "ယခုအပတ်",
+    "this-year": "ယခုနှစ်",
+    "timezone": "အချိန်ဇုန်",
+    "title": "ခေါင်းစဥ်",
+    "today": "ယနေ့",
+    "toggle-charts": "ဇယားများကို အဖွင့်အပိတ်လုပ်မည်",
+    "total": "စုစုပေါင်း",
+    "total-records": "မှတ်တမ်းစုစုပေါင်း",
+    "tracking-code": "ထရက်လုပ်သည့် ကုဒ်",
+    "traffic": "အသွားအလာ",
+    "transactions": "ငွေလွှဲမှုများ",
+    "transfer": "လွှဲပြောင်းမည်",
+    "transfer-website": "ဝက်ဘ်ဆိုဒ်လွှဲပြောင်းမည်",
+    "true": "မှန်သည်",
+    "type": "အမျိုးအစား",
+    "unique": "ထူးခြားသော",
+    "unique-events": "ထူးခြားအဖြစ်အပျက်များ",
+    "unique-visitors": "ဝင်ရောက်သူ (ထပ်ခြင်းမရှိ)",
+    "uniqueCustomers": "ထူးခြားဖောက်သည်များ",
+    "unknown": "မသိသော",
+    "untitled": "ခေါင်းစဉ်မရှိ",
+    "update": "အပ်ဒိတ်လုပ်မည်",
+    "url": "URL",
+    "user": "အသုံးပြုသူ",
+    "username": "အသုံးပြုသူအမည်",
+    "users": "အသုံးပြုသူများ",
+    "utm": "UTM",
+    "utm-campaign": "UTM ကမ်ပိန်း",
+    "utm-content": "UTM အကြောင်းအရာ",
+    "utm-description": "UTM ပါရာမီတာများမှတစ်ဆင့် သင့်ကမ်ပိန်းများကို ခြေရာခံပါ။",
+    "utm-medium": "UTM မီဒီယမ်",
+    "utm-source": "UTM အရင်းအမြစ်",
+    "utm-term": "UTM စည်းကမ်း",
+    "value": "တန်ဖိုး",
+    "version": "ဗားရှင်း",
+    "view": "ဝင်ရောက်ကြည့်ရှုမှု",
+    "view-details": "အသေးစိတ်ကို ကြည့်ရှုမည်",
+    "view-only": "ဝင်ရောက်ကြည့်ရှုမှုများသာ",
+    "views": "ဝင်ရောက်ကြည့်ရှုမှုများ",
+    "views-per-visit": "လည်ပတ်မှုတစ်ခုလျှင် ကြည့်ရှုမှု",
+    "visit-duration": "ဝဘက်ဘ်ဆိုဒ်တွင် ပျမ်းမျှကုန်ဆုံးချိန်",
+    "visitors": "ဝင်ရောက်ကြည့်ရှုသူများ",
+    "visits": "လည်ပတ်မှုများ",
+    "website": "ဝက်ဘ်ဆိုဒ်",
+    "website-id": "ဝက်ဘ်ဆိုဒ် အိုင်ဒီ",
+    "websites": "ဝက်ဘ်ဆိုဒ်များ",
+    "window": "ဝင်းဒိုး",
+    "yesterday": "မနေ့က"
+  },
+  "message": {
+    "action-confirmation": "အတည်ပြုရန် အောက်ပါအကွက်တွင် {confirmation} ကို ရိုက်ထည့်ပါ။",
+    "active-users": "{x} လက်ရှိအသုံးပြုနေသူ {x, plural, one {ယောက်} other {ယောက်}}",
+    "bad-request": "မမှန်ကန်သောတောင်းဆိုမှု",
+    "collected-data": "စုဆောင်းထားသောဒေတာ",
+    "confirm-delete": "{target} ကို ဖျက်ရန် သေချာပါသလား?",
+    "confirm-leave": "<b>{target}</b> ကို ထွက်ရန် သေချာပါသလား?",
+    "confirm-remove": "<b>{target}</b> ကို ဖယ်ရှားလိုသည်မှာ သေချာပါသလား?",
+    "confirm-reset": "{target} ကို ဖျက်၍ပြန်စလုပ်ရန် သေချာပါသလား?",
+    "delete-team-warning": "အသင်းကိုဖျက်ပါက အသင်းဝက်ဘ်ဆိုဒ်များအားလုံးကိုပါ ဖျက်ပစ်မည်။",
+    "delete-website-warning": "ဝက်ဘ်ဆိုဒ် ဒေတာအကုန် ဖျက်မည်",
+    "error": "မှားယွင်းမှုတစ်ခု ရှိသွားပါသည်",
+    "event-log": "<a>{url}</a> တွင် <b>{event}</b>",
+    "forbidden": "ခွင့်ပြုချက်မရှိပါ",
+    "go-to-settings": "ဆက်တင်သို့ သွားရန်",
+    "incorrect-username-password": "အသုံးပြုသူအမည် သို့မဟုတ် စကားဝှက် မှားနေသည်",
+    "invalid-domain": "ဒိုမိန်း မမှန်ပါ http/https. မပါရပါ",
+    "min-password-length": "အနည်းဆုံး {n} character ရှိရမည်",
+    "new-version-available": "အူမာမီ {version} အသစ်ထွက်နေပါပြီ",
+    "no-data-available": "ဒေတာ မရှိပါ",
+    "no-event-data": "အဖြစ်အပျက်ဒေတာ မရှိပါ",
+    "no-match-password": "စကားဝှက် မှားနေသည်",
+    "no-results-found": "ရလဒ်မရှိပါ",
+    "no-team-websites": "ဤအသင်းတွင် ဝက်ဘ်ဆိုက်မရှိသေးပါ",
+    "no-teams": "အသင်း မပြုလုပ်ရသေးပါ",
+    "no-users": "အသုံးပြုသူ မရှိသေးပါ",
+    "no-websites-configured": "ဝက်ဘ်ဆိုဒ်တစ်ခုမှ မထည့်ရသေးပါ",
+    "not-found": "ရှာမတွေ့ပါ",
+    "nothing-selected": "ဘာမှရွေးမထားပါ။",
+    "page-not-found": "ဤစာမျက်နှာသည် မရှိပါ",
+    "reset-website": "ဤ ဝက်ဘ်ဆိုဒ်ဒေတာကိုဖျက်၍ ပြန်စလုပ်ရန် အောက်တွင် {confirmation} ကို ရိုက်ထည့်ပေးပါ",
+    "reset-website-warning": "ဤဝက်ဘ်ဆိုဒ်က စာရင်းအချက်အလက်များကို ဖျက်မည်၊ ဆက်တင်ဒေတာများ မပါပါ",
+    "saved": "မှတ်သားပြီး",
+    "sever-error": "ဆာဗာအမှားအယွင်း",
+    "share-url": "သင့်ဝက်ဆိုဒ်ဘ်၏ စာရင်းအချက်အလက်များကို အောက်ပါ URL တွင် ဝင်ရောက်ကြည့်ရှုနိုင်သည်",
+    "team-already-member": "ဤအသင်းတွင် ဝင်ပြီးသားဖြစ်နေသည်",
+    "team-not-found": "အသင်း မရှိပါ",
+    "team-websites-info": "ဤဝက်ဘ်ဆိုဒ်များကို အသင်းထဲမှ လူတိုင်းဝင်ကြည့်နိုင်သည်",
+    "tracking-code": "ဤဝက်ဘ်ဆိုဒ်၏ ဒေတာကိုကောက်ခံရန် အောက်ပါ code ကို သင်၏ HTML တွင်ထည့်ပါ",
+    "transfer-team-website-to-user": "ဤဝက်ဘ်ဆိုဒ်ကို သင့်အကောင့်သို့ လွှဲပြောင်းမလား?",
+    "transfer-user-website-to-team": "ဤဝက်ဘ်ဆိုဒ်ကို လွှဲပြောင်းမည့် အသင်းကို ရွေးချယ်ပါ။",
+    "transfer-website": "ဝက်ဘ်ဆိုဒ်ပိုင်ဆိုင်မှုကို သင့်အကောင့် သို့မဟုတ် အခြားအသင်းသို့ လွှဲပြောင်းပါ။",
+    "triggered-event": "အစပျိုးလိုက်သော အဖြစ်အပျက်",
+    "unauthorized": "ခွင့်ပြုချက်မရှိပါ",
+    "user-deleted": "အသုံးပြုသူ ဖျက်ပြီးပါပြီ",
+    "viewed-page": "ကြည့်ရှုခဲ့သောစာမျက်နှာ",
+    "visitor-log": "<b>{country}</b> မှ <b>{browser}</b> ဖြင့် <b>{os}</b> <b>{device}</b> တွင် ဝင်ရောက်ကြည့်ရှုသူ"
+  }
 }

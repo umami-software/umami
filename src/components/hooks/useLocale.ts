@@ -4,7 +4,7 @@ import { httpGet } from '@/lib/fetch';
 import { getDateLocale, getTextDirection } from '@/lib/lang';
 import { setItem } from '@/lib/storage';
 import { setLocale, useApp } from '@/store/app';
-import enUS from '../../../public/intl/country/en-US.json';
+import enUS from '../../../public/intl/messages/en-US.json';
 import { useForceUpdate } from './useForceUpdate';
 
 const messages = {

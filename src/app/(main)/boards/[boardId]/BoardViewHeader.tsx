@@ -8,14 +8,14 @@ import { Edit } from '@/components/icons';
 export function BoardViewHeader() {
   const { board } = useBoard();
   const { renderUrl } = useNavigation();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { data: website } = useWebsiteQuery(board?.parameters?.websiteId);
 
   return (
     <PageHeader title={board?.name} description={board?.description}>
       {website?.name && <Text>{website.name}</Text>}
       <LinkButton href={renderUrl(`/boards/${board?.id}/edit`, false)}>
-        <IconLabel icon={<Edit />}>{formatMessage(labels.edit)}</IconLabel>
+        <IconLabel icon={<Edit />}>{t(labels.edit)}</IconLabel>
       </LinkButton>
     </PageHeader>
   );

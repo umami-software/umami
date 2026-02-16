@@ -6,7 +6,7 @@ import { ShareDeleteButton } from './ShareDeleteButton';
 import { ShareEditButton } from './ShareEditButton';
 
 export function SharesTable(props: DataTableProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { cloudMode } = useConfig();
   const { isMobile } = useMobile();
 
@@ -19,10 +19,10 @@ export function SharesTable(props: DataTableProps) {
 
   return (
     <DataTable {...props}>
-      <DataColumn id="name" label={formatMessage(labels.name)}>
+      <DataColumn id="name" label={t(labels.name)}>
         {({ name }: any) => name}
       </DataColumn>
-      <DataColumn id="slug" label={formatMessage(labels.shareUrl)} width="2fr">
+      <DataColumn id="slug" label={t(labels.shareUrl)} width="2fr">
         {({ slug }: any) => {
           const url = getUrl(slug);
           return (
@@ -33,7 +33,7 @@ export function SharesTable(props: DataTableProps) {
         }}
       </DataColumn>
       {!isMobile && (
-        <DataColumn id="created" label={formatMessage(labels.created)}>
+        <DataColumn id="created" label={t(labels.created)}>
           {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
         </DataColumn>
       )}

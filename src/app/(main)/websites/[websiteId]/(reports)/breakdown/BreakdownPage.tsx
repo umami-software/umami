@@ -33,12 +33,12 @@ export function BreakdownPage({ websiteId }: { websiteId: string }) {
 }
 
 const FieldsButton = ({ value, onChange }) => {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   return (
     <DialogButton
       icon={<ListCheck />}
-      label={formatMessage(labels.fields)}
+      label={t(labels.fields)}
       width="400px"
       minHeight="300px"
       variant="outline"

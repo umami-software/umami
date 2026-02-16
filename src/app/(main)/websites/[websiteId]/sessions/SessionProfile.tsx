@@ -30,7 +30,7 @@ export function SessionProfile({
 }) {
   const { data, isLoading, error } = useWebsiteSessionQuery(websiteId, sessionId);
   const { data: replay } = useReplayQuery(websiteId, sessionId);
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   return (
     <LoadingPanel
@@ -63,11 +63,9 @@ export function SessionProfile({
 
             <Tabs>
               <TabList>
-                <Tab id="activity">{formatMessage(labels.activity)}</Tab>
-                <Tab id="properties">{formatMessage(labels.properties)}</Tab>
-                {replay?.events?.length > 0 && (
-                  <Tab id="replay">{formatMessage(labels.replay)}</Tab>
-                )}
+                <Tab id="activity">{t(labels.activity)}</Tab>
+                <Tab id="properties">{t(labels.properties)}</Tab>
+                {replay?.events?.length > 0 && <Tab id="replay">{t(labels.replay)}</Tab>}
               </TabList>
               <TabPanel id="activity">
                 <SessionActivity

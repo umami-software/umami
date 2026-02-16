@@ -4,6 +4,7 @@ import Script from 'next/script';
 import { useEffect } from 'react';
 import { MobileNav } from '@/app/(main)/MobileNav';
 import { SideNav } from '@/app/(main)/SideNav';
+import { TopNav } from '@/app/(main)/TopNav';
 import { useConfig, useLoginQuery, useNavigation } from '@/components/hooks';
 import { LAST_TEAM_CONFIG } from '@/lib/constants';
 import { removeItem, setItem } from '@/lib/storage';
@@ -46,11 +47,12 @@ export function App({ children }) {
       <Row display={{ base: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
         <MobileNav />
       </Row>
-      <Column display={{ base: 'none', lg: 'flex' }}>
+      <Column display={{ base: 'none', lg: 'flex' }} minHeight="0" style={{ overflow: 'hidden' }}>
         <SideNav />
       </Column>
-      <Column alignItems="center" overflowY="auto" overflowX="hidden" position="relative">
-        {children}
+      <Column overflowX="hidden" minHeight="0" position="relative">
+        <TopNav />
+        <Column alignItems="center">{children}</Column>
       </Column>
       <UpdateNotice user={user} config={config} />
       {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (

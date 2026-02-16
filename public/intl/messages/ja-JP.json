@@ -1,2212 +1,388 @@
 {
-  "label.access-code": [
-    {
-      "type": 0,
-      "value": "アクセスコード"
-    }
-  ],
-  "label.actions": [
-    {
-      "type": 0,
-      "value": "アクション"
-    }
-  ],
-  "label.activity": [
-    {
-      "type": 0,
-      "value": "アクティビティログ"
-    }
-  ],
-  "label.add": [
-    {
-      "type": 0,
-      "value": "追加"
-    }
-  ],
-  "label.add-board": [
-    {
-      "type": 0,
-      "value": "ボードを追加"
-    }
-  ],
-  "label.add-description": [
-    {
-      "type": 0,
-      "value": "説明を追加"
-    }
-  ],
-  "label.add-member": [
-    {
-      "type": 0,
-      "value": "メンバーの追加"
-    }
-  ],
-  "label.add-step": [
-    {
-      "type": 0,
-      "value": "ステップを追加"
-    }
-  ],
-  "label.add-website": [
-    {
-      "type": 0,
-      "value": "Webサイトの追加"
-    }
-  ],
-  "label.admin": [
-    {
-      "type": 0,
-      "value": "管理者"
-    }
-  ],
-  "label.affiliate": [
-    {
-      "type": 0,
-      "value": "アフィリエイト"
-    }
-  ],
-  "label.after": [
-    {
-      "type": 0,
-      "value": "直後"
-    }
-  ],
-  "label.all": [
-    {
-      "type": 0,
-      "value": "すべて"
-    }
-  ],
-  "label.all-time": [
-    {
-      "type": 0,
-      "value": "すべての時間帯"
-    }
-  ],
-  "label.analytics": [
-    {
-      "type": 0,
-      "value": "アナリティクス"
-    }
-  ],
-  "label.apply": [
-    {
-      "type": 0,
-      "value": "適用"
-    }
-  ],
-  "label.attribution": [
-    {
-      "type": 0,
-      "value": "アトリビューション"
-    }
-  ],
-  "label.attribution-description": [
-    {
-      "type": 0,
-      "value": "ユーザーがあなたのマーケティングにどのように関与し、何がコンバージョンを促進するかを確認します。"
-    }
-  ],
-  "label.average": [
-    {
-      "type": 0,
-      "value": "平均"
-    }
-  ],
-  "label.back": [
-    {
-      "type": 0,
-      "value": "戻る"
-    }
-  ],
-  "label.before": [
-    {
-      "type": 0,
-      "value": "直前"
-    }
-  ],
-  "label.boards": [
-    {
-      "type": 0,
-      "value": "ボード"
-    }
-  ],
-  "label.bounce-rate": [
-    {
-      "type": 0,
-      "value": "直帰率"
-    }
-  ],
-  "label.breakdown": [
-    {
-      "type": 0,
-      "value": "故障"
-    }
-  ],
-  "label.browser": [
-    {
-      "type": 0,
-      "value": "ブラウザ"
-    }
-  ],
-  "label.browsers": [
-    {
-      "type": 0,
-      "value": "ブラウザ"
-    }
-  ],
-  "label.campaigns": [
-    {
-      "type": 0,
-      "value": "キャンペーン"
-    }
-  ],
-  "label.cancel": [
-    {
-      "type": 0,
-      "value": "キャンセル"
-    }
-  ],
-  "label.change-password": [
-    {
-      "type": 0,
-      "value": "パスワードの変更"
-    }
-  ],
-  "label.channels": [
-    {
-      "type": 0,
-      "value": "チャンネル"
-    }
-  ],
-  "label.cities": [
-    {
-      "type": 0,
-      "value": "都市"
-    }
-  ],
-  "label.city": [
-    {
-      "type": 0,
-      "value": "都市"
-    }
-  ],
-  "label.clear-all": [
-    {
-      "type": 0,
-      "value": "すべてクリア"
-    }
-  ],
-  "label.cohort": [
-    {
-      "type": 0,
-      "value": "コホート"
-    }
-  ],
-  "label.compare": [
-    {
-      "type": 0,
-      "value": "比較"
-    }
-  ],
-  "label.compare-dates": [
-    {
-      "type": 0,
-      "value": "日付を比較"
-    }
-  ],
-  "label.confirm": [
-    {
-      "type": 0,
-      "value": "確認"
-    }
-  ],
-  "label.confirm-password": [
-    {
-      "type": 0,
-      "value": "パスワード(確認)"
-    }
-  ],
-  "label.contains": [
-    {
-      "type": 0,
-      "value": "コンテンツ"
-    }
-  ],
-  "label.content": [
-    {
-      "type": 0,
-      "value": "コンテンツ"
-    }
-  ],
-  "label.continue": [
-    {
-      "type": 0,
-      "value": "続ける"
-    }
-  ],
-  "label.conversion": [
-    {
-      "type": 0,
-      "value": "コンバージョン"
-    }
-  ],
-  "label.conversion-rate": [
-    {
-      "type": 0,
-      "value": "コンバージョン率"
-    }
-  ],
-  "label.conversion-step": [
-    {
-      "type": 0,
-      "value": "コンバージョンステップ"
-    }
-  ],
-  "label.count": [
-    {
-      "type": 0,
-      "value": "回数"
-    }
-  ],
-  "label.countries": [
-    {
-      "type": 0,
-      "value": "国名"
-    }
-  ],
-  "label.country": [
-    {
-      "type": 0,
-      "value": "国"
-    }
-  ],
-  "label.create": [
-    {
-      "type": 0,
-      "value": "作成"
-    }
-  ],
-  "label.create-report": [
-    {
-      "type": 0,
-      "value": "レポートの作成"
-    }
-  ],
-  "label.create-team": [
-    {
-      "type": 0,
-      "value": "チームの作成"
-    }
-  ],
-  "label.create-user": [
-    {
-      "type": 0,
-      "value": "ユーザーの作成"
-    }
-  ],
-  "label.created": [
-    {
-      "type": 0,
-      "value": "作成されました"
-    }
-  ],
-  "label.created-by": [
-    {
-      "type": 0,
-      "value": "作成者"
-    }
-  ],
-  "label.currency": [
-    {
-      "type": 0,
-      "value": "通貨"
-    }
-  ],
-  "label.current": [
-    {
-      "type": 0,
-      "value": "現在"
-    }
-  ],
-  "label.current-password": [
-    {
-      "type": 0,
-      "value": "現在のパスワード"
-    }
-  ],
-  "label.custom-range": [
-    {
-      "type": 0,
-      "value": "範囲指定"
-    }
-  ],
-  "label.dashboard": [
-    {
-      "type": 0,
-      "value": "ダッシュボード"
-    }
-  ],
-  "label.data": [
-    {
-      "type": 0,
-      "value": "データ"
-    }
-  ],
-  "label.date": [
-    {
-      "type": 0,
-      "value": "日付"
-    }
-  ],
-  "label.date-range": [
-    {
-      "type": 0,
-      "value": "期間"
-    }
-  ],
-  "label.day": [
-    {
-      "type": 0,
-      "value": "日"
-    }
-  ],
-  "label.default-date-range": [
-    {
-      "type": 0,
-      "value": "デフォルトの期間"
-    }
-  ],
-  "label.delete": [
-    {
-      "type": 0,
-      "value": "削除"
-    }
-  ],
-  "label.delete-report": [
-    {
-      "type": 0,
-      "value": "レポートの削除"
-    }
-  ],
-  "label.delete-team": [
-    {
-      "type": 0,
-      "value": "チームの削除"
-    }
-  ],
-  "label.delete-user": [
-    {
-      "type": 0,
-      "value": "ユーザーの削除"
-    }
-  ],
-  "label.delete-website": [
-    {
-      "type": 0,
-      "value": "Webサイトの削除"
-    }
-  ],
-  "label.description": [
-    {
-      "type": 0,
-      "value": "説明"
-    }
-  ],
-  "label.desktop": [
-    {
-      "type": 0,
-      "value": "デスクトップ"
-    }
-  ],
-  "label.details": [
-    {
-      "type": 0,
-      "value": "詳細情報"
-    }
-  ],
-  "label.device": [
-    {
-      "type": 0,
-      "value": "デバイス"
-    }
-  ],
-  "label.devices": [
-    {
-      "type": 0,
-      "value": "デバイス"
-    }
-  ],
-  "label.direct": [
-    {
-      "type": 0,
-      "value": "ダイレクト"
-    }
-  ],
-  "label.dismiss": [
-    {
-      "type": 0,
-      "value": "却下"
-    }
-  ],
-  "label.distinct-id": [
-    {
-      "type": 0,
-      "value": "識別ID"
-    }
-  ],
-  "label.does-not-contain": [
-    {
-      "type": 0,
-      "value": "を含まない"
-    }
-  ],
-  "label.does-not-include": [
-    {
-      "type": 0,
-      "value": "含まない"
-    }
-  ],
-  "label.doest-not-exist": [
-    {
-      "type": 0,
-      "value": "存在しない"
-    }
-  ],
-  "label.domain": [
-    {
-      "type": 0,
-      "value": "ドメイン"
-    }
-  ],
-  "label.dropoff": [
-    {
-      "type": 0,
-      "value": "切り捨て"
-    }
-  ],
-  "label.edit": [
-    {
-      "type": 0,
-      "value": "編集"
-    }
-  ],
-  "label.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "ダッシュボードの編集"
-    }
-  ],
-  "label.edit-member": [
-    {
-      "type": 0,
-      "value": "メンバーの編集"
-    }
-  ],
-  "label.email": [
-    {
-      "type": 0,
-      "value": "メール"
-    }
-  ],
-  "label.enable-share-url": [
-    {
-      "type": 0,
-      "value": "共有URLを有効にする"
-    }
-  ],
-  "label.end-step": [
-    {
-      "type": 0,
-      "value": "最終ステップ"
-    }
-  ],
-  "label.entry": [
-    {
-      "type": 0,
-      "value": "訪問時のURL"
-    }
-  ],
-  "label.event": [
-    {
-      "type": 0,
-      "value": "イベント"
-    }
-  ],
-  "label.event-data": [
-    {
-      "type": 0,
-      "value": "イベントデータ"
-    }
-  ],
-  "label.event-name": [
-    {
-      "type": 0,
-      "value": "イベント名"
-    }
-  ],
-  "label.events": [
-    {
-      "type": 0,
-      "value": "イベント"
-    }
-  ],
-  "label.exists": [
-    {
-      "type": 0,
-      "value": "存在する"
-    }
-  ],
-  "label.exit": [
-    {
-      "type": 0,
-      "value": "退出時のURL"
-    }
-  ],
-  "label.false": [
-    {
-      "type": 0,
-      "value": "偽"
-    }
-  ],
-  "label.field": [
-    {
-      "type": 0,
-      "value": "フィールド"
-    }
-  ],
-  "label.fields": [
-    {
-      "type": 0,
-      "value": "フィールド"
-    }
-  ],
-  "label.filter": [
-    {
-      "type": 0,
-      "value": "フィルター"
-    }
-  ],
-  "label.filter-combined": [
-    {
-      "type": 0,
-      "value": "結合"
-    }
-  ],
-  "label.filter-raw": [
-    {
-      "type": 0,
-      "value": "RAW"
-    }
-  ],
-  "label.filters": [
-    {
-      "type": 0,
-      "value": "フィルター"
-    }
-  ],
-  "label.first-click": [
-    {
-      "type": 0,
-      "value": "最初のクリック"
-    }
-  ],
-  "label.first-seen": [
-    {
-      "type": 0,
-      "value": "初回ログイン"
-    }
-  ],
-  "label.funnel": [
-    {
-      "type": 0,
-      "value": "ファネル"
-    }
-  ],
-  "label.funnel-description": [
-    {
-      "type": 0,
-      "value": "ユーザーのコンバージョン率と離脱率を分析します。"
-    }
-  ],
-  "label.funnels": [
-    {
-      "type": 0,
-      "value": "ファネル"
-    }
-  ],
-  "label.goal": [
-    {
-      "type": 0,
-      "value": "目標"
-    }
-  ],
-  "label.goals": [
-    {
-      "type": 0,
-      "value": "目標"
-    }
-  ],
-  "label.goals-description": [
-    {
-      "type": 0,
-      "value": "ページビューとイベントの目標を追跡します。"
-    }
-  ],
-  "label.greater-than": [
-    {
-      "type": 0,
-      "value": "超過"
-    }
-  ],
-  "label.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "以上"
-    }
-  ],
-  "label.grouped": [
-    {
-      "type": 0,
-      "value": "グループ化"
-    }
-  ],
-  "label.hostname": [
-    {
-      "type": 0,
-      "value": "ホスト名"
-    }
-  ],
-  "label.includes": [
-    {
-      "type": 0,
-      "value": "含む"
-    }
-  ],
-  "label.insight": [
-    {
-      "type": 0,
-      "value": "インサイト"
-    }
-  ],
-  "label.insights": [
-    {
-      "type": 0,
-      "value": "インサイト"
-    }
-  ],
-  "label.insights-description": [
-    {
-      "type": 0,
-      "value": "セグメントとフィルタを使用して、データをさらに詳しく分析します。"
-    }
-  ],
-  "label.is": [
-    {
-      "type": 0,
-      "value": "に等しい"
-    }
-  ],
-  "label.is-false": [
-    {
-      "type": 0,
-      "value": "偽である"
-    }
-  ],
-  "label.is-not": [
-    {
-      "type": 0,
-      "value": "に等しくない"
-    }
-  ],
-  "label.is-not-set": [
-    {
-      "type": 0,
-      "value": "未設定"
-    }
-  ],
-  "label.is-set": [
-    {
-      "type": 0,
-      "value": "設定済み"
-    }
-  ],
-  "label.is-true": [
-    {
-      "type": 0,
-      "value": "真である"
-    }
-  ],
-  "label.join": [
-    {
-      "type": 0,
-      "value": "参加"
-    }
-  ],
-  "label.join-team": [
-    {
-      "type": 0,
-      "value": "チームに参加"
-    }
-  ],
-  "label.journey": [
-    {
-      "type": 0,
-      "value": "ジャーニー"
-    }
-  ],
-  "label.journey-description": [
-    {
-      "type": 0,
-      "value": "ユーザーがWebサイト内をどのように移動するかを把握します。"
-    }
-  ],
-  "label.journeys": [
-    {
-      "type": 0,
-      "value": "ジャーニー"
-    }
-  ],
-  "label.language": [
-    {
-      "type": 0,
-      "value": "言語"
-    }
-  ],
-  "label.languages": [
-    {
-      "type": 0,
-      "value": "言語"
-    }
-  ],
-  "label.laptop": [
-    {
-      "type": 0,
-      "value": "ノートPC"
-    }
-  ],
-  "label.last-click": [
-    {
-      "type": 0,
-      "value": "最後のクリック"
-    }
-  ],
-  "label.last-days": [
-    {
-      "type": 0,
-      "value": "過去"
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": "日間"
-    }
-  ],
-  "label.last-hours": [
-    {
-      "type": 0,
-      "value": "過去"
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": "時間"
-    }
-  ],
-  "label.last-months": [
-    {
-      "type": 0,
-      "value": "過去"
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": "月間"
-    }
-  ],
-  "label.last-seen": [
-    {
-      "type": 0,
-      "value": "最終ログイン"
-    }
-  ],
-  "label.leave": [
-    {
-      "type": 0,
-      "value": "離脱"
-    }
-  ],
-  "label.leave-team": [
-    {
-      "type": 0,
-      "value": "チームを離脱"
-    }
-  ],
-  "label.less-than": [
-    {
-      "type": 0,
-      "value": "未満"
-    }
-  ],
-  "label.less-than-equals": [
-    {
-      "type": 0,
-      "value": "以下"
-    }
-  ],
-  "label.links": [
-    {
-      "type": 0,
-      "value": "リンク"
-    }
-  ],
-  "label.login": [
-    {
-      "type": 0,
-      "value": "ログイン"
-    }
-  ],
-  "label.logout": [
-    {
-      "type": 0,
-      "value": "ログアウト"
-    }
-  ],
-  "label.manage": [
-    {
-      "type": 0,
-      "value": "管理"
-    }
-  ],
-  "label.manager": [
-    {
-      "type": 0,
-      "value": "管理者"
-    }
-  ],
-  "label.max": [
-    {
-      "type": 0,
-      "value": "最大"
-    }
-  ],
-  "label.maximize": [
-    {
-      "type": 0,
-      "value": "展開"
-    }
-  ],
-  "label.medium": [
-    {
-      "type": 0,
-      "value": "メディア"
-    }
-  ],
-  "label.member": [
-    {
-      "type": 0,
-      "value": "メンバー"
-    }
-  ],
-  "label.members": [
-    {
-      "type": 0,
-      "value": "メンバー"
-    }
-  ],
-  "label.min": [
-    {
-      "type": 0,
-      "value": "最小"
-    }
-  ],
-  "label.mobile": [
-    {
-      "type": 0,
-      "value": "携帯電話"
-    }
-  ],
-  "label.model": [
-    {
-      "type": 0,
-      "value": "モデル"
-    }
-  ],
-  "label.more": [
-    {
-      "type": 0,
-      "value": "もっと見る"
-    }
-  ],
-  "label.my-account": [
-    {
-      "type": 0,
-      "value": "マイアカウント"
-    }
-  ],
-  "label.my-websites": [
-    {
-      "type": 0,
-      "value": "マイWebサイト"
-    }
-  ],
-  "label.name": [
-    {
-      "type": 0,
-      "value": "名前"
-    }
-  ],
-  "label.new-password": [
-    {
-      "type": 0,
-      "value": "新しいパスワード"
-    }
-  ],
-  "label.none": [
-    {
-      "type": 0,
-      "value": "なし"
-    }
-  ],
-  "label.number-of-records": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "record"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "records"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "label.ok": [
-    {
-      "type": 0,
-      "value": "OK"
-    }
-  ],
-  "label.online": [
-    {
-      "type": 0,
-      "value": "Online"
-    }
-  ],
-  "label.organic-search": [
-    {
-      "type": 0,
-      "value": "オーガニック検索"
-    }
-  ],
-  "label.organic-shopping": [
-    {
-      "type": 0,
-      "value": "オーガニックショッピング"
-    }
-  ],
-  "label.organic-social": [
-    {
-      "type": 0,
-      "value": "オーガニックソーシャル"
-    }
-  ],
-  "label.organic-video": [
-    {
-      "type": 0,
-      "value": "オーガニックビデオ"
-    }
-  ],
-  "label.os": [
-    {
-      "type": 0,
-      "value": "OS"
-    }
-  ],
-  "label.other": [
-    {
-      "type": 0,
-      "value": "その他"
-    }
-  ],
-  "label.overview": [
-    {
-      "type": 0,
-      "value": "概要"
-    }
-  ],
-  "label.owner": [
-    {
-      "type": 0,
-      "value": "所有者"
-    }
-  ],
-  "label.page": [
-    {
-      "type": 0,
-      "value": "ページ"
-    }
-  ],
-  "label.page-of": [
-    {
-      "type": 0,
-      "value": "ページ "
-    },
-    {
-      "type": 1,
-      "value": "current"
-    },
-    {
-      "type": 0,
-      "value": "/"
-    },
-    {
-      "type": 1,
-      "value": "total"
-    }
-  ],
-  "label.page-views": [
-    {
-      "type": 0,
-      "value": "閲覧数"
-    }
-  ],
-  "label.pageTitle": [
-    {
-      "type": 0,
-      "value": "ページタイトル"
-    }
-  ],
-  "label.pages": [
-    {
-      "type": 0,
-      "value": "ページ"
-    }
-  ],
-  "label.paid-ads": [
-    {
-      "type": 0,
-      "value": "有料広告"
-    }
-  ],
-  "label.paid-search": [
-    {
-      "type": 0,
-      "value": "有料検索"
-    }
-  ],
-  "label.paid-shopping": [
-    {
-      "type": 0,
-      "value": "有料ショッピング"
-    }
-  ],
-  "label.paid-social": [
-    {
-      "type": 0,
-      "value": "有料ソーシャル"
-    }
-  ],
-  "label.paid-video": [
-    {
-      "type": 0,
-      "value": "有料ビデオ"
-    }
-  ],
-  "label.password": [
-    {
-      "type": 0,
-      "value": "パスワード"
-    }
-  ],
-  "label.path": [
-    {
-      "type": 0,
-      "value": "パス"
-    }
-  ],
-  "label.paths": [
-    {
-      "type": 0,
-      "value": "パス"
-    }
-  ],
-  "label.pixels": [
-    {
-      "type": 0,
-      "value": "ピクセル"
-    }
-  ],
-  "label.powered-by": [
-    {
-      "type": 0,
-      "value": "Powered by "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    }
-  ],
-  "label.previous": [
-    {
-      "type": 0,
-      "value": "以前"
-    }
-  ],
-  "label.previous-period": [
-    {
-      "type": 0,
-      "value": "前期"
-    }
-  ],
-  "label.previous-year": [
-    {
-      "type": 0,
-      "value": "前年"
-    }
-  ],
-  "label.profile": [
-    {
-      "type": 0,
-      "value": "プロフィール"
-    }
-  ],
-  "label.properties": [
-    {
-      "type": 0,
-      "value": "プロパティ"
-    }
-  ],
-  "label.property": [
-    {
-      "type": 0,
-      "value": "プロパティ"
-    }
-  ],
-  "label.queries": [
-    {
-      "type": 0,
-      "value": "クエリ"
-    }
-  ],
-  "label.query": [
-    {
-      "type": 0,
-      "value": "クエリ"
-    }
-  ],
-  "label.query-parameters": [
-    {
-      "type": 0,
-      "value": "クエリパラメーター"
-    }
-  ],
-  "label.realtime": [
-    {
-      "type": 0,
-      "value": "リアルタイム"
-    }
-  ],
-  "label.referral": [
-    {
-      "type": 0,
-      "value": "Referral"
-    }
-  ],
-  "label.referrer": [
-    {
-      "type": 0,
-      "value": "リファラー"
-    }
-  ],
-  "label.referrers": [
-    {
-      "type": 0,
-      "value": "リファラー"
-    }
-  ],
-  "label.refresh": [
-    {
-      "type": 0,
-      "value": "更新"
-    }
-  ],
-  "label.regenerate": [
-    {
-      "type": 0,
-      "value": "再生成"
-    }
-  ],
-  "label.region": [
-    {
-      "type": 0,
-      "value": "地域"
-    }
-  ],
-  "label.regions": [
-    {
-      "type": 0,
-      "value": "地域"
-    }
-  ],
-  "label.remaining": [
-    {
-      "type": 0,
-      "value": "残り"
-    }
-  ],
-  "label.remove": [
-    {
-      "type": 0,
-      "value": "削除"
-    }
-  ],
-  "label.remove-member": [
-    {
-      "type": 0,
-      "value": "メンバーの削除"
-    }
-  ],
-  "label.reports": [
-    {
-      "type": 0,
-      "value": "レポート"
-    }
-  ],
-  "label.required": [
-    {
-      "type": 0,
-      "value": "必須"
-    }
-  ],
-  "label.reset": [
-    {
-      "type": 0,
-      "value": "リセット"
-    }
-  ],
-  "label.reset-website": [
-    {
-      "type": 0,
-      "value": "Webサイトをリセットする"
-    }
-  ],
-  "label.retention": [
-    {
-      "type": 0,
-      "value": "リテンション"
-    }
-  ],
-  "label.retention-description": [
-    {
-      "type": 0,
-      "value": "ユーザーの再訪問回数を記録して、Webサイトのリテンション率を計測します。"
-    }
-  ],
-  "label.revenue": [
-    {
-      "type": 0,
-      "value": "レベニュー"
-    }
-  ],
-  "label.revenue-description": [
-    {
-      "type": 0,
-      "value": "時間あたりの売上高を確認します。"
-    }
-  ],
-  "label.role": [
-    {
-      "type": 0,
-      "value": "ロール"
-    }
-  ],
-  "label.run-query": [
-    {
-      "type": 0,
-      "value": "クエリ実行"
-    }
-  ],
-  "label.save": [
-    {
-      "type": 0,
-      "value": "保存"
-    }
-  ],
-  "label.screens": [
-    {
-      "type": 0,
-      "value": "画面サイズ"
-    }
-  ],
-  "label.search": [
-    {
-      "type": 0,
-      "value": "検索"
-    }
-  ],
-  "label.select": [
-    {
-      "type": 0,
-      "value": "選択"
-    }
-  ],
-  "label.select-date": [
-    {
-      "type": 0,
-      "value": "日付を選択"
-    }
-  ],
-  "label.select-filter": [
-    {
-      "type": 0,
-      "value": "フィルターを選択"
-    }
-  ],
-  "label.select-role": [
-    {
-      "type": 0,
-      "value": "ロールを選択"
-    }
-  ],
-  "label.select-website": [
-    {
-      "type": 0,
-      "value": "Webサイトを選択"
-    }
-  ],
-  "label.session": [
-    {
-      "type": 0,
-      "value": "セッション"
-    }
-  ],
-  "label.session-data": [
-    {
-      "type": 0,
-      "value": "セッションデータ"
-    }
-  ],
-  "label.sessions": [
-    {
-      "type": 0,
-      "value": "セッション"
-    }
-  ],
-  "label.settings": [
-    {
-      "type": 0,
-      "value": "設定"
-    }
-  ],
-  "label.share": [
-    {
-      "type": 0,
-      "value": "共有"
-    }
-  ],
-  "label.share-url": [
-    {
-      "type": 0,
-      "value": "共有URL"
-    }
-  ],
-  "label.single-day": [
-    {
-      "type": 0,
-      "value": "一日"
-    }
-  ],
-  "label.sms": [
-    {
-      "type": 0,
-      "value": "SMS"
-    }
-  ],
-  "label.sources": [
-    {
-      "type": 0,
-      "value": "ソース"
-    }
-  ],
-  "label.start-step": [
-    {
-      "type": 0,
-      "value": "最初のステップ"
-    }
-  ],
-  "label.steps": [
-    {
-      "type": 0,
-      "value": "ステップ"
-    }
-  ],
-  "label.sum": [
-    {
-      "type": 0,
-      "value": "合計"
-    }
-  ],
-  "label.tablet": [
-    {
-      "type": 0,
-      "value": "タブレット"
-    }
-  ],
-  "label.tag": [
-    {
-      "type": 0,
-      "value": "タグ"
-    }
-  ],
-  "label.tags": [
-    {
-      "type": 0,
-      "value": "タグ"
-    }
-  ],
-  "label.team": [
-    {
-      "type": 0,
-      "value": "チーム"
-    }
-  ],
-  "label.team-id": [
-    {
-      "type": 0,
-      "value": "チームID"
-    }
-  ],
-  "label.team-manager": [
-    {
-      "type": 0,
-      "value": "チーム管理者"
-    }
-  ],
-  "label.team-member": [
-    {
-      "type": 0,
-      "value": "チームメンバー"
-    }
-  ],
-  "label.team-name": [
-    {
-      "type": 0,
-      "value": "チーム名"
-    }
-  ],
-  "label.team-owner": [
-    {
-      "type": 0,
-      "value": "チームオーナー"
-    }
-  ],
-  "label.team-settings": [
-    {
-      "type": 0,
-      "value": "チーム設定"
-    }
-  ],
-  "label.team-view-only": [
-    {
-      "type": 0,
-      "value": "チーム表示のみ"
-    }
-  ],
-  "label.team-websites": [
-    {
-      "type": 0,
-      "value": "チームのWebサイト"
-    }
-  ],
-  "label.teams": [
-    {
-      "type": 0,
-      "value": "チーム"
-    }
-  ],
-  "label.terms": [
-    {
-      "type": 0,
-      "value": "利用規約"
-    }
-  ],
-  "label.theme": [
-    {
-      "type": 0,
-      "value": "テーマ"
-    }
-  ],
-  "label.this-month": [
-    {
-      "type": 0,
-      "value": "今月"
-    }
-  ],
-  "label.this-week": [
-    {
-      "type": 0,
-      "value": "今週"
-    }
-  ],
-  "label.this-year": [
-    {
-      "type": 0,
-      "value": "今年"
-    }
-  ],
-  "label.timezone": [
-    {
-      "type": 0,
-      "value": "タイムゾーン"
-    }
-  ],
-  "label.title": [
-    {
-      "type": 0,
-      "value": "タイトル"
-    }
-  ],
-  "label.today": [
-    {
-      "type": 0,
-      "value": "今日"
-    }
-  ],
-  "label.toggle-charts": [
-    {
-      "type": 0,
-      "value": "グラフを切り替える"
-    }
-  ],
-  "label.total": [
-    {
-      "type": 0,
-      "value": "累計"
-    }
-  ],
-  "label.total-records": [
-    {
-      "type": 0,
-      "value": "総記録数"
-    }
-  ],
-  "label.tracking-code": [
-    {
-      "type": 0,
-      "value": "トラッキングコード"
-    }
-  ],
-  "label.transactions": [
-    {
-      "type": 0,
-      "value": "トランザクション"
-    }
-  ],
-  "label.transfer": [
-    {
-      "type": 0,
-      "value": "移管"
-    }
-  ],
-  "label.transfer-website": [
-    {
-      "type": 0,
-      "value": "Webサイトの移管"
-    }
-  ],
-  "label.true": [
-    {
-      "type": 0,
-      "value": "真"
-    }
-  ],
-  "label.type": [
-    {
-      "type": 0,
-      "value": "種別"
-    }
-  ],
-  "label.unique": [
-    {
-      "type": 0,
-      "value": "ユニーク"
-    }
-  ],
-  "label.unique-visitors": [
-    {
-      "type": 0,
-      "value": "ユニーク訪問者数"
-    }
-  ],
-  "label.uniqueCustomers": [
-    {
-      "type": 0,
-      "value": "ユニーク顧客数"
-    }
-  ],
-  "label.unknown": [
-    {
-      "type": 0,
-      "value": "不明"
-    }
-  ],
-  "label.untitled": [
-    {
-      "type": 0,
-      "value": "無題"
-    }
-  ],
-  "label.update": [
-    {
-      "type": 0,
-      "value": "更新"
-    }
-  ],
-  "label.user": [
-    {
-      "type": 0,
-      "value": "ユーザー"
-    }
-  ],
-  "label.username": [
-    {
-      "type": 0,
-      "value": "ユーザー名"
-    }
-  ],
-  "label.users": [
-    {
-      "type": 0,
-      "value": "ユーザー"
-    }
-  ],
-  "label.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "label.utm-description": [
-    {
-      "type": 0,
-      "value": "UTMパラメーターを使用してキャンペーンを追跡します。"
-    }
-  ],
-  "label.value": [
-    {
-      "type": 0,
-      "value": "値"
-    }
-  ],
-  "label.view": [
-    {
-      "type": 0,
-      "value": "表示"
-    }
-  ],
-  "label.view-details": [
-    {
-      "type": 0,
-      "value": "詳細を表示"
-    }
-  ],
-  "label.view-only": [
-    {
-      "type": 0,
-      "value": "表示のみ"
-    }
-  ],
-  "label.views": [
-    {
-      "type": 0,
-      "value": "表示"
-    }
-  ],
-  "label.views-per-visit": [
-    {
-      "type": 0,
-      "value": "訪問あたりの閲覧数"
-    }
-  ],
-  "label.visit-duration": [
-    {
-      "type": 0,
-      "value": "平均滞在時間"
-    }
-  ],
-  "label.visitors": [
-    {
-      "type": 0,
-      "value": "訪問者"
-    }
-  ],
-  "label.visits": [
-    {
-      "type": 0,
-      "value": "訪問数"
-    }
-  ],
-  "label.website": [
-    {
-      "type": 0,
-      "value": "Webサイト"
-    }
-  ],
-  "label.website-id": [
-    {
-      "type": 0,
-      "value": "WebサイトID"
-    }
-  ],
-  "label.websites": [
-    {
-      "type": 0,
-      "value": "Webサイト"
-    }
-  ],
-  "label.window": [
-    {
-      "type": 0,
-      "value": "ウィンドウ"
-    }
-  ],
-  "label.yesterday": [
-    {
-      "type": 0,
-      "value": "昨日"
-    }
-  ],
-  "message.action-confirmation": [
-    {
-      "type": 0,
-      "value": "承認する場合は、下のフォームに「"
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": "」と入力してください。"
-    }
-  ],
-  "message.active-users": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "アクティブな訪問者"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "アクティブな訪問者"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "message.bad-request": [
-    {
-      "type": 0,
-      "value": "Bad request"
-    }
-  ],
-  "message.collected-data": [
-    {
-      "type": 0,
-      "value": "収集されたデータ"
-    }
-  ],
-  "message.confirm-delete": [
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "を削除してもよろしいですか？"
-    }
-  ],
-  "message.confirm-leave": [
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "から離脱してもよろしいですか？"
-    }
-  ],
-  "message.confirm-remove": [
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "を削除してもよろしいですか？"
-    }
-  ],
-  "message.confirm-reset": [
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "をリセットしてもよろしいですか？"
-    }
-  ],
-  "message.delete-team-warning": [
-    {
-      "type": 0,
-      "value": "チームを削除すると、そのチームが管理しているWebサイトもすべて削除されます。"
-    }
-  ],
-  "message.delete-website-warning": [
-    {
-      "type": 0,
-      "value": "Webサイトのデータがすべて削除されます。"
-    }
-  ],
-  "message.error": [
-    {
-      "type": 0,
-      "value": "未知のエラーが発生しました。"
-    }
-  ],
-  "message.event-log": [
-    {
-      "type": 1,
-      "value": "url"
-    },
-    {
-      "type": 0,
-      "value": "の"
-    },
-    {
-      "type": 1,
-      "value": "event"
-    }
-  ],
-  "message.forbidden": [
-    {
-      "type": 0,
-      "value": "Forbidden"
-    }
-  ],
-  "message.go-to-settings": [
-    {
-      "type": 0,
-      "value": "設定に移動する"
-    }
-  ],
-  "message.incorrect-username-password": [
-    {
-      "type": 0,
-      "value": "ユーザー名またはパスワードが間違っています。"
-    }
-  ],
-  "message.invalid-domain": [
-    {
-      "type": 0,
-      "value": "無効なドメインです。http/httpsを含めないでください。"
-    }
-  ],
-  "message.min-password-length": [
-    {
-      "type": 0,
-      "value": "最小文字数は"
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "文字です"
-    }
-  ],
-  "message.new-version-available": [
-    {
-      "type": 0,
-      "value": "Umamiの新しいバージョン"
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": "が利用可能です！"
-    }
-  ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "データがありません。"
-    }
-  ],
-  "message.no-event-data": [
-    {
-      "type": 0,
-      "value": "イベントデータがありません。"
-    }
-  ],
-  "message.no-match-password": [
-    {
-      "type": 0,
-      "value": "パスワードが一致しません。"
-    }
-  ],
-  "message.no-results-found": [
-    {
-      "type": 0,
-      "value": "結果が見つかりません。"
-    }
-  ],
-  "message.no-team-websites": [
-    {
-      "type": 0,
-      "value": "このチームにはWebサイトがありません。"
-    }
-  ],
-  "message.no-teams": [
-    {
-      "type": 0,
-      "value": "チームを作成していません。"
-    }
-  ],
-  "message.no-users": [
-    {
-      "type": 0,
-      "value": "ユーザーが存在しません。"
-    }
-  ],
-  "message.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "Webサイトが設定されていません。"
-    }
-  ],
-  "message.not-found": [
-    {
-      "type": 0,
-      "value": "Not found"
-    }
-  ],
-  "message.nothing-selected": [
-    {
-      "type": 0,
-      "value": "Nothing selected."
-    }
-  ],
-  "message.page-not-found": [
-    {
-      "type": 0,
-      "value": "ページが見つかりません"
-    }
-  ],
-  "message.reset-website": [
-    {
-      "type": 0,
-      "value": "このWebサイトをリセットするには、下のフォームに「"
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": "」と入力してください。"
-    }
-  ],
-  "message.reset-website-warning": [
-    {
-      "type": 0,
-      "value": "このWebサイトの統計情報はすべて削除されますが、設定はそのまま残ります。"
-    }
-  ],
-  "message.saved": [
-    {
-      "type": 0,
-      "value": "保存されました。"
-    }
-  ],
-  "message.sever-error": [
-    {
-      "type": 0,
-      "value": "Server error"
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "あなたのWebサイトの統計情報は次のURLで公開されています："
-    }
-  ],
-  "message.team-already-member": [
-    {
-      "type": 0,
-      "value": "あなたはすでにチームのメンバーです。"
-    }
-  ],
-  "message.team-not-found": [
-    {
-      "type": 0,
-      "value": "チームが見つかりません。"
-    }
-  ],
-  "message.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Webサイトはチーム内の誰でも見ることができます。"
-    }
-  ],
-  "message.tracking-code": [
-    {
-      "type": 0,
-      "value": "このWebサイトの統計情報を追跡するには、HTMLの"
-    },
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": "..."
-        }
-      ],
-      "type": 8,
-      "value": "head"
-    },
-    {
-      "type": 0,
-      "value": "セクションに以下のコードを記述します。"
-    }
-  ],
-  "message.transfer-team-website-to-user": [
-    {
-      "type": 0,
-      "value": "このWebサイトをあなたのアカウントに移管しますか？"
-    }
-  ],
-  "message.transfer-user-website-to-team": [
-    {
-      "type": 0,
-      "value": "このWebサイトを移管するチームを選択してください。"
-    }
-  ],
-  "message.transfer-website": [
-    {
-      "type": 0,
-      "value": "Webサイトの所有権を自分のアカウントまたは別のチームへ移管します。"
-    }
-  ],
-  "message.triggered-event": [
-    {
-      "type": 0,
-      "value": "トリガーされたイベント"
-    }
-  ],
-  "message.unauthorized": [
-    {
-      "type": 0,
-      "value": "Unauthorized"
-    }
-  ],
-  "message.user-deleted": [
-    {
-      "type": 0,
-      "value": "ユーザーが削除されました。"
-    }
-  ],
-  "message.viewed-page": [
-    {
-      "type": 0,
-      "value": "閲覧されたページ"
-    }
-  ],
-  "message.visitor-log": [
-    {
-      "type": 1,
-      "value": "os"
-    },
-    {
-      "type": 0,
-      "value": "("
-    },
-    {
-      "type": 1,
-      "value": "device"
-    },
-    {
-      "type": 0,
-      "value": ")で"
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    },
-    {
-      "type": 0,
-      "value": "を使用している"
-    },
-    {
-      "type": 1,
-      "value": "country"
-    },
-    {
-      "type": 0,
-      "value": "からの訪問者"
-    }
-  ]
+  "label": {
+    "access-code": "アクセスコード",
+    "account": "アカウント",
+    "action": "アクション",
+    "actions": "アクション",
+    "activity": "アクティビティログ",
+    "add": "追加",
+    "add-board": "ボードを追加",
+    "add-description": "説明を追加",
+    "add-link": "リンクを追加",
+    "add-member": "メンバーの追加",
+    "add-pixel": "ピクセルを追加",
+    "add-step": "ステップを追加",
+    "add-website": "Webサイトの追加",
+    "admin": "管理者",
+    "affiliate": "アフィリエイト",
+    "after": "直後",
+    "all": "すべて",
+    "all-time": "すべての時間帯",
+    "analysis": "分析",
+    "analytics": "アナリティクス",
+    "application": "アプリケーション",
+    "apply": "適用",
+    "attribution": "アトリビューション",
+    "attribution-description": "ユーザーがあなたのマーケティングにどのように関与し、何がコンバージョンを促進するかを確認します。",
+    "audience": "オーディエンス",
+    "average": "平均",
+    "back": "戻る",
+    "before": "直前",
+    "behavior": "行動",
+    "boards": "ボード",
+    "bounce-rate": "直帰率",
+    "breakdown": "内訳",
+    "browser": "ブラウザ",
+    "browsers": "ブラウザ",
+    "campaign": "キャンペーン",
+    "campaigns": "キャンペーン",
+    "cancel": "キャンセル",
+    "change-password": "パスワードの変更",
+    "channel": "チャネル",
+    "channels": "チャンネル",
+    "chart": "チャート",
+    "cities": "都市",
+    "city": "都市",
+    "clear-all": "すべてクリア",
+    "cohort": "コホート",
+    "cohorts": "コホート",
+    "compare": "比較",
+    "compare-dates": "日付を比較",
+    "confirm": "確認",
+    "confirm-password": "パスワード(確認)",
+    "contains": "コンテンツ",
+    "content": "コンテンツ",
+    "continue": "続ける",
+    "conversion": "コンバージョン",
+    "conversion-rate": "コンバージョン率",
+    "conversion-step": "コンバージョンステップ",
+    "count": "回数",
+    "countries": "国名",
+    "country": "国",
+    "create": "作成",
+    "create-report": "レポートの作成",
+    "create-team": "チームの作成",
+    "create-user": "ユーザーの作成",
+    "created": "作成されました",
+    "created-by": "作成者",
+    "criteria": "条件",
+    "currency": "通貨",
+    "current": "現在",
+    "current-password": "現在のパスワード",
+    "custom-range": "範囲指定",
+    "dashboard": "ダッシュボード",
+    "data": "データ",
+    "date": "日付",
+    "date-range": "期間",
+    "day": "日",
+    "default-date-range": "デフォルトの期間",
+    "delete": "削除",
+    "delete-report": "レポートの削除",
+    "delete-team": "チームの削除",
+    "delete-user": "ユーザーの削除",
+    "delete-website": "Webサイトの削除",
+    "description": "説明",
+    "desktop": "デスクトップ",
+    "destination-url": "遷移先URL",
+    "details": "詳細情報",
+    "device": "デバイス",
+    "devices": "デバイス",
+    "direct": "ダイレクト",
+    "dismiss": "却下",
+    "distinct-id": "識別ID",
+    "documentation": "ドキュメント",
+    "does-not-contain": "を含まない",
+    "does-not-include": "含まない",
+    "doest-not-exist": "存在しない",
+    "domain": "ドメイン",
+    "download": "ダウンロード",
+    "dropoff": "切り捨て",
+    "edit": "編集",
+    "edit-member": "メンバーの編集",
+    "email": "メール",
+    "enable-share-url": "共有URLを有効にする",
+    "end-step": "最終ステップ",
+    "entry": "訪問時のURL",
+    "environment": "環境",
+    "event": "イベント",
+    "event-data": "イベントデータ",
+    "event-name": "イベント名",
+    "events": "イベント",
+    "exclude-bounce": "直帰を除外",
+    "exists": "存在する",
+    "exit": "退出時のURL",
+    "false": "偽",
+    "field": "フィールド",
+    "fields": "フィールド",
+    "filter": "フィルター",
+    "filter-combined": "結合",
+    "filter-raw": "RAW",
+    "filters": "フィルター",
+    "first-click": "最初のクリック",
+    "first-seen": "初回ログイン",
+    "funnel": "ファネル",
+    "funnel-description": "ユーザーのコンバージョン率と離脱率を分析します。",
+    "funnels": "ファネル",
+    "goal": "目標",
+    "goals": "目標",
+    "goals-description": "ページビューとイベントの目標を追跡します。",
+    "greater-than": "超過",
+    "greater-than-equals": "以上",
+    "grouped": "グループ化",
+    "growth": "成長",
+    "hostname": "ホスト名",
+    "hour": "時間",
+    "includes": "含む",
+    "insight": "インサイト",
+    "insights": "インサイト",
+    "insights-description": "セグメントとフィルタを使用して、データをさらに詳しく分析します。",
+    "invalid-url": "無効なURL",
+    "is": "に等しい",
+    "is-false": "偽である",
+    "is-not": "に等しくない",
+    "is-not-set": "未設定",
+    "is-set": "設定済み",
+    "is-true": "真である",
+    "join": "参加",
+    "join-team": "チームに参加",
+    "journey": "ジャーニー",
+    "journey-description": "ユーザーがWebサイト内をどのように移動するかを把握します。",
+    "journeys": "ジャーニー",
+    "language": "言語",
+    "languages": "言語",
+    "laptop": "ノートPC",
+    "last-click": "最後のクリック",
+    "last-days": "過去{x}日間",
+    "last-hours": "過去{x}時間",
+    "last-months": "過去{x}月間",
+    "last-seen": "最終ログイン",
+    "leave": "離脱",
+    "leave-team": "チームを離脱",
+    "less-than": "未満",
+    "less-than-equals": "以下",
+    "link": "リンク",
+    "links": "リンク",
+    "location": "場所",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "manage": "管理",
+    "manager": "管理者",
+    "max": "最大",
+    "maximize": "展開",
+    "medium": "メディア",
+    "member": "メンバー",
+    "members": "メンバー",
+    "min": "最小",
+    "minute": "分",
+    "mobile": "携帯電話",
+    "model": "モデル",
+    "month": "月",
+    "more": "もっと見る",
+    "my-account": "マイアカウント",
+    "my-websites": "マイWebサイト",
+    "name": "名前",
+    "new-password": "新しいパスワード",
+    "none": "なし",
+    "number-of-records": "{x} {x, plural, one {件} other {件}}",
+    "ok": "OK",
+    "online": "オンライン",
+    "organic-search": "オーガニック検索",
+    "organic-shopping": "オーガニックショッピング",
+    "organic-social": "オーガニックソーシャル",
+    "organic-video": "オーガニックビデオ",
+    "os": "OS",
+    "other": "その他",
+    "overview": "概要",
+    "owner": "所有者",
+    "page": "ページ",
+    "page-of": "ページ {current}/{total}",
+    "page-views": "閲覧数",
+    "pageTitle": "ページタイトル",
+    "pages": "ページ",
+    "paid-ads": "有料広告",
+    "paid-search": "有料検索",
+    "paid-shopping": "有料ショッピング",
+    "paid-social": "有料ソーシャル",
+    "paid-video": "有料ビデオ",
+    "password": "パスワード",
+    "path": "パス",
+    "paths": "パス",
+    "pixel": "ピクセル",
+    "pixels": "ピクセル",
+    "powered-by": "{name} 提供",
+    "preferences": "環境設定",
+    "previous": "以前",
+    "previous-period": "前期",
+    "previous-year": "前年",
+    "profile": "プロフィール",
+    "profiles": "プロフィール",
+    "properties": "プロパティ",
+    "property": "プロパティ",
+    "queries": "クエリ",
+    "query": "クエリ",
+    "query-parameters": "クエリパラメーター",
+    "realtime": "リアルタイム",
+    "referral": "リファラル",
+    "referrer": "リファラー",
+    "referrers": "リファラー",
+    "refresh": "更新",
+    "regenerate": "再生成",
+    "region": "地域",
+    "regions": "地域",
+    "remaining": "残り",
+    "remove": "削除",
+    "remove-member": "メンバーの削除",
+    "reports": "レポート",
+    "required": "必須",
+    "reset": "リセット",
+    "reset-website": "Webサイトをリセットする",
+    "retention": "リテンション",
+    "retention-description": "ユーザーの再訪問回数を記録して、Webサイトのリテンション率を計測します。",
+    "revenue": "レベニュー",
+    "revenue-description": "時間あたりの売上高を確認します。",
+    "role": "ロール",
+    "run-query": "クエリ実行",
+    "save": "保存",
+    "save-cohort": "コホートを保存",
+    "save-segment": "セグメントを保存",
+    "screen": "スクリーン",
+    "screens": "画面サイズ",
+    "search": "検索",
+    "segment": "セグメント",
+    "segments": "セグメント",
+    "select": "選択",
+    "select-date": "日付を選択",
+    "select-filter": "フィルターを選択",
+    "select-role": "ロールを選択",
+    "select-website": "Webサイトを選択",
+    "session": "セッション",
+    "session-data": "セッションデータ",
+    "sessions": "セッション",
+    "settings": "設定",
+    "share": "共有",
+    "share-url": "共有URL",
+    "single-day": "一日",
+    "sms": "SMS",
+    "source": "ソース",
+    "sources": "ソース",
+    "start-step": "最初のステップ",
+    "steps": "ステップ",
+    "sum": "合計",
+    "support": "サポート",
+    "switch-account": "アカウントを切り替え",
+    "table": "テーブル",
+    "tablet": "タブレット",
+    "tag": "タグ",
+    "tags": "タグ",
+    "team": "チーム",
+    "team-id": "チームID",
+    "team-manager": "チーム管理者",
+    "team-member": "チームメンバー",
+    "team-name": "チーム名",
+    "team-owner": "チームオーナー",
+    "team-settings": "チーム設定",
+    "team-view-only": "チーム表示のみ",
+    "team-websites": "チームのWebサイト",
+    "teams": "チーム",
+    "term": "検索語句",
+    "terms": "利用規約",
+    "theme": "テーマ",
+    "this-month": "今月",
+    "this-week": "今週",
+    "this-year": "今年",
+    "timezone": "タイムゾーン",
+    "title": "タイトル",
+    "today": "今日",
+    "toggle-charts": "グラフを切り替える",
+    "total": "累計",
+    "total-records": "総記録数",
+    "tracking-code": "トラッキングコード",
+    "traffic": "トラフィック",
+    "transactions": "トランザクション",
+    "transfer": "移管",
+    "transfer-website": "Webサイトの移管",
+    "true": "真",
+    "type": "種別",
+    "unique": "ユニーク",
+    "unique-events": "ユニークイベント",
+    "unique-visitors": "ユニーク訪問者数",
+    "uniqueCustomers": "ユニーク顧客数",
+    "unknown": "不明",
+    "untitled": "無題",
+    "update": "更新",
+    "url": "URL",
+    "user": "ユーザー",
+    "username": "ユーザー名",
+    "users": "ユーザー",
+    "utm": "UTM",
+    "utm-campaign": "UTM キャンペーン",
+    "utm-content": "UTM コンテンツ",
+    "utm-description": "UTMパラメーターを使用してキャンペーンを追跡します。",
+    "utm-medium": "UTM メディア",
+    "utm-source": "UTM ソース",
+    "utm-term": "UTM ターム",
+    "value": "値",
+    "version": "バージョン",
+    "view": "表示",
+    "view-details": "詳細を表示",
+    "view-only": "表示のみ",
+    "views": "表示",
+    "views-per-visit": "訪問あたりの閲覧数",
+    "visit-duration": "平均滞在時間",
+    "visitors": "訪問者",
+    "visits": "訪問数",
+    "website": "Webサイト",
+    "website-id": "WebサイトID",
+    "websites": "Webサイト",
+    "window": "ウィンドウ",
+    "yesterday": "昨日"
+  },
+  "message": {
+    "action-confirmation": "承認する場合は、下のフォームに「{confirmation}」と入力してください。",
+    "active-users": "{x} {x, plural, one {アクティブな訪問者} other {アクティブな訪問者}}",
+    "bad-request": "不正なリクエスト",
+    "collected-data": "収集されたデータ",
+    "confirm-delete": "{target}を削除してもよろしいですか？",
+    "confirm-leave": "<b>{target}</b>から離脱してもよろしいですか？",
+    "confirm-remove": "<b>{target}</b>を削除してもよろしいですか？",
+    "confirm-reset": "{target}をリセットしてもよろしいですか？",
+    "delete-team-warning": "チームを削除すると、そのチームが管理しているWebサイトもすべて削除されます。",
+    "delete-website-warning": "Webサイトのデータがすべて削除されます。",
+    "error": "未知のエラーが発生しました。",
+    "event-log": "<a>{url}</a>の<b>{event}</b>",
+    "forbidden": "アクセス禁止",
+    "go-to-settings": "設定に移動する",
+    "incorrect-username-password": "ユーザー名またはパスワードが間違っています。",
+    "invalid-domain": "無効なドメインです。http/httpsを含めないでください。",
+    "min-password-length": "最小文字数は{n}文字です",
+    "new-version-available": "Umamiの新しいバージョン{version}が利用可能です！",
+    "no-data-available": "データがありません。",
+    "no-event-data": "イベントデータがありません。",
+    "no-match-password": "パスワードが一致しません。",
+    "no-results-found": "結果が見つかりません。",
+    "no-team-websites": "このチームにはWebサイトがありません。",
+    "no-teams": "チームを作成していません。",
+    "no-users": "ユーザーが存在しません。",
+    "no-websites-configured": "Webサイトが設定されていません。",
+    "not-found": "見つかりません",
+    "nothing-selected": "何も選択されていません。",
+    "page-not-found": "ページが見つかりません",
+    "reset-website": "このWebサイトをリセットするには、下のフォームに「{confirmation}」と入力してください。",
+    "reset-website-warning": "このWebサイトの統計情報はすべて削除されますが、設定はそのまま残ります。",
+    "saved": "保存されました。",
+    "sever-error": "サーバーエラー",
+    "share-url": "あなたのWebサイトの統計情報は次のURLで公開されています：",
+    "team-already-member": "あなたはすでにチームのメンバーです。",
+    "team-not-found": "チームが見つかりません。",
+    "team-websites-info": "Webサイトはチーム内の誰でも見ることができます。",
+    "tracking-code": "このWebサイトの統計情報を追跡するには、HTMLの<head>...</head>セクションに以下のコードを記述します。",
+    "transfer-team-website-to-user": "このWebサイトをあなたのアカウントに移管しますか？",
+    "transfer-user-website-to-team": "このWebサイトを移管するチームを選択してください。",
+    "transfer-website": "Webサイトの所有権を自分のアカウントまたは別のチームへ移管します。",
+    "triggered-event": "トリガーされたイベント",
+    "unauthorized": "認証が必要です",
+    "user-deleted": "ユーザーが削除されました。",
+    "viewed-page": "閲覧されたページ",
+    "visitor-log": "<b>{os}</b>(<b>{device}</b>)で<b>{browser}</b>を使用している<b>{country}</b>からの訪問者"
+  }
 }

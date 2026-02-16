@@ -1,2222 +1,388 @@
 {
-  "label.access-code": [
-    {
-      "type": 0,
-      "value": "Codi d'accés"
-    }
-  ],
-  "label.actions": [
-    {
-      "type": 0,
-      "value": "Accions"
-    }
-  ],
-  "label.activity": [
-    {
-      "type": 0,
-      "value": "Registre d'activitat"
-    }
-  ],
-  "label.add": [
-    {
-      "type": 0,
-      "value": "Afegir"
-    }
-  ],
-  "label.add-board": [
-    {
-      "type": 0,
-      "value": "Afegir tauler"
-    }
-  ],
-  "label.add-description": [
-    {
-      "type": 0,
-      "value": "Afegir descripció"
-    }
-  ],
-  "label.add-member": [
-    {
-      "type": 0,
-      "value": "Afegir membre"
-    }
-  ],
-  "label.add-step": [
-    {
-      "type": 0,
-      "value": "Afegir pas"
-    }
-  ],
-  "label.add-website": [
-    {
-      "type": 0,
-      "value": "Afegir lloc web"
-    }
-  ],
-  "label.admin": [
-    {
-      "type": 0,
-      "value": "Administrador"
-    }
-  ],
-  "label.affiliate": [
-    {
-      "type": 0,
-      "value": "Afiliat"
-    }
-  ],
-  "label.after": [
-    {
-      "type": 0,
-      "value": "Després"
-    }
-  ],
-  "label.all": [
-    {
-      "type": 0,
-      "value": "Tots"
-    }
-  ],
-  "label.all-time": [
-    {
-      "type": 0,
-      "value": "Sempre"
-    }
-  ],
-  "label.analytics": [
-    {
-      "type": 0,
-      "value": "Analítiques"
-    }
-  ],
-  "label.apply": [
-    {
-      "type": 0,
-      "value": "Aplica"
-    }
-  ],
-  "label.attribution": [
-    {
-      "type": 0,
-      "value": "Atribució"
-    }
-  ],
-  "label.attribution-description": [
-    {
-      "type": 0,
-      "value": "Vegeu com els usuaris interactuen amb el vostre màrqueting i què impulsa les conversions."
-    }
-  ],
-  "label.average": [
-    {
-      "type": 0,
-      "value": "Mitjana"
-    }
-  ],
-  "label.back": [
-    {
-      "type": 0,
-      "value": "Enrere"
-    }
-  ],
-  "label.before": [
-    {
-      "type": 0,
-      "value": "Abans"
-    }
-  ],
-  "label.boards": [
-    {
-      "type": 0,
-      "value": "Taulers"
-    }
-  ],
-  "label.bounce-rate": [
-    {
-      "type": 0,
-      "value": "Percentatge de rebot"
-    }
-  ],
-  "label.breakdown": [
-    {
-      "type": 0,
-      "value": "Desglossament"
-    }
-  ],
-  "label.browser": [
-    {
-      "type": 0,
-      "value": "Navegador"
-    }
-  ],
-  "label.browsers": [
-    {
-      "type": 0,
-      "value": "Navegadors"
-    }
-  ],
-  "label.campaigns": [
-    {
-      "type": 0,
-      "value": "Campanyes"
-    }
-  ],
-  "label.cancel": [
-    {
-      "type": 0,
-      "value": "Cancel·la"
-    }
-  ],
-  "label.change-password": [
-    {
-      "type": 0,
-      "value": "Canvia la contrasenya"
-    }
-  ],
-  "label.channels": [
-    {
-      "type": 0,
-      "value": "Canals"
-    }
-  ],
-  "label.cities": [
-    {
-      "type": 0,
-      "value": "Ciutats"
-    }
-  ],
-  "label.city": [
-    {
-      "type": 0,
-      "value": "Ciutat"
-    }
-  ],
-  "label.clear-all": [
-    {
-      "type": 0,
-      "value": "Netejar tot"
-    }
-  ],
-  "label.cohort": [
-    {
-      "type": 0,
-      "value": "Cohort"
-    }
-  ],
-  "label.compare": [
-    {
-      "type": 0,
-      "value": "Comparar"
-    }
-  ],
-  "label.compare-dates": [
-    {
-      "type": 0,
-      "value": "Comparar dates"
-    }
-  ],
-  "label.confirm": [
-    {
-      "type": 0,
-      "value": "Confirmar"
-    }
-  ],
-  "label.confirm-password": [
-    {
-      "type": 0,
-      "value": "Confirma la contrasenya"
-    }
-  ],
-  "label.contains": [
-    {
-      "type": 0,
-      "value": "Conté"
-    }
-  ],
-  "label.content": [
-    {
-      "type": 0,
-      "value": "Contingut"
-    }
-  ],
-  "label.continue": [
-    {
-      "type": 0,
-      "value": "Continuar"
-    }
-  ],
-  "label.conversion": [
-    {
-      "type": 0,
-      "value": "Conversió"
-    }
-  ],
-  "label.conversion-rate": [
-    {
-      "type": 0,
-      "value": "Taxa de conversió"
-    }
-  ],
-  "label.conversion-step": [
-    {
-      "type": 0,
-      "value": "Pas de conversió"
-    }
-  ],
-  "label.count": [
-    {
-      "type": 0,
-      "value": "Recompte"
-    }
-  ],
-  "label.countries": [
-    {
-      "type": 0,
-      "value": "Països"
-    }
-  ],
-  "label.country": [
-    {
-      "type": 0,
-      "value": "País"
-    }
-  ],
-  "label.create": [
-    {
-      "type": 0,
-      "value": "Crear"
-    }
-  ],
-  "label.create-report": [
-    {
-      "type": 0,
-      "value": "Crear informe"
-    }
-  ],
-  "label.create-team": [
-    {
-      "type": 0,
-      "value": "Crear equip"
-    }
-  ],
-  "label.create-user": [
-    {
-      "type": 0,
-      "value": "Crear usuari"
-    }
-  ],
-  "label.created": [
-    {
-      "type": 0,
-      "value": "Creat"
-    }
-  ],
-  "label.created-by": [
-    {
-      "type": 0,
-      "value": "Creat Per"
-    }
-  ],
-  "label.currency": [
-    {
-      "type": 0,
-      "value": "Moneda"
-    }
-  ],
-  "label.current": [
-    {
-      "type": 0,
-      "value": "Actual"
-    }
-  ],
-  "label.current-password": [
-    {
-      "type": 0,
-      "value": "Contrasenya actual"
-    }
-  ],
-  "label.custom-range": [
-    {
-      "type": 0,
-      "value": "Rang personalitzat"
-    }
-  ],
-  "label.dashboard": [
-    {
-      "type": 0,
-      "value": "Panell"
-    }
-  ],
-  "label.data": [
-    {
-      "type": 0,
-      "value": "Dades"
-    }
-  ],
-  "label.date": [
-    {
-      "type": 0,
-      "value": "Data"
-    }
-  ],
-  "label.date-range": [
-    {
-      "type": 0,
-      "value": "Interval de dates"
-    }
-  ],
-  "label.day": [
-    {
-      "type": 0,
-      "value": "Dia"
-    }
-  ],
-  "label.default-date-range": [
-    {
-      "type": 0,
-      "value": "Interval de dates per defecte"
-    }
-  ],
-  "label.delete": [
-    {
-      "type": 0,
-      "value": "Esborra"
-    }
-  ],
-  "label.delete-report": [
-    {
-      "type": 0,
-      "value": "Eliminar informe"
-    }
-  ],
-  "label.delete-team": [
-    {
-      "type": 0,
-      "value": "Eliminar equip"
-    }
-  ],
-  "label.delete-user": [
-    {
-      "type": 0,
-      "value": "Eliminar usuari"
-    }
-  ],
-  "label.delete-website": [
-    {
-      "type": 0,
-      "value": "Esborra el lloc web"
-    }
-  ],
-  "label.description": [
-    {
-      "type": 0,
-      "value": "Descripció"
-    }
-  ],
-  "label.desktop": [
-    {
-      "type": 0,
-      "value": "Escriptori"
-    }
-  ],
-  "label.details": [
-    {
-      "type": 0,
-      "value": "Detalls"
-    }
-  ],
-  "label.device": [
-    {
-      "type": 0,
-      "value": "Dispositiu"
-    }
-  ],
-  "label.devices": [
-    {
-      "type": 0,
-      "value": "Dispositius"
-    }
-  ],
-  "label.direct": [
-    {
-      "type": 0,
-      "value": "Directe"
-    }
-  ],
-  "label.dismiss": [
-    {
-      "type": 0,
-      "value": "Descarta"
-    }
-  ],
-  "label.distinct-id": [
-    {
-      "type": 0,
-      "value": "ID distintiu"
-    }
-  ],
-  "label.does-not-contain": [
-    {
-      "type": 0,
-      "value": "No conté"
-    }
-  ],
-  "label.does-not-include": [
-    {
-      "type": 0,
-      "value": "No inclou"
-    }
-  ],
-  "label.doest-not-exist": [
-    {
-      "type": 0,
-      "value": "No existeix"
-    }
-  ],
-  "label.domain": [
-    {
-      "type": 0,
-      "value": "Domini"
-    }
-  ],
-  "label.dropoff": [
-    {
-      "type": 0,
-      "value": "Abandonament"
-    }
-  ],
-  "label.edit": [
-    {
-      "type": 0,
-      "value": "Edita"
-    }
-  ],
-  "label.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "Edita panell"
-    }
-  ],
-  "label.edit-member": [
-    {
-      "type": 0,
-      "value": "Edita membre"
-    }
-  ],
-  "label.email": [
-    {
-      "type": 0,
-      "value": "Email"
-    }
-  ],
-  "label.enable-share-url": [
-    {
-      "type": 0,
-      "value": "Activa l'enllaç per compartir"
-    }
-  ],
-  "label.end-step": [
-    {
-      "type": 0,
-      "value": "Pas Final"
-    }
-  ],
-  "label.entry": [
-    {
-      "type": 0,
-      "value": "URL d'entrada"
-    }
-  ],
-  "label.event": [
-    {
-      "type": 0,
-      "value": "Esdeveniment"
-    }
-  ],
-  "label.event-data": [
-    {
-      "type": 0,
-      "value": "Dades de l'esdeveniment"
-    }
-  ],
-  "label.event-name": [
-    {
-      "type": 0,
-      "value": "Nom de l'esdeveniment"
-    }
-  ],
-  "label.events": [
-    {
-      "type": 0,
-      "value": "Esdeveniments"
-    }
-  ],
-  "label.exists": [
-    {
-      "type": 0,
-      "value": "Existeix"
-    }
-  ],
-  "label.exit": [
-    {
-      "type": 0,
-      "value": "URL de sortida"
-    }
-  ],
-  "label.false": [
-    {
-      "type": 0,
-      "value": "Fals"
-    }
-  ],
-  "label.field": [
-    {
-      "type": 0,
-      "value": "Camp"
-    }
-  ],
-  "label.fields": [
-    {
-      "type": 0,
-      "value": "Camps"
-    }
-  ],
-  "label.filter": [
-    {
-      "type": 0,
-      "value": "Filtre"
-    }
-  ],
-  "label.filter-combined": [
-    {
-      "type": 0,
-      "value": "Combinat"
-    }
-  ],
-  "label.filter-raw": [
-    {
-      "type": 0,
-      "value": "En cru"
-    }
-  ],
-  "label.filters": [
-    {
-      "type": 0,
-      "value": "Filtres"
-    }
-  ],
-  "label.first-click": [
-    {
-      "type": 0,
-      "value": "Primer clic"
-    }
-  ],
-  "label.first-seen": [
-    {
-      "type": 0,
-      "value": "Vist per primer cop"
-    }
-  ],
-  "label.funnel": [
-    {
-      "type": 0,
-      "value": "Embut"
-    }
-  ],
-  "label.funnel-description": [
-    {
-      "type": 0,
-      "value": "Entengui la taxa de conversió i abandonament dels usuaris."
-    }
-  ],
-  "label.funnels": [
-    {
-      "type": 0,
-      "value": "Embuts"
-    }
-  ],
-  "label.goal": [
-    {
-      "type": 0,
-      "value": "Meta"
-    }
-  ],
-  "label.goals": [
-    {
-      "type": 0,
-      "value": "Metes"
-    }
-  ],
-  "label.goals-description": [
-    {
-      "type": 0,
-      "value": "Feu un seguiment de les seves metes per a pàgines vistes i esdeveniments."
-    }
-  ],
-  "label.greater-than": [
-    {
-      "type": 0,
-      "value": "Més gran que"
-    }
-  ],
-  "label.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "Més gran que o igual a"
-    }
-  ],
-  "label.grouped": [
-    {
-      "type": 0,
-      "value": "Agrupat"
-    }
-  ],
-  "label.hostname": [
-    {
-      "type": 0,
-      "value": "Nom de host"
-    }
-  ],
-  "label.includes": [
-    {
-      "type": 0,
-      "value": "Inclou"
-    }
-  ],
-  "label.insight": [
-    {
-      "type": 0,
-      "value": "Visió"
-    }
-  ],
-  "label.insights": [
-    {
-      "type": 0,
-      "value": "Insights"
-    }
-  ],
-  "label.insights-description": [
-    {
-      "type": 0,
-      "value": "Aprofundeixi en les seves dades mitjançant l'ús de segments i filtres."
-    }
-  ],
-  "label.is": [
-    {
-      "type": 0,
-      "value": "És igual a"
-    }
-  ],
-  "label.is-false": [
-    {
-      "type": 0,
-      "value": "És fals"
-    }
-  ],
-  "label.is-not": [
-    {
-      "type": 0,
-      "value": "No és igual a"
-    }
-  ],
-  "label.is-not-set": [
-    {
-      "type": 0,
-      "value": "No està establert"
-    }
-  ],
-  "label.is-set": [
-    {
-      "type": 0,
-      "value": "Està establert"
-    }
-  ],
-  "label.is-true": [
-    {
-      "type": 0,
-      "value": "És cert"
-    }
-  ],
-  "label.join": [
-    {
-      "type": 0,
-      "value": "Unir"
-    }
-  ],
-  "label.join-team": [
-    {
-      "type": 0,
-      "value": "Unir-se al equip"
-    }
-  ],
-  "label.journey": [
-    {
-      "type": 0,
-      "value": "Trajecte"
-    }
-  ],
-  "label.journey-description": [
-    {
-      "type": 0,
-      "value": "Entengui com naveguen els usuaris pel seu lloc web."
-    }
-  ],
-  "label.journeys": [
-    {
-      "type": 0,
-      "value": "Trajectes"
-    }
-  ],
-  "label.language": [
-    {
-      "type": 0,
-      "value": "Idioma"
-    }
-  ],
-  "label.languages": [
-    {
-      "type": 0,
-      "value": "Idiomes"
-    }
-  ],
-  "label.laptop": [
-    {
-      "type": 0,
-      "value": "Portàtil"
-    }
-  ],
-  "label.last-click": [
-    {
-      "type": 0,
-      "value": "Últim clic"
-    }
-  ],
-  "label.last-days": [
-    {
-      "type": 0,
-      "value": "Últims "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " dies"
-    }
-  ],
-  "label.last-hours": [
-    {
-      "type": 0,
-      "value": "Últimes "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " hores"
-    }
-  ],
-  "label.last-months": [
-    {
-      "type": 0,
-      "value": "Últims "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " mesos"
-    }
-  ],
-  "label.last-seen": [
-    {
-      "type": 0,
-      "value": "Vist per últim cop"
-    }
-  ],
-  "label.leave": [
-    {
-      "type": 0,
-      "value": "Abandonar"
-    }
-  ],
-  "label.leave-team": [
-    {
-      "type": 0,
-      "value": "Abandonar equip"
-    }
-  ],
-  "label.less-than": [
-    {
-      "type": 0,
-      "value": "Menor que"
-    }
-  ],
-  "label.less-than-equals": [
-    {
-      "type": 0,
-      "value": "Menor que o igual a"
-    }
-  ],
-  "label.links": [
-    {
-      "type": 0,
-      "value": "Enllaços"
-    }
-  ],
-  "label.login": [
-    {
-      "type": 0,
-      "value": "Connecta't"
-    }
-  ],
-  "label.logout": [
-    {
-      "type": 0,
-      "value": "Desconnecta't"
-    }
-  ],
-  "label.manage": [
-    {
-      "type": 0,
-      "value": "Administrar"
-    }
-  ],
-  "label.manager": [
-    {
-      "type": 0,
-      "value": "Responsable"
-    }
-  ],
-  "label.max": [
-    {
-      "type": 0,
-      "value": "Màx"
-    }
-  ],
-  "label.maximize": [
-    {
-      "type": 0,
-      "value": "Expandeix"
-    }
-  ],
-  "label.medium": [
-    {
-      "type": 0,
-      "value": "Mitjà"
-    }
-  ],
-  "label.member": [
-    {
-      "type": 0,
-      "value": "Membre"
-    }
-  ],
-  "label.members": [
-    {
-      "type": 0,
-      "value": "Membres"
-    }
-  ],
-  "label.min": [
-    {
-      "type": 0,
-      "value": "Mín"
-    }
-  ],
-  "label.mobile": [
-    {
-      "type": 0,
-      "value": "Mòbil"
-    }
-  ],
-  "label.model": [
-    {
-      "type": 0,
-      "value": "Model"
-    }
-  ],
-  "label.more": [
-    {
-      "type": 0,
-      "value": "Més"
-    }
-  ],
-  "label.my-account": [
-    {
-      "type": 0,
-      "value": "El meu compte"
-    }
-  ],
-  "label.my-websites": [
-    {
-      "type": 0,
-      "value": "Els meus llocs web"
-    }
-  ],
-  "label.name": [
-    {
-      "type": 0,
-      "value": "Nom"
-    }
-  ],
-  "label.new-password": [
-    {
-      "type": 0,
-      "value": "Contrasenya nova"
-    }
-  ],
-  "label.none": [
-    {
-      "type": 0,
-      "value": "Cap"
-    }
-  ],
-  "label.number-of-records": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "registre"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "registres"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "label.ok": [
-    {
-      "type": 0,
-      "value": "OK"
-    }
-  ],
-  "label.online": [
-    {
-      "type": 0,
-      "value": "Online"
-    }
-  ],
-  "label.organic-search": [
-    {
-      "type": 0,
-      "value": "Cerca orgànica"
-    }
-  ],
-  "label.organic-shopping": [
-    {
-      "type": 0,
-      "value": "Compra orgànica"
-    }
-  ],
-  "label.organic-social": [
-    {
-      "type": 0,
-      "value": "Social orgànic"
-    }
-  ],
-  "label.organic-video": [
-    {
-      "type": 0,
-      "value": "Vídeo orgànic"
-    }
-  ],
-  "label.os": [
-    {
-      "type": 0,
-      "value": "SO"
-    }
-  ],
-  "label.other": [
-    {
-      "type": 0,
-      "value": "Altres"
-    }
-  ],
-  "label.overview": [
-    {
-      "type": 0,
-      "value": "Resum"
-    }
-  ],
-  "label.owner": [
-    {
-      "type": 0,
-      "value": "Propietari"
-    }
-  ],
-  "label.page": [
-    {
-      "type": 0,
-      "value": "Pàgina"
-    }
-  ],
-  "label.page-of": [
-    {
-      "type": 0,
-      "value": "Pàgina "
-    },
-    {
-      "type": 1,
-      "value": "current"
-    },
-    {
-      "type": 0,
-      "value": " de "
-    },
-    {
-      "type": 1,
-      "value": "total"
-    }
-  ],
-  "label.page-views": [
-    {
-      "type": 0,
-      "value": "Pàgines vistes"
-    }
-  ],
-  "label.pageTitle": [
-    {
-      "type": 0,
-      "value": "Títol de la pàgina"
-    }
-  ],
-  "label.pages": [
-    {
-      "type": 0,
-      "value": "Pàgines"
-    }
-  ],
-  "label.paid-ads": [
-    {
-      "type": 0,
-      "value": "Anuncis de pagament"
-    }
-  ],
-  "label.paid-search": [
-    {
-      "type": 0,
-      "value": "Cerca de pagament"
-    }
-  ],
-  "label.paid-shopping": [
-    {
-      "type": 0,
-      "value": "Compra de pagament"
-    }
-  ],
-  "label.paid-social": [
-    {
-      "type": 0,
-      "value": "Social de pagament"
-    }
-  ],
-  "label.paid-video": [
-    {
-      "type": 0,
-      "value": "Vídeo de pagament"
-    }
-  ],
-  "label.password": [
-    {
-      "type": 0,
-      "value": "Contrasenya"
-    }
-  ],
-  "label.path": [
-    {
-      "type": 0,
-      "value": "Camí"
-    }
-  ],
-  "label.paths": [
-    {
-      "type": 0,
-      "value": "Camins"
-    }
-  ],
-  "label.pixels": [
-    {
-      "type": 0,
-      "value": "Pixels"
-    }
-  ],
-  "label.powered-by": [
-    {
-      "type": 0,
-      "value": "Funciona amb "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    }
-  ],
-  "label.previous": [
-    {
-      "type": 0,
-      "value": "Anterior"
-    }
-  ],
-  "label.previous-period": [
-    {
-      "type": 0,
-      "value": "Període anterior"
-    }
-  ],
-  "label.previous-year": [
-    {
-      "type": 0,
-      "value": "Any anterior"
-    }
-  ],
-  "label.profile": [
-    {
-      "type": 0,
-      "value": "Perfil"
-    }
-  ],
-  "label.properties": [
-    {
-      "type": 0,
-      "value": "Propietats"
-    }
-  ],
-  "label.property": [
-    {
-      "type": 0,
-      "value": "Propietat"
-    }
-  ],
-  "label.queries": [
-    {
-      "type": 0,
-      "value": "Consultes"
-    }
-  ],
-  "label.query": [
-    {
-      "type": 0,
-      "value": "Consulta"
-    }
-  ],
-  "label.query-parameters": [
-    {
-      "type": 0,
-      "value": "Paràmetres de consulta"
-    }
-  ],
-  "label.realtime": [
-    {
-      "type": 0,
-      "value": "Temps real"
-    }
-  ],
-  "label.referral": [
-    {
-      "type": 0,
-      "value": "Referència"
-    }
-  ],
-  "label.referrer": [
-    {
-      "type": 0,
-      "value": "Referent"
-    }
-  ],
-  "label.referrers": [
-    {
-      "type": 0,
-      "value": "Referents"
-    }
-  ],
-  "label.refresh": [
-    {
-      "type": 0,
-      "value": "Refresca"
-    }
-  ],
-  "label.regenerate": [
-    {
-      "type": 0,
-      "value": "Regenerar"
-    }
-  ],
-  "label.region": [
-    {
-      "type": 0,
-      "value": "Regió"
-    }
-  ],
-  "label.regions": [
-    {
-      "type": 0,
-      "value": "Regions"
-    }
-  ],
-  "label.remaining": [
-    {
-      "type": 0,
-      "value": "Restant"
-    }
-  ],
-  "label.remove": [
-    {
-      "type": 0,
-      "value": "Treure"
-    }
-  ],
-  "label.remove-member": [
-    {
-      "type": 0,
-      "value": "Eliminar membre"
-    }
-  ],
-  "label.reports": [
-    {
-      "type": 0,
-      "value": "Informes"
-    }
-  ],
-  "label.required": [
-    {
-      "type": 0,
-      "value": "Obligatori"
-    }
-  ],
-  "label.reset": [
-    {
-      "type": 0,
-      "value": "Restableix"
-    }
-  ],
-  "label.reset-website": [
-    {
-      "type": 0,
-      "value": "Restableix estadístiques"
-    }
-  ],
-  "label.retention": [
-    {
-      "type": 0,
-      "value": "Retenció"
-    }
-  ],
-  "label.retention-description": [
-    {
-      "type": 0,
-      "value": "Mesuri la retenció del seu lloc web fent un seguiment de la freqüència amb què tornen els usuaris."
-    }
-  ],
-  "label.revenue": [
-    {
-      "type": 0,
-      "value": "Ingressos"
-    }
-  ],
-  "label.revenue-description": [
-    {
-      "type": 0,
-      "value": "Observi els seus ingressos al llarg del temps."
-    }
-  ],
-  "label.role": [
-    {
-      "type": 0,
-      "value": "Rol"
-    }
-  ],
-  "label.run-query": [
-    {
-      "type": 0,
-      "value": "Executar consulta"
-    }
-  ],
-  "label.save": [
-    {
-      "type": 0,
-      "value": "Desa"
-    }
-  ],
-  "label.screens": [
-    {
-      "type": 0,
-      "value": "Pantalles"
-    }
-  ],
-  "label.search": [
-    {
-      "type": 0,
-      "value": "Buscar"
-    }
-  ],
-  "label.select": [
-    {
-      "type": 0,
-      "value": "Seleccionar"
-    }
-  ],
-  "label.select-date": [
-    {
-      "type": 0,
-      "value": "Seleccionar data"
-    }
-  ],
-  "label.select-filter": [
-    {
-      "type": 0,
-      "value": "Seleccionar filtre"
-    }
-  ],
-  "label.select-role": [
-    {
-      "type": 0,
-      "value": "Seleccionar rol"
-    }
-  ],
-  "label.select-website": [
-    {
-      "type": 0,
-      "value": "Seleccionar lloc web"
-    }
-  ],
-  "label.session": [
-    {
-      "type": 0,
-      "value": "Sessió"
-    }
-  ],
-  "label.session-data": [
-    {
-      "type": 0,
-      "value": "Dades de sessió"
-    }
-  ],
-  "label.sessions": [
-    {
-      "type": 0,
-      "value": "Sessions"
-    }
-  ],
-  "label.settings": [
-    {
-      "type": 0,
-      "value": "Configuració"
-    }
-  ],
-  "label.share": [
-    {
-      "type": 0,
-      "value": "Comparteix"
-    }
-  ],
-  "label.share-url": [
-    {
-      "type": 0,
-      "value": "Enllaç per compartir"
-    }
-  ],
-  "label.single-day": [
-    {
-      "type": 0,
-      "value": "Un sol dia"
-    }
-  ],
-  "label.sms": [
-    {
-      "type": 0,
-      "value": "SMS"
-    }
-  ],
-  "label.sources": [
-    {
-      "type": 0,
-      "value": "Fonts"
-    }
-  ],
-  "label.start-step": [
-    {
-      "type": 0,
-      "value": "Pas inicial"
-    }
-  ],
-  "label.steps": [
-    {
-      "type": 0,
-      "value": "Pasos"
-    }
-  ],
-  "label.sum": [
-    {
-      "type": 0,
-      "value": "Suma"
-    }
-  ],
-  "label.tablet": [
-    {
-      "type": 0,
-      "value": "Tauleta"
-    }
-  ],
-  "label.tag": [
-    {
-      "type": 0,
-      "value": "Etiqueta"
-    }
-  ],
-  "label.tags": [
-    {
-      "type": 0,
-      "value": "Etiquetes"
-    }
-  ],
-  "label.team": [
-    {
-      "type": 0,
-      "value": "Equip"
-    }
-  ],
-  "label.team-id": [
-    {
-      "type": 0,
-      "value": "ID del equip"
-    }
-  ],
-  "label.team-manager": [
-    {
-      "type": 0,
-      "value": "Responsable d'equip"
-    }
-  ],
-  "label.team-member": [
-    {
-      "type": 0,
-      "value": "Membre de l'equip"
-    }
-  ],
-  "label.team-name": [
-    {
-      "type": 0,
-      "value": "Nom de l'equip"
-    }
-  ],
-  "label.team-owner": [
-    {
-      "type": 0,
-      "value": "Propietari de l'equip"
-    }
-  ],
-  "label.team-settings": [
-    {
-      "type": 0,
-      "value": "Configuració de l'equip"
-    }
-  ],
-  "label.team-view-only": [
-    {
-      "type": 0,
-      "value": "Vista només de l'equip"
-    }
-  ],
-  "label.team-websites": [
-    {
-      "type": 0,
-      "value": "Llocs web de l'equip"
-    }
-  ],
-  "label.teams": [
-    {
-      "type": 0,
-      "value": "Equips"
-    }
-  ],
-  "label.terms": [
-    {
-      "type": 0,
-      "value": "Termes"
-    }
-  ],
-  "label.theme": [
-    {
-      "type": 0,
-      "value": "Tema"
-    }
-  ],
-  "label.this-month": [
-    {
-      "type": 0,
-      "value": "Aquest mes"
-    }
-  ],
-  "label.this-week": [
-    {
-      "type": 0,
-      "value": "Aquesta setmana"
-    }
-  ],
-  "label.this-year": [
-    {
-      "type": 0,
-      "value": "Aquest any"
-    }
-  ],
-  "label.timezone": [
-    {
-      "type": 0,
-      "value": "Zona horària"
-    }
-  ],
-  "label.title": [
-    {
-      "type": 0,
-      "value": "Títol"
-    }
-  ],
-  "label.today": [
-    {
-      "type": 0,
-      "value": "Avui"
-    }
-  ],
-  "label.toggle-charts": [
-    {
-      "type": 0,
-      "value": "Mostra/amaga gràfics"
-    }
-  ],
-  "label.total": [
-    {
-      "type": 0,
-      "value": "Total"
-    }
-  ],
-  "label.total-records": [
-    {
-      "type": 0,
-      "value": "Total de registres"
-    }
-  ],
-  "label.tracking-code": [
-    {
-      "type": 0,
-      "value": "Codi de seguiment"
-    }
-  ],
-  "label.transactions": [
-    {
-      "type": 0,
-      "value": "Transaccions"
-    }
-  ],
-  "label.transfer": [
-    {
-      "type": 0,
-      "value": "Transferir"
-    }
-  ],
-  "label.transfer-website": [
-    {
-      "type": 0,
-      "value": "Transferir lloc web"
-    }
-  ],
-  "label.true": [
-    {
-      "type": 0,
-      "value": "Cert"
-    }
-  ],
-  "label.type": [
-    {
-      "type": 0,
-      "value": "Tipus"
-    }
-  ],
-  "label.unique": [
-    {
-      "type": 0,
-      "value": "Únic"
-    }
-  ],
-  "label.unique-visitors": [
-    {
-      "type": 0,
-      "value": "Visitants únics"
-    }
-  ],
-  "label.uniqueCustomers": [
-    {
-      "type": 0,
-      "value": "Clients Únics"
-    }
-  ],
-  "label.unknown": [
-    {
-      "type": 0,
-      "value": "Desconegut"
-    }
-  ],
-  "label.untitled": [
-    {
-      "type": 0,
-      "value": "Sense títol"
-    }
-  ],
-  "label.update": [
-    {
-      "type": 0,
-      "value": "Actualitzar"
-    }
-  ],
-  "label.user": [
-    {
-      "type": 0,
-      "value": "Usuari"
-    }
-  ],
-  "label.username": [
-    {
-      "type": 0,
-      "value": "Nom d'usuari"
-    }
-  ],
-  "label.users": [
-    {
-      "type": 0,
-      "value": "Usuaris"
-    }
-  ],
-  "label.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "label.utm-description": [
-    {
-      "type": 0,
-      "value": "Rastreji les seves campanyes a través de paràmetres UTM."
-    }
-  ],
-  "label.value": [
-    {
-      "type": 0,
-      "value": "Valor"
-    }
-  ],
-  "label.view": [
-    {
-      "type": 0,
-      "value": "Visualitzar"
-    }
-  ],
-  "label.view-details": [
-    {
-      "type": 0,
-      "value": "Veure els detalls"
-    }
-  ],
-  "label.view-only": [
-    {
-      "type": 0,
-      "value": "Només veure"
-    }
-  ],
-  "label.views": [
-    {
-      "type": 0,
-      "value": "Vistes"
-    }
-  ],
-  "label.views-per-visit": [
-    {
-      "type": 0,
-      "value": "Vistes per visita"
-    }
-  ],
-  "label.visit-duration": [
-    {
-      "type": 0,
-      "value": "Temps mitjà de visita"
-    }
-  ],
-  "label.visitors": [
-    {
-      "type": 0,
-      "value": "Visitants"
-    }
-  ],
-  "label.visits": [
-    {
-      "type": 0,
-      "value": "Visites"
-    }
-  ],
-  "label.website": [
-    {
-      "type": 0,
-      "value": "Lloc web"
-    }
-  ],
-  "label.website-id": [
-    {
-      "type": 0,
-      "value": "ID del lloc web"
-    }
-  ],
-  "label.websites": [
-    {
-      "type": 0,
-      "value": "Llocs web"
-    }
-  ],
-  "label.window": [
-    {
-      "type": 0,
-      "value": "Finestra"
-    }
-  ],
-  "label.yesterday": [
-    {
-      "type": 0,
-      "value": "Ahir"
-    }
-  ],
-  "message.action-confirmation": [
-    {
-      "type": 0,
-      "value": "Escrigui "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " al cuadre inferior per confirmar."
-    }
-  ],
-  "message.active-users": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "visitant actual"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "visitants actuals"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "message.bad-request": [
-    {
-      "type": 0,
-      "value": "Bad request"
-    }
-  ],
-  "message.collected-data": [
-    {
-      "type": 0,
-      "value": "Dades recol·lectades"
-    }
-  ],
-  "message.confirm-delete": [
-    {
-      "type": 0,
-      "value": "Segur que vol esborrar "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-leave": [
-    {
-      "type": 0,
-      "value": "Segur que vol abandonar "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-remove": [
-    {
-      "type": 0,
-      "value": "Segur que vol eliminar "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-reset": [
-    {
-      "type": 0,
-      "value": "Segur que vol restablir les estadístiques de "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.delete-team-warning": [
-    {
-      "type": 0,
-      "value": "Al eliminar un equip també s'eliminaran tots els llocs web de l'equip."
-    }
-  ],
-  "message.delete-website-warning": [
-    {
-      "type": 0,
-      "value": "També s'esborraran totes les dades relacionades."
-    }
-  ],
-  "message.error": [
-    {
-      "type": 0,
-      "value": "S'ha produït un error."
-    }
-  ],
-  "message.event-log": [
-    {
-      "type": 1,
-      "value": "event"
-    },
-    {
-      "type": 0,
-      "value": " a "
-    },
-    {
-      "type": 1,
-      "value": "url"
-    }
-  ],
-  "message.forbidden": [
-    {
-      "type": 0,
-      "value": "Forbidden"
-    }
-  ],
-  "message.go-to-settings": [
-    {
-      "type": 0,
-      "value": "Vés a la configuració"
-    }
-  ],
-  "message.incorrect-username-password": [
-    {
-      "type": 0,
-      "value": "Nom d'usuari o contrasenya incorrectes."
-    }
-  ],
-  "message.invalid-domain": [
-    {
-      "type": 0,
-      "value": "Domini invàlid"
-    }
-  ],
-  "message.min-password-length": [
-    {
-      "type": 0,
-      "value": "Longitud mínima de "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " caràcters"
-    }
-  ],
-  "message.new-version-available": [
-    {
-      "type": 0,
-      "value": "Una nova versió d'Umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " està disponible!"
-    }
-  ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "No hi ha dades disponibles."
-    }
-  ],
-  "message.no-event-data": [
-    {
-      "type": 0,
-      "value": "No hi ha dades d'esdeveniments disponibles."
-    }
-  ],
-  "message.no-match-password": [
-    {
-      "type": 0,
-      "value": "Les contrasenyes no coincideixen"
-    }
-  ],
-  "message.no-results-found": [
-    {
-      "type": 0,
-      "value": "No s'han trobat resultats."
-    }
-  ],
-  "message.no-team-websites": [
-    {
-      "type": 0,
-      "value": "Aquest equip no té cap lloc web."
-    }
-  ],
-  "message.no-teams": [
-    {
-      "type": 0,
-      "value": "No ha creat cap equip."
-    }
-  ],
-  "message.no-users": [
-    {
-      "type": 0,
-      "value": "No hi ha cap usuari."
-    }
-  ],
-  "message.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "No hi ha cap lloc web configurat."
-    }
-  ],
-  "message.not-found": [
-    {
-      "type": 0,
-      "value": "Not found"
-    }
-  ],
-  "message.nothing-selected": [
-    {
-      "type": 0,
-      "value": "Nothing selected."
-    }
-  ],
-  "message.page-not-found": [
-    {
-      "type": 0,
-      "value": "No s'ha trobat la pàgina."
-    }
-  ],
-  "message.reset-website": [
-    {
-      "type": 0,
-      "value": "Per restablir aquest lloc web, escrigui "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " al cuadre inferior per confirmar."
-    }
-  ],
-  "message.reset-website-warning": [
-    {
-      "type": 0,
-      "value": "S'esborraran totes les estadístiques per aquest lloc web, però el codi de seguiment es mantindrà."
-    }
-  ],
-  "message.saved": [
-    {
-      "type": 0,
-      "value": "S'ha desat amb èxit."
-    }
-  ],
-  "message.sever-error": [
-    {
-      "type": 0,
-      "value": "Server error"
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "Aquest és l'enllaç públic per compartir de "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "."
-    }
-  ],
-  "message.team-already-member": [
-    {
-      "type": 0,
-      "value": "Ja és membre d'aquest equip."
-    }
-  ],
-  "message.team-not-found": [
-    {
-      "type": 0,
-      "value": "Equip no trobat."
-    }
-  ],
-  "message.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Els llocs web poden ser visualitzats per qualsevol membre de l'equip."
-    }
-  ],
-  "message.tracking-code": [
-    {
-      "type": 0,
-      "value": "Codi de seguiment"
-    }
-  ],
-  "message.transfer-team-website-to-user": [
-    {
-      "type": 0,
-      "value": "Transferir aquest lloc web al seu compte?"
-    }
-  ],
-  "message.transfer-user-website-to-team": [
-    {
-      "type": 0,
-      "value": "Seleccioni l'equip al qui transferir aquest lloc web."
-    }
-  ],
-  "message.transfer-website": [
-    {
-      "type": 0,
-      "value": "Transferir la propietat del lloc web al seu compte o a un altre equip."
-    }
-  ],
-  "message.triggered-event": [
-    {
-      "type": 0,
-      "value": "Esdeveniment desencadenat"
-    }
-  ],
-  "message.unauthorized": [
-    {
-      "type": 0,
-      "value": "Unauthorized"
-    }
-  ],
-  "message.user-deleted": [
-    {
-      "type": 0,
-      "value": "Usuari eliminat."
-    }
-  ],
-  "message.viewed-page": [
-    {
-      "type": 0,
-      "value": "Pàgina vista"
-    }
-  ],
-  "message.visitor-log": [
-    {
-      "type": 0,
-      "value": "Visitant de "
-    },
-    {
-      "type": 1,
-      "value": "country"
-    },
-    {
-      "type": 0,
-      "value": " usant "
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    },
-    {
-      "type": 0,
-      "value": " a "
-    },
-    {
-      "type": 1,
-      "value": "os"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "device"
-    }
-  ]
+  "label": {
+    "access-code": "Codi d'accés",
+    "account": "Compte",
+    "action": "Acció",
+    "actions": "Accions",
+    "activity": "Registre d'activitat",
+    "add": "Afegir",
+    "add-board": "Afegir tauler",
+    "add-description": "Afegir descripció",
+    "add-link": "Afegir enllaç",
+    "add-member": "Afegir membre",
+    "add-pixel": "Afegir píxel",
+    "add-step": "Afegir pas",
+    "add-website": "Afegir lloc web",
+    "admin": "Administrador",
+    "affiliate": "Afiliat",
+    "after": "Després",
+    "all": "Tots",
+    "all-time": "Sempre",
+    "analysis": "Anàlisi",
+    "analytics": "Analítiques",
+    "application": "Aplicació",
+    "apply": "Aplica",
+    "attribution": "Atribució",
+    "attribution-description": "Vegeu com els usuaris interactuen amb el vostre màrqueting i què impulsa les conversions.",
+    "audience": "Audiència",
+    "average": "Mitjana",
+    "back": "Enrere",
+    "before": "Abans",
+    "behavior": "Comportament",
+    "boards": "Taulers",
+    "bounce-rate": "Percentatge de rebot",
+    "breakdown": "Desglossament",
+    "browser": "Navegador",
+    "browsers": "Navegadors",
+    "campaign": "Campanya",
+    "campaigns": "Campanyes",
+    "cancel": "Cancel·la",
+    "change-password": "Canvia la contrasenya",
+    "channel": "Canal",
+    "channels": "Canals",
+    "chart": "Gràfic",
+    "cities": "Ciutats",
+    "city": "Ciutat",
+    "clear-all": "Netejar tot",
+    "cohort": "Cohort",
+    "cohorts": "Cohorts",
+    "compare": "Comparar",
+    "compare-dates": "Comparar dates",
+    "confirm": "Confirmar",
+    "confirm-password": "Confirma la contrasenya",
+    "contains": "Conté",
+    "content": "Contingut",
+    "continue": "Continuar",
+    "conversion": "Conversió",
+    "conversion-rate": "Taxa de conversió",
+    "conversion-step": "Pas de conversió",
+    "count": "Recompte",
+    "countries": "Països",
+    "country": "País",
+    "create": "Crear",
+    "create-report": "Crear informe",
+    "create-team": "Crear equip",
+    "create-user": "Crear usuari",
+    "created": "Creat",
+    "created-by": "Creat Per",
+    "criteria": "Criteris",
+    "currency": "Moneda",
+    "current": "Actual",
+    "current-password": "Contrasenya actual",
+    "custom-range": "Rang personalitzat",
+    "dashboard": "Panell",
+    "data": "Dades",
+    "date": "Data",
+    "date-range": "Interval de dates",
+    "day": "Dia",
+    "default-date-range": "Interval de dates per defecte",
+    "delete": "Esborra",
+    "delete-report": "Eliminar informe",
+    "delete-team": "Eliminar equip",
+    "delete-user": "Eliminar usuari",
+    "delete-website": "Esborra el lloc web",
+    "description": "Descripció",
+    "desktop": "Escriptori",
+    "destination-url": "URL de destinació",
+    "details": "Detalls",
+    "device": "Dispositiu",
+    "devices": "Dispositius",
+    "direct": "Directe",
+    "dismiss": "Descarta",
+    "distinct-id": "ID distintiu",
+    "documentation": "Documentació",
+    "does-not-contain": "No conté",
+    "does-not-include": "No inclou",
+    "doest-not-exist": "No existeix",
+    "domain": "Domini",
+    "download": "Descarregar",
+    "dropoff": "Abandonament",
+    "edit": "Edita",
+    "edit-member": "Edita membre",
+    "email": "Correu electrònic",
+    "enable-share-url": "Activa l'enllaç per compartir",
+    "end-step": "Pas Final",
+    "entry": "URL d'entrada",
+    "environment": "Entorn",
+    "event": "Esdeveniment",
+    "event-data": "Dades de l'esdeveniment",
+    "event-name": "Nom de l'esdeveniment",
+    "events": "Esdeveniments",
+    "exclude-bounce": "Excloure rebot",
+    "exists": "Existeix",
+    "exit": "URL de sortida",
+    "false": "Fals",
+    "field": "Camp",
+    "fields": "Camps",
+    "filter": "Filtre",
+    "filter-combined": "Combinat",
+    "filter-raw": "En cru",
+    "filters": "Filtres",
+    "first-click": "Primer clic",
+    "first-seen": "Vist per primer cop",
+    "funnel": "Embut",
+    "funnel-description": "Entengui la taxa de conversió i abandonament dels usuaris.",
+    "funnels": "Embuts",
+    "goal": "Meta",
+    "goals": "Metes",
+    "goals-description": "Feu un seguiment de les seves metes per a pàgines vistes i esdeveniments.",
+    "greater-than": "Més gran que",
+    "greater-than-equals": "Més gran que o igual a",
+    "grouped": "Agrupat",
+    "growth": "Creixement",
+    "hostname": "Nom de host",
+    "hour": "Hora",
+    "includes": "Inclou",
+    "insight": "Visió",
+    "insights": "Insights",
+    "insights-description": "Aprofundeixi en les seves dades mitjançant l'ús de segments i filtres.",
+    "invalid-url": "URL no vàlida",
+    "is": "És igual a",
+    "is-false": "És fals",
+    "is-not": "No és igual a",
+    "is-not-set": "No està establert",
+    "is-set": "Està establert",
+    "is-true": "És cert",
+    "join": "Unir",
+    "join-team": "Unir-se al equip",
+    "journey": "Trajecte",
+    "journey-description": "Entengui com naveguen els usuaris pel seu lloc web.",
+    "journeys": "Trajectes",
+    "language": "Idioma",
+    "languages": "Idiomes",
+    "laptop": "Portàtil",
+    "last-click": "Últim clic",
+    "last-days": "Últims {x} dies",
+    "last-hours": "Últimes {x} hores",
+    "last-months": "Últims {x} mesos",
+    "last-seen": "Vist per últim cop",
+    "leave": "Abandonar",
+    "leave-team": "Abandonar equip",
+    "less-than": "Menor que",
+    "less-than-equals": "Menor que o igual a",
+    "link": "Enllaç",
+    "links": "Enllaços",
+    "location": "Ubicació",
+    "login": "Connecta't",
+    "logout": "Desconnecta't",
+    "manage": "Administrar",
+    "manager": "Responsable",
+    "max": "Màx",
+    "maximize": "Expandeix",
+    "medium": "Mitjà",
+    "member": "Membre",
+    "members": "Membres",
+    "min": "Mín",
+    "minute": "Minut",
+    "mobile": "Mòbil",
+    "model": "Model",
+    "month": "Mes",
+    "more": "Més",
+    "my-account": "El meu compte",
+    "my-websites": "Els meus llocs web",
+    "name": "Nom",
+    "new-password": "Contrasenya nova",
+    "none": "Cap",
+    "number-of-records": "{x} {x, plural, one {registre} other {registres}}",
+    "ok": "D'acord",
+    "online": "En línia",
+    "organic-search": "Cerca orgànica",
+    "organic-shopping": "Compra orgànica",
+    "organic-social": "Social orgànic",
+    "organic-video": "Vídeo orgànic",
+    "os": "SO",
+    "other": "Altres",
+    "overview": "Resum",
+    "owner": "Propietari",
+    "page": "Pàgina",
+    "page-of": "Pàgina {current} de {total}",
+    "page-views": "Pàgines vistes",
+    "pageTitle": "Títol de la pàgina",
+    "pages": "Pàgines",
+    "paid-ads": "Anuncis de pagament",
+    "paid-search": "Cerca de pagament",
+    "paid-shopping": "Compra de pagament",
+    "paid-social": "Social de pagament",
+    "paid-video": "Vídeo de pagament",
+    "password": "Contrasenya",
+    "path": "Camí",
+    "paths": "Camins",
+    "pixel": "Píxel",
+    "pixels": "Píxels",
+    "powered-by": "Funciona amb {name}",
+    "preferences": "Preferències",
+    "previous": "Anterior",
+    "previous-period": "Període anterior",
+    "previous-year": "Any anterior",
+    "profile": "Perfil",
+    "profiles": "Perfils",
+    "properties": "Propietats",
+    "property": "Propietat",
+    "queries": "Consultes",
+    "query": "Consulta",
+    "query-parameters": "Paràmetres de consulta",
+    "realtime": "Temps real",
+    "referral": "Referència",
+    "referrer": "Referent",
+    "referrers": "Referents",
+    "refresh": "Refresca",
+    "regenerate": "Regenerar",
+    "region": "Regió",
+    "regions": "Regions",
+    "remaining": "Restant",
+    "remove": "Treure",
+    "remove-member": "Eliminar membre",
+    "reports": "Informes",
+    "required": "Obligatori",
+    "reset": "Restableix",
+    "reset-website": "Restableix estadístiques",
+    "retention": "Retenció",
+    "retention-description": "Mesuri la retenció del seu lloc web fent un seguiment de la freqüència amb què tornen els usuaris.",
+    "revenue": "Ingressos",
+    "revenue-description": "Observi els seus ingressos al llarg del temps.",
+    "role": "Rol",
+    "run-query": "Executar consulta",
+    "save": "Desa",
+    "save-cohort": "Desar cohort",
+    "save-segment": "Desar segment",
+    "screen": "Pantalla",
+    "screens": "Pantalles",
+    "search": "Buscar",
+    "segment": "Segment",
+    "segments": "Segments",
+    "select": "Seleccionar",
+    "select-date": "Seleccionar data",
+    "select-filter": "Seleccionar filtre",
+    "select-role": "Seleccionar rol",
+    "select-website": "Seleccionar lloc web",
+    "session": "Sessió",
+    "session-data": "Dades de sessió",
+    "sessions": "Sessions",
+    "settings": "Configuració",
+    "share": "Comparteix",
+    "share-url": "Enllaç per compartir",
+    "single-day": "Un sol dia",
+    "sms": "SMS",
+    "source": "Font",
+    "sources": "Fonts",
+    "start-step": "Pas inicial",
+    "steps": "Pasos",
+    "sum": "Suma",
+    "support": "Suport",
+    "switch-account": "Canviar de compte",
+    "table": "Taula",
+    "tablet": "Tauleta",
+    "tag": "Etiqueta",
+    "tags": "Etiquetes",
+    "team": "Equip",
+    "team-id": "ID del equip",
+    "team-manager": "Responsable d'equip",
+    "team-member": "Membre de l'equip",
+    "team-name": "Nom de l'equip",
+    "team-owner": "Propietari de l'equip",
+    "team-settings": "Configuració de l'equip",
+    "team-view-only": "Vista només de l'equip",
+    "team-websites": "Llocs web de l'equip",
+    "teams": "Equips",
+    "term": "Terme",
+    "terms": "Termes",
+    "theme": "Tema",
+    "this-month": "Aquest mes",
+    "this-week": "Aquesta setmana",
+    "this-year": "Aquest any",
+    "timezone": "Zona horària",
+    "title": "Títol",
+    "today": "Avui",
+    "toggle-charts": "Mostra/amaga gràfics",
+    "total": "Total",
+    "total-records": "Total de registres",
+    "tracking-code": "Codi de seguiment",
+    "traffic": "Trànsit",
+    "transactions": "Transaccions",
+    "transfer": "Transferir",
+    "transfer-website": "Transferir lloc web",
+    "true": "Cert",
+    "type": "Tipus",
+    "unique": "Únic",
+    "unique-events": "Esdeveniments únics",
+    "unique-visitors": "Visitants únics",
+    "uniqueCustomers": "Clients Únics",
+    "unknown": "Desconegut",
+    "untitled": "Sense títol",
+    "update": "Actualitzar",
+    "url": "URL",
+    "user": "Usuari",
+    "username": "Nom d'usuari",
+    "users": "Usuaris",
+    "utm": "UTM",
+    "utm-campaign": "UTM Campanya",
+    "utm-content": "UTM Contingut",
+    "utm-description": "Rastreji les seves campanyes a través de paràmetres UTM.",
+    "utm-medium": "UTM Mitjà",
+    "utm-source": "UTM Font",
+    "utm-term": "UTM Terme",
+    "value": "Valor",
+    "version": "Versió",
+    "view": "Visualitzar",
+    "view-details": "Veure els detalls",
+    "view-only": "Només veure",
+    "views": "Vistes",
+    "views-per-visit": "Vistes per visita",
+    "visit-duration": "Temps mitjà de visita",
+    "visitors": "Visitants",
+    "visits": "Visites",
+    "website": "Lloc web",
+    "website-id": "ID del lloc web",
+    "websites": "Llocs web",
+    "window": "Finestra",
+    "yesterday": "Ahir"
+  },
+  "message": {
+    "action-confirmation": "Escrigui {confirmation} al cuadre inferior per confirmar.",
+    "active-users": "{x} {x, plural, one {visitant actual} other {visitants actuals}}",
+    "bad-request": "Sol·licitud incorrecta",
+    "collected-data": "Dades recol·lectades",
+    "confirm-delete": "Segur que vol esborrar {target}?",
+    "confirm-leave": "Segur que vol abandonar <b>{target}</b>?",
+    "confirm-remove": "Segur que vol eliminar <b>{target}</b>?",
+    "confirm-reset": "Segur que vol restablir les estadístiques de {target}?",
+    "delete-team-warning": "Al eliminar un equip també s'eliminaran tots els llocs web de l'equip.",
+    "delete-website-warning": "També s'esborraran totes les dades relacionades.",
+    "error": "S'ha produït un error.",
+    "event-log": "<b>{event}</b> a <a>{url}</a>",
+    "forbidden": "Prohibit",
+    "go-to-settings": "Vés a la configuració",
+    "incorrect-username-password": "Nom d'usuari o contrasenya incorrectes.",
+    "invalid-domain": "Domini invàlid",
+    "min-password-length": "Longitud mínima de {n} caràcters",
+    "new-version-available": "Una nova versió d'Umami {version} està disponible!",
+    "no-data-available": "No hi ha dades disponibles.",
+    "no-event-data": "No hi ha dades d'esdeveniments disponibles.",
+    "no-match-password": "Les contrasenyes no coincideixen",
+    "no-results-found": "No s'han trobat resultats.",
+    "no-team-websites": "Aquest equip no té cap lloc web.",
+    "no-teams": "No ha creat cap equip.",
+    "no-users": "No hi ha cap usuari.",
+    "no-websites-configured": "No hi ha cap lloc web configurat.",
+    "not-found": "No trobat",
+    "nothing-selected": "Res seleccionat.",
+    "page-not-found": "No s'ha trobat la pàgina.",
+    "reset-website": "Per restablir aquest lloc web, escrigui {confirmation} al cuadre inferior per confirmar.",
+    "reset-website-warning": "S'esborraran totes les estadístiques per aquest lloc web, però el codi de seguiment es mantindrà.",
+    "saved": "S'ha desat amb èxit.",
+    "sever-error": "Error del servidor",
+    "share-url": "Aquest és l'enllaç públic per compartir de {target}.",
+    "team-already-member": "Ja és membre d'aquest equip.",
+    "team-not-found": "Equip no trobat.",
+    "team-websites-info": "Els llocs web poden ser visualitzats per qualsevol membre de l'equip.",
+    "tracking-code": "Codi de seguiment",
+    "transfer-team-website-to-user": "Transferir aquest lloc web al seu compte?",
+    "transfer-user-website-to-team": "Seleccioni l'equip al qui transferir aquest lloc web.",
+    "transfer-website": "Transferir la propietat del lloc web al seu compte o a un altre equip.",
+    "triggered-event": "Esdeveniment desencadenat",
+    "unauthorized": "No autoritzat",
+    "user-deleted": "Usuari eliminat.",
+    "viewed-page": "Pàgina vista",
+    "visitor-log": "Visitant de <b>{country}</b> usant <b>{browser}</b> a <b>{os}</b> <b>{device}</b>"
+  }
 }

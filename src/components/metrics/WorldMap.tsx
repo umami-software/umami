@@ -23,10 +23,10 @@ export function WorldMap({ websiteId, data, ...props }: WorldMapProps) {
   const { theme } = useTheme();
   const { colors } = getThemeColors(theme);
   const { locale } = useLocale();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { countryNames } = useCountryNames(locale);
-  const visitorsLabel = formatMessage(labels.visitors).toLocaleLowerCase(locale);
-  const unknownLabel = formatMessage(labels.unknown);
+  const visitorsLabel = t(labels.visitors).toLocaleLowerCase(locale);
+  const unknownLabel = t(labels.unknown);
 
   const { data: mapData } = useWebsiteMetricsQuery(websiteId, {
     type: 'country',
@@ -101,8 +101,13 @@ export function WorldMap({ websiteId, data, ...props }: WorldMapProps) {
       </ComposableMap>
       {tooltip && (
         <FloatingTooltip>
-          <Box backgroundColor="surface-inverted" color="inverted" padding borderRadius="md">
-            <Text size="sm">{tooltip}</Text>
+          <Box
+            style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}
+            color="inverted"
+            padding
+            borderRadius="md"
+          >
+            {tooltip}
           </Box>
         </FloatingTooltip>
       )}

@@ -13,7 +13,7 @@ export interface UTMProps {
 }
 
 export function UTM({ websiteId, startDate, endDate }: UTMProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { data, error, isLoading } = useResultQuery<any>('utm', {
     websiteId,
     startDate,
@@ -49,7 +49,7 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
                       <Text transform="capitalize">{param.replace(/^utm_/, '')}</Text>
                     </Heading>
                     <ListTable
-                      metric={formatMessage(labels.views)}
+                      metric={t(labels.views)}
                       data={items.map(({ utm, views }) => ({
                         label: utm,
                         count: views,

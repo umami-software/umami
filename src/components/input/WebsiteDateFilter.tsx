@@ -21,7 +21,7 @@ export function WebsiteDateFilter({
   allowCompare,
 }: WebsiteDateFilterProps) {
   const { dateRange, isAllTime, isCustomRange } = useDateRange();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const {
     router,
     updateParams,
@@ -93,8 +93,8 @@ export function WebsiteDateFilter({
               style={{ width: 200 }}
               popoverProps={{ style: { width: 200 } }}
             >
-              <ListItem id="prev">{formatMessage(labels.previousPeriod)}</ListItem>
-              <ListItem id="yoy">{formatMessage(labels.previousYear)}</ListItem>
+              <ListItem id="prev">{t(labels.previousPeriod)}</ListItem>
+              <ListItem id="yoy">{t(labels.previousYear)}</ListItem>
             </Select>
           </Row>
         </Row>

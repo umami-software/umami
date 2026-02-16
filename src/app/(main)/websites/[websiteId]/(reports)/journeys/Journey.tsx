@@ -32,7 +32,7 @@ const EVENT_TYPES = {
 export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyProps) {
   const [selectedNode, setSelectedNode] = useState(null);
   const [activeNode, setActiveNode] = useState(null);
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { data, error, isLoading } = useResultQuery<any>('journey', {
     websiteId,
     steps,
@@ -178,7 +178,7 @@ export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyP
                   <div className={styles.num}>{columnIndex + 1}</div>
                   <div className={styles.stats}>
                     <div className={styles.visitors} title={visitorCount}>
-                      {formatLongNumber(visitorCount)} {formatMessage(labels.visitors)}
+                      {formatLongNumber(visitorCount)} {t(labels.visitors)}
                     </div>
                   </div>
                 </div>
@@ -236,12 +236,12 @@ export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyP
                                   <div>{formatLongNumber(nodeCount)}</div>
                                 </Focusable>
                                 <Tooltip placement="top" offset={20} showArrow>
-                                  <Text transform="lowercase" color="ruby">
-                                    {`${dropped}% ${formatMessage(labels.dropoff)}`}
+                                  <Text transform="lowercase" color="red">
+                                    {`${dropped}% ${t(labels.dropoff)}`}
                                   </Text>
                                   <Column>
                                     <Text transform="lowercase">
-                                      {`${remaining}% ${formatMessage(labels.conversion)}`}
+                                      {`${remaining}% ${t(labels.conversion)}`}
                                     </Text>
                                   </Column>
                                 </Tooltip>

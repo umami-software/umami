@@ -32,7 +32,7 @@ export function LinkEditForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
+  const { t, labels, messages, getErrorMessage } = useMessages();
   const { mutateAsync, error, isPending, touch, toast } = useUpdateQuery(
     linkId ? `/links/${linkId}` : '/links',
     {
@@ -48,7 +48,7 @@ export function LinkEditForm({
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
       onSuccess: async () => {
-        toast(formatMessage(messages.saved));
+        toast(t(messages.saved));
         touch('links');
         touch(`link:${linkId}`);
         onSave?.();
@@ -59,7 +59,7 @@ export function LinkEditForm({
 
   const checkUrl = (url: string) => {
     if (!isValidUrl(url)) {
-      return formatMessage(labels.invalidUrl);
+      return t(labels.invalidUrl);
     }
     return true;
   };
@@ -79,18 +79,14 @@ export function LinkEditForm({
 
         return (
           <>
-            <FormField
-              label={formatMessage(labels.name)}
-              name="name"
-              rules={{ required: formatMessage(labels.required) }}
-            >
+            <FormField label={t(labels.name)} name="name" rules={{ required: t(labels.required) }}>
               <TextField autoComplete="off" autoFocus />
             </FormField>
 
             <FormField
-              label={formatMessage(labels.destinationUrl)}
+              label={t(labels.destinationUrl)}
               name="url"
-              rules={{ required: formatMessage(labels.required), validate: checkUrl }}
+              rules={{ required: t(labels.required), validate: checkUrl }}
             >
               <TextField placeholder="https://example.com" autoComplete="off" />
             </FormField>
@@ -98,9 +94,9 @@ export function LinkEditForm({
             <Grid columns="1fr auto" alignItems="end" gap>
               <FormField
                 name="slug"
-                label={formatMessage({ id: 'label.slug', defaultMessage: 'Slug' })}
+                label={t({ id: 'label.slug', defaultMessage: 'Slug' })}
                 rules={{
-                  required: formatMessage(labels.required),
+                  required: t(labels.required),
                 }}
               >
                 <TextField autoComplete="off" />
@@ -116,7 +112,7 @@ export function LinkEditForm({
             </Grid>
 
             <Column>
-              <Label>{formatMessage(labels.link)}</Label>
+              <Label>{t(labels.link)}</Label>
               <Row alignItems="center" gap>
                 <TextField
                   value={`${hostUrl}/${slug}`}
@@ -131,10 +127,10 @@ export function LinkEditForm({
             <Row justifyContent="flex-end" paddingTop="3" gap="3">
               {onClose && (
                 <Button isDisabled={isPending} onPress={onClose}>
-                  {formatMessage(labels.cancel)}
+                  {t(labels.cancel)}
                 </Button>
               )}
-              <FormSubmitButton>{formatMessage(labels.save)}</FormSubmitButton>
+              <FormSubmitButton>{t(labels.save)}</FormSubmitButton>
             </Row>
           </>
         );

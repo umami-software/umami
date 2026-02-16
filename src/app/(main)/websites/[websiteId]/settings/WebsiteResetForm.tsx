@@ -12,7 +12,7 @@ export function WebsiteResetForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { mutateAsync, isPending, error } = useUpdateQuery(`/websites/${websiteId}/reset`);
 
   const handleConfirm = async () => {
@@ -31,7 +31,7 @@ export function WebsiteResetForm({
       onClose={onClose}
       isLoading={isPending}
       error={error}
-      buttonLabel={formatMessage(labels.reset)}
+      buttonLabel={t(labels.reset)}
     />
   );
 }

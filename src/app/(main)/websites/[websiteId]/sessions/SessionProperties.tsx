@@ -12,7 +12,7 @@ import { CHART_COLORS } from '@/lib/constants';
 
 export function SessionProperties({ websiteId }: { websiteId: string }) {
   const [propertyName, setPropertyName] = useState('');
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { data, isLoading, isFetching, error } = useSessionDataPropertiesQuery(websiteId);
 
   const properties: string[] = data?.map(e => e.propertyName);
@@ -29,7 +29,7 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
         {data && (
           <Grid columns="repeat(auto-fill, minmax(300px, 1fr))" gap>
             <Select
-              label={formatMessage(labels.event)}
+              label={t(labels.event)}
               value={propertyName}
               onChange={setPropertyName}
               placeholder=""

@@ -13,6 +13,7 @@ export * from './context/useWebsite';
 export * from './queries/useActiveUsersQuery';
 export * from './queries/useBoardQuery';
 export * from './queries/useBoardsQuery';
+export * from './queries/useDashboardQuery';
 export * from './queries/useDateRangeQuery';
 export * from './queries/useDeleteQuery';
 export * from './queries/useEventDataEventsQuery';

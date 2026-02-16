@@ -14,7 +14,7 @@ import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
 
 export function useWebsiteNavItems(websiteId: string) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { pathname, renderUrl } = useNavigation();
 
   const renderPath = (path: string) =>
@@ -28,70 +28,70 @@ export function useWebsiteNavItems(websiteId: string) {
 
   const items = [
     {
-      label: formatMessage(labels.traffic),
+      label: t(labels.traffic),
       items: [
         {
           id: 'overview',
-          label: formatMessage(labels.overview),
+          label: t(labels.overview),
           icon: <Eye />,
           path: renderPath(''),
         },
         {
           id: 'events',
-          label: formatMessage(labels.events),
+          label: t(labels.events),
           icon: <Lightning />,
           path: renderPath('/events'),
         },
         {
           id: 'sessions',
-          label: formatMessage(labels.sessions),
+          label: t(labels.sessions),
           icon: <User />,
           path: renderPath('/sessions'),
         },
         {
           id: 'realtime',
-          label: formatMessage(labels.realtime),
+          label: t(labels.realtime),
           icon: <Clock />,
           path: renderPath('/realtime'),
         },
         {
           id: 'compare',
-          label: formatMessage(labels.compare),
+          label: t(labels.compare),
           icon: <AlignEndHorizontal />,
           path: renderPath('/compare'),
         },
         {
           id: 'breakdown',
-          label: formatMessage(labels.breakdown),
+          label: t(labels.breakdown),
           icon: <Sheet />,
           path: renderPath('/breakdown'),
         },
       ],
     },
     {
-      label: formatMessage(labels.behavior),
+      label: t(labels.behavior),
       items: [
         {
           id: 'goals',
-          label: formatMessage(labels.goals),
+          label: t(labels.goals),
           icon: <Target />,
           path: renderPath('/goals'),
         },
         {
           id: 'funnel',
-          label: formatMessage(labels.funnels),
+          label: t(labels.funnels),
           icon: <Funnel />,
           path: renderPath('/funnels'),
         },
         {
           id: 'journeys',
-          label: formatMessage(labels.journeys),
+          label: t(labels.journeys),
           icon: <Path />,
           path: renderPath('/journeys'),
         },
         {
           id: 'retention',
-          label: formatMessage(labels.retention),
+          label: t(labels.retention),
           icon: <Magnet />,
           path: renderPath('/retention'),
         },
@@ -104,40 +104,40 @@ export function useWebsiteNavItems(websiteId: string) {
       ],
     },
     {
-      label: formatMessage(labels.audience),
+      label: t(labels.audience),
       items: [
         {
           id: 'segments',
-          label: formatMessage(labels.segments),
+          label: t(labels.segments),
           icon: <ChartPie />,
           path: renderPath('/segments'),
         },
         {
           id: 'cohorts',
-          label: formatMessage(labels.cohorts),
+          label: t(labels.cohorts),
           icon: <UserPlus />,
           path: renderPath('/cohorts'),
         },
       ],
     },
     {
-      label: formatMessage(labels.growth),
+      label: t(labels.growth),
       items: [
         {
           id: 'utm',
-          label: formatMessage(labels.utm),
+          label: t(labels.utm),
           icon: <Tag />,
           path: renderPath('/utm'),
         },
         {
           id: 'revenue',
-          label: formatMessage(labels.revenue),
+          label: t(labels.revenue),
           icon: <Money />,
           path: renderPath('/revenue'),
         },
         {
           id: 'attribution',
-          label: formatMessage(labels.attribution),
+          label: t(labels.attribution),
           icon: <Network />,
           path: renderPath('/attribution'),
         },

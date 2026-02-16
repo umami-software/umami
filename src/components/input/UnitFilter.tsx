@@ -4,7 +4,7 @@ import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE_VALUE } from '@/lib/constants';
 import { getItem } from '@/lib/storage';
 
 export function UnitFilter() {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { router, query, updateParams } = useNavigation();
 
   const DATE_RANGE_UNIT_CONFIG = {
@@ -47,7 +47,7 @@ export function UnitFilter() {
 
   const options = unitConfig.availableUnits.map(unit => ({
     id: unit,
-    label: formatMessage(labels[unit]),
+    label: t(labels[unit]),
   }));
 
   const selectedUnit = query.unit ?? unitConfig.defaultUnit;

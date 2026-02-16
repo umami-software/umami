@@ -11,7 +11,7 @@ const JOURNEY_STEPS = [2, 3, 4, 5, 6, 7];
 const DEFAULT_STEP = 3;
 
 export function JourneysPage({ websiteId }: { websiteId: string }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const {
     dateRange: { startDate, endDate },
   } = useDateRange();
@@ -23,15 +23,15 @@ export function JourneysPage({ websiteId }: { websiteId: string }) {
   const buttons = [
     {
       id: 'all',
-      label: formatMessage(labels.all),
+      label: t(labels.all),
     },
     {
       id: 'views',
-      label: formatMessage(labels.views),
+      label: t(labels.views),
     },
     {
       id: 'events',
-      label: formatMessage(labels.events),
+      label: t(labels.events),
     },
   ];
 
@@ -39,12 +39,7 @@ export function JourneysPage({ websiteId }: { websiteId: string }) {
     <Column gap>
       <WebsiteControls websiteId={websiteId} />
       <Grid columns="repeat(3, 1fr)" gap>
-        <Select
-          label={formatMessage(labels.steps)}
-          value={steps}
-          defaultValue={steps}
-          onChange={setSteps}
-        >
+        <Select label={t(labels.steps)} value={steps} defaultValue={steps} onChange={setSteps}>
           {JOURNEY_STEPS.map(step => (
             <ListItem key={step} id={step}>
               {step}
@@ -53,7 +48,7 @@ export function JourneysPage({ websiteId }: { websiteId: string }) {
         </Select>
         <Column>
           <SearchField
-            label={formatMessage(labels.startStep)}
+            label={t(labels.startStep)}
             value={startStep}
             onSearch={setStartStep}
             delay={1000}
@@ -61,7 +56,7 @@ export function JourneysPage({ websiteId }: { websiteId: string }) {
         </Column>
         <Column>
           <SearchField
-            label={formatMessage(labels.endStep)}
+            label={t(labels.endStep)}
             value={endStep}
             onSearch={setEndStep}
             delay={1000}

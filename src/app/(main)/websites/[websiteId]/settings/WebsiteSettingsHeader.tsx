@@ -7,14 +7,14 @@ import { ArrowLeft, Globe } from '@/components/icons';
 
 export function WebsiteSettingsHeader() {
   const website = useWebsite();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { renderUrl } = useNavigation();
 
   return (
     <>
       <Row marginTop="6">
         <Link href={renderUrl(`/websites/${website.id}`)}>
-          <IconLabel icon={<ArrowLeft />} label={formatMessage(labels.website)} />
+          <IconLabel icon={<ArrowLeft />} label={t(labels.website)} />
         </Link>
       </Row>
       <PageHeader title={website?.name} description={website?.domain} icon={<Globe />} />

@@ -5,7 +5,7 @@ import { useNavigation } from '@/components/hooks/useNavigation';
 
 export function BounceFilter() {
   const { router, query, updateParams } = useNavigation();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const isSelected = query.excludeBounce === 'true';
 
   const handleChange = (value: boolean) => {
@@ -19,7 +19,7 @@ export function BounceFilter() {
   return (
     <Row alignItems="center" gap>
       <Checkbox isSelected={isSelected} onChange={handleChange}>
-        {formatMessage(labels.excludeBounce)}
+        {t(labels.excludeBounce)}
       </Checkbox>
     </Row>
   );

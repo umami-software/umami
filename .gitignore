@@ -11,6 +11,7 @@ package-lock.json
 /coverage
 
 # next.js
+next-env.d.ts
 /.next
 /out
 
@@ -33,6 +34,7 @@ pm2.yml
 .vscode
 .tool-versions
 .claude
+.agents
 tmpclaude*
 nul
 
@@ -47,4 +49,3 @@ yarn-error.log*
 *.env.*
 
 *.dev.yml
-

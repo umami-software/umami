@@ -1,5 +1,4 @@
 import type { UseQueryOptions } from '@tanstack/react-query';
-import type { ReactElement } from 'react';
 import type { Board as PrismaBoard } from '@/generated/prisma/client';
 import type { DATA_TYPE, OPERATORS, ROLES } from './constants';
 import type { TIME_UNIT } from './date';
@@ -145,15 +144,17 @@ export interface ApiError extends Error {
   message: string;
 }
 
-export interface BoardComponent {
-  id: string;
+export interface BoardComponentConfig {
   type: string;
-  value: string;
+  websiteId?: string;
+  title?: string;
+  description?: string;
+  props?: Record<string, any>;
 }
 
 export interface BoardColumn {
   id: string;
-  component?: ReactElement;
+  component?: BoardComponentConfig;
   size?: number;
 }
 

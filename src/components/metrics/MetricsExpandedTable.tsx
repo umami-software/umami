@@ -33,7 +33,7 @@ export function MetricsExpandedTable({
   children,
 }: MetricsExpandedTableProps) {
   const [search, setSearch] = useState('');
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const isType = ['browser', 'country', 'device', 'os'].includes(type);
   const showBounceDuration = SESSION_COLUMNS.includes(type);
 
@@ -79,35 +79,20 @@ export function MetricsExpandedTable({
                   </Row>
                 )}
               </DataColumn>
-              <DataColumn
-                id="visitors"
-                label={formatMessage(labels.visitors)}
-                align="end"
-                width="120px"
-              >
+              <DataColumn id="visitors" label={t(labels.visitors)} align="end" width="120px">
                 {row => row?.visitors?.toLocaleString()}
               </DataColumn>
-              <DataColumn
-                id="visits"
-                label={formatMessage(labels.visits)}
-                align="end"
-                width="120px"
-              >
+              <DataColumn id="visits" label={t(labels.visits)} align="end" width="120px">
                 {row => row?.visits?.toLocaleString()}
               </DataColumn>
-              <DataColumn
-                id="pageviews"
-                label={formatMessage(labels.views)}
-                align="end"
-                width="120px"
-              >
+              <DataColumn id="pageviews" label={t(labels.views)} align="end" width="120px">
                 {row => row?.pageviews?.toLocaleString()}
               </DataColumn>
               {showBounceDuration && [
                 <DataColumn
                   key="bounceRate"
                   id="bounceRate"
-                  label={formatMessage(labels.bounceRate)}
+                  label={t(labels.bounceRate)}
                   align="end"
                   width="120px"
                 >
@@ -120,7 +105,7 @@ export function MetricsExpandedTable({
                 <DataColumn
                   key="visitDuration"
                   id="visitDuration"
-                  label={formatMessage(labels.visitDuration)}
+                  label={t(labels.visitDuration)}
                   align="end"
                   width="120px"
                 >

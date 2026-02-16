@@ -4,15 +4,15 @@ import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatShortTime } from '@/lib/format';
 
 export function SessionStats({ data }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   return (
     <MetricsBar>
-      <MetricCard label={formatMessage(labels.visits)} value={data?.visits} />
-      <MetricCard label={formatMessage(labels.views)} value={data?.views} />
-      <MetricCard label={formatMessage(labels.events)} value={data?.events} />
+      <MetricCard label={t(labels.visits)} value={data?.visits} />
+      <MetricCard label={t(labels.views)} value={data?.views} />
+      <MetricCard label={t(labels.events)} value={data?.events} />
       <MetricCard
-        label={formatMessage(labels.visitDuration)}
+        label={t(labels.visitDuration)}
         value={data?.totaltime / data?.visits}
         formatValue={n => `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`}
       />

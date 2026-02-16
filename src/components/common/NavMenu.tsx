@@ -55,14 +55,14 @@ export function NavMenu({
     <Column gap overflowY="auto" justifyContent="space-between" position="sticky">
       {title && (
         <Row padding>
-          <Heading size="sm">{title}</Heading>
+          <Heading size="lg">{title}</Heading>
         </Row>
       )}
       <Column gap="6" {...props}>
         {items?.map(({ label, items }, index) => {
           if (label) {
             return (
-              <Column key={`${label}${index}`} gap="1" marginBottom="3" minHeight="40px">
+              <Column key={`${label}${index}`} gap="2" marginBottom="3" minHeight="40px">
                 <Row padding>
                   <Text weight="bold">{label}</Text>
                 </Row>

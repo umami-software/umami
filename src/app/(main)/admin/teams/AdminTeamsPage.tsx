@@ -7,13 +7,13 @@ import { TeamsAddButton } from '../../teams/TeamsAddButton';
 import { AdminTeamsDataTable } from './AdminTeamsDataTable';
 
 export function AdminTeamsPage() {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   const handleSave = () => {};
 
   return (
     <Column gap="6" margin="2">
-      <PageHeader title={formatMessage(labels.teams)}>
+      <PageHeader title={t(labels.teams)}>
         <TeamsAddButton onSave={handleSave} isAdmin={true} />
       </PageHeader>
       <Panel>

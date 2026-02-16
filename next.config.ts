@@ -1,5 +1,8 @@
 import 'dotenv/config';
+import createNextIntlPlugin from 'next-intl/plugin';
 import pkg from './package.json' with { type: 'json' };
+
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const TRACKER_SCRIPT = '/script.js';
 
@@ -114,6 +117,16 @@ if (collectApiEndpoint) {
 
 const redirects = [
   {
+    source: '/teams/:id/dashboard/edit',
+    destination: '/dashboard/edit',
+    permanent: false,
+  },
+  {
+    source: '/teams/:id/dashboard',
+    destination: '/dashboard',
+    permanent: false,
+  },
+  {
     source: '/settings',
     destination: '/settings/preferences',
     permanent: false,
@@ -164,7 +177,7 @@ if (cloudMode) {
 }
 
 /** @type {import('next').NextConfig} */
-export default {
+export default withNextIntl({
   reactStrictMode: false,
   env: {
     basePath,
@@ -176,9 +189,6 @@ export default {
   },
   basePath,
   output: 'standalone',
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -202,4 +212,4 @@ export default {
   async redirects() {
     return [...redirects];
   },
-};
+});

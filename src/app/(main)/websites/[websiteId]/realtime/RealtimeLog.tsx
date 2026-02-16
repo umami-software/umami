@@ -35,7 +35,7 @@ const icons = {
 export function RealtimeLog({ data }: { data: any }) {
   const website = useWebsite();
   const [search, setSearch] = useState('');
-  const { formatMessage, labels, messages, FormattedMessage } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { formatValue } = useFormat();
   const { locale } = useLocale();
   const { formatTimezoneDate } = useTimezone();
@@ -46,19 +46,19 @@ export function RealtimeLog({ data }: { data: any }) {
 
   const buttons = [
     {
-      label: formatMessage(labels.all),
+      label: t(labels.all),
       id: TYPE_ALL,
     },
     {
-      label: formatMessage(labels.views),
+      label: t(labels.views),
       id: TYPE_PAGEVIEW,
     },
     {
-      label: formatMessage(labels.visitors),
+      label: t(labels.visitors),
       id: TYPE_SESSION,
     },
     {
-      label: formatMessage(labels.events),
+      label: t(labels.events),
       id: TYPE_EVENT,
     },
   ];
@@ -80,25 +80,21 @@ export function RealtimeLog({ data }: { data: any }) {
     const { __type, eventName, urlPath, browser, os, country, device, hostname } = log;
 
     if (__type === TYPE_EVENT) {
-      return (
-        <FormattedMessage
-          {...messages.eventLog}
-          values={{
-            event: <b key="b">{eventName || formatMessage(labels.unknown)}</b>,
-            url: (
-              <a
-                key="a"
-                href={`//${hostname}${urlPath}`}
-                style={{ fontWeight: 'bold' }}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                {urlPath}
-              </a>
-            ),
-          }}
-        />
-      );
+      return t.rich(messages.eventLog, {
+        event: eventName || t(labels.unknown),
+        url: urlPath,
+        b: chunks => <b>{chunks}</b>,
+        a: chunks => (
+          <a
+            href={`//${hostname}${urlPath}`}
+            style={{ fontWeight: 'bold' }}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {chunks}
+          </a>
+        ),
+      });
     }
 
     if (__type === TYPE_PAGEVIEW) {
@@ -115,17 +111,13 @@ export function RealtimeLog({ data }: { data: any }) {
     }
 
     if (__type === TYPE_SESSION) {
-      return (
-        <FormattedMessage
-          {...messages.visitorLog}
-          values={{
-            country: <b key="country">{countryNames[country] || formatMessage(labels.unknown)}</b>,
-            browser: <b key="browser">{BROWSERS[browser]}</b>,
-            os: <b key="os">{OS_NAMES[os] || os}</b>,
-            device: <b key="device">{formatMessage(labels[device] || labels.unknown)}</b>,
-          }}
-        />
-      );
+      return t.rich(messages.visitorLog, {
+        country: countryNames[country] || t(labels.unknown),
+        browser: BROWSERS[browser],
+        os: OS_NAMES[os] || os,
+        device: t(labels[device] || labels.unknown),
+        b: chunks => <b>{chunks}</b>,
+      });
     }
   };
 
@@ -183,7 +175,7 @@ export function RealtimeLog({ data }: { data: any }) {
 
   return (
     <Column gap>
-      <Heading size="base">{formatMessage(labels.activity)}</Heading>
+      <Heading size="base">{t(labels.activity)}</Heading>
       {isPhone ? (
         <>
           <Row>

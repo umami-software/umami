@@ -11,7 +11,7 @@ export function WebsiteTrackingCode({
   websiteId: string;
   hostUrl?: string;
 }) {
-  const { formatMessage, messages, labels } = useMessages();
+  const { t, messages, labels } = useMessages();
   const config = useConfig();
   const website = useWebsite();
 
@@ -39,8 +39,8 @@ export function WebsiteTrackingCode({
 
   return (
     <Column gap>
-      <Label>{formatMessage(labels.trackingCode)}</Label>
-      <Text color="muted">{formatMessage(messages.trackingCode)}</Text>
+      <Label>{t(labels.trackingCode)}</Label>
+      <Text color="muted">{t(messages.trackingCode)}</Text>
       <TextField value={code} isReadOnly allowCopy asTextArea resize="none" />
     </Column>
   );

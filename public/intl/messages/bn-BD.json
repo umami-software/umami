@@ -1,2230 +1,388 @@
 {
-  "label.access-code": [
-    {
-      "type": 0,
-      "value": "এক্সেস কোড"
-    }
-  ],
-  "label.actions": [
-    {
-      "type": 0,
-      "value": "অ্যাকশনস"
-    }
-  ],
-  "label.activity": [
-    {
-      "type": 0,
-      "value": "একটিভিটি দেখুন"
-    }
-  ],
-  "label.add": [
-    {
-      "type": 0,
-      "value": "যুক্ত করুন"
-    }
-  ],
-  "label.add-board": [
-    {
-      "type": 0,
-      "value": "বোর্ড যুক্ত করুন"
-    }
-  ],
-  "label.add-description": [
-    {
-      "type": 0,
-      "value": "বর্ননা যোগ করুন"
-    }
-  ],
-  "label.add-member": [
-    {
-      "type": 0,
-      "value": "সদস্য যোগ করুন"
-    }
-  ],
-  "label.add-step": [
-    {
-      "type": 0,
-      "value": "পদ যোগ করুন"
-    }
-  ],
-  "label.add-website": [
-    {
-      "type": 0,
-      "value": "ওয়েবসাইট যুক্ত করুন"
-    }
-  ],
-  "label.admin": [
-    {
-      "type": 0,
-      "value": "অ্যাডমিন"
-    }
-  ],
-  "label.affiliate": [
-    {
-      "type": 0,
-      "value": "সহযোগী"
-    }
-  ],
-  "label.after": [
-    {
-      "type": 0,
-      "value": "পরে"
-    }
-  ],
-  "label.all": [
-    {
-      "type": 0,
-      "value": "সবগুলো"
-    }
-  ],
-  "label.all-time": [
-    {
-      "type": 0,
-      "value": "সব সময়"
-    }
-  ],
-  "label.analytics": [
-    {
-      "type": 0,
-      "value": "বিশ্লেষণ"
-    }
-  ],
-  "label.apply": [
-    {
-      "type": 0,
-      "value": "প্রয়োগ করুন"
-    }
-  ],
-  "label.attribution": [
-    {
-      "type": 0,
-      "value": "অ্যাট্রিবিউশন"
-    }
-  ],
-  "label.attribution-description": [
-    {
-      "type": 0,
-      "value": "দেখুন ব্যবহারকারীরা কীভাবে আপনার মার্কেটিংয়ের সাথে যুক্ত হয় এবং কীভাবে রূপান্তর ঘটে।"
-    }
-  ],
-  "label.average": [
-    {
-      "type": 0,
-      "value": "গড়"
-    }
-  ],
-  "label.back": [
-    {
-      "type": 0,
-      "value": "পেছনে"
-    }
-  ],
-  "label.before": [
-    {
-      "type": 0,
-      "value": "পূর্বে"
-    }
-  ],
-  "label.boards": [
-    {
-      "type": 0,
-      "value": "বোর্ডসমূহ"
-    }
-  ],
-  "label.bounce-rate": [
-    {
-      "type": 0,
-      "value": "উপরে উঠার হার"
-    }
-  ],
-  "label.breakdown": [
-    {
-      "type": 0,
-      "value": "ভাঙ্গন"
-    }
-  ],
-  "label.browser": [
-    {
-      "type": 0,
-      "value": "ব্রাউজার"
-    }
-  ],
-  "label.browsers": [
-    {
-      "type": 0,
-      "value": "ব্রাউজার সমূহ"
-    }
-  ],
-  "label.campaigns": [
-    {
-      "type": 0,
-      "value": "প্রচারণা"
-    }
-  ],
-  "label.cancel": [
-    {
-      "type": 0,
-      "value": "বাতিল"
-    }
-  ],
-  "label.change-password": [
-    {
-      "type": 0,
-      "value": "পাসওয়ার্ড পরিবর্তন করুন"
-    }
-  ],
-  "label.channels": [
-    {
-      "type": 0,
-      "value": "চ্যানেলসমূহ"
-    }
-  ],
-  "label.cities": [
-    {
-      "type": 0,
-      "value": "শহরসমূহ"
-    }
-  ],
-  "label.city": [
-    {
-      "type": 0,
-      "value": "শহর"
-    }
-  ],
-  "label.clear-all": [
-    {
-      "type": 0,
-      "value": "সব মুছে ফেলুন"
-    }
-  ],
-  "label.cohort": [
-    {
-      "type": 0,
-      "value": "কোহর্ট"
-    }
-  ],
-  "label.compare": [
-    {
-      "type": 0,
-      "value": "তুলনা করুন"
-    }
-  ],
-  "label.compare-dates": [
-    {
-      "type": 0,
-      "value": "তারিখ তুলনা করুন"
-    }
-  ],
-  "label.confirm": [
-    {
-      "type": 0,
-      "value": "নিশ্চিত করুন"
-    }
-  ],
-  "label.confirm-password": [
-    {
-      "type": 0,
-      "value": "পাসওয়ার্ড নিশ্চিত করুন"
-    }
-  ],
-  "label.contains": [
-    {
-      "type": 0,
-      "value": "রয়েছে"
-    }
-  ],
-  "label.content": [
-    {
-      "type": 0,
-      "value": "বিষয়বস্তু"
-    }
-  ],
-  "label.continue": [
-    {
-      "type": 0,
-      "value": "পরবর্তিতে"
-    }
-  ],
-  "label.conversion": [
-    {
-      "type": 0,
-      "value": "রূপান্তর"
-    }
-  ],
-  "label.conversion-rate": [
-    {
-      "type": 0,
-      "value": "রূপান্তর হার"
-    }
-  ],
-  "label.conversion-step": [
-    {
-      "type": 0,
-      "value": "রূপান্তর ধাপ"
-    }
-  ],
-  "label.count": [
-    {
-      "type": 0,
-      "value": "গণনা"
-    }
-  ],
-  "label.countries": [
-    {
-      "type": 0,
-      "value": "দেশসমূহ"
-    }
-  ],
-  "label.country": [
-    {
-      "type": 0,
-      "value": "দেশ"
-    }
-  ],
-  "label.create": [
-    {
-      "type": 0,
-      "value": "তৈরি করুন"
-    }
-  ],
-  "label.create-report": [
-    {
-      "type": 0,
-      "value": "রিপোর্ট তৈরি করুন"
-    }
-  ],
-  "label.create-team": [
-    {
-      "type": 0,
-      "value": "দল তৈরি করুন"
-    }
-  ],
-  "label.create-user": [
-    {
-      "type": 0,
-      "value": "ব্যবহারকারী তৈরি করুন"
-    }
-  ],
-  "label.created": [
-    {
-      "type": 0,
-      "value": "তৈরি করা হয়েছে"
-    }
-  ],
-  "label.created-by": [
-    {
-      "type": 0,
-      "value": "তৈরি করেছেন"
-    }
-  ],
-  "label.currency": [
-    {
-      "type": 0,
-      "value": "মুদ্রা"
-    }
-  ],
-  "label.current": [
-    {
-      "type": 0,
-      "value": "বর্তমান"
-    }
-  ],
-  "label.current-password": [
-    {
-      "type": 0,
-      "value": "বর্তমান পাসওয়ার্ড"
-    }
-  ],
-  "label.custom-range": [
-    {
-      "type": 0,
-      "value": "কাস্টম রেঞ্জ"
-    }
-  ],
-  "label.dashboard": [
-    {
-      "type": 0,
-      "value": "ড্যাশবোর্ড"
-    }
-  ],
-  "label.data": [
-    {
-      "type": 0,
-      "value": "ডেটা"
-    }
-  ],
-  "label.date": [
-    {
-      "type": 0,
-      "value": "তারিখ"
-    }
-  ],
-  "label.date-range": [
-    {
-      "type": 0,
-      "value": "তারিখের পরিসীমা"
-    }
-  ],
-  "label.day": [
-    {
-      "type": 0,
-      "value": "দিন"
-    }
-  ],
-  "label.default-date-range": [
-    {
-      "type": 0,
-      "value": "ডিফল্ট তারিখের পরিসীমা"
-    }
-  ],
-  "label.delete": [
-    {
-      "type": 0,
-      "value": "মুছে ফেলুন"
-    }
-  ],
-  "label.delete-report": [
-    {
-      "type": 0,
-      "value": "রিপোর্ট মুছুন"
-    }
-  ],
-  "label.delete-team": [
-    {
-      "type": 0,
-      "value": "দল মুছুন"
-    }
-  ],
-  "label.delete-user": [
-    {
-      "type": 0,
-      "value": "ব্যবহারকারী মুছুন"
-    }
-  ],
-  "label.delete-website": [
-    {
-      "type": 0,
-      "value": "ওয়েবসাইট মুছুন"
-    }
-  ],
-  "label.description": [
-    {
-      "type": 0,
-      "value": "বর্ণনা"
-    }
-  ],
-  "label.desktop": [
-    {
-      "type": 0,
-      "value": "ডেস্কটপ"
-    }
-  ],
-  "label.details": [
-    {
-      "type": 0,
-      "value": "বিস্তারিত"
-    }
-  ],
-  "label.device": [
-    {
-      "type": 0,
-      "value": "ডিভাইস"
-    }
-  ],
-  "label.devices": [
-    {
-      "type": 0,
-      "value": "ডিভাইস গুলো"
-    }
-  ],
-  "label.direct": [
-    {
-      "type": 0,
-      "value": "সরাসরি"
-    }
-  ],
-  "label.dismiss": [
-    {
-      "type": 0,
-      "value": "বাতিল"
-    }
-  ],
-  "label.distinct-id": [
-    {
-      "type": 0,
-      "value": "স্বতন্ত্র আইডি"
-    }
-  ],
-  "label.does-not-contain": [
-    {
-      "type": 0,
-      "value": "ধারণ করে না"
-    }
-  ],
-  "label.does-not-include": [
-    {
-      "type": 0,
-      "value": "অন্তর্ভুক্ত নয়"
-    }
-  ],
-  "label.doest-not-exist": [
-    {
-      "type": 0,
-      "value": "অস্তিত্ব নেই"
-    }
-  ],
-  "label.domain": [
-    {
-      "type": 0,
-      "value": "ডোমেইন"
-    }
-  ],
-  "label.dropoff": [
-    {
-      "type": 0,
-      "value": "ছেড়ে যাওয়া"
-    }
-  ],
-  "label.edit": [
-    {
-      "type": 0,
-      "value": "সম্পাদনা করুন"
-    }
-  ],
-  "label.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "ড্যাশবোর্ড সম্পাদনা করুন"
-    }
-  ],
-  "label.edit-member": [
-    {
-      "type": 0,
-      "value": "সদস্য সম্পাদনা করুন"
-    }
-  ],
-  "label.email": [
-    {
-      "type": 0,
-      "value": "Email"
-    }
-  ],
-  "label.enable-share-url": [
-    {
-      "type": 0,
-      "value": "শেয়ার ইউআরএল শেয়ার করুন"
-    }
-  ],
-  "label.end-step": [
-    {
-      "type": 0,
-      "value": "শেষ ধাপ"
-    }
-  ],
-  "label.entry": [
-    {
-      "type": 0,
-      "value": "প্রবেশ URL"
-    }
-  ],
-  "label.event": [
-    {
-      "type": 0,
-      "value": "ইভেন্ট"
-    }
-  ],
-  "label.event-data": [
-    {
-      "type": 0,
-      "value": "ইভেন্ট ডেটা"
-    }
-  ],
-  "label.event-name": [
-    {
-      "type": 0,
-      "value": "ইভেন্টের নাম"
-    }
-  ],
-  "label.events": [
-    {
-      "type": 0,
-      "value": "ঘটনা"
-    }
-  ],
-  "label.exists": [
-    {
-      "type": 0,
-      "value": "অস্তিত্ব আছে"
-    }
-  ],
-  "label.exit": [
-    {
-      "type": 0,
-      "value": "প্রস্থান URL"
-    }
-  ],
-  "label.false": [
-    {
-      "type": 0,
-      "value": "মিথ্যা"
-    }
-  ],
-  "label.field": [
-    {
-      "type": 0,
-      "value": "ক্ষেত্র"
-    }
-  ],
-  "label.fields": [
-    {
-      "type": 0,
-      "value": "ক্ষেত্রসমূহ"
-    }
-  ],
-  "label.filter": [
-    {
-      "type": 0,
-      "value": "ফিল্টার"
-    }
-  ],
-  "label.filter-combined": [
-    {
-      "type": 0,
-      "value": "সম্মিলিত"
-    }
-  ],
-  "label.filter-raw": [
-    {
-      "type": 0,
-      "value": "অপরিশোধিত"
-    }
-  ],
-  "label.filters": [
-    {
-      "type": 0,
-      "value": "ফিল্টারসমূহ"
-    }
-  ],
-  "label.first-click": [
-    {
-      "type": 0,
-      "value": "প্রথম ক্লিক"
-    }
-  ],
-  "label.first-seen": [
-    {
-      "type": 0,
-      "value": "প্রথম দেখা"
-    }
-  ],
-  "label.funnel": [
-    {
-      "type": 0,
-      "value": "ফানেল"
-    }
-  ],
-  "label.funnel-description": [
-    {
-      "type": 0,
-      "value": "ব্যবহারকারীদের রূপান্তর ও ছেড়ে যাওয়ার হার বুঝুন।"
-    }
-  ],
-  "label.funnels": [
-    {
-      "type": 0,
-      "value": "ফানেলসমূহ"
-    }
-  ],
-  "label.goal": [
-    {
-      "type": 0,
-      "value": "লক্ষ্য"
-    }
-  ],
-  "label.goals": [
-    {
-      "type": 0,
-      "value": "লক্ষ্যসমূহ"
-    }
-  ],
-  "label.goals-description": [
-    {
-      "type": 0,
-      "value": "পৃষ্ঠাদর্শন ও ইভেন্টের লক্ষ্য ট্র্যাক করুন।"
-    }
-  ],
-  "label.greater-than": [
-    {
-      "type": 0,
-      "value": "এর চেয়ে বেশি"
-    }
-  ],
-  "label.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "এর চেয়ে বেশি বা সমান"
-    }
-  ],
-  "label.grouped": [
-    {
-      "type": 0,
-      "value": "গ্রুপ করা"
-    }
-  ],
-  "label.hostname": [
-    {
-      "type": 0,
-      "value": "হোস্টনেম"
-    }
-  ],
-  "label.includes": [
-    {
-      "type": 0,
-      "value": "অন্তর্ভুক্ত"
-    }
-  ],
-  "label.insight": [
-    {
-      "type": 0,
-      "value": "অন্তর্দৃষ্টি"
-    }
-  ],
-  "label.insights": [
-    {
-      "type": 0,
-      "value": "Insights"
-    }
-  ],
-  "label.insights-description": [
-    {
-      "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
-    }
-  ],
-  "label.is": [
-    {
-      "type": 0,
-      "value": "হয়"
-    }
-  ],
-  "label.is-false": [
-    {
-      "type": 0,
-      "value": "মিথ্যা"
-    }
-  ],
-  "label.is-not": [
-    {
-      "type": 0,
-      "value": "নয়"
-    }
-  ],
-  "label.is-not-set": [
-    {
-      "type": 0,
-      "value": "নির্ধারিত নয়"
-    }
-  ],
-  "label.is-set": [
-    {
-      "type": 0,
-      "value": "নির্ধারিত"
-    }
-  ],
-  "label.is-true": [
-    {
-      "type": 0,
-      "value": "সত্য"
-    }
-  ],
-  "label.join": [
-    {
-      "type": 0,
-      "value": "যোগ দিন"
-    }
-  ],
-  "label.join-team": [
-    {
-      "type": 0,
-      "value": "দলে যোগ দিন"
-    }
-  ],
-  "label.journey": [
-    {
-      "type": 0,
-      "value": "যাত্রা"
-    }
-  ],
-  "label.journey-description": [
-    {
-      "type": 0,
-      "value": "ব্যবহারকারীরা কীভাবে আপনার ওয়েবসাইটে নেভিগেট করে তা বুঝুন।"
-    }
-  ],
-  "label.journeys": [
-    {
-      "type": 0,
-      "value": "যাত্রাসমূহ"
-    }
-  ],
-  "label.language": [
-    {
-      "type": 0,
-      "value": "ভাষা"
-    }
-  ],
-  "label.languages": [
-    {
-      "type": 0,
-      "value": "ভাষা"
-    }
-  ],
-  "label.laptop": [
-    {
-      "type": 0,
-      "value": "ল্যাপটপ"
-    }
-  ],
-  "label.last-click": [
-    {
-      "type": 0,
-      "value": "শেষ ক্লিক"
-    }
-  ],
-  "label.last-days": [
-    {
-      "type": 0,
-      "value": "শেষ "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " দিন"
-    }
-  ],
-  "label.last-hours": [
-    {
-      "type": 0,
-      "value": "শেষ "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " ঘন্টা"
-    }
-  ],
-  "label.last-months": [
-    {
-      "type": 0,
-      "value": "শেষ "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " মাস"
-    }
-  ],
-  "label.last-seen": [
-    {
-      "type": 0,
-      "value": "শেষ দেখা"
-    }
-  ],
-  "label.leave": [
-    {
-      "type": 0,
-      "value": "ত্যাগ করুন"
-    }
-  ],
-  "label.leave-team": [
-    {
-      "type": 0,
-      "value": "দল ত্যাগ করুন"
-    }
-  ],
-  "label.less-than": [
-    {
-      "type": 0,
-      "value": "এর চেয়ে কম"
-    }
-  ],
-  "label.less-than-equals": [
-    {
-      "type": 0,
-      "value": "এর চেয়ে কম বা সমান"
-    }
-  ],
-  "label.links": [
-    {
-      "type": 0,
-      "value": "লিঙ্কসমূহ"
-    }
-  ],
-  "label.login": [
-    {
-      "type": 0,
-      "value": "লগিন"
-    }
-  ],
-  "label.logout": [
-    {
-      "type": 0,
-      "value": "লগ আউট"
-    }
-  ],
-  "label.manage": [
-    {
-      "type": 0,
-      "value": "পরিচালনা করুন"
-    }
-  ],
-  "label.manager": [
-    {
-      "type": 0,
-      "value": "পরিচালক"
-    }
-  ],
-  "label.max": [
-    {
-      "type": 0,
-      "value": "সর্বাধিক"
-    }
-  ],
-  "label.maximize": [
-    {
-      "type": 0,
-      "value": "বিস্তৃত করুন"
-    }
-  ],
-  "label.medium": [
-    {
-      "type": 0,
-      "value": "মাঝারি"
-    }
-  ],
-  "label.member": [
-    {
-      "type": 0,
-      "value": "সদস্য"
-    }
-  ],
-  "label.members": [
-    {
-      "type": 0,
-      "value": "সদস্যগণ"
-    }
-  ],
-  "label.min": [
-    {
-      "type": 0,
-      "value": "সর্বনিম্ন"
-    }
-  ],
-  "label.mobile": [
-    {
-      "type": 0,
-      "value": "মুঠোফোন"
-    }
-  ],
-  "label.model": [
-    {
-      "type": 0,
-      "value": "মডেল"
-    }
-  ],
-  "label.more": [
-    {
-      "type": 0,
-      "value": "আরও"
-    }
-  ],
-  "label.my-account": [
-    {
-      "type": 0,
-      "value": "আমার অ্যাকাউন্ট"
-    }
-  ],
-  "label.my-websites": [
-    {
-      "type": 0,
-      "value": "আমার ওয়েবসাইটসমূহ"
-    }
-  ],
-  "label.name": [
-    {
-      "type": 0,
-      "value": "নাম"
-    }
-  ],
-  "label.new-password": [
-    {
-      "type": 0,
-      "value": "নতুন পাসওয়ার্ড"
-    }
-  ],
-  "label.none": [
-    {
-      "type": 0,
-      "value": "কিছুই না"
-    }
-  ],
-  "label.number-of-records": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "record"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "records"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "label.ok": [
-    {
-      "type": 0,
-      "value": "OK"
-    }
-  ],
-  "label.online": [
-    {
-      "type": 0,
-      "value": "Online"
-    }
-  ],
-  "label.organic-search": [
-    {
-      "type": 0,
-      "value": "অর্গানিক সার্চ"
-    }
-  ],
-  "label.organic-shopping": [
-    {
-      "type": 0,
-      "value": "অর্গানিক শপিং"
-    }
-  ],
-  "label.organic-social": [
-    {
-      "type": 0,
-      "value": "অর্গানিক সোশ্যাল"
-    }
-  ],
-  "label.organic-video": [
-    {
-      "type": 0,
-      "value": "অর্গানিক ভিডিও"
-    }
-  ],
-  "label.os": [
-    {
-      "type": 0,
-      "value": "OS"
-    }
-  ],
-  "label.other": [
-    {
-      "type": 0,
-      "value": "অন্যান্য"
-    }
-  ],
-  "label.overview": [
-    {
-      "type": 0,
-      "value": "Overview"
-    }
-  ],
-  "label.owner": [
-    {
-      "type": 0,
-      "value": "মালিক"
-    }
-  ],
-  "label.page": [
-    {
-      "type": 0,
-      "value": "পৃষ্ঠা"
-    }
-  ],
-  "label.page-of": [
-    {
-      "type": 0,
-      "value": "Page "
-    },
-    {
-      "type": 1,
-      "value": "current"
-    },
-    {
-      "type": 0,
-      "value": " of "
-    },
-    {
-      "type": 1,
-      "value": "total"
-    }
-  ],
-  "label.page-views": [
-    {
-      "type": 0,
-      "value": "পৃষ্ঠা পরিদর্শন গুলো"
-    }
-  ],
-  "label.pageTitle": [
-    {
-      "type": 0,
-      "value": "Page title"
-    }
-  ],
-  "label.pages": [
-    {
-      "type": 0,
-      "value": "পৃষ্ঠাগুলি"
-    }
-  ],
-  "label.paid-ads": [
-    {
-      "type": 0,
-      "value": "পেইড বিজ্ঞাপন"
-    }
-  ],
-  "label.paid-search": [
-    {
-      "type": 0,
-      "value": "পেইড সার্চ"
-    }
-  ],
-  "label.paid-shopping": [
-    {
-      "type": 0,
-      "value": "পেইড শপিং"
-    }
-  ],
-  "label.paid-social": [
-    {
-      "type": 0,
-      "value": "পেইড সোশ্যাল"
-    }
-  ],
-  "label.paid-video": [
-    {
-      "type": 0,
-      "value": "পেইড ভিডিও"
-    }
-  ],
-  "label.password": [
-    {
-      "type": 0,
-      "value": "পাসওয়ার্ড"
-    }
-  ],
-  "label.path": [
-    {
-      "type": 0,
-      "value": "পথ"
-    }
-  ],
-  "label.paths": [
-    {
-      "type": 0,
-      "value": "পথসমূহ"
-    }
-  ],
-  "label.pixels": [
-    {
-      "type": 0,
-      "value": "পিক্সেল"
-    }
-  ],
-  "label.powered-by": [
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": " দ্বারা চালিত"
-    }
-  ],
-  "label.previous": [
-    {
-      "type": 0,
-      "value": "পূর্ববর্তী"
-    }
-  ],
-  "label.previous-period": [
-    {
-      "type": 0,
-      "value": "পূর্ববর্তী সময়কাল"
-    }
-  ],
-  "label.previous-year": [
-    {
-      "type": 0,
-      "value": "গত বছর"
-    }
-  ],
-  "label.profile": [
-    {
-      "type": 0,
-      "value": "প্রোফাইল"
-    }
-  ],
-  "label.properties": [
-    {
-      "type": 0,
-      "value": "বৈশিষ্ট্যসমূহ"
-    }
-  ],
-  "label.property": [
-    {
-      "type": 0,
-      "value": "বৈশিষ্ট্য"
-    }
-  ],
-  "label.queries": [
-    {
-      "type": 0,
-      "value": "Queries"
-    }
-  ],
-  "label.query": [
-    {
-      "type": 0,
-      "value": "Query"
-    }
-  ],
-  "label.query-parameters": [
-    {
-      "type": 0,
-      "value": "Query parameters"
-    }
-  ],
-  "label.realtime": [
-    {
-      "type": 0,
-      "value": "সরাসরি"
-    }
-  ],
-  "label.referral": [
-    {
-      "type": 0,
-      "value": "রেফারেল"
-    }
-  ],
-  "label.referrer": [
-    {
-      "type": 0,
-      "value": "Referrer"
-    }
-  ],
-  "label.referrers": [
-    {
-      "type": 0,
-      "value": "রেফারার্স"
-    }
-  ],
-  "label.refresh": [
-    {
-      "type": 0,
-      "value": "রিফ্রেশ"
-    }
-  ],
-  "label.regenerate": [
-    {
-      "type": 0,
-      "value": "Regenerate"
-    }
-  ],
-  "label.region": [
-    {
-      "type": 0,
-      "value": "Region"
-    }
-  ],
-  "label.regions": [
-    {
-      "type": 0,
-      "value": "Regions"
-    }
-  ],
-  "label.remaining": [
-    {
-      "type": 0,
-      "value": "বাকি আছে"
-    }
-  ],
-  "label.remove": [
-    {
-      "type": 0,
-      "value": "Remove"
-    }
-  ],
-  "label.remove-member": [
-    {
-      "type": 0,
-      "value": "Remove member"
-    }
-  ],
-  "label.reports": [
-    {
-      "type": 0,
-      "value": "Reports"
-    }
-  ],
-  "label.required": [
-    {
-      "type": 0,
-      "value": "প্রয়োজনীয়"
-    }
-  ],
-  "label.reset": [
-    {
-      "type": 0,
-      "value": "রিসেট"
-    }
-  ],
-  "label.reset-website": [
-    {
-      "type": 0,
-      "value": "ওয়েবসাইট রিসেট করুন"
-    }
-  ],
-  "label.retention": [
-    {
-      "type": 0,
-      "value": "Retention"
-    }
-  ],
-  "label.retention-description": [
-    {
-      "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
-    }
-  ],
-  "label.revenue": [
-    {
-      "type": 0,
-      "value": "আয়"
-    }
-  ],
-  "label.revenue-description": [
-    {
-      "type": 0,
-      "value": "সময়ের সাথে সাথে আপনার আয় দেখুন।"
-    }
-  ],
-  "label.role": [
-    {
-      "type": 0,
-      "value": "Role"
-    }
-  ],
-  "label.run-query": [
-    {
-      "type": 0,
-      "value": "Run query"
-    }
-  ],
-  "label.save": [
-    {
-      "type": 0,
-      "value": "সংরক্ষণ"
-    }
-  ],
-  "label.screens": [
-    {
-      "type": 0,
-      "value": "স্ক্রিনগুলি"
-    }
-  ],
-  "label.search": [
-    {
-      "type": 0,
-      "value": "Search"
-    }
-  ],
-  "label.select": [
-    {
-      "type": 0,
-      "value": "Select"
-    }
-  ],
-  "label.select-date": [
-    {
-      "type": 0,
-      "value": "Select date"
-    }
-  ],
-  "label.select-filter": [
-    {
-      "type": 0,
-      "value": "ফিল্টার নির্বাচন করুন"
-    }
-  ],
-  "label.select-role": [
-    {
-      "type": 0,
-      "value": "Select role"
-    }
-  ],
-  "label.select-website": [
-    {
-      "type": 0,
-      "value": "Select website"
-    }
-  ],
-  "label.session": [
-    {
-      "type": 0,
-      "value": "সেশন"
-    }
-  ],
-  "label.session-data": [
-    {
-      "type": 0,
-      "value": "সেশন ডেটা"
-    }
-  ],
-  "label.sessions": [
-    {
-      "type": 0,
-      "value": "Sessions"
-    }
-  ],
-  "label.settings": [
-    {
-      "type": 0,
-      "value": "সেটিংস"
-    }
-  ],
-  "label.share": [
-    {
-      "type": 0,
-      "value": "শেয়ার করুন"
-    }
-  ],
-  "label.share-url": [
-    {
-      "type": 0,
-      "value": "এটি "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " এর জন্য প্রকাশ্যে শেয়ার করার ইউআরএল।"
-    }
-  ],
-  "label.single-day": [
-    {
-      "type": 0,
-      "value": "একদিন"
-    }
-  ],
-  "label.sms": [
-    {
-      "type": 0,
-      "value": "SMS"
-    }
-  ],
-  "label.sources": [
-    {
-      "type": 0,
-      "value": "উৎসসমূহ"
-    }
-  ],
-  "label.start-step": [
-    {
-      "type": 0,
-      "value": "Start Step"
-    }
-  ],
-  "label.steps": [
-    {
-      "type": 0,
-      "value": "Steps"
-    }
-  ],
-  "label.sum": [
-    {
-      "type": 0,
-      "value": "Sum"
-    }
-  ],
-  "label.tablet": [
-    {
-      "type": 0,
-      "value": "ট্যাবলেট"
-    }
-  ],
-  "label.tag": [
-    {
-      "type": 0,
-      "value": "ট্যাগ"
-    }
-  ],
-  "label.tags": [
-    {
-      "type": 0,
-      "value": "ট্যাগসমূহ"
-    }
-  ],
-  "label.team": [
-    {
-      "type": 0,
-      "value": "দল"
-    }
-  ],
-  "label.team-id": [
-    {
-      "type": 0,
-      "value": "দল আইডি"
-    }
-  ],
-  "label.team-manager": [
-    {
-      "type": 0,
-      "value": "দল ব্যবস্থাপক"
-    }
-  ],
-  "label.team-member": [
-    {
-      "type": 0,
-      "value": "দলের সদস্য"
-    }
-  ],
-  "label.team-name": [
-    {
-      "type": 0,
-      "value": "দলের নাম"
-    }
-  ],
-  "label.team-owner": [
-    {
-      "type": 0,
-      "value": "দলের মালিক"
-    }
-  ],
-  "label.team-settings": [
-    {
-      "type": 0,
-      "value": "দলের সেটিংস"
-    }
-  ],
-  "label.team-view-only": [
-    {
-      "type": 0,
-      "value": "Team view only"
-    }
-  ],
-  "label.team-websites": [
-    {
-      "type": 0,
-      "value": "Team websites"
-    }
-  ],
-  "label.teams": [
-    {
-      "type": 0,
-      "value": "Teams"
-    }
-  ],
-  "label.terms": [
-    {
-      "type": 0,
-      "value": "শর্তাবলী"
-    }
-  ],
-  "label.theme": [
-    {
-      "type": 0,
-      "value": "থিম"
-    }
-  ],
-  "label.this-month": [
-    {
-      "type": 0,
-      "value": "এই মাস"
-    }
-  ],
-  "label.this-week": [
-    {
-      "type": 0,
-      "value": "এই সপ্তাহ"
-    }
-  ],
-  "label.this-year": [
-    {
-      "type": 0,
-      "value": "এই বছর"
-    }
-  ],
-  "label.timezone": [
-    {
-      "type": 0,
-      "value": "সময়স্থান"
-    }
-  ],
-  "label.title": [
-    {
-      "type": 0,
-      "value": "Title"
-    }
-  ],
-  "label.today": [
-    {
-      "type": 0,
-      "value": "আজ"
-    }
-  ],
-  "label.toggle-charts": [
-    {
-      "type": 0,
-      "value": "চার্ট পরিবর্তন করুন"
-    }
-  ],
-  "label.total": [
-    {
-      "type": 0,
-      "value": "Total"
-    }
-  ],
-  "label.total-records": [
-    {
-      "type": 0,
-      "value": "Total records"
-    }
-  ],
-  "label.tracking-code": [
-    {
-      "type": 0,
-      "value": "ট্র্যাকিং কোড"
-    }
-  ],
-  "label.transactions": [
-    {
-      "type": 0,
-      "value": "Transactions"
-    }
-  ],
-  "label.transfer": [
-    {
-      "type": 0,
-      "value": "Transfer"
-    }
-  ],
-  "label.transfer-website": [
-    {
-      "type": 0,
-      "value": "Transfer website"
-    }
-  ],
-  "label.true": [
-    {
-      "type": 0,
-      "value": "True"
-    }
-  ],
-  "label.type": [
-    {
-      "type": 0,
-      "value": "Type"
-    }
-  ],
-  "label.unique": [
-    {
-      "type": 0,
-      "value": "Unique"
-    }
-  ],
-  "label.unique-visitors": [
-    {
-      "type": 0,
-      "value": "অনন্য ভিজিটর"
-    }
-  ],
-  "label.uniqueCustomers": [
-    {
-      "type": 0,
-      "value": "Unique Customers"
-    }
-  ],
-  "label.unknown": [
-    {
-      "type": 0,
-      "value": "অজানা"
-    }
-  ],
-  "label.untitled": [
-    {
-      "type": 0,
-      "value": "Untitled"
-    }
-  ],
-  "label.update": [
-    {
-      "type": 0,
-      "value": "Update"
-    }
-  ],
-  "label.user": [
-    {
-      "type": 0,
-      "value": "User"
-    }
-  ],
-  "label.username": [
-    {
-      "type": 0,
-      "value": "ব্যবহারকারীর নাম"
-    }
-  ],
-  "label.users": [
-    {
-      "type": 0,
-      "value": "Users"
-    }
-  ],
-  "label.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "label.utm-description": [
-    {
-      "type": 0,
-      "value": "Track your campaigns through UTM parameters."
-    }
-  ],
-  "label.value": [
-    {
-      "type": 0,
-      "value": "Value"
-    }
-  ],
-  "label.view": [
-    {
-      "type": 0,
-      "value": "View"
-    }
-  ],
-  "label.view-details": [
-    {
-      "type": 0,
-      "value": "বিস্তারিত দেখুন"
-    }
-  ],
-  "label.view-only": [
-    {
-      "type": 0,
-      "value": "View only"
-    }
-  ],
-  "label.views": [
-    {
-      "type": 0,
-      "value": "ভিউস"
-    }
-  ],
-  "label.views-per-visit": [
-    {
-      "type": 0,
-      "value": "Views per visit"
-    }
-  ],
-  "label.visit-duration": [
-    {
-      "type": 0,
-      "value": "গড় পরিদর্শনের সময়"
-    }
-  ],
-  "label.visitors": [
-    {
-      "type": 0,
-      "value": "পরিদর্শনার্থী"
-    }
-  ],
-  "label.visits": [
-    {
-      "type": 0,
-      "value": "Visits"
-    }
-  ],
-  "label.website": [
-    {
-      "type": 0,
-      "value": "Website"
-    }
-  ],
-  "label.website-id": [
-    {
-      "type": 0,
-      "value": "Website ID"
-    }
-  ],
-  "label.websites": [
-    {
-      "type": 0,
-      "value": "সবগুলো ওয়েবসাইট"
-    }
-  ],
-  "label.window": [
-    {
-      "type": 0,
-      "value": "Window"
-    }
-  ],
-  "label.yesterday": [
-    {
-      "type": 0,
-      "value": "Yesterday"
-    }
-  ],
-  "message.action-confirmation": [
-    {
-      "type": 0,
-      "value": "Type "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " in the box below to confirm."
-    }
-  ],
-  "message.active-users": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " বর্তমান  "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "visitor"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "visitors"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "message.bad-request": [
-    {
-      "type": 0,
-      "value": "Bad request"
-    }
-  ],
-  "message.collected-data": [
-    {
-      "type": 0,
-      "value": "Collected data"
-    }
-  ],
-  "message.confirm-delete": [
-    {
-      "type": 0,
-      "value": "আপনি কি নিশ্চিত যে আপনি "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " মুছতে চান?"
-    }
-  ],
-  "message.confirm-leave": [
-    {
-      "type": 0,
-      "value": "Are you sure you want to leave "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-remove": [
-    {
-      "type": 0,
-      "value": "Are you sure you want to remove "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-reset": [
-    {
-      "type": 0,
-      "value": "আপনি কি নিশ্চিত যে আপনি "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " এর পরিসংখ্যান পুনরায় সেট করতে চান?"
-    }
-  ],
-  "message.delete-team-warning": [
-    {
-      "type": 0,
-      "value": "Deleting a team will also delete all team websites."
-    }
-  ],
-  "message.delete-website-warning": [
-    {
-      "type": 0,
-      "value": "সমস্ত সম্পর্কিত ডেটা পাশাপাশি মুছে ফেলা হবে।"
-    }
-  ],
-  "message.error": [
-    {
-      "type": 0,
-      "value": "কিছু ভুল হয়েছে।"
-    }
-  ],
-  "message.event-log": [
-    {
-      "type": 1,
-      "value": "event"
-    },
-    {
-      "type": 0,
-      "value": " on "
-    },
-    {
-      "type": 1,
-      "value": "url"
-    }
-  ],
-  "message.forbidden": [
-    {
-      "type": 0,
-      "value": "Forbidden"
-    }
-  ],
-  "message.go-to-settings": [
-    {
-      "type": 0,
-      "value": "সেটিংস এ যান"
-    }
-  ],
-  "message.incorrect-username-password": [
-    {
-      "type": 0,
-      "value": "ভুল ব্যবহারকারীর নাম/পাসওয়ার্ড।"
-    }
-  ],
-  "message.invalid-domain": [
-    {
-      "type": 0,
-      "value": "ভুল ডোমেন"
-    }
-  ],
-  "message.min-password-length": [
-    {
-      "type": 0,
-      "value": "Minimum length of "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " characters"
-    }
-  ],
-  "message.new-version-available": [
-    {
-      "type": 0,
-      "value": "A new version of Umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " is available!"
-    }
-  ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "কোন তথ্য নেই।"
-    }
-  ],
-  "message.no-event-data": [
-    {
-      "type": 0,
-      "value": "No event data is available."
-    }
-  ],
-  "message.no-match-password": [
-    {
-      "type": 0,
-      "value": "পাসওয়ার্ড মেলে না"
-    }
-  ],
-  "message.no-results-found": [
-    {
-      "type": 0,
-      "value": "No results were found."
-    }
-  ],
-  "message.no-team-websites": [
-    {
-      "type": 0,
-      "value": "This team does not have any websites."
-    }
-  ],
-  "message.no-teams": [
-    {
-      "type": 0,
-      "value": "You have not created any teams."
-    }
-  ],
-  "message.no-users": [
-    {
-      "type": 0,
-      "value": "There are no users."
-    }
-  ],
-  "message.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "কোনও ওয়েবসাইট কনফিগার করা নেই।"
-    }
-  ],
-  "message.not-found": [
-    {
-      "type": 0,
-      "value": "Not found"
-    }
-  ],
-  "message.nothing-selected": [
-    {
-      "type": 0,
-      "value": "Nothing selected."
-    }
-  ],
-  "message.page-not-found": [
-    {
-      "type": 0,
-      "value": "পৃষ্ঠা খুঁজে পাওয়া যায়নি।"
-    }
-  ],
-  "message.reset-website": [
-    {
-      "type": 0,
-      "value": "To reset this website, type "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " in the box below to confirm."
-    }
-  ],
-  "message.reset-website-warning": [
-    {
-      "type": 0,
-      "value": "এই ওয়েবসাইটের সমস্ত পরিসংখ্যান মুছে ফেলা হবে, তবে আপনার ট্র্যাকিং কোডটি অক্ষত থাকবে।"
-    }
-  ],
-  "message.saved": [
-    {
-      "type": 0,
-      "value": "সংরক্ষিত হয়েছে।"
-    }
-  ],
-  "message.sever-error": [
-    {
-      "type": 0,
-      "value": "Server error"
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "এটি "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " এর জন্য প্রকাশ্যে শেয়ার করার ইউআরএল।"
-    }
-  ],
-  "message.team-already-member": [
-    {
-      "type": 0,
-      "value": "You are already a member of the team."
-    }
-  ],
-  "message.team-not-found": [
-    {
-      "type": 0,
-      "value": "Team not found."
-    }
-  ],
-  "message.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Websites can be viewed by anyone on the team."
-    }
-  ],
-  "message.tracking-code": [
-    {
-      "type": 0,
-      "value": "ট্র্যাকিং কোড"
-    }
-  ],
-  "message.transfer-team-website-to-user": [
-    {
-      "type": 0,
-      "value": "Transfer this website to your account?"
-    }
-  ],
-  "message.transfer-user-website-to-team": [
-    {
-      "type": 0,
-      "value": "Select the team to transfer this website to."
-    }
-  ],
-  "message.transfer-website": [
-    {
-      "type": 0,
-      "value": "Transfer website ownership to your account or another team."
-    }
-  ],
-  "message.triggered-event": [
-    {
-      "type": 0,
-      "value": "Triggered event"
-    }
-  ],
-  "message.unauthorized": [
-    {
-      "type": 0,
-      "value": "Unauthorized"
-    }
-  ],
-  "message.user-deleted": [
-    {
-      "type": 0,
-      "value": "User deleted."
-    }
-  ],
-  "message.viewed-page": [
-    {
-      "type": 0,
-      "value": "Viewed page"
-    }
-  ],
-  "message.visitor-log": [
-    {
-      "type": 1,
-      "value": "country"
-    },
-    {
-      "type": 0,
-      "value": " থেকে একজন ভিসিটর "
-    },
-    {
-      "type": 1,
-      "value": "ব্রাউজার"
-    },
-    {
-      "type": 0,
-      "value": ", ব্যবহার করছেন "
-    },
-    {
-      "type": 1,
-      "value": "os"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "device"
-    },
-    {
-      "type": 0,
-      "value": " এর মধ্যে।"
-    }
-  ]
+  "label": {
+    "access-code": "এক্সেস কোড",
+    "account": "অ্যাকাউন্ট",
+    "action": "কার্যক্রম",
+    "actions": "অ্যাকশনস",
+    "activity": "একটিভিটি দেখুন",
+    "add": "যুক্ত করুন",
+    "add-board": "বোর্ড যুক্ত করুন",
+    "add-description": "বর্ননা যোগ করুন",
+    "add-link": "লিংক যোগ করুন",
+    "add-member": "সদস্য যোগ করুন",
+    "add-pixel": "পিক্সেল যোগ করুন",
+    "add-step": "পদ যোগ করুন",
+    "add-website": "ওয়েবসাইট যুক্ত করুন",
+    "admin": "অ্যাডমিন",
+    "affiliate": "সহযোগী",
+    "after": "পরে",
+    "all": "সবগুলো",
+    "all-time": "সব সময়",
+    "analysis": "বিশ্লেষণ",
+    "analytics": "বিশ্লেষণ",
+    "application": "অ্যাপ্লিকেশন",
+    "apply": "প্রয়োগ করুন",
+    "attribution": "অ্যাট্রিবিউশন",
+    "attribution-description": "দেখুন ব্যবহারকারীরা কীভাবে আপনার মার্কেটিংয়ের সাথে যুক্ত হয় এবং কীভাবে রূপান্তর ঘটে।",
+    "audience": "দর্শক",
+    "average": "গড়",
+    "back": "পেছনে",
+    "before": "পূর্বে",
+    "behavior": "আচরণ",
+    "boards": "বোর্ডসমূহ",
+    "bounce-rate": "উপরে উঠার হার",
+    "breakdown": "ভাঙ্গন",
+    "browser": "ব্রাউজার",
+    "browsers": "ব্রাউজার সমূহ",
+    "campaign": "প্রচারণা",
+    "campaigns": "প্রচারণা",
+    "cancel": "বাতিল",
+    "change-password": "পাসওয়ার্ড পরিবর্তন করুন",
+    "channel": "চ্যানেল",
+    "channels": "চ্যানেলসমূহ",
+    "chart": "চার্ট",
+    "cities": "শহরসমূহ",
+    "city": "শহর",
+    "clear-all": "সব মুছে ফেলুন",
+    "cohort": "কোহর্ট",
+    "cohorts": "কোহর্ট",
+    "compare": "তুলনা করুন",
+    "compare-dates": "তারিখ তুলনা করুন",
+    "confirm": "নিশ্চিত করুন",
+    "confirm-password": "পাসওয়ার্ড নিশ্চিত করুন",
+    "contains": "রয়েছে",
+    "content": "বিষয়বস্তু",
+    "continue": "পরবর্তিতে",
+    "conversion": "রূপান্তর",
+    "conversion-rate": "রূপান্তর হার",
+    "conversion-step": "রূপান্তর ধাপ",
+    "count": "গণনা",
+    "countries": "দেশসমূহ",
+    "country": "দেশ",
+    "create": "তৈরি করুন",
+    "create-report": "রিপোর্ট তৈরি করুন",
+    "create-team": "দল তৈরি করুন",
+    "create-user": "ব্যবহারকারী তৈরি করুন",
+    "created": "তৈরি করা হয়েছে",
+    "created-by": "তৈরি করেছেন",
+    "criteria": "মানদণ্ড",
+    "currency": "মুদ্রা",
+    "current": "বর্তমান",
+    "current-password": "বর্তমান পাসওয়ার্ড",
+    "custom-range": "কাস্টম রেঞ্জ",
+    "dashboard": "ড্যাশবোর্ড",
+    "data": "ডেটা",
+    "date": "তারিখ",
+    "date-range": "তারিখের পরিসীমা",
+    "day": "দিন",
+    "default-date-range": "ডিফল্ট তারিখের পরিসীমা",
+    "delete": "মুছে ফেলুন",
+    "delete-report": "রিপোর্ট মুছুন",
+    "delete-team": "দল মুছুন",
+    "delete-user": "ব্যবহারকারী মুছুন",
+    "delete-website": "ওয়েবসাইট মুছুন",
+    "description": "বর্ণনা",
+    "desktop": "ডেস্কটপ",
+    "destination-url": "গন্তব্য URL",
+    "details": "বিস্তারিত",
+    "device": "ডিভাইস",
+    "devices": "ডিভাইস গুলো",
+    "direct": "সরাসরি",
+    "dismiss": "বাতিল",
+    "distinct-id": "স্বতন্ত্র আইডি",
+    "documentation": "ডকুমেন্টেশন",
+    "does-not-contain": "ধারণ করে না",
+    "does-not-include": "অন্তর্ভুক্ত নয়",
+    "doest-not-exist": "অস্তিত্ব নেই",
+    "domain": "ডোমেইন",
+    "download": "ডাউনলোড",
+    "dropoff": "ছেড়ে যাওয়া",
+    "edit": "সম্পাদনা করুন",
+    "edit-member": "সদস্য সম্পাদনা করুন",
+    "email": "ইমেইল",
+    "enable-share-url": "শেয়ার ইউআরএল শেয়ার করুন",
+    "end-step": "শেষ ধাপ",
+    "entry": "প্রবেশ URL",
+    "environment": "পরিবেশ",
+    "event": "ইভেন্ট",
+    "event-data": "ইভেন্ট ডেটা",
+    "event-name": "ইভেন্টের নাম",
+    "events": "ঘটনা",
+    "exclude-bounce": "বাউন্স বাদ দিন",
+    "exists": "অস্তিত্ব আছে",
+    "exit": "প্রস্থান URL",
+    "false": "মিথ্যা",
+    "field": "ক্ষেত্র",
+    "fields": "ক্ষেত্রসমূহ",
+    "filter": "ফিল্টার",
+    "filter-combined": "সম্মিলিত",
+    "filter-raw": "অপরিশোধিত",
+    "filters": "ফিল্টারসমূহ",
+    "first-click": "প্রথম ক্লিক",
+    "first-seen": "প্রথম দেখা",
+    "funnel": "ফানেল",
+    "funnel-description": "ব্যবহারকারীদের রূপান্তর ও ছেড়ে যাওয়ার হার বুঝুন।",
+    "funnels": "ফানেলসমূহ",
+    "goal": "লক্ষ্য",
+    "goals": "লক্ষ্যসমূহ",
+    "goals-description": "পৃষ্ঠাদর্শন ও ইভেন্টের লক্ষ্য ট্র্যাক করুন।",
+    "greater-than": "এর চেয়ে বেশি",
+    "greater-than-equals": "এর চেয়ে বেশি বা সমান",
+    "grouped": "গ্রুপ করা",
+    "growth": "বৃদ্ধি",
+    "hostname": "হোস্টনেম",
+    "hour": "ঘণ্টা",
+    "includes": "অন্তর্ভুক্ত",
+    "insight": "অন্তর্দৃষ্টি",
+    "insights": "অন্তর্দৃষ্টি",
+    "insights-description": "সেগমেন্ট এবং ফিল্টার ব্যবহার করে আপনার ডেটায় আরও গভীরে যান।",
+    "invalid-url": "অবৈধ URL",
+    "is": "হয়",
+    "is-false": "মিথ্যা",
+    "is-not": "নয়",
+    "is-not-set": "নির্ধারিত নয়",
+    "is-set": "নির্ধারিত",
+    "is-true": "সত্য",
+    "join": "যোগ দিন",
+    "join-team": "দলে যোগ দিন",
+    "journey": "যাত্রা",
+    "journey-description": "ব্যবহারকারীরা কীভাবে আপনার ওয়েবসাইটে নেভিগেট করে তা বুঝুন।",
+    "journeys": "যাত্রাসমূহ",
+    "language": "ভাষা",
+    "languages": "ভাষা",
+    "laptop": "ল্যাপটপ",
+    "last-click": "শেষ ক্লিক",
+    "last-days": "শেষ {x} দিন",
+    "last-hours": "শেষ {x} ঘন্টা",
+    "last-months": "শেষ {x} মাস",
+    "last-seen": "শেষ দেখা",
+    "leave": "ত্যাগ করুন",
+    "leave-team": "দল ত্যাগ করুন",
+    "less-than": "এর চেয়ে কম",
+    "less-than-equals": "এর চেয়ে কম বা সমান",
+    "link": "লিংক",
+    "links": "লিঙ্কসমূহ",
+    "location": "অবস্থান",
+    "login": "লগিন",
+    "logout": "লগ আউট",
+    "manage": "পরিচালনা করুন",
+    "manager": "পরিচালক",
+    "max": "সর্বাধিক",
+    "maximize": "বিস্তৃত করুন",
+    "medium": "মাঝারি",
+    "member": "সদস্য",
+    "members": "সদস্যগণ",
+    "min": "সর্বনিম্ন",
+    "minute": "মিনিট",
+    "mobile": "মুঠোফোন",
+    "model": "মডেল",
+    "month": "মাস",
+    "more": "আরও",
+    "my-account": "আমার অ্যাকাউন্ট",
+    "my-websites": "আমার ওয়েবসাইটসমূহ",
+    "name": "নাম",
+    "new-password": "নতুন পাসওয়ার্ড",
+    "none": "কিছুই না",
+    "number-of-records": "{x} {x, plural, one {রেকর্ড} other {রেকর্ড}}",
+    "ok": "ঠিক আছে",
+    "online": "অনলাইন",
+    "organic-search": "অর্গানিক সার্চ",
+    "organic-shopping": "অর্গানিক শপিং",
+    "organic-social": "অর্গানিক সোশ্যাল",
+    "organic-video": "অর্গানিক ভিডিও",
+    "os": "ওএস",
+    "other": "অন্যান্য",
+    "overview": "সংক্ষিপ্ত বিবরণ",
+    "owner": "মালিক",
+    "page": "পৃষ্ঠা",
+    "page-of": "পৃষ্ঠা {current} / {total}",
+    "page-views": "পৃষ্ঠা পরিদর্শন গুলো",
+    "pageTitle": "পৃষ্ঠার শিরোনাম",
+    "pages": "পৃষ্ঠাগুলি",
+    "paid-ads": "পেইড বিজ্ঞাপন",
+    "paid-search": "পেইড সার্চ",
+    "paid-shopping": "পেইড শপিং",
+    "paid-social": "পেইড সোশ্যাল",
+    "paid-video": "পেইড ভিডিও",
+    "password": "পাসওয়ার্ড",
+    "path": "পথ",
+    "paths": "পথসমূহ",
+    "pixel": "পিক্সেল",
+    "pixels": "পিক্সেল",
+    "powered-by": "{name} দ্বারা চালিত",
+    "preferences": "পছন্দসমূহ",
+    "previous": "পূর্ববর্তী",
+    "previous-period": "পূর্ববর্তী সময়কাল",
+    "previous-year": "গত বছর",
+    "profile": "প্রোফাইল",
+    "profiles": "প্রোফাইল",
+    "properties": "বৈশিষ্ট্যসমূহ",
+    "property": "বৈশিষ্ট্য",
+    "queries": "কোয়েরি",
+    "query": "কোয়েরি",
+    "query-parameters": "কোয়েরি প্যারামিটার",
+    "realtime": "সরাসরি",
+    "referral": "রেফারেল",
+    "referrer": "রেফারার",
+    "referrers": "রেফারার্স",
+    "refresh": "রিফ্রেশ",
+    "regenerate": "পুনরায় তৈরি",
+    "region": "অঞ্চল",
+    "regions": "অঞ্চলসমূহ",
+    "remaining": "বাকি আছে",
+    "remove": "সরান",
+    "remove-member": "সদস্য সরান",
+    "reports": "রিপোর্ট",
+    "required": "প্রয়োজনীয়",
+    "reset": "রিসেট",
+    "reset-website": "ওয়েবসাইট রিসেট করুন",
+    "retention": "ধরে রাখা",
+    "retention-description": "ব্যবহারকারীরা কতবার ফিরে আসে তা ট্র্যাক করে আপনার ওয়েবসাইটের আঠালোতা পরিমাপ করুন।",
+    "revenue": "আয়",
+    "revenue-description": "সময়ের সাথে সাথে আপনার আয় দেখুন।",
+    "role": "ভূমিকা",
+    "run-query": "কোয়েরি চালান",
+    "save": "সংরক্ষণ",
+    "save-cohort": "কোহর্ট সংরক্ষণ করুন",
+    "save-segment": "সেগমেন্ট সংরক্ষণ করুন",
+    "screen": "স্ক্রিন",
+    "screens": "স্ক্রিনগুলি",
+    "search": "অনুসন্ধান",
+    "segment": "সেগমেন্ট",
+    "segments": "সেগমেন্ট",
+    "select": "নির্বাচন করুন",
+    "select-date": "তারিখ নির্বাচন করুন",
+    "select-filter": "ফিল্টার নির্বাচন করুন",
+    "select-role": "ভূমিকা নির্বাচন করুন",
+    "select-website": "ওয়েবসাইট নির্বাচন করুন",
+    "session": "সেশন",
+    "session-data": "সেশন ডেটা",
+    "sessions": "সেশন",
+    "settings": "সেটিংস",
+    "share": "শেয়ার করুন",
+    "share-url": "এটি {target} এর জন্য প্রকাশ্যে শেয়ার করার ইউআরএল।",
+    "single-day": "একদিন",
+    "sms": "SMS",
+    "source": "উৎস",
+    "sources": "উৎসসমূহ",
+    "start-step": "প্রারম্ভিক ধাপ",
+    "steps": "ধাপসমূহ",
+    "sum": "যোগফল",
+    "support": "সহায়তা",
+    "switch-account": "অ্যাকাউন্ট পরিবর্তন",
+    "table": "টেবিল",
+    "tablet": "ট্যাবলেট",
+    "tag": "ট্যাগ",
+    "tags": "ট্যাগসমূহ",
+    "team": "দল",
+    "team-id": "দল আইডি",
+    "team-manager": "দল ব্যবস্থাপক",
+    "team-member": "দলের সদস্য",
+    "team-name": "দলের নাম",
+    "team-owner": "দলের মালিক",
+    "team-settings": "দলের সেটিংস",
+    "team-view-only": "শুধু টিম দেখুন",
+    "team-websites": "টিম ওয়েবসাইট",
+    "teams": "টিম",
+    "term": "অনুসন্ধান শব্দ",
+    "terms": "শর্তাবলী",
+    "theme": "থিম",
+    "this-month": "এই মাস",
+    "this-week": "এই সপ্তাহ",
+    "this-year": "এই বছর",
+    "timezone": "সময়স্থান",
+    "title": "শিরোনাম",
+    "today": "আজ",
+    "toggle-charts": "চার্ট পরিবর্তন করুন",
+    "total": "মোট",
+    "total-records": "মোট রেকর্ড",
+    "tracking-code": "ট্র্যাকিং কোড",
+    "traffic": "ট্রাফিক",
+    "transactions": "লেনদেন",
+    "transfer": "স্থানান্তর",
+    "transfer-website": "ওয়েবসাইট স্থানান্তর",
+    "true": "সত্য",
+    "type": "ধরন",
+    "unique": "অনন্য",
+    "unique-events": "অনন্য ইভেন্ট",
+    "unique-visitors": "অনন্য ভিজিটর",
+    "uniqueCustomers": "অনন্য গ্রাহক",
+    "unknown": "অজানা",
+    "untitled": "শিরোনামহীন",
+    "update": "আপডেট",
+    "url": "URL",
+    "user": "ব্যবহারকারী",
+    "username": "ব্যবহারকারীর নাম",
+    "users": "ব্যবহারকারীগণ",
+    "utm": "UTM",
+    "utm-campaign": "UTM প্রচারণা",
+    "utm-content": "UTM বিষয়বস্তু",
+    "utm-description": "UTM প্যারামিটারের মাধ্যমে আপনার প্রচারণা ট্র্যাক করুন।",
+    "utm-medium": "UTM মাধ্যম",
+    "utm-source": "UTM উৎস",
+    "utm-term": "UTM শব্দ",
+    "value": "মান",
+    "version": "সংস্করণ",
+    "view": "দেখুন",
+    "view-details": "বিস্তারিত দেখুন",
+    "view-only": "শুধু দেখুন",
+    "views": "ভিউস",
+    "views-per-visit": "প্রতি ভিজিটে দেখা",
+    "visit-duration": "গড় পরিদর্শনের সময়",
+    "visitors": "পরিদর্শনার্থী",
+    "visits": "ভিজিট",
+    "website": "ওয়েবসাইট",
+    "website-id": "ওয়েবসাইট ID",
+    "websites": "সবগুলো ওয়েবসাইট",
+    "window": "উইন্ডো",
+    "yesterday": "গতকাল"
+  },
+  "message": {
+    "action-confirmation": "নিশ্চিত করতে নিচের বক্সে {confirmation} টাইপ করুন।",
+    "active-users": "{x} বর্তমান  {x, plural, one {visitor} other {visitors}}",
+    "bad-request": "অবৈধ অনুরোধ",
+    "collected-data": "সংগৃহীত ডেটা",
+    "confirm-delete": "আপনি কি নিশ্চিত যে আপনি {target} মুছতে চান?",
+    "confirm-leave": "আপনি কি নিশ্চিত যে আপনি <b>{target}</b> ত্যাগ করতে চান?",
+    "confirm-remove": "আপনি কি নিশ্চিত যে আপনি <b>{target}</b> সরাতে চান?",
+    "confirm-reset": "আপনি কি নিশ্চিত যে আপনি {target} এর পরিসংখ্যান পুনরায় সেট করতে চান?",
+    "delete-team-warning": "একটি টিম মুছে ফেললে টিমের সব ওয়েবসাইটও মুছে যাবে।",
+    "delete-website-warning": "সমস্ত সম্পর্কিত ডেটা পাশাপাশি মুছে ফেলা হবে।",
+    "error": "কিছু ভুল হয়েছে।",
+    "event-log": "<a>{url}</a>-এ <b>{event}</b>",
+    "forbidden": "নিষিদ্ধ",
+    "go-to-settings": "সেটিংস এ যান",
+    "incorrect-username-password": "ভুল ব্যবহারকারীর নাম/পাসওয়ার্ড।",
+    "invalid-domain": "ভুল ডোমেন",
+    "min-password-length": "সর্বনিম্ন {n} অক্ষর",
+    "new-version-available": "Umami {version}-এর নতুন সংস্করণ পাওয়া যাচ্ছে!",
+    "no-data-available": "কোন তথ্য নেই।",
+    "no-event-data": "কোনো ইভেন্ট ডেটা পাওয়া যায়নি।",
+    "no-match-password": "পাসওয়ার্ড মেলে না",
+    "no-results-found": "No results were found.",
+    "no-team-websites": "এই টিমের কোনো ওয়েবসাইট নেই।",
+    "no-teams": "আপনি কোনো টিম তৈরি করেননি।",
+    "no-users": "কোনো ব্যবহারকারী নেই।",
+    "no-websites-configured": "কোনও ওয়েবসাইট কনফিগার করা নেই।",
+    "not-found": "পাওয়া যায়নি",
+    "nothing-selected": "কিছু নির্বাচন করা হয়নি।",
+    "page-not-found": "পৃষ্ঠা খুঁজে পাওয়া যায়নি।",
+    "reset-website": "এই ওয়েবসাইট রিসেট করতে, নিচের বক্সে {confirmation} টাইপ করুন।",
+    "reset-website-warning": "এই ওয়েবসাইটের সমস্ত পরিসংখ্যান মুছে ফেলা হবে, তবে আপনার ট্র্যাকিং কোডটি অক্ষত থাকবে।",
+    "saved": "সংরক্ষিত হয়েছে।",
+    "sever-error": "সার্ভার ত্রুটি",
+    "share-url": "এটি {target} এর জন্য প্রকাশ্যে শেয়ার করার ইউআরএল।",
+    "team-already-member": "আপনি ইতিমধ্যে টিমের সদস্য।",
+    "team-not-found": "টিম পাওয়া যায়নি।",
+    "team-websites-info": "ওয়েবসাইটগুলি টিমের যে কেউ দেখতে পারেন।",
+    "tracking-code": "ট্র্যাকিং কোড",
+    "transfer-team-website-to-user": "এই ওয়েবসাইটটি আপনার অ্যাকাউন্টে স্থানান্তর করবেন?",
+    "transfer-user-website-to-team": "এই ওয়েবসাইটটি স্থানান্তর করার জন্য টিম নির্বাচন করুন।",
+    "transfer-website": "ওয়েবসাইটের মালিকানা আপনার অ্যাকাউন্টে বা অন্য টিমে স্থানান্তর করুন।",
+    "triggered-event": "ট্রিগার করা ইভেন্ট",
+    "unauthorized": "অননুমোদিত",
+    "user-deleted": "ব্যবহারকারী মুছে ফেলা হয়েছে।",
+    "viewed-page": "দেখা পৃষ্ঠা",
+    "visitor-log": "<b>{country}</b> থেকে একজন ভিসিটর {ব্রাউজার}, ব্যবহার করছেন <b>{os}</b> <b>{device}</b> এর মধ্যে।"
+  }
 }

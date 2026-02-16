@@ -22,7 +22,7 @@ export function TeamMemberAddForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels, getErrorMessage } = useMessages();
+  const { t, labels, getErrorMessage } = useMessages();
   const { mutateAsync, error, isPending } = useUpdateQuery(`/teams/${teamId}/users`);
 
   const handleSubmit = async (data: any) => {
@@ -37,24 +37,20 @@ export function TeamMemberAddForm({
   const renderRole = role => {
     switch (role) {
       case ROLES.teamManager:
-        return formatMessage(labels.manager);
+        return t(labels.manager);
       case ROLES.teamMember:
-        return formatMessage(labels.member);
+        return t(labels.member);
       case ROLES.teamViewOnly:
-        return formatMessage(labels.viewOnly);
+        return t(labels.viewOnly);
     }
   };
 
   return (
     <Form onSubmit={handleSubmit} error={getErrorMessage(error)}>
-      <FormField
-        name="userId"
-        label={formatMessage(labels.username)}
-        rules={{ required: 'Required' }}
-      >
+      <FormField name="userId" label={t(labels.username)} rules={{ required: 'Required' }}>
         <UserSelect teamId={teamId} />
       </FormField>
-      <FormField name="role" label={formatMessage(labels.role)} rules={{ required: 'Required' }}>
+      <FormField name="role" label={t(labels.role)} rules={{ required: 'Required' }}>
         <Select renderValue={value => renderRole(value as any)}>
           {roles.map(value => (
             <ListItem key={value} id={value}>
@@ -65,10 +61,10 @@ export function TeamMemberAddForm({
       </FormField>
       <FormButtons>
         <Button isDisabled={isPending} onPress={onClose}>
-          {formatMessage(labels.cancel)}
+          {t(labels.cancel)}
         </Button>
         <FormSubmitButton variant="primary" isDisabled={isPending}>
-          {formatMessage(labels.save)}
+          {t(labels.save)}
         </FormSubmitButton>
       </FormButtons>
     </Form>

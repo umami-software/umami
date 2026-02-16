@@ -17,10 +17,10 @@ export function PageBody({
   isLoading?: boolean;
   children?: ReactNode;
 } & ColumnProps) {
-  const { formatMessage, messages } = useMessages();
+  const { t, messages } = useMessages();
 
   if (error) {
-    return <AlertBanner title={formatMessage(messages.error)} variant="error" />;
+    return <AlertBanner title={t(messages.error)} variant="error" />;
   }
 
   if (isLoading) {
