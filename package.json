@@ -20,7 +20,7 @@
     "start-server": "node server.js",
     "build-app": "next build --turbo",
     "build-icons": "svgr ./src/assets --out-dir src/components/svg --typescript",
-    "build-components": "tsup",
+    "build-components": "node scripts/bump-components.js && tsup",
     "build-tracker": "rollup -c rollup.tracker.config.js",
     "build-prisma-client": "node scripts/build-prisma-client.js",
     "build-lang": "npm-run-all download-country-names download-language-names",
