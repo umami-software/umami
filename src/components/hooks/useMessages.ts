@@ -7,12 +7,16 @@ export function useMessages() {
 
   const getMessage = (id: string) => t(`message.${id}`);
 
-  const getErrorMessage = (error: ApiError) => {
+  const getErrorMessage = (error: string | Error | undefined) => {
     if (!error) {
       return undefined;
     }
 
-    const code = error?.code;
+    if (typeof error === 'string') {
+      return error;
+    }
+
+    const code = (error as ApiError)?.code;
 
     return code ? getMessage(code) : error?.message || 'Unknown error';
   };
