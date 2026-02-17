@@ -8,9 +8,10 @@ import {
   Icon,
   PasswordField,
   TextField,
+  Button,
 } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
-import { useMessages, useUpdateQuery } from '@/components/hooks';
+import { useApi, useMessages, useUpdateQuery } from '@/components/hooks';
 import { Logo } from '@/components/svg';
 import { setClientAuthToken } from '@/lib/client';
 import { setUser } from '@/store/app';
@@ -19,6 +20,19 @@ export function LoginForm() {
   const { formatMessage, labels, getErrorMessage } = useMessages();
   const router = useRouter();
   const { mutateAsync, error } = useUpdateQuery('/auth/login');
+  const { useMutation } = useApi();
+  const { mutate: startOIDC, isPending: isOIDC } = useMutation({
+    mutationFn: async (returnUrl?: string) => {
+      const res = await fetch(
+        `/api/auth/oidc/authorize?returnUrl=${encodeURIComponent(returnUrl || '/dashboard')}`,
+      );
+      const data = await res.json();
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+      return data;
+    },
+  });
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
@@ -63,6 +77,14 @@ export function LoginForm() {
           >
             {formatMessage(labels.login)}
           </FormSubmitButton>
+          <Button
+            variant="secondary"
+            onClick={() => startOIDC('/dashboard')}
+            isDisabled={isOIDC}
+            style={{ flex: 1 }}
+          >
+            Se connecter avec OIDC
+          </Button>
         </FormButtons>
       </Form>
     </Column>
