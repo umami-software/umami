@@ -146,7 +146,7 @@ export function hasBlockedIp(clientIp: string) {
 
   const ips = ignoreIps.split(',').map(n => n.trim());
 
-  return ips.find(ip => {
+  return ips.some(ip => {
     if (ip === clientIp) {
       return true;
     }
