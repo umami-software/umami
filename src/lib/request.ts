@@ -16,7 +16,7 @@ export async function parseRequest(
   const url = new URL(request.url);
   let query = Object.fromEntries(url.searchParams);
   let body = await getJsonBody(request);
-  let error: (() => Response) | undefined;
+  let error: () => undefined | undefined;
   let auth = null;
 
   if (schema) {

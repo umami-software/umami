@@ -22,11 +22,7 @@ export function WebsiteChart({
 
   const chartData = useMemo(() => {
     if (data) {
-      const result: {
-        pageviews: any[];
-        sessions: any[];
-        compare?: { pageviews: any[]; sessions: any[] };
-      } = {
+      const result = {
         pageviews,
         sessions,
       };

@@ -19,7 +19,7 @@ export function LanguageButton() {
         </Icon>
       </Button>
       <Popover placement="bottom end">
-        <Dialog variant="sheet">
+        <Dialog variant="menu">
           <Grid columns="repeat(3, minmax(200px, 1fr))" overflow="hidden">
             {items.map(({ value, label }) => {
               return (

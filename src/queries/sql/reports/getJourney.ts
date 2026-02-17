@@ -60,7 +60,7 @@ async function relationalQuery(
     endStepQuery: string;
     params: Record<string, string>;
   } {
-    const params: Record<string, string> = {};
+    const params = {};
     let sequenceQuery = '';
     let startStepQuery = '';
     let endStepQuery = '';
@@ -172,7 +172,7 @@ async function clickhouseQuery(
     endStepQuery: string;
     params: Record<string, string>;
   } {
-    const params: Record<string, string> = {};
+    const params = {};
     let sequenceQuery = '';
     let startStepQuery = '';
     let endStepQuery = '';

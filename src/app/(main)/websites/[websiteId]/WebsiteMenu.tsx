@@ -10,7 +10,7 @@ import {
 } from '@umami/react-zen';
 import { Fragment } from 'react';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { Edit, Ellipsis, Share } from '@/components/icons';
+import { Edit, More, Share } from '@/components/icons';
 
 export function WebsiteMenu({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
@@ -33,7 +33,7 @@ export function WebsiteMenu({ websiteId }: { websiteId: string }) {
     <MenuTrigger>
       <Button variant="quiet">
         <Icon>
-          <Ellipsis />
+          <More />
         </Icon>
       </Button>
       <Popover placement="bottom">
