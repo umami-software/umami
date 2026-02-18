@@ -44,9 +44,6 @@ importers:
       '@umami/react-zen':
         specifier: ^0.245.0
         version: 0.245.0(@types/react@19.2.14)(immer@10.2.0)(react-aria-components@1.14.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.2.4))
-      '@umami/redis-client':
-        specifier: ^0.30.0
-        version: 0.30.0
       bcryptjs:
         specifier: ^3.0.2
         version: 3.0.3
@@ -173,6 +170,9 @@ importers:
       react-window:
         specifier: ^1.8.6
         version: 1.8.11(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      redis:
+        specifier: ^4.5.1
+        version: 4.7.1
       request-ip:
         specifier: ^3.3.0
         version: 3.3.0
@@ -327,8 +327,6 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
-
-  dist: {}
 
 packages:
 
@@ -2964,9 +2962,6 @@ packages:
       react: ^18.0.0 || ^19.0.0
       react-aria-components: ^1.0.0
       react-dom: ^18.0.0 || ^19.0.0
-
-  '@umami/redis-client@0.30.0':
-    resolution: {integrity: sha512-pqeMPdEFMH+9GDpiQd5MdRdTppif4vPl/sp8Y9hPY277g/UFlJAbCUJluESmZRBHjFdXtBPtLzQkxjvdjlRzuQ==}
 
   acorn-walk@8.3.4:
     resolution: {integrity: sha512-ueEepnujpqee2o5aIYnvHU6C0A42MNdsIDeqy5BydrkuC5R1ZuUFnm27EeFJGoEHJQgn3uleRvmTXaJgfXbt4g==}
@@ -10061,13 +10056,6 @@ snapshots:
       - immer
       - tailwindcss
       - use-sync-external-store
-
-  '@umami/redis-client@0.30.0':
-    dependencies:
-      debug: 4.4.3(supports-color@8.1.1)
-      redis: 4.7.1
-    transitivePeerDependencies:
-      - supports-color
 
   acorn-walk@8.3.4:
     dependencies:
