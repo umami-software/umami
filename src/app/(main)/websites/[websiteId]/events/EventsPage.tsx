@@ -1,12 +1,11 @@
 'use client';
 import { Column, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
-import locale from 'date-fns/locale/af';
-import { type Key, useMemo, useState } from 'react';
+import { type Key, useState } from 'react';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
-import { useMessages } from '@/components/hooks';
+import { useDateRange, useMessages } from '@/components/hooks';
 import { useEventStatsQuery } from '@/components/hooks/queries/useEventStatsQuery';
 import { EventsChart } from '@/components/metrics/EventsChart';
 import { MetricCard } from '@/components/metrics/MetricCard';
@@ -21,6 +20,7 @@ const KEY_NAME = 'umami.events.tab';
 
 export function EventsPage({ websiteId }) {
   const [tab, setTab] = useState(getItem(KEY_NAME) || 'chart');
+  const { isAllTime } = useDateRange();
   const { t, labels, getErrorMessage } = useMessages();
   const { data, isLoading, isFetching, error } = useEventStatsQuery({
     websiteId,
@@ -31,34 +31,36 @@ export function EventsPage({ websiteId }) {
     setTab(value);
   };
 
-  const metrics = useMemo(() => {
-    if (!data) return [];
+  const { events, visitors, visits, uniqueEvents, comparison } = data || {};
 
-    const { events, visitors, visits, uniqueEvents } = data || {};
-
-    return [
-      {
-        value: visitors,
-        label: t(labels.visitors),
-        formatValue: formatLongNumber,
-      },
-      {
-        value: visits,
-        label: t(labels.visits),
-        formatValue: formatLongNumber,
-      },
-      {
-        value: events,
-        label: t(labels.events),
-        formatValue: formatLongNumber,
-      },
-      {
-        value: uniqueEvents,
-        label: t(labels.uniqueEvents),
-        formatValue: formatLongNumber,
-      },
-    ] as any;
-  }, [data, locale]);
+  const metrics = data
+    ? [
+        {
+          value: visitors,
+          label: t(labels.visitors),
+          change: visitors - comparison.visitors,
+          formatValue: formatLongNumber,
+        },
+        {
+          value: visits,
+          label: t(labels.visits),
+          change: visits - comparison.visits,
+          formatValue: formatLongNumber,
+        },
+        {
+          value: events,
+          label: t(labels.events),
+          change: events - comparison.events,
+          formatValue: formatLongNumber,
+        },
+        {
+          value: uniqueEvents,
+          label: t(labels.uniqueEvents),
+          change: uniqueEvents - comparison.uniqueEvents,
+          formatValue: formatLongNumber,
+        },
+      ]
+    : null;
 
   return (
     <Column gap="3">
@@ -71,8 +73,17 @@ export function EventsPage({ websiteId }) {
         minHeight="136px"
       >
         <MetricsBar>
-          {metrics?.map(({ label, value, formatValue }) => {
-            return <MetricCard key={label} value={value} label={label} formatValue={formatValue} />;
+          {metrics?.map(({ label, value, change, formatValue }) => {
+            return (
+              <MetricCard
+                key={label}
+                value={value}
+                label={label}
+                change={change}
+                formatValue={formatValue}
+                showChange={!isAllTime}
+              />
+            );
           })}
         </MetricsBar>
       </LoadingPanel>

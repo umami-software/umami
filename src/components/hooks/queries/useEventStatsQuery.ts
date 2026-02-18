@@ -8,6 +8,12 @@ export interface EventStatsData {
   visitors: number;
   visits: number;
   uniqueEvents: number;
+  comparison: {
+    events: number;
+    visitors: number;
+    visits: number;
+    uniqueEvents: number;
+  };
 }
 
 type EventStatsApiResponse = {

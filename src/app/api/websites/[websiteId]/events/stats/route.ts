@@ -1,3 +1,4 @@
+import { getCompareDate } from '@/lib/date';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, withDateRange } from '@/lib/schema';
@@ -28,5 +29,17 @@ export async function GET(
 
   const data = await getWebsiteEventStats(websiteId, filters);
 
-  return json({ data });
+  const { startDate, endDate } = getCompareDate(
+    filters.compare ?? 'prev',
+    filters.startDate,
+    filters.endDate,
+  );
+
+  const comparison = await getWebsiteEventStats(websiteId, {
+    ...filters,
+    startDate,
+    endDate,
+  });
+
+  return json({ data: { ...data, comparison } });
 }
