@@ -40,12 +40,13 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     }
   }
 
+  const referer = request.headers.get('referer') || request.headers.get('referrer');
   const payload = {
     type: 'event',
     payload: {
       link: link.id,
       url: request.url,
-      referrer: request.headers.get('referer'),
+      ...(referer && { referer }), // avoid referrer is not a string
     },
   };
 
