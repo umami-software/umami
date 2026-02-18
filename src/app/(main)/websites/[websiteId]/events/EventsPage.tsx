@@ -89,13 +89,14 @@ export function EventsPage({ websiteId }) {
           <TabPanel id="chart">
             <Column gap="6">
               <Column border="bottom" paddingBottom="6">
-                <EventsChart websiteId={websiteId} />
+                <EventsChart websiteId={websiteId} limit={50} />
               </Column>
               <MetricsTable
                 websiteId={websiteId}
                 type="event"
                 title={t(labels.event)}
                 metric={t(labels.count)}
+                limit={50}
               />
             </Column>
           </TabPanel>
