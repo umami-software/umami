@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "Карыстальнік выдалены.",
   "message.viewed-page": "Праглядзеў старонку",
-  "message.visitor-log": "Наведвальнік з {country} праз {browser} на {os} {device}"
+  "message.visitor-log": "Наведвальнік з {country} праз {browser} на {os} {device}",
+  "message.visitors-tooltip": "Колькасць унікальных наведвальнікаў вашага сайта",
+  "message.visits-tooltip": "Агульная колькасць сеансаў на вашым сайце",
+  "message.page-views-tooltip": "Агульная колькасць праглядаў старонак",
+  "message.bounce-rate-tooltip": "Працэнт наведванняў, якія заканчваюцца пасля прагляду толькі адной старонкі",
+  "message.visit-duration-tooltip": "Сярэдні час, праведзены на вашым сайце за адно наведванне"
 }

@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "Látógató {country} területéről, {os} {device} eszközön, {browser} böngészőből."
+  "message.visitor-log": "Látógató {country} területéről, {os} {device} eszközön, {browser} böngészőből.",
+  "message.visitors-tooltip": "Az Ön weboldalának egyedi látogatóinak száma",
+  "message.visits-tooltip": "Az Ön weboldalán történt összes munkamenet száma",
+  "message.page-views-tooltip": "Az összes megtekintett oldal száma",
+  "message.bounce-rate-tooltip": "Azoknak a látogatásoknak az aránya, amelyek csak egy oldal megtekintése után hagyják el az oldalt",
+  "message.visit-duration-tooltip": "Átlagos idő, amelyet a látogatók az Ön weboldalán töltenek látogatásonként"
 }

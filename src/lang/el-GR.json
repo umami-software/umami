@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "Visitor from {country} using {browser} on {os} {device}"
+  "message.visitor-log": "Visitor from {country} using {browser} on {os} {device}",
+  "message.visitors-tooltip": "Αριθμός μοναδικών επισκεπτών στην ιστοσελίδα σας",
+  "message.visits-tooltip": "Συνολικός αριθμός επισκέψεων στην ιστοσελίδα σας",
+  "message.page-views-tooltip": "Συνολικός αριθμός προβολών σελίδων",
+  "message.bounce-rate-tooltip": "Ποσοστό επισκέψεων που φεύγουν μετά την προβολή μόνο μίας σελίδας",
+  "message.visit-duration-tooltip": "Μέσος χρόνος που ξοδεύεται στην ιστοσελίδα σας ανά επίσκεψη"
 }

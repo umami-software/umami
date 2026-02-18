@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "အသုံးပြုသူ ဖျက်ပြီးပါပြီ",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "{country} မှ {browser} ဖြင့် {os} {device} တွင် ဝင်ရောက်ကြည့်ရှုသူ"
+  "message.visitor-log": "{country} မှ {browser} ဖြင့် {os} {device} တွင် ဝင်ရောက်ကြည့်ရှုသူ",
+  "message.visitors-tooltip": "သင့်ဝက်ဘ်ဆိုက်သို့ သီးသန့်လာရောက်သူအရေအတွက်",
+  "message.visits-tooltip": "သင့်ဝက်ဘ်ဆိုက်တွင် စုစုပေါင်းအကြိမ်ရေ",
+  "message.page-views-tooltip": "စုစုပေါင်းစာမျက်နှာကြည့်မှုအရေအတွက်",
+  "message.bounce-rate-tooltip": "စာမျက်နှာတစ်မျက်နှာသာကြည့်ပြီးထွက်သွားသည့် အရည်အချင်းရာခိုင်နှုန်း",
+  "message.visit-duration-tooltip": "တစ်ကြိမ်လည်ပတ်စဉ် သင့်ဝက်ဘ်ဆိုက်တွင်ကုန်ကျသည့် ပျမ်းမျှအချိန်"
 }

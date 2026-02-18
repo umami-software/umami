@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "Besøgende fra {country} bruger {browser} på {os} {device}"
+  "message.visitor-log": "Besøgende fra {country} bruger {browser} på {os} {device}",
+  "message.visitors-tooltip": "Antal unikke besøgende på dit website",
+  "message.visits-tooltip": "Samlet antal sessioner på dit website",
+  "message.page-views-tooltip": "Samlet antal sidevisninger",
+  "message.bounce-rate-tooltip": "Procentdel af besøg, der forlader websitet efter kun at have set én side",
+  "message.visit-duration-tooltip": "Gennemsnitlig tid brugt på dit website pr. besøg"
 }

@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "{os} {device} پر {browser} کا استعمال کرتے ہوئے {country} سے آنے والا"
+  "message.visitor-log": "{os} {device} پر {browser} کا استعمال کرتے ہوئے {country} سے آنے والا",
+  "message.visitors-tooltip": "آپ کی ویب سائٹ پر منفرد زائرین کی تعداد",
+  "message.visits-tooltip": "آپ کی ویب سائٹ پر کل سیشنز کی تعداد",
+  "message.page-views-tooltip": "کل صفحات کے مشاہدات",
+  "message.bounce-rate-tooltip": "ایسی وزٹس کا فیصد جو صرف ایک صفحہ دیکھ کر چھوڑ دی جاتی ہیں",
+  "message.visit-duration-tooltip": "ہر وزٹ پر آپ کی ویب سائٹ پر گزارا گیا اوسط وقت"
 }

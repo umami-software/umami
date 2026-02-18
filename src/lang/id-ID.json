@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "Pengguna telah dihapus.",
   "message.viewed-page": "Halaman dilihat",
-  "message.visitor-log": "Pengunjung dari {country} dengan {browser} di {device} {os}"
+  "message.visitor-log": "Pengunjung dari {country} dengan {browser} di {device} {os}",
+  "message.visitors-tooltip": "Jumlah pengunjung unik ke situs web Anda",
+  "message.visits-tooltip": "Total jumlah sesi di situs web Anda",
+  "message.page-views-tooltip": "Total jumlah tampilan halaman",
+  "message.bounce-rate-tooltip": "Persentase kunjungan yang meninggalkan situs setelah hanya melihat satu halaman",
+  "message.visit-duration-tooltip": "Rata-rata waktu yang dihabiskan di situs web Anda per kunjungan"
 }
