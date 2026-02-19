@@ -36,11 +36,11 @@ async function relationalQuery(
   return rawQuery(
     `
     select
-      count(*) as "pageviews",
-      count(distinct website_event.session_id) as "visitors",
-      count(distinct website_event.visit_id) as "visits",
-      count(distinct session.country) as "countries",
-      sum(case when website_event.event_type = 2 then 1 else 0 end) as "events"
+      count(*) filter (where website_event.event_type = 1) as "pageviews",
+      count(distinct website_event.session_id) filter (where website_event.event_type = 1) as "visitors",
+      count(distinct website_event.visit_id) filter (where website_event.event_type = 1) as "visits",
+      count(distinct session.country) filter (where website_event.event_type = 1) as "countries",
+      count(*) filter (where website_event.event_type = 2) as "events"
     from website_event
     ${cohortQuery}
     join session on website_event.session_id = session.session_id
@@ -67,30 +67,30 @@ async function clickhouseQuery(
     sql = `
     select
       sumIf(1, event_type = 1) as "pageviews",
-      uniq(session_id) as "visitors",
-      uniq(visit_id) as "visits",
-      uniq(country) as "countries",
-      sum(length(event_name)) as "events"
+      uniqIf(session_id, event_type = 1) as "visitors",
+      uniqIf(visit_id, event_type = 1) as "visits",
+      uniqIf(country, event_type = 1) as "countries",
+      sumIf(1, event_type = 2) as "events"
     from website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        ${filterQuery}
-    `;
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      ${filterQuery}
+  `;
   } else {
     sql = `
     select
-      sum(views) as "pageviews",
-      uniq(session_id) as "visitors",
-      uniq(visit_id) as "visits",
-      uniq(country) as "countries",
-      sum(length(event_name)) as "events"
+      sumIf(views, event_type = 1) as "pageviews",
+      uniqIf(session_id, event_type = 1) as "visitors",
+      uniqIf(visit_id, event_type = 1) as "visits",
+      uniqIf(country, event_type = 1) as "countries",
+      sumIf(1, event_type = 2) as "events"
     from website_event_stats_hourly website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        ${filterQuery}
-    `;
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      ${filterQuery}
+  `;
   }
 
   return rawQuery(sql, queryParams, FUNCTION_NAME);
