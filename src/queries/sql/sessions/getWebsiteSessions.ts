@@ -32,10 +32,26 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 
   return pagedRawQuery(
     `
+    with session_stats as (
+      select
+        session_id,
+        website_id,
+        hostname,
+        min(created_at) as "firstAt",
+        max(created_at) as "lastAt",
+        count(distinct visit_id) as "visits",
+        sum(case when event_type = 1 then 1 else 0 end) as "views"
+      from website_event
+      ${cohortQuery}
+      where website_id = {{websiteId::uuid}}
+      ${dateQuery}
+      ${filterQuery}
+      group by session_id, website_id, hostname
+    )
     select
       session.session_id as "id",
       session.website_id as "websiteId",
-      website_event.hostname,
+      session_stats.hostname,
       session.browser,
       session.os,
       session.device,
@@ -44,31 +60,17 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       session.country,
       session.region,
       session.city,
-      min(website_event.created_at) as "firstAt",
-      max(website_event.created_at) as "lastAt",
-      count(distinct website_event.visit_id) as "visits",
-      sum(case when website_event.event_type = 1 then 1 else 0 end) as "views",
-      max(website_event.created_at) as "createdAt"
-    from website_event 
-    ${cohortQuery}
-    join session on session.session_id = website_event.session_id
-      and session.website_id = website_event.website_id
-    where website_event.website_id = {{websiteId::uuid}}
-    ${dateQuery}
-    ${filterQuery}
+      session_stats."firstAt",
+      session_stats."lastAt",
+      session_stats."visits",
+      session_stats."views",
+      session_stats."lastAt" as "createdAt"
+    from session_stats
+    join session on session.session_id = session_stats.session_id
+      and session.website_id = session_stats.website_id
+    where 1 = 1
     ${searchQuery}
-    group by session.session_id, 
-      session.website_id, 
-      website_event.hostname, 
-      session.browser, 
-      session.os, 
-      session.device, 
-      session.screen, 
-      session.language, 
-      session.country, 
-      session.region, 
-      session.city
-    order by max(website_event.created_at) desc
+    order by session_stats."lastAt" desc
     `,
     queryParams,
     filters,

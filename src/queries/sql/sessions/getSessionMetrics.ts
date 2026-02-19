@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { EVENT_COLUMNS, EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
@@ -44,6 +44,37 @@ async function relationalQuery(
     column = `lower(left(${type}, 2))`;
   }
 
+  // Optimization: use subquery to get distinct sessions before joining
+  if (!Object.keys(filters).some(key => EVENT_COLUMNS.includes(key))) {
+    return rawQuery(
+      `
+      with unique_sessions as (
+        select distinct session_id, website_id
+        from website_event
+        where website_id = {{websiteId::uuid}}
+          and created_at between {{startDate}} and {{endDate}}
+          and event_type = {{eventType}}
+      )
+      select 
+        ${column} x,
+        count(*) y
+        ${includeCountry ? ', country' : ''}
+      from unique_sessions
+      join session on session.session_id = unique_sessions.session_id
+        and session.website_id = unique_sessions.website_id
+      where 1 = 1
+      ${filterQuery}
+      group by 1 
+      ${includeCountry ? ', 3' : ''}
+      order by 2 desc
+      limit ${limit}
+      offset ${offset}
+      `,
+      { ...queryParams, ...parameters, eventType: EVENT_TYPE.pageView },
+      FUNCTION_NAME,
+    );
+  }
+
   return rawQuery(
     `
     select 
@@ -55,7 +86,7 @@ async function relationalQuery(
     ${joinSessionQuery}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
-      and website_event.event_type != 2
+      and website_event.event_type = {{eventType}}
     ${filterQuery}
     group by 1 
     ${includeCountry ? ', 3' : ''}
@@ -63,7 +94,7 @@ async function relationalQuery(
     limit ${limit}
     offset ${offset}
     `,
-    { ...queryParams, ...parameters },
+    { ...queryParams, ...parameters, eventType: EVENT_TYPE.pageView },
     FUNCTION_NAME,
   );
 }
