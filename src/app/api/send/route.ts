@@ -12,6 +12,7 @@ import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
+import { emitSessionCreated } from '@/lib/session-events';
 import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
 
 interface Cache {
@@ -151,6 +152,7 @@ export async function POST(request: Request) {
         distinctId: id,
         createdAt,
       });
+      await emitSessionCreated(sourceId, sessionId);
     }
 
     // Visit info
