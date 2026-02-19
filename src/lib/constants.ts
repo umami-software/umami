@@ -287,6 +287,7 @@ export const SEARCH_DOMAINS = [
   'duckduckgo.com',
   'ecosia.org',
   'google.',
+  'kagi.com',
   'msn.com',
   'perplexity.ai',
   'search.brave.com',
