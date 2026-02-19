@@ -38,10 +38,11 @@ export function WebsiteDateFilter({
         updateParams({
           date: `${getDateRangeValue(websiteDateRange.startDate, websiteDateRange.endDate)}:all`,
           offset: undefined,
+          page: 1,
         }),
       );
     } else {
-      router.push(updateParams({ date, offset: undefined }));
+      router.push(updateParams({ date, offset: undefined, page: 1 }));
     }
   };
 
