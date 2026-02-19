@@ -31,7 +31,7 @@ export function useNavigation() {
         params === false ? {} : { ...queryParams, ...params },
       );
     },
-    [pathname, teamId, queryParams],
+    [teamId, queryParams],
   );
 
   useEffect(() => {
