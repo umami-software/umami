@@ -72,7 +72,7 @@ export function MetricsExpandedTable({
         <Column overflow="auto" minHeight="0" height="100%" paddingRight="3">
           {items && (
             <DataTable data={items}>
-              <DataColumn id="label" label={title} width="minmax(200px, 2fr)" align="start">
+              <DataColumn id="label" label={title} width="minmax(200px, 2fr)" align="start" style={{ position: 'sticky', top: 0, backgroundColor: 'var(--base-color-2)' }}>
                 {row => (
                   <Row overflow="hidden">
                     <MetricLabel type={type} data={row} />
