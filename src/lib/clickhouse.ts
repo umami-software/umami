@@ -178,7 +178,10 @@ function getQueryParams(filters: Record<string, any>) {
   return {
     ...filters,
     ...filtersObjectToArray(filters).reduce((obj, { name, column, operator, value }) => {
-      if (!column || !name || value === undefined) return obj;
+      const resolvedColumn =
+        column || (name?.startsWith('cohort_') && FILTER_COLUMNS[name.slice('cohort_'.length)]);
+
+      if (!resolvedColumn || !name || value === undefined) return obj;
 
       obj[name] = ([OPERATORS.equals, OPERATORS.notEquals] as string[]).includes(operator)
         ? Array.isArray(value)

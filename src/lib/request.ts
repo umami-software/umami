@@ -1,7 +1,7 @@
 import { startOfMonth, subMonths } from 'date-fns';
 import { z } from 'zod';
 import { checkAuth } from '@/lib/auth';
-import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS } from '@/lib/constants';
+import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import { getAllowedUnits, getMinimumUnit, maxDate, parseDateRange } from '@/lib/date';
 import { fetchAccount, fetchWebsite } from '@/lib/load';
 import { filtersArrayToObject } from '@/lib/params';
@@ -130,7 +130,7 @@ export async function getQueryFilters(
 
       cohortFilters.push({
         name: `cohort_${cohortParams.action.type}`,
-        operator: 'eq',
+        operator: OPERATORS.equals,
         value: cohortParams.action.value,
       });
 

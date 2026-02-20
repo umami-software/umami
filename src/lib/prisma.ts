@@ -182,7 +182,10 @@ function getQueryParams(filters: Record<string, any>) {
   return {
     ...filters,
     ...filtersObjectToArray(filters).reduce((obj, { name, column, operator, value }) => {
-      if (!column) return obj;
+      const resolvedColumn =
+        column || (name?.startsWith('cohort_') && FILTER_COLUMNS[name.slice('cohort_'.length)]);
+
+      if (!resolvedColumn) return obj;
 
       if (([OPERATORS.contains, OPERATORS.doesNotContain] as Operator[]).includes(operator)) {
         obj[name] = `%${value}%`;
