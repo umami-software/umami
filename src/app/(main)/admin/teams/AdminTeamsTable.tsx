@@ -10,6 +10,7 @@ import { TeamDeleteForm } from '../../teams/[teamId]/TeamDeleteForm';
 export function AdminTeamsTable({
   data = [],
   showActions = true,
+  ...props
 }: {
   data: any[];
   showActions?: boolean;
@@ -19,7 +20,7 @@ export function AdminTeamsTable({
 
   return (
     <>
-      <DataTable data={data}>
+      <DataTable data={data} {...props}>
         <DataColumn id="name" label={t(labels.name)} width="1fr">
           {(row: any) => <Link href={`/admin/teams/${row.id}`}>{row.name}</Link>}
         </DataColumn>

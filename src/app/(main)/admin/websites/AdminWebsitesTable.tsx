@@ -7,13 +7,13 @@ import { useMessages } from '@/components/hooks';
 import { Edit, Trash, Users } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
 
-export function AdminWebsitesTable({ data = [] }: { data: any[] }) {
+export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
   const { t, labels } = useMessages();
   const [deleteWebsite, setDeleteWebsite] = useState(null);
 
   return (
     <>
-      <DataTable data={data}>
+      <DataTable data={data} {...props}>
         <DataColumn id="name" label={t(labels.name)}>
           {(row: any) => (
             <Text truncate>

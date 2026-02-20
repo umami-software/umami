@@ -27,7 +27,7 @@ export interface Auth {
 export interface Filter {
   name: string;
   operator: Operator;
-  value: string;
+  value: string | string[];
   type?: string;
   column?: string;
   prefix?: string;

@@ -82,9 +82,9 @@ function mapFilter(column: string, operator: string, name: string, type: string 
 
   switch (operator) {
     case OPERATORS.equals:
-      return `${table}.${column} = ${value}`;
+      return `${table}.${column} = ANY(${value})`;
     case OPERATORS.notEquals:
-      return `${table}.${column} != ${value}`;
+      return `${table}.${column} != ALL(${value})`;
     case OPERATORS.contains:
       return `${table}.${column} ilike ${value}`;
     case OPERATORS.doesNotContain:
@@ -177,10 +177,16 @@ function getDateQuery(filters: Record<string, any>) {
 function getQueryParams(filters: Record<string, any>) {
   return {
     ...filters,
-    ...filtersObjectToArray(filters).reduce((obj, { name, operator, value }) => {
-      obj[name] = ([OPERATORS.contains, OPERATORS.doesNotContain] as Operator[]).includes(operator)
-        ? `%${value}%`
-        : value;
+    ...filtersObjectToArray(filters).reduce((obj, { name, column, operator, value }) => {
+      if (!column) return obj;
+
+      if (([OPERATORS.contains, OPERATORS.doesNotContain] as Operator[]).includes(operator)) {
+        obj[name] = `%${value}%`;
+      } else if (([OPERATORS.equals, OPERATORS.notEquals] as Operator[]).includes(operator)) {
+        obj[name] = Array.isArray(value) ? value : [value];
+      } else {
+        obj[name] = value;
+      }
 
       return obj;
     }, {}),

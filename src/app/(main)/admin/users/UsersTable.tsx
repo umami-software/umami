@@ -11,6 +11,7 @@ import { UserDeleteForm } from './UserDeleteForm';
 export function UsersTable({
   data = [],
   showActions = true,
+  ...props
 }: {
   data: any[];
   showActions?: boolean;
@@ -20,7 +21,7 @@ export function UsersTable({
 
   return (
     <>
-      <DataTable data={data}>
+      <DataTable data={data} {...props}>
         <DataColumn id="username" label={t(labels.username)} width="2fr">
           {(row: any) => <Link href={`/admin/users/${row.id}`}>{row.username}</Link>}
         </DataColumn>

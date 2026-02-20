@@ -1,10 +1,13 @@
+import { Column, Focusable, Row, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import Link from 'next/link';
+import { IconLabel } from '@/components/common/IconLabel';
 import { NavMenu } from '@/components/common/NavMenu';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { Globe, User, Users } from '@/components/icons';
+import { ArrowLeft, Globe, User, Users } from '@/components/icons';
 
 export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
   const { t, labels } = useMessages();
-  const { pathname } = useNavigation();
+  const { pathname, renderUrl } = useNavigation();
 
   const items = [
     {
@@ -37,12 +40,29 @@ export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
     ?.find(({ path }) => path && pathname.startsWith(path))?.id;
 
   return (
-    <NavMenu
-      items={items}
-      title={t(labels.admin)}
-      selectedKey={selectedKey}
-      allowMinimize={false}
-      onItemClick={onItemClick}
-    />
+    <Column gap="2">
+      <Link href={renderUrl('/boards', false)} role="button" onClick={onItemClick}>
+        <TooltipTrigger delay={0}>
+          <Focusable>
+            <Row
+              alignItems="center"
+              hover={{ backgroundColor: 'surface-sunken' }}
+              borderRadius
+              minHeight="40px"
+            >
+              <IconLabel icon={<ArrowLeft />} label={t(labels.back)} padding />
+            </Row>
+          </Focusable>
+          <Tooltip placement="right">{t(labels.back)}</Tooltip>
+        </TooltipTrigger>
+      </Link>
+      <NavMenu
+        items={items}
+        title={t(labels.admin)}
+        selectedKey={selectedKey}
+        allowMinimize={false}
+        onItemClick={onItemClick}
+      />
+    </Column>
   );
 }

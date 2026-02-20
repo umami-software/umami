@@ -79,7 +79,12 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
         )}
         {filters.map(filter => {
           const { name, label, operator, value } = filter;
-          const paramValue = isSearchOperator(operator) ? value : formatValue(value, name);
+          const paramValue = isSearchOperator(operator)
+            ? value
+            : String(value)
+                .split(',')
+                .map(v => formatValue(v, name))
+                .join(', ');
 
           return (
             <FilterItem

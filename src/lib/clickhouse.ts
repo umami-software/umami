@@ -75,9 +75,9 @@ function mapFilter(column: string, operator: string, name: string, type: string 
 
   switch (operator) {
     case OPERATORS.equals:
-      return `${column} = ${value}`;
+      return `${column} IN {${name}:Array(${type})}`;
     case OPERATORS.notEquals:
-      return `${column} != ${value}`;
+      return `${column} NOT IN {${name}:Array(${type})}`;
     case OPERATORS.contains:
       return `positionCaseInsensitive(${column}, ${value}) > 0`;
     case OPERATORS.doesNotContain:
@@ -173,10 +173,14 @@ function getDateQuery(filters: Record<string, any>) {
 function getQueryParams(filters: Record<string, any>) {
   return {
     ...filters,
-    ...filtersObjectToArray(filters).reduce((obj, { name, value }) => {
-      if (name && value !== undefined) {
-        obj[name] = value;
-      }
+    ...filtersObjectToArray(filters).reduce((obj, { name, column, operator, value }) => {
+      if (!column || !name || value === undefined) return obj;
+
+      obj[name] = ([OPERATORS.equals, OPERATORS.notEquals] as string[]).includes(operator)
+        ? Array.isArray(value)
+          ? value
+          : [value]
+        : value;
 
       return obj;
     }, {}),

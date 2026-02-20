@@ -9,10 +9,21 @@ export function parseFilterValue(param: any) {
 
     const [, operator, value] = param.match(regex) || [];
 
-    return { operator: operator || OPERATORS.equals, value: value || param };
+    const resolvedOperator = operator || OPERATORS.equals;
+    const resolvedValue = value ?? param;
+
+    if (resolvedOperator === OPERATORS.equals || resolvedOperator === OPERATORS.notEquals) {
+      return { operator: resolvedOperator, value: resolvedValue.split(',') };
+    }
+
+    return { operator: resolvedOperator, value: resolvedValue };
   }
 
-  return { operator: OPERATORS.equals, value: param };
+  if (Array.isArray(param)) {
+    return { operator: OPERATORS.equals, value: param };
+  }
+
+  return { operator: OPERATORS.equals, value: [param] };
 }
 
 export function isEqualsOperator(operator: any) {
@@ -55,7 +66,7 @@ export function filtersArrayToObject(filters: Filter[]) {
   return filters.reduce((obj, filter: Filter) => {
     const { name, operator, value } = filter;
 
-    obj[name] = `${operator}.${value}`;
+    obj[name] = `${operator}.${Array.isArray(value) ? value.join(',') : value}`;
 
     return obj;
   }, {});
