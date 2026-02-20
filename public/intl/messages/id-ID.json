@@ -51,6 +51,8 @@
     "confirm": "Konfirmasi",
     "confirm-password": "Konfirmasi kata sandi",
     "contains": "Mengandung",
+    "regex-match": "Cocok dengan ekspresi reguler",
+    "regex-not-match": "Tidak cocok dengan ekspresi reguler",
     "content": "Konten",
     "continue": "Lanjutkan",
     "conversion": "Konversi",

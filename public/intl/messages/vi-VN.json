@@ -51,6 +51,8 @@
     "confirm": "Xác nhận",
     "confirm-password": "Xác nhận mật khẩu",
     "contains": "Chứa",
+    "regex-match": "Khớp với biểu thức chính quy",
+    "regex-not-match": "Không khớp với biểu thức chính quy",
     "content": "Nội dung",
     "continue": "Tiếp tục",
     "conversion": "Chuyển đổi",

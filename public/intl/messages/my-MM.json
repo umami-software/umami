@@ -51,6 +51,8 @@
     "confirm": "အတည်ပြုသည်",
     "confirm-password": "စကားဝှက်အတည်ပြုသည်",
     "contains": "ပါဝင်သည်",
+    "regex-match": "Regex နှင့် ကိုက်ညီသည်",
+    "regex-not-match": "Regex နှင့် မကိုက်ညီပါ",
     "content": "အကြောင်းအရာ",
     "continue": "ဆက်သွားမည်",
     "conversion": "ပြောင်းလဲမှု",

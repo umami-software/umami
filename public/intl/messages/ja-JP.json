@@ -51,6 +51,8 @@
     "confirm": "確認",
     "confirm-password": "パスワード(確認)",
     "contains": "コンテンツ",
+    "regex-match": "正規表現に一致",
+    "regex-not-match": "正規表現に一致しない",
     "content": "コンテンツ",
     "continue": "続ける",
     "conversion": "コンバージョン",

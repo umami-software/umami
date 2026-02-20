@@ -51,6 +51,8 @@
     "confirm": "تأكيد",
     "confirm-password": "تأكيد كلمة المرور",
     "contains": "يحتوي على",
+    "regex-match": "يطابق التعبير النمطي",
+    "regex-not-match": "لا يطابق التعبير النمطي",
     "content": "المحتوى",
     "continue": "تابع",
     "conversion": "تحويل",

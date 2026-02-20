@@ -51,6 +51,8 @@
     "confirm": "Vahvista",
     "confirm-password": "Vahvista salasana",
     "contains": "Sisältää",
+    "regex-match": "Vastaa säännöllistä lauseketta",
+    "regex-not-match": "Ei vastaa säännöllistä lauseketta",
     "content": "Sisältö",
     "continue": "Jatka",
     "conversion": "Konversio",

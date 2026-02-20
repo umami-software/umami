@@ -51,6 +51,8 @@
     "confirm": "Bekräfta",
     "confirm-password": "Bekräfta lösenord",
     "contains": "Innehåller",
+    "regex-match": "Matchar reguljärt uttryck",
+    "regex-not-match": "Matchar inte reguljärt uttryck",
     "content": "Innehåll",
     "continue": "Fortsätt",
     "conversion": "Konvertering",

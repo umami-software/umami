@@ -51,6 +51,8 @@
     "confirm": "Onayla",
     "confirm-password": "Parolayı onayla",
     "contains": "İçeriği",
+    "regex-match": "Düzenli ifadeyle eşleşir",
+    "regex-not-match": "Düzenli ifadeyle eşleşmez",
     "content": "İçerik",
     "continue": "Devam et",
     "conversion": "Dönüşüm",

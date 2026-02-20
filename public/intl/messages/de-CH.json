@@ -51,6 +51,8 @@
     "confirm": "Bestätige",
     "confirm-password": "Passwort widerhole",
     "contains": "Enthaltet",
+    "regex-match": "Entspricht regulärem Ausdruck",
+    "regex-not-match": "Entspricht nicht regulärem Ausdruck",
     "content": "Inhalt",
     "continue": "Wiiter",
     "conversion": "Umwandlig",

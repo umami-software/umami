@@ -51,6 +51,8 @@
     "confirm": "បញ្ជាក់",
     "confirm-password": "បញ្ជាក់ពាក្យសម្ងាត់",
     "contains": "មាន",
+    "regex-match": "ត្រូវនឹងកន្សោមធម្មតា",
+    "regex-not-match": "មិនត្រូវនឹងកន្សោមធម្មតា",
     "content": "មាតិកា",
     "continue": "បន្ត",
     "conversion": "ការបម្លែង",

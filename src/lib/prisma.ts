@@ -89,6 +89,10 @@ function mapFilter(column: string, operator: string, name: string, type: string 
       return `${table}.${column} ilike ${value}`;
     case OPERATORS.doesNotContain:
       return `${table}.${column} not ilike ${value}`;
+    case OPERATORS.regex:
+      return `${table}.${column} ~ ${value}`;
+    case OPERATORS.notRegex:
+      return `${table}.${column} !~ ${value}`;
     default:
       return '';
   }

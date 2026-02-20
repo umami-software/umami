@@ -82,6 +82,10 @@ function mapFilter(column: string, operator: string, name: string, type: string 
       return `positionCaseInsensitive(${column}, ${value}) > 0`;
     case OPERATORS.doesNotContain:
       return `positionCaseInsensitive(${column}, ${value}) = 0`;
+    case OPERATORS.regex:
+      return `match(${column}, ${value})`;
+    case OPERATORS.notRegex:
+      return `not match(${column}, ${value})`;
     default:
       return '';
   }

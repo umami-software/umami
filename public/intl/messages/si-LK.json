@@ -51,6 +51,8 @@
     "confirm": "තහවුරු කරන්න",
     "confirm-password": "මුරපදය සත්‍යාපනය කරන්න",
     "contains": "අඩංගු වේ",
+    "regex-match": "Regex සමඟ ගැලපේ",
+    "regex-not-match": "Regex සමඟ නොගැලපේ",
     "content": "අන්තර්ගතය",
     "continue": "ඉදිරියට",
     "conversion": "පරිවර්තනය",

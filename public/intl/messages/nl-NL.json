@@ -51,6 +51,8 @@
     "confirm": "Bevestigen",
     "confirm-password": "Wachtwoord bevestigen",
     "contains": "Bevat",
+    "regex-match": "Komt overeen met reguliere expressie",
+    "regex-not-match": "Komt niet overeen met reguliere expressie",
     "content": "Inhoud",
     "continue": "Doorgaan",
     "conversion": "Conversie",

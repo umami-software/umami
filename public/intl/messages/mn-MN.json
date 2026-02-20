@@ -51,6 +51,8 @@
     "confirm": "Батлах",
     "confirm-password": "Шинэ нууц үгээ давтах",
     "contains": "Агуулах",
+    "regex-match": "Регекс-тэй таарна",
+    "regex-not-match": "Регекс-тэй таарахгүй",
     "content": "Агуулга",
     "continue": "Үргэлжлүүлэх",
     "conversion": "Хөрвүүлэлт",

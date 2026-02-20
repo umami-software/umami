@@ -51,6 +51,8 @@
     "confirm": "Megerősít",
     "confirm-password": "Jelszó megerősítése",
     "contains": "Tartalmazza",
+    "regex-match": "Illeszkedik a reguláris kifejezésre",
+    "regex-not-match": "Nem illeszkedik a reguláris kifejezésre",
     "content": "Tartalom",
     "continue": "Folytatás",
     "conversion": "Konverzió",

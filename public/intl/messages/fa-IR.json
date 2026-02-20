@@ -51,6 +51,8 @@
     "confirm": "تأیید",
     "confirm-password": "تأیید رمز",
     "contains": "شامل",
+    "regex-match": "با عبارت منظم مطابقت دارد",
+    "regex-not-match": "با عبارت منظم مطابقت ندارد",
     "content": "محتوا",
     "continue": "ادامه",
     "conversion": "تبدیل",

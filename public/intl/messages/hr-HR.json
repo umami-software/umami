@@ -51,6 +51,8 @@
     "confirm": "Potvrdi",
     "confirm-password": "Potvrdi lozinku",
     "contains": "Sadrži",
+    "regex-match": "Odgovara regularnom izrazu",
+    "regex-not-match": "Ne odgovara regularnom izrazu",
     "content": "Sadržaj",
     "continue": "Nastavi",
     "conversion": "Konverzija",

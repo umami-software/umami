@@ -51,6 +51,8 @@
     "confirm": "Confirmar",
     "confirm-password": "Confirmar contrasinal",
     "contains": "Contén",
+    "regex-match": "Meaitseálann sé le slonn rialta",
+    "regex-not-match": "Ní mheaitseálann sé le slonn rialta",
     "content": "Contido",
     "continue": "Continuar",
     "conversion": "Conversión",

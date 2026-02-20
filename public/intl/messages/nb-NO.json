@@ -51,6 +51,8 @@
     "confirm": "Bekreft",
     "confirm-password": "Godkjenn passord",
     "contains": "Inneholder",
+    "regex-match": "Samsvarer med regulært uttrykk",
+    "regex-not-match": "Samsvarer ikke med regulært uttrykk",
     "content": "Innhold",
     "continue": "Fortsett",
     "conversion": "Konvertering",

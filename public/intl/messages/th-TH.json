@@ -51,6 +51,8 @@
     "confirm": "ยืนยัน",
     "confirm-password": "ยืนยันรหัสผ่าน",
     "contains": "มี",
+    "regex-match": "ตรงกับนิพจน์ทั่วไป",
+    "regex-not-match": "ไม่ตรงกับนิพจน์ทั่วไป",
     "content": "เนื้อหา",
     "continue": "ดำเนินต่อ",
     "conversion": "การแปลง",

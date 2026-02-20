@@ -51,6 +51,8 @@
     "confirm": "Confirmar",
     "confirm-password": "Confirma la contrasenya",
     "contains": "Conté",
+    "regex-match": "Coincideix amb l'expressió regular",
+    "regex-not-match": "No coincideix amb l'expressió regular",
     "content": "Contingut",
     "continue": "Continuar",
     "conversion": "Conversió",

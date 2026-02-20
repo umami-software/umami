@@ -51,6 +51,8 @@
     "confirm": "पुष्टि करें",
     "confirm-password": "पासवर्ड की पुष्टि कीजिये",
     "contains": "शामिल है",
+    "regex-match": "रेगेक्स से मेल खाता है",
+    "regex-not-match": "रेगेक्स से मेल नहीं खाता",
     "content": "सामग्री",
     "continue": "जारी रखें",
     "conversion": "रूपांतरण",

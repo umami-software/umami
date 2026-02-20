@@ -51,6 +51,8 @@
     "confirm": "নিশ্চিত করুন",
     "confirm-password": "পাসওয়ার্ড নিশ্চিত করুন",
     "contains": "রয়েছে",
+    "regex-match": "রেজেক্সের সাথে মেলে",
+    "regex-not-match": "রেজেক্সের সাথে মেলে না",
     "content": "বিষয়বস্তু",
     "continue": "পরবর্তিতে",
     "conversion": "রূপান্তর",

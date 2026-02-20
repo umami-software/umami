@@ -51,6 +51,8 @@
     "confirm": "Potwierdź",
     "confirm-password": "Potwierdź hasło",
     "contains": "Zawiera",
+    "regex-match": "Pasuje do wyrażenia regularnego",
+    "regex-not-match": "Nie pasuje do wyrażenia regularnego",
     "content": "Treść",
     "continue": "Kontynuuj",
     "conversion": "Konwersja",

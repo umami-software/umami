@@ -51,6 +51,8 @@
     "confirm": "Staðfest",
     "confirm-password": "Vátta loyniorð",
     "contains": "Inniheldur",
+    "regex-match": "Samsvarar við regluligan úttrykk",
+    "regex-not-match": "Samsvarar ikki við regluligan úttrykk",
     "content": "Innihald",
     "continue": "Halt fram",
     "conversion": "Umvending",

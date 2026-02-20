@@ -51,6 +51,8 @@
     "confirm": "உறுதிப்படுத்து",
     "confirm-password": "கடவுச்சொல்லை உறுதிப்படுத்தவும்",
     "contains": "உள்ளடக்கியது",
+    "regex-match": "Regex உடன் பொருந்துகிறது",
+    "regex-not-match": "Regex உடன் பொருந்தாது",
     "content": "உள்ளடக்கம்",
     "continue": "தொடர்",
     "conversion": "மாற்றம்",

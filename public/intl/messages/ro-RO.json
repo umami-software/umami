@@ -51,6 +51,8 @@
     "confirm": "Confirmă",
     "confirm-password": "Confirmare parolă",
     "contains": "Conține",
+    "regex-match": "Se potrivește cu expresia regulată",
+    "regex-not-match": "Nu se potrivește cu expresia regulată",
     "content": "Conținut",
     "continue": "Continuă",
     "conversion": "Conversie",

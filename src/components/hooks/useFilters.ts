@@ -14,6 +14,8 @@ export function useFilters() {
     { name: 'neq', type: 'string', label: t(labels.isNot) },
     { name: 'c', type: 'string', label: t(labels.contains) },
     { name: 'dnc', type: 'string', label: t(labels.doesNotContain) },
+    { name: 're', type: 'string', label: t(labels.regexMatch) },
+    { name: 'nre', type: 'string', label: t(labels.regexNotMatch) },
     { name: 'i', type: 'array', label: t(labels.includes) },
     { name: 'dni', type: 'array', label: t(labels.doesNotInclude) },
     { name: 't', type: 'boolean', label: t(labels.isTrue) },
@@ -36,6 +38,8 @@ export function useFilters() {
     [OPERATORS.notSet]: t(labels.isNotSet),
     [OPERATORS.contains]: t(labels.contains),
     [OPERATORS.doesNotContain]: t(labels.doesNotContain),
+    [OPERATORS.regex]: t(labels.regexMatch),
+    [OPERATORS.notRegex]: t(labels.regexNotMatch),
     [OPERATORS.true]: t(labels.true),
     [OPERATORS.false]: t(labels.false),
     [OPERATORS.greaterThan]: t(labels.greaterThan),
@@ -47,7 +51,14 @@ export function useFilters() {
   };
 
   const typeFilters = {
-    string: [OPERATORS.equals, OPERATORS.notEquals, OPERATORS.contains, OPERATORS.doesNotContain],
+    string: [
+      OPERATORS.equals,
+      OPERATORS.notEquals,
+      OPERATORS.contains,
+      OPERATORS.doesNotContain,
+      OPERATORS.regex,
+      OPERATORS.notRegex,
+    ],
     array: [OPERATORS.contains, OPERATORS.doesNotContain],
     boolean: [OPERATORS.true, OPERATORS.false],
     number: [

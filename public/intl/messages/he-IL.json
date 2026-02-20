@@ -51,6 +51,8 @@
     "confirm": "אשר",
     "confirm-password": "אישור סיסמה",
     "contains": "מכיל",
+    "regex-match": "תואם ביטוי רגולרי",
+    "regex-not-match": "לא תואם ביטוי רגולרי",
     "content": "תוכן",
     "continue": "המשך",
     "conversion": "המרה",

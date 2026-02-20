@@ -51,6 +51,8 @@
     "confirm": "Потвърди",
     "confirm-password": "Потвърди парола",
     "contains": "Съдържа",
+    "regex-match": "Съвпада с регулярен израз",
+    "regex-not-match": "Не съвпада с регулярен израз",
     "content": "Съдържание",
     "continue": "Продължи",
     "conversion": "Конверсия",

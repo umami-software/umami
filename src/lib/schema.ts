@@ -143,6 +143,8 @@ export const operatorParam = z.enum([
   'ns',
   'c',
   'dnc',
+  're',
+  'nre',
   't',
   'f',
   'gt',

@@ -51,6 +51,8 @@
     "confirm": "تصدیق کریں",
     "confirm-password": "پاس ورڈ کی تصدیق کریں",
     "contains": "شامل ہے",
+    "regex-match": "ریجیکس سے مطابقت رکھتا ہے",
+    "regex-not-match": "ریجیکس سے مطابقت نہیں رکھتا",
     "content": "مواد",
     "continue": "جاری رکھیں",
     "conversion": "تبدیلی",

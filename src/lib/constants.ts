@@ -129,6 +129,8 @@ export const OPERATORS = {
   notSet: 'ns',
   contains: 'c',
   doesNotContain: 'dnc',
+  regex: 're',
+  notRegex: 'nre',
   true: 't',
   false: 'f',
   greaterThan: 'gt',

@@ -51,6 +51,8 @@
     "confirm": "確認",
     "confirm-password": "確認密碼",
     "contains": "包含",
+    "regex-match": "符合正則表達式",
+    "regex-not-match": "不符合正則表達式",
     "content": "內容",
     "continue": "繼續",
     "conversion": "轉換",

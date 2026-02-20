@@ -51,6 +51,8 @@
     "confirm": "Potvrdiť",
     "confirm-password": "Potvrdiť heslo",
     "contains": "Obsahuje",
+    "regex-match": "Zodpovedá regulárnemu výrazu",
+    "regex-not-match": "Nezodpovedá regulárnemu výrazu",
     "content": "Obsah",
     "continue": "Pokračovať",
     "conversion": "Konverzia",

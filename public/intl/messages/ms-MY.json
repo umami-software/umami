@@ -51,6 +51,8 @@
     "confirm": "Sahkan",
     "confirm-password": "Sahkan kata laluan",
     "contains": "Mengandungi",
+    "regex-match": "Sepadan dengan ungkapan biasa",
+    "regex-not-match": "Tidak sepadan dengan ungkapan biasa",
     "content": "Kandungan",
     "continue": "Teruskan",
     "conversion": "Penukaran",

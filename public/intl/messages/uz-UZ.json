@@ -51,6 +51,8 @@
     "confirm": "Tasdiqlash",
     "confirm-password": "Parolni tasdiqlash",
     "contains": "Oʻz ichiga oladi",
+    "regex-match": "Muntazam ifodaga mos keladi",
+    "regex-not-match": "Muntazam ifodaga mos kelmaydi",
     "content": "Kontent",
     "continue": "Davom etish",
     "conversion": "Konversiya",

@@ -31,7 +31,12 @@ export function isEqualsOperator(operator: any) {
 }
 
 export function isSearchOperator(operator: any) {
-  return [OPERATORS.contains, OPERATORS.doesNotContain].includes(operator);
+  return [
+    OPERATORS.contains,
+    OPERATORS.doesNotContain,
+    OPERATORS.regex,
+    OPERATORS.notRegex,
+  ].includes(operator);
 }
 
 export function filtersObjectToArray(filters: QueryFilters, options: QueryOptions = {}): Filter[] {

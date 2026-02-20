@@ -51,6 +51,8 @@
     "confirm": "확인",
     "confirm-password": "비밀번호 확인",
     "contains": "포함",
+    "regex-match": "정규식과 일치",
+    "regex-not-match": "정규식과 일치하지 않음",
     "content": "콘텐츠",
     "continue": "계속",
     "conversion": "전환",

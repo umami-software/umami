@@ -198,6 +198,8 @@ export const labels: Record<string, string> = {
   lessThanEquals: 'label.less-than-equals',
   contains: 'label.contains',
   doesNotContain: 'label.does-not-contain',
+  regexMatch: 'label.regex-match',
+  regexNotMatch: 'label.regex-not-match',
   includes: 'label.includes',
   doesNotInclude: 'label.does-not-include',
   before: 'label.before',

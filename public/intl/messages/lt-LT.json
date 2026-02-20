@@ -51,6 +51,8 @@
     "confirm": "Patvirtinti",
     "confirm-password": "Patvirtinti slaptažodį",
     "contains": "Turi",
+    "regex-match": "Atitinka reguliariąją išraišką",
+    "regex-not-match": "Neatitinka reguliariosios išraiškos",
     "content": "Turinys",
     "continue": "Tęsti",
     "conversion": "Konversija",
