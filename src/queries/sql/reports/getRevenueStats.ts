@@ -2,17 +2,16 @@ import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
+import type { RevenuParameters } from './getRevenue';
 
-export interface RevenuParameters {
-  startDate: Date;
-  endDate: Date;
-  unit: string;
-  timezone: string;
-  currency: string;
-  compare?: string;
+export interface RevenueStatsResult {
+  sum: number;
+  count: number;
+  average: number;
+  unique_count: number;
 }
 
-export async function getRevenue(
+export async function getRevenueStats(
   ...args: [websiteId: string, parameters: RevenuParameters, filters: QueryFilters]
 ) {
   return runQuery({
@@ -25,9 +24,9 @@ async function relationalQuery(
   websiteId: string,
   parameters: RevenuParameters,
   filters: QueryFilters,
-) {
-  const { startDate, endDate, unit = 'day', timezone = 'utc', currency } = parameters;
-  const { getDateSQL, rawQuery, parseFilters } = prisma;
+): Promise<RevenueStatsResult> {
+  const { startDate, endDate, currency } = parameters;
+  const { rawQuery, parseFilters } = prisma;
   const { queryParams, filterQuery, cohortQuery, joinSessionQuery } = parseFilters({
     ...filters,
     websiteId,
@@ -48,13 +47,12 @@ async function relationalQuery(
           and website_event.event_id = revenue.event_id`
       : '';
 
-  const chart = await rawQuery(
+  const total = await rawQuery(
     `
     select
-      revenue.event_name x,
-      ${getDateSQL('revenue.created_at', unit, timezone)} t,
-      sum(revenue.revenue) y,
-      count(revenue.event_id) count
+      sum(revenue.revenue) as sum,
+      count(distinct revenue.event_id) as count,
+      count(distinct revenue.session_id) as unique_count
     from revenue
     ${joinQuery}
     ${cohortQuery}
@@ -63,22 +61,22 @@ async function relationalQuery(
       and revenue.created_at between {{startDate}} and {{endDate}}
       and upper(revenue.currency) = {{currency}}
       ${filterQuery}
-    group by  x, t
-    order by t
-    `,
+  `,
     queryParams,
-  );
+  ).then(result => result?.[0]);
 
-  return { chart };
+  total.average = total.count > 0 ? Number(total.sum) / Number(total.count) : 0;
+
+  return total;
 }
 
 async function clickhouseQuery(
   websiteId: string,
   parameters: RevenuParameters,
   filters: QueryFilters,
-) {
-  const { startDate, endDate, unit = 'day', timezone = 'utc', currency } = parameters;
-  const { getDateSQL, rawQuery, parseFilters } = clickhouse;
+): Promise<RevenueStatsResult> {
+  const { startDate, endDate, currency } = parameters;
+  const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
@@ -99,13 +97,12 @@ async function clickhouseQuery(
       and website_event.event_id = website_revenue.event_id`
     : '';
 
-  const chart = await rawQuery<{ x: string; t: string; y: number; count: number }[]>(
+  const total = await rawQuery<{ sum: number; count: number; unique_count: number }>(
     `
     select
-      website_revenue.event_name x,
-      ${getDateSQL('website_revenue.created_at', unit, timezone)} t,
-      sum(website_revenue.revenue) y,
-      count(website_revenue.event_id) count
+      sum(website_revenue.revenue) as sum,
+      uniqExact(website_revenue.event_id) as count,
+      uniqExact(website_revenue.session_id) as unique_count
     from website_revenue
     ${joinQuery}
     ${cohortQuery}
@@ -113,11 +110,11 @@ async function clickhouseQuery(
       and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and upper(website_revenue.currency) = {currency:String}
       ${filterQuery}
-    group by  x, t
-    order by t
     `,
     queryParams,
-  );
+  ).then(result => result?.[0]);
 
-  return { chart };
+  total.average = total.count > 0 ? total.sum / total.count : 0;
+
+  return total;
 }

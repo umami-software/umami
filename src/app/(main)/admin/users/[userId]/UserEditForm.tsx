@@ -12,7 +12,7 @@ import { useLoginQuery, useMessages, useUpdateQuery, useUser } from '@/component
 import { ROLES } from '@/lib/constants';
 
 export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () => void }) {
-  const { t, labels, messages, getMessage } = useMessages();
+  const { t, labels, messages, getErrorMessage } = useMessages();
   const user = useUser();
   const { user: login } = useLoginQuery();
 
@@ -30,7 +30,7 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={getMessage(error?.code)} values={user}>
+    <Form onSubmit={handleSubmit} error={getErrorMessage(error)} values={user}>
       <FormField name="username" label={t(labels.username)}>
         <TextField data-test="input-username" />
       </FormField>

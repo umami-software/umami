@@ -229,6 +229,7 @@ export const revenueReportSchema = z.object({
     unit: unitParam.optional(),
     timezone: timezoneParam.optional(),
     currency: z.string(),
+    compare: z.enum(['prev', 'yoy']).optional(),
   }),
 });
 
