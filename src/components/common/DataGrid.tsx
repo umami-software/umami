@@ -56,7 +56,7 @@ export function DataGrid({
     (page: number) => {
       router.push(updateParams({ search, page }));
     },
-    [search],
+    [search, updateParams],
   );
 
   const child = data ? (typeof children === 'function' ? children(data) : children) : null;
