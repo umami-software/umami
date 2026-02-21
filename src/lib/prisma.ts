@@ -74,15 +74,25 @@ function getSearchSQL(column: string, param: string = 'search'): string {
 function mapFilter(column: string, operator: string, name: string, type: string = '') {
   const value = `{{${name}${type ? `::${type}` : ''}}}`;
 
+  if (name.startsWith('cohort_')) {
+    name = name.slice('cohort_'.length);
+  }
+
+  const table = SESSION_COLUMNS.includes(name) ? 'session' : 'website_event';
+
   switch (operator) {
     case OPERATORS.equals:
-      return `${column} = ${value}`;
+      return `${table}.${column} = ANY(${value})`;
     case OPERATORS.notEquals:
-      return `${column} != ${value}`;
+      return `${table}.${column} != ALL(${value})`;
     case OPERATORS.contains:
-      return `${column} ilike ${value}`;
+      return `${table}.${column} ilike ${value}`;
     case OPERATORS.doesNotContain:
-      return `${column} not ilike ${value}`;
+      return `${table}.${column} not ilike ${value}`;
+    case OPERATORS.regex:
+      return `${table}.${column} ~ ${value}`;
+    case OPERATORS.notRegex:
+      return `${table}.${column} !~ ${value}`;
     default:
       return '';
   }
@@ -102,7 +112,7 @@ function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}
 
         if (name === 'referrer') {
           arr.push(
-            `and (website_event.referrer_domain != website_event.hostname or website_event.referrer_domain is null)`,
+            `and (website_event.referrer_domain != regexp_replace(website_event.hostname, '^www.', '') or website_event.referrer_domain is null)`,
           );
         }
       }
@@ -135,6 +145,25 @@ function getCohortQuery(filters: QueryFilters = {}) {
     `;
 }
 
+function getExcludeBounceQuery(filters: Record<string, any>) {
+  if (!filters.excludeBounce === true) {
+    return '';
+  }
+
+  return `join
+    (select distinct session_id, visit_id
+    from website_event
+    where website_id = {{websiteId}}
+      and created_at between {{startDate}} and {{endDate}}
+      and event_type = 1
+    group by session_id, visit_id
+    having count(*) > 1
+    ) excludeBounce
+    on excludeBounce.session_id = website_event.session_id
+      and excludeBounce.visit_id = website_event.visit_id
+    `;
+}
+
 function getDateQuery(filters: Record<string, any>) {
   const { startDate, endDate } = filters;
 
@@ -152,10 +181,19 @@ function getDateQuery(filters: Record<string, any>) {
 function getQueryParams(filters: Record<string, any>) {
   return {
     ...filters,
-    ...filtersObjectToArray(filters).reduce((obj, { name, operator, value }) => {
-      obj[name] = ([OPERATORS.contains, OPERATORS.doesNotContain] as Operator[]).includes(operator)
-        ? `%${value}%`
-        : value;
+    ...filtersObjectToArray(filters).reduce((obj, { name, column, operator, value }) => {
+      const resolvedColumn =
+        column || (name?.startsWith('cohort_') && FILTER_COLUMNS[name.slice('cohort_'.length)]);
+
+      if (!resolvedColumn) return obj;
+
+      if (([OPERATORS.contains, OPERATORS.doesNotContain] as Operator[]).includes(operator)) {
+        obj[name] = `%${value}%`;
+      } else if (([OPERATORS.equals, OPERATORS.notEquals] as Operator[]).includes(operator)) {
+        obj[name] = Array.isArray(value) ? value : [value];
+      } else {
+        obj[name] = value;
+      }
 
       return obj;
     }, {}),
@@ -180,6 +218,7 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
     filterQuery: getFilterQuery(filters, options),
     queryParams: getQueryParams(filters),
     cohortQuery: getCohortQuery(cohortFilters),
+    excludeBounceQuery: getExcludeBounceQuery(filters),
   };
 }
 

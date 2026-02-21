@@ -14,7 +14,7 @@ export interface FilterLinkProps extends HTMLAttributes<HTMLDivElement> {
 
 export function FilterLink({ type, value, label, externalUrl, icon }: FilterLinkProps) {
   const [showLink, setShowLink] = useState(false);
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { updateParams, query } = useNavigation();
   const active = query[type] !== undefined;
   const selected = query[type] === value;
@@ -29,7 +29,7 @@ export function FilterLink({ type, value, label, externalUrl, icon }: FilterLink
       onMouseOut={() => setShowLink(false)}
     >
       {icon}
-      {!value && `(${label || formatMessage(labels.unknown)})`}
+      {!value && `(${label || t(labels.unknown)})`}
       {value && (
         <Text title={label || value} truncate>
           <Link href={updateParams({ [type]: `eq.${value}` })} replace>

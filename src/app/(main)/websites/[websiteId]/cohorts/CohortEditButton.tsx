@@ -13,15 +13,10 @@ export function CohortEditButton({
   websiteId: string;
   filters: Filter[];
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   return (
-    <DialogButton
-      icon={<Edit />}
-      variant="quiet"
-      title={formatMessage(labels.cohort)}
-      width="800px"
-    >
+    <DialogButton icon={<Edit />} variant="quiet" title={t(labels.cohort)} width="800px">
       {({ close }) => {
         return (
           <CohortEditForm

@@ -25,7 +25,7 @@ export const MetricCard = ({
   showChange = false,
 }: MetricCardProps) => {
   const diff = value - change;
-  const pct = ((value - diff) / diff) * 100;
+  const pct = diff !== 0 ? ((value - diff) / diff) * 100 : value !== 0 ? 100 : 0;
   const props = useSpring({ x: Number(value) || 0, from: { x: 0 } });
   const changeProps = useSpring({ x: Number(pct) || 0, from: { x: 0 } });
 
@@ -34,16 +34,17 @@ export const MetricCard = ({
       justifyContent="center"
       paddingX="6"
       paddingY="4"
-      borderRadius="3"
-      backgroundColor
+      borderRadius
+      backgroundColor="surface-base"
       border
+      gap="4"
     >
       {showLabel && (
         <Text weight="bold" wrap="nowrap">
           {label}
         </Text>
       )}
-      <Text size="8" weight="bold" wrap="nowrap">
+      <Text size="4xl" weight="bold" wrap="nowrap">
         <AnimatedDiv title={value?.toString()}>{props?.x?.to(x => formatValue(x))}</AnimatedDiv>
       </Text>
       {showChange && (

@@ -8,6 +8,9 @@ export function useNavigation() {
   const searchParams = useSearchParams();
   const [, teamId] = pathname.match(/\/teams\/([a-f0-9-]+)/) || [];
   const [, websiteId] = pathname.match(/\/websites\/([a-f0-9-]+)/) || [];
+  const [, linkId] = pathname.match(/\/links\/([a-f0-9-]+)/) || [];
+  const [, pixelId] = pathname.match(/\/pixels\/([a-f0-9-]+)/) || [];
+  const [, boardId] = pathname.match(/\/boards\/([a-f0-9-]+)/) || [];
   const [queryParams, setQueryParams] = useState(Object.fromEntries(searchParams));
 
   const updateParams = useCallback(
@@ -45,6 +48,9 @@ export function useNavigation() {
     query: queryParams,
     teamId,
     websiteId,
+    linkId,
+    pixelId,
+    boardId,
     updateParams,
     replaceParams,
     renderUrl,

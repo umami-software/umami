@@ -31,7 +31,7 @@ export function CohortEditForm({
   onClose?: () => void;
 }) {
   const { data } = useWebsiteCohortQuery(websiteId, cohortId);
-  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
+  const { t, labels, messages, getErrorMessage } = useMessages();
 
   const { mutateAsync, error, isPending, touch, toast } = useUpdateQuery(
     `/websites/${websiteId}/segments${cohortId ? `/${cohortId}` : ''}`,
@@ -43,7 +43,7 @@ export function CohortEditForm({
   const handleSubmit = async (formData: any) => {
     await mutateAsync(formData, {
       onSuccess: async () => {
-        toast(formatMessage(messages.saved));
+        toast(t(messages.saved));
         touch('cohorts');
         onSave?.();
         onClose?.();
@@ -70,29 +70,22 @@ export function CohortEditForm({
 
         return (
           <>
-            <FormField
-              name="name"
-              label={formatMessage(labels.name)}
-              rules={{ required: formatMessage(labels.required) }}
-            >
+            <FormField name="name" label={t(labels.name)} rules={{ required: t(labels.required) }}>
               <TextField autoFocus />
             </FormField>
 
             <Column>
-              <Label>{formatMessage(labels.action)}</Label>
-              <Grid columns={{ xs: '1fr', md: '1fr 1fr' }} gap>
+              <Label>{t(labels.action)}</Label>
+              <Grid columns={{ base: '1fr', md: '1fr 1fr' }} gap>
                 <Column>
-                  <FormField
-                    name="parameters.action.type"
-                    rules={{ required: formatMessage(labels.required) }}
-                  >
+                  <FormField name="parameters.action.type" rules={{ required: t(labels.required) }}>
                     <ActionSelect />
                   </FormField>
                 </Column>
                 <Column>
                   <FormField
                     name="parameters.action.value"
-                    rules={{ required: formatMessage(labels.required) }}
+                    rules={{ required: t(labels.required) }}
                   >
                     {({ field }) => {
                       return <LookupField websiteId={websiteId} type={type} {...field} />;
@@ -103,17 +96,14 @@ export function CohortEditForm({
             </Column>
 
             <Column width="260px">
-              <Label>{formatMessage(labels.dateRange)}</Label>
-              <FormField
-                name="parameters.dateRange"
-                rules={{ required: formatMessage(labels.required) }}
-              >
+              <Label>{t(labels.dateRange)}</Label>
+              <FormField name="parameters.dateRange" rules={{ required: t(labels.required) }}>
                 <DateFilter placement="bottom start" />
               </FormField>
             </Column>
 
             <Column>
-              <Label>{formatMessage(labels.filters)}</Label>
+              <Label>{t(labels.filters)}</Label>
               <FormField name="parameters.filters">
                 <FieldFilters websiteId={websiteId} exclude={['path', 'event']} />
               </FormField>
@@ -121,10 +111,10 @@ export function CohortEditForm({
 
             <FormButtons>
               <Button isDisabled={isPending} onPress={onClose}>
-                {formatMessage(labels.cancel)}
+                {t(labels.cancel)}
               </Button>
               <FormSubmitButton variant="primary" data-test="button-submit" isDisabled={isPending}>
-                {formatMessage(labels.save)}
+                {t(labels.save)}
               </FormSubmitButton>
             </FormButtons>
           </>

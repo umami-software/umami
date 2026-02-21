@@ -13,7 +13,7 @@ export function PixelMetricsBar({
   compareMode?: boolean;
 }) {
   const { isAllTime } = useDateRange();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { data, isLoading, isFetching, error } = useWebsiteStatsQuery(pixelId);
 
   const { pageviews, visitors, visits, comparison } = data || {};
@@ -22,19 +22,19 @@ export function PixelMetricsBar({
     ? [
         {
           value: visitors,
-          label: formatMessage(labels.visitors),
+          label: t(labels.visitors),
           change: visitors - comparison.visitors,
           formatValue: formatLongNumber,
         },
         {
           value: visits,
-          label: formatMessage(labels.visits),
+          label: t(labels.visits),
           change: visits - comparison.visits,
           formatValue: formatLongNumber,
         },
         {
           value: pageviews,
-          label: formatMessage(labels.views),
+          label: t(labels.views),
           change: pageviews - comparison.pageviews,
           formatValue: formatLongNumber,
         },

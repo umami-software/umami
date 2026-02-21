@@ -1,2222 +1,390 @@
 {
-  "label.access-code": [
-    {
-      "type": 0,
-      "value": "Pääsykoodi"
-    }
-  ],
-  "label.actions": [
-    {
-      "type": 0,
-      "value": "Toiminnat"
-    }
-  ],
-  "label.activity": [
-    {
-      "type": 0,
-      "value": "Toimintaloki"
-    }
-  ],
-  "label.add": [
-    {
-      "type": 0,
-      "value": "Lisää"
-    }
-  ],
-  "label.add-board": [
-    {
-      "type": 0,
-      "value": "Lisää taulu"
-    }
-  ],
-  "label.add-description": [
-    {
-      "type": 0,
-      "value": "Lisää kuvaus"
-    }
-  ],
-  "label.add-member": [
-    {
-      "type": 0,
-      "value": "Lisää jäsen"
-    }
-  ],
-  "label.add-step": [
-    {
-      "type": 0,
-      "value": "Lisää vaihe"
-    }
-  ],
-  "label.add-website": [
-    {
-      "type": 0,
-      "value": "Lisää verkkosivu"
-    }
-  ],
-  "label.admin": [
-    {
-      "type": 0,
-      "value": "Järjestelmänvalvoja"
-    }
-  ],
-  "label.affiliate": [
-    {
-      "type": 0,
-      "value": "Kumppani"
-    }
-  ],
-  "label.after": [
-    {
-      "type": 0,
-      "value": "Jälkeen"
-    }
-  ],
-  "label.all": [
-    {
-      "type": 0,
-      "value": "Kaikki"
-    }
-  ],
-  "label.all-time": [
-    {
-      "type": 0,
-      "value": "Alusta lähtien"
-    }
-  ],
-  "label.analytics": [
-    {
-      "type": 0,
-      "value": "Analytiikka"
-    }
-  ],
-  "label.apply": [
-    {
-      "type": 0,
-      "value": "Käytä"
-    }
-  ],
-  "label.attribution": [
-    {
-      "type": 0,
-      "value": "Attribuutio"
-    }
-  ],
-  "label.attribution-description": [
-    {
-      "type": 0,
-      "value": "Katso, miten käyttäjät ovat vuorovaikutuksessa markkinointisi kanssa ja mikä johtaa konversioihin."
-    }
-  ],
-  "label.average": [
-    {
-      "type": 0,
-      "value": "Keskiarvo"
-    }
-  ],
-  "label.back": [
-    {
-      "type": 0,
-      "value": "Takaisin"
-    }
-  ],
-  "label.before": [
-    {
-      "type": 0,
-      "value": "Ennen"
-    }
-  ],
-  "label.boards": [
-    {
-      "type": 0,
-      "value": "Taulut"
-    }
-  ],
-  "label.bounce-rate": [
-    {
-      "type": 0,
-      "value": "Välitön poistuminen"
-    }
-  ],
-  "label.breakdown": [
-    {
-      "type": 0,
-      "value": "Erittele"
-    }
-  ],
-  "label.browser": [
-    {
-      "type": 0,
-      "value": "Selain"
-    }
-  ],
-  "label.browsers": [
-    {
-      "type": 0,
-      "value": "Selaimet"
-    }
-  ],
-  "label.campaigns": [
-    {
-      "type": 0,
-      "value": "Kampanjat"
-    }
-  ],
-  "label.cancel": [
-    {
-      "type": 0,
-      "value": "Peruuta"
-    }
-  ],
-  "label.change-password": [
-    {
-      "type": 0,
-      "value": "Vaihda salasana"
-    }
-  ],
-  "label.channels": [
-    {
-      "type": 0,
-      "value": "Kanavat"
-    }
-  ],
-  "label.cities": [
-    {
-      "type": 0,
-      "value": "Kaupungit"
-    }
-  ],
-  "label.city": [
-    {
-      "type": 0,
-      "value": "Kaupunki"
-    }
-  ],
-  "label.clear-all": [
-    {
-      "type": 0,
-      "value": "Tyhjennä kaikki"
-    }
-  ],
-  "label.cohort": [
-    {
-      "type": 0,
-      "value": "Kohortti"
-    }
-  ],
-  "label.compare": [
-    {
-      "type": 0,
-      "value": "Vertaa"
-    }
-  ],
-  "label.compare-dates": [
-    {
-      "type": 0,
-      "value": "Vertaa päivämääriä"
-    }
-  ],
-  "label.confirm": [
-    {
-      "type": 0,
-      "value": "Vahvista"
-    }
-  ],
-  "label.confirm-password": [
-    {
-      "type": 0,
-      "value": "Vahvista salasana"
-    }
-  ],
-  "label.contains": [
-    {
-      "type": 0,
-      "value": "Contains"
-    }
-  ],
-  "label.content": [
-    {
-      "type": 0,
-      "value": "Sisältö"
-    }
-  ],
-  "label.continue": [
-    {
-      "type": 0,
-      "value": "Jatka"
-    }
-  ],
-  "label.conversion": [
-    {
-      "type": 0,
-      "value": "Konversio"
-    }
-  ],
-  "label.conversion-rate": [
-    {
-      "type": 0,
-      "value": "Konversioprosentti"
-    }
-  ],
-  "label.conversion-step": [
-    {
-      "type": 0,
-      "value": "Konversiovaihe"
-    }
-  ],
-  "label.count": [
-    {
-      "type": 0,
-      "value": "Lukumäärä"
-    }
-  ],
-  "label.countries": [
-    {
-      "type": 0,
-      "value": "Maat"
-    }
-  ],
-  "label.country": [
-    {
-      "type": 0,
-      "value": "Maa"
-    }
-  ],
-  "label.create": [
-    {
-      "type": 0,
-      "value": "Luo"
-    }
-  ],
-  "label.create-report": [
-    {
-      "type": 0,
-      "value": "Luo raportti"
-    }
-  ],
-  "label.create-team": [
-    {
-      "type": 0,
-      "value": "Luo tiimi"
-    }
-  ],
-  "label.create-user": [
-    {
-      "type": 0,
-      "value": "Luo käyttäjä"
-    }
-  ],
-  "label.created": [
-    {
-      "type": 0,
-      "value": "Luotu"
-    }
-  ],
-  "label.created-by": [
-    {
-      "type": 0,
-      "value": "Luonut"
-    }
-  ],
-  "label.currency": [
-    {
-      "type": 0,
-      "value": "Valuutta"
-    }
-  ],
-  "label.current": [
-    {
-      "type": 0,
-      "value": "Nykyinen"
-    }
-  ],
-  "label.current-password": [
-    {
-      "type": 0,
-      "value": "Nykyinen salasana"
-    }
-  ],
-  "label.custom-range": [
-    {
-      "type": 0,
-      "value": "Mukautettu ajanjakso"
-    }
-  ],
-  "label.dashboard": [
-    {
-      "type": 0,
-      "value": "Ohjauspaneeli"
-    }
-  ],
-  "label.data": [
-    {
-      "type": 0,
-      "value": "Data"
-    }
-  ],
-  "label.date": [
-    {
-      "type": 0,
-      "value": "Päivämäärä"
-    }
-  ],
-  "label.date-range": [
-    {
-      "type": 0,
-      "value": "Ajanjakso"
-    }
-  ],
-  "label.day": [
-    {
-      "type": 0,
-      "value": "Päivä"
-    }
-  ],
-  "label.default-date-range": [
-    {
-      "type": 0,
-      "value": "Oletusajanjakso"
-    }
-  ],
-  "label.delete": [
-    {
-      "type": 0,
-      "value": "Poista"
-    }
-  ],
-  "label.delete-report": [
-    {
-      "type": 0,
-      "value": "Poista raportti"
-    }
-  ],
-  "label.delete-team": [
-    {
-      "type": 0,
-      "value": "Poista tiimi"
-    }
-  ],
-  "label.delete-user": [
-    {
-      "type": 0,
-      "value": "Poista käyttäjä"
-    }
-  ],
-  "label.delete-website": [
-    {
-      "type": 0,
-      "value": "Poista verkkosivu"
-    }
-  ],
-  "label.description": [
-    {
-      "type": 0,
-      "value": "Kuvaus"
-    }
-  ],
-  "label.desktop": [
-    {
-      "type": 0,
-      "value": "Pöytäkone"
-    }
-  ],
-  "label.details": [
-    {
-      "type": 0,
-      "value": "Tiedot"
-    }
-  ],
-  "label.device": [
-    {
-      "type": 0,
-      "value": "Laite"
-    }
-  ],
-  "label.devices": [
-    {
-      "type": 0,
-      "value": "Laitteet"
-    }
-  ],
-  "label.direct": [
-    {
-      "type": 0,
-      "value": "Suora"
-    }
-  ],
-  "label.dismiss": [
-    {
-      "type": 0,
-      "value": "Hylkää"
-    }
-  ],
-  "label.distinct-id": [
-    {
-      "type": 0,
-      "value": "Yksilöllinen ID"
-    }
-  ],
-  "label.does-not-contain": [
-    {
-      "type": 0,
-      "value": "Ei sisällä"
-    }
-  ],
-  "label.does-not-include": [
-    {
-      "type": 0,
-      "value": "Ei sisällä"
-    }
-  ],
-  "label.doest-not-exist": [
-    {
-      "type": 0,
-      "value": "Ei ole olemassa"
-    }
-  ],
-  "label.domain": [
-    {
-      "type": 0,
-      "value": "Verkkotunnus"
-    }
-  ],
-  "label.dropoff": [
-    {
-      "type": 0,
-      "value": "Poistuminen"
-    }
-  ],
-  "label.edit": [
-    {
-      "type": 0,
-      "value": "Muokkaa"
-    }
-  ],
-  "label.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "Muokkaa ohjauspaneelia"
-    }
-  ],
-  "label.edit-member": [
-    {
-      "type": 0,
-      "value": "Muokkaa jäsentä"
-    }
-  ],
-  "label.email": [
-    {
-      "type": 0,
-      "value": "Sähköposti"
-    }
-  ],
-  "label.enable-share-url": [
-    {
-      "type": 0,
-      "value": "Ota jakamisen URL-osoite käyttöön"
-    }
-  ],
-  "label.end-step": [
-    {
-      "type": 0,
-      "value": "Loppuvaihe"
-    }
-  ],
-  "label.entry": [
-    {
-      "type": 0,
-      "value": "Tulo-URL"
-    }
-  ],
-  "label.event": [
-    {
-      "type": 0,
-      "value": "Tapahtuma"
-    }
-  ],
-  "label.event-data": [
-    {
-      "type": 0,
-      "value": "Tapahtumatiedot"
-    }
-  ],
-  "label.event-name": [
-    {
-      "type": 0,
-      "value": "Tapahtuman nimi"
-    }
-  ],
-  "label.events": [
-    {
-      "type": 0,
-      "value": "Tapahtumat"
-    }
-  ],
-  "label.exists": [
-    {
-      "type": 0,
-      "value": "On olemassa"
-    }
-  ],
-  "label.exit": [
-    {
-      "type": 0,
-      "value": "Poistumis-URL"
-    }
-  ],
-  "label.false": [
-    {
-      "type": 0,
-      "value": "Epätosi"
-    }
-  ],
-  "label.field": [
-    {
-      "type": 0,
-      "value": "Kenttä"
-    }
-  ],
-  "label.fields": [
-    {
-      "type": 0,
-      "value": "Kentät"
-    }
-  ],
-  "label.filter": [
-    {
-      "type": 0,
-      "value": "Filter"
-    }
-  ],
-  "label.filter-combined": [
-    {
-      "type": 0,
-      "value": "Yhdistetty"
-    }
-  ],
-  "label.filter-raw": [
-    {
-      "type": 0,
-      "value": "Käsittelemätön"
-    }
-  ],
-  "label.filters": [
-    {
-      "type": 0,
-      "value": "Suodattimet"
-    }
-  ],
-  "label.first-click": [
-    {
-      "type": 0,
-      "value": "Ensimmäinen klikkaus"
-    }
-  ],
-  "label.first-seen": [
-    {
-      "type": 0,
-      "value": "Ensimmäinen havainto"
-    }
-  ],
-  "label.funnel": [
-    {
-      "type": 0,
-      "value": "Suppilo"
-    }
-  ],
-  "label.funnel-description": [
-    {
-      "type": 0,
-      "value": "Ymmärrä käyttäjien konversio- ja poistumisprosentti."
-    }
-  ],
-  "label.funnels": [
-    {
-      "type": 0,
-      "value": "Suppilot"
-    }
-  ],
-  "label.goal": [
-    {
-      "type": 0,
-      "value": "Tavoite"
-    }
-  ],
-  "label.goals": [
-    {
-      "type": 0,
-      "value": "Tavoitteet"
-    }
-  ],
-  "label.goals-description": [
-    {
-      "type": 0,
-      "value": "Seuraa sivun katselujen ja tapahtumien tavoitteitasi."
-    }
-  ],
-  "label.greater-than": [
-    {
-      "type": 0,
-      "value": "Suurempi kuin"
-    }
-  ],
-  "label.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "Suurempi tai yhtä suuri kuin"
-    }
-  ],
-  "label.grouped": [
-    {
-      "type": 0,
-      "value": "Ryhmitelty"
-    }
-  ],
-  "label.hostname": [
-    {
-      "type": 0,
-      "value": "Isäntänimi"
-    }
-  ],
-  "label.includes": [
-    {
-      "type": 0,
-      "value": "Sisältää"
-    }
-  ],
-  "label.insight": [
-    {
-      "type": 0,
-      "value": "Oivallus"
-    }
-  ],
-  "label.insights": [
-    {
-      "type": 0,
-      "value": "Oivallukset"
-    }
-  ],
-  "label.insights-description": [
-    {
-      "type": 0,
-      "value": "Sukella syvemmälle tietoihisi käyttämällä segmenttejä ja suodattimia."
-    }
-  ],
-  "label.is": [
-    {
-      "type": 0,
-      "value": "On"
-    }
-  ],
-  "label.is-false": [
-    {
-      "type": 0,
-      "value": "On epätosi"
-    }
-  ],
-  "label.is-not": [
-    {
-      "type": 0,
-      "value": "Ei ole"
-    }
-  ],
-  "label.is-not-set": [
-    {
-      "type": 0,
-      "value": "Ei asetettu"
-    }
-  ],
-  "label.is-set": [
-    {
-      "type": 0,
-      "value": "Asetettu"
-    }
-  ],
-  "label.is-true": [
-    {
-      "type": 0,
-      "value": "On tosi"
-    }
-  ],
-  "label.join": [
-    {
-      "type": 0,
-      "value": "Liity"
-    }
-  ],
-  "label.join-team": [
-    {
-      "type": 0,
-      "value": "Liity tiimiin"
-    }
-  ],
-  "label.journey": [
-    {
-      "type": 0,
-      "value": "Polku"
-    }
-  ],
-  "label.journey-description": [
-    {
-      "type": 0,
-      "value": "Ymmärrä, miten käyttäjät navigoivat sivustollasi."
-    }
-  ],
-  "label.journeys": [
-    {
-      "type": 0,
-      "value": "Polut"
-    }
-  ],
-  "label.language": [
-    {
-      "type": 0,
-      "value": "Kieli"
-    }
-  ],
-  "label.languages": [
-    {
-      "type": 0,
-      "value": "Kielet"
-    }
-  ],
-  "label.laptop": [
-    {
-      "type": 0,
-      "value": "Kannettava tietokone"
-    }
-  ],
-  "label.last-click": [
-    {
-      "type": 0,
-      "value": "Viimeinen klikkaus"
-    }
-  ],
-  "label.last-days": [
-    {
-      "type": 0,
-      "value": "Viimeisimmät "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " päivää"
-    }
-  ],
-  "label.last-hours": [
-    {
-      "type": 0,
-      "value": "Viimeisimmät "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " tuntia"
-    }
-  ],
-  "label.last-months": [
-    {
-      "type": 0,
-      "value": "Viimeiset "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " kuukautta"
-    }
-  ],
-  "label.last-seen": [
-    {
-      "type": 0,
-      "value": "Viimeksi nähty"
-    }
-  ],
-  "label.leave": [
-    {
-      "type": 0,
-      "value": "Poistu"
-    }
-  ],
-  "label.leave-team": [
-    {
-      "type": 0,
-      "value": "Poistu tiimistä"
-    }
-  ],
-  "label.less-than": [
-    {
-      "type": 0,
-      "value": "Vähemmän kuin"
-    }
-  ],
-  "label.less-than-equals": [
-    {
-      "type": 0,
-      "value": "Vähemmän tai yhtä suuri kuin"
-    }
-  ],
-  "label.links": [
-    {
-      "type": 0,
-      "value": "Linkit"
-    }
-  ],
-  "label.login": [
-    {
-      "type": 0,
-      "value": "Kirjaudu sisään"
-    }
-  ],
-  "label.logout": [
-    {
-      "type": 0,
-      "value": "Kirjaudu ulos"
-    }
-  ],
-  "label.manage": [
-    {
-      "type": 0,
-      "value": "Hallinnoi"
-    }
-  ],
-  "label.manager": [
-    {
-      "type": 0,
-      "value": "Päällikkö"
-    }
-  ],
-  "label.max": [
-    {
-      "type": 0,
-      "value": "Maksimi"
-    }
-  ],
-  "label.maximize": [
-    {
-      "type": 0,
-      "value": "Laajenna"
-    }
-  ],
-  "label.medium": [
-    {
-      "type": 0,
-      "value": "Keskitaso"
-    }
-  ],
-  "label.member": [
-    {
-      "type": 0,
-      "value": "Jäsen"
-    }
-  ],
-  "label.members": [
-    {
-      "type": 0,
-      "value": "Jäsenet"
-    }
-  ],
-  "label.min": [
-    {
-      "type": 0,
-      "value": "Minimi"
-    }
-  ],
-  "label.mobile": [
-    {
-      "type": 0,
-      "value": "Puhelin"
-    }
-  ],
-  "label.model": [
-    {
-      "type": 0,
-      "value": "Model"
-    }
-  ],
-  "label.more": [
-    {
-      "type": 0,
-      "value": "Lisää"
-    }
-  ],
-  "label.my-account": [
-    {
-      "type": 0,
-      "value": "Oma tili"
-    }
-  ],
-  "label.my-websites": [
-    {
-      "type": 0,
-      "value": "Omat verkkosivut"
-    }
-  ],
-  "label.name": [
-    {
-      "type": 0,
-      "value": "Nimi"
-    }
-  ],
-  "label.new-password": [
-    {
-      "type": 0,
-      "value": "Uusi salasana"
-    }
-  ],
-  "label.none": [
-    {
-      "type": 0,
-      "value": "Ei mitään"
-    }
-  ],
-  "label.number-of-records": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "tietue"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "tietuetta"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "label.ok": [
-    {
-      "type": 0,
-      "value": "OK"
-    }
-  ],
-  "label.online": [
-    {
-      "type": 0,
-      "value": "Online"
-    }
-  ],
-  "label.organic-search": [
-    {
-      "type": 0,
-      "value": "Orgaaninen haku"
-    }
-  ],
-  "label.organic-shopping": [
-    {
-      "type": 0,
-      "value": "Orgaaninen ostaminen"
-    }
-  ],
-  "label.organic-social": [
-    {
-      "type": 0,
-      "value": "Orgaaninen sosiaalinen"
-    }
-  ],
-  "label.organic-video": [
-    {
-      "type": 0,
-      "value": "Orgaaninen video"
-    }
-  ],
-  "label.os": [
-    {
-      "type": 0,
-      "value": "OS"
-    }
-  ],
-  "label.other": [
-    {
-      "type": 0,
-      "value": "Muu"
-    }
-  ],
-  "label.overview": [
-    {
-      "type": 0,
-      "value": "Yleiskatsaus"
-    }
-  ],
-  "label.owner": [
-    {
-      "type": 0,
-      "value": "Omistaja"
-    }
-  ],
-  "label.page": [
-    {
-      "type": 0,
-      "value": "Sivu"
-    }
-  ],
-  "label.page-of": [
-    {
-      "type": 0,
-      "value": "Sivu "
-    },
-    {
-      "type": 1,
-      "value": "current"
-    },
-    {
-      "type": 0,
-      "value": " / "
-    },
-    {
-      "type": 1,
-      "value": "total"
-    }
-  ],
-  "label.page-views": [
-    {
-      "type": 0,
-      "value": "Sivun näyttökerrat"
-    }
-  ],
-  "label.pageTitle": [
-    {
-      "type": 0,
-      "value": "Sivun otsikko"
-    }
-  ],
-  "label.pages": [
-    {
-      "type": 0,
-      "value": "Sivut"
-    }
-  ],
-  "label.paid-ads": [
-    {
-      "type": 0,
-      "value": "Maksetut mainokset"
-    }
-  ],
-  "label.paid-search": [
-    {
-      "type": 0,
-      "value": "Maksettu haku"
-    }
-  ],
-  "label.paid-shopping": [
-    {
-      "type": 0,
-      "value": "Maksettu ostaminen"
-    }
-  ],
-  "label.paid-social": [
-    {
-      "type": 0,
-      "value": "Maksettu sosiaalinen"
-    }
-  ],
-  "label.paid-video": [
-    {
-      "type": 0,
-      "value": "Maksettu video"
-    }
-  ],
-  "label.password": [
-    {
-      "type": 0,
-      "value": "Salasana"
-    }
-  ],
-  "label.path": [
-    {
-      "type": 0,
-      "value": "Polku"
-    }
-  ],
-  "label.paths": [
-    {
-      "type": 0,
-      "value": "Polut"
-    }
-  ],
-  "label.pixels": [
-    {
-      "type": 0,
-      "value": "Pikselit"
-    }
-  ],
-  "label.powered-by": [
-    {
-      "type": 0,
-      "value": "Voimanlähteenä "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    }
-  ],
-  "label.previous": [
-    {
-      "type": 0,
-      "value": "Previous"
-    }
-  ],
-  "label.previous-period": [
-    {
-      "type": 0,
-      "value": "Previous period"
-    }
-  ],
-  "label.previous-year": [
-    {
-      "type": 0,
-      "value": "Previous year"
-    }
-  ],
-  "label.profile": [
-    {
-      "type": 0,
-      "value": "Profiili"
-    }
-  ],
-  "label.properties": [
-    {
-      "type": 0,
-      "value": "Ominaisuudet"
-    }
-  ],
-  "label.property": [
-    {
-      "type": 0,
-      "value": "Ominaisuus"
-    }
-  ],
-  "label.queries": [
-    {
-      "type": 0,
-      "value": "Kyselyt"
-    }
-  ],
-  "label.query": [
-    {
-      "type": 0,
-      "value": "Kysely"
-    }
-  ],
-  "label.query-parameters": [
-    {
-      "type": 0,
-      "value": "Kyselyn parametrit"
-    }
-  ],
-  "label.realtime": [
-    {
-      "type": 0,
-      "value": "Juuri nyt"
-    }
-  ],
-  "label.referral": [
-    {
-      "type": 0,
-      "value": "Viittaus"
-    }
-  ],
-  "label.referrer": [
-    {
-      "type": 0,
-      "value": "Referrer"
-    }
-  ],
-  "label.referrers": [
-    {
-      "type": 0,
-      "value": "Viittaajat"
-    }
-  ],
-  "label.refresh": [
-    {
-      "type": 0,
-      "value": "Päivitä"
-    }
-  ],
-  "label.regenerate": [
-    {
-      "type": 0,
-      "value": "Regenerate"
-    }
-  ],
-  "label.region": [
-    {
-      "type": 0,
-      "value": "Region"
-    }
-  ],
-  "label.regions": [
-    {
-      "type": 0,
-      "value": "Regions"
-    }
-  ],
-  "label.remaining": [
-    {
-      "type": 0,
-      "value": "Jäljellä"
-    }
-  ],
-  "label.remove": [
-    {
-      "type": 0,
-      "value": "Remove"
-    }
-  ],
-  "label.remove-member": [
-    {
-      "type": 0,
-      "value": "Remove member"
-    }
-  ],
-  "label.reports": [
-    {
-      "type": 0,
-      "value": "Reports"
-    }
-  ],
-  "label.required": [
-    {
-      "type": 0,
-      "value": "Vaaditaan"
-    }
-  ],
-  "label.reset": [
-    {
-      "type": 0,
-      "value": "Nollaa"
-    }
-  ],
-  "label.reset-website": [
-    {
-      "type": 0,
-      "value": "Nollaa tilastot"
-    }
-  ],
-  "label.retention": [
-    {
-      "type": 0,
-      "value": "Retention"
-    }
-  ],
-  "label.retention-description": [
-    {
-      "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
-    }
-  ],
-  "label.revenue": [
-    {
-      "type": 0,
-      "value": "Tulot"
-    }
-  ],
-  "label.revenue-description": [
-    {
-      "type": 0,
-      "value": "Katso tulosi ajan mittaan."
-    }
-  ],
-  "label.role": [
-    {
-      "type": 0,
-      "value": "Role"
-    }
-  ],
-  "label.run-query": [
-    {
-      "type": 0,
-      "value": "Run query"
-    }
-  ],
-  "label.save": [
-    {
-      "type": 0,
-      "value": "Tallenna"
-    }
-  ],
-  "label.screens": [
-    {
-      "type": 0,
-      "value": "Näytöt"
-    }
-  ],
-  "label.search": [
-    {
-      "type": 0,
-      "value": "Search"
-    }
-  ],
-  "label.select": [
-    {
-      "type": 0,
-      "value": "Select"
-    }
-  ],
-  "label.select-date": [
-    {
-      "type": 0,
-      "value": "Select date"
-    }
-  ],
-  "label.select-filter": [
-    {
-      "type": 0,
-      "value": "Valitse suodatin"
-    }
-  ],
-  "label.select-role": [
-    {
-      "type": 0,
-      "value": "Select role"
-    }
-  ],
-  "label.select-website": [
-    {
-      "type": 0,
-      "value": "Select website"
-    }
-  ],
-  "label.session": [
-    {
-      "type": 0,
-      "value": "Istunto"
-    }
-  ],
-  "label.session-data": [
-    {
-      "type": 0,
-      "value": "Istuntotiedot"
-    }
-  ],
-  "label.sessions": [
-    {
-      "type": 0,
-      "value": "Sessions"
-    }
-  ],
-  "label.settings": [
-    {
-      "type": 0,
-      "value": "Asetukset"
-    }
-  ],
-  "label.share": [
-    {
-      "type": 0,
-      "value": "Jaa"
-    }
-  ],
-  "label.share-url": [
-    {
-      "type": 0,
-      "value": "Jaa URL"
-    }
-  ],
-  "label.single-day": [
-    {
-      "type": 0,
-      "value": "Yksi päivä"
-    }
-  ],
-  "label.sms": [
-    {
-      "type": 0,
-      "value": "SMS"
-    }
-  ],
-  "label.sources": [
-    {
-      "type": 0,
-      "value": "Lähteet"
-    }
-  ],
-  "label.start-step": [
-    {
-      "type": 0,
-      "value": "Aloitusvaihe"
-    }
-  ],
-  "label.steps": [
-    {
-      "type": 0,
-      "value": "Vaiheet"
-    }
-  ],
-  "label.sum": [
-    {
-      "type": 0,
-      "value": "Sum"
-    }
-  ],
-  "label.tablet": [
-    {
-      "type": 0,
-      "value": "Tabletti"
-    }
-  ],
-  "label.tag": [
-    {
-      "type": 0,
-      "value": "Tunniste"
-    }
-  ],
-  "label.tags": [
-    {
-      "type": 0,
-      "value": "Tunnisteet"
-    }
-  ],
-  "label.team": [
-    {
-      "type": 0,
-      "value": "Team"
-    }
-  ],
-  "label.team-id": [
-    {
-      "type": 0,
-      "value": "Team ID"
-    }
-  ],
-  "label.team-manager": [
-    {
-      "type": 0,
-      "value": "Team manager"
-    }
-  ],
-  "label.team-member": [
-    {
-      "type": 0,
-      "value": "Team member"
-    }
-  ],
-  "label.team-name": [
-    {
-      "type": 0,
-      "value": "Team name"
-    }
-  ],
-  "label.team-owner": [
-    {
-      "type": 0,
-      "value": "Team owner"
-    }
-  ],
-  "label.team-settings": [
-    {
-      "type": 0,
-      "value": "Tiimin asetukset"
-    }
-  ],
-  "label.team-view-only": [
-    {
-      "type": 0,
-      "value": "Team view only"
-    }
-  ],
-  "label.team-websites": [
-    {
-      "type": 0,
-      "value": "Team websites"
-    }
-  ],
-  "label.teams": [
-    {
-      "type": 0,
-      "value": "Teams"
-    }
-  ],
-  "label.terms": [
-    {
-      "type": 0,
-      "value": "Ehdot"
-    }
-  ],
-  "label.theme": [
-    {
-      "type": 0,
-      "value": "Teema"
-    }
-  ],
-  "label.this-month": [
-    {
-      "type": 0,
-      "value": "Tämä kuukausi"
-    }
-  ],
-  "label.this-week": [
-    {
-      "type": 0,
-      "value": "Tämä viikko"
-    }
-  ],
-  "label.this-year": [
-    {
-      "type": 0,
-      "value": "Tämä vuosi"
-    }
-  ],
-  "label.timezone": [
-    {
-      "type": 0,
-      "value": "Aikavyöhyke"
-    }
-  ],
-  "label.title": [
-    {
-      "type": 0,
-      "value": "Title"
-    }
-  ],
-  "label.today": [
-    {
-      "type": 0,
-      "value": "Tänään"
-    }
-  ],
-  "label.toggle-charts": [
-    {
-      "type": 0,
-      "value": "Kytke kaaviot päälle/pois"
-    }
-  ],
-  "label.total": [
-    {
-      "type": 0,
-      "value": "Total"
-    }
-  ],
-  "label.total-records": [
-    {
-      "type": 0,
-      "value": "Total records"
-    }
-  ],
-  "label.tracking-code": [
-    {
-      "type": 0,
-      "value": "Seurantakoodi"
-    }
-  ],
-  "label.transactions": [
-    {
-      "type": 0,
-      "value": "Transactions"
-    }
-  ],
-  "label.transfer": [
-    {
-      "type": 0,
-      "value": "Transfer"
-    }
-  ],
-  "label.transfer-website": [
-    {
-      "type": 0,
-      "value": "Transfer website"
-    }
-  ],
-  "label.true": [
-    {
-      "type": 0,
-      "value": "True"
-    }
-  ],
-  "label.type": [
-    {
-      "type": 0,
-      "value": "Type"
-    }
-  ],
-  "label.unique": [
-    {
-      "type": 0,
-      "value": "Unique"
-    }
-  ],
-  "label.unique-visitors": [
-    {
-      "type": 0,
-      "value": "Yksittäiset kävijät"
-    }
-  ],
-  "label.uniqueCustomers": [
-    {
-      "type": 0,
-      "value": "Unique Customers"
-    }
-  ],
-  "label.unknown": [
-    {
-      "type": 0,
-      "value": "Tuntematon"
-    }
-  ],
-  "label.untitled": [
-    {
-      "type": 0,
-      "value": "Untitled"
-    }
-  ],
-  "label.update": [
-    {
-      "type": 0,
-      "value": "Update"
-    }
-  ],
-  "label.user": [
-    {
-      "type": 0,
-      "value": "User"
-    }
-  ],
-  "label.username": [
-    {
-      "type": 0,
-      "value": "Käyttäjänimi"
-    }
-  ],
-  "label.users": [
-    {
-      "type": 0,
-      "value": "Users"
-    }
-  ],
-  "label.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "label.utm-description": [
-    {
-      "type": 0,
-      "value": "Track your campaigns through UTM parameters."
-    }
-  ],
-  "label.value": [
-    {
-      "type": 0,
-      "value": "Value"
-    }
-  ],
-  "label.view": [
-    {
-      "type": 0,
-      "value": "View"
-    }
-  ],
-  "label.view-details": [
-    {
-      "type": 0,
-      "value": "Katso tiedot"
-    }
-  ],
-  "label.view-only": [
-    {
-      "type": 0,
-      "value": "View only"
-    }
-  ],
-  "label.views": [
-    {
-      "type": 0,
-      "value": "Näyttökerrat"
-    }
-  ],
-  "label.views-per-visit": [
-    {
-      "type": 0,
-      "value": "Views per visit"
-    }
-  ],
-  "label.visit-duration": [
-    {
-      "type": 0,
-      "value": "Keskimääräinen vierailuaika"
-    }
-  ],
-  "label.visitors": [
-    {
-      "type": 0,
-      "value": "Vierailijat"
-    }
-  ],
-  "label.visits": [
-    {
-      "type": 0,
-      "value": "Visits"
-    }
-  ],
-  "label.website": [
-    {
-      "type": 0,
-      "value": "Website"
-    }
-  ],
-  "label.website-id": [
-    {
-      "type": 0,
-      "value": "Website ID"
-    }
-  ],
-  "label.websites": [
-    {
-      "type": 0,
-      "value": "Verkkosivut"
-    }
-  ],
-  "label.window": [
-    {
-      "type": 0,
-      "value": "Window"
-    }
-  ],
-  "label.yesterday": [
-    {
-      "type": 0,
-      "value": "Yesterday"
-    }
-  ],
-  "message.action-confirmation": [
-    {
-      "type": 0,
-      "value": "Type "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " in the box below to confirm."
-    }
-  ],
-  "message.active-users": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "vierailija"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "vierailijaa"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "message.bad-request": [
-    {
-      "type": 0,
-      "value": "Bad request"
-    }
-  ],
-  "message.collected-data": [
-    {
-      "type": 0,
-      "value": "Collected data"
-    }
-  ],
-  "message.confirm-delete": [
-    {
-      "type": 0,
-      "value": "Haluatko varmasti poistaa sivuston "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-leave": [
-    {
-      "type": 0,
-      "value": "Are you sure you want to leave "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-remove": [
-    {
-      "type": 0,
-      "value": "Are you sure you want to remove "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-reset": [
-    {
-      "type": 0,
-      "value": "Haluatko varmasti poistaa sivuston "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " tilastot?"
-    }
-  ],
-  "message.delete-team-warning": [
-    {
-      "type": 0,
-      "value": "Deleting a team will also delete all team websites."
-    }
-  ],
-  "message.delete-website-warning": [
-    {
-      "type": 0,
-      "value": "Kaikki siihen liittyvät tiedot poistetaan."
-    }
-  ],
-  "message.error": [
-    {
-      "type": 0,
-      "value": "Jotain meni pieleen."
-    }
-  ],
-  "message.event-log": [
-    {
-      "type": 1,
-      "value": "event"
-    },
-    {
-      "type": 0,
-      "value": " on "
-    },
-    {
-      "type": 1,
-      "value": "url"
-    }
-  ],
-  "message.forbidden": [
-    {
-      "type": 0,
-      "value": "Forbidden"
-    }
-  ],
-  "message.go-to-settings": [
-    {
-      "type": 0,
-      "value": "Mene asetuksiin"
-    }
-  ],
-  "message.incorrect-username-password": [
-    {
-      "type": 0,
-      "value": "Väärä käyttäjänimi/salasana."
-    }
-  ],
-  "message.invalid-domain": [
-    {
-      "type": 0,
-      "value": "Virheellinen verkkotunnus"
-    }
-  ],
-  "message.min-password-length": [
-    {
-      "type": 0,
-      "value": "Minimum length of "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " characters"
-    }
-  ],
-  "message.new-version-available": [
-    {
-      "type": 0,
-      "value": "A new version of Umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " is available!"
-    }
-  ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "Tietoja ei ole käytettävissä."
-    }
-  ],
-  "message.no-event-data": [
-    {
-      "type": 0,
-      "value": "No event data is available."
-    }
-  ],
-  "message.no-match-password": [
-    {
-      "type": 0,
-      "value": "Salasanat eivät täsmää"
-    }
-  ],
-  "message.no-results-found": [
-    {
-      "type": 0,
-      "value": "No results were found."
-    }
-  ],
-  "message.no-team-websites": [
-    {
-      "type": 0,
-      "value": "This team does not have any websites."
-    }
-  ],
-  "message.no-teams": [
-    {
-      "type": 0,
-      "value": "You have not created any teams."
-    }
-  ],
-  "message.no-users": [
-    {
-      "type": 0,
-      "value": "There are no users."
-    }
-  ],
-  "message.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "Sinulla ei ole määritettyjä verkkosivustoja."
-    }
-  ],
-  "message.not-found": [
-    {
-      "type": 0,
-      "value": "Not found"
-    }
-  ],
-  "message.nothing-selected": [
-    {
-      "type": 0,
-      "value": "Nothing selected."
-    }
-  ],
-  "message.page-not-found": [
-    {
-      "type": 0,
-      "value": "Sivua ei löydetty."
-    }
-  ],
-  "message.reset-website": [
-    {
-      "type": 0,
-      "value": "To reset this website, type "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " in the box below to confirm."
-    }
-  ],
-  "message.reset-website-warning": [
-    {
-      "type": 0,
-      "value": "Kaikki sivuston tilastot poistetaan, mutta seurantakoodi pysyy muuttumattomana."
-    }
-  ],
-  "message.saved": [
-    {
-      "type": 0,
-      "value": "Tallennettu onnistuneesti."
-    }
-  ],
-  "message.sever-error": [
-    {
-      "type": 0,
-      "value": "Server error"
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "Tämä on julkisesti jaettu URL sivustolle "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "."
-    }
-  ],
-  "message.team-already-member": [
-    {
-      "type": 0,
-      "value": "You are already a member of the team."
-    }
-  ],
-  "message.team-not-found": [
-    {
-      "type": 0,
-      "value": "Team not found."
-    }
-  ],
-  "message.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Websites can be viewed by anyone on the team."
-    }
-  ],
-  "message.tracking-code": [
-    {
-      "type": 0,
-      "value": "Seurantakoodi"
-    }
-  ],
-  "message.transfer-team-website-to-user": [
-    {
-      "type": 0,
-      "value": "Transfer this website to your account?"
-    }
-  ],
-  "message.transfer-user-website-to-team": [
-    {
-      "type": 0,
-      "value": "Select the team to transfer this website to."
-    }
-  ],
-  "message.transfer-website": [
-    {
-      "type": 0,
-      "value": "Transfer website ownership to your account or another team."
-    }
-  ],
-  "message.triggered-event": [
-    {
-      "type": 0,
-      "value": "Triggered event"
-    }
-  ],
-  "message.unauthorized": [
-    {
-      "type": 0,
-      "value": "Unauthorized"
-    }
-  ],
-  "message.user-deleted": [
-    {
-      "type": 0,
-      "value": "User deleted."
-    }
-  ],
-  "message.viewed-page": [
-    {
-      "type": 0,
-      "value": "Viewed page"
-    }
-  ],
-  "message.visitor-log": [
-    {
-      "type": 0,
-      "value": "Vierailija maasta "
-    },
-    {
-      "type": 1,
-      "value": "country"
-    },
-    {
-      "type": 0,
-      "value": " selaimella "
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    },
-    {
-      "type": 0,
-      "value": " laitteella "
-    },
-    {
-      "type": 1,
-      "value": "os"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "device"
-    }
-  ]
+  "label": {
+    "access-code": "Pääsykoodi",
+    "account": "Tili",
+    "action": "Toiminto",
+    "actions": "Toiminnat",
+    "activity": "Toimintaloki",
+    "add": "Lisää",
+    "add-board": "Lisää taulu",
+    "add-description": "Lisää kuvaus",
+    "add-link": "Lisää linkki",
+    "add-member": "Lisää jäsen",
+    "add-pixel": "Lisää pikseli",
+    "add-step": "Lisää vaihe",
+    "add-website": "Lisää verkkosivu",
+    "admin": "Järjestelmänvalvoja",
+    "affiliate": "Kumppani",
+    "after": "Jälkeen",
+    "all": "Kaikki",
+    "all-time": "Alusta lähtien",
+    "analysis": "Analyysi",
+    "analytics": "Analytiikka",
+    "application": "Sovellus",
+    "apply": "Käytä",
+    "attribution": "Attribuutio",
+    "attribution-description": "Katso, miten käyttäjät ovat vuorovaikutuksessa markkinointisi kanssa ja mikä johtaa konversioihin.",
+    "audience": "Yleisö",
+    "average": "Keskiarvo",
+    "back": "Takaisin",
+    "before": "Ennen",
+    "behavior": "Käyttäytyminen",
+    "boards": "Taulut",
+    "bounce-rate": "Välitön poistuminen",
+    "breakdown": "Erittele",
+    "browser": "Selain",
+    "browsers": "Selaimet",
+    "campaign": "Kampanja",
+    "campaigns": "Kampanjat",
+    "cancel": "Peruuta",
+    "change-password": "Vaihda salasana",
+    "channel": "Kanava",
+    "channels": "Kanavat",
+    "chart": "Kaavio",
+    "cities": "Kaupungit",
+    "city": "Kaupunki",
+    "clear-all": "Tyhjennä kaikki",
+    "cohort": "Kohortti",
+    "cohorts": "Kohortit",
+    "compare": "Vertaa",
+    "compare-dates": "Vertaa päivämääriä",
+    "confirm": "Vahvista",
+    "confirm-password": "Vahvista salasana",
+    "contains": "Sisältää",
+    "regex-match": "Vastaa säännöllistä lauseketta",
+    "regex-not-match": "Ei vastaa säännöllistä lauseketta",
+    "content": "Sisältö",
+    "continue": "Jatka",
+    "conversion": "Konversio",
+    "conversion-rate": "Konversioprosentti",
+    "conversion-step": "Konversiovaihe",
+    "count": "Lukumäärä",
+    "countries": "Maat",
+    "country": "Maa",
+    "create": "Luo",
+    "create-report": "Luo raportti",
+    "create-team": "Luo tiimi",
+    "create-user": "Luo käyttäjä",
+    "created": "Luotu",
+    "created-by": "Luonut",
+    "criteria": "Kriteerit",
+    "currency": "Valuutta",
+    "current": "Nykyinen",
+    "current-password": "Nykyinen salasana",
+    "custom-range": "Mukautettu ajanjakso",
+    "dashboard": "Ohjauspaneeli",
+    "data": "Data",
+    "date": "Päivämäärä",
+    "date-range": "Ajanjakso",
+    "day": "Päivä",
+    "default-date-range": "Oletusajanjakso",
+    "delete": "Poista",
+    "delete-report": "Poista raportti",
+    "delete-team": "Poista tiimi",
+    "delete-user": "Poista käyttäjä",
+    "delete-website": "Poista verkkosivu",
+    "description": "Kuvaus",
+    "desktop": "Pöytäkone",
+    "destination-url": "Kohde-URL",
+    "details": "Tiedot",
+    "device": "Laite",
+    "devices": "Laitteet",
+    "direct": "Suora",
+    "dismiss": "Hylkää",
+    "distinct-id": "Yksilöllinen ID",
+    "documentation": "Dokumentaatio",
+    "does-not-contain": "Ei sisällä",
+    "does-not-include": "Ei sisällä",
+    "doest-not-exist": "Ei ole olemassa",
+    "domain": "Verkkotunnus",
+    "download": "Lataa",
+    "dropoff": "Poistuminen",
+    "edit": "Muokkaa",
+    "edit-member": "Muokkaa jäsentä",
+    "email": "Sähköposti",
+    "enable-share-url": "Ota jakamisen URL-osoite käyttöön",
+    "end-step": "Loppuvaihe",
+    "entry": "Tulo-URL",
+    "environment": "Ympäristö",
+    "event": "Tapahtuma",
+    "event-data": "Tapahtumatiedot",
+    "event-name": "Tapahtuman nimi",
+    "events": "Tapahtumat",
+    "exclude-bounce": "Sulje poishyppäys pois",
+    "exists": "On olemassa",
+    "exit": "Poistumis-URL",
+    "false": "Epätosi",
+    "field": "Kenttä",
+    "fields": "Kentät",
+    "filter": "Suodatin",
+    "filter-combined": "Yhdistetty",
+    "filter-raw": "Käsittelemätön",
+    "filters": "Suodattimet",
+    "first-click": "Ensimmäinen klikkaus",
+    "first-seen": "Ensimmäinen havainto",
+    "funnel": "Suppilo",
+    "funnel-description": "Ymmärrä käyttäjien konversio- ja poistumisprosentti.",
+    "funnels": "Suppilot",
+    "goal": "Tavoite",
+    "goals": "Tavoitteet",
+    "goals-description": "Seuraa sivun katselujen ja tapahtumien tavoitteitasi.",
+    "greater-than": "Suurempi kuin",
+    "greater-than-equals": "Suurempi tai yhtä suuri kuin",
+    "grouped": "Ryhmitelty",
+    "growth": "Kasvu",
+    "hostname": "Isäntänimi",
+    "hour": "Tunti",
+    "includes": "Sisältää",
+    "insight": "Oivallus",
+    "insights": "Oivallukset",
+    "insights-description": "Sukella syvemmälle tietoihisi käyttämällä segmenttejä ja suodattimia.",
+    "invalid-url": "Virheellinen URL",
+    "is": "On",
+    "is-false": "On epätosi",
+    "is-not": "Ei ole",
+    "is-not-set": "Ei asetettu",
+    "is-set": "Asetettu",
+    "is-true": "On tosi",
+    "join": "Liity",
+    "join-team": "Liity tiimiin",
+    "journey": "Polku",
+    "journey-description": "Ymmärrä, miten käyttäjät navigoivat sivustollasi.",
+    "journeys": "Polut",
+    "language": "Kieli",
+    "languages": "Kielet",
+    "laptop": "Kannettava tietokone",
+    "last-click": "Viimeinen klikkaus",
+    "last-days": "Viimeisimmät {x} päivää",
+    "last-hours": "Viimeisimmät {x} tuntia",
+    "last-months": "Viimeiset {x} kuukautta",
+    "last-seen": "Viimeksi nähty",
+    "leave": "Poistu",
+    "leave-team": "Poistu tiimistä",
+    "less-than": "Vähemmän kuin",
+    "less-than-equals": "Vähemmän tai yhtä suuri kuin",
+    "link": "Linkki",
+    "links": "Linkit",
+    "location": "Sijainti",
+    "login": "Kirjaudu sisään",
+    "logout": "Kirjaudu ulos",
+    "manage": "Hallinnoi",
+    "manager": "Päällikkö",
+    "max": "Maksimi",
+    "maximize": "Laajenna",
+    "medium": "Keskitaso",
+    "member": "Jäsen",
+    "members": "Jäsenet",
+    "min": "Minimi",
+    "minute": "Minuutti",
+    "mobile": "Puhelin",
+    "model": "Malli",
+    "month": "Kuukausi",
+    "more": "Lisää",
+    "my-account": "Oma tili",
+    "my-websites": "Omat verkkosivut",
+    "name": "Nimi",
+    "new-password": "Uusi salasana",
+    "none": "Ei mitään",
+    "number-of-records": "{x} {x, plural, one {tietue} other {tietuetta}}",
+    "ok": "OK",
+    "online": "Verkossa",
+    "organic-search": "Orgaaninen haku",
+    "organic-shopping": "Orgaaninen ostaminen",
+    "organic-social": "Orgaaninen sosiaalinen",
+    "organic-video": "Orgaaninen video",
+    "os": "Käyttöjärjestelmä",
+    "other": "Muu",
+    "overview": "Yleiskatsaus",
+    "owner": "Omistaja",
+    "page": "Sivu",
+    "page-of": "Sivu {current} / {total}",
+    "page-views": "Sivun näyttökerrat",
+    "pageTitle": "Sivun otsikko",
+    "pages": "Sivut",
+    "paid-ads": "Maksetut mainokset",
+    "paid-search": "Maksettu haku",
+    "paid-shopping": "Maksettu ostaminen",
+    "paid-social": "Maksettu sosiaalinen",
+    "paid-video": "Maksettu video",
+    "password": "Salasana",
+    "path": "Polku",
+    "paths": "Polut",
+    "pixel": "Pikseli",
+    "pixels": "Pikselit",
+    "powered-by": "Voimanlähteenä {name}",
+    "preferences": "Asetukset",
+    "previous": "Edellinen",
+    "previous-period": "Edellinen ajanjakso",
+    "previous-year": "Edellinen vuosi",
+    "profile": "Profiili",
+    "profiles": "Profiilit",
+    "properties": "Ominaisuudet",
+    "property": "Ominaisuus",
+    "queries": "Kyselyt",
+    "query": "Kysely",
+    "query-parameters": "Kyselyn parametrit",
+    "realtime": "Juuri nyt",
+    "referral": "Viittaus",
+    "referrer": "Viittaaja",
+    "referrers": "Viittaajat",
+    "refresh": "Päivitä",
+    "regenerate": "Luo uudelleen",
+    "region": "Alue",
+    "regions": "Alueet",
+    "remaining": "Jäljellä",
+    "remove": "Poista",
+    "remove-member": "Poista jäsen",
+    "reports": "Raportit",
+    "required": "Vaaditaan",
+    "reset": "Nollaa",
+    "reset-website": "Nollaa tilastot",
+    "retention": "Säilyvyys",
+    "retention-description": "Mittaa verkkosivustosi sitoutumista seuraamalla, kuinka usein käyttäjät palaavat.",
+    "revenue": "Tulot",
+    "revenue-description": "Katso tulosi ajan mittaan.",
+    "role": "Rooli",
+    "run-query": "Suorita kysely",
+    "save": "Tallenna",
+    "save-cohort": "Tallenna kohortti",
+    "save-segment": "Tallenna segmentti",
+    "screen": "Näyttö",
+    "screens": "Näytöt",
+    "search": "Haku",
+    "segment": "Segmentti",
+    "segments": "Segmentit",
+    "select": "Valitse",
+    "select-date": "Valitse päivämäärä",
+    "select-filter": "Valitse suodatin",
+    "select-role": "Valitse rooli",
+    "select-website": "Valitse verkkosivu",
+    "session": "Istunto",
+    "session-data": "Istuntotiedot",
+    "sessions": "Istunnot",
+    "settings": "Asetukset",
+    "share": "Jaa",
+    "share-url": "Jaa URL",
+    "single-day": "Yksi päivä",
+    "sms": "SMS",
+    "source": "Lähde",
+    "sources": "Lähteet",
+    "start-step": "Aloitusvaihe",
+    "steps": "Vaiheet",
+    "sum": "Summa",
+    "support": "Tuki",
+    "switch-account": "Vaihda tiliä",
+    "table": "Taulukko",
+    "tablet": "Tabletti",
+    "tag": "Tunniste",
+    "tags": "Tunnisteet",
+    "team": "Tiimi",
+    "team-id": "Tiimin ID",
+    "team-manager": "Tiimin johtaja",
+    "team-member": "Tiimin jäsen",
+    "team-name": "Tiimin nimi",
+    "team-owner": "Tiimin omistaja",
+    "team-settings": "Tiimin asetukset",
+    "team-view-only": "Vain tiimin katselu",
+    "team-websites": "Tiimin verkkosivut",
+    "teams": "Tiimit",
+    "term": "Hakusana",
+    "terms": "Ehdot",
+    "theme": "Teema",
+    "this-month": "Tämä kuukausi",
+    "this-week": "Tämä viikko",
+    "this-year": "Tämä vuosi",
+    "timezone": "Aikavyöhyke",
+    "title": "Otsikko",
+    "today": "Tänään",
+    "toggle-charts": "Kytke kaaviot päälle/pois",
+    "total": "Yhteensä",
+    "total-records": "Tietueita yhteensä",
+    "tracking-code": "Seurantakoodi",
+    "traffic": "Liikenne",
+    "transactions": "Transaktiot",
+    "transfer": "Siirrä",
+    "transfer-website": "Siirrä verkkosivu",
+    "true": "Tosi",
+    "type": "Tyyppi",
+    "unique": "Uniikki",
+    "unique-events": "Uniikit tapahtumat",
+    "unique-visitors": "Yksittäiset kävijät",
+    "uniqueCustomers": "Uniikit asiakkaat",
+    "unknown": "Tuntematon",
+    "untitled": "Nimetön",
+    "update": "Päivitä",
+    "url": "URL",
+    "user": "Käyttäjä",
+    "username": "Käyttäjänimi",
+    "users": "Käyttäjät",
+    "utm": "UTM",
+    "utm-campaign": "UTM-kampanja",
+    "utm-content": "UTM-sisältö",
+    "utm-description": "Seuraa kampanjoitasi UTM-parametrien avulla.",
+    "utm-medium": "UTM-media",
+    "utm-source": "UTM-lähde",
+    "utm-term": "UTM-hakusana",
+    "value": "Arvo",
+    "version": "Versio",
+    "view": "Näytä",
+    "view-details": "Katso tiedot",
+    "view-only": "Vain katselu",
+    "views": "Näyttökerrat",
+    "views-per-visit": "Katselukerrat vierailua kohti",
+    "visit-duration": "Keskimääräinen vierailuaika",
+    "visitors": "Vierailijat",
+    "visits": "Vierailut",
+    "website": "Verkkosivu",
+    "website-id": "Verkkosivun ID",
+    "websites": "Verkkosivut",
+    "window": "Ikkuna",
+    "yesterday": "Eilen"
+  },
+  "message": {
+    "action-confirmation": "Kirjoita {confirmation} alla olevaan kenttään vahvistaaksesi.",
+    "active-users": "{x} {x, plural, one {vierailija} other {vierailijaa}}",
+    "bad-request": "Virheellinen pyyntö",
+    "collected-data": "Kerätty data",
+    "confirm-delete": "Haluatko varmasti poistaa sivuston {target}?",
+    "confirm-leave": "Haluatko varmasti poistua <b>{target}</b>?",
+    "confirm-remove": "Haluatko varmasti poistaa <b>{target}</b>?",
+    "confirm-reset": "Haluatko varmasti poistaa sivuston {target} tilastot?",
+    "delete-team-warning": "Tiimin poistaminen poistaa myös kaikki tiimin sivustot.",
+    "delete-website-warning": "Kaikki siihen liittyvät tiedot poistetaan.",
+    "error": "Jotain meni pieleen.",
+    "event-log": "<b>{event}</b> sivulla <a>{url}</a>",
+    "forbidden": "Kielletty",
+    "go-to-settings": "Mene asetuksiin",
+    "incorrect-username-password": "Väärä käyttäjänimi/salasana.",
+    "invalid-domain": "Virheellinen verkkotunnus",
+    "min-password-length": "Vähimmäispituus {n} merkkiä",
+    "new-version-available": "Umamista on saatavilla uusi versio {version}!",
+    "no-data-available": "Tietoja ei ole käytettävissä.",
+    "no-event-data": "Tapahtumatietoja ei ole saatavilla.",
+    "no-match-password": "Salasanat eivät täsmää",
+    "no-results-found": "Tuloksia ei löytynyt.",
+    "no-team-websites": "Tällä tiimillä ei ole verkkosivustoja.",
+    "no-teams": "Et ole luonut yhtään tiimiä.",
+    "no-users": "Käyttäjiä ei ole.",
+    "no-websites-configured": "Sinulla ei ole määritettyjä verkkosivustoja.",
+    "not-found": "Ei löytynyt",
+    "nothing-selected": "Mitään ei ole valittu.",
+    "page-not-found": "Sivua ei löydetty.",
+    "reset-website": "Nollaa verkkosivusto kirjoittamalla {confirmation} alla olevaan kenttään vahvistaaksesi.",
+    "reset-website-warning": "Kaikki sivuston tilastot poistetaan, mutta seurantakoodi pysyy muuttumattomana.",
+    "saved": "Tallennettu onnistuneesti.",
+    "sever-error": "Palvelinvirhe",
+    "share-url": "Tämä on julkisesti jaettu URL sivustolle {target}.",
+    "team-already-member": "Olet jo tiimissä.",
+    "team-not-found": "Tiimiä ei löydetty.",
+    "team-websites-info": "Verkkosivuja voi tarkastella kuka tahansa tiimin jäsen.",
+    "tracking-code": "Seurantakoodi",
+    "transfer-team-website-to-user": "Siirretäänkö tämä verkkosivu tilillesi?",
+    "transfer-user-website-to-team": "Valitse tiimi, johon verkkosivusto siirretään.",
+    "transfer-website": "Siirrä verkkosivusto tiliisi tai toiselle tiimille.",
+    "triggered-event": "Laukaistu tapahtuma",
+    "unauthorized": "Ei oikeuksia",
+    "user-deleted": "Käyttäjä poistettu.",
+    "viewed-page": "Katsottu sivu",
+    "visitor-log": "Vierailija maasta <b>{country}</b> selaimella <b>{browser}</b> laitteella <b>{os}</b> <b>{device}</b>"
+  }
 }

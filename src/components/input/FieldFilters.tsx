@@ -5,8 +5,10 @@ import {
   Icon,
   List,
   ListItem,
+  ListSection,
   Menu,
   MenuItem,
+  MenuSection,
   MenuTrigger,
   Popover,
   Row,
@@ -15,7 +17,7 @@ import { endOfDay, subMonths } from 'date-fns';
 import type { Key } from 'react';
 import { Empty } from '@/components/common/Empty';
 import { FilterRecord } from '@/components/common/FilterRecord';
-import { useFields, useMessages, useMobile } from '@/components/hooks';
+import { type FieldGroup, useFields, useMessages, useMobile } from '@/components/hooks';
 import { Plus } from '@/components/icons';
 
 export interface FieldFiltersProps {
@@ -26,11 +28,25 @@ export interface FieldFiltersProps {
 }
 
 export function FieldFilters({ websiteId, value, exclude = [], onChange }: FieldFiltersProps) {
-  const { formatMessage, messages } = useMessages();
-  const { fields } = useFields();
+  const { t, messages } = useMessages();
+  const { fields, groupLabels } = useFields();
   const startDate = subMonths(endOfDay(new Date()), 6);
   const endDate = endOfDay(new Date());
   const { isMobile } = useMobile();
+
+  const groupedFields = fields
+    .filter(({ name }) => !exclude.includes(name))
+    .reduce(
+      (acc, field) => {
+        const group = field.group;
+        if (!acc[group]) {
+          acc[group] = [];
+        }
+        acc[group].push(field);
+        return acc;
+      },
+      {} as Record<FieldGroup, typeof fields>,
+    );
 
   const updateFilter = (name: string, props: Record<string, any>) => {
     onChange(value.map(filter => (filter.name === name ? { ...filter, ...props } : filter)));
@@ -53,8 +69,8 @@ export function FieldFilters({ websiteId, value, exclude = [], onChange }: Field
   };
 
   return (
-    <Grid columns={{ xs: '1fr', md: '180px 1fr' }} overflow="hidden" gapY="6">
-      <Row display={{ xs: 'flex', md: 'none' }}>
+    <Grid columns={{ base: '1fr', md: '180px 1fr' }} overflow="hidden" gapY="6">
+      <Row display={{ base: 'flex', md: 'none' }}>
         <MenuTrigger>
           <Button>
             <Icon>
@@ -66,32 +82,49 @@ export function FieldFilters({ websiteId, value, exclude = [], onChange }: Field
               onAction={handleAdd}
               style={{ maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}
             >
-              {fields
-                .filter(({ name }) => !exclude.includes(name))
-                .map(field => {
-                  const isDisabled = !!value.find(({ name }) => name === field.name);
-                  return (
-                    <MenuItem key={field.name} id={field.name} isDisabled={isDisabled}>
-                      {field.label}
-                    </MenuItem>
-                  );
-                })}
+              {groupLabels.map(({ key: groupKey, label }) => {
+                const groupFields = groupedFields[groupKey];
+                return (
+                  <MenuSection key={groupKey} title={label}>
+                    {groupFields.map(field => {
+                      const isDisabled = !!value.find(({ name }) => name === field.name);
+                      return (
+                        <MenuItem key={field.name} id={field.name} isDisabled={isDisabled}>
+                          {field.filterLabel}
+                        </MenuItem>
+                      );
+                    })}
+                  </MenuSection>
+                );
+              })}
             </Menu>
           </Popover>
         </MenuTrigger>
       </Row>
-      <Column display={{ xs: 'none', md: 'flex' }} border="right" paddingRight="3" marginRight="6">
+      <Column
+        display={{ base: 'none', md: 'flex' }}
+        border="right"
+        paddingRight="3"
+        marginRight="6"
+      >
         <List onAction={handleAdd}>
-          {fields
-            .filter(({ name }) => !exclude.includes(name))
-            .map(field => {
-              const isDisabled = !!value.find(({ name }) => name === field.name);
-              return (
-                <ListItem key={field.name} id={field.name} isDisabled={isDisabled}>
-                  {field.label}
-                </ListItem>
-              );
-            })}
+          {groupLabels.map(({ key: groupKey, label }) => {
+            const groupFields = groupedFields[groupKey];
+            if (!groupFields || groupFields.length === 0) return null;
+
+            return (
+              <ListSection key={groupKey} title={label}>
+                {groupFields.map(field => {
+                  const isDisabled = !!value.find(({ name }) => name === field.name);
+                  return (
+                    <ListItem key={field.name} id={field.name} isDisabled={isDisabled}>
+                      {field.filterLabel}
+                    </ListItem>
+                  );
+                })}
+              </ListSection>
+            );
+          })}
         </List>
       </Column>
       <Column overflow="auto" gapY="4" style={{ contain: 'layout' }}>
@@ -110,7 +143,7 @@ export function FieldFilters({ websiteId, value, exclude = [], onChange }: Field
             />
           );
         })}
-        {!value.length && <Empty message={formatMessage(messages.nothingSelected)} />}
+        {!value.length && <Empty message={t(messages.nothingSelected)} />}
       </Column>
     </Grid>
   );

@@ -22,7 +22,7 @@ import {
 import { DOCS_URL } from '@/lib/constants';
 
 export function SettingsButton() {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { user } = useLoginQuery();
   const { router } = useNavigation();
   const { cloudMode } = useConfig();
@@ -52,30 +52,22 @@ export function SettingsButton() {
         <Menu autoFocus="last" onAction={handleAction}>
           <MenuSection title={user.username}>
             <MenuSeparator />
-            <MenuItem id="/settings" icon={<Settings />} label={formatMessage(labels.settings)} />
+            <MenuItem id="/settings" icon={<Settings />} label={t(labels.settings)} />
             {!cloudMode && user.isAdmin && (
-              <MenuItem id="/admin" icon={<LockKeyhole />} label={formatMessage(labels.admin)} />
+              <MenuItem id="/admin" icon={<LockKeyhole />} label={t(labels.admin)} />
             )}
             {cloudMode && (
               <>
-                <MenuItem
-                  id="/docs"
-                  icon={<BookText />}
-                  label={formatMessage(labels.documentation)}
-                >
+                <MenuItem id="/docs" icon={<BookText />} label={t(labels.documentation)}>
                   <Icon color="muted">
                     <ExternalLink />
                   </Icon>
                 </MenuItem>
-                <MenuItem
-                  id="/settings/support"
-                  icon={<LifeBuoy />}
-                  label={formatMessage(labels.support)}
-                />
+                <MenuItem id="/settings/support" icon={<LifeBuoy />} label={t(labels.support)} />
               </>
             )}
             <MenuSeparator />
-            <MenuItem id="/logout" icon={<LogOut />} label={formatMessage(labels.logout)} />
+            <MenuItem id="/logout" icon={<LogOut />} label={t(labels.logout)} />
           </MenuSection>
         </Menu>
       </Popover>

@@ -15,6 +15,7 @@ export function WebsiteControls({
 }: {
   websiteId: string;
   allowFilter?: boolean;
+  allowBounceFilter?: boolean;
   allowDateFilter?: boolean;
   allowMonthFilter?: boolean;
   allowDownload?: boolean;
@@ -22,11 +23,11 @@ export function WebsiteControls({
 }) {
   return (
     <Column gap>
-      <Grid columns={{ xs: '1fr', md: 'auto 1fr' }} gap>
-        <Row alignItems="center" justifyContent="flex-start">
-          {allowFilter ? <WebsiteFilterButton websiteId={websiteId} /> : <div />}
+      <Grid columns={{ base: '1fr', md: 'auto 1fr' }} gap>
+        <Row alignItems="center" justifyContent="flex-start" gap="4">
+          {allowFilter && <WebsiteFilterButton websiteId={websiteId} />}
         </Row>
-        <Row alignItems="center" justifyContent={{ xs: 'flex-start', md: 'flex-end' }}>
+        <Row alignItems="center" justifyContent={{ base: 'flex-start', md: 'flex-end' }}>
           {allowDateFilter && (
             <WebsiteDateFilter websiteId={websiteId} allowCompare={allowCompare} />
           )}

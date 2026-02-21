@@ -4,13 +4,14 @@ import {
   Form,
   FormField,
   FormSubmitButton,
+  Grid,
   Icon,
   Label,
   Loading,
   Row,
   TextField,
 } from '@umami/react-zen';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useConfig, useLinkQuery, useMessages } from '@/components/hooks';
 import { useUpdateQuery } from '@/components/hooks/queries/useUpdateQuery';
 import { RefreshCw } from '@/components/icons';
@@ -31,7 +32,7 @@ export function LinkEditForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
+  const { t, labels, messages, getErrorMessage } = useMessages();
   const { mutateAsync, error, isPending, touch, toast } = useUpdateQuery(
     linkId ? `/links/${linkId}` : '/links',
     {
@@ -42,77 +43,76 @@ export function LinkEditForm({
   const { linksUrl } = useConfig();
   const hostUrl = linksUrl || LINKS_URL;
   const { data, isLoading } = useLinkQuery(linkId);
-  const [slug, setSlug] = useState(generateId());
+  const [defaultSlug] = useState(generateId());
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
       onSuccess: async () => {
-        toast(formatMessage(messages.saved));
+        toast(t(messages.saved));
         touch('links');
+        touch(`link:${linkId}`);
         onSave?.();
         onClose?.();
       },
     });
   };
 
-  const handleSlug = () => {
-    const slug = generateId();
-
-    setSlug(slug);
-
-    return slug;
-  };
-
   const checkUrl = (url: string) => {
     if (!isValidUrl(url)) {
-      return formatMessage(labels.invalidUrl);
+      return t(labels.invalidUrl);
     }
     return true;
   };
-
-  useEffect(() => {
-    if (data) {
-      setSlug(data.slug);
-    }
-  }, [data]);
 
   if (linkId && isLoading) {
     return <Loading placement="absolute" />;
   }
 
   return (
-    <Form onSubmit={handleSubmit} error={getErrorMessage(error)} defaultValues={{ slug, ...data }}>
-      {({ setValue }) => {
+    <Form
+      onSubmit={handleSubmit}
+      error={getErrorMessage(error)}
+      defaultValues={{ slug: defaultSlug, ...data }}
+    >
+      {({ setValue, watch }) => {
+        const slug = watch('slug');
+
         return (
           <>
-            <FormField
-              label={formatMessage(labels.name)}
-              name="name"
-              rules={{ required: formatMessage(labels.required) }}
-            >
+            <FormField label={t(labels.name)} name="name" rules={{ required: t(labels.required) }}>
               <TextField autoComplete="off" autoFocus />
             </FormField>
 
             <FormField
-              label={formatMessage(labels.destinationUrl)}
+              label={t(labels.destinationUrl)}
               name="url"
-              rules={{ required: formatMessage(labels.required), validate: checkUrl }}
+              rules={{ required: t(labels.required), validate: checkUrl }}
             >
               <TextField placeholder="https://example.com" autoComplete="off" />
             </FormField>
 
-            <FormField
-              name="slug"
-              rules={{
-                required: formatMessage(labels.required),
-              }}
-              style={{ display: 'none' }}
-            >
-              <input type="hidden" />
-            </FormField>
+            <Grid columns="1fr auto" alignItems="end" gap>
+              <FormField
+                name="slug"
+                label={t({ id: 'label.slug', defaultMessage: 'Slug' })}
+                rules={{
+                  required: t(labels.required),
+                }}
+              >
+                <TextField autoComplete="off" />
+              </FormField>
+              <Button
+                variant="quiet"
+                onPress={() => setValue('slug', generateId(), { shouldDirty: true })}
+              >
+                <Icon>
+                  <RefreshCw />
+                </Icon>
+              </Button>
+            </Grid>
 
             <Column>
-              <Label>{formatMessage(labels.link)}</Label>
+              <Label>{t(labels.link)}</Label>
               <Row alignItems="center" gap>
                 <TextField
                   value={`${hostUrl}/${slug}`}
@@ -121,24 +121,16 @@ export function LinkEditForm({
                   allowCopy
                   style={{ width: '100%' }}
                 />
-                <Button
-                  variant="quiet"
-                  onPress={() => setValue('slug', handleSlug(), { shouldDirty: true })}
-                >
-                  <Icon>
-                    <RefreshCw />
-                  </Icon>
-                </Button>
               </Row>
             </Column>
 
             <Row justifyContent="flex-end" paddingTop="3" gap="3">
               {onClose && (
                 <Button isDisabled={isPending} onPress={onClose}>
-                  {formatMessage(labels.cancel)}
+                  {t(labels.cancel)}
                 </Button>
               )}
-              <FormSubmitButton>{formatMessage(labels.save)}</FormSubmitButton>
+              <FormSubmitButton>{t(labels.save)}</FormSubmitButton>
             </Row>
           </>
         );

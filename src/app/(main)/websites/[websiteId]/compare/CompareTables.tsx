@@ -10,7 +10,7 @@ import { formatNumber } from '@/lib/format';
 export function CompareTables({ websiteId }: { websiteId: string }) {
   const [data, setData] = useState([]);
   const { dateRange, dateCompare } = useDateRange();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const {
     router,
     updateParams,
@@ -30,72 +30,102 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
   const items = [
     {
       id: 'path',
-      label: formatMessage(labels.path),
+      label: t(labels.path),
       path: renderPath('path'),
     },
     {
       id: 'channel',
-      label: formatMessage(labels.channels),
+      label: t(labels.channels),
       path: renderPath('channel'),
     },
     {
       id: 'referrer',
-      label: formatMessage(labels.referrers),
+      label: t(labels.referrers),
       path: renderPath('referrer'),
     },
     {
       id: 'browser',
-      label: formatMessage(labels.browsers),
+      label: t(labels.browsers),
       path: renderPath('browser'),
     },
     {
       id: 'os',
-      label: formatMessage(labels.os),
+      label: t(labels.os),
       path: renderPath('os'),
     },
     {
       id: 'device',
-      label: formatMessage(labels.devices),
+      label: t(labels.devices),
       path: renderPath('device'),
     },
     {
       id: 'country',
-      label: formatMessage(labels.countries),
+      label: t(labels.countries),
       path: renderPath('country'),
     },
     {
       id: 'region',
-      label: formatMessage(labels.regions),
+      label: t(labels.regions),
       path: renderPath('region'),
     },
     {
       id: 'city',
-      label: formatMessage(labels.cities),
+      label: t(labels.cities),
       path: renderPath('city'),
     },
     {
       id: 'language',
-      label: formatMessage(labels.languages),
+      label: t(labels.languages),
       path: renderPath('language'),
     },
     {
       id: 'screen',
-      label: formatMessage(labels.screens),
+      label: t(labels.screens),
       path: renderPath('screen'),
     },
     {
       id: 'event',
-      label: formatMessage(labels.events),
+      label: t(labels.events),
       path: renderPath('event'),
     },
     {
+      id: 'utmSource',
+      label: t(labels.utmSource),
+      path: renderPath('utmSource'),
+    },
+    {
+      id: 'utmMedium',
+      label: t(labels.utmMedium),
+      path: renderPath('utmMedium'),
+    },
+    {
+      id: 'utmCampaign',
+      label: t(labels.utmCampaign),
+      path: renderPath('utmCampaign'),
+    },
+    {
+      id: 'utmContent',
+      label: t(labels.utmContent),
+      path: renderPath('utmContent'),
+    },
+    {
+      id: 'utmTerm',
+      label: t(labels.utmTerm),
+      path: renderPath('utmTerm'),
+    },
+    {
       id: 'hostname',
-      label: formatMessage(labels.hostname),
+      label: t(labels.hostname),
       path: renderPath('hostname'),
     },
     {
+      id: 'distinctId',
+      label: t(labels.distinctId),
+      path: renderPath('distinctId'),
+    },
+    {
       id: 'tag',
-      label: formatMessage(labels.tags),
+      label: t(labels.tags),
       path: renderPath('tag'),
     },
   ];
@@ -122,11 +152,12 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
     <>
       <Row width="300px">
         <Select
-          items={items}
-          label={formatMessage(labels.compare)}
+          label={t(labels.compare)}
           value={view}
           defaultValue={view}
           onChange={handleChange}
+          style={{ width: 200 }}
+          popoverProps={{ style: { width: 200 } }}
         >
           {items.map(({ id, label }) => (
             <ListItem key={id} id={id}>
@@ -136,10 +167,10 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
         </Select>
       </Row>
       <Panel minHeight="300px">
-        <Grid columns={{ xs: '1fr', lg: '1fr 1fr' }} gap="6" height="100%">
+        <Grid columns={{ base: '1fr', lg: '1fr 1fr' }} gap="6" height="100%">
           <Column gap="6">
             <Row alignItems="center" justifyContent="space-between">
-              <Heading size="2">{formatMessage(labels.previous)}</Heading>
+              <Heading size="base">{t(labels.previous)}</Heading>
               <DateDisplay startDate={startDate} endDate={endDate} />
             </Row>
             <MetricsTable
@@ -153,7 +184,7 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
           </Column>
           <Column border="left" paddingLeft="6" gap="6">
             <Row alignItems="center" justifyContent="space-between">
-              <Heading size="2"> {formatMessage(labels.current)}</Heading>
+              <Heading size="base"> {t(labels.current)}</Heading>
               <DateDisplay startDate={dateRange.startDate} endDate={dateRange.endDate} />
             </Row>
             <MetricsTable

@@ -16,12 +16,13 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
     pathname,
   } = useNavigation();
   const { filters } = useFilters();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const [currentFilters, setCurrentFilters] = useState(filters);
   const [currentSegment, setCurrentSegment] = useState(segment);
   const [currentCohort, setCurrentCohort] = useState(cohort);
   const { isMobile } = useMobile();
   const excludeFilters = pathname.includes('/pixels') || pathname.includes('/links');
+  const excludeEvent = !pathname.endsWith('/events');
 
   const handleReset = () => {
     setCurrentFilters([]);
@@ -48,11 +49,11 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
       <Column minHeight="500px">
         <Tabs>
           <TabList>
-            <Tab id="fields">{formatMessage(labels.fields)}</Tab>
+            <Tab id="fields">{t(labels.fields)}</Tab>
             {!excludeFilters && (
               <>
-                <Tab id="segments">{formatMessage(labels.segments)}</Tab>
-                <Tab id="cohorts">{formatMessage(labels.cohorts)}</Tab>
+                <Tab id="segments">{t(labels.segments)}</Tab>
+                <Tab id="cohorts">{t(labels.cohorts)}</Tab>
               </>
             )}
           </TabList>
@@ -61,7 +62,13 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
               websiteId={websiteId}
               value={currentFilters}
               onChange={setCurrentFilters}
-              exclude={excludeFilters ? ['path', 'title', 'hostname', 'tag', 'event'] : []}
+              exclude={
+                excludeFilters
+                  ? ['path', 'title', 'hostname', 'distinctId', 'tag', 'event']
+                  : excludeEvent
+                    ? ['event']
+                    : []
+              }
             />
           </TabPanel>
           <TabPanel id="segments">
@@ -82,11 +89,11 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
         </Tabs>
       </Column>
       <Row alignItems="center" justifyContent="space-between" gap>
-        <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
+        <Button onPress={handleReset}>{t(labels.reset)}</Button>
         <Row alignItems="center" justifyContent="flex-end" gridColumn="span 2" gap>
-          <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
+          <Button onPress={onClose}>{t(labels.cancel)}</Button>
           <Button variant="primary" onPress={handleSave}>
-            {formatMessage(labels.apply)}
+            {t(labels.apply)}
           </Button>
         </Row>
       </Row>

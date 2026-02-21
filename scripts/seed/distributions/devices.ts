@@ -1,4 +1,4 @@
-import { weightedRandom, pickRandom, type WeightedOption } from '../utils.js';
+import { pickRandom, type WeightedOption, weightedRandom } from '../utils.js';
 
 export type DeviceType = 'desktop' | 'mobile' | 'tablet';
 

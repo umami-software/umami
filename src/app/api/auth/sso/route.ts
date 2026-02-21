@@ -1,7 +1,7 @@
 import { saveAuth } from '@/lib/auth';
 import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
-import { json } from '@/lib/response';
+import { json, serverError } from '@/lib/response';
 
 export async function POST(request: Request) {
   const { auth, error } = await parseRequest(request);
@@ -10,9 +10,13 @@ export async function POST(request: Request) {
     return error();
   }
 
-  if (redis.enabled) {
-    const token = await saveAuth({ userId: auth.user.id }, 86400);
-
-    return json({ user: auth.user, token });
+  if (!redis.enabled) {
+    return serverError({
+      message: 'Redis is disabled',
+    });
   }
+
+  const token = await saveAuth({ userId: auth.user.id }, 86400);
+
+  return json({ user: auth.user, token });
 }

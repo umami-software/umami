@@ -12,11 +12,11 @@ export function TeamsHeader({
   allowCreate?: boolean;
   allowJoin?: boolean;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { user } = useLoginQuery();
 
   return (
-    <PageHeader title={formatMessage(labels.teams)}>
+    <PageHeader title={t(labels.teams)}>
       <Row gap="3">
         {allowJoin && <TeamsJoinButton />}
         {allowCreate && user.role !== ROLES.viewOnly && <TeamsAddButton />}

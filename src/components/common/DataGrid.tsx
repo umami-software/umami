@@ -37,7 +37,7 @@ export function DataGrid({
   renderEmpty = () => <Empty />,
   children,
 }: DataGridProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { data, error, isLoading, isFetching } = query;
   const { router, updateParams, query: queryParams } = useNavigation();
   const [search, setSearch] = useState(queryParams?.search || data?.search || '');
@@ -70,13 +70,13 @@ export function DataGrid({
             onSearch={handleSearch}
             delay={searchDelay || DEFAULT_SEARCH_DELAY}
             autoFocus={autoFocus}
-            placeholder={formatMessage(labels.search)}
+            placeholder={t(labels.search)}
           />
           {renderActions?.()}
         </Row>
       )}
       <LoadingPanel
-        data={data}
+        data={data?.data}
         isLoading={isLoading}
         isFetching={isFetching}
         error={error}

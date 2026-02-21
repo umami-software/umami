@@ -5,23 +5,18 @@ import { DialogButton } from '@/components/input/DialogButton';
 import { WebsiteAddForm } from './WebsiteAddForm';
 
 export function WebsiteAddButton({ teamId, onSave }: { teamId: string; onSave?: () => void }) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { toast } = useToast();
   const { touch } = useModified();
 
   const handleSave = async () => {
-    toast(formatMessage(messages.saved));
+    toast(t(messages.saved));
     touch('websites');
     onSave?.();
   };
 
   return (
-    <DialogButton
-      icon={<Plus />}
-      label={formatMessage(labels.addWebsite)}
-      variant="primary"
-      width="400px"
-    >
+    <DialogButton icon={<Plus />} label={t(labels.addWebsite)} variant="primary" width="400px">
       {({ close }) => <WebsiteAddForm teamId={teamId} onSave={handleSave} onClose={close} />}
     </DialogButton>
   );

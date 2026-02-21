@@ -9,6 +9,7 @@ import {
   differenceInCalendarMonths,
   differenceInCalendarWeeks,
   differenceInCalendarYears,
+  differenceInDays,
   differenceInHours,
   differenceInMinutes,
   endOfDay,
@@ -136,7 +137,12 @@ export function parseDateValue(value: string) {
   return { num: +num, unit };
 }
 
-export function parseDateRange(value: string, locale = 'en-US', timezone?: string): DateRange {
+export function parseDateRange(
+  value: string,
+  unitValue?: string,
+  locale = 'en-US',
+  timezone?: string,
+): DateRange {
   if (typeof value !== 'string') {
     return null;
   }
@@ -146,7 +152,7 @@ export function parseDateRange(value: string, locale = 'en-US', timezone?: strin
 
     const startDate = new Date(+startTime);
     const endDate = new Date(+endTime);
-    const unit = getMinimumUnit(startDate, endDate);
+    const unit = getMinimumUnit(startDate, endDate, true);
 
     return {
       startDate,
@@ -169,14 +175,14 @@ export function parseDateRange(value: string, locale = 'en-US', timezone?: strin
         endDate: endOfHour(now),
         offset: 0,
         num: num || 1,
-        unit,
+        unit: unitValue || unit,
         value,
       };
     case 'day':
       return {
         startDate: num ? subDays(startOfDay(now), num) : startOfDay(now),
         endDate: endOfDay(now),
-        unit: num ? 'day' : 'hour',
+        unit: unitValue ? unitValue : num ? 'day' : 'hour',
         offset: 0,
         num: num || 1,
         value,
@@ -187,7 +193,7 @@ export function parseDateRange(value: string, locale = 'en-US', timezone?: strin
           ? subWeeks(startOfWeek(now, { locale: dateLocale }), num)
           : startOfWeek(now, { locale: dateLocale }),
         endDate: endOfWeek(now, { locale: dateLocale }),
-        unit: 'day',
+        unit: unitValue || 'day',
         offset: 0,
         num: num || 1,
         value,
@@ -196,7 +202,7 @@ export function parseDateRange(value: string, locale = 'en-US', timezone?: strin
       return {
         startDate: num ? subMonths(startOfMonth(now), num) : startOfMonth(now),
         endDate: endOfMonth(now),
-        unit: num ? 'month' : 'day',
+        unit: unitValue ? unitValue : num ? 'month' : 'day',
         offset: 0,
         num: num || 1,
         value,
@@ -205,7 +211,7 @@ export function parseDateRange(value: string, locale = 'en-US', timezone?: strin
       return {
         startDate: num ? subYears(startOfYear(now), num) : startOfYear(now),
         endDate: endOfYear(now),
-        unit: 'month',
+        unit: unitValue || 'month',
         offset: 0,
         num: num || 1,
         value,
@@ -273,12 +279,20 @@ export function getAllowedUnits(startDate: Date, endDate: Date) {
   return index >= 0 ? units.splice(index) : [];
 }
 
-export function getMinimumUnit(startDate: number | Date, endDate: number | Date) {
+export function getMinimumUnit(
+  startDate: number | Date,
+  endDate: number | Date,
+  isDateRange: boolean = false,
+) {
   if (differenceInMinutes(endDate, startDate) <= 60) {
     return 'minute';
-  } else if (differenceInHours(endDate, startDate) <= 48) {
+  } else if (
+    isDateRange
+      ? differenceInHours(endDate, startDate) <= 48
+      : differenceInDays(endDate, startDate) <= 30
+  ) {
     return 'hour';
-  } else if (differenceInCalendarMonths(endDate, startDate) <= 6) {
+  } else if (differenceInCalendarMonths(endDate, startDate) <= 7) {
     return 'day';
   } else if (differenceInCalendarMonths(endDate, startDate) <= 24) {
     return 'month';

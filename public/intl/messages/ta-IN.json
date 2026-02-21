@@ -1,2218 +1,390 @@
 {
-  "label.access-code": [
-    {
-      "type": 0,
-      "value": "Access code"
-    }
-  ],
-  "label.actions": [
-    {
-      "type": 0,
-      "value": "செயல்கள்"
-    }
-  ],
-  "label.activity": [
-    {
-      "type": 0,
-      "value": "Activity log"
-    }
-  ],
-  "label.add": [
-    {
-      "type": 0,
-      "value": "Add"
-    }
-  ],
-  "label.add-board": [
-    {
-      "type": 0,
-      "value": "Add board"
-    }
-  ],
-  "label.add-description": [
-    {
-      "type": 0,
-      "value": "Add description"
-    }
-  ],
-  "label.add-member": [
-    {
-      "type": 0,
-      "value": "Add member"
-    }
-  ],
-  "label.add-step": [
-    {
-      "type": 0,
-      "value": "Add step"
-    }
-  ],
-  "label.add-website": [
-    {
-      "type": 0,
-      "value": "வலைத்தளத்தைச் சேர்க்க"
-    }
-  ],
-  "label.admin": [
-    {
-      "type": 0,
-      "value": "நிர்வாகியைச் சேர்க்க"
-    }
-  ],
-  "label.affiliate": [
-    {
-      "type": 0,
-      "value": "Affiliate"
-    }
-  ],
-  "label.after": [
-    {
-      "type": 0,
-      "value": "After"
-    }
-  ],
-  "label.all": [
-    {
-      "type": 0,
-      "value": "எல்லாம்"
-    }
-  ],
-  "label.all-time": [
-    {
-      "type": 0,
-      "value": "All time"
-    }
-  ],
-  "label.analytics": [
-    {
-      "type": 0,
-      "value": "Analytics"
-    }
-  ],
-  "label.apply": [
-    {
-      "type": 0,
-      "value": "Apply"
-    }
-  ],
-  "label.attribution": [
-    {
-      "type": 0,
-      "value": "Attribution"
-    }
-  ],
-  "label.attribution-description": [
-    {
-      "type": 0,
-      "value": "See how users engage with your marketing and what drives conversions."
-    }
-  ],
-  "label.average": [
-    {
-      "type": 0,
-      "value": "Average"
-    }
-  ],
-  "label.back": [
-    {
-      "type": 0,
-      "value": "பின்னால்"
-    }
-  ],
-  "label.before": [
-    {
-      "type": 0,
-      "value": "Before"
-    }
-  ],
-  "label.boards": [
-    {
-      "type": 0,
-      "value": "Boards"
-    }
-  ],
-  "label.bounce-rate": [
-    {
-      "type": 0,
-      "value": "துள்ளல் விகிதம்"
-    }
-  ],
-  "label.breakdown": [
-    {
-      "type": 0,
-      "value": "Breakdown"
-    }
-  ],
-  "label.browser": [
-    {
-      "type": 0,
-      "value": "Browser"
-    }
-  ],
-  "label.browsers": [
-    {
-      "type": 0,
-      "value": "உலாவிகள்"
-    }
-  ],
-  "label.campaigns": [
-    {
-      "type": 0,
-      "value": "Campaigns"
-    }
-  ],
-  "label.cancel": [
-    {
-      "type": 0,
-      "value": "ரத்துசெய்"
-    }
-  ],
-  "label.change-password": [
-    {
-      "type": 0,
-      "value": "கடவுச்சொல்லை மாற்று"
-    }
-  ],
-  "label.channels": [
-    {
-      "type": 0,
-      "value": "Channels"
-    }
-  ],
-  "label.cities": [
-    {
-      "type": 0,
-      "value": "Cities"
-    }
-  ],
-  "label.city": [
-    {
-      "type": 0,
-      "value": "City"
-    }
-  ],
-  "label.clear-all": [
-    {
-      "type": 0,
-      "value": "Clear all"
-    }
-  ],
-  "label.cohort": [
-    {
-      "type": 0,
-      "value": "Cohort"
-    }
-  ],
-  "label.compare": [
-    {
-      "type": 0,
-      "value": "Compare"
-    }
-  ],
-  "label.compare-dates": [
-    {
-      "type": 0,
-      "value": "Compare dates"
-    }
-  ],
-  "label.confirm": [
-    {
-      "type": 0,
-      "value": "Confirm"
-    }
-  ],
-  "label.confirm-password": [
-    {
-      "type": 0,
-      "value": "கடவுச்சொல்லை உறுதிப்படுத்தவும்"
-    }
-  ],
-  "label.contains": [
-    {
-      "type": 0,
-      "value": "Contains"
-    }
-  ],
-  "label.content": [
-    {
-      "type": 0,
-      "value": "Content"
-    }
-  ],
-  "label.continue": [
-    {
-      "type": 0,
-      "value": "Continue"
-    }
-  ],
-  "label.conversion": [
-    {
-      "type": 0,
-      "value": "Conversion"
-    }
-  ],
-  "label.conversion-rate": [
-    {
-      "type": 0,
-      "value": "Conversion rate"
-    }
-  ],
-  "label.conversion-step": [
-    {
-      "type": 0,
-      "value": "Conversion step"
-    }
-  ],
-  "label.count": [
-    {
-      "type": 0,
-      "value": "Count"
-    }
-  ],
-  "label.countries": [
-    {
-      "type": 0,
-      "value": "நாடுகள்"
-    }
-  ],
-  "label.country": [
-    {
-      "type": 0,
-      "value": "Country"
-    }
-  ],
-  "label.create": [
-    {
-      "type": 0,
-      "value": "Create"
-    }
-  ],
-  "label.create-report": [
-    {
-      "type": 0,
-      "value": "Create report"
-    }
-  ],
-  "label.create-team": [
-    {
-      "type": 0,
-      "value": "Create team"
-    }
-  ],
-  "label.create-user": [
-    {
-      "type": 0,
-      "value": "Create user"
-    }
-  ],
-  "label.created": [
-    {
-      "type": 0,
-      "value": "Created"
-    }
-  ],
-  "label.created-by": [
-    {
-      "type": 0,
-      "value": "Created By"
-    }
-  ],
-  "label.currency": [
-    {
-      "type": 0,
-      "value": "Currency"
-    }
-  ],
-  "label.current": [
-    {
-      "type": 0,
-      "value": "Current"
-    }
-  ],
-  "label.current-password": [
-    {
-      "type": 0,
-      "value": "தற்போதைய கடவுச்சொல்"
-    }
-  ],
-  "label.custom-range": [
-    {
-      "type": 0,
-      "value": "தனிப்பயன் வேறுபாட்டெல்லை"
-    }
-  ],
-  "label.dashboard": [
-    {
-      "type": 0,
-      "value": "முகப்பு"
-    }
-  ],
-  "label.data": [
-    {
-      "type": 0,
-      "value": "Data"
-    }
-  ],
-  "label.date": [
-    {
-      "type": 0,
-      "value": "Date"
-    }
-  ],
-  "label.date-range": [
-    {
-      "type": 0,
-      "value": "தேதி வரம்பு"
-    }
-  ],
-  "label.day": [
-    {
-      "type": 0,
-      "value": "Day"
-    }
-  ],
-  "label.default-date-range": [
-    {
-      "type": 0,
-      "value": "இயல்புநிலை தேதி வரம்பு"
-    }
-  ],
-  "label.delete": [
-    {
-      "type": 0,
-      "value": "அழி"
-    }
-  ],
-  "label.delete-report": [
-    {
-      "type": 0,
-      "value": "Delete report"
-    }
-  ],
-  "label.delete-team": [
-    {
-      "type": 0,
-      "value": "Delete team"
-    }
-  ],
-  "label.delete-user": [
-    {
-      "type": 0,
-      "value": "Delete user"
-    }
-  ],
-  "label.delete-website": [
-    {
-      "type": 0,
-      "value": "வலைத்தளத்தை நீக்கு"
-    }
-  ],
-  "label.description": [
-    {
-      "type": 0,
-      "value": "Description"
-    }
-  ],
-  "label.desktop": [
-    {
-      "type": 0,
-      "value": "மேசை கணினி"
-    }
-  ],
-  "label.details": [
-    {
-      "type": 0,
-      "value": "Details"
-    }
-  ],
-  "label.device": [
-    {
-      "type": 0,
-      "value": "Device"
-    }
-  ],
-  "label.devices": [
-    {
-      "type": 0,
-      "value": "சாதனங்கள்"
-    }
-  ],
-  "label.direct": [
-    {
-      "type": 0,
-      "value": "Direct"
-    }
-  ],
-  "label.dismiss": [
-    {
-      "type": 0,
-      "value": "நீக்கு"
-    }
-  ],
-  "label.distinct-id": [
-    {
-      "type": 0,
-      "value": "Distinct ID"
-    }
-  ],
-  "label.does-not-contain": [
-    {
-      "type": 0,
-      "value": "Does not contain"
-    }
-  ],
-  "label.does-not-include": [
-    {
-      "type": 0,
-      "value": "Does not include"
-    }
-  ],
-  "label.doest-not-exist": [
-    {
-      "type": 0,
-      "value": "Does not exist"
-    }
-  ],
-  "label.domain": [
-    {
-      "type": 0,
-      "value": "கள முகவரி"
-    }
-  ],
-  "label.dropoff": [
-    {
-      "type": 0,
-      "value": "Dropoff"
-    }
-  ],
-  "label.edit": [
-    {
-      "type": 0,
-      "value": "திருத்துதல்"
-    }
-  ],
-  "label.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "Edit dashboard"
-    }
-  ],
-  "label.edit-member": [
-    {
-      "type": 0,
-      "value": "Edit member"
-    }
-  ],
-  "label.email": [
-    {
-      "type": 0,
-      "value": "Email"
-    }
-  ],
-  "label.enable-share-url": [
-    {
-      "type": 0,
-      "value": "கள முகவரியை பகிரலாம்"
-    }
-  ],
-  "label.end-step": [
-    {
-      "type": 0,
-      "value": "End Step"
-    }
-  ],
-  "label.entry": [
-    {
-      "type": 0,
-      "value": "Entry URL"
-    }
-  ],
-  "label.event": [
-    {
-      "type": 0,
-      "value": "Event"
-    }
-  ],
-  "label.event-data": [
-    {
-      "type": 0,
-      "value": "Event data"
-    }
-  ],
-  "label.event-name": [
-    {
-      "type": 0,
-      "value": "Event name"
-    }
-  ],
-  "label.events": [
-    {
-      "type": 0,
-      "value": "நிகழ்வுகள்"
-    }
-  ],
-  "label.exists": [
-    {
-      "type": 0,
-      "value": "Exists"
-    }
-  ],
-  "label.exit": [
-    {
-      "type": 0,
-      "value": "Exit URL"
-    }
-  ],
-  "label.false": [
-    {
-      "type": 0,
-      "value": "False"
-    }
-  ],
-  "label.field": [
-    {
-      "type": 0,
-      "value": "Field"
-    }
-  ],
-  "label.fields": [
-    {
-      "type": 0,
-      "value": "Fields"
-    }
-  ],
-  "label.filter": [
-    {
-      "type": 0,
-      "value": "Filter"
-    }
-  ],
-  "label.filter-combined": [
-    {
-      "type": 0,
-      "value": "ஒருங்கிணைந்த"
-    }
-  ],
-  "label.filter-raw": [
-    {
-      "type": 0,
-      "value": "மூல"
-    }
-  ],
-  "label.filters": [
-    {
-      "type": 0,
-      "value": "Filters"
-    }
-  ],
-  "label.first-click": [
-    {
-      "type": 0,
-      "value": "First click"
-    }
-  ],
-  "label.first-seen": [
-    {
-      "type": 0,
-      "value": "First seen"
-    }
-  ],
-  "label.funnel": [
-    {
-      "type": 0,
-      "value": "Funnel"
-    }
-  ],
-  "label.funnel-description": [
-    {
-      "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
-    }
-  ],
-  "label.funnels": [
-    {
-      "type": 0,
-      "value": "Funnels"
-    }
-  ],
-  "label.goal": [
-    {
-      "type": 0,
-      "value": "Goal"
-    }
-  ],
-  "label.goals": [
-    {
-      "type": 0,
-      "value": "Goals"
-    }
-  ],
-  "label.goals-description": [
-    {
-      "type": 0,
-      "value": "Track your goals for pageviews and events."
-    }
-  ],
-  "label.greater-than": [
-    {
-      "type": 0,
-      "value": "Greater than"
-    }
-  ],
-  "label.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "Greater than or equals"
-    }
-  ],
-  "label.grouped": [
-    {
-      "type": 0,
-      "value": "Grouped"
-    }
-  ],
-  "label.hostname": [
-    {
-      "type": 0,
-      "value": "Hostname"
-    }
-  ],
-  "label.includes": [
-    {
-      "type": 0,
-      "value": "Includes"
-    }
-  ],
-  "label.insight": [
-    {
-      "type": 0,
-      "value": "Insight"
-    }
-  ],
-  "label.insights": [
-    {
-      "type": 0,
-      "value": "Insights"
-    }
-  ],
-  "label.insights-description": [
-    {
-      "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
-    }
-  ],
-  "label.is": [
-    {
-      "type": 0,
-      "value": "Is"
-    }
-  ],
-  "label.is-false": [
-    {
-      "type": 0,
-      "value": "Is false"
-    }
-  ],
-  "label.is-not": [
-    {
-      "type": 0,
-      "value": "Is not"
-    }
-  ],
-  "label.is-not-set": [
-    {
-      "type": 0,
-      "value": "Is not set"
-    }
-  ],
-  "label.is-set": [
-    {
-      "type": 0,
-      "value": "Is set"
-    }
-  ],
-  "label.is-true": [
-    {
-      "type": 0,
-      "value": "Is true"
-    }
-  ],
-  "label.join": [
-    {
-      "type": 0,
-      "value": "Join"
-    }
-  ],
-  "label.join-team": [
-    {
-      "type": 0,
-      "value": "Join team"
-    }
-  ],
-  "label.journey": [
-    {
-      "type": 0,
-      "value": "Journey"
-    }
-  ],
-  "label.journey-description": [
-    {
-      "type": 0,
-      "value": "Understand how users navigate through your website."
-    }
-  ],
-  "label.journeys": [
-    {
-      "type": 0,
-      "value": "Journeys"
-    }
-  ],
-  "label.language": [
-    {
-      "type": 0,
-      "value": "Language"
-    }
-  ],
-  "label.languages": [
-    {
-      "type": 0,
-      "value": "Languages"
-    }
-  ],
-  "label.laptop": [
-    {
-      "type": 0,
-      "value": "மடிக்கணினி"
-    }
-  ],
-  "label.last-click": [
-    {
-      "type": 0,
-      "value": "Last click"
-    }
-  ],
-  "label.last-days": [
-    {
-      "type": 0,
-      "value": "முந்தைய "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " நாட்கள்"
-    }
-  ],
-  "label.last-hours": [
-    {
-      "type": 0,
-      "value": "முந்தைய "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " மணி"
-    }
-  ],
-  "label.last-months": [
-    {
-      "type": 0,
-      "value": "Last "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " months"
-    }
-  ],
-  "label.last-seen": [
-    {
-      "type": 0,
-      "value": "Last seen"
-    }
-  ],
-  "label.leave": [
-    {
-      "type": 0,
-      "value": "Leave"
-    }
-  ],
-  "label.leave-team": [
-    {
-      "type": 0,
-      "value": "Leave team"
-    }
-  ],
-  "label.less-than": [
-    {
-      "type": 0,
-      "value": "Less than"
-    }
-  ],
-  "label.less-than-equals": [
-    {
-      "type": 0,
-      "value": "Less than or equals"
-    }
-  ],
-  "label.links": [
-    {
-      "type": 0,
-      "value": "Links"
-    }
-  ],
-  "label.login": [
-    {
-      "type": 0,
-      "value": "உள்நுழைய"
-    }
-  ],
-  "label.logout": [
-    {
-      "type": 0,
-      "value": "வெளியேறு"
-    }
-  ],
-  "label.manage": [
-    {
-      "type": 0,
-      "value": "Manage"
-    }
-  ],
-  "label.manager": [
-    {
-      "type": 0,
-      "value": "Manager"
-    }
-  ],
-  "label.max": [
-    {
-      "type": 0,
-      "value": "Max"
-    }
-  ],
-  "label.maximize": [
-    {
-      "type": 0,
-      "value": "Expand"
-    }
-  ],
-  "label.medium": [
-    {
-      "type": 0,
-      "value": "Medium"
-    }
-  ],
-  "label.member": [
-    {
-      "type": 0,
-      "value": "Member"
-    }
-  ],
-  "label.members": [
-    {
-      "type": 0,
-      "value": "Members"
-    }
-  ],
-  "label.min": [
-    {
-      "type": 0,
-      "value": "Min"
-    }
-  ],
-  "label.mobile": [
-    {
-      "type": 0,
-      "value": "கைபேசி"
-    }
-  ],
-  "label.model": [
-    {
-      "type": 0,
-      "value": "Model"
-    }
-  ],
-  "label.more": [
-    {
-      "type": 0,
-      "value": "மேலும்"
-    }
-  ],
-  "label.my-account": [
-    {
-      "type": 0,
-      "value": "My account"
-    }
-  ],
-  "label.my-websites": [
-    {
-      "type": 0,
-      "value": "My websites"
-    }
-  ],
-  "label.name": [
-    {
-      "type": 0,
-      "value": "பெயர்"
-    }
-  ],
-  "label.new-password": [
-    {
-      "type": 0,
-      "value": "புதிய கடவுச்சொல்"
-    }
-  ],
-  "label.none": [
-    {
-      "type": 0,
-      "value": "None"
-    }
-  ],
-  "label.number-of-records": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "record"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "records"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "label.ok": [
-    {
-      "type": 0,
-      "value": "OK"
-    }
-  ],
-  "label.online": [
-    {
-      "type": 0,
-      "value": "Online"
-    }
-  ],
-  "label.organic-search": [
-    {
-      "type": 0,
-      "value": "Organic search"
-    }
-  ],
-  "label.organic-shopping": [
-    {
-      "type": 0,
-      "value": "Organic shopping"
-    }
-  ],
-  "label.organic-social": [
-    {
-      "type": 0,
-      "value": "Organic social"
-    }
-  ],
-  "label.organic-video": [
-    {
-      "type": 0,
-      "value": "Organic video"
-    }
-  ],
-  "label.os": [
-    {
-      "type": 0,
-      "value": "OS"
-    }
-  ],
-  "label.other": [
-    {
-      "type": 0,
-      "value": "Other"
-    }
-  ],
-  "label.overview": [
-    {
-      "type": 0,
-      "value": "Overview"
-    }
-  ],
-  "label.owner": [
-    {
-      "type": 0,
-      "value": "Owner"
-    }
-  ],
-  "label.page": [
-    {
-      "type": 0,
-      "value": "Page"
-    }
-  ],
-  "label.page-of": [
-    {
-      "type": 0,
-      "value": "Page "
-    },
-    {
-      "type": 1,
-      "value": "current"
-    },
-    {
-      "type": 0,
-      "value": " of "
-    },
-    {
-      "type": 1,
-      "value": "total"
-    }
-  ],
-  "label.page-views": [
-    {
-      "type": 0,
-      "value": "பக்க காட்சிகள்"
-    }
-  ],
-  "label.pageTitle": [
-    {
-      "type": 0,
-      "value": "Page title"
-    }
-  ],
-  "label.pages": [
-    {
-      "type": 0,
-      "value": "பக்கங்கள்"
-    }
-  ],
-  "label.paid-ads": [
-    {
-      "type": 0,
-      "value": "Paid ads"
-    }
-  ],
-  "label.paid-search": [
-    {
-      "type": 0,
-      "value": "Paid search"
-    }
-  ],
-  "label.paid-shopping": [
-    {
-      "type": 0,
-      "value": "Paid shopping"
-    }
-  ],
-  "label.paid-social": [
-    {
-      "type": 0,
-      "value": "Paid social"
-    }
-  ],
-  "label.paid-video": [
-    {
-      "type": 0,
-      "value": "Paid video"
-    }
-  ],
-  "label.password": [
-    {
-      "type": 0,
-      "value": "கடவுச்சொல்"
-    }
-  ],
-  "label.path": [
-    {
-      "type": 0,
-      "value": "Path"
-    }
-  ],
-  "label.paths": [
-    {
-      "type": 0,
-      "value": "Paths"
-    }
-  ],
-  "label.pixels": [
-    {
-      "type": 0,
-      "value": "Pixels"
-    }
-  ],
-  "label.powered-by": [
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": " ஆல் இயக்கப்படுகிறது"
-    }
-  ],
-  "label.previous": [
-    {
-      "type": 0,
-      "value": "Previous"
-    }
-  ],
-  "label.previous-period": [
-    {
-      "type": 0,
-      "value": "Previous period"
-    }
-  ],
-  "label.previous-year": [
-    {
-      "type": 0,
-      "value": "Previous year"
-    }
-  ],
-  "label.profile": [
-    {
-      "type": 0,
-      "value": "சுயவிவரம்"
-    }
-  ],
-  "label.properties": [
-    {
-      "type": 0,
-      "value": "Properties"
-    }
-  ],
-  "label.property": [
-    {
-      "type": 0,
-      "value": "Property"
-    }
-  ],
-  "label.queries": [
-    {
-      "type": 0,
-      "value": "Queries"
-    }
-  ],
-  "label.query": [
-    {
-      "type": 0,
-      "value": "Query"
-    }
-  ],
-  "label.query-parameters": [
-    {
-      "type": 0,
-      "value": "Query parameters"
-    }
-  ],
-  "label.realtime": [
-    {
-      "type": 0,
-      "value": "தற்போதைய"
-    }
-  ],
-  "label.referral": [
-    {
-      "type": 0,
-      "value": "Referral"
-    }
-  ],
-  "label.referrer": [
-    {
-      "type": 0,
-      "value": "Referrer"
-    }
-  ],
-  "label.referrers": [
-    {
-      "type": 0,
-      "value": "குறிப்பிடுவோர்"
-    }
-  ],
-  "label.refresh": [
-    {
-      "type": 0,
-      "value": "புதுப்பிப்பு"
-    }
-  ],
-  "label.regenerate": [
-    {
-      "type": 0,
-      "value": "Regenerate"
-    }
-  ],
-  "label.region": [
-    {
-      "type": 0,
-      "value": "Region"
-    }
-  ],
-  "label.regions": [
-    {
-      "type": 0,
-      "value": "Regions"
-    }
-  ],
-  "label.remaining": [
-    {
-      "type": 0,
-      "value": "Remaining"
-    }
-  ],
-  "label.remove": [
-    {
-      "type": 0,
-      "value": "Remove"
-    }
-  ],
-  "label.remove-member": [
-    {
-      "type": 0,
-      "value": "Remove member"
-    }
-  ],
-  "label.reports": [
-    {
-      "type": 0,
-      "value": "Reports"
-    }
-  ],
-  "label.required": [
-    {
-      "type": 0,
-      "value": "தேவையானவை"
-    }
-  ],
-  "label.reset": [
-    {
-      "type": 0,
-      "value": "மீட்டமை"
-    }
-  ],
-  "label.reset-website": [
-    {
-      "type": 0,
-      "value": "Reset statistics"
-    }
-  ],
-  "label.retention": [
-    {
-      "type": 0,
-      "value": "Retention"
-    }
-  ],
-  "label.retention-description": [
-    {
-      "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
-    }
-  ],
-  "label.revenue": [
-    {
-      "type": 0,
-      "value": "Revenue"
-    }
-  ],
-  "label.revenue-description": [
-    {
-      "type": 0,
-      "value": "Look into your revenue across time."
-    }
-  ],
-  "label.role": [
-    {
-      "type": 0,
-      "value": "Role"
-    }
-  ],
-  "label.run-query": [
-    {
-      "type": 0,
-      "value": "Run query"
-    }
-  ],
-  "label.save": [
-    {
-      "type": 0,
-      "value": "சேமி"
-    }
-  ],
-  "label.screens": [
-    {
-      "type": 0,
-      "value": "Screens"
-    }
-  ],
-  "label.search": [
-    {
-      "type": 0,
-      "value": "Search"
-    }
-  ],
-  "label.select": [
-    {
-      "type": 0,
-      "value": "Select"
-    }
-  ],
-  "label.select-date": [
-    {
-      "type": 0,
-      "value": "Select date"
-    }
-  ],
-  "label.select-filter": [
-    {
-      "type": 0,
-      "value": "Select filter"
-    }
-  ],
-  "label.select-role": [
-    {
-      "type": 0,
-      "value": "Select role"
-    }
-  ],
-  "label.select-website": [
-    {
-      "type": 0,
-      "value": "Select website"
-    }
-  ],
-  "label.session": [
-    {
-      "type": 0,
-      "value": "Session"
-    }
-  ],
-  "label.session-data": [
-    {
-      "type": 0,
-      "value": "Session data"
-    }
-  ],
-  "label.sessions": [
-    {
-      "type": 0,
-      "value": "Sessions"
-    }
-  ],
-  "label.settings": [
-    {
-      "type": 0,
-      "value": "அமைப்புகள்"
-    }
-  ],
-  "label.share": [
-    {
-      "type": 0,
-      "value": "Share"
-    }
-  ],
-  "label.share-url": [
-    {
-      "type": 0,
-      "value": "வலைத்தள களத்தைப் பகிரவும்"
-    }
-  ],
-  "label.single-day": [
-    {
-      "type": 0,
-      "value": "ஒரு நாள்"
-    }
-  ],
-  "label.sms": [
-    {
-      "type": 0,
-      "value": "SMS"
-    }
-  ],
-  "label.sources": [
-    {
-      "type": 0,
-      "value": "Sources"
-    }
-  ],
-  "label.start-step": [
-    {
-      "type": 0,
-      "value": "Start Step"
-    }
-  ],
-  "label.steps": [
-    {
-      "type": 0,
-      "value": "Steps"
-    }
-  ],
-  "label.sum": [
-    {
-      "type": 0,
-      "value": "Sum"
-    }
-  ],
-  "label.tablet": [
-    {
-      "type": 0,
-      "value": "கையடக்க கணினி"
-    }
-  ],
-  "label.tag": [
-    {
-      "type": 0,
-      "value": "Tag"
-    }
-  ],
-  "label.tags": [
-    {
-      "type": 0,
-      "value": "Tags"
-    }
-  ],
-  "label.team": [
-    {
-      "type": 0,
-      "value": "Team"
-    }
-  ],
-  "label.team-id": [
-    {
-      "type": 0,
-      "value": "Team ID"
-    }
-  ],
-  "label.team-manager": [
-    {
-      "type": 0,
-      "value": "Team manager"
-    }
-  ],
-  "label.team-member": [
-    {
-      "type": 0,
-      "value": "Team member"
-    }
-  ],
-  "label.team-name": [
-    {
-      "type": 0,
-      "value": "Team name"
-    }
-  ],
-  "label.team-owner": [
-    {
-      "type": 0,
-      "value": "Team owner"
-    }
-  ],
-  "label.team-settings": [
-    {
-      "type": 0,
-      "value": "Team settings"
-    }
-  ],
-  "label.team-view-only": [
-    {
-      "type": 0,
-      "value": "Team view only"
-    }
-  ],
-  "label.team-websites": [
-    {
-      "type": 0,
-      "value": "Team websites"
-    }
-  ],
-  "label.teams": [
-    {
-      "type": 0,
-      "value": "Teams"
-    }
-  ],
-  "label.terms": [
-    {
-      "type": 0,
-      "value": "Terms"
-    }
-  ],
-  "label.theme": [
-    {
-      "type": 0,
-      "value": "Theme"
-    }
-  ],
-  "label.this-month": [
-    {
-      "type": 0,
-      "value": "இந்த மாதம்"
-    }
-  ],
-  "label.this-week": [
-    {
-      "type": 0,
-      "value": "இந்த வாரம்"
-    }
-  ],
-  "label.this-year": [
-    {
-      "type": 0,
-      "value": "இந்த வருடம்"
-    }
-  ],
-  "label.timezone": [
-    {
-      "type": 0,
-      "value": "நேர மண்டலம்"
-    }
-  ],
-  "label.title": [
-    {
-      "type": 0,
-      "value": "Title"
-    }
-  ],
-  "label.today": [
-    {
-      "type": 0,
-      "value": "இன்று"
-    }
-  ],
-  "label.toggle-charts": [
-    {
-      "type": 0,
-      "value": "Toggle charts"
-    }
-  ],
-  "label.total": [
-    {
-      "type": 0,
-      "value": "Total"
-    }
-  ],
-  "label.total-records": [
-    {
-      "type": 0,
-      "value": "Total records"
-    }
-  ],
-  "label.tracking-code": [
-    {
-      "type": 0,
-      "value": "கண்காணிப்பு குறியீடு"
-    }
-  ],
-  "label.transactions": [
-    {
-      "type": 0,
-      "value": "Transactions"
-    }
-  ],
-  "label.transfer": [
-    {
-      "type": 0,
-      "value": "Transfer"
-    }
-  ],
-  "label.transfer-website": [
-    {
-      "type": 0,
-      "value": "Transfer website"
-    }
-  ],
-  "label.true": [
-    {
-      "type": 0,
-      "value": "True"
-    }
-  ],
-  "label.type": [
-    {
-      "type": 0,
-      "value": "Type"
-    }
-  ],
-  "label.unique": [
-    {
-      "type": 0,
-      "value": "Unique"
-    }
-  ],
-  "label.unique-visitors": [
-    {
-      "type": 0,
-      "value": "தனிப்பட்ட பார்வையாளர்கள்"
-    }
-  ],
-  "label.uniqueCustomers": [
-    {
-      "type": 0,
-      "value": "Unique Customers"
-    }
-  ],
-  "label.unknown": [
-    {
-      "type": 0,
-      "value": "தெரியாத"
-    }
-  ],
-  "label.untitled": [
-    {
-      "type": 0,
-      "value": "Untitled"
-    }
-  ],
-  "label.update": [
-    {
-      "type": 0,
-      "value": "Update"
-    }
-  ],
-  "label.user": [
-    {
-      "type": 0,
-      "value": "User"
-    }
-  ],
-  "label.username": [
-    {
-      "type": 0,
-      "value": "பயனர்பெயர்"
-    }
-  ],
-  "label.users": [
-    {
-      "type": 0,
-      "value": "Users"
-    }
-  ],
-  "label.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "label.utm-description": [
-    {
-      "type": 0,
-      "value": "Track your campaigns through UTM parameters."
-    }
-  ],
-  "label.value": [
-    {
-      "type": 0,
-      "value": "Value"
-    }
-  ],
-  "label.view": [
-    {
-      "type": 0,
-      "value": "View"
-    }
-  ],
-  "label.view-details": [
-    {
-      "type": 0,
-      "value": "விபரங்களை பார்"
-    }
-  ],
-  "label.view-only": [
-    {
-      "type": 0,
-      "value": "View only"
-    }
-  ],
-  "label.views": [
-    {
-      "type": 0,
-      "value": "பார்வைகள்"
-    }
-  ],
-  "label.views-per-visit": [
-    {
-      "type": 0,
-      "value": "Views per visit"
-    }
-  ],
-  "label.visit-duration": [
-    {
-      "type": 0,
-      "value": "சராசரி வருகை நேரம்"
-    }
-  ],
-  "label.visitors": [
-    {
-      "type": 0,
-      "value": "பார்வையாளர்கள்"
-    }
-  ],
-  "label.visits": [
-    {
-      "type": 0,
-      "value": "Visits"
-    }
-  ],
-  "label.website": [
-    {
-      "type": 0,
-      "value": "Website"
-    }
-  ],
-  "label.website-id": [
-    {
-      "type": 0,
-      "value": "Website ID"
-    }
-  ],
-  "label.websites": [
-    {
-      "type": 0,
-      "value": "வலைத்தளங்கள்"
-    }
-  ],
-  "label.window": [
-    {
-      "type": 0,
-      "value": "Window"
-    }
-  ],
-  "label.yesterday": [
-    {
-      "type": 0,
-      "value": "Yesterday"
-    }
-  ],
-  "message.action-confirmation": [
-    {
-      "type": 0,
-      "value": "Type "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " in the box below to confirm."
-    }
-  ],
-  "message.active-users": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " தற்போதைய "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "ஒன்று"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "மற்ற"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "message.bad-request": [
-    {
-      "type": 0,
-      "value": "Bad request"
-    }
-  ],
-  "message.collected-data": [
-    {
-      "type": 0,
-      "value": "Collected data"
-    }
-  ],
-  "message.confirm-delete": [
-    {
-      "type": 0,
-      "value": "நீங்கள் நிச்சயமாக "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " நீக்க விரும்புகிறீர்களா?"
-    }
-  ],
-  "message.confirm-leave": [
-    {
-      "type": 0,
-      "value": "Are you sure you want to leave "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-remove": [
-    {
-      "type": 0,
-      "value": "Are you sure you want to remove "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-reset": [
-    {
-      "type": 0,
-      "value": "Are your sure you want to reset "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "'s statistics?"
-    }
-  ],
-  "message.delete-team-warning": [
-    {
-      "type": 0,
-      "value": "Deleting a team will also delete all team websites."
-    }
-  ],
-  "message.delete-website-warning": [
-    {
-      "type": 0,
-      "value": "தொடர்புடைய எல்லா தரவும் நீக்கப்படும்."
-    }
-  ],
-  "message.error": [
-    {
-      "type": 0,
-      "value": "ஏதோ தவறு நடந்துவிட்டது."
-    }
-  ],
-  "message.event-log": [
-    {
-      "type": 1,
-      "value": "event"
-    },
-    {
-      "type": 0,
-      "value": " on "
-    },
-    {
-      "type": 1,
-      "value": "url"
-    }
-  ],
-  "message.forbidden": [
-    {
-      "type": 0,
-      "value": "Forbidden"
-    }
-  ],
-  "message.go-to-settings": [
-    {
-      "type": 0,
-      "value": "அமைப்புகளுக்குச் செல்லவும்"
-    }
-  ],
-  "message.incorrect-username-password": [
-    {
-      "type": 0,
-      "value": "தவறான பயனர்பெயர் / கடவுச்சொல்."
-    }
-  ],
-  "message.invalid-domain": [
-    {
-      "type": 0,
-      "value": "தவறான கள முகவரி"
-    }
-  ],
-  "message.min-password-length": [
-    {
-      "type": 0,
-      "value": "Minimum length of "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " characters"
-    }
-  ],
-  "message.new-version-available": [
-    {
-      "type": 0,
-      "value": "A new version of Umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " is available!"
-    }
-  ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "தரவு எதுவும் கிடைக்கவில்லை."
-    }
-  ],
-  "message.no-event-data": [
-    {
-      "type": 0,
-      "value": "No event data is available."
-    }
-  ],
-  "message.no-match-password": [
-    {
-      "type": 0,
-      "value": "இருக்கடவுச்சொல் பொருந்தவில்லை"
-    }
-  ],
-  "message.no-results-found": [
-    {
-      "type": 0,
-      "value": "No results were found."
-    }
-  ],
-  "message.no-team-websites": [
-    {
-      "type": 0,
-      "value": "This team does not have any websites."
-    }
-  ],
-  "message.no-teams": [
-    {
-      "type": 0,
-      "value": "You have not created any teams."
-    }
-  ],
-  "message.no-users": [
-    {
-      "type": 0,
-      "value": "There are no users."
-    }
-  ],
-  "message.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "உங்களிடம் எந்த வலைத்தளங்களும் கட்டமைக்கப்படவில்லை."
-    }
-  ],
-  "message.not-found": [
-    {
-      "type": 0,
-      "value": "Not found"
-    }
-  ],
-  "message.nothing-selected": [
-    {
-      "type": 0,
-      "value": "Nothing selected."
-    }
-  ],
-  "message.page-not-found": [
-    {
-      "type": 0,
-      "value": "பக்கம் கிடைக்கவில்லை."
-    }
-  ],
-  "message.reset-website": [
-    {
-      "type": 0,
-      "value": "To reset this website, type "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " in the box below to confirm."
-    }
-  ],
-  "message.reset-website-warning": [
-    {
-      "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
-    }
-  ],
-  "message.saved": [
-    {
-      "type": 0,
-      "value": "வெற்றிகரமாக சேமிக்கப்பட்டது."
-    }
-  ],
-  "message.sever-error": [
-    {
-      "type": 0,
-      "value": "Server error"
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " இது பொதுவில் பகிரும் வலைத்தள முகவரி."
-    }
-  ],
-  "message.team-already-member": [
-    {
-      "type": 0,
-      "value": "You are already a member of the team."
-    }
-  ],
-  "message.team-not-found": [
-    {
-      "type": 0,
-      "value": "Team not found."
-    }
-  ],
-  "message.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Websites can be viewed by anyone on the team."
-    }
-  ],
-  "message.tracking-code": [
-    {
-      "type": 0,
-      "value": "கண்காணிப்பு குறியீடு"
-    }
-  ],
-  "message.transfer-team-website-to-user": [
-    {
-      "type": 0,
-      "value": "Transfer this website to your account?"
-    }
-  ],
-  "message.transfer-user-website-to-team": [
-    {
-      "type": 0,
-      "value": "Select the team to transfer this website to."
-    }
-  ],
-  "message.transfer-website": [
-    {
-      "type": 0,
-      "value": "Transfer website ownership to your account or another team."
-    }
-  ],
-  "message.triggered-event": [
-    {
-      "type": 0,
-      "value": "Triggered event"
-    }
-  ],
-  "message.unauthorized": [
-    {
-      "type": 0,
-      "value": "Unauthorized"
-    }
-  ],
-  "message.user-deleted": [
-    {
-      "type": 0,
-      "value": "User deleted."
-    }
-  ],
-  "message.viewed-page": [
-    {
-      "type": 0,
-      "value": "Viewed page"
-    }
-  ],
-  "message.visitor-log": [
-    {
-      "type": 1,
-      "value": "country"
-    },
-    {
-      "type": 0,
-      "value": "வில் இருந்து பார்வையாளர் "
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    },
-    {
-      "type": 0,
-      "value": " ஐ "
-    },
-    {
-      "type": 1,
-      "value": "os"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "device"
-    },
-    {
-      "type": 0,
-      "value": "லில் பயன்படுத்துகிறார்"
-    }
-  ]
+  "label": {
+    "access-code": "அணுகல் குறியீடு",
+    "account": "கணக்கு",
+    "action": "செயல்",
+    "actions": "செயல்கள்",
+    "activity": "செயல்பாடு",
+    "add": "சேர்",
+    "add-board": "பலகையைச் சேர்",
+    "add-description": "விளக்கத்தைச் சேர்",
+    "add-link": "இணைப்பைச் சேர்",
+    "add-member": "உறுப்பினரைச் சேர்",
+    "add-pixel": "பிக்சலைச் சேர்",
+    "add-step": "படியைச் சேர்",
+    "add-website": "வலைத்தளத்தைச் சேர்க்க",
+    "admin": "நிர்வாகியைச் சேர்க்க",
+    "affiliate": "இணைத்திட்டம்",
+    "after": "பிறகு",
+    "all": "எல்லாம்",
+    "all-time": "எல்லா நேரமும்",
+    "analysis": "பகுப்பாய்வு",
+    "analytics": "பகுப்பாய்வு",
+    "application": "பயன்பாடு",
+    "apply": "பயன்படுத்து",
+    "attribution": "காரணிப்பு",
+    "attribution-description": "பயனர்கள் உங்கள் சந்தைப்படுத்தலுடன் எவ்வாறு ஈடுபடுகிறார்கள் மற்றும் மாற்றங்களை எது ஊக்குவிக்கிறது என்பதைப் பாருங்கள்.",
+    "audience": "பார்வையாளர்",
+    "average": "சராசரி",
+    "back": "பின்னால்",
+    "before": "முன்",
+    "behavior": "நடத்தை",
+    "boards": "பலகைகள்",
+    "bounce-rate": "துள்ளல் விகிதம்",
+    "breakdown": "விரிவாக்கம்",
+    "browser": "உலாவி",
+    "browsers": "உலாவிகள்",
+    "campaign": "பிரச்சாரம்",
+    "campaigns": "பிரச்சாரங்கள்",
+    "cancel": "ரத்துசெய்",
+    "change-password": "கடவுச்சொல்லை மாற்று",
+    "channel": "சேனல்",
+    "channels": "சேனல்கள்",
+    "chart": "வரைபடம்",
+    "cities": "நகரங்கள்",
+    "city": "நகரம்",
+    "clear-all": "அனைத்தையும் அழி",
+    "cohort": "குழு",
+    "cohorts": "குழுக்கள்",
+    "compare": "ஒப்பிடு",
+    "compare-dates": "தேதிகளை ஒப்பிடு",
+    "confirm": "உறுதிப்படுத்து",
+    "confirm-password": "கடவுச்சொல்லை உறுதிப்படுத்தவும்",
+    "contains": "உள்ளடக்கியது",
+    "regex-match": "Regex உடன் பொருந்துகிறது",
+    "regex-not-match": "Regex உடன் பொருந்தாது",
+    "content": "உள்ளடக்கம்",
+    "continue": "தொடர்",
+    "conversion": "மாற்றம்",
+    "conversion-rate": "மாற்ற விகிதம்",
+    "conversion-step": "மாற்றப் படி",
+    "count": "எண்ணிக்கை",
+    "countries": "நாடுகள்",
+    "country": "நாடு",
+    "create": "உருவாக்கு",
+    "create-report": "அறிக்கையை உருவாக்கு",
+    "create-team": "குழுவை உருவாக்கு",
+    "create-user": "பயனரை உருவாக்கு",
+    "created": "உருவாக்கப்பட்டது",
+    "created-by": "உருவாக்கியவர்",
+    "criteria": "அளவுகோல்",
+    "currency": "நாணயம்",
+    "current": "தற்போதைய",
+    "current-password": "தற்போதைய கடவுச்சொல்",
+    "custom-range": "தனிப்பயன் வேறுபாட்டெல்லை",
+    "dashboard": "முகப்பு",
+    "data": "தரவு",
+    "date": "தேதி",
+    "date-range": "தேதி வரம்பு",
+    "day": "நாள்",
+    "default-date-range": "இயல்புநிலை தேதி வரம்பு",
+    "delete": "அழி",
+    "delete-report": "அறிக்கையை நீக்கு",
+    "delete-team": "குழுவை நீக்கு",
+    "delete-user": "பயனரை நீக்கு",
+    "delete-website": "வலைத்தளத்தை நீக்கு",
+    "description": "விளக்கம்",
+    "desktop": "மேசை கணினி",
+    "destination-url": "இலக்கு URL",
+    "details": "விவரங்கள்",
+    "device": "சாதனம்",
+    "devices": "சாதனங்கள்",
+    "direct": "நேரடி",
+    "dismiss": "நீக்கு",
+    "distinct-id": "தனித்துவ ID",
+    "documentation": "ஆவணங்கள்",
+    "does-not-contain": "உள்ளடக்கவில்லை",
+    "does-not-include": "சேர்க்கவில்லை",
+    "doest-not-exist": "இல்லை",
+    "domain": "கள முகவரி",
+    "download": "பதிவிறக்கு",
+    "dropoff": "விலகல்",
+    "edit": "திருத்துதல்",
+    "edit-member": "உறுப்பினரைத் திருத்து",
+    "email": "மின்னஞ்சல்",
+    "enable-share-url": "கள முகவரியை பகிரலாம்",
+    "end-step": "இறுதிப் படி",
+    "entry": "Entry URL",
+    "environment": "சூழல்",
+    "event": "நிகழ்வு",
+    "event-data": "நிகழ்வுத் தரவு",
+    "event-name": "நிகழ்வு பெயர்",
+    "events": "நிகழ்வுகள்",
+    "exclude-bounce": "துள்ளலை விலக்கு",
+    "exists": "உள்ளது",
+    "exit": "Exit URL",
+    "false": "தவறு",
+    "field": "புலம்",
+    "fields": "புலங்கள்",
+    "filter": "வடிகட்டி",
+    "filter-combined": "ஒருங்கிணைந்த",
+    "filter-raw": "மூல",
+    "filters": "வடிகட்டிகள்",
+    "first-click": "முதல் கிளிக்",
+    "first-seen": "முதலில் பார்த்தது",
+    "funnel": "புனல்",
+    "funnel-description": "பயனர்களின் மாற்ற மற்றும் விலகல் விகிதத்தைப் புரிந்துகொள்ளுங்கள்.",
+    "funnels": "புனல்கள்",
+    "goal": "இலக்கு",
+    "goals": "இலக்குகள்",
+    "goals-description": "பக்க காட்சிகள் மற்றும் நிகழ்வுகளுக்கான உங்கள் இலக்குகளைக் கண்காணிக்கவும்.",
+    "greater-than": "பெரியது",
+    "greater-than-equals": "பெரியது அல்லது சமம்",
+    "grouped": "தொகுக்கப்பட்டது",
+    "growth": "வளர்ச்சி",
+    "hostname": "புரவலன் பெயர்",
+    "hour": "மணி",
+    "includes": "சேர்க்கிறது",
+    "insight": "நுண்ணறிவு",
+    "insights": "நுண்ணறிவுகள்",
+    "insights-description": "பிரிவுகள் மற்றும் வடிகட்டிகளைப் பயன்படுத்தி உங்கள் தரவில் ஆழமாக முழுகுங்கள்.",
+    "invalid-url": "தவறான URL",
+    "is": "ஆகும்",
+    "is-false": "தவறு",
+    "is-not": "அல்ல",
+    "is-not-set": "அமைக்கப்படவில்லை",
+    "is-set": "அமைக்கப்பட்டுள்ளது",
+    "is-true": "உண்மை",
+    "join": "சேர்",
+    "join-team": "குழுவில் சேர்",
+    "journey": "பயணம்",
+    "journey-description": "பயனர்கள் உங்கள் வலைத்தளத்தில் எவ்வாறு வழிசெல்கிறார்கள் என்பதைப் புரிந்துகொள்ளுங்கள்.",
+    "journeys": "பயணங்கள்",
+    "language": "மொழி",
+    "languages": "மொழிகள்",
+    "laptop": "மடிக்கணினி",
+    "last-click": "கடைசி கிளிக்",
+    "last-days": "முந்தைய {x} நாட்கள்",
+    "last-hours": "முந்தைய {x} மணி",
+    "last-months": "முந்தைய {x} மாதங்கள்",
+    "last-seen": "கடைசியாகப் பார்த்தது",
+    "leave": "வெளியேறு",
+    "leave-team": "குழுவை விட்டு வெளியேறு",
+    "less-than": "சிறியது",
+    "less-than-equals": "சிறியது அல்லது சமம்",
+    "link": "இணைப்பு",
+    "links": "இணைப்புகள்",
+    "location": "இடம்",
+    "login": "உள்நுழைய",
+    "logout": "வெளியேறு",
+    "manage": "நிர்வகி",
+    "manager": "மேலாளர்",
+    "max": "அதிகபட்சம்",
+    "maximize": "Expand",
+    "medium": "ஊடகம்",
+    "member": "உறுப்பினர்",
+    "members": "உறுப்பினர்கள்",
+    "min": "குறைந்தபட்சம்",
+    "minute": "நிமிடம்",
+    "mobile": "கைபேசி",
+    "model": "மாதிரி",
+    "month": "மாதம்",
+    "more": "மேலும்",
+    "my-account": "எனது கணக்கு",
+    "my-websites": "எனது வலைத்தளங்கள்",
+    "name": "பெயர்",
+    "new-password": "புதிய கடவுச்சொல்",
+    "none": "எதுவுமில்லை",
+    "number-of-records": "{x} {x, plural, one {பதிவு} other {பதிவுகள்}}",
+    "ok": "OK",
+    "online": "நிகழ்நிலை",
+    "organic-search": "இயற்கையான தேடல்",
+    "organic-shopping": "இயற்கையான ஷாப்பிங்",
+    "organic-social": "இயற்கையான சமூக ஊடகம்",
+    "organic-video": "இயற்கையான வீடியோ",
+    "os": "OS",
+    "other": "பிற",
+    "overview": "மேலோட்டம்",
+    "owner": "உரிமையாளர்",
+    "page": "பக்கம்",
+    "page-of": "பக்கம் {current} / {total}",
+    "page-views": "பக்க காட்சிகள்",
+    "pageTitle": "பக்கத் தலைப்பு",
+    "pages": "பக்கங்கள்",
+    "paid-ads": "கட்டண விளம்பரங்கள்",
+    "paid-search": "கட்டணத் தேடல்",
+    "paid-shopping": "கட்டண ஷாப்பிங்",
+    "paid-social": "கட்டண சமூக ஊடகம்",
+    "paid-video": "கட்டண வீடியோ",
+    "password": "கடவுச்சொல்",
+    "path": "பாதை",
+    "paths": "பாதைகள்",
+    "pixel": "பிக்சல்",
+    "pixels": "பிக்சல்கள்",
+    "powered-by": "{name} ஆல் இயக்கப்படுகிறது",
+    "preferences": "விருப்பத்தேர்வுகள்",
+    "previous": "முந்தைய",
+    "previous-period": "முந்தைய காலம்",
+    "previous-year": "முந்தைய ஆண்டு",
+    "profile": "சுயவிவரம்",
+    "profiles": "சுயவிவரங்கள்",
+    "properties": "பண்புகள்",
+    "property": "பண்பு",
+    "queries": "வினவல்கள்",
+    "query": "வினவல்",
+    "query-parameters": "வினவல் அளவுருக்கள்",
+    "realtime": "தற்போதைய",
+    "referral": "பரிந்துரை",
+    "referrer": "பரிந்துரையாளர்",
+    "referrers": "குறிப்பிடுவோர்",
+    "refresh": "புதுப்பிப்பு",
+    "regenerate": "மீண்டும் உருவாக்கு",
+    "region": "பிராந்தியம்",
+    "regions": "பிராந்தியங்கள்",
+    "remaining": "மீதம்",
+    "remove": "நீக்கு",
+    "remove-member": "உறுப்பினரை நீக்கு",
+    "reports": "அறிக்கைகள்",
+    "required": "தேவையானவை",
+    "reset": "மீட்டமை",
+    "reset-website": "Reset statistics",
+    "retention": "தக்கவைப்பு",
+    "retention-description": "பயனர்கள் எவ்வளவு அடிக்கடி திரும்பி வருகிறார்கள் என்பதைக் கண்காணித்து உங்கள் வலைத்தளத்தின் ஒட்டுதலை அளவிடுங்கள்.",
+    "revenue": "வருவாய்",
+    "revenue-description": "உங்கள் வருவாய் தரவையும் பயனர்கள் எவ்வாறு செலவிடுகிறார்கள் என்பதையும் ஆராயுங்கள்.",
+    "role": "பங்கு",
+    "run-query": "வினவலை இயக்கு",
+    "save": "சேமி",
+    "save-cohort": "குழுவைச் சேமி",
+    "save-segment": "பிரிவைச் சேமி",
+    "screen": "திரை",
+    "screens": "திரைகள்",
+    "search": "தேடு",
+    "segment": "பிரிவு",
+    "segments": "பிரிவுகள்",
+    "select": "தேர்ந்தெடு",
+    "select-date": "தேதியைத் தேர்ந்தெடு",
+    "select-filter": "வடிகட்டியைத் தேர்ந்தெடு",
+    "select-role": "பங்கைத் தேர்ந்தெடு",
+    "select-website": "வலைத்தளத்தைத் தேர்ந்தெடு",
+    "session": "அமர்வு",
+    "session-data": "அமர்வுத் தரவு",
+    "sessions": "அமர்வுகள்",
+    "settings": "அமைப்புகள்",
+    "share": "பகிர்",
+    "share-url": "வலைத்தள களத்தைப் பகிரவும்",
+    "single-day": "ஒரு நாள்",
+    "sms": "SMS",
+    "source": "மூலம்",
+    "sources": "மூலங்கள்",
+    "start-step": "தொடக்கப் படி",
+    "steps": "படிகள்",
+    "sum": "கூட்டுத்தொகை",
+    "support": "ஆதரவு",
+    "switch-account": "கணக்கை மாற்று",
+    "table": "அட்டவணை",
+    "tablet": "கையடக்க கணினி",
+    "tag": "குறிச்சொல்",
+    "tags": "குறிச்சொற்கள்",
+    "team": "குழு",
+    "team-id": "குழு ID",
+    "team-manager": "குழு மேலாளர்",
+    "team-member": "குழு உறுப்பினர்",
+    "team-name": "குழுவின் பெயர்",
+    "team-owner": "குழு உரிமையாளர்",
+    "team-settings": "குழு அமைப்புகள்",
+    "team-view-only": "குழு பார்வை மட்டும்",
+    "team-websites": "குழு வலைத்தளங்கள்",
+    "teams": "குழுக்கள்",
+    "term": "சொல்",
+    "terms": "விதிமுறைகள்",
+    "theme": "தீம்",
+    "this-month": "இந்த மாதம்",
+    "this-week": "இந்த வாரம்",
+    "this-year": "இந்த வருடம்",
+    "timezone": "நேர மண்டலம்",
+    "title": "தலைப்பு",
+    "today": "இன்று",
+    "toggle-charts": "வரைபடங்களை மாற்று",
+    "total": "மொத்தம்",
+    "total-records": "மொத்தப் பதிவுகள்",
+    "tracking-code": "கண்காணிப்பு குறியீடு",
+    "traffic": "பார்வையாளர் போக்குவரத்து",
+    "transactions": "பரிவர்த்தனைகள்",
+    "transfer": "மாற்றம்",
+    "transfer-website": "வலைத்தளத்தை மாற்று",
+    "true": "உண்மை",
+    "type": "வகை",
+    "unique": "தனித்துவ",
+    "unique-events": "தனித்துவ நிகழ்வுகள்",
+    "unique-visitors": "தனிப்பட்ட பார்வையாளர்கள்",
+    "uniqueCustomers": "தனித்துவ வாடிக்கையாளர்கள்",
+    "unknown": "தெரியாத",
+    "untitled": "தலைப்பில்லாத",
+    "update": "புதுப்பி",
+    "url": "URL",
+    "user": "பயனர்",
+    "username": "பயனர்பெயர்",
+    "users": "பயனர்கள்",
+    "utm": "UTM",
+    "utm-campaign": "UTM Campaign",
+    "utm-content": "UTM Content",
+    "utm-description": "UTM அளவுருக்கள் மூலம் உங்கள் பிரச்சாரங்களைக் கண்காணிக்கவும்.",
+    "utm-medium": "UTM Medium",
+    "utm-source": "UTM Source",
+    "utm-term": "UTM Term",
+    "value": "மதிப்பு",
+    "version": "பதிப்பு",
+    "view": "பார்",
+    "view-details": "விபரங்களை பார்",
+    "view-only": "பார்வை மட்டும்",
+    "views": "பார்வைகள்",
+    "views-per-visit": "ஒரு வருகைக்கான பார்வைகள்",
+    "visit-duration": "சராசரி வருகை நேரம்",
+    "visitors": "பார்வையாளர்கள்",
+    "visits": "வருகைகள்",
+    "website": "வலைத்தளம்",
+    "website-id": "வலைத்தள ID",
+    "websites": "வலைத்தளங்கள்",
+    "window": "சாளரம்",
+    "yesterday": "நேற்று"
+  },
+  "message": {
+    "action-confirmation": "உறுதிப்படுத்த கீழே உள்ள பெட்டியில் {confirmation} என்று தட்டச்சு செய்யவும்.",
+    "active-users": "{x} தற்போதைய {x, plural, one {ஒன்று} other {மற்ற}}",
+    "bad-request": "தவறான கோரிக்கை",
+    "collected-data": "சேகரிக்கப்பட்ட தரவு",
+    "confirm-delete": "நீங்கள் நிச்சயமாக {target} நீக்க விரும்புகிறீர்களா?",
+    "confirm-leave": "<b>{target}</b> விட்டு வெளியேற விரும்புகிறீர்களா?",
+    "confirm-remove": "<b>{target}</b> நீக்க விரும்புகிறீர்களா?",
+    "confirm-reset": "Are your sure you want to reset {target}'s statistics?",
+    "delete-team-warning": "ஒரு குழுவை நீக்கினால் அனைத்து குழு வலைத்தளங்களும் நீக்கப்படும்.",
+    "delete-website-warning": "தொடர்புடைய எல்லா தரவும் நீக்கப்படும்.",
+    "error": "ஏதோ தவறு நடந்துவிட்டது.",
+    "event-log": "<b>{event}</b> <a>{url}</a> இல்",
+    "forbidden": "தடைசெய்யப்பட்டது",
+    "go-to-settings": "அமைப்புகளுக்குச் செல்லவும்",
+    "incorrect-username-password": "தவறான பயனர்பெயர் / கடவுச்சொல்.",
+    "invalid-domain": "தவறான கள முகவரி",
+    "min-password-length": "குறைந்தபட்சம் {n} எழுத்துகள் தேவை",
+    "new-version-available": "Umami {version} புதிய பதிப்பு கிடைக்கிறது!",
+    "no-data-available": "தரவு எதுவும் கிடைக்கவில்லை.",
+    "no-event-data": "நிகழ்வுத் தரவு எதுவும் கிடைக்கவில்லை.",
+    "no-match-password": "இருக்கடவுச்சொல் பொருந்தவில்லை",
+    "no-results-found": "முடிவுகள் எதுவும் கிடைக்கவில்லை.",
+    "no-team-websites": "இந்தக் குழுவில் வலைத்தளங்கள் எதுவும் இல்லை.",
+    "no-teams": "நீங்கள் எந்தக் குழுவையும் உருவாக்கவில்லை.",
+    "no-users": "பயனர்கள் யாரும் இல்லை.",
+    "no-websites-configured": "உங்களிடம் எந்த வலைத்தளங்களும் கட்டமைக்கப்படவில்லை.",
+    "not-found": "கிடைக்கவில்லை",
+    "nothing-selected": "எதுவும் தேர்ந்தெடுக்கப்படவில்லை.",
+    "page-not-found": "பக்கம் கிடைக்கவில்லை.",
+    "reset-website": "இந்த வலைத்தளத்தை மீட்டமைக்க, கீழே உள்ள பெட்டியில் {confirmation} என்று தட்டச்சு செய்து உறுதிப்படுத்தவும்.",
+    "reset-website-warning": "இந்த வலைத்தளத்தின் அனைத்து புள்ளிவிவரங்களும் நீக்கப்படும், ஆனால் உங்கள் அமைப்புகள் அப்படியே இருக்கும்.",
+    "saved": "வெற்றிகரமாக சேமிக்கப்பட்டது.",
+    "sever-error": "சேவையக பிழை",
+    "share-url": "உங்கள் வலைத்தள புள்ளிவிவரங்கள் பின்வரும் URL இல் பொதுவாகக் கிடைக்கும்:",
+    "team-already-member": "நீங்கள் ஏற்கனவே இந்தக் குழுவின் உறுப்பினர்.",
+    "team-not-found": "குழு கிடைக்கவில்லை.",
+    "team-websites-info": "குழுவில் உள்ள எவரும் வலைத்தளங்களைப் பார்க்கலாம்.",
+    "tracking-code": "இந்த வலைத்தளத்தின் புள்ளிவிவரங்களைக் கண்காணிக்க, பின்வரும் குறியீட்டை உங்கள் HTML இன் <head>...</head> பகுதியில் வைக்கவும்.",
+    "transfer-team-website-to-user": "இந்த வலைத்தளத்தை உங்கள் கணக்கிற்கு மாற்ற விரும்புகிறீர்களா?",
+    "transfer-user-website-to-team": "இந்த வலைத்தளத்தை மாற்ற குழுவைத் தேர்ந்தெடுக்கவும்.",
+    "transfer-website": "வலைத்தள உரிமையை உங்கள் கணக்கிற்கு அல்லது மற்றொரு குழுவிற்கு மாற்றவும்.",
+    "triggered-event": "தூண்டப்பட்ட நிகழ்வு",
+    "unauthorized": "அங்கீகரிக்கப்படவில்லை",
+    "user-deleted": "பயனர் நீக்கப்பட்டார்.",
+    "viewed-page": "பார்வையிட்ட பக்கம்",
+    "visitor-log": "<b>{country}</b>வில் இருந்து பார்வையாளர் <b>{browser}</b> ஐ <b>{os}</b> <b>{device}</b>லில் பயன்படுத்துகிறார்"
+  }
 }

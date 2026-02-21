@@ -3,15 +3,15 @@ import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 
 export function RealtimeHeader({ data }: { data: any }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { totals }: any = data || {};
 
   return (
     <MetricsBar>
-      <MetricCard label={formatMessage(labels.views)} value={totals.views} />
-      <MetricCard label={formatMessage(labels.visitors)} value={totals.visitors} />
-      <MetricCard label={formatMessage(labels.events)} value={totals.events} />
-      <MetricCard label={formatMessage(labels.countries)} value={totals.countries} />
+      <MetricCard label={t(labels.views)} value={totals.views} />
+      <MetricCard label={t(labels.visitors)} value={totals.visitors} />
+      <MetricCard label={t(labels.events)} value={totals.events} />
+      <MetricCard label={t(labels.countries)} value={totals.countries} />
     </MetricsBar>
   );
 }

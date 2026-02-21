@@ -1,35 +1,35 @@
 /* eslint-disable no-console */
 import 'dotenv/config';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient, Prisma } from '../../src/generated/prisma/client.js';
-import { uuid, generateDatesBetween, subDays, formatNumber, progressBar } from './utils.js';
-import { createSessions, type SessionData } from './generators/sessions.js';
+import { type Prisma, PrismaClient } from '../../src/generated/prisma/client.js';
+import { getSessionCountForDay } from './distributions/temporal.js';
 import {
-  generateEventsForSession,
   type EventData,
   type EventDataEntry,
+  generateEventsForSession,
 } from './generators/events.js';
 import {
   generateRevenueForEvents,
-  type RevenueData,
   type RevenueConfig,
+  type RevenueData,
 } from './generators/revenue.js';
-import { getSessionCountForDay } from './distributions/temporal.js';
+import { createSessions, type SessionData } from './generators/sessions.js';
 import {
-  BLOG_WEBSITE_NAME,
-  BLOG_WEBSITE_DOMAIN,
   BLOG_SESSIONS_PER_DAY,
-  getBlogSiteConfig,
+  BLOG_WEBSITE_DOMAIN,
+  BLOG_WEBSITE_NAME,
   getBlogJourney,
+  getBlogSiteConfig,
 } from './sites/blog.js';
 import {
-  SAAS_WEBSITE_NAME,
-  SAAS_WEBSITE_DOMAIN,
-  SAAS_SESSIONS_PER_DAY,
-  getSaasSiteConfig,
   getSaasJourney,
+  getSaasSiteConfig,
+  SAAS_SESSIONS_PER_DAY,
+  SAAS_WEBSITE_DOMAIN,
+  SAAS_WEBSITE_NAME,
   saasRevenueConfigs,
 } from './sites/saas.js';
+import { formatNumber, generateDatesBetween, progressBar, subDays, uuid } from './utils.js';
 
 const BATCH_SIZE = 1000;
 

@@ -10,26 +10,27 @@ import { TeamDeleteForm } from '../../teams/[teamId]/TeamDeleteForm';
 export function AdminTeamsTable({
   data = [],
   showActions = true,
+  ...props
 }: {
   data: any[];
   showActions?: boolean;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const [deleteTeam, setDeleteTeam] = useState(null);
 
   return (
     <>
-      <DataTable data={data}>
-        <DataColumn id="name" label={formatMessage(labels.name)} width="1fr">
+      <DataTable data={data} {...props}>
+        <DataColumn id="name" label={t(labels.name)} width="1fr">
           {(row: any) => <Link href={`/admin/teams/${row.id}`}>{row.name}</Link>}
         </DataColumn>
-        <DataColumn id="websites" label={formatMessage(labels.members)} width="140px">
+        <DataColumn id="websites" label={t(labels.members)} width="140px">
           {(row: any) => row?._count?.members}
         </DataColumn>
-        <DataColumn id="members" label={formatMessage(labels.websites)} width="140px">
+        <DataColumn id="members" label={t(labels.websites)} width="140px">
           {(row: any) => row?._count?.websites}
         </DataColumn>
-        <DataColumn id="owner" label={formatMessage(labels.owner)}>
+        <DataColumn id="owner" label={t(labels.owner)}>
           {(row: any) => {
             const name = row?.members?.[0]?.user?.username;
 
@@ -40,7 +41,7 @@ export function AdminTeamsTable({
             );
           }}
         </DataColumn>
-        <DataColumn id="created" label={formatMessage(labels.created)} width="160px">
+        <DataColumn id="created" label={t(labels.created)} width="160px">
           {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
         </DataColumn>
         {showActions && (
@@ -55,7 +56,7 @@ export function AdminTeamsTable({
                       <Icon>
                         <Edit />
                       </Icon>
-                      <Text>{formatMessage(labels.edit)}</Text>
+                      <Text>{t(labels.edit)}</Text>
                     </Row>
                   </MenuItem>
                   <MenuItem
@@ -67,7 +68,7 @@ export function AdminTeamsTable({
                       <Icon>
                         <Trash />
                       </Icon>
-                      <Text>{formatMessage(labels.delete)}</Text>
+                      <Text>{t(labels.delete)}</Text>
                     </Row>
                   </MenuItem>
                 </MenuButton>

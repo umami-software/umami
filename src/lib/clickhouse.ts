@@ -61,7 +61,7 @@ function getDateStringSQL(data: any, unit: string = 'utc', timezone?: string) {
 
 function getDateSQL(field: string, unit: string, timezone?: string) {
   if (timezone) {
-    return `toDateTime(date_trunc('${unit}', ${field}, '${timezone}'))`;
+    return `toDateTime(date_trunc('${unit}', ${field}, '${timezone}'), '${timezone}')`;
   }
   return `toDateTime(date_trunc('${unit}', ${field}))`;
 }
@@ -75,13 +75,17 @@ function mapFilter(column: string, operator: string, name: string, type: string 
 
   switch (operator) {
     case OPERATORS.equals:
-      return `${column} = ${value}`;
+      return `${column} IN {${name}:Array(${type})}`;
     case OPERATORS.notEquals:
-      return `${column} != ${value}`;
+      return `${column} NOT IN {${name}:Array(${type})}`;
     case OPERATORS.contains:
       return `positionCaseInsensitive(${column}, ${value}) > 0`;
     case OPERATORS.doesNotContain:
       return `positionCaseInsensitive(${column}, ${value}) = 0`;
+    case OPERATORS.regex:
+      return `match(${column}, ${value})`;
+    case OPERATORS.notRegex:
+      return `not match(${column}, ${value})`;
     default:
       return '';
   }
@@ -131,6 +135,25 @@ function getCohortQuery(filters: Record<string, any>) {
     `;
 }
 
+function getExcludeBounceQuery(filters: Record<string, any>) {
+  if (!filters.excludeBounce === true) {
+    return '';
+  }
+
+  return `join
+    (select distinct session_id, visit_id
+    from website_event_stats_hourly
+    where website_id = {websiteId:UUID}
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_type = 1
+    group by session_id, visit_id
+    having sum(views) > 1
+    ) excludeBounce
+    on excludeBounce.session_id = website_event.session_id
+      and excludeBounce.visit_id = website_event.visit_id
+    `;
+}
+
 function getDateQuery(filters: Record<string, any>) {
   const { startDate, endDate, timezone } = filters;
 
@@ -154,10 +177,17 @@ function getDateQuery(filters: Record<string, any>) {
 function getQueryParams(filters: Record<string, any>) {
   return {
     ...filters,
-    ...filtersObjectToArray(filters).reduce((obj, { name, value }) => {
-      if (name && value !== undefined) {
-        obj[name] = value;
-      }
+    ...filtersObjectToArray(filters).reduce((obj, { name, column, operator, value }) => {
+      const resolvedColumn =
+        column || (name?.startsWith('cohort_') && FILTER_COLUMNS[name.slice('cohort_'.length)]);
+
+      if (!resolvedColumn || !name || value === undefined) return obj;
+
+      obj[name] = ([OPERATORS.equals, OPERATORS.notEquals] as string[]).includes(operator)
+        ? Array.isArray(value)
+          ? value
+          : [value]
+        : value;
 
       return obj;
     }, {}),
@@ -174,6 +204,7 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
     dateQuery: getDateQuery(filters),
     queryParams: getQueryParams(filters),
     cohortQuery: getCohortQuery(cohortFilters),
+    excludeBounceQuery: getExcludeBounceQuery(filters),
   };
 }
 

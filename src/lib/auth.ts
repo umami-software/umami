@@ -1,7 +1,6 @@
 import debug from 'debug';
 import { ROLE_PERMISSIONS, ROLES, SHARE_TOKEN_HEADER } from '@/lib/constants';
-import { secret } from '@/lib/crypto';
-import { getRandomChars } from '@/lib/generate';
+import { createAuthKey, secret } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
 import redis from '@/lib/redis';
 import { ensureArray } from '@/lib/utils';
@@ -53,7 +52,7 @@ export async function checkAuth(request: Request) {
 }
 
 export async function saveAuth(data: any, expire = 0) {
-  const authKey = `auth:${getRandomChars(32)}`;
+  const authKey = `auth:${createAuthKey()}`;
 
   if (redis.enabled) {
     await redis.client.set(authKey, data);
