@@ -33,9 +33,10 @@ import { languages } from '@/lib/lang';
 
 export interface UserButtonProps {
   showText?: boolean;
+  onClose?: () => void;
 }
 
-export function UserButton({ showText = true }: UserButtonProps) {
+export function UserButton({ showText = true, onClose }: UserButtonProps) {
   const { user } = useLoginQuery();
   const { cloudMode } = useConfig();
   const { t, labels } = useMessages();
@@ -111,7 +112,7 @@ export function UserButton({ showText = true }: UserButtonProps) {
       </TooltipTrigger>
       <Popover placement="top start">
         <Column minWidth="200px">
-          <Menu autoFocus="last">
+          <Menu autoFocus="last" onAction={onClose}>
             <MenuItem id="settings" href={getUrl('/settings')}>
               <Row alignItems="center" gap>
                 <Icon>

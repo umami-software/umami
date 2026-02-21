@@ -49,7 +49,13 @@ export function MobileNav() {
       <MobileMenuButton>
         {({ close }) => {
           return (
-            <Column gap="2" display="flex" flex-direction="column" height="100vh" padding="1">
+            <Column
+              gap="2"
+              display="flex"
+              flex-direction="column"
+              padding="1"
+              style={{ height: '100dvh' }}
+            >
               {isMain &&
                 links.map(link => {
                   return (
@@ -63,8 +69,8 @@ export function MobileNav() {
               {websiteId && <WebsiteNav websiteId={websiteId} onItemClick={close} />}
               {isAdmin && <AdminNav onItemClick={close} />}
               {isSettings && <SettingsNav onItemClick={close} />}
-              <Row onClick={close} style={{ marginTop: 'auto' }}>
-                <UserButton />
+              <Row style={{ marginTop: 'auto' }}>
+                <UserButton onClose={close} />
               </Row>
             </Column>
           );

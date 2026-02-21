@@ -18,7 +18,7 @@ export function SharesTable(props: DataTableProps) {
   };
 
   return (
-    <DataTable {...props}>
+    <DataTable {...props} displayMode={isMobile ? 'cards' : 'table'}>
       <DataColumn id="name" label={t(labels.name)}>
         {({ name }: any) => name}
       </DataColumn>
@@ -27,16 +27,14 @@ export function SharesTable(props: DataTableProps) {
           const url = getUrl(slug);
           return (
             <ExternalLink href={url} prefetch={false}>
-              {url}
+              {isMobile ? slug : url}
             </ExternalLink>
           );
         }}
       </DataColumn>
-      {!isMobile && (
-        <DataColumn id="created" label={t(labels.created)}>
-          {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
-        </DataColumn>
-      )}
+      <DataColumn id="created" label={t(labels.created)}>
+        {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
+      </DataColumn>
       <DataColumn id="action" align="end" width="100px">
         {({ id, slug }: any) => {
           return (
