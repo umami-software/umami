@@ -22,12 +22,20 @@ export async function parseRequest(
 
   if (schema) {
     const isGet = request.method === 'GET';
+    const rawQuery = query;
     const result = schema.safeParse(isGet ? query : body);
 
     if (!result.success) {
       error = () => badRequest(z.treeifyError(result.error));
     } else if (isGet) {
       query = result.data;
+
+      // Re-add suffixed filter params (e.g., browser1, os2) stripped by Zod schema
+      for (const key of Object.keys(rawQuery)) {
+        if (/\d+$/.test(key) && !(key in query)) {
+          query[key] = rawQuery[key];
+        }
+      }
     } else {
       body = result.data;
     }
@@ -71,10 +79,10 @@ export function getRequestDateRange(query: Record<string, string>) {
 export function getRequestFilters(query: Record<string, any>) {
   const result: Record<string, any> = {};
 
-  for (const key of Object.keys(FILTER_COLUMNS)) {
-    const value = query[key];
-    if (value !== undefined) {
-      result[key] = value;
+  for (const key of Object.keys(query)) {
+    const baseName = key.replace(/\d+$/, '');
+    if (baseName in FILTER_COLUMNS) {
+      result[key] = query[key];
     }
   }
 

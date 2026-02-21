@@ -31,6 +31,7 @@ export interface Filter {
   type?: string;
   column?: string;
   prefix?: string;
+  paramName?: string;
 }
 
 export interface DateRange {

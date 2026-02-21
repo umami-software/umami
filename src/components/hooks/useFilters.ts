@@ -74,10 +74,11 @@ export function useFilters() {
   };
 
   const filters = Object.keys(query).reduce((arr, key) => {
-    if (FILTER_COLUMNS[key]) {
+    const baseName = key.replace(/\d+$/, '');
+    if (FILTER_COLUMNS[baseName]) {
       let operator = 'eq';
       let value = safeDecodeURIComponent(query[key]);
-      const label = fields.find(({ name }) => name === key)?.label;
+      const label = fields.find(({ name }) => name === baseName)?.label;
 
       const match = value.match(/^([a-z]+)\.(.*)/);
 
@@ -88,6 +89,7 @@ export function useFilters() {
 
       return arr.concat({
         name: key,
+        type: baseName,
         operator,
         value,
         label,

@@ -71,8 +71,15 @@ function getSearchSQL(column: string, param: string = 'search'): string {
   return `and ${column} ilike {{${param}}}`;
 }
 
-function mapFilter(column: string, operator: string, name: string, type: string = '') {
-  const value = `{{${name}${type ? `::${type}` : ''}}}`;
+function mapFilter(
+  column: string,
+  operator: string,
+  name: string,
+  type: string = '',
+  paramName?: string,
+) {
+  const param = paramName ?? name;
+  const value = `{{${param}${type ? `::${type}` : ''}}}`;
 
   if (name.startsWith('cohort_')) {
     name = name.slice('cohort_'.length);
@@ -100,7 +107,7 @@ function mapFilter(column: string, operator: string, name: string, type: string 
 
 function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}): string {
   const query = filtersObjectToArray(filters, options).reduce(
-    (arr, { name, column, operator, prefix = '' }) => {
+    (arr, { name, column, operator, prefix = '', paramName }) => {
       const isCohort = options?.isCohort;
 
       if (isCohort) {
@@ -108,7 +115,7 @@ function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}
       }
 
       if (column) {
-        arr.push(`and ${mapFilter(`${prefix}${column}`, operator, name)}`);
+        arr.push(`and ${mapFilter(`${prefix}${column}`, operator, name, '', paramName)}`);
 
         if (name === 'referrer') {
           arr.push(
@@ -181,18 +188,20 @@ function getDateQuery(filters: Record<string, any>) {
 function getQueryParams(filters: Record<string, any>) {
   return {
     ...filters,
-    ...filtersObjectToArray(filters).reduce((obj, { name, column, operator, value }) => {
+    ...filtersObjectToArray(filters).reduce((obj, { name, column, operator, value, paramName }) => {
       const resolvedColumn =
         column || (name?.startsWith('cohort_') && FILTER_COLUMNS[name.slice('cohort_'.length)]);
 
       if (!resolvedColumn) return obj;
 
+      const key = paramName ?? name;
+
       if (([OPERATORS.contains, OPERATORS.doesNotContain] as Operator[]).includes(operator)) {
-        obj[name] = `%${value}%`;
+        obj[key] = `%${value}%`;
       } else if (([OPERATORS.equals, OPERATORS.notEquals] as Operator[]).includes(operator)) {
-        obj[name] = Array.isArray(value) ? value : [value];
+        obj[key] = Array.isArray(value) ? value : [value];
       } else {
-        obj[name] = value;
+        obj[key] = value;
       }
 
       return obj;
@@ -201,9 +210,10 @@ function getQueryParams(filters: Record<string, any>) {
 }
 
 function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
-  const joinSession = Object.keys(filters).find(key =>
-    ['referrer', ...SESSION_COLUMNS].includes(key),
-  );
+  const joinSession = Object.keys(filters).find(key => {
+    const baseName = key.replace(/\d+$/, '');
+    return ['referrer', ...SESSION_COLUMNS].includes(baseName);
+  });
 
   const cohortFilters = Object.fromEntries(
     Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),

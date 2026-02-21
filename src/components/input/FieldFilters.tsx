@@ -48,24 +48,24 @@ export function FieldFilters({ websiteId, value, exclude = [], onChange }: Field
       {} as Record<FieldGroup, typeof fields>,
     );
 
-  const updateFilter = (name: string, props: Record<string, any>) => {
-    onChange(value.map(filter => (filter.name === name ? { ...filter, ...props } : filter)));
+  const updateFilter = (index: number, props: Record<string, any>) => {
+    onChange(value.map((filter, i) => (i === index ? { ...filter, ...props } : filter)));
   };
 
   const handleAdd = (name: Key) => {
     onChange(value.concat({ name: name.toString(), operator: 'eq', value: '' }));
   };
 
-  const handleChange = (name: string, value: Key) => {
-    updateFilter(name, { value });
+  const handleChange = (index: number, val: Key) => {
+    updateFilter(index, { value: val });
   };
 
-  const handleSelect = (name: string, operator: Key) => {
-    updateFilter(name, { operator });
+  const handleSelect = (index: number, operator: Key) => {
+    updateFilter(index, { operator });
   };
 
-  const handleRemove = (name: string) => {
-    onChange(value.filter(filter => filter.name !== name));
+  const handleRemove = (index: number) => {
+    onChange(value.filter((_, i) => i !== index));
   };
 
   return (
@@ -87,9 +87,8 @@ export function FieldFilters({ websiteId, value, exclude = [], onChange }: Field
                 return (
                   <MenuSection key={groupKey} title={label}>
                     {groupFields.map(field => {
-                      const isDisabled = !!value.find(({ name }) => name === field.name);
                       return (
-                        <MenuItem key={field.name} id={field.name} isDisabled={isDisabled}>
+                        <MenuItem key={field.name} id={field.name}>
                           {field.filterLabel}
                         </MenuItem>
                       );
@@ -115,9 +114,8 @@ export function FieldFilters({ websiteId, value, exclude = [], onChange }: Field
             return (
               <ListSection key={groupKey} title={label}>
                 {groupFields.map(field => {
-                  const isDisabled = !!value.find(({ name }) => name === field.name);
                   return (
-                    <ListItem key={field.name} id={field.name} isDisabled={isDisabled}>
+                    <ListItem key={field.name} id={field.name}>
                       {field.filterLabel}
                     </ListItem>
                   );
@@ -128,18 +126,18 @@ export function FieldFilters({ websiteId, value, exclude = [], onChange }: Field
         </List>
       </Column>
       <Column overflow="auto" gapY="4" style={{ contain: 'layout' }}>
-        {value.map(filter => {
+        {value.map((filter, index) => {
           return (
             <FilterRecord
-              key={filter.name}
+              key={`${filter.name}-${index}`}
               websiteId={websiteId}
               type={filter.name}
               startDate={startDate}
               endDate={endDate}
               {...filter}
-              onSelect={handleSelect}
-              onRemove={handleRemove}
-              onChange={handleChange}
+              onSelect={(_name, operator) => handleSelect(index, operator)}
+              onRemove={() => handleRemove(index)}
+              onChange={(_name, val) => handleChange(index, val)}
             />
           );
         })}

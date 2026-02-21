@@ -70,14 +70,21 @@ function getSearchSQL(column: string, param: string = 'search'): string {
   return `and positionCaseInsensitive(${column}, {${param}:String}) > 0`;
 }
 
-function mapFilter(column: string, operator: string, name: string, type: string = 'String') {
-  const value = `{${name}:${type}}`;
+function mapFilter(
+  column: string,
+  operator: string,
+  name: string,
+  type: string = 'String',
+  paramName?: string,
+) {
+  const param = paramName ?? name;
+  const value = `{${param}:${type}}`;
 
   switch (operator) {
     case OPERATORS.equals:
-      return `${column} IN {${name}:Array(${type})}`;
+      return `${column} IN {${param}:Array(${type})}`;
     case OPERATORS.notEquals:
-      return `${column} NOT IN {${name}:Array(${type})}`;
+      return `${column} NOT IN {${param}:Array(${type})}`;
     case OPERATORS.contains:
       return `positionCaseInsensitive(${column}, ${value}) > 0`;
     case OPERATORS.doesNotContain:
@@ -92,27 +99,30 @@ function mapFilter(column: string, operator: string, name: string, type: string 
 }
 
 function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}) {
-  const query = filtersObjectToArray(filters, options).reduce((arr, { name, column, operator }) => {
-    const isCohort = options?.isCohort;
+  const query = filtersObjectToArray(filters, options).reduce(
+    (arr, { name, column, operator, paramName }) => {
+      const isCohort = options?.isCohort;
 
-    if (isCohort) {
-      column = FILTER_COLUMNS[name.slice('cohort_'.length)];
-    }
-
-    if (column) {
-      if (name === 'eventType') {
-        arr.push(`and ${mapFilter(column, operator, name, 'UInt32')}`);
-      } else {
-        arr.push(`and ${mapFilter(column, operator, name)}`);
+      if (isCohort) {
+        column = FILTER_COLUMNS[name.slice('cohort_'.length)];
       }
 
-      if (name === 'referrer') {
-        arr.push(`and referrer_domain != hostname`);
-      }
-    }
+      if (column) {
+        if (name === 'eventType') {
+          arr.push(`and ${mapFilter(column, operator, name, 'UInt32', paramName)}`);
+        } else {
+          arr.push(`and ${mapFilter(column, operator, name, 'String', paramName)}`);
+        }
 
-    return arr;
-  }, []);
+        if (name === 'referrer') {
+          arr.push(`and referrer_domain != hostname`);
+        }
+      }
+
+      return arr;
+    },
+    [],
+  );
 
   return query.join('\n');
 }
@@ -177,13 +187,15 @@ function getDateQuery(filters: Record<string, any>) {
 function getQueryParams(filters: Record<string, any>) {
   return {
     ...filters,
-    ...filtersObjectToArray(filters).reduce((obj, { name, column, operator, value }) => {
+    ...filtersObjectToArray(filters).reduce((obj, { name, column, operator, value, paramName }) => {
       const resolvedColumn =
         column || (name?.startsWith('cohort_') && FILTER_COLUMNS[name.slice('cohort_'.length)]);
 
       if (!resolvedColumn || !name || value === undefined) return obj;
 
-      obj[name] = ([OPERATORS.equals, OPERATORS.notEquals] as string[]).includes(operator)
+      const key = paramName ?? name;
+
+      obj[key] = ([OPERATORS.equals, OPERATORS.notEquals] as string[]).includes(operator)
         ? Array.isArray(value)
           ? value
           : [value]
