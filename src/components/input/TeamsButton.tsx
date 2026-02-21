@@ -23,6 +23,7 @@ export function TeamsButton() {
   const { user } = useLoginQuery();
   const { t, labels } = useMessages();
   const { teamId, router } = useNavigation();
+  const { isPhone } = useMobile();
   const team = user?.teams?.find(({ id }) => id === teamId);
   const selectedKeys = new Set([teamId || 'user']);
   const label = teamId ? team?.name : user.username;
@@ -52,7 +53,7 @@ export function TeamsButton() {
           position="relative"
           gap
           maxHeight="40px"
-          minWidth="200px"
+          minWidth={isPhone ? '100px' : '200px'}
           maxWidth="200px"
         >
           <Icon>{teamId ? <Users /> : <User />}</Icon>
