@@ -11,6 +11,7 @@ package-lock.json
 /coverage
 
 # next.js
+next-env.d.ts
 /.next
 /out
 
@@ -21,6 +22,7 @@ package-lock.json
 /dist
 /generated
 /src/generated
+pm2.yml
 
 # misc
 .DS_Store
@@ -30,6 +32,10 @@ package-lock.json
 *.log
 .vscode
 .tool-versions
+.claude
+.agents
+tmpclaude*
+nul
 
 # debug
 npm-debug.log*
@@ -42,4 +48,3 @@ yarn-error.log*
 *.env.*
 
 *.dev.yml
-

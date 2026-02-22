@@ -41,7 +41,7 @@ export function ListTable({
   itemCount = 10,
   currency,
 }: ListTableProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { isPhone } = useMobile();
 
   const getRow = (row: ListData, index: number) => {
@@ -50,7 +50,7 @@ export function ListTable({
     return (
       <AnimatedRow
         key={`${label}${index}`}
-        label={renderLabel ? renderLabel(row, index) : (label ?? formatMessage(labels.unknown))}
+        label={renderLabel ? renderLabel(row, index) : (label ?? t(labels.unknown))}
         value={count}
         percent={percent}
         animate={animate && !virtualize}
@@ -115,9 +115,9 @@ const AnimatedRow = ({
       columns="1fr 50px 50px"
       paddingLeft="2"
       alignItems="center"
-      hoverBackgroundColor="2"
       borderRadius
       gap
+      hover={{ backgroundColor: 'surface-sunken' }}
     >
       <Row alignItems="center">
         <Text truncate={true} style={{ maxWidth: isPhone ? '200px' : '400px' }}>
@@ -140,7 +140,7 @@ const AnimatedRow = ({
           justifyContent="flex-start"
           position="relative"
           border="left"
-          borderColor="8"
+          borderColor="strong"
           color="muted"
           paddingLeft="3"
         >

@@ -5,7 +5,7 @@ import { LogOut } from '@/components/icons';
 import { TeamLeaveForm } from './TeamLeaveForm';
 
 export function TeamLeaveButton({ teamId, teamName }: { teamId: string; teamName: string }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const router = useRouter();
   const { user } = useLoginQuery();
   const { touch } = useModified();
@@ -21,10 +21,10 @@ export function TeamLeaveButton({ teamId, teamName }: { teamId: string; teamName
         <Icon>
           <LogOut />
         </Icon>
-        <Text>{formatMessage(labels.leave)}</Text>
+        <Text>{t(labels.leave)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.leaveTeam)} style={{ width: 400 }}>
+        <Dialog title={t(labels.leaveTeam)} style={{ width: 400 }}>
           {({ close }) => (
             <TeamLeaveForm
               teamId={teamId}

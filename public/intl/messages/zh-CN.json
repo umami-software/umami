@@ -1,2214 +1,393 @@
 {
-  "label.access-code": [
-    {
-      "type": 0,
-      "value": "访问代码"
-    }
-  ],
-  "label.actions": [
-    {
-      "type": 0,
-      "value": "用户行为"
-    }
-  ],
-  "label.activity": [
-    {
-      "type": 0,
-      "value": "活动日志"
-    }
-  ],
-  "label.add": [
-    {
-      "type": 0,
-      "value": "添加"
-    }
-  ],
-  "label.add-board": [
-    {
-      "type": 0,
-      "value": "添加看板"
-    }
-  ],
-  "label.add-description": [
-    {
-      "type": 0,
-      "value": "添加描述"
-    }
-  ],
-  "label.add-member": [
-    {
-      "type": 0,
-      "value": "添加成员"
-    }
-  ],
-  "label.add-step": [
-    {
-      "type": 0,
-      "value": "添加步骤"
-    }
-  ],
-  "label.add-website": [
-    {
-      "type": 0,
-      "value": "添加网站"
-    }
-  ],
-  "label.admin": [
-    {
-      "type": 0,
-      "value": "管理员"
-    }
-  ],
-  "label.affiliate": [
-    {
-      "type": 0,
-      "value": "联盟"
-    }
-  ],
-  "label.after": [
-    {
-      "type": 0,
-      "value": "之后"
-    }
-  ],
-  "label.all": [
-    {
-      "type": 0,
-      "value": "所有"
-    }
-  ],
-  "label.all-time": [
-    {
-      "type": 0,
-      "value": "所有时间段"
-    }
-  ],
-  "label.analytics": [
-    {
-      "type": 0,
-      "value": "分析"
-    }
-  ],
-  "label.apply": [
-    {
-      "type": 0,
-      "value": "应用"
-    }
-  ],
-  "label.attribution": [
-    {
-      "type": 0,
-      "value": "归因"
-    }
-  ],
-  "label.attribution-description": [
-    {
-      "type": 0,
-      "value": "查看用户如何与您的营销互动，以及是什么促成了转化。"
-    }
-  ],
-  "label.average": [
-    {
-      "type": 0,
-      "value": "平均"
-    }
-  ],
-  "label.back": [
-    {
-      "type": 0,
-      "value": "返回"
-    }
-  ],
-  "label.before": [
-    {
-      "type": 0,
-      "value": "之前"
-    }
-  ],
-  "label.boards": [
-    {
-      "type": 0,
-      "value": "看板"
-    }
-  ],
-  "label.bounce-rate": [
-    {
-      "type": 0,
-      "value": "跳出率"
-    }
-  ],
-  "label.breakdown": [
-    {
-      "type": 0,
-      "value": "故障"
-    }
-  ],
-  "label.browser": [
-    {
-      "type": 0,
-      "value": "浏览器"
-    }
-  ],
-  "label.browsers": [
-    {
-      "type": 0,
-      "value": "浏览器"
-    }
-  ],
-  "label.campaigns": [
-    {
-      "type": 0,
-      "value": "活动"
-    }
-  ],
-  "label.cancel": [
-    {
-      "type": 0,
-      "value": "取消"
-    }
-  ],
-  "label.change-password": [
-    {
-      "type": 0,
-      "value": "修改密码"
-    }
-  ],
-  "label.channels": [
-    {
-      "type": 0,
-      "value": "渠道"
-    }
-  ],
-  "label.cities": [
-    {
-      "type": 0,
-      "value": "市/县"
-    }
-  ],
-  "label.city": [
-    {
-      "type": 0,
-      "value": "市/县"
-    }
-  ],
-  "label.clear-all": [
-    {
-      "type": 0,
-      "value": "清除全部"
-    }
-  ],
-  "label.cohort": [
-    {
-      "type": 0,
-      "value": "队列"
-    }
-  ],
-  "label.compare": [
-    {
-      "type": 0,
-      "value": "比较"
-    }
-  ],
-  "label.compare-dates": [
-    {
-      "type": 0,
-      "value": "比较日期"
-    }
-  ],
-  "label.confirm": [
-    {
-      "type": 0,
-      "value": "确认"
-    }
-  ],
-  "label.confirm-password": [
-    {
-      "type": 0,
-      "value": "确认密码"
-    }
-  ],
-  "label.contains": [
-    {
-      "type": 0,
-      "value": "包含"
-    }
-  ],
-  "label.content": [
-    {
-      "type": 0,
-      "value": "内容"
-    }
-  ],
-  "label.continue": [
-    {
-      "type": 0,
-      "value": "继续"
-    }
-  ],
-  "label.conversion": [
-    {
-      "type": 0,
-      "value": "转化"
-    }
-  ],
-  "label.conversion-rate": [
-    {
-      "type": 0,
-      "value": "转化率"
-    }
-  ],
-  "label.conversion-step": [
-    {
-      "type": 0,
-      "value": "转化步骤"
-    }
-  ],
-  "label.count": [
-    {
-      "type": 0,
-      "value": "统计"
-    }
-  ],
-  "label.countries": [
-    {
-      "type": 0,
-      "value": "国家/地区"
-    }
-  ],
-  "label.country": [
-    {
-      "type": 0,
-      "value": "国家/地区"
-    }
-  ],
-  "label.create": [
-    {
-      "type": 0,
-      "value": "创建"
-    }
-  ],
-  "label.create-report": [
-    {
-      "type": 0,
-      "value": "创建报告"
-    }
-  ],
-  "label.create-team": [
-    {
-      "type": 0,
-      "value": "创建团队"
-    }
-  ],
-  "label.create-user": [
-    {
-      "type": 0,
-      "value": "创建用户"
-    }
-  ],
-  "label.created": [
-    {
-      "type": 0,
-      "value": "已创建"
-    }
-  ],
-  "label.created-by": [
-    {
-      "type": 0,
-      "value": "创建者"
-    }
-  ],
-  "label.currency": [
-    {
-      "type": 0,
-      "value": "货币"
-    }
-  ],
-  "label.current": [
-    {
-      "type": 0,
-      "value": "当前"
-    }
-  ],
-  "label.current-password": [
-    {
-      "type": 0,
-      "value": "当前密码"
-    }
-  ],
-  "label.custom-range": [
-    {
-      "type": 0,
-      "value": "自定义时间段"
-    }
-  ],
-  "label.dashboard": [
-    {
-      "type": 0,
-      "value": "仪表盘"
-    }
-  ],
-  "label.data": [
-    {
-      "type": 0,
-      "value": "统计数据"
-    }
-  ],
-  "label.date": [
-    {
-      "type": 0,
-      "value": "日期"
-    }
-  ],
-  "label.date-range": [
-    {
-      "type": 0,
-      "value": "时间段"
-    }
-  ],
-  "label.day": [
-    {
-      "type": 0,
-      "value": "日"
-    }
-  ],
-  "label.default-date-range": [
-    {
-      "type": 0,
-      "value": "默认时间段"
-    }
-  ],
-  "label.delete": [
-    {
-      "type": 0,
-      "value": "删除"
-    }
-  ],
-  "label.delete-report": [
-    {
-      "type": 0,
-      "value": "删除报告"
-    }
-  ],
-  "label.delete-team": [
-    {
-      "type": 0,
-      "value": "删除团队"
-    }
-  ],
-  "label.delete-user": [
-    {
-      "type": 0,
-      "value": "删除用户"
-    }
-  ],
-  "label.delete-website": [
-    {
-      "type": 0,
-      "value": "删除网站"
-    }
-  ],
-  "label.description": [
-    {
-      "type": 0,
-      "value": "描述"
-    }
-  ],
-  "label.desktop": [
-    {
-      "type": 0,
-      "value": "台式机"
-    }
-  ],
-  "label.details": [
-    {
-      "type": 0,
-      "value": "详细信息"
-    }
-  ],
-  "label.device": [
-    {
-      "type": 0,
-      "value": "设备"
-    }
-  ],
-  "label.devices": [
-    {
-      "type": 0,
-      "value": "设备"
-    }
-  ],
-  "label.direct": [
-    {
-      "type": 0,
-      "value": "直接"
-    }
-  ],
-  "label.dismiss": [
-    {
-      "type": 0,
-      "value": "关闭"
-    }
-  ],
-  "label.distinct-id": [
-    {
-      "type": 0,
-      "value": "唯一ID"
-    }
-  ],
-  "label.does-not-contain": [
-    {
-      "type": 0,
-      "value": "不包含"
-    }
-  ],
-  "label.does-not-include": [
-    {
-      "type": 0,
-      "value": "不包括"
-    }
-  ],
-  "label.doest-not-exist": [
-    {
-      "type": 0,
-      "value": "不存在"
-    }
-  ],
-  "label.domain": [
-    {
-      "type": 0,
-      "value": "域名"
-    }
-  ],
-  "label.dropoff": [
-    {
-      "type": 0,
-      "value": "丢弃"
-    }
-  ],
-  "label.edit": [
-    {
-      "type": 0,
-      "value": "编辑"
-    }
-  ],
-  "label.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "编辑仪表盘"
-    }
-  ],
-  "label.edit-member": [
-    {
-      "type": 0,
-      "value": "编辑成员"
-    }
-  ],
-  "label.email": [
-    {
-      "type": 0,
-      "value": "Email"
-    }
-  ],
-  "label.enable-share-url": [
-    {
-      "type": 0,
-      "value": "启用共享链接"
-    }
-  ],
-  "label.end-step": [
-    {
-      "type": 0,
-      "value": "结束步骤"
-    }
-  ],
-  "label.entry": [
-    {
-      "type": 0,
-      "value": "入口 URL"
-    }
-  ],
-  "label.event": [
-    {
-      "type": 0,
-      "value": "事件"
-    }
-  ],
-  "label.event-data": [
-    {
-      "type": 0,
-      "value": "事件数据"
-    }
-  ],
-  "label.event-name": [
-    {
-      "type": 0,
-      "value": "事件名称"
-    }
-  ],
-  "label.events": [
-    {
-      "type": 0,
-      "value": "行为类别"
-    }
-  ],
-  "label.exists": [
-    {
-      "type": 0,
-      "value": "存在"
-    }
-  ],
-  "label.exit": [
-    {
-      "type": 0,
-      "value": "退出 URL"
-    }
-  ],
-  "label.false": [
-    {
-      "type": 0,
-      "value": "否"
-    }
-  ],
-  "label.field": [
-    {
-      "type": 0,
-      "value": "字段"
-    }
-  ],
-  "label.fields": [
-    {
-      "type": 0,
-      "value": "字段"
-    }
-  ],
-  "label.filter": [
-    {
-      "type": 0,
-      "value": "筛选器"
-    }
-  ],
-  "label.filter-combined": [
-    {
-      "type": 0,
-      "value": "合并"
-    }
-  ],
-  "label.filter-raw": [
-    {
-      "type": 0,
-      "value": "原始"
-    }
-  ],
-  "label.filters": [
-    {
-      "type": 0,
-      "value": "筛选"
-    }
-  ],
-  "label.first-click": [
-    {
-      "type": 0,
-      "value": "首次点击"
-    }
-  ],
-  "label.first-seen": [
-    {
-      "type": 0,
-      "value": "首次出现"
-    }
-  ],
-  "label.funnel": [
-    {
-      "type": 0,
-      "value": "分析"
-    }
-  ],
-  "label.funnel-description": [
-    {
-      "type": 0,
-      "value": "了解用户的转化率和跳出率。"
-    }
-  ],
-  "label.funnels": [
-    {
-      "type": 0,
-      "value": "漏斗"
-    }
-  ],
-  "label.goal": [
-    {
-      "type": 0,
-      "value": "目标"
-    }
-  ],
-  "label.goals": [
-    {
-      "type": 0,
-      "value": "目标"
-    }
-  ],
-  "label.goals-description": [
-    {
-      "type": 0,
-      "value": "跟踪页面浏览量和事件的目标。"
-    }
-  ],
-  "label.greater-than": [
-    {
-      "type": 0,
-      "value": "大于"
-    }
-  ],
-  "label.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "大于或等于"
-    }
-  ],
-  "label.grouped": [
-    {
-      "type": 0,
-      "value": "分组"
-    }
-  ],
-  "label.hostname": [
-    {
-      "type": 0,
-      "value": "主机名"
-    }
-  ],
-  "label.includes": [
-    {
-      "type": 0,
-      "value": "包括"
-    }
-  ],
-  "label.insight": [
-    {
-      "type": 0,
-      "value": "洞察"
-    }
-  ],
-  "label.insights": [
-    {
-      "type": 0,
-      "value": "见解"
-    }
-  ],
-  "label.insights-description": [
-    {
-      "type": 0,
-      "value": "通过使用筛选器和划分时间段来更深入地研究数据。"
-    }
-  ],
-  "label.is": [
-    {
-      "type": 0,
-      "value": "等于"
-    }
-  ],
-  "label.is-false": [
-    {
-      "type": 0,
-      "value": "否"
-    }
-  ],
-  "label.is-not": [
-    {
-      "type": 0,
-      "value": "不等于"
-    }
-  ],
-  "label.is-not-set": [
-    {
-      "type": 0,
-      "value": "未设置"
-    }
-  ],
-  "label.is-set": [
-    {
-      "type": 0,
-      "value": "已设置"
-    }
-  ],
-  "label.is-true": [
-    {
-      "type": 0,
-      "value": "是"
-    }
-  ],
-  "label.join": [
-    {
-      "type": 0,
-      "value": "加入"
-    }
-  ],
-  "label.join-team": [
-    {
-      "type": 0,
-      "value": "加入团队"
-    }
-  ],
-  "label.journey": [
-    {
-      "type": 0,
-      "value": "用户浏览轨迹"
-    }
-  ],
-  "label.journey-description": [
-    {
-      "type": 0,
-      "value": "了解用户如何浏览网站。"
-    }
-  ],
-  "label.journeys": [
-    {
-      "type": 0,
-      "value": "用户路径"
-    }
-  ],
-  "label.language": [
-    {
-      "type": 0,
-      "value": "语言"
-    }
-  ],
-  "label.languages": [
-    {
-      "type": 0,
-      "value": "语言"
-    }
-  ],
-  "label.laptop": [
-    {
-      "type": 0,
-      "value": "笔记本"
-    }
-  ],
-  "label.last-click": [
-    {
-      "type": 0,
-      "value": "最后点击"
-    }
-  ],
-  "label.last-days": [
-    {
-      "type": 0,
-      "value": "最近 "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " 天"
-    }
-  ],
-  "label.last-hours": [
-    {
-      "type": 0,
-      "value": "最近 "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " 小时"
-    }
-  ],
-  "label.last-months": [
-    {
-      "type": 0,
-      "value": "最近 "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " 个月"
-    }
-  ],
-  "label.last-seen": [
-    {
-      "type": 0,
-      "value": "最后出现"
-    }
-  ],
-  "label.leave": [
-    {
-      "type": 0,
-      "value": "离开"
-    }
-  ],
-  "label.leave-team": [
-    {
-      "type": 0,
-      "value": "离开团队"
-    }
-  ],
-  "label.less-than": [
-    {
-      "type": 0,
-      "value": "少于"
-    }
-  ],
-  "label.less-than-equals": [
-    {
-      "type": 0,
-      "value": "少于等于"
-    }
-  ],
-  "label.links": [
-    {
-      "type": 0,
-      "value": "链接"
-    }
-  ],
-  "label.login": [
-    {
-      "type": 0,
-      "value": "登录"
-    }
-  ],
-  "label.logout": [
-    {
-      "type": 0,
-      "value": "退出"
-    }
-  ],
-  "label.manage": [
-    {
-      "type": 0,
-      "value": "管理"
-    }
-  ],
-  "label.manager": [
-    {
-      "type": 0,
-      "value": "管理者"
-    }
-  ],
-  "label.max": [
-    {
-      "type": 0,
-      "value": "最大"
-    }
-  ],
-  "label.maximize": [
-    {
-      "type": 0,
-      "value": "展开"
-    }
-  ],
-  "label.medium": [
-    {
-      "type": 0,
-      "value": "中等"
-    }
-  ],
-  "label.member": [
-    {
-      "type": 0,
-      "value": "成员"
-    }
-  ],
-  "label.members": [
-    {
-      "type": 0,
-      "value": "成员"
-    }
-  ],
-  "label.min": [
-    {
-      "type": 0,
-      "value": "最小"
-    }
-  ],
-  "label.mobile": [
-    {
-      "type": 0,
-      "value": "手机"
-    }
-  ],
-  "label.model": [
-    {
-      "type": 0,
-      "value": "模型"
-    }
-  ],
-  "label.more": [
-    {
-      "type": 0,
-      "value": "更多"
-    }
-  ],
-  "label.my-account": [
-    {
-      "type": 0,
-      "value": "我的账户"
-    }
-  ],
-  "label.my-websites": [
-    {
-      "type": 0,
-      "value": "我的网站"
-    }
-  ],
-  "label.name": [
-    {
-      "type": 0,
-      "value": "名字"
-    }
-  ],
-  "label.new-password": [
-    {
-      "type": 0,
-      "value": "新密码"
-    }
-  ],
-  "label.none": [
-    {
-      "type": 0,
-      "value": "无"
-    }
-  ],
-  "label.number-of-records": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "record"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "records"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "label.ok": [
-    {
-      "type": 0,
-      "value": "好的"
-    }
-  ],
-  "label.online": [
-    {
-      "type": 0,
-      "value": "Online"
-    }
-  ],
-  "label.organic-search": [
-    {
-      "type": 0,
-      "value": "自然搜索"
-    }
-  ],
-  "label.organic-shopping": [
-    {
-      "type": 0,
-      "value": "自然购物"
-    }
-  ],
-  "label.organic-social": [
-    {
-      "type": 0,
-      "value": "自然社交"
-    }
-  ],
-  "label.organic-video": [
-    {
-      "type": 0,
-      "value": "自然视频"
-    }
-  ],
-  "label.os": [
-    {
-      "type": 0,
-      "value": "操作系统"
-    }
-  ],
-  "label.other": [
-    {
-      "type": 0,
-      "value": "其他"
-    }
-  ],
-  "label.overview": [
-    {
-      "type": 0,
-      "value": "概览"
-    }
-  ],
-  "label.owner": [
-    {
-      "type": 0,
-      "value": "所有者"
-    }
-  ],
-  "label.page": [
-    {
-      "type": 0,
-      "value": "页面"
-    }
-  ],
-  "label.page-of": [
-    {
-      "type": 0,
-      "value": "总 "
-    },
-    {
-      "type": 1,
-      "value": "total"
-    },
-    {
-      "type": 0,
-      "value": " 中的第 "
-    },
-    {
-      "type": 1,
-      "value": "current"
-    },
-    {
-      "type": 0,
-      "value": " 页"
-    }
-  ],
-  "label.page-views": [
-    {
-      "type": 0,
-      "value": "页面浏览量"
-    }
-  ],
-  "label.pageTitle": [
-    {
-      "type": 0,
-      "value": "标题"
-    }
-  ],
-  "label.pages": [
-    {
-      "type": 0,
-      "value": "网页"
-    }
-  ],
-  "label.paid-ads": [
-    {
-      "type": 0,
-      "value": "付费广告"
-    }
-  ],
-  "label.paid-search": [
-    {
-      "type": 0,
-      "value": "付费搜索"
-    }
-  ],
-  "label.paid-shopping": [
-    {
-      "type": 0,
-      "value": "付费购物"
-    }
-  ],
-  "label.paid-social": [
-    {
-      "type": 0,
-      "value": "付费社交"
-    }
-  ],
-  "label.paid-video": [
-    {
-      "type": 0,
-      "value": "付费视频"
-    }
-  ],
-  "label.password": [
-    {
-      "type": 0,
-      "value": "密码"
-    }
-  ],
-  "label.path": [
-    {
-      "type": 0,
-      "value": "路径"
-    }
-  ],
-  "label.paths": [
-    {
-      "type": 0,
-      "value": "路径"
-    }
-  ],
-  "label.pixels": [
-    {
-      "type": 0,
-      "value": "像素"
-    }
-  ],
-  "label.powered-by": [
-    {
-      "type": 0,
-      "value": "由 "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": " 提供支持"
-    }
-  ],
-  "label.previous": [
-    {
-      "type": 0,
-      "value": "先前"
-    }
-  ],
-  "label.previous-period": [
-    {
-      "type": 0,
-      "value": "上一时期"
-    }
-  ],
-  "label.previous-year": [
-    {
-      "type": 0,
-      "value": "上一年"
-    }
-  ],
-  "label.profile": [
-    {
-      "type": 0,
-      "value": "个人资料"
-    }
-  ],
-  "label.properties": [
-    {
-      "type": 0,
-      "value": "属性"
-    }
-  ],
-  "label.property": [
-    {
-      "type": 0,
-      "value": "属性"
-    }
-  ],
-  "label.queries": [
-    {
-      "type": 0,
-      "value": "查询"
-    }
-  ],
-  "label.query": [
-    {
-      "type": 0,
-      "value": "查询"
-    }
-  ],
-  "label.query-parameters": [
-    {
-      "type": 0,
-      "value": "查询参数"
-    }
-  ],
-  "label.realtime": [
-    {
-      "type": 0,
-      "value": "实时"
-    }
-  ],
-  "label.referral": [
-    {
-      "type": 0,
-      "value": "Referral"
-    }
-  ],
-  "label.referrer": [
-    {
-      "type": 0,
-      "value": "来源"
-    }
-  ],
-  "label.referrers": [
-    {
-      "type": 0,
-      "value": "来源域名"
-    }
-  ],
-  "label.refresh": [
-    {
-      "type": 0,
-      "value": "刷新"
-    }
-  ],
-  "label.regenerate": [
-    {
-      "type": 0,
-      "value": "重新生成"
-    }
-  ],
-  "label.region": [
-    {
-      "type": 0,
-      "value": "州/省"
-    }
-  ],
-  "label.regions": [
-    {
-      "type": 0,
-      "value": "州/省"
-    }
-  ],
-  "label.remaining": [
-    {
-      "type": 0,
-      "value": "剩余"
-    }
-  ],
-  "label.remove": [
-    {
-      "type": 0,
-      "value": "移除"
-    }
-  ],
-  "label.remove-member": [
-    {
-      "type": 0,
-      "value": "移除成员"
-    }
-  ],
-  "label.reports": [
-    {
-      "type": 0,
-      "value": "报告"
-    }
-  ],
-  "label.required": [
-    {
-      "type": 0,
-      "value": "必填"
-    }
-  ],
-  "label.reset": [
-    {
-      "type": 0,
-      "value": "重置"
-    }
-  ],
-  "label.reset-website": [
-    {
-      "type": 0,
-      "value": "重置统计数据"
-    }
-  ],
-  "label.retention": [
-    {
-      "type": 0,
-      "value": "保留"
-    }
-  ],
-  "label.retention-description": [
-    {
-      "type": 0,
-      "value": "通过追踪用户回访频率来衡量您网站的用户粘性。"
-    }
-  ],
-  "label.revenue": [
-    {
-      "type": 0,
-      "value": "收入"
-    }
-  ],
-  "label.revenue-description": [
-    {
-      "type": 0,
-      "value": "查看随时间变化的收入数据。"
-    }
-  ],
-  "label.role": [
-    {
-      "type": 0,
-      "value": "角色"
-    }
-  ],
-  "label.run-query": [
-    {
-      "type": 0,
-      "value": "查询"
-    }
-  ],
-  "label.save": [
-    {
-      "type": 0,
-      "value": "保存"
-    }
-  ],
-  "label.screens": [
-    {
-      "type": 0,
-      "value": "屏幕尺寸"
-    }
-  ],
-  "label.search": [
-    {
-      "type": 0,
-      "value": "搜索"
-    }
-  ],
-  "label.select": [
-    {
-      "type": 0,
-      "value": "选择"
-    }
-  ],
-  "label.select-date": [
-    {
-      "type": 0,
-      "value": "选择日期"
-    }
-  ],
-  "label.select-filter": [
-    {
-      "type": 0,
-      "value": "选择筛选器"
-    }
-  ],
-  "label.select-role": [
-    {
-      "type": 0,
-      "value": "选择角色"
-    }
-  ],
-  "label.select-website": [
-    {
-      "type": 0,
-      "value": "选择网站"
-    }
-  ],
-  "label.session": [
-    {
-      "type": 0,
-      "value": "会话"
-    }
-  ],
-  "label.session-data": [
-    {
-      "type": 0,
-      "value": "会话数据"
-    }
-  ],
-  "label.sessions": [
-    {
-      "type": 0,
-      "value": "会话"
-    }
-  ],
-  "label.settings": [
-    {
-      "type": 0,
-      "value": "设置"
-    }
-  ],
-  "label.share": [
-    {
-      "type": 0,
-      "value": "分享"
-    }
-  ],
-  "label.share-url": [
-    {
-      "type": 0,
-      "value": "共享链接"
-    }
-  ],
-  "label.single-day": [
-    {
-      "type": 0,
-      "value": "单日"
-    }
-  ],
-  "label.sms": [
-    {
-      "type": 0,
-      "value": "SMS"
-    }
-  ],
-  "label.sources": [
-    {
-      "type": 0,
-      "value": "来源"
-    }
-  ],
-  "label.start-step": [
-    {
-      "type": 0,
-      "value": "开始步骤"
-    }
-  ],
-  "label.steps": [
-    {
-      "type": 0,
-      "value": "步骤"
-    }
-  ],
-  "label.sum": [
-    {
-      "type": 0,
-      "value": "总和"
-    }
-  ],
-  "label.tablet": [
-    {
-      "type": 0,
-      "value": "平板"
-    }
-  ],
-  "label.tag": [
-    {
-      "type": 0,
-      "value": "标签"
-    }
-  ],
-  "label.tags": [
-    {
-      "type": 0,
-      "value": "标签"
-    }
-  ],
-  "label.team": [
-    {
-      "type": 0,
-      "value": "团队"
-    }
-  ],
-  "label.team-id": [
-    {
-      "type": 0,
-      "value": "团队 ID"
-    }
-  ],
-  "label.team-manager": [
-    {
-      "type": 0,
-      "value": "团队管理员"
-    }
-  ],
-  "label.team-member": [
-    {
-      "type": 0,
-      "value": "团队成员"
-    }
-  ],
-  "label.team-name": [
-    {
-      "type": 0,
-      "value": "团队名称"
-    }
-  ],
-  "label.team-owner": [
-    {
-      "type": 0,
-      "value": "团队所有者"
-    }
-  ],
-  "label.team-settings": [
-    {
-      "type": 0,
-      "value": "团队设置"
-    }
-  ],
-  "label.team-view-only": [
-    {
-      "type": 0,
-      "value": "仅团队视图"
-    }
-  ],
-  "label.team-websites": [
-    {
-      "type": 0,
-      "value": "团队网站"
-    }
-  ],
-  "label.teams": [
-    {
-      "type": 0,
-      "value": "团队"
-    }
-  ],
-  "label.terms": [
-    {
-      "type": 0,
-      "value": "条款"
-    }
-  ],
-  "label.theme": [
-    {
-      "type": 0,
-      "value": "主题"
-    }
-  ],
-  "label.this-month": [
-    {
-      "type": 0,
-      "value": "本月"
-    }
-  ],
-  "label.this-week": [
-    {
-      "type": 0,
-      "value": "本周"
-    }
-  ],
-  "label.this-year": [
-    {
-      "type": 0,
-      "value": "今年"
-    }
-  ],
-  "label.timezone": [
-    {
-      "type": 0,
-      "value": "时区"
-    }
-  ],
-  "label.title": [
-    {
-      "type": 0,
-      "value": "标题"
-    }
-  ],
-  "label.today": [
-    {
-      "type": 0,
-      "value": "今天"
-    }
-  ],
-  "label.toggle-charts": [
-    {
-      "type": 0,
-      "value": "切换图表"
-    }
-  ],
-  "label.total": [
-    {
-      "type": 0,
-      "value": "总数"
-    }
-  ],
-  "label.total-records": [
-    {
-      "type": 0,
-      "value": "总记录数"
-    }
-  ],
-  "label.tracking-code": [
-    {
-      "type": 0,
-      "value": "跟踪代码"
-    }
-  ],
-  "label.transactions": [
-    {
-      "type": 0,
-      "value": "交易"
-    }
-  ],
-  "label.transfer": [
-    {
-      "type": 0,
-      "value": "转移"
-    }
-  ],
-  "label.transfer-website": [
-    {
-      "type": 0,
-      "value": "转移网站"
-    }
-  ],
-  "label.true": [
-    {
-      "type": 0,
-      "value": "是"
-    }
-  ],
-  "label.type": [
-    {
-      "type": 0,
-      "value": "类型"
-    }
-  ],
-  "label.unique": [
-    {
-      "type": 0,
-      "value": "独立"
-    }
-  ],
-  "label.unique-visitors": [
-    {
-      "type": 0,
-      "value": "独立访客"
-    }
-  ],
-  "label.uniqueCustomers": [
-    {
-      "type": 0,
-      "value": "独特客户"
-    }
-  ],
-  "label.unknown": [
-    {
-      "type": 0,
-      "value": "未知"
-    }
-  ],
-  "label.untitled": [
-    {
-      "type": 0,
-      "value": "未命名"
-    }
-  ],
-  "label.update": [
-    {
-      "type": 0,
-      "value": "更新"
-    }
-  ],
-  "label.user": [
-    {
-      "type": 0,
-      "value": "用户"
-    }
-  ],
-  "label.username": [
-    {
-      "type": 0,
-      "value": "用户名"
-    }
-  ],
-  "label.users": [
-    {
-      "type": 0,
-      "value": "用户"
-    }
-  ],
-  "label.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "label.utm-description": [
-    {
-      "type": 0,
-      "value": "通过 UTM 参数追踪您的广告活动。"
-    }
-  ],
-  "label.value": [
-    {
-      "type": 0,
-      "value": "值"
-    }
-  ],
-  "label.view": [
-    {
-      "type": 0,
-      "value": "查看"
-    }
-  ],
-  "label.view-details": [
-    {
-      "type": 0,
-      "value": "查看更多"
-    }
-  ],
-  "label.view-only": [
-    {
-      "type": 0,
-      "value": "仅浏览"
-    }
-  ],
-  "label.views": [
-    {
-      "type": 0,
-      "value": "浏览量"
-    }
-  ],
-  "label.views-per-visit": [
-    {
-      "type": 0,
-      "value": "每次访问的浏览量"
-    }
-  ],
-  "label.visit-duration": [
-    {
-      "type": 0,
-      "value": "平均访问时长"
-    }
-  ],
-  "label.visitors": [
-    {
-      "type": 0,
-      "value": "访客"
-    }
-  ],
-  "label.visits": [
-    {
-      "type": 0,
-      "value": "访问次数"
-    }
-  ],
-  "label.website": [
-    {
-      "type": 0,
-      "value": "网站"
-    }
-  ],
-  "label.website-id": [
-    {
-      "type": 0,
-      "value": "网站 ID"
-    }
-  ],
-  "label.websites": [
-    {
-      "type": 0,
-      "value": "网站"
-    }
-  ],
-  "label.window": [
-    {
-      "type": 0,
-      "value": "窗口"
-    }
-  ],
-  "label.yesterday": [
-    {
-      "type": 0,
-      "value": "昨天"
-    }
-  ],
-  "message.action-confirmation": [
-    {
-      "type": 0,
-      "value": "请在下方输入框中输入 "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " 以确认操作。"
-    }
-  ],
-  "message.active-users": [
-    {
-      "type": 0,
-      "value": "当前在线 "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " 位访客"
-    }
-  ],
-  "message.bad-request": [
-    {
-      "type": 0,
-      "value": "Bad request"
-    }
-  ],
-  "message.collected-data": [
-    {
-      "type": 0,
-      "value": "已收集的数据"
-    }
-  ],
-  "message.confirm-delete": [
-    {
-      "type": 0,
-      "value": "你确定要删除 "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " 吗？"
-    }
-  ],
-  "message.confirm-leave": [
-    {
-      "type": 0,
-      "value": "你确定要离开 "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " 吗？"
-    }
-  ],
-  "message.confirm-remove": [
-    {
-      "type": 0,
-      "value": "您确定要移除 "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " ？"
-    }
-  ],
-  "message.confirm-reset": [
-    {
-      "type": 0,
-      "value": "您确定要重置 "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " 的数据吗？"
-    }
-  ],
-  "message.delete-team-warning": [
-    {
-      "type": 0,
-      "value": "删除团队也会删除所有团队网站。"
-    }
-  ],
-  "message.delete-website-warning": [
-    {
-      "type": 0,
-      "value": "所有相关数据将会被删除。"
-    }
-  ],
-  "message.error": [
-    {
-      "type": 0,
-      "value": "发生错误。"
-    }
-  ],
-  "message.event-log": [
-    {
-      "type": 1,
-      "value": "url"
-    },
-    {
-      "type": 0,
-      "value": " 上的 "
-    },
-    {
-      "type": 1,
-      "value": "event"
-    }
-  ],
-  "message.forbidden": [
-    {
-      "type": 0,
-      "value": "Forbidden"
-    }
-  ],
-  "message.go-to-settings": [
-    {
-      "type": 0,
-      "value": "去设置"
-    }
-  ],
-  "message.incorrect-username-password": [
-    {
-      "type": 0,
-      "value": "用户名或密码不正确。"
-    }
-  ],
-  "message.invalid-domain": [
-    {
-      "type": 0,
-      "value": "无效域名"
-    }
-  ],
-  "message.min-password-length": [
-    {
-      "type": 0,
-      "value": "密码最短长度为 "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " 个字符"
-    }
-  ],
-  "message.new-version-available": [
-    {
-      "type": 0,
-      "value": "Umami 新版本 "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " 已发布！"
-    }
-  ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "暂无数据。"
-    }
-  ],
-  "message.no-event-data": [
-    {
-      "type": 0,
-      "value": "无可用事件。"
-    }
-  ],
-  "message.no-match-password": [
-    {
-      "type": 0,
-      "value": "密码不一致"
-    }
-  ],
-  "message.no-results-found": [
-    {
-      "type": 0,
-      "value": "未找到结果。"
-    }
-  ],
-  "message.no-team-websites": [
-    {
-      "type": 0,
-      "value": "该团队暂无网站。"
-    }
-  ],
-  "message.no-teams": [
-    {
-      "type": 0,
-      "value": "您尚未创建任何团队。"
-    }
-  ],
-  "message.no-users": [
-    {
-      "type": 0,
-      "value": "暂无用户。"
-    }
-  ],
-  "message.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "你还没有设置任何网站。"
-    }
-  ],
-  "message.not-found": [
-    {
-      "type": 0,
-      "value": "Not found"
-    }
-  ],
-  "message.nothing-selected": [
-    {
-      "type": 0,
-      "value": "Nothing selected."
-    }
-  ],
-  "message.page-not-found": [
-    {
-      "type": 0,
-      "value": "页面未找到。"
-    }
-  ],
-  "message.reset-website": [
-    {
-      "type": 0,
-      "value": "如确定要重置该网站，请在下面输入 "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " 以确认。"
-    }
-  ],
-  "message.reset-website-warning": [
-    {
-      "type": 0,
-      "value": "此网站的所有统计数据将被删除，但您的跟踪代码将保持不变。"
-    }
-  ],
-  "message.saved": [
-    {
-      "type": 0,
-      "value": "保存成功。"
-    }
-  ],
-  "message.sever-error": [
-    {
-      "type": 0,
-      "value": "Server error"
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "这是 "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " 的共享链接。"
-    }
-  ],
-  "message.team-already-member": [
-    {
-      "type": 0,
-      "value": "你已是该团队的成员。"
-    }
-  ],
-  "message.team-not-found": [
-    {
-      "type": 0,
-      "value": "未找到团队。"
-    }
-  ],
-  "message.team-websites-info": [
-    {
-      "type": 0,
-      "value": "团队成员均可查看网站数据。"
-    }
-  ],
-  "message.tracking-code": [
-    {
-      "type": 0,
-      "value": "跟踪代码"
-    }
-  ],
-  "message.transfer-team-website-to-user": [
-    {
-      "type": 0,
-      "value": "将此网站转移到您的账户？"
-    }
-  ],
-  "message.transfer-user-website-to-team": [
-    {
-      "type": 0,
-      "value": "选择要转移此网站的团队。"
-    }
-  ],
-  "message.transfer-website": [
-    {
-      "type": 0,
-      "value": "将网站所有权转移到您的账户或其他团队。"
-    }
-  ],
-  "message.triggered-event": [
-    {
-      "type": 0,
-      "value": "触发事件"
-    }
-  ],
-  "message.unauthorized": [
-    {
-      "type": 0,
-      "value": "Unauthorized"
-    }
-  ],
-  "message.user-deleted": [
-    {
-      "type": 0,
-      "value": "用户已删除。"
-    }
-  ],
-  "message.viewed-page": [
-    {
-      "type": 0,
-      "value": "已浏览页面"
-    }
-  ],
-  "message.visitor-log": [
-    {
-      "type": 0,
-      "value": "来自 "
-    },
-    {
-      "type": 1,
-      "value": "country"
-    },
-    {
-      "type": 0,
-      "value": " 的访客在搭载 "
-    },
-    {
-      "type": 1,
-      "value": "os"
-    },
-    {
-      "type": 0,
-      "value": " 的 "
-    },
-    {
-      "type": 1,
-      "value": "device"
-    },
-    {
-      "type": 0,
-      "value": " 上使用 "
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    },
-    {
-      "type": 0,
-      "value": " 浏览器进行访问。"
-    }
-  ]
+  "label": {
+    "access-code": "访问代码",
+    "account": "账户",
+    "action": "行为",
+    "actions": "用户行为",
+    "activity": "活动日志",
+    "add": "添加",
+    "add-board": "添加看板",
+    "add-description": "添加描述",
+    "add-link": "添加链接",
+    "add-member": "添加成员",
+    "add-pixel": "添加像素",
+    "add-step": "添加步骤",
+    "add-website": "添加网站",
+    "admin": "管理员",
+    "affiliate": "联盟",
+    "after": "之后",
+    "all": "所有",
+    "all-time": "所有时间段",
+    "analysis": "分析",
+    "analytics": "分析",
+    "application": "应用",
+    "apply": "应用",
+    "attribution": "归因",
+    "attribution-description": "查看用户如何与您的营销互动，以及是什么促成了转化。",
+    "audience": "受众",
+    "average": "平均",
+    "back": "返回",
+    "before": "之前",
+    "behavior": "行为",
+    "boards": "看板",
+    "bounce-rate": "跳出率",
+    "breakdown": "故障",
+    "browser": "浏览器",
+    "browsers": "浏览器",
+    "campaign": "推广活动",
+    "campaigns": "活动",
+    "cancel": "取消",
+    "change-password": "修改密码",
+    "channel": "渠道",
+    "channels": "渠道",
+    "chart": "图表",
+    "cities": "市/县",
+    "city": "市/县",
+    "clear-all": "清除全部",
+    "cohort": "队列",
+    "cohorts": "队列",
+    "compare": "比较",
+    "compare-dates": "比较日期",
+    "confirm": "确认",
+    "confirm-password": "确认密码",
+    "contains": "包含",
+    "regex-match": "匹配正则表达式",
+    "regex-not-match": "不匹配正则表达式",
+    "content": "内容",
+    "continue": "继续",
+    "conversion": "转化",
+    "conversion-rate": "转化率",
+    "conversion-step": "转化步骤",
+    "count": "统计",
+    "countries": "国家/地区",
+    "country": "国家/地区",
+    "create": "创建",
+    "create-report": "创建报告",
+    "create-team": "创建团队",
+    "create-user": "创建用户",
+    "created": "已创建",
+    "created-by": "创建者",
+    "criteria": "条件",
+    "currency": "货币",
+    "current": "当前",
+    "current-password": "当前密码",
+    "custom-range": "自定义时间段",
+    "dashboard": "仪表盘",
+    "data": "统计数据",
+    "date": "日期",
+    "date-range": "时间段",
+    "day": "日",
+    "default-date-range": "默认时间段",
+    "delete": "删除",
+    "delete-report": "删除报告",
+    "delete-team": "删除团队",
+    "delete-user": "删除用户",
+    "delete-website": "删除网站",
+    "description": "描述",
+    "desktop": "台式机",
+    "destination-url": "目标URL",
+    "details": "详细信息",
+    "device": "设备",
+    "devices": "设备",
+    "direct": "直接",
+    "dismiss": "关闭",
+    "distinct-id": "唯一ID",
+    "documentation": "文档",
+    "does-not-contain": "不包含",
+    "does-not-include": "不包括",
+    "doest-not-exist": "不存在",
+    "domain": "域名",
+    "download": "下载",
+    "dropoff": "丢弃",
+    "edit": "编辑",
+    "edit-member": "编辑成员",
+    "email": "邮箱",
+    "enable-share-url": "启用共享链接",
+    "end-step": "结束步骤",
+    "entry": "入口 URL",
+    "environment": "环境",
+    "event": "事件",
+    "event-data": "事件数据",
+    "event-name": "事件名称",
+    "events": "行为类别",
+    "exclude-bounce": "排除跳出",
+    "exists": "存在",
+    "exit": "退出 URL",
+    "false": "否",
+    "field": "字段",
+    "fields": "字段",
+    "filter": "筛选器",
+    "filter-combined": "合并",
+    "filter-raw": "原始",
+    "filters": "筛选",
+    "first-click": "首次点击",
+    "first-seen": "首次出现",
+    "funnel": "分析",
+    "funnel-description": "了解用户的转化率和跳出率。",
+    "funnels": "漏斗",
+    "goal": "目标",
+    "goals": "目标",
+    "goals-description": "跟踪页面浏览量和事件的目标。",
+    "greater-than": "大于",
+    "greater-than-equals": "大于或等于",
+    "grouped": "分组",
+    "growth": "增长",
+    "hostname": "主机名",
+    "hour": "小时",
+    "includes": "包括",
+    "insight": "洞察",
+    "insights": "见解",
+    "insights-description": "通过使用筛选器和划分时间段来更深入地研究数据。",
+    "invalid-url": "无效URL",
+    "is": "等于",
+    "is-false": "否",
+    "is-not": "不等于",
+    "is-not-set": "未设置",
+    "is-set": "已设置",
+    "is-true": "是",
+    "join": "加入",
+    "join-team": "加入团队",
+    "journey": "用户浏览轨迹",
+    "journey-description": "了解用户如何浏览网站。",
+    "journeys": "用户路径",
+    "language": "语言",
+    "languages": "语言",
+    "laptop": "笔记本",
+    "last-click": "最后点击",
+    "last-days": "最近 {x} 天",
+    "last-hours": "最近 {x} 小时",
+    "last-months": "最近 {x} 个月",
+    "last-seen": "最后出现",
+    "leave": "离开",
+    "leave-team": "离开团队",
+    "less-than": "少于",
+    "less-than-equals": "少于等于",
+    "link": "链接",
+    "links": "链接",
+    "location": "位置",
+    "login": "登录",
+    "logout": "退出",
+    "manage": "管理",
+    "manager": "管理者",
+    "max": "最大",
+    "maximize": "展开",
+    "match": "匹配",
+    "match-all": "全部",
+    "match-any": "任意",
+    "medium": "中等",
+    "member": "成员",
+    "members": "成员",
+    "min": "最小",
+    "minute": "分钟",
+    "mobile": "手机",
+    "model": "模型",
+    "month": "月",
+    "more": "更多",
+    "my-account": "我的账户",
+    "my-websites": "我的网站",
+    "name": "名字",
+    "new-password": "新密码",
+    "none": "无",
+    "number-of-records": "{x} {x, plural, one {条记录} other {条记录}}",
+    "ok": "好的",
+    "online": "在线",
+    "organic-search": "自然搜索",
+    "organic-shopping": "自然购物",
+    "organic-social": "自然社交",
+    "organic-video": "自然视频",
+    "os": "操作系统",
+    "other": "其他",
+    "overview": "概览",
+    "owner": "所有者",
+    "page": "页面",
+    "page-of": "总 {total} 中的第 {current} 页",
+    "page-views": "页面浏览量",
+    "pageTitle": "标题",
+    "pages": "网页",
+    "paid-ads": "付费广告",
+    "paid-search": "付费搜索",
+    "paid-shopping": "付费购物",
+    "paid-social": "付费社交",
+    "paid-video": "付费视频",
+    "password": "密码",
+    "path": "路径",
+    "paths": "路径",
+    "pixel": "像素",
+    "pixels": "像素",
+    "powered-by": "由 {name} 提供支持",
+    "preferences": "偏好",
+    "previous": "先前",
+    "previous-period": "上一时期",
+    "previous-year": "上一年",
+    "profile": "个人资料",
+    "profiles": "个人资料",
+    "properties": "属性",
+    "property": "属性",
+    "queries": "查询",
+    "query": "查询",
+    "query-parameters": "查询参数",
+    "realtime": "实时",
+    "referral": "来源",
+    "referrer": "来源",
+    "referrers": "来源域名",
+    "refresh": "刷新",
+    "regenerate": "重新生成",
+    "region": "州/省",
+    "regions": "州/省",
+    "remaining": "剩余",
+    "remove": "移除",
+    "remove-member": "移除成员",
+    "reports": "报告",
+    "required": "必填",
+    "reset": "重置",
+    "reset-website": "重置统计数据",
+    "retention": "保留",
+    "retention-description": "通过追踪用户回访频率来衡量您网站的用户粘性。",
+    "revenue": "收入",
+    "revenue-description": "查看随时间变化的收入数据。",
+    "role": "角色",
+    "run-query": "查询",
+    "save": "保存",
+    "save-cohort": "保存为群组",
+    "save-segment": "保存为细分",
+    "screen": "屏幕",
+    "screens": "屏幕尺寸",
+    "search": "搜索",
+    "segment": "细分",
+    "segments": "细分",
+    "select": "选择",
+    "select-date": "选择日期",
+    "select-filter": "选择筛选器",
+    "select-role": "选择角色",
+    "select-website": "选择网站",
+    "session": "会话",
+    "session-data": "会话数据",
+    "sessions": "会话",
+    "settings": "设置",
+    "share": "分享",
+    "share-url": "共享链接",
+    "single-day": "单日",
+    "sms": "短信",
+    "source": "来源",
+    "sources": "来源",
+    "start-step": "开始步骤",
+    "steps": "步骤",
+    "sum": "总和",
+    "support": "支持",
+    "switch-account": "切换账户",
+    "table": "表格",
+    "tablet": "平板",
+    "tag": "标签",
+    "tags": "标签",
+    "team": "团队",
+    "team-id": "团队 ID",
+    "team-manager": "团队管理员",
+    "team-member": "团队成员",
+    "team-name": "团队名称",
+    "team-owner": "团队所有者",
+    "team-settings": "团队设置",
+    "team-view-only": "仅团队视图",
+    "team-websites": "团队网站",
+    "teams": "团队",
+    "term": "搜索词",
+    "terms": "条款",
+    "theme": "主题",
+    "this-month": "本月",
+    "this-week": "本周",
+    "this-year": "今年",
+    "timezone": "时区",
+    "title": "标题",
+    "today": "今天",
+    "toggle-charts": "切换图表",
+    "total": "总数",
+    "total-records": "总记录数",
+    "tracking-code": "跟踪代码",
+    "traffic": "流量",
+    "transactions": "交易",
+    "transfer": "转移",
+    "transfer-website": "转移网站",
+    "true": "是",
+    "type": "类型",
+    "unique": "独立",
+    "unique-events": "独立事件",
+    "unique-visitors": "独立访客",
+    "uniqueCustomers": "独特客户",
+    "unknown": "未知",
+    "untitled": "未命名",
+    "update": "更新",
+    "url": "URL",
+    "user": "用户",
+    "username": "用户名",
+    "users": "用户",
+    "utm": "UTM",
+    "utm-campaign": "UTM 推广活动",
+    "utm-content": "UTM 内容",
+    "utm-description": "通过 UTM 参数追踪您的广告活动。",
+    "utm-medium": "UTM 媒介",
+    "utm-source": "UTM 来源",
+    "utm-term": "UTM 关键词",
+    "value": "值",
+    "version": "版本",
+    "view": "查看",
+    "view-details": "查看更多",
+    "view-only": "仅浏览",
+    "views": "浏览量",
+    "views-per-visit": "每次访问的浏览量",
+    "visit-duration": "平均访问时长",
+    "visitors": "访客",
+    "visits": "访问次数",
+    "website": "网站",
+    "website-id": "网站 ID",
+    "websites": "网站",
+    "window": "窗口",
+    "yesterday": "昨天"
+  },
+  "message": {
+    "action-confirmation": "请在下方输入框中输入 {confirmation} 以确认操作。",
+    "active-users": "当前在线 {x} 位访客",
+    "bad-request": "请求错误",
+    "collected-data": "已收集的数据",
+    "confirm-delete": "你确定要删除 {target} 吗？",
+    "confirm-leave": "你确定要离开 <b>{target}</b> 吗？",
+    "confirm-remove": "您确定要移除 <b>{target}</b> ？",
+    "confirm-reset": "您确定要重置 {target} 的数据吗？",
+    "delete-team-warning": "删除团队也会删除所有团队网站。",
+    "delete-website-warning": "所有相关数据将会被删除。",
+    "error": "发生错误。",
+    "event-log": "<a>{url}</a> 上的 <b>{event}</b>",
+    "forbidden": "禁止访问",
+    "go-to-settings": "去设置",
+    "incorrect-username-password": "用户名或密码不正确。",
+    "invalid-domain": "无效域名",
+    "min-password-length": "密码最短长度为 {n} 个字符",
+    "new-version-available": "Umami 新版本 {version} 已发布！",
+    "no-data-available": "暂无数据。",
+    "no-event-data": "无可用事件。",
+    "no-match-password": "密码不一致",
+    "no-results-found": "未找到结果。",
+    "no-team-websites": "该团队暂无网站。",
+    "no-teams": "您尚未创建任何团队。",
+    "no-users": "暂无用户。",
+    "no-websites-configured": "你还没有设置任何网站。",
+    "not-found": "未找到",
+    "nothing-selected": "未选择",
+    "page-not-found": "页面未找到。",
+    "reset-website": "如确定要重置该网站，请在下面输入 {confirmation} 以确认。",
+    "reset-website-warning": "此网站的所有统计数据将被删除，但您的跟踪代码将保持不变。",
+    "saved": "保存成功。",
+    "sever-error": "服务器错误",
+    "share-url": "这是 {target} 的共享链接。",
+    "team-already-member": "你已是该团队的成员。",
+    "team-not-found": "未找到团队。",
+    "team-websites-info": "团队成员均可查看网站数据。",
+    "tracking-code": "跟踪代码",
+    "transfer-team-website-to-user": "将此网站转移到您的账户？",
+    "transfer-user-website-to-team": "选择要转移此网站的团队。",
+    "transfer-website": "将网站所有权转移到您的账户或其他团队。",
+    "triggered-event": "触发事件",
+    "unauthorized": "未授权",
+    "user-deleted": "用户已删除。",
+    "viewed-page": "已浏览页面",
+    "visitor-log": "来自 <b>{country}</b> 的访客在搭载 <b>{os}</b> 的 <b>{device}</b> 上使用 <b>{browser}</b> 浏览器进行访问。"
+  }
 }

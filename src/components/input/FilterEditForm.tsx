@@ -6,27 +6,35 @@ import { SegmentFilters } from '@/components/input/SegmentFilters';
 
 export interface FilterEditFormProps {
   websiteId?: string;
-  onChange?: (params: { filters: any[]; segment?: string; cohort?: string }) => void;
+  onChange?: (params: {
+    filters: any[];
+    segment?: string;
+    cohort?: string;
+    match?: string;
+  }) => void;
   onClose?: () => void;
 }
 
 export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormProps) {
   const {
-    query: { segment, cohort },
+    query: { segment, cohort, match },
     pathname,
   } = useNavigation();
   const { filters } = useFilters();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const [currentFilters, setCurrentFilters] = useState(filters);
   const [currentSegment, setCurrentSegment] = useState(segment);
   const [currentCohort, setCurrentCohort] = useState(cohort);
+  const [currentMatch, setCurrentMatch] = useState<string>(match || 'all');
   const { isMobile } = useMobile();
   const excludeFilters = pathname.includes('/pixels') || pathname.includes('/links');
+  const excludeEvent = !pathname.endsWith('/events');
 
   const handleReset = () => {
     setCurrentFilters([]);
     setCurrentSegment(undefined);
     setCurrentCohort(undefined);
+    setCurrentMatch('all');
   };
 
   const handleSave = () => {
@@ -34,6 +42,7 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
       filters: currentFilters.filter(f => f.value),
       segment: currentSegment,
       cohort: currentCohort,
+      match: currentMatch !== 'all' ? currentMatch : undefined,
     });
     onClose?.();
   };
@@ -48,11 +57,11 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
       <Column minHeight="500px">
         <Tabs>
           <TabList>
-            <Tab id="fields">{formatMessage(labels.fields)}</Tab>
+            <Tab id="fields">{t(labels.fields)}</Tab>
             {!excludeFilters && (
               <>
-                <Tab id="segments">{formatMessage(labels.segments)}</Tab>
-                <Tab id="cohorts">{formatMessage(labels.cohorts)}</Tab>
+                <Tab id="segments">{t(labels.segments)}</Tab>
+                <Tab id="cohorts">{t(labels.cohorts)}</Tab>
               </>
             )}
           </TabList>
@@ -60,8 +69,16 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
             <FieldFilters
               websiteId={websiteId}
               value={currentFilters}
+              match={currentMatch}
               onChange={setCurrentFilters}
-              exclude={excludeFilters ? ['path', 'title', 'hostname', 'tag', 'event'] : []}
+              onMatchChange={setCurrentMatch}
+              exclude={
+                excludeFilters
+                  ? ['path', 'title', 'hostname', 'distinctId', 'tag', 'event']
+                  : excludeEvent
+                    ? ['event']
+                    : []
+              }
             />
           </TabPanel>
           <TabPanel id="segments">
@@ -82,11 +99,17 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
         </Tabs>
       </Column>
       <Row alignItems="center" justifyContent="space-between" gap>
-        <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
+        <Button onPress={handleReset}>{t(labels.reset)}</Button>
         <Row alignItems="center" justifyContent="flex-end" gridColumn="span 2" gap>
-          <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
-          <Button variant="primary" onPress={handleSave}>
-            {formatMessage(labels.apply)}
+          <Button onPress={onClose}>{t(labels.cancel)}</Button>
+          <Button
+            variant="primary"
+            onPress={handleSave}
+            isDisabled={
+              currentFilters.filter(f => f.value).length === 0 && !currentSegment && !currentCohort
+            }
+          >
+            {t(labels.apply)}
           </Button>
         </Row>
       </Row>

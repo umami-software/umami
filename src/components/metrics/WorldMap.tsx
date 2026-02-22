@@ -1,4 +1,4 @@
-import { Column, type ColumnProps, FloatingTooltip, useTheme } from '@umami/react-zen';
+import { Box, Column, type ColumnProps, FloatingTooltip, Text, useTheme } from '@umami/react-zen';
 import { colord } from 'colord';
 import { useMemo, useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
@@ -23,10 +23,10 @@ export function WorldMap({ websiteId, data, ...props }: WorldMapProps) {
   const { theme } = useTheme();
   const { colors } = getThemeColors(theme);
   const { locale } = useLocale();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { countryNames } = useCountryNames(locale);
-  const visitorsLabel = formatMessage(labels.visitors).toLocaleLowerCase(locale);
-  const unknownLabel = formatMessage(labels.unknown);
+  const visitorsLabel = t(labels.visitors).toLocaleLowerCase(locale);
+  const unknownLabel = t(labels.unknown);
 
   const { data: mapData } = useWebsiteMetricsQuery(websiteId, {
     type: 'country',
@@ -99,7 +99,18 @@ export function WorldMap({ websiteId, data, ...props }: WorldMapProps) {
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
-      {tooltip && <FloatingTooltip>{tooltip}</FloatingTooltip>}
+      {tooltip && (
+        <FloatingTooltip>
+          <Box
+            style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}
+            color="inverted"
+            padding
+            borderRadius="md"
+          >
+            {tooltip}
+          </Box>
+        </FloatingTooltip>
+      )}
     </Column>
   );
 }

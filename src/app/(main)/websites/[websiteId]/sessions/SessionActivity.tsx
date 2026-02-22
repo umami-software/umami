@@ -28,7 +28,7 @@ export function SessionActivity({
   startDate: Date;
   endDate: Date;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { formatTimezoneDate } = useTimezone();
   const { data, isLoading, error } = useSessionActivityQuery(
     websiteId,
@@ -39,16 +39,29 @@ export function SessionActivity({
   const { isMobile } = useMobile();
   let lastDay = null;
 
+  const renderLink = (label: string, hostname: string) => {
+    return (
+      <a
+        href={`//${hostname}${label}`}
+        style={{ fontWeight: 'bold' }}
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        {label}
+      </a>
+    );
+  };
+
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
       <Column gap>
-        {data?.map(({ eventId, createdAt, urlPath, eventName, visitId, hasData }) => {
+        {data?.map(({ eventId, createdAt, urlPath, eventName, visitId, hostname, hasData }) => {
           const showHeader = !lastDay || !isSameDay(new Date(lastDay), new Date(createdAt));
           lastDay = createdAt;
 
           return (
             <Column key={eventId} gap>
-              {showHeader && <Heading size="1">{formatTimezoneDate(createdAt, 'PPPP')}</Heading>}
+              {showHeader && <Heading size="lg">{formatTimezoneDate(createdAt, 'PPPP')}</Heading>}
               <Row alignItems="center" gap="6" height="40px">
                 <StatusLight color={`#${visitId?.substring(0, 6)}`}>
                   <Text wrap="nowrap">{formatTimezoneDate(createdAt, 'pp')}</Text>
@@ -56,12 +69,10 @@ export function SessionActivity({
                 <Row alignItems="center" gap="2">
                   <Icon>{eventName ? <Lightning /> : <Eye />}</Icon>
                   <Text wrap="nowrap">
-                    {eventName
-                      ? formatMessage(labels.triggeredEvent)
-                      : formatMessage(labels.viewedPage)}
+                    {eventName ? t(labels.triggeredEvent) : t(labels.viewedPage)}
                   </Text>
                   <Text weight="bold" style={{ maxWidth: isMobile ? '400px' : null }} truncate>
-                    {eventName || urlPath}
+                    {eventName || renderLink(urlPath, hostname)}
                   </Text>
                   {hasData > 0 && <PropertiesButton websiteId={websiteId} eventId={eventId} />}
                 </Row>

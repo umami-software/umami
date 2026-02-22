@@ -1,2214 +1,393 @@
 {
-  "label.access-code": [
-    {
-      "type": 0,
-      "value": "Access code"
-    }
-  ],
-  "label.actions": [
-    {
-      "type": 0,
-      "value": "Aksi"
-    }
-  ],
-  "label.activity": [
-    {
-      "type": 0,
-      "value": "Activity log"
-    }
-  ],
-  "label.add": [
-    {
-      "type": 0,
-      "value": "Add"
-    }
-  ],
-  "label.add-board": [
-    {
-      "type": 0,
-      "value": "Add board"
-    }
-  ],
-  "label.add-description": [
-    {
-      "type": 0,
-      "value": "Add description"
-    }
-  ],
-  "label.add-member": [
-    {
-      "type": 0,
-      "value": "Add member"
-    }
-  ],
-  "label.add-step": [
-    {
-      "type": 0,
-      "value": "Add step"
-    }
-  ],
-  "label.add-website": [
-    {
-      "type": 0,
-      "value": "Tambah laman web"
-    }
-  ],
-  "label.admin": [
-    {
-      "type": 0,
-      "value": "Pentadbir"
-    }
-  ],
-  "label.affiliate": [
-    {
-      "type": 0,
-      "value": "Affiliate"
-    }
-  ],
-  "label.after": [
-    {
-      "type": 0,
-      "value": "After"
-    }
-  ],
-  "label.all": [
-    {
-      "type": 0,
-      "value": "Semua"
-    }
-  ],
-  "label.all-time": [
-    {
-      "type": 0,
-      "value": "All time"
-    }
-  ],
-  "label.analytics": [
-    {
-      "type": 0,
-      "value": "Analytics"
-    }
-  ],
-  "label.apply": [
-    {
-      "type": 0,
-      "value": "Apply"
-    }
-  ],
-  "label.attribution": [
-    {
-      "type": 0,
-      "value": "Attribution"
-    }
-  ],
-  "label.attribution-description": [
-    {
-      "type": 0,
-      "value": "See how users engage with your marketing and what drives conversions."
-    }
-  ],
-  "label.average": [
-    {
-      "type": 0,
-      "value": "Average"
-    }
-  ],
-  "label.back": [
-    {
-      "type": 0,
-      "value": "Kembali"
-    }
-  ],
-  "label.before": [
-    {
-      "type": 0,
-      "value": "Before"
-    }
-  ],
-  "label.boards": [
-    {
-      "type": 0,
-      "value": "Boards"
-    }
-  ],
-  "label.bounce-rate": [
-    {
-      "type": 0,
-      "value": "Kadar lantunan"
-    }
-  ],
-  "label.breakdown": [
-    {
-      "type": 0,
-      "value": "Breakdown"
-    }
-  ],
-  "label.browser": [
-    {
-      "type": 0,
-      "value": "Browser"
-    }
-  ],
-  "label.browsers": [
-    {
-      "type": 0,
-      "value": "Pelayar web"
-    }
-  ],
-  "label.campaigns": [
-    {
-      "type": 0,
-      "value": "Campaigns"
-    }
-  ],
-  "label.cancel": [
-    {
-      "type": 0,
-      "value": "Batal"
-    }
-  ],
-  "label.change-password": [
-    {
-      "type": 0,
-      "value": "Tukar kata laluan"
-    }
-  ],
-  "label.channels": [
-    {
-      "type": 0,
-      "value": "Channels"
-    }
-  ],
-  "label.cities": [
-    {
-      "type": 0,
-      "value": "Cities"
-    }
-  ],
-  "label.city": [
-    {
-      "type": 0,
-      "value": "City"
-    }
-  ],
-  "label.clear-all": [
-    {
-      "type": 0,
-      "value": "Clear all"
-    }
-  ],
-  "label.cohort": [
-    {
-      "type": 0,
-      "value": "Cohort"
-    }
-  ],
-  "label.compare": [
-    {
-      "type": 0,
-      "value": "Compare"
-    }
-  ],
-  "label.compare-dates": [
-    {
-      "type": 0,
-      "value": "Compare dates"
-    }
-  ],
-  "label.confirm": [
-    {
-      "type": 0,
-      "value": "Confirm"
-    }
-  ],
-  "label.confirm-password": [
-    {
-      "type": 0,
-      "value": "Sahkan kata laluan"
-    }
-  ],
-  "label.contains": [
-    {
-      "type": 0,
-      "value": "Contains"
-    }
-  ],
-  "label.content": [
-    {
-      "type": 0,
-      "value": "Content"
-    }
-  ],
-  "label.continue": [
-    {
-      "type": 0,
-      "value": "Continue"
-    }
-  ],
-  "label.conversion": [
-    {
-      "type": 0,
-      "value": "Conversion"
-    }
-  ],
-  "label.conversion-rate": [
-    {
-      "type": 0,
-      "value": "Conversion rate"
-    }
-  ],
-  "label.conversion-step": [
-    {
-      "type": 0,
-      "value": "Conversion step"
-    }
-  ],
-  "label.count": [
-    {
-      "type": 0,
-      "value": "Count"
-    }
-  ],
-  "label.countries": [
-    {
-      "type": 0,
-      "value": "Negara"
-    }
-  ],
-  "label.country": [
-    {
-      "type": 0,
-      "value": "Country"
-    }
-  ],
-  "label.create": [
-    {
-      "type": 0,
-      "value": "Create"
-    }
-  ],
-  "label.create-report": [
-    {
-      "type": 0,
-      "value": "Create report"
-    }
-  ],
-  "label.create-team": [
-    {
-      "type": 0,
-      "value": "Create team"
-    }
-  ],
-  "label.create-user": [
-    {
-      "type": 0,
-      "value": "Create user"
-    }
-  ],
-  "label.created": [
-    {
-      "type": 0,
-      "value": "Created"
-    }
-  ],
-  "label.created-by": [
-    {
-      "type": 0,
-      "value": "Created By"
-    }
-  ],
-  "label.currency": [
-    {
-      "type": 0,
-      "value": "Currency"
-    }
-  ],
-  "label.current": [
-    {
-      "type": 0,
-      "value": "Current"
-    }
-  ],
-  "label.current-password": [
-    {
-      "type": 0,
-      "value": "Kata laluan semasa"
-    }
-  ],
-  "label.custom-range": [
-    {
-      "type": 0,
-      "value": "Julat khas"
-    }
-  ],
-  "label.dashboard": [
-    {
-      "type": 0,
-      "value": "Papan pemuka"
-    }
-  ],
-  "label.data": [
-    {
-      "type": 0,
-      "value": "Data"
-    }
-  ],
-  "label.date": [
-    {
-      "type": 0,
-      "value": "Date"
-    }
-  ],
-  "label.date-range": [
-    {
-      "type": 0,
-      "value": "Julat tarikh"
-    }
-  ],
-  "label.day": [
-    {
-      "type": 0,
-      "value": "Day"
-    }
-  ],
-  "label.default-date-range": [
-    {
-      "type": 0,
-      "value": "Julat tarikh lalai"
-    }
-  ],
-  "label.delete": [
-    {
-      "type": 0,
-      "value": "Padam"
-    }
-  ],
-  "label.delete-report": [
-    {
-      "type": 0,
-      "value": "Delete report"
-    }
-  ],
-  "label.delete-team": [
-    {
-      "type": 0,
-      "value": "Delete team"
-    }
-  ],
-  "label.delete-user": [
-    {
-      "type": 0,
-      "value": "Delete user"
-    }
-  ],
-  "label.delete-website": [
-    {
-      "type": 0,
-      "value": "Padam laman web"
-    }
-  ],
-  "label.description": [
-    {
-      "type": 0,
-      "value": "Description"
-    }
-  ],
-  "label.desktop": [
-    {
-      "type": 0,
-      "value": "Desktop"
-    }
-  ],
-  "label.details": [
-    {
-      "type": 0,
-      "value": "Details"
-    }
-  ],
-  "label.device": [
-    {
-      "type": 0,
-      "value": "Device"
-    }
-  ],
-  "label.devices": [
-    {
-      "type": 0,
-      "value": "Peranti"
-    }
-  ],
-  "label.direct": [
-    {
-      "type": 0,
-      "value": "Direct"
-    }
-  ],
-  "label.dismiss": [
-    {
-      "type": 0,
-      "value": "Ketepikan"
-    }
-  ],
-  "label.distinct-id": [
-    {
-      "type": 0,
-      "value": "Distinct ID"
-    }
-  ],
-  "label.does-not-contain": [
-    {
-      "type": 0,
-      "value": "Does not contain"
-    }
-  ],
-  "label.does-not-include": [
-    {
-      "type": 0,
-      "value": "Does not include"
-    }
-  ],
-  "label.doest-not-exist": [
-    {
-      "type": 0,
-      "value": "Does not exist"
-    }
-  ],
-  "label.domain": [
-    {
-      "type": 0,
-      "value": "Domain"
-    }
-  ],
-  "label.dropoff": [
-    {
-      "type": 0,
-      "value": "Dropoff"
-    }
-  ],
-  "label.edit": [
-    {
-      "type": 0,
-      "value": "Edit"
-    }
-  ],
-  "label.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "Edit dashboard"
-    }
-  ],
-  "label.edit-member": [
-    {
-      "type": 0,
-      "value": "Edit member"
-    }
-  ],
-  "label.email": [
-    {
-      "type": 0,
-      "value": "Email"
-    }
-  ],
-  "label.enable-share-url": [
-    {
-      "type": 0,
-      "value": "Aktifkan url berkongsi"
-    }
-  ],
-  "label.end-step": [
-    {
-      "type": 0,
-      "value": "End Step"
-    }
-  ],
-  "label.entry": [
-    {
-      "type": 0,
-      "value": "Entry URL"
-    }
-  ],
-  "label.event": [
-    {
-      "type": 0,
-      "value": "Event"
-    }
-  ],
-  "label.event-data": [
-    {
-      "type": 0,
-      "value": "Event data"
-    }
-  ],
-  "label.event-name": [
-    {
-      "type": 0,
-      "value": "Event name"
-    }
-  ],
-  "label.events": [
-    {
-      "type": 0,
-      "value": "Peristiwa"
-    }
-  ],
-  "label.exists": [
-    {
-      "type": 0,
-      "value": "Exists"
-    }
-  ],
-  "label.exit": [
-    {
-      "type": 0,
-      "value": "Exit URL"
-    }
-  ],
-  "label.false": [
-    {
-      "type": 0,
-      "value": "False"
-    }
-  ],
-  "label.field": [
-    {
-      "type": 0,
-      "value": "Field"
-    }
-  ],
-  "label.fields": [
-    {
-      "type": 0,
-      "value": "Fields"
-    }
-  ],
-  "label.filter": [
-    {
-      "type": 0,
-      "value": "Filter"
-    }
-  ],
-  "label.filter-combined": [
-    {
-      "type": 0,
-      "value": "Digabungkan"
-    }
-  ],
-  "label.filter-raw": [
-    {
-      "type": 0,
-      "value": "Mentah"
-    }
-  ],
-  "label.filters": [
-    {
-      "type": 0,
-      "value": "Filters"
-    }
-  ],
-  "label.first-click": [
-    {
-      "type": 0,
-      "value": "First click"
-    }
-  ],
-  "label.first-seen": [
-    {
-      "type": 0,
-      "value": "First seen"
-    }
-  ],
-  "label.funnel": [
-    {
-      "type": 0,
-      "value": "Funnel"
-    }
-  ],
-  "label.funnel-description": [
-    {
-      "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
-    }
-  ],
-  "label.funnels": [
-    {
-      "type": 0,
-      "value": "Funnels"
-    }
-  ],
-  "label.goal": [
-    {
-      "type": 0,
-      "value": "Goal"
-    }
-  ],
-  "label.goals": [
-    {
-      "type": 0,
-      "value": "Goals"
-    }
-  ],
-  "label.goals-description": [
-    {
-      "type": 0,
-      "value": "Track your goals for pageviews and events."
-    }
-  ],
-  "label.greater-than": [
-    {
-      "type": 0,
-      "value": "Greater than"
-    }
-  ],
-  "label.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "Greater than or equals"
-    }
-  ],
-  "label.grouped": [
-    {
-      "type": 0,
-      "value": "Grouped"
-    }
-  ],
-  "label.hostname": [
-    {
-      "type": 0,
-      "value": "Hostname"
-    }
-  ],
-  "label.includes": [
-    {
-      "type": 0,
-      "value": "Includes"
-    }
-  ],
-  "label.insight": [
-    {
-      "type": 0,
-      "value": "Insight"
-    }
-  ],
-  "label.insights": [
-    {
-      "type": 0,
-      "value": "Insights"
-    }
-  ],
-  "label.insights-description": [
-    {
-      "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
-    }
-  ],
-  "label.is": [
-    {
-      "type": 0,
-      "value": "Is"
-    }
-  ],
-  "label.is-false": [
-    {
-      "type": 0,
-      "value": "Is false"
-    }
-  ],
-  "label.is-not": [
-    {
-      "type": 0,
-      "value": "Is not"
-    }
-  ],
-  "label.is-not-set": [
-    {
-      "type": 0,
-      "value": "Is not set"
-    }
-  ],
-  "label.is-set": [
-    {
-      "type": 0,
-      "value": "Is set"
-    }
-  ],
-  "label.is-true": [
-    {
-      "type": 0,
-      "value": "Is true"
-    }
-  ],
-  "label.join": [
-    {
-      "type": 0,
-      "value": "Join"
-    }
-  ],
-  "label.join-team": [
-    {
-      "type": 0,
-      "value": "Join team"
-    }
-  ],
-  "label.journey": [
-    {
-      "type": 0,
-      "value": "Journey"
-    }
-  ],
-  "label.journey-description": [
-    {
-      "type": 0,
-      "value": "Understand how users navigate through your website."
-    }
-  ],
-  "label.journeys": [
-    {
-      "type": 0,
-      "value": "Journeys"
-    }
-  ],
-  "label.language": [
-    {
-      "type": 0,
-      "value": "Language"
-    }
-  ],
-  "label.languages": [
-    {
-      "type": 0,
-      "value": "Languages"
-    }
-  ],
-  "label.laptop": [
-    {
-      "type": 0,
-      "value": "Laptop"
-    }
-  ],
-  "label.last-click": [
-    {
-      "type": 0,
-      "value": "Last click"
-    }
-  ],
-  "label.last-days": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " hari lepas"
-    }
-  ],
-  "label.last-hours": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " jam lepas"
-    }
-  ],
-  "label.last-months": [
-    {
-      "type": 0,
-      "value": "Last "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " months"
-    }
-  ],
-  "label.last-seen": [
-    {
-      "type": 0,
-      "value": "Last seen"
-    }
-  ],
-  "label.leave": [
-    {
-      "type": 0,
-      "value": "Leave"
-    }
-  ],
-  "label.leave-team": [
-    {
-      "type": 0,
-      "value": "Leave team"
-    }
-  ],
-  "label.less-than": [
-    {
-      "type": 0,
-      "value": "Less than"
-    }
-  ],
-  "label.less-than-equals": [
-    {
-      "type": 0,
-      "value": "Less than or equals"
-    }
-  ],
-  "label.links": [
-    {
-      "type": 0,
-      "value": "Links"
-    }
-  ],
-  "label.login": [
-    {
-      "type": 0,
-      "value": "Log masuk"
-    }
-  ],
-  "label.logout": [
-    {
-      "type": 0,
-      "value": "Log keluar"
-    }
-  ],
-  "label.manage": [
-    {
-      "type": 0,
-      "value": "Manage"
-    }
-  ],
-  "label.manager": [
-    {
-      "type": 0,
-      "value": "Manager"
-    }
-  ],
-  "label.max": [
-    {
-      "type": 0,
-      "value": "Max"
-    }
-  ],
-  "label.maximize": [
-    {
-      "type": 0,
-      "value": "Expand"
-    }
-  ],
-  "label.medium": [
-    {
-      "type": 0,
-      "value": "Medium"
-    }
-  ],
-  "label.member": [
-    {
-      "type": 0,
-      "value": "Member"
-    }
-  ],
-  "label.members": [
-    {
-      "type": 0,
-      "value": "Members"
-    }
-  ],
-  "label.min": [
-    {
-      "type": 0,
-      "value": "Min"
-    }
-  ],
-  "label.mobile": [
-    {
-      "type": 0,
-      "value": "Telefon bimbit"
-    }
-  ],
-  "label.model": [
-    {
-      "type": 0,
-      "value": "Model"
-    }
-  ],
-  "label.more": [
-    {
-      "type": 0,
-      "value": "Lebih banyak lagi"
-    }
-  ],
-  "label.my-account": [
-    {
-      "type": 0,
-      "value": "My account"
-    }
-  ],
-  "label.my-websites": [
-    {
-      "type": 0,
-      "value": "My websites"
-    }
-  ],
-  "label.name": [
-    {
-      "type": 0,
-      "value": "Nama"
-    }
-  ],
-  "label.new-password": [
-    {
-      "type": 0,
-      "value": "Kata laluan baru"
-    }
-  ],
-  "label.none": [
-    {
-      "type": 0,
-      "value": "None"
-    }
-  ],
-  "label.number-of-records": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "record"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "records"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "label.ok": [
-    {
-      "type": 0,
-      "value": "OK"
-    }
-  ],
-  "label.online": [
-    {
-      "type": 0,
-      "value": "Online"
-    }
-  ],
-  "label.organic-search": [
-    {
-      "type": 0,
-      "value": "Organic search"
-    }
-  ],
-  "label.organic-shopping": [
-    {
-      "type": 0,
-      "value": "Organic shopping"
-    }
-  ],
-  "label.organic-social": [
-    {
-      "type": 0,
-      "value": "Organic social"
-    }
-  ],
-  "label.organic-video": [
-    {
-      "type": 0,
-      "value": "Organic video"
-    }
-  ],
-  "label.os": [
-    {
-      "type": 0,
-      "value": "OS"
-    }
-  ],
-  "label.other": [
-    {
-      "type": 0,
-      "value": "Other"
-    }
-  ],
-  "label.overview": [
-    {
-      "type": 0,
-      "value": "Overview"
-    }
-  ],
-  "label.owner": [
-    {
-      "type": 0,
-      "value": "Owner"
-    }
-  ],
-  "label.page": [
-    {
-      "type": 0,
-      "value": "Page"
-    }
-  ],
-  "label.page-of": [
-    {
-      "type": 0,
-      "value": "Page "
-    },
-    {
-      "type": 1,
-      "value": "current"
-    },
-    {
-      "type": 0,
-      "value": " of "
-    },
-    {
-      "type": 1,
-      "value": "total"
-    }
-  ],
-  "label.page-views": [
-    {
-      "type": 0,
-      "value": "Paparan halaman"
-    }
-  ],
-  "label.pageTitle": [
-    {
-      "type": 0,
-      "value": "Page title"
-    }
-  ],
-  "label.pages": [
-    {
-      "type": 0,
-      "value": "Halaman"
-    }
-  ],
-  "label.paid-ads": [
-    {
-      "type": 0,
-      "value": "Paid ads"
-    }
-  ],
-  "label.paid-search": [
-    {
-      "type": 0,
-      "value": "Paid search"
-    }
-  ],
-  "label.paid-shopping": [
-    {
-      "type": 0,
-      "value": "Paid shopping"
-    }
-  ],
-  "label.paid-social": [
-    {
-      "type": 0,
-      "value": "Paid social"
-    }
-  ],
-  "label.paid-video": [
-    {
-      "type": 0,
-      "value": "Paid video"
-    }
-  ],
-  "label.password": [
-    {
-      "type": 0,
-      "value": "Kata laluan"
-    }
-  ],
-  "label.path": [
-    {
-      "type": 0,
-      "value": "Path"
-    }
-  ],
-  "label.paths": [
-    {
-      "type": 0,
-      "value": "Paths"
-    }
-  ],
-  "label.pixels": [
-    {
-      "type": 0,
-      "value": "Pixels"
-    }
-  ],
-  "label.powered-by": [
-    {
-      "type": 0,
-      "value": "Disediakan oleh "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    }
-  ],
-  "label.previous": [
-    {
-      "type": 0,
-      "value": "Previous"
-    }
-  ],
-  "label.previous-period": [
-    {
-      "type": 0,
-      "value": "Previous period"
-    }
-  ],
-  "label.previous-year": [
-    {
-      "type": 0,
-      "value": "Previous year"
-    }
-  ],
-  "label.profile": [
-    {
-      "type": 0,
-      "value": "Profil"
-    }
-  ],
-  "label.properties": [
-    {
-      "type": 0,
-      "value": "Properties"
-    }
-  ],
-  "label.property": [
-    {
-      "type": 0,
-      "value": "Property"
-    }
-  ],
-  "label.queries": [
-    {
-      "type": 0,
-      "value": "Queries"
-    }
-  ],
-  "label.query": [
-    {
-      "type": 0,
-      "value": "Query"
-    }
-  ],
-  "label.query-parameters": [
-    {
-      "type": 0,
-      "value": "Query parameters"
-    }
-  ],
-  "label.realtime": [
-    {
-      "type": 0,
-      "value": "Siaran langsung"
-    }
-  ],
-  "label.referral": [
-    {
-      "type": 0,
-      "value": "Referral"
-    }
-  ],
-  "label.referrer": [
-    {
-      "type": 0,
-      "value": "Referrer"
-    }
-  ],
-  "label.referrers": [
-    {
-      "type": 0,
-      "value": "Perujuk"
-    }
-  ],
-  "label.refresh": [
-    {
-      "type": 0,
-      "value": "Muat semula"
-    }
-  ],
-  "label.regenerate": [
-    {
-      "type": 0,
-      "value": "Regenerate"
-    }
-  ],
-  "label.region": [
-    {
-      "type": 0,
-      "value": "Region"
-    }
-  ],
-  "label.regions": [
-    {
-      "type": 0,
-      "value": "Regions"
-    }
-  ],
-  "label.remaining": [
-    {
-      "type": 0,
-      "value": "Remaining"
-    }
-  ],
-  "label.remove": [
-    {
-      "type": 0,
-      "value": "Remove"
-    }
-  ],
-  "label.remove-member": [
-    {
-      "type": 0,
-      "value": "Remove member"
-    }
-  ],
-  "label.reports": [
-    {
-      "type": 0,
-      "value": "Reports"
-    }
-  ],
-  "label.required": [
-    {
-      "type": 0,
-      "value": "Diperlukan"
-    }
-  ],
-  "label.reset": [
-    {
-      "type": 0,
-      "value": "Tetapkan semula"
-    }
-  ],
-  "label.reset-website": [
-    {
-      "type": 0,
-      "value": "Reset statistics"
-    }
-  ],
-  "label.retention": [
-    {
-      "type": 0,
-      "value": "Retention"
-    }
-  ],
-  "label.retention-description": [
-    {
-      "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
-    }
-  ],
-  "label.revenue": [
-    {
-      "type": 0,
-      "value": "Revenue"
-    }
-  ],
-  "label.revenue-description": [
-    {
-      "type": 0,
-      "value": "Look into your revenue across time."
-    }
-  ],
-  "label.role": [
-    {
-      "type": 0,
-      "value": "Role"
-    }
-  ],
-  "label.run-query": [
-    {
-      "type": 0,
-      "value": "Run query"
-    }
-  ],
-  "label.save": [
-    {
-      "type": 0,
-      "value": "Simpan"
-    }
-  ],
-  "label.screens": [
-    {
-      "type": 0,
-      "value": "Screens"
-    }
-  ],
-  "label.search": [
-    {
-      "type": 0,
-      "value": "Search"
-    }
-  ],
-  "label.select": [
-    {
-      "type": 0,
-      "value": "Select"
-    }
-  ],
-  "label.select-date": [
-    {
-      "type": 0,
-      "value": "Select date"
-    }
-  ],
-  "label.select-filter": [
-    {
-      "type": 0,
-      "value": "Select filter"
-    }
-  ],
-  "label.select-role": [
-    {
-      "type": 0,
-      "value": "Select role"
-    }
-  ],
-  "label.select-website": [
-    {
-      "type": 0,
-      "value": "Select website"
-    }
-  ],
-  "label.session": [
-    {
-      "type": 0,
-      "value": "Session"
-    }
-  ],
-  "label.session-data": [
-    {
-      "type": 0,
-      "value": "Session data"
-    }
-  ],
-  "label.sessions": [
-    {
-      "type": 0,
-      "value": "Sessions"
-    }
-  ],
-  "label.settings": [
-    {
-      "type": 0,
-      "value": "Tetapan"
-    }
-  ],
-  "label.share": [
-    {
-      "type": 0,
-      "value": "Share"
-    }
-  ],
-  "label.share-url": [
-    {
-      "type": 0,
-      "value": "Kongsikan URL"
-    }
-  ],
-  "label.single-day": [
-    {
-      "type": 0,
-      "value": "Satu hari"
-    }
-  ],
-  "label.sms": [
-    {
-      "type": 0,
-      "value": "SMS"
-    }
-  ],
-  "label.sources": [
-    {
-      "type": 0,
-      "value": "Sources"
-    }
-  ],
-  "label.start-step": [
-    {
-      "type": 0,
-      "value": "Start Step"
-    }
-  ],
-  "label.steps": [
-    {
-      "type": 0,
-      "value": "Steps"
-    }
-  ],
-  "label.sum": [
-    {
-      "type": 0,
-      "value": "Sum"
-    }
-  ],
-  "label.tablet": [
-    {
-      "type": 0,
-      "value": "Tablet"
-    }
-  ],
-  "label.tag": [
-    {
-      "type": 0,
-      "value": "Tag"
-    }
-  ],
-  "label.tags": [
-    {
-      "type": 0,
-      "value": "Tags"
-    }
-  ],
-  "label.team": [
-    {
-      "type": 0,
-      "value": "Team"
-    }
-  ],
-  "label.team-id": [
-    {
-      "type": 0,
-      "value": "Team ID"
-    }
-  ],
-  "label.team-manager": [
-    {
-      "type": 0,
-      "value": "Team manager"
-    }
-  ],
-  "label.team-member": [
-    {
-      "type": 0,
-      "value": "Team member"
-    }
-  ],
-  "label.team-name": [
-    {
-      "type": 0,
-      "value": "Team name"
-    }
-  ],
-  "label.team-owner": [
-    {
-      "type": 0,
-      "value": "Team owner"
-    }
-  ],
-  "label.team-settings": [
-    {
-      "type": 0,
-      "value": "Team settings"
-    }
-  ],
-  "label.team-view-only": [
-    {
-      "type": 0,
-      "value": "Team view only"
-    }
-  ],
-  "label.team-websites": [
-    {
-      "type": 0,
-      "value": "Team websites"
-    }
-  ],
-  "label.teams": [
-    {
-      "type": 0,
-      "value": "Teams"
-    }
-  ],
-  "label.terms": [
-    {
-      "type": 0,
-      "value": "Terms"
-    }
-  ],
-  "label.theme": [
-    {
-      "type": 0,
-      "value": "Theme"
-    }
-  ],
-  "label.this-month": [
-    {
-      "type": 0,
-      "value": "Bulan ini"
-    }
-  ],
-  "label.this-week": [
-    {
-      "type": 0,
-      "value": "Minggu ini"
-    }
-  ],
-  "label.this-year": [
-    {
-      "type": 0,
-      "value": "Tahun ini"
-    }
-  ],
-  "label.timezone": [
-    {
-      "type": 0,
-      "value": "Zon masa"
-    }
-  ],
-  "label.title": [
-    {
-      "type": 0,
-      "value": "Title"
-    }
-  ],
-  "label.today": [
-    {
-      "type": 0,
-      "value": "Hari ini"
-    }
-  ],
-  "label.toggle-charts": [
-    {
-      "type": 0,
-      "value": "Toggle charts"
-    }
-  ],
-  "label.total": [
-    {
-      "type": 0,
-      "value": "Total"
-    }
-  ],
-  "label.total-records": [
-    {
-      "type": 0,
-      "value": "Total records"
-    }
-  ],
-  "label.tracking-code": [
-    {
-      "type": 0,
-      "value": "Kod penjejakan"
-    }
-  ],
-  "label.transactions": [
-    {
-      "type": 0,
-      "value": "Transactions"
-    }
-  ],
-  "label.transfer": [
-    {
-      "type": 0,
-      "value": "Transfer"
-    }
-  ],
-  "label.transfer-website": [
-    {
-      "type": 0,
-      "value": "Transfer website"
-    }
-  ],
-  "label.true": [
-    {
-      "type": 0,
-      "value": "True"
-    }
-  ],
-  "label.type": [
-    {
-      "type": 0,
-      "value": "Type"
-    }
-  ],
-  "label.unique": [
-    {
-      "type": 0,
-      "value": "Unique"
-    }
-  ],
-  "label.unique-visitors": [
-    {
-      "type": 0,
-      "value": "Pelawat unik"
-    }
-  ],
-  "label.uniqueCustomers": [
-    {
-      "type": 0,
-      "value": "Unique Customers"
-    }
-  ],
-  "label.unknown": [
-    {
-      "type": 0,
-      "value": "Tidak diketahui"
-    }
-  ],
-  "label.untitled": [
-    {
-      "type": 0,
-      "value": "Untitled"
-    }
-  ],
-  "label.update": [
-    {
-      "type": 0,
-      "value": "Update"
-    }
-  ],
-  "label.user": [
-    {
-      "type": 0,
-      "value": "User"
-    }
-  ],
-  "label.username": [
-    {
-      "type": 0,
-      "value": "Nama pengguna"
-    }
-  ],
-  "label.users": [
-    {
-      "type": 0,
-      "value": "Users"
-    }
-  ],
-  "label.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "label.utm-description": [
-    {
-      "type": 0,
-      "value": "Track your campaigns through UTM parameters."
-    }
-  ],
-  "label.value": [
-    {
-      "type": 0,
-      "value": "Value"
-    }
-  ],
-  "label.view": [
-    {
-      "type": 0,
-      "value": "View"
-    }
-  ],
-  "label.view-details": [
-    {
-      "type": 0,
-      "value": "Lihat butiran"
-    }
-  ],
-  "label.view-only": [
-    {
-      "type": 0,
-      "value": "View only"
-    }
-  ],
-  "label.views": [
-    {
-      "type": 0,
-      "value": "Lawatan"
-    }
-  ],
-  "label.views-per-visit": [
-    {
-      "type": 0,
-      "value": "Views per visit"
-    }
-  ],
-  "label.visit-duration": [
-    {
-      "type": 0,
-      "value": "Purata tempoh masa lawatan"
-    }
-  ],
-  "label.visitors": [
-    {
-      "type": 0,
-      "value": "Pelawat"
-    }
-  ],
-  "label.visits": [
-    {
-      "type": 0,
-      "value": "Visits"
-    }
-  ],
-  "label.website": [
-    {
-      "type": 0,
-      "value": "Website"
-    }
-  ],
-  "label.website-id": [
-    {
-      "type": 0,
-      "value": "Website ID"
-    }
-  ],
-  "label.websites": [
-    {
-      "type": 0,
-      "value": "Laman web"
-    }
-  ],
-  "label.window": [
-    {
-      "type": 0,
-      "value": "Window"
-    }
-  ],
-  "label.yesterday": [
-    {
-      "type": 0,
-      "value": "Yesterday"
-    }
-  ],
-  "message.action-confirmation": [
-    {
-      "type": 0,
-      "value": "Type "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " in the box below to confirm."
-    }
-  ],
-  "message.active-users": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " semasa "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "pelawat"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "pelawat"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "message.bad-request": [
-    {
-      "type": 0,
-      "value": "Bad request"
-    }
-  ],
-  "message.collected-data": [
-    {
-      "type": 0,
-      "value": "Collected data"
-    }
-  ],
-  "message.confirm-delete": [
-    {
-      "type": 0,
-      "value": "Pastikah anda ingin memadam "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-leave": [
-    {
-      "type": 0,
-      "value": "Are you sure you want to leave "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-remove": [
-    {
-      "type": 0,
-      "value": "Are you sure you want to remove "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "?"
-    }
-  ],
-  "message.confirm-reset": [
-    {
-      "type": 0,
-      "value": "Are your sure you want to reset "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "'s statistics?"
-    }
-  ],
-  "message.delete-team-warning": [
-    {
-      "type": 0,
-      "value": "Deleting a team will also delete all team websites."
-    }
-  ],
-  "message.delete-website-warning": [
-    {
-      "type": 0,
-      "value": "Semua data yang berkaitan juga akan dihapuskan."
-    }
-  ],
-  "message.error": [
-    {
-      "type": 0,
-      "value": "Ada yang tidak kena."
-    }
-  ],
-  "message.event-log": [
-    {
-      "type": 1,
-      "value": "event"
-    },
-    {
-      "type": 0,
-      "value": " on "
-    },
-    {
-      "type": 1,
-      "value": "url"
-    }
-  ],
-  "message.forbidden": [
-    {
-      "type": 0,
-      "value": "Forbidden"
-    }
-  ],
-  "message.go-to-settings": [
-    {
-      "type": 0,
-      "value": "Pergi ke tetapan"
-    }
-  ],
-  "message.incorrect-username-password": [
-    {
-      "type": 0,
-      "value": "Pengguna/kata laluan tidak betul."
-    }
-  ],
-  "message.invalid-domain": [
-    {
-      "type": 0,
-      "value": "Domain tidak sah"
-    }
-  ],
-  "message.min-password-length": [
-    {
-      "type": 0,
-      "value": "Minimum length of "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " characters"
-    }
-  ],
-  "message.new-version-available": [
-    {
-      "type": 0,
-      "value": "A new version of Umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " is available!"
-    }
-  ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "Tiada data yang boleh didapati."
-    }
-  ],
-  "message.no-event-data": [
-    {
-      "type": 0,
-      "value": "No event data is available."
-    }
-  ],
-  "message.no-match-password": [
-    {
-      "type": 0,
-      "value": "Kata laluan tidak sepadan"
-    }
-  ],
-  "message.no-results-found": [
-    {
-      "type": 0,
-      "value": "No results were found."
-    }
-  ],
-  "message.no-team-websites": [
-    {
-      "type": 0,
-      "value": "This team does not have any websites."
-    }
-  ],
-  "message.no-teams": [
-    {
-      "type": 0,
-      "value": "You have not created any teams."
-    }
-  ],
-  "message.no-users": [
-    {
-      "type": 0,
-      "value": "There are no users."
-    }
-  ],
-  "message.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "Anda tidak ada sebarang laman web yang telah dikonfigurasikan."
-    }
-  ],
-  "message.not-found": [
-    {
-      "type": 0,
-      "value": "Not found"
-    }
-  ],
-  "message.nothing-selected": [
-    {
-      "type": 0,
-      "value": "Nothing selected."
-    }
-  ],
-  "message.page-not-found": [
-    {
-      "type": 0,
-      "value": "Halaman tidak dijumpai."
-    }
-  ],
-  "message.reset-website": [
-    {
-      "type": 0,
-      "value": "To reset this website, type "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " in the box below to confirm."
-    }
-  ],
-  "message.reset-website-warning": [
-    {
-      "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
-    }
-  ],
-  "message.saved": [
-    {
-      "type": 0,
-      "value": "Berjaya disimpan."
-    }
-  ],
-  "message.sever-error": [
-    {
-      "type": 0,
-      "value": "Server error"
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "Ini adalah URL berkongsi untuk "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "."
-    }
-  ],
-  "message.team-already-member": [
-    {
-      "type": 0,
-      "value": "You are already a member of the team."
-    }
-  ],
-  "message.team-not-found": [
-    {
-      "type": 0,
-      "value": "Team not found."
-    }
-  ],
-  "message.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Websites can be viewed by anyone on the team."
-    }
-  ],
-  "message.tracking-code": [
-    {
-      "type": 0,
-      "value": "Kod penjejakan"
-    }
-  ],
-  "message.transfer-team-website-to-user": [
-    {
-      "type": 0,
-      "value": "Transfer this website to your account?"
-    }
-  ],
-  "message.transfer-user-website-to-team": [
-    {
-      "type": 0,
-      "value": "Select the team to transfer this website to."
-    }
-  ],
-  "message.transfer-website": [
-    {
-      "type": 0,
-      "value": "Transfer website ownership to your account or another team."
-    }
-  ],
-  "message.triggered-event": [
-    {
-      "type": 0,
-      "value": "Triggered event"
-    }
-  ],
-  "message.unauthorized": [
-    {
-      "type": 0,
-      "value": "Unauthorized"
-    }
-  ],
-  "message.user-deleted": [
-    {
-      "type": 0,
-      "value": "User deleted."
-    }
-  ],
-  "message.viewed-page": [
-    {
-      "type": 0,
-      "value": "Viewed page"
-    }
-  ],
-  "message.visitor-log": [
-    {
-      "type": 0,
-      "value": "Pelawat dari "
-    },
-    {
-      "type": 1,
-      "value": "country"
-    },
-    {
-      "type": 0,
-      "value": " mengguna "
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    },
-    {
-      "type": 0,
-      "value": " pada "
-    },
-    {
-      "type": 1,
-      "value": "os"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "device"
-    }
-  ]
+  "label": {
+    "access-code": "Kod akses",
+    "account": "Akaun",
+    "action": "Tindakan",
+    "actions": "Aksi",
+    "activity": "Activity log",
+    "add": "Tambah",
+    "add-board": "Tambah papan",
+    "add-description": "Tambah penerangan",
+    "add-link": "Tambah pautan",
+    "add-member": "Tambah ahli",
+    "add-pixel": "Tambah piksel",
+    "add-step": "Tambah langkah",
+    "add-website": "Tambah laman web",
+    "admin": "Pentadbir",
+    "affiliate": "Gabungan",
+    "after": "Selepas",
+    "all": "Semua",
+    "all-time": "Sepanjang masa",
+    "analysis": "Analisis",
+    "analytics": "Analitik",
+    "application": "Aplikasi",
+    "apply": "Terapkan",
+    "attribution": "Atribusi",
+    "attribution-description": "Lihat bagaimana pengguna berinteraksi dengan pemasaran anda dan apa yang mendorong penukaran.",
+    "audience": "Khalayak",
+    "average": "Purata",
+    "back": "Kembali",
+    "before": "Sebelum",
+    "behavior": "Tingkah laku",
+    "boards": "Papan",
+    "bounce-rate": "Kadar lantunan",
+    "breakdown": "Pecahan",
+    "browser": "Pelayar",
+    "browsers": "Pelayar web",
+    "campaign": "Kempen",
+    "campaigns": "Kempen",
+    "cancel": "Batal",
+    "change-password": "Tukar kata laluan",
+    "channel": "Saluran",
+    "channels": "Saluran",
+    "chart": "Carta",
+    "cities": "Bandar",
+    "city": "Bandar",
+    "clear-all": "Kosongkan semua",
+    "cohort": "Kohort",
+    "cohorts": "Kohort",
+    "compare": "Bandingkan",
+    "compare-dates": "Bandingkan tarikh",
+    "confirm": "Sahkan",
+    "confirm-password": "Sahkan kata laluan",
+    "contains": "Mengandungi",
+    "regex-match": "Sepadan dengan ungkapan biasa",
+    "regex-not-match": "Tidak sepadan dengan ungkapan biasa",
+    "content": "Kandungan",
+    "continue": "Teruskan",
+    "conversion": "Penukaran",
+    "conversion-rate": "Kadar penukaran",
+    "conversion-step": "Langkah penukaran",
+    "count": "Bilangan",
+    "countries": "Negara",
+    "country": "Negara",
+    "create": "Cipta",
+    "create-report": "Cipta laporan",
+    "create-team": "Cipta pasukan",
+    "create-user": "Cipta pengguna",
+    "created": "Dicipta",
+    "created-by": "Dicipta oleh",
+    "criteria": "Kriteria",
+    "currency": "Mata wang",
+    "current": "Semasa",
+    "current-password": "Kata laluan semasa",
+    "custom-range": "Julat khas",
+    "dashboard": "Papan pemuka",
+    "data": "Data",
+    "date": "Tarikh",
+    "date-range": "Julat tarikh",
+    "day": "Hari",
+    "default-date-range": "Julat tarikh lalai",
+    "delete": "Padam",
+    "delete-report": "Padam laporan",
+    "delete-team": "Padam pasukan",
+    "delete-user": "Padam pengguna",
+    "delete-website": "Padam laman web",
+    "description": "Penerangan",
+    "desktop": "Desktop",
+    "destination-url": "URL destinasi",
+    "details": "Butiran",
+    "device": "Peranti",
+    "devices": "Peranti",
+    "direct": "Terus",
+    "dismiss": "Ketepikan",
+    "distinct-id": "ID unik",
+    "documentation": "Dokumentasi",
+    "does-not-contain": "Tidak mengandungi",
+    "does-not-include": "Tidak termasuk",
+    "doest-not-exist": "Tidak wujud",
+    "domain": "Domain",
+    "download": "Muat turun",
+    "dropoff": "Tercicir",
+    "edit": "Sunting",
+    "edit-member": "Sunting ahli",
+    "email": "E-mel",
+    "enable-share-url": "Aktifkan url berkongsi",
+    "end-step": "Langkah akhir",
+    "entry": "Entry URL",
+    "environment": "Persekitaran",
+    "event": "Peristiwa",
+    "event-data": "Data peristiwa",
+    "event-name": "Nama peristiwa",
+    "events": "Peristiwa",
+    "exclude-bounce": "Kecualikan lantunan",
+    "exists": "Wujud",
+    "exit": "Exit URL",
+    "false": "Palsu",
+    "field": "Medan",
+    "fields": "Medan",
+    "filter": "Tapis",
+    "filter-combined": "Digabungkan",
+    "filter-raw": "Mentah",
+    "filters": "Tapis",
+    "first-click": "Klik pertama",
+    "first-seen": "Pertama dilihat",
+    "funnel": "Corong",
+    "funnel-description": "Fahami kadar penukaran dan tercicir pengguna.",
+    "funnels": "Corong",
+    "goal": "Matlamat",
+    "goals": "Matlamat",
+    "goals-description": "Jejaki matlamat anda untuk paparan halaman dan peristiwa.",
+    "greater-than": "Lebih besar dari",
+    "greater-than-equals": "Lebih besar atau sama",
+    "grouped": "Dikumpulkan",
+    "growth": "Pertumbuhan",
+    "hostname": "Nama hos",
+    "hour": "Jam",
+    "includes": "Termasuk",
+    "insight": "Wawasan",
+    "insights": "Wawasan",
+    "insights-description": "Terokai data anda dengan lebih mendalam menggunakan segmen dan tapis.",
+    "invalid-url": "URL tidak sah",
+    "is": "Adalah",
+    "is-false": "Adalah palsu",
+    "is-not": "Bukan",
+    "is-not-set": "Tidak ditetapkan",
+    "is-set": "Ditetapkan",
+    "is-true": "Adalah benar",
+    "join": "Sertai",
+    "join-team": "Sertai pasukan",
+    "journey": "Perjalanan",
+    "journey-description": "Fahami bagaimana pengguna menavigasi laman web anda.",
+    "journeys": "Perjalanan",
+    "language": "Bahasa",
+    "languages": "Bahasa",
+    "laptop": "Komputer riba",
+    "last-click": "Klik terakhir",
+    "last-days": "{x} hari lepas",
+    "last-hours": "{x} jam lepas",
+    "last-months": "{x} bulan lepas",
+    "last-seen": "Terakhir dilihat",
+    "leave": "Keluar",
+    "leave-team": "Keluar pasukan",
+    "less-than": "Kurang dari",
+    "less-than-equals": "Kurang atau sama",
+    "link": "Pautan",
+    "links": "Pautan",
+    "location": "Lokasi",
+    "login": "Log masuk",
+    "logout": "Log keluar",
+    "manage": "Urus",
+    "manager": "Pengurus",
+    "max": "Maks",
+    "maximize": "Expand",
+    "match": "Padanan",
+    "match-all": "Semua",
+    "match-any": "Mana-mana",
+    "medium": "Medium",
+    "member": "Ahli",
+    "members": "Ahli",
+    "min": "Min",
+    "minute": "Minit",
+    "mobile": "Telefon bimbit",
+    "model": "Model",
+    "month": "Bulan",
+    "more": "Lebih banyak lagi",
+    "my-account": "Akaun saya",
+    "my-websites": "Laman web saya",
+    "name": "Nama",
+    "new-password": "Kata laluan baru",
+    "none": "Tiada",
+    "number-of-records": "{x} {x, plural, one {rekod} other {rekod}}",
+    "ok": "OK",
+    "online": "Dalam talian",
+    "organic-search": "Carian organik",
+    "organic-shopping": "Beli-belah organik",
+    "organic-social": "Sosial organik",
+    "organic-video": "Video organik",
+    "os": "OS",
+    "other": "Lain-lain",
+    "overview": "Gambaran keseluruhan",
+    "owner": "Pemilik",
+    "page": "Halaman",
+    "page-of": "Halaman {current} daripada {total}",
+    "page-views": "Paparan halaman",
+    "pageTitle": "Tajuk halaman",
+    "pages": "Halaman",
+    "paid-ads": "Iklan berbayar",
+    "paid-search": "Carian berbayar",
+    "paid-shopping": "Beli-belah berbayar",
+    "paid-social": "Sosial berbayar",
+    "paid-video": "Video berbayar",
+    "password": "Kata laluan",
+    "path": "Laluan",
+    "paths": "Laluan",
+    "pixel": "Piksel",
+    "pixels": "Piksel",
+    "powered-by": "Disediakan oleh {name}",
+    "preferences": "Keutamaan",
+    "previous": "Sebelumnya",
+    "previous-period": "Tempoh sebelumnya",
+    "previous-year": "Tahun sebelumnya",
+    "profile": "Profil",
+    "profiles": "Profil",
+    "properties": "Sifat",
+    "property": "Sifat",
+    "queries": "Pertanyaan",
+    "query": "Pertanyaan",
+    "query-parameters": "Parameter pertanyaan",
+    "realtime": "Siaran langsung",
+    "referral": "Rujukan",
+    "referrer": "Perujuk",
+    "referrers": "Perujuk",
+    "refresh": "Muat semula",
+    "regenerate": "Jana semula",
+    "region": "Wilayah",
+    "regions": "Wilayah",
+    "remaining": "Baki",
+    "remove": "Buang",
+    "remove-member": "Buang ahli",
+    "reports": "Laporan",
+    "required": "Diperlukan",
+    "reset": "Tetapkan semula",
+    "reset-website": "Reset statistics",
+    "retention": "Pengekalan",
+    "retention-description": "Ukur kelekatan laman web anda dengan menjejaki kekerapan pengguna kembali.",
+    "revenue": "Hasil",
+    "revenue-description": "Look into your revenue across time.",
+    "role": "Peranan",
+    "run-query": "Jalankan pertanyaan",
+    "save": "Simpan",
+    "save-cohort": "Simpan kohort",
+    "save-segment": "Simpan segmen",
+    "screen": "Skrin",
+    "screens": "Skrin",
+    "search": "Cari",
+    "segment": "Segmen",
+    "segments": "Segmen",
+    "select": "Pilih",
+    "select-date": "Pilih tarikh",
+    "select-filter": "Pilih tapis",
+    "select-role": "Pilih peranan",
+    "select-website": "Pilih laman web",
+    "session": "Sesi",
+    "session-data": "Data sesi",
+    "sessions": "Sesi",
+    "settings": "Tetapan",
+    "share": "Kongsi",
+    "share-url": "Kongsikan URL",
+    "single-day": "Satu hari",
+    "sms": "SMS",
+    "source": "Sumber",
+    "sources": "Sumber",
+    "start-step": "Langkah mula",
+    "steps": "Langkah",
+    "sum": "Jumlah",
+    "support": "Sokongan",
+    "switch-account": "Tukar akaun",
+    "table": "Jadual",
+    "tablet": "Tablet",
+    "tag": "Tag",
+    "tags": "Tag",
+    "team": "Pasukan",
+    "team-id": "ID pasukan",
+    "team-manager": "Pengurus pasukan",
+    "team-member": "Ahli pasukan",
+    "team-name": "Nama pasukan",
+    "team-owner": "Pemilik pasukan",
+    "team-settings": "Tetapan pasukan",
+    "team-view-only": "Lihat sahaja pasukan",
+    "team-websites": "Laman web pasukan",
+    "teams": "Pasukan",
+    "term": "Kata kunci",
+    "terms": "Syarat",
+    "theme": "Tema",
+    "this-month": "Bulan ini",
+    "this-week": "Minggu ini",
+    "this-year": "Tahun ini",
+    "timezone": "Zon masa",
+    "title": "Tajuk",
+    "today": "Hari ini",
+    "toggle-charts": "Togol carta",
+    "total": "Jumlah",
+    "total-records": "Jumlah rekod",
+    "tracking-code": "Kod penjejakan",
+    "traffic": "Trafik",
+    "transactions": "Transaksi",
+    "transfer": "Pindahkan",
+    "transfer-website": "Pindahkan laman web",
+    "true": "Benar",
+    "type": "Jenis",
+    "unique": "Unik",
+    "unique-events": "Peristiwa unik",
+    "unique-visitors": "Pelawat unik",
+    "uniqueCustomers": "Pelanggan unik",
+    "unknown": "Tidak diketahui",
+    "untitled": "Tanpa tajuk",
+    "update": "Kemas kini",
+    "url": "URL",
+    "user": "Pengguna",
+    "username": "Nama pengguna",
+    "users": "Pengguna",
+    "utm": "UTM",
+    "utm-campaign": "UTM Kempen",
+    "utm-content": "UTM Kandungan",
+    "utm-description": "Jejaki kempen anda melalui parameter UTM.",
+    "utm-medium": "UTM Medium",
+    "utm-source": "UTM Sumber",
+    "utm-term": "UTM Kata Kunci",
+    "value": "Nilai",
+    "version": "Versi",
+    "view": "Lihat",
+    "view-details": "Lihat butiran",
+    "view-only": "Lihat sahaja",
+    "views": "Lawatan",
+    "views-per-visit": "Paparan per lawatan",
+    "visit-duration": "Purata tempoh masa lawatan",
+    "visitors": "Pelawat",
+    "visits": "Lawatan",
+    "website": "Laman web",
+    "website-id": "ID laman web",
+    "websites": "Laman web",
+    "window": "Tetingkap",
+    "yesterday": "Semalam"
+  },
+  "message": {
+    "action-confirmation": "Taip {confirmation} dalam kotak di bawah untuk mengesahkan.",
+    "active-users": "{x} semasa {x, plural, one {pelawat} other {pelawat}}",
+    "bad-request": "Permintaan tidak sah",
+    "collected-data": "Data yang dikumpul",
+    "confirm-delete": "Pastikah anda ingin memadam {target}?",
+    "confirm-leave": "Adakah anda pasti mahu meninggalkan <b>{target}</b>?",
+    "confirm-remove": "Adakah anda pasti mahu membuang <b>{target}</b>?",
+    "confirm-reset": "Are your sure you want to reset {target}'s statistics?",
+    "delete-team-warning": "Memadamkan pasukan juga akan memadamkan semua laman web pasukan.",
+    "delete-website-warning": "Semua data yang berkaitan juga akan dihapuskan.",
+    "error": "Ada yang tidak kena.",
+    "event-log": "<b>{event}</b> di <a>{url}</a>",
+    "forbidden": "Dilarang",
+    "go-to-settings": "Pergi ke tetapan",
+    "incorrect-username-password": "Pengguna/kata laluan tidak betul.",
+    "invalid-domain": "Domain tidak sah",
+    "min-password-length": "Panjang minimum {n} aksara",
+    "new-version-available": "Versi baharu Umami {version} tersedia!",
+    "no-data-available": "Tiada data yang boleh didapati.",
+    "no-event-data": "Tiada data peristiwa tersedia.",
+    "no-match-password": "Kata laluan tidak sepadan",
+    "no-results-found": "No results were found.",
+    "no-team-websites": "Pasukan ini tidak mempunyai laman web.",
+    "no-teams": "Anda belum mencipta sebarang pasukan.",
+    "no-users": "Tiada pengguna.",
+    "no-websites-configured": "Anda tidak ada sebarang laman web yang telah dikonfigurasikan.",
+    "not-found": "Tidak dijumpai",
+    "nothing-selected": "Tiada yang dipilih.",
+    "page-not-found": "Halaman tidak dijumpai.",
+    "reset-website": "Untuk menetapkan semula laman web ini, taip {confirmation} dalam kotak di bawah.",
+    "reset-website-warning": "All statistics for this website will be deleted, but your tracking code will remain intact.",
+    "saved": "Berjaya disimpan.",
+    "sever-error": "Ralat pelayan",
+    "share-url": "Ini adalah URL berkongsi untuk {target}.",
+    "team-already-member": "Anda sudah menjadi ahli pasukan.",
+    "team-not-found": "Pasukan tidak dijumpai.",
+    "team-websites-info": "Laman web boleh dilihat oleh sesiapa dalam pasukan.",
+    "tracking-code": "Kod penjejakan",
+    "transfer-team-website-to-user": "Pindahkan laman web ini ke akaun anda?",
+    "transfer-user-website-to-team": "Pilih pasukan untuk memindahkan laman web ini.",
+    "transfer-website": "Pindahkan pemilikan laman web ke akaun anda atau pasukan lain.",
+    "triggered-event": "Peristiwa yang dicetuskan",
+    "unauthorized": "Tidak dibenarkan",
+    "user-deleted": "Pengguna dipadamkan.",
+    "viewed-page": "Halaman dilihat",
+    "visitor-log": "Pelawat dari <b>{country}</b> mengguna <b>{browser}</b> pada <b>{os}</b> <b>{device}</b>"
+  }
 }

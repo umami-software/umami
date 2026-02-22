@@ -12,7 +12,7 @@ export function UserDeleteForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { messages, labels, formatMessage } = useMessages();
+  const { messages, labels, t } = useMessages();
   const { mutateAsync } = useDeleteQuery(`/users/${userId}`);
   const { touch } = useModified();
 
@@ -29,13 +29,13 @@ export function UserDeleteForm({
 
   return (
     <AlertDialog
-      title={formatMessage(labels.delete)}
+      title={t(labels.delete)}
       onConfirm={handleConfirm}
       onCancel={onClose}
-      confirmLabel={formatMessage(labels.delete)}
+      confirmLabel={t(labels.delete)}
       isDanger
     >
-      <Row gap="1">{formatMessage(messages.confirmDelete, { target: username })}</Row>
+      <Row gap="1">{t(messages.confirmDelete, { target: username })}</Row>
     </AlertDialog>
   );
 }

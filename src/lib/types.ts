@@ -1,4 +1,5 @@
 import type { UseQueryOptions } from '@tanstack/react-query';
+import type { Board as PrismaBoard } from '@/generated/prisma/client';
 import type { DATA_TYPE, OPERATORS, ROLES } from './constants';
 import type { TIME_UNIT } from './date';
 
@@ -26,10 +27,11 @@ export interface Auth {
 export interface Filter {
   name: string;
   operator: Operator;
-  value: string;
+  value: string | string[];
   type?: string;
   column?: string;
   prefix?: string;
+  paramName?: string;
 }
 
 export interface DateRange {
@@ -51,6 +53,8 @@ export interface QueryOptions {
   limit?: number;
   prefix?: string;
   isCohort?: boolean;
+  cohortMatch?: string;
+  cohortActionName?: string;
 }
 
 export interface QueryFilters
@@ -90,6 +94,8 @@ export interface FilterParams {
   segment?: string;
   cohort?: string;
   compare?: string;
+  excludeBounce?: boolean;
+  match?: 'all' | 'any';
 }
 
 export interface SortParams {
@@ -140,4 +146,39 @@ export interface RealtimeData {
 export interface ApiError extends Error {
   code?: string;
   message: string;
+}
+
+export interface BoardComponentConfig {
+  type: string;
+  websiteId?: string;
+  title?: string;
+  description?: string;
+  props?: Record<string, any>;
+}
+
+export interface BoardColumn {
+  id: string;
+  component?: BoardComponentConfig;
+  size?: number;
+}
+
+export interface BoardRow {
+  id: string;
+  columns: BoardColumn[];
+  size?: number;
+}
+
+export interface BoardParameters {
+  websiteId?: string;
+  rows?: BoardRow[];
+}
+
+export interface Board extends Omit<PrismaBoard, 'parameters'> {
+  parameters: BoardParameters;
+}
+
+export interface WhiteLabel {
+  name: string;
+  url: string;
+  image: string;
 }

@@ -12,7 +12,7 @@ import { useLoginQuery, useMessages, useUpdateQuery, useUser } from '@/component
 import { ROLES } from '@/lib/constants';
 
 export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () => void }) {
-  const { formatMessage, labels, messages, getMessage } = useMessages();
+  const { t, labels, messages, getErrorMessage } = useMessages();
   const user = useUser();
   const { user: login } = useLoginQuery();
 
@@ -21,7 +21,7 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
       onSuccess: async () => {
-        toast(formatMessage(messages.saved));
+        toast(t(messages.saved));
         touch('users');
         touch(`user:${user.id}`);
         onSave?.();
@@ -30,42 +30,38 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={getMessage(error?.code)} values={user}>
-      <FormField name="username" label={formatMessage(labels.username)}>
+    <Form onSubmit={handleSubmit} error={getErrorMessage(error)} values={user}>
+      <FormField name="username" label={t(labels.username)}>
         <TextField data-test="input-username" />
       </FormField>
       <FormField
         name="password"
-        label={formatMessage(labels.password)}
+        label={t(labels.password)}
         rules={{
-          minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: '8' }) },
+          minLength: { value: 8, message: t(messages.minPasswordLength, { n: '8' }) },
         }}
       >
         <PasswordField autoComplete="new-password" data-test="input-password" />
       </FormField>
 
       {user.id !== login.id && (
-        <FormField
-          name="role"
-          label={formatMessage(labels.role)}
-          rules={{ required: formatMessage(labels.required) }}
-        >
+        <FormField name="role" label={t(labels.role)} rules={{ required: t(labels.required) }}>
           <Select defaultValue={user.role}>
             <ListItem id={ROLES.viewOnly} data-test="dropdown-item-viewOnly">
-              {formatMessage(labels.viewOnly)}
+              {t(labels.viewOnly)}
             </ListItem>
             <ListItem id={ROLES.user} data-test="dropdown-item-user">
-              {formatMessage(labels.user)}
+              {t(labels.user)}
             </ListItem>
             <ListItem id={ROLES.admin} data-test="dropdown-item-admin">
-              {formatMessage(labels.admin)}
+              {t(labels.admin)}
             </ListItem>
           </Select>
         </FormField>
       )}
       <FormButtons>
         <FormSubmitButton data-test="button-submit" variant="primary">
-          {formatMessage(labels.save)}
+          {t(labels.save)}
         </FormSubmitButton>
       </FormButtons>
     </Form>

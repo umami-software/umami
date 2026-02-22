@@ -15,15 +15,16 @@ import { generateTimeSeries } from '@/lib/date';
 export interface EventsChartProps extends BarChartProps {
   websiteId: string;
   focusLabel?: string;
+  limit?: number;
 }
 
-export function EventsChart({ websiteId, focusLabel }: EventsChartProps) {
+export function EventsChart({ websiteId, focusLabel, limit }: EventsChartProps) {
   const { timezone } = useTimezone();
   const {
     dateRange: { startDate, endDate, unit },
   } = useDateRange({ timezone: timezone });
   const { locale, dateLocale } = useLocale();
-  const { data, isLoading, error } = useWebsiteEventsSeriesQuery(websiteId);
+  const { data, isLoading, error } = useWebsiteEventsSeriesQuery(websiteId, { limit });
   const [label, setLabel] = useState<string>(focusLabel);
 
   const chartData: any = useMemo(() => {

@@ -28,7 +28,7 @@ export function SessionProfile({
   onClose?: () => void;
 }) {
   const { data, isLoading, error } = useWebsiteSessionQuery(websiteId, sessionId);
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   return (
     <LoadingPanel
@@ -61,8 +61,8 @@ export function SessionProfile({
 
             <Tabs>
               <TabList>
-                <Tab id="activity">{formatMessage(labels.activity)}</Tab>
-                <Tab id="properties">{formatMessage(labels.properties)}</Tab>
+                <Tab id="activity">{t(labels.activity)}</Tab>
+                <Tab id="properties">{t(labels.properties)}</Tab>
               </TabList>
               <TabPanel id="activity">
                 <SessionActivity

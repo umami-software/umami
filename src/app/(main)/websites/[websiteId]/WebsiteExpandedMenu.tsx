@@ -1,13 +1,17 @@
-import { SideMenu } from '@/components/common/SideMenu';
+import { NavMenu } from '@/components/common/NavMenu';
 import { useMessages, useNavigation } from '@/components/hooks';
 import {
   AppWindow,
   Cpu,
   Earth,
+  Fingerprint,
   Globe,
+  KeyRound,
   Landmark,
   Languages,
   Laptop,
+  Layers,
+  Link2,
   LogIn,
   LogOut,
   MapPin,
@@ -15,9 +19,11 @@ import {
   Monitor,
   Network,
   Search,
+  Send,
   Share2,
   SquareSlash,
   Tag,
+  Target,
   Type,
 } from '@/components/icons';
 import { Lightning } from '@/components/svg';
@@ -29,7 +35,7 @@ export function WebsiteExpandedMenu({
   excludedIds?: string[];
   onItemClick?: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const {
     updateParams,
     query: { view },
@@ -43,135 +49,176 @@ export function WebsiteExpandedMenu({
       items: [
         {
           id: 'path',
-          label: formatMessage(labels.path),
+          label: t(labels.path),
           path: updateParams({ view: 'path' }),
           icon: <SquareSlash />,
         },
         {
           id: 'entry',
-          label: formatMessage(labels.entry),
+          label: t(labels.entry),
           path: updateParams({ view: 'entry' }),
           icon: <LogIn />,
         },
         {
           id: 'exit',
-          label: formatMessage(labels.exit),
+          label: t(labels.exit),
           path: updateParams({ view: 'exit' }),
           icon: <LogOut />,
         },
         {
           id: 'title',
-          label: formatMessage(labels.title),
+          label: t(labels.title),
           path: updateParams({ view: 'title' }),
           icon: <Type />,
         },
         {
           id: 'query',
-          label: formatMessage(labels.query),
+          label: t(labels.query),
           path: updateParams({ view: 'query' }),
           icon: <Search />,
         },
       ].filter(filterExcluded),
     },
     {
-      label: formatMessage(labels.sources),
+      label: t(labels.sources),
       items: [
         {
           id: 'referrer',
-          label: formatMessage(labels.referrer),
+          label: t(labels.referrer),
           path: updateParams({ view: 'referrer' }),
           icon: <Share2 />,
         },
         {
           id: 'channel',
-          label: formatMessage(labels.channel),
+          label: t(labels.channel),
           path: updateParams({ view: 'channel' }),
           icon: <Megaphone />,
         },
         {
           id: 'domain',
-          label: formatMessage(labels.domain),
+          label: t(labels.domain),
           path: updateParams({ view: 'domain' }),
           icon: <Globe />,
         },
       ].filter(filterExcluded),
     },
     {
-      label: formatMessage(labels.location),
+      label: t(labels.location),
       items: [
         {
           id: 'country',
-          label: formatMessage(labels.country),
+          label: t(labels.country),
           path: updateParams({ view: 'country' }),
           icon: <Earth />,
         },
         {
           id: 'region',
-          label: formatMessage(labels.region),
+          label: t(labels.region),
           path: updateParams({ view: 'region' }),
           icon: <MapPin />,
         },
         {
           id: 'city',
-          label: formatMessage(labels.city),
+          label: t(labels.city),
           path: updateParams({ view: 'city' }),
           icon: <Landmark />,
         },
       ].filter(filterExcluded),
     },
     {
-      label: formatMessage(labels.environment),
+      label: t(labels.environment),
       items: [
         {
           id: 'browser',
-          label: formatMessage(labels.browser),
+          label: t(labels.browser),
           path: updateParams({ view: 'browser' }),
           icon: <AppWindow />,
         },
         {
           id: 'os',
-          label: formatMessage(labels.os),
+          label: t(labels.os),
           path: updateParams({ view: 'os' }),
           icon: <Cpu />,
         },
         {
           id: 'device',
-          label: formatMessage(labels.device),
+          label: t(labels.device),
           path: updateParams({ view: 'device' }),
           icon: <Laptop />,
         },
         {
           id: 'language',
-          label: formatMessage(labels.language),
+          label: t(labels.language),
           path: updateParams({ view: 'language' }),
           icon: <Languages />,
         },
         {
           id: 'screen',
-          label: formatMessage(labels.screen),
+          label: t(labels.screen),
           path: updateParams({ view: 'screen' }),
           icon: <Monitor />,
         },
       ].filter(filterExcluded),
     },
     {
-      label: formatMessage(labels.other),
+      label: t(labels.utm),
+      items: [
+        {
+          id: 'utmSource',
+          label: t(labels.source),
+          path: updateParams({ view: 'utmSource' }),
+          icon: <Link2 />,
+        },
+        {
+          id: 'utmMedium',
+          label: t(labels.medium),
+          path: updateParams({ view: 'utmMedium' }),
+          icon: <Send />,
+        },
+        {
+          id: 'utmCampaign',
+          label: t(labels.campaign),
+          path: updateParams({ view: 'utmCampaign' }),
+          icon: <Target />,
+        },
+        {
+          id: 'utmContent',
+          label: t(labels.content),
+          path: updateParams({ view: 'utmContent' }),
+          icon: <Layers />,
+        },
+        {
+          id: 'utmTerm',
+          label: t(labels.term),
+          path: updateParams({ view: 'utmTerm' }),
+          icon: <KeyRound />,
+        },
+      ].filter(filterExcluded),
+    },
+    {
+      label: t(labels.other),
       items: [
         {
           id: 'event',
-          label: formatMessage(labels.event),
+          label: t(labels.event),
           path: updateParams({ view: 'event' }),
           icon: <Lightning />,
         },
         {
           id: 'hostname',
-          label: formatMessage(labels.hostname),
+          label: t(labels.hostname),
           path: updateParams({ view: 'hostname' }),
           icon: <Network />,
         },
         {
+          id: 'distinctId',
+          label: t(labels.distinctId),
+          path: updateParams({ view: 'distinctId' }),
+          icon: <Fingerprint />,
+        },
+        {
           id: 'tag',
-          label: formatMessage(labels.tag),
+          label: t(labels.tag),
           path: updateParams({ view: 'tag' }),
           icon: <Tag />,
         },
@@ -179,5 +226,5 @@ export function WebsiteExpandedMenu({
     },
   ];
 
-  return <SideMenu items={items} selectedKey={view} onItemClick={onItemClick} />;
+  return <NavMenu items={items} selectedKey={view} onItemClick={onItemClick} />;
 }

@@ -6,7 +6,7 @@ import { useMessages } from '@/components/hooks';
 import { Settings } from '@/components/icons';
 
 export function PreferencesButton() {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   return (
     <DialogTrigger>
@@ -18,11 +18,11 @@ export function PreferencesButton() {
       <Popover placement="bottom end">
         <Panel gap="3">
           <Column>
-            <Label>{formatMessage(labels.timezone)}</Label>
+            <Label>{t(labels.timezone)}</Label>
             <TimezoneSetting />
           </Column>
           <Column>
-            <Label>{formatMessage(labels.defaultDateRange)}</Label>
+            <Label>{t(labels.defaultDateRange)}</Label>
             <DateRangeSetting />
           </Column>
         </Panel>

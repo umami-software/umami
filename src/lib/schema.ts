@@ -20,8 +20,27 @@ export const dateRangeParams = {
   endDate: z.coerce.date().optional(),
   timezone: timezoneParam.optional(),
   unit: unitParam.optional(),
-  compare: z.string().optional(),
+  compare: z.enum(['prev', 'yoy']).optional(),
 };
+
+export function withDateRange<T extends z.ZodRawShape>(shape?: T) {
+  return z
+    .object({
+      ...dateRangeParams,
+      ...shape,
+    })
+    .superRefine((data: Record<string, unknown>, ctx) => {
+      const hasTimestamps = data.startAt != null && data.endAt != null;
+      const hasDates = data.startDate != null && data.endDate != null;
+
+      if (!hasTimestamps && !hasDates) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Either startAt+endAt or startDate+endDate must be provided',
+        });
+      }
+    });
+}
 
 export const filterParams = {
   path: z.string().optional(),
@@ -36,11 +55,19 @@ export const filterParams = {
   city: z.string().optional(),
   tag: z.string().optional(),
   hostname: z.string().optional(),
+  distinctId: z.string().optional(),
   language: z.string().optional(),
   event: z.string().optional(),
+  utmSource: z.string().optional(),
+  utmMedium: z.string().optional(),
+  utmCampaign: z.string().optional(),
+  utmContent: z.string().optional(),
+  utmTerm: z.string().optional(),
   segment: z.uuid().optional(),
   cohort: z.uuid().optional(),
   eventType: z.coerce.number().int().positive().optional(),
+  excludeBounce: z.string().optional(),
+  match: z.enum(['all', 'any']).optional(),
 };
 
 export const searchParams = {
@@ -89,8 +116,14 @@ export const fieldsParam = z.enum([
   'city',
   'tag',
   'hostname',
+  'distinctId',
   'language',
   'event',
+  'utmSource',
+  'utmMedium',
+  'utmCampaign',
+  'utmContent',
+  'utmTerm',
 ]);
 
 export const reportTypeParam = z.enum([
@@ -102,6 +135,25 @@ export const reportTypeParam = z.enum([
   'retention',
   'revenue',
   'utm',
+]);
+
+export const operatorParam = z.enum([
+  'eq',
+  'neq',
+  's',
+  'ns',
+  'c',
+  'dnc',
+  're',
+  'nre',
+  't',
+  'f',
+  'gt',
+  'lt',
+  'gte',
+  'lte',
+  'bf',
+  'af',
 ]);
 
 export const goalReportSchema = z.object({
@@ -149,6 +201,7 @@ export const journeyReportSchema = z.object({
     steps: z.coerce.number().min(2).max(7),
     startStep: z.string().optional(),
     endStep: z.string().optional(),
+    eventType: z.coerce.number().int().positive().optional(),
   }),
 });
 
@@ -157,7 +210,7 @@ export const retentionReportSchema = z.object({
   parameters: z.object({
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
-    timezone: z.string().optional(),
+    timezone: timezoneParam.optional(),
   }),
 });
 
@@ -174,8 +227,10 @@ export const revenueReportSchema = z.object({
   parameters: z.object({
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
-    timezone: z.string().optional(),
+    unit: unitParam.optional(),
+    timezone: timezoneParam.optional(),
     currency: z.string(),
+    compare: z.enum(['prev', 'yoy']).optional(),
   }),
 });
 
@@ -230,3 +285,23 @@ export const reportResultSchema = z.intersection(
 );
 
 export const segmentTypeParam = z.enum(['segment', 'cohort']);
+
+export const segmentParamSchema = z.object({
+  filters: z
+    .array(
+      z.object({
+        name: z.string(),
+        operator: operatorParam,
+        value: z.string(),
+      }),
+    )
+    .optional(),
+  match: z.enum(['all', 'any']).optional(),
+  dateRange: z.string().optional(),
+  action: z
+    .object({
+      type: z.string(),
+      value: z.string(),
+    })
+    .optional(),
+});

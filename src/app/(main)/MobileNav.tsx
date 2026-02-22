@@ -1,63 +1,78 @@
-import { Grid, IconLabel, NavMenu, NavMenuItem, Row, Text } from '@umami/react-zen';
+import { Column, Grid, Row, Text } from '@umami/react-zen';
 import Link from 'next/link';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
+import { IconLabel } from '@/components/common/IconLabel';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { Globe, Grid2x2, LinkIcon } from '@/components/icons';
+import { Globe, Grid2x2, LayoutDashboard, LinkIcon } from '@/components/icons';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
-import { NavButton } from '@/components/input/NavButton';
+import { UserButton } from '@/components/input/UserButton';
 import { Logo } from '@/components/svg';
 import { AdminNav } from './admin/AdminNav';
 import { SettingsNav } from './settings/SettingsNav';
 
 export function MobileNav() {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { pathname, websiteId, renderUrl } = useNavigation();
   const isAdmin = pathname.includes('/admin');
   const isSettings = pathname.includes('/settings');
+  const isMain = !websiteId && !isAdmin && !isSettings;
 
   const links = [
     {
+      id: 'boards',
+      label: t(labels.boards),
+      path: '/boards',
+      icon: <LayoutDashboard />,
+    },
+    {
       id: 'websites',
-      label: formatMessage(labels.websites),
+      label: t(labels.websites),
       path: '/websites',
       icon: <Globe />,
     },
     {
       id: 'links',
-      label: formatMessage(labels.links),
+      label: t(labels.links),
       path: '/links',
       icon: <LinkIcon />,
     },
     {
       id: 'pixels',
-      label: formatMessage(labels.pixels),
+      label: t(labels.pixels),
       path: '/pixels',
       icon: <Grid2x2 />,
     },
   ];
 
   return (
-    <Grid columns="auto 1fr" flexGrow={1} backgroundColor="3" borderRadius>
+    <Grid columns="auto 1fr" flexGrow={1} backgroundColor="surface-sunken" borderRadius>
       <MobileMenuButton>
         {({ close }) => {
           return (
-            <>
-              <NavMenu padding="3" onItemClick={close} border="bottom">
-                <NavButton />
-                {links.map(link => {
+            <Column
+              gap="2"
+              display="flex"
+              flex-direction="column"
+              padding="1"
+              style={{ height: '100dvh' }}
+            >
+              {isMain &&
+                links.map(link => {
                   return (
-                    <Link key={link.id} href={renderUrl(link.path)}>
-                      <NavMenuItem>
+                    <Row key={link.id} padding>
+                      <Link href={renderUrl(link.path)} onClick={close}>
                         <IconLabel icon={link.icon} label={link.label} />
-                      </NavMenuItem>
-                    </Link>
+                      </Link>
+                    </Row>
                   );
                 })}
-              </NavMenu>
               {websiteId && <WebsiteNav websiteId={websiteId} onItemClick={close} />}
               {isAdmin && <AdminNav onItemClick={close} />}
               {isSettings && <SettingsNav onItemClick={close} />}
-            </>
+              <Row style={{ marginTop: 'auto' }}>
+                <UserButton onClose={close} />
+              </Row>
+            </Column>
           );
         }}
       </MobileMenuButton>

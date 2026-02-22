@@ -1,5 +1,6 @@
-import { Grid, Icon, Row, Text } from '@umami/react-zen';
+import { Grid, Row } from '@umami/react-zen';
 import { useEffect, useMemo } from 'react';
+import { IconLabel } from '@/components/common/IconLabel';
 import { LinkButton } from '@/components/common/LinkButton';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useNavigation, useWebsiteMetricsQuery } from '@/components/hooks';
@@ -31,7 +32,7 @@ export function MetricsTable({
   ...props
 }: MetricsTableProps) {
   const { updateParams } = useNavigation();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { data, isLoading, isFetching, error } = useWebsiteMetricsQuery(websiteId, {
     type,
     limit,
@@ -77,15 +78,12 @@ export function MetricsTable({
       error={error}
       minHeight="400px"
     >
-      <Grid>
+      <Grid padding="2">
         {data && <ListTable {...props} data={filteredData} renderLabel={renderLabel} />}
         {showMore && limit && (
-          <Row justifyContent="center" alignItems="flex-end">
+          <Row justifyContent="center" alignItems="flex-end" paddingTop="4">
             <LinkButton href={updateParams({ view: type })} variant="quiet">
-              <Icon size="sm">
-                <Maximize />
-              </Icon>
-              <Text>{formatMessage(labels.more)}</Text>
+              <IconLabel icon={<Maximize />}>{t(labels.more)}</IconLabel>
             </LinkButton>
           </Row>
         )}

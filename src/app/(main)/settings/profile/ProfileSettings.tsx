@@ -5,7 +5,7 @@ import { PasswordChangeButton } from './PasswordChangeButton';
 
 export function ProfileSettings() {
   const { user } = useLoginQuery();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { cloudMode } = useConfig();
 
   if (!user) {
@@ -16,31 +16,31 @@ export function ProfileSettings() {
 
   const renderRole = (value: string) => {
     if (value === ROLES.user) {
-      return formatMessage(labels.user);
+      return t(labels.user);
     }
     if (value === ROLES.admin) {
-      return formatMessage(labels.admin);
+      return t(labels.admin);
     }
     if (value === ROLES.viewOnly) {
-      return formatMessage(labels.viewOnly);
+      return t(labels.viewOnly);
     }
 
-    return formatMessage(labels.unknown);
+    return t(labels.unknown);
   };
 
   return (
-    <Column width="400px" gap="6">
+    <Column gap="6">
       <Column>
-        <Label>{formatMessage(labels.username)}</Label>
+        <Label>{t(labels.username)}</Label>
         {username}
       </Column>
       <Column>
-        <Label>{formatMessage(labels.role)}</Label>
+        <Label>{t(labels.role)}</Label>
         {renderRole(role)}
       </Column>
       {!cloudMode && (
         <Column>
-          <Label>{formatMessage(labels.password)}</Label>
+          <Label>{t(labels.password)}</Label>
           <Row>
             <PasswordChangeButton />
           </Row>

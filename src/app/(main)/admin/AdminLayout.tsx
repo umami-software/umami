@@ -13,13 +13,12 @@ export function AdminLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <Grid columns={{ xs: '1fr', lg: 'auto 1fr' }} width="100%" height="100%">
+    <Grid columns={{ base: '1fr', lg: 'auto 1fr' }} width="100%" height="100%">
       <Column
-        display={{ xs: 'none', lg: 'flex' }}
+        display={{ base: 'none', lg: 'flex' }}
         width="240px"
         height="100%"
         border="right"
-        backgroundColor
         marginRight="2"
         padding="3"
       >

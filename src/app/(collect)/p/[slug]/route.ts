@@ -47,7 +47,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     payload: {
       pixel: pixel.id,
       url: request.url,
-      referrer: request.headers.get('referer'),
+      referrer: request.headers.get("referer") || undefined,
     },
   };
 

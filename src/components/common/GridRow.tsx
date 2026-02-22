@@ -4,18 +4,18 @@ const LAYOUTS = {
   one: { columns: '1fr' },
   two: {
     columns: {
-      xs: '1fr',
+      base: '1fr',
       md: 'repeat(auto-fill, minmax(560px, 1fr))',
     },
   },
   three: {
     columns: {
-      xs: '1fr',
+      base: '1fr',
       md: 'repeat(auto-fill, minmax(360px, 1fr))',
     },
   },
-  'one-two': { columns: { xs: '1fr', md: 'repeat(3, 1fr)' } },
-  'two-one': { columns: { xs: '1fr', md: 'repeat(3, 1fr)' } },
+  'one-two': { columns: { base: '1fr', md: 'repeat(3, 1fr)' } },
+  'two-one': { columns: { base: '1fr', md: 'repeat(3, 1fr)' } },
 };
 
 export function GridRow(props: {

@@ -21,7 +21,7 @@ async function findUser(
     ...criteria,
     where: {
       ...criteria.where,
-      ...(showDeleted && { deletedAt: null }),
+      ...(showDeleted ? {} : { deletedAt: null }),
     },
     select: {
       id: true,
