@@ -1,6 +1,6 @@
 import { Checkbox, Row } from '@umami/react-zen';
 import { useState } from 'react';
-import { useMessages, useNavigation } from '@/components/hooks';
+import { useFilters, useMessages, useNavigation } from '@/components/hooks';
 import { ListFilter } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
 import { FilterEditForm } from '@/components/input/FilterEditForm';
@@ -15,14 +15,17 @@ export function WebsiteFilterButton({
 }) {
   const { t, labels } = useMessages();
   const { updateParams, pathname, router, query } = useNavigation();
+  const { filters: currentFilters } = useFilters();
   const [excludeBounce, setExcludeBounce] = useState(!!query.excludeBounce);
   const isOverview =
     /^\/teams\/[^/]+\/websites\/[^/]+$/.test(pathname) || /^\/share\/[^/]+$/.test(pathname);
 
   const handleChange = ({ filters, segment, cohort, match }: any) => {
     const params = filtersArrayToObject(filters);
+    const cleared = Object.fromEntries(currentFilters.map(f => [f.name, undefined]));
 
     const url = updateParams({
+      ...cleared,
       ...params,
       segment,
       cohort,

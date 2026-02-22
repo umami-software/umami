@@ -102,13 +102,7 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
         <Button onPress={handleReset}>{t(labels.reset)}</Button>
         <Row alignItems="center" justifyContent="flex-end" gridColumn="span 2" gap>
           <Button onPress={onClose}>{t(labels.cancel)}</Button>
-          <Button
-            variant="primary"
-            onPress={handleSave}
-            isDisabled={
-              currentFilters.filter(f => f.value).length === 0 && !currentSegment && !currentCohort
-            }
-          >
+          <Button variant="primary" onPress={handleSave}>
             {t(labels.apply)}
           </Button>
         </Row>
