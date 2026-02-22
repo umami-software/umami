@@ -1,12 +1,20 @@
-import { z } from 'zod';
-import { hashPassword } from '@/lib/password';
-import { parseRequest } from '@/lib/request';
-import { badRequest, json, ok, unauthorized } from '@/lib/response';
-import { userRoleParam } from '@/lib/schema';
-import { canDeleteUser, canUpdateUser, canViewUser } from '@/permissions';
-import { deleteUser, getUser, getUserByUsername, updateUser } from '@/queries/prisma';
+import { z } from "zod";
+import { hashPassword } from "@/lib/password";
+import { parseRequest } from "@/lib/request";
+import { badRequest, json, ok, unauthorized } from "@/lib/response";
+import { userRoleParam } from "@/lib/schema";
+import { canDeleteUser, canUpdateUser, canViewUser } from "@/permissions";
+import {
+  deleteUser,
+  getUser,
+  getUserByUsername,
+  updateUser,
+} from "@/queries/prisma";
 
-export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ userId: string }> },
+) {
   const { auth, error } = await parseRequest(request);
 
   if (error) {
@@ -24,7 +32,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
   return json(user);
 }
 
-export async function POST(request: Request, { params }: { params: Promise<{ userId: string }> }) {
+export async function POST(
+  request: Request,
+  { params }: { params: Promise<{ userId: string }> },
+) {
   const schema = z.object({
     username: z.string().max(255).optional(),
     password: z.string().max(255).optional(),
@@ -59,15 +70,15 @@ export async function POST(request: Request, { params }: { params: Promise<{ use
   }
 
   if (username && auth.user.isAdmin) {
-    data.username = username;
+    data.username = username.toLowerCase();
   }
 
   // Check when username changes
   if (data.username && user.username !== data.username) {
-    const user = await getUserByUsername(username);
+    const existingUser = await getUserByUsername(username);
 
-    if (user) {
-      return badRequest({ message: 'User already exists' });
+    if (existingUser && existingUser.id !== userId) {
+      return badRequest({ message: "User already exists" });
     }
   }
 
@@ -93,7 +104,7 @@ export async function DELETE(
   }
 
   if (userId === auth.user.id) {
-    return badRequest({ message: 'You cannot delete yourself.' });
+    return badRequest({ message: "You cannot delete yourself." });
   }
 
   await deleteUser(userId);

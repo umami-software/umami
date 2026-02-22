@@ -1,8 +1,8 @@
-import { Prisma } from '@/generated/prisma/client';
-import { ROLES } from '@/lib/constants';
-import { getRandomChars } from '@/lib/generate';
-import prisma from '@/lib/prisma';
-import type { QueryFilters, Role } from '@/lib/types';
+import { Prisma } from "@/generated/prisma/client";
+import { ROLES } from "@/lib/constants";
+import { getRandomChars } from "@/lib/generate";
+import prisma from "@/lib/prisma";
+import type { QueryFilters, Role } from "@/lib/types";
 
 import UserFindManyArgs = Prisma.UserFindManyArgs;
 
@@ -11,7 +11,10 @@ export interface GetUserOptions {
   showDeleted?: boolean;
 }
 
-async function findUser(criteria: Prisma.UserFindUniqueArgs, options: GetUserOptions = {}) {
+async function findUser(
+  criteria: Prisma.UserFindUniqueArgs,
+  options: GetUserOptions = {},
+) {
   const { includePassword = false, showDeleted = false } = options;
 
   return prisma.client.user.findUnique({
@@ -41,27 +44,33 @@ export async function getUser(userId: string, options: GetUserOptions = {}) {
   );
 }
 
-export async function getUserByUsername(username: string, options: GetUserOptions = {}) {
-  return findUser({ where: { username } }, options);
+export async function getUserByUsername(
+  username: string,
+  options: GetUserOptions = {},
+) {
+  return findUser({ where: { username: username.toLowerCase() } }, options);
 }
 
-export async function getUsers(criteria: UserFindManyArgs, filters: QueryFilters = {}) {
+export async function getUsers(
+  criteria: UserFindManyArgs,
+  filters: QueryFilters = {},
+) {
   const { search } = filters;
 
   const where: Prisma.UserWhereInput = {
     ...criteria.where,
-    ...prisma.getSearchParameters(search, [{ username: 'contains' }]),
+    ...prisma.getSearchParameters(search, [{ username: "contains" }]),
     deletedAt: null,
   };
 
   return prisma.pagedQuery(
-    'user',
+    "user",
     {
       ...criteria,
       where,
     },
     {
-      orderBy: 'createdAt',
+      orderBy: "createdAt",
       sortDescending: true,
       ...filters,
     },
@@ -110,7 +119,7 @@ export async function deleteUser(userId: string) {
   let websiteIds = [];
 
   if (websites.length > 0) {
-    websiteIds = websites.map(a => a.id);
+    websiteIds = websites.map((a) => a.id);
   }
 
   const teams = await client.team.findMany({
@@ -124,7 +133,7 @@ export async function deleteUser(userId: string) {
     },
   });
 
-  const teamIds = teams.map(a => a.id);
+  const teamIds = teams.map((a) => a.id);
 
   if (cloudMode) {
     return transaction([
