@@ -5,7 +5,7 @@ export function Footer() {
   return (
     <Row as="footer" paddingY="6" justifyContent="flex-end">
       <a href={HOMEPAGE_URL} target="_blank">
-        <Text weight="bold">umami</Text> {`v${CURRENT_VERSION}`}
+        <Text weight="bold">tdoumtsis.dev</Text> {`v${CURRENT_VERSION}`}
       </a>
     </Row>
   );
