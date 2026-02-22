@@ -282,7 +282,7 @@ async function rawQuery<T = unknown>(
       output_format_json_quote_64bit_integers: 0,
     },
   });
-  console.log(query, params);
+
   return (await resultSet.json()) as T;
 }
 
