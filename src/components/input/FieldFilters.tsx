@@ -3,6 +3,7 @@ import {
   Column,
   Grid,
   Icon,
+  Label,
   List,
   ListItem,
   ListSection,
@@ -12,6 +13,7 @@ import {
   MenuTrigger,
   Popover,
   Row,
+  Select,
 } from '@umami/react-zen';
 import { endOfDay, subMonths } from 'date-fns';
 import type { Key } from 'react';
@@ -24,11 +26,20 @@ export interface FieldFiltersProps {
   websiteId: string;
   value?: { name: string; operator: string; value: string }[];
   exclude?: string[];
+  match?: string;
   onChange?: (data: any) => void;
+  onMatchChange?: (match: string) => void;
 }
 
-export function FieldFilters({ websiteId, value, exclude = [], onChange }: FieldFiltersProps) {
-  const { t, messages } = useMessages();
+export function FieldFilters({
+  websiteId,
+  value,
+  exclude = [],
+  match = 'all',
+  onChange,
+  onMatchChange,
+}: FieldFiltersProps) {
+  const { t, labels, messages } = useMessages();
   const { fields, groupLabels } = useFields();
   const startDate = subMonths(endOfDay(new Date()), 6);
   const endDate = endOfDay(new Date());
@@ -126,6 +137,17 @@ export function FieldFilters({ websiteId, value, exclude = [], onChange }: Field
         </List>
       </Column>
       <Column overflow="auto" gapY="4" style={{ contain: 'layout' }}>
+        {onMatchChange && (
+          <Row alignItems="center" gap>
+            <Column gap="1">
+              <Label>{t(labels.match)}</Label>
+              <Select value={match} onChange={onMatchChange} style={{ width: 150 }}>
+                <ListItem id="all">{t(labels.matchAll)}</ListItem>
+                <ListItem id="any">{t(labels.matchAny)}</ListItem>
+              </Select>
+            </Column>
+          </Row>
+        )}
         {value.map((filter, index) => {
           return (
             <FilterRecord

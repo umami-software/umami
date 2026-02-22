@@ -53,6 +53,8 @@ export interface QueryOptions {
   limit?: number;
   prefix?: string;
   isCohort?: boolean;
+  cohortMatch?: string;
+  cohortActionName?: string;
 }
 
 export interface QueryFilters
@@ -93,6 +95,7 @@ export interface FilterParams {
   cohort?: string;
   compare?: string;
   excludeBounce?: boolean;
+  match?: 'all' | 'any';
 }
 
 export interface SortParams {

@@ -19,13 +19,14 @@ export function WebsiteFilterButton({
   const isOverview =
     /^\/teams\/[^/]+\/websites\/[^/]+$/.test(pathname) || /^\/share\/[^/]+$/.test(pathname);
 
-  const handleChange = ({ filters, segment, cohort }: any) => {
+  const handleChange = ({ filters, segment, cohort, match }: any) => {
     const params = filtersArrayToObject(filters);
 
     const url = updateParams({
       ...params,
       segment,
       cohort,
+      match,
       excludeBounce: excludeBounce ? 'true' : undefined,
     });
 

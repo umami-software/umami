@@ -99,32 +99,44 @@ function mapFilter(
 }
 
 function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}) {
-  const query = filtersObjectToArray(filters, options).reduce(
-    (arr, { name, column, operator, paramName }) => {
-      const isCohort = options?.isCohort;
+  const { isCohort, cohortMatch, cohortActionName } = options;
+  const isOr = isCohort ? cohortMatch === 'any' : filters.match === 'any';
+  const orClauses: string[] = [];
+  const andClauses: string[] = [];
 
-      if (isCohort) {
-        column = FILTER_COLUMNS[name.slice('cohort_'.length)];
+  filtersObjectToArray(filters, options).forEach(({ name, column, operator, paramName }) => {
+    if (isCohort) {
+      column = FILTER_COLUMNS[name.slice('cohort_'.length)];
+    }
+
+    if (column) {
+      const isAlwaysAnd = name === 'eventType' || (isCohort && name === cohortActionName);
+
+      if (isAlwaysAnd) {
+        andClauses.push(
+          `and ${mapFilter(column, operator, name, name === 'eventType' ? 'UInt32' : 'String', paramName)}`,
+        );
+      } else if (isOr) {
+        orClauses.push(mapFilter(column, operator, name, 'String', paramName));
+      } else {
+        andClauses.push(`and ${mapFilter(column, operator, name, 'String', paramName)}`);
       }
 
-      if (column) {
-        if (name === 'eventType') {
-          arr.push(`and ${mapFilter(column, operator, name, 'UInt32', paramName)}`);
-        } else {
-          arr.push(`and ${mapFilter(column, operator, name, 'String', paramName)}`);
-        }
-
-        if (name === 'referrer') {
-          arr.push(`and referrer_domain != hostname`);
-        }
+      if (name === 'referrer') {
+        andClauses.push(`and referrer_domain != hostname`);
       }
+    }
+  });
 
-      return arr;
-    },
-    [],
-  );
+  const parts: string[] = [];
 
-  return query.join('\n');
+  if (orClauses.length > 0) {
+    parts.push(`and (\n  ${orClauses.join('\n  or ')}\n)`);
+  }
+
+  parts.push(...andClauses);
+
+  return parts.join('\n');
 }
 
 function getCohortQuery(filters: Record<string, any>) {
@@ -132,7 +144,10 @@ function getCohortQuery(filters: Record<string, any>) {
     return '';
   }
 
-  const filterQuery = getFilterQuery(filters, { isCohort: true });
+  const cohortMatch = filters.cohort_match;
+  const cohortActionName = filters.cohort_actionName;
+
+  const filterQuery = getFilterQuery(filters, { isCohort: true, cohortMatch, cohortActionName });
 
   return `join (
       select distinct session_id
@@ -267,7 +282,7 @@ async function rawQuery<T = unknown>(
       output_format_json_quote_64bit_integers: 0,
     },
   });
-
+  console.log(query, params);
   return (await resultSet.json()) as T;
 }
 

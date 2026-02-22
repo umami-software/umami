@@ -115,6 +115,8 @@ export async function getQueryFilters(
   const dateRange = getRequestDateRange(params);
   const filters = getRequestFilters(params);
 
+  let match = params?.match;
+
   if (websiteId) {
     await setWebsiteDate(websiteId, dateRange);
 
@@ -123,6 +125,10 @@ export async function getQueryFilters(
         ?.parameters as Record<string, any>;
 
       Object.assign(filters, filtersArrayToObject(segmentParams.filters));
+
+      if (segmentParams.match) {
+        match = segmentParams.match;
+      }
     }
 
     if (params.cohort) {
@@ -146,6 +152,10 @@ export async function getQueryFilters(
         ...filtersArrayToObject(cohortFilters),
         cohort_startDate: startDate,
         cohort_endDate: endDate,
+        ...(cohortParams.match && {
+          cohort_match: cohortParams.match,
+          cohort_actionName: `cohort_${cohortParams.action.type}`,
+        }),
       });
     }
 
@@ -157,6 +167,7 @@ export async function getQueryFilters(
   return {
     ...dateRange,
     ...filters,
+    match,
     page: params?.page,
     pageSize: params?.pageSize ? params?.pageSize || DEFAULT_PAGE_SIZE : undefined,
     orderBy: params?.orderBy,

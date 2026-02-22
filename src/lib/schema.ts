@@ -67,6 +67,7 @@ export const filterParams = {
   cohort: z.uuid().optional(),
   eventType: z.coerce.number().int().positive().optional(),
   excludeBounce: z.string().optional(),
+  match: z.enum(['all', 'any']).optional(),
 };
 
 export const searchParams = {
@@ -295,6 +296,7 @@ export const segmentParamSchema = z.object({
       }),
     )
     .optional(),
+  match: z.enum(['all', 'any']).optional(),
   dateRange: z.string().optional(),
   action: z
     .object({

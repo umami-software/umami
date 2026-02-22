@@ -10,6 +10,7 @@ import {
   Loading,
   TextField,
 } from '@umami/react-zen';
+import { useEffect, useState } from 'react';
 import { useMessages, useUpdateQuery, useWebsiteCohortQuery } from '@/components/hooks';
 import { ActionSelect } from '@/components/input/ActionSelect';
 import { DateFilter } from '@/components/input/DateFilter';
@@ -32,6 +33,11 @@ export function CohortEditForm({
 }) {
   const { data } = useWebsiteCohortQuery(websiteId, cohortId);
   const { t, labels, messages, getErrorMessage } = useMessages();
+  const [currentMatch, setCurrentMatch] = useState<string>('all');
+
+  useEffect(() => {
+    setCurrentMatch((data?.parameters as any)?.match || 'all');
+  }, [data]);
 
   const { mutateAsync, error, isPending, touch, toast } = useUpdateQuery(
     `/websites/${websiteId}/segments${cohortId ? `/${cohortId}` : ''}`,
@@ -41,14 +47,23 @@ export function CohortEditForm({
   );
 
   const handleSubmit = async (formData: any) => {
-    await mutateAsync(formData, {
-      onSuccess: async () => {
-        toast(t(messages.saved));
-        touch('cohorts');
-        onSave?.();
-        onClose?.();
+    await mutateAsync(
+      {
+        ...formData,
+        parameters: {
+          ...formData.parameters,
+          match: currentMatch !== 'all' ? currentMatch : undefined,
+        },
       },
-    });
+      {
+        onSuccess: async () => {
+          toast(t(messages.saved));
+          touch('cohorts');
+          onSave?.();
+          onClose?.();
+        },
+      },
+    );
   };
 
   if (cohortId && !data) {
@@ -105,7 +120,12 @@ export function CohortEditForm({
             <Column>
               <Label>{t(labels.filters)}</Label>
               <FormField name="parameters.filters">
-                <FieldFilters websiteId={websiteId} exclude={['path', 'event']} />
+                <FieldFilters
+                  websiteId={websiteId}
+                  exclude={['path', 'event']}
+                  match={currentMatch}
+                  onMatchChange={setCurrentMatch}
+                />
               </FormField>
             </Column>
 

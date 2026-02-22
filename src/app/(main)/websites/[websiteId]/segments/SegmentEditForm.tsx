@@ -8,6 +8,7 @@ import {
   Loading,
   TextField,
 } from '@umami/react-zen';
+import { useEffect, useState } from 'react';
 import { useMessages, useUpdateQuery, useWebsiteSegmentQuery } from '@/components/hooks';
 import { FieldFilters } from '@/components/input/FieldFilters';
 
@@ -28,6 +29,11 @@ export function SegmentEditForm({
 }) {
   const { data } = useWebsiteSegmentQuery(websiteId, segmentId);
   const { t, labels, messages, getErrorMessage } = useMessages();
+  const [currentMatch, setCurrentMatch] = useState<string>('all');
+
+  useEffect(() => {
+    setCurrentMatch((data?.parameters as any)?.match || 'all');
+  }, [data]);
 
   const { mutateAsync, error, isPending, touch, toast } = useUpdateQuery(
     `/websites/${websiteId}/segments${segmentId ? `/${segmentId}` : ''}`,
@@ -37,14 +43,23 @@ export function SegmentEditForm({
   );
 
   const handleSubmit = async (formData: any) => {
-    await mutateAsync(formData, {
-      onSuccess: async () => {
-        toast(t(messages.saved));
-        touch('segments');
-        onSave?.();
-        onClose?.();
+    await mutateAsync(
+      {
+        ...formData,
+        parameters: {
+          ...formData.parameters,
+          match: currentMatch !== 'all' ? currentMatch : undefined,
+        },
       },
-    });
+      {
+        onSuccess: async () => {
+          toast(t(messages.saved));
+          touch('segments');
+          onSave?.();
+          onClose?.();
+        },
+      },
+    );
   };
 
   if (segmentId && !data) {
@@ -64,7 +79,11 @@ export function SegmentEditForm({
         <>
           <Label>{t(labels.filters)}</Label>
           <FormField name="parameters.filters" rules={{ required: t(labels.required) }}>
-            <FieldFilters websiteId={websiteId} />
+            <FieldFilters
+              websiteId={websiteId}
+              match={currentMatch}
+              onMatchChange={setCurrentMatch}
+            />
           </FormField>
         </>
       )}
