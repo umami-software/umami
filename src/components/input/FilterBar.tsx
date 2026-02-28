@@ -142,7 +142,7 @@ const FilterItem = ({ name, label, operator, value, onRemove }) => {
             {label}
           </Text>
           <Text color="11">{operator}</Text>
-          <Text color="12" weight="bold" style={{ overflow: 'hidden' }}>
+          <Text color="12" weight="bold" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {value}
           </Text>
         </Row>
