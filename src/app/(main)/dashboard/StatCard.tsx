@@ -24,7 +24,7 @@ export function StatCard({
           <Loading />
         ) : (
           <>
-            <Heading size="4">{value.toLocaleString()}</Heading>
+            <Heading size="4">{typeof value === 'number' ? value.toLocaleString() : value}</Heading>
             {sparkData && sparkData.length > 1 && <SparkLine data={sparkData} />}
           </>
         )}
