@@ -29,7 +29,21 @@ export async function GET(
 
   const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getEventData(websiteId, filters);
+  const rows = await getEventData(websiteId, filters);
 
-  return json(data);
+  const eventMap = new Map<
+    string,
+    { websiteId: string; eventId: string; eventName: string; eventProperties: object[] }
+  >();
+
+  for (const { websiteId, eventId, eventName, ...props } of rows) {
+    let entry = eventMap.get(eventId);
+    if (!entry) {
+      entry = { websiteId, eventId, eventName, eventProperties: [] };
+      eventMap.set(eventId, entry);
+    }
+    entry.eventProperties.push(props);
+  }
+
+  return json([...eventMap.values()]);
 }
