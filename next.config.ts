@@ -1,5 +1,8 @@
 import 'dotenv/config';
+import createNextIntlPlugin from 'next-intl/plugin';
 import pkg from './package.json' with { type: 'json' };
+
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const TRACKER_SCRIPT = '/script.js';
 
@@ -8,6 +11,7 @@ const cloudMode = process.env.CLOUD_MODE || '';
 const cloudUrl = process.env.CLOUD_URL || '';
 const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT || '';
 const corsMaxAge = process.env.CORS_MAX_AGE || '';
+const defaultCurrency = process.env.DEFAULT_CURRENCY || '';
 const defaultLocale = process.env.DEFAULT_LOCALE || '';
 const forceSSL = process.env.FORCE_SSL || '';
 const frameAncestors = process.env.ALLOWED_FRAME_URLS || '';
@@ -113,6 +117,16 @@ if (collectApiEndpoint) {
 
 const redirects = [
   {
+    source: '/teams/:id/dashboard/edit',
+    destination: '/dashboard/edit',
+    permanent: false,
+  },
+  {
+    source: '/teams/:id/dashboard',
+    destination: '/dashboard',
+    permanent: false,
+  },
+  {
     source: '/settings',
     destination: '/settings/preferences',
     permanent: false,
@@ -163,23 +177,22 @@ if (cloudMode) {
 }
 
 /** @type {import('next').NextConfig} */
-export default {
+export default withNextIntl({
   reactStrictMode: false,
   env: {
     basePath,
     cloudMode,
     cloudUrl,
     currentVersion: pkg.version,
+    defaultCurrency,
     defaultLocale,
   },
   basePath,
   output: 'standalone',
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
+  devIndicators: false,
   async headers() {
     return headers;
   },
@@ -199,4 +212,4 @@ export default {
   async redirects() {
     return [...redirects];
   },
-};
+});

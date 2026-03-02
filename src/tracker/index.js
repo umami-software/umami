@@ -12,7 +12,13 @@
   if (!currentScript) return;
 
   const { hostname, href, origin } = location;
-  const localStorage = href.startsWith('data:') ? undefined : window.localStorage;
+
+  let localStorage;
+  try {
+    localStorage = href.startsWith('data:') ? undefined : window.localStorage;
+  } catch {
+    /* (DOMException) SecurityError: Access is denied for this document. */
+  }
 
   const _data = 'data-';
   const _false = 'false';
@@ -29,6 +35,7 @@
   const excludeHash = attr(`${_data}exclude-hash`) === _true;
   const domain = attr(`${_data}domains`) || '';
   const credentials = attr(`${_data}fetch-credentials`) || 'omit';
+  const perf = attr(`${_data}perf`) === _true;
 
   const domains = domain.split(',').map(n => n.trim());
   const host =
@@ -188,6 +195,7 @@
       track();
       handlePathChanges();
       handleClicks();
+      if (perf) initPerformance();
     }
   };
 
@@ -213,12 +221,84 @@
     );
   };
 
+  /* Performance */
+
+  const initPerformance = () => {
+    const metrics = {};
+    let sent = false;
+
+    const observe = (type, callback) => {
+      try {
+        const observer = new PerformanceObserver(list => {
+          list.getEntries().forEach(callback);
+        });
+        observer.observe({ type, buffered: true });
+      } catch {
+        /* not supported */
+      }
+    };
+
+    // TTFB
+    observe('navigation', entry => {
+      metrics.ttfb = Math.max(entry.responseStart - entry.requestStart, 0);
+    });
+
+    // FCP
+    observe('paint', entry => {
+      if (entry.name === 'first-contentful-paint') {
+        metrics.fcp = entry.startTime;
+      }
+    });
+
+    // LCP
+    observe('largest-contentful-paint', entry => {
+      metrics.lcp = entry.startTime;
+    });
+
+    // CLS
+    let clsValue = 0;
+    observe('layout-shift', entry => {
+      if (!entry.hadRecentInput) {
+        clsValue += entry.value;
+        metrics.cls = clsValue;
+      }
+    });
+
+    // INP
+    let inpValue = 0;
+    try {
+      const observer = new PerformanceObserver(list => {
+        list.getEntries().forEach(entry => {
+          if (entry.duration > inpValue) {
+            inpValue = entry.duration;
+            metrics.inp = inpValue;
+          }
+        });
+      });
+      observer.observe({ type: 'event', buffered: true, durationThreshold: 16 });
+    } catch {
+      /* not supported */
+    }
+
+    const sendPerformance = () => {
+      if (sent || !Object.keys(metrics).length) return;
+      sent = true;
+      send({ ...getPayload(), ...metrics }, 'performance');
+    };
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') sendPerformance();
+    });
+    window.addEventListener('pagehide', sendPerformance);
+  };
+
   /* Start */
 
   if (!window.umami) {
     window.umami = {
       track,
       identify,
+      getSession: () => ({ cache, website }),
     };
   }
 

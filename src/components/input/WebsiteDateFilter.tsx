@@ -21,7 +21,7 @@ export function WebsiteDateFilter({
   allowCompare,
 }: WebsiteDateFilterProps) {
   const { dateRange, isAllTime, isCustomRange } = useDateRange();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const {
     router,
     updateParams,
@@ -31,17 +31,20 @@ export function WebsiteDateFilter({
   const showCompare = allowCompare && !isAllTime;
 
   const websiteDateRange = useDateRangeQuery(websiteId);
+  const { startDate, endDate } = websiteDateRange;
+  const hasData = startDate && endDate;
 
   const handleChange = (date: string) => {
-    if (date === 'all') {
+    if (date === 'all' && hasData) {
       router.push(
         updateParams({
           date: `${getDateRangeValue(websiteDateRange.startDate, websiteDateRange.endDate)}:all`,
           offset: undefined,
+          page: 1,
         }),
       );
     } else {
-      router.push(updateParams({ date, offset: undefined }));
+      router.push(updateParams({ date, offset: undefined, unit: undefined, page: 1 }));
     }
   };
 
@@ -74,14 +77,13 @@ export function WebsiteDateFilter({
           </Button>
         </Row>
       )}
-      <Row minWidth="200px">
-        <DateFilter
-          value={dateValue}
-          onChange={handleChange}
-          showAllTime={showAllTime}
-          renderDate={+offset !== 0}
-        />
-      </Row>
+      <DateFilter
+        className="min-w-[200px]"
+        value={dateValue}
+        onChange={handleChange}
+        showAllTime={hasData && showAllTime}
+        renderDate={+offset !== 0}
+      />
       {showCompare && (
         <Row alignItems="center" gap>
           <Text weight="bold">VS</Text>
@@ -89,10 +91,11 @@ export function WebsiteDateFilter({
             <Select
               value={compare}
               onChange={handleSelect}
+              style={{ width: 200 }}
               popoverProps={{ style: { width: 200 } }}
             >
-              <ListItem id="prev">{formatMessage(labels.previousPeriod)}</ListItem>
-              <ListItem id="yoy">{formatMessage(labels.previousYear)}</ListItem>
+              <ListItem id="prev">{t(labels.previousPeriod)}</ListItem>
+              <ListItem id="yoy">{t(labels.previousYear)}</ListItem>
             </Select>
           </Row>
         </Row>

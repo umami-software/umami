@@ -28,10 +28,14 @@ async function relationalQuery(
   filters: QueryFilters,
 ): Promise<WebsiteStatsData[]> {
   const { getTimestampDiffSQL, parseFilters, rawQuery } = prisma;
-  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
-    ...filters,
-    websiteId,
-  });
+  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } =
+    parseFilters({
+      ...filters,
+      websiteId,
+    });
+
+  const { excludeBounce } = filters;
+  const bounceQuery = excludeBounce ? '0' : 'coalesce(sum(case when t.c = 1 then 1 else 0 end), 0)';
 
   return rawQuery(
     `
@@ -39,7 +43,7 @@ async function relationalQuery(
       cast(coalesce(sum(t.c), 0) as bigint) as "pageviews",
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
-      coalesce(sum(case when t.c = 1 then 1 else 0 end), 0) as "bounces",
+      ${bounceQuery} as "bounces",
       cast(coalesce(sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}), 0) as bigint) as "totaltime"
     from (
       select
@@ -50,12 +54,14 @@ async function relationalQuery(
         max(website_event.created_at) as "max_time"
       from website_event
       ${cohortQuery}
+      ${excludeBounceQuery}
       ${joinSessionQuery}  
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
         and website_event.event_type != 2
         ${filterQuery}
       group by 1, 2
+     
     ) as t
     `,
     queryParams,
@@ -68,12 +74,14 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<WebsiteStatsData[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+  const { filterQuery, cohortQuery, excludeBounceQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
 
   let sql = '';
+  const { excludeBounce } = filters;
+  const bounceQuery = excludeBounce ? '0' : 'sumIf(1, t.c = 1)';
 
   if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
     sql = `
@@ -81,7 +89,7 @@ async function clickhouseQuery(
       sum(t.c) as "pageviews",
       uniq(t.session_id) as "visitors",
       uniq(t.visit_id) as "visits",
-      sum(if(t.c = 1, 1, 0)) as "bounces",
+      ${bounceQuery} as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (
       select
@@ -92,6 +100,7 @@ async function clickhouseQuery(
         max(created_at) max_time
       from website_event
       ${cohortQuery}
+      ${excludeBounceQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type != 2
@@ -105,7 +114,7 @@ async function clickhouseQuery(
       sum(t.c) as "pageviews",
       uniq(session_id) as "visitors",
       uniq(visit_id) as "visits",
-      sumIf(1, t.c = 1) as "bounces",
+      ${bounceQuery} as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (select
             session_id,
@@ -115,6 +124,7 @@ async function clickhouseQuery(
             max(max_time) max_time
         from website_event_stats_hourly "website_event"
         ${cohortQuery}
+        ${excludeBounceQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type != 2

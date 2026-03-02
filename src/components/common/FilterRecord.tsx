@@ -1,6 +1,17 @@
-import { Button, Column, Grid, Icon, Label, ListItem, Select, TextField } from '@umami/react-zen';
+import {
+  Button,
+  Column,
+  Grid,
+  Icon,
+  Label,
+  ListItem,
+  Loading,
+  Select,
+  TextField,
+} from '@umami/react-zen';
 import { useState } from 'react';
 import { Empty } from '@/components/common/Empty';
+import { MultiSelect } from '@/components/common/MultiSelect';
 import { useFilters, useFormat, useWebsiteValuesQuery } from '@/components/hooks';
 import { X } from '@/components/icons';
 import { isSearchOperator } from '@/lib/params';
@@ -12,7 +23,7 @@ export interface FilterRecordProps {
   endDate: Date;
   name: string;
   operator: string;
-  value: string;
+  value: string | string[];
   onSelect?: (name: string, value: any) => void;
   onRemove?: (name: string) => void;
   onChange?: (name: string, value: string) => void;
@@ -31,7 +42,8 @@ export function FilterRecord({
   onChange,
 }: FilterRecordProps) {
   const { fields, operators } = useFilters();
-  const [selected, setSelected] = useState(value);
+  const initValues = Array.isArray(value) ? value : value ? value.split(',') : [];
+  const [selected, setSelected] = useState<string[]>(initValues);
   const [search, setSearch] = useState('');
   const { formatValue } = useFormat();
   const { data, isLoading } = useWebsiteValuesQuery({
@@ -53,55 +65,54 @@ export function FilterRecord({
   };
 
   const handleSelectValue = (value: string) => {
-    setSelected(value);
+    setSelected([value]);
     onChange?.(name, value);
   };
 
-  const renderValue = () => {
-    return formatValue(selected, type);
+  const handleMultiSelectValue = (values: string[]) => {
+    setSelected(values);
+    onChange?.(name, values.join(','));
   };
 
   return (
     <Column>
       <Label>{fields.find(f => f.name === name)?.label}</Label>
       <Grid columns="1fr auto" gap>
-        <Grid columns={{ xs: '1fr', md: '200px 1fr' }} gap>
-          <Select
-            items={operators.filter(({ type }) => type === 'string')}
-            value={operator}
-            onChange={handleSelectOperator}
-          >
-            {({ name, label }: any) => {
-              return (
+        <Grid columns={{ base: '1fr', md: '200px 1fr' }} gap>
+          <Select value={operator} onChange={handleSelectOperator}>
+            {operators
+              .filter(({ type }) => type === 'string')
+              .map(({ name, label }: any) => (
                 <ListItem key={name} id={name}>
                   {label}
                 </ListItem>
-              );
-            }}
+              ))}
           </Select>
           {isSearch && (
-            <TextField value={selected} defaultValue={selected} onChange={handleSelectValue} />
+            <TextField
+              value={selected[0] || ''}
+              defaultValue={selected[0] || ''}
+              onChange={handleSelectValue}
+            />
           )}
           {!isSearch && (
-            <Select
-              items={items}
+            <MultiSelect
               value={selected}
-              onChange={handleSelectValue}
+              onChange={handleMultiSelectValue}
               searchValue={search}
-              renderValue={renderValue}
               onSearch={handleSearch}
-              isLoading={isLoading}
-              listProps={{ renderEmptyState: () => <Empty /> }}
+              renderValue={values =>
+                values.length > 0 ? values.map(v => formatValue(v, type)).join(', ') : undefined
+              }
+              renderEmptyState={() => (isLoading ? <Loading icon="dots" /> : <Empty />)}
               allowSearch
             >
-              {items?.map(({ value }) => {
-                return (
-                  <ListItem key={value} id={value}>
-                    {formatValue(value, type)}
-                  </ListItem>
-                );
-              })}
-            </Select>
+              {items.map(({ value }) => (
+                <ListItem key={value} id={value}>
+                  {formatValue(value, type)}
+                </ListItem>
+              ))}
+            </MultiSelect>
           )}
         </Grid>
         <Column justifyContent="flex-start">

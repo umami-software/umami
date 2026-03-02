@@ -4,6 +4,10 @@ import type { Auth } from '@/lib/types';
 import { getTeamUser } from '@/queries/prisma';
 
 export async function canViewTeam({ user }: Auth, teamId: string) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }
@@ -12,14 +16,22 @@ export async function canViewTeam({ user }: Auth, teamId: string) {
 }
 
 export async function canCreateTeam({ user }: Auth) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }
 
-  return !!user;
+  return hasPermission(user.role, PERMISSIONS.teamCreate);
 }
 
 export async function canUpdateTeam({ user }: Auth, teamId: string) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }
@@ -30,6 +42,10 @@ export async function canUpdateTeam({ user }: Auth, teamId: string) {
 }
 
 export async function canDeleteTeam({ user }: Auth, teamId: string) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }
@@ -40,6 +56,10 @@ export async function canDeleteTeam({ user }: Auth, teamId: string) {
 }
 
 export async function canDeleteTeamUser({ user }: Auth, teamId: string, removeUserId: string) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }
@@ -54,6 +74,10 @@ export async function canDeleteTeamUser({ user }: Auth, teamId: string, removeUs
 }
 
 export async function canCreateTeamWebsite({ user }: Auth, teamId: string) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }
@@ -64,5 +88,5 @@ export async function canCreateTeamWebsite({ user }: Auth, teamId: string) {
 }
 
 export async function canViewAllTeams({ user }: Auth) {
-  return user.isAdmin;
+  return user?.isAdmin ?? false;
 }

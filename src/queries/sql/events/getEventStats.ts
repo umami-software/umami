@@ -6,6 +6,10 @@ import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getEventStats';
 
+export interface EventStatsParameters {
+  limit?: number | string;
+}
+
 interface WebsiteEventMetric {
   x: string;
   t: string;
@@ -13,7 +17,7 @@ interface WebsiteEventMetric {
 }
 
 export async function getEventStats(
-  ...args: [websiteId: string, filters: QueryFilters]
+  ...args: [websiteId: string, parameters: EventStatsParameters, filters: QueryFilters]
 ): Promise<WebsiteEventMetric[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -21,7 +25,12 @@ export async function getEventStats(
   });
 }
 
-async function relationalQuery(websiteId: string, filters: QueryFilters) {
+async function relationalQuery(
+  websiteId: string,
+  parameters: EventStatsParameters,
+  filters: QueryFilters,
+) {
+  const { limit } = parameters;
   const { timezone = 'utc', unit = 'day' } = filters;
   const { rawQuery, getDateSQL, parseFilters } = prisma;
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
@@ -29,6 +38,19 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     websiteId,
     eventType: EVENT_TYPE.customEvent,
   });
+
+  const limitQuery = limit
+    ? `and event_name in (
+    select event_name
+    from website_event
+    where website_id = {{websiteId::uuid}}
+      and created_at between {{startDate}} and {{endDate}}
+      and event_type = 2
+    group by event_name
+    order by count(*) desc
+    limit ${limit}
+  )`
+    : '';
 
   return rawQuery(
     `
@@ -42,6 +64,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       ${filterQuery}
+      ${limitQuery}
     group by 1, 2
     order by 2
     `,
@@ -52,8 +75,10 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 
 async function clickhouseQuery(
   websiteId: string,
+  parameters: EventStatsParameters,
   filters: QueryFilters,
 ): Promise<{ x: string; t: string; y: number }[]> {
+  const { limit } = parameters;
   const { timezone = 'UTC', unit = 'day' } = filters;
   const { rawQuery, getDateSQL, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
@@ -61,6 +86,19 @@ async function clickhouseQuery(
     websiteId,
     eventType: EVENT_TYPE.customEvent,
   });
+
+  const limitQuery = limit
+    ? `and event_name in (
+    select event_name
+    from website_event
+    where website_id = {websiteId:UUID}
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_type = {eventType:UInt32}
+    group by event_name
+    order by count(*) desc
+    limit ${limit}
+  )`
+    : '';
 
   let sql = '';
 
@@ -75,6 +113,7 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       ${filterQuery}
+      ${limitQuery}
     group by x, t
     order by t
     `;
@@ -91,6 +130,7 @@ async function clickhouseQuery(
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
+        ${limitQuery}
     ) as g
     group by x, t
     order by t

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { WebsiteLayout } from '@/app/(main)/websites/[websiteId]/WebsiteLayout';
+import { getWebsite } from '@/queries/prisma';
 
 export default async function ({
   children,
@@ -9,6 +10,11 @@ export default async function ({
   params: Promise<{ websiteId: string }>;
 }) {
   const { websiteId } = await params;
+  const website = await getWebsite(websiteId);
+
+  if (!website || website?.deletedAt) {
+    return null;
+  }
 
   return <WebsiteLayout websiteId={websiteId}>{children}</WebsiteLayout>;
 }

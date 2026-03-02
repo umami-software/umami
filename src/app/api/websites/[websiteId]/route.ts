@@ -1,9 +1,17 @@
 import { z } from 'zod';
-import { SHARE_ID_REGEX } from '@/lib/constants';
+import { ENTITY_TYPE } from '@/lib/constants';
+import { uuid } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
 import { canDeleteWebsite, canUpdateWebsite, canViewWebsite } from '@/permissions';
-import { deleteWebsite, getWebsite, updateWebsite } from '@/queries/prisma';
+import {
+  createShare,
+  deleteSharesByEntityId,
+  deleteWebsite,
+  getShareByEntityId,
+  getWebsite,
+  updateWebsite,
+} from '@/queries/prisma';
 
 export async function GET(
   request: Request,
@@ -33,7 +41,18 @@ export async function POST(
   const schema = z.object({
     name: z.string().optional(),
     domain: z.string().optional(),
-    shareId: z.string().regex(SHARE_ID_REGEX).nullable().optional(),
+    shareId: z.string().max(50).nullable().optional(),
+    replayEnabled: z.boolean().optional(),
+    replayConfig: z
+      .object({
+        sampleRate: z.number().min(0).max(1).optional(),
+        maskLevel: z.enum(['strict', 'moderate', 'relaxed']).optional(),
+        maxDuration: z.number().int().positive().optional(),
+        blockSelector: z.string().optional(),
+        retentionDays: z.number().int().positive().optional(),
+      })
+      .nullable()
+      .optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -43,18 +62,41 @@ export async function POST(
   }
 
   const { websiteId } = await params;
-  const { name, domain, shareId } = body;
+  const { name, domain, shareId, replayEnabled, replayConfig } = body;
 
   if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
   try {
-    const website = await updateWebsite(websiteId, { name, domain, shareId });
+    const website = await updateWebsite(websiteId, {
+      name,
+      domain,
+      ...(replayEnabled !== undefined && { replayEnabled }),
+      ...(replayConfig !== undefined && { replayConfig }),
+    });
 
-    return Response.json(website);
+    if (shareId === null) {
+      await deleteSharesByEntityId(website.id);
+    }
+
+    const share = shareId
+      ? await createShare({
+          id: uuid(),
+          entityId: websiteId,
+          shareType: ENTITY_TYPE.website,
+          name: website.name,
+          slug: shareId,
+          parameters: { overview: true, events: true },
+        })
+      : await getShareByEntityId(websiteId);
+
+    return json({
+      ...website,
+      shareId: share?.slug ?? null,
+    });
   } catch (e: any) {
-    if (e.message.toLowerCase().includes('unique constraint') && e.message.includes('share_id')) {
+    if (e.message.toLowerCase().includes('unique constraint')) {
       return badRequest({ message: 'That share ID is already taken.' });
     }
 
