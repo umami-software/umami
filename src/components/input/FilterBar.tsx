@@ -148,12 +148,12 @@ const FilterItem = ({ name, label, operator, value, onRemove }) => {
       theme="dark"
     >
       <Row alignItems="center" gap="4">
-        <Row alignItems="center" gap="2">
-          <Text color="primary" weight="bold">
+        <Row alignItems="center" gap="2" maxWidth={'500px'}>
+          <Text color="12" weight="bold">
             {label}
           </Text>
-          <Text color="muted">{operator}</Text>
-          <Text color="primary" weight="bold">
+          <Text color="11">{operator}</Text>
+          <Text color="12" weight="bold" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {value}
           </Text>
         </Row>
