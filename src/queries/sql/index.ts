@@ -1,3 +1,4 @@
+export * from './events/getEventDataById';
 export * from './events/getEventDataEvents';
 export * from './events/getEventDataFields';
 export * from './events/getEventDataProperties';
