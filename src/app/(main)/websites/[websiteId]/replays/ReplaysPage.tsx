@@ -3,6 +3,7 @@ import { Column } from '@umami/react-zen';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Panel } from '@/components/common/Panel';
+import { ReplayModal } from './ReplayModal';
 import { ReplaysDataTable } from './ReplaysDataTable';
 
 export function ReplaysPage({ websiteId }: { websiteId: string }) {
@@ -13,6 +14,7 @@ export function ReplaysPage({ websiteId }: { websiteId: string }) {
         <ReplaysDataTable websiteId={websiteId} />
       </Panel>
       <SessionModal websiteId={websiteId} />
+      <ReplayModal websiteId={websiteId} />
     </Column>
   );
 }

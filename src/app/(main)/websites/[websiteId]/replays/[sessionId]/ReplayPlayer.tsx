@@ -1,21 +1,24 @@
 'use client';
 import { Column } from '@umami/react-zen';
 import { useEffect, useRef, useState } from 'react';
+import { useMobile } from '@/components/hooks';
 import 'rrweb-player/dist/style.css';
 
 export function ReplayPlayer({ events }: { events: any[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
   const [loaded, setLoaded] = useState(false);
+  const { isMobile, isPhone } = useMobile();
+
+  const playerWidth = isPhone ? 360 : isMobile ? 640 : 1024;
+  const playerHeight = isPhone ? 202 : isMobile ? 360 : 576;
 
   useEffect(() => {
     if (!containerRef.current || !events?.length) return;
 
-    // Dynamically import rrweb-player to avoid SSR issues
     import('rrweb-player').then(mod => {
       const RRWebPlayer = mod.default;
 
-      // Clear any previous player
       if (containerRef.current) {
         containerRef.current.innerHTML = '';
       }
@@ -24,8 +27,8 @@ export function ReplayPlayer({ events }: { events: any[] }) {
         target: containerRef.current,
         props: {
           events,
-          width: 1024,
-          height: 576,
+          width: playerWidth,
+          height: playerHeight,
           autoPlay: false,
           showController: true,
           speedOption: [1, 2, 4, 8],
@@ -41,15 +44,15 @@ export function ReplayPlayer({ events }: { events: any[] }) {
         playerRef.current = null;
       }
     };
-  }, [events]);
+  }, [events, playerWidth, playerHeight]);
 
   return (
     <Column alignItems="center">
       <div
         ref={containerRef}
         style={{
-          minWidth: 1024,
-          minHeight: loaded ? undefined : 576,
+          width: playerWidth,
+          minHeight: loaded ? undefined : playerHeight,
           maxWidth: '100%',
           overflow: 'hidden',
           borderRadius: '8px',

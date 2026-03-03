@@ -8,7 +8,7 @@ export function ReplaysDataTable({ websiteId }: { websiteId: string }) {
   return (
     <DataGrid query={queryResult} allowPaging allowSearch>
       {({ data }) => {
-        return <ReplaysTable data={data} websiteId={websiteId} />;
+        return <ReplaysTable data={data} />;
       }}
     </DataGrid>
   );

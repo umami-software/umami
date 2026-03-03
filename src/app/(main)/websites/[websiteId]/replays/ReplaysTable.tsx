@@ -13,10 +13,10 @@ function formatDuration(ms: number) {
   return `${minutes}:${secs.toString().padStart(2, '0')}`;
 }
 
-export function ReplaysTable({ websiteId, ...props }: DataTableProps & { websiteId: string }) {
+export function ReplaysTable({ ...props }: DataTableProps) {
   const { t, labels } = useMessages();
   const { formatValue } = useFormat();
-  const { updateParams } = useNavigation();
+  const { router, updateParams } = useNavigation();
 
   return (
     <DataTable {...props}>
@@ -65,13 +65,11 @@ export function ReplaysTable({ websiteId, ...props }: DataTableProps & { website
       </DataColumn>
       <DataColumn id="play" label="" width="80px">
         {(row: any) => (
-          <Link href={`/websites/${websiteId}/replays/${row.id}`}>
-            <Button variant="quiet">
-              <Icon>
-                <Play />
-              </Icon>
-            </Button>
-          </Link>
+          <Button variant="quiet" onClick={() => router.push(updateParams({ replay: row.id }))}>
+            <Icon>
+              <Play />
+            </Icon>
+          </Button>
         )}
       </DataColumn>
     </DataTable>
