@@ -10,9 +10,9 @@ import { record } from 'rrweb';
 
   const website = attr(`${_data}website-id`);
   const hostUrl = attr(`${_data}host-url`);
-  const sampleRate = parseFloat(attr(`${_data}sample-rate`) || '1');
-  const maskLevel = attr(`${_data}mask-level`) || 'moderate';
-  const maxDuration = parseInt(attr(`${_data}max-duration`) || '600000', 10);
+  const sampleRate = parseFloat(attr(`${_data}sample-rate`) || '0.15');
+  const maskLevel = attr(`${_data}mask-level`) || 'strict';
+  const maxDuration = parseInt(attr(`${_data}max-duration`) || '300000', 10);
   const blockSelector = attr(`${_data}block-selector`) || '';
 
   if (!website) return;
@@ -85,20 +85,11 @@ import { record } from 'rrweb';
       case 'strict':
         return {
           maskAllInputs: true,
-          maskTextContent: true,
-          maskAllText: true,
+          maskTextSelector: '*',
         };
-      case 'relaxed':
+      default: // moderate
         return {
           maskAllInputs: true,
-          maskTextContent: false,
-          maskAllText: false,
-        };
-      default:
-        return {
-          maskAllInputs: true,
-          maskTextContent: false,
-          maskAllText: false,
         };
     }
   };

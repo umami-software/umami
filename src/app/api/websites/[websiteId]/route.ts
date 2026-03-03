@@ -46,10 +46,9 @@ export async function POST(
     replayConfig: z
       .object({
         sampleRate: z.number().min(0).max(1).optional(),
-        maskLevel: z.enum(['strict', 'moderate', 'relaxed']).optional(),
+        maskLevel: z.enum(['strict', 'moderate']).optional(),
         maxDuration: z.number().int().positive().optional(),
         blockSelector: z.string().optional(),
-        retentionDays: z.number().int().positive().optional(),
       })
       .nullable()
       .optional(),
