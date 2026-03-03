@@ -70,7 +70,7 @@ async function clickhouseQuery(
       uniq(session_id) as "visitors",
       uniq(visit_id) as "visits",
       uniq(country) as "countries",
-      sum(length(event_name)) as "events"
+      sumIf(1, event_type = 2) as "events"
     from website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}

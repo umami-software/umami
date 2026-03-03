@@ -1,4 +1,3 @@
-import { gzipSync } from 'node:zlib';
 import { isbot } from 'isbot';
 import { serializeError } from 'serialize-error';
 import { z } from 'zod';
@@ -8,7 +7,7 @@ import { parseToken } from '@/lib/jwt';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { getWebsite } from '@/queries/prisma';
-import { saveReplayChunk } from '@/queries/sql';
+import { saveRecording } from '@/queries/sql';
 
 const schema = z.object({
   website: z.uuid(),
@@ -75,18 +74,14 @@ export async function POST(request: Request) {
     const startedAt = new Date(Math.min(...eventTimestamps));
     const endedAt = new Date(Math.max(...eventTimestamps));
 
-    // Compress events
-    const eventsJson = JSON.stringify(events);
-    const compressed = gzipSync(Buffer.from(eventsJson, 'utf-8'));
-
     // Use timestamp-based chunk index for ordering
     const chunkIndex = timestamp || Math.floor(Date.now() / 1000);
 
-    await saveReplayChunk({
+    await saveRecording({
       websiteId,
       sessionId,
       chunkIndex,
-      events: compressed,
+      events,
       eventCount: events.length,
       startedAt,
       endedAt,

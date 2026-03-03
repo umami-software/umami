@@ -27,7 +27,7 @@ export function ReplayPlayback({ websiteId, sessionId }: { websiteId: string; se
               <Column>
                 <Text weight="bold">{t(labels.replay)}</Text>
                 <Text color="muted">
-                  {replay.eventCount} {t(labels.events).toLowerCase()}
+                  {replay.eventCount} {t(labels.actions).toLowerCase()}
                 </Text>
               </Column>
             </Row>

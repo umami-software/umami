@@ -11,21 +11,6 @@ export function ReplayPlayer({ events }: { events: any[] }) {
   useEffect(() => {
     if (!containerRef.current || !events?.length) return;
 
-    // Debug: log event info
-    const typeCounts: Record<number, number> = {};
-    events.forEach((e: any) => {
-      typeCounts[e.type] = (typeCounts[e.type] || 0) + 1;
-    });
-    const timestamps = events.map((e: any) => e.timestamp).filter(Boolean);
-    console.log('[ReplayPlayer] Events:', events.length, 'Types:', typeCounts);
-    console.log(
-      '[ReplayPlayer] Time range:',
-      timestamps.length
-        ? `${Math.min(...timestamps)} - ${Math.max(...timestamps)} (${Math.max(...timestamps) - Math.min(...timestamps)}ms)`
-        : 'no timestamps',
-    );
-    console.log('[ReplayPlayer] First 3 events:', events.slice(0, 3));
-
     // Dynamically import rrweb-player to avoid SSR issues
     import('rrweb-player').then(mod => {
       const RRWebPlayer = mod.default;
@@ -36,7 +21,7 @@ export function ReplayPlayer({ events }: { events: any[] }) {
       }
 
       playerRef.current = new RRWebPlayer({
-        target: containerRef.current!,
+        target: containerRef.current,
         props: {
           events,
           width: 1024,

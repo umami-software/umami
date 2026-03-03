@@ -1,4 +1,3 @@
-import { gunzipSync } from 'node:zlib';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { canViewWebsite } from '@/permissions';
@@ -22,12 +21,7 @@ export async function GET(
 
   const chunks = await getReplayChunks(websiteId, sessionId);
 
-  // Decompress and concatenate all chunks
-  const allEvents = chunks.flatMap(chunk => {
-    const decompressed = gunzipSync(Buffer.from(chunk.events));
-    return JSON.parse(decompressed.toString('utf-8'));
-  });
-
+  const allEvents = chunks.flatMap(chunk => chunk.events);
   const startedAt = chunks.length > 0 ? chunks[0].startedAt : null;
   const endedAt = chunks.length > 0 ? chunks[chunks.length - 1].endedAt : null;
 

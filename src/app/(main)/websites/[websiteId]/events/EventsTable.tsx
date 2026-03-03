@@ -86,14 +86,14 @@ export function EventsTable(props: DataTableProps) {
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="device" label={t(labels.device)} width="120px">
+      <DataColumn id="device" label={t(labels.device)} width="140px">
         {(row: any) => (
           <TypeIcon type="device" value={row.device}>
             {formatValue(row.device, 'device')}
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="created" width="160px" align="end">
+      <DataColumn id="created" width="140px" label={t(labels.created)}>
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
     </DataTable>
