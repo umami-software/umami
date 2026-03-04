@@ -10,6 +10,11 @@ import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { getWebsite } from '@/queries/prisma';
 import { saveReplayChunk } from '@/queries/sql';
 
+interface Cache {
+  sessionId: string;
+  visitId: string;
+}
+
 const schema = z.object({
   website: z.uuid(),
   events: z.array(z.any()).max(200),
@@ -37,13 +42,13 @@ export async function POST(request: Request) {
       return badRequest({ message: 'Missing session token.' });
     }
 
-    const cache = await parseToken(cacheHeader, secret());
+    const cache = (await parseToken(cacheHeader, secret())) as Cache | null;
 
-    if (!cache || !cache.sessionId) {
+    if (!cache?.sessionId || !cache?.visitId) {
       return badRequest({ message: 'Invalid session token.' });
     }
 
-    const { sessionId } = cache;
+    const { sessionId, visitId } = cache;
 
     // Query directly to avoid stale Redis cache for recordingEnabled
     const website = await getWebsite(websiteId);
@@ -69,11 +74,15 @@ export async function POST(request: Request) {
 
     // Compute timestamps from events
     const eventTimestamps = events
-      .map((e: any) => e.timestamp)
-      .filter((t: any) => typeof t === 'number');
+      .map((e: any) => Number(e?.timestamp))
+      .filter((t: number) => Number.isFinite(t) && t > 0);
 
-    const startedAt = new Date(Math.min(...eventTimestamps));
-    const endedAt = new Date(Math.max(...eventTimestamps));
+    const fallbackMs = (timestamp || Math.floor(Date.now() / 1000)) * 1000;
+    const minTimestamp = eventTimestamps.length ? Math.min(...eventTimestamps) : fallbackMs;
+    const maxTimestamp = eventTimestamps.length ? Math.max(...eventTimestamps) : fallbackMs;
+
+    const startedAt = new Date(minTimestamp);
+    const endedAt = new Date(maxTimestamp);
 
     // Compress events
     const eventsJson = JSON.stringify(events);
@@ -85,6 +94,7 @@ export async function POST(request: Request) {
     await saveReplayChunk({
       websiteId,
       sessionId,
+      visitId,
       chunkIndex,
       events: compressed,
       eventCount: events.length,

@@ -4,9 +4,11 @@ import { getWebsite } from '@/queries/prisma';
 
 export default async function ({
   children,
+  modal,
   params,
 }: {
   children: any;
+  modal: React.ReactNode;
   params: Promise<{ websiteId: string }>;
 }) {
   const { websiteId } = await params;
@@ -16,7 +18,12 @@ export default async function ({
     return null;
   }
 
-  return <WebsiteLayout websiteId={websiteId}>{children}</WebsiteLayout>;
+  return (
+    <WebsiteLayout websiteId={websiteId}>
+      {children}
+      {modal}
+    </WebsiteLayout>
+  );
 }
 
 export const metadata: Metadata = {

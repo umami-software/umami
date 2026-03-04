@@ -3,18 +3,17 @@ import Link from 'next/link';
 import { Avatar } from '@/components/common/Avatar';
 import { DateDistance } from '@/components/common/DateDistance';
 import { TypeIcon } from '@/components/common/TypeIcon';
-import { useFormat, useMessages, useNavigation } from '@/components/hooks';
+import { useFormat, useMessages } from '@/components/hooks';
 
-export function SessionsTable(props: DataTableProps) {
+export function SessionsTable({ websiteId, ...props }: DataTableProps & { websiteId: string }) {
   const { t, labels } = useMessages();
   const { formatValue } = useFormat();
-  const { updateParams } = useNavigation();
 
   return (
     <DataTable {...props}>
       <DataColumn id="id" label={t(labels.session)} width="100px">
         {(row: any) => (
-          <Link href={updateParams({ session: row.id })}>
+          <Link href={`/websites/${websiteId}/sessions/${row.id}`}>
             <Avatar seed={row.id} size={32} />
           </Link>
         )}

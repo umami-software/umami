@@ -7,13 +7,14 @@ import { record } from 'rrweb';
 
   const _data = 'data-';
   const attr = currentScript.getAttribute.bind(currentScript);
+  const config = value => attr(`${_data}${value}`);
 
-  const website = attr(`${_data}website-id`);
-  const hostUrl = attr(`${_data}host-url`);
-  const sampleRate = parseFloat(attr(`${_data}sample-rate`) || '0.15');
-  const maskLevel = attr(`${_data}mask-level`) || 'strict';
-  const maxDuration = parseInt(attr(`${_data}max-duration`) || '300000', 10);
-  const blockSelector = attr(`${_data}block-selector`) || '';
+  const website = config(`website-id`);
+  const hostUrl = config(`host-url`);
+  const sampleRate = parseFloat(config(`sample-rate`) || '0.15');
+  const maskLevel = config(`mask-level`) || 'strict';
+  const maxDuration = parseInt(config(`max-duration`) || '300000', 10);
+  const blockSelector = config(`block-selector`) || '';
 
   if (!website) return;
 

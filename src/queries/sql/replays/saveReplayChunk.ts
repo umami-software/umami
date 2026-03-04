@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 export interface SaveReplayChunkArgs {
   websiteId: string;
   sessionId: string;
+  visitId: string;
   chunkIndex: number;
   events: Uint8Array;
   eventCount: number;
@@ -18,6 +19,7 @@ export async function saveReplayChunk(args: SaveReplayChunkArgs) {
 async function relationalQuery({
   websiteId,
   sessionId,
+  visitId,
   chunkIndex,
   events,
   eventCount,
@@ -29,6 +31,7 @@ async function relationalQuery({
       id: uuid(),
       websiteId,
       sessionId,
+      visitId,
       chunkIndex,
       events: new Uint8Array(events) as any,
       eventCount,

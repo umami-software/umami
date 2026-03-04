@@ -1,6 +1,6 @@
 import { Button, DataColumn, DataTable, type DataTableProps, Icon } from '@umami/react-zen';
 import { Play } from 'lucide-react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Avatar } from '@/components/common/Avatar';
 import { DateDistance } from '@/components/common/DateDistance';
 import { TypeIcon } from '@/components/common/TypeIcon';
@@ -16,9 +16,22 @@ function formatDuration(ms: number) {
 export function ReplaysTable({ websiteId, ...props }: DataTableProps & { websiteId: string }) {
   const { t, labels } = useMessages();
   const { formatValue } = useFormat();
+  const router = useRouter();
 
   return (
     <DataTable {...props}>
+      <DataColumn id="play" label="" width="80px">
+        {(row: any) => (
+          <Button
+            variant="quiet"
+            onPress={() => router.push(`/websites/${websiteId}/replays/${row.id}`)}
+          >
+            <Icon>
+              <Play />
+            </Icon>
+          </Button>
+        )}
+      </DataColumn>
       <DataColumn id="id" label={t(labels.session)} width="100px">
         {(row: any) => <Avatar seed={row.id} size={32} />}
       </DataColumn>
@@ -49,17 +62,6 @@ export function ReplaysTable({ websiteId, ...props }: DataTableProps & { website
       </DataColumn>
       <DataColumn id="createdAt" label={t(labels.recordedAt)}>
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
-      </DataColumn>
-      <DataColumn id="play" label="" width="80px">
-        {(row: any) => (
-          <Link href={`/websites/${websiteId}/replays/${row.id}`}>
-            <Button variant="quiet">
-              <Icon>
-                <Play />
-              </Icon>
-            </Button>
-          </Link>
-        )}
       </DataColumn>
     </DataTable>
   );
