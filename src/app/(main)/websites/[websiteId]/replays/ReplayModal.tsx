@@ -1,6 +1,6 @@
 'use client';
 import { Column, Dialog, Modal, type ModalProps } from '@umami/react-zen';
-import { ReplayPlayback } from '@/app/(main)/websites/[websiteId]/replays/[sessionId]/ReplayPlayback';
+import { ReplayPlayback } from '@/app/(main)/websites/[websiteId]/replays/[replayId]/ReplayPlayback';
 import { useNavigation } from '@/components/hooks';
 
 export interface ReplayModalProps extends ModalProps {
@@ -33,7 +33,7 @@ export function ReplayModal({ websiteId, ...props }: ReplayModalProps) {
         <Dialog variant="sheet">
           {({ close }) => (
             <Column padding="6">
-              <ReplayPlayback websiteId={websiteId} sessionId={replay} onClose={close} />
+              <ReplayPlayback websiteId={websiteId} replayId={replay} onClose={close} />
             </Column>
           )}
         </Dialog>

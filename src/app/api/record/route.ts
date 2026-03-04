@@ -42,7 +42,7 @@ export async function POST(request: Request) {
       return badRequest({ message: 'Invalid session token.' });
     }
 
-    const { sessionId } = cache;
+    const { sessionId, visitId } = cache;
 
     // Query directly to avoid stale Redis cache for recordingEnabled
     const website = await getWebsite(websiteId);
@@ -80,6 +80,7 @@ export async function POST(request: Request) {
     await saveRecording({
       websiteId,
       sessionId,
+      visitId,
       chunkIndex,
       events,
       eventCount: events.length,

@@ -22,8 +22,8 @@ export function ReplaysTable({ ...props }: DataTableProps) {
     <DataTable {...props}>
       <DataColumn id="id" label={t(labels.session)} width="100px">
         {(row: any) => (
-          <Link href={updateParams({ session: row.id })}>
-            <Avatar seed={row.id} size={32} />
+          <Link href={updateParams({ session: row.sessionId })}>
+            <Avatar seed={row.sessionId} size={32} />
           </Link>
         )}
       </DataColumn>

@@ -1,4 +1,3 @@
-import { stitchChunkEvents } from '@/lib/replay';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { canViewWebsite } from '@/permissions';
@@ -6,7 +5,7 @@ import { getReplayChunks } from '@/queries/sql';
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ websiteId: string; sessionId: string }> },
+  { params }: { params: Promise<{ websiteId: string; replayId: string }> },
 ) {
   const { auth, error } = await parseRequest(request);
 
@@ -14,19 +13,21 @@ export async function GET(
     return error();
   }
 
-  const { websiteId, sessionId } = await params;
+  const { websiteId, replayId } = await params;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const chunks = await getReplayChunks(websiteId, sessionId);
+  const chunks = await getReplayChunks(websiteId, replayId);
 
-  const allEvents = stitchChunkEvents(chunks);
+  const allEvents = chunks.flatMap(chunk => chunk.events);
+  const sessionId = chunks.length > 0 ? chunks[0].sessionId : null;
   const startedAt = chunks.length > 0 ? chunks[0].startedAt : null;
   const endedAt = chunks.length > 0 ? chunks[chunks.length - 1].endedAt : null;
 
   return json({
+    sessionId,
     events: allEvents,
     startedAt,
     endedAt,

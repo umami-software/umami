@@ -7,6 +7,7 @@ import prisma from '@/lib/prisma';
 export interface SaveRecordingArgs {
   websiteId: string;
   sessionId: string;
+  visitId: string;
   chunkIndex: number;
   events: any[];
   eventCount: number;
@@ -24,6 +25,7 @@ export async function saveRecording(args: SaveRecordingArgs) {
 async function relationalQuery({
   websiteId,
   sessionId,
+  visitId,
   chunkIndex,
   events,
   eventCount,
@@ -37,6 +39,7 @@ async function relationalQuery({
       id: uuid(),
       websiteId,
       sessionId,
+      visitId,
       chunkIndex,
       events: compressed as any,
       eventCount,
@@ -49,6 +52,7 @@ async function relationalQuery({
 async function clickhouseQuery({
   websiteId,
   sessionId,
+  visitId,
   chunkIndex,
   events,
   eventCount,
@@ -62,6 +66,7 @@ async function clickhouseQuery({
       replay_id: uuid(),
       website_id: websiteId,
       session_id: sessionId,
+      visit_id: visitId,
       chunk_index: chunkIndex,
       events: JSON.stringify(events),
       event_count: eventCount,

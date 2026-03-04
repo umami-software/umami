@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 export interface CreateReplayChunkArgs {
   websiteId: string;
   sessionId: string;
+  visitId: string;
   chunkIndex: number;
   events: Uint8Array;
   eventCount: number;
@@ -11,17 +12,18 @@ export interface CreateReplayChunkArgs {
   endedAt: Date;
 }
 
-export async function getReplayChunks(websiteId: string, sessionId: string) {
+export async function getReplayChunks(websiteId: string, visitId: string) {
   return prisma.client.sessionReplay.findMany({
     where: {
       websiteId,
-      sessionId,
+      visitId,
     },
     orderBy: {
       chunkIndex: 'asc',
     },
     select: {
       events: true,
+      sessionId: true,
       chunkIndex: true,
       eventCount: true,
       startedAt: true,
@@ -33,6 +35,7 @@ export async function getReplayChunks(websiteId: string, sessionId: string) {
 export async function createReplayChunk({
   websiteId,
   sessionId,
+  visitId,
   chunkIndex,
   events,
   eventCount,
@@ -44,6 +47,7 @@ export async function createReplayChunk({
       id: uuid(),
       websiteId,
       sessionId,
+      visitId,
       chunkIndex,
       events: new Uint8Array(events) as any,
       eventCount,

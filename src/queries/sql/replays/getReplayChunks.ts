@@ -6,6 +6,8 @@ import prisma from '@/lib/prisma';
 const FUNCTION_NAME = 'getReplayChunks';
 
 export interface ReplayChunk {
+  sessionId: string;
+  visitId: string;
   events: any[];
   chunkIndex: number;
   eventCount: number;
@@ -13,20 +15,19 @@ export interface ReplayChunk {
   endedAt: Date;
 }
 
-export async function getReplayChunks(
-  websiteId: string,
-  sessionId: string,
-): Promise<ReplayChunk[]> {
+export async function getReplayChunks(websiteId: string, visitId: string): Promise<ReplayChunk[]> {
   return runQuery({
-    [PRISMA]: () => relationalQuery(websiteId, sessionId),
-    [CLICKHOUSE]: () => clickhouseQuery(websiteId, sessionId),
+    [PRISMA]: () => relationalQuery(websiteId, visitId),
+    [CLICKHOUSE]: () => clickhouseQuery(websiteId, visitId),
   });
 }
 
-async function relationalQuery(websiteId: string, sessionId: string): Promise<ReplayChunk[]> {
+async function relationalQuery(websiteId: string, visitId: string): Promise<ReplayChunk[]> {
   const { rawQuery } = prisma;
 
   const chunks: {
+    sessionId: string;
+    visitId: string;
     events: Buffer;
     chunkIndex: number;
     eventCount: number;
@@ -35,6 +36,8 @@ async function relationalQuery(websiteId: string, sessionId: string): Promise<Re
   }[] = await rawQuery(
     `
     select
+      session_id as "sessionId",
+      visit_id as "visitId",
       events,
       chunk_index as "chunkIndex",
       event_count as "eventCount",
@@ -42,10 +45,10 @@ async function relationalQuery(websiteId: string, sessionId: string): Promise<Re
       ended_at as "endedAt"
     from session_replay
     where website_id = {{websiteId::uuid}}
-      and session_id = {{sessionId::uuid}}
+      and visit_id = {{visitId::uuid}}
     order by chunk_index asc
     `,
-    { websiteId, sessionId },
+    { websiteId, visitId },
     FUNCTION_NAME,
   );
 
@@ -55,11 +58,13 @@ async function relationalQuery(websiteId: string, sessionId: string): Promise<Re
   }));
 }
 
-async function clickhouseQuery(websiteId: string, sessionId: string): Promise<ReplayChunk[]> {
+async function clickhouseQuery(websiteId: string, visitId: string): Promise<ReplayChunk[]> {
   const { rawQuery } = clickhouse;
 
   const results = await rawQuery<
     {
+      sessionId: string;
+      visitId: string;
       events: string;
       chunk_index: number;
       event_count: number;
@@ -69,6 +74,8 @@ async function clickhouseQuery(websiteId: string, sessionId: string): Promise<Re
   >(
     `
     select
+      session_id as sessionId,
+      visit_id as visitId,
       events,
       chunk_index,
       event_count,
@@ -76,14 +83,16 @@ async function clickhouseQuery(websiteId: string, sessionId: string): Promise<Re
       ended_at
     from session_replay
     where website_id = {websiteId:UUID}
-      and session_id = {sessionId:UUID}
+      and visit_id = {visitId:UUID}
     order by chunk_index asc
     `,
-    { websiteId, sessionId },
+    { websiteId, visitId },
     FUNCTION_NAME,
   );
 
   return results.map(row => ({
+    sessionId: row.sessionId,
+    visitId: row.visitId,
     events: JSON.parse(row.events),
     chunkIndex: row.chunk_index,
     eventCount: row.event_count,

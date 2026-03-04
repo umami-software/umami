@@ -385,6 +385,7 @@ model SessionReplay {
   id         String    @id() @map("replay_id") @db.Uuid
   websiteId  String    @map("website_id") @db.Uuid
   sessionId  String    @map("session_id") @db.Uuid
+  visitId    String    @map("visit_id") @db.Uuid
   chunkIndex Int       @map("chunk_index") @db.Integer
   events     Bytes     @map("events")
   eventCount Int       @map("event_count") @db.Integer
@@ -397,6 +398,7 @@ model SessionReplay {
   @@index([websiteId])
   @@index([sessionId])
   @@index([websiteId, sessionId])
+  @@index([websiteId, visitId])
   @@index([websiteId, createdAt])
   @@index([sessionId, chunkIndex])
   @@map("session_replay")

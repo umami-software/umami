@@ -9,15 +9,15 @@ import { ReplayPlayer } from './ReplayPlayer';
 
 export function ReplayPlayback({
   websiteId,
-  sessionId,
+  replayId,
   onClose,
 }: {
   websiteId: string;
-  sessionId: string;
+  replayId: string;
   onClose?: () => void;
 }) {
-  const { data: replay, isLoading, error } = useReplayQuery(websiteId, sessionId);
-  const { data: session } = useWebsiteSessionQuery(websiteId, sessionId);
+  const { data: replay, isLoading, error } = useReplayQuery(websiteId, replayId);
+  const { data: session } = useWebsiteSessionQuery(websiteId, replay?.sessionId);
   const { t, labels } = useMessages();
 
   return (
@@ -33,7 +33,7 @@ export function ReplayPlayback({
           {session && (
             <Row justifyContent="space-between" alignItems="flex-start">
               <Row alignItems="center" gap="4">
-                <Avatar seed={sessionId} size={48} />
+                <Avatar seed={replay.sessionId} size={48} />
                 <Column>
                   <Text weight="bold">{t(labels.replay)}</Text>
                   <Text color="muted">
