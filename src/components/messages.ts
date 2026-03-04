@@ -255,6 +255,8 @@ export const labels: Record<string, string> = {
   myAccount: 'label.my-account',
   transfer: 'label.transfer',
   transactions: 'label.transactions',
+  aov: 'label.aov',
+  arpu: 'label.arpu',
   uniqueCustomers: 'label.uniqueCustomers',
   viewedPage: 'message.viewed-page',
   collectedData: 'message.collected-data',

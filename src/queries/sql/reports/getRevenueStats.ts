@@ -9,6 +9,7 @@ export interface RevenueStatsResult {
   count: number;
   average: number;
   unique_count: number;
+  arpu: number;
 }
 
 export async function getRevenueStats(
@@ -52,7 +53,11 @@ async function relationalQuery(
     select
       sum(revenue.revenue) as sum,
       count(distinct revenue.event_id) as count,
-      count(distinct revenue.session_id) as unique_count
+      count(distinct revenue.session_id) as unique_count,
+      (select count(distinct session_id)
+       from website_event
+       where website_id = {{websiteId::uuid}}
+         and created_at between {{startDate}} and {{endDate}}) as total_sessions
     from revenue
     ${joinQuery}
     ${cohortQuery}
@@ -66,6 +71,7 @@ async function relationalQuery(
   ).then(result => result?.[0]);
 
   total.average = total.count > 0 ? Number(total.sum) / Number(total.count) : 0;
+  total.arpu = total.total_sessions > 0 ? Number(total.sum) / Number(total.total_sessions) : 0;
 
   return total;
 }
@@ -97,12 +103,21 @@ async function clickhouseQuery(
       and website_event.event_id = website_revenue.event_id`
     : '';
 
-  const total = await rawQuery<{ sum: number; count: number; unique_count: number }>(
+  const total = await rawQuery<{
+    sum: number;
+    count: number;
+    unique_count: number;
+    total_sessions: number;
+  }>(
     `
     select
       sum(website_revenue.revenue) as sum,
       uniqExact(website_revenue.event_id) as count,
-      uniqExact(website_revenue.session_id) as unique_count
+      uniqExact(website_revenue.session_id) as unique_count,
+      (select uniqExact(session_id)
+       from website_event
+       where website_id = {websiteId:UUID}
+         and created_at between {startDate:DateTime64} and {endDate:DateTime64}) as total_sessions
     from website_revenue
     ${joinQuery}
     ${cohortQuery}
@@ -115,6 +130,7 @@ async function clickhouseQuery(
   ).then(result => result?.[0]);
 
   total.average = total.count > 0 ? total.sum / total.count : 0;
+  total.arpu = total.total_sessions > 0 ? total.sum / total.total_sessions : 0;
 
   return total;
 }
