@@ -1,3 +1,4 @@
+import { stitchChunkEvents } from '@/lib/replay';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { canViewWebsite } from '@/permissions';
@@ -21,7 +22,7 @@ export async function GET(
 
   const chunks = await getReplayChunks(websiteId, sessionId);
 
-  const allEvents = chunks.flatMap(chunk => chunk.events);
+  const allEvents = stitchChunkEvents(chunks);
   const startedAt = chunks.length > 0 ? chunks[0].startedAt : null;
   const endedAt = chunks.length > 0 ? chunks[chunks.length - 1].endedAt : null;
 

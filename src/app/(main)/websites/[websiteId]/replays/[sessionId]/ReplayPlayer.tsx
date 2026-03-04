@@ -4,24 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useMobile } from '@/components/hooks';
 import 'rrweb-player/dist/style.css';
 
-function normalizeEvents(events: any[], maxGapMs = 60_000): any[] {
-  if (events.length < 2) return events;
-
-  const sorted = [...events].sort((a, b) => a.timestamp - b.timestamp);
-  let shift = 0;
-  const result: any[] = [sorted[0]];
-
-  for (let i = 1; i < sorted.length; i++) {
-    const gap = sorted[i].timestamp - sorted[i - 1].timestamp;
-    if (gap > maxGapMs) {
-      shift += gap - 1000;
-    }
-    result.push(shift > 0 ? { ...sorted[i], timestamp: sorted[i].timestamp - shift } : sorted[i]);
-  }
-
-  return result;
-}
-
 export function ReplayPlayer({ events }: { events: any[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
@@ -44,7 +26,7 @@ export function ReplayPlayer({ events }: { events: any[] }) {
       playerRef.current = new RRWebPlayer({
         target: containerRef.current,
         props: {
-          events: normalizeEvents(events),
+          events: events,
           width: playerWidth,
           height: playerHeight,
           autoPlay: false,

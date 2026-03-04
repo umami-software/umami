@@ -53,7 +53,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       count(sr.replay_id) as "chunkCount",
       min(sr.started_at) as "startedAt",
       max(sr.ended_at) as "endedAt",
-      (extract(epoch from max(sr.ended_at) - min(sr.started_at)) * 1000)::bigint as "duration",
+      sum(extract(epoch from sr.ended_at - sr.started_at) * 1000)::bigint as "duration",
       max(sr.created_at) as "createdAt"
     from session_replay sr
     join session on session.session_id = sr.session_id
@@ -109,7 +109,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       count(session_replay.replay_id) as chunkCount,
       min(session_replay.started_at) as startedAt,
       max(session_replay.ended_at) as endedAt,
-      toInt64(dateDiff('millisecond', min(session_replay.started_at), max(session_replay.ended_at))) as duration,
+      toInt64(sum(dateDiff('millisecond', session_replay.started_at, session_replay.ended_at))) as duration,
       max(session_replay.created_at) as createdAt
     from session_replay
     join (
