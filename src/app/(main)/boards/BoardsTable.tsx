@@ -1,18 +1,19 @@
 import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
-import Board from 'next/link';
+import Link from 'next/link';
 import { DateDistance } from '@/components/common/DateDistance';
-import { useMessages, useNavigation, useSlug } from '@/components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
+import { BoardDeleteButton } from './BoardDeleteButton';
+import { BoardEditButton } from './BoardEditButton';
 
 export function BoardsTable(props: DataTableProps) {
   const { t, labels } = useMessages();
-  const { websiteId, renderUrl } = useNavigation();
-  const { getSlugUrl } = useSlug('link');
+  const { renderUrl } = useNavigation();
 
   return (
     <DataTable {...props}>
       <DataColumn id="name" label={t(labels.name)}>
         {({ id, name }: any) => {
-          return <Board href={renderUrl(`/boards/${id}`)}>{name}</Board>;
+          return <Link href={renderUrl(`/boards/${id}`)}>{name}</Link>;
         }}
       </DataColumn>
       <DataColumn id="description" label={t(labels.description)} />
@@ -21,7 +22,12 @@ export function BoardsTable(props: DataTableProps) {
       </DataColumn>
       <DataColumn id="action" align="end" width="100px">
         {({ id, name }: any) => {
-          return <Row></Row>;
+          return (
+            <Row>
+              <BoardEditButton boardId={id} />
+              <BoardDeleteButton boardId={id} name={name} />
+            </Row>
+          );
         }}
       </DataColumn>
     </DataTable>
