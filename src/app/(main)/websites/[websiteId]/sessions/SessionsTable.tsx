@@ -20,36 +20,37 @@ export function SessionsTable({ websiteId, ...props }: DataTableProps & { websit
       </DataColumn>
       <DataColumn id="visits" label={t(labels.visits)} width="80px" />
       <DataColumn id="views" label={t(labels.views)} width="80px" />
-      <DataColumn id="country" label={t(labels.country)}>
+      <DataColumn id="events" label={t(labels.events)} width="80px" />
+      <DataColumn id="location" label={t(labels.location)}>
         {(row: any) => (
           <TypeIcon type="country" value={row.country}>
+            {row.city ? `${row.city}, ` : ''}
             {formatValue(row.country, 'country')}
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="city" label={t(labels.city)} />
-      <DataColumn id="browser" label={t(labels.browser)}>
+      <DataColumn id="browser" label={t(labels.browser)} width="140px">
         {(row: any) => (
           <TypeIcon type="browser" value={row.browser}>
             {formatValue(row.browser, 'browser')}
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="os" label={t(labels.os)}>
+      <DataColumn id="os" label={t(labels.os)} width="140px">
         {(row: any) => (
           <TypeIcon type="os" value={row.os}>
             {formatValue(row.os, 'os')}
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="device" label={t(labels.device)}>
+      <DataColumn id="device" label={t(labels.device)} width="140px">
         {(row: any) => (
           <TypeIcon type="device" value={row.device}>
             {formatValue(row.device, 'device')}
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="lastAt" label={t(labels.lastSeen)}>
+      <DataColumn id="lastAt" label={t(labels.lastSeen)} width="140px">
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
     </DataTable>

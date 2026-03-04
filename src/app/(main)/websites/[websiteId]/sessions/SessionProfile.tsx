@@ -11,13 +11,13 @@ import {
   TextField,
 } from '@umami/react-zen';
 import { X } from 'lucide-react';
-import { ReplayPlayer } from '@/app/(main)/websites/[websiteId]/replays/[sessionId]/ReplayPlayer';
 import { Avatar } from '@/components/common/Avatar';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, useReplayQuery, useWebsiteSessionQuery } from '@/components/hooks';
+import { useMessages, useWebsiteSessionQuery } from '@/components/hooks';
 import { SessionActivity } from './SessionActivity';
 import { SessionData } from './SessionData';
 import { SessionInfo } from './SessionInfo';
+import { SessionReplaysDataTable } from './SessionReplaysDataTable';
 import { SessionStats } from './SessionStats';
 
 export function SessionProfile({
@@ -30,7 +30,6 @@ export function SessionProfile({
   onClose?: () => void;
 }) {
   const { data, isLoading, error } = useWebsiteSessionQuery(websiteId, sessionId);
-  const { data: replay } = useReplayQuery(websiteId, sessionId);
   const { t, labels } = useMessages();
 
   return (
@@ -66,7 +65,7 @@ export function SessionProfile({
               <TabList>
                 <Tab id="activity">{t(labels.activity)}</Tab>
                 <Tab id="properties">{t(labels.properties)}</Tab>
-                {replay?.events?.length > 0 && <Tab id="replay">{t(labels.replay)}</Tab>}
+                <Tab id="replays">{t(labels.replay)}</Tab>
               </TabList>
               <TabPanel id="activity">
                 <SessionActivity
@@ -79,11 +78,9 @@ export function SessionProfile({
               <TabPanel id="properties">
                 <SessionData sessionId={sessionId} websiteId={websiteId} />
               </TabPanel>
-              {replay?.events?.length > 0 && (
-                <TabPanel id="replay">
-                  <ReplayPlayer events={replay.events} />
-                </TabPanel>
-              )}
+              <TabPanel id="replays">
+                <SessionReplaysDataTable websiteId={websiteId} sessionId={sessionId} />
+              </TabPanel>
             </Tabs>
           </Column>
         </Column>

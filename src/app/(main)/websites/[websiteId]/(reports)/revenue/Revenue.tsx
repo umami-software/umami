@@ -44,7 +44,7 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
   const metrics = useMemo(() => {
     if (!data) return [];
 
-    const { sum, count, average, unique_count, comparison } = data.total;
+    const { sum, count, average, unique_count, arpu, comparison } = data.total;
 
     return [
       {
@@ -55,8 +55,14 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
       },
       {
         value: average,
-        label: t(labels.average),
+        label: t(labels.aov),
         change: comparison ? average - comparison.average : 0,
+        formatValue: (n: number) => formatLongCurrency(n, currency),
+      },
+      {
+        value: arpu,
+        label: t(labels.arpu),
+        change: comparison ? arpu - (comparison.arpu ?? 0) : 0,
         formatValue: (n: number) => formatLongCurrency(n, currency),
       },
       {

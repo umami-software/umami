@@ -1,5 +1,4 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
@@ -36,7 +35,6 @@ async function relationalQuery(
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
-    eventType: EVENT_TYPE.customEvent,
   });
 
   const limitQuery = limit
@@ -63,6 +61,7 @@ async function relationalQuery(
     ${joinSessionQuery}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
+      and website_event.event_type = 2
       ${filterQuery}
       ${limitQuery}
     group by 1, 2
@@ -84,7 +83,6 @@ async function clickhouseQuery(
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
-    eventType: EVENT_TYPE.customEvent,
   });
 
   const limitQuery = limit
@@ -93,7 +91,7 @@ async function clickhouseQuery(
     from website_event
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type = {eventType:UInt32}
+      and event_type = 2
     group by event_name
     order by count(*) desc
     limit ${limit}
@@ -112,6 +110,7 @@ async function clickhouseQuery(
     ${cohortQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_type = 2
       ${filterQuery}
       ${limitQuery}
     group by x, t
@@ -129,7 +128,7 @@ async function clickhouseQuery(
       from website_event_stats_hourly website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type = {eventType:UInt32}
+        and event_type = 2
         ${limitQuery}
     ) as g
     group by x, t

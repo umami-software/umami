@@ -1,41 +1,41 @@
 'use client';
-import { Button, Column, Dialog, Icon, Modal, Row } from '@umami/react-zen';
-import { X } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { buildPath } from '@/lib/url';
-import { ReplayPlayback } from './[sessionId]/ReplayPlayback';
+import { Column, Dialog, Modal, type ModalProps } from '@umami/react-zen';
+import { ReplayPlayback } from '@/app/(main)/websites/[websiteId]/replays/[replayId]/ReplayPlayback';
+import { useNavigation } from '@/components/hooks';
 
-export function ReplayModal({ websiteId, sessionId }: { websiteId: string; sessionId: string }) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+export interface ReplayModalProps extends ModalProps {
+  websiteId: string;
+}
 
-  const closeModal = () => {
-    const query = Object.fromEntries(searchParams.entries());
-    delete query.session;
-
-    router.push(buildPath(`/websites/${websiteId}/replays`, query));
-  };
+export function ReplayModal({ websiteId, ...props }: ReplayModalProps) {
+  const {
+    router,
+    query: { replay },
+    updateParams,
+  } = useNavigation();
 
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
-      closeModal();
+      router.push(updateParams({ replay: undefined }));
     }
   };
 
   return (
-    <Modal placement="bottom" offset="80px" isOpen onOpenChange={handleOpenChange} isDismissable>
+    <Modal
+      placement="bottom"
+      offset="80px"
+      isOpen={!!replay}
+      onOpenChange={handleOpenChange}
+      isDismissable
+      {...props}
+    >
       <Column height="100%" maxWidth="1320px" style={{ margin: '0 auto' }}>
-        <Dialog variant="sheet" className="rounded-lg">
-          <Column padding="10">
-            <Row justifyContent="flex-end">
-              <Button onPress={closeModal} variant="quiet">
-                <Icon>
-                  <X />
-                </Icon>
-              </Button>
-            </Row>
-            <ReplayPlayback websiteId={websiteId} sessionId={sessionId} />
-          </Column>
+        <Dialog variant="sheet">
+          {({ close }) => (
+            <Column padding="6">
+              <ReplayPlayback websiteId={websiteId} replayId={replay} onClose={close} />
+            </Column>
+          )}
         </Dialog>
       </Column>
     </Modal>

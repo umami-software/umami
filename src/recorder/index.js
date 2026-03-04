@@ -12,7 +12,7 @@ import { record } from 'rrweb';
   const website = config(`website-id`);
   const hostUrl = config(`host-url`);
   const sampleRate = parseFloat(config(`sample-rate`) || '0.15');
-  const maskLevel = config(`mask-level`) || 'strict';
+  const maskLevel = config(`mask-level`) || 'moderate';
   const maxDuration = parseInt(config(`max-duration`) || '300000', 10);
   const blockSelector = config(`block-selector`) || '';
 

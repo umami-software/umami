@@ -1,15 +1,14 @@
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { filterParams, pagingParams, searchParams, withDateRange } from '@/lib/schema';
+import { pagingParams, searchParams, withDateRange } from '@/lib/schema';
 import { canViewWebsite } from '@/permissions';
-import { getWebsiteEvents } from '@/queries/sql';
+import { getSessionReplays } from '@/queries/sql';
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ websiteId: string }> },
+  { params }: { params: Promise<{ websiteId: string; sessionId: string }> },
 ) {
   const schema = withDateRange({
-    ...filterParams,
     ...pagingParams,
     ...searchParams,
   });
@@ -20,7 +19,7 @@ export async function GET(
     return error();
   }
 
-  const { websiteId } = await params;
+  const { websiteId, sessionId } = await params;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
@@ -28,7 +27,7 @@ export async function GET(
 
   const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getWebsiteEvents(websiteId, filters);
+  const data = await getSessionReplays(websiteId, filters, sessionId);
 
   return json(data);
 }

@@ -1,46 +1,34 @@
 'use client';
 import { Column } from '@umami/react-zen';
 import { useEffect, useRef, useState } from 'react';
+import { useMobile } from '@/components/hooks';
 import 'rrweb-player/dist/style.css';
 
 export function ReplayPlayer({ events }: { events: any[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
   const [loaded, setLoaded] = useState(false);
+  const { isMobile, isPhone } = useMobile();
+
+  const playerWidth = isPhone ? 360 : isMobile ? 640 : 1024;
+  const playerHeight = isPhone ? 202 : isMobile ? 360 : 576;
 
   useEffect(() => {
     if (!containerRef.current || !events?.length) return;
 
-    // Debug: log event info
-    const typeCounts: Record<number, number> = {};
-    events.forEach((e: any) => {
-      typeCounts[e.type] = (typeCounts[e.type] || 0) + 1;
-    });
-    const timestamps = events.map((e: any) => e.timestamp).filter(Boolean);
-    console.log('[ReplayPlayer] Events:', events.length, 'Types:', typeCounts);
-    console.log(
-      '[ReplayPlayer] Time range:',
-      timestamps.length
-        ? `${Math.min(...timestamps)} - ${Math.max(...timestamps)} (${Math.max(...timestamps) - Math.min(...timestamps)}ms)`
-        : 'no timestamps',
-    );
-    console.log('[ReplayPlayer] First 3 events:', events.slice(0, 3));
-
-    // Dynamically import rrweb-player to avoid SSR issues
     import('rrweb-player').then(mod => {
       const RRWebPlayer = mod.default;
 
-      // Clear any previous player
       if (containerRef.current) {
         containerRef.current.innerHTML = '';
       }
 
       playerRef.current = new RRWebPlayer({
-        target: containerRef.current!,
+        target: containerRef.current,
         props: {
-          events,
-          width: 1024,
-          height: 576,
+          events: events,
+          width: playerWidth,
+          height: playerHeight,
           autoPlay: false,
           showController: true,
           speedOption: [1, 2, 4, 8],
@@ -56,15 +44,15 @@ export function ReplayPlayer({ events }: { events: any[] }) {
         playerRef.current = null;
       }
     };
-  }, [events]);
+  }, [events, playerWidth, playerHeight]);
 
   return (
     <Column alignItems="center">
       <div
         ref={containerRef}
         style={{
-          minWidth: 1024,
-          minHeight: loaded ? undefined : 576,
+          width: playerWidth,
+          minHeight: loaded ? undefined : playerHeight,
           maxWidth: '100%',
           overflow: 'hidden',
           borderRadius: '8px',

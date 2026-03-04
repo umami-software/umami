@@ -4,6 +4,7 @@ CREATE TABLE umami.session_replay
     replay_id UUID,
     website_id UUID,
     session_id UUID,
+    visit_id UUID,
     chunk_index UInt32,
     events String CODEC(ZSTD(3)),
     event_count UInt32,
@@ -13,5 +14,5 @@ CREATE TABLE umami.session_replay
 )
 ENGINE = MergeTree()
 PARTITION BY toYYYYMM(created_at)
-ORDER BY (replay_id, website_id, session_id, chunk_index)
+ORDER BY (replay_id, website_id, session_id, visit_id, chunk_index)
 SETTINGS index_granularity = 8192;

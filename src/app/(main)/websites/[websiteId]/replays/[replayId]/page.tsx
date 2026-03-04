@@ -4,11 +4,11 @@ import { ReplayPlayback } from './ReplayPlayback';
 export default async function ({
   params,
 }: {
-  params: Promise<{ websiteId: string; sessionId: string }>;
+  params: Promise<{ websiteId: string; replayId: string }>;
 }) {
-  const { websiteId, sessionId } = await params;
+  const { websiteId, replayId } = await params;
 
-  return <ReplayPlayback websiteId={websiteId} sessionId={sessionId} />;
+  return <ReplayPlayback websiteId={websiteId} replayId={replayId} />;
 }
 
 export const metadata: Metadata = {

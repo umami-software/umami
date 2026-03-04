@@ -399,6 +399,7 @@ model SessionReplay {
   @@index([sessionId])
   @@index([visitId])
   @@index([websiteId, sessionId])
+  @@index([websiteId, visitId])
   @@index([websiteId, createdAt])
   @@index([sessionId, chunkIndex])
   @@map("session_replay")
