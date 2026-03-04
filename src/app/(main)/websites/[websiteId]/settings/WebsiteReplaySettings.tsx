@@ -28,7 +28,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const config = (website?.replayConfig as ReplayConfig) || {};
 
   const [sampleRate, setSampleRate] = useState(config.sampleRate ?? 0.15);
-  const [maskLevel, setMaskLevel] = useState(config.maskLevel ?? 'strict');
+  const [maskLevel, setMaskLevel] = useState(config.maskLevel ?? 'moderate');
   const [maxDuration, setMaxDuration] = useState(String(config.maxDuration ?? 300000));
   const [blockSelector, setBlockSelector] = useState(config.blockSelector ?? '');
 

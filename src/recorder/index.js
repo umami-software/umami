@@ -11,7 +11,7 @@ import { record } from 'rrweb';
   const website = attr(`${_data}website-id`);
   const hostUrl = attr(`${_data}host-url`);
   const sampleRate = parseFloat(attr(`${_data}sample-rate`) || '0.15');
-  const maskLevel = attr(`${_data}mask-level`) || 'strict';
+  const maskLevel = attr(`${_data}mask-level`) || 'moderate';
   const maxDuration = parseInt(attr(`${_data}max-duration`) || '300000', 10);
   const blockSelector = attr(`${_data}block-selector`) || '';
 
