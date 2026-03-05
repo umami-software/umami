@@ -134,7 +134,7 @@ export function SideNav(props: any) {
           </Column>
         )}
       </Column>
-      <Row marginBottom="4" style={{ flexShrink: 0 }}>
+      <Row marginBottom="4" paddingTop="2">
         <UserButton showText={!isCollapsed} />
       </Row>
     </Column>

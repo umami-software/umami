@@ -133,7 +133,7 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
                             percent: (value / data?.total.sum) * 100,
                           }),
                         )}
-                        currency={currency}
+                        formatCount={(n: number) => formatLongCurrency(n, currency)}
                         renderLabel={renderLabel('referrer')}
                       />
                     </TabPanel>
@@ -148,7 +148,7 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
                             percent: (value / data?.total.sum) * 100,
                           }),
                         )}
-                        currency={currency}
+                        formatCount={(n: number) => formatLongCurrency(n, currency)}
                         renderLabel={renderLabel('channel')}
                       />
                     </TabPanel>
@@ -172,7 +172,7 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
                             percent: (value / data?.total.sum) * 100,
                           }),
                         )}
-                        currency={currency}
+                        formatCount={(n: number) => formatLongCurrency(n, currency)}
                         renderLabel={renderLabel('country')}
                       />
                     </TabPanel>
@@ -196,7 +196,7 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
                             percent: (value / data?.total.sum) * 100,
                           }),
                         )}
-                        currency={currency}
+                        formatCount={(n: number) => formatLongCurrency(n, currency)}
                         renderLabel={renderLabel('region')}
                       />
                     </TabPanel>

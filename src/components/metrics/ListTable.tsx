@@ -5,7 +5,7 @@ import { FixedSizeList } from 'react-window';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { Empty } from '@/components/common/Empty';
 import { useMessages, useMobile } from '@/components/hooks';
-import { formatLongCurrency, formatLongNumber } from '@/lib/format';
+import { formatLongNumber } from '@/lib/format';
 
 const ITEM_SIZE = 30;
 
@@ -26,7 +26,6 @@ export interface ListTableProps {
   virtualize?: boolean;
   showPercentage?: boolean;
   itemCount?: number;
-  currency?: string;
   formatCount?: (n: number) => string;
 }
 
@@ -40,7 +39,6 @@ export function ListTable({
   virtualize = false,
   showPercentage = true,
   itemCount = 10,
-  currency,
   formatCount,
 }: ListTableProps) {
   const { t, labels } = useMessages();
@@ -58,7 +56,6 @@ export function ListTable({
         animate={animate && !virtualize}
         showPercentage={showPercentage}
         change={renderChange ? renderChange(row, index) : null}
-        currency={currency}
         formatCount={formatCount}
         isPhone={isPhone}
       />
@@ -108,7 +105,6 @@ const AnimatedRow = ({
   change,
   animate,
   showPercentage = true,
-  currency,
   formatCount,
   isPhone,
 }) => {
@@ -137,11 +133,7 @@ const AnimatedRow = ({
         {change}
         <Text weight="bold">
           <AnimatedDiv title={props?.y as any}>
-            {currency
-              ? props.y?.to(n => formatLongCurrency(n, currency))
-              : formatCount
-                ? props.y?.to(formatCount)
-                : props.y?.to(formatLongNumber)}
+            {formatCount ? props.y?.to(formatCount) : props.y?.to(formatLongNumber)}
           </AnimatedDiv>
         </Text>
       </Row>
