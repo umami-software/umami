@@ -331,7 +331,17 @@
       send({ ...getPayload(), ...metrics }, 'performance');
     };
 
-    flushPerformance = sendPerformance;
+    flushPerformance = () => {
+      sendPerformance();
+      Object.keys(metrics).forEach(k => {
+        delete metrics[k];
+      });
+      clsValue = 0;
+      inpValue = 0;
+      sent = false;
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(sendPerformance, 10000);
+    };
     timeoutId = setTimeout(sendPerformance, 10000);
 
     document.addEventListener('visibilitychange', () => {

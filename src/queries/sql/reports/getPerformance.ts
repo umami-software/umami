@@ -138,7 +138,7 @@ async function clickhouseQuery(
   const chart = await rawQuery<{ t: string; p50: number; p75: number; p95: number }[]>(
     `
     select
-      ${getDateSQL('created_at', 'minute', timezone)} t,
+      ${getDateSQL('created_at', unit, timezone)} t,
       quantile(0.5)(${metric}) as p50,
       quantile(0.75)(${metric}) as p75,
       quantile(0.95)(${metric}) as p95
