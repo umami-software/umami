@@ -9,7 +9,7 @@ import { filtersArrayToObject } from '@/lib/params';
 export function WebsiteFilterButton({
   websiteId,
 }: {
-  websiteId: string;
+  websiteId?: string;
   position?: 'bottom' | 'top' | 'left' | 'right';
   alignment?: 'end' | 'center' | 'start';
 }) {

@@ -20,7 +20,7 @@ import {
 import { Bookmark, X } from '@/components/icons';
 import { isSearchOperator } from '@/lib/params';
 
-export function FilterBar({ websiteId }: { websiteId: string }) {
+export function FilterBar({ websiteId }: { websiteId?: string }) {
   const { t, labels } = useMessages();
   const { formatValue } = useFormat();
   const {
@@ -32,7 +32,8 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
   } = useNavigation();
   const { filters, operatorLabels } = useFilters();
   const { data, isLoading } = useWebsiteSegmentQuery(websiteId, segment || cohort);
-  const canSaveSegment = filters.length > 0 && !segment && !cohort && !pathname.includes('/share');
+  const canSaveSegment =
+    !!websiteId && filters.length > 0 && !segment && !cohort && !pathname.includes('/share');
 
   const handleCloseFilter = (param: string) => {
     router.push(updateParams({ [param]: undefined }));
