@@ -40,6 +40,12 @@ async function relationalQuery(
     eventType,
   });
 
+  const excludeEventTypeFilterQuery = filterQuery
+    .split('\n')
+    .filter(filter => !filter.includes('event_type'))
+    .join('\n')
+    .trim();
+
   return rawQuery(
     `
     select count(distinct website_event.session_id) as num,
@@ -50,7 +56,7 @@ async function relationalQuery(
       ${joinSessionQuery}
       where website_event.website_id = {{websiteId::uuid}}
       ${dateQuery}
-      ${filterQuery}
+      ${excludeEventTypeFilterQuery}
     ) as total
     from website_event
     ${cohortQuery}
@@ -82,6 +88,12 @@ async function clickhouseQuery(
     eventType,
   });
 
+  const excludeEventTypeFilterQuery = filterQuery
+    .split('\n')
+    .filter(filter => !filter.includes('event_type'))
+    .join('\n')
+    .trim();
+
   return rawQuery(
     `
     select count(distinct session_id) as num,
@@ -91,7 +103,7 @@ async function clickhouseQuery(
       ${cohortQuery}
       where website_id = {websiteId:UUID}
         ${dateQuery}
-        ${filterQuery}
+        ${excludeEventTypeFilterQuery}
     ) as total
     from website_event
     ${cohortQuery}

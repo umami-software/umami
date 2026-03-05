@@ -19,17 +19,16 @@ export interface WebsiteStatsData {
 }
 
 export function useWebsiteStatsQuery(
-  websiteId: string,
+  { websiteId, compare }: { websiteId: string; compare?: string },
   options?: UseQueryOptions<WebsiteStatsData, Error, WebsiteStatsData>,
 ) {
   const { get, useQuery } = useApi();
-  const { startAt, endAt, unit, timezone } = useDateParameters();
+  const { startAt, endAt } = useDateParameters();
   const filters = useFilterParameters();
 
   return useQuery<WebsiteStatsData>({
-    queryKey: ['websites:stats', { websiteId, startAt, endAt, unit, timezone, ...filters }],
-    queryFn: () =>
-      get(`/websites/${websiteId}/stats`, { startAt, endAt, unit, timezone, ...filters }),
+    queryKey: ['websites:stats', { websiteId, compare, startAt, endAt, ...filters }],
+    queryFn: () => get(`/websites/${websiteId}/stats`, { compare, startAt, endAt, ...filters }),
     enabled: !!websiteId,
     ...options,
   });

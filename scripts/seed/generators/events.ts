@@ -1,5 +1,5 @@
-import { uuid, addSeconds, randomInt } from '../utils.js';
 import { getRandomReferrer } from '../distributions/referrers.js';
+import { addSeconds, randomInt, uuid } from '../utils.js';
 import type { SessionData } from './sessions.js';
 
 export const EVENT_TYPE = {

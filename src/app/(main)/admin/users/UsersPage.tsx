@@ -7,13 +7,13 @@ import { UserAddButton } from './UserAddButton';
 import { UsersDataTable } from './UsersDataTable';
 
 export function UsersPage() {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   const handleSave = () => {};
 
   return (
     <Column gap="6" margin="2">
-      <PageHeader title={formatMessage(labels.users)}>
+      <PageHeader title={t(labels.users)}>
         <UserAddButton onSave={handleSave} />
       </PageHeader>
       <Panel>

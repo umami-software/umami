@@ -3,9 +3,9 @@
   height: 100%;
   position: relative;
 
-  --journey-line-color: var(--base-color-6);
-  --journey-active-color: var(--primary-color);
-  --journey-faded-color: var(--base-color-3);
+  --journey-line-color: var(--border-strong);
+  --journey-active-color: var(--primary);
+  --journey-faded-color: var(--interactive-bg);
 }
 
 .view {
@@ -43,8 +43,8 @@
 
 .dropoff {
   font-weight: 600;
-  color: var(--font-color-muted);
-  background: var(--base-color-2);
+  color: var(--text-muted);
+  background: var(--surface-sunken);
   padding: 4px 8px;
   border-radius: 5px;
 }
@@ -58,8 +58,8 @@
   height: 50px;
   font-size: 16px;
   font-weight: 700;
-  color: var(--base-color-1);
-  background: var(--base-color-12);
+  color: var(--surface-base);
+  background: var(--surface-inverted);
   z-index: 1;
   margin: 0 auto 20px;
 }
@@ -84,7 +84,7 @@
   position: relative;
   cursor: pointer;
   padding: 10px 20px;
-  background: var(--base-color-3);
+  background: var(--interactive-bg);
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -96,27 +96,27 @@
 }
 
 .node:hover:not(.selected) {
-  background: var(--base-color-4);
+  background: var(--interactive-bg-hover);
 }
 
 .node.selected {
-  color: var(--base-color-1);
-  background: var(--base-color-12);
+  color: var(--surface-base);
+  background: var(--surface-inverted);
 }
 
 .node.active {
-  color: var(--primary-font-color);
-  background: var(--primary-color);
+  color: var(--primary-foreground);
+  background: var(--primary);
 }
 
 .node.selected .count {
-  color: var(--base-color-1);
-  background: var(--base-color-12);
+  color: var(--surface-base);
+  background: var(--surface-inverted);
 }
 
 .node.selected.active .count {
-  color: var(--primary-font-color);
-  background: var(--primary-color);
+  color: var(--primary-foreground);
+  background: var(--primary);
 }
 
 .name {
@@ -212,7 +212,7 @@
   position: absolute;
   border-radius: 100%;
   border: 3px solid var(--journey-line-color);
-  background: var(--base-color-1);
+  background: var(--surface-base);
   width: 14px;
   height: 14px;
 }

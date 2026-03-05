@@ -16,7 +16,7 @@ import { setClientAuthToken } from '@/lib/client';
 import { setUser } from '@/store/app';
 
 export function LoginForm() {
-  const { formatMessage, labels, getErrorMessage } = useMessages();
+  const { t, labels, getErrorMessage } = useMessages();
   const router = useRouter();
   const { mutateAsync, error } = useUpdateQuery('/auth/login');
 
@@ -36,21 +36,21 @@ export function LoginForm() {
         <Logo />
       </Icon>
       <Heading>umami</Heading>
-      <Form onSubmit={handleSubmit} error={getErrorMessage(error)}>
+      <Form onSubmit={handleSubmit} error={getErrorMessage(error)} style={{ minWidth: 300 }}>
         <FormField
-          label={formatMessage(labels.username)}
+          label={t(labels.username)}
           data-test="input-username"
           name="username"
-          rules={{ required: formatMessage(labels.required) }}
+          rules={{ required: t(labels.required) }}
         >
           <TextField autoComplete="username" />
         </FormField>
 
         <FormField
-          label={formatMessage(labels.password)}
+          label={t(labels.password)}
           data-test="input-password"
           name="password"
-          rules={{ required: formatMessage(labels.required) }}
+          rules={{ required: t(labels.required) }}
         >
           <PasswordField autoComplete="current-password" />
         </FormField>
@@ -61,7 +61,7 @@ export function LoginForm() {
             style={{ flex: 1 }}
             isDisabled={false}
           >
-            {formatMessage(labels.login)}
+            {t(labels.login)}
           </FormSubmitButton>
         </FormButtons>
       </Form>

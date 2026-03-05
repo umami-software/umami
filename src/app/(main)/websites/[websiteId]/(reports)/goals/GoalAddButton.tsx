@@ -4,7 +4,7 @@ import { Plus } from '@/components/icons';
 import { GoalEditForm } from './GoalEditForm';
 
 export function GoalAddButton({ websiteId }: { websiteId: string }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   return (
     <DialogTrigger>
@@ -12,12 +12,12 @@ export function GoalAddButton({ websiteId }: { websiteId: string }) {
         <Icon>
           <Plus />
         </Icon>
-        <Text>{formatMessage(labels.goal)}</Text>
+        <Text>{t(labels.goal)}</Text>
       </Button>
       <Modal>
         <Dialog
           aria-label="add goal"
-          title={formatMessage(labels.goal)}
+          title={t(labels.goal)}
           style={{ minWidth: 400, minHeight: 300 }}
         >
           {({ close }) => <GoalEditForm websiteId={websiteId} onClose={close} />}

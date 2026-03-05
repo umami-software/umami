@@ -1,0 +1,27 @@
+import { Box, Column } from '@umami/react-zen';
+import { Panel } from '@/components/common/Panel';
+import { useBoard } from '@/components/hooks';
+import type { BoardComponentConfig } from '@/lib/types';
+import { BoardComponentRenderer } from './BoardComponentRenderer';
+
+export function BoardViewColumn({ component }: { component?: BoardComponentConfig }) {
+  const { board } = useBoard();
+  const websiteId = component?.websiteId || board?.parameters?.websiteId;
+
+  if (!component || !websiteId) {
+    return null;
+  }
+
+  const title = component.title;
+  const description = component.description;
+
+  return (
+    <Panel title={title} description={description} height="100%">
+      <Column width="100%" height="100%" style={{ minHeight: 0 }}>
+        <Box width="100%" flexGrow={1} style={{ minHeight: 0 }}>
+          <BoardComponentRenderer config={component} websiteId={websiteId} />
+        </Box>
+      </Column>
+    </Panel>
+  );
+}

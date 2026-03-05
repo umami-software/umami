@@ -4,7 +4,7 @@ import { Plus } from '@/components/icons';
 import { FunnelEditForm } from './FunnelEditForm';
 
 export function FunnelAddButton({ websiteId }: { websiteId: string }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   return (
     <DialogTrigger>
@@ -12,14 +12,10 @@ export function FunnelAddButton({ websiteId }: { websiteId: string }) {
         <Icon>
           <Plus />
         </Icon>
-        <Text>{formatMessage(labels.funnel)}</Text>
+        <Text>{t(labels.funnel)}</Text>
       </Button>
       <Modal>
-        <Dialog
-          variant="modal"
-          title={formatMessage(labels.funnel)}
-          style={{ minHeight: 375, minWidth: 600 }}
-        >
+        <Dialog variant="modal" title={t(labels.funnel)} style={{ minHeight: 375, minWidth: 600 }}>
           {({ close }) => <FunnelEditForm websiteId={websiteId} onClose={close} />}
         </Dialog>
       </Modal>
