@@ -19,6 +19,7 @@ COPY docker/middleware.ts ./src
 ARG BASE_PATH=""
 
 ENV BASE_PATH=$BASE_PATH
+LABEL org.opencontainers.image.base-path="$BASE_PATH"
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV DATABASE_URL="postgresql://user:pass@localhost:5432/dummy"
 
@@ -30,12 +31,10 @@ WORKDIR /app
 
 ARG PRISMA_VERSION="6.19.0"
 ARG NODE_OPTIONS
-ARG BASE_PATH=""
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_OPTIONS=$NODE_OPTIONS
-ENV BASE_PATH=$BASE_PATH
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
