@@ -97,8 +97,10 @@ export function BoardComponentSelect({
     setConfigValues(prev => ({ ...prev, [name]: value }));
   };
 
+  const needsWebsite = selectedDef?.requiresWebsite !== false;
+
   const handleAdd = () => {
-    if (!selectedDef || !selectedWebsiteId) return;
+    if (!selectedDef || (needsWebsite && !selectedWebsiteId)) return;
 
     const props: Record<string, any> = {};
 
@@ -116,7 +118,7 @@ export function BoardComponentSelect({
 
     const config: BoardComponentConfig = {
       type: selectedDef.type,
-      websiteId: selectedWebsiteId,
+      ...(needsWebsite ? { websiteId: selectedWebsiteId } : {}),
       title,
       description,
     };
@@ -137,7 +139,7 @@ export function BoardComponentSelect({
       }
     : null;
 
-  const canSave = !!selectedDef && !!selectedWebsiteId;
+  const canSave = !!selectedDef && (!needsWebsite || !!selectedWebsiteId);
 
   return (
     <Column gap="4">
@@ -184,7 +186,7 @@ export function BoardComponentSelect({
 
         <Column gap="3" flexGrow={1} style={{ minWidth: 0 }}>
           <Panel maxHeight="100%">
-            {previewConfig && selectedWebsiteId ? (
+            {previewConfig && (!needsWebsite || selectedWebsiteId) ? (
               <BoardComponentRenderer config={previewConfig} websiteId={selectedWebsiteId} />
             ) : (
               <Column alignItems="center" justifyContent="center" height="100%">
@@ -201,17 +203,19 @@ export function BoardComponentSelect({
         <Column gap="3" style={{ width: 320, flexShrink: 0, overflowY: 'auto' }}>
           <Text weight="bold">{t(labels.properties)}</Text>
 
-          <Column gap="2">
-            <Text size="sm" color="muted">
-              {t(labels.website)}
-            </Text>
-            <WebsiteSelect
-              websiteId={selectedWebsiteId}
-              teamId={teamId}
-              placeholder={t(labels.selectWebsite)}
-              onChange={setSelectedWebsiteId}
-            />
-          </Column>
+          {needsWebsite && (
+            <Column gap="2">
+              <Text size="sm" color="muted">
+                {t(labels.website)}
+              </Text>
+              <WebsiteSelect
+                websiteId={selectedWebsiteId}
+                teamId={teamId}
+                placeholder={t(labels.selectWebsite)}
+                onChange={setSelectedWebsiteId}
+              />
+            </Column>
+          )}
 
           <Column gap="2">
             <Text size="sm" color="muted">
@@ -260,6 +264,15 @@ export function BoardComponentSelect({
                       type="number"
                       value={String(configValues[field.name] ?? field.defaultValue ?? '')}
                       onChange={(value: string) => handleConfigChange(field.name, value)}
+                    />
+                  )}
+
+                  {field.type === 'textarea' && (
+                    <TextField
+                      asTextArea
+                      value={String(configValues[field.name] ?? field.defaultValue ?? '')}
+                      onChange={(value: string) => handleConfigChange(field.name, value)}
+                      style={{ minHeight: 200 }}
                     />
                   )}
                 </Column>

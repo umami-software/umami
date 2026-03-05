@@ -22,7 +22,7 @@ function BoardComponentRendererComponent({
 
   const Component = definition.component;
 
-  if (!websiteId) {
+  if (!websiteId && definition.requiresWebsite !== false) {
     return (
       <Column alignItems="center" justifyContent="center" width="100%" height="100%">
         <Text color="muted">Select a website</Text>
@@ -30,7 +30,7 @@ function BoardComponentRendererComponent({
     );
   }
 
-  return <Component websiteId={websiteId} {...config.props} />;
+  return <Component {...(websiteId ? { websiteId } : {})} {...config.props} />;
 }
 
 export const BoardComponentRenderer = memo(
