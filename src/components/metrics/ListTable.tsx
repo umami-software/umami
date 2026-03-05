@@ -27,6 +27,7 @@ export interface ListTableProps {
   showPercentage?: boolean;
   itemCount?: number;
   currency?: string;
+  formatCount?: (n: number) => string;
 }
 
 export function ListTable({
@@ -40,6 +41,7 @@ export function ListTable({
   showPercentage = true,
   itemCount = 10,
   currency,
+  formatCount,
 }: ListTableProps) {
   const { t, labels } = useMessages();
   const { isPhone } = useMobile();
@@ -57,6 +59,7 @@ export function ListTable({
         showPercentage={showPercentage}
         change={renderChange ? renderChange(row, index) : null}
         currency={currency}
+        formatCount={formatCount}
         isPhone={isPhone}
       />
     );
@@ -106,6 +109,7 @@ const AnimatedRow = ({
   animate,
   showPercentage = true,
   currency,
+  formatCount,
   isPhone,
 }) => {
   const props = useSpring({
@@ -135,7 +139,9 @@ const AnimatedRow = ({
           <AnimatedDiv title={props?.y as any}>
             {currency
               ? props.y?.to(n => formatLongCurrency(n, currency))
-              : props.y?.to(formatLongNumber)}
+              : formatCount
+                ? props.y?.to(formatCount)
+                : props.y?.to(formatLongNumber)}
           </AnimatedDiv>
         </Text>
       </Row>

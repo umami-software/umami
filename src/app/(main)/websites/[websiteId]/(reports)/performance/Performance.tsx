@@ -18,9 +18,9 @@ import { BarChart } from '@/components/charts/BarChart';
 import { GridRow } from '@/components/common/GridRow';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
-import { TypeIcon } from '@/components/common/TypeIcon';
 import { useLocale, useMessages, useResultQuery } from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
+import { MetricLabel } from '@/components/metrics/MetricLabel';
 import { PerformanceCard } from '@/components/metrics/PerformanceCard';
 import { renderDateLabels } from '@/lib/charts';
 import { CHART_COLORS, WEB_VITALS_THRESHOLDS } from '@/lib/constants';
@@ -46,9 +46,8 @@ const METRIC_LABELS: Record<string, string> = {
 };
 
 function formatMetricValue(metric: string, value: number): string {
-  if (metric === 'cls') {
-    return value.toFixed(3);
-  }
+  if (metric === 'cls') return value.toFixed(3);
+  if (value >= 1000) return `${(value / 1000).toFixed(2)} s`;
   return `${Math.round(value)} ms`;
 }
 
@@ -138,6 +137,11 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
   const renderXLabel = useCallback(renderDateLabels(unit, locale), [unit, locale]);
 
   const threshold = WEB_VITALS_THRESHOLDS[selectedMetric as keyof typeof WEB_VITALS_THRESHOLDS];
+  const isCls = selectedMetric === 'cls';
+  const metricLabel = t(labels[selectedMetric]) || selectedMetric.toUpperCase();
+  const formatListCount = isCls
+    ? (n: number) => n.toFixed(3)
+    : (n: number) => `${(n / 1000).toFixed(2)} s`;
 
   return (
     <Column gap>
@@ -189,6 +193,7 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
                   renderYLabel={(label: string) => {
                     const val = Number(label);
                     if (selectedMetric === 'cls') return val.toFixed(2);
+                    if (val >= 1000) return `${(val / 1000).toFixed(2)} s`;
                     return `${Math.round(val)} ms`;
                   }}
                   height="400px"
@@ -205,26 +210,40 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
                   </TabList>
                   <TabPanel id="path">
                     <ListTable
-                      metric={t(labels[selectedMetric]) || selectedMetric.toUpperCase()}
+                      metric={metricLabel}
                       showPercentage={false}
-                      data={data.pages?.map(({ name, p50, p75, p95 }: any) => ({
-                        label: name,
-                        count: Number({ p50, p75, p95 }[selectedPercentile]),
-                        percent: 0,
-                      }))}
+                      formatCount={formatListCount}
+                      data={data.pages
+                        ?.filter(
+                          ({ p50, p75, p95 }: any) =>
+                            Number({ p50, p75, p95 }[selectedPercentile]) > 0,
+                        )
+                        .slice(0, 20)
+                        .map(({ name, p50, p75, p95 }: any) => ({
+                          label: name,
+                          count: Number({ p50, p75, p95 }[selectedPercentile]),
+                          percent: 0,
+                        }))}
                       renderLabel={({ label }: { label: string }) => <Text>{label}</Text>}
                     />
                   </TabPanel>
                   <TabPanel id="title">
                     <ListTable
-                      metric={t(labels[selectedMetric]) || selectedMetric.toUpperCase()}
+                      metric={metricLabel}
                       showPercentage={false}
-                      data={data.pageTitles?.map(({ name, p50, p75, p95 }: any) => ({
-                        label: name,
-                        count: Number({ p50, p75, p95 }[selectedPercentile]),
-                        percent: 0,
-                      }))}
-                      renderLabel={({ label }: { label: string }) => <Text>{label}</Text>}
+                      formatCount={formatListCount}
+                      data={data.pageTitles
+                        ?.filter(
+                          ({ p50, p75, p95 }: any) =>
+                            Number({ p50, p75, p95 }[selectedPercentile]) > 0,
+                        )
+                        .slice(0, 20)
+                        .map(({ name, p50, p75, p95 }: any) => ({
+                          label: name,
+                          count: Number({ p50, p75, p95 }[selectedPercentile]),
+                          percent: 0,
+                        }))}
+                      renderLabel={(row: any) => <MetricLabel type="title" data={row} />}
                     />
                   </TabPanel>
                 </Tabs>
@@ -238,36 +257,40 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
                   </TabList>
                   <TabPanel id="device">
                     <ListTable
-                      metric={t(labels[selectedMetric]) || selectedMetric.toUpperCase()}
+                      metric={metricLabel}
                       showPercentage={false}
-                      data={data.devices?.map(({ name, p50, p75, p95 }: any) => ({
-                        label: name,
-                        count: Number({ p50, p75, p95 }[selectedPercentile]),
-                        percent: 0,
-                      }))}
-                      renderLabel={({ label }: { label: string }) => (
-                        <Row gap="2" alignItems="center">
-                          <TypeIcon type="device" value={label} />
-                          <Text>{label}</Text>
-                        </Row>
-                      )}
+                      formatCount={formatListCount}
+                      data={data.devices
+                        ?.filter(
+                          ({ p50, p75, p95 }: any) =>
+                            Number({ p50, p75, p95 }[selectedPercentile]) > 0,
+                        )
+                        .slice(0, 20)
+                        .map(({ name, p50, p75, p95 }: any) => ({
+                          label: name,
+                          count: Number({ p50, p75, p95 }[selectedPercentile]),
+                          percent: 0,
+                        }))}
+                      renderLabel={(row: any) => <MetricLabel type="device" data={row} />}
                     />
                   </TabPanel>
                   <TabPanel id="browser">
                     <ListTable
-                      metric={t(labels[selectedMetric]) || selectedMetric.toUpperCase()}
+                      metric={metricLabel}
                       showPercentage={false}
-                      data={data.browsers?.map(({ name, p50, p75, p95 }: any) => ({
-                        label: name,
-                        count: Number({ p50, p75, p95 }[selectedPercentile]),
-                        percent: 0,
-                      }))}
-                      renderLabel={({ label }: { label: string }) => (
-                        <Row gap="2" alignItems="center">
-                          <TypeIcon type="browser" value={label} />
-                          <Text>{label}</Text>
-                        </Row>
-                      )}
+                      formatCount={formatListCount}
+                      data={data.browsers
+                        ?.filter(
+                          ({ p50, p75, p95 }: any) =>
+                            Number({ p50, p75, p95 }[selectedPercentile]) > 0,
+                        )
+                        .slice(0, 20)
+                        .map(({ name, p50, p75, p95 }: any) => ({
+                          label: name,
+                          count: Number({ p50, p75, p95 }[selectedPercentile]),
+                          percent: 0,
+                        }))}
+                      renderLabel={(row: any) => <MetricLabel type="browser" data={row} />}
                     />
                   </TabPanel>
                 </Tabs>

@@ -95,6 +95,7 @@ export function FieldFilters({
             >
               {groupLabels.map(({ key: groupKey, label }) => {
                 const groupFields = groupedFields[groupKey];
+                if (!groupFields || groupFields.length === 0) return null;
                 return (
                   <MenuSection key={groupKey} title={label}>
                     {groupFields.map(field => {

@@ -339,6 +339,7 @@ export const labels: Record<string, string> = {
   saveCohort: 'label.save-cohort',
   analysis: 'label.analysis',
   destinationUrl: 'label.destination-url',
+  slug: 'label.slug',
   audience: 'label.audience',
   invalidUrl: 'label.invalid-url',
   environment: 'label.environment',

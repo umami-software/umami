@@ -94,7 +94,7 @@ export function LinkEditForm({
             <Grid columns="1fr auto" alignItems="end" gap>
               <FormField
                 name="slug"
-                label={t({ id: 'label.slug', defaultMessage: 'Slug' })}
+                label={t(labels.slug)}
                 rules={{
                   required: t(labels.required),
                 }}
