@@ -2,7 +2,7 @@ import { Grid, IconLabel, NavMenu, NavMenuItem, Row, Text } from '@umami/react-z
 import Link from 'next/link';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { Globe, Grid2x2, LinkIcon } from '@/components/icons';
+import { Globe, Grid2x2, LayoutDashboard, LinkIcon } from '@/components/icons';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
 import { NavButton } from '@/components/input/NavButton';
 import { Logo } from '@/components/svg';
@@ -16,6 +16,12 @@ export function MobileNav() {
   const isSettings = pathname.includes('/settings');
 
   const links = [
+    {
+      id: 'dashboard',
+      label: formatMessage(labels.dashboard),
+      path: '/dashboard',
+      icon: <LayoutDashboard />,
+    },
     {
       id: 'websites',
       label: formatMessage(labels.websites),
