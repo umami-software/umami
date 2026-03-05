@@ -68,7 +68,7 @@ async function relationalQuery(
         ${excludeBounceQuery}
         ${joinSessionQuery}
         where website_event.website_id = {{websiteId::uuid}}
-          and website_event.event_type != 2
+          and website_event.event_type NOT IN (2, 5)
           ${dateQuery}
           ${filterQuery}
         group by prefix, 
@@ -163,7 +163,7 @@ async function clickhouseQuery(
             VIDEO_DOMAINS,
           )}]) != 0 or position(lower(utm_medium), 'video') > 0 then concat(prefix, 'Video')
           when referrer_domain != hostname and referrer_domain != '' then 'referral'
-        else '' end AS name,
+        else '' end AS "name",
         session_id,
         visit_id,
         count(*) c,
@@ -174,7 +174,7 @@ async function clickhouseQuery(
       ${excludeBounceQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type != 2
+        and event_type NOT IN (2, 5)
         and name != ''
         ${filterQuery}
       group by prefix, name, session_id, visit_id

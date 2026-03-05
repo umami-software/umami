@@ -1,9 +1,15 @@
 .card {
-  transition: box-shadow 0.2s;
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 15%, transparent);
 }
 
 .card.selected {
-  box-shadow: 0 0 0 2px var(--base-color-primary);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--primary) 40%, transparent),
+    0 0 6px color-mix(in srgb, var(--primary) 15%, transparent);
 }
 
 .good .rating {

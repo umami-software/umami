@@ -1,72 +1,105 @@
--- Create Performance
-CREATE TABLE umami.website_performance
-(
-    website_id UUID,
-    session_id UUID,
-    visit_id UUID,
-    url_path String,
-    lcp Nullable(Decimal(10, 1)),
-    inp Nullable(Decimal(10, 1)),
-    cls Nullable(Decimal(10, 4)),
-    fcp Nullable(Decimal(10, 1)),
-    ttfb Nullable(Decimal(10, 1)),
-    created_at DateTime('UTC')
-)
-ENGINE = MergeTree
-    PARTITION BY toYYYYMM(created_at)
-    ORDER BY (website_id, toStartOfHour(created_at), session_id)
-    SETTINGS index_granularity = 8192;
+-- Add performance columns to website_event
+ALTER TABLE umami.website_event ADD COLUMN lcp Nullable(Decimal(10, 1)) AFTER twclid;
+ALTER TABLE umami.website_event ADD COLUMN inp Nullable(Decimal(10, 1)) AFTER lcp;
+ALTER TABLE umami.website_event ADD COLUMN cls Nullable(Decimal(10, 4)) AFTER inp;
+ALTER TABLE umami.website_event ADD COLUMN fcp Nullable(Decimal(10, 1)) AFTER cls;
+ALTER TABLE umami.website_event ADD COLUMN ttfb Nullable(Decimal(10, 1)) AFTER fcp;
 
--- Performance hourly aggregation
-CREATE TABLE umami.website_performance_hourly
-(
-    website_id UUID,
-    url_path String,
-    lcp_p50 AggregateFunction(quantile(0.5), Nullable(Decimal(10, 1))),
-    lcp_p75 AggregateFunction(quantile(0.75), Nullable(Decimal(10, 1))),
-    lcp_p95 AggregateFunction(quantile(0.95), Nullable(Decimal(10, 1))),
-    inp_p50 AggregateFunction(quantile(0.5), Nullable(Decimal(10, 1))),
-    inp_p75 AggregateFunction(quantile(0.75), Nullable(Decimal(10, 1))),
-    inp_p95 AggregateFunction(quantile(0.95), Nullable(Decimal(10, 1))),
-    cls_p50 AggregateFunction(quantile(0.5), Nullable(Decimal(10, 4))),
-    cls_p75 AggregateFunction(quantile(0.75), Nullable(Decimal(10, 4))),
-    cls_p95 AggregateFunction(quantile(0.95), Nullable(Decimal(10, 4))),
-    fcp_p50 AggregateFunction(quantile(0.5), Nullable(Decimal(10, 1))),
-    fcp_p75 AggregateFunction(quantile(0.75), Nullable(Decimal(10, 1))),
-    fcp_p95 AggregateFunction(quantile(0.95), Nullable(Decimal(10, 1))),
-    ttfb_p50 AggregateFunction(quantile(0.5), Nullable(Decimal(10, 1))),
-    ttfb_p75 AggregateFunction(quantile(0.75), Nullable(Decimal(10, 1))),
-    ttfb_p95 AggregateFunction(quantile(0.95), Nullable(Decimal(10, 1))),
-    sample_count SimpleAggregateFunction(sum, UInt64),
-    created_at DateTime('UTC')
-)
-ENGINE = AggregatingMergeTree
-    PARTITION BY toYYYYMM(created_at)
-    ORDER BY (website_id, toStartOfHour(created_at), url_path)
-    SETTINGS index_granularity = 8192;
+-- Update materialized view to exclude performance events from view counts
+DROP TABLE umami.website_event_stats_hourly_mv;
 
-CREATE MATERIALIZED VIEW umami.website_performance_hourly_mv
-TO umami.website_performance_hourly
+CREATE MATERIALIZED VIEW umami.website_event_stats_hourly_mv
+TO umami.website_event_stats_hourly
 AS
 SELECT
     website_id,
-    url_path,
-    quantileState(0.5)(lcp) as lcp_p50,
-    quantileState(0.75)(lcp) as lcp_p75,
-    quantileState(0.95)(lcp) as lcp_p95,
-    quantileState(0.5)(inp) as inp_p50,
-    quantileState(0.75)(inp) as inp_p75,
-    quantileState(0.95)(inp) as inp_p95,
-    quantileState(0.5)(cls) as cls_p50,
-    quantileState(0.75)(cls) as cls_p75,
-    quantileState(0.95)(cls) as cls_p95,
-    quantileState(0.5)(fcp) as fcp_p50,
-    quantileState(0.75)(fcp) as fcp_p75,
-    quantileState(0.95)(fcp) as fcp_p95,
-    quantileState(0.5)(ttfb) as ttfb_p50,
-    quantileState(0.75)(ttfb) as ttfb_p75,
-    quantileState(0.95)(ttfb) as ttfb_p95,
-    count() as sample_count,
-    toStartOfHour(created_at) as created_at
-FROM umami.website_performance
-GROUP BY website_id, url_path, created_at;
+    session_id,
+    visit_id,
+    hostnames as hostname,
+    browser,
+    os,
+    device,
+    screen,
+    language,
+    country,
+    region,
+    city,
+    entry_url,
+    exit_url,
+    url_paths as url_path,
+    url_query,
+    utm_source,
+    utm_medium,
+    utm_campaign,
+    utm_content,
+    utm_term,
+    referrer_domain,
+    page_title,
+    gclid,
+    fbclid,
+    msclkid,
+    ttclid,
+    li_fat_id,
+    twclid,
+    event_type,
+    event_name,
+    views,
+    min_time,
+    max_time,
+    tag,
+    distinct_id,
+    timestamp as created_at
+FROM (SELECT
+    website_id,
+    session_id,
+    visit_id,
+    arrayFilter(x -> x != '', groupArray(hostname)) hostnames,
+    browser,
+    os,
+    device,
+    screen,
+    language,
+    country,
+    region,
+    city,
+    argMinState(url_path, created_at) entry_url,
+    argMaxState(url_path, created_at) exit_url,
+    arrayFilter(x -> x != '', groupArray(url_path)) as url_paths,
+    arrayFilter(x -> x != '', groupArray(url_query)) url_query,
+    arrayFilter(x -> x != '', groupArray(utm_source)) utm_source,
+    arrayFilter(x -> x != '', groupArray(utm_medium)) utm_medium,
+    arrayFilter(x -> x != '', groupArray(utm_campaign)) utm_campaign,
+    arrayFilter(x -> x != '', groupArray(utm_content)) utm_content,
+    arrayFilter(x -> x != '', groupArray(utm_term)) utm_term,
+    arrayFilter(x -> x != '' and x != hostname, groupArray(referrer_domain)) referrer_domain,
+    arrayFilter(x -> x != '', groupArray(page_title)) page_title,
+    arrayFilter(x -> x != '', groupArray(gclid)) gclid,
+    arrayFilter(x -> x != '', groupArray(fbclid)) fbclid,
+    arrayFilter(x -> x != '', groupArray(msclkid)) msclkid,
+    arrayFilter(x -> x != '', groupArray(ttclid)) ttclid,
+    arrayFilter(x -> x != '', groupArray(li_fat_id)) li_fat_id,
+    arrayFilter(x -> x != '', groupArray(twclid)) twclid,
+    event_type,
+    if(event_type = 2, groupArray(event_name), []) event_name,
+    sumIf(1, event_type NOT IN (2, 5)) views,
+    min(created_at) min_time,
+    max(created_at) max_time,
+    arrayFilter(x -> x != '', groupArray(tag)) tag,
+    distinct_id,
+    toStartOfHour(created_at) timestamp
+FROM umami.website_event
+GROUP BY website_id,
+    session_id,
+    visit_id,
+    hostname,
+    browser,
+    os,
+    device,
+    screen,
+    language,
+    country,
+    region,
+    city,
+    event_type,
+    distinct_id,
+    timestamp);

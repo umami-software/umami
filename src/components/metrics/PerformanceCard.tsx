@@ -1,6 +1,4 @@
-import { useSpring } from '@react-spring/web';
 import { Column, Text } from '@umami/react-zen';
-import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { useMessages } from '@/components/hooks';
 import { WEB_VITALS_THRESHOLDS } from '@/lib/constants';
 import { formatNumber } from '@/lib/format';
@@ -33,7 +31,6 @@ export const PerformanceCard = ({
 }: PerformanceCardProps) => {
   const { t, labels } = useMessages();
   const rating = getRating(metric, value);
-  const props = useSpring({ x: Number(value) || 0, from: { x: 0 } });
 
   return (
     <Column
@@ -52,7 +49,7 @@ export const PerformanceCard = ({
         {label}
       </Text>
       <Text size="4xl" weight="bold" wrap="nowrap">
-        <AnimatedDiv title={value?.toString()}>{props?.x?.to(x => formatValue(x))}</AnimatedDiv>
+        {formatValue(value)}
       </Text>
       <Text size="sm" className={styles.rating}>
         {t(labels[rating === 'needs-improvement' ? 'needsImprovement' : rating])}

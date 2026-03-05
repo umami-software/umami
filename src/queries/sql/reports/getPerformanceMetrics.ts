@@ -2,17 +2,25 @@ import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
+import type { PerformanceParameters } from './getPerformance';
 
-export interface PerformanceStatsResult {
-  lcp: number;
-  inp: number;
-  cls: number;
-  fcp: number;
-  ttfb: number;
+export interface PerformanceMetricsData {
+  name: string;
+  p50: number;
+  p75: number;
+  p95: number;
   count: number;
 }
 
-export async function getPerformanceStats(...args: [websiteId: string, filters: QueryFilters]) {
+export async function getPerformanceMetrics(
+  ...args: [
+    websiteId: string,
+    parameters: PerformanceParameters,
+    filters: QueryFilters,
+    column: string,
+    limit?: number,
+  ]
+) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -21,22 +29,25 @@ export async function getPerformanceStats(...args: [websiteId: string, filters: 
 
 async function relationalQuery(
   websiteId: string,
+  parameters: PerformanceParameters,
   filters: QueryFilters,
-): Promise<PerformanceStatsResult> {
+  column: string,
+  limit?: number,
+): Promise<PerformanceMetricsData[]> {
+  const { startDate, endDate, metric = 'lcp' } = parameters;
   const { rawQuery, parseFilters } = prisma;
   const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
 
-  const result = await rawQuery(
+  return rawQuery(
     `
     select
-      percentile_cont(0.75) within group (order by lcp) as lcp,
-      percentile_cont(0.75) within group (order by inp) as inp,
-      percentile_cont(0.75) within group (order by cls) as cls,
-      percentile_cont(0.75) within group (order by fcp) as fcp,
-      percentile_cont(0.75) within group (order by ttfb) as ttfb,
+      ${column} as "name",
+      percentile_cont(0.5) within group (order by ${metric}) as p50,
+      percentile_cont(0.75) within group (order by ${metric}) as p75,
+      percentile_cont(0.95) within group (order by ${metric}) as p95,
       count(*) as count
     from website_event
     ${cohortQuery}
@@ -45,28 +56,32 @@ async function relationalQuery(
       and website_event.event_type = 5
       and website_event.created_at between {{startDate}} and {{endDate}}
       ${filterQuery}
+    group by ${column}
+    order by p75 desc
+    ${limit ? `limit ${limit}` : ''}
     `,
-    queryParams,
+    { ...queryParams, startDate, endDate },
   );
-
-  return result?.[0] || { lcp: 0, inp: 0, cls: 0, fcp: 0, ttfb: 0, count: 0 };
 }
 
 async function clickhouseQuery(
   websiteId: string,
+  parameters: PerformanceParameters,
   filters: QueryFilters,
-): Promise<PerformanceStatsResult> {
+  column: string,
+  limit?: number,
+): Promise<PerformanceMetricsData[]> {
+  const { startDate, endDate, metric = 'lcp' } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
 
-  const result = await rawQuery<PerformanceStatsResult>(
+  return rawQuery<PerformanceMetricsData[]>(
     `
     select
-      quantile(0.75)(lcp) as lcp,
-      quantile(0.75)(inp) as inp,
-      quantile(0.75)(cls) as cls,
-      quantile(0.75)(fcp) as fcp,
-      quantile(0.75)(ttfb) as ttfb,
+      ${column} as "name",
+      quantile(0.5)(${metric}) as p50,
+      quantile(0.75)(${metric}) as p75,
+      quantile(0.95)(${metric}) as p95,
       count() as count
     from website_event
     ${cohortQuery}
@@ -74,9 +89,10 @@ async function clickhouseQuery(
       and website_event.event_type = 5
       and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
       ${filterQuery}
+    group by ${column}
+    order by p75 desc
+    ${limit ? `limit ${limit}` : ''}
     `,
-    queryParams,
+    { ...queryParams, startDate, endDate },
   );
-
-  return result?.[0] || { lcp: 0, inp: 0, cls: 0, fcp: 0, ttfb: 0, count: 0 };
 }

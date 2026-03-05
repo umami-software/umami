@@ -68,7 +68,12 @@ export function ListTable({
 
   return (
     <Column gap>
-      <Grid alignItems="center" justifyContent="space-between" paddingLeft="2" columns="1fr 100px">
+      <Grid
+        alignItems="center"
+        justifyContent="space-between"
+        paddingLeft="2"
+        columns={`1fr ${showPercentage ? '100px' : '150px'}`}
+      >
         <Text weight="bold">{title}</Text>
         <Text weight="bold" align="center">
           {metric}

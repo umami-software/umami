@@ -58,7 +58,7 @@ async function relationalQuery(
       ${joinSessionQuery}  
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
-        and website_event.event_type != 2
+        and website_event.event_type NOT IN (2, 5)
         ${filterQuery}
       group by 1, 2
      
@@ -103,7 +103,7 @@ async function clickhouseQuery(
       ${excludeBounceQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type != 2
+        and event_type NOT IN (2, 5)
         ${filterQuery}
       group by session_id, visit_id
     ) as t;
@@ -127,7 +127,7 @@ async function clickhouseQuery(
         ${excludeBounceQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type != 2
+      and event_type NOT IN (2, 5)
       ${filterQuery}
       group by session_id, visit_id
     ) as t;

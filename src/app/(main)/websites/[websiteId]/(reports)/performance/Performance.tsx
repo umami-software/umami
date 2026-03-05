@@ -1,13 +1,26 @@
 'use client';
-import { Column, Grid, Row, Text } from '@umami/react-zen';
+import {
+  Column,
+  Grid,
+  Heading,
+  ListItem,
+  Row,
+  Select,
+  Tab,
+  TabList,
+  TabPanel,
+  Tabs,
+  Text,
+} from '@umami/react-zen';
 import { colord } from 'colord';
 import { useCallback, useMemo, useState } from 'react';
 import { BarChart } from '@/components/charts/BarChart';
+import { GridRow } from '@/components/common/GridRow';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
+import { TypeIcon } from '@/components/common/TypeIcon';
 import { useLocale, useMessages, useResultQuery } from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
-import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { PerformanceCard } from '@/components/metrics/PerformanceCard';
 import { renderDateLabels } from '@/lib/charts';
 import { CHART_COLORS, WEB_VITALS_THRESHOLDS } from '@/lib/constants';
@@ -39,8 +52,15 @@ function formatMetricValue(metric: string, value: number): string {
   return `${Math.round(value)} ms`;
 }
 
+const PERCENTILES = [
+  { id: 'p50', label: 'p50 — Median' },
+  { id: 'p75', label: 'p75 — 75th Percentile' },
+  { id: 'p95', label: 'p95 — 95th Percentile' },
+] as const;
+
 export function Performance({ websiteId, startDate, endDate, unit }: PerformanceProps) {
   const [selectedMetric, setSelectedMetric] = useState<string>('lcp');
+  const [selectedPercentile, setSelectedPercentile] = useState<'p50' | 'p75' | 'p95'>('p75');
   const { t, labels } = useMessages();
   const { locale, dateLocale } = useLocale();
 
@@ -121,6 +141,19 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
 
   return (
     <Column gap>
+      <Grid columns="280px" gap>
+        <Select
+          label="Percentile"
+          value={selectedPercentile}
+          onChange={(value: string) => setSelectedPercentile(value as 'p50' | 'p75' | 'p95')}
+        >
+          {PERCENTILES.map(({ id, label }) => (
+            <ListItem key={id} id={id}>
+              {label}
+            </ListItem>
+          ))}
+        </Select>
+      </Grid>
       <LoadingPanel data={data} isLoading={isLoading} error={error}>
         {data && (
           <Column gap>
@@ -129,7 +162,7 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
                 <PerformanceCard
                   key={metric}
                   metric={metric}
-                  value={Number(data.summary?.[metric]?.p75 || 0)}
+                  value={Number(data.summary?.[metric]?.[selectedPercentile] || 0)}
                   label={t(labels[metric]) || metric.toUpperCase()}
                   formatValue={(n: number) => formatMetricValue(metric, n)}
                   onClick={() => setSelectedMetric(metric)}
@@ -162,20 +195,84 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
                 />
               </Column>
             </Panel>
-            <Panel>
-              <ListTable
-                title={t(labels.pages)}
-                metric={t(labels[selectedMetric]) || selectedMetric.toUpperCase()}
-                data={data.pages?.map(
-                  ({ urlPath, p75, count }: { urlPath: string; p75: number; count: number }) => ({
-                    label: urlPath,
-                    count: Number(p75),
-                    percent: 0,
-                  }),
-                )}
-                renderLabel={({ label }: { label: string }) => <Text>{label}</Text>}
-              />
-            </Panel>
+            <GridRow layout="two">
+              <Panel>
+                <Tabs>
+                  <Heading size="2xl">{t(labels.pages)}</Heading>
+                  <TabList>
+                    <Tab id="path">{t(labels.path)}</Tab>
+                    <Tab id="title">{t(labels.pageTitle)}</Tab>
+                  </TabList>
+                  <TabPanel id="path">
+                    <ListTable
+                      metric={t(labels[selectedMetric]) || selectedMetric.toUpperCase()}
+                      showPercentage={false}
+                      data={data.pages?.map(({ name, p50, p75, p95 }: any) => ({
+                        label: name,
+                        count: Number({ p50, p75, p95 }[selectedPercentile]),
+                        percent: 0,
+                      }))}
+                      renderLabel={({ label }: { label: string }) => <Text>{label}</Text>}
+                    />
+                  </TabPanel>
+                  <TabPanel id="title">
+                    <ListTable
+                      metric={t(labels[selectedMetric]) || selectedMetric.toUpperCase()}
+                      showPercentage={false}
+                      data={data.pageTitles?.map(({ name, p50, p75, p95 }: any) => ({
+                        label: name,
+                        count: Number({ p50, p75, p95 }[selectedPercentile]),
+                        percent: 0,
+                      }))}
+                      renderLabel={({ label }: { label: string }) => <Text>{label}</Text>}
+                    />
+                  </TabPanel>
+                </Tabs>
+              </Panel>
+              <Panel>
+                <Tabs>
+                  <Heading size="2xl">{t(labels.environment)}</Heading>
+                  <TabList>
+                    <Tab id="device">{t(labels.device)}</Tab>
+                    <Tab id="browser">{t(labels.browser)}</Tab>
+                  </TabList>
+                  <TabPanel id="device">
+                    <ListTable
+                      metric={t(labels[selectedMetric]) || selectedMetric.toUpperCase()}
+                      showPercentage={false}
+                      data={data.devices?.map(({ name, p50, p75, p95 }: any) => ({
+                        label: name,
+                        count: Number({ p50, p75, p95 }[selectedPercentile]),
+                        percent: 0,
+                      }))}
+                      renderLabel={({ label }: { label: string }) => (
+                        <Row gap="2" alignItems="center">
+                          <TypeIcon type="device" value={label} />
+                          <Text>{label}</Text>
+                        </Row>
+                      )}
+                    />
+                  </TabPanel>
+                  <TabPanel id="browser">
+                    <ListTable
+                      metric={t(labels[selectedMetric]) || selectedMetric.toUpperCase()}
+                      showPercentage={false}
+                      data={data.browsers?.map(({ name, p50, p75, p95 }: any) => ({
+                        label: name,
+                        count: Number({ p50, p75, p95 }[selectedPercentile]),
+                        percent: 0,
+                      }))}
+                      renderLabel={({ label }: { label: string }) => (
+                        <Row gap="2" alignItems="center">
+                          <TypeIcon type="browser" value={label} />
+                          <Text>{label}</Text>
+                        </Row>
+                      )}
+                    />
+                  </TabPanel>
+                </Tabs>
+              </Panel>
+            </GridRow>
           </Column>
         )}
       </LoadingPanel>
