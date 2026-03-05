@@ -32,6 +32,28 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const [maxDuration, setMaxDuration] = useState(String(config.maxDuration ?? 300000));
   const [blockSelector, setBlockSelector] = useState(config.blockSelector ?? '');
 
+  const handleToggle = async (value: boolean) => {
+    const previous = enabled;
+    setEnabled(value);
+
+    try {
+      await mutateAsync(
+        {
+          replayEnabled: value,
+        },
+        {
+          onSuccess: async () => {
+            toast(t(messages.saved));
+            touch('websites');
+            touch(`website:${websiteId}`);
+          },
+        },
+      );
+    } catch {
+      setEnabled(previous);
+    }
+  };
+
   const handleSave = async () => {
     await mutateAsync(
       {
@@ -47,7 +69,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
         onSuccess: async () => {
           toast(t(messages.saved));
           touch('websites');
-          touch(`website:${website.id}`);
+          touch(`website:${websiteId}`);
         },
       },
     );
@@ -56,7 +78,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   return (
     <Column gap="4">
       <Label>{t(labels.replays)}</Label>
-      <Switch isSelected={enabled} onChange={setEnabled}>
+      <Switch isSelected={enabled} onChange={handleToggle} isDisabled={isPending}>
         {t(labels.replayEnabled)}
       </Switch>
       {enabled && (
@@ -92,13 +114,13 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
             <Label>{t(labels.blockSelector)}</Label>
             <TextField value={blockSelector} onChange={setBlockSelector} />
           </Column>
+          <Row>
+            <Button variant="primary" onPress={handleSave} isDisabled={isPending}>
+              {t(labels.save)}
+            </Button>
+          </Row>
         </>
       )}
-      <Row>
-        <Button variant="primary" onPress={handleSave} isDisabled={isPending}>
-          {t(labels.save)}
-        </Button>
-      </Row>
     </Column>
   );
 }

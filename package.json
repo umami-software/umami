@@ -33,6 +33,7 @@
     "update-db": "prisma migrate deploy",
     "check-db": "node scripts/check-db.js",
     "check-env": "node scripts/check-env.js",
+    "check-missing-messages": "node scripts/check-missing-messages.js",
     "copy-db-files": "node scripts/copy-db-files.js",
     "download-country-names": "node scripts/download-country-names.js",
     "download-language-names": "node scripts/download-language-names.js",

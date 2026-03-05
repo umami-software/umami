@@ -358,6 +358,7 @@ export const labels: Record<string, string> = {
   needsImprovement: 'label.needs-improvement',
   poor: 'label.poor',
   sampleSize: 'label.sample-size',
+  play: 'label.play',
   replays: 'label.replays',
   replay: 'label.replay',
   replayId: 'label.replay-id',

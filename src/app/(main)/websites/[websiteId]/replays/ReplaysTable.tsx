@@ -20,6 +20,15 @@ export function ReplaysTable({ ...props }: DataTableProps) {
 
   return (
     <DataTable {...props}>
+      <DataColumn id="play" label="" width="80px">
+        {(row: any) => (
+          <Button variant="quiet" onClick={() => router.push(updateParams({ replay: row.id }))}>
+            <Icon>
+              <Play />
+            </Icon>
+          </Button>
+        )}
+      </DataColumn>
       <DataColumn id="id" label={t(labels.session)} width="100px">
         {(row: any) => (
           <Link href={updateParams({ session: row.sessionId })}>
@@ -62,15 +71,6 @@ export function ReplaysTable({ ...props }: DataTableProps) {
       </DataColumn>
       <DataColumn id="createdAt" label={t(labels.recordedAt)} width="140px">
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
-      </DataColumn>
-      <DataColumn id="play" label="" width="80px">
-        {(row: any) => (
-          <Button variant="quiet" onClick={() => router.push(updateParams({ replay: row.id }))}>
-            <Icon>
-              <Play />
-            </Icon>
-          </Button>
-        )}
       </DataColumn>
     </DataTable>
   );
