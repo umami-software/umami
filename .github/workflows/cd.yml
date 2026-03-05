@@ -24,7 +24,6 @@ jobs:
       contents: read
       packages: write
     strategy:
-      fail-fast: false
       matrix:
         include:
           - type: standard
@@ -92,15 +91,12 @@ jobs:
               GHCR_TAGS="ghcr.io/${{ github.repository }}:$VERSION$SUFFIX"
               GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:${MAJOR}.${MINOR}$SUFFIX"
               GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:${MAJOR}$SUFFIX"
-
+              GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:postgresql-latest$SUFFIX"
+          
               DOCKER_TAGS="umamisoftware/umami:$VERSION$SUFFIX"
               DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:${MAJOR}.${MINOR}$SUFFIX"
               DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:${MAJOR}$SUFFIX"
-
-              if [[ -z "$SUFFIX" ]]; then
-                GHCR_TAGS="$GHCR_TAGS,ghcr.io/${{ github.repository }}:postgresql-latest"
-                DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:postgresql-latest"
-              fi
+              DOCKER_TAGS="$DOCKER_TAGS,umamisoftware/umami:postgresql-latest$SUFFIX"
           
               # Add latest tag based on trigger and input
               if [[ "$REF_TYPE" == "tag" ]] || [[ "$INCLUDE_LATEST" == "true" ]]; then
