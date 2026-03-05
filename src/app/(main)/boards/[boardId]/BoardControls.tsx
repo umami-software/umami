@@ -9,15 +9,8 @@ export function BoardControls() {
     ?.flatMap(row => row.columns)
     .map(column => column.component?.websiteId)
     .filter(Boolean);
-  const fallbackWebsiteId =
-    componentWebsiteIds && new Set(componentWebsiteIds).size === 1
-      ? componentWebsiteIds[0]
-      : undefined;
+  const fallbackWebsiteId = componentWebsiteIds?.[0];
   const websiteId = boardWebsiteId || fallbackWebsiteId;
-
-  if (!websiteId) {
-    return null;
-  }
 
   return (
     <Box marginBottom="4">

@@ -6,7 +6,7 @@ import { useWebsiteSegmentsQuery } from '@/components/hooks';
 import { ChartPie, UserPlus } from '@/components/icons';
 
 export interface SegmentFiltersProps {
-  websiteId: string;
+  websiteId?: string;
   segmentId: string;
   type?: string;
   onChange?: (id: string, type: string) => void;

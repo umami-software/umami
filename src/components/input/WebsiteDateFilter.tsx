@@ -7,7 +7,7 @@ import { getDateRangeValue } from '@/lib/date';
 import { DateFilter } from './DateFilter';
 
 export interface WebsiteDateFilterProps {
-  websiteId: string;
+  websiteId?: string;
   compare?: string;
   showAllTime?: boolean;
   showButtons?: boolean;

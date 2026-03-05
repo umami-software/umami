@@ -27,7 +27,7 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
   const [currentCohort, setCurrentCohort] = useState(cohort);
   const [currentMatch, setCurrentMatch] = useState<string>(match || 'all');
   const { isMobile } = useMobile();
-  const excludeFilters = pathname.includes('/pixels') || pathname.includes('/links');
+  const excludeFilters = !websiteId || pathname.includes('/pixels') || pathname.includes('/links');
   const excludeEvent = !pathname.endsWith('/events') && !pathname.endsWith('/replays');
 
   const handleReset = () => {

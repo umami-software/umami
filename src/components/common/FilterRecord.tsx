@@ -17,7 +17,7 @@ import { X } from '@/components/icons';
 import { isSearchOperator } from '@/lib/params';
 
 export interface FilterRecordProps {
-  websiteId: string;
+  websiteId?: string;
   type: string;
   startDate: Date;
   endDate: Date;
