@@ -3,7 +3,7 @@ import 'dotenv/config';
 import fs from 'node:fs';
 import path from 'node:path';
 import https from 'https';
-import tar from 'tar';
+import * as tar from 'tar';
 import zlib from 'zlib';
 
 if (process.env.VERCEL && !process.env.BUILD_GEO) {
