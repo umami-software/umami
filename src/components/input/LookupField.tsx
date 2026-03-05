@@ -12,7 +12,7 @@ export interface LookupFieldProps extends ComboBoxProps {
 }
 
 export function LookupField({ websiteId, type, value, onChange, ...props }: LookupFieldProps) {
-  const { formatMessage, messages } = useMessages();
+  const { t, messages } = useMessages();
   const [search, setSearch] = useState(value);
   const searchValue = useDebounce(search, 300);
   const startDate = subMonths(endOfDay(new Date()), 6);
@@ -51,7 +51,7 @@ export function LookupField({ websiteId, type, value, onChange, ...props }: Look
         isLoading ? (
           <Loading placement="center" icon="dots" />
         ) : (
-          <Empty message={formatMessage(messages.noResultsFound)} />
+          <Empty message={t(messages.noResultsFound)} />
         )
       }
     >

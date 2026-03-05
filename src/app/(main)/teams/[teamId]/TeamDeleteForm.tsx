@@ -12,7 +12,7 @@ export function TeamDeleteForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { labels, formatMessage, getErrorMessage } = useMessages();
+  const { labels, t, getErrorMessage } = useMessages();
   const { mutateAsync, error, isPending, touch } = useDeleteQuery(`/teams/${teamId}`);
 
   const handleConfirm = async () => {
@@ -33,7 +33,7 @@ export function TeamDeleteForm({
       onClose={onClose}
       isLoading={isPending}
       error={getErrorMessage(error)}
-      buttonLabel={formatMessage(labels.delete)}
+      buttonLabel={t(labels.delete)}
       buttonVariant="danger"
     />
   );

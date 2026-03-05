@@ -1,2178 +1,393 @@
 {
-  "label.access-code": [
-    {
-      "type": 0,
-      "value": "Erişim Kodu"
-    }
-  ],
-  "label.actions": [
-    {
-      "type": 0,
-      "value": "Hareketler"
-    }
-  ],
-  "label.activity": [
-    {
-      "type": 0,
-      "value": "Aktivite Kaydı"
-    }
-  ],
-  "label.add": [
-    {
-      "type": 0,
-      "value": "Ekle"
-    }
-  ],
-  "label.add-board": [
-    {
-      "type": 0,
-      "value": "Pano ekle"
-    }
-  ],
-  "label.add-description": [
-    {
-      "type": 0,
-      "value": "Açıklama ekle"
-    }
-  ],
-  "label.add-member": [
-    {
-      "type": 0,
-      "value": "Üye ekle"
-    }
-  ],
-  "label.add-step": [
-    {
-      "type": 0,
-      "value": "Adım ekle"
-    }
-  ],
-  "label.add-website": [
-    {
-      "type": 0,
-      "value": "Web sitesi ekle"
-    }
-  ],
-  "label.admin": [
-    {
-      "type": 0,
-      "value": "Administrator"
-    }
-  ],
-  "label.affiliate": [
-    {
-      "type": 0,
-      "value": "Ortak"
-    }
-  ],
-  "label.after": [
-    {
-      "type": 0,
-      "value": "Sonra"
-    }
-  ],
-  "label.all": [
-    {
-      "type": 0,
-      "value": "Tümü"
-    }
-  ],
-  "label.all-time": [
-    {
-      "type": 0,
-      "value": "Tüm zamanlar"
-    }
-  ],
-  "label.analytics": [
-    {
-      "type": 0,
-      "value": "Analitik"
-    }
-  ],
-  "label.apply": [
-    {
-      "type": 0,
-      "value": "Uygula"
-    }
-  ],
-  "label.attribution": [
-    {
-      "type": 0,
-      "value": "Atıf"
-    }
-  ],
-  "label.attribution-description": [
-    {
-      "type": 0,
-      "value": "Kullanıcıların pazarlamanızla nasıl etkileşime girdiğini ve dönüşümleri neyin tetiklediğini görün."
-    }
-  ],
-  "label.average": [
-    {
-      "type": 0,
-      "value": "Ortalama"
-    }
-  ],
-  "label.back": [
-    {
-      "type": 0,
-      "value": "Geri"
-    }
-  ],
-  "label.before": [
-    {
-      "type": 0,
-      "value": "Önce"
-    }
-  ],
-  "label.boards": [
-    {
-      "type": 0,
-      "value": "Panolar"
-    }
-  ],
-  "label.bounce-rate": [
-    {
-      "type": 0,
-      "value": "Tek sayfa ziyaret oranı"
-    }
-  ],
-  "label.breakdown": [
-    {
-      "type": 0,
-      "value": "Dağılım"
-    }
-  ],
-  "label.browser": [
-    {
-      "type": 0,
-      "value": "Tarayıcı"
-    }
-  ],
-  "label.browsers": [
-    {
-      "type": 0,
-      "value": "Tarayıcılar"
-    }
-  ],
-  "label.campaigns": [
-    {
-      "type": 0,
-      "value": "Kampanyalar"
-    }
-  ],
-  "label.cancel": [
-    {
-      "type": 0,
-      "value": "İptal"
-    }
-  ],
-  "label.change-password": [
-    {
-      "type": 0,
-      "value": "Şifre değiştir"
-    }
-  ],
-  "label.channels": [
-    {
-      "type": 0,
-      "value": "Kanallar"
-    }
-  ],
-  "label.cities": [
-    {
-      "type": 0,
-      "value": "Şehirler"
-    }
-  ],
-  "label.city": [
-    {
-      "type": 0,
-      "value": "Şehir"
-    }
-  ],
-  "label.clear-all": [
-    {
-      "type": 0,
-      "value": "Hepsini temizle"
-    }
-  ],
-  "label.cohort": [
-    {
-      "type": 0,
-      "value": "Kohort"
-    }
-  ],
-  "label.compare": [
-    {
-      "type": 0,
-      "value": "Karşılaştır"
-    }
-  ],
-  "label.compare-dates": [
-    {
-      "type": 0,
-      "value": "Tarihleri karşılaştır"
-    }
-  ],
-  "label.confirm": [
-    {
-      "type": 0,
-      "value": "Onayla"
-    }
-  ],
-  "label.confirm-password": [
-    {
-      "type": 0,
-      "value": "Parolayı onayla"
-    }
-  ],
-  "label.contains": [
-    {
-      "type": 0,
-      "value": "İçeriği"
-    }
-  ],
-  "label.content": [
-    {
-      "type": 0,
-      "value": "İçerik"
-    }
-  ],
-  "label.continue": [
-    {
-      "type": 0,
-      "value": "Devam et"
-    }
-  ],
-  "label.conversion": [
-    {
-      "type": 0,
-      "value": "Dönüşüm"
-    }
-  ],
-  "label.conversion-rate": [
-    {
-      "type": 0,
-      "value": "Dönüşüm oranı"
-    }
-  ],
-  "label.conversion-step": [
-    {
-      "type": 0,
-      "value": "Dönüşüm adımı"
-    }
-  ],
-  "label.count": [
-    {
-      "type": 0,
-      "value": "Adet"
-    }
-  ],
-  "label.countries": [
-    {
-      "type": 0,
-      "value": "Ülkeler"
-    }
-  ],
-  "label.country": [
-    {
-      "type": 0,
-      "value": "Ülke"
-    }
-  ],
-  "label.create": [
-    {
-      "type": 0,
-      "value": "Oluştur"
-    }
-  ],
-  "label.create-report": [
-    {
-      "type": 0,
-      "value": "Rapor oluştur"
-    }
-  ],
-  "label.create-team": [
-    {
-      "type": 0,
-      "value": "Takım oluştur"
-    }
-  ],
-  "label.create-user": [
-    {
-      "type": 0,
-      "value": "Kullanıcı oluştur"
-    }
-  ],
-  "label.created": [
-    {
-      "type": 0,
-      "value": "Oluşturuldu"
-    }
-  ],
-  "label.created-by": [
-    {
-      "type": 0,
-      "value": "Tarafından oluşturldu"
-    }
-  ],
-  "label.currency": [
-    {
-      "type": 0,
-      "value": "Para birimi"
-    }
-  ],
-  "label.current": [
-    {
-      "type": 0,
-      "value": "Mevcut"
-    }
-  ],
-  "label.current-password": [
-    {
-      "type": 0,
-      "value": "Mevcut parola"
-    }
-  ],
-  "label.custom-range": [
-    {
-      "type": 0,
-      "value": "Özelleştirilmiş aralık"
-    }
-  ],
-  "label.dashboard": [
-    {
-      "type": 0,
-      "value": "Kontrol Paneli"
-    }
-  ],
-  "label.data": [
-    {
-      "type": 0,
-      "value": "Veri"
-    }
-  ],
-  "label.date": [
-    {
-      "type": 0,
-      "value": "Tarih"
-    }
-  ],
-  "label.date-range": [
-    {
-      "type": 0,
-      "value": "Tarih aralığı"
-    }
-  ],
-  "label.day": [
-    {
-      "type": 0,
-      "value": "Gün"
-    }
-  ],
-  "label.default-date-range": [
-    {
-      "type": 0,
-      "value": "Varsayılan tarih aralığı"
-    }
-  ],
-  "label.delete": [
-    {
-      "type": 0,
-      "value": "Sil"
-    }
-  ],
-  "label.delete-report": [
-    {
-      "type": 0,
-      "value": "Rapor sil"
-    }
-  ],
-  "label.delete-team": [
-    {
-      "type": 0,
-      "value": "Takım sil"
-    }
-  ],
-  "label.delete-user": [
-    {
-      "type": 0,
-      "value": "Kullanıcı sil"
-    }
-  ],
-  "label.delete-website": [
-    {
-      "type": 0,
-      "value": "Web sitesini sil"
-    }
-  ],
-  "label.description": [
-    {
-      "type": 0,
-      "value": "Açıklama"
-    }
-  ],
-  "label.desktop": [
-    {
-      "type": 0,
-      "value": "Masaüstü"
-    }
-  ],
-  "label.details": [
-    {
-      "type": 0,
-      "value": "Detaylar"
-    }
-  ],
-  "label.device": [
-    {
-      "type": 0,
-      "value": "Cihaz"
-    }
-  ],
-  "label.devices": [
-    {
-      "type": 0,
-      "value": "Cihazlar"
-    }
-  ],
-  "label.direct": [
-    {
-      "type": 0,
-      "value": "Doğrudan"
-    }
-  ],
-  "label.dismiss": [
-    {
-      "type": 0,
-      "value": "Reddet"
-    }
-  ],
-  "label.distinct-id": [
-    {
-      "type": 0,
-      "value": "Benzersiz ID"
-    }
-  ],
-  "label.does-not-contain": [
-    {
-      "type": 0,
-      "value": "İçermez"
-    }
-  ],
-  "label.does-not-include": [
-    {
-      "type": 0,
-      "value": "İçermiyor"
-    }
-  ],
-  "label.doest-not-exist": [
-    {
-      "type": 0,
-      "value": "Mevcut değil"
-    }
-  ],
-  "label.domain": [
-    {
-      "type": 0,
-      "value": "Alan adı"
-    }
-  ],
-  "label.dropoff": [
-    {
-      "type": 0,
-      "value": "Bırakma"
-    }
-  ],
-  "label.edit": [
-    {
-      "type": 0,
-      "value": "Düzenle"
-    }
-  ],
-  "label.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "Kontrol panelini düzenle"
-    }
-  ],
-  "label.edit-member": [
-    {
-      "type": 0,
-      "value": "Üyeyi düzenle"
-    }
-  ],
-  "label.email": [
-    {
-      "type": 0,
-      "value": "Email"
-    }
-  ],
-  "label.enable-share-url": [
-    {
-      "type": 0,
-      "value": "Anonim paylaşım URL'i aktif"
-    }
-  ],
-  "label.end-step": [
-    {
-      "type": 0,
-      "value": "End Step"
-    }
-  ],
-  "label.entry": [
-    {
-      "type": 0,
-      "value": "Entry URL"
-    }
-  ],
-  "label.event": [
-    {
-      "type": 0,
-      "value": "Olay"
-    }
-  ],
-  "label.event-data": [
-    {
-      "type": 0,
-      "value": "Olay verisi"
-    }
-  ],
-  "label.event-name": [
-    {
-      "type": 0,
-      "value": "Olay adı"
-    }
-  ],
-  "label.events": [
-    {
-      "type": 0,
-      "value": "Olaylar"
-    }
-  ],
-  "label.exists": [
-    {
-      "type": 0,
-      "value": "Mevcut"
-    }
-  ],
-  "label.exit": [
-    {
-      "type": 0,
-      "value": "Exit URL"
-    }
-  ],
-  "label.false": [
-    {
-      "type": 0,
-      "value": "Yanlış"
-    }
-  ],
-  "label.field": [
-    {
-      "type": 0,
-      "value": "Alan"
-    }
-  ],
-  "label.fields": [
-    {
-      "type": 0,
-      "value": "Alanlar"
-    }
-  ],
-  "label.filter": [
-    {
-      "type": 0,
-      "value": "Filtre"
-    }
-  ],
-  "label.filter-combined": [
-    {
-      "type": 0,
-      "value": "Birleşik filtre"
-    }
-  ],
-  "label.filter-raw": [
-    {
-      "type": 0,
-      "value": "Ham filtre"
-    }
-  ],
-  "label.filters": [
-    {
-      "type": 0,
-      "value": "Filtreler"
-    }
-  ],
-  "label.first-click": [
-    {
-      "type": 0,
-      "value": "İlk tıklama"
-    }
-  ],
-  "label.first-seen": [
-    {
-      "type": 0,
-      "value": "First seen"
-    }
-  ],
-  "label.funnel": [
-    {
-      "type": 0,
-      "value": "Huni"
-    }
-  ],
-  "label.funnel-description": [
-    {
-      "type": 0,
-      "value": "Kullanıcıların dönüşüm ve ayrılma oranlarını anlayın."
-    }
-  ],
-  "label.funnels": [
-    {
-      "type": 0,
-      "value": "Huniler"
-    }
-  ],
-  "label.goal": [
-    {
-      "type": 0,
-      "value": "Hedef"
-    }
-  ],
-  "label.goals": [
-    {
-      "type": 0,
-      "value": "Hedefler"
-    }
-  ],
-  "label.goals-description": [
-    {
-      "type": 0,
-      "value": "Sayfa görüntüleme ve olaylar için hedeflerinizi takip edin."
-    }
-  ],
-  "label.greater-than": [
-    {
-      "type": 0,
-      "value": "Büyüktür"
-    }
-  ],
-  "label.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "Büyük veya eşittir"
-    }
-  ],
-  "label.grouped": [
-    {
-      "type": 0,
-      "value": "Gruplandırılmış"
-    }
-  ],
-  "label.hostname": [
-    {
-      "type": 0,
-      "value": "Sunucu adı"
-    }
-  ],
-  "label.includes": [
-    {
-      "type": 0,
-      "value": "İçerir"
-    }
-  ],
-  "label.insight": [
-    {
-      "type": 0,
-      "value": "İçgörü"
-    }
-  ],
-  "label.insights": [
-    {
-      "type": 0,
-      "value": "Insights"
-    }
-  ],
-  "label.insights-description": [
-    {
-      "type": 0,
-      "value": "Segmentleri ve filtreleri kullanarak verilerinizi derinlemesine inceleyin."
-    }
-  ],
-  "label.is": [
-    {
-      "type": 0,
-      "value": "Is"
-    }
-  ],
-  "label.is-false": [
-    {
-      "type": 0,
-      "value": "Yanlış"
-    }
-  ],
-  "label.is-not": [
-    {
-      "type": 0,
-      "value": "Değil"
-    }
-  ],
-  "label.is-not-set": [
-    {
-      "type": 0,
-      "value": "Ayarlanmamış"
-    }
-  ],
-  "label.is-set": [
-    {
-      "type": 0,
-      "value": "Ayarlandı"
-    }
-  ],
-  "label.is-true": [
-    {
-      "type": 0,
-      "value": "Doğru"
-    }
-  ],
-  "label.join": [
-    {
-      "type": 0,
-      "value": "Katıl"
-    }
-  ],
-  "label.join-team": [
-    {
-      "type": 0,
-      "value": "Takıma katıl"
-    }
-  ],
-  "label.journey": [
-    {
-      "type": 0,
-      "value": "Yolculuk"
-    }
-  ],
-  "label.journey-description": [
-    {
-      "type": 0,
-      "value": "Kullanıcıların sitenizde nasıl gezindiğini anlayın."
-    }
-  ],
-  "label.journeys": [
-    {
-      "type": 0,
-      "value": "Yolculuklar"
-    }
-  ],
-  "label.language": [
-    {
-      "type": 0,
-      "value": "Dil"
-    }
-  ],
-  "label.languages": [
-    {
-      "type": 0,
-      "value": "Diller"
-    }
-  ],
-  "label.laptop": [
-    {
-      "type": 0,
-      "value": "Dizüstü"
-    }
-  ],
-  "label.last-click": [
-    {
-      "type": 0,
-      "value": "Son tıklama"
-    }
-  ],
-  "label.last-days": [
-    {
-      "type": 0,
-      "value": "Son "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " gün"
-    }
-  ],
-  "label.last-hours": [
-    {
-      "type": 0,
-      "value": "Son "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " saat"
-    }
-  ],
-  "label.last-months": [
-    {
-      "type": 0,
-      "value": "Son "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " ay"
-    }
-  ],
-  "label.last-seen": [
-    {
-      "type": 0,
-      "value": "Son görüldü"
-    }
-  ],
-  "label.leave": [
-    {
-      "type": 0,
-      "value": "Ayrıl"
-    }
-  ],
-  "label.leave-team": [
-    {
-      "type": 0,
-      "value": "Takımdan Ayrıl"
-    }
-  ],
-  "label.less-than": [
-    {
-      "type": 0,
-      "value": "Küçüktür"
-    }
-  ],
-  "label.less-than-equals": [
-    {
-      "type": 0,
-      "value": "Küçük veya eşittir"
-    }
-  ],
-  "label.links": [
-    {
-      "type": 0,
-      "value": "Bağlantılar"
-    }
-  ],
-  "label.login": [
-    {
-      "type": 0,
-      "value": "Giriş Yap"
-    }
-  ],
-  "label.logout": [
-    {
-      "type": 0,
-      "value": "Çıkış Yap"
-    }
-  ],
-  "label.manage": [
-    {
-      "type": 0,
-      "value": "Yönet"
-    }
-  ],
-  "label.manager": [
-    {
-      "type": 0,
-      "value": "Manager"
-    }
-  ],
-  "label.max": [
-    {
-      "type": 0,
-      "value": "Max"
-    }
-  ],
-  "label.maximize": [
-    {
-      "type": 0,
-      "value": "Genişlet"
-    }
-  ],
-  "label.medium": [
-    {
-      "type": 0,
-      "value": "Orta"
-    }
-  ],
-  "label.member": [
-    {
-      "type": 0,
-      "value": "Üye"
-    }
-  ],
-  "label.members": [
-    {
-      "type": 0,
-      "value": "Üyeler"
-    }
-  ],
-  "label.min": [
-    {
-      "type": 0,
-      "value": "Min"
-    }
-  ],
-  "label.mobile": [
-    {
-      "type": 0,
-      "value": "Mobil Cihaz"
-    }
-  ],
-  "label.model": [
-    {
-      "type": 0,
-      "value": "Model"
-    }
-  ],
-  "label.more": [
-    {
-      "type": 0,
-      "value": "Detaylı göster"
-    }
-  ],
-  "label.my-account": [
-    {
-      "type": 0,
-      "value": "Hesabım"
-    }
-  ],
-  "label.my-websites": [
-    {
-      "type": 0,
-      "value": "Web sitelerim"
-    }
-  ],
-  "label.name": [
-    {
-      "type": 0,
-      "value": "İsim"
-    }
-  ],
-  "label.new-password": [
-    {
-      "type": 0,
-      "value": "Yeni parola"
-    }
-  ],
-  "label.none": [
-    {
-      "type": 0,
-      "value": "Yok"
-    }
-  ],
-  "label.number-of-records": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "record"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "records"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "label.ok": [
-    {
-      "type": 0,
-      "value": "TAMAM"
-    }
-  ],
-  "label.online": [
-    {
-      "type": 0,
-      "value": "Online"
-    }
-  ],
-  "label.organic-search": [
-    {
-      "type": 0,
-      "value": "Organik arama"
-    }
-  ],
-  "label.organic-shopping": [
-    {
-      "type": 0,
-      "value": "Organik alışveriş"
-    }
-  ],
-  "label.organic-social": [
-    {
-      "type": 0,
-      "value": "Organik sosyal"
-    }
-  ],
-  "label.organic-video": [
-    {
-      "type": 0,
-      "value": "Organik video"
-    }
-  ],
-  "label.os": [
-    {
-      "type": 0,
-      "value": "OS"
-    }
-  ],
-  "label.other": [
-    {
-      "type": 0,
-      "value": "Diğer"
-    }
-  ],
-  "label.overview": [
-    {
-      "type": 0,
-      "value": "Genel bakış"
-    }
-  ],
-  "label.owner": [
-    {
-      "type": 0,
-      "value": "Sahibi"
-    }
-  ],
-  "label.page": [
-    {
-      "type": 0,
-      "value": "Sayfa"
-    }
-  ],
-  "label.page-of": [
-    {
-      "type": 1,
-      "value": "total"
-    },
-    {
-      "type": 0,
-      "value": " sayfada "
-    },
-    {
-      "type": 1,
-      "value": "current"
-    },
-    {
-      "type": 0,
-      "value": " "
-    }
-  ],
-  "label.page-views": [
-    {
-      "type": 0,
-      "value": "Sayfa görünümü"
-    }
-  ],
-  "label.pageTitle": [
-    {
-      "type": 0,
-      "value": "Sayfa başlığı"
-    }
-  ],
-  "label.pages": [
-    {
-      "type": 0,
-      "value": "Sayfalar"
-    }
-  ],
-  "label.paid-ads": [
-    {
-      "type": 0,
-      "value": "Ücretli reklamlar"
-    }
-  ],
-  "label.paid-search": [
-    {
-      "type": 0,
-      "value": "Ücretli arama"
-    }
-  ],
-  "label.paid-shopping": [
-    {
-      "type": 0,
-      "value": "Ücretli alışveriş"
-    }
-  ],
-  "label.paid-social": [
-    {
-      "type": 0,
-      "value": "Ücretli sosyal"
-    }
-  ],
-  "label.paid-video": [
-    {
-      "type": 0,
-      "value": "Ücretli video"
-    }
-  ],
-  "label.password": [
-    {
-      "type": 0,
-      "value": "Parola"
-    }
-  ],
-  "label.path": [
-    {
-      "type": 0,
-      "value": "Yol"
-    }
-  ],
-  "label.paths": [
-    {
-      "type": 0,
-      "value": "Yollar"
-    }
-  ],
-  "label.pixels": [
-    {
-      "type": 0,
-      "value": "Pikseller"
-    }
-  ],
-  "label.powered-by": [
-    {
-      "type": 0,
-      "value": "Sağlayıcı: "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    }
-  ],
-  "label.previous": [
-    {
-      "type": 0,
-      "value": "Önceki"
-    }
-  ],
-  "label.previous-period": [
-    {
-      "type": 0,
-      "value": "Önceki dönem"
-    }
-  ],
-  "label.previous-year": [
-    {
-      "type": 0,
-      "value": "Önceki yıl"
-    }
-  ],
-  "label.profile": [
-    {
-      "type": 0,
-      "value": "Profil"
-    }
-  ],
-  "label.properties": [
-    {
-      "type": 0,
-      "value": "Özellikler"
-    }
-  ],
-  "label.property": [
-    {
-      "type": 0,
-      "value": "Özellik"
-    }
-  ],
-  "label.queries": [
-    {
-      "type": 0,
-      "value": "Sorgular"
-    }
-  ],
-  "label.query": [
-    {
-      "type": 0,
-      "value": "Sorgu"
-    }
-  ],
-  "label.query-parameters": [
-    {
-      "type": 0,
-      "value": "Sorgu parametreleri"
-    }
-  ],
-  "label.realtime": [
-    {
-      "type": 0,
-      "value": "Gerçek Zamanlı"
-    }
-  ],
-  "label.referral": [
-    {
-      "type": 0,
-      "value": "Yönlendirme"
-    }
-  ],
-  "label.referrer": [
-    {
-      "type": 0,
-      "value": "Referrer"
-    }
-  ],
-  "label.referrers": [
-    {
-      "type": 0,
-      "value": "Yönlendirenler"
-    }
-  ],
-  "label.refresh": [
-    {
-      "type": 0,
-      "value": "Yenile"
-    }
-  ],
-  "label.regenerate": [
-    {
-      "type": 0,
-      "value": "Yeniden Oluştur"
-    }
-  ],
-  "label.region": [
-    {
-      "type": 0,
-      "value": "Bölge"
-    }
-  ],
-  "label.regions": [
-    {
-      "type": 0,
-      "value": "Bölgeler"
-    }
-  ],
-  "label.remaining": [
-    {
-      "type": 0,
-      "value": "Kalan"
-    }
-  ],
-  "label.remove": [
-    {
-      "type": 0,
-      "value": "Kaldır"
-    }
-  ],
-  "label.remove-member": [
-    {
-      "type": 0,
-      "value": "Üyeyi kaldır"
-    }
-  ],
-  "label.reports": [
-    {
-      "type": 0,
-      "value": "Raporlar"
-    }
-  ],
-  "label.required": [
-    {
-      "type": 0,
-      "value": "Zorunlu alan"
-    }
-  ],
-  "label.reset": [
-    {
-      "type": 0,
-      "value": "Sıfırla"
-    }
-  ],
-  "label.reset-website": [
-    {
-      "type": 0,
-      "value": "İstatistikleri sıfırla"
-    }
-  ],
-  "label.retention": [
-    {
-      "type": 0,
-      "value": "Geri dönüş"
-    }
-  ],
-  "label.retention-description": [
-    {
-      "type": 0,
-      "value": "Kullanıcıların ne sıklıkla geri döndüğünü takip ederek web sitenizin kalıcılığını ölçün."
-    }
-  ],
-  "label.revenue": [
-    {
-      "type": 0,
-      "value": "Gelir"
-    }
-  ],
-  "label.revenue-description": [
-    {
-      "type": 0,
-      "value": "Gelirinizi zaman içinde inceleyin."
-    }
-  ],
-  "label.role": [
-    {
-      "type": 0,
-      "value": "Rol"
-    }
-  ],
-  "label.run-query": [
-    {
-      "type": 0,
-      "value": "Sorgu çalıştır"
-    }
-  ],
-  "label.save": [
-    {
-      "type": 0,
-      "value": "Kaydet"
-    }
-  ],
-  "label.screens": [
-    {
-      "type": 0,
-      "value": "Ekranlar"
-    }
-  ],
-  "label.search": [
-    {
-      "type": 0,
-      "value": "Ara"
-    }
-  ],
-  "label.select": [
-    {
-      "type": 0,
-      "value": "Seç"
-    }
-  ],
-  "label.select-date": [
-    {
-      "type": 0,
-      "value": "Tarih seç"
-    }
-  ],
-  "label.select-filter": [
-    {
-      "type": 0,
-      "value": "Filtre seç"
-    }
-  ],
-  "label.select-role": [
-    {
-      "type": 0,
-      "value": "Rol seç"
-    }
-  ],
-  "label.select-website": [
-    {
-      "type": 0,
-      "value": "Web sitesi seç"
-    }
-  ],
-  "label.session": [
-    {
-      "type": 0,
-      "value": "Oturum"
-    }
-  ],
-  "label.session-data": [
-    {
-      "type": 0,
-      "value": "Oturum verisi"
-    }
-  ],
-  "label.sessions": [
-    {
-      "type": 0,
-      "value": "Sessions"
-    }
-  ],
-  "label.settings": [
-    {
-      "type": 0,
-      "value": "Ayarlar"
-    }
-  ],
-  "label.share": [
-    {
-      "type": 0,
-      "value": "Paylaş"
-    }
-  ],
-  "label.share-url": [
-    {
-      "type": 0,
-      "value": "Paylaşım adresi"
-    }
-  ],
-  "label.single-day": [
-    {
-      "type": 0,
-      "value": "Tekil gün"
-    }
-  ],
-  "label.sms": [
-    {
-      "type": 0,
-      "value": "SMS"
-    }
-  ],
-  "label.sources": [
-    {
-      "type": 0,
-      "value": "Kaynaklar"
-    }
-  ],
-  "label.start-step": [
-    {
-      "type": 0,
-      "value": "Start Step"
-    }
-  ],
-  "label.steps": [
-    {
-      "type": 0,
-      "value": "Adımlar"
-    }
-  ],
-  "label.sum": [
-    {
-      "type": 0,
-      "value": "Toplam"
-    }
-  ],
-  "label.tablet": [
-    {
-      "type": 0,
-      "value": "Tablet"
-    }
-  ],
-  "label.tag": [
-    {
-      "type": 0,
-      "value": "Etiket"
-    }
-  ],
-  "label.tags": [
-    {
-      "type": 0,
-      "value": "Etiketler"
-    }
-  ],
-  "label.team": [
-    {
-      "type": 0,
-      "value": "Takım"
-    }
-  ],
-  "label.team-id": [
-    {
-      "type": 0,
-      "value": "Takım ID"
-    }
-  ],
-  "label.team-manager": [
-    {
-      "type": 0,
-      "value": "Takım yöneticisi"
-    }
-  ],
-  "label.team-member": [
-    {
-      "type": 0,
-      "value": "Takım üyesi"
-    }
-  ],
-  "label.team-name": [
-    {
-      "type": 0,
-      "value": "Takım ismi"
-    }
-  ],
-  "label.team-owner": [
-    {
-      "type": 0,
-      "value": "Takım sahibi"
-    }
-  ],
-  "label.team-settings": [
-    {
-      "type": 0,
-      "value": "Takım ayarları"
-    }
-  ],
-  "label.team-view-only": [
-    {
-      "type": 0,
-      "value": "Yalnızca ekip görünümü"
-    }
-  ],
-  "label.team-websites": [
-    {
-      "type": 0,
-      "value": "Takım web siteleri"
-    }
-  ],
-  "label.teams": [
-    {
-      "type": 0,
-      "value": "Takımlar"
-    }
-  ],
-  "label.terms": [
-    {
-      "type": 0,
-      "value": "Koşullar"
-    }
-  ],
-  "label.theme": [
-    {
-      "type": 0,
-      "value": "Tema"
-    }
-  ],
-  "label.this-month": [
-    {
-      "type": 0,
-      "value": "Bu ay"
-    }
-  ],
-  "label.this-week": [
-    {
-      "type": 0,
-      "value": "Bu hafta"
-    }
-  ],
-  "label.this-year": [
-    {
-      "type": 0,
-      "value": "Bu yıl"
-    }
-  ],
-  "label.timezone": [
-    {
-      "type": 0,
-      "value": "Zaman dilimi"
-    }
-  ],
-  "label.title": [
-    {
-      "type": 0,
-      "value": "Başlık"
-    }
-  ],
-  "label.today": [
-    {
-      "type": 0,
-      "value": "Bugün"
-    }
-  ],
-  "label.toggle-charts": [
-    {
-      "type": 0,
-      "value": "Grafikleri değiştir"
-    }
-  ],
-  "label.total": [
-    {
-      "type": 0,
-      "value": "Toplam"
-    }
-  ],
-  "label.total-records": [
-    {
-      "type": 0,
-      "value": "Toplam kayıt"
-    }
-  ],
-  "label.tracking-code": [
-    {
-      "type": 0,
-      "value": "İzleme kodu"
-    }
-  ],
-  "label.transactions": [
-    {
-      "type": 0,
-      "value": "Transactions"
-    }
-  ],
-  "label.transfer": [
-    {
-      "type": 0,
-      "value": "Transfer"
-    }
-  ],
-  "label.transfer-website": [
-    {
-      "type": 0,
-      "value": "Transfer web sitesi"
-    }
-  ],
-  "label.true": [
-    {
-      "type": 0,
-      "value": "Doğru"
-    }
-  ],
-  "label.type": [
-    {
-      "type": 0,
-      "value": "Tip"
-    }
-  ],
-  "label.unique": [
-    {
-      "type": 0,
-      "value": "Benzersiz"
-    }
-  ],
-  "label.unique-visitors": [
-    {
-      "type": 0,
-      "value": "Tekil kullanıcı"
-    }
-  ],
-  "label.uniqueCustomers": [
-    {
-      "type": 0,
-      "value": "Unique Customers"
-    }
-  ],
-  "label.unknown": [
-    {
-      "type": 0,
-      "value": "Bilinmeyen"
-    }
-  ],
-  "label.untitled": [
-    {
-      "type": 0,
-      "value": "İsimsiz"
-    }
-  ],
-  "label.update": [
-    {
-      "type": 0,
-      "value": "Güncelle"
-    }
-  ],
-  "label.user": [
-    {
-      "type": 0,
-      "value": "Kullanıcı"
-    }
-  ],
-  "label.username": [
-    {
-      "type": 0,
-      "value": "Kullanıcı adı"
-    }
-  ],
-  "label.users": [
-    {
-      "type": 0,
-      "value": "Kullanıcılar"
-    }
-  ],
-  "label.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "label.utm-description": [
-    {
-      "type": 0,
-      "value": "Kampanyalarınızı UTM parametreleri aracılığıyla takip edin."
-    }
-  ],
-  "label.value": [
-    {
-      "type": 0,
-      "value": "Değer"
-    }
-  ],
-  "label.view": [
-    {
-      "type": 0,
-      "value": "Görünüm"
-    }
-  ],
-  "label.view-details": [
-    {
-      "type": 0,
-      "value": "Detayı incele"
-    }
-  ],
-  "label.view-only": [
-    {
-      "type": 0,
-      "value": "Sadece görünüm"
-    }
-  ],
-  "label.views": [
-    {
-      "type": 0,
-      "value": "Görüntüleme"
-    }
-  ],
-  "label.views-per-visit": [
-    {
-      "type": 0,
-      "value": "Ziyaret başına görüntüleme"
-    }
-  ],
-  "label.visit-duration": [
-    {
-      "type": 0,
-      "value": "Ortalama ziyaret süresi"
-    }
-  ],
-  "label.visitors": [
-    {
-      "type": 0,
-      "value": "Ziyaretçi"
-    }
-  ],
-  "label.visits": [
-    {
-      "type": 0,
-      "value": "Ziyaretler"
-    }
-  ],
-  "label.website": [
-    {
-      "type": 0,
-      "value": "Web sitesi"
-    }
-  ],
-  "label.website-id": [
-    {
-      "type": 0,
-      "value": "Website ID"
-    }
-  ],
-  "label.websites": [
-    {
-      "type": 0,
-      "value": "Web siteleri"
-    }
-  ],
-  "label.window": [
-    {
-      "type": 0,
-      "value": "Pencere"
-    }
-  ],
-  "label.yesterday": [
-    {
-      "type": 0,
-      "value": "Dün"
-    }
-  ],
-  "message.action-confirmation": [
-    {
-      "type": 0,
-      "value": "Onaylamak için aşağıdaki kutuya "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " yazın."
-    }
-  ],
-  "message.active-users": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " aktif ziyaretçi"
-    }
-  ],
-  "message.bad-request": [
-    {
-      "type": 0,
-      "value": "Bad request"
-    }
-  ],
-  "message.collected-data": [
-    {
-      "type": 0,
-      "value": "Collected data"
-    }
-  ],
-  "message.confirm-delete": [
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " kaydını silmek istediğinizden emin misiniz?"
-    }
-  ],
-  "message.confirm-leave": [
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " kaydından ayrılmak istediğinizden emin misiniz?"
-    }
-  ],
-  "message.confirm-remove": [
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " kaydını kaldırmak istediğinizden emin misiniz?"
-    }
-  ],
-  "message.confirm-reset": [
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " istatistiklerini sıfırlamak istediğinizden emin misiniz?"
-    }
-  ],
-  "message.delete-team-warning": [
-    {
-      "type": 0,
-      "value": "Bir takımı silmek tüm takım web sitelerini de silecektir."
-    }
-  ],
-  "message.delete-website-warning": [
-    {
-      "type": 0,
-      "value": "İlişkili tüm veriler de silinecektir."
-    }
-  ],
-  "message.error": [
-    {
-      "type": 0,
-      "value": "Bir şeyler ters gitti!"
-    }
-  ],
-  "message.event-log": [
-    {
-      "type": 1,
-      "value": "event"
-    },
-    {
-      "type": 0,
-      "value": " on "
-    },
-    {
-      "type": 1,
-      "value": "url"
-    }
-  ],
-  "message.forbidden": [
-    {
-      "type": 0,
-      "value": "Forbidden"
-    }
-  ],
-  "message.go-to-settings": [
-    {
-      "type": 0,
-      "value": "Ayarlara git"
-    }
-  ],
-  "message.incorrect-username-password": [
-    {
-      "type": 0,
-      "value": "Hatalı kullanıcı adı ya da parola."
-    }
-  ],
-  "message.invalid-domain": [
-    {
-      "type": 0,
-      "value": "Geçersiz alan adı"
-    }
-  ],
-  "message.min-password-length": [
-    {
-      "type": 0,
-      "value": "Minimum "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " karakter uzunluğu"
-    }
-  ],
-  "message.new-version-available": [
-    {
-      "type": 0,
-      "value": "Yeni versiyon Umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " mevcut!"
-    }
-  ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "Henüz hiç veri yok."
-    }
-  ],
-  "message.no-event-data": [
-    {
-      "type": 0,
-      "value": "Hiçbir olay verisi mevcut değil."
-    }
-  ],
-  "message.no-match-password": [
-    {
-      "type": 0,
-      "value": "Parolalar uyuşmuyor"
-    }
-  ],
-  "message.no-results-found": [
-    {
-      "type": 0,
-      "value": "Hiçbir sonuç bulunamadı."
-    }
-  ],
-  "message.no-team-websites": [
-    {
-      "type": 0,
-      "value": "Bu takımın herhangi bir web sitesi yok."
-    }
-  ],
-  "message.no-teams": [
-    {
-      "type": 0,
-      "value": "Herhangi bir takım oluşturmadınız."
-    }
-  ],
-  "message.no-users": [
-    {
-      "type": 0,
-      "value": "Kullanıcı yok."
-    }
-  ],
-  "message.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "Henüz hiç web sitesi tanımlamadınız"
-    }
-  ],
-  "message.not-found": [
-    {
-      "type": 0,
-      "value": "Not found"
-    }
-  ],
-  "message.nothing-selected": [
-    {
-      "type": 0,
-      "value": "Nothing selected."
-    }
-  ],
-  "message.page-not-found": [
-    {
-      "type": 0,
-      "value": "Sayfa bulunamadı."
-    }
-  ],
-  "message.reset-website": [
-    {
-      "type": 0,
-      "value": "Bu websitesini sıfılamak için aşağıdaki kutuya "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " yazın."
-    }
-  ],
-  "message.reset-website-warning": [
-    {
-      "type": 0,
-      "value": "Bu web sitesi için tüm istatistikler silinecek, ancak izleme kodunuz bozulmadan kalacaktır."
-    }
-  ],
-  "message.saved": [
-    {
-      "type": 0,
-      "value": "Başarıyla kaydedildi."
-    }
-  ],
-  "message.sever-error": [
-    {
-      "type": 0,
-      "value": "Server error"
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " için kullanılabilir anonim paylaşım adresidir."
-    }
-  ],
-  "message.team-already-member": [
-    {
-      "type": 0,
-      "value": "Zaten bu takımın üyesisiniz"
-    }
-  ],
-  "message.team-not-found": [
-    {
-      "type": 0,
-      "value": "Takım bulunamadı"
-    }
-  ],
-  "message.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Web siteleri takımdaki herkes tarafından görüntülenebilir."
-    }
-  ],
-  "message.tracking-code": [
-    {
-      "type": 0,
-      "value": "İzleme kodu"
-    }
-  ],
-  "message.transfer-team-website-to-user": [
-    {
-      "type": 0,
-      "value": "Bu web sitesi hesbınıza aktarılsın mı?"
-    }
-  ],
-  "message.transfer-user-website-to-team": [
-    {
-      "type": 0,
-      "value": "Bu web sitesinin aktarılacağı takımı seçin."
-    }
-  ],
-  "message.transfer-website": [
-    {
-      "type": 0,
-      "value": "Web sitesi sahipliğini hesabınıza veya başka bir takıma aktarın"
-    }
-  ],
-  "message.triggered-event": [
-    {
-      "type": 0,
-      "value": "Tetiklenen olay"
-    }
-  ],
-  "message.unauthorized": [
-    {
-      "type": 0,
-      "value": "Unauthorized"
-    }
-  ],
-  "message.user-deleted": [
-    {
-      "type": 0,
-      "value": "Kullanıcı silindi."
-    }
-  ],
-  "message.viewed-page": [
-    {
-      "type": 0,
-      "value": "Görüntülenen sayfa"
-    }
-  ],
-  "message.visitor-log": [
-    {
-      "type": 0,
-      "value": "Yeni ziyaretçi: "
-    },
-    {
-      "type": 1,
-      "value": "country"
-    },
-    {
-      "type": 0,
-      "value": ", "
-    },
-    {
-      "type": 1,
-      "value": "os"
-    },
-    {
-      "type": 0,
-      "value": ", "
-    },
-    {
-      "type": 1,
-      "value": "device"
-    },
-    {
-      "type": 0,
-      "value": ", "
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    }
-  ]
+  "label": {
+    "access-code": "Erişim Kodu",
+    "account": "Hesap",
+    "action": "Eylem",
+    "actions": "Hareketler",
+    "activity": "Aktivite Kaydı",
+    "add": "Ekle",
+    "add-board": "Pano ekle",
+    "add-description": "Açıklama ekle",
+    "add-link": "Bağlantı ekle",
+    "add-member": "Üye ekle",
+    "add-pixel": "Piksel ekle",
+    "add-step": "Adım ekle",
+    "add-website": "Web sitesi ekle",
+    "admin": "Administrator",
+    "affiliate": "Ortak",
+    "after": "Sonra",
+    "all": "Tümü",
+    "all-time": "Tüm zamanlar",
+    "analysis": "Analiz",
+    "analytics": "Analitik",
+    "application": "Uygulama",
+    "apply": "Uygula",
+    "attribution": "Atıf",
+    "attribution-description": "Kullanıcıların pazarlamanızla nasıl etkileşime girdiğini ve dönüşümleri neyin tetiklediğini görün.",
+    "audience": "Kitle",
+    "average": "Ortalama",
+    "back": "Geri",
+    "before": "Önce",
+    "behavior": "Davranış",
+    "boards": "Panolar",
+    "bounce-rate": "Tek sayfa ziyaret oranı",
+    "breakdown": "Dağılım",
+    "browser": "Tarayıcı",
+    "browsers": "Tarayıcılar",
+    "campaign": "Kampanya",
+    "campaigns": "Kampanyalar",
+    "cancel": "İptal",
+    "change-password": "Şifre değiştir",
+    "channel": "Kanal",
+    "channels": "Kanallar",
+    "chart": "Grafik",
+    "cities": "Şehirler",
+    "city": "Şehir",
+    "clear-all": "Hepsini temizle",
+    "cohort": "Kohort",
+    "cohorts": "Kohortlar",
+    "compare": "Karşılaştır",
+    "compare-dates": "Tarihleri karşılaştır",
+    "confirm": "Onayla",
+    "confirm-password": "Parolayı onayla",
+    "contains": "İçeriği",
+    "regex-match": "Düzenli ifadeyle eşleşir",
+    "regex-not-match": "Düzenli ifadeyle eşleşmez",
+    "content": "İçerik",
+    "continue": "Devam et",
+    "conversion": "Dönüşüm",
+    "conversion-rate": "Dönüşüm oranı",
+    "conversion-step": "Dönüşüm adımı",
+    "count": "Adet",
+    "countries": "Ülkeler",
+    "country": "Ülke",
+    "create": "Oluştur",
+    "create-report": "Rapor oluştur",
+    "create-team": "Takım oluştur",
+    "create-user": "Kullanıcı oluştur",
+    "created": "Oluşturuldu",
+    "created-by": "Tarafından oluşturldu",
+    "criteria": "Kriterler",
+    "currency": "Para birimi",
+    "current": "Mevcut",
+    "current-password": "Mevcut parola",
+    "custom-range": "Özelleştirilmiş aralık",
+    "dashboard": "Kontrol Paneli",
+    "data": "Veri",
+    "date": "Tarih",
+    "date-range": "Tarih aralığı",
+    "day": "Gün",
+    "default-date-range": "Varsayılan tarih aralığı",
+    "delete": "Sil",
+    "delete-report": "Rapor sil",
+    "delete-team": "Takım sil",
+    "delete-user": "Kullanıcı sil",
+    "delete-website": "Web sitesini sil",
+    "description": "Açıklama",
+    "desktop": "Masaüstü",
+    "destination-url": "Hedef URL",
+    "details": "Detaylar",
+    "device": "Cihaz",
+    "devices": "Cihazlar",
+    "direct": "Doğrudan",
+    "dismiss": "Reddet",
+    "distinct-id": "Benzersiz ID",
+    "documentation": "Dokümantasyon",
+    "does-not-contain": "İçermez",
+    "does-not-include": "İçermiyor",
+    "doest-not-exist": "Mevcut değil",
+    "domain": "Alan adı",
+    "download": "İndir",
+    "dropoff": "Bırakma",
+    "edit": "Düzenle",
+    "edit-member": "Üyeyi düzenle",
+    "email": "E-posta",
+    "enable-share-url": "Anonim paylaşım URL'i aktif",
+    "end-step": "Son adım",
+    "entry": "Entry URL",
+    "environment": "Ortam",
+    "event": "Olay",
+    "event-data": "Olay verisi",
+    "event-name": "Olay adı",
+    "events": "Olaylar",
+    "exclude-bounce": "Hemen çıkışı hariç tut",
+    "exists": "Mevcut",
+    "exit": "Exit URL",
+    "false": "Yanlış",
+    "field": "Alan",
+    "fields": "Alanlar",
+    "filter": "Filtre",
+    "filter-combined": "Birleşik filtre",
+    "filter-raw": "Ham filtre",
+    "filters": "Filtreler",
+    "first-click": "İlk tıklama",
+    "first-seen": "İlk görülme",
+    "funnel": "Huni",
+    "funnel-description": "Kullanıcıların dönüşüm ve ayrılma oranlarını anlayın.",
+    "funnels": "Huniler",
+    "goal": "Hedef",
+    "goals": "Hedefler",
+    "goals-description": "Sayfa görüntüleme ve olaylar için hedeflerinizi takip edin.",
+    "greater-than": "Büyüktür",
+    "greater-than-equals": "Büyük veya eşittir",
+    "grouped": "Gruplandırılmış",
+    "growth": "Büyüme",
+    "hostname": "Sunucu adı",
+    "hour": "Saat",
+    "includes": "İçerir",
+    "insight": "İçgörü",
+    "insights": "İçgörüler",
+    "insights-description": "Segmentleri ve filtreleri kullanarak verilerinizi derinlemesine inceleyin.",
+    "invalid-url": "Geçersiz URL",
+    "is": "Eşittir",
+    "is-false": "Yanlış",
+    "is-not": "Değil",
+    "is-not-set": "Ayarlanmamış",
+    "is-set": "Ayarlandı",
+    "is-true": "Doğru",
+    "join": "Katıl",
+    "join-team": "Takıma katıl",
+    "journey": "Yolculuk",
+    "journey-description": "Kullanıcıların sitenizde nasıl gezindiğini anlayın.",
+    "journeys": "Yolculuklar",
+    "language": "Dil",
+    "languages": "Diller",
+    "laptop": "Dizüstü",
+    "last-click": "Son tıklama",
+    "last-days": "Son {x} gün",
+    "last-hours": "Son {x} saat",
+    "last-months": "Son {x} ay",
+    "last-seen": "Son görüldü",
+    "leave": "Ayrıl",
+    "leave-team": "Takımdan Ayrıl",
+    "less-than": "Küçüktür",
+    "less-than-equals": "Küçük veya eşittir",
+    "link": "Bağlantı",
+    "links": "Bağlantılar",
+    "location": "Konum",
+    "login": "Giriş Yap",
+    "logout": "Çıkış Yap",
+    "manage": "Yönet",
+    "manager": "Yönetici",
+    "max": "Maks",
+    "maximize": "Genişlet",
+    "match": "Eşleşme",
+    "match-all": "Tümü",
+    "match-any": "Herhangi",
+    "medium": "Orta",
+    "member": "Üye",
+    "members": "Üyeler",
+    "min": "Min",
+    "minute": "Dakika",
+    "mobile": "Mobil Cihaz",
+    "model": "Model",
+    "month": "Ay",
+    "more": "Detaylı göster",
+    "my-account": "Hesabım",
+    "my-websites": "Web sitelerim",
+    "name": "İsim",
+    "new-password": "Yeni parola",
+    "none": "Yok",
+    "number-of-records": "{x} {x, plural, one {kayıt} other {kayıt}}",
+    "ok": "TAMAM",
+    "online": "Çevrimiçi",
+    "organic-search": "Organik arama",
+    "organic-shopping": "Organik alışveriş",
+    "organic-social": "Organik sosyal",
+    "organic-video": "Organik video",
+    "os": "İşletim Sistemi",
+    "other": "Diğer",
+    "overview": "Genel bakış",
+    "owner": "Sahibi",
+    "page": "Sayfa",
+    "page-of": "{total} sayfada {current} ",
+    "page-views": "Sayfa görünümü",
+    "pageTitle": "Sayfa başlığı",
+    "pages": "Sayfalar",
+    "paid-ads": "Ücretli reklamlar",
+    "paid-search": "Ücretli arama",
+    "paid-shopping": "Ücretli alışveriş",
+    "paid-social": "Ücretli sosyal",
+    "paid-video": "Ücretli video",
+    "password": "Parola",
+    "path": "Yol",
+    "paths": "Yollar",
+    "pixel": "Piksel",
+    "pixels": "Pikseller",
+    "powered-by": "Sağlayıcı: {name}",
+    "preferences": "Tercihler",
+    "previous": "Önceki",
+    "previous-period": "Önceki dönem",
+    "previous-year": "Önceki yıl",
+    "profile": "Profil",
+    "profiles": "Profiller",
+    "properties": "Özellikler",
+    "property": "Özellik",
+    "queries": "Sorgular",
+    "query": "Sorgu",
+    "query-parameters": "Sorgu parametreleri",
+    "realtime": "Gerçek Zamanlı",
+    "referral": "Yönlendirme",
+    "referrer": "Yönlendiren",
+    "referrers": "Yönlendirenler",
+    "refresh": "Yenile",
+    "regenerate": "Yeniden Oluştur",
+    "region": "Bölge",
+    "regions": "Bölgeler",
+    "remaining": "Kalan",
+    "remove": "Kaldır",
+    "remove-member": "Üyeyi kaldır",
+    "reports": "Raporlar",
+    "required": "Zorunlu alan",
+    "reset": "Sıfırla",
+    "reset-website": "İstatistikleri sıfırla",
+    "retention": "Geri dönüş",
+    "retention-description": "Kullanıcıların ne sıklıkla geri döndüğünü takip ederek web sitenizin kalıcılığını ölçün.",
+    "revenue": "Gelir",
+    "revenue-description": "Gelirinizi zaman içinde inceleyin.",
+    "role": "Rol",
+    "run-query": "Sorgu çalıştır",
+    "save": "Kaydet",
+    "save-cohort": "Kohortu kaydet",
+    "save-segment": "Segmenti kaydet",
+    "screen": "Ekran",
+    "screens": "Ekranlar",
+    "search": "Ara",
+    "segment": "Segment",
+    "segments": "Segmentler",
+    "select": "Seç",
+    "select-date": "Tarih seç",
+    "select-filter": "Filtre seç",
+    "select-role": "Rol seç",
+    "select-website": "Web sitesi seç",
+    "session": "Oturum",
+    "session-data": "Oturum verisi",
+    "sessions": "Oturumlar",
+    "settings": "Ayarlar",
+    "share": "Paylaş",
+    "share-url": "Paylaşım adresi",
+    "single-day": "Tekil gün",
+    "sms": "SMS",
+    "source": "Kaynak",
+    "sources": "Kaynaklar",
+    "start-step": "Başlangıç adımı",
+    "steps": "Adımlar",
+    "sum": "Toplam",
+    "support": "Destek",
+    "switch-account": "Hesap değiştir",
+    "table": "Tablo",
+    "tablet": "Tablet",
+    "tag": "Etiket",
+    "tags": "Etiketler",
+    "team": "Takım",
+    "team-id": "Takım ID",
+    "team-manager": "Takım yöneticisi",
+    "team-member": "Takım üyesi",
+    "team-name": "Takım ismi",
+    "team-owner": "Takım sahibi",
+    "team-settings": "Takım ayarları",
+    "team-view-only": "Yalnızca ekip görünümü",
+    "team-websites": "Takım web siteleri",
+    "teams": "Takımlar",
+    "term": "Arama terimi",
+    "terms": "Koşullar",
+    "theme": "Tema",
+    "this-month": "Bu ay",
+    "this-week": "Bu hafta",
+    "this-year": "Bu yıl",
+    "timezone": "Zaman dilimi",
+    "title": "Başlık",
+    "today": "Bugün",
+    "toggle-charts": "Grafikleri değiştir",
+    "total": "Toplam",
+    "total-records": "Toplam kayıt",
+    "tracking-code": "İzleme kodu",
+    "traffic": "Trafik",
+    "transactions": "İşlemler",
+    "transfer": "Transfer",
+    "transfer-website": "Transfer web sitesi",
+    "true": "Doğru",
+    "type": "Tip",
+    "unique": "Benzersiz",
+    "unique-events": "Benzersiz etkinlikler",
+    "unique-visitors": "Tekil kullanıcı",
+    "uniqueCustomers": "Benzersiz müşteriler",
+    "unknown": "Bilinmeyen",
+    "untitled": "İsimsiz",
+    "update": "Güncelle",
+    "url": "URL",
+    "user": "Kullanıcı",
+    "username": "Kullanıcı adı",
+    "users": "Kullanıcılar",
+    "utm": "UTM",
+    "utm-campaign": "UTM Kampanya",
+    "utm-content": "UTM İçerik",
+    "utm-description": "Kampanyalarınızı UTM parametreleri aracılığıyla takip edin.",
+    "utm-medium": "UTM Ortam",
+    "utm-source": "UTM Kaynak",
+    "utm-term": "UTM Terim",
+    "value": "Değer",
+    "version": "Sürüm",
+    "view": "Görünüm",
+    "view-details": "Detayı incele",
+    "view-only": "Sadece görünüm",
+    "views": "Görüntüleme",
+    "views-per-visit": "Ziyaret başına görüntüleme",
+    "visit-duration": "Ortalama ziyaret süresi",
+    "visitors": "Ziyaretçi",
+    "visits": "Ziyaretler",
+    "website": "Web sitesi",
+    "website-id": "Web sitesi ID",
+    "websites": "Web siteleri",
+    "window": "Pencere",
+    "yesterday": "Dün"
+  },
+  "message": {
+    "action-confirmation": "Onaylamak için aşağıdaki kutuya {confirmation} yazın.",
+    "active-users": "{x} aktif ziyaretçi",
+    "bad-request": "Geçersiz istek",
+    "collected-data": "Toplanan veriler",
+    "confirm-delete": "{target} kaydını silmek istediğinizden emin misiniz?",
+    "confirm-leave": "<b>{target}</b> kaydından ayrılmak istediğinizden emin misiniz?",
+    "confirm-remove": "<b>{target}</b> kaydını kaldırmak istediğinizden emin misiniz?",
+    "confirm-reset": "{target} istatistiklerini sıfırlamak istediğinizden emin misiniz?",
+    "delete-team-warning": "Bir takımı silmek tüm takım web sitelerini de silecektir.",
+    "delete-website-warning": "İlişkili tüm veriler de silinecektir.",
+    "error": "Bir şeyler ters gitti!",
+    "event-log": "<b>{event}</b> sayfasında <a>{url}</a>",
+    "forbidden": "Yasaklandı",
+    "go-to-settings": "Ayarlara git",
+    "incorrect-username-password": "Hatalı kullanıcı adı ya da parola.",
+    "invalid-domain": "Geçersiz alan adı",
+    "min-password-length": "Minimum {n} karakter uzunluğu",
+    "new-version-available": "Yeni versiyon Umami {version} mevcut!",
+    "no-data-available": "Henüz hiç veri yok.",
+    "no-event-data": "Hiçbir olay verisi mevcut değil.",
+    "no-match-password": "Parolalar uyuşmuyor",
+    "no-results-found": "Hiçbir sonuç bulunamadı.",
+    "no-team-websites": "Bu takımın herhangi bir web sitesi yok.",
+    "no-teams": "Herhangi bir takım oluşturmadınız.",
+    "no-users": "Kullanıcı yok.",
+    "no-websites-configured": "Henüz hiç web sitesi tanımlamadınız",
+    "not-found": "Bulunamadı",
+    "nothing-selected": "Hiçbir şey seçilmedi.",
+    "page-not-found": "Sayfa bulunamadı.",
+    "reset-website": "Bu websitesini sıfılamak için aşağıdaki kutuya {confirmation} yazın.",
+    "reset-website-warning": "Bu web sitesi için tüm istatistikler silinecek, ancak izleme kodunuz bozulmadan kalacaktır.",
+    "saved": "Başarıyla kaydedildi.",
+    "sever-error": "Sunucu hatası",
+    "share-url": "{target} için kullanılabilir anonim paylaşım adresidir.",
+    "team-already-member": "Zaten bu takımın üyesisiniz",
+    "team-not-found": "Takım bulunamadı",
+    "team-websites-info": "Web siteleri takımdaki herkes tarafından görüntülenebilir.",
+    "tracking-code": "İzleme kodu",
+    "transfer-team-website-to-user": "Bu web sitesi hesbınıza aktarılsın mı?",
+    "transfer-user-website-to-team": "Bu web sitesinin aktarılacağı takımı seçin.",
+    "transfer-website": "Web sitesi sahipliğini hesabınıza veya başka bir takıma aktarın",
+    "triggered-event": "Tetiklenen olay",
+    "unauthorized": "Yetkisiz",
+    "user-deleted": "Kullanıcı silindi.",
+    "viewed-page": "Görüntülenen sayfa",
+    "visitor-log": "Yeni ziyaretçi: <b>{country}</b>, <b>{os}</b>, <b>{device}</b>, <b>{browser}</b>"
+  }
 }

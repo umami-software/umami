@@ -15,27 +15,27 @@ import { useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
 import { LockKeyhole, LogOut, UserCircle } from '@/components/icons';
 
 export function ProfileButton() {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { user } = useLoginQuery();
   const { renderUrl } = useNavigation();
 
   const items = [
     {
       id: 'settings',
-      label: formatMessage(labels.profile),
+      label: t(labels.profile),
       path: renderUrl('/settings/profile'),
       icon: <UserCircle />,
     },
     user.isAdmin &&
       !process.env.cloudMode && {
         id: 'admin',
-        label: formatMessage(labels.admin),
+        label: t(labels.admin),
         path: '/admin',
         icon: <LockKeyhole />,
       },
     {
       id: 'logout',
-      label: formatMessage(labels.logout),
+      label: t(labels.logout),
       path: '/logout',
       icon: <LogOut />,
       separator: true,

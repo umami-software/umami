@@ -41,10 +41,11 @@ async function relationalQuery(
   filters: QueryFilters,
 ): Promise<ChannelExpandedMetricsData[]> {
   const { rawQuery, parseFilters, getTimestampDiffSQL } = prisma;
-  const { queryParams, filterQuery, joinSessionQuery, cohortQuery, dateQuery } = parseFilters({
-    ...filters,
-    websiteId,
-  });
+  const { queryParams, filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, dateQuery } =
+    parseFilters({
+      ...filters,
+      websiteId,
+    });
 
   return rawQuery(
     `
@@ -64,6 +65,7 @@ async function relationalQuery(
             max(website_event.created_at) max_time
         from website_event
         ${cohortQuery}
+        ${excludeBounceQuery}
         ${joinSessionQuery}
         where website_event.website_id = {{websiteId::uuid}}
           and website_event.event_type != 2
@@ -89,7 +91,8 @@ async function relationalQuery(
             when ${toPostgresPositionClause('referrer_domain', EMAIL_DOMAINS)} or utm_medium ilike '%mail%' then 'email'
             when ${toPostgresPositionClause('referrer_domain', SHOPPING_DOMAINS)} or utm_medium ilike '%shop%' then concat(prefix, 'Shopping')
             when ${toPostgresPositionClause('referrer_domain', VIDEO_DOMAINS)} or utm_medium ilike '%video%' then concat(prefix, 'Video')
-            else '' end AS name,
+            when referrer_domain != regexp_replace(hostname, '^www.', '') and referrer_domain != '' then 'referral'
+            else '' end as "name",
             session_id,
             visit_id,
             c,
@@ -119,7 +122,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<ChannelExpandedMetricsData[]> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { queryParams, filterQuery, cohortQuery } = parseFilters({
+  const { queryParams, filterQuery, cohortQuery, excludeBounceQuery } = parseFilters({
     ...filters,
     websiteId,
   });
@@ -134,31 +137,33 @@ async function clickhouseQuery(
       sum(if(t.c = 1, 1, 0)) as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (
-      select case when multiSearchAny(utm_medium, ['cp', 'ppc', 'retargeting', 'paid']) != 0 then 'paid' else 'organic' end prefix,
-          case
+      select
+        case when multiSearchAny(lower(utm_medium), ['cp', 'ppc', 'retargeting', 'paid']) != 0 then 'paid' else 'organic' end prefix,
+        case
           when referrer_domain = '' and url_query = '' then 'direct'
-          when multiSearchAny(url_query, [${toClickHouseStringArray(
+          when multiSearchAny(lower(url_query), [${toClickHouseStringArray(
             PAID_AD_PARAMS,
           )}]) != 0 then 'paidAds'
-          when multiSearchAny(utm_medium, ['referral', 'app','link']) != 0 then 'referral'
-          when position(utm_medium, 'affiliate') > 0 then 'affiliate'
-          when position(utm_medium, 'sms') > 0 or position(utm_source, 'sms') > 0 then 'sms'
-          when multiSearchAny(referrer_domain, [${toClickHouseStringArray(
+          when multiSearchAny(lower(utm_medium), ['referral', 'app','link']) != 0 then 'referral'
+          when position(lower(utm_medium), 'affiliate') > 0 then 'affiliate'
+          when position(lower(utm_medium), 'sms') > 0 or position(lower(utm_source), 'sms') > 0 then 'sms'
+          when multiSearchAny(lower(referrer_domain), [${toClickHouseStringArray(
             SEARCH_DOMAINS,
-          )}]) != 0 or position(utm_medium, 'organic') > 0 then concat(prefix, 'Search')
-          when multiSearchAny(referrer_domain, [${toClickHouseStringArray(
+          )}]) != 0 or position(lower(utm_medium), 'organic') > 0 then concat(prefix, 'Search')
+          when multiSearchAny(lower(referrer_domain), [${toClickHouseStringArray(
             SOCIAL_DOMAINS,
           )}]) != 0 then concat(prefix, 'Social')
-          when multiSearchAny(referrer_domain, [${toClickHouseStringArray(
+          when multiSearchAny(lower(referrer_domain), [${toClickHouseStringArray(
             EMAIL_DOMAINS,
-          )}]) != 0 or position(utm_medium, 'mail') > 0 then 'email'
-          when multiSearchAny(referrer_domain, [${toClickHouseStringArray(
+          )}]) != 0 or position(lower(utm_medium), 'mail') > 0 then 'email'
+          when multiSearchAny(lower(referrer_domain), [${toClickHouseStringArray(
             SHOPPING_DOMAINS,
-          )}]) != 0 or position(utm_medium, 'shop') > 0 then concat(prefix, 'Shopping')
-          when multiSearchAny(referrer_domain, [${toClickHouseStringArray(
+          )}]) != 0 or position(lower(utm_medium), 'shop') > 0 then concat(prefix, 'Shopping')
+          when multiSearchAny(lower(referrer_domain), [${toClickHouseStringArray(
             VIDEO_DOMAINS,
-          )}]) != 0 or position(utm_medium, 'video') > 0 then concat(prefix, 'Video')
-          else '' end AS name,
+          )}]) != 0 or position(lower(utm_medium), 'video') > 0 then concat(prefix, 'Video')
+          when referrer_domain != hostname and referrer_domain != '' then 'referral'
+        else '' end AS name,
         session_id,
         visit_id,
         count(*) c,
@@ -166,6 +171,7 @@ async function clickhouseQuery(
         max(created_at) max_time
       from website_event
       ${cohortQuery}
+      ${excludeBounceQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type != 2

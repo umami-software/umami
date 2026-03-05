@@ -14,12 +14,12 @@ export function LanguageButton() {
   return (
     <MenuTrigger key="language">
       <Button variant="quiet">
-        <Icon>
+        <Icon color="primary">
           <Globe />
         </Icon>
       </Button>
       <Popover placement="bottom end">
-        <Dialog variant="menu">
+        <Dialog>
           <Grid columns="repeat(3, minmax(200px, 1fr))" overflow="hidden">
             {items.map(({ value, label }) => {
               return (

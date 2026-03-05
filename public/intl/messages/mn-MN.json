@@ -1,2236 +1,393 @@
 {
-  "label.access-code": [
-    {
-      "type": 0,
-      "value": "Хандалтын код"
-    }
-  ],
-  "label.actions": [
-    {
-      "type": 0,
-      "value": "Үйлдлүүд"
-    }
-  ],
-  "label.activity": [
-    {
-      "type": 0,
-      "value": "Үйл ажиллагааны бүртгэл"
-    }
-  ],
-  "label.add": [
-    {
-      "type": 0,
-      "value": "Нэмэх"
-    }
-  ],
-  "label.add-board": [
-    {
-      "type": 0,
-      "value": "Самбар нэмэх"
-    }
-  ],
-  "label.add-description": [
-    {
-      "type": 0,
-      "value": "Тайлбар нэмэх"
-    }
-  ],
-  "label.add-member": [
-    {
-      "type": 0,
-      "value": "Гишүүн нэмэх"
-    }
-  ],
-  "label.add-step": [
-    {
-      "type": 0,
-      "value": "Алхам нэмэх"
-    }
-  ],
-  "label.add-website": [
-    {
-      "type": 0,
-      "value": "Веб нэмэх"
-    }
-  ],
-  "label.admin": [
-    {
-      "type": 0,
-      "value": "Админ"
-    }
-  ],
-  "label.affiliate": [
-    {
-      "type": 0,
-      "value": "Харьяа"
-    }
-  ],
-  "label.after": [
-    {
-      "type": 0,
-      "value": "Хойно"
-    }
-  ],
-  "label.all": [
-    {
-      "type": 0,
-      "value": "Бүх"
-    }
-  ],
-  "label.all-time": [
-    {
-      "type": 0,
-      "value": "Бүх цаг үеийн"
-    }
-  ],
-  "label.analytics": [
-    {
-      "type": 0,
-      "value": "Аналитик"
-    }
-  ],
-  "label.apply": [
-    {
-      "type": 0,
-      "value": "Хэрэглэх"
-    }
-  ],
-  "label.attribution": [
-    {
-      "type": 0,
-      "value": "Холбогдол"
-    }
-  ],
-  "label.attribution-description": [
-    {
-      "type": 0,
-      "value": "Хэрэглэгчид таны маркетингт хэрхэн оролцож, ямар зүйлс хөрвүүлэлтэд нөлөөлж байгааг хараарай."
-    }
-  ],
-  "label.average": [
-    {
-      "type": 0,
-      "value": "Дундаж"
-    }
-  ],
-  "label.back": [
-    {
-      "type": 0,
-      "value": "Буцах"
-    }
-  ],
-  "label.before": [
-    {
-      "type": 0,
-      "value": "Өмнө"
-    }
-  ],
-  "label.boards": [
-    {
-      "type": 0,
-      "value": "Самбарууд"
-    }
-  ],
-  "label.bounce-rate": [
-    {
-      "type": 0,
-      "value": "Нэг хуудас үзээд гарсан"
-    }
-  ],
-  "label.breakdown": [
-    {
-      "type": 0,
-      "value": "Задаргаа"
-    }
-  ],
-  "label.browser": [
-    {
-      "type": 0,
-      "value": "Хөтөч"
-    }
-  ],
-  "label.browsers": [
-    {
-      "type": 0,
-      "value": "Хөтөч"
-    }
-  ],
-  "label.campaigns": [
-    {
-      "type": 0,
-      "value": "Аянууд"
-    }
-  ],
-  "label.cancel": [
-    {
-      "type": 0,
-      "value": "Цуцлах"
-    }
-  ],
-  "label.change-password": [
-    {
-      "type": 0,
-      "value": "Нууц үг солих"
-    }
-  ],
-  "label.channels": [
-    {
-      "type": 0,
-      "value": "Суваг"
-    }
-  ],
-  "label.cities": [
-    {
-      "type": 0,
-      "value": "Хотууд"
-    }
-  ],
-  "label.city": [
-    {
-      "type": 0,
-      "value": "Хот"
-    }
-  ],
-  "label.clear-all": [
-    {
-      "type": 0,
-      "value": "Бүгдийг арилгах"
-    }
-  ],
-  "label.cohort": [
-    {
-      "type": 0,
-      "value": "Бүлэг"
-    }
-  ],
-  "label.compare": [
-    {
-      "type": 0,
-      "value": "Харьцуулах"
-    }
-  ],
-  "label.compare-dates": [
-    {
-      "type": 0,
-      "value": "Огноо харьцуулах"
-    }
-  ],
-  "label.confirm": [
-    {
-      "type": 0,
-      "value": "Батлах"
-    }
-  ],
-  "label.confirm-password": [
-    {
-      "type": 0,
-      "value": "Шинэ нууц үгээ давтах"
-    }
-  ],
-  "label.contains": [
-    {
-      "type": 0,
-      "value": "Агуулах"
-    }
-  ],
-  "label.content": [
-    {
-      "type": 0,
-      "value": "Агуулга"
-    }
-  ],
-  "label.continue": [
-    {
-      "type": 0,
-      "value": "Үргэлжлүүлэх"
-    }
-  ],
-  "label.conversion": [
-    {
-      "type": 0,
-      "value": "Хөрвүүлэлт"
-    }
-  ],
-  "label.conversion-rate": [
-    {
-      "type": 0,
-      "value": "Хөрвүүлэлтийн хувь"
-    }
-  ],
-  "label.conversion-step": [
-    {
-      "type": 0,
-      "value": "Хөрвүүлэлтийн алхам"
-    }
-  ],
-  "label.count": [
-    {
-      "type": 0,
-      "value": "Тоо"
-    }
-  ],
-  "label.countries": [
-    {
-      "type": 0,
-      "value": "Улс"
-    }
-  ],
-  "label.country": [
-    {
-      "type": 0,
-      "value": "Улс"
-    }
-  ],
-  "label.create": [
-    {
-      "type": 0,
-      "value": "Үүсгэх"
-    }
-  ],
-  "label.create-report": [
-    {
-      "type": 0,
-      "value": "Тайлан үүсгэх"
-    }
-  ],
-  "label.create-team": [
-    {
-      "type": 0,
-      "value": "Баг үүсгэх"
-    }
-  ],
-  "label.create-user": [
-    {
-      "type": 0,
-      "value": "Хэрэглэгч үүсгэх"
-    }
-  ],
-  "label.created": [
-    {
-      "type": 0,
-      "value": "Үүсгэсэн"
-    }
-  ],
-  "label.created-by": [
-    {
-      "type": 0,
-      "value": "Үүсгэсэн"
-    }
-  ],
-  "label.currency": [
-    {
-      "type": 0,
-      "value": "Валют"
-    }
-  ],
-  "label.current": [
-    {
-      "type": 0,
-      "value": "Одоогийн"
-    }
-  ],
-  "label.current-password": [
-    {
-      "type": 0,
-      "value": "Ашиглаж буй нууц үг"
-    }
-  ],
-  "label.custom-range": [
-    {
-      "type": 0,
-      "value": "Дурын хугацаа"
-    }
-  ],
-  "label.dashboard": [
-    {
-      "type": 0,
-      "value": "Хянах самбар"
-    }
-  ],
-  "label.data": [
-    {
-      "type": 0,
-      "value": "Өгөгдөл"
-    }
-  ],
-  "label.date": [
-    {
-      "type": 0,
-      "value": "Огноо"
-    }
-  ],
-  "label.date-range": [
-    {
-      "type": 0,
-      "value": "Хугацааны муж"
-    }
-  ],
-  "label.day": [
-    {
-      "type": 0,
-      "value": "Өдөр"
-    }
-  ],
-  "label.default-date-range": [
-    {
-      "type": 0,
-      "value": "Өгөгдмөл хугацааны муж"
-    }
-  ],
-  "label.delete": [
-    {
-      "type": 0,
-      "value": "Устгах"
-    }
-  ],
-  "label.delete-report": [
-    {
-      "type": 0,
-      "value": "Тайлан устгах"
-    }
-  ],
-  "label.delete-team": [
-    {
-      "type": 0,
-      "value": "Баг устгах"
-    }
-  ],
-  "label.delete-user": [
-    {
-      "type": 0,
-      "value": "Хэрэглэгч устгах"
-    }
-  ],
-  "label.delete-website": [
-    {
-      "type": 0,
-      "value": "Веб устгах"
-    }
-  ],
-  "label.description": [
-    {
-      "type": 0,
-      "value": "Тайлбар"
-    }
-  ],
-  "label.desktop": [
-    {
-      "type": 0,
-      "value": "Суурин компьютер"
-    }
-  ],
-  "label.details": [
-    {
-      "type": 0,
-      "value": "Мэдээлэл"
-    }
-  ],
-  "label.device": [
-    {
-      "type": 0,
-      "value": "Төхөөрөмж"
-    }
-  ],
-  "label.devices": [
-    {
-      "type": 0,
-      "value": "Төхөөрөмж"
-    }
-  ],
-  "label.direct": [
-    {
-      "type": 0,
-      "value": "Шууд"
-    }
-  ],
-  "label.dismiss": [
-    {
-      "type": 0,
-      "value": "Үл хэрэгсэх"
-    }
-  ],
-  "label.distinct-id": [
-    {
-      "type": 0,
-      "value": "Ялгаатай ID"
-    }
-  ],
-  "label.does-not-contain": [
-    {
-      "type": 0,
-      "value": "Агуулахгүй"
-    }
-  ],
-  "label.does-not-include": [
-    {
-      "type": 0,
-      "value": "Агуулаагүй"
-    }
-  ],
-  "label.doest-not-exist": [
-    {
-      "type": 0,
-      "value": "Байхгүй"
-    }
-  ],
-  "label.domain": [
-    {
-      "type": 0,
-      "value": "Домэйн"
-    }
-  ],
-  "label.dropoff": [
-    {
-      "type": 0,
-      "value": "Уналт"
-    }
-  ],
-  "label.edit": [
-    {
-      "type": 0,
-      "value": "Засах"
-    }
-  ],
-  "label.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "Хянах самбар засах"
-    }
-  ],
-  "label.edit-member": [
-    {
-      "type": 0,
-      "value": "Гишүүн засах"
-    }
-  ],
-  "label.email": [
-    {
-      "type": 0,
-      "value": "Имэйл"
-    }
-  ],
-  "label.enable-share-url": [
-    {
-      "type": 0,
-      "value": "Хуваалцах холбоос идэвхжүүлэх"
-    }
-  ],
-  "label.end-step": [
-    {
-      "type": 0,
-      "value": "Төгсгөлийн алхам"
-    }
-  ],
-  "label.entry": [
-    {
-      "type": 0,
-      "value": "Орох зам"
-    }
-  ],
-  "label.event": [
-    {
-      "type": 0,
-      "value": "Үйлдэл"
-    }
-  ],
-  "label.event-data": [
-    {
-      "type": 0,
-      "value": "Үйлдлийн өгөгдөл"
-    }
-  ],
-  "label.event-name": [
-    {
-      "type": 0,
-      "value": "Үйлдлийн нэр"
-    }
-  ],
-  "label.events": [
-    {
-      "type": 0,
-      "value": "Үйлдэл"
-    }
-  ],
-  "label.exists": [
-    {
-      "type": 0,
-      "value": "Байгаа"
-    }
-  ],
-  "label.exit": [
-    {
-      "type": 0,
-      "value": "Гарах зам"
-    }
-  ],
-  "label.false": [
-    {
-      "type": 0,
-      "value": "Худал"
-    }
-  ],
-  "label.field": [
-    {
-      "type": 0,
-      "value": "Талбар"
-    }
-  ],
-  "label.fields": [
-    {
-      "type": 0,
-      "value": "Талбар"
-    }
-  ],
-  "label.filter": [
-    {
-      "type": 0,
-      "value": "Шүүлтүүр"
-    }
-  ],
-  "label.filter-combined": [
-    {
-      "type": 0,
-      "value": "Нэгтгэсэн"
-    }
-  ],
-  "label.filter-raw": [
-    {
-      "type": 0,
-      "value": "Түүхий"
-    }
-  ],
-  "label.filters": [
-    {
-      "type": 0,
-      "value": "Шүүлтүүр"
-    }
-  ],
-  "label.first-click": [
-    {
-      "type": 0,
-      "value": "Эхний даралт"
-    }
-  ],
-  "label.first-seen": [
-    {
-      "type": 0,
-      "value": "Анх харсан"
-    }
-  ],
-  "label.funnel": [
-    {
-      "type": 0,
-      "value": "Цутгал"
-    }
-  ],
-  "label.funnel-description": [
-    {
-      "type": 0,
-      "value": "Хэрэглэгчдийн шилжилт, уналтын хэмжээг шинжлэх."
-    }
-  ],
-  "label.funnels": [
-    {
-      "type": 0,
-      "value": "Цутгалууд"
-    }
-  ],
-  "label.goal": [
-    {
-      "type": 0,
-      "value": "Зорилго"
-    }
-  ],
-  "label.goals": [
-    {
-      "type": 0,
-      "value": "Зорилго"
-    }
-  ],
-  "label.goals-description": [
-    {
-      "type": 0,
-      "value": "Хуудас үзсэн болон үйлдлийн зорилгыг мөрдөх."
-    }
-  ],
-  "label.greater-than": [
-    {
-      "type": 0,
-      "value": "Их"
-    }
-  ],
-  "label.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "Их буюу тэнцүү"
-    }
-  ],
-  "label.grouped": [
-    {
-      "type": 0,
-      "value": "Бүлэглэсэн"
-    }
-  ],
-  "label.hostname": [
-    {
-      "type": 0,
-      "value": "Хост нэр"
-    }
-  ],
-  "label.includes": [
-    {
-      "type": 0,
-      "value": "Агуулсан"
-    }
-  ],
-  "label.insight": [
-    {
-      "type": 0,
-      "value": "Ойлголт"
-    }
-  ],
-  "label.insights": [
-    {
-      "type": 0,
-      "value": "Шинжлэх"
-    }
-  ],
-  "label.insights-description": [
-    {
-      "type": 0,
-      "value": "Өгөгдлөө хэсэгчлэн хуваах, шүүх байдлаар задлан шинжлэх."
-    }
-  ],
-  "label.is": [
-    {
-      "type": 0,
-      "value": "Бол"
-    }
-  ],
-  "label.is-false": [
-    {
-      "type": 0,
-      "value": "Худал байна"
-    }
-  ],
-  "label.is-not": [
-    {
-      "type": 0,
-      "value": "Биш"
-    }
-  ],
-  "label.is-not-set": [
-    {
-      "type": 0,
-      "value": "Утга оноогоогүй"
-    }
-  ],
-  "label.is-set": [
-    {
-      "type": 0,
-      "value": "Утга оноосон"
-    }
-  ],
-  "label.is-true": [
-    {
-      "type": 0,
-      "value": "Үнэн байна"
-    }
-  ],
-  "label.join": [
-    {
-      "type": 0,
-      "value": "Нэгдэх"
-    }
-  ],
-  "label.join-team": [
-    {
-      "type": 0,
-      "value": "Багт нэгдэх"
-    }
-  ],
-  "label.journey": [
-    {
-      "type": 0,
-      "value": "Аялал"
-    }
-  ],
-  "label.journey-description": [
-    {
-      "type": 0,
-      "value": "Хэрэглэгчид таны цахим хуудсаар хэрхэн шилжиж явсныг шинжлэх."
-    }
-  ],
-  "label.journeys": [
-    {
-      "type": 0,
-      "value": "Аялалууд"
-    }
-  ],
-  "label.language": [
-    {
-      "type": 0,
-      "value": "Хэл"
-    }
-  ],
-  "label.languages": [
-    {
-      "type": 0,
-      "value": "Хэл"
-    }
-  ],
-  "label.laptop": [
-    {
-      "type": 0,
-      "value": "Зөөврийн компьютер"
-    }
-  ],
-  "label.last-click": [
-    {
-      "type": 0,
-      "value": "Сүүлийн даралт"
-    }
-  ],
-  "label.last-days": [
-    {
-      "type": 0,
-      "value": "Сүүлийн "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " хоног"
-    }
-  ],
-  "label.last-hours": [
-    {
-      "type": 0,
-      "value": "Сүүлийн "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " цаг"
-    }
-  ],
-  "label.last-months": [
-    {
-      "type": 0,
-      "value": "Сүүлийн "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " сар"
-    }
-  ],
-  "label.last-seen": [
-    {
-      "type": 0,
-      "value": "Сүүлд харагдсан"
-    }
-  ],
-  "label.leave": [
-    {
-      "type": 0,
-      "value": "Гарах"
-    }
-  ],
-  "label.leave-team": [
-    {
-      "type": 0,
-      "value": "Багаас гарах"
-    }
-  ],
-  "label.less-than": [
-    {
-      "type": 0,
-      "value": "Бага"
-    }
-  ],
-  "label.less-than-equals": [
-    {
-      "type": 0,
-      "value": "Бага буюу тэнцүү"
-    }
-  ],
-  "label.links": [
-    {
-      "type": 0,
-      "value": "Холбоосууд"
-    }
-  ],
-  "label.login": [
-    {
-      "type": 0,
-      "value": "Нэвтрэх"
-    }
-  ],
-  "label.logout": [
-    {
-      "type": 0,
-      "value": "Гарах"
-    }
-  ],
-  "label.manage": [
-    {
-      "type": 0,
-      "value": "Удирдах"
-    }
-  ],
-  "label.manager": [
-    {
-      "type": 0,
-      "value": "Удирдагч"
-    }
-  ],
-  "label.max": [
-    {
-      "type": 0,
-      "value": "Max"
-    }
-  ],
-  "label.maximize": [
-    {
-      "type": 0,
-      "value": "Өргөтгөх"
-    }
-  ],
-  "label.medium": [
-    {
-      "type": 0,
-      "value": "Дунд"
-    }
-  ],
-  "label.member": [
-    {
-      "type": 0,
-      "value": "Гишүүн"
-    }
-  ],
-  "label.members": [
-    {
-      "type": 0,
-      "value": "Гишүүд"
-    }
-  ],
-  "label.min": [
-    {
-      "type": 0,
-      "value": "Min"
-    }
-  ],
-  "label.mobile": [
-    {
-      "type": 0,
-      "value": "Утас"
-    }
-  ],
-  "label.model": [
-    {
-      "type": 0,
-      "value": "Загвар"
-    }
-  ],
-  "label.more": [
-    {
-      "type": 0,
-      "value": "Цааш"
-    }
-  ],
-  "label.my-account": [
-    {
-      "type": 0,
-      "value": "Миний бүртгэл"
-    }
-  ],
-  "label.my-websites": [
-    {
-      "type": 0,
-      "value": "Миний вебүүд"
-    }
-  ],
-  "label.name": [
-    {
-      "type": 0,
-      "value": "Нэр"
-    }
-  ],
-  "label.new-password": [
-    {
-      "type": 0,
-      "value": "Шинэ нууц үг"
-    }
-  ],
-  "label.none": [
-    {
-      "type": 0,
-      "value": "Байхгүй"
-    }
-  ],
-  "label.number-of-records": [
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "бичлэг"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "бичлэг"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    }
-  ],
-  "label.ok": [
-    {
-      "type": 0,
-      "value": "ЗА"
-    }
-  ],
-  "label.online": [
-    {
-      "type": 0,
-      "value": "Online"
-    }
-  ],
-  "label.organic-search": [
-    {
-      "type": 0,
-      "value": "Байгалийн хайлт"
-    }
-  ],
-  "label.organic-shopping": [
-    {
-      "type": 0,
-      "value": "Байгалийн дэлгүүр"
-    }
-  ],
-  "label.organic-social": [
-    {
-      "type": 0,
-      "value": "Байгалийн сошиал"
-    }
-  ],
-  "label.organic-video": [
-    {
-      "type": 0,
-      "value": "Байгалийн видео"
-    }
-  ],
-  "label.os": [
-    {
-      "type": 0,
-      "value": "OS"
-    }
-  ],
-  "label.other": [
-    {
-      "type": 0,
-      "value": "Бусад"
-    }
-  ],
-  "label.overview": [
-    {
-      "type": 0,
-      "value": "Тойм"
-    }
-  ],
-  "label.owner": [
-    {
-      "type": 0,
-      "value": "Эзэмшигч"
-    }
-  ],
-  "label.page": [
-    {
-      "type": 0,
-      "value": "Хуудас"
-    }
-  ],
-  "label.page-of": [
-    {
-      "type": 0,
-      "value": "Хуудас "
-    },
-    {
-      "type": 1,
-      "value": "total"
-    },
-    {
-      "type": 0,
-      "value": "-с "
-    },
-    {
-      "type": 1,
-      "value": "current"
-    }
-  ],
-  "label.page-views": [
-    {
-      "type": 0,
-      "value": "Хуудас үзсэн"
-    }
-  ],
-  "label.pageTitle": [
-    {
-      "type": 0,
-      "value": "Хуудасны гарчиг"
-    }
-  ],
-  "label.pages": [
-    {
-      "type": 0,
-      "value": "Хуудас"
-    }
-  ],
-  "label.paid-ads": [
-    {
-      "type": 0,
-      "value": "Төлбөртэй зар"
-    }
-  ],
-  "label.paid-search": [
-    {
-      "type": 0,
-      "value": "Төлбөртэй хайлт"
-    }
-  ],
-  "label.paid-shopping": [
-    {
-      "type": 0,
-      "value": "Төлбөртэй дэлгүүр"
-    }
-  ],
-  "label.paid-social": [
-    {
-      "type": 0,
-      "value": "Төлбөртэй сошиал"
-    }
-  ],
-  "label.paid-video": [
-    {
-      "type": 0,
-      "value": "Төлбөртэй видео"
-    }
-  ],
-  "label.password": [
-    {
-      "type": 0,
-      "value": "Нууц үг"
-    }
-  ],
-  "label.path": [
-    {
-      "type": 0,
-      "value": "Зам"
-    }
-  ],
-  "label.paths": [
-    {
-      "type": 0,
-      "value": "Зам"
-    }
-  ],
-  "label.pixels": [
-    {
-      "type": 0,
-      "value": "Пиксел"
-    }
-  ],
-  "label.powered-by": [
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": " дээр суурилсан"
-    }
-  ],
-  "label.previous": [
-    {
-      "type": 0,
-      "value": "Өмнөх"
-    }
-  ],
-  "label.previous-period": [
-    {
-      "type": 0,
-      "value": "Өмнөх үе"
-    }
-  ],
-  "label.previous-year": [
-    {
-      "type": 0,
-      "value": "Өмнөх жил"
-    }
-  ],
-  "label.profile": [
-    {
-      "type": 0,
-      "value": "Бүртгэл"
-    }
-  ],
-  "label.properties": [
-    {
-      "type": 0,
-      "value": "Шинж чанар"
-    }
-  ],
-  "label.property": [
-    {
-      "type": 0,
-      "value": "Шинж чанар"
-    }
-  ],
-  "label.queries": [
-    {
-      "type": 0,
-      "value": "Query-нүүд"
-    }
-  ],
-  "label.query": [
-    {
-      "type": 0,
-      "value": "Query"
-    }
-  ],
-  "label.query-parameters": [
-    {
-      "type": 0,
-      "value": "Query параметр"
-    }
-  ],
-  "label.realtime": [
-    {
-      "type": 0,
-      "value": "Яг одоо"
-    }
-  ],
-  "label.referral": [
-    {
-      "type": 0,
-      "value": "Referral"
-    }
-  ],
-  "label.referrer": [
-    {
-      "type": 0,
-      "value": "Чиглүүлэгч"
-    }
-  ],
-  "label.referrers": [
-    {
-      "type": 0,
-      "value": "Чиглүүлэгч"
-    }
-  ],
-  "label.refresh": [
-    {
-      "type": 0,
-      "value": "Сэргээх"
-    }
-  ],
-  "label.regenerate": [
-    {
-      "type": 0,
-      "value": "Дахин үүсгэх"
-    }
-  ],
-  "label.region": [
-    {
-      "type": 0,
-      "value": "Бүс"
-    }
-  ],
-  "label.regions": [
-    {
-      "type": 0,
-      "value": "Бүсүүд"
-    }
-  ],
-  "label.remaining": [
-    {
-      "type": 0,
-      "value": "Үлдсэн"
-    }
-  ],
-  "label.remove": [
-    {
-      "type": 0,
-      "value": "Устгах"
-    }
-  ],
-  "label.remove-member": [
-    {
-      "type": 0,
-      "value": "Гишүүн хасах"
-    }
-  ],
-  "label.reports": [
-    {
-      "type": 0,
-      "value": "Тайлан"
-    }
-  ],
-  "label.required": [
-    {
-      "type": 0,
-      "value": "Шаардлагатай"
-    }
-  ],
-  "label.reset": [
-    {
-      "type": 0,
-      "value": "Дахин эхлүүлэх"
-    }
-  ],
-  "label.reset-website": [
-    {
-      "type": 0,
-      "value": "Тоон үзүүлэлтийг дахин эхлүүлэх"
-    }
-  ],
-  "label.retention": [
-    {
-      "type": 0,
-      "value": "Барилт"
-    }
-  ],
-  "label.retention-description": [
-    {
-      "type": 0,
-      "value": "Хэрэглэгчид таны веб рүү дахин хандах буюу хэрэглэгчдээ хэр тогтоож буйг хэмжих."
-    }
-  ],
-  "label.revenue": [
-    {
-      "type": 0,
-      "value": "Орлого"
-    }
-  ],
-  "label.revenue-description": [
-    {
-      "type": 0,
-      "value": "Цаг хугацааны туршид орлогын өөрчлөлтийг харах."
-    }
-  ],
-  "label.role": [
-    {
-      "type": 0,
-      "value": "Эрх"
-    }
-  ],
-  "label.run-query": [
-    {
-      "type": 0,
-      "value": "Query ажиллуулах"
-    }
-  ],
-  "label.save": [
-    {
-      "type": 0,
-      "value": "Хадгалах"
-    }
-  ],
-  "label.screens": [
-    {
-      "type": 0,
-      "value": "Дэлгэц"
-    }
-  ],
-  "label.search": [
-    {
-      "type": 0,
-      "value": "Хайх"
-    }
-  ],
-  "label.select": [
-    {
-      "type": 0,
-      "value": "Сонгох"
-    }
-  ],
-  "label.select-date": [
-    {
-      "type": 0,
-      "value": "Огноо сонгох"
-    }
-  ],
-  "label.select-filter": [
-    {
-      "type": 0,
-      "value": "Шүүлтүүр сонгох"
-    }
-  ],
-  "label.select-role": [
-    {
-      "type": 0,
-      "value": "Select role"
-    }
-  ],
-  "label.select-website": [
-    {
-      "type": 0,
-      "value": "Веб сонгох"
-    }
-  ],
-  "label.session": [
-    {
-      "type": 0,
-      "value": "Session"
-    }
-  ],
-  "label.session-data": [
-    {
-      "type": 0,
-      "value": "Сессийн өгөгдөл"
-    }
-  ],
-  "label.sessions": [
-    {
-      "type": 0,
-      "value": "Sessions"
-    }
-  ],
-  "label.settings": [
-    {
-      "type": 0,
-      "value": "Тохиргоо"
-    }
-  ],
-  "label.share": [
-    {
-      "type": 0,
-      "value": "Хуваалцах"
-    }
-  ],
-  "label.share-url": [
-    {
-      "type": 0,
-      "value": "Хуваалцах холбоос"
-    }
-  ],
-  "label.single-day": [
-    {
-      "type": 0,
-      "value": "Нэг өдөр"
-    }
-  ],
-  "label.sms": [
-    {
-      "type": 0,
-      "value": "SMS"
-    }
-  ],
-  "label.sources": [
-    {
-      "type": 0,
-      "value": "Эх сурвалжууд"
-    }
-  ],
-  "label.start-step": [
-    {
-      "type": 0,
-      "value": "Эхлэх алхам"
-    }
-  ],
-  "label.steps": [
-    {
-      "type": 0,
-      "value": "Алхам"
-    }
-  ],
-  "label.sum": [
-    {
-      "type": 0,
-      "value": "Нийлбэр"
-    }
-  ],
-  "label.tablet": [
-    {
-      "type": 0,
-      "value": "Таблет"
-    }
-  ],
-  "label.tag": [
-    {
-      "type": 0,
-      "value": "Таг"
-    }
-  ],
-  "label.tags": [
-    {
-      "type": 0,
-      "value": "Тагууд"
-    }
-  ],
-  "label.team": [
-    {
-      "type": 0,
-      "value": "Баг"
-    }
-  ],
-  "label.team-id": [
-    {
-      "type": 0,
-      "value": "Багийн ID"
-    }
-  ],
-  "label.team-manager": [
-    {
-      "type": 0,
-      "value": "Багийн удирдагч"
-    }
-  ],
-  "label.team-member": [
-    {
-      "type": 0,
-      "value": "Багийн гишүүн"
-    }
-  ],
-  "label.team-name": [
-    {
-      "type": 0,
-      "value": "Багийн нэр"
-    }
-  ],
-  "label.team-owner": [
-    {
-      "type": 0,
-      "value": "Багийн эзэмшигч"
-    }
-  ],
-  "label.team-settings": [
-    {
-      "type": 0,
-      "value": "Багийн тохиргоо"
-    }
-  ],
-  "label.team-view-only": [
-    {
-      "type": 0,
-      "value": "Team view only"
-    }
-  ],
-  "label.team-websites": [
-    {
-      "type": 0,
-      "value": "Багийн вебүүд"
-    }
-  ],
-  "label.teams": [
-    {
-      "type": 0,
-      "value": "Багууд"
-    }
-  ],
-  "label.terms": [
-    {
-      "type": 0,
-      "value": "Нөхцөл"
-    }
-  ],
-  "label.theme": [
-    {
-      "type": 0,
-      "value": "Загвар"
-    }
-  ],
-  "label.this-month": [
-    {
-      "type": 0,
-      "value": "Энэ сар"
-    }
-  ],
-  "label.this-week": [
-    {
-      "type": 0,
-      "value": "Энэ долоо хоног"
-    }
-  ],
-  "label.this-year": [
-    {
-      "type": 0,
-      "value": "Энэ жил"
-    }
-  ],
-  "label.timezone": [
-    {
-      "type": 0,
-      "value": "Цагийн бүс"
-    }
-  ],
-  "label.title": [
-    {
-      "type": 0,
-      "value": "Гарчиг"
-    }
-  ],
-  "label.today": [
-    {
-      "type": 0,
-      "value": "Өнөөдөр"
-    }
-  ],
-  "label.toggle-charts": [
-    {
-      "type": 0,
-      "value": "Графикийг харуулах/нуух"
-    }
-  ],
-  "label.total": [
-    {
-      "type": 0,
-      "value": "Нийт"
-    }
-  ],
-  "label.total-records": [
-    {
-      "type": 0,
-      "value": "Нийт мөрийн тоо"
-    }
-  ],
-  "label.tracking-code": [
-    {
-      "type": 0,
-      "value": "Мөрдөх код"
-    }
-  ],
-  "label.transactions": [
-    {
-      "type": 0,
-      "value": "Transactions"
-    }
-  ],
-  "label.transfer": [
-    {
-      "type": 0,
-      "value": "Шилжүүлэх"
-    }
-  ],
-  "label.transfer-website": [
-    {
-      "type": 0,
-      "value": "Вебийг шилжүүлэх"
-    }
-  ],
-  "label.true": [
-    {
-      "type": 0,
-      "value": "Үнэн"
-    }
-  ],
-  "label.type": [
-    {
-      "type": 0,
-      "value": "Төрөл"
-    }
-  ],
-  "label.unique": [
-    {
-      "type": 0,
-      "value": "Давхардаагүй"
-    }
-  ],
-  "label.unique-visitors": [
-    {
-      "type": 0,
-      "value": "Зочин"
-    }
-  ],
-  "label.uniqueCustomers": [
-    {
-      "type": 0,
-      "value": "Давтагдаагүй зочин"
-    }
-  ],
-  "label.unknown": [
-    {
-      "type": 0,
-      "value": "Тодорхойгүй"
-    }
-  ],
-  "label.untitled": [
-    {
-      "type": 0,
-      "value": "Гарчиггүй"
-    }
-  ],
-  "label.update": [
-    {
-      "type": 0,
-      "value": "Шинэчлэх"
-    }
-  ],
-  "label.user": [
-    {
-      "type": 0,
-      "value": "Хэрэглэгч"
-    }
-  ],
-  "label.username": [
-    {
-      "type": 0,
-      "value": "Хэрэглэгчийн нэр"
-    }
-  ],
-  "label.users": [
-    {
-      "type": 0,
-      "value": "Хэрэглэгчид"
-    }
-  ],
-  "label.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "label.utm-description": [
-    {
-      "type": 0,
-      "value": "UTM параметраар кампанит ажлаа мөрдөх."
-    }
-  ],
-  "label.value": [
-    {
-      "type": 0,
-      "value": "Утга"
-    }
-  ],
-  "label.view": [
-    {
-      "type": 0,
-      "value": "Харах"
-    }
-  ],
-  "label.view-details": [
-    {
-      "type": 0,
-      "value": "Дэлгэрүүлж харах"
-    }
-  ],
-  "label.view-only": [
-    {
-      "type": 0,
-      "value": "Зөвхөн үзэх"
-    }
-  ],
-  "label.views": [
-    {
-      "type": 0,
-      "value": "Үзсэн"
-    }
-  ],
-  "label.views-per-visit": [
-    {
-      "type": 0,
-      "value": "Зочдын хуудас үзсэн тоо"
-    }
-  ],
-  "label.visit-duration": [
-    {
-      "type": 0,
-      "value": "Зочилсон дундаж хугацаа"
-    }
-  ],
-  "label.visitors": [
-    {
-      "type": 0,
-      "value": "Зочин"
-    }
-  ],
-  "label.visits": [
-    {
-      "type": 0,
-      "value": "Зочилсон"
-    }
-  ],
-  "label.website": [
-    {
-      "type": 0,
-      "value": "Веб"
-    }
-  ],
-  "label.website-id": [
-    {
-      "type": 0,
-      "value": "Вебийн ID"
-    }
-  ],
-  "label.websites": [
-    {
-      "type": 0,
-      "value": "Вебүүд"
-    }
-  ],
-  "label.window": [
-    {
-      "type": 0,
-      "value": "Цонх"
-    }
-  ],
-  "label.yesterday": [
-    {
-      "type": 0,
-      "value": "Өчигдөр"
-    }
-  ],
-  "message.action-confirmation": [
-    {
-      "type": 0,
-      "value": "Доорх хэсэгт "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " гэж бичин баталгаажуулна уу."
-    }
-  ],
-  "message.active-users": [
-    {
-      "type": 0,
-      "value": "одоо "
-    },
-    {
-      "type": 1,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "зочин"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "зочин"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " байна"
-    }
-  ],
-  "message.bad-request": [
-    {
-      "type": 0,
-      "value": "Bad request"
-    }
-  ],
-  "message.collected-data": [
-    {
-      "type": 0,
-      "value": "Цуглуулсан өгөгдөл"
-    }
-  ],
-  "message.confirm-delete": [
-    {
-      "type": 0,
-      "value": "Та "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "-г устгахдаа итгэлтэй байна уу?"
-    }
-  ],
-  "message.confirm-leave": [
-    {
-      "type": 0,
-      "value": "Та "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "-с гарахдаа итгэлтэй байна уу?"
-    }
-  ],
-  "message.confirm-remove": [
-    {
-      "type": 0,
-      "value": "Та "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "-г устгахдаа итгэлтэй байна уу?"
-    }
-  ],
-  "message.confirm-reset": [
-    {
-      "type": 0,
-      "value": "Та "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "-н тоон үзүүлэлтүүдийг устгахдаа итгэлтэй байна уу?"
-    }
-  ],
-  "message.delete-team-warning": [
-    {
-      "type": 0,
-      "value": "Баг устгах нь мөн түүнд харъяалагдах вебүүдийг устгах болно."
-    }
-  ],
-  "message.delete-website-warning": [
-    {
-      "type": 0,
-      "value": "Энэ вебтэй холбоотой бүх өгөгдөл устах болно."
-    }
-  ],
-  "message.error": [
-    {
-      "type": 0,
-      "value": "Ямар нэг зүйл буруу боллоо."
-    }
-  ],
-  "message.event-log": [
-    {
-      "type": 1,
-      "value": "url"
-    },
-    {
-      "type": 0,
-      "value": "-д "
-    },
-    {
-      "type": 1,
-      "value": "event"
-    }
-  ],
-  "message.forbidden": [
-    {
-      "type": 0,
-      "value": "Forbidden"
-    }
-  ],
-  "message.go-to-settings": [
-    {
-      "type": 0,
-      "value": "Тохиргоо руу очих"
-    }
-  ],
-  "message.incorrect-username-password": [
-    {
-      "type": 0,
-      "value": "Буруу хэрэглэгчийн нэр/нууц үг."
-    }
-  ],
-  "message.invalid-domain": [
-    {
-      "type": 0,
-      "value": "Буруу домэйн"
-    }
-  ],
-  "message.min-password-length": [
-    {
-      "type": 0,
-      "value": "Хамгийн багадаа "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " тэмдэгт"
-    }
-  ],
-  "message.new-version-available": [
-    {
-      "type": 0,
-      "value": "Umami-н шинэ хувилбар "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " гарсан байна!"
-    }
-  ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "Өгөгдөл алга."
-    }
-  ],
-  "message.no-event-data": [
-    {
-      "type": 0,
-      "value": "Үйлдлийн өгөгдөл алга."
-    }
-  ],
-  "message.no-match-password": [
-    {
-      "type": 0,
-      "value": "Нууц үг тохирохгүй байна."
-    }
-  ],
-  "message.no-results-found": [
-    {
-      "type": 0,
-      "value": "Ямар ч үр дүн олдсонгүй."
-    }
-  ],
-  "message.no-team-websites": [
-    {
-      "type": 0,
-      "value": "Энэ багт ямар ч веб алга."
-    }
-  ],
-  "message.no-teams": [
-    {
-      "type": 0,
-      "value": "Та ямар ч баг үүсгээгүй байна."
-    }
-  ],
-  "message.no-users": [
-    {
-      "type": 0,
-      "value": "Хэрэглэгч байхгүй байна."
-    }
-  ],
-  "message.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "Та ямар нэгэн веб тохируулаагүй байна."
-    }
-  ],
-  "message.not-found": [
-    {
-      "type": 0,
-      "value": "Not found"
-    }
-  ],
-  "message.nothing-selected": [
-    {
-      "type": 0,
-      "value": "Nothing selected."
-    }
-  ],
-  "message.page-not-found": [
-    {
-      "type": 0,
-      "value": "Хуудас олдсонгүй."
-    }
-  ],
-  "message.reset-website": [
-    {
-      "type": 0,
-      "value": "Тоон үзүүлэлтийг дахин эхлүүлэхийн тулд доорх хэсэгт "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " гэж бичиж, баталгаажуулна уу."
-    }
-  ],
-  "message.reset-website-warning": [
-    {
-      "type": 0,
-      "value": "Энэ вебийн бүх тоон үзүүлэлтүүдийг устгах болно. Гэхдээ мөрдөх код хэвээрээ үлдэнэ."
-    }
-  ],
-  "message.saved": [
-    {
-      "type": 0,
-      "value": "Хадгалсан."
-    }
-  ],
-  "message.sever-error": [
-    {
-      "type": 0,
-      "value": "Server error"
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "Таны вебийн тоон үзүүлэлтүүд доорх URL дээр нийтэд харагдах болно:"
-    }
-  ],
-  "message.team-already-member": [
-    {
-      "type": 0,
-      "value": "Та аль хэдийн энэ багийн гишүүн болсон байна."
-    }
-  ],
-  "message.team-not-found": [
-    {
-      "type": 0,
-      "value": "Баг олдсонгүй."
-    }
-  ],
-  "message.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Вебийг багийн бүх гишүүд үзэж болно."
-    }
-  ],
-  "message.tracking-code": [
-    {
-      "type": 0,
-      "value": "Энэ вебийн хандалтуудыг мөрдөхийн тулд доорх кодыг HTML-нхээ "
-    },
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": "..."
-        }
-      ],
-      "type": 8,
-      "value": "head"
-    },
-    {
-      "type": 0,
-      "value": " хэсэгт байрлуулна уу."
-    }
-  ],
-  "message.transfer-team-website-to-user": [
-    {
-      "type": 0,
-      "value": "Энэ вебийг өөрийн бүртгэл рүү шилжүүлэх үү?"
-    }
-  ],
-  "message.transfer-user-website-to-team": [
-    {
-      "type": 0,
-      "value": "Энэ вебийг шилжүүлж авах багийг сонгоно уу."
-    }
-  ],
-  "message.transfer-website": [
-    {
-      "type": 0,
-      "value": "Энэ вебийг өөрийн бүртгэл рүү эсвэл багт шилжүүлж авах."
-    }
-  ],
-  "message.triggered-event": [
-    {
-      "type": 0,
-      "value": "Өдөөсөн үйлдэл"
-    }
-  ],
-  "message.unauthorized": [
-    {
-      "type": 0,
-      "value": "Unauthorized"
-    }
-  ],
-  "message.user-deleted": [
-    {
-      "type": 0,
-      "value": "Хэрэглэгч устсан."
-    }
-  ],
-  "message.viewed-page": [
-    {
-      "type": 0,
-      "value": "Үзсэн хуудас"
-    }
-  ],
-  "message.visitor-log": [
-    {
-      "type": 1,
-      "value": "country"
-    },
-    {
-      "type": 0,
-      "value": " улсаас "
-    },
-    {
-      "type": 1,
-      "value": "os"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "device"
-    },
-    {
-      "type": 0,
-      "value": " дээр "
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    },
-    {
-      "type": 0,
-      "value": " хөтөч ашиглан орсон"
-    }
-  ]
+  "label": {
+    "access-code": "Хандалтын код",
+    "account": "Бүртгэл",
+    "action": "Үйлдэл",
+    "actions": "Үйлдлүүд",
+    "activity": "Үйл ажиллагааны бүртгэл",
+    "add": "Нэмэх",
+    "add-board": "Самбар нэмэх",
+    "add-description": "Тайлбар нэмэх",
+    "add-link": "Холбоос нэмэх",
+    "add-member": "Гишүүн нэмэх",
+    "add-pixel": "Пиксел нэмэх",
+    "add-step": "Алхам нэмэх",
+    "add-website": "Веб нэмэх",
+    "admin": "Админ",
+    "affiliate": "Харьяа",
+    "after": "Хойно",
+    "all": "Бүх",
+    "all-time": "Бүх цаг үеийн",
+    "analysis": "Шинжилгээ",
+    "analytics": "Аналитик",
+    "application": "Программ",
+    "apply": "Хэрэглэх",
+    "attribution": "Холбогдол",
+    "attribution-description": "Хэрэглэгчид таны маркетингт хэрхэн оролцож, ямар зүйлс хөрвүүлэлтэд нөлөөлж байгааг хараарай.",
+    "audience": "Үзэгчид",
+    "average": "Дундаж",
+    "back": "Буцах",
+    "before": "Өмнө",
+    "behavior": "Зан төлөв",
+    "boards": "Самбарууд",
+    "bounce-rate": "Нэг хуудас үзээд гарсан",
+    "breakdown": "Задаргаа",
+    "browser": "Хөтөч",
+    "browsers": "Хөтөч",
+    "campaign": "Кампанит ажил",
+    "campaigns": "Аянууд",
+    "cancel": "Цуцлах",
+    "change-password": "Нууц үг солих",
+    "channel": "Суваг",
+    "channels": "Суваг",
+    "chart": "График",
+    "cities": "Хотууд",
+    "city": "Хот",
+    "clear-all": "Бүгдийг арилгах",
+    "cohort": "Бүлэг",
+    "cohorts": "Когортууд",
+    "compare": "Харьцуулах",
+    "compare-dates": "Огноо харьцуулах",
+    "confirm": "Батлах",
+    "confirm-password": "Шинэ нууц үгээ давтах",
+    "contains": "Агуулах",
+    "regex-match": "Регекс-тэй таарна",
+    "regex-not-match": "Регекс-тэй таарахгүй",
+    "content": "Агуулга",
+    "continue": "Үргэлжлүүлэх",
+    "conversion": "Хөрвүүлэлт",
+    "conversion-rate": "Хөрвүүлэлтийн хувь",
+    "conversion-step": "Хөрвүүлэлтийн алхам",
+    "count": "Тоо",
+    "countries": "Улс",
+    "country": "Улс",
+    "create": "Үүсгэх",
+    "create-report": "Тайлан үүсгэх",
+    "create-team": "Баг үүсгэх",
+    "create-user": "Хэрэглэгч үүсгэх",
+    "created": "Үүсгэсэн",
+    "created-by": "Үүсгэсэн",
+    "criteria": "Шалгуур",
+    "currency": "Валют",
+    "current": "Одоогийн",
+    "current-password": "Ашиглаж буй нууц үг",
+    "custom-range": "Дурын хугацаа",
+    "dashboard": "Хянах самбар",
+    "data": "Өгөгдөл",
+    "date": "Огноо",
+    "date-range": "Хугацааны муж",
+    "day": "Өдөр",
+    "default-date-range": "Өгөгдмөл хугацааны муж",
+    "delete": "Устгах",
+    "delete-report": "Тайлан устгах",
+    "delete-team": "Баг устгах",
+    "delete-user": "Хэрэглэгч устгах",
+    "delete-website": "Веб устгах",
+    "description": "Тайлбар",
+    "desktop": "Суурин компьютер",
+    "destination-url": "Очих URL",
+    "details": "Мэдээлэл",
+    "device": "Төхөөрөмж",
+    "devices": "Төхөөрөмж",
+    "direct": "Шууд",
+    "dismiss": "Үл хэрэгсэх",
+    "distinct-id": "Ялгаатай ID",
+    "documentation": "Баримт бичиг",
+    "does-not-contain": "Агуулахгүй",
+    "does-not-include": "Агуулаагүй",
+    "doest-not-exist": "Байхгүй",
+    "domain": "Домэйн",
+    "download": "Татах",
+    "dropoff": "Уналт",
+    "edit": "Засах",
+    "edit-member": "Гишүүн засах",
+    "email": "Имэйл",
+    "enable-share-url": "Хуваалцах холбоос идэвхжүүлэх",
+    "end-step": "Төгсгөлийн алхам",
+    "entry": "Орох зам",
+    "environment": "Орчин",
+    "event": "Үйлдэл",
+    "event-data": "Үйлдлийн өгөгдөл",
+    "event-name": "Үйлдлийн нэр",
+    "events": "Үйлдэл",
+    "exclude-bounce": "Буцалтыг хасах",
+    "exists": "Байгаа",
+    "exit": "Гарах зам",
+    "false": "Худал",
+    "field": "Талбар",
+    "fields": "Талбар",
+    "filter": "Шүүлтүүр",
+    "filter-combined": "Нэгтгэсэн",
+    "filter-raw": "Түүхий",
+    "filters": "Шүүлтүүр",
+    "first-click": "Эхний даралт",
+    "first-seen": "Анх харсан",
+    "funnel": "Цутгал",
+    "funnel-description": "Хэрэглэгчдийн шилжилт, уналтын хэмжээг шинжлэх.",
+    "funnels": "Цутгалууд",
+    "goal": "Зорилго",
+    "goals": "Зорилго",
+    "goals-description": "Хуудас үзсэн болон үйлдлийн зорилгыг мөрдөх.",
+    "greater-than": "Их",
+    "greater-than-equals": "Их буюу тэнцүү",
+    "grouped": "Бүлэглэсэн",
+    "growth": "Өсөлт",
+    "hostname": "Хост нэр",
+    "hour": "Цаг",
+    "includes": "Агуулсан",
+    "insight": "Ойлголт",
+    "insights": "Шинжлэх",
+    "insights-description": "Өгөгдлөө хэсэгчлэн хуваах, шүүх байдлаар задлан шинжлэх.",
+    "invalid-url": "Буруу URL",
+    "is": "Бол",
+    "is-false": "Худал байна",
+    "is-not": "Биш",
+    "is-not-set": "Утга оноогоогүй",
+    "is-set": "Утга оноосон",
+    "is-true": "Үнэн байна",
+    "join": "Нэгдэх",
+    "join-team": "Багт нэгдэх",
+    "journey": "Аялал",
+    "journey-description": "Хэрэглэгчид таны цахим хуудсаар хэрхэн шилжиж явсныг шинжлэх.",
+    "journeys": "Аялалууд",
+    "language": "Хэл",
+    "languages": "Хэл",
+    "laptop": "Зөөврийн компьютер",
+    "last-click": "Сүүлийн даралт",
+    "last-days": "Сүүлийн {x} хоног",
+    "last-hours": "Сүүлийн {x} цаг",
+    "last-months": "Сүүлийн {x} сар",
+    "last-seen": "Сүүлд харагдсан",
+    "leave": "Гарах",
+    "leave-team": "Багаас гарах",
+    "less-than": "Бага",
+    "less-than-equals": "Бага буюу тэнцүү",
+    "link": "Холбоос",
+    "links": "Холбоосууд",
+    "location": "Байршил",
+    "login": "Нэвтрэх",
+    "logout": "Гарах",
+    "manage": "Удирдах",
+    "manager": "Удирдагч",
+    "max": "Дээд",
+    "maximize": "Өргөтгөх",
+    "match": "Тохирох",
+    "match-all": "Бүгд",
+    "match-any": "Ямар ч",
+    "medium": "Дунд",
+    "member": "Гишүүн",
+    "members": "Гишүүд",
+    "min": "Доод",
+    "minute": "Минут",
+    "mobile": "Утас",
+    "model": "Загвар",
+    "month": "Сар",
+    "more": "Цааш",
+    "my-account": "Миний бүртгэл",
+    "my-websites": "Миний вебүүд",
+    "name": "Нэр",
+    "new-password": "Шинэ нууц үг",
+    "none": "Байхгүй",
+    "number-of-records": "{x} {x, plural, one {бичлэг} other {бичлэг}}",
+    "ok": "ЗА",
+    "online": "Онлайн",
+    "organic-search": "Байгалийн хайлт",
+    "organic-shopping": "Байгалийн дэлгүүр",
+    "organic-social": "Байгалийн сошиал",
+    "organic-video": "Байгалийн видео",
+    "os": "ҮС",
+    "other": "Бусад",
+    "overview": "Тойм",
+    "owner": "Эзэмшигч",
+    "page": "Хуудас",
+    "page-of": "Хуудас {total}-с {current}",
+    "page-views": "Хуудас үзсэн",
+    "pageTitle": "Хуудасны гарчиг",
+    "pages": "Хуудас",
+    "paid-ads": "Төлбөртэй зар",
+    "paid-search": "Төлбөртэй хайлт",
+    "paid-shopping": "Төлбөртэй дэлгүүр",
+    "paid-social": "Төлбөртэй сошиал",
+    "paid-video": "Төлбөртэй видео",
+    "password": "Нууц үг",
+    "path": "Зам",
+    "paths": "Зам",
+    "pixel": "Пиксел",
+    "pixels": "Пиксел",
+    "powered-by": "{name} дээр суурилсан",
+    "preferences": "Тохиргоо",
+    "previous": "Өмнөх",
+    "previous-period": "Өмнөх үе",
+    "previous-year": "Өмнөх жил",
+    "profile": "Бүртгэл",
+    "profiles": "Профайлууд",
+    "properties": "Шинж чанар",
+    "property": "Шинж чанар",
+    "queries": "Query-нүүд",
+    "query": "Асуулга",
+    "query-parameters": "Query параметр",
+    "realtime": "Яг одоо",
+    "referral": "Лавлагаа",
+    "referrer": "Чиглүүлэгч",
+    "referrers": "Чиглүүлэгч",
+    "refresh": "Сэргээх",
+    "regenerate": "Дахин үүсгэх",
+    "region": "Бүс",
+    "regions": "Бүсүүд",
+    "remaining": "Үлдсэн",
+    "remove": "Устгах",
+    "remove-member": "Гишүүн хасах",
+    "reports": "Тайлан",
+    "required": "Шаардлагатай",
+    "reset": "Дахин эхлүүлэх",
+    "reset-website": "Тоон үзүүлэлтийг дахин эхлүүлэх",
+    "retention": "Барилт",
+    "retention-description": "Хэрэглэгчид таны веб рүү дахин хандах буюу хэрэглэгчдээ хэр тогтоож буйг хэмжих.",
+    "revenue": "Орлого",
+    "revenue-description": "Цаг хугацааны туршид орлогын өөрчлөлтийг харах.",
+    "role": "Эрх",
+    "run-query": "Query ажиллуулах",
+    "save": "Хадгалах",
+    "save-cohort": "Когорт хадгалах",
+    "save-segment": "Сегмент хадгалах",
+    "screen": "Дэлгэц",
+    "screens": "Дэлгэц",
+    "search": "Хайх",
+    "segment": "Сегмент",
+    "segments": "Сегментүүд",
+    "select": "Сонгох",
+    "select-date": "Огноо сонгох",
+    "select-filter": "Шүүлтүүр сонгох",
+    "select-role": "Үүрэг сонгох",
+    "select-website": "Веб сонгох",
+    "session": "Сессия",
+    "session-data": "Сессийн өгөгдөл",
+    "sessions": "Сессиүд",
+    "settings": "Тохиргоо",
+    "share": "Хуваалцах",
+    "share-url": "Хуваалцах холбоос",
+    "single-day": "Нэг өдөр",
+    "sms": "SMS",
+    "source": "Эх сурвалж",
+    "sources": "Эх сурвалжууд",
+    "start-step": "Эхлэх алхам",
+    "steps": "Алхам",
+    "sum": "Нийлбэр",
+    "support": "Дэмжлэг",
+    "switch-account": "Бүртгэл солих",
+    "table": "Хүснэгт",
+    "tablet": "Таблет",
+    "tag": "Таг",
+    "tags": "Тагууд",
+    "team": "Баг",
+    "team-id": "Багийн ID",
+    "team-manager": "Багийн удирдагч",
+    "team-member": "Багийн гишүүн",
+    "team-name": "Багийн нэр",
+    "team-owner": "Багийн эзэмшигч",
+    "team-settings": "Багийн тохиргоо",
+    "team-view-only": "Зөвхөн багийн харагдац",
+    "team-websites": "Багийн вебүүд",
+    "teams": "Багууд",
+    "term": "Хайлтын нөхцөл",
+    "terms": "Нөхцөл",
+    "theme": "Загвар",
+    "this-month": "Энэ сар",
+    "this-week": "Энэ долоо хоног",
+    "this-year": "Энэ жил",
+    "timezone": "Цагийн бүс",
+    "title": "Гарчиг",
+    "today": "Өнөөдөр",
+    "toggle-charts": "Графикийг харуулах/нуух",
+    "total": "Нийт",
+    "total-records": "Нийт мөрийн тоо",
+    "tracking-code": "Мөрдөх код",
+    "traffic": "Урсгал",
+    "transactions": "Гүйлгээнүүд",
+    "transfer": "Шилжүүлэх",
+    "transfer-website": "Вебийг шилжүүлэх",
+    "true": "Үнэн",
+    "type": "Төрөл",
+    "unique": "Давхардаагүй",
+    "unique-events": "Өвөрмөц үйл явдлууд",
+    "unique-visitors": "Зочин",
+    "uniqueCustomers": "Давтагдаагүй зочин",
+    "unknown": "Тодорхойгүй",
+    "untitled": "Гарчиггүй",
+    "update": "Шинэчлэх",
+    "url": "URL",
+    "user": "Хэрэглэгч",
+    "username": "Хэрэглэгчийн нэр",
+    "users": "Хэрэглэгчид",
+    "utm": "UTM",
+    "utm-campaign": "UTM Кампанит ажил",
+    "utm-content": "UTM Агуулга",
+    "utm-description": "UTM параметраар кампанит ажлаа мөрдөх.",
+    "utm-medium": "UTM Хэрэгсэл",
+    "utm-source": "UTM Эх сурвалж",
+    "utm-term": "UTM Нөхцөл",
+    "value": "Утга",
+    "version": "Хувилбар",
+    "view": "Харах",
+    "view-details": "Дэлгэрүүлж харах",
+    "view-only": "Зөвхөн үзэх",
+    "views": "Үзсэн",
+    "views-per-visit": "Зочдын хуудас үзсэн тоо",
+    "visit-duration": "Зочилсон дундаж хугацаа",
+    "visitors": "Зочин",
+    "visits": "Зочилсон",
+    "website": "Веб",
+    "website-id": "Вебийн ID",
+    "websites": "Вебүүд",
+    "window": "Цонх",
+    "yesterday": "Өчигдөр"
+  },
+  "message": {
+    "action-confirmation": "Доорх хэсэгт {confirmation} гэж бичин баталгаажуулна уу.",
+    "active-users": "одоо {x} {x, plural, one {зочин} other {зочин}} байна",
+    "bad-request": "Буруу хүсэлт",
+    "collected-data": "Цуглуулсан өгөгдөл",
+    "confirm-delete": "Та {target}-г устгахдаа итгэлтэй байна уу?",
+    "confirm-leave": "Та <b>{target}</b>-с гарахдаа итгэлтэй байна уу?",
+    "confirm-remove": "Та <b>{target}</b>-г устгахдаа итгэлтэй байна уу?",
+    "confirm-reset": "Та {target}-н тоон үзүүлэлтүүдийг устгахдаа итгэлтэй байна уу?",
+    "delete-team-warning": "Баг устгах нь мөн түүнд харъяалагдах вебүүдийг устгах болно.",
+    "delete-website-warning": "Энэ вебтэй холбоотой бүх өгөгдөл устах болно.",
+    "error": "Ямар нэг зүйл буруу боллоо.",
+    "event-log": "<a>{url}</a>-д <b>{event}</b>",
+    "forbidden": "Хориотой",
+    "go-to-settings": "Тохиргоо руу очих",
+    "incorrect-username-password": "Буруу хэрэглэгчийн нэр/нууц үг.",
+    "invalid-domain": "Буруу домэйн",
+    "min-password-length": "Хамгийн багадаа {n} тэмдэгт",
+    "new-version-available": "Umami-н шинэ хувилбар {version} гарсан байна!",
+    "no-data-available": "Өгөгдөл алга.",
+    "no-event-data": "Үйлдлийн өгөгдөл алга.",
+    "no-match-password": "Нууц үг тохирохгүй байна.",
+    "no-results-found": "Ямар ч үр дүн олдсонгүй.",
+    "no-team-websites": "Энэ багт ямар ч веб алга.",
+    "no-teams": "Та ямар ч баг үүсгээгүй байна.",
+    "no-users": "Хэрэглэгч байхгүй байна.",
+    "no-websites-configured": "Та ямар нэгэн веб тохируулаагүй байна.",
+    "not-found": "Олдсонгүй",
+    "nothing-selected": "Юу ч сонгоогүй байна.",
+    "page-not-found": "Хуудас олдсонгүй.",
+    "reset-website": "Тоон үзүүлэлтийг дахин эхлүүлэхийн тулд доорх хэсэгт {confirmation} гэж бичиж, баталгаажуулна уу.",
+    "reset-website-warning": "Энэ вебийн бүх тоон үзүүлэлтүүдийг устгах болно. Гэхдээ мөрдөх код хэвээрээ үлдэнэ.",
+    "saved": "Хадгалсан.",
+    "sever-error": "Серверийн алдаа",
+    "share-url": "Таны вебийн тоон үзүүлэлтүүд доорх URL дээр нийтэд харагдах болно:",
+    "team-already-member": "Та аль хэдийн энэ багийн гишүүн болсон байна.",
+    "team-not-found": "Баг олдсонгүй.",
+    "team-websites-info": "Вебийг багийн бүх гишүүд үзэж болно.",
+    "tracking-code": "Энэ вебийн хандалтуудыг мөрдөхийн тулд доорх кодыг HTML-нхээ <head>...</head> хэсэгт байрлуулна уу.",
+    "transfer-team-website-to-user": "Энэ вебийг өөрийн бүртгэл рүү шилжүүлэх үү?",
+    "transfer-user-website-to-team": "Энэ вебийг шилжүүлж авах багийг сонгоно уу.",
+    "transfer-website": "Энэ вебийг өөрийн бүртгэл рүү эсвэл багт шилжүүлж авах.",
+    "triggered-event": "Өдөөсөн үйлдэл",
+    "unauthorized": "Зөвшөөрөлгүй",
+    "user-deleted": "Хэрэглэгч устсан.",
+    "viewed-page": "Үзсэн хуудас",
+    "visitor-log": "<b>{country}</b> улсаас <b>{os}</b> <b>{device}</b> дээр <b>{browser}</b> хөтөч ашиглан орсон"
+  }
 }

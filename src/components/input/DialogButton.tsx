@@ -4,10 +4,10 @@ import {
   Dialog,
   type DialogProps,
   DialogTrigger,
-  IconLabel,
   Modal,
 } from '@umami/react-zen';
 import type { CSSProperties, ReactNode } from 'react';
+import { IconLabel } from '@/components/common/IconLabel';
 import { useMobile } from '@/components/hooks';
 
 export interface DialogButtonProps extends Omit<ButtonProps, 'children'> {
