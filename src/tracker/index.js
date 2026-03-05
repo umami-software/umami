@@ -232,6 +232,7 @@
     const metrics = {};
     let sent = false;
     let timeoutId;
+    let isInitialLoad = true;
 
     const observe = (type, callback) => {
       try {
@@ -246,7 +247,7 @@
 
     // TTFB
     observe('navigation', entry => {
-      metrics.ttfb = Math.max(entry.responseStart - entry.requestStart, 0);
+      metrics.ttfb = Math.max(entry.responseStart - entry.startTime, 0);
     });
 
     // FCP
@@ -295,10 +296,12 @@
     };
 
     const applyFallbackMetrics = () => {
+      if (!isInitialLoad) return;
+
       if (metrics.ttfb === undefined) {
         const navigation = getEntriesByType('navigation')?.[0];
         if (navigation) {
-          metrics.ttfb = Math.max(navigation.responseStart - navigation.requestStart, 0);
+          metrics.ttfb = Math.max(navigation.responseStart - navigation.startTime, 0);
         }
       }
 
@@ -333,6 +336,7 @@
 
     flushPerformance = () => {
       sendPerformance();
+      isInitialLoad = false;
       Object.keys(metrics).forEach(k => {
         delete metrics[k];
       });
