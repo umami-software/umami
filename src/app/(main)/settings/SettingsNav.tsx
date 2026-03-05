@@ -1,8 +1,9 @@
 import { SideMenu } from '@/components/common/SideMenu';
-import { useMessages, useNavigation } from '@/components/hooks';
+import { useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
 import { Settings2, UserCircle, Users } from '@/components/icons';
 
 export function SettingsNav({ onItemClick }: { onItemClick?: () => void }) {
+  const { user } = useLoginQuery();
   const { formatMessage, labels } = useMessages();
   const { renderUrl, pathname } = useNavigation();
 
@@ -33,13 +34,20 @@ export function SettingsNav({ onItemClick }: { onItemClick?: () => void }) {
           path: renderUrl('/settings/teams'),
           icon: <Users />,
         },
-      ],
+        user?.isAdmin && {
+          id: 'oidc',
+          label: 'OIDC',
+          path: renderUrl('/settings/oidc'),
+          icon: <Settings2 />,
+        },
+      ].filter(n => n),
     },
   ];
 
   const selectedKey = items
     .flatMap(e => e.items)
     .find(({ path }) => path && pathname.includes(path.split('?')[0]))?.id;
+
 
   return (
     <SideMenu
