@@ -5,7 +5,11 @@ import { DateDistance } from '@/components/common/DateDistance';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { useFormat, useMessages } from '@/components/hooks';
 
-export function SessionsTable({ websiteId, ...props }: DataTableProps & { websiteId: string }) {
+export function SessionsTable({
+  websiteId,
+  getSessionHref,
+  ...props
+}: DataTableProps & { websiteId: string; getSessionHref?: (row: any) => string }) {
   const { t, labels } = useMessages();
   const { formatValue } = useFormat();
 
@@ -13,7 +17,11 @@ export function SessionsTable({ websiteId, ...props }: DataTableProps & { websit
     <DataTable {...props}>
       <DataColumn id="id" label={t(labels.session)} width="100px">
         {(row: any) => (
-          <Link href={`/websites/${websiteId}/sessions/${row.id}`}>
+          <Link
+            href={
+              getSessionHref ? getSessionHref(row) : `/websites/${websiteId}/sessions/${row.id}`
+            }
+          >
             <Avatar seed={row.id} size={32} />
           </Link>
         )}

@@ -1,9 +1,16 @@
 import { Column, Grid, Heading, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
+import { DataGrid } from '@/components/common/DataGrid';
 import { GridRow } from '@/components/common/GridRow';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
-import { useDateRange, useMessages, useResultQuery } from '@/components/hooks';
+import {
+  useDateRange,
+  useMessages,
+  useNavigation,
+  useResultQuery,
+  useRevenueSessionsQuery,
+} from '@/components/hooks';
 import { CurrencySelect } from '@/components/input/CurrencySelect';
 import { ListTable } from '@/components/metrics/ListTable';
 import { MetricCard } from '@/components/metrics/MetricCard';
@@ -13,6 +20,31 @@ import { RevenueChart } from '@/components/metrics/RevenueChart';
 import { CURRENCY_CONFIG, DEFAULT_CURRENCY } from '@/lib/constants';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
 import { getItem, setItem } from '@/lib/storage';
+import { SessionModal } from '../../sessions/SessionModal';
+import { SessionsTable } from '../../sessions/SessionsTable';
+
+function RevenueSessionsDataTable({
+  websiteId,
+  currency,
+}: {
+  websiteId: string;
+  currency: string;
+}) {
+  const { updateParams } = useNavigation();
+  const queryResult = useRevenueSessionsQuery(websiteId, currency);
+
+  return (
+    <DataGrid query={queryResult} allowPaging allowSearch>
+      {({ data }) => (
+        <SessionsTable
+          data={data}
+          websiteId={websiteId}
+          getSessionHref={row => updateParams({ session: row.id })}
+        />
+      )}
+    </DataGrid>
+  );
+}
 
 export interface RevenueProps {
   websiteId: string;
@@ -56,18 +88,30 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
       {
         value: average,
         label: t(labels.aov),
+        tooltip: (
+          <>
+            <div>Average Order Value</div>
+            <div>(Total Revenue / Orders)</div>
+          </>
+        ),
         change: comparison ? average - comparison.average : 0,
         formatValue: (n: number) => formatLongCurrency(n, currency),
       },
       {
         value: arpu,
         label: t(labels.arpu),
+        tooltip: (
+          <>
+            <div>Average Revenue Per User</div>
+            <div>(Total Revenue / All Sessions)</div>
+          </>
+        ),
         change: comparison ? arpu - (comparison.arpu ?? 0) : 0,
         formatValue: (n: number) => formatLongCurrency(n, currency),
       },
       {
         value: count,
-        label: t(labels.transactions),
+        label: t(labels.orders),
         change: comparison ? count - comparison.count : 0,
         formatValue: formatLongNumber,
       },
@@ -91,12 +135,13 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
         {data && (
           <Column gap>
             <MetricsBar>
-              {metrics?.map(({ label, value, change, formatValue }) => {
+              {metrics?.map(({ label, value, change, formatValue, tooltip }) => {
                 return (
                   <MetricCard
                     key={label}
                     value={value}
                     label={label}
+                    tooltip={tooltip}
                     change={change}
                     formatValue={formatValue}
                     showChange={!isAllTime}
@@ -204,9 +249,14 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
                 </Panel>
               </GridRow>
             </Grid>
+            <Panel>
+              <Heading size="2xl">{t(labels.customers)}</Heading>
+              <RevenueSessionsDataTable websiteId={websiteId} currency={currency} />
+            </Panel>
           </Column>
         )}
       </LoadingPanel>
+      <SessionModal websiteId={websiteId} />
     </Column>
   );
 }

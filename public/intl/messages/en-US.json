@@ -338,6 +338,8 @@
     "aov": "AOV",
     "arpu": "ARPU",
     "uniqueCustomers": "Unique Customers",
+    "customers": "Customers",
+    "orders": "Orders",
     "unknown": "Unknown",
     "untitled": "Untitled",
     "update": "Update",

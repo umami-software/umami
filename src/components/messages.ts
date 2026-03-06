@@ -258,6 +258,8 @@ export const labels: Record<string, string> = {
   aov: 'label.aov',
   arpu: 'label.arpu',
   uniqueCustomers: 'label.uniqueCustomers',
+  customers: 'label.customers',
+  orders: 'label.orders',
   viewedPage: 'message.viewed-page',
   collectedData: 'message.collected-data',
   triggeredEvent: 'message.triggered-event',
