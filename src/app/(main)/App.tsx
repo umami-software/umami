@@ -58,6 +58,23 @@ export function App({ children }) {
       {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (
         <Script src={`${process.env.basePath || ''}/telemetry.js`} />
       )}
+      {process.env.selfTrack && (
+        <Script
+          async
+          data-website-id={process.env.selfTrack}
+          src={`${process.env.basePath || ''}/script.js`}
+          data-cache="true"
+          data-performance="true"
+        />
+      )}
+      {process.env.selfRecord && (
+        <Script
+          async
+          data-website-id={process.env.selfRecord}
+          data-sample-rate="1"
+          src={`${process.env.basePath || ''}/recorder.js`}
+        />
+      )}
     </Grid>
   );
 }

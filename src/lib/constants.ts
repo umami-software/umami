@@ -114,6 +114,7 @@ export const EVENT_TYPE = {
   customEvent: 2,
   linkEvent: 3,
   pixelEvent: 4,
+  performance: 5,
 } as const;
 
 export const ENTITY_TYPE = {

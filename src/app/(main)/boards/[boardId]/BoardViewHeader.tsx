@@ -1,9 +1,9 @@
-import { Text } from '@umami/react-zen';
+import { Icon, Row, Text } from '@umami/react-zen';
 import { IconLabel } from '@/components/common/IconLabel';
 import { LinkButton } from '@/components/common/LinkButton';
 import { PageHeader } from '@/components/common/PageHeader';
 import { useBoard, useMessages, useNavigation, useWebsiteQuery } from '@/components/hooks';
-import { Edit } from '@/components/icons';
+import { Edit, Globe } from '@/components/icons';
 
 export function BoardViewHeader() {
   const { board } = useBoard();
@@ -13,10 +13,19 @@ export function BoardViewHeader() {
 
   return (
     <PageHeader title={board?.name} description={board?.description}>
-      {website?.name && <Text>{website.name}</Text>}
-      <LinkButton href={renderUrl(`/boards/${board?.id}/edit`, false)}>
-        <IconLabel icon={<Edit />}>{t(labels.edit)}</IconLabel>
-      </LinkButton>
+      <Row alignItems="center" gap>
+        {website?.name && (
+          <Row padding borderRadius="full" backgroundColor="surface-base" border gap="2">
+            <Icon>
+              <Globe />
+            </Icon>
+            <Text size="sm">{website.name}</Text>
+          </Row>
+        )}
+        <LinkButton href={renderUrl(`/boards/${board?.id}/edit`, false)}>
+          <IconLabel icon={<Edit />}>{t(labels.edit)}</IconLabel>
+        </LinkButton>
+      </Row>
     </PageHeader>
   );
 }

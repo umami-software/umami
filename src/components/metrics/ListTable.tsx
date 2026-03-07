@@ -5,7 +5,7 @@ import { FixedSizeList } from 'react-window';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { Empty } from '@/components/common/Empty';
 import { useMessages, useMobile } from '@/components/hooks';
-import { formatLongCurrency, formatLongNumber } from '@/lib/format';
+import { formatLongNumber } from '@/lib/format';
 
 const ITEM_SIZE = 30;
 
@@ -26,7 +26,7 @@ export interface ListTableProps {
   virtualize?: boolean;
   showPercentage?: boolean;
   itemCount?: number;
-  currency?: string;
+  formatCount?: (n: number) => string;
 }
 
 export function ListTable({
@@ -39,7 +39,7 @@ export function ListTable({
   virtualize = false,
   showPercentage = true,
   itemCount = 10,
-  currency,
+  formatCount,
 }: ListTableProps) {
   const { t, labels } = useMessages();
   const { isPhone } = useMobile();
@@ -56,7 +56,7 @@ export function ListTable({
         animate={animate && !virtualize}
         showPercentage={showPercentage}
         change={renderChange ? renderChange(row, index) : null}
-        currency={currency}
+        formatCount={formatCount}
         isPhone={isPhone}
       />
     );
@@ -68,7 +68,12 @@ export function ListTable({
 
   return (
     <Column gap>
-      <Grid alignItems="center" justifyContent="space-between" paddingLeft="2" columns="1fr 100px">
+      <Grid
+        alignItems="center"
+        justifyContent="space-between"
+        paddingLeft="2"
+        columns={`1fr ${showPercentage ? '100px' : '150px'}`}
+      >
         <Text weight="bold">{title}</Text>
         <Text weight="bold" align="center">
           {metric}
@@ -100,7 +105,7 @@ const AnimatedRow = ({
   change,
   animate,
   showPercentage = true,
-  currency,
+  formatCount,
   isPhone,
 }) => {
   const props = useSpring({
@@ -128,9 +133,7 @@ const AnimatedRow = ({
         {change}
         <Text weight="bold">
           <AnimatedDiv title={props?.y as any}>
-            {currency
-              ? props.y?.to(n => formatLongCurrency(n, currency))
-              : props.y?.to(formatLongNumber)}
+            {formatCount ? props.y?.to(formatCount) : props.y?.to(formatLongNumber)}
           </AnimatedDiv>
         </Text>
       </Row>

@@ -7,6 +7,7 @@ CREATE TABLE "session_replay" (
     "replay_id" UUID NOT NULL,
     "website_id" UUID NOT NULL,
     "session_id" UUID NOT NULL,
+    "visit_id" UUID NOT NULL,
     "chunk_index" INTEGER NOT NULL,
     "events" BYTEA NOT NULL,
     "event_count" INTEGER NOT NULL,
@@ -21,5 +22,6 @@ CREATE TABLE "session_replay" (
 CREATE INDEX "session_replay_website_id_idx" ON "session_replay"("website_id");
 CREATE INDEX "session_replay_session_id_idx" ON "session_replay"("session_id");
 CREATE INDEX "session_replay_website_id_session_id_idx" ON "session_replay"("website_id", "session_id");
+CREATE INDEX "session_replay_website_id_visit_id_idx" ON "session_replay"("website_id", "visit_id");
 CREATE INDEX "session_replay_website_id_created_at_idx" ON "session_replay"("website_id", "created_at");
 CREATE INDEX "session_replay_session_id_chunk_index_idx" ON "session_replay"("session_id", "chunk_index");

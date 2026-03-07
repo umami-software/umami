@@ -12,7 +12,7 @@ import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, savePerformance, saveSessionData } from '@/queries/sql';
+import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
 
 interface Cache {
   websiteId: string;
@@ -284,11 +284,21 @@ export async function POST(request: Request) {
       const currentUrl = new URL(url, base);
       const urlPath = currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname;
 
-      await savePerformance({
+      await saveEvent({
         websiteId: sourceId,
         sessionId,
         visitId,
         urlPath,
+        pageTitle: safeDecodeURIComponent(title),
+        eventType: EVENT_TYPE.performance,
+        browser,
+        os,
+        device,
+        screen,
+        language,
+        country,
+        region,
+        city,
         lcp,
         inp,
         cls,

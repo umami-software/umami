@@ -1,13 +1,13 @@
 import { useApi } from '../useApi';
 
-export function useReplayQuery(websiteId: string, sessionId: string) {
+export function useReplayQuery(websiteId: string, replayId: string) {
   const { get, useQuery } = useApi();
 
   return useQuery({
-    queryKey: ['replay', { websiteId, sessionId }],
+    queryKey: ['replay', { websiteId, replayId }],
     queryFn: () => {
-      return get(`/websites/${websiteId}/replays/${sessionId}`);
+      return get(`/websites/${websiteId}/replays/${replayId}`);
     },
-    enabled: Boolean(websiteId && sessionId),
+    enabled: Boolean(websiteId && replayId),
   });
 }

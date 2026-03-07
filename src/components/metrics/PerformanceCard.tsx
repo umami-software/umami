@@ -1,5 +1,6 @@
-import { useSpring } from '@react-spring/web';
+import { config, useSpring } from '@react-spring/web';
 import { Column, Text } from '@umami/react-zen';
+import { useRef } from 'react';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { useMessages } from '@/components/hooks';
 import { WEB_VITALS_THRESHOLDS } from '@/lib/constants';
@@ -33,7 +34,14 @@ export const PerformanceCard = ({
 }: PerformanceCardProps) => {
   const { t, labels } = useMessages();
   const rating = getRating(metric, value);
-  const props = useSpring({ x: Number(value) || 0, from: { x: 0 } });
+  const prevMetricRef = useRef(metric);
+  const metricChanged = prevMetricRef.current !== metric;
+  if (metricChanged) prevMetricRef.current = metric;
+
+  const spring = useSpring({
+    value: !Number.isNaN(value) ? value : 0,
+    config: metricChanged ? { duration: 0 } : config.default,
+  });
 
   return (
     <Column
@@ -52,7 +60,7 @@ export const PerformanceCard = ({
         {label}
       </Text>
       <Text size="4xl" weight="bold" wrap="nowrap">
-        <AnimatedDiv title={value?.toString()}>{props?.x?.to(x => formatValue(x))}</AnimatedDiv>
+        <AnimatedDiv>{spring.value.to(n => formatValue(n))}</AnimatedDiv>
       </Text>
       <Text size="sm" className={styles.rating}>
         {t(labels[rating === 'needs-improvement' ? 'needsImprovement' : rating])}

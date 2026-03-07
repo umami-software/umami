@@ -13,7 +13,6 @@ export interface PerformanceParameters {
 
 export interface PerformanceResult {
   chart: { t: string; p50: number; p75: number; p95: number }[];
-  pages: { urlPath: string; p75: number; count: number }[];
   summary: {
     lcp: { p50: number; p75: number; p95: number };
     inp: { p50: number; p75: number; p95: number };
@@ -39,7 +38,11 @@ async function relationalQuery(
   filters: QueryFilters,
 ): Promise<PerformanceResult> {
   const { startDate, endDate, unit = 'day', timezone = 'utc', metric = 'lcp' } = parameters;
-  const { getDateSQL, rawQuery } = prisma;
+  const { getDateSQL, rawQuery, parseFilters } = prisma;
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
 
   const chart = await rawQuery(
     `
@@ -48,29 +51,17 @@ async function relationalQuery(
       percentile_cont(0.5) within group (order by ${metric}) as p50,
       percentile_cont(0.75) within group (order by ${metric}) as p75,
       percentile_cont(0.95) within group (order by ${metric}) as p95
-    from performance
-    where website_id = {{websiteId::uuid}}
-      and created_at between {{startDate}} and {{endDate}}
+    from website_event
+    ${cohortQuery}
+    ${joinSessionQuery}
+    where website_event.website_id = {{websiteId::uuid}}
+      and website_event.event_type = 5
+      and website_event.created_at between {{startDate}} and {{endDate}}
+      ${filterQuery}
     group by t
     order by t
     `,
-    { websiteId, startDate, endDate },
-  );
-
-  const pages = await rawQuery(
-    `
-    select
-      url_path as "urlPath",
-      percentile_cont(0.75) within group (order by ${metric}) as p75,
-      count(*) as count
-    from performance
-    where website_id = {{websiteId::uuid}}
-      and created_at between {{startDate}} and {{endDate}}
-    group by url_path
-    order by p75 desc
-    limit 100
-    `,
-    { websiteId, startDate, endDate },
+    { ...queryParams, startDate, endDate },
   );
 
   const summaryResult = await rawQuery(
@@ -92,11 +83,15 @@ async function relationalQuery(
       percentile_cont(0.75) within group (order by ttfb) as ttfb_p75,
       percentile_cont(0.95) within group (order by ttfb) as ttfb_p95,
       count(*) as count
-    from performance
-    where website_id = {{websiteId::uuid}}
-      and created_at between {{startDate}} and {{endDate}}
+    from website_event
+    ${cohortQuery}
+    ${joinSessionQuery}
+    where website_event.website_id = {{websiteId::uuid}}
+      and website_event.event_type = 5
+      and website_event.created_at between {{startDate}} and {{endDate}}
+      ${filterQuery}
     `,
-    { websiteId, startDate, endDate },
+    { ...queryParams, startDate, endDate },
   ).then(result => result?.[0]);
 
   const summary = {
@@ -128,7 +123,7 @@ async function relationalQuery(
     count: Number(summaryResult?.count || 0),
   };
 
-  return { chart, pages, summary };
+  return { chart, summary };
 }
 
 async function clickhouseQuery(
@@ -137,7 +132,8 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<PerformanceResult> {
   const { startDate, endDate, unit = 'day', timezone = 'utc', metric = 'lcp' } = parameters;
-  const { getDateSQL, rawQuery } = clickhouse;
+  const { getDateSQL, rawQuery, parseFilters } = clickhouse;
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
 
   const chart = await rawQuery<{ t: string; p50: number; p75: number; p95: number }[]>(
     `
@@ -146,29 +142,16 @@ async function clickhouseQuery(
       quantile(0.5)(${metric}) as p50,
       quantile(0.75)(${metric}) as p75,
       quantile(0.95)(${metric}) as p95
-    from website_performance
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+    from website_event
+    ${cohortQuery}
+    where website_event.website_id = {websiteId:UUID}
+      and website_event.event_type = 5
+      and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      ${filterQuery}
     group by t
     order by t
     `,
-    { websiteId, startDate, endDate },
-  );
-
-  const pages = await rawQuery<{ urlPath: string; p75: number; count: number }[]>(
-    `
-    select
-      url_path as "urlPath",
-      quantile(0.75)(${metric}) as p75,
-      count() as count
-    from website_performance
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-    group by url_path
-    order by p75 desc
-    limit 100
-    `,
-    { websiteId, startDate, endDate },
+    { ...queryParams, startDate, endDate },
   );
 
   const summaryResult = await rawQuery<any>(
@@ -190,11 +173,14 @@ async function clickhouseQuery(
       quantile(0.75)(ttfb) as ttfb_p75,
       quantile(0.95)(ttfb) as ttfb_p95,
       count() as count
-    from website_performance
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+    from website_event
+    ${cohortQuery}
+    where website_event.website_id = {websiteId:UUID}
+      and website_event.event_type = 5
+      and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      ${filterQuery}
     `,
-    { websiteId, startDate, endDate },
+    { ...queryParams, startDate, endDate },
   ).then(result => result?.[0]);
 
   const summary = {
@@ -226,5 +212,5 @@ async function clickhouseQuery(
     count: Number(summaryResult?.count || 0),
   };
 
-  return { chart, pages, summary };
+  return { chart, summary };
 }

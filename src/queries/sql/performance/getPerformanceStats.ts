@@ -23,8 +23,11 @@ async function relationalQuery(
   websiteId: string,
   filters: QueryFilters,
 ): Promise<PerformanceStatsResult> {
-  const { rawQuery } = prisma;
-  const { startDate, endDate } = filters;
+  const { rawQuery, parseFilters } = prisma;
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
 
   const result = await rawQuery(
     `
@@ -35,11 +38,15 @@ async function relationalQuery(
       percentile_cont(0.75) within group (order by fcp) as fcp,
       percentile_cont(0.75) within group (order by ttfb) as ttfb,
       count(*) as count
-    from performance
-    where website_id = {{websiteId::uuid}}
-      and created_at between {{startDate}} and {{endDate}}
+    from website_event
+    ${cohortQuery}
+    ${joinSessionQuery}
+    where website_event.website_id = {{websiteId::uuid}}
+      and website_event.event_type = 5
+      and website_event.created_at between {{startDate}} and {{endDate}}
+      ${filterQuery}
     `,
-    { websiteId, startDate, endDate },
+    queryParams,
   );
 
   return result?.[0] || { lcp: 0, inp: 0, cls: 0, fcp: 0, ttfb: 0, count: 0 };
@@ -49,8 +56,8 @@ async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
 ): Promise<PerformanceStatsResult> {
-  const { rawQuery } = clickhouse;
-  const { startDate, endDate } = filters;
+  const { rawQuery, parseFilters } = clickhouse;
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
 
   const result = await rawQuery<PerformanceStatsResult>(
     `
@@ -61,11 +68,14 @@ async function clickhouseQuery(
       quantile(0.75)(fcp) as fcp,
       quantile(0.75)(ttfb) as ttfb,
       count() as count
-    from website_performance
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+    from website_event
+    ${cohortQuery}
+    where website_event.website_id = {websiteId:UUID}
+      and website_event.event_type = 5
+      and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      ${filterQuery}
     `,
-    { websiteId, startDate, endDate },
+    queryParams,
   );
 
   return result?.[0] || { lcp: 0, inp: 0, cls: 0, fcp: 0, ttfb: 0, count: 0 };

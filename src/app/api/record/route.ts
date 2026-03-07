@@ -1,4 +1,3 @@
-import { gzipSync } from 'node:zlib';
 import { isbot } from 'isbot';
 import { serializeError } from 'serialize-error';
 import { z } from 'zod';
@@ -8,7 +7,12 @@ import { parseToken } from '@/lib/jwt';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { getWebsite } from '@/queries/prisma';
-import { saveReplayChunk } from '@/queries/sql';
+import { saveRecording } from '@/queries/sql';
+
+interface Cache {
+  sessionId: string;
+  visitId: string;
+}
 
 const schema = z.object({
   website: z.uuid(),
@@ -37,13 +41,13 @@ export async function POST(request: Request) {
       return badRequest({ message: 'Missing session token.' });
     }
 
-    const cache = await parseToken(cacheHeader, secret());
+    const cache = (await parseToken(cacheHeader, secret())) as Cache | null;
 
-    if (!cache || !cache.sessionId) {
+    if (!cache?.sessionId || !cache?.visitId) {
       return badRequest({ message: 'Invalid session token.' });
     }
 
-    const { sessionId } = cache;
+    const { sessionId, visitId } = cache;
 
     // Query directly to avoid stale Redis cache for recordingEnabled
     const website = await getWebsite(websiteId);
@@ -69,24 +73,25 @@ export async function POST(request: Request) {
 
     // Compute timestamps from events
     const eventTimestamps = events
-      .map((e: any) => e.timestamp)
-      .filter((t: any) => typeof t === 'number');
+      .map((e: any) => Number(e?.timestamp))
+      .filter((t: number) => Number.isFinite(t) && t > 0);
 
-    const startedAt = new Date(Math.min(...eventTimestamps));
-    const endedAt = new Date(Math.max(...eventTimestamps));
+    const fallbackMs = (timestamp || Math.floor(Date.now() / 1000)) * 1000;
+    const minTimestamp = eventTimestamps.length ? Math.min(...eventTimestamps) : fallbackMs;
+    const maxTimestamp = eventTimestamps.length ? Math.max(...eventTimestamps) : fallbackMs;
 
-    // Compress events
-    const eventsJson = JSON.stringify(events);
-    const compressed = gzipSync(Buffer.from(eventsJson, 'utf-8'));
+    const startedAt = new Date(minTimestamp);
+    const endedAt = new Date(maxTimestamp);
 
     // Use timestamp-based chunk index for ordering
     const chunkIndex = timestamp || Math.floor(Date.now() / 1000);
 
-    await saveReplayChunk({
+    await saveRecording({
       websiteId,
       sessionId,
+      visitId,
       chunkIndex,
-      events: compressed,
+      events,
       eventCount: events.length,
       startedAt,
       endedAt,

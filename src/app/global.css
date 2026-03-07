@@ -55,3 +55,16 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 1000px var(--background-color) inset !important;
   transition: color 5000s ease-in-out 0s;
 }
+
+/* rrweb-player overrides */
+.rr-controller__btns {
+  gap: 8px;
+}
+
+[data-theme="dark"] .rr-controller__btns button {
+  color: black;
+}
+
+[data-theme="dark"] .rr-controller__btns .label {
+  color: black;
+}

@@ -23,7 +23,7 @@ import { type FieldGroup, useFields, useMessages, useMobile } from '@/components
 import { Plus } from '@/components/icons';
 
 export interface FieldFiltersProps {
-  websiteId: string;
+  websiteId?: string;
   value?: { name: string; operator: string; value: string }[];
   exclude?: string[];
   match?: string;
@@ -95,6 +95,7 @@ export function FieldFilters({
             >
               {groupLabels.map(({ key: groupKey, label }) => {
                 const groupFields = groupedFields[groupKey];
+                if (!groupFields || groupFields.length === 0) return null;
                 return (
                   <MenuSection key={groupKey} title={label}>
                     {groupFields.map(field => {

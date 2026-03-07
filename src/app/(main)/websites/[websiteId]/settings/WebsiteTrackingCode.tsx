@@ -34,7 +34,16 @@ export function WebsiteTrackingCode({
 
   if (website?.replayEnabled) {
     const recorderUrl = getUrl(RECORDER_NAME);
-    code += `\n<script defer src="${recorderUrl}" data-website-id="${websiteId}"></script>`;
+    const replayConfig = (website.replayConfig as any) || {};
+    let recorderAttrs = `data-website-id="${websiteId}"`;
+    if (replayConfig.sampleRate !== undefined)
+      recorderAttrs += ` data-sample-rate="${replayConfig.sampleRate}"`;
+    if (replayConfig.maskLevel) recorderAttrs += ` data-mask-level="${replayConfig.maskLevel}"`;
+    if (replayConfig.maxDuration !== undefined)
+      recorderAttrs += ` data-max-duration="${replayConfig.maxDuration}"`;
+    if (replayConfig.blockSelector)
+      recorderAttrs += ` data-block-selector="${replayConfig.blockSelector}"`;
+    code += `\n<script defer src="${recorderUrl}" ${recorderAttrs}></script>`;
   }
 
   return (

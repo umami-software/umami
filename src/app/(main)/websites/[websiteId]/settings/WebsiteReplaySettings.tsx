@@ -1,10 +1,11 @@
 import {
+  Button,
   Column,
-  Form,
-  FormButtons,
-  FormField,
-  FormSubmitButton,
   Label,
+  ListItem,
+  Row,
+  Select,
+  Slider,
   Switch,
   TextField,
 } from '@umami/react-zen';
@@ -16,81 +17,110 @@ interface ReplayConfig {
   maskLevel?: string;
   maxDuration?: number;
   blockSelector?: string;
-  retentionDays?: number;
 }
 
 export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const website = useWebsite();
   const { t, labels, messages } = useMessages();
-  const { mutateAsync, touch, toast } = useUpdateQuery(`/websites/${websiteId}`);
+  const { mutateAsync, touch, toast, isPending } = useUpdateQuery(`/websites/${websiteId}`);
   const [enabled, setEnabled] = useState(website?.replayEnabled ?? false);
 
   const config = (website?.replayConfig as ReplayConfig) || {};
 
-  const handleSubmit = async (data: any) => {
+  const [sampleRate, setSampleRate] = useState(config.sampleRate ?? 0.15);
+  const [maskLevel, setMaskLevel] = useState(config.maskLevel ?? 'moderate');
+  const [maxDuration, setMaxDuration] = useState(String(config.maxDuration ?? 300000));
+  const [blockSelector, setBlockSelector] = useState(config.blockSelector ?? '');
+
+  const handleToggle = async (value: boolean) => {
+    const previous = enabled;
+    setEnabled(value);
+
+    try {
+      await mutateAsync(
+        {
+          replayEnabled: value,
+        },
+        {
+          onSuccess: async () => {
+            toast(t(messages.saved));
+            touch('websites');
+            touch(`website:${websiteId}`);
+          },
+        },
+      );
+    } catch {
+      setEnabled(previous);
+    }
+  };
+
+  const handleSave = async () => {
     await mutateAsync(
       {
         replayEnabled: enabled,
         replayConfig: {
-          sampleRate: parseFloat(data.sampleRate) || 1,
-          maskLevel: data.maskLevel || 'moderate',
-          maxDuration: parseInt(data.maxDuration, 10) || 600000,
-          blockSelector: data.blockSelector || '',
-          retentionDays: parseInt(data.retentionDays, 10) || 30,
+          sampleRate,
+          maskLevel,
+          maxDuration: parseInt(maxDuration, 10) || 300000,
+          ...(blockSelector && { blockSelector }),
         },
       },
       {
         onSuccess: async () => {
           toast(t(messages.saved));
           touch('websites');
-          touch(`website:${website.id}`);
+          touch(`website:${websiteId}`);
         },
       },
     );
   };
 
   return (
-    <Form
-      onSubmit={handleSubmit}
-      values={{
-        sampleRate: String(config.sampleRate ?? 1),
-        maskLevel: config.maskLevel ?? 'moderate',
-        maxDuration: String(config.maxDuration ?? 600000),
-        blockSelector: config.blockSelector ?? '',
-        retentionDays: String(config.retentionDays ?? 30),
-      }}
-    >
-      <Column gap="4">
-        <Label>{t(labels.replays)}</Label>
-        <Switch isSelected={enabled} onChange={setEnabled}>
-          {t(labels.replayEnabled)}
-        </Switch>
-        {enabled && (
-          <>
-            <FormField name="sampleRate" label={t(labels.sampleRate)}>
-              <TextField />
-            </FormField>
-            <FormField
-              name="maskLevel"
-              label={`${t(labels.maskLevel)} (strict / moderate / relaxed)`}
-            >
-              <TextField />
-            </FormField>
-            <FormField name="maxDuration" label={`${t(labels.maxDuration)} (ms)`}>
-              <TextField />
-            </FormField>
-            <FormField name="blockSelector" label={t(labels.blockSelector)}>
-              <TextField />
-            </FormField>
-            <FormField name="retentionDays" label={t(labels.retentionDays)}>
-              <TextField />
-            </FormField>
-          </>
-        )}
-      </Column>
-      <FormButtons>
-        <FormSubmitButton variant="primary">{t(labels.save)}</FormSubmitButton>
-      </FormButtons>
-    </Form>
+    <Column gap="4">
+      <Label>{t(labels.replays)}</Label>
+      <Switch isSelected={enabled} onChange={handleToggle} isDisabled={isPending}>
+        {t(labels.replayEnabled)}
+      </Switch>
+      {enabled && (
+        <>
+          <Slider
+            label={t(labels.sampleRate)}
+            minValue={0.05}
+            maxValue={1}
+            step={0.05}
+            value={sampleRate}
+            onChange={v => setSampleRate(Array.isArray(v) ? v[0] : v)}
+            showValue
+            formatOptions={{ style: 'percent', maximumFractionDigits: 0 }}
+            style={{ maxWidth: '360px' }}
+          />
+          <Column gap="1">
+            <Label>{t(labels.maskLevel)}</Label>
+            <Select value={maskLevel} onChange={setMaskLevel} style={{ maxWidth: '360px' }}>
+              <ListItem id="strict">strict</ListItem>
+              <ListItem id="moderate">moderate</ListItem>
+            </Select>
+          </Column>
+          <Column gap="1">
+            <Label>{t(labels.maxDuration)}</Label>
+            <Select value={maxDuration} onChange={setMaxDuration} style={{ maxWidth: '360px' }}>
+              <ListItem id="300000">5 minutes</ListItem>
+              <ListItem id="600000">10 minutes</ListItem>
+              <ListItem id="900000">15 minutes</ListItem>
+              <ListItem id="1200000">20 minutes</ListItem>
+            </Select>
+          </Column>
+          <Column gap="1">
+            <Label>{t(labels.blockSelector)}</Label>
+            <TextField value={blockSelector} onChange={setBlockSelector} />
+          </Column>
+          <Row>
+            <Button variant="primary" onPress={handleSave} isDisabled={isPending}>
+              {t(labels.save)}
+            </Button>
+          </Row>
+        </>
+      )}
+    </Column>
   );
 }

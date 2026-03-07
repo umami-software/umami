@@ -27,8 +27,28 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
   const [currentCohort, setCurrentCohort] = useState(cohort);
   const [currentMatch, setCurrentMatch] = useState<string>(match || 'all');
   const { isMobile } = useMobile();
-  const excludeFilters = pathname.includes('/pixels') || pathname.includes('/links');
-  const excludeEvent = !pathname.endsWith('/events');
+  const isPixelLink = !websiteId || pathname.includes('/pixels') || pathname.includes('/links');
+  const excludeEvent = !pathname.endsWith('/events') && !pathname.endsWith('/replays');
+  const isPerformance = pathname.includes('/performance');
+
+  const excludedFields = isPixelLink
+    ? ['path', 'title', 'hostname', 'distinctId', 'tag', 'event']
+    : isPerformance
+      ? [
+          'referrer',
+          'query',
+          'event',
+          'tag',
+          'distinctId',
+          'utmSource',
+          'utmMedium',
+          'utmCampaign',
+          'utmContent',
+          'utmTerm',
+        ]
+      : excludeEvent
+        ? ['event']
+        : [];
 
   const handleReset = () => {
     setCurrentFilters([]);
@@ -58,7 +78,7 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
         <Tabs>
           <TabList>
             <Tab id="fields">{t(labels.fields)}</Tab>
-            {!excludeFilters && (
+            {!isPixelLink && (
               <>
                 <Tab id="segments">{t(labels.segments)}</Tab>
                 <Tab id="cohorts">{t(labels.cohorts)}</Tab>
@@ -72,13 +92,7 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
               match={currentMatch}
               onChange={setCurrentFilters}
               onMatchChange={setCurrentMatch}
-              exclude={
-                excludeFilters
-                  ? ['path', 'title', 'hostname', 'distinctId', 'tag', 'event']
-                  : excludeEvent
-                    ? ['event']
-                    : []
-              }
+              exclude={excludedFields}
             />
           </TabPanel>
           <TabPanel id="segments">

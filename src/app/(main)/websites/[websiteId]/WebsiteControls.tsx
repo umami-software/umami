@@ -13,7 +13,7 @@ export function WebsiteControls({
   allowDownload = false,
   allowCompare = false,
 }: {
-  websiteId: string;
+  websiteId?: string;
   allowFilter?: boolean;
   allowBounceFilter?: boolean;
   allowDateFilter?: boolean;

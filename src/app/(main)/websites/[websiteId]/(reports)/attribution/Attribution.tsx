@@ -16,7 +16,6 @@ export interface AttributionProps {
   model: string;
   type: string;
   step: string;
-  currency?: string;
 }
 
 export function Attribution({
@@ -26,7 +25,6 @@ export function Attribution({
   model,
   type,
   step,
-  currency,
 }: AttributionProps) {
   const { data, error, isLoading } = useResultQuery<any>('attribution', {
     websiteId,
@@ -72,8 +70,7 @@ export function Attribution({
     return (
       <ListTable
         title={title}
-        metric={t(currency ? labels.revenue : labels.visitors)}
-        currency={currency}
+        metric={t(labels.visitors)}
         data={attributionData.map(({ x, y, z }: { x: string; y: number; z: number }) => ({
           label: x,
           count: y,

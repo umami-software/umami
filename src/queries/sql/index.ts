@@ -1,3 +1,4 @@
+export * from './events/getEventDataById';
 export * from './events/getEventDataEvents';
 export * from './events/getEventDataFields';
 export * from './events/getEventDataProperties';
@@ -23,11 +24,9 @@ export * from './pageviews/getPageviewExpandedMetrics';
 export * from './pageviews/getPageviewMetrics';
 export * from './pageviews/getPageviewStats';
 export * from './performance/getPerformanceStats';
-export * from './performance/savePerformance';
-export * from './replays/deleteReplaysByWebsite';
 export * from './replays/getReplayChunks';
 export * from './replays/getSessionReplays';
-export * from './replays/saveReplayChunk';
+export * from './replays/saveRecording';
 export * from './reports/getBreakdown';
 export * from './reports/getFunnel';
 export * from './reports/getJourney';

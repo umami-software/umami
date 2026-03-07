@@ -20,7 +20,7 @@ import {
 import { Bookmark, X } from '@/components/icons';
 import { isSearchOperator } from '@/lib/params';
 
-export function FilterBar({ websiteId }: { websiteId: string }) {
+export function FilterBar({ websiteId }: { websiteId?: string }) {
   const { t, labels } = useMessages();
   const { formatValue } = useFormat();
   const {
@@ -32,7 +32,8 @@ export function FilterBar({ websiteId }: { websiteId: string }) {
   } = useNavigation();
   const { filters, operatorLabels } = useFilters();
   const { data, isLoading } = useWebsiteSegmentQuery(websiteId, segment || cohort);
-  const canSaveSegment = filters.length > 0 && !segment && !cohort && !pathname.includes('/share');
+  const canSaveSegment =
+    !!websiteId && filters.length > 0 && !segment && !cohort && !pathname.includes('/share');
 
   const handleCloseFilter = (param: string) => {
     router.push(updateParams({ [param]: undefined }));
@@ -148,12 +149,16 @@ const FilterItem = ({ name, label, operator, value, onRemove }) => {
       theme="dark"
     >
       <Row alignItems="center" gap="4">
-        <Row alignItems="center" gap="2">
+        <Row alignItems="center" gap="2" maxWidth={'500px'}>
           <Text color="primary" weight="bold">
             {label}
           </Text>
           <Text color="muted">{operator}</Text>
-          <Text color="primary" weight="bold">
+          <Text
+            color="primary"
+            weight="bold"
+            style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+          >
             {value}
           </Text>
         </Row>

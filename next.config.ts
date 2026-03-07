@@ -6,6 +6,8 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const TRACKER_SCRIPT = '/script.js';
 
+const isProd = process.env.NODE_ENV === 'production';
+
 const basePath = process.env.BASE_PATH || '';
 const cloudMode = process.env.CLOUD_MODE || '';
 const cloudUrl = process.env.CLOUD_URL || '';
@@ -17,6 +19,8 @@ const forceSSL = process.env.FORCE_SSL || '';
 const frameAncestors = process.env.ALLOWED_FRAME_URLS || '';
 const trackerScriptName = process.env.TRACKER_SCRIPT_NAME || '';
 const trackerScriptURL = process.env.TRACKER_SCRIPT_URL || '';
+const selfTrack = process.env.UMAMI_SELF_TRACK || '';
+const selfRecord = process.env.UMAMI_SELF_RECORD || '';
 
 const contentSecurityPolicy = `
   default-src 'self';
@@ -88,11 +92,14 @@ const headers = [
     source: '/:path*',
     headers: defaultHeaders,
   },
-  {
+];
+
+if (isProd) {
+  headers.push({
     source: TRACKER_SCRIPT,
     headers: trackerHeaders,
-  },
-];
+  });
+}
 
 const rewrites = [];
 
@@ -169,7 +176,7 @@ if (trackerScriptName) {
   }
 }
 
-if (cloudMode) {
+if (isProd && cloudMode) {
   rewrites.push({
     source: '/script.js',
     destination: 'https://cloud.umami.is/script.js',
@@ -186,6 +193,8 @@ export default withNextIntl({
     currentVersion: pkg.version,
     defaultCurrency,
     defaultLocale,
+    selfTrack,
+    selfRecord,
   },
   basePath,
   output: 'standalone',

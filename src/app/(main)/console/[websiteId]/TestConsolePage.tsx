@@ -115,6 +115,7 @@ export function TestConsolePage({ websiteId }: { websiteId: string }) {
           data-website-id={websiteId}
           src={`${process.env.basePath || ''}/script.js`}
           data-cache="true"
+          data-performance="true"
         />
         <Script
           async

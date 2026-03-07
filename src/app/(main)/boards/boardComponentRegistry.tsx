@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import { TextBlock } from '@/app/(main)/boards/TextBlock';
 import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
 import { WebsiteMetricsBar } from '@/app/(main)/websites/[websiteId]/WebsiteMetricsBar';
 import { EventsChart } from '@/components/metrics/EventsChart';
@@ -9,7 +10,7 @@ import { WorldMap } from '@/components/metrics/WorldMap';
 export interface ConfigField {
   name: string;
   label: string;
-  type: 'select' | 'number' | 'text';
+  type: 'select' | 'number' | 'text' | 'textarea';
   options?: { label: string; value: string }[];
   defaultValue?: any;
 }
@@ -22,12 +23,14 @@ export interface ComponentDefinition {
   component: ComponentType<any>;
   defaultProps?: Record<string, any>;
   configFields?: ConfigField[];
+  requiresWebsite?: boolean;
 }
 
 export const CATEGORIES = [
   { key: 'overview', name: 'Overview' },
   { key: 'tables', name: 'Tables' },
   { key: 'visualization', name: 'Visualization' },
+  { key: 'content', name: 'Content' },
 ] as const;
 
 const METRIC_TYPES = [
@@ -120,6 +123,25 @@ const componentDefinitions: ComponentDefinition[] = [
     description: 'Custom events over time',
     category: 'visualization',
     component: EventsChart,
+  },
+
+  // Content
+  {
+    type: 'TextBlock',
+    name: 'Text',
+    description: 'Free-form text content',
+    category: 'content',
+    component: TextBlock,
+    requiresWebsite: false,
+    defaultProps: { text: '' },
+    configFields: [
+      {
+        name: 'text',
+        label: 'Text',
+        type: 'textarea',
+        defaultValue: '',
+      },
+    ],
   },
 ];
 
