@@ -13,7 +13,9 @@ import { useMemo, useState } from 'react';
 import { Panel } from '@/components/common/Panel';
 import { useBoard, useMessages, useNavigation } from '@/components/hooks';
 import { Pencil, Plus, X } from '@/components/icons';
+import { getBoardEntity, getBoardType, getResolvedComponentEntity } from '@/lib/boards';
 import type { BoardComponentConfig } from '@/lib/types';
+import { getComponentDefinition } from '../boardComponentRegistry';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 import { BoardComponentSelect } from './BoardComponentSelect';
 
@@ -37,15 +39,17 @@ export function BoardEditColumn({
   const { board } = useBoard();
   const { t, labels } = useMessages();
   const { teamId } = useNavigation();
-  const boardWebsiteId = board?.parameters?.websiteId;
-  const websiteId = component?.websiteId || boardWebsiteId;
+  const boardType = getBoardType(board);
+  const { entityType: boardEntityType, entityId: boardEntityId } = getBoardEntity(board);
+  const definition = component ? getComponentDefinition(component.type) : undefined;
+  const { entityId } = getResolvedComponentEntity(board, component);
   const renderedComponent = useMemo(() => {
-    if (!component || !websiteId) {
+    if (!component || (!entityId && definition?.requiresWebsite !== false)) {
       return null;
     }
 
-    return <BoardComponentRenderer config={component} websiteId={websiteId} />;
-  }, [component, websiteId]);
+    return <BoardComponentRenderer config={component} websiteId={entityId} />;
+  }, [component, definition?.requiresWebsite, entityId]);
 
   const handleSelect = (config: BoardComponentConfig) => {
     onSetComponent(id, config);
@@ -129,8 +133,9 @@ export function BoardEditColumn({
           {() => (
             <BoardComponentSelect
               teamId={teamId}
-              websiteId={websiteId}
-              defaultWebsiteId={boardWebsiteId}
+              boardType={boardType}
+              boardEntityType={boardEntityType}
+              boardEntityId={boardEntityId}
               initialConfig={component}
               onSelect={handleSelect}
               onClose={() => setShowSelect(false)}

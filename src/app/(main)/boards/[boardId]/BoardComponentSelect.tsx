@@ -11,8 +11,17 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { Panel } from '@/components/common/Panel';
 import { useMessages } from '@/components/hooks';
+import { LinkSelect } from '@/components/input/LinkSelect';
+import { PixelSelect } from '@/components/input/PixelSelect';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 import type { BoardComponentConfig } from '@/lib/types';
+import {
+  BOARD_ENTITY_TYPES,
+  type BoardEntityType,
+  type BoardType,
+  getComponentEntity,
+  isOpenBoardType,
+} from '@/lib/boards';
 import {
   CATEGORIES,
   type ComponentDefinition,
@@ -23,24 +32,30 @@ import { BoardComponentRenderer } from './BoardComponentRenderer';
 
 export function BoardComponentSelect({
   teamId,
-  websiteId,
-  defaultWebsiteId,
+  boardType,
+  boardEntityType,
+  boardEntityId,
   initialConfig,
   onSelect,
   onClose,
 }: {
   teamId?: string;
-  websiteId?: string;
-  defaultWebsiteId?: string;
+  boardType: BoardType;
+  boardEntityType?: BoardEntityType;
+  boardEntityId?: string;
   initialConfig?: BoardComponentConfig;
   onSelect: (config: BoardComponentConfig) => void;
   onClose: () => void;
 }) {
   const { t, labels, messages } = useMessages();
+  const initialEntity = getComponentEntity(initialConfig);
   const [selectedDef, setSelectedDef] = useState<ComponentDefinition | null>(null);
   const [configValues, setConfigValues] = useState<Record<string, any>>({});
-  const [selectedWebsiteId, setSelectedWebsiteId] = useState(
-    initialConfig?.websiteId || websiteId || defaultWebsiteId,
+  const [selectedEntityType, setSelectedEntityType] = useState<BoardEntityType>(
+    initialEntity.entityType || boardEntityType || BOARD_ENTITY_TYPES.website,
+  );
+  const [selectedEntityId, setSelectedEntityId] = useState(
+    initialEntity.entityId || boardEntityId,
   );
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -81,10 +96,20 @@ export function BoardComponentSelect({
 
     setSelectedDef(definition);
     setConfigValues(getDefaultConfigValues(definition, initialConfig));
-    setSelectedWebsiteId(initialConfig.websiteId || websiteId || defaultWebsiteId);
+    setSelectedEntityType(
+      initialEntity.entityType || boardEntityType || BOARD_ENTITY_TYPES.website,
+    );
+    setSelectedEntityId(initialEntity.entityId || boardEntityId);
     setTitle(initialConfig.title ?? definition.name);
     setDescription(initialConfig.description || '');
-  }, [initialConfig, allDefinitions, websiteId, defaultWebsiteId]);
+  }, [
+    initialConfig,
+    allDefinitions,
+    boardEntityId,
+    boardEntityType,
+    initialEntity.entityId,
+    initialEntity.entityType,
+  ]);
 
   const handleSelectComponent = (def: ComponentDefinition) => {
     setSelectedDef(def);
@@ -98,9 +123,25 @@ export function BoardComponentSelect({
   };
 
   const needsWebsite = selectedDef?.requiresWebsite !== false;
+  const isOpenType = isOpenBoardType(boardType);
+  const resolvedEntityType = needsWebsite
+    ? isOpenType
+      ? selectedEntityType
+      : boardEntityType
+    : undefined;
+  const resolvedEntityId = needsWebsite
+    ? isOpenType
+      ? selectedEntityId
+      : boardEntityId
+    : undefined;
+
+  const handleEntityTypeChange = (value: string) => {
+    setSelectedEntityType(value as BoardEntityType);
+    setSelectedEntityId(undefined);
+  };
 
   const handleAdd = () => {
-    if (!selectedDef || (needsWebsite && !selectedWebsiteId)) return;
+    if (!selectedDef || (needsWebsite && !resolvedEntityId)) return;
 
     const props: Record<string, any> = {};
 
@@ -118,7 +159,9 @@ export function BoardComponentSelect({
 
     const config: BoardComponentConfig = {
       type: selectedDef.type,
-      ...(needsWebsite ? { websiteId: selectedWebsiteId } : {}),
+      ...(needsWebsite && isOpenType && resolvedEntityId
+        ? { entityType: resolvedEntityType, entityId: resolvedEntityId }
+        : {}),
       title,
       description,
     };
@@ -139,7 +182,7 @@ export function BoardComponentSelect({
       }
     : null;
 
-  const canSave = !!selectedDef && (!needsWebsite || !!selectedWebsiteId);
+  const canSave = !!selectedDef && (!needsWebsite || !!resolvedEntityId);
 
   return (
     <Column gap="4">
@@ -186,14 +229,14 @@ export function BoardComponentSelect({
 
         <Column gap="3" flexGrow={1} style={{ minWidth: 0 }}>
           <Panel maxHeight="100%">
-            {previewConfig && (!needsWebsite || selectedWebsiteId) ? (
-              <BoardComponentRenderer config={previewConfig} websiteId={selectedWebsiteId} />
+            {previewConfig && (!needsWebsite || resolvedEntityId) ? (
+              <BoardComponentRenderer config={previewConfig} websiteId={resolvedEntityId} />
             ) : (
               <Column alignItems="center" justifyContent="center" height="100%">
                 <Text color="muted">
-                  {selectedWebsiteId
+                  {resolvedEntityId
                     ? t(messages.selectComponentPreview)
-                    : t(messages.selectWebsiteFirst)}
+                    : t(messages.selectBoardEntityFirst)}
                 </Text>
               </Column>
             )}
@@ -203,18 +246,50 @@ export function BoardComponentSelect({
         <Column gap="3" style={{ width: 320, flexShrink: 0, overflowY: 'auto' }}>
           <Text weight="bold">{t(labels.properties)}</Text>
 
-          {needsWebsite && (
-            <Column gap="2">
-              <Text size="sm" color="muted">
-                {t(labels.website)}
-              </Text>
-              <WebsiteSelect
-                websiteId={selectedWebsiteId}
-                teamId={teamId}
-                placeholder={t(labels.selectWebsite)}
-                onChange={setSelectedWebsiteId}
-              />
-            </Column>
+          {needsWebsite && isOpenType && (
+            <>
+              <Column gap="2">
+                <Text size="sm" color="muted">
+                  {t(labels.type)}
+                </Text>
+                <Select value={selectedEntityType} onChange={handleEntityTypeChange}>
+                  <ListItem id={BOARD_ENTITY_TYPES.website}>{t(labels.website)}</ListItem>
+                  <ListItem id={BOARD_ENTITY_TYPES.pixel}>{t(labels.pixel)}</ListItem>
+                  <ListItem id={BOARD_ENTITY_TYPES.link}>{t(labels.link)}</ListItem>
+                </Select>
+              </Column>
+              <Column gap="2">
+                <Text size="sm" color="muted">
+                  {selectedEntityType === BOARD_ENTITY_TYPES.pixel
+                    ? t(labels.pixel)
+                    : selectedEntityType === BOARD_ENTITY_TYPES.link
+                      ? t(labels.link)
+                      : t(labels.website)}
+                </Text>
+                {selectedEntityType === BOARD_ENTITY_TYPES.pixel ? (
+                  <PixelSelect
+                    pixelId={selectedEntityId}
+                    teamId={teamId}
+                    placeholder={t(labels.selectPixel)}
+                    onChange={setSelectedEntityId}
+                  />
+                ) : selectedEntityType === BOARD_ENTITY_TYPES.link ? (
+                  <LinkSelect
+                    linkId={selectedEntityId}
+                    teamId={teamId}
+                    placeholder={t(labels.selectLink)}
+                    onChange={setSelectedEntityId}
+                  />
+                ) : (
+                  <WebsiteSelect
+                    websiteId={selectedEntityId}
+                    teamId={teamId}
+                    placeholder={t(labels.selectWebsite)}
+                    onChange={setSelectedEntityId}
+                  />
+                )}
+              </Column>
+            </>
           )}
 
           <Column gap="2">

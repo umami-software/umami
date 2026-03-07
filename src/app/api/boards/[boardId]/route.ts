@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { BOARD_TYPES } from '@/lib/boards';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
 import { canDeleteBoard, canUpdateBoard, canViewBoard } from '@/permissions';
@@ -24,6 +25,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ boar
 
 export async function POST(request: Request, { params }: { params: Promise<{ boardId: string }> }) {
   const schema = z.object({
+    type: z
+      .enum([
+        BOARD_TYPES.dashboard,
+        BOARD_TYPES.open,
+        BOARD_TYPES.website,
+        BOARD_TYPES.pixel,
+        BOARD_TYPES.link,
+      ])
+      .optional(),
     name: z.string().optional(),
     description: z.string().optional(),
     parameters: z.object({}).passthrough().optional(),
@@ -36,14 +46,14 @@ export async function POST(request: Request, { params }: { params: Promise<{ boa
   }
 
   const { boardId } = await params;
-  const { name, description, parameters } = body;
+  const { type, name, description, parameters } = body;
 
   if (!(await canUpdateBoard(auth, boardId))) {
     return unauthorized();
   }
 
   try {
-    const board = await updateBoard(boardId, { name, description, parameters });
+    const board = await updateBoard(boardId, { type, name, description, parameters });
 
     return Response.json(board);
   } catch (e: any) {
