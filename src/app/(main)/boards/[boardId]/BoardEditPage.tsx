@@ -4,6 +4,7 @@ import { BoardProvider } from '@/app/(main)/boards/BoardProvider';
 import { PageBody } from '@/components/common/PageBody';
 import { BoardControls } from './BoardControls';
 import { BoardEditBody } from './BoardEditBody';
+import { BoardEditForm } from './BoardEditForm';
 import { BoardEditHeader } from './BoardEditHeader';
 
 export function BoardEditPage({ boardId }: { boardId?: string }) {
@@ -12,6 +13,7 @@ export function BoardEditPage({ boardId }: { boardId?: string }) {
       <PageBody>
         <Column>
           <BoardEditHeader />
+          <BoardEditForm />
           <BoardControls />
           <BoardEditBody />
         </Column>

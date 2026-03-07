@@ -5,9 +5,11 @@ import { v4 as uuid } from 'uuid';
 import { BoardContext, type LayoutGetter } from '@/app/(main)/boards/BoardProvider';
 import { getComponentDefinition } from '@/app/(main)/boards/boardComponentRegistry';
 import { useApi, useDashboardQuery, useMessages, useModified } from '@/components/hooks';
+import { BOARD_TYPES } from '@/lib/boards';
 import type { Board, BoardParameters } from '@/lib/types';
 
 const createDefaultBoard = (): Partial<Board> => ({
+  type: BOARD_TYPES.dashboard,
   name: '',
   description: '',
   parameters: {

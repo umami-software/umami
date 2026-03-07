@@ -1,4 +1,5 @@
 import type { Prisma } from '@/generated/prisma/client';
+import { BOARD_TYPES } from '@/lib/boards';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -31,6 +32,9 @@ export async function getUserBoards(userId: string, filters?: QueryFilters) {
     {
       where: {
         userId,
+        type: {
+          not: BOARD_TYPES.dashboard,
+        },
       },
     },
     filters,
@@ -42,6 +46,9 @@ export async function getTeamBoards(teamId: string, filters?: QueryFilters) {
     {
       where: {
         teamId,
+        type: {
+          not: BOARD_TYPES.dashboard,
+        },
       },
     },
     filters,

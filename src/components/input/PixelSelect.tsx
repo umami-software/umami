@@ -17,7 +17,7 @@ export function PixelSelect({
   teamId?: string;
   isCollapsed?: boolean;
 } & SelectProps) {
-  const { t, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { data: pixel } = usePixelQuery(pixelId);
   const [name, setName] = useState<string>(pixel?.name);
   const [search, setSearch] = useState('');
@@ -42,12 +42,16 @@ export function PixelSelect({
       return '';
     }
 
+    const value = name || props.placeholder || t(labels.pixel);
+
     return (
       <Row alignItems="center" gap>
         <Icon>
           <Grid2x2 />
         </Icon>
-        <Text truncate>{name}</Text>
+        <Text truncate color={name ? undefined : 'muted'}>
+          {value}
+        </Text>
       </Row>
     );
   };

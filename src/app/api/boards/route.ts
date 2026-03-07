@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { BOARD_TYPES } from '@/lib/boards';
 import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
@@ -27,13 +28,20 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const schema = z.object({
-    type: z.string(),
+    type: z.enum([BOARD_TYPES.open, BOARD_TYPES.website, BOARD_TYPES.pixel, BOARD_TYPES.link]),
     name: z.string().max(100),
     description: z.string().max(500).optional(),
     slug: z.string().max(100),
     userId: z.uuid().nullable().optional(),
     teamId: z.uuid().nullable().optional(),
-    parameters: z.object({ websiteId: z.uuid().optional() }).passthrough().optional(),
+    parameters: z
+      .object({
+        websiteId: z.uuid().optional(),
+        pixelId: z.uuid().optional(),
+        linkId: z.uuid().optional(),
+      })
+      .passthrough()
+      .optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);

@@ -17,7 +17,7 @@ export function LinkSelect({
   teamId?: string;
   isCollapsed?: boolean;
 } & SelectProps) {
-  const { t, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { data: link } = useLinkQuery(linkId);
   const [name, setName] = useState<string>(link?.name);
   const [search, setSearch] = useState('');
@@ -42,12 +42,16 @@ export function LinkSelect({
       return '';
     }
 
+    const value = name || props.placeholder || t(labels.link);
+
     return (
       <Row alignItems="center" gap>
         <Icon>
           <Link />
         </Icon>
-        <Text truncate>{name}</Text>
+        <Text truncate color={name ? undefined : 'muted'}>
+          {value}
+        </Text>
       </Row>
     );
   };

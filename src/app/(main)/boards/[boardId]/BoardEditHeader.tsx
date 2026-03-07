@@ -1,33 +1,13 @@
-import {
-  Button,
-  Column,
-  Grid,
-  Heading,
-  LoadingButton,
-  Row,
-  Text,
-  TextField,
-} from '@umami/react-zen';
+import { Button, LoadingButton, Row } from '@umami/react-zen';
+import { PageHeader } from '@/components/common/PageHeader';
 import { useBoard, useMessages, useNavigation } from '@/components/hooks';
-import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 
 export function BoardEditHeader() {
-  const { board, updateBoard, saveBoard, isPending } = useBoard();
+  const { board, saveBoard, isPending } = useBoard();
   const { t, labels } = useMessages();
-  const { router, renderUrl, teamId } = useNavigation();
+  const { router, renderUrl } = useNavigation();
   const defaultName = t(labels.untitled);
-
-  const handleNameChange = (value: string) => {
-    updateBoard({ name: value });
-  };
-
-  const handleDescriptionChange = (value: string) => {
-    updateBoard({ description: value });
-  };
-
-  const handleWebsiteChange = (websiteId: string) => {
-    updateBoard({ parameters: { ...board.parameters, websiteId } });
-  };
+  const title = board?.id ? board?.name || defaultName : t(labels.addBoard);
 
   const handleSave = async () => {
     await saveBoard();
@@ -45,59 +25,15 @@ export function BoardEditHeader() {
   };
 
   return (
-    <Grid
-      columns={{ base: '1fr', md: '1fr 1fr' }}
-      paddingY="4"
-      marginBottom="6"
-      border="bottom"
-      gapX="6"
-    >
-      <Column>
-        <Row>
-          <TextField
-            variant="quiet"
-            name="name"
-            value={board?.name ?? ''}
-            placeholder={defaultName}
-            onChange={handleNameChange}
-            autoComplete="off"
-            style={{ fontSize: '2rem', fontWeight: 700, width: '100%' }}
-          >
-            <Heading size="xl">{board?.name}</Heading>
-          </TextField>
-        </Row>
-        <Row>
-          <TextField
-            variant="quiet"
-            name="description"
-            value={board?.description ?? ''}
-            placeholder={`+ ${t(labels.addDescription)}`}
-            autoComplete="off"
-            onChange={handleDescriptionChange}
-            style={{ width: '100%' }}
-          >
-            {board?.description}
-          </TextField>
-        </Row>
-        <Row alignItems="center" gap="3">
-          <Text>{t(labels.website)}</Text>
-          <WebsiteSelect
-            websiteId={board?.parameters?.websiteId}
-            teamId={teamId}
-            onChange={handleWebsiteChange}
-          />
-        </Row>
-      </Column>
-      <Column justifyContent="center" alignItems="flex-end">
-        <Row gap="3">
-          <Button variant="quiet" onPress={handleCancel}>
-            {t(labels.cancel)}
-          </Button>
-          <LoadingButton variant="primary" onPress={handleSave} isLoading={isPending}>
-            {t(labels.save)}
-          </LoadingButton>
-        </Row>
-      </Column>
-    </Grid>
+    <PageHeader title={title}>
+      <Row gap="3">
+        <Button variant="quiet" onPress={handleCancel}>
+          {t(labels.cancel)}
+        </Button>
+        <LoadingButton variant="primary" onPress={handleSave} isLoading={isPending}>
+          {t(labels.save)}
+        </LoadingButton>
+      </Row>
+    </PageHeader>
   );
 }

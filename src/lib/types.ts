@@ -150,6 +150,8 @@ export interface ApiError extends Error {
 
 export interface BoardComponentConfig {
   type: string;
+  entityType?: 'website' | 'pixel' | 'link';
+  entityId?: string;
   websiteId?: string;
   title?: string;
   description?: string;
@@ -170,6 +172,8 @@ export interface BoardRow {
 
 export interface BoardParameters {
   websiteId?: string;
+  pixelId?: string;
+  linkId?: string;
   rows?: BoardRow[];
 }
 

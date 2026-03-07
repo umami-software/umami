@@ -3,6 +3,7 @@ import { Loading, useToast } from '@umami/react-zen';
 import { createContext, type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { useApi, useMessages, useModified, useNavigation } from '@/components/hooks';
+import { BOARD_TYPES, getBoardType } from '@/lib/boards';
 import { useBoardQuery } from '@/components/hooks/queries/useBoardQuery';
 import type { Board, BoardParameters } from '@/lib/types';
 import { getComponentDefinition } from './boardComponentRegistry';
@@ -21,6 +22,7 @@ export interface BoardContextValue {
 export const BoardContext = createContext<BoardContextValue>(null);
 
 const createDefaultBoard = (): Partial<Board> => ({
+  type: BOARD_TYPES.open,
   name: '',
   description: '',
   parameters: {
@@ -78,6 +80,7 @@ export function BoardProvider({
     if (data) {
       setBoard({
         ...data,
+        type: getBoardType(data, { coerceDashboard: true }),
         parameters: sanitizeBoardParameters(data.parameters),
       });
     }
@@ -88,7 +91,12 @@ export function BoardProvider({
       if (boardData.id) {
         return post(`/boards/${boardData.id}`, boardData);
       }
-      return post('/boards', { ...boardData, type: 'dashboard', slug: '', teamId });
+      return post('/boards', {
+        ...boardData,
+        type: boardData.type || BOARD_TYPES.open,
+        slug: '',
+        teamId,
+      });
     },
   });
 

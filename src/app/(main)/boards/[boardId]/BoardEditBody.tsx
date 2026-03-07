@@ -5,6 +5,7 @@ import { Group, type GroupImperativeHandle, Panel, Separator } from 'react-resiz
 import { v4 as uuid } from 'uuid';
 import { useBoard } from '@/components/hooks';
 import { GripHorizontal, Plus } from '@/components/icons';
+import { getBoardEntity, getBoardType, requiresBoardEntity } from '@/lib/boards';
 import { BoardEditRow } from './BoardEditRow';
 import { BUTTON_ROW_HEIGHT, MAX_ROW_HEIGHT, MIN_ROW_HEIGHT } from './boardConstants';
 
@@ -102,8 +103,9 @@ export function BoardEditBody({ requiresBoardWebsite = true }: { requiresBoardWe
     });
   };
 
-  const websiteId = board?.parameters?.websiteId;
-  const canEdit = requiresBoardWebsite ? !!websiteId : true;
+  const boardType = getBoardType(board);
+  const { entityId } = getBoardEntity(board);
+  const canEdit = requiresBoardWebsite ? !requiresBoardEntity(boardType) || !!entityId : true;
   const rows = board?.parameters?.rows ?? [];
   const minHeight = (rows.length || 1) * MAX_ROW_HEIGHT + BUTTON_ROW_HEIGHT;
 
