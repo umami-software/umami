@@ -78,15 +78,16 @@ model Website {
   replayEnabled Boolean   @default(false) @map("replay_enabled")
   replayConfig  Json?     @map("replay_config")
 
-  user              User?               @relation("user", fields: [userId], references: [id])
-  createUser        User?               @relation("createUser", fields: [createdBy], references: [id])
-  team              Team?               @relation(fields: [teamId], references: [id])
-  eventData         EventData[]
-  reports           Report[]
-  revenue           Revenue[]
-  segments          Segment[]
-  sessionData       SessionData[]
-  sessionReplays SessionReplay[]
+  user                User?               @relation("user", fields: [userId], references: [id])
+  createUser          User?               @relation("createUser", fields: [createdBy], references: [id])
+  team                Team?               @relation(fields: [teamId], references: [id])
+  eventData           EventData[]
+  reports             Report[]
+  revenue             Revenue[]
+  segments            Segment[]
+  sessionData         SessionData[]
+  sessionReplays      SessionReplay[]
+  sessionReplaysSaved SessionReplaySaved[]
 
   @@index([userId])
   @@index([teamId])
@@ -382,4 +383,21 @@ model SessionReplay {
   @@index([websiteId, createdAt])
   @@index([sessionId, chunkIndex])
   @@map("session_replay")
+}
+
+model SessionReplaySaved {
+  id        String    @id() @map("saved_replay_id") @db.Uuid
+  name      String    @db.VarChar(100)
+  websiteId String    @map("website_id") @db.Uuid
+  visitId   String    @map("visit_id") @db.Uuid
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  website Website @relation(fields: [websiteId], references: [id])
+
+  @@unique([websiteId, visitId])
+  @@index([websiteId])
+  @@index([visitId])
+  @@index([websiteId, createdAt])
+  @@map("session_replay_saved")
 }

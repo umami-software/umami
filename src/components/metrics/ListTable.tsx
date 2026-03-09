@@ -72,7 +72,7 @@ export function ListTable({
         alignItems="center"
         justifyContent="space-between"
         paddingLeft="2"
-        columns={`1fr ${showPercentage ? '100px' : '150px'}`}
+        columns={'1fr 100px'}
       >
         <Text weight="bold">{title}</Text>
         <Text weight="bold" align="center">
@@ -117,7 +117,7 @@ const AnimatedRow = ({
 
   return (
     <Grid
-      columns="1fr 50px 50px"
+      columns={showPercentage ? '1fr 50px 50px' : '1fr 100px'}
       paddingLeft="2"
       alignItems="center"
       borderRadius
@@ -129,7 +129,11 @@ const AnimatedRow = ({
           {label}
         </Text>
       </Row>
-      <Row alignItems="center" height="30px" justifyContent="flex-end">
+      <Row
+        alignItems="center"
+        height="30px"
+        justifyContent={showPercentage ? 'flex-end' : 'center'}
+      >
         {change}
         <Text weight="bold">
           <AnimatedDiv title={props?.y as any}>
