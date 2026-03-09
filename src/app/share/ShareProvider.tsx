@@ -13,6 +13,8 @@ export interface ShareData {
   websiteId?: string;
   websiteIds?: string[];
   boardId?: string;
+  pixelId?: string;
+  linkId?: string;
   parameters: any;
   token: string;
   whiteLabel?: WhiteLabel;
@@ -54,12 +56,13 @@ export function ShareProvider({ slug, children }: { slug: string; children: Reac
   const pathname = usePathname();
   const path = getSharePath(pathname);
   const isBoardShare = share?.shareType === ENTITY_TYPE.board;
+  const isWebsiteShare = share?.shareType === ENTITY_TYPE.website;
 
-  const allowedSections = !isBoardShare && share?.parameters
+  const allowedSections = isWebsiteShare && share?.parameters
     ? ALL_SECTION_IDS.filter(id => share.parameters[id] !== false)
     : [];
 
-  const shouldRedirect = !isBoardShare &&
+  const shouldRedirect = isWebsiteShare &&
     allowedSections.length === 1 &&
     allowedSections[0] !== 'overview' &&
     (path === undefined || path === '' || path === 'overview');

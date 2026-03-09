@@ -23,6 +23,8 @@ export interface Auth {
     websiteId?: string;
     websiteIds?: string[];
     boardId?: string;
+    pixelId?: string;
+    linkId?: string;
   };
 }
 

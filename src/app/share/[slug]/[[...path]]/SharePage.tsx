@@ -2,6 +2,8 @@
 import { Column, Grid, Row, useTheme } from '@umami/react-zen';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { LinkPage } from '@/app/(main)/links/[linkId]/LinkPage';
+import { PixelPage } from '@/app/(main)/pixels/[pixelId]/PixelPage';
 import { AttributionPage } from '@/app/(main)/websites/[websiteId]/(reports)/attribution/AttributionPage';
 import { BreakdownPage } from '@/app/(main)/websites/[websiteId]/(reports)/breakdown/BreakdownPage';
 import { FunnelsPage } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/FunnelsPage';
@@ -59,7 +61,7 @@ export function SharePage() {
   const { setTheme } = useTheme();
   const pathname = usePathname();
   const path = getSharePath(pathname);
-  const { websiteId, boardId, parameters = {}, shareType } = share;
+  const { websiteId, boardId, pixelId, linkId, parameters = {}, shareType } = share;
 
   useEffect(() => {
     const url = new URL(window?.location?.href);
@@ -79,6 +81,14 @@ export function SharePage() {
         showEntityBadges={false}
       />
     );
+  }
+
+  if (shareType === ENTITY_TYPE.pixel && pixelId) {
+    return <PixelPage pixelId={pixelId} showHeaderActions={false} />;
+  }
+
+  if (shareType === ENTITY_TYPE.link && linkId) {
+    return <LinkPage linkId={linkId} showHeaderActions={false} />;
   }
 
   // Check if the requested path is allowed
