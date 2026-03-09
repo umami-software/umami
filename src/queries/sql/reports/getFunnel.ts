@@ -184,7 +184,7 @@ async function clickhouseQuery(
             select distinct y.session_id as session_id,
                 y.url_path as url_path,
                 y.referrer_path as referrer_path,
-                y.event_name,
+                y.event_name as event_name,
                 y.created_at as created_at
             from level${i} x
             join level0 y
