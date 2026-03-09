@@ -3,12 +3,16 @@ import { Loading } from '@umami/react-zen';
 import { usePathname, useRouter } from 'next/navigation';
 import { createContext, type ReactNode, useEffect } from 'react';
 import { useShareTokenQuery } from '@/components/hooks';
+import { ENTITY_TYPE } from '@/lib/constants';
 import type { WhiteLabel } from '@/lib/types';
 
 export interface ShareData {
   shareId: string;
   slug: string;
-  websiteId: string;
+  shareType: number;
+  websiteId?: string;
+  websiteIds?: string[];
+  boardId?: string;
   parameters: any;
   token: string;
   whiteLabel?: WhiteLabel;
@@ -49,12 +53,13 @@ export function ShareProvider({ slug, children }: { slug: string; children: Reac
   const router = useRouter();
   const pathname = usePathname();
   const path = getSharePath(pathname);
+  const isBoardShare = share?.shareType === ENTITY_TYPE.board;
 
-  const allowedSections = share?.parameters
+  const allowedSections = !isBoardShare && share?.parameters
     ? ALL_SECTION_IDS.filter(id => share.parameters[id] !== false)
     : [];
 
-  const shouldRedirect =
+  const shouldRedirect = !isBoardShare &&
     allowedSections.length === 1 &&
     allowedSections[0] !== 'overview' &&
     (path === undefined || path === '' || path === 'overview');

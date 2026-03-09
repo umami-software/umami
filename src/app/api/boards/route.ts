@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { BOARD_TYPES } from '@/lib/boards';
+import { BOARD_TYPES, normalizeBoardType } from '@/lib/boards';
 import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
@@ -28,7 +28,9 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const schema = z.object({
-    type: z.enum([BOARD_TYPES.open, BOARD_TYPES.website, BOARD_TYPES.pixel, BOARD_TYPES.link]),
+    type: z
+      .enum([BOARD_TYPES.mixed, BOARD_TYPES.website, BOARD_TYPES.pixel, BOARD_TYPES.link])
+      .or(z.literal('open')),
     name: z.string().max(100),
     description: z.string().max(500).optional(),
     slug: z.string().max(100),
@@ -58,6 +60,7 @@ export async function POST(request: Request) {
 
   const data = {
     ...body,
+    type: normalizeBoardType(body.type),
     id: uuid(),
     parameters: body.parameters ?? {},
     slug: uuid(),

@@ -1,12 +1,15 @@
-import type { Link, Pixel, Website } from '@/generated/prisma/client';
-import { getLink, getPixel, getWebsite } from '@/queries/prisma';
+import type { Board, Link, Pixel, Website } from '@/generated/prisma/client';
+import { getBoard, getLink, getPixel, getWebsite } from '@/queries/prisma';
 
-export async function getEntity(entityId: string): Promise<Website | Link | Pixel | null> {
-  const website = await getWebsite(entityId);
-  const link = await getLink(entityId);
-  const pixel = await getPixel(entityId);
+export async function getEntity(entityId: string): Promise<Website | Link | Pixel | Board | null> {
+  const [website, link, pixel, board] = await Promise.all([
+    getWebsite(entityId),
+    getLink(entityId),
+    getPixel(entityId),
+    getBoard(entityId),
+  ]);
 
-  const entity = website || link || pixel;
+  const entity = website || link || pixel || board;
 
   return entity;
 }

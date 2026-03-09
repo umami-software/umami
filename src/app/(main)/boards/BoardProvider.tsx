@@ -22,7 +22,7 @@ export interface BoardContextValue {
 export const BoardContext = createContext<BoardContextValue>(null);
 
 const createDefaultBoard = (): Partial<Board> => ({
-  type: BOARD_TYPES.open,
+  type: BOARD_TYPES.mixed,
   name: '',
   description: '',
   parameters: {
@@ -93,7 +93,7 @@ export function BoardProvider({
       }
       return post('/boards', {
         ...boardData,
-        type: boardData.type || BOARD_TYPES.open,
+        type: boardData.type || BOARD_TYPES.mixed,
         slug: '',
         teamId,
       });

@@ -8,12 +8,18 @@ import { getComponentDefinition } from '../boardComponentRegistry';
 import { useBoardEntityBadgeProps } from '../useBoardEntityBadgeProps';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 
-export function BoardViewColumn({ component }: { component?: BoardComponentConfig }) {
+export function BoardViewColumn({
+  component,
+  showEntityBadge = true,
+}: {
+  component?: BoardComponentConfig;
+  showEntityBadge?: boolean;
+}) {
   const { board } = useBoard();
   const boardType = getBoardType(board);
   const definition = component ? getComponentDefinition(component.type) : undefined;
   const { entityType, entityId } = getResolvedComponentEntity(board, component);
-  const entityBadge = useBoardEntityBadgeProps(entityType, entityId);
+  const entityBadge = useBoardEntityBadgeProps(entityType, entityId, showEntityBadge);
 
   if (!component || (!entityId && definition?.requiresWebsite !== false)) {
     return null;
@@ -24,7 +30,7 @@ export function BoardViewColumn({ component }: { component?: BoardComponentConfi
 
   return (
     <Panel title={title} description={description} height="100%" position="relative">
-      {isOpenBoardType(boardType) && entityBadge && (
+      {showEntityBadge && isOpenBoardType(boardType) && entityBadge && (
         <Box position="absolute" top="12px" right="12px" zIndex={100}>
           <BoardEntityBadge {...entityBadge} />
         </Box>

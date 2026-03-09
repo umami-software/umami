@@ -55,7 +55,11 @@ export function DialogButton({
         <IconLabel icon={icon} label={label} />
       </Button>
       <Modal placement={isMobile ? 'fullscreen' : 'center'}>
-        <Dialog variant={isMobile ? 'sheet' : undefined} title={title || label} style={style}>
+        <Dialog
+          variant={isMobile ? 'sheet' : undefined}
+          title={title === undefined ? label : title}
+          style={style}
+        >
           {children}
         </Dialog>
       </Modal>

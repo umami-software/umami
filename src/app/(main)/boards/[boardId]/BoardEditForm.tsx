@@ -125,7 +125,7 @@ export function BoardEditForm() {
           >
             <Box width="100%" maxWidth="360px">
               <Select value={boardType} onChange={handleTypeChange} width="100%">
-                <ListItem id={BOARD_TYPES.open}>{t(labels.open)}</ListItem>
+                <ListItem id={BOARD_TYPES.mixed}>{t(labels.open)}</ListItem>
                 <ListItem id={BOARD_TYPES.website}>{t(labels.website)}</ListItem>
                 <ListItem id={BOARD_TYPES.pixel}>{t(labels.pixel)}</ListItem>
                 <ListItem id={BOARD_TYPES.link}>{t(labels.link)}</ListItem>

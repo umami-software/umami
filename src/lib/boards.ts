@@ -2,7 +2,7 @@ import type { Board, BoardComponentConfig, BoardParameters } from './types';
 
 export const BOARD_TYPES = {
   dashboard: 'dashboard',
-  open: 'open',
+  mixed: 'mixed',
   website: 'website',
   pixel: 'pixel',
   link: 'link',
@@ -32,7 +32,19 @@ export function getLegacyBoardType(parameters?: BoardParameters): BoardType {
     return BOARD_TYPES.website;
   }
 
-  return BOARD_TYPES.open;
+  return BOARD_TYPES.mixed;
+}
+
+export function normalizeBoardType(type?: string): BoardType | undefined {
+  if (type === 'open') {
+    return BOARD_TYPES.mixed;
+  }
+
+  if (type && boardTypes.has(type)) {
+    return type as BoardType;
+  }
+
+  return undefined;
 }
 
 export function getBoardType(
@@ -45,15 +57,17 @@ export function getBoardType(
     return getLegacyBoardType(board?.parameters);
   }
 
-  if (type && boardTypes.has(type)) {
-    return type as BoardType;
+  const normalizedType = normalizeBoardType(type);
+
+  if (normalizedType) {
+    return normalizedType;
   }
 
   return getLegacyBoardType(board?.parameters);
 }
 
 export function isOpenBoardType(type?: string) {
-  return type === BOARD_TYPES.open || type === BOARD_TYPES.dashboard;
+  return type === BOARD_TYPES.mixed || type === BOARD_TYPES.dashboard || type === 'open';
 }
 
 export function requiresBoardEntity(type?: string) {
@@ -140,6 +154,33 @@ export function getFirstBoardComponentEntity(
   }
 
   return {};
+}
+
+export function getBoardWebsiteIds(
+  board?: Pick<Board, 'type' | 'parameters'> | Partial<Board>,
+): string[] {
+  const ids = new Set<string>();
+  const boardEntity = getBoardEntity(board);
+
+  if (boardEntity.entityType === BOARD_ENTITY_TYPES.website && boardEntity.entityId) {
+    ids.add(boardEntity.entityId);
+  }
+
+  if (board?.parameters?.websiteId) {
+    ids.add(board.parameters.websiteId);
+  }
+
+  for (const row of board?.parameters?.rows ?? []) {
+    for (const column of row.columns ?? []) {
+      const entity = getComponentEntity(column.component);
+
+      if (entity.entityType === BOARD_ENTITY_TYPES.website && entity.entityId) {
+        ids.add(entity.entityId);
+      }
+    }
+  }
+
+  return [...ids];
 }
 
 export function clearBoardEntity(parameters: BoardParameters = {}): BoardParameters {

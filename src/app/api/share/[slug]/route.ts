@@ -1,11 +1,12 @@
-import { ROLES } from '@/lib/constants';
+import { ENTITY_TYPE, ROLES } from '@/lib/constants';
 import { secret } from '@/lib/crypto';
 import { createToken } from '@/lib/jwt';
+import { getBoardWebsiteIds } from '@/lib/boards';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { json, notFound } from '@/lib/response';
 import type { WhiteLabel } from '@/lib/types';
-import { getShareByCode, getWebsite } from '@/queries/prisma';
+import { getBoard, getShareByCode, getWebsite } from '@/queries/prisma';
 
 async function getAccountId(website: { userId?: string; teamId?: string }): Promise<string | null> {
   if (website.userId) {
@@ -52,10 +53,35 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     return notFound();
   }
 
+  if (share.shareType === ENTITY_TYPE.board) {
+    const board = await getBoard(share.entityId);
+
+    if (!board) {
+      return notFound();
+    }
+
+    const data: Record<string, any> = {
+      shareId: share.id,
+      shareType: share.shareType,
+      boardId: share.entityId,
+      parameters: share.parameters,
+      websiteIds: getBoardWebsiteIds(board),
+    };
+
+    data.token = createToken(data, secret());
+
+    return json(data);
+  }
+
   const website = await getWebsite(share.entityId);
+
+  if (!website) {
+    return notFound();
+  }
 
   const data: Record<string, any> = {
     shareId: share.id,
+    shareType: share.shareType,
     websiteId: share.entityId,
     parameters: share.parameters,
   };

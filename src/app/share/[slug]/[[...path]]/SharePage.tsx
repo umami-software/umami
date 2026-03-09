@@ -17,9 +17,11 @@ import { SessionsPage } from '@/app/(main)/websites/[websiteId]/sessions/Session
 import { WebsiteHeader } from '@/app/(main)/websites/[websiteId]/WebsiteHeader';
 import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
 import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
+import { BoardViewPage } from '@/app/(main)/boards/[boardId]/BoardViewPage';
 import { PageBody } from '@/components/common/PageBody';
 import { useShare } from '@/components/hooks';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
+import { ENTITY_TYPE } from '@/lib/constants';
 import { ShareNav } from './ShareNav';
 
 const PAGE_COMPONENTS: Record<string, React.ComponentType<{ websiteId: string }>> = {
@@ -57,7 +59,7 @@ export function SharePage() {
   const { setTheme } = useTheme();
   const pathname = usePathname();
   const path = getSharePath(pathname);
-  const { websiteId, parameters = {} } = share;
+  const { websiteId, boardId, parameters = {}, shareType } = share;
 
   useEffect(() => {
     const url = new URL(window?.location?.href);
@@ -66,7 +68,18 @@ export function SharePage() {
     if (theme === 'light' || theme === 'dark') {
       setTheme(theme);
     }
-  }, []);
+  }, [setTheme]);
+
+  if (shareType === ENTITY_TYPE.board && boardId) {
+    return (
+      <BoardViewPage
+        boardId={boardId}
+        showActions={false}
+        showControls={false}
+        showEntityBadges={false}
+      />
+    );
+  }
 
   // Check if the requested path is allowed
   const pageKey = path || '';
