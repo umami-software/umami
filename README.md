@@ -50,6 +50,12 @@ Create an `.env` file with the following:
 DATABASE_URL=connection-url
 ```
 
+Optional for Headlify-managed provisioning:
+
+```bash
+HEADLIFY_UMAMI_INTERNAL_SECRET=shared-secret-with-headlify
+```
+
 The connection URL format:
 
 ```bash

@@ -52,6 +52,25 @@ curl -sS -X POST \
 # expected: 401 with incorrect-username-password
 ```
 
+## Headlify internal provisioning
+
+This fork exposes a Headlify-only endpoint for tenant analytics ownership provisioning:
+
+- `POST /api/internal/headlify/provision`
+- protected with `Authorization: Bearer <HEADLIFY_UMAMI_INTERNAL_SECRET>`
+- used by Headlify spawner to ensure/reuse one Umami user per Headlify email and one Umami website per tenant domain
+
+Required worker secret:
+
+- `HEADLIFY_UMAMI_INTERNAL_SECRET`
+
+Operational rules:
+
+- normalize Headlify email to Umami `username`
+- create missing Umami users with random password + role `user`
+- reuse existing websites by domain
+- transfer legacy website ownership to the resolved user when domain already exists under another owner
+
 ## Upgrade checklist (when syncing from upstream Umami)
 
 1. Pull/merge upstream changes.
