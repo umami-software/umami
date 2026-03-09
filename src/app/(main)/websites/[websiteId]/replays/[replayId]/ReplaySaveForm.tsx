@@ -8,6 +8,7 @@ import {
   TextField,
 } from '@umami/react-zen';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
+import { touch } from '@/components/hooks/useModified';
 
 export function ReplaySaveForm({
   websiteId,
@@ -22,7 +23,7 @@ export function ReplaySaveForm({
 }) {
   const { t, labels, getErrorMessage } = useMessages();
   const { mutateAsync, error, isPending } = useUpdateQuery(
-    `/websites/${websiteId}/replays/${replayId}`,
+    `/websites/${websiteId}/replays/saved/${replayId}`,
   );
 
   const handleSubmit = async (formData: { name: string }) => {
@@ -30,6 +31,7 @@ export function ReplaySaveForm({
       { isSaved: true, name: formData.name },
       {
         onSuccess: () => {
+          touch('replays');
           onSave?.();
           onClose?.();
         },

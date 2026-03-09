@@ -30,6 +30,7 @@ export * from './queries/usePixelSharesQuery';
 export * from './queries/usePixelsQuery';
 export * from './queries/useRealtimeQuery';
 export * from './queries/useReplayQuery';
+export * from './queries/useReplaySavedQuery';
 export * from './queries/useReplaysQuery';
 export * from './queries/useReportQuery';
 export * from './queries/useReportsQuery';

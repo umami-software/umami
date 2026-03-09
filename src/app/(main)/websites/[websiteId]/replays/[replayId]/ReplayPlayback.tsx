@@ -8,6 +8,7 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
   useMessages,
   useReplayQuery,
+  useReplaySavedQuery,
   useUpdateQuery,
   useWebsiteSessionQuery,
 } from '@/components/hooks';
@@ -18,19 +19,22 @@ import { ReplaySaveForm } from './ReplaySaveForm';
 export function ReplayPlayback({
   websiteId,
   replayId,
+  showSessionInfo = true,
   onClose,
 }: {
   websiteId: string;
   replayId: string;
+  showSessionInfo?: boolean;
   onClose?: () => void;
 }) {
   const { data: replay, isLoading, error } = useReplayQuery(websiteId, replayId);
+  const { data: replaySaved } = useReplaySavedQuery(websiteId, replayId);
   const { data: session } = useWebsiteSessionQuery(websiteId, replay?.sessionId);
   const { t, labels } = useMessages();
   const [isSaved, setIsSaved] = useState<boolean | null>(null);
-  const { mutate } = useUpdateQuery(`/websites/${websiteId}/replays/${replayId}`);
+  const { mutate } = useUpdateQuery(`/websites/${websiteId}/replays/saved/${replayId}`);
 
-  const saved = isSaved ?? replay?.isSaved ?? false;
+  const saved = isSaved ?? replaySaved?.isSaved ?? false;
 
   const handleUnsave = () => {
     setIsSaved(false);
@@ -100,7 +104,7 @@ export function ReplayPlayback({
             </Row>
           )}
           <ReplayPlayer events={replay.events} />
-          {session && <SessionInfo data={session} />}
+          {showSessionInfo && session && <SessionInfo data={session} />}
         </Column>
       )}
     </LoadingPanel>

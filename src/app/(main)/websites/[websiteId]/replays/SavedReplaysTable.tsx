@@ -1,5 +1,6 @@
 import { Button, DataColumn, DataTable, type DataTableProps, Icon } from '@umami/react-zen';
 import { Play } from 'lucide-react';
+import { DateDistance } from '@/components/common/DateDistance';
 import { useMessages, useNavigation } from '@/components/hooks';
 
 export function SavedReplaysTable({ ...props }: DataTableProps) {
@@ -23,7 +24,7 @@ export function SavedReplaysTable({ ...props }: DataTableProps) {
       <DataColumn id="name" label={t(labels.name)} />
       <DataColumn id="visitId" label={t(labels.replayId)} />
       <DataColumn id="createdAt" label={t(labels.created)} width="160px">
-        {(row: any) => new Date(row.createdAt).toLocaleString()}
+        {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
     </DataTable>
   );

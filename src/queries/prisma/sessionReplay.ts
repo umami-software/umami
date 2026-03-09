@@ -97,7 +97,7 @@ export async function getSavedReplays(websiteId: string, filters: QueryFilters) 
 
   const where = {
     websiteId,
-    ...getSearchParameters(search, [{ name: 'contains' }, { visitId: 'contains' }]),
+    ...getSearchParameters(search, [{ name: 'contains' }]),
   };
 
   return pagedQuery(

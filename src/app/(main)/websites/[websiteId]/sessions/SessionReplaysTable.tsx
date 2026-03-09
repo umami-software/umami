@@ -36,7 +36,7 @@ export function SessionReplaysTable({
         {(row: any) => formatDuration(row.duration || 0)}
       </DataColumn>
       <DataColumn id="eventCount" label={t(labels.actions)} width="80px" />
-      <DataColumn id="createdAt" label={t(labels.recordedAt)} width="160px">
+      <DataColumn id="createdAt" label={t(labels.recorded)} width="160px">
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
     </DataTable>

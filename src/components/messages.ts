@@ -377,7 +377,7 @@ export const labels: Record<string, string> = {
   blockSelector: 'label.block-selector',
   retentionDays: 'label.retention-days',
   duration: 'label.duration',
-  recordedAt: 'label.recorded-at',
+  recorded: 'label.recorded',
 };
 
 export const messages: Record<string, string> = {

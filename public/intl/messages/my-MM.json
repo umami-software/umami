@@ -240,7 +240,7 @@
     "query": "Query (ကွာရီ)",
     "query-parameters": "Query parameters (ကွာရီပါရာမီတာများ)",
     "realtime": "အချိန်နှင့်တပြေးညီ",
-    "recorded-at": "မှတ်တမ်းတင်ချိန်",
+    "recorded": "မှတ်တမ်းတင်ချိန်",
     "referral": "ရည်ညွှန်းမှု",
     "referrer": "ရည်ညွှန်းသူ",
     "referrers": "ရည်ညွှန်းမှုများ",
