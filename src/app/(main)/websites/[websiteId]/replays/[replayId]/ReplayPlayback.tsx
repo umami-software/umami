@@ -47,7 +47,7 @@ export function ReplayPlayback({
       isLoading={isLoading}
       error={error}
       loadingIcon="spinner"
-      loadingPlacement="absolute"
+      style={{ minHeight: '400px' }}
     >
       {replay && (
         <Column gap="6">
