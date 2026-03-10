@@ -13,7 +13,7 @@ import { ArrowLeft, Link as LinkIcon } from '@/components/icons';
 export function LinkEditPage({ linkId }: { linkId: string }) {
   return (
     <LinkProvider linkId={linkId}>
-      <Column margin="2">
+      <Column margin="2" width="100%" maxWidth="800px" style={{ marginInline: 'auto' }}>
         <LinkEditHeader />
         <Column gap="6">
           <Panel>

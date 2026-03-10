@@ -30,13 +30,13 @@ function PixelShareFormContent({
 }) {
   const { t, labels, messages } = useMessages();
   const [isCreating, setIsCreating] = useState(false);
-  const showCreateForm = !hasShares || isCreating;
+  const showCreateForm = isCreating;
 
   return (
     <Column gap="4">
       <Row justifyContent="space-between" alignItems="center">
         <Heading>{t(labels.share)}</Heading>
-        {hasShares && !isCreating && (
+        {!isCreating && (
           <Button variant="primary" onPress={() => setIsCreating(true)}>
             <IconLabel icon={<Plus size={16} />} label={t(labels.add)} />
           </Button>
@@ -46,17 +46,18 @@ function PixelShareFormContent({
         <SimpleShareCreateForm
           createPath={`/pixels/${pixelId}/shares`}
           onSave={() => setIsCreating(false)}
-          onCancel={hasShares ? () => setIsCreating(false) : undefined}
+          onCancel={() => setIsCreating(false)}
         />
       )}
-      {hasShares ? (
-        <>
-          <Text>{t(messages.shareUrl)}</Text>
-          <SimpleSharesTable data={shares} />
-        </>
-      ) : (
-        !showCreateForm && <Text color="muted">{t(messages.noDataAvailable)}</Text>
+      {hasShares && (
+        <Text>{t(messages.shareUrl)}</Text>
       )}
+      {!showCreateForm &&
+        (hasShares ? (
+          <SimpleSharesTable data={shares} />
+        ) : (
+          <Text color="muted">{t(messages.noDataAvailable)}</Text>
+        ))}
     </Column>
   );
 }

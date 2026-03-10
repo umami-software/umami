@@ -13,7 +13,7 @@ import { ArrowLeft, Grid2x2 } from '@/components/icons';
 export function PixelEditPage({ pixelId }: { pixelId: string }) {
   return (
     <PixelProvider pixelId={pixelId}>
-      <Column margin="2">
+      <Column margin="2" width="100%" maxWidth="800px" style={{ marginInline: 'auto' }}>
         <PixelEditHeader />
         <Column gap="6">
           <Panel>

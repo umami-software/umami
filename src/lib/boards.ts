@@ -1,4 +1,5 @@
 import type { Board, BoardComponentConfig, BoardParameters } from './types';
+import { isBoardComponentSupportedByEntityType } from './boardComponentCompatibility';
 
 export const BOARD_TYPES = {
   dashboard: 'dashboard',
@@ -18,9 +19,6 @@ export type BoardType = (typeof BOARD_TYPES)[keyof typeof BOARD_TYPES];
 export type BoardEntityType = (typeof BOARD_ENTITY_TYPES)[keyof typeof BOARD_ENTITY_TYPES];
 
 const boardTypes = new Set<string>(Object.values(BOARD_TYPES));
-const boardComponentEntityTypes: Partial<Record<string, readonly BoardEntityType[]>> = {
-  EventsChart: [BOARD_ENTITY_TYPES.website],
-};
 
 export function getLegacyBoardType(parameters?: BoardParameters): BoardType {
   if (parameters?.pixelId) {
@@ -147,13 +145,7 @@ export function isBoardComponentSupported(
   componentType: string,
   entityType?: BoardEntityType,
 ) {
-  const supportedEntityTypes = boardComponentEntityTypes[componentType];
-
-  if (!entityType || !supportedEntityTypes) {
-    return true;
-  }
-
-  return supportedEntityTypes.includes(entityType);
+  return isBoardComponentSupportedByEntityType(componentType, entityType);
 }
 
 export function getFirstBoardComponentEntity(
