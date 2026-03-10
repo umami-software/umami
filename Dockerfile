@@ -16,7 +16,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 COPY docker/middleware.ts ./src
 
-ARG BASE_PATH=""
+ARG BASE_PATH
 
 ENV BASE_PATH=$BASE_PATH
 ENV NEXT_TELEMETRY_DISABLED=1
