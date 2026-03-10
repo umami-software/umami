@@ -4,10 +4,9 @@ import { LinkButton } from '@/components/common/LinkButton';
 import { PageHeader } from '@/components/common/PageHeader';
 import { useBoard, useMessages, useNavigation } from '@/components/hooks';
 import { getBoardEntity } from '@/lib/boards';
-import { Edit } from '@/components/icons';
+import { Edit, LayoutDashboard } from '@/components/icons';
 import { BoardEntityBadge } from '../BoardEntityBadge';
 import { useBoardEntityBadgeProps } from '../useBoardEntityBadgeProps';
-import { BoardShareButton } from './BoardShareButton';
 
 export function BoardViewHeader({
   showActions = true,
@@ -28,9 +27,11 @@ export function BoardViewHeader({
         {showEntityBadge && entityBadge && <BoardEntityBadge {...entityBadge} />}
         {showActions && board?.id && (
           <>
-            <BoardShareButton boardId={board.id} />
             <LinkButton href={renderUrl(`/boards/${board.id}/edit`, false)}>
               <IconLabel icon={<Edit />}>{t(labels.edit)}</IconLabel>
+            </LinkButton>
+            <LinkButton href={renderUrl(`/boards/${board.id}/design`, false)}>
+              <IconLabel icon={<LayoutDashboard />}>Design</IconLabel>
             </LinkButton>
           </>
         )}

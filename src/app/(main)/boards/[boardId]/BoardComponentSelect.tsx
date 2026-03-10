@@ -95,11 +95,7 @@ export function BoardComponentSelect({
 
     const definition = allDefinitions.find(def => def.type === initialConfig.type);
 
-    if (!definition || !isBoardComponentSupported(definition.type, activeEntityType)) {
-      setSelectedDef(null);
-      setConfigValues({});
-      setTitle('');
-      setDescription('');
+    if (!definition) {
       return;
     }
 
@@ -114,23 +110,11 @@ export function BoardComponentSelect({
   }, [
     initialConfig,
     allDefinitions,
-    activeEntityType,
     boardEntityId,
     boardEntityType,
     initialEntity.entityId,
     initialEntity.entityType,
   ]);
-
-  useEffect(() => {
-    if (!selectedDef || isSelectedDefSupported) {
-      return;
-    }
-
-    setSelectedDef(null);
-    setConfigValues({});
-    setTitle('');
-    setDescription('');
-  }, [isSelectedDefSupported, selectedDef]);
 
   const handleSelectComponent = (def: ComponentDefinition) => {
     setSelectedDef(def);
@@ -211,7 +195,8 @@ export function BoardComponentSelect({
         <Column gap="1" style={{ width: 280, flexShrink: 0, overflowY: 'auto' }}>
           {CATEGORIES.map(category => {
             const components = getComponentsByCategory(category.key).filter(def =>
-              isBoardComponentSupported(def.type, activeEntityType),
+              isBoardComponentSupported(def.type, activeEntityType) ||
+              def.type === selectedDef?.type,
             );
 
             if (!components.length) {
