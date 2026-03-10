@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { matchesConfiguredPath } from '@/lib/match-configured-path';
 
 export const config = {
   matcher: '/:path*',
@@ -7,6 +8,7 @@ export const config = {
 const TRACKER_PATH = '/script.js';
 const COLLECT_PATH = '/api/send';
 const LOGIN_PATH = '/login';
+const BASE_PATH = process.env.BASE_PATH || '';
 
 const apiHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -27,7 +29,7 @@ function customCollectEndpoint(request: NextRequest) {
   if (collectEndpoint) {
     const url = request.nextUrl.clone();
 
-    if (url.pathname.endsWith(collectEndpoint)) {
+    if (matchesConfiguredPath(url.pathname, collectEndpoint, BASE_PATH)) {
       url.pathname = COLLECT_PATH;
       return NextResponse.rewrite(url, { headers: apiHeaders });
     }
@@ -41,7 +43,7 @@ function customScriptName(request: NextRequest) {
     const url = request.nextUrl.clone();
     const names = scriptName.split(',').map(name => name.trim().replace(/^\/+/, ''));
 
-    if (names.find(name => url.pathname.endsWith(name))) {
+    if (names.find(name => matchesConfiguredPath(url.pathname, name, BASE_PATH))) {
       url.pathname = TRACKER_PATH;
       return NextResponse.rewrite(url, { headers: trackerHeaders });
     }
@@ -51,7 +53,7 @@ function customScriptName(request: NextRequest) {
 function customScriptUrl(request: NextRequest) {
   const scriptUrl = process.env.TRACKER_SCRIPT_URL;
 
-  if (scriptUrl && request.nextUrl.pathname.endsWith(TRACKER_PATH)) {
+  if (scriptUrl && matchesConfiguredPath(request.nextUrl.pathname, TRACKER_PATH, BASE_PATH)) {
     return NextResponse.rewrite(scriptUrl, { headers: trackerHeaders });
   }
 }
@@ -59,7 +61,7 @@ function customScriptUrl(request: NextRequest) {
 function disableLogin(request: NextRequest) {
   const loginDisabled = process.env.DISABLE_LOGIN;
 
-  if (loginDisabled && request.nextUrl.pathname.endsWith(LOGIN_PATH)) {
+  if (loginDisabled && matchesConfiguredPath(request.nextUrl.pathname, LOGIN_PATH, BASE_PATH)) {
     return new NextResponse('Access denied', { status: 403 });
   }
 }

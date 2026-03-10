@@ -3,9 +3,17 @@ import { PERMISSIONS } from '@/lib/constants';
 import type { Auth } from '@/lib/types';
 import { getLink, getTeamUser } from '@/queries/prisma';
 
-export async function canViewLink({ user }: Auth, linkId: string) {
+export async function canViewLink({ user, shareToken }: Auth, linkId: string) {
   if (user?.isAdmin) {
     return true;
+  }
+
+  if (shareToken?.linkId === linkId || shareToken?.websiteId === linkId) {
+    return true;
+  }
+
+  if (!user) {
+    return false;
   }
 
   const link = await getLink(linkId);
@@ -24,6 +32,10 @@ export async function canViewLink({ user }: Auth, linkId: string) {
 }
 
 export async function canUpdateLink({ user }: Auth, linkId: string) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }
@@ -44,6 +56,10 @@ export async function canUpdateLink({ user }: Auth, linkId: string) {
 }
 
 export async function canDeleteLink({ user }: Auth, linkId: string) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }

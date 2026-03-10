@@ -21,30 +21,28 @@ export function WebsiteChart({
   const { pageviews, sessions, compare } = (data || {}) as any;
 
   const chartData = useMemo(() => {
-    if (data) {
-      const result = {
-        pageviews,
-        sessions,
-      };
+    if (!data) {
+      return { pageviews: [], sessions: [] };
+    }
 
-      if (compare) {
-        result.compare = {
-          pageviews: result.pageviews.map(({ x }, i) => ({
+    return {
+      pageviews,
+      sessions,
+      ...(compare && {
+        compare: {
+          pageviews: pageviews.map(({ x }, i) => ({
             x,
             y: compare.pageviews[i]?.y,
             d: compare.pageviews[i]?.x,
           })),
-          sessions: result.sessions.map(({ x }, i) => ({
+          sessions: sessions.map(({ x }, i) => ({
             x,
             y: compare.sessions[i]?.y,
             d: compare.sessions[i]?.x,
           })),
-        };
-      }
-
-      return result;
-    }
-    return { pageviews: [], sessions: [] };
+        },
+      }),
+    };
   }, [data, startDate, endDate, unit]);
 
   return (

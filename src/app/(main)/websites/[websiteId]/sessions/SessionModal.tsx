@@ -1,3 +1,4 @@
+'use client';
 import { Column, Dialog, Modal, type ModalProps } from '@umami/react-zen';
 import { SessionProfile } from '@/app/(main)/websites/[websiteId]/sessions/SessionProfile';
 import { useNavigation } from '@/components/hooks';
@@ -28,9 +29,9 @@ export function SessionModal({ websiteId, ...props }: SessionModalProps) {
       {...props}
     >
       <Column height="100%" maxWidth="1320px" style={{ margin: '0 auto' }}>
-        <Dialog variant="sheet">
+        <Dialog variant="sheet" className="rounded-lg">
           {({ close }) => (
-            <Column padding="6">
+            <Column padding="10">
               <SessionProfile websiteId={websiteId} sessionId={session} onClose={() => close()} />
             </Column>
           )}

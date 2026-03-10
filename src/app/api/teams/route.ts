@@ -28,6 +28,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const schema = z.object({
     name: z.string().max(50),
+    ownerId: z.uuid().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -40,7 +41,7 @@ export async function POST(request: Request) {
     return unauthorized();
   }
 
-  const { name } = body;
+  const { name, ownerId } = body;
 
   const team = await createTeam(
     {
@@ -48,7 +49,7 @@ export async function POST(request: Request) {
       name,
       accessCode: `team_${getRandomChars(16)}`,
     },
-    auth.user.id,
+    ownerId ?? auth.user.id,
   );
 
   return json(team);

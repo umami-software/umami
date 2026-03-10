@@ -9,7 +9,7 @@ const logError = (error: Error, info: ErrorInfo) => {
 };
 
 export function ErrorBoundary({ children }: { children: ReactNode }) {
-  const { formatMessage, messages } = useMessages();
+  const { t, messages } = useMessages();
 
   const fallbackRender = ({ error, resetErrorBoundary }) => {
     return (
@@ -22,7 +22,7 @@ export function ErrorBoundary({ children }: { children: ReactNode }) {
         justifyContent="center"
         alignItems="center"
       >
-        <h1>{formatMessage(messages.error)}</h1>
+        <h1>{t(messages.error)}</h1>
         <h3>{error.message}</h3>
         <pre>{error.stack}</pre>
         <Button onClick={resetErrorBoundary}>OK</Button>

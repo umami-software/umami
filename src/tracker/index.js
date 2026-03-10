@@ -12,23 +12,31 @@
   if (!currentScript) return;
 
   const { hostname, href, origin } = location;
-  const localStorage = href.startsWith('data:') ? undefined : window.localStorage;
+
+  let localStorage;
+  try {
+    localStorage = href.startsWith('data:') ? undefined : window.localStorage;
+  } catch {
+    /* (DOMException) SecurityError: Access is denied for this document. */
+  }
 
   const _data = 'data-';
   const _false = 'false';
   const _true = 'true';
   const attr = currentScript.getAttribute.bind(currentScript);
+  const config = value => attr(`${_data}${value}`);
 
-  const website = attr(`${_data}website-id`);
-  const hostUrl = attr(`${_data}host-url`);
-  const beforeSend = attr(`${_data}before-send`);
-  const tag = attr(`${_data}tag`) || undefined;
-  const autoTrack = attr(`${_data}auto-track`) !== _false;
-  const dnt = attr(`${_data}do-not-track`) === _true;
-  const excludeSearch = attr(`${_data}exclude-search`) === _true;
-  const excludeHash = attr(`${_data}exclude-hash`) === _true;
-  const domain = attr(`${_data}domains`) || '';
-  const credentials = attr(`${_data}fetch-credentials`) || 'omit';
+  const website = config('website-id');
+  const hostUrl = config('host-url');
+  const beforeSend = config('before-send');
+  const tag = config('tag') || undefined;
+  const autoTrack = config('auto-track') !== _false;
+  const dnt = config('do-not-track') === _true;
+  const excludeSearch = config('exclude-search') === _true;
+  const excludeHash = config('exclude-hash') === _true;
+  const domain = config('domains') || '';
+  const credentials = config('fetch-credentials') || 'omit';
+  const perf = config('performance') === _true;
 
   const domains = domain.split(',').map(n => n.trim());
   const host =
@@ -74,6 +82,10 @@
 
   const handlePush = (_state, _title, url) => {
     if (!url) return;
+
+    if (typeof flushPerformance === 'function') {
+      flushPerformance();
+    }
 
     currentRef = currentUrl;
     currentUrl = normalize(new URL(url, location.href).toString());
@@ -188,6 +200,7 @@
       track();
       handlePathChanges();
       handleClicks();
+      if (perf) initPerformance();
     }
   };
 
@@ -213,12 +226,141 @@
     );
   };
 
+  /* Performance */
+
+  const initPerformance = () => {
+    const metrics = {};
+    let sent = false;
+    let timeoutId;
+    let isInitialLoad = true;
+
+    const observe = (type, callback) => {
+      try {
+        const observer = new PerformanceObserver(list => {
+          list.getEntries().forEach(callback);
+        });
+        observer.observe({ type, buffered: true });
+      } catch {
+        /* not supported */
+      }
+    };
+
+    // TTFB
+    observe('navigation', entry => {
+      metrics.ttfb = Math.max(entry.responseStart - entry.startTime, 0);
+    });
+
+    // FCP
+    observe('paint', entry => {
+      if (entry.name === 'first-contentful-paint') {
+        metrics.fcp = entry.startTime;
+      }
+    });
+
+    // LCP
+    observe('largest-contentful-paint', entry => {
+      metrics.lcp = entry.startTime;
+    });
+
+    // CLS
+    let clsValue = 0;
+    observe('layout-shift', entry => {
+      if (!entry.hadRecentInput) {
+        clsValue += entry.value;
+        metrics.cls = clsValue;
+      }
+    });
+
+    // INP
+    let inpValue = 0;
+    try {
+      const observer = new PerformanceObserver(list => {
+        list.getEntries().forEach(entry => {
+          if (entry.duration > inpValue) {
+            inpValue = entry.duration;
+            metrics.inp = inpValue;
+          }
+        });
+      });
+      observer.observe({ type: 'event', buffered: true, durationThreshold: 16 });
+    } catch {
+      /* not supported */
+    }
+
+    const getEntriesByType = type => {
+      try {
+        return window.performance?.getEntriesByType?.(type) || [];
+      } catch {
+        return [];
+      }
+    };
+
+    const applyFallbackMetrics = () => {
+      if (!isInitialLoad) return;
+
+      if (metrics.ttfb === undefined) {
+        const navigation = getEntriesByType('navigation')?.[0];
+        if (navigation) {
+          metrics.ttfb = Math.max(navigation.responseStart - navigation.startTime, 0);
+        }
+      }
+
+      if (metrics.fcp === undefined) {
+        const fcpEntry = getEntriesByType('paint')?.find(
+          entry => entry.name === 'first-contentful-paint',
+        );
+        if (fcpEntry) {
+          metrics.fcp = fcpEntry.startTime;
+        }
+      }
+
+      if (metrics.lcp === undefined) {
+        const lcpEntries = getEntriesByType('largest-contentful-paint');
+        const lcpEntry = lcpEntries?.[lcpEntries.length - 1];
+        if (lcpEntry) {
+          metrics.lcp = lcpEntry.startTime;
+        }
+      }
+    };
+
+    const sendPerformance = () => {
+      if (sent) return;
+
+      applyFallbackMetrics();
+      if (!Object.keys(metrics).length) return;
+
+      sent = true;
+      if (timeoutId) clearTimeout(timeoutId);
+      send({ ...getPayload(), ...metrics }, 'performance');
+    };
+
+    flushPerformance = () => {
+      sendPerformance();
+      isInitialLoad = false;
+      Object.keys(metrics).forEach(k => {
+        delete metrics[k];
+      });
+      clsValue = 0;
+      inpValue = 0;
+      sent = false;
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(sendPerformance, 10000);
+    };
+    timeoutId = setTimeout(sendPerformance, 10000);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') sendPerformance();
+    });
+    window.addEventListener('pagehide', sendPerformance);
+  };
+
   /* Start */
 
   if (!window.umami) {
     window.umami = {
       track,
       identify,
+      getSession: () => ({ cache, website }),
     };
   }
 
@@ -229,6 +371,7 @@
   let disabled = false;
   let cache;
   let identity;
+  let flushPerformance;
 
   if (autoTrack && !trackingDisabled()) {
     if (document.readyState === 'complete') {
