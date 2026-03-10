@@ -1,5 +1,3 @@
 User-agent: *
 Allow: /q/
-
-User-agent: *
 Disallow: /
