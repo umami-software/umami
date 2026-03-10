@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
+import { getBaseUrl } from '@/lib/get-base-url';
 import { Providers } from './Providers';
 import '@umami/react-zen/styles.full.css';
 import './global.css';
