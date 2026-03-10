@@ -20,6 +20,7 @@ import {
   type BoardEntityType,
   type BoardType,
   getComponentEntity,
+  isBoardComponentSupported,
   isOpenBoardType,
 } from '@/lib/boards';
 import {
@@ -64,6 +65,10 @@ export function BoardComponentSelect({
     () => CATEGORIES.flatMap(category => getComponentsByCategory(category.key)),
     [],
   );
+  const activeEntityType = isOpenBoardType(boardType) ? selectedEntityType : boardEntityType;
+  const isSelectedDefSupported = selectedDef
+    ? isBoardComponentSupported(selectedDef.type, activeEntityType)
+    : false;
 
   const getDefaultConfigValues = (def: ComponentDefinition, config?: BoardComponentConfig) => {
     const defaults: Record<string, any> = {};
@@ -90,7 +95,11 @@ export function BoardComponentSelect({
 
     const definition = allDefinitions.find(def => def.type === initialConfig.type);
 
-    if (!definition) {
+    if (!definition || !isBoardComponentSupported(definition.type, activeEntityType)) {
+      setSelectedDef(null);
+      setConfigValues({});
+      setTitle('');
+      setDescription('');
       return;
     }
 
@@ -105,11 +114,23 @@ export function BoardComponentSelect({
   }, [
     initialConfig,
     allDefinitions,
+    activeEntityType,
     boardEntityId,
     boardEntityType,
     initialEntity.entityId,
     initialEntity.entityType,
   ]);
+
+  useEffect(() => {
+    if (!selectedDef || isSelectedDefSupported) {
+      return;
+    }
+
+    setSelectedDef(null);
+    setConfigValues({});
+    setTitle('');
+    setDescription('');
+  }, [isSelectedDefSupported, selectedDef]);
 
   const handleSelectComponent = (def: ComponentDefinition) => {
     setSelectedDef(def);
@@ -141,7 +162,7 @@ export function BoardComponentSelect({
   };
 
   const handleAdd = () => {
-    if (!selectedDef || (needsWebsite && !resolvedEntityId)) return;
+    if (!selectedDef || !isSelectedDefSupported || (needsWebsite && !resolvedEntityId)) return;
 
     const props: Record<string, any> = {};
 
@@ -182,14 +203,20 @@ export function BoardComponentSelect({
       }
     : null;
 
-  const canSave = !!selectedDef && (!needsWebsite || !!resolvedEntityId);
+  const canSave = !!selectedDef && isSelectedDefSupported && (!needsWebsite || !!resolvedEntityId);
 
   return (
     <Column gap="4">
       <Row gap="4" style={{ height: 600 }}>
         <Column gap="1" style={{ width: 280, flexShrink: 0, overflowY: 'auto' }}>
           {CATEGORIES.map(category => {
-            const components = getComponentsByCategory(category.key);
+            const components = getComponentsByCategory(category.key).filter(def =>
+              isBoardComponentSupported(def.type, activeEntityType),
+            );
+
+            if (!components.length) {
+              return null;
+            }
 
             return (
               <Column key={category.key} gap="1" marginBottom="2">
