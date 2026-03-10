@@ -1,7 +1,7 @@
 import { useApi } from '../useApi';
 import { useModified } from '../useModified';
 
-export function usePixelQuery(pixelId: string) {
+export function usePixelQuery(pixelId?: string) {
   const { get, useQuery } = useApi();
   const { modified } = useModified(`pixel:${pixelId}`);
 

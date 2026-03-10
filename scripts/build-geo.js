@@ -3,8 +3,13 @@ import 'dotenv/config';
 import fs from 'node:fs';
 import path from 'node:path';
 import https from 'https';
-import tar from 'tar';
+import { list } from 'tar';
 import zlib from 'zlib';
+
+if (process.env.SKIP_BUILD_GEO) {
+  console.log('SKIP_BUILD_GEO is set. Skipping geo setup.');
+  process.exit(0);
+}
 
 if (process.env.VERCEL && !process.env.BUILD_GEO) {
   console.log('Vercel environment detected. Skipping geo setup.');
@@ -40,7 +45,7 @@ const isDirectMmdb = url.endsWith('.mmdb');
 const downloadCompressed = url =>
   new Promise(resolve => {
     https.get(url, res => {
-      resolve(res.pipe(zlib.createGunzip({})).pipe(tar.t()));
+      resolve(res.pipe(zlib.createGunzip({})).pipe(list()));
     });
   });
 

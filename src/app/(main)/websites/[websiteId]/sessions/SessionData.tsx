@@ -17,8 +17,8 @@ export function SessionData({ websiteId, sessionId }: { websiteId: string; sessi
               <Label>{dataKey}</Label>
               <Row alignItems="center" gap>
                 <Text>{stringValue}</Text>
-                <Box paddingY="1" paddingX="2" border borderRadius borderColor="5">
-                  <Text color="muted" size="1">
+                <Box paddingY="1" paddingX="2" border borderRadius borderColor="muted">
+                  <Text color="muted" size="xs">
                     {DATA_TYPES[dataType]}
                   </Text>
                 </Box>

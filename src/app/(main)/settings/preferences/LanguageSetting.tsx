@@ -6,7 +6,7 @@ import { languages } from '@/lib/lang';
 
 export function LanguageSetting() {
   const [search, setSearch] = useState('');
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { locale, saveLocale } = useLocale();
   const items = search
     ? Object.keys(languages).filter(n => {
@@ -34,6 +34,7 @@ export function LanguageSetting() {
         onSearch={setSearch}
         onOpenChange={handleOpen}
         listProps={{ style: { maxHeight: 300 } }}
+        style={{ minWidth: '250px' }}
       >
         {items.map(item => (
           <ListItem key={item} id={item}>
@@ -42,7 +43,7 @@ export function LanguageSetting() {
         ))}
         {!items.length && <ListItem></ListItem>}
       </Select>
-      <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
+      <Button onPress={handleReset}>{t(labels.reset)}</Button>
     </Row>
   );
 }
