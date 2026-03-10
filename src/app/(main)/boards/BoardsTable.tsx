@@ -25,8 +25,8 @@ export function BoardsTable(props: DataTableProps) {
         {({ id, name }: any) => {
           return (
             <Row>
-              <BoardEditButton boardId={id} />
               <BoardDesignButton boardId={id} />
+              <BoardEditButton boardId={id} />
               <BoardDeleteButton boardId={id} name={name} />
             </Row>
           );

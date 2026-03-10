@@ -80,7 +80,13 @@ export function BoardEditColumn({
       onMouseLeave={() => setShowActions(false)}
     >
       {canEdit && canRemoveAction && showActions && (
-        <Box position="absolute" top="12px" right="12px" zIndex={100}>
+        <Box
+          position="absolute"
+          top="50%"
+          left="50%"
+          zIndex={100}
+          style={{ transform: 'translate(-50%, -50%)' }}
+        >
           <Row gap="1" padding="2" borderRadius backgroundColor="surface-sunken">
             {hasComponent && (
               <TooltipTrigger delay={0}>

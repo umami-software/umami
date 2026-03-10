@@ -9,7 +9,6 @@ import {
   TextField,
 } from '@umami/react-zen';
 import { useEffect, useMemo, useState } from 'react';
-import { Panel } from '@/components/common/Panel';
 import { useMessages } from '@/components/hooks';
 import { LinkSelect } from '@/components/input/LinkSelect';
 import { PixelSelect } from '@/components/input/PixelSelect';
@@ -199,8 +198,8 @@ export function BoardComponentSelect({
 
   return (
     <Column gap="4">
-      <Row gap="4" style={{ height: 600 }}>
-        <Column gap="3" style={{ width: 320, flexShrink: 0, overflowY: 'auto' }}>
+      <Row gap="6" style={{ height: 600 }}>
+        <Column gap="3" style={{ width: 280, flexShrink: 0, overflowY: 'auto' }}>
           <Text weight="bold">{t(labels.properties)}</Text>
 
           {needsWebsite && isOpenType && (
@@ -313,10 +312,11 @@ export function BoardComponentSelect({
           )}
         </Column>
 
-        <Column gap="3" style={{ width: 280, flexShrink: 0, minWidth: 0 }}>
-          <Panel maxHeight="100%">
+        <Column gap="3" height="100%" style={{ width: 280, flexShrink: 0, minWidth: 0 }}>
+          <Text weight="bold">Components</Text>
+          <Column border="left" paddingLeft="4" height="100%" style={{ minHeight: 0 }}>
             {hasSelectedEntity ? (
-              <Column gap="1" height="100%" style={{ overflowY: 'auto' }}>
+              <Column gap="1" height="100%" style={{ overflowY: 'auto', minHeight: 0 }}>
                 {availableDefinitions.map(def => {
                   const Icon = def.icon;
 
@@ -324,7 +324,7 @@ export function BoardComponentSelect({
                     <Focusable key={def.type}>
                       <Row
                         gap="3"
-                        alignItems="center"
+                        alignItems="flex-start"
                         paddingX="3"
                         paddingY="2"
                         borderRadius
@@ -357,11 +357,12 @@ export function BoardComponentSelect({
                 <Text color="muted">{t(messages.selectBoardEntityFirst)}</Text>
               </Column>
             )}
-          </Panel>
+          </Column>
         </Column>
 
-        <Column gap="3" flexGrow={1} style={{ minWidth: 0 }}>
-          <Panel maxHeight="100%">
+        <Column gap="3" flexGrow={1} height="100%" style={{ minWidth: 0 }}>
+          <Text weight="bold">Preview</Text>
+          <Column border="left" paddingLeft="4" height="100%" style={{ minWidth: 0 }}>
             {hasSelectedEntity && previewConfig && (!needsWebsite || resolvedEntityId) ? (
               <BoardComponentRenderer config={previewConfig} websiteId={resolvedEntityId} />
             ) : (
@@ -375,7 +376,7 @@ export function BoardComponentSelect({
                 </Text>
               </Column>
             )}
-          </Panel>
+          </Column>
         </Column>
       </Row>
 

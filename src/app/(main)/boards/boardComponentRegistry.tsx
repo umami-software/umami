@@ -3,11 +3,12 @@ import { TextBlock } from '@/app/(main)/boards/TextBlock';
 import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
 import { WebsiteMetricsBar } from '@/app/(main)/websites/[websiteId]/WebsiteMetricsBar';
 import {
-  Activity,
   Calendar,
+  ChartColumnBig,
   ChartPie,
   FileText,
   Globe,
+  PanelTop,
   Sheet,
 } from '@/components/icons';
 import { EventsChart } from '@/components/metrics/EventsChart';
@@ -75,7 +76,7 @@ const componentDefinitions: ComponentDefinition[] = [
     name: 'Metrics bar',
     description: 'Key metrics: views, visitors, bounces, time on site',
     category: 'overview',
-    icon: ChartPie,
+    icon: PanelTop,
     component: WebsiteMetricsBar,
   },
   {
@@ -83,7 +84,7 @@ const componentDefinitions: ComponentDefinition[] = [
     name: 'Website chart',
     description: 'Page views and visitors over time',
     category: 'overview',
-    icon: Activity,
+    icon: ChartColumnBig,
     component: WebsiteChart,
   },
 
