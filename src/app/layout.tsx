@@ -43,9 +43,14 @@ export default function ({ children }) {
   );
 }
 
-export const metadata: Metadata = {
-  title: {
-    template: '%s | Umami',
-    default: 'Umami',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const headerStore = await headers();
+
+  return {
+    metadataBase: getBaseUrl(headerStore),
+    title: {
+      template: '%s | Umami',
+      default: 'Umami',
+    },
+  };
+}
