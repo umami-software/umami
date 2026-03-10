@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "Usuari eliminat.",
   "message.viewed-page": "Pàgina vista",
-  "message.visitor-log": "Visitant de {country} usant {browser} a {os} {device}"
+  "message.visitor-log": "Visitant de {country} usant {browser} a {os} {device}",
+  "message.visitors-tooltip": "Nombre de visitants únics del teu lloc web",
+  "message.visits-tooltip": "Nombre total de sessions al teu lloc web",
+  "message.page-views-tooltip": "Nombre total de pàgines vistes",
+  "message.bounce-rate-tooltip": "Percentatge de visites que abandonen el lloc després de veure només una pàgina",
+  "message.visit-duration-tooltip": "Temps mitjà passat al teu lloc web per visita"
 }

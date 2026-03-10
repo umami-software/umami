@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "Gebruiker verwijderd",
   "message.viewed-page": "Bekeken pagina",
-  "message.visitor-log": "Bezoeker uit {country} met {browser} op een {os} {device}"
+  "message.visitor-log": "Bezoeker uit {country} met {browser} op een {os} {device}",
+  "message.visitors-tooltip": "Aantal unieke bezoekers van uw website",
+  "message.visits-tooltip": "Totaal aantal sessies op uw website",
+  "message.page-views-tooltip": "Totaal aantal paginaweergaven",
+  "message.bounce-rate-tooltip": "Percentage bezoeken dat vertrekt na slechts één pagina te hebben bekeken",
+  "message.visit-duration-tooltip": "Gemiddelde tijd die op uw website wordt doorgebracht per bezoek"
 }

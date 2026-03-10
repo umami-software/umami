@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "Потребителят е изтрит.",
   "message.viewed-page": "Страницата е видяна",
-  "message.visitor-log": "Посетител от {country}, използващ {browser} на {os} {device}"
+  "message.visitor-log": "Посетител от {country}, използващ {browser} на {os} {device}",
+  "message.visitors-tooltip": "Брой уникални посетители на вашия уебсайт",
+  "message.visits-tooltip": "Общ брой сесии на вашия уебсайт",
+  "message.page-views-tooltip": "Общ брой прегледи на страници",
+  "message.bounce-rate-tooltip": "Процент на посещенията, които приключват след преглед само на една страница",
+  "message.visit-duration-tooltip": "Средно време, прекарано на вашия уебсайт за едно посещение"
 }

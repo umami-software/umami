@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "ユーザーが削除されました。",
   "message.viewed-page": "閲覧されたページ",
-  "message.visitor-log": "{os}({device})で{browser}を使用している{country}からの訪問者"
+  "message.visitor-log": "{os}({device})で{browser}を使用している{country}からの訪問者",
+  "message.visitors-tooltip": "ウェブサイトのユニーク訪問者数",
+  "message.visits-tooltip": "ウェブサイトの総セッション数",
+  "message.page-views-tooltip": "総ページ閲覧数",
+  "message.bounce-rate-tooltip": "1ページだけ見て離脱した訪問の割合",
+  "message.visit-duration-tooltip": "訪問ごとの平均滞在時間"
 }

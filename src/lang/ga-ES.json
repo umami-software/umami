@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "Usuario eliminado.",
   "message.viewed-page": "Páxina vista",
-  "message.visitor-log": "Visitante desde {country} usando {browser} en {os} {device}"
+  "message.visitor-log": "Visitante desde {country} usando {browser} en {os} {device}",
+  "message.visitors-tooltip": "Líon na gcuairteoirí uathúla ar do shuíomh Gréasáin",
+  "message.visits-tooltip": "Líon iomlán na seisiúin ar do shuíomh Gréasáin",
+  "message.page-views-tooltip": "Líon iomlán na leathanach féachana",
+  "message.bounce-rate-tooltip": "Céatadán na gcuairteanna a fhágann tar éis leathanach amháin a fheiceáil",
+  "message.visit-duration-tooltip": "Meán-am a chaitear ar do shuíomh Gréasáin in aghaidh gach cuairte"
 }

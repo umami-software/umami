@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
-  "message.visitor-log": "Vitjandi frá {country} brúkar {browser} á {os} {device}"
+  "message.visitor-log": "Vitjandi frá {country} brúkar {browser} á {os} {device}",
+  "message.visitors-tooltip": "Fjöldi einstøku vitjandi á tínum heimasíðu",
+  "message.visits-tooltip": "Samanlagt talið av fundum á tínum heimasíðu",
+  "message.page-views-tooltip": "Samanlagt talið av síðuviðurskoðanum",
+  "message.bounce-rate-tooltip": "Prósent av vitjanum, sum fara frá síðuni eftir at hava sæð bert eina síðu",
+  "message.visit-duration-tooltip": "Meðan tíð sum verður brúkt á tínum heimasíðu fyri hvønn vitjan"
 }

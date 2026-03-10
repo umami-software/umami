@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "Korisnik obrisan.",
   "message.viewed-page": "Pogledana stranica",
-  "message.visitor-log": "Posjetitelj iz {country} koristi {browser} na {os} {device}"
+  "message.visitor-log": "Posjetitelj iz {country} koristi {browser} na {os} {device}",
+  "message.visitors-tooltip": "Broj jedinstvenih posjetilaca vaše web stranice",
+  "message.visits-tooltip": "Ukupan broj sesija na vašoj web stranici",
+  "message.page-views-tooltip": "Ukupan broj pregleda stranica",
+  "message.bounce-rate-tooltip": "Procenat posjeta koje se završe nakon pregleda samo jedne stranice",
+  "message.visit-duration-tooltip": "Prosječno vrijeme provedeno na vašoj web stranici po posjeti"
 }

@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "Пользователь удален.",
   "message.viewed-page": "Просмотренная страница",
-  "message.visitor-log": "Посетитель из {country} используя {browser} на {os} {device}"
+  "message.visitor-log": "Посетитель из {country} используя {browser} на {os} {device}",
+  "message.visitors-tooltip": "Количество уникальных посетителей вашего сайта",
+  "message.visits-tooltip": "Общее количество сессий на вашем сайте",
+  "message.page-views-tooltip": "Общее количество просмотров страниц",
+  "message.bounce-rate-tooltip": "Процент посещений, которые покидают сайт после просмотра только одной страницы",
+  "message.visit-duration-tooltip": "Среднее время, проведённое на вашем сайте за одно посещение"
 }

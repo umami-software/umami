@@ -335,5 +335,10 @@
   "message.unauthorized": "Unauthorized",
   "message.user-deleted": "Хэрэглэгч устсан.",
   "message.viewed-page": "Үзсэн хуудас",
-  "message.visitor-log": "{country} улсаас {os} {device} дээр {browser} хөтөч ашиглан орсон"
+  "message.visitor-log": "{country} улсаас {os} {device} дээр {browser} хөтөч ашиглан орсон",
+  "message.visitors-tooltip": "Таны вэбсайтын өвөрмөц зочдын тоо",
+  "message.visits-tooltip": "Таны вэбсайтын нийт сессийн тоо",
+  "message.page-views-tooltip": "Нийт хуудасны үзэлт",
+  "message.bounce-rate-tooltip": "Зочид зөвхөн нэг хуудсыг үзээд гарсан визитийн хувь",
+  "message.visit-duration-tooltip": "Нэг зочлолтод таны вэбсайт дээр өнгөрүүлсэн дундаж хугацаа"
 }

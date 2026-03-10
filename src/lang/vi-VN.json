@@ -276,5 +276,10 @@
   "message.user-deleted": "Người dùng đã bị xóa.",
   "message.viewed-page": "Đã xem trang",
   "message.visitor-log": "Khách từ {country} đang sử dụng {browser} trên {os} {device}",
-  "message.visitors-dropped-off": "Khách truy cập đã rời đi"
+  "message.visitors-dropped-off": "Khách truy cập đã rời đi",
+  "message.visitors-tooltip": "Số lượng khách truy cập duy nhất trên trang web của bạn",
+  "message.visits-tooltip": "Tổng số phiên trên trang web của bạn",
+  "message.page-views-tooltip": "Tổng số lượt xem trang",
+  "message.bounce-rate-tooltip": "Tỷ lệ lượt truy cập rời đi sau khi chỉ xem một trang",
+  "message.visit-duration-tooltip": "Thời gian trung bình dành trên trang web của bạn mỗi lượt truy cập"
 }
