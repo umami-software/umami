@@ -4,10 +4,12 @@ import { CopyButton } from '@/components/common/CopyButton';
 import { DateDistance } from '@/components/common/DateDistance';
 import { ExternalLink } from '@/components/common/ExternalLink';
 import { useConfig, useMessages, useMobile } from '@/components/hooks';
+import { SimpleShareEditButton } from './SimpleShareEditButton';
 
 export function SimpleSharesTable(props: DataTableProps) {
   const { t, labels } = useMessages();
-  const { cloudMode } = useConfig();
+  const config = useConfig();
+  const cloudMode = config?.cloudMode;
   const { isMobile } = useMobile();
 
   const getUrl = (slug: string) => {
@@ -40,9 +42,10 @@ export function SimpleSharesTable(props: DataTableProps) {
       <DataColumn id="created" label={t(labels.created)}>
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
-      <DataColumn id="action" align="end" width="60px">
+      <DataColumn id="action" align="end" width="100px">
         {({ id, slug }: any) => (
           <Row>
+            <SimpleShareEditButton shareId={id} />
             <ShareDeleteButton shareId={id} slug={slug} />
           </Row>
         )}

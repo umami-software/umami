@@ -40,7 +40,8 @@ export function LinkEditForm({
       teamId,
     },
   );
-  const { linksUrl } = useConfig();
+  const config = useConfig();
+  const linksUrl = config?.linksUrl;
   const hostUrl = linksUrl || LINKS_URL;
   const { data, isLoading } = useLinkQuery(linkId);
   const [defaultSlug] = useState(generateId());

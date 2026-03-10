@@ -2,29 +2,29 @@ import { Button, Column, Heading, Row, Text } from '@umami/react-zen';
 import { useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { IconLabel } from '@/components/common/IconLabel';
-import { useMessages, usePixelSharesQuery } from '@/components/hooks';
+import { useLinkSharesQuery, useMessages } from '@/components/hooks';
 import { Plus } from '@/components/icons';
 import { SimpleShareCreateForm } from '@/components/share/SimpleShareCreateForm';
 import { SimpleSharesTable } from '@/components/share/SimpleSharesTable';
 
-export function PixelShareDialog({ pixelId }: { pixelId: string }) {
-  const { data, error, isLoading } = usePixelSharesQuery({ pixelId });
+export function LinkShareForm({ linkId }: { linkId: string }) {
+  const { data, error, isLoading } = useLinkSharesQuery({ linkId });
   const shares = data?.data || [];
   const hasShares = shares.length > 0;
 
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
-      <PixelShareDialogContent pixelId={pixelId} hasShares={hasShares} shares={shares} />
+      <LinkShareFormContent linkId={linkId} hasShares={hasShares} shares={shares} />
     </LoadingPanel>
   );
 }
 
-function PixelShareDialogContent({
-  pixelId,
+function LinkShareFormContent({
+  linkId,
   hasShares,
   shares,
 }: {
-  pixelId: string;
+  linkId: string;
   hasShares: boolean;
   shares: any[];
 }) {
@@ -44,7 +44,7 @@ function PixelShareDialogContent({
       </Row>
       {showCreateForm && (
         <SimpleShareCreateForm
-          createPath={`/pixels/${pixelId}/shares`}
+          createPath={`/links/${linkId}/shares`}
           onSave={() => setIsCreating(false)}
           onCancel={hasShares ? () => setIsCreating(false) : undefined}
         />
