@@ -24,10 +24,9 @@ import {
   isOpenBoardType,
 } from '@/lib/boards';
 import {
-  CATEGORIES,
   type ComponentDefinition,
   type ConfigField,
-  getComponentsByCategory,
+  getComponentDefinitions,
 } from '../boardComponentRegistry';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 
@@ -62,7 +61,7 @@ export function BoardComponentSelect({
   const [description, setDescription] = useState('');
 
   const allDefinitions = useMemo(
-    () => CATEGORIES.flatMap(category => getComponentsByCategory(category.key)),
+    () => getComponentDefinitions().toSorted((a, b) => a.name.localeCompare(b.name)),
     [],
   );
   const activeEntityType = isOpenBoardType(boardType) ? selectedEntityType : boardEntityType;
@@ -189,6 +188,14 @@ export function BoardComponentSelect({
     : null;
 
   const canSave = !!selectedDef && isSelectedDefSupported && (!needsWebsite || !!resolvedEntityId);
+  const availableDefinitions = useMemo(
+    () =>
+      allDefinitions.filter(
+        def =>
+          isBoardComponentSupported(def.type, activeEntityType) || def.type === selectedDef?.type,
+      ),
+    [activeEntityType, allDefinitions, selectedDef?.type],
+  );
 
   return (
     <Column gap="4">
@@ -310,48 +317,38 @@ export function BoardComponentSelect({
           <Panel maxHeight="100%">
             {hasSelectedEntity ? (
               <Column gap="1" height="100%" style={{ overflowY: 'auto' }}>
-                {CATEGORIES.map(category => {
-                  const components = getComponentsByCategory(category.key).filter(def =>
-                    isBoardComponentSupported(def.type, activeEntityType) ||
-                    def.type === selectedDef?.type,
-                  );
-
-                  if (!components.length) {
-                    return null;
-                  }
+                {availableDefinitions.map(def => {
+                  const Icon = def.icon;
 
                   return (
-                    <Column key={category.key} gap="1" marginBottom="2">
-                      <Text weight="bold">{category.name}</Text>
-                      {components.map(def => (
-                        <Focusable key={def.type}>
-                          <Row
-                            alignItems="center"
-                            paddingX="3"
-                            paddingY="2"
-                            borderRadius
-                            backgroundColor={
-                              selectedDef?.type === def.type ? 'surface-sunken' : undefined
-                            }
-                            hover={{ backgroundColor: 'surface-sunken' }}
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => handleSelectComponent(def)}
+                    <Focusable key={def.type}>
+                      <Row
+                        gap="3"
+                        alignItems="center"
+                        paddingX="3"
+                        paddingY="2"
+                        borderRadius
+                        backgroundColor={
+                          selectedDef?.type === def.type ? 'surface-sunken' : undefined
+                        }
+                        hover={{ backgroundColor: 'surface-sunken' }}
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => handleSelectComponent(def)}
+                      >
+                        <Icon size={16} />
+                        <Column gap="1">
+                          <Text
+                            size="sm"
+                            weight={selectedDef?.type === def.type ? 'bold' : undefined}
                           >
-                            <Column>
-                              <Text
-                                size="sm"
-                                weight={selectedDef?.type === def.type ? 'bold' : undefined}
-                              >
-                                {def.name}
-                              </Text>
-                              <Text size="xs" color="muted">
-                                {def.description}
-                              </Text>
-                            </Column>
-                          </Row>
-                        </Focusable>
-                      ))}
-                    </Column>
+                            {def.name}
+                          </Text>
+                          <Text size="xs" color="muted">
+                            {def.description}
+                          </Text>
+                        </Column>
+                      </Row>
+                    </Focusable>
                   );
                 })}
               </Column>

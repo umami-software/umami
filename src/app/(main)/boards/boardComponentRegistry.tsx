@@ -2,6 +2,14 @@ import type { ComponentType } from 'react';
 import { TextBlock } from '@/app/(main)/boards/TextBlock';
 import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
 import { WebsiteMetricsBar } from '@/app/(main)/websites/[websiteId]/WebsiteMetricsBar';
+import {
+  Activity,
+  Calendar,
+  ChartPie,
+  FileText,
+  Globe,
+  Sheet,
+} from '@/components/icons';
 import { EventsChart } from '@/components/metrics/EventsChart';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { WeeklyTraffic } from '@/components/metrics/WeeklyTraffic';
@@ -20,6 +28,7 @@ export interface ComponentDefinition {
   name: string;
   description: string;
   category: string;
+  icon: ComponentType<any>;
   component: ComponentType<any>;
   defaultProps?: Record<string, any>;
   configFields?: ConfigField[];
@@ -66,6 +75,7 @@ const componentDefinitions: ComponentDefinition[] = [
     name: 'Metrics bar',
     description: 'Key metrics: views, visitors, bounces, time on site',
     category: 'overview',
+    icon: ChartPie,
     component: WebsiteMetricsBar,
   },
   {
@@ -73,6 +83,7 @@ const componentDefinitions: ComponentDefinition[] = [
     name: 'Website chart',
     description: 'Page views and visitors over time',
     category: 'overview',
+    icon: Activity,
     component: WebsiteChart,
   },
 
@@ -82,6 +93,7 @@ const componentDefinitions: ComponentDefinition[] = [
     name: 'Metrics table',
     description: 'Table of metrics by dimension',
     category: 'tables',
+    icon: Sheet,
     component: MetricsTable,
     defaultProps: { type: 'path', limit: 10 },
     configFields: [
@@ -108,6 +120,7 @@ const componentDefinitions: ComponentDefinition[] = [
     name: 'World map',
     description: 'Geographic distribution of visitors',
     category: 'visualization',
+    icon: Globe,
     component: WorldMap,
   },
   {
@@ -115,6 +128,7 @@ const componentDefinitions: ComponentDefinition[] = [
     name: 'Weekly traffic',
     description: 'Traffic heatmap by day and hour',
     category: 'visualization',
+    icon: Calendar,
     component: WeeklyTraffic,
   },
   {
@@ -122,6 +136,7 @@ const componentDefinitions: ComponentDefinition[] = [
     name: 'Events chart',
     description: 'Custom events over time',
     category: 'visualization',
+    icon: ChartPie,
     component: EventsChart,
   },
 
@@ -131,6 +146,7 @@ const componentDefinitions: ComponentDefinition[] = [
     name: 'Text',
     description: 'Free-form text content',
     category: 'content',
+    icon: FileText,
     component: TextBlock,
     requiresWebsite: false,
     defaultProps: { text: '' },
@@ -146,6 +162,10 @@ const componentDefinitions: ComponentDefinition[] = [
 ];
 
 const definitionMap = new Map(componentDefinitions.map(def => [def.type, def]));
+
+export function getComponentDefinitions(): ComponentDefinition[] {
+  return componentDefinitions;
+}
 
 export function getComponentDefinition(type: string): ComponentDefinition | undefined {
   return definitionMap.get(type);
