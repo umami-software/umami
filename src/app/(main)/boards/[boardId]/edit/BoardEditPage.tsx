@@ -20,7 +20,8 @@ export function BoardEditPage({ boardId }: { boardId: string }) {
       <Column
         margin="2"
         width="100%"
-        style={{ minWidth: 'min(760px, 100%)', marginInline: 'auto' }}
+        maxWidth="800px"
+        style={{ marginInline: 'auto' }}
       >
         <>
           <Column marginTop="6">

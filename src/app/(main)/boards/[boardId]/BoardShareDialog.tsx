@@ -30,13 +30,13 @@ function BoardShareDialogContent({
 }) {
   const { t, labels, messages } = useMessages();
   const [isCreating, setIsCreating] = useState(false);
-  const showCreateForm = !hasShares || isCreating;
+  const showCreateForm = isCreating;
 
   return (
     <Column gap="4">
       <Row justifyContent="space-between" alignItems="center">
         <Heading>{t(labels.share)}</Heading>
-        {hasShares && !isCreating && (
+        {!isCreating && (
           <Button variant="primary" onPress={() => setIsCreating(true)}>
             <IconLabel icon={<Plus size={16} />} label={t(labels.add)} />
           </Button>
@@ -46,17 +46,18 @@ function BoardShareDialogContent({
         <BoardShareCreateForm
           boardId={boardId}
           onSave={() => setIsCreating(false)}
-          onCancel={hasShares ? () => setIsCreating(false) : undefined}
+          onCancel={() => setIsCreating(false)}
         />
       )}
-      {hasShares ? (
-        <>
-          <Text>{t(messages.shareUrl)}</Text>
-          <BoardSharesTable data={shares} />
-        </>
-      ) : (
-        !showCreateForm && <Text color="muted">{t(messages.noDataAvailable)}</Text>
+      {hasShares && (
+        <Text>{t(messages.shareUrl)}</Text>
       )}
+      {!showCreateForm &&
+        (hasShares ? (
+          <BoardSharesTable data={shares} />
+        ) : (
+          <Text color="muted">{t(messages.noDataAvailable)}</Text>
+        ))}
     </Column>
   );
 }
