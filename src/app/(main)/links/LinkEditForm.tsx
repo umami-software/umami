@@ -41,6 +41,7 @@ export function LinkEditForm({
     },
   );
   const config = useConfig();
+  const cloudMode = config?.cloudMode;
   const linksUrl = config?.linksUrl;
   const hostUrl = linksUrl || LINKS_URL;
   const { data, isLoading } = useLinkQuery(linkId);
@@ -92,25 +93,37 @@ export function LinkEditForm({
               <TextField placeholder="https://example.com" autoComplete="off" />
             </FormField>
 
-            <Grid columns="1fr auto" alignItems="end" gap>
+            {cloudMode ? (
               <FormField
                 name="slug"
-                label={t(labels.slug)}
                 rules={{
                   required: t(labels.required),
                 }}
+                style={{ display: 'none' }}
               >
-                <TextField autoComplete="off" />
+                <input type="hidden" />
               </FormField>
-              <Button
-                variant="quiet"
-                onPress={() => setValue('slug', generateId(), { shouldDirty: true })}
-              >
-                <Icon>
-                  <RefreshCw />
-                </Icon>
-              </Button>
-            </Grid>
+            ) : (
+              <Grid columns="1fr auto" alignItems="end" gap>
+                <FormField
+                  name="slug"
+                  label={t(labels.slug)}
+                  rules={{
+                    required: t(labels.required),
+                  }}
+                >
+                  <TextField autoComplete="off" />
+                </FormField>
+                <Button
+                  variant="quiet"
+                  onPress={() => setValue('slug', generateId(), { shouldDirty: true })}
+                >
+                  <Icon>
+                    <RefreshCw />
+                  </Icon>
+                </Button>
+              </Grid>
+            )}
 
             <Column>
               <Label>{t(labels.link)}</Label>

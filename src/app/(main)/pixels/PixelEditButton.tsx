@@ -1,3 +1,4 @@
+import { Icon } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { useNavigation } from '@/components/hooks';
 import { useMessages } from '@/components/hooks';
@@ -8,8 +9,15 @@ export function PixelEditButton({ pixelId }: { pixelId: string }) {
   const { renderUrl } = useNavigation();
 
   return (
-    <LinkButton href={renderUrl(`/pixels/${pixelId}/edit`, false)} variant="quiet" aria-label={t(labels.edit)}>
-      <Edit />
+    <LinkButton
+      href={renderUrl(`/pixels/${pixelId}/edit`, false)}
+      title={t(labels.edit)}
+      aria-label={t(labels.edit)}
+      variant="quiet"
+    >
+      <Icon>
+        <Edit />
+      </Icon>
     </LinkButton>
   );
 }
