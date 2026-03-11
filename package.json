@@ -38,7 +38,6 @@
     "download-country-names": "node scripts/download-country-names.js",
     "download-language-names": "node scripts/download-language-names.js",
     "change-password": "node scripts/change-password.js",
-    "prepare": "node -e \"if (process.env.NODE_ENV !== 'production'){process.exit(1)} \" || husky install",
     "postbuild": "node scripts/postbuild.js",
     "test": "jest",
     "cypress-open": "cypress open cypress run",
@@ -47,11 +46,6 @@
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check --write"
-  },
-  "lint-staged": {
-    "**/*.{js,jsx,ts,tsx,json,css}": [
-      "biome check --write --no-errors-on-unmatched --files-ignore-unknown=true"
-    ]
   },
   "cacheDirectories": [
     ".next/cache"
@@ -141,9 +135,7 @@
     "cross-env": "^10.1.0",
     "cypress": "^13.6.6",
     "dotenv-cli": "^11.0.0",
-    "husky": "^9.1.7",
     "jest": "^29.7.0",
-    "lint-staged": "^16.2.6",
     "postcss": "^8.5.6",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^15.1.0",
