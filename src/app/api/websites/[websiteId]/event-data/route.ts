@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { filterParams } from '@/lib/schema';
+import { filterParams, pagingParams } from '@/lib/schema';
 import { canViewWebsite } from '@/permissions';
 import { getEventData } from '@/queries/sql/events/getEventData';
 
@@ -13,6 +13,7 @@ export async function GET(
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
     ...filterParams,
+    ...pagingParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -29,7 +30,7 @@ export async function GET(
 
   const filters = await getQueryFilters(query, websiteId);
 
-  const rows = await getEventData(websiteId, filters);
+  const { data: rows, count, page, pageSize } = await getEventData(websiteId, filters);
 
   const eventMap = new Map<
     string,
@@ -45,5 +46,5 @@ export async function GET(
     entry.eventProperties.push(props);
   }
 
-  return json([...eventMap.values()]);
+  return json({ data: [...eventMap.values()], count, page, pageSize });
 }
