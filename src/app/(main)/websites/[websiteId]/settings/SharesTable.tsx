@@ -36,9 +36,6 @@ export function SharesTable(props: DataTableProps) {
           );
         }}
       </DataColumn>
-      <DataColumn id="created" label={t(labels.created)}>
-        {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
-      </DataColumn>
       <DataColumn id="action" align="end" width="100px">
         {({ id, slug }: any) => {
           return (

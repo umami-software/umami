@@ -1,9 +1,8 @@
-import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
 import { ShareDeleteButton } from '@/app/(main)/websites/[websiteId]/settings/ShareDeleteButton';
 import { CopyButton } from '@/components/common/CopyButton';
-import { DateDistance } from '@/components/common/DateDistance';
 import { ExternalLink } from '@/components/common/ExternalLink';
 import { useConfig, useMessages, useMobile } from '@/components/hooks';
+import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
 import { SimpleShareEditButton } from './SimpleShareEditButton';
 
 export function SimpleSharesTable(props: DataTableProps) {
@@ -38,9 +37,6 @@ export function SimpleSharesTable(props: DataTableProps) {
             </Row>
           );
         }}
-      </DataColumn>
-      <DataColumn id="created" label={t(labels.created)}>
-        {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
       <DataColumn id="action" align="end" width="100px">
         {({ id, slug }: any) => (
