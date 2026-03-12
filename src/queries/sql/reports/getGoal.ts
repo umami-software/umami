@@ -9,8 +9,6 @@ export interface GoalParameters {
   endDate: Date;
   type: string;
   value: string;
-  operator?: string;
-  property?: string;
 }
 
 export async function getGoal(

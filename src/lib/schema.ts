@@ -165,14 +165,6 @@ export const goalReportSchema = z.object({
       endDate: z.coerce.date(),
       type: z.string(),
       value: z.string(),
-      operator: z.enum(['count', 'sum', 'average']).optional(),
-      property: z.string().optional(),
-    })
-    .refine(data => {
-      if (data.type === 'event' && data.property) {
-        return data.operator && data.property;
-      }
-      return true;
     }),
 });
 
