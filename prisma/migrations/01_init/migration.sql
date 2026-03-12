@@ -194,6 +194,3 @@ CREATE INDEX "team_website_team_id_idx" ON "team_website"("team_id");
 
 -- CreateIndex
 CREATE INDEX "team_website_website_id_idx" ON "team_website"("website_id");
-
--- AddSystemUser
-INSERT INTO "user" (user_id, username, role, password) VALUES ('41e2b680-648e-4b09-bcd7-3e2b10c06264' , 'admin', 'admin', '$2b$10$BUli0c.muyCW1ErNJc3jL.vFRFtFJWrT8/GcR4A.sUdCznaXiqFXa');
