@@ -14,7 +14,7 @@ export function LinkMetricsBar({
 }) {
   const { isAllTime } = useDateRange();
   const { t, labels } = useMessages();
-  const { data, isLoading, isFetching, error } = useWebsiteStatsQuery(linkId);
+  const { data, isLoading, isFetching, error } = useWebsiteStatsQuery({ websiteId: linkId });
 
   const { pageviews, visitors, visits, comparison } = data || {};
 

@@ -43,7 +43,7 @@ export function BoardViewColumn({
       {description && <Text color="muted">{description}</Text>}
       <Column width="100%" height="100%" style={{ minHeight: 0 }}>
         <Column width="100%" flexGrow={1} style={{ minHeight: 0 }}>
-          <BoardComponentRenderer config={component} websiteId={entityId} />
+          <BoardComponentRenderer config={component} websiteId={entityId} entityType={entityType} />
         </Column>
       </Column>
     </Panel>

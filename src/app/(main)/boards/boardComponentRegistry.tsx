@@ -1,5 +1,6 @@
-import type { ComponentType } from 'react';
 import { TextBlock } from '@/app/(main)/boards/TextBlock';
+import { LinkMetricsBar } from '@/app/(main)/links/[linkId]/LinkMetricsBar';
+import { PixelMetricsBar } from '@/app/(main)/pixels/[pixelId]/PixelMetricsBar';
 import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
 import { WebsiteMetricsBar } from '@/app/(main)/websites/[websiteId]/WebsiteMetricsBar';
 import {
@@ -15,12 +16,14 @@ import { EventsChart } from '@/components/metrics/EventsChart';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { WeeklyTraffic } from '@/components/metrics/WeeklyTraffic';
 import { WorldMap } from '@/components/metrics/WorldMap';
+import type { ComponentType } from 'react';
 
 export interface ConfigField {
   name: string;
   label: string;
   type: 'select' | 'number' | 'text' | 'textarea';
   options?: { label: string; value: string }[];
+  optionsByEntityType?: Record<string, { label: string; value: string }[]>;
   defaultValue?: any;
 }
 
@@ -31,6 +34,7 @@ export interface ComponentDefinition {
   category: string;
   icon: ComponentType<any>;
   component: ComponentType<any>;
+  componentByEntityType?: Record<string, ComponentType<any>>;
   defaultProps?: Record<string, any>;
   configFields?: ConfigField[];
   requiresWebsite?: boolean;
@@ -44,30 +48,59 @@ export const CATEGORIES = [
 ] as const;
 
 const METRIC_TYPES = [
-  { label: 'Pages', value: 'path' },
-  { label: 'Entry pages', value: 'entry' },
-  { label: 'Exit pages', value: 'exit' },
-  { label: 'Referrers', value: 'referrer' },
-  { label: 'Channels', value: 'channel' },
-  { label: 'Browsers', value: 'browser' },
+  { label: 'Path', value: 'path' },
+  { label: 'Entry page', value: 'entry' },
+  { label: 'Exit page', value: 'exit' },
+  { label: 'Title', value: 'title' },
+  { label: 'Query', value: 'query' },
+  { label: 'Referrer', value: 'referrer' },
+  { label: 'Channel', value: 'channel' },
+  { label: 'Country', value: 'country' },
+  { label: 'Region', value: 'region' },
+  { label: 'City', value: 'city' },
+  { label: 'Browser', value: 'browser' },
   { label: 'OS', value: 'os' },
-  { label: 'Devices', value: 'device' },
-  { label: 'Countries', value: 'country' },
-  { label: 'Regions', value: 'region' },
-  { label: 'Cities', value: 'city' },
-  { label: 'Languages', value: 'language' },
-  { label: 'Screens', value: 'screen' },
-  { label: 'Query parameters', value: 'query' },
-  { label: 'Page titles', value: 'title' },
-  { label: 'Hosts', value: 'host' },
-  { label: 'Events', value: 'event' },
+  { label: 'Device', value: 'device' },
+  { label: 'Language', value: 'language' },
+  { label: 'Screen', value: 'screen' },
+  { label: 'UTM Source', value: 'utmSource' },
+  { label: 'UTM Medium', value: 'utmMedium' },
+  { label: 'UTM Campaign', value: 'utmCampaign' },
+  { label: 'UTM Content', value: 'utmContent' },
+  { label: 'UTM Term', value: 'utmTerm' },
+  { label: 'Event', value: 'event' },
+  { label: 'Hostname', value: 'hostname' },
 ];
+
+const PIXEL_LINK_METRIC_TYPES = METRIC_TYPES.filter(({ value }) =>
+  [
+    'referrer',
+    'country',
+    'region',
+    'city',
+    'browser',
+    'os',
+    'device',
+    'query',
+    'utmSource',
+    'utmMedium',
+    'utmCampaign',
+    'utmContent',
+    'utmTerm',
+  ].includes(value),
+);
 
 const LIMIT_OPTIONS = [
   { label: '5', value: '5' },
   { label: '10', value: '10' },
   { label: '20', value: '20' },
 ];
+
+const PixelMetricsBarAdapter = ({ websiteId }: { websiteId?: string }) =>
+  websiteId ? <PixelMetricsBar pixelId={websiteId} /> : null;
+
+const LinkMetricsBarAdapter = ({ websiteId }: { websiteId?: string }) =>
+  websiteId ? <LinkMetricsBar linkId={websiteId} /> : null;
 
 const componentDefinitions: ComponentDefinition[] = [
   // Overview
@@ -78,6 +111,10 @@ const componentDefinitions: ComponentDefinition[] = [
     category: 'overview',
     icon: PanelTop,
     component: WebsiteMetricsBar,
+    componentByEntityType: {
+      pixel: PixelMetricsBarAdapter,
+      link: LinkMetricsBarAdapter,
+    },
   },
   {
     type: 'WebsiteChart',
@@ -103,6 +140,10 @@ const componentDefinitions: ComponentDefinition[] = [
         label: 'Metric type',
         type: 'select',
         options: METRIC_TYPES,
+        optionsByEntityType: {
+          pixel: PIXEL_LINK_METRIC_TYPES,
+          link: PIXEL_LINK_METRIC_TYPES,
+        },
         defaultValue: 'path',
       },
       {

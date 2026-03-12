@@ -42,14 +42,14 @@ export function BoardEditColumn({
   const boardType = getBoardType(board);
   const { entityType: boardEntityType, entityId: boardEntityId } = getBoardEntity(board);
   const definition = component ? getComponentDefinition(component.type) : undefined;
-  const { entityId } = getResolvedComponentEntity(board, component);
+  const { entityType, entityId } = getResolvedComponentEntity(board, component);
   const renderedComponent = useMemo(() => {
     if (!component || (!entityId && definition?.requiresWebsite !== false)) {
       return null;
     }
 
-    return <BoardComponentRenderer config={component} websiteId={entityId} />;
-  }, [component, definition?.requiresWebsite, entityId]);
+    return <BoardComponentRenderer config={component} websiteId={entityId} entityType={entityType} />;
+  }, [component, definition?.requiresWebsite, entityId, entityType]);
 
   const handleSelect = (config: BoardComponentConfig) => {
     onSetComponent(id, config);
