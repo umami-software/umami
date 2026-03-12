@@ -1,8 +1,7 @@
-import { z } from 'zod';
-import { uuid } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { createBoard, getBoard, updateBoard } from '@/queries/prisma';
+import { z } from 'zod';
 
 export async function GET(request: Request) {
   const { auth, error } = await parseRequest(request);
@@ -55,7 +54,6 @@ export async function POST(request: Request) {
   const result = await createBoard({
     id: userId,
     type: 'dashboard',
-    slug: uuid(),
     userId,
     ...data,
   });
