@@ -1,3 +1,8 @@
+import { Panel } from '@/components/common/Panel';
+import { useBoard, useMessages, useNavigation } from '@/components/hooks';
+import { Pencil, Plus, X } from '@/components/icons';
+import { getBoardEntity, getBoardType, getResolvedComponentEntity } from '@/lib/boards';
+import type { BoardComponentConfig } from '@/lib/types';
 import {
   Box,
   Button,
@@ -10,11 +15,6 @@ import {
   TooltipTrigger,
 } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
-import { Panel } from '@/components/common/Panel';
-import { useBoard, useMessages, useNavigation } from '@/components/hooks';
-import { Pencil, Plus, X } from '@/components/icons';
-import { getBoardEntity, getBoardType, getResolvedComponentEntity } from '@/lib/boards';
-import type { BoardComponentConfig } from '@/lib/types';
 import { getComponentDefinition } from '../boardComponentRegistry';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 import { BoardComponentSelect } from './BoardComponentSelect';
@@ -79,7 +79,7 @@ export function BoardEditColumn({
       onMouseEnter={() => setShowActions(true)}
       onMouseLeave={() => setShowActions(false)}
     >
-      {canEdit && canRemoveAction && showActions && (
+      {canEdit && (showActions || !hasComponent) && (
         <Box
           position="absolute"
           top="50%"
@@ -87,44 +87,39 @@ export function BoardEditColumn({
           zIndex={100}
           style={{ transform: 'translate(-50%, -50%)' }}
         >
-          <Row gap="1" padding="2" borderRadius backgroundColor="surface-sunken">
-            {hasComponent && (
-              <TooltipTrigger delay={0}>
-                <Button variant="outline" onPress={() => setShowSelect(true)}>
-                  <Icon size="sm">
-                    <Pencil />
-                  </Icon>
-                </Button>
-                <Tooltip>{t(labels.edit)}</Tooltip>
-              </TooltipTrigger>
-            )}
+          <Row
+            gap="1"
+            padding={hasComponent ? '2' : undefined}
+            borderRadius={hasComponent || undefined}
+            backgroundColor={hasComponent ? 'surface-sunken' : undefined}
+          >
             <TooltipTrigger delay={0}>
-              <Button variant="outline" onPress={handleRemove} isDisabled={!canRemoveAction}>
+              <Button variant="outline" onPress={() => setShowSelect(true)}>
                 <Icon size="sm">
-                  <X />
+                  {hasComponent ? <Pencil /> : <Plus />}
                 </Icon>
               </Button>
-              <Tooltip>{t(labels.remove)}</Tooltip>
+              <Tooltip>{t(hasComponent ? labels.edit : labels.selectComponent)}</Tooltip>
             </TooltipTrigger>
+            {canRemoveAction && (
+              <TooltipTrigger delay={0}>
+                <Button variant="outline" onPress={handleRemove}>
+                  <Icon size="sm">
+                    <X />
+                  </Icon>
+                </Button>
+                <Tooltip>{t(labels.remove)}</Tooltip>
+              </TooltipTrigger>
+            )}
           </Row>
         </Box>
       )}
-      {renderedComponent ? (
+      {renderedComponent && (
         <Column width="100%" height="100%" style={{ minHeight: 0 }}>
           <Box width="100%" flexGrow={1} overflow="auto" style={{ minHeight: 0 }}>
             {renderedComponent}
           </Box>
         </Column>
-      ) : (
-        canEdit && (
-          <Column width="100%" height="100%" alignItems="center" justifyContent="center">
-            <Button variant="outline" onPress={() => setShowSelect(true)}>
-              <Icon>
-                <Plus />
-              </Icon>
-            </Button>
-          </Column>
-        )
       )}
       <Modal isOpen={showSelect} onOpenChange={setShowSelect}>
         <Dialog

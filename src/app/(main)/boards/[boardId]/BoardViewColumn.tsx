@@ -1,4 +1,4 @@
-import { Box, Column } from '@umami/react-zen';
+import { Box, Column, Row } from '@umami/react-zen';
 import { Panel } from '@/components/common/Panel';
 import { useBoard } from '@/components/hooks';
 import { getBoardType, getResolvedComponentEntity, isOpenBoardType } from '@/lib/boards';
@@ -28,12 +28,20 @@ export function BoardViewColumn({
   const title = component.title;
   const description = component.description;
 
+  const showBadge = showEntityBadge && isOpenBoardType(boardType) && !!entityBadge;
+
   return (
     <Panel title={title} description={description} height="100%" position="relative">
-      {showEntityBadge && isOpenBoardType(boardType) && entityBadge && (
-        <Box position="absolute" top="12px" right="12px" zIndex={100}>
-          <BoardEntityBadge {...entityBadge} />
-        </Box>
+      {showBadge && (
+        title ? (
+          <Box position="absolute" top="12px" right="12px" zIndex={100}>
+            <BoardEntityBadge {...entityBadge} />
+          </Box>
+        ) : (
+          <Row justifyContent="flex-end">
+            <BoardEntityBadge {...entityBadge} />
+          </Row>
+        )
       )}
       <Column width="100%" height="100%" style={{ minHeight: 0 }}>
         <Box width="100%" flexGrow={1} style={{ minHeight: 0 }}>
