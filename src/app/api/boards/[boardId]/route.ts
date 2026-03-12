@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { BOARD_TYPES, normalizeBoardType } from '@/lib/boards';
 import { parseRequest } from '@/lib/request';
-import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
+import { json, ok, serverError, unauthorized } from '@/lib/response';
 import { canDeleteBoard, canUpdateBoard, canViewBoard } from '@/permissions';
 import { deleteBoard, getBoard, updateBoard } from '@/queries/prisma';
 
@@ -59,10 +59,6 @@ export async function POST(request: Request, { params }: { params: Promise<{ boa
 
     return Response.json(board);
   } catch (e: any) {
-    if (e.message.toLowerCase().includes('unique constraint') && e.message.includes('slug')) {
-      return badRequest({ message: 'That slug is already taken.' });
-    }
-
     return serverError(e);
   }
 }

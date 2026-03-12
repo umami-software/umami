@@ -1,3 +1,8 @@
+-- AlterTable board: drop slug
+DROP INDEX IF EXISTS "board_slug_key";
+DROP INDEX IF EXISTS "board_slug_idx";
+ALTER TABLE "board" DROP COLUMN IF EXISTS "slug";
+
 -- AlterTable
 ALTER TABLE "website" ADD COLUMN "replay_enabled" BOOLEAN NOT NULL DEFAULT false;
 ALTER TABLE "website" ADD COLUMN "replay_config" JSONB;

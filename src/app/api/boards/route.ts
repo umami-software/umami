@@ -33,7 +33,6 @@ export async function POST(request: Request) {
       .or(z.literal('open')),
     name: z.string().max(100),
     description: z.string().max(500).optional(),
-    slug: z.string().max(100),
     userId: z.uuid().nullable().optional(),
     teamId: z.uuid().nullable().optional(),
     parameters: z
@@ -63,7 +62,6 @@ export async function POST(request: Request) {
     type: normalizeBoardType(body.type),
     id: uuid(),
     parameters: body.parameters ?? {},
-    slug: uuid(),
     userId: !teamId ? auth.user.id : undefined,
   };
 
