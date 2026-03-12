@@ -4,7 +4,6 @@ import { execSync } from 'node:child_process';
 import { PrismaPg } from '@prisma/adapter-pg';
 import bcrypt from 'bcryptjs';
 import chalk from 'chalk';
-import { v4 as uuid } from 'uuid';
 import semver from 'semver';
 import { PrismaClient } from '../generated/prisma/client.js';
 
@@ -76,17 +75,21 @@ async function applyMigration() {
 }
 
 async function createDefaultUser() {
-  const existing = await prisma.user.findFirst({ where: { role: 'admin' } });
+  const username = process.env.DEFAULT_ADMIN_USERNAME;
+  const password = process.env.DEFAULT_ADMIN_PASSWORD;
 
-  if (!existing) {
-    const username = process.env.DEFAULT_ADMIN_USERNAME || 'admin';
-    const password = process.env.DEFAULT_ADMIN_PASSWORD || 'umami';
+  if (!username && !password) {
+    return;
+  }
 
-    await prisma.user.create({
-      data: { id: uuid(), username, password: bcrypt.hashSync(password, 10), role: 'admin' },
-    });
+  const admin = await prisma.user.findFirst({ where: { role: 'admin' } });
 
-    success(`Admin user created (${username}).`);
+  if (admin) {
+    const data = {};
+    if (username) data.username = username;
+    if (password) data.password = bcrypt.hashSync(password, 10);
+    await prisma.user.update({ where: { id: admin.id }, data });
+    success('Admin user credentials updated.');
   }
 }
 
