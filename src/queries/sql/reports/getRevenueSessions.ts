@@ -56,17 +56,17 @@ async function relationalQuery(websiteId: string, currency: string, filters: Que
     join session
       on session.session_id = website_event.session_id
       and session.website_id = website_event.website_id
+    join (
+      select distinct session_id
+      from revenue
+      where website_id = {{websiteId::uuid}}
+      and revenue.created_at between {{startDate}} and {{endDate}}
+        and upper(currency) = {{currency}}
+    ) rev on rev.session_id = website_event.session_id
     where website_event.website_id = {{websiteId::uuid}}
     ${dateQuery}
     ${filterQuery}
     ${searchQuery}
-      and website_event.session_id in (
-        select distinct session_id
-        from revenue
-        where website_id = {{websiteId::uuid}}
-        ${dateQuery}
-          and upper(currency) = {{currency}}
-      )
     group by
       session.session_id,
       session.website_id,
