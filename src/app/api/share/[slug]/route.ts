@@ -1,11 +1,11 @@
+import { getBoardWebsiteIds } from '@/lib/boards';
 import { ENTITY_TYPE, ROLES } from '@/lib/constants';
 import { secret } from '@/lib/crypto';
 import { createToken } from '@/lib/jwt';
-import { getBoardWebsiteIds } from '@/lib/boards';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { json, notFound } from '@/lib/response';
-import type { WhiteLabel } from '@/lib/types';
+import type { BoardParameters, WhiteLabel } from '@/lib/types';
 import { getBoard, getLink, getPixel, getShareByCode, getWebsite } from '@/queries/prisma';
 
 async function getAccountId(entity: { userId?: string; teamId?: string }): Promise<string | null> {
@@ -53,57 +53,35 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     return notFound();
   }
 
-  if (share.shareType === ENTITY_TYPE.board) {
-    const board = await getBoard(share.entityId);
-
-    if (!board) {
-      return notFound();
-    }
-
-    const data: Record<string, any> = {
-      shareId: share.id,
-      shareType: share.shareType,
-      boardId: share.entityId,
-      parameters: share.parameters,
-      websiteIds: getBoardWebsiteIds(board),
-    };
-
-    data.token = createToken(data, secret());
-
-    return json(data);
-  }
-
-  let entity: { userId?: string; teamId?: string } | null = null;
   const data: Record<string, any> = {
     shareId: share.id,
     shareType: share.shareType,
     parameters: share.parameters,
   };
 
-  if (share.shareType === ENTITY_TYPE.website) {
+  let entity: { userId?: string; teamId?: string } | null = null;
+
+  if (share.shareType === ENTITY_TYPE.board) {
+    const board = await getBoard(share.entityId);
+    if (!board) return notFound();
+    entity = board;
+    data.boardId = share.entityId;
+    data.websiteIds = getBoardWebsiteIds({
+      type: board.type,
+      parameters: share.parameters as BoardParameters,
+    });
+  } else if (share.shareType === ENTITY_TYPE.website) {
     entity = await getWebsite(share.entityId);
-
-    if (!entity) {
-      return notFound();
-    }
-
+    if (!entity) return notFound();
     data.websiteId = share.entityId;
   } else if (share.shareType === ENTITY_TYPE.pixel) {
     entity = await getPixel(share.entityId);
-
-    if (!entity) {
-      return notFound();
-    }
-
+    if (!entity) return notFound();
     data.websiteId = share.entityId;
     data.pixelId = share.entityId;
   } else if (share.shareType === ENTITY_TYPE.link) {
     entity = await getLink(share.entityId);
-
-    if (!entity) {
-      return notFound();
-    }
-
+    if (!entity) return notFound();
     data.websiteId = share.entityId;
     data.linkId = share.entityId;
   } else {
@@ -116,7 +94,6 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
 
   if (accountId) {
     const whiteLabel = await getWhiteLabel(accountId);
-
     if (whiteLabel) {
       data.whiteLabel = whiteLabel;
     }

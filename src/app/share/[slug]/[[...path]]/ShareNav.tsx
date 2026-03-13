@@ -1,10 +1,11 @@
-import { Button, Column, Icon, Row, Text, ThemeButton } from '@umami/react-zen';
+import { Button, Column, Icon, Row, ThemeButton } from '@umami/react-zen';
 import { NavMenu } from '@/components/common/NavMenu';
 import { useMessages, useNavigation, useShare } from '@/components/hooks';
 import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User } from '@/components/icons';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { PreferencesButton } from '@/components/input/PreferencesButton';
-import { Funnel, Lightning, Logo, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import { Funnel, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import { ShareBranding } from './ShareBranding';
 
 export function ShareNav({
   collapsed,
@@ -18,11 +19,7 @@ export function ShareNav({
   const share = useShare();
   const { t, labels } = useMessages();
   const { pathname } = useNavigation();
-  const { slug, parameters, whiteLabel } = share;
-
-  const logoDomain = whiteLabel?.domainName || 'https://umami.is';
-  const logoName = whiteLabel?.displayName || 'umami';
-  const logoImage = whiteLabel?.logoUrl;
+  const { slug, parameters } = share;
 
   const renderPath = (path: string) => `/share/${slug}${path}`;
 
@@ -149,20 +146,7 @@ export function ShareNav({
       border={isMobile ? undefined : 'right'}
     >
       <Row as="header" gap alignItems="center" justifyContent="space-between">
-        {!collapsed && (
-          <a href={logoDomain} target="_blank" rel="noopener" style={{ marginLeft: 12 }}>
-            <Row alignItems="center" gap>
-              {logoImage ? (
-                <img src={logoImage} alt={logoName} style={{ height: 24 }} />
-              ) : (
-                <Icon>
-                  <Logo />
-                </Icon>
-              )}
-              <Text weight="bold">{logoName}</Text>
-            </Row>
-          </a>
-        )}
+        {!collapsed && <ShareBranding size="md" />}
         {!onItemClick && (
           <Button variant="quiet" onPress={() => onCollapse?.(!collapsed)}>
             <Icon color="muted">
