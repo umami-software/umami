@@ -115,15 +115,10 @@ function ValueSelect({
 }) {
   const { get, useQuery } = useApi();
   const { formatMessage, messages } = useMessages();
-  const [search, setSearch] = useState(value ?? '');
-  const searchValue = useDebounce(search, 300);
   const { startAt, endAt } = getEventDataDateRange();
 
   const { data, isLoading } = useQuery<Array<{ value: string; total: number }>>({
-    queryKey: [
-      'event-data:values',
-      { websiteId, eventName, propertyName, searchValue, startAt, endAt },
-    ],
+    queryKey: ['event-data:values', { websiteId, eventName, propertyName, startAt, endAt }],
     queryFn: () =>
       get(`/websites/${websiteId}/event-data/values`, {
         startAt,
@@ -142,7 +137,6 @@ function ValueSelect({
       items={values}
       inputValue={value}
       onInputChange={v => {
-        setSearch(v);
         onChange?.(v);
       }}
       formValue="text"
