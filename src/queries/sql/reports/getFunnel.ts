@@ -22,10 +22,12 @@ export interface FunnelParameters {
   steps: Array<FunnelStep>;
 }
 
-export interface FunnelResult {
-  value: string;
+export interface FunnelResult extends FunnelStep {
   visitors: number;
+  previous: number;
+  dropped: number;
   dropoff: number;
+  remaining: number;
 }
 
 export async function getFunnel(

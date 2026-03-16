@@ -6,16 +6,8 @@ import { ReportEditButton } from '@/components/input/ReportEditButton';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { Lightning } from '@/components/svg';
 import { formatLongNumber } from '@/lib/format';
-import type { FunnelStep } from '@/queries/sql/reports/getFunnel';
+import type { FunnelResult } from '@/queries/sql/reports/getFunnel';
 import { FunnelEditForm } from './FunnelEditForm';
-
-type FunnelResult = FunnelStep & {
-  visitors: number;
-  previous: number;
-  dropped: number;
-  dropoff: number;
-  remaining: number;
-};
 
 interface FunnelProps {
   id: string;
