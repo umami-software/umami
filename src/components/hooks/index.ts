@@ -76,6 +76,7 @@ export * from './useMessages';
 export * from './useMobile';
 export * from './useModified';
 export * from './useNavigation';
+export * from './useOperatorLabels';
 export * from './usePagedQuery';
 export * from './usePageParameters';
 export * from './useRegionNames';

@@ -134,6 +134,15 @@ export const funnelReportSchema = z.object({
         z.object({
           type: z.enum(['path', 'event']),
           value: z.string(),
+          filters: z
+            .array(
+              z.object({
+                property: z.string().min(1),
+                operator: z.enum(['eq', 'neq', 'c', 'dnc']),
+                value: z.string(),
+              }),
+            )
+            .optional(),
         }),
       )
       .min(2)

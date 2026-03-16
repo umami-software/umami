@@ -1,29 +1,30 @@
 import { Box, Column, Dialog, Grid, Icon, ProgressBar, Row, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, useResultQuery } from '@/components/hooks';
+import { useMessages, useOperatorLabels, useResultQuery } from '@/components/hooks';
 import { File, User } from '@/components/icons';
 import { ReportEditButton } from '@/components/input/ReportEditButton';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { Lightning } from '@/components/svg';
 import { formatLongNumber } from '@/lib/format';
+import type { FunnelResult } from '@/queries/sql/reports/getFunnel';
 import { FunnelEditForm } from './FunnelEditForm';
 
-type FunnelResult = {
+interface FunnelProps {
+  id: string;
+  name: string;
   type: string;
-  value: string;
-  visitors: number;
-  previous: number;
-  dropped: number;
-  dropoff: number;
-  remaining: number;
-};
+  parameters: Record<string, any>;
+  websiteId: string;
+}
 
-export function Funnel({ id, name, type, parameters, websiteId }) {
+export function Funnel({ id, name, type, parameters, websiteId }: FunnelProps) {
   const { formatMessage, labels } = useMessages();
-  const { data, error, isLoading } = useResultQuery(type, {
+  const { data, error, isLoading } = useResultQuery<Array<FunnelResult>>(type, {
     websiteId,
     ...parameters,
   });
+
+  const operatorLabels = useOperatorLabels();
 
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
@@ -54,7 +55,7 @@ export function Funnel({ id, name, type, parameters, websiteId }) {
         </Grid>
         {data?.map(
           (
-            { type, value, visitors, previous, dropped, dropoff, remaining }: FunnelResult,
+            { type, value, filters, visitors, previous, dropped, dropoff, remaining }: FunnelResult,
             index: number,
           ) => {
             const isPage = type === 'path';
@@ -92,10 +93,25 @@ export function Funnel({ id, name, type, parameters, websiteId }) {
                     <Text color="muted">{formatMessage(labels.conversionRate)}</Text>
                   </Row>
                   <Row alignItems="center" justifyContent="space-between" gap>
-                    <Row alignItems="center" gap>
-                      <Icon>{type === 'path' ? <File /> : <Lightning />}</Icon>
-                      <Text>{value}</Text>
-                    </Row>
+                    <Column gap="1">
+                      <Row alignItems="center" gap>
+                        <Icon>{type === 'path' ? <File /> : <Lightning />}</Icon>
+                        <Text>{value}</Text>
+                      </Row>
+                      {filters?.map((f, i) => (
+                        <Row key={i} gap="1" style={{ paddingLeft: 28 }}>
+                          <Text size="1" color="muted">
+                            {f.property}
+                          </Text>
+                          <Text size="1" color="muted" transform="lowercase">
+                            {operatorLabels[f.operator] ?? f.operator}
+                          </Text>
+                          <Text size="1" color="muted">
+                            {f.value}
+                          </Text>
+                        </Row>
+                      ))}
+                    </Column>
                     <Row alignItems="center" gap>
                       {index > 0 && (
                         <ChangeLabel value={-dropped} title={`${-Math.round(dropoff * 100)}%`}>
