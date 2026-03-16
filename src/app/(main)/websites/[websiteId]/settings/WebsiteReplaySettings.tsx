@@ -7,10 +7,11 @@ import {
   Select,
   Slider,
   Switch,
+  Text,
   TextField,
 } from '@umami/react-zen';
 import { useState } from 'react';
-import { useMessages, useUpdateQuery, useWebsite } from '@/components/hooks';
+import { useMessages, useSubscription, useUpdateQuery, useWebsite } from '@/components/hooks';
 
 interface ReplayConfig {
   sampleRate?: number;
@@ -22,6 +23,7 @@ interface ReplayConfig {
 export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const website = useWebsite();
   const { t, labels, messages } = useMessages();
+  const { hasFeature, cloudMode } = useSubscription();
   const { mutateAsync, touch, toast, isPending } = useUpdateQuery(`/websites/${websiteId}`);
   const [enabled, setEnabled] = useState(website?.replayEnabled ?? false);
 
@@ -74,6 +76,20 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
       },
     );
   };
+
+  if (cloudMode && !hasFeature('replays')) {
+    return (
+      <Column gap="4">
+        <Label>{t(labels.replays)}</Label>
+        <Column gap="4" alignItems="center" padding="10">
+          <Text>{t(messages.upgradeRequired, { plan: 'Business' })}</Text>
+          <Button variant="primary" onPress={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}>
+            {t(labels.upgrade)}
+          </Button>
+        </Column>
+      </Column>
+    );
+  }
 
   return (
     <Column gap="4">

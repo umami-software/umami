@@ -1,3 +1,4 @@
+import { fetchAccount } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { json } from '@/lib/response';
 import { getAllUserTeams } from '@/queries/prisma';
@@ -9,7 +10,20 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const teams = await getAllUserTeams(auth.user.id);
+  const user = { ...auth.user };
+  const teams = await getAllUserTeams(user.id);
 
-  return json({ ...auth.user, teams });
+  if (process.env.CLOUD_MODE) {
+    const account = await fetchAccount(user.id);
+
+    if (account) {
+      user.subscription = {
+        isPro: account.isPro || false,
+        isBusiness: account.isBusiness || false,
+        hasSubscription: account.hasSubscription || false,
+      };
+    }
+  }
+
+  return json({ ...user, teams });
 }

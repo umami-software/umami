@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { secret } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { parseToken } from '@/lib/jwt';
+import { fetchAccount } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { getWebsite } from '@/queries/prisma';
@@ -58,6 +59,14 @@ export async function POST(request: Request) {
 
     if (!website.replayEnabled) {
       return json({ ok: false, reason: 'replay_disabled' });
+    }
+
+    if (process.env.CLOUD_MODE) {
+      const account = await fetchAccount(website.userId);
+
+      if (!account?.isBusiness) {
+        return forbidden({ message: 'Business subscription required.' });
+      }
     }
 
     // Client info for bot/IP checks

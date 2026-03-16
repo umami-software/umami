@@ -378,6 +378,7 @@ export const labels: Record<string, string> = {
   retentionDays: 'label.retention-days',
   duration: 'label.duration',
   recorded: 'label.recorded',
+  upgrade: 'label.upgrade',
 };
 
 export const messages: Record<string, string> = {
@@ -427,4 +428,5 @@ export const messages: Record<string, string> = {
   forbidden: 'message.forbidden',
   notFound: 'message.not-found',
   serverError: 'message.sever-error',
+  upgradeRequired: 'message.upgrade-required',
 };

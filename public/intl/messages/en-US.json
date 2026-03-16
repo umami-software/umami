@@ -348,6 +348,7 @@
     "saved": "Saved",
     "unknown": "Unknown",
     "untitled": "Untitled",
+    "upgrade": "Upgrade",
     "update": "Update",
     "url": "URL",
     "user": "User",
@@ -426,6 +427,7 @@
     "unauthorized": "Unauthorized",
     "user-deleted": "User deleted.",
     "viewed-page": "Viewed page",
+    "upgrade-required": "This feature requires a {plan} plan subscription.",
     "visitor-log": "Visitor from <b>{country}</b> using <b>{browser}</b> on <b>{os}</b> <b>{device}</b>"
   }
 }

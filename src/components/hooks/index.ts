@@ -96,5 +96,6 @@ export * from './usePageParameters';
 export * from './useRegionNames';
 export * from './useSlug';
 export * from './useSticky';
+export * from './useSubscription';
 export * from './useTimezone';
 export * from './useWebsiteNavItems';

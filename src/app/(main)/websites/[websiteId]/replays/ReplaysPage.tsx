@@ -1,10 +1,10 @@
 'use client';
-import { Column, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { Button, Column, Tab, TabList, TabPanel, Tabs, Text } from '@umami/react-zen';
 import { type Key, useState } from 'react';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Panel } from '@/components/common/Panel';
-import { useMessages } from '@/components/hooks';
+import { useMessages, useSubscription } from '@/components/hooks';
 import { getItem, setItem } from '@/lib/storage';
 import { ReplayModal } from './ReplayModal';
 import { ReplaysDataTable } from './ReplaysDataTable';
@@ -14,12 +14,28 @@ const KEY_NAME = 'umami.replays.tab';
 
 export function ReplaysPage({ websiteId }: { websiteId: string }) {
   const [tab, setTab] = useState(getItem(KEY_NAME) || 'replays');
-  const { t, labels } = useMessages();
+  const { t, labels, messages } = useMessages();
+  const { hasFeature, cloudMode } = useSubscription();
 
   const handleSelect = (value: Key) => {
     setItem(KEY_NAME, value);
     setTab(value);
   };
+
+  if (cloudMode && !hasFeature('replays')) {
+    return (
+      <Column gap="3">
+        <Panel>
+          <Column gap="4" alignItems="center" padding="10">
+            <Text>{t(messages.upgradeRequired, { plan: 'Business' })}</Text>
+            <Button variant="primary" onPress={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}>
+              {t(labels.upgrade)}
+            </Button>
+          </Column>
+        </Panel>
+      </Column>
+    );
+  }
 
   return (
     <Column gap="3">
