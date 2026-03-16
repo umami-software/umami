@@ -177,14 +177,16 @@ export function BoardComponentSelect({
     onSelect(config);
   };
 
-  const previewConfig: BoardComponentConfig | null = selectedDef
-    ? {
-        type: selectedDef.type,
-        title,
-        description,
-        props: { ...selectedDef.defaultProps, ...configValues },
-      }
-    : null;
+  const previewConfig: BoardComponentConfig | null = useMemo(
+    () =>
+      selectedDef
+        ? {
+            type: selectedDef.type,
+            props: { ...selectedDef.defaultProps, ...configValues },
+          }
+        : null,
+    [selectedDef, configValues],
+  );
 
   const canSave = !!selectedDef && isSelectedDefSupported && (!needsWebsite || !!resolvedEntityId);
   const availableDefinitions = useMemo(
@@ -274,12 +276,16 @@ export function BoardComponentSelect({
                     <Select
                       value={String(configValues[field.name] ?? field.defaultValue ?? '')}
                       onChange={(value: string) => handleConfigChange(field.name, value)}
+                      maxHeight={300}
+                      popoverProps={{ style: { width: 220 } }}
                     >
-                      {field.options?.map(option => (
-                        <ListItem key={option.value} id={option.value}>
-                          {option.label}
-                        </ListItem>
-                      ))}
+                      {(field.optionsByEntityType?.[activeEntityType] ?? field.options)?.map(
+                        option => (
+                          <ListItem key={option.value} id={option.value}>
+                            {option.label}
+                          </ListItem>
+                        ),
+                      )}
                     </Select>
                   )}
 
@@ -364,7 +370,7 @@ export function BoardComponentSelect({
           <Text weight="bold">Preview</Text>
           <Column border="left" paddingLeft="4" height="100%" style={{ minWidth: 0 }}>
             {hasSelectedEntity && previewConfig && (!needsWebsite || resolvedEntityId) ? (
-              <BoardComponentRenderer config={previewConfig} websiteId={resolvedEntityId} />
+              <BoardComponentRenderer config={previewConfig} websiteId={resolvedEntityId} entityType={resolvedEntityType} />
             ) : (
               <Column alignItems="center" justifyContent="center" height="100%">
                 <Text color="muted">

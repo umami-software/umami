@@ -233,6 +233,7 @@
     let sent = false;
     let timeoutId;
     let isInitialLoad = true;
+    let activationStart = 0;
 
     const observe = (type, callback) => {
       try {
@@ -247,42 +248,63 @@
 
     // TTFB
     observe('navigation', entry => {
-      metrics.ttfb = Math.max(entry.responseStart - entry.startTime, 0);
+      activationStart = entry.activationStart || 0;
+      metrics.ttfb = Math.max(entry.responseStart - activationStart, 0);
     });
 
     // FCP
     observe('paint', entry => {
       if (entry.name === 'first-contentful-paint') {
-        metrics.fcp = entry.startTime;
+        metrics.fcp = Math.max(entry.startTime - activationStart, 0);
       }
     });
 
     // LCP
     observe('largest-contentful-paint', entry => {
-      metrics.lcp = entry.startTime;
+      metrics.lcp = Math.max(entry.startTime - activationStart, 0);
     });
 
-    // CLS
-    let clsValue = 0;
+    // CLS - session windows algorithm (gap < 1s, max 5s duration; report worst window)
+    let clsSessionValue = 0;
+    let clsSessionEntries = [];
     observe('layout-shift', entry => {
       if (!entry.hadRecentInput) {
-        clsValue += entry.value;
-        metrics.cls = clsValue;
+        const lastEntry = clsSessionEntries[clsSessionEntries.length - 1];
+        const firstEntry = clsSessionEntries[0];
+        if (
+          lastEntry &&
+          entry.startTime - lastEntry.startTime - lastEntry.duration < 1000 &&
+          entry.startTime - firstEntry.startTime < 5000
+        ) {
+          clsSessionValue += entry.value;
+          clsSessionEntries.push(entry);
+        } else {
+          clsSessionValue = entry.value;
+          clsSessionEntries = [entry];
+        }
+        if (clsSessionValue > (metrics.cls || 0)) {
+          metrics.cls = clsSessionValue;
+        }
       }
     });
 
-    // INP
-    let inpValue = 0;
+    // INP - group by interactionId, 98th percentile, 40ms threshold
+    let interactions = {};
     try {
       const observer = new PerformanceObserver(list => {
         list.getEntries().forEach(entry => {
-          if (entry.duration > inpValue) {
-            inpValue = entry.duration;
-            metrics.inp = inpValue;
+          if (entry.interactionId) {
+            const existing = interactions[entry.interactionId];
+            if (!existing || entry.duration > existing) {
+              interactions[entry.interactionId] = entry.duration;
+            }
+            const values = Object.values(interactions).sort((a, b) => b - a);
+            const p98Index = Math.floor(Math.max(values.length, 10) * 0.02);
+            metrics.inp = values[Math.min(p98Index, values.length - 1)] || 0;
           }
         });
       });
-      observer.observe({ type: 'event', buffered: true, durationThreshold: 16 });
+      observer.observe({ type: 'event', buffered: true, durationThreshold: 40 });
     } catch {
       /* not supported */
     }
@@ -301,7 +323,7 @@
       if (metrics.ttfb === undefined) {
         const navigation = getEntriesByType('navigation')?.[0];
         if (navigation) {
-          metrics.ttfb = Math.max(navigation.responseStart - navigation.startTime, 0);
+          metrics.ttfb = Math.max(navigation.responseStart - (navigation.activationStart || 0), 0);
         }
       }
 
@@ -310,7 +332,7 @@
           entry => entry.name === 'first-contentful-paint',
         );
         if (fcpEntry) {
-          metrics.fcp = fcpEntry.startTime;
+          metrics.fcp = Math.max(fcpEntry.startTime - activationStart, 0);
         }
       }
 
@@ -318,7 +340,7 @@
         const lcpEntries = getEntriesByType('largest-contentful-paint');
         const lcpEntry = lcpEntries?.[lcpEntries.length - 1];
         if (lcpEntry) {
-          metrics.lcp = lcpEntry.startTime;
+          metrics.lcp = Math.max(lcpEntry.startTime - activationStart, 0);
         }
       }
     };
@@ -340,8 +362,10 @@
       Object.keys(metrics).forEach(k => {
         delete metrics[k];
       });
-      clsValue = 0;
-      inpValue = 0;
+      activationStart = 0;
+      clsSessionValue = 0;
+      clsSessionEntries = [];
+      interactions = {};
       sent = false;
       if (timeoutId) clearTimeout(timeoutId);
       timeoutId = setTimeout(sendPerformance, 10000);

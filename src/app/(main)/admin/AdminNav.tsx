@@ -1,9 +1,9 @@
-import { Column, Focusable, Row, Tooltip, TooltipTrigger } from '@umami/react-zen';
-import Link from 'next/link';
 import { IconLabel } from '@/components/common/IconLabel';
 import { NavMenu } from '@/components/common/NavMenu';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { ArrowLeft, Globe, User, Users } from '@/components/icons';
+import { Column, Focusable, Row, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import Link from 'next/link';
 
 export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
   const { t, labels } = useMessages();
@@ -41,7 +41,7 @@ export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
 
   return (
     <Column gap="2">
-      <Link href={renderUrl('/boards', false)} role="button" onClick={onItemClick}>
+      <Link href={renderUrl('/websites', false)} role="button" onClick={onItemClick}>
         <TooltipTrigger delay={0}>
           <Focusable>
             <Row
@@ -58,7 +58,6 @@ export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
       </Link>
       <NavMenu
         items={items}
-        title={t(labels.admin)}
         selectedKey={selectedKey}
         allowMinimize={false}
         onItemClick={onItemClick}

@@ -13,7 +13,7 @@ export function useBoardEntityBadgeProps(
   const { data: link } = useLinkQuery(enabled && entityType === 'link' ? entityId : undefined);
 
   if (entityType === 'website' && website?.name) {
-    return { type: entityType, name: website.name };
+    return { type: entityType, name: website.name, domain: website.domain ?? undefined };
   }
 
   if (entityType === 'pixel' && pixel?.name) {

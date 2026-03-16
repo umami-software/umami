@@ -39,7 +39,8 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
           website_event.url_query,
           website_event.utm_medium,
           website_event.utm_source,
-          website_event.session_id
+          website_event.session_id,
+          website_event.hostname
       from website_event
       ${cohortQuery}
       ${excludeBounceQuery}
@@ -61,7 +62,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
           when ${toPostgresLikeClause('referrer_domain', EMAIL_DOMAINS)} or utm_medium ilike '%mail%' then 'email'
           when ${toPostgresLikeClause('referrer_domain', SHOPPING_DOMAINS)} or utm_medium ilike '%shop%' then concat(prefix, 'Shopping')
           when ${toPostgresLikeClause('referrer_domain', VIDEO_DOMAINS)} or utm_medium ilike '%video%' then concat(prefix, 'Video')
-          wwhen referrer_domain != regexp_replace(hostname, '^www.', '') and referrer_domain != '' then 'referral'
+          when referrer_domain != regexp_replace(hostname, '^www.', '') and referrer_domain != '' then 'referral'
           else '' end AS x,
         count(distinct session_id) y
       from prefix

@@ -1,7 +1,5 @@
 'use client';
-import { Column, Grid, Row, useTheme } from '@umami/react-zen';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { BoardViewPage } from '@/app/(main)/boards/[boardId]/BoardViewPage';
 import { LinkPage } from '@/app/(main)/links/[linkId]/LinkPage';
 import { PixelPage } from '@/app/(main)/pixels/[pixelId]/PixelPage';
 import { AttributionPage } from '@/app/(main)/websites/[websiteId]/(reports)/attribution/AttributionPage';
@@ -19,11 +17,14 @@ import { SessionsPage } from '@/app/(main)/websites/[websiteId]/sessions/Session
 import { WebsiteHeader } from '@/app/(main)/websites/[websiteId]/WebsiteHeader';
 import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
 import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
-import { BoardViewPage } from '@/app/(main)/boards/[boardId]/BoardViewPage';
 import { PageBody } from '@/components/common/PageBody';
 import { useShare } from '@/components/hooks';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
 import { ENTITY_TYPE } from '@/lib/constants';
+import { Column, Grid, Row, useTheme } from '@umami/react-zen';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { ShareFooter } from './ShareFooter';
 import { ShareNav } from './ShareNav';
 
 const PAGE_COMPONENTS: Record<string, React.ComponentType<{ websiteId: string }>> = {
@@ -72,23 +73,22 @@ export function SharePage() {
     }
   }, [setTheme]);
 
-  if (shareType === ENTITY_TYPE.board && boardId) {
+  const entityPage =
+    shareType === ENTITY_TYPE.board && boardId ? (
+      <BoardViewPage boardId={boardId} showActions={false} />
+    ) : shareType === ENTITY_TYPE.pixel && pixelId ? (
+      <PixelPage pixelId={pixelId} showHeaderActions={false} />
+    ) : shareType === ENTITY_TYPE.link && linkId ? (
+      <LinkPage linkId={linkId} showHeaderActions={false} />
+    ) : null;
+
+  if (entityPage) {
     return (
-      <BoardViewPage
-        boardId={boardId}
-        showActions={false}
-        showControls={false}
-        showEntityBadges={false}
-      />
+      <Column>
+        {entityPage}
+        <ShareFooter />
+      </Column>
     );
-  }
-
-  if (shareType === ENTITY_TYPE.pixel && pixelId) {
-    return <PixelPage pixelId={pixelId} showHeaderActions={false} />;
-  }
-
-  if (shareType === ENTITY_TYPE.link && linkId) {
-    return <LinkPage linkId={linkId} showHeaderActions={false} />;
   }
 
   // Check if the requested path is allowed
