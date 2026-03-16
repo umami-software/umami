@@ -3,11 +3,13 @@ import { safeDecodeURIComponent } from '@/lib/url';
 import { useFields } from './useFields';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
+import { useOperatorLabels } from './useOperatorLabels';
 
 export function useFilters() {
   const { formatMessage, labels } = useMessages();
   const { query } = useNavigation();
   const { fields } = useFields();
+  const operatorLabels = useOperatorLabels();
 
   const operators = [
     { name: 'eq', type: 'string', label: formatMessage(labels.is) },
@@ -28,23 +30,6 @@ export function useFilters() {
     { name: 'af', type: 'date', label: formatMessage(labels.after) },
     { name: 'eq', type: 'uuid', label: formatMessage(labels.is) },
   ];
-
-  const operatorLabels = {
-    [OPERATORS.equals]: formatMessage(labels.is),
-    [OPERATORS.notEquals]: formatMessage(labels.isNot),
-    [OPERATORS.set]: formatMessage(labels.isSet),
-    [OPERATORS.notSet]: formatMessage(labels.isNotSet),
-    [OPERATORS.contains]: formatMessage(labels.contains),
-    [OPERATORS.doesNotContain]: formatMessage(labels.doesNotContain),
-    [OPERATORS.true]: formatMessage(labels.true),
-    [OPERATORS.false]: formatMessage(labels.false),
-    [OPERATORS.greaterThan]: formatMessage(labels.greaterThan),
-    [OPERATORS.lessThan]: formatMessage(labels.lessThan),
-    [OPERATORS.greaterThanEquals]: formatMessage(labels.greaterThanEquals),
-    [OPERATORS.lessThanEquals]: formatMessage(labels.lessThanEquals),
-    [OPERATORS.before]: formatMessage(labels.before),
-    [OPERATORS.after]: formatMessage(labels.after),
-  };
 
   const typeFilters = {
     string: [OPERATORS.equals, OPERATORS.notEquals, OPERATORS.contains, OPERATORS.doesNotContain],
