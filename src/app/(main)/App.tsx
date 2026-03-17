@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { MobileNav } from '@/app/(main)/MobileNav';
 import { SideNav } from '@/app/(main)/SideNav';
 import { TopNav } from '@/app/(main)/TopNav';
-import { useConfig, useLoginQuery, useNavigation } from '@/components/hooks';
+import { useConfig, useLoginQuery, useNavigation, useTeamQuery } from '@/components/hooks';
 import { LAST_TEAM_CONFIG } from '@/lib/constants';
 import { removeItem, setItem } from '@/lib/storage';
 import { UpdateNotice } from './UpdateNotice';
@@ -13,7 +13,8 @@ import { UpdateNotice } from './UpdateNotice';
 export function App({ children }) {
   const { user, isLoading, error } = useLoginQuery();
   const config = useConfig();
-  const { pathname, teamId } = useNavigation();
+  const { pathname, router, teamId } = useNavigation();
+  const { isLoading: isTeamLoading, error: teamError } = useTeamQuery(teamId);
 
   useEffect(() => {
     if (teamId) {
@@ -23,7 +24,14 @@ export function App({ children }) {
     }
   }, [teamId]);
 
-  if (isLoading || !config) {
+  useEffect(() => {
+    if (teamId && teamError) {
+      removeItem(LAST_TEAM_CONFIG);
+      router.replace('/');
+    }
+  }, [teamId, teamError, router]);
+
+  if (isLoading || !config || (teamId && isTeamLoading)) {
     return <Loading placement="absolute" />;
   }
 
@@ -35,6 +43,10 @@ export function App({ children }) {
   }
 
   if (!user || !config) {
+    return null;
+  }
+
+  if (teamId && teamError) {
     return null;
   }
 
