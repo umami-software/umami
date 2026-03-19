@@ -64,7 +64,7 @@
     "@clickhouse/client": "^1.12.0",
     "@date-fns/utc": "^1.2.0",
     "@dicebear/collection": "^9.2.3",
-    "@dicebear/core": "^9.2.3",
+    "@dicebear/core": "^9.4.1",
     "@fontsource/inter": "^5.2.8",
     "@hello-pangea/dnd": "^17.0.0",
     "@prisma/adapter-pg": "^6.18.0",
