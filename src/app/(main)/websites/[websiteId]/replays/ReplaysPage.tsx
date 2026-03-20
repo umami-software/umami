@@ -1,10 +1,11 @@
 'use client';
-import { Button, Column, Tab, TabList, TabPanel, Tabs, Text } from '@umami/react-zen';
+import { Button, Column, Icon, Tab, TabList, TabPanel, Tabs, Text } from '@umami/react-zen';
 import { type Key, useState } from 'react';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Panel } from '@/components/common/Panel';
 import { useMessages, useSubscription } from '@/components/hooks';
+import { Video } from '@/components/icons';
 import { getItem, setItem } from '@/lib/storage';
 import { ReplayModal } from './ReplayModal';
 import { ReplaysDataTable } from './ReplaysDataTable';
@@ -27,8 +28,14 @@ export function ReplaysPage({ websiteId }: { websiteId: string }) {
       <Column gap="3">
         <Panel>
           <Column gap="4" alignItems="center" padding="10">
-            <Text>{t(messages.upgradeRequired, { plan: 'Business' })}</Text>
-            <Button variant="primary" onPress={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}>
+            <Icon size="xl">
+              <Video />
+            </Icon>
+            <Text className="py-4">{t(messages.upgradeRequired, { plan: 'Business' })}</Text>
+            <Button
+              variant="primary"
+              onPress={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}
+            >
               {t(labels.upgrade)}
             </Button>
           </Column>
