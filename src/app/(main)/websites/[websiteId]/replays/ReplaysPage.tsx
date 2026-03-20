@@ -16,14 +16,14 @@ const KEY_NAME = 'umami.replays.tab';
 export function ReplaysPage({ websiteId }: { websiteId: string }) {
   const [tab, setTab] = useState(getItem(KEY_NAME) || 'replays');
   const { t, labels, messages } = useMessages();
-  const { hasFeature, cloudMode } = useSubscription();
+  const { hasFeature, hasSubscription, cloudMode } = useSubscription();
 
   const handleSelect = (value: Key) => {
     setItem(KEY_NAME, value);
     setTab(value);
   };
 
-  if (cloudMode && !hasFeature('replays')) {
+  if (cloudMode && hasSubscription && !hasFeature('replays')) {
     return (
       <Column gap="3">
         <Panel>
