@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { secret } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { parseToken } from '@/lib/jwt';
-import { fetchAccount } from '@/lib/load';
+import { fetchAccount, fetchTeam } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { getWebsite } from '@/queries/prisma';
@@ -62,9 +62,13 @@ export async function POST(request: Request) {
     }
 
     if (process.env.CLOUD_MODE) {
-      const account = await fetchAccount(website.userId);
+      const account = website.teamId
+        ? await fetchTeam(website.teamId)
+        : website.userId
+          ? await fetchAccount(website.userId)
+          : null;
 
-      if (!account?.isBusiness) {
+      if (!account?.isBusiness && !account?.isNoBilling) {
         return forbidden({ message: 'Business subscription required.' });
       }
     }

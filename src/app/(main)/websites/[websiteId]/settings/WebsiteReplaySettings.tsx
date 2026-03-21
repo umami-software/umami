@@ -23,7 +23,7 @@ interface ReplayConfig {
 export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const website = useWebsite();
   const { t, labels, messages } = useMessages();
-  const { hasFeature, cloudMode } = useSubscription();
+  const { hasFeature, cloudMode } = useSubscription(website?.teamId);
   const { mutateAsync, touch, toast, isPending } = useUpdateQuery(`/websites/${websiteId}`);
   const [enabled, setEnabled] = useState(website?.replayEnabled ?? false);
 

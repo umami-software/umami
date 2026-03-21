@@ -1,12 +1,12 @@
 'use client';
-import { Button, Column, Icon, Tab, TabList, TabPanel, Tabs, Text } from '@umami/react-zen';
-import { type Key, useState } from 'react';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Panel } from '@/components/common/Panel';
-import { useMessages, useSubscription } from '@/components/hooks';
+import { useMessages, useSubscription, useWebsite } from '@/components/hooks';
 import { Video } from '@/components/icons';
 import { getItem, setItem } from '@/lib/storage';
+import { Button, Column, Icon, Tab, TabList, TabPanel, Tabs, Text } from '@umami/react-zen';
+import { type Key, useState } from 'react';
 import { ReplayModal } from './ReplayModal';
 import { ReplaysDataTable } from './ReplaysDataTable';
 import { SavedReplaysDataTable } from './SavedReplaysDataTable';
@@ -15,15 +15,16 @@ const KEY_NAME = 'umami.replays.tab';
 
 export function ReplaysPage({ websiteId }: { websiteId: string }) {
   const [tab, setTab] = useState(getItem(KEY_NAME) || 'replays');
+  const website = useWebsite();
   const { t, labels, messages } = useMessages();
-  const { hasFeature, hasSubscription, cloudMode } = useSubscription();
+  const { hasFeature, cloudMode } = useSubscription(website?.teamId);
 
   const handleSelect = (value: Key) => {
     setItem(KEY_NAME, value);
     setTab(value);
   };
 
-  if (cloudMode && hasSubscription && !hasFeature('replays')) {
+  if (cloudMode && !hasFeature('replays')) {
     return (
       <Column gap="3">
         <Panel>

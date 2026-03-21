@@ -44,3 +44,9 @@ export async function fetchAccount(userId: string) {
 
   return account;
 }
+
+export async function fetchTeam(teamId: string) {
+  const team = await redis.client.get(`team:${teamId}`);
+
+  return team;
+}
