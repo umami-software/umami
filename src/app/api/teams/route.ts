@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { uuid } from '@/lib/crypto';
 import { getRandomChars } from '@/lib/generate';
+import { fetchAccount } from '@/lib/load';
+import redis from '@/lib/redis';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams } from '@/lib/schema';
@@ -43,14 +45,35 @@ export async function POST(request: Request) {
 
   const { name, ownerId } = body;
 
+  const teamId = uuid();
+  const teamOwnerId = ownerId ?? auth.user.id;
+
   const team = await createTeam(
     {
-      id: uuid(),
+      id: teamId,
       name,
       accessCode: `team_${getRandomChars(16)}`,
     },
-    ownerId ?? auth.user.id,
+    teamOwnerId,
   );
+
+  if (process.env.CLOUD_MODE && redis.enabled) {
+    const account = await fetchAccount(teamOwnerId);
+
+    if (account) {
+      await redis.client.set(
+        `team:${teamId}`,
+        {
+          teamOwnerId,
+          isPro: account.isPro || false,
+          isBusiness: account.isBusiness || false,
+          isNoBilling: account.isNoBilling || false,
+          hasSubscription: account.hasSubscription || false,
+        },
+        60 * 60 * 24 * 90,
+      );
+    }
+  }
 
   return json(team);
 }
