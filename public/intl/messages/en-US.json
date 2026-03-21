@@ -419,7 +419,7 @@
     "team-already-member": "You are already a member of the team.",
     "team-not-found": "Team not found.",
     "team-websites-info": "Websites can be viewed by anyone on the team.",
-    "tracking-code": "To track stats for this website, place the following code in the <head>...</head> section of your HTML.",
+    "tracking-code": "To track stats for this website, place the following code in the '<head>...</head>' section of your HTML.",
     "transfer-team-website-to-user": "Transfer this website to your account?",
     "transfer-user-website-to-team": "Select the team to transfer this website to.",
     "transfer-website": "Transfer website ownership to your account or another team.",
