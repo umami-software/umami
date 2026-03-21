@@ -140,31 +140,31 @@ export async function getClientInfo(request: Request, payload: Record<string, an
 export function hasBlockedIp(clientIp: string) {
   const ignoreIps = process.env.IGNORE_IP;
 
-  if (ignoreIps) {
-    const ips = [];
+  if (!clientIp || !ignoreIps) {
+    return false;
+  }
 
-    if (ignoreIps) {
-      ips.push(...ignoreIps.split(',').map(n => n.trim()));
+  const ips = ignoreIps.split(',').map(n => n.trim());
+
+  return ips.some(ip => {
+    if (ip === clientIp) {
+      return true;
     }
 
-    return ips.find(ip => {
-      if (ip === clientIp) {
-        return true;
-      }
-
-      // CIDR notation
-      if (ip.indexOf('/') > 0) {
+    // CIDR notation
+    if (ip.indexOf('/') > 0) {
+      try {
         const addr = ipaddr.parse(clientIp);
         const range = ipaddr.parseCIDR(ip);
 
         if (addr.kind() === range[0].kind() && addr.match(range)) {
           return true;
         }
+      } catch {
+        // Ignore parsing errors
       }
+    }
 
-      return false;
-    });
-  }
-
-  return false;
+    return false;
+  });
 }
