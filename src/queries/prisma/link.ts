@@ -64,3 +64,24 @@ export async function updateLink(linkId: string, data: any) {
 export async function deleteLink(linkId: string) {
   return prisma.client.link.delete({ where: { id: linkId } });
 }
+
+export async function getLinkClickCounts(linkIds: string[]): Promise<Record<string, number>> {
+  if (linkIds.length === 0) return {};
+
+  const results = await prisma.client.websiteEvent.groupBy({
+    by: ['websiteId'],
+    where: {
+      websiteId: { in: linkIds },
+      eventType: 1,
+    },
+    _count: {
+      _all: true,
+    },
+  });
+
+  const counts: Record<string, number> = {};
+  for (const row of results) {
+    counts[row.websiteId] = row._count._all;
+  }
+  return counts;
+}
