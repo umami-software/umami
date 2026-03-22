@@ -1,12 +1,13 @@
 'use client';
-import { Button, Column, Icon, Tab, TabList, TabPanel, Tabs, Text } from '@umami/react-zen';
-import { type Key, useState } from 'react';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
+import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { Panel } from '@/components/common/Panel';
-import { useMessages, useSubscription } from '@/components/hooks';
+import { useMessages, useSubscription, useWebsite } from '@/components/hooks';
 import { Video } from '@/components/icons';
 import { getItem, setItem } from '@/lib/storage';
+import { Button, Column, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { type Key, useState } from 'react';
 import { ReplayModal } from './ReplayModal';
 import { ReplaysDataTable } from './ReplaysDataTable';
 import { SavedReplaysDataTable } from './SavedReplaysDataTable';
@@ -15,8 +16,9 @@ const KEY_NAME = 'umami.replays.tab';
 
 export function ReplaysPage({ websiteId }: { websiteId: string }) {
   const [tab, setTab] = useState(getItem(KEY_NAME) || 'replays');
+  const website = useWebsite();
   const { t, labels, messages } = useMessages();
-  const { hasFeature, cloudMode } = useSubscription();
+  const { hasFeature, cloudMode } = useSubscription(website?.teamId);
 
   const handleSelect = (value: Key) => {
     setItem(KEY_NAME, value);
@@ -27,18 +29,18 @@ export function ReplaysPage({ websiteId }: { websiteId: string }) {
     return (
       <Column gap="3">
         <Panel>
-          <Column gap="4" alignItems="center" padding="10">
-            <Icon size="xl">
-              <Video />
-            </Icon>
-            <Text className="py-4">{t(messages.upgradeRequired, { plan: 'Business' })}</Text>
+          <EmptyPlaceholder
+            icon={<Video />}
+            title={t(messages.upgradeRequired, { plan: 'Business' })}
+            description="Watch real user sessions to see exactly how visitors interact with your site."
+          >
             <Button
               variant="primary"
               onPress={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}
             >
               {t(labels.upgrade)}
             </Button>
-          </Column>
+          </EmptyPlaceholder>
         </Panel>
       </Column>
     );
