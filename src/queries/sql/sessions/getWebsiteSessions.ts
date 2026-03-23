@@ -6,6 +6,8 @@ import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getWebsiteSessions';
 
+const SORTABLE_COLUMNS = ['visits', 'views', 'createdAt', 'firstAt'] as const;
+
 export async function getWebsiteSessions(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -22,12 +24,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     search: search ? `%${search}%` : undefined,
   });
 
-  const SORT_COLUMNS: Record<string, string> = {
-    visits: '"visits"',
-    views: '"views"',
-    createdAt: '"createdAt"',
-    firstAt: '"firstAt"',
-  };
+  const SORT_COLUMNS = Object.fromEntries(SORTABLE_COLUMNS.map(c => [c, `"${c}"`]));
 
   const sortedFilters = {
     ...filters,
@@ -96,12 +93,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     websiteId,
   });
 
-  const SORT_COLUMNS: Record<string, string> = {
-    visits: 'visits',
-    views: 'views',
-    createdAt: 'createdAt',
-    firstAt: 'firstAt',
-  };
+  const SORT_COLUMNS = Object.fromEntries(SORTABLE_COLUMNS.map(c => [c, c]));
 
   const sortedFilters = {
     ...filters,
