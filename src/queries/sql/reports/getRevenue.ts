@@ -12,7 +12,7 @@ export interface RevenuParameters {
 }
 
 export interface RevenueResult {
-  chart: { x: string; t: string; y: number }[];
+  chart: { t: string; sum: number; average: number; count: number; unique_count: number }[];
   country: { name: string; value: number }[];
   total: { sum: number; count: number; average: number; unique_count: number };
 }
@@ -53,9 +53,10 @@ async function relationalQuery(
   const chart = await rawQuery(
     `
     select
-      revenue.event_name x,
       ${getDateSQL('revenue.created_at', unit, timezone)} t,
-      sum(revenue.revenue) y
+      sum(revenue.revenue) as sum,
+      count(distinct revenue.event_id) as count,
+      count(distinct revenue.session_id) as unique_count
     from revenue
     ${joinQuery}
     ${cohortQuery}
@@ -64,11 +65,15 @@ async function relationalQuery(
       and revenue.created_at between {{startDate}} and {{endDate}}
       and revenue.currency = upper({{currency}})
       ${filterQuery}
-    group by  x, t
+    group by t
     order by t
     `,
     queryParams,
   );
+
+  chart.forEach(item => {
+    item.average = item.count > 0 ? Number(item.sum) / Number(item.count) : 0;
+  });
 
   const country = await rawQuery(
     `
@@ -139,16 +144,19 @@ async function clickhouseQuery(
 
   const chart = await rawQuery<
     {
-      x: string;
       t: string;
-      y: number;
+      sum: number;
+      average: number;
+      count: number;
+      unique_count: number;
     }[]
   >(
     `
     select
-      website_revenue.event_name x,
       ${getDateSQL('website_revenue.created_at', unit, timezone)} t,
-      sum(website_revenue.revenue) y
+      sum(website_revenue.revenue) as sum,
+      uniqExact(website_revenue.event_id) as count,
+      uniqExact(website_revenue.session_id) as unique_count
     from website_revenue
     ${joinQuery}
     ${cohortQuery}
@@ -156,11 +164,15 @@ async function clickhouseQuery(
       and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and website_revenue.currency = upper({currency:String})
       ${filterQuery}
-    group by  x, t
+    group by t
     order by t
     `,
     queryParams,
   );
+
+  chart.forEach(item => {
+    item.average = item.count > 0 ? item.sum / item.count : 0;
+  });
 
   const country = await rawQuery<
     {

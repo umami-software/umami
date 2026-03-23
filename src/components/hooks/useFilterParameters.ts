@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import { useNavigation } from './useNavigation';
 
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 export function useFilterParameters() {
   const {
     query: {
@@ -27,6 +29,9 @@ export function useFilterParameters() {
   } = useNavigation();
 
   return useMemo(() => {
+    const validSegment = segment && UUID_REGEX.test(segment) ? segment : undefined;
+    const validCohort = cohort && UUID_REGEX.test(cohort) ? cohort : undefined;
+
     return {
       path,
       referrer,
@@ -43,8 +48,8 @@ export function useFilterParameters() {
       tag,
       hostname,
       search,
-      segment,
-      cohort,
+      segment: validSegment,
+      cohort: validCohort,
     };
   }, [
     path,
