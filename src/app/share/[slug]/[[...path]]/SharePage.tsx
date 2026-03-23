@@ -14,7 +14,6 @@ import { PerformancePage } from '@/app/(main)/websites/[websiteId]/(reports)/per
 import { ComparePage } from '@/app/(main)/websites/[websiteId]/compare/ComparePage';
 import { EventsPage } from '@/app/(main)/websites/[websiteId]/events/EventsPage';
 import { RealtimePage } from '@/app/(main)/websites/[websiteId]/realtime/RealtimePage';
-import { ReplaysPage } from '@/app/(main)/websites/[websiteId]/replays/ReplaysPage';
 import { SessionsPage } from '@/app/(main)/websites/[websiteId]/sessions/SessionsPage';
 import { WebsiteHeader } from '@/app/(main)/websites/[websiteId]/WebsiteHeader';
 import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
@@ -42,7 +41,6 @@ const PAGE_COMPONENTS: Record<string, React.ComponentType<{ websiteId: string }>
   funnels: FunnelsPage,
   journeys: JourneysPage,
   retention: RetentionPage,
-  replays: ReplaysPage,
   utm: UTMPage,
   revenue: RevenuePage,
   attribution: AttributionPage,

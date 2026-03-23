@@ -1,7 +1,7 @@
 import { Button, Column, Icon, Row, ThemeButton } from '@umami/react-zen';
 import { NavMenu } from '@/components/common/NavMenu';
 import { useMessages, useNavigation, useShare } from '@/components/hooks';
-import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User, Video } from '@/components/icons';
+import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User } from '@/components/icons';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { PreferencesButton } from '@/components/input/PreferencesButton';
 import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
@@ -99,12 +99,6 @@ export function ShareNav({
           label: t(labels.retention),
           icon: <Magnet />,
           path: renderPath('/retention'),
-        },
-        {
-          id: 'replays',
-          label: t(labels.replays),
-          icon: <Video />,
-          path: renderPath('/replays'),
         },
       ],
     },
