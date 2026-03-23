@@ -27,7 +27,15 @@ export async function getLinks(criteria: Prisma.LinkFindManyArgs, filters: Query
     ]),
   };
 
-  return pagedQuery('link', { ...criteria, where }, filters);
+  return pagedQuery(
+    'link',
+    { ...criteria, where },
+    {
+      ...filters,
+      orderBy: filters.orderBy ?? 'createdAt',
+      sortDescending: filters.sortDescending ?? true,
+    },
+  );
 }
 
 export async function getUserLinks(userId: string, filters?: QueryFilters) {
