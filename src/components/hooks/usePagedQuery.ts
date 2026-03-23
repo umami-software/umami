@@ -1,27 +1,32 @@
-import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
-import type { PageResult } from '@/lib/types';
-import { useApi } from './useApi';
-import { useNavigation } from './useNavigation';
+import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
+import type { PageResult } from "@/lib/types";
+import { useApi } from "./useApi";
+import { useNavigation } from "./useNavigation";
 
 export function usePagedQuery<TData = any, TError = Error>({
   queryKey,
   queryFn,
   ...options
 }: Omit<
-  UseQueryOptions<PageResult<TData>, TError, PageResult<TData>, readonly unknown[]>,
-  'queryFn' | 'queryKey'
+  UseQueryOptions<
+    PageResult<TData>,
+    TError,
+    PageResult<TData>,
+    readonly unknown[]
+  >,
+  "queryFn" | "queryKey"
 > & {
   queryKey: readonly unknown[];
   queryFn: (params?: object) => Promise<PageResult<TData>> | PageResult<TData>;
 }): UseQueryResult<PageResult<TData>, TError> {
   const {
-    query: { page, search, orderBy, sortDescending },
+    query: { page, search },
   } = useNavigation();
   const { useQuery } = useApi();
 
   return useQuery<PageResult<TData>, TError>({
-    queryKey: [...queryKey, page, search, orderBy, sortDescending] as const,
-    queryFn: () => queryFn({ page, search, orderBy, sortDescending }),
+    queryKey: [...queryKey, page, search] as const,
+    queryFn: () => queryFn({ page, search }),
     ...options,
   });
 }
