@@ -234,6 +234,7 @@
     let timeoutId;
     let isInitialLoad = true;
     let activationStart = 0;
+    let pageStartTime = 0;
 
     const observe = (type, callback) => {
       try {
@@ -299,8 +300,10 @@
               interactions[entry.interactionId] = entry.duration;
             }
             const values = Object.values(interactions).sort((a, b) => b - a);
-            const p98Index = Math.floor(Math.max(values.length, 10) * 0.02);
-            metrics.inp = values[Math.min(p98Index, values.length - 1)] || 0;
+            if (values.length) {
+              const p98Index = Math.floor(Math.max(values.length, 10) * 0.02);
+              metrics.inp = values[Math.min(p98Index, values.length - 1)];
+            }
           }
         });
       });
@@ -349,7 +352,7 @@
       if (sent) return;
 
       applyFallbackMetrics();
-      if (!Object.keys(metrics).length) return;
+      metrics.duration = Math.round(performance.now() - pageStartTime);
 
       sent = true;
       if (timeoutId) clearTimeout(timeoutId);
@@ -363,6 +366,7 @@
         delete metrics[k];
       });
       activationStart = 0;
+      pageStartTime = performance.now();
       clsSessionValue = 0;
       clsSessionEntries = [];
       interactions = {};
