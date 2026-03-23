@@ -4,7 +4,7 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams } from '@/lib/schema';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
-import { createLink, getUserLinks } from '@/queries/prisma';
+import { createLink, getLinkClickCounts, getUserLinks } from '@/queries/prisma';
 
 export async function GET(request: Request) {
   const schema = z.object({
@@ -21,6 +21,13 @@ export async function GET(request: Request) {
   const filters = await getQueryFilters(query);
 
   const links = await getUserLinks(auth.user.id, filters);
+
+  const linkIds = links.data.map((link: any) => link.id);
+  const clickCounts = await getLinkClickCounts(linkIds);
+  links.data = links.data.map((link: any) => ({
+    ...link,
+    clicks: clickCounts[link.id] || 0,
+  }));
 
   return json(links);
 }

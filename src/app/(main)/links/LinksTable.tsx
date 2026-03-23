@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { DateDistance } from '@/components/common/DateDistance';
 import { ExternalLink } from '@/components/common/ExternalLink';
 import { useMessages, useNavigation, useSlug } from '@/components/hooks';
+import { formatLongNumber } from '@/lib/format';
 import { LinkDeleteButton } from './LinkDeleteButton';
 import { LinkEditButton } from './LinkEditButton';
 
@@ -32,6 +33,9 @@ export function LinksTable(props: DataTableProps) {
         {({ url }: any) => {
           return <ExternalLink href={url}>{url}</ExternalLink>;
         }}
+      </DataColumn>
+      <DataColumn id="clicks" label={formatMessage(labels.clicks)} width="100px">
+        {({ clicks }: any) => formatLongNumber(clicks)}
       </DataColumn>
       <DataColumn id="created" label={formatMessage(labels.created)} width="200px">
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
