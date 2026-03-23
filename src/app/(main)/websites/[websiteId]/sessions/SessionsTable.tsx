@@ -2,6 +2,7 @@ import { DataColumn, DataTable, type DataTableProps } from '@umami/react-zen';
 import Link from 'next/link';
 import { Avatar } from '@/components/common/Avatar';
 import { DateDistance } from '@/components/common/DateDistance';
+import { SortableLabel } from '@/components/common/SortableLabel';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { useFormat, useMessages, useNavigation } from '@/components/hooks';
 
@@ -19,8 +20,16 @@ export function SessionsTable(props: DataTableProps) {
           </Link>
         )}
       </DataColumn>
-      <DataColumn id="visits" label={formatMessage(labels.visits)} width="80px" />
-      <DataColumn id="views" label={formatMessage(labels.views)} width="80px" />
+      <DataColumn
+        id="visits"
+        label={<SortableLabel column="visits" label={formatMessage(labels.visits)} />}
+        width="100px"
+      />
+      <DataColumn
+        id="views"
+        label={<SortableLabel column="views" label={formatMessage(labels.views)} />}
+        width="100px"
+      />
       <DataColumn id="country" label={formatMessage(labels.country)}>
         {(row: any) => (
           <TypeIcon type="country" value={row.country}>
@@ -50,7 +59,10 @@ export function SessionsTable(props: DataTableProps) {
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="lastAt" label={formatMessage(labels.lastSeen)}>
+      <DataColumn
+        id="lastAt"
+        label={<SortableLabel column="createdAt" label={formatMessage(labels.lastSeen)} />}
+      >
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
     </DataTable>

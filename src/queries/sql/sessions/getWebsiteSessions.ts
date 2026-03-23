@@ -22,6 +22,19 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     search: search ? `%${search}%` : undefined,
   });
 
+  const SORT_COLUMNS: Record<string, string> = {
+    visits: '"visits"',
+    views: '"views"',
+    createdAt: '"createdAt"',
+    firstAt: '"firstAt"',
+  };
+
+  const sortedFilters = {
+    ...filters,
+    orderBy: SORT_COLUMNS[filters.orderBy as string] || '"createdAt"',
+    sortDescending: filters.orderBy ? filters.sortDescending : true,
+  };
+
   const searchQuery = search
     ? `and (distinct_id ilike {{search}}
            or city ilike {{search}}
@@ -68,10 +81,9 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       session.country, 
       session.region, 
       session.city
-    order by max(website_event.created_at) desc
     `,
     queryParams,
-    filters,
+    sortedFilters,
     FUNCTION_NAME,
   );
 }
@@ -83,6 +95,19 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ...filters,
     websiteId,
   });
+
+  const SORT_COLUMNS: Record<string, string> = {
+    visits: 'visits',
+    views: 'views',
+    createdAt: 'createdAt',
+    firstAt: 'firstAt',
+  };
+
+  const sortedFilters = {
+    ...filters,
+    orderBy: SORT_COLUMNS[filters.orderBy as string] || 'createdAt',
+    sortDescending: filters.orderBy ? filters.sortDescending : true,
+  };
 
   const searchQuery = search
     ? `and ((positionCaseInsensitive(distinct_id, {search:String}) > 0)
@@ -120,7 +145,6 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ${filterQuery}
     ${searchQuery}
     group by session_id, website_id, hostname, browser, os, device, screen, language, country, region, city
-    order by lastAt desc
     `;
   } else {
     sql = `
@@ -148,9 +172,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ${filterQuery}
     ${searchQuery}
     group by session_id, website_id, hostname, browser, os, device, screen, language, country, region, city
-    order by lastAt desc
     `;
   }
 
-  return pagedRawQuery(sql, queryParams, filters, FUNCTION_NAME);
+  return pagedRawQuery(sql, queryParams, sortedFilters, FUNCTION_NAME);
 }

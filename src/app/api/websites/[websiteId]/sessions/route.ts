@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { dateRangeParams, filterParams, pagingParams, searchParams } from '@/lib/schema';
+import { dateRangeParams, filterParams, pagingParams, searchParams, sortingParams } from '@/lib/schema';
 import { canViewWebsite } from '@/permissions';
 import { getWebsiteSessions } from '@/queries/sql';
 
@@ -14,6 +14,7 @@ export async function GET(
     ...filterParams,
     ...pagingParams,
     ...searchParams,
+    ...sortingParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);

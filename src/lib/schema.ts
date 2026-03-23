@@ -54,6 +54,10 @@ export const pagingParams = {
 
 export const sortingParams = {
   orderBy: z.string().optional(),
+  sortDescending: z
+    .enum(['true', 'false'])
+    .transform(v => v === 'true')
+    .optional(),
 };
 
 export const userRoleParam = z.enum(['admin', 'user', 'view-only']);
