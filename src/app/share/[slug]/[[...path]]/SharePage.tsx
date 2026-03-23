@@ -10,9 +10,11 @@ import { JourneysPage } from '@/app/(main)/websites/[websiteId]/(reports)/journe
 import { RetentionPage } from '@/app/(main)/websites/[websiteId]/(reports)/retention/RetentionPage';
 import { RevenuePage } from '@/app/(main)/websites/[websiteId]/(reports)/revenue/RevenuePage';
 import { UTMPage } from '@/app/(main)/websites/[websiteId]/(reports)/utm/UTMPage';
+import { PerformancePage } from '@/app/(main)/websites/[websiteId]/(reports)/performance/PerformancePage';
 import { ComparePage } from '@/app/(main)/websites/[websiteId]/compare/ComparePage';
 import { EventsPage } from '@/app/(main)/websites/[websiteId]/events/EventsPage';
 import { RealtimePage } from '@/app/(main)/websites/[websiteId]/realtime/RealtimePage';
+import { ReplaysPage } from '@/app/(main)/websites/[websiteId]/replays/ReplaysPage';
 import { SessionsPage } from '@/app/(main)/websites/[websiteId]/sessions/SessionsPage';
 import { WebsiteHeader } from '@/app/(main)/websites/[websiteId]/WebsiteHeader';
 import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
@@ -33,12 +35,14 @@ const PAGE_COMPONENTS: Record<string, React.ComponentType<{ websiteId: string }>
   events: EventsPage,
   sessions: SessionsPage,
   realtime: RealtimePage,
+  performance: PerformancePage,
   compare: ComparePage,
   breakdown: BreakdownPage,
   goals: GoalsPage,
   funnels: FunnelsPage,
   journeys: JourneysPage,
   retention: RetentionPage,
+  replays: ReplaysPage,
   utm: UTMPage,
   revenue: RevenuePage,
   attribution: AttributionPage,

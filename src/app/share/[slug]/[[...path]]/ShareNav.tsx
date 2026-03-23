@@ -1,10 +1,10 @@
 import { Button, Column, Icon, Row, ThemeButton } from '@umami/react-zen';
 import { NavMenu } from '@/components/common/NavMenu';
 import { useMessages, useNavigation, useShare } from '@/components/hooks';
-import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User } from '@/components/icons';
+import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User, Video } from '@/components/icons';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { PreferencesButton } from '@/components/input/PreferencesButton';
-import { Funnel, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
 import { ShareBranding } from './ShareBranding';
 
 export function ShareNav({
@@ -53,6 +53,12 @@ export function ShareNav({
           path: renderPath('/realtime'),
         },
         {
+          id: 'performance',
+          label: t(labels.performance),
+          icon: <Gauge />,
+          path: renderPath('/performance'),
+        },
+        {
           id: 'compare',
           label: t(labels.compare),
           icon: <AlignEndHorizontal />,
@@ -93,6 +99,12 @@ export function ShareNav({
           label: t(labels.retention),
           icon: <Magnet />,
           path: renderPath('/retention'),
+        },
+        {
+          id: 'replays',
+          label: t(labels.replays),
+          icon: <Video />,
+          path: renderPath('/replays'),
         },
       ],
     },
