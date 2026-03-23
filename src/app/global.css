@@ -56,6 +56,11 @@ select:-webkit-autofill:focus {
   transition: color 5000s ease-in-out 0s;
 }
 
+/* Code snippet textareas */
+.code-textarea textarea {
+  min-height: 100px;
+}
+
 /* rrweb-player overrides */
 .rr-controller__btns {
   gap: 8px;

@@ -7,12 +7,15 @@ import {
   Select,
   Slider,
   Switch,
+  Text,
   TextField,
 } from '@umami/react-zen';
 import { useState } from 'react';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { useMessages, useSubscription, useUpdateQuery, useWebsite } from '@/components/hooks';
 import { Video } from '@/components/icons';
+
+const RECORDER_NAME = 'recorder.js';
 
 interface ReplayConfig {
   sampleRate?: number;
@@ -34,6 +37,14 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const [maskLevel, setMaskLevel] = useState(config.maskLevel ?? 'moderate');
   const [maxDuration, setMaxDuration] = useState(String(config.maxDuration ?? 300000));
   const [blockSelector, setBlockSelector] = useState(config.blockSelector ?? '');
+
+  const recorderUrl = cloudMode
+    ? `${process.env.cloudUrl}/${RECORDER_NAME}`
+    : `${window?.location?.origin || ''}${process.env.basePath || ''}/${RECORDER_NAME}`;
+
+  let recorderAttrs = `data-website-id="${websiteId}" data-sample-rate="${sampleRate}" data-mask-level="${maskLevel}" data-max-duration="${parseInt(maxDuration, 10) || 300000}"`;
+  if (blockSelector) recorderAttrs += ` data-block-selector="${blockSelector}"`;
+  const recorderCode = `<script defer src="${recorderUrl}" ${recorderAttrs}></script>`;
 
   const handleToggle = async (value: boolean) => {
     const previous = enabled;
@@ -106,6 +117,9 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
       </Switch>
       {enabled && (
         <>
+          <Label>{t(labels.replayCode)}</Label>
+          <Text color="muted">{t(messages.trackingCode)}</Text>
+          <TextField value={recorderCode} isReadOnly allowCopy asTextArea resize="none" className="code-textarea" />
           <Slider
             label={t(labels.sampleRate)}
             minValue={0.05}

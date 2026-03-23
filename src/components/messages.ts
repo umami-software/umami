@@ -371,6 +371,7 @@ export const labels: Record<string, string> = {
   replay: 'label.replay',
   replayId: 'label.replay-id',
   replayEnabled: 'label.replay-enabled',
+  replayCode: 'label.replay-code',
   sampleRate: 'label.sample-rate',
   maskLevel: 'label.mask-level',
   maxDuration: 'label.max-duration',
