@@ -1,10 +1,10 @@
-import { DataColumn, DataTable, type DataTableProps } from '@umami/react-zen';
-import Link from 'next/link';
-import { Avatar } from '@/components/common/Avatar';
-import { DateDistance } from '@/components/common/DateDistance';
-import { SortableLabel } from '@/components/common/SortableLabel';
-import { TypeIcon } from '@/components/common/TypeIcon';
-import { useFormat, useMessages, useNavigation } from '@/components/hooks';
+import { DataColumn, DataTable, type DataTableProps } from "@umami/react-zen";
+import Link from "next/link";
+import { Avatar } from "@/components/common/Avatar";
+import { DateDistance } from "@/components/common/DateDistance";
+import { SortableLabel } from "@/components/common/SortableLabel";
+import { TypeIcon } from "@/components/common/TypeIcon";
+import { useFormat, useMessages, useNavigation } from "@/components/hooks";
 
 export function SessionsTable(props: DataTableProps) {
   const { formatMessage, labels } = useMessages();
@@ -22,18 +22,22 @@ export function SessionsTable(props: DataTableProps) {
       </DataColumn>
       <DataColumn
         id="visits"
-        label={<SortableLabel column="visits" label={formatMessage(labels.visits)} />}
+        label={
+          <SortableLabel column="visits" label={formatMessage(labels.visits)} />
+        }
         width="100px"
       />
       <DataColumn
         id="views"
-        label={<SortableLabel column="views" label={formatMessage(labels.views)} />}
+        label={
+          <SortableLabel column="views" label={formatMessage(labels.views)} />
+        }
         width="100px"
       />
       <DataColumn id="country" label={formatMessage(labels.country)}>
         {(row: any) => (
           <TypeIcon type="country" value={row.country}>
-            {formatValue(row.country, 'country')}
+            {formatValue(row.country, "country")}
           </TypeIcon>
         )}
       </DataColumn>
@@ -41,29 +45,34 @@ export function SessionsTable(props: DataTableProps) {
       <DataColumn id="browser" label={formatMessage(labels.browser)}>
         {(row: any) => (
           <TypeIcon type="browser" value={row.browser}>
-            {formatValue(row.browser, 'browser')}
+            {formatValue(row.browser, "browser")}
           </TypeIcon>
         )}
       </DataColumn>
       <DataColumn id="os" label={formatMessage(labels.os)}>
         {(row: any) => (
           <TypeIcon type="os" value={row.os}>
-            {formatValue(row.os, 'os')}
+            {formatValue(row.os, "os")}
           </TypeIcon>
         )}
       </DataColumn>
       <DataColumn id="device" label={formatMessage(labels.device)}>
         {(row: any) => (
           <TypeIcon type="device" value={row.device}>
-            {formatValue(row.device, 'device')}
+            {formatValue(row.device, "device")}
           </TypeIcon>
         )}
       </DataColumn>
       <DataColumn
         id="lastAt"
-        label={<SortableLabel column="createdAt" label={formatMessage(labels.lastSeen)} />}
+        label={
+          <SortableLabel
+            column="lastAt"
+            label={formatMessage(labels.lastSeen)}
+          />
+        }
       >
-        {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
+        {(row: any) => <DateDistance date={new Date(row.lastAt)} />}
       </DataColumn>
     </DataTable>
   );

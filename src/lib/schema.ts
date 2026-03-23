@@ -55,7 +55,7 @@ export const pagingParams = {
 };
 
 export const sortingParams = {
-  orderBy: z.enum(["visits", "views", "createdAt", "firstAt"]).optional(),
+  orderBy: z.enum(["visits", "views", "lastAt", "firstAt"]).optional(),
   sortDescending: z
     .enum(["true", "false"])
     .transform((v) => v === "true")

@@ -6,7 +6,7 @@ import type { QueryFilters } from "@/lib/types";
 
 const FUNCTION_NAME = "getWebsiteSessions";
 
-const SORTABLE_COLUMNS = ["visits", "views", "createdAt", "firstAt"] as const;
+const SORTABLE_COLUMNS = ["visits", "views", "lastAt", "firstAt"] as const;
 
 export async function getWebsiteSessions(
   ...args: [websiteId: string, filters: QueryFilters]
@@ -32,7 +32,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 
   const sortedFilters = {
     ...filters,
-    orderBy: SORT_COLUMNS[filters.orderBy as string] || '"createdAt"',
+    orderBy: SORT_COLUMNS[filters.orderBy as string] || '"lastAt"',
     sortDescending: filters.orderBy ? filters.sortDescending : true,
   };
 
@@ -61,8 +61,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       min(website_event.created_at) as "firstAt",
       max(website_event.created_at) as "lastAt",
       count(distinct website_event.visit_id) as "visits",
-      sum(case when website_event.event_type = 1 then 1 else 0 end) as "views",
-      max(website_event.created_at) as "createdAt"
+      sum(case when website_event.event_type = 1 then 1 else 0 end) as "views"
     from website_event 
     ${cohortQuery}
     join session on session.session_id = website_event.session_id
@@ -101,7 +100,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
 
   const sortedFilters = {
     ...filters,
-    orderBy: SORT_COLUMNS[filters.orderBy as string] || "createdAt",
+    orderBy: SORT_COLUMNS[filters.orderBy as string] || "lastAt",
     sortDescending: filters.orderBy ? filters.sortDescending : true,
   };
 
@@ -132,8 +131,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       ${getDateStringSQL("min(created_at)")} as firstAt,
       ${getDateStringSQL("max(created_at)")} as lastAt,
       uniq(visit_id) as visits,
-      sumIf(1, event_type = 1) as views,
-      lastAt as createdAt
+      sumIf(1, event_type = 1) as views
     from website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}
@@ -159,8 +157,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       ${getDateStringSQL("min(min_time)")} as firstAt,
       ${getDateStringSQL("max(max_time)")} as lastAt,
       uniq(visit_id) as visits,
-      sumIf(views, event_type = 1) as views,
-      lastAt as createdAt
+      sumIf(views, event_type = 1) as views
     from website_event_stats_hourly as website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}
