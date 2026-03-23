@@ -80,7 +80,7 @@ export async function getLinkClickCounts(linkIds: string[]): Promise<Record<stri
     by: ['websiteId'],
     where: {
       websiteId: { in: linkIds },
-      eventType: 1,
+      eventType: 3,
     },
     _count: {
       _all: true,

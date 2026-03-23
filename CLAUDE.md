@@ -76,12 +76,4 @@ Standalone analytics script bundled with Rollup (`src/tracker/`). Built separate
 
 ## Fork Info
 
-- **origin:** `https://github.com/crisdias/umami.git` (fork)
-- **upstream:** `https://github.com/umami-software/umami` (original)
 - **Always check for upstream updates** at the start of a session with `git fetch upstream && git log --oneline master..upstream/master`
-
-## Production
-
-- **Docker compose:** `D:\docker\umami\docker-compose.yml` (NOT the one in the repo)
-- **Rebuild & restart:** `docker compose -f D:/docker/umami/docker-compose.yml up -d --build`
-- **Port:** 3800 → 3000 (behind reverse proxy at `iaemcurso.link`)

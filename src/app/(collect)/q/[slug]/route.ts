@@ -45,13 +45,16 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     payload: {
       link: link.id,
       url: request.url,
-      referrer: request.headers.get('referer'),
+      referrer: request.headers.get('referer') ?? undefined,
     },
   };
 
+  const headers = new Headers(request.headers);
+  headers.set('Content-Type', 'application/json');
+
   const req = new Request(request.url, {
     method: 'POST',
-    headers: request.headers,
+    headers,
     body: JSON.stringify(payload),
   });
 
