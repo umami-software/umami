@@ -39,9 +39,12 @@ import { record } from 'rrweb';
     if (!session?.cache) return;
 
     const body = JSON.stringify({
-      website,
-      events,
-      timestamp: Math.floor(Date.now() / 1000),
+      type: 'record',
+      payload: {
+        website,
+        events,
+        timestamp: Math.floor(Date.now() / 1000),
+      },
     });
 
     // keepalive has a 64KB body limit — only use it for small payloads on unload

@@ -16,9 +16,12 @@ interface Cache {
 }
 
 const schema = z.object({
-  website: z.uuid(),
-  events: z.array(z.any()).max(200),
-  timestamp: z.coerce.number().int().optional(),
+  type: z.literal('record'),
+  payload: z.object({
+    website: z.uuid(),
+    events: z.array(z.any()).max(200),
+    timestamp: z.coerce.number().int().optional(),
+  }),
 });
 
 export async function POST(request: Request) {
@@ -29,7 +32,7 @@ export async function POST(request: Request) {
       return error();
     }
 
-    const { website: websiteId, events, timestamp } = body;
+    const { website: websiteId, events, timestamp } = body.payload;
 
     if (!events?.length) {
       return json({ ok: true });
