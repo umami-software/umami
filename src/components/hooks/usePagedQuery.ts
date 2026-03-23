@@ -1,15 +1,20 @@
-import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
-import type { PageResult } from '@/lib/types';
-import { useApi } from './useApi';
-import { useNavigation } from './useNavigation';
+import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
+import type { PageResult } from "@/lib/types";
+import { useApi } from "./useApi";
+import { useNavigation } from "./useNavigation";
 
 export function usePagedQuery<TData = any, TError = Error>({
   queryKey,
   queryFn,
   ...options
 }: Omit<
-  UseQueryOptions<PageResult<TData>, TError, PageResult<TData>, readonly unknown[]>,
-  'queryFn' | 'queryKey'
+  UseQueryOptions<
+    PageResult<TData>,
+    TError,
+    PageResult<TData>,
+    readonly unknown[]
+  >,
+  "queryFn" | "queryKey"
 > & {
   queryKey: readonly unknown[];
   queryFn: (params?: object) => Promise<PageResult<TData>> | PageResult<TData>;
