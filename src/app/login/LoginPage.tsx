@@ -1,8 +1,24 @@
 'use client';
-import { Column } from '@umami/react-zen';
+import { Column, Loading } from '@umami/react-zen';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useLoginQuery } from '@/components/hooks';
 import { LoginForm } from './LoginForm';
 
 export function LoginPage() {
+  const { user, isLoading } = useLoginQuery();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.replace('/');
+    }
+  }, [user, router]);
+
+  if (isLoading || user) {
+    return <Loading placement="absolute" />;
+  }
+
   return (
     <Column alignItems="center" height="100vh" backgroundColor="2" paddingTop="12">
       <LoginForm />
