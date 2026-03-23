@@ -1,14 +1,16 @@
-import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
-import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import clickhouse from "@/lib/clickhouse";
+import { EVENT_COLUMNS } from "@/lib/constants";
+import { CLICKHOUSE, PRISMA, runQuery } from "@/lib/db";
+import prisma from "@/lib/prisma";
+import type { QueryFilters } from "@/lib/types";
 
-const FUNCTION_NAME = 'getWebsiteSessions';
+const FUNCTION_NAME = "getWebsiteSessions";
 
-const SORTABLE_COLUMNS = ['visits', 'views', 'createdAt', 'firstAt'] as const;
+const SORTABLE_COLUMNS = ["visits", "views", "createdAt", "firstAt"] as const;
 
-export async function getWebsiteSessions(...args: [websiteId: string, filters: QueryFilters]) {
+export async function getWebsiteSessions(
+  ...args: [websiteId: string, filters: QueryFilters]
+) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -24,7 +26,9 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     search: search ? `%${search}%` : undefined,
   });
 
-  const SORT_COLUMNS = Object.fromEntries(SORTABLE_COLUMNS.map(c => [c, `"${c}"`]));
+  const SORT_COLUMNS = Object.fromEntries(
+    SORTABLE_COLUMNS.map((c) => [c, `"${c}"`]),
+  );
 
   const sortedFilters = {
     ...filters,
@@ -38,7 +42,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
            or browser ilike {{search}}
            or os ilike {{search}}
            or device ilike {{search}})`
-    : '';
+    : "";
 
   return pagedRawQuery(
     `
@@ -93,11 +97,11 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     websiteId,
   });
 
-  const SORT_COLUMNS = Object.fromEntries(SORTABLE_COLUMNS.map(c => [c, c]));
+  const SORT_COLUMNS = Object.fromEntries(SORTABLE_COLUMNS.map((c) => [c, c]));
 
   const sortedFilters = {
     ...filters,
-    orderBy: SORT_COLUMNS[filters.orderBy as string] || 'createdAt',
+    orderBy: SORT_COLUMNS[filters.orderBy as string] || "createdAt",
     sortDescending: filters.orderBy ? filters.sortDescending : true,
   };
 
@@ -107,11 +111,11 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
            or (positionCaseInsensitive(browser, {search:String}) > 0)
            or (positionCaseInsensitive(os, {search:String}) > 0)
            or (positionCaseInsensitive(device, {search:String}) > 0))`
-    : '';
+    : "";
 
-  let sql = '';
+  let sql = "";
 
-  if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
+  if (EVENT_COLUMNS.some((item) => Object.keys(filters).includes(item))) {
     sql = `
     select
       session_id as id,
@@ -125,8 +129,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       country,
       region,
       city,
-      ${getDateStringSQL('min(created_at)')} as firstAt,
-      ${getDateStringSQL('max(created_at)')} as lastAt,
+      ${getDateStringSQL("min(created_at)")} as firstAt,
+      ${getDateStringSQL("max(created_at)")} as lastAt,
       uniq(visit_id) as visits,
       sumIf(1, event_type = 1) as views,
       lastAt as createdAt
@@ -152,8 +156,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       country,
       region,
       city,
-      ${getDateStringSQL('min(min_time)')} as firstAt,
-      ${getDateStringSQL('max(max_time)')} as lastAt,
+      ${getDateStringSQL("min(min_time)")} as firstAt,
+      ${getDateStringSQL("max(max_time)")} as lastAt,
       uniq(visit_id) as visits,
       sumIf(views, event_type = 1) as views,
       lastAt as createdAt
