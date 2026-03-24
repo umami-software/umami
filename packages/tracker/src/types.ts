@@ -18,7 +18,7 @@ export type TrackedProperties = {
   /**
    * Page referrer
    *
-   * @description extracted from `window.navigator.language`
+   * @description extracted from `document.referrer`
    * @example 'https://analytics.umami.is/docs/getting-started'
    */
   referrer: string;

@@ -10,8 +10,8 @@ It can be used in any JavaScript or TypeScript project to integrate Umami analyt
 programmatically, i.e. without resorting to an embed code.
 
 While this does require a separate build tool, you'll likely save a network trip
-and have a higher propability of avoiding ad blockers. Do keep in mind, that
-this this dependency needs to be kept up-to-date (matching your Umami instance).
+and have a higher probability of avoiding ad blockers. Do keep in mind, that
+this dependency needs to be kept up-to-date (matching your Umami instance).
 
 ## Installation
 

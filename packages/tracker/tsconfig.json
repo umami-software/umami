@@ -5,7 +5,6 @@
     "lib": ["ES2020", "DOM"],
     "moduleResolution": "bundler",
     "strict": true,
-    "strictNullChecks": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,

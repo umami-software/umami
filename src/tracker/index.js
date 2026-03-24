@@ -20,7 +20,10 @@ import { createTracker } from '../../packages/tracker/src';
     endpoint: `${host.replace(/\/$/, '')}__COLLECT_API_ENDPOINT__`,
     tag: attr(`${_data}tag`) || undefined,
     autoTrack: attr(`${_data}auto-track`) !== _false,
-    domains: (attr(`${_data}domains`) || '').split(',').map(n => n.trim()),
+    domains: (attr(`${_data}domains`) || '')
+      .split(',')
+      .map(n => n.trim())
+      .filter(Boolean),
     excludeSearch: attr(`${_data}exclude-search`) === _true,
     excludeHash: attr(`${_data}exclude-hash`) === _true,
     doNotTrack: attr(`${_data}do-not-track`) === _true,

@@ -242,7 +242,10 @@ export function createTracker(config: TrackerConfig): UmamiTracker {
     if (document.readyState === 'complete') {
       init();
     } else {
-      document.addEventListener('readystatechange', init, true);
+      document.addEventListener('readystatechange', init, {
+        capture: true,
+        once: true,
+      });
     }
   }
 
