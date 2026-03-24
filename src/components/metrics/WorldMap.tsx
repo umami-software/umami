@@ -102,8 +102,7 @@ export function WorldMap({ websiteId, data, ...props }: WorldMapProps) {
       {tooltip && (
         <FloatingTooltip>
           <Box
-            style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}
-            color="inverted"
+            style={{ backgroundColor: 'rgba(0,0,0,0.8)', color: 'white' }}
             padding
             borderRadius="md"
           >
