@@ -216,7 +216,6 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
                       data={data.pages
                         ?.filter(
                           ({ p50, p75, p95 }: any) =>
-                            selectedMetric === 'cls' ||
                             Number({ p50, p75, p95 }[selectedPercentile]) > 0,
                         )
                         .slice(0, 20)
@@ -236,7 +235,6 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
                       data={data.pageTitles
                         ?.filter(
                           ({ p50, p75, p95 }: any) =>
-                            selectedMetric === 'cls' ||
                             Number({ p50, p75, p95 }[selectedPercentile]) > 0,
                         )
                         .slice(0, 20)
@@ -265,7 +263,6 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
                       data={data.devices
                         ?.filter(
                           ({ p50, p75, p95 }: any) =>
-                            selectedMetric === 'cls' ||
                             Number({ p50, p75, p95 }[selectedPercentile]) > 0,
                         )
                         .slice(0, 20)
@@ -285,7 +282,6 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
                       data={data.browsers
                         ?.filter(
                           ({ p50, p75, p95 }: any) =>
-                            selectedMetric === 'cls' ||
                             Number({ p50, p75, p95 }[selectedPercentile]) > 0,
                         )
                         .slice(0, 20)
