@@ -2,22 +2,22 @@ import { OPERATORS } from '@/lib/constants';
 import { useMessages } from './useMessages';
 
 export function useOperatorLabels(): Record<string, string> {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   return {
-    [OPERATORS.equals]: formatMessage(labels.is),
-    [OPERATORS.notEquals]: formatMessage(labels.isNot),
-    [OPERATORS.set]: formatMessage(labels.isSet),
-    [OPERATORS.notSet]: formatMessage(labels.isNotSet),
-    [OPERATORS.contains]: formatMessage(labels.contains),
-    [OPERATORS.doesNotContain]: formatMessage(labels.doesNotContain),
-    [OPERATORS.true]: formatMessage(labels.true),
-    [OPERATORS.false]: formatMessage(labels.false),
-    [OPERATORS.greaterThan]: formatMessage(labels.greaterThan),
-    [OPERATORS.lessThan]: formatMessage(labels.lessThan),
-    [OPERATORS.greaterThanEquals]: formatMessage(labels.greaterThanEquals),
-    [OPERATORS.lessThanEquals]: formatMessage(labels.lessThanEquals),
-    [OPERATORS.before]: formatMessage(labels.before),
-    [OPERATORS.after]: formatMessage(labels.after),
+    [OPERATORS.equals]: t(labels.is),
+    [OPERATORS.notEquals]: t(labels.isNot),
+    [OPERATORS.set]: t(labels.isSet),
+    [OPERATORS.notSet]: t(labels.isNotSet),
+    [OPERATORS.contains]: t(labels.contains),
+    [OPERATORS.doesNotContain]: t(labels.doesNotContain),
+    [OPERATORS.true]: t(labels.true),
+    [OPERATORS.false]: t(labels.false),
+    [OPERATORS.greaterThan]: t(labels.greaterThan),
+    [OPERATORS.lessThan]: t(labels.lessThan),
+    [OPERATORS.greaterThanEquals]: t(labels.greaterThanEquals),
+    [OPERATORS.lessThanEquals]: t(labels.lessThanEquals),
+    [OPERATORS.before]: t(labels.before),
+    [OPERATORS.after]: t(labels.after),
   };
 }

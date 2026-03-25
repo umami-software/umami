@@ -33,25 +33,6 @@ export function useFilters() {
     { name: 'eq', type: 'uuid', label: t(labels.is) },
   ];
 
-  const operatorLabels = {
-    [OPERATORS.equals]: t(labels.is),
-    [OPERATORS.notEquals]: t(labels.isNot),
-    [OPERATORS.set]: t(labels.isSet),
-    [OPERATORS.notSet]: t(labels.isNotSet),
-    [OPERATORS.contains]: t(labels.contains),
-    [OPERATORS.doesNotContain]: t(labels.doesNotContain),
-    [OPERATORS.regex]: t(labels.regexMatch),
-    [OPERATORS.notRegex]: t(labels.regexNotMatch),
-    [OPERATORS.true]: t(labels.true),
-    [OPERATORS.false]: t(labels.false),
-    [OPERATORS.greaterThan]: t(labels.greaterThan),
-    [OPERATORS.lessThan]: t(labels.lessThan),
-    [OPERATORS.greaterThanEquals]: t(labels.greaterThanEquals),
-    [OPERATORS.lessThanEquals]: t(labels.lessThanEquals),
-    [OPERATORS.before]: t(labels.before),
-    [OPERATORS.after]: t(labels.after),
-  };
-
   const typeFilters = {
     string: [
       OPERATORS.equals,
