@@ -49,7 +49,7 @@ function PropertySelect({
   onPropertyChange?: (value: string) => void;
 }) {
   const { get, useQuery } = useApi();
-  const { formatMessage, messages } = useMessages();
+  const { t, messages } = useMessages();
   const [search, setSearch] = useState(value ?? '');
   const searchValue = useDebounce(search, 300);
   const { startAt, endAt } = getEventDataDateRange();
@@ -87,7 +87,7 @@ function PropertySelect({
         isLoading ? (
           <Loading placement="center" icon="dots" />
         ) : (
-          <Empty message={formatMessage(messages.noResultsFound)} />
+          <Empty message={t(messages.noResultsFound)} />
         )
       }
     >
@@ -114,7 +114,7 @@ function ValueSelect({
   onChange?: (value: string) => void;
 }) {
   const { get, useQuery } = useApi();
-  const { formatMessage, messages } = useMessages();
+  const { t, messages } = useMessages();
   const { startAt, endAt } = getEventDataDateRange();
 
   const { data, isLoading } = useQuery<Array<{ value: string; total: number }>>({
@@ -146,7 +146,7 @@ function ValueSelect({
         isLoading ? (
           <Loading placement="center" icon="dots" />
         ) : (
-          <Empty message={formatMessage(messages.noResultsFound)} />
+          <Empty message={t(messages.noResultsFound)} />
         )
       }
     >
@@ -166,13 +166,13 @@ function OperatorSelect({
   value?: string;
   onChange?: (value: string) => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   return (
     <Select value={value} onChange={onChange}>
-      <ListItem id="eq">{formatMessage(labels.is)}</ListItem>
-      <ListItem id="neq">{formatMessage(labels.isNot)}</ListItem>
-      <ListItem id="c">{formatMessage(labels.contains)}</ListItem>
-      <ListItem id="dnc">{formatMessage(labels.doesNotContain)}</ListItem>
+      <ListItem id="eq">{t(labels.is)}</ListItem>
+      <ListItem id="neq">{t(labels.isNot)}</ListItem>
+      <ListItem id="c">{t(labels.contains)}</ListItem>
+      <ListItem id="dnc">{t(labels.doesNotContain)}</ListItem>
     </Select>
   );
 }
@@ -188,25 +188,19 @@ function StepRow({
   initialEventName?: string;
   onRemove: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const [eventName, setEventName] = useState(initialEventName ?? '');
 
   return (
     <Column gap>
       <Grid columns="260px 1fr auto" gap>
         <Column>
-          <FormField
-            name={`steps.${index}.type`}
-            rules={{ required: formatMessage(labels.required) }}
-          >
+          <FormField name={`steps.${index}.type`} rules={{ required: t(labels.required) }}>
             <ActionSelect />
           </FormField>
         </Column>
         <Column>
-          <FormField
-            name={`steps.${index}.value`}
-            rules={{ required: formatMessage(labels.required) }}
-          >
+          <FormField name={`steps.${index}.value`} rules={{ required: t(labels.required) }}>
             {({ field, context }) => {
               const type = context.watch(`steps.${index}.type`);
               return (
@@ -260,7 +254,7 @@ function StepRow({
                   <Icon size="sm">
                     <Plus />
                   </Icon>
-                  <Text>{formatMessage(labels.filter)}</Text>
+                  <Text>{t(labels.filter)}</Text>
                 </Button>
               </Row>
             </Grid>
@@ -286,14 +280,14 @@ function FilterRow({
   initialProperty?: string;
   onRemove: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const [propertyName, setPropertyName] = useState(initialProperty ?? '');
 
   return (
     <Grid columns="1fr 140px 1fr auto" gap>
       <FormField
         name={`steps.${stepIndex}.filters.${filterIndex}.property`}
-        rules={{ required: formatMessage(labels.required) }}
+        rules={{ required: t(labels.required) }}
       >
         <PropertySelect
           websiteId={websiteId}
