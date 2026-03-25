@@ -23,7 +23,7 @@ export function Legend({
           <Row key={text} onClick={() => onClick(item)}>
             <StatusLight color={color.alpha(color.alpha() + 0.2).toHex()}>
               <Text
-                size="2"
+                size="sm"
                 color={hidden ? 'disabled' : undefined}
                 truncate={true}
                 style={{ maxWidth: '300px' }}

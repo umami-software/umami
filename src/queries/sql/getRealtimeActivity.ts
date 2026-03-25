@@ -30,7 +30,8 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
         session.device,
         session.country,
         website_event.url_path as "urlPath",
-        website_event.referrer_domain as "referrerDomain"
+        website_event.referrer_domain as "referrerDomain",
+        website_event.hostname
     from website_event
     ${cohortQuery}
     inner join session
@@ -65,7 +66,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters): Promis
             device,
             country,
             url_path as urlPath,
-            referrer_domain as referrerDomain
+            referrer_domain as referrerDomain,
+            hostname
         from website_event
         ${cohortQuery}
         where website_id = {websiteId:UUID}

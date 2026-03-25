@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { hashPassword } from '@/lib/password';
 import { parseRequest } from '@/lib/request';
-import { badRequest, json, ok, unauthorized } from '@/lib/response';
+import { badRequest, json, notFound, ok, unauthorized } from '@/lib/response';
 import { userRoleParam } from '@/lib/schema';
 import { canDeleteUser, canUpdateUser, canViewUser } from '@/permissions';
 import { deleteUser, getUser, getUserByUsername, updateUser } from '@/queries/prisma';
@@ -27,7 +27,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
 export async function POST(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const schema = z.object({
     username: z.string().max(255).optional(),
-    password: z.string().max(255).optional(),
+    password: z.string().min(8).max(255).optional(),
     role: userRoleParam.optional(),
   });
 
@@ -46,6 +46,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ use
   const { username, password, role } = body;
 
   const user = await getUser(userId);
+
+  if (!user) {
+    return notFound();
+  }
 
   const data: any = {};
 

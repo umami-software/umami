@@ -6,33 +6,61 @@ import { useNavigation } from './useNavigation';
 import { useOperatorLabels } from './useOperatorLabels';
 
 export function useFilters() {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { query } = useNavigation();
   const { fields } = useFields();
   const operatorLabels = useOperatorLabels();
 
   const operators = [
-    { name: 'eq', type: 'string', label: formatMessage(labels.is) },
-    { name: 'neq', type: 'string', label: formatMessage(labels.isNot) },
-    { name: 'c', type: 'string', label: formatMessage(labels.contains) },
-    { name: 'dnc', type: 'string', label: formatMessage(labels.doesNotContain) },
-    { name: 'i', type: 'array', label: formatMessage(labels.includes) },
-    { name: 'dni', type: 'array', label: formatMessage(labels.doesNotInclude) },
-    { name: 't', type: 'boolean', label: formatMessage(labels.isTrue) },
-    { name: 'f', type: 'boolean', label: formatMessage(labels.isFalse) },
-    { name: 'eq', type: 'number', label: formatMessage(labels.is) },
-    { name: 'neq', type: 'number', label: formatMessage(labels.isNot) },
-    { name: 'gt', type: 'number', label: formatMessage(labels.greaterThan) },
-    { name: 'lt', type: 'number', label: formatMessage(labels.lessThan) },
-    { name: 'gte', type: 'number', label: formatMessage(labels.greaterThanEquals) },
-    { name: 'lte', type: 'number', label: formatMessage(labels.lessThanEquals) },
-    { name: 'bf', type: 'date', label: formatMessage(labels.before) },
-    { name: 'af', type: 'date', label: formatMessage(labels.after) },
-    { name: 'eq', type: 'uuid', label: formatMessage(labels.is) },
+    { name: 'eq', type: 'string', label: t(labels.is) },
+    { name: 'neq', type: 'string', label: t(labels.isNot) },
+    { name: 'c', type: 'string', label: t(labels.contains) },
+    { name: 'dnc', type: 'string', label: t(labels.doesNotContain) },
+    { name: 're', type: 'string', label: t(labels.regexMatch) },
+    { name: 'nre', type: 'string', label: t(labels.regexNotMatch) },
+    { name: 'i', type: 'array', label: t(labels.includes) },
+    { name: 'dni', type: 'array', label: t(labels.doesNotInclude) },
+    { name: 't', type: 'boolean', label: t(labels.isTrue) },
+    { name: 'f', type: 'boolean', label: t(labels.isFalse) },
+    { name: 'eq', type: 'number', label: t(labels.is) },
+    { name: 'neq', type: 'number', label: t(labels.isNot) },
+    { name: 'gt', type: 'number', label: t(labels.greaterThan) },
+    { name: 'lt', type: 'number', label: t(labels.lessThan) },
+    { name: 'gte', type: 'number', label: t(labels.greaterThanEquals) },
+    { name: 'lte', type: 'number', label: t(labels.lessThanEquals) },
+    { name: 'bf', type: 'date', label: t(labels.before) },
+    { name: 'af', type: 'date', label: t(labels.after) },
+    { name: 'eq', type: 'uuid', label: t(labels.is) },
   ];
 
+  const operatorLabels = {
+    [OPERATORS.equals]: t(labels.is),
+    [OPERATORS.notEquals]: t(labels.isNot),
+    [OPERATORS.set]: t(labels.isSet),
+    [OPERATORS.notSet]: t(labels.isNotSet),
+    [OPERATORS.contains]: t(labels.contains),
+    [OPERATORS.doesNotContain]: t(labels.doesNotContain),
+    [OPERATORS.regex]: t(labels.regexMatch),
+    [OPERATORS.notRegex]: t(labels.regexNotMatch),
+    [OPERATORS.true]: t(labels.true),
+    [OPERATORS.false]: t(labels.false),
+    [OPERATORS.greaterThan]: t(labels.greaterThan),
+    [OPERATORS.lessThan]: t(labels.lessThan),
+    [OPERATORS.greaterThanEquals]: t(labels.greaterThanEquals),
+    [OPERATORS.lessThanEquals]: t(labels.lessThanEquals),
+    [OPERATORS.before]: t(labels.before),
+    [OPERATORS.after]: t(labels.after),
+  };
+
   const typeFilters = {
-    string: [OPERATORS.equals, OPERATORS.notEquals, OPERATORS.contains, OPERATORS.doesNotContain],
+    string: [
+      OPERATORS.equals,
+      OPERATORS.notEquals,
+      OPERATORS.contains,
+      OPERATORS.doesNotContain,
+      OPERATORS.regex,
+      OPERATORS.notRegex,
+    ],
     array: [OPERATORS.contains, OPERATORS.doesNotContain],
     boolean: [OPERATORS.true, OPERATORS.false],
     number: [
@@ -48,10 +76,11 @@ export function useFilters() {
   };
 
   const filters = Object.keys(query).reduce((arr, key) => {
-    if (FILTER_COLUMNS[key]) {
+    const baseName = key.replace(/\d+$/, '');
+    if (FILTER_COLUMNS[baseName]) {
       let operator = 'eq';
       let value = safeDecodeURIComponent(query[key]);
-      const label = fields.find(({ name }) => name === key)?.label;
+      const label = fields.find(({ name }) => name === baseName)?.label;
 
       const match = value.match(/^([a-z]+)\.(.*)/);
 
@@ -62,6 +91,7 @@ export function useFilters() {
 
       return arr.concat({
         name: key,
+        type: baseName,
         operator,
         value,
         label,

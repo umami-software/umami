@@ -17,7 +17,7 @@ export interface RetentionProps {
 }
 
 export function Retention({ websiteId, days = DAYS, startDate, endDate }: RetentionProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { locale } = useLocale();
   const { data, error, isLoading } = useResultQuery('retention', {
     websiteId,
@@ -53,7 +53,7 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
         <Panel allowFullscreen height="900px">
           <Column
             paddingY="6"
-            paddingX={{ xs: '3', md: '6' }}
+            paddingX={{ base: '3', md: '6' }}
             position="absolute"
             top="40px"
             left="0"
@@ -72,13 +72,13 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
               >
                 <Column>
                   <Text weight="bold" align="center">
-                    {formatMessage(labels.cohort)}
+                    {t(labels.cohort)}
                   </Text>
                 </Column>
                 {days.map(n => (
                   <Column key={n}>
                     <Text weight="bold" align="center" wrap="nowrap">
-                      {formatMessage(labels.day)} {n}
+                      {t(labels.day)} {n}
                     </Text>
                   </Column>
                 ))}
@@ -131,7 +131,7 @@ const Cell = ({ children }: { children: ReactNode }) => {
       alignItems="center"
       width="100px"
       height="100px"
-      backgroundColor="2"
+      backgroundColor="surface-raised"
       borderRadius
     >
       {children}
