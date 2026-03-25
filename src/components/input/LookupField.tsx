@@ -9,9 +9,14 @@ export interface LookupFieldProps extends ComboBoxProps {
   type: string;
   value: string;
   onChange: (value: string) => void;
+  /**
+   * `FormField` injects `onChange` via `cloneElement`, overwriting any custom handler.
+   * Use `onValueChange` for side effects that must survive that override.
+   */
+  onValueChange?: (value: string) => void;
 }
 
-export function LookupField({ websiteId, type, value, onChange, ...props }: LookupFieldProps) {
+export function LookupField({ websiteId, type, value, onChange, onValueChange, ...props }: LookupFieldProps) {
   const { t, messages } = useMessages();
   const [search, setSearch] = useState(value);
   const searchValue = useDebounce(search, 300);
@@ -43,6 +48,7 @@ export function LookupField({ websiteId, type, value, onChange, ...props }: Look
       onInputChange={value => {
         handleSearch(value);
         onChange?.(value);
+        onValueChange?.(value);
       }}
       formValue="text"
       allowsEmptyCollection

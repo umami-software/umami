@@ -3,11 +3,13 @@ import { safeDecodeURIComponent } from '@/lib/url';
 import { useFields } from './useFields';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
+import { useOperatorLabels } from './useOperatorLabels';
 
 export function useFilters() {
   const { t, labels } = useMessages();
   const { query } = useNavigation();
   const { fields } = useFields();
+  const operatorLabels = useOperatorLabels();
 
   const operators = [
     { name: 'eq', type: 'string', label: t(labels.is) },
