@@ -59,7 +59,14 @@ function getSharePath(pathname: string) {
 }
 
 export function SharePage() {
-  const [navCollapsed, setNavCollapsed] = useState(false);
+  const [navCollapsed, setNavCollapsed] = useState(
+    () => typeof window !== 'undefined' && localStorage.getItem('share:navCollapsed') === 'true',
+  );
+
+  const handleCollapse = (value: boolean) => {
+    localStorage.setItem('share:navCollapsed', String(value));
+    setNavCollapsed(value);
+  };
   const share = useShare();
   const { setTheme } = useTheme();
   const pathname = usePathname();
@@ -113,7 +120,7 @@ export function SharePage() {
         </MobileMenuButton>
       </Row>
       <Column display={{ base: 'none', lg: 'flex' }} marginRight="2">
-        <ShareNav collapsed={navCollapsed} onCollapse={setNavCollapsed} />
+        <ShareNav collapsed={navCollapsed} onCollapse={handleCollapse} />
       </Column>
       <PageBody gap>
         <WebsiteProvider websiteId={websiteId}>

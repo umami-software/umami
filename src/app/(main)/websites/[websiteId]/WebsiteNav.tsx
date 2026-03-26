@@ -18,7 +18,7 @@ export function WebsiteNav({
   const { items, selectedKey } = useWebsiteNavItems(websiteId);
 
   return (
-    <Column gap="2">
+    <Column gap="2" marginTop={isCollapsed ? '2' : undefined}>
       <Link href={renderUrl('/websites', false)} role="button" onClick={onItemClick}>
         <TooltipTrigger isDisabled={!isCollapsed} delay={0}>
           <Focusable>
