@@ -9,10 +9,11 @@ import { useWebsiteSummaryQuery } from '@/components/hooks/queries/useWebsiteSum
 import { getThemeColors } from '@/lib/colors';
 import { formatLongNumber } from '@/lib/format';
 
-function Sparkline({ data, theme }: { data: { x: string; y: number }[]; theme: string }) {
+const ACCENT = '#e85d26'; // warm orange matching the reference screenshots
+
+function Sparkline({ data, accent }: { data: { x: string; y: number }[]; accent: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const chartRef = useRef<ChartJS | null>(null);
-  const { colors } = useMemo(() => getThemeColors(theme), [theme]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -22,8 +23,12 @@ function Sparkline({ data, theme }: { data: { x: string; y: number }[]; theme: s
 
     chartRef.current?.destroy();
 
-    const values = data?.map(d => ({ x: d.x, y: d.y })) ?? [];
-    const lineColor = (colors as any)?.chart?.visitors?.borderColor ?? '#6366f1';
+    const values = (data ?? []).map(d => ({ x: d.x, y: d.y }));
+
+    // Gradient fill
+    const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    grad.addColorStop(0, accent + '55');
+    grad.addColorStop(1, accent + '00');
 
     chartRef.current = new ChartJS(ctx, {
       type: 'line',
@@ -32,11 +37,11 @@ function Sparkline({ data, theme }: { data: { x: string; y: number }[]; theme: s
           {
             data: values,
             parsing: { xAxisKey: 'x', yAxisKey: 'y' },
-            borderColor: lineColor,
-            backgroundColor: lineColor + '22',
+            borderColor: accent,
+            backgroundColor: grad,
             borderWidth: 2,
             pointRadius: 0,
-            tension: 0.35,
+            tension: 0.3,
             fill: true,
           },
         ],
@@ -49,6 +54,7 @@ function Sparkline({ data, theme }: { data: { x: string; y: number }[]; theme: s
           x: { display: false, type: 'category' },
           y: { display: false, beginAtZero: true },
         },
+        layout: { padding: 0 },
       },
     });
 
@@ -56,14 +62,14 @@ function Sparkline({ data, theme }: { data: { x: string; y: number }[]; theme: s
       chartRef.current?.destroy();
       chartRef.current = null;
     };
-  }, [data, colors]);
+  }, [data, accent]);
 
   return (
     <canvas
       ref={canvasRef}
-      width={240}
-      height={64}
-      style={{ display: 'block', width: '100%', height: '64px' }}
+      width={360}
+      height={120}
+      style={{ display: 'block', width: '100%', height: '120px' }}
     />
   );
 }
@@ -80,6 +86,11 @@ export function WebsiteSummaryCard({
   const visitors = data?.stats?.visitors ?? 0;
   const pageviews = data?.pageviews ?? [];
 
+  const isDark = theme === 'dark';
+  const cardBg = isDark ? '#1a1a1a' : '#ffffff';
+  const borderColor = isDark ? '#2d2d2d' : '#e5e7eb';
+  const textMuted = isDark ? '#888' : '#9ca3af';
+
   return (
     <Link
       href={renderUrl(`/websites/${website.id}`, false)}
@@ -88,23 +99,25 @@ export function WebsiteSummaryCard({
       <div
         style={{
           borderRadius: '12px',
-          border: '1px solid var(--border-color)',
-          backgroundColor: 'var(--base-100)',
+          border: `1px solid ${borderColor}`,
+          backgroundColor: cardBg,
           overflow: 'hidden',
           cursor: 'pointer',
-          transition: 'border-color 0.15s',
+          transition: 'border-color 0.15s, transform 0.1s',
         }}
-        onMouseEnter={e =>
-          ((e.currentTarget as HTMLDivElement).style.borderColor = 'var(--primary-color)')
-        }
-        onMouseLeave={e =>
-          ((e.currentTarget as HTMLDivElement).style.borderColor = 'var(--border-color)')
-        }
+        onMouseEnter={e => {
+          (e.currentTarget as HTMLDivElement).style.borderColor = ACCENT;
+          (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-1px)';
+        }}
+        onMouseLeave={e => {
+          (e.currentTarget as HTMLDivElement).style.borderColor = borderColor;
+          (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
+        }}
       >
-        {/* Header */}
-        <div style={{ padding: '14px 16px 10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        {/* Header: favicon + name + domain */}
+        <div style={{ padding: '14px 16px 10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <Favicon domain={website.domain} />
-          <div style={{ overflow: 'hidden', flex: 1 }}>
+          <div style={{ overflow: 'hidden', flex: 1, minWidth: 0 }}>
             <div
               style={{
                 fontWeight: 700,
@@ -112,6 +125,7 @@ export function WebsiteSummaryCard({
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
+                lineHeight: '1.3',
               }}
             >
               {website.name}
@@ -119,10 +133,11 @@ export function WebsiteSummaryCard({
             <div
               style={{
                 fontSize: '12px',
-                color: 'var(--text-500)',
+                color: textMuted,
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
+                lineHeight: '1.3',
               }}
             >
               {website.domain}
@@ -130,27 +145,42 @@ export function WebsiteSummaryCard({
           </div>
         </div>
 
-        {/* Sparkline */}
-        <div style={{ padding: '0 0 4px', minHeight: '68px' }}>
+        {/* Sparkline — edge-to-edge, no padding */}
+        <div style={{ lineHeight: 0, minHeight: '120px', position: 'relative' }}>
           {isLoading ? (
             <div
               style={{
-                height: '64px',
-                background: 'var(--base-200)',
-                opacity: 0.5,
+                height: '120px',
+                background: isDark ? '#222' : '#f3f4f6',
+                opacity: 0.6,
               }}
             />
+          ) : pageviews.length === 0 ? (
+            <div
+              style={{
+                height: '120px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: textMuted,
+                fontSize: '12px',
+              }}
+            >
+              No data
+            </div>
           ) : (
-            <Sparkline data={pageviews} theme={theme} />
+            <Sparkline data={pageviews} accent={ACCENT} />
           )}
         </div>
 
-        {/* Stats footer */}
-        <div style={{ padding: '8px 16px 14px', fontSize: '13px' }}>
-          <span style={{ fontWeight: 700, fontSize: '15px' }}>
+        {/* Footer: visitor count */}
+        <div style={{ padding: '10px 16px 14px' }}>
+          <span style={{ fontWeight: 800, fontSize: '16px' }}>
             {isLoading ? '--' : formatLongNumber(visitors)}
           </span>
-          <span style={{ color: 'var(--text-500)', marginLeft: '5px' }}>visitors · last 24h</span>
+          <span style={{ color: textMuted, fontSize: '13px', marginLeft: '6px' }}>
+            {visitors === 1 ? 'visitor' : 'visitors'} in last 24h
+          </span>
         </div>
       </div>
     </Link>
