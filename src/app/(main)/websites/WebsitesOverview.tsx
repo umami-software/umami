@@ -1,8 +1,9 @@
 'use client';
 import { useLoginQuery, useUserWebsitesQuery } from '@/components/hooks';
+import { type OverviewRange } from '@/components/hooks/queries/useWebsiteSummaryQuery';
 import { WebsiteSummaryCard } from './WebsiteSummaryCard';
 
-export function WebsitesOverview({ teamId }: { teamId?: string }) {
+export function WebsitesOverview({ teamId, range = '24h' }: { teamId?: string; range?: OverviewRange }) {
   const { user } = useLoginQuery();
   const queryResult = useUserWebsitesQuery({ userId: user?.id, teamId }, { pageSize: 100 });
   const websites = (queryResult.data?.data ?? []) as { id: string; name: string; domain: string }[];
@@ -51,7 +52,7 @@ export function WebsitesOverview({ teamId }: { teamId?: string }) {
       }}
     >
       {websites.map(website => (
-        <WebsiteSummaryCard key={website.id} website={website} />
+        <WebsiteSummaryCard key={website.id} website={website} range={range} />
       ))}
     </div>
   );

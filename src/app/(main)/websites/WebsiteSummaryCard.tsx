@@ -5,7 +5,10 @@ import { useEffect, useMemo, useRef } from 'react';
 import ChartJS from 'chart.js/auto';
 import { Favicon } from '@/components/common/Favicon';
 import { useNavigation } from '@/components/hooks';
-import { useWebsiteSummaryQuery } from '@/components/hooks/queries/useWebsiteSummaryQuery';
+import {
+  type OverviewRange,
+  useWebsiteSummaryQuery,
+} from '@/components/hooks/queries/useWebsiteSummaryQuery';
 import { getThemeColors } from '@/lib/colors';
 import { formatLongNumber } from '@/lib/format';
 
@@ -74,14 +77,23 @@ function Sparkline({ data, accent }: { data: { x: string; y: number }[]; accent:
   );
 }
 
+const RANGE_LABEL: Record<OverviewRange, string> = {
+  '24h': 'last 24h',
+  '7d': 'last 7 days',
+  '30d': 'last 30 days',
+  '1y': 'last year',
+};
+
 export function WebsiteSummaryCard({
   website,
+  range = '24h',
 }: {
   website: { id: string; name: string; domain: string };
+  range?: OverviewRange;
 }) {
   const { theme } = useTheme();
   const { renderUrl } = useNavigation();
-  const { data, isLoading } = useWebsiteSummaryQuery(website.id);
+  const { data, isLoading } = useWebsiteSummaryQuery(website.id, range);
 
   const visitors = data?.stats?.visitors ?? 0;
   const pageviews = data?.pageviews ?? [];
@@ -179,7 +191,7 @@ export function WebsiteSummaryCard({
             {isLoading ? '--' : formatLongNumber(visitors)}
           </span>
           <span style={{ color: textMuted, fontSize: '13px', marginLeft: '6px' }}>
-            {visitors === 1 ? 'visitor' : 'visitors'} in last 24h
+            {visitors === 1 ? 'visitor' : 'visitors'} · {RANGE_LABEL[range]}
           </span>
         </div>
       </div>
