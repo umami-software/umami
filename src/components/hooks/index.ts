@@ -20,6 +20,7 @@ export * from './queries/useLinksQuery';
 export * from './queries/useLoginQuery';
 export * from './queries/usePixelQuery';
 export * from './queries/usePixelsQuery';
+export * from './queries/useActiveVisitorsQuery';
 export * from './queries/useRealtimeQuery';
 export * from './queries/useReportQuery';
 export * from './queries/useReportsQuery';

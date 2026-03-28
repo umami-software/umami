@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import ChartJS from 'chart.js/auto';
 import { Favicon } from '@/components/common/Favicon';
 import { useNavigation } from '@/components/hooks';
+import { useActiveVisitorsQuery } from '@/components/hooks/queries/useActiveVisitorsQuery';
 import {
   type OverviewRange,
   useWebsiteSummaryQuery,
@@ -94,6 +95,8 @@ export function WebsiteSummaryCard({
   const { theme } = useTheme();
   const { renderUrl } = useNavigation();
   const { data, isLoading } = useWebsiteSummaryQuery(website.id, range);
+  const { data: activeData } = useActiveVisitorsQuery(website.id);
+  const activeVisitors = activeData?.visitors ?? 0;
 
   const visitors = data?.stats?.visitors ?? 0;
   const pageviews = data?.pageviews ?? [];
@@ -126,7 +129,7 @@ export function WebsiteSummaryCard({
           (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
         }}
       >
-        {/* Header: favicon + name + domain */}
+        {/* Header: favicon + name + domain + active indicator */}
         <div style={{ padding: '14px 16px 10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <Favicon domain={website.domain} />
           <div style={{ overflow: 'hidden', flex: 1, minWidth: 0 }}>
@@ -155,6 +158,34 @@ export function WebsiteSummaryCard({
               {website.domain}
             </div>
           </div>
+          {activeVisitors > 0 && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                flexShrink: 0,
+                padding: '3px 8px',
+                borderRadius: '12px',
+                backgroundColor: isDark ? 'rgba(34, 197, 94, 0.12)' : 'rgba(34, 197, 94, 0.08)',
+              }}
+            >
+              <span
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: '#22c55e',
+                  display: 'inline-block',
+                  boxShadow: '0 0 6px rgba(34, 197, 94, 0.5)',
+                  animation: 'pulse-dot 2s ease-in-out infinite',
+                }}
+              />
+              <span style={{ fontSize: '12px', fontWeight: 600, color: '#22c55e' }}>
+                {activeVisitors}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Sparkline — edge-to-edge, no padding */}
