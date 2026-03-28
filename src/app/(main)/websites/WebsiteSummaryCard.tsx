@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useTheme } from '@umami/react-zen';
-import { useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import ChartJS from 'chart.js/auto';
 import { Favicon } from '@/components/common/Favicon';
 import { useNavigation } from '@/components/hooks';
@@ -10,10 +10,74 @@ import {
   type OverviewRange,
   useWebsiteSummaryQuery,
 } from '@/components/hooks/queries/useWebsiteSummaryQuery';
-import { getThemeColors } from '@/lib/colors';
 import { formatLongNumber } from '@/lib/format';
 
-const ACCENT = '#e85d26'; // warm orange matching the reference screenshots
+const ACCENT = '#e85d26';
+const ACTIVE_COLOR = '#22c55e';
+const ACTIVE_COLOR_RGB = '34, 197, 94';
+
+/* ── Viewport hook (no external dep) ── */
+
+function useInView(rootMargin = '100px') {
+  const ref = useRef<HTMLElement | null>(null);
+  const [inView, setInView] = useState(false);
+
+  const setRef = useCallback((node: HTMLElement | null) => {
+    ref.current = node;
+  }, []);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const obs = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [rootMargin]);
+
+  return { ref: setRef, inView };
+}
+
+/* ── Active visitor badge ── */
+
+function ActiveVisitorBadge({ count, isDark }: { count: number; isDark: boolean }) {
+  if (count <= 0) return null;
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '5px',
+        flexShrink: 0,
+        padding: '3px 8px',
+        borderRadius: '12px',
+        backgroundColor: isDark
+          ? `rgba(${ACTIVE_COLOR_RGB}, 0.12)`
+          : `rgba(${ACTIVE_COLOR_RGB}, 0.08)`,
+      }}
+    >
+      <span
+        style={{
+          width: '8px',
+          height: '8px',
+          borderRadius: '50%',
+          backgroundColor: ACTIVE_COLOR,
+          display: 'inline-block',
+          boxShadow: `0 0 6px rgba(${ACTIVE_COLOR_RGB}, 0.5)`,
+          animation: 'pulse-dot 2s ease-in-out infinite',
+        }}
+      />
+      <span style={{ fontSize: '12px', fontWeight: 600, color: ACTIVE_COLOR }}>
+        {count}
+      </span>
+    </div>
+  );
+}
+
+/* ── Sparkline ── */
 
 function Sparkline({ data, accent }: { data: { x: string; y: number }[]; accent: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -29,7 +93,6 @@ function Sparkline({ data, accent }: { data: { x: string; y: number }[]; accent:
 
     const values = (data ?? []).map(d => ({ x: d.x, y: d.y }));
 
-    // Gradient fill
     const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
     grad.addColorStop(0, accent + '55');
     grad.addColorStop(1, accent + '00');
@@ -78,6 +141,8 @@ function Sparkline({ data, accent }: { data: { x: string; y: number }[]; accent:
   );
 }
 
+/* ── Card ── */
+
 const RANGE_LABEL: Record<OverviewRange, string> = {
   '24h': 'last 24h',
   '7d': 'last 7 days',
@@ -94,8 +159,9 @@ export function WebsiteSummaryCard({
 }) {
   const { theme } = useTheme();
   const { renderUrl } = useNavigation();
+  const { ref, inView } = useInView();
   const { data, isLoading } = useWebsiteSummaryQuery(website.id, range);
-  const { data: activeData } = useActiveVisitorsQuery(website.id);
+  const { data: activeData } = useActiveVisitorsQuery(website.id, { enabled: inView });
   const activeVisitors = activeData?.visitors ?? 0;
 
   const visitors = data?.stats?.visitors ?? 0;
@@ -108,6 +174,7 @@ export function WebsiteSummaryCard({
 
   return (
     <Link
+      ref={ref as any}
       href={renderUrl(`/websites/${website.id}`, false)}
       style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
     >
@@ -129,7 +196,7 @@ export function WebsiteSummaryCard({
           (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
         }}
       >
-        {/* Header: favicon + name + domain + active indicator */}
+        {/* Header */}
         <div style={{ padding: '14px 16px 10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <Favicon domain={website.domain} />
           <div style={{ overflow: 'hidden', flex: 1, minWidth: 0 }}>
@@ -158,37 +225,10 @@ export function WebsiteSummaryCard({
               {website.domain}
             </div>
           </div>
-          {activeVisitors > 0 && (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '5px',
-                flexShrink: 0,
-                padding: '3px 8px',
-                borderRadius: '12px',
-                backgroundColor: isDark ? 'rgba(34, 197, 94, 0.12)' : 'rgba(34, 197, 94, 0.08)',
-              }}
-            >
-              <span
-                style={{
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  backgroundColor: '#22c55e',
-                  display: 'inline-block',
-                  boxShadow: '0 0 6px rgba(34, 197, 94, 0.5)',
-                  animation: 'pulse-dot 2s ease-in-out infinite',
-                }}
-              />
-              <span style={{ fontSize: '12px', fontWeight: 600, color: '#22c55e' }}>
-                {activeVisitors}
-              </span>
-            </div>
-          )}
+          <ActiveVisitorBadge count={activeVisitors} isDark={isDark} />
         </div>
 
-        {/* Sparkline — edge-to-edge, no padding */}
+        {/* Sparkline */}
         <div style={{ lineHeight: 0, minHeight: '120px', position: 'relative' }}>
           {isLoading ? (
             <div
@@ -216,7 +256,7 @@ export function WebsiteSummaryCard({
           )}
         </div>
 
-        {/* Footer: visitor count */}
+        {/* Footer */}
         <div style={{ padding: '10px 16px 14px' }}>
           <span style={{ fontWeight: 800, fontSize: '16px' }}>
             {isLoading ? '--' : formatLongNumber(visitors)}
