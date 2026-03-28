@@ -112,7 +112,7 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
           </TabPanel>
         </Tabs>
       </Column>
-      <Row alignItems="center" justifyContent="space-between" gap>
+      <Row alignItems="center" justifyContent="space-between" gap style={isMobile ? { paddingBottom: '16px' } : undefined}>
         <Button onPress={handleReset}>{t(labels.reset)}</Button>
         <Row alignItems="center" justifyContent="flex-end" gridColumn="span 2" gap>
           <Button onPress={onClose}>{t(labels.cancel)}</Button>

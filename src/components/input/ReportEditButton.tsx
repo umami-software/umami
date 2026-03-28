@@ -14,17 +14,28 @@ import { type ReactNode, useState } from 'react';
 import { useMessages } from '@/components/hooks';
 import { useDeleteQuery } from '@/components/hooks/queries/useDeleteQuery';
 import { Edit, MoreHorizontal, Trash } from '@/components/icons';
+import { DialogButton } from './DialogButton';
 
 export function ReportEditButton({
   id,
   name,
   type,
+  title,
+  width,
+  height,
+  minWidth,
+  minHeight,
   children,
   onDelete,
 }: {
   id: string;
   name: string;
   type: string;
+  title?: ReactNode;
+  width?: string;
+  height?: string;
+  minWidth?: string;
+  minHeight?: string;
   onDelete?: () => void;
   children: ({ close }: { close: () => void }) => ReactNode;
 }) {
@@ -81,18 +92,26 @@ export function ReportEditButton({
           </Menu>
         </Popover>
       </MenuTrigger>
-      <Modal isOpen={showEdit || showDelete} isDismissable={true}>
-        {showEdit && children({ close: handleClose })}
-        {showDelete && (
-          <AlertDialog
-            title={t(labels.delete)}
-            onConfirm={handleDelete}
-            onCancel={handleClose}
-            isDanger
-          >
-            <Row gap="1">{t(messages.confirmDelete, { target: name })}</Row>
-          </AlertDialog>
-        )}
+      <DialogButton
+        isOpen={showEdit}
+        onOpenChange={open => !open && handleClose()}
+        title={title}
+        width={width}
+        height={height}
+        minWidth={minWidth}
+        minHeight={minHeight}
+      >
+        {children}
+      </DialogButton>
+      <Modal isOpen={showDelete} isDismissable={true} onOpenChange={open => !open && handleClose()}>
+        <AlertDialog
+          title={t(labels.delete)}
+          onConfirm={handleDelete}
+          onCancel={handleClose}
+          isDanger
+        >
+          <Row gap="1">{t(messages.confirmDelete, { target: name })}</Row>
+        </AlertDialog>
       </Modal>
     </>
   );
