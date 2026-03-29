@@ -11,7 +11,13 @@ export interface WebsiteSearchTermsData {
 
 export function useWebsiteSearchTermsQuery(
   websiteId: string,
-  params: { path?: string; googleDomain?: string; limit?: number; offset?: number },
+  params: {
+    path?: string;
+    googleDomain?: string;
+    country?: string;
+    limit?: number;
+    offset?: number;
+  },
 ) {
   const { get, useQuery } = useApi();
   const { startAt, endAt } = useDateParameters();

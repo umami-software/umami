@@ -33,6 +33,7 @@ export interface SearchTermsParams {
   endAt: number;
   path?: string;
   googleDomain?: GoogleDomain;
+  country?: string; // alpha-3 code; used when googleDomain does not provide a country
   limit?: number;
   offset?: number;
 }
@@ -169,7 +170,7 @@ export async function getSearchTerms(
   siteUrl: string,
   params: SearchTermsParams,
 ): Promise<SearchTermsResult> {
-  const { startAt, endAt, path, googleDomain, limit = 10, offset = 0 } = params;
+  const { startAt, endAt, path, googleDomain, country, limit = 10, offset = 0 } = params;
 
   const startDate = format(new Date(startAt), 'yyyy-MM-dd');
   const endDate = format(new Date(endAt), 'yyyy-MM-dd');
@@ -185,6 +186,8 @@ export async function getSearchTerms(
     if (countryCode) {
       filters.push({ dimension: 'country', operator: 'equals', expression: countryCode });
     }
+  } else if (country) {
+    filters.push({ dimension: 'country', operator: 'equals', expression: country });
   }
 
   const body: Record<string, any> = {

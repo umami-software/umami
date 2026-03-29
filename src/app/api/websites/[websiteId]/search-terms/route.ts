@@ -4,13 +4,14 @@ import { parseRequest } from '@/lib/request';
 import { json, serverError, unauthorized } from '@/lib/response';
 import { canViewWebsite } from '@/permissions';
 import { getWebsiteGoogleAuthStatus } from '@/queries/prisma';
-import { GOOGLE_DOMAINS } from '@/lib/constants';
+import { COUNTRY_ALPHA2_TO_ALPHA3, CountryCode, GOOGLE_DOMAINS } from '@/lib/constants';
 
 const schema = z.object({
   startAt: z.coerce.number(),
   endAt: z.coerce.number(),
   path: z.string().optional(),
   googleDomain: z.enum(GOOGLE_DOMAINS).optional(),
+  country: z.string().optional(),
   limit: z.coerce.number().int().positive().optional(),
   offset: z.coerce.number().int().min(0).optional(),
 });
@@ -37,7 +38,10 @@ export async function GET(
     return json({ rows: [], total: 0, connected: false });
   }
 
-  const { startAt, endAt, path, googleDomain, limit = 10, offset = 0 } = query;
+  const { startAt, endAt, path, googleDomain, country, limit = 10, offset = 0 } = query;
+  const countryAlpha3 = country
+    ? COUNTRY_ALPHA2_TO_ALPHA3[country.toUpperCase() as CountryCode]
+    : undefined;
 
   try {
     const accessToken = await getValidAccessToken(websiteId);
@@ -46,6 +50,7 @@ export async function GET(
       endAt,
       path,
       googleDomain,
+      country: countryAlpha3,
       limit,
       offset,
     });

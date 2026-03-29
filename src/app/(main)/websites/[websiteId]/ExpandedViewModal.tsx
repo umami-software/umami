@@ -1,17 +1,20 @@
 import { Dialog, Modal } from '@umami/react-zen';
 import { WebsiteExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedView';
+import { WebsiteSearchTermsExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteSearchTermsExpandedView';
 import { useMobile, useNavigation } from '@/components/hooks';
+import { GOOGLE_DOMAINS, OPERATORS } from '@/lib/constants';
+import { parseFilterValue } from '@/lib/params';
 
 export function ExpandedViewModal({
   websiteId,
   excludedIds,
 }: {
   websiteId: string;
-  excludedIds?: string[];
+  excludedIds?: Array<string>;
 }) {
   const {
     router,
-    query: { view },
+    query: { view, referrer },
     updateParams,
   } = useNavigation();
   const { isMobile } = useMobile();
@@ -27,6 +30,19 @@ export function ExpandedViewModal({
     }
   };
 
+  const rawReferrer = referrer as string | undefined;
+
+  const { operator: referrerOperator, value: referrerValue } = rawReferrer
+    ? parseFilterValue(rawReferrer)
+    : { operator: undefined, value: undefined };
+
+  const googleDomain =
+    view === 'searchTerms' && referrerOperator === OPERATORS.equals
+      ? GOOGLE_DOMAINS.find(
+          d => d === (Array.isArray(referrerValue) ? referrerValue[0] : referrerValue),
+        )
+      : undefined;
+
   return (
     <Modal isOpen={!!view} onOpenChange={handleOpenChange} isDismissable>
       <Dialog
@@ -38,6 +54,15 @@ export function ExpandedViewModal({
         }}
       >
         {({ close }) => {
+          if (googleDomain) {
+            return (
+              <WebsiteSearchTermsExpandedView
+                websiteId={websiteId}
+                googleDomain={googleDomain}
+                onClose={() => handleClose(close)}
+              />
+            );
+          }
           return (
             <WebsiteExpandedView
               websiteId={websiteId}
