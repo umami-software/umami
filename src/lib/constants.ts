@@ -1,6 +1,7 @@
 import COUNTRY_NAMES from '../../public/intl/country/en-US.json';
 
 export type CountryCode = keyof typeof COUNTRY_NAMES;
+export const COUNTRY_CODES = Object.keys(COUNTRY_NAMES) as [CountryCode, ...CountryCode[]];
 
 export const CURRENT_VERSION = process.env.currentVersion;
 export const AUTH_TOKEN = 'umami.auth';
