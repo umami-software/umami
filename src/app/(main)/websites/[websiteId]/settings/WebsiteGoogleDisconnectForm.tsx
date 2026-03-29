@@ -18,7 +18,14 @@ export function WebsiteGoogleDisconnectForm({
   return (
     <TypeConfirmationForm
       confirmationValue={CONFIRM_VALUE}
-      onConfirm={() => mutateAsync(null, { onSuccess: () => { onSave?.(); onClose?.(); } })}
+      onConfirm={() =>
+        mutateAsync(null, {
+          onSuccess: () => {
+            onSave?.();
+            onClose?.();
+          },
+        })
+      }
       onClose={onClose}
       isLoading={isPending}
       error={error}
