@@ -14,6 +14,5 @@ export function useWebsiteGscPropertiesQuery(websiteId: string, enabled: boolean
       );
     },
     enabled: !!websiteId && enabled,
-    initialData: [],
   });
 }

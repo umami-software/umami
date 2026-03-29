@@ -114,7 +114,7 @@ export function WebsiteGoogleSearchConsole({ websiteId }: { websiteId: string })
             placeholder={t(labels.selectGscProperty)}
             isDisabled={loadingProperties || isSaving}
           >
-            {properties.map(p => (
+            {(properties ?? []).map(p => (
               <ListItem key={p.siteUrl} id={p.siteUrl}>
                 {p.siteUrl}
               </ListItem>
