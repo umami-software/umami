@@ -58,6 +58,8 @@ export * from './queries/useWebsiteEventsQuery';
 export * from './queries/useWebsiteEventsSeriesQuery';
 export * from './queries/useWebsiteExpandedMetricsQuery';
 export * from './queries/useWebsiteGoogleAuthQuery';
+export * from './queries/useWebsiteGscPropertiesQuery';
+export * from './queries/useWebsiteGscPropertyMutation';
 export * from './queries/useWebsiteMetricsQuery';
 export * from './queries/useWebsiteSearchTermsQuery';
 export * from './queries/useWebsitePageviewsQuery';
