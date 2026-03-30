@@ -4,7 +4,7 @@ import { uuid } from '@/lib/crypto';
 import { fetchAccount, fetchTeam } from '@/lib/load';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
+import { pagingParams, searchParams, sortingParams, timezoneParam } from '@/lib/schema';
 import { getCloudWebsiteLimit } from '@/lib/subscription';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createShare, createWebsite, getTeamWebsiteCount, getWebsiteCount } from '@/queries/prisma';
@@ -15,6 +15,7 @@ export async function GET(request: Request) {
     ...pagingParams,
     ...searchParams,
     ...sortingParams,
+    timezone: timezoneParam.optional(),
     includeTeams: z.string().optional(),
   });
 

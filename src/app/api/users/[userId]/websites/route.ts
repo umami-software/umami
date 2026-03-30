@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
+import { pagingParams, searchParams, sortingParams, timezoneParam } from '@/lib/schema';
 import { getAllUserWebsitesIncludingTeamAccess, getUserWebsites } from '@/queries/prisma/website';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
@@ -9,6 +9,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
     ...pagingParams,
     ...searchParams,
     ...sortingParams,
+    timezone: timezoneParam.optional(),
     includeTeams: z.string().optional(),
   });
 
