@@ -1,5 +1,5 @@
 import { endOfDay, startOfDay, subDays } from 'date-fns';
-import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
+import { toZonedTime, fromZonedTime } from 'date-fns-tz';
 import type { Prisma, Website } from '@/generated/prisma/client';
 import clickhouse from '@/lib/clickhouse';
 import { DEFAULT_PAGE_SIZE, EVENT_TYPE, ROLES } from '@/lib/constants';
@@ -66,11 +66,11 @@ function getActivityTimezone(filters: QueryFilters = {}) {
 
 function getTodayDateRange(filters: QueryFilters = {}) {
   const timezone = getActivityTimezone(filters);
-  const zonedNow = utcToZonedTime(new Date(), timezone);
+  const zonedNow = toZonedTime(new Date(), timezone);
 
   return {
-    startDate: zonedTimeToUtc(startOfDay(zonedNow), timezone),
-    endDate: zonedTimeToUtc(endOfDay(zonedNow), timezone),
+    startDate: fromZonedTime(startOfDay(zonedNow), timezone),
+    endDate: fromZonedTime(endOfDay(zonedNow), timezone),
   };
 }
 
@@ -87,23 +87,23 @@ function getActivityDateRange(filters: QueryFilters = {}) {
 
 function getRecentActivityDateRange(filters: QueryFilters = {}, days = WEBSITE_ACTIVITY_DAYS) {
   const timezone = getActivityTimezone(filters);
-  const zonedNow = utcToZonedTime(new Date(), timezone);
+  const zonedNow = toZonedTime(new Date(), timezone);
 
   return {
-    startDate: zonedTimeToUtc(startOfDay(subDays(zonedNow, days - 1)), timezone),
-    endDate: zonedTimeToUtc(endOfDay(zonedNow), timezone),
+    startDate: fromZonedTime(startOfDay(subDays(zonedNow, days - 1)), timezone),
+    endDate: fromZonedTime(endOfDay(zonedNow), timezone),
     timezone,
   };
 }
 
 function getPreviousTodayDateRange(filters: QueryFilters = {}) {
   const timezone = getActivityTimezone(filters);
-  const zonedNow = utcToZonedTime(new Date(), timezone);
+  const zonedNow = toZonedTime(new Date(), timezone);
   const previousDay = subDays(zonedNow, 1);
 
   return {
-    startDate: zonedTimeToUtc(startOfDay(previousDay), timezone),
-    endDate: zonedTimeToUtc(endOfDay(previousDay), timezone),
+    startDate: fromZonedTime(startOfDay(previousDay), timezone),
+    endDate: fromZonedTime(endOfDay(previousDay), timezone),
   };
 }
 
