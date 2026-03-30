@@ -30,7 +30,7 @@ export function TimeRangePickerForm({
   const [date, setDate] = useState(defaultStartDate || new Date());
   const [startHour, setStartHour] = useState(defaultStartDate?.getHours() || 0);
   const [endHour, setEndHour] = useState(defaultEndDate?.getHours() || 23);
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   const disabled = startHour > endHour;
 
