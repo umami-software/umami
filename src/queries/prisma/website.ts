@@ -1,9 +1,9 @@
 import { endOfDay, startOfDay } from 'date-fns';
 import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import type { Prisma, Website } from '@/generated/prisma/client';
-import { DEFAULT_PAGE_SIZE } from '@/lib/constants';
+import clickhouse from '@/lib/clickhouse';
+import { DEFAULT_PAGE_SIZE, ROLES } from '@/lib/constants';
 import { normalizeTimezone } from '@/lib/date';
-import { ROLES } from '@/lib/constants';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import type { QueryFilters } from '@/lib/types';
@@ -39,15 +39,198 @@ function getActivityDateRange(filters: QueryFilters = {}) {
   };
 }
 
-async function getWebsitesByActivity(
+function getActivityOrderQuery(orderBy: (typeof ACTIVITY_ORDER_FIELDS)[number]) {
+  if (orderBy === 'visitors') {
+    return `
+      select
+        session.website_id as website_id,
+        count(*) as value
+      from session
+      where session.created_at between {{startDate}} and {{endDate}}
+      group by session.website_id
+    `;
+  }
+
+  if (orderBy === 'pageviews' && !clickhouse.enabled) {
+    return `
+      select
+        website_event.website_id as website_id,
+        count(*) as value
+      from website_event
+      where website_event.created_at between {{startDate}} and {{endDate}}
+        and website_event.event_type NOT IN (2, 5)
+      group by website_event.website_id
+    `;
+  }
+}
+
+function getWebsiteActivityFilter(
+  where: Prisma.WebsiteWhereInput = {},
+  search?: string,
+): { whereClause: string; queryParams: Record<string, any> } | null {
+  const queryParams: Record<string, any> = {};
+  const conditions = ['website.deleted_at is null'];
+
+  if (search) {
+    conditions.push(`(website.name ilike {{search}} or website.domain ilike {{search}})`);
+    queryParams.search = `%${search}%`;
+  }
+
+  if (where?.userId) {
+    conditions.push(`website.user_id = {{userId::uuid}}`);
+    queryParams.userId = where.userId;
+  } else if (where?.teamId) {
+    conditions.push(`website.team_id = {{teamId::uuid}}`);
+    queryParams.teamId = where.teamId;
+  } else if (Array.isArray(where?.OR)) {
+    const userFilter = where.OR.find((item: Prisma.WebsiteWhereInput) => item?.userId);
+    const teamFilter = where.OR.find(
+      (item: Prisma.WebsiteWhereInput) => item?.team?.members?.some?.userId,
+    );
+    const teamMemberFilter = teamFilter?.team?.members?.some;
+
+    if (!userFilter?.userId || !teamMemberFilter?.userId || !teamMemberFilter?.role) {
+      return null;
+    }
+
+    conditions.push(`(
+      website.user_id = {{userId::uuid}}
+      or exists (
+        select 1
+        from team
+        inner join team_user on team_user.team_id = team.team_id
+        where team.team_id = website.team_id
+          and team.deleted_at is null
+          and team_user.user_id = {{teamUserId::uuid}}
+          and team_user.role = {{teamUserRole}}
+      )
+    )`);
+    queryParams.userId = userFilter.userId;
+    queryParams.teamUserId = teamMemberFilter.userId;
+    queryParams.teamUserRole = teamMemberFilter.role;
+  } else {
+    const unsupportedKeys = Object.keys(where || {}).filter(key => !['AND', 'deletedAt'].includes(key));
+
+    if (unsupportedKeys.length > 0) {
+      return null;
+    }
+  }
+
+  return {
+    whereClause: conditions.join('\n      and '),
+    queryParams,
+  };
+}
+
+async function fetchActivitySortedWebsitePage(
+  criteria: Prisma.WebsiteFindManyArgs,
+  filters: QueryFilters,
+  orderBy: (typeof ACTIVITY_ORDER_FIELDS)[number],
+) {
+  const activityOrderQuery = getActivityOrderQuery(orderBy);
+  const activityFilter = getWebsiteActivityFilter(criteria.where, filters.search);
+
+  if (!activityOrderQuery || !activityFilter) {
+    return null;
+  }
+
+  const { rawQuery } = prisma;
+  const { page = 1, pageSize, sortDescending = true } = filters;
+  const size = +pageSize || DEFAULT_PAGE_SIZE;
+  const offset = size * (+page - 1);
+  const direction = sortDescending ? 'desc' : 'asc';
+  const { startDate, endDate } = getActivityDateRange(filters);
+  const queryParams = {
+    ...activityFilter.queryParams,
+    startDate,
+    endDate,
+  };
+
+  const countResult = (await rawQuery(
+    `
+    select count(*) as count
+    from website
+    where ${activityFilter.whereClause}
+    `,
+    activityFilter.queryParams,
+  )) as { count: number }[];
+  const [{ count = 0 } = {}] = countResult;
+  const total = Number(count) || 0;
+
+  if (total === 0) {
+    return {
+      ids: [],
+      count: 0,
+      page: +page,
+      pageSize: size,
+      orderBy,
+      search: filters.search,
+      sortDescending,
+    };
+  }
+
+  const rows = (await rawQuery(
+    `
+    select website.website_id as id
+    from website
+    left join (
+      ${activityOrderQuery}
+    ) activity on activity.website_id = website.website_id
+    where ${activityFilter.whereClause}
+    order by coalesce(activity.value, 0) ${direction}, website.name asc, website.website_id asc
+    limit ${size} offset ${offset}
+    `,
+    queryParams,
+  )) as { id: string }[];
+
+  return {
+    ids: rows.map(row => row.id),
+    count: total,
+    page: +page,
+    pageSize: size,
+    orderBy,
+    search: filters.search,
+    sortDescending,
+  };
+}
+
+async function fetchActivitySortedWebsiteDetails(
+  criteria: Prisma.WebsiteFindManyArgs,
+  ids: string[],
+) {
+  if (ids.length === 0) {
+    return [];
+  }
+
+  const websites = await prisma.client.website.findMany({
+    ...criteria,
+    where: {
+      id: {
+        in: ids,
+      },
+    },
+  });
+
+  const websiteById = new Map(websites.map(website => [website.id, website]));
+
+  return ids.map(id => websiteById.get(id)).filter(Boolean);
+}
+
+async function getWebsitesByActivityFallback(
   criteria: Prisma.WebsiteFindManyArgs,
   filters: QueryFilters,
   orderBy: (typeof ACTIVITY_ORDER_FIELDS)[number],
 ) {
   const { page = 1, pageSize, sortDescending = true, search } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
-  const websites = await prisma.client.website.findMany(criteria);
-  const count = websites.length;
+  const websiteRefs = await prisma.client.website.findMany({
+    where: criteria.where,
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+  const count = websiteRefs.length;
 
   if (count === 0) {
     return attachShareIdToWebsites({
@@ -63,7 +246,7 @@ async function getWebsitesByActivity(
 
   const { startDate, endDate } = getActivityDateRange(filters);
   const stats = await getWebsiteListStats(
-    websites.map(website => website.id),
+    websiteRefs.map(website => website.id),
     {
       startDate,
       endDate,
@@ -79,7 +262,7 @@ async function getWebsitesByActivity(
     ]),
   );
   const direction = sortDescending ? -1 : 1;
-  const data = [...websites]
+  const ids = [...websiteRefs]
     .sort((a, b) => {
       const aValue = statsByWebsiteId.get(a.id)?.[orderBy] || 0;
       const bValue = statsByWebsiteId.get(b.id)?.[orderBy] || 0;
@@ -90,7 +273,9 @@ async function getWebsitesByActivity(
 
       return a.name.localeCompare(b.name);
     })
-    .slice(size * (+page - 1), size * (+page - 1) + size);
+    .slice(size * (+page - 1), size * (+page - 1) + size)
+    .map(website => website.id);
+  const data = await fetchActivitySortedWebsiteDetails(criteria, ids);
 
   return attachShareIdToWebsites({
     data,
@@ -101,6 +286,25 @@ async function getWebsitesByActivity(
     search,
     sortDescending,
   });
+}
+
+async function getWebsitesByActivity(
+  criteria: Prisma.WebsiteFindManyArgs,
+  filters: QueryFilters,
+  orderBy: (typeof ACTIVITY_ORDER_FIELDS)[number],
+) {
+  const pageData = await fetchActivitySortedWebsitePage(criteria, filters, orderBy);
+
+  if (pageData) {
+    const data = await fetchActivitySortedWebsiteDetails(criteria, pageData.ids);
+
+    return attachShareIdToWebsites({
+      ...pageData,
+      data,
+    });
+  }
+
+  return getWebsitesByActivityFallback(criteria, filters, orderBy);
 }
 
 export async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs) {
@@ -392,8 +596,8 @@ export async function attachShareIdToWebsites(websites: {
   count: any;
   page: number;
   pageSize: number;
-  orderBy: string;
-  search: string;
+  orderBy?: string;
+  search?: string;
   sortDescending?: boolean;
 }) {
   const websiteIds = websites.data.map(website => website.id);
