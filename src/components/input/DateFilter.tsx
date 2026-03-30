@@ -36,28 +36,27 @@ export function DateFilter({
       value: '24hour',
     },
     {
-      label: formatMessage(labels.lastHours, { x: '12' }),
+      label: t(labels.lastHours, { x: '12' }),
       value: '12hour',
     },
     {
-      label: formatMessage(labels.lastHours, { x: '6' }),
+      label: t(labels.lastHours, { x: '6' }),
       value: '6hour',
     },
     {
-      label: formatMessage(labels.lastHours, { x: '4' }),
+      label: t(labels.lastHours, { x: '4' }),
       value: '4hour',
     },
     {
-      label: formatMessage(labels.lastHours, { x: '2' }),
+      label: t(labels.lastHours, { x: '2' }),
       value: '2hour',
     },
     {
-      label: formatMessage(labels.lastHours, { x: '1' }),
+      label: t(labels.lastHours, { x: '1' }),
       value: '1hour',
       divider: true,
     },
     {
-      label: formatMessage(labels.thisWeek),
       label: t(labels.thisWeek),
       value: '0week',
       divider: true,
@@ -100,7 +99,7 @@ export function DateFilter({
       divider: true,
     },
     {
-      label: formatMessage(labels.timeRange),
+      label: t(labels.timeRange),
       value: 'timeRange',
     },
   ]
