@@ -20,7 +20,7 @@ import {
 import { X } from '@/components/icons';
 import { DownloadButton } from '@/components/input/DownloadButton';
 import { formatLongNumber } from '@/lib/format';
-import { GoogleDomain } from '@/lib/constants';
+import type { GoogleDomain } from '@/lib/constants';
 
 interface Props {
   websiteId: string;

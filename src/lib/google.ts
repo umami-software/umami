@@ -25,7 +25,6 @@ export interface SearchTermRow {
 
 export interface SearchTermsResult {
   rows: Array<SearchTermRow>;
-  total: number;
 }
 
 export interface SearchTermsParams {
@@ -98,6 +97,9 @@ export async function exchangeCodeForTokens(
   const userRes = await fetch(GOOGLE_USERINFO_URL, {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
+  if (!userRes.ok) {
+    throw new Error(`Failed to fetch user info: ${userRes.status}`);
+  }
   const userData = await userRes.json();
   const email: string = userData.email ?? '';
 
@@ -143,6 +145,8 @@ export async function getGscProperties(accessToken: string): Promise<Array<GscPr
   return (data.siteEntry ?? []) as Array<GscProperty>;
 }
 
+const refreshPromises = new Map<string, Promise<string>>();
+
 /** Get a valid access token for the website, auto-refreshing if needed. */
 export async function getValidAccessToken(websiteId: string): Promise<string> {
   const auth = await getWebsiteGoogleAuth(websiteId);
@@ -157,12 +161,18 @@ export async function getValidAccessToken(websiteId: string): Promise<string> {
     return decrypt(auth.accessToken, secret());
   }
 
-  const refreshToken = decrypt(auth.refreshToken, secret());
-  const { accessToken: newAccessToken, expiresAt } = await refreshAccessToken(refreshToken);
-
-  await updateWebsiteGoogleAuthTokens(websiteId, newAccessToken, expiresAt);
-
-  return newAccessToken;
+  // Deduplicate concurrent refresh requests for the same website
+  let pending = refreshPromises.get(websiteId);
+  if (!pending) {
+    pending = (async () => {
+      const refreshToken = decrypt(auth.refreshToken, secret());
+      const { accessToken: newAccessToken, expiresAt } = await refreshAccessToken(refreshToken);
+      await updateWebsiteGoogleAuthTokens(websiteId, newAccessToken, expiresAt);
+      return newAccessToken;
+    })().finally(() => refreshPromises.delete(websiteId));
+    refreshPromises.set(websiteId, pending);
+  }
+  return pending;
 }
 
 export async function getSearchTerms(
@@ -227,5 +237,5 @@ export async function getSearchTerms(
     position: row.position ?? 0,
   }));
 
-  return { rows, total: rows.length };
+  return { rows };
 }

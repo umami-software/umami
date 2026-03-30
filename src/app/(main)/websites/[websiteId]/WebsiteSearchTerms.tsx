@@ -14,7 +14,7 @@ import {
 import { IconLabel } from '@/components/common/IconLabel';
 import { Maximize } from '@/components/icons';
 import { ListTable } from '@/components/metrics/ListTable';
-import { GoogleDomain } from '@/lib/constants';
+import type { GoogleDomain } from '@/lib/constants';
 
 interface Props {
   websiteId: string;

@@ -31,7 +31,6 @@ export async function upsertWebsiteGoogleAuth(
       refreshToken: encrypt(data.refreshToken, secret()),
       expiresAt: data.expiresAt,
       email: data.email,
-      propertyUrl: null,
     },
   });
 }
