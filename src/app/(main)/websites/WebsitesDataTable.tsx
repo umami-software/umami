@@ -35,6 +35,12 @@ const SORT_OPTIONS = [
     sortDescending: false,
   },
 ] as const;
+const DEFAULT_SORT_ID = 'visitors';
+const DEFAULT_SORT = SORT_OPTIONS.find(option => option.id === DEFAULT_SORT_ID) || SORT_OPTIONS[0];
+
+function getSortById(id?: string) {
+  return SORT_OPTIONS.find(option => option.id === id) || DEFAULT_SORT;
+}
 
 function getSelectedSort(orderBy?: string, sortDescending?: boolean | string) {
   const isDescending = sortDescending === true || sortDescending === 'true';
@@ -42,7 +48,7 @@ function getSelectedSort(orderBy?: string, sortDescending?: boolean | string) {
   return (
     SORT_OPTIONS.find(
       option => option.orderBy === orderBy && option.sortDescending === isDescending,
-    ) || SORT_OPTIONS[0]
+    ) || DEFAULT_SORT
   );
 }
 
@@ -89,8 +95,8 @@ export function WebsitesDataTable({
   };
 
   const handleSortChange = (value: string) => {
-    const sort = SORT_OPTIONS.find(option => option.id === value) || SORT_OPTIONS[0];
-    const isDefault = sort.id === SORT_OPTIONS[0].id;
+    const sort = getSortById(value);
+    const isDefault = sort.id === DEFAULT_SORT_ID;
 
     router.push(
       updateParams({

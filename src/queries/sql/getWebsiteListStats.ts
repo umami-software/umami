@@ -6,13 +6,32 @@ import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getWebsiteListStats';
 
+export interface WebsiteListStatsFilters extends QueryFilters {
+  startDate: Date;
+  endDate: Date;
+}
+
 export interface WebsiteListStats {
   websiteId: string;
   pageviews: number;
   visitors: number;
 }
 
-export function getWebsiteListStats(...args: [websiteIds: string[], filters: QueryFilters]) {
+function getRequiredDateRange(filters: WebsiteListStatsFilters) {
+  const { startDate, endDate } = filters;
+  const hasValidStartDate = startDate instanceof Date && !Number.isNaN(startDate.getTime());
+  const hasValidEndDate = endDate instanceof Date && !Number.isNaN(endDate.getTime());
+
+  if (!hasValidStartDate || !hasValidEndDate) {
+    throw new Error('startDate and endDate are required for getWebsiteListStats');
+  }
+
+  return { startDate, endDate };
+}
+
+export function getWebsiteListStats(
+  ...args: [websiteIds: string[], filters: WebsiteListStatsFilters]
+) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -21,10 +40,10 @@ export function getWebsiteListStats(...args: [websiteIds: string[], filters: Que
 
 function relationalQuery(
   websiteIds: string[],
-  filters: QueryFilters,
+  filters: WebsiteListStatsFilters,
 ): Promise<WebsiteListStats[]> {
   const { rawQuery } = prisma;
-  const { startDate, endDate } = filters;
+  const { startDate, endDate } = getRequiredDateRange(filters);
 
   return rawQuery(
     `
@@ -49,10 +68,10 @@ function relationalQuery(
 
 function clickhouseQuery(
   websiteIds: string[],
-  filters: QueryFilters,
+  filters: WebsiteListStatsFilters,
 ): Promise<WebsiteListStats[]> {
   const { rawQuery } = clickhouse;
-  const { startDate, endDate } = filters;
+  const { startDate, endDate } = getRequiredDateRange(filters);
 
   return rawQuery(
     `

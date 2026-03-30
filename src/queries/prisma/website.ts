@@ -39,7 +39,10 @@ function getActivityDateRange(filters: QueryFilters = {}) {
   };
 }
 
-function getActivityOrderQuery(orderBy: (typeof ACTIVITY_ORDER_FIELDS)[number]) {
+function getActivityOrderQuery(
+  orderBy: (typeof ACTIVITY_ORDER_FIELDS)[number],
+  websiteFilterWhereClause: string,
+) {
   if (orderBy === 'visitors') {
     return `
       select
@@ -47,6 +50,11 @@ function getActivityOrderQuery(orderBy: (typeof ACTIVITY_ORDER_FIELDS)[number]) 
         count(*) as value
       from session
       where session.created_at between {{startDate}} and {{endDate}}
+        and session.website_id in (
+          select filtered_website.website_id
+          from website filtered_website
+          where ${websiteFilterWhereClause}
+        )
       group by session.website_id
     `;
   }
@@ -59,6 +67,11 @@ function getActivityOrderQuery(orderBy: (typeof ACTIVITY_ORDER_FIELDS)[number]) 
       from website_event
       where website_event.created_at between {{startDate}} and {{endDate}}
         and website_event.event_type NOT IN (2, 5)
+        and website_event.website_id in (
+          select filtered_website.website_id
+          from website filtered_website
+          where ${websiteFilterWhereClause}
+        )
       group by website_event.website_id
     `;
   }
@@ -67,20 +80,21 @@ function getActivityOrderQuery(orderBy: (typeof ACTIVITY_ORDER_FIELDS)[number]) 
 function getWebsiteActivityFilter(
   where: Prisma.WebsiteWhereInput = {},
   search?: string,
+  alias = 'website',
 ): { whereClause: string; queryParams: Record<string, any> } | null {
   const queryParams: Record<string, any> = {};
-  const conditions = ['website.deleted_at is null'];
+  const conditions = [`${alias}.deleted_at is null`];
 
   if (search) {
-    conditions.push(`(website.name ilike {{search}} or website.domain ilike {{search}})`);
+    conditions.push(`(${alias}.name ilike {{search}} or ${alias}.domain ilike {{search}})`);
     queryParams.search = `%${search}%`;
   }
 
   if (where?.userId) {
-    conditions.push(`website.user_id = {{userId::uuid}}`);
+    conditions.push(`${alias}.user_id = {{userId::uuid}}`);
     queryParams.userId = where.userId;
   } else if (where?.teamId) {
-    conditions.push(`website.team_id = {{teamId::uuid}}`);
+    conditions.push(`${alias}.team_id = {{teamId::uuid}}`);
     queryParams.teamId = where.teamId;
   } else if (Array.isArray(where?.OR)) {
     const userFilter = where.OR.find((item: Prisma.WebsiteWhereInput) => item?.userId);
@@ -94,12 +108,12 @@ function getWebsiteActivityFilter(
     }
 
     conditions.push(`(
-      website.user_id = {{userId::uuid}}
+      ${alias}.user_id = {{userId::uuid}}
       or exists (
         select 1
         from team
         inner join team_user on team_user.team_id = team.team_id
-        where team.team_id = website.team_id
+        where team.team_id = ${alias}.team_id
           and team.deleted_at is null
           and team_user.user_id = {{teamUserId::uuid}}
           and team_user.role = {{teamUserRole}}
@@ -127,10 +141,17 @@ async function fetchActivitySortedWebsitePage(
   filters: QueryFilters,
   orderBy: (typeof ACTIVITY_ORDER_FIELDS)[number],
 ) {
-  const activityOrderQuery = getActivityOrderQuery(orderBy);
   const activityFilter = getWebsiteActivityFilter(criteria.where, filters.search);
+  const scopedActivityFilter = getWebsiteActivityFilter(
+    criteria.where,
+    filters.search,
+    'filtered_website',
+  );
+  const activityOrderQuery = scopedActivityFilter
+    ? getActivityOrderQuery(orderBy, scopedActivityFilter.whereClause)
+    : null;
 
-  if (!activityOrderQuery || !activityFilter) {
+  if (!activityOrderQuery || !activityFilter || !scopedActivityFilter) {
     return null;
   }
 
