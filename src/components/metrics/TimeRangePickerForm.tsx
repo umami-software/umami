@@ -56,7 +56,7 @@ export function TimeRangePickerForm({
       <Row gap justifyContent="center" alignItems="center">
         <Column>
           <label style={{ fontSize: '0.875rem', marginBottom: '0.25rem' }}>
-            {formatMessage(labels.startTime)}
+            {t(labels.startTime)}
           </label>
           <Select
             value={startHour.toString()}
@@ -73,7 +73,7 @@ export function TimeRangePickerForm({
         <span style={{ marginTop: '1.5rem' }}>—</span>
         <Column>
           <label style={{ fontSize: '0.875rem', marginBottom: '0.25rem' }}>
-            {formatMessage(labels.endTime)}
+            {t(labels.endTime)}
           </label>
           <Select
             value={endHour.toString()}
@@ -89,9 +89,9 @@ export function TimeRangePickerForm({
         </Column>
       </Row>
       <Row justifyContent="end" gap>
-        <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
+        <Button onPress={onClose}>{t(labels.cancel)}</Button>
         <Button variant="primary" onPress={handleSave} isDisabled={disabled}>
-          {formatMessage(labels.apply)}
+          {t(labels.apply)}
         </Button>
       </Row>
     </Column>
