@@ -1,3 +1,5 @@
+import { DEFAULT_CURRENCY } from './constants';
+
 export function parseTime(val: number) {
   const days = ~~(val / 86400);
   const hours = ~~(val / 3600) - days * 24;
@@ -94,7 +96,7 @@ export function formatCurrency(value: number, currency: string, locale = 'en-US'
     // Fallback to default currency format if an error occurs
     formattedValue = new Intl.NumberFormat(locale, {
       style: 'currency',
-      currency: 'USD',
+      currency: DEFAULT_CURRENCY,
     });
   }
 

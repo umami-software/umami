@@ -2,7 +2,6 @@ import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 import { useDeleteQuery, useMessages } from '@/components/hooks';
 import { Trash } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
-import { messages } from '@/components/messages';
 
 export function CohortDeleteButton({
   cohortId,
@@ -15,7 +14,7 @@ export function CohortDeleteButton({
   name: string;
   onSave?: () => void;
 }) {
-  const { formatMessage, labels, FormattedMessage } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { mutateAsync, isPending, error, touch } = useDeleteQuery(
     `/websites/${websiteId}/segments/${cohortId}`,
   );
@@ -31,27 +30,18 @@ export function CohortDeleteButton({
   };
 
   return (
-    <DialogButton
-      icon={<Trash />}
-      variant="quiet"
-      title={formatMessage(labels.confirm)}
-      width="400px"
-    >
+    <DialogButton icon={<Trash />} variant="quiet" title={t(labels.confirm)} width="400px">
       {({ close }) => (
         <ConfirmationForm
-          message={
-            <FormattedMessage
-              {...messages.confirmRemove}
-              values={{
-                target: <b>{name}</b>,
-              }}
-            />
-          }
+          message={t.rich(messages.confirmRemove, {
+            target: name,
+            b: chunks => <b>{chunks}</b>,
+          })}
           isLoading={isPending}
           error={error}
           onConfirm={handleConfirm.bind(null, close)}
           onClose={close}
-          buttonLabel={formatMessage(labels.delete)}
+          buttonLabel={t(labels.delete)}
           buttonVariant="danger"
         />
       )}

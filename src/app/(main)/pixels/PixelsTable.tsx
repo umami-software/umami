@@ -6,14 +6,18 @@ import { useMessages, useNavigation, useSlug } from '@/components/hooks';
 import { PixelDeleteButton } from './PixelDeleteButton';
 import { PixelEditButton } from './PixelEditButton';
 
-export function PixelsTable(props: DataTableProps) {
-  const { formatMessage, labels } = useMessages();
+export interface PixelsTableProps extends DataTableProps {
+  showActions?: boolean;
+}
+
+export function PixelsTable({ showActions, ...props }: PixelsTableProps) {
+  const { t, labels } = useMessages();
   const { renderUrl } = useNavigation();
   const { getSlugUrl } = useSlug('pixel');
 
   return (
     <DataTable {...props}>
-      <DataColumn id="name" label={formatMessage(labels.name)}>
+      <DataColumn id="name" label={t(labels.name)}>
         {({ id, name }: any) => {
           return <Link href={renderUrl(`/pixels/${id}`)}>{name}</Link>;
         }}
@@ -28,21 +32,23 @@ export function PixelsTable(props: DataTableProps) {
           );
         }}
       </DataColumn>
-      <DataColumn id="created" label={formatMessage(labels.created)}>
+      <DataColumn id="created" label={t(labels.created)}>
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
-      <DataColumn id="action" align="end" width="100px">
-        {(row: any) => {
-          const { id, name } = row;
+      {showActions && (
+        <DataColumn id="action" align="end" width="100px">
+          {(row: any) => {
+            const { id, name } = row;
 
-          return (
-            <Row>
-              <PixelEditButton pixelId={id} />
-              <PixelDeleteButton pixelId={id} name={name} />
-            </Row>
-          );
-        }}
-      </DataColumn>
+            return (
+              <Row>
+                <PixelEditButton pixelId={id} />
+                <PixelDeleteButton pixelId={id} name={name} />
+              </Row>
+            );
+          }}
+        </DataColumn>
+      )}
     </DataTable>
   );
 }

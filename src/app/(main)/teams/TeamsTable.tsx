@@ -8,20 +8,20 @@ export interface TeamsTableProps extends DataTableProps {
 }
 
 export function TeamsTable({ renderLink, ...props }: TeamsTableProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   return (
     <DataTable {...props}>
-      <DataColumn id="name" label={formatMessage(labels.name)}>
+      <DataColumn id="name" label={t(labels.name)}>
         {renderLink}
       </DataColumn>
-      <DataColumn id="owner" label={formatMessage(labels.owner)}>
+      <DataColumn id="owner" label={t(labels.owner)}>
         {(row: any) => row?.members?.find(({ role }) => role === ROLES.teamOwner)?.user?.username}
       </DataColumn>
-      <DataColumn id="members" label={formatMessage(labels.members)} align="end">
+      <DataColumn id="members" label={t(labels.members)} align="end">
         {(row: any) => row?._count?.members}
       </DataColumn>
-      <DataColumn id="websites" label={formatMessage(labels.websites)} align="end">
+      <DataColumn id="websites" label={t(labels.websites)} align="end">
         {(row: any) => row?._count?.websites}
       </DataColumn>
     </DataTable>

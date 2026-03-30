@@ -11,7 +11,7 @@ export interface PagerProps {
 }
 
 export function Pager({ page, pageSize, count, onPageChange }: PagerProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const maxPage = pageSize && count ? Math.ceil(+count / +pageSize) : 0;
   const lastPage = page === maxPage;
   const firstPage = page === 1;
@@ -34,10 +34,10 @@ export function Pager({ page, pageSize, count, onPageChange }: PagerProps) {
 
   return (
     <Row alignItems="center" justifyContent="space-between" gap="3" flexGrow={1}>
-      <Text>{formatMessage(labels.numberOfRecords, { x: count.toLocaleString() })}</Text>
+      <Text>{t(labels.numberOfRecords, { x: count.toLocaleString() })}</Text>
       <Row alignItems="center" justifyContent="flex-end" gap="3">
         <Text>
-          {formatMessage(labels.pageOf, {
+          {t(labels.pageOf, {
             current: page.toLocaleString(),
             total: maxPage.toLocaleString(),
           })}
