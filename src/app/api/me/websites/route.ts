@@ -1,12 +1,15 @@
 import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json } from '@/lib/response';
-import { pagingParams } from '@/lib/schema';
+import { pagingParams, searchParams, sortingParams, timezoneParam } from '@/lib/schema';
 import { getAllUserWebsitesIncludingTeamOwner, getUserWebsites } from '@/queries/prisma';
 
 export async function GET(request: Request) {
   const schema = z.object({
     ...pagingParams,
+    ...searchParams,
+    ...sortingParams,
+    timezone: timezoneParam.optional(),
     includeTeams: z.string().optional(),
   });
 

@@ -1,8 +1,107 @@
+import { endOfDay, startOfDay } from 'date-fns';
+import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import type { Prisma, Website } from '@/generated/prisma/client';
+import { DEFAULT_PAGE_SIZE } from '@/lib/constants';
+import { normalizeTimezone } from '@/lib/date';
 import { ROLES } from '@/lib/constants';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import type { QueryFilters } from '@/lib/types';
+import { getWebsiteListStats } from '@/queries/sql';
+
+const ACTIVITY_ORDER_FIELDS = ['pageviews', 'visitors'] as const;
+
+function isValidDate(value?: Date) {
+  return value instanceof Date && !Number.isNaN(value.getTime());
+}
+
+function isActivityOrderBy(orderBy?: string): orderBy is (typeof ACTIVITY_ORDER_FIELDS)[number] {
+  return ACTIVITY_ORDER_FIELDS.includes(orderBy as (typeof ACTIVITY_ORDER_FIELDS)[number]);
+}
+
+function getActivityDateRange(filters: QueryFilters = {}) {
+  if (isValidDate(filters.startDate) && isValidDate(filters.endDate)) {
+    return {
+      startDate: filters.startDate,
+      endDate: filters.endDate,
+    };
+  }
+
+  const timezone =
+    filters.timezone && filters.timezone.toLowerCase() !== 'utc'
+      ? normalizeTimezone(filters.timezone)
+      : 'UTC';
+  const zonedNow = utcToZonedTime(new Date(), timezone);
+
+  return {
+    startDate: zonedTimeToUtc(startOfDay(zonedNow), timezone),
+    endDate: zonedTimeToUtc(endOfDay(zonedNow), timezone),
+  };
+}
+
+async function getWebsitesByActivity(
+  criteria: Prisma.WebsiteFindManyArgs,
+  filters: QueryFilters,
+  orderBy: (typeof ACTIVITY_ORDER_FIELDS)[number],
+) {
+  const { page = 1, pageSize, sortDescending = true, search } = filters;
+  const size = +pageSize || DEFAULT_PAGE_SIZE;
+  const websites = await prisma.client.website.findMany(criteria);
+  const count = websites.length;
+
+  if (count === 0) {
+    return attachShareIdToWebsites({
+      data: [],
+      count,
+      page: +page,
+      pageSize: size,
+      orderBy,
+      search,
+      sortDescending,
+    });
+  }
+
+  const { startDate, endDate } = getActivityDateRange(filters);
+  const stats = await getWebsiteListStats(
+    websites.map(website => website.id),
+    {
+      startDate,
+      endDate,
+    },
+  );
+  const statsByWebsiteId = new Map(
+    stats.map(stat => [
+      stat.websiteId,
+      {
+        pageviews: Number(stat.pageviews) || 0,
+        visitors: Number(stat.visitors) || 0,
+      },
+    ]),
+  );
+  const direction = sortDescending ? -1 : 1;
+  const data = [...websites]
+    .sort((a, b) => {
+      const aValue = statsByWebsiteId.get(a.id)?.[orderBy] || 0;
+      const bValue = statsByWebsiteId.get(b.id)?.[orderBy] || 0;
+
+      if (aValue !== bValue) {
+        return (aValue - bValue) * direction;
+      }
+
+      return a.name.localeCompare(b.name);
+    })
+    .slice(size * (+page - 1), size * (+page - 1) + size);
+
+  return attachShareIdToWebsites({
+    data,
+    count,
+    page: +page,
+    pageSize: size,
+    orderBy,
+    search,
+    sortDescending,
+  });
+}
 
 export async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs) {
   return prisma.client.website.findUnique(criteria);
@@ -23,7 +122,7 @@ export async function getWebsite(websiteId: string) {
 }
 
 export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters: QueryFilters) {
-  const { search } = filters;
+  const { orderBy, search } = filters;
   const { getSearchParameters, pagedQuery } = prisma;
 
   const where: Prisma.WebsiteWhereInput = {
@@ -36,6 +135,10 @@ export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters:
     ]),
     deletedAt: null,
   };
+
+  if (isActivityOrderBy(orderBy)) {
+    return getWebsitesByActivity({ ...criteria, where }, filters, orderBy);
+  }
 
   const websites = await pagedQuery('website', { ...criteria, where }, filters);
 
@@ -291,6 +394,7 @@ export async function attachShareIdToWebsites(websites: {
   pageSize: number;
   orderBy: string;
   search: string;
+  sortDescending?: boolean;
 }) {
   const websiteIds = websites.data.map(website => website.id);
 
