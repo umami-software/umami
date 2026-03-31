@@ -5,7 +5,6 @@ import { SearchTermRow } from '@/lib/google';
 
 export interface WebsiteSearchTermsData {
   rows: Array<SearchTermRow>;
-  total: number;
   connected: boolean;
 }
 
