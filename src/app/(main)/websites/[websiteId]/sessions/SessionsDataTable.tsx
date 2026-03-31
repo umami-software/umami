@@ -4,20 +4,17 @@ import { SessionsTable } from './SessionsTable';
 
 export function SessionsDataTable({ websiteId }: { websiteId: string }) {
   const queryResult = useWebsiteSessionsQuery(websiteId);
-  const { pathname } = useNavigation();
-  const isSharePage = pathname.includes('/share/');
+  const { updateParams } = useNavigation();
 
   return (
     <DataGrid query={queryResult} allowPaging allowSearch>
-      {({ data }) => {
-        return (
-          <SessionsTable
-            data={data}
-            websiteId={websiteId}
-            getSessionHref={isSharePage ? () => undefined : undefined}
-          />
-        );
-      }}
+      {({ data }) => (
+        <SessionsTable
+          data={data}
+          websiteId={websiteId}
+          getSessionHref={row => updateParams({ session: row.id })}
+        />
+      )}
     </DataGrid>
   );
 }
