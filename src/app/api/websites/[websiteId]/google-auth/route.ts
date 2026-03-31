@@ -1,5 +1,6 @@
+import { Prisma } from '@/generated/prisma/client';
 import { parseRequest } from '@/lib/request';
-import { json, notFound, unauthorized } from '@/lib/response';
+import { json, notFound, serverError, unauthorized } from '@/lib/response';
 import { canUpdateWebsite, canViewWebsite } from '@/permissions';
 import { deleteWebsiteGoogleAuth, getWebsiteGoogleAuthStatus } from '@/queries/prisma';
 
@@ -46,8 +47,11 @@ export async function DELETE(
 
   try {
     await deleteWebsiteGoogleAuth(websiteId);
-  } catch {
-    return notFound();
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2025') {
+      return notFound();
+    }
+    return serverError();
   }
 
   return json({ ok: true });
