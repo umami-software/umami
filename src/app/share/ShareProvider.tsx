@@ -27,6 +27,7 @@ const ALL_SECTION_IDS = [
   'events',
   'sessions',
   'realtime',
+  'performance',
   'compare',
   'breakdown',
   'goals',
@@ -59,7 +60,7 @@ export function ShareProvider({ slug, children }: { slug: string; children: Reac
   const isWebsiteShare = share?.shareType === ENTITY_TYPE.website;
 
   const allowedSections = isWebsiteShare && share?.parameters
-    ? ALL_SECTION_IDS.filter(id => share.parameters[id] !== false)
+    ? ALL_SECTION_IDS.filter(id => share.parameters[id] === true)
     : [];
 
   const shouldRedirect = isWebsiteShare &&
