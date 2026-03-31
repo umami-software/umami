@@ -125,7 +125,7 @@ export function SharePage() {
       <PageBody gap>
         <WebsiteProvider websiteId={websiteId}>
           <Column>
-            <WebsiteHeader showActions={false} />
+            <WebsiteHeader showActions={false} allowLink={false} />
             <PageComponent websiteId={websiteId} />
           </Column>
         </WebsiteProvider>
