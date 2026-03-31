@@ -99,13 +99,19 @@ export function ListTable({
   );
 }
 
-const MetricColumnLabel = ({ label }: { label: string }) => (
+const MetricColumnLabel = ({ label }: { label?: ListTableProps['metric'] }) => (
   <Text weight="bold" align="center">
     {label}
   </Text>
 );
 
-const MetricColumn = ({ metric, metricToolTip }: { metric?: string; metricToolTip?: string }) => {
+const MetricColumn = ({
+  metric,
+  metricToolTip,
+}: {
+  metric?: ListTableProps['metric'];
+  metricToolTip?: ListTableProps['metricToolTip'];
+}) => {
   if (metricToolTip) {
     return (
       <Row gap="1" alignItems="center">
