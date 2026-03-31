@@ -108,7 +108,7 @@ export async function exchangeCodeForTokens(
 
 export async function refreshAccessToken(
   refreshToken: string,
-): Promise<{ accessToken: string; expiresAt: Date }> {
+): Promise<{ accessToken: string; refreshToken?: string; expiresAt: Date }> {
   const res = await fetch(GOOGLE_TOKEN_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -129,7 +129,11 @@ export async function refreshAccessToken(
   const expiresIn: number = data.expires_in ?? 3600;
   const expiresAt = new Date(Date.now() + expiresIn * 1000);
 
-  return { accessToken, expiresAt };
+  return {
+    accessToken,
+    expiresAt,
+    ...(data.refresh_token ? { refreshToken: data.refresh_token as string } : {}),
+  };
 }
 
 export async function getGscProperties(accessToken: string): Promise<Array<GscProperty>> {
@@ -166,8 +170,12 @@ export async function getValidAccessToken(websiteId: string): Promise<string> {
   if (!pending) {
     pending = (async () => {
       const refreshToken = decrypt(auth.refreshToken, secret());
-      const { accessToken: newAccessToken, expiresAt } = await refreshAccessToken(refreshToken);
-      await updateWebsiteGoogleAuthTokens(websiteId, newAccessToken, expiresAt);
+      const {
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken,
+        expiresAt,
+      } = await refreshAccessToken(refreshToken);
+      await updateWebsiteGoogleAuthTokens(websiteId, newAccessToken, expiresAt, newRefreshToken);
       return newAccessToken;
     })().finally(() => refreshPromises.delete(websiteId));
     refreshPromises.set(websiteId, pending);

@@ -63,12 +63,14 @@ export async function updateWebsiteGoogleAuthTokens(
   websiteId: string,
   accessToken: string,
   expiresAt: Date,
+  refreshToken?: string,
 ) {
   return prisma.client.websiteGoogleAuth.update({
     where: { websiteId },
     data: {
       accessToken: encrypt(accessToken, secret()),
       expiresAt,
+      ...(refreshToken ? { refreshToken: encrypt(refreshToken, secret()) } : {}),
     },
   });
 }
