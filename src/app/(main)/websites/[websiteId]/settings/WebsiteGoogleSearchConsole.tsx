@@ -11,6 +11,7 @@ import {
   Select,
   Text,
 } from '@umami/react-zen';
+import { useState } from 'react';
 
 import { ActionForm } from '@/components/common/ActionForm';
 import {
@@ -28,6 +29,7 @@ export function WebsiteGoogleSearchConsole({ websiteId }: { websiteId: string })
   const { query } = useNavigation();
   const { data, isLoading, refetch } = useWebsiteGoogleAuthQuery(websiteId);
   const { get } = useApi();
+  const [connectError, setConnectError] = useState(false);
 
   const { data: properties, isLoading: loadingProperties } = useWebsiteGscPropertiesQuery(
     websiteId,
@@ -38,8 +40,16 @@ export function WebsiteGoogleSearchConsole({ websiteId }: { websiteId: string })
     useWebsiteGscPropertyMutation(websiteId);
 
   const handleConnectGoogle = async () => {
-    const { url } = await get(`/auth/google`, { websiteId });
-    window.location.href = url;
+    try {
+      const { url } = await get(`/auth/google`, { websiteId });
+      if (!url) {
+        setConnectError(true);
+        return;
+      }
+      window.location.href = url;
+    } catch {
+      setConnectError(true);
+    }
   };
 
   const handlePropertyChange = async (value: string) => {
@@ -72,7 +82,7 @@ export function WebsiteGoogleSearchConsole({ websiteId }: { websiteId: string })
         </Text>
       </Column>
 
-      {query.gsc_error && <Text color="red">{t(messages.gscConnectError)}</Text>}
+      {(query.gsc_error || connectError) && <Text color="red">{t(messages.gscConnectError)}</Text>}
 
       <ActionForm
         label={t(labels.googleAccount)}
