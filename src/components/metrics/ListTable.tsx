@@ -17,7 +17,7 @@ interface ListData {
 }
 
 export interface ListTableProps {
-  data?: ListData[];
+  data?: Array<ListData>;
   title?: string;
   metric?: string;
   metricToolTip?: string;
@@ -69,30 +69,6 @@ export function ListTable({
     return <div style={style}>{getRow(data[index], index)}</div>;
   };
 
-  const MetricColumnLabel = ({ label }: { label: string }) => (
-    <Text weight="bold" align="center">
-      {label}
-    </Text>
-  );
-
-  const MetricColumn = () => {
-    if (metricToolTip) {
-      return (
-        <Row gap="1" alignItems="center">
-          <MetricColumnLabel label={metric} />
-          <TooltipTrigger delay={0}>
-            <Focusable>
-              <Info size={16} />
-            </Focusable>
-            <Tooltip>{metricToolTip}</Tooltip>
-          </TooltipTrigger>
-        </Row>
-      );
-    }
-
-    return <MetricColumnLabel label={metric} />;
-  };
-
   return (
     <Column gap>
       <Grid
@@ -102,7 +78,7 @@ export function ListTable({
         columns={'1fr 100px'}
       >
         <Text weight="bold">{title}</Text>
-        <MetricColumn />
+        <MetricColumn metric={metric} metricToolTip={metricToolTip} />
       </Grid>
       <Column gap="1">
         {data?.length === 0 && <Empty />}
@@ -122,6 +98,30 @@ export function ListTable({
     </Column>
   );
 }
+
+const MetricColumnLabel = ({ label }: { label: string }) => (
+  <Text weight="bold" align="center">
+    {label}
+  </Text>
+);
+
+const MetricColumn = ({ metric, metricToolTip }: { metric?: string; metricToolTip?: string }) => {
+  if (metricToolTip) {
+    return (
+      <Row gap="1" alignItems="center">
+        <MetricColumnLabel label={metric} />
+        <TooltipTrigger delay={0}>
+          <Focusable>
+            <Info size={16} />
+          </Focusable>
+          <Tooltip>{metricToolTip}</Tooltip>
+        </TooltipTrigger>
+      </Row>
+    );
+  }
+
+  return <MetricColumnLabel label={metric} />;
+};
 
 const AnimatedRow = ({
   label,
