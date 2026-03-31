@@ -34,6 +34,7 @@ export function WebsiteSearchTerms({ websiteId, googleDomain }: Props) {
     country,
     limit: 10,
     offset: 0,
+    enabled: !!authData?.connected && !!authData?.propertyUrl,
   });
 
   const basePath = process.env.basePath || '';

@@ -16,10 +16,12 @@ export function useWebsiteSearchTermsQuery(
     country?: string;
     limit?: number;
     offset?: number;
+    enabled?: boolean;
   },
 ) {
   const { get, useQuery } = useApi();
   const { startAt, endAt } = useDateParameters();
+  const { enabled = true, ...queryParams } = params;
 
   return useQuery<WebsiteSearchTermsData>({
     queryKey: [
@@ -28,16 +30,16 @@ export function useWebsiteSearchTermsQuery(
         websiteId,
         startAt,
         endAt,
-        ...params,
+        ...queryParams,
       },
     ],
     queryFn: async () =>
       get(`/websites/${websiteId}/search-terms`, {
         startAt,
         endAt,
-        ...params,
+        ...queryParams,
       }),
-    enabled: !!websiteId && !!startAt && !!endAt,
+    enabled: enabled && !!websiteId && !!startAt && !!endAt,
     placeholderData: keepPreviousData,
   });
 }
