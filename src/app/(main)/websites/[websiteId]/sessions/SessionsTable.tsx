@@ -16,15 +16,16 @@ export function SessionsTable({
   return (
     <DataTable {...props}>
       <DataColumn id="id" label={t(labels.session)} width="100px">
-        {(row: any) => (
-          <Link
-            href={
-              getSessionHref ? getSessionHref(row) : `/websites/${websiteId}/sessions/${row.id}`
-            }
-          >
+        {(row: any) => {
+          const href = getSessionHref ? getSessionHref(row) : `/websites/${websiteId}/sessions/${row.id}`;
+          return href ? (
+            <Link href={href}>
+              <Avatar seed={row.id} size={32} />
+            </Link>
+          ) : (
             <Avatar seed={row.id} size={32} />
-          </Link>
-        )}
+          );
+        }}
       </DataColumn>
       <DataColumn id="visits" label={t(labels.visits)} width="80px" />
       <DataColumn id="views" label={t(labels.views)} width="80px" />
