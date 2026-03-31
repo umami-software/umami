@@ -5,7 +5,7 @@ import { canUpdateWebsite } from '@/permissions';
 import { updateWebsiteGoogleAuthProperty } from '@/queries/prisma';
 
 const schema = z.object({
-  propertyUrl: z.string().min(1),
+  propertyUrl: z.string().min(1).max(500),
 });
 
 export async function PUT(
