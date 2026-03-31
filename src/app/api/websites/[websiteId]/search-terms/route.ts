@@ -35,7 +35,7 @@ export async function GET(
   const status = await getWebsiteGoogleAuthStatus(websiteId);
 
   if (!status?.propertyUrl) {
-    return json({ rows: [], total: 0, connected: false });
+    return json({ rows: [], connected: false });
   }
 
   const { startAt, endAt, path, googleDomain, country, limit = 10, offset = 0 } = query;
