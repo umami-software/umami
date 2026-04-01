@@ -57,12 +57,9 @@ export function WebsiteSearchTerms({ websiteId, googleDomain }: Props) {
       <Row alignItems="center" justifyContent="center" padding="8">
         <Text color="muted" size="sm" align="center">
           {t(messages.gscNotConfiguredPrompt)}{' '}
-          <a
-            href={`${basePath}/websites/${websiteId}/settings`}
-            style={{ textDecoration: 'underline' }}
-          >
+          <LinkButton href={`${basePath}/websites/${websiteId}/settings`}>
             {t(messages.goToSettings)}
-          </a>
+          </LinkButton>
         </Text>
       </Row>
     );
@@ -73,12 +70,9 @@ export function WebsiteSearchTerms({ websiteId, googleDomain }: Props) {
       <Row alignItems="center" justifyContent="center" padding="8">
         <Text color="muted" size="sm" align="center">
           {t(messages.gscPropertyInstruction)}{' '}
-          <a
-            href={`${basePath}/websites/${websiteId}/settings`}
-            style={{ textDecoration: 'underline' }}
-          >
+          <LinkButton href={`${basePath}/websites/${websiteId}/settings`}>
             {t(messages.goToSettings)}
-          </a>
+          </LinkButton>
         </Text>
       </Row>
     );
