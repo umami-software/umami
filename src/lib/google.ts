@@ -90,6 +90,11 @@ export async function exchangeCodeForTokens(
   const data = await res.json();
   const accessToken: string = data.access_token;
   const refreshToken: string = data.refresh_token;
+
+  if (!refreshToken) {
+    throw new Error('Google did not return a refresh token.');
+  }
+
   const expiresIn: number = data.expires_in ?? 3600;
   const expiresAt = new Date(Date.now() + expiresIn * 1000);
 
