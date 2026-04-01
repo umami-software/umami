@@ -26,7 +26,7 @@ import { WebsiteGoogleDisconnectForm } from './WebsiteGoogleDisconnectForm';
 
 export function WebsiteGoogleSearchConsole({ websiteId }: { websiteId: string }) {
   const { t, labels, messages } = useMessages();
-  const { query } = useNavigation();
+  const { router, query, updateParams } = useNavigation();
   const { data, isLoading, refetch } = useWebsiteGoogleAuthQuery(websiteId);
   const { get } = useApi();
   const [connectError, setConnectError] = useState(false);
@@ -42,6 +42,9 @@ export function WebsiteGoogleSearchConsole({ websiteId }: { websiteId: string })
 
   const handleConnectGoogle = async () => {
     setConnectError(false);
+    if (query.gsc_error) {
+      router.replace(updateParams({ gsc_error: undefined }));
+    }
     try {
       const { url } = await get(`/auth/google`, { websiteId });
       if (!url) {
