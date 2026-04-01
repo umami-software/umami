@@ -114,7 +114,7 @@ const MetricColumn = ({
 }) => {
   if (metricToolTip) {
     return (
-      <Row gap="1" alignItems="center">
+      <Row gap="1" alignItems="center" justifyContent="center">
         <MetricColumnLabel label={metric} />
         <TooltipTrigger delay={0}>
           <Focusable>
