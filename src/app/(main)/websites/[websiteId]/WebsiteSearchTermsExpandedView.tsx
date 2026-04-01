@@ -52,13 +52,17 @@ export function WebsiteSearchTermsExpandedView({ websiteId, googleDomain, onClos
       }));
   }, [data, search]);
 
-  const downloadData = data?.rows?.map(r => ({
-    query: r.query,
-    clicks: r.clicks,
-    impressions: r.impressions,
-    ctr: `${(r.ctr * 100).toFixed(1)}%`,
-    position: r.position.toFixed(1),
-  }));
+  const downloadData = useMemo(
+    () =>
+      data?.rows?.map(r => ({
+        query: r.query,
+        clicks: r.clicks,
+        impressions: r.impressions,
+        ctr: `${(r.ctr * 100).toFixed(1)}%`,
+        position: r.position.toFixed(1),
+      })),
+    [data],
+  );
 
   return (
     <>
