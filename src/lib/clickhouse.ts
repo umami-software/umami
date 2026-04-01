@@ -77,7 +77,7 @@ function mapFilter(column: string, operator: string, name: string, type: string 
     case OPERATORS.equals:
       return `${column} = ${value}`;
     case OPERATORS.notEquals:
-      return `${column} != ${value}`;
+      return `(${column} != ${value} OR ${column} = '')`;
     case OPERATORS.contains:
       return `positionCaseInsensitive(${column}, ${value}) > 0`;
     case OPERATORS.doesNotContain:

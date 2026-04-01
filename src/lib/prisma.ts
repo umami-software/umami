@@ -78,11 +78,11 @@ function mapFilter(column: string, operator: string, name: string, type: string 
     case OPERATORS.equals:
       return `${column} = ${value}`;
     case OPERATORS.notEquals:
-      return `${column} != ${value}`;
+      return `(${column} != ${value} OR ${column} IS NULL)`;
     case OPERATORS.contains:
       return `${column} ilike ${value}`;
     case OPERATORS.doesNotContain:
-      return `${column} not ilike ${value}`;
+      return `(${column} not ilike ${value} OR ${column} IS NULL)`;
     default:
       return '';
   }
