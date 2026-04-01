@@ -1,4 +1,5 @@
 import { Grid, Heading, Row, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { useEffect, useState } from 'react';
 import { GridRow } from '@/components/common/GridRow';
 import { Panel } from '@/components/common/Panel';
 import { useMessages, useMobile, useNavigation } from '@/components/hooks';
@@ -35,6 +36,14 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
         )
       : undefined;
 
+  const [sourcesTab, setSourcesTab] = useState<string | number>(
+    googleDomain ? 'searchTerms' : 'referrer',
+  );
+
+  useEffect(() => {
+    setSourcesTab(googleDomain ? 'searchTerms' : 'referrer');
+  }, [googleDomain]);
+
   return (
     <Grid gap="3">
       <GridRow layout="two" {...rowProps}>
@@ -59,7 +68,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
         </Panel>
         <Panel>
           <Heading size="2xl">{t(labels.sources)}</Heading>
-          <Tabs defaultSelectedKey={googleDomain ? 'searchTerms' : undefined}>
+          <Tabs selectedKey={sourcesTab} onSelectionChange={key => setSourcesTab(key)}>
             <TabList>
               {googleDomain && <Tab id="searchTerms">{t(labels.searchTerms)}</Tab>}
               <Tab id="referrer">{t(labels.referrers)}</Tab>
