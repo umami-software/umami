@@ -51,7 +51,7 @@ export function ExpandedViewModal({
         }}
       >
         {({ close }) => {
-          if (googleDomain) {
+          if (view === 'searchTerms' && googleDomain) {
             return (
               <WebsiteSearchTermsExpandedView
                 websiteId={websiteId}
