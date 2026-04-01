@@ -1,6 +1,7 @@
+import { Prisma } from '@/generated/prisma/client';
 import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
-import { json, unauthorized } from '@/lib/response';
+import { json, notFound, serverError, unauthorized } from '@/lib/response';
 import { canUpdateWebsite } from '@/permissions';
 import { updateWebsiteGoogleAuthProperty } from '@/queries/prisma';
 
@@ -25,7 +26,15 @@ export async function PUT(
   }
 
   const { propertyUrl } = body;
-  await updateWebsiteGoogleAuthProperty(websiteId, propertyUrl);
+
+  try {
+    await updateWebsiteGoogleAuthProperty(websiteId, propertyUrl);
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2025') {
+      return notFound();
+    }
+    return serverError();
+  }
 
   return json({ ok: true, propertyUrl });
 }

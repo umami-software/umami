@@ -34,7 +34,7 @@ export function ExpandedViewModal({
     if (view === 'searchTerms' && !googleDomain) {
       router.replace(updateParams({ view: undefined }));
     }
-  }, [view, googleDomain]);
+  }, [view, googleDomain, router, updateParams]);
 
   if (view === 'searchTerms' && !googleDomain) {
     return null;

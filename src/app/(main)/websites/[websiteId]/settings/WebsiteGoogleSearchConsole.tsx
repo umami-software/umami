@@ -55,6 +55,7 @@ export function WebsiteGoogleSearchConsole({ websiteId }: { websiteId: string })
 
   const handlePropertyChange = async (value: string) => {
     if (value && value !== data?.propertyUrl) {
+      setSaveError(false);
       try {
         await saveProperty(value);
         void refetch();

@@ -14,6 +14,7 @@ import { useMemo, useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
   useMessages,
+  useWebsiteGoogleAuthQuery,
   useWebsiteSearchTermsFilters,
   useWebsiteSearchTermsQuery,
 } from '@/components/hooks';
@@ -33,12 +34,15 @@ export function WebsiteSearchTermsExpandedView({ websiteId, googleDomain, onClos
   const { path, country } = useWebsiteSearchTermsFilters();
   const [search, setSearch] = useState('');
 
+  const { data: authData } = useWebsiteGoogleAuthQuery(websiteId);
+
   const { data, isLoading, isFetching, error } = useWebsiteSearchTermsQuery(websiteId, {
     path,
     googleDomain,
     country,
     limit: 500,
     offset: 0,
+    enabled: !!authData?.connected && !!authData?.propertyUrl,
   });
 
   const filteredRows = useMemo(() => {
