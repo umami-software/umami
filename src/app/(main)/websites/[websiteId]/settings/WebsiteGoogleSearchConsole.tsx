@@ -30,6 +30,7 @@ export function WebsiteGoogleSearchConsole({ websiteId }: { websiteId: string })
   const { data, isLoading, refetch } = useWebsiteGoogleAuthQuery(websiteId);
   const { get } = useApi();
   const [connectError, setConnectError] = useState(false);
+  const [saveError, setSaveError] = useState(false);
 
   const { data: properties, isLoading: loadingProperties } = useWebsiteGscPropertiesQuery(
     websiteId,
@@ -54,8 +55,12 @@ export function WebsiteGoogleSearchConsole({ websiteId }: { websiteId: string })
 
   const handlePropertyChange = async (value: string) => {
     if (value && value !== data?.propertyUrl) {
-      await saveProperty(value);
-      void refetch();
+      try {
+        await saveProperty(value);
+        void refetch();
+      } catch {
+        setSaveError(true);
+      }
     }
   };
 
@@ -130,6 +135,7 @@ export function WebsiteGoogleSearchConsole({ websiteId }: { websiteId: string })
               </ListItem>
             ))}
           </Select>
+          {saveError && <Text color="red">{t(messages.gscSavePropertyError)}</Text>}
         </ActionForm>
       )}
     </Column>
