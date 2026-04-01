@@ -34,8 +34,12 @@ export async function GET(
 
   const status = await getWebsiteGoogleAuthStatus(websiteId);
 
-  if (!status?.propertyUrl) {
+  if (!status) {
     return json({ rows: [], connected: false });
+  }
+
+  if (!status.propertyUrl) {
+    return json({ rows: [], connected: true });
   }
 
   const { startAt, endAt, path, googleDomain, country, limit = 10, offset = 0 } = query;
