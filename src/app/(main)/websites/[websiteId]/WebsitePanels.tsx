@@ -27,7 +27,11 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
   );
 
   useEffect(() => {
-    setSourcesTab(googleDomain ? 'searchTerms' : 'referrer');
+    if (googleDomain) {
+      setSourcesTab('searchTerms');
+    } else {
+      setSourcesTab(prev => (prev === 'searchTerms' ? 'referrer' : prev));
+    }
   }, [googleDomain]);
 
   return (
