@@ -96,6 +96,7 @@ export * from './useMobile';
 export * from './useModified';
 export * from './useNavigation';
 export * from './useOperatorLabels';
+export * from './useGoogleDomain';
 export * from './useWebsiteSearchTermsFilters';
 export * from './usePagedQuery';
 export * from './usePageParameters';

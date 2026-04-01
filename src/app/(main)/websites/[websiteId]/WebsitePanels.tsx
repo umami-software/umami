@@ -2,17 +2,14 @@ import { Grid, Heading, Row, Tab, TabList, TabPanel, Tabs } from '@umami/react-z
 import { useEffect, useState } from 'react';
 import { GridRow } from '@/components/common/GridRow';
 import { Panel } from '@/components/common/Panel';
-import { useMessages, useMobile, useNavigation } from '@/components/hooks';
+import { useGoogleDomain, useMessages, useMobile } from '@/components/hooks';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { WeeklyTraffic } from '@/components/metrics/WeeklyTraffic';
 import { WorldMap } from '@/components/metrics/WorldMap';
-import { GOOGLE_DOMAINS, OPERATORS } from '@/lib/constants';
-import { parseFilterValue } from '@/lib/params';
 import { WebsiteSearchTerms } from './WebsiteSearchTerms';
 
 export function WebsitePanels({ websiteId }: { websiteId: string }) {
   const { t, labels } = useMessages();
-  const { query } = useNavigation();
   const tableProps = {
     websiteId,
     limit: 10,
@@ -23,18 +20,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
   const rowProps = { minHeight: '570px' };
   const { isMobile } = useMobile();
 
-  const rawReferrer = query.referrer as string | undefined;
-
-  const { operator: referrerOperator, value: referrerValue } = rawReferrer
-    ? parseFilterValue(rawReferrer)
-    : { operator: undefined, value: undefined };
-
-  const googleDomain =
-    referrerOperator === OPERATORS.equals
-      ? GOOGLE_DOMAINS.find(
-          d => d === (Array.isArray(referrerValue) ? referrerValue[0] : referrerValue),
-        )
-      : undefined;
+  const googleDomain = useGoogleDomain();
 
   const [sourcesTab, setSourcesTab] = useState<string | number>(
     googleDomain ? 'searchTerms' : 'referrer',

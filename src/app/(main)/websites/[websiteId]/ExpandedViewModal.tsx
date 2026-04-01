@@ -2,9 +2,7 @@ import { Dialog, Modal } from '@umami/react-zen';
 import { useEffect } from 'react';
 import { WebsiteExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedView';
 import { WebsiteSearchTermsExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteSearchTermsExpandedView';
-import { useMobile, useNavigation } from '@/components/hooks';
-import { GOOGLE_DOMAINS, OPERATORS } from '@/lib/constants';
-import { parseFilterValue } from '@/lib/params';
+import { useGoogleDomain, useMobile, useNavigation } from '@/components/hooks';
 
 export function ExpandedViewModal({
   websiteId,
@@ -15,10 +13,11 @@ export function ExpandedViewModal({
 }) {
   const {
     router,
-    query: { view, referrer },
+    query: { view },
     updateParams,
   } = useNavigation();
   const { isMobile } = useMobile();
+  const googleDomain = useGoogleDomain();
 
   const handleClose = (close: () => void) => {
     router.push(updateParams({ view: undefined }));
@@ -30,19 +29,6 @@ export function ExpandedViewModal({
       router.push(updateParams({ view: undefined }));
     }
   };
-
-  const rawReferrer = referrer as string | undefined;
-
-  const { operator: referrerOperator, value: referrerValue } = rawReferrer
-    ? parseFilterValue(rawReferrer)
-    : { operator: undefined, value: undefined };
-
-  const googleDomain =
-    view === 'searchTerms' && referrerOperator === OPERATORS.equals
-      ? GOOGLE_DOMAINS.find(
-          d => d === (Array.isArray(referrerValue) ? referrerValue[0] : referrerValue),
-        )
-      : undefined;
 
   useEffect(() => {
     if (view === 'searchTerms' && !googleDomain) {
