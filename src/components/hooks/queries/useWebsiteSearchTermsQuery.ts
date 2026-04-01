@@ -1,7 +1,7 @@
 import { keepPreviousData } from '@tanstack/react-query';
 import { useApi } from '../useApi';
 import { useDateParameters } from '@/components/hooks';
-import { SearchTermRow } from '@/lib/google';
+import type { SearchTermRow } from '@/lib/google';
 
 export interface WebsiteSearchTermsData {
   rows: Array<SearchTermRow>;
