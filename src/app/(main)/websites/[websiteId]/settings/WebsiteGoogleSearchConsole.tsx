@@ -41,6 +41,7 @@ export function WebsiteGoogleSearchConsole({ websiteId }: { websiteId: string })
     useWebsiteGscPropertyMutation(websiteId);
 
   const handleConnectGoogle = async () => {
+    setConnectError(false);
     try {
       const { url } = await get(`/auth/google`, { websiteId });
       if (!url) {
