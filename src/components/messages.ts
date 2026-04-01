@@ -444,6 +444,7 @@ export const messages: Record<string, string> = {
   gscPropertyInstruction: 'message.gsc-property-instruction',
   gscVerificationNote: 'message.gsc-verification-note',
   gscConnectError: 'message.gsc-connect-error',
+  gscSavePropertyError: 'message.gsc-save-property-error',
   gscDescription: 'message.gsc-description',
   gscAccountDescription: 'message.gsc-account-description',
   visitorsGscTooltip: 'message.visitors-gsc-tooltip',

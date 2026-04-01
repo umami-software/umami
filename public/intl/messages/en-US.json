@@ -444,6 +444,7 @@
     "gsc-property-instruction": "Select the Google Search Console property you would like to pull keyword data from.",
     "gsc-verification-note": "Note: You also need to set up your site on Google Search Console for this integration to work.",
     "gsc-connect-error": "Failed to connect Google account. Please try again.",
+    "gsc-save-property-error": "Failed to save the selected property. Please try again.",
     "gsc-description": "You can integrate Google Search Console to retrieve all search results statistics, including the search terms used by users who visit your site.",
     "gsc-account-description": "Link the Google account that manages your website's Google Search Console.",
     "visitors-gsc-tooltip": "Visitors represents the number of clicks from Google Search results."
