@@ -47,13 +47,7 @@ export function WebsiteSearchTermsExpandedView({ websiteId, googleDomain, onClos
 
   const filteredRows = useMemo(() => {
     if (!data?.rows) return [];
-    const totalClicks = data.rows.reduce((sum, r) => sum + r.clicks, 0);
-    return data.rows
-      .filter(r => !search || r.query.toLowerCase().includes(search.toLowerCase()))
-      .map(r => ({
-        ...r,
-        percent: totalClicks > 0 ? (r.clicks / totalClicks) * 100 : 0,
-      }));
+    return data.rows.filter(r => !search || r.query.toLowerCase().includes(search.toLowerCase()));
   }, [data, search]);
 
   const downloadData = useMemo(
