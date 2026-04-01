@@ -1,4 +1,5 @@
 import { Dialog, Modal } from '@umami/react-zen';
+import { useEffect } from 'react';
 import { WebsiteExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedView';
 import { WebsiteSearchTermsExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteSearchTermsExpandedView';
 import { useMobile, useNavigation } from '@/components/hooks';
@@ -42,6 +43,16 @@ export function ExpandedViewModal({
           d => d === (Array.isArray(referrerValue) ? referrerValue[0] : referrerValue),
         )
       : undefined;
+
+  useEffect(() => {
+    if (view === 'searchTerms' && !googleDomain) {
+      router.replace(updateParams({ view: undefined }));
+    }
+  }, [view, googleDomain]);
+
+  if (view === 'searchTerms' && !googleDomain) {
+    return null;
+  }
 
   return (
     <Modal isOpen={!!view} onOpenChange={handleOpenChange} isDismissable>
