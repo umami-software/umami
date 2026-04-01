@@ -32,7 +32,7 @@ export async function GET(request: Request) {
   }
 
   const origin = new URL(request.url).origin;
-  const basePath = process.env.BASE_PATH ? `/${process.env.BASE_PATH}` : '';
+  const basePath = process.env.BASE_PATH ?? '';
   const redirectUri = `${origin}${basePath}/api/auth/google/callback`;
 
   const state = jwt.sign({ websiteId }, secret, { expiresIn: '10m' });
