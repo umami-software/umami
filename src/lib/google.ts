@@ -196,6 +196,7 @@ export async function getSearchTerms(
   const filters: Array<{ dimension: string; operator: string; expression: string }> = [];
 
   if (path) {
+    // GSC page dimension stores full URLs; 'contains' correctly matches Umami pathnames regardless of the original filter operator
     filters.push({ dimension: 'page', operator: 'contains', expression: path });
   }
 
