@@ -87,6 +87,16 @@ export const sortingParams = {
     .optional(),
 };
 
+export const websiteOrderByParam = z.enum(['name', 'domain', 'createdAt', 'visitors', 'pageviews']);
+
+export const websiteSortingParams = {
+  orderBy: websiteOrderByParam.optional(),
+  sortDescending: z
+    .enum(['true', 'false'])
+    .transform(value => value === 'true')
+    .optional(),
+};
+
 export const userRoleParam = z.enum(['admin', 'user', 'view-only']);
 
 export const teamRoleParam = z.enum(['team-member', 'team-view-only', 'team-manager']);
@@ -163,13 +173,12 @@ export const operatorParam = z.enum([
 
 export const goalReportSchema = z.object({
   type: z.literal('goal'),
-  parameters: z
-    .object({
-      startDate: z.coerce.date(),
-      endDate: z.coerce.date(),
-      type: z.string(),
-      value: z.string(),
-    }),
+  parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+    type: z.string(),
+    value: z.string(),
+  }),
 });
 
 export const funnelReportSchema = z.object({

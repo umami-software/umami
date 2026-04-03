@@ -2,7 +2,7 @@ import { endOfDay, startOfDay, subDays } from 'date-fns';
 import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import type { Prisma, Website } from '@/generated/prisma/client';
 import clickhouse from '@/lib/clickhouse';
-import { DEFAULT_PAGE_SIZE, ROLES } from '@/lib/constants';
+import { DEFAULT_PAGE_SIZE, EVENT_TYPE, ROLES } from '@/lib/constants';
 import { normalizeTimezone } from '@/lib/date';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
@@ -137,7 +137,7 @@ function getActivityOrderQuery(
         count(*) as value
       from website_event
       where website_event.created_at between {{startDate}} and {{endDate}}
-        and website_event.event_type NOT IN (2, 5)
+        and website_event.event_type NOT IN (${EVENT_TYPE.customEvent}, ${EVENT_TYPE.performance})
         and website_event.website_id in (
           select filtered_website.website_id
           from website filtered_website

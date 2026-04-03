@@ -4,7 +4,7 @@ import { uuid } from '@/lib/crypto';
 import { fetchAccount } from '@/lib/load';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { pagingParams, searchParams, sortingParams, timezoneParam } from '@/lib/schema';
+import { pagingParams, searchParams, timezoneParam, websiteSortingParams } from '@/lib/schema';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createShare, createWebsite, getWebsiteCount } from '@/queries/prisma';
 import { getAllUserWebsitesIncludingTeamOwner, getUserWebsites } from '@/queries/prisma/website';
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
   const schema = z.object({
     ...pagingParams,
     ...searchParams,
-    ...sortingParams,
+    ...websiteSortingParams,
     timezone: timezoneParam.optional(),
     includeTeams: z.string().optional(),
     includeMetrics: z
