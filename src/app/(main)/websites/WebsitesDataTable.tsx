@@ -8,8 +8,8 @@ import {
   useTimezone,
   useUserWebsitesQuery,
 } from '@/components/hooks';
-import { DEFAULT_PAGE_SIZE } from '@/lib/constants';
 import { Favicon } from '@/index';
+import { DEFAULT_PAGE_SIZE } from '@/lib/constants';
 import { WebsitesTable } from './WebsitesTable';
 
 const PAGE_SIZE_OPTIONS = [20, 50, 100];
@@ -58,12 +58,14 @@ export function WebsitesDataTable({
   allowEdit = true,
   allowView = true,
   showActions = true,
+  showStats = false,
 }: {
   userId?: string;
   teamId?: string;
   allowEdit?: boolean;
   allowView?: boolean;
   showActions?: boolean;
+  showStats?: boolean;
 }) {
   const { user } = useLoginQuery();
   const { t, labels } = useMessages();
@@ -78,6 +80,7 @@ export function WebsitesDataTable({
       orderBy: selectedSort.orderBy,
       sortDescending: selectedSort.sortDescending,
       timezone: canonicalizeTimezone(timezone),
+      includeMetrics: showStats || undefined,
     },
   );
 
@@ -155,6 +158,7 @@ export function WebsitesDataTable({
           showActions={showActions}
           allowEdit={allowEdit}
           allowView={allowView}
+          showStats={showStats}
           renderLink={renderLink}
         />
       )}

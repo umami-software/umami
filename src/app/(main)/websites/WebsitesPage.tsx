@@ -27,7 +27,7 @@ export function WebsitesPage() {
           {showActions && <WebsiteAddButton teamId={teamId} />}
         </PageHeader>
         <Panel>
-          <WebsitesDataTable teamId={teamId} showActions={showActions} />
+          <WebsitesDataTable teamId={teamId} showActions={showActions} showStats />
         </Panel>
       </Column>
     </PageBody>
