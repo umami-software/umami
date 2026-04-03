@@ -11,6 +11,7 @@ import {
   getWebsiteListActiveVisitors,
   getWebsiteListActivity,
   getWebsiteListStats,
+  type WebsiteListStats,
 } from '@/queries/sql';
 
 const ACTIVITY_ORDER_FIELDS = ['pageviews', 'visitors'] as const;
@@ -39,6 +40,10 @@ interface WebsiteListMetricsSummary {
 
 interface WebsiteListComparisonSummary {
   visitors: number;
+}
+
+interface WebsiteListDecorationOptions {
+  currentStats?: WebsiteListStats[];
 }
 
 function isValidDate(value?: Date) {
@@ -389,6 +394,7 @@ async function getWebsitesByActivityFallback(
       sortDescending,
     },
     filters,
+    { currentStats: stats },
   );
 }
 
@@ -748,6 +754,7 @@ export async function attachShareIdToWebsites(websites: {
 async function attachMetricsToWebsites(
   websites: WebsiteListResult,
   filters: WebsiteQueryFilters = {},
+  options: WebsiteListDecorationOptions = {},
 ) {
   const websiteIds = websites.data.map(website => website.id);
 
@@ -759,10 +766,11 @@ async function attachMetricsToWebsites(
   const previousDateRange = getPreviousTodayDateRange(filters);
   const recentActivityRange = getRecentActivityDateRange(filters);
   const [stats, previousStats, activity, activeVisitors] = await Promise.all([
-    getWebsiteListStats(websiteIds, {
-      startDate,
-      endDate,
-    }),
+    options.currentStats ??
+      getWebsiteListStats(websiteIds, {
+        startDate,
+        endDate,
+      }),
     getWebsiteListStats(websiteIds, previousDateRange),
     getWebsiteListActivity(websiteIds, recentActivityRange),
     getWebsiteListActiveVisitors(websiteIds),
@@ -831,12 +839,16 @@ async function attachMetricsToWebsites(
   };
 }
 
-async function decorateWebsiteList(websites: WebsiteListResult, filters: WebsiteQueryFilters = {}) {
+async function decorateWebsiteList(
+  websites: WebsiteListResult,
+  filters: WebsiteQueryFilters = {},
+  options: WebsiteListDecorationOptions = {},
+) {
   if (!filters.includeMetrics) {
     return attachShareIdToWebsites(websites);
   }
 
   const websitesWithShares = await attachShareIdToWebsites(websites);
 
-  return attachMetricsToWebsites(websitesWithShares, filters);
+  return attachMetricsToWebsites(websitesWithShares, filters, options);
 }
