@@ -1,6 +1,6 @@
 import { Icon, Row, Tab, TabList, Tabs, Text } from '@umami/react-zen';
 import { useMessages, useNavigation, useWebsite } from '@/components/hooks';
-import { ChartPie, Clock, Eye, User } from '@/components/icons';
+import { ChartPie, Clock, ExternalLink, Eye, User } from '@/components/icons';
 import { Lightning } from '@/components/svg';
 
 export function WebsiteTabs() {
@@ -20,6 +20,12 @@ export function WebsiteTabs() {
       label: t(labels.events),
       icon: <Lightning />,
       path: '/events',
+    },
+    {
+      id: 'outboundLinks',
+      label: t(labels.outboundLinks),
+      icon: <ExternalLink />,
+      path: '/outbound-links',
     },
     {
       id: 'sessions',

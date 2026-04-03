@@ -40,6 +40,7 @@
   const domain = config('domains') || '';
   const credentials = config('fetch-credentials') || 'omit';
   const perf = config('performance') === _true;
+  const trackOutbound = config('track-outbound') !== _false;
 
   const domains = domain.split(',').map(n => n.trim());
   const host =
@@ -125,18 +126,61 @@
         return track(eventName, eventData);
       }
     };
+
+    const isOutboundLink = el => {
+      if (!el || el.tagName !== 'A' || !el.href) return false;
+      try {
+        const linkUrl = new URL(el.href, location.href);
+        return (
+          linkUrl.protocol === 'http:' || linkUrl.protocol === 'https:'
+        ) && linkUrl.hostname !== hostname;
+      } catch {
+        return false;
+      }
+    };
+
+    const trackOutboundLink = async el => {
+      try {
+        const linkUrl = new URL(el.href, location.href);
+        return track('outbound-link', {
+          url: el.href,
+          domain: linkUrl.hostname.replace(/^www\./, ''),
+        });
+      } catch {
+        /* no-op */
+      }
+    };
+
     const onClick = async e => {
       const el = e.target;
       const parentElement = el.closest('a,button');
       if (!parentElement) return trackElement(el);
 
       const { href, target } = parentElement;
-      if (!parentElement.getAttribute(eventNameAttribute)) return;
+      const hasEvent = parentElement.getAttribute(eventNameAttribute);
 
-      if (parentElement.tagName === 'BUTTON') {
-        return trackElement(parentElement);
+      if (hasEvent) {
+        if (parentElement.tagName === 'BUTTON') {
+          return trackElement(parentElement);
+        }
+        if (parentElement.tagName === 'A' && href) {
+          const external =
+            target === '_blank' ||
+            e.ctrlKey ||
+            e.shiftKey ||
+            e.metaKey ||
+            (e.button && e.button === 1);
+          if (!external) e.preventDefault();
+          return trackElement(parentElement).then(() => {
+            if (!external) {
+              (target === '_top' ? top.location : location).href = href;
+            }
+          });
+        }
+        return;
       }
-      if (parentElement.tagName === 'A' && href) {
+
+      if (trackOutbound && isOutboundLink(parentElement)) {
         const external =
           target === '_blank' ||
           e.ctrlKey ||
@@ -144,7 +188,7 @@
           e.metaKey ||
           (e.button && e.button === 1);
         if (!external) e.preventDefault();
-        return trackElement(parentElement).then(() => {
+        return trackOutboundLink(parentElement).then(() => {
           if (!external) {
             (target === '_top' ? top.location : location).href = href;
           }

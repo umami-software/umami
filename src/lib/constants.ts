@@ -254,6 +254,7 @@ export const DATETIME_REGEX =
 export const URL_LENGTH = 500;
 export const PAGE_TITLE_LENGTH = 500;
 export const EVENT_NAME_LENGTH = 50;
+export const OUTBOUND_EVENT_NAME = 'outbound-link';
 
 export const UTM_PARAMS = ['utm_campaign', 'utm_content', 'utm_medium', 'utm_source', 'utm_term'];
 
