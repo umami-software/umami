@@ -11,6 +11,10 @@ export async function GET(request: Request) {
     ...sortingParams,
     timezone: timezoneParam.optional(),
     includeTeams: z.string().optional(),
+    includeMetrics: z
+      .enum(['true', 'false'])
+      .transform(value => value === 'true')
+      .optional(),
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -19,7 +23,10 @@ export async function GET(request: Request) {
     return error();
   }
 
-  const filters = await getQueryFilters(query);
+  const filters = {
+    ...(await getQueryFilters(query)),
+    includeMetrics: query.includeMetrics,
+  };
 
   if (query.includeTeams) {
     return json(await getAllUserWebsitesIncludingTeamOwner(auth.user.id, filters));

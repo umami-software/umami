@@ -11,6 +11,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
     ...sortingParams,
     timezone: timezoneParam.optional(),
     includeTeams: z.string().optional(),
+    includeMetrics: z
+      .enum(['true', 'false'])
+      .transform(value => value === 'true')
+      .optional(),
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -25,7 +29,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
     return unauthorized();
   }
 
-  const filters = await getQueryFilters(query);
+  const filters = {
+    ...(await getQueryFilters(query)),
+    includeMetrics: query.includeMetrics,
+  };
 
   if (query.includeTeams) {
     return json(await getAllUserWebsitesIncludingTeamOwner(userId, filters));
