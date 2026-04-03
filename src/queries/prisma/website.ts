@@ -30,6 +30,17 @@ type WebsiteQueryFilters = QueryFilters & {
   includeMetrics?: boolean;
 };
 
+interface WebsiteListMetricsSummary {
+  pageviews: number;
+  visitors: number;
+  visits: number;
+  bounces: number;
+}
+
+interface WebsiteListComparisonSummary {
+  visitors: number;
+}
+
 function isValidDate(value?: Date) {
   return value instanceof Date && !Number.isNaN(value.getTime());
 }
@@ -110,7 +121,11 @@ function getActivityOrderQuery(
     `;
   }
 
-  if (orderBy === 'pageviews' && !clickhouse.enabled) {
+  if (orderBy === 'pageviews' && clickhouse.enabled) {
+    return null;
+  }
+
+  if (orderBy === 'pageviews') {
     return `
       select
         website_event.website_id as website_id,
@@ -126,6 +141,8 @@ function getActivityOrderQuery(
       group by website_event.website_id
     `;
   }
+
+  return null;
 }
 
 function getWebsiteActivityFilter(
@@ -285,7 +302,9 @@ async function fetchActivitySortedWebsiteDetails(
     },
   });
 
-  const websiteById = new Map(websites.map(website => [website.id, website]));
+  const websiteById = new Map<string, (typeof websites)[number]>(
+    websites.map(website => [website.id, website] as const),
+  );
 
   return ids.map(id => websiteById.get(id)).filter(Boolean);
 }
@@ -329,16 +348,19 @@ async function getWebsitesByActivityFallback(
       endDate,
     },
   );
-  const statsByWebsiteId = new Map(
-    stats.map(stat => [
-      stat.websiteId,
-      {
-        pageviews: Number(stat.pageviews) || 0,
-        visitors: Number(stat.visitors) || 0,
-        visits: Number(stat.visits) || 0,
-        bounces: Number(stat.bounces) || 0,
-      },
-    ]),
+  const statsByWebsiteId = new Map<string, WebsiteListMetricsSummary>(
+    stats.map(
+      stat =>
+        [
+          stat.websiteId,
+          {
+            pageviews: Number(stat.pageviews) || 0,
+            visitors: Number(stat.visitors) || 0,
+            visits: Number(stat.visits) || 0,
+            bounces: Number(stat.bounces) || 0,
+          },
+        ] as const,
+    ),
   );
   const direction = sortDescending ? -1 : 1;
   const ids = [...websiteRefs]
@@ -710,7 +732,9 @@ export async function attachShareIdToWebsites(websites: {
     },
   });
 
-  const shareByWebsiteId = new Map(shares.map(share => [share.entityId, share.slug]));
+  const shareByWebsiteId = new Map<string, string>(
+    shares.map(share => [share.entityId, share.slug] as const),
+  );
 
   return {
     ...websites,
@@ -744,30 +768,36 @@ async function attachMetricsToWebsites(
     getWebsiteListActiveVisitors(websiteIds),
   ]);
 
-  const statsByWebsiteId = new Map(
-    stats.map(stat => [
-      stat.websiteId,
-      {
-        pageviews: Number(stat.pageviews) || 0,
-        visitors: Number(stat.visitors) || 0,
-        visits: Number(stat.visits) || 0,
-        bounces: Number(stat.bounces) || 0,
-      },
-    ]),
+  const statsByWebsiteId = new Map<string, WebsiteListMetricsSummary>(
+    stats.map(
+      stat =>
+        [
+          stat.websiteId,
+          {
+            pageviews: Number(stat.pageviews) || 0,
+            visitors: Number(stat.visitors) || 0,
+            visits: Number(stat.visits) || 0,
+            bounces: Number(stat.bounces) || 0,
+          },
+        ] as const,
+    ),
   );
-  const previousStatsByWebsiteId = new Map(
-    previousStats.map(stat => [
-      stat.websiteId,
-      {
-        visitors: Number(stat.visitors) || 0,
-      },
-    ]),
+  const previousStatsByWebsiteId = new Map<string, WebsiteListComparisonSummary>(
+    previousStats.map(
+      stat =>
+        [
+          stat.websiteId,
+          {
+            visitors: Number(stat.visitors) || 0,
+          },
+        ] as const,
+    ),
   );
-  const activityByWebsiteId = new Map(
-    activity.map(item => [item.websiteId, item.activity.map(value => Number(value) || 0)]),
+  const activityByWebsiteId = new Map<string, number[]>(
+    activity.map(item => [item.websiteId, item.activity.map(value => Number(value) || 0)] as const),
   );
-  const activeVisitorsByWebsiteId = new Map(
-    activeVisitors.map(item => [item.websiteId, Number(item.visitors) || 0]),
+  const activeVisitorsByWebsiteId = new Map<string, number>(
+    activeVisitors.map(item => [item.websiteId, Number(item.visitors) || 0] as const),
   );
 
   return {
