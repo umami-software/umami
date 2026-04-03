@@ -1,4 +1,4 @@
-import { endOfDay, startOfDay } from 'date-fns';
+import { endOfDay, startOfDay, subDays } from 'date-fns';
 import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import type { Prisma, Website } from '@/generated/prisma/client';
 import clickhouse from '@/lib/clickhouse';
@@ -7,9 +7,28 @@ import { normalizeTimezone } from '@/lib/date';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import type { QueryFilters } from '@/lib/types';
-import { getWebsiteListStats } from '@/queries/sql';
+import {
+  getWebsiteListActiveVisitors,
+  getWebsiteListActivity,
+  getWebsiteListStats,
+} from '@/queries/sql';
 
 const ACTIVITY_ORDER_FIELDS = ['pageviews', 'visitors'] as const;
+const WEBSITE_ACTIVITY_DAYS = 7;
+
+interface WebsiteListResult {
+  data: any[];
+  count: any;
+  page: number;
+  pageSize: number;
+  orderBy?: string;
+  search?: string;
+  sortDescending?: boolean;
+}
+
+type WebsiteQueryFilters = QueryFilters & {
+  includeMetrics?: boolean;
+};
 
 function isValidDate(value?: Date) {
   return value instanceof Date && !Number.isNaN(value.getTime());
@@ -17,6 +36,25 @@ function isValidDate(value?: Date) {
 
 function isActivityOrderBy(orderBy?: string): orderBy is (typeof ACTIVITY_ORDER_FIELDS)[number] {
   return ACTIVITY_ORDER_FIELDS.includes(orderBy as (typeof ACTIVITY_ORDER_FIELDS)[number]);
+}
+
+function getActivityTimezone(filters: QueryFilters = {}) {
+  const timezone =
+    filters.timezone && filters.timezone.toLowerCase() !== 'utc'
+      ? normalizeTimezone(filters.timezone)
+      : 'UTC';
+
+  return timezone;
+}
+
+function getTodayDateRange(filters: QueryFilters = {}) {
+  const timezone = getActivityTimezone(filters);
+  const zonedNow = utcToZonedTime(new Date(), timezone);
+
+  return {
+    startDate: zonedTimeToUtc(startOfDay(zonedNow), timezone),
+    endDate: zonedTimeToUtc(endOfDay(zonedNow), timezone),
+  };
 }
 
 function getActivityDateRange(filters: QueryFilters = {}) {
@@ -27,15 +65,28 @@ function getActivityDateRange(filters: QueryFilters = {}) {
     };
   }
 
-  const timezone =
-    filters.timezone && filters.timezone.toLowerCase() !== 'utc'
-      ? normalizeTimezone(filters.timezone)
-      : 'UTC';
+  return getTodayDateRange(filters);
+}
+
+function getRecentActivityDateRange(filters: QueryFilters = {}, days = WEBSITE_ACTIVITY_DAYS) {
+  const timezone = getActivityTimezone(filters);
   const zonedNow = utcToZonedTime(new Date(), timezone);
 
   return {
-    startDate: zonedTimeToUtc(startOfDay(zonedNow), timezone),
+    startDate: zonedTimeToUtc(startOfDay(subDays(zonedNow, days - 1)), timezone),
     endDate: zonedTimeToUtc(endOfDay(zonedNow), timezone),
+    timezone,
+  };
+}
+
+function getPreviousTodayDateRange(filters: QueryFilters = {}) {
+  const timezone = getActivityTimezone(filters);
+  const zonedNow = utcToZonedTime(new Date(), timezone);
+  const previousDay = subDays(zonedNow, 1);
+
+  return {
+    startDate: zonedTimeToUtc(startOfDay(previousDay), timezone),
+    endDate: zonedTimeToUtc(endOfDay(previousDay), timezone),
   };
 }
 
@@ -123,7 +174,9 @@ function getWebsiteActivityFilter(
     queryParams.teamUserId = teamMemberFilter.userId;
     queryParams.teamUserRole = teamMemberFilter.role;
   } else {
-    const unsupportedKeys = Object.keys(where || {}).filter(key => !['AND', 'deletedAt'].includes(key));
+    const unsupportedKeys = Object.keys(where || {}).filter(
+      key => !['AND', 'deletedAt'].includes(key),
+    );
 
     if (unsupportedKeys.length > 0) {
       return null;
@@ -239,7 +292,7 @@ async function fetchActivitySortedWebsiteDetails(
 
 async function getWebsitesByActivityFallback(
   criteria: Prisma.WebsiteFindManyArgs,
-  filters: QueryFilters,
+  filters: WebsiteQueryFilters,
   orderBy: (typeof ACTIVITY_ORDER_FIELDS)[number],
 ) {
   const { page = 1, pageSize, sortDescending = true, search } = filters;
@@ -254,15 +307,18 @@ async function getWebsitesByActivityFallback(
   const count = websiteRefs.length;
 
   if (count === 0) {
-    return attachShareIdToWebsites({
-      data: [],
-      count,
-      page: +page,
-      pageSize: size,
-      orderBy,
-      search,
-      sortDescending,
-    });
+    return decorateWebsiteList(
+      {
+        data: [],
+        count,
+        page: +page,
+        pageSize: size,
+        orderBy,
+        search,
+        sortDescending,
+      },
+      filters,
+    );
   }
 
   const { startDate, endDate } = getActivityDateRange(filters);
@@ -279,6 +335,8 @@ async function getWebsitesByActivityFallback(
       {
         pageviews: Number(stat.pageviews) || 0,
         visitors: Number(stat.visitors) || 0,
+        visits: Number(stat.visits) || 0,
+        bounces: Number(stat.bounces) || 0,
       },
     ]),
   );
@@ -298,20 +356,23 @@ async function getWebsitesByActivityFallback(
     .map(website => website.id);
   const data = await fetchActivitySortedWebsiteDetails(criteria, ids);
 
-  return attachShareIdToWebsites({
-    data,
-    count,
-    page: +page,
-    pageSize: size,
-    orderBy,
-    search,
-    sortDescending,
-  });
+  return decorateWebsiteList(
+    {
+      data,
+      count,
+      page: +page,
+      pageSize: size,
+      orderBy,
+      search,
+      sortDescending,
+    },
+    filters,
+  );
 }
 
 async function getWebsitesByActivity(
   criteria: Prisma.WebsiteFindManyArgs,
-  filters: QueryFilters,
+  filters: WebsiteQueryFilters,
   orderBy: (typeof ACTIVITY_ORDER_FIELDS)[number],
 ) {
   const pageData = await fetchActivitySortedWebsitePage(criteria, filters, orderBy);
@@ -319,10 +380,13 @@ async function getWebsitesByActivity(
   if (pageData) {
     const data = await fetchActivitySortedWebsiteDetails(criteria, pageData.ids);
 
-    return attachShareIdToWebsites({
-      ...pageData,
-      data,
-    });
+    return decorateWebsiteList(
+      {
+        ...pageData,
+        data,
+      },
+      filters,
+    );
   }
 
   return getWebsitesByActivityFallback(criteria, filters, orderBy);
@@ -346,7 +410,10 @@ export async function getWebsite(websiteId: string) {
   return attachShareIdToWebsite(website);
 }
 
-export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters: QueryFilters) {
+export async function getWebsites(
+  criteria: Prisma.WebsiteFindManyArgs,
+  filters: WebsiteQueryFilters,
+) {
   const { orderBy, search } = filters;
   const { getSearchParameters, pagedQuery } = prisma;
 
@@ -367,10 +434,13 @@ export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters:
 
   const websites = await pagedQuery('website', { ...criteria, where }, filters);
 
-  return attachShareIdToWebsites(websites);
+  return decorateWebsiteList(websites, filters);
 }
 
-export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filters?: QueryFilters) {
+export async function getAllUserWebsitesIncludingTeamOwner(
+  userId: string,
+  filters?: WebsiteQueryFilters,
+) {
   return getWebsites(
     {
       where: {
@@ -397,7 +467,7 @@ export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filte
   );
 }
 
-export async function getUserWebsites(userId: string, filters?: QueryFilters) {
+export async function getUserWebsites(userId: string, filters?: WebsiteQueryFilters) {
   return getWebsites(
     {
       where: {
@@ -419,7 +489,7 @@ export async function getUserWebsites(userId: string, filters?: QueryFilters) {
   );
 }
 
-export async function getTeamWebsites(teamId: string, filters?: QueryFilters) {
+export async function getTeamWebsites(teamId: string, filters?: WebsiteQueryFilters) {
   return getWebsites(
     {
       where: {
@@ -649,4 +719,94 @@ export async function attachShareIdToWebsites(websites: {
       shareId: shareByWebsiteId.get(website.id) ?? null,
     })),
   };
+}
+
+async function attachMetricsToWebsites(
+  websites: WebsiteListResult,
+  filters: WebsiteQueryFilters = {},
+) {
+  const websiteIds = websites.data.map(website => website.id);
+
+  if (websiteIds.length === 0) {
+    return websites;
+  }
+
+  const { startDate, endDate } = getTodayDateRange(filters);
+  const previousDateRange = getPreviousTodayDateRange(filters);
+  const recentActivityRange = getRecentActivityDateRange(filters);
+  const [stats, previousStats, activity, activeVisitors] = await Promise.all([
+    getWebsiteListStats(websiteIds, {
+      startDate,
+      endDate,
+    }),
+    getWebsiteListStats(websiteIds, previousDateRange),
+    getWebsiteListActivity(websiteIds, recentActivityRange),
+    getWebsiteListActiveVisitors(websiteIds),
+  ]);
+
+  const statsByWebsiteId = new Map(
+    stats.map(stat => [
+      stat.websiteId,
+      {
+        pageviews: Number(stat.pageviews) || 0,
+        visitors: Number(stat.visitors) || 0,
+        visits: Number(stat.visits) || 0,
+        bounces: Number(stat.bounces) || 0,
+      },
+    ]),
+  );
+  const previousStatsByWebsiteId = new Map(
+    previousStats.map(stat => [
+      stat.websiteId,
+      {
+        visitors: Number(stat.visitors) || 0,
+      },
+    ]),
+  );
+  const activityByWebsiteId = new Map(
+    activity.map(item => [item.websiteId, item.activity.map(value => Number(value) || 0)]),
+  );
+  const activeVisitorsByWebsiteId = new Map(
+    activeVisitors.map(item => [item.websiteId, Number(item.visitors) || 0]),
+  );
+
+  return {
+    ...websites,
+    data: websites.data.map(website => ({
+      ...website,
+      metrics: {
+        visitors: statsByWebsiteId.get(website.id)?.visitors || 0,
+        pageviews: statsByWebsiteId.get(website.id)?.pageviews || 0,
+        bounceRate: (() => {
+          const visits = statsByWebsiteId.get(website.id)?.visits || 0;
+          const bounces = statsByWebsiteId.get(website.id)?.bounces || 0;
+
+          return visits > 0 ? (Math.min(visits, bounces) / visits) * 100 : 0;
+        })(),
+        change: (() => {
+          const currentVisitors = statsByWebsiteId.get(website.id)?.visitors || 0;
+          const previousVisitors = previousStatsByWebsiteId.get(website.id)?.visitors || 0;
+
+          if (previousVisitors === 0) {
+            return currentVisitors > 0 ? 100 : 0;
+          }
+
+          return ((currentVisitors - previousVisitors) / previousVisitors) * 100;
+        })(),
+        activeVisitors: activeVisitorsByWebsiteId.get(website.id) || 0,
+        isActive: (activeVisitorsByWebsiteId.get(website.id) || 0) > 0,
+        activity: activityByWebsiteId.get(website.id) || Array(WEBSITE_ACTIVITY_DAYS).fill(0),
+      },
+    })),
+  };
+}
+
+async function decorateWebsiteList(websites: WebsiteListResult, filters: WebsiteQueryFilters = {}) {
+  if (!filters.includeMetrics) {
+    return attachShareIdToWebsites(websites);
+  }
+
+  const websitesWithShares = await attachShareIdToWebsites(websites);
+
+  return attachMetricsToWebsites(websitesWithShares, filters);
 }
