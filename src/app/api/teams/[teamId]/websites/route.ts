@@ -11,6 +11,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
     ...searchParams,
     ...sortingParams,
     timezone: timezoneParam.optional(),
+    includeMetrics: z
+      .enum(['true', 'false'])
+      .transform(value => value === 'true')
+      .optional(),
   });
   const { teamId } = await params;
   const { auth, query, error } = await parseRequest(request, schema);
@@ -23,7 +27,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
     return unauthorized();
   }
 
-  const filters = await getQueryFilters(query);
+  const filters = {
+    ...(await getQueryFilters(query)),
+    includeMetrics: query.includeMetrics,
+  };
 
   const websites = await getTeamWebsites(teamId, filters);
 
