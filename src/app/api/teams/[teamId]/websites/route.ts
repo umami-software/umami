@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { pagingParams, searchParams, sortingParams, timezoneParam } from '@/lib/schema';
+import { pagingParams, searchParams, timezoneParam, websiteSortingParams } from '@/lib/schema';
 import { canViewTeam } from '@/permissions';
 import { getTeamWebsites } from '@/queries/prisma';
 
@@ -9,7 +9,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
   const schema = z.object({
     ...pagingParams,
     ...searchParams,
-    ...sortingParams,
+    ...websiteSortingParams,
     timezone: timezoneParam.optional(),
     includeMetrics: z
       .enum(['true', 'false'])
