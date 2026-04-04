@@ -1,0 +1,126 @@
+import { Button, Column, Row, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { useState } from 'react';
+import { useFilters, useMessages, useMobile, useNavigation } from '@/components/hooks';
+import { FieldFilters } from '@/components/input/FieldFilters';
+import { SegmentFilters } from '@/components/input/SegmentFilters';
+
+export interface FilterEditFormProps {
+  websiteId?: string;
+  onChange?: (params: {
+    filters: any[];
+    segment?: string;
+    cohort?: string;
+    match?: string;
+  }) => void;
+  onClose?: () => void;
+}
+
+export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormProps) {
+  const {
+    query: { segment, cohort, match },
+    pathname,
+  } = useNavigation();
+  const { filters } = useFilters();
+  const { t, labels } = useMessages();
+  const [currentFilters, setCurrentFilters] = useState(filters);
+  const [currentSegment, setCurrentSegment] = useState(segment);
+  const [currentCohort, setCurrentCohort] = useState(cohort);
+  const [currentMatch, setCurrentMatch] = useState<string>(match || 'all');
+  const { isMobile } = useMobile();
+  const isPixelLink = !websiteId || pathname.includes('/pixels') || pathname.includes('/links');
+  const excludeEvent = !pathname.endsWith('/events') && !pathname.endsWith('/replays');
+  const isPerformance = pathname.includes('/performance');
+
+  const excludedFields = isPixelLink
+    ? ['path', 'title', 'hostname', 'distinctId', 'tag', 'event']
+    : isPerformance
+      ? [
+          'referrer',
+          'query',
+          'event',
+          'tag',
+          'distinctId',
+          'utmSource',
+          'utmMedium',
+          'utmCampaign',
+          'utmContent',
+          'utmTerm',
+        ]
+      : excludeEvent
+        ? ['event']
+        : [];
+
+  const handleReset = () => {
+    setCurrentFilters([]);
+    setCurrentSegment(undefined);
+    setCurrentCohort(undefined);
+    setCurrentMatch('all');
+  };
+
+  const handleSave = () => {
+    onChange?.({
+      filters: currentFilters.filter(f => f.value),
+      segment: currentSegment,
+      cohort: currentCohort,
+      match: currentMatch !== 'all' ? currentMatch : undefined,
+    });
+    onClose?.();
+  };
+
+  const handleSegmentChange = (id: string, type: string) => {
+    setCurrentSegment(type === 'segment' ? id : undefined);
+    setCurrentCohort(type === 'cohort' ? id : undefined);
+  };
+
+  return (
+    <Column width={isMobile ? 'auto' : '800px'} gap="6">
+      <Column minHeight="500px">
+        <Tabs>
+          <TabList>
+            <Tab id="fields">{t(labels.fields)}</Tab>
+            {!isPixelLink && (
+              <>
+                <Tab id="segments">{t(labels.segments)}</Tab>
+                <Tab id="cohorts">{t(labels.cohorts)}</Tab>
+              </>
+            )}
+          </TabList>
+          <TabPanel id="fields">
+            <FieldFilters
+              websiteId={websiteId}
+              value={currentFilters}
+              match={currentMatch}
+              onChange={setCurrentFilters}
+              onMatchChange={setCurrentMatch}
+              exclude={excludedFields}
+            />
+          </TabPanel>
+          <TabPanel id="segments">
+            <SegmentFilters
+              websiteId={websiteId}
+              segmentId={currentSegment}
+              onChange={handleSegmentChange}
+            />
+          </TabPanel>
+          <TabPanel id="cohorts">
+            <SegmentFilters
+              type="cohort"
+              websiteId={websiteId}
+              segmentId={currentCohort}
+              onChange={handleSegmentChange}
+            />
+          </TabPanel>
+        </Tabs>
+      </Column>
+      <Row alignItems="center" justifyContent="space-between" gap style={isMobile ? { paddingBottom: '16px' } : undefined}>
+        <Button onPress={handleReset}>{t(labels.reset)}</Button>
+        <Row alignItems="center" justifyContent="flex-end" gridColumn="span 2" gap>
+          <Button onPress={onClose}>{t(labels.cancel)}</Button>
+          <Button variant="primary" onPress={handleSave}>
+            {t(labels.apply)}
+          </Button>
+        </Row>
+      </Row>
+    </Column>
+  );
+}

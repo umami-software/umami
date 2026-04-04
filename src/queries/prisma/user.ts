@@ -1,8 +1,9 @@
-import { Prisma } from '@prisma/client';
-import { ROLES } from '@/lib/constants';
-import prisma from '@/lib/prisma';
-import { PageResult, Role, User, PageParams } from '@/lib/types';
-import { getRandomChars } from '@/lib/crypto';
+import { Prisma } from "@/generated/prisma/client";
+import { ROLES } from "@/lib/constants";
+import { getRandomChars } from "@/lib/generate";
+import prisma from "@/lib/prisma";
+import type { QueryFilters, Role } from "@/lib/types";
+
 import UserFindManyArgs = Prisma.UserFindManyArgs;
 
 export interface GetUserOptions {
@@ -13,14 +14,14 @@ export interface GetUserOptions {
 async function findUser(
   criteria: Prisma.UserFindUniqueArgs,
   options: GetUserOptions = {},
-): Promise<User> {
+) {
   const { includePassword = false, showDeleted = false } = options;
 
   return prisma.client.user.findUnique({
     ...criteria,
     where: {
       ...criteria.where,
-      ...(showDeleted && { deletedAt: null }),
+      ...(showDeleted ? {} : { deletedAt: null }),
     },
     select: {
       id: true,
@@ -43,32 +44,35 @@ export async function getUser(userId: string, options: GetUserOptions = {}) {
   );
 }
 
-export async function getUserByUsername(username: string, options: GetUserOptions = {}) {
-  return findUser({ where: { username } }, options);
+export async function getUserByUsername(
+  username: string,
+  options: GetUserOptions = {},
+) {
+  return findUser({ where: { username: username.toLowerCase() } }, options);
 }
 
 export async function getUsers(
   criteria: UserFindManyArgs,
-  pageParams?: PageParams,
-): Promise<PageResult<User[]>> {
-  const { search } = pageParams;
+  filters: QueryFilters = {},
+) {
+  const { search } = filters;
 
   const where: Prisma.UserWhereInput = {
     ...criteria.where,
-    ...prisma.getSearchParameters(search, [{ username: 'contains' }]),
+    ...prisma.getSearchParameters(search, [{ username: "contains" }]),
     deletedAt: null,
   };
 
   return prisma.pagedQuery(
-    'user',
+    "user",
     {
       ...criteria,
       where,
     },
     {
-      orderBy: 'createdAt',
+      orderBy: "createdAt",
       sortDescending: true,
-      ...pageParams,
+      ...filters,
     },
   );
 }
@@ -78,11 +82,7 @@ export async function createUser(data: {
   username: string;
   password: string;
   role: Role;
-}): Promise<{
-  id: string;
-  username: string;
-  role: string;
-}> {
+}) {
   return prisma.client.user.create({
     data,
     select: {
@@ -93,7 +93,7 @@ export async function createUser(data: {
   });
 }
 
-export async function updateUser(userId: string, data: Prisma.UserUpdateInput): Promise<User> {
+export async function updateUser(userId: string, data: Prisma.UserUpdateInput) {
   return prisma.client.user.update({
     where: {
       id: userId,
@@ -108,21 +108,9 @@ export async function updateUser(userId: string, data: Prisma.UserUpdateInput): 
   });
 }
 
-export async function deleteUser(
-  userId: string,
-): Promise<
-  [
-    Prisma.BatchPayload,
-    Prisma.BatchPayload,
-    Prisma.BatchPayload,
-    Prisma.BatchPayload,
-    Prisma.BatchPayload,
-    Prisma.BatchPayload,
-    User,
-  ]
-> {
+export async function deleteUser(userId: string) {
   const { client, transaction } = prisma;
-  const cloudMode = process.env.CLOUD_MODE;
+  const cloudMode = !!process.env.CLOUD_MODE;
 
   const websites = await client.website.findMany({
     where: { userId },
@@ -131,12 +119,12 @@ export async function deleteUser(
   let websiteIds = [];
 
   if (websites.length > 0) {
-    websiteIds = websites.map(a => a.id);
+    websiteIds = websites.map((a) => a.id);
   }
 
   const teams = await client.team.findMany({
     where: {
-      teamUser: {
+      members: {
         some: {
           userId,
           role: ROLES.teamOwner,
@@ -145,7 +133,7 @@ export async function deleteUser(
     },
   });
 
-  const teamIds = teams.map(a => a.id);
+  const teamIds = teams.map((a) => a.id);
 
   if (cloudMode) {
     return transaction([

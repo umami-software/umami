@@ -1,71 +1,100 @@
-import { Key } from 'react';
-import { Text, Icon, Button, Popup, Menu, Item, PopupTrigger, Flexbox } from 'react-basics';
-import classNames from 'classnames';
-import Icons from '@/components/icons';
-import { useLogin, useMessages, useTeams, useTeamUrl } from '@/components/hooks';
-import styles from './TeamsButton.module.css';
+import {
+  Button,
+  Column,
+  Icon,
+  Menu,
+  MenuItem,
+  MenuSection,
+  MenuSeparator,
+  MenuTrigger,
+  Popover,
+  Row,
+  Text,
+} from '@umami/react-zen';
+import { ArrowRight } from 'lucide-react';
+import type { Key } from 'react';
+import { IconLabel } from '@/components/common/IconLabel';
+import { useLoginQuery, useMessages, useMobile, useNavigation } from '@/components/hooks';
+import { ChevronRight, User, Users } from '@/components/icons';
+import { LAST_TEAM_CONFIG } from '@/lib/constants';
+import { removeItem } from '@/lib/storage';
 
-export function TeamsButton({
-  className,
-  showText = true,
-  onChange,
-}: {
-  className?: string;
-  showText?: boolean;
-  onChange?: (value: string) => void;
-}) {
-  const { user } = useLogin();
-  const { formatMessage, labels } = useMessages();
-  const { result } = useTeams(user.id);
-  const { teamId } = useTeamUrl();
-  const team = result?.data?.find(({ id }) => id === teamId);
+export function TeamsButton() {
+  const { user } = useLoginQuery();
+  const { t, labels } = useMessages();
+  const { teamId, router } = useNavigation();
+  const { isPhone } = useMobile();
+  const team = user?.teams?.find(({ id }) => id === teamId);
+  const selectedKeys = new Set([teamId || 'user']);
+  const label = teamId ? team?.name : user.username;
 
-  const handleSelect = (close: () => void, id: Key) => {
-    onChange?.((id !== user.id ? id : '') as string);
-    close();
+  const cloudMode = !!process.env.cloudMode;
+
+  const getUrl = (url: string) => {
+    return cloudMode ? `${process.env.cloudUrl}${url}` : url;
   };
 
-  if (!result?.count) {
-    return null;
-  }
+  const handleAction = async (key: Key) => {
+    if (key === 'user') {
+      removeItem(LAST_TEAM_CONFIG);
+      if (cloudMode) {
+        window.location.href = '/';
+      } else {
+        router.push('/');
+      }
+    }
+  };
 
   return (
-    <PopupTrigger>
-      <Button className={classNames(styles.button, className)} variant="quiet">
-        <Icon>{teamId ? <Icons.Users /> : <Icons.User />}</Icon>
-        {showText && <Text>{teamId ? team?.name : user.username}</Text>}
-        <Icon>
-          <Icons.ChevronDown />
+    <MenuTrigger>
+      <Button variant="quiet">
+        <Row
+          alignItems="center"
+          position="relative"
+          gap
+          maxHeight="40px"
+          minWidth={isPhone ? '100px' : '200px'}
+          maxWidth="200px"
+        >
+          <Icon>{teamId ? <Users /> : <User />}</Icon>
+          <Text truncate>{label}</Text>
+        </Row>
+        <Icon rotate={90} size="sm">
+          <ChevronRight />
         </Icon>
       </Button>
-      <Popup alignment="end">
-        {(close: () => void) => (
-          <Menu className={styles.menu} variant="popup" onSelect={handleSelect.bind(null, close)}>
-            <div className={styles.heading}>{formatMessage(labels.myAccount)}</div>
-            <Item key={user.id} className={classNames({ [styles.selected]: !teamId })}>
-              <Flexbox gap={10} alignItems="center">
-                <Icon>
-                  <Icons.User />
-                </Icon>
-                <Text>{user.username}</Text>
-              </Flexbox>
-            </Item>
-            <div className={styles.heading}>{formatMessage(labels.team)}</div>
-            {result?.data?.map(({ id, name }) => (
-              <Item key={id} className={classNames({ [styles.selected]: id === teamId })}>
-                <Flexbox gap={10} alignItems="center">
-                  <Icon>
-                    <Icons.Users />
-                  </Icon>
-                  <Text>{name}</Text>
-                </Flexbox>
-              </Item>
-            ))}
+      <Popover placement="bottom start">
+        <Column minWidth="300px">
+          <Menu selectionMode="single" selectedKeys={selectedKeys} onAction={handleAction}>
+            <MenuSection title={t(labels.myAccount)}>
+              <MenuItem id="user">
+                <IconLabel icon={<User />} label={user.username} />
+              </MenuItem>
+            </MenuSection>
+            <MenuSeparator />
+            <MenuSection title={t(labels.teams)}>
+              {user?.teams?.map(({ id, name }) => (
+                <MenuItem key={id} id={id} href={getUrl(`/teams/${id}`)}>
+                  <IconLabel icon={<Users />}>
+                    <Text wrap="nowrap">{name}</Text>
+                  </IconLabel>
+                </MenuItem>
+              ))}
+              <MenuSeparator />
+              <MenuItem id="manage-teams">
+                <a href="/settings/teams" style={{ width: '100%' }}>
+                  <Row alignItems="center" justifyContent="space-between" gap>
+                    <Text align="center">Manage teams</Text>
+                    <Icon>
+                      <ArrowRight />
+                    </Icon>
+                  </Row>
+                </a>
+              </MenuItem>
+            </MenuSection>
           </Menu>
-        )}
-      </Popup>
-    </PopupTrigger>
+        </Column>
+      </Popover>
+    </MenuTrigger>
   );
 }
-
-export default TeamsButton;

@@ -1,6 +1,6 @@
-import crypto from 'crypto';
-import prand from 'pure-rand';
-import { v4, v5 } from 'uuid';
+import crypto from 'node:crypto';
+import { startOfDay, startOfMonth, startOfWeek } from 'date-fns';
+import { v4, v5, v7 } from 'uuid';
 
 const ALGORITHM = 'aes-256-gcm';
 const IV_LENGTH = 16;
@@ -11,25 +11,6 @@ const ENC_POSITION = TAG_POSITION + TAG_LENGTH;
 
 const HASH_ALGO = 'sha512';
 const HASH_ENCODING = 'hex';
-
-const seed = Date.now() ^ (Math.random() * 0x100000000);
-const rng = prand.xoroshiro128plus(seed);
-
-export function random(min: number, max: number) {
-  return prand.unsafeUniformIntDistribution(min, max, rng);
-}
-
-export function getRandomChars(
-  n: number,
-  chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-) {
-  const arr = chars.split('');
-  let s = '';
-  for (let i = 0; i < n; i++) {
-    s += arr[random(0, arr.length - 1)];
-  }
-  return s;
-}
 
 const getKey = (password: string, salt: Buffer) =>
   crypto.pbkdf2Sync(password, salt, 10000, 32, 'sha512');
@@ -77,7 +58,21 @@ export function secret() {
 }
 
 export function uuid(...args: any) {
-  if (!args.length) return v4();
+  if (args.length) {
+    return v5(hash(...args, secret()), v5.DNS);
+  }
 
-  return v5(hash(...args, secret()), v5.DNS);
+  return process.env.USE_UUIDV7 ? v7() : v4();
+}
+
+export function createAuthKey() {
+  return crypto.randomBytes(16).toString('hex');
+}
+
+export function getSalt(saltRotation: string, createdAt: Date): string {
+  return hash(
+    (saltRotation === 'day' ? startOfDay : saltRotation === 'week' ? startOfWeek : startOfMonth)(
+      createdAt,
+    ).toUTCString(),
+  );
 }

@@ -1,7 +1,7 @@
+import { Button, Icon, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import Papa from 'papaparse';
-import { Button, Icon, TooltipPopup } from 'react-basics';
-import Icons from '@/components/icons';
 import { useMessages } from '@/components/hooks';
+import { Download } from '@/components/icons';
 
 export function DownloadButton({
   filename = 'data',
@@ -11,20 +11,23 @@ export function DownloadButton({
   data?: any;
   onClick?: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   const handleClick = async () => {
     downloadCsv(`${filename}.csv`, Papa.unparse(data));
   };
 
   return (
-    <TooltipPopup label={formatMessage(labels.download)} position="top">
-      <Button variant="quiet" onClick={handleClick} disabled={!data}>
+    <TooltipTrigger delay={0}>
+      <Button variant="quiet" onClick={handleClick} isDisabled={!data || data.length === 0}>
         <Icon>
-          <Icons.Download />
+          <Download />
         </Icon>
       </Button>
-    </TooltipPopup>
+      <Tooltip>
+        <Text size="sm">{t(labels.download)}</Text>
+      </Tooltip>
+    </TooltipTrigger>
   );
 }
 

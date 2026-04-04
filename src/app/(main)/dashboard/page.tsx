@@ -1,8 +1,8 @@
-import DashboardPage from './DashboardPage';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
+import { DashboardViewPage } from './DashboardViewPage';
 
-export default function () {
-  return <DashboardPage />;
+export default async function () {
+  return <DashboardViewPage />;
 }
 
 export const metadata: Metadata = {

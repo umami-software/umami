@@ -1,6 +1,8 @@
-import prisma from '@/lib/prisma';
 import clickhouse from '@/lib/clickhouse';
-import { runQuery, PRISMA, CLICKHOUSE } from '@/lib/db';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import prisma from '@/lib/prisma';
+
+const FUNCTION_NAME = 'getWebsiteSession';
 
 export async function getWebsiteSession(...args: [websiteId: string, sessionId: string]) {
   return runQuery({
@@ -56,6 +58,7 @@ async function relationalQuery(websiteId: string, sessionId: string) {
     group by id, distinct_id, website_id, browser, os, device, screen, language, country, region, city;
     `,
     { websiteId, sessionId },
+    FUNCTION_NAME,
   ).then(result => result?.[0]);
 }
 
@@ -105,5 +108,6 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
     group by id, websiteId, distinctId, browser, os, device, screen, language, country, region, city;
     `,
     { websiteId, sessionId },
+    FUNCTION_NAME,
   ).then(result => result?.[0]);
 }

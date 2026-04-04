@@ -1,3 +1,5 @@
+import { DEFAULT_CURRENCY } from './constants';
+
 export function parseTime(val: number) {
   const days = ~~(val / 86400);
   const hours = ~~(val / 3600) - days * 24;
@@ -77,24 +79,24 @@ export function stringToColor(str: string) {
   let color = '#';
   for (let i = 0; i < 3; i++) {
     const value = (hash >> (i * 8)) & 0xff;
-    color += ('00' + value.toString(16)).slice(-2);
+    color += `00${value.toString(16)}`.slice(-2);
   }
   return color;
 }
 
 export function formatCurrency(value: number, currency: string, locale = 'en-US') {
-  let formattedValue;
+  let formattedValue: Intl.NumberFormat;
 
   try {
     formattedValue = new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: currency,
     });
-  } catch (error) {
+  } catch {
     // Fallback to default currency format if an error occurs
     formattedValue = new Intl.NumberFormat(locale, {
       style: 'currency',
-      currency: 'USD',
+      currency: DEFAULT_CURRENCY,
     });
   }
 

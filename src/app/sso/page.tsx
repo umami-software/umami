@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import SSOPage from './SSOPage';
+import { SSOPage } from './SSOPage';
 
 export default function () {
   return (

@@ -1,16 +1,25 @@
-import useFormat from '@/components//hooks/useFormat';
-import Empty from '@/components/common/Empty';
-import FilterButtons from '@/components/common/FilterButtons';
-import { useCountryNames, useLocale, useMessages, useTimezone } from '@/components/hooks';
-import Icons from '@/components/icons';
-import { BROWSERS, OS_NAMES } from '@/lib/constants';
-import { stringToColor } from '@/lib/format';
-import { RealtimeData } from '@/lib/types';
-import { useContext, useMemo, useState } from 'react';
-import { Icon, SearchField, StatusLight, Text } from 'react-basics';
+import { Column, Heading, Row, SearchField, Text } from '@umami/react-zen';
+import Link from 'next/link';
+import { useMemo, useState } from 'react';
 import { FixedSizeList } from 'react-window';
-import { WebsiteContext } from '../WebsiteProvider';
-import styles from './RealtimeLog.module.css';
+import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
+import { useFormat } from '@/components//hooks/useFormat';
+import { Avatar } from '@/components/common/Avatar';
+import { Empty } from '@/components/common/Empty';
+import { IconLabel } from '@/components/common/IconLabel';
+import {
+  useCountryNames,
+  useLocale,
+  useMessages,
+  useMobile,
+  useNavigation,
+  useTimezone,
+  useWebsite,
+} from '@/components/hooks';
+import { Eye, User } from '@/components/icons';
+import { FilterButtons } from '@/components/input/FilterButtons';
+import { Lightning } from '@/components/svg';
+import { BROWSERS, OS_NAMES } from '@/lib/constants';
 
 const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';
@@ -18,43 +27,43 @@ const TYPE_SESSION = 'session';
 const TYPE_EVENT = 'event';
 
 const icons = {
-  [TYPE_PAGEVIEW]: <Icons.Eye />,
-  [TYPE_SESSION]: <Icons.Visitor />,
-  [TYPE_EVENT]: <Icons.Bolt />,
+  [TYPE_PAGEVIEW]: <Eye />,
+  [TYPE_SESSION]: <User />,
+  [TYPE_EVENT]: <Lightning />,
 };
 
-export function RealtimeLog({ data }: { data: RealtimeData }) {
-  const website = useContext(WebsiteContext);
+export function RealtimeLog({ data }: { data: any }) {
+  const website = useWebsite();
   const [search, setSearch] = useState('');
-  const { formatMessage, labels, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { formatValue } = useFormat();
   const { locale } = useLocale();
   const { formatTimezoneDate } = useTimezone();
   const { countryNames } = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);
+  const { updateParams } = useNavigation();
+  const { isPhone } = useMobile();
 
   const buttons = [
     {
-      label: formatMessage(labels.all),
-      key: TYPE_ALL,
+      label: t(labels.all),
+      id: TYPE_ALL,
     },
     {
-      label: formatMessage(labels.views),
-      key: TYPE_PAGEVIEW,
+      label: t(labels.views),
+      id: TYPE_PAGEVIEW,
     },
     {
-      label: formatMessage(labels.visitors),
-      key: TYPE_SESSION,
+      label: t(labels.visitors),
+      id: TYPE_SESSION,
     },
     {
-      label: formatMessage(labels.events),
-      key: TYPE_EVENT,
+      label: t(labels.events),
+      id: TYPE_EVENT,
     },
   ];
 
   const getTime = ({ createdAt, firstAt }) => formatTimezoneDate(firstAt || createdAt, 'pp');
-
-  const getColor = ({ id, sessionId }) => stringToColor(sessionId || id);
 
   const getIcon = ({ __type }) => icons[__type];
 
@@ -66,21 +75,23 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     os: string;
     country: string;
     device: string;
+    hostname: string;
   }) => {
-    const { __type, eventName, urlPath: url, browser, os, country, device } = log;
+    const { __type, eventName, urlPath, browser, os, country, device, hostname } = log;
 
     if (__type === TYPE_EVENT) {
-      return formatMessage(messages.eventLog, {
-        event: <b key="b">{eventName || formatMessage(labels.unknown)}</b>,
-        url: (
+      return t.rich(messages.eventLog, {
+        event: eventName || t(labels.unknown),
+        url: urlPath,
+        b: chunks => <b>{chunks}</b>,
+        a: chunks => (
           <a
-            key="a"
-            href={`//${website?.domain}${url}`}
-            className={styles.link}
+            href={`//${hostname}${urlPath}`}
+            style={{ fontWeight: 'bold' }}
             target="_blank"
             rel="noreferrer noopener"
           >
-            {url}
+            {chunks}
           </a>
         ),
       });
@@ -89,39 +100,45 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     if (__type === TYPE_PAGEVIEW) {
       return (
         <a
-          href={`//${website?.domain}${url}`}
-          className={styles.link}
+          href={`//${hostname}${urlPath}`}
+          style={{ fontWeight: 'bold' }}
           target="_blank"
           rel="noreferrer noopener"
         >
-          {url}
+          {urlPath}
         </a>
       );
     }
 
     if (__type === TYPE_SESSION) {
-      return formatMessage(messages.visitorLog, {
-        country: <b key="country">{countryNames[country] || formatMessage(labels.unknown)}</b>,
-        browser: <b key="browser">{BROWSERS[browser]}</b>,
-        os: <b key="os">{OS_NAMES[os] || os}</b>,
-        device: <b key="device">{formatMessage(labels[device] || labels.unknown)}</b>,
+      return t.rich(messages.visitorLog, {
+        country: countryNames[country] || t(labels.unknown),
+        browser: BROWSERS[browser],
+        os: OS_NAMES[os] || os,
+        device: t(labels[device] || labels.unknown),
+        b: chunks => <b>{chunks}</b>,
       });
     }
   };
 
-  const Row = ({ index, style }) => {
+  const TableRow = ({ index, style }) => {
     const row = logs[index];
     return (
-      <div className={styles.row} style={style}>
-        <div>
-          <StatusLight color={getColor(row)} />
-        </div>
-        <div className={styles.time}>{getTime(row)}</div>
-        <div className={styles.detail}>
-          <Icon className={styles.icon}>{getIcon(row)}</Icon>
-          <Text>{getDetail(row)}</Text>
-        </div>
-      </div>
+      <Row alignItems="center" style={style} gap>
+        <Row minWidth="30px">
+          <Link href={updateParams({ session: row.sessionId })}>
+            <Avatar seed={row.sessionId} size={32} />
+          </Link>
+        </Row>
+        <Row minWidth="100px">
+          <Text wrap="nowrap">{getTime(row)}</Text>
+        </Row>
+        <IconLabel icon={getIcon(row)}>
+          <Text style={{ maxWidth: isPhone ? '400px' : null }} truncate>
+            {getDetail(row)}
+          </Text>
+        </IconLabel>
+      </Row>
     );
   };
 
@@ -157,22 +174,33 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
   }, [data, filter, formatValue, search]);
 
   return (
-    <div className={styles.table}>
-      <div className={styles.actions}>
-        <SearchField className={styles.search} value={search} onSearch={setSearch} />
-        <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />
-      </div>
-      <div className={styles.header}>{formatMessage(labels.activity)}</div>
-      <div className={styles.body}>
+    <Column gap>
+      <Heading size="base">{t(labels.activity)}</Heading>
+      {isPhone ? (
+        <>
+          <Row>
+            <SearchField value={search} onSearch={setSearch} />
+          </Row>
+          <Row>
+            <FilterButtons items={buttons} value={filter} onChange={setFilter} />
+          </Row>
+        </>
+      ) : (
+        <Row alignItems="center" justifyContent="space-between">
+          <SearchField value={search} onSearch={setSearch} />
+          <FilterButtons items={buttons} value={filter} onChange={setFilter} />
+        </Row>
+      )}
+
+      <Column>
         {logs?.length === 0 && <Empty />}
         {logs?.length > 0 && (
           <FixedSizeList width="100%" height={500} itemCount={logs.length} itemSize={50}>
-            {Row}
+            {TableRow}
           </FixedSizeList>
         )}
-      </div>
-    </div>
+      </Column>
+      <SessionModal websiteId={website.id} />
+    </Column>
   );
 }
-
-export default RealtimeLog;

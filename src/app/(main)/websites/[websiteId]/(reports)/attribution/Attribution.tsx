@@ -1,0 +1,125 @@
+import { Column, Grid } from '@umami/react-zen';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { Panel } from '@/components/common/Panel';
+import { SectionHeader } from '@/components/common/SectionHeader';
+import { useMessages, useResultQuery } from '@/components/hooks';
+import { ListTable } from '@/components/metrics/ListTable';
+import { MetricCard } from '@/components/metrics/MetricCard';
+import { MetricsBar } from '@/components/metrics/MetricsBar';
+import { percentFilter } from '@/lib/filters';
+import { formatLongNumber } from '@/lib/format';
+
+export interface AttributionProps {
+  websiteId: string;
+  startDate: Date;
+  endDate: Date;
+  model: string;
+  type: string;
+  step: string;
+}
+
+export function Attribution({
+  websiteId,
+  startDate,
+  endDate,
+  model,
+  type,
+  step,
+}: AttributionProps) {
+  const { data, error, isLoading } = useResultQuery<any>('attribution', {
+    websiteId,
+    startDate,
+    endDate,
+    model,
+    type,
+    step,
+  });
+
+  const { t, labels } = useMessages();
+
+  const { pageviews, visitors, visits } = data?.total || {};
+
+  const metrics = data
+    ? [
+        {
+          value: visitors,
+          label: t(labels.visitors),
+          formatValue: formatLongNumber,
+        },
+        {
+          value: visits,
+          label: t(labels.visits),
+          formatValue: formatLongNumber,
+        },
+        {
+          value: pageviews,
+          label: t(labels.views),
+          formatValue: formatLongNumber,
+        },
+      ]
+    : [];
+
+  function AttributionTable({ data = [], title }: { data: any; title: string }) {
+    const attributionData = percentFilter(
+      data.map(({ name, value }) => ({
+        x: name,
+        y: Number(value),
+      })),
+    );
+
+    return (
+      <ListTable
+        title={title}
+        metric={t(labels.visitors)}
+        data={attributionData.map(({ x, y, z }: { x: string; y: number; z: number }) => ({
+          label: x,
+          count: y,
+          percent: z,
+        }))}
+      />
+    );
+  }
+
+  return (
+    <LoadingPanel data={data} isLoading={isLoading} error={error}>
+      {data && (
+        <Column gap>
+          <MetricsBar>
+            {metrics?.map(({ label, value, formatValue }) => {
+              return (
+                <MetricCard key={label} value={value} label={label} formatValue={formatValue} />
+              );
+            })}
+          </MetricsBar>
+          <SectionHeader title={t(labels.sources)} />
+          <Grid columns={{ base: '1fr', md: '1fr 1fr' }} gap>
+            <Panel>
+              <AttributionTable data={data?.referrer} title={t(labels.referrer)} />
+            </Panel>
+            <Panel>
+              <AttributionTable data={data?.paidAds} title={t(labels.paidAds)} />
+            </Panel>
+          </Grid>
+          <SectionHeader title="UTM" />
+          <Grid columns={{ base: '1fr', md: '1fr 1fr' }} gap>
+            <Panel>
+              <AttributionTable data={data?.utm_source} title={t(labels.sources)} />
+            </Panel>
+            <Panel>
+              <AttributionTable data={data?.utm_medium} title={t(labels.medium)} />
+            </Panel>
+            <Panel>
+              <AttributionTable data={data?.utm_cmapaign} title={t(labels.campaigns)} />
+            </Panel>
+            <Panel>
+              <AttributionTable data={data?.utm_content} title={t(labels.content)} />
+            </Panel>
+            <Panel>
+              <AttributionTable data={data?.utm_term} title={t(labels.terms)} />
+            </Panel>
+          </Grid>
+        </Column>
+      )}
+    </LoadingPanel>
+  );
+}

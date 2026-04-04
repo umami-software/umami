@@ -1,12 +1,17 @@
-import { Metadata } from 'next';
-import Providers from './Providers';
-import '@fontsource/inter/300.css';
-import '@fontsource/inter/400.css';
-import '@fontsource/inter/500.css';
-import '@fontsource/inter/700.css';
-import 'react-basics/dist/styles.css';
-import '@/styles/index.css';
-import '@/styles/variables.css';
+import type { Metadata } from 'next';
+import { headers } from 'next/headers';
+import { Inter } from 'next/font/google';
+import { Suspense } from 'react';
+import { getBaseUrl } from '@/lib/get-base-url';
+import { Providers } from './Providers';
+import '@umami/react-zen/styles.full.css';
+import './global.css';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 export default function ({ children }) {
   if (process.env.DISABLE_UI) {
@@ -18,7 +23,7 @@ export default function ({ children }) {
   }
 
   return (
-    <html lang="en" data-scroll="0">
+    <html lang="en" className={`${inter.className} ${inter.variable}`}>
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -31,16 +36,23 @@ export default function ({ children }) {
         <meta name="theme-color" content="#2f2f2f" media="(prefers-color-scheme: dark)" />
         <meta name="robots" content="noindex,nofollow" />
       </head>
-      <body suppressHydrationWarning>
-        <Providers>{children}</Providers>
+      <body>
+        <Suspense>
+          <Providers>{children}</Providers>
+        </Suspense>
       </body>
     </html>
   );
 }
 
-export const metadata: Metadata = {
-  title: {
-    template: '%s | Umami',
-    default: 'Umami',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const headerStore = await headers();
+
+  return {
+    metadataBase: getBaseUrl(headerStore),
+    title: {
+      template: '%s | Umami',
+      default: 'Umami',
+    },
+  };
+}

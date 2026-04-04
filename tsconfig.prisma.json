@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/generated/prisma/client.ts"],
+  "compilerOptions": {
+    "outDir": "generated/prisma",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "target": "ES2020",
+    "declaration": false,
+    "noEmit": false
+  }
+}

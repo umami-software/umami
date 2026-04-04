@@ -1,57 +1,59 @@
 import { useMemo } from 'react';
-import PageviewsChart from '@/components/metrics/PageviewsChart';
-import useWebsitePageviews from '@/components/hooks/queries/useWebsitePageviews';
-import { useDateRange } from '@/components/hooks';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { useDateRange, useTimezone } from '@/components/hooks';
+import { useWebsitePageviewsQuery } from '@/components/hooks/queries/useWebsitePageviewsQuery';
+import { PageviewsChart } from '@/components/metrics/PageviewsChart';
 
 export function WebsiteChart({
   websiteId,
-  compareMode = false,
+  compareMode,
 }: {
   websiteId: string;
   compareMode?: boolean;
 }) {
-  const { dateRange, dateCompare } = useDateRange(websiteId);
+  const { timezone } = useTimezone();
+  const { dateRange, dateCompare } = useDateRange({ timezone: timezone });
   const { startDate, endDate, unit, value } = dateRange;
-  const { data, isLoading } = useWebsitePageviews(websiteId, compareMode ? dateCompare : undefined);
+  const { data, isLoading, isFetching, error } = useWebsitePageviewsQuery({
+    websiteId,
+    compare: compareMode ? dateCompare?.compare : undefined,
+  });
   const { pageviews, sessions, compare } = (data || {}) as any;
 
   const chartData = useMemo(() => {
-    if (data) {
-      const result = {
-        pageviews,
-        sessions,
-      };
+    if (!data) {
+      return { pageviews: [], sessions: [] };
+    }
 
-      if (compare) {
-        result['compare'] = {
-          pageviews: result.pageviews.map(({ x }, i) => ({
+    return {
+      pageviews,
+      sessions,
+      ...(compare && {
+        compare: {
+          pageviews: pageviews.map(({ x }, i) => ({
             x,
             y: compare.pageviews[i]?.y,
             d: compare.pageviews[i]?.x,
           })),
-          sessions: result.sessions.map(({ x }, i) => ({
+          sessions: sessions.map(({ x }, i) => ({
             x,
             y: compare.sessions[i]?.y,
             d: compare.sessions[i]?.x,
           })),
-        };
-      }
-
-      return result;
-    }
-    return { pageviews: [], sessions: [] };
+        },
+      }),
+    };
   }, [data, startDate, endDate, unit]);
 
   return (
-    <PageviewsChart
-      data={chartData}
-      minDate={startDate.toISOString()}
-      maxDate={endDate.toISOString()}
-      unit={unit}
-      isLoading={isLoading}
-      isAllTime={value === 'all'}
-    />
+    <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error}>
+      <PageviewsChart
+        key={value}
+        data={chartData}
+        minDate={startDate}
+        maxDate={endDate}
+        unit={unit}
+      />
+    </LoadingPanel>
   );
 }
-
-export default WebsiteChart;

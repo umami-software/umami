@@ -1,46 +1,41 @@
-import { z, ZodSchema } from 'zod';
-import { FILTER_COLUMNS, FILTER_GROUPS } from '@/lib/constants';
-import { badRequest, unauthorized } from '@/lib/response';
-import { getAllowedUnits, getMinimumUnit } from '@/lib/date';
+import { startOfMonth, subMonths } from 'date-fns';
+import { z } from 'zod';
 import { checkAuth } from '@/lib/auth';
-import { getWebsiteSegment, getWebsiteDateRange } from '@/queries';
-
-export async function getJsonBody(request: Request) {
-  try {
-    return await request.clone().json();
-  } catch {
-    return undefined;
-  }
-}
+import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
+import { getAllowedUnits, getMinimumUnit, maxDate, parseDateRange } from '@/lib/date';
+import { fetchAccount, fetchWebsite } from '@/lib/load';
+import { filtersArrayToObject } from '@/lib/params';
+import { badRequest, unauthorized } from '@/lib/response';
+import type { QueryFilters } from '@/lib/types';
+import { getWebsiteSegment } from '@/queries/prisma';
 
 export async function parseRequest(
   request: Request,
-  schema?: ZodSchema,
+  schema?: any,
   options?: { skipAuth: boolean },
 ): Promise<any> {
   const url = new URL(request.url);
   let query = Object.fromEntries(url.searchParams);
   let body = await getJsonBody(request);
-  let error: () => void | undefined;
+  let error: () => undefined | undefined | Response;
   let auth = null;
-
-  const getErrorMessages = (error: z.ZodError) => {
-    return Object.entries(error.format())
-      .map(([key, value]) => {
-        const messages = (value as any)._errors;
-        return messages ? `${key}: ${messages.join(', ')}` : null;
-      })
-      .filter(Boolean);
-  };
 
   if (schema) {
     const isGet = request.method === 'GET';
+    const rawQuery = query;
     const result = schema.safeParse(isGet ? query : body);
 
     if (!result.success) {
-      error = () => badRequest(getErrorMessages(result.error));
+      error = () => badRequest(z.treeifyError(result.error));
     } else if (isGet) {
       query = result.data;
+
+      // Re-add suffixed filter params (e.g., browser1, os2) stripped by Zod schema
+      for (const key of Object.keys(rawQuery)) {
+        if (/\d+$/.test(key) && !(key in query)) {
+          query[key] = rawQuery[key];
+        }
+      }
     } else {
       body = result.data;
     }
@@ -57,56 +52,127 @@ export async function parseRequest(
   return { url, query, body, auth, error };
 }
 
-export async function getRequestDateRange(query: Record<string, any>) {
-  const { websiteId, startAt, endAt, unit } = query;
-
-  // All-time
-  if (+startAt === 0 && +endAt === 1) {
-    const result = await getWebsiteDateRange(websiteId as string);
-    const { min, max } = result[0];
-    const startDate = new Date(min);
-    const endDate = new Date(max);
-
-    return {
-      startDate,
-      endDate,
-      unit: getMinimumUnit(startDate, endDate),
-    };
+export async function getJsonBody(request: Request) {
+  try {
+    return await request.clone().json();
+  } catch {
+    return undefined;
   }
+}
+
+export function getRequestDateRange(query: Record<string, string>) {
+  const { startAt, endAt, unit, timezone } = query;
 
   const startDate = new Date(+startAt);
   const endDate = new Date(+endAt);
-  const minUnit = getMinimumUnit(startDate, endDate);
 
   return {
     startDate,
     endDate,
-    unit: (getAllowedUnits(startDate, endDate).includes(unit as string) ? unit : minUnit) as string,
+    timezone,
+    unit: getAllowedUnits(startDate, endDate).includes(unit)
+      ? unit
+      : getMinimumUnit(startDate, endDate),
   };
 }
 
-export async function getRequestFilters(query: Record<string, any>, websiteId?: string) {
+export function getRequestFilters(query: Record<string, any>) {
   const result: Record<string, any> = {};
 
-  for (const key of Object.keys(FILTER_COLUMNS)) {
-    const value = query[key];
-    if (value !== undefined) {
-      result[key] = value;
-    }
-  }
-
-  for (const key of Object.keys(FILTER_GROUPS)) {
-    const value = query[key];
-    if (value !== undefined) {
-      const segment = await getWebsiteSegment(websiteId, key, value);
-      if (key === 'segment') {
-        // merge filters into result
-        Object.assign(result, segment.parameters);
-      } else {
-        result[key] = segment.parameters;
-      }
+  for (const key of Object.keys(query)) {
+    const baseName = key.replace(/\d+$/, '');
+    if (baseName in FILTER_COLUMNS) {
+      result[key] = query[key];
     }
   }
 
   return result;
+}
+
+export async function setWebsiteDate(websiteId: string, data: Record<string, any>) {
+  const website = await fetchWebsite(websiteId);
+  const cloudMode = !!process.env.CLOUD_MODE;
+
+  if (cloudMode && website && !website.teamId) {
+    const account = await fetchAccount(website.userId);
+
+    if (!account?.hasSubscription) {
+      data.startDate = maxDate(data.startDate, startOfMonth(subMonths(new Date(), 6)));
+    }
+  }
+
+  if (website?.resetAt) {
+    data.startDate = maxDate(data.startDate, new Date(website?.resetAt));
+  }
+
+  return data;
+}
+
+export async function getQueryFilters(
+  params: Record<string, any>,
+  websiteId?: string,
+): Promise<QueryFilters> {
+  const dateRange = getRequestDateRange(params);
+  const filters = getRequestFilters(params);
+
+  let match = params?.match;
+
+  if (websiteId) {
+    await setWebsiteDate(websiteId, dateRange);
+
+    if (params.segment) {
+      const segmentParams = (await getWebsiteSegment(websiteId, params.segment))
+        ?.parameters as Record<string, any>;
+
+      Object.assign(filters, filtersArrayToObject(segmentParams.filters));
+
+      if (segmentParams.match) {
+        match = segmentParams.match;
+      }
+    }
+
+    if (params.cohort) {
+      const cohortParams = (await getWebsiteSegment(websiteId, params.cohort))
+        ?.parameters as Record<string, any>;
+
+      const { startDate, endDate } = parseDateRange(cohortParams.dateRange);
+
+      const cohortFilters = cohortParams.filters.map(({ name, ...props }) => ({
+        ...props,
+        name: `cohort_${name}`,
+      }));
+
+      cohortFilters.push({
+        name: `cohort_${cohortParams.action.type}`,
+        operator: OPERATORS.equals,
+        value: cohortParams.action.value,
+      });
+
+      Object.assign(filters, {
+        ...filtersArrayToObject(cohortFilters),
+        cohort_startDate: startDate,
+        cohort_endDate: endDate,
+        ...(cohortParams.match && {
+          cohort_match: cohortParams.match,
+          cohort_actionName: `cohort_${cohortParams.action.type}`,
+        }),
+      });
+    }
+
+    if (params.excludeBounce) {
+      Object.assign(filters, { excludeBounce: true });
+    }
+  }
+
+  return {
+    ...dateRange,
+    ...filters,
+    match,
+    page: params?.page,
+    pageSize: params?.pageSize ? params?.pageSize || DEFAULT_PAGE_SIZE : undefined,
+    orderBy: params?.orderBy,
+    sortDescending: params?.sortDescending,
+    search: params?.search,
+    compare: params?.compare,
+  };
 }

@@ -1,7 +1,7 @@
-import { canViewWebsite } from '@/lib/auth';
-import { json, unauthorized } from '@/lib/response';
-import { getActiveVisitors } from '@/queries';
 import { parseRequest } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
+import { canViewWebsite } from '@/permissions';
+import { getActiveVisitors } from '@/queries/sql';
 
 export async function GET(
   request: Request,
@@ -19,7 +19,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const result = await getActiveVisitors(websiteId);
+  const visitors = await getActiveVisitors(websiteId);
 
-  return json(result);
+  return json(visitors);
 }

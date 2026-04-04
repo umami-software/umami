@@ -1,13 +1,17 @@
 'use client';
-import LoginForm from './LoginForm';
-import styles from './LoginPage.module.css';
+import { Column } from '@umami/react-zen';
+import { LoginForm } from './LoginForm';
 
 export function LoginPage() {
   return (
-    <div className={styles.page}>
+    <Column
+      alignItems="center"
+      justifyContent="flex-start"
+      height="100vh"
+      backgroundColor="surface-raised"
+      style={{ paddingTop: '15vh' }}
+    >
       <LoginForm />
-    </div>
+    </Column>
   );
 }
-
-export default LoginPage;

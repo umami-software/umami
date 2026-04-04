@@ -1,60 +1,112 @@
-import { useState, Key } from 'react';
-import { Dropdown, Item } from 'react-basics';
-import { useWebsite, useWebsites, useMessages } from '@/components/hooks';
-import Empty from '@/components/common/Empty';
-import styles from './WebsiteSelect.module.css';
+import { Icon, ListItem, Row, Select, type SelectProps, Text } from '@umami/react-zen';
+import { useEffect, useState } from 'react';
+import { Empty } from '@/components/common/Empty';
+import {
+  useLoginQuery,
+  useMessages,
+  useUserWebsitesQuery,
+  useWebsiteQuery,
+} from '@/components/hooks';
+import { Globe } from '@/components/icons';
 
 export function WebsiteSelect({
   websiteId,
   teamId,
-  onSelect,
+  onChange,
+  includeTeams,
+  isCollapsed,
+  buttonProps,
+  listProps,
+  ...props
 }: {
   websiteId?: string;
   teamId?: string;
-  onSelect?: (key: any) => void;
-}) {
-  const { formatMessage, labels, messages } = useMessages();
+  includeTeams?: boolean;
+  isCollapsed?: boolean;
+} & SelectProps) {
+  const { t, labels, messages } = useMessages();
+  const { data: website } = useWebsiteQuery(websiteId);
+  const [name, setName] = useState<string>(website?.name);
   const [search, setSearch] = useState('');
-  const [selectedId, setSelectedId] = useState<Key>(websiteId);
+  const { user } = useLoginQuery();
+  const { data, isLoading } = useUserWebsitesQuery(
+    { userId: user?.id, teamId },
+    { search, pageSize: 20, includeTeams },
+  );
+  const listItems: { id: string; name: string }[] = data?.data || [];
 
-  const { data: website } = useWebsite(selectedId as string);
-
-  const queryResult = useWebsites({ teamId }, { search, pageSize: 5 });
-
-  const renderValue = () => {
-    return website?.name;
-  };
-
-  const renderEmpty = () => {
-    return <Empty message={formatMessage(messages.noResultsFound)} />;
-  };
-
-  const handleSelect = (value: any) => {
-    setSelectedId(value);
-    onSelect?.(value);
-  };
+  useEffect(() => {
+    setName(website?.name);
+  }, [website?.name]);
 
   const handleSearch = (value: string) => {
     setSearch(value);
   };
 
+  const handleOpenChange = () => {
+    setSearch('');
+  };
+
+  const handleChange = (id: string) => {
+    setName(listItems.find(item => item.id === id)?.name);
+    onChange(id);
+  };
+
+  const renderValue = () => {
+    if (isCollapsed) {
+      return '';
+    }
+
+    const value = name || props.placeholder || t(labels.selectWebsite);
+
+    return (
+      <Row alignItems="center" gap>
+        <Icon>
+          <Globe />
+        </Icon>
+        <Text truncate color={name ? undefined : 'muted'}>
+          {value}
+        </Text>
+      </Row>
+    );
+  };
+
   return (
-    <Dropdown
-      menuProps={{ className: styles.dropdown }}
-      items={queryResult?.result?.data as any[]}
-      value={selectedId as string}
-      renderValue={renderValue}
-      renderEmpty={renderEmpty}
-      onChange={handleSelect}
-      alignment="end"
-      placeholder={formatMessage(labels.selectWebsite)}
+    <Select
+      {...props}
+      value={websiteId}
+      isLoading={isLoading}
       allowSearch={true}
+      searchValue={search}
       onSearch={handleSearch}
-      isLoading={queryResult.query.isLoading}
+      onChange={handleChange}
+      onOpenChange={handleOpenChange}
+      renderValue={renderValue}
+      buttonProps={{
+        ...buttonProps,
+        style: {
+          minHeight: 40,
+          gap: 0,
+          justifyContent: isCollapsed ? 'start' : undefined,
+          ...buttonProps?.style,
+        },
+      }}
+      listProps={{
+        ...listProps,
+        renderEmptyState:
+          listProps?.renderEmptyState || (() => <Empty message={t(messages.noResultsFound)} />),
+        style: {
+          maxHeight: 'calc(42vh - 65px)',
+          width: 280,
+          ...listProps?.style,
+        },
+      }}
     >
-      {({ id, name }) => <Item key={id}>{name}</Item>}
-    </Dropdown>
+      {listItems.map(({ id, name }) => (
+        <ListItem key={id} id={id}>
+          {name}
+        </ListItem>
+      ))}
+    </Select>
   );
 }
-
-export default WebsiteSelect;

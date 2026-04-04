@@ -1,7 +1,7 @@
-import prisma from '@/lib/prisma';
 import clickhouse from '@/lib/clickhouse';
-import { runQuery, CLICKHOUSE, PRISMA } from '@/lib/db';
 import { DEFAULT_RESET_DATE } from '@/lib/constants';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import prisma from '@/lib/prisma';
 
 export async function getWebsiteDateRange(...args: [websiteId: string]) {
   return runQuery({
@@ -12,18 +12,21 @@ export async function getWebsiteDateRange(...args: [websiteId: string]) {
 
 async function relationalQuery(websiteId: string) {
   const { rawQuery, parseFilters } = prisma;
-  const { params } = await parseFilters(websiteId, { startDate: new Date(DEFAULT_RESET_DATE) });
+  const { queryParams } = parseFilters({
+    startDate: new Date(DEFAULT_RESET_DATE),
+    websiteId,
+  });
 
   const result = await rawQuery(
     `
     select
-      min(created_at) as mindate,
-      max(created_at) as maxdate
+      min(created_at) as "startDate",
+      max(created_at) as "endDate"
     from website_event
     where website_id = {{websiteId::uuid}}
       and created_at >= {{startDate}}
     `,
-    params,
+    queryParams,
   );
 
   return result[0] ?? null;
@@ -31,18 +34,21 @@ async function relationalQuery(websiteId: string) {
 
 async function clickhouseQuery(websiteId: string) {
   const { rawQuery, parseFilters } = clickhouse;
-  const { params } = await parseFilters(websiteId, { startDate: new Date(DEFAULT_RESET_DATE) });
+  const { queryParams } = parseFilters({
+    startDate: new Date(DEFAULT_RESET_DATE),
+    websiteId,
+  });
 
   const result = await rawQuery(
     `
     select
-      min(created_at) as mindate,
-      max(created_at) as maxdate
+      min(created_at) as startDate,
+      max(created_at) as endDate
     from website_event_stats_hourly
     where website_id = {websiteId:UUID}
       and created_at >= {startDate:DateTime64}
     `,
-    params,
+    queryParams,
   );
 
   return result[0] ?? null;

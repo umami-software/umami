@@ -1,16 +1,16 @@
-import SessionDetailsPage from './SessionDetailsPage';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
+import { SessionProfile } from '@/app/(main)/websites/[websiteId]/sessions/SessionProfile';
 
-export default async function WebsitePage({
+export default async function ({
   params,
 }: {
-  params: { websiteId: string; sessionId: string };
+  params: Promise<{ websiteId: string; sessionId: string }>;
 }) {
   const { websiteId, sessionId } = await params;
 
-  return <SessionDetailsPage websiteId={websiteId} sessionId={sessionId} />;
+  return <SessionProfile websiteId={websiteId} sessionId={sessionId} />;
 }
 
 export const metadata: Metadata = {
-  title: 'Websites',
+  title: 'Session',
 };

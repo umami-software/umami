@@ -20,5 +20,3 @@ export function Favicon({ domain, ...props }) {
 
   return hostName ? <img src={src} width={16} height={16} alt="" {...props} /> : null;
 }
-
-export default Favicon;

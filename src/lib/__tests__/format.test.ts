@@ -1,5 +1,4 @@
 import * as format from '../format';
-import { expect } from '@jest/globals';
 
 test('parseTime', () => {
   expect(format.parseTime(86400 + 3600 + 60 + 1)).toEqual({

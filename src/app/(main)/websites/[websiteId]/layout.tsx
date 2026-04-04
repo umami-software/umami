@@ -1,16 +1,29 @@
-import { Metadata } from 'next';
-import WebsiteProvider from './WebsiteProvider';
+import type { Metadata } from 'next';
+import { WebsiteLayout } from '@/app/(main)/websites/[websiteId]/WebsiteLayout';
+import { getWebsite } from '@/queries/prisma';
 
 export default async function ({
   children,
+  modal,
   params,
 }: {
   children: any;
+  modal: React.ReactNode;
   params: Promise<{ websiteId: string }>;
 }) {
   const { websiteId } = await params;
+  const website = await getWebsite(websiteId);
 
-  return <WebsiteProvider websiteId={websiteId}>{children}</WebsiteProvider>;
+  if (!website || website?.deletedAt) {
+    return null;
+  }
+
+  return (
+    <WebsiteLayout websiteId={websiteId}>
+      {children}
+      {modal}
+    </WebsiteLayout>
+  );
 }
 
 export const metadata: Metadata = {

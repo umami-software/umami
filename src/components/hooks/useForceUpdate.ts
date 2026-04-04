@@ -7,5 +7,3 @@ export function useForceUpdate() {
     update(Object.create(null));
   }, [update]);
 }
-
-export default useForceUpdate;

@@ -14,23 +14,21 @@ describe('renderNumberLabels', () => {
     expect(renderNumberLabels(input)).toBe(expected);
   });
 
-  test.each([['12500', '12.5k']])(
-    "formats numbers ≥ 10K as 'X.Xk' (%s → %s)",
-    (input, expected) => {
-      expect(renderNumberLabels(input)).toBe(expected);
-    },
-  );
+  test.each([
+    ['12500', '12.5k'],
+  ])("formats numbers ≥ 10K as 'X.Xk' (%s → %s)", (input, expected) => {
+    expect(renderNumberLabels(input)).toBe(expected);
+  });
 
   test.each([['1500', '1.50k']])("formats numbers ≥ 1K as 'X.XXk' (%s → %s)", (input, expected) => {
     expect(renderNumberLabels(input)).toBe(expected);
   });
 
-  test.each([['999', '999']])(
-    'calls formatNumber for values < 1000 (%s → %s)',
-    (input, expected) => {
-      expect(renderNumberLabels(input)).toBe(expected);
-    },
-  );
+  test.each([
+    ['999', '999'],
+  ])('calls formatNumber for values < 1000 (%s → %s)', (input, expected) => {
+    expect(renderNumberLabels(input)).toBe(expected);
+  });
 
   test.each([
     ['0', '0'],

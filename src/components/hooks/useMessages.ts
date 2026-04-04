@@ -1,27 +1,25 @@
-import { useIntl } from 'react-intl';
-import { messages, labels } from '@/components/messages';
+import { useTranslations } from 'next-intl';
+import { labels, messages } from '@/components/messages';
+import type { ApiError } from '@/lib/types';
 
-export function useMessages(): any {
-  const intl = useIntl();
+export function useMessages() {
+  const t = useTranslations();
 
-  const getMessage = (id: string) => {
-    const message = Object.values(messages).find(value => value.id === id);
+  const getMessage = (id: string) => t(`message.${id}`);
 
-    return message ? formatMessage(message) : id;
+  const getErrorMessage = (error: string | Error | undefined) => {
+    if (!error) {
+      return undefined;
+    }
+
+    if (typeof error === 'string') {
+      return error;
+    }
+
+    const code = (error as ApiError)?.code;
+
+    return code ? getMessage(code) : error?.message || 'Unknown error';
   };
 
-  const formatMessage = (
-    descriptor: {
-      id: string;
-      defaultMessage: string;
-    },
-    values?: { [key: string]: string },
-    opts?: any,
-  ) => {
-    return descriptor ? intl.formatMessage(descriptor, values, opts) : null;
-  };
-
-  return { formatMessage, messages, labels, getMessage };
+  return { t, messages, labels, getMessage, getErrorMessage };
 }
-
-export default useMessages;

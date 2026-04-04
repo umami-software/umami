@@ -1,62 +1,73 @@
-import classNames from 'classnames';
-import { useSpring, animated } from '@react-spring/web';
+import { useSpring } from '@react-spring/web';
+import { Button, Column, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import type { ReactNode } from 'react';
+import { AnimatedDiv } from '@/components/common/AnimatedDiv';
+import { Info } from '@/components/icons';
+import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { formatNumber } from '@/lib/format';
-import ChangeLabel from '@/components/metrics/ChangeLabel';
-import styles from './MetricCard.module.css';
 
 export interface MetricCardProps {
   value: number;
   previousValue?: number;
   change?: number;
   label?: string;
+  tooltip?: ReactNode;
   reverseColors?: boolean;
   formatValue?: (n: any) => string;
   showLabel?: boolean;
   showChange?: boolean;
-  showPrevious?: boolean;
-  className?: string;
 }
 
 export const MetricCard = ({
   value = 0,
   change = 0,
   label,
+  tooltip,
   reverseColors = false,
   formatValue = formatNumber,
   showLabel = true,
   showChange = false,
-  showPrevious = false,
-  className,
 }: MetricCardProps) => {
   const diff = value - change;
-  const pct = ((value - diff) / diff) * 100;
+  const pct = diff !== 0 ? ((value - diff) / diff) * 100 : value !== 0 ? 100 : 0;
   const props = useSpring({ x: Number(value) || 0, from: { x: 0 } });
   const changeProps = useSpring({ x: Number(pct) || 0, from: { x: 0 } });
-  const prevProps = useSpring({ x: Number(diff) || 0, from: { x: 0 } });
 
   return (
-    <div className={classNames(styles.card, className, showPrevious && styles.compare)}>
-      {showLabel && <div className={styles.label}>{label}</div>}
-      <animated.div className={styles.value} title={value?.toString()}>
-        {props?.x?.to(x => formatValue(x))}
-      </animated.div>
+    <Column
+      justifyContent="center"
+      paddingX="6"
+      paddingY="4"
+      borderRadius
+      backgroundColor="surface-base"
+      border
+      gap="4"
+    >
+      {showLabel && (
+        <Row justifyContent="space-between" alignItems="flex-start">
+          <Text weight="bold" wrap="nowrap">
+            {label}
+          </Text>
+          {tooltip && (
+            <TooltipTrigger delay={0}>
+              <Button size="sm" variant="quiet">
+                <Icon size="sm">
+                  <Info />
+                </Icon>
+              </Button>
+              <Tooltip placement="top">{tooltip}</Tooltip>
+            </TooltipTrigger>
+          )}
+        </Row>
+      )}
+      <Text size="4xl" weight="bold" wrap="nowrap">
+        <AnimatedDiv title={value?.toString()}>{props?.x?.to(x => formatValue(x))}</AnimatedDiv>
+      </Text>
       {showChange && (
-        <ChangeLabel
-          className={styles.change}
-          value={change}
-          title={formatValue(change)}
-          reverseColors={reverseColors}
-        >
-          <animated.span>{changeProps?.x?.to(x => `${Math.abs(~~x)}%`)}</animated.span>
+        <ChangeLabel value={change} title={formatValue(change)} reverseColors={reverseColors}>
+          <AnimatedDiv>{changeProps?.x?.to(x => `${Math.abs(~~x)}%`)}</AnimatedDiv>
         </ChangeLabel>
       )}
-      {showPrevious && (
-        <animated.div className={classNames(styles.value, styles.prev)} title={diff.toString()}>
-          {prevProps?.x?.to(x => formatValue(x))}
-        </animated.div>
-      )}
-    </div>
+    </Column>
   );
 };
-
-export default MetricCard;

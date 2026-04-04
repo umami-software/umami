@@ -1,102 +1,44 @@
-import classNames from 'classnames';
-import Favicon from '@/components/common/Favicon';
-import { useMessages, useTeamUrl, useWebsite } from '@/components/hooks';
-import Icons from '@/components/icons';
-import ActiveUsers from '@/components/metrics/ActiveUsers';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { ReactNode } from 'react';
-import { Button, Icon, Text } from 'react-basics';
-import Lightning from '@/assets/lightning.svg';
-import styles from './WebsiteHeader.module.css';
+import { Icon, Row, Text } from '@umami/react-zen';
+import { Favicon } from '@/components/common/Favicon';
+import { IconLabel } from '@/components/common/IconLabel';
+import { LinkButton } from '@/components/common/LinkButton';
+import { PageHeader } from '@/components/common/PageHeader';
+import { useMessages, useNavigation, useWebsite } from '@/components/hooks';
+import { Edit } from '@/components/icons';
+import { ActiveUsers } from '@/components/metrics/ActiveUsers';
 
 export function WebsiteHeader({
-  websiteId,
-  showLinks = true,
-  children,
+  showActions,
+  allowLink = true,
 }: {
-  websiteId: string;
-  showLinks?: boolean;
-  children?: ReactNode;
+  showActions?: boolean;
+  allowLink?: boolean;
 }) {
-  const { formatMessage, labels } = useMessages();
-  const { renderTeamUrl } = useTeamUrl();
-  const pathname = usePathname();
-  const { data: website } = useWebsite(websiteId);
-  const { name, domain } = website || {};
+  const website = useWebsite();
+  const { renderUrl, pathname } = useNavigation();
+  const isSettings = pathname.endsWith('/settings');
 
-  const links = [
-    {
-      label: formatMessage(labels.overview),
-      icon: <Icons.Overview />,
-      path: '',
-    },
-    {
-      label: formatMessage(labels.events),
-      icon: <Lightning />,
-      path: '/events',
-    },
-    {
-      label: formatMessage(labels.sessions),
-      icon: <Icons.User />,
-      path: '/sessions',
-    },
-    {
-      label: formatMessage(labels.realtime),
-      icon: <Icons.Clock />,
-      path: '/realtime',
-    },
-    {
-      label: formatMessage(labels.compare),
-      icon: <Icons.Compare />,
-      path: '/compare',
-    },
-    {
-      label: formatMessage(labels.reports),
-      icon: <Icons.Reports />,
-      path: '/reports',
-    },
-  ];
+  const { t, labels } = useMessages();
+
+  if (isSettings) {
+    return null;
+  }
 
   return (
-    <div className={styles.header}>
-      <div className={styles.title}>
-        <Favicon domain={domain} />
-        <Text>{name}</Text>
-        <ActiveUsers websiteId={websiteId} />
-      </div>
-      <div className={styles.actions}>
-        {showLinks && (
-          <div className={styles.links}>
-            {links.map(({ label, icon, path }) => {
-              const selected = path
-                ? pathname.includes(path)
-                : pathname.match(/^\/websites\/[\w-]+$/);
+    <PageHeader
+      title={website.name}
+      icon={<Favicon domain={website.domain} />}
+      titleHref={allowLink ? renderUrl(`/websites/${website.id}`, false) : undefined}
+    >
+      <Row alignItems="center" gap="6" wrap="wrap">
+        <ActiveUsers websiteId={website.id} />
 
-              return (
-                <Link
-                  key={label}
-                  href={renderTeamUrl(`/websites/${websiteId}${path}`)}
-                  shallow={true}
-                >
-                  <Button
-                    variant="quiet"
-                    className={classNames({
-                      [styles.selected]: selected,
-                    })}
-                  >
-                    <Icon className={styles.icon}>{icon}</Icon>
-                    <Text className={styles.label}>{label}</Text>
-                  </Button>
-                </Link>
-              );
-            })}
-          </div>
+        {showActions && (
+          <LinkButton href={renderUrl(`/websites/${website.id}/settings`, false)}>
+            <IconLabel icon={<Edit />}>{t(labels.edit)}</IconLabel>
+          </LinkButton>
         )}
-        {children}
-      </div>
-    </div>
+      </Row>
+    </PageHeader>
   );
 }
-
-export default WebsiteHeader;

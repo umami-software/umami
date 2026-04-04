@@ -1,21 +1,15 @@
-import { z } from 'zod';
-import { canViewWebsite } from '@/lib/auth';
-import { getRequestFilters, getRequestDateRange, parseRequest } from '@/lib/request';
-import { unitParam, timezoneParam, filterParams } from '@/lib/schema';
 import { getCompareDate } from '@/lib/date';
-import { unauthorized, json } from '@/lib/response';
-import { getPageviewStats, getSessionStats } from '@/queries';
+import { getQueryFilters, parseRequest } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
+import { filterParams, withDateRange } from '@/lib/schema';
+import { canViewWebsite } from '@/permissions';
+import { getPageviewStats, getSessionStats } from '@/queries/sql';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
-  const schema = z.object({
-    startAt: z.coerce.number().int(),
-    endAt: z.coerce.number().int(),
-    unit: unitParam,
-    timezone: timezoneParam,
-    compare: z.string().optional(),
+  const schema = withDateRange({
     ...filterParams,
   });
 
@@ -26,32 +20,23 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { timezone, compare } = query;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const { startDate, endDate, unit } = await getRequestDateRange(query);
-
-  const filters = {
-    ...(await getRequestFilters(query)),
-    startDate,
-    endDate,
-    timezone,
-    unit,
-  };
+  const filters = await getQueryFilters(query, websiteId);
 
   const [pageviews, sessions] = await Promise.all([
     getPageviewStats(websiteId, filters),
     getSessionStats(websiteId, filters),
   ]);
 
-  if (compare) {
+  if (filters.compare) {
     const { startDate: compareStartDate, endDate: compareEndDate } = getCompareDate(
-      compare,
-      startDate,
-      endDate,
+      filters.compare,
+      filters.startDate,
+      filters.endDate,
     );
 
     const [comparePageviews, compareSessions] = await Promise.all([
@@ -70,8 +55,8 @@ export async function GET(
     return json({
       pageviews,
       sessions,
-      startDate,
-      endDate,
+      startDate: filters.startDate,
+      endDate: filters.endDate,
       compare: {
         pageviews: comparePageviews,
         sessions: compareSessions,

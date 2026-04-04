@@ -1,15 +1,16 @@
 import { z } from 'zod';
-import { canViewWebsite } from '@/lib/auth';
-import { getWebsiteReports } from '@/queries';
-import { pagingParams } from '@/lib/schema';
 import { parseRequest } from '@/lib/request';
-import { unauthorized, json } from '@/lib/response';
+import { json, unauthorized } from '@/lib/response';
+import { pagingParams, reportTypeParam } from '@/lib/schema';
+import { canViewWebsite } from '@/permissions';
+import { getReports } from '@/queries/prisma';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
+    type: reportTypeParam.optional(),
     ...pagingParams,
   });
 
@@ -20,17 +21,25 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { page, pageSize, search } = query;
+  const { type, page, pageSize, search } = query;
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
-  const data = await getWebsiteReports(websiteId, {
-    page: +page,
-    pageSize: +pageSize,
-    search,
-  });
+  const data = await getReports(
+    {
+      where: {
+        websiteId,
+        type,
+      },
+    },
+    {
+      page,
+      pageSize,
+      search,
+    },
+  );
 
   return json(data);
 }

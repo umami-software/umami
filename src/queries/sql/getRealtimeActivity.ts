@@ -1,7 +1,9 @@
-import prisma from '@/lib/prisma';
 import clickhouse from '@/lib/clickhouse';
-import { runQuery, CLICKHOUSE, PRISMA } from '@/lib/db';
-import { QueryFilters } from '@/lib/types';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import prisma from '@/lib/prisma';
+import type { QueryFilters } from '@/lib/types';
+
+const FUNCTION_NAME = 'getRealtimeActivity';
 
 export async function getRealtimeActivity(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
@@ -12,7 +14,10 @@ export async function getRealtimeActivity(...args: [websiteId: string, filters: 
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
-  const { params, filterQuery, cohortQuery, dateQuery } = await parseFilters(websiteId, filters);
+  const { queryParams, filterQuery, cohortQuery, dateQuery } = parseFilters({
+    ...filters,
+    websiteId,
+  });
 
   return rawQuery(
     `
@@ -25,24 +30,30 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
         session.device,
         session.country,
         website_event.url_path as "urlPath",
-        website_event.referrer_domain as "referrerDomain"
+        website_event.referrer_domain as "referrerDomain",
+        website_event.hostname
     from website_event
     ${cohortQuery}
     inner join session
       on session.session_id = website_event.session_id
+        and session.website_id = website_event.website_id
     where website_event.website_id = {{websiteId::uuid}}
     ${filterQuery}
     ${dateQuery}
     order by website_event.created_at desc
     limit 100
     `,
-    params,
+    queryParams,
+    FUNCTION_NAME,
   );
 }
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters): Promise<{ x: number }> {
   const { rawQuery, parseFilters } = clickhouse;
-  const { params, filterQuery, cohortQuery, dateQuery } = await parseFilters(websiteId, filters);
+  const { queryParams, filterQuery, cohortQuery, dateQuery } = parseFilters({
+    ...filters,
+    websiteId,
+  });
 
   return rawQuery(
     `
@@ -55,7 +66,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters): Promis
             device,
             country,
             url_path as urlPath,
-            referrer_domain as referrerDomain
+            referrer_domain as referrerDomain,
+            hostname
         from website_event
         ${cohortQuery}
         where website_id = {websiteId:UUID}
@@ -64,6 +76,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters): Promis
         order by createdAt desc
         limit 100
     `,
-    params,
+    queryParams,
+    FUNCTION_NAME,
   );
 }

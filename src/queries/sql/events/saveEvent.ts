@@ -1,9 +1,9 @@
-import { EVENT_NAME_LENGTH, URL_LENGTH, EVENT_TYPE, PAGE_TITLE_LENGTH } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import clickhouse from '@/lib/clickhouse';
+import { EVENT_NAME_LENGTH, PAGE_TITLE_LENGTH, URL_LENGTH } from '@/lib/constants';
+import { uuid } from '@/lib/crypto';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import kafka from '@/lib/kafka';
 import prisma from '@/lib/prisma';
-import { uuid } from '@/lib/crypto';
 import { saveEventData } from './saveEventData';
 import { saveRevenue } from './saveRevenue';
 
@@ -11,6 +11,7 @@ export interface SaveEventArgs {
   websiteId: string;
   sessionId: string;
   visitId: string;
+  eventType: number;
   createdAt?: Date;
 
   // Page
@@ -52,6 +53,13 @@ export interface SaveEventArgs {
   ttclid?: string;
   lifatid?: string;
   twclid?: string;
+
+  // Performance
+  lcp?: number;
+  inp?: number;
+  cls?: number;
+  fcp?: number;
+  ttfb?: number;
 }
 
 export async function saveEvent(args: SaveEventArgs) {
@@ -65,9 +73,9 @@ async function relationalQuery({
   websiteId,
   sessionId,
   visitId,
+  eventType,
   createdAt,
   pageTitle,
-  tag,
   hostname,
   urlPath,
   urlQuery,
@@ -76,6 +84,7 @@ async function relationalQuery({
   referrerDomain,
   eventName,
   eventData,
+  tag,
   utmSource,
   utmMedium,
   utmCampaign,
@@ -87,6 +96,11 @@ async function relationalQuery({
   ttclid,
   lifatid,
   twclid,
+  lcp,
+  inp,
+  cls,
+  fcp,
+  ttfb,
 }: SaveEventArgs) {
   const websiteEventId = uuid();
 
@@ -113,10 +127,15 @@ async function relationalQuery({
       ttclid,
       lifatid,
       twclid,
-      eventType: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+      eventType,
       eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
       tag,
       hostname,
+      lcp,
+      inp,
+      cls,
+      fcp,
+      ttfb,
       createdAt,
     },
   });
@@ -152,9 +171,16 @@ async function clickhouseQuery({
   websiteId,
   sessionId,
   visitId,
-  distinctId,
+  eventType,
   createdAt,
   pageTitle,
+  hostname,
+  urlPath,
+  urlQuery,
+  referrerPath,
+  referrerQuery,
+  referrerDomain,
+  distinctId,
   browser,
   os,
   device,
@@ -163,15 +189,9 @@ async function clickhouseQuery({
   country,
   region,
   city,
-  tag,
-  hostname,
-  urlPath,
-  urlQuery,
-  referrerPath,
-  referrerQuery,
-  referrerDomain,
   eventName,
   eventData,
+  tag,
   utmSource,
   utmMedium,
   utmCampaign,
@@ -183,6 +203,11 @@ async function clickhouseQuery({
   ttclid,
   lifatid,
   twclid,
+  lcp,
+  inp,
+  cls,
+  fcp,
+  ttfb,
 }: SaveEventArgs) {
   const { insert, getUTCString } = clickhouse;
   const { sendMessage } = kafka;
@@ -213,17 +238,22 @@ async function clickhouseQuery({
     ttclid: ttclid,
     li_fat_id: lifatid,
     twclid: twclid,
-    event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+    event_type: eventType,
     event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
     tag: tag,
     distinct_id: distinctId,
     created_at: getUTCString(createdAt),
-    browser,
-    os,
-    device,
-    screen,
-    language,
-    hostname,
+    browser: browser,
+    os: os,
+    device: device,
+    screen: screen,
+    language: language,
+    hostname: hostname,
+    lcp: lcp,
+    inp: inp,
+    cls: cls,
+    fcp: fcp,
+    ttfb: ttfb,
   };
 
   if (kafka.enabled) {

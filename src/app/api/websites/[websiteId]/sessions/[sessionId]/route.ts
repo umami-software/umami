@@ -1,7 +1,7 @@
-import { unauthorized, json } from '@/lib/response';
-import { canViewWebsite } from '@/lib/auth';
-import { getWebsiteSession } from '@/queries';
 import { parseRequest } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
+import { canViewWebsite } from '@/permissions';
+import { getWebsiteSession } from '@/queries/sql';
 
 export async function GET(
   request: Request,

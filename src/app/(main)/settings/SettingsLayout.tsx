@@ -1,25 +1,12 @@
 'use client';
-import { ReactNode } from 'react';
-import { useLogin, useMessages } from '@/components/hooks';
-import MenuLayout from '@/components/layout/MenuLayout';
+import { Column } from '@umami/react-zen';
+import type { ReactNode } from 'react';
+import { PageBody } from '@/components/common/PageBody';
 
-export default function SettingsLayout({ children }: { children: ReactNode }) {
-  const { user } = useLogin();
-  const { formatMessage, labels } = useMessages();
-
-  const items = [
-    {
-      key: 'websites',
-      label: formatMessage(labels.websites),
-      url: '/settings/websites',
-    },
-    { key: 'teams', label: formatMessage(labels.teams), url: '/settings/teams' },
-    user.isAdmin && {
-      key: 'users',
-      label: formatMessage(labels.users),
-      url: '/settings/users',
-    },
-  ].filter(n => n);
-
-  return <MenuLayout items={items}>{children}</MenuLayout>;
+export function SettingsLayout({ children }: { children: ReactNode }) {
+  return (
+    <Column gap="6" margin="2" width="100%">
+      <PageBody>{children}</PageBody>
+    </Column>
+  );
 }

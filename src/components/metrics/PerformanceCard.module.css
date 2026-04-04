@@ -1,0 +1,12 @@
+.card {
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 0 0 1px var(--text-primary);
+}
+
+.card.selected {
+  box-shadow: 0 0 0 1px var(--text-primary);
+}
+

@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
-const fs = require('fs-extra');
-const path = require('path');
-const https = require('https');
-const chalk = require('chalk');
 
-const src = path.resolve(__dirname, '../src/lang');
-const dest = path.resolve(__dirname, '../public/intl/language');
+import https from 'node:https';
+import path from 'node:path';
+import chalk from 'chalk';
+import fs from 'node:fs';
+
+const src = path.resolve(process.cwd(), 'public/intl/messages');
+const dest = path.resolve(process.cwd(), 'public/intl/language');
 const files = fs.readdirSync(src);
 
 const getUrl = locale =>
@@ -42,7 +43,7 @@ const downloadFile = (url, filepath) =>
   });
 
 const download = async files => {
-  await fs.ensureDir(dest);
+  fs.mkdirSync(dest, { recursive: true });
 
   await asyncForEach(files, async file => {
     const locale = file.replace('-', '_').replace('.json', '');

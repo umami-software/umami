@@ -1,20 +1,48 @@
-import { useWebsiteEvents } from '@/components/hooks';
-import EventsTable from './EventsTable';
-import DataTable from '@/components/common/DataTable';
-import { ReactNode } from 'react';
+import { type ReactNode, useState } from 'react';
+import { DataGrid } from '@/components/common/DataGrid';
+import { useMessages, useWebsiteEventsQuery } from '@/components/hooks';
+import { FilterButtons } from '@/components/input/FilterButtons';
+import { EventsTable } from './EventsTable';
 
-export default function EventsDataTable({
+export function EventsDataTable({
   websiteId,
 }: {
   websiteId?: string;
   teamId?: string;
   children?: ReactNode;
 }) {
-  const queryResult = useWebsiteEvents(websiteId);
+  const { t, labels } = useMessages();
+  const [view, setView] = useState('all');
+  const query = useWebsiteEventsQuery(websiteId, { view });
+
+  const buttons = [
+    {
+      id: 'all',
+      label: t(labels.all),
+    },
+    {
+      id: 'views',
+      label: t(labels.views),
+    },
+    {
+      id: 'events',
+      label: t(labels.events),
+    },
+  ];
+
+  const renderActions = () => {
+    return <FilterButtons items={buttons} value={view} onChange={setView} />;
+  };
 
   return (
-    <DataTable queryResult={queryResult} allowSearch={true} autoFocus={false}>
+    <DataGrid
+      query={query}
+      allowSearch={true}
+      autoFocus={false}
+      allowPaging={true}
+      renderActions={renderActions}
+    >
       {({ data }) => <EventsTable data={data} />}
-    </DataTable>
+    </DataGrid>
   );
 }

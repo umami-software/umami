@@ -1,46 +1,73 @@
-import BarChartTooltip from '@/components/charts/BarChartTooltip';
-import Chart, { ChartProps } from '@/components/charts/Chart';
-import { useTheme } from '@/components/hooks';
+import { useTheme } from '@umami/react-zen';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { Chart, type ChartProps } from '@/components/charts/Chart';
+import { ChartTooltip } from '@/components/charts/ChartTooltip';
+import { useLocale } from '@/components/hooks';
 import { renderNumberLabels } from '@/lib/charts';
-import { useMemo, useState } from 'react';
+import { getThemeColors } from '@/lib/colors';
+import { DATE_FORMATS, formatDate } from '@/lib/date';
+import { formatLongCurrency, formatLongNumber } from '@/lib/format';
+
+const MemoChart = memo(Chart);
+
+const dateFormats = {
+  millisecond: 'T',
+  second: 'pp',
+  minute: 'p',
+  hour: 'p - PP',
+  day: 'PPPP',
+  week: 'PPPP',
+  month: 'LLLL yyyy',
+  quarter: 'qqq',
+  year: 'yyyy',
+};
 
 export interface BarChartProps extends ChartProps {
-  unit: string;
+  unit?: string;
   stacked?: boolean;
   currency?: string;
   renderXLabel?: (label: string, index: number, values: any[]) => string;
   renderYLabel?: (label: string, index: number, values: any[]) => string;
   XAxisType?: string;
   YAxisType?: string;
-  minDate?: number | string;
-  maxDate?: number | string;
-  isAllTime?: boolean;
+  minDate?: Date;
+  maxDate?: Date;
 }
 
-export function BarChart(props: BarChartProps) {
-  const [tooltip, setTooltip] = useState(null);
-  const { colors } = useTheme();
-  const {
-    renderXLabel,
-    renderYLabel,
-    unit,
-    XAxisType = 'time',
-    YAxisType = 'linear',
-    stacked = false,
-    minDate,
-    maxDate,
-    currency,
-    isAllTime,
-  } = props;
+interface TooltipState {
+  title: string;
+  color?: string;
+  value: string;
+}
 
-  const options: any = useMemo(() => {
+function BarChartComponent({
+  chartData,
+  renderXLabel,
+  renderYLabel,
+  unit,
+  XAxisType = 'timeseries',
+  YAxisType = 'linear',
+  stacked = false,
+  minDate,
+  maxDate,
+  currency,
+  ...props
+}: BarChartProps) {
+  const [tooltip, setTooltip] = useState<TooltipState | null>(null);
+  const { theme } = useTheme();
+  const { locale } = useLocale();
+  const { colors } = useMemo(() => getThemeColors(theme), [theme]);
+
+  const chartOptions: any = useMemo(() => {
     return {
+      __id: Date.now(),
       scales: {
         x: {
           type: XAxisType,
           stacked: true,
-          min: isAllTime ? '' : minDate,
-          max: maxDate,
+          min: formatDate(minDate, DATE_FORMATS[unit], locale),
+          max: formatDate(maxDate, DATE_FORMATS[unit], locale),
+          offset: true,
           time: {
             unit,
           },
@@ -61,7 +88,7 @@ export function BarChart(props: BarChartProps) {
           type: YAxisType,
           min: 0,
           beginAtZero: true,
-          stacked,
+          stacked: !!stacked,
           grid: {
             color: colors.chart.line,
           },
@@ -75,25 +102,65 @@ export function BarChart(props: BarChartProps) {
         },
       },
     };
-  }, [colors, unit, stacked, renderXLabel, renderYLabel]);
+  }, [
+    colors,
+    unit,
+    stacked,
+    renderXLabel,
+    renderYLabel,
+    minDate,
+    maxDate,
+    locale,
+    XAxisType,
+    YAxisType,
+  ]);
 
-  const handleTooltip = ({ tooltip }: { tooltip: any }) => {
-    const { opacity } = tooltip;
+  const handleTooltip = useCallback(
+    ({ tooltip }: { tooltip: any }) => {
+      const { opacity, labelColors, dataPoints } = tooltip;
+      const nextTooltip = opacity
+        ? {
+            title: formatDate(
+              new Date(dataPoints[0].raw?.d || dataPoints[0].raw?.x || dataPoints[0].raw),
+              dateFormats[unit],
+              locale,
+            ),
+            color: labelColors?.[0]?.backgroundColor,
+            value: currency
+              ? formatLongCurrency(dataPoints[0].raw.y, currency)
+              : `${formatLongNumber(dataPoints[0].raw.y)} ${dataPoints[0].dataset.label}`,
+          }
+        : null;
 
-    setTooltip(
-      opacity ? <BarChartTooltip tooltip={tooltip} unit={unit} currency={currency} /> : null,
-    );
-  };
+      setTooltip(prev => {
+        if (
+          prev?.title === nextTooltip?.title &&
+          prev?.color === nextTooltip?.color &&
+          prev?.value === nextTooltip?.value
+        ) {
+          return prev;
+        }
+
+        return nextTooltip;
+      });
+    },
+    [currency, locale, unit],
+  );
 
   return (
-    <Chart
-      {...props}
-      type="bar"
-      chartOptions={options}
-      tooltip={tooltip}
-      onTooltip={handleTooltip}
-    />
+    <>
+      <MemoChart
+        {...props}
+        type="bar"
+        chartData={chartData}
+        chartOptions={chartOptions}
+        onTooltip={handleTooltip}
+      />
+      {tooltip && <ChartTooltip {...tooltip} />}
+    </>
   );
 }
 
-export default BarChart;
+export const BarChart = memo(BarChartComponent);
+
+BarChart.displayName = 'BarChart';

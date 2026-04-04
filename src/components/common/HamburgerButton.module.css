@@ -1,9 +1,0 @@
-.button {
-  display: none;
-}
-
-@media only screen and (max-width: 768px) {
-  .button {
-    display: flex;
-  }
-}

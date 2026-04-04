@@ -1,52 +1,122 @@
 'use client';
-import WebsiteHeader from '../WebsiteHeader';
-import EventsDataTable from './EventsDataTable';
-import EventsMetricsBar from './EventsMetricsBar';
-import EventsChart from '@/components/metrics/EventsChart';
-import { GridRow } from '@/components/layout/Grid';
-import EventsTable from '@/components/metrics/EventsTable';
-import { useMessages } from '@/components/hooks';
-import { Item, Tabs } from 'react-basics';
-import { useState } from 'react';
-import EventProperties from './EventProperties';
+import { Column, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { type Key, useState } from 'react';
+import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
+import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { Panel } from '@/components/common/Panel';
+import { useDateRange, useMessages } from '@/components/hooks';
+import { useEventStatsQuery } from '@/components/hooks/queries/useEventStatsQuery';
+import { EventsChart } from '@/components/metrics/EventsChart';
+import { MetricCard } from '@/components/metrics/MetricCard';
+import { MetricsBar } from '@/components/metrics/MetricsBar';
+import { MetricsTable } from '@/components/metrics/MetricsTable';
+import { formatLongNumber } from '@/lib/format';
 import { getItem, setItem } from '@/lib/storage';
+import { EventProperties } from './EventProperties';
+import { EventsDataTable } from './EventsDataTable';
 
-export default function EventsPage({ websiteId }) {
-  const [label, setLabel] = useState(null);
-  const [tab, setTab] = useState(getItem('eventTab') || 'activity');
-  const { formatMessage, labels } = useMessages();
+const KEY_NAME = 'umami.events.tab';
 
-  const handleLabelClick = (value: string) => {
-    setLabel(value !== label ? value : '');
-  };
+export function EventsPage({ websiteId }) {
+  const [tab, setTab] = useState(getItem(KEY_NAME) || 'chart');
+  const { isAllTime } = useDateRange();
+  const { t, labels, getErrorMessage } = useMessages();
+  const { data, isLoading, isFetching, error } = useEventStatsQuery({
+    websiteId,
+  });
 
-  const onSelect = (value: 'activity' | 'properties') => {
-    setItem('eventTab', value);
+  const handleSelect = (value: Key) => {
+    setItem(KEY_NAME, value);
     setTab(value);
   };
 
+  const { events, visitors, visits, uniqueEvents, comparison } = data || {};
+
+  const metrics = data
+    ? [
+        {
+          value: visitors,
+          label: t(labels.visitors),
+          change: visitors - comparison.visitors,
+          formatValue: formatLongNumber,
+        },
+        {
+          value: visits,
+          label: t(labels.visits),
+          change: visits - comparison.visits,
+          formatValue: formatLongNumber,
+        },
+        {
+          value: events,
+          label: t(labels.events),
+          change: events - comparison.events,
+          formatValue: formatLongNumber,
+        },
+        {
+          value: uniqueEvents,
+          label: t(labels.uniqueEvents),
+          change: uniqueEvents - comparison.uniqueEvents,
+          formatValue: formatLongNumber,
+        },
+      ]
+    : null;
+
   return (
-    <>
-      <WebsiteHeader websiteId={websiteId} />
-      <EventsMetricsBar websiteId={websiteId} />
-      <GridRow columns="two-one">
-        <EventsChart websiteId={websiteId} focusLabel={label} />
-        <EventsTable
-          websiteId={websiteId}
-          type="event"
-          title={formatMessage(labels.events)}
-          metric={formatMessage(labels.actions)}
-          onLabelClick={handleLabelClick}
-        />
-      </GridRow>
-      <div>
-        <Tabs selectedKey={tab} onSelect={onSelect} style={{ marginBottom: 30 }}>
-          <Item key="activity">{formatMessage(labels.activity)}</Item>
-          <Item key="properties">{formatMessage(labels.properties)}</Item>
+    <Column gap="3">
+      <WebsiteControls websiteId={websiteId} />
+      <LoadingPanel
+        data={metrics}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        error={getErrorMessage(error)}
+        minHeight="136px"
+      >
+        <MetricsBar>
+          {metrics?.map(({ label, value, change, formatValue }) => {
+            return (
+              <MetricCard
+                key={label}
+                value={value}
+                label={label}
+                change={change}
+                formatValue={formatValue}
+                showChange={!isAllTime}
+              />
+            );
+          })}
+        </MetricsBar>
+      </LoadingPanel>
+      <Panel>
+        <Tabs selectedKey={tab} onSelectionChange={key => handleSelect(key)}>
+          <TabList>
+            <Tab id="chart">{t(labels.chart)}</Tab>
+            <Tab id="activity">{t(labels.activity)}</Tab>
+            <Tab id="properties">{t(labels.properties)}</Tab>
+          </TabList>
+          <TabPanel id="activity">
+            <EventsDataTable websiteId={websiteId} />
+          </TabPanel>
+          <TabPanel id="chart">
+            <Column gap="6">
+              <Column border="bottom" paddingBottom="6">
+                <EventsChart websiteId={websiteId} limit={50} />
+              </Column>
+              <MetricsTable
+                websiteId={websiteId}
+                type="event"
+                title={t(labels.event)}
+                metric={t(labels.count)}
+                limit={50}
+              />
+            </Column>
+          </TabPanel>
+          <TabPanel id="properties">
+            <EventProperties websiteId={websiteId} />
+          </TabPanel>
         </Tabs>
-        {tab === 'activity' && <EventsDataTable websiteId={websiteId} />}
-        {tab === 'properties' && <EventProperties websiteId={websiteId} />}
-      </div>
-    </>
+      </Panel>
+      <SessionModal websiteId={websiteId} />
+    </Column>
   );
 }
