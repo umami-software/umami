@@ -18,7 +18,7 @@ export function PixelsTable(props: DataTableProps) {
           return <Link href={renderUrl(`/pixels/${id}`)}>{name}</Link>;
         }}
       </DataColumn>
-      <DataColumn id="url" label="URL">
+      <DataColumn id="url" label="URL" style={{ minWidth: 0 }}>
         {({ slug }: any) => {
           const url = getSlugUrl(slug);
           return (

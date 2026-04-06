@@ -18,7 +18,7 @@ export function LinksTable(props: DataTableProps) {
           return <Link href={renderUrl(`/links/${id}`)}>{name}</Link>;
         }}
       </DataColumn>
-      <DataColumn id="slug" label={formatMessage(labels.link)}>
+      <DataColumn id="slug" label={formatMessage(labels.link)} style={{ minWidth: 0 }}>
         {({ slug }: any) => {
           const url = getSlugUrl(slug);
           return (
@@ -28,7 +28,7 @@ export function LinksTable(props: DataTableProps) {
           );
         }}
       </DataColumn>
-      <DataColumn id="url" label={formatMessage(labels.destinationUrl)}>
+      <DataColumn id="url" label={formatMessage(labels.destinationUrl)} style={{ minWidth: 0 }}>
         {({ url }: any) => {
           return <ExternalLink href={url}>{url}</ExternalLink>;
         }}
