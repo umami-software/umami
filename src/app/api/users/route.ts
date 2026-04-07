@@ -28,17 +28,15 @@ export async function POST(request: Request) {
 
   const { id, username, password, role } = body;
 
-  const existingUser = await getUserByUsername(username, {
-    showDeleted: true,
-  });
+  const existingUser = await getUserByUsername(username, { showDeleted: true });
 
   if (existingUser) {
-    return badRequest({ message: "User already exists" });
+    return badRequest({ message: 'User already exists' });
   }
 
   const user = await createUser({
     id: id || uuid(),
-    username: username.toLowerCase(),
+    username,
     password: hashPassword(password),
     role: role ?? ROLES.user,
   });
