@@ -48,6 +48,7 @@ async function relationalQuery(
 
   let entryExitQuery = '';
   let excludeDomain = '';
+  const isPathType = type === 'path' || type === 'entry' || type === 'exit';
 
   if (column === 'referrer_domain') {
     excludeDomain = `and website_event.referrer_domain != website_event.hostname
@@ -75,6 +76,14 @@ async function relationalQuery(
     `;
   }
 
+  const selectColumn = isPathType
+    ? `case when website_event.url_query != '' then website_event.url_path || '?' || website_event.url_query else website_event.url_path end`
+    : column;
+
+  const groupByColumn = isPathType
+    ? `case when website_event.url_query != '' then website_event.url_path || '?' || website_event.url_query else website_event.url_path end`
+    : column;
+
   return rawQuery(
     `
     select
@@ -86,7 +95,7 @@ async function relationalQuery(
       sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime"
     from (
       select
-        ${column} as name,
+        ${selectColumn} as name,
         website_event.session_id,
         website_event.visit_id,
         count(*) as "c",
@@ -94,17 +103,17 @@ async function relationalQuery(
         max(website_event.created_at) as "max_time"
       from website_event
       ${cohortQuery}
-      ${joinSessionQuery} 
-      ${entryExitQuery} 
+      ${joinSessionQuery}
+      ${entryExitQuery}
       where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_type != 2
         ${excludeDomain}
         ${filterQuery}
-      group by ${column}, website_event.session_id, website_event.visit_id
+      group by ${groupByColumn}, website_event.session_id, website_event.visit_id
     ) as t
     where name != ''
-    group by name 
+    group by name
     order by visitors desc, visits desc
     limit ${limit}
     offset ${offset}
@@ -129,27 +138,34 @@ async function clickhouseQuery(
 
   let excludeDomain = '';
   let entryExitQuery = '';
+  const isPathType = type === 'path' || type === 'entry' || type === 'exit';
+  let selectColumn = column;
 
   if (column === 'referrer_domain') {
     excludeDomain = `and referrer_domain != hostname and referrer_domain != ''`;
     if (type === 'domain') {
       column = toClickHouseGroupedReferrer(GROUPED_DOMAINS);
+      selectColumn = column;
     }
   }
 
   if (type === 'entry' || type === 'exit') {
     const aggregrate = type === 'entry' ? 'argMin' : 'argMax';
-    column = `x.${column}`;
 
     entryExitQuery = `
       JOIN (select visit_id,
-          ${aggregrate}(url_path, created_at) url_path
+          ${aggregrate}(url_path, created_at) url_path,
+          ${aggregrate}(url_query, created_at) url_query
       from website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type != 2
       group by visit_id) x
       ON x.visit_id = website_event.visit_id`;
+
+    selectColumn = `if(x.url_query != '', concat(x.url_path, '?', x.url_query), x.url_path)`;
+  } else if (isPathType) {
+    selectColumn = `if(url_query != '', concat(url_path, '?', url_query), url_path)`;
   }
 
   return rawQuery(
@@ -163,7 +179,7 @@ async function clickhouseQuery(
       sum(max_time-min_time) as "totaltime"
     from (
       select
-        ${column} name,
+        ${selectColumn} name,
         session_id,
         visit_id,
         count(*) c,
@@ -180,7 +196,7 @@ async function clickhouseQuery(
         ${filterQuery}
       group by name, session_id, visit_id
     ) as t
-    group by name 
+    group by name
     order by visitors desc, visits desc
     limit ${limit}
     offset ${offset}

@@ -44,6 +44,7 @@ async function relationalQuery(
 
   let entryExitQuery = '';
   let excludeDomain = '';
+  const isPathType = type === 'path' || type === 'entry' || type === 'exit';
 
   if (column === 'referrer_domain') {
     excludeDomain = `and website_event.referrer_domain != website_event.hostname
@@ -52,13 +53,13 @@ async function relationalQuery(
 
   if (type === 'entry' || type === 'exit') {
     const order = type === 'entry' ? 'asc' : 'desc';
-    column = `x.${column}`;
 
     entryExitQuery = `
       join (
         select distinct on (visit_id)
           visit_id,
-          url_path
+          url_path,
+          url_query
         from website_event
         where website_event.website_id = {{websiteId::uuid}}
           and website_event.created_at between {{startDate}} and {{endDate}}
@@ -67,11 +68,19 @@ async function relationalQuery(
       ) x
       on x.visit_id = website_event.visit_id
     `;
+
+    column = isPathType
+      ? `case when x.url_query != '' then x.url_path || '?' || x.url_query else x.url_path end`
+      : `x.${FILTER_COLUMNS[type] || type}`;
   }
+
+  const selectColumn = isPathType && type !== 'entry' && type !== 'exit'
+    ? `case when website_event.url_query != '' then website_event.url_path || '?' || website_event.url_query else website_event.url_path end`
+    : column;
 
   return rawQuery(
     `
-    select ${column} x,
+    select ${selectColumn} x,
       count(distinct website_event.session_id) as y
     from website_event
     ${cohortQuery}
@@ -107,9 +116,11 @@ async function clickhouseQuery(
 
   let sql = '';
   let excludeDomain = '';
+  const isPathType = type === 'path' || type === 'entry' || type === 'exit';
 
   if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
     let entryExitQuery = '';
+    let selectColumn = column;
 
     if (column === 'referrer_domain') {
       excludeDomain = `and referrer_domain != hostname and referrer_domain != ''`;
@@ -117,21 +128,25 @@ async function clickhouseQuery(
 
     if (type === 'entry' || type === 'exit') {
       const aggregrate = type === 'entry' ? 'argMin' : 'argMax';
-      column = `x.${column}`;
 
       entryExitQuery = `
       JOIN (select visit_id,
-          ${aggregrate}(url_path, created_at) url_path
+          ${aggregrate}(url_path, created_at) url_path,
+          ${aggregrate}(url_query, created_at) url_query
       from website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type != 2
       group by visit_id) x
       ON x.visit_id = website_event.visit_id`;
+
+      selectColumn = `if(x.url_query != '', concat(x.url_path, '?', x.url_query), x.url_path)`;
+    } else if (isPathType) {
+      selectColumn = `if(url_query != '', concat(url_path, '?', url_query), url_path)`;
     }
 
     sql = `
-    select ${column} x, 
+    select ${selectColumn} x,
       uniq(website_event.session_id) as y
     from website_event
     ${cohortQuery}
@@ -148,7 +163,9 @@ async function clickhouseQuery(
     `;
   } else {
     let groupByQuery = '';
-    let columnQuery = `arrayJoin(${column})`;
+    let columnQuery = isPathType
+      ? `arrayJoin(arrayMap((p, q) -> if(q != '', concat(p, '?', q), p), url_path, url_query))`
+      : `arrayJoin(${column})`;
 
     if (column === 'referrer_domain') {
       excludeDomain = `and t != ''`;
@@ -170,7 +187,7 @@ async function clickhouseQuery(
     select g.t as x,
       uniq(s) as y
     from (
-      select session_id s, 
+      select session_id s,
         ${columnQuery} as t
       from website_event_stats_hourly as website_event
       ${cohortQuery}
