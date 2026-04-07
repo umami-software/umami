@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
+import { getBaseUrl } from '@/lib/get-base-url';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { getGoogleAuthUrl } from '@/lib/google';
@@ -31,7 +32,7 @@ export async function GET(request: Request) {
     return badRequest({ message: 'Google OAuth is not configured' });
   }
 
-  const origin = new URL(request.url).origin;
+  const origin = getBaseUrl(request.headers).origin;
   const basePath = process.env.BASE_PATH ?? '';
   const redirectUri = `${origin}${basePath}/api/auth/google/callback`;
 

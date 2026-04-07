@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
+import { getBaseUrl } from '@/lib/get-base-url';
 import { exchangeCodeForTokens } from '@/lib/google';
 import { parseRequest } from '@/lib/request';
 import { badRequest } from '@/lib/response';
@@ -32,7 +33,7 @@ export async function GET(request: Request) {
     return badRequest({ message: 'Invalid or expired state parameter' });
   }
 
-  const origin = new URL(request.url).origin;
+  const origin = getBaseUrl(request.headers).origin;
   const basePath = process.env.BASE_PATH ?? '';
   const redirectUri = `${origin}${basePath}/api/auth/google/callback`;
 
