@@ -1,7 +1,4 @@
 (window => {
-  if (window.__umami_tracker_loaded) return;
-  window.__umami_tracker_loaded = true;
-
   const {
     screen: { width, height },
     navigator: { language, doNotTrack: ndnt, msDoNotTrack: msdnt },
@@ -30,6 +27,10 @@
   const config = value => attr(`${_data}${value}`);
 
   const website = config('website-id');
+
+  if (!window.__umami_tracker_loaded) window.__umami_tracker_loaded = new Set();
+  if (window.__umami_tracker_loaded.has(website)) return;
+  window.__umami_tracker_loaded.add(website);
   const hostUrl = config('host-url');
   const beforeSend = config('before-send');
   const tag = config('tag') || undefined;
