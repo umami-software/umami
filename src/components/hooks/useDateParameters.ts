@@ -7,14 +7,18 @@ export function useDateParameters() {
   } = useDateRange();
   const { timezone, localToUtc, canonicalizeTimezone } = useTimezone();
 
-  const startAtValue = +localToUtc(startDate);
-  const endAtValue = +localToUtc(endDate);
+  const utcStart = localToUtc(startDate);
+  const utcEnd = localToUtc(endDate);
+  const startAtValue = +utcStart;
+  const endAtValue = +utcEnd;
+  const isStartValid = Number.isFinite(startAtValue);
+  const isEndValid = Number.isFinite(endAtValue);
 
   return {
-    startAt: Number.isFinite(startAtValue) ? startAtValue : +startDate,
-    endAt: Number.isFinite(endAtValue) ? endAtValue : +endDate,
-    startDate: localToUtc(startDate).toISOString(),
-    endDate: localToUtc(endDate).toISOString(),
+    startAt: isStartValid ? startAtValue : +startDate,
+    endAt: isEndValid ? endAtValue : +endDate,
+    startDate: isStartValid ? utcStart.toISOString() : startDate.toISOString(),
+    endDate: isEndValid ? utcEnd.toISOString() : endDate.toISOString(),
     unit,
     timezone: canonicalizeTimezone(timezone),
   };
