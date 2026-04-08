@@ -163,9 +163,7 @@ async function clickhouseQuery(
     `;
   } else {
     let groupByQuery = '';
-    let columnQuery = isPathType
-      ? `arrayJoin(arrayMap((p, q) -> if(q != '', concat(p, '?', q), p), url_path, url_query))`
-      : `arrayJoin(${column})`;
+    let columnQuery = `arrayJoin(${column})`;
 
     if (column === 'referrer_domain') {
       excludeDomain = `and t != ''`;
