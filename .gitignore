@@ -43,3 +43,5 @@ yarn-error.log*
 
 *.dev.yml
 
+.vercel
+.env*.local
