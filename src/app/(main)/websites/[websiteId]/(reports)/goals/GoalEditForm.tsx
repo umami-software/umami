@@ -10,7 +10,7 @@ import {
   Loading,
   TextField,
 } from '@umami/react-zen';
-import { useMessages, useReportQuery, useUpdateQuery } from '@/components/hooks';
+import { useMessages, useMobile, useReportQuery, useUpdateQuery } from '@/components/hooks';
 import { ActionSelect } from '@/components/input/ActionSelect';
 import { LookupField } from '@/components/input/LookupField';
 
@@ -26,6 +26,7 @@ export function GoalEditForm({
   onClose?: () => void;
 }) {
   const { t, labels } = useMessages();
+  const { isMobile } = useMobile();
   const { data } = useReportQuery(id);
   const { mutateAsync, error, isPending, touch } = useUpdateQuery(`/reports${id ? `/${id}` : ''}`);
 
@@ -64,20 +65,33 @@ export function GoalEditForm({
             </FormField>
             <Column>
               <Label>{t(labels.action)}</Label>
-              <Grid columns="260px 1fr" gap>
-                <Column>
+              {isMobile ? (
+                <Column gap style={{ minWidth: 0 }}>
                   <FormField name="parameters.type" rules={{ required: t(labels.required) }}>
                     <ActionSelect />
                   </FormField>
-                </Column>
-                <Column>
                   <FormField name="parameters.value" rules={{ required: t(labels.required) }}>
                     {({ field }) => {
                       return <LookupField websiteId={websiteId} type={type} {...field} />;
                     }}
                   </FormField>
                 </Column>
-              </Grid>
+              ) : (
+                <Grid columns="260px 1fr" gap>
+                  <Column style={{ minWidth: 0 }}>
+                    <FormField name="parameters.type" rules={{ required: t(labels.required) }}>
+                      <ActionSelect />
+                    </FormField>
+                  </Column>
+                  <Column style={{ minWidth: 0 }}>
+                    <FormField name="parameters.value" rules={{ required: t(labels.required) }}>
+                      {({ field }) => {
+                        return <LookupField websiteId={websiteId} type={type} {...field} />;
+                      }}
+                    </FormField>
+                  </Column>
+                </Grid>
+              )}
             </Column>
 
             <FormButtons>

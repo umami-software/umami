@@ -2,18 +2,27 @@
 import { Column } from '@umami/react-zen';
 import { useState } from 'react';
 import { DataGrid } from '@/components/common/DataGrid';
-import { useReplayQuery, useSessionReplaysQuery } from '@/components/hooks';
-import { ReplayPlayer } from '../replays/[replayId]/ReplayPlayer';
+import { useSessionReplaysQuery } from '@/components/hooks';
+import { ReplayPlayback } from '../replays/[replayId]/ReplayPlayback';
 import { SessionReplaysTable } from './SessionReplaysTable';
 
-function InlinePlayer({ websiteId, replayId }: { websiteId: string; replayId: string }) {
-  const { data: replay } = useReplayQuery(websiteId, replayId);
-
-  if (!replay?.events?.length) return null;
-
+function InlinePlayer({
+  websiteId,
+  replayId,
+  onClose,
+}: {
+  websiteId: string;
+  replayId: string;
+  onClose: () => void;
+}) {
   return (
     <div style={{ padding: '1.5rem 0' }}>
-      <ReplayPlayer events={replay.events} />
+      <ReplayPlayback
+        websiteId={websiteId}
+        replayId={replayId}
+        showSessionInfo={false}
+        onClose={onClose}
+      />
     </div>
   );
 }
@@ -34,7 +43,13 @@ export function SessionReplaysDataTable({
 
   return (
     <Column>
-      {selectedId && <InlinePlayer websiteId={websiteId} replayId={selectedId} />}
+      {selectedId && (
+        <InlinePlayer
+          websiteId={websiteId}
+          replayId={selectedId}
+          onClose={() => setSelectedId(undefined)}
+        />
+      )}
       <DataGrid query={queryResult} allowPaging>
         {({ data }) => (
           <SessionReplaysTable data={data} onPlay={handlePlay} selectedId={selectedId} />

@@ -1,16 +1,17 @@
 import { z } from 'zod';
-import { getQueryFilters, parseRequest } from '@/lib/request';
+import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { dateRangeParams } from '@/lib/schema';
+import { pagingParams, searchParams } from '@/lib/schema';
 import { canViewWebsite } from '@/permissions';
-import { getPerformanceStats } from '@/queries/sql';
+import { getSavedReplays } from '@/queries/prisma/sessionReplay';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
-    ...dateRangeParams,
+    ...pagingParams,
+    ...searchParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -25,9 +26,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const filters = await getQueryFilters(query, websiteId);
-
-  const data = await getPerformanceStats(websiteId, filters);
+  const data = await getSavedReplays(websiteId, query);
 
   return json(data);
 }

@@ -9,7 +9,7 @@ import {
   Tooltip,
   TooltipTrigger,
 } from '@umami/react-zen';
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { useMessages } from '@/components/hooks';
 import { Maximize, X } from '@/components/icons';
 
@@ -17,6 +17,7 @@ export interface PanelProps extends ColumnProps {
   title?: string;
   description?: string;
   allowFullscreen?: boolean;
+  toolbar?: ReactNode;
 }
 
 const fullscreenStyles = {
@@ -33,6 +34,7 @@ export function Panel({
   title,
   description,
   allowFullscreen,
+  toolbar,
   style,
   children,
   height,
@@ -60,14 +62,17 @@ export function Panel({
     >
       {title && <Heading>{title}</Heading>}
       {description && <Text color="muted">{description}</Text>}
-      {allowFullscreen && (
-        <Row justifyContent="flex-end" alignItems="center">
-          <TooltipTrigger delay={0} isDisabled={isFullscreen}>
-            <Button size="sm" variant="quiet" onPress={handleFullscreen}>
-              <Icon>{isFullscreen ? <X /> : <Maximize />}</Icon>
-            </Button>
-            <Tooltip>{t(labels.maximize)}</Tooltip>
-          </TooltipTrigger>
+      {(allowFullscreen || toolbar) && (
+        <Row justifyContent="flex-end" alignItems="center" gap>
+          {toolbar}
+          {allowFullscreen && (
+            <TooltipTrigger delay={0} isDisabled={isFullscreen}>
+              <Button size="sm" variant="quiet" onPress={handleFullscreen}>
+                <Icon>{isFullscreen ? <X /> : <Maximize />}</Icon>
+              </Button>
+              <Tooltip>{t(labels.maximize)}</Tooltip>
+            </TooltipTrigger>
+          )}
         </Row>
       )}
       {children}

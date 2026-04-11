@@ -22,7 +22,7 @@ export interface BoardContextValue {
 export const BoardContext = createContext<BoardContextValue>(null);
 
 const createDefaultBoard = (): Partial<Board> => ({
-  type: BOARD_TYPES.open,
+  type: BOARD_TYPES.mixed,
   name: '',
   description: '',
   parameters: {
@@ -70,6 +70,7 @@ export function BoardProvider({
   const { router, renderUrl, teamId } = useNavigation();
 
   const [board, setBoard] = useState<Partial<Board>>(data ?? createDefaultBoard());
+  const boardRef = useRef<Partial<Board>>(data ?? createDefaultBoard());
   const layoutGetterRef = useRef<LayoutGetter | null>(null);
 
   const registerLayoutGetter = useCallback((getter: LayoutGetter) => {
@@ -78,11 +79,14 @@ export function BoardProvider({
 
   useEffect(() => {
     if (data) {
-      setBoard({
+      const nextBoard = {
         ...data,
         type: getBoardType(data, { coerceDashboard: true }),
         parameters: sanitizeBoardParameters(data.parameters),
-      });
+      };
+
+      boardRef.current = nextBoard;
+      setBoard(nextBoard);
     }
   }, [data]);
 
@@ -93,7 +97,7 @@ export function BoardProvider({
       }
       return post('/boards', {
         ...boardData,
-        type: boardData.type || BOARD_TYPES.open,
+        type: boardData.type || BOARD_TYPES.mixed,
         slug: '',
         teamId,
       });
@@ -101,35 +105,41 @@ export function BoardProvider({
   });
 
   const updateBoard = useCallback((data: Partial<Board>) => {
-    setBoard(current => ({ ...current, ...data }));
+    setBoard(current => {
+      const nextBoard = { ...current, ...data };
+      boardRef.current = nextBoard;
+
+      return nextBoard;
+    });
   }, []);
 
   const saveBoard = useCallback(async () => {
+    const currentBoard = boardRef.current;
     const defaultName = t(labels.untitled);
 
     // Get current layout sizes from BoardEditBody if registered
     const layoutData = layoutGetterRef.current?.();
     const parameters = sanitizeBoardParameters(
-      layoutData ? { ...board.parameters, ...layoutData } : board.parameters,
+      layoutData ? { ...currentBoard.parameters, ...layoutData } : currentBoard.parameters,
     );
 
     const result = await mutateAsync({
-      ...board,
-      name: board.name || defaultName,
+      ...currentBoard,
+      name: currentBoard.name || defaultName,
       parameters,
     });
 
     toast(t(messages.saved));
     touch('boards');
 
-    if (board.id) {
-      touch(`board:${board.id}`);
+    if (currentBoard.id) {
+      touch(`board:${currentBoard.id}`);
     } else if (result?.id) {
       router.push(renderUrl(`/boards/${result.id}`));
     }
 
     return result;
-  }, [board, mutateAsync, toast, t, labels.untitled, messages.saved, touch, router, renderUrl]);
+  }, [mutateAsync, toast, t, labels.untitled, messages.saved, touch, router, renderUrl]);
 
   if (boardId && isFetching && isLoading) {
     return <Loading placement="absolute" />;

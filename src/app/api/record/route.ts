@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { secret } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { parseToken } from '@/lib/jwt';
+import { fetchAccount, fetchTeam } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { getWebsite } from '@/queries/prisma';
@@ -15,9 +16,12 @@ interface Cache {
 }
 
 const schema = z.object({
-  website: z.uuid(),
-  events: z.array(z.any()).max(200),
-  timestamp: z.coerce.number().int().optional(),
+  type: z.literal('record'),
+  payload: z.object({
+    website: z.uuid(),
+    events: z.array(z.any()).max(200),
+    timestamp: z.coerce.number().int().optional(),
+  }),
 });
 
 export async function POST(request: Request) {
@@ -28,7 +32,7 @@ export async function POST(request: Request) {
       return error();
     }
 
-    const { website: websiteId, events, timestamp } = body;
+    const { website: websiteId, events, timestamp } = body.payload;
 
     if (!events?.length) {
       return json({ ok: true });
@@ -58,6 +62,18 @@ export async function POST(request: Request) {
 
     if (!website.replayEnabled) {
       return json({ ok: false, reason: 'replay_disabled' });
+    }
+
+    if (process.env.CLOUD_MODE) {
+      const account = website.teamId
+        ? await fetchTeam(website.teamId)
+        : website.userId
+          ? await fetchAccount(website.userId)
+          : null;
+
+      if (!account?.isBusiness && !account?.isNoBilling) {
+        return forbidden({ message: 'Business subscription required.' });
+      }
     }
 
     // Client info for bot/IP checks

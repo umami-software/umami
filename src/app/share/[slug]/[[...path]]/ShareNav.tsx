@@ -1,10 +1,22 @@
-import { Button, Column, Icon, Row, Text, ThemeButton } from '@umami/react-zen';
-import { NavMenu } from '@/components/common/NavMenu';
+import { IconLabel } from '@/components/common/IconLabel';
 import { useMessages, useNavigation, useShare } from '@/components/hooks';
 import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User } from '@/components/icons';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { PreferencesButton } from '@/components/input/PreferencesButton';
-import { Funnel, Lightning, Logo, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import {
+  Button,
+  Column,
+  Focusable,
+  Icon,
+  Row,
+  Text,
+  ThemeButton,
+  Tooltip,
+  TooltipTrigger,
+} from '@umami/react-zen';
+import Link from 'next/link';
+import { ShareBranding } from './ShareBranding';
 
 export function ShareNav({
   collapsed,
@@ -18,11 +30,7 @@ export function ShareNav({
   const share = useShare();
   const { t, labels } = useMessages();
   const { pathname } = useNavigation();
-  const { slug, parameters, whiteLabel } = share;
-
-  const logoDomain = whiteLabel?.domainName || 'https://umami.is';
-  const logoName = whiteLabel?.displayName || 'umami';
-  const logoImage = whiteLabel?.logoUrl;
+  const { slug, parameters } = share;
 
   const renderPath = (path: string) => `/share/${slug}${path}`;
 
@@ -31,18 +39,8 @@ export function ShareNav({
       section: 'traffic',
       label: t(labels.traffic),
       items: [
-        {
-          id: 'overview',
-          label: t(labels.overview),
-          icon: <Eye />,
-          path: renderPath(''),
-        },
-        {
-          id: 'events',
-          label: t(labels.events),
-          icon: <Lightning />,
-          path: renderPath('/events'),
-        },
+        { id: 'overview', label: t(labels.overview), icon: <Eye />, path: renderPath('') },
+        { id: 'events', label: t(labels.events), icon: <Lightning />, path: renderPath('/events') },
         {
           id: 'sessions',
           label: t(labels.sessions),
@@ -54,6 +52,12 @@ export function ShareNav({
           label: t(labels.realtime),
           icon: <Clock />,
           path: renderPath('/realtime'),
+        },
+        {
+          id: 'performance',
+          label: t(labels.performance),
+          icon: <Gauge />,
+          path: renderPath('/performance'),
         },
         {
           id: 'compare',
@@ -73,18 +77,8 @@ export function ShareNav({
       section: 'behavior',
       label: t(labels.behavior),
       items: [
-        {
-          id: 'goals',
-          label: t(labels.goals),
-          icon: <Target />,
-          path: renderPath('/goals'),
-        },
-        {
-          id: 'funnels',
-          label: t(labels.funnels),
-          icon: <Funnel />,
-          path: renderPath('/funnels'),
-        },
+        { id: 'goals', label: t(labels.goals), icon: <Target />, path: renderPath('/goals') },
+        { id: 'funnels', label: t(labels.funnels), icon: <Funnel />, path: renderPath('/funnels') },
         {
           id: 'journeys',
           label: t(labels.journeys),
@@ -103,18 +97,8 @@ export function ShareNav({
       section: 'growth',
       label: t(labels.growth),
       items: [
-        {
-          id: 'utm',
-          label: t(labels.utm),
-          icon: <Tag />,
-          path: renderPath('/utm'),
-        },
-        {
-          id: 'revenue',
-          label: t(labels.revenue),
-          icon: <Money />,
-          path: renderPath('/revenue'),
-        },
+        { id: 'utm', label: t(labels.utm), icon: <Tag />, path: renderPath('/utm') },
+        { id: 'revenue', label: t(labels.revenue), icon: <Money />, path: renderPath('/revenue') },
         {
           id: 'attribution',
           label: t(labels.attribution),
@@ -142,27 +126,20 @@ export function ShareNav({
   return (
     <Column
       position={isMobile ? undefined : 'fixed'}
-      padding="3"
+      paddingX={collapsed ? '1' : '3'}
+      paddingY="3"
       width={isMobile ? '100%' : collapsed ? '60px' : '240px'}
       maxHeight="100dvh"
       height="100dvh"
       border={isMobile ? undefined : 'right'}
     >
-      <Row as="header" gap alignItems="center" justifyContent="space-between">
-        {!collapsed && (
-          <a href={logoDomain} target="_blank" rel="noopener" style={{ marginLeft: 12 }}>
-            <Row alignItems="center" gap>
-              {logoImage ? (
-                <img src={logoImage} alt={logoName} style={{ height: 24 }} />
-              ) : (
-                <Icon>
-                  <Logo />
-                </Icon>
-              )}
-              <Text weight="bold">{logoName}</Text>
-            </Row>
-          </a>
-        )}
+      <Row
+        as="header"
+        gap
+        alignItems="center"
+        justifyContent={collapsed ? 'center' : 'space-between'}
+      >
+        {!collapsed && <ShareBranding size="md" />}
         {!onItemClick && (
           <Button variant="quiet" onPress={() => onCollapse?.(!collapsed)}>
             <Icon color="muted">
@@ -171,16 +148,44 @@ export function ShareNav({
           </Button>
         )}
       </Row>
-      {!collapsed && (
-        <Column flexGrow={1} overflowY="auto" marginTop="6">
-          <NavMenu
-            items={items}
-            selectedKey={selectedKey}
-            allowMinimize={false}
-            onItemClick={onItemClick}
-          />
-        </Column>
-      )}
+      <Column flexGrow={1} marginTop="2" overflowY="auto" gap="2">
+        {items.map(({ label: sectionLabel, items: sectionItems }, index) => (
+          <Column key={`${sectionLabel}${index}`} gap="1" marginBottom="1">
+            {!collapsed && (
+              <Row padding>
+                <Text weight="bold">{sectionLabel}</Text>
+              </Row>
+            )}
+            {sectionItems.map(({ id, path, label, icon }) => {
+              const isSelected = selectedKey === id;
+              return (
+                <Link key={id} href={path} role="button" onClick={onItemClick}>
+                  <TooltipTrigger isDisabled={!collapsed} delay={0}>
+                    <Focusable>
+                      <Row
+                        alignItems="center"
+                        justifyContent={collapsed ? 'center' : undefined}
+                        hover={{ backgroundColor: 'surface-sunken' }}
+                        backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                        borderRadius
+                        minHeight="40px"
+                      >
+                        <IconLabel
+                          icon={icon}
+                          label={collapsed ? '' : label}
+                          weight={isSelected ? 'bold' : undefined}
+                          {...(!collapsed && { padding: true })}
+                        />
+                      </Row>
+                    </Focusable>
+                    <Tooltip placement="right">{label}</Tooltip>
+                  </TooltipTrigger>
+                </Link>
+              );
+            })}
+          </Column>
+        ))}
+      </Column>
       <Column
         flexGrow={collapsed ? 1 : undefined}
         justifyContent="flex-end"

@@ -5,6 +5,7 @@ import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteContro
 import { Panel } from '@/components/common/Panel';
 import { useMessages } from '@/components/hooks';
 import { getItem, setItem } from '@/lib/storage';
+import { SessionModal } from './SessionModal';
 import { SessionProperties } from './SessionProperties';
 import { SessionsDataTable } from './SessionsDataTable';
 
@@ -22,6 +23,7 @@ export function SessionsPage({ websiteId }) {
   return (
     <Column gap="3">
       <WebsiteControls websiteId={websiteId} />
+      <SessionModal websiteId={websiteId} />
       <Panel>
         <Tabs selectedKey={tab} onSelectionChange={handleSelect}>
           <TabList>

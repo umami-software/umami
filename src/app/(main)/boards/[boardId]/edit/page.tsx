@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { BoardEditPage } from '../BoardEditPage';
+import { BoardEditPage } from './BoardEditPage';
 
 export default async function ({ params }: { params: Promise<{ boardId: string }> }) {
   const { boardId } = await params;

@@ -6,14 +6,24 @@ import { BoardControls } from './BoardControls';
 import { BoardViewBody } from './BoardViewBody';
 import { BoardViewHeader } from './BoardViewHeader';
 
-export function BoardViewPage({ boardId }: { boardId: string }) {
+export function BoardViewPage({
+  boardId,
+  showActions = true,
+  showControls = true,
+  showEntityBadges = true,
+}: {
+  boardId: string;
+  showActions?: boolean;
+  showControls?: boolean;
+  showEntityBadges?: boolean;
+}) {
   return (
     <BoardProvider boardId={boardId}>
       <PageBody>
         <Column>
-          <BoardViewHeader />
-          <BoardControls />
-          <BoardViewBody />
+          <BoardViewHeader showActions={showActions} showEntityBadge={showEntityBadges} />
+          {showControls && <BoardControls />}
+          <BoardViewBody showEntityBadges={showEntityBadges} />
         </Column>
       </PageBody>
     </BoardProvider>

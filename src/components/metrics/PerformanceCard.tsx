@@ -2,6 +2,7 @@ import { config, useSpring } from '@react-spring/web';
 import { Column, Text } from '@umami/react-zen';
 import { useRef } from 'react';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
+import { Badge } from '@/components/common/Badge';
 import { useMessages } from '@/components/hooks';
 import { WEB_VITALS_THRESHOLDS } from '@/lib/constants';
 import { formatNumber } from '@/lib/format';
@@ -15,6 +16,12 @@ export interface PerformanceCardProps {
   onClick?: () => void;
   selected?: boolean;
 }
+
+const RATING_VARIANTS = {
+  good: 'good',
+  'needs-improvement': 'warning',
+  poor: 'danger',
+} as const;
 
 function getRating(metric: string, value: number): 'good' | 'needs-improvement' | 'poor' {
   const threshold = WEB_VITALS_THRESHOLDS[metric as keyof typeof WEB_VITALS_THRESHOLDS];
@@ -45,7 +52,7 @@ export const PerformanceCard = ({
 
   return (
     <Column
-      className={`${styles.card} ${styles[rating]} ${selected ? styles.selected : ''}`}
+      className={`${styles.card} ${selected ? styles.selected : ''}`}
       justifyContent="center"
       paddingX="6"
       paddingY="4"
@@ -62,9 +69,9 @@ export const PerformanceCard = ({
       <Text size="4xl" weight="bold" wrap="nowrap">
         <AnimatedDiv>{spring.value.to(n => formatValue(n))}</AnimatedDiv>
       </Text>
-      <Text size="sm" className={styles.rating}>
+      <Badge variant={RATING_VARIANTS[rating]}>
         {t(labels[rating === 'needs-improvement' ? 'needsImprovement' : rating])}
-      </Text>
+      </Badge>
     </Column>
   );
 };

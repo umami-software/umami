@@ -1,15 +1,4 @@
-import {
-  Button,
-  type ButtonProps,
-  Column,
-  Focusable,
-  Icon,
-  Row,
-  Text,
-  Tooltip,
-  TooltipTrigger,
-} from '@umami/react-zen';
-import Link from 'next/link';
+import { AdminNav } from '@/app/(main)/admin/AdminNav';
 import { SettingsNav } from '@/app/(main)/settings/SettingsNav';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
@@ -24,6 +13,18 @@ import {
 } from '@/components/icons';
 import { UserButton } from '@/components/input/UserButton';
 import { Logo } from '@/components/svg';
+import {
+  Button,
+  type ButtonProps,
+  Column,
+  Focusable,
+  Icon,
+  Row,
+  Text,
+  Tooltip,
+  TooltipTrigger,
+} from '@umami/react-zen';
+import Link from 'next/link';
 
 export function SideNav(props: any) {
   const { t, labels } = useMessages();
@@ -78,7 +79,7 @@ export function SideNav(props: any) {
       minHeight="0"
       margin="2"
       style={{
-        width: isCollapsed ? '55px' : '240px',
+        width: isCollapsed ? '60px' : '240px',
         transition: 'width 0.2s ease-in-out',
         overflow: 'hidden',
       }}
@@ -103,6 +104,8 @@ export function SideNav(props: any) {
           <WebsiteNav websiteId={websiteId} isCollapsed={isCollapsed} />
         ) : pathname.includes('/settings') ? (
           <SettingsNav isCollapsed={isCollapsed} />
+        ) : pathname.includes('/admin') ? (
+          <AdminNav />
         ) : (
           <Column gap="2">
             {links.map(({ id, path, label, icon }) => {

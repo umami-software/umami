@@ -9,7 +9,12 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
     return true;
   }
 
-  if (shareToken?.websiteId === websiteId) {
+  if (
+    shareToken?.websiteId === websiteId ||
+    shareToken?.pixelId === websiteId ||
+    shareToken?.linkId === websiteId ||
+    shareToken?.websiteIds?.includes(websiteId)
+  ) {
     return true;
   }
 

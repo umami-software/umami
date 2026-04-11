@@ -165,14 +165,6 @@ export const goalReportSchema = z.object({
       endDate: z.coerce.date(),
       type: z.string(),
       value: z.string(),
-      operator: z.enum(['count', 'sum', 'average']).optional(),
-      property: z.string().optional(),
-    })
-    .refine(data => {
-      if (data.type === 'event' && data.property) {
-        return data.operator && data.property;
-      }
-      return true;
     }),
 });
 
@@ -187,6 +179,15 @@ export const funnelReportSchema = z.object({
         z.object({
           type: z.enum(['path', 'event']),
           value: z.string(),
+          filters: z
+            .array(
+              z.object({
+                property: z.string().min(1),
+                operator: z.enum(['eq', 'neq', 'c', 'dnc']),
+                value: z.string(),
+              }),
+            )
+            .optional(),
         }),
       )
       .min(2)

@@ -343,6 +343,7 @@ export const labels: Record<string, string> = {
   version: 'label.version',
   saveSegment: 'label.save-segment',
   saveCohort: 'label.save-cohort',
+  saveReplay: 'label.save-replay',
   analysis: 'label.analysis',
   destinationUrl: 'label.destination-url',
   slug: 'label.slug',
@@ -366,16 +367,19 @@ export const labels: Record<string, string> = {
   sampleSize: 'label.sample-size',
   play: 'label.play',
   replays: 'label.replays',
+  saved: 'label.saved',
   replay: 'label.replay',
   replayId: 'label.replay-id',
   replayEnabled: 'label.replay-enabled',
+  replayCode: 'label.replay-code',
   sampleRate: 'label.sample-rate',
   maskLevel: 'label.mask-level',
   maxDuration: 'label.max-duration',
   blockSelector: 'label.block-selector',
   retentionDays: 'label.retention-days',
   duration: 'label.duration',
-  recordedAt: 'label.recorded-at',
+  recorded: 'label.recorded',
+  upgrade: 'label.upgrade',
 };
 
 export const messages: Record<string, string> = {
@@ -425,4 +429,5 @@ export const messages: Record<string, string> = {
   forbidden: 'message.forbidden',
   notFound: 'message.not-found',
   serverError: 'message.sever-error',
+  upgradeRequired: 'message.upgrade-required',
 };

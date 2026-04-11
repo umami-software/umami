@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
+import { getBaseUrl } from '@/lib/get-base-url';
 import { Providers } from './Providers';
 import '@umami/react-zen/styles.full.css';
 import './global.css';
@@ -43,9 +45,14 @@ export default function ({ children }) {
   );
 }
 
-export const metadata: Metadata = {
-  title: {
-    template: '%s | Umami',
-    default: 'Umami',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const headerStore = await headers();
+
+  return {
+    metadataBase: getBaseUrl(headerStore),
+    title: {
+      template: '%s | Umami',
+      default: 'Umami',
+    },
+  };
+}

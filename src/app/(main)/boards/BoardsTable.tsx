@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { DateDistance } from '@/components/common/DateDistance';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { BoardDeleteButton } from './BoardDeleteButton';
+import { BoardDesignButton } from './BoardDesignButton';
 import { BoardEditButton } from './BoardEditButton';
 
 export function BoardsTable(props: DataTableProps) {
@@ -24,6 +25,7 @@ export function BoardsTable(props: DataTableProps) {
         {({ id, name }: any) => {
           return (
             <Row>
+              <BoardDesignButton boardId={id} />
               <BoardEditButton boardId={id} />
               <BoardDeleteButton boardId={id} name={name} />
             </Row>

@@ -38,7 +38,8 @@ export function PixelEditForm({
       teamId,
     },
   );
-  const { pixelsUrl } = useConfig();
+  const config = useConfig();
+  const pixelsUrl = config?.pixelsUrl;
   const hostUrl = pixelsUrl || PIXELS_URL;
   const { data, isLoading } = usePixelQuery(pixelId);
   const [slug, setSlug] = useState(generateId());

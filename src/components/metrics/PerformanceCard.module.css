@@ -3,25 +3,10 @@
 }
 
 .card:hover {
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--primary) 40%, transparent),
-    0 0 6px color-mix(in srgb, var(--primary) 15%, transparent);
+  box-shadow: 0 0 0 1px var(--text-primary);
 }
 
 .card.selected {
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--primary) 40%, transparent),
-    0 0 6px color-mix(in srgb, var(--primary) 15%, transparent);
+  box-shadow: 0 0 0 1px var(--text-primary);
 }
 
-.good .rating {
-  color: #0cce6b;
-}
-
-.needs-improvement .rating {
-  color: #ffa400;
-}
-
-.poor .rating {
-  color: #ff4e42;
-}

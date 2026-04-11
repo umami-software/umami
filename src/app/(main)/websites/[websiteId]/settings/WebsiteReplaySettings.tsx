@@ -7,10 +7,15 @@ import {
   Select,
   Slider,
   Switch,
+  Text,
   TextField,
 } from '@umami/react-zen';
 import { useState } from 'react';
-import { useMessages, useUpdateQuery, useWebsite } from '@/components/hooks';
+import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
+import { useMessages, useSubscription, useUpdateQuery, useWebsite } from '@/components/hooks';
+import { Video } from '@/components/icons';
+
+const RECORDER_NAME = 'recorder.js';
 
 interface ReplayConfig {
   sampleRate?: number;
@@ -22,6 +27,7 @@ interface ReplayConfig {
 export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const website = useWebsite();
   const { t, labels, messages } = useMessages();
+  const { hasFeature, cloudMode } = useSubscription(website?.teamId);
   const { mutateAsync, touch, toast, isPending } = useUpdateQuery(`/websites/${websiteId}`);
   const [enabled, setEnabled] = useState(website?.replayEnabled ?? false);
 
@@ -31,6 +37,14 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const [maskLevel, setMaskLevel] = useState(config.maskLevel ?? 'moderate');
   const [maxDuration, setMaxDuration] = useState(String(config.maxDuration ?? 300000));
   const [blockSelector, setBlockSelector] = useState(config.blockSelector ?? '');
+
+  const recorderUrl = cloudMode
+    ? `${process.env.cloudUrl}/${RECORDER_NAME}`
+    : `${window?.location?.origin || ''}${process.env.basePath || ''}/${RECORDER_NAME}`;
+
+  let recorderAttrs = `data-website-id="${websiteId}" data-sample-rate="${sampleRate}" data-mask-level="${maskLevel}" data-max-duration="${parseInt(maxDuration, 10) || 300000}"`;
+  if (blockSelector) recorderAttrs += ` data-block-selector="${blockSelector}"`;
+  const recorderCode = `<script defer src="${recorderUrl}" ${recorderAttrs}></script>`;
 
   const handleToggle = async (value: boolean) => {
     const previous = enabled;
@@ -75,6 +89,26 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
     );
   };
 
+  if (cloudMode && !hasFeature('replays')) {
+    return (
+      <Column gap="4">
+        <Label>{t(labels.replays)}</Label>
+        <EmptyPlaceholder
+          icon={<Video />}
+          title={t(messages.upgradeRequired, { plan: 'Business' })}
+          description="Watch real user sessions to see exactly how visitors interact with your site."
+        >
+          <Button
+            variant="primary"
+            onPress={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}
+          >
+            {t(labels.upgrade)}
+          </Button>
+        </EmptyPlaceholder>
+      </Column>
+    );
+  }
+
   return (
     <Column gap="4">
       <Label>{t(labels.replays)}</Label>
@@ -83,6 +117,9 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
       </Switch>
       {enabled && (
         <>
+          <Label>{t(labels.replayCode)}</Label>
+          <Text color="muted">{t(messages.trackingCode)}</Text>
+          <TextField value={recorderCode} isReadOnly allowCopy asTextArea resize="none" className="code-textarea" />
           <Slider
             label={t(labels.sampleRate)}
             minValue={0.05}

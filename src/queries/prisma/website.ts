@@ -136,6 +136,10 @@ export async function resetWebsite(websiteId: string) {
 
   return transaction(
     async tx => {
+      await tx.sessionReplaySaved.deleteMany({
+        where: { websiteId },
+      });
+
       await tx.sessionReplay.deleteMany({
         where: { websiteId },
       });
@@ -187,6 +191,10 @@ export async function deleteWebsite(websiteId: string) {
 
   return transaction(
     async tx => {
+      await tx.sessionReplaySaved.deleteMany({
+        where: { websiteId },
+      });
+
       await tx.sessionReplay.deleteMany({
         where: { websiteId },
       });

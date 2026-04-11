@@ -25,7 +25,7 @@ import { record } from 'rrweb';
     hostUrl || '__COLLECT_API_HOST__' || currentScript.src.split('/').slice(0, -1).join('/');
   const endpoint = `${host.replace(/\/$/, '')}__COLLECT_REPLAY_ENDPOINT__`;
 
-  const FLUSH_EVENT_COUNT = 50;
+  const FLUSH_EVENT_COUNT = 100;
   const FLUSH_INTERVAL = 10000;
 
   let eventBuffer = [];
@@ -39,9 +39,12 @@ import { record } from 'rrweb';
     if (!session?.cache) return;
 
     const body = JSON.stringify({
-      website,
-      events,
-      timestamp: Math.floor(Date.now() / 1000),
+      type: 'record',
+      payload: {
+        website,
+        events,
+        timestamp: Math.floor(Date.now() / 1000),
+      },
     });
 
     // keepalive has a 64KB body limit — only use it for small payloads on unload

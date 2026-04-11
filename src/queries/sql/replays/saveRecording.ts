@@ -2,6 +2,7 @@ import { gzipSync } from 'node:zlib';
 import clickhouse from '@/lib/clickhouse';
 import { uuid } from '@/lib/crypto';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import kafka from '@/lib/kafka';
 import prisma from '@/lib/prisma';
 
 export interface SaveRecordingArgs {
@@ -60,18 +61,23 @@ async function clickhouseQuery({
   endedAt,
 }: SaveRecordingArgs) {
   const { insert, getUTCString } = clickhouse;
+  const { sendMessage } = kafka;
 
-  return insert('session_replay', [
-    {
-      replay_id: uuid(),
-      website_id: websiteId,
-      session_id: sessionId,
-      visit_id: visitId,
-      chunk_index: chunkIndex,
-      events: JSON.stringify(events),
-      event_count: eventCount,
-      started_at: getUTCString(startedAt),
-      ended_at: getUTCString(endedAt),
-    },
-  ]);
+  const message = {
+    replay_id: uuid(),
+    website_id: websiteId,
+    session_id: sessionId,
+    visit_id: visitId,
+    chunk_index: chunkIndex,
+    events: JSON.stringify(events),
+    event_count: eventCount,
+    started_at: getUTCString(startedAt),
+    ended_at: getUTCString(endedAt),
+  };
+
+  if (kafka.enabled) {
+    return sendMessage('session_replay', message);
+  }
+
+  return insert('session_replay', [message]);
 }

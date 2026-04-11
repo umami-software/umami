@@ -3,11 +3,13 @@ import { safeDecodeURIComponent } from '@/lib/url';
 import { useFields } from './useFields';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
+import { useOperatorLabels } from './useOperatorLabels';
 
 export function useFilters() {
   const { t, labels } = useMessages();
   const { query } = useNavigation();
   const { fields } = useFields();
+  const operatorLabels = useOperatorLabels();
 
   const operators = [
     { name: 'eq', type: 'string', label: t(labels.is) },
@@ -30,25 +32,6 @@ export function useFilters() {
     { name: 'af', type: 'date', label: t(labels.after) },
     { name: 'eq', type: 'uuid', label: t(labels.is) },
   ];
-
-  const operatorLabels = {
-    [OPERATORS.equals]: t(labels.is),
-    [OPERATORS.notEquals]: t(labels.isNot),
-    [OPERATORS.set]: t(labels.isSet),
-    [OPERATORS.notSet]: t(labels.isNotSet),
-    [OPERATORS.contains]: t(labels.contains),
-    [OPERATORS.doesNotContain]: t(labels.doesNotContain),
-    [OPERATORS.regex]: t(labels.regexMatch),
-    [OPERATORS.notRegex]: t(labels.regexNotMatch),
-    [OPERATORS.true]: t(labels.true),
-    [OPERATORS.false]: t(labels.false),
-    [OPERATORS.greaterThan]: t(labels.greaterThan),
-    [OPERATORS.lessThan]: t(labels.lessThan),
-    [OPERATORS.greaterThanEquals]: t(labels.greaterThanEquals),
-    [OPERATORS.lessThanEquals]: t(labels.lessThanEquals),
-    [OPERATORS.before]: t(labels.before),
-    [OPERATORS.after]: t(labels.after),
-  };
 
   const typeFilters = {
     string: [

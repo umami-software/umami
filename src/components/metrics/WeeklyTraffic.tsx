@@ -97,7 +97,10 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                             />
                           </Row>
                         </Focusable>
-                        <Tooltip placement="right" style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}>
+                        <Tooltip
+                          placement="right"
+                          style={{ backgroundColor: 'rgba(0,0,0,0.8)', color: 'white' }}
+                        >
                           <Text size="base">{`${t(labels.visitors)}: ${count}`}</Text>
                         </Tooltip>
                       </TooltipTrigger>

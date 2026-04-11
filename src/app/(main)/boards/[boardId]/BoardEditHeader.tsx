@@ -2,12 +2,11 @@ import { Button, LoadingButton, Row } from '@umami/react-zen';
 import { PageHeader } from '@/components/common/PageHeader';
 import { useBoard, useMessages, useNavigation } from '@/components/hooks';
 
-export function BoardEditHeader() {
+export function BoardDesignHeader() {
   const { board, saveBoard, isPending } = useBoard();
   const { t, labels } = useMessages();
   const { router, renderUrl } = useNavigation();
-  const defaultName = t(labels.untitled);
-  const title = board?.id ? board?.name || defaultName : t(labels.addBoard);
+  const title = board?.name || t(labels.untitled);
 
   const handleSave = async () => {
     await saveBoard();

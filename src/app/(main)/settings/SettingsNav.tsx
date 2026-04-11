@@ -51,7 +51,7 @@ export function SettingsNav({
 
   return (
     <Column gap="2">
-      <Link href={renderUrl('/boards', false)} role="button" onClick={onItemClick}>
+      <Link href={renderUrl('/websites', false)} role="button" onClick={onItemClick}>
         <TooltipTrigger isDisabled={!isCollapsed} delay={0}>
           <Focusable>
             <Row

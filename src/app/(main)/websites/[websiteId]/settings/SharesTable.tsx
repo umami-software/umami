@@ -1,4 +1,5 @@
 import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
+import { CopyButton } from '@/components/common/CopyButton';
 import { DateDistance } from '@/components/common/DateDistance';
 import { ExternalLink } from '@/components/common/ExternalLink';
 import { useConfig, useMessages, useMobile } from '@/components/hooks';
@@ -26,14 +27,14 @@ export function SharesTable(props: DataTableProps) {
         {({ slug }: any) => {
           const url = getUrl(slug);
           return (
-            <ExternalLink href={url} prefetch={false}>
-              {isMobile ? slug : url}
-            </ExternalLink>
+            <Row alignItems="center" gap="1" overflow="hidden">
+              <ExternalLink href={url} prefetch={false}>
+                {isMobile ? slug : url}
+              </ExternalLink>
+              <CopyButton value={url} label="Copy URL" />
+            </Row>
           );
         }}
-      </DataColumn>
-      <DataColumn id="created" label={t(labels.created)}>
-        {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
       <DataColumn id="action" align="end" width="100px">
         {({ id, slug }: any) => {

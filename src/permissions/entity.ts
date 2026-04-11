@@ -15,6 +15,10 @@ export async function canViewEntity({ user }: Auth, entityId: string) {
 
   const entity = await getEntity(entityId);
 
+  if (!entity) {
+    return false;
+  }
+
   if (entity.userId) {
     return user.id === entity.userId;
   }
@@ -39,6 +43,10 @@ export async function canUpdateEntity({ user }: Auth, entityId: string) {
 
   const entity = await getEntity(entityId);
 
+  if (!entity) {
+    return false;
+  }
+
   if (entity.userId) {
     return user.id === entity.userId;
   }
@@ -62,6 +70,10 @@ export async function canDeleteEntity({ user }: Auth, entityId: string) {
   }
 
   const entity = await getEntity(entityId);
+
+  if (!entity) {
+    return false;
+  }
 
   if (entity.userId) {
     return user.id === entity.userId;

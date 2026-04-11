@@ -6,9 +6,11 @@ import { getComponentDefinition } from '../boardComponentRegistry';
 function BoardComponentRendererComponent({
   config,
   websiteId,
+  entityType,
 }: {
   config: BoardComponentConfig;
   websiteId?: string;
+  entityType?: string;
 }) {
   const definition = getComponentDefinition(config.type);
 
@@ -20,7 +22,8 @@ function BoardComponentRendererComponent({
     );
   }
 
-  const Component = definition.component;
+  const Component =
+    (entityType && definition.componentByEntityType?.[entityType]) || definition.component;
 
   if (!websiteId && definition.requiresWebsite !== false) {
     return (
@@ -36,7 +39,9 @@ function BoardComponentRendererComponent({
 export const BoardComponentRenderer = memo(
   BoardComponentRendererComponent,
   (prevProps, nextProps) =>
-    prevProps.websiteId === nextProps.websiteId && prevProps.config === nextProps.config,
+    prevProps.websiteId === nextProps.websiteId &&
+    prevProps.entityType === nextProps.entityType &&
+    prevProps.config === nextProps.config,
 );
 
 BoardComponentRenderer.displayName = 'BoardComponentRenderer';

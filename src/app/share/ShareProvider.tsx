@@ -3,12 +3,18 @@ import { Loading } from '@umami/react-zen';
 import { usePathname, useRouter } from 'next/navigation';
 import { createContext, type ReactNode, useEffect } from 'react';
 import { useShareTokenQuery } from '@/components/hooks';
+import { ENTITY_TYPE } from '@/lib/constants';
 import type { WhiteLabel } from '@/lib/types';
 
 export interface ShareData {
   shareId: string;
   slug: string;
-  websiteId: string;
+  shareType: number;
+  websiteId?: string;
+  websiteIds?: string[];
+  boardId?: string;
+  pixelId?: string;
+  linkId?: string;
   parameters: any;
   token: string;
   whiteLabel?: WhiteLabel;
@@ -21,6 +27,7 @@ const ALL_SECTION_IDS = [
   'events',
   'sessions',
   'realtime',
+  'performance',
   'compare',
   'breakdown',
   'goals',
@@ -49,12 +56,14 @@ export function ShareProvider({ slug, children }: { slug: string; children: Reac
   const router = useRouter();
   const pathname = usePathname();
   const path = getSharePath(pathname);
+  const isBoardShare = share?.shareType === ENTITY_TYPE.board;
+  const isWebsiteShare = share?.shareType === ENTITY_TYPE.website;
 
-  const allowedSections = share?.parameters
-    ? ALL_SECTION_IDS.filter(id => share.parameters[id] !== false)
+  const allowedSections = isWebsiteShare && share?.parameters
+    ? ALL_SECTION_IDS.filter(id => share.parameters[id] === true)
     : [];
 
-  const shouldRedirect =
+  const shouldRedirect = isWebsiteShare &&
     allowedSections.length === 1 &&
     allowedSections[0] !== 'overview' &&
     (path === undefined || path === '' || path === 'overview');

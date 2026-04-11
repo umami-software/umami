@@ -69,7 +69,7 @@ export function ReplaysTable({ ...props }: DataTableProps) {
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="createdAt" label={t(labels.recordedAt)} width="140px">
+      <DataColumn id="createdAt" label={t(labels.recorded)} width="160px">
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
     </DataTable>

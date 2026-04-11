@@ -3,7 +3,13 @@ import type { BoardColumn } from '@/lib/types';
 import { BoardViewColumn } from './BoardViewColumn';
 import { MIN_COLUMN_WIDTH } from './boardConstants';
 
-export function BoardViewRow({ columns }: { columns: BoardColumn[] }) {
+export function BoardViewRow({
+  columns,
+  showEntityBadges = true,
+}: {
+  columns: BoardColumn[];
+  showEntityBadges?: boolean;
+}) {
   return (
     <Row gap="3" width="100%" overflowX="auto">
       {columns.map(column => (
@@ -14,7 +20,7 @@ export function BoardViewRow({ columns }: { columns: BoardColumn[] }) {
           flexBasis="0%"
           minWidth={`${MIN_COLUMN_WIDTH}px`}
         >
-          <BoardViewColumn component={column.component} />
+          <BoardViewColumn component={column.component} showEntityBadge={showEntityBadges} />
         </Box>
       ))}
     </Row>

@@ -1,4 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
+import { SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
@@ -36,10 +37,10 @@ async function relationalQuery(
 ): Promise<PerformanceMetricsData[]> {
   const { startDate, endDate, metric = 'lcp' } = parameters;
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
-    ...filters,
-    websiteId,
-  });
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters(
+    { ...filters, websiteId },
+    { joinSession: SESSION_COLUMNS.includes(column) },
+  );
 
   return rawQuery(
     `

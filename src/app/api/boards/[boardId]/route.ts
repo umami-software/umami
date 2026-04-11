@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { BOARD_TYPES } from '@/lib/boards';
+import { BOARD_TYPES, normalizeBoardType } from '@/lib/boards';
 import { parseRequest } from '@/lib/request';
-import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
+import { json, ok, serverError, unauthorized } from '@/lib/response';
 import { canDeleteBoard, canUpdateBoard, canViewBoard } from '@/permissions';
 import { deleteBoard, getBoard, updateBoard } from '@/queries/prisma';
 
@@ -28,11 +28,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ boa
     type: z
       .enum([
         BOARD_TYPES.dashboard,
-        BOARD_TYPES.open,
+        BOARD_TYPES.mixed,
         BOARD_TYPES.website,
         BOARD_TYPES.pixel,
         BOARD_TYPES.link,
       ])
+      .or(z.literal('open'))
       .optional(),
     name: z.string().optional(),
     description: z.string().optional(),
@@ -46,7 +47,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ boa
   }
 
   const { boardId } = await params;
-  const { type, name, description, parameters } = body;
+  const { name, description, parameters } = body;
+  const type = normalizeBoardType(body.type);
 
   if (!(await canUpdateBoard(auth, boardId))) {
     return unauthorized();
@@ -57,10 +59,6 @@ export async function POST(request: Request, { params }: { params: Promise<{ boa
 
     return Response.json(board);
   } catch (e: any) {
-    if (e.message.toLowerCase().includes('unique constraint') && e.message.includes('slug')) {
-      return badRequest({ message: 'That slug is already taken.' });
-    }
-
     return serverError(e);
   }
 }

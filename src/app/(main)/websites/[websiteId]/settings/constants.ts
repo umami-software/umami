@@ -6,6 +6,7 @@ export const SHARE_NAV_ITEMS = [
       { id: 'events', label: 'events' },
       { id: 'sessions', label: 'sessions' },
       { id: 'realtime', label: 'realtime' },
+      { id: 'performance', label: 'performance' },
       { id: 'compare', label: 'compare' },
       { id: 'breakdown', label: 'breakdown' },
     ],

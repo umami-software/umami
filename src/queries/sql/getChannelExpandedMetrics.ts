@@ -60,6 +60,7 @@ async function relationalQuery(
             website_event.utm_source,
             website_event.session_id,
             website_event.visit_id,
+            website_event.hostname,
             count(*) c,
             min(website_event.created_at) min_time,
             max(website_event.created_at) max_time
@@ -77,7 +78,8 @@ async function relationalQuery(
             website_event.utm_medium,
             website_event.utm_source,
             website_event.session_id,
-            website_event.visit_id),
+            website_event.visit_id,
+            website_event.hostname),
   
       channels as (
         select case

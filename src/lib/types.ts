@@ -20,7 +20,11 @@ export interface Auth {
     isAdmin: boolean;
   };
   shareToken?: {
-    websiteId: string;
+    websiteId?: string;
+    websiteIds?: string[];
+    boardId?: string;
+    pixelId?: string;
+    linkId?: string;
   };
 }
 

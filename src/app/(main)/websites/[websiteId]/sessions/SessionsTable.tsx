@@ -17,11 +17,7 @@ export function SessionsTable({
     <DataTable {...props}>
       <DataColumn id="id" label={t(labels.session)} width="100px">
         {(row: any) => (
-          <Link
-            href={
-              getSessionHref ? getSessionHref(row) : `/websites/${websiteId}/sessions/${row.id}`
-            }
-          >
+          <Link href={getSessionHref ? getSessionHref(row) : `/websites/${websiteId}/sessions/${row.id}`}>
             <Avatar seed={row.id} size={32} />
           </Link>
         )}

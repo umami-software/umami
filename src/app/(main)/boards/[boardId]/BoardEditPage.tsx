@@ -4,16 +4,14 @@ import { BoardProvider } from '@/app/(main)/boards/BoardProvider';
 import { PageBody } from '@/components/common/PageBody';
 import { BoardControls } from './BoardControls';
 import { BoardEditBody } from './BoardEditBody';
-import { BoardEditForm } from './BoardEditForm';
-import { BoardEditHeader } from './BoardEditHeader';
+import { BoardDesignHeader } from './BoardEditHeader';
 
-export function BoardEditPage({ boardId }: { boardId?: string }) {
+export function BoardDesignPage({ boardId }: { boardId: string }) {
   return (
     <BoardProvider boardId={boardId} editing>
       <PageBody>
         <Column>
-          <BoardEditHeader />
-          <BoardEditForm />
+          <BoardDesignHeader />
           <BoardControls />
           <BoardEditBody />
         </Column>

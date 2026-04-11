@@ -9,8 +9,6 @@ export interface GoalParameters {
   endDate: Date;
   type: string;
   value: string;
-  operator?: string;
-  property?: string;
 }
 
 export async function getGoal(
@@ -31,10 +29,18 @@ async function relationalQuery(
   const { rawQuery, parseFilters } = prisma;
   const eventType = type === 'path' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'path' ? 'url_path' : 'event_name';
+
+  let operator = '=';
+  let paramValue = value;
+  if (value.startsWith('*') || value.endsWith('*')) {
+    operator = 'like';
+    paramValue = value.replace(/^\*|\*$/g, '%');
+  }
+
   const { filterQuery, dateQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
-    value,
+    value: paramValue,
     startDate,
     endDate,
     eventType,
@@ -62,7 +68,7 @@ async function relationalQuery(
     ${cohortQuery}
     ${joinSessionQuery}
     where website_event.website_id = {{websiteId::uuid}}
-      and ${column} = {{value}}
+      and ${column} ${operator} {{value}}
       ${dateQuery}
       ${filterQuery}
     `,
@@ -79,10 +85,18 @@ async function clickhouseQuery(
   const { rawQuery, parseFilters } = clickhouse;
   const eventType = type === 'path' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'path' ? 'url_path' : 'event_name';
+
+  let operator = '=';
+  let paramValue = value;
+  if (value.startsWith('*') || value.endsWith('*')) {
+    operator = 'like';
+    paramValue = value.replace(/^\*|\*$/g, '%');
+  }
+
   const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
-    value,
+    value: paramValue,
     startDate,
     endDate,
     eventType,
@@ -108,7 +122,7 @@ async function clickhouseQuery(
     from website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}
-      and ${column} = {value:String}
+      and ${column} ${operator} {value:String}
       ${dateQuery}
       ${filterQuery}
     `,
