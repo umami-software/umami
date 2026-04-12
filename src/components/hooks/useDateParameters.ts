@@ -1,6 +1,14 @@
 import { useDateRange } from './useDateRange';
 import { useTimezone } from './useTimezone';
 
+function safeToISOString(date: Date, fallback: Date): string {
+  try {
+    return date.toISOString();
+  } catch {
+    return fallback.toISOString();
+  }
+}
+
 export function useDateParameters() {
   const {
     dateRange: { startDate, endDate, unit },
@@ -17,8 +25,8 @@ export function useDateParameters() {
   return {
     startAt: isStartValid ? startAtValue : +startDate,
     endAt: isEndValid ? endAtValue : +endDate,
-    startDate: isStartValid ? utcStart.toISOString() : startDate.toISOString(),
-    endDate: isEndValid ? utcEnd.toISOString() : endDate.toISOString(),
+    startDate: safeToISOString(isStartValid ? utcStart : startDate, startDate),
+    endDate: safeToISOString(isEndValid ? utcEnd : endDate, endDate),
     unit,
     timezone: canonicalizeTimezone(timezone),
   };
