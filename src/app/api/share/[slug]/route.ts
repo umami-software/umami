@@ -68,7 +68,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     data.boardId = share.entityId;
     data.websiteIds = getBoardWebsiteIds({
       type: board.type,
-      parameters: share.parameters as BoardParameters,
+      parameters: board.parameters as BoardParameters,
     });
   } else if (share.shareType === ENTITY_TYPE.website) {
     entity = await getWebsite(share.entityId);
