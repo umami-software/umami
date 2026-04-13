@@ -1,5 +1,5 @@
 import { parseRequest } from '@/lib/request';
-import { badRequest, json, ok, unauthorized } from '@/lib/response';
+import { badRequest, json, notFound, ok, unauthorized } from '@/lib/response';
 import { canDeleteWebsite, canViewWebsite } from '@/permissions';
 import { deleteSession } from '@/queries/prisma';
 import { getWebsiteSession } from '@/queries/sql';
@@ -35,14 +35,20 @@ export async function DELETE(
     return error();
   }
 
-  if (process.env.CLICKHOUSE_URL) {
-    return badRequest({ message: 'Deleting individual sessions is not supported with ClickHouse.' });
-  }
-
   const { websiteId, sessionId } = await params;
 
   if (!(await canDeleteWebsite(auth, websiteId))) {
     return unauthorized();
+  }
+
+  if (process.env.CLICKHOUSE_URL) {
+    return badRequest({ message: 'Deleting individual sessions is not supported with ClickHouse.' });
+  }
+
+  const session = await getWebsiteSession(websiteId, sessionId);
+
+  if (!session) {
+    return notFound();
   }
 
   await deleteSession(websiteId, sessionId);

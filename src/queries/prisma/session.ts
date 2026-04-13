@@ -45,8 +45,8 @@ export async function deleteSession(websiteId: string, sessionId: string) {
         where: { websiteId, sessionId },
       });
 
-      return tx.session.delete({
-        where: { id: sessionId },
+      return tx.session.deleteMany({
+        where: { id: sessionId, websiteId },
       });
     },
     { timeout: 30000 },
