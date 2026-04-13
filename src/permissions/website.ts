@@ -13,7 +13,9 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
     shareToken?.websiteId === websiteId ||
     shareToken?.pixelId === websiteId ||
     shareToken?.linkId === websiteId ||
-    shareToken?.websiteIds?.includes(websiteId)
+    shareToken?.websiteIds?.includes(websiteId) ||
+    shareToken?.pixelIds?.includes(websiteId) ||
+    shareToken?.linkIds?.includes(websiteId)
   ) {
     return true;
   }
