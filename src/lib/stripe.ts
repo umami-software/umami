@@ -8,6 +8,10 @@ const stripe = new Stripe(process.env.STRIPE_API_KEY, {
 
 const invoices: Stripe.Invoice[] = JSON.parse(fs.readFileSync('src/lib/z-invoices.json', 'utf-8'));
 
+const subscriptions: Stripe.Subscription[] = JSON.parse(
+  fs.readFileSync('src/lib/y-subscriptions.json', 'utf-8'),
+);
+
 export interface MonthlyARR {
   month: string;
   totalSales?: number;
@@ -58,10 +62,9 @@ function buildCustomerMRRByMonth(): Map<string, Map<string, CustomerMonthMRR>> {
           Math.round((line.period.end - line.period.start) / (86400 * 30.44)),
         );
         const mrrPerMonth = line.amount / 100 / periodMonths;
-        const periodEnd = new Date(line.period.end * 1000);
         const start = new Date(line.period.start * 1000);
         const cur = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), 1));
-        while (cur < periodEnd) {
+        for (let m = 0; m < periodMonths; m++) {
           add(customerId, toMonthKey(cur.getTime() / 1000), mrrPerMonth, 0);
           cur.setUTCMonth(cur.getUTCMonth() + 1);
         }
@@ -77,6 +80,9 @@ function buildCustomerMRRByMonth(): Map<string, Map<string, CustomerMonthMRR>> {
 }
 
 export function getARRMetrics(startDate: Date, endDate: Date): MonthlyARR[] {
+  // Set to a customer ID to scope analysis to a single customer. Remove to see all.
+  const debugCustomerId = '';
+
   const months: string[] = [];
   const cursor = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), 1));
   while (cursor < endDate) {
@@ -84,7 +90,15 @@ export function getARRMetrics(startDate: Date, endDate: Date): MonthlyARR[] {
     cursor.setUTCMonth(cursor.getUTCMonth() + 1);
   }
 
-  const customerMRR = buildCustomerMRRByMonth();
+  const allCustomerMRR = buildCustomerMRRByMonth();
+  const customerMRR = debugCustomerId
+    ? new Map([
+        [
+          debugCustomerId,
+          allCustomerMRR.get(debugCustomerId) ?? new Map<string, CustomerMonthMRR>(),
+        ],
+      ])
+    : allCustomerMRR;
 
   // Precompute each customer's first active month for new vs resurrected classification
   const firstActiveMonth = new Map<string, string>();
@@ -96,12 +110,39 @@ export function getARRMetrics(startDate: Date, endDate: Date): MonthlyARR[] {
     if (first) firstActiveMonth.set(customerId, first);
   }
 
+  // The current month is incomplete — not all customers have been invoiced yet.
+  const currentMonthKey = toMonthKey(endDate.getTime() / 1000);
+
+  // Build a lookup of active subscription customers for the current-month fallback.
+  // "Active" means they have a live subscription regardless of whether invoiced yet.
+  const activeSubCustomers = new Set(
+    subscriptions
+      .filter(s => ['active', 'trialing', 'past_due'].includes(s.status))
+      .map(s => s.customer as string),
+  );
+
   function getActiveCustomers(monthKey: string): Map<string, CustomerMonthMRR> {
     const result = new Map<string, CustomerMonthMRR>();
     for (const [customerId, byMonth] of customerMRR) {
       const mrr = byMonth.get(monthKey);
       if (mrr && mrr.base > 0) result.set(customerId, mrr);
     }
+
+    // For the current incomplete month, also include subscription-active customers
+    // who haven't been invoiced yet by carrying forward their last known base MRR.
+    if (monthKey === currentMonthKey) {
+      for (const customerId of activeSubCustomers) {
+        if (result.has(customerId)) continue;
+        const byMonth = customerMRR.get(customerId);
+        if (!byMonth) continue;
+        const lastBase =
+          [...byMonth.entries()]
+            .filter(([mk, mrr]) => mk < monthKey && mrr.base > 0)
+            .sort(([a], [b]) => b.localeCompare(a))[0]?.[1]?.base ?? 0;
+        if (lastBase > 0) result.set(customerId, { base: lastBase, usage: 0 });
+      }
+    }
+
     return result;
   }
 
@@ -125,7 +166,7 @@ export function getARRMetrics(startDate: Date, endDate: Date): MonthlyARR[] {
     let churned = 0;
 
     for (const [customerId, { base: currentBase, usage: currentUsage }] of current) {
-      totalSales += currentBase;
+      totalSales += currentBase + currentUsage;
 
       if (!prev.has(customerId)) {
         // Not present last month — new or resurrected
