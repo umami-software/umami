@@ -1,7 +1,7 @@
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, notFound, ok, unauthorized } from '@/lib/response';
 import { canDeleteWebsite, canViewWebsite } from '@/permissions';
-import { deleteSession } from '@/queries/prisma';
+import { deleteSession, findSession } from '@/queries/prisma';
 import { getWebsiteSession } from '@/queries/sql';
 
 export async function GET(
@@ -45,7 +45,7 @@ export async function DELETE(
     return badRequest({ message: 'Deleting individual sessions is not supported with ClickHouse.' });
   }
 
-  const session = await getWebsiteSession(websiteId, sessionId);
+  const session = await findSession(websiteId, sessionId);
 
   if (!session) {
     return notFound();
