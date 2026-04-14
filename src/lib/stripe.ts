@@ -14,7 +14,8 @@ const subscriptions: Stripe.Subscription[] = JSON.parse(
 
 export interface MonthlyARR {
   month: string;
-  totalSales?: number;
+  totalSales?: number; // recurring only: base MRR + usage
+  nonRecurring?: number; // one-time charges (setup fees, etc.) — not part of MRR waterfall
   newSales?: number;
   retained?: number;
   resurrected?: number;
@@ -32,7 +33,7 @@ function round2(n: number): number {
   return Math.round(n * 100) / 100;
 }
 
-type CustomerMonthMRR = { base: number; usage: number };
+type CustomerMonthMRR = { base: number; usage: number; oneTime: number };
 
 // Builds Map<customerId, Map<monthKey, {base, usage}>> from paid invoices.
 //
@@ -42,11 +43,15 @@ type CustomerMonthMRR = { base: number; usage: number };
 function buildCustomerMRRByMonth(): Map<string, Map<string, CustomerMonthMRR>> {
   const map = new Map<string, Map<string, CustomerMonthMRR>>();
 
-  function add(customerId: string, monthKey: string, base: number, usage: number) {
+  function add(customerId: string, monthKey: string, base: number, usage: number, oneTime = 0) {
     if (!map.has(customerId)) map.set(customerId, new Map());
     const byMonth = map.get(customerId) as Map<string, CustomerMonthMRR>;
-    const prev = byMonth.get(monthKey) ?? { base: 0, usage: 0 };
-    byMonth.set(monthKey, { base: prev.base + base, usage: prev.usage + usage });
+    const prev = byMonth.get(monthKey) ?? { base: 0, usage: 0, oneTime: 0 };
+    byMonth.set(monthKey, {
+      base: prev.base + base,
+      usage: prev.usage + usage,
+      oneTime: prev.oneTime + oneTime,
+    });
   }
 
   for (const invoice of invoices) {
@@ -71,8 +76,10 @@ function buildCustomerMRRByMonth(): Map<string, Map<string, CustomerMonthMRR>> {
       } else if (usageType === 'metered') {
         // Usage line — allocate to the invoice's period_end month
         add(customerId, toMonthKey(invoice.period_end), 0, line.amount / 100);
+      } else if (!usageType) {
+        // No recurring price (one-time charge) — tracked separately, not part of MRR
+        add(customerId, toMonthKey(invoice.period_end), 0, 0, line.amount / 100);
       }
-      // one_time charges and anything else are excluded from MRR
     }
   }
 
@@ -139,7 +146,7 @@ export function getARRMetrics(startDate: Date, endDate: Date): MonthlyARR[] {
           [...byMonth.entries()]
             .filter(([mk, mrr]) => mk < monthKey && mrr.base > 0)
             .sort(([a], [b]) => b.localeCompare(a))[0]?.[1]?.base ?? 0;
-        if (lastBase > 0) result.set(customerId, { base: lastBase, usage: 0 });
+        if (lastBase > 0) result.set(customerId, { base: lastBase, usage: 0, oneTime: 0 });
       }
     }
 
@@ -158,6 +165,7 @@ export function getARRMetrics(startDate: Date, endDate: Date): MonthlyARR[] {
       : new Map<string, CustomerMonthMRR>();
 
     let totalSales = 0;
+    let nonRecurring = 0;
     let newSales = 0;
     let retained = 0;
     let resurrected = 0;
@@ -165,39 +173,43 @@ export function getARRMetrics(startDate: Date, endDate: Date): MonthlyARR[] {
     let contraction = 0;
     let churned = 0;
 
-    for (const [customerId, { base: currentBase, usage: currentUsage }] of current) {
+    for (const [
+      customerId,
+      { base: currentBase, usage: currentUsage, oneTime: currentOneTime },
+    ] of current) {
       totalSales += currentBase + currentUsage;
+      nonRecurring += currentOneTime;
+
+      const currentTotal = currentBase + currentUsage;
 
       if (!prev.has(customerId)) {
         // Not present last month — new or resurrected
         if (firstActiveMonth.get(customerId) === monthKey) {
-          newSales += currentBase;
+          newSales += currentTotal;
         } else {
-          resurrected += currentBase;
+          resurrected += currentTotal;
         }
       } else {
         const { base: prevBase, usage: prevUsage } = prev.get(customerId) as CustomerMonthMRR;
-        retained += Math.min(currentBase, prevBase);
+        const prevTotal = prevBase + prevUsage;
+        retained += currentTotal;
 
-        const baseDelta = currentBase - prevBase;
-        if (baseDelta > 0) expansion += baseDelta;
-        else if (baseDelta < 0) contraction += baseDelta;
-
-        const usageDelta = currentUsage - prevUsage;
-        if (usageDelta > 0) expansion += usageDelta;
-        else if (usageDelta < 0) contraction += usageDelta;
+        const delta = currentTotal - prevTotal;
+        if (delta > 0) expansion += delta;
+        else if (delta < 0) contraction += delta;
       }
     }
 
-    for (const [customerId, { base: prevBase }] of prev) {
+    for (const [customerId, { base: prevBase, usage: prevUsage }] of prev) {
       if (!current.has(customerId)) {
-        churned -= prevBase;
+        churned -= prevBase + prevUsage;
       }
     }
 
     results.push({
       month: monthKey,
       totalSales: round2(totalSales),
+      nonRecurring: round2(nonRecurring),
       newSales: round2(newSales),
       retained: round2(retained),
       resurrected: round2(resurrected),
