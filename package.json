@@ -147,8 +147,6 @@
     "rollup-plugin-node-externals": "^8.1.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
-    "stylelint-config-css-modules": "^4.6.0",
-    "stylelint-config-prettier": "^9.0.3",
     "tar": "^7.5.13",
     "ts-jest": "^29.4.6",
     "ts-morph": "^27.0.2",
