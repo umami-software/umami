@@ -27,10 +27,6 @@
   const config = value => attr(`${_data}${value}`);
 
   const website = config('website-id');
-
-  if (!window.__umami_tracker_loaded) window.__umami_tracker_loaded = new Set();
-  if (window.__umami_tracker_loaded.has(website)) return;
-  window.__umami_tracker_loaded.add(website);
   const hostUrl = config('host-url');
   const beforeSend = config('before-send');
   const tag = config('tag') || undefined;
@@ -185,7 +181,6 @@
           ...(typeof cache !== 'undefined' && { 'x-umami-cache': cache }),
         },
         credentials,
-        priority: 'low',
       });
 
       const data = await res.json();

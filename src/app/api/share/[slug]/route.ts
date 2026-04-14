@@ -1,4 +1,4 @@
-import { getBoardWebsiteIds } from '@/lib/boards';
+import { getBoardEntityIds } from '@/lib/boards';
 import { ENTITY_TYPE, ROLES } from '@/lib/constants';
 import { secret } from '@/lib/crypto';
 import { createToken } from '@/lib/jwt';
@@ -66,10 +66,13 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     if (!board) return notFound();
     entity = board;
     data.boardId = share.entityId;
-    data.websiteIds = getBoardWebsiteIds({
+    const boardEntityIds = getBoardEntityIds({
       type: board.type,
-      parameters: share.parameters as BoardParameters,
+      parameters: board.parameters as BoardParameters,
     });
+    data.websiteIds = boardEntityIds.websiteIds;
+    data.pixelIds = boardEntityIds.pixelIds;
+    data.linkIds = boardEntityIds.linkIds;
   } else if (share.shareType === ENTITY_TYPE.website) {
     entity = await getWebsite(share.entityId);
     if (!entity) return notFound();
