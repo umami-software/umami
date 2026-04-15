@@ -4,6 +4,7 @@ import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User } from '@/c
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { PreferencesButton } from '@/components/input/PreferencesButton';
 import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import { buildPath } from '@/lib/url';
 import {
   Button,
   Column,
@@ -29,10 +30,18 @@ export function ShareNav({
 }) {
   const share = useShare();
   const { t, labels } = useMessages();
-  const { pathname } = useNavigation();
+  const { pathname, query } = useNavigation();
   const { slug, parameters } = share;
 
-  const renderPath = (path: string) => `/share/${slug}${path}`;
+  const renderPath = (path: string) =>
+    buildPath(`/share/${slug}${path}`, {
+      ...query,
+      event: undefined,
+      compare: undefined,
+      view: undefined,
+      unit: undefined,
+      excludeBounce: undefined,
+    });
 
   const allItems = [
     {

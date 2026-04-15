@@ -82,6 +82,7 @@ async function relationalQuery(
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_type NOT IN (2, 5)
+      and ${column} != ''
       ${excludeDomain}
       ${filterQuery}
     group by 1
@@ -142,6 +143,7 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type NOT IN (2, 5)
+      and ${column} != ''
       ${excludeDomain}
       ${filterQuery}
     group by x

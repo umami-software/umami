@@ -90,9 +90,9 @@ function mapFilter(
     case OPERATORS.doesNotContain:
       return `positionCaseInsensitive(${column}, ${value}) = 0`;
     case OPERATORS.regex:
-      return `match(${column}, ${value})`;
+      return `match(${column}, concat('(?i)', ${value}))`;
     case OPERATORS.notRegex:
-      return `not match(${column}, ${value})`;
+      return `not match(${column}, concat('(?i)', ${value}))`;
     default:
       return '';
   }
@@ -161,7 +161,7 @@ function getCohortQuery(filters: Record<string, any>) {
 }
 
 function getExcludeBounceQuery(filters: Record<string, any>) {
-  if (!filters.excludeBounce === true) {
+  if (filters.excludeBounce !== true) {
     return '';
   }
 
