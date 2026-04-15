@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { ROLE_PERMISSIONS, ROLES, SHARE_TOKEN_HEADER } from '@/lib/constants';
+import { ROLE_PERMISSIONS, ROLES, SHARE_CONTEXT_HEADER, SHARE_TOKEN_HEADER } from '@/lib/constants';
 import { createAuthKey, secret } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
 import redis from '@/lib/redis';
@@ -37,6 +37,14 @@ export async function checkAuth(request: Request) {
   if (!user?.id && !shareToken) {
     log('User not authorized');
     return null;
+  }
+
+  if (!user?.id && shareToken) {
+    const shareContext = request.headers.get(SHARE_CONTEXT_HEADER);
+    if (!shareContext) {
+      log('Share token used outside share context');
+      return null;
+    }
   }
 
   if (user) {

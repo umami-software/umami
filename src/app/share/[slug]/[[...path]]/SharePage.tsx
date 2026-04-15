@@ -83,6 +83,10 @@ export function SharePage() {
     }
   }, [setTheme]);
 
+  // Check if the requested path is allowed
+  const pageKey = path || '';
+  const isAllowed = pageKey === '' || parameters[pageKey] === true;
+
   const entityPage =
     shareType === ENTITY_TYPE.board && boardId ? (
       <BoardViewPage boardId={boardId} showActions={false} />
@@ -91,6 +95,12 @@ export function SharePage() {
     ) : shareType === ENTITY_TYPE.link && linkId ? (
       <LinkPage linkId={linkId} showHeaderActions={false} />
     ) : null;
+
+  useEffect(() => {
+    if (!isAllowed) {
+      router.replace(`/share/${slug}`);
+    }
+  }, [isAllowed, slug, router]);
 
   if (entityPage) {
     return (
@@ -101,12 +111,7 @@ export function SharePage() {
     );
   }
 
-  // Check if the requested path is allowed
-  const pageKey = path || '';
-  const isAllowed = pageKey === '' || parameters[pageKey] === true;
-
   if (!isAllowed) {
-    router.replace(`/share/${slug}`);
     return null;
   }
 
