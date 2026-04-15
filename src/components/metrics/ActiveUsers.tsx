@@ -1,6 +1,5 @@
 import { StatusLight, Text } from '@umami/react-zen';
 import { useMemo } from 'react';
-import { LinkButton } from '@/components/common/LinkButton';
 import { useActyiveUsersQuery, useMessages } from '@/components/hooks';
 
 export function ActiveUsers({
@@ -28,12 +27,10 @@ export function ActiveUsers({
   }
 
   return (
-    <LinkButton href={`/websites/${websiteId}/realtime`} variant="quiet">
-      <StatusLight variant="success">
-        <Text size="sm" weight="medium">
-          {count} {t(labels.online)}
-        </Text>
-      </StatusLight>
-    </LinkButton>
+    <StatusLight variant="success">
+      <Text size="sm" weight="medium">
+        {count} {t(labels.online)}
+      </Text>
+    </StatusLight>
   );
 }
