@@ -12,19 +12,19 @@ export function TopNav() {
   const { websiteId, linkId, pixelId, boardId, teamId, router, renderUrl } = useNavigation();
 
   const handleWebsiteChange = (value: string) => {
-    router.push(renderUrl(`/websites/${value}`));
+    router.push(renderUrl(`/websites/${value}`, false));
   };
 
   const handleLinkChange = (value: string) => {
-    router.push(renderUrl(`/links/${value}`));
+    router.push(renderUrl(`/links/${value}`, false));
   };
 
   const handlePixelChange = (value: string) => {
-    router.push(renderUrl(`/pixels/${value}`));
+    router.push(renderUrl(`/pixels/${value}`, false));
   };
 
   const handleBoardChange = (value: string) => {
-    router.push(renderUrl(`/boards/${value}`));
+    router.push(renderUrl(`/boards/${value}`, false));
   };
 
   return (
