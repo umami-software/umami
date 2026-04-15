@@ -1,5 +1,5 @@
 import { Button, type ButtonProps } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import type { ReactNode } from 'react';
 import { useLocale } from '@/components/hooks';
 
