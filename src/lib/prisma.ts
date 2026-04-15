@@ -278,7 +278,6 @@ async function rawQuery(sql: string, data: Record<string, any>, name?: string): 
   if (process.env.DATABASE_REPLICA_URL && '$replica' in client) {
     return client.$replica().$queryRawUnsafe(query, ...params);
   }
-  console.log(query, params);
   return client.$queryRawUnsafe(query, ...params);
 }
 
