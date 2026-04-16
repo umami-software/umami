@@ -90,7 +90,7 @@
     "lucide-react": "^1.7.0",
     "maxmind": "^5.0.5",
     "next": "16.2.4",
-    "next-intl": "4.8.3",
+    "next-intl": "4.9.1",
     "node-fetch": "^3.2.8",
     "npm-run-all": "^4.1.5",
     "papaparse": "^5.5.3",
