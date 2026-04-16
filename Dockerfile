@@ -14,7 +14,7 @@ FROM node:${NODE_IMAGE_VERSION} AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-COPY docker/middleware.ts ./src
+COPY docker/proxy.ts ./src
 
 ARG BASE_PATH
 

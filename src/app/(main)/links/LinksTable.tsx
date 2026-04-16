@@ -25,11 +25,7 @@ export function LinksTable({ showActions, ...props }: LinksTableProps) {
       <DataColumn id="slug" label={t(labels.link)}>
         {({ slug }: any) => {
           const url = getSlugUrl(slug);
-          return (
-            <ExternalLink href={url} prefetch={false}>
-              {url}
-            </ExternalLink>
-          );
+          return <ExternalLink href={url}>{url}</ExternalLink>;
         }}
       </DataColumn>
       <DataColumn id="url" label={t(labels.destinationUrl)}>
