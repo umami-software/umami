@@ -1,7 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { usePathname } from 'next/navigation';
 import { useCallback } from 'react';
 import { getClientAuthToken } from '@/lib/client';
-import { SHARE_TOKEN_HEADER } from '@/lib/constants';
+import { SHARE_CONTEXT_HEADER, SHARE_TOKEN_HEADER } from '@/lib/constants';
 import { type FetchResponse, httpDelete, httpGet, httpPost, httpPut } from '@/lib/fetch';
 import { useApp } from '@/store/app';
 
@@ -18,10 +19,17 @@ async function handleResponse(res: FetchResponse): Promise<any> {
 
 export function useApi() {
   const shareToken = useApp(selector);
+  const pathname = usePathname();
+  const isSharePath = pathname?.startsWith('/share');
+
+  const shareHeaders =
+    isSharePath && shareToken?.token
+      ? { [SHARE_TOKEN_HEADER]: shareToken.token, [SHARE_CONTEXT_HEADER]: '1' }
+      : {};
 
   const defaultHeaders = {
     authorization: `Bearer ${getClientAuthToken()}`,
-    [SHARE_TOKEN_HEADER]: shareToken?.token,
+    ...shareHeaders,
   };
   const basePath = process.env.basePath;
 

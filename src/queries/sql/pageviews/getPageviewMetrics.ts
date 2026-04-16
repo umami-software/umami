@@ -34,19 +34,20 @@ async function relationalQuery(
   const { type, limit = 500, offset = 0 } = parameters;
   let column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = prisma;
-  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters(
-    {
-      ...filters,
-      websiteId,
-    },
-    { joinSession: SESSION_COLUMNS.includes(type) },
-  );
+  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } =
+    parseFilters(
+      {
+        ...filters,
+        websiteId,
+      },
+      { joinSession: SESSION_COLUMNS.includes(type) },
+    );
 
   let entryExitQuery = '';
   let excludeDomain = '';
 
   if (column === 'referrer_domain') {
-    excludeDomain = `and website_event.referrer_domain != website_event.hostname
+    excludeDomain = `and website_event.referrer_domain != regexp_replace(website_event.hostname, '^www.', '')
       and website_event.referrer_domain != ''`;
   }
 
@@ -62,7 +63,7 @@ async function relationalQuery(
         from website_event
         where website_event.website_id = {{websiteId::uuid}}
           and website_event.created_at between {{startDate}} and {{endDate}}
-          and website_event.event_type != 2
+          and website_event.event_type NOT IN (2, 5)
         order by visit_id, created_at ${order}
       ) x
       on x.visit_id = website_event.visit_id
@@ -75,11 +76,13 @@ async function relationalQuery(
       count(distinct website_event.session_id) as y
     from website_event
     ${cohortQuery}
+    ${excludeBounceQuery}
     ${joinSessionQuery}
     ${entryExitQuery}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
-      and website_event.event_type != 2
+      and website_event.event_type NOT IN (2, 5)
+      and ${column} != ''
       ${excludeDomain}
       ${filterQuery}
     group by 1
@@ -100,7 +103,7 @@ async function clickhouseQuery(
   const { type, limit = 500, offset = 0 } = parameters;
   let column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+  const { filterQuery, cohortQuery, excludeBounceQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
@@ -125,7 +128,7 @@ async function clickhouseQuery(
       from website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type != 2
+        and event_type NOT IN (2, 5)
       group by visit_id) x
       ON x.visit_id = website_event.visit_id`;
     }
@@ -135,10 +138,12 @@ async function clickhouseQuery(
       uniq(website_event.session_id) as y
     from website_event
     ${cohortQuery}
+    ${excludeBounceQuery}
     ${entryExitQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type != 2
+      and event_type NOT IN (2, 5)
+      and ${column} != ''
       ${excludeDomain}
       ${filterQuery}
     group by x
@@ -174,9 +179,10 @@ async function clickhouseQuery(
         ${columnQuery} as t
       from website_event_stats_hourly as website_event
       ${cohortQuery}
+      ${excludeBounceQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type != 2
+        and event_type NOT IN (2, 5)
         ${excludeDomain}
         ${filterQuery}
       ${groupByQuery}) as g

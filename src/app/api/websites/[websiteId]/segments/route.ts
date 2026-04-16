@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { anyObjectParam, searchParams, segmentTypeParam } from '@/lib/schema';
+import { searchParams, segmentParamSchema, segmentTypeParam } from '@/lib/schema';
 import { canUpdateWebsite, canViewWebsite } from '@/permissions';
 import { createSegment, getWebsiteSegments } from '@/queries/prisma';
 
@@ -42,7 +42,7 @@ export async function POST(
   const schema = z.object({
     type: segmentTypeParam,
     name: z.string().max(200),
-    parameters: anyObjectParam,
+    parameters: segmentParamSchema,
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
