@@ -197,7 +197,7 @@ export default withNextIntl({
     selfRecord,
   },
   basePath,
-  output: process.env.VERCEL ? undefined : 'standalone',
+  output: 'standalone',
   typescript: {
     ignoreBuildErrors: true,
   },
