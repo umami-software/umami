@@ -4,14 +4,14 @@ import { UserEditForm } from './UserEditForm';
 import { UserWebsites } from './UserWebsites';
 
 export function UserSettings({ userId }: { userId: string }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   return (
     <Column gap="6">
       <Tabs>
         <TabList>
-          <Tab id="details">{formatMessage(labels.details)}</Tab>
-          <Tab id="websites">{formatMessage(labels.websites)}</Tab>
+          <Tab id="details">{t(labels.details)}</Tab>
+          <Tab id="websites">{t(labels.websites)}</Tab>
         </TabList>
         <TabPanel id="details" style={{ width: 500 }}>
           <UserEditForm userId={userId} />

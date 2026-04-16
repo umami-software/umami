@@ -6,7 +6,7 @@ import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatLongNumber } from '@/lib/format';
 
 export function SessionsMetricsBar({ websiteId }: { websiteId: string }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { data, isLoading, isFetching, error } = useWebsiteSessionStatsQuery(websiteId);
 
   return (
@@ -15,22 +15,22 @@ export function SessionsMetricsBar({ websiteId }: { websiteId: string }) {
         <MetricsBar>
           <MetricCard
             value={data?.visitors?.value}
-            label={formatMessage(labels.visitors)}
+            label={t(labels.visitors)}
             formatValue={formatLongNumber}
           />
           <MetricCard
             value={data?.visits?.value}
-            label={formatMessage(labels.visits)}
+            label={t(labels.visits)}
             formatValue={formatLongNumber}
           />
           <MetricCard
             value={data?.pageviews?.value}
-            label={formatMessage(labels.views)}
+            label={t(labels.views)}
             formatValue={formatLongNumber}
           />
           <MetricCard
             value={data?.countries?.value}
-            label={formatMessage(labels.countries)}
+            label={t(labels.countries)}
             formatValue={formatLongNumber}
           />
         </MetricsBar>

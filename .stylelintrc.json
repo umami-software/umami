@@ -1,6 +1,0 @@
-{
-  "extends": ["stylelint-config-recommended", "stylelint-config-css-modules"],
-  "rules": {
-    "no-descending-specificity": null
-  }
-}

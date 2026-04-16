@@ -16,7 +16,6 @@ export interface AttributionProps {
   model: string;
   type: string;
   step: string;
-  currency?: string;
 }
 
 export function Attribution({
@@ -26,7 +25,6 @@ export function Attribution({
   model,
   type,
   step,
-  currency,
 }: AttributionProps) {
   const { data, error, isLoading } = useResultQuery<any>('attribution', {
     websiteId,
@@ -37,7 +35,7 @@ export function Attribution({
     step,
   });
 
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   const { pageviews, visitors, visits } = data?.total || {};
 
@@ -45,17 +43,17 @@ export function Attribution({
     ? [
         {
           value: visitors,
-          label: formatMessage(labels.visitors),
+          label: t(labels.visitors),
           formatValue: formatLongNumber,
         },
         {
           value: visits,
-          label: formatMessage(labels.visits),
+          label: t(labels.visits),
           formatValue: formatLongNumber,
         },
         {
           value: pageviews,
-          label: formatMessage(labels.views),
+          label: t(labels.views),
           formatValue: formatLongNumber,
         },
       ]
@@ -72,8 +70,7 @@ export function Attribution({
     return (
       <ListTable
         title={title}
-        metric={formatMessage(currency ? labels.revenue : labels.visitors)}
-        currency={currency}
+        metric={t(labels.visitors)}
         data={attributionData.map(({ x, y, z }: { x: string; y: number; z: number }) => ({
           label: x,
           count: y,
@@ -94,31 +91,31 @@ export function Attribution({
               );
             })}
           </MetricsBar>
-          <SectionHeader title={formatMessage(labels.sources)} />
-          <Grid columns={{ xs: '1fr', md: '1fr 1fr' }} gap>
+          <SectionHeader title={t(labels.sources)} />
+          <Grid columns={{ base: '1fr', md: '1fr 1fr' }} gap>
             <Panel>
-              <AttributionTable data={data?.referrer} title={formatMessage(labels.referrer)} />
+              <AttributionTable data={data?.referrer} title={t(labels.referrer)} />
             </Panel>
             <Panel>
-              <AttributionTable data={data?.paidAds} title={formatMessage(labels.paidAds)} />
+              <AttributionTable data={data?.paidAds} title={t(labels.paidAds)} />
             </Panel>
           </Grid>
           <SectionHeader title="UTM" />
-          <Grid columns={{ xs: '1fr', md: '1fr 1fr' }} gap>
+          <Grid columns={{ base: '1fr', md: '1fr 1fr' }} gap>
             <Panel>
-              <AttributionTable data={data?.utm_source} title={formatMessage(labels.sources)} />
+              <AttributionTable data={data?.utm_source} title={t(labels.sources)} />
             </Panel>
             <Panel>
-              <AttributionTable data={data?.utm_medium} title={formatMessage(labels.medium)} />
+              <AttributionTable data={data?.utm_medium} title={t(labels.medium)} />
             </Panel>
             <Panel>
-              <AttributionTable data={data?.utm_cmapaign} title={formatMessage(labels.campaigns)} />
+              <AttributionTable data={data?.utm_cmapaign} title={t(labels.campaigns)} />
             </Panel>
             <Panel>
-              <AttributionTable data={data?.utm_content} title={formatMessage(labels.content)} />
+              <AttributionTable data={data?.utm_content} title={t(labels.content)} />
             </Panel>
             <Panel>
-              <AttributionTable data={data?.utm_term} title={formatMessage(labels.terms)} />
+              <AttributionTable data={data?.utm_term} title={t(labels.terms)} />
             </Panel>
           </Grid>
         </Column>

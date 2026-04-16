@@ -100,6 +100,13 @@ export async function getAllUserTeams(userId: string) {
   });
 }
 
+export async function getTeamOwner(teamId: string) {
+  return prisma.client.teamUser.findFirst({
+    where: { teamId, role: ROLES.teamOwner },
+    select: { userId: true },
+  });
+}
+
 export async function createTeam(data: Prisma.TeamCreateInput, userId: string): Promise<any> {
   const { id } = data;
   const { client, transaction } = prisma;

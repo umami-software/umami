@@ -4,7 +4,7 @@ import { useMessages } from '@/components/hooks';
 import { Plus } from '@/components/icons';
 
 export function SegmentSaveButton({ websiteId }: { websiteId: string }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   return (
     <DialogTrigger>
@@ -12,10 +12,10 @@ export function SegmentSaveButton({ websiteId }: { websiteId: string }) {
         <Icon>
           <Plus />
         </Icon>
-        <Text>{formatMessage(labels.segment)}</Text>
+        <Text>{t(labels.segment)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.segment)} style={{ width: 800 }}>
+        <Dialog title={t(labels.segment)} style={{ width: 800 }}>
           {({ close }) => {
             return <SegmentEditForm websiteId={websiteId} onClose={close} />;
           }}

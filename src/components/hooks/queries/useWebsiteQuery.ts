@@ -3,7 +3,7 @@ import type { ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
 import { useModified } from '../useModified';
 
-export function useWebsiteQuery(websiteId: string, options?: ReactQueryOptions) {
+export function useWebsiteQuery(websiteId?: string, options?: ReactQueryOptions) {
   const { get, useQuery } = useApi();
   const { modified } = useModified(`website:${websiteId}`);
 

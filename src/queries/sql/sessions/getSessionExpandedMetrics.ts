@@ -38,15 +38,16 @@ async function relationalQuery(
   const { type, limit = 500, offset = 0 } = parameters;
   let column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery, getTimestampDiffSQL } = prisma;
-  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters(
-    {
-      ...filters,
-      websiteId,
-    },
-    {
-      joinSession: SESSION_COLUMNS.includes(type),
-    },
-  );
+  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } =
+    parseFilters(
+      {
+        ...filters,
+        websiteId,
+      },
+      {
+        joinSession: SESSION_COLUMNS.includes(type),
+      },
+    );
   const includeCountry = column === 'city' || column === 'region';
 
   if (type === 'language') {
@@ -65,7 +66,7 @@ async function relationalQuery(
       sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime"
     from (
       select
-        ${column} as name,
+        ${column} as "name",
         ${includeCountry ? 'country,' : ''}
         website_event.session_id,
         website_event.visit_id,
@@ -74,14 +75,16 @@ async function relationalQuery(
         max(website_event.created_at) as "max_time"
       from website_event
       ${cohortQuery}
+      ${excludeBounceQuery}
       ${joinSessionQuery}  
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
-        and website_event.event_type != 2
+        and website_event.event_type NOT IN (2, 5)
         ${filterQuery}
       group by name, website_event.session_id, website_event.visit_id
       ${includeCountry ? ', country' : ''}
     ) as t
+    where name != ''
     group by name 
     ${includeCountry ? ', country' : ''}
     order by visitors desc, visits desc
@@ -101,7 +104,7 @@ async function clickhouseQuery(
   const { type, limit = 500, offset = 0 } = parameters;
   let column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+  const { filterQuery, cohortQuery, excludeBounceQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
@@ -132,9 +135,10 @@ async function clickhouseQuery(
         max(created_at) max_time
       from website_event
       ${cohortQuery}
+      ${excludeBounceQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type != 2
+        and event_type NOT IN (2, 5)
         and name != ''
         ${filterQuery}
       group by name, session_id, visit_id
