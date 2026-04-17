@@ -42,7 +42,7 @@ export async function getUser(userId: string, options: GetUserOptions = {}) {
 }
 
 export async function getUserByUsername(username: string, options: GetUserOptions = {}) {
-  return findUser({ where: { username } }, options);
+  return findUser({ where: { username: username.toLowerCase() } }, options);
 }
 
 export async function getUsers(criteria: UserFindManyArgs, filters: QueryFilters = {}) {
