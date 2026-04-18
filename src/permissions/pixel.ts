@@ -8,7 +8,7 @@ export async function canViewPixel({ user, shareToken }: Auth, pixelId: string) 
     return true;
   }
 
-  if (shareToken?.pixelId === pixelId || shareToken?.websiteId === pixelId) {
+  if (shareToken?.pixelId === pixelId || shareToken?.websiteId === pixelId || shareToken?.pixelIds?.includes(pixelId)) {
     return true;
   }
 

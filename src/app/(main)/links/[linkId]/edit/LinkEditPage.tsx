@@ -1,6 +1,6 @@
 'use client';
 import { Column } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import { LinkEditForm } from '@/app/(main)/links/LinkEditForm';
 import { LinkProvider } from '@/app/(main)/links/LinkProvider';
 import { LinkShareForm } from '@/app/(main)/links/[linkId]/LinkShareForm';

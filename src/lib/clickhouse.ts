@@ -90,9 +90,9 @@ function mapFilter(
     case OPERATORS.doesNotContain:
       return `positionCaseInsensitive(${column}, ${value}) = 0`;
     case OPERATORS.regex:
-      return `match(${column}, ${value})`;
+      return `match(${column}, concat('(?i)', ${value}))`;
     case OPERATORS.notRegex:
-      return `not match(${column}, ${value})`;
+      return `not match(${column}, concat('(?i)', ${value}))`;
     default:
       return '';
   }
@@ -150,23 +150,23 @@ function getCohortQuery(filters: Record<string, any>) {
   const filterQuery = getFilterQuery(filters, { isCohort: true, cohortMatch, cohortActionName });
 
   return `join (
-      select distinct session_id
+      select distinct session_id as cohort_session_id
       from website_event
       where website_id = {websiteId:UUID}
       and created_at between {cohort_startDate:DateTime64} and {cohort_endDate:DateTime64}
       ${filterQuery}
     ) as cohort
-      on cohort.session_id = website_event.session_id
+      on cohort.cohort_session_id = website_event.session_id
     `;
 }
 
 function getExcludeBounceQuery(filters: Record<string, any>) {
-  if (!filters.excludeBounce === true) {
+  if (filters.excludeBounce !== true) {
     return '';
   }
 
   return `join
-    (select distinct session_id, visit_id
+    (select distinct session_id as exclude_session_id, visit_id as exclude_visit_id
     from website_event_stats_hourly
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
@@ -174,8 +174,8 @@ function getExcludeBounceQuery(filters: Record<string, any>) {
     group by session_id, visit_id
     having sum(views) > 1
     ) excludeBounce
-    on excludeBounce.session_id = website_event.session_id
-      and excludeBounce.visit_id = website_event.visit_id
+    on excludeBounce.exclude_session_id = website_event.session_id
+      and excludeBounce.exclude_visit_id = website_event.visit_id
     `;
 }
 

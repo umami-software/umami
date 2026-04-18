@@ -1,7 +1,4 @@
 (window => {
-  if (window.__umami_tracker_loaded) return;
-  window.__umami_tracker_loaded = true;
-
   const {
     screen: { width, height },
     navigator: { language, doNotTrack: ndnt, msDoNotTrack: msdnt },

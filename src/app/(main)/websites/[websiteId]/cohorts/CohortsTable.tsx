@@ -1,5 +1,5 @@
 import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import { CohortDeleteButton } from '@/app/(main)/websites/[websiteId]/cohorts/CohortDeleteButton';
 import { CohortEditButton } from '@/app/(main)/websites/[websiteId]/cohorts/CohortEditButton';
 import { DateDistance } from '@/components/common/DateDistance';

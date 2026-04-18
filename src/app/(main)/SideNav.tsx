@@ -24,7 +24,7 @@ import {
   Tooltip,
   TooltipTrigger,
 } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 
 export function SideNav(props: any) {
   const { t, labels } = useMessages();
