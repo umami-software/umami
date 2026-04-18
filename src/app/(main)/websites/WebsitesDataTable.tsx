@@ -1,5 +1,5 @@
 import { Icon, Row } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import { DataGrid } from '@/components/common/DataGrid';
 import { useLoginQuery, useNavigation, useUserWebsitesQuery } from '@/components/hooks';
 import { Favicon } from '@/index';

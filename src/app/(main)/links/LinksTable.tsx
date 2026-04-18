@@ -1,5 +1,5 @@
 import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import { DateDistance } from '@/components/common/DateDistance';
 import { ExternalLink } from '@/components/common/ExternalLink';
 import { useMessages, useNavigation, useSlug } from '@/components/hooks';
@@ -25,11 +25,7 @@ export function LinksTable({ showActions, ...props }: LinksTableProps) {
       <DataColumn id="slug" label={t(labels.link)}>
         {({ slug }: any) => {
           const url = getSlugUrl(slug);
-          return (
-            <ExternalLink href={url} prefetch={false}>
-              {url}
-            </ExternalLink>
-          );
+          return <ExternalLink href={url}>{url}</ExternalLink>;
         }}
       </DataColumn>
       <DataColumn id="url" label={t(labels.destinationUrl)}>

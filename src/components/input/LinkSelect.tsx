@@ -76,12 +76,12 @@ export function LinkSelect({
           ...buttonProps?.style,
         },
       }}
+      maxHeight={480}
       listProps={{
         ...listProps,
         renderEmptyState:
           listProps?.renderEmptyState || (() => <Empty message={t(messages.noResultsFound)} />),
         style: {
-          maxHeight: 'calc(42vh - 65px)',
           width: 280,
           ...listProps?.style,
         },

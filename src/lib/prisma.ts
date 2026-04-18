@@ -97,9 +97,9 @@ function mapFilter(
     case OPERATORS.doesNotContain:
       return `${table}.${column} not ilike ${value}`;
     case OPERATORS.regex:
-      return `${table}.${column} ~ ${value}`;
+      return `${table}.${column} ~* ${value}`;
     case OPERATORS.notRegex:
-      return `${table}.${column} !~ ${value}`;
+      return `${table}.${column} !~* ${value}`;
     default:
       return '';
   }
@@ -173,7 +173,7 @@ function getCohortQuery(filters: QueryFilters = {}) {
 }
 
 function getExcludeBounceQuery(filters: Record<string, any>) {
-  if (!filters.excludeBounce === true) {
+  if (filters.excludeBounce !== true) {
     return '';
   }
 
@@ -278,7 +278,6 @@ async function rawQuery(sql: string, data: Record<string, any>, name?: string): 
   if (process.env.DATABASE_REPLICA_URL && '$replica' in client) {
     return client.$replica().$queryRawUnsafe(query, ...params);
   }
-
   return client.$queryRawUnsafe(query, ...params);
 }
 

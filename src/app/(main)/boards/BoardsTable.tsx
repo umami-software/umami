@@ -1,5 +1,5 @@
 import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import { DateDistance } from '@/components/common/DateDistance';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { BoardDeleteButton } from './BoardDeleteButton';

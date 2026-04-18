@@ -1,5 +1,5 @@
 import { Column, Grid, Row, Text } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
 import { useMessages, useNavigation } from '@/components/hooks';

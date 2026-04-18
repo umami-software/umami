@@ -1,10 +1,10 @@
 'use client';
-import { Loading } from '@umami/react-zen';
-import { usePathname, useRouter } from 'next/navigation';
-import { createContext, type ReactNode, useEffect } from 'react';
 import { useShareTokenQuery } from '@/components/hooks';
 import { ENTITY_TYPE } from '@/lib/constants';
 import type { WhiteLabel } from '@/lib/types';
+import { Loading } from '@umami/react-zen';
+import { usePathname, useRouter } from 'next/navigation';
+import { createContext, type ReactNode, useEffect } from 'react';
 
 export interface ShareData {
   shareId: string;
@@ -56,14 +56,15 @@ export function ShareProvider({ slug, children }: { slug: string; children: Reac
   const router = useRouter();
   const pathname = usePathname();
   const path = getSharePath(pathname);
-  const isBoardShare = share?.shareType === ENTITY_TYPE.board;
   const isWebsiteShare = share?.shareType === ENTITY_TYPE.website;
 
-  const allowedSections = isWebsiteShare && share?.parameters
-    ? ALL_SECTION_IDS.filter(id => share.parameters[id] === true)
-    : [];
+  const allowedSections =
+    isWebsiteShare && share?.parameters
+      ? ALL_SECTION_IDS.filter(id => share.parameters[id] === true)
+      : [];
 
-  const shouldRedirect = isWebsiteShare &&
+  const shouldRedirect =
+    isWebsiteShare &&
     allowedSections.length === 1 &&
     allowedSections[0] !== 'overview' &&
     (path === undefined || path === '' || path === 'overview');

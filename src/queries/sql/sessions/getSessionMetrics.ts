@@ -58,8 +58,9 @@ async function relationalQuery(
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_type NOT IN (2, 5)
+      and ${column} != ''
     ${filterQuery}
-    group by 1 
+    group by 1
     ${includeCountry ? ', 3' : ''}
     order by 2 desc
     limit ${limit}
@@ -102,8 +103,9 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type NOT IN (2, 5)
+      and ${column} != ''
       ${filterQuery}
-    group by x 
+    group by x
     ${includeCountry ? ', country' : ''}
     order by y desc
     limit ${limit}
@@ -121,6 +123,7 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type NOT IN (2, 5)
+      and ${column} != ''
       ${filterQuery}
     group by x 
     ${includeCountry ? ', country' : ''}

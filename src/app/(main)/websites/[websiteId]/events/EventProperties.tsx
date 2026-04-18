@@ -42,6 +42,7 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
               value={eventName}
               onChange={setEventName}
               placeholder=""
+              maxHeight={480}
             >
               {events?.map(p => (
                 <ListItem key={p} id={p}>
@@ -55,6 +56,7 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
               onChange={setPropertyName}
               isDisabled={!eventName}
               placeholder=""
+              maxHeight={480}
             >
               {properties?.map(p => (
                 <ListItem key={p} id={p}>

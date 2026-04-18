@@ -25,11 +25,11 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, session
 
   const joinQuery =
     filterQuery || cohortQuery
-      ? `join (select distinct website_id, session_id, visit_id
+      ? `join (select distinct website_event.website_id, website_event.session_id, website_event.visit_id
                from website_event
                ${cohortQuery}
-               where website_id = {{websiteId::uuid}}
-                  and created_at between {{startDate}} and {{endDate}}
+               where website_event.website_id = {{websiteId::uuid}}
+                  and website_event.created_at between {{startDate}} and {{endDate}}
                   ${filterQuery}) website_event
         on website_event.website_id = sr.website_id
           and website_event.session_id = sr.session_id
