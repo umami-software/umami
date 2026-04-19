@@ -1,6 +1,7 @@
 import { StatusLight, Text } from '@umami/react-zen';
 import { useMemo } from 'react';
-import { useActyiveUsersQuery, useMessages } from '@/components/hooks';
+import Link from '@/components/common/Link';
+import { useActiveUsersQuery, useMessages } from '@/components/hooks';
 
 export function ActiveUsers({
   websiteId,
@@ -12,7 +13,7 @@ export function ActiveUsers({
   refetchInterval?: number;
 }) {
   const { t, labels } = useMessages();
-  const { data } = useActyiveUsersQuery(websiteId, { refetchInterval });
+  const { data } = useActiveUsersQuery(websiteId, { refetchInterval });
 
   const count = useMemo(() => {
     if (websiteId) {
@@ -27,10 +28,12 @@ export function ActiveUsers({
   }
 
   return (
-    <StatusLight variant="success">
-      <Text size="sm" weight="medium">
-        {count} {t(labels.online)}
-      </Text>
-    </StatusLight>
+    <Link href={`/websites/${websiteId}/realtime`}>
+      <StatusLight variant="success">
+        <Text size="sm" weight="medium">
+          {count} {t(labels.online)}
+        </Text>
+      </StatusLight>
+    </Link>
   );
 }
