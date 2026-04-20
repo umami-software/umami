@@ -19,7 +19,7 @@ export function ActiveUsers({
 
   const count = useMemo(() => {
     if (websiteId) {
-      return data?.visitors || 10;
+      return data?.visitors || 0;
     }
 
     return value !== undefined ? value : 0;
