@@ -1,7 +1,12 @@
 import clickhouse from '@/lib/clickhouse';
+import { FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
+
+const SESSION_DB_COLUMNS = new Set(
+  SESSION_COLUMNS.map(col => FILTER_COLUMNS[col as keyof typeof FILTER_COLUMNS]).filter(Boolean),
+);
 
 const FUNCTION_NAME = 'getValues';
 
@@ -45,13 +50,27 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
     }
   }
 
+  if (SESSION_DB_COLUMNS.has(column)) {
+    return rawQuery(
+      `
+      select ${column} as "value", count(*) as "count"
+      from session
+      where website_id = {{websiteId::uuid}}
+        and created_at between {{startDate}} and {{endDate}}
+        ${searchQuery}
+      group by 1
+      order by 2 desc
+      limit 10
+      `,
+      { websiteId, startDate, endDate, search: `%${search}%`, ...params },
+      FUNCTION_NAME,
+    );
+  }
+
   return rawQuery(
     `
     select ${column} as "value", count(*) as "count"
     from website_event
-    inner join session
-      on session.session_id = website_event.session_id
-        and session.website_id = website_event.website_id
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       ${searchQuery}
@@ -60,13 +79,7 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
     order by 2 desc
     limit 10
     `,
-    {
-      websiteId,
-      startDate,
-      endDate,
-      search: `%${search}%`,
-      ...params,
-    },
+    { websiteId, startDate, endDate, search: `%${search}%`, ...params },
     FUNCTION_NAME,
   );
 }
