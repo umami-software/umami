@@ -7,13 +7,13 @@ import { getItem } from '@/lib/storage';
 
 export function useDateRange(options: { ignoreOffset?: boolean; timezone?: string } = {}) {
   const {
-    query: { date = '', offset = 0, compare = 'prev' },
+    query: { date = '', unit = '', offset = 0, compare = 'prev' },
   } = useNavigation();
   const { locale } = useLocale();
-
   const dateRange = useMemo(() => {
     const dateRangeObject = parseDateRange(
       date || getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE_VALUE,
+      unit,
       locale,
       options.timezone,
     );
@@ -21,12 +21,13 @@ export function useDateRange(options: { ignoreOffset?: boolean; timezone?: strin
     return !options.ignoreOffset && offset
       ? getOffsetDateRange(dateRangeObject, +offset)
       : dateRangeObject;
-  }, [date, offset, options]);
+  }, [date, unit, offset, options]);
 
   const dateCompare = getCompareDate(compare, dateRange.startDate, dateRange.endDate);
 
   return {
     date,
+    unit,
     offset,
     compare,
     isAllTime: date.endsWith(`:all`),

@@ -10,7 +10,7 @@ export function MobileMenuButton(props: DialogProps) {
         </Icon>
       </Button>
       <Modal placement="left" offset="80px">
-        <Dialog variant="sheet" {...props} />
+        <Dialog variant="sheet" {...props} style={{ width: 'auto' }} />
       </Modal>
     </DialogTrigger>
   );

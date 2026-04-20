@@ -1,32 +1,20 @@
-import { Button, Dialog, DialogTrigger, Icon, Modal, Text, useToast } from '@umami/react-zen';
-import { useMessages, useModified, useNavigation } from '@/components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
 import { Plus } from '@/components/icons';
-import { BoardAddForm } from './BoardAddForm';
+import { DialogButton } from '@/components/input/DialogButton';
+import type { Board } from '@/lib/types';
+import { BoardEditForm } from './BoardEditForm';
 
 export function BoardAddButton() {
-  const { formatMessage, labels, messages } = useMessages();
-  const { toast } = useToast();
-  const { touch } = useModified();
-  const { teamId } = useNavigation();
+  const { t, labels } = useMessages();
+  const { teamId, router, renderUrl } = useNavigation();
 
-  const handleSave = async () => {
-    toast(formatMessage(messages.saved));
-    touch('boards');
+  const handleSave = (board: Board) => {
+    router.push(renderUrl(`/boards/${board.id}/design`, false));
   };
 
   return (
-    <DialogTrigger>
-      <Button data-test="button-website-add" variant="primary">
-        <Icon>
-          <Plus />
-        </Icon>
-        <Text>{formatMessage(labels.addBoard)}</Text>
-      </Button>
-      <Modal>
-        <Dialog title={formatMessage(labels.addBoard)} style={{ width: 400 }}>
-          {({ close }) => <BoardAddForm teamId={teamId} onSave={handleSave} onClose={close} />}
-        </Dialog>
-      </Modal>
-    </DialogTrigger>
+    <DialogButton icon={<Plus />} label={t(labels.addBoard)} variant="primary" width="600px">
+      {({ close }) => <BoardEditForm teamId={teamId} onSave={handleSave} onClose={close} />}
+    </DialogButton>
   );
 }

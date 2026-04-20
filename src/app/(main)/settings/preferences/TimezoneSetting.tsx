@@ -7,7 +7,7 @@ const timezones = Intl.supportedValuesOf('timeZone');
 
 export function TimezoneSetting() {
   const [search, setSearch] = useState('');
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { timezone, saveTimezone } = useTimezone();
   const items = search
     ? timezones.filter(n => n.toLowerCase().includes(search.toLowerCase()))
@@ -30,6 +30,7 @@ export function TimezoneSetting() {
         onSearch={setSearch}
         onOpenChange={handleOpen}
         listProps={{ style: { maxHeight: 300 } }}
+        style={{ minWidth: '250px' }}
       >
         {items.map((item: any) => (
           <ListItem key={item} id={item}>
@@ -38,7 +39,7 @@ export function TimezoneSetting() {
         ))}
         {!items.length && <ListItem></ListItem>}
       </Select>
-      <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
+      <Button onPress={handleReset}>{t(labels.reset)}</Button>
     </Row>
   );
 }

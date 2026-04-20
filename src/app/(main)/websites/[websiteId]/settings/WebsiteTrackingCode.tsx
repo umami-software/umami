@@ -10,31 +10,31 @@ export function WebsiteTrackingCode({
   websiteId: string;
   hostUrl?: string;
 }) {
-  const { formatMessage, messages, labels } = useMessages();
+  const { t, messages, labels } = useMessages();
   const config = useConfig();
 
   const trackerScriptName =
     config?.trackerScriptName?.split(',')?.map((n: string) => n.trim())?.[0] || SCRIPT_NAME;
 
-  const getUrl = () => {
+  const getUrl = (scriptName: string) => {
     if (config?.cloudMode) {
-      return `${process.env.cloudUrl}/${trackerScriptName}`;
+      return `${process.env.cloudUrl}/${scriptName}`;
     }
 
     return `${hostUrl || window?.location?.origin || ''}${
       process.env.basePath || ''
-    }/${trackerScriptName}`;
+    }/${scriptName}`;
   };
 
-  const url = trackerScriptName?.startsWith('http') ? trackerScriptName : getUrl();
+  const url = trackerScriptName?.startsWith('http') ? trackerScriptName : getUrl(trackerScriptName);
 
   const code = `<script defer src="${url}" data-website-id="${websiteId}"></script>`;
 
   return (
     <Column gap>
-      <Label>{formatMessage(labels.trackingCode)}</Label>
-      <Text color="muted">{formatMessage(messages.trackingCode)}</Text>
-      <TextField value={code} isReadOnly allowCopy asTextArea resize="none" />
+      <Label>{t(labels.trackingCode)}</Label>
+      <Text color="muted">{t(messages.trackingCode)}</Text>
+      <TextField value={code} isReadOnly allowCopy asTextArea resize="none" className="code-textarea" />
     </Column>
   );
 }

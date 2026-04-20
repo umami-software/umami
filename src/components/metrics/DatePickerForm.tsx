@@ -20,7 +20,7 @@ export function DatePickerForm({
   const [date, setDate] = useState(defaultStartDate || new Date());
   const [startDate, setStartDate] = useState(defaultStartDate || new Date());
   const [endDate, setEndDate] = useState(defaultEndDate || new Date());
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   const disabled = selected.includes(FILTER_DAY)
     ? isAfter(minDate, date) && isBefore(maxDate, date)
@@ -38,8 +38,8 @@ export function DatePickerForm({
     <Column gap>
       <Row justifyContent="center">
         <ToggleGroup disallowEmptySelection value={selected} onChange={setSelected}>
-          <ToggleGroupItem id={FILTER_DAY}>{formatMessage(labels.singleDay)}</ToggleGroupItem>
-          <ToggleGroupItem id={FILTER_RANGE}>{formatMessage(labels.dateRange)}</ToggleGroupItem>
+          <ToggleGroupItem id={FILTER_DAY}>{t(labels.singleDay)}</ToggleGroupItem>
+          <ToggleGroupItem id={FILTER_RANGE}>{t(labels.dateRange)}</ToggleGroupItem>
         </ToggleGroup>
       </Row>
       <Column>
@@ -64,9 +64,9 @@ export function DatePickerForm({
         )}
       </Column>
       <Row justifyContent="end" gap>
-        <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
+        <Button onPress={onClose}>{t(labels.cancel)}</Button>
         <Button variant="primary" onPress={handleSave} isDisabled={disabled}>
-          {formatMessage(labels.apply)}
+          {t(labels.apply)}
         </Button>
       </Row>
     </Column>
