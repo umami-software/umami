@@ -7,17 +7,19 @@ export function ActiveUsers({
   websiteId,
   value,
   refetchInterval = 60000,
+  allowLink = true,
 }: {
   websiteId: string;
   value?: number;
   refetchInterval?: number;
+  allowLink?: boolean;
 }) {
   const { t, labels } = useMessages();
   const { data } = useActiveUsersQuery(websiteId, { refetchInterval });
 
   const count = useMemo(() => {
     if (websiteId) {
-      return data?.visitors || 0;
+      return data?.visitors || 10;
     }
 
     return value !== undefined ? value : 0;
@@ -27,13 +29,17 @@ export function ActiveUsers({
     return null;
   }
 
-  return (
-    <Link href={`/websites/${websiteId}/realtime`}>
-      <StatusLight variant="success">
-        <Text size="sm" weight="medium">
-          {count} {t(labels.online)}
-        </Text>
-      </StatusLight>
-    </Link>
+  const content = (
+    <StatusLight variant="success">
+      <Text size="sm" weight="medium">
+        {count} {t(labels.online)}
+      </Text>
+    </StatusLight>
   );
+
+  if (!allowLink) {
+    return content;
+  }
+
+  return <Link href={`/websites/${websiteId}/realtime`}>{content}</Link>;
 }
