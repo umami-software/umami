@@ -116,3 +116,11 @@ export function formatLongCurrency(value: number, currency: string, locale = 'en
 
   return formatCurrency(n, currency, locale);
 }
+
+export function truncateMiddle(text: string, maxLength: number): string {
+  if (text.length <= maxLength) {
+    return text;
+  }
+  const keep = Math.max(1, Math.floor((maxLength - 3) / 2));
+  return `${text.slice(0, keep)}...${text.slice(-keep)}`;
+}
