@@ -18,6 +18,9 @@ export function BoardsTable(props: DataTableProps) {
         }}
       </DataColumn>
       <DataColumn id="description" label={t(labels.description)} />
+      <DataColumn id="type" label={t(labels.boardType)}>
+        {({ type }: any) => type ? type.charAt(0).toUpperCase() + type.slice(1) : ''}
+      </DataColumn>
       <DataColumn id="created" label={t(labels.created)} width="200px">
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
