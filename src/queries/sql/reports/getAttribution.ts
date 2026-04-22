@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { EVENT_TYPE } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -28,6 +29,7 @@ export async function getAttribution(
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -458,6 +460,206 @@ async function clickhouseQuery(
         ${filterQuery}
     `,
     queryParams,
+  ).then(result => result?.[0]);
+
+  return {
+    referrer: referrerRes,
+    paidAds: paidAdsres,
+    utm_source: sourceRes,
+    utm_medium: mediumRes,
+    utm_campaign: campaignRes,
+    utm_content: contentRes,
+    utm_term: termRes,
+    total: totalRes,
+  };
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  parameters: AttributionParameters,
+  filters: QueryFilters,
+): Promise<AttributionResult> {
+  const { model, type, startDate, endDate, step } = parameters;
+  const { rawQuery, parseFilters } = oceanbase;
+  const eventType = type === 'path' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
+  const column = type === 'path' ? 'url_path' : 'event_name';
+  const { filterQuery, joinSessionQuery, cohortQuery, buildParams } = parseFilters({
+    ...filters,
+    ...parameters,
+    websiteId,
+    eventType,
+  });
+
+  const params = buildParams([websiteId, startDate, endDate, step]);
+
+  function getUTMQuery(utmColumn: string) {
+    return `
+    SELECT
+        COALESCE(we.${utmColumn}, '') AS name,
+        COUNT(DISTINCT we.session_id) AS value
+    FROM model m
+    JOIN website_event we
+    ON we.created_at = m.created_at
+        AND we.session_id = m.session_id
+    WHERE we.website_id = ?
+          AND we.created_at BETWEEN ? AND ?
+          AND we.${utmColumn} != ''
+    GROUP BY 1
+    ORDER BY 2 DESC
+    LIMIT 20`;
+  }
+
+  const eventQuery = `WITH events AS (
+        SELECT DISTINCT
+            website_event.session_id,
+            MAX(website_event.created_at) AS max_dt
+        FROM website_event
+        ${cohortQuery}
+        ${joinSessionQuery}
+        WHERE website_event.website_id = ?
+          AND website_event.created_at BETWEEN ? AND ?
+          AND website_event.${column} = ?
+          ${filterQuery}
+        GROUP BY 1),`;
+
+  function getModelQuery(model: string) {
+    return model === 'first-click'
+      ? `\n
+    model AS (SELECT e.session_id,
+        MIN(we.created_at) AS created_at
+    FROM events e
+    JOIN website_event we
+    ON we.session_id = e.session_id
+    WHERE we.website_id = ?
+          AND we.created_at BETWEEN ? AND ?
+    GROUP BY e.session_id)`
+      : `\n
+    model AS (SELECT e.session_id,
+        MAX(we.created_at) AS created_at
+    FROM events e
+    JOIN website_event we
+    ON we.session_id = e.session_id
+    WHERE we.website_id = ?
+          AND we.created_at BETWEEN ? AND ?
+          AND we.created_at < e.max_dt
+    GROUP BY e.session_id)`;
+  }
+
+  const referrerRes = await rawQuery<{ name: string; value: number }[]>(
+    `
+    ${eventQuery}
+    ${getModelQuery(model)}
+    SELECT COALESCE(we.referrer_domain, '') AS name,
+        COUNT(DISTINCT we.session_id) AS value
+    FROM model m
+    JOIN website_event we
+    ON we.created_at = m.created_at
+        AND we.session_id = m.session_id
+    JOIN session s
+    ON s.session_id = m.session_id
+    WHERE we.website_id = ?
+          AND we.created_at BETWEEN ? AND ?
+          AND we.referrer_domain != REPLACE(we.hostname, 'www.', '')
+          AND we.referrer_domain != ''
+    GROUP BY 1
+    ORDER BY 2 DESC
+    LIMIT 20
+    `,
+    [...params, websiteId, startDate, endDate, websiteId, startDate, endDate],
+  );
+
+  const paidAdsres = await rawQuery<{ name: string; value: number }[]>(
+    `
+    ${eventQuery}
+    ${getModelQuery(model)},
+
+    results AS (
+    SELECT CASE
+            WHEN COALESCE(gclid, '') != '' THEN 'Google Ads'
+            WHEN COALESCE(fbclid, '') != '' THEN 'Facebook / Meta'
+            WHEN COALESCE(msclkid, '') != '' THEN 'Microsoft Ads'
+            WHEN COALESCE(ttclid, '') != '' THEN 'TikTok Ads'
+            WHEN COALESCE(li_fat_id, '') != '' THEN 'LinkedIn Ads'
+            WHEN COALESCE(twclid, '') != '' THEN 'Twitter Ads (X)'
+            ELSE ''
+          END AS name,
+        COUNT(DISTINCT we.session_id) AS value
+    FROM model m
+    JOIN website_event we
+    ON we.created_at = m.created_at
+        AND we.session_id = m.session_id
+    WHERE we.website_id = ?
+          AND we.created_at BETWEEN ? AND ?
+    GROUP BY 1
+    ORDER BY 2 DESC
+    LIMIT 20)
+    SELECT *
+    FROM results
+    WHERE name != ''
+    `,
+    [...params, websiteId, startDate, endDate, websiteId, startDate, endDate],
+  );
+
+  const sourceRes = await rawQuery<{ name: string; value: number }[]>(
+    `
+    ${eventQuery}
+    ${getModelQuery(model)}
+    ${getUTMQuery('utm_source')}
+    `,
+    [...params, websiteId, startDate, endDate, websiteId, startDate, endDate],
+  );
+
+  const mediumRes = await rawQuery<{ name: string; value: number }[]>(
+    `
+    ${eventQuery}
+    ${getModelQuery(model)}
+    ${getUTMQuery('utm_medium')}
+    `,
+    [...params, websiteId, startDate, endDate, websiteId, startDate, endDate],
+  );
+
+  const campaignRes = await rawQuery<{ name: string; value: number }[]>(
+    `
+    ${eventQuery}
+    ${getModelQuery(model)}
+    ${getUTMQuery('utm_campaign')}
+    `,
+    [...params, websiteId, startDate, endDate, websiteId, startDate, endDate],
+  );
+
+  const contentRes = await rawQuery<{ name: string; value: number }[]>(
+    `
+    ${eventQuery}
+    ${getModelQuery(model)}
+    ${getUTMQuery('utm_content')}
+    `,
+    [...params, websiteId, startDate, endDate, websiteId, startDate, endDate],
+  );
+
+  const termRes = await rawQuery<{ name: string; value: number }[]>(
+    `
+    ${eventQuery}
+    ${getModelQuery(model)}
+    ${getUTMQuery('utm_term')}
+    `,
+    [...params, websiteId, startDate, endDate, websiteId, startDate, endDate],
+  );
+
+  const totalRes = await rawQuery<{ pageviews: number; visitors: number; visits: number }[]>(
+    `
+    SELECT
+        COUNT(*) AS pageviews,
+        COUNT(DISTINCT website_event.session_id) AS visitors,
+        COUNT(DISTINCT website_event.visit_id) AS visits
+    FROM website_event
+    ${joinSessionQuery}
+    ${cohortQuery}
+    WHERE website_event.website_id = ?
+        AND website_event.created_at BETWEEN ? AND ?
+        AND website_event.${column} = ?
+        ${filterQuery}
+    `,
+    params,
   ).then(result => result?.[0]);
 
   return {

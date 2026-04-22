@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -10,6 +11,7 @@ export function getSessionReplays(
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -142,6 +144,82 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, session
     order by max(created_at) desc
     `,
     { ...queryParams, sessionId },
+    filters,
+    FUNCTION_NAME,
+  );
+}
+
+async function oceanbaseQuery(websiteId: string, filters: QueryFilters, sessionId?: string) {
+  const { pagedRawQuery, parseFilters } = oceanbase;
+  const { search } = filters;
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    search: search ? `%${search}%` : undefined,
+  });
+
+  const joinQuery =
+    filterQuery || cohortQuery
+      ? `JOIN (SELECT DISTINCT website_event.website_id, website_event.session_id, website_event.visit_id
+               FROM website_event
+               ${cohortQuery}
+               WHERE website_event.website_id = ?
+                  AND website_event.created_at BETWEEN ? AND ?
+                  ${filterQuery}) website_event
+        ON website_event.website_id = sr.website_id
+          AND website_event.session_id = sr.session_id
+          AND website_event.visit_id = sr.visit_id`
+      : '';
+
+  const sessionFilter = sessionId ? 'AND sr.session_id = ?' : '';
+
+  const searchQuery = search
+    ? `AND (LOWER(session.distinct_id) LIKE ?
+           OR LOWER(session.city) LIKE ?
+           OR LOWER(session.browser) LIKE ?
+           OR LOWER(session.os) LIKE ?
+           OR LOWER(session.device) LIKE ?)`
+    : '';
+
+  // Build parameters array with sessionId appended if needed
+  const params = sessionId ? [...queryParams, sessionId] : queryParams;
+
+  return pagedRawQuery(
+    `
+    SELECT
+      sr.visit_id AS id,
+      sr.session_id AS sessionId,
+      sr.website_id AS websiteId,
+      session.browser,
+      session.os,
+      session.device,
+      session.country,
+      session.city,
+      SUM(sr.event_count) AS eventCount,
+      COUNT(sr.replay_id) AS chunkCount,
+      MIN(sr.started_at) AS startedAt,
+      MAX(sr.ended_at) AS endedAt,
+      SUM(TIMESTAMPDIFF(MICROSECOND, sr.started_at, sr.ended_at) / 1000) AS duration,
+      MAX(sr.created_at) AS createdAt
+    FROM session_replay sr
+    JOIN session ON session.session_id = sr.session_id
+      AND session.website_id = sr.website_id
+    ${joinQuery}
+    WHERE sr.website_id = ?
+      AND sr.created_at BETWEEN ? AND ?
+    ${sessionFilter}
+    ${searchQuery}
+    GROUP BY sr.visit_id,
+      sr.session_id,
+      sr.website_id,
+      session.browser,
+      session.os,
+      session.device,
+      session.country,
+      session.city
+    ORDER BY MAX(sr.created_at) DESC
+    `,
+    params,
     filters,
     FUNCTION_NAME,
   );

@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  umami:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ..:/app
+      - umami_node_modules:/app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: mysql://umami:umami_password@db:2881/umami
+      APP_SECRET: replace-me-with-a-random-string
+      NODE_ENV: development
+    command: sh -c "npm install && npm run dev"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:3000/api/heartbeat || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  db:
+    image: oceanbase/oceanbase-ce:latest
+    container_name: umami-oceanbase
+    environment:
+      MODE: mini
+      OB_DATAFILE_SIZE: 2G
+      OB_MEMORY_LIMIT: 4G
+      # Root password for OceanBase
+      OB_ROOT_PASSWORD: root_password
+    ports:
+      - "2881:2881"   # MySQL protocol port
+      - "2882:2882"   # RPC port
+    volumes:
+      - ob_/data
+      - ./init-oceanbase.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "mysql -h127.0.0.1 -P2881 -uroot -proot_password -e 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+
+  # Optional: Redis for caching
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  umami_node_modules:
+  ob_
+  redis_

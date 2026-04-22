@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -8,6 +9,7 @@ const FUNCTION_NAME = 'getEventDataFields';
 export async function getEventDataFields(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -66,7 +68,7 @@ async function clickhouseQuery(
       count(*) as "total"
     from event_data
     any left join (
-          select * 
+          select *
           from website_event
           where website_id = {websiteId:UUID}
             and created_at between {startDate:DateTime64} and {endDate:DateTime64}
@@ -81,6 +83,42 @@ async function clickhouseQuery(
     group by data_key, data_type, value
     order by 2 desc
     limit 100
+    `,
+    queryParams,
+    FUNCTION_NAME,
+  );
+}
+
+async function oceanbaseQuery(websiteId: string, filters: QueryFilters) {
+  const { rawQuery, parseFilters, getDateSQL } = oceanbase;
+  const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
+
+  return rawQuery(
+    `
+    SELECT
+      data_key AS propertyName,
+      data_type AS dataType,
+      CASE
+        WHEN data_type = 2 THEN REPLACE(string_value, '.0000', '')
+        WHEN data_type = 4 THEN ${getDateSQL('date_value', 'hour')}
+        ELSE string_value
+      END AS value,
+      COUNT(*) AS total
+    FROM event_data
+    JOIN website_event ON website_event.event_id = event_data.website_event_id
+      AND website_event.website_id = ?
+      AND website_event.created_at BETWEEN ? AND ?
+    ${cohortQuery}
+    ${joinSessionQuery}
+    WHERE event_data.website_id = ?
+      AND event_data.created_at BETWEEN ? AND ?
+    ${filterQuery}
+    GROUP BY data_key, data_type, value
+    ORDER BY 2 DESC
+    LIMIT 100
     `,
     queryParams,
     FUNCTION_NAME,

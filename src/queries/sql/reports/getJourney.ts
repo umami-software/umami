@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -28,6 +29,7 @@ export async function getJourney(
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
   });
 }
 
@@ -272,4 +274,113 @@ function parseResult(data: any) {
     items: combineSequentialDuplicates([e1, e2, e3, e4, e5, e6, e7]),
     count: +Number(count),
   }));
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  parameters: JourneyParameters,
+  filters: QueryFilters,
+): Promise<JourneyResult[]> {
+  const { startDate, endDate, steps, startStep, endStep } = parameters;
+  const { rawQuery, parseFilters } = oceanbase;
+  const { sequenceQuery, startStepQuery, endStepQuery, params } = getJourneyQuery(
+    steps,
+    startStep,
+    endStep,
+  );
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+  });
+
+  function getJourneyQuery(
+    steps: number,
+    startStep?: string,
+    endStep?: string,
+  ): {
+    sequenceQuery: string;
+    startStepQuery: string;
+    endStepQuery: string;
+    params: string[];
+  } {
+    const params: string[] = [];
+    let sequenceQuery = '';
+    let startStepQuery = '';
+    let endStepQuery = '';
+
+    // create sequence query
+    let selectQuery = '';
+    let maxQuery = '';
+    let groupByQuery = '';
+
+    for (let i = 1; i <= steps; i++) {
+      const endQuery = i < steps ? ',' : '';
+      selectQuery += `s.e${i},`;
+      maxQuery += `\nMAX(CASE WHEN event_number = ${i} THEN event ELSE NULL END) AS e${i}${endQuery}`;
+      groupByQuery += `s.e${i}${endQuery} `;
+    }
+
+    sequenceQuery = `\nsequences AS (
+          SELECT ${selectQuery}
+          COUNT(*) count
+      FROM (
+        SELECT visit_id,
+            ${maxQuery}
+        FROM events
+        GROUP BY visit_id) s
+      GROUP BY ${groupByQuery})
+    `;
+
+    // create start Step params query
+    if (startStep) {
+      startStepQuery = `AND e1 = ?`;
+      params.push(startStep);
+    }
+
+    // create end Step params query
+    if (endStep) {
+      for (let i = 1; i < steps; i++) {
+        const startQuery = i === 1 ? 'AND (' : '\nOR ';
+        endStepQuery += `${startQuery}(e${i} = ? AND e${i + 1} IS NULL) `;
+        params.push(endStep);
+      }
+      endStepQuery += `\nOR (e${steps} = ?))`;
+      params.push(endStep);
+    }
+
+    return {
+      sequenceQuery,
+      startStepQuery,
+      endStepQuery,
+      params,
+    };
+  }
+
+  return rawQuery(
+    `
+    WITH events AS (
+      SELECT DISTINCT
+          website_event.visit_id,
+          website_event.referrer_path,
+          COALESCE(NULLIF(website_event.event_name, ''), website_event.url_path) AS event,
+          ROW_NUMBER() OVER (PARTITION BY visit_id ORDER BY website_event.created_at) AS event_number
+      FROM website_event
+      ${cohortQuery}
+      ${joinSessionQuery}
+      WHERE website_event.website_id = ?
+        AND website_event.created_at BETWEEN ? AND ?
+        ${filterQuery}),
+    ${sequenceQuery}
+    SELECT *
+    FROM sequences
+    WHERE 1 = 1
+    ${startStepQuery}
+    ${endStepQuery}
+    ORDER BY count DESC
+    LIMIT 100
+    `,
+    [websiteId, startDate, endDate, ...params, ...queryParams],
+  ).then(parseResult);
 }

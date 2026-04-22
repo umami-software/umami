@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { DEFAULT_PAGE_SIZE } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -9,6 +10,7 @@ const FUNCTION_NAME = 'getEventData';
 export async function getEventData(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -145,6 +147,72 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     order by event_data.created_at desc
     `,
     queryParams,
+    FUNCTION_NAME,
+  );
+
+  return { data, count, page: +page, pageSize: size };
+}
+
+async function oceanbaseQuery(websiteId: string, filters: QueryFilters) {
+  const { rawQuery, parseFilters } = oceanbase;
+  const { page = 1, pageSize } = filters;
+  const size = +pageSize || DEFAULT_PAGE_SIZE;
+  const offset = +size * (+page - 1);
+
+  const { filterQuery, cohortQuery, joinSessionQuery, buildParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
+
+  // Selects distinct event IDs matching all filters — reused for count and paged data
+  const eventQuery = `
+    SELECT website_event.event_id
+    FROM website_event
+    JOIN event_data ON event_data.website_event_id = website_event.event_id
+      AND event_data.website_id = ?
+      AND event_data.created_at BETWEEN ? AND ?
+    ${cohortQuery}
+    ${joinSessionQuery}
+    WHERE website_event.website_id = ?
+      AND website_event.created_at BETWEEN ? AND ?
+      ${filterQuery}
+    GROUP BY website_event.event_id
+  `;
+
+  const params = buildParams([websiteId, filters.startDate, filters.endDate]);
+
+  const count = await rawQuery(
+    `SELECT COUNT(*) AS num FROM (${eventQuery}) t`,
+    params,
+  ).then((res: any) => res[0].num);
+
+  const data = await rawQuery(
+    `
+    WITH paged_events AS (
+      ${eventQuery}
+      ORDER BY MAX(website_event.created_at) DESC
+      LIMIT ${size} OFFSET ${offset}
+    )
+    SELECT
+      event_data.website_id AS websiteId,
+      event_data.website_event_id AS eventId,
+      website_event.event_name AS eventName,
+      event_data.data_key AS dataKey,
+      event_data.string_value AS stringValue,
+      event_data.number_value AS numberValue,
+      event_data.date_value AS dateValue,
+      event_data.data_type AS dataType,
+      event_data.created_at AS createdAt
+    FROM event_data
+    JOIN website_event ON website_event.event_id = event_data.website_event_id
+      AND website_event.website_id = ?
+      AND website_event.created_at BETWEEN ? AND ?
+    JOIN paged_events ON paged_events.event_id = event_data.website_event_id
+    WHERE event_data.website_id = ?
+      AND event_data.created_at BETWEEN ? AND ?
+    ORDER BY event_data.created_at DESC
+    `,
+    params,
     FUNCTION_NAME,
   );
 

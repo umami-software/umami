@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -17,6 +18,7 @@ export async function getWebsiteEventStats(
 ): Promise<WebsiteEventStatsData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -92,6 +94,46 @@ async function clickhouseQuery(
     ) as t;
     `,
     queryParams,
+    FUNCTION_NAME,
+  ).then(result => result?.[0]);
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  filters: QueryFilters,
+): Promise<WebsiteEventStatsData[]> {
+  const { parseFilters, rawQuery } = oceanbase;
+  const { filterQuery, joinSessionQuery, cohortQuery, buildParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
+
+  const params = buildParams([websiteId, filters.startDate, filters.endDate]);
+
+  return rawQuery(
+    `
+    SELECT
+      CAST(COALESCE(SUM(t.c), 0) AS SIGNED) AS events,
+      COUNT(DISTINCT t.session_id) AS visitors,
+      COUNT(DISTINCT t.visit_id) AS visits,
+      COUNT(DISTINCT t.event_name) AS uniqueEvents
+    FROM (
+      SELECT
+        website_event.session_id,
+        website_event.visit_id,
+        website_event.event_name,
+        COUNT(*) AS c
+      FROM website_event
+      ${cohortQuery}
+      ${joinSessionQuery}
+      WHERE website_event.website_id = ?
+        AND website_event.created_at BETWEEN ? AND ?
+        AND website_event.event_type = 2
+        ${filterQuery}
+      GROUP BY 1, 2, 3
+    ) AS t
+    `,
+    params,
     FUNCTION_NAME,
   ).then(result => result?.[0]);
 }

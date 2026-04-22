@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { EVENT_COLUMNS } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -9,6 +10,7 @@ const FUNCTION_NAME = 'getPageviewStats';
 export async function getPageviewStats(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -99,4 +101,36 @@ async function clickhouseQuery(
   }
 
   return rawQuery(sql, queryParams, FUNCTION_NAME);
+}
+
+async function oceanbaseQuery(websiteId: string, filters: QueryFilters) {
+  const { timezone = 'utc', unit = 'day' } = filters;
+  const { getDateSQL, parseFilters, rawQuery } = oceanbase;
+  const { filterQuery, cohortQuery, excludeBounceQuery, joinSessionQuery, buildParams } =
+    parseFilters({
+      ...filters,
+      websiteId,
+    });
+
+  const params = buildParams([websiteId, filters.startDate, filters.endDate]);
+
+  return rawQuery(
+    `
+    SELECT
+      ${getDateSQL('website_event.created_at', unit, timezone)} x,
+      COUNT(*) y
+    FROM website_event
+    ${cohortQuery}
+    ${excludeBounceQuery}
+    ${joinSessionQuery}
+    WHERE website_event.website_id = ?
+      AND website_event.created_at BETWEEN ? AND ?
+      AND website_event.event_type NOT IN (2, 5)
+      ${filterQuery}
+    GROUP BY 1
+    ORDER BY 1
+    `,
+    params,
+    FUNCTION_NAME,
+  );
 }

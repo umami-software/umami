@@ -7,7 +7,8 @@ import {
   SOCIAL_DOMAINS,
   VIDEO_DOMAINS,
 } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -16,6 +17,7 @@ const FUNCTION_NAME = 'getChannelMetrics';
 export async function getChannelMetrics(...args: [websiteId: string, filters?: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -146,4 +148,73 @@ function toClickHouseStringArray(arr: string[]): string {
 
 function toPostgresLikeClause(column: string, arr: string[]) {
   return arr.map(val => `${column} ilike '%${val.replace(/'/g, "''")}%'`).join(' OR\n  ');
+}
+
+function toOceanBaseLikeClause(column: string, arr: string[]) {
+  return arr.map(val => `LOWER(${column}) LIKE '%${val.toLowerCase()}%'`).join(' OR\n  ');
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  filters: QueryFilters,
+): Promise<{ x: string; y: number }[]> {
+  const { rawQuery, parseFilters } = oceanbase;
+  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, dateQuery, buildParams, getDateParams } =
+    parseFilters({
+      ...filters,
+      websiteId,
+    });
+
+  const params = buildParams([websiteId, ...getDateParams()]);
+
+  return rawQuery<{ x: string; y: number }[]>(
+    `
+    WITH prefix AS (
+      SELECT CASE WHEN website_event.utm_medium LIKE 'p%' OR
+          website_event.utm_medium LIKE '%ppc%' OR
+          website_event.utm_medium LIKE '%retargeting%' OR
+          website_event.utm_medium LIKE '%paid%' THEN 'paid' ELSE 'organic' END prefix,
+          website_event.referrer_domain,
+          website_event.url_query,
+          website_event.utm_medium,
+          website_event.utm_source,
+          website_event.session_id,
+          website_event.hostname
+      FROM website_event
+      ${cohortQuery}
+      ${excludeBounceQuery}
+      ${joinSessionQuery}
+      WHERE website_event.website_id = ?
+        AND website_event.event_type NOT IN (2, 5)
+        ${dateQuery}
+        ${filterQuery}),
+
+    channels AS (
+      SELECT CASE
+          WHEN referrer_domain = '' AND url_query = '' THEN 'direct'
+          WHEN ${toOceanBaseLikeClause('url_query', PAID_AD_PARAMS)} THEN 'paidAds'
+          WHEN ${toOceanBaseLikeClause('utm_medium', ['referral', 'app', 'link'])} THEN 'referral'
+          WHEN LOWER(utm_medium) LIKE '%affiliate%' THEN 'affiliate'
+          WHEN LOWER(utm_medium) LIKE '%sms%' OR LOWER(utm_source) LIKE '%sms%' THEN 'sms'
+          WHEN ${toOceanBaseLikeClause('referrer_domain', SEARCH_DOMAINS)} OR LOWER(utm_medium) LIKE '%organic%' THEN CONCAT(prefix, 'Search')
+          WHEN ${toOceanBaseLikeClause('referrer_domain', SOCIAL_DOMAINS)} THEN CONCAT(prefix, 'Social')
+          WHEN ${toOceanBaseLikeClause('referrer_domain', EMAIL_DOMAINS)} OR LOWER(utm_medium) LIKE '%mail%' THEN 'email'
+          WHEN ${toOceanBaseLikeClause('referrer_domain', SHOPPING_DOMAINS)} OR LOWER(utm_medium) LIKE '%shop%' THEN CONCAT(prefix, 'Shopping')
+          WHEN ${toOceanBaseLikeClause('referrer_domain', VIDEO_DOMAINS)} OR LOWER(utm_medium) LIKE '%video%' THEN CONCAT(prefix, 'Video')
+          WHEN referrer_domain != REGEXP_REPLACE(hostname, '^www.', '') AND referrer_domain != '' THEN 'referral'
+          ELSE '' END AS x,
+        COUNT(DISTINCT session_id) y
+      FROM prefix
+      GROUP BY 1
+      ORDER BY y DESC)
+
+    SELECT x, SUM(y) y
+    FROM channels
+    WHERE x != ''
+    GROUP BY x
+    ORDER BY y DESC
+    `,
+    params,
+    FUNCTION_NAME,
+  ).then(results => results.map(item => ({ ...item, y: Number(item.y) })));
 }

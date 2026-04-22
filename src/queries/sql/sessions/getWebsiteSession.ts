@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 
 const FUNCTION_NAME = 'getWebsiteSession';
@@ -7,6 +8,7 @@ const FUNCTION_NAME = 'getWebsiteSession';
 export async function getWebsiteSession(...args: [websiteId: string, sessionId: string]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -108,6 +110,57 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
     group by id, websiteId, distinctId, browser, os, device, screen, language, country, region, city;
     `,
     { websiteId, sessionId },
+    FUNCTION_NAME,
+  ).then(result => result?.[0]);
+}
+
+async function oceanbaseQuery(websiteId: string, sessionId: string) {
+  const { rawQuery, getTimestampDiffSQL } = oceanbase;
+
+  return rawQuery(
+    `
+    SELECT id,
+      distinct_id AS distinctId,
+      website_id AS websiteId,
+      browser,
+      os,
+      device,
+      screen,
+      language,
+      country,
+      region,
+      city,
+      MIN(min_time) AS firstAt,
+      MAX(max_time) AS lastAt,
+      COUNT(DISTINCT visit_id) AS visits,
+      SUM(views) AS views,
+      SUM(events) AS events,
+      SUM(${getTimestampDiffSQL('min_time', 'max_time')}) AS totaltime
+    FROM (SELECT
+          session.session_id AS id,
+          session.distinct_id,
+          website_event.visit_id,
+          session.website_id,
+          session.browser,
+          session.os,
+          session.device,
+          session.screen,
+          session.language,
+          session.country,
+          session.region,
+          session.city,
+          MIN(website_event.created_at) AS min_time,
+          MAX(website_event.created_at) AS max_time,
+          SUM(CASE WHEN website_event.event_type = 1 THEN 1 ELSE 0 END) AS views,
+          SUM(CASE WHEN website_event.event_type = 2 THEN 1 ELSE 0 END) AS events
+    FROM session
+    JOIN website_event ON website_event.session_id = session.session_id
+    WHERE session.website_id = ?
+      AND session.session_id = ?
+    GROUP BY session.session_id, session.distinct_id, visit_id, session.website_id, session.browser, session.os, session.device, session.screen, session.language, session.country, session.region, session.city) t
+    GROUP BY id, distinct_id, website_id, browser, os, device, screen, language, country, region, city;
+    `,
+    [websiteId, sessionId],
     FUNCTION_NAME,
   ).then(result => result?.[0]);
 }

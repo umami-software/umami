@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -18,6 +19,7 @@ export async function getRevenue(
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
   });
 }
 
@@ -117,6 +119,57 @@ async function clickhouseQuery(
     order by t
     `,
     queryParams,
+  );
+
+  return { chart };
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  parameters: RevenuParameters,
+  filters: QueryFilters,
+) {
+  const { startDate, endDate, unit = 'day', timezone = 'utc', currency } = parameters;
+  const { getDateSQL, rawQuery, parseFilters } = oceanbase;
+  const { queryParams, filterQuery, cohortQuery, joinSessionQuery } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+    currency,
+  });
+
+  const joinQuery =
+    filterQuery || cohortQuery
+      ? `JOIN (SELECT *
+               FROM website_event
+               WHERE website_id = ?
+                  AND created_at BETWEEN ? AND ?
+                  AND event_type = 2) website_event
+        ON website_event.website_id = revenue.website_id
+          AND website_event.session_id = revenue.session_id
+          AND website_event.event_id = revenue.event_id`
+      : '';
+
+  const chart = await rawQuery(
+    `
+    SELECT
+      revenue.event_name x,
+      ${getDateSQL('revenue.created_at', unit, timezone)} t,
+      SUM(revenue.revenue) y,
+      COUNT(revenue.event_id) count
+    FROM revenue
+    ${joinQuery}
+    ${cohortQuery}
+    ${joinSessionQuery}
+    WHERE revenue.website_id = ?
+      AND revenue.created_at BETWEEN ? AND ?
+      AND UPPER(revenue.currency) = ?
+      ${filterQuery}
+    GROUP BY x, t
+    ORDER BY t
+    `,
+    [websiteId, startDate, endDate, websiteId, startDate, endDate, currency, ...queryParams],
   );
 
   return { chart };

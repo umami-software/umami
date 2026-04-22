@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -36,6 +37,7 @@ export async function getFunnel(
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
   });
 }
 
@@ -344,6 +346,112 @@ async function clickhouseQuery(
       ...params,
       ...queryParams,
     },
+  ).then(formatResults(steps));
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  parameters: FunnelParameters,
+  filters: QueryFilters,
+): Promise<Array<FunnelResult>> {
+  const { startDate, endDate, window, steps } = parameters;
+  const { rawQuery, getAddIntervalQuery, parseFilters } = oceanbase;
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+  });
+
+  const extraParams: string[] = [];
+  let levelOneQuery = '';
+  let levelQuery = '';
+  let sumQuery = '';
+
+  for (let i = 0; i < steps.length; i++) {
+    const cv = steps[i];
+    const levelNumber = i + 1;
+    const startSum = i > 0 ? 'UNION ' : '';
+    const isURL = cv.type === 'path';
+    const column = isURL ? 'url_path' : 'event_name';
+
+    let operator = '=';
+    let paramValue = cv.value;
+
+    if (cv.value.startsWith('*') || cv.value.endsWith('*')) {
+      operator = 'LIKE';
+      paramValue = cv.value.replace(/^\*|\*$/g, '%');
+    }
+
+    const existsClause =
+      !isURL && cv.filters?.length
+        ? cv.filters
+            .map((f, fi) => {
+              extraParams.push(f.property);
+              let op = '=';
+              let val = f.value;
+              if (f.operator === 'neq') op = '!=';
+              else if (f.operator === 'c') {
+                op = 'LIKE';
+                val = `%${val}%`;
+              } else if (f.operator === 'dnc') {
+                op = 'NOT LIKE';
+                val = `%${val}%`;
+              }
+              extraParams.push(val);
+              const eventAlias = levelNumber === 1 ? 'website_event' : 'we';
+              return `AND EXISTS (
+                SELECT 1 FROM event_data _ed${i}_${fi}
+                WHERE _ed${i}_${fi}.website_event_id = ${eventAlias}.event_id
+                  AND _ed${i}_${fi}.website_id = ?
+                  AND _ed${i}_${fi}.created_at BETWEEN ? AND ?
+                  AND _ed${i}_${fi}.data_key = ?
+                  AND CASE WHEN _ed${i}_${fi}.data_type = 2 THEN REPLACE(_ed${i}_${fi}.string_value, '.0000', '') ELSE _ed${i}_${fi}.string_value END ${op} ?
+              )`;
+            })
+            .join('\n')
+        : '';
+
+    if (levelNumber === 1) {
+      levelOneQuery = `
+        WITH level1 AS (
+          SELECT DISTINCT website_event.session_id, website_event.created_at
+          FROM website_event
+          ${cohortQuery}
+          ${joinSessionQuery}
+          WHERE website_event.website_id = ?
+            AND website_event.created_at BETWEEN ? AND ?
+            AND ${column} ${operator} ?
+            ${filterQuery}
+            ${existsClause}
+        )`;
+    } else {
+      levelQuery += `
+        , level${levelNumber} AS (
+          SELECT DISTINCT we.session_id, we.created_at
+          FROM level${i} l
+          JOIN website_event we
+              ON l.session_id = we.session_id
+          WHERE we.website_id = ?
+              AND we.created_at BETWEEN l.created_at AND ${getAddIntervalQuery('l.created_at', `${window} minute`)}
+              AND we.${column} ${operator} ?
+              AND we.created_at <= ?
+              ${existsClause}
+        )`;
+    }
+
+    sumQuery += `\n${startSum}SELECT ${levelNumber} AS level, COUNT(DISTINCT session_id) AS count FROM level${levelNumber}`;
+    extraParams.push(paramValue);
+  }
+
+  return rawQuery(
+    `
+    ${levelOneQuery}
+    ${levelQuery}
+    ${sumQuery}
+    ORDER BY level
+    `,
+    [websiteId, startDate, endDate, ...extraParams, ...queryParams],
   ).then(formatResults(steps));
 }
 

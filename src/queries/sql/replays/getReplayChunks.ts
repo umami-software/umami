@@ -1,6 +1,7 @@
 import { gunzipSync } from 'node:zlib';
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 
 const FUNCTION_NAME = 'getReplayChunks';
@@ -18,6 +19,7 @@ export interface ReplayChunk {
 export async function getReplayChunks(websiteId: string, visitId: string): Promise<ReplayChunk[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(websiteId, visitId),
+    [OCEANBASE]: () => oceanbaseQuery(websiteId, visitId),
     [CLICKHOUSE]: () => clickhouseQuery(websiteId, visitId),
   });
 }
@@ -98,5 +100,41 @@ async function clickhouseQuery(websiteId: string, visitId: string): Promise<Repl
     eventCount: row.event_count,
     startedAt: new Date(row.started_at),
     endedAt: new Date(row.ended_at),
+  }));
+}
+
+async function oceanbaseQuery(websiteId: string, visitId: string): Promise<ReplayChunk[]> {
+  const { rawQuery } = oceanbase;
+
+  const chunks: {
+    sessionId: string;
+    visitId: string;
+    events: Buffer;
+    chunkIndex: number;
+    eventCount: number;
+    startedAt: Date;
+    endedAt: Date;
+  }[] = await rawQuery(
+    `
+    SELECT
+      session_id AS sessionId,
+      visit_id AS visitId,
+      events,
+      chunk_index AS chunkIndex,
+      event_count AS eventCount,
+      started_at AS startedAt,
+      ended_at AS endedAt
+    FROM session_replay
+    WHERE website_id = ?
+      AND visit_id = ?
+    ORDER BY chunk_index ASC
+    `,
+    [websiteId, visitId],
+    FUNCTION_NAME,
+  );
+
+  return chunks.map(chunk => ({
+    ...chunk,
+    events: JSON.parse(gunzipSync(Buffer.from(chunk.events)).toString('utf-8')),
   }));
 }

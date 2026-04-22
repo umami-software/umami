@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -26,6 +27,7 @@ export async function getEventExpandedMetrics(
 ): Promise<EventExpandedMetricData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -122,12 +124,67 @@ async function clickhouseQuery(
         ${filterQuery}
       group by name, session_id, visit_id
     ) as t
-    group by name 
+    group by name
     order by visitors desc, visits desc
     limit ${limit}
     offset ${offset}
     `,
     { ...queryParams, ...parameters },
+    FUNCTION_NAME,
+  );
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  parameters: EventExpandedMetricParameters,
+  filters: QueryFilters,
+): Promise<EventExpandedMetricData[]> {
+  const { type, limit = 500, offset = 0 } = parameters;
+  const column = FILTER_COLUMNS[type] || type;
+  const { rawQuery, parseFilters, getTimestampDiffSQL } = oceanbase;
+  const { filterQuery, cohortQuery, joinSessionQuery, buildParams } = parseFilters(
+    {
+      ...filters,
+      websiteId,
+      eventType: EVENT_TYPE.customEvent,
+    },
+    { joinSession: SESSION_COLUMNS.includes(type) },
+  );
+
+  const params = buildParams([websiteId, filters.startDate, filters.endDate]);
+
+  return rawQuery(
+    `
+    SELECT
+      name,
+      SUM(t.c) AS pageviews,
+      COUNT(DISTINCT t.session_id) AS visitors,
+      COUNT(DISTINCT t.visit_id) AS visits,
+      SUM(CASE WHEN t.c = 1 THEN 1 ELSE 0 END) AS bounces,
+      SUM(${getTimestampDiffSQL('t.min_time', 't.max_time')}) AS totaltime
+    FROM (
+      SELECT
+        ${column} AS name,
+        website_event.session_id,
+        website_event.visit_id,
+        COUNT(*) AS c,
+        MIN(website_event.created_at) AS min_time,
+        MAX(website_event.created_at) AS max_time
+      FROM website_event
+      ${cohortQuery}
+      ${joinSessionQuery}
+      WHERE website_event.website_id = ?
+        AND website_event.created_at BETWEEN ? AND ?
+        ${filterQuery}
+      GROUP BY name, website_event.session_id, website_event.visit_id
+    ) AS t
+    WHERE name != ''
+    GROUP BY name
+    ORDER BY visitors DESC, visits DESC
+    LIMIT ${limit}
+    OFFSET ${offset}
+    `,
+    params,
     FUNCTION_NAME,
   );
 }

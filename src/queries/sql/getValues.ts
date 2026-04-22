@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -10,6 +11,7 @@ export async function getValues(
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -124,6 +126,54 @@ async function clickhouseQuery(websiteId: string, column: string, filters: Query
       search,
       ...params,
     },
+    FUNCTION_NAME,
+  );
+}
+
+async function oceanbaseQuery(websiteId: string, column: string, filters: QueryFilters) {
+  const { rawQuery, parseFilters } = oceanbase;
+  const { startDate, endDate, search } = filters;
+  const params: any[] = [];
+
+  let searchQuery = '';
+  let excludeDomain = '';
+
+  if (column === 'referrer_domain') {
+    excludeDomain = `AND website_event.referrer_domain != REGEXP_REPLACE(website_event.hostname, '^www.', '')
+      AND website_event.referrer_domain != ''`;
+  }
+
+  if (search) {
+    if (decodeURIComponent(search).includes(',')) {
+      const searchValues = decodeURIComponent(search).split(',').slice(0, 5);
+      searchQuery = `AND (${searchValues
+        .map((value: string) => {
+          params.push(`%${value}%`);
+          return `LOWER(${column}) LIKE LOWER(?)`;
+        })
+        .join(' OR ')})`;
+    } else {
+      searchQuery = `AND LOWER(${column}) LIKE LOWER(?)`;
+      params.push(`%${search}%`);
+    }
+  }
+
+  return rawQuery(
+    `
+    SELECT ${column} AS value, COUNT(*) AS count
+    FROM website_event
+    INNER JOIN session
+      ON session.session_id = website_event.session_id
+        AND session.website_id = website_event.website_id
+    WHERE website_event.website_id = ?
+      AND website_event.created_at BETWEEN ? AND ?
+      ${searchQuery}
+      ${excludeDomain}
+    GROUP BY 1
+    ORDER BY 2 DESC
+    LIMIT 10
+    `,
+    [websiteId, startDate, endDate, ...params],
     FUNCTION_NAME,
   );
 }

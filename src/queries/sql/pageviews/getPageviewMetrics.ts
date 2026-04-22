@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -22,6 +23,7 @@ export async function getPageviewMetrics(
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -194,4 +196,77 @@ async function clickhouseQuery(
   }
 
   return rawQuery(sql, { ...queryParams, ...parameters }, FUNCTION_NAME);
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  parameters: PageviewMetricsParameters,
+  filters: QueryFilters,
+): Promise<PageviewMetricsData[]> {
+  const { type, limit = 500, offset = 0 } = parameters;
+  let column = FILTER_COLUMNS[type] || type;
+  const { rawQuery, parseFilters } = oceanbase;
+  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, buildParams } =
+    parseFilters(
+      {
+        ...filters,
+        websiteId,
+      },
+      { joinSession: SESSION_COLUMNS.includes(type) },
+    );
+
+  const params = buildParams([websiteId, filters.startDate, filters.endDate]);
+
+  let entryExitQuery = '';
+  let excludeDomain = '';
+
+  if (column === 'referrer_domain') {
+    excludeDomain = `AND website_event.referrer_domain != REGEXP_REPLACE(website_event.hostname, '^www.', '')
+      AND website_event.referrer_domain != ''`;
+  }
+
+  if (type === 'entry' || type === 'exit') {
+    const order = type === 'entry' ? 'ASC' : 'DESC';
+    column = `x.${column}`;
+
+    entryExitQuery = `
+      JOIN (
+        SELECT visit_id, url_path
+        FROM (
+          SELECT visit_id, url_path,
+            ROW_NUMBER() OVER (PARTITION BY visit_id ORDER BY created_at ${order}) AS rn
+          FROM website_event
+          WHERE website_event.website_id = ?
+            AND website_event.created_at BETWEEN ? AND ?
+            AND website_event.event_type NOT IN (2, 5)
+        ) ranked
+        WHERE rn = 1
+      ) x
+      ON x.visit_id = website_event.visit_id
+    `;
+  }
+
+  return rawQuery(
+    `
+    SELECT ${column} x,
+      COUNT(DISTINCT website_event.session_id) AS y
+    FROM website_event
+    ${cohortQuery}
+    ${excludeBounceQuery}
+    ${joinSessionQuery}
+    ${entryExitQuery}
+    WHERE website_event.website_id = ?
+      AND website_event.created_at BETWEEN ? AND ?
+      AND website_event.event_type NOT IN (2, 5)
+      AND ${column} != ''
+      ${excludeDomain}
+      ${filterQuery}
+    GROUP BY 1
+    ORDER BY 2 DESC
+    LIMIT ${limit}
+    OFFSET ${offset}
+    `,
+    params,
+    FUNCTION_NAME,
+  );
 }

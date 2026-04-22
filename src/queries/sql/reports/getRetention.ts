@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -23,6 +24,7 @@ export async function getRetention(
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
   });
 }
 
@@ -169,5 +171,78 @@ async function clickhouseQuery(
     where c.day_number <= 31
     order by 1, 2`,
     queryParams,
+  );
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  parameters: RetentionParameters,
+  filters: QueryFilters,
+): Promise<RetentionResult[]> {
+  const { startDate, endDate, timezone } = parameters;
+  const { getDateSQL, getDayDiffQuery, rawQuery, parseFilters } = oceanbase;
+  const unit = 'day';
+
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+    timezone,
+  });
+
+  return rawQuery(
+    `
+    WITH cohort_items AS (
+      SELECT
+        MIN(${getDateSQL('website_event.created_at', unit, timezone)}) AS cohort_date,
+        website_event.session_id
+      FROM website_event
+      ${cohortQuery}
+      ${joinSessionQuery}
+      WHERE website_event.website_id = ?
+        AND website_event.created_at BETWEEN ? AND ?
+        ${filterQuery}
+      GROUP BY website_event.session_id
+    ),
+    user_activities AS (
+      SELECT DISTINCT
+        website_event.session_id,
+        ${getDayDiffQuery(getDateSQL('created_at', unit, timezone), 'cohort_items.cohort_date')} AS day_number
+      FROM website_event
+      JOIN cohort_items
+      ON website_event.session_id = cohort_items.session_id
+      WHERE website_id = ?
+          AND created_at BETWEEN ? AND ?
+    ),
+    cohort_size AS (
+      SELECT cohort_date,
+        COUNT(*) AS visitors
+      FROM cohort_items
+      GROUP BY 1
+      ORDER BY 1
+    ),
+    cohort_date AS (
+      SELECT
+        c.cohort_date,
+        a.day_number,
+        COUNT(*) AS visitors
+      FROM user_activities a
+      JOIN cohort_items c
+      ON a.session_id = c.session_id
+      GROUP BY 1, 2
+    )
+    SELECT
+      c.cohort_date AS date,
+      c.day_number AS day,
+      s.visitors,
+      c.visitors AS returnVisitors,
+      c.visitors * 100 / s.visitors AS percentage
+    FROM cohort_date c
+    JOIN cohort_size s
+    ON c.cohort_date = s.cohort_date
+    WHERE c.day_number <= 31
+    ORDER BY 1, 2`,
+    [websiteId, startDate, endDate, ...queryParams, websiteId, startDate, endDate, ...queryParams],
   );
 }

@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -8,6 +9,7 @@ const FUNCTION_NAME = 'getWebsiteEvents';
 export function getWebsiteEvents(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -83,7 +85,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     `
     select
       event_id as id,
-      website_id as websiteId, 
+      website_id as websiteId,
       session_id as sessionId,
       created_at as createdAt,
       hostname,
@@ -100,8 +102,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       page_title as pageTitle,
       event_type as eventType,
       event_name as eventName,
-      event_id IN (select event_id 
-                   from event_data 
+      event_id IN (select event_id
+                   from event_data
                    where website_id = {websiteId:UUID}
                    ${dateQuery}) as hasData
     from website_event
@@ -113,6 +115,67 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     order by created_at desc
     `,
     queryParams,
+    filters,
+    FUNCTION_NAME,
+  );
+}
+
+async function oceanbaseQuery(websiteId: string, filters: QueryFilters) {
+  const { pagedRawQuery, parseFilters } = oceanbase;
+  const { search } = filters;
+  const { filterQuery, dateQuery, cohortQuery, buildParams, getDateParams } = parseFilters({
+    ...filters,
+    websiteId,
+    search: search ? `%${search}%` : undefined,
+  });
+
+  // SQL order: cohortQuery, subquery(websiteId,startDate,endDate), websiteId, dateQuery, filterQuery, searchQuery
+  const params = buildParams([websiteId, filters.startDate, filters.endDate, websiteId, ...getDateParams()]);
+
+  // Add search params if needed
+  const searchParams = search ? [search, search] : [];
+
+  const searchQuery = search
+    ? `AND ((LOWER(event_name) LIKE ? AND event_type = 2)
+           OR (LOWER(url_path) LIKE ? AND event_type = 1))`
+    : '';
+
+  return pagedRawQuery(
+    `
+    SELECT
+      website_event.event_id AS id,
+      website_event.website_id AS websiteId,
+      website_event.session_id AS sessionId,
+      website_event.created_at AS createdAt,
+      website_event.hostname,
+      website_event.url_path AS urlPath,
+      website_event.url_query AS urlQuery,
+      website_event.referrer_path AS referrerPath,
+      website_event.referrer_query AS referrerQuery,
+      website_event.referrer_domain AS referrerDomain,
+      session.country AS country,
+      city AS city,
+      device AS device,
+      os AS os,
+      browser AS browser,
+      page_title AS pageTitle,
+      website_event.event_type AS eventType,
+      website_event.event_name AS eventName,
+      event_id IN (SELECT website_event_id
+                   FROM event_data
+                   WHERE website_id = ?
+                      AND created_at BETWEEN ? AND ?) AS hasData
+    FROM website_event
+    ${cohortQuery}
+    JOIN session ON session.session_id = website_event.session_id
+      AND session.website_id = website_event.website_id
+    WHERE website_event.website_id = ?
+    ${dateQuery}
+    ${filterQuery}
+    ${searchQuery}
+    ORDER BY website_event.created_at DESC
+    `,
+    [...params, ...searchParams],
     filters,
     FUNCTION_NAME,
   );
