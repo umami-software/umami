@@ -559,7 +559,7 @@ async function oceanbaseQuery(
     ON s.session_id = m.session_id
     WHERE we.website_id = ?
           AND we.created_at BETWEEN ? AND ?
-          AND we.referrer_domain != REPLACE(we.hostname, 'www.', '')
+          AND we.referrer_domain != REGEXP_REPLACE(we.hostname, '^www.', '')
           AND we.referrer_domain != ''
     GROUP BY 1
     ORDER BY 2 DESC

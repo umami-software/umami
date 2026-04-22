@@ -215,8 +215,7 @@ async function oceanbaseQuery(
       { joinSession: SESSION_COLUMNS.includes(type) },
     );
 
-  const params = buildParams([websiteId, filters.startDate, filters.endDate]);
-
+  let entryExitParams: any[] = [];
   let entryExitQuery = '';
   let excludeDomain = '';
 
@@ -228,6 +227,7 @@ async function oceanbaseQuery(
   if (type === 'entry' || type === 'exit') {
     const order = type === 'entry' ? 'ASC' : 'DESC';
     column = `x.${column}`;
+    entryExitParams = [websiteId, filters.startDate, filters.endDate];
 
     entryExitQuery = `
       JOIN (
@@ -245,6 +245,8 @@ async function oceanbaseQuery(
       ON x.visit_id = website_event.visit_id
     `;
   }
+
+  const params = buildParams([...entryExitParams, websiteId, filters.startDate, filters.endDate]);
 
   return rawQuery(
     `

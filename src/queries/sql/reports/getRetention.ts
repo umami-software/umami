@@ -183,13 +183,17 @@ async function oceanbaseQuery(
   const { getDateSQL, getDayDiffQuery, rawQuery, parseFilters } = oceanbase;
   const unit = 'day';
 
-  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
+  const { filterQuery, joinSessionQuery, cohortQuery, buildParams, queryParams } = parseFilters({
     ...filters,
     websiteId,
     startDate,
     endDate,
     timezone,
   });
+
+  // Build params: cohortQuery params + cohort_items params + user_activities params
+  const cohortItemsParams = buildParams([websiteId, startDate, endDate]);
+  const userActivitiesParams = [websiteId, startDate, endDate];
 
   return rawQuery(
     `
@@ -243,6 +247,6 @@ async function oceanbaseQuery(
     ON c.cohort_date = s.cohort_date
     WHERE c.day_number <= 31
     ORDER BY 1, 2`,
-    [websiteId, startDate, endDate, ...queryParams, websiteId, startDate, endDate, ...queryParams],
+    [...cohortItemsParams, ...userActivitiesParams],
   );
 }
