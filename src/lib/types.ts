@@ -24,7 +24,9 @@ export interface Auth {
     websiteIds?: string[];
     boardId?: string;
     pixelId?: string;
+    pixelIds?: string[];
     linkId?: string;
+    linkIds?: string[];
   };
 }
 

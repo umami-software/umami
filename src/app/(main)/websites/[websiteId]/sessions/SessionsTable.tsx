@@ -1,5 +1,5 @@
 import { DataColumn, DataTable, type DataTableProps } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import { Avatar } from '@/components/common/Avatar';
 import { DateDistance } from '@/components/common/DateDistance';
 import { TypeIcon } from '@/components/common/TypeIcon';
@@ -17,11 +17,7 @@ export function SessionsTable({
     <DataTable {...props}>
       <DataColumn id="id" label={t(labels.session)} width="100px">
         {(row: any) => (
-          <Link
-            href={
-              getSessionHref ? getSessionHref(row) : `/websites/${websiteId}/sessions/${row.id}`
-            }
-          >
+          <Link href={getSessionHref ? getSessionHref(row) : `/websites/${websiteId}/sessions/${row.id}`}>
             <Avatar seed={row.id} size={32} />
           </Link>
         )}

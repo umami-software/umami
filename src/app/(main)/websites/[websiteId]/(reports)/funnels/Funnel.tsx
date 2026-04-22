@@ -1,4 +1,3 @@
-import { Box, Column, Dialog, Grid, Icon, ProgressBar, Row, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useNavigation, useOperatorLabels, useResultQuery } from '@/components/hooks';
 import { File, User } from '@/components/icons';
@@ -7,6 +6,7 @@ import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { Lightning } from '@/components/svg';
 import { formatLongNumber } from '@/lib/format';
 import type { FunnelResult } from '@/queries/sql/reports/getFunnel';
+import { Box, Column, Grid, Icon, ProgressBar, Row, Text } from '@umami/react-zen';
 import { FunnelEditForm } from './FunnelEditForm';
 
 interface FunnelProps {
@@ -17,7 +17,7 @@ interface FunnelProps {
   websiteId: string;
 }
 
-export function Funnel({ id, name, type, parameters, websiteId }) {
+export function Funnel({ id, name, type, parameters, websiteId }: FunnelProps) {
   const { t, labels } = useMessages();
   const { pathname } = useNavigation();
   const isSharePage = pathname.includes('/share/');
@@ -41,14 +41,15 @@ export function Funnel({ id, name, type, parameters, websiteId }) {
           </Column>
           {!isSharePage && (
             <Column>
-              <ReportEditButton id={id} name={name} type={type}>
-                {({ close }) => {
-                  return (
-                    <Dialog title={t(labels.funnel)} style={{ minHeight: 300, minWidth: 400 }}>
-                      <FunnelEditForm id={id} websiteId={websiteId} onClose={close} />
-                    </Dialog>
-                  );
-                }}
+              <ReportEditButton
+                id={id}
+                name={name}
+                type={type}
+                title={t(labels.funnel)}
+                width="700px"
+                height="600px"
+              >
+                {({ close }) => <FunnelEditForm id={id} websiteId={websiteId} onClose={close} />}
               </ReportEditButton>
             </Column>
           )}
@@ -100,15 +101,11 @@ export function Funnel({ id, name, type, parameters, websiteId }) {
                       </Row>
                       {filters?.map((f, i) => (
                         <Row key={i} gap="1" style={{ paddingLeft: 28 }}>
-                          <Text size="1" color="muted">
-                            {f.property}
-                          </Text>
-                          <Text size="1" color="muted" transform="lowercase">
+                          <Text color="muted">{f.property}</Text>
+                          <Text color="muted" transform="lowercase">
                             {operatorLabels[f.operator] ?? f.operator}
                           </Text>
-                          <Text size="1" color="muted">
-                            {f.value}
-                          </Text>
+                          <Text color="muted">{f.value}</Text>
                         </Row>
                       ))}
                     </Column>

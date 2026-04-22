@@ -1,22 +1,25 @@
+import { Empty } from '@/components/common/Empty';
+import { useMessages, useWebsiteValuesQuery } from '@/components/hooks';
 import { ComboBox, type ComboBoxProps, ListItem, Loading, useDebounce } from '@umami/react-zen';
 import { endOfDay, subMonths } from 'date-fns';
 import { type SetStateAction, useMemo, useState } from 'react';
-import { Empty } from '@/components/common/Empty';
-import { useMessages, useWebsiteValuesQuery } from '@/components/hooks';
 
-export interface LookupFieldProps extends ComboBoxProps {
+export interface LookupFieldProps extends Omit<ComboBoxProps, 'onChange'> {
   websiteId: string;
   type: string;
   value: string;
   onChange: (value: string) => void;
-  /**
-   * `FormField` injects `onChange` via `cloneElement`, overwriting any custom handler.
-   * Use `onValueChange` for side effects that must survive that override.
-   */
   onValueChange?: (value: string) => void;
 }
 
-export function LookupField({ websiteId, type, value, onChange, onValueChange, ...props }: LookupFieldProps) {
+export function LookupField({
+  websiteId,
+  type,
+  value,
+  onChange,
+  onValueChange,
+  ...props
+}: LookupFieldProps) {
   const { t, messages } = useMessages();
   const [search, setSearch] = useState(value);
   const searchValue = useDebounce(search, 300);

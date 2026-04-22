@@ -1,7 +1,7 @@
-import { config, useSpring } from '@react-spring/web';
-import { Column, Focusable, Grid, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
-import type { ReactNode } from 'react';
-import { FixedSizeList } from 'react-window';
+import { Column, Grid, Row, Text } from '@umami/react-zen';
+import { useSpring, useTransform } from 'motion/react';
+import { type ReactNode, useEffect } from 'react';
+import { List, type RowComponentProps } from 'react-window';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { Empty } from '@/components/common/Empty';
 import { useMessages, useMobile } from '@/components/hooks';
@@ -65,7 +65,7 @@ export function ListTable({
     );
   };
 
-  const ListTableRow = ({ index, style }) => {
+  const ListTableRow = ({ index, style }: RowComponentProps) => {
     return <div style={style}>{getRow(data[index], index)}</div>;
   };
 
@@ -83,14 +83,14 @@ export function ListTable({
       <Column gap="1">
         {data?.length === 0 && <Empty />}
         {virtualize && data.length > 0 ? (
-          <FixedSizeList
-            width="100%"
-            height={itemCount * ITEM_SIZE}
-            itemCount={data.length}
-            itemSize={ITEM_SIZE}
-          >
-            {ListTableRow}
-          </FixedSizeList>
+          <List
+            style={{ width: '100%', height: itemCount * ITEM_SIZE }}
+            defaultHeight={itemCount * ITEM_SIZE}
+            rowCount={data.length}
+            rowHeight={ITEM_SIZE}
+            rowComponent={ListTableRow}
+            rowProps={{}}
+          />
         ) : (
           data.map(getRow)
         )}
@@ -139,12 +139,21 @@ const AnimatedRow = ({
   formatCount,
   isPhone,
 }) => {
-  const props = useSpring({
-    width: percent,
-    y: !Number.isNaN(value) ? value : 0,
-    from: { width: 0, y: 0 },
-    config: animate ? config.default : { duration: 0 },
-  });
+  const y = !Number.isNaN(value) ? value : 0;
+  const ySpring = useSpring(0, { stiffness: 170, damping: 26 });
+  const widthSpring = useSpring(0, { stiffness: 170, damping: 26 });
+  const yText = useTransform(ySpring, n => (formatCount ? formatCount(n) : formatLongNumber(n)));
+  const widthText = useTransform(widthSpring, n => `${n?.toFixed?.(0)}%`);
+
+  useEffect(() => {
+    if (animate) {
+      ySpring.set(y);
+      widthSpring.set(percent);
+    } else {
+      ySpring.jump(y);
+      widthSpring.jump(percent);
+    }
+  }, [y, percent, animate, ySpring, widthSpring]);
 
   return (
     <Grid
@@ -167,9 +176,7 @@ const AnimatedRow = ({
       >
         {change}
         <Text weight="bold">
-          <AnimatedDiv title={props?.y as any}>
-            {formatCount ? props.y?.to(formatCount) : props.y?.to(formatLongNumber)}
-          </AnimatedDiv>
+          <AnimatedDiv title={String(value)}>{yText}</AnimatedDiv>
         </Text>
       </Row>
       {showPercentage && (
@@ -182,7 +189,7 @@ const AnimatedRow = ({
           color="muted"
           paddingLeft="3"
         >
-          <AnimatedDiv>{props.width.to(n => `${n?.toFixed?.(0)}%`)}</AnimatedDiv>
+          <AnimatedDiv>{widthText}</AnimatedDiv>
         </Row>
       )}
     </Grid>

@@ -3,7 +3,7 @@
 import https from 'node:https';
 import path from 'node:path';
 import chalk from 'chalk';
-import fs from 'fs-extra';
+import fs from 'node:fs';
 
 const src = path.resolve(process.cwd(), 'public/intl/messages');
 const dest = path.resolve(process.cwd(), 'public/intl/language');
@@ -43,7 +43,7 @@ const downloadFile = (url, filepath) =>
   });
 
 const download = async files => {
-  await fs.ensureDir(dest);
+  fs.mkdirSync(dest, { recursive: true });
 
   await asyncForEach(files, async file => {
     const locale = file.replace('-', '_').replace('.json', '');

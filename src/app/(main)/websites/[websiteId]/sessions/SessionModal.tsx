@@ -10,9 +10,11 @@ export interface SessionModalProps extends ModalProps {
 export function SessionModal({ websiteId, ...props }: SessionModalProps) {
   const {
     router,
+    pathname,
     query: { session },
     updateParams,
   } = useNavigation();
+  const isSharePage = pathname.includes('/share/');
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
       router.push(updateParams({ session: undefined }));
@@ -32,7 +34,7 @@ export function SessionModal({ websiteId, ...props }: SessionModalProps) {
         <Dialog variant="sheet" className="rounded-lg">
           {({ close }) => (
             <Column padding="10">
-              <SessionProfile websiteId={websiteId} sessionId={session} onClose={() => close()} />
+              <SessionProfile websiteId={websiteId} sessionId={session} showReplays={!isSharePage} onClose={() => close()} />
             </Column>
           )}
         </Dialog>

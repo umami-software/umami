@@ -84,6 +84,7 @@ async function relationalQuery(
           select 1 from event_data _ed${stepIndex}_${fi}
           where _ed${stepIndex}_${fi}.website_event_id = ${eventAlias}.event_id
             and _ed${stepIndex}_${fi}.website_id = {{websiteId::uuid}}
+            and _ed${stepIndex}_${fi}.created_at between {{startDate}} and {{endDate}}
             and _ed${stepIndex}_${fi}.data_key = {{${keyParam}}}
             and case when _ed${stepIndex}_${fi}.data_type = 2 then replace(_ed${stepIndex}_${fi}.string_value, '.0000', '') else _ed${stepIndex}_${fi}.string_value end ${op} {{${valParam}}}
         )`;
@@ -210,6 +211,7 @@ async function clickhouseQuery(
     stepIndex: number,
     stepFilters: Array<FunnelStepFilter> | undefined,
     params: Record<string, string>,
+    eventAlias: string,
   ): string {
     if (!stepFilters?.length) return '';
 
@@ -231,9 +233,10 @@ async function clickhouseQuery(
         }
         params[valParam] = val;
 
-        return `and event_id in (
+        return `and ${eventAlias}.event_id in (
           select event_id from event_data
           where website_id = {websiteId:UUID}
+            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
             and data_key = {${keyParam}:String}
             and multiIf(data_type = 2, replaceAll(string_value, '.0000', ''), string_value) ${op} {${valParam}:String}
         )`;
@@ -269,8 +272,11 @@ async function clickhouseQuery(
           paramValue = cv.value.replace(/^\*|\*$/g, '%');
         }
 
+        const eventAlias = levelNumber === 1 ? 'level0' : 'y';
         const eventDataClause =
-          !isURL && cv.filters?.length ? buildEventDataFilters(i, cv.filters, extraParams) : '';
+          !isURL && cv.filters?.length
+            ? buildEventDataFilters(i, cv.filters, extraParams, eventAlias)
+            : '';
 
         if (levelNumber === 1) {
           pv.levelOneQuery = `\n
@@ -286,8 +292,8 @@ async function clickhouseQuery(
             select distinct y.session_id as session_id,
                 y.url_path as url_path,
                 y.referrer_path as referrer_path,
-                y.event_name,
-                y.event_id,
+                y.event_name as event_name,
+                y.event_id as event_id,
                 y.created_at as created_at
             from level${i} x
             join level0 y

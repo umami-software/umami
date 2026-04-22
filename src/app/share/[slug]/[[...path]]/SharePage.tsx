@@ -23,7 +23,7 @@ import { useShare } from '@/components/hooks';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
 import { ENTITY_TYPE } from '@/lib/constants';
 import { Column, Grid, Row, useTheme } from '@umami/react-zen';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ShareFooter } from './ShareFooter';
 import { ShareNav } from './ShareNav';
@@ -69,9 +69,10 @@ export function SharePage() {
   };
   const share = useShare();
   const { setTheme } = useTheme();
+  const router = useRouter();
   const pathname = usePathname();
   const path = getSharePath(pathname);
-  const { websiteId, boardId, pixelId, linkId, parameters = {}, shareType } = share;
+  const { slug, websiteId, boardId, pixelId, linkId, parameters = {}, shareType } = share;
 
   useEffect(() => {
     const url = new URL(window?.location?.href);
@@ -82,6 +83,10 @@ export function SharePage() {
     }
   }, [setTheme]);
 
+  // Check if the requested path is allowed
+  const pageKey = path || '';
+  const isAllowed = pageKey === '' || parameters[pageKey] === true;
+
   const entityPage =
     shareType === ENTITY_TYPE.board && boardId ? (
       <BoardViewPage boardId={boardId} showActions={false} />
@@ -91,6 +96,12 @@ export function SharePage() {
       <LinkPage linkId={linkId} showHeaderActions={false} />
     ) : null;
 
+  useEffect(() => {
+    if (!isAllowed) {
+      router.replace(`/share/${slug}`);
+    }
+  }, [isAllowed, slug, router]);
+
   if (entityPage) {
     return (
       <Column>
@@ -99,10 +110,6 @@ export function SharePage() {
       </Column>
     );
   }
-
-  // Check if the requested path is allowed
-  const pageKey = path || '';
-  const isAllowed = pageKey === '' || pageKey === 'overview' || parameters[pageKey] !== false;
 
   if (!isAllowed) {
     return null;
@@ -125,7 +132,7 @@ export function SharePage() {
       <PageBody gap>
         <WebsiteProvider websiteId={websiteId}>
           <Column>
-            <WebsiteHeader showActions={false} />
+            <WebsiteHeader showActions={false} allowLink={false} />
             <PageComponent websiteId={websiteId} />
           </Column>
         </WebsiteProvider>

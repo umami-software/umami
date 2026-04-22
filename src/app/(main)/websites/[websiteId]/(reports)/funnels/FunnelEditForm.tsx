@@ -1,7 +1,6 @@
 import {
   Button,
   Column,
-  ComboBox,
   Form,
   FormButtons,
   FormField,
@@ -9,173 +8,20 @@ import {
   FormSubmitButton,
   Grid,
   Icon,
-  ListItem,
   ListSeparator,
   Loading,
   Row,
-  Select,
   Text,
   TextField,
-  useDebounce,
 } from '@umami/react-zen';
-import { endOfDay, subMonths } from 'date-fns';
 import { Fragment, useState } from 'react';
-import { Empty } from '@/components/common/Empty';
-import { useApi, useMessages, useReportQuery, useUpdateQuery } from '@/components/hooks';
+import { useApi, useMessages, useMobile, useReportQuery, useUpdateQuery } from '@/components/hooks';
 import { Plus, X } from '@/components/icons';
 import { ActionSelect } from '@/components/input/ActionSelect';
 import { LookupField } from '@/components/input/LookupField';
+import { EventDataFilterRow, getEventDataDateRange } from './EventDataFilterRow';
 
 const FUNNEL_STEPS_MAX = 8;
-
-function getEventDataDateRange() {
-  return {
-    startAt: +subMonths(endOfDay(new Date()), 6),
-    endAt: +endOfDay(new Date()),
-  };
-}
-
-function PropertySelect({
-  websiteId,
-  eventName,
-  value,
-  onChange,
-  onPropertyChange,
-}: {
-  websiteId: string;
-  eventName?: string;
-  value?: string;
-  onChange?: (value: string) => void;
-  onPropertyChange?: (value: string) => void;
-}) {
-  const { get, useQuery } = useApi();
-  const { t, messages } = useMessages();
-  const [search, setSearch] = useState(value ?? '');
-  const searchValue = useDebounce(search, 300);
-  const { startAt, endAt } = getEventDataDateRange();
-
-  const { data, isLoading } = useQuery<
-    Array<{ eventName: string; propertyName: string; total: number }>
-  >({
-    queryKey: ['event-data:properties', { websiteId, eventName, searchValue, startAt, endAt }],
-    queryFn: () =>
-      get(`/websites/${websiteId}/event-data/properties`, {
-        startAt,
-        endAt,
-        ...(eventName ? { event: eventName } : {}),
-        ...(searchValue ? { propertyName: searchValue } : {}),
-      }),
-    enabled: !!websiteId,
-  });
-
-  const properties = [...new Set(data?.map(d => d.propertyName) ?? [])];
-
-  return (
-    <ComboBox
-      aria-label="PropertySelect"
-      items={properties}
-      inputValue={value}
-      onInputChange={v => {
-        setSearch(v);
-        onChange?.(v);
-        onPropertyChange?.(v);
-      }}
-      formValue="text"
-      allowsEmptyCollection
-      allowsCustomValue
-      renderEmptyState={() =>
-        isLoading ? (
-          <Loading placement="center" icon="dots" />
-        ) : (
-          <Empty message={t(messages.noResultsFound)} />
-        )
-      }
-    >
-      {properties.map(p => (
-        <ListItem key={p} id={p}>
-          {p}
-        </ListItem>
-      ))}
-    </ComboBox>
-  );
-}
-
-function ValueSelect({
-  websiteId,
-  eventName,
-  propertyName,
-  value,
-  onChange,
-}: {
-  websiteId: string;
-  eventName?: string;
-  propertyName?: string;
-  value?: string;
-  onChange?: (value: string) => void;
-}) {
-  const { get, useQuery } = useApi();
-  const { t, messages } = useMessages();
-  const { startAt, endAt } = getEventDataDateRange();
-
-  const { data, isLoading } = useQuery<Array<{ value: string; total: number }>>({
-    queryKey: ['event-data:values', { websiteId, eventName, propertyName, startAt, endAt }],
-    queryFn: () =>
-      get(`/websites/${websiteId}/event-data/values`, {
-        startAt,
-        endAt,
-        event: eventName,
-        propertyName,
-      }),
-    enabled: !!(websiteId && eventName && propertyName),
-  });
-
-  const values = data?.map(d => d.value) ?? [];
-
-  return (
-    <ComboBox
-      aria-label="ValueSelect"
-      items={values}
-      inputValue={value}
-      onInputChange={v => {
-        onChange?.(v);
-      }}
-      formValue="text"
-      allowsEmptyCollection
-      allowsCustomValue
-      renderEmptyState={() =>
-        isLoading ? (
-          <Loading placement="center" icon="dots" />
-        ) : (
-          <Empty message={t(messages.noResultsFound)} />
-        )
-      }
-    >
-      {values.map(v => (
-        <ListItem key={v} id={v}>
-          {v}
-        </ListItem>
-      ))}
-    </ComboBox>
-  );
-}
-
-function OperatorSelect({
-  value = 'eq',
-  onChange,
-}: {
-  value?: string;
-  onChange?: (value: string) => void;
-}) {
-  const { t, labels } = useMessages();
-  return (
-    <Select value={value} onChange={onChange}>
-      <ListItem id="eq">{t(labels.is)}</ListItem>
-      <ListItem id="neq">{t(labels.isNot)}</ListItem>
-      <ListItem id="c">{t(labels.contains)}</ListItem>
-      <ListItem id="dnc">{t(labels.doesNotContain)}</ListItem>
-    </Select>
-  );
-}
 
 function StepRow({
   index,
@@ -189,39 +35,75 @@ function StepRow({
   onRemove: () => void;
 }) {
   const { t, labels } = useMessages();
+  const { isMobile } = useMobile();
+  const { get, useQuery } = useApi();
   const [eventName, setEventName] = useState(initialEventName ?? '');
+  const { startAt, endAt } = getEventDataDateRange();
+
+  const { data: eventProperties } = useQuery<Array<{ propertyName: string }>>({
+    queryKey: ['event-data:properties', { websiteId, eventName, searchValue: '', startAt, endAt }],
+    queryFn: () =>
+      get(`/websites/${websiteId}/event-data/properties`, {
+        startAt,
+        endAt,
+        ...(eventName ? { event: eventName } : {}),
+      }),
+    enabled: !!websiteId && !!eventName,
+  });
+
+  const hasEventData = (eventProperties?.length ?? 0) > 0;
+
+  const valueField = (
+    <FormField name={`steps.${index}.value`} rules={{ required: t(labels.required) }}>
+      {({ field, context }) => {
+        const type = context.watch(`steps.${index}.type`);
+        return (
+          <LookupField
+            websiteId={websiteId}
+            type={type}
+            {...field}
+            onValueChange={(v: string) => {
+              setEventName(v);
+            }}
+          />
+        );
+      }}
+    </FormField>
+  );
 
   return (
     <Column gap>
-      <Grid columns="260px 1fr auto" gap>
-        <Column>
-          <FormField name={`steps.${index}.type`} rules={{ required: t(labels.required) }}>
-            <ActionSelect />
-          </FormField>
-        </Column>
-        <Column>
-          <FormField name={`steps.${index}.value`} rules={{ required: t(labels.required) }}>
-            {({ field, context }) => {
-              const type = context.watch(`steps.${index}.type`);
-              return (
-                <LookupField
-                  websiteId={websiteId}
-                  type={type}
-                  {...field}
-                  onValueChange={(v: string) => {
-                    setEventName(v);
-                  }}
-                />
-              );
-            }}
-          </FormField>
-        </Column>
-        <Button onPress={onRemove}>
-          <Icon size="sm">
-            <X />
-          </Icon>
-        </Button>
-      </Grid>
+      {isMobile ? (
+        <Grid columns="1fr auto" gap alignItems="start">
+          <Column gap>
+            <FormField name={`steps.${index}.type`} rules={{ required: t(labels.required) }}>
+              <ActionSelect />
+            </FormField>
+            {valueField}
+          </Column>
+          <Button onPress={onRemove}>
+            <Icon size="sm">
+              <X />
+            </Icon>
+          </Button>
+        </Grid>
+      ) : (
+        <Grid columns="260px 1fr auto" gap>
+          <Column>
+            <FormField name={`steps.${index}.type`} rules={{ required: t(labels.required) }}>
+              <ActionSelect />
+            </FormField>
+          </Column>
+          <Column>
+            {valueField}
+          </Column>
+          <Button onPress={onRemove}>
+            <Icon size="sm">
+              <X />
+            </Icon>
+          </Button>
+        </Grid>
+      )}
       <FormFieldArray name={`steps.${index}.filters`}>
         {({ fields: filterFields, append: appendFilter, remove: removeFilter, watch }) => {
           const stepType = watch(`steps.${index}.type`);
@@ -235,7 +117,7 @@ function StepRow({
                   { id: filterId, property: initialProperty }: { id: string; property?: string },
                   filterIndex: number,
                 ) => (
-                  <FilterRow
+                  <EventDataFilterRow
                     key={filterId}
                     stepIndex={index}
                     filterIndex={filterIndex}
@@ -246,67 +128,24 @@ function StepRow({
                   />
                 ),
               )}
-              <Row>
-                <Button
-                  variant="quiet"
-                  onPress={() => appendFilter({ property: '', operator: 'eq', value: '' })}
-                >
-                  <Icon size="sm">
-                    <Plus />
-                  </Icon>
-                  <Text>{t(labels.filter)}</Text>
-                </Button>
-              </Row>
+              {hasEventData && (
+                <Row>
+                  <Button
+                    variant="quiet"
+                    onPress={() => appendFilter({ property: '', operator: 'eq', value: '' })}
+                  >
+                    <Icon size="sm">
+                      <Plus />
+                    </Icon>
+                    <Text>{t(labels.filter)}</Text>
+                  </Button>
+                </Row>
+              )}
             </Grid>
           );
         }}
       </FormFieldArray>
     </Column>
-  );
-}
-
-function FilterRow({
-  stepIndex,
-  filterIndex,
-  websiteId,
-  eventName,
-  initialProperty,
-  onRemove,
-}: {
-  stepIndex: number;
-  filterIndex: number;
-  websiteId: string;
-  eventName: string;
-  initialProperty?: string;
-  onRemove: () => void;
-}) {
-  const { t, labels } = useMessages();
-  const [propertyName, setPropertyName] = useState(initialProperty ?? '');
-
-  return (
-    <Grid columns="1fr 140px 1fr auto" gap>
-      <FormField
-        name={`steps.${stepIndex}.filters.${filterIndex}.property`}
-        rules={{ required: t(labels.required) }}
-      >
-        <PropertySelect
-          websiteId={websiteId}
-          eventName={eventName}
-          onPropertyChange={v => setPropertyName(v)}
-        />
-      </FormField>
-      <FormField name={`steps.${stepIndex}.filters.${filterIndex}.operator`}>
-        <OperatorSelect />
-      </FormField>
-      <FormField name={`steps.${stepIndex}.filters.${filterIndex}.value`}>
-        <ValueSelect websiteId={websiteId} eventName={eventName} propertyName={propertyName} />
-      </FormField>
-      <Button onPress={onRemove}>
-        <Icon size="sm">
-          <X />
-        </Icon>
-      </Button>
-    </Grid>
   );
 }
 
@@ -322,7 +161,7 @@ export function FunnelEditForm({
   onClose?: () => void;
 }) {
   const { t, labels } = useMessages();
-  const { data } = useReportQuery(id);
+  const { data, isLoading } = useReportQuery(id);
   const { mutateAsync, error, isPending, touch } = useUpdateQuery(`/reports${id ? `/${id}` : ''}`);
 
   const handleSubmit = async ({
@@ -345,7 +184,7 @@ export function FunnelEditForm({
     );
   };
 
-  if (id && !data) {
+  if (id && isLoading) {
     return <Loading placement="absolute" />;
   }
 
@@ -405,7 +244,7 @@ export function FunnelEditForm({
           );
         }}
       </FormFieldArray>
-      <FormButtons>
+      <FormButtons style={{ paddingBottom: '16px' }}>
         <Button onPress={onClose} isDisabled={isPending}>
           {t(labels.cancel)}
         </Button>

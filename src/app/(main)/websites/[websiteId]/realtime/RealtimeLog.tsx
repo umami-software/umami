@@ -1,7 +1,7 @@
 import { Column, Heading, Row, SearchField, Text } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import { useMemo, useState } from 'react';
-import { FixedSizeList } from 'react-window';
+import { List, type RowComponentProps } from 'react-window';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { useFormat } from '@/components//hooks/useFormat';
 import { Avatar } from '@/components/common/Avatar';
@@ -121,7 +121,7 @@ export function RealtimeLog({ data }: { data: any }) {
     }
   };
 
-  const TableRow = ({ index, style }) => {
+  const TableRow = ({ index, style, logs }: RowComponentProps<{ logs: any[] }>) => {
     const row = logs[index];
     return (
       <Row alignItems="center" style={style} gap>
@@ -195,9 +195,14 @@ export function RealtimeLog({ data }: { data: any }) {
       <Column>
         {logs?.length === 0 && <Empty />}
         {logs?.length > 0 && (
-          <FixedSizeList width="100%" height={500} itemCount={logs.length} itemSize={50}>
-            {TableRow}
-          </FixedSizeList>
+          <List
+            rowComponent={TableRow}
+            rowCount={logs.length}
+            rowHeight={50}
+            rowProps={{ logs }}
+            defaultHeight={500}
+            style={{ width: '100%' }}
+          />
         )}
       </Column>
       <SessionModal websiteId={website.id} />

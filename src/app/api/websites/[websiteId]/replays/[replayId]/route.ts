@@ -21,7 +21,9 @@ export async function GET(
 
   const chunks = await getReplayChunks(websiteId, replayId);
 
-  const allEvents = chunks.flatMap(chunk => chunk.events);
+  const allEvents = chunks
+    .flatMap(chunk => chunk.events)
+    .sort((a, b) => a.timestamp - b.timestamp);
   const sessionId = chunks.length > 0 ? chunks[0].sessionId : null;
   const startedAt = chunks.length > 0 ? chunks[0].startedAt : null;
   const endedAt = chunks.length > 0 ? chunks[chunks.length - 1].endedAt : null;

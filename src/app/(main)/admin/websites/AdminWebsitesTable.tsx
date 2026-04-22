@@ -1,5 +1,5 @@
 import { DataColumn, DataTable, Dialog, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import { useState } from 'react';
 import { WebsiteDeleteForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteDeleteForm';
 import { DateDistance } from '@/components/common/DateDistance';

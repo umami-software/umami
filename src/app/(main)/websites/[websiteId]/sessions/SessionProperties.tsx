@@ -33,6 +33,7 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
               value={propertyName}
               onChange={setPropertyName}
               placeholder=""
+              maxHeight={480}
             >
               {properties?.map(p => (
                 <ListItem key={p} id={p}>
