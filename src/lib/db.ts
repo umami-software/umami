@@ -21,7 +21,7 @@ export function getDatabaseType(url = process.env.DATABASE_URL) {
 }
 
 export async function runQuery(queries: any) {
-  // AP 数据库优先：ClickHouse 或 OceanBase
+  // AP database priority: ClickHouse or OceanBase
   if (process.env.CLICKHOUSE_URL) {
     if (queries[KAFKA]) {
       return queries[KAFKA]();
@@ -34,7 +34,7 @@ export async function runQuery(queries: any) {
     return queries[OCEANBASE]();
   }
 
-  // 默认使用 PostgreSQL (Prisma)
+  // Default to PostgreSQL (Prisma)
   return queries[PRISMA]();
 }
 

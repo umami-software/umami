@@ -483,14 +483,22 @@ async function oceanbaseQuery(
   const { rawQuery, parseFilters } = oceanbase;
   const eventType = type === 'path' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'path' ? 'url_path' : 'event_name';
-  const { filterQuery, joinSessionQuery, cohortQuery, buildParams } = parseFilters({
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     ...parameters,
     websiteId,
     eventType,
   });
 
-  const params = buildParams([websiteId, startDate, endDate, step]);
+  // eventQuery placeholders: cohortQuery(0|3) + WHERE(websiteId, startDate, endDate, step) + filterQuery(N)
+  const eventQueryParams = [
+    ...(cohortQuery ? [websiteId, startDate, endDate] : []),
+    websiteId, startDate, endDate, step,
+    ...queryParams,
+  ];
+
+  // modelQuery placeholders: websiteId, startDate, endDate
+  const modelParams = [websiteId, startDate, endDate];
 
   function getUTMQuery(utmColumn: string) {
     return `
@@ -545,6 +553,9 @@ async function oceanbaseQuery(
     GROUP BY e.session_id)`;
   }
 
+  // All CTE queries share the same param structure: eventQuery + modelQuery + final(3)
+  const cteParams = [...eventQueryParams, ...modelParams, websiteId, startDate, endDate];
+
   const referrerRes = await rawQuery<{ name: string; value: number }[]>(
     `
     ${eventQuery}
@@ -565,7 +576,7 @@ async function oceanbaseQuery(
     ORDER BY 2 DESC
     LIMIT 20
     `,
-    [...params, websiteId, startDate, endDate, websiteId, startDate, endDate],
+    cteParams,
   );
 
   const paidAdsres = await rawQuery<{ name: string; value: number }[]>(
@@ -597,7 +608,7 @@ async function oceanbaseQuery(
     FROM results
     WHERE name != ''
     `,
-    [...params, websiteId, startDate, endDate, websiteId, startDate, endDate],
+    cteParams,
   );
 
   const sourceRes = await rawQuery<{ name: string; value: number }[]>(
@@ -606,7 +617,7 @@ async function oceanbaseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_source')}
     `,
-    [...params, websiteId, startDate, endDate, websiteId, startDate, endDate],
+    cteParams,
   );
 
   const mediumRes = await rawQuery<{ name: string; value: number }[]>(
@@ -615,7 +626,7 @@ async function oceanbaseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_medium')}
     `,
-    [...params, websiteId, startDate, endDate, websiteId, startDate, endDate],
+    cteParams,
   );
 
   const campaignRes = await rawQuery<{ name: string; value: number }[]>(
@@ -624,7 +635,7 @@ async function oceanbaseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_campaign')}
     `,
-    [...params, websiteId, startDate, endDate, websiteId, startDate, endDate],
+    cteParams,
   );
 
   const contentRes = await rawQuery<{ name: string; value: number }[]>(
@@ -633,7 +644,7 @@ async function oceanbaseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_content')}
     `,
-    [...params, websiteId, startDate, endDate, websiteId, startDate, endDate],
+    cteParams,
   );
 
   const termRes = await rawQuery<{ name: string; value: number }[]>(
@@ -642,8 +653,15 @@ async function oceanbaseQuery(
     ${getModelQuery(model)}
     ${getUTMQuery('utm_term')}
     `,
-    [...params, websiteId, startDate, endDate, websiteId, startDate, endDate],
+    cteParams,
   );
+
+  // totalRes: cohort(0|3) + WHERE(websiteId, startDate, endDate, step) + filterQuery(N)
+  const totalParams = [
+    ...(cohortQuery ? [websiteId, startDate, endDate] : []),
+    websiteId, startDate, endDate, step,
+    ...queryParams,
+  ];
 
   const totalRes = await rawQuery<{ pageviews: number; visitors: number; visits: number }[]>(
     `
@@ -659,7 +677,7 @@ async function oceanbaseQuery(
         AND website_event.${column} = ?
         ${filterQuery}
     `,
-    params,
+    totalParams,
   ).then(result => result?.[0]);
 
   return {

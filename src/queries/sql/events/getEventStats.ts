@@ -169,6 +169,11 @@ async function oceanbaseQuery(
 
   const params = buildParams([websiteId, filters.startDate, filters.endDate]);
 
+  // limitQuery adds 3 more placeholders (websiteId, startDate, endDate)
+  const finalParams = limit
+    ? [...params, websiteId, filters.startDate, filters.endDate]
+    : params;
+
   return rawQuery(
     `
     SELECT
@@ -186,7 +191,7 @@ async function oceanbaseQuery(
     GROUP BY 1, 2
     ORDER BY 2
     `,
-    params,
+    finalParams,
     FUNCTION_NAME,
   );
 }

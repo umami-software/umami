@@ -2,6 +2,7 @@ import mysql, { type Pool, type PoolConnection, type RowDataPacket } from 'mysql
 import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
 import { OCEANBASE } from './db';
+import { isValidTimezone, normalizeTimezone } from './date';
 import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
 import { filtersObjectToArray } from './params';
 import type { Operator, QueryFilters, QueryOptions } from './types';
@@ -16,32 +17,36 @@ const DATE_FORMATS = {
   year: '%Y-01-01',
 };
 
-let pool: Pool;
 const enabled = Boolean(process.env.OCEANBASE_URL);
 
 function getPool(): Pool {
   if (!enabled) {
     throw new Error('OceanBase is not enabled. Set OCEANBASE_URL environment variable.');
   }
-  if (!pool) {
-    const url = new URL(process.env.OCEANBASE_URL!);
 
-    pool = mysql.createPool({
-      host: url.hostname,
-      port: parseInt(url.port) || 2881,
-      user: url.username,
-      password: decodeURIComponent(url.password),
-      database: url.pathname.slice(1),
-      waitForConnections: true,
-      connectionLimit: parseInt(process.env.OCEANBASE_POOL_SIZE || '10'),
-      queueLimit: 0,
-      timezone: 'Z',
-    });
-
-    log('OceanBase pool initialized');
+  const g = globalThis as any;
+  if (g[OCEANBASE]) {
+    return g[OCEANBASE];
   }
 
-  return pool;
+  const url = new URL(process.env.OCEANBASE_URL!);
+
+  const p = mysql.createPool({
+    host: url.hostname,
+    port: parseInt(url.port) || 2881,
+    user: url.username,
+    password: decodeURIComponent(url.password),
+    database: url.pathname.slice(1),
+    waitForConnections: true,
+    connectionLimit: parseInt(process.env.OCEANBASE_POOL_SIZE || '10'),
+    queueLimit: 0,
+    timezone: 'Z',
+  });
+
+  g[OCEANBASE] = p;
+  log('OceanBase pool initialized');
+
+  return p;
 }
 
 async function getConnection(): Promise<PoolConnection> {
@@ -80,14 +85,22 @@ function getCastColumnQuery(field: string, type: string): string {
 
 function getDateSQL(field: string, unit: string, timezone?: string): string {
   if (timezone && timezone !== 'utc') {
-    return `DATE_FORMAT(CONVERT_TZ(${field}, 'UTC', '${timezone}'), '${DATE_FORMATS[unit]}')`;
+    if (!isValidTimezone(timezone)) {
+      throw new Error(`Invalid timezone: ${timezone}`);
+    }
+    const tz = normalizeTimezone(timezone);
+    return `DATE_FORMAT(CONVERT_TZ(${field}, 'UTC', '${tz}'), '${DATE_FORMATS[unit]}')`;
   }
   return `DATE_FORMAT(${field}, '${DATE_FORMATS[unit]}')`;
 }
 
 function getDateWeeklySQL(field: string, timezone?: string): string {
   if (timezone && timezone !== 'utc') {
-    return `CONCAT(DAYOFWEEK(CONVERT_TZ(${field}, 'UTC', '${timezone}')) - 1, ':', DATE_FORMAT(CONVERT_TZ(${field}, 'UTC', '${timezone}'), '%H'))`;
+    if (!isValidTimezone(timezone)) {
+      throw new Error(`Invalid timezone: ${timezone}`);
+    }
+    const tz = normalizeTimezone(timezone);
+    return `CONCAT(DAYOFWEEK(CONVERT_TZ(${field}, 'UTC', '${tz}')) - 1, ':', DATE_FORMAT(CONVERT_TZ(${field}, 'UTC', '${tz}'), '%H'))`;
   }
   return `CONCAT(DAYOFWEEK(${field}) - 1, ':', DATE_FORMAT(${field}, '%H'))`;
 }
@@ -100,7 +113,7 @@ function getTimestampDiffSQL(field1: string, field2: string): string {
   return `UNIX_TIMESTAMP(${field2}) - UNIX_TIMESTAMP(${field1})`;
 }
 
-function getSearchSQL(column: string, param: string = 'search'): string {
+function getSearchSQL(column: string): string {
   return `and LOWER(${column}) LIKE LOWER(?)`;
 }
 
@@ -356,6 +369,10 @@ async function pagedRawQuery(
   const offset = +size * (+page - 1);
   const direction = sortDescending ? 'desc' : 'asc';
 
+  if (orderBy && !/^[a-zA-Z_][a-zA-Z0-9_.]*$/.test(orderBy)) {
+    throw new Error(`Invalid orderBy column: ${orderBy}`);
+  }
+
   const statements = [
     orderBy && `order by ${orderBy} ${direction}`,
     +size > 0 && `limit ${+size} offset ${offset}`,
@@ -418,7 +435,6 @@ function getUTCString(date?: Date | string | number): string {
 export default {
   enabled,
   getPool,
-  getConnection,
   log,
   getAddIntervalQuery,
   getCastColumnQuery,
@@ -428,7 +444,6 @@ export default {
   getFilterQuery,
   getTimestampDiffSQL,
   getTimestampSQL,
-  getSearchSQL,
   parseFilters,
   pagedRawQuery,
   findUnique,

@@ -11,6 +11,7 @@ services:
       - "3000:3000"
     environment:
       DATABASE_URL: mysql://umami:umami_password@db:2881/umami
+      OCEANBASE_URL: mysql://umami:umami_password@db:2881/umami
       APP_SECRET: replace-me-with-a-random-string
       NODE_ENV: development
     command: sh -c "npm install && npm run dev"
@@ -38,7 +39,7 @@ services:
       - "2881:2881"   # MySQL protocol port
       - "2882:2882"   # RPC port
     volumes:
-      - ob_/data
+      - ob_data:/root/ob
       - ./db/oceanbase/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     restart: unless-stopped
     healthcheck:
@@ -54,7 +55,7 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - redis_/data
+      - redis_data:/data
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
@@ -64,5 +65,5 @@ services:
 
 volumes:
   umami_node_modules:
-  ob_
-  redis_
+  ob_data:
+  redis_data:data:

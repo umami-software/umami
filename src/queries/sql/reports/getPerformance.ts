@@ -1,4 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
+import { WEB_VITALS_THRESHOLDS } from '@/lib/constants';
 import oceanbase from '@/lib/oceanbase';
 import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
@@ -217,12 +218,18 @@ async function clickhouseQuery(
   return { chart, summary };
 }
 
+const VALID_METRICS = Object.keys(WEB_VITALS_THRESHOLDS);
+
 async function oceanbaseQuery(
   websiteId: string,
   parameters: PerformanceParameters,
   filters: QueryFilters,
 ): Promise<PerformanceResult> {
   const { startDate, endDate, unit = 'day', timezone = 'utc', metric = 'lcp' } = parameters;
+
+  if (!VALID_METRICS.includes(metric)) {
+    throw new Error(`Invalid metric: ${metric}`);
+  }
   const { getDateSQL, rawQuery, parseFilters } = oceanbase;
   const { filterQuery, joinSessionQuery, cohortQuery, buildParams } = parseFilters({
     ...filters,

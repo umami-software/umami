@@ -159,10 +159,21 @@ async function oceanbaseQuery(websiteId: string, filters: QueryFilters) {
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
 
-  const { filterQuery, cohortQuery, joinSessionQuery, buildParams } = parseFilters({
+  const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
+
+  const { startDate, endDate } = filters;
+
+  // eventQuery placeholder order:
+  //   event_data JOIN (3) → cohortQuery (0|3) → main WHERE (3) → filterQuery (N)
+  const eventQueryParams = [
+    websiteId, startDate, endDate,           // event_data JOIN
+    ...(cohortQuery ? [websiteId, startDate, endDate] : []),  // cohortQuery
+    websiteId, startDate, endDate,           // main WHERE
+    ...queryParams,                          // filterQuery
+  ];
 
   // Selects distinct event IDs matching all filters — reused for count and paged data
   const eventQuery = `
@@ -179,12 +190,17 @@ async function oceanbaseQuery(websiteId: string, filters: QueryFilters) {
     GROUP BY website_event.event_id
   `;
 
-  const params = buildParams([websiteId, filters.startDate, filters.endDate]);
-
   const count = await rawQuery(
     `SELECT COUNT(*) AS num FROM (${eventQuery}) t`,
-    params,
+    eventQueryParams,
   ).then((res: any) => res[0].num);
+
+  // data query: eventQuery (CTE) + outer JOIN website_event (3) + outer WHERE event_data (3)
+  const dataParams = [
+    ...eventQueryParams,
+    websiteId, startDate, endDate,  // outer JOIN website_event
+    websiteId, startDate, endDate,  // outer WHERE event_data
+  ];
 
   const data = await rawQuery(
     `
@@ -212,7 +228,7 @@ async function oceanbaseQuery(websiteId: string, filters: QueryFilters) {
       AND event_data.created_at BETWEEN ? AND ?
     ORDER BY event_data.created_at DESC
     `,
-    params,
+    dataParams,
     FUNCTION_NAME,
   );
 

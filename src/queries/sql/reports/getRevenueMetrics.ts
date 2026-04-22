@@ -471,8 +471,9 @@ async function oceanbaseQuery(
     currency,
   });
 
-  const joinQuery =
-    filterQuery || cohortQuery
+  const hasJoinQuery = !!(filterQuery || cohortQuery);
+
+  const joinQuery = hasJoinQuery
       ? `JOIN (SELECT *
                FROM website_event
                WHERE website_id = ?
@@ -482,6 +483,18 @@ async function oceanbaseQuery(
           AND website_event.session_id = revenue.session_id
           AND website_event.event_id = revenue.event_id`
       : '';
+
+  // joinQuery adds 3 params when present
+  const joinParams = hasJoinQuery ? [websiteId, startDate, endDate] : [];
+  const cohortParams = cohortQuery ? [websiteId, startDate, endDate] : [];
+
+  // country: joinQuery(0|3) + cohort(0|3) + WHERE(websiteId, startDate, endDate, currency) + filterQuery(N)
+  const countryRegionParams = [
+    ...joinParams,
+    ...cohortParams,
+    websiteId, startDate, endDate, currency,
+    ...queryParams,
+  ];
 
   const country = await rawQuery<{ name: string; value: number }[]>(
     `
@@ -501,7 +514,7 @@ async function oceanbaseQuery(
     GROUP BY session.country
     ORDER BY value DESC
     `,
-    [websiteId, startDate, endDate, websiteId, startDate, endDate, currency, ...queryParams],
+    countryRegionParams,
   );
 
   const region = await rawQuery<{ name: string; value: number; country: string }[]>(
@@ -523,8 +536,18 @@ async function oceanbaseQuery(
     GROUP BY session.country, session.region
     ORDER BY value DESC
     `,
-    [websiteId, startDate, endDate, websiteId, startDate, endDate, currency, ...queryParams],
+    countryRegionParams,
   );
+
+  // referrer & channel: joinQuery(0|3) + cohort(0|3) + WHERE(4) + filterQuery(N) + 2 subqueries(3+3)
+  const cteParams = [
+    ...joinParams,
+    ...cohortParams,
+    websiteId, startDate, endDate, currency,
+    ...queryParams,
+    websiteId, startDate, endDate,
+    websiteId, startDate, endDate,
+  ];
 
   const referrer = await rawQuery<{ name: string; value: number }[]>(
     `
@@ -573,7 +596,7 @@ async function oceanbaseQuery(
     GROUP BY we.referrer_domain
     ORDER BY value DESC
     `,
-    [websiteId, startDate, endDate, currency, ...queryParams, websiteId, startDate, endDate, websiteId, startDate, endDate],
+    cteParams,
   );
 
   const channel = await rawQuery<{ name: string; value: number }[]>(
@@ -653,7 +676,7 @@ async function oceanbaseQuery(
     GROUP BY name
     ORDER BY value DESC
     `,
-    [websiteId, startDate, endDate, currency, ...queryParams, websiteId, startDate, endDate, websiteId, startDate, endDate],
+    cteParams,
   );
 
   return { country, region, referrer, channel };

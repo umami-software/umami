@@ -149,7 +149,7 @@ async function oceanbaseQuery(
     paramValue = value.replace(/^\*|\*$/g, '%');
   }
 
-  const { filterQuery, dateQuery, joinSessionQuery, cohortQuery, buildParams, getDateParams, queryParams } = parseFilters({
+  const { filterQuery, dateQuery, joinSessionQuery, cohortQuery, queryParams, getDateParams } = parseFilters({
     ...filters,
     websiteId,
     value: paramValue,
@@ -158,19 +158,33 @@ async function oceanbaseQuery(
     eventType,
   });
 
-  const excludeEventTypeFilterQuery = filterQuery
-    .split('\n')
-    .filter(filter => !filter.includes('event_type'))
-    .join('\n')
-    .trim();
+  // Parse filters again without eventType to get clean SQL and params for the subquery
+  const { filterQuery: subFilterQuery, queryParams: subQueryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    value: paramValue,
+    startDate,
+    endDate,
+  });
 
   const dateParams = getDateParams();
 
-  // Build params for subquery: cohortQuery + websiteId + dateQuery + excludeFilter
-  const subqueryParams = buildParams([websiteId, ...dateParams]);
+  // Subquery: cohort(0|3) + websiteId + dateQuery + subFilterQuery (no event_type)
+  const subqueryParams = [
+    ...(cohortQuery ? [websiteId, startDate, endDate] : []),
+    websiteId,
+    ...dateParams,
+    ...subQueryParams,
+  ];
 
-  // Build params for main query: cohortQuery + websiteId + paramValue + dateQuery + filterQuery
-  const mainQueryParams = buildParams([websiteId, paramValue, ...dateParams]);
+  // Main query: cohort(0|3) + websiteId + paramValue + dateQuery + filterQuery
+  const mainQueryParams = [
+    ...(cohortQuery ? [websiteId, startDate, endDate] : []),
+    websiteId,
+    paramValue,
+    ...dateParams,
+    ...queryParams,
+  ];
 
   return rawQuery(
     `
@@ -182,7 +196,7 @@ async function oceanbaseQuery(
       ${joinSessionQuery}
       WHERE website_event.website_id = ?
       ${dateQuery}
-      ${excludeEventTypeFilterQuery}
+      ${subFilterQuery}
     ) AS total
     FROM website_event
     ${cohortQuery}
