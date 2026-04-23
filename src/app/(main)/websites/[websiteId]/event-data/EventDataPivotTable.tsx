@@ -7,7 +7,7 @@ import { Empty } from '@/components/common/Empty';
 import Link from '@/components/common/Link';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Pager } from '@/components/common/Pager';
-import { useEventDataPivotQuery, useEventDataPropertiesQuery, useMessages, useNavigation } from '@/components/hooks';
+import { useEventDataPivotQuery, useEventDataPropertiesQuery, useMessages, useMobile, useNavigation } from '@/components/hooks';
 
 export function EventDataPivotTable({
   websiteId,
@@ -18,6 +18,7 @@ export function EventDataPivotTable({
 }) {
   const { t, labels } = useMessages();
   const { router, updateParams } = useNavigation();
+  const { isMobile } = useMobile();
 
   const propertiesQuery = useEventDataPropertiesQuery(websiteId);
   const pivotQuery = useEventDataPivotQuery(websiteId, eventName);
@@ -72,8 +73,8 @@ export function EventDataPivotTable({
         renderEmpty={() => <Empty />}
       >
         <Column gap="4" minWidth="0" width="100%" maxWidth="100%">
-          <Column minWidth="0" width="100%" maxWidth="100%" overflow="hidden">
-            <DataTable data={tableQuery?.data} style={{ width: '100%' }}>
+          <Column minWidth="0" width="100%" maxWidth="100%" overflow={isMobile ? undefined : 'hidden'}>
+            <DataTable data={tableQuery?.data} style={{ width: '100%' }} displayMode={isMobile ? 'cards' : 'table'}>
               <DataColumn id="session" label={t(labels.session)} width="0.75fr">
                 {(row: any) => (
                   <Link href={updateParams({ session: row.sessionId })}>

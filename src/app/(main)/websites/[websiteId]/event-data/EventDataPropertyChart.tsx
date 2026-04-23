@@ -144,7 +144,7 @@ export function EventDataPropertyChart({
         error={valuesQuery.error}
         minHeight="300px"
       >
-        <Grid columns="1fr 1fr" gap padding="2" alignItems="start">
+        <Grid columns={{ base: '1fr', md: '1fr 1fr' }} gap padding="2" alignItems="start">
           <ListTable title={propertyName} metric={t(labels.count)} data={tableData} />
           {pieChartData && <PieChart type="doughnut" chartData={pieChartData} />}
         </Grid>
