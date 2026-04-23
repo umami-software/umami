@@ -30,7 +30,7 @@
 
   const config = value => {
     const camelKey = toCamelCase(value);
-    if (globalConfig[camelKey] !== undefined) {
+    if (globalConfig[camelKey] != null) {
       return String(globalConfig[camelKey]);
     }
     return attr(`${_data}${value}`);
