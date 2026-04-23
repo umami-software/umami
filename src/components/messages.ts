@@ -134,6 +134,7 @@ export const labels: Record<string, string> = {
   thisYear: 'label.this-year',
   allTime: 'label.all-time',
   customRange: 'label.custom-range',
+  selectEvent: 'label.select-event',
   selectWebsite: 'label.select-website',
   selectLink: 'label.select-link',
   selectPixel: 'label.select-pixel',
