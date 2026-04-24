@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { parseEventPropertyFilters } from '@/lib/params';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { filterParams } from '@/lib/schema';
+import { filterParams, timezoneParam, unitParam } from '@/lib/schema';
 import { canViewWebsite } from '@/permissions';
 import { getEventDataNumericSeries } from '@/queries/sql/events/getEventDataNumericSeries';
 
@@ -15,7 +15,9 @@ export async function GET(
     endAt: z.coerce.number().int(),
     eventName: z.string(),
     propertyName: z.string(),
-    metric: z.enum(['sum', 'avg']).default('sum'),
+    metric: z.enum(['sum', 'avg', 'count']).default('sum'),
+    timezone: timezoneParam.optional(),
+    unit: unitParam.optional(),
     ...filterParams,
   });
 

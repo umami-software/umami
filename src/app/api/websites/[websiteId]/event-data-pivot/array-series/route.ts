@@ -4,7 +4,7 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, timezoneParam, unitParam } from '@/lib/schema';
 import { canViewWebsite } from '@/permissions';
-import { getEventDataPropertySeries } from '@/queries/sql/events/getEventDataPropertySeries';
+import { getEventDataArraySeries } from '@/queries/sql/events/getEventDataArraySeries';
 
 export async function GET(
   request: Request,
@@ -35,7 +35,7 @@ export async function GET(
   const { eventName, propertyName, ...rest } = query;
   const filters = await getQueryFilters(rest, websiteId);
   const eventFilters = parseEventPropertyFilters(query);
-  const data = await getEventDataPropertySeries(websiteId, eventName, propertyName, filters, eventFilters);
+  const data = await getEventDataArraySeries(websiteId, eventName, propertyName, filters, eventFilters);
 
   return json(data);
 }

@@ -2,9 +2,9 @@ import { z } from 'zod';
 import { parseEventPropertyFilters } from '@/lib/params';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { filterParams, timezoneParam, unitParam } from '@/lib/schema';
+import { filterParams, timezoneParam } from '@/lib/schema';
 import { canViewWebsite } from '@/permissions';
-import { getEventDataPropertySeries } from '@/queries/sql/events/getEventDataPropertySeries';
+import { getEventDataDateSeries } from '@/queries/sql/events/getEventDataDateSeries';
 
 export async function GET(
   request: Request,
@@ -16,7 +16,6 @@ export async function GET(
     eventName: z.string(),
     propertyName: z.string(),
     timezone: timezoneParam.optional(),
-    unit: unitParam.optional(),
     ...filterParams,
   });
 
@@ -35,7 +34,7 @@ export async function GET(
   const { eventName, propertyName, ...rest } = query;
   const filters = await getQueryFilters(rest, websiteId);
   const eventFilters = parseEventPropertyFilters(query);
-  const data = await getEventDataPropertySeries(websiteId, eventName, propertyName, filters, eventFilters);
+  const data = await getEventDataDateSeries(websiteId, eventName, propertyName, filters, eventFilters);
 
   return json(data);
 }

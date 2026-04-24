@@ -1,20 +1,20 @@
 import clickhouse from '@/lib/clickhouse';
+import { DATA_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { EventPropertyFilter, QueryFilters } from '@/lib/types';
+import type { EventDataDateSeriesPoint, EventPropertyFilter, QueryFilters } from '@/lib/types';
 
-const FUNCTION_NAME = 'getEventDataNumericSeries';
+const FUNCTION_NAME = 'getEventDataDateSeries';
 
-export async function getEventDataNumericSeries(
+export async function getEventDataDateSeries(
   ...args: [
     websiteId: string,
     eventName: string,
     propertyName: string,
-    metric: 'sum' | 'avg' | 'count',
     filters: QueryFilters,
     eventFilters?: EventPropertyFilter[],
   ]
-) {
+): Promise<EventDataDateSeriesPoint[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -25,27 +25,22 @@ async function relationalQuery(
   websiteId: string,
   eventName: string,
   propertyName: string,
-  metric: 'sum' | 'avg' | 'count',
   filters: QueryFilters,
   eventFilters: EventPropertyFilter[] = [],
-) {
-  const { timezone = 'utc', unit = 'day' } = filters;
-  const { rawQuery, getDateSQL, parseFilters, getEventPropertyFilterQuery } = prisma;
+) : Promise<EventDataDateSeriesPoint[]> {
+  const { timezone = 'UTC' } = filters;
+  const { rawQuery, parseFilters, getDateStringSQL, getEventPropertyFilterQuery } = prisma;
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
   const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
-  const aggSql =
-    metric === 'avg' ? 'avg(cast(event_data.number_value as decimal))' :
-    metric === 'count' ? 'count(*)' :
-    'sum(cast(event_data.number_value as decimal))';
 
   return rawQuery(
     `
     select
-      ${getDateSQL('event_data.created_at', unit, timezone)} t,
-      ${aggSql} y
+      ${getDateStringSQL('event_data.date_value', 'second', timezone)} as t,
+      count(*) as y
     from event_data
     join website_event on website_event.event_id = event_data.website_event_id
       and website_event.website_id = {{websiteId::uuid}}
@@ -57,7 +52,7 @@ async function relationalQuery(
     where event_data.website_id = {{websiteId::uuid}}
       and event_data.created_at between {{startDate}} and {{endDate}}
       and event_data.data_key = {{propertyName}}
-      and event_data.data_type = 2
+      and event_data.data_type = ${DATA_TYPE.date}
       ${filterQuery}
       ${epfSQL}
     group by 1
@@ -72,24 +67,19 @@ async function clickhouseQuery(
   websiteId: string,
   eventName: string,
   propertyName: string,
-  metric: 'sum' | 'avg' | 'count',
   filters: QueryFilters,
   eventFilters: EventPropertyFilter[] = [],
-): Promise<{ t: string; y: number }[]> {
-  const { timezone = 'UTC', unit = 'day' } = filters;
-  const { rawQuery, getDateSQL, parseFilters, getEventPropertyFilterQuery } = clickhouse;
+): Promise<EventDataDateSeriesPoint[]> {
+  const { timezone = 'UTC' } = filters;
+  const { rawQuery, parseFilters, getDateStringSQL, getEventPropertyFilterQuery } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
   const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
-  const aggSql =
-    metric === 'avg' ? 'avg(event_data.number_value)' :
-    metric === 'count' ? 'count()' :
-    'sum(event_data.number_value)';
 
   return rawQuery(
     `
     select
-      ${getDateSQL('event_data.created_at', unit, timezone)} as t,
-      ${aggSql} as y
+      ${getDateStringSQL('event_data.date_value', 'second', timezone)} as t,
+      count() as y
     from event_data
     any left join (
           select *
@@ -105,7 +95,7 @@ async function clickhouseQuery(
     where event_data.website_id = {websiteId:UUID}
       and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_data.data_key = {propertyName:String}
-      and event_data.data_type = 2
+      and event_data.data_type = ${DATA_TYPE.date}
     ${filterQuery}
     ${epfSQL}
     group by t

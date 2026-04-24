@@ -39,6 +39,11 @@ const DATE_FORMATS_UTC = {
   year: 'YYYY-01-01"T"HH24:00:00"Z"',
 };
 
+const DATE_STRING_FORMATS = {
+  utc: 'YYYY-MM-DD"T"HH24:MI:SS"Z"',
+  second: 'YYYY-MM-DD"T"HH24:MI:SS',
+};
+
 function getAddIntervalQuery(field: string, interval: string): string {
   return `${field} + interval '${interval}'`;
 }
@@ -57,6 +62,14 @@ function getDateSQL(field: string, unit: string, timezone?: string): string {
   }
 
   return `to_char(date_trunc('${unit}', ${field}), '${DATE_FORMATS_UTC[unit]}')`;
+}
+
+function getDateStringSQL(field: string, unit: keyof typeof DATE_STRING_FORMATS = 'utc', timezone?: string): string {
+  if (timezone && timezone !== 'utc') {
+    return `to_char(${field} at time zone '${timezone}', '${DATE_STRING_FORMATS[unit]}')`;
+  }
+
+  return `to_char(${field}, '${DATE_STRING_FORMATS.utc}')`;
 }
 
 function getDateWeeklySQL(field: string, timezone?: string) {
@@ -504,6 +517,7 @@ export default {
   getCastColumnQuery,
   getDayDiffQuery,
   getDateSQL,
+  getDateStringSQL,
   getDateWeeklySQL,
   getFilterQuery,
   getEventPropertyFilterQuery,

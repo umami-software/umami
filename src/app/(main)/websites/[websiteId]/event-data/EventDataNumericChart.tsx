@@ -1,19 +1,22 @@
 'use client';
-import { Column } from '@umami/react-zen';
-import { useTheme } from '@umami/react-zen';
+import { Column, useTheme } from '@umami/react-zen';
 import { useCallback, useMemo } from 'react';
 import { BarChart } from '@/components/charts/BarChart';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
   useDateRange,
   useEventDataNumericSeriesQuery,
+  useEventDataNumericStatsQuery,
   useLocale,
   useMessages,
   useTimezone,
 } from '@/components/hooks';
+import { MetricCard } from '@/components/metrics/MetricCard';
+import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { renderDateLabels } from '@/lib/charts';
 import { getThemeColors } from '@/lib/colors';
 import { generateTimeSeries } from '@/lib/date';
+import { formatLongNumber } from '@/lib/format';
 import type { EventPropertyFilter } from '@/lib/types';
 
 export function EventDataNumericChart({
@@ -48,12 +51,34 @@ export function EventDataNumericChart({
     'avg',
     eventFilters,
   );
+  const statsQuery = useEventDataNumericStatsQuery(
+    websiteId,
+    eventName,
+    propertyName,
+    eventFilters,
+  );
+
+  const sumRows = useMemo(
+    () => (sumQuery.data as { t: string; y: number }[] | undefined) ?? [],
+    [sumQuery.data],
+  );
+  const avgRows = useMemo(
+    () => (avgQuery.data as { t: string; y: number }[] | undefined) ?? [],
+    [avgQuery.data],
+  );
+  const stats = statsQuery.data;
+
+  const formatMetricValue = useCallback(
+    (n: number) =>
+      Number(n).toLocaleString(locale, {
+        maximumFractionDigits: 2,
+        minimumFractionDigits: Number.isInteger(Number(n)) ? 0 : 2,
+      }),
+    [locale],
+  );
 
   const chartData: any = useMemo(() => {
     if (!sumQuery.data && !avgQuery.data) return;
-
-    const sumRows = (sumQuery.data as { t: string; y: number }[] | undefined) ?? [];
-    const avgRows = (avgQuery.data as { t: string; y: number }[] | undefined) ?? [];
 
     return {
       datasets: [
@@ -89,15 +114,50 @@ export function EventDataNumericChart({
         },
       ],
     };
-  }, [sumQuery.data, avgQuery.data, t, labels, startDate, endDate, unit, dateLocale, colors]);
+  }, [sumQuery.data, avgQuery.data, t, labels, startDate, endDate, unit, dateLocale, colors, sumRows, avgRows]);
 
   const renderXLabel = useCallback(renderDateLabels(unit, locale), [unit, locale]);
 
   return (
     <Column gap="4">
       <LoadingPanel
-        isLoading={sumQuery.isLoading || avgQuery.isLoading}
-        error={sumQuery.error || avgQuery.error}
+        data={stats}
+        isLoading={sumQuery.isLoading || avgQuery.isLoading || statsQuery.isLoading}
+        isFetching={sumQuery.isFetching || avgQuery.isFetching || statsQuery.isFetching}
+        error={sumQuery.error || avgQuery.error || statsQuery.error}
+        minHeight="100px"
+      >
+        <MetricsBar padding="2">
+          <MetricCard
+            label={t(labels.total)}
+            value={stats?.total ?? 0}
+            formatValue={formatLongNumber}
+          />
+          <MetricCard
+            label={t(labels.average)}
+            value={stats?.average ?? 0}
+            formatValue={formatMetricValue}
+          />
+          <MetricCard
+            label="Median"
+            value={stats?.median ?? 0}
+            formatValue={formatMetricValue}
+          />
+          <MetricCard
+            label={t(labels.max)}
+            value={stats?.max ?? 0}
+            formatValue={formatMetricValue}
+          />
+          <MetricCard
+            label={t(labels.min)}
+            value={stats?.min ?? 0}
+            formatValue={formatMetricValue}
+          />
+        </MetricsBar>
+      </LoadingPanel>
+      <LoadingPanel
+        isLoading={sumQuery.isLoading || avgQuery.isLoading || statsQuery.isLoading}
+        error={sumQuery.error || avgQuery.error || statsQuery.error}
         minHeight="400px"
       >
         {chartData && (

@@ -8,7 +8,7 @@ import type { EventPropertyFilter, Operator, QueryFilters, QueryOptions } from '
 
 export const CLICKHOUSE_DATE_FORMATS = {
   utc: '%Y-%m-%dT%H:%i:%SZ',
-  second: '%Y-%m-%d %H:%i:%S',
+  second: '%Y-%m-%dT%H:%i:%S',
   minute: '%Y-%m-%d %H:%i:00',
   hour: '%Y-%m-%d %H:00:00',
   day: '%Y-%m-%d',

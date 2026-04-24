@@ -60,6 +60,25 @@ export interface DynamicData {
   [key: string]: number | string | number[] | string[];
 }
 
+export interface EventDataSeriesPoint {
+  x: string;
+  t: string;
+  y: number;
+}
+
+export interface EventDataDateSeriesPoint {
+  t: string;
+  y: number;
+}
+
+export interface EventDataNumericStats {
+  total: number;
+  average: number;
+  median: number;
+  max: number;
+  min: number;
+}
+
 export interface QueryOptions {
   joinSession?: boolean;
   columns?: Record<string, string>;

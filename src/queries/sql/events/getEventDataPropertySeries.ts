@@ -1,7 +1,8 @@
 import clickhouse from '@/lib/clickhouse';
+import { DATA_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { EventPropertyFilter, QueryFilters } from '@/lib/types';
+import type { EventDataSeriesPoint, EventPropertyFilter, QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getEventDataPropertySeries';
 
@@ -13,7 +14,7 @@ export async function getEventDataPropertySeries(
     filters: QueryFilters,
     eventFilters?: EventPropertyFilter[],
   ]
-) {
+): Promise<EventDataSeriesPoint[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -26,7 +27,7 @@ async function relationalQuery(
   propertyName: string,
   filters: QueryFilters,
   eventFilters: EventPropertyFilter[] = [],
-) {
+): Promise<EventDataSeriesPoint[]> {
   const { timezone = 'utc', unit = 'day' } = filters;
   const { rawQuery, getDateSQL, parseFilters, getEventPropertyFilterQuery } = prisma;
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
@@ -52,7 +53,7 @@ async function relationalQuery(
     where event_data.website_id = {{websiteId::uuid}}
       and event_data.created_at between {{startDate}} and {{endDate}}
       and event_data.data_key = {{propertyName}}
-      and event_data.data_type = 1
+      and event_data.data_type in (${DATA_TYPE.string}, ${DATA_TYPE.boolean})
       ${filterQuery}
       ${epfSQL}
     group by 1, 2
@@ -69,7 +70,7 @@ async function clickhouseQuery(
   propertyName: string,
   filters: QueryFilters,
   eventFilters: EventPropertyFilter[] = [],
-): Promise<{ x: string; t: string; y: number }[]> {
+): Promise<EventDataSeriesPoint[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
   const { rawQuery, getDateSQL, parseFilters, getEventPropertyFilterQuery } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
@@ -96,7 +97,7 @@ async function clickhouseQuery(
     where event_data.website_id = {websiteId:UUID}
       and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_data.data_key = {propertyName:String}
-      and event_data.data_type = 1
+      and event_data.data_type in (${DATA_TYPE.string}, ${DATA_TYPE.boolean})
     ${filterQuery}
     ${epfSQL}
     group by x, t

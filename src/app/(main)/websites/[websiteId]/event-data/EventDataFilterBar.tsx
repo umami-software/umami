@@ -1,9 +1,9 @@
 'use client';
-import { Button, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import { X } from '@/components/icons';
 import { OPERATORS } from '@/lib/constants';
 import type { EventPropertyFilter } from '@/lib/types';
+import { Button, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 
 export function EventDataFilterBar({
   filters,
@@ -18,17 +18,28 @@ export function EventDataFilterBar({
 
   const operatorLabel = (op: string) => {
     switch (op) {
-      case OPERATORS.equals: return t(labels.is);
-      case OPERATORS.notEquals: return t(labels.isNot);
-      case OPERATORS.contains: return t(labels.contains);
-      case OPERATORS.doesNotContain: return t(labels.doesNotContain);
-      case OPERATORS.regex: return t(labels.regexMatch);
-      case OPERATORS.notRegex: return t(labels.regexNotMatch);
-      case OPERATORS.greaterThan: return t(labels.greaterThan);
-      case OPERATORS.lessThan: return t(labels.lessThan);
-      case OPERATORS.greaterThanEquals: return t(labels.greaterThanEquals);
-      case OPERATORS.lessThanEquals: return t(labels.lessThanEquals);
-      default: return op;
+      case OPERATORS.equals:
+        return t(labels.is);
+      case OPERATORS.notEquals:
+        return t(labels.isNot);
+      case OPERATORS.contains:
+        return t(labels.contains);
+      case OPERATORS.doesNotContain:
+        return t(labels.doesNotContain);
+      case OPERATORS.regex:
+        return t(labels.regexMatch);
+      case OPERATORS.notRegex:
+        return t(labels.regexNotMatch);
+      case OPERATORS.greaterThan:
+        return t(labels.greaterThan);
+      case OPERATORS.lessThan:
+        return t(labels.lessThan);
+      case OPERATORS.greaterThanEquals:
+        return t(labels.greaterThanEquals);
+      case OPERATORS.lessThanEquals:
+        return t(labels.lessThanEquals);
+      default:
+        return op;
     }
   };
 
@@ -37,7 +48,15 @@ export function EventDataFilterBar({
   };
 
   return (
-    <Row gap alignItems="center" justifyContent="space-between" padding="2" backgroundColor="surface-sunken" wrap="wrap">
+    <Row
+      gap
+      alignItems="center"
+      justifyContent="space-between"
+      padding="2"
+      border
+      borderRadius
+      wrap="wrap"
+    >
       <Row alignItems="center" gap="2" wrap="wrap" width={{ base: '100%', md: 'auto' }}>
         {filters.map((filter, index) => (
           <FilterPill
@@ -75,8 +94,21 @@ function FilterPill({
   onRemove: () => void;
 }) {
   return (
-    <Row border padding="2" color backgroundColor borderRadius alignItems="center" gap="4" theme="dark">
-      <Row alignItems="center" gap="2" style={{ maxWidth: 'min(500px, calc(100vw - 10rem))', minWidth: 0, overflow: 'hidden' }}>
+    <Row
+      border
+      padding="2"
+      color
+      backgroundColor
+      borderRadius
+      alignItems="center"
+      gap="4"
+      theme="dark"
+    >
+      <Row
+        alignItems="center"
+        gap="2"
+        style={{ maxWidth: 'min(500px, calc(100vw - 10rem))', minWidth: 0, overflow: 'hidden' }}
+      >
         <Text color="primary" weight="bold">
           {label}
         </Text>

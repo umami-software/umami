@@ -1,20 +1,20 @@
 import clickhouse from '@/lib/clickhouse';
+import { DATA_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { EventPropertyFilter, QueryFilters } from '@/lib/types';
+import type { EventDataSeriesPoint, EventPropertyFilter, QueryFilters } from '@/lib/types';
 
-const FUNCTION_NAME = 'getEventDataNumericSeries';
+const FUNCTION_NAME = 'getEventDataArraySeries';
 
-export async function getEventDataNumericSeries(
+export async function getEventDataArraySeries(
   ...args: [
     websiteId: string,
     eventName: string,
     propertyName: string,
-    metric: 'sum' | 'avg' | 'count',
     filters: QueryFilters,
     eventFilters?: EventPropertyFilter[],
   ]
-) {
+): Promise<EventDataSeriesPoint[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -25,10 +25,9 @@ async function relationalQuery(
   websiteId: string,
   eventName: string,
   propertyName: string,
-  metric: 'sum' | 'avg' | 'count',
   filters: QueryFilters,
   eventFilters: EventPropertyFilter[] = [],
-) {
+): Promise<EventDataSeriesPoint[]> {
   const { timezone = 'utc', unit = 'day' } = filters;
   const { rawQuery, getDateSQL, parseFilters, getEventPropertyFilterQuery } = prisma;
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
@@ -36,32 +35,30 @@ async function relationalQuery(
     websiteId,
   });
   const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
-  const aggSql =
-    metric === 'avg' ? 'avg(cast(event_data.number_value as decimal))' :
-    metric === 'count' ? 'count(*)' :
-    'sum(cast(event_data.number_value as decimal))';
 
   return rawQuery(
     `
     select
-      ${getDateSQL('event_data.created_at', unit, timezone)} t,
-      ${aggSql} y
+      array_item.value as x,
+      ${getDateSQL('event_data.created_at', unit, timezone)} as t,
+      count(*) as y
     from event_data
     join website_event on website_event.event_id = event_data.website_event_id
       and website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_type = 2
       and website_event.event_name = {{eventName}}
+    cross join lateral jsonb_array_elements_text(coalesce(event_data.string_value, '[]')::jsonb) as array_item(value)
     ${cohortQuery}
     ${joinSessionQuery}
     where event_data.website_id = {{websiteId::uuid}}
       and event_data.created_at between {{startDate}} and {{endDate}}
       and event_data.data_key = {{propertyName}}
-      and event_data.data_type = 2
+      and event_data.data_type = ${DATA_TYPE.array}
       ${filterQuery}
       ${epfSQL}
-    group by 1
-    order by 1
+    group by 1, 2
+    order by 2
     `,
     { ...queryParams, eventName, propertyName, ...epfParams },
     FUNCTION_NAME,
@@ -72,24 +69,20 @@ async function clickhouseQuery(
   websiteId: string,
   eventName: string,
   propertyName: string,
-  metric: 'sum' | 'avg' | 'count',
   filters: QueryFilters,
   eventFilters: EventPropertyFilter[] = [],
-): Promise<{ t: string; y: number }[]> {
+): Promise<EventDataSeriesPoint[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
   const { rawQuery, getDateSQL, parseFilters, getEventPropertyFilterQuery } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
   const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
-  const aggSql =
-    metric === 'avg' ? 'avg(event_data.number_value)' :
-    metric === 'count' ? 'count()' :
-    'sum(event_data.number_value)';
 
   return rawQuery(
     `
     select
+      arrayJoin(JSONExtract(ifNull(event_data.string_value, '[]'), 'Array(String)')) as x,
       ${getDateSQL('event_data.created_at', unit, timezone)} as t,
-      ${aggSql} as y
+      count() as y
     from event_data
     any left join (
           select *
@@ -105,10 +98,10 @@ async function clickhouseQuery(
     where event_data.website_id = {websiteId:UUID}
       and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_data.data_key = {propertyName:String}
-      and event_data.data_type = 2
+      and event_data.data_type = ${DATA_TYPE.array}
     ${filterQuery}
     ${epfSQL}
-    group by t
+    group by x, t
     order by t
     `,
     { ...queryParams, eventName, propertyName, ...epfParams },

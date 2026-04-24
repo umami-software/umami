@@ -1,14 +1,13 @@
 import { serializeEventPropertyFilters } from '@/lib/params';
-import type { EventPropertyFilter, ReactQueryOptions } from '@/lib/types';
+import type { EventDataSeriesPoint, EventPropertyFilter, ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
 import { useDateParameters } from '../useDateParameters';
 import { useFilterParameters } from '../useFilterParameters';
 
-export function useEventDataNumericSeriesQuery(
+export function useEventDataArraySeriesQuery(
   websiteId: string,
   eventName: string,
   propertyName: string,
-  metric: 'sum' | 'avg' | 'count',
   eventFilters: EventPropertyFilter[] = [],
   options?: ReactQueryOptions,
 ) {
@@ -16,16 +15,25 @@ export function useEventDataNumericSeriesQuery(
   const { startAt, endAt, unit, timezone } = useDateParameters();
   const params = useFilterParameters();
 
-  return useQuery<any>({
+  return useQuery<EventDataSeriesPoint[]>({
     queryKey: [
-      'websites:event-data-pivot:numeric-series',
-      { websiteId, eventName, propertyName, metric, eventFilters, startAt, endAt, unit, timezone, ...params },
-    ],
-    queryFn: () =>
-      get(`/websites/${websiteId}/event-data-pivot/numeric-series`, {
+      'websites:event-data-pivot:array-series',
+      {
+        websiteId,
         eventName,
         propertyName,
-        metric,
+        eventFilters,
+        startAt,
+        endAt,
+        unit,
+        timezone,
+        ...params,
+      },
+    ],
+    queryFn: () =>
+      get(`/websites/${websiteId}/event-data-pivot/array-series`, {
+        eventName,
+        propertyName,
         startAt,
         endAt,
         unit,
