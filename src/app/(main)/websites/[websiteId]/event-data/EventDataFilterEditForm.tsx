@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Empty } from '@/components/common/Empty';
 import { useEventDataFieldsQuery, useMessages, useMobile } from '@/components/hooks';
 import { Plus } from '@/components/icons';
+import { OPERATORS } from '@/lib/constants';
 import type { EventPropertyFilter } from '@/lib/types';
 import { EventDataFilterRecord } from './EventDataFilterRecord';
 
@@ -29,7 +30,10 @@ export function EventDataFilterEditForm({
   const handleAdd = (propertyName: string) => {
     const field = (fields as any[]).find(f => f.propertyName === propertyName);
     const dataType: number = field?.dataType ?? 1;
-    setFilters(prev => [...prev, { propertyName, dataType, operator: 'eq', value: '' }]);
+    setFilters(prev => [
+      ...prev,
+      { propertyName, dataType, operator: OPERATORS.equals, value: '' },
+    ]);
   };
 
   const handleChange = (index: number, filter: EventPropertyFilter) => {

@@ -4,7 +4,7 @@ import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
 import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from './constants';
 import { filtersObjectToArray } from './params';
-import type { EventPropertyFilter, QueryFilters, QueryOptions } from './types';
+import type { EventPropertyFilter, Operator, QueryFilters, QueryOptions } from './types';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   utc: '%Y-%m-%dT%H:%i:%SZ',
@@ -18,10 +18,19 @@ export const CLICKHOUSE_DATE_FORMATS = {
 
 const log = debug('umami:clickhouse');
 
+const EQUALITY_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
+const REGEX_OPERATORS: Operator[] = [OPERATORS.regex, OPERATORS.notRegex];
+
 let clickhouse: ClickHouseClient;
 const enabled = Boolean(process.env.CLICKHOUSE_URL);
 
 function getClient() {
+  const clickhouseUrl = process.env.CLICKHOUSE_URL;
+
+  if (!clickhouseUrl) {
+    throw new Error('CLICKHOUSE_URL is not set.');
+  }
+
   const {
     hostname,
     port,
@@ -29,7 +38,7 @@ function getClient() {
     protocol,
     username = 'default',
     password,
-  } = new URL(process.env.CLICKHOUSE_URL);
+  } = new URL(clickhouseUrl);
 
   const client = createClient({
     url: `${protocol}//${hostname}:${port}`,
@@ -70,13 +79,7 @@ function getSearchSQL(column: string, param: string = 'search'): string {
   return `and positionCaseInsensitive(${column}, {${param}:String}) > 0`;
 }
 
-function mapFilter(
-  column: string,
-  operator: string,
-  name: string,
-  type: string = 'String',
-  paramName?: string,
-) {
+function mapFilter(column: string, operator: Operator, name: string, type: string = 'String', paramName?: string) {
   const param = paramName ?? name;
   const value = `{${param}:${type}}`;
 
@@ -210,7 +213,7 @@ function getQueryParams(filters: Record<string, any>) {
 
       const key = paramName ?? name;
 
-      obj[key] = ([OPERATORS.equals, OPERATORS.notEquals] as string[]).includes(operator)
+      obj[key] = EQUALITY_OPERATORS.includes(operator)
         ? Array.isArray(value)
           ? value
           : [value]
@@ -256,30 +259,30 @@ function getEventPropertyFilterQuery(filters: EventPropertyFilter[] = []): {
     if (isNumeric) {
       params[valParam] = parseFloat(value) || 0;
       const opMap: Record<string, string> = {
-        eq: `${col} = {${valParam}:Float64}`,
-        neq: `${col} != {${valParam}:Float64}`,
-        gt: `${col} > {${valParam}:Float64}`,
-        lt: `${col} < {${valParam}:Float64}`,
-        gte: `${col} >= {${valParam}:Float64}`,
-        lte: `${col} <= {${valParam}:Float64}`,
+        [OPERATORS.equals]: `${col} = {${valParam}:Float64}`,
+        [OPERATORS.notEquals]: `${col} != {${valParam}:Float64}`,
+        [OPERATORS.greaterThan]: `${col} > {${valParam}:Float64}`,
+        [OPERATORS.lessThan]: `${col} < {${valParam}:Float64}`,
+        [OPERATORS.greaterThanEquals]: `${col} >= {${valParam}:Float64}`,
+        [OPERATORS.lessThanEquals]: `${col} <= {${valParam}:Float64}`,
       };
       condition = opMap[operator] ?? `${col} = {${valParam}:Float64}`;
-    } else if (operator === 'eq' || operator === 'neq') {
+    } else if (EQUALITY_OPERATORS.includes(operator)) {
       const vals = value.split(',').filter(Boolean);
       if (!vals.length) return;
       params[valParam] = vals;
       condition = mapFilter(
         col,
-        operator === 'eq' ? OPERATORS.equals : OPERATORS.notEquals,
+        operator === OPERATORS.equals ? OPERATORS.equals : OPERATORS.notEquals,
         valParam,
         'String',
       );
-    } else if (operator === 'regex' || operator === 'notRegex') {
+    } else if (REGEX_OPERATORS.includes(operator)) {
       if (!value) return;
       params[valParam] = value;
       condition = mapFilter(
         col,
-        operator === 'regex' ? OPERATORS.regex : OPERATORS.notRegex,
+        operator === OPERATORS.regex ? OPERATORS.regex : OPERATORS.notRegex,
         valParam,
         'String',
       );
@@ -288,7 +291,7 @@ function getEventPropertyFilterQuery(filters: EventPropertyFilter[] = []): {
       params[valParam] = value;
       condition = mapFilter(
         col,
-        operator === 'c' ? OPERATORS.contains : OPERATORS.doesNotContain,
+        operator === OPERATORS.contains ? OPERATORS.contains : OPERATORS.doesNotContain,
         valParam,
         'String',
       );
@@ -379,7 +382,7 @@ async function findFirst(data: any[]) {
 
 async function connect() {
   if (enabled && !clickhouse) {
-    clickhouse = process.env.CLICKHOUSE_URL && (globalThis[CLICKHOUSE] || getClient());
+    clickhouse = globalThis[CLICKHOUSE] || getClient();
   }
 
   return clickhouse;

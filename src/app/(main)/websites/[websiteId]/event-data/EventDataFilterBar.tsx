@@ -2,6 +2,7 @@
 import { Button, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import { X } from '@/components/icons';
+import { OPERATORS } from '@/lib/constants';
 import type { EventPropertyFilter } from '@/lib/types';
 
 export function EventDataFilterBar({
@@ -17,16 +18,16 @@ export function EventDataFilterBar({
 
   const operatorLabel = (op: string) => {
     switch (op) {
-      case 'eq': return t(labels.is);
-      case 'neq': return t(labels.isNot);
-      case 'c': return t(labels.contains);
-      case 'dnc': return t(labels.doesNotContain);
-      case 'regex': return t(labels.regexMatch);
-      case 'notRegex': return t(labels.regexNotMatch);
-      case 'gt': return t(labels.greaterThan);
-      case 'lt': return t(labels.lessThan);
-      case 'gte': return t(labels.greaterThanEquals);
-      case 'lte': return t(labels.lessThanEquals);
+      case OPERATORS.equals: return t(labels.is);
+      case OPERATORS.notEquals: return t(labels.isNot);
+      case OPERATORS.contains: return t(labels.contains);
+      case OPERATORS.doesNotContain: return t(labels.doesNotContain);
+      case OPERATORS.regex: return t(labels.regexMatch);
+      case OPERATORS.notRegex: return t(labels.regexNotMatch);
+      case OPERATORS.greaterThan: return t(labels.greaterThan);
+      case OPERATORS.lessThan: return t(labels.lessThan);
+      case OPERATORS.greaterThanEquals: return t(labels.greaterThanEquals);
+      case OPERATORS.lessThanEquals: return t(labels.lessThanEquals);
       default: return op;
     }
   };

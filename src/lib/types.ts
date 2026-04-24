@@ -33,7 +33,7 @@ export interface Auth {
 export interface EventPropertyFilter {
   propertyName: string;
   dataType: number;
-  operator: string;
+  operator: Operator;
   value: string;
 }
 

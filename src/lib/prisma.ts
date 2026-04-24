@@ -8,6 +8,10 @@ import type { EventPropertyFilter, Operator, QueryFilters, QueryOptions } from '
 
 const log = debug('umami:prisma');
 
+const EQUALITY_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
+const SEARCH_OPERATORS: Operator[] = [OPERATORS.contains, OPERATORS.doesNotContain];
+const REGEX_OPERATORS: Operator[] = [OPERATORS.regex, OPERATORS.notRegex];
+
 const PRISMA = 'prisma';
 
 const PRISMA_LOG_OPTIONS = {
@@ -216,9 +220,9 @@ function getQueryParams(filters: Record<string, any>) {
 
       const key = paramName ?? name;
 
-      if (([OPERATORS.contains, OPERATORS.doesNotContain] as Operator[]).includes(operator)) {
+      if (SEARCH_OPERATORS.includes(operator)) {
         obj[key] = `%${value}%`;
-      } else if (([OPERATORS.equals, OPERATORS.notEquals] as Operator[]).includes(operator)) {
+      } else if (EQUALITY_OPERATORS.includes(operator)) {
         obj[key] = Array.isArray(value) ? value : [value];
       } else {
         obj[key] = value;
@@ -273,31 +277,34 @@ function getEventPropertyFilterQuery(filters: EventPropertyFilter[] = []): {
     if (isNumeric) {
       params[valParam] = parseFloat(value) || 0;
       const opMap: Record<string, string> = {
-        eq: `${col} = {{${valParam}}}`,
-        neq: `${col} != {{${valParam}}}`,
-        gt: `${col} > {{${valParam}}}`,
-        lt: `${col} < {{${valParam}}}`,
-        gte: `${col} >= {{${valParam}}}`,
-        lte: `${col} <= {{${valParam}}}`,
+        [OPERATORS.equals]: `${col} = {{${valParam}}}`,
+        [OPERATORS.notEquals]: `${col} != {{${valParam}}}`,
+        [OPERATORS.greaterThan]: `${col} > {{${valParam}}}`,
+        [OPERATORS.lessThan]: `${col} < {{${valParam}}}`,
+        [OPERATORS.greaterThanEquals]: `${col} >= {{${valParam}}}`,
+        [OPERATORS.lessThanEquals]: `${col} <= {{${valParam}}}`,
       };
       condition = opMap[operator] ?? `${col} = {{${valParam}}}`;
-    } else if (operator === 'eq' || operator === 'neq') {
+    } else if (EQUALITY_OPERATORS.includes(operator)) {
       const vals = value.split(',').filter(Boolean);
       if (!vals.length) return;
       params[valParam] = vals;
       condition =
-        operator === 'eq'
+        operator === OPERATORS.equals
           ? `${col} = ANY({{${valParam}::text[]}})`
           : `${col} != ALL({{${valParam}::text[]}})`;
-    } else if (operator === 'regex' || operator === 'notRegex') {
+    } else if (REGEX_OPERATORS.includes(operator)) {
       if (!value) return;
       params[valParam] = value;
-      condition = operator === 'regex' ? `${col} ~* {{${valParam}}}` : `${col} !~* {{${valParam}}}`;
+      condition =
+        operator === OPERATORS.regex ? `${col} ~* {{${valParam}}}` : `${col} !~* {{${valParam}}}`;
     } else {
       if (!value) return;
       params[valParam] = `%${value}%`;
       condition =
-        operator === 'c' ? `${col} ilike {{${valParam}}}` : `${col} not ilike {{${valParam}}}`;
+        operator === OPERATORS.contains
+          ? `${col} ilike {{${valParam}}}`
+          : `${col} not ilike {{${valParam}}}`;
     }
 
     parts.push(`and website_event.event_id in (
@@ -424,7 +431,13 @@ function transaction(input: any, options?: any) {
 }
 
 function getSchema() {
-  const connectionUrl = new URL(process.env.DATABASE_URL);
+  const databaseUrl = process.env.DATABASE_URL;
+
+  if (!databaseUrl) {
+    throw new Error('DATABASE_URL is not set.');
+  }
+
+  const connectionUrl = new URL(databaseUrl);
 
   return connectionUrl.searchParams.get('schema');
 }
@@ -433,6 +446,11 @@ function getClient() {
   const url = process.env.DATABASE_URL;
   const replicaUrl = process.env.DATABASE_REPLICA_URL;
   const logQuery = process.env.LOG_QUERY;
+
+  if (!url) {
+    throw new Error('DATABASE_URL is not set.');
+  }
+
   const schema = getSchema();
 
   const baseAdapter = new PrismaPg({ connectionString: url }, { schema });

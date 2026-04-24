@@ -336,7 +336,7 @@ AS SELECT
     created_at,
     groupArrayState(data_key) AS property_keys,
     groupArrayState(multiIf(
-        data_type = 1, ifNull(string_value, ''),
+        data_type IN (1, 3, 5), ifNull(string_value, ''),
         data_type = 2, toString(ifNull(number_value, 0)),
         data_type = 4, toString(ifNull(date_value, toDateTime(0))),
         ''

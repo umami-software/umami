@@ -1,5 +1,22 @@
 import { FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
-import type { EventPropertyFilter, Filter, QueryFilters, QueryOptions } from '@/lib/types';
+import type { EventPropertyFilter, Filter, Operator, QueryFilters, QueryOptions } from '@/lib/types';
+
+const VALID_OPERATORS: Operator[] = Object.values(OPERATORS);
+const NUMERIC_EVENT_PROPERTY_OPERATORS: Operator[] = [
+  OPERATORS.greaterThan,
+  OPERATORS.lessThan,
+  OPERATORS.greaterThanEquals,
+  OPERATORS.lessThanEquals,
+];
+const EQUALITY_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
+
+function resolveOperator(value?: string): Operator | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  return VALID_OPERATORS.find(operator => operator === value);
+}
 
 export function parseFilterValue(param: any) {
   if (typeof param === 'string') {
@@ -9,7 +26,7 @@ export function parseFilterValue(param: any) {
 
     const [, operator, value] = param.match(regex) || [];
 
-    const resolvedOperator = operator || OPERATORS.equals;
+    const resolvedOperator = resolveOperator(operator) ?? OPERATORS.equals;
     const resolvedValue = value ?? param;
 
     if (resolvedOperator === OPERATORS.equals || resolvedOperator === OPERATORS.notEquals) {
@@ -97,11 +114,17 @@ export function parseEventPropertyFilters(query: Record<string, any>): EventProp
       if (dotIndex < 1) return [];
       const withoutPrefix = key.slice(4); // strip "epf_"
       const propertyName = withoutPrefix.replace(/\d+$/, ''); // strip trailing index digits
-      const operator = (val as string).slice(0, dotIndex);
+      const rawOperator = (val as string).slice(0, dotIndex);
+      const operator = resolveOperator(rawOperator);
+      if (!operator) {
+        return [];
+      }
       const value = (val as string).slice(dotIndex + 1);
       const isNumeric =
-        ['gt', 'lt', 'gte', 'lte'].includes(operator) ||
-        (['eq', 'neq'].includes(operator) && value !== '' && !Number.isNaN(Number(value)));
+        NUMERIC_EVENT_PROPERTY_OPERATORS.includes(operator) ||
+        (EQUALITY_OPERATORS.includes(operator) &&
+          value !== '' &&
+          !Number.isNaN(Number(value)));
       return [{ propertyName, dataType: isNumeric ? 2 : 1, operator, value }];
     });
 }

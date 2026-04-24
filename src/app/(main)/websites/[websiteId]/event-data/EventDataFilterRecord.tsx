@@ -5,10 +5,32 @@ import { Empty } from '@/components/common/Empty';
 import { MultiSelect } from '@/components/common/MultiSelect';
 import { useEventDataValuesQuery, useMessages } from '@/components/hooks';
 import { X } from '@/components/icons';
-import type { EventPropertyFilter } from '@/lib/types';
+import { OPERATORS } from '@/lib/constants';
+import type { EventPropertyFilter, Operator } from '@/lib/types';
 
-const STRING_OPERATORS = ['eq', 'neq', 'c', 'dnc', 'regex', 'notRegex'] as const;
-const NUMERIC_OPERATORS = ['eq', 'neq', 'gt', 'lt', 'gte', 'lte'] as const;
+const STRING_OPERATORS: Operator[] = [
+  OPERATORS.equals,
+  OPERATORS.notEquals,
+  OPERATORS.contains,
+  OPERATORS.doesNotContain,
+  OPERATORS.regex,
+  OPERATORS.notRegex,
+];
+const NUMERIC_OPERATORS: Operator[] = [
+  OPERATORS.equals,
+  OPERATORS.notEquals,
+  OPERATORS.greaterThan,
+  OPERATORS.lessThan,
+  OPERATORS.greaterThanEquals,
+  OPERATORS.lessThanEquals,
+];
+const MULTI_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
+const FREE_TEXT_OPERATORS: Operator[] = [
+  OPERATORS.contains,
+  OPERATORS.doesNotContain,
+  OPERATORS.regex,
+  OPERATORS.notRegex,
+];
 
 export function EventDataFilterRecord({
   websiteId,
@@ -28,7 +50,7 @@ export function EventDataFilterRecord({
 
   const isNumeric = filter.dataType === 2;
   const operators = isNumeric ? NUMERIC_OPERATORS : STRING_OPERATORS;
-  const isFreeText = filter.operator === 'c' || filter.operator === 'dnc' || filter.operator === 'regex' || filter.operator === 'notRegex';
+  const isFreeText = FREE_TEXT_OPERATORS.includes(filter.operator);
 
   const { data, isLoading } = useEventDataValuesQuery(
     websiteId,
@@ -43,27 +65,31 @@ export function EventDataFilterRecord({
     : values;
   const selected = filter.value ? filter.value.split(',').filter(Boolean) : [];
 
-  const operatorLabel = (op: string) => {
+  const operatorLabel = (op: Operator) => {
     switch (op) {
-      case 'eq': return t(labels.is);
-      case 'neq': return t(labels.isNot);
-      case 'c': return t(labels.contains);
-      case 'dnc': return t(labels.doesNotContain);
-      case 'regex': return t(labels.regexMatch);
-      case 'notRegex': return t(labels.regexNotMatch);
-      case 'gt': return t(labels.greaterThan);
-      case 'lt': return t(labels.lessThan);
-      case 'gte': return t(labels.greaterThanEquals);
-      case 'lte': return t(labels.lessThanEquals);
+      case OPERATORS.equals: return t(labels.is);
+      case OPERATORS.notEquals: return t(labels.isNot);
+      case OPERATORS.contains: return t(labels.contains);
+      case OPERATORS.doesNotContain: return t(labels.doesNotContain);
+      case OPERATORS.regex: return t(labels.regexMatch);
+      case OPERATORS.notRegex: return t(labels.regexNotMatch);
+      case OPERATORS.greaterThan: return t(labels.greaterThan);
+      case OPERATORS.lessThan: return t(labels.lessThan);
+      case OPERATORS.greaterThanEquals: return t(labels.greaterThanEquals);
+      case OPERATORS.lessThanEquals: return t(labels.lessThanEquals);
       default: return op;
     }
   };
 
-  const handleOperatorChange = (op: string) => {
+  const handleOperatorChange = (op: Operator) => {
     // clear value when switching between multi-select and free-text modes
-    const wasMulti = filter.operator === 'eq' || filter.operator === 'neq';
-    const isMulti = op === 'eq' || op === 'neq';
-    onChange({ ...filter, operator: op, value: wasMulti === isMulti ? filter.value : '' });
+    const wasMulti = MULTI_OPERATORS.includes(filter.operator);
+    const isMulti = MULTI_OPERATORS.includes(op);
+    onChange({
+      ...filter,
+      operator: op,
+      value: wasMulti === isMulti ? filter.value : '',
+    });
   };
 
   return (
@@ -71,8 +97,8 @@ export function EventDataFilterRecord({
       <Label>{filter.propertyName}</Label>
       <Grid columns="1fr auto" gap>
         <Grid columns={{ base: '1fr', md: '200px 1fr' }} gap>
-          <Select value={filter.operator} onChange={handleOperatorChange}>
-            {operators.map((op: string) => (
+          <Select value={filter.operator} onChange={value => handleOperatorChange(value as Operator)}>
+            {operators.map(op => (
               <ListItem key={op} id={op}>
                 {operatorLabel(op)}
               </ListItem>
