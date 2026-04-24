@@ -32,6 +32,8 @@ export * from './queries/useLinkQuery';
 export * from './queries/useLinkSharesQuery';
 export * from './queries/useLinksQuery';
 export * from './queries/useLoginQuery';
+export * from './queries/useTwoFactorStatusQuery';
+export * from './queries/useTwoFactorVerifyMutation';
 export * from './queries/usePixelQuery';
 export * from './queries/usePixelSharesQuery';
 export * from './queries/usePixelsQuery';
