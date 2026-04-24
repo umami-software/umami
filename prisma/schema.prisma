@@ -18,15 +18,18 @@ model User {
   displayName String?   @map("display_name") @db.VarChar(255)
   createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
-  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+  deletedAt         DateTime? @map("deleted_at") @db.Timestamptz(6)
+  twoFactorRequired Boolean   @default(false) @map("two_factor_required")
 
-  websites  Website[]  @relation("user")
-  createdBy Website[]  @relation("createUser")
-  links     Link[]     @relation("user")
-  pixels    Pixel[]    @relation("user")
-  teams     TeamUser[]
-  reports   Report[]
-  boards    Board[]    @relation("user")
+  websites             Website[]            @relation("user")
+  createdBy            Website[]            @relation("createUser")
+  links                Link[]               @relation("user")
+  pixels               Pixel[]              @relation("user")
+  teams                TeamUser[]
+  reports              Report[]
+  boards               Board[]              @relation("user")
+  twoFactorAuth        TwoFactorAuth?
+  twoFactorBackupCodes TwoFactorBackupCode[]
 
   @@map("user")
 }
@@ -201,13 +204,14 @@ model Team {
   logoUrl    String?   @map("logo_url") @db.VarChar(2183)
   createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt  DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
-  deletedAt  DateTime? @map("deleted_at") @db.Timestamptz(6)
+  deletedAt         DateTime? @map("deleted_at") @db.Timestamptz(6)
+  twoFactorRequired Boolean   @default(false) @map("two_factor_required")
 
   websites Website[]
   members  TeamUser[]
   links    Link[]
   pixels   Pixel[]
-  boards    Board[]
+  boards   Board[]
 
   @@index([accessCode])
   @@map("team")
@@ -398,4 +402,55 @@ model SessionReplaySaved {
   @@index([visitId])
   @@index([websiteId, createdAt])
   @@map("session_replay_saved")
+}
+
+model TwoFactorAuth {
+  id        String   @id @default(cuid())
+  userId    String   @unique @map("user_id") @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  secret    String
+  isEnabled Boolean  @default(false) @map("is_enabled")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("two_factor_auth")
+}
+
+model TwoFactorBackupCode {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id") @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  codeHash  String   @map("code_hash")
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([userId])
+  @@map("two_factor_backup_code")
+}
+
+model TwoFactorOtpUsed {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id") @db.Uuid
+  otp       String
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(6)
+
+  @@unique([userId, otp])
+  @@map("two_factor_otp_used")
+}
+
+model TwoFactorRateLimit {
+  id          String    @id @default(cuid())
+  userId      String    @unique @map("user_id") @db.Uuid
+  attempts    Int       @default(0)
+  lockedUntil DateTime? @map("locked_until") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("two_factor_rate_limit")
+}
+
+model AppSetting {
+  key   String @id
+  value String
+
+  @@map("app_setting")
 }
