@@ -103,7 +103,7 @@ export function LoginTwoFactorPage() {
         <Form onSubmit={handleSubmit} error={error ?? undefined} style={{ minWidth: 300 }}>
           {!useBackup ? (
             <Column gap="2">
-              <Text weight='bold' >{t(labels.twoFactorEnterCode)}</Text>
+              <Text weight="bold">{t(labels.twoFactorEnterCode)}</Text>
               <OtpInput
                 value={otpValue}
                 onChange={val => {
