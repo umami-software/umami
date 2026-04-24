@@ -1,7 +1,7 @@
 import { IconLabel } from '@/components/common/IconLabel';
 import { NavMenu } from '@/components/common/NavMenu';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { ArrowLeft, Globe, User, Users } from '@/components/icons';
+import { ArrowLeft, Globe, ShieldCheck, User, Users } from '@/components/icons';
 import { Column, Focusable, Row, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import Link from '@/components/common/Link';
 
@@ -30,6 +30,12 @@ export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
           label: t(labels.teams),
           path: '/admin/teams',
           icon: <Users />,
+        },
+        {
+          id: 'security',
+          label: t(labels.security),
+          path: '/admin/security',
+          icon: <ShieldCheck />,
         },
       ],
     },
