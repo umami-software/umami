@@ -31,7 +31,8 @@
   const config = value => {
     const camelKey = toCamelCase(value);
     if (globalConfig[camelKey] != null) {
-      return String(globalConfig[camelKey]);
+      const v = globalConfig[camelKey];
+      return typeof v === 'function' ? v : Array.isArray(v) ? v.join(',') : String(v);
     }
     return attr(`${_data}${value}`);
   };
@@ -173,7 +174,7 @@
   const send = async (payload, type = 'event') => {
     if (trackingDisabled()) return;
 
-    const callback = window[beforeSend];
+    const callback = typeof beforeSend === 'function' ? beforeSend : window[beforeSend];
 
     if (typeof callback === 'function') {
       payload = await Promise.resolve(callback(type, payload));
