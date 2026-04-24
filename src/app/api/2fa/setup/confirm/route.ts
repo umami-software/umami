@@ -31,7 +31,7 @@ export async function POST(request: Request) {
   const rateCheck = await checkRateLimit(userId);
   if (!rateCheck.allowed) {
     return badRequest({
-      code: 'rate-limited',
+      code: 'two-factor-error-too-many-attempts',
       message: 'Too many failed attempts',
       lockedUntil: rateCheck.lockedUntil,
     });
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 
   // Prevent OTP replay
   if (await isOtpReplayed(userId, token)) {
-    return badRequest({ code: 'otp-replayed', message: 'Code already used' });
+    return badRequest({ code: 'two-factor-error-code-used', message: 'Code already used' });
   }
 
   // Verify TOTP

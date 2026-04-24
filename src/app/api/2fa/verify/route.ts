@@ -23,12 +23,12 @@ export async function POST(request: Request) {
   // Validate partial auth token — skip normal session auth
   const rawToken = getBearerToken(request);
   if (!rawToken) {
-    return unauthorized({ code: 'missing-token' });
+    return unauthorized({ code: 'two-factor-error-missing-token' });
   }
 
   const payload = parseSecureToken(rawToken, secret()) as any;
   if (!payload || payload.type !== 'partial-auth' || !payload.userId) {
-    return unauthorized({ code: 'invalid-partial-token' });
+    return unauthorized({ code: 'two-factor-error-invalid-partial-token' });
   }
 
   const { body, error } = await parseRequest(request, schema, { skipAuth: true });
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     return Response.json(
       {
         error: {
-          code: 'rate-limited',
+          code: 'two-factor-error-too-many-attempts',
           message: 'Too many failed attempts',
           lockedUntil: rateCheck.lockedUntil,
         },
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
 
     if (matchIndex === null) {
       await recordFailedAttempt(userId);
-      return badRequest({ code: 'invalid-backup-code', message: 'Invalid backup code' });
+      return badRequest({ code: 'two-factor-error-invalid-backup-code', message: 'Invalid backup code' });
     }
 
     await prisma.client.twoFactorBackupCode.update({
@@ -84,14 +84,14 @@ export async function POST(request: Request) {
     const { token } = body;
 
     if (await isOtpReplayed(userId, token)) {
-      return badRequest({ code: 'otp-replayed', message: 'Code already used' });
+      return badRequest({ code: 'two-factor-error-code-used', message: 'Code already used' });
     }
 
     const decryptedSecret = decryptSecret(twoFactor.secret);
 
     if (!(await verifyTotp(token, decryptedSecret))) {
       await recordFailedAttempt(userId);
-      return badRequest({ code: 'invalid-code', message: 'Invalid verification code' });
+      return badRequest({ code: 'two-factor-error-invalid-code', message: 'Invalid verification code' });
     }
 
     await markOtpUsed(userId, token);
