@@ -1,11 +1,11 @@
-import { IconLabel } from '@umami/react-zen';
 import { useCallback } from 'react';
+import { IconLabel } from '@/components/common/IconLabel';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { useCountryNames, useLocale, useMessages } from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
 
 export function RealtimeCountries({ data }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { locale } = useLocale();
   const { countryNames } = useCountryNames(locale);
 
@@ -18,8 +18,8 @@ export function RealtimeCountries({ data }) {
 
   return (
     <ListTable
-      title={formatMessage(labels.countries)}
-      metric={formatMessage(labels.visitors)}
+      title={t(labels.countries)}
+      metric={t(labels.visitors)}
       data={data.map(({ x, y, z }: { x: string; y: number; z: number }) => ({
         label: x,
         count: y,

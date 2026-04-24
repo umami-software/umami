@@ -12,12 +12,12 @@ export function EmptyPlaceholder({ title, description, icon, children }: EmptyPl
   return (
     <Column alignItems="center" justifyContent="center" gap="5" height="100%" width="100%">
       {icon && (
-        <Icon color="10" size="xl">
+        <Icon color="muted" size="xl">
           {icon}
         </Icon>
       )}
       {title && (
-        <Text weight="bold" size="4">
+        <Text weight="bold" size="lg">
           {title}
         </Text>
       )}

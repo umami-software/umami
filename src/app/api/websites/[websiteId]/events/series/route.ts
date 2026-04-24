@@ -14,6 +14,7 @@ export async function GET(
     endAt: z.coerce.number().int(),
     unit: unitParam.optional(),
     timezone: timezoneParam,
+    limit: z.coerce.number().optional(),
     ...filterParams,
   });
 
@@ -29,9 +30,10 @@ export async function GET(
     return unauthorized();
   }
 
+  const { limit } = query;
   const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getEventStats(websiteId, filters);
+  const data = await getEventStats(websiteId, { limit }, filters);
 
   return json(data);
 }

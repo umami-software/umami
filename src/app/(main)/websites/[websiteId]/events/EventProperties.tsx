@@ -14,7 +14,7 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
   const [propertyName, setPropertyName] = useState('');
   const [eventName, setEventName] = useState('');
 
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { data, isLoading, isFetching, error } = useEventDataPropertiesQuery(websiteId);
 
   const events: string[] = data
@@ -38,7 +38,7 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
         {data && (
           <Grid columns="repeat(auto-fill, minmax(300px, 1fr))" marginBottom="3" gap>
             <Select
-              label={formatMessage(labels.event)}
+              label={t(labels.event)}
               value={eventName}
               onChange={setEventName}
               placeholder=""
@@ -50,7 +50,7 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
               ))}
             </Select>
             <Select
-              label={formatMessage(labels.property)}
+              label={t(labels.property)}
               value={propertyName}
               onChange={setPropertyName}
               isDisabled={!eventName}
