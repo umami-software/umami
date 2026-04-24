@@ -32,7 +32,7 @@
     const camelKey = toCamelCase(value);
     if (globalConfig[camelKey] != null) {
       const v = globalConfig[camelKey];
-      return typeof v === 'function' ? v : Array.isArray(v) ? v.join(',') : String(v);
+      return value === 'before-send' && typeof v === 'function' ? v : Array.isArray(v) ? v.join(',') : String(v);
     }
     return attr(`${_data}${value}`);
   };

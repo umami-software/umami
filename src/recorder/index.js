@@ -13,7 +13,7 @@ import { record } from 'rrweb';
     const camelKey = toCamelCase(value);
     if (globalConfig[camelKey] != null) {
       const v = globalConfig[camelKey];
-      return typeof v === 'function' ? v : Array.isArray(v) ? v.join(',') : String(v);
+      return Array.isArray(v) ? v.join(',') : String(v);
     }
     return attr(`${_data}${value}`);
   };
