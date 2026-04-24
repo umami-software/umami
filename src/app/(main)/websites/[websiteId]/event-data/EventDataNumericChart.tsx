@@ -14,15 +14,18 @@ import {
 import { renderDateLabels } from '@/lib/charts';
 import { getThemeColors } from '@/lib/colors';
 import { generateTimeSeries } from '@/lib/date';
+import type { EventPropertyFilter } from '@/lib/types';
 
 export function EventDataNumericChart({
   websiteId,
   eventName,
   propertyName,
+  eventFilters = [],
 }: {
   websiteId: string;
   eventName: string;
   propertyName: string;
+  eventFilters?: EventPropertyFilter[];
 }) {
   const { t, labels } = useMessages();
   const { theme } = useTheme();
@@ -36,12 +39,14 @@ export function EventDataNumericChart({
     eventName,
     propertyName,
     'sum',
+    eventFilters,
   );
   const avgQuery = useEventDataNumericSeriesQuery(
     websiteId,
     eventName,
     propertyName,
     'avg',
+    eventFilters,
   );
 
   const chartData: any = useMemo(() => {

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { parseEventPropertyFilters } from '@/lib/params';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, pagingParams } from '@/lib/schema';
@@ -31,7 +32,8 @@ export async function GET(
 
   const { eventName, ...rest } = query;
   const filters = await getQueryFilters(rest, websiteId);
-  const result = await getEventDataPivot(websiteId, eventName, filters);
+  const eventFilters = parseEventPropertyFilters(query);
+  const result = await getEventDataPivot(websiteId, eventName, filters, eventFilters);
 
   return json(result);
 }

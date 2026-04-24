@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { parseEventPropertyFilters } from '@/lib/params';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams } from '@/lib/schema';
@@ -32,7 +33,8 @@ export async function GET(
 
   const { eventName, propertyName, metric, ...rest } = query;
   const filters = await getQueryFilters(rest, websiteId);
-  const data = await getEventDataNumericSeries(websiteId, eventName, propertyName, metric, filters);
+  const eventFilters = parseEventPropertyFilters(query);
+  const data = await getEventDataNumericSeries(websiteId, eventName, propertyName, metric, filters, eventFilters);
 
   return json(data);
 }

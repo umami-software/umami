@@ -58,8 +58,9 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
       justifyContent="space-between"
       padding="2"
       backgroundColor="surface-sunken"
+      wrap="wrap"
     >
-      <Row alignItems="center" gap="2" wrap="wrap">
+      <Row alignItems="center" gap="2" wrap="wrap" width={{ base: '100%', md: 'auto' }}>
         {segment && !isLoading && (
           <FilterItem
             name="segment"
@@ -149,7 +150,7 @@ const FilterItem = ({ name, label, operator, value, onRemove }) => {
       theme="dark"
     >
       <Row alignItems="center" gap="4">
-        <Row alignItems="center" gap="2" maxWidth={'500px'}>
+        <Row alignItems="center" gap="2" style={{ maxWidth: 'min(500px, calc(100vw - 10rem))', minWidth: 0, overflow: 'hidden' }}>
           <Text color="primary" weight="bold">
             {label}
           </Text>

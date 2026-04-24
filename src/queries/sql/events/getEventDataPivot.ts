@@ -2,12 +2,17 @@ import clickhouse from '@/lib/clickhouse';
 import { DEFAULT_PAGE_SIZE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import type { EventPropertyFilter, QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getEventDataPivot';
 
 export async function getEventDataPivot(
-  ...args: [websiteId: string, eventName: string, filters: QueryFilters]
+  ...args: [
+    websiteId: string,
+    eventName: string,
+    filters: QueryFilters,
+    eventFilters?: EventPropertyFilter[],
+  ]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -15,8 +20,8 @@ export async function getEventDataPivot(
   });
 }
 
-async function relationalQuery(websiteId: string, eventName: string, filters: QueryFilters) {
-  const { rawQuery, parseFilters } = prisma;
+async function relationalQuery(websiteId: string, eventName: string, filters: QueryFilters, eventFilters: EventPropertyFilter[] = []) {
+  const { rawQuery, parseFilters, getEventPropertyFilterQuery } = prisma;
   const { page = 1, pageSize } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
@@ -25,6 +30,7 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
     ...filters,
     websiteId,
   });
+  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
 
   const countResult = await rawQuery(
     `
@@ -39,8 +45,9 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_name = {{eventName}}
       ${filterQuery}
+      ${epfSQL}
     `,
-    { ...queryParams, eventName },
+    { ...queryParams, eventName, ...epfParams },
   );
 
   const count = countResult[0].num;
@@ -59,6 +66,7 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
         and website_event.created_at between {{startDate}} and {{endDate}}
         and website_event.event_name = {{eventName}}
         ${filterQuery}
+        ${epfSQL}
       group by website_event.event_id
       order by max(website_event.created_at) desc
       limit ${size} offset ${offset}
@@ -85,7 +93,7 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
       and event_data.created_at between {{startDate}} and {{endDate}}
     order by website_event.created_at desc
     `,
-    { ...queryParams, eventName },
+    { ...queryParams, eventName, ...epfParams },
     FUNCTION_NAME,
   );
 
@@ -106,13 +114,14 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
   return { data: [...eventMap.values()], count, page: +page, pageSize: size };
 }
 
-async function clickhouseQuery(websiteId: string, eventName: string, filters: QueryFilters) {
-  const { rawQuery, parseFilters } = clickhouse;
+async function clickhouseQuery(websiteId: string, eventName: string, filters: QueryFilters, eventFilters: EventPropertyFilter[] = []) {
+  const { rawQuery, parseFilters, getEventPropertyFilterQuery } = clickhouse;
   const { page = 1, pageSize } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
 
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
+  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
 
   const count = await rawQuery(
     `
@@ -132,8 +141,9 @@ async function clickhouseQuery(websiteId: string, eventName: string, filters: Qu
     where event_data_pivot.website_id = {websiteId:UUID}
       and event_data_pivot.created_at between {startDate:DateTime64} and {endDate:DateTime64}
     ${filterQuery}
+    ${epfSQL}
     `,
-    { ...queryParams, eventName },
+    { ...queryParams, eventName, ...epfParams },
   ).then((res: any) => res[0].num);
 
   const data = await rawQuery(
@@ -161,11 +171,12 @@ async function clickhouseQuery(websiteId: string, eventName: string, filters: Qu
     where event_data_pivot.website_id = {websiteId:UUID}
       and event_data_pivot.created_at between {startDate:DateTime64} and {endDate:DateTime64}
     ${filterQuery}
+    ${epfSQL}
     group by event_id, session_id, event_name, url_path, created_at
     order by created_at desc
     limit ${size} offset ${offset}
     `,
-    { ...queryParams, eventName },
+    { ...queryParams, eventName, ...epfParams },
     FUNCTION_NAME,
   );
 

@@ -30,6 +30,13 @@ export interface Auth {
   };
 }
 
+export interface EventPropertyFilter {
+  propertyName: string;
+  dataType: number;
+  operator: string;
+  value: string;
+}
+
 export interface Filter {
   name: string;
   operator: Operator;

@@ -1,5 +1,5 @@
 import { FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
-import type { Filter, QueryFilters, QueryOptions } from '@/lib/types';
+import type { EventPropertyFilter, Filter, QueryFilters, QueryOptions } from '@/lib/types';
 
 export function parseFilterValue(param: any) {
   if (typeof param === 'string') {
@@ -87,4 +87,32 @@ export function filtersArrayToObject(filters: Filter[]) {
 
     return obj;
   }, {});
+}
+
+export function parseEventPropertyFilters(query: Record<string, any>): EventPropertyFilter[] {
+  return Object.entries(query)
+    .filter(([key]) => /^epf_/.test(key))
+    .flatMap(([key, val]) => {
+      const dotIndex = (val as string).indexOf('.');
+      if (dotIndex < 1) return [];
+      const withoutPrefix = key.slice(4); // strip "epf_"
+      const propertyName = withoutPrefix.replace(/\d+$/, ''); // strip trailing index digits
+      const operator = (val as string).slice(0, dotIndex);
+      const value = (val as string).slice(dotIndex + 1);
+      const isNumeric =
+        ['gt', 'lt', 'gte', 'lte'].includes(operator) ||
+        (['eq', 'neq'].includes(operator) && value !== '' && !Number.isNaN(Number(value)));
+      return [{ propertyName, dataType: isNumeric ? 2 : 1, operator, value }];
+    });
+}
+
+export function serializeEventPropertyFilters(filters: EventPropertyFilter[]): Record<string, string> {
+  const counts: Record<string, number> = {};
+  return Object.fromEntries(
+    filters.map(f => {
+      const n = counts[f.propertyName] ?? 0;
+      counts[f.propertyName] = n + 1;
+      return [`epf_${f.propertyName}${n > 0 ? n : ''}`, `${f.operator}.${f.value}`];
+    }),
+  );
 }

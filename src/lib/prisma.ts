@@ -1,10 +1,10 @@
+import { PrismaClient } from '@/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import debug from 'debug';
-import { PrismaClient } from '@/generated/prisma/client';
 import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
 import { filtersObjectToArray } from './params';
-import type { Operator, QueryFilters, QueryOptions } from './types';
+import type { EventPropertyFilter, Operator, QueryFilters, QueryOptions } from './types';
 
 const log = debug('umami:prisma');
 
@@ -252,6 +252,68 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   };
 }
 
+function getEventPropertyFilterQuery(filters: EventPropertyFilter[] = []): {
+  sql: string;
+  params: Record<string, any>;
+} {
+  if (!filters.length) return { sql: '', params: {} };
+
+  const parts: string[] = [];
+  const params: Record<string, any> = {};
+
+  filters.forEach(({ propertyName, dataType, operator, value }, i) => {
+    const keyParam = `epf_key_${i}`;
+    const valParam = `epf_val_${i}`;
+    params[keyParam] = propertyName;
+
+    const isNumeric = dataType === 2;
+    const col = isNumeric ? 'cast(number_value as decimal)' : 'string_value';
+
+    let condition: string;
+    if (isNumeric) {
+      params[valParam] = parseFloat(value) || 0;
+      const opMap: Record<string, string> = {
+        eq: `${col} = {{${valParam}}}`,
+        neq: `${col} != {{${valParam}}}`,
+        gt: `${col} > {{${valParam}}}`,
+        lt: `${col} < {{${valParam}}}`,
+        gte: `${col} >= {{${valParam}}}`,
+        lte: `${col} <= {{${valParam}}}`,
+      };
+      condition = opMap[operator] ?? `${col} = {{${valParam}}}`;
+    } else if (operator === 'eq' || operator === 'neq') {
+      const vals = value.split(',').filter(Boolean);
+      if (!vals.length) return;
+      params[valParam] = vals;
+      condition =
+        operator === 'eq'
+          ? `${col} = ANY({{${valParam}::text[]}})`
+          : `${col} != ALL({{${valParam}::text[]}})`;
+    } else if (operator === 'regex' || operator === 'notRegex') {
+      if (!value) return;
+      params[valParam] = value;
+      condition = operator === 'regex' ? `${col} ~* {{${valParam}}}` : `${col} !~* {{${valParam}}}`;
+    } else {
+      if (!value) return;
+      params[valParam] = `%${value}%`;
+      condition =
+        operator === 'c' ? `${col} ilike {{${valParam}}}` : `${col} not ilike {{${valParam}}}`;
+    }
+
+    parts.push(`and website_event.event_id in (
+      select website_event_id 
+      from event_data
+      where website_id = {{websiteId::uuid}}
+        and created_at between {{startDate}} and {{endDate}}
+        and data_key = {{${keyParam}}}
+        and data_type = ${dataType}
+        and ${condition}
+    )`);
+  });
+
+  return { sql: parts.join('\n'), params };
+}
+
 async function rawQuery(sql: string, data: Record<string, any>, name?: string): Promise<any> {
   if (process.env.LOG_QUERY) {
     log('QUERY:\n', sql);
@@ -426,6 +488,7 @@ export default {
   getDateSQL,
   getDateWeeklySQL,
   getFilterQuery,
+  getEventPropertyFilterQuery,
   getSearchParameters,
   getTimestampDiffSQL,
   getSearchSQL,

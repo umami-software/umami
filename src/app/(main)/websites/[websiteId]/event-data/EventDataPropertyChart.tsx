@@ -8,7 +8,6 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
   useDateRange,
   useEventDataPropertySeriesQuery,
-  useEventDataValuesQuery,
   useLocale,
   useMessages,
   useTimezone,
@@ -17,26 +16,44 @@ import { ListTable } from '@/components/metrics/ListTable';
 import { renderDateLabels } from '@/lib/charts';
 import { CHART_COLORS } from '@/lib/constants';
 import { generateTimeSeries } from '@/lib/date';
+import type { EventPropertyFilter } from '@/lib/types';
 
 export function EventDataPropertyChart({
   websiteId,
   eventName,
   propertyName,
+  eventFilters = [],
 }: {
   websiteId: string;
   eventName: string;
   propertyName: string;
+  eventFilters?: EventPropertyFilter[];
 }) {
   const { t, labels } = useMessages();
   const { timezone } = useTimezone();
   const { dateRange: { startDate, endDate, unit } } = useDateRange({ timezone });
   const { locale, dateLocale } = useLocale();
-  const { data, isLoading, error } = useEventDataPropertySeriesQuery(websiteId, eventName, propertyName);
-  const valuesQuery = useEventDataValuesQuery(websiteId, eventName, propertyName);
-  const valueLabels = useMemo(
-    () => valuesQuery.data?.map(({ value }) => value) ?? [],
-    [valuesQuery.data],
+  const { data, isLoading, isFetching, error } = useEventDataPropertySeriesQuery(
+    websiteId,
+    eventName,
+    propertyName,
+    eventFilters,
   );
+
+  // Aggregate totals per value from the already-filtered time series
+  const aggregated = useMemo(() => {
+    if (!data) return [];
+    const totals = (data as any[]).reduce((obj: Record<string, number>, { x, y }) => {
+      obj[x] = (obj[x] ?? 0) + y;
+      return obj;
+    }, {});
+    return Object.entries(totals)
+      .map(([value, total]) => ({ value, total: total as number }))
+      .sort((a, b) => b.total - a.total);
+  }, [data]);
+
+  const valueLabels = useMemo(() => aggregated.map(({ value }) => value), [aggregated]);
+
   const colorMap = useMemo(() => {
     return valueLabels.reduce(
       (obj, label, index) => {
@@ -50,13 +67,9 @@ export function EventDataPropertyChart({
   const chartData: any = useMemo(() => {
     if (!data) return;
 
-    const map = (data as any[]).reduce((obj, { x, t, y }) => {
-      if (!obj[x]) {
-        obj[x] = [];
-      }
-
+    const map = (data as any[]).reduce((obj: Record<string, { x: string; y: number }[]>, { x, t, y }) => {
+      if (!obj[x]) obj[x] = [];
       obj[x].push({ x: t, y });
-
       return obj;
     }, {});
 
@@ -70,57 +83,57 @@ export function EventDataPropertyChart({
           },
         ],
       };
-    } else {
-      const keys = [
-        ...valueLabels.filter(label => map[label]),
-        ...Object.keys(map).filter(key => !valueLabels.includes(key)),
-      ];
-
-      return {
-        datasets: keys.map((key, index) => {
-          const color = colord(colorMap[key] || CHART_COLORS[index % CHART_COLORS.length]);
-          return {
-            label: key,
-            data: generateTimeSeries(map[key], startDate, endDate, unit, dateLocale),
-            lineTension: 0,
-            backgroundColor: color.alpha(0.6).toRgbString(),
-            borderColor: color.alpha(0.7).toRgbString(),
-            borderWidth: 1,
-          };
-        }),
-      };
     }
+
+    const keys = [
+      ...valueLabels.filter(label => map[label]),
+      ...Object.keys(map).filter(key => !valueLabels.includes(key)),
+    ];
+
+    return {
+      datasets: keys.map((key, index) => {
+        const color = colord(colorMap[key] || CHART_COLORS[index % CHART_COLORS.length]);
+        return {
+          label: key,
+          data: generateTimeSeries(map[key], startDate, endDate, unit, dateLocale),
+          lineTension: 0,
+          backgroundColor: color.alpha(0.6).toRgbString(),
+          borderColor: color.alpha(0.7).toRgbString(),
+          borderWidth: 1,
+        };
+      }),
+    };
   }, [data, startDate, endDate, unit, dateLocale, valueLabels, colorMap]);
 
   const renderXLabel = useCallback(renderDateLabels(unit, locale), [unit, locale]);
-  const propertySum = useMemo(() => {
-    return valuesQuery.data?.reduce((sum, { total }) => sum + total, 0) ?? 0;
-  }, [valuesQuery.data]);
+
+  const propertySum = useMemo(
+    () => aggregated.reduce((sum, { total }) => sum + total, 0),
+    [aggregated],
+  );
 
   const tableData = useMemo(() => {
-    if (!valuesQuery.data || propertySum === 0) return [];
-
-    return valuesQuery.data.map(({ value, total }) => ({
+    if (!aggregated.length || propertySum === 0) return [];
+    return aggregated.map(({ value, total }) => ({
       label: value,
       count: total,
       percent: 100 * (total / propertySum),
     }));
-  }, [valuesQuery.data, propertySum]);
+  }, [aggregated, propertySum]);
 
   const pieChartData: any = useMemo(() => {
-    if (!valuesQuery.data?.length) return null;
-
+    if (!aggregated.length) return null;
     return {
       labels: valueLabels,
       datasets: [
         {
-          data: valuesQuery.data.map(({ total }) => total),
+          data: aggregated.map(({ total }) => total),
           backgroundColor: valueLabels.map(label => colorMap[label]),
           borderWidth: 0,
         },
       ],
     };
-  }, [valuesQuery.data, valueLabels, colorMap]);
+  }, [aggregated, valueLabels, colorMap]);
 
   return (
     <Column gap="6">
@@ -139,9 +152,9 @@ export function EventDataPropertyChart({
       </LoadingPanel>
       <LoadingPanel
         data={tableData}
-        isLoading={valuesQuery.isLoading}
-        isFetching={valuesQuery.isFetching}
-        error={valuesQuery.error}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        error={error}
         minHeight="300px"
       >
         <Grid columns={{ base: '1fr', md: '1fr 1fr' }} gap padding="2" alignItems="start">

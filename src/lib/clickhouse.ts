@@ -1,10 +1,10 @@
+import { CLICKHOUSE } from '@/lib/db';
 import { type ClickHouseClient, createClient } from '@clickhouse/client';
 import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
-import { CLICKHOUSE } from '@/lib/db';
 import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from './constants';
 import { filtersObjectToArray } from './params';
-import type { QueryFilters, QueryOptions } from './types';
+import type { EventPropertyFilter, QueryFilters, QueryOptions } from './types';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   utc: '%Y-%m-%dT%H:%i:%SZ',
@@ -235,6 +235,79 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   };
 }
 
+function getEventPropertyFilterQuery(filters: EventPropertyFilter[] = []): {
+  sql: string;
+  params: Record<string, any>;
+} {
+  if (!filters.length) return { sql: '', params: {} };
+
+  const parts: string[] = [];
+  const params: Record<string, any> = {};
+
+  filters.forEach(({ propertyName, dataType, operator, value }, i) => {
+    const keyParam = `epf_key_${i}`;
+    const valParam = `epf_val_${i}`;
+    params[keyParam] = propertyName;
+
+    const isNumeric = dataType === 2;
+    const col = isNumeric ? 'number_value' : 'string_value';
+
+    let condition: string;
+    if (isNumeric) {
+      params[valParam] = parseFloat(value) || 0;
+      const opMap: Record<string, string> = {
+        eq: `${col} = {${valParam}:Float64}`,
+        neq: `${col} != {${valParam}:Float64}`,
+        gt: `${col} > {${valParam}:Float64}`,
+        lt: `${col} < {${valParam}:Float64}`,
+        gte: `${col} >= {${valParam}:Float64}`,
+        lte: `${col} <= {${valParam}:Float64}`,
+      };
+      condition = opMap[operator] ?? `${col} = {${valParam}:Float64}`;
+    } else if (operator === 'eq' || operator === 'neq') {
+      const vals = value.split(',').filter(Boolean);
+      if (!vals.length) return;
+      params[valParam] = vals;
+      condition = mapFilter(
+        col,
+        operator === 'eq' ? OPERATORS.equals : OPERATORS.notEquals,
+        valParam,
+        'String',
+      );
+    } else if (operator === 'regex' || operator === 'notRegex') {
+      if (!value) return;
+      params[valParam] = value;
+      condition = mapFilter(
+        col,
+        operator === 'regex' ? OPERATORS.regex : OPERATORS.notRegex,
+        valParam,
+        'String',
+      );
+    } else {
+      if (!value) return;
+      params[valParam] = value;
+      condition = mapFilter(
+        col,
+        operator === 'c' ? OPERATORS.contains : OPERATORS.doesNotContain,
+        valParam,
+        'String',
+      );
+    }
+
+    parts.push(`and event_id in (
+      select event_id 
+      from event_data
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and data_key = {${keyParam}:String}
+        and data_type = ${dataType}
+        and ${condition}
+    )`);
+  });
+
+  return { sql: parts.join('\n'), params };
+}
+
 async function pagedRawQuery(
   query: string,
   queryParams: Record<string, any>,
@@ -321,6 +394,7 @@ export default {
   getDateSQL,
   getSearchSQL,
   getFilterQuery,
+  getEventPropertyFilterQuery,
   getUTCString,
   parseFilters,
   pagedRawQuery,

@@ -8,20 +8,23 @@ import Link from '@/components/common/Link';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Pager } from '@/components/common/Pager';
 import { useEventDataPivotQuery, useEventDataPropertiesQuery, useMessages, useMobile, useNavigation } from '@/components/hooks';
+import type { EventPropertyFilter } from '@/lib/types';
 
 export function EventDataPivotTable({
   websiteId,
   eventName,
+  eventFilters = [],
 }: {
   websiteId: string;
   eventName: string;
+  eventFilters?: EventPropertyFilter[];
 }) {
   const { t, labels } = useMessages();
   const { router, updateParams } = useNavigation();
   const { isMobile } = useMobile();
 
   const propertiesQuery = useEventDataPropertiesQuery(websiteId);
-  const pivotQuery = useEventDataPivotQuery(websiteId, eventName);
+  const pivotQuery = useEventDataPivotQuery(websiteId, eventName, eventFilters);
 
   const propertyKeys = useMemo(() => {
     if (!propertiesQuery.data || !eventName) return [];

@@ -1,12 +1,18 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import type { EventPropertyFilter, QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getEventDataPropertySeries';
 
 export async function getEventDataPropertySeries(
-  ...args: [websiteId: string, eventName: string, propertyName: string, filters: QueryFilters]
+  ...args: [
+    websiteId: string,
+    eventName: string,
+    propertyName: string,
+    filters: QueryFilters,
+    eventFilters?: EventPropertyFilter[],
+  ]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -19,13 +25,15 @@ async function relationalQuery(
   eventName: string,
   propertyName: string,
   filters: QueryFilters,
+  eventFilters: EventPropertyFilter[] = [],
 ) {
   const { timezone = 'utc', unit = 'day' } = filters;
-  const { rawQuery, getDateSQL, parseFilters } = prisma;
+  const { rawQuery, getDateSQL, parseFilters, getEventPropertyFilterQuery } = prisma;
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
+  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
 
   return rawQuery(
     `
@@ -46,10 +54,11 @@ async function relationalQuery(
       and event_data.data_key = {{propertyName}}
       and event_data.data_type = 1
       ${filterQuery}
+      ${epfSQL}
     group by 1, 2
     order by 2
     `,
-    { ...queryParams, eventName, propertyName },
+    { ...queryParams, eventName, propertyName, ...epfParams },
     FUNCTION_NAME,
   );
 }
@@ -59,10 +68,12 @@ async function clickhouseQuery(
   eventName: string,
   propertyName: string,
   filters: QueryFilters,
+  eventFilters: EventPropertyFilter[] = [],
 ): Promise<{ x: string; t: string; y: number }[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
-  const { rawQuery, getDateSQL, parseFilters } = clickhouse;
+  const { rawQuery, getDateSQL, parseFilters, getEventPropertyFilterQuery } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
+  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
 
   return rawQuery(
     `
@@ -87,10 +98,11 @@ async function clickhouseQuery(
       and event_data.data_key = {propertyName:String}
       and event_data.data_type = 1
     ${filterQuery}
+    ${epfSQL}
     group by x, t
     order by t
     `,
-    { ...queryParams, eventName, propertyName },
+    { ...queryParams, eventName, propertyName, ...epfParams },
     FUNCTION_NAME,
   );
 }

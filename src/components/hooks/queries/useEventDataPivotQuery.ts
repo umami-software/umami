@@ -1,4 +1,5 @@
-import type { ReactQueryOptions } from '@/lib/types';
+import { serializeEventPropertyFilters } from '@/lib/params';
+import type { EventPropertyFilter, ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
 import { useDateParameters } from '../useDateParameters';
 import { useFilterParameters } from '../useFilterParameters';
@@ -6,6 +7,7 @@ import { useFilterParameters } from '../useFilterParameters';
 export function useEventDataPivotQuery(
   websiteId: string,
   eventName: string,
+  eventFilters: EventPropertyFilter[] = [],
   options?: ReactQueryOptions,
 ) {
   const { get, useQuery } = useApi();
@@ -15,7 +17,7 @@ export function useEventDataPivotQuery(
   return useQuery({
     queryKey: [
       'websites:event-data-pivot',
-      { websiteId, eventName, startAt, endAt, unit, timezone, ...params },
+      { websiteId, eventName, eventFilters, startAt, endAt, unit, timezone, ...params },
     ],
     queryFn: () =>
       get(`/websites/${websiteId}/event-data-pivot`, {
@@ -24,6 +26,7 @@ export function useEventDataPivotQuery(
         endAt,
         unit,
         timezone,
+        ...serializeEventPropertyFilters(eventFilters),
         ...params,
       }),
     enabled: !!(websiteId && eventName),

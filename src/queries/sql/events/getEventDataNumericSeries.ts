@@ -1,7 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import type { EventPropertyFilter, QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getEventDataNumericSeries';
 
@@ -12,6 +12,7 @@ export async function getEventDataNumericSeries(
     propertyName: string,
     metric: 'sum' | 'avg',
     filters: QueryFilters,
+    eventFilters?: EventPropertyFilter[],
   ]
 ) {
   return runQuery({
@@ -26,13 +27,15 @@ async function relationalQuery(
   propertyName: string,
   metric: 'sum' | 'avg',
   filters: QueryFilters,
+  eventFilters: EventPropertyFilter[] = [],
 ) {
   const { timezone = 'utc', unit = 'day' } = filters;
-  const { rawQuery, getDateSQL, parseFilters } = prisma;
+  const { rawQuery, getDateSQL, parseFilters, getEventPropertyFilterQuery } = prisma;
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
+  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
   const aggFn = metric === 'avg' ? 'avg' : 'sum';
 
   return rawQuery(
@@ -53,10 +56,11 @@ async function relationalQuery(
       and event_data.data_key = {{propertyName}}
       and event_data.data_type = 2
       ${filterQuery}
+      ${epfSQL}
     group by 1
     order by 1
     `,
-    { ...queryParams, eventName, propertyName },
+    { ...queryParams, eventName, propertyName, ...epfParams },
     FUNCTION_NAME,
   );
 }
@@ -67,10 +71,12 @@ async function clickhouseQuery(
   propertyName: string,
   metric: 'sum' | 'avg',
   filters: QueryFilters,
+  eventFilters: EventPropertyFilter[] = [],
 ): Promise<{ t: string; y: number }[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
-  const { rawQuery, getDateSQL, parseFilters } = clickhouse;
+  const { rawQuery, getDateSQL, parseFilters, getEventPropertyFilterQuery } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
+  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
   const aggFn = metric === 'avg' ? 'avg' : 'sum';
 
   return rawQuery(
@@ -95,10 +101,11 @@ async function clickhouseQuery(
       and event_data.data_key = {propertyName:String}
       and event_data.data_type = 2
     ${filterQuery}
+    ${epfSQL}
     group by t
     order by t
     `,
-    { ...queryParams, eventName, propertyName },
+    { ...queryParams, eventName, propertyName, ...epfParams },
     FUNCTION_NAME,
   );
 }
