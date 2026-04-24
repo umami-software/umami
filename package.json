@@ -135,7 +135,7 @@
     "cypress": "^13.6.6",
     "dotenv-cli": "^11.0.0",
     "jest": "^29.7.0",
-    "postcss": "^8.5.8",
+    "postcss": "^8.5.10",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^15.1.0",
     "postcss-preset-env": "7.8.3",
