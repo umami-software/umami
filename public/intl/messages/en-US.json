@@ -483,6 +483,7 @@
     "two-factor-error-disable-not-allowed": "Two-factor authentication is required and cannot be disabled.",
     "two-factor-error-incorrect-password": "Incorrect password.",
     "two-factor-error-not-enabled": "Two-factor authentication is not enabled.",
+    "two-factor-error-no-pending-setup": "No pending two-factor authentication setup found.",
     "two-factor-locked-message": "Too many failed attempts. Try again at {time}.",
     "two-factor-active-description": "Your account is protected with two-factor authentication. Each login requires a code from your authenticator app."
   }

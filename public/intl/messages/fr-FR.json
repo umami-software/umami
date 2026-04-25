@@ -481,6 +481,7 @@
     "two-factor-error-disable-not-allowed": "L’authentification à deux facteurs est obligatoire et ne peut pas être désactivée.",
     "two-factor-error-incorrect-password": "Mot de passe incorrect.",
     "two-factor-error-not-enabled": "L’authentification à deux facteurs n’est pas activée.",
+    "two-factor-error-no-pending-setup": "Aucune configuration d’authentification à deux facteurs en attente n’a été trouvée.",
     "two-factor-locked-message": "Trop de tentatives infructueuses. Réessayez à {time}.",
     "two-factor-active-description": "Votre compte est protégé par l’authentification à deux facteurs. Chaque connexion nécessite un code provenant de votre application d’authentification."
   }

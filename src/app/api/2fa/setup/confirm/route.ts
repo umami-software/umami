@@ -24,7 +24,10 @@ export async function POST(request: Request) {
 
   // Verify if 2FA is waiting for setup
   if (!twoFactor || twoFactor.isEnabled) {
-    return badRequest({ message: 'No pending 2FA setup found' });
+    return badRequest({
+      code: 'two-factor-error-no-pending-setup',
+      message: 'No pending 2FA setup found',
+    });
   }
 
   // Verify rate limit
