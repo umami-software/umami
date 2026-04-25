@@ -2,6 +2,7 @@
 import { Button, Column, Dialog, Modal, Row, Text } from '@umami/react-zen';
 import { useState } from 'react';
 import { useMessages } from '@/components/hooks';
+import styles from './TwoFactorSuccessModal.module.css';
 
 interface TwoFactorSuccessModalProps {
   backupCodes: string[];
@@ -30,7 +31,7 @@ export function TwoFactorSuccessModal({ backupCodes, onClose }: TwoFactorSuccess
 
   return (
     <Modal isOpen={true} onOpenChange={() => {}}>
-      <Dialog title={t(labels.twoFactorSuccessTitle)} style={{ width: 480, maxWidth: '95vw' }}>
+      <Dialog title={t(labels.twoFactorSuccessTitle)} className={styles.dialog}>
         {() => (
           <Column gap="5">
             <Text>{t(messages.twoFactorEnabledDescription)}</Text>
@@ -39,18 +40,9 @@ export function TwoFactorSuccessModal({ backupCodes, onClose }: TwoFactorSuccess
               <Text weight="bold">{t(labels.twoFactorSaveBackupCodes)}</Text>
               <Text>{t(messages.twoFactorBackupDescription)}</Text>
 
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: '8px',
-                  padding: '12px',
-                  background: 'var(--surface-sunken)',
-                  borderRadius: 8,
-                }}
-              >
+              <div className={styles.codesGrid}>
                 {backupCodes.map((code, i) => (
-                  <code key={i} style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}>
+                  <code key={i} className={styles.code}>
                     {code}
                   </code>
                 ))}
