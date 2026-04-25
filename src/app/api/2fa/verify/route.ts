@@ -81,10 +81,20 @@ export async function POST(request: Request) {
       });
     }
 
-    await prisma.client.twoFactorBackupCode.update({
-      where: { id: unusedCodes[matchIndex].id },
+    const consumed = await prisma.client.twoFactorBackupCode.updateMany({
+      where: { id: unusedCodes[matchIndex].id, used: false },
       data: { used: true },
     });
+
+    if (consumed.count === 0) {
+      const { lockedUntil } = await recordFailedAttempt(userId);
+      return badRequest({
+        code: 'two-factor-error-invalid-backup-code',
+        message: 'Invalid backup code',
+        ...(lockedUntil && { lockedUntil }),
+      });
+    }
+
     await resetRateLimit(userId);
   } else {
     const { token } = body;
