@@ -34,5 +34,9 @@ export async function POST(request: Request) {
     create: { userId, secret: encryptedSecret, isEnabled: false },
   });
 
+  /*
+  `manualKey` is intentionally plaintext as the user needs it once for manual entry.
+  The encrypted copy in DB is what matters for long-term storage.
+   */
   return json({ qrCodeDataUrl, manualKey: secret });
 }
