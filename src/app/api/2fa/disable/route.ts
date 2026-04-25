@@ -101,9 +101,11 @@ export async function POST(request: Request) {
     });
   }
 
-  await markOtpUsed(userId, token);
-  await prisma.client.twoFactorAuth.delete({ where: { userId } });
-  await prisma.client.twoFactorBackupCode.deleteMany({ where: { userId } });
+  await prisma.transaction(async tx => {
+    await markOtpUsed(userId, token, tx);
+    await tx.twoFactorAuth.delete({ where: { userId } });
+    await tx.twoFactorBackupCode.deleteMany({ where: { userId } });
+  });
   await resetRateLimit(userId);
 
   return json({ ok: true });

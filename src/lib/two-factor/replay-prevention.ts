@@ -1,9 +1,13 @@
 import prisma from '@/lib/prisma';
+import { Prisma } from '@/generated/prisma/client';
+
+type TxClient = Prisma.TransactionClient;
 
 /** Records a one-time password as used so it cannot be reused within the next 90 seconds. */
-export async function markOtpUsed(userId: string, otp: string): Promise<void> {
+export async function markOtpUsed(userId: string, otp: string, tx?: TxClient): Promise<void> {
+  const client = tx ?? prisma.client;
   const expiresAt = new Date(Date.now() + 90 * 1000);
-  await prisma.client.twoFactorOtpUsed.upsert({
+  await client.twoFactorOtpUsed.upsert({
     where: { userId_otp: { userId, otp } },
     update: { expiresAt },
     create: { userId, otp, expiresAt },
