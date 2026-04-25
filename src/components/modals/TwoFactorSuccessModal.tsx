@@ -30,7 +30,7 @@ export function TwoFactorSuccessModal({ backupCodes, onClose }: TwoFactorSuccess
   };
 
   return (
-    <Modal isOpen={true} onOpenChange={() => {}}>
+    <Modal isOpen={true}>
       <Dialog title={t(labels.twoFactorSuccessTitle)} className={styles.dialog}>
         {() => (
           <Column gap="5">
