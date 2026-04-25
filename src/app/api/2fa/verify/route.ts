@@ -46,7 +46,7 @@ export async function POST(request: Request) {
   const twoFactor = await prisma.client.twoFactorAuth.findUnique({ where: { userId } });
 
   if (!twoFactor?.isEnabled) {
-    return badRequest({ message: '2FA not enabled for this user' });
+    return badRequest({ code: 'two-factor-error-not-enabled', message: '2FA not enabled for this user' });
   }
 
   const rateCheck = await checkRateLimit(userId);
@@ -72,7 +72,10 @@ export async function POST(request: Request) {
 
     if (matchIndex === null) {
       await recordFailedAttempt(userId);
-      return badRequest({ code: 'two-factor-error-invalid-backup-code', message: 'Invalid backup code' });
+      return badRequest({
+        code: 'two-factor-error-invalid-backup-code',
+        message: 'Invalid backup code',
+      });
     }
 
     await prisma.client.twoFactorBackupCode.update({
@@ -91,7 +94,10 @@ export async function POST(request: Request) {
 
     if (!(await verifyTotp(token, decryptedSecret))) {
       await recordFailedAttempt(userId);
-      return badRequest({ code: 'two-factor-error-invalid-code', message: 'Invalid verification code' });
+      return badRequest({
+        code: 'two-factor-error-invalid-code',
+        message: 'Invalid verification code',
+      });
     }
 
     await markOtpUsed(userId, token);
