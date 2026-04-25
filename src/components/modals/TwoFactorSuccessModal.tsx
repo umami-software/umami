@@ -14,8 +14,8 @@ export function TwoFactorSuccessModal({ backupCodes, onClose }: TwoFactorSuccess
 
   const handleDownload = () => {
     const content = [
-      'Umami - Two-factor authentication backup codes',
-      'Keep these codes safe. Each code can only be used once.',
+      t(labels.twoFactorBackupFileTitle),
+      t(messages.twoFactorBackupCodesOnce),
       '',
       ...backupCodes,
     ].join('\n');
