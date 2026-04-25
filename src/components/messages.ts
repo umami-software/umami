@@ -384,6 +384,7 @@ export const labels: Record<string, string> = {
   upgrade: 'label.upgrade',
   security: 'label.security',
   close: 'label.close',
+  twoFactorAuth: 'label.two-factor-auth',
   twoFactorSetupTitle: 'label.two-factor-setup-title',
   twoFactorStep1: 'label.two-factor-step1',
   twoFactorStep2: 'label.two-factor-step2',
