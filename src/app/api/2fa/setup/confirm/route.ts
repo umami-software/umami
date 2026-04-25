@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import { parseRequest } from '@/lib/request';
-import { badRequest, json, unauthorized } from '@/lib/response';
+import { badRequest, json } from '@/lib/response';
 import { generateBackupCodes } from '@/lib/two-factor/backup-codes';
 import { decryptSecret } from '@/lib/two-factor/crypto';
 import { checkRateLimit, recordFailedAttempt, resetRateLimit } from '@/lib/two-factor/rate-limit';
@@ -61,16 +61,18 @@ export async function POST(request: Request) {
     });
   }
 
-  await prisma.client.twoFactorAuth.update({ where: { userId }, data: { isEnabled: true } });
-  await markOtpUsed(userId, token);
-  await resetRateLimit(userId);
-
   const { plaintext, hashed } = await generateBackupCodes();
 
-  await prisma.client.twoFactorBackupCode.deleteMany({ where: { userId } });
-  await prisma.client.twoFactorBackupCode.createMany({
-    data: hashed.map(codeHash => ({ userId, codeHash })),
+  await prisma.transaction(async tx => {
+    await tx.twoFactorAuth.update({ where: { userId }, data: { isEnabled: true } });
+    await tx.twoFactorBackupCode.deleteMany({ where: { userId } });
+    await tx.twoFactorBackupCode.createMany({
+      data: hashed.map(codeHash => ({ userId, codeHash })),
+    });
   });
+
+  await markOtpUsed(userId, token);
+  await resetRateLimit(userId);
 
   return json({ backupCodes: plaintext });
 }
