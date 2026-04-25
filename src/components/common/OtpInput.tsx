@@ -1,6 +1,6 @@
 'use client';
 import { useRef, ClipboardEvent, KeyboardEvent } from 'react';
-import {Row, TextField} from '@umami/react-zen';
+import { Row, TextField } from '@umami/react-zen';
 
 interface OtpInputProps {
   value: string;
@@ -66,7 +66,7 @@ export function OtpInput({ value, onChange, onComplete, disabled }: OtpInputProp
   };
 
   return (
-    <Row gap='2'>
+    <Row gap="2">
       {digits.map((digit, i) => (
         <div
           key={i}
@@ -85,7 +85,7 @@ export function OtpInput({ value, onChange, onComplete, disabled }: OtpInputProp
             autoComplete="one-time-code"
             aria-label={`Digit ${i + 1}`}
             placeholder="0"
-            style={{width: 32}}
+            style={{ width: 32 }}
           />
         </div>
       ))}
