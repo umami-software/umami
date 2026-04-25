@@ -23,6 +23,15 @@ export async function POST(request: Request) {
     return badRequest({ message: 'User not found' });
   }
 
+  const existing = await prisma.client.twoFactorAuth.findUnique({ where: { userId } });
+
+  if (existing?.isEnabled) {
+    return badRequest({
+      code: 'two-factor-error-already-enabled',
+      message: '2FA is already enabled',
+    });
+  }
+
   const secret = generateTotpSecret();
   const encryptedSecret = encryptSecret(secret);
   const otpAuthUri = generateOtpAuthUri(secret, user.username);

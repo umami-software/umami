@@ -487,6 +487,7 @@ export const messages: Record<string, string> = {
   twoFactorErrorTooManyAttempts: 'message.two-factor-error-too-many-attempts',
   twoFactorErrorDisableNotAllowed: 'message.two-factor-error-disable-not-allowed',
   twoFactorErrorIncorrectPassword: 'message.two-factor-error-incorrect-password',
+  twoFactorErrorAlreadyEnabled: 'message.two-factor-error-already-enabled',
   twoFactorErrorNotEnabled: 'message.two-factor-error-not-enabled',
   twoFactorErrorNoPendingSetup: 'message.two-factor-error-no-pending-setup',
 };
