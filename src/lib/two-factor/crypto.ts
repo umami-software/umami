@@ -5,7 +5,9 @@ const ALGORITHM = 'aes-256-gcm';
 /** Loads and validates the 256-bit encryption key from TWO_FACTOR_ENCRYPTION_KEY. */
 function getKey(): Buffer {
   const hex = process.env.TWO_FACTOR_ENCRYPTION_KEY;
-  if (!hex || hex.length !== 64) throw new Error('TWO_FACTOR_ENCRYPTION_KEY is missing or invalid');
+  if (!hex || hex.length !== 64 || !/^[0-9a-fA-F]{64}$/.test(hex)) {
+    throw new Error('TWO_FACTOR_ENCRYPTION_KEY is missing or invalid');
+  }
   return Buffer.from(hex, 'hex');
 }
 
