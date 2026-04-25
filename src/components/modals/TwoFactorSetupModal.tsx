@@ -64,22 +64,22 @@ export function TwoFactorSetupModal({ required, onClose }: TwoFactorSetupModalPr
   const [backupCodes, setBackupCodes] = useState<string[] | null>(null);
 
   const queryClient = useQueryClient();
-  const { mutateAsync: initiate } = useUpdateQuery('/2fa/setup/initiate');
+  const { mutate: initiate } = useUpdateQuery('/2fa/setup/initiate');
   const { mutateAsync: confirm, isPending: isConfirming } = useUpdateQuery('/2fa/setup/confirm');
-  const { mutateAsync: cancel } = useUpdateQuery('/2fa/setup/cancel');
+  const { mutate: cancel } = useUpdateQuery('/2fa/setup/cancel');
 
   useEffect(() => {
-    initiate({})
-      .then((data: any) => {
-        setQrCodeDataUrl(data.qrCodeDataUrl);
-        setManualKey(data.manualKey);
-      })
-      .catch(() => setError(t(messages.error)));
+    initiate(
+      {},
+      {
+        onSuccess: (data: any) => {
+          setQrCodeDataUrl(data.qrCodeDataUrl);
+          setManualKey(data.manualKey);
+        },
+        onError: () => setError(t(messages.error)),
+      },
+    );
   }, []);
-
-  useEffect(() => {
-    console.log({ lengthTracked: otpValue.length });
-  }, [otpValue.length]);
 
   const handleConfirm = async (value?: string) => {
     const token = value ?? otpValue;
@@ -94,7 +94,7 @@ export function TwoFactorSetupModal({ required, onClose }: TwoFactorSetupModalPr
   };
 
   const handleCancel = async () => {
-    await cancel({}).catch(() => {});
+    cancel({});
     onClose?.();
   };
 
