@@ -69,9 +69,9 @@ export async function POST(request: Request) {
     await tx.twoFactorBackupCode.createMany({
       data: hashed.map(codeHash => ({ userId, codeHash })),
     });
+    await markOtpUsed(userId, token, tx);
   });
 
-  await markOtpUsed(userId, token);
   await resetRateLimit(userId);
 
   return json({ backupCodes: plaintext });
