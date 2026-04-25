@@ -8,11 +8,7 @@ export async function canViewLink({ user, shareToken }: Auth, linkId: string) {
     return true;
   }
 
-  if (
-    shareToken?.linkId === linkId ||
-    shareToken?.websiteId === linkId ||
-    shareToken?.linkIds?.includes(linkId)
-  ) {
+  if (shareToken?.linkId === linkId || shareToken?.websiteId === linkId || shareToken?.linkIds?.includes(linkId)) {
     return true;
   }
 
