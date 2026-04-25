@@ -1,27 +1,24 @@
 'use client';
 import { Column, Row, Switch, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { Badge } from '@/components/common/Badge';
-import { useMessages, useUpdateQuery, useTwoFactorStatusQuery } from '@/components/hooks';
-import { useApi } from '@/components/hooks/useApi';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMessages,
+  useUpdateQuery,
+  useTwoFactorStatusQuery,
+  useUserQuery,
+  useTwoFactorUserStatusQuery
+} from '@/components/hooks';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function UserTwoFactorSettings({ userId }: { userId: string }) {
   const { t, labels, messages } = useMessages();
-  const { get } = useApi();
   const queryClient = useQueryClient();
 
   const { data: globalStatus } = useTwoFactorStatusQuery(true);
   const isGlobalRequired = globalStatus?.requiredReason === 'global';
 
-  const { data: userTfaData } = useQuery({
-    queryKey: ['user-2fa-status', userId],
-    queryFn: () => get(`/admin/users/${userId}/2fa`),
-  });
-
-  const { data: userData } = useQuery({
-    queryKey: ['user', userId],
-    queryFn: () => get(`/users/${userId}`),
-  });
+  const { data: userTfaData } = useTwoFactorUserStatusQuery(userId);
+  const { data: userData } = useUserQuery(userId);
 
   const { mutateAsync: setUserRequired } = useUpdateQuery(`/admin/users/${userId}/2fa`);
 
