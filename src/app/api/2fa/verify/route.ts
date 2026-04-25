@@ -20,7 +20,6 @@ export async function POST(request: Request) {
     z.object({ backupCode: z.string().min(1), token: z.undefined() }),
   ]);
 
-  // Validate partial auth token — skip normal session auth
   const rawToken = getBearerToken(request);
   if (!rawToken) {
     return unauthorized({ code: 'two-factor-error-missing-token' });
