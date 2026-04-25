@@ -1,22 +1,16 @@
 'use client';
 import { Column, Row, Switch, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
-import { useMessages, useUpdateQuery, useTwoFactorStatusQuery } from '@/components/hooks';
-import { useApi } from '@/components/hooks/useApi';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {useMessages, useUpdateQuery, useTwoFactorStatusQuery, useTeamQuery} from '@/components/hooks';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function TeamTwoFactorSettings({ teamId }: { teamId: string }) {
   const { t, labels, messages } = useMessages();
-  const { get } = useApi();
   const queryClient = useQueryClient();
 
   const { data: globalStatus } = useTwoFactorStatusQuery(true);
   const isGlobalRequired = globalStatus?.requiredReason === 'global';
 
-  const { data: teamData } = useQuery({
-    queryKey: ['team', teamId],
-    queryFn: () => get(`/teams/${teamId}`),
-  });
-
+  const { data: teamData } = useTeamQuery(teamId);
   const { mutateAsync: setTeamRequired } = useUpdateQuery(`/admin/teams/${teamId}/2fa`);
 
   const twoFactorRequired = !!(teamData as any)?.twoFactorRequired;
