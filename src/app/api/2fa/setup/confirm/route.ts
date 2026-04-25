@@ -33,11 +33,16 @@ export async function POST(request: Request) {
   // Verify rate limit
   const rateCheck = await checkRateLimit(userId);
   if (!rateCheck.allowed) {
-    return badRequest({
-      code: 'two-factor-error-too-many-attempts',
-      message: 'Too many failed attempts',
-      lockedUntil: rateCheck.lockedUntil,
-    });
+    return Response.json(
+      {
+        error: {
+          code: 'two-factor-error-too-many-attempts',
+          message: 'Too many failed attempts',
+          lockedUntil: rateCheck.lockedUntil,
+        },
+      },
+      { status: 429 },
+    );
   }
 
   // Prevent OTP replay
