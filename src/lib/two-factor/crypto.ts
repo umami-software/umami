@@ -1,4 +1,4 @@
-import { createCipheriv, createDecipheriv, randomBytes, timingSafeEqual } from 'crypto';
+import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
 
 const ALGORITHM = 'aes-256-gcm';
 
@@ -30,10 +30,4 @@ export function decryptSecret(stored: string): string {
     decipher.final(),
   ]);
   return decrypted.toString('utf8');
-}
-
-/** Compares two strings in constant time to prevent timing attacks. */
-export function constantTimeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(Buffer.from(a), Buffer.from(b));
 }
