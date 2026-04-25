@@ -5,10 +5,10 @@ export function generateTotpSecret(): string {
   return generateSecret();
 }
 
-export function generateOtpAuthUri(secret: string, userEmail: string): string {
+export function generateOtpAuthUri(secret: string, username: string): string {
   return generateURI({
     issuer: 'Umami',
-    label: userEmail,
+    label: username,
     secret,
   });
 }
