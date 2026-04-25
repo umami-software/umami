@@ -1,6 +1,11 @@
 'use client';
 import { Column, Row, Switch, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
-import {useMessages, useUpdateQuery, useTwoFactorStatusQuery, useTeamQuery} from '@/components/hooks';
+import {
+  useMessages,
+  useUpdateQuery,
+  useTwoFactorStatusQuery,
+  useTeamQuery,
+} from '@/components/hooks';
 import { useQueryClient } from '@tanstack/react-query';
 
 export function TeamTwoFactorSettings({ teamId }: { teamId: string }) {
@@ -17,7 +22,7 @@ export function TeamTwoFactorSettings({ teamId }: { teamId: string }) {
 
   const handleToggle = async (value: boolean) => {
     await setTeamRequired({ required: value });
-    queryClient.invalidateQueries({ queryKey: ['team', teamId] });
+    queryClient.invalidateQueries({ queryKey: ['teams', { teamId }] });
   };
 
   return (

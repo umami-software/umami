@@ -6,7 +6,7 @@ import {
   useUpdateQuery,
   useTwoFactorStatusQuery,
   useUserQuery,
-  useTwoFactorUserStatusQuery
+  useTwoFactorUserStatusQuery,
 } from '@/components/hooks';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -27,7 +27,7 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
 
   const handleToggle = async (value: boolean) => {
     await setUserRequired({ required: value });
-    queryClient.invalidateQueries({ queryKey: ['user', userId] });
+    queryClient.invalidateQueries({ queryKey: ['users', { userId }] });
   };
 
   return (
