@@ -32,10 +32,16 @@ export function WorldMap({ websiteId, data, ...props }: WorldMapProps) {
     type: 'country',
   });
 
-  const metrics = useMemo(
-    () => (data || mapData ? percentFilter((data || mapData) as any[]) : []),
-    [data, mapData],
-  );
+  const metrics = useMemo(() => {
+    const source = data || mapData;
+    if (!source) return [];
+
+    // Handle both old format (array) and new format ({ data, total })
+    const items = Array.isArray(source) ? source : source.data;
+    const total = Array.isArray(source) ? undefined : source.total;
+
+    return percentFilter(items, total);
+  }, [data, mapData]);
 
   const getFillColor = (code: string) => {
     if (code === 'AQ') return;
