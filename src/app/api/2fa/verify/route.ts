@@ -73,10 +73,11 @@ export async function POST(request: Request) {
     const matchIndex = await verifyBackupCode(body.backupCode, hashes);
 
     if (matchIndex === null) {
-      await recordFailedAttempt(userId);
+      const { lockedUntil } = await recordFailedAttempt(userId);
       return badRequest({
         code: 'two-factor-error-invalid-backup-code',
         message: 'Invalid backup code',
+        ...(lockedUntil && { lockedUntil }),
       });
     }
 
@@ -95,10 +96,11 @@ export async function POST(request: Request) {
     const decryptedSecret = decryptSecret(twoFactor.secret);
 
     if (!(await verifyTotp(token, decryptedSecret))) {
-      await recordFailedAttempt(userId);
+      const { lockedUntil } = await recordFailedAttempt(userId);
       return badRequest({
         code: 'two-factor-error-invalid-code',
         message: 'Invalid verification code',
+        ...(lockedUntil && { lockedUntil }),
       });
     }
 

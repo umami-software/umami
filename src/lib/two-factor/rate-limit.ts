@@ -1,7 +1,9 @@
+import { Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
 
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_MINUTES = 15;
+const MAX_RETRIES = 3;
 
 export async function checkRateLimit(
   userId: string,
@@ -14,16 +16,35 @@ export async function checkRateLimit(
   return { allowed: true };
 }
 
-export async function recordFailedAttempt(userId: string): Promise<void> {
-  const record = await prisma.client.twoFactorRateLimit.upsert({
-    where: { userId },
-    update: { attempts: { increment: 1 }, updatedAt: new Date() },
-    create: { userId, attempts: 1, updatedAt: new Date() },
-  });
-  if (record.attempts >= MAX_ATTEMPTS) {
-    const lockedUntil = new Date(Date.now() + LOCKOUT_MINUTES * 60 * 1000);
-    await prisma.client.twoFactorRateLimit.update({ where: { userId }, data: { lockedUntil } });
+export async function recordFailedAttempt(userId: string) {
+  let retries = 0;
+  while (retries < MAX_RETRIES) {
+    try {
+      return await prisma.transaction(
+        async (tx: Prisma.TransactionClient) => {
+          const record = await tx.twoFactorRateLimit.upsert({
+            where: { userId },
+            update: { attempts: { increment: 1 } },
+            create: { userId, attempts: 1 },
+          });
+          if (record.attempts >= MAX_ATTEMPTS) {
+            const lockedUntil = new Date(Date.now() + LOCKOUT_MINUTES * 60 * 1000);
+            await tx.twoFactorRateLimit.update({ where: { userId }, data: { lockedUntil } });
+            return { lockedUntil };
+          }
+          return {};
+        },
+        { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
+      );
+    } catch (err: any) {
+      if (err.code === 'P2034') {
+        retries++;
+        continue;
+      }
+      throw err;
+    }
   }
+  throw new Error('recordFailedAttempt: max retries exceeded');
 }
 
 export async function resetRateLimit(userId: string): Promise<void> {
