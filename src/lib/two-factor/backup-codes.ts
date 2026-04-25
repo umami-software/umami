@@ -11,9 +11,9 @@ export async function generateBackupCodes(): Promise<{
   const plaintext = Array.from(
     { length: BACKUP_CODE_COUNT },
     () =>
-      randomBytes(5).toString('hex').toUpperCase() +
+      randomBytes(8).toString('hex').toUpperCase() +
       '-' +
-      randomBytes(5).toString('hex').toUpperCase(),
+      randomBytes(8).toString('hex').toUpperCase(),
   );
   const hashed = await Promise.all(plaintext.map(code => bcrypt.hash(code, BCRYPT_ROUNDS)));
   return { plaintext, hashed };
