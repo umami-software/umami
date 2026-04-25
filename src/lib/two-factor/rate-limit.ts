@@ -16,12 +16,17 @@ export async function checkRateLimit(
   return { allowed: true };
 }
 
-export async function recordFailedAttempt(userId: string) {
+export async function recordFailedAttempt(userId: string): Promise<{ lockedUntil?: Date }> {
   let retries = 0;
   while (retries < MAX_RETRIES) {
     try {
-      return await prisma.transaction(
-        async (tx: Prisma.TransactionClient) => {
+      /*
+      prisma.transaction accepts `any` to support both batch and callback forms,
+      so TypeScript resolves to the batch overload and infers `any[]`. Cast is safe:
+      the callback form always returns the callback's return type.
+       */
+      return await (prisma.transaction(
+        async (tx: Prisma.TransactionClient): Promise<{ lockedUntil?: Date }> => {
           const record = await tx.twoFactorRateLimit.upsert({
             where: { userId },
             update: { attempts: { increment: 1 } },
@@ -35,7 +40,7 @@ export async function recordFailedAttempt(userId: string) {
           return {};
         },
         { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
-      );
+      ) as Promise<{ lockedUntil?: Date }>);
     } catch (err: any) {
       if (err.code === 'P2034') {
         retries++;
