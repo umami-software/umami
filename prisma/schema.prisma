@@ -75,12 +75,12 @@ model Website {
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  replayEnabled Boolean   @default(false) @map("replay_enabled")
-  replayConfig  Json?     @map("replay_config")
+  replayEnabled Boolean @default(false) @map("replay_enabled")
+  replayConfig  Json?   @map("replay_config")
 
-  user                User?               @relation("user", fields: [userId], references: [id])
-  createUser          User?               @relation("createUser", fields: [createdBy], references: [id])
-  team                Team?               @relation(fields: [teamId], references: [id])
+  user                User?                @relation("user", fields: [userId], references: [id])
+  createUser          User?                @relation("createUser", fields: [createdBy], references: [id])
+  team                Team?                @relation(fields: [teamId], references: [id])
   eventData           EventData[]
   reports             Report[]
   revenue             Revenue[]
@@ -207,7 +207,7 @@ model Team {
   members  TeamUser[]
   links    Link[]
   pixels   Pixel[]
-  boards    Board[]
+  boards   Board[]
 
   @@index([accessCode])
   @@map("team")
@@ -345,6 +345,7 @@ model Board {
   @@index([createdAt])
   @@map("board")
 }
+
 model Share {
   id         String    @id() @map("share_id") @db.Uuid
   entityId   String    @map("entity_id") @db.Uuid
@@ -398,4 +399,48 @@ model SessionReplaySaved {
   @@index([visitId])
   @@index([websiteId, createdAt])
   @@map("session_replay_saved")
+}
+
+model BillingInvoice {
+  id               String   @id @map("line_id") @db.VarChar(255)
+  providerId       String   @map("provider_id") @db.Uuid
+  invoiceId        String   @map("invoice_id") @db.VarChar(255)
+  customerId       String   @map("customer_id") @db.VarChar(255)
+  invoiceStatus    String   @map("invoice_status") @db.VarChar(50)
+  invoicePeriodEnd DateTime @map("invoice_period_end") @db.Timestamptz(6)
+  usageType        String   @map("usage_type") @db.VarChar(20)
+  amountCents      Int      @map("amount_cents") @db.Integer
+  periodStart      DateTime @map("period_start") @db.Timestamptz(6)
+  periodEnd        DateTime @map("period_end") @db.Timestamptz(6)
+  periodMonths     Int      @map("period_months") @db.Integer
+  mrrCents         Int      @map("mrr_cents") @db.Integer
+
+  billingProvider BillingProvider @relation(fields: [providerId], references: [id])
+
+  @@index([providerId])
+  @@index([invoiceId])
+  @@index([customerId])
+  @@index([invoiceStatus])
+  @@index([usageType])
+  @@map("billing_invoice")
+}
+
+model BillingProvider {
+  id         String   @id @default(uuid()) @map("billing_provider_id") @db.Uuid
+  provider   String   @db.VarChar(50)
+  userId     String?  @map("user_id") @db.Uuid
+  teamId     String?  @map("team_id") @db.Uuid
+  apiKey     String   @map("api_key") @db.Text
+  syncCursor String?  @map("sync_cursor") @db.VarChar(255)
+  syncStatus String   @default("idle") @map("sync_status") @db.VarChar(20)
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  invoices BillingInvoice[]
+
+  @@unique([provider, userId])
+  @@unique([provider, teamId])
+  @@index([userId])
+  @@index([teamId])
+  @@map("billing_provider")
 }

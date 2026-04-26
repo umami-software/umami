@@ -1,3 +1,4 @@
+export * from './billingProvider';
 export * from './board';
 export * from './entity';
 export * from './link';
