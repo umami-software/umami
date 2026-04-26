@@ -1,7 +1,7 @@
 'use client';
+import { useMobile } from '@/components/hooks';
 import { Column } from '@umami/react-zen';
 import { useEffect, useRef, useState } from 'react';
-import { useMobile } from '@/components/hooks';
 import 'rrweb-player/dist/style.css';
 
 export function ReplayPlayer({ events }: { events: any[] }) {
@@ -32,6 +32,8 @@ export function ReplayPlayer({ events }: { events: any[] }) {
           autoPlay: false,
           showController: true,
           speedOption: [1, 2, 4, 8],
+          useVirtualDom: false,
+          showWarning: false,
         },
       });
 

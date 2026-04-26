@@ -24,8 +24,17 @@ export interface Auth {
     websiteIds?: string[];
     boardId?: string;
     pixelId?: string;
+    pixelIds?: string[];
     linkId?: string;
+    linkIds?: string[];
   };
+}
+
+export interface EventPropertyFilter {
+  propertyName: string;
+  dataType: number;
+  operator: Operator;
+  value: string;
 }
 
 export interface Filter {
@@ -49,6 +58,25 @@ export interface DateRange {
 
 export interface DynamicData {
   [key: string]: number | string | number[] | string[];
+}
+
+export interface EventDataSeriesPoint {
+  x: string;
+  t: string;
+  y: number;
+}
+
+export interface EventDataDateSeriesPoint {
+  t: string;
+  y: number;
+}
+
+export interface EventDataNumericStats {
+  total: number;
+  average: number;
+  median: number;
+  max: number;
+  min: number;
 }
 
 export interface QueryOptions {

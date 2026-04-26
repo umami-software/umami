@@ -1,6 +1,6 @@
 'use client';
 import { Column } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import { PixelEditForm } from '@/app/(main)/pixels/PixelEditForm';
 import { PixelProvider } from '@/app/(main)/pixels/PixelProvider';
 import { PixelShareForm } from '@/app/(main)/pixels/[pixelId]/PixelShareForm';

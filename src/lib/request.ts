@@ -1,5 +1,3 @@
-import { startOfMonth, subMonths } from 'date-fns';
-import { z } from 'zod';
 import { checkAuth } from '@/lib/auth';
 import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import { getAllowedUnits, getMinimumUnit, maxDate, parseDateRange } from '@/lib/date';
@@ -8,6 +6,8 @@ import { filtersArrayToObject } from '@/lib/params';
 import { badRequest, unauthorized } from '@/lib/response';
 import type { QueryFilters } from '@/lib/types';
 import { getWebsiteSegment } from '@/queries/prisma';
+import { startOfMonth, subMonths } from 'date-fns';
+import { z } from 'zod';
 
 export async function parseRequest(
   request: Request,
@@ -30,9 +30,9 @@ export async function parseRequest(
     } else if (isGet) {
       query = result.data;
 
-      // Re-add suffixed filter params (e.g., browser1, os2) stripped by Zod schema
+      // Re-add dynamic params stripped by Zod schema: suffixed filter params (browser1, os2)
       for (const key of Object.keys(rawQuery)) {
-        if (/\d+$/.test(key) && !(key in query)) {
+        if ((/\d+$/.test(key) || /^epf_/.test(key)) && !(key in query)) {
           query[key] = rawQuery[key];
         }
       }

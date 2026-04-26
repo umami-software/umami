@@ -1,12 +1,16 @@
+import { PrismaClient } from '@/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import debug from 'debug';
-import { PrismaClient } from '@/generated/prisma/client';
 import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
 import { filtersObjectToArray } from './params';
-import type { Operator, QueryFilters, QueryOptions } from './types';
+import type { EventPropertyFilter, Operator, QueryFilters, QueryOptions } from './types';
 
 const log = debug('umami:prisma');
+
+const EQUALITY_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
+const SEARCH_OPERATORS: Operator[] = [OPERATORS.contains, OPERATORS.doesNotContain];
+const REGEX_OPERATORS: Operator[] = [OPERATORS.regex, OPERATORS.notRegex];
 
 const PRISMA = 'prisma';
 
@@ -35,6 +39,11 @@ const DATE_FORMATS_UTC = {
   year: 'YYYY-01-01"T"HH24:00:00"Z"',
 };
 
+const DATE_STRING_FORMATS = {
+  utc: 'YYYY-MM-DD"T"HH24:MI:SS"Z"',
+  second: 'YYYY-MM-DD"T"HH24:MI:SS',
+};
+
 function getAddIntervalQuery(field: string, interval: string): string {
   return `${field} + interval '${interval}'`;
 }
@@ -53,6 +62,14 @@ function getDateSQL(field: string, unit: string, timezone?: string): string {
   }
 
   return `to_char(date_trunc('${unit}', ${field}), '${DATE_FORMATS_UTC[unit]}')`;
+}
+
+function getDateStringSQL(field: string, unit: keyof typeof DATE_STRING_FORMATS = 'utc', timezone?: string): string {
+  if (timezone && timezone !== 'utc') {
+    return `to_char(${field} at time zone '${timezone}', '${DATE_STRING_FORMATS[unit]}')`;
+  }
+
+  return `to_char(${field}, '${DATE_STRING_FORMATS.utc}')`;
 }
 
 function getDateWeeklySQL(field: string, timezone?: string) {
@@ -97,9 +114,9 @@ function mapFilter(
     case OPERATORS.doesNotContain:
       return `${table}.${column} not ilike ${value}`;
     case OPERATORS.regex:
-      return `${table}.${column} ~ ${value}`;
+      return `${table}.${column} ~* ${value}`;
     case OPERATORS.notRegex:
-      return `${table}.${column} !~ ${value}`;
+      return `${table}.${column} !~* ${value}`;
     default:
       return '';
   }
@@ -173,7 +190,7 @@ function getCohortQuery(filters: QueryFilters = {}) {
 }
 
 function getExcludeBounceQuery(filters: Record<string, any>) {
-  if (!filters.excludeBounce === true) {
+  if (filters.excludeBounce !== true) {
     return '';
   }
 
@@ -216,9 +233,9 @@ function getQueryParams(filters: Record<string, any>) {
 
       const key = paramName ?? name;
 
-      if (([OPERATORS.contains, OPERATORS.doesNotContain] as Operator[]).includes(operator)) {
+      if (SEARCH_OPERATORS.includes(operator)) {
         obj[key] = `%${value}%`;
-      } else if (([OPERATORS.equals, OPERATORS.notEquals] as Operator[]).includes(operator)) {
+      } else if (EQUALITY_OPERATORS.includes(operator)) {
         obj[key] = Array.isArray(value) ? value : [value];
       } else {
         obj[key] = value;
@@ -252,6 +269,71 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   };
 }
 
+function getEventPropertyFilterQuery(filters: EventPropertyFilter[] = []): {
+  sql: string;
+  params: Record<string, any>;
+} {
+  if (!filters.length) return { sql: '', params: {} };
+
+  const parts: string[] = [];
+  const params: Record<string, any> = {};
+
+  filters.forEach(({ propertyName, dataType, operator, value }, i) => {
+    const keyParam = `epf_key_${i}`;
+    const valParam = `epf_val_${i}`;
+    params[keyParam] = propertyName;
+
+    const isNumeric = dataType === 2;
+    const col = isNumeric ? 'cast(number_value as decimal)' : 'string_value';
+
+    let condition: string;
+    if (isNumeric) {
+      params[valParam] = parseFloat(value) || 0;
+      const opMap: Record<string, string> = {
+        [OPERATORS.equals]: `${col} = {{${valParam}}}`,
+        [OPERATORS.notEquals]: `${col} != {{${valParam}}}`,
+        [OPERATORS.greaterThan]: `${col} > {{${valParam}}}`,
+        [OPERATORS.lessThan]: `${col} < {{${valParam}}}`,
+        [OPERATORS.greaterThanEquals]: `${col} >= {{${valParam}}}`,
+        [OPERATORS.lessThanEquals]: `${col} <= {{${valParam}}}`,
+      };
+      condition = opMap[operator] ?? `${col} = {{${valParam}}}`;
+    } else if (EQUALITY_OPERATORS.includes(operator)) {
+      const vals = value.split(',').filter(Boolean);
+      if (!vals.length) return;
+      params[valParam] = vals;
+      condition =
+        operator === OPERATORS.equals
+          ? `${col} = ANY({{${valParam}::text[]}})`
+          : `${col} != ALL({{${valParam}::text[]}})`;
+    } else if (REGEX_OPERATORS.includes(operator)) {
+      if (!value) return;
+      params[valParam] = value;
+      condition =
+        operator === OPERATORS.regex ? `${col} ~* {{${valParam}}}` : `${col} !~* {{${valParam}}}`;
+    } else {
+      if (!value) return;
+      params[valParam] = `%${value}%`;
+      condition =
+        operator === OPERATORS.contains
+          ? `${col} ilike {{${valParam}}}`
+          : `${col} not ilike {{${valParam}}}`;
+    }
+
+    parts.push(`and website_event.event_id in (
+      select website_event_id 
+      from event_data
+      where website_id = {{websiteId::uuid}}
+        and created_at between {{startDate}} and {{endDate}}
+        and data_key = {{${keyParam}}}
+        and data_type = ${dataType}
+        and ${condition}
+    )`);
+  });
+
+  return { sql: parts.join('\n'), params };
+}
+
 async function rawQuery(sql: string, data: Record<string, any>, name?: string): Promise<any> {
   if (process.env.LOG_QUERY) {
     log('QUERY:\n', sql);
@@ -278,7 +360,6 @@ async function rawQuery(sql: string, data: Record<string, any>, name?: string): 
   if (process.env.DATABASE_REPLICA_URL && '$replica' in client) {
     return client.$replica().$queryRawUnsafe(query, ...params);
   }
-
   return client.$queryRawUnsafe(query, ...params);
 }
 
@@ -363,7 +444,13 @@ function transaction(input: any, options?: any) {
 }
 
 function getSchema() {
-  const connectionUrl = new URL(process.env.DATABASE_URL);
+  const databaseUrl = process.env.DATABASE_URL;
+
+  if (!databaseUrl) {
+    throw new Error('DATABASE_URL is not set.');
+  }
+
+  const connectionUrl = new URL(databaseUrl);
 
   return connectionUrl.searchParams.get('schema');
 }
@@ -372,6 +459,11 @@ function getClient() {
   const url = process.env.DATABASE_URL;
   const replicaUrl = process.env.DATABASE_REPLICA_URL;
   const logQuery = process.env.LOG_QUERY;
+
+  if (!url) {
+    throw new Error('DATABASE_URL is not set.');
+  }
+
   const schema = getSchema();
 
   const baseAdapter = new PrismaPg({ connectionString: url }, { schema });
@@ -425,8 +517,10 @@ export default {
   getCastColumnQuery,
   getDayDiffQuery,
   getDateSQL,
+  getDateStringSQL,
   getDateWeeklySQL,
   getFilterQuery,
+  getEventPropertyFilterQuery,
   getSearchParameters,
   getTimestampDiffSQL,
   getSearchSQL,

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import { DataGrid } from '@/components/common/DataGrid';
 import { useLoginQuery, useNavigation, useUserTeamsQuery } from '@/components/hooks';
 import { TeamsTable } from './TeamsTable';

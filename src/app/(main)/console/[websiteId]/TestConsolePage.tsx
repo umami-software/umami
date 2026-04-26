@@ -1,6 +1,6 @@
 'use client';
 import { Button, Column, Grid, Heading } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import Script from 'next/script';
 import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
 import { PageBody } from '@/components/common/PageBody';

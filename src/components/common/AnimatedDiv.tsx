@@ -1,3 +1,3 @@
-import { type AnimatedComponent, animated } from '@react-spring/web';
+import { motion } from 'motion/react';
 
-export const AnimatedDiv: AnimatedComponent<any> = animated.div;
+export const AnimatedDiv = motion.div;
