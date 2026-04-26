@@ -14,7 +14,7 @@ FROM node:${NODE_IMAGE_VERSION} AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-COPY docker/middleware.ts ./src
+COPY docker/proxy.ts ./src
 
 ARG BASE_PATH
 
@@ -49,6 +49,7 @@ RUN pnpm --allow-build='@prisma/engines' add npm-run-all dotenv chalk semver \
 
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/generated ./generated
 

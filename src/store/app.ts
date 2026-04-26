@@ -32,12 +32,11 @@ export function setLocale(locale: string) {
   store.setState({ locale });
 }
 
-export function setShare(share: object) {
-  store.setState({ share });
-}
-
-export function setShareToken(shareToken: { token?: string } | null) {
-  store.setState({ shareToken });
+export function setShareData(
+  share: object | null,
+  shareToken: { token?: string } | null,
+) {
+  store.setState({ share, shareToken });
 }
 
 export function setUser(user: object) {
