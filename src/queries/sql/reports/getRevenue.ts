@@ -151,6 +151,16 @@ async function oceanbaseQuery(
           AND website_event.event_id = revenue.event_id`
       : '';
 
+  const params: any[] = [];
+
+  // joinQuery params (if present)
+  if (filterQuery || cohortQuery) {
+    params.push(websiteId, startDate, endDate);
+  }
+
+  // Main query params
+  params.push(websiteId, startDate, endDate, currency, ...queryParams);
+
   const chart = await rawQuery(
     `
     SELECT
@@ -169,7 +179,7 @@ async function oceanbaseQuery(
     GROUP BY x, t
     ORDER BY t
     `,
-    [websiteId, startDate, endDate, websiteId, startDate, endDate, currency, ...queryParams],
+    params,
   );
 
   return { chart };

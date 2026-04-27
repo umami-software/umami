@@ -66,4 +66,4 @@ services:
 volumes:
   umami_node_modules:
   ob_data:
-  redis_data:data:
+  redis_

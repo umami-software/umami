@@ -164,6 +164,19 @@ async function oceanbaseQuery(
           AND website_event.event_id = revenue.event_id`
       : '';
 
+  const params: any[] = [];
+
+  // Subquery params (total_sessions)
+  params.push(websiteId, startDate, endDate);
+
+  // joinQuery params (if present)
+  if (filterQuery || cohortQuery) {
+    params.push(websiteId, startDate, endDate);
+  }
+
+  // Main query params
+  params.push(websiteId, startDate, endDate, currency, ...queryParams);
+
   const total = await rawQuery<{
     sum: number;
     count: number;
@@ -188,7 +201,7 @@ async function oceanbaseQuery(
       AND UPPER(revenue.currency) = ?
       ${filterQuery}
   `,
-    [websiteId, startDate, endDate, websiteId, startDate, endDate, websiteId, startDate, endDate, currency, ...queryParams],
+    params,
   ).then(result => result?.[0]);
 
   return {
