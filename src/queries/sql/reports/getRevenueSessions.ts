@@ -180,9 +180,9 @@ async function oceanbaseQuery(websiteId: string, currency: string, filters: Quer
   // Main query params: website_id + dateQuery + filterQuery
   params.push(websiteId, ...dateParams, ...queryParams);
 
-  // searchQuery params
+  // searchQuery params (LIKE requires % wildcards)
   if (search) {
-    params.push(search, search, search, search);
+    params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
   }
 
   return pagedRawQuery(

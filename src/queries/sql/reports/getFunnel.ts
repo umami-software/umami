@@ -387,7 +387,8 @@ async function oceanbaseQuery(
       !isURL && cv.filters?.length
         ? cv.filters
             .map((f, fi) => {
-              extraParams.push(f.property);
+              // Push params in order: website_id, startDate, endDate, data_key, value
+              extraParams.push(websiteId, startDate, endDate, f.property);
               let op = '=';
               let val = f.value;
               if (f.operator === 'neq') op = '!=';

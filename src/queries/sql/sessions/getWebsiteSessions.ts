@@ -172,8 +172,8 @@ async function oceanbaseQuery(websiteId: string, filters: QueryFilters) {
   // SQL order: cohortQuery, websiteId, dateQuery, filterQuery, searchQuery
   const params = buildParams([websiteId, ...getDateParams()]);
 
-  // Add search params if needed
-  const searchParams = search ? [search, search, search, search, search] : [];
+  // Add search params if needed (LIKE requires % wildcards)
+  const searchParams = search ? [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`] : [];
 
   const searchQuery = search
     ? `AND (LOWER(distinct_id) LIKE ?
