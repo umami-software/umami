@@ -7,7 +7,7 @@ import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams } from '@/lib/schema';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createShare, createWebsite, getWebsiteCount } from '@/queries/prisma';
-import { getAllUserWebsitesIncludingTeamOwner, getUserWebsites } from '@/queries/prisma/website';
+import { getAllUserWebsitesIncludingTeamAccess, getUserWebsites } from '@/queries/prisma/website';
 
 const CLOUD_WEBSITE_LIMIT = 3;
 
@@ -29,7 +29,7 @@ export async function GET(request: Request) {
   const filters = await getQueryFilters(query);
 
   if (query.includeTeams) {
-    return json(await getAllUserWebsitesIncludingTeamOwner(userId, filters));
+    return json(await getAllUserWebsitesIncludingTeamAccess(userId, filters));
   }
 
   return json(await getUserWebsites(userId, filters));
