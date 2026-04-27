@@ -2,6 +2,7 @@
 import { Column, ComboBox, Grid, Label, ListItem, Row, Select } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { Panel } from '@/components/common/Panel';
 import { useEventDataPropertiesQuery, useMessages } from '@/components/hooks';
 import { DATA_TYPE } from '@/lib/constants';
 import type { EventPropertyFilter } from '@/lib/types';
@@ -168,11 +169,13 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
           </Column>
         )}
         {eventName && (
-          <EventDataPivotTable
-            websiteId={websiteId}
-            eventName={eventName}
-            eventFilters={eventFilters}
-          />
+          <Panel minWidth="0" width="100%">
+            <EventDataPivotTable
+              websiteId={websiteId}
+              eventName={eventName}
+              eventFilters={eventFilters}
+            />
+          </Panel>
         )}
       </Column>
     </LoadingPanel>

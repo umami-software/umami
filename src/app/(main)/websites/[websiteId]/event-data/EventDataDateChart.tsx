@@ -169,7 +169,20 @@ export function EventDataDateChart({
   }, [exactDateRows, chartUnit, dateLocale]);
 
   const chartData: any = useMemo(() => {
-    if (!rows.length || !minPropertyDate || !maxPropertyDate) return null;
+    if (!minPropertyDate || !maxPropertyDate) {
+      return {
+        datasets: [
+          {
+            label: t(labels.count),
+            data: [],
+            barPercentage: 0.9,
+            categoryPercentage: 0.9,
+            ...colors.chart.visitors,
+            borderWidth: 1,
+          },
+        ],
+      };
+    }
 
     return {
       datasets: [
@@ -231,6 +244,28 @@ export function EventDataDateChart({
       };
     });
   }, [exactDateRows, total, dateLocale]);
+  const topDateByDay = useMemo(() => {
+    if (!exactDateRows.length || total === 0) return null;
+
+    const dayTotals = exactDateRows.reduce(
+      (obj, { date, y }) => {
+        const dayDate = startOfDay(date);
+        const key = format(dayDate, 'yyyy-MM-dd');
+        const existing = obj[key];
+
+        obj[key] = {
+          date: dayDate,
+          count: (existing?.count ?? 0) + y,
+        };
+
+        return obj;
+      },
+      {} as Record<string, { date: Date; count: number }>,
+    );
+
+    return Object.values(dayTotals)
+      .sort((a, b) => b.count - a.count || b.date.getTime() - a.date.getTime())[0];
+  }, [exactDateRows, total]);
 
   const topWeekday = useMemo(
     () => [...weekdayTableData].sort((a, b) => b.count - a.count)[0],
@@ -264,18 +299,9 @@ export function EventDataDateChart({
       ],
     };
   }, [weekdayTableData, weekdayLabels, weekdayColorMap]);
-  const spanDays = useMemo(
-    () =>
-      minPropertyDate && maxPropertyDate
-        ? differenceInCalendarDays(maxPropertyDate, minPropertyDate) + 1
-        : 0,
-    [minPropertyDate, maxPropertyDate],
-  );
-
   return (
     <Column gap="6">
       <LoadingPanel
-        data={rows}
         isLoading={query.isLoading}
         isFetching={query.isFetching}
         error={query.error}
@@ -295,16 +321,18 @@ export function EventDataDateChart({
               }
             />
             <InsightCard
-              label="Date span"
-              value={spanDays ? `${formatLongNumber(spanDays)} days` : t(labels.none)}
+              label="Top date"
+              value={topDateByDay ? formatDate(topDateByDay.date, 'PP', locale) : t(labels.none)}
               hint={
-                minPropertyDate && maxPropertyDate
-                  ? `${formatDate(minPropertyDate, 'PP', locale)} - ${formatDate(maxPropertyDate, 'PP', locale)}`
+                topDateByDay
+                  ? `${formatLongNumber(topDateByDay.count)} ${t(labels.count).toLowerCase()} - ${Math.round(
+                      100 * (topDateByDay.count / total),
+                    )}%`
                   : undefined
               }
             />
             <InsightCard
-              label="Earliest value"
+              label="Earliest date"
               value={minPropertyDate ? formatDate(minPropertyDate, 'PPpp', locale) : t(labels.none)}
               hint={
                 minPropertyDate
@@ -316,7 +344,7 @@ export function EventDataDateChart({
               }
             />
             <InsightCard
-              label="Latest value"
+              label="Latest date"
               value={maxPropertyDate ? formatDate(maxPropertyDate, 'PPpp', locale) : t(labels.none)}
               hint={
                 maxPropertyDate
@@ -331,27 +359,28 @@ export function EventDataDateChart({
         </Column>
       </LoadingPanel>
       <LoadingPanel
-        data={rows}
         isLoading={query.isLoading}
         isFetching={query.isFetching}
         error={query.error}
         minHeight="400px"
       >
-        {chartData && minPropertyDate && maxPropertyDate && (
-          <BarChart
-            chartData={chartData}
-            minDate={minPropertyDate}
-            maxDate={maxPropertyDate}
-            unit={chartUnit}
-            stacked={false}
-            renderXLabel={renderXLabel}
-            renderYLabel={(value: string | number) => formatLongNumber(Number(value))}
-            height="400px"
-          />
-        )}
+        <Column minHeight="400px">
+          {chartData && (
+            <BarChart
+              chartData={chartData}
+              minDate={minPropertyDate ?? zonedNow}
+              maxDate={maxPropertyDate ?? zonedNow}
+              unit={chartUnit}
+              stacked={false}
+              renderXLabel={renderXLabel}
+              renderYLabel={(value: string | number) => formatLongNumber(Number(value))}
+              height="400px"
+            />
+          )}
+        </Column>
       </LoadingPanel>
       <LoadingPanel
-        data={rows}
+        data={weekdayTableData}
         isLoading={query.isLoading}
         isFetching={query.isFetching}
         error={query.error}
