@@ -21,6 +21,7 @@ export async function getEventDataPivot(
 }
 
 async function relationalQuery(websiteId: string, eventName: string, filters: QueryFilters, eventFilters: EventPropertyFilter[] = []) {
+  const { timezone = 'utc' } = filters;
   const { rawQuery, parseFilters, getEventPropertyFilterQuery } = prisma;
   const { page = 1, pageSize } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
@@ -29,8 +30,9 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
+    timezone,
   });
-  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
+  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters, timezone);
 
   const countResult = await rawQuery(
     `
@@ -81,7 +83,9 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
       coalesce(
         case when event_data.data_type = 1 then event_data.string_value end,
         case when event_data.data_type = 2 then cast(event_data.number_value as varchar) end,
+        case when event_data.data_type = 3 then event_data.string_value end,
         case when event_data.data_type = 4 then cast(event_data.date_value as varchar) end,
+        case when event_data.data_type = 5 then event_data.string_value end,
         ''
       ) as "value",
       event_data.data_type as "dataType"
@@ -115,13 +119,14 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
 }
 
 async function clickhouseQuery(websiteId: string, eventName: string, filters: QueryFilters, eventFilters: EventPropertyFilter[] = []) {
+  const { timezone = 'UTC' } = filters;
   const { rawQuery, parseFilters, getEventPropertyFilterQuery } = clickhouse;
   const { page = 1, pageSize } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
 
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
-  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
+  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters, timezone);
 
   const count = await rawQuery(
     `
@@ -149,11 +154,11 @@ async function clickhouseQuery(websiteId: string, eventName: string, filters: Qu
   const data = await rawQuery(
     `
     select
-      event_id as eventId,
-      session_id as sessionId,
-      event_name as eventName,
-      url_path as urlPath,
-      created_at as createdAt,
+      event_data_pivot.event_id as eventId,
+      event_data_pivot.session_id as sessionId,
+      event_data_pivot.event_name as eventName,
+      event_data_pivot.url_path as urlPath,
+      event_data_pivot.created_at as createdAt,
       groupArrayMerge(property_keys) as propertyKeys,
       groupArrayMerge(property_values) as propertyValues
     from umami.event_data_pivot
@@ -172,8 +177,13 @@ async function clickhouseQuery(websiteId: string, eventName: string, filters: Qu
       and event_data_pivot.created_at between {startDate:DateTime64} and {endDate:DateTime64}
     ${filterQuery}
     ${epfSQL}
-    group by event_id, session_id, event_name, url_path, created_at
-    order by created_at desc
+    group by
+      event_data_pivot.event_id,
+      event_data_pivot.session_id,
+      event_data_pivot.event_name,
+      event_data_pivot.url_path,
+      event_data_pivot.created_at
+    order by event_data_pivot.created_at desc
     limit ${size} offset ${offset}
     `,
     { ...queryParams, eventName, ...epfParams },

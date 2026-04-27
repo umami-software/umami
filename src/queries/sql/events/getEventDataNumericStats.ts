@@ -27,12 +27,14 @@ async function relationalQuery(
   filters: QueryFilters,
   eventFilters: EventPropertyFilter[] = [],
 ) {
+  const { timezone = 'utc' } = filters;
   const { rawQuery, parseFilters, getEventPropertyFilterQuery } = prisma;
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
+    timezone,
   });
-  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
+  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters, timezone);
 
   return rawQuery(
     `
@@ -69,9 +71,10 @@ async function clickhouseQuery(
   filters: QueryFilters,
   eventFilters: EventPropertyFilter[] = [],
 ): Promise<EventDataNumericStats[]> {
+  const { timezone = 'UTC' } = filters;
   const { rawQuery, parseFilters, getEventPropertyFilterQuery } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
-  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
+  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters, timezone);
 
   return rawQuery(
     `

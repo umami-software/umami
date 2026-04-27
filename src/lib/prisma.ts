@@ -2,7 +2,7 @@ import { PrismaClient } from '@/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import debug from 'debug';
-import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
+import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
 import { filtersObjectToArray } from './params';
 import type { EventPropertyFilter, Operator, QueryFilters, QueryOptions } from './types';
 
@@ -44,6 +44,10 @@ const DATE_STRING_FORMATS = {
   second: 'YYYY-MM-DD"T"HH24:MI:SS',
 };
 
+function isUtcTimezone(timezone?: string) {
+  return timezone?.toLowerCase() === 'utc';
+}
+
 function getAddIntervalQuery(field: string, interval: string): string {
   return `${field} + interval '${interval}'`;
 }
@@ -57,7 +61,7 @@ function getCastColumnQuery(field: string, type: string): string {
 }
 
 function getDateSQL(field: string, unit: string, timezone?: string): string {
-  if (timezone && timezone !== 'utc') {
+  if (timezone && !isUtcTimezone(timezone)) {
     return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${DATE_FORMATS[unit]}')`;
   }
 
@@ -65,7 +69,7 @@ function getDateSQL(field: string, unit: string, timezone?: string): string {
 }
 
 function getDateStringSQL(field: string, unit: keyof typeof DATE_STRING_FORMATS = 'utc', timezone?: string): string {
-  if (timezone && timezone !== 'utc') {
+  if (timezone && !isUtcTimezone(timezone)) {
     return `to_char(${field} at time zone '${timezone}', '${DATE_STRING_FORMATS[unit]}')`;
   }
 
@@ -269,7 +273,10 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   };
 }
 
-function getEventPropertyFilterQuery(filters: EventPropertyFilter[] = []): {
+function getEventPropertyFilterQuery(
+  filters: EventPropertyFilter[] = [],
+  timezone?: string,
+): {
   sql: string;
   params: Record<string, any>;
 } {
@@ -283,41 +290,81 @@ function getEventPropertyFilterQuery(filters: EventPropertyFilter[] = []): {
     const valParam = `epf_val_${i}`;
     params[keyParam] = propertyName;
 
-    const isNumeric = dataType === 2;
-    const col = isNumeric ? 'cast(number_value as decimal)' : 'string_value';
-
     let condition: string;
-    if (isNumeric) {
-      params[valParam] = parseFloat(value) || 0;
-      const opMap: Record<string, string> = {
-        [OPERATORS.equals]: `${col} = {{${valParam}}}`,
-        [OPERATORS.notEquals]: `${col} != {{${valParam}}}`,
-        [OPERATORS.greaterThan]: `${col} > {{${valParam}}}`,
-        [OPERATORS.lessThan]: `${col} < {{${valParam}}}`,
-        [OPERATORS.greaterThanEquals]: `${col} >= {{${valParam}}}`,
-        [OPERATORS.lessThanEquals]: `${col} <= {{${valParam}}}`,
-      };
-      condition = opMap[operator] ?? `${col} = {{${valParam}}}`;
-    } else if (EQUALITY_OPERATORS.includes(operator)) {
-      const vals = value.split(',').filter(Boolean);
-      if (!vals.length) return;
-      params[valParam] = vals;
-      condition =
-        operator === OPERATORS.equals
-          ? `${col} = ANY({{${valParam}::text[]}})`
-          : `${col} != ALL({{${valParam}::text[]}})`;
-    } else if (REGEX_OPERATORS.includes(operator)) {
-      if (!value) return;
-      params[valParam] = value;
-      condition =
-        operator === OPERATORS.regex ? `${col} ~* {{${valParam}}}` : `${col} !~* {{${valParam}}}`;
-    } else {
-      if (!value) return;
-      params[valParam] = `%${value}%`;
-      condition =
-        operator === OPERATORS.contains
-          ? `${col} ilike {{${valParam}}}`
-          : `${col} not ilike {{${valParam}}}`;
+    switch (dataType) {
+      case DATA_TYPE.number: {
+        const col = 'cast(number_value as decimal)';
+        params[valParam] = parseFloat(value) || 0;
+        const opMap: Record<string, string> = {
+          [OPERATORS.equals]: `${col} = {{${valParam}}}`,
+          [OPERATORS.notEquals]: `${col} != {{${valParam}}}`,
+          [OPERATORS.greaterThan]: `${col} > {{${valParam}}}`,
+          [OPERATORS.lessThan]: `${col} < {{${valParam}}}`,
+          [OPERATORS.greaterThanEquals]: `${col} >= {{${valParam}}}`,
+          [OPERATORS.lessThanEquals]: `${col} <= {{${valParam}}}`,
+        };
+        condition = opMap[operator] ?? `${col} = {{${valParam}}}`;
+        break;
+      }
+      case DATA_TYPE.date: {
+        if (!value) return;
+        params[valParam] = value;
+        const dateCol =
+          timezone && !isUtcTimezone(timezone)
+            ? `(date_value at time zone {{timezone}})::date`
+            : `(date_value at time zone 'utc')::date`;
+        const opMap: Record<string, string> = {
+          [OPERATORS.before]: `${dateCol} < {{${valParam}::date}}`,
+          [OPERATORS.after]: `${dateCol} > {{${valParam}::date}}`,
+        };
+        condition = opMap[operator] ?? `${dateCol} = {{${valParam}::date}}`;
+        break;
+      }
+      case DATA_TYPE.array: {
+        if (!value) return;
+        params[valParam] = value;
+        condition =
+          operator === OPERATORS.contains
+            ? `exists (
+                select 1
+                from jsonb_array_elements_text(coalesce(string_value, '[]')::jsonb) as array_item(value)
+                where array_item.value = {{${valParam}}}
+              )`
+            : `not exists (
+                select 1
+                from jsonb_array_elements_text(coalesce(string_value, '[]')::jsonb) as array_item(value)
+                where array_item.value = {{${valParam}}}
+              )`;
+        break;
+      }
+      default: {
+        const col = 'string_value';
+
+        if (EQUALITY_OPERATORS.includes(operator)) {
+          const vals = value.split(',').filter(Boolean);
+          if (!vals.length) return;
+          params[valParam] = vals;
+          condition =
+            operator === OPERATORS.equals
+              ? `${col} = ANY({{${valParam}::text[]}})`
+              : `${col} != ALL({{${valParam}::text[]}})`;
+        } else if (REGEX_OPERATORS.includes(operator)) {
+          if (!value) return;
+          params[valParam] = value;
+          condition =
+            operator === OPERATORS.regex
+              ? `${col} ~* {{${valParam}}}`
+              : `${col} !~* {{${valParam}}}`;
+        } else {
+          if (!value) return;
+          params[valParam] = `%${value}%`;
+          condition =
+            operator === OPERATORS.contains
+              ? `${col} ilike {{${valParam}}}`
+              : `${col} not ilike {{${valParam}}}`;
+        }
+        break;
+      }
     }
 
     parts.push(`and website_event.event_id in (

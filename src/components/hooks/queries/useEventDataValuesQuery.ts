@@ -7,6 +7,7 @@ export function useEventDataValuesQuery(
   websiteId: string,
   event: string,
   propertyName: string,
+  dataType?: number,
   options?: ReactQueryOptions,
 ) {
   const { get, useQuery } = useApi();
@@ -16,7 +17,7 @@ export function useEventDataValuesQuery(
   return useQuery<any>({
     queryKey: [
       'websites:event-data:values',
-      { websiteId, startAt, endAt, unit, timezone, ...filters, event, propertyName },
+      { websiteId, startAt, endAt, unit, timezone, ...filters, event, propertyName, dataType },
     ],
     queryFn: () =>
       get(`/websites/${websiteId}/event-data/values`, {
@@ -27,6 +28,7 @@ export function useEventDataValuesQuery(
         ...filters,
         event,
         propertyName,
+        dataType,
       }),
     enabled: !!(websiteId && propertyName),
     ...options,

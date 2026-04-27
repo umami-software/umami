@@ -14,6 +14,7 @@ export async function GET(
     endAt: z.coerce.number().int(),
     event: z.string(),
     propertyName: z.string(),
+    dataType: z.coerce.number().int().optional(),
     ...filterParams,
   });
 
@@ -29,12 +30,13 @@ export async function GET(
     return unauthorized();
   }
 
-  const { propertyName } = query;
+  const { propertyName, dataType } = query;
   const filters = await getQueryFilters(query, websiteId);
 
   const data = await getEventDataValues(websiteId, {
     ...filters,
     propertyName,
+    dataType,
   });
 
   return json(data);

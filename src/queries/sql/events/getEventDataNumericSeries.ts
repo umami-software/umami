@@ -34,8 +34,9 @@ async function relationalQuery(
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
+    timezone,
   });
-  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
+  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters, timezone);
   const aggSql =
     metric === 'avg' ? 'avg(cast(event_data.number_value as decimal))' :
     metric === 'count' ? 'count(*)' :
@@ -78,8 +79,8 @@ async function clickhouseQuery(
 ): Promise<{ t: string; y: number }[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
   const { rawQuery, getDateSQL, parseFilters, getEventPropertyFilterQuery } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
-  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
+  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters, timezone);
   const aggSql =
     metric === 'avg' ? 'avg(event_data.number_value)' :
     metric === 'count' ? 'count()' :

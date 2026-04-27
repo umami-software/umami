@@ -1,11 +1,14 @@
 'use client';
-import { Button, Column, Grid, Icon, Label, ListItem, Loading, Select, TextField } from '@umami/react-zen';
+import { Button, Calendar, Column, ComboBox, Dialog, DialogTrigger, Grid, Icon, Label, ListItem, Loading, Popover, Row, Select, TextField } from '@umami/react-zen';
+import { format, parseISO } from 'date-fns';
 import { useState } from 'react';
+import { DateDisplay } from '@/components/common/DateDisplay';
 import { Empty } from '@/components/common/Empty';
 import { MultiSelect } from '@/components/common/MultiSelect';
 import { useEventDataValuesQuery, useMessages } from '@/components/hooks';
 import { X } from '@/components/icons';
-import { OPERATORS } from '@/lib/constants';
+import { DATA_TYPE, OPERATORS } from '@/lib/constants';
+import { getMaxSelectableDate } from '@/lib/date';
 import type { EventPropertyFilter, Operator } from '@/lib/types';
 
 const STRING_OPERATORS: Operator[] = [
@@ -24,6 +27,9 @@ const NUMERIC_OPERATORS: Operator[] = [
   OPERATORS.greaterThanEquals,
   OPERATORS.lessThanEquals,
 ];
+const BOOLEAN_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
+const DATE_OPERATORS: Operator[] = [OPERATORS.before, OPERATORS.after];
+const ARRAY_OPERATORS: Operator[] = [OPERATORS.contains, OPERATORS.doesNotContain];
 const MULTI_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
 const FREE_TEXT_OPERATORS: Operator[] = [
   OPERATORS.contains,
@@ -48,15 +54,27 @@ export function EventDataFilterRecord({
   const { t, labels, messages } = useMessages();
   const [search, setSearch] = useState('');
 
-  const isNumeric = filter.dataType === 2;
-  const operators = isNumeric ? NUMERIC_OPERATORS : STRING_OPERATORS;
-  const isFreeText = FREE_TEXT_OPERATORS.includes(filter.operator);
+  const isNumeric = filter.dataType === DATA_TYPE.number;
+  const isBoolean = filter.dataType === DATA_TYPE.boolean;
+  const isDate = filter.dataType === DATA_TYPE.date;
+  const isArray = filter.dataType === DATA_TYPE.array;
+  const operators = isNumeric
+    ? NUMERIC_OPERATORS
+    : isBoolean
+      ? BOOLEAN_OPERATORS
+      : isDate
+        ? DATE_OPERATORS
+        : isArray
+          ? ARRAY_OPERATORS
+          : STRING_OPERATORS;
+  const isFreeText = !isArray && FREE_TEXT_OPERATORS.includes(filter.operator);
 
   const { data, isLoading } = useEventDataValuesQuery(
     websiteId,
     eventName,
     filter.propertyName,
-    { enabled: !isNumeric && !isFreeText },
+    filter.dataType,
+    { enabled: !isNumeric && !isBoolean && !isDate && !isFreeText },
   );
 
   const values = (data as Array<{ value: string }> | undefined)?.map(d => d.value) ?? [];
@@ -77,6 +95,8 @@ export function EventDataFilterRecord({
       case OPERATORS.lessThan: return t(labels.lessThan);
       case OPERATORS.greaterThanEquals: return t(labels.greaterThanEquals);
       case OPERATORS.lessThanEquals: return t(labels.lessThanEquals);
+      case OPERATORS.before: return t(labels.before);
+      case OPERATORS.after: return t(labels.after);
       default: return op;
     }
   };
@@ -104,7 +124,47 @@ export function EventDataFilterRecord({
               </ListItem>
             ))}
           </Select>
-          {isNumeric || isFreeText ? (
+          {isBoolean ? (
+            <Select
+              value={filter.value || 'true'}
+              onChange={value => onChange({ ...filter, value: value as string })}
+            >
+              <ListItem id="true">{t(labels.true)}</ListItem>
+              <ListItem id="false">{t(labels.false)}</ListItem>
+            </Select>
+          ) : isDate ? (
+            <DateValuePicker
+              value={filter.value}
+              onChange={value => onChange({ ...filter, value })}
+            />
+          ) : isArray ? (
+            <ComboBox
+              aria-label={filter.propertyName}
+              items={filteredValues}
+              inputValue={filter.value}
+              style={{ width: '100%' }}
+              onInputChange={v => {
+                setSearch(v);
+                onChange({ ...filter, value: v });
+              }}
+              formValue="text"
+              allowsEmptyCollection
+              allowsCustomValue
+              renderEmptyState={() =>
+                isLoading ? (
+                  <Loading placement="center" icon="dots" />
+                ) : (
+                  <Empty message={t(messages.noResultsFound)} />
+                )
+              }
+            >
+              {filteredValues.map(v => (
+                <ListItem key={v} id={v}>
+                  {v}
+                </ListItem>
+              ))}
+            </ComboBox>
+          ) : isNumeric || isFreeText ? (
             <TextField
               value={filter.value}
               onChange={v => onChange({ ...filter, value: v })}
@@ -144,4 +204,63 @@ export function EventDataFilterRecord({
       </Grid>
     </Column>
   );
+}
+
+function DateValuePicker({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const { t, labels } = useMessages();
+  const [showPicker, setShowPicker] = useState(false);
+  const selectedDate = getSelectedDate(value);
+  const [draftDate, setDraftDate] = useState<Date>(selectedDate);
+
+  const handleOpen = () => {
+    setDraftDate(getSelectedDate(value));
+    setShowPicker(true);
+  };
+
+  const handleApply = () => {
+    onChange(format(draftDate, 'yyyy-MM-dd'));
+    setShowPicker(false);
+  };
+
+  return (
+    <DialogTrigger isOpen={showPicker} onOpenChange={setShowPicker}>
+      <Button onPress={handleOpen} style={{ width: '100%', justifyContent: 'flex-start' }}>
+        <DateDisplay startDate={selectedDate} endDate={selectedDate} />
+      </Button>
+      <Popover placement="bottom start" shouldFlip isNonModal>
+        <Dialog>
+          <Column gap>
+            <Calendar
+              value={draftDate}
+              minValue={new Date(2000, 0, 1)}
+              maxValue={getMaxSelectableDate()}
+              onChange={setDraftDate}
+            />
+            <Row justifyContent="end" gap>
+              <Button onPress={() => setShowPicker(false)}>{t(labels.cancel)}</Button>
+              <Button variant="primary" onPress={handleApply}>
+                {t(labels.apply)}
+              </Button>
+            </Row>
+          </Column>
+        </Dialog>
+      </Popover>
+    </DialogTrigger>
+  );
+}
+
+function getSelectedDate(value?: string) {
+  if (!value) {
+    return new Date();
+  }
+
+  const date = parseISO(value);
+
+  return Number.isNaN(date.getTime()) ? new Date() : date;
 }

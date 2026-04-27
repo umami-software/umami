@@ -1,10 +1,11 @@
 'use client';
 import { Button, Column, Grid, Icon, List, ListItem, Menu, MenuItem, MenuTrigger, Popover, Row } from '@umami/react-zen';
+import { format } from 'date-fns';
 import { useState } from 'react';
 import { Empty } from '@/components/common/Empty';
 import { useEventDataFieldsQuery, useMessages, useMobile } from '@/components/hooks';
 import { Plus } from '@/components/icons';
-import { OPERATORS } from '@/lib/constants';
+import { DATA_TYPE, OPERATORS } from '@/lib/constants';
 import type { EventPropertyFilter } from '@/lib/types';
 import { EventDataFilterRecord } from './EventDataFilterRecord';
 
@@ -32,7 +33,22 @@ export function EventDataFilterEditForm({
     const dataType: number = field?.dataType ?? 1;
     setFilters(prev => [
       ...prev,
-      { propertyName, dataType, operator: OPERATORS.equals, value: '' },
+      {
+        propertyName,
+        dataType,
+        operator:
+          dataType === DATA_TYPE.date
+            ? OPERATORS.before
+            : dataType === DATA_TYPE.array
+              ? OPERATORS.contains
+              : OPERATORS.equals,
+        value:
+          dataType === DATA_TYPE.boolean
+            ? 'true'
+            : dataType === DATA_TYPE.date
+              ? format(new Date(), 'yyyy-MM-dd')
+              : '',
+      },
     ]);
   };
 

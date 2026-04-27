@@ -1,14 +1,8 @@
-import { FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
+import { DATA_TYPE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import type { EventPropertyFilter, Filter, Operator, QueryFilters, QueryOptions } from '@/lib/types';
 
 const VALID_OPERATORS: Operator[] = Object.values(OPERATORS);
-const NUMERIC_EVENT_PROPERTY_OPERATORS: Operator[] = [
-  OPERATORS.greaterThan,
-  OPERATORS.lessThan,
-  OPERATORS.greaterThanEquals,
-  OPERATORS.lessThanEquals,
-];
-const EQUALITY_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
+const VALID_EVENT_DATA_TYPES = Object.values(DATA_TYPE);
 
 function resolveOperator(value?: string): Operator | undefined {
   if (!value) {
@@ -110,22 +104,33 @@ export function parseEventPropertyFilters(query: Record<string, any>): EventProp
   return Object.entries(query)
     .filter(([key]) => /^epf_/.test(key))
     .flatMap(([key, val]) => {
-      const dotIndex = (val as string).indexOf('.');
-      if (dotIndex < 1) return [];
+      const stringValue = String(val);
       const withoutPrefix = key.slice(4); // strip "epf_"
       const propertyName = withoutPrefix.replace(/\d+$/, ''); // strip trailing index digits
-      const rawOperator = (val as string).slice(0, dotIndex);
+      const prefixedDotMatch = stringValue.match(/^(\d+)\.([^.]+)\.(.*)$/);
+      const untypedDotMatch = stringValue.match(/^([^.]+)\.(.*)$/);
+      const explicitDataType = prefixedDotMatch ? Number(prefixedDotMatch[1]) : undefined;
+      const rawOperator = prefixedDotMatch ? prefixedDotMatch[2] : untypedDotMatch?.[1];
       const operator = resolveOperator(rawOperator);
-      if (!operator) {
+
+      if (!operator || (explicitDataType !== undefined && !VALID_EVENT_DATA_TYPES.includes(explicitDataType))) {
         return [];
       }
-      const value = (val as string).slice(dotIndex + 1);
-      const isNumeric =
-        NUMERIC_EVENT_PROPERTY_OPERATORS.includes(operator) ||
-        (EQUALITY_OPERATORS.includes(operator) &&
-          value !== '' &&
-          !Number.isNaN(Number(value)));
-      return [{ propertyName, dataType: isNumeric ? 2 : 1, operator, value }];
+
+      const value = prefixedDotMatch ? prefixedDotMatch[3] : untypedDotMatch?.[2];
+
+      if (value === undefined) {
+        return [];
+      }
+
+      return [
+        {
+          propertyName,
+          dataType: explicitDataType ?? DATA_TYPE.string,
+          operator,
+          value,
+        },
+      ];
     });
 }
 
@@ -135,7 +140,7 @@ export function serializeEventPropertyFilters(filters: EventPropertyFilter[]): R
     filters.map(f => {
       const n = counts[f.propertyName] ?? 0;
       counts[f.propertyName] = n + 1;
-      return [`epf_${f.propertyName}${n > 0 ? n : ''}`, `${f.operator}.${f.value}`];
+      return [`epf_${f.propertyName}${n > 0 ? n : ''}`, `${f.dataType}.${f.operator}.${f.value}`];
     }),
   );
 }

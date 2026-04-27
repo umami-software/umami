@@ -38,6 +38,10 @@ export function EventDataFilterBar({
         return t(labels.greaterThanEquals);
       case OPERATORS.lessThanEquals:
         return t(labels.lessThanEquals);
+      case OPERATORS.before:
+        return t(labels.before);
+      case OPERATORS.after:
+        return t(labels.after);
       default:
         return op;
     }

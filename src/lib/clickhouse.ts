@@ -2,7 +2,7 @@ import { CLICKHOUSE } from '@/lib/db';
 import { type ClickHouseClient, createClient } from '@clickhouse/client';
 import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
-import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from './constants';
+import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from './constants';
 import { filtersObjectToArray } from './params';
 import type { EventPropertyFilter, Operator, QueryFilters, QueryOptions } from './types';
 
@@ -238,7 +238,10 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   };
 }
 
-function getEventPropertyFilterQuery(filters: EventPropertyFilter[] = []): {
+function getEventPropertyFilterQuery(
+  filters: EventPropertyFilter[] = [],
+  timezone?: string,
+): {
   sql: string;
   params: Record<string, any>;
 } {
@@ -252,49 +255,78 @@ function getEventPropertyFilterQuery(filters: EventPropertyFilter[] = []): {
     const valParam = `epf_val_${i}`;
     params[keyParam] = propertyName;
 
-    const isNumeric = dataType === 2;
-    const col = isNumeric ? 'number_value' : 'string_value';
-
     let condition: string;
-    if (isNumeric) {
-      params[valParam] = parseFloat(value) || 0;
-      const opMap: Record<string, string> = {
-        [OPERATORS.equals]: `${col} = {${valParam}:Float64}`,
-        [OPERATORS.notEquals]: `${col} != {${valParam}:Float64}`,
-        [OPERATORS.greaterThan]: `${col} > {${valParam}:Float64}`,
-        [OPERATORS.lessThan]: `${col} < {${valParam}:Float64}`,
-        [OPERATORS.greaterThanEquals]: `${col} >= {${valParam}:Float64}`,
-        [OPERATORS.lessThanEquals]: `${col} <= {${valParam}:Float64}`,
-      };
-      condition = opMap[operator] ?? `${col} = {${valParam}:Float64}`;
-    } else if (EQUALITY_OPERATORS.includes(operator)) {
-      const vals = value.split(',').filter(Boolean);
-      if (!vals.length) return;
-      params[valParam] = vals;
-      condition = mapFilter(
-        col,
-        operator === OPERATORS.equals ? OPERATORS.equals : OPERATORS.notEquals,
-        valParam,
-        'String',
-      );
-    } else if (REGEX_OPERATORS.includes(operator)) {
-      if (!value) return;
-      params[valParam] = value;
-      condition = mapFilter(
-        col,
-        operator === OPERATORS.regex ? OPERATORS.regex : OPERATORS.notRegex,
-        valParam,
-        'String',
-      );
-    } else {
-      if (!value) return;
-      params[valParam] = value;
-      condition = mapFilter(
-        col,
-        operator === OPERATORS.contains ? OPERATORS.contains : OPERATORS.doesNotContain,
-        valParam,
-        'String',
-      );
+    switch (dataType) {
+      case DATA_TYPE.number: {
+        const col = 'number_value';
+        params[valParam] = parseFloat(value) || 0;
+        const opMap: Record<string, string> = {
+          [OPERATORS.equals]: `${col} = {${valParam}:Float64}`,
+          [OPERATORS.notEquals]: `${col} != {${valParam}:Float64}`,
+          [OPERATORS.greaterThan]: `${col} > {${valParam}:Float64}`,
+          [OPERATORS.lessThan]: `${col} < {${valParam}:Float64}`,
+          [OPERATORS.greaterThanEquals]: `${col} >= {${valParam}:Float64}`,
+          [OPERATORS.lessThanEquals]: `${col} <= {${valParam}:Float64}`,
+        };
+        condition = opMap[operator] ?? `${col} = {${valParam}:Float64}`;
+        break;
+      }
+      case DATA_TYPE.date: {
+        if (!value) return;
+        params[valParam] = value;
+        const dateCol = timezone
+          ? `toDate(toTimezone(date_value, {timezone:String}))`
+          : `toDate(toTimezone(date_value, 'UTC'))`;
+        const opMap: Record<string, string> = {
+          [OPERATORS.before]: `${dateCol} < {${valParam}:Date}`,
+          [OPERATORS.after]: `${dateCol} > {${valParam}:Date}`,
+        };
+        condition = opMap[operator] ?? `${dateCol} = {${valParam}:Date}`;
+        break;
+      }
+      case DATA_TYPE.array: {
+        if (!value) return;
+        params[valParam] = value;
+        condition =
+          operator === OPERATORS.contains
+            ? `has(JSONExtract(ifNull(string_value, '[]'), 'Array(String)'), {${valParam}:String})`
+            : `not has(JSONExtract(ifNull(string_value, '[]'), 'Array(String)'), {${valParam}:String})`;
+        break;
+      }
+      default: {
+        const col = 'string_value';
+
+        if (EQUALITY_OPERATORS.includes(operator)) {
+          const vals = value.split(',').filter(Boolean);
+          if (!vals.length) return;
+          params[valParam] = vals;
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.equals ? OPERATORS.equals : OPERATORS.notEquals,
+            valParam,
+            'String',
+          );
+        } else if (REGEX_OPERATORS.includes(operator)) {
+          if (!value) return;
+          params[valParam] = value;
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.regex ? OPERATORS.regex : OPERATORS.notRegex,
+            valParam,
+            'String',
+          );
+        } else {
+          if (!value) return;
+          params[valParam] = value;
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.contains ? OPERATORS.contains : OPERATORS.doesNotContain,
+            valParam,
+            'String',
+          );
+        }
+        break;
+      }
     }
 
     parts.push(`and event_id in (
