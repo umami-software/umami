@@ -1,0 +1,80 @@
+.pageList {
+  overflow-y: auto;
+  padding-right: 8px;
+  max-height: 100%;
+}
+
+.pageButton {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  border-radius: 6px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.pageButton:hover {
+  background: var(--interactive-bg-hover);
+}
+
+.pageButtonSelected,
+.pageButtonSelected:hover {
+  background: var(--surface-inverted);
+  color: var(--surface-base);
+}
+
+.toggleButton {
+  border: 1px solid var(--border-base);
+  background: var(--surface-base);
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.toggleButton:hover {
+  background: var(--interactive-bg-hover);
+}
+
+.canvas {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-base);
+  border-radius: 8px;
+  background: var(--surface-sunken);
+}
+
+.iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
+  transform-origin: top left;
+  pointer-events: none;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.dot {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 60, 0, 0.9) 0%,
+    rgba(255, 200, 0, 0.6) 45%,
+    rgba(255, 200, 0, 0) 80%
+  );
+  pointer-events: auto;
+  mix-blend-mode: multiply;
+}

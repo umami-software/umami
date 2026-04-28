@@ -131,6 +131,7 @@ export const reportTypeParam = z.enum([
   'breakdown',
   'funnel',
   'goal',
+  'heatmap',
   'journey',
   'performance',
   'retention',
@@ -268,6 +269,15 @@ export const breakdownReportSchema = z.object({
   }),
 });
 
+export const heatmapReportSchema = z.object({
+  type: z.literal('heatmap'),
+  parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+    urlPath: z.string().max(500).optional(),
+  }),
+});
+
 export const reportBaseSchema = z.object({
   websiteId: z.uuid(),
   type: reportTypeParam,
@@ -286,6 +296,7 @@ export const reportTypeSchema = z.discriminatedUnion('type', [
   revenueReportSchema,
   attributionReportSchema,
   breakdownReportSchema,
+  heatmapReportSchema,
 ]);
 
 export const reportSchema = reportBaseSchema;

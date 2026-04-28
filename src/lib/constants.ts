@@ -119,6 +119,11 @@ export const EVENT_TYPE = {
   performance: 5,
 } as const;
 
+export const HEATMAP_EVENT_TYPE = {
+  click: 1,
+  scroll: 2,
+} as const;
+
 export const ENTITY_TYPE = {
   website: 1,
   link: 2,
