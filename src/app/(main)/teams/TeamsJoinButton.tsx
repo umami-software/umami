@@ -4,12 +4,12 @@ import { UserPlus } from '@/components/icons';
 import { TeamJoinForm } from './TeamJoinForm';
 
 export function TeamsJoinButton() {
-  const { formatMessage, labels, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { toast } = useToast();
   const { touch } = useModified();
 
   const handleJoin = () => {
-    toast(formatMessage(messages.saved));
+    toast(t(messages.saved));
     touch('teams');
   };
 
@@ -19,10 +19,10 @@ export function TeamsJoinButton() {
         <Icon>
           <UserPlus />
         </Icon>
-        <Text>{formatMessage(labels.joinTeam)}</Text>
+        <Text>{t(labels.joinTeam)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.joinTeam)} style={{ width: 400 }}>
+        <Dialog title={t(labels.joinTeam)} style={{ width: 400 }}>
           {({ close }) => <TeamJoinForm onSave={handleJoin} onClose={close} />}
         </Dialog>
       </Modal>

@@ -24,7 +24,7 @@ export function TeamMemberEditForm({
   onClose?: () => void;
 }) {
   const { mutateAsync, error, isPending } = useUpdateQuery(`/teams/${teamId}/users/${userId}`);
-  const { formatMessage, labels, getErrorMessage } = useMessages();
+  const { t, labels, getErrorMessage } = useMessages();
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
@@ -37,24 +37,20 @@ export function TeamMemberEditForm({
 
   return (
     <Form onSubmit={handleSubmit} error={getErrorMessage(error)} defaultValues={{ role }}>
-      <FormField
-        name="role"
-        rules={{ required: formatMessage(labels.required) }}
-        label={formatMessage(labels.role)}
-      >
+      <FormField name="role" rules={{ required: t(labels.required) }} label={t(labels.role)}>
         <Select>
-          <ListItem id={ROLES.teamManager}>{formatMessage(labels.manager)}</ListItem>
-          <ListItem id={ROLES.teamMember}>{formatMessage(labels.member)}</ListItem>
-          <ListItem id={ROLES.teamViewOnly}>{formatMessage(labels.viewOnly)}</ListItem>
+          <ListItem id={ROLES.teamManager}>{t(labels.manager)}</ListItem>
+          <ListItem id={ROLES.teamMember}>{t(labels.member)}</ListItem>
+          <ListItem id={ROLES.teamViewOnly}>{t(labels.viewOnly)}</ListItem>
         </Select>
       </FormField>
 
       <FormButtons>
         <Button isDisabled={isPending} onPress={onClose}>
-          {formatMessage(labels.cancel)}
+          {t(labels.cancel)}
         </Button>
         <FormSubmitButton variant="primary" isDisabled={false}>
-          {formatMessage(labels.save)}
+          {t(labels.save)}
         </FormSubmitButton>
       </FormButtons>
     </Form>

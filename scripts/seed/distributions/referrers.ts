@@ -1,4 +1,4 @@
-import { weightedRandom, pickRandom, randomInt, type WeightedOption } from '../utils.js';
+import { pickRandom, randomInt, type WeightedOption, weightedRandom } from '../utils.js';
 
 export type ReferrerType = 'direct' | 'organic' | 'social' | 'paid' | 'referral';
 

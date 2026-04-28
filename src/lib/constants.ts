@@ -4,10 +4,12 @@ export const LOCALE_CONFIG = 'umami.locale';
 export const TIMEZONE_CONFIG = 'umami.timezone';
 export const DATE_RANGE_CONFIG = 'umami.date-range';
 export const THEME_CONFIG = 'umami.theme';
+export const CURRENCY_CONFIG = 'umami.currency';
 export const DASHBOARD_CONFIG = 'umami.dashboard';
 export const LAST_TEAM_CONFIG = 'umami.last-team';
 export const VERSION_CHECK = 'umami.version-check';
 export const SHARE_TOKEN_HEADER = 'x-umami-share-token';
+export const SHARE_CONTEXT_HEADER = 'x-umami-share-context';
 export const HOMEPAGE_URL = 'https://umami.is';
 export const DOCS_URL = 'https://umami.is/docs';
 export const REPO_URL = 'https://github.com/umami-software/umami';
@@ -25,6 +27,7 @@ export const DEFAULT_WEBSITE_LIMIT = 10;
 export const DEFAULT_RESET_DATE = '2000-01-01';
 export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_DATE_COMPARE = 'prev';
+export const DEFAULT_CURRENCY = 'USD';
 
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 10000;
@@ -42,6 +45,11 @@ export const EVENT_COLUMNS = [
   'event',
   'tag',
   'hostname',
+  'utmSource',
+  'utmMedium',
+  'utmCampaign',
+  'utmContent',
+  'utmTerm',
 ];
 
 export const SESSION_COLUMNS = [
@@ -53,6 +61,7 @@ export const SESSION_COLUMNS = [
   'country',
   'city',
   'region',
+  'distinctId',
 ];
 
 export const SEGMENT_TYPES = {
@@ -67,6 +76,7 @@ export const FILTER_COLUMNS = {
   referrer: 'referrer_domain',
   domain: 'referrer_domain',
   hostname: 'hostname',
+  distinctId: 'distinct_id',
   title: 'page_title',
   query: 'url_query',
   os: 'os',
@@ -79,11 +89,26 @@ export const FILTER_COLUMNS = {
   event: 'event_name',
   tag: 'tag',
   eventType: 'event_type',
+  utmSource: 'utm_source',
+  utmMedium: 'utm_medium',
+  utmCampaign: 'utm_campaign',
+  utmContent: 'utm_content',
+  utmTerm: 'utm_term',
 };
 
 export const COLLECTION_TYPE = {
   event: 'event',
   identify: 'identify',
+  performance: 'performance',
+  record: 'record',
+} as const;
+
+export const WEB_VITALS_THRESHOLDS = {
+  lcp: { good: 2500, poor: 4000, unit: 'ms' },
+  inp: { good: 200, poor: 500, unit: 'ms' },
+  cls: { good: 0.1, poor: 0.25, unit: '' },
+  fcp: { good: 1800, poor: 3000, unit: 'ms' },
+  ttfb: { good: 800, poor: 1800, unit: 'ms' },
 } as const;
 
 export const EVENT_TYPE = {
@@ -91,6 +116,14 @@ export const EVENT_TYPE = {
   customEvent: 2,
   linkEvent: 3,
   pixelEvent: 4,
+  performance: 5,
+} as const;
+
+export const ENTITY_TYPE = {
+  website: 1,
+  link: 2,
+  pixel: 3,
+  board: 4,
 } as const;
 
 export const DATA_TYPE = {
@@ -108,6 +141,8 @@ export const OPERATORS = {
   notSet: 'ns',
   contains: 'c',
   doesNotContain: 'dnc',
+  regex: 're',
+  notRegex: 'nre',
   true: 't',
   false: 'f',
   greaterThan: 'gt',

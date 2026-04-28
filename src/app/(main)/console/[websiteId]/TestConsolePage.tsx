@@ -1,6 +1,6 @@
 'use client';
 import { Button, Column, Grid, Heading } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import Script from 'next/script';
 import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
 import { PageBody } from '@/components/common/PageBody';
@@ -115,6 +115,12 @@ export function TestConsolePage({ websiteId }: { websiteId: string }) {
           data-website-id={websiteId}
           src={`${process.env.basePath || ''}/script.js`}
           data-cache="true"
+          data-performance="true"
+        />
+        <Script
+          async
+          data-website-id={websiteId}
+          src={`${process.env.basePath || ''}/recorder.js`}
         />
         <Panel>
           <Grid columns="1fr 1fr 1fr" gap>

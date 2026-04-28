@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { DashboardPage } from './DashboardPage';
+import { DashboardViewPage } from './DashboardViewPage';
 
 export default async function () {
-  return <DashboardPage />;
+  return <DashboardViewPage />;
 }
 
 export const metadata: Metadata = {

@@ -2,8 +2,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, ZenProvider } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
+import { NextIntlClientProvider } from 'next-intl';
 import { useEffect } from 'react';
-import { IntlProvider } from 'react-intl';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { useLocale } from '@/components/hooks';
 import 'chartjs-adapter-date-fns';
@@ -27,9 +27,9 @@ function MessagesProvider({ children }) {
   }, [locale, dir]);
 
   return (
-    <IntlProvider locale={locale} messages={messages[locale]} onError={() => null}>
+    <NextIntlClientProvider locale={locale} messages={messages[locale]} onError={() => null}>
       {children}
-    </IntlProvider>
+    </NextIntlClientProvider>
   );
 }
 

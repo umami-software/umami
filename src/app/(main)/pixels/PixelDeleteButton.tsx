@@ -2,7 +2,6 @@ import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 import { useDeleteQuery, useMessages, useModified } from '@/components/hooks';
 import { Trash } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
-import { messages } from '@/components/messages';
 
 export function PixelDeleteButton({
   pixelId,
@@ -13,7 +12,7 @@ export function PixelDeleteButton({
   name: string;
   onSave?: () => void;
 }) {
-  const { formatMessage, labels, getErrorMessage, FormattedMessage } = useMessages();
+  const { t, labels, messages, getErrorMessage } = useMessages();
   const { mutateAsync, isPending, error } = useDeleteQuery(`/pixels/${pixelId}`);
   const { touch } = useModified();
 
@@ -28,27 +27,18 @@ export function PixelDeleteButton({
   };
 
   return (
-    <DialogButton
-      icon={<Trash />}
-      variant="quiet"
-      title={formatMessage(labels.confirm)}
-      width="400px"
-    >
+    <DialogButton icon={<Trash />} variant="quiet" title={t(labels.confirm)} width="400px">
       {({ close }) => (
         <ConfirmationForm
-          message={
-            <FormattedMessage
-              {...messages.confirmRemove}
-              values={{
-                target: <b>{name}</b>,
-              }}
-            />
-          }
+          message={t.rich(messages.confirmRemove, {
+            target: name,
+            b: chunks => <b>{chunks}</b>,
+          })}
           isLoading={isPending}
           error={getErrorMessage(error)}
           onConfirm={handleConfirm.bind(null, close)}
           onClose={close}
-          buttonLabel={formatMessage(labels.delete)}
+          buttonLabel={t(labels.delete)}
           buttonVariant="danger"
         />
       )}
