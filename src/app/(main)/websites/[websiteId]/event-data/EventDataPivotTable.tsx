@@ -70,6 +70,14 @@ export function EventDataPivotTable({
     router.push(updateParams({ page }));
   };
 
+  const renderTruncatedText = (value: string) => (
+    <Row overflow="hidden" minWidth="0" width="100%">
+      <Text truncate title={value} style={{ maxWidth: '100%' }}>
+        {value}
+      </Text>
+    </Row>
+  );
+
   return (
     <Column gap="4" minWidth="0" width="100%" maxWidth="100%">
       <LoadingPanel
@@ -90,19 +98,11 @@ export function EventDataPivotTable({
                 )}
               </DataColumn>
               <DataColumn id="urlPath" label={t(labels.path)} width="220px">
-                {(row: any) => (
-                  <Text truncate title={row.urlPath}>
-                    {row.urlPath}
-                  </Text>
-                )}
+                {(row: any) => renderTruncatedText(row.urlPath ?? '')}
               </DataColumn>
               {propertyKeys.map(key => (
                 <DataColumn key={key} id={key} label={key} width="160px">
-                  {(row: any) => (
-                    <Text truncate title={row[key]}>
-                      {row[key] ?? ''}
-                    </Text>
-                  )}
+                  {(row: any) => renderTruncatedText(row[key] ?? '')}
                 </DataColumn>
               ))}
               <DataColumn id="createdAt" label={t(labels.created)} width="180px">
@@ -125,19 +125,11 @@ export function EventDataPivotTable({
                     )}
                   </DataColumn>
                   <DataColumn id="urlPath" label={t(labels.path)} width="220px">
-                    {(row: any) => (
-                      <Text truncate title={row.urlPath}>
-                        {row.urlPath}
-                      </Text>
-                    )}
+                    {(row: any) => renderTruncatedText(row.urlPath ?? '')}
                   </DataColumn>
                   {propertyKeys.map(key => (
                     <DataColumn key={key} id={key} label={key} width="160px">
-                      {(row: any) => (
-                        <Text truncate title={row[key]}>
-                          {row[key] ?? ''}
-                        </Text>
-                      )}
+                      {(row: any) => renderTruncatedText(row[key] ?? '')}
                     </DataColumn>
                   ))}
                   <DataColumn id="createdAt" label={t(labels.created)} width="180px">

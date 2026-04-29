@@ -3,34 +3,41 @@ import { Button, Column, Grid, Icon, List, ListItem, Menu, MenuItem, MenuTrigger
 import { format } from 'date-fns';
 import { useState } from 'react';
 import { Empty } from '@/components/common/Empty';
-import { useEventDataFieldsQuery, useMessages, useMobile } from '@/components/hooks';
+import { useMessages, useMobile, usePropertyFieldsQuery } from '@/components/hooks';
 import { Plus } from '@/components/icons';
 import { DATA_TYPE, OPERATORS } from '@/lib/constants';
-import type { EventPropertyFilter } from '@/lib/types';
-import { EventDataFilterRecord } from './EventDataFilterRecord';
+import type { PropertyFilter } from '@/lib/types';
+import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
+import { PropertyFilterRecord } from './PropertyFilterRecord';
 
-export function EventDataFilterEditForm({
+export function PropertyFilterEditForm({
+  source,
   websiteId,
   eventName,
+  fields: providedFields,
   value,
   onApply,
   onClose,
 }: {
+  source: PropertyDataSource;
   websiteId: string;
-  eventName: string;
-  value: EventPropertyFilter[];
-  onApply: (filters: EventPropertyFilter[]) => void;
+  eventName?: string;
+  fields?: Array<{ propertyName: string; dataType: number }>;
+  value: PropertyFilter[];
+  onApply: (filters: PropertyFilter[]) => void;
   onClose: () => void;
 }) {
   const { t, labels, messages } = useMessages();
   const { isMobile } = useMobile();
-  const [filters, setFilters] = useState<EventPropertyFilter[]>(value);
-
-  const { data: fields = [] } = useEventDataFieldsQuery(websiteId, eventName);
+  const [filters, setFilters] = useState<PropertyFilter[]>(value);
+  const { data: queriedFields = [] } = usePropertyFieldsQuery(source, websiteId, eventName, {
+    enabled: !providedFields,
+  });
+  const fields = providedFields ?? queriedFields;
 
   const handleAdd = (propertyName: string) => {
     const field = (fields as any[]).find(f => f.propertyName === propertyName);
-    const dataType: number = field?.dataType ?? 1;
+    const dataType: number = field?.dataType ?? DATA_TYPE.string;
     setFilters(prev => [
       ...prev,
       {
@@ -52,14 +59,6 @@ export function EventDataFilterEditForm({
     ]);
   };
 
-  const handleChange = (index: number, filter: EventPropertyFilter) => {
-    setFilters(prev => prev.map((f, i) => (i === index ? filter : f)));
-  };
-
-  const handleRemove = (index: number) => {
-    setFilters(prev => prev.filter((_, i) => i !== index));
-  };
-
   return (
     <Column width={isMobile ? 'auto' : '700px'} gap="6">
       <Column minHeight="400px">
@@ -77,7 +76,7 @@ export function EventDataFilterEditForm({
                   style={{ maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}
                 >
                   {(fields as any[]).map(field => (
-                    <MenuItem key={field.propertyName} id={field.propertyName}>
+                    <MenuItem key={`${field.propertyName}:${field.dataType}`} id={field.propertyName}>
                       {field.propertyName}
                     </MenuItem>
                   ))}
@@ -93,7 +92,7 @@ export function EventDataFilterEditForm({
           >
             <List onAction={key => handleAdd(key.toString())}>
               {(fields as any[]).map(field => (
-                <ListItem key={field.propertyName} id={field.propertyName}>
+                <ListItem key={`${field.propertyName}:${field.dataType}`} id={field.propertyName}>
                   {field.propertyName}
                 </ListItem>
               ))}
@@ -101,13 +100,15 @@ export function EventDataFilterEditForm({
           </Column>
           <Column overflow="auto" gapY="4" style={{ contain: 'layout' }}>
             {filters.map((filter, index) => (
-              <EventDataFilterRecord
+              <PropertyFilterRecord
                 key={`${filter.propertyName}-${index}`}
+                source={source}
                 websiteId={websiteId}
                 eventName={eventName}
                 filter={filter}
-                onChange={f => handleChange(index, f)}
-                onRemove={() => handleRemove(index)}
+                filters={filters}
+                onChange={f => setFilters(prev => prev.map((item, i) => (i === index ? f : item)))}
+                onRemove={() => setFilters(prev => prev.filter((_, i) => i !== index))}
               />
             ))}
             {!filters.length && <Empty message={t(messages.nothingSelected)} />}
@@ -118,7 +119,13 @@ export function EventDataFilterEditForm({
         <Button onPress={() => setFilters([])}>{t(labels.reset)}</Button>
         <Row gap>
           <Button onPress={onClose}>{t(labels.cancel)}</Button>
-          <Button variant="primary" onPress={() => { onApply(filters); onClose(); }}>
+          <Button
+            variant="primary"
+            onPress={() => {
+              onApply(filters);
+              onClose();
+            }}
+          >
             {t(labels.apply)}
           </Button>
         </Row>

@@ -1,16 +1,16 @@
 'use client';
+import { Button, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import { X } from '@/components/icons';
 import { OPERATORS } from '@/lib/constants';
-import type { EventPropertyFilter } from '@/lib/types';
-import { Button, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import type { PropertyFilter } from '@/lib/types';
 
-export function EventDataFilterBar({
+export function PropertyFilterBar({
   filters,
   onChange,
 }: {
-  filters: EventPropertyFilter[];
-  onChange: (filters: EventPropertyFilter[]) => void;
+  filters: PropertyFilter[];
+  onChange: (filters: PropertyFilter[]) => void;
 }) {
   const { t, labels } = useMessages();
 
@@ -47,10 +47,6 @@ export function EventDataFilterBar({
     }
   };
 
-  const handleRemove = (index: number) => {
-    onChange(filters.filter((_, i) => i !== index));
-  };
-
   return (
     <Row
       gap
@@ -68,7 +64,7 @@ export function EventDataFilterBar({
             label={filter.propertyName}
             operator={operatorLabel(filter.operator)}
             value={filter.value}
-            onRemove={() => handleRemove(index)}
+            onRemove={() => onChange(filters.filter((_, i) => i !== index))}
           />
         ))}
       </Row>

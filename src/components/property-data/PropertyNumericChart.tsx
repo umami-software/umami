@@ -5,30 +5,33 @@ import { BarChart } from '@/components/charts/BarChart';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
   useDateRange,
-  useEventDataNumericSeriesQuery,
-  useEventDataNumericStatsQuery,
   useLocale,
   useMessages,
+  usePropertyNumericSeriesQuery,
+  usePropertyNumericStatsQuery,
   useTimezone,
 } from '@/components/hooks';
+import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { renderDateLabels } from '@/lib/charts';
 import { getThemeColors } from '@/lib/colors';
 import { generateTimeSeries } from '@/lib/date';
 import { formatLongNumber } from '@/lib/format';
-import type { EventPropertyFilter } from '@/lib/types';
+import type { PropertyFilter } from '@/lib/types';
 
-export function EventDataNumericChart({
+export function PropertyNumericChart({
+  source,
   websiteId,
-  eventName,
   propertyName,
-  eventFilters = [],
+  propertyFilters = [],
+  eventName,
 }: {
+  source: PropertyDataSource;
   websiteId: string;
-  eventName: string;
   propertyName: string;
-  eventFilters?: EventPropertyFilter[];
+  propertyFilters?: PropertyFilter[];
+  eventName?: string;
 }) {
   const { t, labels } = useMessages();
   const { theme } = useTheme();
@@ -37,35 +40,12 @@ export function EventDataNumericChart({
   const { locale, dateLocale } = useLocale();
   const { colors } = useMemo(() => getThemeColors(theme), [theme]);
 
-  const sumQuery = useEventDataNumericSeriesQuery(
-    websiteId,
-    eventName,
-    propertyName,
-    'sum',
-    eventFilters,
-  );
-  const avgQuery = useEventDataNumericSeriesQuery(
-    websiteId,
-    eventName,
-    propertyName,
-    'avg',
-    eventFilters,
-  );
-  const statsQuery = useEventDataNumericStatsQuery(
-    websiteId,
-    eventName,
-    propertyName,
-    eventFilters,
-  );
+  const sumQuery = usePropertyNumericSeriesQuery(source, websiteId, propertyName, 'sum', propertyFilters, eventName);
+  const avgQuery = usePropertyNumericSeriesQuery(source, websiteId, propertyName, 'avg', propertyFilters, eventName);
+  const statsQuery = usePropertyNumericStatsQuery(source, websiteId, propertyName, propertyFilters, eventName);
 
-  const sumRows = useMemo(
-    () => (sumQuery.data as { t: string; y: number }[] | undefined) ?? [],
-    [sumQuery.data],
-  );
-  const avgRows = useMemo(
-    () => (avgQuery.data as { t: string; y: number }[] | undefined) ?? [],
-    [avgQuery.data],
-  );
+  const sumRows = useMemo(() => (sumQuery.data as { t: string; y: number }[] | undefined) ?? [], [sumQuery.data]);
+  const avgRows = useMemo(() => (avgQuery.data as { t: string; y: number }[] | undefined) ?? [], [avgQuery.data]);
   const stats = statsQuery.data;
 
   const formatMetricValue = useCallback(
@@ -114,7 +94,7 @@ export function EventDataNumericChart({
         },
       ],
     };
-  }, [sumQuery.data, avgQuery.data, t, labels, startDate, endDate, unit, dateLocale, colors, sumRows, avgRows]);
+  }, [avgQuery.data, avgRows, colors, dateLocale, endDate, labels.average, labels.sum, startDate, sumQuery.data, sumRows, t, unit]);
 
   const renderXLabel = useCallback(renderDateLabels(unit, locale), [unit, locale]);
 
@@ -128,31 +108,11 @@ export function EventDataNumericChart({
         minHeight="100px"
       >
         <MetricsBar padding="2">
-          <MetricCard
-            label={t(labels.total)}
-            value={stats?.total ?? 0}
-            formatValue={formatLongNumber}
-          />
-          <MetricCard
-            label={t(labels.average)}
-            value={stats?.average ?? 0}
-            formatValue={formatMetricValue}
-          />
-          <MetricCard
-            label="Median"
-            value={stats?.median ?? 0}
-            formatValue={formatMetricValue}
-          />
-          <MetricCard
-            label={t(labels.max)}
-            value={stats?.max ?? 0}
-            formatValue={formatMetricValue}
-          />
-          <MetricCard
-            label={t(labels.min)}
-            value={stats?.min ?? 0}
-            formatValue={formatMetricValue}
-          />
+          <MetricCard label={t(labels.total)} value={stats?.total ?? 0} formatValue={formatLongNumber} />
+          <MetricCard label={t(labels.average)} value={stats?.average ?? 0} formatValue={formatMetricValue} />
+          <MetricCard label="Median" value={stats?.median ?? 0} formatValue={formatMetricValue} />
+          <MetricCard label={t(labels.max)} value={stats?.max ?? 0} formatValue={formatMetricValue} />
+          <MetricCard label={t(labels.min)} value={stats?.min ?? 0} formatValue={formatMetricValue} />
         </MetricsBar>
       </LoadingPanel>
       <LoadingPanel

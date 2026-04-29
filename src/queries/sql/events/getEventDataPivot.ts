@@ -22,7 +22,7 @@ export async function getEventDataPivot(
 
 async function relationalQuery(websiteId: string, eventName: string, filters: QueryFilters, eventFilters: EventPropertyFilter[] = []) {
   const { timezone = 'utc' } = filters;
-  const { rawQuery, parseFilters, getEventPropertyFilterQuery } = prisma;
+  const { rawQuery, parseFilters, getPropertyFilterQuery } = prisma;
   const { page = 1, pageSize } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
@@ -32,7 +32,7 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
     websiteId,
     timezone,
   });
-  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters, timezone);
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(eventFilters, 'event', timezone);
 
   const countResult = await rawQuery(
     `
@@ -47,9 +47,9 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_name = {{eventName}}
       ${filterQuery}
-      ${epfSQL}
+      ${pfSQL}
     `,
-    { ...queryParams, eventName, ...epfParams },
+    { ...queryParams, eventName, ...pfParams },
   );
 
   const count = countResult[0].num;
@@ -68,7 +68,7 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
         and website_event.created_at between {{startDate}} and {{endDate}}
         and website_event.event_name = {{eventName}}
         ${filterQuery}
-        ${epfSQL}
+        ${pfSQL}
       group by website_event.event_id
       order by max(website_event.created_at) desc
       limit ${size} offset ${offset}
@@ -97,7 +97,7 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
       and event_data.created_at between {{startDate}} and {{endDate}}
     order by website_event.created_at desc
     `,
-    { ...queryParams, eventName, ...epfParams },
+    { ...queryParams, eventName, ...pfParams },
     FUNCTION_NAME,
   );
 
@@ -120,13 +120,13 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
 
 async function clickhouseQuery(websiteId: string, eventName: string, filters: QueryFilters, eventFilters: EventPropertyFilter[] = []) {
   const { timezone = 'UTC' } = filters;
-  const { rawQuery, parseFilters, getEventPropertyFilterQuery } = clickhouse;
+  const { rawQuery, parseFilters, getPropertyFilterQuery } = clickhouse;
   const { page = 1, pageSize } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
 
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
-  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters, timezone);
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(eventFilters, 'event', timezone);
 
   const count = await rawQuery(
     `
@@ -146,9 +146,9 @@ async function clickhouseQuery(websiteId: string, eventName: string, filters: Qu
     where event_data_pivot.website_id = {websiteId:UUID}
       and event_data_pivot.created_at between {startDate:DateTime64} and {endDate:DateTime64}
     ${filterQuery}
-    ${epfSQL}
+    ${pfSQL}
     `,
-    { ...queryParams, eventName, ...epfParams },
+    { ...queryParams, eventName, ...pfParams },
   ).then((res: any) => res[0].num);
 
   const data = await rawQuery(
@@ -176,7 +176,7 @@ async function clickhouseQuery(websiteId: string, eventName: string, filters: Qu
     where event_data_pivot.website_id = {websiteId:UUID}
       and event_data_pivot.created_at between {startDate:DateTime64} and {endDate:DateTime64}
     ${filterQuery}
-    ${epfSQL}
+    ${pfSQL}
     group by
       event_data_pivot.event_id,
       event_data_pivot.session_id,
@@ -186,7 +186,7 @@ async function clickhouseQuery(websiteId: string, eventName: string, filters: Qu
     order by event_data_pivot.created_at desc
     limit ${size} offset ${offset}
     `,
-    { ...queryParams, eventName, ...epfParams },
+    { ...queryParams, eventName, ...pfParams },
     FUNCTION_NAME,
   );
 

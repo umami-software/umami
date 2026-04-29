@@ -4,7 +4,7 @@ import { readReplicas } from '@prisma/extension-read-replicas';
 import debug from 'debug';
 import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
 import { filtersObjectToArray } from './params';
-import type { EventPropertyFilter, Operator, QueryFilters, QueryOptions } from './types';
+import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
 
 const log = debug('umami:prisma');
 
@@ -273,8 +273,9 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   };
 }
 
-function getEventPropertyFilterQuery(
-  filters: EventPropertyFilter[] = [],
+function getPropertyFilterQuery(
+  filters: PropertyFilter[] = [],
+  propertyType: 'event' | 'session' = 'event',
   timezone?: string,
 ): {
   sql: string;
@@ -284,10 +285,14 @@ function getEventPropertyFilterQuery(
 
   const parts: string[] = [];
   const params: Record<string, any> = {};
+  const table = propertyType === 'event' ? 'event_data' : 'session_data';
+  const column = propertyType === 'event' ? 'website_event_id' : 'session_id';
+  const outerColumn =
+    propertyType === 'event' ? 'website_event.event_id' : 'website_event.session_id';
 
   filters.forEach(({ propertyName, dataType, operator, value }, i) => {
-    const keyParam = `epf_key_${i}`;
-    const valParam = `epf_val_${i}`;
+    const keyParam = `pf_key_${i}`;
+    const valParam = `pf_val_${i}`;
     params[keyParam] = propertyName;
 
     let condition: string;
@@ -346,8 +351,8 @@ function getEventPropertyFilterQuery(
           params[valParam] = vals;
           condition =
             operator === OPERATORS.equals
-              ? `${col} = ANY({{${valParam}::text[]}})`
-              : `${col} != ALL({{${valParam}::text[]}})`;
+              ? `${col} = ANY({{${valParam}}})`
+              : `${col} != ALL({{${valParam}}})`;
         } else if (REGEX_OPERATORS.includes(operator)) {
           if (!value) return;
           params[valParam] = value;
@@ -367,9 +372,9 @@ function getEventPropertyFilterQuery(
       }
     }
 
-    parts.push(`and website_event.event_id in (
-      select website_event_id 
-      from event_data
+    parts.push(`and ${outerColumn} in (
+      select ${column}
+      from ${table}
       where website_id = {{websiteId::uuid}}
         and created_at between {{startDate}} and {{endDate}}
         and data_key = {{${keyParam}}}
@@ -567,7 +572,7 @@ export default {
   getDateStringSQL,
   getDateWeeklySQL,
   getFilterQuery,
-  getEventPropertyFilterQuery,
+  getPropertyFilterQuery,
   getSearchParameters,
   getTimestampDiffSQL,
   getSearchSQL,

@@ -4,7 +4,7 @@ import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
 import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from './constants';
 import { filtersObjectToArray } from './params';
-import type { EventPropertyFilter, Operator, QueryFilters, QueryOptions } from './types';
+import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   utc: '%Y-%m-%dT%H:%i:%SZ',
@@ -238,8 +238,9 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   };
 }
 
-function getEventPropertyFilterQuery(
-  filters: EventPropertyFilter[] = [],
+function getPropertyFilterQuery(
+  filters: PropertyFilter[] = [],
+  propertyType: 'event' | 'session' = 'event',
   timezone?: string,
 ): {
   sql: string;
@@ -249,10 +250,13 @@ function getEventPropertyFilterQuery(
 
   const parts: string[] = [];
   const params: Record<string, any> = {};
+  const table = propertyType === 'event' ? 'event_data' : 'session_data final';
+  const column = propertyType === 'event' ? 'event_id' : 'session_id';
+  const outerColumn = propertyType === 'event' ? 'event_id' : 'website_event.session_id';
 
   filters.forEach(({ propertyName, dataType, operator, value }, i) => {
-    const keyParam = `epf_key_${i}`;
-    const valParam = `epf_val_${i}`;
+    const keyParam = `pf_key_${i}`;
+    const valParam = `pf_val_${i}`;
     params[keyParam] = propertyName;
 
     let condition: string;
@@ -329,9 +333,9 @@ function getEventPropertyFilterQuery(
       }
     }
 
-    parts.push(`and event_id in (
-      select event_id 
-      from event_data
+    parts.push(`and ${outerColumn} in (
+      select ${column}
+      from ${table}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and data_key = {${keyParam}:String}
@@ -429,7 +433,7 @@ export default {
   getDateSQL,
   getSearchSQL,
   getFilterQuery,
-  getEventPropertyFilterQuery,
+  getPropertyFilterQuery,
   getUTCString,
   parseFilters,
   pagedRawQuery,

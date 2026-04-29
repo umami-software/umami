@@ -32,7 +32,7 @@ export async function parseRequest(
 
       // Re-add dynamic params stripped by Zod schema: suffixed filter params (browser1, os2)
       for (const key of Object.keys(rawQuery)) {
-        if ((/\d+$/.test(key) || /^epf_/.test(key)) && !(key in query)) {
+        if ((/\d+$/.test(key) || /^pf_/.test(key)) && !(key in query)) {
           query[key] = rawQuery[key];
         }
       }

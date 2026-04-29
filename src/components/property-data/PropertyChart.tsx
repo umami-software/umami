@@ -6,54 +6,58 @@ import { BarChart } from '@/components/charts/BarChart';
 import { PieChart } from '@/components/charts/PieChart';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
-  useEventDataArraySeriesQuery,
   useDateRange,
-  useEventDataPropertySeriesQuery,
   useLocale,
   useMessages,
+  usePropertyArraySeriesQuery,
+  usePropertySeriesQuery,
   useTimezone,
 } from '@/components/hooks';
+import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { ListTable } from '@/components/metrics/ListTable';
 import { renderDateLabels } from '@/lib/charts';
 import { CHART_COLORS } from '@/lib/constants';
 import { generateTimeSeries } from '@/lib/date';
-import type { EventDataSeriesPoint, EventPropertyFilter } from '@/lib/types';
+import type { EventDataSeriesPoint, PropertyFilter } from '@/lib/types';
 
-export function EventDataPropertyChart({
+export function PropertyChart({
+  source,
   websiteId,
-  eventName,
   propertyName,
-  eventFilters = [],
+  propertyFilters = [],
+  eventName,
   seriesType = 'property',
 }: {
+  source: PropertyDataSource;
   websiteId: string;
-  eventName: string;
   propertyName: string;
-  eventFilters?: EventPropertyFilter[];
+  propertyFilters?: PropertyFilter[];
+  eventName?: string;
   seriesType?: 'property' | 'array';
 }) {
   const { t, labels } = useMessages();
   const { timezone } = useTimezone();
   const { dateRange: { startDate, endDate, unit } } = useDateRange({ timezone });
   const { locale, dateLocale } = useLocale();
-  const propertySeriesQuery = useEventDataPropertySeriesQuery(
+  const propertySeriesQuery = usePropertySeriesQuery(
+    source,
     websiteId,
-    eventName,
     propertyName,
-    eventFilters,
+    propertyFilters,
+    eventName,
     { enabled: seriesType === 'property' },
   );
-  const arraySeriesQuery = useEventDataArraySeriesQuery(
+  const arraySeriesQuery = usePropertyArraySeriesQuery(
+    source,
     websiteId,
-    eventName,
     propertyName,
-    eventFilters,
+    propertyFilters,
+    eventName,
     { enabled: seriesType === 'array' },
   );
   const { data, isLoading, isFetching, error } =
     seriesType === 'array' ? arraySeriesQuery : propertySeriesQuery;
 
-  // Aggregate totals per value from the already-filtered time series
   const aggregated = useMemo(() => {
     if (!data) return [];
     const totals = data.reduce((obj: Record<string, number>, { x, y }) => {
@@ -66,16 +70,17 @@ export function EventDataPropertyChart({
   }, [data]);
 
   const valueLabels = useMemo(() => aggregated.map(({ value }) => value), [aggregated]);
-
-  const colorMap = useMemo(() => {
-    return valueLabels.reduce(
-      (obj, label, index) => {
-        obj[label] = CHART_COLORS[index % CHART_COLORS.length];
-        return obj;
-      },
-      {} as Record<string, string>,
-    );
-  }, [valueLabels]);
+  const colorMap = useMemo(
+    () =>
+      valueLabels.reduce(
+        (obj, label, index) => {
+          obj[label] = CHART_COLORS[index % CHART_COLORS.length];
+          return obj;
+        },
+        {} as Record<string, string>,
+      ),
+    [valueLabels],
+  );
 
   const chartData = useMemo(() => {
     if (!data) return;
@@ -86,7 +91,7 @@ export function EventDataPropertyChart({
       return obj;
     }, {});
 
-    if (!map || Object.keys(map).length === 0) {
+    if (!Object.keys(map).length) {
       return {
         datasets: [
           {
@@ -125,12 +130,10 @@ export function EventDataPropertyChart({
   }, [data, startDate, endDate, unit, dateLocale, valueLabels, colorMap]);
 
   const renderXLabel = useCallback(renderDateLabels(unit, locale), [unit, locale]);
-
   const propertySum = useMemo(
     () => aggregated.reduce((sum, { total }) => sum + total, 0),
     [aggregated],
   );
-
   const tableData = useMemo(() => {
     if (!aggregated.length || propertySum === 0) return [];
     return aggregated.map(({ value, total }) => ({
@@ -139,7 +142,6 @@ export function EventDataPropertyChart({
       percent: 100 * (total / propertySum),
     }));
   }, [aggregated, propertySum]);
-
   const pieChartData = useMemo(() => {
     if (!aggregated.length) return null;
     return {

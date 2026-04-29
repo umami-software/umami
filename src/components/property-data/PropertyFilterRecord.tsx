@@ -5,11 +5,12 @@ import { useState } from 'react';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { Empty } from '@/components/common/Empty';
 import { MultiSelect } from '@/components/common/MultiSelect';
-import { useEventDataValuesQuery, useMessages } from '@/components/hooks';
+import { useMessages, usePropertyValuesQuery } from '@/components/hooks';
 import { X } from '@/components/icons';
 import { DATA_TYPE, OPERATORS } from '@/lib/constants';
 import { getMaxSelectableDate } from '@/lib/date';
-import type { EventPropertyFilter, Operator } from '@/lib/types';
+import type { Operator, PropertyFilter } from '@/lib/types';
+import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 
 const STRING_OPERATORS: Operator[] = [
   OPERATORS.equals,
@@ -38,17 +39,21 @@ const FREE_TEXT_OPERATORS: Operator[] = [
   OPERATORS.notRegex,
 ];
 
-export function EventDataFilterRecord({
+export function PropertyFilterRecord({
+  source,
   websiteId,
   eventName,
   filter,
+  filters,
   onChange,
   onRemove,
 }: {
+  source: PropertyDataSource;
   websiteId: string;
-  eventName: string;
-  filter: EventPropertyFilter;
-  onChange: (filter: EventPropertyFilter) => void;
+  eventName?: string;
+  filter: PropertyFilter;
+  filters: PropertyFilter[];
+  onChange: (filter: PropertyFilter) => void;
   onRemove: () => void;
 }) {
   const { t, labels, messages } = useMessages();
@@ -69,11 +74,13 @@ export function EventDataFilterRecord({
           : STRING_OPERATORS;
   const isFreeText = !isArray && FREE_TEXT_OPERATORS.includes(filter.operator);
 
-  const { data, isLoading } = useEventDataValuesQuery(
+  const { data, isLoading } = usePropertyValuesQuery(
+    source,
     websiteId,
-    eventName,
     filter.propertyName,
     filter.dataType,
+    filters.filter(f => f !== filter),
+    eventName,
     { enabled: !isNumeric && !isBoolean && !isDate && !isFreeText },
   );
 
@@ -102,7 +109,6 @@ export function EventDataFilterRecord({
   };
 
   const handleOperatorChange = (op: Operator) => {
-    // clear value when switching between multi-select and free-text modes
     const wasMulti = MULTI_OPERATORS.includes(filter.operator);
     const isMulti = MULTI_OPERATORS.includes(op);
     onChange({
@@ -218,19 +224,15 @@ function DateValuePicker({
   const selectedDate = getSelectedDate(value);
   const [draftDate, setDraftDate] = useState<Date>(selectedDate);
 
-  const handleOpen = () => {
-    setDraftDate(getSelectedDate(value));
-    setShowPicker(true);
-  };
-
-  const handleApply = () => {
-    onChange(format(draftDate, 'yyyy-MM-dd'));
-    setShowPicker(false);
-  };
-
   return (
     <DialogTrigger isOpen={showPicker} onOpenChange={setShowPicker}>
-      <Button onPress={handleOpen} style={{ width: '100%', justifyContent: 'flex-start' }}>
+      <Button
+        onPress={() => {
+          setDraftDate(getSelectedDate(value));
+          setShowPicker(true);
+        }}
+        style={{ width: '100%', justifyContent: 'flex-start' }}
+      >
         <DateDisplay startDate={selectedDate} endDate={selectedDate} />
       </Button>
       <Popover placement="bottom start" shouldFlip isNonModal>
@@ -244,7 +246,13 @@ function DateValuePicker({
             />
             <Row justifyContent="end" gap>
               <Button onPress={() => setShowPicker(false)}>{t(labels.cancel)}</Button>
-              <Button variant="primary" onPress={handleApply}>
+              <Button
+                variant="primary"
+                onPress={() => {
+                  onChange(format(draftDate, 'yyyy-MM-dd'));
+                  setShowPicker(false);
+                }}
+              >
                 {t(labels.apply)}
               </Button>
             </Row>

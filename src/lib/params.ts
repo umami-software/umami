@@ -1,5 +1,5 @@
 import { DATA_TYPE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
-import type { EventPropertyFilter, Filter, Operator, QueryFilters, QueryOptions } from '@/lib/types';
+import type { Filter, Operator, PropertyFilter, QueryFilters, QueryOptions } from '@/lib/types';
 
 const VALID_OPERATORS: Operator[] = Object.values(OPERATORS);
 const VALID_EVENT_DATA_TYPES = Object.values(DATA_TYPE);
@@ -100,12 +100,24 @@ export function filtersArrayToObject(filters: Filter[]) {
   }, {});
 }
 
-export function parseEventPropertyFilters(query: Record<string, any>): EventPropertyFilter[] {
+function getPropertyFilterPrefix(key: string, prefixes: string[]) {
+  return prefixes.find(prefix => key.startsWith(`${prefix}_`));
+}
+
+export function parsePropertyFilters(
+  query: Record<string, any>,
+  prefixes: string[] = ['pf'],
+): PropertyFilter[] {
   return Object.entries(query)
-    .filter(([key]) => /^epf_/.test(key))
     .flatMap(([key, val]) => {
+      const prefix = getPropertyFilterPrefix(key, prefixes);
+
+      if (!prefix) {
+        return [];
+      }
+
       const stringValue = String(val);
-      const withoutPrefix = key.slice(4); // strip "epf_"
+      const withoutPrefix = key.slice(prefix.length + 1);
       const propertyName = withoutPrefix.replace(/\d+$/, ''); // strip trailing index digits
       const prefixedDotMatch = stringValue.match(/^(\d+)\.([^.]+)\.(.*)$/);
       const untypedDotMatch = stringValue.match(/^([^.]+)\.(.*)$/);
@@ -134,13 +146,24 @@ export function parseEventPropertyFilters(query: Record<string, any>): EventProp
     });
 }
 
-export function serializeEventPropertyFilters(filters: EventPropertyFilter[]): Record<string, string> {
+export function parseEventPropertyFilters(query: Record<string, any>) {
+  return parsePropertyFilters(query, ['pf']);
+}
+
+export function serializePropertyFilters(
+  filters: PropertyFilter[],
+  prefix = 'pf',
+): Record<string, string> {
   const counts: Record<string, number> = {};
   return Object.fromEntries(
     filters.map(f => {
       const n = counts[f.propertyName] ?? 0;
       counts[f.propertyName] = n + 1;
-      return [`epf_${f.propertyName}${n > 0 ? n : ''}`, `${f.dataType}.${f.operator}.${f.value}`];
+      return [`${prefix}_${f.propertyName}${n > 0 ? n : ''}`, `${f.dataType}.${f.operator}.${f.value}`];
     }),
   );
+}
+
+export function serializeEventPropertyFilters(filters: PropertyFilter[]) {
+  return serializePropertyFilters(filters, 'pf');
 }
