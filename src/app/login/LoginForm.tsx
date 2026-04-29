@@ -22,9 +22,14 @@ export function LoginForm() {
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
-      onSuccess: async ({ token, user }) => {
-        setClientAuthToken(token);
-        setUser(user);
+      onSuccess: async (response: any) => {
+        if (response.requiresTwoFactor) {
+          sessionStorage.setItem('umami.partial-token', response.partialToken);
+          router.push('/login/two-factor');
+          return;
+        }
+        setClientAuthToken(response.token);
+        setUser(response.user);
         router.push('/');
       },
     });

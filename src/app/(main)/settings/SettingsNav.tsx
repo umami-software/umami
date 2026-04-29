@@ -2,7 +2,7 @@ import { Column, Focusable, Row, Text, Tooltip, TooltipTrigger } from '@umami/re
 import Link from '@/components/common/Link';
 import { IconLabel } from '@/components/common/IconLabel';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { ArrowLeft, Settings2, UserCircle, Users } from '@/components/icons';
+import { ArrowLeft, Settings2, ShieldCheck, UserCircle, Users } from '@/components/icons';
 
 export function SettingsNav({
   isCollapsed,
@@ -40,6 +40,12 @@ export function SettingsNav({
           label: t(labels.teams),
           path: renderUrl('/settings/teams'),
           icon: <Users />,
+        },
+        {
+          id: 'security',
+          label: t(labels.security),
+          path: renderUrl('/settings/security'),
+          icon: <ShieldCheck />,
         },
       ],
     },

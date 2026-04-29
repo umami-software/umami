@@ -5,7 +5,14 @@ import { useEffect } from 'react';
 import { MobileNav } from '@/app/(main)/MobileNav';
 import { SideNav } from '@/app/(main)/SideNav';
 import { TopNav } from '@/app/(main)/TopNav';
-import { useConfig, useLoginQuery, useNavigation, useTeamQuery } from '@/components/hooks';
+import {
+  useConfig,
+  useLoginQuery,
+  useNavigation,
+  useTeamQuery,
+  useTwoFactorStatusQuery,
+} from '@/components/hooks';
+import { TwoFactorSetupModal } from '@/components/modals/TwoFactorSetupModal';
 import { LAST_TEAM_CONFIG } from '@/lib/constants';
 import { removeItem, setItem } from '@/lib/storage';
 import { UpdateNotice } from './UpdateNotice';
@@ -15,6 +22,8 @@ export function App({ children }) {
   const config = useConfig();
   const { pathname, router, teamId } = useNavigation();
   const { isLoading: isTeamLoading, error: teamError } = useTeamQuery(teamId);
+  const { data: twoFactorStatus } = useTwoFactorStatusQuery(!!user);
+  const needsTwoFactorSetup = !!(twoFactorStatus?.isRequired && !twoFactorStatus?.isEnabled);
 
   useEffect(() => {
     if (teamId) {
@@ -64,8 +73,15 @@ export function App({ children }) {
       </Column>
       <Column overflowX="hidden" minHeight="0" position="relative">
         <TopNav />
-        <Column alignItems="center">{children}</Column>
+        <Column
+          alignItems="center"
+          aria-hidden={needsTwoFactorSetup || undefined}
+          style={needsTwoFactorSetup ? { pointerEvents: 'none' } : undefined}
+        >
+          {children}
+        </Column>
       </Column>
+      {needsTwoFactorSetup && <TwoFactorSetupModal required={true} />}
       <UpdateNotice user={user} config={config} />
       {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (
         <Script src={`${process.env.basePath || ''}/telemetry.js`} />
