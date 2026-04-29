@@ -77,8 +77,10 @@ function decodeHeader(s: string | undefined | null): string | undefined | null {
 }
 
 export async function getLocation(ip: string = '', headers: Headers, skipHeaders: boolean) {
-  // Ignore local ips
-  if (!ip || (await isLocalhost(ip))) {
+  const cleanIp = stripPort(ip);
+
+  // Ignore local or invalid ips
+  if (!cleanIp || !ipaddr.isValid(cleanIp) || (await isLocalhost(cleanIp))) {
     return null;
   }
 
@@ -108,7 +110,7 @@ export async function getLocation(ip: string = '', headers: Headers, skipHeaders
     );
   }
 
-  const result = globalThis[MAXMIND]?.get(stripPort(ip));
+  const result = globalThis[MAXMIND]?.get(cleanIp);
 
   if (result) {
     const country = result.country?.iso_code ?? result?.registered_country?.iso_code;
