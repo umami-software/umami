@@ -91,7 +91,7 @@
     currentRef = currentUrl;
     currentUrl = normalize(new URL(url, location.href).toString());
 
-    if (currentUrl !== currentRef) {
+    if (currentUrl !== currentRef && autoPageview) {
       setTimeout(track, delayDuration);
     }
   };
