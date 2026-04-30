@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres:15-alpine
+    network_mode: host
+    environment:
+      POSTGRES_DB: umami
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: umami
+      PGPORT: "5432"
+    volumes:
+      - umami-db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U umami -d umami -p 5432"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  umami:
+    image: node:22-bookworm
+    working_dir: /app
+    network_mode: host
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://umami:umami@127.0.0.1:5432/umami
+      APP_SECRET: alloy-dev-secret-please-change
+      NEXT_TELEMETRY_DISABLED: "1"
+      HOSTNAME: 0.0.0.0
+      PORT: "3000"
+    volumes:
+      - .:/app
+      - umami-node-modules:/app/node_modules
+      - umami-next-cache:/app/.next
+    command:
+      - bash
+      - -lc
+      - |
+        set -e
+        corepack enable
+        corepack prepare pnpm@latest --activate
+        if [ ! -d node_modules/next ]; then
+          pnpm install --frozen-lockfile
+        fi
+        pnpm exec prisma generate
+        pnpm exec prisma migrate deploy
+        exec pnpm exec next dev --turbo -H 0.0.0.0 -p 3000
+
+volumes:
+  umami-db-data:
+  umami-node-modules:
+  umami-next-cache:
