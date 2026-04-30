@@ -37,6 +37,7 @@
   const domain = config('domains') || '';
   const credentials = config('fetch-credentials') || 'omit';
   const perf = config('performance') === _true;
+  const autoPageview = config('auto-pageview') !== _false;
 
   const domains = domain.split(',').map(n => n.trim());
   const host =
@@ -197,7 +198,7 @@
   const init = () => {
     if (!initialized) {
       initialized = true;
-      track();
+      if (autoPageview) track();
       handlePathChanges();
       handleClicks();
       if (perf) initPerformance();
