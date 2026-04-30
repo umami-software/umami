@@ -113,6 +113,10 @@ export function normalizeTimezone(timezone: string): string {
   return TIMEZONE_MAPPINGS[timezone] || timezone;
 }
 
+export function getMaxSelectableDate(now = new Date()) {
+  return max([endOfYear(now), addMonths(now, 6)]);
+}
+
 export function isValidTimezone(timezone: string) {
   try {
     const normalizedTimezone = normalizeTimezone(timezone);

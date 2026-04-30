@@ -84,9 +84,7 @@ export function getIpAddress(headers: Headers) {
   if (header === 'forwarded') {
     const match = ip.match(/for=(\[?[0-9a-fA-F:.]+]?)/);
 
-    if (match) {
-      return resolveIp(match[1]);
-    }
+    return match ? resolveIp(match[1]) : undefined;
   }
 
   return resolveIp(ip);

@@ -1,5 +1,6 @@
 import { Column, Grid, Icon, Row, Text } from '@umami/react-zen';
 import type { ReactNode } from 'react';
+import { differenceInCalendarDays } from 'date-fns';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 import { useLocale, useMessages, useResultQuery } from '@/components/hooks';
@@ -45,8 +46,6 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
       return arr;
     }, []) || [];
 
-  const totalDays = rows.length;
-
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
       {data && (
@@ -84,6 +83,7 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
                 ))}
               </Grid>
               {rows.map(({ date, visitors, records }: any, rowIndex: number) => {
+                const maxDay = differenceInCalendarDays(endDate, new Date(date));
                 return (
                   <Grid
                     key={rowIndex}
@@ -103,10 +103,8 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
                       </Row>
                     </Column>
                     {days.map(day => {
-                      if (totalDays - rowIndex < day) {
-                        return null;
-                      }
-                      const percentage = records.filter(a => a.day === day)[0]?.percentage;
+                      if (day > maxDay) return null;
+                      const percentage = records.find(a => a.day === day)?.percentage;
                       return (
                         <Cell key={day}>
                           {percentage ? `${Number(percentage).toFixed(2)}%` : ''}

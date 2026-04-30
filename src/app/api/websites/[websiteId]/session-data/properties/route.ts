@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { parsePropertyFilters } from '@/lib/params';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams } from '@/lib/schema';
@@ -12,6 +13,7 @@ export async function GET(
   const schema = z.object({
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
+    selectedPropertyName: z.string().optional(),
     ...filterParams,
   });
 
@@ -27,9 +29,16 @@ export async function GET(
     return unauthorized();
   }
 
-  const filters = await getQueryFilters(query, websiteId);
+  const { selectedPropertyName, ...rest } = query;
+  const filters = await getQueryFilters(rest, websiteId);
+  const propertyFilters = parsePropertyFilters(query);
 
-  const data = await getSessionDataProperties(websiteId, filters);
+  const data = await getSessionDataProperties(
+    websiteId,
+    filters,
+    propertyFilters,
+    selectedPropertyName,
+  );
 
   return json(data);
 }
