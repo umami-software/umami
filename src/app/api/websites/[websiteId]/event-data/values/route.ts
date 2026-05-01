@@ -30,10 +30,10 @@ export async function GET(
     return unauthorized();
   }
 
-  const { propertyName, dataType } = query;
+  const { event: eventName, propertyName, dataType } = query;
   const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getEventDataValues(websiteId, {
+  const data = await getEventDataValues(websiteId, eventName, {
     ...filters,
     propertyName,
     dataType,

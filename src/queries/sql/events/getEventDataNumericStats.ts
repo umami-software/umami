@@ -73,7 +73,11 @@ async function clickhouseQuery(
 ): Promise<EventDataNumericStats[]> {
   const { timezone = 'UTC' } = filters;
   const { rawQuery, parseFilters, getPropertyFilterQuery } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    timezone,
+  });
   const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(eventFilters, 'event', timezone);
 
   return rawQuery(
@@ -98,6 +102,7 @@ async function clickhouseQuery(
     ${cohortQuery}
     where event_data.website_id = {websiteId:UUID}
       and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_data.event_name = {eventName:String}
       and event_data.data_key = {propertyName:String}
       and event_data.data_type = 2
     ${filterQuery}

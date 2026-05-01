@@ -20,7 +20,12 @@ export async function getEventDataPivot(
   });
 }
 
-async function relationalQuery(websiteId: string, eventName: string, filters: QueryFilters, eventFilters: EventPropertyFilter[] = []) {
+async function relationalQuery(
+  websiteId: string,
+  eventName: string,
+  filters: QueryFilters,
+  eventFilters: EventPropertyFilter[] = [],
+) {
   const { timezone = 'utc' } = filters;
   const { rawQuery, parseFilters, getPropertyFilterQuery, getDateStringSQL } = prisma;
   const { page = 1, pageSize } = filters;
@@ -104,11 +109,27 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
   // Pivot flat rows into one record per event
   const eventMap = new Map<
     string,
-    { eventId: string; sessionId: string; eventName: string; urlPath: string; createdAt: Date; propertyKeys: string[]; propertyValues: string[] }
+    {
+      eventId: string;
+      sessionId: string;
+      eventName: string;
+      urlPath: string;
+      createdAt: Date;
+      propertyKeys: string[];
+      propertyValues: string[];
+    }
   >();
   for (const { eventId, sessionId, eventName: name, urlPath, createdAt, dataKey, value } of rows) {
     if (!eventMap.has(eventId)) {
-      eventMap.set(eventId, { eventId, sessionId, eventName: name, urlPath, createdAt, propertyKeys: [], propertyValues: [] });
+      eventMap.set(eventId, {
+        eventId,
+        sessionId,
+        eventName: name,
+        urlPath,
+        createdAt,
+        propertyKeys: [],
+        propertyValues: [],
+      });
     }
     const entry = eventMap.get(eventId);
     entry.propertyKeys.push(dataKey);
@@ -118,14 +139,23 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
   return { data: [...eventMap.values()], count, page: +page, pageSize: size };
 }
 
-async function clickhouseQuery(websiteId: string, eventName: string, filters: QueryFilters, eventFilters: EventPropertyFilter[] = []) {
+async function clickhouseQuery(
+  websiteId: string,
+  eventName: string,
+  filters: QueryFilters,
+  eventFilters: EventPropertyFilter[] = [],
+) {
   const { timezone = 'UTC' } = filters;
   const { rawQuery, parseFilters, getPropertyFilterQuery, getDateStringSQL } = clickhouse;
   const { page = 1, pageSize } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
 
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    timezone,
+  });
   const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(eventFilters, 'event', timezone);
 
   const count = await rawQuery(
@@ -145,6 +175,7 @@ async function clickhouseQuery(websiteId: string, eventName: string, filters: Qu
     ${cohortQuery}
     where event_data_pivot.website_id = {websiteId:UUID}
       and event_data_pivot.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_data_pivot.event_name = {eventName:String}
     ${filterQuery}
     ${pfSQL}
     `,
@@ -183,6 +214,7 @@ async function clickhouseQuery(websiteId: string, eventName: string, filters: Qu
     ${cohortQuery}
     where event_data_pivot.website_id = {websiteId:UUID}
       and event_data_pivot.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_data_pivot.event_name = {eventName:String}
     ${filterQuery}
     ${pfSQL}
     group by

@@ -38,9 +38,11 @@ async function relationalQuery(
   });
   const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(eventFilters, 'event', timezone);
   const aggSql =
-    metric === 'avg' ? 'avg(cast(event_data.number_value as decimal))' :
-    metric === 'count' ? 'count(*)' :
-    'sum(cast(event_data.number_value as decimal))';
+    metric === 'avg'
+      ? 'avg(cast(event_data.number_value as decimal))'
+      : metric === 'count'
+        ? 'count(*)'
+        : 'sum(cast(event_data.number_value as decimal))';
 
   return rawQuery(
     `
@@ -79,12 +81,18 @@ async function clickhouseQuery(
 ): Promise<{ t: string; y: number }[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
   const { rawQuery, getDateSQL, parseFilters, getPropertyFilterQuery } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    timezone,
+  });
   const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(eventFilters, 'event', timezone);
   const aggSql =
-    metric === 'avg' ? 'avg(event_data.number_value)' :
-    metric === 'count' ? 'count()' :
-    'sum(event_data.number_value)';
+    metric === 'avg'
+      ? 'avg(event_data.number_value)'
+      : metric === 'count'
+        ? 'count()'
+        : 'sum(event_data.number_value)';
 
   return rawQuery(
     `
@@ -105,6 +113,7 @@ async function clickhouseQuery(
     ${cohortQuery}
     where event_data.website_id = {websiteId:UUID}
       and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_data.event_name = {eventName:String}
       and event_data.data_key = {propertyName:String}
       and event_data.data_type = 2
     ${filterQuery}

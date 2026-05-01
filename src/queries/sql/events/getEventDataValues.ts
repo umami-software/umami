@@ -12,7 +12,11 @@ interface WebsiteEventData {
 }
 
 export async function getEventDataValues(
-  ...args: [websiteId: string, filters: QueryFilters & { propertyName?: string; dataType?: number }]
+  ...args: [
+    websiteId: string,
+    eventName: string,
+    filters: QueryFilters & { propertyName?: string; dataType?: number },
+  ]
 ): Promise<WebsiteEventData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -22,6 +26,7 @@ export async function getEventDataValues(
 
 async function relationalQuery(
   websiteId: string,
+  eventName: string,
   filters: QueryFilters & { propertyName?: string; dataType?: number },
 ) {
   const { rawQuery, parseFilters, getDateSQL } = prisma;
@@ -41,6 +46,8 @@ async function relationalQuery(
       join website_event on website_event.event_id = event_data.website_event_id
         and website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
+        and website_event.event_type = 2
+        and website_event.event_name = {{eventName}}
       cross join lateral jsonb_array_elements_text(coalesce(event_data.string_value, '[]')::jsonb) as array_item(value)
       ${cohortQuery}
       ${joinSessionQuery}
@@ -53,7 +60,7 @@ async function relationalQuery(
       order by 2 desc
       limit 100
       `,
-      queryParams,
+      { ...queryParams, eventName },
       FUNCTION_NAME,
     );
   }
@@ -61,9 +68,9 @@ async function relationalQuery(
   return rawQuery(
     `
     select
-      case 
-        when data_type = 2 then replace(string_value, '.0000', '') 
-        when data_type = 4 then ${getDateSQL('date_value', 'hour')} 
+      case
+        when data_type = 2 then replace(string_value, '.0000', '')
+        when data_type = 4 then ${getDateSQL('date_value', 'hour')}
         else string_value
       end as "value",
       count(*) as "total"
@@ -71,6 +78,8 @@ async function relationalQuery(
     join website_event on website_event.event_id = event_data.website_event_id
       and website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
+      and website_event.event_type = 2
+      and website_event.event_name = {eventName:String}
     ${cohortQuery}
     ${joinSessionQuery}
     where event_data.website_id = {{websiteId::uuid}}
@@ -82,13 +91,14 @@ async function relationalQuery(
     order by 2 desc
     limit 100
     `,
-    queryParams,
+    { ...queryParams, eventName },
     FUNCTION_NAME,
   );
 }
 
 async function clickhouseQuery(
   websiteId: string,
+  eventName: string,
   filters: QueryFilters & { propertyName?: string; dataType?: number },
 ): Promise<{ value: string; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
@@ -101,19 +111,21 @@ async function clickhouseQuery(
       select
         arrayJoin(JSONExtract(ifNull(event_data.string_value, '[]'), 'Array(String)')) as "value",
         count(*) as "total"
-      from event_data 
+      from event_data
       any left join (
-            select * 
+            select *
             from website_event
             where website_id = {websiteId:UUID}
               and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-              and event_type = 2) website_event
+              and event_type = 2
+              and event_name = {eventName:String}) website_event
       on website_event.event_id = event_data.event_id
         and website_event.session_id = event_data.session_id
         and website_event.website_id = event_data.website_id
       ${cohortQuery}
       where event_data.website_id = {websiteId:UUID}
         and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_data.event_name = {eventName:String}
         and event_data.data_key = {propertyName:String}
         and event_data.data_type = ${DATA_TYPE.array}
       ${filterQuery}
@@ -121,7 +133,7 @@ async function clickhouseQuery(
       order by 2 desc
       limit 100
       `,
-      queryParams,
+      { ...queryParams, eventName },
       FUNCTION_NAME,
     );
   }
@@ -133,19 +145,21 @@ async function clickhouseQuery(
               data_type = 4, toString(date_trunc('hour', date_value)),
               string_value) as "value",
       count(*) as "total"
-    from event_data 
+    from event_data
     any left join (
-          select * 
+          select *
           from website_event
           where website_id = {websiteId:UUID}
             and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-            and event_type = 2) website_event
+            and event_type = 2
+            and event_name = {eventName:String}) website_event
     on website_event.event_id = event_data.event_id
       and website_event.session_id = event_data.session_id
       and website_event.website_id = event_data.website_id
     ${cohortQuery}
     where event_data.website_id = {websiteId:UUID}
       and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_data.event_name = {eventName:String}
       and event_data.data_key = {propertyName:String}
       ${dataType ? `and event_data.data_type = ${dataType}` : ''}
     ${filterQuery}
@@ -153,7 +167,7 @@ async function clickhouseQuery(
     order by 2 desc
     limit 100
     `,
-    queryParams,
+    { ...queryParams, eventName },
     FUNCTION_NAME,
   );
 }
