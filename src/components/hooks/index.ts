@@ -47,7 +47,7 @@ export * from './queries/useSessionActivityQuery';
 export * from './queries/useSessionDataPropertiesQuery';
 export * from './queries/useSessionDataPivotQuery';
 export * from './queries/useSessionDataQuery';
-export * from './queries/useSessionDataStatsQuery';
+export * from './queries/useSessionDataActivityStatsQuery';
 export * from './queries/useSessionDataValuesQuery';
 export * from './queries/useSessionReplaysQuery';
 export * from './queries/useShareTokenQuery';

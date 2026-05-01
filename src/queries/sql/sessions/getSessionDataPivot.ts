@@ -55,16 +55,28 @@ async function relationalQuery(
         ${filterQuery}
         ${pfSQL}
     ),
-    selected_property_sessions as (
-      select distinct session_data.session_id
-      from session_data
-      join filtered_sessions
-        on filtered_sessions.session_id = session_data.session_id
-      where session_data.website_id = {{websiteId::uuid}}
-        and session_data.data_key = {{propertyName}}
+    latest_session_properties as (
+      select
+        ranked.session_id,
+        ranked.data_key
+      from (
+        select
+          session_data.session_id,
+          session_data.data_key,
+          row_number() over (
+            partition by session_data.session_id, session_data.data_key
+            order by session_data.created_at desc, session_data.session_data_id desc
+          ) as row_num
+        from session_data
+        join filtered_sessions
+          on filtered_sessions.session_id = session_data.session_id
+        where session_data.website_id = {{websiteId::uuid}}
+      ) ranked
+      where ranked.row_num = 1
     )
     select count(*) as num
-    from selected_property_sessions
+    from latest_session_properties
+    where latest_session_properties.data_key = {{propertyName}}
     `,
     { ...queryParams, websiteId, propertyName, ...pfParams },
   )) as { num: number }[];
@@ -82,14 +94,6 @@ async function relationalQuery(
         and website_event.created_at between {{startDate}} and {{endDate}}
         ${filterQuery}
         ${pfSQL}
-    ),
-    selected_property_sessions as (
-      select distinct session_data.session_id
-      from session_data
-      join filtered_sessions
-        on filtered_sessions.session_id = session_data.session_id
-      where session_data.website_id = {{websiteId::uuid}}
-        and session_data.data_key = {{propertyName}}
     ),
     latest_session_properties as (
       select
@@ -116,17 +120,19 @@ async function relationalQuery(
             order by session_data.created_at desc, session_data.session_data_id desc
           ) as row_num
         from session_data
-        join selected_property_sessions
-          on selected_property_sessions.session_id = session_data.session_id
+        join filtered_sessions
+          on filtered_sessions.session_id = session_data.session_id
         where session_data.website_id = {{websiteId::uuid}}
       ) ranked
       where ranked.row_num = 1
     ),
     paged_sessions as (
-      select latest_session_properties.session_id
+      select
+        latest_session_properties.session_id,
+        latest_session_properties.created_at as sort_created_at
       from latest_session_properties
-      group by latest_session_properties.session_id
-      order by max(latest_session_properties.created_at) desc
+      where latest_session_properties.data_key = {{propertyName}}
+      order by latest_session_properties.created_at desc
       limit ${size} offset ${offset}
     )
     select
@@ -146,9 +152,10 @@ async function relationalQuery(
         order by latest_session_properties.data_key asc
       ) as "propertyValues"
     from latest_session_properties
-    join paged_sessions on paged_sessions.session_id = latest_session_properties.session_id
-    group by latest_session_properties.session_id
-    order by max(latest_session_properties.created_at) desc
+    join paged_sessions
+      on paged_sessions.session_id = latest_session_properties.session_id
+    group by latest_session_properties.session_id, paged_sessions.sort_created_at
+    order by paged_sessions.sort_created_at desc
     `,
     { ...queryParams, websiteId, propertyName, ...pfParams },
     FUNCTION_NAME,
@@ -187,15 +194,21 @@ async function clickhouseQuery(
       ${filterQuery}
       ${pfSQL}
     ),
-    selected_property_sessions as (
-      select distinct session_data.session_id
+    latest_session_properties as (
+      select
+        session_data.session_id as session_id,
+        session_data.data_key as data_key
       from session_data final
-      join filtered_sessions on filtered_sessions.session_id = session_data.session_id
+      join filtered_sessions
+        on filtered_sessions.session_id = session_data.session_id
       where session_data.website_id = {websiteId:UUID}
-        and session_data.data_key = {propertyName:String}
+      group by
+        session_data.session_id,
+        session_data.data_key
     )
     select count() as num
-    from selected_property_sessions
+    from latest_session_properties
+    where latest_session_properties.data_key = {propertyName:String}
     `,
     { ...queryParams, websiteId, propertyName, ...pfParams },
   )) as { num: number }[];
@@ -212,13 +225,6 @@ async function clickhouseQuery(
       ${filterQuery}
       ${pfSQL}
     ),
-    selected_property_sessions as (
-      select distinct session_data.session_id
-      from session_data final
-      join filtered_sessions on filtered_sessions.session_id = session_data.session_id
-      where session_data.website_id = {websiteId:UUID}
-        and session_data.data_key = {propertyName:String}
-    ),
     latest_session_properties as (
       select
         session_data.session_id as session_id,
@@ -230,8 +236,8 @@ async function clickhouseQuery(
         argMax(session_data.date_value, session_data.created_at) as date_value,
         max(session_data.created_at) as created_at
       from session_data final
-      join selected_property_sessions
-        on selected_property_sessions.session_id = session_data.session_id
+      join filtered_sessions
+        on filtered_sessions.session_id = session_data.session_id
       where session_data.website_id = {websiteId:UUID}
       group by
         session_data.session_id,
@@ -239,10 +245,11 @@ async function clickhouseQuery(
     ),
     paged_sessions as (
       select
-        latest_session_properties.session_id
+        latest_session_properties.session_id,
+        latest_session_properties.created_at as sort_created_at
       from latest_session_properties
-      group by latest_session_properties.session_id
-      order by max(latest_session_properties.created_at) desc
+      where latest_session_properties.data_key = {propertyName:String}
+      order by latest_session_properties.created_at desc
       limit ${size} offset ${offset}
     )
     select
@@ -262,8 +269,9 @@ async function clickhouseQuery(
     join paged_sessions
       on paged_sessions.session_id = latest_session_properties.session_id
     group by
-      latest_session_properties.session_id
-    order by createdAt desc
+      latest_session_properties.session_id,
+      paged_sessions.sort_created_at
+    order by paged_sessions.sort_created_at desc
     `,
     { ...queryParams, websiteId, propertyName, ...pfParams },
     FUNCTION_NAME,

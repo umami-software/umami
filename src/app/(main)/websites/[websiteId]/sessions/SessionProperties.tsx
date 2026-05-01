@@ -11,7 +11,7 @@ import { PropertyFilterButton } from '@/components/property-data/PropertyFilterB
 import { PropertyNumericChart } from '@/components/property-data/PropertyNumericChart';
 import { Panel } from '@/components/common/Panel';
 import { SessionDataPivotTable } from '../session-data/SessionDataPivotTable';
-import { SessionStringPropertyView } from '../session-data/SessionStringPropertyView';
+import { SessionPropertyChart } from '../session-data/SessionPropertyChart';
 
 export function SessionProperties({ websiteId }: { websiteId: string }) {
   const [propertyName, setPropertyName] = useState('');
@@ -129,7 +129,7 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
           />
         )}
         {propertyName && selectedProperty?.dataType === DATA_TYPE.string && (
-          <SessionStringPropertyView
+          <SessionPropertyChart
             websiteId={websiteId}
             propertyName={propertyName}
             propertyFilters={propertyFilters}

@@ -31,7 +31,7 @@ async function relationalQuery(
       `
       select
         array_item.value as "value",
-        count(distinct session_data.session_id) as "total"
+        count(*) as "total"
       from website_event
       ${cohortQuery}
       ${joinSessionQuery}
@@ -46,7 +46,7 @@ async function relationalQuery(
       ${filterQuery}
       group by array_item.value
       order by 2 desc
-      limit 100
+      limit 500
       `,
       queryParams,
       FUNCTION_NAME,
@@ -61,7 +61,7 @@ async function relationalQuery(
         when data_type = 4 then ${getDateSQL('date_value', 'hour')} 
         else string_value
       end as "value",
-      count(distinct session_data.session_id) as "total"
+      count(*) as "total"
     from website_event
     ${cohortQuery}
     ${joinSessionQuery}
@@ -75,7 +75,7 @@ async function relationalQuery(
     ${filterQuery}
     group by value
     order by 2 desc
-    limit 100
+    limit 500
     `,
     queryParams,
     FUNCTION_NAME,
@@ -95,7 +95,7 @@ async function clickhouseQuery(
       `
       select
         arrayJoin(JSONExtract(ifNull(session_data.string_value, '[]'), 'Array(String)')) as "value",
-        uniq(session_data.session_id) as "total"
+        count() as "total"
       from website_event
       ${cohortQuery}
       join session_data final
@@ -108,7 +108,7 @@ async function clickhouseQuery(
       ${filterQuery}
       group by value
       order by 2 desc
-      limit 100
+      limit 500
       `,
       queryParams,
       FUNCTION_NAME,
@@ -121,7 +121,7 @@ async function clickhouseQuery(
       multiIf(data_type = 2, replaceAll(string_value, '.0000', ''),
               data_type = 4, toString(date_trunc('hour', date_value)),
               string_value) as "value",
-      uniq(session_data.session_id) as "total"
+      count() as "total"
     from website_event
     ${cohortQuery}
     join session_data final
@@ -134,7 +134,7 @@ async function clickhouseQuery(
     ${filterQuery}
     group by value
     order by 2 desc
-    limit 100
+    limit 500
     `,
     queryParams,
     FUNCTION_NAME,

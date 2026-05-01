@@ -89,11 +89,6 @@ export interface SessionDataPivotRow {
   propertyValues: string[];
 }
 
-export interface PropertyCardinalityBucket {
-  label: string;
-  count: number;
-}
-
 export interface PropertyLeaderboardRow {
   label: string;
   activity: number;
@@ -102,8 +97,6 @@ export interface PropertyLeaderboardRow {
   views: number;
   events: number;
   totaltime: number;
-  newSessions: number;
-  returningSessions: number;
 }
 
 export interface QueryOptions {

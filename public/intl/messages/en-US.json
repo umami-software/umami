@@ -126,6 +126,7 @@
     "filter-raw": "Raw",
     "filters": "Filters",
     "property-filter": "Property Filter",
+    "activity-by-property": "Activity by property",
     "first-click": "First click",
     "first-seen": "First seen",
     "funnel": "Funnel",

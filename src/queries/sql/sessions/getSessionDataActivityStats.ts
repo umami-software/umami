@@ -4,9 +4,9 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { PropertyFilter, PropertyLeaderboardRow, QueryFilters } from '@/lib/types';
 
-const FUNCTION_NAME = 'getSessionDataStats';
+const FUNCTION_NAME = 'getSessionDataActivityStats';
 
-export async function getSessionDataStats(
+export async function getSessionDataActivityStats(
   ...args: [websiteId: string, propertyName: string, filters: QueryFilters, propertyFilters?: PropertyFilter[]]
 ): Promise<PropertyLeaderboardRow[]> {
   return runQuery({
@@ -90,9 +90,7 @@ async function relationalQuery(
       coalesce(sum(session_stats.visits), 0) as visits,
       coalesce(sum(session_stats.views), 0) as views,
       coalesce(sum(session_stats.events), 0) as events,
-      coalesce(sum(session_stats.totaltime), 0) as totaltime,
-      coalesce(sum(case when session_stats.visits = 1 then 1 else 0 end), 0) as "newSessions",
-      coalesce(sum(case when session_stats.visits > 1 then 1 else 0 end), 0) as "returningSessions"
+      coalesce(sum(session_stats.totaltime), 0) as totaltime
     from property_values
     join session_stats on session_stats.session_id = property_values.session_id
     group by property_values.value
@@ -170,9 +168,7 @@ async function clickhouseQuery(
       ifNull(sum(session_stats.visits), 0) as visits,
       ifNull(sum(session_stats.views), 0) as views,
       ifNull(sum(session_stats.events), 0) as events,
-      ifNull(sum(session_stats.totaltime), 0) as totaltime,
-      ifNull(sum(if(session_stats.visits = 1, 1, 0)), 0) as newSessions,
-      ifNull(sum(if(session_stats.visits > 1, 1, 0)), 0) as returningSessions
+      ifNull(sum(session_stats.totaltime), 0) as totaltime
     from property_values
     join session_stats on session_stats.session_id = property_values.session_id
     group by property_values.value

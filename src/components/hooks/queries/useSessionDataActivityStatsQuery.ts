@@ -4,7 +4,7 @@ import { useApi } from '../useApi';
 import { useDateParameters } from '../useDateParameters';
 import { useFilterParameters } from '../useFilterParameters';
 
-export function useSessionDataStatsQuery(
+export function useSessionDataActivityStatsQuery(
   websiteId: string,
   propertyName: string,
   propertyFilters: PropertyFilter[] = [],
@@ -16,7 +16,7 @@ export function useSessionDataStatsQuery(
 
   return useQuery({
     queryKey: [
-      'websites:session-data:stats',
+      'websites:session-data:activity-stats',
       { websiteId, propertyName, propertyFilters, startAt, endAt, unit, timezone, ...params },
     ],
     queryFn: () =>
