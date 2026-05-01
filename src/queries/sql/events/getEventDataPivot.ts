@@ -22,7 +22,7 @@ export async function getEventDataPivot(
 
 async function relationalQuery(websiteId: string, eventName: string, filters: QueryFilters, eventFilters: EventPropertyFilter[] = []) {
   const { timezone = 'utc' } = filters;
-  const { rawQuery, parseFilters, getPropertyFilterQuery } = prisma;
+  const { rawQuery, parseFilters, getPropertyFilterQuery, getDateStringSQL } = prisma;
   const { page = 1, pageSize } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
@@ -84,7 +84,7 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
         case when event_data.data_type = 1 then event_data.string_value end,
         case when event_data.data_type = 2 then cast(event_data.number_value as varchar) end,
         case when event_data.data_type = 3 then event_data.string_value end,
-        case when event_data.data_type = 4 then cast(event_data.date_value as varchar) end,
+        case when event_data.data_type = 4 then ${getDateStringSQL('event_data.date_value', 'second', timezone)} end,
         case when event_data.data_type = 5 then event_data.string_value end,
         ''
       ) as "value",
@@ -120,7 +120,7 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
 
 async function clickhouseQuery(websiteId: string, eventName: string, filters: QueryFilters, eventFilters: EventPropertyFilter[] = []) {
   const { timezone = 'UTC' } = filters;
-  const { rawQuery, parseFilters, getPropertyFilterQuery } = clickhouse;
+  const { rawQuery, parseFilters, getPropertyFilterQuery, getDateStringSQL } = clickhouse;
   const { page = 1, pageSize } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
@@ -160,7 +160,15 @@ async function clickhouseQuery(websiteId: string, eventName: string, filters: Qu
       event_data_pivot.url_path as urlPath,
       event_data_pivot.created_at as createdAt,
       groupArrayMerge(property_keys) as propertyKeys,
-      groupArrayMerge(property_values) as propertyValues
+      arrayMap(
+        (value, dataType) -> if(
+          dataType = 4,
+          ${getDateStringSQL('parseDateTimeBestEffortOrNull(value)', 'second', timezone)},
+          value
+        ),
+        groupArrayMerge(property_values),
+        groupArrayMerge(property_types)
+      ) as propertyValues
     from umami.event_data_pivot
     any left join (
           select *

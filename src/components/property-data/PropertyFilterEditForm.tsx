@@ -60,7 +60,7 @@ export function PropertyFilterEditForm({
   };
 
   return (
-    <Column width={isMobile ? 'auto' : '700px'} gap="6">
+    <Column width={isMobile ? 'auto' : '800px'} gap="6">
       <Column minHeight="400px">
         <Grid columns={{ base: '1fr', md: '180px 1fr' }} overflow="hidden" gapY="6">
           <Row display={{ base: 'flex', md: 'none' }}>
