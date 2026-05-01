@@ -79,7 +79,7 @@ async function relationalQuery(
       and website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_type = 2
-      and website_event.event_name = {eventName:String}
+      and website_event.event_name = {{eventName}}
     ${cohortQuery}
     ${joinSessionQuery}
     where event_data.website_id = {{websiteId::uuid}}
