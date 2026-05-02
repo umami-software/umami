@@ -29,12 +29,13 @@ async function relationalQuery(
   eventFilters: EventPropertyFilter[] = [],
 ): Promise<EventDataSeriesPoint[]> {
   const { timezone = 'utc', unit = 'day' } = filters;
-  const { rawQuery, getDateSQL, parseFilters, getEventPropertyFilterQuery } = prisma;
+  const { rawQuery, getDateSQL, parseFilters, getPropertyFilterQuery } = prisma;
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
+    timezone,
   });
-  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(eventFilters, 'event', timezone);
 
   return rawQuery(
     `
@@ -56,11 +57,11 @@ async function relationalQuery(
       and event_data.data_key = {{propertyName}}
       and event_data.data_type = ${DATA_TYPE.array}
       ${filterQuery}
-      ${epfSQL}
+      ${pfSQL}
     group by 1, 2
     order by 2
     `,
-    { ...queryParams, eventName, propertyName, ...epfParams },
+    { ...queryParams, eventName, propertyName, ...pfParams },
     FUNCTION_NAME,
   );
 }
@@ -73,9 +74,13 @@ async function clickhouseQuery(
   eventFilters: EventPropertyFilter[] = [],
 ): Promise<EventDataSeriesPoint[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
-  const { rawQuery, getDateSQL, parseFilters, getEventPropertyFilterQuery } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
-  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
+  const { rawQuery, getDateSQL, parseFilters, getPropertyFilterQuery } = clickhouse;
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    timezone,
+  });
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(eventFilters, 'event', timezone);
 
   return rawQuery(
     `
@@ -97,14 +102,15 @@ async function clickhouseQuery(
     ${cohortQuery}
     where event_data.website_id = {websiteId:UUID}
       and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_data.event_name = {eventName:String}
       and event_data.data_key = {propertyName:String}
       and event_data.data_type = ${DATA_TYPE.array}
     ${filterQuery}
-    ${epfSQL}
+    ${pfSQL}
     group by x, t
     order by t
     `,
-    { ...queryParams, eventName, propertyName, ...epfParams },
+    { ...queryParams, eventName, propertyName, ...pfParams },
     FUNCTION_NAME,
   );
 }

@@ -34,6 +34,10 @@ export function EventDataPivotTable({
     return [...new Set<string>(keys)];
   }, [propertiesQuery.data, eventName]);
 
+  const tableMinWidth = useMemo(() => {
+    return `${72 + 220 + 180 + propertyKeys.length * 160}px`;
+  }, [propertyKeys.length]);
+
   const tableData = useMemo(() => {
     if (!pivotQuery.data?.data) return [];
     return pivotQuery.data.data.map(
@@ -66,6 +70,14 @@ export function EventDataPivotTable({
     router.push(updateParams({ page }));
   };
 
+  const renderTruncatedText = (value: string) => (
+    <Row overflow="hidden" minWidth="0" width="100%">
+      <Text truncate title={value} style={{ maxWidth: '100%' }}>
+        {value}
+      </Text>
+    </Row>
+  );
+
   return (
     <Column gap="4" minWidth="0" width="100%" maxWidth="100%">
       <LoadingPanel
@@ -76,36 +88,57 @@ export function EventDataPivotTable({
         renderEmpty={() => <Empty />}
       >
         <Column gap="4" minWidth="0" width="100%" maxWidth="100%">
-          <Column minWidth="0" width="100%" maxWidth="100%" overflow={isMobile ? undefined : 'hidden'}>
-            <DataTable data={tableQuery?.data} style={{ width: '100%' }} displayMode={isMobile ? 'cards' : 'table'}>
-              <DataColumn id="session" label={t(labels.session)} width="0.75fr">
+          {isMobile ? (
+            <DataTable data={tableQuery?.data} style={{ width: '100%' }} displayMode="cards">
+              <DataColumn id="session" label={t(labels.session)} width="72px">
                 {(row: any) => (
                   <Link href={updateParams({ session: row.sessionId })}>
                     <Avatar seed={row.sessionId} size={32} />
                   </Link>
                 )}
               </DataColumn>
-              <DataColumn id="urlPath" label={t(labels.path)} width="1.4fr">
-                {(row: any) => (
-                  <Text truncate title={row.urlPath}>
-                    {row.urlPath}
-                  </Text>
-                )}
+              <DataColumn id="urlPath" label={t(labels.path)} width="220px">
+                {(row: any) => renderTruncatedText(row.urlPath ?? '')}
               </DataColumn>
               {propertyKeys.map(key => (
-                <DataColumn key={key} id={key} label={key} width="1fr">
-                  {(row: any) => (
-                    <Text truncate title={row[key]}>
-                      {row[key] ?? ''}
-                    </Text>
-                  )}
+                <DataColumn key={key} id={key} label={key} width="160px">
+                  {(row: any) => renderTruncatedText(row[key] ?? '')}
                 </DataColumn>
               ))}
-              <DataColumn id="createdAt" label={t(labels.created)} width="1.1fr">
+              <DataColumn id="createdAt" label={t(labels.created)} width="180px">
                 {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
               </DataColumn>
             </DataTable>
-          </Column>
+          ) : (
+            <div style={{ width: '100%', maxWidth: '100%', overflowX: 'auto', overflowY: 'hidden' }}>
+              <div style={{ width: tableMinWidth, minWidth: tableMinWidth }}>
+                <DataTable
+                  data={tableQuery?.data}
+                  style={{ width: '100%' }}
+                  displayMode="table"
+                >
+                  <DataColumn id="session" label={t(labels.session)} width="72px">
+                    {(row: any) => (
+                      <Link href={updateParams({ session: row.sessionId })}>
+                        <Avatar seed={row.sessionId} size={32} />
+                      </Link>
+                    )}
+                  </DataColumn>
+                  <DataColumn id="urlPath" label={t(labels.path)} width="220px">
+                    {(row: any) => renderTruncatedText(row.urlPath ?? '')}
+                  </DataColumn>
+                  {propertyKeys.map(key => (
+                    <DataColumn key={key} id={key} label={key} width="160px">
+                      {(row: any) => renderTruncatedText(row[key] ?? '')}
+                    </DataColumn>
+                  ))}
+                  <DataColumn id="createdAt" label={t(labels.created)} width="180px">
+                    {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
+                  </DataColumn>
+                </DataTable>
+              </div>
+            </div>
+          )}
           {showPager && tableQuery && (
             <Row marginTop="6">
               <Pager

@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { parseEventPropertyFilters } from '@/lib/params';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { filterParams, pagingParams } from '@/lib/schema';
+import { filterParams, pagingParams, timezoneParam, unitParam } from '@/lib/schema';
 import { canViewWebsite } from '@/permissions';
 import { getEventDataPivot } from '@/queries/sql/events/getEventDataPivot';
 
@@ -14,6 +14,8 @@ export async function GET(
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
     eventName: z.string(),
+    timezone: timezoneParam.optional(),
+    unit: unitParam.optional(),
     ...filterParams,
     ...pagingParams,
   });

@@ -20,8 +20,14 @@ export async function getEventDataPivot(
   });
 }
 
-async function relationalQuery(websiteId: string, eventName: string, filters: QueryFilters, eventFilters: EventPropertyFilter[] = []) {
-  const { rawQuery, parseFilters, getEventPropertyFilterQuery } = prisma;
+async function relationalQuery(
+  websiteId: string,
+  eventName: string,
+  filters: QueryFilters,
+  eventFilters: EventPropertyFilter[] = [],
+) {
+  const { timezone = 'utc' } = filters;
+  const { rawQuery, parseFilters, getPropertyFilterQuery, getDateStringSQL } = prisma;
   const { page = 1, pageSize } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
@@ -29,8 +35,9 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
+    timezone,
   });
-  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(eventFilters, 'event', timezone);
 
   const countResult = await rawQuery(
     `
@@ -45,9 +52,9 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_name = {{eventName}}
       ${filterQuery}
-      ${epfSQL}
+      ${pfSQL}
     `,
-    { ...queryParams, eventName, ...epfParams },
+    { ...queryParams, eventName, ...pfParams },
   );
 
   const count = countResult[0].num;
@@ -66,7 +73,7 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
         and website_event.created_at between {{startDate}} and {{endDate}}
         and website_event.event_name = {{eventName}}
         ${filterQuery}
-        ${epfSQL}
+        ${pfSQL}
       group by website_event.event_id
       order by max(website_event.created_at) desc
       limit ${size} offset ${offset}
@@ -81,7 +88,9 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
       coalesce(
         case when event_data.data_type = 1 then event_data.string_value end,
         case when event_data.data_type = 2 then cast(event_data.number_value as varchar) end,
-        case when event_data.data_type = 4 then cast(event_data.date_value as varchar) end,
+        case when event_data.data_type = 3 then event_data.string_value end,
+        case when event_data.data_type = 4 then ${getDateStringSQL('event_data.date_value', 'second', timezone)} end,
+        case when event_data.data_type = 5 then event_data.string_value end,
         ''
       ) as "value",
       event_data.data_type as "dataType"
@@ -93,18 +102,34 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
       and event_data.created_at between {{startDate}} and {{endDate}}
     order by website_event.created_at desc
     `,
-    { ...queryParams, eventName, ...epfParams },
+    { ...queryParams, eventName, ...pfParams },
     FUNCTION_NAME,
   );
 
   // Pivot flat rows into one record per event
   const eventMap = new Map<
     string,
-    { eventId: string; sessionId: string; eventName: string; urlPath: string; createdAt: Date; propertyKeys: string[]; propertyValues: string[] }
+    {
+      eventId: string;
+      sessionId: string;
+      eventName: string;
+      urlPath: string;
+      createdAt: Date;
+      propertyKeys: string[];
+      propertyValues: string[];
+    }
   >();
   for (const { eventId, sessionId, eventName: name, urlPath, createdAt, dataKey, value } of rows) {
     if (!eventMap.has(eventId)) {
-      eventMap.set(eventId, { eventId, sessionId, eventName: name, urlPath, createdAt, propertyKeys: [], propertyValues: [] });
+      eventMap.set(eventId, {
+        eventId,
+        sessionId,
+        eventName: name,
+        urlPath,
+        createdAt,
+        propertyKeys: [],
+        propertyValues: [],
+      });
     }
     const entry = eventMap.get(eventId);
     entry.propertyKeys.push(dataKey);
@@ -114,14 +139,24 @@ async function relationalQuery(websiteId: string, eventName: string, filters: Qu
   return { data: [...eventMap.values()], count, page: +page, pageSize: size };
 }
 
-async function clickhouseQuery(websiteId: string, eventName: string, filters: QueryFilters, eventFilters: EventPropertyFilter[] = []) {
-  const { rawQuery, parseFilters, getEventPropertyFilterQuery } = clickhouse;
+async function clickhouseQuery(
+  websiteId: string,
+  eventName: string,
+  filters: QueryFilters,
+  eventFilters: EventPropertyFilter[] = [],
+) {
+  const { timezone = 'UTC' } = filters;
+  const { rawQuery, parseFilters, getPropertyFilterQuery, getDateStringSQL } = clickhouse;
   const { page = 1, pageSize } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
   const offset = +size * (+page - 1);
 
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
-  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    timezone,
+  });
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(eventFilters, 'event', timezone);
 
   const count = await rawQuery(
     `
@@ -140,22 +175,31 @@ async function clickhouseQuery(websiteId: string, eventName: string, filters: Qu
     ${cohortQuery}
     where event_data_pivot.website_id = {websiteId:UUID}
       and event_data_pivot.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_data_pivot.event_name = {eventName:String}
     ${filterQuery}
-    ${epfSQL}
+    ${pfSQL}
     `,
-    { ...queryParams, eventName, ...epfParams },
+    { ...queryParams, eventName, ...pfParams },
   ).then((res: any) => res[0].num);
 
   const data = await rawQuery(
     `
     select
-      event_id as eventId,
-      session_id as sessionId,
-      event_name as eventName,
-      url_path as urlPath,
-      created_at as createdAt,
+      event_data_pivot.event_id as eventId,
+      event_data_pivot.session_id as sessionId,
+      event_data_pivot.event_name as eventName,
+      event_data_pivot.url_path as urlPath,
+      event_data_pivot.created_at as createdAt,
       groupArrayMerge(property_keys) as propertyKeys,
-      groupArrayMerge(property_values) as propertyValues
+      arrayMap(
+        (value, dataType) -> if(
+          dataType = 4,
+          ${getDateStringSQL('parseDateTimeBestEffortOrNull(value)', 'second', timezone)},
+          value
+        ),
+        groupArrayMerge(property_values),
+        groupArrayMerge(property_types)
+      ) as propertyValues
     from umami.event_data_pivot
     any left join (
           select *
@@ -170,13 +214,19 @@ async function clickhouseQuery(websiteId: string, eventName: string, filters: Qu
     ${cohortQuery}
     where event_data_pivot.website_id = {websiteId:UUID}
       and event_data_pivot.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_data_pivot.event_name = {eventName:String}
     ${filterQuery}
-    ${epfSQL}
-    group by event_id, session_id, event_name, url_path, created_at
-    order by created_at desc
+    ${pfSQL}
+    group by
+      event_data_pivot.event_id,
+      event_data_pivot.session_id,
+      event_data_pivot.event_name,
+      event_data_pivot.url_path,
+      event_data_pivot.created_at
+    order by event_data_pivot.created_at desc
     limit ${size} offset ${offset}
     `,
-    { ...queryParams, eventName, ...epfParams },
+    { ...queryParams, eventName, ...pfParams },
     FUNCTION_NAME,
   );
 

@@ -30,12 +30,14 @@ export interface Auth {
   };
 }
 
-export interface EventPropertyFilter {
+export interface PropertyFilter {
   propertyName: string;
   dataType: number;
   operator: Operator;
   value: string;
 }
+
+export type EventPropertyFilter = PropertyFilter;
 
 export interface Filter {
   name: string;
@@ -77,6 +79,24 @@ export interface EventDataNumericStats {
   median: number;
   max: number;
   min: number;
+}
+
+export interface SessionDataPivotRow {
+  sessionId: string;
+  distinctId: string;
+  createdAt: string | Date;
+  propertyKeys: string[];
+  propertyValues: string[];
+}
+
+export interface PropertyLeaderboardRow {
+  label: string;
+  activity: number;
+  sessions: number;
+  visits: number;
+  views: number;
+  events: number;
+  totaltime: number;
 }
 
 export interface QueryOptions {

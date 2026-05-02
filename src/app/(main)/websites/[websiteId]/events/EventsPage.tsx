@@ -87,17 +87,21 @@ export function EventsPage({ websiteId }) {
           })}
         </MetricsBar>
       </LoadingPanel>
-      <Panel>
-        <Tabs selectedKey={tab} onSelectionChange={key => handleSelect(key)}>
+      <Panel minWidth="0" width="100%" style={{ overflow: 'hidden' }}>
+        <Tabs
+          selectedKey={tab}
+          onSelectionChange={key => handleSelect(key)}
+          style={{ minWidth: 0, width: '100%' }}
+        >
           <TabList>
             <Tab id="chart">{t(labels.chart)}</Tab>
             <Tab id="activity">{t(labels.activity)}</Tab>
             <Tab id="properties">{t(labels.properties)}</Tab>
           </TabList>
-          <TabPanel id="activity">
+          <TabPanel id="activity" style={{ minWidth: 0, width: '100%' }}>
             <EventsDataTable websiteId={websiteId} />
           </TabPanel>
-          <TabPanel id="chart">
+          <TabPanel id="chart" style={{ minWidth: 0, width: '100%' }}>
             <Column gap="6">
               <Column border="bottom" paddingBottom="6">
                 <EventsChart websiteId={websiteId} limit={50} />
@@ -111,7 +115,7 @@ export function EventsPage({ websiteId }) {
               />
             </Column>
           </TabPanel>
-          <TabPanel id="properties">
+          <TabPanel id="properties" style={{ minWidth: 0, width: '100%', overflow: 'hidden' }}>
             <EventProperties websiteId={websiteId} />
           </TabPanel>
         </Tabs>

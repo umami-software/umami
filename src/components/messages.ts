@@ -191,6 +191,7 @@ export const labels: Record<string, string> = {
   filter: 'label.filter',
   filters: 'label.filters',
   propertyFilter: 'label.property-filter',
+  activityByProperty: 'label.activity-by-property',
   breakdown: 'label.breakdown',
   true: 'label.true',
   false: 'label.false',

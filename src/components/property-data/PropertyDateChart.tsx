@@ -1,6 +1,5 @@
 'use client';
 import { Column, Grid, Text, useTheme } from '@umami/react-zen';
-import { colord } from 'colord';
 import {
   differenceInCalendarDays,
   format,
@@ -17,15 +16,15 @@ import { type ReactNode, useCallback, useMemo } from 'react';
 import { BarChart } from '@/components/charts/BarChart';
 import { PieChart } from '@/components/charts/PieChart';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useEventDataDateSeriesQuery, useLocale, useMessages, useTimezone } from '@/components/hooks';
+import { useLocale, useMessages, usePropertyDateSeriesQuery, useTimezone } from '@/components/hooks';
+import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { ListTable } from '@/components/metrics/ListTable';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { renderDateLabels } from '@/lib/charts';
 import { getThemeColors } from '@/lib/colors';
 import { CHART_COLORS } from '@/lib/constants';
 import { formatDate, generateTimeSeries } from '@/lib/date';
-import { formatLongNumber } from '@/lib/format';
-import type { EventDataDateSeriesPoint, EventPropertyFilter } from '@/lib/types';
+import type { EventDataDateSeriesPoint, PropertyFilter } from '@/lib/types';
 
 type DateChartUnit = 'day' | 'week' | 'month' | 'year';
 type ParsedDateRow = EventDataDateSeriesPoint & { date: Date };
@@ -40,15 +39,7 @@ function parseDateValue(value: string) {
   return isValid(date) ? date : null;
 }
 
-function InsightCard({
-  label,
-  value,
-  hint,
-}: {
-  label: string;
-  value: string;
-  hint?: ReactNode;
-}) {
+function InsightCard({ label, value, hint }: { label: string; value: string; hint?: ReactNode }) {
   return (
     <Column
       justifyContent="center"
@@ -61,28 +52,18 @@ function InsightCard({
       height="100%"
       style={{ minWidth: 0 }}
     >
-      <Text weight="bold" style={{ overflowWrap: 'anywhere' }}>
-        {label}
-      </Text>
-      <Text weight="bold" style={{ overflowWrap: 'anywhere' }}>
-        {value}
-      </Text>
-      {hint && (
-        <Text color="muted" style={{ overflowWrap: 'anywhere' }}>
-          {hint}
-        </Text>
-      )}
+      <Text weight="bold" style={{ overflowWrap: 'anywhere' }}>{label}</Text>
+      <Text weight="bold" style={{ overflowWrap: 'anywhere' }}>{value}</Text>
+      {hint && <Text color="muted" style={{ overflowWrap: 'anywhere' }}>{hint}</Text>}
     </Column>
   );
 }
 
 function getChartUnit(minDate: Date, maxDate: Date): DateChartUnit {
   const spanDays = differenceInCalendarDays(maxDate, minDate);
-
   if (spanDays <= 45) return 'day';
   if (spanDays <= 180) return 'week';
   if (spanDays <= 730) return 'month';
-
   return 'year';
 }
 
@@ -99,77 +80,83 @@ function getBucketStart(date: Date, unit: DateChartUnit, dateLocale: Locale) {
   }
 }
 
-export function EventDataDateChart({
+export function PropertyDateChart({
+  source,
   websiteId,
-  eventName,
   propertyName,
-  eventFilters = [],
+  propertyFilters = [],
+  eventName,
 }: {
+  source: PropertyDataSource;
   websiteId: string;
-  eventName: string;
   propertyName: string;
-  eventFilters?: EventPropertyFilter[];
+  propertyFilters?: PropertyFilter[];
+  eventName?: string;
 }) {
   const { theme } = useTheme();
   const { t, labels } = useMessages();
   const { locale, dateLocale } = useLocale();
   const { timezone } = useTimezone();
   const { colors } = useMemo(() => getThemeColors(theme), [theme]);
-  const query = useEventDataDateSeriesQuery(websiteId, eventName, propertyName, eventFilters);
+  const query = usePropertyDateSeriesQuery(source, websiteId, propertyName, propertyFilters, eventName);
 
   const rows = useMemo(() => query.data ?? [], [query.data]);
   const total = useMemo(() => rows.reduce((sum, { y }) => sum + y, 0), [rows]);
   const zonedNow = useMemo(() => toZonedTime(new Date(), timezone), [timezone]);
 
-  const exactDateRows = useMemo(() => {
-    return rows
-      .map(row => {
-        const date = parseDateValue(row.t);
-
-        return date ? { ...row, date } : null;
-      })
-      .filter((row): row is ParsedDateRow => row !== null)
-      .sort((a, b) => a.date.getTime() - b.date.getTime());
-  }, [rows]);
+  const exactDateRows = useMemo(
+    () =>
+      rows
+        .map(row => {
+          const date = parseDateValue(row.t);
+          return date ? { ...row, date } : null;
+        })
+        .filter((row): row is ParsedDateRow => row !== null)
+        .sort((a, b) => a.date.getTime() - b.date.getTime()),
+    [rows],
+  );
 
   const minPropertyDate = exactDateRows[0]?.date ?? null;
-  const lastExactDateRow = exactDateRows[exactDateRows.length - 1];
-  const maxPropertyDate = lastExactDateRow?.date ?? null;
-
+  const maxPropertyDate = exactDateRows[exactDateRows.length - 1]?.date ?? null;
   const chartUnit = useMemo(
-    () =>
-      minPropertyDate && maxPropertyDate
-        ? getChartUnit(minPropertyDate, maxPropertyDate)
-        : 'day',
-    [minPropertyDate, maxPropertyDate],
+    () => (minPropertyDate && maxPropertyDate ? getChartUnit(minPropertyDate, maxPropertyDate) : 'day'),
+    [maxPropertyDate, minPropertyDate],
   );
 
   const chartRows = useMemo(() => {
     if (!exactDateRows.length) return [];
-
     const buckets = exactDateRows.reduce(
       (obj, row) => {
         const bucketStart = getBucketStart(row.date, chartUnit, dateLocale);
         const bucketKey = format(bucketStart, "yyyy-MM-dd'T'HH:mm:ss");
-        const existing = obj[bucketKey];
-
         obj[bucketKey] = {
           t: bucketKey,
-          y: (existing?.y ?? 0) + row.y,
+          y: (obj[bucketKey]?.y ?? 0) + row.y,
         };
-
         return obj;
       },
       {} as Record<string, EventDataDateSeriesPoint>,
     );
-
     return Object.values(buckets).sort(
       (a, b) => (parseDateValue(a.t)?.getTime() ?? 0) - (parseDateValue(b.t)?.getTime() ?? 0),
     );
-  }, [exactDateRows, chartUnit, dateLocale]);
+  }, [chartUnit, dateLocale, exactDateRows]);
 
   const chartData: any = useMemo(() => {
-    if (!rows.length || !minPropertyDate || !maxPropertyDate) return null;
+    if (!minPropertyDate || !maxPropertyDate) {
+      return {
+        datasets: [
+          {
+            label: t(labels.count),
+            data: [],
+            barPercentage: 0.9,
+            categoryPercentage: 0.9,
+            ...colors.chart.visitors,
+            borderWidth: 1,
+          },
+        ],
+      };
+    }
 
     return {
       datasets: [
@@ -189,28 +176,14 @@ export function EventDataDateChart({
         },
       ],
     };
-  }, [
-    rows,
-    minPropertyDate,
-    maxPropertyDate,
-    chartRows,
-    chartUnit,
-    dateLocale,
-    colors,
-    t,
-    labels.count,
-  ]);
+  }, [chartRows, chartUnit, colors, dateLocale, labels.count, maxPropertyDate, minPropertyDate, t]);
 
   const renderXLabel = useCallback(renderDateLabels(chartUnit, locale), [chartUnit, locale]);
 
   const weekdayTableData = useMemo(() => {
     if (!exactDateRows.length || total === 0) return [];
-
     const weekStartsOn = dateLocale.options?.weekStartsOn ?? 0;
-    const weekdayOrder = Array.from(
-      { length: 7 },
-      (_, index) => (weekStartsOn + index) % 7,
-    );
+    const weekdayOrder = Array.from({ length: 7 }, (_, index) => (weekStartsOn + index) % 7);
     const weekdayTotals = exactDateRows.reduce(
       (obj, { date, y }) => {
         const day = date.getDay();
@@ -230,29 +203,35 @@ export function EventDataDateChart({
         percent: total ? 100 * (count / total) : 0,
       };
     });
-  }, [exactDateRows, total, dateLocale]);
+  }, [dateLocale, exactDateRows, total]);
 
-  const topWeekday = useMemo(
-    () => [...weekdayTableData].sort((a, b) => b.count - a.count)[0],
-    [weekdayTableData],
-  );
-  const weekdayLabels = useMemo(
-    () => weekdayTableData.map(({ label }) => label),
-    [weekdayTableData],
-  );
-  const weekdayColorMap = useMemo(() => {
-    return weekdayLabels.reduce(
-      (obj, label, index) => {
-        const color = colord(CHART_COLORS[index % CHART_COLORS.length]);
-        obj[label] = color.alpha(0.7).toRgbString();
+  const topDateByDay = useMemo(() => {
+    if (!exactDateRows.length || total === 0) return null;
+    const dayTotals = exactDateRows.reduce(
+      (obj, { date, y }) => {
+        const dayDate = startOfDay(date);
+        const key = format(dayDate, 'yyyy-MM-dd');
+        obj[key] = { date: dayDate, count: (obj[key]?.count ?? 0) + y };
         return obj;
       },
-      {} as Record<string, string>,
+      {} as Record<string, { date: Date; count: number }>,
     );
-  }, [weekdayLabels]);
+    return Object.values(dayTotals).sort((a, b) => b.count - a.count || b.date.getTime() - a.date.getTime())[0];
+  }, [exactDateRows, total]);
+
+  const topWeekday = useMemo(() => [...weekdayTableData].sort((a, b) => b.count - a.count)[0], [weekdayTableData]);
+  const weekdayLabels = useMemo(() => weekdayTableData.map(({ label }) => label), [weekdayTableData]);
+  const weekdayColorMap = useMemo(
+    () =>
+      weekdayLabels.reduce((obj, label, index) => {
+        obj[label] = CHART_COLORS[index % CHART_COLORS.length];
+        return obj;
+      }, {} as Record<string, string>),
+    [weekdayLabels],
+  );
+
   const weekdayPieChartData = useMemo(() => {
     if (!weekdayTableData.length) return null;
-
     return {
       labels: weekdayLabels,
       datasets: [
@@ -263,109 +242,57 @@ export function EventDataDateChart({
         },
       ],
     };
-  }, [weekdayTableData, weekdayLabels, weekdayColorMap]);
-  const spanDays = useMemo(
-    () =>
-      minPropertyDate && maxPropertyDate
-        ? differenceInCalendarDays(maxPropertyDate, minPropertyDate) + 1
-        : 0,
-    [minPropertyDate, maxPropertyDate],
-  );
+  }, [weekdayColorMap, weekdayLabels, weekdayTableData]);
 
   return (
-    <Column gap="6">
-      <LoadingPanel
-        data={rows}
-        isLoading={query.isLoading}
-        isFetching={query.isFetching}
-        error={query.error}
-        minHeight="300px"
-      >
-        <Column gap="4">
-          <MetricsBar padding="2">
-            <InsightCard
-              label="Top weekday"
-              value={topWeekday?.count ? topWeekday.label : t(labels.none)}
-              hint={
-                topWeekday?.count
-                  ? `${formatLongNumber(topWeekday.count)} ${t(labels.count).toLowerCase()} - ${Math.round(
-                      topWeekday.percent,
-                    )}%`
-                  : undefined
-              }
-            />
-            <InsightCard
-              label="Date span"
-              value={spanDays ? `${formatLongNumber(spanDays)} days` : t(labels.none)}
-              hint={
-                minPropertyDate && maxPropertyDate
-                  ? `${formatDate(minPropertyDate, 'PP', locale)} - ${formatDate(maxPropertyDate, 'PP', locale)}`
-                  : undefined
-              }
-            />
-            <InsightCard
-              label="Earliest value"
-              value={minPropertyDate ? formatDate(minPropertyDate, 'PPpp', locale) : t(labels.none)}
-              hint={
-                minPropertyDate
-                  ? formatDistance(minPropertyDate, zonedNow, {
-                      addSuffix: true,
-                      locale: dateLocale,
-                    })
-                  : undefined
-              }
-            />
-            <InsightCard
-              label="Latest value"
-              value={maxPropertyDate ? formatDate(maxPropertyDate, 'PPpp', locale) : t(labels.none)}
-              hint={
-                maxPropertyDate
-                  ? formatDistance(maxPropertyDate, zonedNow, {
-                      addSuffix: true,
-                      locale: dateLocale,
-                    })
-                  : undefined
-              }
-            />
-          </MetricsBar>
-        </Column>
+    <Column gap="4">
+      <LoadingPanel isLoading={query.isLoading} isFetching={query.isFetching} error={query.error} minHeight="100px">
+        <MetricsBar padding="2">
+          <InsightCard
+            label="Top weekday"
+            value={topWeekday?.label ?? 'None'}
+            hint={topWeekday ? `${topWeekday.count.toLocaleString(locale)} count - ${Math.round(topWeekday.percent)}%` : undefined}
+          />
+          <InsightCard
+            label="Top date"
+            value={topDateByDay ? formatDate(topDateByDay.date, 'PP', locale) : 'None'}
+            hint={topDateByDay ? `${topDateByDay.count.toLocaleString(locale)} count - ${Math.round((topDateByDay.count / total) * 100)}%` : undefined}
+          />
+          <InsightCard
+            label="Earliest date"
+            value={minPropertyDate ? formatDate(minPropertyDate, 'PP', locale) : 'None'}
+            hint={minPropertyDate ? formatDistance(minPropertyDate, zonedNow, { addSuffix: true }) : undefined}
+          />
+          <InsightCard
+            label="Latest date"
+            value={maxPropertyDate ? formatDate(maxPropertyDate, 'PP', locale) : 'None'}
+            hint={maxPropertyDate ? formatDistance(maxPropertyDate, zonedNow, { addSuffix: true }) : undefined}
+          />
+        </MetricsBar>
       </LoadingPanel>
-      <LoadingPanel
-        data={rows}
-        isLoading={query.isLoading}
-        isFetching={query.isFetching}
-        error={query.error}
-        minHeight="400px"
-      >
-        {chartData && minPropertyDate && maxPropertyDate && (
+      <LoadingPanel isLoading={query.isLoading} error={query.error} minHeight="400px">
+        {chartData && (
           <BarChart
             chartData={chartData}
-            minDate={minPropertyDate}
-            maxDate={maxPropertyDate}
+            minDate={minPropertyDate ?? new Date()}
+            maxDate={maxPropertyDate ?? new Date()}
             unit={chartUnit}
             stacked={false}
             renderXLabel={renderXLabel}
-            renderYLabel={(value: string | number) => formatLongNumber(Number(value))}
             height="400px"
           />
         )}
       </LoadingPanel>
       <LoadingPanel
-        data={rows}
+        data={weekdayTableData}
         isLoading={query.isLoading}
         isFetching={query.isFetching}
         error={query.error}
         minHeight="300px"
       >
         <Grid columns={{ base: '1fr', md: '1fr 1fr' }} gap padding="2" alignItems="start">
-          <Column style={{ minWidth: 0 }} width="100%">
-            <ListTable title="Weekdays" metric={t(labels.count)} data={weekdayTableData} />
-          </Column>
-          <Column style={{ minWidth: 0 }} width="100%">
-            {weekdayPieChartData && (
-              <PieChart type="doughnut" chartData={weekdayPieChartData} height="280px" />
-            )}
-          </Column>
+          <ListTable title={propertyName} metric={t(labels.count)} data={weekdayTableData} />
+          {weekdayPieChartData && <PieChart type="doughnut" chartData={weekdayPieChartData} />}
         </Grid>
       </LoadingPanel>
     </Column>

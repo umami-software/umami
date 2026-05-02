@@ -66,9 +66,9 @@ async function clickhouseQuery(
   return rawQuery(
     `
     select
-      event_name as eventName,
-      data_key as propertyName,
-      data_type as dataType,
+      event_data.event_name as eventName,
+      event_data.data_key as propertyName,
+      event_data.data_type as dataType,
       count(*) as total
     from event_data
     any left join (
@@ -84,7 +84,7 @@ async function clickhouseQuery(
     where event_data.website_id = {websiteId:UUID}
       and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
     ${filterQuery}
-    group by event_name, data_key, data_type
+    group by event_data.event_name, event_data.data_key, event_data.data_type
     order by 1, 4 desc
     limit 500
     `,

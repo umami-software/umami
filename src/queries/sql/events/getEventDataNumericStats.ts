@@ -27,12 +27,14 @@ async function relationalQuery(
   filters: QueryFilters,
   eventFilters: EventPropertyFilter[] = [],
 ) {
-  const { rawQuery, parseFilters, getEventPropertyFilterQuery } = prisma;
+  const { timezone = 'utc' } = filters;
+  const { rawQuery, parseFilters, getPropertyFilterQuery } = prisma;
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
+    timezone,
   });
-  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(eventFilters, 'event', timezone);
 
   return rawQuery(
     `
@@ -55,9 +57,9 @@ async function relationalQuery(
       and event_data.data_key = {{propertyName}}
       and event_data.data_type = 2
       ${filterQuery}
-      ${epfSQL}
+      ${pfSQL}
     `,
-    { ...queryParams, eventName, propertyName, ...epfParams },
+    { ...queryParams, eventName, propertyName, ...pfParams },
     FUNCTION_NAME,
   );
 }
@@ -69,9 +71,14 @@ async function clickhouseQuery(
   filters: QueryFilters,
   eventFilters: EventPropertyFilter[] = [],
 ): Promise<EventDataNumericStats[]> {
-  const { rawQuery, parseFilters, getEventPropertyFilterQuery } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
-  const { sql: epfSQL, params: epfParams } = getEventPropertyFilterQuery(eventFilters);
+  const { timezone = 'UTC' } = filters;
+  const { rawQuery, parseFilters, getPropertyFilterQuery } = clickhouse;
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    timezone,
+  });
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(eventFilters, 'event', timezone);
 
   return rawQuery(
     `
@@ -95,12 +102,13 @@ async function clickhouseQuery(
     ${cohortQuery}
     where event_data.website_id = {websiteId:UUID}
       and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_data.event_name = {eventName:String}
       and event_data.data_key = {propertyName:String}
       and event_data.data_type = 2
     ${filterQuery}
-    ${epfSQL}
+    ${pfSQL}
     `,
-    { ...queryParams, eventName, propertyName, ...epfParams },
+    { ...queryParams, eventName, propertyName, ...pfParams },
     FUNCTION_NAME,
   );
 }
