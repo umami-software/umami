@@ -38,7 +38,7 @@ import {
   subWeeks,
   subYears,
 } from 'date-fns';
-import { utcToZonedTime } from 'date-fns-tz';
+import { toZonedTime } from 'date-fns-tz';
 import { getDateLocale } from '@/lib/lang';
 import type { DateRange } from '@/lib/types';
 
@@ -113,6 +113,10 @@ export function normalizeTimezone(timezone: string): string {
   return TIMEZONE_MAPPINGS[timezone] || timezone;
 }
 
+export function getMaxSelectableDate(now = new Date()) {
+  return max([endOfYear(now), addMonths(now, 6)]);
+}
+
 export function isValidTimezone(timezone: string) {
   try {
     const normalizedTimezone = normalizeTimezone(timezone);
@@ -164,7 +168,7 @@ export function parseDateRange(
   }
 
   const date = new Date();
-  const now = timezone ? utcToZonedTime(date, timezone) : date;
+  const now = timezone ? toZonedTime(date, timezone) : date;
   const dateLocale = getDateLocale(locale);
   const { num = 1, unit } = parseDateValue(value);
 
