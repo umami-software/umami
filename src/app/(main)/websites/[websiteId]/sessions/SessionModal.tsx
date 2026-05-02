@@ -34,7 +34,7 @@ export function SessionModal({ websiteId, ...props }: SessionModalProps) {
         <Dialog variant="sheet" className="rounded-lg">
           {({ close }) => (
             <Column padding="10">
-              <SessionProfile websiteId={websiteId} sessionId={session} showReplays={!isSharePage} onClose={() => close()} />
+              <SessionProfile websiteId={websiteId} sessionId={session} showReplays={!isSharePage} allowDelete={!isSharePage} onClose={() => close()} />
             </Column>
           )}
         </Dialog>
