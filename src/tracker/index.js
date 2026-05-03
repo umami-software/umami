@@ -9,7 +9,8 @@
     doNotTrack,
   } = window;
   const { currentScript, referrer } = document;
-  if (!currentScript) return;
+  const globalConfig = window.umamiConfig || {};
+  if (!currentScript && !globalConfig.websiteId) return;
 
   const { hostname, href, origin } = location;
 
@@ -23,8 +24,18 @@
   const _data = 'data-';
   const _false = 'false';
   const _true = 'true';
-  const attr = currentScript.getAttribute.bind(currentScript);
-  const config = value => attr(`${_data}${value}`);
+  const attr = currentScript ? currentScript.getAttribute.bind(currentScript) : () => null;
+
+  const toCamelCase = str => str.replace(/-([a-z])/g, g => g[1].toUpperCase());
+
+  const config = value => {
+    const camelKey = toCamelCase(value);
+    if (globalConfig[camelKey] != null) {
+      const v = globalConfig[camelKey];
+      return value === 'before-send' && typeof v === 'function' ? v : Array.isArray(v) ? v.join(',') : String(v);
+    }
+    return attr(`${_data}${value}`);
+  };
 
   const website = config('website-id');
   const hostUrl = config('host-url');
@@ -41,7 +52,7 @@
 
   const domains = domain.split(',').map(n => n.trim());
   const host =
-    hostUrl || '__COLLECT_API_HOST__' || currentScript.src.split('/').slice(0, -1).join('/');
+    hostUrl || '__COLLECT_API_HOST__' || (currentScript ? currentScript.src.split('/').slice(0, -1).join('/') : '');
   const endpoint = `${host.replace(/\/$/, '')}__COLLECT_API_ENDPOINT__`;
   const screen = `${width}x${height}`;
   const eventRegex = /data-umami-event-([\w-_]+)/;
@@ -164,7 +175,7 @@
   const send = async (payload, type = 'event') => {
     if (trackingDisabled()) return;
 
-    const callback = window[beforeSend];
+    const callback = typeof beforeSend === 'function' ? beforeSend : window[beforeSend];
 
     if (typeof callback === 'function') {
       payload = await Promise.resolve(callback(type, payload));
