@@ -91,6 +91,9 @@ ENGINE = ReplacingMergeTree
     SETTINGS index_granularity = 8192;
 
 ALTER TABLE umami.session_data
+MODIFY SETTING deduplicate_merge_projection_mode = 'drop';
+
+ALTER TABLE umami.session_data
 ADD PROJECTION session_data_property_filter_projection (
     SELECT *
     ORDER BY (
