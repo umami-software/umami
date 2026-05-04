@@ -1,5 +1,4 @@
 import clickhouse from '@/lib/clickhouse';
-import { DEFAULT_PAGE_SIZE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { PageResult, PropertyFilter, QueryFilters, SessionDataPivotRow } from '@/lib/types';
@@ -25,12 +24,9 @@ async function relationalQuery(
   propertyName: string,
   filters: QueryFilters,
   propertyFilters: PropertyFilter[] = [],
-): Promise<PageResult<SessionDataPivotRow[]>> {
+) {
   const { timezone = 'utc' } = filters;
-  const { rawQuery, parseFilters, getPropertyFilterQuery, getDateStringSQL } = prisma;
-  const { page = 1, pageSize } = filters;
-  const size = +pageSize || DEFAULT_PAGE_SIZE;
-  const offset = +size * (+page - 1);
+  const { pagedRawQuery, parseFilters, getPropertyFilterQuery, getDateStringSQL } = prisma;
 
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
@@ -43,47 +39,7 @@ async function relationalQuery(
     timezone,
   );
 
-  const countResult = (await rawQuery(
-    `
-    with filtered_sessions as (
-      select distinct website_event.session_id
-      from website_event
-      ${cohortQuery}
-      ${joinSessionQuery}
-      where website_event.website_id = {{websiteId::uuid}}
-        and website_event.created_at between {{startDate}} and {{endDate}}
-        ${filterQuery}
-        ${pfSQL}
-    ),
-    latest_session_properties as (
-      select
-        ranked.session_id,
-        ranked.data_key
-      from (
-        select
-          session_data.session_id,
-          session_data.data_key,
-          row_number() over (
-            partition by session_data.session_id, session_data.data_key
-            order by session_data.created_at desc, session_data.session_data_id desc
-          ) as row_num
-        from session_data
-        join filtered_sessions
-          on filtered_sessions.session_id = session_data.session_id
-        where session_data.website_id = {{websiteId::uuid}}
-      ) ranked
-      where ranked.row_num = 1
-    )
-    select count(*) as num
-    from latest_session_properties
-    where latest_session_properties.data_key = {{propertyName}}
-    `,
-    { ...queryParams, websiteId, propertyName, ...pfParams },
-  )) as { num: number }[];
-
-  const count = countResult[0].num;
-
-  const rows = (await rawQuery(
+  return pagedRawQuery(
     `
     with filtered_sessions as (
       select distinct website_event.session_id
@@ -132,8 +88,6 @@ async function relationalQuery(
         latest_session_properties.created_at as sort_created_at
       from latest_session_properties
       where latest_session_properties.data_key = {{propertyName}}
-      order by latest_session_properties.created_at desc
-      limit ${size} offset ${offset}
     )
     select
       latest_session_properties.session_id as "sessionId",
@@ -158,10 +112,9 @@ async function relationalQuery(
     order by paged_sessions.sort_created_at desc
     `,
     { ...queryParams, websiteId, propertyName, ...pfParams },
+    filters,
     FUNCTION_NAME,
-  )) as SessionDataPivotRow[];
-
-  return { data: rows, count, page: +page, pageSize: size };
+  );
 }
 
 async function clickhouseQuery(
@@ -169,12 +122,9 @@ async function clickhouseQuery(
   propertyName: string,
   filters: QueryFilters,
   propertyFilters: PropertyFilter[] = [],
-): Promise<PageResult<SessionDataPivotRow[]>> {
+) {
   const { timezone = 'UTC' } = filters;
-  const { rawQuery, parseFilters, getPropertyFilterQuery, getDateStringSQL } = clickhouse;
-  const { page = 1, pageSize } = filters;
-  const size = +pageSize || DEFAULT_PAGE_SIZE;
-  const offset = +size * (+page - 1);
+  const { pagedRawQuery, parseFilters, getPropertyFilterQuery, getDateStringSQL } = clickhouse;
 
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
   const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(
@@ -183,38 +133,7 @@ async function clickhouseQuery(
     timezone,
   );
 
-  const countResult = (await rawQuery(
-    `
-    with filtered_sessions as (
-      select distinct website_event.session_id
-      from website_event
-      ${cohortQuery}
-      where website_event.website_id = {websiteId:UUID}
-        and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      ${filterQuery}
-      ${pfSQL}
-    ),
-    latest_session_properties as (
-      select
-        session_data.session_id as session_id,
-        session_data.data_key as data_key
-      from session_data final
-      join filtered_sessions
-        on filtered_sessions.session_id = session_data.session_id
-      where session_data.website_id = {websiteId:UUID}
-      group by
-        session_data.session_id,
-        session_data.data_key
-    )
-    select count() as num
-    from latest_session_properties
-    where latest_session_properties.data_key = {propertyName:String}
-    `,
-    { ...queryParams, websiteId, propertyName, ...pfParams },
-  )) as { num: number }[];
-  const count = countResult[0].num;
-
-  const data = (await rawQuery(
+  return pagedRawQuery(
     `
     with filtered_sessions as (
       select distinct website_event.session_id
@@ -249,8 +168,6 @@ async function clickhouseQuery(
         latest_session_properties.created_at as sort_created_at
       from latest_session_properties
       where latest_session_properties.data_key = {propertyName:String}
-      order by latest_session_properties.created_at desc
-      limit ${size} offset ${offset}
     )
     select
       latest_session_properties.session_id as sessionId,
@@ -274,8 +191,7 @@ async function clickhouseQuery(
     order by paged_sessions.sort_created_at desc
     `,
     { ...queryParams, websiteId, propertyName, ...pfParams },
+    filters,
     FUNCTION_NAME,
-  )) as SessionDataPivotRow[];
-
-  return { data, count, page: +page, pageSize: size };
+  );
 }

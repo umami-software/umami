@@ -1,3 +1,4 @@
+import { MAX_PAGING_RESULTS } from '@/lib/constants';
 import type { ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
 import { useDateParameters } from '../useDateParameters';
@@ -32,6 +33,7 @@ export function useWebsiteEventsQuery(
         ...filters,
         ...pageParams,
         eventType: EVENT_TYPES[params.view],
+        maxResults: MAX_PAGING_RESULTS,
       }),
     enabled: !!websiteId,
     ...options,

@@ -470,13 +470,15 @@ async function pagedRawQuery(
     .filter(n => n)
     .join('\n');
 
-  const count = await rawQuery(`select count(*) as num from (${query}) t`, queryParams).then(
-    res => res[0].num,
-  );
+  const { maxResults } = filters;
+  const countQuery = maxResults
+    ? `select count(*) as num from (select 1 from (${query}) t limit ${+maxResults}) t2`
+    : `select count(*) as num from (${query}) t`;
 
+  const count = await rawQuery(countQuery, queryParams).then(res => Number(res[0].num));
   const data = await rawQuery(`${query}${statements}`, queryParams, name);
 
-  return { data, count, page: +page, pageSize: size, orderBy };
+  return { data, count, page: +page, pageSize: size, orderBy, isCapped: !!maxResults && +count >= +maxResults };
 }
 
 function getSearchParameters(query: string, filters: Record<string, any>[]) {
