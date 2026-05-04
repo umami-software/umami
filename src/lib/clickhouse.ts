@@ -253,6 +253,10 @@ function getPropertyFilterQuery(
   const table = propertyType === 'event' ? 'event_data' : 'session_data final';
   const column = propertyType === 'event' ? 'event_id' : 'session_id';
   const outerColumn = propertyType === 'event' ? 'event_id' : 'website_event.session_id';
+  const dateFilter =
+    propertyType === 'event'
+      ? `and created_at between {startDate:DateTime64} and {endDate:DateTime64}`
+      : '';
 
   filters.forEach(({ propertyName, dataType, operator, value }, i) => {
     const keyParam = `pf_key_${i}`;
@@ -333,15 +337,26 @@ function getPropertyFilterQuery(
       }
     }
 
-    parts.push(`and ${outerColumn} in (
-      select ${column}
+    if (propertyType === 'session') {
+      parts.push(`and tuple(website_event.website_id, website_event.session_id) in (
+      select website_id, session_id
       from ${table}
       where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and data_key = {${keyParam}:String}
         and data_type = ${dataType}
         and ${condition}
     )`);
+    } else {
+      parts.push(`and ${outerColumn} in (
+      select ${column}
+      from ${table}
+      where website_id = {websiteId:UUID}
+        ${dateFilter}
+        and data_key = {${keyParam}:String}
+        and data_type = ${dataType}
+        and ${condition}
+    )`);
+    }
   });
 
   return { sql: parts.join('\n'), params };

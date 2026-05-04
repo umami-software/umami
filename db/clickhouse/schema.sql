@@ -90,6 +90,22 @@ ENGINE = ReplacingMergeTree
     ORDER BY (website_id, session_id, data_key)
     SETTINGS index_granularity = 8192;
 
+ALTER TABLE umami.session_data
+ADD PROJECTION session_data_property_filter_projection (
+    SELECT *
+    ORDER BY (
+        website_id,
+        data_key,
+        data_type,
+        string_value,
+        number_value,
+        date_value,
+        session_id
+    )
+);
+
+ALTER TABLE umami.session_data MATERIALIZE PROJECTION session_data_property_filter_projection;
+
 -- stats hourly
 CREATE TABLE umami.website_event_stats_hourly
 (

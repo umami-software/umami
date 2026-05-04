@@ -108,3 +108,19 @@ SELECT
     groupArrayState(data_type)
 FROM umami.session_data
 GROUP BY website_id, session_id, distinct_id;
+
+ALTER TABLE umami.session_data
+ADD PROJECTION session_data_property_filter_projection (
+    SELECT *
+    ORDER BY (
+        website_id,
+        data_key,
+        data_type,
+        string_value,
+        number_value,
+        date_value,
+        session_id
+    )
+);
+
+ALTER TABLE umami.session_data MATERIALIZE PROJECTION session_data_property_filter_projection;
