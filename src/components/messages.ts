@@ -6,6 +6,7 @@ export const labels: Record<string, string> = {
   cancel: 'label.cancel',
   continue: 'label.continue',
   delete: 'label.delete',
+  disconnect: 'label.disconnect',
   leave: 'label.leave',
   users: 'label.users',
   createUser: 'label.create-user',
@@ -383,6 +384,15 @@ export const labels: Record<string, string> = {
   duration: 'label.duration',
   recorded: 'label.recorded',
   upgrade: 'label.upgrade',
+  googleSearchConsole: 'label.google-search-console',
+  googleAccount: 'label.google-account',
+  searchTerms: 'label.search-terms',
+  connectWithGoogle: 'label.connect-with-google',
+  disconnectGoogleAccount: 'label.disconnect-google-account',
+  selectGscProperty: 'label.select-gsc-property',
+  impressions: 'label.impressions',
+  ctr: 'label.ctr',
+  position: 'label.position',
 };
 
 export const messages: Record<string, string> = {
@@ -433,4 +443,12 @@ export const messages: Record<string, string> = {
   notFound: 'message.not-found',
   serverError: 'message.sever-error',
   upgradeRequired: 'message.upgrade-required',
+  gscNotConfiguredPrompt: 'message.gsc-not-configured-prompt',
+  gscPropertyInstruction: 'message.gsc-property-instruction',
+  gscVerificationNote: 'message.gsc-verification-note',
+  gscConnectError: 'message.gsc-connect-error',
+  gscSavePropertyError: 'message.gsc-save-property-error',
+  gscDescription: 'message.gsc-description',
+  gscAccountDescription: 'message.gsc-account-description',
+  visitorsGscTooltip: 'message.visitors-gsc-tooltip',
 };

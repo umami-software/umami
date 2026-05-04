@@ -1,4 +1,4 @@
-import { Column, Grid, Row, Text } from '@umami/react-zen';
+import {Column, Focusable, Grid, Row, Text, Tooltip, TooltipTrigger} from '@umami/react-zen';
 import { useSpring, useTransform } from 'motion/react';
 import { type ReactNode, useEffect } from 'react';
 import { List, type RowComponentProps } from 'react-window';
@@ -6,6 +6,7 @@ import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { Empty } from '@/components/common/Empty';
 import { useMessages, useMobile } from '@/components/hooks';
 import { formatLongNumber } from '@/lib/format';
+import { Info } from 'lucide-react';
 
 const ITEM_SIZE = 30;
 
@@ -16,9 +17,10 @@ interface ListData {
 }
 
 export interface ListTableProps {
-  data?: ListData[];
+  data?: Array<ListData>;
   title?: string;
   metric?: string;
+  metricToolTip?: string;
   className?: string;
   renderLabel?: (data: ListData, index: number) => ReactNode;
   renderChange?: (data: ListData, index: number) => ReactNode;
@@ -33,6 +35,7 @@ export function ListTable({
   data = [],
   title,
   metric,
+  metricToolTip,
   renderLabel,
   renderChange,
   animate = true,
@@ -75,9 +78,7 @@ export function ListTable({
         columns={'1fr 100px'}
       >
         <Text weight="bold">{title}</Text>
-        <Text weight="bold" align="center">
-          {metric}
-        </Text>
+        <MetricColumn metric={metric} metricToolTip={metricToolTip} />
       </Grid>
       <Column gap="1">
         {data?.length === 0 && <Empty />}
@@ -97,6 +98,36 @@ export function ListTable({
     </Column>
   );
 }
+
+const MetricColumnLabel = ({ label }: { label?: ListTableProps['metric'] }) => (
+  <Text weight="bold" align="center">
+    {label}
+  </Text>
+);
+
+const MetricColumn = ({
+  metric,
+  metricToolTip,
+}: {
+  metric?: ListTableProps['metric'];
+  metricToolTip?: ListTableProps['metricToolTip'];
+}) => {
+  if (metricToolTip) {
+    return (
+      <Row gap="1" alignItems="center" justifyContent="center">
+        <MetricColumnLabel label={metric} />
+        <TooltipTrigger delay={0}>
+          <Focusable>
+            <Info size={16} />
+          </Focusable>
+          <Tooltip>{metricToolTip}</Tooltip>
+        </TooltipTrigger>
+      </Row>
+    );
+  }
+
+  return <MetricColumnLabel label={metric} />;
+};
 
 const AnimatedRow = ({
   label,

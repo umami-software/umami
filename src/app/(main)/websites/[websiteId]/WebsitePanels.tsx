@@ -1,10 +1,12 @@
 import { Grid, Heading, Row, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { useEffect, useState } from 'react';
 import { GridRow } from '@/components/common/GridRow';
 import { Panel } from '@/components/common/Panel';
-import { useMessages, useMobile } from '@/components/hooks';
+import { useGoogleDomain, useMessages, useMobile } from '@/components/hooks';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { WeeklyTraffic } from '@/components/metrics/WeeklyTraffic';
 import { WorldMap } from '@/components/metrics/WorldMap';
+import { WebsiteSearchTerms } from './WebsiteSearchTerms';
 
 export function WebsitePanels({ websiteId }: { websiteId: string }) {
   const { t, labels } = useMessages();
@@ -17,6 +19,20 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
   };
   const rowProps = { minHeight: '570px' };
   const { isMobile } = useMobile();
+
+  const googleDomain = useGoogleDomain();
+
+  const [sourcesTab, setSourcesTab] = useState<string | number>(
+    googleDomain ? 'searchTerms' : 'referrer',
+  );
+
+  useEffect(() => {
+    if (googleDomain) {
+      setSourcesTab('searchTerms');
+    } else {
+      setSourcesTab(prev => (prev === 'searchTerms' ? 'referrer' : prev));
+    }
+  }, [googleDomain]);
 
   return (
     <Grid gap="3">
@@ -42,11 +58,17 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
         </Panel>
         <Panel>
           <Heading size="2xl">{t(labels.sources)}</Heading>
-          <Tabs>
+          <Tabs selectedKey={sourcesTab} onSelectionChange={key => setSourcesTab(key)}>
             <TabList>
+              {googleDomain && <Tab id="searchTerms">{t(labels.searchTerms)}</Tab>}
               <Tab id="referrer">{t(labels.referrers)}</Tab>
               <Tab id="channel">{t(labels.channels)}</Tab>
             </TabList>
+            {googleDomain && (
+              <TabPanel id="searchTerms">
+                <WebsiteSearchTerms websiteId={websiteId} googleDomain={googleDomain} />
+              </TabPanel>
+            )}
             <TabPanel id="referrer">
               <MetricsTable type="referrer" title={t(labels.referrer)} {...tableProps} />
             </TabPanel>

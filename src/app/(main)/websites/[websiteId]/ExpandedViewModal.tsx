@@ -1,13 +1,15 @@
 import { Dialog, Modal } from '@umami/react-zen';
+import { useEffect } from 'react';
 import { WebsiteExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedView';
-import { useMobile, useNavigation } from '@/components/hooks';
+import { WebsiteSearchTermsExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteSearchTermsExpandedView';
+import { useGoogleDomain, useMobile, useNavigation } from '@/components/hooks';
 
 export function ExpandedViewModal({
   websiteId,
   excludedIds,
 }: {
   websiteId: string;
-  excludedIds?: string[];
+  excludedIds?: Array<string>;
 }) {
   const {
     router,
@@ -15,6 +17,7 @@ export function ExpandedViewModal({
     updateParams,
   } = useNavigation();
   const { isMobile } = useMobile();
+  const googleDomain = useGoogleDomain();
 
   const handleClose = (close: () => void) => {
     router.push(updateParams({ view: undefined }));
@@ -27,6 +30,16 @@ export function ExpandedViewModal({
     }
   };
 
+  useEffect(() => {
+    if (view === 'searchTerms' && !googleDomain) {
+      router.replace(updateParams({ view: undefined }));
+    }
+  }, [view, googleDomain, router, updateParams]);
+
+  if (view === 'searchTerms' && !googleDomain) {
+    return null;
+  }
+
   return (
     <Modal isOpen={!!view} onOpenChange={handleOpenChange} isDismissable>
       <Dialog
@@ -38,6 +51,15 @@ export function ExpandedViewModal({
         }}
       >
         {({ close }) => {
+          if (view === 'searchTerms' && googleDomain) {
+            return (
+              <WebsiteSearchTermsExpandedView
+                websiteId={websiteId}
+                googleDomain={googleDomain}
+                onClose={() => handleClose(close)}
+              />
+            );
+          }
           return (
             <WebsiteExpandedView
               websiteId={websiteId}
