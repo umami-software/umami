@@ -3,7 +3,7 @@ import { DistributionBarChart } from '@/components/charts/DistributionBarChart';
 import { Empty } from '@/components/common/Empty';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useMobile, useSessionDataActivityStatsQuery } from '@/components/hooks';
-import { formatLongNumber, formatShortTime } from '@/lib/format';
+import { formatLongNumber } from '@/lib/format';
 import type { PropertyFilter } from '@/lib/types';
 import { Column, DataColumn, DataTable, Grid, Row, Text } from '@umami/react-zen';
 import { useMemo } from 'react';
@@ -122,16 +122,6 @@ export function SessionPropertyChart({
                       </DataColumn>
                       <DataColumn id="events" label={t(labels.events)} align="end" width="90px">
                         {row => formatLongNumber(row.events)}
-                      </DataColumn>
-                      <DataColumn
-                        id="duration"
-                        label={t(labels.duration)}
-                        align="end"
-                        width="120px"
-                      >
-                        {row =>
-                          formatShortTime(Math.abs(~~Number(row.totaltime)), ['h', 'm', 's'], ' ')
-                        }
                       </DataColumn>
                     </DataTable>
                   </Column>

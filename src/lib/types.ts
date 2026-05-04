@@ -96,7 +96,6 @@ export interface PropertyLeaderboardRow {
   visits: number;
   views: number;
   events: number;
-  totaltime: number;
 }
 
 export interface QueryOptions {
