@@ -97,10 +97,6 @@ async function clickhouseQuery(websiteId: string, column: string, filters: Query
   }
 
   if (search) {
-    searchQuery = `and positionCaseInsensitive(${column}, {search:String}) > 0`;
-  }
-
-  if (search) {
     if (decodeURIComponent(search).includes(',')) {
       searchQuery = `AND (${decodeURIComponent(search)
         .split(',')
