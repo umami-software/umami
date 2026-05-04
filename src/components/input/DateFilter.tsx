@@ -1,10 +1,9 @@
 import { Dialog, ListItem, ListSeparator, Modal, Select, type SelectProps } from '@umami/react-zen';
-import { endOfYear } from 'date-fns';
 import { Fragment, type Key, useState } from 'react';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { useMessages, useMobile } from '@/components/hooks';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
-import { parseDateRange } from '@/lib/date';
+import { getMaxSelectableDate, parseDateRange } from '@/lib/date';
 
 export interface DateFilterProps extends SelectProps {
   value?: string;
@@ -129,7 +128,7 @@ export function DateFilter({
               startDate={startDate}
               endDate={endDate}
               minDate={new Date(2000, 0, 1)}
-              maxDate={endOfYear(new Date())}
+              maxDate={getMaxSelectableDate()}
               onChange={handlePickerChange}
               onClose={() => setShowPicker(false)}
             />

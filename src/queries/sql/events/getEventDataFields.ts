@@ -13,7 +13,7 @@ export async function getEventDataFields(...args: [websiteId: string, filters: Q
 }
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
-  const { rawQuery, parseFilters, getDateSQL } = prisma;
+  const { rawQuery, parseFilters } = prisma;
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
@@ -24,11 +24,6 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     select
       data_key as "propertyName",
       data_type as "dataType",
-      case 
-        when data_type = 2 then replace(string_value, '.0000', '') 
-        when data_type = 4 then ${getDateSQL('date_value', 'hour')} 
-        else string_value
-      end as "value",
       count(*) as "total"
     from event_data
     join website_event on website_event.event_id = event_data.website_event_id
@@ -39,9 +34,8 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     where event_data.website_id = {{websiteId::uuid}}
       and event_data.created_at between {{startDate}} and {{endDate}}
     ${filterQuery}
-    group by data_key, data_type, value
-    order by 2 desc
-    limit 100
+    group by data_key, data_type
+    order by "total" desc, "propertyName" asc
     `,
     queryParams,
     FUNCTION_NAME,
@@ -51,7 +45,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
-): Promise<{ propertyName: string; dataType: number; propertyValue: string; total: number }[]> {
+): Promise<{ propertyName: string; dataType: number; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
 
@@ -60,13 +54,10 @@ async function clickhouseQuery(
     select
       data_key as propertyName,
       data_type as dataType,
-      multiIf(data_type = 2, replaceAll(string_value, '.0000', ''),
-              data_type = 4, toString(date_trunc('hour', date_value)),
-              string_value) as "value",
       count(*) as "total"
     from event_data
     any left join (
-          select * 
+          select *
           from website_event
           where website_id = {websiteId:UUID}
             and created_at between {startDate:DateTime64} and {endDate:DateTime64}
@@ -78,9 +69,8 @@ async function clickhouseQuery(
     where event_data.website_id = {websiteId:UUID}
       and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
     ${filterQuery}
-    group by data_key, data_type, value
-    order by 2 desc
-    limit 100
+    group by data_key, data_type
+    order by total desc, propertyName asc
     `,
     queryParams,
     FUNCTION_NAME,

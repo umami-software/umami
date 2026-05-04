@@ -1,3 +1,4 @@
+import { MAX_PAGING_RESULTS } from '@/lib/constants';
 import { useApi } from '../useApi';
 import { useDateParameters } from '../useDateParameters';
 import { useFilterParameters } from '../useFilterParameters';
@@ -24,7 +25,7 @@ export function useReplaysQuery(websiteId: string, params?: Record<string, strin
         ...filters,
         ...pageParams,
         ...params,
-        pageSize: 20,
+        maxResults: MAX_PAGING_RESULTS,
       });
     },
   });
