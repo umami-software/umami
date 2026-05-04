@@ -475,9 +475,9 @@ function getSearchParameters(query: string, filters: Record<string, any>[]) {
       [key]:
         typeof value === 'string'
           ? {
-              [value]: query,
-              mode: 'insensitive',
-            }
+            [value]: query,
+            mode: 'insensitive',
+          }
           : parseFilter(value),
     };
   };
@@ -518,7 +518,10 @@ function getClient() {
 
   const schema = getSchema();
 
-  const baseAdapter = new PrismaPg({ connectionString: url }, { schema });
+  console.log(schema, replicaUrl, url, 'replica adapter');
+
+
+  const baseAdapter = new PrismaPg({ connectionString: url }, schema ? { schema } : {});
 
   const baseClient = new PrismaClient({
     adapter: baseAdapter,
@@ -536,7 +539,7 @@ function getClient() {
     return baseClient;
   }
 
-  const replicaAdapter = new PrismaPg({ connectionString: replicaUrl }, { schema });
+  const replicaAdapter = new PrismaPg({ connectionString: replicaUrl }, schema ? { schema } : {});
 
   const replicaClient = new PrismaClient({
     adapter: replicaAdapter,

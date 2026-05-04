@@ -216,6 +216,10 @@ export const ROLE_PERMISSIONS = {
   [ROLES.teamViewOnly]: [],
 } as const;
 
+export const BILLING_PROVIDER_TYPES = {
+  stripe: 'stripe',
+};
+
 export const THEME_COLORS = {
   light: {
     primary: '#2680eb',

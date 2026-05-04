@@ -415,7 +415,7 @@ model BillingInvoice {
   periodMonths     Int      @map("period_months") @db.Integer
   mrrCents         Int      @map("mrr_cents") @db.Integer
 
-  billingProvider BillingProvider @relation(fields: [providerId], references: [id])
+  billingProvider Billing @relation(fields: [providerId], references: [id])
 
   @@index([providerId])
   @@index([invoiceId])
@@ -425,21 +425,23 @@ model BillingInvoice {
   @@map("billing_invoice")
 }
 
-model BillingProvider {
-  id         String   @id @default(uuid()) @map("billing_provider_id") @db.Uuid
-  provider   String   @db.VarChar(50)
-  userId     String?  @map("user_id") @db.Uuid
-  teamId     String?  @map("team_id") @db.Uuid
-  apiKey     String   @map("api_key") @db.Text
-  syncCursor String?  @map("sync_cursor") @db.VarChar(255)
-  syncStatus String   @default("idle") @map("sync_status") @db.VarChar(20)
-  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+model Billing {
+  id         String    @id @default(uuid()) @map("billing_id") @db.Uuid
+  name       String    @db.VarChar(100)
+  provider   String    @db.VarChar(50)
+  userId     String?   @map("user_id") @db.Uuid
+  teamId     String?   @map("team_id") @db.Uuid
+  apiKey     String    @map("api_key") @db.Text
+  syncCursor String?   @map("sync_cursor") @db.VarChar(255)
+  syncStatus String    @default("idle") @map("sync_status") @db.VarChar(20)
+  lastRunAt  DateTime? @map("last_run_at") @db.Timestamptz(6)
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime? @map("updated_at") @db.Timestamptz(6)
 
   invoices BillingInvoice[]
 
-  @@unique([provider, userId])
-  @@unique([provider, teamId])
+  @@unique([name, userId])
+  @@unique([name, teamId])
   @@index([userId])
   @@index([teamId])
   @@map("billing_provider")

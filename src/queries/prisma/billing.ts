@@ -1,62 +1,121 @@
-import type Stripe from 'stripe';
+import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
 
-export const STALE_RUNNING_MS = 2 * 60 * 1000;
+const db = () => (prisma.client as any).billing;
 
-// Upsert a batch of invoice line items into billing_invoice.
-export async function upsertInvoiceBatch(
-  invoices: Stripe.Invoice[],
-  providerId: string,
-): Promise<void> {
-  const db = prisma.client as any;
-
-  for (const invoice of invoices) {
-    const customerId = invoice.customer as string;
-    const invoiceStatus = invoice.status ?? 'unknown';
-    const invoicePeriodEnd = new Date(invoice.period_end * 1000);
-
-    for (const line of (invoice.lines as any).data) {
-      const usageType = line.pricing?.price_details?.price?.recurring?.usage_type;
-      const lineType: string | null =
-        usageType === 'licensed'
-          ? 'licensed'
-          : usageType === 'metered'
-            ? 'metered'
-            : usageType == null && line.amount != null
-              ? 'one_time'
-              : null;
-
-      if (!lineType) continue;
-
-      const periodMonths = Math.max(
-        1,
-        Math.round((line.period.end - line.period.start) / (86400 * 30.44)),
-      );
-
-      await db.billingInvoice.upsert({
-        where: { id: line.id },
-        create: {
-          id: line.id,
-          providerId,
-          invoiceId: invoice.id,
-          customerId,
-          invoiceStatus,
-          invoicePeriodEnd,
-          usageType: lineType,
-          amountCents: line.amount,
-          periodStart: new Date(line.period.start * 1000),
-          periodEnd: new Date(line.period.end * 1000),
-          periodMonths,
-          mrrCents: Math.round(line.amount / periodMonths),
-        },
-        update: {
-          invoiceStatus,
-          invoicePeriodEnd,
-          amountCents: line.amount,
-          usageType: lineType,
-          mrrCents: Math.round(line.amount / periodMonths),
-        },
-      });
-    }
-  }
+function maskKey(apiKey: string): string {
+  // Show last 4 chars: sk_live_****abcd
+  return apiKey.length > 4 ? `****${apiKey.slice(-4)}` : '****';
 }
+
+export async function getBillingByUser(userId: string, provider: string) {
+  return db().findUnique({
+    where: { provider_userId: { provider, userId } },
+  });
+}
+
+export async function getBillingByTeam(teamId: string, provider: string) {
+  return db().findUnique({
+    where: { provider_teamId: { provider, teamId } },
+  });
+}
+
+export async function upsertBillingForUser(
+  userId: string,
+  provider: string,
+  name: string,
+  encryptedKey: string,
+) {
+  return db().upsert({
+    where: { provider_userId: { provider, userId } },
+    create: { id: uuid(), name, provider, userId, apiKey: encryptedKey, updatedAt: new Date() },
+    update: { name, apiKey: encryptedKey, updatedAt: new Date() },
+  });
+}
+
+export async function upsertBillingForTeam(
+  teamId: string,
+  provider: string,
+  name: string,
+  encryptedKey: string,
+) {
+  return db().upsert({
+    where: { provider_teamId: { provider, teamId } },
+    create: { id: uuid(), name, provider, teamId, apiKey: encryptedKey, updatedAt: new Date() },
+    update: { name, apiKey: encryptedKey, updatedAt: new Date() },
+  });
+}
+
+export async function deleteBillingByUser(userId: string, provider: string) {
+  return db().delete({
+    where: { provider_userId: { provider, userId } },
+  });
+}
+
+export async function deleteBillingByTeam(teamId: string, provider: string) {
+  return db().delete({
+    where: { provider_teamId: { provider, teamId } },
+  });
+}
+
+export async function getBillingById(id: string) {
+  return db().findUnique({ where: { id } });
+}
+
+export async function updateBillingSync(
+  id: string,
+  data: { syncStatus: string; syncCursor?: string | null; lastRunAt?: Date | null },
+) {
+  return db().update({ where: { id }, data });
+}
+
+export async function getBillingSyncStatuses() {
+  return db().findMany({
+    select: {
+      id: true,
+      provider: true,
+      userId: true,
+      teamId: true,
+      syncStatus: true,
+      syncCursor: true,
+      updatedAt: true,
+    },
+  });
+}
+
+const providerSelect = {
+  id: true,
+  name: true,
+  provider: true,
+  userId: true,
+  teamId: true,
+  syncStatus: true,
+  syncCursor: true,
+  lastRunAt: true,
+  createdAt: true,
+  updatedAt: true,
+};
+
+export async function getBillingsPage(
+  where: Record<string, any> = {},
+  filters?: Record<string, any>,
+) {
+  return prisma.pagedQuery(
+    'billing',
+    { where, select: providerSelect },
+    { orderBy: 'createdAt', sortDescending: true, ...filters },
+  );
+}
+
+export async function updateBilling(
+  id: string,
+  data: { name?: string; apiKey?: string; provider?: string },
+) {
+  return db().update({ where: { id }, data: { ...data, updatedAt: new Date() } });
+}
+
+export async function deleteBillingById(id: string) {
+  return db().delete({ where: { id } });
+}
+
+export { maskKey };

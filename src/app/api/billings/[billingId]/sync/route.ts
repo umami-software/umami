@@ -1,24 +1,20 @@
-import { NextResponse } from 'next/server';
-import Stripe from 'stripe';
 import { decrypt, secret } from '@/lib/crypto';
 import { fetchInvoicePageBackfill, fetchInvoicePageIncremental } from '@/lib/stripe';
-import { getBillingProviderById, updateBillingProviderSync } from '@/queries/prisma';
-import { STALE_RUNNING_MS, upsertInvoiceBatch } from '@/queries/prisma/billing';
+import { getBillingById, updateBillingSync } from '@/queries/prisma';
+import { STALE_RUNNING_MS, upsertInvoiceBatch } from '@/queries/prisma/billingInvoice';
+import { NextResponse } from 'next/server';
+import Stripe from 'stripe';
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
+export async function POST(
+  request: Request,
+  { params }: { params: Promise<{ billingId: string }> },
+) {
+  const { billingId } = await params;
+  const { mode: rawMode } = await request.json();
+  const mode = rawMode === 'full' ? 'full' : 'batch';
 
-  // keyId identifies which BillingProvider (i.e. which owner) to sync.
-  // mode=full  — fetch all pages in one request (self-hosted, no timeout concern)
-  // mode=batch — fetch one page and return; caller re-invokes (Vercel / default)
-  const keyId = searchParams.get('keyId');
-  const mode = searchParams.get('mode') === 'full' ? 'full' : 'batch';
+  const keyRow = await getBillingById(billingId);
 
-  if (!keyId) {
-    return NextResponse.json({ error: 'keyId is required' }, { status: 400 });
-  }
-
-  const keyRow = await getBillingProviderById(keyId);
   if (!keyRow) {
     return NextResponse.json({ error: 'API key not found' }, { status: 404 });
   }
@@ -31,7 +27,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ skipped: true, reason: 'already running' }, { status: 409 });
   }
 
-  await updateBillingProviderSync(keyId, { syncStatus: 'running' });
+  await updateBillingSync(billingId, { syncStatus: 'running' });
 
   // Decrypt the API key and create a scoped Stripe client
   const rawApiKey = decrypt(keyRow.apiKey, secret());
@@ -42,7 +38,6 @@ export async function GET(request: Request) {
     let processed = 0;
     let lastCursor: string | null = keyRow.syncCursor ?? null;
 
-    // If backfilling, always fetch in batch mode to avoid partial syncs. Otherwise, follow the requested mode.
     if (mode === 'full') {
       let hasMore = true;
       while (hasMore) {
@@ -50,7 +45,7 @@ export async function GET(request: Request) {
           ? await fetchInvoicePageBackfill(stripe, lastCursor)
           : await fetchInvoicePageIncremental(stripe);
 
-        await upsertInvoiceBatch(page.data, keyId);
+        await upsertInvoiceBatch(page.data, billingId);
 
         processed += page.data.length;
         hasMore = page.has_more;
@@ -59,7 +54,11 @@ export async function GET(request: Request) {
         if (!isBackfilling) break;
       }
 
-      await updateBillingProviderSync(keyId, { syncStatus: 'idle', syncCursor: null });
+      await updateBillingSync(billingId, {
+        syncStatus: 'idle',
+        syncCursor: null,
+        lastRunAt: new Date(),
+      });
 
       return NextResponse.json({ processed, hasMore: false, cursor: null, status: 'idle' });
     } else {
@@ -67,13 +66,17 @@ export async function GET(request: Request) {
         ? await fetchInvoicePageBackfill(stripe, lastCursor)
         : await fetchInvoicePageIncremental(stripe);
 
-      await upsertInvoiceBatch(page.data, keyId);
+      await upsertInvoiceBatch(page.data, billingId);
 
       const nextCursor =
         page.has_more && page.data.length > 0 ? page.data[page.data.length - 1].id : null;
       const nextStatus = page.has_more ? 'backfilling' : 'idle';
 
-      await updateBillingProviderSync(keyId, { syncStatus: nextStatus, syncCursor: nextCursor });
+      await updateBillingSync(billingId, {
+        syncStatus: nextStatus,
+        syncCursor: nextCursor,
+        ...(nextStatus === 'idle' && { lastRunAt: new Date() }),
+      });
 
       return NextResponse.json({
         processed: page.data.length,
@@ -83,7 +86,7 @@ export async function GET(request: Request) {
       });
     }
   } catch (err) {
-    await updateBillingProviderSync(keyId, { syncStatus: 'idle' });
+    await updateBillingSync(billingId, { syncStatus: 'idle' });
     throw err;
   }
 }
