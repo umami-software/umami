@@ -74,7 +74,7 @@ export function SessionPropertyChart({
             <Empty />
           )}
         </Column>
-        <Column minHeight="400px">
+        <Column>
           <Grid columns="1fr" gap padding="2" alignItems="start">
             <Column gap padding="2">
               {activeTable.length === 0 ? (
@@ -97,7 +97,12 @@ export function SessionPropertyChart({
                 <Column overflow="auto" minHeight="0">
                   <Column style={{ minWidth: '700px' }}>
                     <DataTable data={activeTable}>
-                      <DataColumn id="label" label={propertyName} width="minmax(220px, 2fr)" align="start">
+                      <DataColumn
+                        id="label"
+                        label={propertyName}
+                        width="minmax(220px, 2fr)"
+                        align="start"
+                      >
                         {row => (
                           <Row overflow="hidden">
                             <Text truncate style={{ maxWidth: '320px' }}>
@@ -118,7 +123,12 @@ export function SessionPropertyChart({
                       <DataColumn id="events" label={t(labels.events)} align="end" width="90px">
                         {row => formatLongNumber(row.events)}
                       </DataColumn>
-                      <DataColumn id="duration" label={t(labels.duration)} align="end" width="120px">
+                      <DataColumn
+                        id="duration"
+                        label={t(labels.duration)}
+                        align="end"
+                        width="120px"
+                      >
                         {row =>
                           formatShortTime(Math.abs(~~Number(row.totaltime)), ['h', 'm', 's'], ' ')
                         }
