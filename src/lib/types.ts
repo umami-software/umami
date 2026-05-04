@@ -157,6 +157,7 @@ export interface SortParams {
 export interface PageParams {
   page?: number;
   pageSize?: number;
+  maxResults?: number;
 }
 
 export interface SegmentParams {
@@ -172,6 +173,7 @@ export interface PageResult<T> {
   orderBy?: string;
   sortDescending?: boolean;
   search?: string;
+  isCapped?: boolean;
 }
 
 export interface RealtimeData {
