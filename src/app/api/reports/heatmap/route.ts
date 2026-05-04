@@ -1,10 +1,14 @@
 import { parseRequest, setWebsiteDate } from '@/lib/request';
-import { json, unauthorized } from '@/lib/response';
+import { forbidden, json, unauthorized } from '@/lib/response';
 import { reportResultSchema } from '@/lib/schema';
 import { canViewWebsite } from '@/permissions';
 import { getHeatmap, type HeatmapParameters } from '@/queries/sql';
 
 export async function POST(request: Request) {
+  if (!process.env.UMAMI_SELF_RECORD) {
+    return forbidden({ message: 'Heatmap recording is disabled.' });
+  }
+
   const { auth, body, error } = await parseRequest(request, reportResultSchema);
 
   if (error) {

@@ -11,12 +11,14 @@ import {
   Video,
 } from '@/components/icons';
 import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import { useConfig } from './useConfig';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
 
 export function useWebsiteNavItems(websiteId: string) {
   const { t, labels } = useMessages();
   const { pathname, renderUrl } = useNavigation();
+  const config = useConfig();
 
   const renderPath = (path: string) =>
     renderUrl(`/websites/${websiteId}${path}`, {
@@ -108,12 +110,16 @@ export function useWebsiteNavItems(websiteId: string) {
           icon: <Video />,
           path: renderPath('/replays'),
         },
-        {
-          id: 'heatmaps',
-          label: t(labels.heatmaps),
-          icon: <Flame />,
-          path: renderPath('/heatmaps'),
-        },
+        ...(config?.selfRecordEnabled
+          ? [
+              {
+                id: 'heatmaps',
+                label: t(labels.heatmaps),
+                icon: <Flame />,
+                path: renderPath('/heatmaps'),
+              },
+            ]
+          : []),
       ],
     },
     {
