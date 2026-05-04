@@ -1,14 +1,14 @@
+import { CLICKHOUSE } from '@/lib/db';
 import { type ClickHouseClient, createClient } from '@clickhouse/client';
 import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
-import { CLICKHOUSE } from '@/lib/db';
-import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from './constants';
+import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from './constants';
 import { filtersObjectToArray } from './params';
-import type { QueryFilters, QueryOptions } from './types';
+import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   utc: '%Y-%m-%dT%H:%i:%SZ',
-  second: '%Y-%m-%d %H:%i:%S',
+  second: '%Y-%m-%dT%H:%i:%S',
   minute: '%Y-%m-%d %H:%i:00',
   hour: '%Y-%m-%d %H:00:00',
   day: '%Y-%m-%d',
@@ -18,10 +18,19 @@ export const CLICKHOUSE_DATE_FORMATS = {
 
 const log = debug('umami:clickhouse');
 
+const EQUALITY_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
+const REGEX_OPERATORS: Operator[] = [OPERATORS.regex, OPERATORS.notRegex];
+
 let clickhouse: ClickHouseClient;
 const enabled = Boolean(process.env.CLICKHOUSE_URL);
 
 function getClient() {
+  const clickhouseUrl = process.env.CLICKHOUSE_URL;
+
+  if (!clickhouseUrl) {
+    throw new Error('CLICKHOUSE_URL is not set.');
+  }
+
   const {
     hostname,
     port,
@@ -29,7 +38,7 @@ function getClient() {
     protocol,
     username = 'default',
     password,
-  } = new URL(process.env.CLICKHOUSE_URL);
+  } = new URL(clickhouseUrl);
 
   const client = createClient({
     url: `${protocol}//${hostname}:${port}`,
@@ -70,13 +79,7 @@ function getSearchSQL(column: string, param: string = 'search'): string {
   return `and positionCaseInsensitive(${column}, {${param}:String}) > 0`;
 }
 
-function mapFilter(
-  column: string,
-  operator: string,
-  name: string,
-  type: string = 'String',
-  paramName?: string,
-) {
+function mapFilter(column: string, operator: Operator, name: string, type: string = 'String', paramName?: string) {
   const param = paramName ?? name;
   const value = `{${param}:${type}}`;
 
@@ -210,7 +213,7 @@ function getQueryParams(filters: Record<string, any>) {
 
       const key = paramName ?? name;
 
-      obj[key] = ([OPERATORS.equals, OPERATORS.notEquals] as string[]).includes(operator)
+      obj[key] = EQUALITY_OPERATORS.includes(operator)
         ? Array.isArray(value)
           ? value
           : [value]
@@ -233,6 +236,130 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
     cohortQuery: getCohortQuery(cohortFilters),
     excludeBounceQuery: getExcludeBounceQuery(filters),
   };
+}
+
+function getPropertyFilterQuery(
+  filters: PropertyFilter[] = [],
+  propertyType: 'event' | 'session' = 'event',
+  timezone?: string,
+): {
+  sql: string;
+  params: Record<string, any>;
+} {
+  if (!filters.length) return { sql: '', params: {} };
+
+  const parts: string[] = [];
+  const params: Record<string, any> = {};
+  const table = propertyType === 'event' ? 'event_data' : 'session_data final';
+  const column = propertyType === 'event' ? 'event_id' : 'session_id';
+  const outerColumn = propertyType === 'event' ? 'event_id' : 'website_event.session_id';
+  const dateFilter =
+    propertyType === 'event'
+      ? `and created_at between {startDate:DateTime64} and {endDate:DateTime64}`
+      : '';
+
+  filters.forEach(({ propertyName, dataType, operator, value }, i) => {
+    const keyParam = `pf_key_${i}`;
+    const valParam = `pf_val_${i}`;
+    params[keyParam] = propertyName;
+
+    let condition: string;
+    switch (dataType) {
+      case DATA_TYPE.number: {
+        const col = 'number_value';
+        params[valParam] = parseFloat(value) || 0;
+        const opMap: Record<string, string> = {
+          [OPERATORS.equals]: `${col} = {${valParam}:Float64}`,
+          [OPERATORS.notEquals]: `${col} != {${valParam}:Float64}`,
+          [OPERATORS.greaterThan]: `${col} > {${valParam}:Float64}`,
+          [OPERATORS.lessThan]: `${col} < {${valParam}:Float64}`,
+          [OPERATORS.greaterThanEquals]: `${col} >= {${valParam}:Float64}`,
+          [OPERATORS.lessThanEquals]: `${col} <= {${valParam}:Float64}`,
+        };
+        condition = opMap[operator] ?? `${col} = {${valParam}:Float64}`;
+        break;
+      }
+      case DATA_TYPE.date: {
+        if (!value) return;
+        params[valParam] = value;
+        const dateCol = timezone
+          ? `toDate(toTimezone(date_value, {timezone:String}))`
+          : `toDate(toTimezone(date_value, 'UTC'))`;
+        const opMap: Record<string, string> = {
+          [OPERATORS.before]: `${dateCol} < {${valParam}:Date}`,
+          [OPERATORS.after]: `${dateCol} > {${valParam}:Date}`,
+        };
+        condition = opMap[operator] ?? `${dateCol} = {${valParam}:Date}`;
+        break;
+      }
+      case DATA_TYPE.array: {
+        if (!value) return;
+        params[valParam] = value;
+        condition =
+          operator === OPERATORS.contains
+            ? `has(JSONExtract(ifNull(string_value, '[]'), 'Array(String)'), {${valParam}:String})`
+            : `not has(JSONExtract(ifNull(string_value, '[]'), 'Array(String)'), {${valParam}:String})`;
+        break;
+      }
+      default: {
+        const col = 'string_value';
+
+        if (EQUALITY_OPERATORS.includes(operator)) {
+          const vals = value.split(',').filter(Boolean);
+          if (!vals.length) return;
+          params[valParam] = vals;
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.equals ? OPERATORS.equals : OPERATORS.notEquals,
+            valParam,
+            'String',
+          );
+        } else if (REGEX_OPERATORS.includes(operator)) {
+          if (!value) return;
+          params[valParam] = value;
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.regex ? OPERATORS.regex : OPERATORS.notRegex,
+            valParam,
+            'String',
+          );
+        } else {
+          if (!value) return;
+          params[valParam] = value;
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.contains ? OPERATORS.contains : OPERATORS.doesNotContain,
+            valParam,
+            'String',
+          );
+        }
+        break;
+      }
+    }
+
+    if (propertyType === 'session') {
+      parts.push(`and tuple(website_event.website_id, website_event.session_id) in (
+      select website_id, session_id
+      from ${table}
+      where website_id = {websiteId:UUID}
+        and data_key = {${keyParam}:String}
+        and data_type = ${dataType}
+        and ${condition}
+    )`);
+    } else {
+      parts.push(`and ${outerColumn} in (
+      select ${column}
+      from ${table}
+      where website_id = {websiteId:UUID}
+        ${dateFilter}
+        and data_key = {${keyParam}:String}
+        and data_type = ${dataType}
+        and ${condition}
+    )`);
+    }
+  });
+
+  return { sql: parts.join('\n'), params };
 }
 
 async function pagedRawQuery(
@@ -306,7 +433,7 @@ async function findFirst(data: any[]) {
 
 async function connect() {
   if (enabled && !clickhouse) {
-    clickhouse = process.env.CLICKHOUSE_URL && (globalThis[CLICKHOUSE] || getClient());
+    clickhouse = globalThis[CLICKHOUSE] || getClient();
   }
 
   return clickhouse;
@@ -321,6 +448,7 @@ export default {
   getDateSQL,
   getSearchSQL,
   getFilterQuery,
+  getPropertyFilterQuery,
   getUTCString,
   parseFilters,
   pagedRawQuery,

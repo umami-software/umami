@@ -11,7 +11,7 @@ export function useResultQuery<T = any>(
   const { websiteId, ...parameters } = params;
   const { post, useQuery } = useApi();
   const { startDate, endDate, timezone, unit } = useDateParameters();
-  const filters = useFilterParameters();
+  const filters = useFilterParameters({ includePagination: false });
 
   return useQuery<T>({
     queryKey: [
