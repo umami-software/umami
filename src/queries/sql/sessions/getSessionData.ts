@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 
 const FUNCTION_NAME = 'getSessionData';
@@ -7,6 +8,7 @@ const FUNCTION_NAME = 'getSessionData';
 export async function getSessionData(...args: [websiteId: string, sessionId: string]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -55,6 +57,30 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
     order by data_key asc
     `,
     { websiteId, sessionId },
+    FUNCTION_NAME,
+  );
+}
+
+async function oceanbaseQuery(websiteId: string, sessionId: string) {
+  const { rawQuery } = oceanbase;
+
+  return rawQuery(
+    `
+    SELECT
+        website_id AS websiteId,
+        session_id AS sessionId,
+        data_key AS dataKey,
+        data_type AS dataType,
+        REPLACE(string_value, '.0000', '') AS stringValue,
+        number_value AS numberValue,
+        date_value AS dateValue,
+        created_at AS createdAt
+    FROM session_data
+    WHERE website_id = ?
+      AND session_id = ?
+    ORDER BY data_key ASC
+    `,
+    [websiteId, sessionId],
     FUNCTION_NAME,
   );
 }

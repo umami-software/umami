@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -18,6 +19,7 @@ export async function getEventDataEvents(
 ): Promise<WebsiteEventData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -99,7 +101,7 @@ async function clickhouseQuery(
         count(*) as total
       from event_data
       any left join (
-            select * 
+            select *
             from website_event
             where website_id = {websiteId:UUID}
               and created_at between {startDate:DateTime64} and {endDate:DateTime64}
@@ -129,7 +131,7 @@ async function clickhouseQuery(
       count(*) as total
     from event_data
     any left join (
-          select * 
+          select *
           from website_event
           where website_id = {websiteId:UUID}
             and created_at between {startDate:DateTime64} and {endDate:DateTime64}
@@ -146,6 +148,63 @@ async function clickhouseQuery(
     limit 500
     `,
     queryParams,
+    FUNCTION_NAME,
+  );
+}
+
+async function oceanbaseQuery(websiteId: string, filters: QueryFilters) {
+  const { rawQuery, parseFilters } = oceanbase;
+  const { event } = filters;
+  const { filterQuery, cohortQuery, joinSessionQuery, buildParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
+
+  const params = buildParams([websiteId, filters.startDate, filters.endDate]);
+
+  if (event) {
+    return rawQuery(
+      `
+      SELECT
+        website_event.event_name AS eventName,
+        event_data.data_key AS propertyName,
+        event_data.data_type AS dataType,
+        event_data.string_value AS propertyValue,
+        COUNT(*) AS total
+      FROM event_data
+      INNER JOIN website_event
+        ON website_event.event_id = event_data.website_event_id
+      ${cohortQuery}
+      ${joinSessionQuery}
+      WHERE event_data.website_id = ?
+        AND event_data.created_at BETWEEN ? AND ?
+      ${filterQuery}
+      GROUP BY website_event.event_name, event_data.data_key, event_data.data_type, event_data.string_value
+      ORDER BY 1 ASC, 2 ASC, 3 ASC, 5 DESC
+      `,
+      params,
+      FUNCTION_NAME,
+    );
+  }
+
+  return rawQuery(
+    `
+    SELECT
+      website_event.event_name AS eventName,
+      event_data.data_key AS propertyName,
+      event_data.data_type AS dataType,
+      COUNT(*) AS total
+    FROM event_data
+    INNER JOIN website_event
+      ON website_event.event_id = event_data.website_event_id
+    ${cohortQuery}
+    ${joinSessionQuery}
+    WHERE event_data.website_id = ?
+      AND event_data.created_at BETWEEN ? AND ?
+    ${filterQuery}
+    LIMIT 500
+    `,
+    params,
     FUNCTION_NAME,
   );
 }

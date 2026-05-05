@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -20,6 +21,7 @@ export async function getEventStats(
 ): Promise<WebsiteEventMetric[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -137,4 +139,59 @@ async function clickhouseQuery(
   }
 
   return rawQuery(sql, queryParams, FUNCTION_NAME);
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  parameters: EventStatsParameters,
+  filters: QueryFilters,
+) {
+  const { limit } = parameters;
+  const { timezone = 'utc', unit = 'day' } = filters;
+  const { rawQuery, getDateSQL, parseFilters } = oceanbase;
+  const { filterQuery, cohortQuery, joinSessionQuery, buildParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
+
+  const limitQuery = limit
+    ? `AND event_name IN (
+    SELECT event_name
+    FROM website_event
+    WHERE website_id = ?
+      AND created_at BETWEEN ? AND ?
+      AND event_type = 2
+    GROUP BY event_name
+    ORDER BY COUNT(*) DESC
+    LIMIT ${limit}
+  )`
+    : '';
+
+  const params = buildParams([websiteId, filters.startDate, filters.endDate]);
+
+  // limitQuery adds 3 more placeholders (websiteId, startDate, endDate)
+  const finalParams = limit
+    ? [...params, websiteId, filters.startDate, filters.endDate]
+    : params;
+
+  return rawQuery(
+    `
+    SELECT
+      event_name x,
+      ${getDateSQL('website_event.created_at', unit, timezone)} t,
+      COUNT(*) y
+    FROM website_event
+    ${cohortQuery}
+    ${joinSessionQuery}
+    WHERE website_event.website_id = ?
+      AND website_event.created_at BETWEEN ? AND ?
+      AND website_event.event_type = 2
+      ${filterQuery}
+      ${limitQuery}
+    GROUP BY 1, 2
+    ORDER BY 2
+    `,
+    finalParams,
+    FUNCTION_NAME,
+  );
 }

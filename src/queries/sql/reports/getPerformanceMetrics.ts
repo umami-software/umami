@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
+import oceanbase from '@/lib/oceanbase';
 import { SESSION_COLUMNS } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 import type { PerformanceParameters } from './getPerformance';
@@ -25,6 +26,7 @@ export async function getPerformanceMetrics(
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
   });
 }
 
@@ -95,5 +97,42 @@ async function clickhouseQuery(
     ${limit ? `limit ${limit}` : ''}
     `,
     { ...queryParams, startDate, endDate },
+  );
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  parameters: PerformanceParameters,
+  filters: QueryFilters,
+  column: string,
+  limit?: number,
+): Promise<PerformanceMetricsData[]> {
+  const { startDate, endDate, metric = 'lcp' } = parameters;
+  const { rawQuery, parseFilters } = oceanbase;
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters(
+    { ...filters, websiteId },
+    { joinSession: SESSION_COLUMNS.includes(column) },
+  );
+
+  return rawQuery(
+    `
+    SELECT
+      ${column} AS name,
+      PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ${metric}) AS p50,
+      PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY ${metric}) AS p75,
+      PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY ${metric}) AS p95,
+      COUNT(*) AS count
+    FROM website_event
+    ${cohortQuery}
+    ${joinSessionQuery}
+    WHERE website_event.website_id = ?
+      AND website_event.event_type = 5
+      AND website_event.created_at BETWEEN ? AND ?
+      ${filterQuery}
+    GROUP BY ${column}
+    ORDER BY p75 DESC
+    ${limit ? `LIMIT ${limit}` : ''}
+    `,
+    [websiteId, startDate, endDate, ...queryParams],
   );
 }

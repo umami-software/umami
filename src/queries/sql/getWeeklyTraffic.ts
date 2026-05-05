@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { EVENT_COLUMNS } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -9,6 +10,7 @@ const FUNCTION_NAME = 'getWeeklyTraffic';
 export async function getWeeklyTraffic(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -40,7 +42,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     `,
     queryParams,
     FUNCTION_NAME,
-  ).then(formatResults);
+  ).then(formatResults as ( unknown) => any[]);
 }
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
@@ -85,10 +87,10 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     `;
   }
 
-  return rawQuery(sql, queryParams, FUNCTION_NAME).then(formatResults);
+  return rawQuery(sql, queryParams, FUNCTION_NAME).then(formatResults as ( unknown) => any[]);
 }
 
-function formatResults(data: any) {
+function formatResults(data: { time: string; value: number }[]) {
   const days = [];
 
   for (let i = 0; i < 7; i++) {
@@ -104,4 +106,36 @@ function formatResults(data: any) {
   }
 
   return days;
+}
+
+async function oceanbaseQuery(websiteId: string, filters: QueryFilters) {
+  const { timezone = 'utc' } = filters;
+  const { rawQuery, getDateWeeklySQL, parseFilters } = oceanbase;
+  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, buildParams } =
+    parseFilters({
+      ...filters,
+      websiteId,
+    });
+
+  const params = buildParams([websiteId, filters.startDate, filters.endDate]);
+
+  return rawQuery(
+    `
+    SELECT
+      ${getDateWeeklySQL('website_event.created_at', timezone)} AS time,
+      COUNT(DISTINCT website_event.session_id) AS value
+    FROM website_event
+    ${cohortQuery}
+    ${excludeBounceQuery}
+    ${joinSessionQuery}
+    WHERE website_event.website_id = ?
+      AND website_event.created_at BETWEEN ? AND ?
+      AND website_event.event_type NOT IN (2, 5)
+      ${filterQuery}
+    GROUP BY time
+    ORDER BY 1
+    `,
+    params,
+    FUNCTION_NAME,
+  ).then(formatResults as ( unknown) => any[]);
 }

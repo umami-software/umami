@@ -1,4 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
+import oceanbase from '@/lib/oceanbase';
 import {
   EMAIL_DOMAINS,
   PAID_AD_PARAMS,
@@ -7,7 +8,7 @@ import {
   SOCIAL_DOMAINS,
   VIDEO_DOMAINS,
 } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 import type { RevenuParameters } from './getRevenue';
@@ -25,6 +26,7 @@ export async function getRevenueMetrics(
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
   });
 }
 
@@ -448,4 +450,234 @@ function toClickHouseStringArray(arr: string[]): string {
 
 function toPostgresLikeClause(column: string, arr: string[]) {
   return arr.map(val => `${column} ilike '%${val.replace(/'/g, "''")}%'`).join(' OR\n  ');
+}
+
+function toMySQLLikeClause(column: string, arr: string[]) {
+  return arr.map(val => `LOWER(${column}) LIKE LOWER('%${val.replace(/'/g, "''")}%')`).join(' OR\n  ');
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  parameters: RevenuParameters,
+  filters: QueryFilters,
+): Promise<RevenueMetricsResult> {
+  const { startDate, endDate, currency } = parameters;
+  const { rawQuery, parseFilters } = oceanbase;
+  const { queryParams, filterQuery, cohortQuery, joinSessionQuery } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+    currency,
+  });
+
+  const hasJoinQuery = !!(filterQuery || cohortQuery);
+
+  const joinQuery = hasJoinQuery
+      ? `JOIN (SELECT *
+               FROM website_event
+               WHERE website_id = ?
+                  AND created_at BETWEEN ? AND ?
+                  AND event_type = 2) website_event
+        ON website_event.website_id = revenue.website_id
+          AND website_event.session_id = revenue.session_id
+          AND website_event.event_id = revenue.event_id`
+      : '';
+
+  // joinQuery adds 3 params when present
+  const joinParams = hasJoinQuery ? [websiteId, startDate, endDate] : [];
+  const cohortParams = cohortQuery ? [websiteId, startDate, endDate] : [];
+
+  // country: joinQuery(0|3) + cohort(0|3) + WHERE(websiteId, startDate, endDate, currency) + filterQuery(N)
+  const countryRegionParams = [
+    ...joinParams,
+    ...cohortParams,
+    websiteId, startDate, endDate, currency,
+    ...queryParams,
+  ];
+
+  const country = await rawQuery<{ name: string; value: number }[]>(
+    `
+    SELECT
+      session.country AS name,
+      SUM(revenue) AS value
+    FROM revenue
+    ${joinQuery}
+    JOIN session
+      ON session.website_id = revenue.website_id
+        AND session.session_id = revenue.session_id
+    ${cohortQuery}
+    WHERE revenue.website_id = ?
+      AND revenue.created_at BETWEEN ? AND ?
+      AND UPPER(revenue.currency) = ?
+      ${filterQuery}
+    GROUP BY session.country
+    ORDER BY value DESC
+    `,
+    countryRegionParams,
+  );
+
+  const region = await rawQuery<{ name: string; value: number; country: string }[]>(
+    `
+    SELECT
+      session.country,
+      session.region AS name,
+      SUM(revenue.revenue) AS value
+    FROM revenue
+    ${joinQuery}
+    JOIN session
+      ON session.website_id = revenue.website_id
+        AND session.session_id = revenue.session_id
+    ${cohortQuery}
+    WHERE revenue.website_id = ?
+      AND revenue.created_at BETWEEN ? AND ?
+      AND UPPER(revenue.currency) = ?
+      ${filterQuery}
+    GROUP BY session.country, session.region
+    ORDER BY value DESC
+    `,
+    countryRegionParams,
+  );
+
+  // referrer & channel: joinQuery(0|3) + cohort(0|3) + WHERE(4) + filterQuery(N) + 2 subqueries(3+3)
+  const cteParams = [
+    ...joinParams,
+    ...cohortParams,
+    websiteId, startDate, endDate, currency,
+    ...queryParams,
+    websiteId, startDate, endDate,
+    websiteId, startDate, endDate,
+  ];
+
+  const referrer = await rawQuery<{ name: string; value: number }[]>(
+    `
+    WITH events AS (
+      SELECT
+        revenue.website_id,
+        revenue.session_id,
+        SUM(revenue.revenue) AS value
+      FROM revenue
+      ${joinQuery}
+      ${cohortQuery}
+      ${joinSessionQuery}
+      WHERE revenue.website_id = ?
+        AND revenue.created_at BETWEEN ? AND ?
+        AND UPPER(revenue.currency) = ?
+        ${filterQuery}
+      GROUP BY revenue.website_id, revenue.session_id),
+
+    revenue_data AS (
+      SELECT
+        e.website_id,
+        e.session_id,
+        e.value,
+        we.min_date AS created_at
+      FROM events e
+      JOIN (
+        SELECT session_id, MIN(created_at) AS min_date
+        FROM website_event
+        WHERE website_id = ?
+          AND created_at BETWEEN ? AND ?
+        GROUP BY session_id
+      ) we ON we.session_id = e.session_id)
+
+    SELECT
+      we.referrer_domain AS name,
+      SUM(revenue_data.value) AS value
+    FROM revenue_data
+    JOIN (
+      SELECT website_id, session_id, referrer_domain, created_at
+      FROM website_event
+      WHERE website_id = ?
+        AND created_at BETWEEN ? AND ?) we
+    ON we.website_id = revenue_data.website_id
+      AND we.session_id = revenue_data.session_id
+      AND we.created_at = revenue_data.created_at
+    GROUP BY we.referrer_domain
+    ORDER BY value DESC
+    `,
+    cteParams,
+  );
+
+  const channel = await rawQuery<{ name: string; value: number }[]>(
+    `
+    WITH events AS (
+      SELECT
+        revenue.website_id,
+        revenue.session_id,
+        SUM(revenue.revenue) AS value
+      FROM revenue
+      ${joinQuery}
+        ${cohortQuery}
+        ${joinSessionQuery}
+        WHERE revenue.website_id = ?
+          AND revenue.created_at BETWEEN ? AND ?
+          AND UPPER(revenue.currency) = ?
+        ${filterQuery}
+      GROUP BY revenue.website_id, revenue.session_id),
+
+    revenue_data AS (
+      SELECT
+        e.website_id,
+        e.session_id,
+        e.value,
+        we.min_date AS created_at
+      FROM events e
+      JOIN (
+        SELECT session_id, MIN(created_at) AS min_date
+        FROM website_event
+        WHERE website_id = ?
+          AND created_at BETWEEN ? AND ?
+        GROUP BY session_id
+      ) we ON we.session_id = e.session_id),
+
+    revenue_prefix AS (
+      SELECT
+        CASE WHEN LOWER(we.utm_medium) LIKE '%cp%' OR
+              LOWER(we.utm_medium) LIKE '%ppc%' OR
+              LOWER(we.utm_medium) LIKE '%retargeting%' OR
+              LOWER(we.utm_medium) LIKE '%paid%' THEN 'paid' ELSE 'organic' END AS prefix,
+        we.referrer_domain,
+        we.url_query,
+        we.utm_medium,
+        we.utm_source,
+        we.hostname,
+        r.value
+      FROM revenue_data r
+      JOIN (
+        SELECT website_id, session_id, referrer_domain, url_query, utm_medium, utm_source, hostname, created_at
+        FROM website_event
+        WHERE website_id = ?
+          AND created_at BETWEEN ? AND ?) we
+      ON we.website_id = r.website_id
+        AND we.session_id = r.session_id
+        AND we.created_at = r.created_at),
+
+    channels AS (
+      SELECT
+        CASE
+          WHEN referrer_domain = '' AND url_query = '' THEN 'direct'
+          WHEN ${toMySQLLikeClause('url_query', PAID_AD_PARAMS)} THEN 'paidAds'
+          WHEN ${toMySQLLikeClause('utm_medium', ['referral', 'app', 'link'])} THEN 'referral'
+          WHEN LOWER(utm_medium) LIKE '%affiliate%' THEN 'affiliate'
+          WHEN LOWER(utm_medium) LIKE '%sms%' OR LOWER(utm_source) LIKE '%sms%' THEN 'sms'
+          WHEN ${toMySQLLikeClause('referrer_domain', SEARCH_DOMAINS)} OR LOWER(utm_medium) LIKE '%organic%' THEN CONCAT(prefix, 'Search')
+          WHEN ${toMySQLLikeClause('referrer_domain', SOCIAL_DOMAINS)} THEN CONCAT(prefix, 'Social')
+          WHEN ${toMySQLLikeClause('referrer_domain', EMAIL_DOMAINS)} OR LOWER(utm_medium) LIKE '%mail%' THEN 'email'
+          WHEN ${toMySQLLikeClause('referrer_domain', SHOPPING_DOMAINS)} OR LOWER(utm_medium) LIKE '%shop%' THEN CONCAT(prefix, 'Shopping')
+          WHEN ${toMySQLLikeClause('referrer_domain', VIDEO_DOMAINS)} OR LOWER(utm_medium) LIKE '%video%' THEN CONCAT(prefix, 'Video')
+          WHEN referrer_domain != REGEXP_REPLACE(hostname, '^www.', '') AND referrer_domain != '' THEN 'referral'
+        ELSE 'Unknown' END AS name,
+        value
+      FROM revenue_prefix)
+
+    SELECT name, SUM(value) AS value
+    FROM channels
+    GROUP BY name
+    ORDER BY value DESC
+    `,
+    cteParams,
+  );
+
+  return { country, region, referrer, channel };
 }

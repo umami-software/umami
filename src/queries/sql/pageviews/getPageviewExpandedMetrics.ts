@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { FILTER_COLUMNS, GROUPED_DOMAINS, SESSION_COLUMNS } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -26,6 +27,7 @@ export async function getPageviewExpandedMetrics(
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -227,4 +229,112 @@ export function toPostgresGroupedReferrer(
 
 function toPostgresLikeClause(column: string, arr: string[]) {
   return arr.map(val => `${column} ilike '%${val.replace(/'/g, "''")}%'`).join(' OR\n  ');
+}
+
+export function toOceanBaseGroupedReferrer(
+  domains: any[],
+  column: string = 'referrer_domain',
+): string {
+  return [
+    'CASE',
+    ...domains.map(group => {
+      const matches = Array.isArray(group.match) ? group.match : [group.match];
+
+      return `WHEN ${toOceanBaseLikeClause(column, matches)} THEN '${group.domain}'`;
+    }),
+    "  ELSE 'Other'",
+    'END',
+  ].join('\n');
+}
+
+function toOceanBaseLikeClause(column: string, arr: string[]) {
+  return arr.map(val => `LOWER(${column}) LIKE '%${val.toLowerCase()}%'`).join(' OR\n  ');
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  parameters: PageviewExpandedMetricsParameters,
+  filters: QueryFilters,
+): Promise<PageviewExpandedMetricsData[]> {
+  const { type, limit = 500, offset = 0 } = parameters;
+  let column = FILTER_COLUMNS[type] || type;
+  const { rawQuery, parseFilters, getTimestampDiffSQL } = oceanbase;
+  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, buildParams } =
+    parseFilters(
+      {
+        ...filters,
+        websiteId,
+      },
+      { joinSession: SESSION_COLUMNS.includes(type) },
+    );
+
+  const params = buildParams([websiteId, filters.startDate, filters.endDate]);
+
+  let entryExitQuery = '';
+  let excludeDomain = '';
+
+  if (column === 'referrer_domain') {
+    excludeDomain = `AND website_event.referrer_domain != REGEXP_REPLACE(website_event.hostname, '^www.', '')
+      AND website_event.referrer_domain != ''`;
+    if (type === 'domain') {
+      column = toOceanBaseGroupedReferrer(GROUPED_DOMAINS);
+    }
+  }
+
+  if (type === 'entry' || type === 'exit') {
+    const aggregrate = type === 'entry' ? 'MIN' : 'MAX';
+
+    entryExitQuery = `
+      JOIN (
+        SELECT visit_id,
+            ${aggregrate}(created_at) target_created_at
+        FROM website_event
+        WHERE website_event.website_id = ?
+          AND website_event.created_at BETWEEN ? AND ?
+          AND website_event.event_type NOT IN (2, 5)
+        GROUP BY visit_id
+      ) x
+      ON x.visit_id = website_event.visit_id
+          AND x.target_created_at = website_event.created_at
+    `;
+  }
+
+  return rawQuery(
+    `
+    SELECT
+      name,
+      SUM(t.c) AS pageviews,
+      COUNT(DISTINCT t.session_id) AS visitors,
+      COUNT(DISTINCT t.visit_id) AS visits,
+      SUM(CASE WHEN t.c = 1 THEN 1 ELSE 0 END) AS bounces,
+      SUM(${getTimestampDiffSQL('t.min_time', 't.max_time')}) AS totaltime
+    FROM (
+      SELECT
+        ${column} AS name,
+        website_event.session_id,
+        website_event.visit_id,
+        COUNT(*) AS c,
+        MIN(website_event.created_at) AS min_time,
+        MAX(website_event.created_at) AS max_time
+      FROM website_event
+      ${cohortQuery}
+      ${excludeBounceQuery}
+      ${joinSessionQuery}
+      ${entryExitQuery}
+      WHERE website_event.website_id = ?
+      AND website_event.created_at BETWEEN ? AND ?
+      AND website_event.event_type NOT IN (2, 5)
+        ${excludeDomain}
+        ${filterQuery}
+      GROUP BY ${column}, website_event.session_id, website_event.visit_id
+    ) AS t
+    WHERE name != ''
+    GROUP BY name
+    ORDER BY visitors DESC, visits DESC
+    LIMIT ${limit}
+    OFFSET ${offset}
+    `,
+    params,
+    FUNCTION_NAME,
+  );
 }

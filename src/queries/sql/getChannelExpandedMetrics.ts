@@ -7,7 +7,8 @@ import {
   SOCIAL_DOMAINS,
   VIDEO_DOMAINS,
 } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -32,6 +33,7 @@ export async function getChannelExpandedMetrics(
 ): Promise<ChannelExpandedMetricsData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -116,7 +118,7 @@ async function relationalQuery(
       `,
     queryParams,
     FUNCTION_NAME,
-  ).then(results => results.map(item => ({ ...item, y: Number(item.y) })));
+  ).then(results => results as ChannelExpandedMetricsData[]);
 }
 
 async function clickhouseQuery(
@@ -195,4 +197,93 @@ function toClickHouseStringArray(arr: string[]): string {
 
 function toPostgresPositionClause(column: string, arr: string[]) {
   return arr.map(val => `${column} ilike '%${val.replace(/'/g, "''")}%'`).join(' OR\n  ');
+}
+
+function toOceanBasePositionClause(column: string, arr: string[]) {
+  return arr.map(val => `LOWER(${column}) LIKE '%${val.toLowerCase()}%'`).join(' OR\n  ');
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  filters: QueryFilters,
+): Promise<ChannelExpandedMetricsData[]> {
+  const { rawQuery, parseFilters, getTimestampDiffSQL } = oceanbase;
+  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, dateQuery, buildParams, getDateParams } =
+    parseFilters({
+      ...filters,
+      websiteId,
+    });
+
+  const params = buildParams([websiteId, ...getDateParams()]);
+
+  return rawQuery<ChannelExpandedMetricsData[]>(
+    `
+    WITH prefix AS (
+      SELECT CASE WHEN website_event.utm_medium LIKE 'p%' OR
+          website_event.utm_medium LIKE '%ppc%' OR
+          website_event.utm_medium LIKE '%retargeting%' OR
+          website_event.utm_medium LIKE '%paid%' THEN 'paid' ELSE 'organic' END prefix,
+          website_event.referrer_domain,
+          website_event.url_query,
+          website_event.utm_medium,
+          website_event.utm_source,
+          website_event.session_id,
+          website_event.visit_id,
+          website_event.hostname,
+          COUNT(*) c,
+          MIN(website_event.created_at) min_time,
+          MAX(website_event.created_at) max_time
+      FROM website_event
+      ${cohortQuery}
+      ${excludeBounceQuery}
+      ${joinSessionQuery}
+      WHERE website_event.website_id = ?
+        AND website_event.event_type NOT IN (2, 5)
+        ${dateQuery}
+        ${filterQuery}
+      GROUP BY prefix,
+          website_event.referrer_domain,
+          website_event.url_query,
+          website_event.utm_medium,
+          website_event.utm_source,
+          website_event.session_id,
+          website_event.visit_id,
+          website_event.hostname),
+
+    channels AS (
+      SELECT CASE
+          WHEN referrer_domain = '' AND url_query = '' THEN 'direct'
+          WHEN ${toOceanBasePositionClause('url_query', PAID_AD_PARAMS)} THEN 'paidAds'
+          WHEN ${toOceanBasePositionClause('utm_medium', ['referral', 'app', 'link'])} THEN 'referral'
+          WHEN LOWER(utm_medium) LIKE '%affiliate%' THEN 'affiliate'
+          WHEN LOWER(utm_medium) LIKE '%sms%' OR LOWER(utm_source) LIKE '%sms%' THEN 'sms'
+          WHEN ${toOceanBasePositionClause('referrer_domain', SEARCH_DOMAINS)} OR LOWER(utm_medium) LIKE '%organic%' THEN CONCAT(prefix, 'Search')
+          WHEN ${toOceanBasePositionClause('referrer_domain', SOCIAL_DOMAINS)} THEN CONCAT(prefix, 'Social')
+          WHEN ${toOceanBasePositionClause('referrer_domain', EMAIL_DOMAINS)} OR LOWER(utm_medium) LIKE '%mail%' THEN 'email'
+          WHEN ${toOceanBasePositionClause('referrer_domain', SHOPPING_DOMAINS)} OR LOWER(utm_medium) LIKE '%shop%' THEN CONCAT(prefix, 'Shopping')
+          WHEN ${toOceanBasePositionClause('referrer_domain', VIDEO_DOMAINS)} OR LOWER(utm_medium) LIKE '%video%' THEN CONCAT(prefix, 'Video')
+          WHEN referrer_domain != REGEXP_REPLACE(hostname, '^www.', '') AND referrer_domain != '' THEN 'referral'
+          ELSE '' END AS name,
+          session_id,
+          visit_id,
+          c,
+          min_time,
+          max_time
+      FROM prefix)
+
+    SELECT
+      name,
+      SUM(c) AS pageviews,
+      COUNT(DISTINCT session_id) AS visitors,
+      COUNT(DISTINCT visit_id) AS visits,
+      SUM(CASE WHEN c = 1 THEN 1 ELSE 0 END) AS bounces,
+      SUM(${getTimestampDiffSQL('min_time', 'max_time')}) AS totaltime
+    FROM channels
+    WHERE name != ''
+    GROUP BY name
+    ORDER BY visitors DESC, visits DESC
+    `,
+    params,
+    FUNCTION_NAME,
+  ).then(results => results as ChannelExpandedMetricsData[]);
 }

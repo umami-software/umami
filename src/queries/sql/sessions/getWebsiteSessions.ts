@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { EVENT_COLUMNS } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -9,6 +10,7 @@ const FUNCTION_NAME = 'getWebsiteSessions';
 export async function getWebsiteSessions(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -156,4 +158,74 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   }
 
   return pagedRawQuery(sql, queryParams, filters, FUNCTION_NAME);
+}
+
+async function oceanbaseQuery(websiteId: string, filters: QueryFilters) {
+  const { pagedRawQuery, parseFilters } = oceanbase;
+  const { search } = filters;
+  const { filterQuery, dateQuery, cohortQuery, buildParams, getDateParams } = parseFilters({
+    ...filters,
+    websiteId,
+    search: search ? `%${search}%` : undefined,
+  });
+
+  // SQL order: cohortQuery, websiteId, dateQuery, filterQuery, searchQuery
+  const params = buildParams([websiteId, ...getDateParams()]);
+
+  // Add search params if needed (LIKE requires % wildcards)
+  const searchParams = search ? [`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`] : [];
+
+  const searchQuery = search
+    ? `AND (LOWER(distinct_id) LIKE ?
+           OR LOWER(city) LIKE ?
+           OR LOWER(browser) LIKE ?
+           OR LOWER(os) LIKE ?
+           OR LOWER(device) LIKE ?)`
+    : '';
+
+  return pagedRawQuery(
+    `
+    SELECT
+      session.session_id AS id,
+      session.website_id AS websiteId,
+      website_event.hostname,
+      session.browser,
+      session.os,
+      session.device,
+      session.screen,
+      session.language,
+      session.country,
+      session.region,
+      session.city,
+      MIN(website_event.created_at) AS firstAt,
+      MAX(website_event.created_at) AS lastAt,
+      COUNT(DISTINCT website_event.visit_id) AS visits,
+      SUM(CASE WHEN website_event.event_type = 1 THEN 1 ELSE 0 END) AS views,
+      SUM(CASE WHEN website_event.event_type = 2 THEN 1 ELSE 0 END) AS events,
+      MAX(website_event.created_at) AS createdAt
+    FROM website_event
+    ${cohortQuery}
+    JOIN session ON session.session_id = website_event.session_id
+      AND session.website_id = website_event.website_id
+    WHERE website_event.website_id = ?
+    ${dateQuery}
+    ${filterQuery}
+    ${searchQuery}
+    GROUP BY session.session_id,
+      session.website_id,
+      website_event.hostname,
+      session.browser,
+      session.os,
+      session.device,
+      session.screen,
+      session.language,
+      session.country,
+      session.region,
+      session.city
+    ORDER BY MAX(website_event.created_at) DESC
+    `,
+    [...params, ...searchParams],
+    filters,
+    FUNCTION_NAME,
+  );
 }

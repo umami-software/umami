@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -17,6 +18,7 @@ export async function getSessionMetrics(
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -134,4 +136,56 @@ async function clickhouseQuery(
   }
 
   return rawQuery(sql, { ...queryParams, ...parameters }, FUNCTION_NAME);
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  parameters: SessionMetricsParameters,
+  filters: QueryFilters,
+) {
+  const { type, limit = 500, offset = 0 } = parameters;
+  let column = FILTER_COLUMNS[type] || type;
+  const { parseFilters, rawQuery } = oceanbase;
+  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, buildParams } =
+    parseFilters(
+      {
+        ...filters,
+        websiteId,
+      },
+      {
+        joinSession: SESSION_COLUMNS.includes(type),
+      },
+    );
+  const includeCountry = column === 'city' || column === 'region';
+
+  if (type === 'language') {
+    column = `LOWER(LEFT(${type}, 2))`;
+  }
+
+  const params = buildParams([websiteId, filters.startDate, filters.endDate]);
+
+  return rawQuery(
+    `
+    SELECT
+      ${column} x,
+      COUNT(DISTINCT website_event.session_id) y
+      ${includeCountry ? ', country' : ''}
+    FROM website_event
+    ${cohortQuery}
+    ${excludeBounceQuery}
+    ${joinSessionQuery}
+    WHERE website_event.website_id = ?
+      AND website_event.created_at BETWEEN ? AND ?
+      AND website_event.event_type NOT IN (2, 5)
+      AND ${column} != ''
+    ${filterQuery}
+    GROUP BY 1
+    ${includeCountry ? ', 3' : ''}
+    ORDER BY 2 DESC
+    LIMIT ${limit}
+    OFFSET ${offset}
+    `,
+    params,
+    FUNCTION_NAME,
+  );
 }

@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -10,6 +11,7 @@ export async function getSessionDataProperties(
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -70,6 +72,38 @@ async function clickhouseQuery(
     limit 500
     `,
     queryParams,
+    FUNCTION_NAME,
+  );
+}
+
+async function oceanbaseQuery(websiteId: string, filters: QueryFilters) {
+  const { rawQuery, parseFilters } = oceanbase;
+  const { filterQuery, joinSessionQuery, cohortQuery, buildParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
+
+  const params = buildParams([websiteId, filters.startDate, filters.endDate]);
+
+  return rawQuery(
+    `
+    SELECT
+      data_key AS propertyName,
+      COUNT(DISTINCT session_data.session_id) AS total
+    FROM website_event
+    ${cohortQuery}
+    ${joinSessionQuery}
+    JOIN session_data
+      ON session_data.session_id = website_event.session_id
+        AND session_data.website_id = website_event.website_id
+    WHERE website_event.website_id = ?
+      AND website_event.created_at BETWEEN ? AND ?
+      ${filterQuery}
+    GROUP BY 1
+    ORDER BY 2 DESC
+    LIMIT 500
+    `,
+    params,
     FUNCTION_NAME,
   );
 }

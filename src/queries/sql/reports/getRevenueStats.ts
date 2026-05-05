@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 import type { RevenuParameters } from './getRevenue';
@@ -18,6 +19,7 @@ export async function getRevenueStats(
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
   });
 }
 
@@ -133,4 +135,80 @@ async function clickhouseQuery(
   total.arpu = total.total_sessions > 0 ? total.sum / total.total_sessions : 0;
 
   return total;
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  parameters: RevenuParameters,
+  filters: QueryFilters,
+): Promise<RevenueStatsResult> {
+  const { startDate, endDate, currency } = parameters;
+  const { rawQuery, parseFilters } = oceanbase;
+  const { queryParams, filterQuery, cohortQuery, joinSessionQuery } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+    currency,
+  });
+
+  const joinQuery =
+    filterQuery || cohortQuery
+      ? `JOIN (SELECT *
+               FROM website_event
+               WHERE website_id = ?
+                  AND created_at BETWEEN ? AND ?
+                  AND event_type = 2) website_event
+        ON website_event.website_id = revenue.website_id
+          AND website_event.session_id = revenue.session_id
+          AND website_event.event_id = revenue.event_id`
+      : '';
+
+  const params: any[] = [];
+
+  // Subquery params (total_sessions)
+  params.push(websiteId, startDate, endDate);
+
+  // joinQuery params (if present)
+  if (filterQuery || cohortQuery) {
+    params.push(websiteId, startDate, endDate);
+  }
+
+  // Main query params
+  params.push(websiteId, startDate, endDate, currency, ...queryParams);
+
+  const total = await rawQuery<{
+    sum: number;
+    count: number;
+    unique_count: number;
+    total_sessions: number;
+  }[]>(
+    `
+    SELECT
+      SUM(revenue.revenue) AS sum,
+      COUNT(DISTINCT revenue.event_id) AS count,
+      COUNT(DISTINCT revenue.session_id) AS unique_count,
+      (SELECT COUNT(DISTINCT session_id)
+       FROM website_event
+       WHERE website_id = ?
+         AND created_at BETWEEN ? AND ?) AS total_sessions
+    FROM revenue
+    ${joinQuery}
+    ${cohortQuery}
+    ${joinSessionQuery}
+    WHERE revenue.website_id = ?
+      AND revenue.created_at BETWEEN ? AND ?
+      AND UPPER(revenue.currency) = ?
+      ${filterQuery}
+  `,
+    params,
+  ).then(result => result?.[0]);
+
+  return {
+    sum: Number(total?.sum || 0),
+    count: Number(total?.count || 0),
+    average: total && total.count > 0 ? Number(total.sum) / Number(total.count) : 0,
+    unique_count: Number(total?.unique_count || 0),
+    arpu: total && total.total_sessions > 0 ? Number(total.sum) / Number(total.total_sessions) : 0,
+  };
 }

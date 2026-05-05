@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { EVENT_COLUMNS } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -19,6 +20,7 @@ export async function getWebsiteStats(
 ): Promise<WebsiteStatsData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -135,4 +137,51 @@ async function clickhouseQuery(
   }
 
   return rawQuery(sql, queryParams, FUNCTION_NAME).then(result => result?.[0]);
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  filters: QueryFilters,
+): Promise<WebsiteStatsData[]> {
+  const { getTimestampDiffSQL, parseFilters, rawQuery } = oceanbase;
+  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, buildParams } =
+    parseFilters({
+      ...filters,
+      websiteId,
+    });
+
+  const { excludeBounce } = filters;
+  const bounceQuery = excludeBounce ? '0' : 'COALESCE(SUM(CASE WHEN t.c = 1 THEN 1 ELSE 0 END), 0)';
+
+  const params = buildParams([websiteId, filters.startDate, filters.endDate]);
+
+  return rawQuery(
+    `
+    SELECT
+      CAST(COALESCE(SUM(t.c), 0) AS SIGNED) AS pageviews,
+      COUNT(DISTINCT t.session_id) AS visitors,
+      COUNT(DISTINCT t.visit_id) AS visits,
+      ${bounceQuery} AS bounces,
+      CAST(COALESCE(SUM(${getTimestampDiffSQL('t.min_time', 't.max_time')}), 0) AS SIGNED) AS totaltime
+    FROM (
+      SELECT
+        website_event.session_id,
+        website_event.visit_id,
+        COUNT(*) AS c,
+        MIN(website_event.created_at) AS min_time,
+        MAX(website_event.created_at) AS max_time
+      FROM website_event
+      ${cohortQuery}
+      ${excludeBounceQuery}
+      ${joinSessionQuery}
+      WHERE website_event.website_id = ?
+        AND website_event.created_at BETWEEN ? AND ?
+        AND website_event.event_type NOT IN (2, 5)
+        ${filterQuery}
+      GROUP BY 1, 2
+    ) AS t
+    `,
+    params,
+    FUNCTION_NAME,
+  ).then(result => result?.[0]);
 }

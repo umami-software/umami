@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
+import oceanbase from '@/lib/oceanbase';
 import { EVENT_TYPE } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -16,6 +17,7 @@ export async function getUTM(
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
   });
 }
 
@@ -82,5 +84,40 @@ async function clickhouseQuery(
     limit 50
     `,
     queryParams,
+  );
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  parameters: UTMParameters,
+  filters: QueryFilters,
+) {
+  const { column, startDate, endDate } = parameters;
+  const { parseFilters, rawQuery } = oceanbase;
+  const { filterQuery, joinSessionQuery, cohortQuery, buildParams } = parseFilters({
+    ...filters,
+    websiteId,
+    startDate,
+    endDate,
+    eventType: EVENT_TYPE.pageView,
+  });
+
+  const params = buildParams([websiteId, startDate, endDate]);
+
+  return rawQuery(
+    `
+    SELECT website_event.${column} utm, COUNT(*) AS views
+    FROM website_event
+    ${cohortQuery}
+    ${joinSessionQuery}
+    WHERE website_event.website_id = ?
+      AND website_event.created_at BETWEEN ? AND ?
+      AND COALESCE(website_event.${column}, '') != ''
+      ${filterQuery}
+    GROUP BY 1
+    ORDER BY 2 DESC
+    LIMIT 50
+    `,
+    params,
   );
 }

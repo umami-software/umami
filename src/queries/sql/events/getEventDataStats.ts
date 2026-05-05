@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -14,6 +15,7 @@ export async function getEventDataStats(
 }> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   }).then(results => results?.[0]);
 }
@@ -62,7 +64,7 @@ async function clickhouseQuery(
 
   return rawQuery(
     `
-    select 
+    select
       count(distinct t.event_id) as "events",
       count(distinct t.data_key) as "properties",
       sum(t.total) as "records"
@@ -73,7 +75,7 @@ async function clickhouseQuery(
         count(*) as "total"
       from event_data
       any left join (
-          select * 
+          select *
           from website_event
           where website_id = {websiteId:UUID}
             and created_at between {startDate:DateTime64} and {endDate:DateTime64}
@@ -89,6 +91,43 @@ async function clickhouseQuery(
       ) as t
     `,
     queryParams,
+    FUNCTION_NAME,
+  );
+}
+
+async function oceanbaseQuery(websiteId: string, filters: QueryFilters) {
+  const { rawQuery, parseFilters } = oceanbase;
+  const { filterQuery, joinSessionQuery, cohortQuery, buildParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
+
+  const params = buildParams([websiteId, filters.startDate, filters.endDate]);
+
+  return rawQuery(
+    `
+    SELECT
+      COUNT(DISTINCT t.website_event_id) AS events,
+      COUNT(DISTINCT t.data_key) AS properties,
+      SUM(t.total) AS records
+    FROM (
+      SELECT
+        website_event_id,
+        data_key,
+        COUNT(*) AS total
+      FROM event_data
+      JOIN website_event ON website_event.event_id = event_data.website_event_id
+        AND website_event.website_id = ?
+        AND website_event.created_at BETWEEN ? AND ?
+      ${cohortQuery}
+      ${joinSessionQuery}
+      WHERE event_data.website_id = ?
+        AND event_data.created_at BETWEEN ? AND ?
+      ${filterQuery}
+      GROUP BY website_event_id, data_key
+      ) AS t
+    `,
+    params,
     FUNCTION_NAME,
   );
 }

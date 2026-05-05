@@ -1,5 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { WEB_VITALS_THRESHOLDS } from '@/lib/constants';
+import oceanbase from '@/lib/oceanbase';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -29,6 +31,7 @@ export async function getPerformance(
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
   });
 }
 
@@ -181,6 +184,108 @@ async function clickhouseQuery(
       ${filterQuery}
     `,
     { ...queryParams, startDate, endDate },
+  ).then(result => result?.[0]);
+
+  const summary = {
+    lcp: {
+      p50: Number(summaryResult?.lcp_p50 || 0),
+      p75: Number(summaryResult?.lcp_p75 || 0),
+      p95: Number(summaryResult?.lcp_p95 || 0),
+    },
+    inp: {
+      p50: Number(summaryResult?.inp_p50 || 0),
+      p75: Number(summaryResult?.inp_p75 || 0),
+      p95: Number(summaryResult?.inp_p95 || 0),
+    },
+    cls: {
+      p50: Number(summaryResult?.cls_p50 || 0),
+      p75: Number(summaryResult?.cls_p75 || 0),
+      p95: Number(summaryResult?.cls_p95 || 0),
+    },
+    fcp: {
+      p50: Number(summaryResult?.fcp_p50 || 0),
+      p75: Number(summaryResult?.fcp_p75 || 0),
+      p95: Number(summaryResult?.fcp_p95 || 0),
+    },
+    ttfb: {
+      p50: Number(summaryResult?.ttfb_p50 || 0),
+      p75: Number(summaryResult?.ttfb_p75 || 0),
+      p95: Number(summaryResult?.ttfb_p95 || 0),
+    },
+    count: Number(summaryResult?.count || 0),
+  };
+
+  return { chart, summary };
+}
+
+const VALID_METRICS = Object.keys(WEB_VITALS_THRESHOLDS);
+
+async function oceanbaseQuery(
+  websiteId: string,
+  parameters: PerformanceParameters,
+  filters: QueryFilters,
+): Promise<PerformanceResult> {
+  const { startDate, endDate, unit = 'day', timezone = 'utc', metric = 'lcp' } = parameters;
+
+  if (!VALID_METRICS.includes(metric)) {
+    throw new Error(`Invalid metric: ${metric}`);
+  }
+  const { getDateSQL, rawQuery, parseFilters } = oceanbase;
+  const { filterQuery, joinSessionQuery, cohortQuery, buildParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
+
+  const params = buildParams([websiteId, startDate, endDate]);
+
+  const chart = await rawQuery<{ t: string; p50: number; p75: number; p95: number }[]>(
+    `
+    SELECT
+      ${getDateSQL('created_at', unit, timezone)} t,
+      PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ${metric}) AS p50,
+      PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY ${metric}) AS p75,
+      PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY ${metric}) AS p95
+    FROM website_event
+    ${cohortQuery}
+    ${joinSessionQuery}
+    WHERE website_event.website_id = ?
+      AND website_event.event_type = 5
+      AND website_event.created_at BETWEEN ? AND ?
+      ${filterQuery}
+    GROUP BY t
+    ORDER BY t
+    `,
+    params,
+  );
+
+  const summaryResult = await rawQuery<any>(
+    `
+    SELECT
+      PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY lcp) AS lcp_p50,
+      PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY lcp) AS lcp_p75,
+      PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY lcp) AS lcp_p95,
+      PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY inp) AS inp_p50,
+      PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY inp) AS inp_p75,
+      PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY inp) AS inp_p95,
+      PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY cls) AS cls_p50,
+      PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY cls) AS cls_p75,
+      PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY cls) AS cls_p95,
+      PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY fcp) AS fcp_p50,
+      PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY fcp) AS fcp_p75,
+      PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY fcp) AS fcp_p95,
+      PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ttfb) AS ttfb_p50,
+      PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY ttfb) AS ttfb_p75,
+      PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY ttfb) AS ttfb_p95,
+      COUNT(*) AS count
+    FROM website_event
+    ${cohortQuery}
+    ${joinSessionQuery}
+    WHERE website_event.website_id = ?
+      AND website_event.event_type = 5
+      AND website_event.created_at BETWEEN ? AND ?
+      ${filterQuery}
+    `,
+    params,
   ).then(result => result?.[0]);
 
   const summary = {

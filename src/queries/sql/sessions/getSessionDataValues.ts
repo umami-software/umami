@@ -1,15 +1,15 @@
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getSessionDataValues';
 
-export async function getSessionDataValues(
-  ...args: [websiteId: string, filters: QueryFilters & { propertyName?: string }]
-) {
+export async function getSessionDataValues(...args: [websiteId: string, filters: QueryFilters & { propertyName?: string }]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -80,6 +80,46 @@ async function clickhouseQuery(
     limit 100
     `,
     queryParams,
+    FUNCTION_NAME,
+  );
+}
+
+async function oceanbaseQuery(
+  websiteId: string,
+  filters: QueryFilters & { propertyName?: string },
+) {
+  const { rawQuery, parseFilters, getDateSQL } = oceanbase;
+  const { filterQuery, joinSessionQuery, cohortQuery, buildParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
+
+  const params = buildParams([websiteId, filters.startDate, filters.endDate, filters.propertyName]);
+
+  return rawQuery(
+    `
+    SELECT
+      CASE
+        WHEN data_type = 2 THEN REPLACE(string_value, '.0000', '')
+        WHEN data_type = 4 THEN ${getDateSQL('date_value', 'hour')}
+        ELSE string_value
+      END AS value,
+      COUNT(DISTINCT session_data.session_id) AS total
+    FROM website_event
+    ${cohortQuery}
+    ${joinSessionQuery}
+    JOIN session_data
+        ON session_data.session_id = website_event.session_id
+          AND session_data.website_id = website_event.website_id
+    WHERE website_event.website_id = ?
+      AND website_event.created_at BETWEEN ? AND ?
+      AND session_data.data_key = ?
+    ${filterQuery}
+    GROUP BY value
+    ORDER BY 2 DESC
+    LIMIT 100
+    `,
+    params,
     FUNCTION_NAME,
   );
 }

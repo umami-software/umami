@@ -1,6 +1,7 @@
 import type { EventData } from '@/generated/prisma/client';
 import clickhouse from '@/lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, OCEANBASE, PRISMA, runQuery } from '@/lib/db';
+import oceanbase from '@/lib/oceanbase';
 import prisma from '@/lib/prisma';
 
 const FUNCTION_NAME = 'getEventDataById';
@@ -10,6 +11,7 @@ export async function getEventDataById(
 ): Promise<EventData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [OCEANBASE]: () => oceanbaseQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -58,6 +60,31 @@ async function clickhouseQuery(websiteId: string, eventId: string): Promise<Even
         and event_id = {eventId:UUID}
     `,
     { websiteId, eventId },
+    FUNCTION_NAME,
+  );
+}
+
+async function oceanbaseQuery(websiteId: string, eventId: string): Promise<EventData[]> {
+  const { rawQuery } = oceanbase;
+
+  return rawQuery(
+    `
+    SELECT event_data.website_id AS websiteId,
+       event_data.website_event_id AS eventId,
+       website_event.event_name AS eventName,
+       event_data.data_key AS dataKey,
+       event_data.string_value AS stringValue,
+       event_data.number_value AS numberValue,
+       event_data.date_value AS dateValue,
+       event_data.data_type AS dataType,
+       event_data.created_at AS createdAt
+    FROM event_data
+    JOIN website_event ON website_event.event_id = event_data.website_event_id
+      AND website_event.website_id = ?
+    WHERE event_data.website_id = ?
+      AND event_data.website_event_id = ?
+    `,
+    [websiteId, websiteId, eventId],
     FUNCTION_NAME,
   );
 }

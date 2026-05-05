@@ -89,6 +89,7 @@
     "kafkajs": "^2.1.0",
     "lucide-react": "^1.7.0",
     "maxmind": "^5.0.5",
+    "mysql2": "^3.22.2",
     "next": "16.2.4",
     "next-intl": "4.8.3",
     "node-fetch": "^3.2.8",
