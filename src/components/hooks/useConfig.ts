@@ -8,7 +8,6 @@ export type Config = {
   linksUrl?: string;
   pixelsUrl?: string;
   privateMode: boolean;
-  selfRecordEnabled: boolean;
   telemetryDisabled: boolean;
   trackerScriptName?: string;
   updatesDisabled: boolean;
