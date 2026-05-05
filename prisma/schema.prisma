@@ -413,6 +413,7 @@ model HeatmapEvent {
   y          Int?     @db.Integer
   viewportW  Int?     @map("viewport_w") @db.Integer
   viewportH  Int?     @map("viewport_h") @db.Integer
+  pageH      Int?     @map("page_h") @db.Integer
   scrollPct  Int?     @map("scroll_pct") @db.Integer
   createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 

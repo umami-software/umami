@@ -160,13 +160,12 @@ export const operatorParam = z.enum([
 
 export const goalReportSchema = z.object({
   type: z.literal('goal'),
-  parameters: z
-    .object({
-      startDate: z.coerce.date(),
-      endDate: z.coerce.date(),
-      type: z.string(),
-      value: z.string(),
-    }),
+  parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+    type: z.string(),
+    value: z.string(),
+  }),
 });
 
 export const funnelReportSchema = z.object({
@@ -275,6 +274,7 @@ export const heatmapReportSchema = z.object({
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
     urlPath: z.string().max(500).optional(),
+    mode: z.enum(['click', 'scroll']).optional(),
   }),
 });
 

@@ -15,6 +15,7 @@ export interface HeatmapEventRow {
   y: number | null;
   viewportW: number | null;
   viewportH: number | null;
+  pageH: number | null;
   scrollPct: number | null;
   createdAt: Date;
 }
@@ -42,6 +43,7 @@ async function relationalQuery(rows: HeatmapEventRow[]) {
       y: r.y,
       viewportW: r.viewportW,
       viewportH: r.viewportH,
+      pageH: r.pageH,
       scrollPct: r.scrollPct,
       createdAt: r.createdAt,
     })),
@@ -64,6 +66,7 @@ async function clickhouseQuery(rows: HeatmapEventRow[]) {
     y: r.y,
     viewport_w: r.viewportW,
     viewport_h: r.viewportH,
+    page_h: r.pageH,
     scroll_pct: r.scrollPct,
     created_at: getUTCString(r.createdAt),
   }));

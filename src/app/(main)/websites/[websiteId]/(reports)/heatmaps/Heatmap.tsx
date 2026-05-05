@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useResultQuery, useWebsite } from '@/components/hooks';
 import { formatLongNumber } from '@/lib/format';
-import type { HeatmapPoint, HeatmapResult } from '@/queries/sql';
+import type { HeatmapMode, HeatmapPoint, HeatmapResult } from '@/queries/sql';
 import styles from './Heatmap.module.css';
 
 const RENDER_WIDTH = 1024;
@@ -19,25 +19,38 @@ interface HeatmapProps {
   websiteId: string;
   urlPath: string;
   onUrlPathChange: (urlPath: string) => void;
+  mode: HeatmapMode;
+  onModeChange: (mode: HeatmapMode) => void;
 }
 
-export function Heatmap({ websiteId, urlPath, onUrlPathChange }: HeatmapProps) {
+export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, onModeChange }: HeatmapProps) {
   const website = useWebsite();
   const { data, error, isLoading } = useResultQuery<HeatmapResult>('heatmap', {
     websiteId,
     urlPath: urlPath || undefined,
+    mode,
   });
 
   const pages = data?.pages ?? [];
   const points = data?.points ?? [];
+  const scroll = data?.scroll;
 
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error} height="100%">
       <Grid columns="320px 1fr" gap height="100%">
-        <PageList pages={pages} selected={urlPath} onSelect={onUrlPathChange} />
+        <PageList pages={pages} selected={urlPath} onSelect={onUrlPathChange} mode={mode} />
         <Column gap>
+          <ModeToggle mode={mode} onChange={onModeChange} />
           {urlPath ? (
-            <HeatmapView domain={website?.domain ?? null} urlPath={urlPath} points={points} />
+            mode === 'scroll' ? (
+              <ScrollHeatmapView
+                domain={website?.domain ?? null}
+                urlPath={urlPath}
+                scroll={scroll}
+              />
+            ) : (
+              <HeatmapView domain={website?.domain ?? null} urlPath={urlPath} points={points} />
+            )
           ) : (
             <EmptyState />
           )}
@@ -47,14 +60,43 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange }: HeatmapProps) {
   );
 }
 
+function ModeToggle({
+  mode,
+  onChange,
+}: {
+  mode: HeatmapMode;
+  onChange: (mode: HeatmapMode) => void;
+}) {
+  return (
+    <Row gap="2">
+      <button
+        type="button"
+        onClick={() => onChange('click')}
+        className={`${styles.toggleButton} ${mode === 'click' ? styles.toggleButtonSelected : ''}`}
+      >
+        Clicks
+      </button>
+      <button
+        type="button"
+        onClick={() => onChange('scroll')}
+        className={`${styles.toggleButton} ${mode === 'scroll' ? styles.toggleButtonSelected : ''}`}
+      >
+        Scroll
+      </button>
+    </Row>
+  );
+}
+
 function PageList({
   pages,
   selected,
   onSelect,
+  mode,
 }: {
   pages: HeatmapResult['pages'];
   selected: string;
   onSelect: (urlPath: string) => void;
+  mode: HeatmapMode;
 }) {
   return (
     <Column className={styles.pageList} gap="2">
@@ -69,7 +111,7 @@ function PageList({
         >
           <Row alignItems="center" justifyContent="space-between" gap="2">
             <Text truncate>{p.urlPath}</Text>
-            <Text color="muted">{formatLongNumber(p.count)}</Text>
+            <Text color="muted">{formatLongNumber(mode === 'scroll' ? p.sessions : p.count)}</Text>
           </Row>
         </button>
       ))}
@@ -144,10 +186,7 @@ function HeatmapView({
           </button>
         )}
       </Row>
-      <div
-        className={styles.canvas}
-        style={{ width: RENDER_WIDTH, height: renderHeight }}
-      >
+      <div className={styles.canvas} style={{ width: RENDER_WIDTH, height: renderHeight }}>
         {showPage && iframeSrc && (
           <iframe
             className={styles.iframe}
@@ -184,11 +223,100 @@ function HeatmapView({
   );
 }
 
-function EmptyState() {
+function ScrollHeatmapView({
+  domain,
+  urlPath,
+  scroll,
+}: {
+  domain: string | null;
+  urlPath: string;
+  scroll: HeatmapResult['scroll'] | undefined;
+}) {
+  const [showPage, setShowPage] = useState(true);
+
+  if (!scroll || scroll.totalSessions === 0 || !scroll.pageH || !scroll.viewportW) {
+    return <EmptyState message="No scroll data for this page yet." />;
+  }
+
+  const { buckets, totalSessions, pageH, viewportW, viewportH } = scroll;
+  const scale = RENDER_WIDTH / viewportW;
+  const renderHeight = Math.round(pageH * scale);
+  const iframeSrc = domain ? `https://${domain}${urlPath}` : null;
+
+  // Cumulative reach: % of sessions that scrolled at least to depth D.
+  const sortedBuckets = [...buckets].sort((a, b) => a.depth - b.depth);
+  let remaining = totalSessions;
+  const cumulative = sortedBuckets.map(b => {
+    const reached = remaining;
+    remaining -= b.sessions;
+    return { depth: b.depth, reached, ratio: reached / totalSessions };
+  });
+
+  return (
+    <Column gap>
+      <Row alignItems="center" justifyContent="space-between" gap>
+        <Text color="muted">
+          {formatLongNumber(totalSessions)} sessions · page {viewportW}×{pageH}
+          {viewportH ? ` · viewport ${viewportH}` : ''}
+        </Text>
+        {iframeSrc && (
+          <button
+            type="button"
+            className={styles.toggleButton}
+            onClick={() => setShowPage(v => !v)}
+          >
+            {showPage ? 'Hide page' : 'Show page'}
+          </button>
+        )}
+      </Row>
+      <div className={styles.canvas} style={{ width: RENDER_WIDTH, height: renderHeight }}>
+        {showPage && iframeSrc && (
+          <iframe
+            className={styles.iframe}
+            src={iframeSrc}
+            width={viewportW}
+            height={pageH}
+            style={{ transform: `scale(${scale})` }}
+            sandbox="allow-same-origin"
+            referrerPolicy="no-referrer"
+          />
+        )}
+        <div className={styles.overlay}>
+          {cumulative.map((b, i) => {
+            const top = Math.round((b.depth / 100) * renderHeight);
+            const next = cumulative[i + 1];
+            const bottom = next ? Math.round((next.depth / 100) * renderHeight) : renderHeight;
+            const height = Math.max(0, bottom - top);
+            const intensity = b.ratio;
+            const hue = Math.round(60 - intensity * 60); // 60=yellow → 0=red
+            return (
+              <div
+                key={b.depth}
+                className={styles.scrollBand}
+                style={{
+                  top,
+                  height,
+                  background: `hsla(${hue}, 90%, 50%, ${0.15 + intensity * 0.5})`,
+                }}
+                title={`${b.depth}% — ${formatLongNumber(b.reached)} sessions (${Math.round(intensity * 100)}%)`}
+              >
+                <span className={styles.scrollBandLabel}>
+                  {b.depth}% · {Math.round(intensity * 100)}%
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </Column>
+  );
+}
+
+function EmptyState({ message }: { message?: string } = {}) {
   return (
     <Column alignItems="center" justifyContent="center" height="100%" gap>
-      <Heading size="lg">Select a page</Heading>
-      <Text color="muted">Choose a page from the list to view its click heatmap.</Text>
+      <Heading size="lg">{message ? 'No data' : 'Select a page'}</Heading>
+      <Text color="muted">{message ?? 'Choose a page from the list to view its heatmap.'}</Text>
     </Column>
   );
 }

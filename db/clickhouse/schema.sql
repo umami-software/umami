@@ -359,6 +359,7 @@ CREATE TABLE umami.heatmap_event
     y Nullable(Int32),
     viewport_w Nullable(Int32),
     viewport_h Nullable(Int32),
+    page_h Nullable(Int32),
     scroll_pct Nullable(UInt8),
     created_at DateTime('UTC')
 )

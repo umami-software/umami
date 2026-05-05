@@ -40,6 +40,34 @@
   background: var(--interactive-bg-hover);
 }
 
+.toggleButtonSelected,
+.toggleButtonSelected:hover {
+  background: var(--surface-inverted);
+  color: var(--surface-base);
+  border-color: var(--surface-inverted);
+}
+
+.scrollBand {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 2px 8px;
+}
+
+.scrollBandLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 4px;
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+
 .canvas {
   position: relative;
   overflow: hidden;
