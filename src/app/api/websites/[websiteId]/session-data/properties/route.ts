@@ -13,7 +13,7 @@ export async function GET(
   const schema = z.object({
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
-    selectedPropertyName: z.string().optional(),
+    propertyName: z.string().optional(),
     ...filterParams,
   });
 
@@ -29,7 +29,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const { selectedPropertyName, ...rest } = query;
+  const { propertyName, ...rest } = query;
   const filters = await getQueryFilters(rest, websiteId);
   const propertyFilters = parsePropertyFilters(query);
 
@@ -37,7 +37,7 @@ export async function GET(
     websiteId,
     filters,
     propertyFilters,
-    selectedPropertyName,
+    propertyName,
   );
 
   return json(data);
