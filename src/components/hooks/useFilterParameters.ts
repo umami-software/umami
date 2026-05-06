@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { FILTER_COLUMNS } from '@/lib/constants';
 import { useNavigation } from './useNavigation';
 
-export function useFilterParameters() {
+export function useFilterParameters({ includePagination = true }: { includePagination?: boolean } = {}) {
   const { query } = useNavigation();
 
   return useMemo(() => {
@@ -15,15 +15,20 @@ export function useFilterParameters() {
       }
     }
 
-    return {
+    const params = {
       ...filterParams,
       search: query.search,
       segment: query.segment,
       cohort: query.cohort,
       excludeBounce: query.excludeBounce,
       match: query.match,
-      page: query.page,
-      pageSize: query.pageSize,
-    };
-  }, [query]);
+    } as Record<string, any>;
+
+    if (includePagination) {
+      params.page = query.page;
+      params.pageSize = query.pageSize;
+    }
+
+    return params;
+  }, [query, includePagination]);
 }

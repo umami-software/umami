@@ -14,6 +14,7 @@ import {
   useFilters,
   useFormat,
   useMessages,
+  useMobile,
   useNavigation,
   useWebsiteSegmentQuery,
 } from '@/components/hooks';
@@ -22,6 +23,7 @@ import { isSearchOperator } from '@/lib/params';
 
 export function FilterBar({ websiteId }: { websiteId?: string }) {
   const { t, labels } = useMessages();
+  const { isMobile } = useMobile();
   const { formatValue } = useFormat();
   const {
     router,
@@ -58,8 +60,9 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
       justifyContent="space-between"
       padding="2"
       backgroundColor="surface-sunken"
+      wrap="wrap"
     >
-      <Row alignItems="center" gap="2" wrap="wrap">
+      <Row alignItems="center" gap="2" wrap="wrap" width={{ base: '100%', md: 'auto' }}>
         {segment && !isLoading && (
           <FilterItem
             name="segment"
@@ -113,8 +116,19 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
               </Tooltip>
             </TooltipTrigger>
           )}
-          <Modal>
-            <Dialog title={t(labels.segment)} style={{ width: 800, minHeight: 300 }}>
+          <Modal placement={isMobile ? 'fullscreen' : 'center'}>
+            <Dialog
+              variant={isMobile ? 'sheet' : undefined}
+              title={t(labels.segment)}
+              style={{
+                width: isMobile ? '100%' : '800px',
+                height: isMobile ? '100%' : undefined,
+                minHeight: 300,
+                maxHeight: isMobile ? '100%' : 'calc(100dvh - 40px)',
+                overflowY: 'auto',
+                padding: '32px',
+              }}
+            >
               {({ close }) => {
                 return <SegmentEditForm websiteId={websiteId} onClose={close} filters={filters} />;
               }}
@@ -149,7 +163,7 @@ const FilterItem = ({ name, label, operator, value, onRemove }) => {
       theme="dark"
     >
       <Row alignItems="center" gap="4">
-        <Row alignItems="center" gap="2" maxWidth={'500px'}>
+        <Row alignItems="center" gap="2" style={{ maxWidth: 'min(500px, calc(100vw - 10rem))', minWidth: 0, overflow: 'hidden' }}>
           <Text color="primary" weight="bold">
             {label}
           </Text>

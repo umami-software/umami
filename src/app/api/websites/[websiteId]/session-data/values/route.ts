@@ -13,6 +13,7 @@ export async function GET(
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
     propertyName: z.string().optional(),
+    dataType: z.coerce.number().int().optional(),
     ...filterParams,
   });
 
@@ -28,12 +29,13 @@ export async function GET(
     return unauthorized();
   }
 
-  const { propertyName } = query;
+  const { propertyName, dataType } = query;
   const filters = await getQueryFilters(query, websiteId);
 
   const data = await getSessionDataValues(websiteId, {
     ...filters,
     propertyName,
+    dataType,
   });
 
   return json(data);

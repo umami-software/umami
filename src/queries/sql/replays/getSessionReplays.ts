@@ -17,7 +17,7 @@ export function getSessionReplays(
 async function relationalQuery(websiteId: string, filters: QueryFilters, sessionId?: string) {
   const { pagedRawQuery, parseFilters } = prisma;
   const { search } = filters;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+  const { filterQuery, cohortQuery, queryParams, joinSessionQuery } = parseFilters({
     ...filters,
     websiteId,
     search: search ? `%${search}%` : undefined,
@@ -27,6 +27,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, session
     filterQuery || cohortQuery
       ? `join (select distinct website_event.website_id, website_event.session_id, website_event.visit_id
                from website_event
+               ${joinSessionQuery}
                ${cohortQuery}
                where website_event.website_id = {{websiteId::uuid}}
                   and website_event.created_at between {{startDate}} and {{endDate}}

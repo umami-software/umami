@@ -30,6 +30,15 @@ export interface Auth {
   };
 }
 
+export interface PropertyFilter {
+  propertyName: string;
+  dataType: number;
+  operator: Operator;
+  value: string;
+}
+
+export type EventPropertyFilter = PropertyFilter;
+
 export interface Filter {
   name: string;
   operator: Operator;
@@ -51,6 +60,42 @@ export interface DateRange {
 
 export interface DynamicData {
   [key: string]: number | string | number[] | string[];
+}
+
+export interface EventDataSeriesPoint {
+  x: string;
+  t: string;
+  y: number;
+}
+
+export interface EventDataDateSeriesPoint {
+  t: string;
+  y: number;
+}
+
+export interface EventDataNumericStats {
+  total: number;
+  average: number;
+  median: number;
+  max: number;
+  min: number;
+}
+
+export interface SessionDataPivotRow {
+  sessionId: string;
+  distinctId: string;
+  createdAt: string | Date;
+  propertyKeys: string[];
+  propertyValues: string[];
+}
+
+export interface PropertyLeaderboardRow {
+  label: string;
+  activity: number;
+  sessions: number;
+  visits: number;
+  views: number;
+  events: number;
 }
 
 export interface QueryOptions {
@@ -112,6 +157,7 @@ export interface SortParams {
 export interface PageParams {
   page?: number;
   pageSize?: number;
+  maxResults?: number;
 }
 
 export interface SegmentParams {
@@ -127,6 +173,7 @@ export interface PageResult<T> {
   orderBy?: string;
   sortDescending?: boolean;
   search?: string;
+  isCapped?: boolean;
 }
 
 export interface RealtimeData {

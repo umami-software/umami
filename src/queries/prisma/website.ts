@@ -42,7 +42,7 @@ export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters:
   return attachShareIdToWebsites(websites);
 }
 
-export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filters?: QueryFilters) {
+export async function getAllUserWebsitesIncludingTeamAccess(userId: string, filters?: QueryFilters) {
   return getWebsites(
     {
       where: {
@@ -53,7 +53,7 @@ export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filte
               deletedAt: null,
               members: {
                 some: {
-                  role: ROLES.teamOwner,
+                  role: { in: [ROLES.teamOwner, ROLES.teamManager] },
                   userId,
                 },
               },

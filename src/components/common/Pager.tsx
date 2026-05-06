@@ -6,11 +6,12 @@ export interface PagerProps {
   page: string | number;
   pageSize: string | number;
   count: string | number;
+  isCapped?: boolean;
   onPageChange: (nextPage: number) => void;
   className?: string;
 }
 
-export function Pager({ page, pageSize, count, onPageChange }: PagerProps) {
+export function Pager({ page, pageSize, count, isCapped, onPageChange }: PagerProps) {
   const { t, labels } = useMessages();
   const maxPage = pageSize && count ? Math.ceil(+count / +pageSize) : 0;
   const lastPage = page === maxPage;
@@ -28,13 +29,15 @@ export function Pager({ page, pageSize, count, onPageChange }: PagerProps) {
     }
   };
 
-  if (maxPage === 1) {
+  if (maxPage === 1 && !isCapped) {
     return null;
   }
 
+  const displayCount = isCapped ? `10,000+` : (+count).toLocaleString();
+
   return (
     <Row alignItems="center" justifyContent="space-between" gap="3" flexGrow={1}>
-      <Text>{t(labels.numberOfRecords, { x: count.toLocaleString() })}</Text>
+      <Text>{t(labels.numberOfRecords, { x: displayCount })}</Text>
       <Row alignItems="center" justifyContent="flex-end" gap="3">
         <Text>
           {t(labels.pageOf, {
