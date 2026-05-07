@@ -10,10 +10,12 @@ import { formatShortTime } from '@/lib/format';
 export type MetricSeriesKind = 'bouncerate' | 'visitduration';
 
 export interface MetricSeriesChartProps extends BarChartProps {
-  data: {
-    series: { x: string; y: number }[];
-    compare?: { x: string; y: number }[];
-  };
+  data:
+    | {
+        series: { x: string; y: number }[];
+        compare?: { x: string; y: number }[];
+      }
+    | null;
   unit: string;
   kind: MetricSeriesKind;
   label: string;
@@ -43,11 +45,8 @@ export function MetricSeriesChart({
   const chartData: any = useMemo(() => {
     if (!data) return;
 
-    const yMaxBaseline = kind === 'bouncerate' ? 100 : undefined;
-
     return {
       __id: Date.now(),
-      yMax: yMaxBaseline,
       datasets: [
         {
           type: 'bar',
@@ -74,7 +73,7 @@ export function MetricSeriesChart({
           : []),
       ],
     };
-  }, [data, locale, kind, label, comparePreviousLabel, colors, minDate, maxDate, unit, dateLocale]);
+  }, [data, kind, label, comparePreviousLabel, colors, minDate, maxDate, unit, dateLocale]);
 
   const renderXLabel = useCallback(renderDateLabels(unit, locale), [unit, locale]);
   const renderYLabel = useCallback((value: any) => formatY(Number(value)), [formatY]);
@@ -82,6 +81,8 @@ export function MetricSeriesChart({
     (raw: { x: any; y: number }) => formatY(Number(raw?.y)),
     [formatY],
   );
+
+  const yMax = kind === 'bouncerate' ? 100 : undefined;
 
   return (
     <BarChart
@@ -93,6 +94,7 @@ export function MetricSeriesChart({
       renderXLabel={renderXLabel}
       renderYLabel={renderYLabel}
       renderTooltipValue={renderTooltipValue}
+      yMax={yMax}
       height="400px"
     />
   );

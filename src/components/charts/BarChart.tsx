@@ -31,6 +31,8 @@ export interface BarChartProps extends ChartProps {
   renderTooltipValue?: (raw: { x: any; y: number }, datasetLabel: string) => string;
   XAxisType?: string;
   YAxisType?: string;
+  yMax?: number;
+  ySuggestedMax?: number;
   minDate?: Date;
   maxDate?: Date;
 }
@@ -49,6 +51,8 @@ function BarChartComponent({
   unit,
   XAxisType = 'timeseries',
   YAxisType = 'linear',
+  yMax,
+  ySuggestedMax,
   stacked = false,
   minDate,
   maxDate,
@@ -90,6 +94,8 @@ function BarChartComponent({
           type: YAxisType,
           min: 0,
           beginAtZero: true,
+          ...(yMax !== undefined && { max: yMax }),
+          ...(ySuggestedMax !== undefined && { suggestedMax: ySuggestedMax }),
           stacked: !!stacked,
           grid: {
             color: colors.chart.line,
@@ -115,6 +121,8 @@ function BarChartComponent({
     locale,
     XAxisType,
     YAxisType,
+    yMax,
+    ySuggestedMax,
   ]);
 
   const handleTooltip = useCallback(
