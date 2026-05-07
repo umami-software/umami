@@ -11,6 +11,7 @@ CREATE TABLE "heatmap_event" (
     "y" INTEGER,
     "viewport_w" INTEGER,
     "viewport_h" INTEGER,
+    "page_h" INTEGER,
     "scroll_pct" INTEGER,
     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
