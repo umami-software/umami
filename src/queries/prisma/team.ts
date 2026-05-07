@@ -145,7 +145,7 @@ export async function deleteTeam(teamId: string) {
   const { client, transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
-  const [links, pixels, boards] = await Promise.all([
+  const [links, pixels, boards, websites] = await Promise.all([
     client.link.findMany({
       where: { teamId },
       select: { id: true, slug: true, deletedAt: true },
@@ -155,17 +155,26 @@ export async function deleteTeam(teamId: string) {
       select: { id: true, slug: true, deletedAt: true },
     }),
     client.board.findMany({ where: { teamId }, select: { id: true } }),
+    client.website.findMany({ where: { teamId }, select: { id: true, deletedAt: true } }),
   ]);
-  const entityIds = [...links.map(l => l.id), ...pixels.map(p => p.id), ...boards.map(b => b.id)];
-  // Only invalidate Redis cache for slugs that are still live (not already soft-deleted).
+  const websiteIds = websites.map(w => w.id);
+  const entityIds = [
+    ...links.map(l => l.id),
+    ...pixels.map(p => p.id),
+    ...boards.map(b => b.id),
+    ...websiteIds,
+  ];
+  // Only invalidate Redis cache for slugs/keys that are still live (not already soft-deleted).
   const linkSlugs = links.filter(l => !l.deletedAt).map(l => l.slug);
   const pixelSlugs = pixels.filter(p => !p.deletedAt).map(p => p.slug);
+  const liveWebsiteIds = websites.filter(w => !w.deletedAt).map(w => w.id);
 
   const invalidateRedis = async () => {
-    if (redis.enabled && (linkSlugs.length || pixelSlugs.length)) {
+    if (redis.enabled && (linkSlugs.length || pixelSlugs.length || liveWebsiteIds.length)) {
       await Promise.all([
         ...linkSlugs.map(slug => redis.client.del(`link:${slug}`)),
         ...pixelSlugs.map(slug => redis.client.del(`pixel:${slug}`)),
+        ...liveWebsiteIds.map(id => redis.client.del(`website:${id}`)),
       ]);
     }
   };
@@ -191,6 +200,10 @@ export async function deleteTeam(teamId: string) {
         where: { teamId, deletedAt: null },
       }),
       client.board.deleteMany({ where: { teamId } }),
+      client.website.updateMany({
+        data: { deletedAt: new Date() },
+        where: { teamId, deletedAt: null },
+      }),
     ]).then(async result => {
       await invalidateRedis();
       return result;
@@ -207,6 +220,17 @@ export async function deleteTeam(teamId: string) {
     client.link.deleteMany({ where: { teamId } }),
     client.pixel.deleteMany({ where: { teamId } }),
     client.board.deleteMany({ where: { teamId } }),
+    // Mirror deleteWebsite cleanup order for team-owned websites:
+    client.sessionReplaySaved.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.sessionReplay.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.revenue.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.eventData.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.sessionData.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.websiteEvent.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.session.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.report.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.segment.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.website.deleteMany({ where: { id: { in: websiteIds } } }),
     client.team.delete({
       where: {
         id: teamId,

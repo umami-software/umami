@@ -30,6 +30,7 @@ export async function getUserPixels(userId: string, filters?: QueryFilters) {
     {
       where: {
         userId,
+        deletedAt: null,
       },
     },
     filters,
@@ -41,6 +42,7 @@ export async function getTeamPixels(teamId: string, filters?: QueryFilters) {
     {
       where: {
         teamId,
+        deletedAt: null,
       },
     },
     filters,
