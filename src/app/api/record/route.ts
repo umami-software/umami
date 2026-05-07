@@ -9,6 +9,8 @@ import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { getWebsite } from '@/queries/prisma';
 import { saveRecording } from '@/queries/sql';
+import { extractHeatmapEvents } from '@/queries/sql/heatmap/extractHeatmapEvents';
+import { saveHeatmapEvents } from '@/queries/sql/heatmap/saveHeatmapEvents';
 
 interface Cache {
   sessionId: string;
@@ -112,6 +114,22 @@ export async function POST(request: Request) {
       startedAt,
       endedAt,
     });
+
+    try {
+      const heatmapRows = extractHeatmapEvents(events).map(e => ({
+        websiteId,
+        sessionId,
+        visitId,
+        ...e,
+      }));
+
+      if (heatmapRows.length) {
+        await saveHeatmapEvents(heatmapRows);
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log('heatmap extraction failed', serializeError(e));
+    }
 
     return json({ ok: true });
   } catch (e) {

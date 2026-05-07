@@ -28,6 +28,7 @@ const contentSecurityPolicy = `
   script-src 'self' 'unsafe-eval' 'unsafe-inline';
   style-src 'self' 'unsafe-inline';
   connect-src 'self' https:;
+  frame-src 'self' http: https:;
   frame-ancestors 'self' ${frameAncestors};
 `;
 
