@@ -13,7 +13,7 @@ export function HeatmapsPage({ websiteId }: { websiteId: string }) {
   return (
     <Column gap>
       <WebsiteControls websiteId={websiteId} />
-      <Panel height="900px" allowFullscreen>
+      <Panel minHeight="900px" allowFullscreen>
         <Heatmap
           websiteId={websiteId}
           urlPath={urlPath}

@@ -68,12 +68,18 @@
   white-space: nowrap;
 }
 
+.canvasWrapper {
+  width: 100%;
+  min-width: 0;
+}
+
 .canvas {
   position: relative;
   overflow: hidden;
   border: 1px solid var(--border-base);
   border-radius: 8px;
   background: var(--surface-sunken);
+  max-width: 100%;
 }
 
 .iframe {

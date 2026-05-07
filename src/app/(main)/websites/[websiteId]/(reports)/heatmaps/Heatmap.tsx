@@ -1,13 +1,30 @@
 'use client';
 import { Column, Grid, Heading, Row, Text } from '@umami/react-zen';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useResultQuery, useWebsite } from '@/components/hooks';
 import { formatLongNumber } from '@/lib/format';
 import type { HeatmapMode, HeatmapPoint, HeatmapResult } from '@/queries/sql';
 import styles from './Heatmap.module.css';
 
-const RENDER_WIDTH = 1024;
+const MAX_RENDER_WIDTH = 1024;
+const IFRAME_SANDBOX = 'allow-same-origin allow-scripts allow-forms allow-popups';
+
+function useElementWidth<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  const [width, setWidth] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const ro = new ResizeObserver(entries => {
+      const w = entries[0]?.contentRect.width ?? 0;
+      setWidth(w);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  return [ref, width] as const;
+}
 
 interface ViewportBucket {
   width: number;
@@ -36,20 +53,26 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, onModeChang
   const scroll = data?.scroll;
 
   return (
-    <LoadingPanel data={data} isLoading={isLoading} error={error} height="100%">
-      <Grid columns="320px 1fr" gap height="100%">
+    <LoadingPanel data={data} isLoading={isLoading} error={error} minHeight="900px">
+      <Grid columns="320px 1fr" gap minHeight="900px">
         <PageList pages={pages} selected={urlPath} onSelect={onUrlPathChange} mode={mode} />
         <Column gap>
           <ModeToggle mode={mode} onChange={onModeChange} />
           {urlPath ? (
             mode === 'scroll' ? (
               <ScrollHeatmapView
+                websiteId={websiteId}
                 domain={website?.domain ?? null}
                 urlPath={urlPath}
                 scroll={scroll}
               />
             ) : (
-              <HeatmapView domain={website?.domain ?? null} urlPath={urlPath} points={points} />
+              <HeatmapView
+                websiteId={websiteId}
+                domain={website?.domain ?? null}
+                urlPath={urlPath}
+                points={points}
+              />
             )
           ) : (
             <EmptyState />
@@ -119,6 +142,27 @@ function PageList({
   );
 }
 
+function buildIframeSrc(
+  websiteId: string | null,
+  domain: string | null,
+  urlPath: string,
+): string | null {
+  // Self-record: data was captured from this very umami instance, so iframe the
+  // current origin instead of the website's stored domain (which often points to prod).
+  if (typeof window !== 'undefined' && websiteId && websiteId === process.env.selfRecord) {
+    return `${window.location.origin}${urlPath}`;
+  }
+  if (!domain) return null;
+  if (/^https?:\/\//i.test(domain)) return `${domain}${urlPath}`;
+  const isLocal = /^(localhost|127\.|0\.0\.0\.0|\[::1\])(:|\/|$)/i.test(domain);
+  const protocol = isLocal
+    ? typeof window !== 'undefined'
+      ? window.location.protocol
+      : 'http:'
+    : 'https:';
+  return `${protocol}//${domain}${urlPath}`;
+}
+
 function pickViewport(points: HeatmapPoint[]): ViewportBucket | null {
   if (!points.length) return null;
   const buckets = new Map<string, ViewportBucket>();
@@ -139,10 +183,12 @@ function pickViewport(points: HeatmapPoint[]): ViewportBucket | null {
 }
 
 function HeatmapView({
+  websiteId,
   domain,
   urlPath,
   points,
 }: {
+  websiteId: string;
   domain: string | null;
   urlPath: string;
   points: HeatmapPoint[];
@@ -161,13 +207,16 @@ function HeatmapView({
     [visible],
   );
 
+  const [containerRef, containerWidth] = useElementWidth<HTMLDivElement>();
+
   if (!viewport || visible.length === 0) {
     return <EmptyState />;
   }
 
-  const scale = RENDER_WIDTH / viewport.width;
+  const renderWidth = containerWidth > 0 ? Math.min(containerWidth, MAX_RENDER_WIDTH) : 0;
+  const scale = renderWidth ? renderWidth / viewport.width : 0;
   const renderHeight = Math.round(viewport.height * scale);
-  const iframeSrc = domain ? `https://${domain}${urlPath}` : null;
+  const iframeSrc = buildIframeSrc(websiteId, domain, urlPath);
 
   return (
     <Column gap>
@@ -186,37 +235,41 @@ function HeatmapView({
           </button>
         )}
       </Row>
-      <div className={styles.canvas} style={{ width: RENDER_WIDTH, height: renderHeight }}>
-        {showPage && iframeSrc && (
-          <iframe
-            className={styles.iframe}
-            src={iframeSrc}
-            width={viewport.width}
-            height={viewport.height}
-            style={{ transform: `scale(${scale})` }}
-            sandbox="allow-same-origin"
-            referrerPolicy="no-referrer"
-          />
-        )}
-        <div className={styles.overlay}>
-          {visible.map((p, i) => {
-            const intensity = Math.min(1, p.count / maxCount);
-            const size = 24 + intensity * 36;
-            return (
-              <div
-                key={`${p.x}-${p.y}-${i}`}
-                className={styles.dot}
-                style={{
-                  left: p.x * scale - size / 2,
-                  top: p.y * scale - size / 2,
-                  width: size,
-                  height: size,
-                  opacity: 0.25 + intensity * 0.55,
-                }}
-                title={`${p.count} click${p.count === 1 ? '' : 's'}`}
-              />
-            );
-          })}
+      <div ref={containerRef} className={styles.canvasWrapper}>
+        <div
+          className={styles.canvas}
+          style={{ width: renderWidth || '100%', height: renderHeight || 0 }}
+        >
+          {renderWidth > 0 && showPage && iframeSrc && (
+            <iframe
+              className={styles.iframe}
+              src={iframeSrc}
+              width={viewport.width}
+              height={viewport.height}
+              style={{ transform: `scale(${scale})` }}
+              sandbox={IFRAME_SANDBOX}
+            />
+          )}
+          <div className={styles.overlay}>
+            {visible.map((p, i) => {
+              const intensity = Math.min(1, p.count / maxCount);
+              const size = 24 + intensity * 36;
+              return (
+                <div
+                  key={`${p.x}-${p.y}-${i}`}
+                  className={styles.dot}
+                  style={{
+                    left: p.x * scale - size / 2,
+                    top: p.y * scale - size / 2,
+                    width: size,
+                    height: size,
+                    opacity: 0.25 + intensity * 0.55,
+                  }}
+                  title={`${p.count} click${p.count === 1 ? '' : 's'}`}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
     </Column>
@@ -224,24 +277,29 @@ function HeatmapView({
 }
 
 function ScrollHeatmapView({
+  websiteId,
   domain,
   urlPath,
   scroll,
 }: {
+  websiteId: string;
   domain: string | null;
   urlPath: string;
   scroll: HeatmapResult['scroll'] | undefined;
 }) {
   const [showPage, setShowPage] = useState(true);
 
+  const [containerRef, containerWidth] = useElementWidth<HTMLDivElement>();
+
   if (!scroll || scroll.totalSessions === 0 || !scroll.pageH || !scroll.viewportW) {
     return <EmptyState message="No scroll data for this page yet." />;
   }
 
   const { buckets, totalSessions, pageH, viewportW, viewportH } = scroll;
-  const scale = RENDER_WIDTH / viewportW;
+  const renderWidth = containerWidth > 0 ? Math.min(containerWidth, MAX_RENDER_WIDTH) : 0;
+  const scale = renderWidth ? renderWidth / viewportW : 0;
   const renderHeight = Math.round(pageH * scale);
-  const iframeSrc = domain ? `https://${domain}${urlPath}` : null;
+  const iframeSrc = buildIframeSrc(websiteId, domain, urlPath);
 
   // Cumulative reach: % of sessions that scrolled at least to depth D.
   const sortedBuckets = [...buckets].sort((a, b) => a.depth - b.depth);
@@ -251,6 +309,23 @@ function ScrollHeatmapView({
     remaining -= b.sessions;
     return { depth: b.depth, reached, ratio: reached / totalSessions };
   });
+
+  // Build page-spanning bands. Each band covers a vertical slice of the page.
+  // Intensity = fraction of sessions reaching the band's TOP edge (everyone who
+  // got that far saw at least the start of the slice).
+  type Band = { fromPct: number; toPct: number; reached: number; ratio: number };
+  const bands: Band[] = [];
+  const firstDepth = cumulative[0]?.depth ?? 100;
+  if (firstDepth > 0) {
+    bands.push({ fromPct: 0, toPct: firstDepth, reached: totalSessions, ratio: 1 });
+  }
+  for (let i = 0; i < cumulative.length; i++) {
+    const c = cumulative[i];
+    const toPct = cumulative[i + 1]?.depth ?? 100;
+    if (c.depth < toPct) {
+      bands.push({ fromPct: c.depth, toPct, reached: c.reached, ratio: c.ratio });
+    }
+  }
 
   return (
     <Column gap>
@@ -269,43 +344,46 @@ function ScrollHeatmapView({
           </button>
         )}
       </Row>
-      <div className={styles.canvas} style={{ width: RENDER_WIDTH, height: renderHeight }}>
-        {showPage && iframeSrc && (
-          <iframe
-            className={styles.iframe}
-            src={iframeSrc}
-            width={viewportW}
-            height={pageH}
-            style={{ transform: `scale(${scale})` }}
-            sandbox="allow-same-origin"
-            referrerPolicy="no-referrer"
-          />
-        )}
-        <div className={styles.overlay}>
-          {cumulative.map((b, i) => {
-            const top = Math.round((b.depth / 100) * renderHeight);
-            const next = cumulative[i + 1];
-            const bottom = next ? Math.round((next.depth / 100) * renderHeight) : renderHeight;
-            const height = Math.max(0, bottom - top);
-            const intensity = b.ratio;
-            const hue = Math.round(60 - intensity * 60); // 60=yellow → 0=red
-            return (
-              <div
-                key={b.depth}
-                className={styles.scrollBand}
-                style={{
-                  top,
-                  height,
-                  background: `hsla(${hue}, 90%, 50%, ${0.15 + intensity * 0.5})`,
-                }}
-                title={`${b.depth}% — ${formatLongNumber(b.reached)} sessions (${Math.round(intensity * 100)}%)`}
-              >
-                <span className={styles.scrollBandLabel}>
-                  {b.depth}% · {Math.round(intensity * 100)}%
-                </span>
-              </div>
-            );
-          })}
+      <div ref={containerRef} className={styles.canvasWrapper}>
+        <div
+          className={styles.canvas}
+          style={{ width: renderWidth || '100%', height: renderHeight || 0 }}
+        >
+          {renderWidth > 0 && showPage && iframeSrc && (
+            <iframe
+              className={styles.iframe}
+              src={iframeSrc}
+              width={viewportW}
+              height={pageH}
+              style={{ transform: `scale(${scale})` }}
+              sandbox={IFRAME_SANDBOX}
+            />
+          )}
+          <div className={styles.overlay}>
+            {bands.map(b => {
+              const top = Math.round((b.fromPct / 100) * renderHeight);
+              const bottom = Math.round((b.toPct / 100) * renderHeight);
+              const height = Math.max(0, bottom - top);
+              const intensity = b.ratio;
+              const hue = Math.round(60 - intensity * 60); // 60=yellow → 0=red
+              return (
+                <div
+                  key={b.fromPct}
+                  className={styles.scrollBand}
+                  style={{
+                    top,
+                    height,
+                    background: `hsla(${hue}, 90%, 50%, ${0.15 + intensity * 0.5})`,
+                  }}
+                  title={`${b.fromPct}–${b.toPct}% — ${formatLongNumber(b.reached)} sessions (${Math.round(intensity * 100)}%)`}
+                >
+                  <span className={styles.scrollBandLabel}>
+                    {b.fromPct}% · {Math.round(intensity * 100)}%
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </Column>
