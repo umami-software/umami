@@ -276,6 +276,7 @@ export const BROWSERS = {
   aol: 'AOL',
   bb10: 'BlackBerry 10',
   beaker: 'Beaker',
+  browser: 'Unknown',
   chrome: 'Chrome',
   'chromium-webview': 'Chrome (webview)',
   crios: 'Chrome (iOS)',
