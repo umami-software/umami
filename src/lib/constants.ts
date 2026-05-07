@@ -37,6 +37,7 @@ export const UNIT_TYPES = ['year', 'month', 'hour', 'day', 'minute'];
 
 export const EVENT_COLUMNS = [
   'path',
+  'fullPath',
   'entry',
   'exit',
   'referrer',
