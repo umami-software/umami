@@ -3,9 +3,12 @@ import { ROLES } from '@/lib/constants';
 import { getRandomChars } from '@/lib/generate';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
+import { sanitizeSortFilters } from '@/lib/sort';
 import type { QueryFilters, Role } from '@/lib/types';
 
 import UserFindManyArgs = Prisma.UserFindManyArgs;
+
+const USER_SORT_FIELDS = ['username', 'role', 'createdAt'] as const;
 
 export interface GetUserOptions {
   includePassword?: boolean;
@@ -47,7 +50,11 @@ export async function getUserByUsername(username: string, options: GetUserOption
 }
 
 export async function getUsers(criteria: UserFindManyArgs, filters: QueryFilters = {}) {
-  const { search } = filters;
+  const sortFilters = sanitizeSortFilters(filters, USER_SORT_FIELDS, {
+    orderBy: 'createdAt',
+    sortDescending: true,
+  });
+  const { search } = sortFilters;
 
   const where: Prisma.UserWhereInput = {
     ...criteria.where,
@@ -61,11 +68,7 @@ export async function getUsers(criteria: UserFindManyArgs, filters: QueryFilters
       ...criteria,
       where,
     },
-    {
-      orderBy: 'createdAt',
-      sortDescending: true,
-      ...filters,
-    },
+    sortFilters,
   );
 }
 

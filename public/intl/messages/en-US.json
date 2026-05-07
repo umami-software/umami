@@ -125,6 +125,7 @@
     "filter-combined": "Combined",
     "filter-raw": "Raw",
     "filters": "Filters",
+    "filters-enabled": "Filters enabled",
     "property-filter": "Property Filter",
     "activity-by-property": "Activity by property",
     "first-click": "First click",

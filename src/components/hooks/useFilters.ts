@@ -1,5 +1,6 @@
 import { FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import { safeDecodeURIComponent } from '@/lib/url';
+import { useShare } from './context/useShare';
 import { useFields } from './useFields';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
@@ -10,6 +11,8 @@ export function useFilters() {
   const { query } = useNavigation();
   const { fields } = useFields();
   const operatorLabels = useOperatorLabels();
+  const share = useShare();
+  const allowFilter = share?.parameters?.allowFilter !== false;
 
   const operators = [
     { name: 'eq', type: 'string', label: t(labels.is) },
@@ -56,30 +59,32 @@ export function useFilters() {
     uuid: [OPERATORS.equals],
   };
 
-  const filters = Object.keys(query).reduce((arr, key) => {
-    const baseName = key.replace(/\d+$/, '');
-    if (FILTER_COLUMNS[baseName]) {
-      let operator = 'eq';
-      let value = safeDecodeURIComponent(query[key]);
-      const label = fields.find(({ name }) => name === baseName)?.label;
+  const filters = allowFilter
+    ? Object.keys(query).reduce((arr, key) => {
+        const baseName = key.replace(/\d+$/, '');
+        if (FILTER_COLUMNS[baseName]) {
+          let operator = 'eq';
+          let value = safeDecodeURIComponent(query[key]);
+          const label = fields.find(({ name }) => name === baseName)?.label;
 
-      const match = value.match(/^([a-z]+)\.(.*)/);
+          const match = value.match(/^([a-z]+)\.(.*)/);
 
-      if (match) {
-        operator = match[1];
-        value = match[2];
-      }
+          if (match) {
+            operator = match[1];
+            value = match[2];
+          }
 
-      return arr.concat({
-        name: key,
-        type: baseName,
-        operator,
-        value,
-        label,
-      });
-    }
-    return arr;
-  }, []);
+          return arr.concat({
+            name: key,
+            type: baseName,
+            operator,
+            value,
+            label,
+          });
+        }
+        return arr;
+      }, [])
+    : [];
 
   const getFilters = (type: string) => {
     return (

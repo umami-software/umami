@@ -190,6 +190,7 @@ export const labels: Record<string, string> = {
   type: 'label.type',
   filter: 'label.filter',
   filters: 'label.filters',
+  filtersEnabled: 'label.filters-enabled',
   propertyFilter: 'label.property-filter',
   activityByProperty: 'label.activity-by-property',
   breakdown: 'label.breakdown',
