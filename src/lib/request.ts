@@ -174,5 +174,6 @@ export async function getQueryFilters(
     sortDescending: params?.sortDescending,
     search: params?.search,
     compare: params?.compare,
+    maxResults: params?.maxResults,
   };
 }

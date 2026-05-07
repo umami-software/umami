@@ -77,10 +77,21 @@ export const searchParams = {
 export const pagingParams = {
   page: z.coerce.number().int().positive().optional(),
   pageSize: z.coerce.number().int().positive().optional(),
+  maxResults: z.coerce.number().int().positive().optional(),
 };
 
 export const sortingParams = {
   orderBy: z.string().optional(),
+  sortDescending: z
+    .enum(['true', 'false'])
+    .optional()
+    .transform(value => {
+      if (value === undefined) {
+        return undefined;
+      }
+
+      return value === 'true';
+    }),
 };
 
 export const userRoleParam = z.enum(['admin', 'user', 'view-only']);

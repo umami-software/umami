@@ -48,15 +48,6 @@ export function PropertyNumericChart({
   const avgRows = useMemo(() => (avgQuery.data as { t: string; y: number }[] | undefined) ?? [], [avgQuery.data]);
   const stats = statsQuery.data;
 
-  const formatMetricValue = useCallback(
-    (n: number) =>
-      Number(n).toLocaleString(locale, {
-        maximumFractionDigits: 2,
-        minimumFractionDigits: Number.isInteger(Number(n)) ? 0 : 2,
-      }),
-    [locale],
-  );
-
   const chartData: any = useMemo(() => {
     if (!sumQuery.data && !avgQuery.data) return;
 
@@ -109,10 +100,10 @@ export function PropertyNumericChart({
       >
         <MetricsBar padding="2">
           <MetricCard label={t(labels.total)} value={stats?.total ?? 0} formatValue={formatLongNumber} />
-          <MetricCard label={t(labels.average)} value={stats?.average ?? 0} formatValue={formatMetricValue} />
-          <MetricCard label="Median" value={stats?.median ?? 0} formatValue={formatMetricValue} />
-          <MetricCard label={t(labels.max)} value={stats?.max ?? 0} formatValue={formatMetricValue} />
-          <MetricCard label={t(labels.min)} value={stats?.min ?? 0} formatValue={formatMetricValue} />
+          <MetricCard label={t(labels.average)} value={stats?.average ?? 0} formatValue={formatLongNumber} />
+          <MetricCard label="Median" value={stats?.median ?? 0} formatValue={formatLongNumber} />
+          <MetricCard label={t(labels.max)} value={stats?.max ?? 0} formatValue={formatLongNumber} />
+          <MetricCard label={t(labels.min)} value={stats?.min ?? 0} formatValue={formatLongNumber} />
         </MetricsBar>
       </LoadingPanel>
       <LoadingPanel

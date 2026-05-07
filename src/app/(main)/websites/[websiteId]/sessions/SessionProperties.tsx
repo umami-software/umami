@@ -20,7 +20,7 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
   const { data, isLoading, isFetching, error } = usePropertyFieldsQuery('session', websiteId);
   const { data: scopedData } = useSessionDataPropertiesQuery(
     websiteId,
-    propertyName ? { selectedPropertyName: propertyName, propertyFilters } : undefined,
+    propertyName ? { propertyName, propertyFilters } : undefined,
     { enabled: !!propertyName },
   );
 

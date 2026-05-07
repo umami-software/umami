@@ -27,7 +27,16 @@ export interface Auth {
     pixelIds?: string[];
     linkId?: string;
     linkIds?: string[];
+    parameters?: ShareParameters;
   };
+}
+
+export type ShareTheme = 'light' | 'dark';
+
+export interface ShareParameters {
+  allowFilter?: boolean;
+  theme?: ShareTheme;
+  [key: string]: boolean | ShareTheme | undefined;
 }
 
 export interface PropertyFilter {
@@ -96,7 +105,6 @@ export interface PropertyLeaderboardRow {
   visits: number;
   views: number;
   events: number;
-  totaltime: number;
 }
 
 export interface QueryOptions {
@@ -158,6 +166,7 @@ export interface SortParams {
 export interface PageParams {
   page?: number;
   pageSize?: number;
+  maxResults?: number;
 }
 
 export interface SegmentParams {
@@ -173,6 +182,7 @@ export interface PageResult<T> {
   orderBy?: string;
   sortDescending?: boolean;
   search?: string;
+  isCapped?: boolean;
 }
 
 export interface RealtimeData {
