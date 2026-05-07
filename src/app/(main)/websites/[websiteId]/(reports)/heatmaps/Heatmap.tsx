@@ -1,6 +1,6 @@
 'use client';
-import { Column, Grid, Heading, Row, Text } from '@umami/react-zen';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Column, Grid, Heading, Loading, Row, Text } from '@umami/react-zen';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useResultQuery } from '@/components/hooks';
 import { useReplayQuery } from '@/components/hooks/queries/useReplayQuery';
@@ -173,6 +173,7 @@ function HeatmapView({
   snapshot: HeatmapSnapshot | null;
 }) {
   const [showPage, setShowPage] = useState(true);
+  const [snapshotReady, setSnapshotReady] = useState(false);
 
   const viewport = useMemo(() => pickViewport(points), [points]);
 
@@ -187,6 +188,11 @@ function HeatmapView({
   );
 
   const [containerRef, containerWidth] = useElementWidth<HTMLDivElement>();
+  const handleSnapshotReady = useCallback(() => setSnapshotReady(true), []);
+
+  useEffect(() => {
+    setSnapshotReady(!(showPage && snapshot));
+  }, [containerWidth, showPage, snapshot]);
 
   if (!viewport || visible.length === 0) {
     return <EmptyState />;
@@ -195,6 +201,8 @@ function HeatmapView({
   const renderWidth = containerWidth > 0 ? Math.min(containerWidth, MAX_RENDER_WIDTH) : 0;
   const scale = renderWidth ? renderWidth / viewport.width : 0;
   const renderHeight = Math.round(viewport.height * scale);
+  const showSnapshot = renderWidth > 0 && showPage && !!snapshot;
+  const showOverlay = !showSnapshot || snapshotReady;
 
   return (
     <Column gap>
@@ -218,35 +226,39 @@ function HeatmapView({
           className={styles.canvas}
           style={{ width: renderWidth || '100%', height: renderHeight || 0 }}
         >
-          {renderWidth > 0 && showPage && snapshot && (
+          {showSnapshot && !snapshotReady && <CanvasLoading />}
+          {showSnapshot && (
             <ReplaySnapshot
               websiteId={websiteId}
               snapshot={snapshot}
               width={viewport.width}
               height={viewport.height}
               scale={scale}
+              onReady={handleSnapshotReady}
             />
           )}
-          <div className={styles.overlay}>
-            {visible.map((p, i) => {
-              const intensity = Math.min(1, p.count / maxCount);
-              const size = 24 + intensity * 36;
-              return (
-                <div
-                  key={`${p.x}-${p.y}-${i}`}
-                  className={styles.dot}
-                  style={{
-                    left: p.x * scale - size / 2,
-                    top: p.y * scale - size / 2,
-                    width: size,
-                    height: size,
-                    opacity: 0.25 + intensity * 0.55,
-                  }}
-                  title={`${p.count} click${p.count === 1 ? '' : 's'}`}
-                />
-              );
-            })}
-          </div>
+          {showOverlay && (
+            <div className={styles.overlay}>
+              {visible.map((p, i) => {
+                const intensity = Math.min(1, p.count / maxCount);
+                const size = 24 + intensity * 36;
+                return (
+                  <div
+                    key={`${p.x}-${p.y}-${i}`}
+                    className={styles.dot}
+                    style={{
+                      left: p.x * scale - size / 2,
+                      top: p.y * scale - size / 2,
+                      width: size,
+                      height: size,
+                      opacity: 0.25 + intensity * 0.55,
+                    }}
+                    title={`${p.count} click${p.count === 1 ? '' : 's'}`}
+                  />
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </Column>
@@ -263,8 +275,14 @@ function ScrollHeatmapView({
   snapshot: HeatmapSnapshot | null;
 }) {
   const [showPage, setShowPage] = useState(true);
+  const [snapshotReady, setSnapshotReady] = useState(false);
 
   const [containerRef, containerWidth] = useElementWidth<HTMLDivElement>();
+  const handleSnapshotReady = useCallback(() => setSnapshotReady(true), []);
+
+  useEffect(() => {
+    setSnapshotReady(!(showPage && snapshot));
+  }, [containerWidth, showPage, snapshot]);
 
   if (!scroll || scroll.totalSessions === 0 || !scroll.pageH || !scroll.viewportW) {
     return <EmptyState message="No scroll data for this page yet." />;
@@ -274,6 +292,8 @@ function ScrollHeatmapView({
   const renderWidth = containerWidth > 0 ? Math.min(containerWidth, MAX_RENDER_WIDTH) : 0;
   const scale = renderWidth ? renderWidth / viewportW : 0;
   const renderHeight = Math.round(pageH * scale);
+  const showSnapshot = renderWidth > 0 && showPage && !!snapshot;
+  const showOverlay = !showSnapshot || snapshotReady;
 
   // Cumulative reach: % of sessions that scrolled at least to depth D.
   const sortedBuckets = [...buckets].sort((a, b) => a.depth - b.depth);
@@ -323,40 +343,44 @@ function ScrollHeatmapView({
           className={styles.canvas}
           style={{ width: renderWidth || '100%', height: renderHeight || 0 }}
         >
-          {renderWidth > 0 && showPage && snapshot && (
+          {showSnapshot && !snapshotReady && <CanvasLoading />}
+          {showSnapshot && (
             <ReplaySnapshot
               websiteId={websiteId}
               snapshot={snapshot}
               width={viewportW}
               height={pageH}
               scale={scale}
+              onReady={handleSnapshotReady}
             />
           )}
-          <div className={styles.overlay}>
-            {bands.map(b => {
-              const top = Math.round((b.fromPct / 100) * renderHeight);
-              const bottom = Math.round((b.toPct / 100) * renderHeight);
-              const height = Math.max(0, bottom - top);
-              const intensity = b.ratio;
-              const hue = Math.round(60 - intensity * 60); // 60=yellow → 0=red
-              return (
-                <div
-                  key={b.fromPct}
-                  className={styles.scrollBand}
-                  style={{
-                    top,
-                    height,
-                    background: `hsla(${hue}, 90%, 50%, ${0.15 + intensity * 0.5})`,
-                  }}
-                  title={`${b.fromPct}–${b.toPct}% — ${formatLongNumber(b.reached)} sessions (${Math.round(intensity * 100)}%)`}
-                >
-                  <span className={styles.scrollBandLabel}>
-                    {b.fromPct}% · {Math.round(intensity * 100)}%
-                  </span>
-                </div>
-              );
-            })}
-          </div>
+          {showOverlay && (
+            <div className={styles.overlay}>
+              {bands.map(b => {
+                const top = Math.round((b.fromPct / 100) * renderHeight);
+                const bottom = Math.round((b.toPct / 100) * renderHeight);
+                const height = Math.max(0, bottom - top);
+                const intensity = b.ratio;
+                const hue = Math.round(60 - intensity * 60); // 60=yellow → 0=red
+                return (
+                  <div
+                    key={b.fromPct}
+                    className={styles.scrollBand}
+                    style={{
+                      top,
+                      height,
+                      background: `hsla(${hue}, 90%, 50%, ${0.15 + intensity * 0.5})`,
+                    }}
+                    title={`${b.fromPct}–${b.toPct}% — ${formatLongNumber(b.reached)} sessions (${Math.round(intensity * 100)}%)`}
+                  >
+                    <span className={styles.scrollBandLabel}>
+                      {b.fromPct}% · {Math.round(intensity * 100)}%
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </Column>
@@ -369,12 +393,14 @@ function ReplaySnapshot({
   width,
   height,
   scale,
+  onReady,
 }: {
   websiteId: string;
   snapshot: HeatmapSnapshot;
   width: number;
   height: number;
   scale: number;
+  onReady: () => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const replayerRef = useRef<any>(null);
@@ -402,6 +428,7 @@ function ReplaySnapshot({
       });
 
       replayerRef.current = replayer;
+      let ready = false;
 
       const freeze = () => {
         const offset = Math.max(0, snapshot.timestamp - events[0].timestamp);
@@ -410,10 +437,22 @@ function ReplaySnapshot({
         resizeReplayFrame(replayer, width, height);
       };
 
-      requestAnimationFrame(() => {
-        freeze();
-        requestAnimationFrame(freeze);
-      });
+      const handleReady = () => {
+        if (ready || cancelled) return;
+        ready = true;
+
+        requestAnimationFrame(() => {
+          if (cancelled) return;
+          freeze();
+          requestAnimationFrame(() => {
+            if (cancelled) return;
+            freeze();
+            onReady();
+          });
+        });
+      };
+
+      replayer.on('fullsnapshot-rebuilded', handleReady);
     });
 
     return () => {
@@ -426,7 +465,7 @@ function ReplaySnapshot({
         container.innerHTML = '';
       }
     };
-  }, [data?.events, height, snapshot.timestamp, width]);
+  }, [data?.events, height, onReady, snapshot.timestamp, width]);
 
   useEffect(() => {
     if (replayerRef.current) {
@@ -440,6 +479,14 @@ function ReplaySnapshot({
       className={styles.snapshot}
       style={{ width, height, transform: `scale(${scale})` }}
     />
+  );
+}
+
+function CanvasLoading() {
+  return (
+    <div className={styles.canvasLoading}>
+      <Loading icon="dots" placement="center" />
+    </div>
   );
 }
 
