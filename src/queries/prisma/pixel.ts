@@ -1,5 +1,6 @@
 import type { Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
+import redis from '@/lib/redis';
 import type { QueryFilters } from '@/lib/types';
 
 export async function findPixel(criteria: Prisma.PixelFindUniqueArgs) {
@@ -54,9 +55,25 @@ export async function createPixel(data: Prisma.PixelUncheckedCreateInput) {
 }
 
 export async function updatePixel(pixelId: string, data: any) {
-  return prisma.client.pixel.update({ where: { id: pixelId }, data });
+  // Fetch the old slug so we can invalidate its cache entry if the slug changes.
+  const previous = await prisma.client.pixel.findUnique({
+    where: { id: pixelId },
+    select: { slug: true },
+  });
+  const pixel = await prisma.client.pixel.update({ where: { id: pixelId }, data });
+  if (redis.enabled) {
+    await redis.client.del(`pixel:${pixel.slug}`);
+    if (previous && previous.slug !== pixel.slug) {
+      await redis.client.del(`pixel:${previous.slug}`);
+    }
+  }
+  return pixel;
 }
 
 export async function deletePixel(pixelId: string) {
-  return prisma.client.pixel.delete({ where: { id: pixelId } });
+  const pixel = await prisma.client.pixel.delete({ where: { id: pixelId } });
+  if (redis.enabled) {
+    await redis.client.del(`pixel:${pixel.slug}`);
+  }
+  return pixel;
 }

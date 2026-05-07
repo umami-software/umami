@@ -180,13 +180,15 @@ export async function deleteUser(userId: string) {
       }),
       client.share.deleteMany({ where: { entityId: { in: entityIds } } }),
       // deletedAt: null avoids restamping rows that were already soft-deleted earlier.
+      // Spread `ownedFilter` (which is `{ userId }` in cloud mode) for consistency
+      // with everything else in the function.
       client.link.updateMany({
         data: { deletedAt: new Date() },
-        where: { userId, deletedAt: null },
+        where: { ...ownedFilter, deletedAt: null },
       }),
       client.pixel.updateMany({
         data: { deletedAt: new Date() },
-        where: { userId, deletedAt: null },
+        where: { ...ownedFilter, deletedAt: null },
       }),
       client.board.deleteMany({ where: { userId } }),
     ]).then(async result => {
