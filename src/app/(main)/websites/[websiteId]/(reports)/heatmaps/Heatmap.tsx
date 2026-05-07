@@ -2,13 +2,14 @@
 import { Column, Grid, Heading, Row, Text } from '@umami/react-zen';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useResultQuery, useWebsite } from '@/components/hooks';
+import { useResultQuery } from '@/components/hooks';
+import { useReplayQuery } from '@/components/hooks/queries/useReplayQuery';
 import { formatLongNumber } from '@/lib/format';
-import type { HeatmapMode, HeatmapPoint, HeatmapResult } from '@/queries/sql';
+import type { HeatmapMode, HeatmapPoint, HeatmapResult, HeatmapSnapshot } from '@/queries/sql';
 import styles from './Heatmap.module.css';
+import 'rrweb/dist/replay/rrweb-replay.css';
 
 const MAX_RENDER_WIDTH = 1024;
-const IFRAME_SANDBOX = 'allow-same-origin allow-scripts allow-forms allow-popups';
 
 function useElementWidth<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
@@ -26,6 +27,10 @@ function useElementWidth<T extends HTMLElement>() {
   return [ref, width] as const;
 }
 
+interface ReplayData {
+  events: any[];
+}
+
 interface ViewportBucket {
   width: number;
   height: number;
@@ -41,7 +46,6 @@ interface HeatmapProps {
 }
 
 export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, onModeChange }: HeatmapProps) {
-  const website = useWebsite();
   const { data, error, isLoading } = useResultQuery<HeatmapResult>('heatmap', {
     websiteId,
     urlPath: urlPath || undefined,
@@ -62,16 +66,14 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, onModeChang
             mode === 'scroll' ? (
               <ScrollHeatmapView
                 websiteId={websiteId}
-                domain={website?.domain ?? null}
-                urlPath={urlPath}
                 scroll={scroll}
+                snapshot={data?.snapshot ?? null}
               />
             ) : (
               <HeatmapView
                 websiteId={websiteId}
-                domain={website?.domain ?? null}
-                urlPath={urlPath}
                 points={points}
+                snapshot={data?.snapshot ?? null}
               />
             )
           ) : (
@@ -142,27 +144,6 @@ function PageList({
   );
 }
 
-function buildIframeSrc(
-  websiteId: string | null,
-  domain: string | null,
-  urlPath: string,
-): string | null {
-  // Self-record: data was captured from this very umami instance, so iframe the
-  // current origin instead of the website's stored domain (which often points to prod).
-  if (typeof window !== 'undefined' && websiteId && websiteId === process.env.selfRecord) {
-    return `${window.location.origin}${urlPath}`;
-  }
-  if (!domain) return null;
-  if (/^https?:\/\//i.test(domain)) return `${domain}${urlPath}`;
-  const isLocal = /^(localhost|127\.|0\.0\.0\.0|\[::1\])(:|\/|$)/i.test(domain);
-  const protocol = isLocal
-    ? typeof window !== 'undefined'
-      ? window.location.protocol
-      : 'http:'
-    : 'https:';
-  return `${protocol}//${domain}${urlPath}`;
-}
-
 function pickViewport(points: HeatmapPoint[]): ViewportBucket | null {
   if (!points.length) return null;
   const buckets = new Map<string, ViewportBucket>();
@@ -184,14 +165,12 @@ function pickViewport(points: HeatmapPoint[]): ViewportBucket | null {
 
 function HeatmapView({
   websiteId,
-  domain,
-  urlPath,
   points,
+  snapshot,
 }: {
   websiteId: string;
-  domain: string | null;
-  urlPath: string;
   points: HeatmapPoint[];
+  snapshot: HeatmapSnapshot | null;
 }) {
   const [showPage, setShowPage] = useState(true);
 
@@ -216,7 +195,6 @@ function HeatmapView({
   const renderWidth = containerWidth > 0 ? Math.min(containerWidth, MAX_RENDER_WIDTH) : 0;
   const scale = renderWidth ? renderWidth / viewport.width : 0;
   const renderHeight = Math.round(viewport.height * scale);
-  const iframeSrc = buildIframeSrc(websiteId, domain, urlPath);
 
   return (
     <Column gap>
@@ -225,7 +203,7 @@ function HeatmapView({
           {visible.length} positions · {formatLongNumber(visible.reduce((s, p) => s + p.count, 0))}{' '}
           clicks · viewport {viewport.width}×{viewport.height}
         </Text>
-        {iframeSrc && (
+        {snapshot && (
           <button
             type="button"
             className={styles.toggleButton}
@@ -240,14 +218,13 @@ function HeatmapView({
           className={styles.canvas}
           style={{ width: renderWidth || '100%', height: renderHeight || 0 }}
         >
-          {renderWidth > 0 && showPage && iframeSrc && (
-            <iframe
-              className={styles.iframe}
-              src={iframeSrc}
+          {renderWidth > 0 && showPage && snapshot && (
+            <ReplaySnapshot
+              websiteId={websiteId}
+              snapshot={snapshot}
               width={viewport.width}
               height={viewport.height}
-              style={{ transform: `scale(${scale})` }}
-              sandbox={IFRAME_SANDBOX}
+              scale={scale}
             />
           )}
           <div className={styles.overlay}>
@@ -278,14 +255,12 @@ function HeatmapView({
 
 function ScrollHeatmapView({
   websiteId,
-  domain,
-  urlPath,
   scroll,
+  snapshot,
 }: {
   websiteId: string;
-  domain: string | null;
-  urlPath: string;
   scroll: HeatmapResult['scroll'] | undefined;
+  snapshot: HeatmapSnapshot | null;
 }) {
   const [showPage, setShowPage] = useState(true);
 
@@ -299,7 +274,6 @@ function ScrollHeatmapView({
   const renderWidth = containerWidth > 0 ? Math.min(containerWidth, MAX_RENDER_WIDTH) : 0;
   const scale = renderWidth ? renderWidth / viewportW : 0;
   const renderHeight = Math.round(pageH * scale);
-  const iframeSrc = buildIframeSrc(websiteId, domain, urlPath);
 
   // Cumulative reach: % of sessions that scrolled at least to depth D.
   const sortedBuckets = [...buckets].sort((a, b) => a.depth - b.depth);
@@ -334,7 +308,7 @@ function ScrollHeatmapView({
           {formatLongNumber(totalSessions)} sessions · page {viewportW}×{pageH}
           {viewportH ? ` · viewport ${viewportH}` : ''}
         </Text>
-        {iframeSrc && (
+        {snapshot && (
           <button
             type="button"
             className={styles.toggleButton}
@@ -349,14 +323,13 @@ function ScrollHeatmapView({
           className={styles.canvas}
           style={{ width: renderWidth || '100%', height: renderHeight || 0 }}
         >
-          {renderWidth > 0 && showPage && iframeSrc && (
-            <iframe
-              className={styles.iframe}
-              src={iframeSrc}
+          {renderWidth > 0 && showPage && snapshot && (
+            <ReplaySnapshot
+              websiteId={websiteId}
+              snapshot={snapshot}
               width={viewportW}
               height={pageH}
-              style={{ transform: `scale(${scale})` }}
-              sandbox={IFRAME_SANDBOX}
+              scale={scale}
             />
           )}
           <div className={styles.overlay}>
@@ -388,6 +361,102 @@ function ScrollHeatmapView({
       </div>
     </Column>
   );
+}
+
+function ReplaySnapshot({
+  websiteId,
+  snapshot,
+  width,
+  height,
+  scale,
+}: {
+  websiteId: string;
+  snapshot: HeatmapSnapshot;
+  width: number;
+  height: number;
+  scale: number;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const replayerRef = useRef<any>(null);
+  const { data } = useReplayQuery(websiteId, snapshot.replayId) as { data?: ReplayData };
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const events = data?.events;
+    if (!container || !events?.length) return;
+
+    let cancelled = false;
+
+    import('rrweb').then(({ Replayer }) => {
+      if (cancelled || !containerRef.current) return;
+
+      container.innerHTML = '';
+
+      const replayer = new Replayer(events, {
+        root: container,
+        showWarning: false,
+        mouseTail: false,
+        triggerFocus: false,
+        pauseAnimation: true,
+        useVirtualDom: false,
+      });
+
+      replayerRef.current = replayer;
+
+      const freeze = () => {
+        const offset = Math.max(0, snapshot.timestamp - events[0].timestamp);
+        replayer.pause(offset);
+        replayer.disableInteract();
+        resizeReplayFrame(replayer, width, height);
+      };
+
+      requestAnimationFrame(() => {
+        freeze();
+        requestAnimationFrame(freeze);
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      if (replayerRef.current) {
+        replayerRef.current.destroy();
+        replayerRef.current = null;
+      }
+      if (container) {
+        container.innerHTML = '';
+      }
+    };
+  }, [data?.events, height, snapshot.timestamp, width]);
+
+  useEffect(() => {
+    if (replayerRef.current) {
+      resizeReplayFrame(replayerRef.current, width, height);
+    }
+  }, [height, width]);
+
+  return (
+    <div
+      ref={containerRef}
+      className={styles.snapshot}
+      style={{ width, height, transform: `scale(${scale})` }}
+    />
+  );
+}
+
+function resizeReplayFrame(replayer: any, width: number, height: number) {
+  const { iframe, wrapper } = replayer;
+
+  if (wrapper) {
+    wrapper.style.width = `${width}px`;
+    wrapper.style.height = `${height}px`;
+  }
+
+  if (iframe) {
+    iframe.setAttribute('width', String(width));
+    iframe.setAttribute('height', String(height));
+    iframe.style.width = `${width}px`;
+    iframe.style.height = `${height}px`;
+  }
 }
 
 function EmptyState({ message }: { message?: string } = {}) {

@@ -38,10 +38,16 @@ export interface HeatmapScrollBucket {
   sessions: number;
 }
 
+export interface HeatmapSnapshot {
+  replayId: string;
+  timestamp: number;
+}
+
 export interface HeatmapResult {
   mode: HeatmapMode;
   pages: HeatmapPage[];
   points: HeatmapPoint[];
+  snapshot: HeatmapSnapshot | null;
   scroll: {
     buckets: HeatmapScrollBucket[];
     totalSessions: number;
@@ -69,6 +75,29 @@ const emptyScroll = (): HeatmapResult['scroll'] => ({
   viewportH: null,
 });
 
+function pickSnapshotViewport(points: HeatmapPoint[]): { width: number; height: number } | null {
+  const buckets = new Map<string, { width: number; height: number; count: number }>();
+
+  for (const p of points) {
+    const key = `${p.viewportW}x${p.viewportH}`;
+    const existing = buckets.get(key);
+    if (existing) {
+      existing.count += p.count;
+    } else {
+      buckets.set(key, { width: p.viewportW, height: p.viewportH, count: p.count });
+    }
+  }
+
+  let best: { width: number; height: number; count: number } | null = null;
+  for (const bucket of buckets.values()) {
+    if (!best || bucket.count > best.count) {
+      best = bucket;
+    }
+  }
+
+  return best ? { width: best.width, height: best.height } : null;
+}
+
 async function relationalQuery(
   websiteId: string,
   { startDate, endDate, urlPath, mode = 'click' }: HeatmapParameters,
@@ -95,7 +124,7 @@ async function relationalQuery(
   );
 
   if (!urlPath) {
-    return { mode, pages, points: [], scroll: emptyScroll() };
+    return { mode, pages, points: [], snapshot: null, scroll: emptyScroll() };
   }
 
   if (mode === 'scroll') {
@@ -145,17 +174,29 @@ async function relationalQuery(
     );
 
     const dim = dimRows[0];
+    const scroll = {
+      buckets: bucketRows.map(r => ({ depth: Number(r.depth), sessions: Number(r.sessions) })),
+      totalSessions: Number(dim?.totalSessions ?? 0),
+      pageH: dim?.pageH ?? null,
+      viewportW: dim?.viewportW ?? null,
+      viewportH: dim?.viewportH ?? null,
+    };
+    const snapshot = await getRelationalSnapshot(rawQuery, {
+      websiteId,
+      eventType,
+      urlPath,
+      startDate,
+      endDate,
+      viewportW: scroll.viewportW,
+      viewportH: scroll.viewportH,
+    });
+
     return {
       mode,
       pages,
       points: [],
-      scroll: {
-        buckets: bucketRows.map(r => ({ depth: Number(r.depth), sessions: Number(r.sessions) })),
-        totalSessions: Number(dim?.totalSessions ?? 0),
-        pageH: dim?.pageH ?? null,
-        viewportW: dim?.viewportW ?? null,
-        viewportH: dim?.viewportH ?? null,
-      },
+      snapshot,
+      scroll,
     };
   }
 
@@ -185,7 +226,73 @@ async function relationalQuery(
     FUNCTION_NAME,
   );
 
-  return { mode, pages, points: rawPoints, scroll: emptyScroll() };
+  const viewport = pickSnapshotViewport(rawPoints);
+  const snapshot = await getRelationalSnapshot(rawQuery, {
+    websiteId,
+    eventType,
+    urlPath,
+    startDate,
+    endDate,
+    viewportW: viewport?.width ?? null,
+    viewportH: viewport?.height ?? null,
+  });
+
+  return { mode, pages, points: rawPoints, snapshot, scroll: emptyScroll() };
+}
+
+async function getRelationalSnapshot(
+  rawQuery: typeof prisma.rawQuery,
+  {
+    websiteId,
+    eventType,
+    urlPath,
+    startDate,
+    endDate,
+    viewportW,
+    viewportH,
+  }: {
+    websiteId: string;
+    eventType: number;
+    urlPath: string;
+    startDate: Date;
+    endDate: Date;
+    viewportW: number | null;
+    viewportH: number | null;
+  },
+): Promise<HeatmapSnapshot | null> {
+  const viewportFilter =
+    viewportW && viewportH
+      ? `
+      and h.viewport_w = {{viewportW}}
+      and h.viewport_h = {{viewportH}}
+    `
+      : '';
+
+  const rows: { replayId: string; timestamp: number | string }[] = await rawQuery(
+    `
+    select
+      h.visit_id as "replayId",
+      (extract(epoch from h.created_at) * 1000)::bigint as "timestamp"
+    from heatmap_event h
+    inner join (
+      select distinct visit_id
+      from session_replay
+      where website_id = {{websiteId::uuid}}
+    ) sr on sr.visit_id = h.visit_id
+    where h.website_id = {{websiteId::uuid}}
+      and h.event_type = {{eventType}}
+      and h.url_path = {{urlPath}}
+      and h.created_at between {{startDate}} and {{endDate}}
+      ${viewportFilter}
+    order by h.created_at asc
+    limit 1
+    `,
+    { websiteId, eventType, urlPath, startDate, endDate, viewportW, viewportH },
+    FUNCTION_NAME,
+  );
+
+  const row = rows[0];
+  return row ? { replayId: row.replayId, timestamp: Number(row.timestamp) } : null;
 }
 
 async function clickhouseQuery(
@@ -222,7 +329,7 @@ async function clickhouseQuery(
   }));
 
   if (!urlPath) {
-    return { mode, pages, points: [], scroll: emptyScroll() };
+    return { mode, pages, points: [], snapshot: null, scroll: emptyScroll() };
   }
 
   if (mode === 'scroll') {
@@ -274,19 +381,31 @@ async function clickhouseQuery(
     );
 
     const dim = dimRows[0];
+    const scroll = {
+      buckets: bucketRows.map(r => ({ depth: Number(r.depth), sessions: Number(r.sessions) })),
+      totalSessions: Number(dim?.totalSessions ?? 0),
+      pageH: dim?.pageH === null || dim?.pageH === undefined ? null : Number(dim.pageH),
+      viewportW:
+        dim?.viewportW === null || dim?.viewportW === undefined ? null : Number(dim.viewportW),
+      viewportH:
+        dim?.viewportH === null || dim?.viewportH === undefined ? null : Number(dim.viewportH),
+    };
+    const snapshot = await getClickhouseSnapshot(rawQuery, {
+      websiteId,
+      eventType,
+      urlPath,
+      startDate,
+      endDate,
+      viewportW: scroll.viewportW,
+      viewportH: scroll.viewportH,
+    });
+
     return {
       mode,
       pages,
       points: [],
-      scroll: {
-        buckets: bucketRows.map(r => ({ depth: Number(r.depth), sessions: Number(r.sessions) })),
-        totalSessions: Number(dim?.totalSessions ?? 0),
-        pageH: dim?.pageH === null || dim?.pageH === undefined ? null : Number(dim.pageH),
-        viewportW:
-          dim?.viewportW === null || dim?.viewportW === undefined ? null : Number(dim.viewportW),
-        viewportH:
-          dim?.viewportH === null || dim?.viewportH === undefined ? null : Number(dim.viewportH),
-      },
+      snapshot,
+      scroll,
     };
   }
 
@@ -334,5 +453,71 @@ async function clickhouseQuery(
     count: Number(p.count),
   }));
 
-  return { mode, pages, points, scroll: emptyScroll() };
+  const viewport = pickSnapshotViewport(points);
+  const snapshot = await getClickhouseSnapshot(rawQuery, {
+    websiteId,
+    eventType,
+    urlPath,
+    startDate,
+    endDate,
+    viewportW: viewport?.width ?? null,
+    viewportH: viewport?.height ?? null,
+  });
+
+  return { mode, pages, points, snapshot, scroll: emptyScroll() };
+}
+
+async function getClickhouseSnapshot(
+  rawQuery: typeof clickhouse.rawQuery,
+  {
+    websiteId,
+    eventType,
+    urlPath,
+    startDate,
+    endDate,
+    viewportW,
+    viewportH,
+  }: {
+    websiteId: string;
+    eventType: number;
+    urlPath: string;
+    startDate: Date;
+    endDate: Date;
+    viewportW: number | null;
+    viewportH: number | null;
+  },
+): Promise<HeatmapSnapshot | null> {
+  const viewportFilter =
+    viewportW && viewportH
+      ? `
+      and h.viewport_w = {viewportW:UInt32}
+      and h.viewport_h = {viewportH:UInt32}
+    `
+      : '';
+
+  const rows = await rawQuery<{ replayId: string; timestamp: string | number }[]>(
+    `
+    select
+      toString(h.visit_id) as replayId,
+      toUnixTimestamp64Milli(h.created_at) as timestamp
+    from heatmap_event h
+    inner join (
+      select distinct visit_id
+      from session_replay
+      where website_id = {websiteId:UUID}
+    ) sr on sr.visit_id = h.visit_id
+    where h.website_id = {websiteId:UUID}
+      and h.event_type = {eventType:UInt8}
+      and h.url_path = {urlPath:String}
+      and h.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      ${viewportFilter}
+    order by h.created_at asc
+    limit 1
+    `,
+    { websiteId, eventType, urlPath, startDate, endDate, viewportW, viewportH },
+    FUNCTION_NAME,
+  );
+
+  const row = rows[0];
+  return row ? { replayId: row.replayId, timestamp: Number(row.timestamp) } : null;
 }

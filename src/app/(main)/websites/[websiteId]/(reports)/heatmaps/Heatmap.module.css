@@ -82,13 +82,28 @@
   max-width: 100%;
 }
 
-.iframe {
+.snapshot {
   position: absolute;
   top: 0;
   left: 0;
-  border: 0;
   transform-origin: top left;
   pointer-events: none;
+  overflow: hidden;
+}
+
+.snapshot :global(.replayer-wrapper) {
+  border: 0;
+  overflow: hidden;
+}
+
+.snapshot :global(iframe) {
+  border: 0;
+  pointer-events: none;
+}
+
+.snapshot :global(.replayer-mouse),
+.snapshot :global(.replayer-mouse-tail) {
+  display: none !important;
 }
 
 .overlay {
