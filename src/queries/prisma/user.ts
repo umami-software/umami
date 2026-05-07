@@ -135,13 +135,20 @@ export async function deleteUser(userId: string) {
     : { OR: [{ userId }, { teamId: { in: teamIds } }] };
 
   const [links, pixels, boards] = await Promise.all([
-    client.link.findMany({ where: ownedFilter, select: { id: true, slug: true } }),
-    client.pixel.findMany({ where: ownedFilter, select: { id: true, slug: true } }),
+    client.link.findMany({
+      where: ownedFilter,
+      select: { id: true, slug: true, deletedAt: true },
+    }),
+    client.pixel.findMany({
+      where: ownedFilter,
+      select: { id: true, slug: true, deletedAt: true },
+    }),
     client.board.findMany({ where: ownedFilter, select: { id: true } }),
   ]);
   const entityIds = [...links.map(l => l.id), ...pixels.map(p => p.id), ...boards.map(b => b.id)];
-  const linkSlugs = links.map(l => l.slug);
-  const pixelSlugs = pixels.map(p => p.slug);
+  // Only invalidate Redis cache for slugs that are still live (not already soft-deleted).
+  const linkSlugs = links.filter(l => !l.deletedAt).map(l => l.slug);
+  const pixelSlugs = pixels.filter(p => !p.deletedAt).map(p => p.slug);
 
   const invalidateRedis = async () => {
     if (redis.enabled && (linkSlugs.length || pixelSlugs.length)) {
@@ -170,8 +177,15 @@ export async function deleteUser(userId: string) {
         },
       }),
       client.share.deleteMany({ where: { entityId: { in: entityIds } } }),
-      client.link.updateMany({ data: { deletedAt: new Date() }, where: { userId } }),
-      client.pixel.updateMany({ data: { deletedAt: new Date() }, where: { userId } }),
+      // deletedAt: null avoids restamping rows that were already soft-deleted earlier.
+      client.link.updateMany({
+        data: { deletedAt: new Date() },
+        where: { userId, deletedAt: null },
+      }),
+      client.pixel.updateMany({
+        data: { deletedAt: new Date() },
+        where: { userId, deletedAt: null },
+      }),
       client.board.deleteMany({ where: { userId } }),
     ]).then(async result => {
       await invalidateRedis();
