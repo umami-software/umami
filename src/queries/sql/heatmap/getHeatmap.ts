@@ -499,7 +499,7 @@ async function getClickhouseSnapshot(
     `
     select
       toString(h.visit_id) as replayId,
-      toUnixTimestamp64Milli(h.created_at) as timestamp
+      toUnixTimestamp(h.created_at) * 1000 as timestamp
     from heatmap_event h
     inner join (
       select distinct visit_id
