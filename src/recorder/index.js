@@ -33,6 +33,8 @@ import { record } from 'rrweb';
   let flushTimer = null;
   let startTime = null;
   let stopped = false;
+  let recorderReady = false;
+  let customEventBuffer = [];
 
   const sendEvents = (events, useKeepalive = false) => {
     const session = window.umami?.getSession?.();
@@ -84,6 +86,42 @@ import { record } from 'rrweb';
     if (stopFn) stopFn();
   };
 
+  const flushCustomEvents = () => {
+    if (!recorderReady || !customEventBuffer.length) return;
+
+    const events = customEventBuffer;
+    customEventBuffer = [];
+
+    for (const event of events) {
+      addCustomEvent(event.tag, event.payload);
+    }
+  };
+
+  const addCustomEvent = (tag, payload) => {
+    if (stopped) return;
+
+    if (!recorderReady) {
+      customEventBuffer.push({ tag, payload });
+      return;
+    }
+
+    try {
+      record.addCustomEvent(tag, payload);
+    } catch (e) {
+      if (e?.message === 'please add custom event after start recording') {
+        recorderReady = false;
+        customEventBuffer.push({ tag, payload });
+        setTimeout(() => {
+          recorderReady = true;
+          flushCustomEvents();
+        }, 0);
+        return;
+      }
+
+      throw e;
+    }
+  };
+
   const getMaskConfig = level => {
     switch (level) {
       case 'strict':
@@ -124,6 +162,8 @@ import { record } from 'rrweb';
         }
 
         eventBuffer.push(event);
+        recorderReady = true;
+        flushCustomEvents();
 
         if (eventBuffer.length >= FLUSH_EVENT_COUNT) {
           flush();
@@ -148,6 +188,8 @@ import { record } from 'rrweb';
       checkoutEveryNms: 30000,
       ...(blockSelector && { blockSelector }),
     });
+    recorderReady = true;
+    flushCustomEvents();
 
     let scrollUrl = location.href;
     let maxScrollPct = 0;
@@ -164,7 +206,7 @@ import { record } from 'rrweb';
 
     const flushScroll = () => {
       if (maxScrollPct <= 0) return;
-      record.addCustomEvent('scroll-progress', {
+      addCustomEvent('scroll-progress', {
         url: scrollUrl,
         scrollPct: maxScrollPct,
         viewportW: window.innerWidth,
@@ -187,7 +229,7 @@ import { record } from 'rrweb';
       if (location.href === scrollUrl) return;
       flushScroll();
       scrollUrl = location.href;
-      record.addCustomEvent('url-change', { url: scrollUrl });
+      addCustomEvent('url-change', { url: scrollUrl });
     };
 
     const hookHistory = method => {
