@@ -27,7 +27,16 @@ export interface Auth {
     pixelIds?: string[];
     linkId?: string;
     linkIds?: string[];
+    parameters?: ShareParameters;
   };
+}
+
+export type ShareTheme = 'light' | 'dark';
+
+export interface ShareParameters {
+  allowFilter?: boolean;
+  theme?: ShareTheme;
+  [key: string]: boolean | ShareTheme | undefined;
 }
 
 export interface PropertyFilter {

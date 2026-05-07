@@ -1,5 +1,6 @@
 import { DataColumn, DataTable, type DataTableProps, Icon } from '@umami/react-zen';
 import type { ReactNode } from 'react';
+import { DateDistance } from '@/components/common/DateDistance';
 import { LinkButton } from '@/components/common/LinkButton';
 import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages, useNavigation } from '@/components/hooks';
@@ -22,6 +23,13 @@ export function WebsitesTable({ showActions, renderLink, ...props }: WebsitesTab
         {renderLink}
       </DataColumn>
       <DataColumn id="domain" label={<SortableLabel label={t(labels.domain)} sortKey="domain" />} />
+      <DataColumn
+        id="created"
+        label={<SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />}
+        width="200px"
+      >
+        {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
+      </DataColumn>
       {showActions && (
         <DataColumn id="action" label=" " align="end">
           {(row: any) => {
