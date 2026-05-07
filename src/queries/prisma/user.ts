@@ -1,7 +1,9 @@
 import { Prisma } from '@/generated/prisma/client';
+import clickhouse from '@/lib/clickhouse';
 import { ROLES } from '@/lib/constants';
 import { getRandomChars } from '@/lib/generate';
 import prisma from '@/lib/prisma';
+import redis from '@/lib/redis';
 import type { QueryFilters, Role } from '@/lib/types';
 
 import UserFindManyArgs = Prisma.UserFindManyArgs;
@@ -103,16 +105,6 @@ export async function deleteUser(userId: string) {
   const { client, transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
-  const websites = await client.website.findMany({
-    where: { userId },
-  });
-
-  let websiteIds = [];
-
-  if (websites.length > 0) {
-    websiteIds = websites.map(a => a.id);
-  }
-
   const teams = await client.team.findMany({
     where: {
       members: {
@@ -126,13 +118,61 @@ export async function deleteUser(userId: string) {
 
   const teamIds = teams.map(a => a.id);
 
+  // Cloud mode keeps owned teams (and their team-owned content), so cleanup
+  // only covers user-direct rows. Non-cloud hard-deletes owned teams below,
+  // so we must also clean up team-owned content (websites included).
+  const ownedFilter = cloudMode
+    ? { userId }
+    : { OR: [{ userId }, { teamId: { in: teamIds } }] };
+
+  const [links, pixels, boards, websites] = await Promise.all([
+    client.link.findMany({
+      where: ownedFilter,
+      select: { id: true, slug: true, deletedAt: true },
+    }),
+    client.pixel.findMany({
+      where: ownedFilter,
+      select: { id: true, slug: true, deletedAt: true },
+    }),
+    client.board.findMany({ where: ownedFilter, select: { id: true } }),
+    client.website.findMany({
+      where: ownedFilter,
+      select: { id: true, deletedAt: true },
+    }),
+  ]);
+  const websiteIds = websites.map(w => w.id);
+  const linkIds = links.map(l => l.id);
+  const pixelIds = pixels.map(p => p.id);
+  const entityIds = [
+    ...linkIds,
+    ...pixelIds,
+    ...boards.map(b => b.id),
+    ...websiteIds,
+  ];
+  // Boards have no CH events; /api/send writes link/pixel ids as website_id.
+  const clickhouseIds = [...websiteIds, ...linkIds, ...pixelIds];
+  // Only invalidate Redis cache for slugs/keys that are still live (not already soft-deleted).
+  const linkSlugs = links.filter(l => !l.deletedAt).map(l => l.slug);
+  const pixelSlugs = pixels.filter(p => !p.deletedAt).map(p => p.slug);
+  const liveWebsiteIds = websites.filter(w => !w.deletedAt).map(w => w.id);
+
+  const invalidateRedis = async () => {
+    if (redis.enabled && (linkSlugs.length || pixelSlugs.length || liveWebsiteIds.length)) {
+      await Promise.all([
+        ...linkSlugs.map(slug => redis.client.del(`link:${slug}`)),
+        ...pixelSlugs.map(slug => redis.client.del(`pixel:${slug}`)),
+        ...liveWebsiteIds.map(id => redis.client.del(`website:${id}`)),
+      ]);
+    }
+  };
+
   if (cloudMode) {
     return transaction([
       client.website.updateMany({
         data: {
           deletedAt: new Date(),
         },
-        where: { id: { in: websiteIds } },
+        where: { id: { in: websiteIds }, deletedAt: null },
       }),
       client.user.update({
         data: {
@@ -143,22 +183,35 @@ export async function deleteUser(userId: string) {
           id: userId,
         },
       }),
-    ]);
+      client.share.deleteMany({ where: { entityId: { in: entityIds } } }),
+      // deletedAt: null avoids restamping rows that were already soft-deleted earlier.
+      // Spread `ownedFilter` (which is `{ userId }` in cloud mode) for consistency
+      // with everything else in the function.
+      client.link.updateMany({
+        data: { deletedAt: new Date() },
+        where: { ...ownedFilter, deletedAt: null },
+      }),
+      client.pixel.updateMany({
+        data: { deletedAt: new Date() },
+        where: { ...ownedFilter, deletedAt: null },
+      }),
+      client.board.deleteMany({ where: { userId } }),
+    ]).then(async result => {
+      await invalidateRedis();
+      return result;
+    });
   }
 
   return transaction([
-    client.eventData.deleteMany({
-      where: { websiteId: { in: websiteIds } },
-    }),
-    client.sessionData.deleteMany({
-      where: { websiteId: { in: websiteIds } },
-    }),
-    client.websiteEvent.deleteMany({
-      where: { websiteId: { in: websiteIds } },
-    }),
-    client.session.deleteMany({
-      where: { websiteId: { in: websiteIds } },
-    }),
+    // Website-dependent rows (mirror deleteWebsite cleanup at queries/prisma/website.ts):
+    client.sessionReplaySaved.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.sessionReplay.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.revenue.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.eventData.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.sessionData.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.websiteEvent.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.session.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.segment.deleteMany({ where: { websiteId: { in: websiteIds } } }),
     client.teamUser.deleteMany({
       where: {
         OR: [
@@ -194,6 +247,10 @@ export async function deleteUser(userId: string) {
         ],
       },
     }),
+    client.share.deleteMany({ where: { entityId: { in: entityIds } } }),
+    client.link.deleteMany({ where: ownedFilter }),
+    client.pixel.deleteMany({ where: ownedFilter }),
+    client.board.deleteMany({ where: ownedFilter }),
     client.website.deleteMany({
       where: { id: { in: websiteIds } },
     }),
@@ -202,5 +259,9 @@ export async function deleteUser(userId: string) {
         id: userId,
       },
     }),
-  ]);
+  ]).then(async result => {
+    await invalidateRedis();
+    await clickhouse.deleteByWebsiteIds(clickhouseIds);
+    return result;
+  });
 }

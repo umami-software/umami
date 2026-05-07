@@ -1,7 +1,9 @@
 import { Prisma, type Team } from '@/generated/prisma/client';
+import clickhouse from '@/lib/clickhouse';
 import { ROLES } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
+import redis from '@/lib/redis';
 import type { PageResult, QueryFilters } from '@/lib/types';
 
 import TeamFindManyArgs = Prisma.TeamFindManyArgs;
@@ -144,6 +146,44 @@ export async function deleteTeam(teamId: string) {
   const { client, transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
+  const [links, pixels, boards, websites] = await Promise.all([
+    client.link.findMany({
+      where: { teamId },
+      select: { id: true, slug: true, deletedAt: true },
+    }),
+    client.pixel.findMany({
+      where: { teamId },
+      select: { id: true, slug: true, deletedAt: true },
+    }),
+    client.board.findMany({ where: { teamId }, select: { id: true } }),
+    client.website.findMany({ where: { teamId }, select: { id: true, deletedAt: true } }),
+  ]);
+  const websiteIds = websites.map(w => w.id);
+  const linkIds = links.map(l => l.id);
+  const pixelIds = pixels.map(p => p.id);
+  const entityIds = [
+    ...linkIds,
+    ...pixelIds,
+    ...boards.map(b => b.id),
+    ...websiteIds,
+  ];
+  // Boards have no CH events; /api/send writes link/pixel ids as website_id.
+  const clickhouseIds = [...websiteIds, ...linkIds, ...pixelIds];
+  // Only invalidate Redis cache for slugs/keys that are still live (not already soft-deleted).
+  const linkSlugs = links.filter(l => !l.deletedAt).map(l => l.slug);
+  const pixelSlugs = pixels.filter(p => !p.deletedAt).map(p => p.slug);
+  const liveWebsiteIds = websites.filter(w => !w.deletedAt).map(w => w.id);
+
+  const invalidateRedis = async () => {
+    if (redis.enabled && (linkSlugs.length || pixelSlugs.length || liveWebsiteIds.length)) {
+      await Promise.all([
+        ...linkSlugs.map(slug => redis.client.del(`link:${slug}`)),
+        ...pixelSlugs.map(slug => redis.client.del(`pixel:${slug}`)),
+        ...liveWebsiteIds.map(id => redis.client.del(`website:${id}`)),
+      ]);
+    }
+  };
+
   if (cloudMode) {
     return transaction([
       client.team.update({
@@ -154,7 +194,25 @@ export async function deleteTeam(teamId: string) {
           id: teamId,
         },
       }),
-    ]);
+      client.share.deleteMany({ where: { entityId: { in: entityIds } } }),
+      // deletedAt: null avoids restamping rows that were already soft-deleted earlier.
+      client.link.updateMany({
+        data: { deletedAt: new Date() },
+        where: { teamId, deletedAt: null },
+      }),
+      client.pixel.updateMany({
+        data: { deletedAt: new Date() },
+        where: { teamId, deletedAt: null },
+      }),
+      client.board.deleteMany({ where: { teamId } }),
+      client.website.updateMany({
+        data: { deletedAt: new Date() },
+        where: { teamId, deletedAt: null },
+      }),
+    ]).then(async result => {
+      await invalidateRedis();
+      return result;
+    });
   }
 
   return transaction([
@@ -163,10 +221,29 @@ export async function deleteTeam(teamId: string) {
         teamId,
       },
     }),
+    client.share.deleteMany({ where: { entityId: { in: entityIds } } }),
+    client.link.deleteMany({ where: { teamId } }),
+    client.pixel.deleteMany({ where: { teamId } }),
+    client.board.deleteMany({ where: { teamId } }),
+    // Mirror deleteWebsite cleanup order for team-owned websites:
+    client.sessionReplaySaved.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.sessionReplay.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.revenue.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.eventData.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.sessionData.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.websiteEvent.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.session.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.report.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.segment.deleteMany({ where: { websiteId: { in: websiteIds } } }),
+    client.website.deleteMany({ where: { id: { in: websiteIds } } }),
     client.team.delete({
       where: {
         id: teamId,
       },
     }),
-  ]);
+  ]).then(async result => {
+    await invalidateRedis();
+    await clickhouse.deleteByWebsiteIds(clickhouseIds);
+    return result;
+  });
 }

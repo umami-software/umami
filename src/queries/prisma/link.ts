@@ -1,5 +1,7 @@
 import type { Prisma } from '@/generated/prisma/client';
+import clickhouse from '@/lib/clickhouse';
 import prisma from '@/lib/prisma';
+import redis from '@/lib/redis';
 import type { QueryFilters } from '@/lib/types';
 
 export async function findLink(criteria: Prisma.LinkFindUniqueArgs) {
@@ -47,6 +49,7 @@ export async function getTeamLinks(teamId: string, filters?: QueryFilters) {
     {
       where: {
         teamId,
+        deletedAt: null,
       },
     },
     filters,
@@ -58,9 +61,29 @@ export async function createLink(data: Prisma.LinkUncheckedCreateInput) {
 }
 
 export async function updateLink(linkId: string, data: any) {
-  return prisma.client.link.update({ where: { id: linkId }, data });
+  // Fetch the old slug so we can invalidate its cache entry if the slug changes.
+  const previous = await prisma.client.link.findUnique({
+    where: { id: linkId },
+    select: { slug: true },
+  });
+  const link = await prisma.client.link.update({ where: { id: linkId }, data });
+  if (redis.enabled) {
+    await redis.client.del(`link:${link.slug}`);
+    if (previous && previous.slug !== link.slug) {
+      await redis.client.del(`link:${previous.slug}`);
+    }
+  }
+  return link;
 }
 
 export async function deleteLink(linkId: string) {
-  return prisma.client.link.delete({ where: { id: linkId } });
+  const cloudMode = !!process.env.CLOUD_MODE;
+  const link = await prisma.client.link.delete({ where: { id: linkId } });
+  if (redis.enabled) {
+    await redis.client.del(`link:${link.slug}`);
+  }
+  if (!cloudMode) {
+    await clickhouse.deleteByWebsiteIds([link.id]);
+  }
+  return link;
 }
