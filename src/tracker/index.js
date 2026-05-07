@@ -89,7 +89,7 @@
     }
 
     currentRef = currentUrl;
-    currentUrl = normalize(new URL(url, location.href).toString());
+    currentUrl = normalize(url);
 
     if (currentUrl !== currentRef && autoPageview) {
       setTimeout(track, delayDuration);
@@ -100,8 +100,9 @@
     const hook = (_this, method, callback) => {
       const orig = _this[method];
       return (...args) => {
+        const result = orig.apply(_this, args);
         callback.apply(null, args);
-        return orig.apply(_this, args);
+        return result;
       };
     };
 
@@ -123,18 +124,13 @@
         return track(eventName, eventData);
       }
     };
-    const onClick = async e => {
+    const onClick = e => {
       const el = e.target;
-      const parentElement = el.closest('a,button');
-      if (!parentElement) return trackElement(el);
+      const eventEl = el.closest(`[${eventNameAttribute}]`);
+      if (!eventEl) return;
 
-      const { href, target } = parentElement;
-      if (!parentElement.getAttribute(eventNameAttribute)) return;
-
-      if (parentElement.tagName === 'BUTTON') {
-        return trackElement(parentElement);
-      }
-      if (parentElement.tagName === 'A' && href) {
+      if (eventEl.tagName === 'A' && eventEl.href) {
+        const { href, target } = eventEl;
         const external =
           target === '_blank' ||
           e.ctrlKey ||
@@ -142,12 +138,14 @@
           e.metaKey ||
           (e.button && e.button === 1);
         if (!external) e.preventDefault();
-        return trackElement(parentElement).then(() => {
+        return trackElement(eventEl).then(() => {
           if (!external) {
             (target === '_top' ? top.location : location).href = href;
           }
         });
       }
+
+      return trackElement(eventEl);
     };
     document.addEventListener('click', onClick, true);
   };
