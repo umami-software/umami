@@ -249,9 +249,10 @@ export async function deleteWebsite(websiteId: string) {
       timeout: 30000,
     },
   ).then(async data => {
-    if (cloudMode) {
+    if (redis.enabled) {
       await redis.client.del(`website:${websiteId}`);
-    } else {
+    }
+    if (!cloudMode) {
       await clickhouse.deleteByWebsiteIds([websiteId]);
     }
 
