@@ -2,6 +2,7 @@ import { Prisma } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
 import { getRandomChars } from '@/lib/generate';
 import prisma from '@/lib/prisma';
+import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
 import type { QueryFilters, Role } from '@/lib/types';
 
@@ -129,6 +130,38 @@ export async function deleteUser(userId: string) {
 
   const teamIds = teams.map(a => a.id);
 
+  // Cloud mode keeps owned teams (and their team-owned content), so cleanup
+  // only covers user-direct rows. Non-cloud hard-deletes owned teams below,
+  // so we must also clean up team-owned content.
+  const ownedFilter = cloudMode
+    ? { userId }
+    : { OR: [{ userId }, { teamId: { in: teamIds } }] };
+
+  const [links, pixels, boards] = await Promise.all([
+    client.link.findMany({
+      where: ownedFilter,
+      select: { id: true, slug: true, deletedAt: true },
+    }),
+    client.pixel.findMany({
+      where: ownedFilter,
+      select: { id: true, slug: true, deletedAt: true },
+    }),
+    client.board.findMany({ where: ownedFilter, select: { id: true } }),
+  ]);
+  const entityIds = [...links.map(l => l.id), ...pixels.map(p => p.id), ...boards.map(b => b.id)];
+  // Only invalidate Redis cache for slugs that are still live (not already soft-deleted).
+  const linkSlugs = links.filter(l => !l.deletedAt).map(l => l.slug);
+  const pixelSlugs = pixels.filter(p => !p.deletedAt).map(p => p.slug);
+
+  const invalidateRedis = async () => {
+    if (redis.enabled && (linkSlugs.length || pixelSlugs.length)) {
+      await Promise.all([
+        ...linkSlugs.map(slug => redis.client.del(`link:${slug}`)),
+        ...pixelSlugs.map(slug => redis.client.del(`pixel:${slug}`)),
+      ]);
+    }
+  };
+
   if (cloudMode) {
     return transaction([
       client.website.updateMany({
@@ -146,7 +179,21 @@ export async function deleteUser(userId: string) {
           id: userId,
         },
       }),
-    ]);
+      client.share.deleteMany({ where: { entityId: { in: entityIds } } }),
+      // deletedAt: null avoids restamping rows that were already soft-deleted earlier.
+      client.link.updateMany({
+        data: { deletedAt: new Date() },
+        where: { userId, deletedAt: null },
+      }),
+      client.pixel.updateMany({
+        data: { deletedAt: new Date() },
+        where: { userId, deletedAt: null },
+      }),
+      client.board.deleteMany({ where: { userId } }),
+    ]).then(async result => {
+      await invalidateRedis();
+      return result;
+    });
   }
 
   return transaction([
@@ -197,6 +244,10 @@ export async function deleteUser(userId: string) {
         ],
       },
     }),
+    client.share.deleteMany({ where: { entityId: { in: entityIds } } }),
+    client.link.deleteMany({ where: ownedFilter }),
+    client.pixel.deleteMany({ where: ownedFilter }),
+    client.board.deleteMany({ where: ownedFilter }),
     client.website.deleteMany({
       where: { id: { in: websiteIds } },
     }),
@@ -205,5 +256,8 @@ export async function deleteUser(userId: string) {
         id: userId,
       },
     }),
-  ]);
+  ]).then(async result => {
+    await invalidateRedis();
+    return result;
+  });
 }
