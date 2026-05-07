@@ -51,6 +51,7 @@ export async function getTeamLinks(teamId: string, filters?: QueryFilters) {
     {
       where: {
         teamId,
+        deletedAt: null,
       },
     },
     filters,
