@@ -292,26 +292,32 @@
 
     // INP - group by interactionId, 98th percentile, 40ms threshold
     let interactions = {};
-    try {
-      const observer = new PerformanceObserver(list => {
-        list.getEntries().forEach(entry => {
-          if (entry.interactionId) {
-            const existing = interactions[entry.interactionId];
-            if (!existing || entry.duration > existing) {
-              interactions[entry.interactionId] = entry.duration;
-            }
-            const values = Object.values(interactions).sort((a, b) => b - a);
-            if (values.length) {
-              const p98Index = Math.floor(Math.max(values.length, 10) * 0.02);
-              metrics.inp = values[Math.min(p98Index, values.length - 1)];
-            }
+    let inpObserver;
+    const recordInteractions = entries => {
+      entries.forEach(entry => {
+        if (entry.interactionId) {
+          const existing = interactions[entry.interactionId];
+          if (!existing || entry.duration > existing) {
+            interactions[entry.interactionId] = entry.duration;
           }
-        });
+        }
       });
-      observer.observe({ type: 'event', buffered: true, durationThreshold: 40 });
+    };
+    try {
+      inpObserver = new PerformanceObserver(list => recordInteractions(list.getEntries()));
+      inpObserver.observe({ type: 'event', buffered: true, durationThreshold: 40 });
     } catch {
       /* not supported */
     }
+
+    const computeInp = () => {
+      if (inpObserver) recordInteractions(inpObserver.takeRecords());
+      const values = Object.values(interactions).sort((a, b) => b - a);
+      if (values.length) {
+        const p98Index = Math.floor(Math.max(values.length, 10) * 0.02);
+        metrics.inp = values[Math.min(p98Index, values.length - 1)];
+      }
+    };
 
     const getEntriesByType = type => {
       try {
@@ -353,6 +359,7 @@
       if (sent) return;
 
       applyFallbackMetrics();
+      computeInp();
       metrics.duration = Math.round(performance.now() - pageStartTime);
 
       sent = true;
