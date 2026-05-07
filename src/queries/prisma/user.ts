@@ -1,4 +1,5 @@
 import { Prisma } from '@/generated/prisma/client';
+import clickhouse from '@/lib/clickhouse';
 import { ROLES } from '@/lib/constants';
 import { getRandomChars } from '@/lib/generate';
 import prisma from '@/lib/prisma';
@@ -140,12 +141,16 @@ export async function deleteUser(userId: string) {
     }),
   ]);
   const websiteIds = websites.map(w => w.id);
+  const linkIds = links.map(l => l.id);
+  const pixelIds = pixels.map(p => p.id);
   const entityIds = [
-    ...links.map(l => l.id),
-    ...pixels.map(p => p.id),
+    ...linkIds,
+    ...pixelIds,
     ...boards.map(b => b.id),
     ...websiteIds,
   ];
+  // Boards have no CH events; /api/send writes link/pixel ids as website_id.
+  const clickhouseIds = [...websiteIds, ...linkIds, ...pixelIds];
   // Only invalidate Redis cache for slugs/keys that are still live (not already soft-deleted).
   const linkSlugs = links.filter(l => !l.deletedAt).map(l => l.slug);
   const pixelSlugs = pixels.filter(p => !p.deletedAt).map(p => p.slug);
@@ -256,6 +261,7 @@ export async function deleteUser(userId: string) {
     }),
   ]).then(async result => {
     await invalidateRedis();
+    await clickhouse.deleteByWebsiteIds(clickhouseIds);
     return result;
   });
 }

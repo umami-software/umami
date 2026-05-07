@@ -421,6 +421,32 @@ async function insert(table: string, values: any[]) {
   return clickhouse.insert({ table, values, format: 'JSONEachRow' });
 }
 
+async function deleteByWebsiteIds(websiteIds: string[]) {
+  if (!enabled || websiteIds.length === 0) return;
+
+  await connect();
+
+  // MV target tables need explicit DELETE — CH MVs don't cascade mutations.
+  const tables = [
+    'website_event',
+    'event_data',
+    'session_data',
+    'session_replay',
+    'website_revenue',
+    'website_event_stats_hourly',
+    'event_data_pivot',
+  ];
+
+  await Promise.all(
+    tables.map(table =>
+      clickhouse.command({
+        query: `ALTER TABLE ${table} DELETE WHERE website_id IN {websiteIds:Array(UUID)}`,
+        query_params: { websiteIds },
+      }),
+    ),
+  );
+}
+
 async function findUnique(data: any[]) {
   if (data.length > 1) {
     throw `${data.length} records found when expecting 1.`;
@@ -458,4 +484,5 @@ export default {
   findFirst,
   rawQuery,
   insert,
+  deleteByWebsiteIds,
 };

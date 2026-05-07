@@ -1,4 +1,5 @@
 import type { Prisma } from '@/generated/prisma/client';
+import clickhouse from '@/lib/clickhouse';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import type { QueryFilters } from '@/lib/types';
@@ -76,9 +77,13 @@ export async function updateLink(linkId: string, data: any) {
 }
 
 export async function deleteLink(linkId: string) {
+  const cloudMode = !!process.env.CLOUD_MODE;
   const link = await prisma.client.link.delete({ where: { id: linkId } });
   if (redis.enabled) {
     await redis.client.del(`link:${link.slug}`);
+  }
+  if (!cloudMode) {
+    await clickhouse.deleteByWebsiteIds([link.id]);
   }
   return link;
 }
