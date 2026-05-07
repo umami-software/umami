@@ -10,11 +10,13 @@ export function TypeIcon({
   value: string;
   children?: ReactNode;
 }) {
+  const iconValue = type === 'browser' && value === 'browser' ? 'unknown' : value;
+
   return (
     <Row gap="3" alignItems="center">
       <img
         src={`${process.env.basePath || ''}/images/${type}/${
-          value?.replaceAll(' ', '-').toLowerCase() || 'unknown'
+          iconValue?.replaceAll(' ', '-').toLowerCase() || 'unknown'
         }.png`}
         onError={e => {
           e.currentTarget.src = `${process.env.basePath || ''}/images/${type}/unknown.png`;
