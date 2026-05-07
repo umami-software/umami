@@ -41,7 +41,7 @@ export function DataGrid({
   const { data, error, isLoading, isFetching } = query;
   const { router, updateParams, query: queryParams } = useNavigation();
   const [search, setSearch] = useState(queryParams?.search || data?.search || '');
-  const showPager = allowPaging && data && (data.count > data.pageSize || data.isCapped);
+  const showPager = allowPaging && data && data.count > 0;
   const { isMobile } = useMobile();
   const displayMode = isMobile ? 'cards' : undefined;
 

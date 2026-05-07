@@ -2,9 +2,12 @@ import { Prisma, type Team } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
+import { sanitizeSortFilters } from '@/lib/sort';
 import type { PageResult, QueryFilters } from '@/lib/types';
 
 import TeamFindManyArgs = Prisma.TeamFindManyArgs;
+
+const TEAM_SORT_FIELDS = ['name', 'createdAt'] as const;
 
 export async function findTeam(criteria: Prisma.TeamFindUniqueArgs): Promise<Team> {
   return prisma.client.team.findUnique(criteria);
@@ -29,7 +32,8 @@ export async function getTeams(
   filters: QueryFilters,
 ): Promise<PageResult<Team[]>> {
   const { getSearchParameters } = prisma;
-  const { search } = filters;
+  const sortFilters = sanitizeSortFilters(filters, TEAM_SORT_FIELDS);
+  const { search } = sortFilters;
 
   const where: Prisma.TeamWhereInput = {
     ...criteria.where,
@@ -42,7 +46,7 @@ export async function getTeams(
       ...criteria,
       where,
     },
-    filters,
+    sortFilters,
   );
 }
 
