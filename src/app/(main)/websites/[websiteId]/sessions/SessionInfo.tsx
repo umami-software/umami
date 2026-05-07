@@ -7,57 +7,48 @@ import { Calendar, KeyRound, Landmark, MapPin } from '@/components/icons';
 
 export function SessionInfo({ data }) {
   const { locale } = useLocale();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { formatValue } = useFormat();
   const { getRegionName } = useRegionNames(locale);
 
   return (
     <Grid columns="repeat(auto-fit, minmax(200px, 1fr)" gap>
-      <Info label={formatMessage(labels.distinctId)} icon={<KeyRound />}>
+      <Info label={t(labels.distinctId)} icon={<KeyRound />}>
         {data?.distinctId}
       </Info>
 
-      <Info label={formatMessage(labels.lastSeen)} icon={<Calendar />}>
+      <Info label={t(labels.lastSeen)} icon={<Calendar />}>
         <DateDistance date={new Date(data.lastAt)} />
       </Info>
 
-      <Info label={formatMessage(labels.firstSeen)} icon={<Calendar />}>
+      <Info label={t(labels.firstSeen)} icon={<Calendar />}>
         <DateDistance date={new Date(data.firstAt)} />
       </Info>
 
-      <Info
-        label={formatMessage(labels.country)}
-        icon={<TypeIcon type="country" value={data?.country} />}
-      >
+      <Info label={t(labels.country)} icon={<TypeIcon type="country" value={data?.country} />}>
         {formatValue(data?.country, 'country')}
       </Info>
 
-      <Info label={formatMessage(labels.region)} icon={<MapPin />}>
+      <Info label={t(labels.region)} icon={<MapPin />}>
         {getRegionName(data?.region)}
       </Info>
 
-      <Info label={formatMessage(labels.city)} icon={<Landmark />}>
+      <Info label={t(labels.city)} icon={<Landmark />}>
         {data?.city}
       </Info>
 
-      <Info
-        label={formatMessage(labels.browser)}
-        icon={<TypeIcon type="browser" value={data?.browser} />}
-      >
+      <Info label={t(labels.browser)} icon={<TypeIcon type="browser" value={data?.browser} />}>
         {formatValue(data?.browser, 'browser')}
       </Info>
 
       <Info
-        label={formatMessage(labels.os)}
+        label={t(labels.os)}
         icon={<TypeIcon type="os" value={data?.os?.toLowerCase()?.replaceAll(/\W/g, '-')} />}
       >
         {formatValue(data?.os, 'os')}
       </Info>
 
-      <Info
-        label={formatMessage(labels.device)}
-        icon={<TypeIcon type="device" value={data?.device} />}
-      >
+      <Info label={t(labels.device)} icon={<TypeIcon type="device" value={data?.device} />}>
         {formatValue(data?.device, 'device')}
       </Info>
     </Grid>

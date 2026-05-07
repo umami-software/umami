@@ -1,32 +1,33 @@
-import type { Prisma } from '@/generated/prisma/client';
+import type { Prisma, Website } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
+import { sanitizeSortFilters } from '@/lib/sort';
 import type { QueryFilters } from '@/lib/types';
+
+const WEBSITE_SORT_FIELDS = ['name', 'domain', 'createdAt'] as const;
 
 export async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs) {
   return prisma.client.website.findUnique(criteria);
 }
 
 export async function getWebsite(websiteId: string) {
-  return findWebsite({
+  const website = await findWebsite({
     where: {
       id: websiteId,
     },
   });
-}
 
-export async function getSharedWebsite(shareId: string) {
-  return findWebsite({
-    where: {
-      shareId,
-      deletedAt: null,
-    },
-  });
+  if (!website) {
+    return null;
+  }
+
+  return attachShareIdToWebsite(website);
 }
 
 export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters: QueryFilters) {
-  const { search } = filters;
+  const sortFilters = sanitizeSortFilters(filters, WEBSITE_SORT_FIELDS);
+  const { search } = sortFilters;
   const { getSearchParameters, pagedQuery } = prisma;
 
   const where: Prisma.WebsiteWhereInput = {
@@ -40,10 +41,12 @@ export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters:
     deletedAt: null,
   };
 
-  return pagedQuery('website', { ...criteria, where }, filters);
+  const websites = await pagedQuery('website', { ...criteria, where }, sortFilters);
+
+  return attachShareIdToWebsites(websites);
 }
 
-export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filters?: QueryFilters) {
+export async function getAllUserWebsitesIncludingTeamAccess(userId: string, filters?: QueryFilters) {
   return getWebsites(
     {
       where: {
@@ -54,7 +57,7 @@ export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filte
               deletedAt: null,
               members: {
                 some: {
-                  role: ROLES.teamOwner,
+                  role: { in: [ROLES.teamOwner, ROLES.teamManager] },
                   userId,
                 },
               },
@@ -63,10 +66,7 @@ export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filte
         ],
       },
     },
-    {
-      orderBy: 'name',
-      ...filters,
-    },
+    sanitizeSortFilters(filters, WEBSITE_SORT_FIELDS, { orderBy: 'name' }),
   );
 }
 
@@ -85,10 +85,7 @@ export async function getUserWebsites(userId: string, filters?: QueryFilters) {
         },
       },
     },
-    {
-      orderBy: 'name',
-      ...filters,
-    },
+    sanitizeSortFilters(filters, WEBSITE_SORT_FIELDS, { orderBy: 'name' }),
   );
 }
 
@@ -132,42 +129,54 @@ export async function updateWebsite(
 }
 
 export async function resetWebsite(websiteId: string) {
-  const { client, transaction } = prisma;
+  const { transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
   return transaction(
-    [
-      client.revenue.deleteMany({
+    async tx => {
+      await tx.sessionReplaySaved.deleteMany({
         where: { websiteId },
-      }),
-      client.eventData.deleteMany({
+      });
+
+      await tx.sessionReplay.deleteMany({
         where: { websiteId },
-      }),
-      client.sessionData.deleteMany({
+      });
+
+      await tx.revenue.deleteMany({
         where: { websiteId },
-      }),
-      client.websiteEvent.deleteMany({
+      });
+
+      await tx.eventData.deleteMany({
         where: { websiteId },
-      }),
-      client.session.deleteMany({
+      });
+
+      await tx.sessionData.deleteMany({
         where: { websiteId },
-      }),
-      client.website.update({
+      });
+
+      await tx.websiteEvent.deleteMany({
+        where: { websiteId },
+      });
+
+      await tx.session.deleteMany({
+        where: { websiteId },
+      });
+
+      const website = await tx.website.update({
         where: { id: websiteId },
         data: {
           resetAt: new Date(),
         },
-      }),
-    ],
+      });
+
+      return website;
+    },
     {
       timeout: 30000,
     },
   ).then(async data => {
     if (cloudMode) {
-      await redis.client.set(
-        `website:${websiteId}`,
-        data.find(website => website.id),
-      );
+      await redis.client.set(`website:${websiteId}`, data);
     }
 
     return data;
@@ -175,43 +184,64 @@ export async function resetWebsite(websiteId: string) {
 }
 
 export async function deleteWebsite(websiteId: string) {
-  const { client, transaction } = prisma;
+  const { transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
   return transaction(
-    [
-      client.revenue.deleteMany({
+    async tx => {
+      await tx.sessionReplaySaved.deleteMany({
         where: { websiteId },
-      }),
-      client.eventData.deleteMany({
+      });
+
+      await tx.sessionReplay.deleteMany({
         where: { websiteId },
-      }),
-      client.sessionData.deleteMany({
+      });
+
+      await tx.revenue.deleteMany({
         where: { websiteId },
-      }),
-      client.websiteEvent.deleteMany({
+      });
+
+      await tx.eventData.deleteMany({
         where: { websiteId },
-      }),
-      client.session.deleteMany({
+      });
+
+      await tx.sessionData.deleteMany({
         where: { websiteId },
-      }),
-      client.report.deleteMany({
+      });
+
+      await tx.websiteEvent.deleteMany({
         where: { websiteId },
-      }),
-      client.segment.deleteMany({
+      });
+
+      await tx.session.deleteMany({
         where: { websiteId },
-      }),
-      cloudMode
-        ? client.website.update({
+      });
+
+      await tx.report.deleteMany({
+        where: { websiteId },
+      });
+
+      await tx.segment.deleteMany({
+        where: { websiteId },
+      });
+
+      await tx.share.deleteMany({
+        where: { entityId: websiteId },
+      });
+
+      const website = cloudMode
+        ? await tx.website.update({
             data: {
               deletedAt: new Date(),
             },
             where: { id: websiteId },
           })
-        : client.website.delete({
+        : await tx.website.delete({
             where: { id: websiteId },
-          }),
-    ],
+          });
+
+      return website;
+    },
     {
       timeout: 30000,
     },
@@ -231,4 +261,61 @@ export async function getWebsiteCount(userId: string) {
       deletedAt: null,
     },
   });
+}
+
+export async function attachShareIdToWebsite(website: Website) {
+  const share = await prisma.client.share.findFirst({
+    where: {
+      entityId: website.id,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    select: {
+      slug: true,
+    },
+  });
+
+  return {
+    ...website,
+    shareId: share?.slug ?? null,
+  };
+}
+
+export async function attachShareIdToWebsites(websites: {
+  data: any;
+  count: any;
+  page: number;
+  pageSize: number;
+  orderBy: string;
+  search: string;
+}) {
+  const websiteIds = websites.data.map(website => website.id);
+
+  if (websiteIds.length === 0) {
+    return {
+      ...websites,
+      data: websites.data.map(website => ({ ...website, shareId: null })),
+    };
+  }
+
+  const shares = await prisma.client.share.findMany({
+    where: {
+      entityId: { in: websiteIds },
+    },
+    distinct: ['entityId'],
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  const shareByWebsiteId = new Map(shares.map(share => [share.entityId, share.slug]));
+
+  return {
+    ...websites,
+    data: websites.data.map(website => ({
+      ...website,
+      shareId: shareByWebsiteId.get(website.id) ?? null,
+    })),
+  };
 }

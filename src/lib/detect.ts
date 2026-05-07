@@ -10,6 +10,16 @@ import { safeDecodeURIComponent } from '@/lib/url';
 const MAXMIND = 'maxmind';
 
 const PROVIDER_HEADERS = [
+  // Umami custom headers (cloud mode only)
+  ...(process.env.CLOUD_MODE
+    ? [
+        {
+          countryHeader: 'x-umami-client-country',
+          regionHeader: 'x-umami-client-region',
+          cityHeader: 'x-umami-client-city',
+        },
+      ]
+    : []),
   // Cloudflare headers
   {
     countryHeader: 'cf-ipcountry',
@@ -27,6 +37,12 @@ const PROVIDER_HEADERS = [
     countryHeader: 'cloudfront-viewer-country',
     regionHeader: 'cloudfront-viewer-country-region',
     cityHeader: 'cloudfront-viewer-city',
+  },
+  // EdgeOne headers (requires custom request headers in Rule Priorities, see: https://edgeone.ai/document/46151)
+  {
+    countryHeader: 'eo-ipcountry',
+    regionHeader: 'eo-region-code',
+    cityHeader: 'eo-ipcity',
   },
 ];
 
@@ -60,13 +76,15 @@ function decodeHeader(s: string | undefined | null): string | undefined | null {
   return Buffer.from(s, 'latin1').toString('utf-8');
 }
 
-export async function getLocation(ip: string = '', headers: Headers, hasPayloadIP: boolean) {
-  // Ignore local ips
-  if (!ip || (await isLocalhost(ip))) {
+export async function getLocation(ip: string = '', headers: Headers, skipHeaders: boolean) {
+  const cleanIp = stripPort(ip);
+
+  // Ignore local or invalid ips
+  if (!cleanIp || !ipaddr.isValid(cleanIp) || (await isLocalhost(cleanIp))) {
     return null;
   }
 
-  if (!hasPayloadIP && !process.env.SKIP_LOCATION_HEADERS) {
+  if (!skipHeaders && !process.env.SKIP_LOCATION_HEADERS) {
     for (const provider of PROVIDER_HEADERS) {
       const countryHeader = headers.get(provider.countryHeader);
       if (countryHeader) {
@@ -92,7 +110,7 @@ export async function getLocation(ip: string = '', headers: Headers, hasPayloadI
     );
   }
 
-  const result = globalThis[MAXMIND]?.get(stripPort(ip));
+  const result = globalThis[MAXMIND]?.get(cleanIp);
 
   if (result) {
     const country = result.country?.iso_code ?? result?.registered_country?.iso_code;

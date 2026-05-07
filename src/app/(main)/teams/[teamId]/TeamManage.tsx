@@ -5,7 +5,7 @@ import { useMessages, useModified } from '@/components/hooks';
 import { TeamDeleteForm } from './TeamDeleteForm';
 
 export function TeamManage({ teamId }: { teamId: string }) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const router = useRouter();
   const { touch } = useModified();
 
@@ -15,14 +15,11 @@ export function TeamManage({ teamId }: { teamId: string }) {
   };
 
   return (
-    <ActionForm
-      label={formatMessage(labels.deleteTeam)}
-      description={formatMessage(messages.deleteTeamWarning)}
-    >
+    <ActionForm label={t(labels.deleteTeam)} description={t(messages.deleteTeamWarning)}>
       <DialogTrigger>
-        <Button variant="danger">{formatMessage(labels.delete)}</Button>
+        <Button variant="danger">{t(labels.delete)}</Button>
         <Modal>
-          <Dialog title={formatMessage(labels.deleteTeam)} style={{ width: 400 }}>
+          <Dialog title={t(labels.deleteTeam)} style={{ width: 400 }}>
             {({ close }) => <TeamDeleteForm teamId={teamId} onSave={handleLeave} onClose={close} />}
           </Dialog>
         </Modal>

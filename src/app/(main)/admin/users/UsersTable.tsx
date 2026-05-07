@@ -1,7 +1,8 @@
 import { DataColumn, DataTable, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import { useState } from 'react';
 import { DateDistance } from '@/components/common/DateDistance';
+import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages } from '@/components/hooks';
 import { Edit, Trash } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
@@ -11,30 +12,36 @@ import { UserDeleteForm } from './UserDeleteForm';
 export function UsersTable({
   data = [],
   showActions = true,
+  ...props
 }: {
   data: any[];
   showActions?: boolean;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const [deleteUser, setDeleteUser] = useState(null);
 
   return (
     <>
-      <DataTable data={data}>
-        <DataColumn id="username" label={formatMessage(labels.username)} width="2fr">
+      <DataTable data={data} {...props}>
+        <DataColumn
+          id="username"
+          label={<SortableLabel label={t(labels.username)} sortKey="username" />}
+          width="2fr"
+        >
           {(row: any) => <Link href={`/admin/users/${row.id}`}>{row.username}</Link>}
         </DataColumn>
-        <DataColumn id="role" label={formatMessage(labels.role)}>
+        <DataColumn id="role" label={<SortableLabel label={t(labels.role)} sortKey="role" />}>
           {(row: any) =>
-            formatMessage(
-              labels[Object.keys(ROLES).find(key => ROLES[key] === row.role)] || labels.unknown,
-            )
+            t(labels[Object.keys(ROLES).find(key => ROLES[key] === row.role)] || labels.unknown)
           }
         </DataColumn>
-        <DataColumn id="websites" label={formatMessage(labels.websites)}>
+        <DataColumn id="websites" label={t(labels.websites)}>
           {(row: any) => row._count.websites}
         </DataColumn>
-        <DataColumn id="created" label={formatMessage(labels.created)}>
+        <DataColumn
+          id="created"
+          label={<SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />}
+        >
           {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
         </DataColumn>
         {showActions && (
@@ -49,7 +56,7 @@ export function UsersTable({
                       <Icon>
                         <Edit />
                       </Icon>
-                      <Text>{formatMessage(labels.edit)}</Text>
+                      <Text>{t(labels.edit)}</Text>
                     </Row>
                   </MenuItem>
                   <MenuItem
@@ -61,7 +68,7 @@ export function UsersTable({
                       <Icon>
                         <Trash />
                       </Icon>
-                      <Text>{formatMessage(labels.delete)}</Text>
+                      <Text>{t(labels.delete)}</Text>
                     </Row>
                   </MenuItem>
                 </MenuButton>

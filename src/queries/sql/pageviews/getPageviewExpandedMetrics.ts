@@ -38,20 +38,21 @@ async function relationalQuery(
   const { type, limit = 500, offset = 0 } = parameters;
   let column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters, getTimestampDiffSQL } = prisma;
-  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters(
-    {
-      ...filters,
-      websiteId,
-    },
-    { joinSession: SESSION_COLUMNS.includes(type) },
-  );
+  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } =
+    parseFilters(
+      {
+        ...filters,
+        websiteId,
+      },
+      { joinSession: SESSION_COLUMNS.includes(type) },
+    );
 
   let entryExitQuery = '';
   let excludeDomain = '';
   const isPathType = type === 'path' || type === 'entry' || type === 'exit';
 
   if (column === 'referrer_domain') {
-    excludeDomain = `and website_event.referrer_domain != website_event.hostname
+    excludeDomain = `and website_event.referrer_domain != regexp_replace(website_event.hostname, '^www.', '')
       and website_event.referrer_domain != ''`;
     if (type === 'domain') {
       column = toPostgresGroupedReferrer(GROUPED_DOMAINS);
@@ -68,7 +69,7 @@ async function relationalQuery(
         from website_event
         where website_event.website_id = {{websiteId::uuid}}
           and website_event.created_at between {{startDate}} and {{endDate}}
-          and website_event.event_type != 2
+          and website_event.event_type NOT IN (2, 5)
         group by visit_id
       ) x
       on x.visit_id = website_event.visit_id
@@ -95,7 +96,7 @@ async function relationalQuery(
       sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime"
     from (
       select
-        ${selectColumn} as name,
+        ${selectColumn} as "name",
         website_event.session_id,
         website_event.visit_id,
         count(*) as "c",
@@ -103,11 +104,12 @@ async function relationalQuery(
         max(website_event.created_at) as "max_time"
       from website_event
       ${cohortQuery}
-      ${joinSessionQuery}
-      ${entryExitQuery}
+      ${excludeBounceQuery}
+      ${joinSessionQuery} 
+      ${entryExitQuery} 
       where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
-      and website_event.event_type != 2
+      and website_event.event_type NOT IN (2, 5)
         ${excludeDomain}
         ${filterQuery}
       group by ${groupByColumn}, website_event.session_id, website_event.visit_id
@@ -131,7 +133,7 @@ async function clickhouseQuery(
   const { type, limit = 500, offset = 0 } = parameters;
   let column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+  const { filterQuery, cohortQuery, excludeBounceQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
@@ -159,7 +161,7 @@ async function clickhouseQuery(
       from website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type != 2
+        and event_type NOT IN (2, 5)
       group by visit_id) x
       ON x.visit_id = website_event.visit_id`;
 
@@ -187,10 +189,11 @@ async function clickhouseQuery(
         max(created_at) max_time
       from website_event
       ${cohortQuery}
+      ${excludeBounceQuery}
       ${entryExitQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type != 2
+        and event_type NOT IN (2, 5)
         and name != ''
         ${excludeDomain}
         ${filterQuery}

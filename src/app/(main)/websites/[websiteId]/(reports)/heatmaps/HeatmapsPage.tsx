@@ -1,0 +1,27 @@
+'use client';
+import { Column } from '@umami/react-zen';
+import { useState } from 'react';
+import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
+import { Panel } from '@/components/common/Panel';
+import type { HeatmapMode } from '@/queries/sql';
+import { Heatmap } from './Heatmap';
+
+export function HeatmapsPage({ websiteId }: { websiteId: string }) {
+  const [urlPath, setUrlPath] = useState<string>('');
+  const [mode, setMode] = useState<HeatmapMode>('click');
+
+  return (
+    <Column gap>
+      <WebsiteControls websiteId={websiteId} />
+      <Panel minHeight="900px" allowFullscreen>
+        <Heatmap
+          websiteId={websiteId}
+          urlPath={urlPath}
+          onUrlPathChange={setUrlPath}
+          mode={mode}
+          onModeChange={setMode}
+        />
+      </Panel>
+    </Column>
+  );
+}

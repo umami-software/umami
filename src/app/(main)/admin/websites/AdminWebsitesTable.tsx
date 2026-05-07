@@ -1,30 +1,31 @@
 import { DataColumn, DataTable, Dialog, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import { useState } from 'react';
 import { WebsiteDeleteForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteDeleteForm';
 import { DateDistance } from '@/components/common/DateDistance';
+import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages } from '@/components/hooks';
 import { Edit, Trash, Users } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
 
-export function AdminWebsitesTable({ data = [] }: { data: any[] }) {
-  const { formatMessage, labels } = useMessages();
+export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
+  const { t, labels } = useMessages();
   const [deleteWebsite, setDeleteWebsite] = useState(null);
 
   return (
     <>
-      <DataTable data={data}>
-        <DataColumn id="name" label={formatMessage(labels.name)}>
+      <DataTable data={data} {...props}>
+        <DataColumn id="name" label={<SortableLabel label={t(labels.name)} sortKey="name" />}>
           {(row: any) => (
             <Text truncate>
               <Link href={`/admin/websites/${row.id}`}>{row.name}</Link>
             </Text>
           )}
         </DataColumn>
-        <DataColumn id="domain" label={formatMessage(labels.domain)}>
+        <DataColumn id="domain" label={<SortableLabel label={t(labels.domain)} sortKey="domain" />}>
           {(row: any) => <Text truncate>{row.domain}</Text>}
         </DataColumn>
-        <DataColumn id="owner" label={formatMessage(labels.owner)}>
+        <DataColumn id="owner" label={t(labels.owner)}>
           {(row: any) => {
             if (row?.team) {
               return (
@@ -45,7 +46,11 @@ export function AdminWebsitesTable({ data = [] }: { data: any[] }) {
             );
           }}
         </DataColumn>
-        <DataColumn id="created" label={formatMessage(labels.created)} width="180px">
+        <DataColumn
+          id="created"
+          label={<SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />}
+          width="180px"
+        >
           {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
         </DataColumn>
         <DataColumn id="action" align="end" width="50px">
@@ -59,7 +64,7 @@ export function AdminWebsitesTable({ data = [] }: { data: any[] }) {
                     <Icon>
                       <Edit />
                     </Icon>
-                    <Text>{formatMessage(labels.edit)}</Text>
+                    <Text>{t(labels.edit)}</Text>
                   </Row>
                 </MenuItem>
                 <MenuItem
@@ -71,7 +76,7 @@ export function AdminWebsitesTable({ data = [] }: { data: any[] }) {
                     <Icon>
                       <Trash />
                     </Icon>
-                    <Text>{formatMessage(labels.delete)}</Text>
+                    <Text>{t(labels.delete)}</Text>
                   </Row>
                 </MenuItem>
               </MenuButton>

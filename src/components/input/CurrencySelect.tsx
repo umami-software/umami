@@ -4,17 +4,16 @@ import { useMessages } from '@/components/hooks';
 import { CURRENCIES } from '@/lib/constants';
 
 export function CurrencySelect({ value, onChange }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const [search, setSearch] = useState('');
 
   return (
     <Select
-      items={CURRENCIES}
-      label={formatMessage(labels.currency)}
+      label={t(labels.currency)}
       value={value}
       defaultValue={value}
       onChange={onChange}
-      listProps={{ style: { maxHeight: 300 } }}
+      maxHeight={480}
       onSearch={setSearch}
       allowSearch
     >

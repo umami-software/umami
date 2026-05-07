@@ -10,7 +10,7 @@ export function RefreshButton({
   websiteId: string;
   isLoading?: boolean;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { dateRange } = useDateRange();
 
   function handleClick() {
@@ -26,7 +26,7 @@ export function RefreshButton({
           <RefreshCw />
         </Icon>
       </LoadingButton>
-      <Tooltip>{formatMessage(labels.refresh)}</Tooltip>
+      <Tooltip>{t(labels.refresh)}</Tooltip>
     </TooltipTrigger>
   );
 }

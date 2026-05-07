@@ -1,4 +1,4 @@
-import { weightedRandom, randomInt, type WeightedOption } from '../utils.js';
+import { randomInt, type WeightedOption, weightedRandom } from '../utils.js';
 
 const hourlyWeights: WeightedOption<number>[] = [
   { value: 0, weight: 0.02 },

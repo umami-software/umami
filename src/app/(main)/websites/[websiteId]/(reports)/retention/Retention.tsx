@@ -1,5 +1,6 @@
 import { Column, Grid, Icon, Row, Text } from '@umami/react-zen';
 import type { ReactNode } from 'react';
+import { differenceInCalendarDays } from 'date-fns';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 import { useLocale, useMessages, useResultQuery } from '@/components/hooks';
@@ -17,7 +18,7 @@ export interface RetentionProps {
 }
 
 export function Retention({ websiteId, days = DAYS, startDate, endDate }: RetentionProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { locale } = useLocale();
   const { data, error, isLoading } = useResultQuery('retention', {
     websiteId,
@@ -45,15 +46,13 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
       return arr;
     }, []) || [];
 
-  const totalDays = rows.length;
-
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
       {data && (
         <Panel allowFullscreen height="900px">
           <Column
             paddingY="6"
-            paddingX={{ xs: '3', md: '6' }}
+            paddingX={{ base: '3', md: '6' }}
             position="absolute"
             top="40px"
             left="0"
@@ -72,18 +71,19 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
               >
                 <Column>
                   <Text weight="bold" align="center">
-                    {formatMessage(labels.cohort)}
+                    {t(labels.cohort)}
                   </Text>
                 </Column>
                 {days.map(n => (
                   <Column key={n}>
                     <Text weight="bold" align="center" wrap="nowrap">
-                      {formatMessage(labels.day)} {n}
+                      {t(labels.day)} {n}
                     </Text>
                   </Column>
                 ))}
               </Grid>
               {rows.map(({ date, visitors, records }: any, rowIndex: number) => {
+                const maxDay = differenceInCalendarDays(endDate, new Date(date));
                 return (
                   <Grid
                     key={rowIndex}
@@ -103,10 +103,8 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
                       </Row>
                     </Column>
                     {days.map(day => {
-                      if (totalDays - rowIndex < day) {
-                        return null;
-                      }
-                      const percentage = records.filter(a => a.day === day)[0]?.percentage;
+                      if (day > maxDay) return null;
+                      const percentage = records.find(a => a.day === day)?.percentage;
                       return (
                         <Cell key={day}>
                           {percentage ? `${Number(percentage).toFixed(2)}%` : ''}
@@ -131,7 +129,7 @@ const Cell = ({ children }: { children: ReactNode }) => {
       alignItems="center"
       width="100px"
       height="100px"
-      backgroundColor="2"
+      backgroundColor="surface-raised"
       borderRadius
     >
       {children}

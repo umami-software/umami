@@ -24,13 +24,13 @@ body:
       render: shell
   - type: input
     attributes:
-      label: Which Umami version are you using? (if relevant)
+      label: Which Umami version are you using?
       description: 'For example: 2.18.0, 2.15.1, 1.39.0, etc'
   - type: input
     attributes:
-      label: Which browser are you using? (if relevant)
-      description: 'For example: Chrome, Edge, Firefox, etc'
+      label: How are you deploying your application?
+      description: 'For example: Vercel, Railway, Docker, etc'
   - type: input
     attributes:
-      label: How are you deploying your application? (if relevant)
-      description: 'For example: Vercel, Railway, Docker, etc'
+      label: Which browser are you using?
+      description: 'For example: Chrome, Edge, Firefox, etc'
