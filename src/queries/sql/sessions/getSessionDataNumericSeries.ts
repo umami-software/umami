@@ -1,4 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
+import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { PropertyFilter, QueryFilters } from '@/lib/types';
@@ -51,6 +52,7 @@ async function relationalQuery(
       ${joinSessionQuery}
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
+        and website_event.event_type != ${EVENT_TYPE.performance}
         ${filterQuery}
         ${pfSQL}
     )
@@ -98,6 +100,7 @@ async function clickhouseQuery(
       ${cohortQuery}
       where website_event.website_id = {websiteId:UUID}
         and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and website_event.event_type != ${EVENT_TYPE.performance}
       ${filterQuery}
       ${pfSQL}
     )

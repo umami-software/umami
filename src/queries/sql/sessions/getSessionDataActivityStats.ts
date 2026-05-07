@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { DATA_TYPE } from '@/lib/constants';
+import { DATA_TYPE, EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { PropertyFilter, PropertyLeaderboardRow, QueryFilters } from '@/lib/types';
@@ -39,6 +39,7 @@ async function relationalQuery(
       ${joinSessionQuery}
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
+        and website_event.event_type != ${EVENT_TYPE.performance}
         ${filterQuery}
         ${pfSQL}
     ),
@@ -57,6 +58,7 @@ async function relationalQuery(
         and filtered_sessions.website_id = website_event.website_id
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
+        and website_event.event_type != ${EVENT_TYPE.performance}
       group by website_event.session_id, website_event.visit_id
     ),
     session_stats as (
@@ -119,6 +121,7 @@ async function clickhouseQuery(
       ${cohortQuery}
       where website_event.website_id = {websiteId:UUID}
         and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and website_event.event_type != ${EVENT_TYPE.performance}
       ${filterQuery}
       ${pfSQL}
     ),
@@ -135,6 +138,7 @@ async function clickhouseQuery(
       join filtered_sessions on filtered_sessions.session_id = website_event.session_id
       where website_event.website_id = {websiteId:UUID}
         and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and website_event.event_type != ${EVENT_TYPE.performance}
       group by website_event.session_id, website_event.visit_id
     ),
     session_stats as (
