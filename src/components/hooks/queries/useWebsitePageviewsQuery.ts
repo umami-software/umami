@@ -6,6 +6,8 @@ import { useFilterParameters } from '../useFilterParameters';
 export interface WebsitePageviewsData {
   pageviews: { x: string; y: number }[];
   sessions: { x: string; y: number }[];
+  bouncerate: { x: string; y: number }[];
+  visitduration: { x: string; y: number }[];
 }
 
 export function useWebsitePageviewsQuery(

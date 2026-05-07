@@ -4,6 +4,7 @@ import { ExpandedViewModal } from '@/app/(main)/websites/[websiteId]/ExpandedVie
 import { Panel } from '@/components/common/Panel';
 import { UnitFilter } from '@/components/input/UnitFilter';
 import { WebsiteChart } from './WebsiteChart';
+import { WebsiteChartMetricFilter } from './WebsiteChartMetricFilter';
 import { WebsiteControls } from './WebsiteControls';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
 import { WebsitePanels } from './WebsitePanels';
@@ -14,7 +15,8 @@ export function WebsitePage({ websiteId }: { websiteId: string }) {
       <WebsiteControls websiteId={websiteId} allowBounceFilter={true} />
       <WebsiteMetricsBar websiteId={websiteId} showChange={true} />
       <Panel minHeight="520px">
-        <Row justifyContent="end">
+        <Row justifyContent="end" gap>
+          <WebsiteChartMetricFilter />
           <UnitFilter />
         </Row>
         <WebsiteChart websiteId={websiteId} />
