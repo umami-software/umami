@@ -88,12 +88,29 @@ model Website {
   sessionData         SessionData[]
   sessionReplays      SessionReplay[]
   sessionReplaysSaved SessionReplaySaved[]
+  googleAuth          WebsiteGoogleAuth?
 
   @@index([userId])
   @@index([teamId])
   @@index([createdAt])
   @@index([createdBy])
   @@map("website")
+}
+
+model WebsiteGoogleAuth {
+  id           String    @id @default(uuid()) @map("google_auth_id") @db.Uuid
+  websiteId    String    @unique @map("website_id") @db.Uuid
+  accessToken  String    @map("access_token") @db.Text
+  refreshToken String    @map("refresh_token") @db.Text
+  expiresAt    DateTime  @map("expires_at") @db.Timestamptz(6)
+  email        String    @db.VarChar(255)
+  propertyUrl  String?   @map("property_url") @db.VarChar(500)
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  website      Website   @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  @@map("website_google_auth")
 }
 
 model WebsiteEvent {
