@@ -287,20 +287,26 @@ model Revenue {
 }
 
 model Link {
-  id          String    @id() @map("link_id") @db.Uuid
-  name        String    @db.VarChar(100)
-  url         String    @db.VarChar(500)
-  slug        String    @unique() @db.VarChar(100)
-  utmSource   String?   @map("utm_source") @db.VarChar(255)
-  utmMedium   String?   @map("utm_medium") @db.VarChar(255)
-  utmCampaign String?   @map("utm_campaign") @db.VarChar(255)
-  utmTerm     String?   @map("utm_term") @db.VarChar(255)
-  utmContent  String?   @map("utm_content") @db.VarChar(255)
-  userId      String?   @map("user_id") @db.Uuid
-  teamId      String?   @map("team_id") @db.Uuid
-  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
-  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+  id                  String    @id() @map("link_id") @db.Uuid
+  name                String    @db.VarChar(100)
+  url                 String    @db.VarChar(500)
+  slug                String    @unique() @db.VarChar(100)
+  utmSource           String?   @map("utm_source") @db.VarChar(255)
+  utmMedium           String?   @map("utm_medium") @db.VarChar(255)
+  utmCampaign         String?   @map("utm_campaign") @db.VarChar(255)
+  utmTerm             String?   @map("utm_term") @db.VarChar(255)
+  utmContent          String?   @map("utm_content") @db.VarChar(255)
+  ogTitle             String?   @map("og_title") @db.VarChar(255)
+  ogDescription       String?   @map("og_description") @db.VarChar(500)
+  ogImage             String?   @map("og_image") @db.VarChar(2047)
+  ogTitleManual       Boolean   @default(false) @map("og_title_manual")
+  ogDescriptionManual Boolean   @default(false) @map("og_description_manual")
+  ogImageManual       Boolean   @default(false) @map("og_image_manual")
+  userId              String?   @map("user_id") @db.Uuid
+  teamId              String?   @map("team_id") @db.Uuid
+  createdAt           DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt           DateTime? @map("deleted_at") @db.Timestamptz(6)
 
   user User? @relation("user", fields: [userId], references: [id])
   team Team? @relation(fields: [teamId], references: [id])
