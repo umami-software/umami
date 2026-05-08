@@ -70,7 +70,7 @@ export function Chart({
       // and let the parent push a new hiddenLabels set on the next render.
       const { datasetIndex } = item;
       const ds = chart.current.data.datasets[datasetIndex];
-      onLegendClick(ds.label, !ds.hidden);
+      onLegendClick(ds.label, !hiddenLabels?.has(ds.label));
       return;
     }
 
