@@ -203,6 +203,9 @@ importers:
       ua-parser-js:
         specifier: ^2.0.9
         version: 2.0.9
+      undici:
+        specifier: ^8.2.0
+        version: 8.2.0
       uuid:
         specifier: ^14.0.0
         version: 14.0.0
@@ -6105,6 +6108,10 @@ packages:
   undici@7.25.0:
     resolution: {integrity: sha512-xXnp4kTyor2Zq+J1FfPI6Eq3ew5h6Vl0F/8d9XU5zZQf1tX9s2Su1/3PiMmUANFULpmksxkClamIZcaUqryHsQ==}
     engines: {node: '>=20.18.1'}
+
+  undici@8.2.0:
+    resolution: {integrity: sha512-Z+4Hx9GE26Lh9Upwfnc8C7SsrpBPGaM/Gm6kMFtiG7c+5IvQKlXi/t+9x9DrrCh29cww5TSP9YdVaBcnLDs5fQ==}
+    engines: {node: '>=22.19.0'}
 
   unicorn-magic@0.3.0:
     resolution: {integrity: sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA==}
@@ -12200,6 +12207,8 @@ snapshots:
   undici-types@7.24.6: {}
 
   undici@7.25.0: {}
+
+  undici@8.2.0: {}
 
   unicorn-magic@0.3.0: {}
 

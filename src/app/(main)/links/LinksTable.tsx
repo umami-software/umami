@@ -18,7 +18,11 @@ export function LinksTable({ showActions, ...props }: LinksTableProps) {
 
   return (
     <DataTable {...props}>
-      <DataColumn id="name" label={<SortableLabel label={t(labels.name)} sortKey="name" />}>
+      <DataColumn
+        id="name"
+        label={<SortableLabel label={t(labels.name)} sortKey="name" />}
+        width="minmax(0, 1fr)"
+      >
         {({ id, name }: any) => {
           return <Link href={renderUrl(`/links/${id}`)}>{name}</Link>;
         }}
@@ -26,7 +30,7 @@ export function LinksTable({ showActions, ...props }: LinksTableProps) {
       <DataColumn
         id="slug"
         label={<SortableLabel label={t(labels.link)} sortKey="slug" />}
-        width="25%"
+        width="minmax(0, 1fr)"
       >
         {({ slug }: any) => {
           const url = getSlugUrl(slug);
@@ -36,7 +40,7 @@ export function LinksTable({ showActions, ...props }: LinksTableProps) {
       <DataColumn
         id="url"
         label={<SortableLabel label={t(labels.destinationUrl)} sortKey="url" />}
-        width="30%"
+        width="minmax(0, 1fr)"
       >
         {({ url }: any) => {
           return <ExternalLink href={url}>{url}</ExternalLink>;

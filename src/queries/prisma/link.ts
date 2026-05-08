@@ -1,10 +1,71 @@
 import type { Prisma } from '@/generated/prisma/client';
+import { fetchOgMetadata } from '@/lib/og';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
 import type { QueryFilters } from '@/lib/types';
 
 const LINK_SORT_FIELDS = ['name', 'slug', 'url', 'createdAt'] as const;
+
+type OgFieldName = 'ogTitle' | 'ogDescription' | 'ogImage';
+type OgManualFlag = 'ogTitleManual' | 'ogDescriptionManual' | 'ogImageManual';
+
+const OG_FIELDS: ReadonlyArray<OgFieldName> = ['ogTitle', 'ogDescription', 'ogImage'];
+
+const OG_FIELD_TO_PARSED_KEY: Record<OgFieldName, 'title' | 'description' | 'image'> = {
+  ogTitle: 'title',
+  ogDescription: 'description',
+  ogImage: 'image',
+};
+
+function flagOf(field: OgFieldName): OgManualFlag {
+  return `${field}Manual` as OgManualFlag;
+}
+
+interface OgPreReadRow {
+  url?: string | null;
+  ogTitleManual?: boolean | null;
+  ogDescriptionManual?: boolean | null;
+  ogImageManual?: boolean | null;
+}
+
+// undefined → preserve, null → clear-to-auto, string → manual override.
+async function applyOgFields(data: any, currentRow: OgPreReadRow | null): Promise<void> {
+  for (const f of OG_FIELDS) {
+    const flag = flagOf(f);
+    const v = data[f];
+    if (v === undefined) {
+      delete data[f];
+      delete data[flag];
+    } else if (v === null) {
+      data[flag] = false;
+    } else {
+      data[flag] = true;
+    }
+  }
+
+  const targetUrl = data.url ?? currentRow?.url;
+  if (!targetUrl) return;
+
+  const urlChanged = currentRow ? data.url !== undefined && data.url !== currentRow.url : true;
+
+  const fieldsToFill = OG_FIELDS.filter(f => {
+    const flag = flagOf(f);
+    const intent = data[flag];
+    if (intent === true) return false;
+    if (intent === false) return true;
+    if (currentRow?.[flag]) return false;
+    return urlChanged;
+  });
+
+  if (fieldsToFill.length === 0) return;
+
+  const parsed = await fetchOgMetadata(targetUrl);
+  for (const f of fieldsToFill) {
+    data[f] = parsed[OG_FIELD_TO_PARSED_KEY[f]] ?? null;
+    data[flagOf(f)] = false;
+  }
+}
 
 export async function findLink(criteria: Prisma.LinkFindUniqueArgs) {
   return prisma.client.link.findUnique(criteria);
@@ -59,10 +120,11 @@ export async function getTeamLinks(teamId: string, filters?: QueryFilters) {
 }
 
 export async function createLink(data: Prisma.LinkUncheckedCreateInput) {
+  await applyOgFields(data, null);
+
   const result = await prisma.client.link.create({ data });
 
-  // Defensive: a slug may be reused after a hard-delete and the redirect cache
-  // for that slug can still hold the old link's URL for up to 24h.
+  // Slug may be reused after a hard-delete; clear any stale redirect cache.
   if (redis.enabled && result.slug) {
     await redis.client.del(`link:${result.slug}`);
   }
@@ -71,12 +133,19 @@ export async function createLink(data: Prisma.LinkUncheckedCreateInput) {
 }
 
 export async function updateLink(linkId: string, data: any) {
-  const before = redis.enabled
-    ? await prisma.client.link.findUnique({
-        where: { id: linkId },
-        select: { slug: true },
-      })
-    : null;
+  // Always run: needed for OG manual-flag check + Redis cache invalidation.
+  const before = await prisma.client.link.findUnique({
+    where: { id: linkId },
+    select: {
+      slug: true,
+      url: true,
+      ogTitleManual: true,
+      ogDescriptionManual: true,
+      ogImageManual: true,
+    },
+  });
+
+  await applyOgFields(data, before);
 
   const result = await prisma.client.link.update({ where: { id: linkId }, data });
 
