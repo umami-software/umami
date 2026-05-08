@@ -84,11 +84,32 @@ export function DataGrid({
       >
         {data && (
           <>
-            <Column>
+            {/*
+              Wrap the table in a horizontally scrollable container. The
+              react-zen DataTable lays its columns out on a CSS Grid with
+              fixed pixel widths, so the sum of column widths becomes the
+              table's max-content and propagates up through the surrounding
+              flex chain into the Tabs grid track, pinning every ancestor
+              wider than the viewport on small screens. overflow-x: auto on
+              its own does not break that chain because the wrapper still
+              stretches to its parent's width. Setting display: grid with
+              grid-template-columns: minmax(0, 1fr) gives the wrapper an
+              explicit 1fr column that resolves to the available space,
+              caps its own intrinsic width, and lets overflow-x: auto
+              kick in so the user can scroll the columns horizontally
+              instead of having the card overflow off screen.
+            */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'minmax(0, 1fr)',
+                overflowX: 'auto',
+              }}
+            >
               {isValidElement(child)
                 ? cloneElement(child as ReactElement<any>, { displayMode })
                 : child}
-            </Column>
+            </div>
             {showPager && (
               <Row marginTop="6">
                 <Pager
