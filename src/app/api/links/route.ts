@@ -1,11 +1,18 @@
+import { after } from 'next/server';
 import { z } from 'zod';
 import { uuid } from '@/lib/crypto';
-import { validateUrl } from '@/lib/og';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
-import { createLink, getUserLinks } from '@/queries/prisma';
+import { backfillOgMetadata, createLink, getUserLinks } from '@/queries/prisma';
+import {
+  isHttpUrl,
+  ogDescriptionField,
+  ogImageField,
+  ogTitleField,
+  utmField,
+} from './schemas';
 
 export async function GET(request: Request) {
   const schema = z.object({
@@ -27,51 +34,6 @@ export async function GET(request: Request) {
   return json(links);
 }
 
-const utmField = z
-  .string()
-  .max(255)
-  .transform(v => (v === '' ? null : v))
-  .nullable()
-  .optional();
-
-const ogTextField = (max: number) =>
-  z
-    .string()
-    .max(max)
-    .transform(v => {
-      const trimmed = v.trim();
-      return trimmed === '' ? null : trimmed;
-    })
-    .nullable()
-    .optional();
-
-function isHttpUrl(value: string): boolean {
-  try {
-    const u = new URL(value);
-    return (u.protocol === 'http:' || u.protocol === 'https:') && !!u.host;
-  } catch {
-    return false;
-  }
-}
-
-// http(s) URL that doesn't resolve to a private/reserved IP literal.
-function isPublicHttpUrl(value: string): boolean {
-  return isHttpUrl(value) && validateUrl(value) !== null;
-}
-
-const ogImageField = z
-  .string()
-  .max(2047)
-  .transform(v => {
-    const trimmed = v.trim();
-    return trimmed === '' ? null : trimmed;
-  })
-  .nullable()
-  .optional()
-  .refine(v => v == null || isPublicHttpUrl(v), {
-    message: 'ogImage must be a public http(s) URL',
-  });
-
 export async function POST(request: Request) {
   const schema = z.object({
     name: z.string().max(100),
@@ -87,8 +49,8 @@ export async function POST(request: Request) {
     utmCampaign: utmField,
     utmTerm: utmField,
     utmContent: utmField,
-    ogTitle: ogTextField(255),
-    ogDescription: ogTextField(500),
+    ogTitle: ogTitleField,
+    ogDescription: ogDescriptionField,
     ogImage: ogImageField,
   });
 
@@ -139,6 +101,8 @@ export async function POST(request: Request) {
   }
 
   const result = await createLink(data);
+
+  after(() => backfillOgMetadata(result.id, data, null));
 
   return json(result);
 }
