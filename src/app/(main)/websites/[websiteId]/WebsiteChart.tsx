@@ -25,6 +25,9 @@ export function WebsiteChart({
   const { data, isLoading, isFetching, error } = useWebsitePageviewsQuery({
     websiteId,
     compare: compareMode ? dateCompare?.compare : undefined,
+    // Only ask the server for the session-series metrics when they are
+    // actually selected; otherwise the server skips the third DB query.
+    metric: metric === 'pageviews' ? undefined : metric,
   });
   const { pageviews, sessions, bouncerate, visitduration, compare } = (data || {}) as any;
 
