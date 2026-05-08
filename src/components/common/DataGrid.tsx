@@ -57,9 +57,13 @@ export function DataGrid({
   const [search, setSearch] = useState(queryParams?.search || data?.search || '');
   const showPager = allowPaging && data && data.count > data.pageSize;
   const { isMobile } = useMobile();
-  const [userDisplayMode, setUserDisplayMode] = useState<DisplayMode | null>(
-    () => getItem(DISPLAY_MODE_STORAGE_KEY) ?? null,
-  );
+  const [userDisplayMode, setUserDisplayMode] = useState<DisplayMode | null>(() => {
+    // localStorage can hold anything (extensions, manual edits, schema drift),
+    // so accept only the two values we know how to render and otherwise fall
+    // back to the useMobile-driven default.
+    const stored = getItem(DISPLAY_MODE_STORAGE_KEY);
+    return stored === 'table' || stored === 'cards' ? stored : null;
+  });
 
   // Effective mode: explicit user choice wins, otherwise fall back to the
   // mobile-driven default (cards on small viewports, table elsewhere).
@@ -100,8 +104,8 @@ export function DataGrid({
 
   return (
     <Column gap="4" minHeight="300px">
-      <Row alignItems="center" justifyContent="space-between" wrap="wrap" gap>
-        {allowSearch ? (
+      <Row alignItems="center" wrap="wrap" gap>
+        {allowSearch && (
           <SearchField
             value={search}
             onSearch={handleSearch}
@@ -109,10 +113,8 @@ export function DataGrid({
             autoFocus={autoFocus}
             placeholder={t(labels.search)}
           />
-        ) : (
-          <span />
         )}
-        <Row alignItems="center" gap>
+        <Row alignItems="center" gap style={{ marginLeft: 'auto' }}>
           {renderActions?.()}
           {viewToggleButton}
         </Row>
