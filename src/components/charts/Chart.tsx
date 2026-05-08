@@ -18,6 +18,8 @@ export interface ChartProps extends BoxProps {
   updateMode?: UpdateMode;
   animationDuration?: number;
   onTooltip?: (model: any) => void;
+  hiddenLabels?: Set<string>;
+  onLegendClick?: (label: string, willBeHidden: boolean) => void;
 }
 
 export function Chart({
@@ -27,6 +29,8 @@ export function Chart({
   updateMode,
   onTooltip,
   chartOptions,
+  hiddenLabels,
+  onLegendClick,
   ...props
 }: ChartProps) {
   const canvas = useRef(null);
@@ -61,6 +65,15 @@ export function Chart({
   }, [chartOptions]);
 
   const handleLegendClick = (item: LegendItem) => {
+    if (onLegendClick && type === 'bar') {
+      // Controlled mode: caller owns the hidden state. We report the click
+      // and let the parent push a new hiddenLabels set on the next render.
+      const { datasetIndex } = item;
+      const ds = chart.current.data.datasets[datasetIndex];
+      onLegendClick(ds.label, !ds.hidden);
+      return;
+    }
+
     if (type === 'bar') {
       const { datasetIndex } = item;
       const meta = chart.current.getDatasetMeta(datasetIndex);
@@ -111,13 +124,24 @@ export function Chart({
         });
       }
 
+      // Re-apply caller-driven hidden flags after focusLabel handling so a
+      // dataset stays hidden across data changes (e.g. date-range switches)
+      // even though Chart.js regenerates dataset meta on every replace.
+      if (hiddenLabels) {
+        chart.current.data.datasets.forEach((ds: { hidden: boolean; label: any }) => {
+          if (hiddenLabels.has(ds.label)) {
+            ds.hidden = true;
+          }
+        });
+      }
+
       chart.current.options = options;
 
       chart.current.update(updateMode);
 
       setLegendItems(chart.current.legend.legendItems);
     }
-  }, [chartData, options, updateMode]);
+  }, [chartData, options, updateMode, hiddenLabels]);
 
   return (
     <Column gap="6">
