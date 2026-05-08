@@ -29,8 +29,8 @@ interface OgPreReadRow {
   ogImageManual?: boolean | null;
 }
 
-// undefined → preserve, null → clear-to-auto, string → manual override.
-async function applyOgFields(data: any, currentRow: OgPreReadRow | null): Promise<void> {
+// Sync intent classification + clear stale auto fields on url change; network fetch is deferred to backfillOgMetadata.
+function applyOgIntent(data: any, currentRow: OgPreReadRow | null = null): void {
   for (const f of OG_FIELDS) {
     const flag = flagOf(f);
     const v = data[f];
@@ -44,12 +44,32 @@ async function applyOgFields(data: any, currentRow: OgPreReadRow | null): Promis
     }
   }
 
+  // On url change, null out auto-managed fields up front so the user never sees the prior URL's metadata.
+  if (currentRow && data.url !== undefined && data.url !== currentRow.url) {
+    for (const f of OG_FIELDS) {
+      const flag = flagOf(f);
+      if (data[flag] === true) continue;
+      if (data[flag] === undefined && currentRow[flag]) continue;
+      if (data[f] === undefined) {
+        data[f] = null;
+        data[flag] = false;
+      }
+    }
+  }
+}
+
+// Run via next/server `after`; optimistic write guards against races on rapid edits, manual overrides, and deletes.
+export async function backfillOgMetadata(
+  linkId: string,
+  data: any,
+  currentRow: OgPreReadRow | null,
+): Promise<void> {
   const targetUrl = data.url ?? currentRow?.url;
   if (!targetUrl) return;
 
   const urlChanged = currentRow ? data.url !== undefined && data.url !== currentRow.url : true;
 
-  const fieldsToFill = OG_FIELDS.filter(f => {
+  const candidateFields = OG_FIELDS.filter(f => {
     const flag = flagOf(f);
     const intent = data[flag];
     if (intent === true) return false;
@@ -58,12 +78,40 @@ async function applyOgFields(data: any, currentRow: OgPreReadRow | null): Promis
     return urlChanged;
   });
 
-  if (fieldsToFill.length === 0) return;
+  if (candidateFields.length === 0) return;
 
-  const parsed = await fetchOgMetadata(targetUrl);
-  for (const f of fieldsToFill) {
-    data[f] = parsed[OG_FIELD_TO_PARSED_KEY[f]] ?? null;
-    data[flagOf(f)] = false;
+  let parsed;
+  try {
+    parsed = await fetchOgMetadata(targetUrl);
+  } catch {
+    return;
+  }
+
+  // updateMany no-ops if url+flag have diverged since fetch started; next edit re-triggers.
+  for (const f of candidateFields) {
+    const flag = flagOf(f);
+    const newValue = parsed[OG_FIELD_TO_PARSED_KEY[f]] ?? null;
+    await prisma.client.link
+      .updateMany({
+        where: {
+          id: linkId,
+          url: targetUrl,
+          [flag]: false,
+          deletedAt: null,
+        },
+        data: { [f]: newValue, [flag]: false },
+      })
+      .catch(() => {});
+  }
+
+  // del-only (no prime): a concurrent crawler set could clobber us last-write-wins; bounded 24h staleness is accepted.
+  if (redis.enabled) {
+    const fresh = await prisma.client.link
+      .findUnique({ where: { id: linkId }, select: { slug: true } })
+      .catch(() => null);
+    if (fresh?.slug) {
+      await redis.client.del(`link:${fresh.slug}`).catch(() => {});
+    }
   }
 }
 
@@ -120,7 +168,7 @@ export async function getTeamLinks(teamId: string, filters?: QueryFilters) {
 }
 
 export async function createLink(data: Prisma.LinkUncheckedCreateInput) {
-  await applyOgFields(data, null);
+  applyOgIntent(data);
 
   const result = await prisma.client.link.create({ data });
 
@@ -133,7 +181,7 @@ export async function createLink(data: Prisma.LinkUncheckedCreateInput) {
 }
 
 export async function updateLink(linkId: string, data: any) {
-  // Always run: needed for OG manual-flag check + Redis cache invalidation.
+  // Returned to caller for OG manual-flag check, Redis invalidation, and backfill race guards.
   const before = await prisma.client.link.findUnique({
     where: { id: linkId },
     select: {
@@ -145,7 +193,7 @@ export async function updateLink(linkId: string, data: any) {
     },
   });
 
-  await applyOgFields(data, before);
+  applyOgIntent(data, before);
 
   const result = await prisma.client.link.update({ where: { id: linkId }, data });
 
@@ -156,7 +204,7 @@ export async function updateLink(linkId: string, data: any) {
     }
   }
 
-  return result;
+  return { result, before };
 }
 
 export async function deleteLink(linkId: string) {

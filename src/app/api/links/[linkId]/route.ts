@@ -1,9 +1,16 @@
+import { after } from 'next/server';
 import { z } from 'zod';
-import { validateUrl } from '@/lib/og';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
 import { canDeleteLink, canUpdateLink, canViewLink } from '@/permissions';
-import { deleteLink, getLink, updateLink } from '@/queries/prisma';
+import { backfillOgMetadata, deleteLink, getLink, updateLink } from '@/queries/prisma';
+import {
+  isHttpUrl,
+  ogDescriptionField,
+  ogImageField,
+  ogTitleField,
+  utmField,
+} from '../schemas';
 
 export async function GET(request: Request, { params }: { params: Promise<{ linkId: string }> }) {
   const { auth, error } = await parseRequest(request);
@@ -23,50 +30,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ link
   return json(website);
 }
 
-const utmField = z
-  .string()
-  .max(255)
-  .transform(v => (v === '' ? null : v))
-  .nullable()
-  .optional();
-
-const ogTextField = (max: number) =>
-  z
-    .string()
-    .max(max)
-    .transform(v => {
-      const trimmed = v.trim();
-      return trimmed === '' ? null : trimmed;
-    })
-    .nullable()
-    .optional();
-
-function isHttpUrl(value: string): boolean {
-  try {
-    const u = new URL(value);
-    return (u.protocol === 'http:' || u.protocol === 'https:') && !!u.host;
-  } catch {
-    return false;
-  }
-}
-
-function isPublicHttpUrl(value: string): boolean {
-  return isHttpUrl(value) && validateUrl(value) !== null;
-}
-
-const ogImageField = z
-  .string()
-  .max(2047)
-  .transform(v => {
-    const trimmed = v.trim();
-    return trimmed === '' ? null : trimmed;
-  })
-  .nullable()
-  .optional()
-  .refine(v => v == null || isPublicHttpUrl(v), {
-    message: 'ogImage must be a public http(s) URL',
-  });
-
 export async function POST(request: Request, { params }: { params: Promise<{ linkId: string }> }) {
   const schema = z.object({
     name: z.string().max(100).optional(),
@@ -81,8 +44,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ lin
     utmCampaign: utmField,
     utmTerm: utmField,
     utmContent: utmField,
-    ogTitle: ogTextField(255),
-    ogDescription: ogTextField(500),
+    ogTitle: ogTitleField,
+    ogDescription: ogDescriptionField,
     ogImage: ogImageField,
   });
 
@@ -127,7 +90,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ lin
   if (ogImage !== undefined) payload.ogImage = ogImage;
 
   try {
-    const result = await updateLink(linkId, payload);
+    const { result, before } = await updateLink(linkId, payload);
+
+    after(() => backfillOgMetadata(result.id, payload, before));
 
     return Response.json(result);
   } catch (e: any) {

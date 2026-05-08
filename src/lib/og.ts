@@ -9,7 +9,7 @@ export interface OgMetadata {
 }
 
 const FETCH_TIMEOUT_MS = 5000;
-const MAX_REDIRECTS = 3;
+const MAX_HOPS = 3;
 const MAX_BODY_BYTES = 1024 * 1024;
 const HEAD_SLICE_FALLBACK_BYTES = 64 * 1024;
 
@@ -211,7 +211,7 @@ export async function fetchOgMetadata(rawUrl: string): Promise<OgMetadata> {
   let currentUrl: URL = initial;
   let response: import('undici').Response | null = null;
 
-  for (let hop = 0; hop < MAX_REDIRECTS; hop++) {
+  for (let hop = 0; hop < MAX_HOPS; hop++) {
     try {
       response = await undiciFetch(currentUrl, {
         method: 'GET',
