@@ -131,6 +131,10 @@ export function Chart({
         chart.current.data.datasets.forEach((ds: { hidden: boolean; label: any }) => {
           if (hiddenLabels.has(ds.label)) {
             ds.hidden = true;
+          } else if (!chartData.focusLabel) {
+            // Explicitly reset so un-hiding a label is always reflected,
+            // regardless of whether the focusLabel pass ran above.
+            ds.hidden = false;
           }
         });
       }
