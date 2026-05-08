@@ -1,5 +1,6 @@
 import type { Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
+import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
 import type { QueryFilters } from '@/lib/types';
 
@@ -58,13 +59,50 @@ export async function getTeamLinks(teamId: string, filters?: QueryFilters) {
 }
 
 export async function createLink(data: Prisma.LinkUncheckedCreateInput) {
-  return prisma.client.link.create({ data });
+  const result = await prisma.client.link.create({ data });
+
+  // Defensive: a slug may be reused after a hard-delete and the redirect cache
+  // for that slug can still hold the old link's URL for up to 24h.
+  if (redis.enabled && result.slug) {
+    await redis.client.del(`link:${result.slug}`);
+  }
+
+  return result;
 }
 
 export async function updateLink(linkId: string, data: any) {
-  return prisma.client.link.update({ where: { id: linkId }, data });
+  const before = redis.enabled
+    ? await prisma.client.link.findUnique({
+        where: { id: linkId },
+        select: { slug: true },
+      })
+    : null;
+
+  const result = await prisma.client.link.update({ where: { id: linkId }, data });
+
+  if (redis.enabled) {
+    if (before?.slug) await redis.client.del(`link:${before.slug}`);
+    if (result.slug && result.slug !== before?.slug) {
+      await redis.client.del(`link:${result.slug}`);
+    }
+  }
+
+  return result;
 }
 
 export async function deleteLink(linkId: string) {
-  return prisma.client.link.delete({ where: { id: linkId } });
+  const before = redis.enabled
+    ? await prisma.client.link.findUnique({
+        where: { id: linkId },
+        select: { slug: true },
+      })
+    : null;
+
+  const result = await prisma.client.link.delete({ where: { id: linkId } });
+
+  if (redis.enabled && before?.slug) {
+    await redis.client.del(`link:${before.slug}`);
+  }
+
+  return result;
 }

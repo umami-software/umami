@@ -11,10 +11,10 @@ import {
   Row,
   TextField,
 } from '@umami/react-zen';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useConfig, useLinkQuery, useMessages } from '@/components/hooks';
 import { useUpdateQuery } from '@/components/hooks/queries/useUpdateQuery';
-import { RefreshCw } from '@/components/icons';
+import { ChevronDown, RefreshCw } from '@/components/icons';
 import { LINKS_URL } from '@/lib/constants';
 import { getRandomChars } from '@/lib/generate';
 import { isValidUrl } from '@/lib/url';
@@ -46,6 +46,20 @@ export function LinkEditForm({
   const hostUrl = linksUrl || LINKS_URL;
   const { data, isLoading } = useLinkQuery(linkId);
   const [defaultSlug] = useState(generateId());
+  const [utmExpanded, setUtmExpanded] = useState(false);
+
+  useEffect(() => {
+    if (
+      data &&
+      (data.utmSource ||
+        data.utmMedium ||
+        data.utmCampaign ||
+        data.utmTerm ||
+        data.utmContent)
+    ) {
+      setUtmExpanded(true);
+    }
+  }, [data]);
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
@@ -92,6 +106,38 @@ export function LinkEditForm({
             >
               <TextField placeholder="https://example.com" autoComplete="off" />
             </FormField>
+
+            <Column gap="2">
+              <Button
+                variant="quiet"
+                onPress={() => setUtmExpanded(v => !v)}
+                style={{ alignSelf: 'flex-start' }}
+              >
+                <Icon rotate={utmExpanded ? 180 : 0}>
+                  <ChevronDown />
+                </Icon>
+                {t(labels.utm)}
+              </Button>
+              {utmExpanded && (
+                <>
+                  <FormField label={t(labels.utmSource)} name="utmSource">
+                    <TextField autoComplete="off" maxLength={255} />
+                  </FormField>
+                  <FormField label={t(labels.utmMedium)} name="utmMedium">
+                    <TextField autoComplete="off" maxLength={255} />
+                  </FormField>
+                  <FormField label={t(labels.utmCampaign)} name="utmCampaign">
+                    <TextField autoComplete="off" maxLength={255} />
+                  </FormField>
+                  <FormField label={t(labels.utmTerm)} name="utmTerm">
+                    <TextField autoComplete="off" maxLength={255} />
+                  </FormField>
+                  <FormField label={t(labels.utmContent)} name="utmContent">
+                    <TextField autoComplete="off" maxLength={255} />
+                  </FormField>
+                </>
+              )}
+            </Column>
 
             {cloudMode ? (
               <FormField
