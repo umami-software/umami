@@ -47,3 +47,21 @@ export function isValidUrl(url: string) {
     return false;
   }
 }
+
+export function appendQueryParams(
+  url: string,
+  params: Record<string, string | null | undefined>,
+): string {
+  const entries = Object.entries(params).filter(
+    (e): e is [string, string] => e[1] != null && e[1] !== '',
+  );
+  if (entries.length === 0) return url;
+
+  try {
+    const u = new URL(url);
+    for (const [k, v] of entries) u.searchParams.set(k, v);
+    return u.toString();
+  } catch {
+    return url;
+  }
+}
