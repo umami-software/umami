@@ -61,11 +61,12 @@ export function EventsChart({ websiteId, focusLabel, limit }: EventsChartProps) 
       // (the FNV prime is close to 2^24).
       const colorByKey: Record<string, string> = {};
       const used = new Set<string>();
-      const orderedKeys = [...Object.keys(map)].sort(
-        (a, b) => parseInt(hex6(a), 16) - parseInt(hex6(b), 16),
+      const hashOf = Object.fromEntries(
+        Object.keys(map).map(key => [key, parseInt(hex6(key), 16)]),
       );
+      const orderedKeys = [...Object.keys(map)].sort((a, b) => hashOf[a] - hashOf[b]);
       for (const key of orderedKeys) {
-        const start = (parseInt(hex6(key), 16) >>> 4) % CHART_COLORS.length;
+        const start = (hashOf[key] >>> 4) % CHART_COLORS.length;
         let chosen = CHART_COLORS[start];
         for (let i = 0; i < CHART_COLORS.length; i++) {
           const candidate = CHART_COLORS[(start + i) % CHART_COLORS.length];
