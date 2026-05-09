@@ -19,16 +19,20 @@ CREATE UNIQUE INDEX IF NOT EXISTS "share_slug_key" ON "share"("slug");
 CREATE INDEX IF NOT EXISTS "share_entity_id_idx" ON "share"("entity_id");
 
 -- MigrateData
-INSERT INTO "share" (share_id, entity_id, name, share_type, slug, parameters, created_at)
-SELECT gen_random_uuid(),
-       website_id,
-       name,
-       1,
-       share_id,
-       '{"overview":true}'::jsonb,
-       now()
-FROM "website"
-WHERE share_id IS NOT NULL;
+DO $$
+BEGIN
+    INSERT INTO "share" (share_id, entity_id, name, share_type, slug, parameters, created_at)
+    SELECT gen_random_uuid(),
+        website_id,
+        name,
+        1,
+        share_id,
+        '{"overview":true}'::jsonb,
+        now()
+    FROM "website"
+    WHERE share_id IS NOT NULL;
+EXCEPTION WHEN undefined_column THEN NULL;
+END $$;
 
 -- DropIndex
 DROP INDEX IF EXISTS "website_share_id_idx";
