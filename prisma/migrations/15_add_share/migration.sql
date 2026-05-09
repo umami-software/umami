@@ -31,10 +31,10 @@ FROM "website"
 WHERE share_id IS NOT NULL;
 
 -- DropIndex
-DROP INDEX "website_share_id_idx";
+DROP INDEX IF EXISTS "website_share_id_idx";
 
 -- DropIndex
-DROP INDEX "website_share_id_key";
+DROP INDEX IF EXISTS "website_share_id_key";
 
 -- AlterTable
-ALTER TABLE "website" DROP COLUMN "share_id";
+ALTER TABLE "website" DROP COLUMN IF EXISTS "share_id";
