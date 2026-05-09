@@ -13,10 +13,10 @@ CREATE TABLE "share" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "share_slug_key" ON "share"("slug");
+CREATE UNIQUE INDEX IF NOT EXISTS "share_slug_key" ON "share"("slug");
 
 -- CreateIndex
-CREATE INDEX "share_entity_id_idx" ON "share"("entity_id");
+CREATE INDEX IF NOT EXISTS "share_entity_id_idx" ON "share"("entity_id");
 
 -- MigrateData
 INSERT INTO "share" (share_id, entity_id, name, share_type, slug, parameters, created_at)
