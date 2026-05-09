@@ -39,5 +39,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "./cypress.config.ts", "cypress"]
+  "exclude": ["node_modules", "./playwright.config.ts", "tests/e2e"]
 }

@@ -1,8 +1,0 @@
-{
-  "teamCreate": {
-    "name": "cypress"
-  },
-  "teamUpdate": {
-    "name": "cypressUpdate"
-  }
-}

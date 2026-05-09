@@ -1,7 +1,6 @@
 packages:
   - '**'
 ignoredBuiltDependencies:
-  - cypress
   - esbuild
   - sharp
 onlyBuiltDependencies:
