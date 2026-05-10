@@ -255,6 +255,18 @@ export const DATETIME_REGEX =
 export const URL_LENGTH = 500;
 export const PAGE_TITLE_LENGTH = 500;
 export const EVENT_NAME_LENGTH = 50;
+export const UTM_LENGTH = 255;
+export const CLICK_ID_LENGTH = 255;
+export const TAG_LENGTH = 50;
+export const HOSTNAME_LENGTH = 100;
+export const DATA_LENGTH = 500;
+export const CURRENCY_LENGTH = 10;
+export const SESSION_FIELD_LENGTH = 20;
+export const SCREEN_LENGTH = 11;
+export const LANGUAGE_LENGTH = 35;
+export const COUNTRY_LENGTH = 2;
+export const CITY_LENGTH = 50;
+export const DISTINCT_ID_LENGTH = 50;
 
 export const UTM_PARAMS = ['utm_campaign', 'utm_content', 'utm_medium', 'utm_source', 'utm_term'];
 
