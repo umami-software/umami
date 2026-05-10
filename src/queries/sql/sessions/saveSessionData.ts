@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { DATA_TYPE } from '@/lib/constants';
+import { DATA_LENGTH, DATA_TYPE } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { flattenJSON, getStringValue } from '@/lib/data';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
@@ -37,8 +37,8 @@ export async function relationalQuery({
     id: uuid(),
     websiteId,
     sessionId,
-    dataKey: a.key,
-    stringValue: getStringValue(a.value, a.dataType),
+    dataKey: a.key?.substring(0, DATA_LENGTH),
+    stringValue: getStringValue(a.value, a.dataType)?.substring(0, DATA_LENGTH),
     numberValue: a.dataType === DATA_TYPE.number ? a.value : null,
     dateValue: a.dataType === DATA_TYPE.date ? new Date(a.value) : null,
     dataType: a.dataType,
@@ -86,9 +86,9 @@ async function clickhouseQuery({
     return {
       website_id: websiteId,
       session_id: sessionId,
-      data_key: key,
+      data_key: key?.substring(0, DATA_LENGTH),
       data_type: dataType,
-      string_value: getStringValue(value, dataType),
+      string_value: getStringValue(value, dataType)?.substring(0, DATA_LENGTH),
       number_value: dataType === DATA_TYPE.number ? value : null,
       date_value: dataType === DATA_TYPE.date ? getUTCString(value) : null,
       distinct_id: distinctId,
