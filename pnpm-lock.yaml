@@ -35,6 +35,12 @@ importers:
       '@react-spring/web':
         specifier: ^10.0.3
         version: 10.0.3(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@rrweb/rrweb-plugin-console-record':
+        specifier: 2.0.0-alpha.20
+        version: 2.0.0-alpha.20(@rrweb/utils@2.0.0-alpha.20)(rrweb@2.0.0-alpha.20)
+      '@rrweb/rrweb-plugin-console-replay':
+        specifier: 2.0.0-alpha.20
+        version: 2.0.0-alpha.20(rrweb@2.0.0-alpha.20)
       '@svgr/cli':
         specifier: ^8.1.0
         version: 8.1.0(typescript@5.9.3)
@@ -174,11 +180,11 @@ importers:
         specifier: ^3.3.0
         version: 3.3.0
       rrweb:
-        specifier: 2.0.0-alpha.4
-        version: 2.0.0-alpha.4
+        specifier: 2.0.0-alpha.20
+        version: 2.0.0-alpha.20
       rrweb-player:
-        specifier: 1.0.0-alpha.4
-        version: 1.0.0-alpha.4
+        specifier: 2.0.0-alpha.20
+        version: 2.0.0-alpha.20
       semver:
         specifier: ^7.7.4
         version: 7.7.4
@@ -312,8 +318,6 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
-
-  dist: {}
 
 packages:
 
@@ -2029,8 +2033,28 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@rrweb/packer@2.0.0-alpha.20':
+    resolution: {integrity: sha512-GsByg2olGZ2n3To6keFG604QAboipuXZvjYxO2wITSwARBf/sZdy6cbUEjF0RS+QnuTM5GaVXeQapNMLmpKbrA==}
+
+  '@rrweb/replay@2.0.0-alpha.20':
+    resolution: {integrity: sha512-VodsLb+C2bYNNVbb0U14tKLa9ctzUxYIlt9VnxPATWvfyXHLTku8BhRWptuW/iIjVjmG49LBoR1ilxw/HMiJ1w==}
+
+  '@rrweb/rrweb-plugin-console-record@2.0.0-alpha.20':
+    resolution: {integrity: sha512-4v05qwW7C4AnGxkwf7YeIkSGrNJpZ4tFj2j5Wa6suHlDsDvpqHH/ZRNTqdNRjeWcceSMuqka/zULOGX/f0KcCA==}
+    peerDependencies:
+      '@rrweb/utils': ^2.0.0-alpha.20
+      rrweb: ^2.0.0-alpha.20
+
+  '@rrweb/rrweb-plugin-console-replay@2.0.0-alpha.20':
+    resolution: {integrity: sha512-CbYrHNBefEuprSrG2rObzKDtljMfzNOzLq9jMFUCHGqbfJSWDY7zpr0zSLgQux+lLsJF1g2lBqNGwab/4j8GFw==}
+    peerDependencies:
+      rrweb: ^2.0.0-alpha.20
+
   '@rrweb/types@2.0.0-alpha.20':
     resolution: {integrity: sha512-RbnDgKxA/odwB1R4gF7eUUj+rdSrq6ROQJsnMw7MIsGzlbSYvJeZN8YY4XqU0G6sKJvXI6bSzk7w/G94jNwzhw==}
+
+  '@rrweb/utils@2.0.0-alpha.20':
+    resolution: {integrity: sha512-MTQOmhPRe39C0fYaCnnVYOufQsyGzwNXpUStKiyFSfGLUJrzuwhbRoUAKR5w6W2j5XuA0bIz3ZDIBztkquOhLw==}
 
   '@schummar/icu-type-parser@1.21.5':
     resolution: {integrity: sha512-bXHSaW5jRTmke9Vd0h5P7BtWZG9Znqb8gSDxZnxaGSJnGwPLDPfS+3g0BKzeWqzgZPsIVZkM7m2tbo18cm5HBw==}
@@ -5402,17 +5426,17 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
-  rrdom@0.1.7:
-    resolution: {integrity: sha512-ZLd8f14z9pUy2Hk9y636cNv5Y2BMnNEY99wxzW9tD2BLDfe1xFxtLjB4q/xCBYo6HRe0wofzKzjm4JojmpBfFw==}
+  rrdom@2.0.0-alpha.20:
+    resolution: {integrity: sha512-hoqjS4662LtBp82qEz9GrqU36UpEmCvTA2Hns3qdF7cklLFFy3G+0Th8hLytJENleHHWxsB5nWJ3eXz5mSRxdQ==}
 
-  rrweb-player@1.0.0-alpha.4:
-    resolution: {integrity: sha512-Wlmn9GZ5Fdqa37vd3TzsYdLl/JWEvXNUrLCrYpnOwEgmY409HwVIvvA5aIo7k582LoKgdRCsB87N+f0oWAR0Kg==}
+  rrweb-player@2.0.0-alpha.20:
+    resolution: {integrity: sha512-3ZCv1ksUxuIOn3Vn/eWrwWs9Xy+4KVjISD+q26ZLfisZ3hZ0CPgYG3iC22pmmycIeMS2svOfvf7gPh7jExwpUA==}
 
-  rrweb-snapshot@2.0.0-alpha.4:
-    resolution: {integrity: sha512-KQ2OtPpXO5jLYqg1OnXS/Hf+EzqnZyP5A+XPqBCjYpj3XIje/Od4gdUwjbFo3cVuWq5Cw5Y1d3/xwgIS7/XpQQ==}
+  rrweb-snapshot@2.0.0-alpha.20:
+    resolution: {integrity: sha512-YTNf9YVeaGRo/jxY3FKBge2c/Ojd/KTHmuWloUSB+oyPXuY73ZeeG873qMMmhIpqEn7hn7aBF1eWEQmP7wjf8A==}
 
-  rrweb@2.0.0-alpha.4:
-    resolution: {integrity: sha512-wEHUILbxDPcNwkM3m4qgPgXAiBJyqCbbOHyVoNEVBJzHszWEFYyTbrZqUdeb1EfmTRC2PsumCIkVcomJ/xcOzA==}
+  rrweb@2.0.0-alpha.20:
+    resolution: {integrity: sha512-CZKDlm+j1VA50Ko3gnMbpvguCAleljsTNXPnVk9aeNP8o6T6kolRbISHyDZpqZ4G+bdDLlQOignPP3jEsXs8Gg==}
 
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
@@ -7745,7 +7769,28 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.60.1':
     optional: true
 
+  '@rrweb/packer@2.0.0-alpha.20':
+    dependencies:
+      '@rrweb/types': 2.0.0-alpha.20
+      fflate: 0.4.8
+
+  '@rrweb/replay@2.0.0-alpha.20':
+    dependencies:
+      '@rrweb/types': 2.0.0-alpha.20
+      rrweb: 2.0.0-alpha.20
+
+  '@rrweb/rrweb-plugin-console-record@2.0.0-alpha.20(@rrweb/utils@2.0.0-alpha.20)(rrweb@2.0.0-alpha.20)':
+    dependencies:
+      '@rrweb/utils': 2.0.0-alpha.20
+      rrweb: 2.0.0-alpha.20
+
+  '@rrweb/rrweb-plugin-console-replay@2.0.0-alpha.20(rrweb@2.0.0-alpha.20)':
+    dependencies:
+      rrweb: 2.0.0-alpha.20
+
   '@rrweb/types@2.0.0-alpha.20': {}
+
+  '@rrweb/utils@2.0.0-alpha.20': {}
 
   '@schummar/icu-type-parser@1.21.5': {}
 
@@ -11505,27 +11550,30 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.60.1
       fsevents: 2.3.3
 
-  rrdom@0.1.7:
+  rrdom@2.0.0-alpha.20:
     dependencies:
-      rrweb-snapshot: 2.0.0-alpha.4
+      rrweb-snapshot: 2.0.0-alpha.20
 
-  rrweb-player@1.0.0-alpha.4:
+  rrweb-player@2.0.0-alpha.20:
     dependencies:
+      '@rrweb/packer': 2.0.0-alpha.20
+      '@rrweb/replay': 2.0.0-alpha.20
       '@tsconfig/svelte': 1.0.13
-      rrweb: 2.0.0-alpha.4
 
-  rrweb-snapshot@2.0.0-alpha.4: {}
+  rrweb-snapshot@2.0.0-alpha.20:
+    dependencies:
+      postcss: 8.5.8
 
-  rrweb@2.0.0-alpha.4:
+  rrweb@2.0.0-alpha.20:
     dependencies:
       '@rrweb/types': 2.0.0-alpha.20
+      '@rrweb/utils': 2.0.0-alpha.20
       '@types/css-font-loading-module': 0.0.7
       '@xstate/fsm': 1.6.5
       base64-arraybuffer: 1.0.2
-      fflate: 0.4.8
       mitt: 3.0.1
-      rrdom: 0.1.7
-      rrweb-snapshot: 2.0.0-alpha.4
+      rrdom: 2.0.0-alpha.20
+      rrweb-snapshot: 2.0.0-alpha.20
 
   run-parallel@1.2.0:
     dependencies:

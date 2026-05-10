@@ -380,6 +380,7 @@ export const labels: Record<string, string> = {
   duration: 'label.duration',
   recorded: 'label.recorded',
   upgrade: 'label.upgrade',
+  recordConsole: 'label.record-console',
 };
 
 export const messages: Record<string, string> = {

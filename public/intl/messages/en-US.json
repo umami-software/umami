@@ -253,6 +253,7 @@
     "remove": "Remove",
     "remove-member": "Remove member",
     "play": "Play",
+    "record-console": "Record console logs",
     "replay": "Replay",
     "replay-id": "Replay ID",
     "replay-code": "Session replay code",
