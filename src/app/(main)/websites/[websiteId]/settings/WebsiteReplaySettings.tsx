@@ -158,6 +158,9 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
           <Switch isSelected={recordConsole} onChange={setRecordConsole}>
             {t(labels.recordConsole)}
           </Switch>
+          <Text color="muted" size="sm">
+            {t(messages.recordConsoleWarning)}
+          </Text>
           <Row>
             <Button variant="primary" onPress={handleSave} isDisabled={isPending}>
               {t(labels.save)}

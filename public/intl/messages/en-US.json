@@ -430,6 +430,7 @@
     "user-deleted": "User deleted.",
     "viewed-page": "Viewed page",
     "upgrade-required": "This feature requires a {plan} plan subscription.",
-    "visitor-log": "Visitor from <b>{country}</b> using <b>{browser}</b> on <b>{os}</b> <b>{device}</b>"
+    "visitor-log": "Visitor from <b>{country}</b> using <b>{browser}</b> on <b>{os}</b> <b>{device}</b>",
+    "record-console-warning": "This will record all console logs, which may include sensitive information."
   }
 }

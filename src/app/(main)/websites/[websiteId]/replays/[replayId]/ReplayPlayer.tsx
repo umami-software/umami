@@ -25,6 +25,8 @@ export function ReplayPlayer({ events }: { events: any[] }) {
           containerRef.current.innerHTML = '';
         }
 
+        const hasConsole = events.some(event => event.data?.plugin === 'rrweb/console@1');
+
         playerRef.current = new RRWebPlayer({
           target: containerRef.current,
           props: {
@@ -36,7 +38,7 @@ export function ReplayPlayer({ events }: { events: any[] }) {
             speedOption: [1, 2, 4, 8],
             useVirtualDom: false,
             showWarning: false,
-            plugins: [getReplayConsolePlugin()],
+            plugins: hasConsole ? [getReplayConsolePlugin()] : [],
           },
         });
 
