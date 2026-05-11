@@ -180,6 +180,7 @@
     "links": "Links",
     "location": "Location",
     "login": "Login",
+    "llm": "LLM",
     "logout": "Logout",
     "manage": "Manage",
     "manager": "Manager",

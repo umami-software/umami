@@ -326,14 +326,21 @@ export const SOCIAL_DOMAINS = [
 export const SEARCH_DOMAINS = [
   'baidu.com',
   'bing.com',
-  'chatgpt.com',
   'duckduckgo.com',
   'ecosia.org',
   'google.',
   'msn.com',
-  'perplexity.ai',
   'search.brave.com',
   'yandex.',
+];
+
+export const LLM_DOMAINS = [
+  'chatgpt.com',
+  'claude.ai',
+  'copilot.microsoft.com',
+  'gemini.google.com',
+  'meta.ai',
+  'perplexity.ai',
 ];
 
 export const SHOPPING_DOMAINS = [

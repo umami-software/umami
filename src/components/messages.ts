@@ -307,6 +307,7 @@ export const labels: Record<string, string> = {
   affiliate: 'label.affiliate',
   email: 'label.email',
   sms: 'label.sms',
+  llm: 'label.llm',
   organicSearch: 'label.organic-search',
   organicSocial: 'label.organic-social',
   organicShopping: 'label.organic-shopping',
