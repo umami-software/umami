@@ -1,5 +1,5 @@
 'use client';
-import { Button, Column, Icon, Row } from '@umami/react-zen';
+import { Button, Column, Icon, ListItem, Row, Select } from '@umami/react-zen';
 import { useState } from 'react';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
@@ -7,7 +7,8 @@ import { Panel } from '@/components/common/Panel';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { type OverviewRange } from '@/components/hooks/queries/useWebsiteSummaryQuery';
 import { type SortField } from '@/components/hooks/queries/useAllWebsiteStatsQuery';
-import { LayoutGrid, List } from '@/components/icons';
+import { FilterButtons } from '@/components/input/FilterButtons';
+import { ArrowUpDown, LayoutGrid, List } from '@/components/icons';
 import { getItem, setItem } from '@/lib/storage';
 import { WebsiteAddButton } from './WebsiteAddButton';
 import { WebsitesDataTable } from './WebsitesDataTable';
@@ -59,40 +60,30 @@ export function WebsitesPage() {
           <Row gap="2" alignItems="center">
             {view === 'grid' && (
               <>
-                {/* Sort selector */}
                 <Row gap="1" alignItems="center">
-                  <span style={{ fontSize: '12px', color: 'var(--text-500)', whiteSpace: 'nowrap' }}>
-                    {formatMessage(labels.sort)}:
-                  </span>
-                  {sorts.map(s => (
-                    <Button
-                      key={s.value}
-                      variant={sort === s.value ? 'primary' : 'quiet'}
-                      size="sm"
-                      onPress={() => handleSortChange(s.value)}
-                    >
-                      {s.label}
-                    </Button>
-                  ))}
+                  <Icon size="sm" style={{ color: 'var(--text-500)' }}>
+                    <ArrowUpDown />
+                  </Icon>
+                  <Select
+                    value={sort}
+                    onChange={(value: string) => handleSortChange(value as SortField)}
+                  >
+                    {sorts.map(s => (
+                      <ListItem key={s.value} id={s.value}>
+                        {s.label}
+                      </ListItem>
+                    ))}
+                  </Select>
                 </Row>
 
-                {/* Range selector */}
-                <Row gap="1" alignItems="center">
-                  {RANGES.map(r => (
-                    <Button
-                      key={r.value}
-                      variant={range === r.value ? 'primary' : 'quiet'}
-                      size="sm"
-                      onPress={() => handleRangeChange(r.value)}
-                    >
-                      {r.label}
-                    </Button>
-                  ))}
-                </Row>
+                <FilterButtons
+                  items={RANGES.map(r => ({ id: r.value, label: r.label }))}
+                  value={range}
+                  onChange={value => handleRangeChange(value as OverviewRange)}
+                />
               </>
             )}
 
-            {/* View toggle */}
             <Button
               variant={view === 'grid' ? 'primary' : 'quiet'}
               size="sm"
