@@ -256,6 +256,8 @@ export const labels: Record<string, string> = {
   month: 'label.month',
   date: 'label.date',
   pageOf: 'label.page-of',
+  period: 'label.period',
+  cumulative: 'label.cumulative',
   create: 'label.create',
   search: 'label.search',
   numberOfRecords: 'label.number-of-records',

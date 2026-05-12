@@ -1,4 +1,4 @@
-import { Column, Grid, Heading, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { Column, Grid, Heading, ListItem, Row, Select, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 import { DataGrid } from '@/components/common/DataGrid';
 import { GridRow } from '@/components/common/GridRow';
@@ -53,14 +53,27 @@ export interface RevenueProps {
   unit: string;
 }
 
+type RevenueChartMode = 'period' | 'cumulative';
+
 export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
   const [currency, setCurrency] = useState(
     getItem(CURRENCY_CONFIG) || process.env.defaultCurrency || DEFAULT_CURRENCY,
   );
+  const {
+    router,
+    query: { revenueChart },
+    updateParams,
+  } = useNavigation();
+  const revenueChartMode: RevenueChartMode =
+    revenueChart === 'cumulative' ? 'cumulative' : 'period';
 
   const handleCurrencyChange = (value: string) => {
     setCurrency(value);
     setItem(CURRENCY_CONFIG, value);
+  };
+
+  const handleRevenueChartModeChange = (value: RevenueChartMode) => {
+    router.push(updateParams({ revenueChart: value }));
   };
 
   const { t, labels } = useMessages();
@@ -122,7 +135,16 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
         formatValue: formatLongNumber,
       },
     ] as any;
-  }, [data]);
+  }, [
+    data,
+    currency,
+    t,
+    labels.total,
+    labels.aov,
+    labels.arpu,
+    labels.orders,
+    labels.uniqueCustomers,
+  ]);
 
   const renderLabel = (type: string) => (data: any) => <MetricLabel type={type} data={data} />;
 
@@ -150,8 +172,20 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
               })}
             </MetricsBar>
             <Panel>
+              <Row justifyContent="end">
+                <Select
+                  value={revenueChartMode}
+                  onChange={handleRevenueChartModeChange}
+                  popoverProps={{ placement: 'bottom right' }}
+                  style={{ width: 140 }}
+                >
+                  <ListItem id="period">{t(labels.period)}</ListItem>
+                  <ListItem id="cumulative">{t(labels.cumulative)}</ListItem>
+                </Select>
+              </Row>
               <RevenueChart
                 data={data.chart}
+                mode={revenueChartMode}
                 unit={unit}
                 minDate={startDate}
                 maxDate={endDate}
