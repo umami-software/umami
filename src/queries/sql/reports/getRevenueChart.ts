@@ -12,7 +12,7 @@ export interface RevenuParameters {
   compare?: string;
 }
 
-export async function getRevenue(
+export async function getRevenueChart(
   ...args: [websiteId: string, parameters: RevenuParameters, filters: QueryFilters]
 ) {
   return runQuery({
