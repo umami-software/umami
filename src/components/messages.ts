@@ -107,6 +107,7 @@ export const labels = defineMessages({
   cohorts: { id: 'label.cohorts', defaultMessage: 'Cohorts' },
   count: { id: 'label.count', defaultMessage: 'Count' },
   average: { id: 'label.average', defaultMessage: 'Average' },
+  sort: { id: 'label.sort', defaultMessage: 'Sort' },
   sum: { id: 'label.sum', defaultMessage: 'Sum' },
   event: { id: 'label.event', defaultMessage: 'Event' },
   events: { id: 'label.events', defaultMessage: 'Events' },

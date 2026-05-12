@@ -13,12 +13,16 @@ export interface WebsiteSummaryData {
   pageviews: { x: string; y: number }[];
 }
 
-const MS: Record<OverviewRange, number> = {
+export const RANGE_MS: Record<OverviewRange, number> = {
   '24h': 24 * 60 * 60 * 1000,
   '7d': 7 * 24 * 60 * 60 * 1000,
   '30d': 30 * 24 * 60 * 60 * 1000,
   '1y': 365 * 24 * 60 * 60 * 1000,
 };
+
+export function getRangeBucketMs(range: OverviewRange) {
+  return range === '24h' ? 60 * 60 * 1000 : 6 * 60 * 60 * 1000;
+}
 
 const UNIT: Record<OverviewRange, string> = {
   '24h': 'hour',
@@ -30,15 +34,14 @@ const UNIT: Record<OverviewRange, string> = {
 export function useWebsiteSummaryQuery(websiteId: string, range: OverviewRange = '24h') {
   const { get, useQuery } = useApi();
 
-  // Stable bucket: 1h for 24h range, 6h for longer ranges
-  const bucketMs = range === '24h' ? 60 * 60 * 1000 : 6 * 60 * 60 * 1000;
+  const bucketMs = getRangeBucketMs(range);
   const bucket = Math.floor(Date.now() / bucketMs);
 
   return useQuery<WebsiteSummaryData>({
     queryKey: ['websites:summary', { websiteId, range, bucket }],
     queryFn: async () => {
       const endAt = Date.now();
-      const startAt = endAt - MS[range];
+      const startAt = endAt - RANGE_MS[range];
       const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
       const [stats, pageviewsData] = await Promise.all([

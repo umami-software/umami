@@ -1,14 +1,52 @@
 'use client';
+import { useMemo } from 'react';
 import { useLoginQuery, useUserWebsitesQuery } from '@/components/hooks';
 import { type OverviewRange } from '@/components/hooks/queries/useWebsiteSummaryQuery';
+import { type SortField, useAllWebsiteStatsQuery } from '@/components/hooks/queries/useAllWebsiteStatsQuery';
 import { WebsiteSummaryCard } from './WebsiteSummaryCard';
 
-export function WebsitesOverview({ teamId, range = '24h' }: { teamId?: string; range?: OverviewRange }) {
+interface Website {
+  id: string;
+  name: string;
+  domain: string;
+}
+
+export function WebsitesOverview({
+  teamId,
+  range = '24h',
+  sort = 'name',
+}: {
+  teamId?: string;
+  range?: OverviewRange;
+  sort?: SortField;
+}) {
   const { user } = useLoginQuery();
   const queryResult = useUserWebsitesQuery({ userId: user?.id, teamId }, { pageSize: 100 });
-  const websites = (queryResult.data?.data ?? []) as { id: string; name: string; domain: string }[];
+  const websites = (queryResult.data?.data ?? []) as Website[];
 
-  if (queryResult.isLoading) {
+  const websiteIds = useMemo(() => websites.map(w => w.id), [websites]);
+  const needsStats = sort !== 'name';
+  const { data: allStats, isLoading: statsLoading } = useAllWebsiteStatsQuery(
+    websiteIds,
+    range,
+    needsStats && websiteIds.length > 0,
+  );
+
+  const sortedWebsites = useMemo(() => {
+    if (sort === 'name' || !allStats) {
+      return [...websites].sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    return [...websites].sort((a, b) => {
+      const aVal = allStats[a.id]?.[sort] ?? 0;
+      const bVal = allStats[b.id]?.[sort] ?? 0;
+      return bVal - aVal;
+    });
+  }, [websites, allStats, sort]);
+
+  const isLoading = queryResult.isLoading || (needsStats && statsLoading);
+
+  if (isLoading) {
     return (
       <div
         style={{
@@ -51,7 +89,7 @@ export function WebsitesOverview({ teamId, range = '24h' }: { teamId?: string; r
         gap: '16px',
       }}
     >
-      {websites.map(website => (
+      {sortedWebsites.map(website => (
         <WebsiteSummaryCard key={website.id} website={website} range={range} />
       ))}
     </div>
