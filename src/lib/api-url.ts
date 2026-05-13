@@ -3,6 +3,11 @@ type ApiUrlOptions = {
   basePath?: string;
 };
 
+const APP_ROUTE_PATTERNS: RegExp[] = [
+  /^\/auth(\/|$)/,
+  /^\/config(\/|$)/,
+];
+
 function trimTrailingSlash(value: string) {
   return value.replace(/\/+$/, '');
 }
@@ -23,13 +28,19 @@ function isAbsoluteUrl(url: string) {
   return /^https?:\/\//i.test(url);
 }
 
+function isAppRoute(url: string) {
+  const path = `/${trimLeadingSlash(url.split('?')[0])}`;
+  return APP_ROUTE_PATTERNS.some(re => re.test(path));
+}
+
 export function getApiUrl(url: string, options: ApiUrlOptions = {}) {
   if (isAbsoluteUrl(url)) {
     return url;
   }
 
   const { apiUrl = process.env.apiUrl || '', basePath = process.env.basePath || '' } = options;
-  const baseUrl = apiUrl
+  const useApiUrl = apiUrl && !isAppRoute(url);
+  const baseUrl = useApiUrl
     ? isAbsoluteUrl(apiUrl)
       ? apiUrl
       : joinPath(basePath, apiUrl)
