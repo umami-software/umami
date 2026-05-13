@@ -46,6 +46,10 @@ Create an `.env` file with the following:
 DATABASE_URL=connection-url
 ```
 
+Optional: set `API_URL` to change the base URL used by internal UI API calls.
+Relative paths are served under `BASE_PATH`; absolute URLs are called directly by the browser.
+For example, `API_URL=/internal-api` or `API_URL=https://api.example.com/api`.
+
 The connection URL format:
 
 ```bash
