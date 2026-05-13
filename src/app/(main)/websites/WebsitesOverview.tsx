@@ -1,8 +1,11 @@
 'use client';
 import { useMemo } from 'react';
 import { useLoginQuery, useUserWebsitesQuery } from '@/components/hooks';
-import { type OverviewRange } from '@/components/hooks/queries/useWebsiteSummaryQuery';
-import { type SortField, useAllWebsiteStatsQuery } from '@/components/hooks/queries/useAllWebsiteStatsQuery';
+import {
+  type SortField,
+  useAllWebsiteStatsQuery,
+} from '@/components/hooks/queries/useAllWebsiteStatsQuery';
+import type { OverviewRange } from '@/components/hooks/queries/useWebsiteSummaryQuery';
 import { WebsiteSummaryCard } from './WebsiteSummaryCard';
 
 interface Website {
@@ -26,11 +29,14 @@ export function WebsitesOverview({
 
   const websiteIds = useMemo(() => websites.map(w => w.id), [websites]);
   const needsStats = sort !== 'name';
-  const { data: allStats, isLoading: statsLoading } = useAllWebsiteStatsQuery(
+  const { data: statsResult, isLoading: statsLoading } = useAllWebsiteStatsQuery(
     websiteIds,
     range,
     needsStats && websiteIds.length > 0,
   );
+
+  const allStats = statsResult?.stats;
+  const failedIds = statsResult?.failedIds ?? [];
 
   const sortedWebsites = useMemo(() => {
     if (sort === 'name' || !allStats) {
@@ -82,16 +88,30 @@ export function WebsitesOverview({
   }
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-        gap: '16px',
-      }}
-    >
-      {sortedWebsites.map(website => (
-        <WebsiteSummaryCard key={website.id} website={website} range={range} />
-      ))}
-    </div>
+    <>
+      {needsStats && failedIds.length > 0 && (
+        <div
+          style={{
+            fontSize: '12px',
+            color: 'var(--text-500)',
+            marginBottom: '8px',
+          }}
+        >
+          Stats unavailable for {failedIds.length} site{failedIds.length !== 1 ? 's' : ''} — they
+          appear at the bottom.
+        </div>
+      )}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+          gap: '16px',
+        }}
+      >
+        {sortedWebsites.map(website => (
+          <WebsiteSummaryCard key={website.id} website={website} range={range} />
+        ))}
+      </div>
+    </>
   );
 }

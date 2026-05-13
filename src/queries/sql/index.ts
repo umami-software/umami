@@ -13,6 +13,7 @@ export * from './events/saveEvent';
 export * from './getActiveVisitors';
 export * from './getChannelExpandedMetrics';
 export * from './getChannelMetrics';
+export * from './getMultipleWebsiteStats';
 export * from './getRealtimeActivity';
 export * from './getRealtimeData';
 export * from './getValues';

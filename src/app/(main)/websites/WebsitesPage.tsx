@@ -1,14 +1,14 @@
 'use client';
 import { Button, Column, Icon, ListItem, Row, Select } from '@umami/react-zen';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { type OverviewRange } from '@/components/hooks/queries/useWebsiteSummaryQuery';
-import { type SortField } from '@/components/hooks/queries/useAllWebsiteStatsQuery';
-import { FilterButtons } from '@/components/input/FilterButtons';
+import type { SortField } from '@/components/hooks/queries/useAllWebsiteStatsQuery';
+import type { OverviewRange } from '@/components/hooks/queries/useWebsiteSummaryQuery';
 import { ArrowUpDown, LayoutGrid, List } from '@/components/icons';
+import { FilterButtons } from '@/components/input/FilterButtons';
 import { getItem, setItem } from '@/lib/storage';
 import { WebsiteAddButton } from './WebsiteAddButton';
 import { WebsitesDataTable } from './WebsitesDataTable';
@@ -29,11 +29,14 @@ export function WebsitesPage() {
   const { teamId } = useNavigation();
   const { formatMessage, labels } = useMessages();
 
-  const sorts: { value: SortField; label: string }[] = [
-    { value: 'name', label: formatMessage(labels.name) },
-    { value: 'visitors', label: formatMessage(labels.visitors) },
-    { value: 'pageviews', label: formatMessage(labels.views) },
-  ];
+  const sorts = useMemo<{ value: SortField; label: string }[]>(
+    () => [
+      { value: 'name', label: formatMessage(labels.name) },
+      { value: 'visitors', label: formatMessage(labels.visitors) },
+      { value: 'pageviews', label: formatMessage(labels.views) },
+    ],
+    [formatMessage, labels],
+  );
   const [view, setView] = useState<'grid' | 'list'>(() => getItem(VIEW_KEY) ?? 'grid');
   const [range, setRange] = useState<OverviewRange>(() => getItem(RANGE_KEY) ?? '24h');
   const [sort, setSort] = useState<SortField>(() => getItem(SORT_KEY) ?? 'name');
@@ -65,6 +68,7 @@ export function WebsitesPage() {
                     <ArrowUpDown />
                   </Icon>
                   <Select
+                    aria-label={formatMessage(labels.sort)}
                     value={sort}
                     onChange={(value: string) => handleSortChange(value as SortField)}
                   >
