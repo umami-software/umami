@@ -40,8 +40,6 @@ function normalizePath(url: string) {
 }
 
 const apiUrlOrigin = getUrlOrigin(apiUrl);
-const isAbsoluteApiUrl = Boolean(apiUrlOrigin);
-const allowOrigin = isAbsoluteApiUrl && cloudUrl ? cloudUrl : '*';
 const connectSrc = ["'self'", 'https:', apiUrlOrigin].filter(Boolean).join(' ');
 
 const contentSecurityPolicy = `
@@ -86,14 +84,8 @@ const trackerHeaders = [
 const apiHeaders = [
   {
     key: 'Access-Control-Allow-Origin',
-    value: allowOrigin,
+    value: '*',
   },
-  ...(allowOrigin !== '*'
-    ? [
-        { key: 'Access-Control-Allow-Credentials', value: 'true' },
-        { key: 'Vary', value: 'Origin' },
-      ]
-    : []),
   {
     key: 'Access-Control-Allow-Headers',
     value: '*',
