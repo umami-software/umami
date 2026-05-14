@@ -4,7 +4,8 @@ import Script from 'next/script';
 import { useEffect } from 'react';
 import { MobileNav } from '@/app/(main)/MobileNav';
 import { SideNav } from '@/app/(main)/SideNav';
-import { useConfig, useLoginQuery, useNavigation } from '@/components/hooks';
+import { TopNav } from '@/app/(main)/TopNav';
+import { useConfig, useLoginQuery, useNavigation, useTeamQuery } from '@/components/hooks';
 import { LAST_TEAM_CONFIG } from '@/lib/constants';
 import { removeItem, setItem } from '@/lib/storage';
 import { UpdateNotice } from './UpdateNotice';
@@ -12,7 +13,8 @@ import { UpdateNotice } from './UpdateNotice';
 export function App({ children }) {
   const { user, isLoading, error } = useLoginQuery();
   const config = useConfig();
-  const { pathname, teamId } = useNavigation();
+  const { pathname, router, teamId } = useNavigation();
+  const { isLoading: isTeamLoading, error: teamError } = useTeamQuery(teamId);
 
   useEffect(() => {
     if (teamId) {
@@ -22,7 +24,14 @@ export function App({ children }) {
     }
   }, [teamId]);
 
-  if (isLoading || !config) {
+  useEffect(() => {
+    if (teamId && teamError) {
+      removeItem(LAST_TEAM_CONFIG);
+      router.replace('/');
+    }
+  }, [teamId, teamError, router]);
+
+  if (isLoading || !config || (teamId && isTeamLoading)) {
     return <Loading placement="absolute" />;
   }
 
@@ -37,25 +46,46 @@ export function App({ children }) {
     return null;
   }
 
+  if (teamId && teamError) {
+    return null;
+  }
+
   return (
     <Grid
-      columns={{ xs: '1fr', lg: 'auto 1fr' }}
-      rows={{ xs: 'auto 1fr', lg: '1fr' }}
-      height={{ xs: 'auto', lg: '100vh' }}
-      width="100%"
+      columns={{ base: '1fr', lg: 'auto 1fr' }}
+      rows={{ base: 'auto 1fr', lg: '1fr' }}
+      height="screen"
     >
-      <Row display={{ xs: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
+      <Row display={{ base: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
         <MobileNav />
       </Row>
-      <Column display={{ xs: 'none', lg: 'flex' }}>
+      <Column display={{ base: 'none', lg: 'flex' }} minHeight="0" style={{ overflow: 'hidden' }}>
         <SideNav />
       </Column>
-      <Column alignItems="center" overflowY="auto" overflowX="hidden" position="relative">
-        {children}
+      <Column overflowX="hidden" minHeight="0" position="relative">
+        <TopNav />
+        <Column alignItems="center">{children}</Column>
       </Column>
       <UpdateNotice user={user} config={config} />
       {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (
         <Script src={`${process.env.basePath || ''}/telemetry.js`} />
+      )}
+      {process.env.selfTrack && (
+        <Script
+          async
+          data-website-id={process.env.selfTrack}
+          src={`${process.env.basePath || ''}/script.js`}
+          data-cache="true"
+          data-performance="true"
+        />
+      )}
+      {process.env.selfRecord && (
+        <Script
+          async
+          data-website-id={process.env.selfRecord}
+          data-sample-rate="1"
+          src={`${process.env.basePath || ''}/recorder.js`}
+        />
       )}
     </Grid>
   );

@@ -1,10 +1,10 @@
-import { weightedRandom, type WeightedOption } from '../utils.js';
 import type {
-  SiteConfig,
+  CustomEventConfig,
   JourneyConfig,
   PageConfig,
-  CustomEventConfig,
+  SiteConfig,
 } from '../generators/events.js';
+import { type WeightedOption, weightedRandom } from '../utils.js';
 
 export const BLOG_WEBSITE_NAME = 'Demo Blog';
 export const BLOG_WEBSITE_DOMAIN = 'blog.example.com';

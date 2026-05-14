@@ -47,6 +47,7 @@ async function relationalQuery(
       ${filterQuery}
     group by 1
     order by 2 desc
+    limit 50
     `,
     queryParams,
   );
@@ -78,6 +79,7 @@ async function clickhouseQuery(
       ${filterQuery}
     group by 1
     order by 2 desc
+    limit 50
     `,
     queryParams,
   );

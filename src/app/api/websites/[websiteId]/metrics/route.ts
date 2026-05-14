@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { EVENT_COLUMNS, EVENT_TYPE, SESSION_COLUMNS } from '@/lib/constants';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
-import { dateRangeParams, filterParams, searchParams } from '@/lib/schema';
+import { filterParams, searchParams, withDateRange } from '@/lib/schema';
 import { canViewWebsite } from '@/permissions';
 import {
   getChannelMetrics,
@@ -15,11 +15,10 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
-  const schema = z.object({
+  const schema = withDateRange({
     type: z.string(),
     limit: z.coerce.number().optional(),
     offset: z.coerce.number().optional(),
-    ...dateRangeParams,
     ...searchParams,
     ...filterParams,
   });

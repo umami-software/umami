@@ -34,6 +34,12 @@ CREATE TABLE umami.website_event
     ttclid String,
     li_fat_id String,
     twclid String,
+    --performance
+    lcp Nullable(Decimal(10, 1)),
+    inp Nullable(Decimal(10, 1)),
+    cls Nullable(Decimal(10, 4)),
+    fcp Nullable(Decimal(10, 1)),
+    ttfb Nullable(Decimal(10, 1)),
     --events
     event_type UInt32,
     event_name String,
@@ -209,7 +215,7 @@ FROM (SELECT
     arrayFilter(x -> x != '', groupArray(twclid)) twclid,
     event_type,
     if(event_type = 2, groupArray(event_name), []) event_name,
-    sumIf(1, event_type != 2) views,
+    sumIf(1, event_type NOT IN (2, 5)) views,
     min(created_at) min_time,
     max(created_at) max_time,
     arrayFilter(x -> x != '', groupArray(tag)) tag,
@@ -281,3 +287,22 @@ JOIN (SELECT event_id, string_value as currency
         WHERE positionCaseInsensitive(data_key, 'currency') > 0) c
       ON c.event_id = ed.event_id
 WHERE positionCaseInsensitive(data_key, 'revenue') > 0;
+
+-- Create session_replay
+CREATE TABLE umami.session_replay
+(
+    replay_id UUID,
+    website_id UUID,
+    session_id UUID,
+    visit_id UUID,
+    chunk_index UInt32,
+    events String CODEC(ZSTD(3)),
+    event_count UInt32,
+    started_at DateTime64(6),
+    ended_at DateTime64(6),
+    created_at DateTime64(6) DEFAULT now64(6)
+)
+ENGINE = MergeTree()
+PARTITION BY toYYYYMM(created_at)
+ORDER BY (replay_id, website_id, session_id, visit_id, chunk_index)
+SETTINGS index_granularity = 8192;

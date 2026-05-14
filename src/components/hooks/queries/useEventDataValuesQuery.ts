@@ -16,7 +16,7 @@ export function useEventDataValuesQuery(
   return useQuery<any>({
     queryKey: [
       'websites:event-data:values',
-      { websiteId, event, propertyName, startAt, endAt, unit, timezone, ...filters },
+      { websiteId, startAt, endAt, unit, timezone, ...filters, event, propertyName },
     ],
     queryFn: () =>
       get(`/websites/${websiteId}/event-data/values`, {

@@ -1,10 +1,14 @@
 import type { Auth } from '@/lib/types';
 
 export async function canCreateUser({ user }: Auth) {
-  return user.isAdmin;
+  return user?.isAdmin ?? false;
 }
 
 export async function canViewUser({ user }: Auth, viewedUserId: string) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }
@@ -13,10 +17,14 @@ export async function canViewUser({ user }: Auth, viewedUserId: string) {
 }
 
 export async function canViewUsers({ user }: Auth) {
-  return user.isAdmin;
+  return user?.isAdmin ?? false;
 }
 
 export async function canUpdateUser({ user }: Auth, viewedUserId: string) {
+  if (!user) {
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }
@@ -25,5 +33,5 @@ export async function canUpdateUser({ user }: Auth, viewedUserId: string) {
 }
 
 export async function canDeleteUser({ user }: Auth) {
-  return user.isAdmin;
+  return user?.isAdmin ?? false;
 }

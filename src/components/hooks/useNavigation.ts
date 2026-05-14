@@ -1,5 +1,5 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { buildPath } from '@/lib/url';
 
 export function useNavigation() {
@@ -8,22 +8,34 @@ export function useNavigation() {
   const searchParams = useSearchParams();
   const [, teamId] = pathname.match(/\/teams\/([a-f0-9-]+)/) || [];
   const [, websiteId] = pathname.match(/\/websites\/([a-f0-9-]+)/) || [];
+  const [, linkId] = pathname.match(/\/links\/([a-f0-9-]+)/) || [];
+  const [, pixelId] = pathname.match(/\/pixels\/([a-f0-9-]+)/) || [];
+  const [, boardId] = pathname.match(/\/boards\/([a-f0-9-]+)/) || [];
   const [queryParams, setQueryParams] = useState(Object.fromEntries(searchParams));
 
-  const updateParams = (params?: Record<string, string | number>) => {
-    return buildPath(pathname, { ...queryParams, ...params });
-  };
+  const updateParams = useCallback(
+    (params?: Record<string, string | number>) => {
+      return buildPath(pathname, { ...queryParams, ...params });
+    },
+    [pathname, queryParams],
+  );
 
-  const replaceParams = (params?: Record<string, string | number>) => {
-    return buildPath(pathname, params);
-  };
+  const replaceParams = useCallback(
+    (params?: Record<string, string | number>) => {
+      return buildPath(pathname, params);
+    },
+    [pathname],
+  );
 
-  const renderUrl = (path: string, params?: Record<string, string | number> | false) => {
-    return buildPath(
-      teamId ? `/teams/${teamId}${path}` : path,
-      params === false ? {} : { ...queryParams, ...params },
-    );
-  };
+  const renderUrl = useCallback(
+    (path: string, params?: Record<string, string | number> | false) => {
+      return buildPath(
+        teamId ? `/teams/${teamId}${path}` : path,
+        params === false ? {} : { ...queryParams, ...params },
+      );
+    },
+    [teamId, queryParams],
+  );
 
   useEffect(() => {
     setQueryParams(Object.fromEntries(searchParams));
@@ -36,6 +48,9 @@ export function useNavigation() {
     query: queryParams,
     teamId,
     websiteId,
+    linkId,
+    pixelId,
+    boardId,
     updateParams,
     replaceParams,
     renderUrl,

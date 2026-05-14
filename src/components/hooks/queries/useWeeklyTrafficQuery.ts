@@ -12,13 +12,12 @@ export function useWeeklyTrafficQuery(websiteId: string, params?: Record<string,
   return useQuery({
     queryKey: [
       'sessions',
-      { websiteId, modified, startAt, endAt, unit, timezone, ...params, ...filters },
+      { websiteId, modified, startAt, endAt, timezone, ...params, ...filters },
     ],
     queryFn: () => {
       return get(`/websites/${websiteId}/sessions/weekly`, {
         startAt,
         endAt,
-        unit,
         timezone,
         ...params,
         ...filters,

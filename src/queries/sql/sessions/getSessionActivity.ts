@@ -29,6 +29,7 @@ async function relationalQuery(websiteId: string, sessionId: string, filters: Qu
       event_type as "eventType",
       event_name as "eventName",
       visit_id as "visitId",
+      hostname,
       event_id IN (select website_event_id 
                    from event_data
                    where website_id = {{websiteId::uuid}}
@@ -60,6 +61,7 @@ async function clickhouseQuery(websiteId: string, sessionId: string, filters: Qu
       event_type as eventType,
       event_name as eventName,
       visit_id as visitId,
+      hostname,
       event_id IN (select event_id 
                    from event_data 
                    where website_id = {websiteId:UUID} 

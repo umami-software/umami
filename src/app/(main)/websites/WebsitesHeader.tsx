@@ -7,11 +7,11 @@ export interface WebsitesHeaderProps {
 }
 
 export function WebsitesHeader({ allowCreate = true }: WebsitesHeaderProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { teamId } = useNavigation();
 
   return (
-    <PageHeader title={formatMessage(labels.websites)}>
+    <PageHeader title={t(labels.websites)}>
       {allowCreate && <WebsiteAddButton teamId={teamId} />}
     </PageHeader>
   );

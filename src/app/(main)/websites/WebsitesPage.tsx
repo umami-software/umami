@@ -4,11 +4,12 @@ import { useMemo, useState } from 'react';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
-import { useMessages, useNavigation } from '@/components/hooks';
+import { useLoginQuery, useMessages, useNavigation, useTeamMembersQuery } from '@/components/hooks';
 import type { SortField } from '@/components/hooks/queries/useAllWebsiteStatsQuery';
 import type { OverviewRange } from '@/components/hooks/queries/useWebsiteSummaryQuery';
 import { ArrowUpDown, LayoutGrid, List } from '@/components/icons';
 import { FilterButtons } from '@/components/input/FilterButtons';
+import { ROLES } from '@/lib/constants';
 import { getItem, setItem } from '@/lib/storage';
 import { WebsiteAddButton } from './WebsiteAddButton';
 import { WebsitesDataTable } from './WebsitesDataTable';
@@ -26,16 +27,24 @@ const RANGES: { value: OverviewRange; label: string }[] = [
 ];
 
 export function WebsitesPage() {
+  const { user } = useLoginQuery();
   const { teamId } = useNavigation();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
+  const { data } = useTeamMembersQuery(teamId);
+
+  const showActions =
+    (teamId &&
+      data?.data.filter(team => team.userId === user.id && team.role !== ROLES.teamViewOnly)
+        .length > 0) ||
+    (!teamId && user.role !== ROLES.viewOnly);
 
   const sorts = useMemo<{ value: SortField; label: string }[]>(
     () => [
-      { value: 'name', label: formatMessage(labels.name) },
-      { value: 'visitors', label: formatMessage(labels.visitors) },
-      { value: 'pageviews', label: formatMessage(labels.views) },
+      { value: 'name', label: t(labels.name) },
+      { value: 'visitors', label: t(labels.visitors) },
+      { value: 'pageviews', label: t(labels.views) },
     ],
-    [formatMessage, labels],
+    [t, labels],
   );
   const [view, setView] = useState<'grid' | 'list'>(() => getItem(VIEW_KEY) ?? 'grid');
   const [range, setRange] = useState<OverviewRange>(() => getItem(RANGE_KEY) ?? '24h');
@@ -59,7 +68,7 @@ export function WebsitesPage() {
   return (
     <PageBody>
       <Column gap="6" margin="2">
-        <PageHeader title={formatMessage(labels.websites)}>
+        <PageHeader title={t(labels.websites)}>
           <Row gap="2" alignItems="center">
             {view === 'grid' && (
               <>
@@ -68,7 +77,7 @@ export function WebsitesPage() {
                     <ArrowUpDown />
                   </Icon>
                   <Select
-                    aria-label={formatMessage(labels.sort)}
+                    aria-label={t(labels.sort)}
                     value={sort}
                     onChange={(value: string) => handleSortChange(value as SortField)}
                   >
@@ -109,7 +118,7 @@ export function WebsitesPage() {
               </Icon>
             </Button>
 
-            <WebsiteAddButton teamId={teamId} />
+            {showActions && <WebsiteAddButton teamId={teamId} />}
           </Row>
         </PageHeader>
 
@@ -117,7 +126,7 @@ export function WebsitesPage() {
           <WebsitesOverview teamId={teamId} range={range} sort={sort} />
         ) : (
           <Panel>
-            <WebsitesDataTable teamId={teamId} />
+            <WebsitesDataTable teamId={teamId} showActions={showActions} />
           </Panel>
         )}
       </Column>

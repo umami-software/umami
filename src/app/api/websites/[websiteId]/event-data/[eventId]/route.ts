@@ -1,7 +1,7 @@
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { canViewWebsite } from '@/permissions';
-import { getEventData } from '@/queries/sql/events/getEventData';
+import { getEventDataById } from '@/queries/sql/events/getEventDataById';
 
 export async function GET(
   request: Request,
@@ -19,7 +19,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const data = await getEventData(websiteId, eventId);
+  const data = await getEventDataById(websiteId, eventId);
 
   return json(data);
 }
