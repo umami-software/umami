@@ -13,6 +13,9 @@ CREATE TABLE "heatmap_event" (
     "viewport_h" INTEGER,
     "page_h" INTEGER,
     "scroll_pct" INTEGER,
+    "replay_chunk_index" INTEGER,
+    "replay_event_index" INTEGER,
+    "replay_time_ms" BIGINT,
     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "heatmap_event_pkey" PRIMARY KEY ("heatmap_event_id")
@@ -23,3 +26,4 @@ CREATE INDEX "heatmap_event_website_id_idx" ON "heatmap_event"("website_id");
 CREATE INDEX "heatmap_event_visit_id_idx" ON "heatmap_event"("visit_id");
 CREATE INDEX "heatmap_event_website_id_created_at_idx" ON "heatmap_event"("website_id", "created_at");
 CREATE INDEX "heatmap_event_website_id_url_path_event_type_created_at_idx" ON "heatmap_event"("website_id", "url_path", "event_type", "created_at");
+CREATE INDEX "heatmap_event_website_id_visit_id_replay_chunk_index_replay_event_index_idx" ON "heatmap_event"("website_id", "visit_id", "replay_chunk_index", "replay_event_index");

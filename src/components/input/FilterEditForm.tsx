@@ -28,7 +28,10 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
   const [currentMatch, setCurrentMatch] = useState<string>(match || 'all');
   const { isMobile } = useMobile();
   const isPixelLink = !websiteId || pathname.includes('/pixels') || pathname.includes('/links');
-  const excludeEvent = !pathname.endsWith('/events') && !pathname.endsWith('/replays');
+  const excludeEvent =
+    !pathname.endsWith('/events') &&
+    !pathname.endsWith('/replays') &&
+    !pathname.endsWith('/heatmaps');
   const isPerformance = pathname.includes('/performance');
 
   const excludedFields = isPixelLink

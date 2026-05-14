@@ -1,8 +1,8 @@
 'use client';
-import { Column, Grid, Heading, Loading, Row, Text } from '@umami/react-zen';
+import { Column, Grid, Heading, Loading, Row, Switch, Text } from '@umami/react-zen';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useResultQuery } from '@/components/hooks';
+import { useMessages, useResultQuery } from '@/components/hooks';
 import { useReplayQuery } from '@/components/hooks/queries/useReplayQuery';
 import { formatLongNumber } from '@/lib/format';
 import type { HeatmapMode, HeatmapPoint, HeatmapResult, HeatmapSnapshot } from '@/queries/sql';
@@ -17,6 +17,7 @@ function useElementWidth<T extends HTMLElement>() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    setWidth(el.getBoundingClientRect().width || el.clientWidth || 0);
     const ro = new ResizeObserver(entries => {
       const w = entries[0]?.contentRect.width ?? 0;
       setWidth(w);
@@ -31,6 +32,15 @@ interface ReplayData {
   events: any[];
 }
 
+interface ReplayInstance {
+  iframe?: HTMLIFrameElement;
+  wrapper?: HTMLDivElement;
+  on: (event: string, handler: (...args: any[]) => void) => void;
+  pause: (timeOffset?: number) => void;
+  disableInteract: () => void;
+  destroy: () => void;
+}
+
 interface ViewportBucket {
   width: number;
   height: number;
@@ -42,38 +52,97 @@ interface HeatmapProps {
   urlPath: string;
   onUrlPathChange: (urlPath: string) => void;
   mode: HeatmapMode;
-  onModeChange: (mode: HeatmapMode) => void;
+  search: string;
 }
 
-export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, onModeChange }: HeatmapProps) {
-  const { data, error, isLoading } = useResultQuery<HeatmapResult>('heatmap', {
+export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: HeatmapProps) {
+  const {
+    data: pagesData,
+    error,
+    isLoading,
+  } = useResultQuery<HeatmapResult>('heatmap', {
     websiteId,
-    urlPath: urlPath || undefined,
     mode,
   });
 
-  const pages = data?.pages ?? [];
-  const points = data?.points ?? [];
-  const scroll = data?.scroll;
+  const {
+    data: detailData,
+    isLoading: isDetailLoading,
+    isFetching: isDetailFetching,
+  } = useResultQuery<HeatmapResult>(
+    'heatmap',
+    {
+      websiteId,
+      urlPath: urlPath || undefined,
+      mode,
+    },
+    {
+      enabled: Boolean(urlPath),
+    },
+  );
+
+  const pages = pagesData?.pages ?? [];
+  const filteredPages = useMemo(() => {
+    if (!search) {
+      return pages;
+    }
+
+    const value = search.toLowerCase();
+
+    return pages.filter(page => page.urlPath.toLowerCase().includes(value));
+  }, [pages, search]);
+  const points = detailData?.points ?? [];
+  const scroll = detailData?.scroll;
+  const snapshot = detailData?.snapshot ?? null;
+  const detailLoading = Boolean(urlPath) && (isDetailLoading || isDetailFetching);
+
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    if (filteredPages.length === 0) {
+      if (urlPath) {
+        onUrlPathChange('');
+      }
+      return;
+    }
+
+    if (!urlPath || filteredPages.some(page => page.urlPath === urlPath)) {
+      return;
+    }
+
+    onUrlPathChange(filteredPages[0].urlPath);
+  }, [filteredPages, isLoading, onUrlPathChange, urlPath]);
 
   return (
-    <LoadingPanel data={data} isLoading={isLoading} error={error} minHeight="900px">
-      <Grid columns="320px 1fr" gap minHeight="900px">
-        <PageList pages={pages} selected={urlPath} onSelect={onUrlPathChange} mode={mode} />
-        <Column gap>
-          <ModeToggle mode={mode} onChange={onModeChange} />
+    <LoadingPanel data={pagesData} isLoading={isLoading} error={error} minHeight="900px">
+      <Grid columns="320px 12px 1fr" minHeight="900px" className={styles.layoutGrid}>
+        <PageList
+          pages={filteredPages}
+          selected={urlPath}
+          onSelect={onUrlPathChange}
+          mode={mode}
+          hasSearch={Boolean(search)}
+        />
+        <div className={styles.railDivider} aria-hidden="true" />
+        <Column className={styles.contentColumn} gap>
           {urlPath ? (
             mode === 'scroll' ? (
               <ScrollHeatmapView
                 websiteId={websiteId}
+                urlPath={urlPath}
                 scroll={scroll}
-                snapshot={data?.snapshot ?? null}
+                snapshot={snapshot}
+                isLoading={detailLoading}
               />
             ) : (
               <HeatmapView
+                urlPath={urlPath}
                 websiteId={websiteId}
                 points={points}
-                snapshot={data?.snapshot ?? null}
+                snapshot={snapshot}
+                isLoading={detailLoading}
               />
             )
           ) : (
@@ -85,61 +154,43 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, onModeChang
   );
 }
 
-function ModeToggle({
-  mode,
-  onChange,
-}: {
-  mode: HeatmapMode;
-  onChange: (mode: HeatmapMode) => void;
-}) {
-  return (
-    <Row gap="2">
-      <button
-        type="button"
-        onClick={() => onChange('click')}
-        className={`${styles.toggleButton} ${mode === 'click' ? styles.toggleButtonSelected : ''}`}
-      >
-        Clicks
-      </button>
-      <button
-        type="button"
-        onClick={() => onChange('scroll')}
-        className={`${styles.toggleButton} ${mode === 'scroll' ? styles.toggleButtonSelected : ''}`}
-      >
-        Scroll
-      </button>
-    </Row>
-  );
-}
-
 function PageList({
   pages,
   selected,
   onSelect,
   mode,
+  hasSearch,
 }: {
   pages: HeatmapResult['pages'];
   selected: string;
   onSelect: (urlPath: string) => void;
   mode: HeatmapMode;
+  hasSearch: boolean;
 }) {
+  const { t, messages } = useMessages();
+
   return (
-    <Column className={styles.pageList} gap="2">
+    <Column className={styles.pageList} gap="1">
       <Heading size="lg">Pages</Heading>
-      {pages.length === 0 && <Text color="muted">No data yet</Text>}
-      {pages.map(p => (
-        <button
-          key={p.urlPath}
-          type="button"
-          onClick={() => onSelect(p.urlPath)}
-          className={`${styles.pageButton} ${selected === p.urlPath ? styles.pageButtonSelected : ''}`}
-        >
-          <Row alignItems="center" justifyContent="space-between" gap="2">
-            <Text truncate>{p.urlPath}</Text>
-            <Text color="muted">{formatLongNumber(mode === 'scroll' ? p.sessions : p.count)}</Text>
-          </Row>
-        </button>
-      ))}
+      <Column className={styles.pageListItems} gap="2">
+        {pages.length === 0 && (
+          <Text color="muted">{hasSearch ? 'No matching pages' : t(messages.noDataAvailable)}</Text>
+        )}
+        {pages.map(p => (
+          <button
+            key={p.urlPath}
+            type="button"
+            onClick={() => onSelect(p.urlPath)}
+            title={p.urlPath}
+            className={`${styles.pageButton} ${selected === p.urlPath ? styles.pageButtonSelected : ''}`}
+          >
+            <Row alignItems="center" justifyContent="space-between" gap="2">
+              <Text truncate>{p.urlPath}</Text>
+              <Text color="muted">{formatLongNumber(mode === 'scroll' ? p.sessions : p.count)}</Text>
+            </Row>
+          </button>
+        ))}
+      </Column>
     </Column>
   );
 }
@@ -164,13 +215,17 @@ function pickViewport(points: HeatmapPoint[]): ViewportBucket | null {
 }
 
 function HeatmapView({
+  urlPath,
   websiteId,
   points,
   snapshot,
+  isLoading,
 }: {
+  urlPath: string;
   websiteId: string;
   points: HeatmapPoint[];
   snapshot: HeatmapSnapshot | null;
+  isLoading: boolean;
 }) {
   const [showPage, setShowPage] = useState(true);
   const [snapshotReady, setSnapshotReady] = useState(false);
@@ -194,51 +249,55 @@ function HeatmapView({
     setSnapshotReady(!(showPage && snapshot));
   }, [containerWidth, showPage, snapshot]);
 
+  if (isLoading) {
+    return <CanvasLoading />;
+  }
+
   if (!viewport || visible.length === 0) {
     return <EmptyState />;
   }
 
-  const renderWidth = containerWidth > 0 ? Math.min(containerWidth, MAX_RENDER_WIDTH) : 0;
-  const scale = renderWidth ? renderWidth / viewport.width : 0;
+  const renderWidth = Math.min(containerWidth > 0 ? containerWidth : viewport.width, MAX_RENDER_WIDTH);
+  const scale = renderWidth / viewport.width;
   const renderHeight = Math.round(viewport.height * scale);
   const showSnapshot = renderWidth > 0 && showPage && !!snapshot;
   const showOverlay = !showSnapshot || snapshotReady;
 
   return (
     <Column gap>
-      <Row alignItems="center" justifyContent="space-between" gap>
-        <Text color="muted">
+      <Column gap="2" className={styles.summaryHeader}>
+        <Row alignItems="center" justifyContent="space-between" gap>
+          <Text color="muted" title={urlPath} className={styles.summaryPath}>
+            {urlPath}
+          </Text>
+        </Row>
+        <Row alignItems="center" justifyContent="space-between" gap className={styles.summaryStats}>
+          <Text color="muted" className={styles.summaryStat}>
           {visible.length} positions · {formatLongNumber(visible.reduce((s, p) => s + p.count, 0))}{' '}
           clicks · viewport {viewport.width}×{viewport.height}
-        </Text>
-        {snapshot && (
-          <button
-            type="button"
-            className={styles.toggleButton}
-            onClick={() => setShowPage(v => !v)}
-          >
-            {showPage ? 'Hide page' : 'Show page'}
-          </button>
-        )}
-      </Row>
+          </Text>
+        </Row>
+      </Column>
       <div ref={containerRef} className={styles.canvasWrapper}>
         <div
           className={styles.canvas}
           style={{ width: renderWidth || '100%', height: renderHeight || 0 }}
         >
-          {showSnapshot && !snapshotReady && <CanvasLoading />}
-          {showSnapshot && (
-            <ReplaySnapshot
-              websiteId={websiteId}
-              snapshot={snapshot}
-              width={viewport.width}
-              height={viewport.height}
-              scale={scale}
-              onReady={handleSnapshotReady}
-            />
-          )}
+          <div className={styles.canvasClip}>
+            {showSnapshot && !snapshotReady && <CanvasLoading />}
+            {showSnapshot && (
+              <ReplaySnapshot
+                websiteId={websiteId}
+                snapshot={snapshot}
+                width={viewport.width}
+                height={viewport.height}
+                scale={scale}
+                onReady={handleSnapshotReady}
+              />
+            )}
+          </div>
           {showOverlay && (
-            <div className={styles.overlay}>
+            <div className={`${styles.overlay} ${styles.heatOverlay}`}>
               {visible.map((p, i) => {
                 const intensity = Math.min(1, p.count / maxCount);
                 const size = 24 + intensity * 36;
@@ -261,18 +320,29 @@ function HeatmapView({
           )}
         </div>
       </div>
+      {snapshot && (
+        <Row justifyContent="center" className={styles.snapshotControlRow}>
+          <Switch isSelected={showPage} onChange={setShowPage}>
+            Show page
+          </Switch>
+        </Row>
+      )}
     </Column>
   );
 }
 
 function ScrollHeatmapView({
+  urlPath,
   websiteId,
   scroll,
   snapshot,
+  isLoading,
 }: {
+  urlPath: string;
   websiteId: string;
   scroll: HeatmapResult['scroll'] | undefined;
   snapshot: HeatmapSnapshot | null;
+  isLoading: boolean;
 }) {
   const [showPage, setShowPage] = useState(true);
   const [snapshotReady, setSnapshotReady] = useState(false);
@@ -284,13 +354,17 @@ function ScrollHeatmapView({
     setSnapshotReady(!(showPage && snapshot));
   }, [containerWidth, showPage, snapshot]);
 
+  if (isLoading) {
+    return <CanvasLoading />;
+  }
+
   if (!scroll || scroll.totalSessions === 0 || !scroll.pageH || !scroll.viewportW) {
     return <EmptyState message="No scroll data for this page yet." />;
   }
 
   const { buckets, totalSessions, pageH, viewportW, viewportH } = scroll;
-  const renderWidth = containerWidth > 0 ? Math.min(containerWidth, MAX_RENDER_WIDTH) : 0;
-  const scale = renderWidth ? renderWidth / viewportW : 0;
+  const renderWidth = Math.min(containerWidth > 0 ? containerWidth : viewportW, MAX_RENDER_WIDTH);
+  const scale = renderWidth / viewportW;
   const renderHeight = Math.round(pageH * scale);
   const showSnapshot = renderWidth > 0 && showPage && !!snapshot;
   const showOverlay = !showSnapshot || snapshotReady;
@@ -323,39 +397,34 @@ function ScrollHeatmapView({
 
   return (
     <Column gap>
-      <Row alignItems="center" justifyContent="space-between" gap>
-        <Text color="muted">
+      <Text color="muted" title={urlPath} className={styles.summaryPath}>
+        {urlPath}
+      </Text>
+      <Row alignItems="center" justifyContent="space-between" gap className={styles.summaryHeader}>
+        <Text color="muted" className={styles.summaryStat}>
           {formatLongNumber(totalSessions)} sessions · page {viewportW}×{pageH}
           {viewportH ? ` · viewport ${viewportH}` : ''}
         </Text>
-        {snapshot && (
-          <button
-            type="button"
-            className={styles.toggleButton}
-            onClick={() => setShowPage(v => !v)}
-          >
-            {showPage ? 'Hide page' : 'Show page'}
-          </button>
-        )}
       </Row>
       <div ref={containerRef} className={styles.canvasWrapper}>
         <div
           className={styles.canvas}
           style={{ width: renderWidth || '100%', height: renderHeight || 0 }}
         >
-          {showSnapshot && !snapshotReady && <CanvasLoading />}
-          {showSnapshot && (
-            <ReplaySnapshot
-              websiteId={websiteId}
-              snapshot={snapshot}
-              width={viewportW}
-              height={pageH}
-              scale={scale}
-              onReady={handleSnapshotReady}
-            />
-          )}
-          {showOverlay && (
-            <div className={styles.overlay}>
+          <div className={styles.canvasClip}>
+            {showSnapshot && !snapshotReady && <CanvasLoading />}
+            {showSnapshot && (
+              <ReplaySnapshot
+                websiteId={websiteId}
+                snapshot={snapshot}
+                width={viewportW}
+                height={pageH}
+                scale={scale}
+                onReady={handleSnapshotReady}
+              />
+            )}
+            {showOverlay && (
+              <div className={styles.overlay}>
               {bands.map(b => {
                 const top = Math.round((b.fromPct / 100) * renderHeight);
                 const bottom = Math.round((b.toPct / 100) * renderHeight);
@@ -379,10 +448,18 @@ function ScrollHeatmapView({
                   </div>
                 );
               })}
-            </div>
-          )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
+      {snapshot && (
+        <Row justifyContent="center" className={styles.snapshotControlRow}>
+          <Switch isSelected={showPage} onChange={setShowPage}>
+            Show page
+          </Switch>
+        </Row>
+      )}
     </Column>
   );
 }
@@ -403,8 +480,12 @@ function ReplaySnapshot({
   onReady: () => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const replayerRef = useRef<any>(null);
-  const { data } = useReplayQuery(websiteId, snapshot.replayId) as { data?: ReplayData };
+  const replayerRef = useRef<ReplayInstance | null>(null);
+  const { data } = useReplayQuery(websiteId, snapshot.replayId, {
+    until: snapshot.timestamp,
+    chunkIndex: snapshot.chunkIndex,
+    eventIndex: snapshot.eventIndex,
+  }) as { data?: ReplayData };
 
   useEffect(() => {
     const container = containerRef.current;
@@ -425,34 +506,72 @@ function ReplaySnapshot({
         triggerFocus: false,
         pauseAnimation: true,
         useVirtualDom: false,
-      });
+        loadTimeout: 3000,
+      }) as ReplayInstance;
 
       replayerRef.current = replayer;
-      let ready = false;
+      let rebuilt = false;
+      let waitingForStyles = false;
+      let settled = false;
 
       const freeze = () => {
         const offset = Math.max(0, snapshot.timestamp - events[0].timestamp);
+        resizeReplayFrame(replayer, width, height);
         replayer.pause(offset);
         replayer.disableInteract();
         resizeReplayFrame(replayer, width, height);
       };
 
-      const handleReady = () => {
-        if (ready || cancelled) return;
-        ready = true;
+      const finalize = async () => {
+        if (settled || waitingForStyles || !rebuilt || cancelled) {
+          return;
+        }
 
-        requestAnimationFrame(() => {
-          if (cancelled) return;
-          freeze();
-          requestAnimationFrame(() => {
-            if (cancelled) return;
-            freeze();
-            onReady();
-          });
-        });
+        settled = true;
+
+        await waitForReplayLayout(replayer);
+
+        if (cancelled) {
+          return;
+        }
+
+        freeze();
+        await waitForAnimationFrames(2);
+
+        if (cancelled) {
+          return;
+        }
+
+        freeze();
+        onReady();
       };
 
-      replayer.on('fullsnapshot-rebuilded', handleReady);
+      replayer.on('load-stylesheet-start', () => {
+        waitingForStyles = true;
+      });
+
+      replayer.on('load-stylesheet-end', () => {
+        waitingForStyles = false;
+        void finalize();
+      });
+
+      replayer.on('fullsnapshot-rebuilded', () => {
+        rebuilt = true;
+        void finalize();
+      });
+
+      replayer.on('resize', (dimension: { width?: number; height?: number }) => {
+        resizeReplayFrame(
+          replayer,
+          dimension.width && Number.isFinite(dimension.width) ? dimension.width : width,
+          dimension.height && Number.isFinite(dimension.height) ? dimension.height : height,
+        );
+      });
+
+      setTimeout(() => {
+        waitingForStyles = false;
+        void finalize();
+      }, 3500);
     });
 
     return () => {
@@ -490,12 +609,59 @@ function CanvasLoading() {
   );
 }
 
-function resizeReplayFrame(replayer: any, width: number, height: number) {
+function waitForAnimationFrames(count = 2) {
+  return new Promise<void>(resolve => {
+    const step = (remaining: number) => {
+      if (remaining <= 0) {
+        resolve();
+        return;
+      }
+
+      requestAnimationFrame(() => step(remaining - 1));
+    };
+
+    step(count);
+  });
+}
+
+async function waitForReplayLayout(replayer: ReplayInstance) {
+  const fonts = replayer.iframe?.contentDocument?.fonts;
+
+  if (fonts?.ready) {
+    try {
+      await Promise.race([
+        fonts.ready.then(() => undefined),
+        new Promise(resolve => setTimeout(resolve, 1500)),
+      ]);
+    } catch {
+      // Ignore font readiness failures and fall back to frame settling.
+    }
+  }
+
+  await waitForAnimationFrames(3);
+}
+
+function syncReplayDocumentViewport(replayer: ReplayInstance, width: number, height: number) {
+  const doc = replayer.iframe?.contentDocument;
+  const html = doc?.documentElement;
+  const body = doc?.body;
+
+  if (html) {
+    html.style.margin = '0';
+  }
+
+  if (body) {
+    body.style.margin = '0';
+  }
+}
+
+function resizeReplayFrame(replayer: ReplayInstance, width: number, height: number) {
   const { iframe, wrapper } = replayer;
 
   if (wrapper) {
     wrapper.style.width = `${width}px`;
     wrapper.style.height = `${height}px`;
+    wrapper.style.overflow = 'hidden';
   }
 
   if (iframe) {
@@ -503,12 +669,15 @@ function resizeReplayFrame(replayer: any, width: number, height: number) {
     iframe.setAttribute('height', String(height));
     iframe.style.width = `${width}px`;
     iframe.style.height = `${height}px`;
+    iframe.style.display = 'block';
   }
+
+  syncReplayDocumentViewport(replayer, width, height);
 }
 
 function EmptyState({ message }: { message?: string } = {}) {
   return (
-    <Column alignItems="center" justifyContent="center" height="100%" gap>
+    <Column alignItems="center" justifyContent="center" minHeight="360px" gap>
       <Heading size="lg">{message ? 'No data' : 'Select a page'}</Heading>
       <Text color="muted">{message ?? 'Choose a page from the list to view its heatmap.'}</Text>
     </Column>

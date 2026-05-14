@@ -416,6 +416,9 @@ CREATE TABLE umami.heatmap_event
     viewport_h Nullable(Int32),
     page_h Nullable(Int32),
     scroll_pct Nullable(UInt8),
+    replay_chunk_index Nullable(UInt32),
+    replay_event_index Nullable(UInt32),
+    replay_time_ms Nullable(Int64),
     created_at DateTime('UTC')
 )
 ENGINE = MergeTree

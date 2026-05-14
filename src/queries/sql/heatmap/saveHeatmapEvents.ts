@@ -18,6 +18,9 @@ export interface HeatmapEventRow {
   pageH: number | null;
   scrollPct: number | null;
   createdAt: Date;
+  replayChunkIndex: number | null;
+  replayEventIndex: number | null;
+  replayTimeMs: number | null;
 }
 
 export async function saveHeatmapEvents(rows: HeatmapEventRow[]) {
@@ -46,7 +49,10 @@ async function relationalQuery(rows: HeatmapEventRow[]) {
       pageH: r.pageH,
       scrollPct: r.scrollPct,
       createdAt: r.createdAt,
-    })),
+      replayChunkIndex: r.replayChunkIndex,
+      replayEventIndex: r.replayEventIndex,
+      replayTimeMs: r.replayTimeMs,
+    })) as any,
   });
 }
 
@@ -69,6 +75,9 @@ async function clickhouseQuery(rows: HeatmapEventRow[]) {
     page_h: r.pageH,
     scroll_pct: r.scrollPct,
     created_at: getUTCString(r.createdAt),
+    replay_chunk_index: r.replayChunkIndex,
+    replay_event_index: r.replayEventIndex,
+    replay_time_ms: r.replayTimeMs,
   }));
 
   if (kafka.enabled) {

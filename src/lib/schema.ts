@@ -315,7 +315,7 @@ export const reportSchema = reportBaseSchema;
 export const reportResultSchema = z.intersection(
   z.object({
     websiteId: z.uuid(),
-    filters: z.object({ ...filterParams }),
+    filters: z.object({ ...filterParams }).passthrough(),
   }),
   reportTypeSchema,
 );

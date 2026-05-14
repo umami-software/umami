@@ -18,6 +18,13 @@ export interface ExtractedHeatmapEvent {
   scrollPct: number | null;
   urlPath: string;
   createdAt: Date;
+  replayChunkIndex: number | null;
+  replayEventIndex: number | null;
+  replayTimeMs: number | null;
+}
+
+interface ExtractHeatmapEventOptions {
+  chunkIndex?: number;
 }
 
 function safePathname(href: unknown): string | null {
@@ -29,7 +36,10 @@ function safePathname(href: unknown): string | null {
   }
 }
 
-export function extractHeatmapEvents(events: any[]): ExtractedHeatmapEvent[] {
+export function extractHeatmapEvents(
+  events: any[],
+  { chunkIndex }: ExtractHeatmapEventOptions = {},
+): ExtractedHeatmapEvent[] {
   if (!Array.isArray(events) || events.length === 0) return [];
 
   let urlPath: string | null = null;
@@ -37,8 +47,10 @@ export function extractHeatmapEvents(events: any[]): ExtractedHeatmapEvent[] {
   let viewportH: number | null = null;
   const out: ExtractedHeatmapEvent[] = [];
 
-  for (const ev of events) {
+  for (const [eventIndex, ev] of events.entries()) {
     if (!ev || typeof ev !== 'object') continue;
+    const replayTimeMs =
+      typeof ev.timestamp === 'number' && Number.isFinite(ev.timestamp) ? ev.timestamp : null;
 
     if (ev.type === RRWEB_TYPE_META && ev.data) {
       const path = safePathname(ev.data.href);
@@ -72,7 +84,10 @@ export function extractHeatmapEvents(events: any[]): ExtractedHeatmapEvent[] {
               ? Math.max(0, Math.min(100, Math.round(p.scrollPct)))
               : null,
           urlPath: path,
-          createdAt: new Date(typeof ev.timestamp === 'number' ? ev.timestamp : Date.now()),
+          createdAt: new Date(replayTimeMs ?? Date.now()),
+          replayChunkIndex: chunkIndex ?? null,
+          replayEventIndex: eventIndex,
+          replayTimeMs,
         });
       }
       continue;
@@ -103,7 +118,10 @@ export function extractHeatmapEvents(events: any[]): ExtractedHeatmapEvent[] {
         pageH: null,
         scrollPct: null,
         urlPath,
-        createdAt: new Date(typeof ev.timestamp === 'number' ? ev.timestamp : Date.now()),
+        createdAt: new Date(replayTimeMs ?? Date.now()),
+        replayChunkIndex: chunkIndex ?? null,
+        replayEventIndex: eventIndex,
+        replayTimeMs,
       });
     }
   }

@@ -116,7 +116,7 @@ export async function POST(request: Request) {
     });
 
     try {
-      const heatmapRows = extractHeatmapEvents(events).map(e => ({
+      const heatmapRows = extractHeatmapEvents(events, { chunkIndex }).map(e => ({
         websiteId,
         sessionId,
         visitId,
