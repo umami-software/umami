@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import {
   EMAIL_DOMAINS,
+  LLM_DOMAINS,
   PAID_AD_PARAMS,
   SEARCH_DOMAINS,
   SHOPPING_DOMAINS,
@@ -10,7 +11,7 @@ import {
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
-import type { RevenuParameters } from './getRevenue';
+import type { RevenuParameters } from './getRevenueChart';
 
 export interface RevenueMetricsResult {
   country: { name: string; value: number }[];
@@ -19,8 +20,15 @@ export interface RevenueMetricsResult {
   channel: { name: string; value: number }[];
 }
 
+export type RevenueMetricType = keyof RevenueMetricsResult;
+
 export async function getRevenueMetrics(
-  ...args: [websiteId: string, parameters: RevenuParameters, filters: QueryFilters]
+  ...args: [
+    websiteId: string,
+    parameters: RevenuParameters,
+    filters: QueryFilters,
+    type: RevenueMetricType,
+  ]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -32,7 +40,8 @@ async function relationalQuery(
   websiteId: string,
   parameters: RevenuParameters,
   filters: QueryFilters,
-): Promise<RevenueMetricsResult> {
+  type: RevenueMetricType,
+): Promise<RevenueMetricsResult[RevenueMetricType]> {
   const { startDate, endDate, currency } = parameters;
   const { rawQuery, parseFilters } = prisma;
   const { queryParams, filterQuery, cohortQuery, joinSessionQuery } = parseFilters({
@@ -55,100 +64,106 @@ async function relationalQuery(
           and website_event.event_id = revenue.event_id`
       : '';
 
-  const country = await rawQuery(
-    `
-    select
-      session.country as "name",
-      sum(revenue) as "value"
-    from revenue
-    ${joinQuery}
-    join session
-      on session.website_id = revenue.website_id
-        and session.session_id = revenue.session_id
-    ${cohortQuery}
-    where revenue.website_id = {{websiteId::uuid}}
-      and revenue.created_at between {{startDate}} and {{endDate}}
-      and upper(revenue.currency) = {{currency}}
-      ${filterQuery}
-    group by session.country
-    order by value desc
-    `,
-    queryParams,
-  );
-
-  const region = await rawQuery(
-    `
-    select
-      session.country,
-      session.region as "name",
-      sum(revenue.revenue) as "value"
-    from revenue
-    ${joinQuery}
-    join session
-      on session.website_id = revenue.website_id
-        and session.session_id = revenue.session_id
-    ${cohortQuery}
-    where revenue.website_id = {{websiteId::uuid}}
-      and revenue.created_at between {{startDate}} and {{endDate}}
-      and upper(revenue.currency) = {{currency}}
-      ${filterQuery}
-    group by session.country, session.region
-    order by value desc
-    `,
-    queryParams,
-  );
-
-  const referrer = await rawQuery(
-    `
-    WITH events AS (
+  if (type === 'country') {
+    return rawQuery(
+      `
       select
-        revenue.website_id,
-        revenue.session_id,
-        sum(revenue.revenue) as "value"
+        session.country as "name",
+        sum(revenue) as "value"
       from revenue
       ${joinQuery}
+      join session
+        on session.website_id = revenue.website_id
+          and session.session_id = revenue.session_id
       ${cohortQuery}
-      ${joinSessionQuery}
       where revenue.website_id = {{websiteId::uuid}}
         and revenue.created_at between {{startDate}} and {{endDate}}
         and upper(revenue.currency) = {{currency}}
         ${filterQuery}
-      group by revenue.website_id, revenue.session_id),
+      group by session.country
+      order by value desc
+      `,
+      queryParams,
+    );
+  }
 
-    revenue_data AS (
+  if (type === 'region') {
+    return rawQuery(
+      `
       select
-        e.website_id,
-        e.session_id,
-        e.value,
-        we.min_date as created_at
-      from events e
+        session.country,
+        session.region as "name",
+        sum(revenue.revenue) as "value"
+      from revenue
+      ${joinQuery}
+      join session
+        on session.website_id = revenue.website_id
+          and session.session_id = revenue.session_id
+      ${cohortQuery}
+      where revenue.website_id = {{websiteId::uuid}}
+        and revenue.created_at between {{startDate}} and {{endDate}}
+        and upper(revenue.currency) = {{currency}}
+        ${filterQuery}
+      group by session.country, session.region
+      order by value desc
+      `,
+      queryParams,
+    );
+  }
+
+  if (type === 'referrer') {
+    return rawQuery(
+      `
+      WITH events AS (
+        select
+          revenue.website_id,
+          revenue.session_id,
+          sum(revenue.revenue) as "value"
+        from revenue
+        ${joinQuery}
+        ${cohortQuery}
+        ${joinSessionQuery}
+        where revenue.website_id = {{websiteId::uuid}}
+          and revenue.created_at between {{startDate}} and {{endDate}}
+          and upper(revenue.currency) = {{currency}}
+          ${filterQuery}
+        group by revenue.website_id, revenue.session_id),
+
+      revenue_data AS (
+        select
+          e.website_id,
+          e.session_id,
+          e.value,
+          we.min_date as created_at
+        from events e
+        join (
+          select session_id, min(created_at) as min_date
+          from website_event
+          where website_id = {{websiteId::uuid}}
+            and created_at between {{startDate}} and {{endDate}}
+          group by session_id
+        ) we on we.session_id = e.session_id)
+
+      select
+        we.referrer_domain as "name",
+        sum(revenue_data.value) as "value"
+      from revenue_data
       join (
-        select session_id, min(created_at) as min_date
+        select website_id, session_id, referrer_domain, created_at
         from website_event
         where website_id = {{websiteId::uuid}}
-          and created_at between {{startDate}} and {{endDate}}
-        group by session_id
-      ) we on we.session_id = e.session_id)
+          and created_at between {{startDate}} and {{endDate}}) we
+      on we.website_id = revenue_data.website_id
+        and we.session_id = revenue_data.session_id
+        and we.created_at = revenue_data.created_at
+      group by we.referrer_domain
+      order by value desc
+      `,
+      queryParams,
+    );
+  }
 
-    select
-      we.referrer_domain as "name",
-      sum(revenue_data.value) as "value"
-    from revenue_data
-    join (
-      select website_id, session_id, referrer_domain, created_at
-      from website_event
-      where website_id = {{websiteId::uuid}}
-        and created_at between {{startDate}} and {{endDate}}) we
-    on we.website_id = revenue_data.website_id
-      and we.session_id = revenue_data.session_id
-      and we.created_at = revenue_data.created_at
-    group by we.referrer_domain
-    order by value desc
-    `,
-    queryParams,
-  );
-
-  const channel = await rawQuery(
+  return rawQuery(
     `
     WITH events AS (
       select
@@ -210,6 +225,7 @@ async function relationalQuery(
           when ${toPostgresLikeClause('utm_medium', ['referral', 'app', 'link'])} then 'referral'
           when utm_medium ilike '%affiliate%' then 'affiliate'
           when utm_medium ilike '%sms%' or utm_source ilike '%sms%' then 'sms'
+          when ${toPostgresLikeClause('referrer_domain', LLM_DOMAINS)} then 'llm'
           when ${toPostgresLikeClause('referrer_domain', SEARCH_DOMAINS)} or utm_medium ilike '%organic%' then concat(prefix, 'Search')
           when ${toPostgresLikeClause('referrer_domain', SOCIAL_DOMAINS)} then concat(prefix, 'Social')
           when ${toPostgresLikeClause('referrer_domain', EMAIL_DOMAINS)} or utm_medium ilike '%mail%' then 'email'
@@ -227,15 +243,14 @@ async function relationalQuery(
     `,
     queryParams,
   );
-
-  return { country, region, referrer, channel };
 }
 
 async function clickhouseQuery(
   websiteId: string,
   parameters: RevenuParameters,
   filters: QueryFilters,
-): Promise<RevenueMetricsResult> {
+  type: RevenueMetricType,
+): Promise<RevenueMetricsResult[RevenueMetricType]> {
   const { startDate, endDate, currency } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
@@ -258,8 +273,9 @@ async function clickhouseQuery(
       and website_event.event_id = website_revenue.event_id`
     : '';
 
-  const country = await rawQuery<{ name: string; value: number }[]>(
-    `
+  if (type === 'country') {
+    return rawQuery<{ name: string; value: number }[]>(
+      `
       select
         website_event.country as "name",
         sum(website_revenue.revenue) as "value"
@@ -280,12 +296,14 @@ async function clickhouseQuery(
         ${filterQuery}
       group by website_event.country
       order by value desc
-    `,
-    queryParams,
-  );
+      `,
+      queryParams,
+    );
+  }
 
-  const region = await rawQuery<{ name: string; value: number; country: string }[]>(
-    `
+  if (type === 'region') {
+    return rawQuery<{ name: string; value: number; country: string }[]>(
+      `
       select
         website_event.country,
         website_event.region as "name",
@@ -307,60 +325,63 @@ async function clickhouseQuery(
         ${filterQuery}
       group by 1,2
       order by value desc
-    `,
-    queryParams,
-  );
+      `,
+      queryParams,
+    );
+  }
 
-  const referrer = await rawQuery<{ name: string; value: number }[]>(
-    `
-    WITH events AS (
-    select distinct
-        website_id,
-        session_id,
-        sum(revenue) as "value"
-    from website_revenue
-    ${joinQuery}
-    ${cohortQuery}
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and upper(currency) = {currency:String}
-      ${filterQuery}
-    group by 1,2),
-
-    revenue AS (
-    select
-        e.website_id,
-        e.session_id,
-        e.value,
-        we.min_date as created_at
-    from events e
-    join (select session_id, min(created_at) min_date
-          from website_event
-          where website_id = {websiteId:UUID}
-            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-          group by 1
-        ) we
-    on we.session_id = e.session_id)
-
-    select
-        website_event.referrer_domain as "name",
-        sum(revenue.value) as "value"
-    from revenue
-    any left join (
-      select website_id, session_id, referrer_domain, created_at
-      from website_event
+  if (type === 'referrer') {
+    return rawQuery<{ name: string; value: number }[]>(
+      `
+      WITH events AS (
+      select distinct
+          website_id,
+          session_id,
+          sum(revenue) as "value"
+      from website_revenue
+      ${joinQuery}
+      ${cohortQuery}
       where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}) website_event
-    on website_event.website_id = revenue.website_id
-    and website_event.session_id = revenue.session_id
-    and website_event.created_at = revenue.created_at
-    group by 1
-    order by value desc
-    `,
-    queryParams,
-  );
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and upper(currency) = {currency:String}
+        ${filterQuery}
+      group by 1,2),
 
-  const channel = await rawQuery<{ name: string; value: number }[]>(
+      revenue AS (
+      select
+          e.website_id,
+          e.session_id,
+          e.value,
+          we.min_date as created_at
+      from events e
+      join (select session_id, min(created_at) min_date
+            from website_event
+            where website_id = {websiteId:UUID}
+              and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+            group by 1
+          ) we
+      on we.session_id = e.session_id)
+
+      select
+          website_event.referrer_domain as "name",
+          sum(revenue.value) as "value"
+      from revenue
+      any left join (
+        select website_id, session_id, referrer_domain, created_at
+        from website_event
+        where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}) website_event
+      on website_event.website_id = revenue.website_id
+      and website_event.session_id = revenue.session_id
+      and website_event.created_at = revenue.created_at
+      group by 1
+      order by value desc
+      `,
+      queryParams,
+    );
+  }
+
+  return rawQuery<{ name: string; value: number }[]>(
     `
     WITH events AS (
     select distinct
@@ -403,6 +424,9 @@ async function clickhouseQuery(
           when position(lower(utm_medium), 'affiliate') > 0 then 'affiliate'
           when position(lower(utm_medium), 'sms') > 0 or position(lower(utm_source), 'sms') > 0 then 'sms'
           when multiSearchAny(lower(referrer_domain), [${toClickHouseStringArray(
+            LLM_DOMAINS,
+          )}]) != 0 then 'llm'
+          when multiSearchAny(lower(referrer_domain), [${toClickHouseStringArray(
             SEARCH_DOMAINS,
           )}]) != 0 or position(lower(utm_medium), 'organic') > 0 then concat(prefix, 'Search')
           when multiSearchAny(lower(referrer_domain), [${toClickHouseStringArray(
@@ -438,8 +462,6 @@ async function clickhouseQuery(
     `,
     queryParams,
   );
-
-  return { country, region, referrer, channel };
 }
 
 function toClickHouseStringArray(arr: string[]): string {

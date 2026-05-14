@@ -25,6 +25,7 @@ import {
   Tag,
   Target,
   Type,
+  Waypoints,
 } from '@/components/icons';
 import { Lightning } from '@/components/svg';
 
@@ -45,13 +46,19 @@ export function WebsiteExpandedMenu({
 
   const items = [
     {
-      label: 'URL',
+      label: t(labels.pages),
       items: [
         {
           id: 'path',
           label: t(labels.path),
           path: updateParams({ view: 'path' }),
           icon: <SquareSlash />,
+        },
+        {
+          id: 'fullPath',
+          label: t(labels.url),
+          path: updateParams({ view: 'fullPath' }),
+          icon: <Waypoints />,
         },
         {
           id: 'entry',

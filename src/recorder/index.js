@@ -33,6 +33,8 @@ import { record } from 'rrweb';
   let flushTimer = null;
   let startTime = null;
   let stopped = false;
+  let recorderReady = false;
+  let customEventBuffer = [];
 
   const sendEvents = (events, useKeepalive = false) => {
     const session = window.umami?.getSession?.();
@@ -84,6 +86,42 @@ import { record } from 'rrweb';
     if (stopFn) stopFn();
   };
 
+  const flushCustomEvents = () => {
+    if (!recorderReady || !customEventBuffer.length) return;
+
+    const events = customEventBuffer;
+    customEventBuffer = [];
+
+    for (const event of events) {
+      addCustomEvent(event.tag, event.payload);
+    }
+  };
+
+  const addCustomEvent = (tag, payload) => {
+    if (stopped) return;
+
+    if (!recorderReady) {
+      customEventBuffer.push({ tag, payload });
+      return;
+    }
+
+    try {
+      record.addCustomEvent(tag, payload);
+    } catch (e) {
+      if (e?.message === 'please add custom event after start recording') {
+        recorderReady = false;
+        customEventBuffer.push({ tag, payload });
+        setTimeout(() => {
+          recorderReady = true;
+          flushCustomEvents();
+        }, 0);
+        return;
+      }
+
+      throw e;
+    }
+  };
+
   const getMaskConfig = level => {
     switch (level) {
       case 'strict':
@@ -124,6 +162,8 @@ import { record } from 'rrweb';
         }
 
         eventBuffer.push(event);
+        recorderReady = true;
+        flushCustomEvents();
 
         if (eventBuffer.length >= FLUSH_EVENT_COUNT) {
           flush();
@@ -148,12 +188,81 @@ import { record } from 'rrweb';
       checkoutEveryNms: 30000,
       ...(blockSelector && { blockSelector }),
     });
+    recorderReady = true;
+    flushCustomEvents();
+
+    let scrollUrl = location.href;
+    let maxScrollPct = 0;
+    let scrollTimer = null;
+
+    const computeScrollPct = () => {
+      const pageH = document.documentElement.scrollHeight;
+      const visible = window.scrollY + window.innerHeight;
+      return {
+        pct: Math.max(0, Math.min(100, Math.round((visible / Math.max(1, pageH)) * 100))),
+        pageH,
+      };
+    };
+
+    const flushScroll = () => {
+      if (maxScrollPct <= 0) return;
+      addCustomEvent('scroll-progress', {
+        url: scrollUrl,
+        scrollPct: maxScrollPct,
+        viewportW: window.innerWidth,
+        viewportH: window.innerHeight,
+        pageH: document.documentElement.scrollHeight,
+      });
+      maxScrollPct = 0;
+    };
+
+    const onScroll = () => {
+      if (scrollTimer) return;
+      scrollTimer = setTimeout(() => {
+        const { pct } = computeScrollPct();
+        if (pct > maxScrollPct) maxScrollPct = pct;
+        scrollTimer = null;
+      }, 200);
+    };
+
+    const onUrlChange = () => {
+      if (location.href === scrollUrl) return;
+      flushScroll();
+      scrollUrl = location.href;
+      addCustomEvent('url-change', { url: scrollUrl });
+    };
+
+    const hookHistory = method => {
+      const orig = history[method];
+      history[method] = function (...args) {
+        const result = orig.apply(this, args);
+        onUrlChange();
+        return result;
+      };
+    };
+
+    hookHistory('pushState');
+    hookHistory('replaceState');
+    window.addEventListener('popstate', onUrlChange);
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Capture initial scroll position
+    {
+      const { pct } = computeScrollPct();
+      if (pct > maxScrollPct) maxScrollPct = pct;
+    }
 
     document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') flush(true);
+      if (document.visibilityState === 'hidden') {
+        flushScroll();
+        flush(true);
+      }
     });
 
-    window.addEventListener('beforeunload', () => flush(true));
+    window.addEventListener('beforeunload', () => {
+      flushScroll();
+      flush(true);
+    });
   };
 
   if (document.readyState === 'complete') {

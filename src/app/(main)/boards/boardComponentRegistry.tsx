@@ -49,6 +49,7 @@ export const CATEGORIES = [
 
 const METRIC_TYPES = [
   { label: 'Path', value: 'path' },
+  { label: 'URL', value: 'fullPath' },
   { label: 'Entry page', value: 'entry' },
   { label: 'Exit page', value: 'exit' },
   { label: 'Title', value: 'title' },

@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import {
   EMAIL_DOMAINS,
+  LLM_DOMAINS,
   PAID_AD_PARAMS,
   SEARCH_DOMAINS,
   SHOPPING_DOMAINS,
@@ -88,6 +89,7 @@ async function relationalQuery(
             when ${toPostgresPositionClause('utm_medium', ['referral', 'app', 'link'])} then 'referral'
             when utm_medium ilike '%affiliate%' then 'affiliate'
             when utm_medium ilike '%sms%' or utm_source ilike '%sms%' then 'sms'
+            when ${toPostgresPositionClause('referrer_domain', LLM_DOMAINS)} then 'llm'
             when ${toPostgresPositionClause('referrer_domain', SEARCH_DOMAINS)} or utm_medium ilike '%organic%' then concat(prefix, 'Search')
             when ${toPostgresPositionClause('referrer_domain', SOCIAL_DOMAINS)} then concat(prefix, 'Social')
             when ${toPostgresPositionClause('referrer_domain', EMAIL_DOMAINS)} or utm_medium ilike '%mail%' then 'email'
@@ -149,6 +151,9 @@ async function clickhouseQuery(
           when multiSearchAny(lower(utm_medium), ['referral', 'app','link']) != 0 then 'referral'
           when position(lower(utm_medium), 'affiliate') > 0 then 'affiliate'
           when position(lower(utm_medium), 'sms') > 0 or position(lower(utm_source), 'sms') > 0 then 'sms'
+          when multiSearchAny(lower(referrer_domain), [${toClickHouseStringArray(
+            LLM_DOMAINS,
+          )}]) != 0 then 'llm'
           when multiSearchAny(lower(referrer_domain), [${toClickHouseStringArray(
             SEARCH_DOMAINS,
           )}]) != 0 or position(lower(utm_medium), 'organic') > 0 then concat(prefix, 'Search')

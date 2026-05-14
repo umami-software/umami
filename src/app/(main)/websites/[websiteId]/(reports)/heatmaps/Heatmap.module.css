@@ -1,0 +1,138 @@
+.pageList {
+  overflow-y: auto;
+  padding-right: 8px;
+  max-height: 100%;
+}
+
+.pageButton {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  border-radius: 6px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.pageButton:hover {
+  background: var(--interactive-bg-hover);
+}
+
+.pageButtonSelected,
+.pageButtonSelected:hover {
+  background: var(--surface-inverted);
+  color: var(--surface-base);
+}
+
+.toggleButton {
+  border: 1px solid var(--border-base);
+  background: var(--surface-base);
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.toggleButton:hover {
+  background: var(--interactive-bg-hover);
+}
+
+.toggleButtonSelected,
+.toggleButtonSelected:hover {
+  background: var(--surface-inverted);
+  color: var(--surface-base);
+  border-color: var(--surface-inverted);
+}
+
+.scrollBand {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 2px 8px;
+}
+
+.scrollBandLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 4px;
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+
+.canvasWrapper {
+  width: 100%;
+  min-width: 0;
+}
+
+.canvas {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-base);
+  border-radius: 8px;
+  background: var(--surface-sunken);
+  max-width: 100%;
+}
+
+.snapshot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  transform-origin: top left;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.snapshot :global(.replayer-wrapper) {
+  border: 0;
+  overflow: hidden;
+}
+
+.snapshot :global(iframe) {
+  border: 0;
+  pointer-events: none;
+}
+
+.snapshot :global(.replayer-mouse),
+.snapshot :global(.replayer-mouse-tail) {
+  display: none !important;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.canvasLoading {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--surface-sunken);
+}
+
+.dot {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 60, 0, 0.9) 0%,
+    rgba(255, 200, 0, 0.6) 45%,
+    rgba(255, 200, 0, 0) 80%
+  );
+  pointer-events: auto;
+  mix-blend-mode: multiply;
+}
