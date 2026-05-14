@@ -23,13 +23,21 @@ export function LinksTable({ showActions, ...props }: LinksTableProps) {
           return <Link href={renderUrl(`/links/${id}`)}>{name}</Link>;
         }}
       </DataColumn>
+<<<<<<< fix/links-table-truncate-urls
+      <DataColumn id="slug" label={t(labels.link)} width="25%">
+=======
       <DataColumn id="slug" label={<SortableLabel label={t(labels.link)} sortKey="slug" />}>
+>>>>>>> dev
         {({ slug }: any) => {
           const url = getSlugUrl(slug);
           return <ExternalLink href={url}>{url}</ExternalLink>;
         }}
       </DataColumn>
+<<<<<<< fix/links-table-truncate-urls
+      <DataColumn id="url" label={t(labels.destinationUrl)} width="30%">
+=======
       <DataColumn id="url" label={<SortableLabel label={t(labels.destinationUrl)} sortKey="url" />}>
+>>>>>>> dev
         {({ url }: any) => {
           return <ExternalLink href={url}>{url}</ExternalLink>;
         }}
