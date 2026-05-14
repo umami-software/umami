@@ -1,16 +1,16 @@
 'use client';
 import { Column, ComboBox, Grid, Label, ListItem, Row, Select } from '@umami/react-zen';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 import { useEventDataPropertiesQuery, useMessages } from '@/components/hooks';
-import { DATA_TYPE } from '@/lib/constants';
-import type { PropertyFilter } from '@/lib/types';
 import { PropertyChart } from '@/components/property-data/PropertyChart';
 import { PropertyDateChart } from '@/components/property-data/PropertyDateChart';
 import { PropertyFilterBar } from '@/components/property-data/PropertyFilterBar';
 import { PropertyFilterButton } from '@/components/property-data/PropertyFilterButton';
 import { PropertyNumericChart } from '@/components/property-data/PropertyNumericChart';
+import { DATA_TYPE } from '@/lib/constants';
+import type { PropertyFilter } from '@/lib/types';
 import { EventDataPivotTable } from '../event-data/EventDataPivotTable';
 
 export function EventProperties({ websiteId }: { websiteId: string }) {
@@ -18,6 +18,11 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
   const [propertyName, setPropertyName] = useState('');
   const [propertyFilters, setPropertyFilters] = useState<PropertyFilter[]>([]);
   const { t, labels } = useMessages();
+
+  useEffect(() => {
+    setPropertyName('');
+    setPropertyFilters([]);
+  }, [eventName]);
 
   const { data, isLoading, isFetching, error } = useEventDataPropertiesQuery(websiteId);
 
@@ -126,11 +131,9 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
             )}
           </Grid>
         )}
-        {eventName && (
-          <PropertyFilterBar filters={propertyFilters} onChange={setPropertyFilters} />
-        )}
+        {eventName && <PropertyFilterBar filters={propertyFilters} onChange={setPropertyFilters} />}
         {eventName && propertyName && (
-          <Column border="bottom" paddingBottom="6">
+          <Column key={`${eventName}:${propertyName}`} border="bottom" paddingBottom="6">
             {(selectedProperty?.dataType === DATA_TYPE.string ||
               selectedProperty?.dataType === DATA_TYPE.boolean) && (
               <PropertyChart
