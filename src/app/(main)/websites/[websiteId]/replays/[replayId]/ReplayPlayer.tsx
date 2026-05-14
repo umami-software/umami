@@ -16,29 +16,35 @@ export function ReplayPlayer({ events }: { events: any[] }) {
   useEffect(() => {
     if (!containerRef.current || !events?.length) return;
 
-    import('rrweb-player').then(mod => {
-      const RRWebPlayer = mod.default;
+    Promise.all([import('rrweb-player'), import('@rrweb/rrweb-plugin-console-replay')]).then(
+      ([mod, consoleMod]) => {
+        const RRWebPlayer = mod.default;
+        const { getReplayConsolePlugin } = consoleMod;
 
-      if (containerRef.current) {
-        containerRef.current.innerHTML = '';
-      }
+        if (containerRef.current) {
+          containerRef.current.innerHTML = '';
+        }
 
-      playerRef.current = new RRWebPlayer({
-        target: containerRef.current,
-        props: {
-          events: events,
-          width: playerWidth,
-          height: playerHeight,
-          autoPlay: false,
-          showController: true,
-          speedOption: [1, 2, 4, 8],
-          useVirtualDom: false,
-          showWarning: false,
-        },
-      });
+        const hasConsole = events.some(event => event.data?.plugin === 'rrweb/console@1');
 
-      setLoaded(true);
-    });
+        playerRef.current = new RRWebPlayer({
+          target: containerRef.current,
+          props: {
+            events: events,
+            width: playerWidth,
+            height: playerHeight,
+            autoPlay: false,
+            showController: true,
+            speedOption: [1, 2, 4, 8],
+            useVirtualDom: false,
+            showWarning: false,
+            plugins: hasConsole ? [getReplayConsolePlugin()] : [],
+          },
+        });
+
+        setLoaded(true);
+      },
+    );
 
     return () => {
       if (playerRef.current) {
