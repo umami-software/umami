@@ -1,5 +1,5 @@
 import { Column, Grid, ListItem, Select } from '@umami/react-zen';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { PieChart } from '@/components/charts/PieChart';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
@@ -13,6 +13,10 @@ import { CHART_COLORS } from '@/lib/constants';
 export function EventProperties({ websiteId }: { websiteId: string }) {
   const [propertyName, setPropertyName] = useState('');
   const [eventName, setEventName] = useState('');
+
+  useEffect(() => {
+    setPropertyName('');
+  }, [eventName]);
 
   const { t, labels } = useMessages();
   const { data, isLoading, isFetching, error } = useEventDataPropertiesQuery(websiteId);
@@ -65,7 +69,12 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
           </Grid>
         )}
         {eventName && propertyName && (
-          <EventValues websiteId={websiteId} eventName={eventName} propertyName={propertyName} />
+          <EventValues
+            key={`${eventName}:${propertyName}`}
+            websiteId={websiteId}
+            eventName={eventName}
+            propertyName={propertyName}
+          />
         )}
       </Column>
     </LoadingPanel>
