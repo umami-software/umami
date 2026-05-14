@@ -1,4 +1,5 @@
 import { record } from 'rrweb';
+import { getRecordConsolePlugin } from '@rrweb/rrweb-plugin-console-record';
 
 (window => {
   const { document } = window;
@@ -15,6 +16,7 @@ import { record } from 'rrweb';
   const maskLevel = config(`mask-level`) || 'moderate';
   const maxDuration = parseInt(config(`max-duration`) || '300000', 10);
   const blockSelector = config(`block-selector`) || '';
+  const recordConsole = config(`record-console`) === 'true';
 
   if (!website) return;
 
@@ -114,6 +116,12 @@ import { record } from 'rrweb';
 
     const maskConfig = getMaskConfig(maskLevel);
 
+    const plugins = [];
+
+    if (recordConsole) {
+      plugins.push(getRecordConsolePlugin());
+    }
+
     stopFn = record({
       emit(event) {
         if (stopped) return;
@@ -132,6 +140,7 @@ import { record } from 'rrweb';
         scheduleFlush();
       },
       ...maskConfig,
+      plugins,
       inlineStylesheet: true,
       slimDOMOptions: {
         script: true,

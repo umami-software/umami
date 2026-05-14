@@ -22,6 +22,7 @@ interface ReplayConfig {
   maskLevel?: string;
   maxDuration?: number;
   blockSelector?: string;
+  recordConsole?: boolean;
 }
 
 export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
@@ -37,6 +38,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const [maskLevel, setMaskLevel] = useState(config.maskLevel ?? 'moderate');
   const [maxDuration, setMaxDuration] = useState(String(config.maxDuration ?? 300000));
   const [blockSelector, setBlockSelector] = useState(config.blockSelector ?? '');
+  const [recordConsole, setRecordConsole] = useState(config.recordConsole ?? false);
 
   const recorderUrl = cloudMode
     ? `${process.env.cloudUrl}/${RECORDER_NAME}`
@@ -44,6 +46,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
 
   let recorderAttrs = `data-website-id="${websiteId}" data-sample-rate="${sampleRate}" data-mask-level="${maskLevel}" data-max-duration="${parseInt(maxDuration, 10) || 300000}"`;
   if (blockSelector) recorderAttrs += ` data-block-selector="${blockSelector}"`;
+  if (recordConsole) recorderAttrs += ` data-record-console="true"`;
   const recorderCode = `<script defer src="${recorderUrl}" ${recorderAttrs}></script>`;
 
   const handleToggle = async (value: boolean) => {
@@ -77,6 +80,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
           maskLevel,
           maxDuration: parseInt(maxDuration, 10) || 300000,
           ...(blockSelector && { blockSelector }),
+          recordConsole,
         },
       },
       {
@@ -151,6 +155,9 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
             <Label>{t(labels.blockSelector)}</Label>
             <TextField value={blockSelector} onChange={setBlockSelector} />
           </Column>
+          <Switch isSelected={recordConsole} onChange={setRecordConsole}>
+            {t(labels.recordConsole)}
+          </Switch>
           <Row>
             <Button variant="primary" onPress={handleSave} isDisabled={isPending}>
               {t(labels.save)}
