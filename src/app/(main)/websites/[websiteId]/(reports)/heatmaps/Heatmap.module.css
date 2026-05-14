@@ -160,10 +160,6 @@
   pointer-events: none;
 }
 
-.heatOverlay {
-  overflow: visible;
-}
-
 .canvasLoading {
   position: absolute;
   inset: 0;

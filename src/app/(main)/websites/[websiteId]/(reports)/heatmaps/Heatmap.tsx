@@ -2,7 +2,7 @@
 import { Column, Grid, Heading, Loading, Row, Switch, Text } from '@umami/react-zen';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, useResultQuery } from '@/components/hooks';
+import { useResultQuery } from '@/components/hooks';
 import { useReplayQuery } from '@/components/hooks/queries/useReplayQuery';
 import { formatLongNumber } from '@/lib/format';
 import type { HeatmapMode, HeatmapPoint, HeatmapResult, HeatmapSnapshot } from '@/queries/sql';
@@ -115,6 +115,14 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
     onUrlPathChange(filteredPages[0].urlPath);
   }, [filteredPages, isLoading, onUrlPathChange, urlPath]);
 
+  if (!isLoading && pages.length === 0) {
+    return (
+      <LoadingPanel data={pagesData} isLoading={isLoading} error={error} minHeight="900px">
+        <EmptyState message="No data available." />
+      </LoadingPanel>
+    );
+  }
+
   return (
     <LoadingPanel data={pagesData} isLoading={isLoading} error={error} minHeight="900px">
       <Grid columns="320px 12px 1fr" minHeight="900px" className={styles.layoutGrid}>
@@ -167,15 +175,11 @@ function PageList({
   mode: HeatmapMode;
   hasSearch: boolean;
 }) {
-  const { t, messages } = useMessages();
-
   return (
     <Column className={styles.pageList} gap="1">
       <Heading size="lg">Pages</Heading>
       <Column className={styles.pageListItems} gap="2">
-        {pages.length === 0 && (
-          <Text color="muted">{hasSearch ? 'No matching pages' : t(messages.noDataAvailable)}</Text>
-        )}
+        {pages.length === 0 && hasSearch && <Text color="muted">No matching pages</Text>}
         {pages.map(p => (
           <button
             key={p.urlPath}
@@ -295,29 +299,29 @@ function HeatmapView({
                 onReady={handleSnapshotReady}
               />
             )}
+            {showOverlay && (
+              <div className={styles.overlay}>
+                {visible.map((p, i) => {
+                  const intensity = Math.min(1, p.count / maxCount);
+                  const size = 24 + intensity * 36;
+                  return (
+                    <div
+                      key={`${p.x}-${p.y}-${i}`}
+                      className={styles.dot}
+                      style={{
+                        left: p.x * scale - size / 2,
+                        top: p.y * scale - size / 2,
+                        width: size,
+                        height: size,
+                        opacity: 0.25 + intensity * 0.55,
+                      }}
+                      title={`${p.count} click${p.count === 1 ? '' : 's'}`}
+                    />
+                  );
+                })}
+              </div>
+            )}
           </div>
-          {showOverlay && (
-            <div className={`${styles.overlay} ${styles.heatOverlay}`}>
-              {visible.map((p, i) => {
-                const intensity = Math.min(1, p.count / maxCount);
-                const size = 24 + intensity * 36;
-                return (
-                  <div
-                    key={`${p.x}-${p.y}-${i}`}
-                    className={styles.dot}
-                    style={{
-                      left: p.x * scale - size / 2,
-                      top: p.y * scale - size / 2,
-                      width: size,
-                      height: size,
-                      opacity: 0.25 + intensity * 0.55,
-                    }}
-                    title={`${p.count} click${p.count === 1 ? '' : 's'}`}
-                  />
-                );
-              })}
-            </div>
-          )}
         </div>
       </div>
       {snapshot && (
@@ -560,12 +564,8 @@ function ReplaySnapshot({
         void finalize();
       });
 
-      replayer.on('resize', (dimension: { width?: number; height?: number }) => {
-        resizeReplayFrame(
-          replayer,
-          dimension.width && Number.isFinite(dimension.width) ? dimension.width : width,
-          dimension.height && Number.isFinite(dimension.height) ? dimension.height : height,
-        );
+      replayer.on('resize', () => {
+        resizeReplayFrame(replayer, width, height);
       });
 
       setTimeout(() => {
@@ -661,6 +661,12 @@ function resizeReplayFrame(replayer: ReplayInstance, width: number, height: numb
   if (wrapper) {
     wrapper.style.width = `${width}px`;
     wrapper.style.height = `${height}px`;
+    wrapper.style.minWidth = `${width}px`;
+    wrapper.style.minHeight = `${height}px`;
+    wrapper.style.maxWidth = `${width}px`;
+    wrapper.style.maxHeight = `${height}px`;
+    wrapper.style.margin = '0';
+    wrapper.style.padding = '0';
     wrapper.style.overflow = 'hidden';
   }
 
@@ -669,6 +675,11 @@ function resizeReplayFrame(replayer: ReplayInstance, width: number, height: numb
     iframe.setAttribute('height', String(height));
     iframe.style.width = `${width}px`;
     iframe.style.height = `${height}px`;
+    iframe.style.minWidth = `${width}px`;
+    iframe.style.minHeight = `${height}px`;
+    iframe.style.maxWidth = `${width}px`;
+    iframe.style.maxHeight = `${height}px`;
+    iframe.style.margin = '0';
     iframe.style.display = 'block';
   }
 
@@ -678,7 +689,7 @@ function resizeReplayFrame(replayer: ReplayInstance, width: number, height: numb
 function EmptyState({ message }: { message?: string } = {}) {
   return (
     <Column alignItems="center" justifyContent="center" minHeight="360px" gap>
-      <Heading size="lg">{message ? 'No data' : 'Select a page'}</Heading>
+      {!message && <Heading size="lg">Select a page</Heading>}
       <Text color="muted">{message ?? 'Choose a page from the list to view its heatmap.'}</Text>
     </Column>
   );

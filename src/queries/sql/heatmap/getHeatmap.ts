@@ -80,6 +80,11 @@ interface HeatmapFilterContext {
   queryParams: Record<string, any>;
 }
 
+interface SnapshotPoint {
+  x: number;
+  y: number;
+}
+
 async function relationalQuery(
   websiteId: string,
   parameters: HeatmapParameters,
@@ -186,6 +191,7 @@ async function relationalQuery(
       endDate,
       viewportW: scroll.viewportW,
       viewportH: scroll.viewportH,
+      point: null,
       filterContext,
     });
 
@@ -226,6 +232,7 @@ async function relationalQuery(
   );
 
   const viewport = pickSnapshotViewport(rawPoints);
+  const point = pickRepresentativePoint(rawPoints, viewport);
   const snapshot = await getRelationalSnapshot(rawQuery, {
     websiteId,
     eventType,
@@ -234,6 +241,7 @@ async function relationalQuery(
     endDate,
     viewportW: viewport?.width ?? null,
     viewportH: viewport?.height ?? null,
+    point,
     filterContext,
   });
 
@@ -250,6 +258,7 @@ async function getRelationalSnapshot(
     endDate,
     viewportW,
     viewportH,
+    point,
     filterContext,
   }: {
     websiteId: string;
@@ -259,6 +268,7 @@ async function getRelationalSnapshot(
     endDate: Date;
     viewportW: number | null;
     viewportH: number | null;
+    point: SnapshotPoint | null;
     filterContext: HeatmapFilterContext;
   },
 ): Promise<HeatmapSnapshot | null> {
@@ -269,6 +279,12 @@ async function getRelationalSnapshot(
       and h.viewport_h = {{viewportH}}
     `
       : '';
+  const pointFilter = point
+    ? `
+      and h.x = {{pointX}}
+      and h.y = {{pointY}}
+    `
+    : '';
 
   const rows: SnapshotRow[] = await rawQuery(
     `
@@ -284,6 +300,7 @@ async function getRelationalSnapshot(
         and h.url_path = {{urlPath}}
         and h.created_at between {{startDate}} and {{endDate}}
         ${viewportFilter}
+        ${pointFilter}
       group by h.visit_id
       order by event_count desc, first_seen asc
       limit 1
@@ -306,6 +323,7 @@ async function getRelationalSnapshot(
       and h.url_path = {{urlPath}}
       and h.created_at between {{startDate}} and {{endDate}}
       ${viewportFilter}
+      ${pointFilter}
     order by
       case when h.replay_chunk_index is null then 1 else 0 end asc,
       h.replay_chunk_index asc nulls last,
@@ -313,7 +331,18 @@ async function getRelationalSnapshot(
       h.created_at asc
     limit 1
     `,
-    { ...filterContext.queryParams, websiteId, eventType, urlPath, startDate, endDate, viewportW, viewportH },
+    {
+      ...filterContext.queryParams,
+      websiteId,
+      eventType,
+      urlPath,
+      startDate,
+      endDate,
+      viewportW,
+      viewportH,
+      pointX: point?.x,
+      pointY: point?.y,
+    },
     FUNCTION_NAME,
   );
 
@@ -438,6 +467,7 @@ async function clickhouseQuery(
       endDate,
       viewportW: scroll.viewportW,
       viewportH: scroll.viewportH,
+      point: null,
       filterContext,
     });
 
@@ -496,6 +526,7 @@ async function clickhouseQuery(
   }));
 
   const viewport = pickSnapshotViewport(points);
+  const point = pickRepresentativePoint(points, viewport);
   const snapshot = await getClickhouseSnapshot(rawQuery, {
     websiteId,
     eventType,
@@ -504,6 +535,7 @@ async function clickhouseQuery(
     endDate,
     viewportW: viewport?.width ?? null,
     viewportH: viewport?.height ?? null,
+    point,
     filterContext,
   });
 
@@ -520,6 +552,7 @@ async function getClickhouseSnapshot(
     endDate,
     viewportW,
     viewportH,
+    point,
     filterContext,
   }: {
     websiteId: string;
@@ -529,6 +562,7 @@ async function getClickhouseSnapshot(
     endDate: Date;
     viewportW: number | null;
     viewportH: number | null;
+    point: SnapshotPoint | null;
     filterContext: HeatmapFilterContext;
   },
 ): Promise<HeatmapSnapshot | null> {
@@ -539,6 +573,12 @@ async function getClickhouseSnapshot(
       and h.viewport_h = {viewportH:UInt32}
     `
       : '';
+  const pointFilter = point
+    ? `
+      and h.x = {pointX:UInt32}
+      and h.y = {pointY:UInt32}
+    `
+    : '';
 
   const rows = await rawQuery<SnapshotRow[]>(
     `
@@ -554,6 +594,7 @@ async function getClickhouseSnapshot(
         and h.url_path = {urlPath:String}
         and h.created_at between {startDate:DateTime64} and {endDate:DateTime64}
         ${viewportFilter}
+        ${pointFilter}
       group by h.visit_id
       order by event_count desc, first_seen asc
       limit 1
@@ -576,6 +617,7 @@ async function getClickhouseSnapshot(
       and h.url_path = {urlPath:String}
       and h.created_at between {startDate:DateTime64} and {endDate:DateTime64}
       ${viewportFilter}
+      ${pointFilter}
     order by
       isNull(h.replay_chunk_index) asc,
       h.replay_chunk_index asc,
@@ -592,6 +634,8 @@ async function getClickhouseSnapshot(
       endDate,
       viewportW,
       viewportH,
+      pointX: point?.x,
+      pointY: point?.y,
     },
     FUNCTION_NAME,
   );
@@ -630,6 +674,21 @@ function pickSnapshotViewport(points: HeatmapPoint[]): { width: number; height: 
   }
 
   return best ? { width: best.width, height: best.height } : null;
+}
+
+function pickRepresentativePoint(
+  points: HeatmapPoint[],
+  viewport: { width: number; height: number } | null,
+): SnapshotPoint | null {
+  if (!viewport) {
+    return null;
+  }
+
+  const match = points.find(
+    point => point.viewportW === viewport.width && point.viewportH === viewport.height,
+  );
+
+  return match ? { x: match.x, y: match.y } : null;
 }
 
 function mapSnapshot(row?: SnapshotRow | null): HeatmapSnapshot | null {

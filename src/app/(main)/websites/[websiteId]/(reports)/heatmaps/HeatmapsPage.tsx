@@ -1,9 +1,11 @@
 'use client';
-import { Column, Row, SearchField } from '@umami/react-zen';
+import { Button, Column, Row, SearchField } from '@umami/react-zen';
 import { useState } from 'react';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
+import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { Panel } from '@/components/common/Panel';
-import { useMobile } from '@/components/hooks';
+import { useMessages, useMobile, useSubscription, useWebsite } from '@/components/hooks';
+import { Flame } from '@/components/icons';
 import { FilterButtons } from '@/components/input/FilterButtons';
 import type { HeatmapMode } from '@/queries/sql';
 import { Heatmap } from './Heatmap';
@@ -17,11 +19,35 @@ export function HeatmapsPage({ websiteId }: { websiteId: string }) {
   const [mode, setMode] = useState<HeatmapMode>('click');
   const [search, setSearch] = useState('');
   const { isPhone } = useMobile();
+  const website = useWebsite();
+  const { t, labels, messages } = useMessages();
+  const { hasFeature, cloudMode } = useSubscription(website?.teamId);
 
   const buttons = [
     { id: 'click', label: 'Clicks' },
     { id: 'scroll', label: 'Scroll' },
   ];
+
+  if (cloudMode && !hasFeature('replays')) {
+    return (
+      <Column gap="3">
+        <Panel>
+          <EmptyPlaceholder
+            icon={<Flame />}
+            title={t(messages.upgradeRequired, { plan: 'Business' })}
+            description="View click and scroll heatmaps for your pages."
+          >
+            <Button
+              variant="primary"
+              onPress={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}
+            >
+              {t(labels.upgrade)}
+            </Button>
+          </EmptyPlaceholder>
+        </Panel>
+      </Column>
+    );
+  }
 
   return (
     <Column gap>
