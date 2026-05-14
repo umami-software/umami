@@ -11,22 +11,25 @@ import { record } from 'rrweb';
 
   const website = config(`website-id`);
   const hostUrl = config(`host-url`);
-  const sampleRate = parseFloat(config(`sample-rate`) || '0.15');
-  const maskLevel = config(`mask-level`) || 'moderate';
-  const maxDuration = parseInt(config(`max-duration`) || '300000', 10);
-  const blockSelector = config(`block-selector`) || '';
 
   if (!website) return;
 
-  // Sample rate check
-  if (sampleRate < 1 && Math.random() > sampleRate) return;
-
   const host =
     hostUrl || '__COLLECT_API_HOST__' || currentScript.src.split('/').slice(0, -1).join('/');
-  const endpoint = `${host.replace(/\/$/, '')}__COLLECT_REPLAY_ENDPOINT__`;
+  const hostBase = host.replace(/\/$/, '');
+  const endpoint = `${hostBase}__COLLECT_REPLAY_ENDPOINT__`;
+  const configEndpoint = `${hostBase}__RECORDER_CONFIG_ENDPOINT__`.replace(
+    '{websiteId}',
+    website,
+  );
 
   const FLUSH_EVENT_COUNT = 100;
   const FLUSH_INTERVAL = 10000;
+
+  let sampleRate = 0.15;
+  let maskLevel = 'moderate';
+  let maxDuration = 300000;
+  let blockSelector = '';
 
   let eventBuffer = [];
   let stopFn = null;
@@ -265,11 +268,33 @@ import { record } from 'rrweb';
     });
   };
 
-  if (document.readyState === 'complete') {
-    waitForSession();
-  } else {
-    document.addEventListener('readystatechange', () => {
-      if (document.readyState === 'complete') waitForSession();
-    });
-  }
+  const bootstrap = async () => {
+    try {
+      const response = await fetch(configEndpoint, { credentials: 'omit' });
+      if (!response.ok) return;
+
+      const data = await response.json();
+      if (!data?.enabled) return;
+
+      if (typeof data.sampleRate === 'number') sampleRate = data.sampleRate;
+      if (typeof data.maskLevel === 'string') maskLevel = data.maskLevel;
+      if (typeof data.maxDuration === 'number') maxDuration = data.maxDuration;
+      if (typeof data.blockSelector === 'string') blockSelector = data.blockSelector;
+    } catch {
+      return;
+    }
+
+    // Sample rate check
+    if (sampleRate < 1 && Math.random() > sampleRate) return;
+
+    if (document.readyState === 'complete') {
+      waitForSession();
+    } else {
+      document.addEventListener('readystatechange', () => {
+        if (document.readyState === 'complete') waitForSession();
+      });
+    }
+  };
+
+  bootstrap();
 })(window);
