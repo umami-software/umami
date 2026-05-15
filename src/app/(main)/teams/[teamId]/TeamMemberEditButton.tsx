@@ -15,23 +15,18 @@ export function TeamMemberEditButton({
   role: string;
   onSave?: () => void;
 }) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { toast } = useToast();
   const { touch } = useModified();
 
   const handleSave = () => {
     touch('teams:members');
-    toast(formatMessage(messages.saved));
+    toast(t(messages.saved));
     onSave?.();
   };
 
   return (
-    <DialogButton
-      icon={<Edit />}
-      title={formatMessage(labels.editMember)}
-      variant="quiet"
-      width="400px"
-    >
+    <DialogButton icon={<Edit />} title={t(labels.editMember)} variant="quiet" width="400px">
       {({ close }) => (
         <TeamMemberEditForm
           teamId={teamId}

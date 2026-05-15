@@ -7,12 +7,12 @@ import { useMessages } from '@/components/hooks';
 import { PreferenceSettings } from './PreferenceSettings';
 
 export function PreferencesPage() {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   return (
     <PageBody>
       <Column gap="6">
-        <PageHeader title={formatMessage(labels.preferences)} />
+        <PageHeader title={t(labels.preferences)} />
         <Panel>
           <PreferenceSettings />
         </Panel>

@@ -12,15 +12,15 @@ export interface WebsitesTableProps extends DataTableProps {
 }
 
 export function WebsitesTable({ showActions, renderLink, ...props }: WebsitesTableProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { renderUrl } = useNavigation();
 
   return (
     <DataTable {...props}>
-      <DataColumn id="name" label={formatMessage(labels.name)}>
+      <DataColumn id="name" label={t(labels.name)}>
         {renderLink}
       </DataColumn>
-      <DataColumn id="domain" label={formatMessage(labels.domain)} />
+      <DataColumn id="domain" label={t(labels.domain)} />
       {showActions && (
         <DataColumn id="action" label=" " align="end">
           {(row: any) => {

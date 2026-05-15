@@ -45,7 +45,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     payload: {
       link: link.id,
       url: request.url,
-      referrer: request.headers.get('referer'),
+      referrer: request.headers.get("referer") || undefined,
     },
   };
 

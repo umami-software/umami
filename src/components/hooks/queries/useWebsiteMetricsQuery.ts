@@ -15,7 +15,7 @@ export function useWebsiteMetricsQuery(
   options?: ReactQueryOptions<WebsiteMetricsData>,
 ) {
   const { get, useQuery } = useApi();
-  const { startAt, endAt, unit, timezone } = useDateParameters();
+  const { startAt, endAt } = useDateParameters();
   const filters = useFilterParameters();
 
   return useQuery<WebsiteMetricsData>({
@@ -25,8 +25,6 @@ export function useWebsiteMetricsQuery(
         websiteId,
         startAt,
         endAt,
-        unit,
-        timezone,
         ...filters,
         ...params,
       },
@@ -35,8 +33,6 @@ export function useWebsiteMetricsQuery(
       get(`/websites/${websiteId}/metrics`, {
         startAt,
         endAt,
-        unit,
-        timezone,
         ...filters,
         ...params,
       }),

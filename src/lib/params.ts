@@ -9,10 +9,21 @@ export function parseFilterValue(param: any) {
 
     const [, operator, value] = param.match(regex) || [];
 
-    return { operator: operator || OPERATORS.equals, value: value || param };
+    const resolvedOperator = operator || OPERATORS.equals;
+    const resolvedValue = value ?? param;
+
+    if (resolvedOperator === OPERATORS.equals || resolvedOperator === OPERATORS.notEquals) {
+      return { operator: resolvedOperator, value: resolvedValue.split(',') };
+    }
+
+    return { operator: resolvedOperator, value: resolvedValue };
   }
 
-  return { operator: OPERATORS.equals, value: param };
+  if (Array.isArray(param)) {
+    return { operator: OPERATORS.equals, value: param };
+  }
+
+  return { operator: OPERATORS.equals, value: [param] };
 }
 
 export function isEqualsOperator(operator: any) {
@@ -20,7 +31,12 @@ export function isEqualsOperator(operator: any) {
 }
 
 export function isSearchOperator(operator: any) {
-  return [OPERATORS.contains, OPERATORS.doesNotContain].includes(operator);
+  return [
+    OPERATORS.contains,
+    OPERATORS.doesNotContain,
+    OPERATORS.regex,
+    OPERATORS.notRegex,
+  ].includes(operator);
 }
 
 export function filtersObjectToArray(filters: QueryFilters, options: QueryOptions = {}): Filter[] {
@@ -35,15 +51,23 @@ export function filtersObjectToArray(filters: QueryFilters, options: QueryOption
       return arr;
     }
 
+    const baseName = key.replace(/\d+$/, '');
+    const paramName = key !== baseName ? key : undefined;
+
     if (filter?.name && filter?.value !== undefined) {
-      return arr.concat({ ...filter, column: options?.columns?.[key] ?? FILTER_COLUMNS[key] });
+      return arr.concat({
+        ...filter,
+        column: options?.columns?.[baseName] ?? FILTER_COLUMNS[baseName],
+        paramName: paramName ?? filter.paramName,
+      });
     }
 
     const { operator, value } = parseFilterValue(filter);
 
     return arr.concat({
-      name: key,
-      column: options?.columns?.[key] ?? FILTER_COLUMNS[key],
+      name: baseName,
+      paramName,
+      column: options?.columns?.[baseName] ?? FILTER_COLUMNS[baseName],
       operator,
       value,
       prefix: options?.prefix,
@@ -52,10 +76,14 @@ export function filtersObjectToArray(filters: QueryFilters, options: QueryOption
 }
 
 export function filtersArrayToObject(filters: Filter[]) {
+  const nameCounts: Record<string, number> = {};
   return filters.reduce((obj, filter: Filter) => {
     const { name, operator, value } = filter;
+    const count = nameCounts[name] ?? 0;
+    const key = count === 0 ? name : `${name}${count}`;
+    nameCounts[name] = count + 1;
 
-    obj[name] = `${operator}.${value}`;
+    obj[key] = `${operator}.${Array.isArray(value) ? value.join(',') : value}`;
 
     return obj;
   }, {});

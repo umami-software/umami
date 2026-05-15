@@ -48,7 +48,7 @@ async function checkConnection() {
 
     success('Database connection successful.');
   } catch (e) {
-    throw new Error('Unable to connect to the database: ' + e.message);
+    throw new Error(`Unable to connect to the database: ${e.message}`);
   }
 }
 

@@ -132,7 +132,7 @@ async function clickhouseQuery(
     ),
     user_activities AS (
       select distinct
-        website_event.session_id,
+        website_event.session_id as session_id,
         toInt32((${getDateSQL('created_at', unit, timezone)} - cohort_items.cohort_date) / 86400) as day_number
       from website_event
       join cohort_items

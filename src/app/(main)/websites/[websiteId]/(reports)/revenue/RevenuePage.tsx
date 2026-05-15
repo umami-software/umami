@@ -1,13 +1,14 @@
 'use client';
 import { Column } from '@umami/react-zen';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
-import { useDateRange } from '@/components/hooks';
+import { useDateRange, useTimezone } from '@/components/hooks';
 import { Revenue } from './Revenue';
 
 export function RevenuePage({ websiteId }: { websiteId: string }) {
+  const { timezone } = useTimezone();
   const {
     dateRange: { startDate, endDate, unit },
-  } = useDateRange();
+  } = useDateRange({ timezone });
 
   return (
     <Column gap>

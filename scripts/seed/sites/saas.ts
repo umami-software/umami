@@ -1,11 +1,11 @@
-import { weightedRandom, type WeightedOption } from '../utils.js';
 import type {
-  SiteConfig,
+  CustomEventConfig,
   JourneyConfig,
   PageConfig,
-  CustomEventConfig,
+  SiteConfig,
 } from '../generators/events.js';
 import type { RevenueConfig } from '../generators/revenue.js';
+import { type WeightedOption, weightedRandom } from '../utils.js';
 
 export const SAAS_WEBSITE_NAME = 'Demo SaaS';
 export const SAAS_WEBSITE_DOMAIN = 'app.example.com';

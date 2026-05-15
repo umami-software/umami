@@ -4,7 +4,7 @@ import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteContro
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 import { SectionHeader } from '@/components/common/SectionHeader';
-import { useDateRange, useReportsQuery } from '@/components/hooks';
+import { useDateRange, useNavigation, useReportsQuery } from '@/components/hooks';
 import { Funnel } from './Funnel';
 import { FunnelAddButton } from './FunnelAddButton';
 
@@ -13,13 +13,17 @@ export function FunnelsPage({ websiteId }: { websiteId: string }) {
   const {
     dateRange: { startDate, endDate },
   } = useDateRange();
+  const { pathname } = useNavigation();
+  const isSharePage = pathname.includes('/share/');
 
   return (
     <Column gap>
       <WebsiteControls websiteId={websiteId} />
-      <SectionHeader>
-        <FunnelAddButton websiteId={websiteId} />
-      </SectionHeader>
+      {!isSharePage && (
+        <SectionHeader>
+          <FunnelAddButton websiteId={websiteId} />
+        </SectionHeader>
+      )}
       <LoadingPanel data={data} isLoading={isLoading} error={error}>
         {data && (
           <Grid gap>

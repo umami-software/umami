@@ -1,70 +1,29 @@
 import { useMemo } from 'react';
+import { FILTER_COLUMNS } from '@/lib/constants';
 import { useNavigation } from './useNavigation';
 
 export function useFilterParameters() {
-  const {
-    query: {
-      path,
-      referrer,
-      title,
-      query,
-      host,
-      os,
-      browser,
-      device,
-      country,
-      region,
-      city,
-      event,
-      tag,
-      hostname,
-      page,
-      pageSize,
-      search,
-      segment,
-      cohort,
-    },
-  } = useNavigation();
+  const { query } = useNavigation();
 
   return useMemo(() => {
+    const filterParams: Record<string, any> = {};
+
+    for (const key of Object.keys(query)) {
+      const baseName = key.replace(/\d+$/, '');
+      if (FILTER_COLUMNS[baseName]) {
+        filterParams[key] = query[key];
+      }
+    }
+
     return {
-      path,
-      referrer,
-      title,
-      query,
-      host,
-      os,
-      browser,
-      device,
-      country,
-      region,
-      city,
-      event,
-      tag,
-      hostname,
-      search,
-      segment,
-      cohort,
+      ...filterParams,
+      search: query.search,
+      segment: query.segment,
+      cohort: query.cohort,
+      excludeBounce: query.excludeBounce,
+      match: query.match,
+      page: query.page,
+      pageSize: query.pageSize,
     };
-  }, [
-    path,
-    referrer,
-    title,
-    query,
-    host,
-    os,
-    browser,
-    device,
-    country,
-    region,
-    city,
-    event,
-    tag,
-    hostname,
-    page,
-    pageSize,
-    search,
-    segment,
-    cohort,
-  ]);
+  }, [query]);
 }

@@ -25,7 +25,7 @@ export function TypeConfirmationForm({
   onConfirm?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels, messages, getErrorMessage } = useMessages();
+  const { t, labels, messages, getErrorMessage } = useMessages();
   if (!confirmationValue) {
     return null;
   }
@@ -33,21 +33,21 @@ export function TypeConfirmationForm({
   return (
     <Form onSubmit={onConfirm} error={getErrorMessage(error)}>
       <p>
-        {formatMessage(messages.actionConfirmation, {
+        {t(messages.actionConfirmation, {
           confirmation: confirmationValue,
         })}
       </p>
       <FormField
-        label={formatMessage(labels.confirm)}
+        label={t(labels.confirm)}
         name="confirm"
         rules={{ validate: value => value === confirmationValue }}
       >
         <TextField autoComplete="off" />
       </FormField>
       <FormButtons>
-        <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
+        <Button onPress={onClose}>{t(labels.cancel)}</Button>
         <FormSubmitButton isLoading={isLoading} variant={buttonVariant}>
-          {buttonLabel || formatMessage(labels.ok)}
+          {buttonLabel || t(labels.ok)}
         </FormSubmitButton>
       </FormButtons>
     </Form>

@@ -17,10 +17,10 @@ jobs:
         with:
           version: 10
           run_install: false
-      - name: Use Node.js 18.18
+      - name: Use Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: 18.18
+          node-version: 22
           cache: "pnpm"
       - run: npm install --global pnpm
       - run: pnpm install

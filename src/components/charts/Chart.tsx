@@ -122,7 +122,20 @@ export function Chart({
   return (
     <Column gap="6">
       <Box {...props}>
-        <canvas ref={canvas} />
+        {/*
+          Position the canvas absolutely inside a relative-positioned
+          wrapper. Chart.js writes inline pixel sizes onto the canvas, and
+          while it lives in the normal flow that pixel width propagates up
+          as min/max-content through every flex parent into the surrounding
+          CSS Grid track, pinning the chart's column at its widest measured
+          size and only resetting on a full page reload. Taking the canvas
+          out of flow with position: absolute breaks that propagation; the
+          wrapper sizes purely from its parent (width: 100%, height: 100%)
+          and Chart.js' ResizeObserver picks up viewport changes.
+        */}
+        <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
+          <canvas ref={canvas} style={{ position: 'absolute', top: 0, left: 0 }} />
+        </div>
       </Box>
       <Legend items={legendItems} onClick={handleLegendClick} />
     </Column>

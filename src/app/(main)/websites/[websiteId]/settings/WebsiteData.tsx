@@ -13,7 +13,7 @@ import { WebsiteResetForm } from './WebsiteResetForm';
 import { WebsiteTransferForm } from './WebsiteTransferForm';
 
 export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { user } = useLoginQuery();
   const { touch } = useModified();
   const { router, pathname, teamId, renderUrl } = useNavigation();
@@ -49,14 +49,11 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   return (
     <Column gap="6">
       {!isAdmin && (
-        <ActionForm
-          label={formatMessage(labels.transferWebsite)}
-          description={formatMessage(messages.transferWebsite)}
-        >
+        <ActionForm label={t(labels.transferWebsite)} description={t(messages.transferWebsite)}>
           <DialogTrigger>
-            <Button isDisabled={!canTransferWebsite}>{formatMessage(labels.transfer)}</Button>
+            <Button isDisabled={!canTransferWebsite}>{t(labels.transfer)}</Button>
             <Modal>
-              <Dialog title={formatMessage(labels.transferWebsite)} style={{ width: 400 }}>
+              <Dialog title={t(labels.transferWebsite)} style={{ width: 400 }}>
                 {({ close }) => (
                   <WebsiteTransferForm websiteId={websiteId} onSave={handleSave} onClose={close} />
                 )}
@@ -66,14 +63,11 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
         </ActionForm>
       )}
 
-      <ActionForm
-        label={formatMessage(labels.resetWebsite)}
-        description={formatMessage(messages.resetWebsiteWarning)}
-      >
+      <ActionForm label={t(labels.resetWebsite)} description={t(messages.resetWebsiteWarning)}>
         <DialogTrigger>
-          <Button>{formatMessage(labels.reset)}</Button>
+          <Button>{t(labels.reset)}</Button>
           <Modal>
-            <Dialog title={formatMessage(labels.resetWebsite)} style={{ width: 400 }}>
+            <Dialog title={t(labels.resetWebsite)} style={{ width: 400 }}>
               {({ close }) => (
                 <WebsiteResetForm websiteId={websiteId} onSave={handleReset} onClose={close} />
               )}
@@ -82,16 +76,13 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
         </DialogTrigger>
       </ActionForm>
 
-      <ActionForm
-        label={formatMessage(labels.deleteWebsite)}
-        description={formatMessage(messages.deleteWebsiteWarning)}
-      >
+      <ActionForm label={t(labels.deleteWebsite)} description={t(messages.deleteWebsiteWarning)}>
         <DialogTrigger>
           <Button data-test="button-delete" variant="danger">
-            {formatMessage(labels.delete)}
+            {t(labels.delete)}
           </Button>
           <Modal>
-            <Dialog title={formatMessage(labels.deleteWebsite)} style={{ width: 400 }}>
+            <Dialog title={t(labels.deleteWebsite)} style={{ width: 400 }}>
               {({ close }) => (
                 <WebsiteDeleteForm websiteId={websiteId} onSave={handleSave} onClose={close} />
               )}

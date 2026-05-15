@@ -2,7 +2,6 @@ import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 import { useDeleteQuery, useMessages, useModified } from '@/components/hooks';
 import { Trash } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
-import { messages } from '@/components/messages';
 
 export function TeamMemberRemoveButton({
   teamId,
@@ -16,7 +15,7 @@ export function TeamMemberRemoveButton({
   disabled?: boolean;
   onSave?: () => void;
 }) {
-  const { formatMessage, labels, FormattedMessage } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { mutateAsync, isPending, error } = useDeleteQuery(`/teams/${teamId}/users/${userId}`);
   const { touch } = useModified();
 
@@ -31,27 +30,18 @@ export function TeamMemberRemoveButton({
   };
 
   return (
-    <DialogButton
-      icon={<Trash />}
-      title={formatMessage(labels.confirm)}
-      variant="quiet"
-      width="400px"
-    >
+    <DialogButton icon={<Trash />} title={t(labels.confirm)} variant="quiet" width="400px">
       {({ close }) => (
         <ConfirmationForm
-          message={
-            <FormattedMessage
-              {...messages.confirmRemove}
-              values={{
-                target: <b>{userName}</b>,
-              }}
-            />
-          }
+          message={t.rich(messages.confirmRemove, {
+            target: userName,
+            b: chunks => <b>{chunks}</b>,
+          })}
           isLoading={isPending}
           error={error}
           onConfirm={handleConfirm.bind(null, close)}
           onClose={close}
-          buttonLabel={formatMessage(labels.remove)}
+          buttonLabel={t(labels.remove)}
           buttonVariant="danger"
         />
       )}

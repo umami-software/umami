@@ -18,7 +18,7 @@ export interface MetricLabelProps {
 }
 
 export function MetricLabel({ type, data }: MetricLabelProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { formatValue, formatCity } = useFormat();
   const { locale } = useLocale();
   const { countryNames } = useCountryNames(locale);
@@ -39,7 +39,7 @@ export function MetricLabel({ type, data }: MetricLabelProps) {
       );
 
     case 'channel':
-      return formatMessage(labels[label]);
+      return t(labels[label]);
 
     case 'city':
       return (
@@ -87,7 +87,7 @@ export function MetricLabel({ type, data }: MetricLabelProps) {
         <FilterLink
           type={type === 'entry' || type === 'exit' ? 'path' : type}
           value={label}
-          label={!label && formatMessage(labels.none)}
+          label={!label && t(labels.none)}
           externalUrl={
             domain ? `${domain?.startsWith('http') ? domain : `https://${domain}`}${label}` : null
           }
@@ -110,14 +110,14 @@ export function MetricLabel({ type, data }: MetricLabelProps) {
           type="referrer"
           value={label}
           externalUrl={`https://${label}`}
-          label={!label && formatMessage(labels.none)}
+          label={!label && t(labels.none)}
           icon={<Favicon domain={label} />}
         />
       );
 
     case 'domain':
       if (label === 'Other') {
-        return `(${formatMessage(labels.other)})`;
+        return `(${t(labels.other)})`;
       } else {
         const name = GROUPED_DOMAINS.find(({ domain }) => domain === label)?.name;
 

@@ -1,11 +1,12 @@
 import { z } from 'zod';
+import { ENTITY_TYPE } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
-import redis from '@/lib/redis';
+import { fetchAccount } from '@/lib/load';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams } from '@/lib/schema';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
-import { createWebsite, getWebsiteCount } from '@/queries/prisma';
+import { createShare, createWebsite, getWebsiteCount } from '@/queries/prisma';
 import { getAllUserWebsitesIncludingTeamOwner, getUserWebsites } from '@/queries/prisma/website';
 
 const CLOUD_WEBSITE_LIMIT = 3;
@@ -52,7 +53,7 @@ export async function POST(request: Request) {
   const { id, name, domain, shareId, teamId } = body;
 
   if (process.env.CLOUD_MODE && !teamId) {
-    const account = await redis.client.get(`account:${auth.user.id}`);
+    const account = await fetchAccount(auth.user.id);
 
     if (!account?.hasSubscription) {
       const count = await getWebsiteCount(auth.user.id);
@@ -72,7 +73,6 @@ export async function POST(request: Request) {
     createdBy: auth.user.id,
     name,
     domain,
-    shareId,
     teamId,
   };
 
@@ -82,5 +82,19 @@ export async function POST(request: Request) {
 
   const website = await createWebsite(data);
 
-  return json(website);
+  const share = shareId
+    ? await createShare({
+        id: uuid(),
+        entityId: website.id,
+        shareType: ENTITY_TYPE.website,
+        name: website.name,
+        slug: shareId,
+        parameters: { overview: true, events: true },
+      })
+    : null;
+
+  return json({
+    ...website,
+    shareId: share?.slug ?? null,
+  });
 }

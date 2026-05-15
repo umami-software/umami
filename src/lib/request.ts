@@ -1,8 +1,9 @@
+import { startOfMonth, subMonths } from 'date-fns';
 import { z } from 'zod';
 import { checkAuth } from '@/lib/auth';
-import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS } from '@/lib/constants';
+import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import { getAllowedUnits, getMinimumUnit, maxDate, parseDateRange } from '@/lib/date';
-import { fetchWebsite } from '@/lib/load';
+import { fetchAccount, fetchWebsite } from '@/lib/load';
 import { filtersArrayToObject } from '@/lib/params';
 import { badRequest, unauthorized } from '@/lib/response';
 import type { QueryFilters } from '@/lib/types';
@@ -16,17 +17,25 @@ export async function parseRequest(
   const url = new URL(request.url);
   let query = Object.fromEntries(url.searchParams);
   let body = await getJsonBody(request);
-  let error: () => undefined | undefined;
+  let error: () => undefined | undefined | Response;
   let auth = null;
 
   if (schema) {
     const isGet = request.method === 'GET';
+    const rawQuery = query;
     const result = schema.safeParse(isGet ? query : body);
 
     if (!result.success) {
       error = () => badRequest(z.treeifyError(result.error));
     } else if (isGet) {
       query = result.data;
+
+      // Re-add suffixed filter params (e.g., browser1, os2) stripped by Zod schema
+      for (const key of Object.keys(rawQuery)) {
+        if (/\d+$/.test(key) && !(key in query)) {
+          query[key] = rawQuery[key];
+        }
+      }
     } else {
       body = result.data;
     }
@@ -70,10 +79,10 @@ export function getRequestDateRange(query: Record<string, string>) {
 export function getRequestFilters(query: Record<string, any>) {
   const result: Record<string, any> = {};
 
-  for (const key of Object.keys(FILTER_COLUMNS)) {
-    const value = query[key];
-    if (value !== undefined) {
-      result[key] = value;
+  for (const key of Object.keys(query)) {
+    const baseName = key.replace(/\d+$/, '');
+    if (baseName in FILTER_COLUMNS) {
+      result[key] = query[key];
     }
   }
 
@@ -82,6 +91,15 @@ export function getRequestFilters(query: Record<string, any>) {
 
 export async function setWebsiteDate(websiteId: string, data: Record<string, any>) {
   const website = await fetchWebsite(websiteId);
+  const cloudMode = !!process.env.CLOUD_MODE;
+
+  if (cloudMode && website && !website.teamId) {
+    const account = await fetchAccount(website.userId);
+
+    if (!account?.hasSubscription) {
+      data.startDate = maxDate(data.startDate, startOfMonth(subMonths(new Date(), 6)));
+    }
+  }
 
   if (website?.resetAt) {
     data.startDate = maxDate(data.startDate, new Date(website?.resetAt));
@@ -97,6 +115,8 @@ export async function getQueryFilters(
   const dateRange = getRequestDateRange(params);
   const filters = getRequestFilters(params);
 
+  let match = params?.match;
+
   if (websiteId) {
     await setWebsiteDate(websiteId, dateRange);
 
@@ -105,6 +125,10 @@ export async function getQueryFilters(
         ?.parameters as Record<string, any>;
 
       Object.assign(filters, filtersArrayToObject(segmentParams.filters));
+
+      if (segmentParams.match) {
+        match = segmentParams.match;
+      }
     }
 
     if (params.cohort) {
@@ -120,7 +144,7 @@ export async function getQueryFilters(
 
       cohortFilters.push({
         name: `cohort_${cohortParams.action.type}`,
-        operator: 'eq',
+        operator: OPERATORS.equals,
         value: cohortParams.action.value,
       });
 
@@ -128,13 +152,22 @@ export async function getQueryFilters(
         ...filtersArrayToObject(cohortFilters),
         cohort_startDate: startDate,
         cohort_endDate: endDate,
+        ...(cohortParams.match && {
+          cohort_match: cohortParams.match,
+          cohort_actionName: `cohort_${cohortParams.action.type}`,
+        }),
       });
+    }
+
+    if (params.excludeBounce) {
+      Object.assign(filters, { excludeBounce: true });
     }
   }
 
   return {
     ...dateRange,
     ...filters,
+    match,
     page: params?.page,
     pageSize: params?.pageSize ? params?.pageSize || DEFAULT_PAGE_SIZE : undefined,
     orderBy: params?.orderBy,
