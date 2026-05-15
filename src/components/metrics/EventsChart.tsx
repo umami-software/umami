@@ -9,6 +9,7 @@ import {
   useWebsiteEventsSeriesQuery,
 } from '@/components/hooks';
 import { renderDateLabels } from '@/lib/charts';
+import { hex6 } from '@/lib/colors';
 import { CHART_COLORS } from '@/lib/constants';
 import { generateTimeSeries } from '@/lib/date';
 
@@ -51,9 +52,36 @@ export function EventsChart({ websiteId, focusLabel, limit }: EventsChartProps) 
         ],
       };
     } else {
+      // Each label has a preferred palette slot derived from a hash of the
+      // label, so the same event tends to get the same color across reloads
+      // and date-range changes. We walk labels in hash order and, when two
+      // labels prefer the same slot, the later one steps to the next free
+      // slot, so the visible set of <=12 events all get distinct colors.
+      // The right shift on hex6 sidesteps the FNV-1a low-bit bias mod 12
+      // (the FNV prime is close to 2^24).
+      const colorByKey: Record<string, string> = {};
+      const used = new Set<string>();
+      const hashOf = Object.fromEntries(
+        Object.keys(map).map(key => [key, parseInt(hex6(key), 16)]),
+      );
+      const orderedKeys = [...Object.keys(map)].sort((a, b) => hashOf[a] - hashOf[b]);
+      for (const key of orderedKeys) {
+        const start = (hashOf[key] >>> 4) % CHART_COLORS.length;
+        let chosen = CHART_COLORS[start];
+        for (let i = 0; i < CHART_COLORS.length; i++) {
+          const candidate = CHART_COLORS[(start + i) % CHART_COLORS.length];
+          if (!used.has(candidate)) {
+            chosen = candidate;
+            break;
+          }
+        }
+        used.add(chosen);
+        colorByKey[key] = chosen;
+      }
+
       return {
-        datasets: Object.keys(map).map((key, index) => {
-          const color = colord(CHART_COLORS[index % CHART_COLORS.length]);
+        datasets: Object.keys(map).map(key => {
+          const color = colord(colorByKey[key]);
           return {
             label: key,
             data: generateTimeSeries(map[key], startDate, endDate, unit, dateLocale),
