@@ -13,28 +13,32 @@ CREATE TABLE "share" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "share_slug_key" ON "share"("slug");
+CREATE UNIQUE INDEX IF NOT EXISTS "share_slug_key" ON "share"("slug");
 
 -- CreateIndex
-CREATE INDEX "share_entity_id_idx" ON "share"("entity_id");
+CREATE INDEX IF NOT EXISTS "share_entity_id_idx" ON "share"("entity_id");
 
 -- MigrateData
-INSERT INTO "share" (share_id, entity_id, name, share_type, slug, parameters, created_at)
-SELECT gen_random_uuid(),
-       website_id,
-       name,
-       1,
-       share_id,
-       '{"overview":true}'::jsonb,
-       now()
-FROM "website"
-WHERE share_id IS NOT NULL;
+DO $$
+BEGIN
+    INSERT INTO "share" (share_id, entity_id, name, share_type, slug, parameters, created_at)
+    SELECT gen_random_uuid(),
+        website_id,
+        name,
+        1,
+        share_id,
+        '{"overview":true}'::jsonb,
+        now()
+    FROM "website"
+    WHERE share_id IS NOT NULL;
+EXCEPTION WHEN undefined_column THEN NULL;
+END $$;
 
 -- DropIndex
-DROP INDEX "website_share_id_idx";
+DROP INDEX IF EXISTS "website_share_id_idx";
 
 -- DropIndex
-DROP INDEX "website_share_id_key";
+DROP INDEX IF EXISTS "website_share_id_key";
 
 -- AlterTable
-ALTER TABLE "website" DROP COLUMN "share_id";
+ALTER TABLE "website" DROP COLUMN IF EXISTS "share_id";
