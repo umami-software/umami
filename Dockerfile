@@ -7,6 +7,11 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN npm install -g pnpm
+
+RUN cat > pnpm-workspace.yaml << EOF
+strictDepBuilds: false
+EOF
+
 RUN pnpm install --frozen-lockfile
 
 # Rebuild the source code only when needed
@@ -41,8 +46,17 @@ RUN set -x \
     && apk add --no-cache curl \
     && npm install -g pnpm
 
+RUN echo {} > package.json
+
+RUN cat > pnpm-workspace.yaml << EOF
+allowBuilds:
+  '@prisma/engines': true
+  prisma: false
+verifyDepsBeforeRun: false
+EOF
+
 # Script dependencies
-RUN pnpm --allow-build='@prisma/engines' add npm-run-all dotenv chalk semver \
+RUN pnpm add npm-run-all dotenv chalk semver \
     prisma@${PRISMA_VERSION} \
     @prisma/client@${PRISMA_VERSION} \
     @prisma/adapter-pg@${PRISMA_VERSION}

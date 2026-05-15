@@ -1,9 +1,10 @@
 packages:
   - '**'
-ignoredBuiltDependencies:
-  - esbuild
-  - sharp
-onlyBuiltDependencies:
-  - '@prisma/client'
-  - '@prisma/engines'
-  - prisma
+allowBuilds:
+  '@parcel/watcher': false
+  '@prisma/engines': true
+  '@swc/core': false
+  esbuild: false
+  msw: false
+  prisma: true
+  sharp: false
