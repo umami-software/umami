@@ -27,6 +27,16 @@ export function EventsChart({ websiteId, focusLabel, limit }: EventsChartProps) 
   const { locale, dateLocale } = useLocale();
   const { data, isLoading, error } = useWebsiteEventsSeriesQuery(websiteId, { limit });
   const [label, setLabel] = useState<string>(focusLabel);
+  const [hiddenLabels, setHiddenLabels] = useState<Set<string>>(() => new Set());
+
+  const handleLegendClick = useCallback((legendLabel: string, willBeHidden: boolean) => {
+    setHiddenLabels(prev => {
+      const next = new Set(prev);
+      if (willBeHidden) next.add(legendLabel);
+      else next.delete(legendLabel);
+      return next;
+    });
+  }, []);
 
   const chartData: any = useMemo(() => {
     if (!data) return;
@@ -115,6 +125,8 @@ export function EventsChart({ websiteId, focusLabel, limit }: EventsChartProps) 
           stacked={true}
           renderXLabel={renderXLabel}
           height="400px"
+          hiddenLabels={hiddenLabels}
+          onLegendClick={handleLegendClick}
         />
       )}
     </LoadingPanel>
