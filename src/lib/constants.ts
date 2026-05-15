@@ -26,6 +26,7 @@ export const DEFAULT_DATE_RANGE_VALUE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
 export const DEFAULT_RESET_DATE = '2000-01-01';
 export const DEFAULT_PAGE_SIZE = 20;
+export const MAX_PAGING_RESULTS = 10000;
 export const DEFAULT_DATE_COMPARE = 'prev';
 export const DEFAULT_CURRENCY = 'USD';
 
@@ -36,6 +37,7 @@ export const UNIT_TYPES = ['year', 'month', 'hour', 'day', 'minute'];
 
 export const EVENT_COLUMNS = [
   'path',
+  'fullPath',
   'entry',
   'exit',
   'referrer',
@@ -117,6 +119,11 @@ export const EVENT_TYPE = {
   linkEvent: 3,
   pixelEvent: 4,
   performance: 5,
+} as const;
+
+export const HEATMAP_EVENT_TYPE = {
+  click: 1,
+  scroll: 2,
 } as const;
 
 export const ENTITY_TYPE = {
@@ -250,7 +257,7 @@ export const DOMAIN_REGEX =
   /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-_]{1,63}\.)(xn--)?[a-z0-9-_]+(-[a-z0-9-_]+)*\.)+(xn--)?[a-z0-9-_]{2,63})$/;
 export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{8,50}$/;
 export const DATETIME_REGEX =
-  /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{3}(Z|\+[0-9]{2}:[0-9]{2})?)?$/;
+  /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{3})?(Z|\+[0-9]{2}:[0-9]{2})?$/;
 
 export const URL_LENGTH = 500;
 export const PAGE_TITLE_LENGTH = 500;
@@ -271,6 +278,7 @@ export const BROWSERS = {
   aol: 'AOL',
   bb10: 'BlackBerry 10',
   beaker: 'Beaker',
+  browser: 'Unknown',
   chrome: 'Chrome',
   'chromium-webview': 'Chrome (webview)',
   crios: 'Chrome (iOS)',
@@ -318,14 +326,21 @@ export const SOCIAL_DOMAINS = [
 export const SEARCH_DOMAINS = [
   'baidu.com',
   'bing.com',
-  'chatgpt.com',
   'duckduckgo.com',
   'ecosia.org',
   'google.',
   'msn.com',
-  'perplexity.ai',
   'search.brave.com',
   'yandex.',
+];
+
+export const LLM_DOMAINS = [
+  'chatgpt.com',
+  'claude.ai',
+  'copilot.microsoft.com',
+  'gemini.google.com',
+  'meta.ai',
+  'perplexity.ai',
 ];
 
 export const SHOPPING_DOMAINS = [

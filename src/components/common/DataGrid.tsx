@@ -55,7 +55,7 @@ export function DataGrid({
   const { data, error, isLoading, isFetching } = query;
   const { router, updateParams, query: queryParams } = useNavigation();
   const [search, setSearch] = useState(queryParams?.search || data?.search || '');
-  const showPager = allowPaging && data && data.count > data.pageSize;
+  const showPager = allowPaging && data && data.count > 0;
   const { isMobile } = useMobile();
   const [userDisplayMode, setUserDisplayMode] = useState<DisplayMode | null>(() => {
     // localStorage can hold anything (extensions, manual edits, schema drift),
@@ -127,25 +127,33 @@ export function DataGrid({
         renderEmpty={renderEmpty}
       >
         {data && (
-          <>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'minmax(0, 1fr)',
+                overflowX: 'auto',
+              }}
+            >
             <Column>
               {isValidElement(child)
                 ? cloneElement(child as ReactElement<any>, { displayMode })
                 : child}
             </Column>
-            {showPager && (
-              <Row marginTop="6">
-                <Pager
-                  page={data.page}
-                  pageSize={data.pageSize}
-                  count={data.count}
-                  onPageChange={handlePageChange}
-                />
-              </Row>
-            )}
-          </>
-        )}
-      </LoadingPanel>
+            </div>
+          )}
+        </LoadingPanel>
+      </Column>
+      {showPager && (
+        <Row marginTop="4">
+          <Pager
+            page={data.page}
+            pageSize={data.pageSize}
+            count={data.count}
+            isCapped={data.isCapped}
+            onPageChange={handlePageChange}
+          />
+        </Row>
+      )}
     </Column>
   );
 }

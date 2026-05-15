@@ -47,7 +47,7 @@ async function relationalQuery(
   const chart = await rawQuery(
     `
     select
-      ${getDateSQL('created_at', unit, timezone)} t,
+      ${getDateSQL('website_event.created_at', unit, timezone)} t,
       percentile_cont(0.5) within group (order by ${metric}) as p50,
       percentile_cont(0.75) within group (order by ${metric}) as p75,
       percentile_cont(0.95) within group (order by ${metric}) as p95

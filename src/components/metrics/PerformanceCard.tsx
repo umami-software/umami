@@ -1,6 +1,6 @@
-import { config, useSpring } from '@react-spring/web';
 import { Column, Text } from '@umami/react-zen';
-import { useRef } from 'react';
+import { useSpring, useTransform } from 'motion/react';
+import { useEffect, useRef } from 'react';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { Badge } from '@/components/common/Badge';
 import { useMessages } from '@/components/hooks';
@@ -45,10 +45,14 @@ export const PerformanceCard = ({
   const metricChanged = prevMetricRef.current !== metric;
   if (metricChanged) prevMetricRef.current = metric;
 
-  const spring = useSpring({
-    value: !Number.isNaN(value) ? value : 0,
-    config: metricChanged ? { duration: 0 } : config.default,
-  });
+  const target = !Number.isNaN(value) ? value : 0;
+  const spring = useSpring(target, { stiffness: 170, damping: 26 });
+  const display = useTransform(spring, n => formatValue(n));
+
+  useEffect(() => {
+    if (metricChanged) spring.jump(target);
+    else spring.set(target);
+  }, [target, metricChanged, spring]);
 
   return (
     <Column
@@ -67,7 +71,7 @@ export const PerformanceCard = ({
         {label}
       </Text>
       <Text size="4xl" weight="bold" wrap="nowrap">
-        <AnimatedDiv>{spring.value.to(n => formatValue(n))}</AnimatedDiv>
+        <AnimatedDiv>{display}</AnimatedDiv>
       </Text>
       <Badge variant={RATING_VARIANTS[rating]}>
         {t(labels[rating === 'needs-improvement' ? 'needsImprovement' : rating])}

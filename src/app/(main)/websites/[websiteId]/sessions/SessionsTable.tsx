@@ -25,7 +25,7 @@ export function SessionsTable({
       <DataColumn id="visits" label={t(labels.visits)} width="80px" />
       <DataColumn id="views" label={t(labels.views)} width="80px" />
       <DataColumn id="events" label={t(labels.events)} width="80px" />
-      <DataColumn id="location" label={t(labels.location)}>
+      <DataColumn id="location" label={t(labels.location)} width="200px">
         {(row: any) => (
           <TypeIcon type="country" value={row.country}>
             {row.city ? `${row.city}, ` : ''}

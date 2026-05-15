@@ -2,7 +2,7 @@ export function getQueryString(params: object = {}): string {
   const searchParams = new URLSearchParams();
 
   Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined) {
+    if (value !== undefined && value !== null && !Number.isNaN(value)) {
       searchParams.append(key, value);
     }
   });

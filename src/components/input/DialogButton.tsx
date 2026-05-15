@@ -42,7 +42,7 @@ export function DialogButton({
     height,
     minWidth,
     minHeight,
-    maxHeight: 'calc(100dvh - 40px)',
+    maxHeight: 'min(80dvh, calc(100dvh - 40px))',
     overflowY: 'auto',
     padding: '32px',
   };

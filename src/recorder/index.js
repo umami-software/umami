@@ -11,28 +11,33 @@ import { record } from 'rrweb';
 
   const website = config(`website-id`);
   const hostUrl = config(`host-url`);
-  const sampleRate = parseFloat(config(`sample-rate`) || '0.15');
-  const maskLevel = config(`mask-level`) || 'moderate';
-  const maxDuration = parseInt(config(`max-duration`) || '300000', 10);
-  const blockSelector = config(`block-selector`) || '';
 
   if (!website) return;
 
-  // Sample rate check
-  if (sampleRate < 1 && Math.random() > sampleRate) return;
-
   const host =
     hostUrl || '__COLLECT_API_HOST__' || currentScript.src.split('/').slice(0, -1).join('/');
-  const endpoint = `${host.replace(/\/$/, '')}__COLLECT_REPLAY_ENDPOINT__`;
+  const hostBase = host.replace(/\/$/, '');
+  const endpoint = `${hostBase}__COLLECT_REPLAY_ENDPOINT__`;
+  const configEndpoint = `${hostBase}__RECORDER_CONFIG_ENDPOINT__`.replace(
+    '{websiteId}',
+    website,
+  );
 
   const FLUSH_EVENT_COUNT = 100;
   const FLUSH_INTERVAL = 10000;
+
+  let sampleRate = 0.15;
+  let maskLevel = 'moderate';
+  let maxDuration = 300000;
+  let blockSelector = '';
 
   let eventBuffer = [];
   let stopFn = null;
   let flushTimer = null;
   let startTime = null;
   let stopped = false;
+  let recorderReady = false;
+  let customEventBuffer = [];
 
   const sendEvents = (events, useKeepalive = false) => {
     const session = window.umami?.getSession?.();
@@ -84,6 +89,42 @@ import { record } from 'rrweb';
     if (stopFn) stopFn();
   };
 
+  const flushCustomEvents = () => {
+    if (!recorderReady || !customEventBuffer.length) return;
+
+    const events = customEventBuffer;
+    customEventBuffer = [];
+
+    for (const event of events) {
+      addCustomEvent(event.tag, event.payload);
+    }
+  };
+
+  const addCustomEvent = (tag, payload) => {
+    if (stopped) return;
+
+    if (!recorderReady) {
+      customEventBuffer.push({ tag, payload });
+      return;
+    }
+
+    try {
+      record.addCustomEvent(tag, payload);
+    } catch (e) {
+      if (e?.message === 'please add custom event after start recording') {
+        recorderReady = false;
+        customEventBuffer.push({ tag, payload });
+        setTimeout(() => {
+          recorderReady = true;
+          flushCustomEvents();
+        }, 0);
+        return;
+      }
+
+      throw e;
+    }
+  };
+
   const getMaskConfig = level => {
     switch (level) {
       case 'strict':
@@ -124,6 +165,8 @@ import { record } from 'rrweb';
         }
 
         eventBuffer.push(event);
+        recorderReady = true;
+        flushCustomEvents();
 
         if (eventBuffer.length >= FLUSH_EVENT_COUNT) {
           flush();
@@ -148,19 +191,110 @@ import { record } from 'rrweb';
       checkoutEveryNms: 30000,
       ...(blockSelector && { blockSelector }),
     });
+    recorderReady = true;
+    flushCustomEvents();
+
+    let scrollUrl = location.href;
+    let maxScrollPct = 0;
+    let scrollTimer = null;
+
+    const computeScrollPct = () => {
+      const pageH = document.documentElement.scrollHeight;
+      const visible = window.scrollY + window.innerHeight;
+      return {
+        pct: Math.max(0, Math.min(100, Math.round((visible / Math.max(1, pageH)) * 100))),
+        pageH,
+      };
+    };
+
+    const flushScroll = () => {
+      if (maxScrollPct <= 0) return;
+      addCustomEvent('scroll-progress', {
+        url: scrollUrl,
+        scrollPct: maxScrollPct,
+        viewportW: window.innerWidth,
+        viewportH: window.innerHeight,
+        pageH: document.documentElement.scrollHeight,
+      });
+      maxScrollPct = 0;
+    };
+
+    const onScroll = () => {
+      if (scrollTimer) return;
+      scrollTimer = setTimeout(() => {
+        const { pct } = computeScrollPct();
+        if (pct > maxScrollPct) maxScrollPct = pct;
+        scrollTimer = null;
+      }, 200);
+    };
+
+    const onUrlChange = () => {
+      if (location.href === scrollUrl) return;
+      flushScroll();
+      scrollUrl = location.href;
+      addCustomEvent('url-change', { url: scrollUrl });
+    };
+
+    const hookHistory = method => {
+      const orig = history[method];
+      history[method] = function (...args) {
+        const result = orig.apply(this, args);
+        onUrlChange();
+        return result;
+      };
+    };
+
+    hookHistory('pushState');
+    hookHistory('replaceState');
+    window.addEventListener('popstate', onUrlChange);
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Capture initial scroll position
+    {
+      const { pct } = computeScrollPct();
+      if (pct > maxScrollPct) maxScrollPct = pct;
+    }
 
     document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') flush(true);
+      if (document.visibilityState === 'hidden') {
+        flushScroll();
+        flush(true);
+      }
     });
 
-    window.addEventListener('beforeunload', () => flush(true));
+    window.addEventListener('beforeunload', () => {
+      flushScroll();
+      flush(true);
+    });
   };
 
-  if (document.readyState === 'complete') {
-    waitForSession();
-  } else {
-    document.addEventListener('readystatechange', () => {
-      if (document.readyState === 'complete') waitForSession();
-    });
-  }
+  const bootstrap = async () => {
+    try {
+      const response = await fetch(configEndpoint, { credentials: 'omit' });
+      if (!response.ok) return;
+
+      const data = await response.json();
+      if (!data?.enabled) return;
+
+      if (typeof data.sampleRate === 'number') sampleRate = data.sampleRate;
+      if (typeof data.maskLevel === 'string') maskLevel = data.maskLevel;
+      if (typeof data.maxDuration === 'number') maxDuration = data.maxDuration;
+      if (typeof data.blockSelector === 'string') blockSelector = data.blockSelector;
+    } catch {
+      return;
+    }
+
+    // Sample rate check
+    if (sampleRate < 1 && Math.random() > sampleRate) return;
+
+    if (document.readyState === 'complete') {
+      waitForSession();
+    } else {
+      document.addEventListener('readystatechange', () => {
+        if (document.readyState === 'complete') waitForSession();
+      });
+    }
+  };
+
+  bootstrap();
 })(window);
