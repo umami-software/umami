@@ -1,51 +1,66 @@
 import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import { DateDistance } from '@/components/common/DateDistance';
 import { ExternalLink } from '@/components/common/ExternalLink';
+import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages, useNavigation, useSlug } from '@/components/hooks';
 import { LinkDeleteButton } from './LinkDeleteButton';
 import { LinkEditButton } from './LinkEditButton';
 
-export function LinksTable(props: DataTableProps) {
-  const { formatMessage, labels } = useMessages();
+export interface LinksTableProps extends DataTableProps {
+  showActions?: boolean;
+}
+
+export function LinksTable({ showActions, ...props }: LinksTableProps) {
+  const { t, labels } = useMessages();
   const { websiteId, renderUrl } = useNavigation();
   const { getSlugUrl } = useSlug('link');
 
   return (
     <DataTable {...props}>
-      <DataColumn id="name" label={formatMessage(labels.name)}>
+      <DataColumn id="name" label={<SortableLabel label={t(labels.name)} sortKey="name" />}>
         {({ id, name }: any) => {
           return <Link href={renderUrl(`/links/${id}`)}>{name}</Link>;
         }}
       </DataColumn>
-      <DataColumn id="slug" label={formatMessage(labels.link)}>
+      <DataColumn
+        id="slug"
+        label={<SortableLabel label={t(labels.link)} sortKey="slug" />}
+        width="25%"
+      >
         {({ slug }: any) => {
           const url = getSlugUrl(slug);
-          return (
-            <ExternalLink href={url} prefetch={false}>
-              {url}
-            </ExternalLink>
-          );
+          return <ExternalLink href={url}>{url}</ExternalLink>;
         }}
       </DataColumn>
-      <DataColumn id="url" label={formatMessage(labels.destinationUrl)}>
+      <DataColumn
+        id="url"
+        label={<SortableLabel label={t(labels.destinationUrl)} sortKey="url" />}
+        width="30%"
+      >
         {({ url }: any) => {
           return <ExternalLink href={url}>{url}</ExternalLink>;
         }}
       </DataColumn>
-      <DataColumn id="created" label={formatMessage(labels.created)} width="200px">
+      <DataColumn
+        id="created"
+        label={<SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />}
+        width="200px"
+      >
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
-      <DataColumn id="action" align="end" width="100px">
-        {({ id, name }: any) => {
-          return (
-            <Row>
-              <LinkEditButton linkId={id} />
-              <LinkDeleteButton linkId={id} websiteId={websiteId} name={name} />
-            </Row>
-          );
-        }}
-      </DataColumn>
+      {showActions && (
+        <DataColumn id="action" align="end" width="100px">
+          {({ id, name }: any) => {
+            return (
+              <Row>
+                <LinkEditButton linkId={id} />
+                <LinkDeleteButton linkId={id} websiteId={websiteId} name={name} />
+              </Row>
+            );
+          }}
+        </DataColumn>
+      )}
     </DataTable>
   );
 }

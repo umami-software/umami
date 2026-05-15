@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS } from '@/lib/constants';
+import { EVENT_COLUMNS, EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
@@ -48,12 +48,14 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       max(website_event.created_at) as "lastAt",
       count(distinct website_event.visit_id) as "visits",
       sum(case when website_event.event_type = 1 then 1 else 0 end) as "views",
+      sum(case when website_event.event_type = 2 then 1 else 0 end) as "events",
       max(website_event.created_at) as "createdAt"
     from website_event 
     ${cohortQuery}
     join session on session.session_id = website_event.session_id
       and session.website_id = website_event.website_id
     where website_event.website_id = {{websiteId::uuid}}
+      and website_event.event_type != ${EVENT_TYPE.performance}
     ${dateQuery}
     ${filterQuery}
     ${searchQuery}
@@ -112,10 +114,12 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       ${getDateStringSQL('max(created_at)')} as lastAt,
       uniq(visit_id) as visits,
       sumIf(1, event_type = 1) as views,
+      sumIf(1, event_type = 2) as events,
       lastAt as createdAt
     from website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}
+      and event_type != ${EVENT_TYPE.performance}
     ${dateQuery}
     ${filterQuery}
     ${searchQuery}
@@ -140,10 +144,12 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       ${getDateStringSQL('max(max_time)')} as lastAt,
       uniq(visit_id) as visits,
       sumIf(views, event_type = 1) as views,
+      sum(length(event_name)) as events,
       lastAt as createdAt
     from website_event_stats_hourly as website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}
+      and event_type != ${EVENT_TYPE.performance}
     ${dateQuery}
     ${filterQuery}
     ${searchQuery}

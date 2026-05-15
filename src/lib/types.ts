@@ -1,4 +1,5 @@
 import type { UseQueryOptions } from '@tanstack/react-query';
+import type { Board as PrismaBoard } from '@/generated/prisma/client';
 import type { DATA_TYPE, OPERATORS, ROLES } from './constants';
 import type { TIME_UNIT } from './date';
 
@@ -19,17 +20,42 @@ export interface Auth {
     isAdmin: boolean;
   };
   shareToken?: {
-    websiteId: string;
+    websiteId?: string;
+    websiteIds?: string[];
+    boardId?: string;
+    pixelId?: string;
+    pixelIds?: string[];
+    linkId?: string;
+    linkIds?: string[];
+    parameters?: ShareParameters;
   };
 }
+
+export type ShareTheme = 'light' | 'dark';
+
+export interface ShareParameters {
+  allowFilter?: boolean;
+  theme?: ShareTheme;
+  [key: string]: boolean | ShareTheme | undefined;
+}
+
+export interface PropertyFilter {
+  propertyName: string;
+  dataType: number;
+  operator: Operator;
+  value: string;
+}
+
+export type EventPropertyFilter = PropertyFilter;
 
 export interface Filter {
   name: string;
   operator: Operator;
-  value: string;
+  value: string | string[];
   type?: string;
   column?: string;
   prefix?: string;
+  paramName?: string;
 }
 
 export interface DateRange {
@@ -45,12 +71,50 @@ export interface DynamicData {
   [key: string]: number | string | number[] | string[];
 }
 
+export interface EventDataSeriesPoint {
+  x: string;
+  t: string;
+  y: number;
+}
+
+export interface EventDataDateSeriesPoint {
+  t: string;
+  y: number;
+}
+
+export interface EventDataNumericStats {
+  total: number;
+  average: number;
+  median: number;
+  max: number;
+  min: number;
+}
+
+export interface SessionDataPivotRow {
+  sessionId: string;
+  distinctId: string;
+  createdAt: string | Date;
+  propertyKeys: string[];
+  propertyValues: string[];
+}
+
+export interface PropertyLeaderboardRow {
+  label: string;
+  activity: number;
+  sessions: number;
+  visits: number;
+  views: number;
+  events: number;
+}
+
 export interface QueryOptions {
   joinSession?: boolean;
   columns?: Record<string, string>;
   limit?: number;
   prefix?: string;
   isCohort?: boolean;
+  cohortMatch?: string;
+  cohortActionName?: string;
 }
 
 export interface QueryFilters
@@ -90,6 +154,8 @@ export interface FilterParams {
   segment?: string;
   cohort?: string;
   compare?: string;
+  excludeBounce?: boolean;
+  match?: 'all' | 'any';
 }
 
 export interface SortParams {
@@ -100,6 +166,7 @@ export interface SortParams {
 export interface PageParams {
   page?: number;
   pageSize?: number;
+  maxResults?: number;
 }
 
 export interface SegmentParams {
@@ -115,6 +182,7 @@ export interface PageResult<T> {
   orderBy?: string;
   sortDescending?: boolean;
   search?: string;
+  isCapped?: boolean;
 }
 
 export interface RealtimeData {
@@ -140,4 +208,43 @@ export interface RealtimeData {
 export interface ApiError extends Error {
   code?: string;
   message: string;
+}
+
+export interface BoardComponentConfig {
+  type: string;
+  entityType?: 'website' | 'pixel' | 'link';
+  entityId?: string;
+  websiteId?: string;
+  title?: string;
+  description?: string;
+  props?: Record<string, any>;
+}
+
+export interface BoardColumn {
+  id: string;
+  component?: BoardComponentConfig;
+  size?: number;
+}
+
+export interface BoardRow {
+  id: string;
+  columns: BoardColumn[];
+  size?: number;
+}
+
+export interface BoardParameters {
+  websiteId?: string;
+  pixelId?: string;
+  linkId?: string;
+  rows?: BoardRow[];
+}
+
+export interface Board extends Omit<PrismaBoard, 'parameters'> {
+  parameters: BoardParameters;
+}
+
+export interface WhiteLabel {
+  displayName: string;
+  domainName: string;
+  logoUrl: string;
 }

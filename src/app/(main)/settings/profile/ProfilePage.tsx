@@ -7,12 +7,12 @@ import { useMessages } from '@/components/hooks';
 import { ProfileSettings } from './ProfileSettings';
 
 export function ProfilePage() {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   return (
     <PageBody>
       <Column gap="6">
-        <PageHeader title={formatMessage(labels.profile)} />
+        <PageHeader title={t(labels.profile)} />
         <Panel>
           <ProfileSettings />
         </Panel>

@@ -8,9 +8,9 @@ import {
   Loading,
   TextField,
 } from '@umami/react-zen';
+import { useEffect, useState } from 'react';
 import { useMessages, useUpdateQuery, useWebsiteSegmentQuery } from '@/components/hooks';
 import { FieldFilters } from '@/components/input/FieldFilters';
-import { messages } from '@/components/messages';
 
 export function SegmentEditForm({
   segmentId,
@@ -28,7 +28,12 @@ export function SegmentEditForm({
   onClose?: () => void;
 }) {
   const { data } = useWebsiteSegmentQuery(websiteId, segmentId);
-  const { formatMessage, labels, getErrorMessage } = useMessages();
+  const { t, labels, messages, getErrorMessage } = useMessages();
+  const [currentMatch, setCurrentMatch] = useState<string>('all');
+
+  useEffect(() => {
+    setCurrentMatch((data?.parameters as any)?.match || 'all');
+  }, [data]);
 
   const { mutateAsync, error, isPending, touch, toast } = useUpdateQuery(
     `/websites/${websiteId}/segments${segmentId ? `/${segmentId}` : ''}`,
@@ -38,14 +43,23 @@ export function SegmentEditForm({
   );
 
   const handleSubmit = async (formData: any) => {
-    await mutateAsync(formData, {
-      onSuccess: async () => {
-        toast(formatMessage(messages.saved));
-        touch('segments');
-        onSave?.();
-        onClose?.();
+    await mutateAsync(
+      {
+        ...formData,
+        parameters: {
+          ...formData.parameters,
+          match: currentMatch !== 'all' ? currentMatch : undefined,
+        },
       },
-    });
+      {
+        onSuccess: async () => {
+          toast(t(messages.saved));
+          touch('segments');
+          onSave?.();
+          onClose?.();
+        },
+      },
+    );
   };
 
   if (segmentId && !data) {
@@ -58,27 +72,27 @@ export function SegmentEditForm({
       defaultValues={data || { parameters: { filters } }}
       error={getErrorMessage(error)}
     >
-      <FormField
-        name="name"
-        label={formatMessage(labels.name)}
-        rules={{ required: formatMessage(labels.required) }}
-      >
+      <FormField name="name" label={t(labels.name)} rules={{ required: t(labels.required) }}>
         <TextField autoFocus={!segmentId} />
       </FormField>
       {showFilters && (
         <>
-          <Label>{formatMessage(labels.filters)}</Label>
-          <FormField name="parameters.filters" rules={{ required: formatMessage(labels.required) }}>
-            <FieldFilters websiteId={websiteId} />
+          <Label>{t(labels.filters)}</Label>
+          <FormField name="parameters.filters" rules={{ required: t(labels.required) }}>
+            <FieldFilters
+              websiteId={websiteId}
+              match={currentMatch}
+              onMatchChange={setCurrentMatch}
+            />
           </FormField>
         </>
       )}
       <FormButtons>
         <Button isDisabled={isPending} onPress={onClose}>
-          {formatMessage(labels.cancel)}
+          {t(labels.cancel)}
         </Button>
         <FormSubmitButton variant="primary" data-test="button-submit" isDisabled={isPending}>
-          {formatMessage(labels.save)}
+          {t(labels.save)}
         </FormSubmitButton>
       </FormButtons>
     </Form>

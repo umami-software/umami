@@ -1,11 +1,11 @@
-import { config, useSpring } from '@react-spring/web';
 import { Column, Grid, Row, Text } from '@umami/react-zen';
-import type { ReactNode } from 'react';
-import { FixedSizeList } from 'react-window';
+import { useSpring, useTransform } from 'motion/react';
+import { type ReactNode, useEffect } from 'react';
+import { List, type RowComponentProps } from 'react-window';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { Empty } from '@/components/common/Empty';
 import { useMessages, useMobile } from '@/components/hooks';
-import { formatLongCurrency, formatLongNumber } from '@/lib/format';
+import { formatLongNumber } from '@/lib/format';
 
 const ITEM_SIZE = 30;
 
@@ -26,7 +26,7 @@ export interface ListTableProps {
   virtualize?: boolean;
   showPercentage?: boolean;
   itemCount?: number;
-  currency?: string;
+  formatCount?: (n: number) => string;
 }
 
 export function ListTable({
@@ -39,9 +39,9 @@ export function ListTable({
   virtualize = false,
   showPercentage = true,
   itemCount = 10,
-  currency,
+  formatCount,
 }: ListTableProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { isPhone } = useMobile();
 
   const getRow = (row: ListData, index: number) => {
@@ -50,25 +50,30 @@ export function ListTable({
     return (
       <AnimatedRow
         key={`${label}${index}`}
-        label={renderLabel ? renderLabel(row, index) : (label ?? formatMessage(labels.unknown))}
+        label={renderLabel ? renderLabel(row, index) : (label ?? t(labels.unknown))}
         value={count}
         percent={percent}
         animate={animate && !virtualize}
         showPercentage={showPercentage}
         change={renderChange ? renderChange(row, index) : null}
-        currency={currency}
+        formatCount={formatCount}
         isPhone={isPhone}
       />
     );
   };
 
-  const ListTableRow = ({ index, style }) => {
+  const ListTableRow = ({ index, style }: RowComponentProps) => {
     return <div style={style}>{getRow(data[index], index)}</div>;
   };
 
   return (
     <Column gap>
-      <Grid alignItems="center" justifyContent="space-between" paddingLeft="2" columns="1fr 100px">
+      <Grid
+        alignItems="center"
+        justifyContent="space-between"
+        paddingLeft="2"
+        columns={'1fr 100px'}
+      >
         <Text weight="bold">{title}</Text>
         <Text weight="bold" align="center">
           {metric}
@@ -77,14 +82,14 @@ export function ListTable({
       <Column gap="1">
         {data?.length === 0 && <Empty />}
         {virtualize && data.length > 0 ? (
-          <FixedSizeList
-            width="100%"
-            height={itemCount * ITEM_SIZE}
-            itemCount={data.length}
-            itemSize={ITEM_SIZE}
-          >
-            {ListTableRow}
-          </FixedSizeList>
+          <List
+            style={{ width: '100%', height: itemCount * ITEM_SIZE }}
+            defaultHeight={itemCount * ITEM_SIZE}
+            rowCount={data.length}
+            rowHeight={ITEM_SIZE}
+            rowComponent={ListTableRow}
+            rowProps={{}}
+          />
         ) : (
           data.map(getRow)
         )}
@@ -100,38 +105,47 @@ const AnimatedRow = ({
   change,
   animate,
   showPercentage = true,
-  currency,
+  formatCount,
   isPhone,
 }) => {
-  const props = useSpring({
-    width: percent,
-    y: !Number.isNaN(value) ? value : 0,
-    from: { width: 0, y: 0 },
-    config: animate ? config.default : { duration: 0 },
-  });
+  const y = !Number.isNaN(value) ? value : 0;
+  const ySpring = useSpring(0, { stiffness: 170, damping: 26 });
+  const widthSpring = useSpring(0, { stiffness: 170, damping: 26 });
+  const yText = useTransform(ySpring, n => (formatCount ? formatCount(n) : formatLongNumber(n)));
+  const widthText = useTransform(widthSpring, n => `${n?.toFixed?.(0)}%`);
+
+  useEffect(() => {
+    if (animate) {
+      ySpring.set(y);
+      widthSpring.set(percent);
+    } else {
+      ySpring.jump(y);
+      widthSpring.jump(percent);
+    }
+  }, [y, percent, animate, ySpring, widthSpring]);
 
   return (
     <Grid
-      columns="1fr 50px 50px"
+      columns={showPercentage ? '1fr 50px 50px' : '1fr 100px'}
       paddingLeft="2"
       alignItems="center"
-      hoverBackgroundColor="2"
       borderRadius
       gap
+      hover={{ backgroundColor: 'surface-sunken' }}
     >
       <Row alignItems="center">
         <Text truncate={true} style={{ maxWidth: isPhone ? '200px' : '400px' }}>
           {label}
         </Text>
       </Row>
-      <Row alignItems="center" height="30px" justifyContent="flex-end">
+      <Row
+        alignItems="center"
+        height="30px"
+        justifyContent={showPercentage ? 'flex-end' : 'center'}
+      >
         {change}
         <Text weight="bold">
-          <AnimatedDiv title={props?.y as any}>
-            {currency
-              ? props.y?.to(n => formatLongCurrency(n, currency))
-              : props.y?.to(formatLongNumber)}
-          </AnimatedDiv>
+          <AnimatedDiv title={String(value)}>{yText}</AnimatedDiv>
         </Text>
       </Row>
       {showPercentage && (
@@ -140,11 +154,11 @@ const AnimatedRow = ({
           justifyContent="flex-start"
           position="relative"
           border="left"
-          borderColor="8"
+          borderColor="strong"
           color="muted"
           paddingLeft="3"
         >
-          <AnimatedDiv>{props.width.to(n => `${n?.toFixed?.(0)}%`)}</AnimatedDiv>
+          <AnimatedDiv>{widthText}</AnimatedDiv>
         </Row>
       )}
     </Grid>

@@ -1,0 +1,82 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.good {
+  color: #15803d;
+  background: #dcfce7;
+}
+
+.good .dot {
+  background: #16a34a;
+}
+
+.warning {
+  color: #a16207;
+  background: #fef9c3;
+}
+
+.warning .dot {
+  background: #ca8a04;
+}
+
+.danger {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+.danger .dot {
+  background: #dc2626;
+}
+
+.gray {
+  color: var(--text-muted);
+  background: var(--surface-sunken);
+}
+
+.gray .dot {
+  background: var(--text-muted);
+}
+
+:global([data-theme='dark']) .good {
+  color: #86efac;
+  background: rgba(22, 163, 74, 0.15);
+}
+
+:global([data-theme='dark']) .good .dot {
+  background: #4ade80;
+}
+
+:global([data-theme='dark']) .warning {
+  color: #fde047;
+  background: rgba(202, 138, 4, 0.15);
+}
+
+:global([data-theme='dark']) .warning .dot {
+  background: #facc15;
+}
+
+:global([data-theme='dark']) .danger {
+  color: #fca5a5;
+  background: rgba(220, 38, 38, 0.15);
+}
+
+:global([data-theme='dark']) .danger .dot {
+  background: #f87171;
+}

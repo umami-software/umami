@@ -4,12 +4,12 @@ import { Plus } from '@/components/icons';
 import { UserAddForm } from './UserAddForm';
 
 export function UserAddButton({ onSave }: { onSave?: () => void }) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { toast } = useToast();
   const { touch } = useModified();
 
   const handleSave = () => {
-    toast(formatMessage(messages.saved));
+    toast(t(messages.saved));
     touch('users');
     onSave?.();
   };
@@ -20,10 +20,10 @@ export function UserAddButton({ onSave }: { onSave?: () => void }) {
         <Icon>
           <Plus />
         </Icon>
-        <Text>{formatMessage(labels.createUser)}</Text>
+        <Text>{t(labels.createUser)}</Text>
       </Button>
       <Modal>
-        <Dialog title={formatMessage(labels.createUser)} style={{ width: 400 }}>
+        <Dialog title={t(labels.createUser)} style={{ width: 400 }}>
           {({ close }) => <UserAddForm onSave={handleSave} onClose={close} />}
         </Dialog>
       </Modal>

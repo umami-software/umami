@@ -18,5 +18,5 @@ test('getIpAddress: Standard header', () => {
 });
 
 test('getIpAddress: No header', () => {
-  expect(getIpAddress(new Headers())).toEqual(null);
+  expect(getIpAddress(new Headers())).toEqual(undefined);
 });

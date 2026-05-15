@@ -17,10 +17,10 @@ export function PageBody({
   isLoading?: boolean;
   children?: ReactNode;
 } & ColumnProps) {
-  const { formatMessage, messages } = useMessages();
+  const { t, messages } = useMessages();
 
   if (error) {
-    return <AlertBanner title={formatMessage(messages.error)} variant="error" />;
+    return <AlertBanner title={t(messages.error)} variant="error" />;
   }
 
   if (isLoading) {
@@ -31,9 +31,10 @@ export function PageBody({
     <Column
       {...props}
       width="100%"
+      minHeight="100vh"
       paddingBottom="6"
       maxWidth={maxWidth}
-      paddingX={{ xs: '3', md: '6' }}
+      paddingX={{ base: '3', md: '6' }}
       style={{ margin: '0 auto' }}
     >
       {children}

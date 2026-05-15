@@ -1,4 +1,4 @@
-import { uuid, randomFloat } from '../utils.js';
+import { randomFloat, uuid } from '../utils.js';
 import type { EventData } from './events.js';
 
 export interface RevenueConfig {

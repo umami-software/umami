@@ -1,11 +1,8 @@
-import { Column, Heading, IconLabel, Row, SearchField, Text } from '@umami/react-zen';
-import Link from 'next/link';
-import { useMemo, useState } from 'react';
-import { FixedSizeList } from 'react-window';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
-import { useFormat } from '@/components//hooks/useFormat';
 import { Avatar } from '@/components/common/Avatar';
 import { Empty } from '@/components/common/Empty';
+import { IconLabel } from '@/components/common/IconLabel';
+import Link from '@/components/common/Link';
 import {
   useCountryNames,
   useLocale,
@@ -15,15 +12,21 @@ import {
   useTimezone,
   useWebsite,
 } from '@/components/hooks';
+import { useFormat } from '@/components/hooks/useFormat';
 import { Eye, User } from '@/components/icons';
 import { FilterButtons } from '@/components/input/FilterButtons';
 import { Lightning } from '@/components/svg';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
+import { Column, Heading, Row, SearchField, Text } from '@umami/react-zen';
+import { useMemo, useState } from 'react';
+import { List, type RowComponentProps } from 'react-window';
 
 const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';
 const TYPE_SESSION = 'session';
 const TYPE_EVENT = 'event';
+const MAX_LIST_HEIGHT = 500;
+const ROW_HEIGHT = 50;
 
 const icons = {
   [TYPE_PAGEVIEW]: <Eye />,
@@ -34,7 +37,7 @@ const icons = {
 export function RealtimeLog({ data }: { data: any }) {
   const website = useWebsite();
   const [search, setSearch] = useState('');
-  const { formatMessage, labels, messages, FormattedMessage } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { formatValue } = useFormat();
   const { locale } = useLocale();
   const { formatTimezoneDate } = useTimezone();
@@ -45,19 +48,19 @@ export function RealtimeLog({ data }: { data: any }) {
 
   const buttons = [
     {
-      label: formatMessage(labels.all),
+      label: t(labels.all),
       id: TYPE_ALL,
     },
     {
-      label: formatMessage(labels.views),
+      label: t(labels.views),
       id: TYPE_PAGEVIEW,
     },
     {
-      label: formatMessage(labels.visitors),
+      label: t(labels.visitors),
       id: TYPE_SESSION,
     },
     {
-      label: formatMessage(labels.events),
+      label: t(labels.events),
       id: TYPE_EVENT,
     },
   ];
@@ -74,57 +77,56 @@ export function RealtimeLog({ data }: { data: any }) {
     os: string;
     country: string;
     device: string;
+    hostname: string;
   }) => {
-    const { __type, eventName, urlPath, browser, os, country, device } = log;
+    const { __type, eventName, urlPath, browser, os, country, device, hostname } = log;
 
     if (__type === TYPE_EVENT) {
-      return (
-        <FormattedMessage
-          {...messages.eventLog}
-          values={{
-            event: <b key="b">{eventName || formatMessage(labels.unknown)}</b>,
-            url: (
-              <a
-                key="a"
-                href={`//${website?.domain}${urlPath}`}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                {urlPath}
-              </a>
-            ),
-          }}
-        />
-      );
+      return t.rich(messages.eventLog, {
+        event: eventName || t(labels.unknown),
+        url: urlPath,
+        b: chunks => <b>{chunks}</b>,
+        a: chunks => (
+          <a
+            href={`//${hostname}${urlPath}`}
+            style={{ fontWeight: 'bold' }}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {chunks}
+          </a>
+        ),
+      });
     }
 
     if (__type === TYPE_PAGEVIEW) {
       return (
-        <a href={`//${website?.domain}${urlPath}`} target="_blank" rel="noreferrer noopener">
+        <a
+          href={`//${hostname}${urlPath}`}
+          style={{ fontWeight: 'bold' }}
+          target="_blank"
+          rel="noreferrer noopener"
+        >
           {urlPath}
         </a>
       );
     }
 
     if (__type === TYPE_SESSION) {
-      return (
-        <FormattedMessage
-          {...messages.visitorLog}
-          values={{
-            country: <b key="country">{countryNames[country] || formatMessage(labels.unknown)}</b>,
-            browser: <b key="browser">{BROWSERS[browser]}</b>,
-            os: <b key="os">{OS_NAMES[os] || os}</b>,
-            device: <b key="device">{formatMessage(labels[device] || labels.unknown)}</b>,
-          }}
-        />
-      );
+      return t.rich(messages.visitorLog, {
+        country: countryNames[country] || t(labels.unknown),
+        browser: BROWSERS[browser],
+        os: OS_NAMES[os] || os,
+        device: t(labels[device] || labels.unknown),
+        b: chunks => <b>{chunks}</b>,
+      });
     }
   };
 
-  const TableRow = ({ index, style }) => {
+  const TableRow = ({ index, style, logs }: RowComponentProps<{ logs: any[] }>) => {
     const row = logs[index];
     return (
-      <Row alignItems="center" style={style} gap>
+      <Row alignItems="center" style={{ ...style, minWidth: 0 }} gap>
         <Row minWidth="30px">
           <Link href={updateParams({ session: row.sessionId })}>
             <Avatar seed={row.sessionId} size={32} />
@@ -133,8 +135,8 @@ export function RealtimeLog({ data }: { data: any }) {
         <Row minWidth="100px">
           <Text wrap="nowrap">{getTime(row)}</Text>
         </Row>
-        <IconLabel icon={getIcon(row)}>
-          <Text style={{ maxWidth: isPhone ? '400px' : null }} truncate>
+        <IconLabel icon={getIcon(row)} style={{ minWidth: 0, flex: 1 }}>
+          <Text truncate>
             {getDetail(row)}
           </Text>
         </IconLabel>
@@ -173,12 +175,14 @@ export function RealtimeLog({ data }: { data: any }) {
     return logs;
   }, [data, filter, formatValue, search]);
 
+  const listHeight = Math.min(logs.length * ROW_HEIGHT, MAX_LIST_HEIGHT);
+
   return (
-    <Column gap>
-      <Heading size="2">{formatMessage(labels.activity)}</Heading>
+    <Column gap="3">
+      <Heading size="base">{t(labels.activity)}</Heading>
       {isPhone ? (
         <>
-          <Row>
+          <Row marginBottom="1">
             <SearchField value={search} onSearch={setSearch} />
           </Row>
           <Row>
@@ -192,12 +196,17 @@ export function RealtimeLog({ data }: { data: any }) {
         </Row>
       )}
 
-      <Column>
+      <Column gap="3">
         {logs?.length === 0 && <Empty />}
-        {logs?.length > 0 && (
-          <FixedSizeList width="100%" height={500} itemCount={logs.length} itemSize={50}>
-            {TableRow}
-          </FixedSizeList>
+        {logs.length > 0 && (
+          <List
+            rowComponent={TableRow}
+            rowCount={logs.length}
+            rowHeight={ROW_HEIGHT}
+            rowProps={{ logs }}
+            defaultHeight={listHeight}
+            style={{ width: '100%', height: listHeight }}
+          />
         )}
       </Column>
       <SessionModal websiteId={website.id} />

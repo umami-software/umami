@@ -13,14 +13,15 @@ export function WebsiteExpandedView({
   excludedIds?: string[];
   onClose?: () => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const {
     query: { view },
   } = useNavigation();
+  const title = view === 'fullPath' ? t(labels.url) : t(labels[view]);
 
   return (
     <Column height="100%" overflow="hidden" gap>
-      <Row id="expanded-mobile-menu-button" display={{ xs: 'flex', md: 'none' }}>
+      <Row id="expanded-mobile-menu-button" display={{ base: 'flex', md: 'none' }}>
         <MobileMenuButton>
           {({ close }) => {
             return (
@@ -31,10 +32,10 @@ export function WebsiteExpandedView({
           }}
         </MobileMenuButton>
       </Row>
-      <Grid columns={{ xs: '1fr', md: 'auto 1fr' }} gap="6" overflow="hidden">
+      <Grid columns={{ base: '1fr', md: 'auto 1fr' }} gap="6" overflow="hidden">
         <Column
           id="metrics-expanded-menu"
-          display={{ xs: 'none', md: 'flex' }}
+          display={{ base: 'none', md: 'flex' }}
           width="240px"
           gap="6"
           border="right"
@@ -44,12 +45,7 @@ export function WebsiteExpandedView({
           <WebsiteExpandedMenu excludedIds={excludedIds} />
         </Column>
         <Column id="metrics-expanded-table" overflow="hidden">
-          <MetricsExpandedTable
-            title={formatMessage(labels[view])}
-            type={view}
-            websiteId={websiteId}
-            onClose={onClose}
-          />
+          <MetricsExpandedTable title={title} type={view} websiteId={websiteId} onClose={onClose} />
         </Column>
       </Grid>
     </Column>

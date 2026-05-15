@@ -1,5 +1,16 @@
-import { FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
-import type { Filter, QueryFilters, QueryOptions } from '@/lib/types';
+import { DATA_TYPE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
+import type { Filter, Operator, PropertyFilter, QueryFilters, QueryOptions } from '@/lib/types';
+
+const VALID_OPERATORS: Operator[] = Object.values(OPERATORS);
+const VALID_EVENT_DATA_TYPES = Object.values(DATA_TYPE);
+
+function resolveOperator(value?: string): Operator | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  return VALID_OPERATORS.find(operator => operator === value);
+}
 
 export function parseFilterValue(param: any) {
   if (typeof param === 'string') {
@@ -9,10 +20,21 @@ export function parseFilterValue(param: any) {
 
     const [, operator, value] = param.match(regex) || [];
 
-    return { operator: operator || OPERATORS.equals, value: value || param };
+    const resolvedOperator = resolveOperator(operator) ?? OPERATORS.equals;
+    const resolvedValue = value ?? param;
+
+    if (resolvedOperator === OPERATORS.equals || resolvedOperator === OPERATORS.notEquals) {
+      return { operator: resolvedOperator, value: resolvedValue.split(',') };
+    }
+
+    return { operator: resolvedOperator, value: resolvedValue };
   }
 
-  return { operator: OPERATORS.equals, value: param };
+  if (Array.isArray(param)) {
+    return { operator: OPERATORS.equals, value: param };
+  }
+
+  return { operator: OPERATORS.equals, value: [param] };
 }
 
 export function isEqualsOperator(operator: any) {
@@ -20,7 +42,12 @@ export function isEqualsOperator(operator: any) {
 }
 
 export function isSearchOperator(operator: any) {
-  return [OPERATORS.contains, OPERATORS.doesNotContain].includes(operator);
+  return [
+    OPERATORS.contains,
+    OPERATORS.doesNotContain,
+    OPERATORS.regex,
+    OPERATORS.notRegex,
+  ].includes(operator);
 }
 
 export function filtersObjectToArray(filters: QueryFilters, options: QueryOptions = {}): Filter[] {
@@ -35,15 +62,23 @@ export function filtersObjectToArray(filters: QueryFilters, options: QueryOption
       return arr;
     }
 
+    const baseName = key.replace(/\d+$/, '');
+    const paramName = key !== baseName ? key : undefined;
+
     if (filter?.name && filter?.value !== undefined) {
-      return arr.concat({ ...filter, column: options?.columns?.[key] ?? FILTER_COLUMNS[key] });
+      return arr.concat({
+        ...filter,
+        column: options?.columns?.[baseName] ?? FILTER_COLUMNS[baseName],
+        paramName: paramName ?? filter.paramName,
+      });
     }
 
     const { operator, value } = parseFilterValue(filter);
 
     return arr.concat({
-      name: key,
-      column: options?.columns?.[key] ?? FILTER_COLUMNS[key],
+      name: baseName,
+      paramName,
+      column: options?.columns?.[baseName] ?? FILTER_COLUMNS[baseName],
       operator,
       value,
       prefix: options?.prefix,
@@ -52,11 +87,83 @@ export function filtersObjectToArray(filters: QueryFilters, options: QueryOption
 }
 
 export function filtersArrayToObject(filters: Filter[]) {
+  const nameCounts: Record<string, number> = {};
   return filters.reduce((obj, filter: Filter) => {
     const { name, operator, value } = filter;
+    const count = nameCounts[name] ?? 0;
+    const key = count === 0 ? name : `${name}${count}`;
+    nameCounts[name] = count + 1;
 
-    obj[name] = `${operator}.${value}`;
+    obj[key] = `${operator}.${Array.isArray(value) ? value.join(',') : value}`;
 
     return obj;
   }, {});
+}
+
+function getPropertyFilterPrefix(key: string, prefixes: string[]) {
+  return prefixes.find(prefix => key.startsWith(`${prefix}_`));
+}
+
+export function parsePropertyFilters(
+  query: Record<string, any>,
+  prefixes: string[] = ['pf'],
+): PropertyFilter[] {
+  return Object.entries(query)
+    .flatMap(([key, val]) => {
+      const prefix = getPropertyFilterPrefix(key, prefixes);
+
+      if (!prefix) {
+        return [];
+      }
+
+      const stringValue = String(val);
+      const withoutPrefix = key.slice(prefix.length + 1);
+      const propertyName = withoutPrefix.replace(/\d+$/, ''); // strip trailing index digits
+      const prefixedDotMatch = stringValue.match(/^(\d+)\.([^.]+)\.(.*)$/);
+      const untypedDotMatch = stringValue.match(/^([^.]+)\.(.*)$/);
+      const explicitDataType = prefixedDotMatch ? Number(prefixedDotMatch[1]) : undefined;
+      const rawOperator = prefixedDotMatch ? prefixedDotMatch[2] : untypedDotMatch?.[1];
+      const operator = resolveOperator(rawOperator);
+
+      if (!operator || (explicitDataType !== undefined && !VALID_EVENT_DATA_TYPES.includes(explicitDataType))) {
+        return [];
+      }
+
+      const value = prefixedDotMatch ? prefixedDotMatch[3] : untypedDotMatch?.[2];
+
+      if (value === undefined) {
+        return [];
+      }
+
+      return [
+        {
+          propertyName,
+          dataType: explicitDataType ?? DATA_TYPE.string,
+          operator,
+          value,
+        },
+      ];
+    });
+}
+
+export function parseEventPropertyFilters(query: Record<string, any>) {
+  return parsePropertyFilters(query, ['pf']);
+}
+
+export function serializePropertyFilters(
+  filters: PropertyFilter[],
+  prefix = 'pf',
+): Record<string, string> {
+  const counts: Record<string, number> = {};
+  return Object.fromEntries(
+    filters.map(f => {
+      const n = counts[f.propertyName] ?? 0;
+      counts[f.propertyName] = n + 1;
+      return [`${prefix}_${f.propertyName}${n > 0 ? n : ''}`, `${f.dataType}.${f.operator}.${f.value}`];
+    }),
+  );
+}
+
+export function serializeEventPropertyFilters(filters: PropertyFilter[]) {
+  return serializePropertyFilters(filters, 'pf');
 }
