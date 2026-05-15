@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { DATA_TYPE } from '@/lib/constants';
+import { DATA_LENGTH, DATA_TYPE } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { flattenJSON, getStringValue } from '@/lib/data';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
@@ -34,8 +34,8 @@ async function relationalQuery(data: SaveEventDataArgs) {
     id: uuid(),
     websiteEventId: eventId,
     websiteId,
-    dataKey: a.key,
-    stringValue: getStringValue(a.value, a.dataType),
+    dataKey: a.key?.substring(0, DATA_LENGTH),
+    stringValue: getStringValue(a.value, a.dataType)?.substring(0, DATA_LENGTH),
     numberValue: a.dataType === DATA_TYPE.number ? a.value : null,
     dateValue: a.dataType === DATA_TYPE.date ? new Date(a.value) : null,
     dataType: a.dataType,
@@ -62,9 +62,9 @@ async function clickhouseQuery(data: SaveEventDataArgs) {
       event_id: eventId,
       url_path: urlPath,
       event_name: eventName,
-      data_key: key,
+      data_key: key?.substring(0, DATA_LENGTH),
       data_type: dataType,
-      string_value: getStringValue(value, dataType),
+      string_value: getStringValue(value, dataType)?.substring(0, DATA_LENGTH),
       number_value: dataType === DATA_TYPE.number ? value : null,
       date_value: dataType === DATA_TYPE.date ? getUTCString(value) : null,
       created_at: getUTCString(createdAt),
