@@ -127,22 +127,21 @@ export function DataGrid({
         renderEmpty={renderEmpty}
       >
         {data && (
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'minmax(0, 1fr)',
-                overflowX: 'auto',
-              }}
-            >
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'minmax(0, 1fr)',
+              overflowX: 'auto',
+            }}
+          >
             <Column>
               {isValidElement(child)
                 ? cloneElement(child as ReactElement<any>, { displayMode })
                 : child}
             </Column>
-            </div>
-          )}
-        </LoadingPanel>
-      </Column>
+          </div>
+        )}
+      </LoadingPanel>
       {showPager && (
         <Row marginTop="4">
           <Pager
