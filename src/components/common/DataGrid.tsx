@@ -62,67 +62,6 @@ export function DataGrid({
   const child = data ? (typeof children === 'function' ? children(data) : children) : null;
 
   return (
-    <Column gap="4" minHeight="300px">
-      {allowSearch && (
-        <Row alignItems="center" justifyContent="space-between" wrap="wrap" gap>
-          <SearchField
-            value={search}
-            onSearch={handleSearch}
-            delay={searchDelay || DEFAULT_SEARCH_DELAY}
-            autoFocus={autoFocus}
-            placeholder={t(labels.search)}
-          />
-          {renderActions?.()}
-        </Row>
-      )}
-      <LoadingPanel
-        data={data?.data}
-        isLoading={isLoading}
-        isFetching={isFetching}
-        error={error}
-        renderEmpty={renderEmpty}
-      >
-        {data && (
-          <>
-            {/*
-              Wrap the table in a horizontally scrollable container. The
-              react-zen DataTable lays its columns out on a CSS Grid with
-              fixed pixel widths, so the sum of column widths becomes the
-              table's max-content and propagates up through the surrounding
-              flex chain into the Tabs grid track, pinning every ancestor
-              wider than the viewport on small screens. overflow-x: auto on
-              its own does not break that chain because the wrapper still
-              stretches to its parent's width. Setting display: grid with
-              grid-template-columns: minmax(0, 1fr) gives the wrapper an
-              explicit 1fr column that resolves to the available space,
-              caps its own intrinsic width, and lets overflow-x: auto
-              kick in so the user can scroll the columns horizontally
-              instead of having the card overflow off screen.
-            */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'minmax(0, 1fr)',
-                overflowX: 'auto',
-              }}
-            >
-              {isValidElement(child)
-                ? cloneElement(child as ReactElement<any>, { displayMode })
-                : child}
-            </div>
-            {showPager && (
-              <Row marginTop="6">
-                <Pager
-                  page={data.page}
-                  pageSize={data.pageSize}
-                  count={data.count}
-                  onPageChange={handlePageChange}
-                />
-              </Row>
-            )}
-          </>
-        )}
-      </LoadingPanel>
     <Column gap="4" minHeight="300px" justifyContent="space-between">
       <Column gap="4">
         {allowSearch && (
@@ -145,11 +84,17 @@ export function DataGrid({
           renderEmpty={renderEmpty}
         >
           {data && (
-            <Column>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'minmax(0, 1fr)',
+                overflowX: 'auto',
+              }}
+            >
               {isValidElement(child)
                 ? cloneElement(child as ReactElement<any>, { displayMode })
                 : child}
-            </Column>
+            </div>
           )}
         </LoadingPanel>
       </Column>
