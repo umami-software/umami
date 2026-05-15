@@ -110,8 +110,8 @@ export function BoardEditBody({ requiresBoardWebsite = true }: { requiresBoardWe
   const minHeight = (rows.length || 1) * MAX_ROW_HEIGHT + BUTTON_ROW_HEIGHT;
 
   return (
-    <Box minHeight={`${minHeight}px`}>
-      <Group groupRef={rowGroupRef} orientation="vertical">
+    <Box>
+      <Group style={{ minHeight: `${minHeight}px` }} groupRef={rowGroupRef} orientation="vertical">
         {rows.map((row, index) => (
           <Fragment key={`${row.id}:${row.size ?? 'auto'}`}>
             <Panel

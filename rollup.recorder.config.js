@@ -16,6 +16,8 @@ export default {
     replace({
       __COLLECT_API_HOST__: process.env.COLLECT_API_HOST || '',
       __COLLECT_REPLAY_ENDPOINT__: process.env.COLLECT_REPLAY_ENDPOINT || '/api/record',
+      __RECORDER_CONFIG_ENDPOINT__:
+        process.env.RECORDER_CONFIG_ENDPOINT || '/api/websites/{websiteId}/recorder',
       delimiters: ['', ''],
       preventAssignment: true,
     }),

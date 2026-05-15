@@ -26,7 +26,7 @@ export function useEventStatsQuery(
 ) {
   const { get, useQuery } = useApi();
   const { startAt, endAt } = useDateParameters();
-  const filters = useFilterParameters();
+  const filters = useFilterParameters({ includePagination: false });
 
   return useQuery<EventStatsApiResponse, Error, EventStatsData>({
     queryKey: ['websites:events:stats', { websiteId, startAt, endAt, ...filters }],

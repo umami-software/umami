@@ -4,7 +4,7 @@ import { uuid } from '@/lib/crypto';
 import { getRandomChars } from '@/lib/generate';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { filterParams, pagingParams } from '@/lib/schema';
+import { anyObjectParam, filterParams, pagingParams } from '@/lib/schema';
 import { canUpdatePixel, canViewPixel } from '@/permissions';
 import { createShare, getSharesByEntityId } from '@/queries/prisma';
 
@@ -45,6 +45,7 @@ export async function POST(
 ) {
   const schema = z.object({
     name: z.string().max(200),
+    parameters: anyObjectParam.optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -54,7 +55,8 @@ export async function POST(
   }
 
   const { pixelId } = await params;
-  const { name } = body;
+  const { name, parameters } = body;
+  const shareParameters = parameters ?? {};
 
   if (!(await canUpdatePixel(auth, pixelId))) {
     return unauthorized();
@@ -66,7 +68,7 @@ export async function POST(
     shareType: ENTITY_TYPE.pixel,
     name,
     slug: getRandomChars(16),
-    parameters: {},
+    parameters: shareParameters,
   });
 
   return json(share);

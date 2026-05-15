@@ -1,3 +1,4 @@
+import { MAX_PAGING_RESULTS } from '@/lib/constants';
 import { useApi } from '../useApi';
 import { useDateParameters } from '../useDateParameters';
 import { useFilterParameters } from '../useFilterParameters';
@@ -29,7 +30,7 @@ export function useRevenueSessionsQuery(
         ...filters,
         ...pageParams,
         ...params,
-        pageSize: 20,
+        maxResults: MAX_PAGING_RESULTS,
       });
     },
   });

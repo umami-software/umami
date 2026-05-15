@@ -42,9 +42,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
     ? `${process.env.cloudUrl}/${RECORDER_NAME}`
     : `${window?.location?.origin || ''}${process.env.basePath || ''}/${RECORDER_NAME}`;
 
-  let recorderAttrs = `data-website-id="${websiteId}" data-sample-rate="${sampleRate}" data-mask-level="${maskLevel}" data-max-duration="${parseInt(maxDuration, 10) || 300000}"`;
-  if (blockSelector) recorderAttrs += ` data-block-selector="${blockSelector}"`;
-  const recorderCode = `<script defer src="${recorderUrl}" ${recorderAttrs}></script>`;
+  const recorderCode = `<script defer src="${recorderUrl}" data-website-id="${websiteId}"></script>`;
 
   const handleToggle = async (value: boolean) => {
     const previous = enabled;

@@ -1,7 +1,7 @@
 'use client';
 import { useShareTokenQuery } from '@/components/hooks';
 import { ENTITY_TYPE } from '@/lib/constants';
-import type { WhiteLabel } from '@/lib/types';
+import type { ShareParameters, WhiteLabel } from '@/lib/types';
 import { Loading } from '@umami/react-zen';
 import { usePathname, useRouter } from 'next/navigation';
 import { createContext, type ReactNode, useEffect } from 'react';
@@ -15,7 +15,7 @@ export interface ShareData {
   boardId?: string;
   pixelId?: string;
   linkId?: string;
-  parameters: any;
+  parameters: ShareParameters;
   token: string;
   whiteLabel?: WhiteLabel;
 }

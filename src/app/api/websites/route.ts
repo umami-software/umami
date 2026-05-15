@@ -4,10 +4,10 @@ import { uuid } from '@/lib/crypto';
 import { fetchAccount } from '@/lib/load';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { pagingParams, searchParams } from '@/lib/schema';
+import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createShare, createWebsite, getWebsiteCount } from '@/queries/prisma';
-import { getAllUserWebsitesIncludingTeamOwner, getUserWebsites } from '@/queries/prisma/website';
+import { getAllUserWebsitesIncludingTeamAccess, getUserWebsites } from '@/queries/prisma/website';
 
 const CLOUD_WEBSITE_LIMIT = 3;
 
@@ -15,6 +15,7 @@ export async function GET(request: Request) {
   const schema = z.object({
     ...pagingParams,
     ...searchParams,
+    ...sortingParams,
     includeTeams: z.string().optional(),
   });
 
@@ -29,7 +30,7 @@ export async function GET(request: Request) {
   const filters = await getQueryFilters(query);
 
   if (query.includeTeams) {
-    return json(await getAllUserWebsitesIncludingTeamOwner(userId, filters));
+    return json(await getAllUserWebsitesIncludingTeamAccess(userId, filters));
   }
 
   return json(await getUserWebsites(userId, filters));
