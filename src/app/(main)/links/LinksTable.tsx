@@ -23,13 +23,21 @@ export function LinksTable({ showActions, ...props }: LinksTableProps) {
           return <Link href={renderUrl(`/links/${id}`)}>{name}</Link>;
         }}
       </DataColumn>
-      <DataColumn id="slug" label={<SortableLabel label={t(labels.link)} sortKey="slug" />}>
+      <DataColumn
+        id="slug"
+        label={<SortableLabel label={t(labels.link)} sortKey="slug" />}
+        width="25%"
+      >
         {({ slug }: any) => {
           const url = getSlugUrl(slug);
           return <ExternalLink href={url}>{url}</ExternalLink>;
         }}
       </DataColumn>
-      <DataColumn id="url" label={<SortableLabel label={t(labels.destinationUrl)} sortKey="url" />}>
+      <DataColumn
+        id="url"
+        label={<SortableLabel label={t(labels.destinationUrl)} sortKey="url" />}
+        width="30%"
+      >
         {({ url }: any) => {
           return <ExternalLink href={url}>{url}</ExternalLink>;
         }}

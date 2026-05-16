@@ -364,3 +364,64 @@ AS SELECT
 FROM umami.event_data
 GROUP BY website_id, session_id, event_id, event_name, url_path, created_at;
 
+-- Create session_data_pivot
+CREATE TABLE IF NOT EXISTS umami.session_data_pivot
+(
+    website_id      UUID,
+    session_id      UUID,
+    distinct_id     String,
+    created_year_month UInt32,
+    created_at      AggregateFunction(max, DateTime('UTC')),
+    property_keys   AggregateFunction(groupArray, String),
+    property_values AggregateFunction(groupArray, String),
+    property_types  AggregateFunction(groupArray, UInt32)
+)
+ENGINE = AggregatingMergeTree()
+PARTITION BY created_year_month
+ORDER BY (website_id, session_id, distinct_id)
+SETTINGS index_granularity = 8192;
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS umami.session_data_pivot_mv
+TO umami.session_data_pivot
+AS SELECT
+    website_id,
+    session_id,
+    ifNull(distinct_id, '') AS distinct_id,
+    toYYYYMM(max(session_data.created_at)) AS created_year_month,
+    maxState(session_data.created_at) AS created_at,
+    groupArrayState(data_key) AS property_keys,
+    groupArrayState(multiIf(
+        data_type IN (1, 3, 5), ifNull(string_value, ''),
+        data_type = 2, toString(ifNull(number_value, 0)),
+        data_type = 4, toString(ifNull(date_value, toDateTime(0))),
+        ''
+    )) AS property_values,
+    groupArrayState(data_type) AS property_types
+FROM umami.session_data
+GROUP BY website_id, session_id, distinct_id;
+
+-- Create heatmap_event
+CREATE TABLE umami.heatmap_event
+(
+    heatmap_event_id UUID,
+    website_id UUID,
+    session_id UUID,
+    visit_id UUID,
+    url_path String,
+    event_type UInt8,
+    node_id Nullable(Int32),
+    x Nullable(Int32),
+    y Nullable(Int32),
+    viewport_w Nullable(Int32),
+    viewport_h Nullable(Int32),
+    page_h Nullable(Int32),
+    scroll_pct Nullable(UInt8),
+    replay_chunk_index Nullable(UInt32),
+    replay_event_index Nullable(UInt32),
+    replay_time_ms Nullable(Int64),
+    created_at DateTime('UTC')
+)
+ENGINE = MergeTree
+    PARTITION BY toYYYYMM(created_at)
+    ORDER BY (website_id, url_path, event_type, created_at)
+    SETTINGS index_granularity = 8192;

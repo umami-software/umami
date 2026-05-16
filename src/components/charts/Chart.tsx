@@ -18,6 +18,8 @@ export interface ChartProps extends BoxProps {
   updateMode?: UpdateMode;
   animationDuration?: number;
   onTooltip?: (model: any) => void;
+  hiddenLabels?: Set<string>;
+  onLegendClick?: (label: string, willBeHidden: boolean) => void;
 }
 
 export function Chart({
@@ -27,6 +29,8 @@ export function Chart({
   updateMode,
   onTooltip,
   chartOptions,
+  hiddenLabels,
+  onLegendClick,
   ...props
 }: ChartProps) {
   const canvas = useRef(null);
@@ -61,6 +65,15 @@ export function Chart({
   }, [chartOptions]);
 
   const handleLegendClick = (item: LegendItem) => {
+    if (onLegendClick && type === 'bar') {
+      // Controlled mode: caller owns the hidden state. We report the click
+      // and let the parent push a new hiddenLabels set on the next render.
+      const { datasetIndex } = item;
+      const ds = chart.current.data.datasets[datasetIndex];
+      onLegendClick(ds.label, !hiddenLabels?.has(ds.label));
+      return;
+    }
+
     if (type === 'bar') {
       const { datasetIndex } = item;
       const meta = chart.current.getDatasetMeta(datasetIndex);
@@ -111,18 +124,35 @@ export function Chart({
         });
       }
 
+      // Re-apply caller-driven hidden flags after focusLabel handling so a
+      // dataset stays hidden across data changes (e.g. date-range switches)
+      // even though Chart.js regenerates dataset meta on every replace.
+      if (hiddenLabels) {
+        chart.current.data.datasets.forEach((ds: { hidden: boolean; label: any }) => {
+          if (hiddenLabels.has(ds.label)) {
+            ds.hidden = true;
+          } else if (!chartData.focusLabel) {
+            // Explicitly reset so un-hiding a label is always reflected,
+            // regardless of whether the focusLabel pass ran above.
+            ds.hidden = false;
+          }
+        });
+      }
+
       chart.current.options = options;
 
       chart.current.update(updateMode);
 
       setLegendItems(chart.current.legend.legendItems);
     }
-  }, [chartData, options, updateMode]);
+  }, [chartData, options, updateMode, hiddenLabels]);
 
   return (
     <Column gap="6">
       <Box {...props}>
-        <canvas ref={canvas} />
+        <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
+          <canvas ref={canvas} style={{ position: 'absolute', top: 0, left: 0 }} />
+        </div>
       </Box>
       <Legend items={legendItems} onClick={handleLegendClick} />
     </Column>

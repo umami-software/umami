@@ -142,6 +142,7 @@ export const reportTypeParam = z.enum([
   'breakdown',
   'funnel',
   'goal',
+  'heatmap',
   'journey',
   'performance',
   'retention',
@@ -170,13 +171,12 @@ export const operatorParam = z.enum([
 
 export const goalReportSchema = z.object({
   type: z.literal('goal'),
-  parameters: z
-    .object({
-      startDate: z.coerce.date(),
-      endDate: z.coerce.date(),
-      type: z.string(),
-      value: z.string(),
-    }),
+  parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+    type: z.string(),
+    value: z.string(),
+  }),
 });
 
 export const funnelReportSchema = z.object({
@@ -279,6 +279,16 @@ export const breakdownReportSchema = z.object({
   }),
 });
 
+export const heatmapReportSchema = z.object({
+  type: z.literal('heatmap'),
+  parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+    urlPath: z.string().max(500).optional(),
+    mode: z.enum(['click', 'scroll']).optional(),
+  }),
+});
+
 export const reportBaseSchema = z.object({
   websiteId: z.uuid(),
   type: reportTypeParam,
@@ -297,6 +307,7 @@ export const reportTypeSchema = z.discriminatedUnion('type', [
   revenueReportSchema,
   attributionReportSchema,
   breakdownReportSchema,
+  heatmapReportSchema,
 ]);
 
 export const reportSchema = reportBaseSchema;
@@ -304,7 +315,7 @@ export const reportSchema = reportBaseSchema;
 export const reportResultSchema = z.intersection(
   z.object({
     websiteId: z.uuid(),
-    filters: z.object({ ...filterParams }),
+    filters: z.object({ ...filterParams }).passthrough(),
   }),
   reportTypeSchema,
 );
