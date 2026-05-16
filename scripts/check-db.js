@@ -48,7 +48,7 @@ async function checkConnection() {
 
     success('Database connection successful.');
   } catch (e) {
-    throw new Error('Unable to connect to the database: ' + e.message);
+    throw new Error(`Unable to connect to the database: ${e.message}`);
   }
 }
 
@@ -67,7 +67,8 @@ async function checkDatabaseVersion() {
 
 async function applyMigration() {
   if (!process.env.SKIP_DB_MIGRATION) {
-    console.log(execSync('prisma migrate deploy').toString());
+    const directUrl = process.env.DIRECT_DATABASE_URL || process.env.DATABASE_URL;
+    console.log(execSync('prisma migrate deploy', { env: { ...process.env, DATABASE_URL: directUrl } }).toString());
 
     success('Database is up to date.');
   }

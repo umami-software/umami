@@ -6,36 +6,36 @@ import { Lightning } from '@/components/svg';
 export function WebsiteTabs() {
   const website = useWebsite();
   const { pathname, renderUrl } = useNavigation();
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   const links = [
     {
       id: 'overview',
-      label: formatMessage(labels.overview),
+      label: t(labels.overview),
       icon: <Eye />,
       path: '',
     },
     {
       id: 'events',
-      label: formatMessage(labels.events),
+      label: t(labels.events),
       icon: <Lightning />,
       path: '/events',
     },
     {
       id: 'sessions',
-      label: formatMessage(labels.sessions),
+      label: t(labels.sessions),
       icon: <User />,
       path: '/sessions',
     },
     {
       id: 'realtime',
-      label: formatMessage(labels.realtime),
+      label: t(labels.realtime),
       icon: <Clock />,
       path: '/realtime',
     },
     {
       id: 'reports',
-      label: formatMessage(labels.reports),
+      label: t(labels.reports),
       icon: <ChartPie />,
       path: '/reports',
     },

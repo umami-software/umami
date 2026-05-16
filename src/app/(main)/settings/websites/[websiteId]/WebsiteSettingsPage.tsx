@@ -7,7 +7,7 @@ import { WebsiteProvider } from '@/app/(main)/websites/WebsiteProvider';
 export function WebsiteSettingsPage({ websiteId }: { websiteId: string }) {
   return (
     <WebsiteProvider websiteId={websiteId}>
-      <Column margin="2">
+      <Column margin="2" width="100%" maxWidth="800px" style={{ marginInline: 'auto' }}>
         <WebsiteSettingsHeader />
         <WebsiteSettings websiteId={websiteId} />
       </Column>

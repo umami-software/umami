@@ -16,7 +16,7 @@
  *   npm run seed-data -- --verbose # Show detailed progress
  */
 
-import { seed, type SeedConfig } from './seed/index.js';
+import { type SeedConfig, seed } from './seed/index.js';
 
 function parseArgs(): SeedConfig {
   const args = process.argv.slice(2);

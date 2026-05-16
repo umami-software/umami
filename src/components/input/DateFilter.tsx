@@ -1,10 +1,9 @@
 import { Dialog, ListItem, ListSeparator, Modal, Select, type SelectProps } from '@umami/react-zen';
-import { endOfYear } from 'date-fns';
 import { Fragment, type Key, useState } from 'react';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { useMessages, useMobile } from '@/components/hooks';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
-import { parseDateRange } from '@/lib/date';
+import { getMaxSelectableDate, parseDateRange } from '@/lib/date';
 
 export interface DateFilterProps extends SelectProps {
   value?: string;
@@ -22,56 +21,56 @@ export function DateFilter({
   placement = 'bottom',
   ...props
 }: DateFilterProps) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const [showPicker, setShowPicker] = useState(false);
   const { startDate, endDate } = parseDateRange(value) || {};
   const { isMobile } = useMobile();
 
   const options = [
-    { label: formatMessage(labels.today), value: '0day' },
+    { label: t(labels.today), value: '0day' },
     {
-      label: formatMessage(labels.lastHours, { x: '24' }),
+      label: t(labels.lastHours, { x: '24' }),
       value: '24hour',
     },
     {
-      label: formatMessage(labels.thisWeek),
+      label: t(labels.thisWeek),
       value: '0week',
       divider: true,
     },
     {
-      label: formatMessage(labels.lastDays, { x: '7' }),
+      label: t(labels.lastDays, { x: '7' }),
       value: '7day',
     },
     {
-      label: formatMessage(labels.thisMonth),
+      label: t(labels.thisMonth),
       value: '0month',
       divider: true,
     },
     {
-      label: formatMessage(labels.lastDays, { x: '30' }),
+      label: t(labels.lastDays, { x: '30' }),
       value: '30day',
     },
     {
-      label: formatMessage(labels.lastDays, { x: '90' }),
+      label: t(labels.lastDays, { x: '90' }),
       value: '90day',
     },
-    { label: formatMessage(labels.thisYear), value: '0year' },
+    { label: t(labels.thisYear), value: '0year' },
     {
-      label: formatMessage(labels.lastMonths, { x: '6' }),
+      label: t(labels.lastMonths, { x: '6' }),
       value: '6month',
       divider: true,
     },
     {
-      label: formatMessage(labels.lastMonths, { x: '12' }),
+      label: t(labels.lastMonths, { x: '12' }),
       value: '12month',
     },
     showAllTime && {
-      label: formatMessage(labels.allTime),
+      label: t(labels.allTime),
       value: 'all',
       divider: true,
     },
     {
-      label: formatMessage(labels.customRange),
+      label: t(labels.customRange),
       value: 'custom',
       divider: true,
     },
@@ -107,10 +106,10 @@ export function DateFilter({
       <Select
         {...props}
         value={selectedValue}
-        placeholder={formatMessage(labels.selectDate)}
+        placeholder={t(labels.selectDate)}
         onChange={handleChange}
         renderValue={renderValue}
-        popoverProps={{ placement }}
+        popoverProps={{ placement, style: { minWidth: 200 } }}
         isFullscreen={isMobile}
       >
         {options.map(({ label, value, divider }: any) => {
@@ -129,7 +128,7 @@ export function DateFilter({
               startDate={startDate}
               endDate={endDate}
               minDate={new Date(2000, 0, 1)}
-              maxDate={endOfYear(new Date())}
+              maxDate={getMaxSelectableDate()}
               onChange={handlePickerChange}
               onClose={() => setShowPicker(false)}
             />

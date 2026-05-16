@@ -1,5 +1,5 @@
 import { Button, type ButtonProps } from '@umami/react-zen';
-import Link from 'next/link';
+import Link from '@/components/common/Link';
 import type { ReactNode } from 'react';
 import { useLocale } from '@/components/hooks';
 
@@ -25,17 +25,15 @@ export function LinkButton({
 }: LinkButtonProps) {
   const { dir } = useLocale();
 
-  return (
-    <Button {...props} variant={variant} asChild>
-      {asAnchor ? (
-        <a href={href} target={target}>
-          {children}
-        </a>
-      ) : (
-        <Link href={href} dir={dir} scroll={scroll} target={target} prefetch={prefetch}>
-          {children}
-        </Link>
-      )}
-    </Button>
+  const linkElement = asAnchor ? (
+    <a href={href} target={target}>
+      {children}
+    </a>
+  ) : (
+    <Link href={href} dir={dir} scroll={scroll} target={target} prefetch={prefetch}>
+      {children}
+    </Link>
   );
+
+  return <Button {...props} variant={variant} render={linkElement} />;
 }

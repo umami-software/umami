@@ -10,15 +10,21 @@ import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
 import { PageBody } from '@/components/common/PageBody';
 import { Panel } from '@/components/common/Panel';
 
-const excludedIds = ['path', 'entry', 'exit', 'title', 'language', 'screen', 'event'];
+const excludedIds = ['path', 'fullPath', 'entry', 'exit', 'title', 'language', 'screen', 'event'];
 
-export function PixelPage({ pixelId }: { pixelId: string }) {
+export function PixelPage({
+  pixelId,
+  showHeaderActions = true,
+}: {
+  pixelId: string;
+  showHeaderActions?: boolean;
+}) {
   return (
     <PixelProvider pixelId={pixelId}>
       <Grid width="100%" height="100%">
         <Column margin="2">
           <PageBody gap>
-            <PixelHeader />
+            <PixelHeader showActions={showHeaderActions} />
             <PixelControls pixelId={pixelId} />
             <PixelMetricsBar pixelId={pixelId} showChange={true} />
             <Panel>

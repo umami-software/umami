@@ -1,0 +1,81 @@
+:root {
+  --font-family: var(--font-inter), sans-serif;
+  --primary: oklch(62.3% 0.214 259.815);
+  --primary-foreground: oklch(98.5% 0 0);
+}
+
+html,
+body {
+  font-family: var(--font-family), sans-serif;
+  font-size: 14px;
+  color: var(--text-primary);
+  background-color: var(--surface-raised);
+  width: 100%;
+  min-height: 100vh;
+}
+
+html[style*="padding-right"] {
+  padding-right: 0 !important;
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  border: 7px solid rgba(0, 0, 0, 0);
+  background-color: var(--border-default);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 7px solid rgba(0, 0, 0, 0);
+  background-color: var(--text-disabled);
+  border-radius: var(--border-radius-full);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  border: 4px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+}
+
+/* Fix autofill background color to match theme */
+input:is(:-webkit-autofill, :autofill),
+input:is(:-webkit-autofill, :autofill):hover,
+input:is(:-webkit-autofill, :autofill):focus,
+input:is(:-webkit-autofill, :autofill):active,
+textarea:is(:-webkit-autofill, :autofill),
+textarea:is(:-webkit-autofill, :autofill):hover,
+textarea:is(:-webkit-autofill, :autofill):focus,
+select:is(:-webkit-autofill, :autofill),
+select:is(:-webkit-autofill, :autofill):hover,
+select:is(:-webkit-autofill, :autofill):focus {
+  color: var(--text-primary) !important;
+  caret-color: var(--text-primary);
+  box-shadow: 0 0 0 1000px var(--surface-base) inset !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--surface-base) inset !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
+  transition:
+    background-color 5000s ease-in-out 0s,
+    color 5000s ease-in-out 0s;
+}
+
+/* Code snippet textareas */
+.code-textarea textarea {
+  min-height: 100px;
+}
+
+/* rrweb-player overrides */
+.rr-controller__btns {
+  gap: 8px;
+}
+
+[data-theme="dark"] .rr-controller__btns button {
+  color: black;
+}
+
+[data-theme="dark"] .rr-controller__btns .label {
+  color: black;
+}

@@ -1,28 +1,21 @@
-import { Button, Dialog, DialogTrigger, Icon, Modal, Text } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import { Plus } from '@/components/icons';
+import { DialogButton } from '@/components/input/DialogButton';
 import { GoalEditForm } from './GoalEditForm';
 
 export function GoalAddButton({ websiteId }: { websiteId: string }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
 
   return (
-    <DialogTrigger>
-      <Button variant="primary">
-        <Icon>
-          <Plus />
-        </Icon>
-        <Text>{formatMessage(labels.goal)}</Text>
-      </Button>
-      <Modal>
-        <Dialog
-          aria-label="add goal"
-          title={formatMessage(labels.goal)}
-          style={{ minWidth: 400, minHeight: 300 }}
-        >
-          {({ close }) => <GoalEditForm websiteId={websiteId} onClose={close} />}
-        </Dialog>
-      </Modal>
-    </DialogTrigger>
+    <DialogButton
+      variant="primary"
+      icon={<Plus />}
+      label={t(labels.goal)}
+      title={t(labels.goal)}
+      minWidth="400px"
+      minHeight="300px"
+    >
+      {({ close }) => <GoalEditForm websiteId={websiteId} onClose={close} />}
+    </DialogButton>
   );
 }

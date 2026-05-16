@@ -53,6 +53,13 @@ export interface SaveEventArgs {
   ttclid?: string;
   lifatid?: string;
   twclid?: string;
+
+  // Performance
+  lcp?: number;
+  inp?: number;
+  cls?: number;
+  fcp?: number;
+  ttfb?: number;
 }
 
 export async function saveEvent(args: SaveEventArgs) {
@@ -89,6 +96,11 @@ async function relationalQuery({
   ttclid,
   lifatid,
   twclid,
+  lcp,
+  inp,
+  cls,
+  fcp,
+  ttfb,
 }: SaveEventArgs) {
   const websiteEventId = uuid();
 
@@ -119,6 +131,11 @@ async function relationalQuery({
       eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
       tag,
       hostname,
+      lcp,
+      inp,
+      cls,
+      fcp,
+      ttfb,
       createdAt,
     },
   });
@@ -186,6 +203,11 @@ async function clickhouseQuery({
   ttclid,
   lifatid,
   twclid,
+  lcp,
+  inp,
+  cls,
+  fcp,
+  ttfb,
 }: SaveEventArgs) {
   const { insert, getUTCString } = clickhouse;
   const { sendMessage } = kafka;
@@ -221,12 +243,17 @@ async function clickhouseQuery({
     tag: tag,
     distinct_id: distinctId,
     created_at: getUTCString(createdAt),
-    browser,
-    os,
-    device,
-    screen,
-    language,
-    hostname,
+    browser: browser,
+    os: os,
+    device: device,
+    screen: screen,
+    language: language,
+    hostname: hostname,
+    lcp: lcp,
+    inp: inp,
+    cls: cls,
+    fcp: fcp,
+    ttfb: ttfb,
   };
 
   if (kafka.enabled) {

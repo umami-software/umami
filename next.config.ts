@@ -1,25 +1,54 @@
 import 'dotenv/config';
+import createNextIntlPlugin from 'next-intl/plugin';
 import pkg from './package.json' with { type: 'json' };
+
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const TRACKER_SCRIPT = '/script.js';
 
+const isProd = process.env.NODE_ENV === 'production';
+
+const apiUrl = process.env.API_URL || '';
 const basePath = process.env.BASE_PATH || '';
 const cloudMode = process.env.CLOUD_MODE || '';
 const cloudUrl = process.env.CLOUD_URL || '';
 const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT || '';
 const corsMaxAge = process.env.CORS_MAX_AGE || '';
+const defaultCurrency = process.env.DEFAULT_CURRENCY || '';
 const defaultLocale = process.env.DEFAULT_LOCALE || '';
 const forceSSL = process.env.FORCE_SSL || '';
 const frameAncestors = process.env.ALLOWED_FRAME_URLS || '';
 const trackerScriptName = process.env.TRACKER_SCRIPT_NAME || '';
 const trackerScriptURL = process.env.TRACKER_SCRIPT_URL || '';
+const selfTrack = process.env.UMAMI_SELF_TRACK || '';
+const selfRecord = process.env.UMAMI_SELF_RECORD || '';
+
+function getUrlOrigin(url: string) {
+  try {
+    return new URL(url).origin;
+  } catch {
+    return '';
+  }
+}
+
+function isRelativeUrl(url: string) {
+  return Boolean(url && !/^https?:\/\//i.test(url));
+}
+
+function normalizePath(url: string) {
+  return `/${url.replace(/^\/+|\/+$/g, '')}`;
+}
+
+const apiUrlOrigin = getUrlOrigin(apiUrl);
+const connectSrc = ["'self'", 'https:', apiUrlOrigin].filter(Boolean).join(' ');
 
 const contentSecurityPolicy = `
   default-src 'self';
   img-src 'self' https: data:;
   script-src 'self' 'unsafe-eval' 'unsafe-inline';
   style-src 'self' 'unsafe-inline';
-  connect-src 'self' https:;
+  connect-src ${connectSrc};
+  frame-src 'self' http: https:;
   frame-ancestors 'self' ${frameAncestors};
 `;
 
@@ -84,11 +113,14 @@ const headers = [
     source: '/:path*',
     headers: defaultHeaders,
   },
-  {
+];
+
+if (isProd) {
+  headers.push({
     source: TRACKER_SCRIPT,
     headers: trackerHeaders,
-  },
-];
+  });
+}
 
 const rewrites = [];
 
@@ -111,7 +143,33 @@ if (collectApiEndpoint) {
   });
 }
 
+if (isRelativeUrl(apiUrl)) {
+  const normalizedApiUrl = normalizePath(apiUrl);
+
+  if (normalizedApiUrl !== '/' && normalizedApiUrl !== '/api') {
+    headers.push({
+      source: `${normalizedApiUrl}/:path*`,
+      headers: apiHeaders,
+    });
+
+    rewrites.push({
+      source: `${normalizedApiUrl}/:path*`,
+      destination: '/api/:path*',
+    });
+  }
+}
+
 const redirects = [
+  {
+    source: '/teams/:id/dashboard/edit',
+    destination: '/dashboard/edit',
+    permanent: false,
+  },
+  {
+    source: '/teams/:id/dashboard',
+    destination: '/dashboard',
+    permanent: false,
+  },
   {
     source: '/settings',
     destination: '/settings/preferences',
@@ -155,7 +213,7 @@ if (trackerScriptName) {
   }
 }
 
-if (cloudMode) {
+if (isProd && cloudMode) {
   rewrites.push({
     source: '/script.js',
     destination: 'https://cloud.umami.is/script.js',
@@ -163,23 +221,25 @@ if (cloudMode) {
 }
 
 /** @type {import('next').NextConfig} */
-export default {
+export default withNextIntl({
   reactStrictMode: false,
   env: {
+    apiUrl,
     basePath,
     cloudMode,
     cloudUrl,
     currentVersion: pkg.version,
+    defaultCurrency,
     defaultLocale,
+    selfTrack,
+    selfRecord,
   },
   basePath,
   output: 'standalone',
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
+  devIndicators: false,
   async headers() {
     return headers;
   },
@@ -199,4 +259,4 @@ export default {
   async redirects() {
     return [...redirects];
   },
-};
+});

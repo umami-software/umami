@@ -1,0 +1,184 @@
+.layoutGrid {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.pageList {
+  min-width: 0;
+  padding-right: 6px;
+}
+
+.railDivider {
+  width: 1px;
+  height: 100%;
+  background: var(--gray-300, #d1d5db);
+  justify-self: center;
+}
+
+.contentColumn {
+  min-width: 0;
+  min-height: 0;
+  padding-left: 20px;
+}
+
+.pageListItems {
+  overflow-y: auto;
+  padding-top: 8px;
+  padding-right: 8px;
+  max-height: 850px;
+  scrollbar-gutter: stable;
+}
+
+.pageButton {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  border-radius: 6px;
+  padding: 8px 10px 8px 6px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.pageButton:hover {
+  background: var(--interactive-bg-hover);
+}
+
+.pageButtonSelected,
+.pageButtonSelected:hover {
+  background: var(--surface-inverted);
+  color: var(--surface-base);
+}
+
+.summaryHeader {
+  min-width: 0;
+}
+
+.summaryPath {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.summaryStats {
+  flex-wrap: wrap;
+}
+
+.summaryStat {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-base);
+  white-space: nowrap;
+}
+
+.scrollBand {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 2px 8px;
+}
+
+.scrollBandLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 4px;
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+
+.canvasWrapper {
+  width: 100%;
+  min-width: 0;
+}
+
+.snapshotControlRow {
+  margin-top: 8px;
+}
+
+.canvas {
+  position: relative;
+  overflow: visible;
+  border: 1px solid var(--border-base);
+  border-radius: 8px;
+  background: var(--surface-sunken);
+  max-width: 100%;
+}
+
+.canvasClip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  background: inherit;
+}
+
+.snapshot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  transform-origin: top left;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.snapshot :global(.replayer-wrapper) {
+  border: 0;
+  overflow: hidden;
+}
+
+.snapshot :global(iframe) {
+  border: 0;
+  pointer-events: none;
+}
+
+.snapshot :global(.replayer-mouse),
+.snapshot :global(.replayer-mouse-tail) {
+  display: none !important;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.canvasLoading {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--surface-sunken);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dot {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 60, 0, 0.9) 0%,
+    rgba(255, 200, 0, 0.6) 45%,
+    rgba(255, 200, 0, 0) 80%
+  );
+  pointer-events: auto;
+  mix-blend-mode: multiply;
+}

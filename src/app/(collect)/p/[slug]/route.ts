@@ -21,6 +21,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
         return findPixel({
           where: {
             slug,
+            deletedAt: null,
           },
         });
       },
@@ -34,6 +35,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     pixel = await findPixel({
       where: {
         slug,
+        deletedAt: null,
       },
     });
 
@@ -47,7 +49,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     payload: {
       pixel: pixel.id,
       url: request.url,
-      referrer: request.headers.get('referer'),
+      referrer: request.headers.get("referer") || undefined,
     },
   };
 
@@ -63,6 +65,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     headers: {
       'Content-Type': 'image/gif',
       'Content-Length': image.length.toString(),
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      Pragma: 'no-cache',
+      Expires: '0',
     },
   });
 }

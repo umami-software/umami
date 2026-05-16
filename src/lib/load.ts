@@ -38,3 +38,15 @@ export async function fetchSession(websiteId: string, sessionId: string): Promis
 
   return session;
 }
+
+export async function fetchAccount(userId: string) {
+  const account = await redis.client.get(`account:${userId}`);
+
+  return account;
+}
+
+export async function fetchTeam(teamId: string) {
+  const team = await redis.client.get(`team:${teamId}`);
+
+  return team;
+}

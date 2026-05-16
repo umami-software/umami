@@ -3,7 +3,7 @@ import { useDeleteQuery, useMessages } from '@/components/hooks';
 import { X } from '@/components/icons';
 
 export function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
-  const { formatMessage, labels } = useMessages();
+  const { t, labels } = useMessages();
   const { mutateAsync } = useDeleteQuery(`/teams/${teamId}/websites/${websiteId}`);
 
   const handleRemoveTeamMember = async () => {
@@ -19,7 +19,7 @@ export function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
       <Icon>
         <X />
       </Icon>
-      <Text>{formatMessage(labels.remove)}</Text>
+      <Text>{t(labels.remove)}</Text>
     </LoadingButton>
   );
 }
