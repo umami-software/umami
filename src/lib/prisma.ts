@@ -1,8 +1,14 @@
-import { PrismaClient } from '@/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import debug from 'debug';
-import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
+import { PrismaClient } from '@/generated/prisma/client';
+import {
+  DATA_TYPE,
+  DEFAULT_PAGE_SIZE,
+  FILTER_COLUMNS,
+  OPERATORS,
+  SESSION_COLUMNS,
+} from './constants';
 import { filtersObjectToArray } from './params';
 import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
 
@@ -68,7 +74,11 @@ function getDateSQL(field: string, unit: string, timezone?: string): string {
   return `to_char(date_trunc('${unit}', ${field}), '${DATE_FORMATS_UTC[unit]}')`;
 }
 
-function getDateStringSQL(field: string, unit: keyof typeof DATE_STRING_FORMATS = 'utc', timezone?: string): string {
+function getDateStringSQL(
+  field: string,
+  unit: keyof typeof DATE_STRING_FORMATS = 'utc',
+  timezone?: string,
+): string {
   if (timezone && !isUtcTimezone(timezone)) {
     return `to_char(${field} at time zone '${timezone}', '${DATE_STRING_FORMATS[unit]}')`;
   }
@@ -478,7 +488,14 @@ async function pagedRawQuery(
   const count = await rawQuery(countQuery, queryParams).then(res => Number(res[0].num));
   const data = await rawQuery(`${query}${statements}`, queryParams, name);
 
-  return { data, count, page: +page, pageSize: size, orderBy, isCapped: !!maxResults && +count >= +maxResults };
+  return {
+    data,
+    count,
+    page: +page,
+    pageSize: size,
+    orderBy,
+    isCapped: !!maxResults && +count >= +maxResults,
+  };
 }
 
 function getSearchParameters(query: string, filters: Record<string, any>[]) {
