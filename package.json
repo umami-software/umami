@@ -147,7 +147,7 @@
     "postcss-import": "^16.1.1",
     "postcss-preset-env": "11.2.1",
     "prompts": "2.4.2",
-    "rollup": "^4.60.3",
+    "rollup": "^4.60.4",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-delete": "^3.0.2",
     "rollup-plugin-dts": "^6.4.1",
@@ -158,7 +158,7 @@
     "ts-morph": "^28.0.0",
     "ts-node": "^10.9.1",
     "tsup": "^8.5.0",
-    "tsx": "^4.22.0",
+    "tsx": "^4.22.1",
     "typescript": "^6.0.3",
     "vitest": "^4.1.6"
   }
