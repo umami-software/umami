@@ -1,4 +1,5 @@
-import { renderNumberLabels } from '../charts';
+import { describe, expect, test } from 'vitest';
+import { renderNumberLabels } from './charts';
 
 // test for renderNumberLabels
 

@@ -1,7 +1,7 @@
-import { getIpAddress } from '../ip';
+import { expect, test } from 'vitest';
+import { getIpAddress } from './ip';
 
 const IP = '127.0.0.1';
-const BAD_IP = '127.127.127.127';
 
 test('getIpAddress: Custom header', () => {
   process.env.CLIENT_IP_HEADER = 'x-custom-ip-header';

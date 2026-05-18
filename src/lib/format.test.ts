@@ -1,4 +1,5 @@
-import * as format from '../format';
+import { expect, test } from 'vitest';
+import * as format from './format';
 
 test('parseTime', () => {
   expect(format.parseTime(86400 + 3600 + 60 + 1)).toEqual({

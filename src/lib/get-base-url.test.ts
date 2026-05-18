@@ -1,5 +1,6 @@
-import { HOMEPAGE_URL } from '../constants';
-import { getBaseUrl } from '../get-base-url';
+import { expect, test } from 'vitest';
+import { HOMEPAGE_URL } from './constants';
+import { getBaseUrl } from './get-base-url';
 
 function createHeaders(entries: Record<string, string>) {
   return {

@@ -1,11 +1,9 @@
-import {
-  BOARD_ENTITY_TYPES,
-  isBoardComponentSupported,
-} from '../boards';
+import { expect, test } from 'vitest';
 import {
   BOARD_COMPONENT_COMPATIBILITY_MATRIX,
   getSupportedBoardComponentEntityTypes,
-} from '../boardComponentCompatibility';
+} from './boardComponentCompatibility';
+import { BOARD_ENTITY_TYPES, isBoardComponentSupported } from './boards';
 
 test('isBoardComponentSupported allows events chart on website boards', () => {
   expect(isBoardComponentSupported('EventsChart', BOARD_ENTITY_TYPES.website)).toBe(true);

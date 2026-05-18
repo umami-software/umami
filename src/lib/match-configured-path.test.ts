@@ -1,4 +1,5 @@
-import { matchesConfiguredPath } from '../match-configured-path';
+import { expect, test } from 'vitest';
+import { matchesConfiguredPath } from './match-configured-path';
 
 test('matches the exact configured path', () => {
   expect(matchesConfiguredPath('/d.js', 'd.js')).toBe(true);
