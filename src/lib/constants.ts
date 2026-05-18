@@ -262,6 +262,9 @@ export const DATETIME_REGEX =
 export const URL_LENGTH = 500;
 export const PAGE_TITLE_LENGTH = 500;
 export const EVENT_NAME_LENGTH = 50;
+export const TAG_LENGTH = 50;
+export const HOSTNAME_LENGTH = 100;
+export const FIELD_VALUE_LENGTH = 255;
 
 export const UTM_PARAMS = ['utm_campaign', 'utm_content', 'utm_medium', 'utm_source', 'utm_term'];
 
