@@ -1,7 +1,7 @@
-import { CLICKHOUSE } from '@/lib/db';
 import { type ClickHouseClient, createClient } from '@clickhouse/client';
 import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
+import { CLICKHOUSE } from '@/lib/db';
 import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from './constants';
 import { filtersObjectToArray } from './params';
 import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
@@ -79,7 +79,13 @@ function getSearchSQL(column: string, param: string = 'search'): string {
   return `and positionCaseInsensitive(${column}, {${param}:String}) > 0`;
 }
 
-function mapFilter(column: string, operator: Operator, name: string, type: string = 'String', paramName?: string) {
+function mapFilter(
+  column: string,
+  operator: Operator,
+  name: string,
+  type: string = 'String',
+  paramName?: string,
+) {
   const param = paramName ?? name;
   const value = `{${param}:${type}}`;
 
@@ -388,7 +394,15 @@ async function pagedRawQuery(
   const count = await rawQuery(countQuery, queryParams).then(res => res[0].num);
   const data = await rawQuery(`${query}${statements}`, queryParams, name);
 
-  return { data, count, page: +page, pageSize: size, orderBy, search, isCapped: !!maxResults && +count >= +maxResults };
+  return {
+    data,
+    count,
+    page: +page,
+    pageSize: size,
+    orderBy,
+    search,
+    isCapped: !!maxResults && +count >= +maxResults,
+  };
 }
 
 async function rawQuery<T = unknown>(
