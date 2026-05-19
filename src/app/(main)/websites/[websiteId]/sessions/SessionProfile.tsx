@@ -1,7 +1,10 @@
 'use client';
+import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 import { Avatar } from '@/components/common/Avatar';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, useWebsiteSessionQuery } from '@/components/hooks';
+import { useDeleteQuery, useMessages, useWebsiteSessionQuery } from '@/components/hooks';
+import { Trash } from '@/components/icons';
+import { DialogButton } from '@/components/input/DialogButton';
 import {
   Button,
   Column,
@@ -24,15 +27,33 @@ export function SessionProfile({
   websiteId,
   sessionId,
   showReplays = true,
+  allowDelete = true,
   onClose,
+  onDelete,
 }: {
   websiteId: string;
   sessionId: string;
   showReplays?: boolean;
+  allowDelete?: boolean;
   onClose?: () => void;
+  onDelete?: () => void;
 }) {
   const { data, isLoading, error } = useWebsiteSessionQuery(websiteId, sessionId);
-  const { t, labels } = useMessages();
+  const { t, labels, messages } = useMessages();
+  const { mutateAsync, isPending, error: deleteError, touch } = useDeleteQuery(
+    `/websites/${websiteId}/sessions/${sessionId}`,
+  );
+
+  const handleDelete = async (close: () => void) => {
+    await mutateAsync(null, {
+      onSuccess: () => {
+        touch('sessions');
+        close();
+        onDelete?.();
+        onClose?.();
+      },
+    });
+  };
 
   return (
     <LoadingPanel
@@ -44,15 +65,35 @@ export function SessionProfile({
     >
       {data && (
         <Column gap>
-          {onClose && (
-            <Row justifyContent="flex-end">
+          <Row justifyContent="flex-end" gap>
+            {allowDelete && (
+              <DialogButton
+                icon={<Trash />}
+                variant="quiet"
+                title={t(labels.confirm)}
+                width="400px"
+              >
+                {({ close }) => (
+                  <ConfirmationForm
+                    message={t(messages.confirmDelete, { target: t(labels.session) })}
+                    isLoading={isPending}
+                    error={deleteError}
+                    onConfirm={handleDelete.bind(null, close)}
+                    onClose={close}
+                    buttonLabel={t(labels.delete)}
+                    buttonVariant="danger"
+                  />
+                )}
+              </DialogButton>
+            )}
+            {onClose && (
               <Button onPress={onClose} variant="quiet">
                 <Icon>
                   <X />
                 </Icon>
               </Button>
-            </Row>
-          )}
+            )}
+          </Row>
           <Column gap="6">
             <Row justifyContent="center" alignItems="center" gap="6">
               <Avatar seed={data?.id} size={128} />
