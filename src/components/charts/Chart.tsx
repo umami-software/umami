@@ -13,7 +13,7 @@ ChartJS.defaults.font.family = 'Inter';
 
 export interface ChartProps extends BoxProps {
   type?: 'bar' | 'bubble' | 'doughnut' | 'pie' | 'line' | 'polarArea' | 'radar' | 'scatter';
-  chartData?: ChartData & { focusLabel?: string };
+  chartData?: ChartData<any, any, unknown> & { focusLabel?: string };
   chartOptions?: ChartOptions;
   updateMode?: UpdateMode;
   animationDuration?: number;
@@ -66,8 +66,6 @@ export function Chart({
 
   const handleLegendClick = (item: LegendItem) => {
     if (onLegendClick && type === 'bar') {
-      // Controlled mode: caller owns the hidden state. We report the click
-      // and let the parent push a new hiddenLabels set on the next render.
       const { datasetIndex } = item;
       const ds = chart.current.data.datasets[datasetIndex];
       onLegendClick(ds.label, !hiddenLabels?.has(ds.label));
@@ -124,16 +122,11 @@ export function Chart({
         });
       }
 
-      // Re-apply caller-driven hidden flags after focusLabel handling so a
-      // dataset stays hidden across data changes (e.g. date-range switches)
-      // even though Chart.js regenerates dataset meta on every replace.
       if (hiddenLabels) {
         chart.current.data.datasets.forEach((ds: { hidden: boolean; label: any }) => {
           if (hiddenLabels.has(ds.label)) {
             ds.hidden = true;
           } else if (!chartData.focusLabel) {
-            // Explicitly reset so un-hiding a label is always reflected,
-            // regardless of whether the focusLabel pass ran above.
             ds.hidden = false;
           }
         });

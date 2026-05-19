@@ -130,9 +130,6 @@ export async function deleteUser(userId: string) {
 
   const teamIds = teams.map(a => a.id);
 
-  // Cloud mode keeps owned teams (and their team-owned content), so cleanup
-  // only covers user-direct rows. Non-cloud hard-deletes owned teams below,
-  // so we must also clean up team-owned content.
   const ownedFilter = cloudMode
     ? { userId }
     : { OR: [{ userId }, { teamId: { in: teamIds } }] };

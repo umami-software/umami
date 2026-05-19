@@ -58,16 +58,11 @@ export function DataGrid({
   const showPager = allowPaging && data && data.count > 0;
   const { isMobile } = useMobile();
   const [userDisplayMode, setUserDisplayMode] = useState<DisplayMode | null>(() => {
-    // localStorage can hold anything (extensions, manual edits, schema drift),
-    // so accept only the two values we know how to render and otherwise fall
-    // back to the useMobile-driven default.
     const stored = getItem(DISPLAY_MODE_STORAGE_KEY);
     return stored === 'table' || stored === 'cards' ? stored : null;
   });
 
-  // Effective mode: explicit user choice wins, otherwise fall back to the
-  // mobile-driven default (cards on small viewports, table elsewhere).
-  const displayMode: DisplayMode | undefined = userDisplayMode ?? (isMobile ? 'cards' : undefined);
+  const displayMode: DisplayMode | undefined = isMobile ? 'cards' : userDisplayMode ?? undefined;
 
   const handleToggleDisplayMode = () => {
     const next: DisplayMode = displayMode === 'cards' ? 'table' : 'cards';
@@ -116,7 +111,7 @@ export function DataGrid({
         )}
         <Row alignItems="center" gap style={{ marginLeft: 'auto' }}>
           {renderActions?.()}
-          {viewToggleButton}
+          {!isMobile && viewToggleButton}
         </Row>
       </Row>
       <LoadingPanel
