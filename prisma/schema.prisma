@@ -411,6 +411,9 @@ model HeatmapEvent {
   nodeId           Int?     @map("node_id") @db.Integer
   x                Int?     @db.Integer
   y                Int?     @db.Integer
+  pageX            Int?     @map("page_x") @db.Integer
+  pageY            Int?     @map("page_y") @db.Integer
+  pageW            Int?     @map("page_w") @db.Integer
   viewportW        Int?     @map("viewport_w") @db.Integer
   viewportH        Int?     @map("viewport_h") @db.Integer
   pageH            Int?     @map("page_h") @db.Integer

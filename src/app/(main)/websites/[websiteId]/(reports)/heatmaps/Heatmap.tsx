@@ -9,22 +9,29 @@ import type { HeatmapMode, HeatmapPoint, HeatmapResult, HeatmapSnapshot } from '
 import styles from './Heatmap.module.css';
 import 'rrweb/dist/replay/rrweb-replay.css';
 
-const MAX_RENDER_WIDTH = 1024;
+const MAX_FIXED_WIDTH_OVERRUN = 160;
+const CLICK_EDGE_PADDING = 4;
 
 function useElementWidth<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
   const [width, setWidth] = useState(0);
+
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
     setWidth(el.getBoundingClientRect().width || el.clientWidth || 0);
+
     const ro = new ResizeObserver(entries => {
-      const w = entries[0]?.contentRect.width ?? 0;
-      setWidth(w);
+      const nextWidth = entries[0]?.contentRect.width ?? 0;
+      setWidth(nextWidth);
     });
+
     ro.observe(el);
+
     return () => ro.disconnect();
   }, []);
+
   return [ref, width] as const;
 }
 
@@ -44,6 +51,8 @@ interface ReplayInstance {
 interface ViewportBucket {
   width: number;
   height: number;
+  pageW: number;
+  pageH: number;
   count: number;
 }
 
@@ -201,21 +210,42 @@ function PageList({
 
 function pickViewport(points: HeatmapPoint[]): ViewportBucket | null {
   if (!points.length) return null;
-  const buckets = new Map<string, ViewportBucket>();
+  const viewportBuckets = new Map<
+    string,
+    ViewportBucket & { maxPageW: number; maxPageH: number }
+  >();
   for (const p of points) {
-    const key = `${p.viewportW}x${p.viewportH}`;
-    const existing = buckets.get(key);
+    const viewportKey = `${p.viewportW}x${p.viewportH}`;
+    const existing = viewportBuckets.get(viewportKey);
     if (existing) {
       existing.count += p.count;
+      existing.maxPageW = Math.max(existing.maxPageW, p.pageW);
+      existing.maxPageH = Math.max(existing.maxPageH, p.pageH);
     } else {
-      buckets.set(key, { width: p.viewportW, height: p.viewportH, count: p.count });
+      viewportBuckets.set(viewportKey, {
+        width: p.viewportW,
+        height: p.viewportH,
+        pageW: p.pageW,
+        pageH: p.pageH,
+        count: p.count,
+        maxPageW: p.pageW,
+        maxPageH: p.pageH,
+      });
     }
   }
-  let best: ViewportBucket | null = null;
-  for (const b of buckets.values()) {
+  let best: (ViewportBucket & { maxPageW: number; maxPageH: number }) | null = null;
+  for (const b of viewportBuckets.values()) {
     if (!best || b.count > best.count) best = b;
   }
-  return best;
+  if (!best) return null;
+
+  return {
+    width: best.width,
+    height: best.height,
+    pageW: best.maxPageW,
+    pageH: best.maxPageH,
+    count: best.count,
+  };
 }
 
 function HeatmapView({
@@ -251,7 +281,7 @@ function HeatmapView({
 
   useEffect(() => {
     setSnapshotReady(!(showPage && snapshot));
-  }, [containerWidth, showPage, snapshot]);
+  }, [showPage, snapshot]);
 
   if (isLoading) {
     return <CanvasLoading />;
@@ -261,9 +291,14 @@ function HeatmapView({
     return <EmptyState />;
   }
 
-  const renderWidth = Math.min(containerWidth > 0 ? containerWidth : viewport.width, MAX_RENDER_WIDTH);
-  const scale = renderWidth / viewport.width;
-  const renderHeight = Math.round(viewport.height * scale);
+  const overlayGutter = Math.max(48, Math.round(viewport.width * 0.04));
+  const maxPointX = visible.reduce((max, point) => Math.max(max, point.pageX), 0);
+  const maxPointY = visible.reduce((max, point) => Math.max(max, point.pageY), 0);
+  const baseWidth = Math.max(viewport.pageW, maxPointX + overlayGutter);
+  const baseHeight = Math.max(viewport.pageH, maxPointY + overlayGutter);
+  const renderWidth = containerWidth > 0 ? Math.min(baseWidth, containerWidth) : baseWidth;
+  const scale = renderWidth / baseWidth;
+  const renderHeight = Math.round(baseHeight * scale);
   const showSnapshot = renderWidth > 0 && showPage && !!snapshot;
   const showOverlay = !showSnapshot || snapshotReady;
 
@@ -287,41 +322,55 @@ function HeatmapView({
           className={styles.canvas}
           style={{ width: renderWidth || '100%', height: renderHeight || 0 }}
         >
-          <div className={styles.canvasClip}>
+          <div className={styles.snapshotClip}>
             {showSnapshot && !snapshotReady && <CanvasLoading />}
             {showSnapshot && (
               <ReplaySnapshot
                 websiteId={websiteId}
                 snapshot={snapshot}
-                width={viewport.width}
-                height={viewport.height}
+                width={baseWidth}
+                height={baseHeight}
                 scale={scale}
+                allowWidthExpansion={viewport.pageW > viewport.width}
                 onReady={handleSnapshotReady}
               />
             )}
-            {showOverlay && (
-              <div className={styles.overlay}>
-                {visible.map((p, i) => {
-                  const intensity = Math.min(1, p.count / maxCount);
-                  const size = 24 + intensity * 36;
-                  return (
-                    <div
-                      key={`${p.x}-${p.y}-${i}`}
-                      className={styles.dot}
-                      style={{
-                        left: p.x * scale - size / 2,
-                        top: p.y * scale - size / 2,
-                        width: size,
-                        height: size,
-                        opacity: 0.25 + intensity * 0.55,
-                      }}
-                      title={`${p.count} click${p.count === 1 ? '' : 's'}`}
-                    />
-                  );
-                })}
-              </div>
-            )}
           </div>
+          {showOverlay && (
+            <div className={styles.overlay}>
+              {visible.map((p, i) => {
+                const intensity = Math.min(1, p.count / maxCount);
+                const desiredSize = 24 + intensity * 36;
+                const pointWidth = Math.max(baseWidth, p.pageW || 0, p.pageX);
+                const pointHeight = Math.max(baseHeight, p.pageH || 0, p.pageY);
+                const rawCenterX = (p.pageX / Math.max(1, pointWidth)) * renderWidth;
+                const rawCenterY = (p.pageY / Math.max(1, pointHeight)) * renderHeight;
+                const size = desiredSize;
+                const centerX = Math.max(
+                  size / 2 + CLICK_EDGE_PADDING,
+                  Math.min(renderWidth - size / 2 - CLICK_EDGE_PADDING, rawCenterX),
+                );
+                const centerY = Math.max(
+                  size / 2 + CLICK_EDGE_PADDING,
+                  Math.min(renderHeight - size / 2 - CLICK_EDGE_PADDING, rawCenterY),
+                );
+                return (
+                  <div
+                    key={`${p.pageX}-${p.pageY}-${i}`}
+                    className={styles.dot}
+                    style={{
+                      left: centerX - size / 2,
+                      top: centerY - size / 2,
+                      width: size,
+                      height: size,
+                      opacity: 0.25 + intensity * 0.55,
+                    }}
+                    title={`${p.count} click${p.count === 1 ? '' : 's'}`}
+                  />
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
       {snapshot && (
@@ -356,20 +405,22 @@ function ScrollHeatmapView({
 
   useEffect(() => {
     setSnapshotReady(!(showPage && snapshot));
-  }, [containerWidth, showPage, snapshot]);
+  }, [showPage, snapshot]);
 
   if (isLoading) {
     return <CanvasLoading />;
   }
 
-  if (!scroll || scroll.totalSessions === 0 || !scroll.pageH || !scroll.viewportW) {
+  if (!scroll || scroll.totalSessions === 0 || !scroll.pageW || !scroll.pageH || !scroll.viewportW) {
     return <EmptyState message="No scroll data for this page yet." />;
   }
 
-  const { buckets, totalSessions, pageH, viewportW, viewportH } = scroll;
-  const renderWidth = Math.min(containerWidth > 0 ? containerWidth : viewportW, MAX_RENDER_WIDTH);
-  const scale = renderWidth / viewportW;
-  const renderHeight = Math.round(pageH * scale);
+  const { buckets, totalSessions, pageW, pageH, viewportW, viewportH } = scroll;
+  const baseWidth = pageW;
+  const baseHeight = pageH;
+  const renderWidth = containerWidth > 0 ? Math.min(baseWidth, containerWidth) : baseWidth;
+  const scale = renderWidth / baseWidth;
+  const renderHeight = Math.round(baseHeight * scale);
   const showSnapshot = renderWidth > 0 && showPage && !!snapshot;
   const showOverlay = !showSnapshot || snapshotReady;
 
@@ -382,9 +433,6 @@ function ScrollHeatmapView({
     return { depth: b.depth, reached, ratio: reached / totalSessions };
   });
 
-  // Build page-spanning bands. Each band covers a vertical slice of the page.
-  // Intensity = fraction of sessions reaching the band's TOP edge (everyone who
-  // got that far saw at least the start of the slice).
   type Band = { fromPct: number; toPct: number; reached: number; ratio: number };
   const bands: Band[] = [];
   const firstDepth = cumulative[0]?.depth ?? 100;
@@ -421,9 +469,10 @@ function ScrollHeatmapView({
               <ReplaySnapshot
                 websiteId={websiteId}
                 snapshot={snapshot}
-                width={viewportW}
+                width={pageW}
                 height={pageH}
                 scale={scale}
+                allowWidthExpansion={pageW > viewportW}
                 onReady={handleSnapshotReady}
               />
             )}
@@ -474,6 +523,7 @@ function ReplaySnapshot({
   width,
   height,
   scale,
+  allowWidthExpansion = true,
   onReady,
 }: {
   websiteId: string;
@@ -481,10 +531,13 @@ function ReplaySnapshot({
   width: number;
   height: number;
   scale: number;
+  allowWidthExpansion?: boolean;
   onReady: () => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const replayerRef = useRef<ReplayInstance | null>(null);
+  const contentWidthRef = useRef(width);
+  const [contentWidth, setContentWidth] = useState(width);
   const { data } = useReplayQuery(websiteId, snapshot.replayId, {
     until: snapshot.timestamp,
     chunkIndex: snapshot.chunkIndex,
@@ -492,11 +545,25 @@ function ReplaySnapshot({
   }) as { data?: ReplayData };
 
   useEffect(() => {
+    contentWidthRef.current = width;
+    setContentWidth(width);
+  }, [
+    snapshot.chunkIndex,
+    snapshot.eventIndex,
+    snapshot.replayId,
+    snapshot.timestamp,
+    width,
+  ]);
+
+  useEffect(() => {
     const container = containerRef.current;
     const events = data?.events;
     if (!container || !events?.length) return;
 
     let cancelled = false;
+    let finalizeTimer: ReturnType<typeof setTimeout> | null = null;
+    let readyTimer: ReturnType<typeof setTimeout> | null = null;
+    let widthObserver: ResizeObserver | null = null;
 
     import('rrweb').then(({ Replayer }) => {
       if (cancelled || !containerRef.current) return;
@@ -516,7 +583,70 @@ function ReplaySnapshot({
       replayerRef.current = replayer;
       let rebuilt = false;
       let waitingForStyles = false;
-      let settled = false;
+      let finalizeToken = 0;
+      let observingWidth = false;
+
+      const getBoundedWidth = (nextWidth: number) => {
+        const maxWidth = allowWidthExpansion ? Number.POSITIVE_INFINITY : width + MAX_FIXED_WIDTH_OVERRUN;
+        return Math.min(Math.max(width, nextWidth), maxWidth);
+      };
+
+      const commitWidth = (nextWidth: number) => {
+        const stableWidth = Math.max(contentWidthRef.current, getBoundedWidth(nextWidth), width);
+
+        if (stableWidth === contentWidthRef.current) {
+          return;
+        }
+
+        contentWidthRef.current = stableWidth;
+        resizeReplayFrame(replayer, stableWidth, height);
+        setContentWidth(stableWidth);
+      };
+
+      const scheduleReady = (delay = 250) => {
+        if (cancelled) {
+          return;
+        }
+
+        if (readyTimer) {
+          clearTimeout(readyTimer);
+        }
+
+        readyTimer = setTimeout(() => {
+          readyTimer = null;
+          if (!cancelled) {
+            onReady();
+          }
+        }, delay);
+      };
+
+      const startWidthObserver = () => {
+        if (observingWidth || cancelled) {
+          return;
+        }
+
+        const doc = replayer.iframe?.contentDocument;
+        const html = doc?.documentElement;
+        const body = doc?.body;
+
+        if (!html && !body) {
+          return;
+        }
+
+        observingWidth = true;
+        widthObserver = new ResizeObserver(() => {
+          commitWidth(measureReplayWidth(replayer, width));
+          scheduleReady();
+        });
+
+        if (html) {
+          widthObserver.observe(html);
+        }
+
+        if (body) {
+          widthObserver.observe(body);
+        }
+      };
 
       const freeze = () => {
         const offset = Math.max(0, snapshot.timestamp - events[0].timestamp);
@@ -526,28 +656,62 @@ function ReplaySnapshot({
         resizeReplayFrame(replayer, width, height);
       };
 
-      const finalize = async () => {
-        if (settled || waitingForStyles || !rebuilt || cancelled) {
+      const finalize = async (token: number) => {
+        if (waitingForStyles || !rebuilt || cancelled) {
           return;
         }
 
-        settled = true;
-
         await waitForReplayLayout(replayer);
 
-        if (cancelled) {
+        if (cancelled || token !== finalizeToken) {
           return;
         }
 
         freeze();
         await waitForAnimationFrames(2);
 
-        if (cancelled) {
+        if (cancelled || token !== finalizeToken) {
           return;
         }
 
         freeze();
-        onReady();
+        await waitForAnimationFrames(2);
+
+        if (cancelled || token !== finalizeToken) {
+          return;
+        }
+
+        commitWidth(
+          await measureStableReplayWidth(replayer, width, {
+          maxWidth: allowWidthExpansion ? undefined : width + MAX_FIXED_WIDTH_OVERRUN,
+          samples: 12,
+        }),
+        );
+
+        if (cancelled || token !== finalizeToken) {
+          return;
+        }
+
+        startWidthObserver();
+        scheduleReady();
+      };
+
+      const scheduleFinalize = (delay = 250) => {
+        if (cancelled) {
+          return;
+        }
+
+        finalizeToken += 1;
+        const token = finalizeToken;
+
+        if (finalizeTimer) {
+          clearTimeout(finalizeTimer);
+        }
+
+        finalizeTimer = setTimeout(() => {
+          finalizeTimer = null;
+          void finalize(token);
+        }, delay);
       };
 
       replayer.on('load-stylesheet-start', () => {
@@ -556,26 +720,35 @@ function ReplaySnapshot({
 
       replayer.on('load-stylesheet-end', () => {
         waitingForStyles = false;
-        void finalize();
+        scheduleFinalize();
       });
 
       replayer.on('fullsnapshot-rebuilded', () => {
         rebuilt = true;
-        void finalize();
+        scheduleFinalize();
       });
 
       replayer.on('resize', () => {
-        resizeReplayFrame(replayer, width, height);
+        scheduleFinalize();
       });
 
       setTimeout(() => {
         waitingForStyles = false;
-        void finalize();
+        scheduleFinalize(0);
       }, 3500);
     });
 
     return () => {
       cancelled = true;
+      if (finalizeTimer) {
+        clearTimeout(finalizeTimer);
+      }
+      if (readyTimer) {
+        clearTimeout(readyTimer);
+      }
+      if (widthObserver) {
+        widthObserver.disconnect();
+      }
       if (replayerRef.current) {
         replayerRef.current.destroy();
         replayerRef.current = null;
@@ -584,20 +757,34 @@ function ReplaySnapshot({
         container.innerHTML = '';
       }
     };
-  }, [data?.events, height, onReady, snapshot.timestamp, width]);
+  }, [allowWidthExpansion, data?.events, height, onReady, snapshot.timestamp, width]);
 
   useEffect(() => {
     if (replayerRef.current) {
-      resizeReplayFrame(replayerRef.current, width, height);
+      resizeReplayFrame(replayerRef.current, contentWidth, height);
     }
-  }, [height, width]);
+  }, [contentWidth, height]);
+
+  const fitScaleX = contentWidth > width ? width / Math.max(1, contentWidth) : 1;
+  const snapshotScaleX = scale * fitScaleX;
 
   return (
     <div
-      ref={containerRef}
       className={styles.snapshot}
-      style={{ width, height, transform: `scale(${scale})` }}
-    />
+      style={{
+        width: contentWidth,
+        height,
+        transform: `scale(${snapshotScaleX}, ${scale})`,
+      }}
+    >
+      <div
+        ref={containerRef}
+        style={{
+          width: contentWidth,
+          height,
+        }}
+      />
+    </div>
   );
 }
 
@@ -641,17 +828,36 @@ async function waitForReplayLayout(replayer: ReplayInstance) {
   await waitForAnimationFrames(3);
 }
 
-function syncReplayDocumentViewport(replayer: ReplayInstance, width: number, height: number) {
+async function measureStableReplayWidth(
+  replayer: ReplayInstance,
+  fallbackWidth: number,
+  { maxWidth, samples = 6 }: { maxWidth?: number; samples?: number } = {},
+) {
+  let stableWidth = fallbackWidth;
+
+  for (let i = 0; i < samples; i++) {
+    await waitForAnimationFrames(1);
+    stableWidth = Math.max(stableWidth, measureReplayWidth(replayer, fallbackWidth));
+  }
+
+  return maxWidth ? Math.min(stableWidth, maxWidth) : stableWidth;
+}
+
+function syncReplayDocumentViewport(replayer: ReplayInstance) {
   const doc = replayer.iframe?.contentDocument;
   const html = doc?.documentElement;
   const body = doc?.body;
 
   if (html) {
     html.style.margin = '0';
+    html.style.overflowX = 'visible';
+    html.style.overflowY = 'hidden';
   }
 
   if (body) {
     body.style.margin = '0';
+    body.style.overflowX = 'visible';
+    body.style.overflowY = 'hidden';
   }
 }
 
@@ -667,7 +873,7 @@ function resizeReplayFrame(replayer: ReplayInstance, width: number, height: numb
     wrapper.style.maxHeight = `${height}px`;
     wrapper.style.margin = '0';
     wrapper.style.padding = '0';
-    wrapper.style.overflow = 'hidden';
+    wrapper.style.overflow = 'visible';
   }
 
   if (iframe) {
@@ -683,7 +889,66 @@ function resizeReplayFrame(replayer: ReplayInstance, width: number, height: numb
     iframe.style.display = 'block';
   }
 
-  syncReplayDocumentViewport(replayer, width, height);
+  syncReplayDocumentViewport(replayer);
+}
+
+function measureReplayWidth(replayer: ReplayInstance, fallbackWidth: number) {
+  const doc = replayer.iframe?.contentDocument;
+  const win = replayer.iframe?.contentWindow;
+  const root = doc?.documentElement as HTMLElement | undefined;
+  const body = doc?.body as HTMLElement | undefined;
+  const scrollingElement = doc?.scrollingElement as HTMLElement | undefined;
+  const firstChild = body?.firstElementChild as HTMLElement | null;
+  const wrapperWidth = replayer.wrapper?.scrollWidth || replayer.wrapper?.offsetWidth || 0;
+  const iframeWidth = replayer.iframe?.scrollWidth || replayer.iframe?.offsetWidth || 0;
+
+  return Math.round(
+    Math.max(
+      fallbackWidth,
+      measureDocumentWidth(doc),
+      wrapperWidth,
+      iframeWidth,
+      win?.innerWidth || 0,
+      measureElementWidth(root),
+      measureElementWidth(body),
+      measureElementWidth(scrollingElement),
+      measureElementWidth(firstChild || undefined),
+    ),
+  );
+}
+
+function measureDocumentWidth(doc?: Document | null) {
+  const body = doc?.body;
+
+  if (!body) {
+    return 0;
+  }
+
+  let maxRight = 0;
+  const walker = doc.createTreeWalker(body, NodeFilter.SHOW_ELEMENT);
+  let node = walker.currentNode as Element | null;
+
+  while (node) {
+    const rect = node.getBoundingClientRect?.();
+
+    if (rect && rect.width > 0) {
+      maxRight = Math.max(maxRight, rect.right);
+    }
+
+    node = walker.nextNode() as Element | null;
+  }
+
+  return Math.max(0, Math.round(maxRight));
+}
+
+function measureElementWidth(element?: HTMLElement | null) {
+  if (!element) {
+    return 0;
+  }
+
+  const rect = element.getBoundingClientRect();
+
+  return Math.max(element.scrollWidth, element.offsetWidth, element.clientWidth, rect.width);
 }
 
 function EmptyState({ message }: { message?: string } = {}) {

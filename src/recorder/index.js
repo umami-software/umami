@@ -139,6 +139,54 @@ import { record } from 'rrweb';
     }
   };
 
+  const measureElementWidth = element => {
+    if (!element) return 0;
+    const rect = element.getBoundingClientRect?.();
+    return Math.max(
+      element.scrollWidth || 0,
+      element.offsetWidth || 0,
+      element.clientWidth || 0,
+      rect?.width || 0,
+    );
+  };
+
+  const measureElementHeight = element => {
+    if (!element) return 0;
+    const rect = element.getBoundingClientRect?.();
+    return Math.max(
+      element.scrollHeight || 0,
+      element.offsetHeight || 0,
+      element.clientHeight || 0,
+      rect?.height || 0,
+    );
+  };
+
+  const measureDocumentBounds = doc => {
+    const body = doc?.body;
+    if (!body) {
+      return { width: 0, height: 0 };
+    }
+
+    let maxRight = 0;
+    let maxBottom = 0;
+    const walker = doc.createTreeWalker(body, NodeFilter.SHOW_ELEMENT);
+    let node = walker.currentNode;
+
+    while (node) {
+      const rect = node.getBoundingClientRect?.();
+      if (rect && (rect.width > 0 || rect.height > 0)) {
+        maxRight = Math.max(maxRight, rect.right);
+        maxBottom = Math.max(maxBottom, rect.bottom);
+      }
+      node = walker.nextNode();
+    }
+
+    return {
+      width: Math.max(0, Math.round(maxRight)),
+      height: Math.max(0, Math.round(maxBottom)),
+    };
+  };
+
   const waitForSession = (attempts = 0) => {
     if (attempts > 50) return;
 
@@ -198,9 +246,39 @@ import { record } from 'rrweb';
     let maxScrollPct = 0;
     let scrollTimer = null;
 
+    const computePageMetrics = ({ includeBounds = false } = {}) => {
+      const scrollingElement = document.scrollingElement || document.documentElement;
+      const firstChild = document.body?.firstElementChild;
+      const bounds = includeBounds ? measureDocumentBounds(document) : null;
+      const pageW = Math.max(
+        bounds?.width || 0,
+        measureElementWidth(scrollingElement),
+        measureElementWidth(document.documentElement),
+        measureElementWidth(document.body),
+        measureElementWidth(firstChild),
+      );
+      const pageH = Math.max(
+        bounds?.height || 0,
+        measureElementHeight(scrollingElement),
+        measureElementHeight(document.documentElement),
+        measureElementHeight(document.body),
+        measureElementHeight(firstChild),
+      );
+      const scrollLeft = scrollingElement?.scrollLeft || window.scrollX || 0;
+      const scrollTop = scrollingElement?.scrollTop || window.scrollY || 0;
+
+      return {
+        pageW,
+        pageH,
+        scrollLeft,
+        scrollTop,
+      };
+    };
+
     const computeScrollPct = () => {
-      const pageH = document.documentElement.scrollHeight;
-      const visible = window.scrollY + window.innerHeight;
+      const { pageH, scrollTop } = computePageMetrics();
+      const visible = scrollTop + window.innerHeight;
+
       return {
         pct: Math.max(0, Math.min(100, Math.round((visible / Math.max(1, pageH)) * 100))),
         pageH,
@@ -209,14 +287,48 @@ import { record } from 'rrweb';
 
     const flushScroll = () => {
       if (maxScrollPct <= 0) return;
+      const { pageW, pageH } = computePageMetrics({ includeBounds: true });
+
       addCustomEvent('scroll-progress', {
         url: scrollUrl,
         scrollPct: maxScrollPct,
         viewportW: window.innerWidth,
         viewportH: window.innerHeight,
-        pageH: document.documentElement.scrollHeight,
+        pageW,
+        pageH,
       });
       maxScrollPct = 0;
+    };
+
+    const onClick = event => {
+      if (!event.isTrusted || event.button !== 0) return;
+
+      const { pageW: rawPageW, pageH: rawPageH, scrollLeft, scrollTop } = computePageMetrics({
+        includeBounds: true,
+      });
+      const pageX = Number.isFinite(event.pageX) ? event.pageX : event.clientX + scrollLeft;
+      const pageY = Number.isFinite(event.pageY) ? event.pageY : event.clientY + scrollTop;
+      const target = event.target;
+      const targetRect =
+        target && typeof target.getBoundingClientRect === 'function'
+          ? target.getBoundingClientRect()
+          : null;
+      const targetRight = targetRect ? targetRect.right + scrollLeft : 0;
+      const targetBottom = targetRect ? targetRect.bottom + scrollTop : 0;
+      const pageW = Math.max(rawPageW, Math.ceil(pageX), Math.ceil(targetRight));
+      const pageH = Math.max(rawPageH, Math.ceil(pageY), Math.ceil(targetBottom));
+
+      addCustomEvent('heatmap-click', {
+        url: location.href,
+        x: Math.round(event.clientX),
+        y: Math.round(event.clientY),
+        pageX: Math.round(pageX),
+        pageY: Math.round(pageY),
+        pageW,
+        pageH,
+        viewportW: window.innerWidth,
+        viewportH: window.innerHeight,
+      });
     };
 
     const onScroll = () => {
@@ -248,8 +360,8 @@ import { record } from 'rrweb';
     hookHistory('replaceState');
     window.addEventListener('popstate', onUrlChange);
     window.addEventListener('scroll', onScroll, { passive: true });
+    document.addEventListener('click', onClick, { capture: true, passive: true });
 
-    // Capture initial scroll position
     {
       const { pct } = computeScrollPct();
       if (pct > maxScrollPct) maxScrollPct = pct;

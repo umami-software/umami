@@ -13,6 +13,9 @@ export interface HeatmapEventRow {
   nodeId: number | null;
   x: number | null;
   y: number | null;
+  pageX: number | null;
+  pageY: number | null;
+  pageW: number | null;
   viewportW: number | null;
   viewportH: number | null;
   pageH: number | null;
@@ -44,6 +47,9 @@ async function relationalQuery(rows: HeatmapEventRow[]) {
       nodeId: r.nodeId,
       x: r.x,
       y: r.y,
+      pageX: r.pageX,
+      pageY: r.pageY,
+      pageW: r.pageW,
       viewportW: r.viewportW,
       viewportH: r.viewportH,
       pageH: r.pageH,
@@ -70,6 +76,9 @@ async function clickhouseQuery(rows: HeatmapEventRow[]) {
     node_id: r.nodeId,
     x: r.x,
     y: r.y,
+    page_x: r.pageX,
+    page_y: r.pageY,
+    page_w: r.pageW,
     viewport_w: r.viewportW,
     viewport_h: r.viewportH,
     page_h: r.pageH,

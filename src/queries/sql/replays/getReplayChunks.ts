@@ -18,6 +18,9 @@ export interface ReplayChunk {
 interface GetReplayChunksOptions {
   endAt?: Date;
   endChunkIndex?: number;
+  startChunkIndex?: number;
+  limit?: number;
+  order?: 'asc' | 'desc';
 }
 
 export async function getReplayChunks(
@@ -34,7 +37,7 @@ export async function getReplayChunks(
 async function relationalQuery(
   websiteId: string,
   visitId: string,
-  { endAt, endChunkIndex }: GetReplayChunksOptions,
+  { endAt, endChunkIndex, startChunkIndex, limit, order = 'asc' }: GetReplayChunksOptions,
 ): Promise<ReplayChunk[]> {
   const { rawQuery } = prisma;
   const endAtFilter = endAt
@@ -46,6 +49,18 @@ async function relationalQuery(
     endChunkIndex !== undefined
       ? `
       and chunk_index <= {{endChunkIndex}}
+    `
+      : '';
+  const startChunkFilter =
+    startChunkIndex !== undefined
+      ? `
+      and chunk_index >= {{startChunkIndex}}
+    `
+      : '';
+  const limitClause =
+    limit !== undefined
+      ? `
+    limit ${limit}
     `
       : '';
 
@@ -71,10 +86,12 @@ async function relationalQuery(
     where website_id = {{websiteId::uuid}}
       and visit_id = {{visitId::uuid}}
       ${endAtFilter}
+      ${startChunkFilter}
       ${endChunkFilter}
-    order by chunk_index asc
+    order by chunk_index ${order}
+    ${limitClause}
     `,
-    { websiteId, visitId, endAt, endChunkIndex },
+    { websiteId, visitId, endAt, endChunkIndex, startChunkIndex },
     FUNCTION_NAME,
   );
 
@@ -87,7 +104,7 @@ async function relationalQuery(
 async function clickhouseQuery(
   websiteId: string,
   visitId: string,
-  { endAt, endChunkIndex }: GetReplayChunksOptions,
+  { endAt, endChunkIndex, startChunkIndex, limit, order = 'asc' }: GetReplayChunksOptions,
 ): Promise<ReplayChunk[]> {
   const { rawQuery } = clickhouse;
   const endAtFilter = endAt
@@ -99,6 +116,18 @@ async function clickhouseQuery(
     endChunkIndex !== undefined
       ? `
       and chunk_index <= {endChunkIndex:UInt32}
+    `
+      : '';
+  const startChunkFilter =
+    startChunkIndex !== undefined
+      ? `
+      and chunk_index >= {startChunkIndex:UInt32}
+    `
+      : '';
+  const limitClause =
+    limit !== undefined
+      ? `
+    limit ${limit}
     `
       : '';
 
@@ -126,10 +155,12 @@ async function clickhouseQuery(
     prewhere website_id = {websiteId:UUID}
       and visit_id = {visitId:UUID}
       ${endAtFilter}
+      ${startChunkFilter}
       ${endChunkFilter}
-    order by chunk_index asc
+    order by chunk_index ${order}
+    ${limitClause}
     `,
-    { websiteId, visitId, endAt, endChunkIndex },
+    { websiteId, visitId, endAt, endChunkIndex, startChunkIndex },
     FUNCTION_NAME,
   );
 

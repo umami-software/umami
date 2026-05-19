@@ -1,7 +1,7 @@
 .layoutGrid {
   height: 100%;
   min-height: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .pageList {
@@ -102,6 +102,10 @@
 .canvasWrapper {
   width: 100%;
   min-width: 0;
+  max-width: 100%;
+  max-height: 75vh;
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .snapshotControlRow {
@@ -114,10 +118,18 @@
   border: 1px solid var(--border-base);
   border-radius: 8px;
   background: var(--surface-sunken);
-  max-width: 100%;
+  flex: 0 0 auto;
 }
 
 .canvasClip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  background: inherit;
+}
+
+.snapshotClip {
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -137,7 +149,7 @@
 
 .snapshot :global(.replayer-wrapper) {
   border: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .snapshot :global(iframe) {

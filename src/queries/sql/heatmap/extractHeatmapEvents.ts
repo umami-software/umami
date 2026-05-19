@@ -3,15 +3,16 @@ import { HEATMAP_EVENT_TYPE } from '@/lib/constants';
 const RRWEB_TYPE_INCREMENTAL = 3;
 const RRWEB_TYPE_META = 4;
 const RRWEB_TYPE_CUSTOM = 5;
-const RRWEB_SOURCE_MOUSE_INTERACTION = 2;
 const RRWEB_SOURCE_VIEWPORT_RESIZE = 4;
-const RRWEB_MOUSE_CLICK = 2;
 
 export interface ExtractedHeatmapEvent {
   eventType: number;
   nodeId: number | null;
   x: number | null;
   y: number | null;
+  pageX: number | null;
+  pageY: number | null;
+  pageW: number | null;
   viewportW: number | null;
   viewportH: number | null;
   pageH: number | null;
@@ -76,6 +77,9 @@ export function extractHeatmapEvents(
           nodeId: null,
           x: null,
           y: null,
+          pageX: null,
+          pageY: null,
+          pageW: typeof p.pageW === 'number' ? p.pageW : null,
           viewportW: typeof p.viewportW === 'number' ? p.viewportW : viewportW,
           viewportH: typeof p.viewportH === 'number' ? p.viewportH : viewportH,
           pageH: typeof p.pageH === 'number' ? p.pageH : null,
@@ -90,6 +94,31 @@ export function extractHeatmapEvents(
           replayTimeMs,
         });
       }
+
+      if (ev.data.tag === 'heatmap-click' && ev.data.payload) {
+        const p = ev.data.payload;
+        const path = safePathname(p.url) ?? urlPath;
+        if (path === null) continue;
+        out.push({
+          eventType: HEATMAP_EVENT_TYPE.click,
+          nodeId: null,
+          x: typeof p.x === 'number' ? Math.round(p.x) : null,
+          y: typeof p.y === 'number' ? Math.round(p.y) : null,
+          pageX: typeof p.pageX === 'number' ? Math.round(p.pageX) : null,
+          pageY: typeof p.pageY === 'number' ? Math.round(p.pageY) : null,
+          pageW: typeof p.pageW === 'number' ? Math.round(p.pageW) : null,
+          viewportW: typeof p.viewportW === 'number' ? Math.round(p.viewportW) : viewportW,
+          viewportH: typeof p.viewportH === 'number' ? Math.round(p.viewportH) : viewportH,
+          pageH: typeof p.pageH === 'number' ? Math.round(p.pageH) : null,
+          scrollPct: null,
+          urlPath: path,
+          createdAt: new Date(replayTimeMs ?? Date.now()),
+          replayChunkIndex: chunkIndex ?? null,
+          replayEventIndex: eventIndex,
+          replayTimeMs,
+        });
+      }
+
       continue;
     }
 
@@ -101,28 +130,6 @@ export function extractHeatmapEvents(
       if (typeof d.width === 'number') viewportW = d.width;
       if (typeof d.height === 'number') viewportH = d.height;
       continue;
-    }
-
-    if (
-      d.source === RRWEB_SOURCE_MOUSE_INTERACTION &&
-      d.type === RRWEB_MOUSE_CLICK &&
-      urlPath !== null
-    ) {
-      out.push({
-        eventType: HEATMAP_EVENT_TYPE.click,
-        nodeId: typeof d.id === 'number' ? d.id : null,
-        x: typeof d.x === 'number' ? Math.round(d.x) : null,
-        y: typeof d.y === 'number' ? Math.round(d.y) : null,
-        viewportW,
-        viewportH,
-        pageH: null,
-        scrollPct: null,
-        urlPath,
-        createdAt: new Date(replayTimeMs ?? Date.now()),
-        replayChunkIndex: chunkIndex ?? null,
-        replayEventIndex: eventIndex,
-        replayTimeMs,
-      });
     }
   }
 
