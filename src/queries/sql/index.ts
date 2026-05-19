@@ -51,6 +51,7 @@ export * from './sessions/getSessionDataPropertySeries';
 export * from './sessions/getSessionDataNumericSeries';
 export * from './sessions/getSessionDataNumericStats';
 export * from './sessions/getSessionDataPivot';
+export * from './sessions/getSessionStatsSeries';
 export * from './sessions/getSessionDataActivityStats';
 export * from './sessions/getSessionDataValues';
 export * from './sessions/getSessionExpandedMetrics';
