@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { WebsitesPage } from './WebsitesPage';
 
-export default function () {
+export default function Page() {
   return <WebsitesPage />;
 }
 

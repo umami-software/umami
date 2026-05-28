@@ -7,14 +7,25 @@ import { useBoardSharesQuery, useMessages } from '@/components/hooks';
 import { BoardShareCreateForm } from './BoardShareCreateForm';
 import { BoardSharesTable } from './BoardSharesTable';
 
-export function BoardShareDialog({ boardId }: { boardId: string }) {
+export function BoardShareDialog({
+  boardId,
+  dateRangeValue,
+}: {
+  boardId: string;
+  dateRangeValue: string | object;
+}) {
   const { data, error, isLoading } = useBoardSharesQuery({ boardId });
   const shares = data?.data || [];
   const hasShares = shares.length > 0;
 
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
-      <BoardShareDialogContent boardId={boardId} hasShares={hasShares} shares={shares} />
+      <BoardShareDialogContent
+        boardId={boardId}
+        hasShares={hasShares}
+        shares={shares}
+        dateRangeValue={dateRangeValue}
+      />
     </LoadingPanel>
   );
 }
@@ -23,10 +34,12 @@ function BoardShareDialogContent({
   boardId,
   hasShares,
   shares,
+  dateRangeValue,
 }: {
   boardId: string;
   hasShares: boolean;
   shares: any[];
+  dateRangeValue: string | object;
 }) {
   const { t, labels, messages } = useMessages();
   const [isCreating, setIsCreating] = useState(false);
@@ -54,7 +67,7 @@ function BoardShareDialogContent({
       )}
       {!showCreateForm &&
         (hasShares ? (
-          <BoardSharesTable data={shares} />
+          <BoardSharesTable data={shares} dateRangeValue={dateRangeValue} />
         ) : (
           <Text color="muted">{t(messages.noDataAvailable)}</Text>
         ))}
