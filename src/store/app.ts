@@ -9,7 +9,7 @@ import {
   TIMEZONE_CONFIG,
 } from '@/lib/constants';
 import { getTimezone } from '@/lib/date';
-import { getItem } from '@/lib/storage';
+import { getItem, setItem } from '@/lib/storage';
 
 const initialState = {
   locale: getItem(LOCALE_CONFIG) || process.env.defaultLocale || DEFAULT_LOCALE,
@@ -49,6 +49,14 @@ export function setConfig(config: object) {
 
 export function setDateRangeValue(dateRangeValue: string) {
   store.setState({ dateRangeValue });
+}
+
+// Added scoped board setter to handle unique board filter persistence
+export function setBoardDateRangeValue(dateRangeValue: string, boardId: string) {
+  store.setState({ dateRangeValue });
+  if (boardId) {
+    setItem(`${DATE_RANGE_CONFIG}:${boardId}`, dateRangeValue);
+  }
 }
 
 export const useApp = store;
