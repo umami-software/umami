@@ -4,17 +4,29 @@ import { ExternalLink } from '@/components/common/ExternalLink';
 import { useConfig, useMessages, useMobile } from '@/components/hooks';
 import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
 
-export function BoardSharesTable(props: DataTableProps) {
+interface BoardSharesTableProps extends DataTableProps {
+  dateRangeValue?: string | object;
+}
+
+export function BoardSharesTable({ dateRangeValue, ...props }: BoardSharesTableProps) {
   const { t, labels } = useMessages();
   const { cloudMode } = useConfig();
   const { isMobile } = useMobile();
 
   const getUrl = (slug: string) => {
-    if (cloudMode) {
-      return `${process.env.cloudUrl}/share/${slug}`;
+    let baseUrl = cloudMode
+      ? `${process.env.cloudUrl}/share/${slug}`
+      : `${window?.location.origin}${process.env.basePath || ''}/share/${slug}`;
+
+    if (dateRangeValue) {
+      const rangeString = typeof dateRangeValue === 'object' 
+        ? JSON.stringify(dateRangeValue) 
+        : dateRangeValue;
+        
+      return `${baseUrl}?range=${encodeURIComponent(rangeString)}`;
     }
 
-    return `${window?.location.origin}${process.env.basePath || ''}/share/${slug}`;
+    return baseUrl;
   };
 
   return (
