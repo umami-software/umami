@@ -32,6 +32,9 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const [maskLevel, setMaskLevel] = useState(config.maskLevel ?? 'moderate');
   const [maxDuration, setMaxDuration] = useState(String(config.maxDuration ?? 300000));
   const [blockSelector, setBlockSelector] = useState(config.blockSelector ?? '');
+  const [recordCanvas, setRecordCanvas] = useState(config.recordCanvas ?? true);
+  const [canvasFps, setCanvasFps] = useState(config.canvasFps ?? 15);
+  const [canvasQuality, setCanvasQuality] = useState(config.canvasQuality ?? 0.6);
 
   useEffect(() => {
     setReplayEnabled(config.replayEnabled === true);
@@ -41,12 +44,18 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
     setMaskLevel(config.maskLevel ?? 'moderate');
     setMaxDuration(String(config.maxDuration ?? 300000));
     setBlockSelector(config.blockSelector ?? '');
+    setRecordCanvas(config.recordCanvas ?? true);
+    setCanvasFps(config.canvasFps ?? 15);
+    setCanvasQuality(config.canvasQuality ?? 0.6);
   }, [
     config.blockSelector,
+    config.canvasFps,
+    config.canvasQuality,
     config.heatmapEnabled,
     config.heatmapSampleRate,
     config.maskLevel,
     config.maxDuration,
+    config.recordCanvas,
     config.replayEnabled,
     config.sampleRate,
   ]);
@@ -86,6 +95,9 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
     maskLevel,
     maxDuration: parseInt(maxDuration, 10) || 300000,
     blockSelector,
+    recordCanvas,
+    canvasFps,
+    canvasQuality,
     ...overrides,
   });
 
@@ -194,6 +206,34 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
                 <Label>{t(labels.blockSelector)}</Label>
                 <TextField value={blockSelector} onChange={setBlockSelector} />
               </Column>
+              <Switch isSelected={recordCanvas} onChange={setRecordCanvas}>
+                {t(labels.recordCanvas)}
+              </Switch>
+              {recordCanvas && (
+                <>
+                  <Slider
+                    label={t(labels.canvasFps)}
+                    minValue={1}
+                    maxValue={30}
+                    step={1}
+                    value={canvasFps}
+                    onChange={v => setCanvasFps(Array.isArray(v) ? v[0] : v)}
+                    showValue
+                    style={{ maxWidth: '360px' }}
+                  />
+                  <Slider
+                    label={t(labels.canvasQuality)}
+                    minValue={0.1}
+                    maxValue={1}
+                    step={0.1}
+                    value={canvasQuality}
+                    onChange={v => setCanvasQuality(Array.isArray(v) ? v[0] : v)}
+                    showValue
+                    formatOptions={{ style: 'percent', maximumFractionDigits: 0 }}
+                    style={{ maxWidth: '360px' }}
+                  />
+                </>
+              )}
             </>
           )}
           <Row>

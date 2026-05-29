@@ -6,6 +6,9 @@ export interface RecorderConfig {
   maskLevel?: 'strict' | 'moderate';
   maxDuration?: number;
   blockSelector?: string;
+  recordCanvas?: boolean;
+  canvasFps?: number;
+  canvasQuality?: number;
 }
 
 export function getRecorderConfig(value: unknown): RecorderConfig {
@@ -42,6 +45,18 @@ export function getRecorderConfig(value: unknown): RecorderConfig {
 
   if (typeof config.blockSelector === 'string') {
     nextConfig.blockSelector = config.blockSelector;
+  }
+
+  if (typeof config.recordCanvas === 'boolean') {
+    nextConfig.recordCanvas = config.recordCanvas;
+  }
+
+  if (typeof config.canvasFps === 'number' && Number.isFinite(config.canvasFps)) {
+    nextConfig.canvasFps = Math.min(Math.max(Math.round(config.canvasFps), 1), 60);
+  }
+
+  if (typeof config.canvasQuality === 'number' && Number.isFinite(config.canvasQuality)) {
+    nextConfig.canvasQuality = Math.min(Math.max(config.canvasQuality, 0), 1);
   }
 
   return nextConfig;

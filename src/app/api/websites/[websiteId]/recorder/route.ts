@@ -35,6 +35,9 @@ export async function GET(
       maskLevel: config.maskLevel ?? 'moderate',
       maxDuration: config.maxDuration ?? 300000,
       blockSelector: config.blockSelector ?? '',
+      recordCanvas: config.recordCanvas ?? true,
+      canvasFps: config.canvasFps ?? 15,
+      canvasQuality: config.canvasQuality ?? 0.6,
     },
     { headers },
   );

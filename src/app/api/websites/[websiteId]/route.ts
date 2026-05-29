@@ -53,6 +53,9 @@ export async function POST(
         maskLevel: z.enum(['strict', 'moderate']).optional(),
         maxDuration: z.number().int().positive().optional(),
         blockSelector: z.string().optional(),
+        recordCanvas: z.boolean().optional(),
+        canvasFps: z.number().int().min(1).max(60).optional(),
+        canvasQuality: z.number().min(0).max(1).optional(),
       })
       .nullable()
       .optional(),

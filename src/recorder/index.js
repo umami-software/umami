@@ -33,6 +33,10 @@ import { record } from 'rrweb';
   let maskLevel = 'moderate';
   let maxDuration = 300000;
   let blockSelector = '';
+  let recordCanvas = true;
+  let canvasFps = 15;
+  let canvasQuality = 0.6;
+  const canvasType = 'image/webp';
 
   let replayBuffer = [];
   let heatmapBuffer = [];
@@ -296,7 +300,16 @@ import { record } from 'rrweb';
         headMetaAuthorship: true,
         headMetaVerification: true,
       },
-      recordCanvas: false,
+      recordCanvas,
+      ...(recordCanvas && {
+        sampling: {
+          canvas: canvasFps,
+        },
+        dataURLOptions: {
+          type: canvasType,
+          quality: canvasQuality,
+        },
+      }),
       recordCrossOriginIframes: false,
       checkoutEveryNms: 30000,
       ...(blockSelector && { blockSelector }),
@@ -488,6 +501,13 @@ import { record } from 'rrweb';
       if (typeof data.maskLevel === 'string') maskLevel = data.maskLevel;
       if (typeof data.maxDuration === 'number') maxDuration = data.maxDuration;
       if (typeof data.blockSelector === 'string') blockSelector = data.blockSelector;
+      if (typeof data.recordCanvas === 'boolean') recordCanvas = data.recordCanvas;
+      if (typeof data.canvasFps === 'number') {
+        canvasFps = Math.min(Math.max(Math.round(data.canvasFps), 1), 60);
+      }
+      if (typeof data.canvasQuality === 'number') {
+        canvasQuality = Math.min(Math.max(data.canvasQuality, 0), 1);
+      }
     } catch {
       return;
     }

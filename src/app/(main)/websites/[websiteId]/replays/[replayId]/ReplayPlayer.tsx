@@ -33,6 +33,7 @@ export function ReplayPlayer({ events }: { events: any[] }) {
           showController: true,
           speedOption: [1, 2, 4, 8],
           useVirtualDom: false,
+          UNSAFE_replayCanvas: true,
           showWarning: false,
         },
       });
