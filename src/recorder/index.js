@@ -34,7 +34,7 @@ import { record } from 'rrweb';
   let consoleLevel = 'none';
   let maxDuration = 300000;
   let blockSelector = '';
-  let recordCanvas = true;
+  let recordCanvas = false;
   let canvasFps = 15;
   let canvasQuality = 0.6;
   const canvasType = 'image/webp';
@@ -177,13 +177,11 @@ import { record } from 'rrweb';
   const getMaskConfig = level => {
     switch (level) {
       case 'none':
+      case 'lax':
         return {
           blockClass: '__umami-rrweb-block-disabled__',
           ignoreClass: '__umami-rrweb-ignore-disabled__',
           maskAllInputs: false,
-          maskInputOptions: {
-            password: false,
-          },
           maskTextClass: '__umami-rrweb-mask-disabled__',
         };
       case 'strict':
@@ -643,7 +641,15 @@ import { record } from 'rrweb';
 
       if (typeof data.sampleRate === 'number') sampleRate = data.sampleRate;
       if (typeof data.heatmapSampleRate === 'number') heatmapSampleRate = data.heatmapSampleRate;
-      if (typeof data.maskLevel === 'string') maskLevel = data.maskLevel;
+      if (data.maskLevel === 'none') {
+        maskLevel = 'lax';
+      } else if (
+        data.maskLevel === 'lax' ||
+        data.maskLevel === 'strict' ||
+        data.maskLevel === 'moderate'
+      ) {
+        maskLevel = data.maskLevel;
+      }
       if (typeof data.consoleLevel === 'string') consoleLevel = data.consoleLevel;
       if (typeof data.maxDuration === 'number') maxDuration = data.maxDuration;
       if (typeof data.blockSelector === 'string') blockSelector = data.blockSelector;

@@ -386,6 +386,7 @@ export const labels: Record<string, string> = {
   recorderCode: 'label.recorder-code',
   sampleRate: 'label.sample-rate',
   maskLevel: 'label.mask-level',
+  consoleLevel: 'label.console-level',
   maxDuration: 'label.max-duration',
   blockSelector: 'label.block-selector',
   recordCanvas: 'label.record-canvas',

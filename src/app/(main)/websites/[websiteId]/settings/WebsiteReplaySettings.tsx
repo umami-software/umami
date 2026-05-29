@@ -33,7 +33,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const [consoleLevel, setConsoleLevel] = useState(config.consoleLevel ?? 'none');
   const [maxDuration, setMaxDuration] = useState(String(config.maxDuration ?? 300000));
   const [blockSelector, setBlockSelector] = useState(config.blockSelector ?? '');
-  const [recordCanvas, setRecordCanvas] = useState(config.recordCanvas ?? true);
+  const [recordCanvas, setRecordCanvas] = useState(config.recordCanvas ?? false);
   const [canvasFps, setCanvasFps] = useState(config.canvasFps ?? 15);
   const [canvasQuality, setCanvasQuality] = useState(config.canvasQuality ?? 0.6);
 
@@ -46,7 +46,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
     setConsoleLevel(config.consoleLevel ?? 'none');
     setMaxDuration(String(config.maxDuration ?? 300000));
     setBlockSelector(config.blockSelector ?? '');
-    setRecordCanvas(config.recordCanvas ?? true);
+    setRecordCanvas(config.recordCanvas ?? false);
     setCanvasFps(config.canvasFps ?? 15);
     setCanvasQuality(config.canvasQuality ?? 0.6);
   }, [
@@ -193,13 +193,13 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
               <Column gap="1">
                 <Label>{t(labels.maskLevel)}</Label>
                 <Select value={maskLevel} onChange={setMaskLevel} style={{ maxWidth: '360px' }}>
-                  <ListItem id="none">none</ListItem>
+                  <ListItem id="lax">lax</ListItem>
                   <ListItem id="strict">strict</ListItem>
                   <ListItem id="moderate">moderate</ListItem>
                 </Select>
               </Column>
               <Column gap="1">
-                <Label>Console logs</Label>
+                <Label>{t(labels.consoleLevel)}</Label>
                 <Select value={consoleLevel} onChange={setConsoleLevel} style={{ maxWidth: '360px' }}>
                   <ListItem id="none">none</ListItem>
                   <ListItem id="error">errors only</ListItem>

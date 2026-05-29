@@ -36,7 +36,7 @@ export async function GET(
       consoleLevel: config.consoleLevel ?? 'none',
       maxDuration: config.maxDuration ?? 300000,
       blockSelector: config.blockSelector ?? '',
-      recordCanvas: config.recordCanvas ?? true,
+      recordCanvas: config.recordCanvas ?? false,
       canvasFps: config.canvasFps ?? 15,
       canvasQuality: config.canvasQuality ?? 0.6,
     },

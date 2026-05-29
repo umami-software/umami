@@ -51,6 +51,7 @@ function formatOffset(timestamp: number, startTimestamp: number) {
 }
 
 function ReplayConsoleLogs({ events }: { events: any[] }) {
+  const { t, labels } = useMessages();
   const logs = getConsoleLogs(events);
 
   if (!logs.length) return null;
@@ -60,7 +61,7 @@ function ReplayConsoleLogs({ events }: { events: any[] }) {
   return (
     <Column gap="2">
       <Row justifyContent="space-between" alignItems="center">
-        <Text weight="bold">Console logs</Text>
+        <Text weight="bold">{t(labels.consoleLevel)}</Text>
         <Text color="muted">{logs.length} entries</Text>
       </Row>
       <Column

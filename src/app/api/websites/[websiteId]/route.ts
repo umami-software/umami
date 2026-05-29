@@ -50,7 +50,10 @@ export async function POST(
         heatmapEnabled: z.boolean().optional(),
         sampleRate: z.number().min(0).max(1).optional(),
         heatmapSampleRate: z.number().min(0).max(1).optional(),
-        maskLevel: z.enum(['none', 'strict', 'moderate']).optional(),
+        maskLevel: z.preprocess(
+          value => (value === 'none' ? 'lax' : value),
+          z.enum(['lax', 'strict', 'moderate']).optional(),
+        ),
         consoleLevel: z.enum(['none', 'error', 'warn', 'info', 'debug', 'all']).optional(),
         maxDuration: z.number().int().positive().optional(),
         blockSelector: z.string().optional(),

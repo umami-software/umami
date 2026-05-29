@@ -3,7 +3,7 @@ export interface RecorderConfig {
   heatmapEnabled?: boolean;
   sampleRate?: number;
   heatmapSampleRate?: number;
-  maskLevel?: 'none' | 'strict' | 'moderate';
+  maskLevel?: 'lax' | 'strict' | 'moderate';
   consoleLevel?: 'none' | 'error' | 'warn' | 'info' | 'debug' | 'all';
   maxDuration?: number;
   blockSelector?: string;
@@ -36,7 +36,9 @@ export function getRecorderConfig(value: unknown): RecorderConfig {
     nextConfig.heatmapSampleRate = config.heatmapSampleRate;
   }
 
-  if (config.maskLevel === 'none' || config.maskLevel === 'strict' || config.maskLevel === 'moderate') {
+  if (config.maskLevel === 'none' || config.maskLevel === 'lax') {
+    nextConfig.maskLevel = 'lax';
+  } else if (config.maskLevel === 'strict' || config.maskLevel === 'moderate') {
     nextConfig.maskLevel = config.maskLevel;
   }
 
