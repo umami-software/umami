@@ -16,6 +16,84 @@ import { touch } from '@/components/hooks/useModified';
 import { ReplayPlayer } from './ReplayPlayer';
 import { ReplaySaveForm } from './ReplaySaveForm';
 
+const CONSOLE_EVENT_TAG = 'umami.console';
+
+function formatConsoleValue(value: any): string {
+  if (typeof value === 'string') return value;
+  if (value === null || value === undefined) return String(value);
+
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return String(value);
+  }
+}
+
+function getConsoleLogs(events: any[] = []) {
+  return events
+    .filter(event => event?.data?.tag === CONSOLE_EVENT_TAG)
+    .map(event => {
+      const args = event.data.payload?.args;
+
+      return {
+        timestamp: Number(event.timestamp) || 0,
+        level: event.data.payload?.level || 'log',
+        message: (Array.isArray(args) ? args : []).map(formatConsoleValue).join(' '),
+      };
+    });
+}
+
+function formatOffset(timestamp: number, startTimestamp: number) {
+  const seconds = Math.max(0, Math.floor((timestamp - startTimestamp) / 1000));
+  const minutes = Math.floor(seconds / 60);
+
+  return `${minutes}:${String(seconds % 60).padStart(2, '0')}`;
+}
+
+function ReplayConsoleLogs({ events }: { events: any[] }) {
+  const logs = getConsoleLogs(events);
+
+  if (!logs.length) return null;
+
+  const startTimestamp = events[0]?.timestamp || logs[0].timestamp;
+
+  return (
+    <Column gap="2">
+      <Row justifyContent="space-between" alignItems="center">
+        <Text weight="bold">Console logs</Text>
+        <Text color="muted">{logs.length} entries</Text>
+      </Row>
+      <Column
+        gap="1"
+        style={{
+          maxHeight: '240px',
+          overflow: 'auto',
+          border: '1px solid var(--base300)',
+          borderRadius: '8px',
+          background: 'var(--base75)',
+          padding: '8px',
+        }}
+      >
+        {logs.map((log, index) => (
+          <Row key={`${log.timestamp}-${index}`} gap="3" alignItems="flex-start">
+            <Text color="muted" style={{ minWidth: '40px', fontFamily: 'monospace' }}>
+              {formatOffset(log.timestamp, startTimestamp)}
+            </Text>
+            <Text
+              style={{ minWidth: '44px', fontFamily: 'monospace', textTransform: 'uppercase' }}
+            >
+              {log.level}
+            </Text>
+            <Text style={{ fontFamily: 'monospace', overflowWrap: 'anywhere' }}>
+              {log.message}
+            </Text>
+          </Row>
+        ))}
+      </Column>
+    </Column>
+  );
+}
+
 export function ReplayPlayback({
   websiteId,
   replayId,
@@ -104,6 +182,7 @@ export function ReplayPlayback({
             </Row>
           )}
           <ReplayPlayer events={replay.events} />
+          <ReplayConsoleLogs events={replay.events} />
           {showSessionInfo && session && <SessionInfo data={session} />}
         </Column>
       )}

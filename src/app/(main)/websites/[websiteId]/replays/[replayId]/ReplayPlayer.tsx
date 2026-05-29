@@ -32,6 +32,9 @@ export function ReplayPlayer({ events }: { events: any[] }) {
           autoPlay: false,
           showController: true,
           speedOption: [1, 2, 4, 8],
+          tags: {
+            'umami.console': '#f59e0b',
+          },
           useVirtualDom: false,
           UNSAFE_replayCanvas: true,
           showWarning: false,

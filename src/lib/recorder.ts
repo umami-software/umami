@@ -3,7 +3,8 @@ export interface RecorderConfig {
   heatmapEnabled?: boolean;
   sampleRate?: number;
   heatmapSampleRate?: number;
-  maskLevel?: 'strict' | 'moderate';
+  maskLevel?: 'none' | 'strict' | 'moderate';
+  consoleLevel?: 'none' | 'error' | 'warn' | 'info' | 'debug' | 'all';
   maxDuration?: number;
   blockSelector?: string;
   recordCanvas?: boolean;
@@ -35,8 +36,19 @@ export function getRecorderConfig(value: unknown): RecorderConfig {
     nextConfig.heatmapSampleRate = config.heatmapSampleRate;
   }
 
-  if (config.maskLevel === 'strict' || config.maskLevel === 'moderate') {
+  if (config.maskLevel === 'none' || config.maskLevel === 'strict' || config.maskLevel === 'moderate') {
     nextConfig.maskLevel = config.maskLevel;
+  }
+
+  if (
+    config.consoleLevel === 'none' ||
+    config.consoleLevel === 'error' ||
+    config.consoleLevel === 'warn' ||
+    config.consoleLevel === 'info' ||
+    config.consoleLevel === 'debug' ||
+    config.consoleLevel === 'all'
+  ) {
+    nextConfig.consoleLevel = config.consoleLevel;
   }
 
   if (typeof config.maxDuration === 'number' && Number.isFinite(config.maxDuration)) {

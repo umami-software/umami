@@ -30,6 +30,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const [sampleRate, setSampleRate] = useState(config.sampleRate ?? 0.15);
   const [heatmapSampleRate, setHeatmapSampleRate] = useState(config.heatmapSampleRate ?? 0.15);
   const [maskLevel, setMaskLevel] = useState(config.maskLevel ?? 'moderate');
+  const [consoleLevel, setConsoleLevel] = useState(config.consoleLevel ?? 'none');
   const [maxDuration, setMaxDuration] = useState(String(config.maxDuration ?? 300000));
   const [blockSelector, setBlockSelector] = useState(config.blockSelector ?? '');
   const [recordCanvas, setRecordCanvas] = useState(config.recordCanvas ?? true);
@@ -42,6 +43,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
     setSampleRate(config.sampleRate ?? 0.15);
     setHeatmapSampleRate(config.heatmapSampleRate ?? 0.15);
     setMaskLevel(config.maskLevel ?? 'moderate');
+    setConsoleLevel(config.consoleLevel ?? 'none');
     setMaxDuration(String(config.maxDuration ?? 300000));
     setBlockSelector(config.blockSelector ?? '');
     setRecordCanvas(config.recordCanvas ?? true);
@@ -54,6 +56,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
     config.heatmapEnabled,
     config.heatmapSampleRate,
     config.maskLevel,
+    config.consoleLevel,
     config.maxDuration,
     config.recordCanvas,
     config.replayEnabled,
@@ -93,6 +96,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
     sampleRate,
     heatmapSampleRate,
     maskLevel,
+    consoleLevel,
     maxDuration: parseInt(maxDuration, 10) || 300000,
     blockSelector,
     recordCanvas,
@@ -189,8 +193,20 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
               <Column gap="1">
                 <Label>{t(labels.maskLevel)}</Label>
                 <Select value={maskLevel} onChange={setMaskLevel} style={{ maxWidth: '360px' }}>
+                  <ListItem id="none">none</ListItem>
                   <ListItem id="strict">strict</ListItem>
                   <ListItem id="moderate">moderate</ListItem>
+                </Select>
+              </Column>
+              <Column gap="1">
+                <Label>Console logs</Label>
+                <Select value={consoleLevel} onChange={setConsoleLevel} style={{ maxWidth: '360px' }}>
+                  <ListItem id="none">none</ListItem>
+                  <ListItem id="error">errors only</ListItem>
+                  <ListItem id="warn">warnings and errors</ListItem>
+                  <ListItem id="info">info, warnings, and errors</ListItem>
+                  <ListItem id="debug">debug and above</ListItem>
+                  <ListItem id="all">all</ListItem>
                 </Select>
               </Column>
               <Column gap="1">

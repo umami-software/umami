@@ -33,6 +33,7 @@ export async function GET(
       sampleRate: config.sampleRate ?? 0.15,
       heatmapSampleRate: config.heatmapSampleRate ?? 0.15,
       maskLevel: config.maskLevel ?? 'moderate',
+      consoleLevel: config.consoleLevel ?? 'none',
       maxDuration: config.maxDuration ?? 300000,
       blockSelector: config.blockSelector ?? '',
       recordCanvas: config.recordCanvas ?? true,
