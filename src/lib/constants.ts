@@ -693,6 +693,7 @@ export const CURRENCIES = [
   { id: 'TND', name: 'Tunisian Dinar' },
   { id: 'OMR', name: 'Omani Rial' },
   { id: 'GHS', name: 'Ghanaian Cedi' },
+  { id: 'IRR', name: 'Iranian Rial' },
 ];
 
 export const TIMEZONE_LEGACY: Record<string, string> = {
