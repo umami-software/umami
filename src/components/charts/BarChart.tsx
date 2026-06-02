@@ -28,8 +28,11 @@ export interface BarChartProps extends ChartProps {
   currency?: string;
   renderXLabel?: (label: string, index: number, values: any[]) => string;
   renderYLabel?: (label: string, index: number, values: any[]) => string;
+  renderTooltipValue?: (raw: { x: any; y: number }, datasetLabel: string) => string;
   XAxisType?: string;
   YAxisType?: string;
+  yMax?: number;
+  ySuggestedMax?: number;
   minDate?: Date;
   maxDate?: Date;
 }
@@ -44,9 +47,12 @@ function BarChartComponent({
   chartData,
   renderXLabel,
   renderYLabel,
+  renderTooltipValue,
   unit,
   XAxisType = 'timeseries',
   YAxisType = 'linear',
+  yMax,
+  ySuggestedMax,
   stacked = false,
   minDate,
   maxDate,
@@ -88,6 +94,8 @@ function BarChartComponent({
           type: YAxisType,
           min: 0,
           beginAtZero: true,
+          ...(yMax !== undefined && { max: yMax }),
+          ...(ySuggestedMax !== undefined && { suggestedMax: ySuggestedMax }),
           stacked: !!stacked,
           grid: {
             color: colors.chart.line,
@@ -113,6 +121,8 @@ function BarChartComponent({
     locale,
     XAxisType,
     YAxisType,
+    yMax,
+    ySuggestedMax,
   ]);
 
   const handleTooltip = useCallback(
@@ -126,9 +136,11 @@ function BarChartComponent({
               locale,
             ),
             color: labelColors?.[0]?.borderColor || labelColors?.[0]?.backgroundColor,
-            value: currency
-              ? formatLongCurrency(dataPoints[0].raw.y, currency)
-              : `${formatLongNumber(dataPoints[0].raw.y)} ${dataPoints[0].dataset.label}`,
+            value: renderTooltipValue
+              ? renderTooltipValue(dataPoints[0].raw, dataPoints[0].dataset.label)
+              : currency
+                ? formatLongCurrency(dataPoints[0].raw.y, currency)
+                : `${formatLongNumber(dataPoints[0].raw.y)} ${dataPoints[0].dataset.label}`,
           }
         : null;
 
@@ -144,7 +156,7 @@ function BarChartComponent({
         return nextTooltip;
       });
     },
-    [currency, locale, unit],
+    [currency, locale, unit, renderTooltipValue],
   );
 
   return (
