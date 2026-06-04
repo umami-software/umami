@@ -558,7 +558,7 @@ function getClient() {
   // See https://github.com/umami-software/umami/issues/4285
   const connectionUrl = new URL(url);
   const existingOptions = connectionUrl.searchParams.get('options') || '';
-  if (!existingOptions.includes('timezone')) {
+  if (!/(^|\s)-c\s+timezone=/i.test(existingOptions)) {
     connectionUrl.searchParams.set(
       'options',
       existingOptions ? `${existingOptions} -c timezone=UTC` : '-c timezone=UTC',
