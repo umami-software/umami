@@ -291,7 +291,15 @@ function createPrismaClient(): PrismaClient {
     );
   }
 
-  const adapter = new PrismaPg({ connectionString: url }, { schema });
+  const existingOptions = connectionUrl.searchParams.get('options') || '';
+  if (!existingOptions.includes('timezone')) {
+    connectionUrl.searchParams.set(
+      'options',
+      existingOptions ? `${existingOptions} -c timezone=UTC` : '-c timezone=UTC',
+    );
+  }
+
+  const adapter = new PrismaPg({ connectionString: connectionUrl.toString() }, { schema });
 
   return new PrismaClient({
     adapter,

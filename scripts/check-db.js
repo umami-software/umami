@@ -15,6 +15,14 @@ if (process.env.SKIP_DB_CHECK) {
 
 const url = new URL(process.env.DATABASE_URL);
 
+const existingOptions = url.searchParams.get('options') || '';
+if (!existingOptions.includes('timezone')) {
+  url.searchParams.set(
+    'options',
+    existingOptions ? `${existingOptions} -c timezone=UTC` : '-c timezone=UTC',
+  );
+}
+
 const adapter = new PrismaPg(
   { connectionString: url.toString() },
   { schema: url.searchParams.get('schema') },

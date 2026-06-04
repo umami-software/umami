@@ -551,7 +551,21 @@ function getClient() {
 
   const schema = getSchema();
 
-  const baseAdapter = new PrismaPg({ connectionString: url }, { schema });
+  // Ensure consistent UTC session timezone so that TIMESTAMPTZ values
+  // written by @prisma/adapter-pg are not mis-interpreted by PostgreSQL.
+  // The adapter's formatDateTime omits the timezone offset, causing
+  // PostgreSQL to assume the session timezone (default: server timezone).
+  // See https://github.com/umami-software/umami/issues/4285
+  const connectionUrl = new URL(url);
+  const existingOptions = connectionUrl.searchParams.get('options') || '';
+  if (!existingOptions.includes('timezone')) {
+    connectionUrl.searchParams.set(
+      'options',
+      existingOptions ? `${existingOptions} -c timezone=UTC` : '-c timezone=UTC',
+    );
+  }
+
+  const baseAdapter = new PrismaPg({ connectionString: connectionUrl.toString() }, { schema });
 
   const baseClient = new PrismaClient({
     adapter: baseAdapter,
@@ -569,7 +583,18 @@ function getClient() {
     return baseClient;
   }
 
-  const replicaAdapter = new PrismaPg({ connectionString: replicaUrl }, { schema });
+  const replicaConnectionUrl = new URL(replicaUrl);
+  const replicaExistingOptions = replicaConnectionUrl.searchParams.get('options') || '';
+  if (!replicaExistingOptions.includes('timezone')) {
+    replicaConnectionUrl.searchParams.set(
+      'options',
+      replicaExistingOptions
+        ? `${replicaExistingOptions} -c timezone=UTC`
+        : '-c timezone=UTC',
+    );
+  }
+
+  const replicaAdapter = new PrismaPg({ connectionString: replicaConnectionUrl.toString() }, { schema });
 
   const replicaClient = new PrismaClient({
     adapter: replicaAdapter,
