@@ -1,7 +1,7 @@
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { reportResultSchema } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
+import { canViewAuthenticatedWebsite } from '@/permissions';
 import { getHeatmap, type HeatmapParameters } from '@/queries/sql';
 
 export async function POST(request: Request) {
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
   const { websiteId } = body;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewAuthenticatedWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

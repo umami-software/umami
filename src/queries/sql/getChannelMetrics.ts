@@ -41,6 +41,9 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
           website_event.utm_medium,
           website_event.utm_source,
           website_event.session_id,
+          website_event.visit_id,
+          website_event.event_id,
+          website_event.created_at,
           website_event.hostname
       from website_event
       ${cohortQuery}
@@ -66,14 +69,32 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
           when ${toPostgresLikeClause('referrer_domain', VIDEO_DOMAINS)} or utm_medium ilike '%video%' then concat(prefix, 'Video')
           when referrer_domain != regexp_replace(hostname, '^www.', '') and referrer_domain != '' then 'referral'
           else '' end AS x,
-        count(distinct session_id) y
-      from prefix
-      group by 1
-      order by y desc)
+          session_id,
+          visit_id,
+          event_id,
+          created_at
+      from prefix),
 
-    select x, sum(y) y
-    from channels
-    where x != ''
+    visit_channels as (
+      select
+        session_id,
+        visit_id,
+        coalesce(nullif(x, ''), 'direct') as x
+      from (
+        select
+          x,
+          session_id,
+          visit_id,
+          row_number() over (
+            partition by session_id, visit_id
+            order by case when x != '' then 0 else 1 end, created_at, event_id
+          ) as row_num
+        from channels
+      ) as ranked_channels
+      where row_num = 1)
+
+    select x, count(distinct session_id) y
+    from visit_channels
     group by x
     order by y desc;
     `,
@@ -94,6 +115,11 @@ async function clickhouseQuery(
 
   const sql = `
     WITH channels as (
+      select
+        session_id,
+        visit_id,
+        coalesce(nullIf(argMin(x, tuple(if(x != '', 0, 1), created_at, event_id)), ''), 'direct') as x
+      from (
       select
         case when multiSearchAny(lower(utm_medium), ['cp', 'ppc', 'retargeting', 'paid']) != 0 then 'paid' else 'organic' end prefix,
         case
@@ -124,7 +150,10 @@ async function clickhouseQuery(
           )}]) != 0 or position(lower(utm_medium), 'video') > 0 then concat(prefix, 'Video')
           when referrer_domain != hostname and referrer_domain != '' then 'referral'
         else '' end AS x,
-        count(distinct session_id) y
+        session_id,
+        visit_id,
+        event_id,
+        created_at
       from website_event
       ${cohortQuery}
       ${excludeBounceQuery}
@@ -132,12 +161,11 @@ async function clickhouseQuery(
         and event_type NOT IN (2, 5)
         ${dateQuery}
         ${filterQuery}
-      group by 1, 2
-      order by y desc)
+      )
+      group by session_id, visit_id)
 
-    select x, sum(y) y
+    select x, uniq(session_id) y
     from channels
-    where x != ''
     group by x
     order by y desc;
   `;

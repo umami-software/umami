@@ -163,7 +163,11 @@ const FilterItem = ({ name, label, operator, value, onRemove }) => {
       theme="dark"
     >
       <Row alignItems="center" gap="4">
-        <Row alignItems="center" gap="2" style={{ maxWidth: 'min(500px, calc(100vw - 10rem))', minWidth: 0, overflow: 'hidden' }}>
+        <Row
+          alignItems="center"
+          gap="2"
+          style={{ maxWidth: 'min(500px, calc(100vw - 10rem))', minWidth: 0, overflow: 'hidden' }}
+        >
           <Text color="primary" weight="bold">
             {label}
           </Text>

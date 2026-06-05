@@ -10,6 +10,8 @@ export const LAST_TEAM_CONFIG = 'umami.last-team';
 export const VERSION_CHECK = 'umami.version-check';
 export const SHARE_TOKEN_HEADER = 'x-umami-share-token';
 export const SHARE_CONTEXT_HEADER = 'x-umami-share-context';
+export const SHARE_TOKEN_TYPE = 'share';
+export const CACHE_TOKEN_TYPE = 'cache';
 export const HOMEPAGE_URL = 'https://umami.is';
 export const DOCS_URL = 'https://umami.is/docs';
 export const REPO_URL = 'https://github.com/umami-software/umami';
@@ -176,6 +178,13 @@ export const ROLES = {
   teamManager: 'team-manager',
   teamMember: 'team-member',
   teamViewOnly: 'team-view-only',
+} as const;
+
+export const TEAM_ROLE_RANK: Record<string, number> = {
+  [ROLES.teamViewOnly]: 0,
+  [ROLES.teamMember]: 1,
+  [ROLES.teamManager]: 2,
+  [ROLES.teamOwner]: 3,
 } as const;
 
 export const PERMISSIONS = {

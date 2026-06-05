@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Build, push, and deploy
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     steps:
       - uses: actions/checkout@v3
@@ -23,7 +23,7 @@ jobs:
         with:
           image: umamisoftware/umami
           tags: cloud-${{ steps.random_hash.outputs.hash }}, cloud-latest
-          buildArgs: DATABASE_TYPE=postgresql,INSTALL_HEATMAP=true
+          buildArgs: DATABASE_TYPE=postgresql
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}

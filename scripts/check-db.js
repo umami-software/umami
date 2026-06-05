@@ -68,7 +68,11 @@ async function checkDatabaseVersion() {
 async function applyMigration() {
   if (!process.env.SKIP_DB_MIGRATION) {
     const directUrl = process.env.DIRECT_DATABASE_URL || process.env.DATABASE_URL;
-    console.log(execSync('prisma migrate deploy', { env: { ...process.env, DATABASE_URL: directUrl } }).toString());
+    console.log(
+      execSync('prisma migrate deploy', {
+        env: { ...process.env, DATABASE_URL: directUrl },
+      }).toString(),
+    );
 
     success('Database is up to date.');
   }

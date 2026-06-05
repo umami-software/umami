@@ -1,6 +1,6 @@
-import { notFound, unauthorized } from '@/lib/response';
-import { canViewWebsite } from '@/permissions';
 import { parseRequest } from '@/lib/request';
+import { notFound, unauthorized } from '@/lib/response';
+import { canViewAuthenticatedWebsite } from '@/permissions';
 import { getHeatmapSnapshotImage } from '@/queries/sql/heatmap/ensureHeatmapSnapshot';
 
 export async function GET(
@@ -14,7 +14,7 @@ export async function GET(
     return error();
   }
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewAuthenticatedWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

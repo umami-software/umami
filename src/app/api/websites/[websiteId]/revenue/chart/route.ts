@@ -2,11 +2,8 @@ import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, withDateRange } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
-import {
-  getRevenueChart,
-  type RevenuParameters,
-} from '@/queries/sql/reports/getRevenueChart';
+import { canViewWebsiteSection } from '@/permissions';
+import { getRevenueChart, type RevenuParameters } from '@/queries/sql/reports/getRevenueChart';
 
 export async function GET(
   request: Request,
@@ -25,7 +22,7 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsiteSection(auth, websiteId, 'revenue'))) {
     return unauthorized();
   }
 

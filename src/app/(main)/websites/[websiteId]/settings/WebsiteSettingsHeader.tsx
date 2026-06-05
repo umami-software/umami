@@ -1,6 +1,6 @@
 import { Row } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import { IconLabel } from '@/components/common/IconLabel';
+import Link from '@/components/common/Link';
 import { PageHeader } from '@/components/common/PageHeader';
 import { useMessages, useNavigation, useWebsite } from '@/components/hooks';
 import { ArrowLeft, Globe } from '@/components/icons';

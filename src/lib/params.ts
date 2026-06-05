@@ -108,42 +108,44 @@ export function parsePropertyFilters(
   query: Record<string, any>,
   prefixes: string[] = ['pf'],
 ): PropertyFilter[] {
-  return Object.entries(query)
-    .flatMap(([key, val]) => {
-      const prefix = getPropertyFilterPrefix(key, prefixes);
+  return Object.entries(query).flatMap(([key, val]) => {
+    const prefix = getPropertyFilterPrefix(key, prefixes);
 
-      if (!prefix) {
-        return [];
-      }
+    if (!prefix) {
+      return [];
+    }
 
-      const stringValue = String(val);
-      const withoutPrefix = key.slice(prefix.length + 1);
-      const propertyName = withoutPrefix.replace(/\d+$/, ''); // strip trailing index digits
-      const prefixedDotMatch = stringValue.match(/^(\d+)\.([^.]+)\.(.*)$/);
-      const untypedDotMatch = stringValue.match(/^([^.]+)\.(.*)$/);
-      const explicitDataType = prefixedDotMatch ? Number(prefixedDotMatch[1]) : undefined;
-      const rawOperator = prefixedDotMatch ? prefixedDotMatch[2] : untypedDotMatch?.[1];
-      const operator = resolveOperator(rawOperator);
+    const stringValue = String(val);
+    const withoutPrefix = key.slice(prefix.length + 1);
+    const propertyName = withoutPrefix.replace(/\d+$/, ''); // strip trailing index digits
+    const prefixedDotMatch = stringValue.match(/^(\d+)\.([^.]+)\.(.*)$/);
+    const untypedDotMatch = stringValue.match(/^([^.]+)\.(.*)$/);
+    const explicitDataType = prefixedDotMatch ? Number(prefixedDotMatch[1]) : undefined;
+    const rawOperator = prefixedDotMatch ? prefixedDotMatch[2] : untypedDotMatch?.[1];
+    const operator = resolveOperator(rawOperator);
 
-      if (!operator || (explicitDataType !== undefined && !VALID_EVENT_DATA_TYPES.includes(explicitDataType))) {
-        return [];
-      }
+    if (
+      !operator ||
+      (explicitDataType !== undefined && !VALID_EVENT_DATA_TYPES.includes(explicitDataType))
+    ) {
+      return [];
+    }
 
-      const value = prefixedDotMatch ? prefixedDotMatch[3] : untypedDotMatch?.[2];
+    const value = prefixedDotMatch ? prefixedDotMatch[3] : untypedDotMatch?.[2];
 
-      if (value === undefined) {
-        return [];
-      }
+    if (value === undefined) {
+      return [];
+    }
 
-      return [
-        {
-          propertyName,
-          dataType: explicitDataType ?? DATA_TYPE.string,
-          operator,
-          value,
-        },
-      ];
-    });
+    return [
+      {
+        propertyName,
+        dataType: explicitDataType ?? DATA_TYPE.string,
+        operator,
+        value,
+      },
+    ];
+  });
 }
 
 export function parseEventPropertyFilters(query: Record<string, any>) {
@@ -159,7 +161,10 @@ export function serializePropertyFilters(
     filters.map(f => {
       const n = counts[f.propertyName] ?? 0;
       counts[f.propertyName] = n + 1;
-      return [`${prefix}_${f.propertyName}${n > 0 ? n : ''}`, `${f.dataType}.${f.operator}.${f.value}`];
+      return [
+        `${prefix}_${f.propertyName}${n > 0 ? n : ''}`,
+        `${f.dataType}.${f.operator}.${f.value}`,
+      ];
     }),
   );
 }

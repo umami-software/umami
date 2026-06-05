@@ -1,23 +1,18 @@
 ARG NODE_IMAGE_VERSION="22-alpine"
 ARG PNPM_VERSION="10.15.1"
-ARG INSTALL_HEATMAP="false"
 
 # Install dependencies only when needed
 FROM node:${NODE_IMAGE_VERSION} AS deps
-ARG INSTALL_HEATMAP
 
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 COPY package.json pnpm-lock.yaml ./
 RUN npm install -g pnpm
 
 RUN printf 'strictDepBuilds: false\n' > pnpm-workspace.yaml
 
 RUN pnpm install --frozen-lockfile
-RUN mkdir -p $PLAYWRIGHT_BROWSERS_PATH \
-    && if [ "$INSTALL_HEATMAP" = "true" ]; then pnpm run install-heatmap; fi
 
 # Rebuild the source code only when needed
 FROM node:${NODE_IMAGE_VERSION} AS builder
@@ -43,12 +38,11 @@ ARG NODE_OPTIONS
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_OPTIONS=$NODE_OPTIONS
-ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 RUN set -x \
-    && apk add --no-cache curl \
+    && apk add --no-cache curl libc6-compat \
     && npm install -g pnpm
 
 RUN echo {} > package.json
@@ -66,7 +60,6 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/generated ./generated
-COPY --from=deps --chown=nextjs:nodejs /ms-playwright /ms-playwright
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing

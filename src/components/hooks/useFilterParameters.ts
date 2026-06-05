@@ -3,7 +3,11 @@ import { FILTER_COLUMNS } from '@/lib/constants';
 import { useShare } from './context/useShare';
 import { useNavigation } from './useNavigation';
 
-export function useFilterParameters({ includePagination = true }: { includePagination?: boolean } = {}) {
+export function useFilterParameters({
+  includePagination = true,
+}: {
+  includePagination?: boolean;
+} = {}) {
   const { query } = useNavigation();
   const share = useShare();
   const allowFilter = share?.parameters?.allowFilter !== false;

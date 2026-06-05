@@ -1,6 +1,5 @@
-import type { ReactQueryOptions } from '@/lib/types';
 import { serializePropertyFilters } from '@/lib/params';
-import type { PropertyFilter } from '@/lib/types';
+import type { PropertyFilter, ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
 import { useDateParameters } from '../useDateParameters';
 import { useFilterParameters } from '../useFilterParameters';

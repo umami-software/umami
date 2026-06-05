@@ -1,7 +1,7 @@
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, withDateRange } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
+import { canViewAuthenticatedWebsite } from '@/permissions';
 import { getSessionReplays } from '@/queries/sql';
 
 export async function GET(
@@ -21,7 +21,7 @@ export async function GET(
 
   const { websiteId, sessionId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewAuthenticatedWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

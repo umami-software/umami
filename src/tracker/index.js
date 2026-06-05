@@ -138,7 +138,7 @@
           e.metaKey ||
           (e.button && e.button === 1);
         if (!external) e.preventDefault();
-        return trackElement(eventEl).then(() => {
+        return trackElement(eventEl).finally(() => {
           if (!external) {
             (target === '_top' ? top.location : location).href = href;
           }

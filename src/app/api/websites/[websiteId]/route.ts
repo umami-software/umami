@@ -5,7 +5,7 @@ import { uuid } from '@/lib/crypto';
 import { getRecorderConfig, getRecorderEnabled } from '@/lib/recorder';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
-import { canDeleteWebsite, canUpdateWebsite, canViewWebsite } from '@/permissions';
+import { canDeleteWebsite, canUpdateWebsite, canViewSharedWebsite } from '@/permissions';
 import {
   createShare,
   deleteSharesByEntityId,
@@ -27,7 +27,7 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewSharedWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

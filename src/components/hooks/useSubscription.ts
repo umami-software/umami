@@ -27,7 +27,7 @@ export function useSubscription(teamId?: string | null) {
 
   const ownSubscription: Subscription = user?.subscription || defaultSubscription;
   const teamSubscription: Subscription | null = teamId
-    ? user?.teams?.find((t: any) => t.id === teamId)?.subscription ?? null
+    ? (user?.teams?.find((t: any) => t.id === teamId)?.subscription ?? null)
     : null;
 
   const subscription: Subscription = teamSubscription || ownSubscription;

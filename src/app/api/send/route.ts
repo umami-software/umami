@@ -3,7 +3,7 @@ import { isbot } from 'isbot';
 import { serializeError } from 'serialize-error';
 import { z } from 'zod';
 import clickhouse from '@/lib/clickhouse';
-import { COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
+import { CACHE_TOKEN_TYPE, COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
 import { getSalt, hash, secret, uuid } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { createToken, parseToken } from '@/lib/jwt';
@@ -21,6 +21,17 @@ interface Cache {
   iat: number;
 }
 
+// Reject strings whose first character is a spreadsheet formula trigger to
+// prevent CSV formula injection in analytics exports (defense-in-depth).
+const FORMULA_TRIGGER_RE = /^[=+\-@\t\r]/;
+const safeStringParam = (maxLen: number) =>
+  z
+    .string()
+    .max(maxLen)
+    .refine(val => !FORMULA_TRIGGER_RE.test(val), {
+      message: 'Value must not start with =, +, -, @, tab, or carriage return',
+    });
+
 const schema = z.object({
   type: z.enum(['event', 'identify', 'performance']),
   payload: z
@@ -35,8 +46,8 @@ const schema = z.object({
       screen: z.string().max(11).optional(),
       title: z.string().optional(),
       url: urlOrPathParam.optional(),
-      name: z.string().max(50).optional(),
-      tag: z.string().max(50).optional(),
+      name: safeStringParam(50).optional(),
+      tag: safeStringParam(50).optional(),
       ip: z.string().optional(),
       userAgent: z.string().optional(),
       timestamp: z.coerce.number().int().optional(),
@@ -106,7 +117,7 @@ export async function POST(request: Request) {
       if (cacheHeader) {
         const result = await parseToken(cacheHeader, secret());
 
-        if (result) {
+        if (result?.type === CACHE_TOKEN_TYPE) {
           cache = result;
         }
       }
@@ -308,7 +319,10 @@ export async function POST(request: Request) {
       });
     }
 
-    const token = createToken({ websiteId, sessionId, visitId, iat }, secret());
+    const token = createToken(
+      { websiteId, sessionId, visitId, iat, type: CACHE_TOKEN_TYPE },
+      secret(),
+    );
 
     return json({ cache: token, sessionId, visitId });
   } catch (e) {

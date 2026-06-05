@@ -71,9 +71,10 @@ async function relationalQuery(
     column = `x.${FILTER_COLUMNS[type] || type}`;
   }
 
-  const selectColumn = type === 'fullPath'
-    ? `case when website_event.url_query != '' then website_event.url_path || '?' || website_event.url_query else website_event.url_path end`
-    : column;
+  const selectColumn =
+    type === 'fullPath'
+      ? `case when website_event.url_query != '' then website_event.url_path || '?' || website_event.url_query else website_event.url_path end`
+      : column;
 
   return rawQuery(
     `

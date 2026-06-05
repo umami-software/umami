@@ -21,7 +21,18 @@ export function usePropertyValuesQuery(
   return useQuery<any>({
     queryKey: [
       `websites:${source}-data:values`,
-      { websiteId, propertyName, dataType, eventName, propertyFilters, startAt, endAt, unit, timezone, ...params },
+      {
+        websiteId,
+        propertyName,
+        dataType,
+        eventName,
+        propertyFilters,
+        startAt,
+        endAt,
+        unit,
+        timezone,
+        ...params,
+      },
     ],
     queryFn: () =>
       get(

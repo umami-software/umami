@@ -123,9 +123,7 @@ export async function deleteUser(userId: string) {
   // Cloud mode keeps owned teams (and their team-owned content), so cleanup
   // only covers user-direct rows. Non-cloud hard-deletes owned teams below,
   // so we must also clean up team-owned content (websites included).
-  const ownedFilter = cloudMode
-    ? { userId }
-    : { OR: [{ userId }, { teamId: { in: teamIds } }] };
+  const ownedFilter = cloudMode ? { userId } : { OR: [{ userId }, { teamId: { in: teamIds } }] };
 
   const [links, pixels, boards, websites] = await Promise.all([
     client.link.findMany({

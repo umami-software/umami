@@ -52,11 +52,7 @@ function getClient() {
   return client;
 }
 
-export async function putHeatmapSnapshot(
-  objectKey: string,
-  imageData: Buffer,
-  mimeType: string,
-) {
+export async function putHeatmapSnapshot(objectKey: string, imageData: Buffer, mimeType: string) {
   await getClient().send(
     new PutObjectCommand({
       Bucket: getBucket(),

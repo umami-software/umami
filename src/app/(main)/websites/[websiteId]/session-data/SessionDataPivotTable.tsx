@@ -37,7 +37,10 @@ export function SessionDataPivotTable({
     return [];
   }, [providedPropertyKeys]);
 
-  const tableMinWidth = useMemo(() => `${72 + 220 + 180 + propertyKeys.length * 160}px`, [propertyKeys.length]);
+  const tableMinWidth = useMemo(
+    () => `${72 + 220 + 180 + propertyKeys.length * 160}px`,
+    [propertyKeys.length],
+  );
 
   const tableData = useMemo(() => {
     if (!pivotQuery.data?.data) return [];
@@ -120,7 +123,9 @@ export function SessionDataPivotTable({
           {isMobile ? (
             renderTable('cards')
           ) : (
-            <div style={{ width: '100%', maxWidth: '100%', overflowX: 'auto', overflowY: 'hidden' }}>
+            <div
+              style={{ width: '100%', maxWidth: '100%', overflowX: 'auto', overflowY: 'hidden' }}
+            >
               <div style={{ width: tableMinWidth, minWidth: tableMinWidth }}>
                 {renderTable('table')}
               </div>

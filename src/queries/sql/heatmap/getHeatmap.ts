@@ -1,11 +1,12 @@
 import clickhouse from '@/lib/clickhouse';
-import { HEATMAP_EVENT_TYPE } from '@/lib/constants';
+import { HEATMAP_EVENT_TYPE, OPERATORS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { filtersObjectToArray } from '@/lib/params';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 import {
-  type HeatmapSnapshotImage,
   ensureHeatmapSnapshot,
+  type HeatmapSnapshotImage,
   shouldSkipSnapshot,
 } from './ensureHeatmapSnapshot';
 
@@ -75,6 +76,7 @@ export async function getHeatmap(
 
 interface HeatmapFilterContext {
   joinQuery: string;
+  filterQuery: string;
   queryParams: Record<string, any>;
 }
 
@@ -116,6 +118,7 @@ async function relationalQuery(
     where h.website_id = {{websiteId::uuid}}
       and h.event_type = {{eventType}}
       and h.created_at between {{startDate}} and {{endDate}}
+      ${filterContext.filterQuery}
       ${pageFilter}
     group by h.url_path
     order by sessions desc, count desc
@@ -144,6 +147,7 @@ async function relationalQuery(
           and h.event_type = {{eventType}}
           and h.url_path = {{urlPath}}
           and h.created_at between {{startDate}} and {{endDate}}
+          ${filterContext.filterQuery}
           and h.scroll_pct is not null
         group by h.visit_id
       ) per_session
@@ -174,6 +178,7 @@ async function relationalQuery(
         and h.event_type = {{eventType}}
         and h.url_path = {{urlPath}}
         and h.created_at between {{startDate}} and {{endDate}}
+        ${filterContext.filterQuery}
         and h.scroll_pct is not null
       `,
       { ...filterContext.queryParams, websiteId, eventType, urlPath, startDate, endDate },
@@ -226,6 +231,7 @@ async function relationalQuery(
       and h.event_type = {{eventType}}
       and h.url_path = {{urlPath}}
       and h.created_at between {{startDate}} and {{endDate}}
+      ${filterContext.filterQuery}
       and h.x is not null
       and h.y is not null
       and h.page_x is not null
@@ -304,6 +310,7 @@ async function clickhouseQuery(
     where h.website_id = {websiteId:UUID}
       and h.event_type = {eventType:UInt8}
       and h.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      ${filterContext.filterQuery}
       ${pageFilter}
     group by h.url_path
     order by sessions desc, count desc
@@ -339,6 +346,7 @@ async function clickhouseQuery(
           and h.event_type = {eventType:UInt8}
           and h.url_path = {urlPath:String}
           and h.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+          ${filterContext.filterQuery}
           and h.scroll_pct is not null
         group by h.visit_id
       )
@@ -371,6 +379,7 @@ async function clickhouseQuery(
         and h.event_type = {eventType:UInt8}
         and h.url_path = {urlPath:String}
         and h.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        ${filterContext.filterQuery}
         and h.scroll_pct is not null
       `,
       { ...filterContext.queryParams, websiteId, eventType, urlPath, startDate, endDate },
@@ -438,6 +447,7 @@ async function clickhouseQuery(
       and h.event_type = {eventType:UInt8}
       and h.url_path = {urlPath:String}
       and h.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      ${filterContext.filterQuery}
       and h.x is not null
       and h.y is not null
       and h.page_x is not null
@@ -533,15 +543,13 @@ function pickSnapshotViewport(
     }
   }
 
-  let bestViewport:
-    | {
-        width: number;
-        height: number;
-        count: number;
-        maxPageW: number;
-        maxPageH: number;
-      }
-    | null = null;
+  let bestViewport: {
+    width: number;
+    height: number;
+    count: number;
+    maxPageW: number;
+    maxPageH: number;
+  } | null = null;
 
   for (const bucket of viewportBuckets.values()) {
     if (!bestViewport || bucket.count > bestViewport.count) {
@@ -561,19 +569,150 @@ function pickSnapshotViewport(
   };
 }
 
+function getHeatmapPathFilters(filters: QueryFilters) {
+  return filtersObjectToArray(filters).filter(filter => filter.name === 'path');
+}
+
+function omitHeatmapPathFilters(filters: QueryFilters): QueryFilters {
+  return Object.fromEntries(
+    Object.entries(filters).filter(([key]) => key.replace(/\d+$/, '') !== 'path'),
+  ) as QueryFilters;
+}
+
+function getRelationalHeatmapPathFilterContext(filters: QueryFilters) {
+  const pathFilters = getHeatmapPathFilters(filters);
+
+  if (!pathFilters.length) {
+    return { filterQuery: '', queryParams: {} };
+  }
+
+  const clauses = pathFilters.map(({ operator, value, paramName, name }) => {
+    const key = paramName ?? name;
+
+    switch (operator) {
+      case OPERATORS.equals:
+        return `h.url_path = ANY({{${key}}})`;
+      case OPERATORS.notEquals:
+        return `h.url_path != ALL({{${key}}})`;
+      case OPERATORS.contains:
+        return `h.url_path ilike {{${key}}}`;
+      case OPERATORS.doesNotContain:
+        return `h.url_path not ilike {{${key}}}`;
+      case OPERATORS.regex:
+        return `h.url_path ~* {{${key}}}`;
+      case OPERATORS.notRegex:
+        return `h.url_path !~* {{${key}}}`;
+      default:
+        return '';
+    }
+  });
+
+  const queryParams = Object.fromEntries(
+    pathFilters.map(({ operator, value, paramName, name }) => {
+      const key = paramName ?? name;
+
+      if (operator === OPERATORS.contains || operator === OPERATORS.doesNotContain) {
+        return [key, `%${value}%`];
+      }
+
+      if (operator === OPERATORS.equals || operator === OPERATORS.notEquals) {
+        return [key, Array.isArray(value) ? value : [value]];
+      }
+
+      return [key, Array.isArray(value) ? value[0] : value];
+    }),
+  );
+
+  const joinedClauses =
+    filters.match === 'any'
+      ? clauses.filter(Boolean).join('\n        or ')
+      : clauses.filter(Boolean).join('\n      and ');
+
+  return {
+    filterQuery:
+      filters.match === 'any'
+        ? `and (\n        ${joinedClauses}\n      )`
+        : clauses.length
+          ? `and ${joinedClauses}`
+          : '',
+    queryParams,
+  };
+}
+
+function getClickhouseHeatmapPathFilterContext(filters: QueryFilters) {
+  const pathFilters = getHeatmapPathFilters(filters);
+
+  if (!pathFilters.length) {
+    return { filterQuery: '', queryParams: {} };
+  }
+
+  const clauses = pathFilters.map(({ operator, value, paramName, name }) => {
+    const key = paramName ?? name;
+
+    switch (operator) {
+      case OPERATORS.equals:
+        return `h.url_path IN {${key}:Array(String)}`;
+      case OPERATORS.notEquals:
+        return `h.url_path NOT IN {${key}:Array(String)}`;
+      case OPERATORS.contains:
+        return `positionCaseInsensitive(h.url_path, {${key}:String}) > 0`;
+      case OPERATORS.doesNotContain:
+        return `positionCaseInsensitive(h.url_path, {${key}:String}) = 0`;
+      case OPERATORS.regex:
+        return `match(h.url_path, concat('(?i)', {${key}:String}))`;
+      case OPERATORS.notRegex:
+        return `not match(h.url_path, concat('(?i)', {${key}:String}))`;
+      default:
+        return '';
+    }
+  });
+
+  const queryParams = Object.fromEntries(
+    pathFilters.map(({ operator, value, paramName, name }) => {
+      const key = paramName ?? name;
+
+      if (operator === OPERATORS.equals || operator === OPERATORS.notEquals) {
+        return [key, Array.isArray(value) ? value : [value]];
+      }
+
+      return [key, Array.isArray(value) ? value[0] : value];
+    }),
+  );
+
+  const joinedClauses =
+    filters.match === 'any'
+      ? clauses.filter(Boolean).join('\n        or ')
+      : clauses.filter(Boolean).join('\n      and ');
+
+  return {
+    filterQuery:
+      filters.match === 'any'
+        ? `and (\n        ${joinedClauses}\n      )`
+        : clauses.length
+          ? `and ${joinedClauses}`
+          : '',
+    queryParams,
+  };
+}
+
 function getRelationalHeatmapFilterContext(
   websiteId: string,
   filters: QueryFilters,
 ): HeatmapFilterContext {
   const { parseFilters } = prisma;
+  const pathFilterContext = getRelationalHeatmapPathFilterContext(filters);
   const { filterQuery, cohortQuery, excludeBounceQuery, joinSessionQuery, queryParams } =
     parseFilters({
-      ...filters,
+      ...omitHeatmapPathFilters(filters),
       websiteId,
     });
 
   if (!(filterQuery || cohortQuery || excludeBounceQuery)) {
-    return { joinQuery: '', queryParams };
+    return {
+      joinQuery: '',
+      filterQuery: pathFilterContext.filterQuery,
+      queryParams: pathFilterContext.queryParams,
+    };
   }
 
   return {
@@ -592,7 +731,8 @@ function getRelationalHeatmapFilterContext(
       and filtered_visits.session_id = h.session_id
       and filtered_visits.visit_id = h.visit_id
     `,
-    queryParams,
+    filterQuery: pathFilterContext.filterQuery,
+    queryParams: { ...queryParams, ...pathFilterContext.queryParams },
   };
 }
 
@@ -601,13 +741,18 @@ function getClickhouseHeatmapFilterContext(
   filters: QueryFilters,
 ): HeatmapFilterContext {
   const { parseFilters } = clickhouse;
+  const pathFilterContext = getClickhouseHeatmapPathFilterContext(filters);
   const { filterQuery, cohortQuery, excludeBounceQuery, queryParams } = parseFilters({
-    ...filters,
+    ...omitHeatmapPathFilters(filters),
     websiteId,
   });
 
   if (!(filterQuery || cohortQuery || excludeBounceQuery)) {
-    return { joinQuery: '', queryParams };
+    return {
+      joinQuery: '',
+      filterQuery: pathFilterContext.filterQuery,
+      queryParams: pathFilterContext.queryParams,
+    };
   }
 
   return {
@@ -625,6 +770,7 @@ function getClickhouseHeatmapFilterContext(
       and filtered_visits.session_id = h.session_id
       and filtered_visits.visit_id = h.visit_id
     `,
-    queryParams,
+    filterQuery: pathFilterContext.filterQuery,
+    queryParams: { ...queryParams, ...pathFilterContext.queryParams },
   };
 }

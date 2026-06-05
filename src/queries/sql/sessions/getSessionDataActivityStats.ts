@@ -7,7 +7,12 @@ import type { PropertyFilter, PropertyLeaderboardRow, QueryFilters } from '@/lib
 const FUNCTION_NAME = 'getSessionDataActivityStats';
 
 export async function getSessionDataActivityStats(
-  ...args: [websiteId: string, propertyName: string, filters: QueryFilters, propertyFilters?: PropertyFilter[]]
+  ...args: [
+    websiteId: string,
+    propertyName: string,
+    filters: QueryFilters,
+    propertyFilters?: PropertyFilter[],
+  ]
 ): Promise<PropertyLeaderboardRow[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -28,8 +33,12 @@ async function relationalQuery(
     websiteId,
     timezone,
   });
-  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(propertyFilters, 'session', timezone);
- 
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(
+    propertyFilters,
+    'session',
+    timezone,
+  );
+
   return rawQuery(
     `
     with filtered_sessions as (
@@ -110,8 +119,16 @@ async function clickhouseQuery(
 ) {
   const { timezone = 'UTC' } = filters;
   const { rawQuery, parseFilters, getPropertyFilterQuery } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
-  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(propertyFilters, 'session', timezone);
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    timezone,
+  });
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(
+    propertyFilters,
+    'session',
+    timezone,
+  );
 
   return rawQuery(
     `

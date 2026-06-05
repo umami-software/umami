@@ -93,14 +93,18 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
     const previous = replayEnabled;
 
     setReplayEnabled(value);
-    await saveRecorderConfig(getNextConfig({ replayEnabled: value }), () => setReplayEnabled(previous));
+    await saveRecorderConfig(getNextConfig({ replayEnabled: value }), () =>
+      setReplayEnabled(previous),
+    );
   };
 
   const handleHeatmapToggle = async (value: boolean) => {
     const previous = heatmapEnabled;
 
     setHeatmapEnabled(value);
-    await saveRecorderConfig(getNextConfig({ heatmapEnabled: value }), () => setHeatmapEnabled(previous));
+    await saveRecorderConfig(getNextConfig({ heatmapEnabled: value }), () =>
+      setHeatmapEnabled(previous),
+    );
   };
 
   const handleSave = async () => {
