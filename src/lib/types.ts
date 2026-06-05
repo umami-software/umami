@@ -20,6 +20,7 @@ export interface Auth {
     isAdmin: boolean;
   };
   shareToken?: {
+    shareType?: number;
     websiteId?: string;
     websiteIds?: string[];
     boardId?: string;

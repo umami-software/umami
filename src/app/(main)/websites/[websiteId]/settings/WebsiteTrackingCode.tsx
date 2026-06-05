@@ -34,7 +34,14 @@ export function WebsiteTrackingCode({
     <Column gap>
       <Label>{t(labels.trackingCode)}</Label>
       <Text color="muted">{t(messages.trackingCode)}</Text>
-      <TextField value={code} isReadOnly allowCopy asTextArea resize="none" className="code-textarea" />
+      <TextField
+        value={code}
+        isReadOnly
+        allowCopy
+        asTextArea
+        resize="none"
+        className="code-textarea"
+      />
     </Column>
   );
 }

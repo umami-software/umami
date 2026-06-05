@@ -1,7 +1,7 @@
 import { DataColumn, DataTable, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import { useState } from 'react';
 import { DateDistance } from '@/components/common/DateDistance';
+import Link from '@/components/common/Link';
 import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages } from '@/components/hooks';
 import { Edit, Trash } from '@/components/icons';
@@ -40,7 +40,9 @@ export function UsersTable({
         </DataColumn>
         <DataColumn
           id="created"
-          label={<SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />}
+          label={
+            <SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />
+          }
         >
           {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
         </DataColumn>

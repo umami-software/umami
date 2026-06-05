@@ -336,7 +336,12 @@ import { record } from 'rrweb';
     const onClick = event => {
       if (!event.isTrusted || event.button !== 0) return;
 
-      const { pageW: rawPageW, pageH: rawPageH, scrollLeft, scrollTop } = computePageMetrics({
+      const {
+        pageW: rawPageW,
+        pageH: rawPageH,
+        scrollLeft,
+        scrollTop,
+      } = computePageMetrics({
         includeBounds: true,
       });
       const pageX = Number.isFinite(event.pageX) ? event.pageX : event.clientX + scrollLeft;

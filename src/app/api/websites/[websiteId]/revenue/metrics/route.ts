@@ -2,12 +2,9 @@ import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { filterParams, withDateRange } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
-import {
-  getRevenueMetrics,
-  type RevenueMetricType,
-} from '@/queries/sql/reports/getRevenueMetrics';
+import { canViewWebsiteSection } from '@/permissions';
 import type { RevenuParameters } from '@/queries/sql/reports/getRevenueChart';
+import { getRevenueMetrics, type RevenueMetricType } from '@/queries/sql/reports/getRevenueMetrics';
 
 const revenueMetricType = z.enum(['country', 'region', 'referrer', 'channel']);
 
@@ -29,7 +26,7 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsiteSection(auth, websiteId, 'revenue'))) {
     return unauthorized();
   }
 
@@ -42,7 +39,5 @@ export async function GET(
 
   const parameters = { ...filters, currency } as RevenuParameters;
 
-  return json(
-    await getRevenueMetrics(websiteId, parameters, filters, type as RevenueMetricType),
-  );
+  return json(await getRevenueMetrics(websiteId, parameters, filters, type as RevenueMetricType));
 }

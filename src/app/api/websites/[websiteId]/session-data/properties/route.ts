@@ -3,7 +3,7 @@ import { parsePropertyFilters } from '@/lib/params';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
+import { canViewAuthenticatedWebsite } from '@/permissions';
 import { getSessionDataProperties } from '@/queries/sql';
 
 export async function GET(
@@ -25,7 +25,7 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewAuthenticatedWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
@@ -33,12 +33,7 @@ export async function GET(
   const filters = await getQueryFilters(rest, websiteId);
   const propertyFilters = parsePropertyFilters(query);
 
-  const data = await getSessionDataProperties(
-    websiteId,
-    filters,
-    propertyFilters,
-    propertyName,
-  );
+  const data = await getSessionDataProperties(websiteId, filters, propertyFilters, propertyName);
 
   return json(data);
 }

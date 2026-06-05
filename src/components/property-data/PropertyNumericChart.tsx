@@ -36,16 +36,44 @@ export function PropertyNumericChart({
   const { t, labels } = useMessages();
   const { theme } = useTheme();
   const { timezone } = useTimezone();
-  const { dateRange: { startDate, endDate, unit } } = useDateRange({ timezone });
+  const {
+    dateRange: { startDate, endDate, unit },
+  } = useDateRange({ timezone });
   const { locale, dateLocale } = useLocale();
   const { colors } = useMemo(() => getThemeColors(theme), [theme]);
 
-  const sumQuery = usePropertyNumericSeriesQuery(source, websiteId, propertyName, 'sum', propertyFilters, eventName);
-  const avgQuery = usePropertyNumericSeriesQuery(source, websiteId, propertyName, 'avg', propertyFilters, eventName);
-  const statsQuery = usePropertyNumericStatsQuery(source, websiteId, propertyName, propertyFilters, eventName);
+  const sumQuery = usePropertyNumericSeriesQuery(
+    source,
+    websiteId,
+    propertyName,
+    'sum',
+    propertyFilters,
+    eventName,
+  );
+  const avgQuery = usePropertyNumericSeriesQuery(
+    source,
+    websiteId,
+    propertyName,
+    'avg',
+    propertyFilters,
+    eventName,
+  );
+  const statsQuery = usePropertyNumericStatsQuery(
+    source,
+    websiteId,
+    propertyName,
+    propertyFilters,
+    eventName,
+  );
 
-  const sumRows = useMemo(() => (sumQuery.data as { t: string; y: number }[] | undefined) ?? [], [sumQuery.data]);
-  const avgRows = useMemo(() => (avgQuery.data as { t: string; y: number }[] | undefined) ?? [], [avgQuery.data]);
+  const sumRows = useMemo(
+    () => (sumQuery.data as { t: string; y: number }[] | undefined) ?? [],
+    [sumQuery.data],
+  );
+  const avgRows = useMemo(
+    () => (avgQuery.data as { t: string; y: number }[] | undefined) ?? [],
+    [avgQuery.data],
+  );
   const stats = statsQuery.data;
 
   const chartData: any = useMemo(() => {
@@ -85,7 +113,20 @@ export function PropertyNumericChart({
         },
       ],
     };
-  }, [avgQuery.data, avgRows, colors, dateLocale, endDate, labels.average, labels.sum, startDate, sumQuery.data, sumRows, t, unit]);
+  }, [
+    avgQuery.data,
+    avgRows,
+    colors,
+    dateLocale,
+    endDate,
+    labels.average,
+    labels.sum,
+    startDate,
+    sumQuery.data,
+    sumRows,
+    t,
+    unit,
+  ]);
 
   const renderXLabel = useCallback(renderDateLabels(unit, locale), [unit, locale]);
 
@@ -99,11 +140,27 @@ export function PropertyNumericChart({
         minHeight="100px"
       >
         <MetricsBar padding="2">
-          <MetricCard label={t(labels.total)} value={stats?.total ?? 0} formatValue={formatLongNumber} />
-          <MetricCard label={t(labels.average)} value={stats?.average ?? 0} formatValue={formatLongNumber} />
+          <MetricCard
+            label={t(labels.total)}
+            value={stats?.total ?? 0}
+            formatValue={formatLongNumber}
+          />
+          <MetricCard
+            label={t(labels.average)}
+            value={stats?.average ?? 0}
+            formatValue={formatLongNumber}
+          />
           <MetricCard label="Median" value={stats?.median ?? 0} formatValue={formatLongNumber} />
-          <MetricCard label={t(labels.max)} value={stats?.max ?? 0} formatValue={formatLongNumber} />
-          <MetricCard label={t(labels.min)} value={stats?.min ?? 0} formatValue={formatLongNumber} />
+          <MetricCard
+            label={t(labels.max)}
+            value={stats?.max ?? 0}
+            formatValue={formatLongNumber}
+          />
+          <MetricCard
+            label={t(labels.min)}
+            value={stats?.min ?? 0}
+            formatValue={formatLongNumber}
+          />
         </MetricsBar>
       </LoadingPanel>
       <LoadingPanel

@@ -127,31 +127,38 @@ function DistributionBarChartComponent({
     [chartData.labels, colors, horizontal, stacked],
   );
 
-  const handleTooltip = useCallback(({ tooltip }: { tooltip: any }) => {
-    const { opacity, labelColors, dataPoints } = tooltip;
-    const point = dataPoints?.[0];
-    const nextTooltip = opacity
-      ? {
-          title: (point?.label ?? '').toString(),
-          color: labelColors?.[0]?.backgroundColor,
-          value: `${formatLongNumber(
-            Number(horizontal ? point?.raw?.x ?? point?.raw ?? 0 : point?.raw?.y ?? point?.raw ?? 0),
-          )}${point?.dataset?.label ? ` ${point.dataset.label}` : ''}`,
+  const handleTooltip = useCallback(
+    ({ tooltip }: { tooltip: any }) => {
+      const { opacity, labelColors, dataPoints } = tooltip;
+      const point = dataPoints?.[0];
+      const nextTooltip = opacity
+        ? {
+            title: (point?.label ?? '').toString(),
+            color: labelColors?.[0]?.backgroundColor,
+            value: `${formatLongNumber(
+              Number(
+                horizontal
+                  ? (point?.raw?.x ?? point?.raw ?? 0)
+                  : (point?.raw?.y ?? point?.raw ?? 0),
+              ),
+            )}${point?.dataset?.label ? ` ${point.dataset.label}` : ''}`,
+          }
+        : null;
+
+      setTooltip(prev => {
+        if (
+          prev?.title === nextTooltip?.title &&
+          prev?.color === nextTooltip?.color &&
+          prev?.value === nextTooltip?.value
+        ) {
+          return prev;
         }
-      : null;
 
-    setTooltip(prev => {
-      if (
-        prev?.title === nextTooltip?.title &&
-        prev?.color === nextTooltip?.color &&
-        prev?.value === nextTooltip?.value
-      ) {
-        return prev;
-      }
-
-      return nextTooltip;
-    });
-  }, [horizontal]);
+        return nextTooltip;
+      });
+    },
+    [horizontal],
+  );
 
   return (
     <>

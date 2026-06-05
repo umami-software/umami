@@ -1,7 +1,7 @@
 import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import { DateDistance } from '@/components/common/DateDistance';
 import { ExternalLink } from '@/components/common/ExternalLink';
+import Link from '@/components/common/Link';
 import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages, useNavigation, useSlug } from '@/components/hooks';
 import { PixelDeleteButton } from './PixelDeleteButton';
@@ -35,7 +35,9 @@ export function PixelsTable({ showActions, ...props }: PixelsTableProps) {
       </DataColumn>
       <DataColumn
         id="created"
-        label={<SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />}
+        label={
+          <SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />
+        }
       >
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>

@@ -1,8 +1,8 @@
 import { DataColumn, DataTable, Dialog, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import { useState } from 'react';
 import { WebsiteDeleteForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteDeleteForm';
 import { DateDistance } from '@/components/common/DateDistance';
+import Link from '@/components/common/Link';
 import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages } from '@/components/hooks';
 import { Edit, Trash, Users } from '@/components/icons';
@@ -48,7 +48,9 @@ export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
         </DataColumn>
         <DataColumn
           id="created"
-          label={<SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />}
+          label={
+            <SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />
+          }
           width="180px"
         >
           {(row: any) => <DateDistance date={new Date(row.createdAt)} />}

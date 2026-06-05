@@ -42,6 +42,12 @@
   color: inherit;
 }
 
+.pageMetric {
+  flex: 0 0 88px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
 .pageButton:hover {
   background: var(--interactive-bg-hover);
 }
@@ -125,6 +131,7 @@
   border-radius: 8px;
   background: var(--surface-sunken);
   flex: 0 0 auto;
+  margin-inline: auto;
 }
 
 .canvasClip {

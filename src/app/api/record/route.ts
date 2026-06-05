@@ -1,11 +1,11 @@
 import { isbot } from 'isbot';
 import { serializeError } from 'serialize-error';
 import { z } from 'zod';
+import { HEATMAP_EVENT_TYPE } from '@/lib/constants';
 import { secret } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { parseToken } from '@/lib/jwt';
 import { fetchAccount, fetchTeam } from '@/lib/load';
-import { HEATMAP_EVENT_TYPE } from '@/lib/constants';
 import { getRecorderConfig } from '@/lib/recorder';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
@@ -185,15 +185,15 @@ export async function POST(request: Request) {
         visitId,
         eventType: event.type === 'click' ? HEATMAP_EVENT_TYPE.click : HEATMAP_EVENT_TYPE.scroll,
         nodeId: null,
-        x: event.type === 'click' ? event.x ?? null : null,
-        y: event.type === 'click' ? event.y ?? null : null,
-        pageX: event.type === 'click' ? event.pageX ?? null : null,
-        pageY: event.type === 'click' ? event.pageY ?? null : null,
+        x: event.type === 'click' ? (event.x ?? null) : null,
+        y: event.type === 'click' ? (event.y ?? null) : null,
+        pageX: event.type === 'click' ? (event.pageX ?? null) : null,
+        pageY: event.type === 'click' ? (event.pageY ?? null) : null,
         pageW: event.pageW ?? null,
         viewportW: event.viewportW ?? null,
         viewportH: event.viewportH ?? null,
         pageH: event.pageH ?? null,
-        scrollPct: event.type === 'scroll' ? event.scrollPct ?? null : null,
+        scrollPct: event.type === 'scroll' ? (event.scrollPct ?? null) : null,
         urlPath: getUrlPath(event.url),
         createdAt: new Date(event.timestamp ?? fallbackMs),
         replayChunkIndex: null,

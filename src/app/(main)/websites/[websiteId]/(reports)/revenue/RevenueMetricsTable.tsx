@@ -1,11 +1,7 @@
 import { Grid } from '@umami/react-zen';
 import { useMemo } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import {
-  useMessages,
-  useRevenueMetricsQuery,
-  type RevenueMetricType,
-} from '@/components/hooks';
+import { type RevenueMetricType, useMessages, useRevenueMetricsQuery } from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
 import { formatLongCurrency } from '@/lib/format';

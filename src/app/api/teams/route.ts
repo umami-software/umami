@@ -47,7 +47,7 @@ export async function POST(request: Request) {
   const { name, ownerId } = body;
 
   const teamId = uuid();
-  const teamOwnerId = ownerId ?? auth.user.id;
+  const teamOwnerId = ownerId && auth.user.isAdmin ? ownerId : auth.user.id;
 
   const team = await createTeam(
     {

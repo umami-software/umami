@@ -2,11 +2,8 @@ import { getCompareDate } from '@/lib/date';
 import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { reportResultSchema } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
-import {
-  getRevenueChart,
-  type RevenuParameters,
-} from '@/queries/sql/reports/getRevenueChart';
+import { canViewWebsiteSection } from '@/permissions';
+import { getRevenueChart, type RevenuParameters } from '@/queries/sql/reports/getRevenueChart';
 import {
   getRevenueMetrics,
   type RevenueMetricsResult,
@@ -22,7 +19,7 @@ export async function POST(request: Request) {
 
   const { websiteId } = body;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsiteSection(auth, websiteId, 'revenue'))) {
     return unauthorized();
   }
 
@@ -36,30 +33,18 @@ export async function POST(request: Request) {
     getRevenueChart(websiteId, parameters as RevenuParameters, filters),
     getRevenueStats(websiteId, parameters as RevenuParameters, filters),
     getRevenueStats(websiteId, comparisonParameters, filters),
-    getRevenueMetrics(
-      websiteId,
-      parameters as RevenuParameters,
-      filters,
-      'country',
-    ) as Promise<RevenueMetricsResult['country']>,
-    getRevenueMetrics(
-      websiteId,
-      parameters as RevenuParameters,
-      filters,
-      'region',
-    ) as Promise<RevenueMetricsResult['region']>,
-    getRevenueMetrics(
-      websiteId,
-      parameters as RevenuParameters,
-      filters,
-      'referrer',
-    ) as Promise<RevenueMetricsResult['referrer']>,
-    getRevenueMetrics(
-      websiteId,
-      parameters as RevenuParameters,
-      filters,
-      'channel',
-    ) as Promise<RevenueMetricsResult['channel']>,
+    getRevenueMetrics(websiteId, parameters as RevenuParameters, filters, 'country') as Promise<
+      RevenueMetricsResult['country']
+    >,
+    getRevenueMetrics(websiteId, parameters as RevenuParameters, filters, 'region') as Promise<
+      RevenueMetricsResult['region']
+    >,
+    getRevenueMetrics(websiteId, parameters as RevenuParameters, filters, 'referrer') as Promise<
+      RevenueMetricsResult['referrer']
+    >,
+    getRevenueMetrics(websiteId, parameters as RevenuParameters, filters, 'channel') as Promise<
+      RevenueMetricsResult['channel']
+    >,
   ]);
 
   return json({ chart, total: { ...total, comparison }, country, region, referrer, channel });

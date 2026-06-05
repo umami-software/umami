@@ -100,21 +100,21 @@ export function SimpleShareEditForm({
             <TextField autoComplete="off" autoFocus />
           </FormField>
           <Row gap="6">
-              <FormField label={t(labels.filters)} name="allowFilter">
-                <Switch
-                  isSelected={watch('allowFilter')}
-                  onChange={value => setValue('allowFilter', value, { shouldDirty: true })}
-                >
-                  {t(labels.filtersEnabled)}
-                </Switch>
-              </FormField>
-              <FormField label={t(labels.theme)} name="theme">
-                <ThemeModeSelector
-                  value={watch('theme')}
-                  includeSystem
-                  onChange={value => setValue('theme', value, { shouldDirty: true })}
-                />
-              </FormField>
+            <FormField label={t(labels.filters)} name="allowFilter">
+              <Switch
+                isSelected={watch('allowFilter')}
+                onChange={value => setValue('allowFilter', value, { shouldDirty: true })}
+              >
+                {t(labels.filtersEnabled)}
+              </Switch>
+            </FormField>
+            <FormField label={t(labels.theme)} name="theme">
+              <ThemeModeSelector
+                value={watch('theme')}
+                includeSystem
+                onChange={value => setValue('theme', value, { shouldDirty: true })}
+              />
+            </FormField>
           </Row>
           <Row justifyContent="flex-end" paddingTop="3" gap="3">
             {onClose && (

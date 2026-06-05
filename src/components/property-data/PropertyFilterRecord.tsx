@@ -1,16 +1,32 @@
 'use client';
-import { Button, Calendar, Column, ComboBox, Dialog, DialogTrigger, Grid, Icon, Label, ListItem, Loading, Popover, Row, Select, TextField } from '@umami/react-zen';
+import {
+  Button,
+  Calendar,
+  Column,
+  ComboBox,
+  Dialog,
+  DialogTrigger,
+  Grid,
+  Icon,
+  Label,
+  ListItem,
+  Loading,
+  Popover,
+  Row,
+  Select,
+  TextField,
+} from '@umami/react-zen';
 import { format, parseISO } from 'date-fns';
 import { useState } from 'react';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { Empty } from '@/components/common/Empty';
 import { MultiSelect } from '@/components/common/MultiSelect';
 import { useMessages, usePropertyValuesQuery } from '@/components/hooks';
+import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { X } from '@/components/icons';
 import { DATA_TYPE, OPERATORS } from '@/lib/constants';
 import { getMaxSelectableDate } from '@/lib/date';
 import type { Operator, PropertyFilter } from '@/lib/types';
-import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 
 const STRING_OPERATORS: Operator[] = [
   OPERATORS.equals,
@@ -92,19 +108,32 @@ export function PropertyFilterRecord({
 
   const operatorLabel = (op: Operator) => {
     switch (op) {
-      case OPERATORS.equals: return t(labels.is);
-      case OPERATORS.notEquals: return t(labels.isNot);
-      case OPERATORS.contains: return t(labels.contains);
-      case OPERATORS.doesNotContain: return t(labels.doesNotContain);
-      case OPERATORS.regex: return t(labels.regexMatch);
-      case OPERATORS.notRegex: return t(labels.regexNotMatch);
-      case OPERATORS.greaterThan: return t(labels.greaterThan);
-      case OPERATORS.lessThan: return t(labels.lessThan);
-      case OPERATORS.greaterThanEquals: return t(labels.greaterThanEquals);
-      case OPERATORS.lessThanEquals: return t(labels.lessThanEquals);
-      case OPERATORS.before: return t(labels.before);
-      case OPERATORS.after: return t(labels.after);
-      default: return op;
+      case OPERATORS.equals:
+        return t(labels.is);
+      case OPERATORS.notEquals:
+        return t(labels.isNot);
+      case OPERATORS.contains:
+        return t(labels.contains);
+      case OPERATORS.doesNotContain:
+        return t(labels.doesNotContain);
+      case OPERATORS.regex:
+        return t(labels.regexMatch);
+      case OPERATORS.notRegex:
+        return t(labels.regexNotMatch);
+      case OPERATORS.greaterThan:
+        return t(labels.greaterThan);
+      case OPERATORS.lessThan:
+        return t(labels.lessThan);
+      case OPERATORS.greaterThanEquals:
+        return t(labels.greaterThanEquals);
+      case OPERATORS.lessThanEquals:
+        return t(labels.lessThanEquals);
+      case OPERATORS.before:
+        return t(labels.before);
+      case OPERATORS.after:
+        return t(labels.after);
+      default:
+        return op;
     }
   };
 
@@ -123,7 +152,10 @@ export function PropertyFilterRecord({
       <Label>{filter.propertyName}</Label>
       <Grid columns="1fr auto" gap>
         <Grid columns={{ base: '1fr', md: '200px 1fr' }} gap>
-          <Select value={filter.operator} onChange={value => handleOperatorChange(value as Operator)}>
+          <Select
+            value={filter.operator}
+            onChange={value => handleOperatorChange(value as Operator)}
+          >
             {operators.map(op => (
               <ListItem key={op} id={op}>
                 {operatorLabel(op)}

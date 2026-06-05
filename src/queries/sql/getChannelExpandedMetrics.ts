@@ -62,9 +62,8 @@ async function relationalQuery(
             website_event.session_id,
             website_event.visit_id,
             website_event.hostname,
-            count(*) c,
-            min(website_event.created_at) min_time,
-            max(website_event.created_at) max_time
+            website_event.event_id,
+            website_event.created_at
         from website_event
         ${cohortQuery}
         ${excludeBounceQuery}
@@ -72,15 +71,7 @@ async function relationalQuery(
         where website_event.website_id = {{websiteId::uuid}}
           and website_event.event_type NOT IN (2, 5)
           ${dateQuery}
-          ${filterQuery}
-        group by prefix, 
-            website_event.referrer_domain,
-            website_event.url_query,
-            website_event.utm_medium,
-            website_event.utm_source,
-            website_event.session_id,
-            website_event.visit_id,
-            website_event.hostname),
+          ${filterQuery}),
   
       channels as (
         select case
@@ -99,21 +90,50 @@ async function relationalQuery(
             else '' end as "name",
             session_id,
             visit_id,
-            c,
-            min_time,
-            max_time
-        from prefix)
+            event_id,
+            created_at
+        from prefix),
+
+      visit_channels as (
+        select
+          session_id,
+          visit_id,
+          coalesce(nullif(name, ''), 'direct') as "name"
+        from (
+          select
+            name,
+            session_id,
+            visit_id,
+            row_number() over (
+              partition by session_id, visit_id
+              order by case when name != '' then 0 else 1 end, created_at, event_id
+            ) as row_num
+          from channels
+        ) as ranked_channels
+        where row_num = 1),
+
+      visit_stats as (
+        select
+          session_id,
+          visit_id,
+          count(*) as c,
+          min(created_at) as min_time,
+          max(created_at) as max_time
+        from prefix
+        group by session_id, visit_id)
   
       select
-        name,
-        sum(c) as "pageviews",
-        count(distinct session_id) as "visitors",
-        count(distinct visit_id) as "visits",
-        sum(case when c = 1 then 1 else 0 end) as "bounces",
-        sum(${getTimestampDiffSQL('min_time', 'max_time')}) as "totaltime"
-      from channels
-      where name != ''
-      group by name 
+        visit_channels.name,
+        sum(visit_stats.c) as "pageviews",
+        count(distinct visit_stats.session_id) as "visitors",
+        count(distinct visit_stats.visit_id) as "visits",
+        sum(case when visit_stats.c = 1 then 1 else 0 end) as "bounces",
+        sum(${getTimestampDiffSQL('visit_stats.min_time', 'visit_stats.max_time')}) as "totaltime"
+      from visit_stats
+      join visit_channels
+        on visit_channels.session_id = visit_stats.session_id
+        and visit_channels.visit_id = visit_stats.visit_id
+      group by visit_channels.name 
       order by visitors desc, visits desc
       `,
     queryParams,
@@ -142,6 +162,14 @@ async function clickhouseQuery(
       sum(max_time-min_time) as "totaltime"
     from (
       select
+        session_id,
+        visit_id,
+        coalesce(nullIf(argMin(name, tuple(if(name != '', 0, 1), created_at, event_id)), ''), 'direct') as name,
+        count(*) c,
+        min(created_at) min_time,
+        max(created_at) max_time
+      from (
+        select
         case when multiSearchAny(lower(utm_medium), ['cp', 'ppc', 'retargeting', 'paid']) != 0 then 'paid' else 'organic' end prefix,
         case
           when referrer_domain = '' and url_query = '' then 'direct'
@@ -173,18 +201,17 @@ async function clickhouseQuery(
         else '' end AS "name",
         session_id,
         visit_id,
-        count(*) c,
-        min(created_at) min_time,
-        max(created_at) max_time
-      from website_event
-      ${cohortQuery}
-      ${excludeBounceQuery}
-      where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type NOT IN (2, 5)
-        and name != ''
-        ${filterQuery}
-      group by prefix, name, session_id, visit_id
+        event_id,
+        created_at
+        from website_event
+        ${cohortQuery}
+        ${excludeBounceQuery}
+        where website_id = {websiteId:UUID}
+          and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+          and event_type NOT IN (2, 5)
+          ${filterQuery}
+      )
+      group by session_id, visit_id
     ) as t
     group by name 
     order by visitors desc, visits desc;

@@ -137,21 +137,21 @@ export function ShareEditForm({
               <TextField autoComplete="off" autoFocus={!isEditing} />
             </FormField>
             <Grid columns={{ base: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} gap="3">
-                <FormField label={t(labels.filters)} name="allowFilter">
-                  <Switch
-                    isSelected={watch('allowFilter')}
-                    onChange={value => setValue('allowFilter', value, { shouldDirty: true })}
-                  >
-                    {t(labels.filtersEnabled)}
-                  </Switch>
-                </FormField>
-                <FormField label={t(labels.theme)} name="theme">
-                  <ThemeModeSelector
-                    value={watch('theme')}
-                    includeSystem
-                    onChange={value => setValue('theme', value, { shouldDirty: true })}
-                  />
-                </FormField>
+              <FormField label={t(labels.filters)} name="allowFilter">
+                <Switch
+                  isSelected={watch('allowFilter')}
+                  onChange={value => setValue('allowFilter', value, { shouldDirty: true })}
+                >
+                  {t(labels.filtersEnabled)}
+                </Switch>
+              </FormField>
+              <FormField label={t(labels.theme)} name="theme">
+                <ThemeModeSelector
+                  value={watch('theme')}
+                  includeSystem
+                  onChange={value => setValue('theme', value, { shouldDirty: true })}
+                />
+              </FormField>
             </Grid>
             <ListSeparator />
             <Grid columns={{ base: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} gap="3">

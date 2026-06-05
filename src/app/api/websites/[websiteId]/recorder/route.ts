@@ -1,5 +1,5 @@
-import { parseRequest } from '@/lib/request';
 import { getRecorderConfig } from '@/lib/recorder';
+import { parseRequest } from '@/lib/request';
 import { getWebsite } from '@/queries/prisma';
 
 export async function GET(

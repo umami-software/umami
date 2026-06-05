@@ -1,9 +1,9 @@
 'use client';
 
-import type { ReactNode } from 'react';
 import { Icon } from '@umami/react-zen';
-import { ChevronDown, ChevronUp } from '@/components/icons';
+import type { ReactNode } from 'react';
 import { useNavigation } from '@/components/hooks';
+import { ChevronDown, ChevronUp } from '@/components/icons';
 
 type SortDirection = 'asc' | 'desc';
 
@@ -13,11 +13,7 @@ export interface SortableLabelProps {
   defaultDirection?: SortDirection;
 }
 
-export function SortableLabel({
-  label,
-  sortKey,
-  defaultDirection = 'asc',
-}: SortableLabelProps) {
+export function SortableLabel({ label, sortKey, defaultDirection = 'asc' }: SortableLabelProps) {
   const { router, query, updateParams } = useNavigation();
   const isActive = query.orderBy === sortKey;
   const isDescending = query.sortDescending === 'true';

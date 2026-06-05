@@ -8,7 +8,11 @@ export async function canViewLink({ user, shareToken }: Auth, linkId: string) {
     return true;
   }
 
-  if (shareToken?.linkId === linkId || shareToken?.websiteId === linkId || shareToken?.linkIds?.includes(linkId)) {
+  if (
+    shareToken?.linkId === linkId ||
+    shareToken?.websiteId === linkId ||
+    shareToken?.linkIds?.includes(linkId)
+  ) {
     return true;
   }
 
@@ -17,6 +21,10 @@ export async function canViewLink({ user, shareToken }: Auth, linkId: string) {
   }
 
   const link = await getLink(linkId);
+
+  if (!link) {
+    return false;
+  }
 
   if (link.userId) {
     return user.id === link.userId;
@@ -42,6 +50,10 @@ export async function canUpdateLink({ user }: Auth, linkId: string) {
 
   const link = await getLink(linkId);
 
+  if (!link) {
+    return false;
+  }
+
   if (link.userId) {
     return user.id === link.userId;
   }
@@ -65,6 +77,10 @@ export async function canDeleteLink({ user }: Auth, linkId: string) {
   }
 
   const link = await getLink(linkId);
+
+  if (!link) {
+    return false;
+  }
 
   if (link.userId) {
     return user.id === link.userId;

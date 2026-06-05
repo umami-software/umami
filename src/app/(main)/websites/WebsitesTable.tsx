@@ -25,7 +25,9 @@ export function WebsitesTable({ showActions, renderLink, ...props }: WebsitesTab
       <DataColumn id="domain" label={<SortableLabel label={t(labels.domain)} sortKey="domain" />} />
       <DataColumn
         id="created"
-        label={<SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />}
+        label={
+          <SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />
+        }
         width="200px"
       >
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}

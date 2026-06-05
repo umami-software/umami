@@ -7,10 +7,7 @@ export interface RevenueSessionsDataTableProps {
   currency: string;
 }
 
-export function RevenueSessionsDataTable({
-  websiteId,
-  currency,
-}: RevenueSessionsDataTableProps) {
+export function RevenueSessionsDataTable({ websiteId, currency }: RevenueSessionsDataTableProps) {
   const { updateParams } = useNavigation();
   const queryResult = useRevenueSessionsQuery(websiteId, currency);
 

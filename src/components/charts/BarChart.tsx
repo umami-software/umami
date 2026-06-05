@@ -1,3 +1,5 @@
+import { useTheme } from '@umami/react-zen';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { Chart, type ChartProps } from '@/components/charts/Chart';
 import { ChartTooltip } from '@/components/charts/ChartTooltip';
 import { useLocale } from '@/components/hooks';
@@ -5,8 +7,6 @@ import { renderNumberLabels } from '@/lib/charts';
 import { getThemeColors } from '@/lib/colors';
 import { DATE_FORMATS, formatDate } from '@/lib/date';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
-import { useTheme } from '@umami/react-zen';
-import { memo, useCallback, useMemo, useState } from 'react';
 
 const MemoChart = memo(Chart);
 

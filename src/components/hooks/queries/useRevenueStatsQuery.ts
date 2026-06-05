@@ -35,7 +35,10 @@ export function useRevenueStatsQuery(
   const filters = useFilterParameters({ includePagination: false });
 
   return useQuery<RevenueStatsData>({
-    queryKey: ['websites:revenue:stats', { websiteId, currency, compare, startAt, endAt, ...filters }],
+    queryKey: [
+      'websites:revenue:stats',
+      { websiteId, currency, compare, startAt, endAt, ...filters },
+    ],
     queryFn: () =>
       get(`/websites/${websiteId}/revenue/stats`, {
         currency,

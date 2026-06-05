@@ -1,6 +1,6 @@
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { canViewWebsite } from '@/permissions';
+import { canViewAuthenticatedWebsite } from '@/permissions';
 import { getReplayChunks } from '@/queries/sql';
 
 function getEventTimestamp(event: any): number | null {
@@ -86,7 +86,7 @@ export async function GET(
   const endEventIndex = parseOptionalInteger(searchParams.get('eventIndex'));
   const endAt = until !== undefined ? new Date(until) : undefined;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewAuthenticatedWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

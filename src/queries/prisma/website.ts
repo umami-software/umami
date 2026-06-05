@@ -47,7 +47,10 @@ export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters:
   return attachShareIdToWebsites(websites);
 }
 
-export async function getAllUserWebsitesIncludingTeamAccess(userId: string, filters?: QueryFilters) {
+export async function getAllUserWebsitesIncludingTeamAccess(
+  userId: string,
+  filters?: QueryFilters,
+) {
   return getWebsites(
     {
       where: {
@@ -262,6 +265,15 @@ export async function getWebsiteCount(userId: string) {
   return prisma.client.website.count({
     where: {
       userId,
+      deletedAt: null,
+    },
+  });
+}
+
+export async function getTeamWebsiteCount(teamId: string) {
+  return prisma.client.website.count({
+    where: {
+      teamId,
       deletedAt: null,
     },
   });

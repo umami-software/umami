@@ -3,16 +3,14 @@ import { parseRequest } from '@/lib/request';
 import { ok } from '@/lib/response';
 
 export async function POST(request: Request) {
-  const { error } = await parseRequest(request);
+  const { auth, error } = await parseRequest(request);
 
   if (error) {
     return error();
   }
 
-  if (redis.enabled) {
-    const token = request.headers.get('authorization')?.split(' ')?.[1];
-
-    await redis.client.del(token);
+  if (redis.enabled && auth?.authKey) {
+    await redis.client.del(auth.authKey);
   }
 
   return ok();

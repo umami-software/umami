@@ -9,11 +9,7 @@ export function RealtimeHeader({ data }: { data: any }) {
 
   return (
     <MetricsBar
-      columns={
-        isPhone
-          ? 'repeat(2, minmax(0, 1fr))'
-          : 'repeat(auto-fit, minmax(160px, 1fr))'
-      }
+      columns={isPhone ? 'repeat(2, minmax(0, 1fr))' : 'repeat(auto-fit, minmax(160px, 1fr))'}
     >
       <MetricCard label={t(labels.views)} value={totals.views} />
       <MetricCard label={t(labels.visitors)} value={totals.visitors} />

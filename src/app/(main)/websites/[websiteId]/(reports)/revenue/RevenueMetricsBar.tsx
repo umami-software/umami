@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
 import { useDateRange, useMessages } from '@/components/hooks';
+import type { RevenueStatsData } from '@/components/hooks/queries/useRevenueStatsQuery';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
-import type { RevenueStatsData } from '@/components/hooks/queries/useRevenueStatsQuery';
 
 export interface RevenueMetricsBarProps {
   data: RevenueStatsData;

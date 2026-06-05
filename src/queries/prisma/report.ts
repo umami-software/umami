@@ -18,6 +18,7 @@ export async function getReport(reportId: string) {
 
 export async function getReports(criteria: ReportFindManyArgs, filters: QueryFilters = {}) {
   const { search } = filters;
+  const orderBy = criteria.orderBy ?? [{ name: 'asc' }, { id: 'asc' }];
 
   const where: Prisma.ReportWhereInput = {
     ...criteria.where,
@@ -43,7 +44,7 @@ export async function getReports(criteria: ReportFindManyArgs, filters: QueryFil
     ]),
   };
 
-  return prisma.pagedQuery('report', { ...criteria, where }, filters);
+  return prisma.pagedQuery('report', { ...criteria, where, orderBy }, filters);
 }
 
 export async function getUserReports(userId: string, filters?: QueryFilters) {

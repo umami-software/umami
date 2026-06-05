@@ -37,7 +37,9 @@ export function PropertyChart({
 }) {
   const { t, labels } = useMessages();
   const { timezone } = useTimezone();
-  const { dateRange: { startDate, endDate, unit } } = useDateRange({ timezone });
+  const {
+    dateRange: { startDate, endDate, unit },
+  } = useDateRange({ timezone });
   const { locale, dateLocale } = useLocale();
   const propertySeriesQuery = usePropertySeriesQuery(
     source,
