@@ -49,7 +49,14 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
             </Column>
             {!isSharePage && (
               <Column>
-                <ReportEditButton id={id} name={name} type={type} title={t(labels.goal)} minWidth="400px" minHeight="300px">
+                <ReportEditButton
+                  id={id}
+                  name={name}
+                  type={type}
+                  title={t(labels.goal)}
+                  minWidth="400px"
+                  minHeight="300px"
+                >
                   {({ close }) => <GoalEditForm id={id} websiteId={websiteId} onClose={close} />}
                 </ReportEditButton>
               </Column>

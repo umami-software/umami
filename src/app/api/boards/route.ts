@@ -2,15 +2,16 @@ import { z } from 'zod';
 import { BOARD_TYPES, normalizeBoardType } from '@/lib/boards';
 import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { json, unauthorized } from '@/lib/response';
-import { pagingParams, searchParams } from '@/lib/schema';
-import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
+import { badRequest, json, unauthorized } from '@/lib/response';
+import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
+import { canCreateTeamWebsite, canCreateWebsite, canViewBoardEntities } from '@/permissions';
 import { createBoard, getUserBoards } from '@/queries/prisma';
 
 export async function GET(request: Request) {
   const schema = z.object({
     ...pagingParams,
     ...searchParams,
+    ...sortingParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -55,6 +56,10 @@ export async function POST(request: Request) {
 
   if ((teamId && !(await canCreateTeamWebsite(auth, teamId))) || !(await canCreateWebsite(auth))) {
     return unauthorized();
+  }
+
+  if (!(await canViewBoardEntities(auth, body.type, body.parameters))) {
+    return badRequest({ message: 'Board contains inaccessible entities.' });
   }
 
   const data = {

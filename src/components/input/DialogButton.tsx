@@ -42,7 +42,7 @@ export function DialogButton({
     height,
     minWidth,
     minHeight,
-    maxHeight: 'calc(100dvh - 40px)',
+    maxHeight: 'min(80dvh, calc(100dvh - 40px))',
     overflowY: 'auto',
     padding: '32px',
   };
@@ -68,7 +68,12 @@ export function DialogButton({
 
   if (isOpen !== undefined) {
     return (
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable placement={isMobile ? 'fullscreen' : 'center'}>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        isDismissable
+        placement={isMobile ? 'fullscreen' : 'center'}
+      >
         {dialog}
       </Modal>
     );
@@ -79,9 +84,7 @@ export function DialogButton({
       <Button {...props}>
         <IconLabel icon={icon} label={label} />
       </Button>
-      <Modal placement={isMobile ? 'fullscreen' : 'center'}>
-        {dialog}
-      </Modal>
+      <Modal placement={isMobile ? 'fullscreen' : 'center'}>{dialog}</Modal>
     </DialogTrigger>
   );
 }

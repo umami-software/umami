@@ -1,12 +1,17 @@
 ARG NODE_IMAGE_VERSION="22-alpine"
+ARG PNPM_VERSION="10.15.1"
 
 # Install dependencies only when needed
 FROM node:${NODE_IMAGE_VERSION} AS deps
+
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN npm install -g pnpm
+
+RUN printf 'strictDepBuilds: false\n' > pnpm-workspace.yaml
+
 RUN pnpm install --frozen-lockfile
 
 # Rebuild the source code only when needed
@@ -28,7 +33,6 @@ RUN npm run build-docker
 FROM node:${NODE_IMAGE_VERSION} AS runner
 WORKDIR /app
 
-ARG PRISMA_VERSION="7.3.0"
 ARG NODE_OPTIONS
 
 ENV NODE_ENV=production
@@ -38,11 +42,15 @@ ENV NODE_OPTIONS=$NODE_OPTIONS
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 RUN set -x \
-    && apk add --no-cache curl \
+    && apk add --no-cache curl libc6-compat \
     && npm install -g pnpm
 
+RUN echo {} > package.json
+
+RUN printf "allowBuilds:\n  '@prisma/engines': true\n  prisma: false\nverifyDepsBeforeRun: false\n" > pnpm-workspace.yaml
+
 # Script dependencies
-RUN pnpm --allow-build='@prisma/engines' add npm-run-all dotenv chalk semver \
+RUN pnpm add npm-run-all dotenv chalk semver \
     prisma@${PRISMA_VERSION} \
     @prisma/client@${PRISMA_VERSION} \
     @prisma/adapter-pg@${PRISMA_VERSION}
@@ -57,6 +65,8 @@ COPY --from=builder /app/generated ./generated
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+RUN rm -rf /app/node_modules
+COPY --from=deps /app/node_modules ./node_modules
 
 USER nextjs
 
@@ -65,4 +75,4 @@ EXPOSE 3000
 ENV HOSTNAME=0.0.0.0
 ENV PORT=3000
 
-CMD ["pnpm", "start-docker"]
+CMD ["npm", "run", "start-docker"]

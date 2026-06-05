@@ -28,7 +28,10 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
   const [currentMatch, setCurrentMatch] = useState<string>(match || 'all');
   const { isMobile } = useMobile();
   const isPixelLink = !websiteId || pathname.includes('/pixels') || pathname.includes('/links');
-  const excludeEvent = !pathname.endsWith('/events') && !pathname.endsWith('/replays');
+  const excludeEvent =
+    !pathname.endsWith('/events') &&
+    !pathname.endsWith('/replays') &&
+    !pathname.endsWith('/heatmaps');
   const isPerformance = pathname.includes('/performance');
 
   const excludedFields = isPixelLink
@@ -112,7 +115,12 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
           </TabPanel>
         </Tabs>
       </Column>
-      <Row alignItems="center" justifyContent="space-between" gap style={isMobile ? { paddingBottom: '16px' } : undefined}>
+      <Row
+        alignItems="center"
+        justifyContent="space-between"
+        gap
+        style={isMobile ? { paddingBottom: '16px' } : undefined}
+      >
         <Button onPress={handleReset}>{t(labels.reset)}</Button>
         <Row alignItems="center" justifyContent="flex-end" gridColumn="span 2" gap>
           <Button onPress={onClose}>{t(labels.cancel)}</Button>

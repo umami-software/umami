@@ -1,5 +1,11 @@
 import debug from 'debug';
-import { ROLE_PERMISSIONS, ROLES, SHARE_CONTEXT_HEADER, SHARE_TOKEN_HEADER } from '@/lib/constants';
+import {
+  ROLE_PERMISSIONS,
+  ROLES,
+  SHARE_CONTEXT_HEADER,
+  SHARE_TOKEN_HEADER,
+  SHARE_TOKEN_TYPE,
+} from '@/lib/constants';
 import { createAuthKey, secret } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
 import redis from '@/lib/redis';
@@ -79,7 +85,16 @@ export async function hasPermission(role: string, permission: string | string[])
 
 export function parseShareToken(request: Request) {
   try {
-    return parseToken(request.headers.get(SHARE_TOKEN_HEADER), secret());
+    const token: any = parseToken(request.headers.get(SHARE_TOKEN_HEADER), secret());
+
+    // Only accept tokens explicitly minted as share tokens. This prevents other
+    // tokens signed with the same secret (e.g. the cache token from /api/send)
+    // from being replayed as share tokens to gain analytics access.
+    if (token?.type !== SHARE_TOKEN_TYPE) {
+      return null;
+    }
+
+    return token;
   } catch (e) {
     log(e);
     return null;

@@ -1,14 +1,15 @@
 import { useApi } from '../useApi';
 import { useModified } from '../useModified';
+import { usePagedQuery } from '../usePagedQuery';
 
 export function useUserTeamsQuery(userId: string) {
-  const { get, useQuery } = useApi();
+  const { get } = useApi();
   const { modified } = useModified(`teams`);
 
-  return useQuery({
+  return usePagedQuery({
     queryKey: ['teams', { userId, modified }],
-    queryFn: () => {
-      return get(`/users/${userId}/teams`);
+    queryFn: params => {
+      return get(`/users/${userId}/teams`, params);
     },
     enabled: !!userId,
   });

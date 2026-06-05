@@ -49,8 +49,6 @@ export async function relationalQuery({
   for (const data of flattenedData) {
     const { sessionId, dataKey, ...props } = data;
 
-    // Try to update existing record using compound where clause
-    // This is safer than using id from a previous query due to race conditions
     const updateResult = await client.sessionData.updateMany({
       where: {
         sessionId,

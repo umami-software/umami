@@ -1,7 +1,7 @@
 import { DataColumn, DataTable, type DataTableProps } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import { Avatar } from '@/components/common/Avatar';
 import { DateDistance } from '@/components/common/DateDistance';
+import Link from '@/components/common/Link';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { useFormat, useMessages } from '@/components/hooks';
 
@@ -17,7 +17,11 @@ export function SessionsTable({
     <DataTable {...props}>
       <DataColumn id="id" label={t(labels.session)} width="100px">
         {(row: any) => (
-          <Link href={getSessionHref ? getSessionHref(row) : `/websites/${websiteId}/sessions/${row.id}`}>
+          <Link
+            href={
+              getSessionHref ? getSessionHref(row) : `/websites/${websiteId}/sessions/${row.id}`
+            }
+          >
             <Avatar seed={row.id} size={32} />
           </Link>
         )}
@@ -25,7 +29,7 @@ export function SessionsTable({
       <DataColumn id="visits" label={t(labels.visits)} width="80px" />
       <DataColumn id="views" label={t(labels.views)} width="80px" />
       <DataColumn id="events" label={t(labels.events)} width="80px" />
-      <DataColumn id="location" label={t(labels.location)}>
+      <DataColumn id="location" label={t(labels.location)} width="200px">
         {(row: any) => (
           <TypeIcon type="country" value={row.country}>
             {row.city ? `${row.city}, ` : ''}

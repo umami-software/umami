@@ -1,6 +1,6 @@
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { canViewWebsite } from '@/permissions';
+import { canViewAuthenticatedWebsite } from '@/permissions';
 import { getEventDataById } from '@/queries/sql/events/getEventDataById';
 
 export async function GET(
@@ -15,7 +15,7 @@ export async function GET(
 
   const { websiteId, eventId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewAuthenticatedWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

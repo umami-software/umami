@@ -32,7 +32,7 @@ async function relationalQuery(
   filters: QueryFilters,
 ): Promise<PageviewMetricsData[]> {
   const { type, limit = 500, offset = 0 } = parameters;
-  let column = FILTER_COLUMNS[type] || type;
+  let column = getPageviewColumn(type);
   const { rawQuery, parseFilters } = prisma;
   const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } =
     parseFilters(
@@ -45,7 +45,6 @@ async function relationalQuery(
 
   let entryExitQuery = '';
   let excludeDomain = '';
-
   if (column === 'referrer_domain') {
     excludeDomain = `and website_event.referrer_domain != regexp_replace(website_event.hostname, '^www.', '')
       and website_event.referrer_domain != ''`;
@@ -53,13 +52,13 @@ async function relationalQuery(
 
   if (type === 'entry' || type === 'exit') {
     const order = type === 'entry' ? 'asc' : 'desc';
-    column = `x.${column}`;
 
     entryExitQuery = `
       join (
         select distinct on (visit_id)
           visit_id,
-          url_path
+          url_path,
+          url_query
         from website_event
         where website_event.website_id = {{websiteId::uuid}}
           and website_event.created_at between {{startDate}} and {{endDate}}
@@ -68,11 +67,18 @@ async function relationalQuery(
       ) x
       on x.visit_id = website_event.visit_id
     `;
+
+    column = `x.${FILTER_COLUMNS[type] || type}`;
   }
+
+  const selectColumn =
+    type === 'fullPath'
+      ? `case when website_event.url_query != '' then website_event.url_path || '?' || website_event.url_query else website_event.url_path end`
+      : column;
 
   return rawQuery(
     `
-    select ${column} x,
+    select ${selectColumn} x,
       count(distinct website_event.session_id) as y
     from website_event
     ${cohortQuery}
@@ -101,7 +107,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
   const { type, limit = 500, offset = 0 } = parameters;
-  let column = FILTER_COLUMNS[type] || type;
+  let column = getPageviewColumn(type);
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, excludeBounceQuery, queryParams } = parseFilters({
     ...filters,
@@ -110,9 +116,9 @@ async function clickhouseQuery(
 
   let sql = '';
   let excludeDomain = '';
-
-  if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
+  if (type === 'fullPath' || EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
     let entryExitQuery = '';
+    let selectColumn = column;
 
     if (column === 'referrer_domain') {
       excludeDomain = `and referrer_domain != hostname and referrer_domain != ''`;
@@ -120,21 +126,26 @@ async function clickhouseQuery(
 
     if (type === 'entry' || type === 'exit') {
       const aggregrate = type === 'entry' ? 'argMin' : 'argMax';
-      column = `x.${column}`;
 
       entryExitQuery = `
       JOIN (select visit_id,
-          ${aggregrate}(url_path, created_at) url_path
+          ${aggregrate}(url_path, created_at) url_path,
+          ${aggregrate}(url_query, created_at) url_query
       from website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type NOT IN (2, 5)
       group by visit_id) x
       ON x.visit_id = website_event.visit_id`;
+
+      column = `x.url_path`;
+      selectColumn = `x.url_path`;
+    } else if (type === 'fullPath') {
+      selectColumn = `if(url_query != '', concat(url_path, '?', url_query), url_path)`;
     }
 
     sql = `
-    select ${column} x, 
+    select ${selectColumn} x,
       uniq(website_event.session_id) as y
     from website_event
     ${cohortQuery}
@@ -175,7 +186,7 @@ async function clickhouseQuery(
     select g.t as x,
       uniq(s) as y
     from (
-      select session_id s, 
+      select session_id s,
         ${columnQuery} as t
       from website_event_stats_hourly as website_event
       ${cohortQuery}
@@ -194,4 +205,12 @@ async function clickhouseQuery(
   }
 
   return rawQuery(sql, { ...queryParams, ...parameters }, FUNCTION_NAME);
+}
+
+function getPageviewColumn(type: string) {
+  if (type === 'fullPath') {
+    return 'url_path';
+  }
+
+  return FILTER_COLUMNS[type] || type;
 }

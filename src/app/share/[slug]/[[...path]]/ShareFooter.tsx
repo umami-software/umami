@@ -1,6 +1,6 @@
 'use client';
-import { useShare } from '@/components/hooks';
 import { Column, Row } from '@umami/react-zen';
+import { useShare } from '@/components/hooks';
 import { ShareBranding } from './ShareBranding';
 
 export function ShareFooter() {

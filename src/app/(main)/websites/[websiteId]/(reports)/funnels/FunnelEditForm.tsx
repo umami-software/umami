@@ -94,9 +94,7 @@ function StepRow({
               <ActionSelect />
             </FormField>
           </Column>
-          <Column>
-            {valueField}
-          </Column>
+          <Column>{valueField}</Column>
           <Button onPress={onRemove}>
             <Icon size="sm">
               <X />

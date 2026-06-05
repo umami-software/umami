@@ -3,7 +3,7 @@ import { EVENT_COLUMNS, EVENT_TYPE, SESSION_COLUMNS } from '@/lib/constants';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { filterParams, searchParams, withDateRange } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
+import { canViewWebsiteSection } from '@/permissions';
 import {
   getChannelMetrics,
   getEventMetrics,
@@ -31,7 +31,17 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (
+    !(await canViewWebsiteSection(auth, websiteId, [
+      'overview',
+      'events',
+      'sessions',
+      'compare',
+      'breakdown',
+      'utm',
+      'attribution',
+    ]))
+  ) {
     return unauthorized();
   }
 

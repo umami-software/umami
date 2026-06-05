@@ -1,27 +1,26 @@
 import { DATA_TYPE, DATETIME_REGEX } from './constants';
 import type { DynamicDataType } from './types';
 
-export function flattenJSON(
-  eventData: Record<string, any>,
-  keyValues: { key: string; value: any; dataType: DynamicDataType }[] = [],
-  parentKey = '',
-): { key: string; value: any; dataType: DynamicDataType }[] {
-  return Object.keys(eventData).reduce(
-    (acc, key) => {
-      const value = eventData[key];
-      const type = typeof eventData[key];
+export interface KeyValueData {
+  key: string;
+  value: any;
+  dataType: DynamicDataType;
+}
 
-      // nested object
-      if (value && type === 'object' && !Array.isArray(value) && !isValidDateValue(value)) {
-        flattenJSON(value, acc.keyValues, getKeyName(key, parentKey));
-      } else {
-        createKey(getKeyName(key, parentKey), value, acc);
+export function flattenJSON(eventData: Record<string, any>): KeyValueData[] {
+  function flatten(obj: Record<string, any>, parentKey: string): KeyValueData[] {
+    return Object.entries(obj).flatMap(([key, value]) => {
+      const fullKey = parentKey ? `${parentKey}.${key}` : key;
+
+      if (value && typeof value === 'object' && !Array.isArray(value) && !isValidDateValue(value)) {
+        return flatten(value, fullKey);
       }
 
-      return acc;
-    },
-    { keyValues, parentKey },
-  ).keyValues;
+      return [createKeyValue(fullKey, value)];
+    });
+  }
+
+  return flatten(eventData, '');
 }
 
 export function isValidDateValue(value: string) {
@@ -50,10 +49,10 @@ export function getStringValue(value: string, dataType: number) {
   return value;
 }
 
-function createKey(key: string, value: string, acc: { keyValues: any[]; parentKey: string }) {
+export function createKeyValue(key: string, value: any): KeyValueData {
   const type = getDataType(value);
-
-  let dataType = null;
+  let dataType: DynamicDataType;
+  let processedValue = value;
 
   switch (type) {
     case 'number':
@@ -64,29 +63,21 @@ function createKey(key: string, value: string, acc: { keyValues: any[]; parentKe
       break;
     case 'boolean':
       dataType = DATA_TYPE.boolean;
-      value = value ? 'true' : 'false';
+      processedValue = value ? 'true' : 'false';
       break;
     case 'date':
       dataType = DATA_TYPE.date;
       break;
     case 'object':
       dataType = DATA_TYPE.array;
-      value = JSON.stringify(value);
+      processedValue = JSON.stringify(value);
       break;
     default:
       dataType = DATA_TYPE.string;
       break;
   }
 
-  acc.keyValues.push({ key, value, dataType });
-}
-
-function getKeyName(key: string, parentKey: string) {
-  if (!parentKey) {
-    return key;
-  }
-
-  return `${parentKey}.${key}`;
+  return { key, value: processedValue, dataType };
 }
 
 export function objectToArray(obj: object) {

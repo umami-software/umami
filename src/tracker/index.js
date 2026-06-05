@@ -37,6 +37,7 @@
   const domain = config('domains') || '';
   const credentials = config('fetch-credentials') || 'omit';
   const perf = config('performance') === _true;
+  const autoPageview = config('auto-pageview') !== _false;
 
   const domains = domain.split(',').map(n => n.trim());
   const host =
@@ -88,9 +89,9 @@
     }
 
     currentRef = currentUrl;
-    currentUrl = normalize(new URL(url, location.href).toString());
+    currentUrl = normalize(url);
 
-    if (currentUrl !== currentRef) {
+    if (currentUrl !== currentRef && autoPageview) {
       setTimeout(track, delayDuration);
     }
   };
@@ -99,8 +100,9 @@
     const hook = (_this, method, callback) => {
       const orig = _this[method];
       return (...args) => {
+        const result = orig.apply(_this, args);
         callback.apply(null, args);
-        return orig.apply(_this, args);
+        return result;
       };
     };
 
@@ -122,18 +124,13 @@
         return track(eventName, eventData);
       }
     };
-    const onClick = async e => {
+    const onClick = e => {
       const el = e.target;
-      const parentElement = el.closest('a,button');
-      if (!parentElement) return trackElement(el);
+      const eventEl = el.closest(`[${eventNameAttribute}]`);
+      if (!eventEl) return;
 
-      const { href, target } = parentElement;
-      if (!parentElement.getAttribute(eventNameAttribute)) return;
-
-      if (parentElement.tagName === 'BUTTON') {
-        return trackElement(parentElement);
-      }
-      if (parentElement.tagName === 'A' && href) {
+      if (eventEl.tagName === 'A' && eventEl.href) {
+        const { href, target } = eventEl;
         const external =
           target === '_blank' ||
           e.ctrlKey ||
@@ -141,12 +138,14 @@
           e.metaKey ||
           (e.button && e.button === 1);
         if (!external) e.preventDefault();
-        return trackElement(parentElement).then(() => {
+        return trackElement(eventEl).finally(() => {
           if (!external) {
             (target === '_top' ? top.location : location).href = href;
           }
         });
       }
+
+      return trackElement(eventEl);
     };
     document.addEventListener('click', onClick, true);
   };
@@ -178,6 +177,8 @@
         body: JSON.stringify({ type, payload }),
         headers: {
           'Content-Type': 'application/json',
+          'x-umami-website-id': website,
+          'x-umami-hostname': hostname,
           ...(typeof cache !== 'undefined' && { 'x-umami-cache': cache }),
         },
         credentials,
@@ -197,7 +198,7 @@
   const init = () => {
     if (!initialized) {
       initialized = true;
-      track();
+      if (autoPageview) track();
       handlePathChanges();
       handleClicks();
       if (perf) initPerformance();
@@ -291,26 +292,32 @@
 
     // INP - group by interactionId, 98th percentile, 40ms threshold
     let interactions = {};
-    try {
-      const observer = new PerformanceObserver(list => {
-        list.getEntries().forEach(entry => {
-          if (entry.interactionId) {
-            const existing = interactions[entry.interactionId];
-            if (!existing || entry.duration > existing) {
-              interactions[entry.interactionId] = entry.duration;
-            }
-            const values = Object.values(interactions).sort((a, b) => b - a);
-            if (values.length) {
-              const p98Index = Math.floor(Math.max(values.length, 10) * 0.02);
-              metrics.inp = values[Math.min(p98Index, values.length - 1)];
-            }
+    let inpObserver;
+    const recordInteractions = entries => {
+      entries.forEach(entry => {
+        if (entry.interactionId) {
+          const existing = interactions[entry.interactionId];
+          if (!existing || entry.duration > existing) {
+            interactions[entry.interactionId] = entry.duration;
           }
-        });
+        }
       });
-      observer.observe({ type: 'event', buffered: true, durationThreshold: 40 });
+    };
+    try {
+      inpObserver = new PerformanceObserver(list => recordInteractions(list.getEntries()));
+      inpObserver.observe({ type: 'event', buffered: true, durationThreshold: 40 });
     } catch {
       /* not supported */
     }
+
+    const computeInp = () => {
+      if (inpObserver) recordInteractions(inpObserver.takeRecords());
+      const values = Object.values(interactions).sort((a, b) => b - a);
+      if (values.length) {
+        const p98Index = Math.floor(Math.max(values.length, 10) * 0.02);
+        metrics.inp = values[Math.min(p98Index, values.length - 1)];
+      }
+    };
 
     const getEntriesByType = type => {
       try {
@@ -352,6 +359,7 @@
       if (sent) return;
 
       applyFallbackMetrics();
+      computeInp();
       metrics.duration = Math.round(performance.now() - pageStartTime);
 
       sent = true;
