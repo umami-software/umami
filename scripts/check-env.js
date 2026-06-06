@@ -19,7 +19,9 @@ function checkMissing(vars) {
 }
 
 if (!process.env.SKIP_DB_CHECK && !process.env.DATABASE_TYPE) {
-  checkMissing(['DATABASE_URL']);
+  if (!process.env.POSTGRES_PRISMA_URL && !process.env.DATABASE_URL) {
+    checkMissing(['DATABASE_URL']);
+  }
 }
 
 if (process.env.CLOUD_URL) {
