@@ -13,6 +13,11 @@ if (process.env.SKIP_DB_CHECK) {
   process.exit(0);
 }
 
+if (!process.env.DATABASE_URL) {
+  console.error('DATABASE_URL is not defined.');
+  process.exit(1);
+}
+
 const url = new URL(process.env.DATABASE_URL);
 
 const adapter = new PrismaPg(
