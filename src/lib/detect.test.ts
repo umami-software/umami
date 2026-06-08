@@ -20,3 +20,26 @@ test('getIpAddress: Standard header', () => {
 test('getIpAddress: No header', () => {
   expect(getIpAddress(new Headers())).toEqual(undefined);
 });
+
+test('getIpAddress: skips private/internal IP for the public client IP', () => {
+  delete process.env.CLIENT_IP_HEADER;
+
+  expect(
+    getIpAddress(
+      new Headers({
+        'x-real-ip': '10.0.0.8',
+        'x-forwarded-for': '79.127.237.104, 10.0.0.8',
+      }),
+    ),
+  ).toEqual('79.127.237.104');
+});
+
+test('getIpAddress: custom x-forwarded-for header extracts the first IP', () => {
+  process.env.CLIENT_IP_HEADER = 'x-forwarded-for';
+
+  expect(getIpAddress(new Headers({ 'x-forwarded-for': '79.127.237.104, 10.0.0.8' }))).toEqual(
+    '79.127.237.104',
+  );
+
+  delete process.env.CLIENT_IP_HEADER;
+});

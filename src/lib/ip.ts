@@ -58,31 +58,86 @@ function resolveIp(ip?: string | null) {
   }
 }
 
-export function getIpAddress(headers: Headers) {
-  const customHeader = process.env.CLIENT_IP_HEADER;
+/**
+ * Detect private/internal addresses (RFC1918, loopback, link-local, CGNAT,
+ * IPv6 unique-local) which can be injected by internal proxies or load
+ * balancers and should not be treated as the real client IP.
+ */
+function isPrivateIp(ip: string) {
+  try {
+    const range = ipaddr.parse(ip).range();
 
-  if (customHeader && headers.get(customHeader)) {
-    return resolveIp(headers.get(customHeader));
+    return (
+      range === 'private' ||
+      range === 'loopback' ||
+      range === 'linkLocal' ||
+      range === 'carrierGradeNat' ||
+      range === 'uniqueLocal'
+    );
+  } catch {
+    return false;
   }
+}
 
-  const header = IP_ADDRESS_HEADERS.find(name => headers.get(name));
-  if (!header) {
-    return undefined;
-  }
-
-  const ip = headers.get(header);
-
+/**
+ * Extract a single candidate IP from a header value, handling the
+ * comma-separated `x-forwarded-for` list and the `forwarded` syntax.
+ */
+function extractIp(header: string, value: string) {
   if (header === 'x-forwarded-for') {
-    return resolveIp(ip?.split(',')?.[0]?.trim());
+    return value.split(',')?.[0]?.trim();
   }
 
   if (header === 'forwarded') {
-    const match = ip.match(/for=(\[?[0-9a-fA-F:.]+]?)/);
+    const match = value.match(/for=(\[?[0-9a-fA-F:.]+]?)/);
 
-    return match ? resolveIp(match[1]) : undefined;
+    return match ? match[1] : undefined;
   }
 
-  return resolveIp(ip);
+  return value;
+}
+
+export function getIpAddress(headers: Headers) {
+  const customHeader = process.env.CLIENT_IP_HEADER;
+
+  if (customHeader) {
+    const value = headers.get(customHeader);
+
+    if (value) {
+      return resolveIp(extractIp(customHeader, value));
+    }
+  }
+
+  // Check candidate headers in priority order. Skip private/internal addresses,
+  // which can appear (e.g. in x-real-ip or forwarded) when a request passes
+  // through internal proxies or load balancers, and fall through to the next
+  // header that carries a public client IP.
+  let fallback: string | null | undefined;
+
+  for (const name of IP_ADDRESS_HEADERS) {
+    const value = headers.get(name);
+
+    if (!value) {
+      continue;
+    }
+
+    const ip = resolveIp(extractIp(name, value));
+
+    if (!ip) {
+      continue;
+    }
+
+    if (isPrivateIp(ip)) {
+      // Keep the first private match as a last resort, in case every candidate
+      // header only carries a private address.
+      fallback ??= ip;
+      continue;
+    }
+
+    return ip;
+  }
+
+  return fallback;
 }
 
 export function stripPort(ip?: string | null) {
