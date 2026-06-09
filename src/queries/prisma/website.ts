@@ -22,6 +22,24 @@ export async function getWebsite(websiteId: string) {
   return attachShareIdToWebsite(website);
 }
 
+export async function isAdminOwnedWebsite(websiteId: string) {
+  const website = await prisma.client.website.findFirst({
+    where: {
+      id: websiteId,
+      deletedAt: null,
+      user: {
+        role: ROLES.admin,
+        deletedAt: null,
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  return !!website;
+}
+
 export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters: QueryFilters) {
   const { search } = filters;
   const { getSearchParameters, pagedQuery } = prisma;
@@ -49,6 +67,12 @@ export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filte
         OR: [
           { userId },
           {
+            user: {
+              role: ROLES.admin,
+              deletedAt: null,
+            },
+          },
+          {
             team: {
               deletedAt: null,
               members: {
@@ -74,6 +98,36 @@ export async function getUserWebsites(userId: string, filters?: QueryFilters) {
     {
       where: {
         userId,
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+            id: true,
+          },
+        },
+      },
+    },
+    {
+      orderBy: 'name',
+      ...filters,
+    },
+  );
+}
+
+export async function getUserWebsitesIncludingAdminOwned(userId: string, filters?: QueryFilters) {
+  return getWebsites(
+    {
+      where: {
+        OR: [
+          { userId },
+          {
+            user: {
+              role: ROLES.admin,
+              deletedAt: null,
+            },
+          },
+        ],
       },
       include: {
         user: {

@@ -2,7 +2,7 @@ import { hasPermission } from '@/lib/auth';
 import { PERMISSIONS } from '@/lib/constants';
 import { getEntity } from '@/lib/entity';
 import type { Auth } from '@/lib/types';
-import { getTeamUser, getWebsite } from '@/queries/prisma';
+import { getTeamUser, getWebsite, isAdminOwnedWebsite } from '@/queries/prisma';
 
 export async function canViewWebsite({ user, shareToken }: Auth, websiteId: string) {
   if (user?.isAdmin) {
@@ -27,7 +27,11 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
   }
 
   if (entity.userId) {
-    return user.id === entity.userId;
+    if (user.id === entity.userId) {
+      return true;
+    }
+
+    return isAdminOwnedWebsite(websiteId);
   }
 
   if (entity.teamId) {
