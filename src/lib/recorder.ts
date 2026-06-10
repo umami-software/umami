@@ -3,9 +3,13 @@ export interface RecorderConfig {
   heatmapEnabled?: boolean;
   sampleRate?: number;
   heatmapSampleRate?: number;
-  maskLevel?: 'strict' | 'moderate';
+  maskLevel?: 'lax' | 'strict' | 'moderate';
+  consoleLevel?: 'none' | 'error' | 'warn' | 'info' | 'debug' | 'all';
   maxDuration?: number;
   blockSelector?: string;
+  recordCanvas?: boolean;
+  canvasFps?: number;
+  canvasQuality?: number;
 }
 
 export function getRecorderConfig(value: unknown): RecorderConfig {
@@ -32,8 +36,21 @@ export function getRecorderConfig(value: unknown): RecorderConfig {
     nextConfig.heatmapSampleRate = config.heatmapSampleRate;
   }
 
-  if (config.maskLevel === 'strict' || config.maskLevel === 'moderate') {
+  if (config.maskLevel === 'none' || config.maskLevel === 'lax') {
+    nextConfig.maskLevel = 'lax';
+  } else if (config.maskLevel === 'strict' || config.maskLevel === 'moderate') {
     nextConfig.maskLevel = config.maskLevel;
+  }
+
+  if (
+    config.consoleLevel === 'none' ||
+    config.consoleLevel === 'error' ||
+    config.consoleLevel === 'warn' ||
+    config.consoleLevel === 'info' ||
+    config.consoleLevel === 'debug' ||
+    config.consoleLevel === 'all'
+  ) {
+    nextConfig.consoleLevel = config.consoleLevel;
   }
 
   if (typeof config.maxDuration === 'number' && Number.isFinite(config.maxDuration)) {
@@ -42,6 +59,18 @@ export function getRecorderConfig(value: unknown): RecorderConfig {
 
   if (typeof config.blockSelector === 'string') {
     nextConfig.blockSelector = config.blockSelector;
+  }
+
+  if (typeof config.recordCanvas === 'boolean') {
+    nextConfig.recordCanvas = config.recordCanvas;
+  }
+
+  if (typeof config.canvasFps === 'number' && Number.isFinite(config.canvasFps)) {
+    nextConfig.canvasFps = Math.min(Math.max(Math.round(config.canvasFps), 1), 60);
+  }
+
+  if (typeof config.canvasQuality === 'number' && Number.isFinite(config.canvasQuality)) {
+    nextConfig.canvasQuality = Math.min(Math.max(config.canvasQuality, 0), 1);
   }
 
   return nextConfig;
