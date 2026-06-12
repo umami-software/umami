@@ -78,7 +78,7 @@
     "del": "^6.0.0",
     "detect-browser": "^5.2.0",
     "dotenv": "^17.3.1",
-    "esbuild": "^0.27.4",
+    "esbuild": "^0.28.1",
     "immer": "^11.1.4",
     "ipaddr.js": "^2.3.0",
     "is-ci": "^3.0.1",
