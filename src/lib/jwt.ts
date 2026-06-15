@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { TokenExpiredError } from 'jsonwebtoken';
 import { decrypt, encrypt } from '@/lib/crypto';
 
 export function createToken(payload: any, secret: any, options?: any) {
@@ -20,7 +20,10 @@ export function createSecureToken(payload: any, secret: any, options?: any) {
 export function parseSecureToken(token: string, secret: any) {
   try {
     return jwt.verify(decrypt(token, secret), secret);
-  } catch {
+  } catch (error) {
+    if (error instanceof TokenExpiredError) {
+      throw error;
+    }
     return null;
   }
 }
@@ -33,4 +36,26 @@ export async function parseAuthToken(req: Request, secret: string) {
   } catch {
     return null;
   }
+}
+
+export function refreshTokensEnabled() {
+  return process.env.AUTH_REFRESH_TOKEN_ENABLED === 'true';
+}
+
+export function getAccessExpiry() {
+  if (refreshTokensEnabled) {
+    return process.env.AUTH_ACCESS_TOKEN_EXPIRY || '15m';
+  }
+
+  return undefined;
+}
+
+export function getRefreshExpiry() {
+  const expiryDays = process.env.AUTH_REFRESH_TOKEN_EXPIRY_DAYS || '30';
+
+  if (refreshTokensEnabled && !Number.isNaN(expiryDays)) {
+    return Number(expiryDays);
+  }
+
+  return undefined;
 }
