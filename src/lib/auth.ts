@@ -116,5 +116,9 @@ export async function saveRefreshToken(userId: string, refreshToken: string) {
 export async function revokeRefreshToken(refreshToken: string) {
   const session = await getUserAuthSessionByRefreshHash(hash(refreshToken));
 
+  if (!session) {
+    return;
+  }
+
   await updateUserAuthSession(session.id, { revokedAt: new Date() });
 }
