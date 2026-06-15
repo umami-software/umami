@@ -40,7 +40,7 @@ export async function request(
       return request(method, url, body, {
         ...headers,
         authorization: `Bearer ${token}`
-      }); //todo the auth header needs to be changed
+      });
     }
 
     return {
