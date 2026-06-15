@@ -22,6 +22,7 @@ export async function request(
   url: string,
   body?: string,
   headers: object = {},
+  skipRefresh: boolean = false
 ): Promise<FetchResponse> {
   return fetch(url, {
     method,
@@ -35,7 +36,7 @@ export async function request(
   }).then(async res => {
     const data = await res.json();
 
-    if (res.status === 401 && data?.error?.code === 'expired-token') {
+    if (!skipRefresh && res.status === 401 && data?.error?.code === 'expired-token') {
       const token = await refreshTokens();
       return request(method, url, body, {
         ...headers,
@@ -54,7 +55,7 @@ export async function request(
 export async function refreshTokens() {
   const res = await request('POST', getApiUrl('/auth/refresh'), JSON.stringify({
     refreshToken: getClientRefreshToken(),
-  }), { 'Content-Type' : 'application/json' });
+  }), { 'Content-Type' : 'application/json' }, true);
 
   if (res.data?.refreshToken) {
     setClientRefreshToken(res.data.refreshToken);
