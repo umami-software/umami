@@ -43,7 +43,7 @@ export function refreshTokensEnabled() {
 }
 
 export function getAccessExpiry() {
-  if (refreshTokensEnabled) {
+  if (refreshTokensEnabled()) {
     return process.env.AUTH_ACCESS_TOKEN_EXPIRY || '15m';
   }
 
@@ -53,7 +53,7 @@ export function getAccessExpiry() {
 export function getRefreshExpiry() {
   const expiryDays = process.env.AUTH_REFRESH_TOKEN_EXPIRY_DAYS || '30';
 
-  if (refreshTokensEnabled && !Number.isNaN(expiryDays)) {
+  if (refreshTokensEnabled() && !Number.isNaN(expiryDays)) {
     return Number(expiryDays);
   }
 
