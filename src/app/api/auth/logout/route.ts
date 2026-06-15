@@ -27,9 +27,9 @@ export async function POST(request: Request) {
     }
 
     await revokeRefreshToken(body.refreshToken);
-    removeClientAuthToken();
   }
 
+  removeClientAuthToken();
   removeClientRefreshToken();
 
   return ok();
