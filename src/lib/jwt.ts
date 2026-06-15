@@ -52,8 +52,9 @@ export function getAccessExpiry() {
 
 export function getRefreshExpiry() {
   const expiryDays = process.env.AUTH_REFRESH_TOKEN_EXPIRY_DAYS || '30';
+  const expiryDaysParsed = Number(expiryDays);
 
-  if (refreshTokensEnabled() && !Number.isNaN(expiryDays)) {
+  if (refreshTokensEnabled() && !Number.isNaN(expiryDaysParsed)) {
     return Number(expiryDays);
   }
 
