@@ -45,10 +45,7 @@ export async function POST(request: Request) {
   // auth tokens live forever unless refresh tokens are enabled.
   const token = createSecureToken({ userId: user.id, role }, secret(), { expiresIn: getAccessExpiry() });
 
-  console.log(token);
-
   if (!refreshTokensEnabled()) {
-    console.log('no refresh config found');
     return json({
       token,
       user: { id, username, role, createdAt, isAdmin: role === ROLES.admin, teams },
@@ -57,7 +54,6 @@ export async function POST(request: Request) {
 
   const refreshToken = createRefreshToken();
 
-  console.log('refreshToken: ' + refreshToken);
   await saveRefreshToken(id, refreshToken);
 
   return json({

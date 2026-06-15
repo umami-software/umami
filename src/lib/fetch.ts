@@ -35,11 +35,7 @@ export async function request(
   }).then(async res => {
     const data = await res.json();
 
-    console.log('fetch.ts res.status: ', res.status);
-    console.log('fetch.ts data.error.code: ', data?.error?.code);
-
     if (res.status === 401 && data?.error?.code === 'expired-token') {
-      console.log('trying to refresh tokens');
       const token = await refreshTokens();
       return request(method, url, body, {
         ...headers,
