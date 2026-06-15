@@ -5,6 +5,7 @@ import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
 import { badRequest, ok } from '@/lib/response';
 import { revokeRefreshToken } from '@/lib/auth';
+import { removeClientAuthToken, removeClientRefreshToken } from '@/lib/client';
 
 export async function POST(request: Request) {
   const schema = z.object({
@@ -27,7 +28,10 @@ export async function POST(request: Request) {
     }
 
     await revokeRefreshToken(body.refreshToken);
+    removeClientAuthToken();
   }
+
+  removeClientRefreshToken();
 
   return ok();
 }
