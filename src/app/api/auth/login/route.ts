@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { saveAuth, saveRefreshToken } from '@/lib/auth';
 import { ROLES } from '@/lib/constants';
 import { secret, createRefreshToken } from '@/lib/crypto';
-import { createSecureToken, getAccessExpiry, getRefreshExpiry, refreshTokensEnabled } from '@/lib/jwt';
+import { createSecureToken, getAccessExpiry, refreshTokensEnabled } from '@/lib/jwt';
 import { checkPassword } from '@/lib/password';
 import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';

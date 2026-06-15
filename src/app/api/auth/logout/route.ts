@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { hash } from '@/lib/crypto';
 import { refreshTokensEnabled } from '@/lib/jwt';
 import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
