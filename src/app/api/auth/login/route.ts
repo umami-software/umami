@@ -1,7 +1,7 @@
-import { saveAuth } from '@/lib/auth';
+import { saveAuth, saveRefreshToken} from '@/lib/auth';
 import { PARTIAL_AUTH_TOKEN_TYPE, ROLES } from '@/lib/constants';
-import { hash, secret } from '@/lib/crypto';
-import { createSecureToken } from '@/lib/jwt';
+import { hash, secret, createRefreshToken } from '@/lib/crypto';
+import { createSecureToken, getAccessExpiry, getRefreshExpiry, refreshTokensEnabled } from '@/lib/jwt';
 import { checkPassword } from '@/lib/password';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
@@ -48,21 +48,42 @@ export async function POST(request: Request) {
     );
     return json({ requiresTwoFactor: true, partialToken });
   }
+
   // Bind token to password hash so a password change invalidates old tokens.
   const pwd = hash(user.password);
 
-  let token: string;
+  const teams = await getAllUserTeams(id);
 
   if (redis.enabled) {
-    token = await saveAuth({ userId: id, role, pwd });
-  } else {
-    token = createSecureToken({ userId: user.id, role, pwd }, secret());
+    const token = await saveAuth({ userId: id, role });
+
+    return json({
+      token,
+      user: { id, username, role, createdAt, isAdmin: role === ROLES.admin, teams },
+    });
   }
 
-  const teams = await getAllUserTeams(id);
+  // auth tokens live forever unless refresh tokens are enabled.
+  const token = createSecureToken({ userId: user.id, role }, secret(), { expiresIn: getAccessExpiry() });
+
+  console.log(token);
+
+  if (!refreshTokensEnabled()) {
+    console.log('no refresh config found');
+    return json({
+      token,
+      user: { id, username, role, createdAt, isAdmin: role === ROLES.admin, teams },
+    })
+  }
+
+  const refreshToken = createRefreshToken();
+
+  console.log('refreshToken: ' + refreshToken);
+  await saveRefreshToken(id, refreshToken);
 
   return json({
     token,
+    refreshToken,
     user: { id, username, role, createdAt, isAdmin: role === ROLES.admin, teams },
   });
 }
