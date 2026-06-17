@@ -13,15 +13,20 @@ export function useBoardEntityBadgeProps(
   const { data: link } = useLinkQuery(enabled && entityType === 'link' ? entityId : undefined);
 
   if (entityType === 'website' && website?.name) {
-    return { type: entityType, name: website.name, domain: website.domain ?? undefined };
+    return {
+      type: entityType,
+      name: website.name,
+      domain: website.domain ?? undefined,
+      id: website.id,
+    };
   }
 
   if (entityType === 'pixel' && pixel?.name) {
-    return { type: entityType, name: pixel.name };
+    return { type: entityType, name: pixel.name, domain: pixel.id, id: pixel.id };
   }
 
   if (entityType === 'link' && link?.name) {
-    return { type: entityType, name: link.name };
+    return { type: entityType, name: link.name, id: link.id };
   }
 
   return null;
