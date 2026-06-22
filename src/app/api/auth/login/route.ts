@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { saveAuth } from '@/lib/auth';
+import { saveAuth, saveRefreshToken } from '@/lib/auth';
 import { ROLES } from '@/lib/constants';
-import { secret } from '@/lib/crypto';
-import { createSecureToken } from '@/lib/jwt';
+import { secret, createRefreshToken } from '@/lib/crypto';
+import { createSecureToken, getAccessExpiry, refreshTokensEnabled } from '@/lib/jwt';
 import { checkPassword } from '@/lib/password';
 import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
@@ -31,18 +31,34 @@ export async function POST(request: Request) {
 
   const { id, role, createdAt } = user;
 
-  let token: string;
+  const teams = await getAllUserTeams(id);
 
   if (redis.enabled) {
-    token = await saveAuth({ userId: id, role });
-  } else {
-    token = createSecureToken({ userId: user.id, role }, secret());
+    const token = await saveAuth({ userId: id, role });
+
+    return json({
+      token,
+      user: { id, username, role, createdAt, isAdmin: role === ROLES.admin, teams },
+    });
   }
 
-  const teams = await getAllUserTeams(id);
+  if (!refreshTokensEnabled()) {
+    const token = createSecureToken({ userId: user.id, role }, secret(), {});
+
+    return json({
+      token,
+      user: { id, username, role, createdAt, isAdmin: role === ROLES.admin, teams },
+    })
+  }
+
+  const token = createSecureToken({ userId: user.id, role }, secret(), { expiresIn: getAccessExpiry() });
+  const refreshToken = createRefreshToken();
+
+  await saveRefreshToken(id, refreshToken);
 
   return json({
     token,
+    refreshToken,
     user: { id, username, role, createdAt, isAdmin: role === ROLES.admin, teams },
   });
 }

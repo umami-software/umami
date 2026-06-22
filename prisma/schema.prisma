@@ -27,8 +27,23 @@ model User {
   teams     TeamUser[]
   reports   Report[]
   boards    Board[]    @relation("user")
+  userAuthSessions UserAuthSession[]
 
   @@map("user")
+}
+
+model UserAuthSession {
+  id          String    @id @default(uuid())
+  userId      String
+  refreshHash String    @unique
+  expiresAt   DateTime  @map("expires_at")
+  revokedAt   DateTime? @map("revoked_at")
+  createdAt   DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("user_auth_session")
 }
 
 model Session {

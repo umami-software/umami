@@ -12,7 +12,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { Logo } from '@/components/svg';
-import { setClientAuthToken } from '@/lib/client';
+import { setClientAuthToken, setClientRefreshToken } from '@/lib/client';
 import { setUser } from '@/store/app';
 
 export function LoginForm() {
@@ -22,8 +22,11 @@ export function LoginForm() {
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
-      onSuccess: async ({ token, user }) => {
+      onSuccess: async ({ token, user, refreshToken }) => {
         setClientAuthToken(token);
+        if (refreshToken) {
+          setClientRefreshToken(refreshToken)
+        }
         setUser(user);
         router.push('/');
       },

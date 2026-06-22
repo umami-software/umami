@@ -8,6 +8,7 @@ import { filtersArrayToObject } from '@/lib/params';
 import { badRequest, unauthorized } from '@/lib/response';
 import type { QueryFilters } from '@/lib/types';
 import { getWebsiteSegment } from '@/queries/prisma';
+import { TokenExpiredError } from 'jsonwebtoken'
 
 export async function parseRequest(
   request: Request,
@@ -42,11 +43,20 @@ export async function parseRequest(
   }
 
   if (!options?.skipAuth && !error) {
-    auth = await checkAuth(request);
+    try {
+      auth = await checkAuth(request);
 
-    if (!auth) {
-      error = () => unauthorized();
+      if (!auth) {
+        error = () => unauthorized();
+      }
+    } catch (err) {
+      if (err instanceof TokenExpiredError) {
+        error = () => unauthorized({ code: 'expired-token' });
+      } else {
+        error = () => unauthorized();
+      }
     }
+
   }
 
   return { url, query, body, auth, error };
