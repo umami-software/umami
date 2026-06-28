@@ -278,6 +278,7 @@ export const FIELD_LENGTH = {
   region: 20,
   city: 50,
   distinctId: 50,
+  visitorId: 50,
   url: 500,
   pageTitle: 500,
   eventName: 50,

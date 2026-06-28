@@ -45,6 +45,7 @@ CREATE TABLE umami.website_event
     event_name String,
     tag String,
     distinct_id String,
+    visitor_id String,
     created_at DateTime('UTC'),
     job_id Nullable(UUID)
 )
@@ -148,6 +149,7 @@ CREATE TABLE umami.website_event_stats_hourly
     max_time SimpleAggregateFunction(max, DateTime('UTC')),
     tag SimpleAggregateFunction(groupArrayArray, Array(String)),
     distinct_id String,
+    visitor_id String,
     created_at Datetime('UTC')
 )
 ENGINE = AggregatingMergeTree
@@ -201,6 +203,7 @@ SELECT
     max_time,
     tag,
     distinct_id,
+    visitor_id,
     timestamp as created_at
 FROM (SELECT
     website_id,
@@ -239,6 +242,7 @@ FROM (SELECT
     max(created_at) max_time,
     arrayFilter(x -> x != '', groupArray(tag)) tag,
     distinct_id,
+    visitor_id,
     toStartOfHour(created_at) timestamp
 FROM umami.website_event
 GROUP BY website_id,
@@ -255,6 +259,7 @@ GROUP BY website_id,
     city,
     event_type,
     distinct_id,
+    visitor_id,
     timestamp);
 
 -- projections
@@ -424,3 +429,16 @@ ENGINE = MergeTree
     PARTITION BY toYYYYMM(created_at)
     ORDER BY (website_id, url_path, event_type, created_at)
     SETTINGS index_granularity = 8192;
+
+-- identity linking
+CREATE TABLE umami.identity_link
+(
+    website_id UUID,
+    visitor_id String,
+    distinct_id String,
+    created_at DateTime('UTC'),
+    linked_at DateTime('UTC')
+)
+ENGINE = ReplacingMergeTree(linked_at)
+ORDER BY (website_id, visitor_id, distinct_id)
+SETTINGS index_granularity = 8192;

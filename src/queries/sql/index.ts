@@ -29,6 +29,8 @@ export * from './getWeeklyTraffic';
 export * from './heatmap/extractHeatmapEvents';
 export * from './heatmap/getHeatmap';
 export * from './heatmap/saveHeatmapEvents';
+export * from './identity/createIdentityLink';
+export * from './identity/getLinkedVisitorIds';
 export * from './pageviews/getPageviewExpandedMetrics';
 export * from './pageviews/getPageviewMetrics';
 export * from './pageviews/getPageviewStats';

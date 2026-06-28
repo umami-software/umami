@@ -11,7 +11,7 @@ import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
+import { createIdentityLink, createSession, saveEvent, saveSessionData } from '@/queries/sql';
 
 interface Cache {
   websiteId: string;
@@ -56,6 +56,7 @@ const schema = z.object({
       cls: z.number().nonnegative().max(100).optional(),
       fcp: z.number().nonnegative().max(60000).optional(),
       ttfb: z.number().nonnegative().max(60000).optional(),
+      vid: z.string().max(50).optional(),
     })
     .refine(
       data => {
@@ -100,6 +101,7 @@ export async function POST(request: Request) {
       cls,
       fcp,
       ttfb,
+      vid: visitorId,
     } = payload;
 
     const sourceId = websiteId || pixelId || linkId;
@@ -167,6 +169,7 @@ export async function POST(request: Request) {
         region,
         city,
         distinctId: id,
+        visitorId,
         createdAt,
       });
     }
@@ -247,6 +250,7 @@ export async function POST(request: Request) {
 
         // Session
         distinctId: id,
+        visitorId,
         browser,
         os,
         device,
@@ -284,6 +288,18 @@ export async function POST(request: Request) {
           sessionData: data,
           distinctId: id,
           createdAt,
+        });
+      }
+
+      // Create identity link when both visitorId and distinctId are present.
+      // Fire-and-forget to avoid adding latency to the tracking endpoint.
+      if (visitorId && id && websiteId) {
+        createIdentityLink({
+          websiteId,
+          visitorId,
+          distinctId: id,
+        }).catch(e => {
+          console.error('Failed to create identity link:', e);
         });
       }
     } else if (type === COLLECTION_TYPE.performance) {

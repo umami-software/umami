@@ -28,11 +28,10 @@ async function relationalQuery(
   filters: QueryFilters,
 ): Promise<WebsiteStatsData[]> {
   const { getTimestampDiffSQL, parseFilters, rawQuery } = prisma;
-  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } =
-    parseFilters({
-      ...filters,
-      websiteId,
-    });
+  const { filterQuery, cohortQuery, excludeBounceQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+  });
 
   const { excludeBounce } = filters;
   const bounceQuery = excludeBounce ? '0' : 'coalesce(sum(case when t.c = 1 then 1 else 0 end), 0)';
@@ -41,7 +40,7 @@ async function relationalQuery(
     `
     select
       cast(coalesce(sum(t.c), 0) as bigint) as "pageviews",
-      count(distinct t.session_id) as "visitors",
+      count(distinct coalesce(t.resolved_identity, t.visitor_id, t.session_id::text)) as "visitors",
       count(distinct t.visit_id) as "visits",
       ${bounceQuery} as "bounces",
       cast(coalesce(sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}), 0) as bigint) as "totaltime"
@@ -49,19 +48,23 @@ async function relationalQuery(
       select
         website_event.session_id,
         website_event.visit_id,
+        session.visitor_id,
+        il.distinct_id as "resolved_identity",
         count(*) as "c",
         min(website_event.created_at) as "min_time",
         max(website_event.created_at) as "max_time"
       from website_event
       ${cohortQuery}
       ${excludeBounceQuery}
-      ${joinSessionQuery}  
+      left join session on session.session_id = website_event.session_id
+        and session.website_id = website_event.website_id
+      left join identity_link il on il.visitor_id = session.visitor_id
+        and il.website_id = session.website_id
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
         and website_event.event_type NOT IN (2, 5)
         ${filterQuery}
-      group by 1, 2
-     
+      group by 1, 2, 3, 4
     ) as t
     `,
     queryParams,
@@ -87,49 +90,57 @@ async function clickhouseQuery(
     sql = `
     select
       sum(t.c) as "pageviews",
-      uniq(t.session_id) as "visitors",
+      uniq(coalesce(t.resolved_identity, t.visitor_id, toString(t.session_id))) as "visitors",
       uniq(t.visit_id) as "visits",
       ${bounceQuery} as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (
       select
-        session_id,
-        visit_id,
+        website_event.session_id,
+        website_event.visit_id,
+        website_event.visitor_id,
+        il.distinct_id as resolved_identity,
         count(*) c,
-        min(created_at) min_time,
-        max(created_at) max_time
+        min(website_event.created_at) min_time,
+        max(website_event.created_at) max_time
       from website_event
       ${cohortQuery}
       ${excludeBounceQuery}
-      where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type NOT IN (2, 5)
+      left join identity_link final il on il.visitor_id = website_event.visitor_id
+        and il.website_id = website_event.website_id
+      where website_event.website_id = {websiteId:UUID}
+        and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and website_event.event_type NOT IN (2, 5)
         ${filterQuery}
-      group by session_id, visit_id
+      group by website_event.session_id, website_event.visit_id, website_event.visitor_id, il.distinct_id
     ) as t;
     `;
   } else {
     sql = `
     select
       sum(t.c) as "pageviews",
-      uniq(session_id) as "visitors",
-      uniq(visit_id) as "visits",
+      uniq(coalesce(t.resolved_identity, t.visitor_id, toString(t.session_id))) as "visitors",
+      uniq(t.visit_id) as "visits",
       ${bounceQuery} as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (select
-            session_id,
-            visit_id,
-            sum(views) c,
-            min(min_time) min_time,
-            max(max_time) max_time
+            "website_event".session_id,
+            "website_event".visit_id,
+            "website_event".visitor_id,
+            il.distinct_id as resolved_identity,
+            sum("website_event".views) c,
+            min("website_event".min_time) min_time,
+            max("website_event".max_time) max_time
         from website_event_stats_hourly "website_event"
         ${cohortQuery}
         ${excludeBounceQuery}
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type NOT IN (2, 5)
+        left join identity_link final il on il.visitor_id = "website_event".visitor_id
+          and il.website_id = "website_event".website_id
+    where "website_event".website_id = {websiteId:UUID}
+      and "website_event".created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and "website_event".event_type NOT IN (2, 5)
       ${filterQuery}
-      group by session_id, visit_id
+      group by "website_event".session_id, "website_event".visit_id, "website_event".visitor_id, il.distinct_id
     ) as t;
     `;
   }

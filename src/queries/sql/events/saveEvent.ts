@@ -26,6 +26,7 @@ export interface SaveEventArgs {
 
   // Session
   distinctId?: string;
+  visitorId?: string;
   browser?: string;
   os?: string;
   device?: string;
@@ -182,6 +183,7 @@ async function clickhouseQuery({
   referrerQuery,
   referrerDomain,
   distinctId,
+  visitorId,
   browser,
   os,
   device,
@@ -245,6 +247,7 @@ async function clickhouseQuery({
     event_name: truncateString(eventName, FIELD_LENGTH.eventName) ?? null,
     tag: truncateString(tag, FIELD_LENGTH.tag),
     distinct_id: truncateString(distinctId, FIELD_LENGTH.distinctId),
+    visitor_id: truncateString(visitorId, FIELD_LENGTH.visitorId),
     created_at: getUTCString(createdAt),
     browser: truncateString(browser, FIELD_LENGTH.browser),
     os: truncateString(os, FIELD_LENGTH.os),
