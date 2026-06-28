@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
+import { canViewWebsiteSection } from '@/permissions';
 import { getEventDataValues } from '@/queries/sql';
 
 export async function GET(
@@ -14,6 +14,7 @@ export async function GET(
     endAt: z.coerce.number().int(),
     event: z.string(),
     propertyName: z.string(),
+    dataType: z.coerce.number().int().optional(),
     ...filterParams,
   });
 
@@ -25,16 +26,17 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsiteSection(auth, websiteId, 'events'))) {
     return unauthorized();
   }
 
-  const { propertyName } = query;
+  const { event: eventName, propertyName, dataType } = query;
   const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getEventDataValues(websiteId, {
+  const data = await getEventDataValues(websiteId, eventName, {
     ...filters,
     propertyName,
+    dataType,
   });
 
   return json(data);

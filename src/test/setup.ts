@@ -38,6 +38,7 @@ class ResizeObserver {
 class IntersectionObserver {
   readonly root = null;
   readonly rootMargin = '';
+  readonly scrollMargin = '';
   readonly thresholds = [];
 
   observe() {}

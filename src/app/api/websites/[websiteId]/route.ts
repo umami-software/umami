@@ -1,9 +1,11 @@
 import { z } from 'zod';
+import type { Prisma } from '@/generated/prisma/client';
 import { ENTITY_TYPE } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
+import { getRecorderConfig, getRecorderEnabled } from '@/lib/recorder';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
-import { canDeleteWebsite, canUpdateWebsite, canViewWebsite } from '@/permissions';
+import { canDeleteWebsite, canUpdateWebsite, canViewSharedWebsite } from '@/permissions';
 import {
   createShare,
   deleteSharesByEntityId,
@@ -25,7 +27,7 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewSharedWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
@@ -39,13 +41,15 @@ export async function POST(
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
-    name: z.string().optional(),
-    domain: z.string().optional(),
+    name: z.string().max(100).optional(),
+    domain: z.string().max(500).optional(),
     shareId: z.string().max(50).nullable().optional(),
-    replayEnabled: z.boolean().optional(),
     replayConfig: z
       .object({
+        replayEnabled: z.boolean().optional(),
+        heatmapEnabled: z.boolean().optional(),
         sampleRate: z.number().min(0).max(1).optional(),
+        heatmapSampleRate: z.number().min(0).max(1).optional(),
         maskLevel: z.enum(['strict', 'moderate']).optional(),
         maxDuration: z.number().int().positive().optional(),
         blockSelector: z.string().optional(),
@@ -61,18 +65,35 @@ export async function POST(
   }
 
   const { websiteId } = await params;
-  const { name, domain, shareId, replayEnabled, replayConfig } = body;
+  const { name, domain, shareId, replayConfig } = body;
 
   if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
   try {
+    const currentWebsite = await getWebsite(websiteId);
+
+    if (!currentWebsite) {
+      return badRequest({ message: 'Website not found.' });
+    }
+
+    const nextReplayConfig = getRecorderConfig(
+      replayConfig === null
+        ? {}
+        : {
+            ...getRecorderConfig(currentWebsite.replayConfig),
+            ...(replayConfig ?? {}),
+          },
+    );
+
     const website = await updateWebsite(websiteId, {
       name,
       domain,
-      ...(replayEnabled !== undefined && { replayEnabled }),
-      ...(replayConfig !== undefined && { replayConfig }),
+      ...(replayConfig !== undefined && {
+        replayConfig: nextReplayConfig as Prisma.InputJsonObject,
+        recorderEnabled: getRecorderEnabled(nextReplayConfig),
+      }),
     });
 
     if (shareId === null) {

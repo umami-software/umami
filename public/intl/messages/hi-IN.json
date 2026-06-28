@@ -102,6 +102,7 @@
     "download": "डाउनलोड",
     "dropoff": "ड्रॉपऑफ",
     "duration": "अवधि",
+    "min-duration-seconds": "न्यूनतम अवधि (सेकंड)",
     "edit": "संपादित करें",
     "edit-member": "सदस्य संपादित करें",
     "email": "ईमेल",
@@ -124,6 +125,7 @@
     "filter-combined": "संयुक्त",
     "filter-raw": "रॉ",
     "filters": "फ़िल्टर",
+    "filters-enabled": "फ़िल्टर सक्षम",
     "first-click": "पहला क्लिक",
     "first-seen": "पहली बार देखा गया",
     "funnel": "फनल",
@@ -300,6 +302,8 @@
     "sum": "योग",
     "support": "सहायता",
     "switch-account": "खाता बदलें",
+    "switch-to-card-view": "कार्ड दृश्य पर स्विच करें",
+    "switch-to-table-view": "तालिका दृश्य पर स्विच करें",
     "table": "तालिका",
     "tablet": "टैबलेट",
     "tag": "टैग",
@@ -416,6 +420,7 @@
     "triggered-event": "ट्रिगर किया गया ईवेंट",
     "unauthorized": "अनधिकृत",
     "user-deleted": "उपयोगकर्ता हटाया गया।",
+    "replay-min-duration-description": "केवल इस अवधि या उससे अधिक की रिप्ले दिखाएं।",
     "viewed-page": "देखा गया पेज",
     "visitor-log": "<b>{country}</b> का आगंतुक, जो <b>{browser}</b> का उपयोग करता है, <b>{os}</b> यन्त्र पर"
   }

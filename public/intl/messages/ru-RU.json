@@ -102,6 +102,7 @@
     "download": "Скачать",
     "dropoff": "Высадка",
     "duration": "Длительность",
+    "min-duration-seconds": "Минимальная продолжительность (секунды)",
     "edit": "Изменить",
     "edit-member": "Редактировать участника",
     "email": "Электронная почта",
@@ -124,6 +125,7 @@
     "filter-combined": "Объединенные",
     "filter-raw": "Сырые данные",
     "filters": "Фильтры",
+    "filters-enabled": "Фильтры включены",
     "first-click": "Первый клик",
     "first-seen": "Первый вход",
     "funnel": "Воронка",
@@ -300,6 +302,8 @@
     "sum": "Сумма",
     "support": "Поддержка",
     "switch-account": "Сменить аккаунт",
+    "switch-to-card-view": "Переключиться в режим карточек",
+    "switch-to-table-view": "Переключиться в режим таблицы",
     "table": "Таблица",
     "tablet": "Планшет",
     "tag": "Тег",
@@ -416,6 +420,7 @@
     "triggered-event": "Запущенное событие",
     "unauthorized": "Не авторизован",
     "user-deleted": "Пользователь удален.",
+    "replay-min-duration-description": "Показывать только воспроизведения с такой или большей продолжительностью.",
     "viewed-page": "Просмотренная страница",
     "visitor-log": "Посетитель из <b>{country}</b> используя <b>{browser}</b> на <b>{os}</b> <b>{device}</b>"
   }

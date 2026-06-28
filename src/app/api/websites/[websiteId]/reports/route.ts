@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, reportTypeParam } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
+import { canViewAuthenticatedWebsite } from '@/permissions';
 import { getReports } from '@/queries/prisma';
 
 export async function GET(
@@ -23,7 +23,7 @@ export async function GET(
   const { websiteId } = await params;
   const { type, page, pageSize, search } = query;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewAuthenticatedWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

@@ -74,13 +74,28 @@ export const searchParams = {
   search: z.string().optional(),
 };
 
+export const replayParams = {
+  minDuration: z.coerce.number().int().nonnegative().optional(),
+};
+
 export const pagingParams = {
   page: z.coerce.number().int().positive().optional(),
   pageSize: z.coerce.number().int().positive().optional(),
+  maxResults: z.coerce.number().int().positive().optional(),
 };
 
 export const sortingParams = {
   orderBy: z.string().optional(),
+  sortDescending: z
+    .enum(['true', 'false'])
+    .optional()
+    .transform(value => {
+      if (value === undefined) {
+        return undefined;
+      }
+
+      return value === 'true';
+    }),
 };
 
 export const userRoleParam = z.enum(['admin', 'user', 'view-only']);
@@ -131,6 +146,7 @@ export const reportTypeParam = z.enum([
   'breakdown',
   'funnel',
   'goal',
+  'heatmap',
   'journey',
   'performance',
   'retention',
@@ -159,13 +175,12 @@ export const operatorParam = z.enum([
 
 export const goalReportSchema = z.object({
   type: z.literal('goal'),
-  parameters: z
-    .object({
-      startDate: z.coerce.date(),
-      endDate: z.coerce.date(),
-      type: z.string(),
-      value: z.string(),
-    }),
+  parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+    type: z.string(),
+    value: z.string(),
+  }),
 });
 
 export const funnelReportSchema = z.object({
@@ -268,6 +283,16 @@ export const breakdownReportSchema = z.object({
   }),
 });
 
+export const heatmapReportSchema = z.object({
+  type: z.literal('heatmap'),
+  parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+    urlPath: z.string().max(500).optional(),
+    mode: z.enum(['click', 'scroll']).optional(),
+  }),
+});
+
 export const reportBaseSchema = z.object({
   websiteId: z.uuid(),
   type: reportTypeParam,
@@ -286,6 +311,7 @@ export const reportTypeSchema = z.discriminatedUnion('type', [
   revenueReportSchema,
   attributionReportSchema,
   breakdownReportSchema,
+  heatmapReportSchema,
 ]);
 
 export const reportSchema = reportBaseSchema;
@@ -293,7 +319,7 @@ export const reportSchema = reportBaseSchema;
 export const reportResultSchema = z.intersection(
   z.object({
     websiteId: z.uuid(),
-    filters: z.object({ ...filterParams }),
+    filters: z.object({ ...filterParams }).passthrough(),
   }),
   reportTypeSchema,
 );

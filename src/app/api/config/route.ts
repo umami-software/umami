@@ -1,6 +1,8 @@
 import { parseRequest } from '@/lib/request';
 import { json } from '@/lib/response';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   const { error } = await parseRequest(request, null, { skipAuth: true });
 
@@ -17,6 +19,5 @@ export async function GET(request: Request) {
     telemetryDisabled: !!process.env.DISABLE_TELEMETRY,
     trackerScriptName: process.env.TRACKER_SCRIPT_NAME,
     updatesDisabled: !!process.env.DISABLE_UPDATES,
-    currentVersion: !!process.env.currentVersion,
   });
 }

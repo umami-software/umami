@@ -102,6 +102,7 @@
     "download": "ダウンロード",
     "dropoff": "切り捨て",
     "duration": "継続時間",
+    "min-duration-seconds": "最小時間（秒）",
     "edit": "編集",
     "edit-member": "メンバーの編集",
     "email": "メール",
@@ -124,6 +125,7 @@
     "filter-combined": "結合",
     "filter-raw": "RAW",
     "filters": "フィルター",
+    "filters-enabled": "フィルター有効",
     "first-click": "最初のクリック",
     "first-seen": "初回ログイン",
     "funnel": "ファネル",
@@ -300,6 +302,8 @@
     "sum": "合計",
     "support": "サポート",
     "switch-account": "アカウントを切り替え",
+    "switch-to-card-view": "カード表示に切り替え",
+    "switch-to-table-view": "テーブル表示に切り替え",
     "table": "テーブル",
     "tablet": "タブレット",
     "tag": "タグ",
@@ -416,6 +420,7 @@
     "triggered-event": "トリガーされたイベント",
     "unauthorized": "認証が必要です",
     "user-deleted": "ユーザーが削除されました。",
+    "replay-min-duration-description": "この時間以上の再生のみ表示します。",
     "viewed-page": "閲覧されたページ",
     "visitor-log": "<b>{os}</b>(<b>{device}</b>)で<b>{browser}</b>を使用している<b>{country}</b>からの訪問者"
   }

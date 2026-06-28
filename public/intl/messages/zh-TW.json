@@ -102,6 +102,7 @@
     "download": "下載",
     "dropoff": "離開",
     "duration": "持續時間",
+    "min-duration-seconds": "最短時長（秒）",
     "edit": "編輯",
     "edit-member": "編輯成員",
     "email": "電子郵件",
@@ -124,6 +125,7 @@
     "filter-combined": "組合",
     "filter-raw": "原始",
     "filters": "篩選條件",
+    "filters-enabled": "篩選器已啟用",
     "first-click": "首次點擊",
     "first-seen": "首次造訪",
     "funnel": "漏斗分析",
@@ -300,6 +302,8 @@
     "sum": "總和",
     "support": "支援",
     "switch-account": "切換帳號",
+    "switch-to-card-view": "切換到卡片檢視",
+    "switch-to-table-view": "切換到表格檢視",
     "table": "表格",
     "tablet": "平板",
     "tag": "標籤",
@@ -416,6 +420,7 @@
     "triggered-event": "已觸發的事件",
     "unauthorized": "未經授權",
     "user-deleted": "使用者已刪除。",
+    "replay-min-duration-description": "只顯示時長達到或超過此值的回放。",
     "viewed-page": "已瀏覽的網頁",
     "visitor-log": "來自 <b>{country}</b> 的訪客在 <b>{device}</b> 上的 <b>{os}</b> 使用 <b>{browser}</b> 瀏覽。"
   }

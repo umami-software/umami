@@ -102,6 +102,7 @@
     "download": "下载",
     "dropoff": "丢弃",
     "duration": "持续时间",
+    "min-duration-seconds": "最短时长（秒）",
     "edit": "编辑",
     "edit-member": "编辑成员",
     "email": "邮箱",
@@ -124,6 +125,7 @@
     "filter-combined": "合并",
     "filter-raw": "原始",
     "filters": "筛选",
+    "filters-enabled": "过滤器已启用",
     "first-click": "首次点击",
     "first-seen": "首次出现",
     "funnel": "分析",
@@ -300,6 +302,8 @@
     "sum": "总和",
     "support": "支持",
     "switch-account": "切换账户",
+    "switch-to-card-view": "切换到卡片视图",
+    "switch-to-table-view": "切换到表格视图",
     "table": "表格",
     "tablet": "平板",
     "tag": "标签",
@@ -416,6 +420,7 @@
     "triggered-event": "触发事件",
     "unauthorized": "未授权",
     "user-deleted": "用户已删除。",
+    "replay-min-duration-description": "只显示时长达到或超过此值的回放。",
     "viewed-page": "已浏览页面",
     "visitor-log": "来自 <b>{country}</b> 的访客在搭载 <b>{os}</b> 的 <b>{device}</b> 上使用 <b>{browser}</b> 浏览器进行访问。"
   }

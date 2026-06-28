@@ -2,9 +2,13 @@ import { Prisma, type Team } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
+import redis from '@/lib/redis';
+import { sanitizeSortFilters } from '@/lib/sort';
 import type { PageResult, QueryFilters } from '@/lib/types';
 
 import TeamFindManyArgs = Prisma.TeamFindManyArgs;
+
+const TEAM_SORT_FIELDS = ['name', 'createdAt'] as const;
 
 export async function findTeam(criteria: Prisma.TeamFindUniqueArgs): Promise<Team> {
   return prisma.client.team.findUnique(criteria);
@@ -29,7 +33,8 @@ export async function getTeams(
   filters: QueryFilters,
 ): Promise<PageResult<Team[]>> {
   const { getSearchParameters } = prisma;
-  const { search } = filters;
+  const sortFilters = sanitizeSortFilters(filters, TEAM_SORT_FIELDS);
+  const { search } = sortFilters;
 
   const where: Prisma.TeamWhereInput = {
     ...criteria.where,
@@ -42,7 +47,7 @@ export async function getTeams(
       ...criteria,
       where,
     },
-    filters,
+    sortFilters,
   );
 }
 
@@ -144,6 +149,31 @@ export async function deleteTeam(teamId: string) {
   const { client, transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
+  const [links, pixels, boards] = await Promise.all([
+    client.link.findMany({
+      where: { teamId },
+      select: { id: true, slug: true, deletedAt: true },
+    }),
+    client.pixel.findMany({
+      where: { teamId },
+      select: { id: true, slug: true, deletedAt: true },
+    }),
+    client.board.findMany({ where: { teamId }, select: { id: true } }),
+  ]);
+  const entityIds = [...links.map(l => l.id), ...pixels.map(p => p.id), ...boards.map(b => b.id)];
+  // Only invalidate Redis cache for slugs that are still live (not already soft-deleted).
+  const linkSlugs = links.filter(l => !l.deletedAt).map(l => l.slug);
+  const pixelSlugs = pixels.filter(p => !p.deletedAt).map(p => p.slug);
+
+  const invalidateRedis = async () => {
+    if (redis.enabled && (linkSlugs.length || pixelSlugs.length)) {
+      await Promise.all([
+        ...linkSlugs.map(slug => redis.client.del(`link:${slug}`)),
+        ...pixelSlugs.map(slug => redis.client.del(`pixel:${slug}`)),
+      ]);
+    }
+  };
+
   if (cloudMode) {
     return transaction([
       client.team.update({
@@ -154,7 +184,21 @@ export async function deleteTeam(teamId: string) {
           id: teamId,
         },
       }),
-    ]);
+      client.share.deleteMany({ where: { entityId: { in: entityIds } } }),
+      // deletedAt: null avoids restamping rows that were already soft-deleted earlier.
+      client.link.updateMany({
+        data: { deletedAt: new Date() },
+        where: { teamId, deletedAt: null },
+      }),
+      client.pixel.updateMany({
+        data: { deletedAt: new Date() },
+        where: { teamId, deletedAt: null },
+      }),
+      client.board.deleteMany({ where: { teamId } }),
+    ]).then(async result => {
+      await invalidateRedis();
+      return result;
+    });
   }
 
   return transaction([
@@ -163,10 +207,17 @@ export async function deleteTeam(teamId: string) {
         teamId,
       },
     }),
+    client.share.deleteMany({ where: { entityId: { in: entityIds } } }),
+    client.link.deleteMany({ where: { teamId } }),
+    client.pixel.deleteMany({ where: { teamId } }),
+    client.board.deleteMany({ where: { teamId } }),
     client.team.delete({
       where: {
         id: teamId,
       },
     }),
-  ]);
+  ]).then(async result => {
+    await invalidateRedis();
+    return result;
+  });
 }

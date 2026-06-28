@@ -50,9 +50,9 @@ export function UserSelect({
       onSearch={handleSearch}
       onChange={handleChange}
       onOpenChange={handleOpenChange}
+      maxHeight={480}
       listProps={{
         renderEmptyState: () => <Empty message={t(messages.noResultsFound)} />,
-        style: { maxHeight: 'calc(42vh - 65px)' },
       }}
     >
       {listItems.map(({ id, username }) => (

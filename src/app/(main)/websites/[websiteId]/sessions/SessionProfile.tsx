@@ -1,7 +1,4 @@
 'use client';
-import { Avatar } from '@/components/common/Avatar';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, useWebsiteSessionQuery } from '@/components/hooks';
 import {
   Button,
   Column,
@@ -14,6 +11,9 @@ import {
   TextField,
 } from '@umami/react-zen';
 import { X } from 'lucide-react';
+import { Avatar } from '@/components/common/Avatar';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { useMessages, useWebsiteSessionQuery } from '@/components/hooks';
 import { SessionActivity } from './SessionActivity';
 import { SessionData } from './SessionData';
 import { SessionInfo } from './SessionInfo';

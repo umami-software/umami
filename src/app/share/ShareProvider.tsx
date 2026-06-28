@@ -1,10 +1,11 @@
 'use client';
-import { useShareTokenQuery } from '@/components/hooks';
-import { ENTITY_TYPE } from '@/lib/constants';
-import type { WhiteLabel } from '@/lib/types';
 import { Loading } from '@umami/react-zen';
 import { usePathname, useRouter } from 'next/navigation';
 import { createContext, type ReactNode, useEffect } from 'react';
+import { useShareTokenQuery } from '@/components/hooks';
+import { ENTITY_TYPE } from '@/lib/constants';
+import type { ShareParameters, WhiteLabel } from '@/lib/types';
+import { setShareData, useApp } from '@/store/app';
 
 export interface ShareData {
   shareId: string;
@@ -15,12 +16,14 @@ export interface ShareData {
   boardId?: string;
   pixelId?: string;
   linkId?: string;
-  parameters: any;
+  parameters: ShareParameters;
   token: string;
   whiteLabel?: WhiteLabel;
 }
 
 export const ShareContext = createContext<ShareData>(null);
+
+const selector = (state: { shareToken: { token?: string } | null }) => state.shareToken;
 
 const ALL_SECTION_IDS = [
   'overview',
@@ -55,8 +58,10 @@ export function ShareProvider({ slug, children }: { slug: string; children: Reac
   const { share, isLoading, isFetching } = useShareTokenQuery(slug);
   const router = useRouter();
   const pathname = usePathname();
+  const shareToken = useApp(selector);
   const path = getSharePath(pathname);
   const isWebsiteShare = share?.shareType === ENTITY_TYPE.website;
+  const isShareReady = !!share?.token && shareToken?.token === share.token;
 
   const allowedSections =
     isWebsiteShare && share?.parameters
@@ -75,11 +80,17 @@ export function ShareProvider({ slug, children }: { slug: string; children: Reac
     }
   }, [shouldRedirect, slug, allowedSections, router]);
 
-  if (isFetching && isLoading) {
+  useEffect(() => {
+    return () => {
+      setShareData(null, null);
+    };
+  }, [slug]);
+
+  if ((isFetching && isLoading) || (share && !isShareReady)) {
     return <Loading placement="absolute" />;
   }
 
-  if (!share || shouldRedirect) {
+  if (!share || !isShareReady || shouldRedirect) {
     return null;
   }
 

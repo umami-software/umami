@@ -102,6 +102,7 @@
     "download": "ডাউনলোড",
     "dropoff": "ছেড়ে যাওয়া",
     "duration": "সময়কাল",
+    "min-duration-seconds": "ন্যূনতম সময়কাল (সেকেন্ড)",
     "edit": "সম্পাদনা করুন",
     "edit-member": "সদস্য সম্পাদনা করুন",
     "email": "ইমেইল",
@@ -124,6 +125,7 @@
     "filter-combined": "সম্মিলিত",
     "filter-raw": "অপরিশোধিত",
     "filters": "ফিল্টারসমূহ",
+    "filters-enabled": "ফিল্টার সক্রিয়",
     "first-click": "প্রথম ক্লিক",
     "first-seen": "প্রথম দেখা",
     "funnel": "ফানেল",
@@ -300,6 +302,8 @@
     "sum": "যোগফল",
     "support": "সহায়তা",
     "switch-account": "অ্যাকাউন্ট পরিবর্তন",
+    "switch-to-card-view": "কার্ড ভিউতে স্যুইচ করুন",
+    "switch-to-table-view": "টেবিল ভিউতে স্যুইচ করুন",
     "table": "টেবিল",
     "tablet": "ট্যাবলেট",
     "tag": "ট্যাগ",
@@ -416,6 +420,7 @@
     "triggered-event": "ট্রিগার করা ইভেন্ট",
     "unauthorized": "অননুমোদিত",
     "user-deleted": "ব্যবহারকারী মুছে ফেলা হয়েছে।",
+    "replay-min-duration-description": "শুধুমাত্র এই সময়কাল বা তার উপরে রিপ্লেগুলি দেখান।",
     "viewed-page": "দেখা পৃষ্ঠা",
     "visitor-log": "<b>{country}</b> থেকে একজন ভিসিটর {ব্রাউজার}, ব্যবহার করছেন <b>{os}</b> <b>{device}</b> এর মধ্যে।"
   }

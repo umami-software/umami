@@ -3,8 +3,33 @@ import { uuid } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, reportSchema, reportTypeParam } from '@/lib/schema';
-import { canUpdateWebsite, canViewWebsite } from '@/permissions';
+import {
+  canUpdateWebsite,
+  canViewAuthenticatedWebsite,
+  canViewWebsiteSection,
+} from '@/permissions';
+import type { ShareSection } from '@/permissions';
 import { createReport, getReports } from '@/queries/prisma';
+
+function getReportSection(type?: z.infer<typeof reportTypeParam>): ShareSection | null {
+  switch (type) {
+    case 'attribution':
+    case 'breakdown':
+    case 'performance':
+    case 'retention':
+    case 'revenue':
+    case 'utm':
+      return type;
+    case 'funnel':
+      return 'funnels';
+    case 'goal':
+      return 'goals';
+    case 'journey':
+      return 'journeys';
+    default:
+      return null;
+  }
+}
 
 export async function GET(request: Request) {
   const schema = z.object({
@@ -26,7 +51,12 @@ export async function GET(request: Request) {
     search,
   };
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  const section = getReportSection(type);
+  const canView = section
+    ? await canViewWebsiteSection(auth, websiteId, section)
+    : await canViewAuthenticatedWebsite(auth, websiteId);
+
+  if (!canView) {
     return unauthorized();
   }
 

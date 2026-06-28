@@ -37,3 +37,8 @@ test('stringToColor', () => {
   expect(format.stringToColor('hello')).toBe('#d218e9');
   expect(format.stringToColor('goodbye')).toBe('#11e956');
 });
+
+test('truncateString', () => {
+  expect(format.truncateString('hello', 3)).toBe('hel');
+  expect(format.truncateString(undefined, 3)).toBeUndefined();
+});

@@ -2,7 +2,7 @@ import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
-import type { RevenuParameters } from './getRevenue';
+import type { RevenuParameters } from './getRevenueChart';
 
 export interface RevenueStatsResult {
   sum: number;

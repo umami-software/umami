@@ -102,6 +102,7 @@
     "download": "ดาวน์โหลด",
     "dropoff": "การออกจากระบบ",
     "duration": "ระยะเวลา",
+    "min-duration-seconds": "ระยะเวลาขั้นต่ำ (วินาที)",
     "edit": "แก้ไข",
     "edit-member": "แก้ไขสมาชิก",
     "email": "อีเมล",
@@ -124,6 +125,7 @@
     "filter-combined": "ข้อมูลรวม",
     "filter-raw": "ข้อมูลดิบ",
     "filters": "ตัวกรอง",
+    "filters-enabled": "เปิดใช้งานตัวกรอง",
     "first-click": "คลิกแรก",
     "first-seen": "เห็นครั้งแรก",
     "funnel": "ช่องทางขาย",
@@ -300,6 +302,8 @@
     "sum": "ผลรวม",
     "support": "การสนับสนุน",
     "switch-account": "สลับบัญชี",
+    "switch-to-card-view": "เปลี่ยนเป็นมุมมองการ์ด",
+    "switch-to-table-view": "เปลี่ยนเป็นมุมมองตาราง",
     "table": "ตาราง",
     "tablet": "แท็บเล็ต",
     "tag": "แท็ก",
@@ -416,6 +420,7 @@
     "triggered-event": "เหตุการณ์ที่ถูกเรียก",
     "unauthorized": "ไม่ได้รับอนุญาต",
     "user-deleted": "ผู้ใช้ถูกลบแล้ว",
+    "replay-min-duration-description": "แสดงเฉพาะการเล่นซ้ำที่มีระยะเวลาเท่ากับหรือมากกว่านี้",
     "viewed-page": "หน้าที่ดู",
     "visitor-log": "ผู้เข้าชมจาก <b>{country}</b> กำลังใช้งานผ่าน <b>{browser}</b> บน <b>{os}</b> <b>{device}</b>"
   }

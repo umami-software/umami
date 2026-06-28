@@ -1,7 +1,8 @@
 import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import { DateDistance } from '@/components/common/DateDistance';
 import { ExternalLink } from '@/components/common/ExternalLink';
+import Link from '@/components/common/Link';
+import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages, useNavigation, useSlug } from '@/components/hooks';
 import { PixelDeleteButton } from './PixelDeleteButton';
 import { PixelEditButton } from './PixelEditButton';
@@ -17,12 +18,12 @@ export function PixelsTable({ showActions, ...props }: PixelsTableProps) {
 
   return (
     <DataTable {...props}>
-      <DataColumn id="name" label={t(labels.name)}>
+      <DataColumn id="name" label={<SortableLabel label={t(labels.name)} sortKey="name" />}>
         {({ id, name }: any) => {
           return <Link href={renderUrl(`/pixels/${id}`)}>{name}</Link>;
         }}
       </DataColumn>
-      <DataColumn id="url" label="URL">
+      <DataColumn id="url" label={<SortableLabel label="URL" sortKey="slug" />}>
         {({ slug }: any) => {
           const url = getSlugUrl(slug);
           return (
@@ -32,7 +33,12 @@ export function PixelsTable({ showActions, ...props }: PixelsTableProps) {
           );
         }}
       </DataColumn>
-      <DataColumn id="created" label={t(labels.created)}>
+      <DataColumn
+        id="created"
+        label={
+          <SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />
+        }
+      >
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
       {showActions && (

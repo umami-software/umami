@@ -1,10 +1,8 @@
-import prand from 'pure-rand';
-
-const seed = Date.now() ^ (Math.random() * 0x100000000);
-const rng = prand.xoroshiro128plus(seed);
-
 export function random(min: number, max: number) {
-  return prand.unsafeUniformIntDistribution(min, max, rng);
+  const range = max - min + 1;
+  const buf = new Uint32Array(1);
+  globalThis.crypto.getRandomValues(buf);
+  return min + (buf[0] % range);
 }
 
 export function getRandomChars(

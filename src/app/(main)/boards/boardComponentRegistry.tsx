@@ -1,3 +1,4 @@
+import type { ComponentType } from 'react';
 import { TextBlock } from '@/app/(main)/boards/TextBlock';
 import { LinkMetricsBar } from '@/app/(main)/links/[linkId]/LinkMetricsBar';
 import { PixelMetricsBar } from '@/app/(main)/pixels/[pixelId]/PixelMetricsBar';
@@ -16,7 +17,6 @@ import { EventsChart } from '@/components/metrics/EventsChart';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { WeeklyTraffic } from '@/components/metrics/WeeklyTraffic';
 import { WorldMap } from '@/components/metrics/WorldMap';
-import type { ComponentType } from 'react';
 
 export interface ConfigField {
   name: string;
@@ -49,6 +49,7 @@ export const CATEGORIES = [
 
 const METRIC_TYPES = [
   { label: 'Path', value: 'path' },
+  { label: 'URL', value: 'fullPath' },
   { label: 'Entry page', value: 'entry' },
   { label: 'Exit page', value: 'exit' },
   { label: 'Title', value: 'title' },
@@ -118,7 +119,7 @@ const componentDefinitions: ComponentDefinition[] = [
   },
   {
     type: 'WebsiteChart',
-    name: 'Website chart',
+    name: 'Visitors chart',
     description: 'Page views and visitors over time',
     category: 'overview',
     icon: ChartColumnBig,

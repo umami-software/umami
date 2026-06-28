@@ -1,8 +1,9 @@
 import clickhouse from '@/lib/clickhouse';
-import { DATA_TYPE } from '@/lib/constants';
+import { DATA_TYPE, FIELD_LENGTH } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
-import { flattenJSON, getStringValue } from '@/lib/data';
+import { flattenJSON, getStoredStringValue } from '@/lib/data';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { truncateString } from '@/lib/format';
 import kafka from '@/lib/kafka';
 import prisma from '@/lib/prisma';
 import type { DynamicData } from '@/lib/types';
@@ -32,25 +33,24 @@ export async function relationalQuery({
   const { client } = prisma;
 
   const jsonKeys = flattenJSON(sessionData);
+  const normalizedDistinctId = truncateString(distinctId, FIELD_LENGTH.distinctId);
 
   const flattenedData = jsonKeys.map(a => ({
     id: uuid(),
     websiteId,
     sessionId,
-    dataKey: a.key,
-    stringValue: getStringValue(a.value, a.dataType),
+    dataKey: truncateString(a.key, FIELD_LENGTH.dataKey),
+    stringValue: getStoredStringValue(a.value, a.dataType),
     numberValue: a.dataType === DATA_TYPE.number ? a.value : null,
     dateValue: a.dataType === DATA_TYPE.date ? new Date(a.value) : null,
     dataType: a.dataType,
-    distinctId,
+    distinctId: normalizedDistinctId,
     createdAt,
   }));
 
   for (const data of flattenedData) {
     const { sessionId, dataKey, ...props } = data;
 
-    // Try to update existing record using compound where clause
-    // This is safer than using id from a previous query due to race conditions
     const updateResult = await client.sessionData.updateMany({
       where: {
         sessionId,
@@ -81,17 +81,18 @@ async function clickhouseQuery({
   const { sendMessage } = kafka;
 
   const jsonKeys = flattenJSON(sessionData);
+  const normalizedDistinctId = truncateString(distinctId, FIELD_LENGTH.distinctId);
 
   const messages = jsonKeys.map(({ key, value, dataType }) => {
     return {
       website_id: websiteId,
       session_id: sessionId,
-      data_key: key,
+      data_key: truncateString(key, FIELD_LENGTH.dataKey),
       data_type: dataType,
-      string_value: getStringValue(value, dataType),
+      string_value: getStoredStringValue(value, dataType),
       number_value: dataType === DATA_TYPE.number ? value : null,
       date_value: dataType === DATA_TYPE.date ? getUTCString(value) : null,
-      distinct_id: distinctId,
+      distinct_id: normalizedDistinctId,
       created_at: getUTCString(createdAt),
     };
   });

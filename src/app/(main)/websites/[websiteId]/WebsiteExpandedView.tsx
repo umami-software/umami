@@ -17,6 +17,7 @@ export function WebsiteExpandedView({
   const {
     query: { view },
   } = useNavigation();
+  const title = view === 'fullPath' ? t(labels.url) : t(labels[view]);
 
   return (
     <Column height="100%" overflow="hidden" gap>
@@ -44,12 +45,7 @@ export function WebsiteExpandedView({
           <WebsiteExpandedMenu excludedIds={excludedIds} />
         </Column>
         <Column id="metrics-expanded-table" overflow="hidden">
-          <MetricsExpandedTable
-            title={t(labels[view])}
-            type={view}
-            websiteId={websiteId}
-            onClose={onClose}
-          />
+          <MetricsExpandedTable title={title} type={view} websiteId={websiteId} onClose={onClose} />
         </Column>
       </Grid>
     </Column>

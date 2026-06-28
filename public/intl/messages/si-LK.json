@@ -102,6 +102,7 @@
     "download": "බාගන්න",
     "dropoff": "අතහැර යෑම",
     "duration": "කාලය",
+    "min-duration-seconds": "අවම කාලය (තත්පර)",
     "edit": "සංස්කරණය කරන්න",
     "edit-member": "සාමාජිකයා සංස්කරණය",
     "email": "විද්‍යුත් තැපෑල",
@@ -124,6 +125,7 @@
     "filter-combined": "ඒකාබද්ධ",
     "filter-raw": "අමු",
     "filters": "පෙරහන්",
+    "filters-enabled": "පෙරහන් සක්‍රීය කර ඇත",
     "first-click": "පළමු ක්ලික්",
     "first-seen": "මුලින් දුටු",
     "funnel": "පුනීලය",
@@ -300,6 +302,8 @@
     "sum": "එකතුව",
     "support": "සහාය",
     "switch-account": "ගිණුම මාරු කරන්න",
+    "switch-to-card-view": "කාඩ් දසුනට මාරු කරන්න",
+    "switch-to-table-view": "වගු දසුනට මාරු කරන්න",
     "table": "වගුව",
     "tablet": "ටැබ්ලටය",
     "tag": "ටැගය",
@@ -416,6 +420,7 @@
     "triggered-event": "අවුලුවන ලද සිදුවීම",
     "unauthorized": "අනවසරයි",
     "user-deleted": "පරිශීලකයා මකා දමන ලදි.",
+    "replay-min-duration-description": "මෙම කාලය හෝ ඊට වඩා වැඩි රිප්ලේ පමණක් පෙන්වන්න.",
     "viewed-page": "නැරඹූ පිටුව",
     "visitor-log": "<b>{country}</b> සිට <b>{os}</b> <b>{device}</b> හි <b>{browser}</b> භාවිතා කරන නරඹන්නා"
   }

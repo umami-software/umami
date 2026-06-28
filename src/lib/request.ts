@@ -30,9 +30,9 @@ export async function parseRequest(
     } else if (isGet) {
       query = result.data;
 
-      // Re-add suffixed filter params (e.g., browser1, os2) stripped by Zod schema
+      // Re-add dynamic params stripped by Zod schema: suffixed filter params (browser1, os2)
       for (const key of Object.keys(rawQuery)) {
-        if (/\d+$/.test(key) && !(key in query)) {
+        if ((/\d+$/.test(key) || /^pf_/.test(key)) && !(key in query)) {
           query[key] = rawQuery[key];
         }
       }
@@ -168,11 +168,13 @@ export async function getQueryFilters(
     ...dateRange,
     ...filters,
     match,
+    minDuration: params?.minDuration,
     page: params?.page,
     pageSize: params?.pageSize ? params?.pageSize || DEFAULT_PAGE_SIZE : undefined,
     orderBy: params?.orderBy,
     sortDescending: params?.sortDescending,
     search: params?.search,
     compare: params?.compare,
+    maxResults: params?.maxResults,
   };
 }

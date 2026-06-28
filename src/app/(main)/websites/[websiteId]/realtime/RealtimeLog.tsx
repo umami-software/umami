@@ -1,12 +1,11 @@
 import { Column, Heading, Row, SearchField, Text } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import { useMemo, useState } from 'react';
-import { FixedSizeList } from 'react-window';
+import { List, type RowComponentProps } from 'react-window';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
-import { useFormat } from '@/components//hooks/useFormat';
 import { Avatar } from '@/components/common/Avatar';
 import { Empty } from '@/components/common/Empty';
 import { IconLabel } from '@/components/common/IconLabel';
+import Link from '@/components/common/Link';
 import {
   useCountryNames,
   useLocale,
@@ -16,6 +15,7 @@ import {
   useTimezone,
   useWebsite,
 } from '@/components/hooks';
+import { useFormat } from '@/components/hooks/useFormat';
 import { Eye, User } from '@/components/icons';
 import { FilterButtons } from '@/components/input/FilterButtons';
 import { Lightning } from '@/components/svg';
@@ -25,6 +25,8 @@ const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';
 const TYPE_SESSION = 'session';
 const TYPE_EVENT = 'event';
+const MAX_LIST_HEIGHT = 500;
+const ROW_HEIGHT = 50;
 
 const icons = {
   [TYPE_PAGEVIEW]: <Eye />,
@@ -121,10 +123,10 @@ export function RealtimeLog({ data }: { data: any }) {
     }
   };
 
-  const TableRow = ({ index, style }) => {
+  const TableRow = ({ index, style, logs }: RowComponentProps<{ logs: any[] }>) => {
     const row = logs[index];
     return (
-      <Row alignItems="center" style={style} gap>
+      <Row alignItems="center" style={{ ...style, minWidth: 0 }} gap>
         <Row minWidth="30px">
           <Link href={updateParams({ session: row.sessionId })}>
             <Avatar seed={row.sessionId} size={32} />
@@ -133,10 +135,8 @@ export function RealtimeLog({ data }: { data: any }) {
         <Row minWidth="100px">
           <Text wrap="nowrap">{getTime(row)}</Text>
         </Row>
-        <IconLabel icon={getIcon(row)}>
-          <Text style={{ maxWidth: isPhone ? '400px' : null }} truncate>
-            {getDetail(row)}
-          </Text>
+        <IconLabel icon={getIcon(row)} style={{ minWidth: 0, flex: 1 }}>
+          <Text truncate>{getDetail(row)}</Text>
         </IconLabel>
       </Row>
     );
@@ -173,12 +173,14 @@ export function RealtimeLog({ data }: { data: any }) {
     return logs;
   }, [data, filter, formatValue, search]);
 
+  const listHeight = Math.min(logs.length * ROW_HEIGHT, MAX_LIST_HEIGHT);
+
   return (
-    <Column gap>
+    <Column gap="3">
       <Heading size="base">{t(labels.activity)}</Heading>
       {isPhone ? (
         <>
-          <Row>
+          <Row marginBottom="1">
             <SearchField value={search} onSearch={setSearch} />
           </Row>
           <Row>
@@ -192,12 +194,17 @@ export function RealtimeLog({ data }: { data: any }) {
         </Row>
       )}
 
-      <Column>
+      <Column gap="3">
         {logs?.length === 0 && <Empty />}
-        {logs?.length > 0 && (
-          <FixedSizeList width="100%" height={500} itemCount={logs.length} itemSize={50}>
-            {TableRow}
-          </FixedSizeList>
+        {logs.length > 0 && (
+          <List
+            rowComponent={TableRow}
+            rowCount={logs.length}
+            rowHeight={ROW_HEIGHT}
+            rowProps={{ logs }}
+            defaultHeight={listHeight}
+            style={{ width: '100%', height: listHeight }}
+          />
         )}
       </Column>
       <SessionModal websiteId={website.id} />

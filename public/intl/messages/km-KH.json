@@ -102,6 +102,7 @@
     "download": "ទាញយក",
     "dropoff": "ការចាកចេញ",
     "duration": "រយៈពេល",
+    "min-duration-seconds": "រយៈពេលអប្បបរមា (វិនាទី)",
     "edit": "កែប្រែ",
     "edit-member": "កែព័ត៌មានសមាជិក",
     "email": "អ៊ីមែល",
@@ -124,6 +125,7 @@
     "filter-combined": "រួមបញ្ចូលគ្នា",
     "filter-raw": "ដើម",
     "filters": "ចម្រោះ",
+    "filters-enabled": "ការច្រោះបានបើក",
     "first-click": "ចុចដំបូង",
     "first-seen": "ឃើញដំបូង",
     "funnel": "ផ្លូវបង្ហាញ",
@@ -300,6 +302,8 @@
     "sum": "ផលបូក",
     "support": "ជំនួយ",
     "switch-account": "ប្ដូរគណនី",
+    "switch-to-card-view": "ប្ដូរទៅរូបរាងកាត",
+    "switch-to-table-view": "ប្ដូរទៅរូបរាងតារាង",
     "table": "តារាង",
     "tablet": "ថេប្លេត",
     "tag": "ស្លាក",
@@ -416,6 +420,7 @@
     "triggered-event": "ព្រឹត្តិការណ៍ដែលបានដំណើរការ",
     "unauthorized": "មិនមានសិទ្ធិ",
     "user-deleted": "អ្នកប្រើប្រាស់ត្រូវបានលុបចោល។",
+    "replay-min-duration-description": "បង្ហាញតែការចាក់ឡើងវិញដែលមានរយៈពេលនេះ ឬខ្ពស់ជាងនេះ។",
     "viewed-page": "ទំព័រដែលបានមើល",
     "visitor-log": "អ្នកមើលពីប្រទេស <b>{country}</b> ប្រើប្រាស់កម្មវិធី <b>{browser}</b> លើឧបករណ៍ <b>{os}</b> <b>{device}</b>"
   }

@@ -3,9 +3,9 @@ import type { ErrorInfo, ReactNode } from 'react';
 import { ErrorBoundary as Boundary } from 'react-error-boundary';
 import { useMessages } from '@/components/hooks';
 
-const logError = (error: Error, info: ErrorInfo) => {
+const logError = (error: unknown, info: ErrorInfo) => {
   // eslint-disable-next-line no-console
-  console.error(error, info.componentStack);
+  console.error(error instanceof Error ? error : new Error(String(error)), info.componentStack);
 };
 
 export function ErrorBoundary({ children }: { children: ReactNode }) {

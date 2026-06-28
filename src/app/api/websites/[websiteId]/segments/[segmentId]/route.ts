@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { json, notFound, ok, unauthorized } from '@/lib/response';
 import { anyObjectParam, segmentTypeParam } from '@/lib/schema';
-import { canDeleteWebsite, canUpdateWebsite, canViewWebsite } from '@/permissions';
+import { canDeleteWebsite, canUpdateWebsite, canViewSharedWebsiteFilters } from '@/permissions';
 import { deleteSegment, getWebsiteSegment, updateSegment } from '@/queries/prisma';
 
 export async function GET(
@@ -17,7 +17,7 @@ export async function GET(
 
   const { websiteId, segmentId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewSharedWebsiteFilters(auth, websiteId))) {
     return unauthorized();
   }
 

@@ -1,7 +1,7 @@
-import thenby from 'thenby';
 import { useMessages, useWebsite } from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
 import { percentFilter } from '@/lib/filters';
+import { firstBy } from 'thenby';
 
 export function RealtimeReferrers({ data }: { data: any }) {
   const website = useWebsite();
@@ -26,7 +26,7 @@ export function RealtimeReferrers({ data }: { data: any }) {
           y: referrers[key],
         };
       })
-      .sort(thenby.firstBy('y', -1))
+      .sort(firstBy('y', -1))
       .slice(0, limit),
   );
 

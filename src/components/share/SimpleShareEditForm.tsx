@@ -7,10 +7,12 @@ import {
   Label,
   Loading,
   Row,
+  Switch,
   TextField,
 } from '@umami/react-zen';
 import { useEffect, useState } from 'react';
 import { useApi, useConfig, useMessages, useModified } from '@/components/hooks';
+import { ThemeModeSelector } from '@/components/input/ThemeModeSelector';
 
 export function SimpleShareEditForm({
   shareId,
@@ -49,7 +51,7 @@ export function SimpleShareEditForm({
     loadShare();
   }, [get, modified, shareId]);
 
-  const handleSubmit = async (data: { name: string }) => {
+  const handleSubmit = async (data: { name: string; allowFilter?: boolean; theme?: string }) => {
     setIsPending(true);
     setError(null);
 
@@ -57,7 +59,11 @@ export function SimpleShareEditForm({
       await post(`/share/id/${shareId}`, {
         name: data.name,
         slug: share.slug,
-        parameters: share.parameters || {},
+        parameters: {
+          ...(share.parameters || {}),
+          allowFilter: data.allowFilter ?? true,
+          theme: data.theme === 'system' ? undefined : data.theme,
+        },
       });
 
       touch('shares');
@@ -78,27 +84,50 @@ export function SimpleShareEditForm({
     <Form
       onSubmit={handleSubmit}
       error={getErrorMessage(error)}
-      defaultValues={{ name: share?.name || '' }}
+      defaultValues={{
+        name: share?.name || '',
+        allowFilter: share?.parameters?.allowFilter ?? true,
+        theme: share?.parameters?.theme || 'system',
+      }}
     >
-      <Column gap="6">
-        <Column>
-          <Label>{t(labels.shareUrl)}</Label>
-          <TextField value={getUrl(share?.slug || '')} isReadOnly allowCopy />
+      {({ watch, setValue }) => (
+        <Column gap="6">
+          <Column>
+            <Label>{t(labels.shareUrl)}</Label>
+            <TextField value={getUrl(share?.slug || '')} isReadOnly allowCopy />
+          </Column>
+          <FormField label={t(labels.name)} name="name" rules={{ required: t(labels.required) }}>
+            <TextField autoComplete="off" autoFocus />
+          </FormField>
+          <Row gap="6">
+            <FormField label={t(labels.filters)} name="allowFilter">
+              <Switch
+                isSelected={watch('allowFilter')}
+                onChange={value => setValue('allowFilter', value, { shouldDirty: true })}
+              >
+                {t(labels.filtersEnabled)}
+              </Switch>
+            </FormField>
+            <FormField label={t(labels.theme)} name="theme">
+              <ThemeModeSelector
+                value={watch('theme')}
+                includeSystem
+                onChange={value => setValue('theme', value, { shouldDirty: true })}
+              />
+            </FormField>
+          </Row>
+          <Row justifyContent="flex-end" paddingTop="3" gap="3">
+            {onClose && (
+              <Button isDisabled={isPending} onPress={onClose}>
+                {t(labels.cancel)}
+              </Button>
+            )}
+            <FormSubmitButton variant="primary" isDisabled={isPending}>
+              {t(labels.save)}
+            </FormSubmitButton>
+          </Row>
         </Column>
-        <FormField label={t(labels.name)} name="name" rules={{ required: t(labels.required) }}>
-          <TextField autoComplete="off" autoFocus />
-        </FormField>
-        <Row justifyContent="flex-end" paddingTop="3" gap="3">
-          {onClose && (
-            <Button isDisabled={isPending} onPress={onClose}>
-              {t(labels.cancel)}
-            </Button>
-          )}
-          <FormSubmitButton variant="primary" isDisabled={isPending}>
-            {t(labels.save)}
-          </FormSubmitButton>
-        </Row>
-      </Column>
+      )}
     </Form>
   );
 }

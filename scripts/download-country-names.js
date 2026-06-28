@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 
+import fs from 'node:fs';
 import https from 'node:https';
 import path from 'node:path';
 import chalk from 'chalk';
-import fs from 'node:fs';
 
 const src = path.resolve(process.cwd(), 'public/intl/messages');
 const dest = path.resolve(process.cwd(), 'public/intl/country');

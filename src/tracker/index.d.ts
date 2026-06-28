@@ -66,7 +66,7 @@ export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
  * - Objects have a max of 50 properties. Arrays are considered 1 property.
  */
 export interface EventData {
-  [key: string]: number | string | EventData | number[] | string[] | EventData[];
+  [key: string]: boolean | number | string | EventData | boolean[] | number[] | string[] | EventData[];
 }
 
 export type EventProperties = {
@@ -146,8 +146,29 @@ export type UmamiTracker = {
      */
     (eventFunction: CustomEventFunction): Promise<string>;
   };
+  identify: {
+    /**
+     * Identify a visitor with optional associated data.
+     *
+     * @example ```
+     * umami.identify('user-123', { plan: 'pro' });
+     * ```
+     */
+    (id: string, data?: EventData): Promise<string>;
+
+    /**
+     * Associate data with the current visitor without setting an identity string.
+     *
+     * @example ```
+     * umami.identify({ plan: 'pro' });
+     * ```
+     */
+    (data: EventData): Promise<string>;
+  };
 };
 
-export interface Window {
-  umami: UmamiTracker;
+declare global {
+  interface Window {
+    umami: UmamiTracker;
+  }
 }

@@ -5,13 +5,14 @@ import { fetchAccount } from '@/lib/load';
 import redis from '@/lib/redis';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { pagingParams } from '@/lib/schema';
+import { pagingParams, sortingParams } from '@/lib/schema';
 import { canCreateTeam } from '@/permissions';
 import { createTeam, getUserTeams } from '@/queries/prisma';
 
 export async function GET(request: Request) {
   const schema = z.object({
     ...pagingParams,
+    ...sortingParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -46,7 +47,7 @@ export async function POST(request: Request) {
   const { name, ownerId } = body;
 
   const teamId = uuid();
-  const teamOwnerId = ownerId ?? auth.user.id;
+  const teamOwnerId = ownerId && auth.user.isAdmin ? ownerId : auth.user.id;
 
   const team = await createTeam(
     {
@@ -69,6 +70,7 @@ export async function POST(request: Request) {
           isBusiness: account.isBusiness || false,
           isNoBilling: account.isNoBilling || false,
           hasSubscription: account.hasSubscription || false,
+          unlimitedWebsites: account.unlimitedWebsites || false,
         },
         60 * 60 * 24 * 90,
       );

@@ -1,10 +1,3 @@
-import { IconLabel } from '@/components/common/IconLabel';
-import { useMessages, useNavigation, useShare } from '@/components/hooks';
-import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User } from '@/components/icons';
-import { LanguageButton } from '@/components/input/LanguageButton';
-import { PreferencesButton } from '@/components/input/PreferencesButton';
-import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
-import { buildPath } from '@/lib/url';
 import {
   Button,
   Column,
@@ -16,7 +9,15 @@ import {
   Tooltip,
   TooltipTrigger,
 } from '@umami/react-zen';
+import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
+import { useMessages, useNavigation, useShare } from '@/components/hooks';
+import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User } from '@/components/icons';
+import { LanguageButton } from '@/components/input/LanguageButton';
+import { PreferencesButton } from '@/components/input/PreferencesButton';
+import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import { allowShareFilter, excludeShareFilterParam, getShareTheme } from '@/lib/share';
+import { buildPath } from '@/lib/url';
 import { ShareBranding } from './ShareBranding';
 
 export function ShareNav({
@@ -32,12 +33,19 @@ export function ShareNav({
   const { t, labels } = useMessages();
   const { pathname, query } = useNavigation();
   const { slug, parameters } = share;
+  const allowFilter = allowShareFilter(parameters);
+  const shareTheme = getShareTheme(parameters);
 
   const renderPath = (path: string) =>
     buildPath(`/share/${slug}${path}`, {
-      ...query,
+      ...Object.fromEntries(
+        Object.entries(query).filter(([key]) => {
+          return allowFilter || !excludeShareFilterParam(key);
+        }),
+      ),
       event: undefined,
       compare: undefined,
+      theme: undefined,
       view: undefined,
       unit: undefined,
       excludeBounce: undefined,
@@ -202,13 +210,13 @@ export function ShareNav({
       >
         {collapsed ? (
           <Column gap="2" alignItems="center">
-            <ThemeButton />
+            {!shareTheme && <ThemeButton />}
             <LanguageButton />
             <PreferencesButton />
           </Column>
         ) : (
           <Row>
-            <ThemeButton />
+            {!shareTheme && <ThemeButton />}
             <LanguageButton />
             <PreferencesButton />
           </Row>
