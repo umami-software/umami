@@ -18,6 +18,7 @@ export async function createSession(data: Prisma.SessionCreateInput) {
     region: truncateString(data.region, FIELD_LENGTH.region),
     city: truncateString(data.city, FIELD_LENGTH.city),
     distinctId: truncateString(data.distinctId, FIELD_LENGTH.distinctId),
+    visitorId: truncateString(data.visitorId, FIELD_LENGTH.visitorId),
   };
 
   await rawQuery(

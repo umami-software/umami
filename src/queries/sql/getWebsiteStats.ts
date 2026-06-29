@@ -61,6 +61,7 @@ async function relationalQuery(
       left join (
         select distinct on (website_id, visitor_id) website_id, visitor_id, distinct_id
         from identity_link
+        where website_id = {{websiteId::uuid}}
         order by website_id, visitor_id, linked_at asc, distinct_id asc
       ) il on il.visitor_id = session.visitor_id
         and il.website_id = session.website_id
@@ -113,6 +114,7 @@ async function clickhouseQuery(
       left join (
         select website_id, visitor_id, argMin(distinct_id, linked_at) as distinct_id
         from identity_link final
+        where website_id = {websiteId:UUID}
         group by website_id, visitor_id
       ) il on il.visitor_id = website_event.visitor_id
         and il.website_id = website_event.website_id
@@ -145,6 +147,7 @@ async function clickhouseQuery(
         left join (
           select website_id, visitor_id, argMin(distinct_id, linked_at) as distinct_id
           from identity_link final
+          where website_id = {websiteId:UUID}
           group by website_id, visitor_id
         ) il on il.visitor_id = "website_event".visitor_id
           and il.website_id = "website_event".website_id

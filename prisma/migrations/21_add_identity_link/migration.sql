@@ -17,7 +17,6 @@ CREATE TABLE "identity_link" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "identity_link_identity_link_id_key" ON "identity_link"("identity_link_id");
 CREATE UNIQUE INDEX "identity_link_website_id_visitor_id_distinct_id_key" ON "identity_link"("website_id", "visitor_id", "distinct_id");
 CREATE INDEX "identity_link_website_id_distinct_id_idx" ON "identity_link"("website_id", "distinct_id");
 CREATE INDEX "identity_link_website_id_visitor_id_idx" ON "identity_link"("website_id", "visitor_id");
