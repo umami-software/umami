@@ -5,6 +5,7 @@ import clickhouse from '@/lib/clickhouse';
 import { CACHE_TOKEN_TYPE, COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
 import { getSalt, hash, secret, uuid } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
+import { resolveVisitorId } from '@/lib/identity';
 import { createToken, parseToken } from '@/lib/jwt';
 import { fetchWebsite } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
@@ -101,7 +102,6 @@ export async function POST(request: Request) {
       cls,
       fcp,
       ttfb,
-      vid: visitorId,
     } = payload;
 
     const sourceId = websiteId || pixelId || linkId;
@@ -153,7 +153,9 @@ export async function POST(request: Request) {
     const sessionSalt = getSalt(saltRotation, createdAt);
     const visitSalt = hash(startOfHour(createdAt).toUTCString());
 
-    const sessionId = id ? uuid(sourceId, id) : uuid(sourceId, ip, userAgent, sessionSalt);
+    const fingerprintId = uuid(sourceId, ip, userAgent, sessionSalt);
+    const sessionId = id ? uuid(sourceId, id) : fingerprintId;
+    const visitorId = resolveVisitorId({ clientVid: payload.vid, fingerprintId });
 
     // Create a session if not found
     if (!clickhouse.enabled && !cache?.sessionId) {
