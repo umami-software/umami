@@ -58,7 +58,11 @@ async function relationalQuery(
       ${excludeBounceQuery}
       left join session on session.session_id = website_event.session_id
         and session.website_id = website_event.website_id
-      left join identity_link il on il.visitor_id = session.visitor_id
+      left join (
+        select distinct on (website_id, visitor_id) website_id, visitor_id, distinct_id
+        from identity_link
+        order by website_id, visitor_id, linked_at asc, distinct_id asc
+      ) il on il.visitor_id = session.visitor_id
         and il.website_id = session.website_id
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
@@ -90,7 +94,7 @@ async function clickhouseQuery(
     sql = `
     select
       sum(t.c) as "pageviews",
-      uniq(coalesce(t.resolved_identity, t.visitor_id, toString(t.session_id))) as "visitors",
+      uniq(coalesce(nullIf(t.resolved_identity, ''), nullIf(t.visitor_id, ''), toString(t.session_id))) as "visitors",
       uniq(t.visit_id) as "visits",
       ${bounceQuery} as "bounces",
       sum(max_time-min_time) as "totaltime"
@@ -106,7 +110,11 @@ async function clickhouseQuery(
       from website_event
       ${cohortQuery}
       ${excludeBounceQuery}
-      left join identity_link final il on il.visitor_id = website_event.visitor_id
+      left join (
+        select website_id, visitor_id, argMin(distinct_id, linked_at) as distinct_id
+        from identity_link final
+        group by website_id, visitor_id
+      ) il on il.visitor_id = website_event.visitor_id
         and il.website_id = website_event.website_id
       where website_event.website_id = {websiteId:UUID}
         and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
@@ -119,7 +127,7 @@ async function clickhouseQuery(
     sql = `
     select
       sum(t.c) as "pageviews",
-      uniq(coalesce(t.resolved_identity, t.visitor_id, toString(t.session_id))) as "visitors",
+      uniq(coalesce(nullIf(t.resolved_identity, ''), nullIf(t.visitor_id, ''), toString(t.session_id))) as "visitors",
       uniq(t.visit_id) as "visits",
       ${bounceQuery} as "bounces",
       sum(max_time-min_time) as "totaltime"
@@ -134,7 +142,11 @@ async function clickhouseQuery(
         from website_event_stats_hourly "website_event"
         ${cohortQuery}
         ${excludeBounceQuery}
-        left join identity_link final il on il.visitor_id = "website_event".visitor_id
+        left join (
+          select website_id, visitor_id, argMin(distinct_id, linked_at) as distinct_id
+          from identity_link final
+          group by website_id, visitor_id
+        ) il on il.visitor_id = "website_event".visitor_id
           and il.website_id = "website_event".website_id
     where "website_event".website_id = {websiteId:UUID}
       and "website_event".created_at between {startDate:DateTime64} and {endDate:DateTime64}

@@ -48,7 +48,7 @@ const schema = z.object({
       ip: z.string().optional(),
       userAgent: z.string().optional(),
       timestamp: z.coerce.number().int().optional(),
-      id: z.string().optional(),
+      id: z.string().max(50).optional(),
       browser: z.string().optional(),
       os: z.string().optional(),
       device: z.string().optional(),
@@ -294,15 +294,14 @@ export async function POST(request: Request) {
       }
 
       // Create identity link when both visitorId and distinctId are present.
-      // Fire-and-forget to avoid adding latency to the tracking endpoint.
+      // Awaited (single indexed write) so the link is not dropped when a
+      // serverless instance freezes after the response is returned.
       if (visitorId && id && websiteId) {
-        createIdentityLink({
-          websiteId,
-          visitorId,
-          distinctId: id,
-        }).catch(e => {
+        try {
+          await createIdentityLink({ websiteId, visitorId, distinctId: id });
+        } catch (e) {
           console.error('Failed to create identity link:', e);
-        });
+        }
       }
     } else if (type === COLLECTION_TYPE.performance) {
       const base = hostname ? `https://${hostname}` : 'https://localhost';
