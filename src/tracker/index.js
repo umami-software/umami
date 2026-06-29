@@ -38,7 +38,7 @@
   const credentials = config('fetch-credentials') || 'omit';
   const perf = config('performance') === _true;
   const autoPageview = config('auto-pageview') !== _false;
-  const identityStitching = config('identity-stitching') !== _false;
+  const identityStitching = config('identity-stitching') === _true;
 
   const domains = domain.split(',').map(n => n.trim());
   const host =
