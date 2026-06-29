@@ -15,8 +15,10 @@
  */
 
 import clickhouse from '@/lib/clickhouse';
+import { FIELD_LENGTH } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { truncateString } from '@/lib/format';
 import kafka from '@/lib/kafka';
 import prisma from '@/lib/prisma';
 
@@ -27,9 +29,18 @@ export interface CreateIdentityLinkArgs {
 }
 
 export async function createIdentityLink(data: CreateIdentityLinkArgs) {
+  // Truncate to the column width (VARCHAR(50)) so long ids are stitched
+  // consistently with how sessions/events store them, instead of failing the
+  // write. The send endpoint accepts ids of any length and never rejects them.
+  const normalized: CreateIdentityLinkArgs = {
+    websiteId: data.websiteId,
+    visitorId: truncateString(data.visitorId, FIELD_LENGTH.visitorId),
+    distinctId: truncateString(data.distinctId, FIELD_LENGTH.distinctId),
+  };
+
   return runQuery({
-    [PRISMA]: () => relationalQuery(data),
-    [CLICKHOUSE]: () => clickhouseQuery(data),
+    [PRISMA]: () => relationalQuery(normalized),
+    [CLICKHOUSE]: () => clickhouseQuery(normalized),
   });
 }
 
