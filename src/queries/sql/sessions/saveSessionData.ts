@@ -49,7 +49,7 @@ export async function relationalQuery({
   }));
 
   for (const data of flattenedData) {
-    const { sessionId, dataKey, ...props } = data;
+    const { id, sessionId, dataKey, ...props } = data;
 
     const updateResult = await client.sessionData.updateMany({
       where: {
