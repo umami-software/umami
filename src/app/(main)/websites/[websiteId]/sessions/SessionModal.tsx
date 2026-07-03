@@ -8,7 +8,7 @@ export interface SessionModalProps extends ModalProps {
   websiteId: string;
 }
 
-export function SessionModal({ websiteId, ...props }: SessionModalProps) {
+export function SessionModal({ websiteId, className, ...props }: SessionModalProps) {
   const {
     router,
     pathname,
@@ -26,7 +26,7 @@ export function SessionModal({ websiteId, ...props }: SessionModalProps) {
     <Modal
       placement="bottom"
       offset="80px"
-      className={styles.modal}
+      className={[styles.modal, className].filter(Boolean).join(' ')}
       isOpen={!!session}
       onOpenChange={handleOpenChange}
       isDismissable
