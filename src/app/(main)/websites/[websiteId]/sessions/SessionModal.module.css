@@ -1,0 +1,3 @@
+.modal {
+  width: min(calc(100dvw - 48px), 1320px);
+}

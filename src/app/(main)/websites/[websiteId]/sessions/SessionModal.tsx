@@ -2,6 +2,7 @@
 import { Column, Dialog, Modal, type ModalProps } from '@umami/react-zen';
 import { SessionProfile } from '@/app/(main)/websites/[websiteId]/sessions/SessionProfile';
 import { useNavigation } from '@/components/hooks';
+import styles from './SessionModal.module.css';
 
 export interface SessionModalProps extends ModalProps {
   websiteId: string;
@@ -25,12 +26,13 @@ export function SessionModal({ websiteId, ...props }: SessionModalProps) {
     <Modal
       placement="bottom"
       offset="80px"
+      className={styles.modal}
       isOpen={!!session}
       onOpenChange={handleOpenChange}
       isDismissable
       {...props}
     >
-      <Column height="100%" maxWidth="1320px" style={{ margin: '0 auto' }}>
+      <Column height="100%">
         <Dialog variant="sheet" className="rounded-lg">
           {({ close }) => (
             <Column padding="10">
