@@ -30,6 +30,7 @@ export function WebsiteBlocklist({ websiteId }: { websiteId: string }) {
         onChange={setBlockedIps}
         asTextArea
         resize="none"
+        maxLength={500}
         style={{ maxWidth: '500px' }}
       />
       <Row>

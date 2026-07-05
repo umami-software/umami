@@ -91,7 +91,7 @@ export async function POST(
     const website = await updateWebsite(websiteId, {
       name,
       domain,
-      blockedIps: blockedIps ?? undefined,
+      blockedIps: blockedIps !== undefined ? blockedIps : undefined,
       ...(replayConfig !== undefined && {
         replayConfig: nextReplayConfig as Prisma.InputJsonObject,
         recorderEnabled: getRecorderEnabled(nextReplayConfig),

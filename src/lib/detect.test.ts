@@ -103,5 +103,9 @@ test('hasBlockedIp: handles mixed separators in extraIps', () => {
 test('hasBlockedIp: combines IGNORE_IP and extraIps correctly', () => {
   process.env.IGNORE_IP = '10.0.0.0/8';
 
-  expect(hasBlockedIp('10.0.0.5', '192.168.1.0/24')).toBe(true);
+  try {
+    expect(hasBlockedIp('10.0.0.5', '192.168.1.0/24')).toBe(true);
+  } finally {
+    delete process.env.IGNORE_IP;
+  }
 });

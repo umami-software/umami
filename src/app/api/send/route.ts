@@ -119,11 +119,13 @@ export async function POST(request: Request) {
         }
       }
 
-      // Find website
-      website = await fetchWebsite(websiteId);
+      // Find website (only on first request to reduce overhead on hot path)
+      if (!cache?.websiteId) {
+        website = await fetchWebsite(websiteId);
 
-      if (!website) {
-        return badRequest({ message: 'Website not found.' });
+        if (!website) {
+          return badRequest({ message: 'Website not found.' });
+        }
       }
     }
 
