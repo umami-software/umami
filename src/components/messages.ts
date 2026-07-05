@@ -384,6 +384,7 @@ export const labels: Record<string, string> = {
   replayId: 'label.replay-id',
   replayEnabled: 'label.replay-enabled',
   recorderCode: 'label.recorder-code',
+  blockedIps: 'label.blocked-ips',
   sampleRate: 'label.sample-rate',
   minDurationSeconds: 'label.min-duration-seconds',
   maskLevel: 'label.mask-level',
@@ -444,4 +445,5 @@ export const messages: Record<string, string> = {
   serverError: 'message.sever-error',
   upgradeRequired: 'message.upgrade-required',
   replayMinDurationDescription: 'message.replay-min-duration-description',
+  blockedIpsDescription: 'message.blocked-ips-description',
 };

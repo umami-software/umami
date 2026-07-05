@@ -30,6 +30,7 @@
     "before": "Before",
     "behavior": "Behaviour",
     "block-selector": "Block selector",
+    "blocked-ips": "Blocked IPs",
     "boards": "Boards",
     "board-type": "Board type",
     "bounce-rate": "Bounce rate",
@@ -434,6 +435,7 @@
     "replay-min-duration-description": "Only show replays at or above this duration.",
     "viewed-page": "Viewed page",
     "upgrade-required": "This feature requires a {plan} plan subscription.",
+    "blocked-ips-description": "Enter IP addresses (comma separated, supports CIDR notation) to exclude from statistics.",
     "visitor-log": "Visitor from <b>{country}</b> using <b>{browser}</b> on <b>{os}</b> <b>{device}</b>"
   }
 }

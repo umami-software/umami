@@ -75,3 +75,33 @@ test('hasBlockedIp: returns false for malformed client ip with cidr block', () =
 
   expect(hasBlockedIp('not-an-ip')).toBe(false);
 });
+
+test('hasBlockedIp: matches exact ip with extraIps', () => {
+  expect(hasBlockedIp('192.168.1.1', '192.168.1.1')).toBe(true);
+});
+
+test('hasBlockedIp: matches cidr with extraIps', () => {
+  expect(hasBlockedIp('10.0.0.5', '10.0.0.0/8')).toBe(true);
+});
+
+test('hasBlockedIp: does not match when ip not in extraIps', () => {
+  expect(hasBlockedIp('192.168.1.1', '10.0.0.0/8')).toBe(false);
+});
+
+test('hasBlockedIp: returns false when extraIps is empty string', () => {
+  expect(hasBlockedIp('192.168.1.1', '')).toBe(false);
+});
+
+test('hasBlockedIp: handles newlines as separator in extraIps', () => {
+  expect(hasBlockedIp('10.0.0.1', '192.168.1.1\n10.0.0.1')).toBe(true);
+});
+
+test('hasBlockedIp: handles mixed separators in extraIps', () => {
+  expect(hasBlockedIp('10.0.0.1', '192.168.1.1,\n10.0.0.1')).toBe(true);
+});
+
+test('hasBlockedIp: combines IGNORE_IP and extraIps correctly', () => {
+  process.env.IGNORE_IP = '10.0.0.0/8';
+
+  expect(hasBlockedIp('10.0.0.5', '192.168.1.0/24')).toBe(true);
+});

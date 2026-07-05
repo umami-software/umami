@@ -175,6 +175,10 @@ export async function POST(request: Request) {
       return forbidden();
     }
 
+    if (website?.blockedIps && hasBlockedIp(ip, website.blockedIps)) {
+      return json({ beep: 'boop' });
+    }
+
     if (body.type === 'record') {
       if (!replayEnabled) {
         return json({ ok: false, reason: 'replay_disabled' });

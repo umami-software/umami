@@ -147,14 +147,16 @@ export async function getClientInfo(request: Request, payload: Record<string, an
   return { userAgent, browser, os, ip, country, region, city, device };
 }
 
-export function hasBlockedIp(clientIp: string) {
+export function hasBlockedIp(clientIp: string, extraIps?: string) {
   const ignoreIps = process.env.IGNORE_IP;
 
-  if (!clientIp || !ignoreIps) {
+  const allIps = [ignoreIps, extraIps].filter(Boolean).join(',');
+
+  if (!clientIp || !allIps) {
     return false;
   }
 
-  const ips = ignoreIps.split(',').map(n => n.trim());
+  const ips = allIps.split(/[\s,]+/).filter(Boolean);
 
   return ips.some(ip => {
     if (ip === clientIp) {
