@@ -4,7 +4,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import chalk from 'chalk';
 import { PrismaClient } from '../generated/prisma/client.js';
 
-const DEFAULT_RETENTION_DAYS = 4;
+const DEFAULT_RETENTION_DAYS = 7;
 
 if (process.env.SKIP_REPLAY_PRUNE) {
   console.log('Skipping replay prune.');
