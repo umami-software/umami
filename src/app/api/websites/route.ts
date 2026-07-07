@@ -8,6 +8,7 @@ import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
 import { getCloudWebsiteLimit } from '@/lib/subscription';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createShare, createWebsite, getTeamWebsiteCount, getWebsiteCount } from '@/queries/prisma';
+import { validateWebsiteGroupOwnership } from '@/lib/websiteGroupValidation';
 import { getAllUserWebsitesIncludingTeamAccess, getUserWebsites } from '@/queries/prisma/website';
 
 export async function GET(request: Request) {
@@ -41,6 +42,7 @@ export async function POST(request: Request) {
     domain: z.string().max(500),
     shareId: z.string().max(50).nullable().optional(),
     teamId: z.uuid().nullable().optional(),
+    groupId: z.uuid().nullable().optional(),
     id: z.uuid().nullable().optional(),
   });
 
@@ -50,7 +52,7 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const { id, name, domain, shareId, teamId } = body;
+  const { id, name, domain, shareId, teamId, groupId } = body;
 
   if (process.env.CLOUD_MODE) {
     const account = teamId ? await fetchTeam(teamId) : await fetchAccount(auth.user.id);
@@ -71,12 +73,25 @@ export async function POST(request: Request) {
     return unauthorized();
   }
 
+  if (groupId) {
+    const groupValidation = await validateWebsiteGroupOwnership({
+      groupId,
+      userId: teamId ? null : auth.user.id,
+      teamId,
+    });
+
+    if (!groupValidation.valid) {
+      return unauthorized({ message: groupValidation.message });
+    }
+  }
+
   const data: any = {
     id: id ?? uuid(),
     createdBy: auth.user.id,
     name,
     domain,
     teamId,
+    groupId: groupId ?? null,
   };
 
   if (!teamId) {

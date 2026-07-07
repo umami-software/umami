@@ -9,3 +9,4 @@ export * from './team';
 export * from './teamUser';
 export * from './user';
 export * from './website';
+export * from './websiteGroup';

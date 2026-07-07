@@ -1,13 +1,37 @@
-import { Icon, ListItem, Row, Select, type SelectProps, Text } from '@umami/react-zen';
-import { useEffect, useState } from 'react';
+import { Icon, ListItem, ListSection, Row, Select, type SelectProps, Text } from '@umami/react-zen';
+import { useEffect, useMemo, useState } from 'react';
 import { Empty } from '@/components/common/Empty';
 import {
   useLoginQuery,
   useMessages,
   useUserWebsitesQuery,
   useWebsiteQuery,
+  useWebsiteTreeQuery,
 } from '@/components/hooks';
 import { Globe } from '@/components/icons';
+import { flattenTreeForSelect, buildGroupedSelectSections } from '@/lib/websiteTree';
+
+function renderGroupedSelectItems(tree: ReturnType<typeof flattenTreeForSelect>) {
+  return buildGroupedSelectSections(tree).map(entry => {
+    if (entry.type === 'website') {
+      return (
+        <ListItem key={entry.id} id={entry.id}>
+          {entry.label}
+        </ListItem>
+      );
+    }
+
+    return (
+      <ListSection key={entry.title} title={entry.title}>
+        {entry.websites.map(website => (
+          <ListItem key={website.id} id={website.id}>
+            {website.label}
+          </ListItem>
+        ))}
+      </ListSection>
+    );
+  });
+}
 
 export function WebsiteSelect({
   websiteId,
@@ -29,11 +53,22 @@ export function WebsiteSelect({
   const [name, setName] = useState<string>(website?.name);
   const [search, setSearch] = useState('');
   const { user } = useLoginQuery();
-  const { data, isLoading } = useUserWebsitesQuery(
+  const isSearching = !!search;
+
+  const { data: tree, isLoading: treeLoading } = useWebsiteTreeQuery(
+    { teamId },
+    { enabled: !isSearching && !includeTeams },
+  );
+
+  const { data: flatData, isLoading: flatLoading } = useUserWebsitesQuery(
     { userId: user?.id, teamId },
     { search, pageSize: 100, includeTeams },
+    { enabled: isSearching || !!includeTeams },
   );
-  const listItems: { id: string; name: string }[] = data?.data || [];
+
+  const flatItems = flatData?.data || [];
+  const treeItems = useMemo(() => (tree ? flattenTreeForSelect(tree) : []), [tree]);
+  const websiteItems = treeItems.filter(item => item.type === 'website');
 
   useEffect(() => {
     setName(website?.name);
@@ -48,7 +83,9 @@ export function WebsiteSelect({
   };
 
   const handleChange = (id: string) => {
-    setName(listItems.find(item => item.id === id)?.name);
+    const selected =
+      flatItems.find(item => item.id === id) || websiteItems.find(item => item.id === id);
+    setName(selected?.name ?? selected?.label);
     onChange(id);
   };
 
@@ -70,6 +107,16 @@ export function WebsiteSelect({
       </Row>
     );
   };
+
+  const isLoading = isSearching || includeTeams ? flatLoading : treeLoading;
+
+  const listContent = isSearching || includeTeams
+    ? flatItems.map(({ id, name: itemName, groupPath }) => (
+        <ListItem key={id} id={id}>
+          {groupPath ? `${groupPath} / ${itemName}` : itemName}
+        </ListItem>
+      ))
+    : renderGroupedSelectItems(treeItems);
 
   return (
     <Select
@@ -102,11 +149,7 @@ export function WebsiteSelect({
         },
       }}
     >
-      {listItems.map(({ id, name }) => (
-        <ListItem key={id} id={id}>
-          {name}
-        </ListItem>
-      ))}
+      {listContent}
     </Select>
   );
 }

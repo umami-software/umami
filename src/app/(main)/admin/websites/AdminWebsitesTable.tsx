@@ -25,6 +25,9 @@ export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
         <DataColumn id="domain" label={<SortableLabel label={t(labels.domain)} sortKey="domain" />}>
           {(row: any) => <Text truncate>{row.domain}</Text>}
         </DataColumn>
+        <DataColumn id="groupPath" label={t(labels.groupPath)}>
+          {(row: any) => <Text truncate>{row.groupPath ?? '—'}</Text>}
+        </DataColumn>
         <DataColumn id="owner" label={t(labels.owner)}>
           {(row: any) => {
             if (row?.team) {

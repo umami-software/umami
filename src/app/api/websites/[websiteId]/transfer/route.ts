@@ -30,6 +30,7 @@ export async function POST(
     const website = await updateWebsite(websiteId, {
       userId,
       teamId: null,
+      groupId: null,
     });
 
     return json(website);
@@ -41,6 +42,7 @@ export async function POST(
     const website = await updateWebsite(websiteId, {
       userId: null,
       teamId,
+      groupId: null,
     });
 
     return json(website);

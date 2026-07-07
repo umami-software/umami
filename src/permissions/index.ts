@@ -7,3 +7,4 @@ export * from './share';
 export * from './team';
 export * from './user';
 export * from './website';
+export * from './websiteGroup';

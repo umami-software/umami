@@ -1,22 +1,31 @@
 import { Form, FormButtons, FormField, FormSubmitButton, TextField } from '@umami/react-zen';
-import { useMessages, useUpdateQuery, useWebsite } from '@/components/hooks';
+import { useMessages, useNavigation, useUpdateQuery, useWebsite } from '@/components/hooks';
+import { WebsiteGroupSelectField } from '@/components/input/WebsiteGroupSelect';
 import { DOMAIN_REGEX } from '@/lib/constants';
 
 export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
   const website = useWebsite();
+  const { teamId } = useNavigation();
   const { t, labels, messages, getErrorMessage } = useMessages();
   const { mutateAsync, error, touch, toast } = useUpdateQuery(`/websites/${websiteId}`);
 
   const handleSubmit = async (data: any) => {
     const { shareId, ...updateData } = data;
-    await mutateAsync(updateData, {
-      onSuccess: async () => {
-        toast(t(messages.saved));
-        touch('websites');
-        touch(`website:${website.id}`);
-        onSave?.();
+    await mutateAsync(
+      {
+        ...updateData,
+        groupId: updateData.groupId || null,
       },
-    });
+      {
+        onSuccess: async () => {
+          toast(t(messages.saved));
+          touch('websites');
+          touch('website-groups');
+          touch(`website:${website.id}`);
+          onSave?.();
+        },
+      },
+    );
   };
 
   return (
@@ -46,6 +55,7 @@ export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSa
       >
         <TextField />
       </FormField>
+      <WebsiteGroupSelectField teamId={teamId || website?.teamId} />
       <FormButtons>
         <FormSubmitButton data-test="button-submit" variant="primary">
           {t(labels.save)}

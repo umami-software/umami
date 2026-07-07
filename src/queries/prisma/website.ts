@@ -4,6 +4,8 @@ import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
 import type { QueryFilters } from '@/lib/types';
+import { attachGroupPathToWebsites, getGroupPath } from '@/lib/websiteTree';
+import { getAllWebsiteGroupsForOwner } from '@/queries/prisma/websiteGroup';
 
 const WEBSITE_SORT_FIELDS = ['name', 'domain', 'createdAt'] as const;
 
@@ -43,7 +45,87 @@ export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters:
 
   const websites = await pagedQuery('website', { ...criteria, where }, sortFilters);
 
-  return attachShareIdToWebsites(websites);
+  return attachGroupPathToWebsitesResult(websites, criteria.where);
+}
+
+async function attachGroupPathToWebsitesResult(
+  websites: {
+    data: any;
+    count: any;
+    page: number;
+    pageSize: number;
+    orderBy: string;
+    search: string;
+  },
+  where: Prisma.WebsiteWhereInput = {},
+) {
+  const withShare = await attachShareIdToWebsites(websites);
+
+  const owner = extractOwnerFromWhere(where);
+
+  if (owner) {
+    const groups = await getAllWebsiteGroupsForOwner(owner);
+
+    return {
+      ...withShare,
+      data: attachGroupPathToWebsites(withShare.data, groups),
+    };
+  }
+
+  const ownerKeys = new Set<string>();
+
+  for (const website of withShare.data) {
+    if (website.teamId) {
+      ownerKeys.add(`team:${website.teamId}`);
+    } else if (website.userId) {
+      ownerKeys.add(`user:${website.userId}`);
+    }
+  }
+
+  const groupsByOwner = new Map<string, Awaited<ReturnType<typeof getAllWebsiteGroupsForOwner>>>();
+
+  await Promise.all(
+    [...ownerKeys].map(async key => {
+      const [type, id] = key.split(':');
+      const groups = await getAllWebsiteGroupsForOwner(
+        type === 'team' ? { teamId: id } : { userId: id },
+      );
+      groupsByOwner.set(key, groups);
+    }),
+  );
+
+  return {
+    ...withShare,
+    data: withShare.data.map((website: any) => {
+      const key = website.teamId
+        ? `team:${website.teamId}`
+        : website.userId
+          ? `user:${website.userId}`
+          : null;
+      const groups = key ? (groupsByOwner.get(key) ?? []) : [];
+      const groupsMap = new Map(groups.map(group => [group.id, group]));
+
+      return {
+        ...website,
+        groupPath: getGroupPath(website.groupId, groupsMap),
+      };
+    }),
+  };
+}
+
+function extractOwnerFromWhere(where: Prisma.WebsiteWhereInput): {
+  userId?: string | null;
+  teamId?: string | null;
+} | null {
+  if (where.userId && typeof where.userId === 'string') {
+    return { userId: where.userId };
+  }
+
+  if (where.teamId && typeof where.teamId === 'string') {
+    return { teamId: where.teamId };
+  }
+
+  return null;
 }
 
 export async function getAllUserWebsitesIncludingTeamAccess(

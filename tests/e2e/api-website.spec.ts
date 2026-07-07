@@ -128,6 +128,32 @@ test.describe('Website API tests', () => {
     expect(body).toHaveProperty('shareId', 'ABCDEF');
   });
 
+  test('updates a website group assignment', async ({ request }) => {
+    const groupResponse = await request.post('/api/website-groups', {
+      headers: authHeaders(auth),
+      data: { name: 'Temp Group' },
+    });
+    const group = await groupResponse.json();
+
+    const response = await request.post(`/api/websites/${websiteId}`, {
+      headers: authHeaders(auth),
+      data: { groupId: group.id },
+    });
+    const body = await response.json();
+
+    expect(response.status()).toBe(200);
+    expect(body).toHaveProperty('groupId', group.id);
+
+    await request.post(`/api/websites/${websiteId}`, {
+      headers: authHeaders(auth),
+      data: { groupId: null },
+    });
+
+    await request.delete(`/api/website-groups/${group.id}`, {
+      headers: authHeaders(auth),
+    });
+  });
+
   test('resets a website by removing all data related to the website', async ({ request }) => {
     const response = await request.post(`/api/websites/${websiteId}/reset`, {
       headers: authHeaders(auth),

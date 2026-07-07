@@ -5,6 +5,7 @@ import { uuid } from '@/lib/crypto';
 import { getRecorderConfig, getRecorderEnabled } from '@/lib/recorder';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
+import { validateWebsiteGroupOwnership } from '@/lib/websiteGroupValidation';
 import { canDeleteWebsite, canUpdateWebsite, canViewSharedWebsite } from '@/permissions';
 import {
   createShare,
@@ -44,6 +45,7 @@ export async function POST(
     name: z.string().max(100).optional(),
     domain: z.string().max(500).optional(),
     shareId: z.string().max(50).nullable().optional(),
+    groupId: z.uuid().nullable().optional(),
     replayConfig: z
       .object({
         replayEnabled: z.boolean().optional(),
@@ -65,7 +67,7 @@ export async function POST(
   }
 
   const { websiteId } = await params;
-  const { name, domain, shareId, replayConfig } = body;
+  const { name, domain, shareId, groupId, replayConfig } = body;
 
   if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
@@ -76,6 +78,18 @@ export async function POST(
 
     if (!currentWebsite) {
       return badRequest({ message: 'Website not found.' });
+    }
+
+    if (groupId !== undefined && groupId !== null) {
+      const groupValidation = await validateWebsiteGroupOwnership({
+        groupId,
+        userId: currentWebsite.userId,
+        teamId: currentWebsite.teamId,
+      });
+
+      if (!groupValidation.valid) {
+        return badRequest({ message: groupValidation.message });
+      }
     }
 
     const nextReplayConfig = getRecorderConfig(
@@ -90,6 +104,7 @@ export async function POST(
     const website = await updateWebsite(websiteId, {
       name,
       domain,
+      ...(groupId !== undefined && { groupId }),
       ...(replayConfig !== undefined && {
         replayConfig: nextReplayConfig as Prisma.InputJsonObject,
         recorderEnabled: getRecorderEnabled(nextReplayConfig),

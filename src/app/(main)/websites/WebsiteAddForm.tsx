@@ -1,5 +1,6 @@
 import { Button, Form, FormField, FormSubmitButton, Row, TextField } from '@umami/react-zen';
-import { useMessages, useUpdateQuery } from '@/components/hooks';
+import { useMessages, useModified, useUpdateQuery } from '@/components/hooks';
+import { WebsiteGroupSelectField } from '@/components/input/WebsiteGroupSelect';
 import { DOMAIN_REGEX } from '@/lib/constants';
 
 export function WebsiteAddForm({
@@ -13,14 +14,23 @@ export function WebsiteAddForm({
 }) {
   const { t, labels, messages } = useMessages();
   const { mutateAsync, error, isPending } = useUpdateQuery('/websites', { teamId });
+  const { touch } = useModified();
 
   const handleSubmit = async (data: any) => {
-    await mutateAsync(data, {
-      onSuccess: async () => {
-        onSave?.();
-        onClose?.();
+    await mutateAsync(
+      {
+        ...data,
+        groupId: data.groupId || null,
       },
-    });
+      {
+        onSuccess: async () => {
+          touch('websites');
+          touch('website-groups');
+          onSave?.();
+          onClose?.();
+        },
+      },
+    );
   };
 
   return (
@@ -45,6 +55,7 @@ export function WebsiteAddForm({
       >
         <TextField autoComplete="off" />
       </FormField>
+      <WebsiteGroupSelectField teamId={teamId} />
       <Row justifyContent="flex-end" paddingTop="3" gap="3">
         {onClose && (
           <Button isDisabled={isPending} onPress={onClose}>
