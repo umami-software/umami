@@ -60,7 +60,7 @@ export function LinkEditForm({
   };
 
   const checkUrl = (url: string) => {
-    if (!isValidUrl(url) || (url === `${hostUrl}/${slug}`))) {
+    if (!isValidUrl(url) || (url === `${hostUrl}/${defaultSlug}`)) {
       return t(labels.invalidUrl);
     }
     return true;
