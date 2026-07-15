@@ -59,8 +59,8 @@ export function LinkEditForm({
     });
   };
 
-  const checkUrl = (url: string) => {
-    if (!isValidUrl(url) || (url === `${hostUrl}/${defaultSlug}`)) {
+  const checkUrl = (url: string, formValues: any) => {
+    if (!isValidUrl(url) || (url === `${hostUrl}/${formValues.slug}`)) {
       return t(labels.invalidUrl);
     }
     return true;
