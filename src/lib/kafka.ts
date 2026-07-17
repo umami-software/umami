@@ -1,5 +1,5 @@
 import type * as tls from 'node:tls';
-import { Kafka, logLevel, type Producer, type SASLOptions } from 'kafkajs';
+import { CompressionTypes, Kafka, logLevel, type Producer, type SASLOptions } from 'kafkajs';
 import { serializeError } from 'serialize-error';
 import { BatchBuffer } from '@/lib/batch-buffer';
 import { KAFKA, KAFKA_PRODUCER } from '@/lib/db';
@@ -15,6 +15,8 @@ const BATCH_SIZE = Math.floor(MAX_QUEUE_SIZE * 0.8); // Flush at 80% capacity
 const CONNECT_TIMEOUT = parseInt(process.env.KAFKA_CONNECT_TIMEOUT || '10000', 10);
 const SEND_TIMEOUT = parseInt(process.env.KAFKA_SEND_TIMEOUT || '30000', 10);
 const ACKS = 1;
+// Broker's message.max.bytes is 1048588; keep a margin for batch/protocol overhead.
+const MAX_BATCH_BYTES = parseInt(process.env.KAFKA_MAX_BATCH_BYTES || '943729', 10);
 
 let kafka: Kafka;
 let producer: Producer;
@@ -83,6 +85,80 @@ async function getProducer(): Promise<Producer> {
 }
 
 /**
+ * Split messages into chunks that stay under MAX_BATCH_BYTES
+ */
+function chunkByByteSize(
+  msgs: Array<{ value: string; timestamp: string }>,
+): Array<Array<{ value: string; timestamp: string }>> {
+  const chunks: Array<Array<{ value: string; timestamp: string }>> = [];
+  let current: Array<{ value: string; timestamp: string }> = [];
+  let currentBytes = 0;
+
+  for (const msg of msgs) {
+    const msgBytes = Buffer.byteLength(msg.value, 'utf8');
+
+    if (current.length > 0 && currentBytes + msgBytes > MAX_BATCH_BYTES) {
+      chunks.push(current);
+      current = [];
+      currentBytes = 0;
+    }
+
+    current.push(msg);
+    currentBytes += msgBytes;
+  }
+
+  if (current.length > 0) {
+    chunks.push(current);
+  }
+
+  return chunks;
+}
+
+const NON_RETRIABLE_SIZE_ERRORS = new Set(['MESSAGE_TOO_LARGE', 'RECORD_LIST_TOO_LARGE']);
+
+function isMessageTooLargeError(error: unknown): boolean {
+  const type = (error as { type?: string; cause?: { type?: string } })?.type;
+  const causeType = (error as { cause?: { type?: string } })?.cause?.type;
+
+  return NON_RETRIABLE_SIZE_ERRORS.has(type) || NON_RETRIABLE_SIZE_ERRORS.has(causeType);
+}
+
+/**
+ * Send a chunk, bisecting and dropping only the oversized message(s) if the
+ * broker permanently rejects it for size — prevents a poison message from
+ * blocking the batch buffer forever (everything else keeps flowing).
+ */
+async function sendChunkSafely(
+  topic: string,
+  chunk: Array<{ value: string; timestamp: string }>,
+): Promise<void> {
+  try {
+    await producer.send({
+      topic,
+      messages: chunk,
+      acks: ACKS,
+      timeout: SEND_TIMEOUT,
+      compression: CompressionTypes.GZIP,
+    });
+  } catch (error) {
+    if (!isMessageTooLargeError(error)) {
+      throw error;
+    }
+
+    if (chunk.length === 1) {
+      logger.error(
+        `Dropping oversized message on topic "${topic}" (${Buffer.byteLength(chunk[0].value, 'utf8')} bytes, exceeds broker limit)`,
+      );
+      return;
+    }
+
+    const mid = Math.floor(chunk.length / 2);
+    await sendChunkSafely(topic, chunk.slice(0, mid));
+    await sendChunkSafely(topic, chunk.slice(mid));
+  }
+}
+
+/**
  * Flush handler called by BatchBuffer when it's time to send messages
  */
 async function flushBatch(messages: KafkaMessage[]): Promise<void> {
@@ -109,15 +185,10 @@ async function flushBatch(messages: KafkaMessage[]): Promise<void> {
     await sleep(500);
   }
 
-  // Send all topics in parallel
+  // Send all topics in parallel, chunked to stay under the broker's max message size
   await Promise.all(
-    Object.entries(topicGroups).map(([topic, msgs]) =>
-      producer.send({
-        topic,
-        messages: msgs,
-        acks: ACKS,
-        timeout: SEND_TIMEOUT,
-      }),
+    Object.entries(topicGroups).flatMap(([topic, msgs]) =>
+      chunkByByteSize(msgs).map(chunk => sendChunkSafely(topic, chunk)),
     ),
   );
 
