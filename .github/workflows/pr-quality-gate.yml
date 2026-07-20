@@ -1,0 +1,71 @@
+name: PR Quality Gate
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+concurrency:
+  group: pr-quality-gate-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+  pull-requests: write
+  security-events: read     # lets GITHUB_TOKEN read Dependabot alerts (fallback if no PAT)
+jobs:
+  quality-gate: 
+    # The job NAME below is exactly what appears as the status check in the
+    # Actions tab and in branch protection. Set this same string as the
+    # required status check. Change it here and it changes everywhere.
+    name: PR Quality Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SOURCE branch (PR head)
+        uses: actions/checkout@v4
+        with:
+          # Build + lint run against this source-branch checkout. (Vulnerabilities
+          # come from the Dependabot alerts API, which is default-branch and
+          # unaffected by this ref.)
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Cache package-manager DOWNLOAD caches so Node installs run mostly offline.
+      - name: Cache package-manager downloads
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ~/.cache/yarn
+            ~/.local/share/pnpm/store
+          key: pm-${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/yarn.lock', '**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pm-${{ runner.os }}-
+
+      - name: Install tooling (requests, ruff)
+        run: pip install requests ruff --quiet
+
+      - name: Run PR quality gate
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # PAT with security_events (alerts) read. Recommended for private repos;
+          # falls back to GITHUB_TOKEN + security-events:read above if omitted.
+          DEPENDABOT_PAT: ${{ secrets.DEPENDABOT_PAT }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+          # Incremental-scan inputs: on "synchronize" these bound the new push.
+          EVENT_ACTION: ${{ github.event.action }}
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.event.after }}
+          # ── Gating knobs — all three block the merge ──────────────────
+          BLOCK_ON_VULN: 'true'
+          BLOCK_ON_BUILD: 'true'
+          BLOCK_ON_LINT: 'true'
+        run: python scripts/pr_quality_gate.py
