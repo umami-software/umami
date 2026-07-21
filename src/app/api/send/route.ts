@@ -10,9 +10,8 @@ import { fetchWebsite } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
-import { getSessionId } from '@/lib/session';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData, saveSessionLink } from '@/queries/sql';
+import { createSession, saveEvent, saveSessionData, saveSessionLink, updateSession } from '@/queries/sql';
 
 interface Cache {
   websiteId: string;
@@ -130,7 +129,7 @@ export async function POST(request: Request) {
       }
     }
 
-    // Carried forward in the cache token so repeat identify calls skip the link write
+    // Carried forward in the cache token so repeat identify calls skip identity writes
     let sessionLinkId = cache?.sessionLinkId;
 
     // Client info
@@ -156,7 +155,7 @@ export async function POST(request: Request) {
     const sessionSalt = getSalt(saltRotation, createdAt);
     const visitSalt = hash(startOfHour(createdAt).toUTCString());
 
-    const sessionId = getSessionId(sourceId, ip, userAgent, sessionSalt, id);
+    const sessionId = uuid(sourceId, ip, userAgent, sessionSalt);
 
     // Create a session if not found
     if (!clickhouse.enabled && !cache?.sessionId) {
@@ -283,25 +282,24 @@ export async function POST(request: Request) {
       });
     } else if (type === COLLECTION_TYPE.identify) {
       if (websiteId && id) {
-        // Persist both memberships so stitched activity can be resolved from
-        // either the anonymous session or the identified session.
-        const anonymousSessionId = getSessionId(sourceId, ip, userAgent, sessionSalt);
-        const linkedSessionIds = [...new Set([anonymousSessionId, sessionId])];
-        const newLinkId = hash(...linkedSessionIds, id);
+        const newLinkId = hash(sessionId, id);
 
         if (sessionLinkId !== newLinkId) {
-          // Best-effort: a link failure must not block the session data write below
+          // Best-effort: identity link failures must not block the session data write below.
           try {
-            await Promise.all(
-              linkedSessionIds.map(linkedSessionId =>
-                saveSessionLink({
-                  websiteId,
-                  sessionId: linkedSessionId,
-                  distinctId: id,
-                  createdAt,
-                }),
-              ),
-            );
+            await Promise.all([
+              saveSessionLink({
+                websiteId,
+                sessionId,
+                distinctId: id,
+                createdAt,
+              }),
+              updateSession({
+                websiteId,
+                sessionId,
+                distinctId: id,
+              }),
+            ]);
             sessionLinkId = newLinkId;
           } catch (e) {
             // eslint-disable-next-line no-console
