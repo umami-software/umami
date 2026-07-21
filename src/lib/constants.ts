@@ -75,6 +75,7 @@ export const SEGMENT_TYPES = {
 
 export const FILTER_COLUMNS = {
   path: 'url_path',
+  fullPath: 'url_path',
   entry: 'url_path',
   exit: 'url_path',
   referrer: 'referrer_domain',
