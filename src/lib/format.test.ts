@@ -27,6 +27,8 @@ test('formatNumber', () => {
 });
 
 test('formatLongNumber', () => {
+  expect(format.formatLongNumber(1000000000)).toBe('1.0b');
+  expect(format.formatLongNumber(2500000000)).toBe('2.5b');
   expect(format.formatLongNumber(1200000)).toBe('1.2m');
   expect(format.formatLongNumber(575000)).toBe('575k');
   expect(format.formatLongNumber(10500)).toBe('10.5k');

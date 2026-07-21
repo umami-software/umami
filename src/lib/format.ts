@@ -51,7 +51,7 @@ export function formatLongNumber(value: number) {
   const n = Number(value);
 
   if (n >= 1000000000) {
-    return `${(n / 1000000).toFixed(1)}b`;
+    return `${(n / 1000000000).toFixed(1)}b`;
   }
   if (n >= 1000000) {
     return `${(n / 1000000).toFixed(1)}m`;
