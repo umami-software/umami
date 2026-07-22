@@ -17,7 +17,7 @@ export function SessionModal({ websiteId, ...props }: SessionModalProps) {
   const isSharePage = pathname.includes('/share/');
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
-      router.push(updateParams({ session: undefined }));
+      router.replace(updateParams({ session: undefined }), { scroll: false });
     }
   };
 

@@ -1,7 +1,10 @@
 import { describe, expect, test } from 'vitest';
 import {
+  CLOUD_FREE_TEAM_LIMIT,
   CLOUD_FREE_WEBSITE_LIMIT,
+  CLOUD_PRO_TEAM_LIMIT,
   CLOUD_PRO_WEBSITE_LIMIT,
+  getCloudTeamLimit,
   getCloudWebsiteLimit,
 } from './subscription';
 
@@ -41,5 +44,30 @@ describe('getCloudWebsiteLimit', () => {
     expect(
       getCloudWebsiteLimit({ hasSubscription: false, unlimitedWebsites: true }),
     ).toBe(CLOUD_FREE_WEBSITE_LIMIT);
+  });
+});
+
+describe('getCloudTeamLimit', () => {
+  test('does not allow teams for accounts without a subscription', () => {
+    expect(CLOUD_FREE_TEAM_LIMIT).toBe(0);
+    expect(getCloudTeamLimit(null)).toBe(CLOUD_FREE_TEAM_LIMIT);
+    expect(getCloudTeamLimit(undefined)).toBe(CLOUD_FREE_TEAM_LIMIT);
+    expect(getCloudTeamLimit({ hasSubscription: false })).toBe(CLOUD_FREE_TEAM_LIMIT);
+  });
+
+  test('limits Pro accounts to the Pro team limit', () => {
+    expect(getCloudTeamLimit({ hasSubscription: true, isPro: true })).toBe(CLOUD_PRO_TEAM_LIMIT);
+  });
+
+  test('does not limit Business or no-billing accounts', () => {
+    expect(getCloudTeamLimit({ hasSubscription: true, isBusiness: true })).toBeNull();
+    expect(getCloudTeamLimit({ hasSubscription: true, isNoBilling: true })).toBeNull();
+  });
+
+  // unlimitedWebsites is a website-only entitlement; it must not lift the team limit.
+  test('ignores the unlimited websites flag for team limits', () => {
+    expect(getCloudTeamLimit({ hasSubscription: true, isPro: true, unlimitedWebsites: true })).toBe(
+      CLOUD_PRO_TEAM_LIMIT,
+    );
   });
 });

@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   const schema = z.object({
     name: z.string().max(100),
     url: z.string().max(500),
-    slug: z.string().max(100),
+    slug: z.string().min(8).max(100),
     teamId: z.string().nullable().optional(),
     id: z.uuid().nullable().optional(),
   });

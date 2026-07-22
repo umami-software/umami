@@ -168,7 +168,9 @@
 
 .snapshot {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1;
   transform-origin: top left;
   pointer-events: none;

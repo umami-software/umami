@@ -42,3 +42,9 @@ test('truncateString', () => {
   expect(format.truncateString('hello', 3)).toBe('hel');
   expect(format.truncateString(undefined, 3)).toBeUndefined();
 });
+
+test('decodePunycodeDomain', () => {
+  expect(format.decodePunycodeDomain('xn--bcher-kva.example')).toBe('bücher.example');
+  expect(format.decodePunycodeDomain('example.com')).toBe('example.com');
+  expect(format.decodePunycodeDomain(undefined)).toBeUndefined();
+});

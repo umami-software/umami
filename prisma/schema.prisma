@@ -63,6 +63,17 @@ model Session {
   @@map("session")
 }
 
+model SessionLink {
+  websiteId  String    @map("website_id") @db.Uuid
+  sessionId  String    @map("session_id") @db.Uuid
+  distinctId String    @map("distinct_id") @db.VarChar(50)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@id([websiteId, distinctId, sessionId])
+  @@index([websiteId, sessionId])
+  @@map("session_link")
+}
+
 model Website {
   id        String    @id() @map("website_id") @db.Uuid
   name      String    @db.VarChar(100)

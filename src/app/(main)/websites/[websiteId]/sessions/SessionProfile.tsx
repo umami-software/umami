@@ -13,7 +13,7 @@ import {
 import { X } from 'lucide-react';
 import { Avatar } from '@/components/common/Avatar';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, useWebsiteSessionQuery } from '@/components/hooks';
+import { useMessages, useMobile, useWebsiteSessionQuery } from '@/components/hooks';
 import { SessionActivity } from './SessionActivity';
 import { SessionData } from './SessionData';
 import { SessionInfo } from './SessionInfo';
@@ -33,6 +33,7 @@ export function SessionProfile({
 }) {
   const { data, isLoading, error } = useWebsiteSessionQuery(websiteId, sessionId);
   const { t, labels } = useMessages();
+  const { isMobile } = useMobile();
 
   return (
     <LoadingPanel
@@ -54,9 +55,14 @@ export function SessionProfile({
             </Row>
           )}
           <Column gap="6">
-            <Row justifyContent="center" alignItems="center" gap="6">
-              <Avatar seed={data?.id} size={128} />
-              <Column width="360px">
+            <Row
+              justifyContent="center"
+              alignItems="center"
+              gap="6"
+              style={{ flexWrap: isMobile ? 'wrap' : 'nowrap' }}
+            >
+              <Avatar seed={data?.id} size={isMobile ? 80 : 128} />
+              <Column width={isMobile ? '100%' : '360px'} minWidth="0" maxWidth="360px">
                 <TextField label="ID" value={data?.id} allowCopy />
               </Column>
             </Row>
@@ -75,6 +81,7 @@ export function SessionProfile({
                   sessionId={sessionId}
                   startDate={data?.firstAt}
                   endDate={data?.lastAt}
+                  distinctId={data?.distinctId}
                 />
               </TabPanel>
               <TabPanel id="properties">

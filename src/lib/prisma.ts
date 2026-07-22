@@ -29,6 +29,46 @@ const PRISMA_LOG_OPTIONS = {
   ],
 };
 
+export interface RawQueryExecutor {
+  $executeRawUnsafe: (query: string, ...params: any[]) => unknown;
+  $queryRawUnsafe: (query: string, ...params: any[]) => unknown;
+}
+
+export interface RawQueryClient extends RawQueryExecutor {
+  $primary?: () => unknown;
+  $replica?: () => unknown;
+}
+
+function isRawQueryExecutor(value: unknown): value is RawQueryExecutor {
+  return !!value && typeof value === 'object' && '$executeRawUnsafe' in value && '$queryRawUnsafe' in value;
+}
+
+export function getRawQueryClient(
+  client: RawQueryClient,
+  {
+    useReplica = false,
+    write = false,
+  }: {
+    useReplica?: boolean;
+    write?: boolean;
+  } = {},
+) {
+  if (write) {
+    const primary = typeof client.$primary === 'function' ? client.$primary() : null;
+    return isRawQueryExecutor(primary) ? primary : client;
+  }
+
+  if (useReplica && typeof client.$replica === 'function') {
+    const replica = client.$replica();
+
+    if (isRawQueryExecutor(replica)) {
+      return replica;
+    }
+  }
+
+  return client;
+}
+
 const DATE_FORMATS = {
   minute: 'YYYY-MM-DD HH24:MI:00',
   hour: 'YYYY-MM-DD HH24:00:00',
@@ -410,7 +450,12 @@ function getPropertyFilterQuery(
   return { sql: parts.join('\n'), params };
 }
 
-async function rawQuery(sql: string, data: Record<string, any>, name?: string): Promise<any> {
+async function executeRawQuery(
+  sql: string,
+  data: Record<string, any>,
+  name?: string,
+  write = false,
+): Promise<any> {
   if (process.env.LOG_QUERY) {
     log('QUERY:\n', sql);
     log('PARAMETERS:\n', data);
@@ -418,10 +463,6 @@ async function rawQuery(sql: string, data: Record<string, any>, name?: string): 
   }
   const params = [];
   const schema = getSchema();
-
-  if (schema) {
-    await client.$executeRawUnsafe(`SET search_path TO "${schema}";`);
-  }
 
   const query = sql?.replaceAll(/\{\{\s*(\w+)(::\w+)?\s*}}/g, (...args) => {
     const [, name, type] = args;
@@ -433,10 +474,24 @@ async function rawQuery(sql: string, data: Record<string, any>, name?: string): 
     return `$${params.length}${type ?? ''}`;
   });
 
-  if (process.env.DATABASE_REPLICA_URL && '$replica' in client) {
-    return client.$replica().$queryRawUnsafe(query, ...params);
+  const queryClient = getRawQueryClient(client, {
+    useReplica: !!process.env.DATABASE_REPLICA_URL,
+    write,
+  });
+
+  if (schema) {
+    await queryClient.$executeRawUnsafe(`SET search_path TO "${schema}";`);
   }
-  return client.$queryRawUnsafe(query, ...params);
+
+  return queryClient.$queryRawUnsafe(query, ...params);
+}
+
+async function rawQuery(sql: string, data: Record<string, any>, name?: string): Promise<any> {
+  return executeRawQuery(sql, data, name);
+}
+
+async function writeRawQuery(sql: string, data: Record<string, any>, name?: string): Promise<any> {
+  return executeRawQuery(sql, data, name, true);
 }
 
 async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters) {
@@ -613,4 +668,5 @@ export default {
   pagedRawQuery,
   parseFilters,
   rawQuery,
+  writeRawQuery,
 };

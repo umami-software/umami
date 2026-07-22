@@ -7,7 +7,7 @@ import type { QueryFilters } from '@/lib/types';
 const FUNCTION_NAME = 'getSessionActivity';
 
 export async function getSessionActivity(
-  ...args: [websiteId: string, sessionId: string, filters: QueryFilters]
+  ...args: [websiteId: string, sessionIds: string[], filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -15,7 +15,7 @@ export async function getSessionActivity(
   });
 }
 
-async function relationalQuery(websiteId: string, sessionId: string, filters: QueryFilters) {
+async function relationalQuery(websiteId: string, sessionIds: string[], filters: QueryFilters) {
   const { rawQuery } = prisma;
   const { startDate, endDate } = filters;
 
@@ -37,18 +37,18 @@ async function relationalQuery(websiteId: string, sessionId: string, filters: Qu
                       and created_at between {{startDate}} and {{endDate}}) AS "hasData"
     from website_event
     where website_id = {{websiteId::uuid}}
-      and session_id = {{sessionId::uuid}}
+      and session_id = any({{sessionIds}}::uuid[])
       and event_type != ${EVENT_TYPE.performance}
       and created_at between {{startDate}} and {{endDate}}
     order by created_at desc
     limit 500
     `,
-    { websiteId, sessionId, startDate, endDate },
+    { websiteId, sessionIds, startDate, endDate },
     FUNCTION_NAME,
   );
 }
 
-async function clickhouseQuery(websiteId: string, sessionId: string, filters: QueryFilters) {
+async function clickhouseQuery(websiteId: string, sessionIds: string[], filters: QueryFilters) {
   const { rawQuery } = clickhouse;
   const { startDate, endDate } = filters;
 
@@ -64,20 +64,20 @@ async function clickhouseQuery(websiteId: string, sessionId: string, filters: Qu
       event_name as eventName,
       visit_id as visitId,
       hostname,
-      event_id IN (select event_id 
-                   from event_data 
-                   where website_id = {websiteId:UUID} 
-                    and session_id = {sessionId:UUID}
+      event_id IN (select event_id
+                   from event_data
+                   where website_id = {websiteId:UUID}
+                    and session_id in {sessionIds:Array(UUID)}
                     and created_at between {startDate:DateTime64} and {endDate:DateTime64}) AS hasData
     from website_event
     where website_id = {websiteId:UUID}
-      and session_id = {sessionId:UUID} 
+      and session_id in {sessionIds:Array(UUID)}
       and event_type != ${EVENT_TYPE.performance}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
     order by created_at desc
     limit 500
     `,
-    { websiteId, sessionId, startDate, endDate },
+    { websiteId, sessionIds, startDate, endDate },
     FUNCTION_NAME,
   );
 }

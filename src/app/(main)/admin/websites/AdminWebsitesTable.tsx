@@ -7,6 +7,7 @@ import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages } from '@/components/hooks';
 import { Edit, Trash, Users } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
+import { decodePunycodeDomain } from '@/lib/format';
 
 export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
   const { t, labels } = useMessages();
@@ -23,7 +24,7 @@ export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
           )}
         </DataColumn>
         <DataColumn id="domain" label={<SortableLabel label={t(labels.domain)} sortKey="domain" />}>
-          {(row: any) => <Text truncate>{row.domain}</Text>}
+          {(row: any) => <Text truncate>{decodePunycodeDomain(row.domain)}</Text>}
         </DataColumn>
         <DataColumn id="owner" label={t(labels.owner)}>
           {(row: any) => {

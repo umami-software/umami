@@ -70,6 +70,7 @@ export * from './queries/useWebsiteEventsSeriesQuery';
 export * from './queries/useWebsiteExpandedMetricsQuery';
 export * from './queries/useWebsiteMetricsQuery';
 export * from './queries/useWebsitePageviewsQuery';
+export * from './queries/useWebsiteListChartsQuery';
 export * from './queries/useWebsiteQuery';
 export * from './queries/useWebsiteSegmentQuery';
 export * from './queries/useWebsiteSegmentsQuery';

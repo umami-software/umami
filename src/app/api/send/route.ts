@@ -11,13 +11,14 @@ import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
+import { createSession, saveEvent, saveSessionData, saveSessionLink, updateSession } from '@/queries/sql';
 
 interface Cache {
   websiteId: string;
   sessionId: string;
   visitId: string;
   iat: number;
+  sessionLinkId?: string;
 }
 
 // Reject strings whose first character is a spreadsheet formula trigger to
@@ -128,6 +129,9 @@ export async function POST(request: Request) {
       }
     }
 
+    // Carried forward in the cache token so repeat identify calls skip identity writes
+    let sessionLinkId = cache?.sessionLinkId;
+
     // Client info
     const { ip, userAgent, device, browser, os, country, region, city } = await getClientInfo(
       request,
@@ -151,7 +155,7 @@ export async function POST(request: Request) {
     const sessionSalt = getSalt(saltRotation, createdAt);
     const visitSalt = hash(startOfHour(createdAt).toUTCString());
 
-    const sessionId = id ? uuid(sourceId, id) : uuid(sourceId, ip, userAgent, sessionSalt);
+    const sessionId = uuid(sourceId, ip, userAgent, sessionSalt);
 
     // Create a session if not found
     if (!clickhouse.enabled && !cache?.sessionId) {
@@ -277,6 +281,33 @@ export async function POST(request: Request) {
         twclid,
       });
     } else if (type === COLLECTION_TYPE.identify) {
+      if (websiteId && id) {
+        const newLinkId = hash(sessionId, id);
+
+        if (sessionLinkId !== newLinkId) {
+          // Best-effort: identity link failures must not block the session data write below.
+          try {
+            await Promise.all([
+              saveSessionLink({
+                websiteId,
+                sessionId,
+                distinctId: id,
+                createdAt,
+              }),
+              updateSession({
+                websiteId,
+                sessionId,
+                distinctId: id,
+              }),
+            ]);
+            sessionLinkId = newLinkId;
+          } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error('Failed to save session link:', e);
+          }
+        }
+      }
+
       if (data) {
         await saveSessionData({
           websiteId,
@@ -316,7 +347,7 @@ export async function POST(request: Request) {
     }
 
     const token = createToken(
-      { websiteId, sessionId, visitId, iat, type: CACHE_TOKEN_TYPE },
+      { websiteId, sessionId, visitId, iat, sessionLinkId, type: CACHE_TOKEN_TYPE },
       secret(),
     );
 

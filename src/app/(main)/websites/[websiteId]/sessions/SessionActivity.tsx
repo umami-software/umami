@@ -22,11 +22,13 @@ export function SessionActivity({
   sessionId,
   startDate,
   endDate,
+  distinctId,
 }: {
   websiteId: string;
   sessionId: string;
   startDate: Date;
   endDate: Date;
+  distinctId?: string;
 }) {
   const { t, labels } = useMessages();
   const { formatTimezoneDate } = useTimezone();
@@ -35,6 +37,7 @@ export function SessionActivity({
     sessionId,
     startDate,
     endDate,
+    distinctId,
   );
   const { isMobile } = useMobile();
   let lastDay = null;

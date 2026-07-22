@@ -1,5 +1,6 @@
-import { Column, ComboBox, Grid, Label, ListItem, Row } from '@umami/react-zen';
+import { Column, Grid, Label, ListItem, Row } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
+import { ComboBox } from '@/components/common/ComboBox';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 import {

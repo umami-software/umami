@@ -397,7 +397,6 @@ export const PAID_AD_PARAMS = [
   'aid=',
   'dclid=',
   'epik=',
-  'fbclid=',
   'gclid=',
   'li_fat_id=',
   'msclkid=',
