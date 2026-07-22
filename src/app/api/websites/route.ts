@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ENTITY_TYPE } from '@/lib/constants';
+import { DOMAIN_REGEX, ENTITY_TYPE } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { fetchAccount, fetchTeam } from '@/lib/load';
 import { getQueryFilters, parseRequest } from '@/lib/request';
@@ -37,8 +37,8 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const schema = z.object({
-    name: z.string().max(100),
-    domain: z.string().max(500),
+    name: z.string().trim().min(1).max(100),
+    domain: z.string().trim().regex(DOMAIN_REGEX).max(500),
     shareId: z.string().max(50).nullable().optional(),
     teamId: z.uuid().nullable().optional(),
     id: z.uuid().nullable().optional(),
