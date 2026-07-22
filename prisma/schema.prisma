@@ -88,6 +88,7 @@ model Website {
 
   recorderEnabled Boolean @default(false) @map("recorder_enabled")
   replayConfig    Json?   @map("replay_config")
+  blockedIps      String? @map("blocked_ips")
 
   user                User?               @relation("user", fields: [userId], references: [id])
   createUser          User?               @relation("createUser", fields: [createdBy], references: [id])

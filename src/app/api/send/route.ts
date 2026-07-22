@@ -107,6 +107,7 @@ export async function POST(request: Request) {
 
     // Cache check
     let cache: Cache | null = null;
+    let website = null;
 
     if (websiteId) {
       const cacheHeader = request.headers.get('x-umami-cache');
@@ -119,9 +120,9 @@ export async function POST(request: Request) {
         }
       }
 
-      // Find website
+      // Find website (only on first request to reduce overhead on hot path)
       if (!cache?.websiteId) {
-        const website = await fetchWebsite(websiteId);
+        website = await fetchWebsite(websiteId);
 
         if (!website) {
           return badRequest({ message: 'Website not found.' });
@@ -146,6 +147,11 @@ export async function POST(request: Request) {
     // IP block
     if (hasBlockedIp(ip)) {
       return forbidden();
+    }
+
+    // Per-website IP block
+    if (website?.blockedIps && hasBlockedIp(ip, website.blockedIps)) {
+      return json({ beep: 'boop' });
     }
 
     const createdAt = timestamp ? new Date(timestamp * 1000) : new Date();

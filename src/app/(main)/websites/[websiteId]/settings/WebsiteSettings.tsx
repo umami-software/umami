@@ -1,5 +1,6 @@
 import { Column } from '@umami/react-zen';
 import { Panel } from '@/components/common/Panel';
+import { WebsiteBlocklist } from './WebsiteBlocklist';
 import { WebsiteData } from './WebsiteData';
 import { WebsiteEditForm } from './WebsiteEditForm';
 import { WebsiteReplaySettings } from './WebsiteReplaySettings';
@@ -17,6 +18,9 @@ export function WebsiteSettings({ websiteId }: { websiteId: string; openExternal
       </Panel>
       <Panel>
         <WebsiteReplaySettings websiteId={websiteId} />
+      </Panel>
+      <Panel>
+        <WebsiteBlocklist websiteId={websiteId} />
       </Panel>
       <Panel>
         <WebsiteShareForm websiteId={websiteId} />
