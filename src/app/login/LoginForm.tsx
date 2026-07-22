@@ -10,24 +10,34 @@ import {
   TextField,
 } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
-import { useMessages, useUpdateQuery } from '@/components/hooks';
+import { useState } from 'react';
+import { useMessages } from '@/components/hooks';
 import { Logo } from '@/components/svg';
-import { setClientAuthToken } from '@/lib/client';
-import { setUser } from '@/store/app';
+import { authClient } from '@/lib/auth-client';
 
 export function LoginForm() {
   const { t, labels, getErrorMessage } = useMessages();
   const router = useRouter();
-  const { mutateAsync, error } = useUpdateQuery('/auth/login');
+  const [error, setError] = useState<Error | undefined>();
 
   const handleSubmit = async (data: any) => {
-    await mutateAsync(data, {
-      onSuccess: async ({ token, user }) => {
-        setClientAuthToken(token);
-        setUser(user);
-        router.push('/');
-      },
+    setError(undefined);
+
+    const { error: signInError } = await authClient.signIn.username({
+      username: data.username,
+      password: data.password,
     });
+
+    if (signInError) {
+      setError(
+        Object.assign(new Error(signInError.message || 'Incorrect username and/or password.'), {
+          code: 'incorrect-username-password',
+        }),
+      );
+      return;
+    }
+
+    router.push('/');
   };
 
   return (

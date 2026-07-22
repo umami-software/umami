@@ -22,7 +22,8 @@ export async function loginViaApi(
   username = umamiUser.username,
   password = umamiUser.password,
 ): Promise<Auth> {
-  const response = await request.post('/api/auth/login', {
+  // better-auth session token; usable as a Bearer token via the bearer plugin.
+  const response = await request.post('/api/auth/sign-in/username', {
     data: { username, password },
   });
 
@@ -36,14 +37,10 @@ export async function loginViaApi(
   };
 }
 
-export async function loginPage(page: Page, request: APIRequestContext): Promise<Auth> {
-  const auth = await loginViaApi(request);
-
-  await page.addInitScript(token => {
-    window.localStorage.setItem('umami.auth', JSON.stringify(token));
-  }, auth.token);
-
-  return auth;
+export async function loginPage(page: Page, _request?: APIRequestContext): Promise<Auth> {
+  // Sign in through the page's own request context so the better-auth session
+  // cookie lands in the browser context.
+  return loginViaApi(page.context().request);
 }
 
 export async function logout(page: Page) {

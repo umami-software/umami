@@ -61,7 +61,17 @@ function customScriptUrl(request: NextRequest) {
 function disableLogin(request: NextRequest) {
   const loginDisabled = process.env.DISABLE_LOGIN;
 
-  if (loginDisabled && matchesConfiguredPath(request.nextUrl.pathname, LOGIN_PATH, BASE_PATH)) {
+  if (!loginDisabled) {
+    return;
+  }
+
+  if (matchesConfiguredPath(request.nextUrl.pathname, LOGIN_PATH, BASE_PATH)) {
+    return new NextResponse('Access denied', { status: 403 });
+  }
+
+  // Also block the better-auth sign-in endpoints. The SSO verify endpoint
+  // stays reachable since external-login deployments depend on it.
+  if (request.nextUrl.pathname.startsWith(`${BASE_PATH}/api/auth/sign-in`)) {
     return new NextResponse('Access denied', { status: 403 });
   }
 }

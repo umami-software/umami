@@ -24,6 +24,9 @@ export async function request(
   return fetch(url, {
     method,
     cache: 'no-cache',
+    // Auth uses the better-auth session cookie; include it even when the API
+    // is served from a different origin (apiUrl).
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

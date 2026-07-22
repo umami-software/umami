@@ -1,5 +1,6 @@
 import { Prisma } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
+import { uuid } from '@/lib/crypto';
 import { getRandomChars } from '@/lib/generate';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
@@ -11,12 +12,11 @@ import UserFindManyArgs = Prisma.UserFindManyArgs;
 const USER_SORT_FIELDS = ['username', 'role', 'createdAt'] as const;
 
 export interface GetUserOptions {
-  includePassword?: boolean;
   showDeleted?: boolean;
 }
 
 async function findUser(criteria: Prisma.UserFindUniqueArgs, options: GetUserOptions = {}) {
-  const { includePassword = false, showDeleted = false } = options;
+  const { showDeleted = false } = options;
 
   return prisma.client.user.findUnique({
     ...criteria,
@@ -27,7 +27,6 @@ async function findUser(criteria: Prisma.UserFindUniqueArgs, options: GetUserOpt
     select: {
       id: true,
       username: true,
-      password: includePassword,
       role: true,
       createdAt: true,
     },
@@ -78,14 +77,39 @@ export async function createUser(data: {
   password: string;
   role: Role;
 }) {
-  return prisma.client.user.create({
-    data,
-    select: {
-      id: true,
-      username: true,
-      role: true,
-    },
-  });
+  const { id, username, password, role } = data;
+
+  // Create the user together with its better-auth credential account row.
+  // `password` is a bcrypt hash, which matches the custom password hashing
+  // configured on the better-auth instance.
+  const [user] = await prisma.transaction([
+    prisma.client.user.create({
+      data: {
+        id,
+        username,
+        displayUsername: username,
+        displayName: username,
+        email: `${id}@placeholder.local`,
+        role,
+      },
+      select: {
+        id: true,
+        username: true,
+        role: true,
+      },
+    }),
+    prisma.client.account.create({
+      data: {
+        id: uuid(),
+        userId: id,
+        accountId: id,
+        providerId: 'credential',
+        password,
+      },
+    }),
+  ]);
+
+  return user;
 }
 
 export async function updateUser(userId: string, data: Prisma.UserUpdateInput) {
@@ -174,6 +198,8 @@ export async function deleteUser(userId: string) {
           id: userId,
         },
       }),
+      client.account.deleteMany({ where: { userId } }),
+      client.authSession.deleteMany({ where: { userId } }),
       client.share.deleteMany({ where: { entityId: { in: entityIds } } }),
       // deletedAt: null avoids restamping rows that were already soft-deleted earlier.
       client.link.updateMany({
@@ -246,6 +272,8 @@ export async function deleteUser(userId: string) {
     client.website.deleteMany({
       where: { id: { in: websiteIds } },
     }),
+    client.account.deleteMany({ where: { userId } }),
+    client.authSession.deleteMany({ where: { userId } }),
     client.user.delete({
       where: {
         id: userId,

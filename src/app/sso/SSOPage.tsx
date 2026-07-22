@@ -2,7 +2,6 @@
 import { Loading } from '@umami/react-zen';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import { setClientAuthToken } from '@/lib/client';
 
 function isSafeRedirectUrl(url: string): boolean {
   // Must start with a single slash (relative path)
@@ -17,14 +16,28 @@ export function SSOPage() {
   const token = search.get('token');
 
   useEffect(() => {
-    if (url && token) {
+    async function verify() {
       if (!isSafeRedirectUrl(url)) {
         router.push('/');
         return;
       }
 
-      setClientAuthToken(token);
-      router.push(url);
+      // Exchange the one-time SSO token for a session cookie.
+      const res = await fetch(`${process.env.basePath || ''}/api/auth/sso/verify`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ token }),
+      }).catch(() => null);
+
+      if (res?.ok) {
+        router.push(url);
+      } else {
+        router.push('/');
+      }
+    }
+
+    if (url && token) {
+      verify();
     }
   }, [router, url, token]);
 

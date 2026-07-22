@@ -1,12 +1,19 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { hash } from '@/lib/crypto';
-import { parseSecureToken } from '@/lib/jwt';
-import redis from '@/lib/redis';
+import { auth as betterAuth } from '@/lib/auth-server';
+import { SHARE_CONTEXT_HEADER, SHARE_TOKEN_HEADER } from '@/lib/constants';
+import { parseToken } from '@/lib/jwt';
 import { getUser } from '@/queries/prisma/user';
 import { checkAuth } from './auth';
 
+vi.mock('@/lib/auth-server', () => ({
+  auth: {
+    api: {
+      getSession: vi.fn(),
+    },
+  },
+}));
+
 vi.mock('@/lib/jwt', () => ({
-  parseSecureToken: vi.fn(),
   parseToken: vi.fn(() => null),
 }));
 
@@ -14,107 +21,109 @@ vi.mock('@/queries/prisma/user', () => ({
   getUser: vi.fn(),
 }));
 
-vi.mock('@/lib/redis', () => ({
-  default: {
-    enabled: false,
-    client: {
-      get: vi.fn(),
-    },
-  },
-}));
-
-const parseSecureTokenMock = vi.mocked(parseSecureToken);
+const getSessionMock = vi.mocked(betterAuth.api.getSession);
+const parseTokenMock = vi.mocked(parseToken);
 const getUserMock = vi.mocked(getUser);
-const redisMock = redis as unknown as {
-  enabled: boolean;
-  client: {
-    get: ReturnType<typeof vi.fn>;
-  };
-};
 
-const PASSWORD_HASH = '$2b$10$currentpasswordhashvalue';
-
-function authedRequest() {
-  return new Request('http://localhost/api/test', {
-    headers: { authorization: 'Bearer secure-token' },
-  });
+function request(headers: Record<string, string> = {}) {
+  return new Request('http://localhost/api/test', { headers });
 }
 
-function mockUser() {
+function mockSession(userId = 'user-1') {
+  getSessionMock.mockResolvedValue({
+    session: { token: 'session-token', userId },
+    user: { id: userId },
+  } as any);
+}
+
+function mockUser(role = 'user') {
   getUserMock.mockResolvedValue({
     id: 'user-1',
     username: 'bob',
-    role: 'user',
-    password: PASSWORD_HASH,
+    role,
+    createdAt: new Date(),
   } as any);
 }
 
 beforeEach(() => {
-  parseSecureTokenMock.mockReset();
+  getSessionMock.mockReset();
+  getSessionMock.mockResolvedValue(null);
+  parseTokenMock.mockReset();
+  parseTokenMock.mockReturnValue(null);
   getUserMock.mockReset();
-  redisMock.enabled = false;
-  redisMock.client.get.mockReset();
 });
 
-describe('checkAuth password fingerprint', () => {
-  test('authorizes a stateless token whose fingerprint matches the current password', async () => {
-    parseSecureTokenMock.mockReturnValue({ userId: 'user-1', pwd: hash(PASSWORD_HASH) } as any);
+describe('checkAuth sessions', () => {
+  test('authorizes a request with a valid session', async () => {
+    mockSession();
     mockUser();
 
-    const result = await checkAuth(authedRequest());
+    const result = await checkAuth(request());
 
     expect(result?.user?.id).toBe('user-1');
+    expect(result?.token).toBe('session-token');
   });
 
-  test('authorizes a legacy stateless token that does not include a password fingerprint', async () => {
-    parseSecureTokenMock.mockReturnValue({ userId: 'user-1' } as any);
-    mockUser();
-
-    const result = await checkAuth(authedRequest());
-
-    expect(result?.user?.id).toBe('user-1');
-  });
-
-  test('rejects a stateless token whose fingerprint predates a password change', async () => {
-    // Token minted against the old password must stop working once the password changes.
-    parseSecureTokenMock.mockReturnValue({
-      userId: 'user-1',
-      pwd: hash('old-password-hash'),
-    } as any);
-    mockUser();
-
-    const result = await checkAuth(authedRequest());
+  test('rejects a request without a session or share token', async () => {
+    const result = await checkAuth(request());
 
     expect(result).toBeNull();
   });
 
-  test('does not expose the password hash on the returned user', async () => {
-    parseSecureTokenMock.mockReturnValue({ userId: 'user-1', pwd: hash(PASSWORD_HASH) } as any);
-    mockUser();
+  test('rejects a session for a soft-deleted user', async () => {
+    mockSession();
+    // getUser filters deletedAt and returns null for deleted users.
+    getUserMock.mockResolvedValue(null);
 
-    const result = await checkAuth(authedRequest());
+    const result = await checkAuth(request());
 
-    expect(result?.user).not.toHaveProperty('password');
+    expect(result).toBeNull();
   });
 
-  test('authorizes a Redis session whose fingerprint matches the current password', async () => {
-    redisMock.enabled = true;
-    parseSecureTokenMock.mockReturnValue({ authKey: 'auth:session-key' } as any);
-    redisMock.client.get.mockResolvedValue({ userId: 'user-1', pwd: hash(PASSWORD_HASH) });
-    mockUser();
+  test('sets isAdmin for admin users', async () => {
+    mockSession();
+    mockUser('admin');
 
-    const result = await checkAuth(authedRequest());
+    const result = await checkAuth(request());
 
-    expect(result?.user?.id).toBe('user-1');
+    expect(result?.user?.isAdmin).toBe(true);
   });
 
-  test('rejects a Redis session whose fingerprint predates a password change', async () => {
-    redisMock.enabled = true;
-    parseSecureTokenMock.mockReturnValue({ authKey: 'auth:session-key' } as any);
-    redisMock.client.get.mockResolvedValue({ userId: 'user-1', pwd: hash('old-password-hash') });
-    mockUser();
+  test('does not set isAdmin for regular users', async () => {
+    mockSession();
+    mockUser('user');
 
-    const result = await checkAuth(authedRequest());
+    const result = await checkAuth(request());
+
+    expect(result?.user?.isAdmin).toBe(false);
+  });
+});
+
+describe('checkAuth share tokens', () => {
+  test('authorizes a share token within a share context', async () => {
+    parseTokenMock.mockReturnValue({ type: 'share', websiteId: 'website-1' } as any);
+
+    const result = await checkAuth(
+      request({ [SHARE_TOKEN_HEADER]: 'share-token', [SHARE_CONTEXT_HEADER]: '1' }),
+    );
+
+    expect(result?.shareToken).toEqual({ type: 'share', websiteId: 'website-1' });
+    expect(result?.user).toBeNull();
+  });
+
+  test('rejects a share token used outside a share context', async () => {
+    parseTokenMock.mockReturnValue({ type: 'share', websiteId: 'website-1' } as any);
+
+    const result = await checkAuth(request({ [SHARE_TOKEN_HEADER]: 'share-token' }));
+
+    expect(result).toBeNull();
+  });
+
+  test('rejects tokens that are not share tokens', async () => {
+    // e.g. the cache token from /api/send is signed with the same secret.
+    parseTokenMock.mockReturnValue({ websiteId: 'website-1' } as any);
+
+    const result = await checkAuth(request({ [SHARE_TOKEN_HEADER]: 'cache-token' }));
 
     expect(result).toBeNull();
   });

@@ -25,3 +25,9 @@ if (!process.env.SKIP_DB_CHECK && !process.env.DATABASE_TYPE) {
 if (process.env.CLOUD_URL) {
   checkMissing(['CLOUD_URL', 'CLICKHOUSE_URL', 'REDIS_URL']);
 }
+
+if (!process.env.APP_SECRET) {
+  console.log(
+    'Warning: APP_SECRET is not defined. Session cookies and share tokens will be signed with a secret derived from DATABASE_URL.',
+  );
+}

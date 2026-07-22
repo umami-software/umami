@@ -51,6 +51,30 @@ class UmamiRedisClient {
     return this.client.set(key, JSON.stringify(value), { EX: ttl });
   }
 
+  // Raw string helpers (no JSON round-trip, no forced default TTL).
+  // Used by better-auth's secondaryStorage, which stores raw strings and
+  // writes some keys (e.g. active session lists) without an expiry.
+  async getRaw(key: string) {
+    await this.connect();
+
+    return this.client.get(key);
+  }
+
+  async setRaw(key: string, value: string, ttl?: number) {
+    await this.connect();
+
+    return ttl && ttl > 0 ? this.client.set(key, value, { EX: ttl }) : this.client.set(key, value);
+  }
+
+  // Atomic set-if-not-exists with expiry. Returns true when the key was set.
+  async setNX(key: string, value: string, ttl: number) {
+    await this.connect();
+
+    const result = await this.client.set(key, value, { NX: true, EX: ttl });
+
+    return result === 'OK';
+  }
+
   async del(key: string) {
     await this.connect();
 

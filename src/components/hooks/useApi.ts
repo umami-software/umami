@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { getApiUrl } from '@/lib/api-url';
-import { getClientAuthToken } from '@/lib/client';
 import { SHARE_CONTEXT_HEADER, SHARE_TOKEN_HEADER } from '@/lib/constants';
 import { type FetchResponse, httpDelete, httpGet, httpPost, httpPut } from '@/lib/fetch';
 import { useApp } from '@/store/app';
@@ -24,8 +23,8 @@ export function useApi() {
       ? { [SHARE_TOKEN_HEADER]: shareToken, [SHARE_CONTEXT_HEADER]: '1' }
       : {};
 
+  // Auth is cookie-based (better-auth session cookie, sent automatically).
   const defaultHeaders = {
-    authorization: `Bearer ${getClientAuthToken()}`,
     ...shareHeaders,
   };
   const getUrl = (url: string) => {

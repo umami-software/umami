@@ -1,4 +1,5 @@
 import debug from 'debug';
+import { auth as betterAuth } from '@/lib/auth-server';
 import {
   ROLE_PERMISSIONS,
   ROLES,
@@ -6,53 +7,32 @@ import {
   SHARE_TOKEN_HEADER,
   SHARE_TOKEN_TYPE,
 } from '@/lib/constants';
-import { createAuthKey, hash, secret } from '@/lib/crypto';
-import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
-import redis from '@/lib/redis';
+import { secret } from '@/lib/crypto';
+import { parseToken } from '@/lib/jwt';
 import { ensureArray } from '@/lib/utils';
 import { getUser } from '@/queries/prisma/user';
 
 const log = debug('umami:auth');
 
-export function getBearerToken(request: Request) {
-  const auth = request.headers.get('authorization');
-
-  return auth?.split(' ')[1];
-}
-
 export async function checkAuth(request: Request) {
-  const token = getBearerToken(request);
-  const payload = parseSecureToken(token, secret());
+  const session = await betterAuth.api
+    .getSession({ headers: request.headers })
+    .catch((e: unknown) => {
+      log(e);
+      return null;
+    });
   const shareToken = await parseShareToken(request);
 
   let user = null;
-  const { userId, authKey } = payload || {};
 
-  if (userId) {
-    user = await getUser(userId, { includePassword: true });
-
-    // Reject tokens issued before the current password.
-    // Allow legacy stateless tokens that were minted without a password fingerprint.
-    if (user && payload.pwd && hash(user.password) !== payload.pwd) {
-      user = null;
-    }
-  } else if (redis.enabled && authKey) {
-    const key = await redis.client.get(authKey);
-
-    if (key?.userId) {
-      user = await getUser(key.userId, { includePassword: true });
-
-      // Only enforce password-change invalidation for sessions that include a password fingerprint.
-      if (user && key.pwd && hash(user.password) !== key.pwd) {
-        user = null;
-      }
-    }
+  if (session?.user?.id) {
+    // Re-read through umami's own query to enforce soft-delete filtering and
+    // keep the exact user shape the API routes and permissions expect.
+    user = await getUser(session.user.id);
   }
 
   log({
-    hasToken: !!token,
-    hasPayload: !!payload,
-    hasAuthKey: !!authKey,
+    hasSession: !!session,
     hasShareToken: !!shareToken,
     userId: user?.id,
   });
@@ -71,30 +51,14 @@ export async function checkAuth(request: Request) {
   }
 
   if (user) {
-    delete user.password;
     user.isAdmin = user.role === ROLES.admin;
   }
 
   return {
-    token,
-    authKey,
+    token: session?.session?.token,
     shareToken,
     user,
   };
-}
-
-export async function saveAuth(data: any, expire = 0) {
-  const authKey = `auth:${createAuthKey()}`;
-
-  if (redis.enabled) {
-    await redis.client.set(authKey, data);
-
-    if (expire) {
-      await redis.client.expire(authKey, expire);
-    }
-  }
-
-  return createSecureToken({ authKey }, secret());
 }
 
 export async function hasPermission(role: string, permission: string | string[]) {

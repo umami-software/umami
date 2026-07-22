@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { hashPassword } from '@/lib/password';
+import { revokeUserSessions, setUserPassword } from '@/lib/auth-server';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, notFound, ok, unauthorized } from '@/lib/response';
 import { userRoleParam } from '@/lib/schema';
@@ -53,10 +53,6 @@ export async function POST(request: Request, { params }: { params: Promise<{ use
 
   const data: any = {};
 
-  if (password) {
-    data.password = hashPassword(password);
-  }
-
   // Only admin can change these fields
   if (role && auth.user.isAdmin) {
     data.role = role;
@@ -64,6 +60,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ use
 
   if (username && auth.user.isAdmin) {
     data.username = username.toLowerCase();
+    data.displayUsername = username.toLowerCase();
   }
 
   // Check when username changes
@@ -73,6 +70,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ use
     if (existingUser && existingUser.id !== userId) {
       return badRequest({ message: 'User already exists' });
     }
+  }
+
+  if (password) {
+    // Update the credential account row and revoke the user's existing sessions.
+    await setUserPassword(userId, password);
+    await revokeUserSessions(userId);
   }
 
   const updated = await updateUser(userId, data);
@@ -100,6 +103,8 @@ export async function DELETE(
     return badRequest({ message: 'You cannot delete yourself.' });
   }
 
+  // Revoke sessions first so Redis-stored sessions are cleared as well.
+  await revokeUserSessions(userId);
   await deleteUser(userId);
 
   return ok();

@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { checkPassword, hashPassword } from '@/lib/password';
+import { auth as betterAuth } from '@/lib/auth-server';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json } from '@/lib/response';
-import { getUser, updateUser } from '@/queries/prisma/user';
+import { getUser } from '@/queries/prisma/user';
 
 export async function POST(request: Request) {
   const schema = z.object({
@@ -16,18 +16,20 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const userId = auth.user.id;
   const { currentPassword, newPassword } = body;
 
-  const user = await getUser(userId, { includePassword: true });
-
-  if (!checkPassword(currentPassword, user.password)) {
+  try {
+    await betterAuth.api.changePassword({
+      headers: request.headers,
+      body: {
+        currentPassword,
+        newPassword,
+        revokeOtherSessions: true,
+      },
+    });
+  } catch {
     return badRequest({ message: 'Current password is incorrect' });
   }
 
-  const password = hashPassword(newPassword);
-
-  const updated = await updateUser(userId, { password });
-
-  return json(updated);
+  return json(await getUser(auth.user.id));
 }
