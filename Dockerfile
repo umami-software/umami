@@ -44,9 +44,13 @@ ENV NODE_OPTIONS=$NODE_OPTIONS
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
+# Bootstrap pnpm with the bundled npm, then remove npm in the same layer so the
+# vulnerable packages vendored inside the npm CLI are not shipped in the final
+# image. pnpm is the only package manager needed at build and runtime.
 RUN set -x \
     && apk add --no-cache curl libc6-compat \
-    && npm install -g pnpm
+    && npm install -g pnpm \
+    && rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
 RUN echo {} > package.json
 
