@@ -27,10 +27,10 @@ export function BoardViewHeader({
       <Row alignItems="center" gap>
         {showEntityBadge && entityBadge && <BoardEntityBadge {...entityBadge} />}
         {showActions && board?.id && (
-          <>
-            <LinkButton href={renderUrl(`/boards/${board.id}/design`, false)}>
-              <IconLabel icon={<LayoutDashboard />}>Design</IconLabel>
-            </LinkButton>
+            <>
+              <LinkButton href={renderUrl(`/boards/${board.id}/design`, false)}>
+                <IconLabel icon={<LayoutDashboard />}>{t(labels.design)}</IconLabel>
+              </LinkButton>
             <LinkButton href={renderUrl(`/boards/${board.id}/edit`, false)}>
               <IconLabel icon={<Edit />}>{t(labels.edit)}</IconLabel>
             </LinkButton>

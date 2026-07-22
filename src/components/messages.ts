@@ -28,6 +28,7 @@ export const labels: Record<string, string> = {
   created: 'label.created',
   createdBy: 'label.created-by',
   edit: 'label.edit',
+  design: 'label.design',
   name: 'label.name',
   manager: 'label.manager',
   member: 'label.member',
