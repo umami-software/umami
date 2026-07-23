@@ -8,6 +8,7 @@ import {
   Loading,
   Row,
   Select,
+  Text,
   TextField,
 } from '@umami/react-zen';
 import { useBoardQuery, useMessages, useNavigation, useUpdateQuery } from '@/components/hooks';
@@ -97,6 +98,14 @@ export function BoardEditForm({
             : type === BOARD_TYPES.link
               ? t(labels.link)
               : t(labels.website);
+        const boardTypeLabel =
+          type === BOARD_TYPES.mixed
+            ? t(labels.open)
+            : type === BOARD_TYPES.pixel
+              ? t(labels.pixel)
+              : type === BOARD_TYPES.link
+                ? t(labels.link)
+                : t(labels.website);
 
         const handleTypeChange = (value: string) => {
           setValue('type', value as BoardType, { shouldDirty: true });
@@ -126,12 +135,16 @@ export function BoardEditForm({
               rules={{ required: t(labels.required) }}
             >
               <Box width="100%" maxWidth="360px">
-                <Select value={type} onChange={handleTypeChange}>
-                  <ListItem id={BOARD_TYPES.mixed}>{t(labels.open)}</ListItem>
-                  <ListItem id={BOARD_TYPES.website}>{t(labels.website)}</ListItem>
-                  <ListItem id={BOARD_TYPES.pixel}>{t(labels.pixel)}</ListItem>
-                  <ListItem id={BOARD_TYPES.link}>{t(labels.link)}</ListItem>
-                </Select>
+                {boardId ? (
+                  <Text>{boardTypeLabel}</Text>
+                ) : (
+                  <Select value={type} onChange={handleTypeChange}>
+                    <ListItem id={BOARD_TYPES.mixed}>{t(labels.open)}</ListItem>
+                    <ListItem id={BOARD_TYPES.website}>{t(labels.website)}</ListItem>
+                    <ListItem id={BOARD_TYPES.pixel}>{t(labels.pixel)}</ListItem>
+                    <ListItem id={BOARD_TYPES.link}>{t(labels.link)}</ListItem>
+                  </Select>
+                )}
               </Box>
             </FormField>
             {requiresBoardEntity(type) && (

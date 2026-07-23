@@ -1,22 +1,37 @@
 'use client';
-import { Column, ComboBox, Grid, Label, ListItem, Row, Select } from '@umami/react-zen';
-import { useMemo, useState } from 'react';
+import { Column, Grid, Label, ListItem, Row, Select } from '@umami/react-zen';
+import { useEffect, useMemo, useState } from 'react';
+import { ComboBox } from '@/components/common/ComboBox';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { Panel } from '@/components/common/Panel';
 import { useEventDataPropertiesQuery, useMessages } from '@/components/hooks';
+import { PropertyChart } from '@/components/property-data/PropertyChart';
+import { PropertyDateChart } from '@/components/property-data/PropertyDateChart';
+import { PropertyFilterBar } from '@/components/property-data/PropertyFilterBar';
+import { PropertyFilterButton } from '@/components/property-data/PropertyFilterButton';
+import { PropertyNumericChart } from '@/components/property-data/PropertyNumericChart';
 import { DATA_TYPE } from '@/lib/constants';
-import type { EventPropertyFilter } from '@/lib/types';
-import { EventDataDateChart } from '../event-data/EventDataDateChart';
-import { EventDataFilterBar } from '../event-data/EventDataFilterBar';
-import { EventDataFilterButton } from '../event-data/EventDataFilterButton';
-import { EventDataNumericChart } from '../event-data/EventDataNumericChart';
+import type { PropertyFilter } from '@/lib/types';
 import { EventDataPivotTable } from '../event-data/EventDataPivotTable';
-import { EventDataPropertyChart } from '../event-data/EventDataPropertyChart';
+
+const selectValueStyle = {
+  display: 'block',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap' as const,
+};
 
 export function EventProperties({ websiteId }: { websiteId: string }) {
   const [eventName, setEventName] = useState('');
+  const [eventSearch, setEventSearch] = useState('');
   const [propertyName, setPropertyName] = useState('');
-  const [eventFilters, setEventFilters] = useState<EventPropertyFilter[]>([]);
+  const [propertyFilters, setPropertyFilters] = useState<PropertyFilter[]>([]);
   const { t, labels } = useMessages();
+
+  useEffect(() => {
+    setPropertyName('');
+    setPropertyFilters([]);
+  }, [eventName]);
 
   const { data, isLoading, isFetching, error } = useEventDataPropertiesQuery(websiteId);
 
@@ -33,10 +48,8 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
     return data
       .filter((field: { eventName: string }) => field.eventName === eventName)
       .filter((field: { propertyName: string; dataType: number }) => {
-        const key = `${field.propertyName}:${field.dataType}`;
-
-        if (seen.has(key)) return false;
-        seen.add(key);
+        if (seen.has(field.propertyName)) return false;
+        seen.add(field.propertyName);
 
         return true;
       });
@@ -48,10 +61,24 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
     );
   }, [properties, propertyName]);
 
+  const filteredEventNames = useMemo(() => {
+    if (!eventSearch) {
+      return eventNames;
+    }
+
+    const normalizedSearch = eventSearch.toLowerCase();
+
+    return eventNames.filter(name => name.toLowerCase().includes(normalizedSearch));
+  }, [eventNames, eventSearch]);
+
   const handleEventChange = (value: string) => {
     setEventName(value);
     setPropertyName('');
-    setEventFilters([]);
+    setPropertyFilters([]);
+  };
+
+  const handleEventOpenChange = () => {
+    setEventSearch('');
   };
 
   return (
@@ -83,10 +110,18 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
                 <Select
                   value={eventName}
                   onChange={handleEventChange}
+                  allowSearch
+                  searchValue={eventSearch}
+                  onSearch={setEventSearch}
+                  onOpenChange={handleEventOpenChange}
                   placeholder={t(labels.selectEvent)}
-                  maxHeight={480}
+                  maxHeight={400}
+                  buttonProps={{ style: { minWidth: 0, maxWidth: '100%', overflow: 'hidden' } }}
+                  renderValue={({ defaultChildren }) => (
+                    <span style={selectValueStyle}>{defaultChildren}</span>
+                  )}
                 >
-                  {eventNames.map(name => (
+                  {filteredEventNames.map(name => (
                     <ListItem key={name} id={name}>
                       {name}
                     </ListItem>
@@ -116,63 +151,68 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
                 marginTop={{ base: '2', md: '0' }}
                 style={{ minWidth: 0 }}
               >
-                <EventDataFilterButton
+                <PropertyFilterButton
+                  source="event"
                   websiteId={websiteId}
                   eventName={eventName}
-                  eventFilters={eventFilters}
-                  onApply={setEventFilters}
+                  filters={propertyFilters}
+                  onApply={setPropertyFilters}
                 />
               </Row>
             )}
           </Grid>
         )}
-        {eventName && (
-          <EventDataFilterBar filters={eventFilters} onChange={setEventFilters} />
-        )}
+        {eventName && <PropertyFilterBar filters={propertyFilters} onChange={setPropertyFilters} />}
         {eventName && propertyName && (
-          <Column border="bottom" paddingBottom="6">
+          <Column key={`${eventName}:${propertyName}`} border="bottom" paddingBottom="6">
             {(selectedProperty?.dataType === DATA_TYPE.string ||
               selectedProperty?.dataType === DATA_TYPE.boolean) && (
-              <EventDataPropertyChart
+              <PropertyChart
+                source="event"
                 websiteId={websiteId}
                 eventName={eventName}
                 propertyName={propertyName}
-                eventFilters={eventFilters}
+                propertyFilters={propertyFilters}
               />
             )}
             {selectedProperty?.dataType === DATA_TYPE.number && (
-              <EventDataNumericChart
+              <PropertyNumericChart
+                source="event"
                 websiteId={websiteId}
                 eventName={eventName}
                 propertyName={propertyName}
-                eventFilters={eventFilters}
+                propertyFilters={propertyFilters}
               />
             )}
             {selectedProperty?.dataType === DATA_TYPE.date && (
-              <EventDataDateChart
+              <PropertyDateChart
+                source="event"
                 websiteId={websiteId}
                 eventName={eventName}
                 propertyName={propertyName}
-                eventFilters={eventFilters}
+                propertyFilters={propertyFilters}
               />
             )}
             {selectedProperty?.dataType === DATA_TYPE.array && (
-              <EventDataPropertyChart
+              <PropertyChart
+                source="event"
                 websiteId={websiteId}
                 eventName={eventName}
                 propertyName={propertyName}
-                eventFilters={eventFilters}
+                propertyFilters={propertyFilters}
                 seriesType="array"
               />
             )}
           </Column>
         )}
         {eventName && (
-          <EventDataPivotTable
-            websiteId={websiteId}
-            eventName={eventName}
-            eventFilters={eventFilters}
-          />
+          <Panel minWidth="0" width="100%">
+            <EventDataPivotTable
+              websiteId={websiteId}
+              eventName={eventName}
+              eventFilters={propertyFilters}
+            />
+          </Panel>
         )}
       </Column>
     </LoadingPanel>

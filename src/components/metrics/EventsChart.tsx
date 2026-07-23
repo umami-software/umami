@@ -9,6 +9,7 @@ import {
   useWebsiteEventsSeriesQuery,
 } from '@/components/hooks';
 import { renderDateLabels } from '@/lib/charts';
+import { hex6 } from '@/lib/colors';
 import { CHART_COLORS } from '@/lib/constants';
 import { generateTimeSeries } from '@/lib/date';
 
@@ -26,6 +27,16 @@ export function EventsChart({ websiteId, focusLabel, limit }: EventsChartProps) 
   const { locale, dateLocale } = useLocale();
   const { data, isLoading, error } = useWebsiteEventsSeriesQuery(websiteId, { limit });
   const [label, setLabel] = useState<string>(focusLabel);
+  const [hiddenLabels, setHiddenLabels] = useState<Set<string>>(() => new Set());
+
+  const handleLegendClick = useCallback((legendLabel: string, willBeHidden: boolean) => {
+    setHiddenLabels(prev => {
+      const next = new Set(prev);
+      if (willBeHidden) next.add(legendLabel);
+      else next.delete(legendLabel);
+      return next;
+    });
+  }, []);
 
   const chartData: any = useMemo(() => {
     if (!data) return;
@@ -51,9 +62,29 @@ export function EventsChart({ websiteId, focusLabel, limit }: EventsChartProps) 
         ],
       };
     } else {
+      const colorByKey: Record<string, string> = {};
+      const used = new Set<string>();
+      const hashOf = Object.fromEntries(
+        Object.keys(map).map(key => [key, parseInt(hex6(key), 16)]),
+      );
+      const orderedKeys = [...Object.keys(map)].sort((a, b) => hashOf[a] - hashOf[b]);
+      for (const key of orderedKeys) {
+        const start = (hashOf[key] >>> 4) % CHART_COLORS.length;
+        let chosen = CHART_COLORS[start];
+        for (let i = 0; i < CHART_COLORS.length; i++) {
+          const candidate = CHART_COLORS[(start + i) % CHART_COLORS.length];
+          if (!used.has(candidate)) {
+            chosen = candidate;
+            break;
+          }
+        }
+        used.add(chosen);
+        colorByKey[key] = chosen;
+      }
+
       return {
-        datasets: Object.keys(map).map((key, index) => {
-          const color = colord(CHART_COLORS[index % CHART_COLORS.length]);
+        datasets: Object.keys(map).map(key => {
+          const color = colord(colorByKey[key]);
           return {
             label: key,
             data: generateTimeSeries(map[key], startDate, endDate, unit, dateLocale),
@@ -87,6 +118,8 @@ export function EventsChart({ websiteId, focusLabel, limit }: EventsChartProps) 
           stacked={true}
           renderXLabel={renderXLabel}
           height="400px"
+          hiddenLabels={hiddenLabels}
+          onLegendClick={handleLegendClick}
         />
       )}
     </LoadingPanel>

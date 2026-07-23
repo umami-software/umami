@@ -39,7 +39,12 @@ export function WebsiteFilterButton({
   };
 
   return (
-    <DialogButton icon={<ListFilter />} label={t(labels.filter)} variant="outline">
+    <DialogButton
+      icon={<ListFilter />}
+      label={t(labels.filter)}
+      variant="outline"
+      height="min(80dvh, calc(100dvh - 40px))"
+    >
       {({ close }) => {
         return (
           <>

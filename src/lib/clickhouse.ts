@@ -1,10 +1,10 @@
-import { CLICKHOUSE } from '@/lib/db';
 import { type ClickHouseClient, createClient } from '@clickhouse/client';
 import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
-import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from './constants';
+import { CLICKHOUSE } from '@/lib/db';
+import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from './constants';
 import { filtersObjectToArray } from './params';
-import type { EventPropertyFilter, Operator, QueryFilters, QueryOptions } from './types';
+import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   utc: '%Y-%m-%dT%H:%i:%SZ',
@@ -79,7 +79,13 @@ function getSearchSQL(column: string, param: string = 'search'): string {
   return `and positionCaseInsensitive(${column}, {${param}:String}) > 0`;
 }
 
-function mapFilter(column: string, operator: Operator, name: string, type: string = 'String', paramName?: string) {
+function mapFilter(
+  column: string,
+  operator: Operator,
+  name: string,
+  type: string = 'String',
+  paramName?: string,
+) {
   const param = paramName ?? name;
   const value = `{${param}:${type}}`;
 
@@ -238,7 +244,11 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   };
 }
 
-function getEventPropertyFilterQuery(filters: EventPropertyFilter[] = []): {
+function getPropertyFilterQuery(
+  filters: PropertyFilter[] = [],
+  propertyType: 'event' | 'session' = 'event',
+  timezone?: string,
+): {
   sql: string;
   params: Record<string, any>;
 } {
@@ -246,66 +256,113 @@ function getEventPropertyFilterQuery(filters: EventPropertyFilter[] = []): {
 
   const parts: string[] = [];
   const params: Record<string, any> = {};
+  const table = propertyType === 'event' ? 'event_data' : 'session_data final';
+  const column = propertyType === 'event' ? 'event_id' : 'session_id';
+  const outerColumn = propertyType === 'event' ? 'event_id' : 'website_event.session_id';
+  const dateFilter =
+    propertyType === 'event'
+      ? `and created_at between {startDate:DateTime64} and {endDate:DateTime64}`
+      : '';
 
   filters.forEach(({ propertyName, dataType, operator, value }, i) => {
-    const keyParam = `epf_key_${i}`;
-    const valParam = `epf_val_${i}`;
+    const keyParam = `pf_key_${i}`;
+    const valParam = `pf_val_${i}`;
     params[keyParam] = propertyName;
 
-    const isNumeric = dataType === 2;
-    const col = isNumeric ? 'number_value' : 'string_value';
-
     let condition: string;
-    if (isNumeric) {
-      params[valParam] = parseFloat(value) || 0;
-      const opMap: Record<string, string> = {
-        [OPERATORS.equals]: `${col} = {${valParam}:Float64}`,
-        [OPERATORS.notEquals]: `${col} != {${valParam}:Float64}`,
-        [OPERATORS.greaterThan]: `${col} > {${valParam}:Float64}`,
-        [OPERATORS.lessThan]: `${col} < {${valParam}:Float64}`,
-        [OPERATORS.greaterThanEquals]: `${col} >= {${valParam}:Float64}`,
-        [OPERATORS.lessThanEquals]: `${col} <= {${valParam}:Float64}`,
-      };
-      condition = opMap[operator] ?? `${col} = {${valParam}:Float64}`;
-    } else if (EQUALITY_OPERATORS.includes(operator)) {
-      const vals = value.split(',').filter(Boolean);
-      if (!vals.length) return;
-      params[valParam] = vals;
-      condition = mapFilter(
-        col,
-        operator === OPERATORS.equals ? OPERATORS.equals : OPERATORS.notEquals,
-        valParam,
-        'String',
-      );
-    } else if (REGEX_OPERATORS.includes(operator)) {
-      if (!value) return;
-      params[valParam] = value;
-      condition = mapFilter(
-        col,
-        operator === OPERATORS.regex ? OPERATORS.regex : OPERATORS.notRegex,
-        valParam,
-        'String',
-      );
-    } else {
-      if (!value) return;
-      params[valParam] = value;
-      condition = mapFilter(
-        col,
-        operator === OPERATORS.contains ? OPERATORS.contains : OPERATORS.doesNotContain,
-        valParam,
-        'String',
-      );
+    switch (dataType) {
+      case DATA_TYPE.number: {
+        const col = 'number_value';
+        params[valParam] = parseFloat(value) || 0;
+        const opMap: Record<string, string> = {
+          [OPERATORS.equals]: `${col} = {${valParam}:Float64}`,
+          [OPERATORS.notEquals]: `${col} != {${valParam}:Float64}`,
+          [OPERATORS.greaterThan]: `${col} > {${valParam}:Float64}`,
+          [OPERATORS.lessThan]: `${col} < {${valParam}:Float64}`,
+          [OPERATORS.greaterThanEquals]: `${col} >= {${valParam}:Float64}`,
+          [OPERATORS.lessThanEquals]: `${col} <= {${valParam}:Float64}`,
+        };
+        condition = opMap[operator] ?? `${col} = {${valParam}:Float64}`;
+        break;
+      }
+      case DATA_TYPE.date: {
+        if (!value) return;
+        params[valParam] = value;
+        const dateCol = timezone
+          ? `toDate(toTimezone(date_value, {timezone:String}))`
+          : `toDate(toTimezone(date_value, 'UTC'))`;
+        const opMap: Record<string, string> = {
+          [OPERATORS.before]: `${dateCol} < {${valParam}:Date}`,
+          [OPERATORS.after]: `${dateCol} > {${valParam}:Date}`,
+        };
+        condition = opMap[operator] ?? `${dateCol} = {${valParam}:Date}`;
+        break;
+      }
+      case DATA_TYPE.array: {
+        if (!value) return;
+        params[valParam] = value;
+        condition =
+          operator === OPERATORS.contains
+            ? `has(JSONExtract(ifNull(string_value, '[]'), 'Array(String)'), {${valParam}:String})`
+            : `not has(JSONExtract(ifNull(string_value, '[]'), 'Array(String)'), {${valParam}:String})`;
+        break;
+      }
+      default: {
+        const col = 'string_value';
+
+        if (EQUALITY_OPERATORS.includes(operator)) {
+          const vals = value.split(',').filter(Boolean);
+          if (!vals.length) return;
+          params[valParam] = vals;
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.equals ? OPERATORS.equals : OPERATORS.notEquals,
+            valParam,
+            'String',
+          );
+        } else if (REGEX_OPERATORS.includes(operator)) {
+          if (!value) return;
+          params[valParam] = value;
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.regex ? OPERATORS.regex : OPERATORS.notRegex,
+            valParam,
+            'String',
+          );
+        } else {
+          if (!value) return;
+          params[valParam] = value;
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.contains ? OPERATORS.contains : OPERATORS.doesNotContain,
+            valParam,
+            'String',
+          );
+        }
+        break;
+      }
     }
 
-    parts.push(`and event_id in (
-      select event_id 
-      from event_data
+    if (propertyType === 'session') {
+      parts.push(`and tuple(website_event.website_id, website_event.session_id) in (
+      select website_id, session_id
+      from ${table}
       where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and data_key = {${keyParam}:String}
         and data_type = ${dataType}
         and ${condition}
     )`);
+    } else {
+      parts.push(`and ${outerColumn} in (
+      select ${column}
+      from ${table}
+      where website_id = {websiteId:UUID}
+        ${dateFilter}
+        and data_key = {${keyParam}:String}
+        and data_type = ${dataType}
+        and ${condition}
+    )`);
+    }
   });
 
   return { sql: parts.join('\n'), params };
@@ -329,13 +386,23 @@ async function pagedRawQuery(
     .filter(n => n)
     .join('\n');
 
-  const count = await rawQuery(`select count(*) as num from (${query}) t`, queryParams).then(
-    res => res[0].num,
-  );
+  const { maxResults } = filters;
+  const countQuery = maxResults
+    ? `select count(*) as num from (select 1 from (${query}) t limit ${+maxResults}) t2`
+    : `select count(*) as num from (${query}) t`;
 
+  const count = await rawQuery(countQuery, queryParams).then(res => res[0].num);
   const data = await rawQuery(`${query}${statements}`, queryParams, name);
 
-  return { data, count, page: +page, pageSize: size, orderBy, search };
+  return {
+    data,
+    count,
+    page: +page,
+    pageSize: size,
+    orderBy,
+    search,
+    isCapped: !!maxResults && +count >= +maxResults,
+  };
 }
 
 async function rawQuery<T = unknown>(
@@ -397,7 +464,7 @@ export default {
   getDateSQL,
   getSearchSQL,
   getFilterQuery,
-  getEventPropertyFilterQuery,
+  getPropertyFilterQuery,
   getUTCString,
   parseFilters,
   pagedRawQuery,

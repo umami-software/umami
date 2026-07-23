@@ -125,7 +125,7 @@ function BarChartComponent({
               dateFormats[unit],
               locale,
             ),
-            color: labelColors?.[0]?.backgroundColor,
+            color: labelColors?.[0]?.borderColor || labelColors?.[0]?.backgroundColor,
             value: currency
               ? formatLongCurrency(dataPoints[0].raw.y, currency)
               : `${formatLongNumber(dataPoints[0].raw.y)} ${dataPoints[0].dataset.label}`,

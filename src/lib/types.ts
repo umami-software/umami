@@ -20,6 +20,7 @@ export interface Auth {
     isAdmin: boolean;
   };
   shareToken?: {
+    shareType?: number;
     websiteId?: string;
     websiteIds?: string[];
     boardId?: string;
@@ -27,15 +28,26 @@ export interface Auth {
     pixelIds?: string[];
     linkId?: string;
     linkIds?: string[];
+    parameters?: ShareParameters;
   };
 }
 
-export interface EventPropertyFilter {
+export type ShareTheme = 'light' | 'dark';
+
+export interface ShareParameters {
+  allowFilter?: boolean;
+  theme?: ShareTheme;
+  [key: string]: boolean | ShareTheme | undefined;
+}
+
+export interface PropertyFilter {
   propertyName: string;
   dataType: number;
   operator: Operator;
   value: string;
 }
+
+export type EventPropertyFilter = PropertyFilter;
 
 export interface Filter {
   name: string;
@@ -79,6 +91,23 @@ export interface EventDataNumericStats {
   min: number;
 }
 
+export interface SessionDataPivotRow {
+  sessionId: string;
+  distinctId: string;
+  createdAt: string | Date;
+  propertyKeys: string[];
+  propertyValues: string[];
+}
+
+export interface PropertyLeaderboardRow {
+  label: string;
+  activity: number;
+  sessions: number;
+  visits: number;
+  views: number;
+  events: number;
+}
+
 export interface QueryOptions {
   joinSession?: boolean;
   columns?: Record<string, string>;
@@ -95,6 +124,7 @@ export interface QueryFilters
     SortParams,
     PageParams,
     SegmentParams {
+  minDuration?: number;
   cohortFilters?: QueryFilters;
 }
 
@@ -138,6 +168,7 @@ export interface SortParams {
 export interface PageParams {
   page?: number;
   pageSize?: number;
+  maxResults?: number;
 }
 
 export interface SegmentParams {
@@ -153,6 +184,7 @@ export interface PageResult<T> {
   orderBy?: string;
   sortDescending?: boolean;
   search?: string;
+  isCapped?: boolean;
 }
 
 export interface RealtimeData {

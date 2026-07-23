@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { saveAuth } from '@/lib/auth';
 import { ROLES } from '@/lib/constants';
-import { secret } from '@/lib/crypto';
+import { hash, secret } from '@/lib/crypto';
 import { createSecureToken } from '@/lib/jwt';
 import { checkPassword } from '@/lib/password';
 import prisma from '@/lib/prisma';
@@ -40,13 +40,15 @@ export async function POST(request: Request) {
     });
     return json({ requiresTwoFactor: true, partialToken });
   }
+  // Bind token to password hash so a password change invalidates old tokens.
+  const pwd = hash(user.password);
 
   let token: string;
 
   if (redis.enabled) {
-    token = await saveAuth({ userId: id, role });
+    token = await saveAuth({ userId: id, role, pwd });
   } else {
-    token = createSecureToken({ userId: user.id, role }, secret());
+    token = createSecureToken({ userId: user.id, role, pwd }, secret());
   }
 
   const teams = await getAllUserTeams(id);

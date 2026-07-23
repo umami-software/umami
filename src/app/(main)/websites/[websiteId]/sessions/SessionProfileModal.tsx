@@ -18,7 +18,7 @@ export function SessionProfileModal({
     const query = Object.fromEntries(searchParams.entries());
     delete query.session;
 
-    router.push(buildPath(`/websites/${websiteId}/sessions`, query));
+    router.replace(buildPath(`/websites/${websiteId}/sessions`, query), { scroll: false });
   };
 
   const handleOpenChange = (isOpen: boolean) => {

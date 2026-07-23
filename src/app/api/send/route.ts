@@ -1,9 +1,8 @@
 import { startOfHour } from 'date-fns';
 import { isbot } from 'isbot';
-import { serializeError } from 'serialize-error';
 import { z } from 'zod';
 import clickhouse from '@/lib/clickhouse';
-import { COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
+import { CACHE_TOKEN_TYPE, COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
 import { getSalt, hash, secret, uuid } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { createToken, parseToken } from '@/lib/jwt';
@@ -12,14 +11,23 @@ import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
+import { createSession, saveEvent, saveSessionData, saveSessionLink, updateSession } from '@/queries/sql';
 
 interface Cache {
   websiteId: string;
   sessionId: string;
   visitId: string;
   iat: number;
+  sessionLinkId?: string;
 }
+
+// Reject strings whose first character is a spreadsheet formula trigger to
+// prevent CSV formula injection in analytics exports (defense-in-depth).
+const FORMULA_TRIGGER_RE = /^[=+\-@\t\r]/;
+const safeStringParam = () =>
+  z.string().refine(val => !FORMULA_TRIGGER_RE.test(val), {
+    message: 'Value must not start with =, +, -, @, tab, or carriage return',
+  });
 
 const schema = z.object({
   type: z.enum(['event', 'identify', 'performance']),
@@ -29,14 +37,14 @@ const schema = z.object({
       link: z.uuid().optional(),
       pixel: z.uuid().optional(),
       data: anyObjectParam.optional(),
-      hostname: z.string().max(100).optional(),
-      language: z.string().max(35).optional(),
+      hostname: z.string().optional(),
+      language: z.string().optional(),
       referrer: urlOrPathParam.optional(),
-      screen: z.string().max(11).optional(),
+      screen: z.string().optional(),
       title: z.string().optional(),
       url: urlOrPathParam.optional(),
-      name: z.string().max(50).optional(),
-      tag: z.string().max(50).optional(),
+      name: safeStringParam().optional(),
+      tag: safeStringParam().optional(),
       ip: z.string().optional(),
       userAgent: z.string().optional(),
       timestamp: z.coerce.number().int().optional(),
@@ -106,7 +114,7 @@ export async function POST(request: Request) {
       if (cacheHeader) {
         const result = await parseToken(cacheHeader, secret());
 
-        if (result) {
+        if (result?.type === CACHE_TOKEN_TYPE) {
           cache = result;
         }
       }
@@ -120,6 +128,9 @@ export async function POST(request: Request) {
         }
       }
     }
+
+    // Carried forward in the cache token so repeat identify calls skip identity writes
+    let sessionLinkId = cache?.sessionLinkId;
 
     // Client info
     const { ip, userAgent, device, browser, os, country, region, city } = await getClientInfo(
@@ -144,7 +155,7 @@ export async function POST(request: Request) {
     const sessionSalt = getSalt(saltRotation, createdAt);
     const visitSalt = hash(startOfHour(createdAt).toUTCString());
 
-    const sessionId = id ? uuid(sourceId, id) : uuid(sourceId, ip, userAgent, sessionSalt);
+    const sessionId = uuid(sourceId, ip, userAgent, sessionSalt);
 
     // Create a session if not found
     if (!clickhouse.enabled && !cache?.sessionId) {
@@ -270,6 +281,33 @@ export async function POST(request: Request) {
         twclid,
       });
     } else if (type === COLLECTION_TYPE.identify) {
+      if (websiteId && id) {
+        const newLinkId = hash(sessionId, id);
+
+        if (sessionLinkId !== newLinkId) {
+          // Best-effort: identity link failures must not block the session data write below.
+          try {
+            await Promise.all([
+              saveSessionLink({
+                websiteId,
+                sessionId,
+                distinctId: id,
+                createdAt,
+              }),
+              updateSession({
+                websiteId,
+                sessionId,
+                distinctId: id,
+              }),
+            ]);
+            sessionLinkId = newLinkId;
+          } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error('Failed to save session link:', e);
+          }
+        }
+      }
+
       if (data) {
         await saveSessionData({
           websiteId,
@@ -308,15 +346,13 @@ export async function POST(request: Request) {
       });
     }
 
-    const token = createToken({ websiteId, sessionId, visitId, iat }, secret());
+    const token = createToken(
+      { websiteId, sessionId, visitId, iat, sessionLinkId, type: CACHE_TOKEN_TYPE },
+      secret(),
+    );
 
     return json({ cache: token, sessionId, visitId });
   } catch (e) {
-    const error = serializeError(e);
-
-    // eslint-disable-next-line no-console
-    console.log(error);
-
-    return serverError({ errorObject: error });
+    return serverError(e);
   }
 }

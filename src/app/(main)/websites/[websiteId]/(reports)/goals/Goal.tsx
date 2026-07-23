@@ -19,11 +19,21 @@ export interface GoalProps {
   websiteId: string;
   startDate: Date;
   endDate: Date;
+  allowEdit?: boolean;
 }
 
 export type GoalData = { num: number; total: number };
 
-export function Goal({ id, name, type, parameters, websiteId, startDate, endDate }: GoalProps) {
+export function Goal({
+  id,
+  name,
+  type,
+  parameters,
+  websiteId,
+  startDate,
+  endDate,
+  allowEdit = true,
+}: GoalProps) {
   const { t, labels } = useMessages();
   const { pathname } = useNavigation();
   const isSharePage = pathname.includes('/share/');
@@ -47,9 +57,16 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
                 </Text>
               </Row>
             </Column>
-            {!isSharePage && (
+            {allowEdit && !isSharePage && (
               <Column>
-                <ReportEditButton id={id} name={name} type={type} title={t(labels.goal)} minWidth="400px" minHeight="300px">
+                <ReportEditButton
+                  id={id}
+                  name={name}
+                  type={type}
+                  title={t(labels.goal)}
+                  minWidth="400px"
+                  minHeight="300px"
+                >
                   {({ close }) => <GoalEditForm id={id} websiteId={websiteId} onClose={close} />}
                 </ReportEditButton>
               </Column>

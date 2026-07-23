@@ -66,22 +66,35 @@ model Session {
   @@map("session")
 }
 
+model SessionLink {
+  websiteId  String    @map("website_id") @db.Uuid
+  sessionId  String    @map("session_id") @db.Uuid
+  distinctId String    @map("distinct_id") @db.VarChar(50)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@id([websiteId, distinctId, sessionId])
+  @@index([websiteId, sessionId])
+  @@map("session_link")
+}
+
 model Website {
-  id                  String               @id @map("website_id") @db.Uuid
-  name                String               @db.VarChar(100)
-  domain              String?              @db.VarChar(500)
-  resetAt             DateTime?            @map("reset_at") @db.Timestamptz(6)
-  userId              String?              @map("user_id") @db.Uuid
-  createdAt           DateTime?            @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt           DateTime?            @updatedAt @map("updated_at") @db.Timestamptz(6)
-  deletedAt           DateTime?            @map("deleted_at") @db.Timestamptz(6)
-  createdBy           String?              @map("created_by") @db.Uuid
-  teamId              String?              @map("team_id") @db.Uuid
-  replayEnabled       Boolean              @default(false) @map("replay_enabled")
-  replayConfig        Json?                @map("replay_config")
-  user                User?                @relation("user", fields: [userId], references: [id])
-  createUser          User?                @relation("createUser", fields: [createdBy], references: [id])
-  team                Team?                @relation(fields: [teamId], references: [id])
+  id        String    @id() @map("website_id") @db.Uuid
+  name      String    @db.VarChar(100)
+  domain    String?   @db.VarChar(500)
+  resetAt   DateTime? @map("reset_at") @db.Timestamptz(6)
+  userId    String?   @map("user_id") @db.Uuid
+  teamId    String?   @map("team_id") @db.Uuid
+  createdBy String?   @map("created_by") @db.Uuid
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  recorderEnabled Boolean @default(false) @map("recorder_enabled")
+  replayConfig    Json?   @map("replay_config")
+
+  user                User?               @relation("user", fields: [userId], references: [id])
+  createUser          User?               @relation("createUser", fields: [createdBy], references: [id])
+  team                Team?               @relation(fields: [teamId], references: [id])
   eventData           EventData[]
   reports             Report[]
   revenue             Revenue[]
@@ -89,6 +102,7 @@ model Website {
   sessionData         SessionData[]
   sessionReplays      SessionReplay[]
   sessionReplaysSaved SessionReplaySaved[]
+  heatmapEvents       HeatmapEvent[]
 
   @@index([userId])
   @@index([teamId])

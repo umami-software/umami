@@ -1,6 +1,7 @@
 import { hasPermission } from '@/lib/auth';
 import { PERMISSIONS } from '@/lib/constants';
 import { getEntity } from '@/lib/entity';
+import prisma from '@/lib/prisma';
 import type { Auth } from '@/lib/types';
 import { getTeamUser, getWebsite } from '@/queries/prisma';
 
@@ -37,6 +38,76 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
   }
 
   return false;
+}
+
+export async function canViewBatchWebsites({ user, shareToken }: Auth, websiteIds: string[]) {
+  if (!websiteIds.length) {
+    return [];
+  }
+
+  const requestedIds = Array.from(new Set(websiteIds));
+
+  if (user?.isAdmin) {
+    return requestedIds;
+  }
+
+  const shareAllowedIds = new Set(
+    [
+      shareToken?.websiteId,
+      shareToken?.pixelId,
+      shareToken?.linkId,
+      ...(shareToken?.websiteIds ?? []),
+      ...(shareToken?.pixelIds ?? []),
+      ...(shareToken?.linkIds ?? []),
+    ].filter((id): id is string => Boolean(id)),
+  );
+
+  if (!user) {
+    return requestedIds.filter(id => shareAllowedIds.has(id));
+  }
+
+  const websites = await prisma.client.website.findMany({
+    where: {
+      id: {
+        in: requestedIds,
+      },
+    },
+    select: {
+      id: true,
+      userId: true,
+      teamId: true,
+    },
+  });
+
+  const ownedIds = new Set(
+    websites.filter(website => website.userId === user.id).map(website => website.id),
+  );
+  const teamIds = Array.from(
+    new Set(websites.map(website => website.teamId).filter((teamId): teamId is string => Boolean(teamId))),
+  );
+  const teamUsers = teamIds.length
+    ? await prisma.client.teamUser.findMany({
+        where: {
+          userId: user.id,
+          teamId: {
+            in: teamIds,
+          },
+        },
+        select: {
+          teamId: true,
+        },
+      })
+    : [];
+  const allowedTeamIds = new Set(teamUsers.map(teamUser => teamUser.teamId));
+  const teamOwnedIds = new Set(
+    websites
+      .filter(website => website.teamId && allowedTeamIds.has(website.teamId))
+      .map(website => website.id),
+  );
+
+  return requestedIds.filter(
+    id => shareAllowedIds.has(id) || ownedIds.has(id) || teamOwnedIds.has(id),
+  );
 }
 
 export async function canViewAllWebsites({ user }: Auth) {

@@ -1,7 +1,10 @@
 import type { Prisma } from '@/generated/prisma/client';
 import { BOARD_TYPES } from '@/lib/boards';
 import prisma from '@/lib/prisma';
+import { sanitizeSortFilters } from '@/lib/sort';
 import type { QueryFilters } from '@/lib/types';
+
+const BOARD_SORT_FIELDS = ['name', 'description', 'type', 'createdAt'] as const;
 
 export async function findBoard(criteria: Prisma.BoardFindUniqueArgs) {
   return prisma.client.board.findUnique(criteria);
@@ -16,7 +19,8 @@ export async function getBoard(boardId: string) {
 }
 
 export async function getBoards(criteria: Prisma.BoardFindManyArgs, filters: QueryFilters = {}) {
-  const { search } = filters;
+  const sortFilters = sanitizeSortFilters(filters, BOARD_SORT_FIELDS);
+  const { search } = sortFilters;
   const { getSearchParameters, pagedQuery } = prisma;
 
   const where: Prisma.BoardWhereInput = {
@@ -24,7 +28,7 @@ export async function getBoards(criteria: Prisma.BoardFindManyArgs, filters: Que
     ...getSearchParameters(search, [{ name: 'contains' }, { description: 'contains' }]),
   };
 
-  return pagedQuery('board', { ...criteria, where }, filters);
+  return pagedQuery('board', { ...criteria, where }, sortFilters);
 }
 
 export async function getUserBoards(userId: string, filters?: QueryFilters) {

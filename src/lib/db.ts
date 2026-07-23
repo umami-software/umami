@@ -5,7 +5,7 @@ export const KAFKA = 'kafka';
 export const KAFKA_PRODUCER = 'kafka-producer';
 
 // Fixes issue with converting bigint values
-BigInt.prototype.toJSON = function () {
+(BigInt.prototype as unknown as { toJSON(): number }).toJSON = function () {
   return Number(this);
 };
 

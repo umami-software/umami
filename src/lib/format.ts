@@ -1,3 +1,4 @@
+import { toUnicode } from 'punycode';
 import { DEFAULT_CURRENCY } from './constants';
 
 export function parseTime(val: number) {
@@ -117,4 +118,23 @@ export function formatLongCurrency(value: number, currency: string, locale = 'en
   }
 
   return formatCurrency(n, currency, locale);
+}
+
+export function decodePunycodeDomain(domain?: string | null) {
+  if (!domain) {
+    return domain;
+  }
+
+  try {
+    return toUnicode(domain);
+  } catch {
+    return domain;
+  }
+}
+
+export function truncateString<T extends string | null | undefined>(
+  value: T,
+  maxLength: number,
+): T extends string ? string : T {
+  return (value ? value.substring(0, maxLength) : value) as T extends string ? string : T;
 }

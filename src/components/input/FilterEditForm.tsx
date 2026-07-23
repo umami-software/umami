@@ -28,7 +28,10 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
   const [currentMatch, setCurrentMatch] = useState<string>(match || 'all');
   const { isMobile } = useMobile();
   const isPixelLink = !websiteId || pathname.includes('/pixels') || pathname.includes('/links');
-  const excludeEvent = !pathname.endsWith('/events') && !pathname.endsWith('/replays');
+  const excludeEvent =
+    !pathname.endsWith('/events') &&
+    !pathname.endsWith('/replays') &&
+    !pathname.endsWith('/heatmaps');
   const isPerformance = pathname.includes('/performance');
 
   const excludedFields = isPixelLink
@@ -72,47 +75,59 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
     setCurrentCohort(type === 'cohort' ? id : undefined);
   };
 
+  const panelStyle = { overflowY: 'auto' as const, minHeight: 0 };
+
   return (
-    <Column width={isMobile ? 'auto' : '800px'} gap="6">
-      <Column minHeight="500px">
-        <Tabs>
-          <TabList>
-            <Tab id="fields">{t(labels.fields)}</Tab>
-            {!isPixelLink && (
-              <>
-                <Tab id="segments">{t(labels.segments)}</Tab>
-                <Tab id="cohorts">{t(labels.cohorts)}</Tab>
-              </>
-            )}
-          </TabList>
-          <TabPanel id="fields">
-            <FieldFilters
-              websiteId={websiteId}
-              value={currentFilters}
-              match={currentMatch}
-              onChange={setCurrentFilters}
-              onMatchChange={setCurrentMatch}
-              exclude={excludedFields}
-            />
-          </TabPanel>
-          <TabPanel id="segments">
-            <SegmentFilters
-              websiteId={websiteId}
-              segmentId={currentSegment}
-              onChange={handleSegmentChange}
-            />
-          </TabPanel>
-          <TabPanel id="cohorts">
-            <SegmentFilters
-              type="cohort"
-              websiteId={websiteId}
-              segmentId={currentCohort}
-              onChange={handleSegmentChange}
-            />
-          </TabPanel>
-        </Tabs>
-      </Column>
-      <Row alignItems="center" justifyContent="space-between" gap style={isMobile ? { paddingBottom: '16px' } : undefined}>
+    <Column width={isMobile ? 'auto' : '800px'} gap="6" style={{ flex: 1, minHeight: 0 }}>
+      <Tabs
+        style={{
+          flex: 1,
+          minHeight: 0,
+          gridTemplateRows: 'auto 1fr',
+          overflow: 'hidden',
+        }}
+      >
+        <TabList>
+          <Tab id="fields">{t(labels.fields)}</Tab>
+          {!isPixelLink && (
+            <>
+              <Tab id="segments">{t(labels.segments)}</Tab>
+              <Tab id="cohorts">{t(labels.cohorts)}</Tab>
+            </>
+          )}
+        </TabList>
+        <TabPanel id="fields" style={panelStyle}>
+          <FieldFilters
+            websiteId={websiteId}
+            value={currentFilters}
+            match={currentMatch}
+            onChange={setCurrentFilters}
+            onMatchChange={setCurrentMatch}
+            exclude={excludedFields}
+          />
+        </TabPanel>
+        <TabPanel id="segments" style={panelStyle}>
+          <SegmentFilters
+            websiteId={websiteId}
+            segmentId={currentSegment}
+            onChange={handleSegmentChange}
+          />
+        </TabPanel>
+        <TabPanel id="cohorts" style={panelStyle}>
+          <SegmentFilters
+            type="cohort"
+            websiteId={websiteId}
+            segmentId={currentCohort}
+            onChange={handleSegmentChange}
+          />
+        </TabPanel>
+      </Tabs>
+      <Row
+        alignItems="center"
+        justifyContent="space-between"
+        gap
+        style={isMobile ? { paddingBottom: '16px' } : undefined}
+      >
         <Button onPress={handleReset}>{t(labels.reset)}</Button>
         <Row alignItems="center" justifyContent="flex-end" gridColumn="span 2" gap>
           <Button onPress={onClose}>{t(labels.cancel)}</Button>

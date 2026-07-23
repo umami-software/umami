@@ -1,9 +1,9 @@
 import { Button, Column, Heading, Row, Text } from '@umami/react-zen';
 import { useState } from 'react';
-import { Plus } from '@/components/icons';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { IconLabel } from '@/components/common/IconLabel';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useBoardSharesQuery, useMessages } from '@/components/hooks';
+import { Plus } from '@/components/icons';
 import { BoardShareCreateForm } from './BoardShareCreateForm';
 import { BoardSharesTable } from './BoardSharesTable';
 
@@ -49,9 +49,7 @@ function BoardShareDialogContent({
           onCancel={() => setIsCreating(false)}
         />
       )}
-      {hasShares && (
-        <Text>{t(messages.shareUrl)}</Text>
-      )}
+      {hasShares && <Text>{t(messages.shareUrl)}</Text>}
       {!showCreateForm &&
         (hasShares ? (
           <BoardSharesTable data={shares} />

@@ -1,3 +1,5 @@
+import { serializeError } from 'serialize-error';
+
 export function ok() {
   return Response.json({ ok: true });
 }
@@ -36,6 +38,15 @@ export function forbidden(error?: Record<string, any>) {
   );
 }
 
+export function payloadTooLarge(error?: Record<string, any>) {
+  return Response.json(
+    {
+      error: { message: 'Payload too large', code: 'payload-too-large', status: 413, ...error },
+    },
+    { status: 413 },
+  );
+}
+
 export function notFound(error?: Record<string, any>) {
   return Response.json(
     { error: { message: 'Not found', code: 'not-found', status: 404, ...error } },
@@ -43,14 +54,18 @@ export function notFound(error?: Record<string, any>) {
   );
 }
 
-export function serverError(error?: Record<string, any>) {
+export function serverError(error?: unknown) {
+  if (error && typeof error !== 'string') {
+    // eslint-disable-next-line no-console
+    console.log(serializeError(error));
+  }
+
   return Response.json(
     {
       error: {
-        message: 'Server error',
+        message: typeof error === 'string' ? error : 'Server error',
         code: 'server-error',
         status: 500,
-        ...error,
       },
     },
     { status: 500 },

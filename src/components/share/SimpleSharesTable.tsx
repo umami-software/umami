@@ -1,8 +1,9 @@
+import { DataColumn, DataTable, Icon, type DataTableProps, Row, Text } from '@umami/react-zen';
 import { ShareDeleteButton } from '@/app/(main)/websites/[websiteId]/settings/ShareDeleteButton';
 import { CopyButton } from '@/components/common/CopyButton';
-import { ExternalLink } from '@/components/common/ExternalLink';
+import Link from '@/components/common/Link';
 import { useConfig, useMessages, useMobile } from '@/components/hooks';
-import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
+import { ExternalLink } from '@/components/icons';
 import { SimpleShareEditButton } from './SimpleShareEditButton';
 
 export function SimpleSharesTable(props: DataTableProps) {
@@ -24,15 +25,22 @@ export function SimpleSharesTable(props: DataTableProps) {
       <DataColumn id="name" label={t(labels.name)}>
         {({ name }: any) => name}
       </DataColumn>
-      <DataColumn id="slug" label={t(labels.shareUrl)} width="2fr">
+      <DataColumn id="slug" label={t(labels.shareUrl)} width="2fr" style={{ minWidth: 0 }}>
         {({ slug }: any) => {
           const url = getUrl(slug);
 
           return (
-            <Row alignItems="center" gap="1" overflow="hidden">
-              <ExternalLink href={url} prefetch={false}>
-                {isMobile ? slug : url}
-              </ExternalLink>
+            <Row alignItems="center" gap="1" minWidth="0" width="100%" overflow="hidden">
+              <Row alignItems="center" gap minWidth="0" style={{ flex: 1 }}>
+                <Text title={url} style={{ minWidth: 0, flex: 1, overflowWrap: 'anywhere' }}>
+                  <Link href={url} target="_blank" prefetch={false}>
+                    {isMobile ? slug : url}
+                  </Link>
+                </Text>
+                <Icon size="sm" strokeColor="muted" style={{ flexShrink: 0 }}>
+                  <ExternalLink />
+                </Icon>
+              </Row>
               <CopyButton value={url} label="Copy URL" />
             </Row>
           );

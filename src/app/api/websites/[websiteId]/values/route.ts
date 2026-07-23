@@ -2,7 +2,7 @@ import { EVENT_COLUMNS, FILTER_COLUMNS, SEGMENT_TYPES, SESSION_COLUMNS } from '@
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { fieldsParam, searchParams, withDateRange } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
+import { canViewWebsiteSection } from '@/permissions';
 import { getWebsiteSegments } from '@/queries/prisma';
 import { getValues } from '@/queries/sql';
 
@@ -23,7 +23,17 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (
+    !(await canViewWebsiteSection(auth, websiteId, [
+      'overview',
+      'events',
+      'sessions',
+      'compare',
+      'breakdown',
+      'utm',
+      'attribution',
+    ]))
+  ) {
     return unauthorized();
   }
 
