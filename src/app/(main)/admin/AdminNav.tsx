@@ -4,8 +4,6 @@ import Link from '@/components/common/Link';
 import { NavMenu } from '@/components/common/NavMenu';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { ArrowLeft, Globe, ShieldCheck, User, Users } from '@/components/icons';
-import { Column, Focusable, Row, Tooltip, TooltipTrigger } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 
 export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
   const { t, labels } = useMessages();
