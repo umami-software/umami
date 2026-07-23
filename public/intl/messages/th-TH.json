@@ -114,6 +114,7 @@
     "environment": "สภาพแวดล้อม",
     "event": "เหตุการณ์",
     "event-data": "ข้อมูลเหตุการณ์",
+    "event-properties": "ข้อมูลเหตุการณ์",
     "event-name": "ชื่อเหตุการณ์",
     "events": "เหตุการณ์",
     "exclude-bounce": "ยกเว้นการตีกลับ",

@@ -115,6 +115,7 @@
     "environment": "Mediu",
     "event": "Eveniment",
     "event-data": "Date despre eveniment",
+    "event-properties": "Date despre eveniment",
     "event-name": "Nume eveniment",
     "events": "Evenimente",
     "exclude-bounce": "Exclude respingere",

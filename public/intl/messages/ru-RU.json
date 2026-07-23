@@ -116,6 +116,7 @@
     "environment": "Окружение",
     "event": "Событие",
     "event-data": "Данные о событии",
+    "event-properties": "Данные о событии",
     "event-name": "Название события",
     "events": "События",
     "exclude-bounce": "Исключить отказы",

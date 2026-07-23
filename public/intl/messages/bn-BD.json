@@ -114,6 +114,7 @@
     "environment": "পরিবেশ",
     "event": "ইভেন্ট",
     "event-data": "ইভেন্ট ডেটা",
+    "event-properties": "ইভেন্ট ডেটা",
     "event-name": "ইভেন্টের নাম",
     "events": "ঘটনা",
     "exclude-bounce": "বাউন্স বাদ দিন",

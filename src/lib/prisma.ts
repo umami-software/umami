@@ -309,6 +309,14 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   const cohortFilters = Object.fromEntries(
     Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
   );
+  const {
+    sql: eventPropertyFilterQuery,
+    params: eventPropertyFilterParams,
+  } = getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
+  const {
+    sql: sessionPropertyFilterQuery,
+    params: sessionPropertyFilterParams,
+  } = getSessionPropertyFilterQuery((filters as QueryFilters).sessionPropertyFilters, filters.timezone);
 
   return {
     joinSessionQuery:
@@ -316,8 +324,14 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
         ? `inner join session on website_event.session_id = session.session_id and website_event.website_id = session.website_id`
         : '',
     dateQuery: getDateQuery(filters),
-    filterQuery: getFilterQuery(filters, options),
-    queryParams: getQueryParams(filters),
+    filterQuery: [getFilterQuery(filters, options), eventPropertyFilterQuery, sessionPropertyFilterQuery]
+      .filter(Boolean)
+      .join('\n'),
+    queryParams: {
+      ...getQueryParams(filters),
+      ...eventPropertyFilterParams,
+      ...sessionPropertyFilterParams,
+    },
     cohortQuery: getCohortQuery(cohortFilters),
     excludeBounceQuery: getExcludeBounceQuery(filters),
   };
@@ -448,6 +462,258 @@ function getPropertyFilterQuery(
   });
 
   return { sql: parts.join('\n'), params };
+}
+
+function getEventPropertyFilterQuery(
+  filters: PropertyFilter[] = [],
+  timezone?: string,
+): {
+  sql: string;
+  params: Record<string, any>;
+} {
+  if (!filters.length) {
+    return { sql: '', params: {} };
+  }
+
+  const clauses: string[] = [];
+  const keyRefs: string[] = [];
+  const params: Record<string, any> = {};
+
+  filters.forEach(({ propertyName, dataType, operator, value }, index) => {
+    const keyParam = `epf_key_${index}`;
+    const valParam = `epf_val_${index}`;
+    params[keyParam] = propertyName;
+    keyRefs.push(`{{${keyParam}}}`);
+
+    let condition: string;
+
+    switch (dataType) {
+      case DATA_TYPE.number: {
+        const col = 'cast(number_value as decimal)';
+        params[valParam] = parseFloat(value) || 0;
+        const opMap: Record<string, string> = {
+          [OPERATORS.equals]: `${col} = {{${valParam}}}`,
+          [OPERATORS.notEquals]: `${col} != {{${valParam}}}`,
+          [OPERATORS.greaterThan]: `${col} > {{${valParam}}}`,
+          [OPERATORS.lessThan]: `${col} < {{${valParam}}}`,
+          [OPERATORS.greaterThanEquals]: `${col} >= {{${valParam}}}`,
+          [OPERATORS.lessThanEquals]: `${col} <= {{${valParam}}}`,
+        };
+        condition = opMap[operator] ?? `${col} = {{${valParam}}}`;
+        break;
+      }
+      case DATA_TYPE.date: {
+        if (!value) return;
+        params[valParam] = value;
+        const dateCol =
+          timezone && !isUtcTimezone(timezone)
+            ? `(date_value at time zone {{timezone}})::date`
+            : `(date_value at time zone 'utc')::date`;
+        const opMap: Record<string, string> = {
+          [OPERATORS.before]: `${dateCol} < {{${valParam}::date}}`,
+          [OPERATORS.after]: `${dateCol} > {{${valParam}::date}}`,
+        };
+        condition = opMap[operator] ?? `${dateCol} = {{${valParam}::date}}`;
+        break;
+      }
+      case DATA_TYPE.array: {
+        if (!value) return;
+        params[valParam] = value;
+        condition =
+          operator === OPERATORS.contains
+            ? `exists (
+                select 1
+                from jsonb_array_elements_text(coalesce(string_value, '[]')::jsonb) as array_item(value)
+                where array_item.value = {{${valParam}}}
+              )`
+            : `not exists (
+                select 1
+                from jsonb_array_elements_text(coalesce(string_value, '[]')::jsonb) as array_item(value)
+                where array_item.value = {{${valParam}}}
+              )`;
+        break;
+      }
+      default: {
+        const col = 'string_value';
+
+        if (EQUALITY_OPERATORS.includes(operator)) {
+          const vals = value.split(',').filter(Boolean);
+
+          if (!vals.length) return;
+
+          params[valParam] = vals;
+          condition =
+            operator === OPERATORS.equals
+              ? `${col} = ANY({{${valParam}}})`
+              : `${col} != ALL({{${valParam}}})`;
+        } else if (REGEX_OPERATORS.includes(operator)) {
+          if (!value) return;
+
+          params[valParam] = value;
+          condition =
+            operator === OPERATORS.regex
+              ? `${col} ~* {{${valParam}}}`
+              : `${col} !~* {{${valParam}}}`;
+        } else {
+          if (!value) return;
+
+          params[valParam] = `%${value}%`;
+          condition =
+            operator === OPERATORS.contains
+              ? `${col} ilike {{${valParam}}}`
+              : `${col} not ilike {{${valParam}}}`;
+        }
+        break;
+      }
+    }
+
+    clauses.push(
+      `bool_or(data_key = {{${keyParam}}} and data_type = ${dataType} and ${condition})`,
+    );
+  });
+
+  if (!clauses.length) {
+    return { sql: '', params: {} };
+  }
+
+  return {
+    sql: `and website_event.event_id in (
+      select website_event_id
+      from event_data
+      where website_id = {{websiteId::uuid}}
+        and created_at between {{startDate}} and {{endDate}}
+        and data_key in (${keyRefs.join(', ')})
+      group by website_event_id
+      having ${clauses.join('\n        and ')}
+    )`,
+    params,
+  };
+}
+
+function getSessionPropertyFilterQuery(
+  filters: PropertyFilter[] = [],
+  timezone?: string,
+): {
+  sql: string;
+  params: Record<string, any>;
+} {
+  if (!filters.length) {
+    return { sql: '', params: {} };
+  }
+
+  const clauses: string[] = [];
+  const keyRefs: string[] = [];
+  const params: Record<string, any> = {};
+
+  filters.forEach(({ propertyName, dataType, operator, value }, index) => {
+    const keyParam = `spf_key_${index}`;
+    const valParam = `spf_val_${index}`;
+    params[keyParam] = propertyName;
+    keyRefs.push(`{{${keyParam}}}`);
+
+    let condition: string;
+
+    switch (dataType) {
+      case DATA_TYPE.number: {
+        const col = 'cast(number_value as decimal)';
+        params[valParam] = parseFloat(value) || 0;
+        const opMap: Record<string, string> = {
+          [OPERATORS.equals]: `${col} = {{${valParam}}}`,
+          [OPERATORS.notEquals]: `${col} != {{${valParam}}}`,
+          [OPERATORS.greaterThan]: `${col} > {{${valParam}}}`,
+          [OPERATORS.lessThan]: `${col} < {{${valParam}}}`,
+          [OPERATORS.greaterThanEquals]: `${col} >= {{${valParam}}}`,
+          [OPERATORS.lessThanEquals]: `${col} <= {{${valParam}}}`,
+        };
+        condition = opMap[operator] ?? `${col} = {{${valParam}}}`;
+        break;
+      }
+      case DATA_TYPE.date: {
+        if (!value) return;
+        params[valParam] = value;
+        const dateCol =
+          timezone && !isUtcTimezone(timezone)
+            ? `(date_value at time zone {{timezone}})::date`
+            : `(date_value at time zone 'utc')::date`;
+        const opMap: Record<string, string> = {
+          [OPERATORS.before]: `${dateCol} < {{${valParam}::date}}`,
+          [OPERATORS.after]: `${dateCol} > {{${valParam}::date}}`,
+        };
+        condition = opMap[operator] ?? `${dateCol} = {{${valParam}::date}}`;
+        break;
+      }
+      case DATA_TYPE.array: {
+        if (!value) return;
+        params[valParam] = value;
+        condition =
+          operator === OPERATORS.contains
+            ? `exists (
+                select 1
+                from jsonb_array_elements_text(coalesce(string_value, '[]')::jsonb) as array_item(value)
+                where array_item.value = {{${valParam}}}
+              )`
+            : `not exists (
+                select 1
+                from jsonb_array_elements_text(coalesce(string_value, '[]')::jsonb) as array_item(value)
+                where array_item.value = {{${valParam}}}
+              )`;
+        break;
+      }
+      default: {
+        const col = 'string_value';
+
+        if (EQUALITY_OPERATORS.includes(operator)) {
+          const vals = value.split(',').filter(Boolean);
+
+          if (!vals.length) return;
+
+          params[valParam] = vals;
+          condition =
+            operator === OPERATORS.equals
+              ? `${col} = ANY({{${valParam}}})`
+              : `${col} != ALL({{${valParam}}})`;
+        } else if (REGEX_OPERATORS.includes(operator)) {
+          if (!value) return;
+
+          params[valParam] = value;
+          condition =
+            operator === OPERATORS.regex
+              ? `${col} ~* {{${valParam}}}`
+              : `${col} !~* {{${valParam}}}`;
+        } else {
+          if (!value) return;
+
+          params[valParam] = `%${value}%`;
+          condition =
+            operator === OPERATORS.contains
+              ? `${col} ilike {{${valParam}}}`
+              : `${col} not ilike {{${valParam}}}`;
+        }
+        break;
+      }
+    }
+
+    clauses.push(
+      `bool_or(data_key = {{${keyParam}}} and data_type = ${dataType} and ${condition})`,
+    );
+  });
+
+  if (!clauses.length) {
+    return { sql: '', params: {} };
+  }
+
+  return {
+    sql: `and exists (
+      select 1
+      from session_data
+      where website_id = website_event.website_id
+        and session_id = website_event.session_id
+        and data_key in (${keyRefs.join(', ')})
+      group by website_id, session_id
+      having ${clauses.join('\n        and ')}
+    )`,
+    params,
+  };
 }
 
 async function executeRawQuery(

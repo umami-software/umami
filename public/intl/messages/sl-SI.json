@@ -115,6 +115,7 @@
     "environment": "Okolje",
     "event": "Dogodek",
     "event-data": "Podatki dogodka",
+    "event-properties": "Podatki dogodka",
     "event-name": "Ime dogodka",
     "events": "Dogodki",
     "exclude-bounce": "Izključi odbite",

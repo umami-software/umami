@@ -115,6 +115,7 @@
     "environment": "Prostredie",
     "event": "Udalosť",
     "event-data": "Dáta udalosti",
+    "event-properties": "Dáta udalosti",
     "event-name": "Názov udalosti",
     "events": "Udalosti",
     "exclude-bounce": "Vylúčiť odmietnutia",

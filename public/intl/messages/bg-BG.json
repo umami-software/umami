@@ -114,6 +114,7 @@
     "environment": "Среда",
     "event": "Събитие",
     "event-data": "Данни за събитие",
+    "event-properties": "Данни за събитие",
     "event-name": "Име на събитие",
     "events": "Събития",
     "exclude-bounce": "Изключи отпадане",

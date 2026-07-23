@@ -114,6 +114,7 @@
     "environment": "Середовище",
     "event": "Подія",
     "event-data": "Дані події",
+    "event-properties": "Дані події",
     "event-name": "Назва події",
     "events": "Події",
     "exclude-bounce": "Виключити відмови",

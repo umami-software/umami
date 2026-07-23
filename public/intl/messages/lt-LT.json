@@ -115,6 +115,7 @@
     "environment": "Aplinka",
     "event": "Įvykis",
     "event-data": "Įvykių duomenys",
+    "event-properties": "Įvykių duomenys",
     "event-name": "Įvykio pavadinimas",
     "events": "Įvykiai",
     "exclude-bounce": "Neįtraukti atmetimų",

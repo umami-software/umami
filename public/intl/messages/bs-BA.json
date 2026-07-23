@@ -115,6 +115,7 @@
     "environment": "Okruženje",
     "event": "Događaj",
     "event-data": "Podaci o događaju",
+    "event-properties": "Podaci o događaju",
     "event-name": "Naziv događaja",
     "events": "Događaji",
     "exclude-bounce": "Isključi odbijanja",

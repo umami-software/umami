@@ -114,6 +114,7 @@
     "environment": "环境",
     "event": "事件",
     "event-data": "事件数据",
+    "event-properties": "事件数据",
     "event-name": "事件名称",
     "events": "行为类别",
     "exclude-bounce": "排除跳出",

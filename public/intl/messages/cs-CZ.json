@@ -115,6 +115,7 @@
     "environment": "Prostředí",
     "event": "Událost",
     "event-data": "Data události",
+    "event-properties": "Data události",
     "event-name": "Název události",
     "events": "Události",
     "exclude-bounce": "Vyloučit odmítnutí",

@@ -115,6 +115,7 @@
     "environment": "Lingkungan",
     "event": "Peristiwa",
     "event-data": "Data peristiwa",
+    "event-properties": "Data peristiwa",
     "event-name": "Nama peristiwa",
     "events": "Peristiwa",
     "exclude-bounce": "Kecualikan pantulan",

@@ -168,6 +168,7 @@ export const labels: Record<string, string> = {
   regions: 'label.regions',
   reports: 'label.reports',
   eventData: 'label.event-data',
+  eventProperties: 'label.event-properties',
   sessionData: 'label.session-data',
   funnel: 'label.funnel',
   funnels: 'label.funnels',

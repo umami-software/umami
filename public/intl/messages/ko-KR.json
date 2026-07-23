@@ -122,6 +122,7 @@
     "environment": "환경",
     "event": "이벤트",
     "event-data": "이벤트 데이터",
+    "event-properties": "이벤트 데이터",
     "event-name": "이벤트 이름",
     "events": "이벤트",
     "exclude-bounce": "이탈 제외",

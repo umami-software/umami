@@ -114,6 +114,7 @@
     "environment": "Περιβάλλον",
     "event": "Συμβάν",
     "event-data": "Δεδομένα συμβάντος",
+    "event-properties": "Δεδομένα συμβάντος",
     "event-name": "Όνομα συμβάντος",
     "events": "Γεγονότα",
     "exclude-bounce": "Εξαίρεση αναπήδησης",

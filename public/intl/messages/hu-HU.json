@@ -115,6 +115,7 @@
     "environment": "Környezet",
     "event": "Esemény",
     "event-data": "Eseményadatok",
+    "event-properties": "Eseményadatok",
     "event-name": "Esemény neve",
     "events": "Események",
     "exclude-bounce": "Visszafordulás kizárása",

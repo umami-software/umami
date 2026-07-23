@@ -234,11 +234,25 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   const cohortFilters = Object.fromEntries(
     Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
   );
+  const {
+    sql: eventPropertyFilterQuery,
+    params: eventPropertyFilterParams,
+  } = getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
+  const {
+    sql: sessionPropertyFilterQuery,
+    params: sessionPropertyFilterParams,
+  } = getSessionPropertyFilterQuery((filters as QueryFilters).sessionPropertyFilters, filters.timezone);
 
   return {
-    filterQuery: getFilterQuery(filters, options),
+    filterQuery: [getFilterQuery(filters, options), eventPropertyFilterQuery, sessionPropertyFilterQuery]
+      .filter(Boolean)
+      .join('\n'),
     dateQuery: getDateQuery(filters),
-    queryParams: getQueryParams(filters),
+    queryParams: {
+      ...getQueryParams(filters),
+      ...eventPropertyFilterParams,
+      ...sessionPropertyFilterParams,
+    },
     cohortQuery: getCohortQuery(cohortFilters),
     excludeBounceQuery: getExcludeBounceQuery(filters),
   };
@@ -366,6 +380,251 @@ function getPropertyFilterQuery(
   });
 
   return { sql: parts.join('\n'), params };
+}
+
+function getEventPropertyFilterQuery(
+  filters: PropertyFilter[] = [],
+  timezone?: string,
+): {
+  sql: string;
+  params: Record<string, any>;
+} {
+  if (!filters.length) {
+    return { sql: '', params: {} };
+  }
+
+  const clauses: string[] = [];
+  const keyRefs: string[] = [];
+  const params: Record<string, any> = {};
+
+  filters.forEach(({ propertyName, dataType, operator, value }, index) => {
+    const keyParam = `epf_key_${index}`;
+    const valParam = `epf_val_${index}`;
+    params[keyParam] = propertyName;
+    keyRefs.push(`{${keyParam}:String}`);
+
+    let condition: string;
+
+    switch (dataType) {
+      case DATA_TYPE.number: {
+        const col = 'number_value';
+        params[valParam] = parseFloat(value) || 0;
+        const opMap: Record<string, string> = {
+          [OPERATORS.equals]: `${col} = {${valParam}:Float64}`,
+          [OPERATORS.notEquals]: `${col} != {${valParam}:Float64}`,
+          [OPERATORS.greaterThan]: `${col} > {${valParam}:Float64}`,
+          [OPERATORS.lessThan]: `${col} < {${valParam}:Float64}`,
+          [OPERATORS.greaterThanEquals]: `${col} >= {${valParam}:Float64}`,
+          [OPERATORS.lessThanEquals]: `${col} <= {${valParam}:Float64}`,
+        };
+        condition = opMap[operator] ?? `${col} = {${valParam}:Float64}`;
+        break;
+      }
+      case DATA_TYPE.date: {
+        if (!value) return;
+        params[valParam] = value;
+        const dateCol = timezone
+          ? `toDate(toTimezone(date_value, {timezone:String}))`
+          : `toDate(toTimezone(date_value, 'UTC'))`;
+        const opMap: Record<string, string> = {
+          [OPERATORS.before]: `${dateCol} < {${valParam}:Date}`,
+          [OPERATORS.after]: `${dateCol} > {${valParam}:Date}`,
+        };
+        condition = opMap[operator] ?? `${dateCol} = {${valParam}:Date}`;
+        break;
+      }
+      case DATA_TYPE.array: {
+        if (!value) return;
+        params[valParam] = value;
+        condition =
+          operator === OPERATORS.contains
+            ? `has(JSONExtract(ifNull(string_value, '[]'), 'Array(String)'), {${valParam}:String})`
+            : `not has(JSONExtract(ifNull(string_value, '[]'), 'Array(String)'), {${valParam}:String})`;
+        break;
+      }
+      default: {
+        const col = 'string_value';
+
+        if (EQUALITY_OPERATORS.includes(operator)) {
+          const vals = value.split(',').filter(Boolean);
+
+          if (!vals.length) return;
+
+          params[valParam] = vals;
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.equals ? OPERATORS.equals : OPERATORS.notEquals,
+            valParam,
+            'String',
+          );
+        } else if (REGEX_OPERATORS.includes(operator)) {
+          if (!value) return;
+
+          params[valParam] = value;
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.regex ? OPERATORS.regex : OPERATORS.notRegex,
+            valParam,
+            'String',
+          );
+        } else {
+          if (!value) return;
+
+          params[valParam] = value;
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.contains ? OPERATORS.contains : OPERATORS.doesNotContain,
+            valParam,
+            'String',
+          );
+        }
+        break;
+      }
+    }
+
+    clauses.push(
+      `max(if(data_key = {${keyParam}:String} and data_type = ${dataType} and ${condition}, 1, 0)) = 1`,
+    );
+  });
+
+  if (!clauses.length) {
+    return { sql: '', params: {} };
+  }
+
+  return {
+    sql: `and website_event.event_id in (
+      select event_id
+      from event_data
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and data_key in (${keyRefs.join(', ')})
+      group by event_id
+      having ${clauses.join('\n        and ')}
+    )`,
+    params,
+  };
+}
+
+function getSessionPropertyFilterQuery(
+  filters: PropertyFilter[] = [],
+  timezone?: string,
+): {
+  sql: string;
+  params: Record<string, any>;
+} {
+  if (!filters.length) {
+    return { sql: '', params: {} };
+  }
+
+  const clauses: string[] = [];
+  const keyRefs: string[] = [];
+  const params: Record<string, any> = {};
+
+  filters.forEach(({ propertyName, dataType, operator, value }, index) => {
+    const keyParam = `spf_key_${index}`;
+    const valParam = `spf_val_${index}`;
+    params[keyParam] = propertyName;
+    keyRefs.push(`{${keyParam}:String}`);
+
+    let condition: string;
+
+    switch (dataType) {
+      case DATA_TYPE.number: {
+        const col = 'number_value';
+        params[valParam] = parseFloat(value) || 0;
+        const opMap: Record<string, string> = {
+          [OPERATORS.equals]: `${col} = {${valParam}:Float64}`,
+          [OPERATORS.notEquals]: `${col} != {${valParam}:Float64}`,
+          [OPERATORS.greaterThan]: `${col} > {${valParam}:Float64}`,
+          [OPERATORS.lessThan]: `${col} < {${valParam}:Float64}`,
+          [OPERATORS.greaterThanEquals]: `${col} >= {${valParam}:Float64}`,
+          [OPERATORS.lessThanEquals]: `${col} <= {${valParam}:Float64}`,
+        };
+        condition = opMap[operator] ?? `${col} = {${valParam}:Float64}`;
+        break;
+      }
+      case DATA_TYPE.date: {
+        if (!value) return;
+        params[valParam] = value;
+        const dateCol = timezone
+          ? `toDate(toTimezone(date_value, {timezone:String}))`
+          : `toDate(toTimezone(date_value, 'UTC'))`;
+        const opMap: Record<string, string> = {
+          [OPERATORS.before]: `${dateCol} < {${valParam}:Date}`,
+          [OPERATORS.after]: `${dateCol} > {${valParam}:Date}`,
+        };
+        condition = opMap[operator] ?? `${dateCol} = {${valParam}:Date}`;
+        break;
+      }
+      case DATA_TYPE.array: {
+        if (!value) return;
+        params[valParam] = value;
+        condition =
+          operator === OPERATORS.contains
+            ? `has(JSONExtract(ifNull(string_value, '[]'), 'Array(String)'), {${valParam}:String})`
+            : `not has(JSONExtract(ifNull(string_value, '[]'), 'Array(String)'), {${valParam}:String})`;
+        break;
+      }
+      default: {
+        const col = 'string_value';
+
+        if (EQUALITY_OPERATORS.includes(operator)) {
+          const vals = value.split(',').filter(Boolean);
+
+          if (!vals.length) return;
+
+          params[valParam] = vals;
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.equals ? OPERATORS.equals : OPERATORS.notEquals,
+            valParam,
+            'String',
+          );
+        } else if (REGEX_OPERATORS.includes(operator)) {
+          if (!value) return;
+
+          params[valParam] = value;
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.regex ? OPERATORS.regex : OPERATORS.notRegex,
+            valParam,
+            'String',
+          );
+        } else {
+          if (!value) return;
+
+          params[valParam] = value;
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.contains ? OPERATORS.contains : OPERATORS.doesNotContain,
+            valParam,
+            'String',
+          );
+        }
+        break;
+      }
+    }
+
+    clauses.push(
+      `max(if(data_key = {${keyParam}:String} and data_type = ${dataType} and ${condition}, 1, 0)) = 1`,
+    );
+  });
+
+  if (!clauses.length) {
+    return { sql: '', params: {} };
+  }
+
+  return {
+    sql: `and tuple(website_event.website_id, website_event.session_id) in (
+      select website_id, session_id
+      from session_data final
+      where website_id = {websiteId:UUID}
+        and data_key in (${keyRefs.join(', ')})
+      group by website_id, session_id
+      having ${clauses.join('\n        and ')}
+    )`,
+    params,
+  };
 }
 
 async function pagedRawQuery(

@@ -115,6 +115,7 @@
     "environment": "Miljø",
     "event": "Hendelse",
     "event-data": "Hendelsesdata",
+    "event-properties": "Hendelsesdata",
     "event-name": "Hendelsesnavn",
     "events": "Hendelser",
     "exclude-bounce": "Ekskluder avvisning",

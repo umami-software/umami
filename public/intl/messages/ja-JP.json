@@ -114,6 +114,7 @@
     "environment": "環境",
     "event": "イベント",
     "event-data": "イベントデータ",
+    "event-properties": "イベントデータ",
     "event-name": "イベント名",
     "events": "イベント",
     "exclude-bounce": "直帰を除外",

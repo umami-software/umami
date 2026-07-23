@@ -115,6 +115,7 @@
     "environment": "Umhvørvi",
     "event": "Tiltak",
     "event-data": "Tiltaksdata",
+    "event-properties": "Tiltaksdata",
     "event-name": "Tiltaksnavn",
     "events": "Hendingar/tiltøk",
     "exclude-bounce": "Útiloka frástøyt",

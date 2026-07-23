@@ -114,6 +114,7 @@
     "environment": "بيئة",
     "event": "الحدث",
     "event-data": "تاريخ الحدث",
+    "event-properties": "تاريخ الحدث",
     "event-name": "اسم الحدث",
     "events": "الأحداث",
     "exclude-bounce": "استبعاد الارتداد",

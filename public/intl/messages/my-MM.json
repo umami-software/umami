@@ -114,6 +114,7 @@
     "environment": "ပတ်ဝန်းကျင်",
     "event": "အဖြစ်အပျက်",
     "event-data": "အဖြစ်အပျက် ဒေတာ",
+    "event-properties": "အဖြစ်အပျက် ဒေတာ",
     "event-name": "အဖြစ်အပျက်အမည်",
     "events": "အဖြစ်အပျက်များ",
     "exclude-bounce": "Bounce ဖယ်ထုတ်မည်",

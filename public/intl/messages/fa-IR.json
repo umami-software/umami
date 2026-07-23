@@ -114,6 +114,7 @@
     "environment": "محیط",
     "event": "رویداد",
     "event-data": "داده‌های رویداد",
+    "event-properties": "داده‌های رویداد",
     "event-name": "نام رویداد",
     "events": "رویدادها",
     "exclude-bounce": "حذف نرخ پرش",

@@ -114,6 +114,7 @@
     "environment": "Орчин",
     "event": "Үйлдэл",
     "event-data": "Үйлдлийн өгөгдөл",
+    "event-properties": "Үйлдлийн өгөгдөл",
     "event-name": "Үйлдлийн нэр",
     "events": "Үйлдэл",
     "exclude-bounce": "Буцалтыг хасах",

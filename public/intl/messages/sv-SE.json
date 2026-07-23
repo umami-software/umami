@@ -115,6 +115,7 @@
     "environment": "Miljö",
     "event": "Händelse",
     "event-data": "Händelsedata",
+    "event-properties": "Händelsedata",
     "event-name": "Händelsenamn",
     "events": "Händelser",
     "exclude-bounce": "Exkludera avvisning",

@@ -115,6 +115,7 @@
     "environment": "Ympäristö",
     "event": "Tapahtuma",
     "event-data": "Tapahtumatiedot",
+    "event-properties": "Tapahtumatiedot",
     "event-name": "Tapahtuman nimi",
     "events": "Tapahtumat",
     "exclude-bounce": "Sulje poishyppäys pois",

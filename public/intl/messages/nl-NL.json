@@ -115,6 +115,7 @@
     "environment": "Omgeving",
     "event": "Gebeurtenis",
     "event-data": "Datum gebeurtenis",
+    "event-properties": "Datum gebeurtenis",
     "event-name": "Gebeurtenisnaam",
     "events": "Gebeurtenissen",
     "exclude-bounce": "Bounce uitsluiten",

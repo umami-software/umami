@@ -115,6 +115,7 @@
     "environment": "Ortam",
     "event": "Olay",
     "event-data": "Olay verisi",
+    "event-properties": "Olay verisi",
     "event-name": "Olay adı",
     "events": "Olaylar",
     "exclude-bounce": "Hemen çıkışı hariç tut",

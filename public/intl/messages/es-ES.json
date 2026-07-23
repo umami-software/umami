@@ -116,6 +116,7 @@
     "environment": "Entorno",
     "event": "Evento",
     "event-data": "Datos de evento",
+    "event-properties": "Datos de evento",
     "event-name": "Nombre del evento",
     "events": "Eventos",
     "exclude-bounce": "Excluir rebote",
