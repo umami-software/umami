@@ -4,6 +4,7 @@ import { ROLES } from '@/lib/constants';
 import { hash, secret } from '@/lib/crypto';
 import { createSecureToken } from '@/lib/jwt';
 import { checkPassword } from '@/lib/password';
+import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
@@ -31,6 +32,14 @@ export async function POST(request: Request) {
 
   const { id, role, createdAt } = user;
 
+  // Check if 2FA is enabled for this user
+  const twoFactor = await prisma.client.twoFactorAuth.findUnique({ where: { userId: id } });
+  if (twoFactor?.isEnabled) {
+    const partialToken = createSecureToken({ userId: id, type: 'partial-auth' }, secret(), {
+      expiresIn: '5m',
+    });
+    return json({ requiresTwoFactor: true, partialToken });
+  }
   // Bind token to password hash so a password change invalidates old tokens.
   const pwd = hash(user.password);
 
