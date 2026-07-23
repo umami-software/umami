@@ -27,6 +27,8 @@ model User {
   teams     TeamUser[]
   reports   Report[]
   boards    Board[]    @relation("user")
+  issuedTeamInvites TeamInvite[] @relation("teamInviteIssuer")
+  usedTeamInvites   TeamInvite[] @relation("teamInviteUser")
 
   @@map("user")
 }
@@ -220,6 +222,7 @@ model Team {
   links    Link[]
   pixels   Pixel[]
   boards    Board[]
+  invites  TeamInvite[]
 
   @@index([accessCode])
   @@map("team")
@@ -236,9 +239,33 @@ model TeamUser {
   team Team @relation(fields: [teamId], references: [id])
   user User @relation(fields: [userId], references: [id])
 
+  @@unique([teamId, userId])
   @@index([teamId])
   @@index([userId])
   @@map("team_user")
+}
+
+model TeamInvite {
+  id          String    @id() @map("team_invite_id") @db.Uuid
+  teamId      String    @map("team_id") @db.Uuid
+  issuerId    String    @map("issuer_id") @db.Uuid
+  tokenDigest String    @unique @map("token_digest") @db.VarChar(128)
+  role        String    @db.VarChar(50)
+  expiresAt   DateTime  @map("expires_at") @db.Timestamptz(6)
+  revokedAt   DateTime? @map("revoked_at") @db.Timestamptz(6)
+  usedAt      DateTime? @map("used_at") @db.Timestamptz(6)
+  usedBy      String?   @map("used_by") @db.Uuid
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  team       Team  @relation(fields: [teamId], references: [id])
+  issuer     User  @relation("teamInviteIssuer", fields: [issuerId], references: [id])
+  usedByUser User? @relation("teamInviteUser", fields: [usedBy], references: [id])
+
+  @@index([teamId])
+  @@index([issuerId])
+  @@index([usedBy])
+  @@index([expiresAt])
+  @@map("team_invite")
 }
 
 model Report {

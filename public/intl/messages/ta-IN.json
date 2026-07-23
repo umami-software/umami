@@ -372,7 +372,29 @@
     "website-id": "வலைத்தள ID",
     "websites": "வலைத்தளங்கள்",
     "window": "சாளரம்",
-    "yesterday": "நேற்று"
+    "yesterday": "நேற்று",
+    "active": "Active",
+    "copy-invitation-link": "Copy invitation link",
+    "create-account": "Create account",
+    "create-account-and-join-team": "Create account and join team",
+    "create-invitation": "Create invitation",
+    "done": "Done",
+    "expired": "Expired",
+    "expires": "Expires",
+    "expires-in": "Expires in",
+    "invitation-link": "Invitation link",
+    "invitations": "Invitations",
+    "invitation-unavailable": "Invitation unavailable",
+    "one-day": "1 day",
+    "revoke": "Revoke",
+    "revoked": "Revoked",
+    "revoke-invitation": "Revoke invitation",
+    "seven-days": "7 days",
+    "sign-in": "Sign in",
+    "sign-in-and-join-team": "Sign in and join team",
+    "status": "Status",
+    "thirty-days": "30 days",
+    "used": "Used"
   },
   "message": {
     "action-confirmation": "உறுதிப்படுத்த கீழே உள்ள பெட்டியில் {confirmation} என்று தட்டச்சு செய்யவும்.",
@@ -424,6 +446,15 @@
     "user-deleted": "பயனர் நீக்கப்பட்டார்.",
     "replay-min-duration-description": "இந்த காலவரையறை அல்லது அதற்கும் அதிகமான மறுஒலிப்புகளை மட்டும் காட்டு.",
     "viewed-page": "பார்வையிட்ட பக்கம்",
-    "visitor-log": "<b>{country}</b>வில் இருந்து பார்வையாளர் <b>{browser}</b> ஐ <b>{os}</b> <b>{device}</b>லில் பயன்படுத்துகிறார்"
+    "visitor-log": "<b>{country}</b>வில் இருந்து பார்வையாளர் <b>{browser}</b> ஐ <b>{os}</b> <b>{device}</b>லில் பயன்படுத்துகிறார்",
+    "confirm-revoke-invitation": "Are you sure you want to revoke this invitation?",
+    "invitation-link-one-time": "Copy this invitation link now. It will not be shown again.",
+    "invitation-unavailable": "This invitation can no longer be used.",
+    "invitation-authentication-required": "Sign in through your configured authentication provider, then reopen this invitation link.",
+    "invited-to-join": "You've been invited to join",
+    "no-invitations": "There are no invitations.",
+    "ALREADY_TEAM_MEMBER": "You are already a member of the team.",
+    "INVALID_TEAM_INVITE": "This invitation can no longer be used.",
+    "USERNAME_UNAVAILABLE": "Username is unavailable."
   }
 }

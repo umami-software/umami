@@ -372,7 +372,29 @@
     "website-id": "Идентификатор на уебсайт",
     "websites": "Уебсайтове",
     "window": "Прозорец",
-    "yesterday": "Вчера"
+    "yesterday": "Вчера",
+    "active": "Active",
+    "copy-invitation-link": "Copy invitation link",
+    "create-account": "Create account",
+    "create-account-and-join-team": "Create account and join team",
+    "create-invitation": "Create invitation",
+    "done": "Done",
+    "expired": "Expired",
+    "expires": "Expires",
+    "expires-in": "Expires in",
+    "invitation-link": "Invitation link",
+    "invitations": "Invitations",
+    "invitation-unavailable": "Invitation unavailable",
+    "one-day": "1 day",
+    "revoke": "Revoke",
+    "revoked": "Revoked",
+    "revoke-invitation": "Revoke invitation",
+    "seven-days": "7 days",
+    "sign-in": "Sign in",
+    "sign-in-and-join-team": "Sign in and join team",
+    "status": "Status",
+    "thirty-days": "30 days",
+    "used": "Used"
   },
   "message": {
     "action-confirmation": "Въведете {confirmation} в полето по-долу, за да потвърдите.",
@@ -424,6 +446,15 @@
     "user-deleted": "Потребителят е изтрит.",
     "replay-min-duration-description": "Показвай само записи с тази или по-голяма продължителност.",
     "viewed-page": "Страницата е видяна",
-    "visitor-log": "Посетител от <b>{country}</b>, използващ <b>{browser}</b> на <b>{os}</b> <b>{device}</b>"
+    "visitor-log": "Посетител от <b>{country}</b>, използващ <b>{browser}</b> на <b>{os}</b> <b>{device}</b>",
+    "confirm-revoke-invitation": "Are you sure you want to revoke this invitation?",
+    "invitation-link-one-time": "Copy this invitation link now. It will not be shown again.",
+    "invitation-unavailable": "This invitation can no longer be used.",
+    "invitation-authentication-required": "Sign in through your configured authentication provider, then reopen this invitation link.",
+    "invited-to-join": "You've been invited to join",
+    "no-invitations": "There are no invitations.",
+    "ALREADY_TEAM_MEMBER": "You are already a member of the team.",
+    "INVALID_TEAM_INVITE": "This invitation can no longer be used.",
+    "USERNAME_UNAVAILABLE": "Username is unavailable."
   }
 }

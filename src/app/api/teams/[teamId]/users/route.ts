@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { Prisma } from '@/generated/prisma/client';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, teamRoleParam } from '@/lib/schema';
@@ -77,7 +78,15 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
     return badRequest({ message: 'User is already a member of the Team.' });
   }
 
-  const users = await createTeamUser(userId, teamId, role);
+  try {
+    const users = await createTeamUser(userId, teamId, role);
 
-  return json(users);
+    return json(users);
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+      return badRequest({ message: 'User is already a member of the Team.' });
+    }
+
+    throw error;
+  }
 }

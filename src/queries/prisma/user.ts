@@ -4,6 +4,7 @@ import { getRandomChars } from '@/lib/generate';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
+import { getTeamInviteHardDeleteWhere } from '@/lib/team-invite';
 import type { QueryFilters, Role } from '@/lib/types';
 
 import UserFindManyArgs = Prisma.UserFindManyArgs;
@@ -128,7 +129,7 @@ export async function deleteUser(userId: string) {
     },
   });
 
-  const teamIds = teams.map(a => a.id);
+  const teamIds = teams.map(a => a.id).sort();
 
   const ownedFilter = cloudMode ? { userId } : { OR: [{ userId }, { teamId: { in: teamIds } }] };
 
@@ -159,6 +160,12 @@ export async function deleteUser(userId: string) {
 
   if (cloudMode) {
     return transaction([
+      client.$queryRaw(Prisma.sql`
+        SELECT user_id
+        FROM "user"
+        WHERE user_id = ${userId}
+        FOR UPDATE
+      `),
       client.website.updateMany({
         data: {
           deletedAt: new Date(),
@@ -173,6 +180,10 @@ export async function deleteUser(userId: string) {
         where: {
           id: userId,
         },
+      }),
+      client.teamInvite.updateMany({
+        data: { revokedAt: new Date() },
+        where: { issuerId: userId, revokedAt: null, usedAt: null },
       }),
       client.share.deleteMany({ where: { entityId: { in: entityIds } } }),
       // deletedAt: null avoids restamping rows that were already soft-deleted earlier.
@@ -192,6 +203,23 @@ export async function deleteUser(userId: string) {
   }
 
   return transaction([
+    ...(teamIds.length
+      ? [
+          client.$queryRaw(Prisma.sql`
+            SELECT team_id
+            FROM "team"
+            WHERE team_id IN (${Prisma.join(teamIds)})
+            ORDER BY team_id
+            FOR UPDATE
+          `),
+        ]
+      : []),
+    client.$queryRaw(Prisma.sql`
+      SELECT user_id
+      FROM "user"
+      WHERE user_id = ${userId}
+      FOR UPDATE
+    `),
     client.eventData.deleteMany({
       where: { websiteId: { in: websiteIds } },
     }),
@@ -217,6 +245,9 @@ export async function deleteUser(userId: string) {
           },
         ],
       },
+    }),
+    client.teamInvite.deleteMany({
+      where: getTeamInviteHardDeleteWhere(userId, teamIds),
     }),
     client.team.deleteMany({
       where: {

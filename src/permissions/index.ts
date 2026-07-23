@@ -5,5 +5,6 @@ export * from './pixel';
 export * from './report';
 export * from './share';
 export * from './team';
+export * from './team-invite';
 export * from './user';
 export * from './website';

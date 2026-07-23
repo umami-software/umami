@@ -7,6 +7,7 @@ import { Users } from '@/components/icons';
 import { ROLES } from '@/lib/constants';
 import { TeamsMemberAddButton } from '../TeamsMemberAddButton';
 import { TeamEditForm } from './TeamEditForm';
+import { TeamInvitationsPanel } from './TeamInvitationsPanel';
 import { TeamManage } from './TeamManage';
 import { TeamMembersDataTable } from './TeamMembersDataTable';
 
@@ -45,6 +46,11 @@ export function TeamSettings({ teamId }: { teamId: string }) {
         </Row>
         <TeamMembersDataTable teamId={teamId} allowEdit={canEdit} />
       </Panel>
+      {canEdit && (
+        <Panel>
+          <TeamInvitationsPanel teamId={teamId} />
+        </Panel>
+      )}
       {isTeamOwner && (
         <Panel>
           <TeamManage teamId={teamId} />

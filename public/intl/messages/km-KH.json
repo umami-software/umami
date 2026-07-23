@@ -372,7 +372,29 @@
     "website-id": "ID គេហទំព័រ",
     "websites": "គេហទំព័រ",
     "window": "បង្អួច",
-    "yesterday": "ម្សិលមិញ"
+    "yesterday": "ម្សិលមិញ",
+    "active": "Active",
+    "copy-invitation-link": "Copy invitation link",
+    "create-account": "Create account",
+    "create-account-and-join-team": "Create account and join team",
+    "create-invitation": "Create invitation",
+    "done": "Done",
+    "expired": "Expired",
+    "expires": "Expires",
+    "expires-in": "Expires in",
+    "invitation-link": "Invitation link",
+    "invitations": "Invitations",
+    "invitation-unavailable": "Invitation unavailable",
+    "one-day": "1 day",
+    "revoke": "Revoke",
+    "revoked": "Revoked",
+    "revoke-invitation": "Revoke invitation",
+    "seven-days": "7 days",
+    "sign-in": "Sign in",
+    "sign-in-and-join-team": "Sign in and join team",
+    "status": "Status",
+    "thirty-days": "30 days",
+    "used": "Used"
   },
   "message": {
     "action-confirmation": "សសេរ {confirmation} នៅក្នុងប្រអប់ខាងក្រោមដើម្បីបញ្ជាក់។",
@@ -424,6 +446,15 @@
     "user-deleted": "អ្នកប្រើប្រាស់ត្រូវបានលុបចោល។",
     "replay-min-duration-description": "បង្ហាញតែការចាក់ឡើងវិញដែលមានរយៈពេលនេះ ឬខ្ពស់ជាងនេះ។",
     "viewed-page": "ទំព័រដែលបានមើល",
-    "visitor-log": "អ្នកមើលពីប្រទេស <b>{country}</b> ប្រើប្រាស់កម្មវិធី <b>{browser}</b> លើឧបករណ៍ <b>{os}</b> <b>{device}</b>"
+    "visitor-log": "អ្នកមើលពីប្រទេស <b>{country}</b> ប្រើប្រាស់កម្មវិធី <b>{browser}</b> លើឧបករណ៍ <b>{os}</b> <b>{device}</b>",
+    "confirm-revoke-invitation": "Are you sure you want to revoke this invitation?",
+    "invitation-link-one-time": "Copy this invitation link now. It will not be shown again.",
+    "invitation-unavailable": "This invitation can no longer be used.",
+    "invitation-authentication-required": "Sign in through your configured authentication provider, then reopen this invitation link.",
+    "invited-to-join": "You've been invited to join",
+    "no-invitations": "There are no invitations.",
+    "ALREADY_TEAM_MEMBER": "You are already a member of the team.",
+    "INVALID_TEAM_INVITE": "This invitation can no longer be used.",
+    "USERNAME_UNAVAILABLE": "Username is unavailable."
   }
 }

@@ -391,7 +391,29 @@
     "website-id": "웹사이트 ID",
     "websites": "웹사이트",
     "window": "창",
-    "yesterday": "어제"
+    "yesterday": "어제",
+    "active": "Active",
+    "copy-invitation-link": "Copy invitation link",
+    "create-account": "Create account",
+    "create-account-and-join-team": "Create account and join team",
+    "create-invitation": "Create invitation",
+    "done": "Done",
+    "expired": "Expired",
+    "expires": "Expires",
+    "expires-in": "Expires in",
+    "invitation-link": "Invitation link",
+    "invitations": "Invitations",
+    "invitation-unavailable": "Invitation unavailable",
+    "one-day": "1 day",
+    "revoke": "Revoke",
+    "revoked": "Revoked",
+    "revoke-invitation": "Revoke invitation",
+    "seven-days": "7 days",
+    "sign-in": "Sign in",
+    "sign-in-and-join-team": "Sign in and join team",
+    "status": "Status",
+    "thirty-days": "30 days",
+    "used": "Used"
   },
   "message": {
     "action-confirmation": "확인을 위해 아래 상자에 {confirmation}을(를) 입력하세요.",
@@ -445,6 +467,15 @@
     "user-deleted": "사용자를 삭제했습니다.",
     "replay-min-duration-description": "이 지속 시간 이상의 리플레이만 표시합니다.",
     "viewed-page": "조회한 페이지",
-    "visitor-log": "<b>{os}</b> <b>{device}</b>에서 <b>{browser}</b>을(를) 사용하는 <b>{country}</b>의 방문자"
+    "visitor-log": "<b>{os}</b> <b>{device}</b>에서 <b>{browser}</b>을(를) 사용하는 <b>{country}</b>의 방문자",
+    "confirm-revoke-invitation": "Are you sure you want to revoke this invitation?",
+    "invitation-link-one-time": "Copy this invitation link now. It will not be shown again.",
+    "invitation-unavailable": "This invitation can no longer be used.",
+    "invitation-authentication-required": "Sign in through your configured authentication provider, then reopen this invitation link.",
+    "invited-to-join": "You've been invited to join",
+    "no-invitations": "There are no invitations.",
+    "ALREADY_TEAM_MEMBER": "You are already a member of the team.",
+    "INVALID_TEAM_INVITE": "This invitation can no longer be used.",
+    "USERNAME_UNAVAILABLE": "Username is unavailable."
   }
 }

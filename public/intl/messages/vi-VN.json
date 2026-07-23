@@ -377,7 +377,29 @@
     "website-id": "ID website",
     "websites": "Các website",
     "window": "Cửa sổ",
-    "yesterday": "Hôm qua"
+    "yesterday": "Hôm qua",
+    "active": "Active",
+    "copy-invitation-link": "Copy invitation link",
+    "create-account": "Create account",
+    "create-account-and-join-team": "Create account and join team",
+    "create-invitation": "Create invitation",
+    "done": "Done",
+    "expired": "Expired",
+    "expires": "Expires",
+    "expires-in": "Expires in",
+    "invitation-link": "Invitation link",
+    "invitations": "Invitations",
+    "invitation-unavailable": "Invitation unavailable",
+    "one-day": "1 day",
+    "revoke": "Revoke",
+    "revoked": "Revoked",
+    "revoke-invitation": "Revoke invitation",
+    "seven-days": "7 days",
+    "sign-in": "Sign in",
+    "sign-in-and-join-team": "Sign in and join team",
+    "status": "Status",
+    "thirty-days": "30 days",
+    "used": "Used"
   },
   "message": {
     "action-confirmation": "Nhập {confirmation} vào ô bên dưới để xác nhận.",
@@ -430,6 +452,15 @@
     "replay-min-duration-description": "Chỉ hiển thị các lần phát lại có thời lượng bằng hoặc trên mức này.",
     "viewed-page": "Đã xem trang",
     "visitor-log": "Khách từ <b>{country}</b> đang sử dụng <b>{browser}</b> trên <b>{os}</b> <b>{device}</b>",
-    "visitors-dropped-off": "Khách truy cập đã rời đi"
+    "visitors-dropped-off": "Khách truy cập đã rời đi",
+    "confirm-revoke-invitation": "Are you sure you want to revoke this invitation?",
+    "invitation-link-one-time": "Copy this invitation link now. It will not be shown again.",
+    "invitation-unavailable": "This invitation can no longer be used.",
+    "invitation-authentication-required": "Sign in through your configured authentication provider, then reopen this invitation link.",
+    "invited-to-join": "You've been invited to join",
+    "no-invitations": "There are no invitations.",
+    "ALREADY_TEAM_MEMBER": "You are already a member of the team.",
+    "INVALID_TEAM_INVITE": "This invitation can no longer be used.",
+    "USERNAME_UNAVAILABLE": "Username is unavailable."
   }
 }

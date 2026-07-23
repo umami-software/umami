@@ -187,6 +187,12 @@ export async function deleteTeam(teamId: string) {
 
   if (cloudMode) {
     return transaction([
+      client.$queryRaw(Prisma.sql`
+        SELECT team_id
+        FROM "team"
+        WHERE team_id = ${teamId}
+        FOR UPDATE
+      `),
       client.team.update({
         data: {
           deletedAt: new Date(),
@@ -194,6 +200,10 @@ export async function deleteTeam(teamId: string) {
         where: {
           id: teamId,
         },
+      }),
+      client.teamInvite.updateMany({
+        data: { revokedAt: new Date() },
+        where: { teamId, revokedAt: null, usedAt: null },
       }),
       client.share.deleteMany({ where: { entityId: { in: entityIds } } }),
       // deletedAt: null avoids restamping rows that were already soft-deleted earlier.
@@ -213,11 +223,18 @@ export async function deleteTeam(teamId: string) {
   }
 
   return transaction([
+    client.$queryRaw(Prisma.sql`
+      SELECT team_id
+      FROM "team"
+      WHERE team_id = ${teamId}
+      FOR UPDATE
+    `),
     client.teamUser.deleteMany({
       where: {
         teamId,
       },
     }),
+    client.teamInvite.deleteMany({ where: { teamId } }),
     client.share.deleteMany({ where: { entityId: { in: entityIds } } }),
     client.link.deleteMany({ where: { teamId } }),
     client.pixel.deleteMany({ where: { teamId } }),

@@ -382,7 +382,29 @@
     "website-id": "ID do site",
     "websites": "Sites",
     "window": "Janela",
-    "yesterday": "Ontem"
+    "yesterday": "Ontem",
+    "active": "Active",
+    "copy-invitation-link": "Copy invitation link",
+    "create-account": "Create account",
+    "create-account-and-join-team": "Create account and join team",
+    "create-invitation": "Create invitation",
+    "done": "Done",
+    "expired": "Expired",
+    "expires": "Expires",
+    "expires-in": "Expires in",
+    "invitation-link": "Invitation link",
+    "invitations": "Invitations",
+    "invitation-unavailable": "Invitation unavailable",
+    "one-day": "1 day",
+    "revoke": "Revoke",
+    "revoked": "Revoked",
+    "revoke-invitation": "Revoke invitation",
+    "seven-days": "7 days",
+    "sign-in": "Sign in",
+    "sign-in-and-join-team": "Sign in and join team",
+    "status": "Status",
+    "thirty-days": "30 days",
+    "used": "Used"
   },
   "message": {
     "action-confirmation": "Digite {confirmation} na caixa abaixo para confirmar.",
@@ -436,6 +458,15 @@
     "replay-min-duration-description": "Mostrar apenas repetições com esta duração ou superior.",
     "viewed-page": "Página visualizada",
     "upgrade-required": "Este recurso requer uma assinatura do plano {plan}.",
-    "visitor-log": "Visitante de <b>{country}</b> usando o navegador <b>{browser}</b> em um <b>{device}</b> com sistema operacional <b>{os}</b>."
+    "visitor-log": "Visitante de <b>{country}</b> usando o navegador <b>{browser}</b> em um <b>{device}</b> com sistema operacional <b>{os}</b>.",
+    "confirm-revoke-invitation": "Are you sure you want to revoke this invitation?",
+    "invitation-link-one-time": "Copy this invitation link now. It will not be shown again.",
+    "invitation-unavailable": "This invitation can no longer be used.",
+    "invitation-authentication-required": "Sign in through your configured authentication provider, then reopen this invitation link.",
+    "invited-to-join": "You've been invited to join",
+    "no-invitations": "There are no invitations.",
+    "ALREADY_TEAM_MEMBER": "You are already a member of the team.",
+    "INVALID_TEAM_INVITE": "This invitation can no longer be used.",
+    "USERNAME_UNAVAILABLE": "Username is unavailable."
   }
 }
