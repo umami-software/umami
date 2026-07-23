@@ -1,4 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
+import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
@@ -28,7 +29,7 @@ async function relationalQuery(
 ): Promise<RevenueStatsResult> {
   const { startDate, endDate, currency } = parameters;
   const { rawQuery, parseFilters } = prisma;
-  const { queryParams, filterQuery, cohortQuery, joinSessionQuery } = parseFilters({
+  const { queryParams, filterQuery, cohortQuery, joinSessionQuery, dateQuery } = parseFilters({
     ...filters,
     websiteId,
     startDate,
@@ -36,37 +37,36 @@ async function relationalQuery(
     currency,
   });
 
-  const joinQuery =
-    filterQuery || cohortQuery
-      ? `join (select *
-               from website_event
-               where website_id = {{websiteId::uuid}}
-                  and created_at between {{startDate}} and {{endDate}}
-                  and event_type = 2) website_event
-        on website_event.website_id = revenue.website_id
-          and website_event.session_id = revenue.session_id
-          and website_event.event_id = revenue.event_id`
-      : '';
-
   const total = await rawQuery(
     `
+    with
+      filtered_sessions as (
+        select distinct website_event.website_id, website_event.session_id
+        from website_event
+        ${cohortQuery}
+        ${joinSessionQuery}
+        where website_event.website_id = {{websiteId::uuid}}
+          and website_event.event_type != ${EVENT_TYPE.performance}
+        ${dateQuery}
+        ${filterQuery}
+      ),
+      filtered_revenue as (
+        select revenue.website_id, revenue.session_id, revenue.event_id, revenue.revenue
+        from revenue
+        join filtered_sessions
+          on filtered_sessions.website_id = revenue.website_id
+         and filtered_sessions.session_id = revenue.session_id
+        where revenue.website_id = {{websiteId::uuid}}
+          and revenue.created_at between {{startDate}} and {{endDate}}
+          and upper(revenue.currency) = {{currency}}
+      )
     select
-      sum(revenue.revenue) as sum,
-      count(distinct revenue.event_id) as count,
-      count(distinct revenue.session_id) as unique_count,
-      (select count(distinct session_id)
-       from website_event
-       where website_id = {{websiteId::uuid}}
-         and created_at between {{startDate}} and {{endDate}}) as total_sessions
-    from revenue
-    ${joinQuery}
-    ${cohortQuery}
-    ${joinSessionQuery}
-    where revenue.website_id = {{websiteId::uuid}}
-      and revenue.created_at between {{startDate}} and {{endDate}}
-      and upper(revenue.currency) = {{currency}}
-      ${filterQuery}
-  `,
+      sum(filtered_revenue.revenue) as sum,
+      count(distinct filtered_revenue.event_id) as count,
+      count(distinct filtered_revenue.session_id) as unique_count,
+      (select count(*) from filtered_sessions) as total_sessions
+    from filtered_revenue
+    `,
     queryParams,
   ).then(result => result?.[0]);
 
@@ -83,25 +83,13 @@ async function clickhouseQuery(
 ): Promise<RevenueStatsResult> {
   const { startDate, endDate, currency } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+  const { filterQuery, cohortQuery, dateQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     startDate,
     endDate,
     currency,
   });
-
-  const joinQuery = filterQuery
-    ? `any left join (
-      select *
-      from website_event
-      where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type = 2) website_event
-    on website_event.website_id = website_revenue.website_id
-      and website_event.session_id = website_revenue.session_id
-      and website_event.event_id = website_revenue.event_id`
-    : '';
 
   const total = await rawQuery<{
     sum: number;
@@ -110,21 +98,33 @@ async function clickhouseQuery(
     total_sessions: number;
   }>(
     `
+    with
+      filtered_sessions as (
+        select website_id, session_id
+        from website_event
+        ${cohortQuery}
+        where website_id = {websiteId:UUID}
+          and event_type != ${EVENT_TYPE.performance}
+        ${dateQuery}
+        ${filterQuery}
+        group by website_id, session_id
+      ),
+      filtered_revenue as (
+        select website_revenue.website_id, website_revenue.session_id, website_revenue.event_id, website_revenue.revenue
+        from website_revenue
+        any inner join filtered_sessions
+          on filtered_sessions.website_id = website_revenue.website_id
+         and filtered_sessions.session_id = website_revenue.session_id
+        where website_revenue.website_id = {websiteId:UUID}
+          and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+          and upper(website_revenue.currency) = {currency:String}
+      )
     select
-      sum(website_revenue.revenue) as sum,
-      uniqExact(website_revenue.event_id) as count,
-      uniqExact(website_revenue.session_id) as unique_count,
-      (select uniqExact(session_id)
-       from website_event
-       where website_id = {websiteId:UUID}
-         and created_at between {startDate:DateTime64} and {endDate:DateTime64}) as total_sessions
-    from website_revenue
-    ${joinQuery}
-    ${cohortQuery}
-    where website_revenue.website_id = {websiteId:UUID}
-      and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and upper(website_revenue.currency) = {currency:String}
-      ${filterQuery}
+      sum(filtered_revenue.revenue) as sum,
+      uniqExact(filtered_revenue.event_id) as count,
+      uniqExact(filtered_revenue.session_id) as unique_count,
+      (select count() from filtered_sessions) as total_sessions
+    from filtered_revenue
     `,
     queryParams,
   ).then(result => result?.[0]);
