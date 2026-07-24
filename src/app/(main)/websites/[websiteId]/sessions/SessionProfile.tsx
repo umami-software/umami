@@ -10,11 +10,18 @@ import {
   Tabs,
   TextField,
 } from '@umami/react-zen';
-import { X } from 'lucide-react';
+import {
+  useConfig,
+  useMessages,
+  useMobile,
+  useNavigation,
+  useWebsiteSessionQuery,
+} from '@/components/hooks';
+import { X } from '@/components/icons';
 import { Avatar } from '@/components/common/Avatar';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, useMobile, useWebsiteSessionQuery } from '@/components/hooks';
 import { SessionActivity } from './SessionActivity';
+import { SessionDeleteButton } from './SessionDeleteButton';
 import { SessionData } from './SessionData';
 import { SessionInfo } from './SessionInfo';
 import { SessionReplaysDataTable } from './SessionReplaysDataTable';
@@ -32,8 +39,14 @@ export function SessionProfile({
   onClose?: () => void;
 }) {
   const { data, isLoading, error } = useWebsiteSessionQuery(websiteId, sessionId);
+  const config = useConfig();
   const { t, labels } = useMessages();
   const { isMobile } = useMobile();
+  const { pathname } = useNavigation();
+  const isSharePage = pathname.includes('/share/');
+  const showDeleteButton = Boolean(
+    !isSharePage && config?.sessionDeletionEnabled && data?.canDelete,
+  );
 
   return (
     <LoadingPanel
@@ -46,7 +59,14 @@ export function SessionProfile({
       {data && (
         <Column gap>
           {onClose && (
-            <Row justifyContent="flex-end">
+            <Row justifyContent="flex-end" gap="1">
+              {showDeleteButton && (
+                <SessionDeleteButton
+                  websiteId={websiteId}
+                  sessionId={sessionId}
+                  onSave={onClose}
+                />
+              )}
               <Button onPress={onClose} variant="quiet">
                 <Icon>
                   <X />
