@@ -419,10 +419,10 @@
     "two-factor-require-global": "Require 2FA for all users",
     "two-factor-require-user": "Require 2FA for this user",
     "two-factor-require-team": "Require 2FA for all members of this team",
+    "two-factor-reset": "Reset 2FA",
     "two-factor-global-active-tooltip": "Global 2FA is enabled",
     "two-factor-verify": "Verify",
-    "two-factor-login": "Two-factor authentication",
-    "close": "Close"
+    "two-factor-login": "Two-factor authentication"
   },
   "message": {
     "action-confirmation": "Type {confirmation} in the box below to confirm.",
@@ -492,6 +492,7 @@
     "two-factor-require-user-description": "When enabled, this user will be prompted to set up 2FA on their next login if they haven't already.",
     "two-factor-require-team-description": "When enabled, all members of this team will be prompted to set up 2FA on their next login if they haven't already.",
     "two-factor-user-description": "Add an extra layer of security to your account. Each time you log in, you will need your password and a code from your authenticator app.",
+    "two-factor-reset-description": "Remove this user's current two-factor configuration. If 2FA is still required by policy, they will be asked to scan a new QR code on their next login.",
     "two-factor-error-invalid-code": "Invalid verification code. Please try again.",
     "two-factor-error-missing-token": "Authentication token is missing.",
     "two-factor-error-invalid-partial-token": "Invalid or expired authentication token.",

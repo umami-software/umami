@@ -67,3 +67,7 @@ CREATE UNIQUE INDEX "two_factor_otp_used_user_id_otp_key" ON "two_factor_otp_use
 
 -- CreateIndex
 CREATE UNIQUE INDEX "two_factor_rate_limit_user_id_key" ON "two_factor_rate_limit"("user_id");
+
+-- Historical catch-up: some environments already have this replay index,
+-- but the current schema expects it everywhere.
+CREATE INDEX IF NOT EXISTS "session_replay_visit_id_idx" ON "session_replay"("visit_id");

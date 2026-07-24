@@ -410,10 +410,10 @@
     "two-factor-require-global": "Rendre l’authentification à deux facteurs obligatoire pour tous les utilisateurs",
     "two-factor-require-user": "Rendre l’authentification à deux facteurs obligatoire pour cet utilisateur",
     "two-factor-require-team": "Rendre l’authentification à deux facteurs oblitatoire pour tous les membres de cette équipe",
+    "two-factor-reset": "Reinitialiser la 2FA",
     "two-factor-global-active-tooltip": "L’authentification à deux facteurs est obligatoire pour tous les utilisateurs",
     "two-factor-verify": "Vérifier",
-    "two-factor-login": "Authentification à deux facteurs",
-    "close": "Fermer"
+    "two-factor-login": "Authentification à deux facteurs"
   },
   "message": {
     "action-confirmation": "Taper {confirmation} ci-dessous pour confirmer.",
@@ -483,6 +483,7 @@
     "two-factor-require-user-description": "Lorsque cette option est activée, cet utilisateur sera invité à configurer l’authentification à deux facteurs lors de sa prochaine connexion s’il ne l'a pas déjà fait.",
     "two-factor-require-team-description": "Lorsque cette option est activée, tous les membres de cette équipe seront invités à configurer l’authentification à deux facteurs lors de leur prochaine connexion s’ils ne l’ont pas déjà fait.",
     "two-factor-user-description": "Ajoutez une couche de sécurité supplémentaire à votre compte. À chaque connexion, vous aurez besoin de votre mot de passe et d'un code provenant de votre application d’authentification.",
+    "two-factor-reset-description": "Supprime la configuration 2FA actuelle de cet utilisateur. Si la 2FA reste obligatoire par politique, il devra scanner un nouveau QR code lors de sa prochaine connexion.",
     "two-factor-error-invalid-code": "Code de vérification invalide. Veuillez réessayer.",
     "two-factor-error-missing-token": "Le jeton d'authentification est manquant.",
     "two-factor-error-invalid-partial-token": "Jeton d'authentification invalide ou expiré.",
