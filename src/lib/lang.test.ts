@@ -20,15 +20,8 @@ describe('getTextDirection', () => {
   test('returns rtl for right-to-left languages', () => {
     expect(getTextDirection('ar-SA')).toBe('rtl');
     expect(getTextDirection('fa-IR')).toBe('rtl');
+    expect(getTextDirection('he-IL')).toBe('rtl');
     expect(getTextDirection('ur-PK')).toBe('rtl');
-  });
-
-  // NOTE: Hebrew (he-IL) is a right-to-left language but is NOT marked with
-  // `dir: 'rtl'` in `languages`, so getTextDirection returns 'ltr'. This asserts
-  // the current (suspected buggy) behavior. If the source is fixed to add
-  // `dir: 'rtl'` for he-IL, update this expectation to 'rtl'.
-  test('does not mark Hebrew as rtl (suspected source bug)', () => {
-    expect(getTextDirection('he-IL')).toBe('ltr');
   });
 
   test('returns ltr for left-to-right languages', () => {
