@@ -184,8 +184,8 @@
     "link": "Enlace",
     "links": "Enlaces",
     "location": "Ubicación",
-    "llm": "LLM",
     "login": "Iniciar sesión",
+    "llm": "LLM",
     "logout": "Cerrar sesión",
     "manage": "Administrar",
     "manager": "Gerente",
@@ -227,8 +227,8 @@
     "page-of": "Página {current} de {total}",
     "page-views": "Vistas",
     "pageTitle": "Título de página",
-    "pages": "Páginas",
     "period": "Periodo",
+    "pages": "Páginas",
     "paid-ads": "Anuncios pagados",
     "paid-search": "Búsqueda pagada",
     "paid-shopping": "Compras pagadas",
@@ -392,9 +392,7 @@
     "website-id": "ID del sitio web",
     "websites": "Sitios web",
     "window": "Ventana",
-    "yesterday": "Ayer",
-    "revenue-property": "Propiedad de ganancias",
-    "user-property": "Propiedad de usuario"
+    "yesterday": "Ayer"
   },
   "message": {
     "action-confirmation": "Escriba {confirmation} en el cuadro a continuación para confirmar.",

@@ -383,12 +383,7 @@
     "website-id": "Veb-sayt ID'si",
     "websites": "Veb-saytlar",
     "window": "Oyna",
-    "yesterday": "Kecha",
-    "host": "Xost",
-    "hosts": "Xostlar",
-    "revenue-property": "Daromad xususiyati",
-    "urls": "URL'lar",
-    "user-property": "Foydalanuvchi xususiyati"
+    "yesterday": "Kecha"
   },
   "message": {
     "action-confirmation": "Tasdiqlash uchun pastdagi qutiga **{confirmation}** yozing.",
@@ -442,7 +437,6 @@
     "replay-min-duration-description": "Faqat shu yoki undan yuqori davomiylikdagi takrorlarni ko'rsatish.",
     "viewed-page": "Sahifa koʻrildi",
     "upgrade-required": "Bu xususiyat {plan} tarif obunasini talab qiladi.",
-    "visitor-log": "<b>{os}</b> <b>{device}</b> da <b>{browser}</b> dan foydalanayotgan <b>{country}</b> dan tashrif buyuruvchi",
-    "visitors-dropped-off": "Tashrif buyuruvchilar tashlab ketishdi"
+    "visitor-log": "<b>{os}</b> <b>{device}</b> da <b>{browser}</b> dan foydalanayotgan <b>{country}</b> dan tashrif buyuruvchi"
   }
 }

@@ -383,10 +383,7 @@
     "website-id": "ID spletnega mesta",
     "websites": "Spletna mesta",
     "window": "Okno",
-    "yesterday": "Včeraj",
-    "host": "Gostitelj",
-    "hosts": "Gostitelji",
-    "revenue-property": "Lastnost prihodkov"
+    "yesterday": "Včeraj"
   },
   "message": {
     "action-confirmation": "Za potrditev v spodnje polje vnesite {confirmation}.",
@@ -440,7 +437,6 @@
     "replay-min-duration-description": "Prikaži samo posnetke s tem ali daljšim trajanjem.",
     "viewed-page": "Ogledana stran",
     "upgrade-required": "Ta funkcija zahteva naročnino na paket {plan}.",
-    "visitor-log": "Obiskovalec iz <b>{country}</b> uporablja <b>{browser}</b> na <b>{os}</b> <b>{device}</b>",
-    "visitors-dropped-off": "Osip obiskovalcev"
+    "visitor-log": "Obiskovalec iz <b>{country}</b> uporablja <b>{browser}</b> na <b>{os}</b> <b>{device}</b>"
   }
 }
