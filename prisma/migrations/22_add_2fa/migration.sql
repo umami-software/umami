@@ -67,6 +67,3 @@ CREATE UNIQUE INDEX "two_factor_otp_used_user_id_otp_key" ON "two_factor_otp_use
 
 -- CreateIndex
 CREATE UNIQUE INDEX "two_factor_rate_limit_user_id_key" ON "two_factor_rate_limit"("user_id");
-
--- CreateIndex
-CREATE INDEX "session_replay_visit_id_idx" ON "session_replay"("visit_id");

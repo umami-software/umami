@@ -16,8 +16,8 @@ import redis from '@/lib/redis';
 
 export async function POST(request: Request) {
   const schema = z.union([
-    z.object({ token: z.string().length(6), backupCode: z.undefined() }),
-    z.object({ backupCode: z.string().min(1), token: z.undefined() }),
+    z.object({ token: z.string().length(6) }).strict(),
+    z.object({ backupCode: z.string().min(1) }).strict(),
   ]);
 
   const rawToken = getBearerToken(request);
