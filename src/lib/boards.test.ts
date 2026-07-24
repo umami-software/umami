@@ -32,25 +32,17 @@ test('board component compatibility matrix defines website-only components expli
   expect(BOARD_COMPONENT_COMPATIBILITY_MATRIX.RealtimeActiveUsers).toEqual([
     BOARD_ENTITY_TYPES.website,
   ]);
-  expect(BOARD_COMPONENT_COMPATIBILITY_MATRIX.RealtimeHeader).toEqual([
-    BOARD_ENTITY_TYPES.website,
-  ]);
-  expect(BOARD_COMPONENT_COMPATIBILITY_MATRIX.RealtimeChart).toEqual([
-    BOARD_ENTITY_TYPES.website,
-  ]);
+  expect(BOARD_COMPONENT_COMPATIBILITY_MATRIX.RealtimeHeader).toEqual([BOARD_ENTITY_TYPES.website]);
+  expect(BOARD_COMPONENT_COMPATIBILITY_MATRIX.RealtimeChart).toEqual([BOARD_ENTITY_TYPES.website]);
   expect(BOARD_COMPONENT_COMPATIBILITY_MATRIX.RevenueMetricsBar).toEqual([
     BOARD_ENTITY_TYPES.website,
   ]);
-  expect(BOARD_COMPONENT_COMPATIBILITY_MATRIX.RevenueChart).toEqual([
-    BOARD_ENTITY_TYPES.website,
-  ]);
+  expect(BOARD_COMPONENT_COMPATIBILITY_MATRIX.RevenueChart).toEqual([BOARD_ENTITY_TYPES.website]);
   expect(BOARD_COMPONENT_COMPATIBILITY_MATRIX.RevenueMetricsTable).toEqual([
     BOARD_ENTITY_TYPES.website,
   ]);
   expect(BOARD_COMPONENT_COMPATIBILITY_MATRIX.UTM).toEqual([BOARD_ENTITY_TYPES.website]);
-  expect(BOARD_COMPONENT_COMPATIBILITY_MATRIX.WeeklyTraffic).toEqual([
-    BOARD_ENTITY_TYPES.website,
-  ]);
+  expect(BOARD_COMPONENT_COMPATIBILITY_MATRIX.WeeklyTraffic).toEqual([BOARD_ENTITY_TYPES.website]);
   expect(getSupportedBoardComponentEntityTypes('EventsMetricsBar')).toEqual([
     BOARD_ENTITY_TYPES.website,
   ]);
@@ -90,7 +82,9 @@ test('isBoardComponentSupported leaves other components available for all board 
 
 test('metrics table limits pixel and link boards to overview-page metric types', () => {
   const definition = getComponentDefinition('MetricsTable');
-  const options = definition?.configFields?.find(field => field.name === 'type')?.optionsByEntityType;
+  const options = definition?.configFields?.find(
+    field => field.name === 'type',
+  )?.optionsByEntityType;
 
   expect(options?.pixel?.map(option => option.value)).toEqual([
     'referrer',

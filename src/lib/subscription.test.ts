@@ -41,9 +41,9 @@ describe('getCloudWebsiteLimit', () => {
   });
 
   test('still limits teams whose owner has no subscription even if unlimited websites is set', () => {
-    expect(
-      getCloudWebsiteLimit({ hasSubscription: false, unlimitedWebsites: true }),
-    ).toBe(CLOUD_FREE_WEBSITE_LIMIT);
+    expect(getCloudWebsiteLimit({ hasSubscription: false, unlimitedWebsites: true })).toBe(
+      CLOUD_FREE_WEBSITE_LIMIT,
+    );
   });
 });
 

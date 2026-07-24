@@ -27,9 +27,7 @@ test('getIpAddress: Custom header', () => {
 test('getIpAddress: Custom header set to x-forwarded-for uses leftmost IP in chain', () => {
   process.env.CLIENT_IP_HEADER = 'x-forwarded-for';
 
-  expect(
-    getIpAddress(new Headers({ 'x-forwarded-for': `${IP}, 10.0.0.1, 10.0.0.2` })),
-  ).toEqual(IP);
+  expect(getIpAddress(new Headers({ 'x-forwarded-for': `${IP}, 10.0.0.1, 10.0.0.2` }))).toEqual(IP);
 });
 
 test('getIpAddress: CloudFlare header', () => {
