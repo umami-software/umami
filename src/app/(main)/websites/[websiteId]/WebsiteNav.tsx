@@ -1,6 +1,6 @@
 import { Column, Focusable, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import { IconLabel } from '@/components/common/IconLabel';
+import Link from '@/components/common/Link';
 import { useMessages, useNavigation, useWebsiteNavItems } from '@/components/hooks';
 import { ArrowLeft } from '@/components/icons';
 

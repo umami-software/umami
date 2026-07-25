@@ -2,7 +2,10 @@ import type { Prisma, Website } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
+import { sanitizeSortFilters } from '@/lib/sort';
 import type { QueryFilters } from '@/lib/types';
+
+const WEBSITE_SORT_FIELDS = ['name', 'domain', 'createdAt'] as const;
 
 export async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs) {
   return prisma.client.website.findUnique(criteria);
@@ -23,7 +26,8 @@ export async function getWebsite(websiteId: string) {
 }
 
 export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters: QueryFilters) {
-  const { search } = filters;
+  const sortFilters = sanitizeSortFilters(filters, WEBSITE_SORT_FIELDS);
+  const { search } = sortFilters;
   const { getSearchParameters, pagedQuery } = prisma;
 
   const where: Prisma.WebsiteWhereInput = {
@@ -37,12 +41,15 @@ export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters:
     deletedAt: null,
   };
 
-  const websites = await pagedQuery('website', { ...criteria, where }, filters);
+  const websites = await pagedQuery('website', { ...criteria, where }, sortFilters);
 
   return attachShareIdToWebsites(websites);
 }
 
-export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filters?: QueryFilters) {
+export async function getAllUserWebsitesIncludingTeamAccess(
+  userId: string,
+  filters?: QueryFilters,
+) {
   return getWebsites(
     {
       where: {
@@ -53,7 +60,7 @@ export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filte
               deletedAt: null,
               members: {
                 some: {
-                  role: ROLES.teamOwner,
+                  role: { in: [ROLES.teamOwner, ROLES.teamManager] },
                   userId,
                 },
               },
@@ -62,10 +69,7 @@ export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filte
         ],
       },
     },
-    {
-      orderBy: 'name',
-      ...filters,
-    },
+    sanitizeSortFilters(filters, WEBSITE_SORT_FIELDS, { orderBy: 'name' }),
   );
 }
 
@@ -84,10 +88,7 @@ export async function getUserWebsites(userId: string, filters?: QueryFilters) {
         },
       },
     },
-    {
-      orderBy: 'name',
-      ...filters,
-    },
+    sanitizeSortFilters(filters, WEBSITE_SORT_FIELDS, { orderBy: 'name' }),
   );
 }
 
@@ -260,6 +261,15 @@ export async function getWebsiteCount(userId: string) {
   return prisma.client.website.count({
     where: {
       userId,
+      deletedAt: null,
+    },
+  });
+}
+
+export async function getTeamWebsiteCount(teamId: string) {
+  return prisma.client.website.count({
+    where: {
+      teamId,
       deletedAt: null,
     },
   });

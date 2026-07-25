@@ -6,6 +6,7 @@ export interface Subscription {
   isBusiness: boolean;
   isNoBilling: boolean;
   hasSubscription: boolean;
+  unlimitedWebsites: boolean;
 }
 
 const FEATURES = {
@@ -19,6 +20,7 @@ const defaultSubscription: Subscription = {
   isBusiness: false,
   isNoBilling: false,
   hasSubscription: false,
+  unlimitedWebsites: false,
 };
 
 export function useSubscription(teamId?: string | null) {
@@ -27,7 +29,7 @@ export function useSubscription(teamId?: string | null) {
 
   const ownSubscription: Subscription = user?.subscription || defaultSubscription;
   const teamSubscription: Subscription | null = teamId
-    ? user?.teams?.find((t: any) => t.id === teamId)?.subscription ?? null
+    ? (user?.teams?.find((t: any) => t.id === teamId)?.subscription ?? null)
     : null;
 
   const subscription: Subscription = teamSubscription || ownSubscription;

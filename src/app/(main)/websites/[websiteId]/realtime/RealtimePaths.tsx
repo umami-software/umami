@@ -1,4 +1,4 @@
-import thenby from 'thenby';
+import { firstBy } from 'thenby';
 import { useMessages, useWebsite } from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
 import { percentFilter } from '@/lib/filters';
@@ -26,7 +26,7 @@ export function RealtimePaths({ data }: { data: any }) {
           y: urls[key],
         };
       })
-      .sort(thenby.firstBy('y', -1))
+      .sort(firstBy('y', -1))
       .slice(0, limit),
   );
 

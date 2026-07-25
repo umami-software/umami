@@ -7,13 +7,16 @@ import {
   FormSubmitButton,
   Grid,
   Label,
+  ListSeparator,
   Loading,
   Row,
+  Switch,
   Text,
   TextField,
 } from '@umami/react-zen';
 import { useEffect, useState } from 'react';
 import { useApi, useConfig, useMessages, useModified } from '@/components/hooks';
+import { ThemeModeSelector } from '@/components/input/ThemeModeSelector';
 import { SHARE_NAV_ITEMS } from './constants';
 
 export function ShareEditForm({
@@ -59,12 +62,14 @@ export function ShareEditForm({
   }, [shareId, modified]);
 
   const handleSubmit = async (data: any) => {
-    const parameters: Record<string, boolean> = {};
+    const parameters: Record<string, boolean | string | undefined> = {};
     SHARE_NAV_ITEMS.forEach(section => {
       section.items.forEach(item => {
         parameters[item.id] = data[item.id] ?? false;
       });
     });
+    parameters.allowFilter = data.allowFilter ?? true;
+    parameters.theme = data.theme === 'system' ? undefined : data.theme;
 
     setIsPending(true);
     setError(null);
@@ -101,6 +106,8 @@ export function ShareEditForm({
   // Build default values from share parameters
   const defaultValues: Record<string, any> = {
     name: share?.name || '',
+    allowFilter: share?.parameters?.allowFilter ?? true,
+    theme: share?.parameters?.theme || 'system',
   };
   SHARE_NAV_ITEMS.forEach(section => {
     section.items.forEach(item => {
@@ -114,7 +121,7 @@ export function ShareEditForm({
 
   return (
     <Form onSubmit={handleSubmit} error={getErrorMessage(error)} defaultValues={defaultValues}>
-      {({ watch }) => {
+      {({ watch, setValue }) => {
         const values = watch();
         const hasSelection = allItemIds.some(id => values[id]);
 
@@ -129,7 +136,25 @@ export function ShareEditForm({
             <FormField label={t(labels.name)} name="name" rules={{ required: t(labels.required) }}>
               <TextField autoComplete="off" autoFocus={!isEditing} />
             </FormField>
-            <Grid columns="repeat(auto-fit, minmax(150px, 1fr))" gap="3">
+            <Grid columns={{ base: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} gap="3">
+              <FormField label={t(labels.filters)} name="allowFilter">
+                <Switch
+                  isSelected={watch('allowFilter')}
+                  onChange={value => setValue('allowFilter', value, { shouldDirty: true })}
+                >
+                  {t(labels.filtersEnabled)}
+                </Switch>
+              </FormField>
+              <FormField label={t(labels.theme)} name="theme">
+                <ThemeModeSelector
+                  value={watch('theme')}
+                  includeSystem
+                  onChange={value => setValue('theme', value, { shouldDirty: true })}
+                />
+              </FormField>
+            </Grid>
+            <ListSeparator />
+            <Grid columns={{ base: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} gap="3">
               {SHARE_NAV_ITEMS.map(section => (
                 <Column key={section.section} gap="3">
                   <Text weight="bold">{t((labels as any)[section.section])}</Text>

@@ -154,10 +154,9 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
         <Select
           label={t(labels.compare)}
           value={view}
-          defaultValue={view}
           onChange={handleChange}
-          style={{ width: 200 }}
-          popoverProps={{ style: { width: 200 } }}
+          maxHeight={480}
+          listProps={{ style: { width: 200 } }}
         >
           {items.map(({ id, label }) => (
             <ListItem key={id} id={id}>

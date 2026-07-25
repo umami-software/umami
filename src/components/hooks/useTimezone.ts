@@ -1,4 +1,4 @@
-import { formatInTimeZone, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
+import { formatInTimeZone, fromZonedTime, toZonedTime } from 'date-fns-tz';
 import { TIMEZONE_CONFIG, TIMEZONE_LEGACY } from '@/lib/constants';
 import { getTimezone } from '@/lib/date';
 import { setItem } from '@/lib/storage';
@@ -61,19 +61,19 @@ export function useTimezone() {
   };
 
   const toUtc = (date: Date | string | number) => {
-    return zonedTimeToUtc(date, timezone);
+    return fromZonedTime(date, timezone);
   };
 
   const fromUtc = (date: Date | string | number) => {
-    return utcToZonedTime(date, timezone);
+    return toZonedTime(date, timezone);
   };
 
   const localToUtc = (date: Date | string | number) => {
-    return zonedTimeToUtc(date, localTimeZone);
+    return fromZonedTime(date, localTimeZone);
   };
 
   const localFromUtc = (date: Date | string | number) => {
-    return utcToZonedTime(date, localTimeZone);
+    return toZonedTime(date, localTimeZone);
   };
 
   const canonicalizeTimezone = (timezone: string): string => {

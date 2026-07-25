@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, pagingParams, searchParams, withDateRange } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
+import { canViewWebsiteSection } from '@/permissions';
 import { getRevenueSessions } from '@/queries/sql/reports/getRevenueSessions';
 
 export async function GET(
@@ -24,7 +24,7 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsiteSection(auth, websiteId, 'revenue'))) {
     return unauthorized();
   }
 

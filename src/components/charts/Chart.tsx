@@ -13,11 +13,13 @@ ChartJS.defaults.font.family = 'Inter';
 
 export interface ChartProps extends BoxProps {
   type?: 'bar' | 'bubble' | 'doughnut' | 'pie' | 'line' | 'polarArea' | 'radar' | 'scatter';
-  chartData?: ChartData & { focusLabel?: string };
+  chartData?: ChartData<any, any, unknown> & { focusLabel?: string };
   chartOptions?: ChartOptions;
   updateMode?: UpdateMode;
   animationDuration?: number;
   onTooltip?: (model: any) => void;
+  hiddenLabels?: Set<string>;
+  onLegendClick?: (label: string, willBeHidden: boolean) => void;
 }
 
 export function Chart({
@@ -27,6 +29,8 @@ export function Chart({
   updateMode,
   onTooltip,
   chartOptions,
+  hiddenLabels,
+  onLegendClick,
   ...props
 }: ChartProps) {
   const canvas = useRef(null);
@@ -61,6 +65,13 @@ export function Chart({
   }, [chartOptions]);
 
   const handleLegendClick = (item: LegendItem) => {
+    if (onLegendClick && type === 'bar') {
+      const { datasetIndex } = item;
+      const ds = chart.current.data.datasets[datasetIndex];
+      onLegendClick(ds.label, !hiddenLabels?.has(ds.label));
+      return;
+    }
+
     if (type === 'bar') {
       const { datasetIndex } = item;
       const meta = chart.current.getDatasetMeta(datasetIndex);
@@ -111,28 +122,27 @@ export function Chart({
         });
       }
 
+      if (hiddenLabels) {
+        chart.current.data.datasets.forEach((ds: { hidden: boolean; label: any }) => {
+          if (hiddenLabels.has(ds.label)) {
+            ds.hidden = true;
+          } else if (!chartData.focusLabel) {
+            ds.hidden = false;
+          }
+        });
+      }
+
       chart.current.options = options;
 
       chart.current.update(updateMode);
 
       setLegendItems(chart.current.legend.legendItems);
     }
-  }, [chartData, options, updateMode]);
+  }, [chartData, options, updateMode, hiddenLabels]);
 
   return (
     <Column gap="6">
       <Box {...props}>
-        {/*
-          Position the canvas absolutely inside a relative-positioned
-          wrapper. Chart.js writes inline pixel sizes onto the canvas, and
-          while it lives in the normal flow that pixel width propagates up
-          as min/max-content through every flex parent into the surrounding
-          CSS Grid track, pinning the chart's column at its widest measured
-          size and only resetting on a full page reload. Taking the canvas
-          out of flow with position: absolute breaks that propagation; the
-          wrapper sizes purely from its parent (width: 100%, height: 100%)
-          and Chart.js' ResizeObserver picks up viewport changes.
-        */}
         <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
           <canvas ref={canvas} style={{ position: 'absolute', top: 0, left: 0 }} />
         </div>

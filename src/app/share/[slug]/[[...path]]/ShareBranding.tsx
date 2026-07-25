@@ -1,7 +1,7 @@
 'use client';
+import { Icon, Row, Text } from '@umami/react-zen';
 import { useShare } from '@/components/hooks';
 import { Logo } from '@/components/svg';
-import { Icon, Row, Text } from '@umami/react-zen';
 
 const LOGO_SIZE = { sm: 24, md: 32, lg: 40 };
 const TEXT_SIZE = { sm: 'sm', md: 'base', lg: 'lg' } as const;

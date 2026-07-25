@@ -81,9 +81,9 @@ export function FieldFilters({
 
   return (
     <Grid columns={{ base: '1fr', md: '180px 1fr' }} overflow="hidden" gapY="6">
-      <Row display={{ base: 'flex', md: 'none' }}>
+      <Row display={{ base: 'flex', md: 'none' }} alignItems="flex-start">
         <MenuTrigger>
-          <Button>
+          <Button size="sm">
             <Icon>
               <Plus />
             </Icon>
@@ -164,7 +164,20 @@ export function FieldFilters({
             />
           );
         })}
-        {!value.length && <Empty message={t(messages.nothingSelected)} />}
+        {!value.length &&
+          (isMobile ? (
+            <Row
+              color="muted"
+              justifyContent="center"
+              width="100%"
+              minHeight="70px"
+              style={{ paddingTop: '24px' }}
+            >
+              {t(messages.nothingSelected)}
+            </Row>
+          ) : (
+            <Empty message={t(messages.nothingSelected)} />
+          ))}
       </Column>
     </Grid>
   );

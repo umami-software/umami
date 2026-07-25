@@ -22,6 +22,7 @@ export async function POST(request: Request) {
         isBusiness: account.isBusiness || false,
         isNoBilling: account.isNoBilling || false,
         hasSubscription: account.hasSubscription || false,
+        unlimitedWebsites: account.unlimitedWebsites || false,
       };
     }
 
@@ -36,6 +37,7 @@ export async function POST(request: Request) {
                 isBusiness: teamAccount.isBusiness || false,
                 isNoBilling: teamAccount.isNoBilling || false,
                 hasSubscription: teamAccount.hasSubscription || false,
+                unlimitedWebsites: teamAccount.unlimitedWebsites || false,
               }
             : null,
         };
