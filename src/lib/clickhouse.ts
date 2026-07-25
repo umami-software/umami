@@ -7,9 +7,11 @@ import { filtersObjectToArray } from './params';
 import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
 
 export const CLICKHOUSE_DATE_FORMATS = {
-  utc: '%Y-%m-%dT%H:%i:%SZ',
-  second: '%Y-%m-%dT%H:%i:%S',
-  minute: '%Y-%m-%d %H:%i:00',
+  // %i is unsupported by ClickHouse before v23.4. %T and %R work on both
+  // older and newer versions while retaining the intended ISO time format.
+  utc: '%Y-%m-%dT%TZ',
+  second: '%Y-%m-%dT%T',
+  minute: '%Y-%m-%d %R:00',
   hour: '%Y-%m-%d %H:00:00',
   day: '%Y-%m-%d',
   month: '%Y-%m-01',
