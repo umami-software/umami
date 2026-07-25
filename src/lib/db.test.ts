@@ -81,6 +81,29 @@ describe('runQuery', () => {
   });
 });
 
+describe('isRelationalOnly', () => {
+  test('returns true for a postgresql database without clickhouse', () => {
+    vi.stubEnv('CLICKHOUSE_URL', '');
+    vi.stubEnv('DATABASE_URL', 'postgresql://user:pass@localhost:5432/umami');
+
+    expect(db.isRelationalOnly()).toBe(true);
+  });
+
+  test('returns false when clickhouse is enabled', () => {
+    vi.stubEnv('CLICKHOUSE_URL', 'http://localhost:8123');
+    vi.stubEnv('DATABASE_URL', 'postgresql://user:pass@localhost:5432/umami');
+
+    expect(db.isRelationalOnly()).toBe(false);
+  });
+
+  test('returns false for unsupported non-relational databases', () => {
+    vi.stubEnv('CLICKHOUSE_URL', '');
+    vi.stubEnv('DATABASE_URL', 'mysql://user:pass@localhost:3306/umami');
+
+    expect(db.isRelationalOnly()).toBe(false);
+  });
+});
+
 describe('BigInt.prototype.toJSON', () => {
   test('serializes bigint values as numbers', () => {
     expect((BigInt(123) as any).toJSON()).toBe(123);
