@@ -279,12 +279,11 @@ describe('canTransferWebsiteToUser', () => {
     ).resolves.toBe(false);
   });
 
-  // NOTE: admins are NOT short-circuited here; there is no isAdmin bypass in this function.
-  test('denies an admin transferring a user-owned website (no team)', async () => {
-    vi.mocked(getWebsite).mockResolvedValue({ userId: 'admin-1' } as any);
+  test('allows admins without any lookup', async () => {
     await expect(
       canTransferWebsiteToUser({ user: adminUser }, 'website-1', 'admin-1'),
-    ).resolves.toBe(false);
+    ).resolves.toBe(true);
+    expect(getWebsite).not.toHaveBeenCalled();
   });
 
   test('allows a team owner transferring a team website to themselves', async () => {
@@ -314,6 +313,13 @@ describe('canTransferWebsiteToUser', () => {
 describe('canTransferWebsiteToTeam', () => {
   test('denies when there is no user', async () => {
     await expect(canTransferWebsiteToTeam({}, 'website-1', 'team-1')).resolves.toBe(false);
+  });
+
+  test('allows admins without any lookup', async () => {
+    await expect(
+      canTransferWebsiteToTeam({ user: adminUser }, 'website-1', 'team-1'),
+    ).resolves.toBe(true);
+    expect(getWebsite).not.toHaveBeenCalled();
   });
 
   test('denies when website is missing', async () => {

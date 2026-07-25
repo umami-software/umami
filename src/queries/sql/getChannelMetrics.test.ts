@@ -101,11 +101,16 @@ describe('getChannelMetrics postgres branch', () => {
     await getChannelMetrics('website-1', {});
     const [query] = prismaRawQuery.mock.calls[0];
 
+    // LIKE wildcards/backslashes are escaped so values match literally (e.g. the
+    // underscores in PAID_AD_PARAMS like `ad_id=` become `ad\_id=`).
+    const escapeLike = (val: string) =>
+      val.replace(/\\/g, '\\\\').replace(/%/g, '\\%').replace(/_/g, '\\_').replace(/'/g, "''");
+
     for (const val of PAID_AD_PARAMS) {
-      expect(query).toContain(`url_query ilike '%${val}%'`);
+      expect(query).toContain(`url_query ilike '%${escapeLike(val)}%'`);
     }
     for (const val of SEARCH_DOMAINS) {
-      expect(query).toContain(`referrer_domain ilike '%${val}%'`);
+      expect(query).toContain(`referrer_domain ilike '%${escapeLike(val)}%'`);
     }
     for (const domainList of [
       LLM_DOMAINS,
@@ -115,7 +120,7 @@ describe('getChannelMetrics postgres branch', () => {
       VIDEO_DOMAINS,
     ]) {
       for (const val of domainList) {
-        expect(query).toContain(`referrer_domain ilike '%${val}%'`);
+        expect(query).toContain(`referrer_domain ilike '%${escapeLike(val)}%'`);
       }
     }
     // referral clause uses a literal array, not a constant
@@ -132,21 +137,19 @@ describe('getChannelMetrics postgres branch', () => {
     expect(result).toEqual([{ x: 'direct', y: 42 }]);
   });
 
-  // NOTE: toPostgresLikeClause only escapes single quotes (' -> ''). LIKE
-  // wildcards (% and _) and backslashes pass through unescaped. This is safe
-  // today because the helper is private and only ever receives the hardcoded
-  // constant arrays, but it would be an escaping gap if user input reached it.
-  // See getChannelMetrics.ts:180-182.
-  test('single-quote escaping doubles quotes (documenting current helper behavior)', async () => {
-    // None of the real constants contain quotes, so assert the round-trip of
-    // the escaping regex against every constant value: no bare `''` artifacts
-    // should appear inside a domain fragment.
+  // toPostgresLikeClause escapes LIKE wildcards (% and _) and backslashes so the
+  // value matches literally, then escapes single quotes for the SQL string
+  // literal. The hardcoded constants contain none of these, so their rendered
+  // form is unchanged; this asserts each constant appears intact in the clause.
+  test('renders an ilike clause for each escaped constant value', async () => {
     await getChannelMetrics('website-1', {});
     const [query] = prismaRawQuery.mock.calls[0];
 
+    const escapeLike = (val: string) =>
+      val.replace(/\\/g, '\\\\').replace(/%/g, '\\%').replace(/_/g, '\\_').replace(/'/g, "''");
+
     for (const val of [...PAID_AD_PARAMS, ...LLM_DOMAINS, ...SEARCH_DOMAINS]) {
-      const escaped = val.replace(/'/g, "''");
-      expect(query).toContain(`'%${escaped}%'`);
+      expect(query).toContain(`'%${escapeLike(val)}%'`);
     }
   });
 });
@@ -194,15 +197,15 @@ describe('getChannelMetrics clickhouse branch', () => {
     );
   });
 
-  // NOTE: toClickHouseStringArray escapes single quotes as \' but leaves
-  // backslashes and other metacharacters untouched (getChannelMetrics.ts:176-178).
-  // Safe today (constants only), documented here as current behavior.
-  test('clickhouse array escaping only handles single quotes', async () => {
+  // toClickHouseStringArray escapes backslashes and single quotes for ClickHouse
+  // string literals. The constants contain neither, so they render unchanged.
+  test('clickhouse array escaping handles backslashes and single quotes', async () => {
     await getChannelMetrics('website-1', {});
     const [query] = clickhouseRawQuery.mock.calls[0];
 
     for (const val of [...VIDEO_DOMAINS, ...SHOPPING_DOMAINS]) {
-      expect(query).toContain(`'${val.replace(/'/g, "\\'")}'`);
+      const escaped = val.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+      expect(query).toContain(`'${escaped}'`);
     }
   });
 });

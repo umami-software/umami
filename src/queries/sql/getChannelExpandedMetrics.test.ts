@@ -102,8 +102,13 @@ describe('getChannelExpandedMetrics postgres branch', () => {
     await getChannelExpandedMetrics('website-1', {});
     const [query] = prismaRawQuery.mock.calls[0];
 
+    // LIKE wildcards/backslashes are escaped so values match literally (e.g. the
+    // underscores in PAID_AD_PARAMS like `ad_id=` become `ad\_id=`).
+    const escapeLike = (val: string) =>
+      val.replace(/\\/g, '\\\\').replace(/%/g, '\\%').replace(/_/g, '\\_').replace(/'/g, "''");
+
     for (const val of PAID_AD_PARAMS) {
-      expect(query).toContain(`url_query ilike '%${val}%'`);
+      expect(query).toContain(`url_query ilike '%${escapeLike(val)}%'`);
     }
     for (const domainList of [
       LLM_DOMAINS,
@@ -114,9 +119,21 @@ describe('getChannelExpandedMetrics postgres branch', () => {
       VIDEO_DOMAINS,
     ]) {
       for (const val of domainList) {
-        expect(query).toContain(`referrer_domain ilike '%${val}%'`);
+        expect(query).toContain(`referrer_domain ilike '%${escapeLike(val)}%'`);
       }
     }
+  });
+
+  test('returns the query rows unchanged without a spurious y column', async () => {
+    const rows = [
+      { name: 'direct', pageviews: 10, visitors: 4, visits: 5, bounces: 1, totaltime: 100 },
+    ];
+    prismaRawQuery.mockResolvedValue(rows);
+
+    const result = await getChannelExpandedMetrics('website-1', {});
+
+    expect(result).toEqual(rows);
+    expect(result[0]).not.toHaveProperty('y');
   });
 });
 

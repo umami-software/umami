@@ -138,7 +138,7 @@ async function relationalQuery(
       `,
     queryParams,
     FUNCTION_NAME,
-  ).then(results => results.map(item => ({ ...item, y: Number(item.y) })));
+  );
 }
 
 async function clickhouseQuery(
@@ -222,9 +222,16 @@ async function clickhouseQuery(
 }
 
 function toClickHouseStringArray(arr: string[]): string {
-  return arr.map(p => `'${p.replace(/'/g, "\\'")}'`).join(', ');
+  // Escape backslashes first, then single quotes, for ClickHouse string literals.
+  return arr.map(p => `'${p.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`).join(', ');
+}
+
+function escapePostgresLikeValue(val: string) {
+  // Escape LIKE wildcards/backslashes so the value is matched literally, then
+  // escape single quotes for the surrounding SQL string literal.
+  return val.replace(/\\/g, '\\\\').replace(/%/g, '\\%').replace(/_/g, '\\_').replace(/'/g, "''");
 }
 
 function toPostgresPositionClause(column: string, arr: string[]) {
-  return arr.map(val => `${column} ilike '%${val.replace(/'/g, "''")}%'`).join(' OR\n  ');
+  return arr.map(val => `${column} ilike '%${escapePostgresLikeValue(val)}%'`).join(' OR\n  ');
 }

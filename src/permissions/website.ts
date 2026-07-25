@@ -83,7 +83,9 @@ export async function canViewBatchWebsites({ user, shareToken }: Auth, websiteId
     websites.filter(website => website.userId === user.id).map(website => website.id),
   );
   const teamIds = Array.from(
-    new Set(websites.map(website => website.teamId).filter((teamId): teamId is string => Boolean(teamId))),
+    new Set(
+      websites.map(website => website.teamId).filter((teamId): teamId is string => Boolean(teamId)),
+    ),
   );
   const teamUsers = teamIds.length
     ? await prisma.client.teamUser.findMany({
@@ -187,6 +189,10 @@ export async function canTransferWebsiteToUser({ user }: Auth, websiteId: string
     return false;
   }
 
+  if (user.isAdmin) {
+    return true;
+  }
+
   const website = await getWebsite(websiteId);
 
   if (!website) {
@@ -205,6 +211,10 @@ export async function canTransferWebsiteToUser({ user }: Auth, websiteId: string
 export async function canTransferWebsiteToTeam({ user }: Auth, websiteId: string, teamId: string) {
   if (!user) {
     return false;
+  }
+
+  if (user.isAdmin) {
+    return true;
   }
 
   const website = await getWebsite(websiteId);
