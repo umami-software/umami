@@ -153,7 +153,7 @@ async function clickhouseQuery(
       group by session_id, visit_id
     ) as t
     left join (
-      select session_id, visit_id, toUInt32(sumIf(views, event_type = ${EVENT_TYPE.customEvent})) as events_count
+      select session_id, visit_id, toUInt32(sum(length(event_name))) as events_count
       from website_event_stats_hourly
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
