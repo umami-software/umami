@@ -152,7 +152,7 @@
     "rollup-plugin-node-externals": "^9.0.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
-    "tar": "^7.5.16",
+    "tar": "^7.5.21",
     "ts-morph": "^28.0.0",
     "ts-node": "^10.9.1",
     "tsup": "^8.5.0",
