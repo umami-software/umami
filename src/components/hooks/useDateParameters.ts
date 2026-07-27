@@ -13,10 +13,10 @@ export function useDateParameters() {
   const {
     dateRange: { startDate, endDate, unit },
   } = useDateRange();
-  const { timezone, toUtc, canonicalizeTimezone } = useTimezone();
+  const { timezone, localToUtc, canonicalizeTimezone } = useTimezone();
 
-  const utcStart = toUtc(startDate);
-  const utcEnd = toUtc(endDate);
+  const utcStart = localToUtc(startDate);
+  const utcEnd = localToUtc(endDate);
   const startAtValue = +utcStart;
   const endAtValue = +utcEnd;
   const isStartValid = Number.isFinite(startAtValue);

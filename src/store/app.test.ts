@@ -1,10 +1,30 @@
 import { beforeEach, describe, expect, test } from 'vitest';
-import { setConfig, setDateRangeValue, setLocale, setShareData, setUser, useApp } from './app';
+import {
+  setConfig,
+  setDateRangeValue,
+  setLocale,
+  setShareData,
+  setTimezone,
+  setUser,
+  useApp,
+} from './app';
 
 const initialState = { ...useApp.getState() };
 
 beforeEach(() => {
   useApp.setState({ ...initialState }, true);
+});
+
+describe('setTimezone', () => {
+  test('updates the timezone', () => {
+    setTimezone('America/New_York');
+    expect(useApp.getState().timezone).toBe('America/New_York');
+  });
+
+  test('leaves other fields untouched', () => {
+    setTimezone('UTC');
+    expect(useApp.getState().locale).toBe(initialState.locale);
+  });
 });
 
 describe('setLocale', () => {

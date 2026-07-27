@@ -1,7 +1,7 @@
 import { Dialog, ListItem, ListSeparator, Modal, Select, type SelectProps } from '@umami/react-zen';
 import { Fragment, type Key, useState } from 'react';
 import { DateDisplay } from '@/components/common/DateDisplay';
-import { useMessages, useMobile, useTimezone } from '@/components/hooks';
+import { useMessages, useMobile } from '@/components/hooks';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
 import { getMaxSelectableDate, parseDateRange } from '@/lib/date';
 
@@ -23,8 +23,7 @@ export function DateFilter({
 }: DateFilterProps) {
   const { t, labels } = useMessages();
   const [showPicker, setShowPicker] = useState(false);
-  const { timezone, fromUtc } = useTimezone();
-  const { startDate, endDate } = parseDateRange(value, undefined, undefined, timezone) || {};
+  const { startDate, endDate } = parseDateRange(value) || {};
   const { isMobile } = useMobile();
 
   const options = [
@@ -129,7 +128,7 @@ export function DateFilter({
               startDate={startDate}
               endDate={endDate}
               minDate={new Date(2000, 0, 1)}
-              maxDate={getMaxSelectableDate(fromUtc(new Date()))}
+              maxDate={getMaxSelectableDate()}
               onChange={handlePickerChange}
               onClose={() => setShowPicker(false)}
             />

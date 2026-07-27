@@ -1,34 +1,21 @@
 import { formatInTimeZone, fromZonedTime, toZonedTime } from 'date-fns-tz';
-import { useSyncExternalStore } from 'react';
-import { TIMEZONE_LEGACY } from '@/lib/constants';
-import { getTimezone, isValidTimezone, normalizeTimezone } from '@/lib/date';
+import { TIMEZONE_CONFIG, TIMEZONE_LEGACY } from '@/lib/constants';
+import { getTimezone } from '@/lib/date';
+import { setItem } from '@/lib/storage';
+import { setTimezone, useApp } from '@/store/app';
 import { useLocale } from './useLocale';
-import { useNavigation } from './useNavigation';
 
-function canonicalizeTimezone(timezone: string): string {
-  return TIMEZONE_LEGACY[timezone] ?? normalizeTimezone(timezone);
-}
-
-function subscribe() {
-  return () => {};
-}
-
-function getServerTimezone() {
-  return 'UTC';
-}
+const selector = (state: { timezone: string }) => state.timezone;
 
 export function useTimezone() {
-  const {
-    query: { timezone: queryTimezone },
-  } = useNavigation();
-  const localTimeZone = canonicalizeTimezone(
-    useSyncExternalStore(subscribe, getTimezone, getServerTimezone),
-  );
-  const requestedTimezone =
-    typeof queryTimezone === 'string' ? canonicalizeTimezone(queryTimezone) : undefined;
-  const timezone =
-    requestedTimezone && isValidTimezone(requestedTimezone) ? requestedTimezone : localTimeZone;
+  const timezone = useApp(selector);
+  const localTimeZone = getTimezone();
   const { dateLocale } = useLocale();
+
+  const saveTimezone = (value: string) => {
+    setItem(TIMEZONE_CONFIG, value);
+    setTimezone(value);
+  };
 
   const formatTimezoneDate = (date: string, pattern: string) => {
     return formatInTimeZone(
@@ -89,6 +76,10 @@ export function useTimezone() {
     return toZonedTime(date, localTimeZone);
   };
 
+  const canonicalizeTimezone = (timezone: string): string => {
+    return TIMEZONE_LEGACY[timezone] ?? timezone;
+  };
+
   return {
     timezone,
     localTimeZone,
@@ -96,6 +87,7 @@ export function useTimezone() {
     fromUtc,
     localToUtc,
     localFromUtc,
+    saveTimezone,
     formatTimezoneDate,
     formatSeriesTimezone,
     canonicalizeTimezone,

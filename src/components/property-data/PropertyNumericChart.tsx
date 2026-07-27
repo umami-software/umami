@@ -9,6 +9,7 @@ import {
   useMessages,
   usePropertyNumericSeriesQuery,
   usePropertyNumericStatsQuery,
+  useTimezone,
 } from '@/components/hooks';
 import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { MetricCard } from '@/components/metrics/MetricCard';
@@ -34,9 +35,10 @@ export function PropertyNumericChart({
 }) {
   const { t, labels } = useMessages();
   const { theme } = useTheme();
+  const { timezone } = useTimezone();
   const {
     dateRange: { startDate, endDate, unit },
-  } = useDateRange();
+  } = useDateRange({ timezone });
   const { locale, dateLocale } = useLocale();
   const { colors } = useMemo(() => getThemeColors(theme), [theme]);
 

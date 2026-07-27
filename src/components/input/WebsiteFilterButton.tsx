@@ -4,7 +4,6 @@ import { useFilters, useMessages, useNavigation } from '@/components/hooks';
 import { ListFilter } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
 import { FilterEditForm } from '@/components/input/FilterEditForm';
-import { TimezoneFilter } from '@/components/input/TimezoneFilter';
 import {
   filtersArrayToObject,
   serializeSessionPropertyFilters,
@@ -79,14 +78,17 @@ export function WebsiteFilterButton({
       {({ close }) => {
         return (
           <>
-            <Row position="absolute" top="30px" right="30px" alignItems="center" gap>
-              {(isOverview || allowBounceFilter) && (
-                <Checkbox value={excludeBounce ? 'true' : ''} onChange={setExcludeBounce}>
+            {(isOverview || allowBounceFilter) && (
+              <Row position="absolute" top="30px" right="30px">
+                <Checkbox
+                  value={excludeBounce ? 'true' : ''}
+                  onChange={setExcludeBounce}
+                  style={{ marginTop: '3px' }}
+                >
                   {t(labels.excludeBounce)}
                 </Checkbox>
-              )}
-              <TimezoneFilter />
-            </Row>
+              </Row>
+            )}
             <FilterEditForm websiteId={websiteId} onChange={handleChange} onClose={close} />
           </>
         );

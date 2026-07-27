@@ -11,6 +11,7 @@ import {
   useMessages,
   usePropertyArraySeriesQuery,
   usePropertySeriesQuery,
+  useTimezone,
 } from '@/components/hooks';
 import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { ListTable } from '@/components/metrics/ListTable';
@@ -35,9 +36,10 @@ export function PropertyChart({
   seriesType?: 'property' | 'array';
 }) {
   const { t, labels } = useMessages();
+  const { timezone } = useTimezone();
   const {
     dateRange: { startDate, endDate, unit },
-  } = useDateRange();
+  } = useDateRange({ timezone });
   const { locale, dateLocale } = useLocale();
   const propertySeriesQuery = usePropertySeriesQuery(
     source,
