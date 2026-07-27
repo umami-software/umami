@@ -140,7 +140,7 @@
     "dotenv-cli": "^11.0.0",
     "jsdom": "^29.1.1",
     "msw": "^2.14.6",
-    "postcss": "^8.5.15",
+    "postcss": "^8.5.18",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^16.1.1",
     "postcss-preset-env": "11.3.0",
