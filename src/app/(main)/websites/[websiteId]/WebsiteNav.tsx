@@ -37,7 +37,7 @@ export function WebsiteNav({
       {items.map(({ label: sectionLabel, items: sectionItems }, index) => (
         <Column key={`${sectionLabel}${index}`} gap="1" marginBottom="1">
           {!isCollapsed && (
-            <Row padding>
+            <Row paddingX="3" marginTop="2">
               <Text weight="bold">{sectionLabel}</Text>
             </Row>
           )}

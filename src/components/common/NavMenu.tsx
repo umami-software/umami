@@ -62,8 +62,8 @@ export function NavMenu({
         {items?.map(({ label, items }, index) => {
           if (label) {
             return (
-              <Column key={`${label}${index}`} gap="2" marginBottom="3" minHeight="40px">
-                <Row padding>
+              <Column key={`${label}${index}`} gap="1" marginBottom="3" minHeight="40px">
+                <Row paddingX="3" marginTop="2">
                   <Text weight="bold">{label}</Text>
                 </Row>
                 {renderItems(items)}
