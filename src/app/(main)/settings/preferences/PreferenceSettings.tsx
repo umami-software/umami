@@ -3,7 +3,6 @@ import { useLoginQuery, useMessages } from '@/components/hooks';
 import { DateRangeSetting } from './DateRangeSetting';
 import { LanguageSetting } from './LanguageSetting';
 import { ThemeSetting } from './ThemeSetting';
-import { TimezoneSetting } from './TimezoneSetting';
 import { VersionSetting } from './VersionSetting';
 
 export function PreferenceSettings() {
@@ -19,10 +18,6 @@ export function PreferenceSettings() {
       <Column>
         <Label>{t(labels.defaultDateRange)}</Label>
         <DateRangeSetting />
-      </Column>
-      <Column>
-        <Label>{t(labels.timezone)}</Label>
-        <TimezoneSetting />
       </Column>
       <Column>
         <Label>{t(labels.language)}</Label>

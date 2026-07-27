@@ -2,12 +2,7 @@ import { colord } from 'colord';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BarChart, type BarChartProps } from '@/components/charts/BarChart';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import {
-  useDateRange,
-  useLocale,
-  useTimezone,
-  useWebsiteEventsSeriesQuery,
-} from '@/components/hooks';
+import { useDateRange, useLocale, useWebsiteEventsSeriesQuery } from '@/components/hooks';
 import { renderDateLabels } from '@/lib/charts';
 import { hex6 } from '@/lib/colors';
 import { CHART_COLORS } from '@/lib/constants';
@@ -20,10 +15,9 @@ export interface EventsChartProps extends BarChartProps {
 }
 
 export function EventsChart({ websiteId, focusLabel, limit }: EventsChartProps) {
-  const { timezone } = useTimezone();
   const {
     dateRange: { startDate, endDate, unit },
-  } = useDateRange({ timezone: timezone });
+  } = useDateRange();
   const { locale, dateLocale } = useLocale();
   const { data, isLoading, error } = useWebsiteEventsSeriesQuery(websiteId, { limit });
   const [label, setLabel] = useState<string>(focusLabel);

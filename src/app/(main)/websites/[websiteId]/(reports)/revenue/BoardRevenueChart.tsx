@@ -1,5 +1,5 @@
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useDateRange, useTimezone } from '@/components/hooks';
+import { useDateRange } from '@/components/hooks';
 import { useRevenueChartQuery } from '@/components/hooks/queries/useRevenueChartQuery';
 import { RevenueChart } from './RevenueChart';
 import { useBoardRevenueCurrency } from './useBoardRevenueCurrency';
@@ -12,10 +12,9 @@ export function BoardRevenueChart({
   currency?: string;
 }) {
   const currency = useBoardRevenueCurrency(selectedCurrency);
-  const { timezone } = useTimezone();
   const {
     dateRange: { startDate, endDate, unit },
-  } = useDateRange({ timezone });
+  } = useDateRange();
   const { data, isLoading, isFetching, error } = useRevenueChartQuery(websiteId, currency);
 
   return (
