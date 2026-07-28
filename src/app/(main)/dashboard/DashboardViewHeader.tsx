@@ -11,7 +11,7 @@ export function DashboardViewHeader() {
   return (
     <PageHeader title={t(labels.dashboard)}>
       <LinkButton href={renderUrl('/dashboard/edit', false)}>
-        <IconLabel icon={<LayoutDashboard />}>Design</IconLabel>
+        <IconLabel icon={<LayoutDashboard />}>{t(labels.edit)}</IconLabel>
       </LinkButton>
     </PageHeader>
   );
