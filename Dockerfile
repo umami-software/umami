@@ -45,7 +45,7 @@ ENV NODE_OPTIONS=$NODE_OPTIONS
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 RUN set -x \
-    && apk add --no-cache curl libc6-compat \
+    && apk add --no-cache curl libc6-compat tini \
     && npm install -g pnpm
 
 RUN echo {} > package.json
@@ -53,7 +53,7 @@ RUN echo {} > package.json
 RUN printf "allowBuilds:\n  '@prisma/engines': true\n  prisma: false\nverifyDepsBeforeRun: false\n" > pnpm-workspace.yaml
 
 # Script dependencies
-RUN pnpm add npm-run-all dotenv chalk semver \
+RUN pnpm add dotenv chalk semver \
     prisma@${PRISMA_VERSION} \
     @prisma/client@${PRISMA_VERSION} \
     @prisma/adapter-pg@${PRISMA_VERSION}
@@ -76,4 +76,5 @@ EXPOSE 3000
 ENV HOSTNAME=0.0.0.0
 ENV PORT=3000
 
-CMD ["npm", "run", "start-docker"]
+ENTRYPOINT ["/sbin/tini", "-e", "143", "--"]
+CMD ["sh", "-c", "node scripts/check-db.js && node scripts/update-tracker.js && exec node server.js"]
