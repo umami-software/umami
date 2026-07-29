@@ -1576,9 +1576,6 @@ packages:
       '@types/node':
         optional: true
 
-  '@internationalized/date@3.11.0':
-    resolution: {integrity: sha512-BOx5huLAWhicM9/ZFs84CzP+V3gBW6vlpM02yzsdYC7TGlZJX1OJiEEHcSayF00Z+3jLlm4w79amvSt6RqKN3Q==}
-
   '@internationalized/date@3.12.2':
     resolution: {integrity: sha512-FY1Y+H64NDs+HAF6omlnWxm3mEpfgaCSWtL5l551ZZfImA+kGjPFgrnJrGjH6lfmLL0g8Z/mBu1R3kufeCp6Jw==}
 
@@ -1984,26 +1981,8 @@ packages:
       '@types/react':
         optional: true
 
-  '@react-aria/focus@3.21.4':
-    resolution: {integrity: sha512-6gz+j9ip0/vFRTKJMl3R30MHopn4i19HqqLfSQfElxJD+r9hBnYG1Q6Wd/kl/WRR1+CALn2F+rn06jUnf5sT8Q==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-
-  '@react-aria/interactions@3.27.0':
-    resolution: {integrity: sha512-D27pOy+0jIfHK60BB26AgqjjRFOYdvVSkwC31b2LicIzRCSPOSP06V4gMHuGmkhNTF4+YWDi1HHYjxIvMeiSlA==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-
-  '@react-aria/ssr@3.9.10':
-    resolution: {integrity: sha512-hvTm77Pf+pMBhuBm760Li0BVIO38jv1IBws1xFm1NoL26PU+fe+FMW5+VZWyANR6nYL65joaJKZqOdTQMkO9IQ==}
-    engines: {node: '>= 12'}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-
-  '@react-aria/utils@3.33.0':
-    resolution: {integrity: sha512-yvz7CMH8d2VjwbSa5nGXqjU031tYhD8ddax95VzJsHSPyqHDEGfxul8RkhGV6oO7bVqZxVs6xY66NIgae+FHjw==}
+  '@react-aria/focus@3.22.1':
+    resolution: {integrity: sha512-CPxtkyrBi/HYY5P3lE/57sQ6qfa0lN8E55TOm89H0kNGv0lKt+/0zP7lWERzBjRr5IxBVrQX4gFEowBN52LPaA==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
@@ -2034,14 +2013,6 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-
-  '@react-stately/flags@3.1.2':
-    resolution: {integrity: sha512-2HjFcZx1MyQXoPqcBGALwWWmgFVUk2TuKVIQxCbRq7fPyWXIl6VHcakCLurdtYC2Iks7zizvz0Idv48MQ38DWg==}
-
-  '@react-stately/utils@3.11.0':
-    resolution: {integrity: sha512-8LZpYowJ9eZmmYLpudbo/eclIRnbhWIJZ994ncmlKlouNzKohtM8qTC6B1w1pwUbiwGdUoyzLuQbeaIor5Dvcw==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
   '@react-types/shared@3.36.0':
     resolution: {integrity: sha512-DkP/H0C2YjjS7gZWKNqOmU8a16qHPjQNdzMwmTq9SzplM6Iw0kVMTZ0OIoe6FOgGqa+FwMsE2QbPjh/n3g/jXQ==}
@@ -4977,8 +4948,8 @@ packages:
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
 
-  react-hook-form@7.71.1:
-    resolution: {integrity: sha512-9SUJKCGKo8HUSsCO+y0CtqkqI5nNuaDqTxyqPsZPqIwudpj4rCrAz/jZV+jn57bx5gtZKOh3neQu94DXMc+w5w==}
+  react-hook-form@7.83.0:
+    resolution: {integrity: sha512-AXt8cMCmx5a7u4uvpb2uRFVrWQhllI4pV+LSykxIac/hjt44TnQkmX9BKuQi2i+LDC62esmiLpilkav+kjVf/A==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -5407,17 +5378,19 @@ packages:
     resolution: {integrity: sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng==}
     engines: {node: '>=20'}
 
-  tailwind-merge@3.4.0:
-    resolution: {integrity: sha512-uSaO4gnW+b3Y2aWoWfFpX62vn2sR3skfhbjsEnaBI81WD1wBLlHZe5sWf0AqjksNdYTbGBEd0UasQMT3SNV15g==}
+  tailwind-merge@3.6.0:
+    resolution: {integrity: sha512-uxL7qAVQriqRQPAyK3pj66VqskWqoZ37PW94jwOTwNfq/z9oyu1V+eqrZqtR2+fCiXdYOZe/Modt8GtvqNzu+w==}
 
-  tailwind-variants@3.2.2:
-    resolution: {integrity: sha512-Mi4kHeMTLvKlM98XPnK+7HoBPmf4gygdFmqQPaDivc3DpYS6aIY6KiG/PgThrGvii5YZJqRsPz0aPyhoFzmZgg==}
-    engines: {node: '>=16.x', pnpm: '>=7.x'}
+  tailwind-variants@3.3.0:
+    resolution: {integrity: sha512-t1QsB42dcwUdaCEArO0tRZcP0nbCcAmJKRYCs7jmwYSFOCXlGqgO8c0TrCYm9OranYmT6i9YOi8LFo2gxmxnow==}
+    engines: {node: '>=16.9.x', pnpm: '>=7.x'}
     peerDependencies:
       tailwind-merge: '>=3.0.0'
       tailwindcss: '*'
     peerDependenciesMeta:
       tailwind-merge:
+        optional: true
+      tailwindcss:
         optional: true
 
   tailwindcss@4.1.18:
@@ -6947,10 +6920,6 @@ snapshots:
     optionalDependencies:
       '@types/node': 26.1.2
 
-  '@internationalized/date@3.11.0':
-    dependencies:
-      '@swc/helpers': 0.5.23
-
   '@internationalized/date@3.12.2':
     dependencies:
       '@swc/helpers': 0.5.23
@@ -7350,40 +7319,11 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.17
 
-  '@react-aria/focus@3.21.4(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
-    dependencies:
-      '@react-aria/interactions': 3.27.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      '@react-aria/utils': 3.33.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      '@react-types/shared': 3.36.0(react@19.2.8)
-      '@swc/helpers': 0.5.23
-      clsx: 2.1.1
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
-
-  '@react-aria/interactions@3.27.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
-    dependencies:
-      '@react-aria/ssr': 3.9.10(react@19.2.8)
-      '@react-aria/utils': 3.33.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      '@react-stately/flags': 3.1.2
-      '@react-types/shared': 3.36.0(react@19.2.8)
-      '@swc/helpers': 0.5.23
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
-
-  '@react-aria/ssr@3.9.10(react@19.2.8)':
+  '@react-aria/focus@3.22.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@swc/helpers': 0.5.23
       react: 19.2.8
-
-  '@react-aria/utils@3.33.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
-    dependencies:
-      '@react-aria/ssr': 3.9.10(react@19.2.8)
-      '@react-stately/flags': 3.1.2
-      '@react-stately/utils': 3.11.0(react@19.2.8)
-      '@react-types/shared': 3.36.0(react@19.2.8)
-      '@swc/helpers': 0.5.23
-      clsx: 2.1.1
-      react: 19.2.8
+      react-aria: 3.50.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react-dom: 19.2.8(react@19.2.8)
 
   '@react-spring/animated@9.7.5(react@19.2.8)':
@@ -7417,15 +7357,6 @@ snapshots:
       '@react-spring/types': 9.7.5
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
-
-  '@react-stately/flags@3.1.2':
-    dependencies:
-      '@swc/helpers': 0.5.23
-
-  '@react-stately/utils@3.11.0(react@19.2.8)':
-    dependencies:
-      '@swc/helpers': 0.5.23
-      react: 19.2.8
 
   '@react-types/shared@3.36.0(react@19.2.8)':
     dependencies:
@@ -8048,17 +7979,17 @@ snapshots:
 
   '@umami/react-zen@0.245.0(@types/react@19.2.17)(immer@11.1.15)(react-aria-components@1.19.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.2.8))':
     dependencies:
-      '@internationalized/date': 3.11.0
-      '@react-aria/focus': 3.21.4(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@internationalized/date': 3.12.2
+      '@react-aria/focus': 3.22.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@react-spring/web': 9.7.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       clsx: 2.1.1
       lucide-react: 0.555.0(react@19.2.8)
       react: 19.2.8
       react-aria-components: 1.19.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react-dom: 19.2.8(react@19.2.8)
-      react-hook-form: 7.71.1(react@19.2.8)
-      tailwind-merge: 3.4.0
-      tailwind-variants: 3.2.2(tailwind-merge@3.4.0)(tailwindcss@4.1.18)
+      react-hook-form: 7.83.0(react@19.2.8)
+      tailwind-merge: 3.6.0
+      tailwind-variants: 3.3.0(tailwind-merge@3.6.0)(tailwindcss@4.1.18)
       zustand: 5.0.14(@types/react@19.2.17)(immer@11.1.15)(react@19.2.8)(use-sync-external-store@1.6.0(react@19.2.8))
     transitivePeerDependencies:
       - '@types/react'
@@ -10332,7 +10263,7 @@ snapshots:
     dependencies:
       react: 19.2.8
 
-  react-hook-form@7.71.1(react@19.2.8):
+  react-hook-form@7.83.0(react@19.2.8):
     dependencies:
       react: 19.2.8
 
@@ -10860,15 +10791,15 @@ snapshots:
 
   tagged-tag@1.0.0: {}
 
-  tailwind-merge@3.4.0: {}
+  tailwind-merge@3.6.0: {}
 
-  tailwind-variants@3.2.2(tailwind-merge@3.4.0)(tailwindcss@4.1.18):
-    dependencies:
-      tailwindcss: 4.1.18
+  tailwind-variants@3.3.0(tailwind-merge@3.6.0)(tailwindcss@4.1.18):
     optionalDependencies:
-      tailwind-merge: 3.4.0
+      tailwind-merge: 3.6.0
+      tailwindcss: 4.1.18
 
-  tailwindcss@4.1.18: {}
+  tailwindcss@4.1.18:
+    optional: true
 
   tar@7.5.22:
     dependencies:
