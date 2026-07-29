@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { BOUNCE_THRESHOLD, EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
@@ -50,7 +50,7 @@ async function relationalQuery(
       sum(t.c) as "views",
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
-      sum(case when t.c = 1 then 1 else 0 end) as "bounces",
+      sum(case when t.c = 1 and t.events_count < ${BOUNCE_THRESHOLD} then 1 else 0 end) as "bounces",
       sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime",
       ${parseFieldsByName(fields)}
     from (
@@ -60,14 +60,23 @@ async function relationalQuery(
         website_event.visit_id,
         count(*) as "c",
         min(website_event.created_at) as "min_time",
-        max(website_event.created_at) as "max_time"
+        max(website_event.created_at) as "max_time",
+        max((
+          select count(*)
+          from website_event we2
+          where we2.website_id = website_event.website_id
+            and we2.session_id = website_event.session_id
+            and we2.visit_id = website_event.visit_id
+            and we2.created_at between {{startDate}} and {{endDate}}
+            and we2.event_type = ${EVENT_TYPE.customEvent}
+        )) as "events_count"
       from website_event
-      ${cohortQuery}  
+      ${cohortQuery}
       ${joinSessionQuery}
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
         ${filterQuery}
-      group by ${parseFieldsByName(fields)}, 
+      group by ${parseFieldsByName(fields)},
         website_event.session_id, website_event.visit_id
     ) as t
     group by ${parseFieldsByName(fields)}
@@ -99,7 +108,7 @@ async function clickhouseQuery(
       sum(t.c) as "views",
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
-      sum(if(t.c = 1, 1, 0)) as "bounces",
+      sumIf(1, t.c = 1 and ifNull(e.events_count, 0) < ${BOUNCE_THRESHOLD}) as "bounces",
       sum(max_time-min_time) as "totaltime",
       ${parseFieldsByName(fields)}
     from (
@@ -115,9 +124,17 @@ async function clickhouseQuery(
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         ${filterQuery}
-      group by ${parseFieldsByName(fields)}, 
+      group by ${parseFieldsByName(fields)},
         session_id, visit_id
     ) as t
+    left join (
+      select session_id, visit_id, toUInt32(count()) as events_count
+      from website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = ${EVENT_TYPE.customEvent}
+      group by session_id, visit_id
+    ) as e using (session_id, visit_id)
     group by ${parseFieldsByName(fields)}
     order by 2 desc, 1 desc
     limit 500
