@@ -218,6 +218,9 @@ export default withNextIntl({
   typescript: {
     ignoreBuildErrors: true,
   },
+  experimental: {
+    useTypeScriptCli: true,
+  },
   devIndicators: false,
   async headers() {
     return headers;
