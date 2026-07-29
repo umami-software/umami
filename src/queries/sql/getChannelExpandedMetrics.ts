@@ -1,6 +1,8 @@
 import clickhouse from '@/lib/clickhouse';
 import {
+  BOUNCE_THRESHOLD,
   EMAIL_DOMAINS,
+  EVENT_TYPE,
   LLM_DOMAINS,
   PAID_AD_PARAMS,
   SEARCH_DOMAINS,
@@ -120,20 +122,34 @@ async function relationalQuery(
           min(created_at) as min_time,
           max(created_at) as max_time
         from prefix
+        group by session_id, visit_id),
+
+      visit_events as (
+        select
+          session_id,
+          visit_id,
+          count(*) as events_count
+        from website_event
+        where website_id = {{websiteId::uuid}}
+          and created_at between {{startDate}} and {{endDate}}
+          and event_type = ${EVENT_TYPE.customEvent}
         group by session_id, visit_id)
-  
+
       select
         visit_channels.name,
         sum(visit_stats.c) as "pageviews",
         count(distinct visit_stats.session_id) as "visitors",
         count(distinct visit_stats.visit_id) as "visits",
-        sum(case when visit_stats.c = 1 then 1 else 0 end) as "bounces",
+        sum(case when visit_stats.c = 1 and coalesce(visit_events.events_count, 0) < ${BOUNCE_THRESHOLD} then 1 else 0 end) as "bounces",
         sum(${getTimestampDiffSQL('visit_stats.min_time', 'visit_stats.max_time')}) as "totaltime"
       from visit_stats
       join visit_channels
         on visit_channels.session_id = visit_stats.session_id
         and visit_channels.visit_id = visit_stats.visit_id
-      group by visit_channels.name 
+      left join visit_events
+        on visit_events.session_id = visit_stats.session_id
+        and visit_events.visit_id = visit_stats.visit_id
+      group by visit_channels.name
       order by visitors desc, visits desc
       `,
     queryParams,
@@ -158,7 +174,7 @@ async function clickhouseQuery(
       sum(t.c) as "pageviews",
       uniq(t.session_id) as "visitors",
       uniq(t.visit_id) as "visits",
-      sum(if(t.c = 1, 1, 0)) as "bounces",
+      sumIf(1, t.c = 1 and ifNull(e.events_count, 0) < ${BOUNCE_THRESHOLD}) as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (
       select
@@ -213,7 +229,15 @@ async function clickhouseQuery(
       )
       group by session_id, visit_id
     ) as t
-    group by name 
+    left join (
+      select session_id, visit_id, toUInt32(count()) as events_count
+      from website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = ${EVENT_TYPE.customEvent}
+      group by session_id, visit_id
+    ) as e using (session_id, visit_id)
+    group by name
     order by visitors desc, visits desc;
     `,
     queryParams,

@@ -22,8 +22,8 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   });
 
   const searchQuery = search
-    ? `and ((event_name ilike {{search}} and event_type = 2)
-           or (url_path ilike {{search}} and event_type = 1))`
+    ? `and ((event_name ilike {{search}} and event_type = ${EVENT_TYPE.customEvent})
+           or (url_path ilike {{search}} and event_type = ${EVENT_TYPE.pageView}))`
     : '';
 
   return pagedRawQuery(
@@ -77,8 +77,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   });
 
   const searchQuery = search
-    ? `and ((positionCaseInsensitive(event_name, {search:String}) > 0 and event_type = 2)
-           or (positionCaseInsensitive(url_path, {search:String}) > 0 and event_type = 1))`
+    ? `and ((positionCaseInsensitive(event_name, {search:String}) > 0 and event_type = ${EVENT_TYPE.customEvent})
+           or (positionCaseInsensitive(url_path, {search:String}) > 0 and event_type = ${EVENT_TYPE.pageView}))`
     : '';
 
   return pagedRawQuery(
