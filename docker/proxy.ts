@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { getContentSecurityPolicy } from '@/lib/csp';
 import { matchesConfiguredPath } from '@/lib/match-configured-path';
 
 export const config = {
@@ -22,6 +23,9 @@ const trackerHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Cache-Control': 'public, max-age=86400, must-revalidate',
 };
+
+// Resolved once at startup — env vars don't change after the process starts.
+const contentSecurityPolicy = getContentSecurityPolicy();
 
 function customCollectEndpoint(request: NextRequest) {
   const collectEndpoint = process.env.COLLECT_API_ENDPOINT;
@@ -69,12 +73,20 @@ function disableLogin(request: NextRequest) {
 export default function middleware(req: NextRequest) {
   const fns = [customCollectEndpoint, customScriptName, customScriptUrl, disableLogin];
 
+  let res: NextResponse | undefined;
+
   for (const fn of fns) {
-    const res = fn(req);
+    res = fn(req);
     if (res) {
-      return res;
+      break;
     }
   }
 
-  return NextResponse.next();
+  res ??= NextResponse.next();
+
+  // Set the CSP here, not only at build time in next.config.ts, so
+  // ALLOWED_FRAME_URLS is resolved from the runtime environment.
+  res.headers.set('Content-Security-Policy', contentSecurityPolicy);
+
+  return res;
 }

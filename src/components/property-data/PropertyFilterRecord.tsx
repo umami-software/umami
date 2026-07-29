@@ -3,7 +3,6 @@ import {
   Button,
   Calendar,
   Column,
-  ComboBox,
   Dialog,
   DialogTrigger,
   Grid,
@@ -18,6 +17,7 @@ import {
 } from '@umami/react-zen';
 import { format, parseISO } from 'date-fns';
 import { useState } from 'react';
+import { ComboBox } from '@/components/common/ComboBox';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { Empty } from '@/components/common/Empty';
 import { MultiSelect } from '@/components/common/MultiSelect';

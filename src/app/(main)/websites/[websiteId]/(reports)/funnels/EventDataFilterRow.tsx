@@ -1,7 +1,6 @@
 import {
   Button,
   Column,
-  ComboBox,
   FormField,
   Grid,
   Icon,
@@ -12,6 +11,7 @@ import {
 } from '@umami/react-zen';
 import { endOfDay, subMonths } from 'date-fns';
 import { useState } from 'react';
+import { ComboBox } from '@/components/common/ComboBox';
 import { Empty } from '@/components/common/Empty';
 import { useApi, useMessages, useMobile } from '@/components/hooks';
 import { X } from '@/components/icons';
@@ -56,7 +56,7 @@ function PropertySelect({
     enabled: !!websiteId,
   });
 
-  const properties = [...new Set(data?.map(d => d.propertyName) ?? [])];
+  const properties: string[] = Array.from(new Set<string>(data?.map(d => d.propertyName) ?? []));
 
   return (
     <ComboBox
@@ -118,7 +118,7 @@ function ValueSelect({
     enabled: !!(websiteId && eventName && propertyName),
   });
 
-  const values = data?.map(d => d.value) ?? [];
+  const values: string[] = data?.map(d => d.value) ?? [];
 
   return (
     <ComboBox

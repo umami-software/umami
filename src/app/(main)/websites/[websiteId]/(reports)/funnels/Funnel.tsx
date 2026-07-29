@@ -15,9 +15,17 @@ interface FunnelProps {
   type: string;
   parameters: Record<string, any>;
   websiteId: string;
+  allowEdit?: boolean;
 }
 
-export function Funnel({ id, name, type, parameters, websiteId }: FunnelProps) {
+export function Funnel({
+  id,
+  name,
+  type,
+  parameters,
+  websiteId,
+  allowEdit = true,
+}: FunnelProps) {
   const { t, labels } = useMessages();
   const { pathname } = useNavigation();
   const isSharePage = pathname.includes('/share/');
@@ -39,7 +47,7 @@ export function Funnel({ id, name, type, parameters, websiteId }: FunnelProps) {
               </Text>
             </Row>
           </Column>
-          {!isSharePage && (
+          {allowEdit && !isSharePage && (
             <Column>
               <ReportEditButton
                 id={id}

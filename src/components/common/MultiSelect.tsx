@@ -2,6 +2,10 @@ import { Button, Column, Icon, List, MenuTrigger, Popover, SearchField } from '@
 import type { ReactNode } from 'react';
 import { ChevronRight } from '@/components/icons';
 
+const listStyle = {
+  maxHeight: 'min(320px, calc(100dvh - 8rem))',
+};
+
 interface MultiSelectProps {
   value?: string[];
   onChange?: (values: string[]) => void;
@@ -60,6 +64,9 @@ export function MultiSelect({
             value={value}
             onChange={onChange}
             showCheckmark
+            shouldSelectOnPressUp
+            shouldFocusOnHover={false}
+            style={listStyle}
             renderEmptyState={renderEmptyState}
           >
             {children}

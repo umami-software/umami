@@ -1,8 +1,18 @@
 import { DATA_TYPE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
-import type { Filter, Operator, PropertyFilter, QueryFilters, QueryOptions } from '@/lib/types';
+import type {
+  Filter,
+  Operator,
+  PropertyFilter,
+  QueryFilters,
+  QueryOptions,
+  EventPropertyFilter,
+  SessionPropertyFilter,
+} from '@/lib/types';
 
 const VALID_OPERATORS: Operator[] = Object.values(OPERATORS);
 const VALID_EVENT_DATA_TYPES = Object.values(DATA_TYPE);
+const EVENT_PROPERTY_FILTER_PARAM = /^epf\d+$/;
+const SESSION_PROPERTY_FILTER_PARAM = /^spf\d+$/;
 
 function isValidEventDataType(value: number): value is (typeof VALID_EVENT_DATA_TYPES)[number] {
   return VALID_EVENT_DATA_TYPES.includes(value as (typeof VALID_EVENT_DATA_TYPES)[number]);
@@ -108,6 +118,18 @@ function getPropertyFilterPrefix(key: string, prefixes: string[]) {
   return prefixes.find(prefix => key.startsWith(`${prefix}_`));
 }
 
+function decodePropertyName(value: string) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
+function encodePropertyName(value: string) {
+  return encodeURIComponent(value).replaceAll('.', '%2E');
+}
+
 export function parsePropertyFilters(
   query: Record<string, any>,
   prefixes: string[] = ['pf'],
@@ -156,6 +178,76 @@ export function parseEventPropertyFilters(query: Record<string, any>) {
   return parsePropertyFilters(query, ['pf']);
 }
 
+export function parseUniversalEventPropertyFilters(
+  query: Record<string, any>,
+): EventPropertyFilter[] {
+  return Object.entries(query).flatMap(([key, val]) => {
+    if (!EVENT_PROPERTY_FILTER_PARAM.test(key)) {
+      return [];
+    }
+
+    const stringValue = String(val);
+    const match = stringValue.match(/^(\d+)\.([^.]+)\.([^.]+)\.(.*)$/);
+    const explicitDataType = match ? Number(match[1]) : undefined;
+    const operator = resolveOperator(match?.[2]);
+    const propertyName = match?.[3] ? decodePropertyName(match[3]) : undefined;
+    const value = match?.[4];
+
+    if (
+      !propertyName ||
+      !operator ||
+      explicitDataType === undefined ||
+      !isValidEventDataType(explicitDataType) ||
+      value === undefined
+    ) {
+      return [];
+    }
+
+    return [
+      {
+        propertyName,
+        dataType: explicitDataType,
+        operator,
+        value,
+      },
+    ];
+  });
+}
+
+export function parseSessionPropertyFilters(query: Record<string, any>): SessionPropertyFilter[] {
+  return Object.entries(query).flatMap(([key, val]) => {
+    if (!SESSION_PROPERTY_FILTER_PARAM.test(key)) {
+      return [];
+    }
+
+    const stringValue = String(val);
+    const match = stringValue.match(/^(\d+)\.([^.]+)\.([^.]+)\.(.*)$/);
+    const explicitDataType = match ? Number(match[1]) : undefined;
+    const operator = resolveOperator(match?.[2]);
+    const propertyName = match?.[3] ? decodePropertyName(match[3]) : undefined;
+    const value = match?.[4];
+
+    if (
+      !propertyName ||
+      !operator ||
+      explicitDataType === undefined ||
+      !isValidEventDataType(explicitDataType) ||
+      value === undefined
+    ) {
+      return [];
+    }
+
+    return [
+      {
+        propertyName,
+        dataType: explicitDataType,
+        operator,
+        value,
+      },
+    ];
+  });
+}
+
 export function serializePropertyFilters(
   filters: PropertyFilter[],
   prefix = 'pf',
@@ -175,4 +267,22 @@ export function serializePropertyFilters(
 
 export function serializeEventPropertyFilters(filters: PropertyFilter[]) {
   return serializePropertyFilters(filters, 'pf');
+}
+
+export function serializeUniversalEventPropertyFilters(filters: EventPropertyFilter[]) {
+  return Object.fromEntries(
+    filters.map((filter, index) => [
+      `epf${index}`,
+      `${filter.dataType}.${filter.operator}.${encodePropertyName(filter.propertyName)}.${filter.value}`,
+    ]),
+  );
+}
+
+export function serializeSessionPropertyFilters(filters: SessionPropertyFilter[]) {
+  return Object.fromEntries(
+    filters.map((filter, index) => [
+      `spf${index}`,
+      `${filter.dataType}.${filter.operator}.${encodePropertyName(filter.propertyName)}.${filter.value}`,
+    ]),
+  );
 }

@@ -4,7 +4,12 @@ import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
-import { canCreateTeamWebsite, canCreateWebsite, canViewBoardEntities } from '@/permissions';
+import {
+  canCreateTeamWebsite,
+  canCreateWebsite,
+  canViewBoardEntities,
+  hasValidBoardReports,
+} from '@/permissions';
 import { createBoard, getUserBoards } from '@/queries/prisma';
 
 export async function GET(request: Request) {
@@ -60,6 +65,10 @@ export async function POST(request: Request) {
 
   if (!(await canViewBoardEntities(auth, body.type, body.parameters))) {
     return badRequest({ message: 'Board contains inaccessible entities.' });
+  }
+
+  if (!(await hasValidBoardReports(body.type, body.parameters))) {
+    return badRequest({ message: 'Board contains invalid saved reports.' });
   }
 
   const data = {

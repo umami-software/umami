@@ -12,7 +12,7 @@ export async function GET(
   const schema = z.object({
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
-    event: z.string(),
+    event: z.string().optional(),
     propertyName: z.string(),
     dataType: z.coerce.number().int().optional(),
     ...filterParams,

@@ -65,6 +65,7 @@ select:is(:-webkit-autofill, :autofill):focus {
 /* Code snippet textareas */
 .code-textarea textarea {
   min-height: 100px;
+  padding-right: 36px;
 }
 
 /* rrweb-player overrides */

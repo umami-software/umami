@@ -2,7 +2,7 @@ import { Column, Focusable, Row, Text, Tooltip, TooltipTrigger } from '@umami/re
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { ArrowLeft, Settings2, UserCircle, Users } from '@/components/icons';
+import { ArrowLeft, Settings2, ShieldCheck, UserCircle, Users } from '@/components/icons';
 
 export function SettingsNav({
   isCollapsed,
@@ -41,6 +41,12 @@ export function SettingsNav({
           path: renderUrl('/settings/teams'),
           icon: <Users />,
         },
+        {
+          id: 'security',
+          label: t(labels.security),
+          path: renderUrl('/settings/security'),
+          icon: <ShieldCheck />,
+        },
       ],
     },
   ];
@@ -69,7 +75,7 @@ export function SettingsNav({
       {items.map(({ label: sectionLabel, items: sectionItems }, index) => (
         <Column key={`${sectionLabel}${index}`} gap="1" marginBottom="1">
           {!isCollapsed && (
-            <Row padding>
+            <Row paddingX="3" marginTop="2">
               <Text weight="bold">{sectionLabel}</Text>
             </Row>
           )}

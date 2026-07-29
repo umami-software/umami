@@ -1,5 +1,5 @@
 'use client';
-import { Button, Column, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { Button, Column, Loading, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
 import { type Key, useState } from 'react';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
@@ -18,12 +18,16 @@ export function ReplaysPage({ websiteId }: { websiteId: string }) {
   const [tab, setTab] = useState(getItem(KEY_NAME) || 'replays');
   const website = useWebsite();
   const { t, labels, messages } = useMessages();
-  const { hasFeature, cloudMode } = useSubscription(website?.teamId);
+  const { hasFeature, cloudMode, isLoading } = useSubscription(website?.teamId);
 
   const handleSelect = (value: Key) => {
     setItem(KEY_NAME, value);
     setTab(value);
   };
+
+  if (isLoading) {
+    return <Loading placement="absolute" />;
+  }
 
   if (cloudMode && !hasFeature('replays')) {
     return (

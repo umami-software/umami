@@ -1,3 +1,215 @@
+/** Public types for the browser tracker. */
+export type TrackedProperties = {
+  /**
+   * Hostname of server
+   *
+   * @description extracted from `window.location.hostname`
+   * @example 'analytics.umami.is'
+   */
+  hostname?: string;
+
+  /** Distinct ID associated with the current visitor. */
+  id?: string;
+
+  /**
+   * Browser language
+   *
+   * @description extracted from `window.navigator.language`
+   * @example 'en-US', 'fr-FR'
+   */
+  language?: string;
+
+  /**
+   * Page referrer
+   *
+   * @description extracted from `document.referrer`
+   * @example 'https://analytics.umami.is/docs/getting-started'
+   */
+  referrer?: string;
+
+  /**
+   * Screen dimensions
+   *
+   * @description extracted from `window.screen.width` and `window.screen.height`
+   * @example '1920x1080', '2560x1440'
+   */
+  screen?: string;
+
+  /** Tag configured on the tracker script. */
+  tag?: string;
+
+  /**
+   * Page title
+   *
+   * @description extracted from `document.querySelector('head > title')`
+   * @example 'umami'
+   */
+  title?: string;
+
+  /**
+   * Page url
+   *
+   * @description normalized from `window.location.href`
+   * @example 'https://analytics.umami.is/docs/getting-started'
+   */
+  url?: string;
+
+  /**
+   * Website ID (required)
+   *
+   * @example 'b59e9c65-ae32-47f1-8400-119fcf4861c4'
+   */
+  website: string;
+};
+
+export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
+
+export type EventDataValue = boolean | number | string | null | EventData | EventDataValue[];
+
+/**
+ *
+ * Event Data can work with any JSON data. There are a few rules in place to maintain performance.
+ * - Numbers have a max precision of 4.
+ * - Strings have a max length of 500.
+ * - Arrays are converted to a String, with the same max length of 500.
+ * - Objects have a max of 50 properties. Arrays are considered 1 property.
+ */
+export interface EventData {
+  [key: string]: EventDataValue;
+}
+
+export type EventProperties = {
+  /**
+   * NOTE: event names will be truncated past 50 characters
+   */
+  name: string;
+  data?: EventData;
+} & WithRequired<TrackedProperties, 'website'>;
+export type PageViewProperties = WithRequired<TrackedProperties, 'website'>;
+export type CustomEventFunction = (
+  props: PageViewProperties,
+) => EventProperties | PageViewProperties;
+
+export type UmamiTracker = {
+  track: {
+    /**
+     * Track a page view
+     *
+     * @example ```
+     * umami.track();
+     * ```
+     */
+    (): Promise<void>;
+
+    /**
+     * Track an event with a given name
+     *
+     * NOTE: event names will be truncated past 50 characters
+     *
+     * @example ```
+     * umami.track('signup-button');
+     * ```
+     */
+    (eventName: string): Promise<void>;
+
+    /**
+     * Tracks an event with dynamic data.
+     *
+     * NOTE: event names will be truncated past 50 characters
+     *
+     * When tracking events, the default properties are included in the payload. This is equivalent to running:
+     *
+     * ```js
+     * umami.track(props => ({
+     *   ...props,
+     *   name: 'signup-button',
+     *   data: {
+     *     name: 'newsletter',
+     *     id: 123
+     *   }
+     * }));
+     * ```
+     *
+     * @example ```
+     * umami.track('signup-button', { name: 'newsletter', id: 123 });
+     * ```
+     */
+    (eventName: string, obj: EventData): Promise<void>;
+
+    /**
+     * Tracks a page view with custom properties
+     *
+     * @example ```
+     * umami.track({ website: 'e676c9b4-11e4-4ef1-a4d7-87001773e9f2', url: '/home', title: 'Home page' });
+     * ```
+     */
+    (properties: PageViewProperties): Promise<void>;
+
+    /**
+     * Tracks an event with fully customizable dynamic data
+     * If you don't specify any `name` and/or `data`, it will be treated as a page view
+     *
+     * @example ```
+     * umami.track((props) => ({ ...props, url: path }));
+     * ```
+     */
+    (eventFunction: CustomEventFunction): Promise<void>;
+  };
+  identify: {
+    /**
+     * Identify a visitor with optional associated data.
+     *
+     * @example ```
+     * umami.identify('user-123', { plan: 'pro' });
+     * ```
+     */
+    (id: string, data?: EventData): Promise<void>;
+
+    /**
+     * Associate data with the current visitor. An `id` string sets the Distinct ID.
+     *
+     * @example ```
+     * umami.identify({ id: 'user-123', plan: 'pro' });
+     * ```
+     */
+    (data: EventData & { id?: string }): Promise<void>;
+  };
+  getSession: () => {
+    cache: string | undefined;
+    website: string | null;
+  };
+};
+
+declare global {
+  interface Window {
+    umami: UmamiTracker;
+  }
+}
+
+type Payload = Record<string, unknown>;
+type BeforeSend = (
+  type: string,
+  payload: Payload,
+) => Payload | null | undefined | Promise<Payload | null | undefined>;
+type TrackerWindow = Window &
+  typeof globalThis & {
+    doNotTrack?: string | number | null;
+    navigator: Navigator & {
+      msDoNotTrack?: string | number | null;
+    };
+  };
+type TrackerDocument = Document & {
+  currentScript: HTMLScriptElement | null;
+};
+type MetricEntry = PerformanceEntry & {
+  activationStart: number;
+  duration: number;
+  hadRecentInput: boolean;
+  interactionId: number;
+  responseStart: number;
+  startTime: number;
+  value: number;
+};
 (window => {
   const {
     screen: { width, height },
@@ -8,12 +220,12 @@
     top,
     doNotTrack,
   } = window;
-  const { currentScript, referrer } = document;
+  const { currentScript, referrer } = document as TrackerDocument;
   if (!currentScript) return;
 
   const { hostname, href, origin } = location;
 
-  let localStorage;
+  let localStorage: Storage | undefined;
   try {
     localStorage = href.startsWith('data:') ? undefined : window.localStorage;
   } catch {
@@ -24,7 +236,7 @@
   const _false = 'false';
   const _true = 'true';
   const attr = currentScript.getAttribute.bind(currentScript);
-  const config = value => attr(`${_data}${value}`);
+  const config = (value: string) => attr(`${_data}${value}`);
 
   const website = config('website-id');
   const hostUrl = config('host-url');
@@ -35,7 +247,7 @@
   const excludeSearch = config('exclude-search') === _true;
   const excludeHash = config('exclude-hash') === _true;
   const domain = config('domains') || '';
-  const credentials = config('fetch-credentials') || 'omit';
+  const credentials = (config('fetch-credentials') || 'omit') as RequestCredentials;
   const perf = config('performance') === _true;
   const autoPageview = config('auto-pageview') !== _false;
 
@@ -50,15 +262,15 @@
 
   /* Helper functions */
 
-  const normalize = raw => {
-    if (!raw) return raw;
+  const normalize = (raw: string | URL): string => {
+    if (!raw) return raw as string;
     try {
       const u = new URL(raw, location.href);
       if (excludeSearch) u.search = '';
       if (excludeHash) u.hash = '';
       return u.toString();
     } catch {
-      return raw;
+      return raw as string;
     }
   };
 
@@ -81,7 +293,7 @@
 
   /* Event handlers */
 
-  const handlePush = (_state, _title, url) => {
+  const handlePush = (_state: unknown, _title: string, url?: string | URL | null) => {
     if (!url) return;
 
     if (typeof flushPerformance === 'function') {
@@ -97,9 +309,13 @@
   };
 
   const handlePathChanges = () => {
-    const hook = (_this, method, callback) => {
+    const hook = (
+      _this: History,
+      method: 'pushState' | 'replaceState',
+      callback: typeof handlePush,
+    ) => {
       const orig = _this[method];
-      return (...args) => {
+      return (...args: Parameters<History['pushState']>) => {
         const result = orig.apply(_this, args);
         callback.apply(null, args);
         return result;
@@ -111,26 +327,26 @@
   };
 
   const handleClicks = () => {
-    const trackElement = async el => {
+    const trackElement = async (el: Element) => {
       const eventName = el.getAttribute(eventNameAttribute);
       if (eventName) {
-        const eventData = {};
+        const eventData: EventData = {};
 
         el.getAttributeNames().forEach(name => {
           const match = name.match(eventRegex);
-          if (match) eventData[match[1]] = el.getAttribute(name);
+          if (match) eventData[match[1]] = el.getAttribute(name) as string;
         });
 
         return track(eventName, eventData);
       }
     };
-    const onClick = e => {
-      const el = e.target;
+    const onClick = (e: MouseEvent) => {
+      const el = e.target as Element;
       const eventEl = el.closest(`[${eventNameAttribute}]`);
       if (!eventEl) return;
 
-      if (eventEl.tagName === 'A' && eventEl.href) {
-        const { href, target } = eventEl;
+      if (eventEl.tagName === 'A' && (eventEl as HTMLAnchorElement).href) {
+        const { href, target } = eventEl as HTMLAnchorElement;
         const external =
           target === '_blank' ||
           e.ctrlKey ||
@@ -140,7 +356,7 @@
         if (!external) e.preventDefault();
         return trackElement(eventEl).finally(() => {
           if (!external) {
-            (target === '_top' ? top.location : location).href = href;
+            (target === '_top' ? (top as WindowProxy).location : location).href = href;
           }
         });
       }
@@ -159,13 +375,15 @@
     (domain && !domains.includes(hostname)) ||
     (dnt && hasDoNotTrack());
 
-  const send = async (payload, type = 'event') => {
+  const send = async (payload: Payload | null | undefined, type = 'event'): Promise<void> => {
     if (trackingDisabled()) return;
 
-    const callback = window[beforeSend];
+    const callback = (window as unknown as Record<string, unknown>)[beforeSend as string] as
+      | BeforeSend
+      | undefined;
 
     if (typeof callback === 'function') {
-      payload = await Promise.resolve(callback(type, payload));
+      payload = await Promise.resolve(callback(type, payload as Payload));
     }
 
     if (!payload) return;
@@ -177,14 +395,14 @@
         body: JSON.stringify({ type, payload }),
         headers: {
           'Content-Type': 'application/json',
-          'x-umami-website-id': website,
+          'x-umami-website-id': website as string,
           'x-umami-hostname': hostname,
           ...(typeof cache !== 'undefined' && { 'x-umami-cache': cache }),
         },
         credentials,
       });
 
-      const data = await res.json();
+      const data = (await res.json()) as { cache?: string; disabled?: boolean } | null;
       if (data) {
         disabled = !!data.disabled;
         cache = data.cache;
@@ -205,16 +423,24 @@
     }
   };
 
-  const track = (name, data) => {
+  const track = (
+    name?: string | Payload | ((payload: Payload) => Payload),
+    data?: EventData,
+  ): Promise<void> => {
     if (typeof name === 'string') return send({ ...getPayload(), name, data });
     if (typeof name === 'object') return send({ ...name });
     if (typeof name === 'function') return send(name(getPayload()));
     return send(getPayload());
   };
 
-  const identify = (id, data) => {
-    if (typeof id === 'string') {
-      identity = id;
+  const identify = (
+    id: string | (EventData & { id?: string }),
+    data?: EventData,
+  ): Promise<void> => {
+    const nextIdentity = typeof id === 'string' ? id : id.id;
+
+    if (nextIdentity !== undefined) {
+      identity = nextIdentity;
     }
 
     cache = '';
@@ -230,17 +456,17 @@
   /* Performance */
 
   const initPerformance = () => {
-    const metrics = {};
+    const metrics: Record<string, number> = {};
     let sent = false;
-    let timeoutId;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
     let isInitialLoad = true;
     let activationStart = 0;
     let pageStartTime = 0;
 
-    const observe = (type, callback) => {
+    const observe = (type: string, callback: (entry: MetricEntry) => void) => {
       try {
         const observer = new PerformanceObserver(list => {
-          list.getEntries().forEach(callback);
+          (list.getEntries() as MetricEntry[]).forEach(callback);
         });
         observer.observe({ type, buffered: true });
       } catch {
@@ -268,7 +494,7 @@
 
     // CLS - session windows algorithm (gap < 1s, max 5s duration; report worst window)
     let clsSessionValue = 0;
-    let clsSessionEntries = [];
+    let clsSessionEntries: MetricEntry[] = [];
     observe('layout-shift', entry => {
       if (!entry.hadRecentInput) {
         const lastEntry = clsSessionEntries[clsSessionEntries.length - 1];
@@ -291,10 +517,10 @@
     });
 
     // INP - group by interactionId, 98th percentile, 40ms threshold
-    let interactions = {};
-    let inpObserver;
-    const recordInteractions = entries => {
-      entries.forEach(entry => {
+    let interactions: Record<number, number> = {};
+    let inpObserver: PerformanceObserver | undefined;
+    const recordInteractions = (entries: PerformanceEntryList) => {
+      (entries as MetricEntry[]).forEach(entry => {
         if (entry.interactionId) {
           const existing = interactions[entry.interactionId];
           if (!existing || entry.duration > existing) {
@@ -305,7 +531,11 @@
     };
     try {
       inpObserver = new PerformanceObserver(list => recordInteractions(list.getEntries()));
-      inpObserver.observe({ type: 'event', buffered: true, durationThreshold: 40 });
+      inpObserver.observe({
+        type: 'event',
+        buffered: true,
+        durationThreshold: 40,
+      } as PerformanceObserverInit);
     } catch {
       /* not supported */
     }
@@ -319,9 +549,9 @@
       }
     };
 
-    const getEntriesByType = type => {
+    const getEntriesByType = (type: string): MetricEntry[] => {
       try {
-        return window.performance?.getEntriesByType?.(type) || [];
+        return (window.performance?.getEntriesByType?.(type) as MetricEntry[]) || [];
       } catch {
         return [];
       }
@@ -397,7 +627,7 @@
       track,
       identify,
       getSession: () => ({ cache, website }),
-    };
+    } as UmamiTracker;
   }
 
   let currentUrl = normalize(href);
@@ -405,9 +635,9 @@
 
   let initialized = false;
   let disabled = false;
-  let cache;
-  let identity;
-  let flushPerformance;
+  let cache: string | undefined;
+  let identity: string | undefined;
+  let flushPerformance: (() => void) | undefined;
 
   if (autoTrack && !trackingDisabled()) {
     if (document.readyState === 'complete') {
@@ -416,4 +646,4 @@
       document.addEventListener('readystatechange', init, true);
     }
   }
-})(window);
+})(window as TrackerWindow);

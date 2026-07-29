@@ -3,6 +3,7 @@ import {
   Column,
   Label,
   ListItem,
+  Loading,
   Row,
   Select,
   Slider,
@@ -21,7 +22,7 @@ const RECORDER_NAME = 'recorder.js';
 export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const website = useWebsite();
   const { t, labels, messages } = useMessages();
-  const { hasFeature, cloudMode } = useSubscription(website?.teamId);
+  const { hasFeature, cloudMode, isLoading } = useSubscription(website?.teamId);
   const { mutateAsync, touch, toast, isPending } = useUpdateQuery(`/websites/${websiteId}`);
   const config = getRecorderConfig(website?.replayConfig);
 
@@ -110,6 +111,10 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const handleSave = async () => {
     await saveRecorderConfig(getNextConfig());
   };
+
+  if (isLoading) {
+    return <Loading placement="absolute" />;
+  }
 
   if (cloudMode && !hasFeature('replays')) {
     return (

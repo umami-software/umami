@@ -35,3 +35,11 @@ export async function canUpdateUser({ user }: Auth, viewedUserId: string) {
 export async function canDeleteUser({ user }: Auth) {
   return user?.isAdmin ?? false;
 }
+
+export async function canEnforceTwoFactorAuthForEveryone({ user }: Auth) {
+  return user?.isAdmin ?? false;
+}
+
+export async function canEnforceTwoFactorAuthForUser({ user }: Auth) {
+  return user?.isAdmin ?? false;
+}

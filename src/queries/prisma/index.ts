@@ -3,6 +3,7 @@ export * from './link';
 export * from './pixel';
 export * from './report';
 export * from './segment';
+export * from './session';
 export * from './sessionReplay';
 export * from './share';
 export * from './team';
