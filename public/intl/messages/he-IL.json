@@ -102,6 +102,7 @@
     "download": "הורדה",
     "dropoff": "עזיבה",
     "duration": "משך",
+    "min-duration-seconds": "משך מינימלי (שניות)",
     "edit": "עריכה",
     "edit-member": "ערוך חבר",
     "email": "אימייל",
@@ -124,6 +125,7 @@
     "filter-combined": "משותף",
     "filter-raw": "גולמי",
     "filters": "מסננים",
+    "filters-enabled": "מסננים מופעלים",
     "first-click": "קליק ראשון",
     "first-seen": "נראה לראשונה",
     "funnel": "משפך",
@@ -300,6 +302,8 @@
     "sum": "סכום",
     "support": "תמיכה",
     "switch-account": "החלף חשבון",
+    "switch-to-card-view": "החלף לתצוגת כרטיסים",
+    "switch-to-table-view": "החלף לתצוגת טבלה",
     "table": "טבלה",
     "tablet": "טאבלט",
     "tag": "תגית",
@@ -416,6 +420,7 @@
     "triggered-event": "אירוע שהופעל",
     "unauthorized": "לא מורשה",
     "user-deleted": "משתמש נמחק.",
+    "replay-min-duration-description": "הצג רק הקלטות בהפעלה חוזרת בעלות משך זמן זה או ארוך יותר.",
     "viewed-page": "עמוד שנצפה",
     "visitor-log": "מבקר ממדינת <b>{country}</b> משתמבש בדפדפן <b>{browser}</b> ב-<b>{os}</b> <b>{device}</b>"
   }

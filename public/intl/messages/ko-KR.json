@@ -102,6 +102,7 @@
     "download": "다운로드",
     "dropoff": "이탈",
     "duration": "재생 시간",
+    "min-duration-seconds": "최소 지속 시간(초)",
     "edit": "편집",
     "edit-member": "멤버 편집",
     "email": "이메일",
@@ -124,6 +125,7 @@
     "filter-combined": "합쳐 보기",
     "filter-raw": "전체 보기",
     "filters": "필터",
+    "filters-enabled": "필터 활성화됨",
     "first-click": "첫 클릭",
     "first-seen": "첫 접속",
     "funnel": "퍼널",
@@ -300,6 +302,8 @@
     "sum": "합계",
     "support": "지원",
     "switch-account": "계정 전환",
+    "switch-to-card-view": "카드 보기로 전환",
+    "switch-to-table-view": "테이블 보기로 전환",
     "table": "표",
     "tablet": "태블릿",
     "tag": "태그",
@@ -416,6 +420,7 @@
     "triggered-event": "트리거된 이벤트",
     "unauthorized": "인증되지 않음",
     "user-deleted": "사용자를 삭제했습니다.",
+    "replay-min-duration-description": "이 지속 시간 이상의 리플레이만 표시합니다.",
     "viewed-page": "조회한 페이지",
     "visitor-log": "<b>{os}</b> <b>{device}</b>에서 <b>{browser}</b>을(를) 사용하는 <b>{country}</b>의 방문자"
   }

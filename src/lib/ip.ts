@@ -16,11 +16,6 @@ export const IP_ADDRESS_HEADERS = [
   'x-forwarded',
 ];
 
-/**
- * Normalize IP strings to a canonical form:
- * - strips IPv4-mapped IPv6 (e.g. ::ffff:192.0.2.1 -> 192.0.2.1)
- * - keeps valid IPv4/IPv6 as-is (canonically formatted by ipaddr.js)
- */
 function normalizeIp(ip?: string | null) {
   if (!ip) return ip;
 
@@ -84,9 +79,7 @@ export function getIpAddress(headers: Headers) {
   if (header === 'forwarded') {
     const match = ip.match(/for=(\[?[0-9a-fA-F:.]+]?)/);
 
-    if (match) {
-      return resolveIp(match[1]);
-    }
+    return match ? resolveIp(match[1]) : undefined;
   }
 
   return resolveIp(ip);

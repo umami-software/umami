@@ -12,7 +12,7 @@
   <a href="https://github.com/umami-software/umami/releases"><img src="https://img.shields.io/github/release/umami-software/umami.svg" alt="GitHub Release" /></a>
   <a href="https://github.com/umami-software/umami/blob/master/LICENSE"><img src="https://img.shields.io/github/license/umami-software/umami.svg" alt="MIT License" /></a>
   <a href="https://github.com/umami-software/umami/actions"><img src="https://img.shields.io/github/actions/workflow/status/umami-software/umami/ci.yml" alt="Build Status" /></a>
-  <a href="https://analytics.umami.is/share/LGazGOecbDtaIwDr/umami.is" style="text-decoration: none;"><img src="https://img.shields.io/badge/Try%20Demo%20Now-Click%20Here-brightgreen" alt="Umami Demo" /></a>
+  <a href="https://cloud.umami.is/share/LGazGOecbDtaIwDr/umami.is" style="text-decoration: none;"><img src="https://img.shields.io/badge/Try%20Demo%20Now-Click%20Here-brightgreen" alt="Umami Demo" /></a>
 </p>
 
 ---
@@ -45,6 +45,10 @@ Create an `.env` file with the following:
 ```bash
 DATABASE_URL=connection-url
 ```
+
+Optional: set `API_URL` to change the base URL used by internal UI API calls.
+Relative paths are served under `BASE_PATH`; absolute URLs are proxied through the local `/api` route.
+For example, `API_URL=/internal-api` or `API_URL=https://api.example.com/api`.
 
 The connection URL format:
 

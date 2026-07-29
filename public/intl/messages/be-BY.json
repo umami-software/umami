@@ -102,6 +102,7 @@
     "download": "Спампаваць",
     "dropoff": "Адмовы",
     "duration": "Працягласць",
+    "min-duration-seconds": "Мінімальная працягласць (секунды)",
     "edit": "Змяніць",
     "edit-member": "Рэдагаваць удзельніка",
     "email": "Электронная пошта",
@@ -124,6 +125,7 @@
     "filter-combined": "Камбініраваны",
     "filter-raw": "Сырыя",
     "filters": "Фільтры",
+    "filters-enabled": "Фільтры ўключаны",
     "first-click": "Першы клік",
     "first-seen": "Першы раз убачана",
     "funnel": "Варонка",
@@ -300,6 +302,8 @@
     "sum": "Сума",
     "support": "Падтрымка",
     "switch-account": "Змяніць акаўнт",
+    "switch-to-card-view": "Пераключыцца на выгляд картак",
+    "switch-to-table-view": "Пераключыцца на выгляд табліцы",
     "table": "Табліца",
     "tablet": "Планшэт",
     "tag": "Тэг",
@@ -416,6 +420,7 @@
     "triggered-event": "Падзея якая спрацавала",
     "unauthorized": "Не аўтарызаваны",
     "user-deleted": "Карыстальнік выдалены.",
+    "replay-min-duration-description": "Паказваць толькі паўторы з такой або большай працягласцю.",
     "viewed-page": "Праглядзеў старонку",
     "visitor-log": "Наведвальнік з <b>{country}</b> праз <b>{browser}</b> на <b>{os}</b> <b>{device}</b>"
   }

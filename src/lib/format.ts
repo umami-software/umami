@@ -118,3 +118,10 @@ export function formatLongCurrency(value: number, currency: string, locale = 'en
 
   return formatCurrency(n, currency, locale);
 }
+
+export function truncateString<T extends string | null | undefined>(
+  value: T,
+  maxLength: number,
+): T extends string ? string : T {
+  return (value ? value.substring(0, maxLength) : value) as T extends string ? string : T;
+}

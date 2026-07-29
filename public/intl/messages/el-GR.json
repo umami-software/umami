@@ -102,6 +102,7 @@
     "download": "Λήψη",
     "dropoff": "Εγκατάλειψη",
     "duration": "Διάρκεια",
+    "min-duration-seconds": "Ελάχιστη διάρκεια (δευτερόλεπτα)",
     "edit": "Επεξεργασία",
     "edit-member": "Επεξεργασία μέλους",
     "email": "Email",
@@ -124,6 +125,7 @@
     "filter-combined": "Σε συνδυασμό",
     "filter-raw": "Ακατέργαστο",
     "filters": "Φίλτρα",
+    "filters-enabled": "Φίλτρα ενεργοποιημένα",
     "first-click": "Πρώτο κλικ",
     "first-seen": "Πρώτη εμφάνιση",
     "funnel": "Χωνί",
@@ -300,6 +302,8 @@
     "sum": "Άθροισμα",
     "support": "Υποστήριξη",
     "switch-account": "Αλλαγή λογαριασμού",
+    "switch-to-card-view": "Εναλλαγή σε προβολή καρτών",
+    "switch-to-table-view": "Εναλλαγή σε προβολή πίνακα",
     "table": "Πίνακας",
     "tablet": "Τάμπλετ",
     "tag": "Ετικέτα",
@@ -416,6 +420,7 @@
     "triggered-event": "Ενεργοποιημένο συμβάν",
     "unauthorized": "Μη εξουσιοδοτημένο",
     "user-deleted": "Ο χρήστης διαγράφηκε.",
+    "replay-min-duration-description": "Εμφάνιση μόνο αναπαραγωγών με αυτή ή μεγαλύτερη διάρκεια.",
     "viewed-page": "Προβολή σελίδας",
     "visitor-log": "Επισκέπτης από <b>{country}</b> χρησιμοποιώντας <b>{browser}</b> σε <b>{os}</b> <b>{device}</b>"
   }

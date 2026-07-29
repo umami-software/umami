@@ -102,6 +102,7 @@
     "download": "تحميل",
     "dropoff": "إنزال",
     "duration": "المدة",
+    "min-duration-seconds": "الحد الأدنى للمدة (ثواني)",
     "edit": "تعديل",
     "edit-member": "عدّل العضو",
     "email": "بريد إلكتروني",
@@ -124,6 +125,7 @@
     "filter-combined": "مُجمّعة",
     "filter-raw": "خام",
     "filters": "التصفيات",
+    "filters-enabled": "الفلاتر مفعّلة",
     "first-click": "النقرة الأولى",
     "first-seen": "أول ظهور",
     "funnel": "قمع",
@@ -300,6 +302,8 @@
     "sum": "المجموع",
     "support": "دعم",
     "switch-account": "تبديل الحساب",
+    "switch-to-card-view": "التبديل إلى عرض البطاقات",
+    "switch-to-table-view": "التبديل إلى عرض الجدول",
     "table": "جدول",
     "tablet": "تابلت",
     "tag": "الوسم",
@@ -416,6 +420,7 @@
     "triggered-event": "أُطلق الحدث",
     "unauthorized": "غير مصرح",
     "user-deleted": "تم حذف المستخدم.",
+    "replay-min-duration-description": "إظهار التسجيلات ذات المدة الأطول أو المساوية لهذه المدة فقط.",
     "viewed-page": "شوهدت الصفحة",
     "visitor-log": "زائر من <b>{country}</b> يستخدم <b>{browser}</b> على <b>{os}</b> <b>{device}</b>"
   }

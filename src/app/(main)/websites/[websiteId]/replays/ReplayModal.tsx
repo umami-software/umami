@@ -2,38 +2,54 @@
 import { Column, Dialog, Modal, type ModalProps } from '@umami/react-zen';
 import { ReplayPlayback } from '@/app/(main)/websites/[websiteId]/replays/[replayId]/ReplayPlayback';
 import { useNavigation } from '@/components/hooks';
+import { buildPath } from '@/lib/url';
+import styles from './ReplayModal.module.css';
 
 export interface ReplayModalProps extends ModalProps {
   websiteId: string;
+  replayId?: string;
 }
 
-export function ReplayModal({ websiteId, ...props }: ReplayModalProps) {
+export function ReplayModal({ websiteId, replayId, className, ...props }: ReplayModalProps) {
   const {
     router,
     query: { replay },
+    searchParams,
     updateParams,
   } = useNavigation();
+  const activeReplayId = replayId || replay;
+  const modalClassName = [styles.modal, className].filter(Boolean).join(' ');
 
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
-      router.push(updateParams({ replay: undefined }));
+      if (replayId) {
+        const query = Object.fromEntries(searchParams.entries());
+        delete query.replay;
+
+        router.push(buildPath(`/websites/${websiteId}/replays`, query));
+      } else {
+        router.push(updateParams({ replay: undefined }));
+      }
     }
   };
 
   return (
     <Modal
+      {...props}
       placement="bottom"
       offset="80px"
-      isOpen={!!replay}
+      className={modalClassName}
+      isOpen={!!activeReplayId}
       onOpenChange={handleOpenChange}
       isDismissable
-      {...props}
     >
-      <Column height="100%" maxWidth="1320px" style={{ margin: '0 auto' }}>
-        <Dialog variant="sheet">
+      <Column height="100%">
+        <Dialog variant="sheet" className={styles.sheet}>
           {({ close }) => (
             <Column padding="6">
-              <ReplayPlayback websiteId={websiteId} replayId={replay} onClose={close} />
+              {activeReplayId && (
+                <ReplayPlayback websiteId={websiteId} replayId={activeReplayId} onClose={close} />
+              )}
             </Column>
           )}
         </Dialog>

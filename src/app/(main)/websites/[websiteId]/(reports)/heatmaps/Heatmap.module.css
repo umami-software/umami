@@ -1,0 +1,228 @@
+.layoutGrid {
+  height: 100%;
+  min-height: 0;
+  overflow: visible;
+}
+
+.pageList {
+  min-width: 0;
+  padding-right: 6px;
+}
+
+.railDivider {
+  width: 1px;
+  height: 100%;
+  background: var(--gray-300, #d1d5db);
+  justify-self: center;
+}
+
+.contentColumn {
+  min-width: 0;
+  min-height: 0;
+  padding-left: 20px;
+}
+
+.pageListItems {
+  overflow-y: auto;
+  padding-top: 8px;
+  padding-right: 8px;
+  max-height: 850px;
+  scrollbar-gutter: stable;
+}
+
+.pageButton {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  border-radius: 6px;
+  padding: 8px 10px 8px 6px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.pageMetric {
+  flex: 0 0 88px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.pageButton:hover {
+  background: var(--surface-sunken);
+}
+
+.pageButtonSelected,
+.pageButtonSelected:hover {
+  background: var(--surface-sunken);
+  font-weight: 600;
+}
+
+.summaryHeader {
+  min-width: 0;
+}
+
+.summaryPath {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.summaryStats {
+  flex-wrap: wrap;
+}
+
+.summaryStat {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-base);
+  white-space: nowrap;
+}
+
+.screenWidthControl {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.screenWidthLabel,
+.screenWidthValue {
+  white-space: nowrap;
+}
+
+.screenWidthValue {
+  min-width: 0;
+}
+
+.screenWidthCount {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.scrollBand {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 2px 8px;
+  mix-blend-mode: multiply;
+}
+
+.scrollBandLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 4px;
+  padding: 1px 6px;
+  white-space: nowrap;
+  /* Counter-scaled inline via transform: scale(1 / fit.scale). Anchor to the
+     top-right corner (where the band right-aligns it) so it grows inward and
+     stays pinned to the edge instead of drifting off-canvas. */
+  transform-origin: top right;
+}
+
+.canvasWrapper {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  max-height: 75vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.canvas {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-base);
+  border-radius: 8px;
+  background: var(--surface-sunken);
+  flex: 0 0 auto;
+  margin-inline: auto;
+}
+
+.canvasSurface {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  border-radius: inherit;
+  background: inherit;
+}
+
+.snapshotClip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  background: inherit;
+}
+
+.snapshot {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transform-origin: top left;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.snapshotImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.snapshotIframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: var(--surface-base);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.canvasLoading {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--surface-sunken);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dot {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 60, 0, 0.9) 0%,
+    rgba(255, 200, 0, 0.6) 45%,
+    rgba(255, 200, 0, 0) 80%
+  );
+  pointer-events: auto;
+  mix-blend-mode: multiply;
+}

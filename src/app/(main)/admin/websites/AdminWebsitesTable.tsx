@@ -1,8 +1,9 @@
 import { DataColumn, DataTable, Dialog, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import { useState } from 'react';
 import { WebsiteDeleteForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteDeleteForm';
 import { DateDistance } from '@/components/common/DateDistance';
+import Link from '@/components/common/Link';
+import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages } from '@/components/hooks';
 import { Edit, Trash, Users } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
@@ -14,14 +15,14 @@ export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
   return (
     <>
       <DataTable data={data} {...props}>
-        <DataColumn id="name" label={t(labels.name)}>
+        <DataColumn id="name" label={<SortableLabel label={t(labels.name)} sortKey="name" />}>
           {(row: any) => (
             <Text truncate>
               <Link href={`/admin/websites/${row.id}`}>{row.name}</Link>
             </Text>
           )}
         </DataColumn>
-        <DataColumn id="domain" label={t(labels.domain)}>
+        <DataColumn id="domain" label={<SortableLabel label={t(labels.domain)} sortKey="domain" />}>
           {(row: any) => <Text truncate>{row.domain}</Text>}
         </DataColumn>
         <DataColumn id="owner" label={t(labels.owner)}>
@@ -45,7 +46,13 @@ export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
             );
           }}
         </DataColumn>
-        <DataColumn id="created" label={t(labels.created)} width="180px">
+        <DataColumn
+          id="created"
+          label={
+            <SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />
+          }
+          width="180px"
+        >
           {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
         </DataColumn>
         <DataColumn id="action" align="end" width="50px">

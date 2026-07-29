@@ -1,8 +1,9 @@
+import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
 import { ShareDeleteButton } from '@/app/(main)/websites/[websiteId]/settings/ShareDeleteButton';
 import { CopyButton } from '@/components/common/CopyButton';
 import { ExternalLink } from '@/components/common/ExternalLink';
 import { useConfig, useMessages, useMobile } from '@/components/hooks';
-import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
+import { SimpleShareEditButton } from '@/components/share/SimpleShareEditButton';
 
 export function BoardSharesTable(props: DataTableProps) {
   const { t, labels } = useMessages();
@@ -36,9 +37,10 @@ export function BoardSharesTable(props: DataTableProps) {
           );
         }}
       </DataColumn>
-      <DataColumn id="action" align="end" width="60px">
+      <DataColumn id="action" align="end" width="100px">
         {({ id, slug }: any) => (
           <Row>
+            <SimpleShareEditButton shareId={id} />
             <ShareDeleteButton shareId={id} slug={slug} />
           </Row>
         )}

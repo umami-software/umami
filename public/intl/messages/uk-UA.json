@@ -102,6 +102,7 @@
     "download": "Завантажити",
     "dropoff": "Відсів",
     "duration": "Тривалість",
+    "min-duration-seconds": "Мінімальна тривалість (секунди)",
     "edit": "Редагувати",
     "edit-member": "Редагувати учасника",
     "email": "Електронна пошта",
@@ -124,6 +125,7 @@
     "filter-combined": "Об'єднані",
     "filter-raw": "Сирі дані",
     "filters": "Фільтри",
+    "filters-enabled": "Фільтри увімкнено",
     "first-click": "Перший клік",
     "first-seen": "Перший візит",
     "funnel": "Воронка",
@@ -300,6 +302,8 @@
     "sum": "Сума",
     "support": "Підтримка",
     "switch-account": "Змінити обліковий запис",
+    "switch-to-card-view": "Перейти до перегляду карток",
+    "switch-to-table-view": "Перейти до перегляду таблиці",
     "table": "Таблиця",
     "tablet": "Планшет",
     "tag": "Тег",
@@ -416,6 +420,7 @@
     "triggered-event": "Подія, що спрацювала",
     "unauthorized": "Не авторизовано",
     "user-deleted": "Користувача видалено.",
+    "replay-min-duration-description": "Показувати лише відтворення з такою або більшою тривалістю.",
     "viewed-page": "Переглянута сторінка",
     "visitor-log": "Відвідувач з <b>{country}</b> використовуючи <b>{browser}</b> на <b>{os}</b> <b>{device}</b>"
   }

@@ -102,6 +102,7 @@
     "download": "Татах",
     "dropoff": "Уналт",
     "duration": "Хугацаа",
+    "min-duration-seconds": "Хамгийн бага үргэлжлэх хугацаа (секунд)",
     "edit": "Засах",
     "edit-member": "Гишүүн засах",
     "email": "Имэйл",
@@ -124,6 +125,7 @@
     "filter-combined": "Нэгтгэсэн",
     "filter-raw": "Түүхий",
     "filters": "Шүүлтүүр",
+    "filters-enabled": "Шүүлтүүр идэвхжүүлэгдсэн",
     "first-click": "Эхний даралт",
     "first-seen": "Анх харсан",
     "funnel": "Цутгал",
@@ -300,6 +302,8 @@
     "sum": "Нийлбэр",
     "support": "Дэмжлэг",
     "switch-account": "Бүртгэл солих",
+    "switch-to-card-view": "Картын харагдац руу шилжих",
+    "switch-to-table-view": "Хүснэгт харагдац руу шилжих",
     "table": "Хүснэгт",
     "tablet": "Таблет",
     "tag": "Таг",
@@ -416,6 +420,7 @@
     "triggered-event": "Өдөөсөн үйлдэл",
     "unauthorized": "Зөвшөөрөлгүй",
     "user-deleted": "Хэрэглэгч устсан.",
+    "replay-min-duration-description": "Зөвхөн энэ эсвэл үүнээс их үргэлжлэх хугацаатай тоглуулалтуудыг харуул.",
     "viewed-page": "Үзсэн хуудас",
     "visitor-log": "<b>{country}</b> улсаас <b>{os}</b> <b>{device}</b> дээр <b>{browser}</b> хөтөч ашиглан орсон"
   }

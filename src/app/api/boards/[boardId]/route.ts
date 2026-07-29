@@ -1,8 +1,9 @@
 import { z } from 'zod';
 import { BOARD_TYPES, normalizeBoardType } from '@/lib/boards';
+import type { BoardParameters } from '@/lib/types';
 import { parseRequest } from '@/lib/request';
-import { json, ok, serverError, unauthorized } from '@/lib/response';
-import { canDeleteBoard, canUpdateBoard, canViewBoard } from '@/permissions';
+import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
+import { canDeleteBoard, canUpdateBoard, canViewBoard, canViewBoardEntities } from '@/permissions';
 import { deleteBoard, getBoard, updateBoard } from '@/queries/prisma';
 
 export async function GET(request: Request, { params }: { params: Promise<{ boardId: string }> }) {
@@ -35,8 +36,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ boa
       ])
       .or(z.literal('open'))
       .optional(),
-    name: z.string().optional(),
-    description: z.string().optional(),
+    name: z.string().max(200).optional(),
+    description: z.string().max(500).optional(),
     parameters: z.object({}).passthrough().optional(),
   });
 
@@ -52,6 +53,21 @@ export async function POST(request: Request, { params }: { params: Promise<{ boa
 
   if (!(await canUpdateBoard(auth, boardId))) {
     return unauthorized();
+  }
+
+  if (type !== undefined || parameters !== undefined) {
+    const currentBoard = await getBoard(boardId);
+
+    if (!currentBoard) {
+      return unauthorized();
+    }
+
+    const nextType = type ?? currentBoard.type;
+    const nextParameters = (parameters ?? currentBoard.parameters) as BoardParameters;
+
+    if (!(await canViewBoardEntities(auth, nextType, nextParameters))) {
+      return badRequest({ message: 'Board contains inaccessible entities.' });
+    }
   }
 
   try {

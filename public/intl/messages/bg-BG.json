@@ -102,6 +102,7 @@
     "download": "Изтегляне",
     "dropoff": "Отпадане",
     "duration": "Продължителност",
+    "min-duration-seconds": "Минимална продължителност (секунди)",
     "edit": "Редактирай",
     "edit-member": "Редактирай член",
     "email": "Имейл",
@@ -124,6 +125,7 @@
     "filter-combined": "Комбиниран",
     "filter-raw": "Суров",
     "filters": "Филтри",
+    "filters-enabled": "Филтрите са активирани",
     "first-click": "Първо кликване",
     "first-seen": "Първо видяно",
     "funnel": "Фуния",
@@ -300,6 +302,8 @@
     "sum": "Сума",
     "support": "Поддръжка",
     "switch-account": "Смяна на акаунт",
+    "switch-to-card-view": "Превключване към изглед на карти",
+    "switch-to-table-view": "Превключване към изглед на таблица",
     "table": "Таблица",
     "tablet": "Таблет",
     "tag": "Етикет",
@@ -416,6 +420,7 @@
     "triggered-event": "Активирано събитие",
     "unauthorized": "Неоторизиран достъп",
     "user-deleted": "Потребителят е изтрит.",
+    "replay-min-duration-description": "Показвай само записи с тази или по-голяма продължителност.",
     "viewed-page": "Страницата е видяна",
     "visitor-log": "Посетител от <b>{country}</b>, използващ <b>{browser}</b> на <b>{os}</b> <b>{device}</b>"
   }

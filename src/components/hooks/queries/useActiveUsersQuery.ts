@@ -1,7 +1,7 @@
 import type { ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
 
-export function useActyiveUsersQuery(websiteId: string, options?: ReactQueryOptions) {
+export function useActiveUsersQuery(websiteId: string, options?: ReactQueryOptions) {
   const { get, useQuery } = useApi();
   return useQuery<any>({
     queryKey: ['websites:active', websiteId],

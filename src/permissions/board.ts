@@ -1,7 +1,37 @@
 import { hasPermission } from '@/lib/auth';
+import { getBoardEntityIds } from '@/lib/boards';
 import { PERMISSIONS } from '@/lib/constants';
-import type { Auth } from '@/lib/types';
+import type { Auth, BoardParameters } from '@/lib/types';
 import { getBoard, getTeamUser } from '@/queries/prisma';
+import { canViewLink } from './link';
+import { canViewPixel } from './pixel';
+import { canViewWebsite } from './website';
+
+async function checkBoardEntityAccess(check: Promise<boolean>) {
+  try {
+    return await check;
+  } catch {
+    return false;
+  }
+}
+
+export async function canViewBoardEntities(
+  auth: Auth,
+  type: string | undefined,
+  parameters: BoardParameters = {},
+) {
+  const { websiteIds, pixelIds, linkIds } = getBoardEntityIds({ type, parameters });
+  const userOnlyAuth: Auth = { user: auth.user };
+  const checks = [
+    ...websiteIds.map(id => checkBoardEntityAccess(canViewWebsite(userOnlyAuth, id))),
+    ...pixelIds.map(id => checkBoardEntityAccess(canViewPixel(userOnlyAuth, id))),
+    ...linkIds.map(id => checkBoardEntityAccess(canViewLink(userOnlyAuth, id))),
+  ];
+
+  const results = await Promise.all(checks);
+
+  return results.every(Boolean);
+}
 
 export async function canViewBoard({ user, shareToken }: Auth, boardId: string) {
   if (user?.isAdmin) {

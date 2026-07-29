@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { canViewWebsite } from '@/permissions';
+import { canViewWebsiteSection } from '@/permissions';
 import { getSessionActivity } from '@/queries/sql';
 
 export async function GET(
@@ -21,7 +21,14 @@ export async function GET(
 
   const { websiteId, sessionId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (
+    !(await canViewWebsiteSection(auth, websiteId, [
+      'sessions',
+      'events',
+      'realtime',
+      'revenue',
+    ]))
+  ) {
     return unauthorized();
   }
 

@@ -102,6 +102,7 @@
     "download": "دانلود",
     "dropoff": "رها کردن",
     "duration": "مدت",
+    "min-duration-seconds": "حداقل مدت زمان (ثانیه)",
     "edit": "ویرایش",
     "edit-member": "ویرایش عضو",
     "email": "ایمیل",
@@ -124,6 +125,7 @@
     "filter-combined": "ترکیب شده",
     "filter-raw": "خام",
     "filters": "فیلترها",
+    "filters-enabled": "فیلترها فعال",
     "first-click": "اولین کلیک",
     "first-seen": "اولین بار دیده شده",
     "funnel": "فانل",
@@ -300,6 +302,8 @@
     "sum": "جمع",
     "support": "پشتیبانی",
     "switch-account": "تغییر حساب",
+    "switch-to-card-view": "تغییر به نمای کارت",
+    "switch-to-table-view": "تغییر به نمای جدول",
     "table": "جدول",
     "tablet": "تبلت",
     "tag": "برچسب",
@@ -416,6 +420,7 @@
     "triggered-event": "رویداد فعال شده",
     "unauthorized": "غیرمجاز",
     "user-deleted": "کاربر حذف شد.",
+    "replay-min-duration-description": "فقط پخش‌هایی را نشان بده که مدت زمان آن‌ها برابر یا بیشتر از این مقدار است.",
     "viewed-page": "صفحه مشاهده شد",
     "visitor-log": "بازدیدکننده از کشور <b>{country}</b> با مروگر <b>{browser}</b> در <b>{os}</b> <b>{device}</b>"
   }

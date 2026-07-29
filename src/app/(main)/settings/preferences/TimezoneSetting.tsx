@@ -29,7 +29,7 @@ export function TimezoneSetting() {
         allowSearch={true}
         onSearch={setSearch}
         onOpenChange={handleOpen}
-        listProps={{ style: { maxHeight: 300 } }}
+        maxHeight={480}
         style={{ minWidth: '250px' }}
       >
         {items.map((item: any) => (

@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS } from '@/lib/constants';
+import { EVENT_COLUMNS, EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
@@ -36,7 +36,7 @@ async function relationalQuery(
   return rawQuery(
     `
     select
-      count(*) as "pageviews",
+      sum(case when website_event.event_type = 1 then 1 else 0 end) as "pageviews",
       count(distinct website_event.session_id) as "visitors",
       count(distinct website_event.visit_id) as "visits",
       count(distinct session.country) as "countries",
@@ -47,6 +47,7 @@ async function relationalQuery(
       and website_event.website_id = session.website_id
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
+      and website_event.event_type != ${EVENT_TYPE.performance}
       ${filterQuery}
     `,
     queryParams,
@@ -75,6 +76,7 @@ async function clickhouseQuery(
     ${cohortQuery}
     where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type != ${EVENT_TYPE.performance}
         ${filterQuery}
     `;
   } else {
@@ -89,6 +91,7 @@ async function clickhouseQuery(
     ${cohortQuery}
     where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type != ${EVENT_TYPE.performance}
         ${filterQuery}
     `;
   }

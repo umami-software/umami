@@ -1,6 +1,16 @@
-import { Column, Grid, Heading, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import {
+  Column,
+  Grid,
+  Heading,
+  ListItem,
+  Row,
+  Select,
+  Tab,
+  TabList,
+  TabPanel,
+  Tabs,
+} from '@umami/react-zen';
 import { useMemo, useState } from 'react';
-import { DataGrid } from '@/components/common/DataGrid';
 import { GridRow } from '@/components/common/GridRow';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
@@ -8,43 +18,21 @@ import {
   useDateRange,
   useMessages,
   useNavigation,
-  useResultQuery,
-  useRevenueSessionsQuery,
+  useRevenueChartQuery,
+  useRevenueStatsQuery,
 } from '@/components/hooks';
 import { CurrencySelect } from '@/components/input/CurrencySelect';
-import { ListTable } from '@/components/metrics/ListTable';
-import { MetricCard } from '@/components/metrics/MetricCard';
-import { MetricLabel } from '@/components/metrics/MetricLabel';
-import { MetricsBar } from '@/components/metrics/MetricsBar';
-import { RevenueChart } from '@/components/metrics/RevenueChart';
 import { CURRENCY_CONFIG, DEFAULT_CURRENCY } from '@/lib/constants';
-import { formatLongCurrency, formatLongNumber } from '@/lib/format';
 import { getItem, setItem } from '@/lib/storage';
 import { SessionModal } from '../../sessions/SessionModal';
-import { SessionsTable } from '../../sessions/SessionsTable';
+import { RevenueChart } from './RevenueChart';
+import { RevenueMetricsBar } from './RevenueMetricsBar';
+import { RevenueMetricsTable } from './RevenueMetricsTable';
+import { RevenueSessionsDataTable } from './RevenueSessionsDataTable';
 
-function RevenueSessionsDataTable({
-  websiteId,
-  currency,
-}: {
-  websiteId: string;
-  currency: string;
-}) {
-  const { updateParams } = useNavigation();
-  const queryResult = useRevenueSessionsQuery(websiteId, currency);
-
-  return (
-    <DataGrid query={queryResult} allowPaging allowSearch>
-      {({ data }) => (
-        <SessionsTable
-          data={data}
-          websiteId={websiteId}
-          getSessionHref={row => updateParams({ session: row.id })}
-        />
-      )}
-    </DataGrid>
-  );
-}
+type RevenueChartMode = 'period' | 'cumulative';
+type SourceTab = 'referrer' | 'channel';
+type LocationTab = 'country' | 'region';
 
 export interface RevenueProps {
   websiteId: string;
@@ -54,104 +42,67 @@ export interface RevenueProps {
 }
 
 export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
+  const [sourceTab, setSourceTab] = useState<SourceTab>('referrer');
+  const [locationTab, setLocationTab] = useState<LocationTab>('country');
   const [currency, setCurrency] = useState(
     getItem(CURRENCY_CONFIG) || process.env.defaultCurrency || DEFAULT_CURRENCY,
   );
+  const {
+    router,
+    query: { revenueChart },
+    updateParams,
+  } = useNavigation();
+  const revenueChartMode: RevenueChartMode =
+    revenueChart === 'cumulative' ? 'cumulative' : 'period';
 
   const handleCurrencyChange = (value: string) => {
     setCurrency(value);
     setItem(CURRENCY_CONFIG, value);
   };
 
+  const handleRevenueChartModeChange = (value: RevenueChartMode) => {
+    router.push(updateParams({ revenueChart: value }));
+  };
+
   const { t, labels } = useMessages();
-  const { compare, isAllTime } = useDateRange();
-  const { data, error, isLoading } = useResultQuery<any>('revenue', {
-    websiteId,
-    startDate,
-    endDate,
-    currency,
-    compare,
-  });
-
-  const metrics = useMemo(() => {
-    if (!data) return [];
-
-    const { sum, count, average, unique_count, arpu, comparison } = data.total;
-
-    return [
-      {
-        value: sum,
-        label: t(labels.total),
-        change: comparison ? sum - comparison.sum : 0,
-        formatValue: (n: number) => formatLongCurrency(n, currency),
-      },
-      {
-        value: average,
-        label: t(labels.aov),
-        tooltip: (
-          <>
-            <div>Average Order Value</div>
-            <div>(Total Revenue / Orders)</div>
-          </>
-        ),
-        change: comparison ? average - comparison.average : 0,
-        formatValue: (n: number) => formatLongCurrency(n, currency),
-      },
-      {
-        value: arpu,
-        label: t(labels.arpu),
-        tooltip: (
-          <>
-            <div>Average Revenue Per User</div>
-            <div>(Total Revenue / All Sessions)</div>
-          </>
-        ),
-        change: comparison ? arpu - (comparison.arpu ?? 0) : 0,
-        formatValue: (n: number) => formatLongCurrency(n, currency),
-      },
-      {
-        value: count,
-        label: t(labels.orders),
-        change: comparison ? count - comparison.count : 0,
-        formatValue: formatLongNumber,
-      },
-      {
-        value: unique_count,
-        label: t(labels.uniqueCustomers),
-        change: comparison ? unique_count - comparison.unique_count : 0,
-        formatValue: formatLongNumber,
-      },
-    ] as any;
-  }, [data]);
-
-  const renderLabel = (type: string) => (data: any) => <MetricLabel type={type} data={data} />;
+  const { compare } = useDateRange();
+  const chartQuery = useRevenueChartQuery(websiteId, currency);
+  const statsQuery = useRevenueStatsQuery({ websiteId, currency, compare });
+  const data = useMemo(
+    () =>
+      chartQuery.data && statsQuery.data
+        ? { chart: chartQuery.data.chart, total: statsQuery.data }
+        : null,
+    [chartQuery.data, statsQuery.data],
+  );
+  const error = chartQuery.error || statsQuery.error;
+  const isFetching = chartQuery.isFetching || statsQuery.isFetching;
+  const isLoading = chartQuery.isLoading || statsQuery.isLoading;
 
   return (
     <Column gap>
       <Grid columns="280px" gap>
         <CurrencySelect value={currency} onChange={handleCurrencyChange} />
       </Grid>
-      <LoadingPanel data={data} isLoading={isLoading} error={error}>
+      <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} error={error}>
         {data && (
           <Column gap>
-            <MetricsBar>
-              {metrics?.map(({ label, value, change, formatValue, tooltip }) => {
-                return (
-                  <MetricCard
-                    key={label}
-                    value={value}
-                    label={label}
-                    tooltip={tooltip}
-                    change={change}
-                    formatValue={formatValue}
-                    showChange={!isAllTime}
-                  />
-                );
-              })}
-            </MetricsBar>
+            <RevenueMetricsBar data={data.total} currency={currency} />
             <Panel>
+              <Row justifyContent="end">
+                <Select
+                  value={revenueChartMode}
+                  onChange={handleRevenueChartModeChange}
+                  popoverProps={{ placement: 'bottom right' }}
+                  style={{ width: 140 }}
+                >
+                  <ListItem id="period">{t(labels.period)}</ListItem>
+                  <ListItem id="cumulative">{t(labels.cumulative)}</ListItem>
+                </Select>
+              </Row>
               <RevenueChart
                 data={data.chart}
+                mode={revenueChartMode}
                 unit={unit}
                 minDate={startDate}
                 maxDate={endDate}
@@ -162,87 +113,64 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
               <GridRow layout="two">
                 <Panel>
                   <Heading size="2xl">{t(labels.sources)}</Heading>
-                  <Tabs>
+                  <Tabs
+                    selectedKey={sourceTab}
+                    onSelectionChange={key => setSourceTab(String(key) as SourceTab)}
+                  >
                     <TabList>
                       <Tab id="referrer">{t(labels.referrers)}</Tab>
                       <Tab id="channel">{t(labels.channels)}</Tab>
                     </TabList>
                     <TabPanel id="referrer">
-                      <ListTable
+                      <RevenueMetricsTable
+                        websiteId={websiteId}
+                        currency={currency}
+                        type="referrer"
                         title={t(labels.referrer)}
-                        metric={t(labels.revenue)}
-                        data={data?.referrer.map(
-                          ({ name, value }: { name: string; value: number }) => ({
-                            label: name,
-                            count: Number(value),
-                            percent: (value / data?.total.sum) * 100,
-                          }),
-                        )}
-                        formatCount={(n: number) => formatLongCurrency(n, currency)}
-                        renderLabel={renderLabel('referrer')}
+                        totalRevenue={Number(data?.total.sum) || 0}
+                        enabled={sourceTab === 'referrer'}
                       />
                     </TabPanel>
                     <TabPanel id="channel">
-                      <ListTable
+                      <RevenueMetricsTable
+                        websiteId={websiteId}
+                        currency={currency}
+                        type="channel"
                         title={t(labels.channel)}
-                        metric={t(labels.revenue)}
-                        data={data?.channel.map(
-                          ({ name, value }: { name: string; value: number }) => ({
-                            label: name,
-                            count: Number(value),
-                            percent: (value / data?.total.sum) * 100,
-                          }),
-                        )}
-                        formatCount={(n: number) => formatLongCurrency(n, currency)}
-                        renderLabel={renderLabel('channel')}
+                        totalRevenue={Number(data?.total.sum) || 0}
+                        enabled={sourceTab === 'channel'}
                       />
                     </TabPanel>
                   </Tabs>
                 </Panel>
                 <Panel>
                   <Heading size="2xl">{t(labels.location)}</Heading>
-                  <Tabs>
+                  <Tabs
+                    selectedKey={locationTab}
+                    onSelectionChange={key => setLocationTab(String(key) as LocationTab)}
+                  >
                     <TabList>
                       <Tab id="country">{t(labels.countries)}</Tab>
                       <Tab id="region">{t(labels.regions)}</Tab>
                     </TabList>
                     <TabPanel id="country">
-                      <ListTable
+                      <RevenueMetricsTable
+                        websiteId={websiteId}
+                        currency={currency}
+                        type="country"
                         title={t(labels.country)}
-                        metric={t(labels.revenue)}
-                        data={data?.country.map(
-                          ({ name, value }: { name: string; value: number }) => ({
-                            label: name,
-                            count: Number(value),
-                            percent: (value / data?.total.sum) * 100,
-                          }),
-                        )}
-                        formatCount={(n: number) => formatLongCurrency(n, currency)}
-                        renderLabel={renderLabel('country')}
+                        totalRevenue={Number(data?.total.sum) || 0}
+                        enabled={locationTab === 'country'}
                       />
                     </TabPanel>
                     <TabPanel id="region">
-                      <ListTable
+                      <RevenueMetricsTable
+                        websiteId={websiteId}
+                        currency={currency}
+                        type="region"
                         title={t(labels.region)}
-                        metric={t(labels.revenue)}
-                        data={data?.region.map(
-                          ({
-                            name,
-                            value,
-                            country,
-                          }: {
-                            name: string;
-                            value: number;
-                            country: string;
-                          }) => ({
-                            label: name,
-                            country,
-                            count: Number(value),
-                            percent: (value / data?.total.sum) * 100,
-                          }),
-                        )}
-                        formatCount={(n: number) => formatLongCurrency(n, currency)}
-                        renderLabel={renderLabel('region')}
+                        totalRevenue={Number(data?.total.sum) || 0}
+                        enabled={locationTab === 'region'}
                       />
                     </TabPanel>
                   </Tabs>
