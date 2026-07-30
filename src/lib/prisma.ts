@@ -2,13 +2,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import debug from 'debug';
 import { PrismaClient } from '@/generated/prisma/client';
-import {
-  DATA_TYPE,
-  DEFAULT_PAGE_SIZE,
-  FILTER_COLUMNS,
-  OPERATORS,
-  SESSION_COLUMNS,
-} from './constants';
+import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
 import { filtersObjectToArray } from './params';
 import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
 
@@ -249,13 +243,17 @@ function getExcludeBounceQuery(filters: Record<string, any>) {
   }
 
   return `join
-    (select distinct session_id, visit_id
+    (select session_id, visit_id
     from website_event
     where website_id = {{websiteId}}
       and created_at between {{startDate}} and {{endDate}}
-      and event_type = 1
+      and event_type != 5
     group by session_id, visit_id
-    having count(*) > 1
+    having sum(case when event_type NOT IN (2, 5) then 1 else 0 end) > 1
+      or (
+        sum(case when event_type NOT IN (2, 5) then 1 else 0 end) = 1
+        and sum(case when event_type = 2 then 1 else 0 end) > 0
+      )
     ) excludeBounce
     on excludeBounce.session_id = website_event.session_id
       and excludeBounce.visit_id = website_event.visit_id
