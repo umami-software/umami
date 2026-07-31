@@ -12,3 +12,5 @@ allowBuilds:
   sharp: false
 minimumReleaseAgeExclude:
   - '@umami/react-zen@0.247.0'
+patchedDependencies:
+  '@umami/react-zen@0.247.0': patches/@umami__react-zen@0.247.0.patch

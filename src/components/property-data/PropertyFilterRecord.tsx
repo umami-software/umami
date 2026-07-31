@@ -20,7 +20,7 @@ import { useState } from 'react';
 import { ComboBox } from '@/components/common/ComboBox';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { Empty } from '@/components/common/Empty';
-import { MultiSelect } from '@/components/common/MultiSelect';
+import { MultiSelect, MultiSelectItem } from '@/components/common/MultiSelect';
 import { useMessages, usePropertyValuesQuery } from '@/components/hooks';
 import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { X } from '@/components/icons';
@@ -222,9 +222,9 @@ export function PropertyFilterRecord({
               }
             >
               {filteredValues.map(v => (
-                <ListItem key={v} id={v}>
+                <MultiSelectItem key={v} value={v}>
                   {v}
-                </ListItem>
+                </MultiSelectItem>
               ))}
             </MultiSelect>
           )}

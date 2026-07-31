@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@umami/react-zen@0.247.0': 7a13e402d0a59d203f92fa4c64c8511aa38c5cd914092f5232c6271c606c9126
+
 importers:
 
   .:
@@ -37,7 +40,7 @@ importers:
         version: 5.101.4(react@19.2.8)
       '@umami/react-zen':
         specifier: ^0.247.0
-        version: 0.247.0(@date-fns/tz@1.5.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(date-fns@4.4.0)(immer@11.1.15)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.2.8))
+        version: 0.247.0(patch_hash=7a13e402d0a59d203f92fa4c64c8511aa38c5cd914092f5232c6271c606c9126)(@date-fns/tz@1.5.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(date-fns@4.4.0)(immer@11.1.15)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.2.8))
       bcryptjs:
         specifier: ^3.0.2
         version: 3.0.3
@@ -8265,7 +8268,7 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@umami/react-zen@0.247.0(@date-fns/tz@1.5.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(date-fns@4.4.0)(immer@11.1.15)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.2.8))':
+  '@umami/react-zen@0.247.0(patch_hash=7a13e402d0a59d203f92fa4c64c8511aa38c5cd914092f5232c6271c606c9126)(@date-fns/tz@1.5.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(date-fns@4.4.0)(immer@11.1.15)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.2.8))':
     dependencies:
       '@base-ui/react': 1.6.0(@date-fns/tz@1.5.0)(@types/react@19.2.17)(date-fns@4.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@react-spring/web': 9.7.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8)

@@ -3,7 +3,7 @@ import { Column, Grid, Label, ListItem, Loading, Select } from '@umami/react-zen
 import { useState } from 'react';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Empty } from '@/components/common/Empty';
-import { MultiSelect } from '@/components/common/MultiSelect';
+import { MultiSelect, MultiSelectItem } from '@/components/common/MultiSelect';
 import { useDateRange, useMessages, useWebsiteValuesQuery } from '@/components/hooks';
 import { Attribution } from './Attribution';
 
@@ -72,9 +72,9 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
             allowSearch
           >
             {items.map(({ value }) => (
-              <ListItem key={value} id={value}>
+              <MultiSelectItem key={value} value={value}>
                 {value}
-              </ListItem>
+              </MultiSelectItem>
             ))}
           </MultiSelect>
         </Column>
