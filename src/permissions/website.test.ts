@@ -54,8 +54,8 @@ beforeEach(() => {
   vi.mocked(getEntity).mockReset();
   vi.mocked(getWebsite).mockReset();
   vi.mocked(getTeamUser).mockReset();
-  vi.mocked(prisma.client.website.findMany).mockReset();
-  vi.mocked(prisma.client.teamUser.findMany).mockReset();
+  vi.mocked(prisma.client.website.findMany as (...args: unknown[]) => unknown).mockReset();
+  vi.mocked(prisma.client.teamUser.findMany as (...args: unknown[]) => unknown).mockReset();
 });
 
 describe('canViewWebsite', () => {
@@ -139,12 +139,16 @@ describe('canViewBatchWebsites', () => {
   });
 
   test('returns owned, team, and share allowed ids for a user', async () => {
-    vi.mocked(prisma.client.website.findMany).mockResolvedValue([
+    vi.mocked(
+      prisma.client.website.findMany as (...args: unknown[]) => Promise<unknown>,
+    ).mockResolvedValue([
       { id: 'owned', userId: 'user-1', teamId: null },
       { id: 'team', userId: null, teamId: 'team-1' },
       { id: 'foreign', userId: 'other', teamId: null },
     ] as any);
-    vi.mocked(prisma.client.teamUser.findMany).mockResolvedValue([{ teamId: 'team-1' }] as any);
+    vi.mocked(
+      prisma.client.teamUser.findMany as (...args: unknown[]) => Promise<unknown>,
+    ).mockResolvedValue([{ teamId: 'team-1' }] as any);
 
     await expect(
       canViewBatchWebsites({ user: normalUser, shareToken: { websiteId: 'shared' } as any }, [
@@ -157,10 +161,12 @@ describe('canViewBatchWebsites', () => {
   });
 
   test('excludes team websites when the user is not a team member', async () => {
-    vi.mocked(prisma.client.website.findMany).mockResolvedValue([
-      { id: 'team', userId: null, teamId: 'team-1' },
-    ] as any);
-    vi.mocked(prisma.client.teamUser.findMany).mockResolvedValue([] as any);
+    vi.mocked(
+      prisma.client.website.findMany as (...args: unknown[]) => Promise<unknown>,
+    ).mockResolvedValue([{ id: 'team', userId: null, teamId: 'team-1' }] as any);
+    vi.mocked(
+      prisma.client.teamUser.findMany as (...args: unknown[]) => Promise<unknown>,
+    ).mockResolvedValue([] as any);
 
     await expect(canViewBatchWebsites({ user: normalUser }, ['team'])).resolves.toEqual([]);
   });

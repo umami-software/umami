@@ -109,7 +109,7 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
                 <Label>{t(labels.event)}</Label>
                 <Select
                   value={eventName}
-                  onChange={handleEventChange}
+                  onChange={value => handleEventChange(value as string)}
                   allowSearch
                   searchValue={eventSearch}
                   onSearch={setEventSearch}
@@ -132,10 +132,8 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
                 <Label>{t(labels.property)}</Label>
                 <ComboBox
                   inputValue={propertyName}
-                  onInputChange={setPropertyName}
+                  onInputValueChange={setPropertyName}
                   isDisabled={!eventName}
-                  allowsCustomValue
-                  allowsEmptyCollection
                 >
                   {properties.map((field: { propertyName: string }) => (
                     <ListItem key={field.propertyName} id={field.propertyName}>

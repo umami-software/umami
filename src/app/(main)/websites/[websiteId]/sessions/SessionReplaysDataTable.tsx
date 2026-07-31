@@ -52,7 +52,7 @@ export function SessionReplaysDataTable({
       )}
       <DataGrid query={queryResult} allowPaging>
         {({ data }) => (
-          <SessionReplaysTable data={data} onPlay={handlePlay} selectedId={selectedId} />
+          <SessionReplaysTable data={data} onPlay={handlePlay as any} selectedId={selectedId} />
         )}
       </DataGrid>
     </Column>

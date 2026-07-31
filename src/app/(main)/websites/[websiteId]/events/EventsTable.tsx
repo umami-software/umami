@@ -110,7 +110,7 @@ const PropertiesButton = props => {
           </Icon>
         </Row>
       </Button>
-      <Popover placement="right">
+      <Popover side="right">
         <Dialog>
           <EventData {...props} />
         </Dialog>

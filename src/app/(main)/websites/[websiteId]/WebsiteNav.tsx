@@ -20,19 +20,30 @@ export function WebsiteNav({
   return (
     <Column gap="2" marginTop={isCollapsed ? '2' : undefined}>
       <Link href={renderUrl('/websites', false)} role="button" onClick={onItemClick}>
-        <TooltipTrigger isDisabled={!isCollapsed} delay={0}>
-          <Focusable>
-            <Row
-              alignItems="center"
-              hover={{ backgroundColor: 'surface-sunken' }}
-              borderRadius
-              minHeight="40px"
-            >
-              <IconLabel icon={<ArrowLeft />} label={isCollapsed ? '' : t(labels.back)} padding />
-            </Row>
-          </Focusable>
-          <Tooltip placement="right">{t(labels.back)}</Tooltip>
-        </TooltipTrigger>
+        {isCollapsed ? (
+          <TooltipTrigger delay={0}>
+            <Focusable>
+              <Row
+                alignItems="center"
+                hover={{ backgroundColor: 'surface-sunken' }}
+                borderRadius
+                minHeight="40px"
+              >
+                <IconLabel icon={<ArrowLeft />} label="" padding />
+              </Row>
+            </Focusable>
+            <Tooltip placement="right">{t(labels.back)}</Tooltip>
+          </TooltipTrigger>
+        ) : (
+          <Row
+            alignItems="center"
+            hover={{ backgroundColor: 'surface-sunken' }}
+            borderRadius
+            minHeight="40px"
+          >
+            <IconLabel icon={<ArrowLeft />} label={t(labels.back)} padding />
+          </Row>
+        )}
       </Link>
       {items.map(({ label: sectionLabel, items: sectionItems }, index) => (
         <Column key={`${sectionLabel}${index}`} gap="1" marginBottom="1">
@@ -45,25 +56,42 @@ export function WebsiteNav({
             const isSelected = selectedKey === id;
             return (
               <Link key={id} href={path} role="button" onClick={onItemClick}>
-                <TooltipTrigger isDisabled={!isCollapsed} delay={0}>
-                  <Focusable>
-                    <Row
-                      alignItems="center"
-                      hover={{ backgroundColor: 'surface-sunken' }}
-                      backgroundColor={isSelected ? 'surface-sunken' : undefined}
-                      borderRadius
-                      minHeight="40px"
-                    >
-                      <IconLabel
-                        icon={icon}
-                        label={isCollapsed ? '' : label}
-                        weight={isSelected ? 'bold' : undefined}
-                        padding
-                      />
-                    </Row>
-                  </Focusable>
-                  <Tooltip placement="right">{label}</Tooltip>
-                </TooltipTrigger>
+                {isCollapsed ? (
+                  <TooltipTrigger delay={0}>
+                    <Focusable>
+                      <Row
+                        alignItems="center"
+                        hover={{ backgroundColor: 'surface-sunken' }}
+                        backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                        borderRadius
+                        minHeight="40px"
+                      >
+                        <IconLabel
+                          icon={icon}
+                          label=""
+                          weight={isSelected ? 'bold' : undefined}
+                          padding
+                        />
+                      </Row>
+                    </Focusable>
+                    <Tooltip placement="right">{label}</Tooltip>
+                  </TooltipTrigger>
+                ) : (
+                  <Row
+                    alignItems="center"
+                    hover={{ backgroundColor: 'surface-sunken' }}
+                    backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                    borderRadius
+                    minHeight="40px"
+                  >
+                    <IconLabel
+                      icon={icon}
+                      label={label}
+                      weight={isSelected ? 'bold' : undefined}
+                      padding
+                    />
+                  </Row>
+                )}
               </Link>
             );
           })}

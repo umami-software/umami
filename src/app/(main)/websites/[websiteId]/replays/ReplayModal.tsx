@@ -1,11 +1,11 @@
 'use client';
-import { Column, Dialog, Modal, type ModalProps } from '@umami/react-zen';
+import { Column, Dialog, Sheet, type SheetProps } from '@umami/react-zen';
 import { ReplayPlayback } from '@/app/(main)/websites/[websiteId]/replays/[replayId]/ReplayPlayback';
 import { useNavigation } from '@/components/hooks';
 import { buildPath } from '@/lib/url';
 import styles from './ReplayModal.module.css';
 
-export interface ReplayModalProps extends ModalProps {
+export interface ReplayModalProps extends SheetProps {
   websiteId: string;
   replayId?: string;
 }
@@ -34,17 +34,16 @@ export function ReplayModal({ websiteId, replayId, className, ...props }: Replay
   };
 
   return (
-    <Modal
+    <Sheet
       {...props}
-      placement="bottom"
-      offset="80px"
+      side="bottom"
+      size="calc(100dvh - 80px)"
       className={modalClassName}
       isOpen={!!activeReplayId}
       onOpenChange={handleOpenChange}
-      isDismissable
     >
       <Column height="100%">
-        <Dialog variant="sheet" className={styles.sheet}>
+        <Dialog className={styles.sheet}>
           {({ close }) => (
             <Column padding="6">
               {activeReplayId && (
@@ -54,6 +53,6 @@ export function ReplayModal({ websiteId, replayId, className, ...props }: Replay
           )}
         </Dialog>
       </Column>
-    </Modal>
+    </Sheet>
   );
 }

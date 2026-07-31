@@ -64,8 +64,6 @@ export function MultiSelect({
             value={value}
             onChange={onChange}
             showCheckmark
-            shouldSelectOnPressUp
-            shouldFocusOnHover={false}
             style={listStyle}
             renderEmptyState={renderEmptyState}
           >

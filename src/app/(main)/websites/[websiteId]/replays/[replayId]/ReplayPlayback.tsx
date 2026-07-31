@@ -76,7 +76,7 @@ export function ReplayPlayback({
                         <Bookmark fill="none" />
                       </Icon>
                     </Button>
-                    <Popover placement="bottom end">
+                    <Popover side="bottom" align="end">
                       <Dialog title={t(labels.saveReplay)} style={{ width: '300px' }}>
                         {({ close }) => (
                           <ReplaySaveForm

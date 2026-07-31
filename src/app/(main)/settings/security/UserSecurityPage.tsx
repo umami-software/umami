@@ -1,4 +1,5 @@
 'use client';
+import { useQueryClient } from '@tanstack/react-query';
 import { Column, Row, Switch, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { useState } from 'react';
 import { Badge } from '@/components/common/Badge';
@@ -8,7 +9,6 @@ import { Panel } from '@/components/common/Panel';
 import { useMessages, useTwoFactorStatusQuery } from '@/components/hooks';
 import { TwoFactorDisableModal } from '@/components/modals/TwoFactorDisableModal';
 import { TwoFactorSetupModal } from '@/components/modals/TwoFactorSetupModal';
-import { useQueryClient } from '@tanstack/react-query';
 
 export function UserSecurityPage() {
   const { t, labels, messages } = useMessages();
@@ -61,7 +61,19 @@ export function UserSecurityPage() {
               <Text>{t(messages.twoFactorUserDescription)}</Text>
             )}
 
-            <TooltipTrigger isDisabled={!(isEnabled && isRequired)}>
+            {isEnabled && isRequired ? (
+              <TooltipTrigger>
+                <Row alignItems="center" gap="3">
+                  <Switch
+                    isSelected={isEnabled}
+                    isDisabled={isEnabled && isRequired}
+                    onChange={handleToggle}
+                  />
+                  <Text>{t(labels.twoFactorEnable)}</Text>
+                </Row>
+                <Tooltip>{t(messages.twoFactorRequiredMessage)}</Tooltip>
+              </TooltipTrigger>
+            ) : (
               <Row alignItems="center" gap="3">
                 <Switch
                   isSelected={isEnabled}
@@ -70,8 +82,7 @@ export function UserSecurityPage() {
                 />
                 <Text>{t(labels.twoFactorEnable)}</Text>
               </Row>
-              <Tooltip>{t(messages.twoFactorRequiredMessage)}</Tooltip>
-            </TooltipTrigger>
+            )}
 
             {isEnabled && isRequired && (
               <Text size="sm" color="muted">

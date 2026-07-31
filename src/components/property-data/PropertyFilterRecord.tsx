@@ -180,14 +180,11 @@ export function PropertyFilterRecord({
               aria-label={filter.propertyName}
               items={filteredValues}
               inputValue={filter.value}
-              style={{ width: '100%' }}
-              onInputChange={v => {
+              className="w-full"
+              onInputValueChange={(v: string) => {
                 setSearch(v);
                 onChange({ ...filter, value: v });
               }}
-              formValue="text"
-              allowsEmptyCollection
-              allowsCustomValue
               renderEmptyState={() =>
                 isLoading ? (
                   <Loading placement="center" icon="dots" />
@@ -267,7 +264,7 @@ function DateValuePicker({
       >
         <DateDisplay startDate={selectedDate} endDate={selectedDate} />
       </Button>
-      <Popover placement="bottom start" shouldFlip isNonModal>
+      <Popover side="bottom" align="start" isNonModal>
         <Dialog>
           <Column gap>
             <Calendar

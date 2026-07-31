@@ -51,6 +51,14 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
     }
   };
 
+  const handleNavigate = (url: string) => {
+    if (cloudMode) {
+      window.location.href = url;
+    } else {
+      router.push(url);
+    }
+  };
+
   return (
     <MenuTrigger>
       <Pressable>
@@ -77,25 +85,29 @@ export function NavButton({ showText = true }: TeamsButtonProps) {
           )}
         </Row>
       </Pressable>
-      <Popover placement="bottom start">
+      <Popover side="bottom" align="start">
         <Column minWidth="300px">
-          <Menu autoFocus="last">
+          <Menu>
             <SubmenuTrigger>
               <MenuItem id="teams" showChecked={false} showSubMenuIcon>
                 <IconLabel icon={<Switch />} label={t(labels.switchAccount)} />
               </MenuItem>
-              <Popover placement={isMobile ? 'bottom start' : 'right top'}>
+              <Popover side={isMobile ? 'bottom' : 'right'} align="start">
                 <Column minWidth="300px">
-                  <Menu selectionMode="single" selectedKeys={selectedKeys} onAction={handleAction}>
+                  <Menu selectionMode="single" selectedKeys={selectedKeys}>
                     <MenuSection title={t(labels.myAccount)}>
-                      <MenuItem id="user">
+                      <MenuItem id="user" onAction={handleAction}>
                         <IconLabel icon={<User />} label={user.username} />
                       </MenuItem>
                     </MenuSection>
                     <MenuSeparator />
                     <MenuSection title={t(labels.teams)}>
                       {user?.teams?.map(({ id, name }) => (
-                        <MenuItem key={id} id={id} href={getUrl(`/teams/${id}`)}>
+                        <MenuItem
+                          key={id}
+                          id={id}
+                          onAction={() => handleNavigate(getUrl(`/teams/${id}`))}
+                        >
                           <IconLabel icon={<Users />}>
                             <Text wrap="nowrap">{name}</Text>
                           </IconLabel>

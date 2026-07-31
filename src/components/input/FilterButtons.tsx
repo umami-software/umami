@@ -18,7 +18,6 @@ export function FilterButtons({ items, value, onChange }: FilterButtonsProps) {
             onChange?.(nextValue);
           }
         }}
-        disallowEmptySelection={true}
       >
         {items.map(({ id, label }) => (
           <ToggleGroupItem key={id} id={id}>

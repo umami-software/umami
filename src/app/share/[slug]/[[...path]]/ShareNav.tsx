@@ -177,26 +177,42 @@ export function ShareNav({
               const isSelected = selectedKey === id;
               return (
                 <Link key={id} href={path} role="button" onClick={onItemClick}>
-                  <TooltipTrigger isDisabled={!collapsed} delay={0}>
-                    <Focusable>
-                      <Row
-                        alignItems="center"
-                        justifyContent={collapsed ? 'center' : undefined}
-                        hover={{ backgroundColor: 'surface-sunken' }}
-                        backgroundColor={isSelected ? 'surface-sunken' : undefined}
-                        borderRadius
-                        minHeight="40px"
-                      >
-                        <IconLabel
-                          icon={icon}
-                          label={collapsed ? '' : label}
-                          weight={isSelected ? 'bold' : undefined}
-                          {...(!collapsed && { padding: true })}
-                        />
-                      </Row>
-                    </Focusable>
-                    <Tooltip placement="right">{label}</Tooltip>
-                  </TooltipTrigger>
+                  {collapsed ? (
+                    <TooltipTrigger delay={0}>
+                      <Focusable>
+                        <Row
+                          alignItems="center"
+                          justifyContent="center"
+                          hover={{ backgroundColor: 'surface-sunken' }}
+                          backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                          borderRadius
+                          minHeight="40px"
+                        >
+                          <IconLabel
+                            icon={icon}
+                            label=""
+                            weight={isSelected ? 'bold' : undefined}
+                          />
+                        </Row>
+                      </Focusable>
+                      <Tooltip placement="right">{label}</Tooltip>
+                    </TooltipTrigger>
+                  ) : (
+                    <Row
+                      alignItems="center"
+                      hover={{ backgroundColor: 'surface-sunken' }}
+                      backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                      borderRadius
+                      minHeight="40px"
+                    >
+                      <IconLabel
+                        icon={icon}
+                        label={label}
+                        weight={isSelected ? 'bold' : undefined}
+                        padding
+                      />
+                    </Row>
+                  )}
                 </Link>
               );
             })}

@@ -1,17 +1,27 @@
 'use client';
-import { Button, Column, Dialog, Modal, Row, Switch, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { useQueryClient } from '@tanstack/react-query';
+import {
+  Button,
+  Column,
+  Dialog,
+  Modal,
+  Row,
+  Switch,
+  Text,
+  Tooltip,
+  TooltipTrigger,
+} from '@umami/react-zen';
 import { useState } from 'react';
 import { Badge } from '@/components/common/Badge';
 import { TypeConfirmationForm } from '@/components/common/TypeConfirmationForm';
 import {
   useDeleteQuery,
   useMessages,
-  useUpdateQuery,
   useTwoFactorStatusQuery,
-  useUserQuery,
   useTwoFactorUserStatusQuery,
+  useUpdateQuery,
+  useUserQuery,
 } from '@/components/hooks';
-import { useQueryClient } from '@tanstack/react-query';
 
 const CONFIRM_VALUE = 'RESET';
 
@@ -27,9 +37,11 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
   const { data: userData } = useUserQuery(userId);
 
   const { mutateAsync: setUserRequired } = useUpdateQuery(`/admin/users/${userId}/2fa`);
-  const { mutateAsync: resetUserTwoFactor, isPending: isResetting, error: resetError } = useDeleteQuery(
-    `/admin/users/${userId}/2fa`,
-  );
+  const {
+    mutateAsync: resetUserTwoFactor,
+    isPending: isResetting,
+    error: resetError,
+  } = useDeleteQuery(`/admin/users/${userId}/2fa`);
 
   const twoFactorEnabled = !!(userTfaData as any)?.isEnabled;
   const twoFactorRequired = !!(userData as any)?.twoFactorRequired;
@@ -62,7 +74,19 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
           {t(messages.twoFactorRequireUserDescription)}
         </Text>
 
-        <TooltipTrigger isDisabled={!isGlobalRequired}>
+        {isGlobalRequired ? (
+          <TooltipTrigger>
+            <Row alignItems="center" gap="3">
+              <Switch
+                isSelected={isGlobalRequired || twoFactorRequired}
+                isDisabled={isGlobalRequired}
+                onChange={handleToggle}
+              />
+              <Text>{t(labels.twoFactorRequireUser)}</Text>
+            </Row>
+            <Tooltip>{t(labels.twoFactorGlobalActiveTooltip)}</Tooltip>
+          </TooltipTrigger>
+        ) : (
           <Row alignItems="center" gap="3">
             <Switch
               isSelected={isGlobalRequired || twoFactorRequired}
@@ -71,8 +95,7 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
             />
             <Text>{t(labels.twoFactorRequireUser)}</Text>
           </Row>
-          <Tooltip>{t(labels.twoFactorGlobalActiveTooltip)}</Tooltip>
-        </TooltipTrigger>
+        )}
 
         {twoFactorEnabled && (
           <Column gap="3">
@@ -89,7 +112,7 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
         )}
       </Column>
 
-      <Modal isOpen={showReset} isDismissable={true} onOpenChange={open => !open && setShowReset(false)}>
+      <Modal isOpen={showReset} onOpenChange={open => !open && setShowReset(false)}>
         <Dialog title={t(labels.twoFactorReset)} style={{ width: 400 }}>
           <TypeConfirmationForm
             confirmationValue={CONFIRM_VALUE}

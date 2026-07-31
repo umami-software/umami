@@ -1,6 +1,9 @@
 'use client';
+import { useQueryClient } from '@tanstack/react-query';
 import {
-  AlertBanner,
+  Alert,
+  AlertDescription,
+  AlertTitle,
   Box,
   Button,
   Code,
@@ -14,13 +17,12 @@ import {
   TagGroup,
   Text,
 } from '@umami/react-zen';
-import { useQueryClient } from '@tanstack/react-query';
-import { ReactNode, useEffect, useState } from 'react';
+import { LucideCopy } from 'lucide-react';
+import { type ReactNode, useEffect, useState } from 'react';
 import { OtpInput } from '@/components/common/OtpInput';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
-import { TwoFactorSuccessModal } from './TwoFactorSuccessModal';
 import styles from './TwoFactorSetupModal.module.css';
-import { LucideCopy } from 'lucide-react';
+import { TwoFactorSuccessModal } from './TwoFactorSuccessModal';
 
 function Step({
   tag,
@@ -187,7 +189,12 @@ export function TwoFactorSetupModal({ required, onClose }: TwoFactorSetupModalPr
               </Column>
             </Step>
 
-            {error && <AlertBanner variant="error" title={t(messages.error)} description={error} />}
+            {error && (
+              <Alert variant="danger">
+                <AlertTitle>{t(messages.error)}</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
 
             <Row gap="2" justifyContent="flex-end">
               {!required && (

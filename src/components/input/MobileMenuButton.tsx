@@ -1,4 +1,4 @@
-import { Button, Dialog, type DialogProps, DialogTrigger, Icon, Modal } from '@umami/react-zen';
+import { Button, Dialog, type DialogProps, DialogTrigger, Icon, Sheet } from '@umami/react-zen';
 import { Menu } from '@/components/icons';
 
 export function MobileMenuButton(props: DialogProps) {
@@ -9,9 +9,9 @@ export function MobileMenuButton(props: DialogProps) {
           <Menu />
         </Icon>
       </Button>
-      <Modal placement="left" offset="80px">
-        <Dialog variant="sheet" {...props} style={{ width: 'auto' }} />
-      </Modal>
+      <Sheet side="left">
+        <Dialog {...props} style={{ width: 'auto' }} />
+      </Sheet>
     </DialogTrigger>
   );
 }

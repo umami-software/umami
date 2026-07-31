@@ -5,7 +5,7 @@ import { useMessages, useMobile } from '@/components/hooks';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
 import { getMaxSelectableDate, parseDateRange } from '@/lib/date';
 
-export interface DateFilterProps extends SelectProps {
+export interface DateFilterProps extends Omit<SelectProps, 'value' | 'onChange'> {
   value?: string;
   onChange?: (value: string) => void;
   showAllTime?: boolean;
@@ -101,6 +101,8 @@ export function DateFilter({
 
   const selectedValue = value.endsWith(':all') ? 'all' : value;
 
+  const [side, align] = String(placement).split(' ');
+
   return (
     <>
       <Select
@@ -109,7 +111,11 @@ export function DateFilter({
         placeholder={t(labels.selectDate)}
         onChange={handleChange}
         renderValue={renderValue}
-        popoverProps={{ placement, style: { minWidth: 200 } }}
+        popoverProps={{
+          side: side as any,
+          align: (align === 'top' ? 'start' : align === 'bottom' ? 'end' : align) as any,
+          style: { minWidth: 200 },
+        }}
         isFullscreen={isMobile}
       >
         {options.map(({ label, value, divider }: any) => {

@@ -28,7 +28,7 @@ export function ExpandedViewModal({
   };
 
   return (
-    <Modal isOpen={!!view} onOpenChange={handleOpenChange} isDismissable>
+    <Modal isOpen={!!view} onOpenChange={handleOpenChange}>
       <Dialog
         style={{
           maxWidth: 1320,

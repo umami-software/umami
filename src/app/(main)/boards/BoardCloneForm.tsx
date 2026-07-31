@@ -53,7 +53,9 @@ export function BoardCloneForm({
 }) {
   const { t, labels, messages, getErrorMessage } = useMessages();
   const { data: board, isLoading } = useBoardQuery(boardId);
-  const { mutateAsync, error, isPending, touch, toast } = useUpdateQuery(`/boards/${boardId}/clone`);
+  const { mutateAsync, error, isPending, touch, toast } = useUpdateQuery(
+    `/boards/${boardId}/clone`,
+  );
   const values = getDefaultValues(board);
   const boardType = getBoardType(board, { coerceDashboard: true });
   const resolvedTeamId = board?.teamId;
@@ -95,8 +97,8 @@ export function BoardCloneForm({
                 ? t(labels.link)
                 : t(labels.website);
 
-        const handleEntityChange = (value: string) => {
-          setValue('entityId', value, { shouldDirty: true });
+        const handleEntityChange = (value: string | number | null) => {
+          setValue('entityId', (value as string) ?? '', { shouldDirty: true });
         };
 
         return (
