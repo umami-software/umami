@@ -1,5 +1,6 @@
 import { Dialog, ListItem, ListSeparator, Modal, Select, type SelectProps } from '@umami/react-zen';
 import { Fragment, type Key, useState } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { useMessages, useMobile } from '@/components/hooks';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
@@ -128,18 +129,20 @@ export function DateFilter({
         })}
       </Select>
       {showPicker && (
-        <Modal isOpen={true}>
-          <Dialog>
-            <DatePickerForm
-              startDate={startDate}
-              endDate={endDate}
-              minDate={new Date(2000, 0, 1)}
-              maxDate={getMaxSelectableDate()}
-              onChange={handlePickerChange}
-              onClose={() => setShowPicker(false)}
-            />
-          </Dialog>
-        </Modal>
+        <ControlledDialog>
+          <Modal isOpen={true}>
+            <Dialog>
+              <DatePickerForm
+                startDate={startDate}
+                endDate={endDate}
+                minDate={new Date(2000, 0, 1)}
+                maxDate={getMaxSelectableDate()}
+                onChange={handlePickerChange}
+                onClose={() => setShowPicker(false)}
+              />
+            </Dialog>
+          </Modal>
+        </ControlledDialog>
       )}
     </>
   );

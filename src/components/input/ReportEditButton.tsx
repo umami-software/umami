@@ -11,6 +11,7 @@ import {
   Text,
 } from '@umami/react-zen';
 import { type ReactNode, useState } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { useMessages } from '@/components/hooks';
 import { useDeleteQuery } from '@/components/hooks/queries/useDeleteQuery';
 import { Edit, MoreHorizontal, Trash } from '@/components/icons';
@@ -103,16 +104,18 @@ export function ReportEditButton({
       >
         {children}
       </DialogButton>
-      <Modal isOpen={showDelete} onOpenChange={open => !open && handleClose()}>
-        <AlertDialog
-          title={t(labels.delete)}
-          onConfirm={handleDelete}
-          onCancel={handleClose}
-          isDanger
-        >
-          <Row gap="1">{t(messages.confirmDelete, { target: name })}</Row>
-        </AlertDialog>
-      </Modal>
+      <ControlledDialog>
+        <Modal isOpen={showDelete} onOpenChange={open => !open && handleClose()}>
+          <AlertDialog
+            title={t(labels.delete)}
+            onConfirm={handleDelete}
+            onCancel={handleClose}
+            isDanger
+          >
+            <Row gap="1">{t(messages.confirmDelete, { target: name })}</Row>
+          </AlertDialog>
+        </Modal>
+      </ControlledDialog>
     </>
   );
 }

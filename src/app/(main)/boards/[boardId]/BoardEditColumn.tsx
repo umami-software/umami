@@ -10,6 +10,7 @@ import {
   TooltipTrigger,
 } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { Panel } from '@/components/common/Panel';
 import { useBoard, useMessages, useNavigation } from '@/components/hooks';
 import { Pencil, Plus, X } from '@/components/icons';
@@ -121,29 +122,31 @@ export function BoardEditColumn({
           </Box>
         </Column>
       )}
-      <Modal isOpen={showSelect} onOpenChange={setShowSelect}>
-        <Dialog
-          title={t(labels.selectComponent)}
-          style={{
-            width: '1200px',
-            maxWidth: 'calc(100vw - 40px)',
-            maxHeight: 'calc(100dvh - 40px)',
-            padding: '32px',
-          }}
-        >
-          {() => (
-            <BoardComponentSelect
-              teamId={teamId}
-              boardType={boardType}
-              boardEntityType={boardEntityType}
-              boardEntityId={boardEntityId}
-              initialConfig={component}
-              onSelect={handleSelect}
-              onClose={() => setShowSelect(false)}
-            />
-          )}
-        </Dialog>
-      </Modal>
+      <ControlledDialog>
+        <Modal isOpen={showSelect} onOpenChange={setShowSelect}>
+          <Dialog
+            title={t(labels.selectComponent)}
+            style={{
+              width: '1200px',
+              maxWidth: 'calc(100vw - 40px)',
+              maxHeight: 'calc(100dvh - 40px)',
+              padding: '32px',
+            }}
+          >
+            {() => (
+              <BoardComponentSelect
+                teamId={teamId}
+                boardType={boardType}
+                boardEntityType={boardEntityType}
+                boardEntityId={boardEntityId}
+                initialConfig={component}
+                onSelect={handleSelect}
+                onClose={() => setShowSelect(false)}
+              />
+            )}
+          </Dialog>
+        </Modal>
+      </ControlledDialog>
     </Panel>
   );
 }

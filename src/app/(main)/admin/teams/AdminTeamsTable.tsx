@@ -1,6 +1,7 @@
 import { DataColumn, DataTable, Dialog, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { DateDistance } from '@/components/common/DateDistance';
 import Link from '@/components/common/Link';
 import { SortableLabel } from '@/components/common/SortableLabel';
@@ -93,11 +94,13 @@ export function AdminTeamsTable({
           </DataColumn>
         )}
       </DataTable>
-      <Modal isOpen={!!deleteTeam}>
-        <Dialog style={{ width: 400 }}>
-          <TeamDeleteForm teamId={deleteTeam} onClose={() => setDeleteTeam(null)} />
-        </Dialog>
-      </Modal>
+      <ControlledDialog>
+        <Modal isOpen={!!deleteTeam}>
+          <Dialog style={{ width: 400 }}>
+            <TeamDeleteForm teamId={deleteTeam} onClose={() => setDeleteTeam(null)} />
+          </Dialog>
+        </Modal>
+      </ControlledDialog>
     </>
   );
 }

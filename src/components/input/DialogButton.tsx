@@ -7,6 +7,7 @@ import {
   Modal,
 } from '@umami/react-zen';
 import type { CSSProperties, ReactNode } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { IconLabel } from '@/components/common/IconLabel';
 import { useMobile } from '@/components/hooks';
 
@@ -64,13 +65,15 @@ export function DialogButton({
 
   if (isOpen !== undefined) {
     return (
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        placement={isMobile ? 'fullscreen' : 'center'}
-      >
-        {dialog}
-      </Modal>
+      <ControlledDialog>
+        <Modal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          placement={isMobile ? 'fullscreen' : 'center'}
+        >
+          {dialog}
+        </Modal>
+      </ControlledDialog>
     );
   }
 

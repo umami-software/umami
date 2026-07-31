@@ -1,6 +1,7 @@
 'use client';
 import { Column, Dialog, Sheet, type SheetProps } from '@umami/react-zen';
 import { SessionProfile } from '@/app/(main)/websites/[websiteId]/sessions/SessionProfile';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { useNavigation } from '@/components/hooks';
 import styles from './SessionModal.module.css';
 
@@ -23,28 +24,30 @@ export function SessionModal({ websiteId, className, ...props }: SessionModalPro
   };
 
   return (
-    <Sheet
-      side="bottom"
-      size="calc(100dvh - 80px)"
-      className={[styles.modal, className].filter(Boolean).join(' ')}
-      isOpen={!!session}
-      onOpenChange={handleOpenChange}
-      {...props}
-    >
-      <Column height="100%">
-        <Dialog className="rounded-lg">
-          {({ close }) => (
-            <Column padding="10">
-              <SessionProfile
-                websiteId={websiteId}
-                sessionId={session}
-                showReplays={!isSharePage}
-                onClose={() => close()}
-              />
-            </Column>
-          )}
-        </Dialog>
-      </Column>
-    </Sheet>
+    <ControlledDialog>
+      <Sheet
+        side="bottom"
+        size="calc(100dvh - 80px)"
+        className={[styles.modal, className].filter(Boolean).join(' ')}
+        isOpen={!!session}
+        onOpenChange={handleOpenChange}
+        {...props}
+      >
+        <Column height="100%">
+          <Dialog className="rounded-lg">
+            {({ close }) => (
+              <Column padding="10">
+                <SessionProfile
+                  websiteId={websiteId}
+                  sessionId={session}
+                  showReplays={!isSharePage}
+                  onClose={() => close()}
+                />
+              </Column>
+            )}
+          </Dialog>
+        </Column>
+      </Sheet>
+    </ControlledDialog>
   );
 }

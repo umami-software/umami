@@ -1,6 +1,7 @@
 import { DataColumn, DataTable, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { DateDistance } from '@/components/common/DateDistance';
 import Link from '@/components/common/Link';
 import { SortableLabel } from '@/components/common/SortableLabel';
@@ -84,15 +85,17 @@ export function UsersTable({
           </DataColumn>
         )}
       </DataTable>
-      <Modal isOpen={!!deleteUser}>
-        <UserDeleteForm
-          userId={deleteUser?.id}
-          username={deleteUser?.username}
-          onClose={() => {
-            setDeleteUser(null);
-          }}
-        />
-      </Modal>
+      <ControlledDialog>
+        <Modal isOpen={!!deleteUser}>
+          <UserDeleteForm
+            userId={deleteUser?.id}
+            username={deleteUser?.username}
+            onClose={() => {
+              setDeleteUser(null);
+            }}
+          />
+        </Modal>
+      </ControlledDialog>
     </>
   );
 }

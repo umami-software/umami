@@ -2,6 +2,7 @@ import { DataColumn, DataTable, Dialog, Icon, MenuItem, Modal, Row, Text } from 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { WebsiteDeleteForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteDeleteForm';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { DateDistance } from '@/components/common/DateDistance';
 import Link from '@/components/common/Link';
 import { SortableLabel } from '@/components/common/SortableLabel';
@@ -92,11 +93,13 @@ export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
           }}
         </DataColumn>
       </DataTable>
-      <Modal isOpen={!!deleteWebsite}>
-        <Dialog style={{ width: 400 }}>
-          <WebsiteDeleteForm websiteId={deleteWebsite} onClose={() => setDeleteWebsite(null)} />
-        </Dialog>
-      </Modal>
+      <ControlledDialog>
+        <Modal isOpen={!!deleteWebsite}>
+          <Dialog style={{ width: 400 }}>
+            <WebsiteDeleteForm websiteId={deleteWebsite} onClose={() => setDeleteWebsite(null)} />
+          </Dialog>
+        </Modal>
+      </ControlledDialog>
     </>
   );
 }

@@ -13,6 +13,7 @@ import {
 } from '@umami/react-zen';
 import { useState } from 'react';
 import { Badge } from '@/components/common/Badge';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { TypeConfirmationForm } from '@/components/common/TypeConfirmationForm';
 import {
   useDeleteQuery,
@@ -112,19 +113,21 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
         )}
       </Column>
 
-      <Modal isOpen={showReset} onOpenChange={open => !open && setShowReset(false)}>
-        <Dialog title={t(labels.twoFactorReset)} style={{ width: 400 }}>
-          <TypeConfirmationForm
-            confirmationValue={CONFIRM_VALUE}
-            onConfirm={handleReset}
-            onClose={() => setShowReset(false)}
-            isLoading={isResetting}
-            error={resetError}
-            buttonLabel={t(labels.reset)}
-            buttonVariant="danger"
-          />
-        </Dialog>
-      </Modal>
+      <ControlledDialog>
+        <Modal isOpen={showReset} onOpenChange={open => !open && setShowReset(false)}>
+          <Dialog title={t(labels.twoFactorReset)} style={{ width: 400 }}>
+            <TypeConfirmationForm
+              confirmationValue={CONFIRM_VALUE}
+              onConfirm={handleReset}
+              onClose={() => setShowReset(false)}
+              isLoading={isResetting}
+              error={resetError}
+              buttonLabel={t(labels.reset)}
+              buttonVariant="danger"
+            />
+          </Dialog>
+        </Modal>
+      </ControlledDialog>
     </>
   );
 }

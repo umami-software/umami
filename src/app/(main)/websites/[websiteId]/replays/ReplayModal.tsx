@@ -1,6 +1,7 @@
 'use client';
 import { Column, Dialog, Sheet, type SheetProps } from '@umami/react-zen';
 import { ReplayPlayback } from '@/app/(main)/websites/[websiteId]/replays/[replayId]/ReplayPlayback';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { useNavigation } from '@/components/hooks';
 import { buildPath } from '@/lib/url';
 import styles from './ReplayModal.module.css';
@@ -34,25 +35,27 @@ export function ReplayModal({ websiteId, replayId, className, ...props }: Replay
   };
 
   return (
-    <Sheet
-      {...props}
-      side="bottom"
-      size="calc(100dvh - 80px)"
-      className={modalClassName}
-      isOpen={!!activeReplayId}
-      onOpenChange={handleOpenChange}
-    >
-      <Column height="100%">
-        <Dialog className={styles.sheet}>
-          {({ close }) => (
-            <Column padding="6">
-              {activeReplayId && (
-                <ReplayPlayback websiteId={websiteId} replayId={activeReplayId} onClose={close} />
-              )}
-            </Column>
-          )}
-        </Dialog>
-      </Column>
-    </Sheet>
+    <ControlledDialog>
+      <Sheet
+        {...props}
+        side="bottom"
+        size="calc(100dvh - 80px)"
+        className={modalClassName}
+        isOpen={!!activeReplayId}
+        onOpenChange={handleOpenChange}
+      >
+        <Column height="100%">
+          <Dialog className={styles.sheet}>
+            {({ close }) => (
+              <Column padding="6">
+                {activeReplayId && (
+                  <ReplayPlayback websiteId={websiteId} replayId={activeReplayId} onClose={close} />
+                )}
+              </Column>
+            )}
+          </Dialog>
+        </Column>
+      </Sheet>
+    </ControlledDialog>
   );
 }
