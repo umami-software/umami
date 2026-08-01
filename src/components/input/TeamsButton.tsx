@@ -1,6 +1,5 @@
 import {
   Button,
-  Column,
   Icon,
   Menu,
   MenuItem,
@@ -72,36 +71,34 @@ export function TeamsButton() {
         </Icon>
       </Button>
       <Popover side="bottom" align="start">
-        <Column minWidth="300px">
-          <Menu selectionMode="single" selectedKeys={selectedKeys}>
-            <MenuSection title={t(labels.myAccount)}>
-              <MenuItem id="user" onAction={handleAction}>
-                <IconLabel icon={<User />} label={user.username} />
+        <Menu className="min-w-[300px]" selectionMode="single" selectedKeys={selectedKeys}>
+          <MenuSection title={t(labels.myAccount)}>
+            <MenuItem id="user" onAction={handleAction}>
+              <IconLabel icon={<User />} label={user.username} />
+            </MenuItem>
+          </MenuSection>
+          <MenuSeparator />
+          <MenuSection title={t(labels.teams)}>
+            {user?.teams?.map(({ id, name }) => (
+              <MenuItem key={id} id={id} onAction={() => handleNavigate(getUrl(`/teams/${id}`))}>
+                <IconLabel icon={<Users />}>
+                  <Text wrap="nowrap">{name}</Text>
+                </IconLabel>
               </MenuItem>
-            </MenuSection>
+            ))}
             <MenuSeparator />
-            <MenuSection title={t(labels.teams)}>
-              {user?.teams?.map(({ id, name }) => (
-                <MenuItem key={id} id={id} onAction={() => handleNavigate(getUrl(`/teams/${id}`))}>
-                  <IconLabel icon={<Users />}>
-                    <Text wrap="nowrap">{name}</Text>
-                  </IconLabel>
-                </MenuItem>
-              ))}
-              <MenuSeparator />
-              <MenuItem id="manage-teams">
-                <a href="/settings/teams" style={{ width: '100%' }}>
-                  <Row alignItems="center" justifyContent="space-between" gap>
-                    <Text align="center">Manage teams</Text>
-                    <Icon>
-                      <ArrowRight />
-                    </Icon>
-                  </Row>
-                </a>
-              </MenuItem>
-            </MenuSection>
-          </Menu>
-        </Column>
+            <MenuItem id="manage-teams">
+              <a href="/settings/teams" style={{ width: '100%' }}>
+                <Row alignItems="center" justifyContent="space-between" gap>
+                  <Text align="center">Manage teams</Text>
+                  <Icon>
+                    <ArrowRight />
+                  </Icon>
+                </Row>
+              </a>
+            </MenuItem>
+          </MenuSection>
+        </Menu>
       </Popover>
     </MenuTrigger>
   );

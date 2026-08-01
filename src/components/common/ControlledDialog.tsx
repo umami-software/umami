@@ -5,7 +5,7 @@ import type { ReactElement } from 'react';
 export function ControlledDialog({ children }: { children: ReactElement }) {
   return (
     <DialogTrigger>
-      <span hidden />
+      <button type="button" hidden />
       {children}
     </DialogTrigger>
   );

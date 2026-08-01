@@ -1,11 +1,12 @@
 'use client';
-import { Column, Grid, Label, ListItem, Loading, Select } from '@umami/react-zen';
+import { Column, Grid, ListItem, Select } from '@umami/react-zen';
 import { useState } from 'react';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Empty } from '@/components/common/Empty';
-import { MultiSelect, MultiSelectItem } from '@/components/common/MultiSelect';
 import { useDateRange, useMessages, useWebsiteValuesQuery } from '@/components/hooks';
 import { Attribution } from './Attribution';
+
+const stepPlaceholder = 'Select an item';
 
 export function AttributionPage({ websiteId }: { websiteId: string }) {
   const [model, setModel] = useState('first-click');
@@ -29,10 +30,6 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
     setType(value as string);
     setStep('');
     setSearch('');
-  };
-
-  const handleStepChange = (values: string[]) => {
-    setStep(values.filter(value => value !== step).pop() ?? '');
   };
 
   return (
@@ -62,21 +59,24 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
           </Select>
         </Column>
         <Column>
-          <Label>{t(labels.conversionStep)}</Label>
-          <MultiSelect
-            value={step ? [step] : []}
-            onChange={handleStepChange}
+          <Select
+            label={t(labels.conversionStep)}
+            value={step}
+            onChange={value => setStep(value?.toString() ?? '')}
+            placeholder={stepPlaceholder}
+            renderValue={({ defaultChildren }) => (step ? defaultChildren : stepPlaceholder)}
+            isLoading={isLoading}
             searchValue={search}
             onSearch={setSearch}
-            renderEmptyState={() => (isLoading ? <Loading icon="dots" /> : <Empty />)}
+            maxHeight={320}
             allowSearch
           >
             {items.map(({ value }) => (
-              <MultiSelectItem key={value} value={value}>
+              <ListItem key={value} id={value}>
                 {value}
-              </MultiSelectItem>
+              </ListItem>
             ))}
-          </MultiSelect>
+          </Select>
         </Column>
       </Grid>
       {step ? (

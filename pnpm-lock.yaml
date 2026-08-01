@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-patchedDependencies:
-  '@umami/react-zen@0.247.0': 7a13e402d0a59d203f92fa4c64c8511aa38c5cd914092f5232c6271c606c9126
-
 importers:
 
   .:
@@ -39,8 +36,8 @@ importers:
         specifier: ^5.101.4
         version: 5.101.4(react@19.2.8)
       '@umami/react-zen':
-        specifier: ^0.247.0
-        version: 0.247.0(patch_hash=7a13e402d0a59d203f92fa4c64c8511aa38c5cd914092f5232c6271c606c9126)(@date-fns/tz@1.5.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(date-fns@4.4.0)(immer@11.1.15)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.2.8))
+        specifier: ^0.248.0
+        version: 0.248.0(@date-fns/tz@1.5.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(date-fns@4.4.0)(immer@11.1.15)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.2.8))
       bcryptjs:
         specifier: ^3.0.2
         version: 3.0.3
@@ -2930,8 +2927,8 @@ packages:
   '@types/yargs@17.0.35':
     resolution: {integrity: sha512-qUHkeCyQFxMXg79wQfTtfndEC+N9ZZg76HJftDJp+qH2tV7Gj4OJi7l+PiWwJ+pWtW8GwSmqsDj/oymhrTWXjg==}
 
-  '@umami/react-zen@0.247.0':
-    resolution: {integrity: sha512-3I8kCsSX3DEDX2D0ft+2g9fUdmXm5+BWR6mMkbOxYy9bColbL5gTF7UOcl+wuN4ETOh7bo9Lxk5CM6hDyZX6uA==}
+  '@umami/react-zen@0.248.0':
+    resolution: {integrity: sha512-sCEA+nVko+7cETmnmF+HvKyP54Bn/9S0GPexyA7QCDoYITu5X4FS2TT422kKM2UX6eVmuiq8slMdeZfAlUEynw==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -8268,7 +8265,7 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@umami/react-zen@0.247.0(patch_hash=7a13e402d0a59d203f92fa4c64c8511aa38c5cd914092f5232c6271c606c9126)(@date-fns/tz@1.5.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(date-fns@4.4.0)(immer@11.1.15)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.2.8))':
+  '@umami/react-zen@0.248.0(@date-fns/tz@1.5.0)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(date-fns@4.4.0)(immer@11.1.15)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.2.8))':
     dependencies:
       '@base-ui/react': 1.6.0(@date-fns/tz@1.5.0)(@types/react@19.2.17)(date-fns@4.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@react-spring/web': 9.7.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
