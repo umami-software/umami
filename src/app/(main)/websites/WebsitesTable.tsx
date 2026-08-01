@@ -26,6 +26,92 @@ export interface WebsitesTableProps extends DataTableProps {
   renderLink?: (row: any) => ReactNode;
 }
 
+function WebsiteMetric({
+  label,
+  value,
+  formatValue = formatLongNumber,
+}: {
+  label: string;
+  value?: number;
+  formatValue?: (value: number) => string;
+}) {
+  return (
+    <Column gap="1" alignItems="flex-end">
+      <Text weight="bold">{formatValue(value || 0)}</Text>
+      <Text size="sm" color="muted">
+        {label}
+      </Text>
+    </Column>
+  );
+}
+
+function WebsiteActivitySparkline({ values }: { values?: number[] }) {
+  const { theme } = useTheme();
+  const { colors } = useMemo(() => getThemeColors(theme), [theme]);
+  const series = Array.from({ length: 7 }, (_, index) => Number(values?.[index]) || 0);
+  const width = 84;
+  const height = 32;
+  const barWidth = 8;
+  const gap = 4;
+  const maxValue = Math.max(...series, 1);
+
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
+      fill="none"
+      aria-hidden="true"
+    >
+      {series.map((value, index) => {
+        const scaledHeight = value > 0 ? Math.max((value / maxValue) * height, 4) : 2;
+        const x = index * (barWidth + gap);
+        const y = height - scaledHeight;
+
+        return (
+          <rect
+            key={`${value}-${index}`}
+            x={x}
+            y={y}
+            width={barWidth}
+            height={scaledHeight}
+            rx="2"
+            fill={colors.chart.views.borderColor}
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
+function WebsiteStatus({
+  isActive,
+  activeVisitors,
+  activeLabel,
+  inactiveLabel,
+  onlineLabel,
+}: {
+  isActive?: boolean;
+  activeVisitors?: number;
+  activeLabel: string;
+  inactiveLabel: string;
+  onlineLabel: string;
+}) {
+  return (
+    <Column gap="1" alignItems="flex-end">
+      <Text
+        weight="bold"
+        style={{ color: isActive ? 'var(--status-success)' : 'var(--text-muted)' }}
+      >
+        {isActive ? activeLabel : inactiveLabel}
+      </Text>
+      <Text size="sm" color="muted">
+        {activeVisitors ? `${formatLongNumber(activeVisitors)} ${onlineLabel}` : inactiveLabel}
+      </Text>
+    </Column>
+  );
+}
+
 export function WebsitesTable({
   showActions,
   showStats,

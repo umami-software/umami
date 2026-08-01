@@ -108,15 +108,6 @@ export const websiteSortingParams = {
     .optional(),
 };
 
-export const websiteOrderByParam = z.enum(['name', 'domain', 'createdAt', 'visitors', 'pageviews']);
-
-export const websiteSortingParams = {
-  orderBy: websiteOrderByParam.optional(),
-  sortDescending: z
-    .enum(['true', 'false'])
-    .transform(value => value === 'true')
-    .optional(),
-};
 
 export const userRoleParam = z.enum(['admin', 'user', 'view-only']);
 
