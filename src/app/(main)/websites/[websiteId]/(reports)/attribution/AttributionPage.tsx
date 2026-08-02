@@ -1,6 +1,6 @@
 'use client';
 import { Column, Grid, ListItem, Select } from '@umami/react-zen';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Empty } from '@/components/common/Empty';
 import { useDateRange, useMessages, useWebsiteValuesQuery } from '@/components/hooks';
@@ -25,6 +25,13 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
     endDate,
   });
   const items = data?.filter(({ value }) => value) || [];
+  const stepItems = useMemo(() => {
+    if (!step || items.some(({ value }) => value === step)) {
+      return items;
+    }
+
+    return [{ value: step }, ...items];
+  }, [items, step]);
 
   const handleTypeChange = (value: any) => {
     setType(value as string);
@@ -71,7 +78,7 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
             maxHeight={320}
             allowSearch
           >
-            {items.map(({ value }) => (
+            {stepItems.map(({ value }) => (
               <ListItem key={value} id={value}>
                 {value}
               </ListItem>
