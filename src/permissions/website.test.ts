@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { getEntity } from '@/lib/entity';
-import prisma from '@/lib/prisma';
 import { getTeamUser, getWebsite } from '@/queries/prisma';
 import {
   canCreateWebsite,
@@ -12,6 +11,11 @@ import {
   canViewBatchWebsites,
   canViewWebsite,
 } from './website';
+
+const { websiteFindManyMock, teamUserFindManyMock } = vi.hoisted(() => ({
+  websiteFindManyMock: vi.fn(),
+  teamUserFindManyMock: vi.fn(),
+}));
 
 vi.mock('@/lib/entity', () => ({
   getEntity: vi.fn(),
@@ -26,10 +30,10 @@ vi.mock('@/lib/prisma', () => ({
   default: {
     client: {
       website: {
-        findMany: vi.fn(),
+        findMany: websiteFindManyMock,
       },
       teamUser: {
-        findMany: vi.fn(),
+        findMany: teamUserFindManyMock,
       },
     },
   },
@@ -54,8 +58,8 @@ beforeEach(() => {
   vi.mocked(getEntity).mockReset();
   vi.mocked(getWebsite).mockReset();
   vi.mocked(getTeamUser).mockReset();
-  vi.mocked(prisma.client.website.findMany as (...args: unknown[]) => unknown).mockReset();
-  vi.mocked(prisma.client.teamUser.findMany as (...args: unknown[]) => unknown).mockReset();
+  websiteFindManyMock.mockReset();
+  teamUserFindManyMock.mockReset();
 });
 
 describe('canViewWebsite', () => {
@@ -139,16 +143,12 @@ describe('canViewBatchWebsites', () => {
   });
 
   test('returns owned, team, and share allowed ids for a user', async () => {
-    vi.mocked(
-      prisma.client.website.findMany as (...args: unknown[]) => Promise<unknown>,
-    ).mockResolvedValue([
+    websiteFindManyMock.mockResolvedValue([
       { id: 'owned', userId: 'user-1', teamId: null },
       { id: 'team', userId: null, teamId: 'team-1' },
       { id: 'foreign', userId: 'other', teamId: null },
     ] as any);
-    vi.mocked(
-      prisma.client.teamUser.findMany as (...args: unknown[]) => Promise<unknown>,
-    ).mockResolvedValue([{ teamId: 'team-1' }] as any);
+    teamUserFindManyMock.mockResolvedValue([{ teamId: 'team-1' }] as any);
 
     await expect(
       canViewBatchWebsites({ user: normalUser, shareToken: { websiteId: 'shared' } as any }, [
@@ -161,12 +161,10 @@ describe('canViewBatchWebsites', () => {
   });
 
   test('excludes team websites when the user is not a team member', async () => {
-    vi.mocked(
-      prisma.client.website.findMany as (...args: unknown[]) => Promise<unknown>,
-    ).mockResolvedValue([{ id: 'team', userId: null, teamId: 'team-1' }] as any);
-    vi.mocked(
-      prisma.client.teamUser.findMany as (...args: unknown[]) => Promise<unknown>,
-    ).mockResolvedValue([] as any);
+    websiteFindManyMock.mockResolvedValue([
+      { id: 'team', userId: null, teamId: 'team-1' },
+    ] as any);
+    teamUserFindManyMock.mockResolvedValue([] as any);
 
     await expect(canViewBatchWebsites({ user: normalUser }, ['team'])).resolves.toEqual([]);
   });

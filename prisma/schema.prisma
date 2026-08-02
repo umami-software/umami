@@ -208,6 +208,7 @@ model SessionData {
   @@index([sessionId])
   @@index([sessionId, createdAt])
   @@index([websiteId, createdAt, dataKey])
+  @@unique([sessionId, dataKey])
   @@map("session_data")
 }
 

@@ -1,8 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import {
-  BOUNCE_THRESHOLD,
   EMAIL_DOMAINS,
-  EVENT_TYPE,
   LLM_DOMAINS,
   PAID_AD_PARAMS,
   SEARCH_DOMAINS,
@@ -85,12 +83,9 @@ describe('getChannelExpandedMetrics postgres branch', () => {
     expect(query).toContain('sum(visit_stats.c) as "pageviews"');
     expect(query).toContain('count(distinct visit_stats.session_id) as "visitors"');
     expect(query).toContain('count(distinct visit_stats.visit_id) as "visits"');
+    expect(query).toContain('sum(case when visit_stats.c = 1 and coalesce(visit_events.has_custom_event, 0) = 0 then 1 else 0 end) as "bounces"');
     expect(query).toContain('visit_events as');
-    expect(query).toContain(`and event_type = ${EVENT_TYPE.customEvent}`);
     expect(query).toContain('left join visit_events');
-    expect(query).toContain(
-      `sum(case when visit_stats.c = 1 and coalesce(visit_events.events_count, 0) < ${BOUNCE_THRESHOLD} then 1 else 0 end) as "bounces"`,
-    );
     // getTimestampDiffSQL output is injected into the totaltime column
     expect(query).toContain('sum(ts_diff(min_time, max_time)) as "totaltime"');
     expect(getTimestampDiffSQL).toHaveBeenCalledWith(
@@ -158,11 +153,8 @@ describe('getChannelExpandedMetrics clickhouse branch', () => {
 
     expect(query).toContain('uniq(t.session_id) as "visitors"');
     expect(query).toContain('uniq(t.visit_id) as "visits"');
-    expect(query).toContain(
-      `sumIf(1, t.c = 1 and ifNull(e.events_count, 0) < ${BOUNCE_THRESHOLD}) as "bounces"`,
-    );
-    expect(query).toContain(`and event_type = ${EVENT_TYPE.customEvent}`);
-    expect(query).toContain('as e using (session_id, visit_id)');
+    expect(query).toContain('sumIf(1, t.c = 1 and ifNull(e.has_custom_event, 0) = 0) as "bounces"');
+    expect(query).toContain('left join (');
     expect(query).toContain('sum(max_time-min_time) as "totaltime"');
     expect(query).toContain('where website_id = {websiteId:UUID}');
     expect(query).toContain(

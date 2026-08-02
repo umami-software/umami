@@ -177,13 +177,17 @@ function getExcludeBounceQuery(filters: Record<string, any>) {
   }
 
   return `join
-    (select distinct session_id as exclude_session_id, visit_id as exclude_visit_id
+    (select session_id as exclude_session_id, visit_id as exclude_visit_id
     from website_event_stats_hourly
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type = 1
+      and event_type != 5
     group by session_id, visit_id
     having sum(views) > 1
+      or (
+        sum(views) = 1
+        and sumIf(length(event_name), event_type = 2) > 0
+      )
     ) excludeBounce
     on excludeBounce.exclude_session_id = website_event.session_id
       and excludeBounce.exclude_visit_id = website_event.visit_id
