@@ -1,11 +1,11 @@
 import {
   Button,
+  DialogTrigger,
   Icon,
   Menu,
   MenuItem,
   MenuSection,
   MenuSeparator,
-  MenuTrigger,
   Popover,
   Row,
   Text,
@@ -53,7 +53,7 @@ export function TeamsButton() {
   };
 
   return (
-    <MenuTrigger>
+    <DialogTrigger>
       <Button variant="quiet">
         <Row
           alignItems="center"
@@ -100,6 +100,6 @@ export function TeamsButton() {
           </MenuSection>
         </Menu>
       </Popover>
-    </MenuTrigger>
+    </DialogTrigger>
   );
 }

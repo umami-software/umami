@@ -1,12 +1,12 @@
 import {
+  Button,
   Column,
+  DialogTrigger,
   Icon,
   Menu,
   MenuItem,
   MenuSeparator,
-  MenuTrigger,
   Popover,
-  Pressable,
   Row,
   SubmenuTrigger,
   Text,
@@ -101,15 +101,19 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
   ].filter(Boolean);
 
   const trigger = (
-    <Pressable>
+    <Button
+      variant="zero"
+      aria-label={showText ? undefined : user.username}
+      style={{ padding: 0, width: '100%', justifyContent: 'flex-start' }}
+    >
       <Row
         alignItems="center"
         flexGrow={1}
+        width="100%"
         hover={{ backgroundColor: 'surface-sunken' }}
         borderRadius
         minHeight="40px"
-        role="button"
-        style={{ cursor: 'pointer', textWrap: 'nowrap', overflow: 'hidden', outline: 'none' }}
+        style={{ textWrap: 'nowrap', overflow: 'hidden' }}
       >
         <Row alignItems="center" gap padding>
           <Icon>
@@ -118,19 +122,12 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
           {showText && <Text>{user.username}</Text>}
         </Row>
       </Row>
-    </Pressable>
+    </Button>
   );
 
-  return (
-    <MenuTrigger>
-      {showText ? (
-        trigger
-      ) : (
-        <TooltipTrigger delay={0}>
-          {trigger}
-          <Tooltip placement="right">{user.username}</Tooltip>
-        </TooltipTrigger>
-      )}
+  const menu = (
+    <DialogTrigger>
+      {trigger}
       <Popover side="top" align="start">
         <Column minWidth="200px">
           <Menu>
@@ -224,6 +221,17 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
           </Menu>
         </Column>
       </Popover>
-    </MenuTrigger>
+    </DialogTrigger>
+  );
+
+  if (showText) {
+    return menu;
+  }
+
+  return (
+    <TooltipTrigger delay={0}>
+      <Row width="100%">{menu}</Row>
+      <Tooltip placement="right">{user.username}</Tooltip>
+    </TooltipTrigger>
   );
 }
