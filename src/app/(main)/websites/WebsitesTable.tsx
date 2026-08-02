@@ -1,5 +1,5 @@
 import { DataColumn, DataTable, type DataTableProps, Icon, Text } from '@umami/react-zen';
-import { useMemo, type ReactNode } from 'react';
+import { type ReactNode, useMemo } from 'react';
 import { DateDistance } from '@/components/common/DateDistance';
 import { LinkButton } from '@/components/common/LinkButton';
 import { SortableLabel } from '@/components/common/SortableLabel';
@@ -10,8 +10,6 @@ import { WebsiteSparkline } from './WebsiteSparkline';
 
 export interface WebsitesTableProps extends DataTableProps {
   showActions?: boolean;
-  allowEdit?: boolean;
-  allowView?: boolean;
   renderLink?: (row: any) => ReactNode;
 }
 
