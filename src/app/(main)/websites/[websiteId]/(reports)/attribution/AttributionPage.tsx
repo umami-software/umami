@@ -1,42 +1,23 @@
 'use client';
 import { Column, Grid, ListItem, Select } from '@umami/react-zen';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Empty } from '@/components/common/Empty';
-import { useDateRange, useMessages, useWebsiteValuesQuery } from '@/components/hooks';
+import { useDateRange, useMessages } from '@/components/hooks';
+import { WebsiteValueComboBox } from '@/components/input/WebsiteValueComboBox';
 import { Attribution } from './Attribution';
-
-const stepPlaceholder = 'Select an item';
 
 export function AttributionPage({ websiteId }: { websiteId: string }) {
   const [model, setModel] = useState('first-click');
   const [type, setType] = useState('path');
   const [step, setStep] = useState('');
-  const [search, setSearch] = useState('');
   const { t, labels } = useMessages();
   const {
     dateRange: { startDate, endDate },
   } = useDateRange();
-  const { data, isLoading } = useWebsiteValuesQuery({
-    websiteId,
-    type,
-    search,
-    startDate,
-    endDate,
-  });
-  const items = data?.filter(({ value }) => value) || [];
-  const stepItems = useMemo(() => {
-    if (!step || items.some(({ value }) => value === step)) {
-      return items;
-    }
-
-    return [{ value: step }, ...items];
-  }, [items, step]);
-
   const handleTypeChange = (value: any) => {
     setType(value as string);
     setStep('');
-    setSearch('');
   };
 
   return (
@@ -66,24 +47,15 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
           </Select>
         </Column>
         <Column>
-          <Select
+          <WebsiteValueComboBox
             label={t(labels.conversionStep)}
+            websiteId={websiteId}
+            type={type}
+            startDate={startDate}
+            endDate={endDate}
             value={step}
-            onChange={value => setStep(value?.toString() ?? '')}
-            placeholder={stepPlaceholder}
-            renderValue={({ defaultChildren }) => (step ? defaultChildren : stepPlaceholder)}
-            isLoading={isLoading}
-            searchValue={search}
-            onSearch={setSearch}
-            maxHeight={320}
-            allowSearch
-          >
-            {stepItems.map(({ value }) => (
-              <ListItem key={value} id={value}>
-                {value}
-              </ListItem>
-            ))}
-          </Select>
+            onChange={setStep}
+          />
         </Column>
       </Grid>
       {step ? (
