@@ -101,6 +101,7 @@ vi.mock('@/components/input/WebsiteValueComboBox', () => ({
       {label}
       <select aria-label={label} value={value} onChange={event => onChange(event.currentTarget.value)}>
         <option value="" />
+        {value && !mockValues.some(item => item.value === value) && <option value={value}>{value}</option>}
         {mockValues.map(({ value }) => (
           <option key={value} value={value}>
             {value}
@@ -117,7 +118,7 @@ vi.mock('@/app/(main)/websites/[websiteId]/WebsiteControls', () => ({
 
 vi.mock('./Attribution', () => ({
   Attribution: ({ step, type }: { step: string; type: string }) => (
-    <div data-testid="attribution-result">{`${type}:${step}`}</div>
+    <div data-test="attribution-result">{`${type}:${step}`}</div>
   ),
 }));
 
