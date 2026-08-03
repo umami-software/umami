@@ -31,7 +31,8 @@ test('renders the expanded sidebar control at full width and opens its menu', as
 
   expect(button).toHaveStyle({ width: '100%' });
 
-  await user.click(button);
+  button.focus();
+  await user.keyboard('{Enter}');
 
   expect(screen.getByRole('menuitem', { name: 'Settings' })).toBeInTheDocument();
 });
@@ -40,7 +41,19 @@ test('keeps the collapsed sidebar control accessible and interactive', async () 
   const { user } = render(<UserButton showText={false} />);
   const button = screen.getByRole('button', { name: 'admin' });
 
-  await user.click(button);
+  button.focus();
+  await user.keyboard('{Enter}');
 
   expect(screen.getByRole('menuitem', { name: 'Settings' })).toBeInTheDocument();
+});
+
+test('closes the menu after selecting settings', async () => {
+  const { user } = render(<UserButton />);
+  const button = screen.getByRole('button', { name: 'admin' });
+
+  button.focus();
+  await user.keyboard('{Enter}');
+  await user.click(screen.getByRole('menuitem', { name: 'Settings' }));
+
+  expect(screen.queryByRole('menuitem', { name: 'Settings' })).not.toBeInTheDocument();
 });

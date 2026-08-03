@@ -1,11 +1,11 @@
 import {
   Button,
   Column,
-  DialogTrigger,
   Icon,
   Menu,
   MenuItem,
   MenuSeparator,
+  MenuTrigger,
   Popover,
   Row,
   SubmenuTrigger,
@@ -52,6 +52,7 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
 
   const handleNavigate = (url: string, target?: string) => {
     onClose?.();
+
     if (target) {
       window.open(url, target);
     } else if (url.startsWith('http')) {
@@ -59,6 +60,16 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
     } else {
       router.push(url);
     }
+  };
+
+  const handleSelectLocale = (key: string) => {
+    saveLocale(key);
+    onClose?.();
+  };
+
+  const handleSelectTheme = (key: 'light' | 'dark') => {
+    setTheme(key);
+    onClose?.();
   };
 
   const languageItems = Object.keys(languages).map(key => ({
@@ -104,7 +115,13 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
     <Button
       variant="zero"
       aria-label={showText ? undefined : user.username}
-      style={{ padding: 0, width: '100%', justifyContent: 'flex-start' }}
+      style={{
+        display: 'flex',
+        padding: 0,
+        width: '100%',
+        flexGrow: 1,
+        justifyContent: 'flex-start',
+      }}
     >
       <Row
         alignItems="center"
@@ -126,7 +143,7 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
   );
 
   const menu = (
-    <DialogTrigger>
+    <MenuTrigger>
       {trigger}
       <Popover side="top" align="start">
         <Column minWidth="200px">
@@ -159,7 +176,7 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
                   style={{ maxHeight: 300, overflow: 'auto' }}
                 >
                   {languageItems.map(({ value, label }) => (
-                    <MenuItem key={value} id={value} onAction={key => saveLocale(key as string)}>
+                    <MenuItem key={value} id={value} onAction={() => handleSelectLocale(value)}>
                       <Text weight={value === locale ? 'bold' : undefined}>{label}</Text>
                     </MenuItem>
                   ))}
@@ -181,21 +198,17 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
                 isNonModal
               >
                 <Menu selectionMode="single" selectedKeys={new Set([theme])}>
-                  <MenuItem id="light" onAction={key => setTheme(key as 'light' | 'dark')}>
-                    <Row alignItems="center" gap>
-                      <Icon>
-                        <Sun />
-                      </Icon>
-                      <Text>Light</Text>
-                    </Row>
+                  <MenuItem id="light" onAction={() => handleSelectTheme('light')}>
+                    <Icon>
+                      <Sun />
+                    </Icon>
+                    <Text weight={theme === 'light' ? 'bold' : undefined}>Light</Text>
                   </MenuItem>
-                  <MenuItem id="dark" onAction={key => setTheme(key as 'light' | 'dark')}>
-                    <Row alignItems="center" gap>
-                      <Icon>
-                        <Moon />
-                      </Icon>
-                      <Text>Dark</Text>
-                    </Row>
+                  <MenuItem id="dark" onAction={() => handleSelectTheme('dark')}>
+                    <Icon>
+                      <Moon />
+                    </Icon>
+                    <Text weight={theme === 'dark' ? 'bold' : undefined}>Dark</Text>
                   </MenuItem>
                 </Menu>
               </Popover>
@@ -204,6 +217,7 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
               if (separator) {
                 return <MenuSeparator key={id} />;
               }
+
               return (
                 <MenuItem key={id} id={id} onAction={() => handleNavigate(path, target)}>
                   <Row alignItems="center" gap>
@@ -221,16 +235,16 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
           </Menu>
         </Column>
       </Popover>
-    </DialogTrigger>
+    </MenuTrigger>
   );
 
   if (showText) {
-    return menu;
+    return <div style={{ width: '100%' }}>{menu}</div>;
   }
 
   return (
     <TooltipTrigger delay={0}>
-      <Row width="100%">{menu}</Row>
+      <div style={{ width: '100%' }}>{menu}</div>
       <Tooltip placement="right">{user.username}</Tooltip>
     </TooltipTrigger>
   );
