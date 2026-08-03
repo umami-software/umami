@@ -15,7 +15,7 @@ export function PreferencesButton() {
           <Settings />
         </Icon>
       </Button>
-      <Popover placement="bottom end">
+      <Popover side="bottom" align="end">
         <Panel gap="3">
           <Column>
             <Label>{t(labels.timezone)}</Label>

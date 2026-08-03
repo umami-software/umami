@@ -1,6 +1,13 @@
-import { Button, Column, Icon, List, MenuTrigger, Popover, SearchField } from '@umami/react-zen';
-import type { ReactNode } from 'react';
+import { Button, Icon, Menu, MenuItem, MenuTrigger, SearchField } from '@umami/react-zen';
+import { Children, type ReactNode } from 'react';
 import { ChevronRight } from '@/components/icons';
+
+const listStyle = {
+  maxHeight: 'min(320px, calc(100dvh - 8rem))',
+  overflowY: 'auto' as const,
+};
+
+const menuItemProps = { closeOnClick: false };
 
 interface MultiSelectProps {
   value?: string[];
@@ -12,6 +19,14 @@ interface MultiSelectProps {
   renderEmptyState?: () => ReactNode;
   renderValue?: (values: string[]) => ReactNode;
   children: ReactNode;
+}
+
+export function MultiSelectItem({ value, children }: { value: string; children: ReactNode }) {
+  return (
+    <MenuItem id={value} {...menuItemProps}>
+      {children}
+    </MenuItem>
+  );
 }
 
 export function MultiSelect({
@@ -45,27 +60,35 @@ export function MultiSelect({
           <ChevronRight />
         </Icon>
       </Button>
-      <Popover style={{ minWidth: 'var(--trigger-width)', maxWidth: 'var(--trigger-width)' }}>
-        <Column
-          gap="2"
-          padding="2"
-          border
-          borderRadius="md"
-          shadow="lg"
-          className="bg-surface-overlay"
-        >
-          {allowSearch && <SearchField value={searchValue} onSearch={onSearch} autoFocus />}
-          <List
-            selectionMode="multiple"
-            value={value}
-            onChange={onChange}
-            showCheckmark
-            renderEmptyState={renderEmptyState}
-          >
-            {children}
-          </List>
-        </Column>
-      </Popover>
+      <Menu
+        selectionMode="multiple"
+        selectedKeys={value}
+        onSelectionChange={keys =>
+          onChange?.(keys === 'all' ? [] : Array.from(keys, key => String(key)))
+        }
+        className="flex flex-col gap-2"
+        style={{
+          width: 'var(--anchor-width)',
+          maxWidth: 'var(--available-width)',
+        }}
+      >
+        {allowSearch && (
+          <SearchField
+            value={searchValue}
+            onSearch={onSearch}
+            autoFocus
+            onKeyDown={event => {
+              if (event.key !== 'Escape' && event.key !== 'Tab') {
+                event.stopPropagation();
+              }
+            }}
+          />
+        )}
+        <div style={listStyle}>
+          {children}
+          {Children.count(children) === 0 && renderEmptyState?.()}
+        </div>
+      </Menu>
     </MenuTrigger>
   );
 }

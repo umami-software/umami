@@ -48,7 +48,14 @@ export function MetricsExpandedTable({
   return (
     <>
       <Row alignItems="center" paddingBottom="3">
-        {allowSearch && <SearchField value={search} onSearch={setSearch} delay={300} />}
+        {allowSearch && (
+          <SearchField
+            value={search}
+            onSearch={setSearch}
+            delay={300}
+            className="w-full max-w-md"
+          />
+        )}
         <Row justifyContent="flex-end" flexGrow={1} gap>
           {children}
           {allowDownload && <DownloadButton filename={type} data={data} />}

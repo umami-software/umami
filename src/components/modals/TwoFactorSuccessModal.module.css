@@ -1,0 +1,18 @@
+.dialog {
+  width: 620px;
+  max-width: 95vw;
+}
+
+.codesGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 12px;
+  background: var(--surface-sunken);
+  border-radius: 8px;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 0.9rem;
+}

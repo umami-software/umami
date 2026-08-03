@@ -1,3 +1,4 @@
+import { MAX_PAGING_RESULTS } from '@/lib/constants';
 import { serializePropertyFilters } from '@/lib/params';
 import type { PropertyFilter, ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
@@ -28,6 +29,7 @@ export function useSessionDataPivotQuery(
         propertyName,
         ...serializePropertyFilters(propertyFilters),
         ...params,
+        maxResults: MAX_PAGING_RESULTS,
       }),
     enabled: !!(websiteId && propertyName),
     ...options,

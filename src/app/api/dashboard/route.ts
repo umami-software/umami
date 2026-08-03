@@ -1,7 +1,8 @@
-import { parseRequest } from '@/lib/request';
-import { json, unauthorized } from '@/lib/response';
-import { createBoard, getBoard, updateBoard } from '@/queries/prisma';
 import { z } from 'zod';
+import { hasValidBoardReports } from '@/permissions';
+import { parseRequest } from '@/lib/request';
+import { badRequest, json, unauthorized } from '@/lib/response';
+import { createBoard, getBoard, updateBoard } from '@/queries/prisma';
 
 export async function GET(request: Request) {
   const { auth, error } = await parseRequest(request);
@@ -21,8 +22,8 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const schema = z.object({
-    name: z.string().optional(),
-    description: z.string().optional(),
+    name: z.string().max(200).optional(),
+    description: z.string().max(500).optional(),
     parameters: z.object({}).passthrough().optional(),
   });
 
@@ -44,6 +45,10 @@ export async function POST(request: Request) {
     description: body.description,
     parameters: body.parameters ?? {},
   };
+
+  if (!(await hasValidBoardReports(existing?.type ?? 'dashboard', data.parameters))) {
+    return badRequest({ message: 'Board contains invalid saved reports.' });
+  }
 
   if (existing) {
     const result = await updateBoard(userId, data);

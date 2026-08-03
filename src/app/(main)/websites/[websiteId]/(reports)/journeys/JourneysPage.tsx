@@ -39,7 +39,12 @@ export function JourneysPage({ websiteId }: { websiteId: string }) {
     <Column gap>
       <WebsiteControls websiteId={websiteId} />
       <Grid columns="repeat(3, 1fr)" gap>
-        <Select label={t(labels.steps)} value={steps} defaultValue={steps} onChange={setSteps}>
+        <Select
+          label={t(labels.steps)}
+          value={steps}
+          defaultValue={steps}
+          onChange={value => setSteps(Number(value))}
+        >
           {JOURNEY_STEPS.map(step => (
             <ListItem key={step} id={step}>
               {step}

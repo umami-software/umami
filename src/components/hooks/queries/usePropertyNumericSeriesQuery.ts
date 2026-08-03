@@ -21,7 +21,18 @@ export function usePropertyNumericSeriesQuery(
   return useQuery<any>({
     queryKey: [
       `websites:${source}-data:numeric-series`,
-      { websiteId, propertyName, metric, eventName, propertyFilters, startAt, endAt, unit, timezone, ...params },
+      {
+        websiteId,
+        propertyName,
+        metric,
+        eventName,
+        propertyFilters,
+        startAt,
+        endAt,
+        unit,
+        timezone,
+        ...params,
+      },
     ],
     queryFn: () =>
       get(

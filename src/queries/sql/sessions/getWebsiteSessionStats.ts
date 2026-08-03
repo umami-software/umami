@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS } from '@/lib/constants';
+import { EVENT_COLUMNS, EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
@@ -36,17 +36,18 @@ async function relationalQuery(
   return rawQuery(
     `
     select
-      count(*) as "pageviews",
+      sum(case when website_event.event_type = ${EVENT_TYPE.pageView} then 1 else 0 end) as "pageviews",
       count(distinct website_event.session_id) as "visitors",
       count(distinct website_event.visit_id) as "visits",
       count(distinct session.country) as "countries",
-      sum(case when website_event.event_type = 2 then 1 else 0 end) as "events"
+      sum(case when website_event.event_type = ${EVENT_TYPE.customEvent} then 1 else 0 end) as "events"
     from website_event
     ${cohortQuery}
     join session on website_event.session_id = session.session_id
       and website_event.website_id = session.website_id
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
+      and website_event.event_type != ${EVENT_TYPE.performance}
       ${filterQuery}
     `,
     queryParams,
@@ -66,15 +67,16 @@ async function clickhouseQuery(
   if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
     sql = `
     select
-      sumIf(1, event_type = 1) as "pageviews",
+      sumIf(1, event_type = ${EVENT_TYPE.pageView}) as "pageviews",
       uniq(session_id) as "visitors",
       uniq(visit_id) as "visits",
       uniq(country) as "countries",
-      sumIf(1, event_type = 2) as "events"
+      sumIf(1, event_type = ${EVENT_TYPE.customEvent}) as "events"
     from website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type != ${EVENT_TYPE.performance}
         ${filterQuery}
     `;
   } else {
@@ -89,6 +91,7 @@ async function clickhouseQuery(
     ${cohortQuery}
     where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type != ${EVENT_TYPE.performance}
         ${filterQuery}
     `;
   }

@@ -31,7 +31,7 @@ export function WebsiteSelect({
   const { user } = useLoginQuery();
   const { data, isLoading } = useUserWebsitesQuery(
     { userId: user?.id, teamId },
-    { search, pageSize: 20, includeTeams },
+    { search, pageSize: 100, includeTeams },
   );
   const listItems: { id: string; name: string }[] = data?.data || [];
 
@@ -79,7 +79,7 @@ export function WebsiteSelect({
       allowSearch={true}
       searchValue={search}
       onSearch={handleSearch}
-      onChange={handleChange}
+      onChange={value => handleChange(value as string)}
       onOpenChange={handleOpenChange}
       renderValue={renderValue}
       buttonProps={{

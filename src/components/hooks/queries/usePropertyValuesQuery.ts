@@ -21,7 +21,18 @@ export function usePropertyValuesQuery(
   return useQuery<any>({
     queryKey: [
       `websites:${source}-data:values`,
-      { websiteId, propertyName, dataType, eventName, propertyFilters, startAt, endAt, unit, timezone, ...params },
+      {
+        websiteId,
+        propertyName,
+        dataType,
+        eventName,
+        propertyFilters,
+        startAt,
+        endAt,
+        unit,
+        timezone,
+        ...params,
+      },
     ],
     queryFn: () =>
       get(
@@ -29,7 +40,7 @@ export function usePropertyValuesQuery(
           ? `/websites/${websiteId}/event-data/values`
           : `/websites/${websiteId}/session-data/values`,
         {
-          ...(source === 'event' ? { event: eventName } : {}),
+          ...(source === 'event' && eventName ? { event: eventName } : {}),
           startAt,
           endAt,
           unit,
@@ -40,7 +51,7 @@ export function usePropertyValuesQuery(
           ...params,
         },
       ),
-    enabled: !!(websiteId && propertyName && (source === 'session' || eventName)),
+    enabled: !!(websiteId && propertyName),
     ...options,
   });
 }

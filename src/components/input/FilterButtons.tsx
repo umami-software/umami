@@ -1,5 +1,4 @@
 import { Box, ToggleGroup, ToggleGroupItem } from '@umami/react-zen';
-import { useState } from 'react';
 
 export interface FilterButtonsProps {
   items: { id: string; label: string }[];
@@ -8,19 +7,17 @@ export interface FilterButtonsProps {
 }
 
 export function FilterButtons({ items, value, onChange }: FilterButtonsProps) {
-  const [selected, setSelected] = useState(value);
-
-  const handleChange = (value: string) => {
-    setSelected(value);
-    onChange?.(value);
-  };
-
   return (
     <Box>
       <ToggleGroup
-        value={[selected]}
-        onChange={e => handleChange(e[0])}
-        disallowEmptySelection={true}
+        value={[value]}
+        onChange={e => {
+          const nextValue = e[0];
+
+          if (nextValue) {
+            onChange?.(nextValue);
+          }
+        }}
       >
         {items.map(({ id, label }) => (
           <ToggleGroupItem key={id} id={id}>

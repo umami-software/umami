@@ -1,5 +1,10 @@
 import clickhouse from '@/lib/clickhouse';
-import { FILTER_COLUMNS, GROUPED_DOMAINS, SESSION_COLUMNS } from '@/lib/constants';
+import {
+  EVENT_TYPE,
+  FILTER_COLUMNS,
+  GROUPED_DOMAINS,
+  SESSION_COLUMNS,
+} from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
@@ -36,7 +41,7 @@ async function relationalQuery(
   filters: QueryFilters,
 ): Promise<PageviewExpandedMetricsData[]> {
   const { type, limit = 500, offset = 0 } = parameters;
-  let column = FILTER_COLUMNS[type] || type;
+  let column = getPageviewColumn(type);
   const { rawQuery, parseFilters, getTimestampDiffSQL } = prisma;
   const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } =
     parseFilters(
@@ -46,10 +51,14 @@ async function relationalQuery(
       },
       { joinSession: SESSION_COLUMNS.includes(type) },
     );
+  const needsBounceEvents = filters.excludeBounce !== true;
+  const fullPathSearchQuery =
+    type === 'fullPath' && filters.search
+      ? `and (case when website_event.url_query != '' then website_event.url_path || '?' || website_event.url_query else website_event.url_path end) ilike {{fullPathSearch}}`
+      : '';
 
   let entryExitQuery = '';
   let excludeDomain = '';
-
   if (column === 'referrer_domain') {
     excludeDomain = `and website_event.referrer_domain != regexp_replace(website_event.hostname, '^www.', '')
       and website_event.referrer_domain != ''`;
@@ -76,6 +85,31 @@ async function relationalQuery(
     `;
   }
 
+  const selectColumn =
+    type === 'fullPath'
+      ? `case when website_event.url_query != '' then website_event.url_path || '?' || website_event.url_query else website_event.url_path end`
+      : column;
+
+  const groupByColumn =
+    type === 'fullPath'
+      ? `case when website_event.url_query != '' then website_event.url_path || '?' || website_event.url_query else website_event.url_path end`
+      : column;
+  const bounceQuery = needsBounceEvents
+    ? `sum(case when t.c = 1 and coalesce(e.has_custom_event, 0) = 0 then 1 else 0 end) as "bounces",`
+    : '0 as "bounces",';
+  const visitEventsJoin = needsBounceEvents
+    ? `left join (
+      select session_id, visit_id, 1 as "has_custom_event"
+      from website_event
+      where website_id = {{websiteId::uuid}}
+        and created_at between {{startDate}} and {{endDate}}
+        and event_type = ${EVENT_TYPE.customEvent}
+      group by 1, 2
+    ) as e
+      on e.session_id = t.session_id
+      and e.visit_id = t.visit_id`
+    : '';
+
   return rawQuery(
     `
     select
@@ -83,11 +117,11 @@ async function relationalQuery(
       sum(t.c) as "pageviews",
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
-      sum(case when t.c = 1 then 1 else 0 end) as "bounces",
+      ${bounceQuery}
       sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime"
     from (
       select
-        ${column} as "name",
+        ${selectColumn} as "name",
         website_event.session_id,
         website_event.visit_id,
         count(*) as "c",
@@ -96,22 +130,27 @@ async function relationalQuery(
       from website_event
       ${cohortQuery}
       ${excludeBounceQuery}
-      ${joinSessionQuery} 
-      ${entryExitQuery} 
+      ${joinSessionQuery}
+      ${entryExitQuery}
       where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_type NOT IN (2, 5)
         ${excludeDomain}
+        ${fullPathSearchQuery}
         ${filterQuery}
-      group by ${column}, website_event.session_id, website_event.visit_id
+      group by ${groupByColumn}, website_event.session_id, website_event.visit_id
     ) as t
+    ${visitEventsJoin}
     where name != ''
-    group by name 
+    group by name
     order by visitors desc, visits desc
     limit ${limit}
     offset ${offset}
     `,
-    queryParams,
+    {
+      ...queryParams,
+      ...(type === 'fullPath' && filters.search ? { fullPathSearch: `%${filters.search}%` } : {}),
+    },
     FUNCTION_NAME,
   );
 }
@@ -122,37 +161,61 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
   const { type, limit = 500, offset = 0 } = parameters;
-  let column = FILTER_COLUMNS[type] || type;
+  let column = getPageviewColumn(type);
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, excludeBounceQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
+  const needsBounceEvents = filters.excludeBounce !== true;
+  const fullPathSearchQuery =
+    type === 'fullPath' && filters.search
+      ? `and positionCaseInsensitive(if(url_query != '', concat(url_path, '?', url_query), url_path), {fullPathSearch:String}) > 0`
+      : '';
 
   let excludeDomain = '';
   let entryExitQuery = '';
+  let selectColumn = column;
 
   if (column === 'referrer_domain') {
     excludeDomain = `and referrer_domain != hostname and referrer_domain != ''`;
     if (type === 'domain') {
       column = toClickHouseGroupedReferrer(GROUPED_DOMAINS);
+      selectColumn = column;
     }
   }
 
   if (type === 'entry' || type === 'exit') {
     const aggregrate = type === 'entry' ? 'argMin' : 'argMax';
-    column = `x.${column}`;
 
     entryExitQuery = `
       JOIN (select visit_id,
-          ${aggregrate}(url_path, created_at) url_path
+          ${aggregrate}(url_path, created_at) url_path,
+          ${aggregrate}(url_query, created_at) url_query
       from website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type NOT IN (2, 5)
       group by visit_id) x
       ON x.visit_id = website_event.visit_id`;
+
+    selectColumn = `x.url_path`;
+  } else if (type === 'fullPath') {
+    selectColumn = `if(url_query != '', concat(url_path, '?', url_query), url_path)`;
   }
+  const bounceQuery = needsBounceEvents
+    ? `sumIf(1, t.c = 1 and ifNull(e.has_custom_event, 0) = 0) as "bounces",`
+    : '0 as "bounces",';
+  const visitEventsJoin = needsBounceEvents
+    ? `left join (
+      select session_id, visit_id, toUInt8(1) as has_custom_event
+      from website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = ${EVENT_TYPE.customEvent}
+      group by session_id, visit_id
+    ) as e using (session_id, visit_id)`
+    : '';
 
   return rawQuery(
     `
@@ -161,11 +224,11 @@ async function clickhouseQuery(
       sum(t.c) as "pageviews",
       uniq(t.session_id) as "visitors",
       uniq(t.visit_id) as "visits",
-      sum(if(t.c = 1, 1, 0)) as "bounces",
+      ${bounceQuery}
       sum(max_time-min_time) as "totaltime"
     from (
       select
-        ${column} name,
+        ${selectColumn} name,
         session_id,
         visit_id,
         count(*) c,
@@ -180,15 +243,21 @@ async function clickhouseQuery(
         and event_type NOT IN (2, 5)
         and name != ''
         ${excludeDomain}
+        ${fullPathSearchQuery}
         ${filterQuery}
       group by name, session_id, visit_id
     ) as t
-    group by name 
+    ${visitEventsJoin}
+    group by name
     order by visitors desc, visits desc
     limit ${limit}
     offset ${offset}
     `,
-    { ...queryParams, ...parameters },
+    {
+      ...queryParams,
+      ...parameters,
+      ...(type === 'fullPath' && filters.search ? { fullPathSearch: filters.search } : {}),
+    },
     FUNCTION_NAME,
   );
 }
@@ -227,4 +296,12 @@ export function toPostgresGroupedReferrer(
 
 function toPostgresLikeClause(column: string, arr: string[]) {
   return arr.map(val => `${column} ilike '%${val.replace(/'/g, "''")}%'`).join(' OR\n  ');
+}
+
+function getPageviewColumn(type: string) {
+  if (type === 'fullPath') {
+    return 'url_path';
+  }
+
+  return FILTER_COLUMNS[type] || type;
 }

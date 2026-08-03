@@ -67,7 +67,7 @@ export const languages = {
   'fo-FO': { label: 'Føroyskt' },
   'fr-FR': { label: 'Français', dateLocale: fr },
   'ga-ES': { label: 'Galacian (Spain)', dateLocale: es },
-  'he-IL': { label: 'עברית', dateLocale: he },
+  'he-IL': { label: 'עברית', dateLocale: he, dir: 'rtl' },
   'hi-IN': { label: 'हिन्दी', dateLocale: hi },
   'hr-HR': { label: 'Hrvatski', dateLocale: hr },
   'hu-HU': { label: 'Hungarian', dateLocale: hu },

@@ -15,15 +15,39 @@ export interface ReplayChunk {
   endedAt: Date;
 }
 
-export async function getReplayChunks(websiteId: string, visitId: string): Promise<ReplayChunk[]> {
+interface GetReplayChunksOptions {
+  endAt?: Date;
+  endChunkIndex?: number;
+}
+
+export async function getReplayChunks(
+  websiteId: string,
+  visitId: string,
+  options: GetReplayChunksOptions = {},
+): Promise<ReplayChunk[]> {
   return runQuery({
-    [PRISMA]: () => relationalQuery(websiteId, visitId),
-    [CLICKHOUSE]: () => clickhouseQuery(websiteId, visitId),
+    [PRISMA]: () => relationalQuery(websiteId, visitId, options),
+    [CLICKHOUSE]: () => clickhouseQuery(websiteId, visitId, options),
   });
 }
 
-async function relationalQuery(websiteId: string, visitId: string): Promise<ReplayChunk[]> {
+async function relationalQuery(
+  websiteId: string,
+  visitId: string,
+  { endAt, endChunkIndex }: GetReplayChunksOptions,
+): Promise<ReplayChunk[]> {
   const { rawQuery } = prisma;
+  const endAtFilter = endAt
+    ? `
+      and started_at <= {{endAt}}
+    `
+    : '';
+  const endChunkFilter =
+    endChunkIndex !== undefined
+      ? `
+      and chunk_index <= {{endChunkIndex}}
+    `
+      : '';
 
   const chunks: {
     sessionId: string;
@@ -46,9 +70,11 @@ async function relationalQuery(websiteId: string, visitId: string): Promise<Repl
     from session_replay
     where website_id = {{websiteId::uuid}}
       and visit_id = {{visitId::uuid}}
+      ${endAtFilter}
+      ${endChunkFilter}
     order by chunk_index asc
     `,
-    { websiteId, visitId },
+    { websiteId, visitId, endAt, endChunkIndex },
     FUNCTION_NAME,
   );
 
@@ -58,8 +84,23 @@ async function relationalQuery(websiteId: string, visitId: string): Promise<Repl
   }));
 }
 
-async function clickhouseQuery(websiteId: string, visitId: string): Promise<ReplayChunk[]> {
+async function clickhouseQuery(
+  websiteId: string,
+  visitId: string,
+  { endAt, endChunkIndex }: GetReplayChunksOptions,
+): Promise<ReplayChunk[]> {
   const { rawQuery } = clickhouse;
+  const endAtFilter = endAt
+    ? `
+      and started_at <= {endAt:DateTime64}
+    `
+    : '';
+  const endChunkFilter =
+    endChunkIndex !== undefined
+      ? `
+      and chunk_index <= {endChunkIndex:UInt32}
+    `
+      : '';
 
   const results = await rawQuery<
     {
@@ -82,11 +123,13 @@ async function clickhouseQuery(websiteId: string, visitId: string): Promise<Repl
       started_at,
       ended_at
     from session_replay
-    where website_id = {websiteId:UUID}
+    prewhere website_id = {websiteId:UUID}
       and visit_id = {visitId:UUID}
+      ${endAtFilter}
+      ${endChunkFilter}
     order by chunk_index asc
     `,
-    { websiteId, visitId },
+    { websiteId, visitId, endAt, endChunkIndex },
     FUNCTION_NAME,
   );
 

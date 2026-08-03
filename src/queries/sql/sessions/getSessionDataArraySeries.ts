@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { DATA_TYPE } from '@/lib/constants';
+import { DATA_TYPE, EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { EventDataSeriesPoint, PropertyFilter, QueryFilters } from '@/lib/types';
@@ -33,7 +33,11 @@ async function relationalQuery(
     websiteId,
     timezone,
   });
-  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(propertyFilters, 'session', timezone);
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(
+    propertyFilters,
+    'session',
+    timezone,
+  );
 
   return rawQuery(
     `
@@ -50,6 +54,7 @@ async function relationalQuery(
     cross join lateral jsonb_array_elements_text(coalesce(session_data.string_value, '[]')::jsonb) as array_item(value)
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
+      and website_event.event_type != ${EVENT_TYPE.performance}
       and session_data.data_key = {{propertyName}}
       and session_data.data_type = ${DATA_TYPE.array}
       ${filterQuery}
@@ -70,8 +75,16 @@ async function clickhouseQuery(
 ): Promise<EventDataSeriesPoint[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
   const { rawQuery, getDateSQL, parseFilters, getPropertyFilterQuery } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
-  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(propertyFilters, 'session', timezone);
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    timezone,
+  });
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(
+    propertyFilters,
+    'session',
+    timezone,
+  );
 
   return rawQuery(
     `
@@ -86,6 +99,7 @@ async function clickhouseQuery(
         and session_data.website_id = {websiteId:UUID}
     where website_event.website_id = {websiteId:UUID}
       and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and website_event.event_type != ${EVENT_TYPE.performance}
       and session_data.data_key = {propertyName:String}
       and session_data.data_type = ${DATA_TYPE.array}
     ${filterQuery}

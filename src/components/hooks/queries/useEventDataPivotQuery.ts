@@ -1,3 +1,4 @@
+import { MAX_PAGING_RESULTS } from '@/lib/constants';
 import { serializeEventPropertyFilters } from '@/lib/params';
 import type { EventPropertyFilter, ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
@@ -28,6 +29,7 @@ export function useEventDataPivotQuery(
         timezone,
         ...serializeEventPropertyFilters(eventFilters),
         ...params,
+        maxResults: MAX_PAGING_RESULTS,
       }),
     enabled: !!(websiteId && eventName),
     ...options,

@@ -3,7 +3,7 @@ import { parsePropertyFilters } from '@/lib/params';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
+import { canViewWebsiteSection } from '@/permissions';
 import { getSessionDataProperties } from '@/queries/sql';
 
 export async function GET(
@@ -13,7 +13,7 @@ export async function GET(
   const schema = z.object({
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
-    selectedPropertyName: z.string().optional(),
+    propertyName: z.string().optional(),
     ...filterParams,
   });
 
@@ -25,20 +25,15 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsiteSection(auth, websiteId, 'sessions'))) {
     return unauthorized();
   }
 
-  const { selectedPropertyName, ...rest } = query;
+  const { propertyName, ...rest } = query;
   const filters = await getQueryFilters(rest, websiteId);
   const propertyFilters = parsePropertyFilters(query);
 
-  const data = await getSessionDataProperties(
-    websiteId,
-    filters,
-    propertyFilters,
-    selectedPropertyName,
-  );
+  const data = await getSessionDataProperties(websiteId, filters, propertyFilters, propertyName);
 
   return json(data);
 }

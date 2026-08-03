@@ -7,7 +7,13 @@ import { Empty } from '@/components/common/Empty';
 import Link from '@/components/common/Link';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Pager } from '@/components/common/Pager';
-import { useEventDataPivotQuery, useEventDataPropertiesQuery, useMessages, useMobile, useNavigation } from '@/components/hooks';
+import {
+  useEventDataPivotQuery,
+  useEventDataPropertiesQuery,
+  useMessages,
+  useMobile,
+  useNavigation,
+} from '@/components/hooks';
 import type { EventPropertyFilter } from '@/lib/types';
 
 export function EventDataPivotTable({
@@ -41,7 +47,15 @@ export function EventDataPivotTable({
   const tableData = useMemo(() => {
     if (!pivotQuery.data?.data) return [];
     return pivotQuery.data.data.map(
-      (row: { eventId: string; sessionId: string; eventName: string; urlPath: string; createdAt: string; propertyKeys: string[]; propertyValues: string[] }) => {
+      (row: {
+        eventId: string;
+        sessionId: string;
+        eventName: string;
+        urlPath: string;
+        createdAt: string;
+        propertyKeys: string[];
+        propertyValues: string[];
+      }) => {
         const flat: Record<string, any> = {
           eventId: row.eventId,
           sessionId: row.sessionId,
@@ -57,10 +71,7 @@ export function EventDataPivotTable({
   }, [pivotQuery.data]);
 
   const tableQuery = useMemo(
-    () =>
-      pivotQuery.data
-        ? { ...pivotQuery.data, data: tableData }
-        : undefined,
+    () => (pivotQuery.data ? { ...pivotQuery.data, data: tableData } : undefined),
     [pivotQuery.data, tableData],
   );
 
@@ -110,13 +121,11 @@ export function EventDataPivotTable({
               </DataColumn>
             </DataTable>
           ) : (
-            <div style={{ width: '100%', maxWidth: '100%', overflowX: 'auto', overflowY: 'hidden' }}>
+            <div
+              style={{ width: '100%', maxWidth: '100%', overflowX: 'auto', overflowY: 'hidden' }}
+            >
               <div style={{ width: tableMinWidth, minWidth: tableMinWidth }}>
-                <DataTable
-                  data={tableQuery?.data}
-                  style={{ width: '100%' }}
-                  displayMode="table"
-                >
+                <DataTable data={tableQuery?.data} style={{ width: '100%' }} displayMode="table">
                   <DataColumn id="session" label={t(labels.session)} width="72px">
                     {(row: any) => (
                       <Link href={updateParams({ session: row.sessionId })}>

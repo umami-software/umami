@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { DATA_TYPE } from '@/lib/constants';
+import { DATA_TYPE, EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { PropertyFilter, PropertyLeaderboardRow, QueryFilters } from '@/lib/types';
@@ -7,7 +7,12 @@ import type { PropertyFilter, PropertyLeaderboardRow, QueryFilters } from '@/lib
 const FUNCTION_NAME = 'getSessionDataActivityStats';
 
 export async function getSessionDataActivityStats(
-  ...args: [websiteId: string, propertyName: string, filters: QueryFilters, propertyFilters?: PropertyFilter[]]
+  ...args: [
+    websiteId: string,
+    propertyName: string,
+    filters: QueryFilters,
+    propertyFilters?: PropertyFilter[],
+  ]
 ): Promise<PropertyLeaderboardRow[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -22,14 +27,18 @@ async function relationalQuery(
   propertyFilters: PropertyFilter[] = [],
 ) {
   const { timezone = 'utc' } = filters;
-  const { rawQuery, parseFilters, getPropertyFilterQuery, getTimestampDiffSQL } = prisma;
+  const { rawQuery, parseFilters, getPropertyFilterQuery } = prisma;
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
     timezone,
   });
-  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(propertyFilters, 'session', timezone);
- 
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(
+    propertyFilters,
+    'session',
+    timezone,
+  );
+
   return rawQuery(
     `
     with filtered_sessions as (
@@ -39,6 +48,7 @@ async function relationalQuery(
       ${joinSessionQuery}
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
+        and website_event.event_type != ${EVENT_TYPE.performance}
         ${filterQuery}
         ${pfSQL}
     ),
@@ -57,6 +67,7 @@ async function relationalQuery(
         and filtered_sessions.website_id = website_event.website_id
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
+        and website_event.event_type != ${EVENT_TYPE.performance}
       group by website_event.session_id, website_event.visit_id
     ),
     session_stats as (
@@ -65,8 +76,7 @@ async function relationalQuery(
         count(*) as visits,
         sum(activity) as activity,
         sum(views) as views,
-        sum(events) as events,
-        sum(${getTimestampDiffSQL('min_time', 'max_time')}) as totaltime
+        sum(events) as events
       from session_rollup
       group by session_id
     ),
@@ -89,8 +99,7 @@ async function relationalQuery(
       count(distinct property_values.session_id) as sessions,
       coalesce(sum(session_stats.visits), 0) as visits,
       coalesce(sum(session_stats.views), 0) as views,
-      coalesce(sum(session_stats.events), 0) as events,
-      coalesce(sum(session_stats.totaltime), 0) as totaltime
+      coalesce(sum(session_stats.events), 0) as events
     from property_values
     join session_stats on session_stats.session_id = property_values.session_id
     group by property_values.value
@@ -110,8 +119,16 @@ async function clickhouseQuery(
 ) {
   const { timezone = 'UTC' } = filters;
   const { rawQuery, parseFilters, getPropertyFilterQuery } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
-  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(propertyFilters, 'session', timezone);
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    timezone,
+  });
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(
+    propertyFilters,
+    'session',
+    timezone,
+  );
 
   return rawQuery(
     `
@@ -121,6 +138,7 @@ async function clickhouseQuery(
       ${cohortQuery}
       where website_event.website_id = {websiteId:UUID}
         and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and website_event.event_type != ${EVENT_TYPE.performance}
       ${filterQuery}
       ${pfSQL}
     ),
@@ -137,6 +155,7 @@ async function clickhouseQuery(
       join filtered_sessions on filtered_sessions.session_id = website_event.session_id
       where website_event.website_id = {websiteId:UUID}
         and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and website_event.event_type != ${EVENT_TYPE.performance}
       group by website_event.session_id, website_event.visit_id
     ),
     session_stats as (
@@ -145,8 +164,7 @@ async function clickhouseQuery(
         count() as visits,
         sum(activity) as activity,
         sum(views) as views,
-        sum(events) as events,
-        sum(max_time - min_time) as totaltime
+        sum(events) as events
       from session_rollup
       group by session_id
     ),
@@ -167,8 +185,7 @@ async function clickhouseQuery(
       uniq(property_values.session_id) as sessions,
       ifNull(sum(session_stats.visits), 0) as visits,
       ifNull(sum(session_stats.views), 0) as views,
-      ifNull(sum(session_stats.events), 0) as events,
-      ifNull(sum(session_stats.totaltime), 0) as totaltime
+      ifNull(sum(session_stats.events), 0) as events
     from property_values
     join session_stats on session_stats.session_id = property_values.session_id
     group by property_values.value

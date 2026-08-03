@@ -1,8 +1,3 @@
-import { Panel } from '@/components/common/Panel';
-import { useBoard, useMessages, useNavigation } from '@/components/hooks';
-import { Pencil, Plus, X } from '@/components/icons';
-import { getBoardEntity, getBoardType, getResolvedComponentEntity } from '@/lib/boards';
-import type { BoardComponentConfig } from '@/lib/types';
 import {
   Box,
   Button,
@@ -15,6 +10,12 @@ import {
   TooltipTrigger,
 } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
+import { Panel } from '@/components/common/Panel';
+import { useBoard, useMessages, useNavigation } from '@/components/hooks';
+import { Pencil, Plus, X } from '@/components/icons';
+import { getBoardEntity, getBoardType, getResolvedComponentEntity } from '@/lib/boards';
+import type { BoardComponentConfig } from '@/lib/types';
 import { getComponentDefinition } from '../boardComponentRegistry';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 import { BoardComponentSelect } from './BoardComponentSelect';
@@ -48,7 +49,9 @@ export function BoardEditColumn({
       return null;
     }
 
-    return <BoardComponentRenderer config={component} websiteId={entityId} entityType={entityType} />;
+    return (
+      <BoardComponentRenderer config={component} websiteId={entityId} entityType={entityType} />
+    );
   }, [component, definition?.requiresWebsite, entityId, entityType]);
 
   const handleSelect = (config: BoardComponentConfig) => {
@@ -95,9 +98,7 @@ export function BoardEditColumn({
           >
             <TooltipTrigger delay={0}>
               <Button variant="outline" onPress={() => setShowSelect(true)}>
-                <Icon size="sm">
-                  {hasComponent ? <Pencil /> : <Plus />}
-                </Icon>
+                <Icon size="sm">{hasComponent ? <Pencil /> : <Plus />}</Icon>
               </Button>
               <Tooltip>{t(hasComponent ? labels.edit : labels.selectComponent)}</Tooltip>
             </TooltipTrigger>
@@ -121,29 +122,31 @@ export function BoardEditColumn({
           </Box>
         </Column>
       )}
-      <Modal isOpen={showSelect} onOpenChange={setShowSelect}>
-        <Dialog
-          title={t(labels.selectComponent)}
-          style={{
-            width: '1200px',
-            maxWidth: 'calc(100vw - 40px)',
-            maxHeight: 'calc(100dvh - 40px)',
-            padding: '32px',
-          }}
-        >
-          {() => (
-            <BoardComponentSelect
-              teamId={teamId}
-              boardType={boardType}
-              boardEntityType={boardEntityType}
-              boardEntityId={boardEntityId}
-              initialConfig={component}
-              onSelect={handleSelect}
-              onClose={() => setShowSelect(false)}
-            />
-          )}
-        </Dialog>
-      </Modal>
+      <ControlledDialog>
+        <Modal isOpen={showSelect} onOpenChange={setShowSelect}>
+          <Dialog
+            title={t(labels.selectComponent)}
+            style={{
+              width: '1200px',
+              maxWidth: 'calc(100vw - 40px)',
+              maxHeight: 'calc(100dvh - 40px)',
+              padding: '32px',
+            }}
+          >
+            {() => (
+              <BoardComponentSelect
+                teamId={teamId}
+                boardType={boardType}
+                boardEntityType={boardEntityType}
+                boardEntityId={boardEntityId}
+                initialConfig={component}
+                onSelect={handleSelect}
+                onClose={() => setShowSelect(false)}
+              />
+            )}
+          </Dialog>
+        </Modal>
+      </ControlledDialog>
     </Panel>
   );
 }

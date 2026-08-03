@@ -15,6 +15,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ repo
 
   const report = await getReport(reportId);
 
+  if (!report) {
+    return notFound();
+  }
+
   if (!(await canViewReport(auth, report))) {
     return unauthorized();
   }

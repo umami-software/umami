@@ -1,15 +1,20 @@
-import { Column, ComboBox, Grid, Label, ListItem, Row } from '@umami/react-zen';
+import { Column, Grid, Label, ListItem, Row } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
+import { ComboBox } from '@/components/common/ComboBox';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, usePropertyFieldsQuery, useSessionDataPropertiesQuery } from '@/components/hooks';
-import { DATA_TYPE } from '@/lib/constants';
-import type { PropertyFilter } from '@/lib/types';
+import { Panel } from '@/components/common/Panel';
+import {
+  useMessages,
+  usePropertyFieldsQuery,
+  useSessionDataPropertiesQuery,
+} from '@/components/hooks';
 import { PropertyChart } from '@/components/property-data/PropertyChart';
 import { PropertyDateChart } from '@/components/property-data/PropertyDateChart';
 import { PropertyFilterBar } from '@/components/property-data/PropertyFilterBar';
 import { PropertyFilterButton } from '@/components/property-data/PropertyFilterButton';
 import { PropertyNumericChart } from '@/components/property-data/PropertyNumericChart';
-import { Panel } from '@/components/common/Panel';
+import { DATA_TYPE } from '@/lib/constants';
+import type { PropertyFilter } from '@/lib/types';
 import { SessionDataPivotTable } from '../session-data/SessionDataPivotTable';
 import { SessionPropertyChart } from '../session-data/SessionPropertyChart';
 
@@ -20,7 +25,7 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
   const { data, isLoading, isFetching, error } = usePropertyFieldsQuery('session', websiteId);
   const { data: scopedData } = useSessionDataPropertiesQuery(
     websiteId,
-    propertyName ? { selectedPropertyName: propertyName, propertyFilters } : undefined,
+    propertyName ? { propertyName, propertyFilters } : undefined,
     { enabled: !!propertyName },
   );
 
@@ -80,12 +85,7 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
             >
               <Column gap="1" style={{ minWidth: 0 }}>
                 <Label>{t(labels.property)}</Label>
-                <ComboBox
-                  inputValue={propertyName}
-                  onInputChange={setPropertyName}
-                  allowsCustomValue
-                  allowsEmptyCollection
-                >
+                <ComboBox inputValue={propertyName} onInputValueChange={setPropertyName}>
                   {properties.map((field: { propertyName: string }) => (
                     <ListItem key={field.propertyName} id={field.propertyName}>
                       {field.propertyName}
@@ -111,7 +111,9 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
             )}
           </Grid>
         )}
-        {propertyName && <PropertyFilterBar filters={propertyFilters} onChange={setPropertyFilters} />}
+        {propertyName && (
+          <PropertyFilterBar filters={propertyFilters} onChange={setPropertyFilters} />
+        )}
         {propertyName && selectedProperty?.dataType === DATA_TYPE.number && (
           <PropertyNumericChart
             source="session"

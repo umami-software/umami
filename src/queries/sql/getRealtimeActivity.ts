@@ -1,4 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
+import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
@@ -38,6 +39,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       on session.session_id = website_event.session_id
         and session.website_id = website_event.website_id
     where website_event.website_id = {{websiteId::uuid}}
+      and website_event.event_type != ${EVENT_TYPE.performance}
     ${filterQuery}
     ${dateQuery}
     order by website_event.created_at desc
@@ -71,6 +73,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters): Promis
         from website_event
         ${cohortQuery}
         where website_id = {websiteId:UUID}
+          and event_type != ${EVENT_TYPE.performance}
         ${filterQuery}
         ${dateQuery}
         order by createdAt desc

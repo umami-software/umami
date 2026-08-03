@@ -1,4 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
+import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { PropertyFilter, QueryFilters } from '@/lib/types';
@@ -10,7 +11,7 @@ export async function getSessionDataProperties(
     websiteId: string,
     filters: QueryFilters,
     propertyFilters?: PropertyFilter[],
-    selectedPropertyName?: string,
+    propertyName?: string,
   ]
 ) {
   return runQuery({
@@ -23,7 +24,7 @@ async function relationalQuery(
   websiteId: string,
   filters: QueryFilters,
   propertyFilters: PropertyFilter[] = [],
-  selectedPropertyName?: string,
+  propertyName?: string,
 ) {
   const { timezone = 'utc' } = filters;
   const { rawQuery, parseFilters, getPropertyFilterQuery } = prisma;
@@ -47,6 +48,7 @@ async function relationalQuery(
       ${joinSessionQuery}
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
+        and website_event.event_type != ${EVENT_TYPE.performance}
         ${filterQuery}
         ${pfSQL}
     ),
@@ -56,7 +58,7 @@ async function relationalQuery(
       join filtered_sessions
         on filtered_sessions.session_id = session_data.session_id
         and filtered_sessions.website_id = session_data.website_id
-      ${selectedPropertyName ? 'where session_data.data_key = {{selectedPropertyName}}' : ''}
+      ${propertyName ? 'where session_data.data_key = {{propertyName}}' : ''}
     )
     select
         data_key as "propertyName",
@@ -70,7 +72,7 @@ async function relationalQuery(
     order by 3 desc, 1 asc
     limit 500
     `,
-    { ...queryParams, websiteId, selectedPropertyName, ...pfParams },
+    { ...queryParams, websiteId, propertyName, ...pfParams },
     FUNCTION_NAME,
   );
 }
@@ -79,11 +81,15 @@ async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
   propertyFilters: PropertyFilter[] = [],
-  selectedPropertyName?: string,
+  propertyName?: string,
 ): Promise<{ propertyName: string; dataType: number; total: number }[]> {
   const { timezone = 'UTC' } = filters;
   const { rawQuery, parseFilters, getPropertyFilterQuery } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    timezone,
+  });
   const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(
     propertyFilters,
     'session',
@@ -98,6 +104,7 @@ async function clickhouseQuery(
       ${cohortQuery}
       where website_event.website_id = {websiteId:UUID}
         and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and website_event.event_type != ${EVENT_TYPE.performance}
       ${filterQuery}
       ${pfSQL}
     ),
@@ -107,7 +114,7 @@ async function clickhouseQuery(
       join filtered_sessions
         on filtered_sessions.session_id = session_data.session_id
         and filtered_sessions.website_id = session_data.website_id
-      ${selectedPropertyName ? 'where session_data.data_key = {selectedPropertyName:String}' : ''}
+      ${propertyName ? 'where session_data.data_key = {propertyName:String}' : ''}
     )
     select
       data_key as propertyName,
@@ -123,7 +130,7 @@ async function clickhouseQuery(
     order by 3 desc, 1 asc
     limit 500
     `,
-    { ...queryParams, websiteId, selectedPropertyName, ...pfParams },
+    { ...queryParams, websiteId, propertyName, ...pfParams },
     FUNCTION_NAME,
   );
 }

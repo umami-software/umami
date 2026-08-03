@@ -1,4 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
+import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { PropertyFilter, QueryFilters } from '@/lib/types';
@@ -34,7 +35,11 @@ async function relationalQuery(
     websiteId,
     timezone,
   });
-  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(propertyFilters, 'session', timezone);
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(
+    propertyFilters,
+    'session',
+    timezone,
+  );
   const aggSql =
     metric === 'avg'
       ? 'avg(cast(session_data.number_value as decimal))'
@@ -51,6 +56,7 @@ async function relationalQuery(
       ${joinSessionQuery}
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
+        and website_event.event_type != ${EVENT_TYPE.performance}
         ${filterQuery}
         ${pfSQL}
     )
@@ -81,8 +87,16 @@ async function clickhouseQuery(
 ): Promise<{ t: string; y: number }[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
   const { rawQuery, getDateSQL, parseFilters, getPropertyFilterQuery } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
-  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(propertyFilters, 'session', timezone);
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    timezone,
+  });
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(
+    propertyFilters,
+    'session',
+    timezone,
+  );
   const aggSql =
     metric === 'avg'
       ? 'avg(session_data.number_value)'
@@ -98,6 +112,7 @@ async function clickhouseQuery(
       ${cohortQuery}
       where website_event.website_id = {websiteId:UUID}
         and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and website_event.event_type != ${EVENT_TYPE.performance}
       ${filterQuery}
       ${pfSQL}
     )

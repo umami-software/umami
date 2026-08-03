@@ -1,7 +1,18 @@
+import {
+  Button,
+  type ButtonProps,
+  Column,
+  Icon,
+  Row,
+  Text,
+  Tooltip,
+  TooltipTrigger,
+} from '@umami/react-zen';
 import { AdminNav } from '@/app/(main)/admin/AdminNav';
 import { SettingsNav } from '@/app/(main)/settings/SettingsNav';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
+import Link from '@/components/common/Link';
 import { useGlobalState, useMessages, useNavigation } from '@/components/hooks';
 import {
   Globe,
@@ -14,18 +25,6 @@ import {
 } from '@/components/icons';
 import { UserButton } from '@/components/input/UserButton';
 import { Logo } from '@/components/svg';
-import {
-  Button,
-  type ButtonProps,
-  Column,
-  Focusable,
-  Icon,
-  Row,
-  Text,
-  Tooltip,
-  TooltipTrigger,
-} from '@umami/react-zen';
-import Link from '@/components/common/Link';
 
 export function SideNav(props: any) {
   const { t, labels } = useMessages();
@@ -81,7 +80,7 @@ export function SideNav(props: any) {
       backgroundColor="surface-base"
       border
       borderRadius
-      paddingX="2"
+      padding="2"
       flexGrow="1"
       minHeight="0"
       margin="2"
@@ -94,10 +93,10 @@ export function SideNav(props: any) {
       <Row
         alignItems="center"
         justifyContent="space-between"
-        height="60px"
+        minHeight="40px"
         style={{ flexShrink: 0 }}
       >
-        <Row paddingX="3" alignItems="center" justifyContent="space-between" flexGrow="1">
+        <Row padding="3" alignItems="center" justifyContent="space-between" flexGrow="1">
           {!isCollapsed && (
             <IconLabel icon={<Logo />}>
               <Text weight="bold">umami</Text>
@@ -117,34 +116,40 @@ export function SideNav(props: any) {
           <Column gap="2">
             {links.map(({ id, path, label, icon }) => {
               const isSelected = pathname.startsWith(renderUrl(path, false));
+              const content = (
+                <Row
+                  tabIndex={0}
+                  alignItems="center"
+                  hover={{ backgroundColor: 'surface-sunken' }}
+                  backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                  borderRadius
+                  minHeight="40px"
+                >
+                  <IconLabel
+                    icon={icon}
+                    label={isCollapsed ? '' : label}
+                    weight={isSelected ? 'bold' : undefined}
+                    padding
+                  />
+                </Row>
+              );
               return (
                 <Link key={id} href={renderUrl(path, false)} role="button">
-                  <TooltipTrigger isDisabled={!isCollapsed} delay={0}>
-                    <Focusable>
-                      <Row
-                        alignItems="center"
-                        hover={{ backgroundColor: 'surface-sunken' }}
-                        backgroundColor={isSelected ? 'surface-sunken' : undefined}
-                        borderRadius
-                        minHeight="40px"
-                      >
-                        <IconLabel
-                          icon={icon}
-                          label={isCollapsed ? '' : label}
-                          weight={isSelected ? 'bold' : undefined}
-                          padding
-                        />
-                      </Row>
-                    </Focusable>
-                    <Tooltip placement="right">{label}</Tooltip>
-                  </TooltipTrigger>
+                  {isCollapsed ? (
+                    <TooltipTrigger delay={0}>
+                      {content}
+                      <Tooltip placement="right">{label}</Tooltip>
+                    </TooltipTrigger>
+                  ) : (
+                    content
+                  )}
                 </Link>
               );
             })}
           </Column>
         )}
       </Column>
-      <Row marginBottom="4" paddingTop="2">
+      <Row paddingTop="2" width="100%" style={{ flexShrink: 0 }}>
         <UserButton showText={!isCollapsed} />
       </Row>
     </Column>

@@ -9,7 +9,7 @@ import {
   Select,
   Text,
 } from '@umami/react-zen';
-import { type Key, useState } from 'react';
+import { useState } from 'react';
 import {
   useLoginQuery,
   useMessages,
@@ -59,7 +59,7 @@ export function WebsiteTransferForm({
     );
   };
 
-  const handleChange = (key: Key) => {
+  const handleChange = (key: string | number | null) => {
     setTeamId(key as string);
   };
 
@@ -74,7 +74,7 @@ export function WebsiteTransferForm({
       </Text>
       <FormField name="teamId">
         {!isTeamWebsite && (
-          <Select onSelectionChange={handleChange} selectedKey={teamId}>
+          <Select onChange={handleChange} value={teamId}>
             {items.map(({ id, name }) => {
               return (
                 <ListItem key={`${id}`} id={`${id}`}>
@@ -89,7 +89,7 @@ export function WebsiteTransferForm({
         <Button onPress={onClose}>{t(labels.cancel)}</Button>
         <FormSubmitButton
           variant="primary"
-          isPending={isPending}
+          isLoading={isPending}
           isDisabled={!isTeamWebsite && !teamId}
         >
           {t(labels.transfer)}

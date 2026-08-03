@@ -10,6 +10,7 @@ import {
   useRegionNames,
 } from '@/components/hooks';
 import { GROUPED_DOMAINS } from '@/lib/constants';
+import { decodePunycodeDomain } from '@/lib/format';
 
 export interface MetricLabelProps {
   type: string;
@@ -94,6 +95,9 @@ export function MetricLabel({ type, data }: MetricLabelProps) {
         />
       );
 
+    case 'fullPath':
+      return label || `(${t(labels.none)})`;
+
     case 'device':
       return (
         <FilterLink
@@ -110,7 +114,7 @@ export function MetricLabel({ type, data }: MetricLabelProps) {
           type="referrer"
           value={label}
           externalUrl={`https://${label}`}
-          label={!label && t(labels.none)}
+          label={!label ? t(labels.none) : decodePunycodeDomain(label)}
           icon={<Favicon domain={label} />}
         />
       );

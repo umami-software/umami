@@ -1,6 +1,5 @@
-import type { ReactQueryOptions } from '@/lib/types';
 import { serializePropertyFilters } from '@/lib/params';
-import type { PropertyFilter } from '@/lib/types';
+import type { PropertyFilter, ReactQueryOptions } from '@/lib/types';
 import { useApi } from '../useApi';
 import { useDateParameters } from '../useDateParameters';
 import { useFilterParameters } from '../useFilterParameters';
@@ -8,7 +7,7 @@ import { useFilterParameters } from '../useFilterParameters';
 export function useSessionDataPropertiesQuery(
   websiteId: string,
   params?: {
-    selectedPropertyName?: string;
+    propertyName?: string;
     propertyFilters?: PropertyFilter[];
   },
   options?: ReactQueryOptions,
@@ -16,14 +15,14 @@ export function useSessionDataPropertiesQuery(
   const { get, useQuery } = useApi();
   const { startAt, endAt, unit, timezone } = useDateParameters();
   const filters = useFilterParameters({ includePagination: false });
-  const { selectedPropertyName, propertyFilters = [] } = params || {};
+  const { propertyName, propertyFilters = [] } = params || {};
 
   return useQuery<any>({
     queryKey: [
       'websites:session-data:properties',
       {
         websiteId,
-        selectedPropertyName,
+        propertyName,
         propertyFilters,
         startAt,
         endAt,
@@ -38,7 +37,7 @@ export function useSessionDataPropertiesQuery(
         endAt,
         unit,
         timezone,
-        selectedPropertyName,
+        propertyName,
         ...serializePropertyFilters(propertyFilters),
         ...filters,
       }),

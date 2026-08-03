@@ -11,19 +11,19 @@ import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 export function TopNav() {
   const { websiteId, linkId, pixelId, boardId, teamId, router, renderUrl } = useNavigation();
 
-  const handleWebsiteChange = (value: string) => {
+  const handleWebsiteChange = (value: string | number | null) => {
     router.push(renderUrl(`/websites/${value}`, false));
   };
 
-  const handleLinkChange = (value: string) => {
+  const handleLinkChange = (value: string | number | null) => {
     router.push(renderUrl(`/links/${value}`, false));
   };
 
-  const handlePixelChange = (value: string) => {
+  const handlePixelChange = (value: string | number | null) => {
     router.push(renderUrl(`/pixels/${value}`, false));
   };
 
-  const handleBoardChange = (value: string) => {
+  const handleBoardChange = (value: string | number | null) => {
     router.push(renderUrl(`/boards/${value}`, false));
   };
 

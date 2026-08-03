@@ -90,6 +90,25 @@ ENGINE = ReplacingMergeTree
     ORDER BY (website_id, session_id, data_key)
     SETTINGS index_granularity = 8192;
 
+ALTER TABLE umami.session_data
+MODIFY SETTING deduplicate_merge_projection_mode = 'drop';
+
+ALTER TABLE umami.session_data
+ADD PROJECTION session_data_property_filter_projection (
+    SELECT *
+    ORDER BY (
+        website_id,
+        data_key,
+        data_type,
+        string_value,
+        number_value,
+        date_value,
+        session_id
+    )
+);
+
+ALTER TABLE umami.session_data MATERIALIZE PROJECTION session_data_property_filter_projection;
+
 -- stats hourly
 CREATE TABLE umami.website_event_stats_hourly
 (
@@ -380,3 +399,41 @@ AS SELECT
     groupArrayState(data_type) AS property_types
 FROM umami.session_data
 GROUP BY website_id, session_id, distinct_id;
+
+-- Create heatmap_event
+CREATE TABLE umami.heatmap_event
+(
+    heatmap_event_id UUID,
+    website_id UUID,
+    session_id UUID,
+    visit_id UUID,
+    url_path String,
+    event_type UInt8,
+    x Nullable(Int32),
+    y Nullable(Int32),
+    page_x Nullable(Int32),
+    page_y Nullable(Int32),
+    page_w Nullable(Int32),
+    viewport_w Nullable(Int32),
+    viewport_h Nullable(Int32),
+    page_h Nullable(Int32),
+    scroll_pct Nullable(UInt8),
+    created_at DateTime('UTC')
+)
+ENGINE = MergeTree
+    PARTITION BY toYYYYMM(created_at)
+    ORDER BY (website_id, url_path, event_type, created_at)
+    SETTINGS index_granularity = 8192;
+
+-- Create session_link
+CREATE TABLE umami.session_link
+(
+    website_id UUID,
+    session_id UUID,
+    distinct_id String,
+    created_at DateTime('UTC'),
+    INDEX idx_session_id session_id TYPE bloom_filter GRANULARITY 1
+)
+ENGINE = ReplacingMergeTree
+    ORDER BY (website_id, distinct_id, session_id)
+    SETTINGS index_granularity = 8192;

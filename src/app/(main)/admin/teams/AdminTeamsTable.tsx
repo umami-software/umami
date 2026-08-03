@@ -1,7 +1,10 @@
 import { DataColumn, DataTable, Dialog, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
-import Link from '@/components/common/Link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { DateDistance } from '@/components/common/DateDistance';
+import Link from '@/components/common/Link';
+import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages } from '@/components/hooks';
 import { Edit, Trash } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
@@ -16,12 +19,17 @@ export function AdminTeamsTable({
   showActions?: boolean;
 }) {
   const { t, labels } = useMessages();
+  const router = useRouter();
   const [deleteTeam, setDeleteTeam] = useState(null);
 
   return (
     <>
       <DataTable data={data} {...props}>
-        <DataColumn id="name" label={t(labels.name)} width="1fr">
+        <DataColumn
+          id="name"
+          label={<SortableLabel label={t(labels.name)} sortKey="name" />}
+          width="1fr"
+        >
           {(row: any) => <Link href={`/admin/teams/${row.id}`}>{row.name}</Link>}
         </DataColumn>
         <DataColumn id="websites" label={t(labels.members)} width="140px">
@@ -41,7 +49,13 @@ export function AdminTeamsTable({
             );
           }}
         </DataColumn>
-        <DataColumn id="created" label={t(labels.created)} width="160px">
+        <DataColumn
+          id="created"
+          label={
+            <SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />
+          }
+          width="160px"
+        >
           {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
         </DataColumn>
         {showActions && (
@@ -51,7 +65,10 @@ export function AdminTeamsTable({
 
               return (
                 <MenuButton>
-                  <MenuItem href={`/admin/teams/${id}`} data-test="link-button-edit">
+                  <MenuItem
+                    onAction={() => router.push(`/admin/teams/${id}`)}
+                    data-test="link-button-edit"
+                  >
                     <Row alignItems="center" gap>
                       <Icon>
                         <Edit />
@@ -77,11 +94,13 @@ export function AdminTeamsTable({
           </DataColumn>
         )}
       </DataTable>
-      <Modal isOpen={!!deleteTeam}>
-        <Dialog style={{ width: 400 }}>
-          <TeamDeleteForm teamId={deleteTeam} onClose={() => setDeleteTeam(null)} />
-        </Dialog>
-      </Modal>
+      <ControlledDialog>
+        <Modal isOpen={!!deleteTeam}>
+          <Dialog style={{ width: 400 }}>
+            <TeamDeleteForm teamId={deleteTeam} onClose={() => setDeleteTeam(null)} />
+          </Dialog>
+        </Modal>
+      </ControlledDialog>
     </>
   );
 }

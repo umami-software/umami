@@ -11,6 +11,7 @@ import {
   Text,
 } from '@umami/react-zen';
 import { type ReactNode, useState } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { useMessages } from '@/components/hooks';
 import { useDeleteQuery } from '@/components/hooks/queries/useDeleteQuery';
 import { Edit, MoreHorizontal, Trash } from '@/components/icons';
@@ -75,15 +76,15 @@ export function ReportEditButton({
             <MoreHorizontal />
           </Icon>
         </Button>
-        <Popover placement="bottom">
-          <Menu onAction={handleAction}>
-            <MenuItem id="edit">
+        <Popover side="bottom">
+          <Menu>
+            <MenuItem id="edit" onAction={handleAction}>
               <Icon>
                 <Edit />
               </Icon>
               <Text>{t(labels.edit)}</Text>
             </MenuItem>
-            <MenuItem id="delete">
+            <MenuItem id="delete" onAction={handleAction}>
               <Icon>
                 <Trash />
               </Icon>
@@ -103,16 +104,18 @@ export function ReportEditButton({
       >
         {children}
       </DialogButton>
-      <Modal isOpen={showDelete} isDismissable={true} onOpenChange={open => !open && handleClose()}>
-        <AlertDialog
-          title={t(labels.delete)}
-          onConfirm={handleDelete}
-          onCancel={handleClose}
-          isDanger
-        >
-          <Row gap="1">{t(messages.confirmDelete, { target: name })}</Row>
-        </AlertDialog>
-      </Modal>
+      <ControlledDialog>
+        <Modal isOpen={showDelete} onOpenChange={open => !open && handleClose()}>
+          <AlertDialog
+            title={t(labels.delete)}
+            onConfirm={handleDelete}
+            onCancel={handleClose}
+            isDanger
+          >
+            <Row gap="1">{t(messages.confirmDelete, { target: name })}</Row>
+          </AlertDialog>
+        </Modal>
+      </ControlledDialog>
     </>
   );
 }

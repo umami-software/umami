@@ -17,7 +17,7 @@ import { LockKeyhole, LogOut, UserCircle } from '@/components/icons';
 export function ProfileButton() {
   const { t, labels } = useMessages();
   const { user } = useLoginQuery();
-  const { renderUrl } = useNavigation();
+  const { renderUrl, router } = useNavigation();
 
   const items = [
     {
@@ -49,15 +49,15 @@ export function ProfileButton() {
           <UserCircle />
         </Icon>
       </Button>
-      <Popover placement="bottom end">
-        <Menu autoFocus="last">
+      <Popover side="bottom" align="end">
+        <Menu>
           <MenuSection title={user.username}>
             <MenuSeparator />
             {items.map(({ id, path, label, icon, separator }) => {
               return (
                 <Fragment key={id}>
                   {separator && <MenuSeparator />}
-                  <MenuItem id={id} href={path}>
+                  <MenuItem id={id} onAction={() => router.push(path)}>
                     <Row alignItems="center" gap>
                       <Icon>{icon}</Icon>
                       <Text>{label}</Text>
