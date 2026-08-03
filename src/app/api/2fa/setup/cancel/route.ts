@@ -1,8 +1,12 @@
 import prisma from '@/lib/prisma';
 import { parseRequest } from '@/lib/request';
-import { json } from '@/lib/response';
+import { json, notFound } from '@/lib/response';
 
 export async function POST(request: Request) {
+  if (process.env.CLOUD_MODE) {
+    return notFound();
+  }
+
   const { auth, error } = await parseRequest(request);
 
   if (error) {
