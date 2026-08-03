@@ -1,11 +1,11 @@
 'use client';
-import { Column, Dialog, Sheet, type SheetProps } from '@umami/react-zen';
+import { Column, Dialog, Modal, type ModalProps } from '@umami/react-zen';
 import { SessionProfile } from '@/app/(main)/websites/[websiteId]/sessions/SessionProfile';
 import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { useNavigation } from '@/components/hooks';
 import styles from './SessionModal.module.css';
 
-export interface SessionModalProps extends SheetProps {
+export interface SessionModalProps extends ModalProps {
   websiteId: string;
 }
 
@@ -25,16 +25,14 @@ export function SessionModal({ websiteId, className, ...props }: SessionModalPro
 
   return (
     <ControlledDialog>
-      <Sheet
-        side="bottom"
-        size="calc(100dvh - 80px)"
+      <Modal
         className={[styles.modal, className].filter(Boolean).join(' ')}
         isOpen={!!session}
         onOpenChange={handleOpenChange}
         {...props}
       >
         <Column height="100%">
-          <Dialog className="rounded-lg">
+          <Dialog className="h-full rounded-lg">
             {({ close }) => (
               <Column padding="10">
                 <SessionProfile
@@ -47,7 +45,7 @@ export function SessionModal({ websiteId, className, ...props }: SessionModalPro
             )}
           </Dialog>
         </Column>
-      </Sheet>
+      </Modal>
     </ControlledDialog>
   );
 }
