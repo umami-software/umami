@@ -56,6 +56,13 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       ${eventQuery}
       order by created_at desc
       limit ${size} offset ${offset}
+    ),
+    paged_event_data as (
+      select distinct event_data.website_event_id as event_id
+      from event_data
+      join paged_events on paged_events.event_id = event_data.website_event_id
+      where event_data.website_id = {{websiteId::uuid}}
+      ${hasDataDateQuery}
     )
     select
       website_event.event_id as "id",
@@ -76,17 +83,12 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       website_event.page_title as "pageTitle",
       website_event.event_type as "eventType",
       website_event.event_name as "eventName",
-      exists(
-        select 1
-        from event_data
-        where event_data.website_event_id = website_event.event_id
-          and event_data.website_id = {{websiteId::uuid}}
-        ${hasDataDateQuery}
-      ) as "hasData"
+      (paged_event_data.event_id is not null) as "hasData"
     from paged_events
     join website_event on website_event.event_id = paged_events.event_id
     join session on session.session_id = website_event.session_id
       and session.website_id = website_event.website_id
+    left join paged_event_data on paged_event_data.event_id = website_event.event_id
     order by paged_events.created_at desc
     `,
     queryParams,
@@ -143,6 +145,13 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       ${eventQuery}
       order by created_at desc
       limit ${size} offset ${offset}
+    ),
+    paged_event_data as (
+      select distinct event_id
+      from event_data
+      inner join paged_events on paged_events.event_id = event_data.event_id
+      where website_id = {websiteId:UUID}
+      ${dateQuery}
     )
     select
       website_event.event_id as id,
@@ -163,15 +172,10 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       website_event.page_title as pageTitle,
       website_event.event_type as eventType,
       website_event.event_name as eventName,
-      website_event.event_id in (
-        select event_id
-        from event_data
-        where website_id = {websiteId:UUID}
-          ${dateQuery}
-          and event_id in (select event_id from paged_events)
-      ) as hasData
+      paged_event_data.event_id is not null as hasData
     from paged_events
     inner join website_event on website_event.event_id = paged_events.event_id
+    left join paged_event_data on paged_event_data.event_id = website_event.event_id
     order by paged_events.created_at desc
     `,
     queryParams,

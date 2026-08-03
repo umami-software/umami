@@ -89,4 +89,42 @@ describe('getWebsiteEventStats', () => {
     expect(query).not.toContain('group by session_id, visit_id, event_name');
     expect(query).not.toContain('sum(t.c)');
   });
+
+  test('clickhouse uses the hourly rollup when there are no extra filters', async () => {
+    vi.resetModules();
+
+    const clickhouseRawQuery = vi.fn().mockResolvedValue([{}]);
+
+    vi.doMock('@/lib/db', () => ({
+      CLICKHOUSE: 'clickhouse',
+      PRISMA: 'prisma',
+      runQuery: vi.fn((queries: Record<string, () => unknown>) => queries.clickhouse()),
+    }));
+
+    vi.doMock('@/lib/prisma', () => ({
+      default: {},
+    }));
+
+    vi.doMock('@/lib/clickhouse', () => ({
+      default: {
+        rawQuery: clickhouseRawQuery,
+        parseFilters: vi.fn().mockReturnValue({
+          queryParams: { websiteId: 'website-1' },
+          filterQuery: '',
+          cohortQuery: '',
+        }),
+      },
+    }));
+
+    const { getWebsiteEventStats } = await import('./getWebsiteEventStats');
+
+    await getWebsiteEventStats('website-1', {} as any);
+
+    const [query] = clickhouseRawQuery.mock.calls[0];
+
+    expect(query).toContain('sum(length(event_name)) as "events"');
+    expect(query).toContain('uniqArray(event_name) as "uniqueEvents"');
+    expect(query).toContain('from website_event_stats_hourly website_event');
+    expect(query).not.toContain('from website_event\n');
+  });
 });

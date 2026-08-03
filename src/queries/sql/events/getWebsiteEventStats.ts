@@ -61,21 +61,31 @@ async function clickhouseQuery(
     websiteId,
   });
 
-  return rawQuery(
-    `
-    select
-      count(*) as "events",
-      uniq(session_id) as "visitors",
-      uniq(visit_id) as "visits",
-      uniq(event_name) as "uniqueEvents"
-    from website_event
-    ${cohortQuery}
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type = 2
-      ${filterQuery};
-    `,
-    queryParams,
-    FUNCTION_NAME,
-  ).then(result => result?.[0]);
+  const sql = filterQuery || cohortQuery
+    ? `
+      select
+        count(*) as "events",
+        uniq(session_id) as "visitors",
+        uniq(visit_id) as "visits",
+        uniq(event_name) as "uniqueEvents"
+      from website_event
+      ${cohortQuery}
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = 2
+        ${filterQuery};
+      `
+    : `
+      select
+        sum(length(event_name)) as "events",
+        uniq(session_id) as "visitors",
+        uniq(visit_id) as "visits",
+        uniqArray(event_name) as "uniqueEvents"
+      from website_event_stats_hourly website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = 2;
+      `;
+
+  return rawQuery(sql, queryParams, FUNCTION_NAME).then(result => result?.[0]);
 }
