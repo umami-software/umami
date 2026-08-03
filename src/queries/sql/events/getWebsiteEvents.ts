@@ -1,4 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
+import { DEFAULT_PAGE_SIZE } from '@/lib/constants';
 import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
@@ -14,20 +15,48 @@ export function getWebsiteEvents(...args: [websiteId: string, filters: QueryFilt
 }
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
-  const { pagedRawQuery, parseFilters } = prisma;
-  const { search } = filters;
-  const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({
+  const { rawQuery, parseFilters } = prisma;
+  const { search, page = 1, pageSize, maxResults, orderBy } = filters;
+  const size = +pageSize || DEFAULT_PAGE_SIZE;
+  const offset = +size * (+page - 1);
+  const { filterQuery, dateQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
+  const hasDataDateQuery = dateQuery.replaceAll('website_event.', 'event_data.');
 
   const searchQuery = search
     ? `and ((event_name ilike {{search}} and event_type = ${EVENT_TYPE.customEvent})
            or (url_path ilike {{search}} and event_type = ${EVENT_TYPE.pageView}))`
     : '';
 
-  return pagedRawQuery(
+  const eventQuery = `
+    select
+      website_event.event_id,
+      website_event.created_at
+    from website_event
+    ${cohortQuery}
+    ${joinSessionQuery}
+    where website_event.website_id = {{websiteId::uuid}}
+      and website_event.event_type != ${EVENT_TYPE.performance}
+    ${dateQuery}
+    ${filterQuery}
+    ${searchQuery}
+  `;
+
+  const countQuery = maxResults
+    ? `select count(*) as num from (select 1 from (${eventQuery}) t limit ${+maxResults}) t2`
+    : `select count(*) as num from (${eventQuery}) t`;
+
+  const count = await rawQuery(countQuery, queryParams).then(res => Number(res[0].num));
+
+  const data = await rawQuery(
     `
+    with paged_events as (
+      ${eventQuery}
+      order by created_at desc
+      limit ${size} offset ${offset}
+    )
     select
       website_event.event_id as "id",
       website_event.website_id as "websiteId", 
@@ -40,37 +69,45 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       website_event.referrer_query as "referrerQuery",
       website_event.referrer_domain as "referrerDomain",
       session.country as country,
-      city as city,
-      device as  device,
-      os as os,
-      browser as browser,
-      page_title as "pageTitle",
+      session.city as city,
+      session.device as device,
+      session.os as os,
+      session.browser as browser,
+      website_event.page_title as "pageTitle",
       website_event.event_type as "eventType",
       website_event.event_name as "eventName",
-      event_id IN (select website_event_id 
-                   from event_data
-                   where website_id = {{websiteId::uuid}}
-                      and created_at between {{startDate}} and {{endDate}}) AS "hasData"
-    from website_event
-    ${cohortQuery}
-    join session on session.session_id = website_event.session_id 
+      exists(
+        select 1
+        from event_data
+        where event_data.website_event_id = website_event.event_id
+          and event_data.website_id = {{websiteId::uuid}}
+        ${hasDataDateQuery}
+      ) as "hasData"
+    from paged_events
+    join website_event on website_event.event_id = paged_events.event_id
+    join session on session.session_id = website_event.session_id
       and session.website_id = website_event.website_id
-    where website_event.website_id = {{websiteId::uuid}}
-      and website_event.event_type != ${EVENT_TYPE.performance}
-    ${dateQuery}
-    ${filterQuery}
-    ${searchQuery}
-    order by website_event.created_at desc
+    order by paged_events.created_at desc
     `,
     queryParams,
-    filters,
     FUNCTION_NAME,
   );
+
+  return {
+    data,
+    count,
+    page: +page,
+    pageSize: size,
+    orderBy,
+    isCapped: !!maxResults && +count >= +maxResults,
+  };
 }
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
-  const { pagedRawQuery, parseFilters } = clickhouse;
-  const { search } = filters;
+  const { rawQuery, parseFilters } = clickhouse;
+  const { search, page = 1, pageSize, maxResults, orderBy } = filters;
+  const size = +pageSize || DEFAULT_PAGE_SIZE;
+  const offset = +size * (+page - 1);
   const { queryParams, dateQuery, cohortQuery, filterQuery } = parseFilters({
     ...filters,
     websiteId,
@@ -81,31 +118,10 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
            or (positionCaseInsensitive(url_path, {search:String}) > 0 and event_type = ${EVENT_TYPE.pageView}))`
     : '';
 
-  return pagedRawQuery(
-    `
+  const eventQuery = `
     select
-      event_id as id,
-      website_id as websiteId, 
-      session_id as sessionId,
-      created_at as createdAt,
-      hostname,
-      url_path as urlPath,
-      url_query as urlQuery,
-      referrer_path as referrerPath,
-      referrer_query as referrerQuery,
-      referrer_domain as referrerDomain,
-      country as country,
-      city as city,
-      device as device,
-      os as os,
-      browser as browser,
-      page_title as pageTitle,
-      event_type as eventType,
-      event_name as eventName,
-      event_id IN (select event_id 
-                   from event_data 
-                   where website_id = {websiteId:UUID}
-                   ${dateQuery}) as hasData
+      event_id,
+      created_at
     from website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}
@@ -113,10 +129,62 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ${dateQuery}
     ${filterQuery}
     ${searchQuery}
-    order by created_at desc
+  `;
+
+  const countQuery = maxResults
+    ? `select count(*) as num from (select 1 from (${eventQuery}) t limit ${+maxResults}) t2`
+    : `select count(*) as num from (${eventQuery}) t`;
+
+  const count = await rawQuery(countQuery, queryParams).then(res => res[0].num);
+
+  const data = await rawQuery(
+    `
+    with paged_events as (
+      ${eventQuery}
+      order by created_at desc
+      limit ${size} offset ${offset}
+    )
+    select
+      website_event.event_id as id,
+      website_event.website_id as websiteId, 
+      website_event.session_id as sessionId,
+      website_event.created_at as createdAt,
+      website_event.hostname,
+      website_event.url_path as urlPath,
+      website_event.url_query as urlQuery,
+      website_event.referrer_path as referrerPath,
+      website_event.referrer_query as referrerQuery,
+      website_event.referrer_domain as referrerDomain,
+      website_event.country as country,
+      website_event.city as city,
+      website_event.device as device,
+      website_event.os as os,
+      website_event.browser as browser,
+      website_event.page_title as pageTitle,
+      website_event.event_type as eventType,
+      website_event.event_name as eventName,
+      website_event.event_id in (
+        select event_id
+        from event_data
+        where website_id = {websiteId:UUID}
+          ${dateQuery}
+          and event_id in (select event_id from paged_events)
+      ) as hasData
+    from paged_events
+    inner join website_event on website_event.event_id = paged_events.event_id
+    order by paged_events.created_at desc
     `,
     queryParams,
-    filters,
     FUNCTION_NAME,
   );
+
+  return {
+    data,
+    count,
+    page: +page,
+    pageSize: size,
+    orderBy,
+    search,
+    isCapped: !!maxResults && +count >= +maxResults,
+  };
 }

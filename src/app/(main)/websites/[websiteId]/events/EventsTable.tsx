@@ -48,6 +48,7 @@ export function EventsTable(props: DataTableProps) {
                 <IconLabel
                   icon={row.eventName ? <Lightning /> : <Eye />}
                   label={t(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
+                  labelProps={{ wrap: 'nowrap' }}
                 />
               </Row>
               <Text

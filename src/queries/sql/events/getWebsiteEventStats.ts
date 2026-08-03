@@ -34,25 +34,17 @@ async function relationalQuery(
   return rawQuery(
     `
     select
-      cast(coalesce(sum(t.c), 0) as bigint) as "events",
-      count(distinct t.session_id) as "visitors",
-      count(distinct t.visit_id) as "visits",
-      count(distinct t.event_name) as "uniqueEvents"
-    from (
-      select
-        website_event.session_id,
-        website_event.visit_id,
-        website_event.event_name,
-        count(*) as "c"
-      from website_event
-      ${cohortQuery}
-      ${joinSessionQuery}  
-      where website_event.website_id = {{websiteId::uuid}}
-        and website_event.created_at between {{startDate}} and {{endDate}}
-        and website_event.event_type = 2
-        ${filterQuery}
-      group by 1, 2, 3
-    ) as t
+      cast(count(*) as bigint) as "events",
+      count(distinct website_event.session_id) as "visitors",
+      count(distinct website_event.visit_id) as "visits",
+      count(distinct website_event.event_name) as "uniqueEvents"
+    from website_event
+    ${cohortQuery}
+    ${joinSessionQuery}
+    where website_event.website_id = {{websiteId::uuid}}
+      and website_event.created_at between {{startDate}} and {{endDate}}
+      and website_event.event_type = 2
+      ${filterQuery}
     `,
     queryParams,
     FUNCTION_NAME,
@@ -72,24 +64,16 @@ async function clickhouseQuery(
   return rawQuery(
     `
     select
-      sum(t.c) as "events",
-      uniq(t.session_id) as "visitors",
-      uniq(t.visit_id) as "visits",
-      count(distinct t.event_name) as "uniqueEvents"
-    from (
-      select
-        session_id,
-        visit_id,
-        event_name,
-        count(*) c
-      from website_event
-      ${cohortQuery}
-      where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type = 2
-        ${filterQuery}
-      group by session_id, visit_id, event_name
-    ) as t;
+      count(*) as "events",
+      uniq(session_id) as "visitors",
+      uniq(visit_id) as "visits",
+      uniq(event_name) as "uniqueEvents"
+    from website_event
+    ${cohortQuery}
+    where website_id = {websiteId:UUID}
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_type = 2
+      ${filterQuery};
     `,
     queryParams,
     FUNCTION_NAME,
