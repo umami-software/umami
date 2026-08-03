@@ -88,7 +88,6 @@ describe('getWebsiteEvents', () => {
     expect(countQuery).not.toContain('exists(');
     expect(dataQuery).toContain('with paged_events as (');
     expect(dataQuery).toContain('paged_event_data as (');
-    expect(dataQuery).toContain('join website_event on website_event.event_id = paged_events.event_id');
     expect(dataQuery).toContain('join paged_events on paged_events.event_id = event_data.website_event_id');
     expect(dataQuery).toContain('where event_data.website_id = {{websiteId::uuid}}');
     expect(dataQuery).toContain('and event_data.created_at between {{startDate}} and {{endDate}}');
@@ -122,15 +121,19 @@ describe('getWebsiteEvents', () => {
     expect(countQuery).toContain('select count(*) as num from (select 1 from (');
     expect(countQuery).not.toContain('event_data');
     expect(dataQuery).toContain('with paged_events as (');
+    expect(dataQuery).toContain('website_id as websiteId');
     expect(dataQuery).toContain('paged_event_data as (');
-    expect(dataQuery).toContain('inner join website_event on website_event.event_id = paged_events.event_id');
     expect(dataQuery).toContain('where website_id = {websiteId:UUID}');
     expect(dataQuery).toContain('from event_data');
-    expect(dataQuery).toContain('inner join paged_events on paged_events.event_id = event_data.event_id');
-    expect(dataQuery).toContain('and created_at between {startDate:DateTime64} and {endDate:DateTime64}');
-    expect(dataQuery).toContain('left join paged_event_data on paged_event_data.event_id = website_event.event_id');
-    expect(dataQuery).toContain('order by paged_events.created_at desc');
-    expect(dataQuery).toContain('paged_event_data.event_id is not null as hasData');
+    expect(dataQuery).toContain('inner join paged_events on paged_events.id = event_data.event_id');
+    expect(dataQuery).toContain(
+      'and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}',
+    );
+    expect(dataQuery).toContain('from paged_events');
+    expect(dataQuery).toContain('left join paged_event_data on paged_event_data.event_id = paged_events.id');
+    expect(dataQuery).toContain('order by paged_events.createdAt desc');
+    expect(dataQuery).toContain('toUInt8(1) as has_data');
+    expect(dataQuery).toContain('ifNull(paged_event_data.has_data, 0) as hasData');
     expect(result).toEqual({
       data: [{ id: 'event-1' }],
       count: '25',
@@ -182,7 +185,7 @@ describe('getWebsiteEvents', () => {
     const [dataQuery] = clickhouseRawQuery.mock.calls[1];
 
     expect(dataQuery).toContain(
-      'and created_at between toTimezone({startDate:DateTime64},{timezone:String}) and toTimezone({endDate:DateTime64},{timezone:String})',
+      'and event_data.created_at between toTimezone({startDate:DateTime64},{timezone:String}) and toTimezone({endDate:DateTime64},{timezone:String})',
     );
     expect(dataQuery).not.toContain(
       'and created_at between {startDate:DateTime64} and {endDate:DateTime64}',

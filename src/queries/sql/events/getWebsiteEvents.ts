@@ -114,6 +114,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ...filters,
     websiteId,
   });
+  const hasDataDateQuery = dateQuery.replaceAll('created_at', 'event_data.created_at');
 
   const searchQuery = search
     ? `and ((positionCaseInsensitive(event_name, {search:String}) > 0 and event_type = ${EVENT_TYPE.customEvent})
@@ -142,41 +143,51 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   const data = await rawQuery(
     `
     with paged_events as (
-      ${eventQuery}
+      select
+        event_id as id,
+        website_id as websiteId,
+        session_id as sessionId,
+        created_at as createdAt,
+        hostname,
+        url_path as urlPath,
+        url_query as urlQuery,
+        referrer_path as referrerPath,
+        referrer_query as referrerQuery,
+        referrer_domain as referrerDomain,
+        country,
+        city,
+        device,
+        os,
+        browser,
+        page_title as pageTitle,
+        event_type as eventType,
+        event_name as eventName
+      from website_event
+      ${cohortQuery}
+      where website_id = {websiteId:UUID}
+        and event_type != ${EVENT_TYPE.performance}
+      ${dateQuery}
+      ${filterQuery}
+      ${searchQuery}
       order by created_at desc
       limit ${size} offset ${offset}
     ),
     paged_event_data as (
-      select distinct event_id
+      select
+        event_id,
+        toUInt8(1) as has_data
       from event_data
-      inner join paged_events on paged_events.event_id = event_data.event_id
+      inner join paged_events on paged_events.id = event_data.event_id
       where website_id = {websiteId:UUID}
-      ${dateQuery}
+      ${hasDataDateQuery}
+      group by event_id
     )
     select
-      website_event.event_id as id,
-      website_event.website_id as websiteId, 
-      website_event.session_id as sessionId,
-      website_event.created_at as createdAt,
-      website_event.hostname,
-      website_event.url_path as urlPath,
-      website_event.url_query as urlQuery,
-      website_event.referrer_path as referrerPath,
-      website_event.referrer_query as referrerQuery,
-      website_event.referrer_domain as referrerDomain,
-      website_event.country as country,
-      website_event.city as city,
-      website_event.device as device,
-      website_event.os as os,
-      website_event.browser as browser,
-      website_event.page_title as pageTitle,
-      website_event.event_type as eventType,
-      website_event.event_name as eventName,
-      paged_event_data.event_id is not null as hasData
+      paged_events.*,
+      ifNull(paged_event_data.has_data, 0) as hasData
     from paged_events
-    inner join website_event on website_event.event_id = paged_events.event_id
-    left join paged_event_data on paged_event_data.event_id = website_event.event_id
-    order by paged_events.created_at desc
+    left join paged_event_data on paged_event_data.event_id = paged_events.id
+    order by paged_events.createdAt desc
     `,
     queryParams,
     FUNCTION_NAME,
