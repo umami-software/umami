@@ -109,6 +109,7 @@ export function DataGrid({
             delay={searchDelay || DEFAULT_SEARCH_DELAY}
             autoFocus={autoFocus}
             placeholder={t(labels.search)}
+            className="w-full max-w-md"
           />
         )}
         <Row
