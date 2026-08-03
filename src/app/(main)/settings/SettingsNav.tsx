@@ -1,4 +1,4 @@
-import { Column, Focusable, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Column, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import { useMessages, useNavigation } from '@/components/hooks';
@@ -60,16 +60,15 @@ export function SettingsNav({
       <Link href={renderUrl('/websites', false)} role="button" onClick={onItemClick}>
         {(() => {
           const content = (
-            <Focusable>
-              <Row
-                alignItems="center"
-                hover={{ backgroundColor: 'surface-sunken' }}
-                borderRadius
-                minHeight="40px"
-              >
-                <IconLabel icon={<ArrowLeft />} label={isCollapsed ? '' : t(labels.back)} padding />
-              </Row>
-            </Focusable>
+            <Row
+              tabIndex={0}
+              alignItems="center"
+              hover={{ backgroundColor: 'surface-sunken' }}
+              borderRadius
+              minHeight="40px"
+            >
+              <IconLabel icon={<ArrowLeft />} label={isCollapsed ? '' : t(labels.back)} padding />
+            </Row>
           );
 
           return isCollapsed ? (
@@ -92,22 +91,21 @@ export function SettingsNav({
           {sectionItems.map(({ id, path, label, icon }) => {
             const isSelected = selectedKey === id;
             const content = (
-              <Focusable>
-                <Row
-                  alignItems="center"
-                  hover={{ backgroundColor: 'surface-sunken' }}
-                  backgroundColor={isSelected ? 'surface-sunken' : undefined}
-                  borderRadius
-                  minHeight="40px"
-                >
-                  <IconLabel
-                    icon={icon}
-                    label={isCollapsed ? '' : label}
-                    weight={isSelected ? 'bold' : undefined}
-                    padding
-                  />
-                </Row>
-              </Focusable>
+              <Row
+                tabIndex={0}
+                alignItems="center"
+                hover={{ backgroundColor: 'surface-sunken' }}
+                backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                borderRadius
+                minHeight="40px"
+              >
+                <IconLabel
+                  icon={icon}
+                  label={isCollapsed ? '' : label}
+                  weight={isSelected ? 'bold' : undefined}
+                  padding
+                />
+              </Row>
             );
             return (
               <Link key={id} href={path} role="button" onClick={onItemClick}>

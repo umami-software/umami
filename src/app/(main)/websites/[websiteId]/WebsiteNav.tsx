@@ -1,4 +1,4 @@
-import { Column, Focusable, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Column, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import { useMessages, useNavigation, useWebsiteNavItems } from '@/components/hooks';
@@ -22,16 +22,15 @@ export function WebsiteNav({
       <Link href={renderUrl('/websites', false)} role="button" onClick={onItemClick}>
         {isCollapsed ? (
           <TooltipTrigger delay={0}>
-            <Focusable>
-              <Row
-                alignItems="center"
-                hover={{ backgroundColor: 'surface-sunken' }}
-                borderRadius
-                minHeight="40px"
-              >
-                <IconLabel icon={<ArrowLeft />} label="" padding />
-              </Row>
-            </Focusable>
+            <Row
+              tabIndex={0}
+              alignItems="center"
+              hover={{ backgroundColor: 'surface-sunken' }}
+              borderRadius
+              minHeight="40px"
+            >
+              <IconLabel icon={<ArrowLeft />} label="" padding />
+            </Row>
             <Tooltip placement="right">{t(labels.back)}</Tooltip>
           </TooltipTrigger>
         ) : (
@@ -58,22 +57,21 @@ export function WebsiteNav({
               <Link key={id} href={path} role="button" onClick={onItemClick}>
                 {isCollapsed ? (
                   <TooltipTrigger delay={0}>
-                    <Focusable>
-                      <Row
-                        alignItems="center"
-                        hover={{ backgroundColor: 'surface-sunken' }}
-                        backgroundColor={isSelected ? 'surface-sunken' : undefined}
-                        borderRadius
-                        minHeight="40px"
-                      >
-                        <IconLabel
-                          icon={icon}
-                          label=""
-                          weight={isSelected ? 'bold' : undefined}
-                          padding
-                        />
-                      </Row>
-                    </Focusable>
+                    <Row
+                      tabIndex={0}
+                      alignItems="center"
+                      hover={{ backgroundColor: 'surface-sunken' }}
+                      backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                      borderRadius
+                      minHeight="40px"
+                    >
+                      <IconLabel
+                        icon={icon}
+                        label=""
+                        weight={isSelected ? 'bold' : undefined}
+                        padding
+                      />
+                    </Row>
                     <Tooltip placement="right">{label}</Tooltip>
                   </TooltipTrigger>
                 ) : (

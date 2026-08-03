@@ -2,7 +2,6 @@ import {
   Button,
   type ButtonProps,
   Column,
-  Focusable,
   Icon,
   Row,
   Text,
@@ -111,22 +110,21 @@ export function SideNav(props: any) {
             {links.map(({ id, path, label, icon }) => {
               const isSelected = pathname.startsWith(renderUrl(path, false));
               const content = (
-                <Focusable>
-                  <Row
-                    alignItems="center"
-                    hover={{ backgroundColor: 'surface-sunken' }}
-                    backgroundColor={isSelected ? 'surface-sunken' : undefined}
-                    borderRadius
-                    minHeight="40px"
-                  >
-                    <IconLabel
-                      icon={icon}
-                      label={isCollapsed ? '' : label}
-                      weight={isSelected ? 'bold' : undefined}
-                      padding
-                    />
-                  </Row>
-                </Focusable>
+                <Row
+                  tabIndex={0}
+                  alignItems="center"
+                  hover={{ backgroundColor: 'surface-sunken' }}
+                  backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                  borderRadius
+                  minHeight="40px"
+                >
+                  <IconLabel
+                    icon={icon}
+                    label={isCollapsed ? '' : label}
+                    weight={isSelected ? 'bold' : undefined}
+                    padding
+                  />
+                </Row>
               );
               return (
                 <Link key={id} href={renderUrl(path, false)} role="button">

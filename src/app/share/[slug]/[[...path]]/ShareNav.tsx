@@ -1,7 +1,6 @@
 import {
   Button,
   Column,
-  Focusable,
   Icon,
   Row,
   Text,
@@ -179,22 +178,17 @@ export function ShareNav({
                 <Link key={id} href={path} role="button" onClick={onItemClick}>
                   {collapsed ? (
                     <TooltipTrigger delay={0}>
-                      <Focusable>
-                        <Row
-                          alignItems="center"
-                          justifyContent="center"
-                          hover={{ backgroundColor: 'surface-sunken' }}
-                          backgroundColor={isSelected ? 'surface-sunken' : undefined}
-                          borderRadius
-                          minHeight="40px"
-                        >
-                          <IconLabel
-                            icon={icon}
-                            label=""
-                            weight={isSelected ? 'bold' : undefined}
-                          />
-                        </Row>
-                      </Focusable>
+                      <Row
+                        tabIndex={0}
+                        alignItems="center"
+                        justifyContent="center"
+                        hover={{ backgroundColor: 'surface-sunken' }}
+                        backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                        borderRadius
+                        minHeight="40px"
+                      >
+                        <IconLabel icon={icon} label="" weight={isSelected ? 'bold' : undefined} />
+                      </Row>
                       <Tooltip placement="right">{label}</Tooltip>
                     </TooltipTrigger>
                   ) : (

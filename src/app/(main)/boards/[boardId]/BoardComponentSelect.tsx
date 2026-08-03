@@ -1,13 +1,4 @@
-import {
-  Button,
-  Column,
-  Focusable,
-  ListItem,
-  Row,
-  Select,
-  Text,
-  TextField,
-} from '@umami/react-zen';
+import { Button, Column, ListItem, Row, Select, Text, TextField } from '@umami/react-zen';
 import { useEffect, useMemo, useState } from 'react';
 import { useApi, useMessages } from '@/components/hooks';
 import { LinkSelect } from '@/components/input/LinkSelect';
@@ -465,34 +456,34 @@ export function BoardComponentSelect({
                       const Icon = def.icon;
 
                       return (
-                        <Focusable key={def.type}>
-                          <Row
-                            gap="3"
-                            alignItems="flex-start"
-                            paddingX="3"
-                            paddingY="2"
-                            borderRadius
-                            backgroundColor={
-                              selectedDef?.type === def.type ? 'surface-sunken' : undefined
-                            }
-                            hover={{ backgroundColor: 'surface-sunken' }}
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => handleSelectComponent(def)}
-                          >
-                            <Icon size={16} />
-                            <Column gap="1">
-                              <Text
-                                size="sm"
-                                weight={selectedDef?.type === def.type ? 'bold' : undefined}
-                              >
-                                {def.name}
-                              </Text>
-                              <Text size="xs" color="muted">
-                                {def.description}
-                              </Text>
-                            </Column>
-                          </Row>
-                        </Focusable>
+                        <Row
+                          key={def.type}
+                          tabIndex={0}
+                          gap="3"
+                          alignItems="flex-start"
+                          paddingX="3"
+                          paddingY="2"
+                          borderRadius
+                          backgroundColor={
+                            selectedDef?.type === def.type ? 'surface-sunken' : undefined
+                          }
+                          hover={{ backgroundColor: 'surface-sunken' }}
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => handleSelectComponent(def)}
+                        >
+                          <Icon size={16} />
+                          <Column gap="1">
+                            <Text
+                              size="sm"
+                              weight={selectedDef?.type === def.type ? 'bold' : undefined}
+                            >
+                              {def.name}
+                            </Text>
+                            <Text size="xs" color="muted">
+                              {def.description}
+                            </Text>
+                          </Column>
+                        </Row>
                       );
                     })}
                   </Column>

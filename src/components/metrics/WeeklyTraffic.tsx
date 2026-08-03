@@ -1,4 +1,4 @@
-import { Focusable, Grid, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Grid, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { addHours, format, startOfDay } from 'date-fns';
 import { Fragment } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
@@ -77,26 +77,25 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                   {day?.map((count: number, j) => {
                     const pct = max ? count / max : 0;
                     const cell = (
-                      <Focusable>
+                      <Row
+                        tabIndex={0}
+                        alignItems="center"
+                        justifyContent="center"
+                        backgroundColor="surface-raised"
+                        width="16px"
+                        height="16px"
+                        borderRadius="full"
+                        style={{ margin: '0 auto' }}
+                        role="button"
+                      >
                         <Row
-                          alignItems="center"
-                          justifyContent="center"
-                          backgroundColor="surface-raised"
+                          backgroundColor="primary"
                           width="16px"
                           height="16px"
                           borderRadius="full"
-                          style={{ margin: '0 auto' }}
-                          role="button"
-                        >
-                          <Row
-                            backgroundColor="primary"
-                            width="16px"
-                            height="16px"
-                            borderRadius="full"
-                            style={{ opacity: pct, transform: `scale(${pct})` }}
-                          />
-                        </Row>
-                      </Focusable>
+                          style={{ opacity: pct, transform: `scale(${pct})` }}
+                        />
+                      </Row>
                     );
 
                     if (count <= 0) {

@@ -1,4 +1,4 @@
-import { Column, Focusable, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Column, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
 import { firstBy } from 'thenby';
@@ -232,9 +232,7 @@ export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyP
                                 <div>{formatLongNumber(nodeCount)}</div>
                               ) : (
                                 <TooltipTrigger delay={0}>
-                                  <Focusable>
-                                    <div>{formatLongNumber(nodeCount)}</div>
-                                  </Focusable>
+                                  <div tabIndex={0}>{formatLongNumber(nodeCount)}</div>
                                   <Tooltip placement="top" sideOffset={20} showArrow>
                                     <Text transform="lowercase" color="red">
                                       {`${dropped}% ${t(labels.dropoff)}`}
