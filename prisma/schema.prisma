@@ -403,7 +403,7 @@ model SessionReplaySaved {
 
 model BillingInvoice {
   id               String   @id @map("line_id") @db.VarChar(255)
-  providerId       String   @map("provider_id") @db.Uuid
+  billingId        String   @map("billing_id") @db.Uuid
   invoiceId        String   @map("invoice_id") @db.VarChar(255)
   customerId       String   @map("customer_id") @db.VarChar(255)
   invoiceStatus    String   @map("invoice_status") @db.VarChar(50)
@@ -415,9 +415,9 @@ model BillingInvoice {
   periodMonths     Int      @map("period_months") @db.Integer
   mrrCents         Int      @map("mrr_cents") @db.Integer
 
-  billingProvider Billing @relation(fields: [providerId], references: [id])
+  billingProvider Billing @relation(fields: [billingId], references: [id])
 
-  @@index([providerId])
+  @@index([billingId])
   @@index([invoiceId])
   @@index([customerId])
   @@index([invoiceStatus])
@@ -426,17 +426,19 @@ model BillingInvoice {
 }
 
 model Billing {
-  id         String    @id @default(uuid()) @map("billing_id") @db.Uuid
-  name       String    @db.VarChar(100)
-  provider   String    @db.VarChar(50)
-  userId     String?   @map("user_id") @db.Uuid
-  teamId     String?   @map("team_id") @db.Uuid
-  apiKey     String    @map("api_key") @db.Text
-  syncCursor String?   @map("sync_cursor") @db.VarChar(255)
-  syncStatus String    @default("idle") @map("sync_status") @db.VarChar(20)
-  lastRunAt  DateTime? @map("last_run_at") @db.Timestamptz(6)
-  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt  DateTime? @map("updated_at") @db.Timestamptz(6)
+  id            String    @id @default(uuid()) @map("billing_id") @db.Uuid
+  name          String    @db.VarChar(100)
+  provider      String    @db.VarChar(50)
+  userId        String?   @map("user_id") @db.Uuid
+  teamId        String?   @map("team_id") @db.Uuid
+  apiKey        String    @map("api_key") @db.Text
+  syncCursor    String?   @map("sync_cursor") @db.VarChar(255)
+  syncStatus    String    @default("idle") @map("sync_status") @db.VarChar(20)
+  lastRunAt     DateTime? @map("last_run_at") @db.Timestamptz(6)
+  webhookId     String?   @map("webhook_id") @db.VarChar(255)
+  webhookSecret String?   @map("webhook_secret") @db.Text
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime? @map("updated_at") @db.Timestamptz(6)
 
   invoices BillingInvoice[]
 
@@ -444,5 +446,5 @@ model Billing {
   @@unique([name, teamId])
   @@index([userId])
   @@index([teamId])
-  @@map("billing_provider")
+  @@map("billing")
 }

@@ -6,7 +6,7 @@ export const STALE_RUNNING_MS = 2 * 60 * 1000;
 // Upsert a batch of invoice line items into billing_invoice.
 export async function upsertInvoiceBatch(
   invoices: Stripe.Invoice[],
-  providerId: string,
+  billingId: string,
 ): Promise<void> {
   const db = prisma.client as any;
 
@@ -37,7 +37,7 @@ export async function upsertInvoiceBatch(
         where: { id: line.id },
         create: {
           id: line.id,
-          providerId,
+          billingId,
           invoiceId: invoice.id,
           customerId,
           invoiceStatus,

@@ -8,15 +8,15 @@ function maskKey(apiKey: string): string {
   return apiKey.length > 4 ? `****${apiKey.slice(-4)}` : '****';
 }
 
-export async function getBillingByUser(userId: string, provider: string) {
+export async function getBillingByUser(userId: string) {
   return db().findUnique({
-    where: { provider_userId: { provider, userId } },
+    where: { userId: userId },
   });
 }
 
-export async function getBillingByTeam(teamId: string, provider: string) {
+export async function getBillingByTeam(teamId: string) {
   return db().findUnique({
-    where: { provider_teamId: { provider, teamId } },
+    where: { teamId: teamId },
   });
 }
 
@@ -25,11 +25,22 @@ export async function upsertBillingForUser(
   provider: string,
   name: string,
   encryptedKey: string,
+  webhookId: string | null,
+  webhookSecret: string | null,
 ) {
   return db().upsert({
-    where: { provider_userId: { provider, userId } },
-    create: { id: uuid(), name, provider, userId, apiKey: encryptedKey, updatedAt: new Date() },
-    update: { name, apiKey: encryptedKey, updatedAt: new Date() },
+    where: { name_userId: { name, userId } },
+    create: {
+      id: uuid(),
+      name,
+      provider,
+      userId,
+      apiKey: encryptedKey,
+      webhookId,
+      webhookSecret,
+      updatedAt: new Date(),
+    },
+    update: { provider, apiKey: encryptedKey, webhookId, webhookSecret, updatedAt: new Date() },
   });
 }
 
@@ -38,28 +49,34 @@ export async function upsertBillingForTeam(
   provider: string,
   name: string,
   encryptedKey: string,
+  webhookId: string | null,
+  webhookSecret: string | null,
 ) {
   return db().upsert({
-    where: { provider_teamId: { provider, teamId } },
-    create: { id: uuid(), name, provider, teamId, apiKey: encryptedKey, updatedAt: new Date() },
-    update: { name, apiKey: encryptedKey, updatedAt: new Date() },
-  });
-}
-
-export async function deleteBillingByUser(userId: string, provider: string) {
-  return db().delete({
-    where: { provider_userId: { provider, userId } },
-  });
-}
-
-export async function deleteBillingByTeam(teamId: string, provider: string) {
-  return db().delete({
-    where: { provider_teamId: { provider, teamId } },
+    where: { name_teamId: { name, teamId } },
+    create: {
+      id: uuid(),
+      name,
+      provider,
+      teamId,
+      apiKey: encryptedKey,
+      webhookId,
+      webhookSecret,
+      updatedAt: new Date(),
+    },
+    update: { provider, apiKey: encryptedKey, webhookId, webhookSecret, updatedAt: new Date() },
   });
 }
 
 export async function getBillingById(id: string) {
   return db().findUnique({ where: { id } });
+}
+
+export async function updateBillingWebhook(
+  id: string,
+  data: { webhookId: string; webhookSecret: string },
+) {
+  return db().update({ where: { id }, data });
 }
 
 export async function updateBillingSync(
@@ -109,7 +126,13 @@ export async function getBillingsPage(
 
 export async function updateBilling(
   id: string,
-  data: { name?: string; apiKey?: string; provider?: string },
+  data: {
+    name?: string;
+    apiKey?: string;
+    provider?: string;
+    webhookId?: string;
+    webhookSecret?: string;
+  },
 ) {
   return db().update({ where: { id }, data: { ...data, updatedAt: new Date() } });
 }

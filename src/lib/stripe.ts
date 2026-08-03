@@ -2,6 +2,8 @@ import 'dotenv/config';
 import fs from 'node:fs';
 import Stripe from 'stripe';
 
+console.log('STRIPE_API_KEY: ', process.env.STRIPE_API_KEY);
+
 const stripe = new Stripe(process.env.STRIPE_API_KEY, {
   apiVersion: '2026-02-25.clover',
 });
@@ -222,41 +224,6 @@ export function getARRMetrics(startDate: Date, endDate: Date): MonthlyARR[] {
   return results;
 }
 
-// ─── Per-owner sync helpers (accept a caller-supplied Stripe instance) ──────
-
-const INVOICE_EXPAND = ['data.lines.data.pricing.price_details.price'];
-
-function startOfCurrentMonth(): number {
-  const d = new Date();
-  d.setUTCDate(1);
-  d.setUTCHours(0, 0, 0, 0);
-  return Math.floor(d.getTime() / 1000);
-}
-
-// Fetch one page of invoices oldest-first for backfill. Pass null cursor to start from the beginning.
-export async function fetchInvoicePageBackfill(
-  client: Stripe,
-  cursor: string | null,
-): Promise<Awaited<ReturnType<typeof client.invoices.list>>> {
-  return client.invoices.list({
-    limit: 100,
-    expand: INVOICE_EXPAND,
-    created: { lte: Math.floor(Date.now() / 1000) },
-    ...(cursor ? { starting_after: cursor } : {}),
-  });
-}
-
-// Fetch one page of invoices created in the current calendar month (incremental refresh).
-export async function fetchInvoicePageIncremental(
-  client: Stripe,
-): Promise<Awaited<ReturnType<typeof client.invoices.list>>> {
-  return client.invoices.list({
-    limit: 100,
-    expand: INVOICE_EXPAND,
-    created: { gte: startOfCurrentMonth() },
-  });
-}
-
 // ─── Global helpers (use module-level stripe client) ────────────────────────
 
 export async function fetchAllSubscriptions(): Promise<Stripe.Subscription[]> {
@@ -303,7 +270,7 @@ export async function fetchAllInvoices(): Promise<Stripe.Invoice[]> {
 
 console.log('start: ', new Date());
 
-// console.log(getARRMetrics(new Date('2025-11-01'), new Date()));
+console.log(getARRMetrics(new Date('2025-11-01'), new Date()));
 
 // fetchAllSubscriptions().then(() => {
 //   console.log('done: ', new Date());
@@ -313,6 +280,6 @@ console.log('start: ', new Date());
 //   console.log('done: ', new Date());
 // });
 
-export default {
-  client: stripe,
-};
+// export default {
+//   client: stripe,
+// };

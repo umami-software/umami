@@ -50,3 +50,7 @@ yarn-error.log*
 *.env.*
 
 *.dev.yml
+
+src/lib/y-subscriptions.json
+
+src/lib/z-invoices.json

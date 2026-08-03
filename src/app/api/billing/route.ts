@@ -1,3 +1,4 @@
+import Stripe from 'stripe';
 import { z } from 'zod';
 import { decrypt, encrypt, secret } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';
@@ -6,6 +7,7 @@ import { pagingParams, searchParams } from '@/lib/schema';
 import {
   getBillingsPage,
   maskKey,
+  updateBillingWebhook,
   upsertBillingForTeam,
   upsertBillingForUser,
 } from '@/queries/prisma';
@@ -57,6 +59,8 @@ export async function POST(request: Request) {
     apiKey: z.string().min(1),
     userId: z.string().uuid().optional(),
     teamId: z.string().uuid().optional(),
+    webhookId: z.string().max(255).optional(),
+    webhookSecret: z.string().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -69,7 +73,7 @@ export async function POST(request: Request) {
     return unauthorized();
   }
 
-  const { name, provider, apiKey, userId, teamId } = body;
+  const { name, provider, apiKey, userId, teamId, webhookId, webhookSecret } = body;
 
   if (!userId && !teamId) {
     return new Response(JSON.stringify({ error: 'userId or teamId is required' }), {
@@ -88,12 +92,47 @@ export async function POST(request: Request) {
   }
 
   const encryptedKey = encrypt(apiKey, secret());
+  const encryptedWebhookSecret = webhookSecret ? encrypt(webhookSecret, secret()) : null;
 
   const row = userId
-    ? await upsertBillingForUser(userId, provider, name, encryptedKey)
-    : await upsertBillingForTeam(teamId, provider, name, encryptedKey);
+    ? await upsertBillingForUser(
+        userId,
+        provider,
+        name,
+        encryptedKey,
+        webhookId ?? null,
+        encryptedWebhookSecret,
+      )
+    : await upsertBillingForTeam(
+        teamId,
+        provider,
+        name,
+        encryptedKey,
+        webhookId ?? null,
+        encryptedWebhookSecret,
+      );
 
   const rawKey = decrypt(row.apiKey, secret());
+
+  if (!webhookId && !webhookSecret && process.env.APP_URL) {
+    const stripe = new Stripe(rawKey, { apiVersion: '2026-02-25.clover' });
+    const webhook = await stripe.webhookEndpoints.create({
+      url: `${process.env.APP_URL}/api/billing/${row.id}/webhook`,
+      enabled_events: [
+        'invoice.created',
+        'invoice.finalized',
+        'invoice.paid',
+        'invoice.payment_failed',
+        'invoice.updated',
+        'invoice.voided',
+        'invoice.marked_uncollectible',
+      ],
+    });
+    await updateBillingWebhook(row.id, {
+      webhookId: webhook.id,
+      webhookSecret: encrypt(webhook.secret, secret()),
+    });
+  }
 
   return json({
     id: row.id,

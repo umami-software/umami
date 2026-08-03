@@ -12,7 +12,7 @@ export function useBillingProvidersQuery(
 
   return usePagedQuery({
     queryKey: ['billingProviders', { modified, ...params }],
-    queryFn: pageParams => get('/billing/providers', { ...pageParams, ...params }),
+    queryFn: pageParams => get('/billing', { ...pageParams, ...params }),
     ...options,
   });
 }

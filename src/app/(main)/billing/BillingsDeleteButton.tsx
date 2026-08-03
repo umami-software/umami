@@ -4,18 +4,16 @@ import { Trash } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
 
 export function BillingsDeleteButton({
-  providerId,
+  billingId,
   providerName,
   onSave,
 }: {
-  providerId: string;
+  billingId: string;
   providerName: string;
   onSave?: () => void;
 }) {
   const { t, labels, messages, getErrorMessage } = useMessages();
-  const { mutateAsync, isPending, error, touch } = useDeleteQuery(
-    `/billing/providers/${providerId}`,
-  );
+  const { mutateAsync, isPending, error, touch } = useDeleteQuery(`/billing/${billingId}`);
 
   const handleConfirm = async (close: () => void) => {
     await mutateAsync(null, {

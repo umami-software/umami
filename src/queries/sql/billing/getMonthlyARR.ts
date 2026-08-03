@@ -1,19 +1,12 @@
-import { PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { MonthlyARR } from '@/lib/stripe';
 
 const FUNCTION_NAME = 'getMonthlyARR';
 
+// billing_invoice only exists in Postgres, so this bypasses the ClickHouse/Prisma
+// runQuery dispatch used by analytics queries that can live in either backend.
 export async function getMonthlyARR(
-  ...args: [providerId: string, startDate: Date, endDate: Date]
-): Promise<MonthlyARR[]> {
-  return runQuery({
-    [PRISMA]: () => relationalQuery(...args),
-  });
-}
-
-async function relationalQuery(
-  providerId: string,
+  billingId: string,
   startDate: Date,
   endDate: Date,
 ): Promise<MonthlyARR[]> {
@@ -38,7 +31,7 @@ async function relationalQuery(
       ) AS gs(m)
       WHERE bil.invoice_status = 'paid'
         AND bil.usage_type = 'licensed'
-        AND bil.provider_id = {{providerId}}::uuid
+        AND bil.billing_id = {{billingId}}::uuid
       GROUP BY bil.customer_id, date_trunc('month', gs.m)
     ),
 
@@ -52,7 +45,7 @@ async function relationalQuery(
       FROM billing_invoice bil
       WHERE bil.invoice_status = 'paid'
         AND bil.usage_type = 'metered'
-        AND bil.provider_id = {{providerId}}::uuid
+        AND bil.billing_id = {{billingId}}::uuid
       GROUP BY bil.customer_id, date_trunc('month', bil.invoice_period_end)
     ),
 
@@ -66,7 +59,7 @@ async function relationalQuery(
       FROM billing_invoice bil
       WHERE bil.invoice_status = 'paid'
         AND bil.usage_type = 'one_time'
-        AND bil.provider_id = {{providerId}}::uuid
+        AND bil.billing_id = {{billingId}}::uuid
       GROUP BY bil.customer_id, date_trunc('month', bil.invoice_period_end)
     ),
 
@@ -182,7 +175,7 @@ async function relationalQuery(
     LEFT JOIN waterfall w ON w.month_start = m.month_start
     ORDER BY m.month_start
     `,
-    { providerId, startDate, endDate },
+    { billingId, startDate, endDate },
     FUNCTION_NAME,
   );
 

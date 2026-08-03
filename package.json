@@ -43,6 +43,7 @@
     "cypress-open": "cypress open cypress run",
     "cypress-run": "cypress run cypress run",
     "seed-data": "tsx scripts/seed-data.ts",
+    "sync-billing": "tsx scripts/sync-billing.ts",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check --write"

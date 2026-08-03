@@ -10,7 +10,7 @@ import {
   LinkIcon,
   PanelLeft,
   PanelsLeftBottom,
-  BadgeDollarSign
+  BadgeDollarSign,
 } from '@/components/icons';
 import { UserButton } from '@/components/input/UserButton';
 import { Logo } from '@/components/svg';
@@ -35,13 +35,13 @@ export function SideNav(props: any) {
   const links = [
     ...(!teamId
       ? [
-        {
-          id: 'dashboard',
-          label: t(labels.dashboard),
-          path: '/dashboard',
-          icon: <PanelsLeftBottom />,
-        },
-      ]
+          {
+            id: 'dashboard',
+            label: t(labels.dashboard),
+            path: '/dashboard',
+            icon: <PanelsLeftBottom />,
+          },
+        ]
       : []),
     {
       id: 'boards',
