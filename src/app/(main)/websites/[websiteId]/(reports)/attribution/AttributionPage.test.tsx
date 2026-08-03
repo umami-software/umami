@@ -18,40 +18,45 @@ beforeEach(() => {
   mockValues = [{ value: 'Sign up' }, { value: 'Purchase' }];
 });
 
-vi.mock('@umami/react-zen', () => ({
-  Column: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  Grid: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  ListItem: ({ id, children }: { id: string; children: ReactNode }) => (
-    <option value={id}>{children}</option>
-  ),
-  Select: ({
-    label,
-    value,
-    defaultValue,
-    placeholder,
-    onChange,
-    children,
-  }: {
-    label: string;
-    value?: string;
-    defaultValue?: string;
-    placeholder?: string;
-    onChange?: (value: string) => void;
-    children: ReactNode;
-  }) => (
-    <label>
-      {label}
-      <select
-        aria-label={label}
-        value={value ?? defaultValue ?? ''}
-        onChange={event => onChange?.(event.currentTarget.value)}
-      >
-        {placeholder && <option value="">{placeholder}</option>}
-        {children}
-      </select>
-    </label>
-  ),
-}));
+vi.mock('@umami/react-zen', async importOriginal => {
+  const actual = await importOriginal<typeof import('@umami/react-zen')>();
+
+  return {
+    ...actual,
+    Column: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    Grid: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    ListItem: ({ id, children }: { id: string; children: ReactNode }) => (
+      <option value={id}>{children}</option>
+    ),
+    Select: ({
+      label,
+      value,
+      defaultValue,
+      placeholder,
+      onChange,
+      children,
+    }: {
+      label: string;
+      value?: string;
+      defaultValue?: string;
+      placeholder?: string;
+      onChange?: (value: string) => void;
+      children: ReactNode;
+    }) => (
+      <label>
+        {label}
+        <select
+          aria-label={label}
+          value={value ?? defaultValue ?? ''}
+          onChange={event => onChange?.(event.currentTarget.value)}
+        >
+          {placeholder && <option value="">{placeholder}</option>}
+          {children}
+        </select>
+      </label>
+    ),
+  };
+});
 
 vi.mock('@/components/common/Empty', () => ({
   Empty: () => <div>Empty</div>,
@@ -72,11 +77,38 @@ vi.mock('@/components/hooks', () => ({
       viewedPage: 'Viewed Page',
       triggeredEvent: 'Triggered Event',
     },
+    messages: {
+      noResultsFound: 'No results found',
+    },
   }),
   useWebsiteValuesQuery: () => ({
     data: mockValues,
     isLoading: false,
   }),
+}));
+
+vi.mock('@/components/input/WebsiteValueComboBox', () => ({
+  WebsiteValueComboBox: ({
+    label,
+    value,
+    onChange,
+  }: {
+    label: string;
+    value: string;
+    onChange: (value: string) => void;
+  }) => (
+    <label>
+      {label}
+      <select aria-label={label} value={value} onChange={event => onChange(event.currentTarget.value)}>
+        <option value="" />
+        {mockValues.map(({ value }) => (
+          <option key={value} value={value}>
+            {value}
+          </option>
+        ))}
+      </select>
+    </label>
+  ),
 }));
 
 vi.mock('@/app/(main)/websites/[websiteId]/WebsiteControls', () => ({
