@@ -7,6 +7,7 @@ import { Avatar } from '@/components/common/Avatar';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
   useMessages,
+  useMobile,
   useReplayQuery,
   useReplaySavedQuery,
   useUpdateQuery,
@@ -36,6 +37,7 @@ export function ReplayPlayback({
   const { data: replaySaved } = useReplaySavedQuery(websiteId, replayId);
   const { data: session } = useWebsiteSessionQuery(websiteId, replay?.sessionId);
   const { t, labels } = useMessages();
+  const { isMobile } = useMobile();
   const [isSaved, setIsSaved] = useState<boolean | null>(null);
   const { mutate } = useUpdateQuery(`/websites/${websiteId}/replays/saved/${replayId}`);
   const replayViewport = useMemo(() => getReplayViewport(replay?.events), [replay?.events]);
@@ -67,19 +69,24 @@ export function ReplayPlayback({
       style={{ minHeight: '400px' }}
     >
       {replay && (
-        <Column gap="6">
+        <Column gap="6" width="100%" minWidth="0">
           {session && (
-            <Row justifyContent="space-between" alignItems="flex-start">
-              <Row alignItems="center" gap="4">
+            <Row
+              justifyContent="space-between"
+              alignItems="flex-start"
+              gap="3"
+              style={{ flexWrap: isMobile ? 'wrap' : 'nowrap' }}
+            >
+              <Row alignItems="center" gap="4" minWidth="0" style={{ flex: '1 1 240px' }}>
                 <Avatar seed={replay.sessionId} size={48} />
-                <Column>
+                <Column minWidth="0">
                   <Text weight="bold">{t(labels.replay)}</Text>
                   <Text color="muted">
                     {replay.eventCount} {t(labels.actions).toLowerCase()}
                   </Text>
                 </Column>
               </Row>
-              <Row gap="2">
+              <Row gap="2" style={{ flex: '0 0 auto' }}>
                 {saved ? (
                   <Button onPress={handleUnsave} variant="quiet">
                     <Icon>
