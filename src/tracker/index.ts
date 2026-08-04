@@ -241,6 +241,7 @@ type MetricEntry = PerformanceEntry & {
   const website = config('website-id');
   const hostUrl = config('host-url');
   const beforeSend = config('before-send');
+  const distinctId = config('distinct-id') || undefined;
   const tag = config('tag') || undefined;
   const autoTrack = config('auto-track') !== _false;
   const dnt = config('do-not-track') === _true;
@@ -636,8 +637,12 @@ type MetricEntry = PerformanceEntry & {
   let initialized = false;
   let disabled = false;
   let cache: string | undefined;
-  let identity: string | undefined;
+  let identity = distinctId;
   let flushPerformance: (() => void) | undefined;
+
+  if (distinctId) {
+    void identify(distinctId);
+  }
 
   if (autoTrack && !trackingDisabled()) {
     if (document.readyState === 'complete') {
