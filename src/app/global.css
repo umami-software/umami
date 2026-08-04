@@ -80,3 +80,33 @@ select:is(:-webkit-autofill, :autofill):focus {
 [data-theme="dark"] .rr-controller__btns .label {
   color: black;
 }
+
+@media (max-width: 640px) {
+  .rr-controller {
+    height: auto !important;
+    padding: 8px 0 10px;
+    gap: 8px;
+  }
+
+  .rr-timeline {
+    width: calc(100% - 24px) !important;
+    gap: 4px;
+  }
+
+  .rr-timeline__time {
+    width: auto !important;
+    min-width: 52px;
+    font-size: 12px;
+  }
+
+  .rr-progress {
+    margin: 0 2px;
+  }
+
+  .rr-controller__btns {
+    width: calc(100% - 24px);
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 8px;
+  }
+}

@@ -1,5 +1,6 @@
 'use client';
 import { Column, Dialog, Modal, type ModalProps } from '@umami/react-zen';
+import { useEffect, useState } from 'react';
 import { ReplayPlayback } from '@/app/(main)/websites/[websiteId]/replays/[replayId]/ReplayPlayback';
 import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { useNavigation } from '@/components/hooks';
@@ -19,7 +20,21 @@ export function ReplayModal({ websiteId, replayId, className, ...props }: Replay
     updateParams,
   } = useNavigation();
   const activeReplayId = replayId || replay;
-  const modalClassName = [styles.modal, className].filter(Boolean).join(' ');
+  const [replayOrientation, setReplayOrientation] = useState<'portrait' | 'landscape' | null>(null);
+
+  useEffect(() => {
+    if (activeReplayId) {
+      setReplayOrientation(null);
+    }
+  }, [activeReplayId]);
+
+  const modalClassName = [
+    styles.modal,
+    replayOrientation === 'portrait' ? styles.portrait : null,
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
@@ -47,7 +62,12 @@ export function ReplayModal({ websiteId, replayId, className, ...props }: Replay
             {({ close }) => (
               <Column padding="6">
                 {activeReplayId && (
-                  <ReplayPlayback websiteId={websiteId} replayId={activeReplayId} onClose={close} />
+                  <ReplayPlayback
+                    websiteId={websiteId}
+                    replayId={activeReplayId}
+                    onClose={close}
+                    onReplayStateChange={setReplayOrientation}
+                  />
                 )}
               </Column>
             )}

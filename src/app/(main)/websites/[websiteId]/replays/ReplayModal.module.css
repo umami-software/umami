@@ -8,3 +8,7 @@
   height: calc(100dvh - 80px);
   overflow: hidden;
 }
+
+.portrait {
+  width: min(calc(100dvw - 48px), 900px);
+}
