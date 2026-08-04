@@ -1,8 +1,8 @@
 import type { ComponentType } from 'react';
 import { TextBlock } from '@/app/(main)/boards/TextBlock';
-import { BoardFunnel } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/BoardFunnel';
 import { LinkMetricsBar } from '@/app/(main)/links/[linkId]/LinkMetricsBar';
 import { PixelMetricsBar } from '@/app/(main)/pixels/[pixelId]/PixelMetricsBar';
+import { BoardFunnel } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/BoardFunnel';
 import { BoardGoal } from '@/app/(main)/websites/[websiteId]/(reports)/goals/BoardGoal';
 import { BoardRevenueChart } from '@/app/(main)/websites/[websiteId]/(reports)/revenue/BoardRevenueChart';
 import { BoardRevenueMetricsBar } from '@/app/(main)/websites/[websiteId]/(reports)/revenue/BoardRevenueMetricsBar';
@@ -27,6 +27,8 @@ import {
   Target,
   Users,
 } from '@/components/icons';
+import { AllWebsitesMetricsBar } from '@/components/metrics/AllWebsitesMetricsBar';
+import { AllWebsitesTable } from '@/components/metrics/AllWebsitesTable';
 import { EventsChart } from '@/components/metrics/EventsChart';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { WeeklyTraffic } from '@/components/metrics/WeeklyTraffic';
@@ -92,16 +94,7 @@ const METRIC_TYPES = [
 ];
 
 const PIXEL_LINK_METRIC_TYPES = METRIC_TYPES.filter(({ value }) =>
-  [
-    'referrer',
-    'channel',
-    'browser',
-    'os',
-    'device',
-    'country',
-    'region',
-    'city',
-  ].includes(value),
+  ['referrer', 'channel', 'browser', 'os', 'device', 'country', 'region', 'city'].includes(value),
 );
 
 const LIMIT_OPTIONS = [
@@ -150,6 +143,36 @@ const componentDefinitions: ComponentDefinition[] = [
       pixel: PixelMetricsBarAdapter,
       link: LinkMetricsBarAdapter,
     },
+  },
+  {
+    type: 'AllWebsitesMetricsBar',
+    name: 'All websites metrics',
+    description: 'Combined visitors, visits, and views across all your websites',
+    category: 'overview',
+    group: 'All websites',
+    icon: PanelTop,
+    component: AllWebsitesMetricsBar,
+    requiresWebsite: false,
+  },
+  {
+    type: 'AllWebsitesTable',
+    name: 'All websites table',
+    description: 'Per-website traffic with trend sparklines',
+    category: 'tables',
+    group: 'All websites',
+    icon: Sheet,
+    component: AllWebsitesTable,
+    requiresWebsite: false,
+    defaultProps: { limit: 10 },
+    configFields: [
+      {
+        name: 'limit',
+        label: 'Rows',
+        type: 'select',
+        options: LIMIT_OPTIONS,
+        defaultValue: '10',
+      },
+    ],
   },
   {
     type: 'EventsMetricsBar',
