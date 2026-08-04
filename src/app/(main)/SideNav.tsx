@@ -86,10 +86,15 @@ export function SideNav(props: any) {
       <Row
         alignItems="center"
         justifyContent="space-between"
-        minHeight="40px"
+        minHeight="9"
         style={{ flexShrink: 0 }}
       >
-        <Row padding="3" alignItems="center" justifyContent="space-between" flexGrow="1">
+        <Row
+          padding="3"
+          alignItems="center"
+          justifyContent={isCollapsed ? 'center' : 'space-between'}
+          flexGrow="1"
+        >
           {!isCollapsed && (
             <IconLabel icon={<Logo />}>
               <Text weight="bold">umami</Text>
@@ -113,10 +118,11 @@ export function SideNav(props: any) {
                 <Row
                   tabIndex={0}
                   alignItems="center"
+                  justifyContent={isCollapsed ? 'center' : undefined}
                   hover={{ backgroundColor: 'surface-sunken' }}
                   backgroundColor={isSelected ? 'surface-sunken' : undefined}
                   borderRadius
-                  minHeight="40px"
+                  minHeight="9"
                 >
                   <IconLabel
                     icon={icon}
@@ -142,7 +148,12 @@ export function SideNav(props: any) {
           </Column>
         )}
       </Column>
-      <Row paddingTop="2" width="100%" style={{ flexShrink: 0 }}>
+      <Row
+        paddingTop="2"
+        width="100%"
+        justifyContent={isCollapsed ? 'center' : undefined}
+        style={{ flexShrink: 0 }}
+      >
         <UserButton showText={!isCollapsed} />
       </Row>
     </Column>

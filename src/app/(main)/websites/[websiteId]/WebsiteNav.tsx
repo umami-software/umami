@@ -25,9 +25,10 @@ export function WebsiteNav({
             <Row
               tabIndex={0}
               alignItems="center"
+              justifyContent="center"
               hover={{ backgroundColor: 'surface-sunken' }}
               borderRadius
-              minHeight="40px"
+              minHeight="9"
             >
               <IconLabel icon={<ArrowLeft />} label="" padding />
             </Row>
@@ -38,7 +39,7 @@ export function WebsiteNav({
             alignItems="center"
             hover={{ backgroundColor: 'surface-sunken' }}
             borderRadius
-            minHeight="40px"
+            minHeight="9"
           >
             <IconLabel icon={<ArrowLeft />} label={t(labels.back)} padding />
           </Row>
@@ -60,10 +61,11 @@ export function WebsiteNav({
                     <Row
                       tabIndex={0}
                       alignItems="center"
+                      justifyContent="center"
                       hover={{ backgroundColor: 'surface-sunken' }}
                       backgroundColor={isSelected ? 'surface-sunken' : undefined}
                       borderRadius
-                      minHeight="40px"
+                      minHeight="9"
                     >
                       <IconLabel
                         icon={icon}
@@ -80,7 +82,7 @@ export function WebsiteNav({
                     hover={{ backgroundColor: 'surface-sunken' }}
                     backgroundColor={isSelected ? 'surface-sunken' : undefined}
                     borderRadius
-                    minHeight="40px"
+                    minHeight="9"
                   >
                     <IconLabel
                       icon={icon}

@@ -63,9 +63,10 @@ export function SettingsNav({
             <Row
               tabIndex={0}
               alignItems="center"
+              justifyContent={isCollapsed ? 'center' : undefined}
               hover={{ backgroundColor: 'surface-sunken' }}
               borderRadius
-              minHeight="40px"
+              minHeight="9"
             >
               <IconLabel icon={<ArrowLeft />} label={isCollapsed ? '' : t(labels.back)} padding />
             </Row>
@@ -94,10 +95,11 @@ export function SettingsNav({
               <Row
                 tabIndex={0}
                 alignItems="center"
+                justifyContent={isCollapsed ? 'center' : undefined}
                 hover={{ backgroundColor: 'surface-sunken' }}
                 backgroundColor={isSelected ? 'surface-sunken' : undefined}
                 borderRadius
-                minHeight="40px"
+                minHeight="9"
               >
                 <IconLabel
                   icon={icon}

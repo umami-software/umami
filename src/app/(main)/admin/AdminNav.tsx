@@ -54,7 +54,7 @@ export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
             alignItems="center"
             hover={{ backgroundColor: 'surface-sunken' }}
             borderRadius
-            minHeight="40px"
+            minHeight="9"
           >
             <IconLabel icon={<ArrowLeft />} label={t(labels.back)} padding />
           </Row>
