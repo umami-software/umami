@@ -98,7 +98,7 @@ const PropertiesButton = props => {
           </Icon>
         </Row>
       </Button>
-      <Popover side="right">
+      <Popover side="right" sideOffset={8}>
         <Dialog>
           <EventData {...props} />
         </Dialog>

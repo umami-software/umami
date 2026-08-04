@@ -124,10 +124,10 @@ describe('getWebsiteEvents', () => {
     expect(dataQuery).toContain('website_id as websiteId');
     expect(dataQuery).toContain('paged_event_data as (');
     expect(dataQuery).toContain('where website_id = {websiteId:UUID}');
-    expect(dataQuery).toContain('from event_data');
-    expect(dataQuery).toContain('inner join paged_events on paged_events.id = event_data.event_id');
+    expect(dataQuery).toContain('from umami.event_data_pivot');
+    expect(dataQuery).toContain('inner join paged_events on paged_events.id = event_data_pivot.event_id');
     expect(dataQuery).toContain(
-      'and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}',
+      'and event_data_pivot.created_at between {startDate:DateTime64} and {endDate:DateTime64}',
     );
     expect(dataQuery).toContain('from paged_events');
     expect(dataQuery).toContain('left join paged_event_data on paged_event_data.event_id = paged_events.id');
@@ -185,7 +185,7 @@ describe('getWebsiteEvents', () => {
     const [dataQuery] = clickhouseRawQuery.mock.calls[1];
 
     expect(dataQuery).toContain(
-      'and event_data.created_at between toTimezone({startDate:DateTime64},{timezone:String}) and toTimezone({endDate:DateTime64},{timezone:String})',
+      'and event_data_pivot.created_at between toTimezone({startDate:DateTime64},{timezone:String}) and toTimezone({endDate:DateTime64},{timezone:String})',
     );
     expect(dataQuery).not.toContain(
       'and created_at between {startDate:DateTime64} and {endDate:DateTime64}',

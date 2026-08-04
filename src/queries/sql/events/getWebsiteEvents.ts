@@ -114,7 +114,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ...filters,
     websiteId,
   });
-  const hasDataDateQuery = dateQuery.replaceAll('created_at', 'event_data.created_at');
+  const hasDataDateQuery = dateQuery.replaceAll('created_at', 'event_data_pivot.created_at');
 
   const searchQuery = search
     ? `and ((positionCaseInsensitive(event_name, {search:String}) > 0 and event_type = ${EVENT_TYPE.customEvent})
@@ -176,8 +176,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       select
         event_id,
         toUInt8(1) as has_data
-      from event_data
-      inner join paged_events on paged_events.id = event_data.event_id
+      from umami.event_data_pivot
+      inner join paged_events on paged_events.id = event_data_pivot.event_id
       where website_id = {websiteId:UUID}
       ${hasDataDateQuery}
       group by event_id
