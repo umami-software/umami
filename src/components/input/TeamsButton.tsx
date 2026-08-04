@@ -70,7 +70,7 @@ export function TeamsButton() {
           <ChevronRight />
         </Icon>
       </Button>
-      <Popover side="bottom" align="start">
+      <Popover side="bottom" align="start" sideOffset={4}>
         <Menu className="min-w-[300px]" selectionMode="single" selectedKeys={selectedKeys}>
           <MenuSection title={t(labels.myAccount)}>
             <MenuItem id="user" onAction={handleAction}>
