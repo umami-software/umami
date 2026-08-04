@@ -192,7 +192,7 @@ export async function POST(request: Request) {
       let urlPath =
         currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname + currentUrl.hash;
       const urlQuery = currentUrl.search.substring(1);
-      const urlDomain = currentUrl.hostname.replace(/^www./, '');
+      const urlDomain = currentUrl.hostname.replace(/^www\./, '');
 
       let referrerPath: string;
       let referrerQuery: string;
@@ -218,11 +218,27 @@ export async function POST(request: Request) {
       }
 
       if (referrer) {
-        const referrerUrl = new URL(referrer, base);
+        // Canonicalize the event domain (lowercase, punycode, no port) so it
+        // compares correctly against the parsed referrer hostname
+        let eventDomain = urlDomain;
+        if (hostname) {
+          try {
+            eventDomain = new URL(`https://${hostname}`).hostname.replace(/^www\./, '');
+          } catch {
+            eventDomain = hostname.replace(/^www\./, '');
+          }
+        }
+        // Resolve path-only referrers against the event's domain, not the localhost fallback
+        const referrerUrl = new URL(referrer, eventDomain ? `https://${eventDomain}` : base);
 
         referrerPath = referrerUrl.pathname;
         referrerQuery = referrerUrl.search.substring(1);
         referrerDomain = referrerUrl.hostname.replace(/^www\./, '');
+
+        // Never save the referrer domain for self-referrals
+        if (referrerDomain === eventDomain) {
+          referrerDomain = undefined;
+        }
       }
 
       const eventType = linkId
