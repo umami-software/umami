@@ -120,7 +120,6 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ? `and ((positionCaseInsensitive(event_name, {search:String}) > 0 and event_type = ${EVENT_TYPE.customEvent})
            or (positionCaseInsensitive(url_path, {search:String}) > 0 and event_type = ${EVENT_TYPE.pageView}))`
     : '';
-  const candidateLimit = maxResults ? Math.min(+maxResults, offset + size) : offset + size;
 
   const eventQuery = `
     select
@@ -140,57 +139,69 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     : `select count(*) as num from (${eventQuery}) t`;
 
   const count = await rawQuery(countQuery, queryParams).then(res => res[0].num);
+  const pagedEventRows = await rawQuery<{ event_id: string; created_at: string }[]>(
+    `
+    ${eventQuery}
+    order by created_at desc
+    limit ${size} offset ${offset}
+    `,
+    queryParams,
+    FUNCTION_NAME,
+  );
+
+  const eventIds = pagedEventRows.map(({ event_id }) => event_id);
+
+  if (!eventIds.length) {
+    return {
+      data: [],
+      count,
+      page: +page,
+      pageSize: size,
+      orderBy,
+      search,
+      isCapped: !!maxResults && +count >= +maxResults,
+    };
+  }
 
   const dataQuery = `
-    with candidate_events as (
-      ${eventQuery}
-      order by created_at desc
-      limit ${candidateLimit}
-    ),
-    paged_events as (
-      select
-        website_event.event_id as id,
-        website_event.website_id as websiteId,
-        website_event.session_id as sessionId,
-        website_event.created_at as createdAt,
-        website_event.hostname,
-        website_event.url_path as urlPath,
-        website_event.url_query as urlQuery,
-        website_event.referrer_path as referrerPath,
-        website_event.referrer_query as referrerQuery,
-        website_event.referrer_domain as referrerDomain,
-        website_event.country,
-        website_event.city,
-        website_event.device,
-        website_event.os,
-        website_event.browser,
-        website_event.page_title as pageTitle,
-        website_event.event_type as eventType,
-        website_event.event_name as eventName
-      from candidate_events
-      inner join website_event on website_event.event_id = candidate_events.event_id
-      order by candidate_events.created_at desc
-      limit ${size} offset ${offset}
-    ),
     paged_event_data as (
       select
         event_id,
         toUInt8(1) as has_data
       from umami.event_data_pivot
-      inner join paged_events on paged_events.id = event_data_pivot.event_id
       where website_id = {websiteId:UUID}
+        and event_id in {eventIds:Array(UUID)}
       ${hasDataDateQuery}
       group by event_id
     )
     select
-      paged_events.*,
+      website_event.event_id as id,
+      website_event.website_id as websiteId,
+      website_event.session_id as sessionId,
+      website_event.created_at as createdAt,
+      website_event.hostname,
+      website_event.url_path as urlPath,
+      website_event.url_query as urlQuery,
+      website_event.referrer_path as referrerPath,
+      website_event.referrer_query as referrerQuery,
+      website_event.referrer_domain as referrerDomain,
+      website_event.country,
+      website_event.city,
+      website_event.device,
+      website_event.os,
+      website_event.browser,
+      website_event.page_title as pageTitle,
+      website_event.event_type as eventType,
+      website_event.event_name as eventName,
       ifNull(paged_event_data.has_data, 0) as hasData
-    from paged_events
-    left join paged_event_data on paged_event_data.event_id = paged_events.id
-    order by paged_events.createdAt desc
+    from website_event
+    left join paged_event_data on paged_event_data.event_id = website_event.event_id
+    where website_event.website_id = {websiteId:UUID}
+      and website_event.event_id in {eventIds:Array(UUID)}
+    order by indexOf({eventIds:Array(UUID)}, website_event.event_id)
     `;
 
-  const data = await rawQuery(dataQuery, queryParams, FUNCTION_NAME);
+  const data = await rawQuery(dataQuery, { ...queryParams, eventIds }, FUNCTION_NAME);
 
   return {
     data,

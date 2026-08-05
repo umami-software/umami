@@ -32,6 +32,7 @@ async function loadModule({
   const clickhouseRawQuery = vi
     .fn()
     .mockResolvedValueOnce([{ num: '25' }])
+    .mockResolvedValueOnce([{ event_id: 'event-1', created_at: '2026-08-05 10:00:00' }])
     .mockResolvedValueOnce([{ id: 'event-1' }]);
   const clickhouseParseFilters = vi.fn().mockReturnValue(clickhouseParseFiltersResult);
 
@@ -116,29 +117,34 @@ describe('getWebsiteEvents', () => {
     } as any);
 
     const [countQuery] = clickhouseRawQuery.mock.calls[0];
-    const [dataQuery] = clickhouseRawQuery.mock.calls[1];
+    const [pagedEventsQuery] = clickhouseRawQuery.mock.calls[1];
+    const [dataQuery, dataParams] = clickhouseRawQuery.mock.calls[2];
 
     expect(countQuery).toContain('select count(*) as num from (select 1 from (');
     expect(countQuery).not.toContain('event_data');
-    expect(dataQuery).toContain('with candidate_events as (');
-    expect(dataQuery).toContain('and url_path = {path:String}');
-    expect(dataQuery).toContain('positionCaseInsensitive');
-    expect(dataQuery).toContain(
-      'inner join website_event on website_event.event_id = candidate_events.event_id',
-    );
+    expect(pagedEventsQuery).toContain('select');
+    expect(pagedEventsQuery).toContain('event_id,');
+    expect(pagedEventsQuery).toContain('created_at');
+    expect(pagedEventsQuery).toContain('from website_event');
+    expect(pagedEventsQuery).toContain('and url_path = {path:String}');
+    expect(pagedEventsQuery).toContain('positionCaseInsensitive');
+    expect(pagedEventsQuery).toContain('order by created_at desc');
+    expect(pagedEventsQuery).toContain('limit 20 offset 0');
     expect(dataQuery).toContain('paged_event_data as (');
     expect(dataQuery).toContain('where website_id = {websiteId:UUID}');
     expect(dataQuery).toContain('from umami.event_data_pivot');
-    expect(dataQuery).toContain('inner join paged_events on paged_events.id = event_data_pivot.event_id');
+    expect(dataQuery).toContain('and event_id in {eventIds:Array(UUID)}');
     expect(dataQuery).toContain(
       'and event_data_pivot.created_at between {startDate:DateTime64} and {endDate:DateTime64}',
     );
-    expect(dataQuery).toContain('from candidate_events');
-    expect(dataQuery).toContain('from paged_events');
-    expect(dataQuery).toContain('left join paged_event_data on paged_event_data.event_id = paged_events.id');
-    expect(dataQuery).toContain('order by paged_events.createdAt desc');
+    expect(dataQuery).toContain('from website_event');
+    expect(dataQuery).toContain(
+      'left join paged_event_data on paged_event_data.event_id = website_event.event_id',
+    );
+    expect(dataQuery).toContain('order by indexOf({eventIds:Array(UUID)}, website_event.event_id)');
     expect(dataQuery).toContain('toUInt8(1) as has_data');
     expect(dataQuery).toContain('ifNull(paged_event_data.has_data, 0) as hasData');
+    expect(dataParams).toMatchObject({ eventIds: ['event-1'] });
     expect(result).toEqual({
       data: [{ id: 'event-1' }],
       count: '25',
@@ -156,6 +162,7 @@ describe('getWebsiteEvents', () => {
     const clickhouseRawQuery = vi
       .fn()
       .mockResolvedValueOnce([{ num: '25' }])
+      .mockResolvedValueOnce([{ event_id: 'event-1', created_at: '2026-08-05 10:00:00' }])
       .mockResolvedValueOnce([{ id: 'event-1' }]);
 
     vi.doMock('@/lib/db', () => ({
@@ -187,7 +194,7 @@ describe('getWebsiteEvents', () => {
       timezone: 'America/Los_Angeles',
     } as any);
 
-    const [dataQuery] = clickhouseRawQuery.mock.calls[1];
+    const [dataQuery] = clickhouseRawQuery.mock.calls[2];
 
     expect(dataQuery).toContain(
       'and event_data_pivot.created_at between toTimezone({startDate:DateTime64},{timezone:String}) and toTimezone({endDate:DateTime64},{timezone:String})',
@@ -203,6 +210,7 @@ describe('getWebsiteEvents', () => {
     const clickhouseRawQuery = vi
       .fn()
       .mockResolvedValueOnce([{ num: '10000' }])
+      .mockResolvedValueOnce([{ event_id: 'event-1', created_at: '2026-08-05 10:00:00' }])
       .mockResolvedValueOnce([{ id: 'event-1' }]);
 
     vi.doMock('@/lib/db', () => ({
@@ -235,20 +243,65 @@ describe('getWebsiteEvents', () => {
     } as any);
 
     const [countQuery] = clickhouseRawQuery.mock.calls[0];
-    const [dataQuery] = clickhouseRawQuery.mock.calls[1];
+    const [pagedEventsQuery] = clickhouseRawQuery.mock.calls[1];
+    const [dataQuery, dataParams] = clickhouseRawQuery.mock.calls[2];
 
     expect(countQuery).toContain('select count(*) as num from (select 1 from (');
     expect(countQuery).toContain('from website_event');
     expect(countQuery).not.toContain('from website_event_stats_hourly');
-    expect(dataQuery).toContain('with candidate_events as (');
-    expect(dataQuery).toContain('select');
-    expect(dataQuery).toContain('event_id,');
-    expect(dataQuery).toContain('created_at');
+    expect(pagedEventsQuery).toContain('select');
+    expect(pagedEventsQuery).toContain('event_id,');
+    expect(pagedEventsQuery).toContain('created_at');
+    expect(pagedEventsQuery).toContain('from website_event');
+    expect(pagedEventsQuery).toContain('limit 20 offset 0');
+    expect(pagedEventsQuery).not.toContain('positionCaseInsensitive');
+    expect(dataQuery).toContain('and event_id in {eventIds:Array(UUID)}');
     expect(dataQuery).toContain('from website_event');
-    expect(dataQuery).toContain('limit 20');
-    expect(dataQuery).toContain(
-      'inner join website_event on website_event.event_id = candidate_events.event_id',
-    );
-    expect(dataQuery).not.toContain('positionCaseInsensitive');
+    expect(dataQuery).toContain('order by indexOf({eventIds:Array(UUID)}, website_event.event_id)');
+    expect(dataParams).toMatchObject({ eventIds: ['event-1'] });
+  });
+
+  test('clickhouse returns an empty page without running the wide hydration query when no ids match', async () => {
+    vi.resetModules();
+
+    const clickhouseRawQuery = vi
+      .fn()
+      .mockResolvedValueOnce([{ num: '0' }])
+      .mockResolvedValueOnce([]);
+
+    vi.doMock('@/lib/db', () => ({
+      CLICKHOUSE: 'clickhouse',
+      PRISMA: 'prisma',
+      runQuery: vi.fn((queries: Record<string, () => unknown>) => queries.clickhouse()),
+    }));
+
+    vi.doMock('@/lib/prisma', () => ({
+      default: {},
+    }));
+
+    vi.doMock('@/lib/clickhouse', () => ({
+      default: {
+        rawQuery: clickhouseRawQuery,
+        parseFilters: vi.fn().mockReturnValue(clickhouseParseFiltersResult),
+      },
+    }));
+
+    const { getWebsiteEvents } = await import('./getWebsiteEvents');
+
+    const result = await getWebsiteEvents('website-1', {
+      page: 1,
+      pageSize: 20,
+    } as any);
+
+    expect(clickhouseRawQuery).toHaveBeenCalledTimes(2);
+    expect(result).toEqual({
+      data: [],
+      count: '0',
+      page: 1,
+      pageSize: 20,
+      orderBy: undefined,
+      search: undefined,
+      isCapped: false,
+    });
   });
 });
