@@ -24,10 +24,11 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     websiteId,
   });
   const hasDataDateQuery = dateQuery.replaceAll('website_event.', 'event_data.');
+  const searchParams = search ? { eventSearch: `%${search}%` } : {};
 
   const searchQuery = search
-    ? `and ((event_name ilike {{search}} and event_type = ${EVENT_TYPE.customEvent})
-           or (url_path ilike {{search}} and event_type = ${EVENT_TYPE.pageView}))`
+    ? `and ((event_name ilike {{eventSearch}} and event_type = ${EVENT_TYPE.customEvent})
+           or (url_path ilike {{eventSearch}} and event_type = ${EVENT_TYPE.pageView}))`
     : '';
 
   const eventQuery = `
@@ -44,11 +45,24 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     ${searchQuery}
   `;
 
+  const countFromQuery = `
+    from website_event
+    ${cohortQuery}
+    ${joinSessionQuery}
+    where website_event.website_id = {{websiteId::uuid}}
+      and website_event.event_type != ${EVENT_TYPE.performance}
+    ${dateQuery}
+    ${filterQuery}
+    ${searchQuery}
+  `;
+
   const countQuery = maxResults
     ? `select count(*) as num from (select 1 from (${eventQuery}) t limit ${+maxResults}) t2`
-    : `select count(*) as num from (${eventQuery}) t`;
+    : `select count(*) as num ${countFromQuery}`;
 
-  const count = await rawQuery(countQuery, queryParams).then(res => Number(res[0].num));
+  const count = await rawQuery(countQuery, { ...queryParams, ...searchParams }).then(res =>
+    Number(res[0].num),
+  );
 
   const data = await rawQuery(
     `
@@ -91,7 +105,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     left join paged_event_data on paged_event_data.event_id = website_event.event_id
     order by paged_events.created_at desc
     `,
-    queryParams,
+    { ...queryParams, ...searchParams },
     FUNCTION_NAME,
   );
 
@@ -134,9 +148,19 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ${searchQuery}
   `;
 
+  const countFromQuery = `
+    from website_event
+    ${cohortQuery}
+    where website_id = {websiteId:UUID}
+      and event_type != ${EVENT_TYPE.performance}
+    ${dateQuery}
+    ${filterQuery}
+    ${searchQuery}
+  `;
+
   const countQuery = maxResults
     ? `select count(*) as num from (select 1 from (${eventQuery}) t limit ${+maxResults}) t2`
-    : `select count(*) as num from (${eventQuery}) t`;
+    : `select count(*) as num ${countFromQuery}`;
 
   const count = await rawQuery(countQuery, queryParams).then(res => res[0].num);
 

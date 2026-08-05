@@ -79,10 +79,13 @@ describe('getWebsiteEvents', () => {
     } as any);
 
     const [countQuery] = prismaRawQuery.mock.calls[0];
+    const [, countParams] = prismaRawQuery.mock.calls[0];
     const [dataQuery] = prismaRawQuery.mock.calls[1];
+    const [, dataParams] = prismaRawQuery.mock.calls[1];
 
     expect(countQuery).toContain('select count(*) as num from (select 1 from (');
     expect(countQuery).not.toContain('exists(');
+    expect(countQuery).toContain('event_name ilike {{eventSearch}}');
     expect(dataQuery).toContain('with paged_events as (');
     expect(dataQuery).toContain('paged_event_data as (');
     expect(dataQuery).toContain(
@@ -95,6 +98,8 @@ describe('getWebsiteEvents', () => {
     );
     expect(dataQuery).toContain('order by paged_events.created_at desc');
     expect(dataQuery).toContain('(paged_event_data.event_id is not null) as "hasData"');
+    expect(countParams).toMatchObject({ eventSearch: '%signup%' });
+    expect(dataParams).toMatchObject({ eventSearch: '%signup%' });
     expect(result).toEqual({
       data: [{ id: 'event-1' }],
       count: 25,
