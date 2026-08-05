@@ -57,7 +57,7 @@ export function SessionProfile({
       loadingPlacement="absolute"
     >
       {data && (
-        <Column gap>
+        <Column gap width="100%" minWidth="0">
           {onClose && (
             <Row justifyContent="flex-end" gap="1">
               {showDeleteButton && (
@@ -74,7 +74,7 @@ export function SessionProfile({
               </Button>
             </Row>
           )}
-          <Column gap="6">
+          <Column gap="6" width="100%" minWidth="0">
             <Row
               justifyContent="center"
               alignItems="center"
@@ -108,7 +108,7 @@ export function SessionProfile({
                 <SessionData sessionId={sessionId} websiteId={websiteId} />
               </TabPanel>
               {showReplays && (
-                <TabPanel id="replays">
+                <TabPanel id="replays" style={{ width: '100%', minWidth: 0, overflowX: 'hidden' }}>
                   <SessionReplaysDataTable websiteId={websiteId} sessionId={sessionId} />
                 </TabPanel>
               )}

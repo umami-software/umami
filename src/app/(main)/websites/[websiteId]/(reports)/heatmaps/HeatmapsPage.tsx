@@ -67,7 +67,12 @@ export function HeatmapsPage({ websiteId }: { websiteId: string }) {
             {isPhone ? (
               <Column gap="3">
                 <Row>
-                  <SearchField value={search} onSearch={setSearch} placeholder="Search" />
+                  <SearchField
+                    value={search}
+                    onSearch={setSearch}
+                    placeholder="Search"
+                    className="w-full max-w-md"
+                  />
                 </Row>
                 <Row justifyContent="flex-end">
                   <FilterButtons
@@ -79,7 +84,12 @@ export function HeatmapsPage({ websiteId }: { websiteId: string }) {
               </Column>
             ) : (
               <Row alignItems="center" justifyContent="space-between" gap="4">
-                <SearchField value={search} onSearch={setSearch} placeholder="Search" />
+                <SearchField
+                  value={search}
+                  onSearch={setSearch}
+                  placeholder="Search"
+                  className="w-full max-w-md"
+                />
                 <FilterButtons
                   items={buttons}
                   value={mode}

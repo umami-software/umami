@@ -6,6 +6,7 @@ import { getContentSecurityPolicy } from './src/lib/csp';
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const TRACKER_SCRIPT = '/script.js';
+const RECORDER_SCRIPT = '/recorder.js';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -97,6 +98,10 @@ const headers = [
 if (isProd) {
   headers.push({
     source: TRACKER_SCRIPT,
+    headers: trackerHeaders,
+  });
+  headers.push({
+    source: RECORDER_SCRIPT,
     headers: trackerHeaders,
   });
 }

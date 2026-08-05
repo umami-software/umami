@@ -7,6 +7,7 @@ export const config = {
 };
 
 const TRACKER_PATH = '/script.js';
+const RECORDER_PATH = '/recorder.js';
 const COLLECT_PATH = '/api/send';
 const LOGIN_PATH = '/login';
 const BASE_PATH = process.env.BASE_PATH || '';
@@ -62,6 +63,17 @@ function customScriptUrl(request: NextRequest) {
   }
 }
 
+function applyStaticScriptHeaders(request: NextRequest, response: NextResponse) {
+  if (
+    matchesConfiguredPath(request.nextUrl.pathname, TRACKER_PATH, BASE_PATH) ||
+    matchesConfiguredPath(request.nextUrl.pathname, RECORDER_PATH, BASE_PATH)
+  ) {
+    Object.entries(trackerHeaders).forEach(([key, value]) => {
+      response.headers.set(key, value);
+    });
+  }
+}
+
 function disableLogin(request: NextRequest) {
   const loginDisabled = process.env.DISABLE_LOGIN;
 
@@ -83,6 +95,7 @@ export default function middleware(req: NextRequest) {
   }
 
   res ??= NextResponse.next();
+  applyStaticScriptHeaders(req, res);
 
   // Set the CSP here, not only at build time in next.config.ts, so
   // ALLOWED_FRAME_URLS is resolved from the runtime environment.

@@ -80,3 +80,49 @@ select:is(:-webkit-autofill, :autofill):focus {
 [data-theme="dark"] .rr-controller__btns .label {
   color: black;
 }
+
+@media (max-width: 640px) {
+  .rr-controller {
+    height: auto !important;
+    padding: 8px 0 10px;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .rr-timeline {
+    width: calc(100% - 24px) !important;
+    gap: 4px;
+  }
+
+  .rr-timeline__time {
+    width: auto !important;
+    min-width: 44px;
+    font-size: 12px;
+  }
+
+  .rr-progress {
+    margin: 0 2px;
+  }
+
+  .rr-controller__btns {
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 6px;
+    row-gap: 8px;
+    font-size: 12px;
+    overflow: hidden;
+  }
+
+  .rr-controller__btns button {
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+  }
+
+  .rr-controller__btns .label {
+    margin: 0 4px;
+    font-size: 12px;
+  }
+}
