@@ -226,7 +226,6 @@ export default withNextIntl({
   experimental: {
     useTypeScriptCli: true,
   },
-  devIndicators: false,
   async headers() {
     return headers;
   },
