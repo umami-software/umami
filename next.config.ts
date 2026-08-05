@@ -9,6 +9,7 @@ const TRACKER_SCRIPT = '/script.js';
 const RECORDER_SCRIPT = '/recorder.js';
 
 const isProd = process.env.NODE_ENV === 'production';
+const isVercel = Boolean(process.env.VERCEL);
 
 const apiUrl = process.env.API_URL || '';
 const basePath = process.env.BASE_PATH || '';
@@ -219,7 +220,7 @@ export default withNextIntl({
     selfRecord,
   },
   basePath,
-  output: 'standalone',
+  output: isVercel ? undefined : 'standalone',
   typescript: {
     ignoreBuildErrors: true,
   },
