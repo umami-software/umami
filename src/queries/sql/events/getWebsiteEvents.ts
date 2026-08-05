@@ -120,6 +120,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ? `and ((positionCaseInsensitive(event_name, {search:String}) > 0 and event_type = ${EVENT_TYPE.customEvent})
            or (positionCaseInsensitive(url_path, {search:String}) > 0 and event_type = ${EVENT_TYPE.pageView}))`
     : '';
+  const candidateLimit = maxResults ? Math.min(+maxResults, offset + size) : offset + size;
 
   const eventQuery = `
     select
@@ -140,36 +141,35 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
 
   const count = await rawQuery(countQuery, queryParams).then(res => res[0].num);
 
-  const data = await rawQuery(
-    `
-    with paged_events as (
-      select
-        event_id as id,
-        website_id as websiteId,
-        session_id as sessionId,
-        created_at as createdAt,
-        hostname,
-        url_path as urlPath,
-        url_query as urlQuery,
-        referrer_path as referrerPath,
-        referrer_query as referrerQuery,
-        referrer_domain as referrerDomain,
-        country,
-        city,
-        device,
-        os,
-        browser,
-        page_title as pageTitle,
-        event_type as eventType,
-        event_name as eventName
-      from website_event
-      ${cohortQuery}
-      where website_id = {websiteId:UUID}
-        and event_type != ${EVENT_TYPE.performance}
-      ${dateQuery}
-      ${filterQuery}
-      ${searchQuery}
+  const dataQuery = `
+    with candidate_events as (
+      ${eventQuery}
       order by created_at desc
+      limit ${candidateLimit}
+    ),
+    paged_events as (
+      select
+        website_event.event_id as id,
+        website_event.website_id as websiteId,
+        website_event.session_id as sessionId,
+        website_event.created_at as createdAt,
+        website_event.hostname,
+        website_event.url_path as urlPath,
+        website_event.url_query as urlQuery,
+        website_event.referrer_path as referrerPath,
+        website_event.referrer_query as referrerQuery,
+        website_event.referrer_domain as referrerDomain,
+        website_event.country,
+        website_event.city,
+        website_event.device,
+        website_event.os,
+        website_event.browser,
+        website_event.page_title as pageTitle,
+        website_event.event_type as eventType,
+        website_event.event_name as eventName
+      from candidate_events
+      inner join website_event on website_event.event_id = candidate_events.event_id
+      order by candidate_events.created_at desc
       limit ${size} offset ${offset}
     ),
     paged_event_data as (
@@ -188,10 +188,9 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     from paged_events
     left join paged_event_data on paged_event_data.event_id = paged_events.id
     order by paged_events.createdAt desc
-    `,
-    queryParams,
-    FUNCTION_NAME,
-  );
+    `;
+
+  const data = await rawQuery(dataQuery, queryParams, FUNCTION_NAME);
 
   return {
     data,

@@ -104,7 +104,7 @@ describe('getWebsiteEvents', () => {
     });
   });
 
-  test('clickhouse counts from the lightweight filtered event query and resolves hasData from paged ids', async () => {
+  test('clickhouse counts from the lightweight filtered event query and hydrates wide rows from candidate ids', async () => {
     const { getWebsiteEvents, clickhouseRawQuery } = await loadModule({ mode: 'clickhouse' });
 
     const result = await getWebsiteEvents('website-1', {
@@ -120,8 +120,12 @@ describe('getWebsiteEvents', () => {
 
     expect(countQuery).toContain('select count(*) as num from (select 1 from (');
     expect(countQuery).not.toContain('event_data');
-    expect(dataQuery).toContain('with paged_events as (');
-    expect(dataQuery).toContain('website_id as websiteId');
+    expect(dataQuery).toContain('with candidate_events as (');
+    expect(dataQuery).toContain('and url_path = {path:String}');
+    expect(dataQuery).toContain('positionCaseInsensitive');
+    expect(dataQuery).toContain(
+      'inner join website_event on website_event.event_id = candidate_events.event_id',
+    );
     expect(dataQuery).toContain('paged_event_data as (');
     expect(dataQuery).toContain('where website_id = {websiteId:UUID}');
     expect(dataQuery).toContain('from umami.event_data_pivot');
@@ -129,6 +133,7 @@ describe('getWebsiteEvents', () => {
     expect(dataQuery).toContain(
       'and event_data_pivot.created_at between {startDate:DateTime64} and {endDate:DateTime64}',
     );
+    expect(dataQuery).toContain('from candidate_events');
     expect(dataQuery).toContain('from paged_events');
     expect(dataQuery).toContain('left join paged_event_data on paged_event_data.event_id = paged_events.id');
     expect(dataQuery).toContain('order by paged_events.createdAt desc');
@@ -190,5 +195,60 @@ describe('getWebsiteEvents', () => {
     expect(dataQuery).not.toContain(
       'and created_at between {startDate:DateTime64} and {endDate:DateTime64}',
     );
+  });
+
+  test('clickhouse narrows row fetches to candidate ids when there are no filters, cohorts, or search', async () => {
+    vi.resetModules();
+
+    const clickhouseRawQuery = vi
+      .fn()
+      .mockResolvedValueOnce([{ num: '10000' }])
+      .mockResolvedValueOnce([{ id: 'event-1' }]);
+
+    vi.doMock('@/lib/db', () => ({
+      CLICKHOUSE: 'clickhouse',
+      PRISMA: 'prisma',
+      runQuery: vi.fn((queries: Record<string, () => unknown>) => queries.clickhouse()),
+    }));
+
+    vi.doMock('@/lib/prisma', () => ({
+      default: {},
+    }));
+
+    vi.doMock('@/lib/clickhouse', () => ({
+      default: {
+        rawQuery: clickhouseRawQuery,
+        parseFilters: vi.fn().mockReturnValue({
+          ...clickhouseParseFiltersResult,
+          filterQuery: '',
+          cohortQuery: '',
+        }),
+      },
+    }));
+
+    const { getWebsiteEvents } = await import('./getWebsiteEvents');
+
+    await getWebsiteEvents('website-1', {
+      page: 1,
+      pageSize: 20,
+      maxResults: 10000,
+    } as any);
+
+    const [countQuery] = clickhouseRawQuery.mock.calls[0];
+    const [dataQuery] = clickhouseRawQuery.mock.calls[1];
+
+    expect(countQuery).toContain('select count(*) as num from (select 1 from (');
+    expect(countQuery).toContain('from website_event');
+    expect(countQuery).not.toContain('from website_event_stats_hourly');
+    expect(dataQuery).toContain('with candidate_events as (');
+    expect(dataQuery).toContain('select');
+    expect(dataQuery).toContain('event_id,');
+    expect(dataQuery).toContain('created_at');
+    expect(dataQuery).toContain('from website_event');
+    expect(dataQuery).toContain('limit 20');
+    expect(dataQuery).toContain(
+      'inner join website_event on website_event.event_id = candidate_events.event_id',
+    );
+    expect(dataQuery).not.toContain('positionCaseInsensitive');
   });
 });
