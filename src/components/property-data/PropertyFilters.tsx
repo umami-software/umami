@@ -13,15 +13,21 @@ import {
   Row,
 } from '@umami/react-zen';
 import { format } from 'date-fns';
-import { Badge } from '@/components/common/Badge';
 import { Empty } from '@/components/common/Empty';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useMobile, usePropertyFieldsQuery } from '@/components/hooks';
 import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { Plus } from '@/components/icons';
-import { DATA_TYPE, DATA_TYPES, OPERATORS } from '@/lib/constants';
+import { DATA_TYPE, OPERATORS } from '@/lib/constants';
 import type { PropertyFilter } from '@/lib/types';
 import { PropertyFilterRecord } from './PropertyFilterRecord';
+
+const propertyNameStyle = {
+  display: 'block',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap' as const,
+};
 
 export function PropertyFilters({
   source,
@@ -47,14 +53,16 @@ export function PropertyFilters({
   } = usePropertyFieldsQuery(source, websiteId, eventName, {
     enabled: !providedFields,
   });
-  const fields = providedFields ?? queriedFields ?? [];
+  // A property can be stored under multiple data types. Collapse to the dominant
+  // one: results are ordered by session count, so first-wins keeps the most common.
+  const seen = new Set<string>();
+  const fields = (providedFields ?? queriedFields ?? []).filter(
+    (field: { propertyName: string }) => {
+      if (seen.has(field.propertyName)) return false;
+      seen.add(field.propertyName);
 
-  // The same property can be stored under multiple data types, which renders as
-  // identical-looking rows. Tag only those, so names keep the full column width.
-  const duplicateNames = new Set(
-    (fields as any[])
-      .map(f => f.propertyName)
-      .filter((name, i, names) => names.indexOf(name) !== i),
+      return true;
+    },
   );
 
   const handleAdd = (field: { propertyName: string; dataType: number }) => {
@@ -113,10 +121,9 @@ export function PropertyFilters({
                     id={`${field.propertyName}:${field.dataType}`}
                     onAction={() => handleAdd(field)}
                   >
-                    <PropertyLabel
-                      field={field}
-                      showDataType={duplicateNames.has(field.propertyName)}
-                    />
+                    <span title={field.propertyName} style={propertyNameStyle}>
+                      {field.propertyName}
+                    </span>
                   </MenuItem>
                 ))}
               </Menu>
@@ -137,10 +144,9 @@ export function PropertyFilters({
                 id={`${field.propertyName}:${field.dataType}`}
                 onClick={() => handleAdd(field)}
               >
-                <PropertyLabel
-                  field={field}
-                  showDataType={duplicateNames.has(field.propertyName)}
-                />
+                <span title={field.propertyName} style={propertyNameStyle}>
+                  {field.propertyName}
+                </span>
               </ListItem>
             ))}
           </List>
@@ -177,29 +183,5 @@ export function PropertyFilters({
         </Column>
       </Grid>
     </LoadingPanel>
-  );
-}
-
-function PropertyLabel({
-  field,
-  showDataType,
-}: {
-  field: { propertyName: string; dataType: number };
-  showDataType: boolean;
-}) {
-  return (
-    <Row alignItems="center" gap="2" minWidth="0">
-      <span
-        title={field.propertyName}
-        style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
-      >
-        {field.propertyName}
-      </span>
-      {showDataType && (
-        <Badge variant="gray" dot={false}>
-          {DATA_TYPES[field.dataType]}
-        </Badge>
-      )}
-    </Row>
   );
 }
