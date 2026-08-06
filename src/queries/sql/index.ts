@@ -46,7 +46,6 @@ export * from './sessions/createSession';
 export * from './sessions/getLinkedDistinctIds';
 export * from './sessions/getLinkedSessionIds';
 export * from './sessions/getSessionActivity';
-export * from './sessions/getSessionActivityBounds';
 export * from './sessions/getSessionData';
 export * from './sessions/getSessionDataActivityStats';
 export * from './sessions/getSessionDataArraySeries';

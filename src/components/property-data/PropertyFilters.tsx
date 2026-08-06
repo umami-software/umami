@@ -13,12 +13,13 @@ import {
   Row,
 } from '@umami/react-zen';
 import { format } from 'date-fns';
+import { Badge } from '@/components/common/Badge';
 import { Empty } from '@/components/common/Empty';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useMobile, usePropertyFieldsQuery } from '@/components/hooks';
 import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { Plus } from '@/components/icons';
-import { DATA_TYPE, OPERATORS } from '@/lib/constants';
+import { DATA_TYPE, DATA_TYPES, OPERATORS } from '@/lib/constants';
 import type { PropertyFilter } from '@/lib/types';
 import { PropertyFilterRecord } from './PropertyFilterRecord';
 
@@ -48,9 +49,17 @@ export function PropertyFilters({
   });
   const fields = providedFields ?? queriedFields ?? [];
 
-  const handleAdd = (propertyName: string) => {
-    const field = (fields as any[]).find(f => f.propertyName === propertyName);
-    const dataType: number = field?.dataType ?? DATA_TYPE.string;
+  // The same property can be stored under multiple data types, which renders as
+  // identical-looking rows. Tag only those, so names keep the full column width.
+  const duplicateNames = new Set(
+    (fields as any[])
+      .map(f => f.propertyName)
+      .filter((name, i, names) => names.indexOf(name) !== i),
+  );
+
+  const handleAdd = (field: { propertyName: string; dataType: number }) => {
+    const { propertyName } = field;
+    const dataType: number = field.dataType ?? DATA_TYPE.string;
 
     onChange([
       ...value,
@@ -101,10 +110,13 @@ export function PropertyFilters({
                 {(fields as any[]).map(field => (
                   <MenuItem
                     key={`${field.propertyName}:${field.dataType}`}
-                    id={field.propertyName}
-                    onAction={key => handleAdd(key.toString())}
+                    id={`${field.propertyName}:${field.dataType}`}
+                    onAction={() => handleAdd(field)}
                   >
-                    {field.propertyName}
+                    <PropertyLabel
+                      field={field}
+                      showDataType={duplicateNames.has(field.propertyName)}
+                    />
                   </MenuItem>
                 ))}
               </Menu>
@@ -122,10 +134,13 @@ export function PropertyFilters({
             {(fields as any[]).map(field => (
               <ListItem
                 key={`${field.propertyName}:${field.dataType}`}
-                id={field.propertyName}
-                onClick={() => handleAdd(field.propertyName)}
+                id={`${field.propertyName}:${field.dataType}`}
+                onClick={() => handleAdd(field)}
               >
-                {field.propertyName}
+                <PropertyLabel
+                  field={field}
+                  showDataType={duplicateNames.has(field.propertyName)}
+                />
               </ListItem>
             ))}
           </List>
@@ -162,5 +177,29 @@ export function PropertyFilters({
         </Column>
       </Grid>
     </LoadingPanel>
+  );
+}
+
+function PropertyLabel({
+  field,
+  showDataType,
+}: {
+  field: { propertyName: string; dataType: number };
+  showDataType: boolean;
+}) {
+  return (
+    <Row alignItems="center" gap="2" minWidth="0">
+      <span
+        title={field.propertyName}
+        style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+      >
+        {field.propertyName}
+      </span>
+      {showDataType && (
+        <Badge variant="gray" dot={false}>
+          {DATA_TYPES[field.dataType]}
+        </Badge>
+      )}
+    </Row>
   );
 }
