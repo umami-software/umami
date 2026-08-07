@@ -148,8 +148,18 @@ export function PropertyFilterRecord({
   };
 
   return (
-    <Column>
-      <Label>{filter.propertyName}</Label>
+    <Column minWidth="0">
+      <Label
+        title={filter.propertyName}
+        style={{
+          display: 'block',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {filter.propertyName}
+      </Label>
       <Grid columns="1fr auto" gap>
         <Grid columns={{ base: '1fr', md: '200px 1fr' }} gap>
           <Select

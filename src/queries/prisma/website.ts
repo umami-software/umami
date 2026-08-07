@@ -8,6 +8,7 @@ import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
 import type { QueryFilters } from '@/lib/types';
+import { z } from 'zod';
 import {
   getWebsiteListActiveVisitors,
   getWebsiteListActivity,
@@ -428,6 +429,10 @@ export async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs) {
 }
 
 export async function getWebsite(websiteId: string) {
+  if (!z.uuid().safeParse(websiteId).success) {
+    return null;
+  }
+
   const website = await findWebsite({
     where: {
       id: websiteId,

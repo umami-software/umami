@@ -22,6 +22,13 @@ import { DATA_TYPE, OPERATORS } from '@/lib/constants';
 import type { PropertyFilter } from '@/lib/types';
 import { PropertyFilterRecord } from './PropertyFilterRecord';
 
+const propertyNameStyle = {
+  display: 'block',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap' as const,
+};
+
 export function PropertyFilters({
   source,
   websiteId,
@@ -46,11 +53,21 @@ export function PropertyFilters({
   } = usePropertyFieldsQuery(source, websiteId, eventName, {
     enabled: !providedFields,
   });
-  const fields = providedFields ?? queriedFields ?? [];
+  // A property can be stored under multiple data types. Collapse to the dominant
+  // one: results are ordered by session count, so first-wins keeps the most common.
+  const seen = new Set<string>();
+  const fields = (providedFields ?? queriedFields ?? []).filter(
+    (field: { propertyName: string }) => {
+      if (seen.has(field.propertyName)) return false;
+      seen.add(field.propertyName);
 
-  const handleAdd = (propertyName: string) => {
-    const field = (fields as any[]).find(f => f.propertyName === propertyName);
-    const dataType: number = field?.dataType ?? DATA_TYPE.string;
+      return true;
+    },
+  );
+
+  const handleAdd = (field: { propertyName: string; dataType: number }) => {
+    const { propertyName } = field;
+    const dataType: number = field.dataType ?? DATA_TYPE.string;
 
     onChange([
       ...value,
@@ -101,10 +118,12 @@ export function PropertyFilters({
                 {(fields as any[]).map(field => (
                   <MenuItem
                     key={`${field.propertyName}:${field.dataType}`}
-                    id={field.propertyName}
-                    onAction={key => handleAdd(key.toString())}
+                    id={`${field.propertyName}:${field.dataType}`}
+                    onAction={() => handleAdd(field)}
                   >
-                    {field.propertyName}
+                    <span title={field.propertyName} style={propertyNameStyle}>
+                      {field.propertyName}
+                    </span>
                   </MenuItem>
                 ))}
               </Menu>
@@ -122,10 +141,12 @@ export function PropertyFilters({
             {(fields as any[]).map(field => (
               <ListItem
                 key={`${field.propertyName}:${field.dataType}`}
-                id={field.propertyName}
-                onClick={() => handleAdd(field.propertyName)}
+                id={`${field.propertyName}:${field.dataType}`}
+                onClick={() => handleAdd(field)}
               >
-                {field.propertyName}
+                <span title={field.propertyName} style={propertyNameStyle}>
+                  {field.propertyName}
+                </span>
               </ListItem>
             ))}
           </List>
