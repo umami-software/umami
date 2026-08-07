@@ -44,8 +44,9 @@ export function ReplayPlayback({
   const [isSaved, setIsSaved] = useState<boolean | null>(null);
   const { mutate } = useUpdateQuery(`/websites/${websiteId}/replays/saved/${replayId}`);
   const replays = useReplays(state => state.replays);
+  const getReplayId = (r: any) => r.visitId || r.id;
 
-  const currentIndex = replays.findIndex(r => r.id === replayId || r.visitId === replayId);
+  const currentIndex = replays.findIndex(r => getReplayId(r) === replayId);
   const prevReplay = currentIndex > 0 ? replays[currentIndex - 1] : null;
   const nextReplay = currentIndex !== -1 && currentIndex < replays.length - 1 ? replays[currentIndex + 1] : null;
 
@@ -73,10 +74,10 @@ export function ReplayPlayback({
 
       if (e.key === 'ArrowLeft' && prevReplay) {
         e.preventDefault();
-        navigateToReplay(prevReplay.id || prevReplay.visitId);
+        navigateToReplay(getReplayId(prevReplay));
       } else if (e.key === 'ArrowRight' && nextReplay) {
         e.preventDefault();
-        navigateToReplay(nextReplay.id || nextReplay.visitId);
+        navigateToReplay(getReplayId(nextReplay));
       }
     };
 
@@ -116,12 +117,12 @@ export function ReplayPlayback({
                 </Column>
               </Row>
               <Row gap="2" style={{ flex: '0 0 auto' }}>
-                <Button variant="quiet" isDisabled={!prevReplay} onPress={() => prevReplay && navigateToReplay(prevReplay.id || prevReplay.visitId)}>
+                <Button variant="quiet" isDisabled={!prevReplay} onPress={() => prevReplay && navigateToReplay(getReplayId(prevReplay))}>
                   <Icon>
                     <ChevronLeft />
                   </Icon>
                 </Button>
-                <Button variant="quiet" isDisabled={!nextReplay} onPress={() => nextReplay && navigateToReplay(nextReplay.id || nextReplay.visitId)}>
+                <Button variant="quiet" isDisabled={!nextReplay} onPress={() => nextReplay && navigateToReplay(getReplayId(nextReplay))}>
                   <Icon>
                     <ChevronRight />
                   </Icon>
