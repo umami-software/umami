@@ -1,6 +1,6 @@
 'use client';
 import { Button, Column, Dialog, DialogTrigger, Icon, Popover, Row, Text } from '@umami/react-zen';
-import { Bookmark, X } from 'lucide-react';
+import { Bookmark, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { SessionInfo } from '@/app/(main)/websites/[websiteId]/sessions/SessionInfo';
 import { Avatar } from '@/components/common/Avatar';
@@ -8,11 +8,13 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
   useMessages,
   useMobile,
+  useNavigation,
   useReplayQuery,
   useReplaySavedQuery,
   useUpdateQuery,
   useWebsiteSessionQuery,
 } from '@/components/hooks';
+import { useReplays } from '@/store/replays';
 import { touch } from '@/components/hooks/useModified';
 import { getReplayViewport } from '@/lib/replay';
 import { ReplayPlayer } from './ReplayPlayer';
@@ -38,8 +40,18 @@ export function ReplayPlayback({
   const { data: session } = useWebsiteSessionQuery(websiteId, replay?.sessionId);
   const { t, labels } = useMessages();
   const { isMobile } = useMobile();
+  const { router, updateParams } = useNavigation();
   const [isSaved, setIsSaved] = useState<boolean | null>(null);
   const { mutate } = useUpdateQuery(`/websites/${websiteId}/replays/saved/${replayId}`);
+  const replays = useReplays(state => state.replays);
+
+  const currentIndex = replays.findIndex(r => r.id === replayId || r.visitId === replayId);
+  const prevReplay = currentIndex > 0 ? replays[currentIndex - 1] : null;
+  const nextReplay = currentIndex !== -1 && currentIndex < replays.length - 1 ? replays[currentIndex + 1] : null;
+
+  const navigateToReplay = (id: string) => {
+    router.push(updateParams({ replay: id }));
+  };
   const replayViewport = useMemo(() => getReplayViewport(replay?.events), [replay?.events]);
   const replayOrientation: ReplayOrientation | null = replayViewport
     ? replayViewport.height > replayViewport.width
@@ -54,6 +66,23 @@ export function ReplayPlayback({
   useEffect(() => {
     onReplayStateChange?.(replayOrientation);
   }, [replayOrientation, onReplayStateChange]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)) return;
+
+      if (e.key === 'ArrowLeft' && prevReplay) {
+        e.preventDefault();
+        navigateToReplay(prevReplay.id || prevReplay.visitId);
+      } else if (e.key === 'ArrowRight' && nextReplay) {
+        e.preventDefault();
+        navigateToReplay(nextReplay.id || nextReplay.visitId);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
+  }, [prevReplay, nextReplay, router, updateParams]);
 
   const handleUnsave = () => {
     setIsSaved(false);
@@ -87,6 +116,16 @@ export function ReplayPlayback({
                 </Column>
               </Row>
               <Row gap="2" style={{ flex: '0 0 auto' }}>
+                <Button variant="quiet" isDisabled={!prevReplay} onPress={() => prevReplay && navigateToReplay(prevReplay.id || prevReplay.visitId)}>
+                  <Icon>
+                    <ChevronLeft />
+                  </Icon>
+                </Button>
+                <Button variant="quiet" isDisabled={!nextReplay} onPress={() => nextReplay && navigateToReplay(nextReplay.id || nextReplay.visitId)}>
+                  <Icon>
+                    <ChevronRight />
+                  </Icon>
+                </Button>
                 {saved ? (
                   <Button onPress={handleUnsave} variant="quiet">
                     <Icon>
