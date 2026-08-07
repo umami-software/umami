@@ -29,13 +29,7 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
   const { t, labels } = useMessages();
   const { isMobile } = useMobile();
   const { formatValue } = useFormat();
-  const {
-    router,
-    pathname,
-    updateParams,
-    replaceParams,
-    query,
-  } = useNavigation();
+  const { router, pathname, updateParams, replaceParams, query } = useNavigation();
   const { segment, cohort } = query;
   const { filters, eventPropertyFilters, sessionPropertyFilters, operatorLabels } = useFilters();
   const { data, isLoading } = useWebsiteSegmentQuery(websiteId, segment || cohort);
@@ -92,7 +86,13 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
     router.push(updateParams({ [type]: undefined }));
   };
 
-  if (!filters.length && !eventPropertyFilters.length && !sessionPropertyFilters.length && !segment && !cohort) {
+  if (
+    !filters.length &&
+    !eventPropertyFilters.length &&
+    !sessionPropertyFilters.length &&
+    !segment &&
+    !cohort
+  ) {
     return null;
   }
 
@@ -181,7 +181,6 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
           )}
           <Modal placement={isMobile ? 'fullscreen' : 'center'}>
             <Dialog
-              variant={isMobile ? 'sheet' : undefined}
               title={t(labels.segment)}
               style={{
                 width: isMobile ? '100%' : '800px',

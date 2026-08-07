@@ -88,11 +88,8 @@ export function FieldFilters({
               <Plus />
             </Icon>
           </Button>
-          <Popover placement={isMobile ? 'left' : 'bottom start'} shouldFlip>
-            <Menu
-              onAction={handleAdd}
-              style={{ maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}
-            >
+          <Popover side={isMobile ? 'left' : 'bottom'} align={isMobile ? undefined : 'start'}>
+            <Menu style={{ maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}>
               {groupLabels.map(({ key: groupKey, label }) => {
                 const groupFields = groupedFields[groupKey];
                 if (!groupFields || groupFields.length === 0) return null;
@@ -100,7 +97,7 @@ export function FieldFilters({
                   <MenuSection key={groupKey} title={label}>
                     {groupFields.map(field => {
                       return (
-                        <MenuItem key={field.name} id={field.name}>
+                        <MenuItem key={field.name} id={field.name} onAction={handleAdd}>
                           {field.filterLabel}
                         </MenuItem>
                       );
@@ -118,7 +115,7 @@ export function FieldFilters({
         paddingRight="3"
         marginRight="6"
       >
-        <List onAction={handleAdd}>
+        <List>
           {groupLabels.map(({ key: groupKey, label }) => {
             const groupFields = groupedFields[groupKey];
             if (!groupFields || groupFields.length === 0) return null;
@@ -127,7 +124,11 @@ export function FieldFilters({
               <ListSection key={groupKey} title={label}>
                 {groupFields.map(field => {
                   return (
-                    <ListItem key={field.name} id={field.name}>
+                    <ListItem
+                      key={field.name}
+                      id={field.name}
+                      onClick={() => handleAdd(field.name)}
+                    >
                       {field.filterLabel}
                     </ListItem>
                   );
@@ -142,7 +143,11 @@ export function FieldFilters({
           <Row alignItems="center" gap>
             <Column gap="1">
               <Label>{t(labels.match)}</Label>
-              <Select value={match} onChange={onMatchChange} style={{ width: 150 }}>
+              <Select
+                value={match}
+                onChange={value => onMatchChange(value as string)}
+                buttonProps={{ style: { width: 150 } }}
+              >
                 <ListItem id="all">{t(labels.matchAll)}</ListItem>
                 <ListItem id="any">{t(labels.matchAny)}</ListItem>
               </Select>

@@ -369,6 +369,108 @@ describe('event url and referrer parsing', () => {
     });
   });
 
+  test('does not save referrer domain when it matches the hostname', async () => {
+    await callPOST({
+      type: 'event',
+      payload: {
+        website: WEBSITE_ID,
+        hostname: 'example.com',
+        url: '/products',
+        referrer: 'https://www.example.com/prev?a=1',
+      },
+    });
+
+    const arg = saveEventMock.mock.calls[0][0] as Record<string, any>;
+    expect(arg).toMatchObject({
+      referrerPath: '/prev',
+      referrerQuery: 'a=1',
+    });
+    expect(arg.referrerDomain).toBeUndefined();
+  });
+
+  test('does not save referrer domain for a path-only referrer', async () => {
+    await callPOST({
+      type: 'event',
+      payload: {
+        website: WEBSITE_ID,
+        hostname: 'example.com',
+        url: '/products',
+        referrer: '/prev?a=1',
+      },
+    });
+
+    const arg = saveEventMock.mock.calls[0][0] as Record<string, any>;
+    expect(arg).toMatchObject({
+      referrerPath: '/prev',
+      referrerQuery: 'a=1',
+    });
+    expect(arg.referrerDomain).toBeUndefined();
+  });
+
+  test('saves referrer domain for a lookalike domain that only shares a prefix', async () => {
+    await callPOST({
+      type: 'event',
+      payload: {
+        website: WEBSITE_ID,
+        hostname: 'example.com',
+        url: '/products',
+        referrer: 'https://example.com.br/page',
+      },
+    });
+
+    expect(saveEventMock.mock.calls[0][0]).toMatchObject({
+      referrerDomain: 'example.com.br',
+      referrerPath: '/page',
+    });
+  });
+
+  test('resolves a path-only referrer against the url domain when hostname is missing', async () => {
+    await callPOST({
+      type: 'event',
+      payload: {
+        website: WEBSITE_ID,
+        url: 'https://example.com/products',
+        referrer: '/prev',
+      },
+    });
+
+    const arg = saveEventMock.mock.calls[0][0] as Record<string, any>;
+    expect(arg).toMatchObject({ referrerPath: '/prev' });
+    expect(arg.referrerDomain).toBeUndefined();
+  });
+
+  test('does not save referrer domain when hostname differs only by case', async () => {
+    await callPOST({
+      type: 'event',
+      payload: {
+        website: WEBSITE_ID,
+        hostname: 'EXAMPLE.com',
+        url: '/products',
+        referrer: 'https://example.com/prev',
+      },
+    });
+
+    const arg = saveEventMock.mock.calls[0][0] as Record<string, any>;
+    expect(arg).toMatchObject({ referrerPath: '/prev' });
+    expect(arg.referrerDomain).toBeUndefined();
+  });
+
+  test('does not save referrer domain when hostname includes a port', async () => {
+    await callPOST({
+      type: 'event',
+      payload: {
+        website: WEBSITE_ID,
+        hostname: 'example.com:8443',
+        url: '/products',
+        referrer: 'https://example.com:8443/prev',
+      },
+    });
+
+    const arg = saveEventMock.mock.calls[0][0] as Record<string, any>;
+    expect(arg).toMatchObject({ referrerPath: '/prev' });
+    expect(arg.referrerDomain).toBeUndefined();
+  });
+
   test('REMOVE_TRAILING_SLASH strips a trailing slash from the url path', async () => {
     process.env.REMOVE_TRAILING_SLASH = '1';
 

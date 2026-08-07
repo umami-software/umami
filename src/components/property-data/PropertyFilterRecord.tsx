@@ -20,7 +20,7 @@ import { useState } from 'react';
 import { ComboBox } from '@/components/common/ComboBox';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { Empty } from '@/components/common/Empty';
-import { MultiSelect } from '@/components/common/MultiSelect';
+import { MultiSelect, MultiSelectItem } from '@/components/common/MultiSelect';
 import { useMessages, usePropertyValuesQuery } from '@/components/hooks';
 import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { X } from '@/components/icons';
@@ -180,14 +180,11 @@ export function PropertyFilterRecord({
               aria-label={filter.propertyName}
               items={filteredValues}
               inputValue={filter.value}
-              style={{ width: '100%' }}
-              onInputChange={v => {
+              className="w-full"
+              onInputValueChange={(v: string) => {
                 setSearch(v);
                 onChange({ ...filter, value: v });
               }}
-              formValue="text"
-              allowsEmptyCollection
-              allowsCustomValue
               renderEmptyState={() =>
                 isLoading ? (
                   <Loading placement="center" icon="dots" />
@@ -225,9 +222,9 @@ export function PropertyFilterRecord({
               }
             >
               {filteredValues.map(v => (
-                <ListItem key={v} id={v}>
+                <MultiSelectItem key={v} value={v}>
                   {v}
-                </ListItem>
+                </MultiSelectItem>
               ))}
             </MultiSelect>
           )}
@@ -267,7 +264,7 @@ function DateValuePicker({
       >
         <DateDisplay startDate={selectedDate} endDate={selectedDate} />
       </Button>
-      <Popover placement="bottom start" shouldFlip isNonModal>
+      <Popover side="bottom" align="start" isNonModal>
         <Dialog>
           <Column gap>
             <Calendar

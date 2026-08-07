@@ -93,8 +93,8 @@ export function Goal({
           <Row alignItems="center" gap="6">
             <ProgressBar
               value={data?.num || 0}
-              minValue={0}
-              maxValue={data?.total || 1}
+              min={0}
+              max={data?.total || 1}
               style={{ width: '100%' }}
             />
             <Text weight="bold" size="4xl">

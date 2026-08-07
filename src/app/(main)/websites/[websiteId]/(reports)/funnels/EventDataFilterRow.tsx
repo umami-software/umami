@@ -63,15 +63,11 @@ function PropertySelect({
       aria-label="PropertySelect"
       items={properties}
       inputValue={value}
-      style={{ width: '100%' }}
-      onInputChange={v => {
+      onInputValueChange={v => {
         setSearch(v);
         onChange?.(v);
         onPropertyChange?.(v);
       }}
-      formValue="text"
-      allowsEmptyCollection
-      allowsCustomValue
       renderEmptyState={() =>
         isLoading ? (
           <Loading placement="center" icon="dots" />
@@ -125,13 +121,9 @@ function ValueSelect({
       aria-label="ValueSelect"
       items={values}
       inputValue={value}
-      style={{ width: '100%' }}
-      onInputChange={v => {
+      onInputValueChange={v => {
         onChange?.(v);
       }}
-      formValue="text"
-      allowsEmptyCollection
-      allowsCustomValue
       renderEmptyState={() =>
         isLoading ? (
           <Loading placement="center" icon="dots" />
@@ -158,7 +150,7 @@ function OperatorSelect({
 }) {
   const { t, labels } = useMessages();
   return (
-    <Select value={value} onChange={onChange}>
+    <Select value={value} onChange={v => onChange?.(v as string)}>
       <ListItem id="eq">{t(labels.is)}</ListItem>
       <ListItem id="neq">{t(labels.isNot)}</ListItem>
       <ListItem id="c">{t(labels.contains)}</ListItem>

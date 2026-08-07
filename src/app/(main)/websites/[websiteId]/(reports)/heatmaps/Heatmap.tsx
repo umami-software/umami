@@ -1,19 +1,25 @@
 'use client';
 import {
+  Button,
   Column,
+  Dialog,
   Grid,
   Heading,
   Icon,
   ListItem,
   Loading,
+  Modal,
   Row,
   Select,
   Text,
 } from '@umami/react-zen';
 import { Laptop, Monitor, Smartphone, Tablet } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
+import { IconLabel } from '@/components/common/IconLabel';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useResultQuery } from '@/components/hooks';
+import { useMobile, useResultQuery } from '@/components/hooks';
+import { ListCheck } from '@/components/icons';
 import { formatLongNumber } from '@/lib/format';
 import type { HeatmapMode, HeatmapPoint, HeatmapResult, HeatmapSnapshot } from '@/queries/sql';
 import styles from './Heatmap.module.css';
@@ -53,6 +59,8 @@ interface HeatmapProps {
 }
 
 export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: HeatmapProps) {
+  const { isPhone } = useMobile();
+  const [isPagePickerOpen, setIsPagePickerOpen] = useState(false);
   const {
     data: pagesData,
     error,
@@ -88,6 +96,7 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
 
     return pages.filter(page => page.urlPath.toLowerCase().includes(value));
   }, [pages, search]);
+  const selectedPage = filteredPages.find(page => page.urlPath === urlPath) ?? null;
   const points = detailData?.points ?? [];
   const scroll = detailData?.scroll;
   const snapshot = detailData?.snapshot ?? null;
@@ -122,16 +131,33 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
 
   return (
     <LoadingPanel data={pagesData} isLoading={isLoading} error={error} minHeight="900px">
-      <Grid columns="320px 12px 1fr" minHeight="900px" className={styles.layoutGrid}>
-        <PageList
-          pages={filteredPages}
-          selected={urlPath}
-          onSelect={onUrlPathChange}
-          mode={mode}
-          hasSearch={Boolean(search)}
-        />
-        <div className={styles.railDivider} aria-hidden="true" />
-        <Column className={styles.contentColumn} gap>
+      {isPhone ? (
+        <Column gap="4" minHeight="900px">
+          <Column gap="2" className={styles.mobilePageSection}>
+            <Row alignItems="center" justifyContent="space-between" gap className={styles.mobilePageHeader}>
+              <Text color="muted" className={styles.mobileSectionLabel}>
+                Selected page
+              </Text>
+              <Button variant="outline" onPress={() => setIsPagePickerOpen(true)}>
+                <IconLabel icon={<ListCheck />} label="Pages" />
+              </Button>
+            </Row>
+            {selectedPage && (
+              <button
+                type="button"
+                className={styles.mobileSelectedPageButton}
+                onClick={() => setIsPagePickerOpen(true)}
+              >
+                <Row alignItems="center" justifyContent="space-between" gap="3">
+                  <Text truncate>{selectedPage.urlPath}</Text>
+                  <Text color="muted" className={styles.pageMetric}>
+                    {formatLongNumber(selectedPage.sessions)}
+                  </Text>
+                </Row>
+              </button>
+            )}
+          </Column>
+
           {urlPath ? (
             mode === 'scroll' ? (
               <ScrollHeatmapView
@@ -151,8 +177,74 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
           ) : (
             <EmptyState />
           )}
+
+          <ControlledDialog>
+            <Modal
+              isOpen={isPagePickerOpen}
+              onOpenChange={isOpen => setIsPagePickerOpen(isOpen)}
+              placement="fullscreen"
+            >
+              <Dialog
+                title="Pages"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  maxHeight: '100%',
+                  overflowY: 'auto',
+                  padding: '24px',
+                }}
+              >
+                {({ close }) => (
+                  <PageList
+                    pages={filteredPages}
+                    selected={urlPath}
+                    onSelect={nextUrlPath => {
+                      onUrlPathChange(nextUrlPath);
+                      setIsPagePickerOpen(false);
+                      close();
+                    }}
+                    mode={mode}
+                    hasSearch={Boolean(search)}
+                    showHeading={false}
+                  />
+                )}
+              </Dialog>
+            </Modal>
+          </ControlledDialog>
         </Column>
-      </Grid>
+      ) : (
+        <Grid columns="320px 12px 1fr" minHeight="900px" className={styles.layoutGrid}>
+          <PageList
+            pages={filteredPages}
+            selected={urlPath}
+            onSelect={onUrlPathChange}
+            mode={mode}
+            hasSearch={Boolean(search)}
+          />
+          <div className={styles.railDivider} aria-hidden="true" />
+          <Column className={styles.contentColumn} gap>
+            {urlPath ? (
+              mode === 'scroll' ? (
+                <ScrollHeatmapView
+                  urlPath={urlPath}
+                  scroll={scroll}
+                  snapshot={snapshot}
+                  isLoading={detailLoading}
+                />
+              ) : (
+                <ClickHeatmapView
+                  urlPath={urlPath}
+                  points={points}
+                  snapshot={snapshot}
+                  isLoading={detailLoading}
+                />
+              )
+            ) : (
+              <EmptyState />
+            )}
+          </Column>
+        </Grid>
+      )}
     </LoadingPanel>
   );
 }
@@ -163,12 +255,14 @@ function PageList({
   onSelect,
   mode,
   hasSearch,
+  showHeading = true,
 }: {
   pages: HeatmapResult['pages'];
   selected: string;
   onSelect: (urlPath: string) => void;
   mode: HeatmapMode;
   hasSearch: boolean;
+  showHeading?: boolean;
 }) {
   const getPageMetricTitle = (page: HeatmapResult['pages'][number]) => {
     const metricLabel = mode === 'scroll' ? 'scroll events' : 'clicks';
@@ -178,7 +272,7 @@ function PageList({
 
   return (
     <Column className={styles.pageList} gap="1">
-      <Heading size="lg">Pages</Heading>
+      {showHeading && <Heading size="lg">Pages</Heading>}
       <Column className={styles.pageListItems} gap="2">
         {pages.length === 0 && hasSearch && <Text color="muted">No matching pages</Text>}
         {pages.map(page => (
@@ -546,6 +640,7 @@ function ClickHeatmapView({
   snapshot: HeatmapSnapshot | null;
   isLoading: boolean;
 }) {
+  const { isPhone } = useMobile();
   const [snapshotReady, setSnapshotReady] = useState(false);
   const screenWidthBuckets = useMemo(() => getScreenWidthBuckets(points), [points]);
   const { viewport, setSelectedScreenWidth } = useSelectedScreenWidthBucket(screenWidthBuckets);
@@ -596,17 +691,27 @@ function ClickHeatmapView({
   return (
     <Column gap>
       <Column gap="2" className={styles.summaryHeader}>
-        <Row alignItems="center" justifyContent="space-between" gap>
-          <Text color="muted" title={urlPath} className={styles.summaryPath}>
-            {urlPath}
-          </Text>
-        </Row>
+        {!isPhone && (
+          <Row alignItems="center" justifyContent="space-between" gap>
+            <Text color="muted" title={urlPath} className={styles.summaryPath}>
+              {urlPath}
+            </Text>
+          </Row>
+        )}
         {showLoading ? (
           <Row alignItems="center" gap className={styles.summaryStats}>
             <Text color="muted" className={styles.summaryStat}>
               Loading Heatmap...
             </Text>
           </Row>
+        ) : isPhone ? (
+          <Column gap="2" className={styles.mobileSummaryControls}>
+            <ScreenWidthSelect
+              buckets={screenWidthBuckets}
+              value={viewport?.width ?? null}
+              onChange={setSelectedScreenWidth}
+            />
+          </Column>
         ) : (
           <Row
             alignItems="center"
@@ -705,6 +810,7 @@ function ScrollHeatmapView({
   snapshot: HeatmapSnapshot | null;
   isLoading: boolean;
 }) {
+  const { isPhone } = useMobile();
   const [snapshotReady, setSnapshotReady] = useState(false);
   const handleSnapshotReady = useCallback(() => setSnapshotReady(true), []);
   const hasSnapshot = Boolean(snapshot);
@@ -771,15 +877,25 @@ function ScrollHeatmapView({
 
   return (
     <Column gap>
-      <Text color="muted" title={urlPath} className={styles.summaryPath}>
-        {urlPath}
-      </Text>
+      {!isPhone && (
+        <Text color="muted" title={urlPath} className={styles.summaryPath}>
+          {urlPath}
+        </Text>
+      )}
       {showLoading ? (
         <Row alignItems="center" gap className={styles.summaryStats}>
           <Text color="muted" className={styles.summaryStat}>
             Loading Heatmap...
           </Text>
         </Row>
+      ) : isPhone ? (
+        <Column gap="2" className={styles.mobileSummaryControls}>
+          <ScreenWidthSelect
+            buckets={screenWidthBuckets}
+            value={viewport?.width ?? null}
+            onChange={setSelectedScreenWidth}
+          />
+        </Column>
       ) : (
         <Row
           alignItems="center"

@@ -17,9 +17,14 @@ import { useNavigation } from './useNavigation';
 export function useWebsiteNavItems(websiteId: string) {
   const { t, labels } = useMessages();
   const { pathname, renderUrl } = useNavigation();
+  const resetParams = {
+    search: undefined,
+    page: undefined,
+  };
 
   const renderPath = (path: string) =>
     renderUrl(`/websites/${websiteId}${path}`, {
+      ...resetParams,
       event: undefined,
       compare: undefined,
       view: undefined,

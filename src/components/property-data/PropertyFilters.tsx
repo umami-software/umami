@@ -39,14 +39,13 @@ export function PropertyFilters({
 }) {
   const { t, messages } = useMessages();
   const { isMobile } = useMobile();
-  const { data: queriedFields, isLoading, isFetching } = usePropertyFieldsQuery(
-    source,
-    websiteId,
-    eventName,
-    {
-      enabled: !providedFields,
-    },
-  );
+  const {
+    data: queriedFields,
+    isLoading,
+    isFetching,
+  } = usePropertyFieldsQuery(source, websiteId, eventName, {
+    enabled: !providedFields,
+  });
   const fields = providedFields ?? queriedFields ?? [];
 
   const handleAdd = (propertyName: string) => {
@@ -97,13 +96,14 @@ export function PropertyFilters({
                 <Plus />
               </Icon>
             </Button>
-            <Popover placement="bottom start" shouldFlip>
-              <Menu
-                onAction={key => handleAdd(key.toString())}
-                style={{ maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}
-              >
+            <Popover side="bottom" align="start">
+              <Menu style={{ maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}>
                 {(fields as any[]).map(field => (
-                  <MenuItem key={`${field.propertyName}:${field.dataType}`} id={field.propertyName}>
+                  <MenuItem
+                    key={`${field.propertyName}:${field.dataType}`}
+                    id={field.propertyName}
+                    onAction={key => handleAdd(key.toString())}
+                  >
                     {field.propertyName}
                   </MenuItem>
                 ))}
@@ -118,9 +118,13 @@ export function PropertyFilters({
           marginRight="6"
           alignSelf="stretch"
         >
-          <List onAction={key => handleAdd(key.toString())}>
+          <List>
             {(fields as any[]).map(field => (
-              <ListItem key={`${field.propertyName}:${field.dataType}`} id={field.propertyName}>
+              <ListItem
+                key={`${field.propertyName}:${field.dataType}`}
+                id={field.propertyName}
+                onClick={() => handleAdd(field.propertyName)}
+              >
                 {field.propertyName}
               </ListItem>
             ))}

@@ -11,7 +11,7 @@ import {
 } from '@umami/react-zen';
 import { useState } from 'react';
 import { Empty } from '@/components/common/Empty';
-import { MultiSelect } from '@/components/common/MultiSelect';
+import { MultiSelect, MultiSelectItem } from '@/components/common/MultiSelect';
 import { useFilters, useFormat, useWebsiteValuesQuery } from '@/components/hooks';
 import { X } from '@/components/icons';
 import { isSearchOperator } from '@/lib/params';
@@ -108,9 +108,9 @@ export function FilterRecord({
               allowSearch
             >
               {items.map(({ value }) => (
-                <ListItem key={value} id={value}>
+                <MultiSelectItem key={value} value={value}>
                   {formatValue(value, type)}
-                </ListItem>
+                </MultiSelectItem>
               ))}
             </MultiSelect>
           )}

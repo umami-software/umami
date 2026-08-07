@@ -85,12 +85,7 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
             >
               <Column gap="1" style={{ minWidth: 0 }}>
                 <Label>{t(labels.property)}</Label>
-                <ComboBox
-                  inputValue={propertyName}
-                  onInputChange={setPropertyName}
-                  allowsCustomValue
-                  allowsEmptyCollection
-                >
+                <ComboBox inputValue={propertyName} onInputValueChange={setPropertyName}>
                   {properties.map((field: { propertyName: string }) => (
                     <ListItem key={field.propertyName} id={field.propertyName}>
                       {field.propertyName}

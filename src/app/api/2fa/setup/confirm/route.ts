@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import { parseRequest } from '@/lib/request';
-import { badRequest, json } from '@/lib/response';
+import { badRequest, json, notFound } from '@/lib/response';
 import { generateBackupCodes } from '@/lib/two-factor/backup-codes';
 import { decryptSecret } from '@/lib/two-factor/crypto';
 import { checkRateLimit, recordFailedAttempt, resetRateLimit } from '@/lib/two-factor/rate-limit';
@@ -9,6 +9,10 @@ import { isOtpReplayed, markOtpUsed } from '@/lib/two-factor/replay-prevention';
 import { verifyTotp } from '@/lib/two-factor/totp';
 
 export async function POST(request: Request) {
+  if (process.env.CLOUD_MODE) {
+    return notFound();
+  }
+
   const schema = z.object({ token: z.string().length(6) });
 
   const { auth, body, error } = await parseRequest(request, schema);

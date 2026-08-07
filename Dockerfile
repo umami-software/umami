@@ -1,16 +1,17 @@
 ARG NODE_IMAGE_VERSION="22-alpine"
 ARG PNPM_VERSION="10.15.1"
 # Keep in sync with the prisma/@prisma/* versions in package.json
-ARG PRISMA_VERSION="7.8.0"
+ARG PRISMA_VERSION="7.9.1"
 
 # Install dependencies only when needed
 FROM node:${NODE_IMAGE_VERSION} AS deps
+ARG PNPM_VERSION
 
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm
+RUN npm install -g pnpm@${PNPM_VERSION}
 
 RUN printf 'strictDepBuilds: false\n' > pnpm-workspace.yaml
 
@@ -36,6 +37,7 @@ FROM node:${NODE_IMAGE_VERSION} AS runner
 WORKDIR /app
 
 ARG NODE_OPTIONS
+ARG PNPM_VERSION
 ARG PRISMA_VERSION
 
 ENV NODE_ENV=production
@@ -49,7 +51,7 @@ RUN adduser --system --uid 1001 nextjs
 # image. pnpm is the only package manager needed at build and runtime.
 RUN set -x \
     && apk add --no-cache curl libc6-compat \
-    && npm install -g pnpm \
+    && npm install -g pnpm@${PNPM_VERSION} \
     && rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
 RUN echo {} > package.json

@@ -1,7 +1,7 @@
 import { type ComboBoxProps, ListItem, Loading, useDebounce } from '@umami/react-zen';
-import { ComboBox } from '@/components/common/ComboBox';
 import { endOfDay, subMonths } from 'date-fns';
 import { type SetStateAction, useMemo, useState } from 'react';
+import { ComboBox } from '@/components/common/ComboBox';
 import { Empty } from '@/components/common/Empty';
 import { useMessages, useWebsiteValuesQuery } from '@/components/hooks';
 
@@ -49,14 +49,11 @@ export function LookupField({
       {...props}
       items={items}
       inputValue={value}
-      onInputChange={value => {
+      onInputValueChange={value => {
         handleSearch(value);
         onChange?.(value);
         onValueChange?.(value);
       }}
-      formValue="text"
-      allowsEmptyCollection
-      allowsCustomValue
       renderEmptyState={() =>
         isLoading ? (
           <Loading placement="center" icon="dots" />

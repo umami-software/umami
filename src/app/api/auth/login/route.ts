@@ -31,9 +31,13 @@ export async function POST(request: Request) {
   }
 
   const { id, role, createdAt } = user;
+  const cloudMode = !!process.env.CLOUD_MODE;
 
   // Check if 2FA is enabled for this user
-  const twoFactor = await prisma.client.twoFactorAuth.findUnique({ where: { userId: id } });
+  const twoFactor = !cloudMode
+    ? await prisma.client.twoFactorAuth.findUnique({ where: { userId: id } })
+    : null;
+
   if (twoFactor?.isEnabled) {
     const partialToken = createSecureToken({ userId: id, type: 'partial-auth' }, secret(), {
       expiresIn: '5m',

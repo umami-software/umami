@@ -1,13 +1,4 @@
-import {
-  Button,
-  Column,
-  Focusable,
-  ListItem,
-  Row,
-  Select,
-  Text,
-  TextField,
-} from '@umami/react-zen';
+import { Button, Column, ListItem, Row, Select, Text, TextField } from '@umami/react-zen';
 import { useEffect, useMemo, useState } from 'react';
 import { useApi, useMessages } from '@/components/hooks';
 import { LinkSelect } from '@/components/input/LinkSelect';
@@ -97,7 +88,10 @@ export function BoardComponentSelect({
       const options = (entityType && field.optionsByEntityType?.[entityType]) ?? field.options;
       const currentValue = defaults[field.name];
 
-      if (options?.length && !options.some(option => String(option.value) === String(currentValue))) {
+      if (
+        options?.length &&
+        !options.some(option => String(option.value) === String(currentValue))
+      ) {
         defaults[field.name] = options[0].value;
       }
     }
@@ -308,7 +302,10 @@ export function BoardComponentSelect({
                 <Text size="sm" color="muted">
                   {t(labels.type)}
                 </Text>
-                <Select value={selectedEntityType} onChange={handleEntityTypeChange}>
+                <Select
+                  value={selectedEntityType}
+                  onChange={value => handleEntityTypeChange(value as string)}
+                >
                   <ListItem id={BOARD_ENTITY_TYPES.website}>{t(labels.website)}</ListItem>
                   <ListItem id={BOARD_ENTITY_TYPES.pixel}>{t(labels.pixel)}</ListItem>
                   <ListItem id={BOARD_ENTITY_TYPES.link}>{t(labels.link)}</ListItem>
@@ -327,21 +324,21 @@ export function BoardComponentSelect({
                     pixelId={selectedEntityId}
                     teamId={teamId}
                     placeholder={t(labels.selectPixel)}
-                    onChange={setSelectedEntityId}
+                    onChange={value => setSelectedEntityId(value as string)}
                   />
                 ) : selectedEntityType === BOARD_ENTITY_TYPES.link ? (
                   <LinkSelect
                     linkId={selectedEntityId}
                     teamId={teamId}
                     placeholder={t(labels.selectLink)}
-                    onChange={setSelectedEntityId}
+                    onChange={value => setSelectedEntityId(value as string)}
                   />
                 ) : (
                   <WebsiteSelect
                     websiteId={selectedEntityId}
                     teamId={teamId}
                     placeholder={t(labels.selectWebsite)}
-                    onChange={setSelectedEntityId}
+                    onChange={value => setSelectedEntityId(value as string)}
                   />
                 )}
               </Column>
@@ -373,7 +370,7 @@ export function BoardComponentSelect({
                   {field.type === 'select' && (
                     <Select
                       value={String(configValues[field.name] ?? field.defaultValue ?? '')}
-                      onChange={(value: string) => handleConfigChange(field.name, value)}
+                      onChange={value => handleConfigChange(field.name, value as string)}
                       maxHeight={300}
                       popoverProps={{ style: { width: 220 } }}
                     >
@@ -415,7 +412,7 @@ export function BoardComponentSelect({
                     <>
                       <Select
                         value={String(configValues[field.name] ?? field.defaultValue ?? '')}
-                        onChange={(value: string) => handleConfigChange(field.name, value)}
+                        onChange={value => handleConfigChange(field.name, value as string)}
                         maxHeight={300}
                         popoverProps={{ style: { width: 220 } }}
                       >
@@ -459,34 +456,34 @@ export function BoardComponentSelect({
                       const Icon = def.icon;
 
                       return (
-                        <Focusable key={def.type}>
-                          <Row
-                            gap="3"
-                            alignItems="flex-start"
-                            paddingX="3"
-                            paddingY="2"
-                            borderRadius
-                            backgroundColor={
-                              selectedDef?.type === def.type ? 'surface-sunken' : undefined
-                            }
-                            hover={{ backgroundColor: 'surface-sunken' }}
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => handleSelectComponent(def)}
-                          >
-                            <Icon size={16} />
-                            <Column gap="1">
-                              <Text
-                                size="sm"
-                                weight={selectedDef?.type === def.type ? 'bold' : undefined}
-                              >
-                                {def.name}
-                              </Text>
-                              <Text size="xs" color="muted">
-                                {def.description}
-                              </Text>
-                            </Column>
-                          </Row>
-                        </Focusable>
+                        <Row
+                          key={def.type}
+                          tabIndex={0}
+                          gap="3"
+                          alignItems="flex-start"
+                          paddingX="3"
+                          paddingY="2"
+                          borderRadius
+                          backgroundColor={
+                            selectedDef?.type === def.type ? 'surface-sunken' : undefined
+                          }
+                          hover={{ backgroundColor: 'surface-sunken' }}
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => handleSelectComponent(def)}
+                        >
+                          <Icon size={16} />
+                          <Column gap="1">
+                            <Text
+                              size="sm"
+                              weight={selectedDef?.type === def.type ? 'bold' : undefined}
+                            >
+                              {def.name}
+                            </Text>
+                            <Text size="xs" color="muted">
+                              {def.description}
+                            </Text>
+                          </Column>
+                        </Row>
                       );
                     })}
                   </Column>

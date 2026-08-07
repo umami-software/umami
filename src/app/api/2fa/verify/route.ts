@@ -5,7 +5,7 @@ import { ROLES } from '@/lib/constants';
 import { secret } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken } from '@/lib/jwt';
 import { parseRequest } from '@/lib/request';
-import { badRequest, json, unauthorized } from '@/lib/response';
+import { badRequest, json, notFound, unauthorized } from '@/lib/response';
 import { verifyBackupCode } from '@/lib/two-factor/backup-codes';
 import { decryptSecret } from '@/lib/two-factor/crypto';
 import { checkRateLimit, recordFailedAttempt, resetRateLimit } from '@/lib/two-factor/rate-limit';
@@ -15,6 +15,10 @@ import { getAllUserTeams, getUser } from '@/queries/prisma';
 import redis from '@/lib/redis';
 
 export async function POST(request: Request) {
+  if (process.env.CLOUD_MODE) {
+    return notFound();
+  }
+
   const schema = z.union([
     z.object({ token: z.string().length(6) }).strict(),
     z.object({ backupCode: z.string().min(1) }).strict(),

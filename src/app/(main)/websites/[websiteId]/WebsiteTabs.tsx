@@ -7,6 +7,10 @@ export function WebsiteTabs() {
   const website = useWebsite();
   const { pathname, renderUrl } = useNavigation();
   const { t, labels } = useMessages();
+  const resetParams = {
+    search: undefined,
+    page: undefined,
+  };
 
   const links = [
     {
@@ -49,7 +53,7 @@ export function WebsiteTabs() {
         <TabList>
           {links.map(({ id, label, icon, path }) => {
             return (
-              <Tab key={id} id={id} href={renderUrl(`/websites/${website.id}${path}`)}>
+              <Tab key={id} id={id} href={renderUrl(`/websites/${website.id}${path}`, resetParams)}>
                 <Row alignItems="center" gap>
                   <Icon>{icon}</Icon>
                   <Text>{label}</Text>

@@ -107,13 +107,13 @@ export function BoardEditForm({
                 ? t(labels.link)
                 : t(labels.website);
 
-        const handleTypeChange = (value: string) => {
+        const handleTypeChange = (value: string | number | null) => {
           setValue('type', value as BoardType, { shouldDirty: true });
           setValue('entityId', '', { shouldDirty: true });
         };
 
-        const handleEntityChange = (value: string) => {
-          setValue('entityId', value, { shouldDirty: true });
+        const handleEntityChange = (value: string | number | null) => {
+          setValue('entityId', (value as string) ?? '', { shouldDirty: true });
         };
 
         return (

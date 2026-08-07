@@ -1,12 +1,12 @@
 'use client';
+import { useQueryClient } from '@tanstack/react-query';
 import { Column, Row, Switch, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import {
   useMessages,
-  useUpdateQuery,
-  useTwoFactorStatusQuery,
   useTeamQuery,
+  useTwoFactorStatusQuery,
+  useUpdateQuery,
 } from '@/components/hooks';
-import { useQueryClient } from '@tanstack/react-query';
 
 export function TeamTwoFactorSettings({ teamId }: { teamId: string }) {
   const { t, labels, messages } = useMessages();
@@ -29,7 +29,19 @@ export function TeamTwoFactorSettings({ teamId }: { teamId: string }) {
     <Column gap="4">
       <Text weight="bold">{t(labels.twoFactorAuth)}</Text>
 
-      <TooltipTrigger isDisabled={!isGlobalRequired}>
+      {isGlobalRequired ? (
+        <TooltipTrigger>
+          <Row alignItems="center" gap="3">
+            <Switch
+              isSelected={isGlobalRequired || twoFactorRequired}
+              isDisabled={isGlobalRequired}
+              onChange={handleToggle}
+            />
+            <Text>{t(labels.twoFactorRequireTeam)}</Text>
+          </Row>
+          <Tooltip>{t(labels.twoFactorGlobalActiveTooltip)}</Tooltip>
+        </TooltipTrigger>
+      ) : (
         <Row alignItems="center" gap="3">
           <Switch
             isSelected={isGlobalRequired || twoFactorRequired}
@@ -38,8 +50,7 @@ export function TeamTwoFactorSettings({ teamId }: { teamId: string }) {
           />
           <Text>{t(labels.twoFactorRequireTeam)}</Text>
         </Row>
-        <Tooltip>{t(labels.twoFactorGlobalActiveTooltip)}</Tooltip>
-      </TooltipTrigger>
+      )}
 
       <Text size="sm" color="muted">
         {t(messages.twoFactorRequireTeamDescription)}

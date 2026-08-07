@@ -1,6 +1,6 @@
 'use client';
-import { useRef, ClipboardEvent, KeyboardEvent } from 'react';
 import { Row, TextField } from '@umami/react-zen';
+import { type ClipboardEvent, type KeyboardEvent, useRef } from 'react';
 
 interface OtpInputProps {
   value: string;
@@ -36,7 +36,10 @@ export function OtpInput({ value, onChange, onComplete, disabled }: OtpInputProp
     }
   };
 
-  const handleKeyDown = (index: number, e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (
+    index: number,
+    e: KeyboardEvent<HTMLInputElement & HTMLTextAreaElement>,
+  ) => {
     if (e.key === 'Backspace') {
       if (digits[index]) {
         update(index, '');
@@ -51,7 +54,7 @@ export function OtpInput({ value, onChange, onComplete, disabled }: OtpInputProp
     }
   };
 
-  const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
+  const handlePaste = (e: ClipboardEvent<HTMLInputElement & HTMLTextAreaElement>) => {
     e.preventDefault();
     const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, LENGTH);
     const next = Array.from({ length: LENGTH }, (_, i) => pasted[i] ?? '');

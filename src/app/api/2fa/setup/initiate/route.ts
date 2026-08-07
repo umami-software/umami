@@ -1,5 +1,5 @@
 import { parseRequest } from '@/lib/request';
-import { badRequest, json } from '@/lib/response';
+import { badRequest, json, notFound } from '@/lib/response';
 import { encryptSecret } from '@/lib/two-factor/crypto';
 import {
   generateOtpAuthUri,
@@ -10,6 +10,10 @@ import prisma from '@/lib/prisma';
 import { getUser } from '@/queries/prisma/user';
 
 export async function POST(request: Request) {
+  if (process.env.CLOUD_MODE) {
+    return notFound();
+  }
+
   const { auth, error } = await parseRequest(request);
 
   if (error) {

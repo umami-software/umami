@@ -56,9 +56,9 @@ export function UnitFilter() {
     <Row>
       <Select
         value={selectedUnit}
-        onChange={handleChange}
-        popoverProps={{ placement: 'bottom right' }}
-        style={{ width: 100 }}
+        onChange={value => handleChange(value as string)}
+        popoverProps={{ side: 'bottom', align: 'end' }}
+        buttonProps={{ style: { width: 100 } }}
       >
         {options.map(({ id, label }) => (
           <ListItem key={id} id={id}>

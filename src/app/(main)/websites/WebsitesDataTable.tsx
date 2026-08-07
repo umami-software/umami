@@ -55,15 +55,11 @@ function getSelectedSort(orderBy?: string, sortDescending?: boolean | string) {
 export function WebsitesDataTable({
   userId,
   teamId,
-  allowEdit = true,
-  allowView = true,
   showActions = true,
   showStats = false,
 }: {
   userId?: string;
   teamId?: string;
-  allowEdit?: boolean;
-  allowView?: boolean;
   showActions?: boolean;
   showStats?: boolean;
 }) {
@@ -156,8 +152,6 @@ export function WebsitesDataTable({
         <WebsitesTable
           data={data}
           showActions={showActions}
-          allowEdit={allowEdit}
-          allowView={allowView}
           showStats={showStats}
           renderLink={renderLink}
         />

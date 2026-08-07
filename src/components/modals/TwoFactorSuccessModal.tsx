@@ -1,6 +1,7 @@
 'use client';
 import { Button, Column, Dialog, Modal, Row, Text } from '@umami/react-zen';
 import { useState } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { useMessages } from '@/components/hooks';
 import styles from './TwoFactorSuccessModal.module.css';
 
@@ -30,51 +31,53 @@ export function TwoFactorSuccessModal({ backupCodes, onClose }: TwoFactorSuccess
   };
 
   return (
-    <Modal isOpen={true}>
-      <Dialog title={t(labels.twoFactorSuccessTitle)} className={styles.dialog}>
-        {() => (
-          <Column gap="5">
-            <Text>{t(messages.twoFactorEnabledDescription)}</Text>
+    <ControlledDialog>
+      <Modal isOpen={true}>
+        <Dialog title={t(labels.twoFactorSuccessTitle)} className={styles.dialog}>
+          {() => (
+            <Column gap="5">
+              <Text>{t(messages.twoFactorEnabledDescription)}</Text>
 
-            <Column gap="2">
-              <Text weight="bold">{t(labels.twoFactorSaveBackupCodes)}</Text>
-              <Text>{t(messages.twoFactorBackupDescription)}</Text>
+              <Column gap="2">
+                <Text weight="bold">{t(labels.twoFactorSaveBackupCodes)}</Text>
+                <Text>{t(messages.twoFactorBackupDescription)}</Text>
 
-              <div className={styles.codesGrid}>
-                {backupCodes.map((code, i) => (
-                  <code key={i} className={styles.code}>
-                    {code}
-                  </code>
-                ))}
-              </div>
+                <div className={styles.codesGrid}>
+                  {backupCodes.map((code, i) => (
+                    <code key={i} className={styles.code}>
+                      {code}
+                    </code>
+                  ))}
+                </div>
 
-              <Row>
-                <Button variant="outline" onPress={handleDownload}>
-                  {t(labels.twoFactorDownloadCodes)}
+                <Row>
+                  <Button variant="outline" onPress={handleDownload}>
+                    {t(labels.twoFactorDownloadCodes)}
+                  </Button>
+                </Row>
+              </Column>
+
+              <Row gap="2" alignItems="center">
+                <input
+                  type="checkbox"
+                  id="saved-codes"
+                  checked={saved}
+                  onChange={e => setSaved(e.target.checked)}
+                />
+                <label htmlFor="saved-codes">
+                  <Text>{t(labels.twoFactorSavedCodes)}</Text>
+                </label>
+              </Row>
+
+              <Row justifyContent="flex-end">
+                <Button variant="primary" onPress={onClose} isDisabled={!saved}>
+                  {t(labels.close)}
                 </Button>
               </Row>
             </Column>
-
-            <Row gap="2" alignItems="center">
-              <input
-                type="checkbox"
-                id="saved-codes"
-                checked={saved}
-                onChange={e => setSaved(e.target.checked)}
-              />
-              <label htmlFor="saved-codes">
-                <Text>{t(labels.twoFactorSavedCodes)}</Text>
-              </label>
-            </Row>
-
-            <Row justifyContent="flex-end">
-              <Button variant="primary" onPress={onClose} isDisabled={!saved}>
-                {t(labels.close)}
-              </Button>
-            </Row>
-          </Column>
-        )}
-      </Dialog>
-    </Modal>
+          )}
+        </Dialog>
+      </Modal>
+    </ControlledDialog>
   );
 }

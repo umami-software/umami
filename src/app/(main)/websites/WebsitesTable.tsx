@@ -20,8 +20,6 @@ import { WebsiteSparkline } from './WebsiteSparkline';
 
 export interface WebsitesTableProps extends DataTableProps {
   showActions?: boolean;
-  allowEdit?: boolean;
-  allowView?: boolean;
   showStats?: boolean;
   renderLink?: (row: any) => ReactNode;
 }
