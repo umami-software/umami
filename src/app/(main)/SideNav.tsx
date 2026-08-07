@@ -13,6 +13,7 @@ import { SettingsNav } from '@/app/(main)/settings/SettingsNav';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { useGlobalState, useMessages, useNavigation } from '@/components/hooks';
 import {
   Globe,
@@ -103,7 +104,7 @@ export function SideNav(props: any) {
           <PanelButton />
         </Row>
       </Row>
-      <Column flexGrow="1" minHeight="0" style={{ overflowY: 'auto', overflowX: 'hidden' }}>
+      <OverlayScrollArea style={{ flexGrow: 1, minHeight: 0 }}>
         {websiteId ? (
           <WebsiteNav websiteId={websiteId} isCollapsed={isCollapsed} />
         ) : pathname.includes('/settings') ? (
@@ -147,7 +148,7 @@ export function SideNav(props: any) {
             })}
           </Column>
         )}
-      </Column>
+      </OverlayScrollArea>
       <Row
         paddingTop="2"
         width="100%"

@@ -1,0 +1,45 @@
+.root {
+  --overlay-scrollbar-track: var(--gray-50);
+  --overlay-scrollbar-thumb: var(--gray-300);
+  --overlay-scrollbar-thumb-hover: var(--gray-400);
+}
+
+.root > [data-orientation="vertical"] {
+  width: 4px;
+  margin: 16px 2px;
+  background-color: var(--overlay-scrollbar-track);
+}
+
+.root > [data-orientation="horizontal"] {
+  height: 4px;
+  margin: 2px 16px;
+  background-color: var(--overlay-scrollbar-track);
+}
+
+.root > [data-orientation] > div {
+  position: relative;
+  background-color: var(--overlay-scrollbar-thumb);
+}
+
+.root > [data-orientation] > div:hover,
+.root > [data-orientation] > div:active {
+  background-color: var(--overlay-scrollbar-thumb-hover);
+}
+
+.root > [data-orientation="vertical"] > div::before {
+  position: absolute;
+  inset: 0 -4px;
+  content: "";
+}
+
+.root > [data-orientation="horizontal"] > div::before {
+  position: absolute;
+  inset: -4px 0;
+  content: "";
+}
+
+:global([data-theme="dark"]) .root {
+  --overlay-scrollbar-track: var(--gray-800);
+  --overlay-scrollbar-thumb: var(--gray-600);
+  --overlay-scrollbar-thumb-hover: var(--gray-500);
+}

@@ -18,29 +18,6 @@ html[style*="padding-right"] {
   padding-right: 0 !important;
 }
 
-::-webkit-scrollbar {
-  width: 15px;
-  background: transparent;
-}
-
-::-webkit-scrollbar-track {
-  border: 7px solid rgba(0, 0, 0, 0);
-  background-color: var(--border-default);
-  background-clip: padding-box;
-}
-
-::-webkit-scrollbar-thumb {
-  border: 7px solid rgba(0, 0, 0, 0);
-  background-color: var(--text-disabled);
-  border-radius: var(--border-radius-full);
-  background-clip: padding-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  border: 4px solid rgba(0, 0, 0, 0);
-  background-clip: padding-box;
-}
-
 /* Fix autofill background color to match theme */
 input:is(:-webkit-autofill, :autofill),
 input:is(:-webkit-autofill, :autofill):hover,
