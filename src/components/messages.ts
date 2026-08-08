@@ -362,6 +362,7 @@ export const labels: Record<string, string> = {
   slug: 'label.slug',
   audience: 'label.audience',
   invalidUrl: 'label.invalid-url',
+  invalidValue: 'message.invalid-value',
   environment: 'label.environment',
   criteria: 'label.criteria',
   share: 'label.share',
