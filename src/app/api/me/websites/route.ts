@@ -1,14 +1,20 @@
 import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json } from '@/lib/response';
-import { pagingParams, sortingParams } from '@/lib/schema';
+import { pagingParams, searchParams, timezoneParam, websiteSortingParams } from '@/lib/schema';
 import { getAllUserWebsitesIncludingTeamAccess, getUserWebsites } from '@/queries/prisma';
 
 export async function GET(request: Request) {
   const schema = z.object({
     ...pagingParams,
-    ...sortingParams,
+    ...searchParams,
+    ...websiteSortingParams,
+    timezone: timezoneParam.optional(),
     includeTeams: z.string().optional(),
+    includeMetrics: z
+      .enum(['true', 'false'])
+      .transform(value => value === 'true')
+      .optional(),
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -17,7 +23,10 @@ export async function GET(request: Request) {
     return error();
   }
 
-  const filters = await getQueryFilters(query);
+  const filters = {
+    ...(await getQueryFilters(query)),
+    includeMetrics: query.includeMetrics,
+  };
 
   if (query.includeTeams) {
     return json(await getAllUserWebsitesIncludingTeamAccess(auth.user.id, filters));
