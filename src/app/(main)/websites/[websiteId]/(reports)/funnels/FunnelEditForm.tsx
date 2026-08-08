@@ -200,7 +200,14 @@ export function FunnelEditForm({
       <FormField name="name" label={t(labels.name)} rules={{ required: t(labels.required) }}>
         <TextField autoFocus />
       </FormField>
-      <FormField name="window" label={t(labels.window)} rules={{ required: t(labels.required) }}>
+      <FormField
+        name="window"
+        label={t(labels.window)}
+        rules={{
+          required: t(labels.required),
+          pattern: { value: /^[1-9][0-9]*$/, message: t(labels.invalidValue) || 'Must be greater than 0' },
+        }}
+      >
         <TextField />
       </FormField>
       <FormFieldArray
