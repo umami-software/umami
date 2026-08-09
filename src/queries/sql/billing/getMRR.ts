@@ -1,15 +1,15 @@
 import prisma from '@/lib/prisma';
-import type { MonthlyARR } from '@/lib/stripe';
+import type { MonthlyMRR } from '@/lib/stripe';
 
-const FUNCTION_NAME = 'getMonthlyARR';
+const FUNCTION_NAME = 'getMRR';
 
 // billing_invoice only exists in Postgres, so this bypasses the ClickHouse/Prisma
 // runQuery dispatch used by analytics queries that can live in either backend.
-export async function getMonthlyARR(
+export async function getMRR(
   billingId: string,
   startDate: Date,
   endDate: Date,
-): Promise<MonthlyARR[]> {
+): Promise<MonthlyMRR[]> {
   const { rawQuery } = prisma;
 
   const rows = await rawQuery(

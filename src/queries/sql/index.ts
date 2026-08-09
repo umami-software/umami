@@ -1,4 +1,5 @@
-export * from './billing/getMonthlyARR';
+export * from './billing/getARR';
+export * from './billing/getMRR';
 export * from './events/getEventDataArraySeries';
 export * from './events/getEventDataById';
 export * from './events/getEventDataDateSeries';

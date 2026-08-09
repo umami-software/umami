@@ -2,7 +2,7 @@ import { parseRequest } from '@/lib/request';
 import { json, notFound, unauthorized } from '@/lib/response';
 import { withDateRange } from '@/lib/schema';
 import { getBillingById } from '@/queries/prisma';
-import { getMonthlyARR } from '@/queries/sql';
+import { getARR } from '@/queries/sql';
 
 function canAccess(
   user: { id: string; isAdmin: boolean },
@@ -41,7 +41,7 @@ export async function GET(
   const startDate = query.startDate ?? new Date(query.startAt as number);
   const endDate = query.endDate ?? new Date(query.endAt as number);
 
-  const data = await getMonthlyARR(billingId, startDate, endDate);
+  const data = await getARR(billingId, startDate, endDate);
 
   return json(data);
 }

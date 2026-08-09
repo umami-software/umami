@@ -14,7 +14,7 @@ const subscriptions: Stripe.Subscription[] = JSON.parse(
   fs.readFileSync('src/lib/y-subscriptions.json', 'utf-8'),
 );
 
-export interface MonthlyARR {
+export interface MonthlyMRR {
   month: string;
   totalSales?: number; // recurring only: base MRR + usage
   nonRecurring?: number; // one-time charges (setup fees, etc.) — not part of MRR waterfall
@@ -88,7 +88,7 @@ function buildCustomerMRRByMonth(): Map<string, Map<string, CustomerMonthMRR>> {
   return map;
 }
 
-export function getARRMetrics(startDate: Date, endDate: Date): MonthlyARR[] {
+export function getARRMetrics(startDate: Date, endDate: Date): MonthlyMRR[] {
   // Set to a customer ID to scope analysis to a single customer. Remove to see all.
   const debugCustomerId = '';
 
@@ -155,7 +155,7 @@ export function getARRMetrics(startDate: Date, endDate: Date): MonthlyARR[] {
     return result;
   }
 
-  const results: MonthlyARR[] = [];
+  const results: MonthlyMRR[] = [];
 
   for (let i = 0; i < months.length; i++) {
     const monthKey = months[i];
