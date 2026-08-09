@@ -61,6 +61,3 @@ CREATE UNIQUE INDEX "billing_name_user_id_key" ON "billing"("name", "user_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "billing_name_team_id_key" ON "billing"("name", "team_id");
-
--- CreateIndex
-CREATE INDEX "session_replay_visit_id_idx" ON "session_replay"("visit_id");

@@ -32,6 +32,7 @@ model User {
   twoFactorBackupCodes TwoFactorBackupCode[]
   twoFactorOtpUseds    TwoFactorOtpUsed[]
   twoFactorRateLimit   TwoFactorRateLimit?
+  billings             Billing[]
 
   @@map("user")
 }
@@ -227,6 +228,7 @@ model Team {
   links    Link[]
   pixels   Pixel[]
   boards   Board[]
+  billings Billing[]
 
   @@index([accessCode])
   @@map("team")
@@ -302,6 +304,55 @@ model Revenue {
   @@index([websiteId, createdAt])
   @@index([websiteId, sessionId, createdAt])
   @@map("revenue")
+}
+
+model Billing {
+  id             String    @id() @map("billing_id") @db.Uuid
+  name           String    @db.VarChar(100)
+  provider       String    @db.VarChar(50)
+  userId         String?   @map("user_id") @db.Uuid
+  teamId         String?   @map("team_id") @db.Uuid
+  apiKey         String    @map("api_key")
+  syncCursor     String?   @map("sync_cursor") @db.VarChar(255)
+  syncStatus     String    @default("idle") @map("sync_status") @db.VarChar(20)
+  lastRunAt      DateTime? @map("last_run_at") @db.Timestamptz(6)
+  webhookId      String?   @map("webhook_id") @db.VarChar(255)
+  webhookSecret  String?   @map("webhook_secret")
+  createdAt      DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user    User?           @relation(fields: [userId], references: [id])
+  team    Team?           @relation(fields: [teamId], references: [id])
+  invoices BillingInvoice[]
+
+  @@unique([name, userId])
+  @@unique([name, teamId])
+  @@index([userId])
+  @@index([teamId])
+  @@map("billing")
+}
+
+model BillingInvoice {
+  id                String   @id() @map("line_id") @db.VarChar(255)
+  billingId         String   @map("billing_id") @db.Uuid
+  invoiceId         String   @map("invoice_id") @db.VarChar(255)
+  customerId        String   @map("customer_id") @db.VarChar(255)
+  invoiceStatus     String   @map("invoice_status") @db.VarChar(50)
+  invoicePeriodEnd  DateTime @map("invoice_period_end") @db.Timestamptz(6)
+  usageType         String   @map("usage_type") @db.VarChar(20)
+  amountCents       Int      @map("amount_cents")
+  periodStart       DateTime @map("period_start") @db.Timestamptz(6)
+  periodEnd         DateTime @map("period_end") @db.Timestamptz(6)
+  periodMonths      Int      @map("period_months")
+  mrrCents          Int      @map("mrr_cents")
+
+  billing Billing @relation(fields: [billingId], references: [id])
+
+  @@index([billingId])
+  @@index([invoiceId])
+  @@index([customerId])
+  @@index([usageType])
+  @@map("billing_invoice")
 }
 
 model Link {

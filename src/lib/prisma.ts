@@ -2,7 +2,13 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import debug from 'debug';
 import { PrismaClient } from '@/generated/prisma/client';
-import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
+import {
+  DATA_TYPE,
+  DEFAULT_PAGE_SIZE,
+  FILTER_COLUMNS,
+  OPERATORS,
+  SESSION_COLUMNS,
+} from './constants';
 import { filtersObjectToArray } from './params';
 import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
 
@@ -34,7 +40,12 @@ export interface RawQueryClient extends RawQueryExecutor {
 }
 
 function isRawQueryExecutor(value: unknown): value is RawQueryExecutor {
-  return !!value && typeof value === 'object' && '$executeRawUnsafe' in value && '$queryRawUnsafe' in value;
+  return (
+    !!value &&
+    typeof value === 'object' &&
+    '$executeRawUnsafe' in value &&
+    '$queryRawUnsafe' in value
+  );
 }
 
 export function getRawQueryClient(
@@ -307,14 +318,13 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   const cohortFilters = Object.fromEntries(
     Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
   );
-  const {
-    sql: eventPropertyFilterQuery,
-    params: eventPropertyFilterParams,
-  } = getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
-  const {
-    sql: sessionPropertyFilterQuery,
-    params: sessionPropertyFilterParams,
-  } = getSessionPropertyFilterQuery((filters as QueryFilters).sessionPropertyFilters, filters.timezone);
+  const { sql: eventPropertyFilterQuery, params: eventPropertyFilterParams } =
+    getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
+  const { sql: sessionPropertyFilterQuery, params: sessionPropertyFilterParams } =
+    getSessionPropertyFilterQuery(
+      (filters as QueryFilters).sessionPropertyFilters,
+      filters.timezone,
+    );
 
   return {
     joinSessionQuery:
@@ -322,7 +332,11 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
         ? `inner join session on website_event.session_id = session.session_id and website_event.website_id = session.website_id`
         : '',
     dateQuery: getDateQuery(filters),
-    filterQuery: [getFilterQuery(filters, options), eventPropertyFilterQuery, sessionPropertyFilterQuery]
+    filterQuery: [
+      getFilterQuery(filters, options),
+      eventPropertyFilterQuery,
+      sessionPropertyFilterQuery,
+    ]
       .filter(Boolean)
       .join('\n'),
     queryParams: {
@@ -827,9 +841,9 @@ function getSearchParameters(query: string, filters: Record<string, any>[]) {
       [key]:
         typeof value === 'string'
           ? {
-            [value]: query,
-            mode: 'insensitive',
-          }
+              [value]: query,
+              mode: 'insensitive',
+            }
           : parseFilter(value),
     };
   };
@@ -871,7 +885,6 @@ function getClient() {
   const schema = getSchema();
 
   console.log(schema, replicaUrl, url, 'replica adapter');
-
 
   const baseAdapter = new PrismaPg({ connectionString: url }, schema ? { schema } : {});
 

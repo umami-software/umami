@@ -111,7 +111,7 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ billingId: string }> },
 ) {
-  const { auth, error } = await parseRequest(request, z.object({}));
+  const { auth, error } = await parseRequest(request);
 
   if (error) {
     return error();
@@ -130,12 +130,6 @@ export async function DELETE(
 
   if (!canAccess(auth.user, row)) {
     return unauthorized();
-  }
-
-  if (row.webhookId) {
-    const rawKey = decrypt(row.apiKey, secret());
-    const stripe = new Stripe(rawKey, { apiVersion: '2026-02-25.clover' });
-    await stripe.webhookEndpoints.del(row.webhookId);
   }
 
   await deleteBillingById(billingId);

@@ -81,10 +81,60 @@ export async function getMonthlyARR(
       GROUP BY customer_id, month_start
     ),
 
-    -- "Active" in a month = has licensed base > 0. Mirrors JS getActiveCustomers() filter.
-    active AS (
+    -- "Active" in a month = has licensed base > 0, before accounting for invoice sync lag.
+    real_active AS (
       SELECT customer_id, month_start, base_cents, usage_cents, one_time_cents
       FROM customer_month
+      WHERE base_cents > 0
+    ),
+
+    -- Expected next-invoice date per customer: period_end of their most recent paid
+    -- licensed invoice. Used to gate the carry-forward grace below.
+    last_licensed_invoice AS (
+      SELECT DISTINCT ON (bil.customer_id)
+        bil.customer_id,
+        bil.period_end AS next_invoice_date
+      FROM billing_invoice bil
+      WHERE bil.invoice_status = 'paid'
+        AND bil.usage_type = 'licensed'
+        AND bil.billing_id = {{billingId}}::uuid
+      ORDER BY bil.customer_id, bil.period_start DESC
+    ),
+
+    -- For the current (most recent, still-in-progress) month in the query range only:
+    -- if a customer had no invoice at all yet this month, but their next invoice isn't
+    -- due yet, assume they continue at last month's charge and usage. Once endDate
+    -- reaches their next_invoice_date with still nothing posted, this stops firing and
+    -- they fall through to the churned bucket via the movement CTE below.
+    carried_forward AS (
+      SELECT
+        ra.customer_id,
+        date_trunc('month', {{endDate}}::timestamptz) AS month_start,
+        ra.base_cents,
+        ra.usage_cents,
+        0 AS one_time_cents
+      FROM real_active ra
+      JOIN last_licensed_invoice lli ON lli.customer_id = ra.customer_id
+      WHERE ra.month_start = date_trunc('month', {{endDate}}::timestamptz) - interval '1 month'
+        AND lli.next_invoice_date > {{endDate}}::timestamptz
+        AND NOT EXISTS (
+          SELECT 1 FROM customer_month cm
+          WHERE cm.customer_id = ra.customer_id
+            AND cm.month_start = date_trunc('month', {{endDate}}::timestamptz)
+        )
+    ),
+
+    customer_month_all AS (
+      SELECT * FROM customer_month
+      UNION ALL
+      SELECT * FROM carried_forward
+    ),
+
+    -- "Active" in a month = has licensed base > 0. Mirrors JS getActiveCustomers() filter,
+    -- now including invoices assumed carried forward for the current month (see above).
+    active AS (
+      SELECT customer_id, month_start, base_cents, usage_cents, one_time_cents
+      FROM customer_month_all
       WHERE base_cents > 0
     ),
 
