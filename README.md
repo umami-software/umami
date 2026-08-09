@@ -5,7 +5,7 @@
 <h1 align="center">Umami</h1>
 
 <p align="center">
-  <i>Umami is a simple, fast, privacy-focused alternative to Google Analytics.</i>
+  <i>Umami is a privacy-first analytics platform. Traffic, campaigns, behavior, conversions, and revenue in one place — no cookies, no tracking, self-hosted or in the cloud.</i>
 </p>
 
 <p align="center">
