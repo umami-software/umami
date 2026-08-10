@@ -442,6 +442,7 @@
     "go-to-settings": "Ir a la configuración",
     "incorrect-username-password": "Nombre de usuario o contraseña incorrectos.",
     "invalid-domain": "Dominio inválido",
+    "invalid-value": "Valor no válido",
     "min-password-length": "Longitud mínima de {n} caracteres",
     "new-version-available": "Una nueva versión de Umami {version} está disponible",
     "no-data-available": "No hay información disponible.",

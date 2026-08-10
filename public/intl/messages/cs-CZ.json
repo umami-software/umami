@@ -442,6 +442,7 @@
     "go-to-settings": "Jít do nastavení",
     "incorrect-username-password": "Nesprávné jméno/heslo.",
     "invalid-domain": "Neplatná doména",
+    "invalid-value": "Neplatná hodnota",
     "min-password-length": "Minimální délka {n} znaků",
     "new-version-available": "Je k dispozici nová verze Umami {version}!",
     "no-data-available": "Žádná data.",

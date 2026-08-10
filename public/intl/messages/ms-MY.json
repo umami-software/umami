@@ -442,6 +442,7 @@
     "go-to-settings": "Pergi ke tetapan",
     "incorrect-username-password": "Pengguna/kata laluan tidak betul.",
     "invalid-domain": "Domain tidak sah",
+    "invalid-value": "Nilai tidak sah",
     "min-password-length": "Panjang minimum {n} aksara",
     "new-version-available": "Versi baharu Umami {version} tersedia!",
     "no-data-available": "Tiada data yang boleh didapati.",

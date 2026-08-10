@@ -442,6 +442,7 @@
     "go-to-settings": "ترتیبات پر جائیں",
     "incorrect-username-password": "غلط صارف نام/پاس ورڈ۔",
     "invalid-domain": "غلط ڈومین",
+    "invalid-value": "غلط قدر",
     "min-password-length": "کم از کم {n} حروف کی لمبائی",
     "new-version-available": "Umami کا نیا ورژن {version} دستیاب ہے!",
     "no-data-available": "مواد موجود نہیں ہے.",

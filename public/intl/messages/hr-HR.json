@@ -442,6 +442,7 @@
     "go-to-settings": "Idi u postavke",
     "incorrect-username-password": "Neispravno korisničke ime/lozinka.",
     "invalid-domain": "Nevaljana domena. Ne uključujte http/https.",
+    "invalid-value": "Nevaljana vrijednost",
     "min-password-length": "Minimalna duljina od {n} znakova",
     "new-version-available": "Dostupna je nova verzija Umami {version}!",
     "no-data-available": "Nema dostupnih podataka.",

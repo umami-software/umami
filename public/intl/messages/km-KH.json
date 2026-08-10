@@ -442,6 +442,7 @@
     "go-to-settings": "ការកំណត់",
     "incorrect-username-password": "ឈ្មោះអ្នកប្រើឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។",
     "invalid-domain": "Domain មិន​ត្រឹមត្រូវ",
+    "invalid-value": "តម្លៃមិនត្រឹមត្រូវ",
     "min-password-length": "តិចបំផុតដែលមានអក្សរ {n} តួអក្សរ",
     "new-version-available": "Version ថ្មីនៃ Umami {version} អាចប្រើប្រាស់បានហើយ!",
     "no-data-available": "មិនមានទិន្នន័យ។",

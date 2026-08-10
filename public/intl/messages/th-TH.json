@@ -442,6 +442,7 @@
     "go-to-settings": "ไปที่การตั้งค่า",
     "incorrect-username-password": "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง.",
     "invalid-domain": "โดเมนไม่ถูกต้อง",
+    "invalid-value": "ค่าไม่ถูกต้อง",
     "min-password-length": "ความยาวขั้นต่ำ {n} ตัวอักษร",
     "new-version-available": "Umami เวอร์ชันใหม่ {version} พร้อมใช้งานแล้ว!",
     "no-data-available": "ไม่มีข้อมูล.",

@@ -442,6 +442,7 @@
     "go-to-settings": "前往設定",
     "incorrect-username-password": "使用者名稱或密碼不正確。",
     "invalid-domain": "無效的網域。請勿包含 http/https。",
+    "invalid-value": "無效的值",
     "min-password-length": "密碼長度至少需 {n} 個字元",
     "new-version-available": "Umami {version} 的新版本已推出！",
     "no-data-available": "沒有可用的資料。",

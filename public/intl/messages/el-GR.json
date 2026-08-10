@@ -442,6 +442,7 @@
     "go-to-settings": "Μεταβείτε στις ρυθμίσεις",
     "incorrect-username-password": "Εσφαλμένο όνομα χρήστη / κωδικός πρόσβασης.",
     "invalid-domain": "Μη έγκυρος τομέας",
+    "invalid-value": "Μη έγκυρη τιμή",
     "min-password-length": "Ελάχιστο μήκος {n} χαρακτήρων",
     "new-version-available": "Μια νέα έκδοση του Umami {version} είναι διαθέσιμη!",
     "no-data-available": "Δεν υπάρχουν διαθέσιμα δεδομένα.",

@@ -442,6 +442,7 @@
     "go-to-settings": "Chuyển đến cài đặt",
     "incorrect-username-password": "Sai tên đăng nhập/mật khẩu.",
     "invalid-domain": "Tên miền không hợp lệ",
+    "invalid-value": "Giá trị không hợp lệ",
     "min-password-length": "Độ dài tối thiểu {n} ký tự",
     "new-version-available": "Có phiên bản mới của Umami {version}!",
     "no-data-available": "Không có dữ liệu.",

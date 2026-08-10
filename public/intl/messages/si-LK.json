@@ -442,6 +442,7 @@
     "go-to-settings": "සැකසීම් වෙත යන්න",
     "incorrect-username-password": "වැරදි පරිශීලක නාමය/මුරපදය.",
     "invalid-domain": "වලංගු නොවන ඩොමේනයකි. http/https ඇතුළත් නොකරන්න.",
+    "invalid-value": "වලංගු නොවන අගයකි",
     "min-password-length": "අවම {n} අක්ෂර දිග",
     "new-version-available": "Umami හි නව අනුවාදයක් {version} ලබා ගත හැකිය!",
     "no-data-available": "පෙන්වීමට දත්ත නොමැත.",

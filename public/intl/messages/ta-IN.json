@@ -442,6 +442,7 @@
     "go-to-settings": "அமைப்புகளுக்குச் செல்லவும்",
     "incorrect-username-password": "தவறான பயனர்பெயர் / கடவுச்சொல்.",
     "invalid-domain": "தவறான கள முகவரி",
+    "invalid-value": "தவறான மதிப்பு",
     "min-password-length": "குறைந்தபட்சம் {n} எழுத்துகள் தேவை",
     "new-version-available": "Umami {version} புதிய பதிப்பு கிடைக்கிறது!",
     "no-data-available": "தரவு எதுவும் கிடைக்கவில்லை.",

@@ -442,6 +442,7 @@
     "go-to-settings": "Mergi la Setări",
     "incorrect-username-password": "Nume utilizator / parolă incorecte.",
     "invalid-domain": "Domeniul nu este valid",
+    "invalid-value": "Valoare invalidă",
     "min-password-length": "Lungimea minimă este de {n} caractere",
     "new-version-available": "O nouă versiune de Umami {version} este disponibilă!",
     "no-data-available": "Nicio informație disponibilă.",

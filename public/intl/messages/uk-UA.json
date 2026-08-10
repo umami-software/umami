@@ -442,6 +442,7 @@
     "go-to-settings": "Перейти до налаштувань",
     "incorrect-username-password": "Невірне ім'я користувача або пароль.",
     "invalid-domain": "Некоректний домен",
+    "invalid-value": "Некоректне значення",
     "min-password-length": "Мінімальна довжина {n} символів",
     "new-version-available": "Вийшла нова версія Umami {version}!",
     "no-data-available": "Немає даних.",

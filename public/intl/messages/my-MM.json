@@ -442,6 +442,7 @@
     "go-to-settings": "ဆက်တင်သို့ သွားရန်",
     "incorrect-username-password": "အသုံးပြုသူအမည် သို့မဟုတ် စကားဝှက် မှားနေသည်",
     "invalid-domain": "ဒိုမိန်း မမှန်ပါ http/https. မပါရပါ",
+    "invalid-value": "မမှန်ကန်သော တန်ဖိုး",
     "min-password-length": "အနည်းဆုံး {n} character ရှိရမည်",
     "new-version-available": "အူမာမီ {version} အသစ်ထွက်နေပါပြီ",
     "no-data-available": "ဒေတာ မရှိပါ",

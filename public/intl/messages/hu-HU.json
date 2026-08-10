@@ -442,6 +442,7 @@
     "go-to-settings": "Tovább a beállításokhoz",
     "incorrect-username-password": "Érvénytelen felhasználónév/jelszó.",
     "invalid-domain": "Érvénytelen domain",
+    "invalid-value": "Érvénytelen érték",
     "min-password-length": "Minimum {n} karakter hosszúság",
     "new-version-available": "Elérhető az Umami {version} új verziója!",
     "no-data-available": "Nincs rendelkezésre álló adat.",

@@ -442,6 +442,7 @@
     "go-to-settings": "Eiti į nustatymus",
     "incorrect-username-password": "Neteisingas vartotojo vardas/slaptažodis.",
     "invalid-domain": "Klaidingas domenas",
+    "invalid-value": "Netinkama reikšmė",
     "min-password-length": "Reikia bent {n} simbolių",
     "new-version-available": "Išleista nauja 'Umami' {version} versija!",
     "no-data-available": "Nėra jokių duomenų.",

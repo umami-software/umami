@@ -442,6 +442,7 @@
     "go-to-settings": "Pergi ke pengaturan",
     "incorrect-username-password": "Nama pengguna/kata sandi salah.",
     "invalid-domain": "Domain tidak valid",
+    "invalid-value": "Nilai tidak valid",
     "min-password-length": "Minimal {n} karakter",
     "new-version-available": "Versi baru dari Umami {version} telah tersedia!",
     "no-data-available": "Tidak ada data.",

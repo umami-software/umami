@@ -847,7 +847,7 @@ function transaction(input: any, options?: any) {
   return client.$transaction(input, options);
 }
 
-function getSchema() {
+export function getSchema() {
   const databaseUrl = process.env.DATABASE_URL;
 
   if (!databaseUrl) {

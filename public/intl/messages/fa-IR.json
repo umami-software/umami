@@ -443,6 +443,7 @@
     "go-to-settings": "رفتن به تنظیمات",
     "incorrect-username-password": "نام کاربری / رمز نادرست است.",
     "invalid-domain": "دامنه نامعتبر است.",
+    "invalid-value": "مقدار نامعتبر",
     "min-password-length": "حداقل طول {n} کاراکتر است.",
     "new-version-available": "نسخه‌ی جدیدی از Umami {version} در دسترس است.",
     "no-data-available": "اطلاعاتی موجود نیست.",

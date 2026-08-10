@@ -442,6 +442,7 @@
     "go-to-settings": "設定に移動する",
     "incorrect-username-password": "ユーザー名またはパスワードが間違っています。",
     "invalid-domain": "無効なドメインです。http/httpsを含めないでください。",
+    "invalid-value": "無効な値",
     "min-password-length": "最小文字数は{n}文字です",
     "new-version-available": "Umamiの新しいバージョン{version}が利用可能です！",
     "no-data-available": "データがありません。",

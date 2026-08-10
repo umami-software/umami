@@ -442,6 +442,7 @@
     "go-to-settings": "Перейти к настройкам",
     "incorrect-username-password": "Неверное имя пользователя/пароль.",
     "invalid-domain": "Некорректный домен",
+    "invalid-value": "Некорректное значение",
     "min-password-length": "Минимальная длина {n} символов",
     "new-version-available": "Вышла новая версия Umami {version}!",
     "no-data-available": "Нет данных.",

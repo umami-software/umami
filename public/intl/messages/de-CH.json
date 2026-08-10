@@ -442,6 +442,7 @@
     "go-to-settings": "Zu de Istellige",
     "incorrect-username-password": "Falsches Passwort oder Benutzername.",
     "invalid-domain": "Ungültigi Domain",
+    "invalid-value": "Ungültiger Wärt",
     "min-password-length": "Miminamli längi vo {n} Zeiche",
     "new-version-available": "Es isch en neue Version vo Umami {version} verfügbar!",
     "no-data-available": "Kei Date vorhande.",

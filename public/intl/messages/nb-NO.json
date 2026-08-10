@@ -442,6 +442,7 @@
     "go-to-settings": "Gå til innstillinger",
     "incorrect-username-password": "Ugyldig brukernavn/passord.",
     "invalid-domain": "Ugyldig domene",
+    "invalid-value": "Ugyldig verdi",
     "min-password-length": "Minimumslengde på {n} tegn",
     "new-version-available": "En ny versjon av Umami {version} er tilgjengelig!",
     "no-data-available": "Ingen data tilgjengelig.",

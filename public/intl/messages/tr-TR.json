@@ -442,6 +442,7 @@
     "go-to-settings": "Ayarlara git",
     "incorrect-username-password": "Hatalı kullanıcı adı ya da parola.",
     "invalid-domain": "Geçersiz alan adı",
+    "invalid-value": "Geçersiz değer",
     "min-password-length": "Minimum {n} karakter uzunluğu",
     "new-version-available": "Yeni versiyon Umami {version} mevcut!",
     "no-data-available": "Henüz hiç veri yok.",

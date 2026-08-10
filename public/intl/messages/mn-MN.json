@@ -442,6 +442,7 @@
     "go-to-settings": "Тохиргоо руу очих",
     "incorrect-username-password": "Буруу хэрэглэгчийн нэр/нууц үг.",
     "invalid-domain": "Буруу домэйн",
+    "invalid-value": "Буруу утга",
     "min-password-length": "Хамгийн багадаа {n} тэмдэгт",
     "new-version-available": "Umami-н шинэ хувилбар {version} гарсан байна!",
     "no-data-available": "Өгөгдөл алга.",

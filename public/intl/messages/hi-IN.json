@@ -442,6 +442,7 @@
     "go-to-settings": "समायोजन में जाइए",
     "incorrect-username-password": "ग़लत उपयोगकर्ता नाम / पासवर्ड।",
     "invalid-domain": "अमान्य डोमेन",
+    "invalid-value": "अमान्य मान",
     "min-password-length": "न्यूनतम {n} वर्ण",
     "new-version-available": "Umami {version} का नया संस्करण उपलब्ध है!",
     "no-data-available": "कोई डेटा उपलब्ध नहीं है।",

@@ -442,6 +442,7 @@
     "go-to-settings": "להדרותג",
     "incorrect-username-password": "שם משתמש או סיסמה לא נכונים",
     "invalid-domain": "דומיין לא תקין",
+    "invalid-value": "ערך לא תקין",
     "min-password-length": "אורך מינימלי של {n} תווים",
     "new-version-available": "גרסה חדשה של Umami {version} זמינה!",
     "no-data-available": "אין מידע זמין",

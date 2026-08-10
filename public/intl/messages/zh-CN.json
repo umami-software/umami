@@ -442,6 +442,7 @@
     "go-to-settings": "去设置",
     "incorrect-username-password": "用户名或密码不正确。",
     "invalid-domain": "无效域名",
+    "invalid-value": "无效值",
     "min-password-length": "密码最短长度为 {n} 个字符",
     "new-version-available": "Umami 新版本 {version} 已发布！",
     "no-data-available": "暂无数据。",

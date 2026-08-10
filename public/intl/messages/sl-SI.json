@@ -442,6 +442,7 @@
     "go-to-settings": "Pojdi v nastavitve",
     "incorrect-username-password": "Nepravilno uporabniško ime/geslo.",
     "invalid-domain": "Neveljavna domena",
+    "invalid-value": "Neveljavna vrednost",
     "min-password-length": "Najmanjša dolžina je {n} znakov",
     "new-version-available": "Na voljo je nova verzija programa Umami {version}!",
     "no-data-available": "Podatki niso na voljo.",

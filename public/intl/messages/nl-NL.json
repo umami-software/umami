@@ -442,6 +442,7 @@
     "go-to-settings": "Naar instellingen",
     "incorrect-username-password": "Incorrecte gebruikersnaam/wachtwoord.",
     "invalid-domain": "Ongeldig domein",
+    "invalid-value": "Ongeldige waarde",
     "min-password-length": "Minimale lengte van {n} tekens",
     "new-version-available": "Een nieuwe versie van Umami {version} is beschikbaar!",
     "no-data-available": "Geen gegevens beschikbaar.",

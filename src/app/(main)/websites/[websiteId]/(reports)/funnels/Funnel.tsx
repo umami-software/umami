@@ -30,31 +30,31 @@ export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true
   const operatorLabels = useOperatorLabels();
 
   return (
-    <LoadingPanel data={data} isLoading={isLoading} error={error}>
-      <Grid gap>
-        <Grid columns="1fr auto" gap>
-          <Column gap>
-            <Row>
-              <Text size="lg" weight="bold">
-                {name}
-              </Text>
-            </Row>
+    <Grid gap>
+      <Grid columns="1fr auto" gap>
+        <Column gap>
+          <Row>
+            <Text size="lg" weight="bold">
+              {name}
+            </Text>
+          </Row>
+        </Column>
+        {allowEdit && !isSharePage && (
+          <Column>
+            <ReportEditButton
+              id={id}
+              name={name}
+              type={type}
+              title={t(labels.funnel)}
+              width="700px"
+              height="600px"
+            >
+              {({ close }) => <FunnelEditForm id={id} websiteId={websiteId} onClose={close} />}
+            </ReportEditButton>
           </Column>
-          {allowEdit && !isSharePage && (
-            <Column>
-              <ReportEditButton
-                id={id}
-                name={name}
-                type={type}
-                title={t(labels.funnel)}
-                width="700px"
-                height="600px"
-              >
-                {({ close }) => <FunnelEditForm id={id} websiteId={websiteId} onClose={close} />}
-              </ReportEditButton>
-            </Column>
-          )}
-        </Grid>
+        )}
+      </Grid>
+      <LoadingPanel data={data} isLoading={isLoading} error={error}>
         {data?.map(
           (
             { type, value, filters, visitors, previous, dropped, dropoff, remaining }: FunnelResult,
@@ -142,7 +142,7 @@ export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true
             );
           },
         )}
-      </Grid>
-    </LoadingPanel>
+      </LoadingPanel>
+    </Grid>
   );
 }

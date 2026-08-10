@@ -442,6 +442,7 @@
     "go-to-settings": "Sozlamalarga oʻtish",
     "incorrect-username-password": "Notoʻgʻri foydalanuvchi nomi va/yoki parol.",
     "invalid-domain": "Notoʻgʻri domen. http/https qoʻshmang.",
+    "invalid-value": "Notoʻgʻri qiymat",
     "min-password-length": "Minimal uzunligi {n} belgidan",
     "new-version-available": "Umami'ning yangi **{version}** versiyasi mavjud!",
     "no-data-available": "Ma'lumotlar mavjud emas.",

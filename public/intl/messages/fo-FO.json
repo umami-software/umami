@@ -442,6 +442,7 @@
     "go-to-settings": "Far til stillingar",
     "incorrect-username-password": "Skeivt brúkaranavn/loyniorð.",
     "invalid-domain": "Ógilt økisnavn",
+    "invalid-value": "Ógilt virði",
     "min-password-length": "Minsta longd er {n} tekn",
     "new-version-available": "Nýggj útgáva av Umami {version} er tøk!",
     "no-data-available": "Einki data tøk.",
