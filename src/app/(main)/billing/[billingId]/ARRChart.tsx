@@ -1,14 +1,21 @@
 'use client';
 import { useTheme } from '@umami/react-zen';
 import { colord } from 'colord';
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Chart } from '@/components/charts/Chart';
 import { useLocale } from '@/components/hooks';
 import { getThemeColors } from '@/lib/colors';
 import { formatDate } from '@/lib/date';
 import { formatLongCurrency } from '@/lib/format';
 import type { ARRMetrics } from '@/queries/sql/billing/getARR';
-import { ARR_SERIES, computeYoYGrowth, YOY_GROWTH_COLOR } from './arr';
+import { ARRChartTooltip, type ARRChartTooltipProps } from './ARRChartTooltip';
+import {
+  ARR_SERIES,
+  computeYoYGrowth,
+  DISPLAY_MONTHS,
+  parseMonthKey,
+  YOY_GROWTH_COLOR,
+} from './arr';
 
 export interface ARRChartProps {
   data: ARRMetrics[];
@@ -19,12 +26,19 @@ export function ARRChart({ data, currency = 'USD' }: ARRChartProps) {
   const { theme } = useTheme();
   const { locale } = useLocale();
   const { colors } = useMemo(() => getThemeColors(theme), [theme]);
+  const [tooltip, setTooltip] = useState<ARRChartTooltipProps | null>(null);
+
+  // Growth is computed against the full fetched range (which includes a trailing 12-month
+  // buffer) so every displayed month has a same-month comparator, then both are sliced down
+  // to the display window together so indices stay aligned.
+  const growthByIndex = useMemo(() => computeYoYGrowth(data), [data]);
+  const displayData = useMemo(() => data.slice(-DISPLAY_MONTHS), [data]);
+  const displayGrowth = useMemo(() => growthByIndex.slice(-DISPLAY_MONTHS), [growthByIndex]);
 
   const chartData: any = useMemo(() => {
-    if (!data?.length) return { labels: [], datasets: [] };
+    if (!displayData?.length) return { labels: [], datasets: [] };
 
-    const labels = data.map(row => formatDate(`${row.month}-01`, 'MMM yyyy', locale));
-    const growth = computeYoYGrowth(data);
+    const labels = displayData.map(row => formatDate(parseMonthKey(row.month), 'MMM yyyy', locale));
 
     return {
       labels,
@@ -32,7 +46,7 @@ export function ARRChart({ data, currency = 'USD' }: ARRChartProps) {
         ...ARR_SERIES.map(({ key, label, color }) => ({
           type: 'bar',
           label,
-          data: data.map(row => row[key]),
+          data: displayData.map(row => row[key]),
           backgroundColor: colord(color).alpha(0.85).toRgbString(),
           borderRadius: 2,
           stack: 'arr',
@@ -42,7 +56,7 @@ export function ARRChart({ data, currency = 'USD' }: ARRChartProps) {
         {
           type: 'line',
           label: 'YoY Growth',
-          data: growth,
+          data: displayGrowth,
           borderColor: YOY_GROWTH_COLOR,
           backgroundColor: YOY_GROWTH_COLOR,
           borderWidth: 2,
@@ -55,29 +69,10 @@ export function ARRChart({ data, currency = 'USD' }: ARRChartProps) {
         },
       ],
     };
-  }, [data, locale]);
+  }, [displayData, displayGrowth, locale]);
 
   const chartOptions: any = useMemo(() => {
     return {
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          enabled: true,
-          mode: 'index',
-          intersect: false,
-          callbacks: {
-            label: (item: any) => {
-              if (item.dataset.yAxisID === 'y1') {
-                return item.raw == null
-                  ? undefined
-                  : `${item.dataset.label}: ${Number(item.raw).toFixed(1)}%`;
-              }
-              return `${item.dataset.label}: ${formatLongCurrency(item.raw, currency)}`;
-            },
-          },
-        },
-      },
       scales: {
         x: {
           stacked: true,
@@ -108,5 +103,51 @@ export function ARRChart({ data, currency = 'USD' }: ARRChartProps) {
     };
   }, [colors, currency]);
 
-  return <Chart type="bar" chartData={chartData} chartOptions={chartOptions} height="400px" />;
+  const handleTooltip = useCallback(
+    ({ chart, tooltip }: { chart: any; tooltip: any }) => {
+      const { opacity, dataPoints, caretX, caretY } = tooltip;
+      if (!opacity || !dataPoints?.length) {
+        setTooltip(null);
+        return;
+      }
+
+      const index = dataPoints[0].dataIndex;
+      const row = displayData[index];
+      if (!row) {
+        setTooltip(null);
+        return;
+      }
+
+      const growth = displayGrowth[index];
+      const canvasRect = chart.canvas.getBoundingClientRect();
+
+      setTooltip({
+        position: { x: canvasRect.left + caretX, y: canvasRect.top + caretY },
+        title: formatDate(parseMonthKey(row.month), 'MMM yyyy', locale),
+        activeKey: dataPoints[0].dataset.label,
+        items: ARR_SERIES.map(({ key, label, color }) => ({
+          key: label,
+          label,
+          color,
+          value: formatLongCurrency(row[key], currency),
+        })),
+        total: formatLongCurrency(row.totalSales, currency),
+        growth: growth != null ? `${growth.toFixed(1)}%` : null,
+      });
+    },
+    [displayData, displayGrowth, currency, locale],
+  );
+
+  return (
+    <>
+      <Chart
+        type="bar"
+        chartData={chartData}
+        chartOptions={chartOptions}
+        onTooltip={handleTooltip}
+        height="400px"
+      />
+      {tooltip && <ARRChartTooltip {...tooltip} />}
+    </>
+  );
 }

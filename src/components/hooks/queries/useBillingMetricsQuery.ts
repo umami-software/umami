@@ -5,9 +5,9 @@ import type { ReactQueryOptions } from '@/lib/types';
 import type { ARRMetrics } from '@/queries/sql/billing/getARR';
 import { useApi } from '../useApi';
 
-// Defaults to the last 24 months (current month + 23 prior), from the start of that first month.
-// The extra trailing year is fetched so the most recent 12 months have a same-month comparator
-// available for year-over-year growth, even though only the whole range gets charted.
+// Defaults to the last 36 months (current month + 35 prior), from the start of that first month.
+// Only the most recent DISPLAY_MONTHS (see arr.ts) get charted — the extra trailing year is
+// fetched purely so every displayed month has a same-month comparator for year-over-year growth.
 export function useBillingMetricsQuery(
   billingId?: string,
   options?: ReactQueryOptions<ARRMetrics[]>,
@@ -15,7 +15,7 @@ export function useBillingMetricsQuery(
   const { get, useQuery } = useApi();
   const { startAt, endAt } = useMemo(() => {
     const now = new Date();
-    return { startAt: +startOfMonth(subMonths(now, 23)), endAt: +now };
+    return { startAt: +startOfMonth(subMonths(now, 35)), endAt: +now };
   }, []);
 
   return useQuery<ARRMetrics[]>({

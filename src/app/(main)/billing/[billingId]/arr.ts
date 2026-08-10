@@ -20,6 +20,17 @@ export const ARR_SERIES: ARRSeriesDef[] = [
 
 export const YOY_GROWTH_COLOR = '#89c541';
 
+// useBillingMetricsQuery fetches 12 extra trailing months beyond this so every displayed
+// month has a same-month comparator for YoY growth; components slice their computed output
+// down to this count before rendering.
+export const DISPLAY_MONTHS = 24;
+
+// ARRMetrics.month is a 'YYYY-MM' key. `new Date('YYYY-MM-01')` parses as UTC midnight, which
+// renders as the prior month in any timezone behind UTC — appending a local time avoids that.
+export function parseMonthKey(month: string): Date {
+  return new Date(`${month}-01T00:00:00`);
+}
+
 export interface ARRRollForwardRow extends ARRMetrics {
   startingARR: number;
   endingARR: number;

@@ -1,10 +1,10 @@
 'use client';
 import { Column, DataColumn, DataTable, Text } from '@umami/react-zen';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { formatDate } from '@/lib/date';
 import { formatCurrency } from '@/lib/format';
 import type { ARRMetrics } from '@/queries/sql/billing/getARR';
-import { computeRollForward } from './arr';
+import { computeRollForward, DISPLAY_MONTHS, parseMonthKey } from './arr';
 
 export interface ARRRollForwardTableProps {
   data: ARRMetrics[];
@@ -32,7 +32,18 @@ const ROW_DEFS: RollForwardRowDef[] = [
 ];
 
 export function ARRRollForwardTable({ data, currency = 'USD' }: ARRRollForwardTableProps) {
-  const rollForward = useMemo(() => computeRollForward(data), [data]);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Compute against the full fetched range so the first displayed month's Starting ARR is
+  // real prior-month data rather than a back-derived approximation, then slice to display.
+  const rollForward = useMemo(() => computeRollForward(data).slice(-DISPLAY_MONTHS), [data]);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) {
+      el.scrollLeft = el.scrollWidth;
+    }
+  }, [rollForward]);
 
   const tableData = useMemo(
     () =>
@@ -53,7 +64,10 @@ export function ARRRollForwardTable({ data, currency = 'USD' }: ARRRollForwardTa
   }
 
   return (
-    <div style={{ width: '100%', maxWidth: '100%', overflowX: 'auto', overflowY: 'hidden' }}>
+    <div
+      ref={scrollRef}
+      style={{ width: '100%', maxWidth: '100%', overflowX: 'auto', overflowY: 'hidden' }}
+    >
       <div style={{ width: `${tableMinWidth}px`, minWidth: `${tableMinWidth}px` }}>
         <DataTable data={tableData} style={{ width: '100%' }} displayMode="table">
           <DataColumn
@@ -69,7 +83,7 @@ export function ARRRollForwardTable({ data, currency = 'USD' }: ARRRollForwardTa
             <DataColumn
               key={monthRow.month}
               id={monthRow.month}
-              label={formatDate(`${monthRow.month}-01`, 'MMM yyyy')}
+              label={formatDate(parseMonthKey(monthRow.month), 'MMM yyyy')}
               align="end"
               width={`${MONTH_COLUMN_WIDTH}px`}
             >
@@ -80,10 +94,7 @@ export function ARRRollForwardTable({ data, currency = 'USD' }: ARRRollForwardTa
                     ? { border: true, borderRadius: true, paddingX: '2' }
                     : {})}
                 >
-                  <Text
-                    weight={row.emphasize ? 'bold' : undefined}
-                    color={row[monthRow.month] < 0 ? 'red' : undefined}
-                  >
+                  <Text weight={row.emphasize ? 'bold' : undefined}>
                     {formatCurrency(row[monthRow.month], currency)}
                   </Text>
                 </Column>
