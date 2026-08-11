@@ -187,6 +187,7 @@ model SessionData {
   website Website @relation(fields: [websiteId], references: [id])
   session Session @relation(fields: [sessionId], references: [id])
 
+  @@unique([sessionId, dataKey])
   @@index([createdAt])
   @@index([websiteId])
   @@index([sessionId])

@@ -49,24 +49,28 @@ export async function relationalQuery({
   }));
 
   for (const data of flattenedData) {
-    const { sessionId, dataKey, ...props } = data;
+    const { id, sessionId, dataKey, ...props } = data;
 
-    const updateResult = await client.sessionData.updateMany({
+    // The unique key lets concurrent calls for the same session resolve in the
+    // database: a collision becomes an update. The generated id belongs to the
+    // insert alone — assigning it on an update would move the primary key.
+    await client.sessionData.upsert({
       where: {
+        sessionId_dataKey: {
+          sessionId,
+          dataKey,
+        },
+      },
+      create: {
+        id,
         sessionId,
         dataKey,
+        ...props,
       },
-      data: {
+      update: {
         ...props,
       },
     });
-
-    // If no record was updated, create a new one
-    if (updateResult.count === 0) {
-      await client.sessionData.create({
-        data,
-      });
-    }
   }
 }
 
