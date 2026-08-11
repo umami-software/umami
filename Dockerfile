@@ -1,5 +1,5 @@
 ARG NODE_IMAGE_VERSION="22-alpine"
-ARG PNPM_VERSION="10.15.1"
+ARG PNPM_VERSION="11.21.0"
 # Keep in sync with the prisma/@prisma/* versions in package.json
 ARG PRISMA_VERSION="7.9.1"
 
@@ -63,6 +63,13 @@ RUN pnpm add npm-run-all dotenv chalk semver \
     prisma@${PRISMA_VERSION} \
     @prisma/client@${PRISMA_VERSION} \
     @prisma/adapter-pg@${PRISMA_VERSION}
+
+# Assert the @prisma/engines postinstall actually downloaded the engine
+# binaries. If pnpm blocked the build script (e.g. allowBuilds not honored by
+# the installed pnpm version), prisma would try to download engines at runtime
+# as the non-root user and fail with a permissions error.
+RUN ls node_modules/.pnpm/@prisma+engines@${PRISMA_VERSION}/node_modules/@prisma/engines/*engine* \
+    || (echo "ERROR: Prisma engine binaries missing - @prisma/engines postinstall was blocked" && exit 1)
 
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder /app/prisma ./prisma
