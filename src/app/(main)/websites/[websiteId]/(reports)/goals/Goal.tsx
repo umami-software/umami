@@ -19,11 +19,21 @@ export interface GoalProps {
   websiteId: string;
   startDate: Date;
   endDate: Date;
+  allowEdit?: boolean;
 }
 
 export type GoalData = { num: number; total: number };
 
-export function Goal({ id, name, type, parameters, websiteId, startDate, endDate }: GoalProps) {
+export function Goal({
+  id,
+  name,
+  type,
+  parameters,
+  websiteId,
+  startDate,
+  endDate,
+  allowEdit = true,
+}: GoalProps) {
   const { t, labels } = useMessages();
   const { pathname } = useNavigation();
   const isSharePage = pathname.includes('/share/');
@@ -36,63 +46,61 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
   const isPage = parameters?.type === 'path';
 
   return (
-    <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} error={error}>
-      {data && (
-        <Grid gap>
-          <Grid columns="1fr auto" gap>
-            <Column gap>
-              <Row>
-                <Text size="lg" weight="bold">
-                  {name}
-                </Text>
-              </Row>
-            </Column>
-            {!isSharePage && (
-              <Column>
-                <ReportEditButton
-                  id={id}
-                  name={name}
-                  type={type}
-                  title={t(labels.goal)}
-                  minWidth="400px"
-                  minHeight="300px"
-                >
-                  {({ close }) => <GoalEditForm id={id} websiteId={websiteId} onClose={close} />}
-                </ReportEditButton>
-              </Column>
-            )}
-          </Grid>
-          <Row alignItems="center" justifyContent="space-between" gap>
-            <Text color="muted">{t(isPage ? labels.viewedPage : labels.triggeredEvent)}</Text>
-            <Text color="muted">{t(labels.conversionRate)}</Text>
-          </Row>
-          <Row alignItems="center" justifyContent="space-between" gap>
-            <Row alignItems="center" gap>
-              <Icon>{parameters.type === 'path' ? <File /> : <Lightning />}</Icon>
-              <Text>{parameters.value}</Text>
-            </Row>
-            <Row alignItems="center" gap>
-              <Icon>
-                <User />
-              </Icon>
-              <Text title={`${data?.num} / ${data?.total}`}>{`${formatLongNumber(
-                data?.num,
-              )} / ${formatLongNumber(data?.total)}`}</Text>
-            </Row>
-          </Row>
-          <Row alignItems="center" gap="6">
-            <ProgressBar
-              value={data?.num || 0}
-              minValue={0}
-              maxValue={data?.total || 1}
-              style={{ width: '100%' }}
-            />
-            <Text weight="bold" size="4xl">
-              {data?.total ? Math.round((+data?.num / +data?.total) * 100) : '0'}%
+    <Grid gap>
+      <Grid columns="1fr auto" gap>
+        <Column gap>
+          <Row>
+            <Text size="lg" weight="bold">
+              {name}
             </Text>
           </Row>
-        </Grid>
-      )}
-    </LoadingPanel>
+        </Column>
+        {allowEdit && !isSharePage && (
+          <Column>
+            <ReportEditButton
+              id={id}
+              name={name}
+              type={type}
+              title={t(labels.goal)}
+              minWidth="400px"
+              minHeight="300px"
+            >
+              {({ close }) => <GoalEditForm id={id} websiteId={websiteId} onClose={close} />}
+            </ReportEditButton>
+          </Column>
+        )}
+      </Grid>
+      <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} error={error}>
+        <Row alignItems="center" justifyContent="space-between" gap>
+          <Text color="muted">{t(isPage ? labels.viewedPage : labels.triggeredEvent)}</Text>
+          <Text color="muted">{t(labels.conversionRate)}</Text>
+        </Row>
+        <Row alignItems="center" justifyContent="space-between" gap>
+          <Row alignItems="center" gap>
+            <Icon>{parameters.type === 'path' ? <File /> : <Lightning />}</Icon>
+            <Text>{parameters.value}</Text>
+          </Row>
+          <Row alignItems="center" gap>
+            <Icon>
+              <User />
+            </Icon>
+            <Text title={`${data?.num} / ${data?.total}`}>{`${formatLongNumber(
+              data?.num,
+            )} / ${formatLongNumber(data?.total)}`}</Text>
+          </Row>
+        </Row>
+        <Row alignItems="center" gap="6">
+          <ProgressBar
+            value={data?.num || 0}
+            min={0}
+            max={data?.total || 1}
+            style={{ width: '100%' }}
+          />
+          <Text weight="bold" size="4xl">
+            {data?.total ? Math.round((+data?.num / +data?.total) * 100) : '0'}%
+          </Text>
+        </Row>
+      </LoadingPanel>
+    </Grid>
   );
 }

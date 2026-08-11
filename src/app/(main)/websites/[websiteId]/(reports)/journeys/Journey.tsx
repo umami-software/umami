@@ -1,4 +1,4 @@
-import { Column, Focusable, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Column, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
 import { firstBy } from 'thenby';
@@ -228,24 +228,23 @@ export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyP
                               <Text truncate>{name}</Text>
                             </Row>
                             <div className={styles.count} title={nodeCount}>
-                              <TooltipTrigger
-                                delay={0}
-                                isDisabled={columnIndex === 0 || (selectedNode && !selected)}
-                              >
-                                <Focusable>
-                                  <div>{formatLongNumber(nodeCount)}</div>
-                                </Focusable>
-                                <Tooltip placement="top" offset={20} showArrow>
-                                  <Text transform="lowercase" color="red">
-                                    {`${dropped}% ${t(labels.dropoff)}`}
-                                  </Text>
-                                  <Column>
-                                    <Text transform="lowercase">
-                                      {`${remaining}% ${t(labels.conversion)}`}
+                              {columnIndex === 0 || (selectedNode && !selected) ? (
+                                <div>{formatLongNumber(nodeCount)}</div>
+                              ) : (
+                                <TooltipTrigger delay={0}>
+                                  <div tabIndex={0}>{formatLongNumber(nodeCount)}</div>
+                                  <Tooltip placement="top" sideOffset={20} showArrow>
+                                    <Text transform="lowercase" color="red">
+                                      {`${dropped}% ${t(labels.dropoff)}`}
                                     </Text>
-                                  </Column>
-                                </Tooltip>
-                              </TooltipTrigger>
+                                    <Column>
+                                      <Text transform="lowercase">
+                                        {`${remaining}% ${t(labels.conversion)}`}
+                                      </Text>
+                                    </Column>
+                                  </Tooltip>
+                                </TooltipTrigger>
+                              )}
                             </div>
                             {columnIndex < columns.length &&
                               lines.map(([fromIndex, nodeIndex], i) => {

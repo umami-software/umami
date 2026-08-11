@@ -58,6 +58,35 @@
   font-weight: 600;
 }
 
+.mobilePageHeader {
+  min-width: 0;
+}
+
+.mobilePageSection {
+  padding: 4px 0 2px;
+}
+
+.mobileSectionLabel {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mobileSelectedPageButton {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--border-base);
+  background: var(--surface-raised);
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.mobileSelectedPageButton:hover {
+  background: var(--surface-sunken);
+}
+
 .summaryHeader {
   min-width: 0;
 }
@@ -96,6 +125,10 @@
 
 .screenWidthValue {
   min-width: 0;
+}
+
+.mobileSummaryControls {
+  width: 100%;
 }
 
 .screenWidthCount {
@@ -168,7 +201,9 @@
 
 .snapshot {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1;
   transform-origin: top left;
   pointer-events: none;
@@ -225,4 +260,39 @@
   );
   pointer-events: auto;
   mix-blend-mode: multiply;
+}
+
+@media (max-width: 640px) {
+  .summaryStats,
+  .summaryHeader {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .summaryStats {
+    gap: 8px;
+  }
+
+  .summaryStat {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .screenWidthControl {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
+  }
+
+  .screenWidthLabel {
+    font-size: 12px;
+  }
+
+  .canvasWrapper {
+    max-height: 70vh;
+  }
+
+  .scrollBandLabel {
+    display: none;
+  }
 }

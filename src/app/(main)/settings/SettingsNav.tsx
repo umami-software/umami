@@ -1,8 +1,8 @@
-import { Column, Focusable, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Column, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { ArrowLeft, Settings2, UserCircle, Users } from '@/components/icons';
+import { ArrowLeft, Settings2, ShieldCheck, UserCircle, Users } from '@/components/icons';
 
 export function SettingsNav({
   isCollapsed,
@@ -41,6 +41,12 @@ export function SettingsNav({
           path: renderUrl('/settings/teams'),
           icon: <Users />,
         },
+        {
+          id: 'security',
+          label: t(labels.security),
+          path: renderUrl('/settings/security'),
+          icon: <ShieldCheck />,
+        },
       ],
     },
   ];
@@ -52,50 +58,67 @@ export function SettingsNav({
   return (
     <Column gap="2">
       <Link href={renderUrl('/websites', false)} role="button" onClick={onItemClick}>
-        <TooltipTrigger isDisabled={!isCollapsed} delay={0}>
-          <Focusable>
+        {(() => {
+          const content = (
             <Row
+              tabIndex={0}
               alignItems="center"
+              justifyContent={isCollapsed ? 'center' : undefined}
               hover={{ backgroundColor: 'surface-sunken' }}
               borderRadius
-              minHeight="40px"
+              minHeight="9"
             >
               <IconLabel icon={<ArrowLeft />} label={isCollapsed ? '' : t(labels.back)} padding />
             </Row>
-          </Focusable>
-          <Tooltip placement="right">{t(labels.back)}</Tooltip>
-        </TooltipTrigger>
+          );
+
+          return isCollapsed ? (
+            <TooltipTrigger delay={0}>
+              {content}
+              <Tooltip placement="right">{t(labels.back)}</Tooltip>
+            </TooltipTrigger>
+          ) : (
+            content
+          );
+        })()}
       </Link>
       {items.map(({ label: sectionLabel, items: sectionItems }, index) => (
         <Column key={`${sectionLabel}${index}`} gap="1" marginBottom="1">
           {!isCollapsed && (
-            <Row padding>
+            <Row paddingX="3" marginTop="2">
               <Text weight="bold">{sectionLabel}</Text>
             </Row>
           )}
           {sectionItems.map(({ id, path, label, icon }) => {
             const isSelected = selectedKey === id;
+            const content = (
+              <Row
+                tabIndex={0}
+                alignItems="center"
+                justifyContent={isCollapsed ? 'center' : undefined}
+                hover={{ backgroundColor: 'surface-sunken' }}
+                backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                borderRadius
+                minHeight="9"
+              >
+                <IconLabel
+                  icon={icon}
+                  label={isCollapsed ? '' : label}
+                  weight={isSelected ? 'bold' : undefined}
+                  padding
+                />
+              </Row>
+            );
             return (
               <Link key={id} href={path} role="button" onClick={onItemClick}>
-                <TooltipTrigger isDisabled={!isCollapsed} delay={0}>
-                  <Focusable>
-                    <Row
-                      alignItems="center"
-                      hover={{ backgroundColor: 'surface-sunken' }}
-                      backgroundColor={isSelected ? 'surface-sunken' : undefined}
-                      borderRadius
-                      minHeight="40px"
-                    >
-                      <IconLabel
-                        icon={icon}
-                        label={isCollapsed ? '' : label}
-                        weight={isSelected ? 'bold' : undefined}
-                        padding
-                      />
-                    </Row>
-                  </Focusable>
-                  <Tooltip placement="right">{label}</Tooltip>
-                </TooltipTrigger>
+                {isCollapsed ? (
+                  <TooltipTrigger delay={0}>
+                    {content}
+                    <Tooltip placement="right">{label}</Tooltip>
+                  </TooltipTrigger>
+                ) : (
+                  content
+                )}
               </Link>
             );
           })}

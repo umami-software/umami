@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { Prisma } from '@/generated/prisma/client';
-import { ENTITY_TYPE } from '@/lib/constants';
+import { DOMAIN_REGEX, ENTITY_TYPE } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { getRecorderConfig, getRecorderEnabled } from '@/lib/recorder';
 import { parseRequest } from '@/lib/request';
@@ -41,8 +41,8 @@ export async function POST(
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
-    name: z.string().max(100).optional(),
-    domain: z.string().max(500).optional(),
+    name: z.string().trim().min(1).max(100).optional(),
+    domain: z.string().trim().regex(DOMAIN_REGEX).max(500).optional(),
     shareId: z.string().max(50).nullable().optional(),
     replayConfig: z
       .object({

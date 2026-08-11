@@ -7,10 +7,11 @@ import {
   Modal,
 } from '@umami/react-zen';
 import type { CSSProperties, ReactNode } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { IconLabel } from '@/components/common/IconLabel';
 import { useMobile } from '@/components/hooks';
 
-export interface DialogButtonProps extends Omit<ButtonProps, 'children'> {
+export interface DialogButtonProps extends Omit<ButtonProps, 'children' | 'title'> {
   icon?: ReactNode;
   label?: ReactNode;
   title?: ReactNode;
@@ -57,25 +58,22 @@ export function DialogButton({
   }
 
   const dialog = (
-    <Dialog
-      variant={isMobile ? 'sheet' : undefined}
-      title={title === undefined ? label : title}
-      style={style}
-    >
+    <Dialog title={title === undefined ? label : title} style={style}>
       {children}
     </Dialog>
   );
 
   if (isOpen !== undefined) {
     return (
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        isDismissable
-        placement={isMobile ? 'fullscreen' : 'center'}
-      >
-        {dialog}
-      </Modal>
+      <ControlledDialog>
+        <Modal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          placement={isMobile ? 'fullscreen' : 'center'}
+        >
+          {dialog}
+        </Modal>
+      </ControlledDialog>
     );
   }
 

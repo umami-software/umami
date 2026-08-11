@@ -105,6 +105,17 @@ export async function getAllUserTeams(userId: string) {
   });
 }
 
+export async function getUserOwnedTeamCount(userId: string) {
+  return prisma.client.team.count({
+    where: {
+      deletedAt: null,
+      members: {
+        some: { userId, role: ROLES.teamOwner },
+      },
+    },
+  });
+}
+
 export async function getTeamOwner(teamId: string) {
   return prisma.client.teamUser.findFirst({
     where: { teamId, role: ROLES.teamOwner },

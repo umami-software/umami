@@ -49,13 +49,7 @@ export function MobileNav() {
       <MobileMenuButton>
         {({ close }) => {
           return (
-            <Column
-              gap="2"
-              display="flex"
-              flex-direction="column"
-              padding="1"
-              style={{ height: '100dvh' }}
-            >
+            <Column gap="2" display="flex" flex-direction="column" padding="1" height="100%">
               {isMain &&
                 links.map(link => {
                   return (

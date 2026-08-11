@@ -26,7 +26,7 @@ export function usePropertyFieldsQuery(
           ? `/websites/${websiteId}/event-data/fields`
           : `/websites/${websiteId}/session-data/properties`,
         {
-          ...(source === 'event' ? { event: eventName } : {}),
+          ...(source === 'event' && eventName ? { event: eventName } : {}),
           startAt,
           endAt,
           unit,
@@ -34,7 +34,7 @@ export function usePropertyFieldsQuery(
           ...params,
         },
       ),
-    enabled: !!(websiteId && (source === 'session' || eventName)),
+    enabled: !!websiteId,
     ...options,
   });
 }

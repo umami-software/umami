@@ -65,14 +65,23 @@ export function Panel({
       {(allowFullscreen || toolbar) && (
         <Row justifyContent="flex-end" alignItems="center" gap>
           {toolbar}
-          {allowFullscreen && (
-            <TooltipTrigger delay={0} isDisabled={isFullscreen}>
+          {allowFullscreen &&
+            (isFullscreen ? (
               <Button size="sm" variant="quiet" onPress={handleFullscreen}>
-                <Icon>{isFullscreen ? <X /> : <Maximize />}</Icon>
+                <Icon>
+                  <X />
+                </Icon>
               </Button>
-              <Tooltip>{t(labels.maximize)}</Tooltip>
-            </TooltipTrigger>
-          )}
+            ) : (
+              <TooltipTrigger delay={0}>
+                <Button size="sm" variant="quiet" onPress={handleFullscreen}>
+                  <Icon>
+                    <Maximize />
+                  </Icon>
+                </Button>
+                <Tooltip>{t(labels.maximize)}</Tooltip>
+              </TooltipTrigger>
+            ))}
         </Row>
       )}
       {children}

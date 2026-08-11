@@ -48,6 +48,7 @@ export interface PropertyFilter {
 }
 
 export type EventPropertyFilter = PropertyFilter;
+export type SessionPropertyFilter = PropertyFilter;
 
 export interface Filter {
   name: string;
@@ -126,6 +127,8 @@ export interface QueryFilters
     SegmentParams {
   minDuration?: number;
   cohortFilters?: QueryFilters;
+  eventPropertyFilters?: EventPropertyFilter[];
+  sessionPropertyFilters?: SessionPropertyFilter[];
 }
 
 export interface DateParams {

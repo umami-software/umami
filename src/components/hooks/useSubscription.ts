@@ -1,13 +1,7 @@
+import { DEFAULT_SUBSCRIPTION, type Subscription } from '@/lib/subscription';
 import { useApp } from '@/store/app';
+import { useApi } from './useApi';
 import { useConfig } from './useConfig';
-
-export interface Subscription {
-  isPro: boolean;
-  isBusiness: boolean;
-  isNoBilling: boolean;
-  hasSubscription: boolean;
-  unlimitedWebsites: boolean;
-}
 
 const FEATURES = {
   replays: 'isBusiness',
@@ -15,25 +9,25 @@ const FEATURES = {
 
 export type FeatureName = keyof typeof FEATURES;
 
-const defaultSubscription: Subscription = {
-  isPro: false,
-  isBusiness: false,
-  isNoBilling: false,
-  hasSubscription: false,
-  unlimitedWebsites: false,
-};
-
 export function useSubscription(teamId?: string | null) {
-  const { user } = useApp();
+  const userId = useApp(state => state.user?.id);
   const config = useConfig();
-
-  const ownSubscription: Subscription = user?.subscription || defaultSubscription;
-  const teamSubscription: Subscription | null = teamId
-    ? (user?.teams?.find((t: any) => t.id === teamId)?.subscription ?? null)
-    : null;
-
-  const subscription: Subscription = teamSubscription || ownSubscription;
+  const { get, useQuery } = useApi();
   const cloudMode = config?.cloudMode || false;
+  const {
+    data: subscription = DEFAULT_SUBSCRIPTION,
+    isLoading,
+    isFetching,
+    error,
+  } = useQuery<Subscription>({
+    queryKey: ['subscription', { teamId: teamId || null }],
+    queryFn: () => get('/auth/subscription', teamId ? { teamId } : {}),
+    enabled: cloudMode && !!userId,
+    staleTime: 0,
+    gcTime: 0,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: 'always',
+  });
 
   function hasFeature(feature: FeatureName): boolean {
     if (!cloudMode || subscription.isNoBilling) {
@@ -48,5 +42,8 @@ export function useSubscription(teamId?: string | null) {
     ...subscription,
     cloudMode,
     hasFeature,
+    isLoading: isLoading || isFetching,
+    isFetching,
+    error,
   };
 }

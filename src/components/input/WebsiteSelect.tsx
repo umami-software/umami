@@ -79,7 +79,7 @@ export function WebsiteSelect({
       allowSearch={true}
       searchValue={search}
       onSearch={handleSearch}
-      onChange={handleChange}
+      onChange={value => handleChange(value as string)}
       onOpenChange={handleOpenChange}
       renderValue={renderValue}
       buttonProps={{

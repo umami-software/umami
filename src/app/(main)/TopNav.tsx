@@ -11,20 +11,28 @@ import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 export function TopNav() {
   const { websiteId, linkId, pixelId, boardId, teamId, router, renderUrl } = useNavigation();
 
-  const handleWebsiteChange = (value: string) => {
-    router.push(renderUrl(`/websites/${value}`, false));
+  const navigateToEntity = (basePath: string, value: string | number | null) => {
+    if (value === null || value === undefined || value === '') {
+      return;
+    }
+
+    router.push(renderUrl(`${basePath}/${value}`, false));
   };
 
-  const handleLinkChange = (value: string) => {
-    router.push(renderUrl(`/links/${value}`, false));
+  const handleWebsiteChange = (value: string | number | null) => {
+    navigateToEntity('/websites', value);
   };
 
-  const handlePixelChange = (value: string) => {
-    router.push(renderUrl(`/pixels/${value}`, false));
+  const handleLinkChange = (value: string | number | null) => {
+    navigateToEntity('/links', value);
   };
 
-  const handleBoardChange = (value: string) => {
-    router.push(renderUrl(`/boards/${value}`, false));
+  const handlePixelChange = (value: string | number | null) => {
+    navigateToEntity('/pixels', value);
+  };
+
+  const handleBoardChange = (value: string | number | null) => {
+    navigateToEntity('/boards', value);
   };
 
   return (

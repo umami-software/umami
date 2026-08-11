@@ -21,6 +21,7 @@ export function SessionsTable({
             href={
               getSessionHref ? getSessionHref(row) : `/websites/${websiteId}/sessions/${row.id}`
             }
+            scroll={getSessionHref ? false : undefined}
           >
             <Avatar seed={row.id} size={32} />
           </Link>
