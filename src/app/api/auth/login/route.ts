@@ -59,6 +59,7 @@ export async function POST(request: Request) {
 
   return json({
     token,
-    user: { id, username, role, createdAt, isAdmin: role === ROLES.admin, teams },
+    // Return the stored username, not the submitted one, which may differ in case.
+    user: { id, username: user.username, role, createdAt, isAdmin: role === ROLES.admin, teams },
   });
 }
