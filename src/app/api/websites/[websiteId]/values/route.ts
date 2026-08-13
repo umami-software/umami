@@ -54,5 +54,5 @@ export async function GET(
     values = await getValues(websiteId, FILTER_COLUMNS[type], filters);
   }
 
-  return json(values.filter(n => n).sort());
+  return json(values.filter(n => n?.value != null).sort());
 }
