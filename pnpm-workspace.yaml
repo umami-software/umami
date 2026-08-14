@@ -10,3 +10,5 @@ allowBuilds:
   msw: false
   prisma: true
   sharp: false
+minimumReleaseAgeExclude:
+  - '@umami/react-zen'

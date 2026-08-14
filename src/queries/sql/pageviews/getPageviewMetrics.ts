@@ -42,6 +42,10 @@ async function relationalQuery(
       },
       { joinSession: SESSION_COLUMNS.includes(type) },
     );
+  const fullPathSearchQuery =
+    type === 'fullPath' && filters.search
+      ? `and (case when website_event.url_query != '' then website_event.url_path || '?' || website_event.url_query else website_event.url_path end) ilike {{fullPathSearch}}`
+      : '';
 
   let entryExitQuery = '';
   let excludeDomain = '';
@@ -90,13 +94,18 @@ async function relationalQuery(
       and website_event.event_type NOT IN (2, 5)
       and ${column} != ''
       ${excludeDomain}
+      ${fullPathSearchQuery}
       ${filterQuery}
     group by 1
     order by 2 desc
     limit ${limit}
     offset ${offset}
     `,
-    { ...queryParams, ...parameters },
+    {
+      ...queryParams,
+      ...parameters,
+      ...(type === 'fullPath' && filters.search ? { fullPathSearch: `%${filters.search}%` } : {}),
+    },
     FUNCTION_NAME,
   );
 }
@@ -113,6 +122,10 @@ async function clickhouseQuery(
     ...filters,
     websiteId,
   });
+  const fullPathSearchQuery =
+    type === 'fullPath' && filters.search
+      ? `and positionCaseInsensitive(if(url_query != '', concat(url_path, '?', url_query), url_path), {fullPathSearch:String}) > 0`
+      : '';
 
   let sql = '';
   let excludeDomain = '';
@@ -156,6 +169,7 @@ async function clickhouseQuery(
       and event_type NOT IN (2, 5)
       and ${column} != ''
       ${excludeDomain}
+      ${fullPathSearchQuery}
       ${filterQuery}
     group by x
     order by y desc
@@ -204,7 +218,15 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, { ...queryParams, ...parameters }, FUNCTION_NAME);
+  return rawQuery(
+    sql,
+    {
+      ...queryParams,
+      ...parameters,
+      ...(type === 'fullPath' && filters.search ? { fullPathSearch: filters.search } : {}),
+    },
+    FUNCTION_NAME,
+  );
 }
 
 function getPageviewColumn(type: string) {

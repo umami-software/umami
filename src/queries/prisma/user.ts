@@ -30,6 +30,7 @@ async function findUser(criteria: Prisma.UserFindUniqueArgs, options: GetUserOpt
       password: includePassword,
       role: true,
       createdAt: true,
+      twoFactorRequired: true,
     },
   });
 }

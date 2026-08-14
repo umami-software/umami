@@ -1,6 +1,11 @@
+import { corsPreflight, getApiCorsHeaders, withCorsHeaders } from '@/lib/cors';
 import { getRecorderConfig } from '@/lib/recorder';
 import { parseRequest } from '@/lib/request';
 import { getWebsite } from '@/queries/prisma';
+
+export function OPTIONS() {
+  return corsPreflight();
+}
 
 export async function GET(
   request: Request,
@@ -9,13 +14,14 @@ export async function GET(
   const { error } = await parseRequest(request, null, { skipAuth: true });
 
   if (error) {
-    return error();
+    return withCorsHeaders(error());
   }
 
   const { websiteId } = await params;
   const website = await getWebsite(websiteId);
 
   const headers = {
+    ...getApiCorsHeaders(),
     'Cache-Control': 'public, max-age=60, stale-while-revalidate=300',
   };
 

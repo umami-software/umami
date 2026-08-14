@@ -15,9 +15,10 @@ interface FunnelProps {
   type: string;
   parameters: Record<string, any>;
   websiteId: string;
+  allowEdit?: boolean;
 }
 
-export function Funnel({ id, name, type, parameters, websiteId }: FunnelProps) {
+export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true }: FunnelProps) {
   const { t, labels } = useMessages();
   const { pathname } = useNavigation();
   const isSharePage = pathname.includes('/share/');
@@ -29,31 +30,31 @@ export function Funnel({ id, name, type, parameters, websiteId }: FunnelProps) {
   const operatorLabels = useOperatorLabels();
 
   return (
-    <LoadingPanel data={data} isLoading={isLoading} error={error}>
-      <Grid gap>
-        <Grid columns="1fr auto" gap>
-          <Column gap>
-            <Row>
-              <Text size="lg" weight="bold">
-                {name}
-              </Text>
-            </Row>
+    <Grid gap>
+      <Grid columns="1fr auto" gap>
+        <Column gap>
+          <Row>
+            <Text size="lg" weight="bold">
+              {name}
+            </Text>
+          </Row>
+        </Column>
+        {allowEdit && !isSharePage && (
+          <Column>
+            <ReportEditButton
+              id={id}
+              name={name}
+              type={type}
+              title={t(labels.funnel)}
+              width="700px"
+              height="600px"
+            >
+              {({ close }) => <FunnelEditForm id={id} websiteId={websiteId} onClose={close} />}
+            </ReportEditButton>
           </Column>
-          {!isSharePage && (
-            <Column>
-              <ReportEditButton
-                id={id}
-                name={name}
-                type={type}
-                title={t(labels.funnel)}
-                width="700px"
-                height="600px"
-              >
-                {({ close }) => <FunnelEditForm id={id} websiteId={websiteId} onClose={close} />}
-              </ReportEditButton>
-            </Column>
-          )}
-        </Grid>
+        )}
+      </Grid>
+      <LoadingPanel data={data} isLoading={isLoading} error={error}>
         {data?.map(
           (
             { type, value, filters, visitors, previous, dropped, dropoff, remaining }: FunnelResult,
@@ -126,8 +127,8 @@ export function Funnel({ id, name, type, parameters, websiteId }: FunnelProps) {
                   <Row alignItems="center" gap="6">
                     <ProgressBar
                       value={visitors || 0}
-                      minValue={0}
-                      maxValue={previous || 1}
+                      min={0}
+                      max={previous || 1}
                       style={{ width: '100%' }}
                     />
                     <Row minWidth="90px" justifyContent="end">
@@ -141,7 +142,7 @@ export function Funnel({ id, name, type, parameters, websiteId }: FunnelProps) {
             );
           },
         )}
-      </Grid>
-    </LoadingPanel>
+      </LoadingPanel>
+    </Grid>
   );
 }

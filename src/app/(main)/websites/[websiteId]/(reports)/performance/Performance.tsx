@@ -149,7 +149,7 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
         <Select
           label="Percentile"
           value={selectedPercentile}
-          onChange={(value: string) => setSelectedPercentile(value as 'p50' | 'p75' | 'p95')}
+          onChange={value => setSelectedPercentile(value as 'p50' | 'p75' | 'p95')}
         >
           {PERCENTILES.map(({ id, label }) => (
             <ListItem key={id} id={id}>

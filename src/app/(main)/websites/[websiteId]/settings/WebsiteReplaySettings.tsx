@@ -3,6 +3,7 @@ import {
   Column,
   Label,
   ListItem,
+  Loading,
   Row,
   Select,
   Slider,
@@ -21,7 +22,7 @@ const RECORDER_NAME = 'recorder.js';
 export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const website = useWebsite();
   const { t, labels, messages } = useMessages();
-  const { hasFeature, cloudMode } = useSubscription(website?.teamId);
+  const { hasFeature, cloudMode, isLoading } = useSubscription(website?.teamId);
   const { mutateAsync, touch, toast, isPending } = useUpdateQuery(`/websites/${websiteId}`);
   const config = getRecorderConfig(website?.replayConfig);
 
@@ -111,6 +112,10 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
     await saveRecorderConfig(getNextConfig());
   };
 
+  if (isLoading) {
+    return <Loading placement="absolute" />;
+  }
+
   if (cloudMode && !hasFeature('replays')) {
     return (
       <Column gap="4">
@@ -155,13 +160,12 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
           {heatmapEnabled && (
             <Slider
               label={`Heatmap ${t(labels.sampleRate).toLowerCase()}`}
-              minValue={0.05}
-              maxValue={1}
+              min={0.05}
+              max={1}
               step={0.05}
               value={heatmapSampleRate}
               onChange={v => setHeatmapSampleRate(Array.isArray(v) ? v[0] : v)}
               showValue
-              formatOptions={{ style: 'percent', maximumFractionDigits: 0 }}
               style={{ maxWidth: '360px' }}
             />
           )}
@@ -169,25 +173,32 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
             <>
               <Slider
                 label={`Replay ${t(labels.sampleRate).toLowerCase()}`}
-                minValue={0.05}
-                maxValue={1}
+                min={0.05}
+                max={1}
                 step={0.05}
                 value={sampleRate}
                 onChange={v => setSampleRate(Array.isArray(v) ? v[0] : v)}
                 showValue
-                formatOptions={{ style: 'percent', maximumFractionDigits: 0 }}
                 style={{ maxWidth: '360px' }}
               />
               <Column gap="1">
                 <Label>{t(labels.maskLevel)}</Label>
-                <Select value={maskLevel} onChange={setMaskLevel} style={{ maxWidth: '360px' }}>
+                <Select
+                  value={maskLevel}
+                  onChange={v => setMaskLevel(v as typeof maskLevel)}
+                  buttonProps={{ style: { maxWidth: '360px' } }}
+                >
                   <ListItem id="strict">strict</ListItem>
                   <ListItem id="moderate">moderate</ListItem>
                 </Select>
               </Column>
               <Column gap="1">
                 <Label>{t(labels.maxDuration)}</Label>
-                <Select value={maxDuration} onChange={setMaxDuration} style={{ maxWidth: '360px' }}>
+                <Select
+                  value={maxDuration}
+                  onChange={v => setMaxDuration(v as string)}
+                  buttonProps={{ style: { maxWidth: '360px' } }}
+                >
                   <ListItem id="300000">5 minutes</ListItem>
                   <ListItem id="600000">10 minutes</ListItem>
                   <ListItem id="900000">15 minutes</ListItem>

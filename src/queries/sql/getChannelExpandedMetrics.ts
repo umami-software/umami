@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import {
   EMAIL_DOMAINS,
+  EVENT_TYPE,
   LLM_DOMAINS,
   PAID_AD_PARAMS,
   SEARCH_DOMAINS,
@@ -47,6 +48,29 @@ async function relationalQuery(
       ...filters,
       websiteId,
     });
+  const needsBounceEvents = filters.excludeBounce !== true;
+  const bounceQuery = needsBounceEvents
+    ? `sum(case when visit_stats.c = 1 and coalesce(visit_events.has_custom_event, 0) = 0 then 1 else 0 end) as "bounces",`
+    : '0 as "bounces",';
+  const visitEventsQuery = needsBounceEvents
+    ? `,
+
+      visit_events as (
+        select
+          session_id,
+          visit_id,
+          1 as has_custom_event
+        from website_event
+        where website_id = {{websiteId::uuid}}
+          and created_at between {{startDate}} and {{endDate}}
+          and event_type = ${EVENT_TYPE.customEvent}
+        group by session_id, visit_id)`
+    : '';
+  const visitEventsJoin = needsBounceEvents
+    ? `left join visit_events
+        on visit_events.session_id = visit_stats.session_id
+        and visit_events.visit_id = visit_stats.visit_id`
+    : '';
 
   return rawQuery(
     `
@@ -121,24 +145,26 @@ async function relationalQuery(
           max(created_at) as max_time
         from prefix
         group by session_id, visit_id)
-  
+      ${visitEventsQuery}
+
       select
         visit_channels.name,
         sum(visit_stats.c) as "pageviews",
         count(distinct visit_stats.session_id) as "visitors",
         count(distinct visit_stats.visit_id) as "visits",
-        sum(case when visit_stats.c = 1 then 1 else 0 end) as "bounces",
+        ${bounceQuery}
         sum(${getTimestampDiffSQL('visit_stats.min_time', 'visit_stats.max_time')}) as "totaltime"
       from visit_stats
       join visit_channels
         on visit_channels.session_id = visit_stats.session_id
         and visit_channels.visit_id = visit_stats.visit_id
-      group by visit_channels.name 
+      ${visitEventsJoin}
+      group by visit_channels.name
       order by visitors desc, visits desc
       `,
     queryParams,
     FUNCTION_NAME,
-  ).then(results => results.map(item => ({ ...item, y: Number(item.y) })));
+  );
 }
 
 async function clickhouseQuery(
@@ -150,6 +176,20 @@ async function clickhouseQuery(
     ...filters,
     websiteId,
   });
+  const needsBounceEvents = filters.excludeBounce !== true;
+  const bounceQuery = needsBounceEvents
+    ? `sumIf(1, t.c = 1 and ifNull(e.has_custom_event, 0) = 0) as "bounces",`
+    : '0 as "bounces",';
+  const visitEventsJoin = needsBounceEvents
+    ? `left join (
+      select session_id, visit_id, toUInt8(1) as has_custom_event
+      from website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = ${EVENT_TYPE.customEvent}
+      group by session_id, visit_id
+    ) as e using (session_id, visit_id)`
+    : '';
 
   return rawQuery(
     `
@@ -158,7 +198,7 @@ async function clickhouseQuery(
       sum(t.c) as "pageviews",
       uniq(t.session_id) as "visitors",
       uniq(t.visit_id) as "visits",
-      sum(if(t.c = 1, 1, 0)) as "bounces",
+      ${bounceQuery}
       sum(max_time-min_time) as "totaltime"
     from (
       select
@@ -213,7 +253,8 @@ async function clickhouseQuery(
       )
       group by session_id, visit_id
     ) as t
-    group by name 
+    ${visitEventsJoin}
+    group by name
     order by visitors desc, visits desc;
     `,
     queryParams,
@@ -222,9 +263,16 @@ async function clickhouseQuery(
 }
 
 function toClickHouseStringArray(arr: string[]): string {
-  return arr.map(p => `'${p.replace(/'/g, "\\'")}'`).join(', ');
+  // Escape backslashes first, then single quotes, for ClickHouse string literals.
+  return arr.map(p => `'${p.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`).join(', ');
+}
+
+function escapePostgresLikeValue(val: string) {
+  // Escape LIKE wildcards/backslashes so the value is matched literally, then
+  // escape single quotes for the surrounding SQL string literal.
+  return val.replace(/\\/g, '\\\\').replace(/%/g, '\\%').replace(/_/g, '\\_').replace(/'/g, "''");
 }
 
 function toPostgresPositionClause(column: string, arr: string[]) {
-  return arr.map(val => `${column} ilike '%${val.replace(/'/g, "''")}%'`).join(' OR\n  ');
+  return arr.map(val => `${column} ilike '%${escapePostgresLikeValue(val)}%'`).join(' OR\n  ');
 }

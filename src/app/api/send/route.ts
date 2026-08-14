@@ -11,13 +11,14 @@ import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
+import { createSession, saveEvent, saveSessionData, saveSessionLink, updateSession } from '@/queries/sql';
 
 interface Cache {
   websiteId: string;
   sessionId: string;
   visitId: string;
   iat: number;
+  sessionLinkId?: string;
 }
 
 // Reject strings whose first character is a spreadsheet formula trigger to
@@ -128,6 +129,9 @@ export async function POST(request: Request) {
       }
     }
 
+    // Carried forward in the cache token so repeat identify calls skip identity writes
+    let sessionLinkId = cache?.sessionLinkId;
+
     // Client info
     const { ip, userAgent, device, browser, os, country, region, city } = await getClientInfo(
       request,
@@ -151,7 +155,7 @@ export async function POST(request: Request) {
     const sessionSalt = getSalt(saltRotation, createdAt);
     const visitSalt = hash(startOfHour(createdAt).toUTCString());
 
-    const sessionId = id ? uuid(sourceId, id) : uuid(sourceId, ip, userAgent, sessionSalt);
+    const sessionId = uuid(sourceId, ip, userAgent, sessionSalt);
 
     // Create a session if not found
     if (!clickhouse.enabled && !cache?.sessionId) {
@@ -188,7 +192,7 @@ export async function POST(request: Request) {
       let urlPath =
         currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname + currentUrl.hash;
       const urlQuery = currentUrl.search.substring(1);
-      const urlDomain = currentUrl.hostname.replace(/^www./, '');
+      const urlDomain = currentUrl.hostname.replace(/^www\./, '');
 
       let referrerPath: string;
       let referrerQuery: string;
@@ -214,11 +218,27 @@ export async function POST(request: Request) {
       }
 
       if (referrer) {
-        const referrerUrl = new URL(referrer, base);
+        // Canonicalize the event domain (lowercase, punycode, no port) so it
+        // compares correctly against the parsed referrer hostname
+        let eventDomain = urlDomain;
+        if (hostname) {
+          try {
+            eventDomain = new URL(`https://${hostname}`).hostname.replace(/^www\./, '');
+          } catch {
+            eventDomain = hostname.replace(/^www\./, '');
+          }
+        }
+        // Resolve path-only referrers against the event's domain, not the localhost fallback
+        const referrerUrl = new URL(referrer, eventDomain ? `https://${eventDomain}` : base);
 
         referrerPath = referrerUrl.pathname;
         referrerQuery = referrerUrl.search.substring(1);
         referrerDomain = referrerUrl.hostname.replace(/^www\./, '');
+
+        // Never save the referrer domain for self-referrals
+        if (referrerDomain === eventDomain) {
+          referrerDomain = undefined;
+        }
       }
 
       const eventType = linkId
@@ -277,6 +297,33 @@ export async function POST(request: Request) {
         twclid,
       });
     } else if (type === COLLECTION_TYPE.identify) {
+      if (websiteId && id) {
+        const newLinkId = hash(sessionId, id);
+
+        if (sessionLinkId !== newLinkId) {
+          // Best-effort: identity link failures must not block the session data write below.
+          try {
+            await Promise.all([
+              saveSessionLink({
+                websiteId,
+                sessionId,
+                distinctId: id,
+                createdAt,
+              }),
+              updateSession({
+                websiteId,
+                sessionId,
+                distinctId: id,
+              }),
+            ]);
+            sessionLinkId = newLinkId;
+          } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error('Failed to save session link:', e);
+          }
+        }
+      }
+
       if (data) {
         await saveSessionData({
           websiteId,
@@ -316,7 +363,7 @@ export async function POST(request: Request) {
     }
 
     const token = createToken(
-      { websiteId, sessionId, visitId, iat, type: CACHE_TOKEN_TYPE },
+      { websiteId, sessionId, visitId, iat, sessionLinkId, type: CACHE_TOKEN_TYPE },
       secret(),
     );
 

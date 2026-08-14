@@ -1,5 +1,6 @@
 import {
   Button,
+  Column,
   DataColumn,
   DataTable,
   type DataTableProps,
@@ -43,23 +44,26 @@ export function EventsTable(props: DataTableProps) {
       <DataColumn id="event" label={t(labels.event)} width="2fr">
         {(row: any) => {
           return (
-            <Row alignItems="center" wrap="wrap" gap>
+            <Column gap="2">
               <Row>
                 <IconLabel
                   icon={row.eventName ? <Lightning /> : <Eye />}
                   label={t(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
+                  labelProps={{ wrap: 'nowrap' }}
                 />
               </Row>
-              <Text
-                weight="bold"
-                style={{ maxWidth: '300px' }}
-                title={row.eventName || row.urlPath}
-                truncate
-              >
-                {row.eventName || renderLink(row.urlPath, row.hostname)}
-              </Text>
-              {row.hasData > 0 && <PropertiesButton websiteId={row.websiteId} eventId={row.id} />}
-            </Row>
+              <Row alignItems="center" gap>
+                <Text
+                  weight="bold"
+                  style={{ maxWidth: '300px' }}
+                  title={row.eventName || row.urlPath}
+                  truncate
+                >
+                  {row.eventName || renderLink(row.urlPath, row.hostname)}
+                </Text>
+                {row.hasData > 0 && <PropertiesButton websiteId={row.websiteId} eventId={row.id} />}
+              </Row>
+            </Column>
           );
         }}
       </DataColumn>
@@ -110,7 +114,7 @@ const PropertiesButton = props => {
           </Icon>
         </Row>
       </Button>
-      <Popover placement="right">
+      <Popover side="right" sideOffset={8}>
         <Dialog>
           <EventData {...props} />
         </Dialog>

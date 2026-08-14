@@ -18,29 +18,6 @@ html[style*="padding-right"] {
   padding-right: 0 !important;
 }
 
-::-webkit-scrollbar {
-  width: 15px;
-  background: transparent;
-}
-
-::-webkit-scrollbar-track {
-  border: 7px solid rgba(0, 0, 0, 0);
-  background-color: var(--border-default);
-  background-clip: padding-box;
-}
-
-::-webkit-scrollbar-thumb {
-  border: 7px solid rgba(0, 0, 0, 0);
-  background-color: var(--text-disabled);
-  border-radius: var(--border-radius-full);
-  background-clip: padding-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  border: 4px solid rgba(0, 0, 0, 0);
-  background-clip: padding-box;
-}
-
 /* Fix autofill background color to match theme */
 input:is(:-webkit-autofill, :autofill),
 input:is(:-webkit-autofill, :autofill):hover,
@@ -65,6 +42,7 @@ select:is(:-webkit-autofill, :autofill):focus {
 /* Code snippet textareas */
 .code-textarea textarea {
   min-height: 100px;
+  padding-right: 36px;
 }
 
 /* rrweb-player overrides */
@@ -78,4 +56,50 @@ select:is(:-webkit-autofill, :autofill):focus {
 
 [data-theme="dark"] .rr-controller__btns .label {
   color: black;
+}
+
+@media (max-width: 640px) {
+  .rr-controller {
+    height: auto !important;
+    padding: 8px 0 10px;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .rr-timeline {
+    width: calc(100% - 24px) !important;
+    gap: 4px;
+  }
+
+  .rr-timeline__time {
+    width: auto !important;
+    min-width: 44px;
+    font-size: 12px;
+  }
+
+  .rr-progress {
+    margin: 0 2px;
+  }
+
+  .rr-controller__btns {
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 6px;
+    row-gap: 8px;
+    font-size: 12px;
+    overflow: hidden;
+  }
+
+  .rr-controller__btns button {
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+  }
+
+  .rr-controller__btns .label {
+    margin: 0 4px;
+    font-size: 12px;
+  }
 }

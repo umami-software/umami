@@ -3,7 +3,6 @@ import {
   Button,
   Calendar,
   Column,
-  ComboBox,
   Dialog,
   DialogTrigger,
   Grid,
@@ -18,9 +17,10 @@ import {
 } from '@umami/react-zen';
 import { format, parseISO } from 'date-fns';
 import { useState } from 'react';
+import { ComboBox } from '@/components/common/ComboBox';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { Empty } from '@/components/common/Empty';
-import { MultiSelect } from '@/components/common/MultiSelect';
+import { MultiSelect, MultiSelectItem } from '@/components/common/MultiSelect';
 import { useMessages, usePropertyValuesQuery } from '@/components/hooks';
 import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { X } from '@/components/icons';
@@ -148,8 +148,18 @@ export function PropertyFilterRecord({
   };
 
   return (
-    <Column>
-      <Label>{filter.propertyName}</Label>
+    <Column minWidth="0">
+      <Label
+        title={filter.propertyName}
+        style={{
+          display: 'block',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {filter.propertyName}
+      </Label>
       <Grid columns="1fr auto" gap>
         <Grid columns={{ base: '1fr', md: '200px 1fr' }} gap>
           <Select
@@ -180,14 +190,11 @@ export function PropertyFilterRecord({
               aria-label={filter.propertyName}
               items={filteredValues}
               inputValue={filter.value}
-              style={{ width: '100%' }}
-              onInputChange={v => {
+              className="w-full"
+              onInputValueChange={(v: string) => {
                 setSearch(v);
                 onChange({ ...filter, value: v });
               }}
-              formValue="text"
-              allowsEmptyCollection
-              allowsCustomValue
               renderEmptyState={() =>
                 isLoading ? (
                   <Loading placement="center" icon="dots" />
@@ -225,9 +232,9 @@ export function PropertyFilterRecord({
               }
             >
               {filteredValues.map(v => (
-                <ListItem key={v} id={v}>
+                <MultiSelectItem key={v} value={v}>
                   {v}
-                </ListItem>
+                </MultiSelectItem>
               ))}
             </MultiSelect>
           )}
@@ -267,7 +274,7 @@ function DateValuePicker({
       >
         <DateDisplay startDate={selectedDate} endDate={selectedDate} />
       </Button>
-      <Popover placement="bottom start" shouldFlip isNonModal>
+      <Popover side="bottom" align="start" isNonModal>
         <Dialog>
           <Column gap>
             <Calendar

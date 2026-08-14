@@ -36,13 +36,13 @@ export function WebsiteMenu({ websiteId }: { websiteId: string }) {
           <MoreHorizontal />
         </Icon>
       </Button>
-      <Popover placement="bottom">
-        <Menu onAction={handleAction}>
+      <Popover side="bottom">
+        <Menu>
           {menuItems.map(({ id, label, icon, seperator }, index) => {
             return (
               <Fragment key={index}>
                 {seperator && <MenuSeparator />}
-                <MenuItem id={id}>
+                <MenuItem id={id} onAction={handleAction}>
                   <Icon>{icon}</Icon>
                   <Text>{label}</Text>
                 </MenuItem>

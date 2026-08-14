@@ -26,14 +26,18 @@ export function Attribution({
   type,
   step,
 }: AttributionProps) {
-  const { data, error, isLoading } = useResultQuery<any>('attribution', {
-    websiteId,
-    startDate,
-    endDate,
-    model,
-    type,
-    step,
-  });
+  const { data, error, isLoading } = useResultQuery<any>(
+    'attribution',
+    {
+      websiteId,
+      startDate,
+      endDate,
+      model,
+      type,
+      step,
+    },
+    { enabled: !!step },
+  );
 
   const { t, labels } = useMessages();
 

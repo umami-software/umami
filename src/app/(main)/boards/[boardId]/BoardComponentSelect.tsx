@@ -1,15 +1,6 @@
-import {
-  Button,
-  Column,
-  Focusable,
-  ListItem,
-  Row,
-  Select,
-  Text,
-  TextField,
-} from '@umami/react-zen';
+import { Button, Column, ListItem, Row, Select, Text, TextField } from '@umami/react-zen';
 import { useEffect, useMemo, useState } from 'react';
-import { useMessages } from '@/components/hooks';
+import { useApi, useMessages } from '@/components/hooks';
 import { LinkSelect } from '@/components/input/LinkSelect';
 import { PixelSelect } from '@/components/input/PixelSelect';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
@@ -29,6 +20,16 @@ import {
 } from '../boardComponentRegistry';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 
+const COMPONENT_GROUP_ORDER: string[] = [
+  'Traffic',
+  'Events',
+  'Behavior',
+  'Realtime',
+  'Growth',
+  'Revenue',
+  'Content',
+];
+
 export function BoardComponentSelect({
   teamId,
   boardType,
@@ -47,6 +48,7 @@ export function BoardComponentSelect({
   onClose: () => void;
 }) {
   const { t, labels, messages } = useMessages();
+  const { get, useQuery } = useApi();
   const initialEntity = getComponentEntity(initialConfig);
   const [selectedDef, setSelectedDef] = useState<ComponentDefinition | null>(null);
   const [configValues, setConfigValues] = useState<Record<string, any>>({});
@@ -57,16 +59,17 @@ export function BoardComponentSelect({
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
-  const allDefinitions = useMemo(
-    () => getComponentDefinitions().toSorted((a, b) => a.name.localeCompare(b.name)),
-    [],
-  );
+  const allDefinitions = useMemo(() => getComponentDefinitions(), []);
   const activeEntityType = isOpenBoardType(boardType) ? selectedEntityType : boardEntityType;
   const isSelectedDefSupported = selectedDef
     ? isBoardComponentSupported(selectedDef.type, activeEntityType)
     : false;
 
-  const getDefaultConfigValues = (def: ComponentDefinition, config?: BoardComponentConfig) => {
+  const getDefaultConfigValues = (
+    def: ComponentDefinition,
+    config?: BoardComponentConfig,
+    entityType?: BoardEntityType,
+  ) => {
     const defaults: Record<string, any> = {};
 
     for (const field of def.configFields ?? []) {
@@ -75,6 +78,22 @@ export function BoardComponentSelect({
 
     if (def.defaultProps) {
       Object.assign(defaults, def.defaultProps);
+    }
+
+    for (const field of def.configFields ?? []) {
+      if (field.type !== 'select') {
+        continue;
+      }
+
+      const options = (entityType && field.optionsByEntityType?.[entityType]) ?? field.options;
+      const currentValue = defaults[field.name];
+
+      if (
+        options?.length &&
+        !options.some(option => String(option.value) === String(currentValue))
+      ) {
+        defaults[field.name] = options[0].value;
+      }
     }
 
     if (config?.props) {
@@ -96,10 +115,9 @@ export function BoardComponentSelect({
     }
 
     setSelectedDef(definition);
-    setConfigValues(getDefaultConfigValues(definition, initialConfig));
-    setSelectedEntityType(
-      initialEntity.entityType || boardEntityType || BOARD_ENTITY_TYPES.website,
-    );
+    const entityType = initialEntity.entityType || boardEntityType || BOARD_ENTITY_TYPES.website;
+    setConfigValues(getDefaultConfigValues(definition, initialConfig, entityType));
+    setSelectedEntityType(entityType);
     setSelectedEntityId(initialEntity.entityId || boardEntityId);
     setTitle(initialConfig.title ?? definition.name);
     setDescription(initialConfig.description || '');
@@ -114,7 +132,7 @@ export function BoardComponentSelect({
 
   const handleSelectComponent = (def: ComponentDefinition) => {
     setSelectedDef(def);
-    setConfigValues(getDefaultConfigValues(def));
+    setConfigValues(getDefaultConfigValues(def, undefined, activeEntityType));
     setTitle(def.name);
     setDescription('');
   };
@@ -136,10 +154,55 @@ export function BoardComponentSelect({
       ? selectedEntityId
       : boardEntityId
     : undefined;
+  const reportFields = selectedDef?.configFields?.filter(
+    field => field.type === 'report' && field.reportType,
+  );
+  const { data: reportOptionsData, isLoading: isLoadingReportOptions } = useQuery({
+    queryKey: [
+      'board-component-report-options',
+      {
+        websiteId: resolvedEntityId,
+        reportTypes: reportFields?.map(field => field.reportType).join(','),
+      },
+    ],
+    queryFn: async () => {
+      const types = [...new Set(reportFields?.map(field => field.reportType).filter(Boolean))];
+
+      const entries = await Promise.all(
+        types.map(async type => {
+          const response = await get('/reports', {
+            websiteId: resolvedEntityId,
+            type,
+            pageSize: 1000,
+          });
+
+          return [type, response.data] as const;
+        }),
+      );
+
+      return Object.fromEntries(entries);
+    },
+    enabled: !!resolvedEntityId && !!reportFields?.length,
+  });
+  const reportOptionsByType = reportOptionsData ?? {};
+  const hasRequiredConfig = selectedDef
+    ? (selectedDef.configFields ?? []).every(field => {
+        if (!field.required) {
+          return true;
+        }
+
+        const value = configValues[field.name];
+        return value !== undefined && value !== null && value !== '';
+      })
+    : false;
 
   const handleEntityTypeChange = (value: string) => {
     setSelectedEntityType(value as BoardEntityType);
     setSelectedEntityId(undefined);
+    setSelectedDef(null);
+    setConfigValues({});
+    setTitle('');
+    setDescription('');
   };
 
   const handleAdd = () => {
@@ -186,7 +249,11 @@ export function BoardComponentSelect({
     [selectedDef, configValues],
   );
 
-  const canSave = !!selectedDef && isSelectedDefSupported && (!needsWebsite || !!resolvedEntityId);
+  const canSave =
+    !!selectedDef &&
+    isSelectedDefSupported &&
+    hasRequiredConfig &&
+    (!needsWebsite || !!resolvedEntityId);
   const availableDefinitions = useMemo(
     () =>
       allDefinitions.filter(
@@ -195,6 +262,33 @@ export function BoardComponentSelect({
       ),
     [activeEntityType, allDefinitions, selectedDef?.type],
   );
+  const groupedDefinitions = useMemo(() => {
+    const order = new Map(COMPONENT_GROUP_ORDER.map((group, index) => [group, index]));
+    const groups = new Map<string, ComponentDefinition[]>();
+
+    for (const def of availableDefinitions) {
+      const group = def.group ?? 'Other';
+      const items = groups.get(group) ?? [];
+      items.push(def);
+      groups.set(group, items);
+    }
+
+    return Array.from(groups.entries())
+      .sort(([a], [b]) => {
+        const left = order.get(a) ?? Number.MAX_SAFE_INTEGER;
+        const right = order.get(b) ?? Number.MAX_SAFE_INTEGER;
+
+        if (left !== right) {
+          return left - right;
+        }
+
+        return a.localeCompare(b);
+      })
+      .map(([group, definitions]) => ({
+        group,
+        definitions,
+      }));
+  }, [availableDefinitions]);
 
   return (
     <Column gap="4">
@@ -208,7 +302,10 @@ export function BoardComponentSelect({
                 <Text size="sm" color="muted">
                   {t(labels.type)}
                 </Text>
-                <Select value={selectedEntityType} onChange={handleEntityTypeChange}>
+                <Select
+                  value={selectedEntityType}
+                  onChange={value => handleEntityTypeChange(value as string)}
+                >
                   <ListItem id={BOARD_ENTITY_TYPES.website}>{t(labels.website)}</ListItem>
                   <ListItem id={BOARD_ENTITY_TYPES.pixel}>{t(labels.pixel)}</ListItem>
                   <ListItem id={BOARD_ENTITY_TYPES.link}>{t(labels.link)}</ListItem>
@@ -227,21 +324,21 @@ export function BoardComponentSelect({
                     pixelId={selectedEntityId}
                     teamId={teamId}
                     placeholder={t(labels.selectPixel)}
-                    onChange={setSelectedEntityId}
+                    onChange={value => setSelectedEntityId(value as string)}
                   />
                 ) : selectedEntityType === BOARD_ENTITY_TYPES.link ? (
                   <LinkSelect
                     linkId={selectedEntityId}
                     teamId={teamId}
                     placeholder={t(labels.selectLink)}
-                    onChange={setSelectedEntityId}
+                    onChange={value => setSelectedEntityId(value as string)}
                   />
                 ) : (
                   <WebsiteSelect
                     websiteId={selectedEntityId}
                     teamId={teamId}
                     placeholder={t(labels.selectWebsite)}
-                    onChange={setSelectedEntityId}
+                    onChange={value => setSelectedEntityId(value as string)}
                   />
                 )}
               </Column>
@@ -273,7 +370,7 @@ export function BoardComponentSelect({
                   {field.type === 'select' && (
                     <Select
                       value={String(configValues[field.name] ?? field.defaultValue ?? '')}
-                      onChange={(value: string) => handleConfigChange(field.name, value)}
+                      onChange={value => handleConfigChange(field.name, value as string)}
                       maxHeight={300}
                       popoverProps={{ style: { width: 220 } }}
                     >
@@ -310,6 +407,35 @@ export function BoardComponentSelect({
                       style={{ minHeight: 200 }}
                     />
                   )}
+
+                  {field.type === 'report' && (
+                    <>
+                      <Select
+                        value={String(configValues[field.name] ?? field.defaultValue ?? '')}
+                        onChange={value => handleConfigChange(field.name, value as string)}
+                        maxHeight={300}
+                        popoverProps={{ style: { width: 220 } }}
+                      >
+                        {(reportOptionsByType[field.reportType ?? ''] ?? []).map(option => (
+                          <ListItem key={option.id} id={option.id}>
+                            {option.name}
+                          </ListItem>
+                        ))}
+                      </Select>
+                      {isLoadingReportOptions && (
+                        <Text size="xs" color="muted">
+                          Loading options...
+                        </Text>
+                      )}
+                      {!isLoadingReportOptions &&
+                        resolvedEntityId &&
+                        (reportOptionsByType[field.reportType ?? '']?.length ?? 0) === 0 && (
+                          <Text size="xs" color="muted">
+                            No saved items found.
+                          </Text>
+                        )}
+                    </>
+                  )}
                 </Column>
               ))}
             </Column>
@@ -321,40 +447,47 @@ export function BoardComponentSelect({
           <Column border="left" paddingLeft="4" height="100%" style={{ minHeight: 0 }}>
             {hasSelectedEntity ? (
               <Column gap="1" height="100%" style={{ overflowY: 'auto', minHeight: 0 }}>
-                {availableDefinitions.map(def => {
-                  const Icon = def.icon;
+                {groupedDefinitions.map(({ group, definitions }) => (
+                  <Column key={group} gap="1" paddingBottom="2">
+                    <Text size="sm" color="muted" weight="bold">
+                      {group}
+                    </Text>
+                    {definitions.map(def => {
+                      const Icon = def.icon;
 
-                  return (
-                    <Focusable key={def.type}>
-                      <Row
-                        gap="3"
-                        alignItems="flex-start"
-                        paddingX="3"
-                        paddingY="2"
-                        borderRadius
-                        backgroundColor={
-                          selectedDef?.type === def.type ? 'surface-sunken' : undefined
-                        }
-                        hover={{ backgroundColor: 'surface-sunken' }}
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => handleSelectComponent(def)}
-                      >
-                        <Icon size={16} />
-                        <Column gap="1">
-                          <Text
-                            size="sm"
-                            weight={selectedDef?.type === def.type ? 'bold' : undefined}
-                          >
-                            {def.name}
-                          </Text>
-                          <Text size="xs" color="muted">
-                            {def.description}
-                          </Text>
-                        </Column>
-                      </Row>
-                    </Focusable>
-                  );
-                })}
+                      return (
+                        <Row
+                          key={def.type}
+                          tabIndex={0}
+                          gap="3"
+                          alignItems="flex-start"
+                          paddingX="3"
+                          paddingY="2"
+                          borderRadius
+                          backgroundColor={
+                            selectedDef?.type === def.type ? 'surface-sunken' : undefined
+                          }
+                          hover={{ backgroundColor: 'surface-sunken' }}
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => handleSelectComponent(def)}
+                        >
+                          <Icon size={16} />
+                          <Column gap="1">
+                            <Text
+                              size="sm"
+                              weight={selectedDef?.type === def.type ? 'bold' : undefined}
+                            >
+                              {def.name}
+                            </Text>
+                            <Text size="xs" color="muted">
+                              {def.description}
+                            </Text>
+                          </Column>
+                        </Row>
+                      );
+                    })}
+                  </Column>
+                ))}
               </Column>
             ) : (
               <Column alignItems="center" justifyContent="center" height="100%">
@@ -372,6 +505,7 @@ export function BoardComponentSelect({
                 config={previewConfig}
                 websiteId={resolvedEntityId}
                 entityType={resolvedEntityType}
+                isPreview
               />
             ) : (
               <Column alignItems="center" justifyContent="center" height="100%">

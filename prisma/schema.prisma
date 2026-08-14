@@ -10,23 +10,28 @@ datasource db {
 }
 
 model User {
-  id          String    @id() @map("user_id") @db.Uuid
-  username    String    @unique @db.VarChar(255)
-  password    String    @db.VarChar(60)
-  role        String    @map("role") @db.VarChar(50)
-  logoUrl     String?   @map("logo_url") @db.VarChar(2183)
-  displayName String?   @map("display_name") @db.VarChar(255)
-  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
-  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+  id                String    @id() @map("user_id") @db.Uuid
+  username          String    @unique @db.VarChar(255)
+  password          String    @db.VarChar(60)
+  role              String    @map("role") @db.VarChar(50)
+  logoUrl           String?   @map("logo_url") @db.VarChar(2183)
+  displayName       String?   @map("display_name") @db.VarChar(255)
+  twoFactorRequired Boolean   @default(false) @map("two_factor_required")
+  createdAt         DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt         DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  websites  Website[]  @relation("user")
-  createdBy Website[]  @relation("createUser")
-  links     Link[]     @relation("user")
-  pixels    Pixel[]    @relation("user")
-  teams     TeamUser[]
-  reports   Report[]
-  boards    Board[]    @relation("user")
+  websites             Website[]             @relation("user")
+  createdBy            Website[]             @relation("createUser")
+  links                Link[]                @relation("user")
+  pixels               Pixel[]               @relation("user")
+  teams                TeamUser[]
+  reports              Report[]
+  boards               Board[]               @relation("user")
+  twoFactorAuth        TwoFactorAuth?
+  twoFactorBackupCodes TwoFactorBackupCode[]
+  twoFactorOtpUseds    TwoFactorOtpUsed[]
+  twoFactorRateLimit   TwoFactorRateLimit?
 
   @@map("user")
 }
@@ -63,6 +68,17 @@ model Session {
   @@map("session")
 }
 
+model SessionLink {
+  websiteId  String    @map("website_id") @db.Uuid
+  sessionId  String    @map("session_id") @db.Uuid
+  distinctId String    @map("distinct_id") @db.VarChar(50)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@id([websiteId, distinctId, sessionId])
+  @@index([websiteId, sessionId])
+  @@map("session_link")
+}
+
 model Website {
   id        String    @id() @map("website_id") @db.Uuid
   name      String    @db.VarChar(100)
@@ -78,9 +94,9 @@ model Website {
   recorderEnabled Boolean @default(false) @map("recorder_enabled")
   replayConfig    Json?   @map("replay_config")
 
-  user                User?               @relation("user", fields: [userId], references: [id])
-  createUser          User?               @relation("createUser", fields: [createdBy], references: [id])
-  team                Team?               @relation(fields: [teamId], references: [id])
+  user                User?                @relation("user", fields: [userId], references: [id])
+  createUser          User?                @relation("createUser", fields: [createdBy], references: [id])
+  team                Team?                @relation(fields: [teamId], references: [id])
   eventData           EventData[]
   reports             Report[]
   revenue             Revenue[]
@@ -192,23 +208,25 @@ model SessionData {
   @@index([sessionId])
   @@index([sessionId, createdAt])
   @@index([websiteId, createdAt, dataKey])
+  @@unique([sessionId, dataKey])
   @@map("session_data")
 }
 
 model Team {
-  id         String    @id() @map("team_id") @db.Uuid
-  name       String    @db.VarChar(50)
-  accessCode String?   @unique @map("access_code") @db.VarChar(50)
-  logoUrl    String?   @map("logo_url") @db.VarChar(2183)
-  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt  DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
-  deletedAt  DateTime? @map("deleted_at") @db.Timestamptz(6)
+  id                String    @id() @map("team_id") @db.Uuid
+  name              String    @db.VarChar(50)
+  accessCode        String?   @unique @map("access_code") @db.VarChar(50)
+  logoUrl           String?   @map("logo_url") @db.VarChar(2183)
+  twoFactorRequired Boolean   @default(false) @map("two_factor_required")
+  createdAt         DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt         DateTime? @map("deleted_at") @db.Timestamptz(6)
 
   websites Website[]
   members  TeamUser[]
   links    Link[]
   pixels   Pixel[]
-  boards    Board[]
+  boards   Board[]
 
   @@index([accessCode])
   @@map("team")
@@ -346,6 +364,7 @@ model Board {
   @@index([createdAt])
   @@map("board")
 }
+
 model Share {
   id         String    @id() @map("share_id") @db.Uuid
   entityId   String    @map("entity_id") @db.Uuid
@@ -402,22 +421,22 @@ model SessionReplaySaved {
 }
 
 model HeatmapEvent {
-  id               String   @id() @map("heatmap_event_id") @db.Uuid
-  websiteId        String   @map("website_id") @db.Uuid
-  sessionId        String   @map("session_id") @db.Uuid
-  visitId          String   @map("visit_id") @db.Uuid
-  urlPath          String   @map("url_path") @db.VarChar(500)
-  eventType        Int      @map("event_type") @db.Integer
-  x                Int?     @db.Integer
-  y                Int?     @db.Integer
-  pageX            Int?     @map("page_x") @db.Integer
-  pageY            Int?     @map("page_y") @db.Integer
-  pageW            Int?     @map("page_w") @db.Integer
-  viewportW        Int?     @map("viewport_w") @db.Integer
-  viewportH        Int?     @map("viewport_h") @db.Integer
-  pageH            Int?     @map("page_h") @db.Integer
-  scrollPct        Int?     @map("scroll_pct") @db.Integer
-  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  id        String   @id() @map("heatmap_event_id") @db.Uuid
+  websiteId String   @map("website_id") @db.Uuid
+  sessionId String   @map("session_id") @db.Uuid
+  visitId   String   @map("visit_id") @db.Uuid
+  urlPath   String   @map("url_path") @db.VarChar(500)
+  eventType Int      @map("event_type") @db.Integer
+  x         Int?     @db.Integer
+  y         Int?     @db.Integer
+  pageX     Int?     @map("page_x") @db.Integer
+  pageY     Int?     @map("page_y") @db.Integer
+  pageW     Int?     @map("page_w") @db.Integer
+  viewportW Int?     @map("viewport_w") @db.Integer
+  viewportH Int?     @map("viewport_h") @db.Integer
+  pageH     Int?     @map("page_h") @db.Integer
+  scrollPct Int?     @map("scroll_pct") @db.Integer
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   website Website @relation(fields: [websiteId], references: [id])
 
@@ -426,4 +445,57 @@ model HeatmapEvent {
   @@index([websiteId, createdAt])
   @@index([websiteId, urlPath, eventType, createdAt])
   @@map("heatmap_event")
+}
+
+model TwoFactorAuth {
+  id        String   @id @default(cuid())
+  userId    String   @unique @map("user_id") @db.Uuid
+  secret    String
+  isEnabled Boolean  @default(false) @map("is_enabled")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("two_factor_auth")
+}
+
+model TwoFactorBackupCode {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id") @db.Uuid
+  codeHash  String   @map("code_hash")
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("two_factor_backup_code")
+}
+
+model TwoFactorOtpUsed {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id") @db.Uuid
+  otp       String
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(6)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, otp])
+  @@map("two_factor_otp_used")
+}
+
+model TwoFactorRateLimit {
+  id          String    @id @default(cuid())
+  userId      String    @unique @map("user_id") @db.Uuid
+  attempts    Int       @default(0)
+  lockedUntil DateTime? @map("locked_until") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("two_factor_rate_limit")
+}
+
+model AppSetting {
+  key   String @id
+  value String
+
+  @@map("app_setting")
 }

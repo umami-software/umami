@@ -24,23 +24,70 @@ function destroyReplayPlayer(player: { $destroy?: () => void } | null) {
 }
 
 export function ReplayPlayer({ events }: { events: any[] }) {
+  const playerWrapperRef = useRef<HTMLDivElement>(null);
   const playerRootRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
   const [playerError, setPlayerError] = useState(false);
+  const [availableWidth, setAvailableWidth] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState(
+    () => (typeof window !== 'undefined' ? window.innerHeight : 0),
+  );
   const { isMobile, isPhone } = useMobile();
   const replayEvents = useMemo(() => getReplayPlayerEvents(events), [events]);
   const replayViewport = useMemo(() => getReplayViewport(replayEvents), [replayEvents]);
   const canReplay = replayEvents.length >= 2;
   const showUnavailable = !events?.length || !canReplay || playerError;
 
-  const playerWidth = isPhone ? 360 : isMobile ? 640 : 1024;
+  const preferredPlayerWidth = isPhone ? 360 : isMobile ? 640 : 1024;
   const replayAspectRatio = replayViewport
     ? replayViewport.height / replayViewport.width
     : DEFAULT_REPLAY_ASPECT_RATIO;
-  const playerHeight = Math.round(
-    playerWidth * Math.min(Math.max(replayAspectRatio, DEFAULT_REPLAY_ASPECT_RATIO), 1.5),
+  const isPortraitReplay = replayViewport
+    ? replayViewport.height > replayViewport.width
+    : false;
+  const fittedAspectRatio = isPortraitReplay
+    ? Math.min(Math.max(replayAspectRatio, DEFAULT_REPLAY_ASPECT_RATIO), 2.25)
+    : Math.min(Math.max(replayAspectRatio, DEFAULT_REPLAY_ASPECT_RATIO), 1.5);
+  const maxPortraitPlayerHeight = Math.max(
+    240,
+    Math.round((viewportHeight || 900) * (isMobile ? (isPhone ? 0.55 : 0.6) : 0.88)),
   );
+  let playerWidth = Math.min(preferredPlayerWidth, availableWidth || preferredPlayerWidth);
+  let playerHeight = Math.round(playerWidth * fittedAspectRatio);
+
+  // Portrait/mobile-recorded replays need to shrink to the visible viewport,
+  // otherwise the player keeps a large desktop frame with a tiny phone replay inside it.
+  if (isPortraitReplay && playerHeight > maxPortraitPlayerHeight) {
+    playerHeight = maxPortraitPlayerHeight;
+    playerWidth = Math.max(1, Math.round(playerHeight / fittedAspectRatio));
+  }
+
   const playerOuterHeight = playerHeight + 80;
+
+  useEffect(() => {
+    const updateAvailableSize = () => {
+      const width = playerWrapperRef.current?.clientWidth ?? 0;
+
+      setAvailableWidth(current => (current === width ? current : width));
+      setViewportHeight(current => (current === window.innerHeight ? current : window.innerHeight));
+    };
+
+    updateAvailableSize();
+
+    const resizeObserver =
+      typeof ResizeObserver !== 'undefined' ? new ResizeObserver(updateAvailableSize) : null;
+
+    if (playerWrapperRef.current && resizeObserver) {
+      resizeObserver.observe(playerWrapperRef.current);
+    }
+
+    window.addEventListener('resize', updateAvailableSize);
+
+    return () => {
+      resizeObserver?.disconnect();
+      window.removeEventListener('resize', updateAvailableSize);
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -114,27 +161,28 @@ export function ReplayPlayer({ events }: { events: any[] }) {
 
   return (
     <Column alignItems="center" width="100%">
-      <div
-        style={{
-          width: '100%',
-          maxWidth: playerWidth,
-          height: showUnavailable ? playerHeight : playerOuterHeight,
-          overflowX: showUnavailable ? 'hidden' : 'auto',
-          overflowY: 'hidden',
-          borderRadius: '8px',
-          border: '1px solid var(--base300)',
-          background: 'var(--base75)',
-        }}
-      >
+      <div ref={playerWrapperRef} style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
         <div
-          ref={playerRootRef}
           style={{
-            display: showUnavailable ? 'none' : 'block',
             width: playerWidth,
-            height: playerOuterHeight,
+            maxWidth: '100%',
+            height: showUnavailable ? playerHeight : playerOuterHeight,
+            overflow: 'hidden',
+            borderRadius: '8px',
+            border: '1px solid var(--base300)',
+            background: 'var(--base75)',
           }}
-        />
-        {showUnavailable && <Empty message="Replay unavailable." />}
+        >
+          <div
+            ref={playerRootRef}
+            style={{
+              display: showUnavailable ? 'none' : 'block',
+              width: playerWidth,
+              height: playerOuterHeight,
+            }}
+          />
+          {showUnavailable && <Empty message="Replay unavailable." />}
+        </div>
       </div>
     </Column>
   );

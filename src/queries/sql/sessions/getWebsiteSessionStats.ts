@@ -36,11 +36,11 @@ async function relationalQuery(
   return rawQuery(
     `
     select
-      sum(case when website_event.event_type = 1 then 1 else 0 end) as "pageviews",
+      sum(case when website_event.event_type = ${EVENT_TYPE.pageView} then 1 else 0 end) as "pageviews",
       count(distinct website_event.session_id) as "visitors",
       count(distinct website_event.visit_id) as "visits",
       count(distinct session.country) as "countries",
-      sum(case when website_event.event_type = 2 then 1 else 0 end) as "events"
+      sum(case when website_event.event_type = ${EVENT_TYPE.customEvent} then 1 else 0 end) as "events"
     from website_event
     ${cohortQuery}
     join session on website_event.session_id = session.session_id
@@ -67,11 +67,11 @@ async function clickhouseQuery(
   if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
     sql = `
     select
-      sumIf(1, event_type = 1) as "pageviews",
+      sumIf(1, event_type = ${EVENT_TYPE.pageView}) as "pageviews",
       uniq(session_id) as "visitors",
       uniq(visit_id) as "visits",
       uniq(country) as "countries",
-      sumIf(1, event_type = 2) as "events"
+      sumIf(1, event_type = ${EVENT_TYPE.customEvent}) as "events"
     from website_event
     ${cohortQuery}
     where website_id = {websiteId:UUID}

@@ -1,7 +1,6 @@
 import {
   Button,
   Column,
-  ComboBox,
   FormField,
   Grid,
   Icon,
@@ -12,6 +11,7 @@ import {
 } from '@umami/react-zen';
 import { endOfDay, subMonths } from 'date-fns';
 import { useState } from 'react';
+import { ComboBox } from '@/components/common/ComboBox';
 import { Empty } from '@/components/common/Empty';
 import { useApi, useMessages, useMobile } from '@/components/hooks';
 import { X } from '@/components/icons';
@@ -56,22 +56,18 @@ function PropertySelect({
     enabled: !!websiteId,
   });
 
-  const properties = [...new Set(data?.map(d => d.propertyName) ?? [])];
+  const properties: string[] = Array.from(new Set<string>(data?.map(d => d.propertyName) ?? []));
 
   return (
     <ComboBox
       aria-label="PropertySelect"
       items={properties}
       inputValue={value}
-      style={{ width: '100%' }}
-      onInputChange={v => {
+      onInputValueChange={v => {
         setSearch(v);
         onChange?.(v);
         onPropertyChange?.(v);
       }}
-      formValue="text"
-      allowsEmptyCollection
-      allowsCustomValue
       renderEmptyState={() =>
         isLoading ? (
           <Loading placement="center" icon="dots" />
@@ -118,20 +114,16 @@ function ValueSelect({
     enabled: !!(websiteId && eventName && propertyName),
   });
 
-  const values = data?.map(d => d.value) ?? [];
+  const values: string[] = data?.map(d => d.value) ?? [];
 
   return (
     <ComboBox
       aria-label="ValueSelect"
       items={values}
       inputValue={value}
-      style={{ width: '100%' }}
-      onInputChange={v => {
+      onInputValueChange={v => {
         onChange?.(v);
       }}
-      formValue="text"
-      allowsEmptyCollection
-      allowsCustomValue
       renderEmptyState={() =>
         isLoading ? (
           <Loading placement="center" icon="dots" />
@@ -158,7 +150,7 @@ function OperatorSelect({
 }) {
   const { t, labels } = useMessages();
   return (
-    <Select value={value} onChange={onChange}>
+    <Select value={value} onChange={v => onChange?.(v as string)}>
       <ListItem id="eq">{t(labels.is)}</ListItem>
       <ListItem id="neq">{t(labels.isNot)}</ListItem>
       <ListItem id="c">{t(labels.contains)}</ListItem>

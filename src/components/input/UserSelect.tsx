@@ -48,7 +48,7 @@ export function UserSelect({
       allowSearch={true}
       searchValue={search}
       onSearch={handleSearch}
-      onChange={handleChange}
+      onChange={value => handleChange(value as string)}
       onOpenChange={handleOpenChange}
       maxHeight={480}
       listProps={{
