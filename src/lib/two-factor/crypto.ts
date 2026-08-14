@@ -1,14 +1,20 @@
 import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
 
 const ALGORITHM = 'aes-256-gcm';
+const KEY_REGEX = /^[0-9a-fA-F]{64}$/;
+
+/** Checks that TWO_FACTOR_ENCRYPTION_KEY holds a valid 256-bit key, without throwing. */
+export function isTwoFactorConfigured(): boolean {
+  const hex = process.env.TWO_FACTOR_ENCRYPTION_KEY;
+  return !!hex && KEY_REGEX.test(hex);
+}
 
 /** Loads and validates the 256-bit encryption key from TWO_FACTOR_ENCRYPTION_KEY. */
 function getKey(): Buffer {
-  const hex = process.env.TWO_FACTOR_ENCRYPTION_KEY;
-  if (!hex || hex.length !== 64 || !/^[0-9a-fA-F]{64}$/.test(hex)) {
+  if (!isTwoFactorConfigured()) {
     throw new Error('TWO_FACTOR_ENCRYPTION_KEY is missing or invalid');
   }
-  return Buffer.from(hex, 'hex');
+  return Buffer.from(process.env.TWO_FACTOR_ENCRYPTION_KEY, 'hex');
 }
 
 /** Encrypts a TOTP secret using AES-256-GCM. Returns `ciphertext:iv:authTag` as hex. */

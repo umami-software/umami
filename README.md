@@ -5,7 +5,7 @@
 <h1 align="center">Umami</h1>
 
 <p align="center">
-  <i>Umami is a simple, fast, privacy-focused alternative to Google Analytics.</i>
+  <i>Umami is a privacy-first analytics platform. Traffic, campaigns, behavior, conversions, and revenue in one place — no cookies, no surveillance, self-hosted or in the cloud.</i>
 </p>
 
 <p align="center">
@@ -49,6 +49,10 @@ DATABASE_URL=connection-url
 Optional: set `API_URL` to change the base URL used by internal UI API calls.
 Relative paths are served under `BASE_PATH`; absolute URLs are proxied through the local `/api` route.
 For example, `API_URL=/internal-api` or `API_URL=https://api.example.com/api`.
+
+Optional: set `TWO_FACTOR_ENCRYPTION_KEY` to a 64-character hex string to enable two-factor
+authentication. Generate one with `openssl rand -hex 32`. Two-factor authentication is unavailable
+and cannot be required until this key is set.
 
 The connection URL format:
 

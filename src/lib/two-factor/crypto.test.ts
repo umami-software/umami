@@ -51,3 +51,31 @@ describe('encryptSecret/decryptSecret', () => {
     vi.unstubAllEnvs();
   });
 });
+
+describe('isTwoFactorConfigured', () => {
+  test('returns true with a valid key', async () => {
+    vi.stubEnv('TWO_FACTOR_ENCRYPTION_KEY', KEY);
+    vi.resetModules();
+    const { isTwoFactorConfigured } = await import('./crypto');
+
+    expect(isTwoFactorConfigured()).toBe(true);
+
+    vi.unstubAllEnvs();
+  });
+
+  test('returns false when the key is missing or invalid', async () => {
+    vi.stubEnv('TWO_FACTOR_ENCRYPTION_KEY', '');
+    vi.resetModules();
+    const { isTwoFactorConfigured } = await import('./crypto');
+
+    expect(isTwoFactorConfigured()).toBe(false);
+
+    vi.stubEnv('TWO_FACTOR_ENCRYPTION_KEY', 'too-short');
+    expect(isTwoFactorConfigured()).toBe(false);
+
+    vi.stubEnv('TWO_FACTOR_ENCRYPTION_KEY', 'z'.repeat(64));
+    expect(isTwoFactorConfigured()).toBe(false);
+
+    vi.unstubAllEnvs();
+  });
+});

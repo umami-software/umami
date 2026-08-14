@@ -506,5 +506,6 @@ export const messages: Record<string, string> = {
   twoFactorErrorAlreadyEnabled: 'message.two-factor-error-already-enabled',
   twoFactorErrorNotEnabled: 'message.two-factor-error-not-enabled',
   twoFactorErrorNoPendingSetup: 'message.two-factor-error-no-pending-setup',
+  twoFactorErrorNotConfigured: 'message.two-factor-error-not-configured',
   replayMinDurationDescription: 'message.replay-min-duration-description',
 };
