@@ -1,7 +1,8 @@
 import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import { parseRequest } from '@/lib/request';
-import { json, notFound, unauthorized } from '@/lib/response';
+import { json, notFound, serviceUnavailable, unauthorized } from '@/lib/response';
+import { getTwoFactorConfigurationError, isTwoFactorConfigured } from '@/lib/two-factor/crypto';
 import { canEnforceTwoFactorAuthForEveryone } from '@/permissions';
 
 export async function POST(request: Request) {
@@ -22,6 +23,10 @@ export async function POST(request: Request) {
   }
 
   const { required } = body;
+
+  if (required && !isTwoFactorConfigured()) {
+    return serviceUnavailable(getTwoFactorConfigurationError());
+  }
 
   await prisma.client.appSetting.upsert({
     where: { key: 'twoFactorRequiredGlobal' },

@@ -1,6 +1,10 @@
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, notFound, serviceUnavailable } from '@/lib/response';
-import { encryptSecret, isTwoFactorConfigured } from '@/lib/two-factor/crypto';
+import {
+  encryptSecret,
+  getTwoFactorConfigurationError,
+  isTwoFactorConfigured,
+} from '@/lib/two-factor/crypto';
 import {
   generateOtpAuthUri,
   generateQrCodeDataUrl,
@@ -22,10 +26,7 @@ export async function POST(request: Request) {
 
   // Secrets cannot be stored without an encryption key
   if (!isTwoFactorConfigured()) {
-    return serviceUnavailable({
-      code: 'two-factor-error-not-configured',
-      message: 'TWO_FACTOR_ENCRYPTION_KEY is missing or invalid',
-    });
+    return serviceUnavailable(getTwoFactorConfigurationError());
   }
 
   const userId = auth.user.id;

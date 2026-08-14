@@ -13,7 +13,9 @@ export function TeamTwoFactorSettings({ teamId }: { teamId: string }) {
   const queryClient = useQueryClient();
 
   const { data: globalStatus } = useTwoFactorStatusQuery(true);
-  const isGlobalRequired = globalStatus?.requiredReason === 'global';
+  const isConfigured = globalStatus?.isConfigured;
+  const isGlobalRequired = globalStatus?.globalRequired ?? false;
+  const showConfigurationError = isConfigured === false;
 
   const { data: teamData } = useTeamQuery(teamId);
   const { mutateAsync: setTeamRequired } = useUpdateQuery(`/admin/teams/${teamId}/2fa`);
@@ -25,31 +27,35 @@ export function TeamTwoFactorSettings({ teamId }: { teamId: string }) {
     queryClient.invalidateQueries({ queryKey: ['teams', { teamId }] });
   };
 
+  const isToggleDisabled = isGlobalRequired || (!isConfigured && !twoFactorRequired);
+  const toggle = (
+    <Row alignItems="center" gap="3">
+      <Switch
+        isSelected={isGlobalRequired || twoFactorRequired}
+        isDisabled={isToggleDisabled}
+        onChange={handleToggle}
+      />
+      <Text>{t(labels.twoFactorRequireTeam)}</Text>
+    </Row>
+  );
+
   return (
     <Column gap="4">
       <Text weight="bold">{t(labels.twoFactorAuth)}</Text>
 
+      {showConfigurationError && (
+        <Text size="sm" color="muted">
+          {t(messages.twoFactorErrorNotConfigured)}
+        </Text>
+      )}
+
       {isGlobalRequired ? (
         <TooltipTrigger>
-          <Row alignItems="center" gap="3">
-            <Switch
-              isSelected={isGlobalRequired || twoFactorRequired}
-              isDisabled={isGlobalRequired}
-              onChange={handleToggle}
-            />
-            <Text>{t(labels.twoFactorRequireTeam)}</Text>
-          </Row>
+          {toggle}
           <Tooltip>{t(labels.twoFactorGlobalActiveTooltip)}</Tooltip>
         </TooltipTrigger>
       ) : (
-        <Row alignItems="center" gap="3">
-          <Switch
-            isSelected={isGlobalRequired || twoFactorRequired}
-            isDisabled={isGlobalRequired}
-            onChange={handleToggle}
-          />
-          <Text>{t(labels.twoFactorRequireTeam)}</Text>
-        </Row>
+        toggle
       )}
 
       <Text size="sm" color="muted">

@@ -12,6 +12,7 @@ const mocks = vi.hoisted(() => ({
   updateBackupCodes: vi.fn(),
   verifyBackupCode: vi.fn(),
   decryptSecret: vi.fn(),
+  isTwoFactorConfigured: vi.fn(),
   checkRateLimit: vi.fn(),
   recordFailedAttempt: vi.fn(),
   resetRateLimit: vi.fn(),
@@ -60,6 +61,11 @@ vi.mock('@/lib/two-factor/backup-codes', () => ({
 
 vi.mock('@/lib/two-factor/crypto', () => ({
   decryptSecret: mocks.decryptSecret,
+  getTwoFactorConfigurationError: () => ({
+    code: 'two-factor-error-not-configured',
+    message: 'TWO_FACTOR_ENCRYPTION_KEY is missing or invalid',
+  }),
+  isTwoFactorConfigured: mocks.isTwoFactorConfigured,
 }));
 
 vi.mock('@/lib/two-factor/rate-limit', () => ({
@@ -97,6 +103,7 @@ beforeEach(() => {
   mocks.updateBackupCodes.mockReset();
   mocks.verifyBackupCode.mockReset();
   mocks.decryptSecret.mockReset();
+  mocks.isTwoFactorConfigured.mockReset();
   mocks.checkRateLimit.mockReset();
   mocks.recordFailedAttempt.mockReset();
   mocks.resetRateLimit.mockReset();
@@ -118,6 +125,7 @@ beforeEach(() => {
   mocks.findTwoFactorAuth.mockResolvedValue({ userId: 'user-1', isEnabled: true, secret: 'encrypted' });
   mocks.createSecureToken.mockReturnValue('full-auth-token');
   mocks.decryptSecret.mockReturnValue('plain-secret');
+  mocks.isTwoFactorConfigured.mockReturnValue(true);
   mocks.checkRateLimit.mockResolvedValue({ allowed: true });
   mocks.recordFailedAttempt.mockResolvedValue({ lockedUntil: undefined });
   mocks.resetRateLimit.mockResolvedValue(undefined);
@@ -152,4 +160,27 @@ test('POST accepts a token-only payload and completes 2FA verification', async (
     },
   });
   expect(response.status).toBe(200);
+});
+
+test('POST returns a configuration error when the encryption key is missing', async () => {
+  mocks.isTwoFactorConfigured.mockReturnValue(false);
+
+  const response = await POST(
+    new Request('http://localhost/api/2fa/verify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer partial-token',
+      },
+      body: JSON.stringify({ token: '123456' }),
+    }),
+  );
+
+  expect(mocks.findTwoFactorAuth).not.toHaveBeenCalled();
+  await expect(response.json()).resolves.toMatchObject({
+    error: {
+      code: 'two-factor-error-not-configured',
+    },
+  });
+  expect(response.status).toBe(503);
 });

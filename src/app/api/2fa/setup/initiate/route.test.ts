@@ -34,6 +34,10 @@ vi.mock('@/lib/prisma', () => ({
 
 vi.mock('@/lib/two-factor/crypto', () => ({
   encryptSecret: mocks.encryptSecret,
+  getTwoFactorConfigurationError: () => ({
+    code: 'two-factor-error-not-configured',
+    message: 'TWO_FACTOR_ENCRYPTION_KEY is missing or invalid',
+  }),
   isTwoFactorConfigured: mocks.isTwoFactorConfigured,
 }));
 

@@ -19,6 +19,7 @@ const mocks = vi.hoisted(() => {
     tx,
     generateBackupCodes: vi.fn(),
     decryptSecret: vi.fn(),
+    isTwoFactorConfigured: vi.fn(),
     checkRateLimit: vi.fn(),
     recordFailedAttempt: vi.fn(),
     resetRateLimit: vi.fn(),
@@ -49,6 +50,11 @@ vi.mock('@/lib/two-factor/backup-codes', () => ({
 
 vi.mock('@/lib/two-factor/crypto', () => ({
   decryptSecret: mocks.decryptSecret,
+  getTwoFactorConfigurationError: () => ({
+    code: 'two-factor-error-not-configured',
+    message: 'TWO_FACTOR_ENCRYPTION_KEY is missing or invalid',
+  }),
+  isTwoFactorConfigured: mocks.isTwoFactorConfigured,
 }));
 
 vi.mock('@/lib/two-factor/rate-limit', () => ({
@@ -75,6 +81,7 @@ beforeEach(() => {
   mocks.tx.twoFactorBackupCode.createMany.mockReset();
   mocks.generateBackupCodes.mockReset();
   mocks.decryptSecret.mockReset();
+  mocks.isTwoFactorConfigured.mockReset();
   mocks.checkRateLimit.mockReset();
   mocks.recordFailedAttempt.mockReset();
   mocks.resetRateLimit.mockReset();
@@ -94,6 +101,7 @@ beforeEach(() => {
     hashed: ['hash-1', 'hash-2'],
   });
   mocks.decryptSecret.mockReturnValue('plain-secret');
+  mocks.isTwoFactorConfigured.mockReturnValue(true);
   mocks.checkRateLimit.mockResolvedValue({ allowed: true });
   mocks.recordFailedAttempt.mockResolvedValue({ lockedUntil: undefined });
   mocks.resetRateLimit.mockResolvedValue(undefined);
@@ -132,6 +140,23 @@ test('POST confirms setup, enables 2FA, stores backup codes, and resets the rate
     backupCodes: ['code-1', 'code-2'],
   });
   expect(response.status).toBe(200);
+});
+
+test('POST reports a configuration error when the encryption key is missing', async () => {
+  mocks.isTwoFactorConfigured.mockReturnValue(false);
+
+  const response = await POST(
+    new Request('http://localhost/api/2fa/setup/confirm', { method: 'POST' }),
+  );
+
+  expect(mocks.checkRateLimit).not.toHaveBeenCalled();
+  expect(mocks.decryptSecret).not.toHaveBeenCalled();
+  await expect(response.json()).resolves.toMatchObject({
+    error: {
+      code: 'two-factor-error-not-configured',
+    },
+  });
+  expect(response.status).toBe(503);
 });
 
 test('POST records a failed attempt and skips writes when the token is invalid', async () => {

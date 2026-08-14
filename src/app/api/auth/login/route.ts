@@ -7,7 +7,8 @@ import { checkPassword } from '@/lib/password';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
-import { json, unauthorized } from '@/lib/response';
+import { json, serviceUnavailable, unauthorized } from '@/lib/response';
+import { getTwoFactorConfigurationError, isTwoFactorConfigured } from '@/lib/two-factor/crypto';
 import { getAllUserTeams, getUserByUsername } from '@/queries/prisma';
 
 export async function POST(request: Request) {
@@ -39,6 +40,10 @@ export async function POST(request: Request) {
     : null;
 
   if (twoFactor?.isEnabled) {
+    if (!isTwoFactorConfigured()) {
+      return serviceUnavailable(getTwoFactorConfigurationError());
+    }
+
     const partialToken = createSecureToken({ userId: id, type: 'partial-auth' }, secret(), {
       expiresIn: '5m',
     });

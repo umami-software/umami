@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import { parseRequest } from '@/lib/request';
-import { badRequest, forbidden, json, notFound } from '@/lib/response';
-import { decryptSecret } from '@/lib/two-factor/crypto';
+import { badRequest, forbidden, json, notFound, serviceUnavailable } from '@/lib/response';
+import { decryptSecret, getTwoFactorConfigurationError, isTwoFactorConfigured } from '@/lib/two-factor/crypto';
 import { checkRateLimit, recordFailedAttempt, resetRateLimit } from '@/lib/two-factor/rate-limit';
 import { isOtpReplayed, markOtpUsed } from '@/lib/two-factor/replay-prevention';
 import { verifyTotp } from '@/lib/two-factor/totp';
@@ -23,6 +23,10 @@ export async function POST(request: Request) {
 
   if (error) {
     return error();
+  }
+
+  if (!isTwoFactorConfigured()) {
+    return serviceUnavailable(getTwoFactorConfigurationError());
   }
 
   const userId = auth.user.id;

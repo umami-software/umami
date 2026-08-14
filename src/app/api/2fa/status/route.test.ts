@@ -1,9 +1,15 @@
 import { beforeEach, expect, test, vi } from 'vitest';
-import prisma from '@/lib/prisma';
 import { parseRequest } from '@/lib/request';
 import { GET } from './route';
 
 const KEY = 'a'.repeat(64);
+const mocks = vi.hoisted(() => ({
+  findTwoFactorAuth: vi.fn(),
+  findAppSetting: vi.fn(),
+  findUser: vi.fn(),
+  findTeamUsers: vi.fn(),
+  findTeams: vi.fn(),
+}));
 
 vi.mock('@/lib/request', () => ({
   parseRequest: vi.fn(),
@@ -13,35 +19,34 @@ vi.mock('@/lib/prisma', () => ({
   default: {
     client: {
       twoFactorAuth: {
-        findUnique: vi.fn(),
+        findUnique: mocks.findTwoFactorAuth,
       },
       appSetting: {
-        findUnique: vi.fn(),
+        findUnique: mocks.findAppSetting,
       },
       user: {
-        findUnique: vi.fn(),
+        findUnique: mocks.findUser,
       },
       teamUser: {
-        findMany: vi.fn(),
+        findMany: mocks.findTeamUsers,
       },
       team: {
-        findMany: vi.fn(),
+        findMany: mocks.findTeams,
       },
     },
   },
 }));
 
 const parseRequestMock = vi.mocked(parseRequest);
-const prismaMock = vi.mocked(prisma, true);
 
 beforeEach(() => {
   vi.unstubAllEnvs();
   parseRequestMock.mockReset();
-  prismaMock.client.twoFactorAuth.findUnique.mockReset();
-  prismaMock.client.appSetting.findUnique.mockReset();
-  prismaMock.client.user.findUnique.mockReset();
-  prismaMock.client.teamUser.findMany.mockReset();
-  prismaMock.client.team.findMany.mockReset();
+  mocks.findTwoFactorAuth.mockReset();
+  mocks.findAppSetting.mockReset();
+  mocks.findUser.mockReset();
+  mocks.findTeamUsers.mockReset();
+  mocks.findTeams.mockReset();
 
   parseRequestMock.mockResolvedValue({
     auth: {
@@ -51,14 +56,14 @@ beforeEach(() => {
     },
     error: undefined,
   });
-  prismaMock.client.twoFactorAuth.findUnique.mockResolvedValue(null as any);
-  prismaMock.client.appSetting.findUnique.mockResolvedValue({
+  mocks.findTwoFactorAuth.mockResolvedValue(null as any);
+  mocks.findAppSetting.mockResolvedValue({
     key: 'twoFactorRequiredGlobal',
     value: 'true',
   } as any);
-  prismaMock.client.user.findUnique.mockResolvedValue({ twoFactorRequired: false } as any);
-  prismaMock.client.teamUser.findMany.mockResolvedValue([] as any);
-  prismaMock.client.team.findMany.mockResolvedValue([] as any);
+  mocks.findUser.mockResolvedValue({ twoFactorRequired: false } as any);
+  mocks.findTeamUsers.mockResolvedValue([] as any);
+  mocks.findTeams.mockResolvedValue([] as any);
 });
 
 test('GET requires 2FA when it is globally enabled', async () => {
@@ -69,6 +74,8 @@ test('GET requires 2FA when it is globally enabled', async () => {
   await expect(response.json()).resolves.toEqual({
     isEnabled: false,
     isRequired: true,
+    isConfigured: true,
+    globalRequired: true,
     requiredReason: 'global',
   });
   expect(response.status).toBe(200);
@@ -79,10 +86,11 @@ test('GET does not require 2FA when the encryption key is missing', async () => 
 
   const response = await GET(new Request('http://localhost/api/2fa/status'));
 
-  expect(prismaMock.client.appSetting.findUnique).not.toHaveBeenCalled();
   await expect(response.json()).resolves.toEqual({
     isEnabled: false,
     isRequired: false,
+    isConfigured: false,
+    globalRequired: true,
     requiredReason: null,
   });
   expect(response.status).toBe(200);

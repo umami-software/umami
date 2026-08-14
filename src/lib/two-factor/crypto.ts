@@ -2,6 +2,10 @@ import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
 
 const ALGORITHM = 'aes-256-gcm';
 const KEY_REGEX = /^[0-9a-fA-F]{64}$/;
+const TWO_FACTOR_CONFIGURATION_ERROR = {
+  code: 'two-factor-error-not-configured',
+  message: 'TWO_FACTOR_ENCRYPTION_KEY is missing or invalid',
+} as const;
 
 /** Checks that TWO_FACTOR_ENCRYPTION_KEY holds a valid 256-bit key, without throwing. */
 export function isTwoFactorConfigured(): boolean {
@@ -9,10 +13,14 @@ export function isTwoFactorConfigured(): boolean {
   return !!hex && KEY_REGEX.test(hex);
 }
 
+export function getTwoFactorConfigurationError() {
+  return TWO_FACTOR_CONFIGURATION_ERROR;
+}
+
 /** Loads and validates the 256-bit encryption key from TWO_FACTOR_ENCRYPTION_KEY. */
 function getKey(): Buffer {
   if (!isTwoFactorConfigured()) {
-    throw new Error('TWO_FACTOR_ENCRYPTION_KEY is missing or invalid');
+    throw new Error(TWO_FACTOR_CONFIGURATION_ERROR.message);
   }
   return Buffer.from(process.env.TWO_FACTOR_ENCRYPTION_KEY, 'hex');
 }

@@ -32,7 +32,9 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
   const [showReset, setShowReset] = useState(false);
 
   const { data: globalStatus } = useTwoFactorStatusQuery(true);
-  const isGlobalRequired = globalStatus?.requiredReason === 'global';
+  const isConfigured = globalStatus?.isConfigured;
+  const isGlobalRequired = globalStatus?.globalRequired ?? false;
+  const showConfigurationError = isConfigured === false;
 
   const { data: userTfaData } = useTwoFactorUserStatusQuery(userId);
   const { data: userData } = useUserQuery(userId);
@@ -51,6 +53,18 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
     await setUserRequired({ required: value });
     queryClient.invalidateQueries({ queryKey: ['users', { userId }] });
   };
+
+  const isToggleDisabled = isGlobalRequired || (!isConfigured && !twoFactorRequired);
+  const toggle = (
+    <Row alignItems="center" gap="3">
+      <Switch
+        isSelected={isGlobalRequired || twoFactorRequired}
+        isDisabled={isToggleDisabled}
+        onChange={handleToggle}
+      />
+      <Text>{t(labels.twoFactorRequireUser)}</Text>
+    </Row>
+  );
 
   const handleReset = async () => {
     await resetUserTwoFactor(null, {
@@ -75,27 +89,19 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
           {t(messages.twoFactorRequireUserDescription)}
         </Text>
 
+        {showConfigurationError && (
+          <Text size="sm" color="muted">
+            {t(messages.twoFactorErrorNotConfigured)}
+          </Text>
+        )}
+
         {isGlobalRequired ? (
           <TooltipTrigger>
-            <Row alignItems="center" gap="3">
-              <Switch
-                isSelected={isGlobalRequired || twoFactorRequired}
-                isDisabled={isGlobalRequired}
-                onChange={handleToggle}
-              />
-              <Text>{t(labels.twoFactorRequireUser)}</Text>
-            </Row>
+            {toggle}
             <Tooltip>{t(labels.twoFactorGlobalActiveTooltip)}</Tooltip>
           </TooltipTrigger>
         ) : (
-          <Row alignItems="center" gap="3">
-            <Switch
-              isSelected={isGlobalRequired || twoFactorRequired}
-              isDisabled={isGlobalRequired}
-              onChange={handleToggle}
-            />
-            <Text>{t(labels.twoFactorRequireUser)}</Text>
-          </Row>
+          toggle
         )}
 
         {twoFactorEnabled && (
