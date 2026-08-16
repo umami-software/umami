@@ -3,8 +3,15 @@ import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
 import { CLICKHOUSE } from '@/lib/db';
 import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from './constants';
-import { filtersObjectToArray } from './params';
-import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
+import { filterGroupsToArray, filtersObjectToArray, resolveFilterGroups } from './params';
+import type {
+  Filter,
+  FilterGroup,
+  Operator,
+  PropertyFilter,
+  QueryFilters,
+  QueryOptions,
+} from './types';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   // %i is unsupported by ClickHouse before v23.4. %T and %R work on both
@@ -109,6 +116,34 @@ function mapFilter(
   }
 }
 
+function getFilterClause(filter: Filter) {
+  const { name, column, operator, paramName } = filter;
+
+  if (!column) {
+    return '';
+  }
+
+  return mapFilter(column, operator, name, name === 'eventType' ? 'UInt32' : 'String', paramName);
+}
+
+function groupHasFilter(group: FilterGroup, name: string): boolean {
+  return (
+    (group.filters || []).some(filter => filter.name === name) ||
+    (group.groups || []).some(child => groupHasFilter(child, name))
+  );
+}
+
+function getFilterGroupQuery(group: FilterGroup): string {
+  const clauses = (group.filters || [])
+    .filter(filter => filter.name !== 'eventType')
+    .map(getFilterClause)
+    .filter(Boolean);
+  const childClauses = (group.groups || []).map(getFilterGroupQuery).filter(Boolean);
+  const allClauses = [...clauses, ...childClauses];
+
+  return allClauses.length ? `(${allClauses.join(group.match === 'any' ? ' or ' : ' and ')})` : '';
+}
+
 function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}) {
   const { isCohort, cohortMatch, cohortActionName } = options;
   const isOr = isCohort ? cohortMatch === 'any' : filters.match === 'any';
@@ -138,6 +173,33 @@ function getFilterQuery(filters: Record<string, any>, options: QueryOptions = {}
       }
     }
   });
+
+  if (!isCohort) {
+    const groups = resolveFilterGroups(filters.groups, options);
+
+    filterGroupsToArray(groups)
+      .filter(filter => filter.name === 'eventType')
+      .map(getFilterClause)
+      .filter(Boolean)
+      .forEach(clause => {
+        andClauses.push(`and ${clause}`);
+      });
+
+    groups
+      .map(getFilterGroupQuery)
+      .filter(Boolean)
+      .forEach(clause => {
+        if (isOr) {
+          orClauses.push(clause);
+        } else {
+          andClauses.push(`and ${clause}`);
+        }
+      });
+
+    if (groups.some(group => groupHasFilter(group, 'referrer'))) {
+      andClauses.push(`and referrer_domain != hostname`);
+    }
+  }
 
   const parts: string[] = [];
 
@@ -215,6 +277,8 @@ function getDateQuery(filters: Record<string, any>) {
 }
 
 function getQueryParams(filters: Record<string, any>) {
+  const groupFilters = filterGroupsToArray(resolveFilterGroups(filters.groups));
+
   return {
     ...filters,
     ...filtersObjectToArray(filters).reduce((obj, { name, column, operator, value, paramName }) => {
@@ -226,6 +290,17 @@ function getQueryParams(filters: Record<string, any>) {
       const key = paramName ?? name;
 
       obj[key] = EQUALITY_OPERATORS.includes(operator)
+        ? Array.isArray(value)
+          ? value
+          : [value]
+        : value;
+
+      return obj;
+    }, {}),
+    ...groupFilters.reduce((obj, { column, operator, value, paramName }) => {
+      if (!column || !paramName || value === undefined) return obj;
+
+      obj[paramName] = EQUALITY_OPERATORS.includes(operator)
         ? Array.isArray(value)
           ? value
           : [value]

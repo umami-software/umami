@@ -326,16 +326,31 @@ export const reportResultSchema = z.intersection(
 
 export const segmentTypeParam = z.enum(['segment', 'cohort']);
 
+const segmentFilterSchema = z.object({
+  name: z.string(),
+  operator: operatorParam,
+  value: z.string(),
+});
+
+const segmentGroupSchema: z.ZodType<{
+  match: 'all' | 'any';
+  filters: z.infer<typeof segmentFilterSchema>[];
+  groups?: z.infer<typeof segmentGroupSchema>[];
+}> = z.lazy(() =>
+  z
+    .object({
+      match: z.enum(['all', 'any']),
+      filters: z.array(segmentFilterSchema).optional().default([]),
+      groups: z.array(segmentGroupSchema).optional(),
+    })
+    .refine(group => group.filters.length > 0 || group.groups?.length, {
+      message: 'A group must contain a filter or child group',
+    }),
+);
+
 export const segmentParamSchema = z.object({
-  filters: z
-    .array(
-      z.object({
-        name: z.string(),
-        operator: operatorParam,
-        value: z.string(),
-      }),
-    )
-    .optional(),
+  filters: z.array(segmentFilterSchema).optional(),
+  groups: z.array(segmentGroupSchema).optional(),
   match: z.enum(['all', 'any']).optional(),
   dateRange: z.string().optional(),
   action: z
