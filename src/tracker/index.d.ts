@@ -19,10 +19,8 @@ export type TrackedProperties = {
   /**
    * Page referrer
    *
-   * @description extracted from `document.referrer` on page load, or the previous
-   * in-app URL on client-side navigation. Same-origin referrers are sent as
-   * root-relative paths so the site's own domain is never saved as a referrer.
-   * @example 'https://analytics.umami.is/docs/getting-started', '/docs/getting-started'
+   * @description extracted from `document.referrer`
+   * @example 'https://analytics.umami.is/docs/getting-started'
    */
   referrer?: string;
   /**
