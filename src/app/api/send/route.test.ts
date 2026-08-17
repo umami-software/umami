@@ -482,6 +482,39 @@ describe('event url and referrer parsing', () => {
     expect(saveEventMock.mock.calls[0][0]).toMatchObject({ urlPath: '/blog' });
   });
 
+  test('REMOVE_TRAILING_SLASH keeps the root path as "/"', async () => {
+    process.env.REMOVE_TRAILING_SLASH = '1';
+
+    await callPOST({
+      type: 'event',
+      payload: { website: WEBSITE_ID, hostname: 'example.com', url: '/' },
+    });
+
+    expect(saveEventMock.mock.calls[0][0]).toMatchObject({ urlPath: '/' });
+  });
+
+  test('REMOVE_TRAILING_SLASH keeps the root path when the url has a hash', async () => {
+    process.env.REMOVE_TRAILING_SLASH = '1';
+
+    await callPOST({
+      type: 'event',
+      payload: { website: WEBSITE_ID, hostname: 'example.com', url: '/#hero' },
+    });
+
+    expect(saveEventMock.mock.calls[0][0]).toMatchObject({ urlPath: '/#hero' });
+  });
+
+  test('REMOVE_TRAILING_SLASH strips a trailing slash before the hash', async () => {
+    process.env.REMOVE_TRAILING_SLASH = '1';
+
+    await callPOST({
+      type: 'event',
+      payload: { website: WEBSITE_ID, hostname: 'example.com', url: '/blog/#hero' },
+    });
+
+    expect(saveEventMock.mock.calls[0][0]).toMatchObject({ urlPath: '/blog#hero' });
+  });
+
   test('maps a "/undefined" pathname to an empty url path', async () => {
     await callPOST({
       type: 'event',

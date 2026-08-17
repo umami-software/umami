@@ -214,7 +214,8 @@ export async function POST(request: Request) {
       const twclid = currentUrl.searchParams.get('twclid');
 
       if (process.env.REMOVE_TRAILING_SLASH) {
-        urlPath = urlPath.replace(/\/(?=(#.*)?$)/, '');
+        // Never strip the root slash, otherwise the home page is saved with an empty path
+        urlPath = urlPath.replace(/(?!^)\/(?=(#.*)?$)/, '');
       }
 
       if (referrer) {
