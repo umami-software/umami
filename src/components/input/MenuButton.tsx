@@ -34,7 +34,10 @@ export function MenuButton({
           {Children.map(children, child =>
             isValidElement(child)
               ? cloneElement(child as ReactElement<{ onAction?: (key: Key) => void }>, {
-                  onAction: handleAction,
+                  onAction: (key: Key) => {
+                    child.props.onAction?.(key);
+                    handleAction(key);
+                  },
                 })
               : child,
           )}
