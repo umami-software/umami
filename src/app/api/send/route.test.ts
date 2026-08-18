@@ -7,7 +7,7 @@ process.env.APP_SECRET = 'route-send-test-secret';
 import { isbot } from 'isbot';
 import clickhouse from '@/lib/clickhouse';
 import { CACHE_TOKEN_TYPE, EVENT_TYPE } from '@/lib/constants';
-import { secret } from '@/lib/crypto';
+import { getSalt, secret, uuid } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { createToken, parseToken } from '@/lib/jwt';
 import { fetchWebsite } from '@/lib/load';
@@ -91,6 +91,13 @@ function callPOST(
       headers,
     }),
   );
+}
+
+function makeComputedSessionId(sourceId: string, timestamp = 1704067200) {
+  const createdAt = new Date(timestamp * 1000);
+  const sessionSalt = getSalt(process.env.SALT_ROTATION || 'month', createdAt);
+
+  return uuid(sourceId, defaultClientInfo.ip, defaultClientInfo.userAgent, sessionSalt);
 }
 
 beforeEach(() => {
@@ -540,17 +547,54 @@ describe('cache token handling', () => {
     );
   }
 
-  test('a valid cache token skips website lookup and session creation', async () => {
-    const token = makeCacheToken();
+  test('a valid cache token skips website lookup and session creation when it matches the computed session', async () => {
+    const timestamp = 1704067200;
+    const token = makeCacheToken({ sessionId: makeComputedSessionId(WEBSITE_ID, timestamp) });
 
     const response = await callPOST(
-      { type: 'event', payload: { website: WEBSITE_ID, url: '/' } },
+      { type: 'event', payload: { website: WEBSITE_ID, url: '/', timestamp } },
       { headers: { 'x-umami-cache': token } },
     );
 
     expect(fetchWebsiteMock).not.toHaveBeenCalled();
     expect(createSessionMock).not.toHaveBeenCalled();
     await expect(response.json()).resolves.toMatchObject({ visitId: 'cached-visit' });
+  });
+
+  test('a valid cache token creates the computed session before event writes when the cached session differs', async () => {
+    const token = makeCacheToken({ sessionId: 'cached-session' });
+
+    await callPOST(
+      { type: 'event', payload: { website: WEBSITE_ID, url: '/' } },
+      { headers: { 'x-umami-cache': token } },
+    );
+
+    expect(createSessionMock).toHaveBeenCalledTimes(1);
+    const createdSession = createSessionMock.mock.calls[0][0] as Record<string, any>;
+    const savedEvent = saveEventMock.mock.calls[0][0] as Record<string, any>;
+
+    expect(createdSession.id).not.toBe('cached-session');
+    expect(savedEvent.sessionId).toBe(createdSession.id);
+  });
+
+  test('a valid cache token creates the computed session before identify writes when the cached session differs', async () => {
+    const token = makeCacheToken({ sessionId: 'cached-session' });
+
+    await callPOST(
+      { type: 'identify', payload: { website: WEBSITE_ID, id: 'user-42', data: { plan: 'pro' } } },
+      { headers: { 'x-umami-cache': token } },
+    );
+
+    expect(createSessionMock).toHaveBeenCalledTimes(1);
+    const createdSession = createSessionMock.mock.calls[0][0] as Record<string, any>;
+    const savedLink = saveSessionLinkMock.mock.calls[0][0] as Record<string, any>;
+    const updatedSession = updateSessionMock.mock.calls[0][0] as Record<string, any>;
+    const savedSessionData = saveSessionDataMock.mock.calls[0][0] as Record<string, any>;
+
+    expect(createdSession.id).not.toBe('cached-session');
+    expect(savedLink.sessionId).toBe(createdSession.id);
+    expect(updatedSession.sessionId).toBe(createdSession.id);
+    expect(savedSessionData.sessionId).toBe(createdSession.id);
   });
 
   test('an invalid cache token falls back to website lookup', async () => {

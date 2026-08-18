@@ -156,9 +156,11 @@ export async function POST(request: Request) {
     const visitSalt = hash(startOfHour(createdAt).toUTCString());
 
     const sessionId = uuid(sourceId, ip, userAgent, sessionSalt);
+    const shouldEnsureSession =
+      !clickhouse.enabled && !!websiteId && !!cache?.sessionId && cache.sessionId !== sessionId;
 
     // Create a session if not found
-    if (!clickhouse.enabled && !cache?.sessionId) {
+    if ((!clickhouse.enabled && !cache?.sessionId) || shouldEnsureSession) {
       await createSession({
         id: sessionId,
         websiteId: sourceId,
