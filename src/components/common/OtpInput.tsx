@@ -27,8 +27,28 @@ export function OtpInput({ value, onChange, onComplete, disabled }: OtpInputProp
     }
   };
 
+  const applyPastedValue = (digitsStr: string) => {
+    const pasted = digitsStr.replace(/\D/g, '').slice(0, LENGTH);
+    const next = Array.from({ length: LENGTH }, (_, i) => pasted[i] ?? '');
+    const newVal = next.join('');
+    onChange(newVal);
+    if (newVal.length === LENGTH) {
+      onComplete?.(newVal);
+      focusInput(refs.current[LENGTH - 1]);
+    } else {
+      focusInput(refs.current[pasted.length]);
+    }
+  };
+
   const handleInput = (index: number, raw: string) => {
-    const char = raw.replace(/\D/g, '').slice(-1);
+    const digitsOnly = raw.replace(/\D/g, '');
+
+    if (digitsOnly.length > 1) {
+      applyPastedValue(digitsOnly);
+      return;
+    }
+
+    const char = digitsOnly;
     if (!char) return;
     update(index, char);
     if (index < LENGTH - 1) {
@@ -56,16 +76,7 @@ export function OtpInput({ value, onChange, onComplete, disabled }: OtpInputProp
 
   const handlePaste = (e: ClipboardEvent<HTMLInputElement & HTMLTextAreaElement>) => {
     e.preventDefault();
-    const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, LENGTH);
-    const next = Array.from({ length: LENGTH }, (_, i) => pasted[i] ?? '');
-    const newVal = next.join('');
-    onChange(newVal);
-    if (newVal.length === LENGTH) {
-      onComplete?.(newVal);
-      focusInput(refs.current[LENGTH - 1]);
-    } else {
-      focusInput(refs.current[pasted.length]);
-    }
+    applyPastedValue(e.clipboardData.getData('text'));
   };
 
   return (
