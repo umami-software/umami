@@ -8,6 +8,19 @@ import type { EventPropertyFilter, SessionPropertyFilter } from '@/lib/types';
 
 export interface FilterEditFormProps {
   websiteId?: string;
+  /**
+   * Seeds the form with an already-saved filter set instead of whatever the
+   * URL currently holds. Used when editing filters that live somewhere other
+   * than the address bar, e.g. a board row's.
+   */
+  defaultValues?: {
+    filters?: any[];
+    eventPropertyFilters?: EventPropertyFilter[];
+    sessionPropertyFilters?: SessionPropertyFilter[];
+    segment?: string;
+    cohort?: string;
+    match?: string;
+  };
   onChange?: (params: {
     filters: any[];
     eventPropertyFilters: EventPropertyFilter[];
@@ -19,20 +32,30 @@ export interface FilterEditFormProps {
   onClose?: () => void;
 }
 
-export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormProps) {
+export function FilterEditForm({
+  websiteId,
+  defaultValues,
+  onChange,
+  onClose,
+}: FilterEditFormProps) {
   const {
     query: { segment, cohort, match },
     pathname,
   } = useNavigation();
   const { filters, eventPropertyFilters, sessionPropertyFilters } = useFilters();
   const { t, labels } = useMessages();
-  const [currentFilters, setCurrentFilters] = useState(filters);
-  const [currentEventPropertyFilters, setCurrentEventPropertyFilters] = useState(eventPropertyFilters);
-  const [currentSessionPropertyFilters, setCurrentSessionPropertyFilters] =
-    useState(sessionPropertyFilters);
-  const [currentSegment, setCurrentSegment] = useState(segment);
-  const [currentCohort, setCurrentCohort] = useState(cohort);
-  const [currentMatch, setCurrentMatch] = useState<string>(match || 'all');
+  const [currentFilters, setCurrentFilters] = useState(defaultValues?.filters ?? filters);
+  const [currentEventPropertyFilters, setCurrentEventPropertyFilters] = useState(
+    defaultValues?.eventPropertyFilters ?? eventPropertyFilters,
+  );
+  const [currentSessionPropertyFilters, setCurrentSessionPropertyFilters] = useState(
+    defaultValues?.sessionPropertyFilters ?? sessionPropertyFilters,
+  );
+  const [currentSegment, setCurrentSegment] = useState(defaultValues?.segment ?? segment);
+  const [currentCohort, setCurrentCohort] = useState(defaultValues?.cohort ?? cohort);
+  const [currentMatch, setCurrentMatch] = useState<string>(
+    defaultValues?.match ?? match ?? 'all',
+  );
   const { isMobile } = useMobile();
   const isPixelLink = !websiteId || pathname.includes('/pixels') || pathname.includes('/links');
   const isEventsPath = pathname.endsWith('/events');

@@ -25,7 +25,7 @@ export function BoardRowFilterTags({
   }
 
   return (
-    <Row gap="2" alignItems="center" wrap="wrap">
+    <Row gap="2" alignItems="center" wrap="wrap" data-test="board-row-filter-tags">
       {segment && (
         <FilterTag
           label={t(labels.segment)}

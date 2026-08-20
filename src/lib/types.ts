@@ -231,10 +231,27 @@ export interface BoardColumn {
   size?: number;
 }
 
+/**
+ * Filters saved on a board row, scoping every component in that row. Stored
+ * structured (not as query params) so the filter dialog can reopen with the
+ * saved values; serialized to params by `boardRowFiltersToParams`.
+ *
+ * Event property filters are deliberately absent: the filter dialog only
+ * offers them on the /events path, which no board component renders.
+ */
+export interface BoardRowFilters {
+  filters?: Filter[];
+  sessionPropertyFilters?: SessionPropertyFilter[];
+  segment?: string;
+  cohort?: string;
+  match?: string;
+}
+
 export interface BoardRow {
   id: string;
   columns: BoardColumn[];
   size?: number;
+  filters?: BoardRowFilters;
 }
 
 export interface BoardParameters {

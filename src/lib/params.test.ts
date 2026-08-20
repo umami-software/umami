@@ -1,6 +1,8 @@
 import { describe, expect, test } from 'vitest';
 import { DATA_TYPE, OPERATORS } from './constants';
 import {
+  boardRowFiltersToParams,
+  mergeFilterParams,
   parseSessionPropertyFilters,
   parseUniversalEventPropertyFilters,
   serializeSessionPropertyFilters,
@@ -69,5 +71,67 @@ describe('session property filter params', () => {
         epf2: '1.eq',
       }),
     ).toEqual([]);
+  });
+});
+
+describe('mergeFilterParams', () => {
+  test('adds params that do not collide', () => {
+    expect(mergeFilterParams({ path: 'eq./home' }, { browser: 'eq.chrome' })).toEqual({
+      path: 'eq./home',
+      browser: 'eq.chrome',
+    });
+  });
+
+  test('renumbers a colliding field filter instead of replacing it', () => {
+    expect(mergeFilterParams({ path: 'eq./home' }, { path: 'eq./about' })).toEqual({
+      path: 'eq./home',
+      path1: 'eq./about',
+    });
+  });
+
+  test('renumbers session property filters into the next free slot', () => {
+    expect(
+      mergeFilterParams({ spf0: '1.eq.a.1', spf1: '1.eq.b.2' }, { spf0: '1.eq.c.3' }),
+    ).toEqual({
+      spf0: '1.eq.a.1',
+      spf1: '1.eq.b.2',
+      spf2: '1.eq.c.3',
+    });
+  });
+
+  test('leaves single-valued params to the caller', () => {
+    expect(
+      mergeFilterParams({ segment: 'a' }, { segment: 'b', cohort: 'c', match: 'any' }),
+    ).toEqual({ segment: 'a' });
+  });
+});
+
+describe('boardRowFiltersToParams', () => {
+  test('returns nothing without filters', () => {
+    expect(boardRowFiltersToParams()).toEqual({});
+    expect(boardRowFiltersToParams({})).toEqual({});
+  });
+
+  test('serializes field filters, session properties and segment refs', () => {
+    expect(
+      boardRowFiltersToParams({
+        filters: [{ name: 'path', operator: OPERATORS.equals, value: '/home' }],
+        sessionPropertyFilters: [
+          {
+            propertyName: 'user_region',
+            dataType: DATA_TYPE.string,
+            operator: OPERATORS.equals,
+            value: 'VastraGotaland',
+          },
+        ],
+        segment: 'seg-id',
+        match: 'any',
+      }),
+    ).toEqual({
+      path: `${OPERATORS.equals}./home`,
+      spf0: `${DATA_TYPE.string}.${OPERATORS.equals}.user_region.VastraGotaland`,
+      segment: 'seg-id',
+      match: 'any',
+    });
   });
 });
