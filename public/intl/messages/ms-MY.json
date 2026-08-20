@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Pengesahan dua faktor tidak didayakan.",
     "two-factor-error-no-pending-setup": "Tiada persediaan pengesahan dua faktor yang belum selesai ditemui.",
     "two-factor-locked-message": "Terlalu banyak percubaan yang gagal. Cuba lagi di {time}.",
-    "two-factor-active-description": "Akaun anda dilindungi dengan pengesahan dua faktor. Setiap log masuk memerlukan kod daripada apl pengesah anda."
+    "two-factor-active-description": "Akaun anda dilindungi dengan pengesahan dua faktor. Setiap log masuk memerlukan kod daripada apl pengesah anda.",
+    "two-factor-error-not-configured": "Pengesahan dua faktor tidak tersedia kerana pelayan tiada TWO_FACTOR_ENCRYPTION_KEY yang sah. Hubungi pentadbir anda untuk mendapatkan bantuan."
   }
 }

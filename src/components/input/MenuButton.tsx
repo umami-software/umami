@@ -31,13 +31,20 @@ export function MenuButton({
       </Button>
       <Popover side="bottom" align="start">
         <Menu aria-label="menu" style={{ minWidth: '140px' }}>
-          {Children.map(children, child =>
-            isValidElement(child)
-              ? cloneElement(child as ReactElement<{ onAction?: (key: Key) => void }>, {
-                  onAction: handleAction,
-                })
-              : child,
-          )}
+          {Children.map(children, child => {
+            if (!isValidElement(child)) {
+              return child;
+            }
+
+            const menuChild = child as ReactElement<{ onAction?: (key: Key) => void }>;
+
+            return cloneElement(menuChild, {
+              onAction: (key: Key) => {
+                menuChild.props.onAction?.(key);
+                handleAction(key);
+              },
+            });
+          })}
         </Menu>
       </Popover>
     </DialogTrigger>

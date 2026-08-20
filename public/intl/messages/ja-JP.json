@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "二要素認証が有効になっていません。",
     "two-factor-error-no-pending-setup": "保留中の 2 要素認証セットアップが見つかりません。",
     "two-factor-locked-message": "失敗した試行が多すぎます。 {time} でもう一度お試しください。",
-    "two-factor-active-description": "あなたのアカウントは二要素認証で保護されています。各ログインには認証アプリからのコードが必要です。"
+    "two-factor-active-description": "あなたのアカウントは二要素認証で保護されています。各ログインには認証アプリからのコードが必要です。",
+    "two-factor-error-not-configured": "サーバーに有効な TWO_FACTOR_ENCRYPTION_KEY がないため、二要素認証は利用できません。管理者に連絡してサポートを受けてください。"
   }
 }

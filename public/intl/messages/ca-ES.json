@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "L'autenticació de dos factors no està activada.",
     "two-factor-error-no-pending-setup": "No s'ha trobat cap configuració d'autenticació de dos factors pendent.",
     "two-factor-locked-message": "Massa intents fallits. Torna-ho a provar a {time}.",
-    "two-factor-active-description": "El vostre compte està protegit amb una autenticació de dos factors. Cada inici de sessió requereix un codi de la vostra aplicació d'autenticació."
+    "two-factor-active-description": "El vostre compte està protegit amb una autenticació de dos factors. Cada inici de sessió requereix un codi de la vostra aplicació d'autenticació.",
+    "two-factor-error-not-configured": "L'autenticació de dos factors no està disponible perquè al servidor li falta una TWO_FACTOR_ENCRYPTION_KEY vàlida. Contacteu amb l'administrador per obtenir ajuda."
   }
 }

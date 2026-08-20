@@ -5,9 +5,9 @@ import { ROLES } from '@/lib/constants';
 import { secret } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken } from '@/lib/jwt';
 import { parseRequest } from '@/lib/request';
-import { badRequest, json, notFound, unauthorized } from '@/lib/response';
+import { badRequest, json, notFound, serviceUnavailable, unauthorized } from '@/lib/response';
 import { verifyBackupCode } from '@/lib/two-factor/backup-codes';
-import { decryptSecret } from '@/lib/two-factor/crypto';
+import { decryptSecret, getTwoFactorConfigurationError, isTwoFactorConfigured } from '@/lib/two-factor/crypto';
 import { checkRateLimit, recordFailedAttempt, resetRateLimit } from '@/lib/two-factor/rate-limit';
 import { isOtpReplayed, markOtpUsed } from '@/lib/two-factor/replay-prevention';
 import { verifyTotp } from '@/lib/two-factor/totp';
@@ -32,6 +32,10 @@ export async function POST(request: Request) {
   const payload = parseSecureToken(rawToken, secret()) as any;
   if (!payload || payload.type !== 'partial-auth' || !payload.userId) {
     return unauthorized({ code: 'two-factor-error-invalid-partial-token' });
+  }
+
+  if (!isTwoFactorConfigured()) {
+    return serviceUnavailable(getTwoFactorConfigurationError());
   }
 
   const { body, error } = await parseRequest(request, schema, { skipAuth: true });

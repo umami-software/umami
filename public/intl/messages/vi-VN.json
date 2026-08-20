@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Xác thực hai yếu tố không được kích hoạt.",
     "two-factor-error-no-pending-setup": "Không tìm thấy thiết lập xác thực hai yếu tố đang chờ xử lý.",
     "two-factor-locked-message": "Quá nhiều lần thất bại. Hãy thử lại tại {time}.",
-    "two-factor-active-description": "Tài khoản của bạn được bảo vệ bằng xác thực hai yếu tố. Mỗi lần đăng nhập yêu cầu một mã từ ứng dụng xác thực của bạn."
+    "two-factor-active-description": "Tài khoản của bạn được bảo vệ bằng xác thực hai yếu tố. Mỗi lần đăng nhập yêu cầu một mã từ ứng dụng xác thực của bạn.",
+    "two-factor-error-not-configured": "Xác thực hai yếu tố không khả dụng vì máy chủ thiếu TWO_FACTOR_ENCRYPTION_KEY hợp lệ. Hãy liên hệ quản trị viên để được hỗ trợ."
   }
 }

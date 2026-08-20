@@ -1,5 +1,3 @@
-import { Button, Column, DataColumn, DataTable, Icon, Row, SearchField } from '@umami/react-zen';
-import { type ReactNode, useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { useMessages, useWebsiteExpandedMetricsQuery } from '@/components/hooks';
@@ -8,6 +6,8 @@ import { DownloadButton } from '@/components/input/DownloadButton';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
 import { SESSION_COLUMNS } from '@/lib/constants';
 import { formatShortTime } from '@/lib/format';
+import { Button, Column, DataColumn, DataTable, Icon, Row, SearchField } from '@umami/react-zen';
+import { type ReactNode, useState } from 'react';
 
 export interface MetricsExpandedTableProps {
   websiteId: string;
@@ -77,7 +77,15 @@ export function MetricsExpandedTable({
         height="100%"
         loadingIcon="spinner"
       >
-        <OverlayScrollArea orientation="both" style={{ height: '100%', minHeight: 0 }}>
+        <OverlayScrollArea
+          orientation="both"
+          style={{
+            height: '100%',
+            minHeight: 0,
+            ['--overlay-scrollbar-viewport-padding-right' as string]: '14px',
+            ['--overlay-scrollbar-vertical-margin-right' as string]: '6px',
+          }}
+        >
           <Column paddingRight="3">
             {items && (
               <DataTable data={items}>

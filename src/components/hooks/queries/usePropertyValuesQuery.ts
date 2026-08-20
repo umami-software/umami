@@ -40,7 +40,8 @@ export function usePropertyValuesQuery(
           ? `/websites/${websiteId}/event-data/values`
           : `/websites/${websiteId}/session-data/values`,
         {
-          ...(source === 'event' && eventName ? { event: eventName } : {}),
+          ...params,
+          ...(source === 'event' && eventName ? { eventName } : {}),
           startAt,
           endAt,
           unit,
@@ -48,7 +49,6 @@ export function usePropertyValuesQuery(
           propertyName,
           dataType,
           ...serializePropertyFilters(propertyFilters),
-          ...params,
         },
       ),
     enabled: !!(websiteId && propertyName),

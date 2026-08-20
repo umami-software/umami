@@ -5,8 +5,7 @@ const prismaParseFiltersResult = {
   filterQuery: 'and website_event.url_path = {{path}}',
   dateQuery: 'and website_event.created_at between {{startDate}} and {{endDate}}',
   cohortQuery: 'join cohort on cohort.session_id = website_event.session_id',
-  joinSessionQuery:
-    'inner join session on website_event.session_id = session.session_id and website_event.website_id = session.website_id',
+  joinSessionQuery: '',
 };
 
 const clickhouseParseFiltersResult = {
@@ -67,7 +66,7 @@ afterEach(() => {
 });
 
 describe('getWebsiteEvents', () => {
-  test('postgres counts from the lightweight filtered event query and enriches only the paged rows', async () => {
+  test('postgres counts from the lightweight filtered event query and keeps paged rows even when session enrichment is missing', async () => {
     const { getWebsiteEvents, prismaRawQuery } = await loadModule({ mode: 'prisma' });
 
     const result = await getWebsiteEvents('website-1', {
@@ -86,6 +85,7 @@ describe('getWebsiteEvents', () => {
     expect(countQuery).toContain('select count(*) as num from (select 1 from (');
     expect(countQuery).not.toContain('exists(');
     expect(countQuery).toContain('event_name ilike {{eventSearch}}');
+    expect(countQuery).not.toContain('inner join session on website_event.session_id');
     expect(dataQuery).toContain('with paged_events as (');
     expect(dataQuery).toContain('paged_event_data as (');
     expect(dataQuery).toContain(
@@ -95,6 +95,9 @@ describe('getWebsiteEvents', () => {
     expect(dataQuery).toContain('and event_data.created_at between {{startDate}} and {{endDate}}');
     expect(dataQuery).toContain(
       'left join paged_event_data on paged_event_data.event_id = website_event.event_id',
+    );
+    expect(dataQuery).toContain(
+      'left join session on session.session_id = website_event.session_id',
     );
     expect(dataQuery).toContain('order by paged_events.created_at desc');
     expect(dataQuery).toContain('(paged_event_data.event_id is not null) as "hasData"');

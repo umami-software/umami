@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "未启用双因素身份验证。",
     "two-factor-error-no-pending-setup": "未找到待处理的双因素身份验证设置。",
     "two-factor-locked-message": "失败的尝试太多了。请在 {time} 处重试。",
-    "two-factor-active-description": "您的帐户受到双因素身份验证的保护。每次登录都需要来自身份验证器应用程序的代码。"
+    "two-factor-active-description": "您的帐户受到双因素身份验证的保护。每次登录都需要来自身份验证器应用程序的代码。",
+    "two-factor-error-not-configured": "由于服务器缺少有效的 TWO_FACTOR_ENCRYPTION_KEY，双重身份验证不可用。请联系管理员获取帮助。"
   }
 }

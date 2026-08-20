@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Uwierzytelnianie dwuskładnikowe nie jest włączone.",
     "two-factor-error-no-pending-setup": "Nie znaleziono oczekującej konfiguracji uwierzytelniania dwuskładnikowego.",
     "two-factor-locked-message": "Zbyt wiele nieudanych prób. Spróbuj ponownie w {time}.",
-    "two-factor-active-description": "Twoje konto jest chronione za pomocą uwierzytelniania dwuskładnikowego. Każde logowanie wymaga kodu z aplikacji uwierzytelniającej."
+    "two-factor-active-description": "Twoje konto jest chronione za pomocą uwierzytelniania dwuskładnikowego. Każde logowanie wymaga kodu z aplikacji uwierzytelniającej.",
+    "two-factor-error-not-configured": "Uwierzytelnianie dwuskładnikowe jest niedostępne, ponieważ na serwerze brakuje prawidłowego TWO_FACTOR_ENCRYPTION_KEY. Skontaktuj się z administratorem, aby uzyskać pomoc."
   }
 }

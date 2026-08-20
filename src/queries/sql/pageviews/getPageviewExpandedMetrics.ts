@@ -1,6 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
 import {
-  EVENT_TYPE,
   FILTER_COLUMNS,
   GROUPED_DOMAINS,
   SESSION_COLUMNS,
@@ -42,7 +41,7 @@ async function relationalQuery(
 ): Promise<PageviewExpandedMetricsData[]> {
   const { type, limit = 500, offset = 0 } = parameters;
   let column = getPageviewColumn(type);
-  const { rawQuery, parseFilters, getTimestampDiffSQL } = prisma;
+  const { rawQuery, parseFilters } = prisma;
   const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } =
     parseFilters(
       {
@@ -51,7 +50,6 @@ async function relationalQuery(
       },
       { joinSession: SESSION_COLUMNS.includes(type) },
     );
-  const needsBounceEvents = filters.excludeBounce !== true;
   const fullPathSearchQuery =
     type === 'fullPath' && filters.search
       ? `and (case when website_event.url_query != '' then website_event.url_path || '?' || website_event.url_query else website_event.url_path end) ilike {{fullPathSearch}}`
@@ -94,21 +92,6 @@ async function relationalQuery(
     type === 'fullPath'
       ? `case when website_event.url_query != '' then website_event.url_path || '?' || website_event.url_query else website_event.url_path end`
       : column;
-  const bounceQuery = needsBounceEvents
-    ? `sum(case when t.c = 1 and coalesce(e.has_custom_event, 0) = 0 then 1 else 0 end) as "bounces",`
-    : '0 as "bounces",';
-  const visitEventsJoin = needsBounceEvents
-    ? `left join (
-      select session_id, visit_id, 1 as "has_custom_event"
-      from website_event
-      where website_id = {{websiteId::uuid}}
-        and created_at between {{startDate}} and {{endDate}}
-        and event_type = ${EVENT_TYPE.customEvent}
-      group by 1, 2
-    ) as e
-      on e.session_id = t.session_id
-      and e.visit_id = t.visit_id`
-    : '';
 
   return rawQuery(
     `
@@ -117,16 +100,14 @@ async function relationalQuery(
       sum(t.c) as "pageviews",
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
-      ${bounceQuery}
-      sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime"
+      0 as "bounces",
+      0 as "totaltime"
     from (
       select
         ${selectColumn} as "name",
         website_event.session_id,
         website_event.visit_id,
-        count(*) as "c",
-        min(website_event.created_at) as "min_time",
-        max(website_event.created_at) as "max_time"
+        count(*) as "c"
       from website_event
       ${cohortQuery}
       ${excludeBounceQuery}
@@ -140,7 +121,6 @@ async function relationalQuery(
         ${filterQuery}
       group by ${groupByColumn}, website_event.session_id, website_event.visit_id
     ) as t
-    ${visitEventsJoin}
     where name != ''
     group by name
     order by visitors desc, visits desc
@@ -167,7 +147,6 @@ async function clickhouseQuery(
     ...filters,
     websiteId,
   });
-  const needsBounceEvents = filters.excludeBounce !== true;
   const fullPathSearchQuery =
     type === 'fullPath' && filters.search
       ? `and positionCaseInsensitive(if(url_query != '', concat(url_path, '?', url_query), url_path), {fullPathSearch:String}) > 0`
@@ -203,19 +182,6 @@ async function clickhouseQuery(
   } else if (type === 'fullPath') {
     selectColumn = `if(url_query != '', concat(url_path, '?', url_query), url_path)`;
   }
-  const bounceQuery = needsBounceEvents
-    ? `sumIf(1, t.c = 1 and ifNull(e.has_custom_event, 0) = 0) as "bounces",`
-    : '0 as "bounces",';
-  const visitEventsJoin = needsBounceEvents
-    ? `left join (
-      select session_id, visit_id, toUInt8(1) as has_custom_event
-      from website_event
-      where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type = ${EVENT_TYPE.customEvent}
-      group by session_id, visit_id
-    ) as e using (session_id, visit_id)`
-    : '';
 
   return rawQuery(
     `
@@ -224,16 +190,14 @@ async function clickhouseQuery(
       sum(t.c) as "pageviews",
       uniq(t.session_id) as "visitors",
       uniq(t.visit_id) as "visits",
-      ${bounceQuery}
-      sum(max_time-min_time) as "totaltime"
+      0 as "bounces",
+      0 as "totaltime"
     from (
       select
         ${selectColumn} name,
         session_id,
         visit_id,
-        count(*) c,
-        min(created_at) min_time,
-        max(created_at) max_time
+        count(*) c
       from website_event
       ${cohortQuery}
       ${excludeBounceQuery}
@@ -247,7 +211,6 @@ async function clickhouseQuery(
         ${filterQuery}
       group by name, session_id, visit_id
     ) as t
-    ${visitEventsJoin}
     group by name
     order by visitors desc, visits desc
     limit ${limit}

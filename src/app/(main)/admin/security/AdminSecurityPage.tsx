@@ -11,7 +11,9 @@ export function AdminSecurityPage() {
   const { mutateAsync: setGlobal } = useUpdateQuery('/admin/2fa/global');
   const queryClient = useQueryClient();
 
-  const isGlobalRequired = status?.requiredReason === 'global' || false;
+  const isConfigured = status?.isConfigured;
+  const isGlobalRequired = status?.globalRequired ?? false;
+  const showConfigurationError = isConfigured === false;
 
   const handleToggle = async (value: boolean) => {
     await setGlobal({ required: value });
@@ -27,15 +29,23 @@ export function AdminSecurityPage() {
         <Column gap="4">
           <Column gap="1">
             <Text weight="bold">{t(labels.twoFactorAuth)}</Text>
-            <Text>{t(messages.twoFactorAdminGlobalDescription)}</Text>
+            <Text>
+              {showConfigurationError
+                ? t(messages.twoFactorErrorNotConfigured)
+                : t(messages.twoFactorAdminGlobalDescription)}
+            </Text>
           </Column>
 
           <Row alignItems="center" gap="3">
-            <Switch isSelected={isGlobalRequired} onChange={handleToggle} />
+            <Switch
+              isSelected={isGlobalRequired}
+              isDisabled={!isConfigured && !isGlobalRequired}
+              onChange={handleToggle}
+            />
             <Text>{t(labels.twoFactorRequireGlobal)}</Text>
           </Row>
 
-          {isGlobalRequired && (
+          {isConfigured === true && isGlobalRequired && (
             <Text size="sm" color="muted">
               {t(messages.twoFactorOverrideNote)}
             </Text>

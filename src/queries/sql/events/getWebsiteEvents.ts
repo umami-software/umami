@@ -100,7 +100,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       (paged_event_data.event_id is not null) as "hasData"
     from paged_events
     join website_event on website_event.event_id = paged_events.event_id
-    join session on session.session_id = website_event.session_id
+    left join session on session.session_id = website_event.session_id
       and session.website_id = website_event.website_id
     left join paged_event_data on paged_event_data.event_id = website_event.event_id
     order by paged_events.created_at desc

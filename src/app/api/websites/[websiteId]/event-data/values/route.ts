@@ -12,7 +12,7 @@ export async function GET(
   const schema = z.object({
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
-    event: z.string().optional(),
+    eventName: z.string().optional(),
     propertyName: z.string(),
     dataType: z.coerce.number().int().optional(),
     ...filterParams,
@@ -30,7 +30,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const { event: eventName, propertyName, dataType } = query;
+  const { eventName, propertyName, dataType } = query;
   const filters = await getQueryFilters(query, websiteId);
 
   const data = await getEventDataValues(websiteId, eventName, {

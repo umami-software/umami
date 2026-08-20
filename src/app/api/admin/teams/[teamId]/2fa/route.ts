@@ -1,7 +1,8 @@
 import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import { parseRequest } from '@/lib/request';
-import { json, notFound, unauthorized } from '@/lib/response';
+import { json, notFound, serviceUnavailable, unauthorized } from '@/lib/response';
+import { getTwoFactorConfigurationError, isTwoFactorConfigured } from '@/lib/two-factor/crypto';
 import { canEnforceTwoFactorAuthForTeam } from '@/permissions';
 
 export async function POST(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
@@ -23,6 +24,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
     return unauthorized();
   }
   const { required } = body;
+
+  if (required && !isTwoFactorConfigured()) {
+    return serviceUnavailable(getTwoFactorConfigurationError());
+  }
 
   await prisma.client.team.update({
     where: { id: teamId },

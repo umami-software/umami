@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "La autenticación de dos factores no está habilitada.",
     "two-factor-error-no-pending-setup": "No se encontró ninguna configuración de autenticación de dos factores pendiente.",
     "two-factor-locked-message": "Demasiados intentos fallidos. Vuelve a intentarlo en {time}.",
-    "two-factor-active-description": "Su cuenta está protegida con autenticación de dos factores. Cada inicio de sesión requiere un código de su aplicación de autenticación."
+    "two-factor-active-description": "Su cuenta está protegida con autenticación de dos factores. Cada inicio de sesión requiere un código de su aplicación de autenticación.",
+    "two-factor-error-not-configured": "La autenticación de dos factores no está disponible porque al servidor le falta una TWO_FACTOR_ENCRYPTION_KEY válida. Ponte en contacto con tu administrador para obtener ayuda."
   }
 }

@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "A autenticación de dous factores non está activada.",
     "two-factor-error-no-pending-setup": "Non se atopou ningunha configuración de autenticación de dous factores pendente.",
     "two-factor-locked-message": "Demasiados intentos fallidos. Téntao de novo en {time}.",
-    "two-factor-active-description": "A túa conta está protexida cunha autenticación de dous factores. Cada inicio de sesión require un código da túa aplicación de autenticación."
+    "two-factor-active-description": "A túa conta está protexida cunha autenticación de dous factores. Cada inicio de sesión require un código da túa aplicación de autenticación.",
+    "two-factor-error-not-configured": "Níl fíordheimhniú ar fáil toisc go bhfuil TWO_FACTOR_ENCRYPTION_KEY bailí in easnamh ar an bhfreastalaí. Déan teagmháil le do riarthóir chun cabhair a fháil."
   }
 }

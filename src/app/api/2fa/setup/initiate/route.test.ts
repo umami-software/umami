@@ -8,6 +8,7 @@ const mocks = vi.hoisted(() => ({
   upsert: vi.fn(),
   generateTotpSecret: vi.fn(),
   encryptSecret: vi.fn(),
+  isTwoFactorConfigured: vi.fn(),
   generateOtpAuthUri: vi.fn(),
   generateQrCodeDataUrl: vi.fn(),
 }));
@@ -33,6 +34,11 @@ vi.mock('@/lib/prisma', () => ({
 
 vi.mock('@/lib/two-factor/crypto', () => ({
   encryptSecret: mocks.encryptSecret,
+  getTwoFactorConfigurationError: () => ({
+    code: 'two-factor-error-not-configured',
+    message: 'TWO_FACTOR_ENCRYPTION_KEY is missing or invalid',
+  }),
+  isTwoFactorConfigured: mocks.isTwoFactorConfigured,
 }));
 
 vi.mock('@/lib/two-factor/totp', () => ({
@@ -48,9 +54,11 @@ beforeEach(() => {
   mocks.upsert.mockReset();
   mocks.generateTotpSecret.mockReset();
   mocks.encryptSecret.mockReset();
+  mocks.isTwoFactorConfigured.mockReset();
   mocks.generateOtpAuthUri.mockReset();
   mocks.generateQrCodeDataUrl.mockReset();
 
+  mocks.isTwoFactorConfigured.mockReturnValue(true);
   mocks.parseRequest.mockResolvedValue({
     auth: { user: { id: 'user-1' } },
     error: undefined,
@@ -80,6 +88,22 @@ test('POST creates a pending 2FA setup and returns the manual key and QR data', 
     qrCodeDataUrl: 'data:image/png;base64,qr',
   });
   expect(response.status).toBe(200);
+});
+
+test('POST reports a configuration error when the encryption key is missing', async () => {
+  mocks.isTwoFactorConfigured.mockReturnValue(false);
+
+  const response = await POST(
+    new Request('http://localhost/api/2fa/setup/initiate', { method: 'POST' }),
+  );
+
+  expect(mocks.upsert).not.toHaveBeenCalled();
+  await expect(response.json()).resolves.toMatchObject({
+    error: {
+      code: 'two-factor-error-not-configured',
+    },
+  });
+  expect(response.status).toBe(503);
 });
 
 test('POST rejects setup when 2FA is already enabled for the user', async () => {

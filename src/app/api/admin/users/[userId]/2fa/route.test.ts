@@ -2,6 +2,7 @@ import { beforeEach, expect, test, vi } from 'vitest';
 import { canEnforceTwoFactorAuthForUser } from '@/permissions';
 import prisma from '@/lib/prisma';
 import { parseRequest } from '@/lib/request';
+import { isTwoFactorConfigured } from '@/lib/two-factor/crypto';
 import { updateUser } from '@/queries/prisma/user';
 import { DELETE, GET, POST } from './route';
 
@@ -15,6 +16,14 @@ vi.mock('@/permissions', () => ({
 
 vi.mock('@/queries/prisma/user', () => ({
   updateUser: vi.fn(),
+}));
+
+vi.mock('@/lib/two-factor/crypto', () => ({
+  getTwoFactorConfigurationError: () => ({
+    code: 'two-factor-error-not-configured',
+    message: 'TWO_FACTOR_ENCRYPTION_KEY is missing or invalid',
+  }),
+  isTwoFactorConfigured: vi.fn(),
 }));
 
 vi.mock('@/lib/prisma', () => ({
@@ -40,12 +49,14 @@ vi.mock('@/lib/prisma', () => ({
 
 const parseRequestMock = vi.mocked(parseRequest);
 const canEnforceTwoFactorAuthForUserMock = vi.mocked(canEnforceTwoFactorAuthForUser);
+const isTwoFactorConfiguredMock = vi.mocked(isTwoFactorConfigured);
 const updateUserMock = vi.mocked(updateUser);
 const prismaMock = vi.mocked(prisma, true);
 
 beforeEach(() => {
   parseRequestMock.mockReset();
   canEnforceTwoFactorAuthForUserMock.mockReset();
+  isTwoFactorConfiguredMock.mockReset();
   updateUserMock.mockReset();
   prismaMock.client.twoFactorAuth.findUnique.mockReset();
   prismaMock.client.twoFactorAuth.deleteMany.mockReset();
@@ -64,6 +75,7 @@ beforeEach(() => {
     error: undefined,
   });
   canEnforceTwoFactorAuthForUserMock.mockResolvedValue(true);
+  isTwoFactorConfiguredMock.mockReturnValue(true);
 });
 
 test('GET returns whether 2FA is enabled for the target user', async () => {
@@ -106,6 +118,34 @@ test('POST updates the user-level 2FA requirement flag', async () => {
     twoFactorRequired: true,
   });
   expect(response.status).toBe(200);
+});
+
+test('POST rejects enabling a user-level 2FA requirement when the encryption key is missing', async () => {
+  parseRequestMock.mockResolvedValue({
+    auth: {
+      user: {
+        id: 'admin-1',
+        isAdmin: true,
+      },
+    },
+    body: {
+      required: true,
+    },
+    error: undefined,
+  });
+  isTwoFactorConfiguredMock.mockReturnValue(false);
+
+  const response = await POST(new Request('http://localhost/api/admin/users/user-1/2fa', { method: 'POST' }), {
+    params: Promise.resolve({ userId: 'user-1' }),
+  });
+
+  expect(updateUserMock).not.toHaveBeenCalled();
+  await expect(response.json()).resolves.toMatchObject({
+    error: {
+      code: 'two-factor-error-not-configured',
+    },
+  });
+  expect(response.status).toBe(503);
 });
 
 test('DELETE clears the user 2FA configuration and related support tables', async () => {

@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Kaksivaiheinen todennus ei ole käytössä.",
     "two-factor-error-no-pending-setup": "Odottavaa kaksivaiheista todennusasetusta ei löytynyt.",
     "two-factor-locked-message": "Liian monta epäonnistunutta yritystä. Yritä uudelleen osoitteessa {time}.",
-    "two-factor-active-description": "Tilisi on suojattu kaksivaiheisella todennuksella. Jokainen kirjautuminen vaatii koodin todennussovelluksestasi."
+    "two-factor-active-description": "Tilisi on suojattu kaksivaiheisella todennuksella. Jokainen kirjautuminen vaatii koodin todennussovelluksestasi.",
+    "two-factor-error-not-configured": "Kaksivaiheinen todennus ei ole käytettävissä, koska palvelimelta puuttuu kelvollinen TWO_FACTOR_ENCRYPTION_KEY. Ota yhteyttä järjestelmänvalvojaasi saadaksesi apua."
   }
 }

@@ -1,7 +1,8 @@
 import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import { parseRequest } from '@/lib/request';
-import { json, notFound, unauthorized } from '@/lib/response';
+import { json, notFound, serviceUnavailable, unauthorized } from '@/lib/response';
+import { getTwoFactorConfigurationError, isTwoFactorConfigured } from '@/lib/two-factor/crypto';
 import { updateUser } from '@/queries/prisma/user';
 import { canEnforceTwoFactorAuthForUser } from '@/permissions';
 
@@ -46,6 +47,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ use
 
   const { userId } = await params;
   const { required } = body;
+
+  if (required && !isTwoFactorConfigured()) {
+    return serviceUnavailable(getTwoFactorConfigurationError());
+  }
 
   const user = await updateUser(userId, { twoFactorRequired: required });
 

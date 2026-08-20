@@ -2,11 +2,17 @@
   --overlay-scrollbar-track: var(--gray-50);
   --overlay-scrollbar-thumb: var(--gray-300);
   --overlay-scrollbar-thumb-hover: var(--gray-400);
+  --overlay-scrollbar-viewport-padding-right: 0px;
+  --overlay-scrollbar-vertical-margin-right: 2px;
+}
+
+.root > :first-child {
+  padding-right: var(--overlay-scrollbar-viewport-padding-right);
 }
 
 .root > [data-orientation="vertical"] {
   width: 4px;
-  margin: 16px 2px;
+  margin: 16px var(--overlay-scrollbar-vertical-margin-right);
   background-color: var(--overlay-scrollbar-track);
 }
 
@@ -38,7 +44,7 @@
   content: "";
 }
 
-:global([data-theme="dark"]) .root {
+[data-theme='dark'] .root {
   --overlay-scrollbar-track: var(--gray-800);
   --overlay-scrollbar-thumb: var(--gray-600);
   --overlay-scrollbar-thumb-hover: var(--gray-500);
