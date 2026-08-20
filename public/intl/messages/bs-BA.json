@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Dvofaktorska autentifikacija nije omogućena.",
     "two-factor-error-no-pending-setup": "Nije pronađeno podešavanje dvofaktorske autentifikacije na čekanju.",
     "two-factor-locked-message": "Previše neuspjelih pokušaja. Pokušajte ponovo na {time}.",
-    "two-factor-active-description": "Vaš nalog je zaštićen dvofaktorskom autentifikacijom. Za svaku prijavu potreban je kod iz vaše aplikacije za autentifikaciju."
+    "two-factor-active-description": "Vaš nalog je zaštićen dvofaktorskom autentifikacijom. Za svaku prijavu potreban je kod iz vaše aplikacije za autentifikaciju.",
+    "two-factor-error-not-configured": "Dvofaktorska autentifikacija nije dostupna jer serveru nedostaje važeći TWO_FACTOR_ENCRYPTION_KEY. Obratite se administratoru za pomoć."
   }
 }

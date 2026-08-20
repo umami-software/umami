@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "İki faktörlü kimlik doğrulama etkin değil.",
     "two-factor-error-no-pending-setup": "Bekleyen iki faktörlü kimlik doğrulama kurulumu bulunamadı.",
     "two-factor-locked-message": "Çok fazla başarısız deneme. {time} adresinde tekrar deneyin.",
-    "two-factor-active-description": "Hesabınız iki faktörlü kimlik doğrulama ile korunmaktadır. Her oturum açma, kimlik doğrulayıcı uygulamanızdan bir kod gerektirir."
+    "two-factor-active-description": "Hesabınız iki faktörlü kimlik doğrulama ile korunmaktadır. Her oturum açma, kimlik doğrulayıcı uygulamanızdan bir kod gerektirir.",
+    "two-factor-error-not-configured": "Sunucuda geçerli bir TWO_FACTOR_ENCRYPTION_KEY bulunmadığı için iki faktörlü kimlik doğrulama kullanılamıyor. Yardım için yöneticinizle iletişime geçin."
   }
 }

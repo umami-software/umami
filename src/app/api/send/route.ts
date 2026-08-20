@@ -156,8 +156,8 @@ export async function POST(request: Request) {
     const visitSalt = hash(startOfHour(createdAt).toUTCString());
 
     const sessionId = uuid(sourceId, ip, userAgent, sessionSalt);
-    const shouldEnsureSession =
-      !clickhouse.enabled && !!websiteId && !!cache?.sessionId && cache.sessionId !== sessionId;
+    const sessionDrift = !!websiteId && !!cache?.sessionId && cache.sessionId !== sessionId;
+    const shouldEnsureSession = !clickhouse.enabled && sessionDrift;
 
     // Create a session if not found
     if ((!clickhouse.enabled && !cache?.sessionId) || shouldEnsureSession) {
@@ -180,6 +180,12 @@ export async function POST(request: Request) {
     // Visit info
     let visitId = cache?.visitId || uuid(sessionId, visitSalt);
     let iat = cache?.iat || now;
+
+    // A drifted cache session should start a fresh visit on the recomputed session.
+    if (sessionDrift) {
+      visitId = uuid(sessionId, visitSalt);
+      iat = now;
+    }
 
     // Expire visit after 30 minutes
     if (!timestamp && now - iat > 1800) {

@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Ikki faktorli autentifikatsiya yoqilmagan.",
     "two-factor-error-no-pending-setup": "Kutilayotgan ikki faktorli autentifikatsiya sozlamalari topilmadi.",
     "two-factor-locked-message": "Juda ko'p muvaffaqiyatsiz urinishlar. [[9000]]] orqali qayta urinib koʻring.",
-    "two-factor-active-description": "Hisobingiz ikki faktorli autentifikatsiya bilan himoyalangan. Har bir login uchun autentifikatsiya ilovangizdan kod talab qilinadi."
+    "two-factor-active-description": "Hisobingiz ikki faktorli autentifikatsiya bilan himoyalangan. Har bir login uchun autentifikatsiya ilovangizdan kod talab qilinadi.",
+    "two-factor-error-not-configured": "Ikki faktorli autentifikatsiya mavjud emas, chunki serverda yaroqli TWO_FACTOR_ENCRYPTION_KEY yoʻq. Yordam uchun administratoringiz bilan bogʻlaning."
   }
 }

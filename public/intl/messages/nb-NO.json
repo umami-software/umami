@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Tofaktorautentisering er ikke aktivert.",
     "two-factor-error-no-pending-setup": "Fant ingen ventende tofaktorautentiseringsoppsett.",
     "two-factor-locked-message": "For mange mislykkede forsøk. Prøv igjen på {time}.",
-    "two-factor-active-description": "Kontoen din er beskyttet med tofaktorautentisering. Hver pålogging krever en kode fra autentiseringsappen din."
+    "two-factor-active-description": "Kontoen din er beskyttet med tofaktorautentisering. Hver pålogging krever en kode fra autentiseringsappen din.",
+    "two-factor-error-not-configured": "Tofaktorautentisering er ikke tilgjengelig fordi serveren mangler en gyldig TWO_FACTOR_ENCRYPTION_KEY. Kontakt administratoren din for hjelp."
   }
 }

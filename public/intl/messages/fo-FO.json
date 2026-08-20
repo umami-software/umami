@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Tvífaktor-góðkenning er ikki virkin.",
     "two-factor-error-no-pending-setup": "Eingin bíðandi tvífaktor-autentikatiónsuppseting funnin.",
     "two-factor-locked-message": "Ov nógvar miseydnaðar royndir. Royn aftur við {time}.",
-    "two-factor-active-description": "Tín konta er vard við tvífaktor-góðkenning. Hvørt innritan krevur eina kodu frá tínari sannroyndarapp."
+    "two-factor-active-description": "Tín konta er vard við tvífaktor-góðkenning. Hvørt innritan krevur eina kodu frá tínari sannroyndarapp.",
+    "two-factor-error-not-configured": "Tvíþátta innriting er ikki tøk, tí tænaranum vantar ein galdandi TWO_FACTOR_ENCRYPTION_KEY. Set teg í samband við tín skipara fyri hjálp."
   }
 }

@@ -93,7 +93,7 @@ function callPOST(
   );
 }
 
-function makeComputedSessionId(sourceId: string, timestamp = 1704067200) {
+function makeComputedSessionId(sourceId: string, timestamp = Math.floor(Date.now() / 1000)) {
   const createdAt = new Date(timestamp * 1000);
   const sessionSalt = getSalt(process.env.SALT_ROTATION || 'month', createdAt);
 
@@ -564,7 +564,7 @@ describe('cache token handling', () => {
   test('a valid cache token creates the computed session before event writes when the cached session differs', async () => {
     const token = makeCacheToken({ sessionId: 'cached-session' });
 
-    await callPOST(
+    const response = await callPOST(
       { type: 'event', payload: { website: WEBSITE_ID, url: '/' } },
       { headers: { 'x-umami-cache': token } },
     );
@@ -572,15 +572,19 @@ describe('cache token handling', () => {
     expect(createSessionMock).toHaveBeenCalledTimes(1);
     const createdSession = createSessionMock.mock.calls[0][0] as Record<string, any>;
     const savedEvent = saveEventMock.mock.calls[0][0] as Record<string, any>;
+    const body = (await response.json()) as Record<string, any>;
 
     expect(createdSession.id).not.toBe('cached-session');
     expect(savedEvent.sessionId).toBe(createdSession.id);
+    expect(savedEvent.visitId).not.toBe('cached-visit');
+    expect(body.sessionId).toBe(createdSession.id);
+    expect(body.visitId).toBe(savedEvent.visitId);
   });
 
   test('a valid cache token creates the computed session before identify writes when the cached session differs', async () => {
     const token = makeCacheToken({ sessionId: 'cached-session' });
 
-    await callPOST(
+    const response = await callPOST(
       { type: 'identify', payload: { website: WEBSITE_ID, id: 'user-42', data: { plan: 'pro' } } },
       { headers: { 'x-umami-cache': token } },
     );
@@ -590,11 +594,32 @@ describe('cache token handling', () => {
     const savedLink = saveSessionLinkMock.mock.calls[0][0] as Record<string, any>;
     const updatedSession = updateSessionMock.mock.calls[0][0] as Record<string, any>;
     const savedSessionData = saveSessionDataMock.mock.calls[0][0] as Record<string, any>;
+    const body = (await response.json()) as Record<string, any>;
 
     expect(createdSession.id).not.toBe('cached-session');
     expect(savedLink.sessionId).toBe(createdSession.id);
     expect(updatedSession.sessionId).toBe(createdSession.id);
     expect(savedSessionData.sessionId).toBe(createdSession.id);
+    expect(body.sessionId).toBe(createdSession.id);
+    expect(body.visitId).not.toBe('cached-visit');
+  });
+
+  test('a drifted cache token resets the visit in clickhouse mode without creating a session row', async () => {
+    (clickhouse as any).enabled = true;
+    const token = makeCacheToken({ sessionId: 'cached-session' });
+
+    const response = await callPOST(
+      { type: 'event', payload: { website: WEBSITE_ID, url: '/' } },
+      { headers: { 'x-umami-cache': token } },
+    );
+
+    const savedEvent = saveEventMock.mock.calls[0][0] as Record<string, any>;
+    const body = (await response.json()) as Record<string, any>;
+
+    expect(createSessionMock).not.toHaveBeenCalled();
+    expect(savedEvent.sessionId).toBe(body.sessionId);
+    expect(savedEvent.visitId).not.toBe('cached-visit');
+    expect(body.visitId).toBe(savedEvent.visitId);
   });
 
   test('an invalid cache token falls back to website lookup', async () => {
@@ -688,7 +713,7 @@ describe('30-minute visit expiry', () => {
       {
         type: CACHE_TOKEN_TYPE,
         websiteId: WEBSITE_ID,
-        sessionId: 'cached-session',
+        sessionId: makeComputedSessionId(WEBSITE_ID),
         visitId: 'cached-visit',
         iat: recentIat,
       },
@@ -704,12 +729,13 @@ describe('30-minute visit expiry', () => {
   });
 
   test('does not expire the visit when an explicit timestamp is supplied', async () => {
+    const timestamp = 1000000000;
     const oldIat = Math.floor(Date.now() / 1000) - 5000;
     const token = createToken(
       {
         type: CACHE_TOKEN_TYPE,
         websiteId: WEBSITE_ID,
-        sessionId: 'cached-session',
+        sessionId: makeComputedSessionId(WEBSITE_ID, timestamp),
         visitId: 'cached-visit',
         iat: oldIat,
       },
@@ -719,7 +745,7 @@ describe('30-minute visit expiry', () => {
     const response = await callPOST(
       {
         type: 'event',
-        payload: { website: WEBSITE_ID, url: '/', timestamp: 1000000000 },
+        payload: { website: WEBSITE_ID, url: '/', timestamp },
       },
       { headers: { 'x-umami-cache': token } },
     );

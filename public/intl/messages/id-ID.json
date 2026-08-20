@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Otentikasi dua faktor tidak diaktifkan.",
     "two-factor-error-no-pending-setup": "Tidak ditemukan penyiapan autentikasi dua faktor yang tertunda.",
     "two-factor-locked-message": "Terlalu banyak upaya yang gagal. Coba lagi di {time}.",
-    "two-factor-active-description": "Akun Anda dilindungi dengan otentikasi dua faktor. Setiap login memerlukan kode dari aplikasi autentikator Anda."
+    "two-factor-active-description": "Akun Anda dilindungi dengan otentikasi dua faktor. Setiap login memerlukan kode dari aplikasi autentikator Anda.",
+    "two-factor-error-not-configured": "Autentikasi dua faktor tidak tersedia karena server tidak memiliki TWO_FACTOR_ENCRYPTION_KEY yang valid. Hubungi administrator Anda untuk mendapatkan bantuan."
   }
 }

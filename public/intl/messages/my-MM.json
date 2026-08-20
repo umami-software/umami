@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "two-factor authentication ကို ဖွင့်မထားပါ။",
     "two-factor-error-no-pending-setup": "ဆိုင်းငံ့ထားသော two-factor authentication setup ကို မတွေ့ပါ။",
     "two-factor-locked-message": "မအောင်မြင်သောကြိုးစားမှုများစွာ။ {time} တွင် ထပ်စမ်းကြည့်ပါ။",
-    "two-factor-active-description": "သင့်အကောင့်ကို two-factor authentication ဖြင့် ကာကွယ်ထားသည်။ အကောင့်ဝင်ခြင်းတစ်ခုစီတိုင်းသည် သင်၏ authenticator အက်ပ်မှ ကုဒ်တစ်ခု လိုအပ်သည်။"
+    "two-factor-active-description": "သင့်အကောင့်ကို two-factor authentication ဖြင့် ကာကွယ်ထားသည်။ အကောင့်ဝင်ခြင်းတစ်ခုစီတိုင်းသည် သင်၏ authenticator အက်ပ်မှ ကုဒ်တစ်ခု လိုအပ်သည်။",
+    "two-factor-error-not-configured": "ဆာဗာတွင် မှန်ကန်သော TWO_FACTOR_ENCRYPTION_KEY မရှိသောကြောင့် နှစ်ဆင့်အတည်ပြုခြင်းကို မရနိုင်ပါ။ အကူအညီအတွက် သင့်စီမံခန့်ခွဲသူကို ဆက်သွယ်ပါ။"
   }
 }

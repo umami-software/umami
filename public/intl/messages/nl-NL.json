@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Tweefactorauthenticatie is niet ingeschakeld.",
     "two-factor-error-no-pending-setup": "Er is geen openstaande configuratie voor tweefactorauthenticatie gevonden.",
     "two-factor-locked-message": "Te veel mislukte pogingen. Probeer het opnieuw op {time}.",
-    "two-factor-active-description": "Uw account is beveiligd met tweefactorauthenticatie. Voor elke login is een code van uw authenticator-app vereist."
+    "two-factor-active-description": "Uw account is beveiligd met tweefactorauthenticatie. Voor elke login is een code van uw authenticator-app vereist.",
+    "two-factor-error-not-configured": "Tweefactorauthenticatie is niet beschikbaar omdat de server geen geldige TWO_FACTOR_ENCRYPTION_KEY heeft. Neem contact op met je beheerder voor hulp."
   }
 }

@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "이중 인증이 활성화되어 있지 않습니다.",
     "two-factor-error-no-pending-setup": "보류 중인 2단계 인증 설정을 찾을 수 없습니다.",
     "two-factor-locked-message": "실패한 시도가 너무 많습니다. {time}에서 다시 시도하세요.",
-    "two-factor-active-description": "귀하의 계정은 이중 인증으로 보호됩니다. 로그인할 때마다 인증 앱의 코드가 필요합니다."
+    "two-factor-active-description": "귀하의 계정은 이중 인증으로 보호됩니다. 로그인할 때마다 인증 앱의 코드가 필요합니다.",
+    "two-factor-error-not-configured": "서버에 유효한 TWO_FACTOR_ENCRYPTION_KEY가 없기 때문에 2단계 인증을 사용할 수 없습니다. 도움이 필요하면 관리자에게 문의하세요."
   }
 }

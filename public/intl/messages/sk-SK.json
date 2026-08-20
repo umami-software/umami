@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Dvojfaktorové overenie nie je povolené.",
     "two-factor-error-no-pending-setup": "Nenašlo sa žiadne čakajúce nastavenie dvojfaktorovej autentifikácie.",
     "two-factor-locked-message": "Príliš veľa neúspešných pokusov. Skúste to znova na {time}.",
-    "two-factor-active-description": "Váš účet je chránený dvojfaktorovou autentifikáciou. Každé prihlásenie vyžaduje kód z vašej autentifikačnej aplikácie."
+    "two-factor-active-description": "Váš účet je chránený dvojfaktorovou autentifikáciou. Každé prihlásenie vyžaduje kód z vašej autentifikačnej aplikácie.",
+    "two-factor-error-not-configured": "Dvojfaktorové overenie nie je k dispozícii, pretože serveru chýba platný TWO_FACTOR_ENCRYPTION_KEY. Požiadajte správcu o pomoc."
   }
 }

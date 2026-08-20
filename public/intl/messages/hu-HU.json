@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "A kéttényezős hitelesítés nincs engedélyezve.",
     "two-factor-error-no-pending-setup": "Nem található függőben lévő kéttényezős hitelesítési beállítás.",
     "two-factor-locked-message": "Túl sok sikertelen próbálkozás. Próbálja újra a {time}-on.",
-    "two-factor-active-description": "Fiókját kétlépcsős hitelesítés védi. Minden bejelentkezéshez kód szükséges a hitelesítő alkalmazástól."
+    "two-factor-active-description": "Fiókját kétlépcsős hitelesítés védi. Minden bejelentkezéshez kód szükséges a hitelesítő alkalmazástól.",
+    "two-factor-error-not-configured": "A kétfaktoros hitelesítés nem érhető el, mert a szerverről hiányzik egy érvényes TWO_FACTOR_ENCRYPTION_KEY. Kérj segítséget a rendszergazdától."
   }
 }

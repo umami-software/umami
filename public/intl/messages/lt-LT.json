@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Dviejų veiksnių autentifikavimas neįjungtas.",
     "two-factor-error-no-pending-setup": "Nerasta laukiančių dviejų veiksnių autentifikavimo sąrankos.",
     "two-factor-locked-message": "Per daug nesėkmingų bandymų. Bandykite dar kartą adresu {time}.",
-    "two-factor-active-description": "Jūsų paskyra apsaugota dviejų veiksnių autentifikavimu. Kiekvienam prisijungimui reikalingas kodas iš autentifikavimo programos."
+    "two-factor-active-description": "Jūsų paskyra apsaugota dviejų veiksnių autentifikavimu. Kiekvienam prisijungimui reikalingas kodas iš autentifikavimo programos.",
+    "two-factor-error-not-configured": "Dviejų veiksnių autentifikavimas negalimas, nes serveryje nėra galiojančio TWO_FACTOR_ENCRYPTION_KEY. Kreipkitės pagalbos į administratorių."
   }
 }

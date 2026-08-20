@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Tvåfaktorsautentisering är inte aktiverad.",
     "two-factor-error-no-pending-setup": "Ingen väntande tvåfaktorsautentiseringskonfiguration hittades.",
     "two-factor-locked-message": "För många misslyckade försök. Försök igen på {time}.",
-    "two-factor-active-description": "Ditt konto är skyddat med tvåfaktorsautentisering. Varje inloggning kräver en kod från din autentiseringsapp."
+    "two-factor-active-description": "Ditt konto är skyddat med tvåfaktorsautentisering. Varje inloggning kräver en kod från din autentiseringsapp.",
+    "two-factor-error-not-configured": "Tvåfaktorsautentisering är inte tillgänglig eftersom servern saknar en giltig TWO_FACTOR_ENCRYPTION_KEY. Kontakta administratören för hjälp."
   }
 }

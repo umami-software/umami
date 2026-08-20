@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Die Zwei-Faktor-Authentifizierung ist nicht aktiviert.",
     "two-factor-error-no-pending-setup": "Es wurde kein ausstehendes Zwei-Faktor-Authentifizierungs-Setup gefunden.",
     "two-factor-locked-message": "Zu viele gescheiterte Versuche. Versuchen Sie es erneut bei {time}.",
-    "two-factor-active-description": "Ihr Konto ist durch eine Zwei-Faktor-Authentifizierung geschützt. Für jede Anmeldung ist ein Code aus Ihrer Authentifizierungs-App erforderlich."
+    "two-factor-active-description": "Ihr Konto ist durch eine Zwei-Faktor-Authentifizierung geschützt. Für jede Anmeldung ist ein Code aus Ihrer Authentifizierungs-App erforderlich.",
+    "two-factor-error-not-configured": "Die Zwei-Faktor-Authentifizierung ist nicht verfügbar, weil dem Server ein gültiger TWO_FACTOR_ENCRYPTION_KEY fehlt. Wende dich an deinen Administrator, um Hilfe zu erhalten."
   }
 }

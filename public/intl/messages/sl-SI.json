@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Dvostopenjska avtentikacija ni omogočena.",
     "two-factor-error-no-pending-setup": "Najdena ni bila čakajoča nastavitev dvostopenjske avtentikacije.",
     "two-factor-locked-message": "Preveč neuspelih poskusov. Poskusite znova na {time}.",
-    "two-factor-active-description": "Vaš račun je zaščiten z dvostopenjsko avtentikacijo. Vsaka prijava zahteva kodo iz vaše aplikacije za preverjanje pristnosti."
+    "two-factor-active-description": "Vaš račun je zaščiten z dvostopenjsko avtentikacijo. Vsaka prijava zahteva kodo iz vaše aplikacije za preverjanje pristnosti.",
+    "two-factor-error-not-configured": "Dvofaktorska avtentikacija ni na voljo, ker strežniku manjka veljaven TWO_FACTOR_ENCRYPTION_KEY. Za pomoč se obrnite na skrbnika."
   }
 }

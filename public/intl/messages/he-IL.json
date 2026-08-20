@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "אימות דו-שלבי אינו מופעל.",
     "two-factor-error-no-pending-setup": "לא נמצאה הגדרת אימות דו-גורמי בהמתנה.",
     "two-factor-locked-message": "יותר מדי ניסיונות כושלים. נסה שוב ב-{time}.",
-    "two-factor-active-description": "החשבון שלך מוגן באמצעות אימות דו-גורמי. כל התחברות דורשת קוד מאפליקציית המאמת שלך."
+    "two-factor-active-description": "החשבון שלך מוגן באמצעות אימות דו-גורמי. כל התחברות דורשת קוד מאפליקציית המאמת שלך.",
+    "two-factor-error-not-configured": "אימות דו-שלבי אינו זמין משום שלשרת חסר TWO_FACTOR_ENCRYPTION_KEY תקף. יש לפנות למנהל המערכת לקבלת עזרה."
   }
 }

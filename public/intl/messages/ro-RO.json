@@ -506,6 +506,7 @@
     "two-factor-error-not-enabled": "Autentificarea cu doi factori nu este activată.",
     "two-factor-error-no-pending-setup": "Nu a fost găsită nicio configurare de autentificare cu doi factori în așteptare.",
     "two-factor-locked-message": "Prea multe încercări eșuate. Încercați din nou la {time}.",
-    "two-factor-active-description": "Contul dvs. este protejat cu autentificare cu doi factori. Fiecare autentificare necesită un cod din aplicația dvs. de autentificare."
+    "two-factor-active-description": "Contul dvs. este protejat cu autentificare cu doi factori. Fiecare autentificare necesită un cod din aplicația dvs. de autentificare.",
+    "two-factor-error-not-configured": "Autentificarea cu doi factori nu este disponibilă deoarece serverului îi lipsește un TWO_FACTOR_ENCRYPTION_KEY valid. Contactați administratorul pentru ajutor."
   }
 }

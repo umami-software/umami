@@ -268,7 +268,6 @@
     "play": "پخش",
     "replay": "پخش مجدد",
     "replay-id": "Replay ID",
-    "replay-code": "کد پخش مجدد نشست",
     "replays": "پخش‌های مجدد",
     "reports": "گزارش‌ها",
     "required": "ضروری",
@@ -293,12 +292,10 @@
     "segment": "بخش",
     "segments": "بخش‌ها",
     "select": "انتخاب",
-    "select-link": "پیوند را انتخاب کنید",
-    "select-pixel": "پیکسل را انتخاب کنید",
-    "select-date": "انتخاب تاریخ",
-    "select-filter": "انتخاب فیلتر",
     "select-link": "انتخاب لینک",
     "select-pixel": "انتخاب پیکسل",
+    "select-date": "انتخاب تاریخ",
+    "select-filter": "انتخاب فیلتر",
     "select-role": "انتخاب نقش",
     "select-component": "یک کامپوننت انتخاب کنید",
     "select-event": "یک رویداد را انتخاب کنید",
@@ -423,7 +420,9 @@
     "two-factor-reset": "بازنشانی 2FA",
     "two-factor-global-active-tooltip": "جهانی 2FA فعال است",
     "two-factor-verify": "تأیید کنید",
-    "two-factor-login": "احراز هویت دو مرحله ای"
+    "two-factor-login": "احراز هویت دو مرحله ای",
+    "recorder-code": "کد پخش مجدد نشست",
+    "replay-enabled": "بازپخش فعال است"
   },
   "message": {
     "action-confirmation": "برای تأیید این عملیات، لطفاً {confirmation} را تایپ کنید.",
@@ -474,11 +473,10 @@
     "transfer-website": "مالکیت وب‌سایت را به حساب خودت یا یک تیم دیگر منتقل کنید.",
     "triggered-event": "رویداد فعال شده",
     "unauthorized": "غیرمجاز",
-    "upgrade-required": "این قابلیت نیاز به اشتراک پلن {plan} دارد.",
+    "upgrade-required": "این ویژگی به اشتراک طرح {plan} نیاز دارد.",
     "user-deleted": "کاربر حذف شد.",
     "replay-min-duration-description": "فقط پخش‌هایی را نشان بده که مدت زمان آن‌ها برابر یا بیشتر از این مقدار است.",
     "viewed-page": "صفحه مشاهده شد",
-    "upgrade-required": "این ویژگی به اشتراک طرح {plan} نیاز دارد.",
     "visitor-log": "بازدیدکننده از کشور <b>{country}</b> با مروگر <b>{browser}</b> در <b>{os}</b> <b>{device}</b>",
     "two-factor-setup-description": "هر بار که وارد سیستم می شوید، علاوه بر رمز عبور، از یک برنامه احراز هویت برای ایجاد و استفاده از یک کد یکبار مصرف استفاده می کنید.",
     "two-factor-setup-required-description": "برای دسترسی به Umami احراز هویت دو مرحله ای (2FA) مورد نیاز است.",
@@ -508,6 +506,7 @@
     "two-factor-error-not-enabled": "احراز هویت دو مرحله ای فعال نیست.",
     "two-factor-error-no-pending-setup": "هیچ راه‌اندازی احراز هویت دو مرحله‌ای معلق پیدا نشد.",
     "two-factor-locked-message": "تلاش های ناموفق بسیار زیاد. دوباره در {time} امتحان کنید.",
-    "two-factor-active-description": "حساب شما با احراز هویت دو مرحله ای محافظت می شود. هر ورود به یک کد از برنامه احراز هویت شما نیاز دارد."
+    "two-factor-active-description": "حساب شما با احراز هویت دو مرحله ای محافظت می شود. هر ورود به یک کد از برنامه احراز هویت شما نیاز دارد.",
+    "two-factor-error-not-configured": "احراز هویت دومرحله‌ای در دسترس نیست زیرا سرور فاقد یک TWO_FACTOR_ENCRYPTION_KEY معتبر است. برای کمک با مدیر خود تماس بگیرید."
   }
 }
