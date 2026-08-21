@@ -467,7 +467,7 @@
     "team-already-member": "Siz allaqachon jamoa a'zosisiz.",
     "team-not-found": "Jamoa topilmadi.",
     "team-websites-info": "Veb-saytlarni jamoaning har bir a'zosi koʻrishi mumkin.",
-    "tracking-code": "Bu veb-sayt uchun statistikani kuzatish uchun quyidagi kodni HTML'ingizdagi **<head>...</head>** qismiga joylashtiring.",
+    "tracking-code": "Bu veb-sayt uchun statistikani kuzatish uchun quyidagi kodni HTML'ingizdagi **'<head>...</head>'** qismiga joylashtiring.",
     "transfer-team-website-to-user": "Bu veb-saytni oʻz hisobingizga oʻtkazasizmi?",
     "transfer-user-website-to-team": "Bu veb-saytni oʻtkazish uchun jamoani tanlang.",
     "transfer-website": "Veb-sayt egaligini oʻz hisobingizga yoki boshqa jamoaga oʻtkazish.",
@@ -505,7 +505,7 @@
     "two-factor-error-already-enabled": "Ikki faktorli autentifikatsiya allaqachon yoqilgan.",
     "two-factor-error-not-enabled": "Ikki faktorli autentifikatsiya yoqilmagan.",
     "two-factor-error-no-pending-setup": "Kutilayotgan ikki faktorli autentifikatsiya sozlamalari topilmadi.",
-    "two-factor-locked-message": "Juda ko'p muvaffaqiyatsiz urinishlar. [[9000]]] orqali qayta urinib koʻring.",
+    "two-factor-locked-message": "Juda ko'p muvaffaqiyatsiz urinishlar. {time} orqali qayta urinib koʻring.",
     "two-factor-active-description": "Hisobingiz ikki faktorli autentifikatsiya bilan himoyalangan. Har bir login uchun autentifikatsiya ilovangizdan kod talab qilinadi.",
     "two-factor-error-not-configured": "Ikki faktorli autentifikatsiya mavjud emas, chunki serverda yaroqli TWO_FACTOR_ENCRYPTION_KEY yoʻq. Yordam uchun administratoringiz bilan bogʻlaning."
   }
