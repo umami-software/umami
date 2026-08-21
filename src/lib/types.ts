@@ -240,6 +240,15 @@ export interface BoardColumn {
  * offers them on the /events path, which no board component renders.
  */
 export interface BoardRowFilters {
+  /**
+   * The website the filters were defined against. Session properties,
+   * segments and cohorts are website-scoped, so on a mixed board — where each
+   * column can be bound to a different entity — the row's filters apply only
+   * to the columns showing this website. Columns pointing anywhere else are
+   * left unfiltered rather than queried with filters that don't belong to
+   * them.
+   */
+  websiteId?: string;
   filters?: Filter[];
   sessionPropertyFilters?: SessionPropertyFilter[];
   segment?: string;

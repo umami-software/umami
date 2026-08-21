@@ -22,7 +22,35 @@ async function addWebsiteWithId(request: any, auth: Auth, name: string, domain: 
   return websiteId;
 }
 
-async function addBoard(request: any, auth: Auth, websiteId: string, filters?: object) {
+const UA =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+
+async function seedSessions(request: any, websiteId: string, value: string, count: number) {
+  for (let i = 0; i < count; i++) {
+    const payload = {
+      website: websiteId,
+      hostname: 'rowfilter.test',
+      language: 'en-US',
+      screen: '1512x982',
+      url: `/seed-${value}-${i}`,
+    };
+    const headers = { 'Content-Type': 'application/json', 'User-Agent': `${UA} [${value}${i}]` };
+
+    await request.post('/api/send', {
+      headers,
+      data: { type: 'identify', payload: { ...payload, data: { user_region: value } } },
+    });
+    await request.post('/api/send', { headers, data: { type: 'event', payload } });
+  }
+}
+
+async function addBoard(
+  request: any,
+  auth: Auth,
+  websiteId: string,
+  filters?: object,
+  extraWebsiteId?: string,
+) {
   const response = await request.post('/api/boards', {
     headers: authHeaders(auth),
     data: {
@@ -37,16 +65,35 @@ async function addBoard(request: any, auth: Auth, websiteId: string, filters?: o
           {
             id: uuid(),
             ...(filters ? { filters } : {}),
-            columns: [
-              {
-                id: uuid(),
-                component: {
-                  type: 'WebsiteMetricsBar',
-                  entityType: 'website',
-                  entityId: websiteId,
-                },
-              },
-            ],
+            columns: extraWebsiteId
+              ? [
+                  {
+                    id: uuid(),
+                    component: {
+                      type: 'WebsiteMetricsBar',
+                      entityType: 'website',
+                      entityId: websiteId,
+                    },
+                  },
+                  {
+                    id: uuid(),
+                    component: {
+                      type: 'WebsiteMetricsBar',
+                      entityType: 'website',
+                      entityId: extraWebsiteId,
+                    },
+                  },
+                ]
+              : [
+                  {
+                    id: uuid(),
+                    component: {
+                      type: 'WebsiteMetricsBar',
+                      entityType: 'website',
+                      entityId: websiteId,
+                    },
+                  },
+                ],
           },
         ],
       },
@@ -106,5 +153,51 @@ test.describe('Board row filters', () => {
     await request.delete(`/api/boards/${filteredBoard}`, { headers: authHeaders(auth) });
     await request.delete(`/api/boards/${plainBoard}`, { headers: authHeaders(auth) });
     await request.delete(`/api/websites/${websiteId}`, { headers: authHeaders(auth) });
+  });
+
+  test('leaves columns for another website unscoped on a mixed row', async ({ page, request }) => {
+    const auth = await loginPage(page, request);
+    const filtered = await addWebsiteWithId(request, auth, 'Row filter A', 'rowfiltera.com');
+    const other = await addWebsiteWithId(request, auth, 'Row filter B', 'rowfilterb.com');
+
+    // Website A has 2 sessions in the region we filter on; website B has 3
+    // sessions and no such property at all.
+    await seedSessions(request, filtered, region, 2);
+    await seedSessions(request, other, 'Elsewhere', 3);
+
+    const boardId = await addBoard(
+      request,
+      auth,
+      filtered,
+      { ...rowFilters, websiteId: filtered },
+      other,
+    );
+
+    const scopedRequests: string[] = [];
+    page.on('request', req => {
+      if (req.url().includes('/api/websites/')) {
+        scopedRequests.push(req.url());
+      }
+    });
+
+    await page.goto(`/boards/${boardId}`);
+    await expect(page.getByTestId('board-row-filter-tags')).toContainText(region);
+    await expect.poll(() => scopedRequests.some(url => url.includes(filtered))).toBe(true);
+    await expect.poll(() => scopedRequests.some(url => url.includes(other))).toBe(true);
+
+    // The filter must ride along only on the website it was defined for.
+    const filteredWithParam = scopedRequests.filter(
+      url => url.includes(filtered) && url.includes('spf0='),
+    );
+    const otherWithParam = scopedRequests.filter(
+      url => url.includes(other) && url.includes('spf0='),
+    );
+
+    expect(filteredWithParam.length).toBeGreaterThan(0);
+    expect(otherWithParam).toEqual([]);
+
+    await request.delete(`/api/boards/${boardId}`, { headers: authHeaders(auth) });
+    await request.delete(`/api/websites/${filtered}`, { headers: authHeaders(auth) });
+    await request.delete(`/api/websites/${other}`, { headers: authHeaders(auth) });
   });
 });

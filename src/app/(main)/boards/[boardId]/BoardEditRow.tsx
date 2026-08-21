@@ -11,7 +11,7 @@ import { v4 as uuid } from 'uuid';
 import { FilterScopeProvider } from '@/components/common/FilterScopeProvider';
 import { useBoard } from '@/components/hooks';
 import { ChevronDown, GripVertical, Minus, Plus } from '@/components/icons';
-import { boardRowFiltersToParams } from '@/lib/params';
+import { getResolvedComponentEntity } from '@/lib/boards';
 import type {
   BoardColumn as BoardColumnType,
   BoardComponentConfig,
@@ -21,7 +21,7 @@ import { BoardEditColumn } from './BoardEditColumn';
 import { BoardRowFilterButton } from './BoardRowFilterButton';
 import { BoardRowFilterTags } from './BoardRowFilterTags';
 import { MAX_COLUMNS, MIN_COLUMN_WIDTH } from './boardConstants';
-import { useBoardRowWebsiteId } from './useBoardRowWebsiteId';
+import { useBoardRowScope } from './useBoardRowScope';
 
 export function BoardEditRow({
   rowId,
@@ -48,7 +48,7 @@ export function BoardEditRow({
 }) {
   const { board, updateBoard } = useBoard();
   const [showActions, setShowActions] = useState(false);
-  const filterWebsiteId = useBoardRowWebsiteId(board, columns);
+  const scope = useBoardRowScope(board, columns, filters);
   const moveUpDisabled = rowIndex === 0;
   const addColumnDisabled = columns.length >= MAX_COLUMNS;
   const moveDownDisabled = rowIndex === rowCount - 1;
@@ -96,9 +96,6 @@ export function BoardEditRow({
     });
   };
 
-  const scopeParams = boardRowFiltersToParams(filters);
-  const hasRowFilters = Object.keys(scopeParams).length > 0;
-
   const columnsGroup = (
     <Group groupRef={handleGroupRef}>
       {columns?.map((column, index) => (
@@ -108,13 +105,24 @@ export function BoardEditRow({
             minSize={MIN_COLUMN_WIDTH}
             defaultSize={column.size != null ? `${column.size}%` : undefined}
           >
-            <BoardEditColumn
-              {...column}
-              canEdit={canEdit}
-              onRemove={handleRemoveColumn}
-              onSetComponent={handleSetComponent}
-              canRemove={columns.length > 1}
-            />
+            {(() => {
+              const { entityId } = getResolvedComponentEntity(board, column.component);
+              const content = (
+                <BoardEditColumn
+                  {...column}
+                  canEdit={canEdit}
+                  onRemove={handleRemoveColumn}
+                  onSetComponent={handleSetComponent}
+                  canRemove={columns.length > 1}
+                />
+              );
+
+              return scope.appliesTo(entityId) ? (
+                <FilterScopeProvider params={scope.params}>{content}</FilterScopeProvider>
+              ) : (
+                content
+              );
+            })()}
           </ResizablePanel>
           {index < columns.length - 1 && (
             <Separator
@@ -154,15 +162,17 @@ export function BoardEditRow({
       onMouseEnter={() => setShowActions(true)}
       onMouseLeave={() => setShowActions(false)}
     >
-      {hasRowFilters ? (
-        <FilterScopeProvider params={scopeParams}>
-          <Column gap="2" height="100%">
-            <BoardRowFilterTags rowFilters={filters} websiteId={filterWebsiteId} />
-            <Box flexGrow={1} style={{ minHeight: 0 }}>
-              {columnsGroup}
-            </Box>
-          </Column>
-        </FilterScopeProvider>
+      {scope.hasFilters ? (
+        <Column gap="2" height="100%">
+          <BoardRowFilterTags
+            rowFilters={filters}
+            websiteId={scope.targetWebsiteId}
+            showEntity={scope.isMixed}
+          />
+          <Box flexGrow={1} style={{ minHeight: 0 }}>
+            {columnsGroup}
+          </Box>
+        </Column>
       ) : (
         columnsGroup
       )}
@@ -191,7 +201,11 @@ export function BoardEditRow({
             </Button>
             <Tooltip placement="top">Move row up</Tooltip>
           </TooltipTrigger>
-          <BoardRowFilterButton rowId={rowId} websiteId={filterWebsiteId} rowFilters={filters} />
+          <BoardRowFilterButton
+            rowId={rowId}
+            websiteId={scope.targetWebsiteId}
+            rowFilters={filters}
+          />
           <TooltipTrigger delay={0}>
             <Button
               variant="outline"

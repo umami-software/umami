@@ -1,12 +1,12 @@
 import { Box, Column, Row } from '@umami/react-zen';
 import { FilterScopeProvider } from '@/components/common/FilterScopeProvider';
 import { useBoard } from '@/components/hooks';
-import { boardRowFiltersToParams } from '@/lib/params';
+import { getResolvedComponentEntity } from '@/lib/boards';
 import type { BoardRow as BoardRowType } from '@/lib/types';
 import { BoardRowFilterTags } from './BoardRowFilterTags';
 import { BoardViewColumn } from './BoardViewColumn';
 import { MIN_COLUMN_WIDTH } from './boardConstants';
-import { useBoardRowWebsiteId } from './useBoardRowWebsiteId';
+import { useBoardRowScope } from './useBoardRowScope';
 
 export function BoardViewRow({
   row,
@@ -17,37 +17,48 @@ export function BoardViewRow({
 }) {
   const { board } = useBoard();
   const { columns, filters } = row;
-  const websiteId = useBoardRowWebsiteId(board, columns);
-
-  const scopeParams = boardRowFiltersToParams(filters);
+  const scope = useBoardRowScope(board, columns, filters);
 
   const columnsRow = (
     <Row gap="3" width="100%" overflowX="auto">
-      {columns.map(column => (
-        <Box
-          key={column.id}
-          flexGrow={column.size ?? 1}
-          flexShrink={1}
-          flexBasis="0%"
-          minWidth={`${MIN_COLUMN_WIDTH}px`}
-        >
+      {columns.map(column => {
+        const { entityId } = getResolvedComponentEntity(board, column.component);
+        const content = (
           <BoardViewColumn component={column.component} showEntityBadge={showEntityBadges} />
-        </Box>
-      ))}
+        );
+
+        return (
+          <Box
+            key={column.id}
+            flexGrow={column.size ?? 1}
+            flexShrink={1}
+            flexBasis="0%"
+            minWidth={`${MIN_COLUMN_WIDTH}px`}
+          >
+            {scope.appliesTo(entityId) ? (
+              <FilterScopeProvider params={scope.params}>{content}</FilterScopeProvider>
+            ) : (
+              content
+            )}
+          </Box>
+        );
+      })}
     </Row>
   );
 
   // Rows without filters render exactly as before — no extra wrapper.
-  if (!Object.keys(scopeParams).length) {
+  if (!scope.hasFilters) {
     return columnsRow;
   }
 
   return (
-    <FilterScopeProvider params={scopeParams}>
-      <Column gap="2" width="100%">
-        <BoardRowFilterTags rowFilters={filters} websiteId={websiteId} />
-        {columnsRow}
-      </Column>
-    </FilterScopeProvider>
+    <Column gap="2" width="100%">
+      <BoardRowFilterTags
+        rowFilters={filters}
+        websiteId={scope.targetWebsiteId}
+        showEntity={scope.isMixed}
+      />
+      {columnsRow}
+    </Column>
   );
 }

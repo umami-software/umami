@@ -30,6 +30,9 @@ export function BoardRowFilterButton({
     match,
   }) => {
     const nextFilters: BoardRowFilters = {
+      // Recorded so the row applies its filters only to the columns showing
+      // this website: session properties, segments and cohorts belong to it.
+      ...(websiteId ? { websiteId } : {}),
       ...(filters?.length ? { filters } : {}),
       ...(sessionPropertyFilters?.length ? { sessionPropertyFilters } : {}),
       ...(segment ? { segment } : {}),
@@ -44,7 +47,9 @@ export function BoardRowFilterButton({
         if (row) {
           // Drop the key entirely when cleared, so an untouched row stays
           // identical to one saved before this feature existed.
-          row.filters = Object.keys(nextFilters).length ? nextFilters : undefined;
+          // websiteId alone is bookkeeping, not a filter — drop the whole set.
+          const { websiteId: _websiteId, ...rest } = nextFilters;
+          row.filters = Object.keys(rest).length ? nextFilters : undefined;
         }
       }),
     });
