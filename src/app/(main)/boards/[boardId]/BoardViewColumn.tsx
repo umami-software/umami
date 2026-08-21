@@ -2,18 +2,24 @@ import { Column, Heading, Row, Text } from '@umami/react-zen';
 import { Panel } from '@/components/common/Panel';
 import { useBoard } from '@/components/hooks';
 import { getBoardType, getResolvedComponentEntity, isOpenBoardType } from '@/lib/boards';
-import type { BoardComponentConfig } from '@/lib/types';
+import type { BoardComponentConfig, BoardRowFilters } from '@/lib/types';
 import { BoardEntityBadge } from '../BoardEntityBadge';
 import { getComponentDefinition } from '../boardComponentRegistry';
 import { useBoardEntityBadgeProps } from '../useBoardEntityBadgeProps';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
+import { BoardRowFilterIndicator } from './BoardRowFilterIndicator';
 
 export function BoardViewColumn({
   component,
   showEntityBadge = true,
+  rowFilters,
+  filterWebsiteId,
 }: {
   component?: BoardComponentConfig;
   showEntityBadge?: boolean;
+  /** The row's filters, passed only when they scope this column. */
+  rowFilters?: BoardRowFilters;
+  filterWebsiteId?: string;
 }) {
   const { board } = useBoard();
   const boardType = getBoardType(board);
@@ -29,13 +35,20 @@ export function BoardViewColumn({
   const description = component.description;
 
   const showBadge = showEntityBadge && isOpenBoardType(boardType) && !!entityBadge;
+  const filterIndicator = rowFilters ? (
+    <BoardRowFilterIndicator rowFilters={rowFilters} websiteId={filterWebsiteId} />
+  ) : null;
+  const hasHeaderAccessory = showBadge || !!filterIndicator;
 
   return (
     <Panel height="100%">
-      {showBadge ? (
-        <Row justifyContent={title ? 'space-between' : 'flex-end'} alignItems="center">
+      {hasHeaderAccessory ? (
+        <Row justifyContent={title ? 'space-between' : 'flex-end'} alignItems="center" gap="2">
           {title && <Heading>{title}</Heading>}
-          <BoardEntityBadge {...entityBadge} />
+          <Row alignItems="center" gap="2">
+            {filterIndicator}
+            {showBadge && <BoardEntityBadge {...entityBadge} />}
+          </Row>
         </Row>
       ) : (
         title && <Heading>{title}</Heading>

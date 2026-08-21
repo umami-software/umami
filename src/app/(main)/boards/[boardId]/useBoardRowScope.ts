@@ -40,7 +40,6 @@ export function useBoardRowScope(
       params,
       hasFilters,
       targetWebsiteId,
-      isMixed: uniqueWebsiteIds.length > 1,
       appliesTo: (entityId?: string) => hasFilters && !!entityId && entityId === targetWebsiteId,
     };
   }, [board, columns, rowFilters]);

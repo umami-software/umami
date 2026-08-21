@@ -137,16 +137,21 @@ test.describe('Board row filters', () => {
     });
 
     await page.goto(`/boards/${filteredBoard}`);
-    await expect(page.getByTestId('board-row-filter-tags')).toContainText('user_region');
-    await expect(page.getByTestId('board-row-filter-tags')).toContainText(region);
+    const indicator = page.getByTestId('board-row-filter-indicator');
+    await expect(indicator).toHaveCount(1);
+    // The filters are readable without hovering, and spelled out on hover.
+    await expect(indicator).toHaveAttribute('aria-label', new RegExp(`user_region.*${region}`));
+    await indicator.hover();
+    await expect(page.getByTestId('board-row-filter-details')).toContainText('user_region');
+    await expect(page.getByTestId('board-row-filter-details')).toContainText(region);
     await expect
       .poll(() => scopedRequests.some(url => url.includes(`spf0=1.eq.user_region.${region}`)))
       .toBe(true);
 
-    // An unfiltered board renders no chips and sends no scoped params.
+    // An unfiltered board marks no panel and sends no scoped params.
     scopedRequests.length = 0;
     await page.goto(`/boards/${plainBoard}`);
-    await expect(page.getByTestId('board-row-filter-tags')).toHaveCount(0);
+    await expect(page.getByTestId('board-row-filter-indicator')).toHaveCount(0);
     await expect.poll(() => scopedRequests.length).toBeGreaterThan(0);
     expect(scopedRequests.some(url => url.includes('spf0='))).toBe(false);
 
@@ -181,7 +186,9 @@ test.describe('Board row filters', () => {
     });
 
     await page.goto(`/boards/${boardId}`);
-    await expect(page.getByTestId('board-row-filter-tags')).toContainText(region);
+    // Only the scoped column is marked, so the indicator itself says which
+    // half of a mixed row the filters cover.
+    await expect(page.getByTestId('board-row-filter-indicator')).toHaveCount(1);
     await expect.poll(() => scopedRequests.some(url => url.includes(filtered))).toBe(true);
     await expect.poll(() => scopedRequests.some(url => url.includes(other))).toBe(true);
 

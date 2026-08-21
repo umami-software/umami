@@ -19,7 +19,6 @@ import type {
 } from '@/lib/types';
 import { BoardEditColumn } from './BoardEditColumn';
 import { BoardRowFilterButton } from './BoardRowFilterButton';
-import { BoardRowFilterTags } from './BoardRowFilterTags';
 import { MAX_COLUMNS, MIN_COLUMN_WIDTH } from './boardConstants';
 import { useBoardRowScope } from './useBoardRowScope';
 
@@ -107,6 +106,7 @@ export function BoardEditRow({
           >
             {(() => {
               const { entityId } = getResolvedComponentEntity(board, column.component);
+              const isScoped = scope.appliesTo(entityId);
               const content = (
                 <BoardEditColumn
                   {...column}
@@ -114,10 +114,12 @@ export function BoardEditRow({
                   onRemove={handleRemoveColumn}
                   onSetComponent={handleSetComponent}
                   canRemove={columns.length > 1}
+                  rowFilters={isScoped ? filters : undefined}
+                  filterWebsiteId={scope.targetWebsiteId}
                 />
               );
 
-              return scope.appliesTo(entityId) ? (
+              return isScoped ? (
                 <FilterScopeProvider params={scope.params}>{content}</FilterScopeProvider>
               ) : (
                 content
@@ -162,20 +164,7 @@ export function BoardEditRow({
       onMouseEnter={() => setShowActions(true)}
       onMouseLeave={() => setShowActions(false)}
     >
-      {scope.hasFilters ? (
-        <Column gap="2" height="100%">
-          <BoardRowFilterTags
-            rowFilters={filters}
-            websiteId={scope.targetWebsiteId}
-            showEntity={scope.isMixed}
-          />
-          <Box flexGrow={1} style={{ minHeight: 0 }}>
-            {columnsGroup}
-          </Box>
-        </Column>
-      ) : (
-        columnsGroup
-      )}
+      {columnsGroup}
       {canEdit && showActions && (
         <Column
           padding="2"
@@ -205,6 +194,7 @@ export function BoardEditRow({
             rowId={rowId}
             websiteId={scope.targetWebsiteId}
             rowFilters={filters}
+            isActive={scope.hasFilters}
           />
           <TooltipTrigger delay={0}>
             <Button

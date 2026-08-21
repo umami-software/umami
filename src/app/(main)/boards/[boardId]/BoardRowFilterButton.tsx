@@ -14,10 +14,13 @@ export function BoardRowFilterButton({
   rowId,
   websiteId,
   rowFilters,
+  isActive,
 }: {
   rowId: string;
   websiteId?: string;
   rowFilters?: BoardRowFilters;
+  /** Highlights the button so a row that already carries filters reads as such. */
+  isActive?: boolean;
 }) {
   const { board, updateBoard } = useBoard();
   const { t, labels } = useMessages();
@@ -60,7 +63,7 @@ export function BoardRowFilterButton({
       icon={<ListFilter />}
       title={t(labels.filter)}
       aria-label={t(labels.filter)}
-      variant="outline"
+      variant={isActive ? 'primary' : 'outline'}
       height="min(80dvh, calc(100dvh - 40px))"
     >
       {({ close }) => (
