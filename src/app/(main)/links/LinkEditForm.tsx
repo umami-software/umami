@@ -21,6 +21,22 @@ import { isValidUrl } from '@/lib/url';
 
 const generateId = () => getRandomChars(9);
 
+const parseUtm = (url: string) => {
+  if (!url) return {};
+  try {
+    const u = new URL(url);
+    return {
+      utmSource: u.searchParams.get('utm_source') || '',
+      utmMedium: u.searchParams.get('utm_medium') || '',
+      utmCampaign: u.searchParams.get('utm_campaign') || '',
+      utmContent: u.searchParams.get('utm_content') || '',
+      utmTerm: u.searchParams.get('utm_term') || '',
+    };
+  } catch {
+    return {};
+  }
+};
+
 export function LinkEditForm({
   linkId,
   teamId,
@@ -46,9 +62,15 @@ export function LinkEditForm({
   const hostUrl = linksUrl || LINKS_URL;
   const { data, isLoading } = useLinkQuery(linkId);
   const [defaultSlug] = useState(generateId());
+  const [showUtm, setShowUtm] = useState(() => {
+    const utm = parseUtm(data?.url);
+    return !!(utm.utmSource || utm.utmMedium || utm.utmCampaign || utm.utmContent || utm.utmTerm);
+  });
 
   const handleSubmit = async (data: any) => {
-    await mutateAsync(data, {
+    const { utmSource, utmMedium, utmCampaign, utmContent, utmTerm, ...payload } = data;
+
+    await mutateAsync(payload, {
       onSuccess: async () => {
         toast(t(messages.saved));
         touch('links');
@@ -74,7 +96,7 @@ export function LinkEditForm({
     <Form
       onSubmit={handleSubmit}
       error={getErrorMessage(error)}
-      defaultValues={{ slug: defaultSlug, ...data }}
+      defaultValues={{ slug: defaultSlug, ...data, ...parseUtm(data?.url) }}
     >
       {({ setValue, watch }) => {
         const slug = watch('slug');
@@ -85,13 +107,105 @@ export function LinkEditForm({
               <TextField autoComplete="off" autoFocus />
             </FormField>
 
-            <FormField
-              label={t(labels.destinationUrl)}
-              name="url"
-              rules={{ required: t(labels.required), validate: checkUrl }}
-            >
-              <TextField placeholder="https://example.com" autoComplete="off" />
-            </FormField>
+            <Grid columns="1fr auto" alignItems="end" gap>
+              <FormField
+                label={t(labels.destinationUrl)}
+                name="url"
+                rules={{ required: t(labels.required), validate: checkUrl }}
+              >
+                <TextField placeholder="https://example.com" autoComplete="off" />
+              </FormField>
+              <Button variant="quiet" onPress={() => setShowUtm(!showUtm)}>
+                <Icon color={showUtm ? 'primary' : 'inherit'}>
+                  <RefreshCw style={{ transform: 'rotate(45deg)' }} />
+                </Icon>
+              </Button>
+            </Grid>
+
+            {showUtm && (
+              <Grid columns="1fr 1fr" gap="3">
+                <FormField label={t(labels.utmSource)} name="utmSource">
+                  <TextField
+                    autoComplete="off"
+                    onChange={val => {
+                      const url = watch('url');
+                      try {
+                        const u = new URL(url);
+                        if (val) u.searchParams.set('utm_source', val);
+                        else u.searchParams.delete('utm_source');
+                        setValue('url', u.toString(), { shouldDirty: true });
+                      } catch {
+                        // ignore
+                      }
+                    }}
+                  />
+                </FormField>
+                <FormField label={t(labels.utmMedium)} name="utmMedium">
+                  <TextField
+                    autoComplete="off"
+                    onChange={val => {
+                      const url = watch('url');
+                      try {
+                        const u = new URL(url);
+                        if (val) u.searchParams.set('utm_medium', val);
+                        else u.searchParams.delete('utm_medium');
+                        setValue('url', u.toString(), { shouldDirty: true });
+                      } catch {
+                        // ignore
+                      }
+                    }}
+                  />
+                </FormField>
+                <FormField label={t(labels.utmCampaign)} name="utmCampaign">
+                  <TextField
+                    autoComplete="off"
+                    onChange={val => {
+                      const url = watch('url');
+                      try {
+                        const u = new URL(url);
+                        if (val) u.searchParams.set('utm_campaign', val);
+                        else u.searchParams.delete('utm_campaign');
+                        setValue('url', u.toString(), { shouldDirty: true });
+                      } catch {
+                        // ignore
+                      }
+                    }}
+                  />
+                </FormField>
+                <FormField label={t(labels.utmContent)} name="utmContent">
+                  <TextField
+                    autoComplete="off"
+                    onChange={val => {
+                      const url = watch('url');
+                      try {
+                        const u = new URL(url);
+                        if (val) u.searchParams.set('utm_content', val);
+                        else u.searchParams.delete('utm_content');
+                        setValue('url', u.toString(), { shouldDirty: true });
+                      } catch {
+                        // ignore
+                      }
+                    }}
+                  />
+                </FormField>
+                <FormField label={t(labels.utmTerm)} name="utmTerm" colSpan="2">
+                  <TextField
+                    autoComplete="off"
+                    onChange={val => {
+                      const url = watch('url');
+                      try {
+                        const u = new URL(url);
+                        if (val) u.searchParams.set('utm_term', val);
+                        else u.searchParams.delete('utm_term');
+                        setValue('url', u.toString(), { shouldDirty: true });
+                      } catch {
+                        // ignore
+                      }
+                    }}
+                  />
+                </FormField>
+              </Grid>
+            )}
 
             {cloudMode ? (
               <FormField
