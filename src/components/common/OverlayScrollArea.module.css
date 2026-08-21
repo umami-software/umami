@@ -6,6 +6,10 @@
   --overlay-scrollbar-vertical-margin-right: 2px;
 }
 
+.collapsed > [data-orientation] {
+  display: none;
+}
+
 .root > :first-child {
   padding-right: var(--overlay-scrollbar-viewport-padding-right);
 }
