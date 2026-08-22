@@ -4,7 +4,7 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, withDateRange } from '@/lib/schema';
 import { canViewAuthenticatedWebsite } from '@/permissions';
-import { getEventMetrics, getPageviewMetrics, getSessionMetrics } from '@/queries/sql';
+import { getExportEventData, getExportSessionData, getExportWebsiteEvents } from '@/queries/sql';
 
 export async function GET(
   request: Request,
@@ -28,14 +28,10 @@ export async function GET(
 
   const filters = await getQueryFilters(query, websiteId);
 
-  const [events, pages, referrers, browsers, os, devices, countries] = await Promise.all([
-    getEventMetrics(websiteId, { type: 'event' }, filters),
-    getPageviewMetrics(websiteId, { type: 'path' }, filters),
-    getPageviewMetrics(websiteId, { type: 'referrer' }, filters),
-    getSessionMetrics(websiteId, { type: 'browser' }, filters),
-    getSessionMetrics(websiteId, { type: 'os' }, filters),
-    getSessionMetrics(websiteId, { type: 'device' }, filters),
-    getSessionMetrics(websiteId, { type: 'country' }, filters),
+  const [websiteEvents, sessionData, eventData] = await Promise.all([
+    getExportWebsiteEvents(websiteId, filters),
+    getExportSessionData(websiteId, filters),
+    getExportEventData(websiteId, filters),
   ]);
 
   const zip = new JSZip();
@@ -59,21 +55,30 @@ export async function GET(
     return sanitized;
   };
 
-  const parse = (data: any) => {
+  const parse = (data: any, columns: string[]) => {
     const sanitized = Array.isArray(data) ? data.map(sanitizeRow) : data;
-    return Papa.unparse(sanitized, {
-      header: true,
-      skipEmptyLines: true,
-    });
+    return Papa.unparse(
+      { fields: columns, data: sanitized },
+      {
+        header: true,
+        skipEmptyLines: true,
+      }
+    );
   };
 
-  zip.file('events.csv', parse(events));
-  zip.file('pages.csv', parse(pages));
-  zip.file('referrers.csv', parse(referrers));
-  zip.file('browsers.csv', parse(browsers));
-  zip.file('os.csv', parse(os));
-  zip.file('devices.csv', parse(devices));
-  zip.file('countries.csv', parse(countries));
+  const WEBSITE_EVENT_COLUMNS = [
+    'website_id', 'session_id', 'visit_id', 'event_id', 'hostname', 'browser', 'os', 'device', 'screen', 'language', 'country', 'region', 'city', 'url_path', 'url_query', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'referrer_path', 'referrer_query', 'referrer_domain', 'page_title', 'gclid', 'fbclid', 'msclkid', 'ttclid', 'li_fat_id', 'twclid', 'lcp', 'inp', 'cls', 'fcp', 'ttfb', 'event_type', 'event_name', 'tag', 'distinct_id', 'created_at', 'job_id'
+  ];
+  const SESSION_DATA_COLUMNS = [
+    'website_id', 'session_id', 'data_key', 'string_value', 'number_value', 'date_value', 'data_type', 'distinct_id', 'created_at', 'job_id'
+  ];
+  const EVENT_DATA_COLUMNS = [
+    'website_id', 'session_id', 'event_id', 'url_path', 'event_name', 'data_key', 'string_value', 'number_value', 'date_value', 'data_type', 'created_at', 'job_id'
+  ];
+
+  zip.file('website_event.csv', parse(websiteEvents, WEBSITE_EVENT_COLUMNS));
+  zip.file('session_data.csv', parse(sessionData, SESSION_DATA_COLUMNS));
+  zip.file('event_data.csv', parse(eventData, EVENT_DATA_COLUMNS));
 
   const content = await zip.generateAsync({ type: 'nodebuffer' });
   const base64 = content.toString('base64');

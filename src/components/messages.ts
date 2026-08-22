@@ -245,6 +245,8 @@ export const labels: Record<string, string> = {
   medium: 'label.medium',
   campaign: 'label.campaign',
   content: 'label.content',
+  export: 'label.export',
+  exportData: 'label.export-data',
   term: 'label.term',
   utmSource: 'label.utm-source',
   utmMedium: 'label.utm-medium',
