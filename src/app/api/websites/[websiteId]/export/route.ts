@@ -1,11 +1,12 @@
 import JSZip from 'jszip';
 import Papa from 'papaparse';
+import { Readable } from 'stream';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { unauthorized } from '@/lib/response';
 import { NextResponse } from 'next/server';
 import { pagingParams, withDateRange } from '@/lib/schema';
 import { canViewAuthenticatedWebsite } from '@/permissions';
-import { getExportEventData, getExportSessionData, getExportWebsiteEvents } from '@/queries/sql';
+import { getExportEventData, getExportSessionData, getExportWebsiteEvents, getExportEventDataClickhouseStream, getExportSessionDataClickhouseStream, getExportWebsiteEventsClickhouseStream } from '@/queries/sql';
 
 export async function GET(
   request: Request,
@@ -50,16 +51,61 @@ export async function GET(
     return sanitized;
   };
 
-  const parse = (data: any, columns: string[]) => {
-    const sanitized = Array.isArray(data) ? data.map(sanitizeRow) : data;
-    return Papa.unparse(
-      { fields: columns, data: sanitized },
-      {
-        header: true,
-        skipEmptyLines: true,
+  const isClickhouse = !!process.env.CLICKHOUSE_URL;
+
+  function createCsvStream(fetcher: any, clickhouseFetcher: any, columns: string[]) {
+    async function* generate() {
+      let isHeaderWritten = false;
+
+      if (isClickhouse) {
+        const stream = await clickhouseFetcher(websiteId, filters);
+        for await (const rows of stream) {
+          const data = rows.map((r: any) => r.json());
+          if (data.length === 0) continue;
+          
+          const sanitized = data.map(sanitizeRow);
+          const csv = Papa.unparse(
+            { fields: columns, data: sanitized },
+            { header: !isHeaderWritten, skipEmptyLines: true }
+          );
+          isHeaderWritten = true;
+          yield csv + '\n';
+        }
+      } else {
+        let cursorDate: Date | undefined = undefined;
+        let cursorId: string | undefined = undefined;
+
+        while (true) {
+          const data = await fetcher(websiteId, { ...filters, cursorDate, cursorId });
+          
+          if (data.length === 0) {
+            if (!isHeaderWritten) {
+              yield Papa.unparse({ fields: columns, data: [] }, { header: true }) + '\n';
+            }
+            break;
+          }
+
+          const sanitized = data.map(sanitizeRow);
+          const csv = Papa.unparse(
+            { fields: columns, data: sanitized },
+            { header: !isHeaderWritten, skipEmptyLines: true }
+          );
+          isHeaderWritten = true;
+          yield csv + '\n';
+
+          if (data.length < 10000) {
+            break;
+          }
+
+          const lastRow = data[data.length - 1];
+          cursorDate = lastRow.created_at;
+          cursorId = lastRow.id || lastRow.event_id;
+        }
       }
-    );
-  };
+    }
+
+    return Readable.from(generate());
+  }
 
   const WEBSITE_EVENT_COLUMNS = [
     'website_id', 'session_id', 'visit_id', 'event_id', 'hostname', 'browser', 'os', 'device', 'screen', 'language', 'country', 'region', 'city', 'url_path', 'url_query', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'referrer_path', 'referrer_query', 'referrer_domain', 'page_title', 'gclid', 'fbclid', 'msclkid', 'ttclid', 'li_fat_id', 'twclid', 'lcp', 'inp', 'cls', 'fcp', 'ttfb', 'event_type', 'event_name', 'tag', 'distinct_id', 'created_at', 'job_id'
@@ -71,13 +117,14 @@ export async function GET(
     'website_id', 'session_id', 'event_id', 'url_path', 'event_name', 'data_key', 'string_value', 'number_value', 'date_value', 'data_type', 'created_at', 'job_id'
   ];
 
-  zip.file('website_event.csv', parse(await getExportWebsiteEvents(websiteId, filters), WEBSITE_EVENT_COLUMNS));
-  zip.file('session_data.csv', parse(await getExportSessionData(websiteId, filters), SESSION_DATA_COLUMNS));
-  zip.file('event_data.csv', parse(await getExportEventData(websiteId, filters), EVENT_DATA_COLUMNS));
+  zip.file('website_event.csv', createCsvStream(getExportWebsiteEvents, getExportWebsiteEventsClickhouseStream, WEBSITE_EVENT_COLUMNS));
+  zip.file('session_data.csv', createCsvStream(getExportSessionData, getExportSessionDataClickhouseStream, SESSION_DATA_COLUMNS));
+  zip.file('event_data.csv', createCsvStream(getExportEventData, getExportEventDataClickhouseStream, EVENT_DATA_COLUMNS));
 
-  const content = await zip.generateAsync({ type: 'arraybuffer' });
+  const nodeStream = zip.generateNodeStream({ type: 'nodebuffer', streamFiles: true });
+  const webStream = Readable.toWeb(nodeStream as any);
 
-  return new NextResponse(content, {
+  return new NextResponse(webStream as any, {
     status: 200,
     headers: {
       'Content-Type': 'application/zip',
