@@ -1,5 +1,5 @@
 import { FormButtons } from '@umami/react-zen';
-import { Column, Text, LoadingButton } from '@umami/react-zen';
+import { Column, Text, LoadingButton, useToast } from '@umami/react-zen';
 import { useState } from 'react';
 import { useMessages, useApi, useTimezone, useDateRangeQuery } from '@/components/hooks';
 import { DateFilter } from '@/components/input/DateFilter';
@@ -16,7 +16,8 @@ export function WebsiteExportForm({
   websiteId: string;
   onClose: () => void;
 }) {
-  const { t, labels } = useMessages();
+  const { t, labels, messages } = useMessages();
+  const { toast } = useToast();
   const [dateRange, setDateRange] = useState('24hour');
   const [isLoading, setIsLoading] = useState(false);
   const { get } = useApi();
@@ -69,10 +70,13 @@ export function WebsiteExportForm({
         a.download = `export-${websiteId}.zip`;
         a.click();
         URL.revokeObjectURL(url);
+        
+        onClose();
       }
+    } catch (error: any) {
+      toast(error?.message || t(messages.error));
     } finally {
       setIsLoading(false);
-      onClose();
     }
   };
 
