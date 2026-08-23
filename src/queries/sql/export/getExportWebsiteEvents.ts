@@ -10,12 +10,90 @@ export async function getExportWebsiteEvents(websiteId: string, filters: QueryFi
   });
 }
 
-async function relationalQuery(websiteId: string, filters: QueryFilters) {
+export async function getExportWebsiteEventsClickhouseStream(websiteId: string, filters: QueryFilters) {
+  const { client, parseFilters, connect } = clickhouse;
+  await connect();
+
+  const { queryParams, dateQuery, filterQuery } = parseFilters({
+    ...filters,
+    websiteId,
+  });
+
+  const query = `
+    select
+      website_id,
+      session_id,
+      visit_id,
+      event_id,
+      hostname,
+      browser,
+      os,
+      device,
+      screen,
+      language,
+      country,
+      region,
+      city,
+      url_path,
+      url_query,
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      utm_content,
+      utm_term,
+      referrer_path,
+      referrer_query,
+      referrer_domain,
+      page_title,
+      gclid,
+      fbclid,
+      msclkid,
+      ttclid,
+      li_fat_id,
+      twclid,
+      lcp,
+      inp,
+      cls,
+      fcp,
+      ttfb,
+      event_type,
+      event_name,
+      tag,
+      distinct_id,
+      created_at,
+      job_id
+    from website_event
+    where website_id = {websiteId:UUID}
+    ${dateQuery}
+    ${filterQuery}
+    order by created_at asc
+  `;
+
+  const resultSet = await client.query({
+    query,
+    query_params: queryParams,
+    format: 'JSONEachRow',
+    clickhouse_settings: {
+      date_time_output_format: 'iso',
+      output_format_json_quote_64bit_integers: 0,
+    },
+  });
+
+  return resultSet.stream();
+}
+
+async function relationalQuery(websiteId: string, filters: QueryFilters & { cursorDate?: Date; cursorId?: string }) {
   const { rawQuery, parseFilters } = prisma;
   const { filterQuery, dateQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
+
+  const hasCursor = filters.cursorDate && filters.cursorId;
+  if (hasCursor) {
+    (queryParams as any).cursorDate = filters.cursorDate;
+    (queryParams as any).cursorId = filters.cursorId;
+  }
 
   return rawQuery(
     `
@@ -67,7 +145,13 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     where website_event.website_id = {{websiteId::uuid}}
     ${dateQuery}
     ${filterQuery}
-    order by website_event.created_at asc
+    ${
+      hasCursor
+        ? 'and (website_event.created_at > {{cursorDate::timestamptz}} or (website_event.created_at = {{cursorDate::timestamptz}} and website_event.event_id > {{cursorId::uuid}}))'
+        : ''
+    }
+    order by website_event.created_at asc, website_event.event_id asc
+    limit 10000
     `,
     queryParams,
   );

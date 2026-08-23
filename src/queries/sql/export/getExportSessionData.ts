@@ -10,7 +10,49 @@ export async function getExportSessionData(websiteId: string, filters: QueryFilt
   });
 }
 
-async function relationalQuery(websiteId: string, filters: QueryFilters) {
+export async function getExportSessionDataClickhouseStream(websiteId: string, filters: QueryFilters) {
+  const { client, parseFilters, connect } = clickhouse;
+  await connect();
+
+  const { queryParams, dateQuery } = parseFilters({
+    ...filters,
+    websiteId,
+  });
+
+  const hasDataDateQuery = dateQuery.replaceAll('created_at', 'session_data.created_at');
+
+  const query = `
+    select
+      website_id,
+      session_id,
+      data_key,
+      string_value,
+      number_value,
+      date_value,
+      data_type,
+      distinct_id,
+      created_at,
+      job_id
+    from session_data
+    where website_id = {websiteId:UUID}
+    ${hasDataDateQuery}
+    order by created_at asc
+  `;
+
+  const resultSet = await client.query({
+    query,
+    query_params: queryParams,
+    format: 'JSONEachRow',
+    clickhouse_settings: {
+      date_time_output_format: 'iso',
+      output_format_json_quote_64bit_integers: 0,
+    },
+  });
+
+  return resultSet.stream();
+}
+
+async function relationalQuery(websiteId: string, filters: QueryFilters & { cursorDate?: Date; cursorId?: string }) {
   const { rawQuery, parseFilters } = prisma;
   const { dateQuery, queryParams } = parseFilters({
     ...filters,
@@ -19,11 +61,18 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   
   const hasDataDateQuery = dateQuery.replaceAll('website_event.', 'session_data.');
 
+  const hasCursor = filters.cursorDate && filters.cursorId;
+  if (hasCursor) {
+    (queryParams as any).cursorDate = filters.cursorDate;
+    (queryParams as any).cursorId = filters.cursorId;
+  }
+
   return rawQuery(
     `
     select
       session_data.website_id as website_id,
       session_data.session_id as session_id,
+      session_data.session_data_id as id,
       session_data.data_key as data_key,
       session_data.string_value as string_value,
       session_data.number_value as number_value,
@@ -35,7 +84,13 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     from session_data
     where session_data.website_id = {{websiteId::uuid}}
     ${hasDataDateQuery}
-    order by session_data.created_at asc
+    ${
+      hasCursor
+        ? 'and (session_data.created_at > {{cursorDate::timestamptz}} or (session_data.created_at = {{cursorDate::timestamptz}} and session_data.session_data_id > {{cursorId::uuid}}))'
+        : ''
+    }
+    order by session_data.created_at asc, session_data.session_data_id asc
+    limit 10000
     `,
     queryParams,
   );

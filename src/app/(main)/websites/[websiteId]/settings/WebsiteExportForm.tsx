@@ -6,7 +6,6 @@ import { DateFilter } from '@/components/input/DateFilter';
 import { parseDateRange, getDateRangeValue } from '@/lib/date';
 import { getApiUrl } from '@/lib/api-url';
 import { getClientAuthToken } from '@/lib/client';
-import { SHARE_CONTEXT_HEADER, SHARE_TOKEN_HEADER } from '@/lib/constants';
 import { useApp } from '@/store/app';
 
 export function WebsiteExportForm({
@@ -45,32 +44,13 @@ export function WebsiteExportForm({
         const startAt = +localToUtc(parsed.startDate);
         const endAt = +localToUtc(parsed.endDate);
 
-        const shareHeaders = shareId && shareToken
-          ? { [SHARE_TOKEN_HEADER]: shareToken, [SHARE_CONTEXT_HEADER]: '1' }
-          : {};
-
-        const headers = {
-          authorization: `Bearer ${getClientAuthToken()}`,
-          ...shareHeaders,
-        };
-
-        const response = await fetch(
-          getApiUrl(`/websites/${websiteId}/export?startAt=${startAt}&endAt=${endAt}`),
-          { method: 'GET', headers }
-        );
-
-        if (!response.ok) {
-          throw new Error('Export failed');
-        }
-
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `export-${websiteId}.zip`;
-        a.click();
-        URL.revokeObjectURL(url);
+        let url = getApiUrl(`/websites/${websiteId}/export?startAt=${startAt}&endAt=${endAt}`);
         
+        const token = getClientAuthToken();
+        if (token) url += `&token=${encodeURIComponent(token)}`;
+        if (shareId && shareToken) url += `&shareToken=${encodeURIComponent(shareToken)}`;
+
+        window.open(url, '_blank');
         onClose();
       }
     } catch (error: any) {
