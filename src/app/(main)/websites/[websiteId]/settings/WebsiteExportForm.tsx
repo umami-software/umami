@@ -64,10 +64,23 @@ export function WebsiteExportForm({
         }
 
         const { downloadToken } = await tokenRes.json();
-        const newWindow = window.open(`${url}&downloadToken=${downloadToken}`, '_blank');
-        if (!newWindow) {
-          throw new Error('Download popup was blocked by your browser. Please allow popups for this site.');
+        
+        const exportRes = await fetch(`${url}&downloadToken=${downloadToken}`);
+        if (!exportRes.ok) {
+          const text = await exportRes.text();
+          let msg = 'Export failed';
+          try { msg = JSON.parse(text).error?.message || msg; } catch { /* ignore */ }
+          throw new Error(msg);
         }
+
+        const blob = await exportRes.blob();
+        const downloadUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = `umami_export_${websiteId}.zip`;
+        a.click();
+        URL.revokeObjectURL(downloadUrl);
+
         onClose();
       }
     } catch (error: any) {
