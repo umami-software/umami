@@ -43,11 +43,6 @@ export async function GET(
     return unauthorized();
   }
 
-  const isValidationOnly = url.searchParams.get('validate') === 'true';
-  if (isValidationOnly) {
-    return NextResponse.json({ ok: true });
-  }
-
   const filters = await getQueryFilters(query, websiteId);
 
   const zip = new JSZip();
@@ -80,6 +75,7 @@ export async function GET(
       if (isClickhouse) {
         const stream = await clickhouseFetcher(websiteId, filters);
         for await (const rows of stream) {
+          if (request.signal.aborted) break;
           const data = rows.map((r: any) => r.json());
           if (data.length === 0) continue;
           
@@ -96,6 +92,7 @@ export async function GET(
         let cursorId: string | undefined = undefined;
 
         while (true) {
+          if (request.signal.aborted) break;
           const data = await fetcher(websiteId, { ...filters, cursorDate, cursorId });
           
           if (data.length === 0) {

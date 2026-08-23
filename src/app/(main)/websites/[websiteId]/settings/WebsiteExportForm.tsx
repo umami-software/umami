@@ -50,7 +50,8 @@ export function WebsiteExportForm({
         if (token) url += `&token=${encodeURIComponent(token)}`;
         if (shareId && shareToken) url += `&shareToken=${encodeURIComponent(shareToken)}`;
 
-        const response = await fetch(url + '&validate=true', { method: 'GET' });
+        const controller = new AbortController();
+        const response = await fetch(url, { method: 'GET', signal: controller.signal });
 
         if (!response.ok) {
           const text = await response.text();
@@ -62,6 +63,8 @@ export function WebsiteExportForm({
           }
           throw new Error(msg);
         }
+
+        controller.abort();
 
         const newWindow = window.open(url, '_blank');
         if (!newWindow) {
