@@ -1,7 +1,7 @@
 import { FormButtons } from '@umami/react-zen';
 import { Column, Text, LoadingButton, useToast } from '@umami/react-zen';
 import { useState } from 'react';
-import { useMessages, useApi, useTimezone, useDateRangeQuery } from '@/components/hooks';
+import { useMessages, useTimezone, useDateRangeQuery } from '@/components/hooks';
 import { DateFilter } from '@/components/input/DateFilter';
 import { parseDateRange, getDateRangeValue } from '@/lib/date';
 import { getApiUrl } from '@/lib/api-url';
@@ -19,7 +19,6 @@ export function WebsiteExportForm({
   const { toast } = useToast();
   const [dateRange, setDateRange] = useState('24hour');
   const [isLoading, setIsLoading] = useState(false);
-  const { get } = useApi();
   const { localToUtc } = useTimezone();
   const websiteDateRange = useDateRangeQuery(websiteId);
   const hasData = !!(websiteDateRange?.startDate && websiteDateRange?.endDate);
@@ -37,7 +36,7 @@ export function WebsiteExportForm({
   const handleExport = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     try {
       const parsed = parseDateRange(dateRange);
       if (parsed) {
@@ -45,28 +44,27 @@ export function WebsiteExportForm({
         const endAt = +localToUtc(parsed.endDate);
 
         let url = getApiUrl(`/websites/${websiteId}/export?startAt=${startAt}&endAt=${endAt}`);
-        
+
         const token = getClientAuthToken();
         if (token) url += `&token=${encodeURIComponent(token)}`;
         if (shareId && shareToken) url += `&shareToken=${encodeURIComponent(shareToken)}`;
 
-        const controller = new AbortController();
-        const response = await fetch(url, { method: 'GET', signal: controller.signal });
+        const tokenRes = await fetch(
+          getApiUrl(`/websites/${websiteId}/export/token?startAt=${startAt}&endAt=${endAt}`) +
+          (token ? `&token=${encodeURIComponent(token)}` : '') +
+          (shareId && shareToken ? `&shareToken=${encodeURIComponent(shareToken)}` : ''),
+          { method: 'POST' },
+        );
 
-        if (!response.ok) {
-          const text = await response.text();
+        if (!tokenRes.ok) {
+          const text = await tokenRes.text();
           let msg = 'Export failed';
-          try {
-            msg = JSON.parse(text).message || msg;
-          } catch (e) {
-            // ignore
-          }
+          try { msg = JSON.parse(text).error?.message || msg; } catch { /* ignore */ }
           throw new Error(msg);
         }
 
-        controller.abort();
-
-        const newWindow = window.open(url, '_blank');
+        const { downloadToken } = await tokenRes.json();
+        const newWindow = window.open(`${url}&downloadToken=${downloadToken}`, '_blank');
         if (!newWindow) {
           throw new Error('Download popup was blocked by your browser. Please allow popups for this site.');
         }

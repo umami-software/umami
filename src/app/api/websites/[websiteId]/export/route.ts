@@ -2,11 +2,12 @@ import JSZip from 'jszip';
 import Papa from 'papaparse';
 import { Readable } from 'stream';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { unauthorized } from '@/lib/response';
+import { unauthorized, badRequest } from '@/lib/response';
 import { NextResponse } from 'next/server';
 import { pagingParams, withDateRange } from '@/lib/schema';
 import { canViewAuthenticatedWebsite } from '@/permissions';
 import { getExportEventData, getExportSessionData, getExportWebsiteEvents, getExportEventDataClickhouseStream, getExportSessionDataClickhouseStream, getExportWebsiteEventsClickhouseStream } from '@/queries/sql';
+import { validateAndConsumeDownloadToken } from './token/route';
 
 export async function GET(
   request: Request,
@@ -15,41 +16,39 @@ export async function GET(
   const url = new URL(request.url);
   const token = url.searchParams.get('token');
   const shareToken = url.searchParams.get('shareToken');
-
-  const modifiedRequest = new Request(request.url, {
-    method: request.method,
-    headers: new Headers(request.headers),
-  });
-
-  if (token) modifiedRequest.headers.set('authorization', `Bearer ${token}`);
-  if (shareToken) {
-    modifiedRequest.headers.set('x-umami-share-token', shareToken);
-    modifiedRequest.headers.set('x-umami-share-context', '1');
-  }
-
-  const schema = withDateRange({
-    ...pagingParams,
-  });
-
-  const { auth, query, error } = await parseRequest(modifiedRequest, schema);
-
-  if (error) {
-    return error();
-  }
+  const downloadToken = url.searchParams.get('downloadToken');
 
   const { websiteId } = await params;
+  const schema = withDateRange({ ...pagingParams });
+  let query: Record<string, any>;
 
-  if (!(await canViewAuthenticatedWebsite(auth, websiteId))) {
-    return unauthorized();
+  const authRequest = new Request(request.url, { method: 'GET', headers: new Headers(request.headers) });
+  if (token) authRequest.headers.set('authorization', `Bearer ${token}`);
+  if (shareToken) {
+    authRequest.headers.set('x-umami-share-token', shareToken);
+    authRequest.headers.set('x-umami-share-context', '1');
+  }
+
+  if (downloadToken !== null) {
+    if (!validateAndConsumeDownloadToken(downloadToken)) {
+      return badRequest({ message: 'Invalid or expired download token.' });
+    }
+    const { query: q, error } = await parseRequest(authRequest, schema);
+    if (error) return error();
+    query = q;
+  } else {
+    const { auth, query: q, error } = await parseRequest(authRequest, schema);
+    if (error) return error();
+    if (!(await canViewAuthenticatedWebsite(auth, websiteId))) return unauthorized();
+    query = q;
   }
 
   const filters = await getQueryFilters(query, websiteId);
 
   const zip = new JSZip();
 
-  // Prefix cells whose first character is a formula trigger with a single quote
-  // to prevent CSV formula injection when opened in spreadsheet applications.
   const FORMULA_TRIGGERS = new Set(['=', '+', '-', '@', '\t', '\r']);
+
 
   const sanitizeCsvValue = (value: unknown): unknown => {
     if (typeof value === 'string' && value.length > 0 && FORMULA_TRIGGERS.has(value[0])) {
@@ -75,10 +74,9 @@ export async function GET(
       if (isClickhouse) {
         const stream = await clickhouseFetcher(websiteId, filters);
         for await (const rows of stream) {
-          if (request.signal.aborted) break;
           const data = rows.map((r: any) => r.json());
           if (data.length === 0) continue;
-          
+
           const sanitized = data.map(sanitizeRow);
           const csv = Papa.unparse(
             { fields: columns, data: sanitized },
@@ -92,9 +90,8 @@ export async function GET(
         let cursorId: string | undefined = undefined;
 
         while (true) {
-          if (request.signal.aborted) break;
           const data = await fetcher(websiteId, { ...filters, cursorDate, cursorId });
-          
+
           if (data.length === 0) {
             if (!isHeaderWritten) {
               yield Papa.unparse({ fields: columns, data: [] }, { header: true }) + '\n';
