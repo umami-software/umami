@@ -50,7 +50,26 @@ export function WebsiteExportForm({
         if (token) url += `&token=${encodeURIComponent(token)}`;
         if (shareId && shareToken) url += `&shareToken=${encodeURIComponent(shareToken)}`;
 
-        window.open(url, '_blank');
+        const controller = new AbortController();
+        const response = await fetch(url, { method: 'GET', signal: controller.signal });
+
+        if (!response.ok) {
+          const text = await response.text();
+          let msg = 'Export failed';
+          try {
+            msg = JSON.parse(text).message || msg;
+          } catch (e) {
+            // ignore
+          }
+          throw new Error(msg);
+        }
+
+        controller.abort();
+
+        const newWindow = window.open(url, '_blank');
+        if (!newWindow) {
+          throw new Error('Download popup was blocked by your browser. Please allow popups for this site.');
+        }
         onClose();
       }
     } catch (error: any) {
