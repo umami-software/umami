@@ -7,7 +7,7 @@ import { NextResponse } from 'next/server';
 import { pagingParams, withDateRange } from '@/lib/schema';
 import { canViewAuthenticatedWebsite } from '@/permissions';
 import { getExportEventData, getExportSessionData, getExportWebsiteEvents, getExportEventDataClickhouseStream, getExportSessionDataClickhouseStream, getExportWebsiteEventsClickhouseStream } from '@/queries/sql';
-import { validateAndConsumeDownloadToken } from './token/route';
+import { validateDownloadToken } from './token/route';
 
 export async function GET(
   request: Request,
@@ -30,7 +30,7 @@ export async function GET(
   }
 
   if (downloadToken !== null) {
-    if (!validateAndConsumeDownloadToken(downloadToken)) {
+    if (!validateDownloadToken(downloadToken, websiteId)) {
       return badRequest({ message: 'Invalid or expired download token.' });
     }
     const { query: q, error } = await parseRequest(authRequest, schema);

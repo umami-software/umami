@@ -1,16 +1,13 @@
-﻿import crypto from 'crypto';
+﻿import { createToken, parseToken } from '@/lib/jwt';
+import { secret } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';
 import { unauthorized, serverError } from '@/lib/response';
 import { canViewAuthenticatedWebsite } from '@/permissions';
 
-const downloadTokens = new Map<string, number>();
-const TOKEN_TTL_MS = 60_000;
-
-export function validateAndConsumeDownloadToken(token: string): boolean {
-  const expiry = downloadTokens.get(token);
-  if (expiry === undefined) return false;
-  downloadTokens.delete(token);
-  return Date.now() <= expiry;
+export function validateDownloadToken(token: string, websiteId: string): boolean {
+  const payload = parseToken(token, secret());
+  if (!payload) return false;
+  return (payload as any).websiteId === websiteId;
 }
 
 export async function POST(
@@ -40,8 +37,8 @@ export async function POST(
       return unauthorized();
     }
 
-    const downloadToken = crypto.randomBytes(32).toString('hex');
-    downloadTokens.set(downloadToken, Date.now() + TOKEN_TTL_MS);
+    // Create a stateless JWT scoped to this specific websiteId, expiring in 60 seconds
+    const downloadToken = createToken({ websiteId }, secret(), { expiresIn: '60s' });
 
     return Response.json({ downloadToken });
   } catch (e) {
