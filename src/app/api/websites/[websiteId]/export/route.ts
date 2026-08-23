@@ -43,6 +43,11 @@ export async function GET(
     return unauthorized();
   }
 
+  const isValidationOnly = url.searchParams.get('validate') === 'true';
+  if (isValidationOnly) {
+    return NextResponse.json({ ok: true });
+  }
+
   const filters = await getQueryFilters(query, websiteId);
 
   const zip = new JSZip();
