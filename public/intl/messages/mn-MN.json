@@ -118,6 +118,8 @@
     "event-data": "Үйлдлийн өгөгдөл",
     "event-properties": "Үйлдлийн өгөгдөл",
     "event-name": "Үйлдлийн нэр",
+    "export": "Экспортлох",
+    "export-data": "Өгөгдөл экспортлох",
     "events": "Үйлдэл",
     "exclude-bounce": "Буцалтыг хасах",
     "exists": "Байгаа",

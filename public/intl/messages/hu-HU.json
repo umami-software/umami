@@ -118,6 +118,8 @@
     "event-data": "Eseményadatok",
     "event-properties": "Eseményadatok",
     "event-name": "Esemény neve",
+    "export": "Exportálás",
+    "export-data": "Adatok exportálása",
     "events": "Események",
     "exclude-bounce": "Visszafordulás kizárása",
     "exists": "Létezik",
