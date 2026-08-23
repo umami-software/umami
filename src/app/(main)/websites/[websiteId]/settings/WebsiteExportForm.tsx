@@ -4,6 +4,10 @@ import { useState } from 'react';
 import { useMessages, useApi, useTimezone, useDateRangeQuery } from '@/components/hooks';
 import { DateFilter } from '@/components/input/DateFilter';
 import { parseDateRange, getDateRangeValue } from '@/lib/date';
+import { getApiUrl } from '@/lib/api-url';
+import { getClientAuthToken } from '@/lib/client';
+import { SHARE_CONTEXT_HEADER, SHARE_TOKEN_HEADER } from '@/lib/constants';
+import { useApp } from '@/store/app';
 
 export function WebsiteExportForm({
   websiteId,
@@ -19,6 +23,8 @@ export function WebsiteExportForm({
   const { localToUtc } = useTimezone();
   const websiteDateRange = useDateRangeQuery(websiteId);
   const hasData = !!(websiteDateRange?.startDate && websiteDateRange?.endDate);
+  const shareId = useApp(state => state.share?.shareId);
+  const shareToken = useApp(state => state.shareToken?.token);
 
   const handleDateChange = (value: string) => {
     if (value === 'all' && hasData) {
@@ -38,13 +44,31 @@ export function WebsiteExportForm({
         const startAt = +localToUtc(parsed.startDate);
         const endAt = +localToUtc(parsed.endDate);
 
-        const { zip } = await get(`/websites/${websiteId}/export`, {
-          startAt,
-          endAt,
-          format: 'json',
-        });
+        const shareHeaders = shareId && shareToken
+          ? { [SHARE_TOKEN_HEADER]: shareToken, [SHARE_CONTEXT_HEADER]: '1' }
+          : {};
 
-        await loadZip(zip);
+        const headers = {
+          authorization: `Bearer ${getClientAuthToken()}`,
+          ...shareHeaders,
+        };
+
+        const response = await fetch(
+          getApiUrl(`/websites/${websiteId}/export?startAt=${startAt}&endAt=${endAt}`),
+          { method: 'GET', headers }
+        );
+
+        if (!response.ok) {
+          throw new Error('Export failed');
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `export-${websiteId}.zip`;
+        a.click();
+        URL.revokeObjectURL(url);
       }
     } finally {
       setIsLoading(false);
@@ -68,19 +92,3 @@ export function WebsiteExportForm({
   );
 }
 
-async function loadZip(zip: string) {
-  const binary = atob(zip);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) {
-    bytes[i] = binary.charCodeAt(i);
-  }
-
-  const blob = new Blob([bytes], { type: 'application/zip' });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'download.zip';
-  a.click();
-  URL.revokeObjectURL(url);
-}

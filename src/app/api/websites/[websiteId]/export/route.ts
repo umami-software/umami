@@ -1,7 +1,8 @@
 import JSZip from 'jszip';
 import Papa from 'papaparse';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { json, unauthorized } from '@/lib/response';
+import { unauthorized } from '@/lib/response';
+import { NextResponse } from 'next/server';
 import { pagingParams, withDateRange } from '@/lib/schema';
 import { canViewAuthenticatedWebsite } from '@/permissions';
 import { getExportEventData, getExportSessionData, getExportWebsiteEvents } from '@/queries/sql';
@@ -27,12 +28,6 @@ export async function GET(
   }
 
   const filters = await getQueryFilters(query, websiteId);
-
-  const [websiteEvents, sessionData, eventData] = await Promise.all([
-    getExportWebsiteEvents(websiteId, filters),
-    getExportSessionData(websiteId, filters),
-    getExportEventData(websiteId, filters),
-  ]);
 
   const zip = new JSZip();
 
@@ -76,12 +71,17 @@ export async function GET(
     'website_id', 'session_id', 'event_id', 'url_path', 'event_name', 'data_key', 'string_value', 'number_value', 'date_value', 'data_type', 'created_at', 'job_id'
   ];
 
-  zip.file('website_event.csv', parse(websiteEvents, WEBSITE_EVENT_COLUMNS));
-  zip.file('session_data.csv', parse(sessionData, SESSION_DATA_COLUMNS));
-  zip.file('event_data.csv', parse(eventData, EVENT_DATA_COLUMNS));
+  zip.file('website_event.csv', parse(await getExportWebsiteEvents(websiteId, filters), WEBSITE_EVENT_COLUMNS));
+  zip.file('session_data.csv', parse(await getExportSessionData(websiteId, filters), SESSION_DATA_COLUMNS));
+  zip.file('event_data.csv', parse(await getExportEventData(websiteId, filters), EVENT_DATA_COLUMNS));
 
-  const content = await zip.generateAsync({ type: 'nodebuffer' });
-  const base64 = content.toString('base64');
+  const content = await zip.generateAsync({ type: 'arraybuffer' });
 
-  return json({ zip: base64 });
+  return new NextResponse(content, {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/zip',
+      'Content-Disposition': `attachment; filename="export.zip"`,
+    },
+  });
 }
