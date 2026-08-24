@@ -11,8 +11,8 @@ export async function getExportWebsiteEvents(websiteId: string, filters: QueryFi
 }
 
 export async function getExportWebsiteEventsClickhouseStream(websiteId: string, filters: QueryFilters) {
-  const { client, parseFilters, connect } = clickhouse;
-  await connect();
+  const { parseFilters, connect } = clickhouse;
+  const client = await connect();
 
   const { queryParams, dateQuery, filterQuery } = parseFilters({
     ...filters,

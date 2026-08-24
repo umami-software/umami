@@ -11,8 +11,8 @@ export async function getExportSessionData(websiteId: string, filters: QueryFilt
 }
 
 export async function getExportSessionDataClickhouseStream(websiteId: string, filters: QueryFilters) {
-  const { client, parseFilters, connect } = clickhouse;
-  await connect();
+  const { parseFilters, connect } = clickhouse;
+  const client = await connect();
 
   const { queryParams, dateQuery } = parseFilters({
     ...filters,
