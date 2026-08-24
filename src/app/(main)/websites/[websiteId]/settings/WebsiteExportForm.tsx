@@ -65,21 +65,16 @@ export function WebsiteExportForm({
 
         const { downloadToken } = await tokenRes.json();
         
-        const exportRes = await fetch(`${url}&downloadToken=${downloadToken}`);
-        if (!exportRes.ok) {
-          const text = await exportRes.text();
-          let msg = 'Export failed';
-          try { msg = JSON.parse(text).error?.message || msg; } catch { /* ignore */ }
-          throw new Error(msg);
-        }
-
-        const blob = await exportRes.blob();
-        const downloadUrl = URL.createObjectURL(blob);
+        // Let the browser handle the streamed response directly. Fetching the
+        // response and converting it to a Blob would retain the entire archive
+        // in tab memory before the download starts.
         const a = document.createElement('a');
-        a.href = downloadUrl;
+        a.href = `${url}&downloadToken=${encodeURIComponent(downloadToken)}`;
         a.download = `umami_export_${websiteId}.zip`;
+        a.style.display = 'none';
+        document.body.appendChild(a);
         a.click();
-        URL.revokeObjectURL(downloadUrl);
+        a.remove();
 
         onClose();
       }
