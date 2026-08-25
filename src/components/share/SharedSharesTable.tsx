@@ -5,7 +5,7 @@ import { useConfig, useMessages, useMobile } from '@/components/hooks';
 import { ExternalLink } from '@/components/icons';
 
 const desktopGridTemplateColumns = 'minmax(180px, 1fr) minmax(0, 2fr) auto';
-const rowBorder = '1px solid var(--border-default)';
+const rowBorder = '1px solid var(--zen-border-default)';
 
 export interface ShareRow {
   id: string;

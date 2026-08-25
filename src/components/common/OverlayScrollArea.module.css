@@ -1,7 +1,7 @@
 .root {
-  --overlay-scrollbar-track: var(--gray-50);
-  --overlay-scrollbar-thumb: var(--gray-300);
-  --overlay-scrollbar-thumb-hover: var(--gray-400);
+  --overlay-scrollbar-track: var(--zen-gray-50);
+  --overlay-scrollbar-thumb: var(--zen-gray-300);
+  --overlay-scrollbar-thumb-hover: var(--zen-gray-400);
   --overlay-scrollbar-viewport-padding-right: 0px;
   --overlay-scrollbar-vertical-margin-right: 2px;
 }
@@ -45,7 +45,7 @@
 }
 
 [data-theme='dark'] .root {
-  --overlay-scrollbar-track: var(--gray-800);
-  --overlay-scrollbar-thumb: var(--gray-600);
-  --overlay-scrollbar-thumb-hover: var(--gray-500);
+  --overlay-scrollbar-track: var(--zen-gray-800);
+  --overlay-scrollbar-thumb: var(--zen-gray-600);
+  --overlay-scrollbar-thumb-hover: var(--zen-gray-500);
 }

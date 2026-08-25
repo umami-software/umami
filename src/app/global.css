@@ -1,15 +1,15 @@
 :root {
-  --font-family: var(--font-inter), sans-serif;
-  --primary: oklch(62.3% 0.214 259.815);
-  --primary-foreground: oklch(98.5% 0 0);
+  --zen-font-family: var(--font-inter), sans-serif;
+  --zen-primary: oklch(62.3% 0.214 259.815);
+  --zen-primary-foreground: oklch(98.5% 0 0);
 }
 
 html,
 body {
-  font-family: var(--font-family), sans-serif;
+  font-family: var(--zen-font-family), sans-serif;
   font-size: 14px;
-  color: var(--text-primary);
-  background-color: var(--surface-raised);
+  color: var(--zen-text-primary);
+  background-color: var(--zen-surface-raised);
   width: 100%;
   min-height: 100vh;
 }
@@ -29,11 +29,11 @@ textarea:is(:-webkit-autofill, :autofill):focus,
 select:is(:-webkit-autofill, :autofill),
 select:is(:-webkit-autofill, :autofill):hover,
 select:is(:-webkit-autofill, :autofill):focus {
-  color: var(--text-primary) !important;
-  caret-color: var(--text-primary);
-  box-shadow: 0 0 0 1000px var(--surface-base) inset !important;
-  -webkit-box-shadow: 0 0 0 1000px var(--surface-base) inset !important;
-  -webkit-text-fill-color: var(--text-primary) !important;
+  color: var(--zen-text-primary) !important;
+  caret-color: var(--zen-text-primary);
+  box-shadow: 0 0 0 1000px var(--zen-surface-base) inset !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--zen-surface-base) inset !important;
+  -webkit-text-fill-color: var(--zen-text-primary) !important;
   transition:
     background-color 5000s ease-in-out 0s,
     color 5000s ease-in-out 0s;

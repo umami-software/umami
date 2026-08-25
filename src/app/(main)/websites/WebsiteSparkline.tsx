@@ -48,7 +48,7 @@ export function WebsiteSparkline({
           maxWidth: 88,
           height: 24,
           borderRadius: 9999,
-          background: 'var(--surface-sunken)',
+          background: 'var(--zen-surface-sunken)',
         }}
       />
     );

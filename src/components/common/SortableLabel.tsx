@@ -18,7 +18,7 @@ export function SortableLabel({ label, sortKey, defaultDirection = 'asc' }: Sort
   const isActive = query.orderBy === sortKey;
   const isDescending = query.sortDescending === 'true';
   const direction = isActive ? (isDescending ? 'desc' : 'asc') : undefined;
-  const activeColor = 'var(--text-primary)';
+  const activeColor = 'var(--zen-text-primary)';
 
   const getNextDirection = (): SortDirection => {
     if (!isActive) {
@@ -55,7 +55,7 @@ export function SortableLabel({ label, sortKey, defaultDirection = 'asc' }: Sort
           flexDirection: 'column',
           gap: 0,
           lineHeight: 0,
-          color: 'var(--text-muted)',
+          color: 'var(--zen-text-muted)',
           opacity: 0.8,
         }}
       >

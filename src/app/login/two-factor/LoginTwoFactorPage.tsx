@@ -97,7 +97,7 @@ export function LoginTwoFactorPage() {
         <Text>{t(messages.twoFactorLoginDescription)}</Text>
 
         {!!lockUntil && lockMessage && (
-          <Text style={{ color: 'var(--color-danger, red)' }}>{lockMessage}</Text>
+          <Text style={{ color: 'var(--zen-status-error)' }}>{lockMessage}</Text>
         )}
 
         <Form onSubmit={handleSubmit} error={error ?? undefined} style={{ minWidth: 300 }}>
