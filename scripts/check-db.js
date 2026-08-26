@@ -7,6 +7,16 @@ import { PrismaClient } from '../generated/prisma/client.js';
 
 const MIN_VERSION = '9.4.0';
 const MIN_VERSION_NUM = 90400;
+const maxOpenConnections = process.env.CLICKHOUSE_MAX_OPEN_CONNECTIONS;
+
+if (
+  maxOpenConnections !== undefined &&
+  (!/^[1-9]\d*$/.test(maxOpenConnections) ||
+    !Number.isSafeInteger(Number(maxOpenConnections)))
+) {
+  console.log('CLICKHOUSE_MAX_OPEN_CONNECTIONS must be a positive integer.');
+  process.exit(1);
+}
 
 if (process.env.SKIP_DB_CHECK) {
   console.log('Skipping database check.');
