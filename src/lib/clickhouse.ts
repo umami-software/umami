@@ -25,6 +25,23 @@ const REGEX_OPERATORS: Operator[] = [OPERATORS.regex, OPERATORS.notRegex];
 
 let clickhouse: ClickHouseClient;
 const enabled = Boolean(process.env.CLICKHOUSE_URL);
+const maxOpenConnections = getMaxOpenConnections();
+
+function getMaxOpenConnections() {
+  const value = process.env.CLICKHOUSE_MAX_OPEN_CONNECTIONS;
+
+  if (value === undefined) {
+    return undefined;
+  }
+
+  const parsed = Number(value);
+
+  if (!/^[1-9]\d*$/.test(value) || !Number.isSafeInteger(parsed)) {
+    throw new Error('CLICKHOUSE_MAX_OPEN_CONNECTIONS must be a positive integer.');
+  }
+
+  return parsed;
+}
 
 function getClient() {
   const clickhouseUrl = process.env.CLICKHOUSE_URL;
@@ -47,6 +64,7 @@ function getClient() {
     database: pathname.replace('/', ''),
     username: username,
     password,
+    ...(maxOpenConnections === undefined ? {} : { max_open_connections: maxOpenConnections }),
   });
 
   if (process.env.NODE_ENV !== 'production') {

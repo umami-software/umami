@@ -60,6 +60,11 @@ The connection URL format:
 postgresql://username:mypassword@localhost:5432/mydb
 ```
 
+For deployments using ClickHouse through `CLICKHOUSE_URL`, `CLICKHOUSE_MAX_OPEN_CONNECTIONS` can
+override the client connection limit with a positive integer. When unset, the bundled ClickHouse
+client currently defaults to 10 connections. Each Umami server instance has its own connection pool,
+so five replicas configured with 20 can open up to 100 connections total.
+
 ### Build the Application
 
 ```bash
