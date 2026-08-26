@@ -25,7 +25,7 @@ const REGEX_OPERATORS: Operator[] = [OPERATORS.regex, OPERATORS.notRegex];
 
 let clickhouse: ClickHouseClient;
 const enabled = Boolean(process.env.CLICKHOUSE_URL);
-const maxOpenConnections = getMaxOpenConnections();
+const maxOpenConnections = enabled ? getMaxOpenConnections() : undefined;
 
 function getMaxOpenConnections() {
   const value = process.env.CLICKHOUSE_MAX_OPEN_CONNECTIONS;

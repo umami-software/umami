@@ -5,8 +5,11 @@ const createClient = vi.hoisted(() => vi.fn((_options: unknown) => ({})));
 
 vi.mock('@clickhouse/client', () => ({ createClient }));
 
-async function connect(maxOpenConnections?: string) {
-  vi.stubEnv('CLICKHOUSE_URL', 'http://default:password@localhost:8123/umami');
+async function connect(maxOpenConnections?: string, enabled = true) {
+  vi.stubEnv(
+    'CLICKHOUSE_URL',
+    enabled ? 'http://default:password@localhost:8123/umami' : undefined,
+  );
   vi.stubEnv('CLICKHOUSE_MAX_OPEN_CONNECTIONS', maxOpenConnections);
   vi.stubEnv('NODE_ENV', 'production');
 
@@ -47,6 +50,11 @@ describe('ClickHouse connection limit', () => {
     await connect('25');
 
     expect(createClient.mock.calls[0][0]).toHaveProperty('max_open_connections', 25);
+  });
+
+  test('ignores CLICKHOUSE_MAX_OPEN_CONNECTIONS when ClickHouse is disabled', async () => {
+    await expect(connect('invalid', false)).resolves.toBeUndefined();
+    expect(createClient).not.toHaveBeenCalled();
   });
 
   test.each(['', '0', '-1', '1.5', 'ten', '10connections', '9007199254740992'])(
