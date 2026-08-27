@@ -1,4 +1,13 @@
-import { Button, Column, DataColumn, DataTable, Loading, Row, Text } from '@umami/react-zen';
+import {
+  Button,
+  Column,
+  DataColumn,
+  DataTable,
+  Heading,
+  Loading,
+  Row,
+  Text,
+} from '@umami/react-zen';
 import { useState } from 'react';
 import { formatAnnotationDate } from '@/components/charts/ChartAnnotationMarkers';
 import { Empty } from '@/components/common/Empty';
@@ -54,12 +63,15 @@ export function AnnotationsModal({
 
   if (view.mode !== 'list') {
     return (
-      <AnnotationEditForm
-        websiteId={websiteId}
-        annotation={view.mode === 'edit' ? view.annotation : undefined}
-        onSave={showList}
-        onClose={showList}
-      />
+      <Column gap>
+        <Heading size="xl">{t(labels.notes)}</Heading>
+        <AnnotationEditForm
+          websiteId={websiteId}
+          annotation={view.mode === 'edit' ? view.annotation : undefined}
+          onSave={showList}
+          onClose={showList}
+        />
+      </Column>
     );
   }
 
@@ -71,7 +83,8 @@ export function AnnotationsModal({
 
   return (
     <Column gap>
-      <Row justifyContent="end">
+      <Row alignItems="center" justifyContent="space-between">
+        <Heading size="xl">{t(labels.notes)}</Heading>
         <Button variant="primary" onPress={() => setView({ mode: 'add' })}>
           <Plus />
           {t(labels.addNote)}
@@ -83,7 +96,7 @@ export function AnnotationsModal({
         <DataTable data={rows}>
           <DataColumn id="date" label={t(labels.date)} width="200px">
             {(row: Annotation) => (
-              <Button variant="quiet" onPress={() => handleSelect(row)}>
+              <Button onPress={() => handleSelect(row)}>
                 {formatAnnotationDate(
                   { id: row.id, date: toLocalDate(row), label: row.note, allDay: row.allDay },
                   locale,

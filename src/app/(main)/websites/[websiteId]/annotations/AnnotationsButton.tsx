@@ -15,6 +15,7 @@ export function AnnotationsButton({ websiteId }: { websiteId: string }) {
     <DialogButton
       icon={<MessageSquareText />}
       label={t(labels.notes)}
+      title={null}
       variant="quiet"
       width="800px"
     >
