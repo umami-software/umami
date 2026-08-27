@@ -1,8 +1,8 @@
 import { useMessages, useWebsite } from '@/components/hooks';
-import { Column, Label, TextField } from '@umami/react-zen';
+import { Button, Column, Label, Row, TextField } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 
-export function BuildUTMLink() {
+export function BuildUTMLink({ onClose }: { onClose: () => void }) {
   const { t, labels } = useMessages();
   const website = useWebsite();
 
@@ -59,20 +59,6 @@ export function BuildUTMLink() {
       </Column>
 
       <Column>
-        <Label>{t(labels.utmSource)}</Label>
-        <TextField
-          value={source}
-          onChange={setSource}
-          placeholder="newsletter, twitter, google, etc."
-        />
-      </Column>
-
-      <Column>
-        <Label>{t(labels.utmMedium)}</Label>
-        <TextField value={medium} onChange={setMedium} placeholder="email, social, cpc, etc." />
-      </Column>
-
-      <Column>
         <Label>{t(labels.utmCampaign)}</Label>
         <TextField value={campaign} onChange={setCampaign} placeholder="promotion, sale, etc." />
       </Column>
@@ -83,7 +69,21 @@ export function BuildUTMLink() {
       </Column>
 
       <Column>
+        <Label>{t(labels.utmMedium)}</Label>
+        <TextField value={medium} onChange={setMedium} placeholder="email, social, cpc, etc." />
+      </Column>
+
+      <Column>
         <Label>{t(labels.utmSource)}</Label>
+        <TextField
+          value={source}
+          onChange={setTerm}
+          placeholder="newsletter, twitter, google, etc."
+        />
+      </Column>
+
+      <Column>
+        <Label>{t(labels.utmTerm)}</Label>
         <TextField value={term} onChange={setTerm} placeholder="running-shoes" />
       </Column>
 
@@ -91,6 +91,10 @@ export function BuildUTMLink() {
         <Label>{t(labels.utmGeneratedUrl)}</Label>
         <TextField value={builtUrl} isReadOnly allowCopy />
       </Column>
+
+      <Row justifyContent="flex-end" paddingTop="3" gap="3">
+        <Button onPress={onClose}>{t(labels.close)}</Button>
+      </Row>
     </Column>
   );
 }

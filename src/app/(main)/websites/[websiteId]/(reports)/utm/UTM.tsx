@@ -6,7 +6,7 @@ import { useMessages, useResultQuery } from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
 import { CHART_COLORS, UTM_PARAMS } from '@/lib/constants';
 import { DialogButton } from '@/components/input/DialogButton';
-import { Plus } from 'lucide-react';
+import { Link } from 'lucide-react';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { BuildUTMLink } from './BuildUTMLink';
 
@@ -31,13 +31,13 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
           <SectionHeader>
             <DialogButton
               variant="primary"
-              icon={<Plus />}
+              icon={<Link />}
               label={t(labels.utmGenerator)}
               title={t(labels.utmGenerator)}
               minWidth="400px"
               minHeight="300px"
             >
-              <BuildUTMLink />
+              {({ close }) => <BuildUTMLink onClose={close} />}
             </DialogButton>
           </SectionHeader>
           {UTM_PARAMS.map(param => {
