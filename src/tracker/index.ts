@@ -346,7 +346,11 @@ type MetricEntry = PerformanceEntry & {
       }
     };
     const onClick = (e: MouseEvent) => {
-      const el = e.target as Element;
+      const el = e.target;
+      // The listener is on `document` in the capture phase, so it receives every
+      // click in the page — including ones dispatched on `document` itself or on
+      // a non-element node, where `closest` does not exist.
+      if (!(el instanceof Element)) return;
       const eventEl = el.closest(`[${eventNameAttribute}]`);
       if (!eventEl) return;
 
