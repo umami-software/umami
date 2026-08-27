@@ -463,7 +463,7 @@
     "select-component-preview": "Válasszon egy komponenst az előnézethez",
     "select-website-first": "Először válasszon egy webhelyet",
     "sever-error": "Szerverhiba",
-    "share-url": "{target} nyilvánosan megosztott URL címe.",
+    "share-url": "A webhely statisztikái nyilvánosan elérhetők a következő URL-címen:",
     "team-already-member": "Ön már tagja a csapatnak.",
     "team-not-found": "Csapat nem található.",
     "team-websites-info": "A weboldalakat a csapat bármely tagja megtekintheti.",

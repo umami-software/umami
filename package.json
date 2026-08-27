@@ -49,6 +49,7 @@
     "test:e2e:ui": "playwright test --ui",
     "seed-data": "tsx scripts/seed-data.ts",
     "lint": "biome lint .",
+    "lint:i18n": "eloqnt lint",
     "format": "biome format --write .",
     "check": "biome check --write"
   },
@@ -119,6 +120,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.5",
+    "@eloqnt/cli": "^0.6.18",
     "@netlify/plugin-nextjs": "^5.15.13",
     "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-node-resolve": "^16.0.3",
