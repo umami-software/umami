@@ -1,12 +1,15 @@
 import 'dotenv/config';
 import createNextIntlPlugin from 'next-intl/plugin';
 import pkg from './package.json' with { type: 'json' };
+import { getContentSecurityPolicy } from './src/lib/csp';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const TRACKER_SCRIPT = '/script.js';
+const RECORDER_SCRIPT = '/recorder.js';
 
 const isProd = process.env.NODE_ENV === 'production';
+const isVercel = Boolean(process.env.VERCEL);
 
 const apiUrl = process.env.API_URL || '';
 const basePath = process.env.BASE_PATH || '';
@@ -17,19 +20,10 @@ const corsMaxAge = process.env.CORS_MAX_AGE || '';
 const defaultCurrency = process.env.DEFAULT_CURRENCY || '';
 const defaultLocale = process.env.DEFAULT_LOCALE || '';
 const forceSSL = process.env.FORCE_SSL || '';
-const frameAncestors = process.env.ALLOWED_FRAME_URLS || '';
 const trackerScriptName = process.env.TRACKER_SCRIPT_NAME || '';
 const trackerScriptURL = process.env.TRACKER_SCRIPT_URL || '';
 const selfTrack = process.env.UMAMI_SELF_TRACK || '';
 const selfRecord = process.env.UMAMI_SELF_RECORD || '';
-
-function getUrlOrigin(url: string) {
-  try {
-    return new URL(url).origin;
-  } catch {
-    return '';
-  }
-}
 
 function isRelativeUrl(url: string) {
   return Boolean(url && !/^https?:\/\//i.test(url));
@@ -39,19 +33,6 @@ function normalizePath(url: string) {
   return `/${url.replace(/^\/+|\/+$/g, '')}`;
 }
 
-const apiUrlOrigin = getUrlOrigin(apiUrl);
-const connectSrc = ["'self'", 'https:', apiUrlOrigin].filter(Boolean).join(' ');
-
-const contentSecurityPolicy = `
-  default-src 'self';
-  img-src 'self' https: data: blob:;
-  script-src 'self' 'unsafe-eval' 'unsafe-inline';
-  style-src 'self' 'unsafe-inline';
-  connect-src ${connectSrc};
-  frame-src 'self' http: https:;
-  frame-ancestors 'self' ${frameAncestors};
-`;
-
 const defaultHeaders = [
   {
     key: 'X-DNS-Prefetch-Control',
@@ -59,7 +40,7 @@ const defaultHeaders = [
   },
   {
     key: 'Content-Security-Policy',
-    value: contentSecurityPolicy.replace(/\s{2,}/g, ' ').trim(),
+    value: getContentSecurityPolicy(),
   },
 ];
 
@@ -118,6 +99,10 @@ const headers = [
 if (isProd) {
   headers.push({
     source: TRACKER_SCRIPT,
+    headers: trackerHeaders,
+  });
+  headers.push({
+    source: RECORDER_SCRIPT,
     headers: trackerHeaders,
   });
 }
@@ -235,11 +220,13 @@ export default withNextIntl({
     selfRecord,
   },
   basePath,
-  output: 'standalone',
+  output: isVercel ? undefined : 'standalone',
   typescript: {
     ignoreBuildErrors: true,
   },
-  devIndicators: false,
+  experimental: {
+    useTypeScriptCli: true,
+  },
   async headers() {
     return headers;
   },

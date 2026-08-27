@@ -20,6 +20,7 @@ export interface Auth {
     isAdmin: boolean;
   };
   shareToken?: {
+    shareType?: number;
     websiteId?: string;
     websiteIds?: string[];
     boardId?: string;
@@ -47,6 +48,7 @@ export interface PropertyFilter {
 }
 
 export type EventPropertyFilter = PropertyFilter;
+export type SessionPropertyFilter = PropertyFilter;
 
 export interface Filter {
   name: string;
@@ -123,7 +125,10 @@ export interface QueryFilters
     SortParams,
     PageParams,
     SegmentParams {
+  minDuration?: number;
   cohortFilters?: QueryFilters;
+  eventPropertyFilters?: EventPropertyFilter[];
+  sessionPropertyFilters?: SessionPropertyFilter[];
 }
 
 export interface DateParams {

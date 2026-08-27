@@ -48,6 +48,15 @@ export function isValidUrl(url: string) {
   }
 }
 
+export function isHttpUrl(value: string): boolean {
+  try {
+    const u = new URL(value);
+    return (u.protocol === 'http:' || u.protocol === 'https:') && !!u.host;
+  } catch {
+    return false;
+  }
+}
+
 export function appendQueryParams(
   url: string,
   params: Record<string, string | null | undefined>,

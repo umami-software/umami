@@ -10,6 +10,8 @@ export const LAST_TEAM_CONFIG = 'umami.last-team';
 export const VERSION_CHECK = 'umami.version-check';
 export const SHARE_TOKEN_HEADER = 'x-umami-share-token';
 export const SHARE_CONTEXT_HEADER = 'x-umami-share-context';
+export const SHARE_TOKEN_TYPE = 'share';
+export const CACHE_TOKEN_TYPE = 'cache';
 export const HOMEPAGE_URL = 'https://umami.is';
 export const DOCS_URL = 'https://umami.is/docs';
 export const REPO_URL = 'https://github.com/umami-software/umami';
@@ -178,6 +180,13 @@ export const ROLES = {
   teamViewOnly: 'team-view-only',
 } as const;
 
+export const TEAM_ROLE_RANK: Record<string, number> = {
+  [ROLES.teamViewOnly]: 0,
+  [ROLES.teamMember]: 1,
+  [ROLES.teamManager]: 2,
+  [ROLES.teamOwner]: 3,
+} as const;
+
 export const PERMISSIONS = {
   all: 'all',
   websiteCreate: 'website:create',
@@ -259,12 +268,26 @@ export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{8,50}$/;
 export const DATETIME_REGEX =
   /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{3})?(Z|\+[0-9]{2}:[0-9]{2})?$/;
 
-export const URL_LENGTH = 500;
-export const PAGE_TITLE_LENGTH = 500;
-export const EVENT_NAME_LENGTH = 50;
-export const TAG_LENGTH = 50;
-export const HOSTNAME_LENGTH = 100;
-export const FIELD_VALUE_LENGTH = 255;
+export const FIELD_LENGTH = {
+  browser: 20,
+  os: 20,
+  device: 20,
+  screen: 11,
+  language: 35,
+  country: 2,
+  region: 20,
+  city: 50,
+  distinctId: 50,
+  url: 500,
+  pageTitle: 500,
+  eventName: 50,
+  tag: 50,
+  hostname: 100,
+  fieldValue: 255,
+  dataKey: 500,
+  stringValue: 500,
+  currency: 10,
+} as const;
 
 export const UTM_PARAMS = ['utm_campaign', 'utm_content', 'utm_medium', 'utm_source', 'utm_term'];
 
@@ -374,7 +397,6 @@ export const PAID_AD_PARAMS = [
   'aid=',
   'dclid=',
   'epik=',
-  'fbclid=',
   'gclid=',
   'li_fat_id=',
   'msclkid=',
@@ -711,6 +733,7 @@ export const CURRENCIES = [
   { id: 'TND', name: 'Tunisian Dinar' },
   { id: 'OMR', name: 'Omani Rial' },
   { id: 'GHS', name: 'Ghanaian Cedi' },
+  { id: 'IRR', name: 'Iranian Rial' },
 ];
 
 export const TIMEZONE_LEGACY: Record<string, string> = {

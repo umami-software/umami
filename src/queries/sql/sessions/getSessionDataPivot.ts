@@ -128,7 +128,11 @@ async function clickhouseQuery(
   const { timezone = 'UTC' } = filters;
   const { pagedRawQuery, parseFilters, getPropertyFilterQuery, getDateStringSQL } = clickhouse;
 
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    timezone,
+  });
   const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(
     propertyFilters,
     'session',

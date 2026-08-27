@@ -3,10 +3,9 @@
 }
 
 .card:hover {
-  box-shadow: 0 0 0 1px var(--text-primary);
+  box-shadow: 0 0 0 1px var(--zen-text-primary);
 }
 
 .card.selected {
-  box-shadow: 0 0 0 1px var(--text-primary);
+  box-shadow: 0 0 0 1px var(--zen-text-primary);
 }
-

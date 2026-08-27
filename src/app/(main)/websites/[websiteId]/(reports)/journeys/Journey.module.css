@@ -3,9 +3,9 @@
   height: 100%;
   position: relative;
 
-  --journey-line-color: var(--border-strong);
-  --journey-active-color: var(--primary);
-  --journey-faded-color: var(--interactive-bg);
+  --journey-line-color: var(--zen-border-strong);
+  --journey-active-color: var(--zen-primary);
+  --journey-faded-color: var(--zen-interactive-bg);
 }
 
 .view {
@@ -43,8 +43,8 @@
 
 .dropoff {
   font-weight: 600;
-  color: var(--text-muted);
-  background: var(--surface-sunken);
+  color: var(--zen-text-muted);
+  background: var(--zen-surface-sunken);
   padding: 4px 8px;
   border-radius: 5px;
 }
@@ -58,8 +58,8 @@
   height: 50px;
   font-size: 16px;
   font-weight: 700;
-  color: var(--surface-base);
-  background: var(--surface-inverted);
+  color: var(--zen-surface-base);
+  background: var(--zen-surface-inverted);
   z-index: 1;
   margin: 0 auto 20px;
 }
@@ -84,7 +84,7 @@
   position: relative;
   cursor: pointer;
   padding: 10px 20px;
-  background: var(--interactive-bg);
+  background: var(--zen-interactive-bg);
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -96,27 +96,27 @@
 }
 
 .node:hover:not(.selected) {
-  background: var(--interactive-bg-hover);
+  background: var(--zen-interactive-bg-hover);
 }
 
 .node.selected {
-  color: var(--surface-base);
-  background: var(--surface-inverted);
+  color: var(--zen-surface-base);
+  background: var(--zen-surface-inverted);
 }
 
 .node.active {
-  color: var(--primary-foreground);
-  background: var(--primary);
+  color: var(--zen-primary-foreground);
+  background: var(--zen-primary);
 }
 
 .node.selected .count {
-  color: var(--surface-base);
-  background: var(--surface-inverted);
+  color: var(--zen-surface-base);
+  background: var(--zen-surface-inverted);
 }
 
 .node.selected.active .count {
-  color: var(--primary-foreground);
-  background: var(--primary);
+  color: var(--zen-primary-foreground);
+  background: var(--zen-primary);
 }
 
 .name {
@@ -212,7 +212,7 @@
   position: absolute;
   border-radius: 100%;
   border: 3px solid var(--journey-line-color);
-  background: var(--surface-base);
+  background: var(--zen-surface-base);
   width: 14px;
   height: 14px;
 }

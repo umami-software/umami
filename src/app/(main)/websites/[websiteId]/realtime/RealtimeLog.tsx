@@ -1,3 +1,6 @@
+import { Column, Heading, Row, SearchField, Text } from '@umami/react-zen';
+import { useMemo, useState } from 'react';
+import { List, type RowComponentProps } from 'react-window';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { Avatar } from '@/components/common/Avatar';
 import { Empty } from '@/components/common/Empty';
@@ -17,9 +20,6 @@ import { Eye, User } from '@/components/icons';
 import { FilterButtons } from '@/components/input/FilterButtons';
 import { Lightning } from '@/components/svg';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
-import { Column, Heading, Row, SearchField, Text } from '@umami/react-zen';
-import { useMemo, useState } from 'react';
-import { List, type RowComponentProps } from 'react-window';
 
 const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';
@@ -136,9 +136,7 @@ export function RealtimeLog({ data }: { data: any }) {
           <Text wrap="nowrap">{getTime(row)}</Text>
         </Row>
         <IconLabel icon={getIcon(row)} style={{ minWidth: 0, flex: 1 }}>
-          <Text truncate>
-            {getDetail(row)}
-          </Text>
+          <Text truncate>{getDetail(row)}</Text>
         </IconLabel>
       </Row>
     );
@@ -183,15 +181,25 @@ export function RealtimeLog({ data }: { data: any }) {
       {isPhone ? (
         <>
           <Row marginBottom="1">
-            <SearchField value={search} onSearch={setSearch} />
+            <SearchField
+              value={search}
+              onSearch={setSearch}
+              placeholder={t(labels.search)}
+              className="w-full max-w-md"
+            />
           </Row>
           <Row>
             <FilterButtons items={buttons} value={filter} onChange={setFilter} />
           </Row>
         </>
       ) : (
-        <Row alignItems="center" justifyContent="space-between">
-          <SearchField value={search} onSearch={setSearch} />
+        <Row alignItems="center" justifyContent="space-between" gap="4">
+          <SearchField
+            value={search}
+            onSearch={setSearch}
+            placeholder={t(labels.search)}
+            className="w-full max-w-md"
+          />
           <FilterButtons items={buttons} value={filter} onChange={setFilter} />
         </Row>
       )}

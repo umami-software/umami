@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react';
 import { Button, Icon, Row } from '@umami/react-zen';
+import type { ReactNode } from 'react';
 import { Monitor, Moon, Sun } from '@/components/icons';
 
 export type ThemeMode = 'light' | 'dark' | 'system';

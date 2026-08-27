@@ -8,10 +8,7 @@ import { anyObjectParam, filterParams, pagingParams } from '@/lib/schema';
 import { canUpdateBoard, canViewBoard } from '@/permissions';
 import { createShare, getSharesByEntityId } from '@/queries/prisma';
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ boardId: string }> },
-) {
+export async function GET(request: Request, { params }: { params: Promise<{ boardId: string }> }) {
   const schema = z.object({
     ...filterParams,
     ...pagingParams,
@@ -39,10 +36,7 @@ export async function GET(
   return json(data);
 }
 
-export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ boardId: string }> },
-) {
+export async function POST(request: Request, { params }: { params: Promise<{ boardId: string }> }) {
   const schema = z.object({
     name: z.string().max(200),
     parameters: anyObjectParam.optional(),

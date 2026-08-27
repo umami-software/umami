@@ -4,16 +4,16 @@ import { ArrowRight } from '@/components/icons';
 
 const STYLES = {
   positive: {
-    color: `var(--status-success)`,
-    background: `var(--status-success-bg)`,
+    color: `var(--zen-status-success)`,
+    background: `var(--zen-status-success-bg)`,
   },
   negative: {
-    color: `var(--status-error)`,
-    background: `var(--status-error-bg)`,
+    color: `var(--zen-status-error)`,
+    background: `var(--zen-status-error-bg)`,
   },
   neutral: {
-    color: `var(--text-muted)`,
-    background: `var(--surface-raised)`,
+    color: `var(--zen-text-muted)`,
+    background: `var(--zen-surface-raised)`,
   },
 };
 

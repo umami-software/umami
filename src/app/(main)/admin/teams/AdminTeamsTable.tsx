@@ -1,7 +1,9 @@
 import { DataColumn, DataTable, Dialog, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
-import Link from '@/components/common/Link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { DateDistance } from '@/components/common/DateDistance';
+import Link from '@/components/common/Link';
 import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages } from '@/components/hooks';
 import { Edit, Trash } from '@/components/icons';
@@ -17,6 +19,7 @@ export function AdminTeamsTable({
   showActions?: boolean;
 }) {
   const { t, labels } = useMessages();
+  const router = useRouter();
   const [deleteTeam, setDeleteTeam] = useState(null);
 
   return (
@@ -48,7 +51,9 @@ export function AdminTeamsTable({
         </DataColumn>
         <DataColumn
           id="created"
-          label={<SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />}
+          label={
+            <SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />
+          }
           width="160px"
         >
           {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
@@ -60,7 +65,10 @@ export function AdminTeamsTable({
 
               return (
                 <MenuButton>
-                  <MenuItem href={`/admin/teams/${id}`} data-test="link-button-edit">
+                  <MenuItem
+                    onAction={() => router.push(`/admin/teams/${id}`)}
+                    data-test="link-button-edit"
+                  >
                     <Row alignItems="center" gap>
                       <Icon>
                         <Edit />
@@ -86,11 +94,13 @@ export function AdminTeamsTable({
           </DataColumn>
         )}
       </DataTable>
-      <Modal isOpen={!!deleteTeam}>
-        <Dialog style={{ width: 400 }}>
-          <TeamDeleteForm teamId={deleteTeam} onClose={() => setDeleteTeam(null)} />
-        </Dialog>
-      </Modal>
+      <ControlledDialog>
+        <Modal isOpen={!!deleteTeam}>
+          <Dialog style={{ width: 400 }}>
+            <TeamDeleteForm teamId={deleteTeam} onClose={() => setDeleteTeam(null)} />
+          </Dialog>
+        </Modal>
+      </ControlledDialog>
     </>
   );
 }

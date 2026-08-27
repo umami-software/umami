@@ -2,6 +2,7 @@
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
+  flex-shrink: 0;
   gap: 6px;
   padding: 2px 8px;
   border-radius: 6px;
@@ -46,37 +47,37 @@
 }
 
 .gray {
-  color: var(--text-muted);
-  background: var(--surface-sunken);
+  color: var(--zen-text-muted);
+  background: var(--zen-surface-sunken);
 }
 
 .gray .dot {
-  background: var(--text-muted);
+  background: var(--zen-text-muted);
 }
 
-:global([data-theme='dark']) .good {
+:global([data-theme="dark"]) .good {
   color: #86efac;
   background: rgba(22, 163, 74, 0.15);
 }
 
-:global([data-theme='dark']) .good .dot {
+:global([data-theme="dark"]) .good .dot {
   background: #4ade80;
 }
 
-:global([data-theme='dark']) .warning {
+:global([data-theme="dark"]) .warning {
   color: #fde047;
   background: rgba(202, 138, 4, 0.15);
 }
 
-:global([data-theme='dark']) .warning .dot {
+:global([data-theme="dark"]) .warning .dot {
   background: #facc15;
 }
 
-:global([data-theme='dark']) .danger {
+:global([data-theme="dark"]) .danger {
   color: #fca5a5;
   background: rgba(220, 38, 38, 0.15);
 }
 
-:global([data-theme='dark']) .danger .dot {
+:global([data-theme="dark"]) .danger .dot {
   background: #f87171;
 }

@@ -10,7 +10,6 @@ export interface HeatmapEventRow {
   visitId: string;
   urlPath: string;
   eventType: number;
-  nodeId: number | null;
   x: number | null;
   y: number | null;
   pageX: number | null;
@@ -21,9 +20,6 @@ export interface HeatmapEventRow {
   pageH: number | null;
   scrollPct: number | null;
   createdAt: Date;
-  replayChunkIndex: number | null;
-  replayEventIndex: number | null;
-  replayTimeMs: number | null;
 }
 
 export async function saveHeatmapEvents(rows: HeatmapEventRow[]) {
@@ -31,7 +27,6 @@ export async function saveHeatmapEvents(rows: HeatmapEventRow[]) {
 
   const normalizedRows = rows.map(r => ({
     ...r,
-    nodeId: toInt(r.nodeId),
     x: toInt(r.x),
     y: toInt(r.y),
     pageX: toInt(r.pageX),
@@ -70,7 +65,6 @@ async function relationalQuery(rows: HeatmapEventRow[]) {
       visitId: r.visitId,
       urlPath: r.urlPath,
       eventType: r.eventType,
-      nodeId: r.nodeId,
       x: r.x,
       y: r.y,
       pageX: r.pageX,
@@ -81,9 +75,6 @@ async function relationalQuery(rows: HeatmapEventRow[]) {
       pageH: r.pageH,
       scrollPct: r.scrollPct,
       createdAt: r.createdAt,
-      replayChunkIndex: r.replayChunkIndex,
-      replayEventIndex: r.replayEventIndex,
-      replayTimeMs: r.replayTimeMs,
     })) as any,
   });
 }
@@ -99,7 +90,6 @@ async function clickhouseQuery(rows: HeatmapEventRow[]) {
     visit_id: r.visitId,
     url_path: r.urlPath,
     event_type: r.eventType,
-    node_id: r.nodeId,
     x: r.x,
     y: r.y,
     page_x: r.pageX,
@@ -110,9 +100,6 @@ async function clickhouseQuery(rows: HeatmapEventRow[]) {
     page_h: r.pageH,
     scroll_pct: r.scrollPct,
     created_at: getUTCString(r.createdAt),
-    replay_chunk_index: r.replayChunkIndex,
-    replay_event_index: r.replayEventIndex,
-    replay_time_ms: r.replayTimeMs,
   }));
 
   if (kafka.enabled) {

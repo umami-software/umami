@@ -49,8 +49,8 @@ async function relationalQuery(websiteId: string, sessionId: string) {
           session.city,
           min(website_event.created_at) as min_time,
           max(website_event.created_at) as max_time,
-          sum(case when website_event.event_type = 1 then 1 else 0 end) as views,
-          sum(case when website_event.event_type = 2 then 1 else 0 end) as events
+          sum(case when website_event.event_type = ${EVENT_TYPE.pageView} then 1 else 0 end) as views,
+          sum(case when website_event.event_type = ${EVENT_TYPE.customEvent} then 1 else 0 end) as events
     from session
     join website_event on website_event.session_id = session.session_id
     where session.website_id = {{websiteId::uuid}}
@@ -70,16 +70,16 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
   return rawQuery(
     `
     select id,
-      websiteId,
-      distinctId,
-      browser,
-      os,
-      device,
-      screen,
-      language,
-      country,
-      region,
-      city,
+      any(websiteId) as websiteId,
+      argMax(distinctId, max_time) as distinctId,
+      argMax(browser, max_time) as browser,
+      argMax(os, max_time) as os,
+      argMax(device, max_time) as device,
+      argMax(screen, max_time) as screen,
+      argMax(language, max_time) as language,
+      argMax(country, max_time) as country,
+      argMax(region, max_time) as region,
+      argMax(city, max_time) as city,
       ${getDateStringSQL('min(min_time)')} as firstAt,
       ${getDateStringSQL('max(max_time)')} as lastAt,
       uniq(visit_id) visits,
@@ -108,7 +108,7 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
           and session_id = {sessionId:UUID}
           and event_type != ${EVENT_TYPE.performance}
         group by session_id, distinct_id, visit_id, website_id, browser, os, device, screen, language, country, region, city) t
-    group by id, websiteId, distinctId, browser, os, device, screen, language, country, region, city;
+    group by id;
     `,
     { websiteId, sessionId },
     FUNCTION_NAME,

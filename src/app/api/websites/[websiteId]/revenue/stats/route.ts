@@ -3,8 +3,8 @@ import { getCompareDate } from '@/lib/date';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, withDateRange } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
-import { type RevenuParameters } from '@/queries/sql/reports/getRevenueChart';
+import { canViewWebsiteSection } from '@/permissions';
+import type { RevenuParameters } from '@/queries/sql/reports/getRevenueChart';
 import { getRevenueStats } from '@/queries/sql/reports/getRevenueStats';
 
 export async function GET(
@@ -24,7 +24,7 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsiteSection(auth, websiteId, 'revenue'))) {
     return unauthorized();
   }
 

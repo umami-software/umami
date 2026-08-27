@@ -9,7 +9,6 @@ const RRWEB_MOUSE_CLICK = 2;
 
 export interface ExtractedHeatmapEvent {
   eventType: number;
-  nodeId: number | null;
   x: number | null;
   y: number | null;
   viewportW: number | null;
@@ -18,9 +17,6 @@ export interface ExtractedHeatmapEvent {
   scrollPct: number | null;
   urlPath: string;
   createdAt: Date;
-  replayChunkIndex: number | null;
-  replayEventIndex: number | null;
-  replayTimeMs: number | null;
 }
 
 interface ExtractHeatmapEventOptions {
@@ -36,10 +32,7 @@ function safePathname(href: unknown): string | null {
   }
 }
 
-export function extractHeatmapEvents(
-  events: any[],
-  { chunkIndex }: ExtractHeatmapEventOptions = {},
-): ExtractedHeatmapEvent[] {
+export function extractHeatmapEvents(events: any[], _options: ExtractHeatmapEventOptions = {}) {
   if (!Array.isArray(events) || events.length === 0) return [];
 
   let urlPath: string | null = null;
@@ -47,7 +40,7 @@ export function extractHeatmapEvents(
   let viewportH: number | null = null;
   const out: ExtractedHeatmapEvent[] = [];
 
-  for (const [eventIndex, ev] of events.entries()) {
+  for (const ev of events) {
     if (!ev || typeof ev !== 'object') continue;
     const replayTimeMs =
       typeof ev.timestamp === 'number' && Number.isFinite(ev.timestamp) ? ev.timestamp : null;
@@ -73,7 +66,6 @@ export function extractHeatmapEvents(
         if (path === null) continue;
         out.push({
           eventType: HEATMAP_EVENT_TYPE.scroll,
-          nodeId: null,
           x: null,
           y: null,
           viewportW: typeof p.viewportW === 'number' ? p.viewportW : viewportW,
@@ -85,9 +77,6 @@ export function extractHeatmapEvents(
               : null,
           urlPath: path,
           createdAt: new Date(replayTimeMs ?? Date.now()),
-          replayChunkIndex: chunkIndex ?? null,
-          replayEventIndex: eventIndex,
-          replayTimeMs,
         });
       }
       continue;
@@ -110,7 +99,6 @@ export function extractHeatmapEvents(
     ) {
       out.push({
         eventType: HEATMAP_EVENT_TYPE.click,
-        nodeId: typeof d.id === 'number' ? d.id : null,
         x: typeof d.x === 'number' ? Math.round(d.x) : null,
         y: typeof d.y === 'number' ? Math.round(d.y) : null,
         viewportW,
@@ -119,9 +107,6 @@ export function extractHeatmapEvents(
         scrollPct: null,
         urlPath,
         createdAt: new Date(replayTimeMs ?? Date.now()),
-        replayChunkIndex: chunkIndex ?? null,
-        replayEventIndex: eventIndex,
-        replayTimeMs,
       });
     }
   }

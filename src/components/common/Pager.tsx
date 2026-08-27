@@ -11,13 +11,7 @@ export interface PagerProps {
   className?: string;
 }
 
-export function Pager({
-  page,
-  pageSize,
-  count,
-  isCapped,
-  onPageChange,
-}: PagerProps) {
+export function Pager({ page, pageSize, count, isCapped, onPageChange }: PagerProps) {
   const { t, labels } = useMessages();
   const maxPage = pageSize && count ? Math.ceil(+count / +pageSize) : 0;
   const lastPage = page === maxPage;

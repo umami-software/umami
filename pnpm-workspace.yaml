@@ -1,5 +1,7 @@
 packages:
   - '**'
+  - '!dist'
+  - '!**/dist/**'
 allowBuilds:
   '@parcel/watcher': false
   '@prisma/engines': true
@@ -8,3 +10,5 @@ allowBuilds:
   msw: false
   prisma: true
   sharp: false
+minimumReleaseAgeExclude:
+  - '@umami/react-zen'

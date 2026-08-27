@@ -3,8 +3,9 @@ import { IconLabel } from '@/components/common/IconLabel';
 import { LinkButton } from '@/components/common/LinkButton';
 import { PageHeader } from '@/components/common/PageHeader';
 import { useBoard, useMessages, useNavigation } from '@/components/hooks';
-import { getBoardEntity } from '@/lib/boards';
 import { Edit, LayoutDashboard } from '@/components/icons';
+import { getBoardEntity } from '@/lib/boards';
+import { BoardCloneButton } from '../BoardCloneButton';
 import { BoardEntityBadge } from '../BoardEntityBadge';
 import { useBoardEntityBadgeProps } from '../useBoardEntityBadgeProps';
 
@@ -26,13 +27,14 @@ export function BoardViewHeader({
       <Row alignItems="center" gap>
         {showEntityBadge && entityBadge && <BoardEntityBadge {...entityBadge} />}
         {showActions && board?.id && (
-          <>
-            <LinkButton href={renderUrl(`/boards/${board.id}/design`, false)}>
-              <IconLabel icon={<LayoutDashboard />}>Design</IconLabel>
-            </LinkButton>
+            <>
+              <LinkButton href={renderUrl(`/boards/${board.id}/design`, false)}>
+                <IconLabel icon={<LayoutDashboard />}>{t(labels.design)}</IconLabel>
+              </LinkButton>
             <LinkButton href={renderUrl(`/boards/${board.id}/edit`, false)}>
               <IconLabel icon={<Edit />}>{t(labels.edit)}</IconLabel>
             </LinkButton>
+            <BoardCloneButton boardId={board.id} showLabel />
           </>
         )}
       </Row>

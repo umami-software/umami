@@ -8,7 +8,7 @@ import { getBaseUrl } from '@/lib/get-base-url';
 import { renderOgHtml } from '@/lib/og-html';
 import redis from '@/lib/redis';
 import { notFound } from '@/lib/response';
-import { appendQueryParams } from '@/lib/url';
+import { appendQueryParams, isHttpUrl } from '@/lib/url';
 import { findLink } from '@/queries/prisma';
 
 export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
@@ -55,7 +55,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
   });
 
   const userAgent = request.headers.get('user-agent') ?? '';
-  if (!process.env.DISABLE_BOT_CHECK && isbot(userAgent)) {
+  // Links created before url validation existed may hold a non-http(s) scheme.
+  // Only http(s) destinations get the interstitial card; anything else falls
+  // through to the plain redirect rather than being embedded in our own HTML.
+  if (!process.env.DISABLE_BOT_CHECK && isHttpUrl(target) && isbot(userAgent)) {
     const html = renderOgHtml(link, getBaseUrl(request.headers).origin, target);
     return new Response(html, {
       status: 200,
@@ -77,7 +80,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     payload: {
       link: link.id,
       url: request.url,
-      referrer: request.headers.get("referer") || undefined,
+      referrer: request.headers.get('referer') || undefined,
     },
   };
 

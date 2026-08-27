@@ -1,7 +1,9 @@
 import { DataColumn, DataTable, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
-import Link from '@/components/common/Link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { DateDistance } from '@/components/common/DateDistance';
+import Link from '@/components/common/Link';
 import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages } from '@/components/hooks';
 import { Edit, Trash } from '@/components/icons';
@@ -18,6 +20,7 @@ export function UsersTable({
   showActions?: boolean;
 }) {
   const { t, labels } = useMessages();
+  const router = useRouter();
   const [deleteUser, setDeleteUser] = useState(null);
 
   return (
@@ -40,7 +43,9 @@ export function UsersTable({
         </DataColumn>
         <DataColumn
           id="created"
-          label={<SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />}
+          label={
+            <SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />
+          }
         >
           {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
         </DataColumn>
@@ -51,7 +56,10 @@ export function UsersTable({
 
               return (
                 <MenuButton>
-                  <MenuItem href={`/admin/users/${id}`} data-test="link-button-edit">
+                  <MenuItem
+                    onAction={() => router.push(`/admin/users/${id}`)}
+                    data-test="link-button-edit"
+                  >
                     <Row alignItems="center" gap>
                       <Icon>
                         <Edit />
@@ -77,15 +85,17 @@ export function UsersTable({
           </DataColumn>
         )}
       </DataTable>
-      <Modal isOpen={!!deleteUser}>
-        <UserDeleteForm
-          userId={deleteUser?.id}
-          username={deleteUser?.username}
-          onClose={() => {
-            setDeleteUser(null);
-          }}
-        />
-      </Modal>
+      <ControlledDialog>
+        <Modal isOpen={!!deleteUser}>
+          <UserDeleteForm
+            userId={deleteUser?.id}
+            username={deleteUser?.username}
+            onClose={() => {
+              setDeleteUser(null);
+            }}
+          />
+        </Modal>
+      </ControlledDialog>
     </>
   );
 }

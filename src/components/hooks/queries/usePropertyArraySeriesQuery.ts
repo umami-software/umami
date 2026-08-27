@@ -20,7 +20,17 @@ export function usePropertyArraySeriesQuery(
   return useQuery<EventDataSeriesPoint[]>({
     queryKey: [
       `websites:${source}-data:array-series`,
-      { websiteId, propertyName, eventName, propertyFilters, startAt, endAt, unit, timezone, ...params },
+      {
+        websiteId,
+        propertyName,
+        eventName,
+        propertyFilters,
+        startAt,
+        endAt,
+        unit,
+        timezone,
+        ...params,
+      },
     ],
     queryFn: () =>
       get(

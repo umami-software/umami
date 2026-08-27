@@ -2,15 +2,7 @@ import { z } from 'zod';
 import { fetchOgMetadata } from '@/lib/og';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
-
-function isHttpUrl(value: string): boolean {
-  try {
-    const u = new URL(value);
-    return (u.protocol === 'http:' || u.protocol === 'https:') && !!u.host;
-  } catch {
-    return false;
-  }
-}
+import { isHttpUrl } from '@/lib/url';
 
 export async function GET(request: Request) {
   const schema = z.object({

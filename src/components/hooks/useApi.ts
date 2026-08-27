@@ -1,13 +1,10 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { usePathname } from 'next/navigation';
 import { useCallback } from 'react';
 import { getApiUrl } from '@/lib/api-url';
 import { getClientAuthToken } from '@/lib/client';
 import { SHARE_CONTEXT_HEADER, SHARE_TOKEN_HEADER } from '@/lib/constants';
 import { type FetchResponse, httpDelete, httpGet, httpPost, httpPut } from '@/lib/fetch';
 import { useApp } from '@/store/app';
-
-const selector = (state: { shareToken: { token?: string } }) => state.shareToken;
 
 async function handleResponse(res: FetchResponse): Promise<any> {
   if (!res.ok) {
@@ -19,13 +16,12 @@ async function handleResponse(res: FetchResponse): Promise<any> {
 }
 
 export function useApi() {
-  const shareToken = useApp(selector);
-  const pathname = usePathname();
-  const isSharePath = pathname?.startsWith('/share');
+  const shareId = useApp(state => state.share?.shareId);
+  const shareToken = useApp(state => state.shareToken?.token);
 
   const shareHeaders =
-    isSharePath && shareToken?.token
-      ? { [SHARE_TOKEN_HEADER]: shareToken.token, [SHARE_CONTEXT_HEADER]: '1' }
+    shareId && shareToken
+      ? { [SHARE_TOKEN_HEADER]: shareToken, [SHARE_CONTEXT_HEADER]: '1' }
       : {};
 
   const defaultHeaders = {

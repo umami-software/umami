@@ -3,7 +3,12 @@ import { uuid } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, reportSchema, reportTypeParam } from '@/lib/schema';
-import { canUpdateWebsite, canViewWebsite } from '@/permissions';
+import {
+  getReportSection,
+  canUpdateWebsite,
+  canViewAuthenticatedWebsite,
+  canViewWebsiteSection,
+} from '@/permissions';
 import { createReport, getReports } from '@/queries/prisma';
 
 export async function GET(request: Request) {
@@ -26,7 +31,12 @@ export async function GET(request: Request) {
     search,
   };
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  const section = getReportSection(type);
+  const canView = section
+    ? await canViewWebsiteSection(auth, websiteId, section)
+    : await canViewAuthenticatedWebsite(auth, websiteId);
+
+  if (!canView) {
     return unauthorized();
   }
 

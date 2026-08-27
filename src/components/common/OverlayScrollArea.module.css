@@ -1,0 +1,51 @@
+.root {
+  --overlay-scrollbar-track: var(--zen-gray-50);
+  --overlay-scrollbar-thumb: var(--zen-gray-300);
+  --overlay-scrollbar-thumb-hover: var(--zen-gray-400);
+  --overlay-scrollbar-viewport-padding-right: 0px;
+  --overlay-scrollbar-vertical-margin-right: 2px;
+}
+
+.root > :first-child {
+  padding-right: var(--overlay-scrollbar-viewport-padding-right);
+}
+
+.root > [data-orientation="vertical"] {
+  width: 4px;
+  margin: 16px var(--overlay-scrollbar-vertical-margin-right);
+  background-color: var(--overlay-scrollbar-track);
+}
+
+.root > [data-orientation="horizontal"] {
+  height: 4px;
+  margin: 2px 16px;
+  background-color: var(--overlay-scrollbar-track);
+}
+
+.root > [data-orientation] > div {
+  position: relative;
+  background-color: var(--overlay-scrollbar-thumb);
+}
+
+.root > [data-orientation] > div:hover,
+.root > [data-orientation] > div:active {
+  background-color: var(--overlay-scrollbar-thumb-hover);
+}
+
+.root > [data-orientation="vertical"] > div::before {
+  position: absolute;
+  inset: 0 -4px;
+  content: "";
+}
+
+.root > [data-orientation="horizontal"] > div::before {
+  position: absolute;
+  inset: -4px 0;
+  content: "";
+}
+
+[data-theme='dark'] .root {
+  --overlay-scrollbar-track: var(--zen-gray-800);
+  --overlay-scrollbar-thumb: var(--zen-gray-600);
+  --overlay-scrollbar-thumb-hover: var(--zen-gray-500);
+}

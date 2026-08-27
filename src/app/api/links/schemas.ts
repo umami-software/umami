@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { validateUrl } from '@/lib/og';
+import { isHttpUrl } from '@/lib/url';
 
 export const utmField = z
   .string()
@@ -21,15 +22,6 @@ const ogTextField = (max: number) =>
 
 export const ogTitleField = ogTextField(255);
 export const ogDescriptionField = ogTextField(500);
-
-export function isHttpUrl(value: string): boolean {
-  try {
-    const u = new URL(value);
-    return (u.protocol === 'http:' || u.protocol === 'https:') && !!u.host;
-  } catch {
-    return false;
-  }
-}
 
 // http(s) URL whose host doesn't resolve to a private/reserved IP literal.
 export function isPublicHttpUrl(value: string): boolean {

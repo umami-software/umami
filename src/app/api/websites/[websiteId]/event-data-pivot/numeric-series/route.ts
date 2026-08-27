@@ -3,7 +3,7 @@ import { parseEventPropertyFilters } from '@/lib/params';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, timezoneParam, unitParam } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
+import { canViewWebsiteSection } from '@/permissions';
 import { getEventDataNumericSeries } from '@/queries/sql/events/getEventDataNumericSeries';
 
 export async function GET(
@@ -29,14 +29,21 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsiteSection(auth, websiteId, 'events'))) {
     return unauthorized();
   }
 
   const { eventName, propertyName, metric, ...rest } = query;
   const filters = await getQueryFilters(rest, websiteId);
   const eventFilters = parseEventPropertyFilters(query);
-  const data = await getEventDataNumericSeries(websiteId, eventName, propertyName, metric, filters, eventFilters);
+  const data = await getEventDataNumericSeries(
+    websiteId,
+    eventName,
+    propertyName,
+    metric,
+    filters,
+    eventFilters,
+  );
 
   return json(data);
 }

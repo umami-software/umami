@@ -1,23 +1,53 @@
 'use client';
-import { Column, Grid, Heading, Loading, Row, Switch, Text } from '@umami/react-zen';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  Button,
+  Column,
+  Dialog,
+  Grid,
+  Heading,
+  Icon,
+  ListItem,
+  Loading,
+  Modal,
+  Row,
+  Select,
+  Text,
+} from '@umami/react-zen';
+import { Laptop, Monitor, Smartphone, Tablet } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
+import { IconLabel } from '@/components/common/IconLabel';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useResultQuery } from '@/components/hooks';
-import { getClientAuthToken } from '@/lib/client';
+import { useMobile, useResultQuery } from '@/components/hooks';
+import { ListCheck } from '@/components/icons';
 import { formatLongNumber } from '@/lib/format';
 import type { HeatmapMode, HeatmapPoint, HeatmapResult, HeatmapSnapshot } from '@/queries/sql';
 import styles from './Heatmap.module.css';
 
-const CLICK_EDGE_PERCENT = 1.5;
 const SCROLL_BUCKET_SIZE = 10;
-const SNAPSHOT_UNAVAILABLE_ERROR = 'Page screenshot unavailable.';
+const SCREEN_WIDTH_BUCKETS = [320, 375, 425, 768, 1024, 1440, 1920] as const;
 
-interface ViewportBucket {
+interface ScreenWidthBucket {
   width: number;
-  height: number;
+  viewportH: number;
   pageW: number;
   pageH: number;
+  positions: number;
   count: number;
+  minViewportW: number;
+  maxViewportW: number;
+}
+
+interface ScreenWidthMetric {
+  pageW: number;
+  pageH: number;
+  viewportW: number;
+  viewportH: number;
+  count: number;
+}
+
+interface ScreenWidthBucketOptions {
+  pageSize?: 'max' | 'weightedAverage';
 }
 
 interface HeatmapProps {
@@ -29,6 +59,8 @@ interface HeatmapProps {
 }
 
 export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: HeatmapProps) {
+  const { isPhone } = useMobile();
+  const [isPagePickerOpen, setIsPagePickerOpen] = useState(false);
   const {
     data: pagesData,
     error,
@@ -64,6 +96,7 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
 
     return pages.filter(page => page.urlPath.toLowerCase().includes(value));
   }, [pages, search]);
+  const selectedPage = filteredPages.find(page => page.urlPath === urlPath) ?? null;
   const points = detailData?.points ?? [];
   const scroll = detailData?.scroll;
   const snapshot = detailData?.snapshot ?? null;
@@ -98,16 +131,33 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
 
   return (
     <LoadingPanel data={pagesData} isLoading={isLoading} error={error} minHeight="900px">
-      <Grid columns="320px 12px 1fr" minHeight="900px" className={styles.layoutGrid}>
-        <PageList
-          pages={filteredPages}
-          selected={urlPath}
-          onSelect={onUrlPathChange}
-          mode={mode}
-          hasSearch={Boolean(search)}
-        />
-        <div className={styles.railDivider} aria-hidden="true" />
-        <Column className={styles.contentColumn} gap>
+      {isPhone ? (
+        <Column gap="4" minHeight="900px">
+          <Column gap="2" className={styles.mobilePageSection}>
+            <Row alignItems="center" justifyContent="space-between" gap className={styles.mobilePageHeader}>
+              <Text color="muted" className={styles.mobileSectionLabel}>
+                Selected page
+              </Text>
+              <Button variant="outline" onPress={() => setIsPagePickerOpen(true)}>
+                <IconLabel icon={<ListCheck />} label="Pages" />
+              </Button>
+            </Row>
+            {selectedPage && (
+              <button
+                type="button"
+                className={styles.mobileSelectedPageButton}
+                onClick={() => setIsPagePickerOpen(true)}
+              >
+                <Row alignItems="center" justifyContent="space-between" gap="3">
+                  <Text truncate>{selectedPage.urlPath}</Text>
+                  <Text color="muted" className={styles.pageMetric}>
+                    {formatLongNumber(selectedPage.sessions)}
+                  </Text>
+                </Row>
+              </button>
+            )}
+          </Column>
+
           {urlPath ? (
             mode === 'scroll' ? (
               <ScrollHeatmapView
@@ -127,8 +177,74 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
           ) : (
             <EmptyState />
           )}
+
+          <ControlledDialog>
+            <Modal
+              isOpen={isPagePickerOpen}
+              onOpenChange={isOpen => setIsPagePickerOpen(isOpen)}
+              placement="fullscreen"
+            >
+              <Dialog
+                title="Pages"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  maxHeight: '100%',
+                  overflowY: 'auto',
+                  padding: '24px',
+                }}
+              >
+                {({ close }) => (
+                  <PageList
+                    pages={filteredPages}
+                    selected={urlPath}
+                    onSelect={nextUrlPath => {
+                      onUrlPathChange(nextUrlPath);
+                      setIsPagePickerOpen(false);
+                      close();
+                    }}
+                    mode={mode}
+                    hasSearch={Boolean(search)}
+                    showHeading={false}
+                  />
+                )}
+              </Dialog>
+            </Modal>
+          </ControlledDialog>
         </Column>
-      </Grid>
+      ) : (
+        <Grid columns="320px 12px 1fr" minHeight="900px" className={styles.layoutGrid}>
+          <PageList
+            pages={filteredPages}
+            selected={urlPath}
+            onSelect={onUrlPathChange}
+            mode={mode}
+            hasSearch={Boolean(search)}
+          />
+          <div className={styles.railDivider} aria-hidden="true" />
+          <Column className={styles.contentColumn} gap>
+            {urlPath ? (
+              mode === 'scroll' ? (
+                <ScrollHeatmapView
+                  urlPath={urlPath}
+                  scroll={scroll}
+                  snapshot={snapshot}
+                  isLoading={detailLoading}
+                />
+              ) : (
+                <ClickHeatmapView
+                  urlPath={urlPath}
+                  points={points}
+                  snapshot={snapshot}
+                  isLoading={detailLoading}
+                />
+              )
+            ) : (
+              <EmptyState />
+            )}
+          </Column>
+        </Grid>
+      )}
     </LoadingPanel>
   );
 }
@@ -139,16 +255,24 @@ function PageList({
   onSelect,
   mode,
   hasSearch,
+  showHeading = true,
 }: {
   pages: HeatmapResult['pages'];
   selected: string;
   onSelect: (urlPath: string) => void;
   mode: HeatmapMode;
   hasSearch: boolean;
+  showHeading?: boolean;
 }) {
+  const getPageMetricTitle = (page: HeatmapResult['pages'][number]) => {
+    const metricLabel = mode === 'scroll' ? 'scroll events' : 'clicks';
+
+    return `${formatLongNumber(page.sessions)} visitors - ${formatLongNumber(page.count)} ${metricLabel}`;
+  };
+
   return (
     <Column className={styles.pageList} gap="1">
-      <Heading size="lg">Pages</Heading>
+      {showHeading && <Heading size="lg">Pages</Heading>}
       <Column className={styles.pageListItems} gap="2">
         {pages.length === 0 && hasSearch && <Text color="muted">No matching pages</Text>}
         {pages.map(page => (
@@ -161,8 +285,8 @@ function PageList({
           >
             <Row alignItems="center" justifyContent="space-between" gap="2">
               <Text truncate>{page.urlPath}</Text>
-              <Text color="muted">
-                {formatLongNumber(mode === 'scroll' ? page.sessions : page.count)}
+              <Text color="muted" className={styles.pageMetric} title={getPageMetricTitle(page)}>
+                {formatLongNumber(page.sessions)}
               </Text>
             </Row>
           </button>
@@ -172,57 +296,337 @@ function PageList({
   );
 }
 
-function pickViewport(points: HeatmapPoint[]): ViewportBucket | null {
-  if (!points.length) {
-    return null;
+function getScreenWidthBucketWidth(viewportW: number) {
+  return SCREEN_WIDTH_BUCKETS.reduce((best, width) => {
+    const bestDistance = Math.abs(viewportW - best);
+    const distance = Math.abs(viewportW - width);
+
+    return distance < bestDistance ? width : best;
+  }, SCREEN_WIDTH_BUCKETS[0]);
+}
+
+function getScreenWidthBuckets(
+  metrics: ScreenWidthMetric[],
+  options: ScreenWidthBucketOptions = {},
+): ScreenWidthBucket[] {
+  if (!metrics.length) {
+    return [];
   }
 
-  const viewportBuckets = new Map<
-    string,
-    ViewportBucket & { maxPageW: number; maxPageH: number }
+  const buckets = new Map<
+    number,
+    ScreenWidthBucket & {
+      weightedPageW: number;
+      weightedPageH: number;
+      weightedViewportH: number;
+    }
   >();
+  const pageSize = options.pageSize ?? 'max';
 
-  for (const point of points) {
-    const viewportKey = `${point.viewportW}x${point.viewportH}`;
-    const existing = viewportBuckets.get(viewportKey);
+  for (const metric of metrics) {
+    const width = getScreenWidthBucketWidth(metric.viewportW);
+    const scale = width / Math.max(1, metric.viewportW);
+    const scaledViewportH = metric.viewportH * scale;
+    const scaledPageW = Math.max(width, metric.pageW * scale);
+    const scaledPageH = Math.max(scaledViewportH, metric.pageH * scale);
+    const existing = buckets.get(width);
 
     if (existing) {
-      existing.count += point.count;
-      existing.maxPageW = Math.max(existing.maxPageW, point.pageW);
-      existing.maxPageH = Math.max(existing.maxPageH, point.pageH);
+      existing.positions += 1;
+      existing.count += metric.count;
+      existing.pageW = Math.max(existing.pageW, scaledPageW);
+      existing.pageH = Math.max(existing.pageH, scaledPageH);
+      existing.weightedPageW += scaledPageW * metric.count;
+      existing.weightedPageH += scaledPageH * metric.count;
+      existing.weightedViewportH += scaledViewportH * metric.count;
+      existing.minViewportW = Math.min(existing.minViewportW, metric.viewportW);
+      existing.maxViewportW = Math.max(existing.maxViewportW, metric.viewportW);
       continue;
     }
 
-    viewportBuckets.set(viewportKey, {
-      width: point.viewportW,
-      height: point.viewportH,
-      pageW: point.pageW,
-      pageH: point.pageH,
-      count: point.count,
-      maxPageW: point.pageW,
-      maxPageH: point.pageH,
+    buckets.set(width, {
+      width,
+      viewportH: scaledViewportH,
+      pageW: scaledPageW,
+      pageH: scaledPageH,
+      positions: 1,
+      count: metric.count,
+      minViewportW: metric.viewportW,
+      maxViewportW: metric.viewportW,
+      weightedPageW: scaledPageW * metric.count,
+      weightedPageH: scaledPageH * metric.count,
+      weightedViewportH: scaledViewportH * metric.count,
     });
   }
 
-  let best: (ViewportBucket & { maxPageW: number; maxPageH: number }) | null = null;
+  return SCREEN_WIDTH_BUCKETS.map(width => buckets.get(width))
+    .filter(
+      (
+        bucket,
+      ): bucket is ScreenWidthBucket & {
+        weightedPageW: number;
+        weightedPageH: number;
+        weightedViewportH: number;
+      } => Boolean(bucket),
+    )
+    .map(({ weightedPageW, weightedPageH, weightedViewportH, ...bucket }) => ({
+      ...bucket,
+      viewportH: Math.max(1, Math.round(weightedViewportH / Math.max(1, bucket.count))),
+      pageW: Math.max(
+        bucket.width,
+        Math.round(
+          pageSize === 'weightedAverage' ? weightedPageW / Math.max(1, bucket.count) : bucket.pageW,
+        ),
+      ),
+      pageH: Math.max(
+        640,
+        Math.round(
+          pageSize === 'weightedAverage' ? weightedPageH / Math.max(1, bucket.count) : bucket.pageH,
+        ),
+      ),
+    }));
+}
 
-  for (const bucket of viewportBuckets.values()) {
-    if (!best || bucket.count > best.count) {
-      best = bucket;
+function getDefaultScreenWidthBucket(buckets: ScreenWidthBucket[]) {
+  return buckets.reduce<ScreenWidthBucket | null>(
+    (best, bucket) => (!best || bucket.count > best.count ? bucket : best),
+    null,
+  );
+}
+
+function normalizePointToBucket(point: HeatmapPoint, bucket: ScreenWidthBucket): HeatmapPoint {
+  const scale = bucket.width / Math.max(1, point.viewportW);
+  const viewportH = Math.max(1, Math.round(point.viewportH * scale));
+
+  return {
+    ...point,
+    x: point.x * scale,
+    y: point.y * scale,
+    pageX: point.pageX * scale,
+    pageY: point.pageY * scale,
+    pageW: Math.max(bucket.width, point.pageW * scale),
+    pageH: Math.max(viewportH, point.pageH * scale),
+    viewportW: bucket.width,
+    viewportH,
+  };
+}
+
+function getNormalizedBucketPoints(points: HeatmapPoint[], bucket: ScreenWidthBucket) {
+  const groupedPoints = new Map<string, HeatmapPoint>();
+
+  for (const point of points) {
+    if (getScreenWidthBucketWidth(point.viewportW) !== bucket.width) {
+      continue;
     }
+
+    const normalized = normalizePointToBucket(point, bucket);
+    const pageX = Math.round(normalized.pageX);
+    const pageY = Math.round(normalized.pageY);
+    const key = `${pageX}:${pageY}`;
+    const existing = groupedPoints.get(key);
+
+    if (existing) {
+      existing.count += normalized.count;
+      existing.pageW = Math.max(existing.pageW, normalized.pageW);
+      existing.pageH = Math.max(existing.pageH, normalized.pageH);
+      continue;
+    }
+
+    groupedPoints.set(key, {
+      ...normalized,
+      x: Math.round(normalized.x),
+      y: Math.round(normalized.y),
+      pageX,
+      pageY,
+    });
   }
 
-  if (!best) {
+  return Array.from(groupedPoints.values());
+}
+
+function useSelectedScreenWidthBucket(screenWidthBuckets: ScreenWidthBucket[]) {
+  const [selectedScreenWidth, setSelectedScreenWidth] = useState<number | null>(null);
+  const defaultScreenWidth = useMemo(
+    () => getDefaultScreenWidthBucket(screenWidthBuckets)?.width ?? null,
+    [screenWidthBuckets],
+  );
+
+  useEffect(() => {
+    const availableWidths = new Set(screenWidthBuckets.map(bucket => bucket.width));
+
+    setSelectedScreenWidth(current => {
+      if (!defaultScreenWidth) {
+        return null;
+      }
+
+      return current && availableWidths.has(current) ? current : defaultScreenWidth;
+    });
+  }, [defaultScreenWidth, screenWidthBuckets]);
+
+  const viewport = useMemo(() => {
+    const activeWidth = selectedScreenWidth ?? defaultScreenWidth;
+
+    return screenWidthBuckets.find(bucket => bucket.width === activeWidth) ?? null;
+  }, [defaultScreenWidth, screenWidthBuckets, selectedScreenWidth]);
+
+  return { viewport, setSelectedScreenWidth };
+}
+
+function getScrollScreenWidthMetrics(scroll: HeatmapResult['scroll'] | undefined) {
+  return (
+    scroll?.buckets.map(bucket => ({
+      pageW: bucket.pageW,
+      pageH: bucket.pageH,
+      viewportW: bucket.viewportW,
+      viewportH: bucket.viewportH,
+      count: bucket.sessions,
+    })) ?? []
+  );
+}
+
+function getSelectedScrollBuckets(
+  scroll: HeatmapResult['scroll'] | undefined,
+  bucket: ScreenWidthBucket | null,
+) {
+  if (!scroll || !bucket) {
+    return [];
+  }
+
+  const sessionsByDepth = new Map<number, number>();
+
+  for (const row of scroll.buckets) {
+    if (getScreenWidthBucketWidth(row.viewportW) !== bucket.width) {
+      continue;
+    }
+
+    sessionsByDepth.set(row.depth, (sessionsByDepth.get(row.depth) ?? 0) + row.sessions);
+  }
+
+  return Array.from(sessionsByDepth.entries())
+    .map(([depth, sessions]) => ({ depth, sessions }))
+    .sort((a, b) => a.depth - b.depth);
+}
+
+function useCanvasFit(renderWidth: number, renderHeight: number) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [availableWidth, setAvailableWidth] = useState(0);
+
+  useEffect(() => {
+    const updateAvailableSize = () => {
+      const width = wrapperRef.current?.clientWidth ?? 0;
+
+      setAvailableWidth(current => (current === width ? current : width));
+    };
+
+    updateAvailableSize();
+
+    const resizeObserver =
+      typeof ResizeObserver !== 'undefined' ? new ResizeObserver(updateAvailableSize) : null;
+
+    if (wrapperRef.current && resizeObserver) {
+      resizeObserver.observe(wrapperRef.current);
+    }
+
+    window.addEventListener('resize', updateAvailableSize);
+
+    return () => {
+      resizeObserver?.disconnect();
+      window.removeEventListener('resize', updateAvailableSize);
+    };
+  }, []);
+
+  const safeWidth = Math.max(1, renderWidth);
+  const safeHeight = Math.max(1, renderHeight);
+  const scale = availableWidth ? Math.min(1, availableWidth / safeWidth) : 1;
+
+  return {
+    wrapperRef,
+    scale,
+    width: Math.max(1, Math.round(safeWidth * scale)),
+    height: Math.max(1, Math.round(safeHeight * scale)),
+  };
+}
+
+function ScreenWidthSelect({
+  buckets,
+  value,
+  onChange,
+}: {
+  buckets: ScreenWidthBucket[];
+  value: number | null;
+  onChange: (value: number) => void;
+}) {
+  const bucketsByWidth = useMemo(
+    () => new Map(buckets.map(bucket => [bucket.width, bucket])),
+    [buckets],
+  );
+
+  if (!value || buckets.length === 0) {
     return null;
   }
 
-  return {
-    width: best.width,
-    height: best.height,
-    pageW: best.maxPageW,
-    pageH: best.maxPageH,
-    count: best.count,
-  };
+  return (
+    <Row alignItems="center" gap="2" className={styles.screenWidthControl}>
+      <Text color="muted" className={styles.screenWidthLabel}>
+        Screen width:
+      </Text>
+      <Select
+        aria-label="Screen width"
+        value={value}
+        onChange={nextValue => onChange(Number(nextValue))}
+        maxHeight={420}
+        renderValue={() => <ScreenWidthValue width={value} />}
+        buttonProps={{
+          style: {
+            minHeight: 36,
+            minWidth: 132,
+          },
+        }}
+        listProps={{
+          style: {
+            width: 176,
+          },
+        }}
+      >
+        {SCREEN_WIDTH_BUCKETS.map(width => {
+          const bucket = bucketsByWidth.get(width);
+
+          return (
+            <ListItem key={width} id={width} isDisabled={!bucket}>
+              <Row alignItems="center" justifyContent="space-between" gap="2">
+                <ScreenWidthValue width={width} />
+                {bucket && (
+                  <Text color="muted" className={styles.screenWidthCount}>
+                    {formatLongNumber(bucket.count)}
+                  </Text>
+                )}
+              </Row>
+            </ListItem>
+          );
+        })}
+      </Select>
+    </Row>
+  );
+}
+
+function ScreenWidthValue({ width }: { width: number }) {
+  return (
+    <Row alignItems="center" gap="2" className={styles.screenWidthValue}>
+      <ScreenWidthIcon width={width} />
+      <Text>{width} px</Text>
+    </Row>
+  );
+}
+
+function ScreenWidthIcon({ width }: { width: number }) {
+  const DeviceIcon =
+    width < 768 ? Smartphone : width < 1200 ? Tablet : width < 1600 ? Laptop : Monitor;
+
+  return (
+    <Icon size="sm">
+      <DeviceIcon />
+    </Icon>
+  );
 }
 
 function ClickHeatmapView({
@@ -236,18 +640,17 @@ function ClickHeatmapView({
   snapshot: HeatmapSnapshot | null;
   isLoading: boolean;
 }) {
-  const [showPage, setShowPage] = useState(true);
+  const { isPhone } = useMobile();
   const [snapshotReady, setSnapshotReady] = useState(false);
-  const viewport = useMemo(() => pickViewport(points), [points]);
+  const screenWidthBuckets = useMemo(() => getScreenWidthBuckets(points), [points]);
+  const { viewport, setSelectedScreenWidth } = useSelectedScreenWidthBucket(screenWidthBuckets);
 
   const visible = useMemo(() => {
     if (!viewport) {
       return [];
     }
 
-    return points.filter(
-      point => point.viewportW === viewport.width && point.viewportH === viewport.height,
-    );
+    return getNormalizedBucketPoints(points, viewport);
   }, [points, viewport]);
 
   const maxCount = useMemo(
@@ -256,61 +659,87 @@ function ClickHeatmapView({
   );
 
   const handleSnapshotReady = useCallback(() => setSnapshotReady(true), []);
-  const hasSnapshotImage = Boolean(snapshot?.imageUrl);
+  const hasSnapshot = Boolean(snapshot);
 
   useEffect(() => {
-    setSnapshotReady(!(showPage && hasSnapshotImage));
-  }, [hasSnapshotImage, showPage, snapshot?.id]);
+    setSnapshotReady(!hasSnapshot);
+  }, [hasSnapshot, snapshot?.id]);
   const overlayGutter = Math.max(48, Math.round((viewport?.width ?? 1920) * 0.04));
   const maxPointX = visible.reduce((max, point) => Math.max(max, point.pageX), 0);
-  const maxPointY = visible.reduce((max, point) => Math.max(max, point.pageY), 0);
-  const baseWidth = Math.max(snapshot?.pageW ?? 0, viewport?.pageW ?? 0, maxPointX + overlayGutter, 1200);
-  const baseHeight = Math.max(snapshot?.pageH ?? 0, viewport?.pageH ?? 0, maxPointY + overlayGutter, 640);
-  const overlayPageW = snapshot?.pageW ?? viewport?.pageW ?? baseWidth;
-  const overlayPageH = snapshot?.pageH ?? viewport?.pageH ?? baseHeight;
-  const showSnapshot = baseWidth > 0 && showPage && hasSnapshotImage;
-  const showOverlay = !showSnapshot || snapshotReady;
+  const snapshotHeight = snapshot ? getSnapshotFrameHeight(snapshot) : 0;
+  // Keep the canvas sized to real content and clip outlier clicks instead of stretching it.
+  const baseWidth = Math.max(viewport?.pageW ?? 0, maxPointX + overlayGutter, 1);
+  const renderWidth = viewport?.width ?? snapshot?.viewportW ?? baseWidth;
+  // Match the canvas height to the snapshot height we actually render.
+  const contentHeight = snapshotHeight || viewport?.pageH || 0;
+  const renderHeight = Math.max(contentHeight, 640);
+  const hasMeasuredWidth = Boolean(viewport?.width || snapshot?.viewportW || maxPointX);
+  const fit = useCanvasFit(renderWidth, renderHeight);
+  const canvasWidth = hasMeasuredWidth ? `${fit.width}px` : '100%';
+  const canvasHeight = hasMeasuredWidth ? `${fit.height}px` : undefined;
+  const overlayPageW = renderWidth;
+  const shouldRenderSnapshot = renderWidth > 0 && hasSnapshot;
+  const showOverlay = !shouldRenderSnapshot || snapshotReady;
   const totalClicks = visible.reduce((sum, point) => sum + point.count, 0);
+  const bucketDescription = viewport
+    ? viewport.minViewportW === viewport.maxViewportW
+      ? `Recorded at ${viewport.minViewportW}px wide`
+      : `Grouped recorded widths from ${viewport.minViewportW}px to ${viewport.maxViewportW}px`
+    : undefined;
   const showLoading = isLoading;
 
   return (
     <Column gap>
       <Column gap="2" className={styles.summaryHeader}>
-        <Row alignItems="center" justifyContent="space-between" gap>
-          <Text color="muted" title={urlPath} className={styles.summaryPath}>
-            {urlPath}
-          </Text>
-        </Row>
+        {!isPhone && (
+          <Row alignItems="center" justifyContent="space-between" gap>
+            <Text color="muted" title={urlPath} className={styles.summaryPath}>
+              {urlPath}
+            </Text>
+          </Row>
+        )}
         {showLoading ? (
           <Row alignItems="center" gap className={styles.summaryStats}>
             <Text color="muted" className={styles.summaryStat}>
               Loading Heatmap...
             </Text>
           </Row>
+        ) : isPhone ? (
+          <Column gap="2" className={styles.mobileSummaryControls}>
+            <ScreenWidthSelect
+              buckets={screenWidthBuckets}
+              value={viewport?.width ?? null}
+              onChange={setSelectedScreenWidth}
+            />
+          </Column>
         ) : (
-          <Row alignItems="center" justifyContent="space-between" gap className={styles.summaryStats}>
-            <Text color="muted" className={styles.summaryStat}>
+          <Row
+            alignItems="center"
+            justifyContent="space-between"
+            gap
+            className={styles.summaryStats}
+          >
+            <Text color="muted" className={styles.summaryStat} title={bucketDescription}>
               {viewport
-                ? `${visible.length} positions - ${formatLongNumber(totalClicks)} clicks - viewport ${viewport.width}x${viewport.height}`
+                ? `${visible.length} positions - ${formatLongNumber(totalClicks)} clicks`
                 : 'No click data for this page yet.'}
             </Text>
+            <ScreenWidthSelect
+              buckets={screenWidthBuckets}
+              value={viewport?.width ?? null}
+              onChange={setSelectedScreenWidth}
+            />
           </Row>
         )}
       </Column>
 
-      {showPage && snapshot?.status === 'failed' && (
-        <Text color="muted" className={styles.snapshotMessage}>
-          {SNAPSHOT_UNAVAILABLE_ERROR}
-        </Text>
-      )}
-
-      <div className={styles.canvasWrapper}>
+      <div ref={fit.wrapperRef} className={styles.canvasWrapper}>
         <div
           className={styles.canvas}
           style={{
-            width: '100%',
-            maxWidth: baseWidth || '100%',
-            aspectRatio: `${Math.max(1, baseWidth)} / ${Math.max(1, baseHeight)}`,
+            width: canvasWidth,
+            height: canvasHeight,
+            aspectRatio: `${Math.max(1, renderWidth)} / ${Math.max(1, renderHeight)}`,
           }}
         >
           {showLoading ? (
@@ -318,60 +747,54 @@ function ClickHeatmapView({
           ) : !viewport || visible.length === 0 ? (
             <EmptyState message="No click data for this page yet." />
           ) : (
-            <>
-          <div className={styles.snapshotClip}>
-            {showSnapshot && !snapshotReady && <CanvasLoading />}
-            {showSnapshot && snapshot?.imageUrl && <SnapshotImage snapshot={snapshot} onReady={handleSnapshotReady} />}
-          </div>
-          {showOverlay && (
-            <div className={styles.overlay}>
-              {visible.map((point, index) => {
-                const intensity = Math.min(1, point.count / maxCount);
-                const desiredSize = 24 + intensity * 36;
-                const pointWidth = Math.max(overlayPageW, point.pageX);
-                const pointHeight = Math.max(overlayPageH, point.pageY);
-                const rawCenterX = (point.pageX / Math.max(1, pointWidth)) * 100;
-                const rawCenterY = (point.pageY / Math.max(1, pointHeight)) * 100;
-                const size = desiredSize;
-                const centerX = Math.max(
-                  CLICK_EDGE_PERCENT,
-                  Math.min(100 - CLICK_EDGE_PERCENT, rawCenterX),
-                );
-                const centerY = Math.max(
-                  CLICK_EDGE_PERCENT,
-                  Math.min(100 - CLICK_EDGE_PERCENT, rawCenterY),
-                );
+            <div
+              className={styles.canvasSurface}
+              style={{
+                width: Math.max(1, renderWidth),
+                height: Math.max(1, renderHeight),
+                transform: `scale(${fit.scale})`,
+              }}
+            >
+              <div className={styles.snapshotClip}>
+                {shouldRenderSnapshot && !snapshotReady && <CanvasLoading />}
+                {shouldRenderSnapshot && snapshot && (
+                  <SnapshotPreview snapshot={snapshot} onReady={handleSnapshotReady} />
+                )}
+              </div>
+              {showOverlay && (
+                <div className={styles.overlay}>
+                  {visible.map((point, index) => {
+                    const intensity = Math.min(1, point.count / maxCount);
+                    const desiredSize = 24 + intensity * 36;
+                    const size = desiredSize;
+                    const centerX = Math.max(0, Math.min(overlayPageW, point.pageX));
+                    // Don't clamp to the canvas height: points below the real
+                    // content overflow and are clipped by the canvas instead of
+                    // piling up on the bottom edge.
+                    const centerY = Math.max(0, point.pageY);
 
-                return (
-                  <div
-                    key={`${point.pageX}-${point.pageY}-${index}`}
-                    className={styles.dot}
-                    style={{
-                      left: `${centerX}%`,
-                      top: `${centerY}%`,
-                      width: size,
-                      height: size,
-                      transform: 'translate(-50%, -50%)',
-                      opacity: 0.25 + intensity * 0.55,
-                    }}
-                    title={`${point.count} click${point.count === 1 ? '' : 's'}`}
-                  />
-                );
-              })}
+                    return (
+                      <div
+                        key={`${point.pageX}-${point.pageY}-${index}`}
+                        className={styles.dot}
+                        style={{
+                          left: centerX,
+                          top: centerY,
+                          width: size,
+                          height: size,
+                          transform: 'translate(-50%, -50%)',
+                          opacity: 0.25 + intensity * 0.55,
+                        }}
+                        title={`${point.count} click${point.count === 1 ? '' : 's'}`}
+                      />
+                    );
+                  })}
+                </div>
+              )}
             </div>
-          )}
-            </>
           )}
         </div>
       </div>
-
-      {hasSnapshotImage && (
-        <Row justifyContent="center" className={styles.snapshotControlRow}>
-          <Switch isSelected={showPage} onChange={setShowPage}>
-            Show page
-          </Switch>
-        </Row>
-      )}
     </Column>
   );
 }
@@ -387,26 +810,53 @@ function ScrollHeatmapView({
   snapshot: HeatmapSnapshot | null;
   isLoading: boolean;
 }) {
-  const [showPage, setShowPage] = useState(true);
+  const { isPhone } = useMobile();
   const [snapshotReady, setSnapshotReady] = useState(false);
   const handleSnapshotReady = useCallback(() => setSnapshotReady(true), []);
-  const hasSnapshotImage = Boolean(snapshot?.imageUrl);
+  const hasSnapshot = Boolean(snapshot);
 
   useEffect(() => {
-    setSnapshotReady(!(showPage && hasSnapshotImage));
-  }, [hasSnapshotImage, showPage, snapshot?.id]);
-  const { buckets = [], totalSessions = 0, pageW = 0, pageH = 0, viewportW = 0, viewportH = 0 } =
-    scroll ?? {};
-  const baseWidth = Math.max(snapshot?.pageW ?? 0, pageW, 1200);
-  const baseHeight = Math.max(snapshot?.pageH ?? 0, pageH, 640);
-  const showSnapshot = baseWidth > 0 && showPage && hasSnapshotImage;
-  const showOverlay = !showSnapshot || snapshotReady;
-  const hasScrollData = Boolean(scroll && totalSessions > 0 && pageW && pageH && viewportW);
+    setSnapshotReady(!hasSnapshot);
+  }, [hasSnapshot, snapshot?.id]);
+  const scrollMetrics = useMemo(() => getScrollScreenWidthMetrics(scroll), [scroll]);
+  const screenWidthBuckets = useMemo(
+    () => getScreenWidthBuckets(scrollMetrics, { pageSize: 'weightedAverage' }),
+    [scrollMetrics],
+  );
+  const { viewport, setSelectedScreenWidth } = useSelectedScreenWidthBucket(screenWidthBuckets);
+  const selectedBuckets = useMemo(
+    () => getSelectedScrollBuckets(scroll, viewport),
+    [scroll, viewport],
+  );
+  const totalSessions = viewport?.count ?? 0;
+  const pageW = viewport?.pageW ?? scroll?.pageW ?? 0;
+  const pageH = viewport?.pageH ?? scroll?.pageH ?? 0;
+  const viewportW = viewport?.width ?? scroll?.viewportW ?? 0;
+  const viewportH = viewport?.viewportH ?? scroll?.viewportH ?? 0;
+  const snapshotHeight = snapshot ? getSnapshotFrameHeight(snapshot) : 0;
+  const baseWidth = Math.max(pageW, 1);
+  const baseHeight = Math.max(snapshotHeight || pageH, 640);
+  const renderWidth = viewport?.width ?? snapshot?.viewportW ?? viewportW ?? baseWidth;
+  const renderHeight = baseHeight;
+  const hasMeasuredWidth = Boolean(viewport?.width || snapshot?.viewportW || viewportW || pageW);
+  const fit = useCanvasFit(renderWidth, renderHeight);
+  const canvasWidth = hasMeasuredWidth ? `${fit.width}px` : '100%';
+  const canvasHeight = hasMeasuredWidth ? `${fit.height}px` : undefined;
+  const shouldRenderSnapshot = renderWidth > 0 && hasSnapshot;
+  const showOverlay = !shouldRenderSnapshot || snapshotReady;
+  const hasScrollData = Boolean(
+    viewport && selectedBuckets.length > 0 && totalSessions > 0 && pageW && pageH && viewportW,
+  );
   const showLoading = isLoading;
+  const bucketDescription = viewport
+    ? viewport.minViewportW === viewport.maxViewportW
+      ? `Recorded at ${viewport.minViewportW}px wide`
+      : `Grouped recorded widths from ${viewport.minViewportW}px to ${viewport.maxViewportW}px`
+    : undefined;
 
   type Band = { fromPct: number; toPct: number; reached: number; ratio: number };
   const bands: Band[] = [];
-  const sessionsByDepth = new Map(buckets.map(bucket => [bucket.depth, bucket.sessions]));
+  const sessionsByDepth = new Map(selectedBuckets.map(bucket => [bucket.depth, bucket.sessions]));
   let dropped = 0;
 
   for (let depth = 0; depth < 100; depth += SCROLL_BUCKET_SIZE) {
@@ -427,38 +877,52 @@ function ScrollHeatmapView({
 
   return (
     <Column gap>
-      <Text color="muted" title={urlPath} className={styles.summaryPath}>
-        {urlPath}
-      </Text>
+      {!isPhone && (
+        <Text color="muted" title={urlPath} className={styles.summaryPath}>
+          {urlPath}
+        </Text>
+      )}
       {showLoading ? (
         <Row alignItems="center" gap className={styles.summaryStats}>
           <Text color="muted" className={styles.summaryStat}>
             Loading Heatmap...
           </Text>
         </Row>
+      ) : isPhone ? (
+        <Column gap="2" className={styles.mobileSummaryControls}>
+          <ScreenWidthSelect
+            buckets={screenWidthBuckets}
+            value={viewport?.width ?? null}
+            onChange={setSelectedScreenWidth}
+          />
+        </Column>
       ) : (
-        <Row alignItems="center" justifyContent="space-between" gap className={styles.summaryHeader}>
-          <Text color="muted" className={styles.summaryStat}>
+        <Row
+          alignItems="center"
+          justifyContent="space-between"
+          gap
+          className={styles.summaryHeader}
+        >
+          <Text color="muted" className={styles.summaryStat} title={bucketDescription}>
             {hasScrollData
               ? `${formatLongNumber(totalSessions)} sessions - page ${pageW}x${pageH}${viewportH ? ` - viewport ${viewportW}x${viewportH}` : ''}`
               : 'No scroll data for this page yet.'}
           </Text>
+          <ScreenWidthSelect
+            buckets={screenWidthBuckets}
+            value={viewport?.width ?? null}
+            onChange={setSelectedScreenWidth}
+          />
         </Row>
       )}
 
-      {showPage && snapshot?.status === 'failed' && (
-        <Text color="muted" className={styles.snapshotMessage}>
-          {SNAPSHOT_UNAVAILABLE_ERROR}
-        </Text>
-      )}
-
-      <div className={styles.canvasWrapper}>
+      <div ref={fit.wrapperRef} className={styles.canvasWrapper}>
         <div
           className={styles.canvas}
           style={{
-            width: '100%',
-            maxWidth: baseWidth || '100%',
-            aspectRatio: `${Math.max(1, baseWidth)} / ${Math.max(1, baseHeight)}`,
+            width: canvasWidth,
+            height: canvasHeight,
+            aspectRatio: `${Math.max(1, renderWidth)} / ${Math.max(1, renderHeight)}`,
           }}
         >
           {showLoading ? (
@@ -466,110 +930,127 @@ function ScrollHeatmapView({
           ) : !hasScrollData ? (
             <EmptyState message="No scroll data for this page yet." />
           ) : (
-            <div className={styles.canvasClip}>
-            {showSnapshot && !snapshotReady && <CanvasLoading />}
-            {showSnapshot && snapshot?.imageUrl && <SnapshotImage snapshot={snapshot} onReady={handleSnapshotReady} />}
-            {showOverlay && (
-              <div className={styles.overlay}>
-                {bands.map(band => {
-                  const intensity = band.ratio;
-                  const hue = Math.round(60 - intensity * 60);
+            <div
+              className={styles.canvasSurface}
+              style={{
+                width: Math.max(1, renderWidth),
+                height: Math.max(1, renderHeight),
+                transform: `scale(${fit.scale})`,
+              }}
+            >
+              {shouldRenderSnapshot && !snapshotReady && <CanvasLoading />}
+              {shouldRenderSnapshot && snapshot && (
+                <SnapshotPreview snapshot={snapshot} onReady={handleSnapshotReady} />
+              )}
+              {showOverlay && (
+                <div className={styles.overlay}>
+                  {bands.map(band => {
+                    const intensity = band.ratio;
+                    const hue = Math.round(60 - intensity * 60);
 
-                  return (
-                    <div
-                      key={band.fromPct}
-                      className={styles.scrollBand}
-                      style={{
-                        top: `${band.fromPct}%`,
-                        height: `${Math.max(0, band.toPct - band.fromPct)}%`,
-                        background: intensity > 0 ? `hsla(${hue}, 90%, 55%, ${0.12 + intensity * 0.45})` : 'none',
-                      }}
-                      title={`${band.toPct}% depth • ${formatLongNumber(band.reached)} sessions reached`}
-                    >
-                      <span className={styles.scrollBandLabel}>
-                        {band.toPct}% depth • {Math.round(intensity * 100)}% reached
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+                    return (
+                      <div
+                        key={band.fromPct}
+                        className={styles.scrollBand}
+                        style={{
+                          top: `${band.fromPct}%`,
+                          height: `${Math.max(0, band.toPct - band.fromPct)}%`,
+                          background:
+                            intensity > 0
+                              ? `hsla(${hue}, 90%, 55%, ${0.12 + intensity * 0.45})`
+                              : 'none',
+                        }}
+                        title={`${band.toPct}% depth - ${formatLongNumber(band.reached)} sessions reached`}
+                      >
+                        <span
+                          className={styles.scrollBandLabel}
+                          // Counter-scale the label by the inverse of the canvas
+                          // scale so its on-screen size stays constant while the
+                          // bands resize with the rest of the overlay.
+                          style={{ transform: `scale(${1 / fit.scale})` }}
+                        >
+                          {band.toPct}% depth - {Math.round(intensity * 100)}% reached
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
         </div>
       </div>
-
-      {hasSnapshotImage && (
-        <Row justifyContent="center" className={styles.snapshotControlRow}>
-          <Switch isSelected={showPage} onChange={setShowPage}>
-            Show page
-          </Switch>
-        </Row>
-      )}
     </Column>
   );
 }
 
-function SnapshotImage({
+function getSnapshotFrameHeight(snapshot: HeatmapSnapshot) {
+  const { pageH, viewportH } = snapshot;
+
+  // Use the recorded viewport height for near-single-screen pages so `100vh` matches the visitor's screen.
+  if (pageH <= viewportH * 1.25) {
+    return viewportH;
+  }
+
+  return pageH;
+}
+
+function SnapshotPreview({
   snapshot,
   onReady,
 }: {
   snapshot: HeatmapSnapshot;
   onReady: () => void;
 }) {
-  const [src, setSrc] = useState<string | null>(null);
+  return <IframeSnapshot snapshot={snapshot} onReady={onReady} />;
+}
+
+function IframeSnapshot({
+  snapshot,
+  onReady,
+}: {
+  snapshot: HeatmapSnapshot;
+  onReady: () => void;
+}) {
+  const [available, setAvailable] = useState(true);
+  const iframeUrl = snapshot.url;
+  const frameHeight = getSnapshotFrameHeight(snapshot);
 
   useEffect(() => {
-    if (!snapshot.imageUrl) {
-      setSrc(null);
-      return;
-    }
+    setAvailable(true);
 
-    const controller = new AbortController();
-    const token = getClientAuthToken();
-    let objectUrl: string | null = null;
+    const readyTimer = window.setTimeout(() => onReady(), 1500);
 
-    setSrc(null);
-
-    fetch(snapshot.imageUrl, {
-      signal: controller.signal,
-      headers: {
-        ...(token ? { authorization: `Bearer ${token}` } : {}),
-      },
-    })
-      .then(async response => {
-        if (!response.ok) {
-          throw new Error(`Snapshot image request failed: ${response.status}`);
-        }
-
-        const blob = await response.blob();
-        objectUrl = URL.createObjectURL(blob);
-        setSrc(objectUrl);
-      })
-      .catch(() => {
-        setSrc(null);
-        onReady();
-      });
-
-    return () => {
-      controller.abort();
-
-      if (objectUrl) {
-        URL.revokeObjectURL(objectUrl);
-      }
-    };
-  }, [snapshot.id, snapshot.imageUrl]);
+    return () => window.clearTimeout(readyTimer);
+  }, [onReady, snapshot.id]);
 
   const handleLoad = useCallback(() => onReady(), [onReady]);
+  const handleError = useCallback(() => {
+    setAvailable(false);
+    onReady();
+  }, [onReady]);
+
+  if (!available) {
+    return null;
+  }
 
   return (
-    <div className={styles.snapshot}>
-      <img
-        className={styles.snapshotImage}
-        src={src || undefined}
-        alt=""
-        draggable={false}
+    <div
+      className={styles.snapshot}
+      style={{
+        height: Math.max(1, frameHeight),
+      }}
+    >
+      <iframe
+        className={`${styles.snapshotIframe} rr-block`}
+        src={iframeUrl}
+        title={iframeUrl}
+        tabIndex={-1}
+        loading="lazy"
+        scrolling="no"
+        referrerPolicy="no-referrer"
         onLoad={handleLoad}
+        onError={handleError}
       />
     </div>
   );

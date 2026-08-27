@@ -1,12 +1,12 @@
 'use client';
+import { Column, DataColumn, DataTable, Grid, Row, Text } from '@umami/react-zen';
+import { useMemo } from 'react';
 import { DistributionBarChart } from '@/components/charts/DistributionBarChart';
 import { Empty } from '@/components/common/Empty';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useMobile, useSessionDataActivityStatsQuery } from '@/components/hooks';
 import { formatLongNumber } from '@/lib/format';
 import type { PropertyFilter } from '@/lib/types';
-import { Column, DataColumn, DataTable, Grid, Row, Text } from '@umami/react-zen';
-import { useMemo } from 'react';
 
 export function SessionPropertyChart({
   websiteId,

@@ -1,4 +1,5 @@
-import { DATA_TYPE, DATETIME_REGEX } from './constants';
+import { DATA_TYPE, DATETIME_REGEX, FIELD_LENGTH } from './constants';
+import { truncateString } from './format';
 import type { DynamicDataType } from './types';
 
 export interface KeyValueData {
@@ -47,6 +48,16 @@ export function getStringValue(value: string, dataType: number) {
   }
 
   return value;
+}
+
+export function getStoredStringValue(value: string, dataType: number) {
+  const stringValue = getStringValue(value, dataType);
+
+  if (dataType === DATA_TYPE.array && stringValue.length > FIELD_LENGTH.stringValue) {
+    return null;
+  }
+
+  return truncateString(stringValue, FIELD_LENGTH.stringValue);
 }
 
 export function createKeyValue(key: string, value: any): KeyValueData {

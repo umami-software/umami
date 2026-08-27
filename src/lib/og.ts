@@ -47,9 +47,8 @@ export const safeLookup = (hostname: string, options: any, callback: any) => {
 const ssrfAgent = new Agent({ connect: { lookup: safeLookup as any } });
 
 function isIpLiteralPrivate(hostname: string): boolean {
-  const stripped = hostname.startsWith('[') && hostname.endsWith(']')
-    ? hostname.slice(1, -1)
-    : hostname;
+  const stripped =
+    hostname.startsWith('[') && hostname.endsWith(']') ? hostname.slice(1, -1) : hostname;
   if (!ipaddr.isValid(stripped)) return false;
   return !isPublicAddress(stripped);
 }
@@ -77,7 +76,12 @@ const ENTITY_MAP: Record<string, string> = {
 
 // Reject surrogates and out-of-range code points so fromCodePoint never throws.
 function safeFromCodePoint(code: number, fallback: string): string {
-  if (!Number.isInteger(code) || code < 0 || code > 0x10ffff || (code >= 0xd800 && code <= 0xdfff)) {
+  if (
+    !Number.isInteger(code) ||
+    code < 0 ||
+    code > 0x10ffff ||
+    (code >= 0xd800 && code <= 0xdfff)
+  ) {
     return fallback;
   }
   try {

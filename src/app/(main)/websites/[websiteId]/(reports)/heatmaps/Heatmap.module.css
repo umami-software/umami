@@ -12,7 +12,7 @@
 .railDivider {
   width: 1px;
   height: 100%;
-  background: var(--gray-300, #d1d5db);
+  background: var(--zen-gray-300, #d1d5db);
   justify-self: center;
 }
 
@@ -42,14 +42,49 @@
   color: inherit;
 }
 
+.pageMetric {
+  flex: 0 0 88px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
 .pageButton:hover {
-  background: var(--interactive-bg-hover);
+  background: var(--zen-surface-sunken);
 }
 
 .pageButtonSelected,
 .pageButtonSelected:hover {
-  background: var(--surface-inverted);
-  color: var(--surface-base);
+  background: var(--zen-surface-sunken);
+  font-weight: 600;
+}
+
+.mobilePageHeader {
+  min-width: 0;
+}
+
+.mobilePageSection {
+  padding: 4px 0 2px;
+}
+
+.mobileSectionLabel {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mobileSelectedPageButton {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--zen-border-default);
+  background: var(--zen-surface-raised);
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.mobileSelectedPageButton:hover {
+  background: var(--zen-surface-sunken);
 }
 
 .summaryHeader {
@@ -73,13 +108,32 @@
   align-items: center;
   padding: 4px 10px;
   border-radius: 999px;
-  background: var(--surface-raised);
-  border: 1px solid var(--border-base);
+  background: var(--zen-surface-raised);
+  border: 1px solid var(--zen-border-default);
   white-space: nowrap;
 }
 
-.snapshotMessage {
-  margin-top: -4px;
+.screenWidthControl {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.screenWidthLabel,
+.screenWidthValue {
+  white-space: nowrap;
+}
+
+.screenWidthValue {
+  min-width: 0;
+}
+
+.mobileSummaryControls {
+  width: 100%;
+}
+
+.screenWidthCount {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
 }
 
 .scrollBand {
@@ -102,6 +156,10 @@
   border-radius: 4px;
   padding: 1px 6px;
   white-space: nowrap;
+  /* Counter-scaled inline via transform: scale(1 / fit.scale). Anchor to the
+     top-right corner (where the band right-aligns it) so it grows inward and
+     stays pinned to the edge instead of drifting off-canvas. */
+  transform-origin: top right;
 }
 
 .canvasWrapper {
@@ -114,23 +172,21 @@
   overscroll-behavior: contain;
 }
 
-.snapshotControlRow {
-  margin-top: 8px;
-}
-
 .canvas {
   position: relative;
-  overflow: visible;
-  border: 1px solid var(--border-base);
+  overflow: hidden;
+  border: 1px solid var(--zen-border-default);
   border-radius: 8px;
-  background: var(--surface-sunken);
+  background: var(--zen-surface-sunken);
   flex: 0 0 auto;
+  margin-inline: auto;
 }
 
-.canvasClip {
+.canvasSurface {
   position: absolute;
-  inset: 0;
-  overflow: hidden;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
   border-radius: inherit;
   background: inherit;
 }
@@ -145,7 +201,9 @@
 
 .snapshot {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1;
   transform-origin: top left;
   pointer-events: none;
@@ -159,6 +217,16 @@
   object-fit: fill;
   user-select: none;
   -webkit-user-drag: none;
+}
+
+.snapshotIframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: var(--zen-surface-base);
+  overflow: hidden;
+  pointer-events: none;
 }
 
 .overlay {
@@ -175,7 +243,7 @@
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: var(--surface-sunken);
+  background: var(--zen-surface-sunken);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -192,4 +260,39 @@
   );
   pointer-events: auto;
   mix-blend-mode: multiply;
+}
+
+@media (max-width: 640px) {
+  .summaryStats,
+  .summaryHeader {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .summaryStats {
+    gap: 8px;
+  }
+
+  .summaryStat {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .screenWidthControl {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
+  }
+
+  .screenWidthLabel {
+    font-size: 12px;
+  }
+
+  .canvasWrapper {
+    max-height: 70vh;
+  }
+
+  .scrollBandLabel {
+    display: none;
+  }
 }

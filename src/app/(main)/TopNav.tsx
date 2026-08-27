@@ -11,20 +11,28 @@ import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 export function TopNav() {
   const { websiteId, linkId, pixelId, boardId, teamId, router, renderUrl } = useNavigation();
 
-  const handleWebsiteChange = (value: string) => {
-    router.push(renderUrl(`/websites/${value}`, false));
+  const navigateToEntity = (basePath: string, value: string | number | null) => {
+    if (value === null || value === undefined || value === '') {
+      return;
+    }
+
+    router.push(renderUrl(`${basePath}/${value}`, false));
   };
 
-  const handleLinkChange = (value: string) => {
-    router.push(renderUrl(`/links/${value}`, false));
+  const handleWebsiteChange = (value: string | number | null) => {
+    navigateToEntity('/websites', value);
   };
 
-  const handlePixelChange = (value: string) => {
-    router.push(renderUrl(`/pixels/${value}`, false));
+  const handleLinkChange = (value: string | number | null) => {
+    navigateToEntity('/links', value);
   };
 
-  const handleBoardChange = (value: string) => {
-    router.push(renderUrl(`/boards/${value}`, false));
+  const handlePixelChange = (value: string | number | null) => {
+    navigateToEntity('/pixels', value);
+  };
+
+  const handleBoardChange = (value: string | number | null) => {
+    navigateToEntity('/boards', value);
   };
 
   return (
@@ -38,7 +46,7 @@ export function TopNav() {
       paddingRight="5"
       width="100%"
       zIndex={100}
-      backgroundColor="surface-raised"
+      backgroundColor="surface-base"
     >
       <Row alignItems="center">
         <TeamsButton />
@@ -101,7 +109,7 @@ export function TopNav() {
           left: 0,
           right: 0,
           height: 16,
-          background: 'linear-gradient(to bottom, var(--surface-raised), transparent)',
+          background: 'linear-gradient(to bottom, var(--zen-surface-base), transparent)',
           pointerEvents: 'none',
         }}
       />

@@ -68,7 +68,7 @@ export function TeamEditForm({
             )}
             {allowEdit && (
               <FormButtons justifyContent="flex-end">
-                <FormSubmitButton variant="primary" isPending={isPending}>
+                <FormSubmitButton variant="primary" isLoading={isPending}>
                   {t(labels.save)}
                 </FormSubmitButton>
               </FormButtons>

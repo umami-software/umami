@@ -16,6 +16,7 @@ import {
   type ReactElement,
   type ReactNode,
   useCallback,
+  useEffect,
   useState,
 } from 'react';
 import { Empty } from '@/components/common/Empty';
@@ -62,7 +63,7 @@ export function DataGrid({
     return stored === 'table' || stored === 'cards' ? stored : null;
   });
 
-  const displayMode: DisplayMode | undefined = isMobile ? 'cards' : userDisplayMode ?? undefined;
+  const displayMode: DisplayMode | undefined = isMobile ? 'cards' : (userDisplayMode ?? undefined);
 
   const handleToggleDisplayMode = () => {
     const next: DisplayMode = displayMode === 'cards' ? 'table' : 'cards';
@@ -73,7 +74,6 @@ export function DataGrid({
   const handleSearch = (value: string) => {
     if (value !== search) {
       setSearch(value);
-      router.push(updateParams({ search: value, page: 1 }));
     }
   };
 
@@ -83,6 +83,24 @@ export function DataGrid({
     },
     [router, updateParams, search],
   );
+
+  useEffect(() => {
+    setSearch(queryParams?.search || '');
+  }, [queryParams?.search]);
+
+  useEffect(() => {
+    const currentSearch = queryParams?.search || '';
+
+    if (search === currentSearch) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      router.push(updateParams({ search: search || undefined, page: 1 }));
+    }, searchDelay || DEFAULT_SEARCH_DELAY);
+
+    return () => window.clearTimeout(timer);
+  }, [queryParams?.search, router, search, searchDelay, updateParams]);
 
   const child = data ? (typeof children === 'function' ? children(data) : children) : null;
 
@@ -106,12 +124,17 @@ export function DataGrid({
           <SearchField
             value={search}
             onSearch={handleSearch}
-            delay={searchDelay || DEFAULT_SEARCH_DELAY}
+            delay={0}
             autoFocus={autoFocus}
             placeholder={t(labels.search)}
+            className="w-full max-w-md"
           />
         )}
-        <Row alignItems="center" gap style={{ marginLeft: 'auto' }}>
+        <Row
+          alignItems="center"
+          gap
+          style={isMobile ? { width: '100%', justifyContent: 'flex-start' } : { marginLeft: 'auto' }}
+        >
           {renderActions?.()}
           {!isMobile && viewToggleButton}
         </Row>

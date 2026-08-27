@@ -14,11 +14,12 @@ import {
 } from '@umami/react-zen';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useConfig, useLinkQuery, useMessages } from '@/components/hooks';
-import { getClientAuthToken } from '@/lib/client';
 import { useUpdateQuery } from '@/components/hooks/queries/useUpdateQuery';
 import { ChevronDown, RefreshCw } from '@/components/icons';
+import { getClientAuthToken } from '@/lib/client';
 import { LINKS_URL } from '@/lib/constants';
 import { getRandomChars } from '@/lib/generate';
+import { isHttpUrl } from '@/lib/url';
 
 const OG_FIELDS = ['ogTitle', 'ogDescription', 'ogImage'] as const;
 type OgField = (typeof OG_FIELDS)[number];
@@ -64,7 +65,7 @@ function OgUrlWatcher({
   onPreview: (preview: OgPreview | null, loading: boolean) => void;
 }>) {
   useEffect(() => {
-    if (!url || !/^https?:\/\//i.test(url)) {
+    if (!url || !isHttpUrl(url)) {
       onPreview(null, false);
       return;
     }
@@ -136,11 +137,7 @@ export function LinkEditForm({
   useEffect(() => {
     if (
       data &&
-      (data.utmSource ||
-        data.utmMedium ||
-        data.utmCampaign ||
-        data.utmTerm ||
-        data.utmContent)
+      (data.utmSource || data.utmMedium || data.utmCampaign || data.utmTerm || data.utmContent)
     ) {
       setUtmExpanded(true);
     }
@@ -171,9 +168,9 @@ export function LinkEditForm({
 
   // Seed inputs only when *Manual=true so auto values aren't promoted to manual.
   const ogDefaults = {
-    ogTitle: data?.ogTitleManual ? data?.ogTitle ?? '' : '',
-    ogDescription: data?.ogDescriptionManual ? data?.ogDescription ?? '' : '',
-    ogImage: data?.ogImageManual ? data?.ogImage ?? '' : '',
+    ogTitle: data?.ogTitleManual ? (data?.ogTitle ?? '') : '',
+    ogDescription: data?.ogDescriptionManual ? (data?.ogDescription ?? '') : '',
+    ogImage: data?.ogImageManual ? (data?.ogImage ?? '') : '',
   };
   // Live preview takes precedence over stored parsed values for placeholder hints.
   const autoValues: Record<OgField, string | null | undefined> = {
@@ -183,13 +180,7 @@ export function LinkEditForm({
     ogImage: livePreview?.image ?? (data?.ogImageManual ? null : data?.ogImage),
   };
 
-  const checkUrl = (url: string) => {
-    try {
-      const u = new URL(url);
-      if ((u.protocol === 'http:' || u.protocol === 'https:') && u.host) return true;
-    } catch {}
-    return t(labels.invalidUrl);
-  };
+  const checkUrl = (url: string) => isHttpUrl(url) || t(labels.invalidUrl);
 
   if (linkId && isLoading) {
     return <Loading placement="absolute" />;

@@ -3,10 +3,15 @@ import { FILTER_COLUMNS } from '@/lib/constants';
 import { useShare } from './context/useShare';
 import { useNavigation } from './useNavigation';
 
-export function useFilterParameters({ includePagination = true }: { includePagination?: boolean } = {}) {
-  const { query } = useNavigation();
+export function useFilterParameters({
+  includePagination = true,
+}: {
+  includePagination?: boolean;
+} = {}) {
+  const { pathname, query } = useNavigation();
   const share = useShare();
   const allowFilter = share?.parameters?.allowFilter !== false;
+  const isEventsPath = pathname.endsWith('/events');
 
   return useMemo(() => {
     const filterParams: Record<string, any> = {};
@@ -14,7 +19,11 @@ export function useFilterParameters({ includePagination = true }: { includePagin
     if (allowFilter) {
       for (const key of Object.keys(query)) {
         const baseName = key.replace(/\d+$/, '');
-        if (FILTER_COLUMNS[baseName]) {
+        if (
+          FILTER_COLUMNS[baseName] ||
+          /^spf\d+$/.test(key) ||
+          (isEventsPath && /^epf\d+$/.test(key))
+        ) {
           filterParams[key] = query[key];
         }
       }
@@ -35,5 +44,5 @@ export function useFilterParameters({ includePagination = true }: { includePagin
     }
 
     return params;
-  }, [allowFilter, includePagination, query]);
+  }, [allowFilter, includePagination, isEventsPath, query]);
 }

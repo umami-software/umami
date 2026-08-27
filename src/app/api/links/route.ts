@@ -4,15 +4,10 @@ import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
+import { isHttpUrl } from '@/lib/url';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { backfillOgMetadata, createLink, getUserLinks } from '@/queries/prisma';
-import {
-  isHttpUrl,
-  ogDescriptionField,
-  ogImageField,
-  ogTitleField,
-  utmField,
-} from './schemas';
+import { ogDescriptionField, ogImageField, ogTitleField, utmField } from './schemas';
 
 export async function GET(request: Request) {
   const schema = z.object({
@@ -37,11 +32,8 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const schema = z.object({
     name: z.string().max(100),
-    url: z
-      .string()
-      .max(500)
-      .refine(isHttpUrl, { message: 'url must be an http(s) URL' }),
-    slug: z.string().max(100),
+    url: z.string().max(500).refine(isHttpUrl, { message: 'url must be an http(s) URL' }),
+    slug: z.string().min(8).max(100),
     teamId: z.string().nullable().optional(),
     id: z.uuid().nullable().optional(),
     utmSource: utmField,

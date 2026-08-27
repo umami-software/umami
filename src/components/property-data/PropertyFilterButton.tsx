@@ -1,9 +1,9 @@
 'use client';
 import { useMessages } from '@/components/hooks';
+import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { ListFilter } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
 import type { PropertyFilter } from '@/lib/types';
-import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { PropertyFilterEditForm } from './PropertyFilterEditForm';
 
 export function PropertyFilterButton({

@@ -37,7 +37,7 @@ export function DatePickerForm({
   return (
     <Column gap>
       <Row justifyContent="center">
-        <ToggleGroup disallowEmptySelection value={selected} onChange={setSelected}>
+        <ToggleGroup value={selected} onChange={setSelected}>
           <ToggleGroupItem id={FILTER_DAY}>{t(labels.singleDay)}</ToggleGroupItem>
           <ToggleGroupItem id={FILTER_RANGE}>{t(labels.dateRange)}</ToggleGroupItem>
         </ToggleGroup>

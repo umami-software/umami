@@ -2,15 +2,10 @@ import { after } from 'next/server';
 import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
+import { isHttpUrl } from '@/lib/url';
 import { canDeleteLink, canUpdateLink, canViewLink } from '@/permissions';
 import { backfillOgMetadata, deleteLink, getLink, updateLink } from '@/queries/prisma';
-import {
-  isHttpUrl,
-  ogDescriptionField,
-  ogImageField,
-  ogTitleField,
-  utmField,
-} from '../schemas';
+import { ogDescriptionField, ogImageField, ogTitleField, utmField } from '../schemas';
 
 export async function GET(request: Request, { params }: { params: Promise<{ linkId: string }> }) {
   const { auth, error } = await parseRequest(request);

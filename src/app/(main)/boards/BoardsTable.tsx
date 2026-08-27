@@ -1,6 +1,6 @@
 import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import { DateDistance } from '@/components/common/DateDistance';
+import Link from '@/components/common/Link';
 import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { BoardDeleteButton } from './BoardDeleteButton';
@@ -23,11 +23,13 @@ export function BoardsTable(props: DataTableProps) {
         label={<SortableLabel label={t(labels.description)} sortKey="description" />}
       />
       <DataColumn id="type" label={<SortableLabel label={t(labels.boardType)} sortKey="type" />}>
-        {({ type }: any) => type ? type.charAt(0).toUpperCase() + type.slice(1) : ''}
+        {({ type }: any) => (type ? type.charAt(0).toUpperCase() + type.slice(1) : '')}
       </DataColumn>
       <DataColumn
         id="created"
-        label={<SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />}
+        label={
+          <SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />
+        }
         width="200px"
       >
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}

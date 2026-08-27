@@ -35,7 +35,11 @@ async function relationalQuery(
     websiteId,
     timezone,
   });
-  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(propertyFilters, 'session', timezone);
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(
+    propertyFilters,
+    'session',
+    timezone,
+  );
   const aggSql =
     metric === 'avg'
       ? 'avg(cast(session_data.number_value as decimal))'
@@ -83,8 +87,16 @@ async function clickhouseQuery(
 ): Promise<{ t: string; y: number }[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
   const { rawQuery, getDateSQL, parseFilters, getPropertyFilterQuery } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
-  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(propertyFilters, 'session', timezone);
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    timezone,
+  });
+  const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(
+    propertyFilters,
+    'session',
+    timezone,
+  );
   const aggSql =
     metric === 'avg'
       ? 'avg(session_data.number_value)'

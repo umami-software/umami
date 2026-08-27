@@ -1,4 +1,4 @@
-import { record } from 'rrweb';
+import { addCustomEvent, record } from 'rrweb';
 
 (window => {
   const { document } = window;
@@ -18,11 +18,17 @@ import { record } from 'rrweb';
   const host =
     hostUrl || '__COLLECT_API_HOST__' || currentScript.src.split('/').slice(0, -1).join('/');
   const hostBase = host.replace(/\/$/, '');
-  const endpoint = `${hostBase}__COLLECT_REPLAY_ENDPOINT__`;
-  const configEndpoint = `${hostBase}__RECORDER_CONFIG_ENDPOINT__`.replace('{websiteId}', website);
+  const endpoint = `${hostBase}/api/record`;
+  const configEndpoint = `${hostBase}/api/websites/${website}/recorder`;
 
   const REPLAY_FLUSH_EVENT_COUNT = 100;
-  const REPLAY_FLUSH_INTERVAL = 10000;
+  const REPLAY_FLUSH_INTERVAL = 2000;
+  const REPLAY_MAX_PAYLOAD_SIZE = 500000;
+  const REPLAY_FRAGMENT_TYPE = 'umami:rrweb-event-fragment';
+  const REPLAY_FRAGMENT_TOTAL_PLACEHOLDER = 999999999;
+  const RRWEB_EVENT_TYPE = {
+    FullSnapshot: 2,
+  };
   const HEATMAP_FLUSH_EVENT_COUNT = 20;
   const HEATMAP_FLUSH_INTERVAL = 5000;
 
@@ -40,17 +46,14 @@ import { record } from 'rrweb';
   let replayFlushTimer = null;
   let heatmapFlushTimer = null;
   let replayStartTime = null;
+  let replayLastChunkIndex = 0;
   let replayStopped = false;
   let heatmapStarted = false;
 
   const getSessionCache = () => window.umami?.getSession?.()?.cache;
 
-  const sendPayload = (type, payload, useKeepalive = false) => {
-    const cache = getSessionCache();
-
-    if (!cache) return;
-
-    const body = JSON.stringify({
+  const getPayloadBody = (type, payload) =>
+    JSON.stringify({
       type,
       payload: {
         website,
@@ -58,7 +61,59 @@ import { record } from 'rrweb';
       },
     });
 
-    const keepalive = useKeepalive && body.length < 60000;
+  const getPayloadSize = body => {
+    try {
+      return new Blob([body]).size;
+    } catch {
+      return body.length;
+    }
+  };
+
+  const getReplayPayloadSize = (events, timestamp) =>
+    getPayloadSize(getPayloadBody('record', { events, timestamp }));
+
+  const isReplayPayloadTooLarge = (events, timestamp) =>
+    getReplayPayloadSize(events, timestamp) > REPLAY_MAX_PAYLOAD_SIZE;
+
+  const getReplayChunkIndex = () => {
+    const timestamp = Math.floor(Date.now() / 1000);
+    const chunkIndex = Math.max(timestamp, replayLastChunkIndex + 1);
+
+    replayLastChunkIndex = chunkIndex;
+
+    return chunkIndex;
+  };
+
+  const createReplayFragment = (id, index, total, timestamp, value) => ({
+    type: REPLAY_FRAGMENT_TYPE,
+    timestamp,
+    data: {
+      id,
+      index,
+      total,
+      value,
+    },
+  });
+
+  const getReplayEventTimestamp = event => {
+    const timestamp = Number(event?.timestamp);
+
+    return Number.isFinite(timestamp) ? timestamp : Date.now();
+  };
+
+  const getReplayFragmentId = () =>
+    `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+
+  const isReplayFullSnapshot = event => event?.type === RRWEB_EVENT_TYPE.FullSnapshot;
+
+  const sendPayload = (type, payload, useKeepalive = false) => {
+    const cache = getSessionCache();
+
+    if (!cache) return;
+
+    const body = getPayloadBody(type, payload);
+
+    const keepalive = useKeepalive && getPayloadSize(body) < 60000;
 
     return fetch(endpoint, {
       keepalive,
@@ -72,20 +127,135 @@ import { record } from 'rrweb';
     }).catch(() => {});
   };
 
+  const sendReplayChunk = (events, timestamp, useKeepalive = false) => {
+    replayLastChunkIndex = Math.max(replayLastChunkIndex, timestamp);
+
+    sendPayload(
+      'record',
+      {
+        events,
+        timestamp,
+      },
+      useKeepalive,
+    );
+  };
+
+  const getReplayEventFragments = (event, chunkTimestamp) => {
+    const value = JSON.stringify(event);
+    const id = getReplayFragmentId();
+    const eventTimestamp = getReplayEventTimestamp(event);
+    const fragments = [];
+    let start = 0;
+
+    while (start < value.length) {
+      let low = start + 1;
+      let high = value.length;
+      let end = start;
+
+      while (low <= high) {
+        const mid = Math.floor((low + high) / 2);
+        const fragmentChunkTimestamp = chunkTimestamp + fragments.length;
+        const fragment = createReplayFragment(
+          id,
+          fragments.length,
+          REPLAY_FRAGMENT_TOTAL_PLACEHOLDER,
+          eventTimestamp,
+          value.slice(start, mid),
+        );
+
+        if (isReplayPayloadTooLarge([fragment], fragmentChunkTimestamp)) {
+          high = mid - 1;
+        } else {
+          end = mid;
+          low = mid + 1;
+        }
+      }
+
+      if (end === start) {
+        end = start + 1;
+      }
+
+      fragments.push(value.slice(start, end));
+      start = end;
+    }
+
+    return fragments.map((fragment, index) =>
+      createReplayFragment(id, index, fragments.length, eventTimestamp, fragment),
+    );
+  };
+
+  const sendReplayEventFragments = (event, timestamp, useKeepalive = false) => {
+    const fragments = getReplayEventFragments(event, timestamp);
+
+    fragments.forEach((fragment, index) => {
+      sendReplayChunk([fragment], timestamp + index, useKeepalive);
+    });
+
+    return fragments.length;
+  };
+
+  const sendReplayEvents = (events, timestamp, useKeepalive = false) => {
+    let chunk = [];
+    let chunkOffset = 0;
+
+    for (const event of events) {
+      const chunkTimestamp = timestamp + chunkOffset;
+
+      if (isReplayFullSnapshot(event)) {
+        if (chunk.length) {
+          sendReplayChunk(chunk, chunkTimestamp, useKeepalive);
+          chunk = [];
+          chunkOffset += 1;
+        }
+
+        const snapshotTimestamp = timestamp + chunkOffset;
+
+        if (isReplayPayloadTooLarge([event], snapshotTimestamp)) {
+          chunkOffset += sendReplayEventFragments(event, snapshotTimestamp, useKeepalive);
+        } else {
+          sendReplayChunk([event], snapshotTimestamp, useKeepalive);
+          chunkOffset += 1;
+        }
+
+        continue;
+      }
+
+      if (isReplayPayloadTooLarge([event], chunkTimestamp)) {
+        if (chunk.length) {
+          sendReplayChunk(chunk, chunkTimestamp, useKeepalive);
+          chunk = [];
+          chunkOffset += 1;
+        }
+
+        chunkOffset += sendReplayEventFragments(event, timestamp + chunkOffset, useKeepalive);
+        continue;
+      }
+
+      const candidate = [...chunk, event];
+
+      if (isReplayPayloadTooLarge(candidate, chunkTimestamp)) {
+        if (chunk.length) {
+          sendReplayChunk(chunk, chunkTimestamp, useKeepalive);
+          chunk = [];
+          chunkOffset += 1;
+        }
+      }
+
+      chunk.push(event);
+    }
+
+    if (chunk.length) {
+      sendReplayChunk(chunk, timestamp + chunkOffset, useKeepalive);
+    }
+  };
+
   const flushReplay = (useKeepalive = false) => {
     if (!replayBuffer.length) return;
 
     const events = replayBuffer;
     replayBuffer = [];
 
-    sendPayload(
-      'record',
-      {
-        events,
-        timestamp: Math.floor(Date.now() / 1000),
-      },
-      useKeepalive,
-    );
+    sendReplayEvents(events, getReplayChunkIndex(), useKeepalive);
   };
 
   const flushHeatmap = (useKeepalive = false) => {
@@ -102,11 +272,6 @@ import { record } from 'rrweb';
       },
       useKeepalive,
     );
-  };
-
-  const scheduleReplayFlush = () => {
-    if (replayFlushTimer) clearTimeout(replayFlushTimer);
-    replayFlushTimer = setTimeout(() => flushReplay(), REPLAY_FLUSH_INTERVAL);
   };
 
   const scheduleHeatmapFlush = () => {
@@ -133,7 +298,7 @@ import { record } from 'rrweb';
 
     replayStopped = true;
 
-    if (replayFlushTimer) clearTimeout(replayFlushTimer);
+    if (replayFlushTimer) clearInterval(replayFlushTimer);
     flushReplay();
 
     if (replayStopFn) {
@@ -267,6 +432,8 @@ import { record } from 'rrweb';
   const beginReplayCapture = () => {
     replayStartTime = Date.now();
 
+    replayFlushTimer = setInterval(() => flushReplay(), REPLAY_FLUSH_INTERVAL);
+
     replayStopFn = record({
       emit(event) {
         if (replayStopped) return;
@@ -276,13 +443,38 @@ import { record } from 'rrweb';
           return;
         }
 
-        replayBuffer.push(event);
+        if (isReplayFullSnapshot(event)) {
+          flushReplay();
+          sendReplayEvents([event], getReplayChunkIndex());
+          return;
+        }
 
-        if (replayBuffer.length >= REPLAY_FLUSH_EVENT_COUNT) {
+        const timestamp = Math.floor(Date.now() / 1000);
+
+        if (isReplayPayloadTooLarge([event], timestamp)) {
+          if (replayBuffer.length) {
+            const events = replayBuffer;
+            replayBuffer = [];
+
+            sendReplayEvents(events, getReplayChunkIndex());
+          }
+
+          sendReplayEvents([event], getReplayChunkIndex());
+          return;
+        }
+
+        if (replayBuffer.length && isReplayPayloadTooLarge([...replayBuffer, event], timestamp)) {
           flushReplay();
         }
 
-        scheduleReplayFlush();
+        replayBuffer.push(event);
+
+        if (
+          replayBuffer.length >= REPLAY_FLUSH_EVENT_COUNT ||
+          isReplayPayloadTooLarge(replayBuffer, Math.floor(Date.now() / 1000))
+        ) {
+          flushReplay();
+        }
       },
       ...getMaskConfig(maskLevel),
       inlineStylesheet: true,
@@ -301,6 +493,11 @@ import { record } from 'rrweb';
       checkoutEveryNms: 30000,
       ...(blockSelector && { blockSelector }),
     });
+
+    if (replayStopped && replayStopFn) {
+      replayStopFn();
+      replayStopFn = null;
+    }
   };
 
   const beginHeatmapCapture = () => {
@@ -336,7 +533,12 @@ import { record } from 'rrweb';
     const onClick = event => {
       if (!event.isTrusted || event.button !== 0) return;
 
-      const { pageW: rawPageW, pageH: rawPageH, scrollLeft, scrollTop } = computePageMetrics({
+      const {
+        pageW: rawPageW,
+        pageH: rawPageH,
+        scrollLeft,
+        scrollTop,
+      } = computePageMetrics({
         includeBounds: true,
       });
       const pageX = Number.isFinite(event.pageX) ? event.pageX : event.clientX + scrollLeft;
@@ -386,6 +588,10 @@ import { record } from 'rrweb';
       flushScroll();
       scrollUrl = location.href;
       lastFlushedScrollPct = 0;
+
+      if (replayStopFn && !replayStopped) {
+        addCustomEvent('url-change', { url: scrollUrl });
+      }
     };
 
     const hookHistory = method => {
@@ -458,6 +664,10 @@ import { record } from 'rrweb';
       if (document.visibilityState === 'hidden') {
         flushReplay(true);
       }
+    });
+
+    window.addEventListener('pagehide', () => {
+      flushReplay(true);
     });
 
     window.addEventListener('beforeunload', () => {

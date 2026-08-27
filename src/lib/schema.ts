@@ -74,6 +74,16 @@ export const searchParams = {
   search: z.string().optional(),
 };
 
+export const replayParams = {
+  minDuration: z.coerce.number().int().nonnegative().optional(),
+};
+
+export const annotationSchema = z.object({
+  date: z.coerce.date(),
+  allDay: z.boolean().optional().default(true),
+  note: z.string().min(1).max(500),
+});
+
 export const pagingParams = {
   page: z.coerce.number().int().positive().optional(),
   pageSize: z.coerce.number().int().positive().optional(),

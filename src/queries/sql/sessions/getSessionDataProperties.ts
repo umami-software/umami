@@ -85,7 +85,11 @@ async function clickhouseQuery(
 ): Promise<{ propertyName: string; dataType: number; total: number }[]> {
   const { timezone = 'UTC' } = filters;
   const { rawQuery, parseFilters, getPropertyFilterQuery } = clickhouse;
-  const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId, timezone });
+  const { filterQuery, cohortQuery, queryParams } = parseFilters({
+    ...filters,
+    websiteId,
+    timezone,
+  });
   const { sql: pfSQL, params: pfParams } = getPropertyFilterQuery(
     propertyFilters,
     'session',

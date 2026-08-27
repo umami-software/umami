@@ -76,11 +76,19 @@ function decodeHeader(s: string | undefined | null): string | undefined | null {
   return Buffer.from(s, 'latin1').toString('utf-8');
 }
 
+async function isLocalIp(ip: string) {
+  try {
+    return await isLocalhost(ip);
+  } catch {
+    return false;
+  }
+}
+
 export async function getLocation(ip: string = '', headers: Headers, skipHeaders: boolean) {
   const cleanIp = stripPort(ip);
 
   // Ignore local or invalid ips
-  if (!cleanIp || !ipaddr.isValid(cleanIp) || (await isLocalhost(cleanIp))) {
+  if (!cleanIp || !ipaddr.isValid(cleanIp) || (await isLocalIp(cleanIp))) {
     return null;
   }
 

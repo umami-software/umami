@@ -1,13 +1,17 @@
+import { startOfMonth, subMonths } from 'date-fns';
+import { z } from 'zod';
 import { checkAuth } from '@/lib/auth';
 import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import { getAllowedUnits, getMinimumUnit, maxDate, parseDateRange } from '@/lib/date';
 import { fetchAccount, fetchWebsite } from '@/lib/load';
-import { filtersArrayToObject } from '@/lib/params';
+import {
+  filtersArrayToObject,
+  parseSessionPropertyFilters,
+  parseUniversalEventPropertyFilters,
+} from '@/lib/params';
 import { badRequest, unauthorized } from '@/lib/response';
 import type { QueryFilters } from '@/lib/types';
 import { getWebsiteSegment } from '@/queries/prisma';
-import { startOfMonth, subMonths } from 'date-fns';
-import { z } from 'zod';
 
 export async function parseRequest(
   request: Request,
@@ -32,7 +36,10 @@ export async function parseRequest(
 
       // Re-add dynamic params stripped by Zod schema: suffixed filter params (browser1, os2)
       for (const key of Object.keys(rawQuery)) {
-        if ((/\d+$/.test(key) || /^pf_/.test(key)) && !(key in query)) {
+        if (
+          (/\d+$/.test(key) || /^pf_/.test(key) || /^epf\d+$/.test(key) || /^spf\d+$/.test(key)) &&
+          !(key in query)
+        ) {
           query[key] = rawQuery[key];
         }
       }
@@ -114,6 +121,8 @@ export async function getQueryFilters(
 ): Promise<QueryFilters> {
   const dateRange = getRequestDateRange(params);
   const filters = getRequestFilters(params);
+  const eventPropertyFilters = parseUniversalEventPropertyFilters(params);
+  const sessionPropertyFilters = parseSessionPropertyFilters(params);
 
   let match = params?.match;
 
@@ -168,6 +177,9 @@ export async function getQueryFilters(
     ...dateRange,
     ...filters,
     match,
+    minDuration: params?.minDuration,
+    eventPropertyFilters,
+    sessionPropertyFilters,
     page: params?.page,
     pageSize: params?.pageSize ? params?.pageSize || DEFAULT_PAGE_SIZE : undefined,
     orderBy: params?.orderBy,
