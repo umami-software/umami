@@ -44,7 +44,13 @@ export function BuildUTMLink({ onClose }: { onClose: () => void }) {
 
     const query = params.toString();
 
-    return query ? `${baseUrl}${baseUrl.includes('?') ? '&' : '?'}${query}` : baseUrl;
+    if (!query) return baseUrl;
+
+    const url = new URL(baseUrl);
+
+    params.forEach((value, key) => url.searchParams.set(key, value));
+
+    return url.toString();
   }, [website.domain, path, source, medium, campaign, content, term]);
 
   return (
@@ -77,7 +83,7 @@ export function BuildUTMLink({ onClose }: { onClose: () => void }) {
         <Label>{t(labels.utmSource)}</Label>
         <TextField
           value={source}
-          onChange={setTerm}
+          onChange={setSource}
           placeholder="newsletter, twitter, google, etc."
         />
       </Column>
