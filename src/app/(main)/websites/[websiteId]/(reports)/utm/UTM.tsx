@@ -7,7 +7,6 @@ import { ListTable } from '@/components/metrics/ListTable';
 import { CHART_COLORS, UTM_PARAMS } from '@/lib/constants';
 import { DialogButton } from '@/components/input/DialogButton';
 import { Plus } from 'lucide-react';
-import { GoalEditForm } from '../goals/GoalEditForm';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { BuildUTMLink } from './BuildUTMLink';
 
@@ -33,12 +32,12 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
             <DialogButton
               variant="primary"
               icon={<Plus />}
-              label="UTM Link generator"
-              title="UTM Link generator"
+              label={t(labels.utmGenerator)}
+              title={t(labels.utmGenerator)}
               minWidth="400px"
               minHeight="300px"
             >
-              {({ close }) => <BuildUTMLink />}
+              <BuildUTMLink />
             </DialogButton>
           </SectionHeader>
           {UTM_PARAMS.map(param => {
