@@ -3,6 +3,7 @@ import { Column, Row } from '@umami/react-zen';
 import { ExpandedViewModal } from '@/app/(main)/websites/[websiteId]/ExpandedViewModal';
 import { Panel } from '@/components/common/Panel';
 import { UnitFilter } from '@/components/input/UnitFilter';
+import { AnnotationsButton } from './annotations/AnnotationsButton';
 import { WebsiteChart } from './WebsiteChart';
 import { WebsiteControls } from './WebsiteControls';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
@@ -18,6 +19,9 @@ export function WebsitePage({ websiteId }: { websiteId: string }) {
           <UnitFilter />
         </Row>
         <WebsiteChart websiteId={websiteId} />
+        <Row justifyContent="end">
+          <AnnotationsButton websiteId={websiteId} />
+        </Row>
       </Panel>
       <WebsitePanels websiteId={websiteId} />
       <ExpandedViewModal websiteId={websiteId} />

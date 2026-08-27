@@ -97,6 +97,7 @@ model Website {
   user                User?                @relation("user", fields: [userId], references: [id])
   createUser          User?                @relation("createUser", fields: [createdBy], references: [id])
   team                Team?                @relation(fields: [teamId], references: [id])
+  annotations         Annotation[]
   eventData           EventData[]
   reports             Report[]
   revenue             Revenue[]
@@ -267,6 +268,22 @@ model Report {
   @@index([type])
   @@index([name])
   @@map("report")
+}
+
+model Annotation {
+  id        String    @id() @map("annotation_id") @db.Uuid
+  websiteId String    @map("website_id") @db.Uuid
+  userId    String?   @map("user_id") @db.Uuid
+  date      DateTime  @db.Timestamptz(6)
+  allDay    Boolean   @default(true) @map("all_day")
+  note      String    @db.VarChar(500)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  website Website @relation(fields: [websiteId], references: [id])
+
+  @@index([websiteId, date])
+  @@map("annotation")
 }
 
 model Segment {

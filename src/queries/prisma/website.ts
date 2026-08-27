@@ -237,6 +237,10 @@ export async function deleteWebsite(websiteId: string) {
         where: { websiteId },
       });
 
+      await tx.annotation.deleteMany({
+        where: { websiteId },
+      });
+
       await tx.share.deleteMany({
         where: { entityId: websiteId },
       });

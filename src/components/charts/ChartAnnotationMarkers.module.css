@@ -1,0 +1,42 @@
+.marker {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--base-color-1, #fff);
+  padding: 0;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform 0.1s ease-in-out;
+}
+
+.marker:hover,
+.marker:focus-visible {
+  transform: translate(-50%, -50%) scale(1.3);
+  outline: none;
+}
+
+.count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 7px;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 14px;
+  color: #fff;
+  background: inherit;
+  border: 1px solid var(--base-color-1, #fff);
+  pointer-events: none;
+}
+
+.note {
+  max-width: 300px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
