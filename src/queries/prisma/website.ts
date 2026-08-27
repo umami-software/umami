@@ -1,4 +1,5 @@
 import type { Prisma, Website } from '@/generated/prisma/client';
+import clickhouse from '@/lib/clickhouse';
 import { ROLES } from '@/lib/constants';
 import prisma, { getSchema } from '@/lib/prisma';
 import redis from '@/lib/redis';
@@ -262,8 +263,11 @@ export async function deleteWebsite(websiteId: string) {
       timeout: 30000,
     },
   ).then(async data => {
-    if (cloudMode) {
+    if (redis.enabled) {
       await redis.client.del(`website:${websiteId}`);
+    }
+    if (!cloudMode) {
+      await clickhouse.deleteByWebsiteIds([websiteId]);
     }
 
     return data;
