@@ -42,7 +42,14 @@ export function FilterRecord({
   onChange,
 }: FilterRecordProps) {
   const { fields, operators } = useFilters();
-  const initValues = Array.isArray(value) ? value : value ? value.split(',') : [];
+  const isSearch = isSearchOperator(operator);
+  const initValues = Array.isArray(value)
+    ? value
+    : value
+      ? isSearch
+        ? [value]
+        : value.split(',')
+      : [];
   const [selected, setSelected] = useState<string[]>(initValues);
   const [search, setSearch] = useState('');
   const { formatValue } = useFormat();
@@ -53,7 +60,6 @@ export function FilterRecord({
     startDate,
     endDate,
   });
-  const isSearch = isSearchOperator(operator);
   const items = data?.filter(({ value }) => value) || [];
 
   const handleSearch = (value: string) => {
