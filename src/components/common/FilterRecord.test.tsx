@@ -45,3 +45,19 @@ test('keeps commas in regex filter values', () => {
 
   expect(screen.getByLabelText('Filter value')).toHaveValue(value);
 });
+
+test('keeps commas when changing to a search operator', () => {
+  const value = '^[a-zA-Z0-9]{21,22}$';
+  const props = {
+    type: 'path',
+    startDate: new Date('2026-08-01'),
+    endDate: new Date('2026-08-02'),
+    name: 'path',
+    value,
+  };
+  const { rerender } = render(<FilterRecord {...props} operator="eq" />);
+
+  rerender(<FilterRecord {...props} operator="re" />);
+
+  expect(screen.getByLabelText('Filter value')).toHaveValue(value);
+});
