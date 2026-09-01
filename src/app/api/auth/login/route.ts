@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import { saveAuth } from '@/lib/auth';
 import { ROLES } from '@/lib/constants';
 import { hash, secret } from '@/lib/crypto';
@@ -10,14 +9,10 @@ import { parseRequest } from '@/lib/request';
 import { json, serviceUnavailable, unauthorized } from '@/lib/response';
 import { getTwoFactorConfigurationError, isTwoFactorConfigured } from '@/lib/two-factor/crypto';
 import { getAllUserTeams, getUserByUsername } from '@/queries/prisma';
+import { loginRequestSchema } from './schema';
 
 export async function POST(request: Request) {
-  const schema = z.object({
-    username: z.string(),
-    password: z.string(),
-  });
-
-  const { body, error } = await parseRequest(request, schema, { skipAuth: true });
+  const { body, error } = await parseRequest(request, loginRequestSchema, { skipAuth: true });
 
   if (error) {
     return error();

@@ -12,9 +12,9 @@
   "type": "module",
   "scripts": {
     "dev": "dotenv next dev --turbo",
-    "build": "npm-run-all check-env build-db check-db build-tracker build-recorder build-geo build-app",
+    "build": "npm-run-all check-env build-db check-db build-tracker build-recorder build-geo build-openapi build-app",
     "start": "next start",
-    "build-docker": "npm-run-all build-db build-tracker build-recorder build-geo build-app",
+    "build-docker": "npm-run-all build-db build-tracker build-recorder build-geo build-openapi build-app",
     "start-docker": "npm-run-all check-db update-tracker start-server",
     "start-env": "node scripts/start-env.js",
     "start-server": "node server.js",
@@ -29,6 +29,7 @@
     "build-prisma-client": "node scripts/build-prisma-client.js",
     "build-lang": "npm-run-all download-country-names download-language-names",
     "build-geo": "node scripts/build-geo.js",
+    "build-openapi": "pnpm openapi:generate",
     "build-db": "npm-run-all build-db-client build-prisma-client",
     "build-db-schema": "prisma db pull",
     "build-db-client": "prisma generate",
@@ -41,6 +42,8 @@
     "download-country-names": "node scripts/download-country-names.js",
     "download-language-names": "node scripts/download-language-names.js",
     "change-password": "node scripts/change-password.js",
+    "openapi:generate": "tsx scripts/generate-openapi.ts",
+    "openapi:check": "tsx scripts/check-openapi.ts",
     "postbuild": "node scripts/postbuild.js",
     "pretest": "pnpm build-db-client",
     "test": "vitest run",
@@ -145,6 +148,7 @@
     "tsup": "^8.5.0",
     "tsx": "^4.23.1",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "zod-openapi": "^6.0.1"
   }
 }
