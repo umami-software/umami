@@ -87,15 +87,16 @@ export function TeamsButton() {
               </MenuItem>
             ))}
             <MenuSeparator />
-            <MenuItem id="manage-teams">
-              <a href="/settings/teams" style={{ width: '100%' }}>
-                <Row alignItems="center" justifyContent="space-between" gap>
-                  <Text align="center">Manage teams</Text>
-                  <Icon>
-                    <ArrowRight />
-                  </Icon>
-                </Row>
-              </a>
+            <MenuItem
+              id="manage-teams"
+              onAction={() => handleNavigate(getUrl('/settings/teams'))}
+            >
+              <Row alignItems="center" justifyContent="space-between" gap width="100%">
+                <Text align="center">Manage teams</Text>
+                <Icon>
+                  <ArrowRight />
+                </Icon>
+              </Row>
             </MenuItem>
           </MenuSection>
         </Menu>
