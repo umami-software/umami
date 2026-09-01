@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getTeamsTeamIdPixels',
     summary: 'Get teams team id pixels',
-    description:
-      'Get teams team id pixels. The request and response models are derived from the validated route contract.',
     tags: ['Teams'],
     parameters: [
       {

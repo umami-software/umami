@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getWebsitesWebsiteIdSegments',
     summary: 'Get websites website id segments',
-    description:
-      'Get websites website id segments. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {
@@ -214,8 +212,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'postWebsitesWebsiteIdSegments',
     summary: 'Create or update websites website id segments',
-    description:
-      'Create or update websites website id segments. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {

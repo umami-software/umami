@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getLinksLinkIdShares',
     summary: 'Get links link id shares',
-    description:
-      'Get links link id shares. The request and response models are derived from the validated route contract.',
     tags: ['Links'],
     parameters: [
       {
@@ -432,8 +430,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'postLinksLinkIdShares',
     summary: 'Create or update links link id shares',
-    description:
-      'Create or update links link id shares. The request and response models are derived from the validated route contract.',
     tags: ['Links'],
     parameters: [
       {

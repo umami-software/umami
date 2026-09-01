@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postAuthSso',
     summary: 'Create or update auth sso',
-    description:
-      'Create or update auth sso. The request and response models are derived from the validated route contract.',
     tags: ['Authentication'],
     responses: {
       '200': {

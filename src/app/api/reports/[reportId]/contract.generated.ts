@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'deleteReportsReportId',
     summary: 'Delete reports report id',
-    description:
-      'Delete reports report id. The request and response models are derived from the validated route contract.',
     tags: ['Reports'],
     parameters: [
       {
@@ -87,8 +85,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'getReportsReportId',
     summary: 'Get reports report id',
-    description:
-      'Get reports report id. The request and response models are derived from the validated route contract.',
     tags: ['Reports'],
     parameters: [
       {
@@ -251,8 +247,6 @@ const operation3 = defineOperation({
   operation: {
     operationId: 'postReportsReportId',
     summary: 'Create or update reports report id',
-    description:
-      'Create or update reports report id. The request and response models are derived from the validated route contract.',
     tags: ['Reports'],
     parameters: [
       {

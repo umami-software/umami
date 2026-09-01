@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postRecord',
     summary: 'Create or update record',
-    description:
-      'Create or update record. The request and response models are derived from the validated route contract.',
     tags: ['Collection'],
     requestBody: {
       required: true,

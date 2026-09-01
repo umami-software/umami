@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postReportsRetention',
     summary: 'Create or update reports retention',
-    description:
-      'Create or update reports retention. The request and response models are derived from the validated route contract.',
     tags: ['Reports'],
     requestBody: {
       required: true,

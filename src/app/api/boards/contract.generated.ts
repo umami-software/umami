@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getBoards',
     summary: 'Get boards',
-    description:
-      'Get boards. The request and response models are derived from the validated route contract.',
     tags: ['Boards'],
     parameters: [
       {
@@ -249,8 +247,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'postBoards',
     summary: 'Create or update boards',
-    description:
-      'Create or update boards. The request and response models are derived from the validated route contract.',
     tags: ['Boards'],
     requestBody: {
       required: true,

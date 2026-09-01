@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'deletePixelsPixelId',
     summary: 'Delete pixels pixel id',
-    description:
-      'Delete pixels pixel id. The request and response models are derived from the validated route contract.',
     tags: ['Pixels'],
     parameters: [
       {
@@ -70,8 +68,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'getPixelsPixelId',
     summary: 'Get pixels pixel id',
-    description:
-      'Get pixels pixel id. The request and response models are derived from the validated route contract.',
     tags: ['Pixels'],
     parameters: [
       {
@@ -162,8 +158,6 @@ const operation3 = defineOperation({
   operation: {
     operationId: 'postPixelsPixelId',
     summary: 'Create or update pixels pixel id',
-    description:
-      'Create or update pixels pixel id. The request and response models are derived from the validated route contract.',
     tags: ['Pixels'],
     parameters: [
       {

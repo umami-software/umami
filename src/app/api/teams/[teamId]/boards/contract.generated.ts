@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getTeamsTeamIdBoards',
     summary: 'Get teams team id boards',
-    description:
-      'Get teams team id boards. The request and response models are derived from the validated route contract.',
     tags: ['Teams'],
     parameters: [
       {

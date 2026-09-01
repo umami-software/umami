@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postReportsFunnel',
     summary: 'Create or update reports funnel',
-    description:
-      'Create or update reports funnel. The request and response models are derived from the validated route contract.',
     tags: ['Reports'],
     requestBody: {
       required: true,

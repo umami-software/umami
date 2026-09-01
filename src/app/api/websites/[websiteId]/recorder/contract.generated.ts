@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getWebsitesWebsiteIdRecorder',
     summary: 'Get websites website id recorder',
-    description:
-      'Get websites website id recorder. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {

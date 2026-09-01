@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'deleteWebsitesWebsiteIdSegmentsSegmentId',
     summary: 'Delete websites website id segments segment id',
-    description:
-      'Delete websites website id segments segment id. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {
@@ -95,8 +93,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'getWebsitesWebsiteIdSegmentsSegmentId',
     summary: 'Get websites website id segments segment id',
-    description:
-      'Get websites website id segments segment id. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {
@@ -251,8 +247,6 @@ const operation3 = defineOperation({
   operation: {
     operationId: 'postWebsitesWebsiteIdSegmentsSegmentId',
     summary: 'Create or update websites website id segments segment id',
-    description:
-      'Create or update websites website id segments segment id. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {

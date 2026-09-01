@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getWebsitesWebsiteIdReplays',
     summary: 'Get websites website id replays',
-    description:
-      'Get websites website id replays. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {

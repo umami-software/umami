@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getLinksCharts',
     summary: 'Get links charts',
-    description:
-      'Get links charts. The request and response models are derived from the validated route contract.',
     tags: ['Links'],
     parameters: [
       {

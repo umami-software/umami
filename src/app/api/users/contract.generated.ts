@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postUsers',
     summary: 'Create or update users',
-    description:
-      'Create or update users. The request and response models are derived from the validated route contract.',
     tags: ['Users'],
     requestBody: {
       required: true,

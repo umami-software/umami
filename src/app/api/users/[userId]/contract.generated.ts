@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'deleteUsersUserId',
     summary: 'Delete users user id',
-    description:
-      'Delete users user id. The request and response models are derived from the validated route contract.',
     tags: ['Users'],
     parameters: [
       {
@@ -87,8 +85,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'getUsersUserId',
     summary: 'Get users user id',
-    description:
-      'Get users user id. The request and response models are derived from the validated route contract.',
     tags: ['Users'],
     parameters: [
       {
@@ -879,8 +875,6 @@ const operation3 = defineOperation({
   operation: {
     operationId: 'postUsersUserId',
     summary: 'Create or update users user id',
-    description:
-      'Create or update users user id. The request and response models are derived from the validated route contract.',
     tags: ['Users'],
     parameters: [
       {

@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getUsersUserIdTeams',
     summary: 'Get users user id teams',
-    description:
-      'Get users user id teams. The request and response models are derived from the validated route contract.',
     tags: ['Users'],
     parameters: [
       {

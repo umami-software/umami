@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getDashboard',
     summary: 'Get dashboard',
-    description:
-      'Get dashboard. The request and response models are derived from the validated route contract.',
     tags: ['Dashboard'],
     responses: {
       '200': {
@@ -148,8 +146,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'postDashboard',
     summary: 'Create or update dashboard',
-    description:
-      'Create or update dashboard. The request and response models are derived from the validated route contract.',
     tags: ['Dashboard'],
     requestBody: {
       required: true,

@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'deleteShareIdShareId',
     summary: 'Delete share id share id',
-    description:
-      'Delete share id share id. The request and response models are derived from the validated route contract.',
     tags: ['Shares'],
     parameters: [
       {
@@ -70,8 +68,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'getShareIdShareId',
     summary: 'Get share id share id',
-    description:
-      'Get share id share id. The request and response models are derived from the validated route contract.',
     tags: ['Shares'],
     parameters: [
       {
@@ -213,8 +209,6 @@ const operation3 = defineOperation({
   operation: {
     operationId: 'postShareIdShareId',
     summary: 'Create or update share id share id',
-    description:
-      'Create or update share id share id. The request and response models are derived from the validated route contract.',
     tags: ['Shares'],
     parameters: [
       {

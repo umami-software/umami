@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getShareSlug',
     summary: 'Get share slug',
-    description:
-      'Get share slug. The request and response models are derived from the validated route contract.',
     tags: ['Shares'],
     parameters: [
       {

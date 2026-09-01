@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getRealtimeWebsiteId',
     summary: 'Get realtime website id',
-    description:
-      'Get realtime website id. The request and response models are derived from the validated route contract.',
     tags: ['Realtime'],
     parameters: [
       {

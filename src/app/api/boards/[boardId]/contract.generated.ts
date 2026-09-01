@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'deleteBoardsBoardId',
     summary: 'Delete boards board id',
-    description:
-      'Delete boards board id. The request and response models are derived from the validated route contract.',
     tags: ['Boards'],
     parameters: [
       {
@@ -70,8 +68,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'getBoardsBoardId',
     summary: 'Get boards board id',
-    description:
-      'Get boards board id. The request and response models are derived from the validated route contract.',
     tags: ['Boards'],
     parameters: [
       {
@@ -217,8 +213,6 @@ const operation3 = defineOperation({
   operation: {
     operationId: 'postBoardsBoardId',
     summary: 'Create or update boards board id',
-    description:
-      'Create or update boards board id. The request and response models are derived from the validated route contract.',
     tags: ['Boards'],
     parameters: [
       {

@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'deleteWebsitesWebsiteIdAnnotationsAnnotationId',
     summary: 'Delete websites website id annotations annotation id',
-    description:
-      'Delete websites website id annotations annotation id. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {
@@ -95,8 +93,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'getWebsitesWebsiteIdAnnotationsAnnotationId',
     summary: 'Get websites website id annotations annotation id',
-    description:
-      'Get websites website id annotations annotation id. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {
@@ -212,8 +208,6 @@ const operation3 = defineOperation({
   operation: {
     operationId: 'postWebsitesWebsiteIdAnnotationsAnnotationId',
     summary: 'Create or update websites website id annotations annotation id',
-    description:
-      'Create or update websites website id annotations annotation id. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {

@@ -59,7 +59,7 @@ for (const [routeSource, contracts] of byRoute) {
       typeof operation.description === 'string' &&
       operation.description.startsWith('Generated from')
     ) {
-      operation.description = `${operation.summary}. The request and response models are derived from the validated route contract.`;
+      delete operation.description;
     }
 
     return `const operation${index + 1} = defineOperation({\n  method: ${serialize(contract.method)},\n  path: ${serialize(contract.path)},\n  audience: ${serialize(contract.audience)},\n  auth: ${serialize(contract.auth)},\n  operation: ${serialize(operation)} as ZodOpenApiOperationObject,\n});`;

@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'post2faDisable',
     summary: 'Create or update 2fa disable',
-    description:
-      'Create or update 2fa disable. The request and response models are derived from the validated route contract.',
     tags: ['Two-factor authentication'],
     requestBody: {
       required: true,

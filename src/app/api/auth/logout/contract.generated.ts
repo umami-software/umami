@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postAuthLogout',
     summary: 'Create or update auth logout',
-    description:
-      'Create or update auth logout. The request and response models are derived from the validated route contract.',
     tags: ['Authentication'],
     responses: {
       '200': {

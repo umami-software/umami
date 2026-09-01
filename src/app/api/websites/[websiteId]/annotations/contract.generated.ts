@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getWebsitesWebsiteIdAnnotations',
     summary: 'Get websites website id annotations',
-    description:
-      'Get websites website id annotations. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {
@@ -201,8 +199,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'postWebsitesWebsiteIdAnnotations',
     summary: 'Create or update websites website id annotations',
-    description:
-      'Create or update websites website id annotations. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {

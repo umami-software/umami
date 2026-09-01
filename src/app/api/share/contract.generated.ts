@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postShare',
     summary: 'Create or update share',
-    description:
-      'Create or update share. The request and response models are derived from the validated route contract.',
     tags: ['Shares'],
     requestBody: {
       required: true,

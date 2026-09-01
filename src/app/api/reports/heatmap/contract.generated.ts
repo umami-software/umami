@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postReportsHeatmap',
     summary: 'Create or update reports heatmap',
-    description:
-      'Create or update reports heatmap. The request and response models are derived from the validated route contract.',
     tags: ['Reports'],
     requestBody: {
       required: true,

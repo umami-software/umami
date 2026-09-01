@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getTeams',
     summary: 'Get teams',
-    description:
-      'Get teams. The request and response models are derived from the validated route contract.',
     tags: ['Teams'],
     parameters: [
       {
@@ -186,8 +184,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'postTeams',
     summary: 'Create or update teams',
-    description:
-      'Create or update teams. The request and response models are derived from the validated route contract.',
     tags: ['Teams'],
     requestBody: {
       required: true,

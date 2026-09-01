@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postMePassword',
     summary: 'Create or update me password',
-    description:
-      'Create or update me password. The request and response models are derived from the validated route contract.',
     tags: ['Account'],
     requestBody: {
       required: true,

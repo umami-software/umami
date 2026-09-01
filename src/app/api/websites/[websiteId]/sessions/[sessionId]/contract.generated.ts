@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'deleteWebsitesWebsiteIdSessionsSessionId',
     summary: 'Delete websites website id sessions session id',
-    description:
-      'Delete websites website id sessions session id. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {
@@ -112,8 +110,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'getWebsitesWebsiteIdSessionsSessionId',
     summary: 'Get websites website id sessions session id',
-    description:
-      'Get websites website id sessions session id. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {

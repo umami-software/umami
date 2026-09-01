@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postBatch',
     summary: 'Create or update batch',
-    description:
-      'Create or update batch. The request and response models are derived from the validated route contract.',
     tags: ['Collection'],
     requestBody: {
       required: true,

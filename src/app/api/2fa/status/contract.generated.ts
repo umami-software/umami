@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'get2faStatus',
     summary: 'Get 2fa status',
-    description:
-      'Get 2fa status. The request and response models are derived from the validated route contract.',
     tags: ['Two-factor authentication'],
     responses: {
       '200': {

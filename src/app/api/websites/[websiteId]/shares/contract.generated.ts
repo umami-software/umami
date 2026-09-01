@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getWebsitesWebsiteIdShares',
     summary: 'Get websites website id shares',
-    description:
-      'Get websites website id shares. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {
@@ -432,8 +430,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'postWebsitesWebsiteIdShares',
     summary: 'Create or update websites website id shares',
-    description:
-      'Create or update websites website id shares. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {

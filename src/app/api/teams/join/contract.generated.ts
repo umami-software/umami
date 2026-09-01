@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postTeamsJoin',
     summary: 'Create or update teams join',
-    description:
-      'Create or update teams join. The request and response models are derived from the validated route contract.',
     tags: ['Teams'],
     requestBody: {
       required: true,

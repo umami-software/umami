@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postReportsGoal',
     summary: 'Create or update reports goal',
-    description:
-      'Create or update reports goal. The request and response models are derived from the validated route contract.',
     tags: ['Reports'],
     requestBody: {
       required: true,

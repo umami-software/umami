@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getTeamsTeamIdUsers',
     summary: 'Get teams team id users',
-    description:
-      'Get teams team id users. The request and response models are derived from the validated route contract.',
     tags: ['Teams'],
     parameters: [
       {
@@ -190,8 +188,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'postTeamsTeamIdUsers',
     summary: 'Create or update teams team id users',
-    description:
-      'Create or update teams team id users. The request and response models are derived from the validated route contract.',
     tags: ['Teams'],
     parameters: [
       {

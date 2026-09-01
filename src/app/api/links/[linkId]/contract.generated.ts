@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'deleteLinksLinkId',
     summary: 'Delete links link id',
-    description:
-      'Delete links link id. The request and response models are derived from the validated route contract.',
     tags: ['Links'],
     parameters: [
       {
@@ -70,8 +68,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'getLinksLinkId',
     summary: 'Get links link id',
-    description:
-      'Get links link id. The request and response models are derived from the validated route contract.',
     tags: ['Links'],
     parameters: [
       {
@@ -166,8 +162,6 @@ const operation3 = defineOperation({
   operation: {
     operationId: 'postLinksLinkId',
     summary: 'Create or update links link id',
-    description:
-      'Create or update links link id. The request and response models are derived from the validated route contract.',
     tags: ['Links'],
     parameters: [
       {

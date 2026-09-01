@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getReports',
     summary: 'Get reports',
-    description:
-      'Get reports. The request and response models are derived from the validated route contract.',
     tags: ['Reports'],
     parameters: [
       {
@@ -262,8 +260,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'postReports',
     summary: 'Create or update reports',
-    description:
-      'Create or update reports. The request and response models are derived from the validated route contract.',
     tags: ['Reports'],
     requestBody: {
       required: true,

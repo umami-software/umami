@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'deleteAdminUsersUserId2fa',
     summary: 'Delete admin users user id 2fa',
-    description:
-      'Delete admin users user id 2fa. The request and response models are derived from the validated route contract.',
     tags: ['Administration'],
     parameters: [
       {
@@ -100,8 +98,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'getAdminUsersUserId2fa',
     summary: 'Get admin users user id 2fa',
-    description:
-      'Get admin users user id 2fa. The request and response models are derived from the validated route contract.',
     tags: ['Administration'],
     parameters: [
       {
@@ -176,8 +172,6 @@ const operation3 = defineOperation({
   operation: {
     operationId: 'postAdminUsersUserId2fa',
     summary: 'Create or update admin users user id 2fa',
-    description:
-      'Create or update admin users user id 2fa. The request and response models are derived from the validated route contract.',
     tags: ['Administration'],
     parameters: [
       {

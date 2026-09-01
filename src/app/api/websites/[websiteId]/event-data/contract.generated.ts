@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getWebsitesWebsiteIdEventData',
     summary: 'Get websites website id event data',
-    description:
-      'Get websites website id event data. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {

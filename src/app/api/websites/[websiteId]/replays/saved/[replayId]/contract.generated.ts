@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getWebsitesWebsiteIdReplaysSavedReplayId',
     summary: 'Get websites website id replays saved replay id',
-    description:
-      'Get websites website id replays saved replay id. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {
@@ -78,8 +76,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'postWebsitesWebsiteIdReplaysSavedReplayId',
     summary: 'Create or update websites website id replays saved replay id',
-    description:
-      'Create or update websites website id replays saved replay id. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {

@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getPixelsPixelIdShares',
     summary: 'Get pixels pixel id shares',
-    description:
-      'Get pixels pixel id shares. The request and response models are derived from the validated route contract.',
     tags: ['Pixels'],
     parameters: [
       {
@@ -432,8 +430,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'postPixelsPixelIdShares',
     summary: 'Create or update pixels pixel id shares',
-    description:
-      'Create or update pixels pixel id shares. The request and response models are derived from the validated route contract.',
     tags: ['Pixels'],
     parameters: [
       {

@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getPixelsCharts',
     summary: 'Get pixels charts',
-    description:
-      'Get pixels charts. The request and response models are derived from the validated route contract.',
     tags: ['Pixels'],
     parameters: [
       {

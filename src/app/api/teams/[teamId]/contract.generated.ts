@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'deleteTeamsTeamId',
     summary: 'Delete teams team id',
-    description:
-      'Delete teams team id. The request and response models are derived from the validated route contract.',
     tags: ['Teams'],
     parameters: [
       {
@@ -70,8 +68,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'getTeamsTeamId',
     summary: 'Get teams team id',
-    description:
-      'Get teams team id. The request and response models are derived from the validated route contract.',
     tags: ['Teams'],
     parameters: [
       {
@@ -179,8 +175,6 @@ const operation3 = defineOperation({
   operation: {
     operationId: 'postTeamsTeamId',
     summary: 'Create or update teams team id',
-    description:
-      'Create or update teams team id. The request and response models are derived from the validated route contract.',
     tags: ['Teams'],
     parameters: [
       {

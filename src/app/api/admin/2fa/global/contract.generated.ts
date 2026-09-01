@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postAdmin2faGlobal',
     summary: 'Create or update admin 2fa global',
-    description:
-      'Create or update admin 2fa global. The request and response models are derived from the validated route contract.',
     tags: ['Administration'],
     requestBody: {
       required: true,

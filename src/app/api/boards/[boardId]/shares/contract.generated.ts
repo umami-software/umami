@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getBoardsBoardIdShares',
     summary: 'Get boards board id shares',
-    description:
-      'Get boards board id shares. The request and response models are derived from the validated route contract.',
     tags: ['Boards'],
     parameters: [
       {
@@ -432,8 +430,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'postBoardsBoardIdShares',
     summary: 'Create or update boards board id shares',
-    description:
-      'Create or update boards board id shares. The request and response models are derived from the validated route contract.',
     tags: ['Boards'],
     parameters: [
       {

@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postSend',
     summary: 'Create or update send',
-    description:
-      'Create or update send. The request and response models are derived from the validated route contract.',
     tags: ['Collection'],
     requestBody: {
       required: true,

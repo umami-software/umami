@@ -705,7 +705,6 @@
   "paths": {
     "/api/2fa/disable": {
       "post": {
-        "description": "Create or update 2fa disable. The request and response models are derived from the validated route contract.",
         "operationId": "post2faDisable",
         "requestBody": {
           "content": {
@@ -919,7 +918,6 @@
     },
     "/api/2fa/setup/cancel": {
       "post": {
-        "description": "Create or update 2fa setup cancel. The request and response models are derived from the validated route contract.",
         "operationId": "post2faSetupCancel",
         "responses": {
           "200": {
@@ -991,7 +989,6 @@
     },
     "/api/2fa/setup/confirm": {
       "post": {
-        "description": "Create or update 2fa setup confirm. The request and response models are derived from the validated route contract.",
         "operationId": "post2faSetupConfirm",
         "requestBody": {
           "content": {
@@ -1187,7 +1184,6 @@
     },
     "/api/2fa/setup/initiate": {
       "post": {
-        "description": "Create or update 2fa setup initiate. The request and response models are derived from the validated route contract.",
         "operationId": "post2faSetupInitiate",
         "responses": {
           "200": {
@@ -1297,7 +1293,6 @@
     },
     "/api/2fa/status": {
       "get": {
-        "description": "Get 2fa status. The request and response models are derived from the validated route contract.",
         "operationId": "get2faStatus",
         "responses": {
           "200": {
@@ -1399,7 +1394,6 @@
     },
     "/api/2fa/verify": {
       "post": {
-        "description": "Create or update 2fa verify. The request and response models are derived from the validated route contract.",
         "operationId": "post2faVerify",
         "requestBody": {
           "content": {
@@ -1656,7 +1650,6 @@
     },
     "/api/admin/2fa/global": {
       "post": {
-        "description": "Create or update admin 2fa global. The request and response models are derived from the validated route contract.",
         "operationId": "postAdmin2faGlobal",
         "requestBody": {
           "content": {
@@ -1782,7 +1775,6 @@
     },
     "/api/admin/teams": {
       "get": {
-        "description": "Get admin teams. The request and response models are derived from the validated route contract.",
         "operationId": "getAdminTeams",
         "parameters": [
           {
@@ -1981,7 +1973,6 @@
     },
     "/api/admin/teams/{teamId}/2fa": {
       "post": {
-        "description": "Create or update admin teams team id 2fa. The request and response models are derived from the validated route contract.",
         "operationId": "postAdminTeamsTeamId2fa",
         "parameters": [
           {
@@ -2121,7 +2112,6 @@
     },
     "/api/admin/users": {
       "get": {
-        "description": "Get admin users. The request and response models are derived from the validated route contract.",
         "operationId": "getAdminUsers",
         "parameters": [
           {
@@ -2317,7 +2307,6 @@
     },
     "/api/admin/users/{userId}/2fa": {
       "delete": {
-        "description": "Delete admin users user id 2fa. The request and response models are derived from the validated route contract.",
         "operationId": "deleteAdminUsersUserId2fa",
         "parameters": [
           {
@@ -2417,7 +2406,6 @@
         "x-umami-source": "src/app/api/admin/users/[userId]/2fa/contract.generated.ts"
       },
       "get": {
-        "description": "Get admin users user id 2fa. The request and response models are derived from the validated route contract.",
         "operationId": "getAdminUsersUserId2fa",
         "parameters": [
           {
@@ -2497,7 +2485,6 @@
         "x-umami-source": "src/app/api/admin/users/[userId]/2fa/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update admin users user id 2fa. The request and response models are derived from the validated route contract.",
         "operationId": "postAdminUsersUserId2fa",
         "parameters": [
           {
@@ -2637,7 +2624,6 @@
     },
     "/api/admin/websites": {
       "get": {
-        "description": "Get admin websites. The request and response models are derived from the validated route contract.",
         "operationId": "getAdminWebsites",
         "parameters": [
           {
@@ -3067,7 +3053,6 @@
     },
     "/api/auth/logout": {
       "post": {
-        "description": "Create or update auth logout. The request and response models are derived from the validated route contract.",
         "operationId": "postAuthLogout",
         "responses": {
           "200": {
@@ -3122,7 +3107,6 @@
     },
     "/api/auth/sso": {
       "post": {
-        "description": "Create or update auth sso. The request and response models are derived from the validated route contract.",
         "operationId": "postAuthSso",
         "responses": {
           "200": {
@@ -3196,7 +3180,6 @@
     },
     "/api/auth/subscription": {
       "get": {
-        "description": "Get auth subscription. The request and response models are derived from the validated route contract.",
         "operationId": "getAuthSubscription",
         "parameters": [
           {
@@ -3330,7 +3313,6 @@
     },
     "/api/auth/verify": {
       "post": {
-        "description": "Create or update auth verify. The request and response models are derived from the validated route contract.",
         "operationId": "postAuthVerify",
         "responses": {
           "200": {
@@ -3383,7 +3365,6 @@
     },
     "/api/batch": {
       "post": {
-        "description": "Create or update batch. The request and response models are derived from the validated route contract.",
         "operationId": "postBatch",
         "requestBody": {
           "content": {
@@ -3479,7 +3460,6 @@
     },
     "/api/boards": {
       "get": {
-        "description": "Get boards. The request and response models are derived from the validated route contract.",
         "operationId": "getBoards",
         "parameters": [
           {
@@ -3731,7 +3711,6 @@
         "x-umami-source": "src/app/api/boards/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update boards. The request and response models are derived from the validated route contract.",
         "operationId": "postBoards",
         "requestBody": {
           "content": {
@@ -3971,7 +3950,6 @@
     },
     "/api/boards/{boardId}": {
       "delete": {
-        "description": "Delete boards board id. The request and response models are derived from the validated route contract.",
         "operationId": "deleteBoardsBoardId",
         "parameters": [
           {
@@ -4034,7 +4012,6 @@
         "x-umami-source": "src/app/api/boards/[boardId]/contract.generated.ts"
       },
       "get": {
-        "description": "Get boards board id. The request and response models are derived from the validated route contract.",
         "operationId": "getBoardsBoardId",
         "parameters": [
           {
@@ -4191,7 +4168,6 @@
         "x-umami-source": "src/app/api/boards/[boardId]/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update boards board id. The request and response models are derived from the validated route contract.",
         "operationId": "postBoardsBoardId",
         "parameters": [
           {
@@ -4419,7 +4395,6 @@
     },
     "/api/boards/{boardId}/clone": {
       "post": {
-        "description": "Create or update boards board id clone. The request and response models are derived from the validated route contract.",
         "operationId": "postBoardsBoardIdClone",
         "parameters": [
           {
@@ -4619,7 +4594,6 @@
     },
     "/api/boards/{boardId}/shares": {
       "get": {
-        "description": "Get boards board id shares. The request and response models are derived from the validated route contract.",
         "operationId": "getBoardsBoardIdShares",
         "parameters": [
           {
@@ -5058,7 +5032,6 @@
         "x-umami-source": "src/app/api/boards/[boardId]/shares/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update boards board id shares. The request and response models are derived from the validated route contract.",
         "operationId": "postBoardsBoardIdShares",
         "parameters": [
           {
@@ -5249,7 +5222,6 @@
     },
     "/api/config": {
       "get": {
-        "description": "Get config. The request and response models are derived from the validated route contract.",
         "operationId": "getConfig",
         "responses": {
           "200": {
@@ -5315,7 +5287,6 @@
     },
     "/api/dashboard": {
       "get": {
-        "description": "Get dashboard. The request and response models are derived from the validated route contract.",
         "operationId": "getDashboard",
         "responses": {
           "200": {
@@ -5458,7 +5429,6 @@
         "x-umami-source": "src/app/api/dashboard/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update dashboard. The request and response models are derived from the validated route contract.",
         "operationId": "postDashboard",
         "requestBody": {
           "content": {
@@ -5644,7 +5614,6 @@
     },
     "/api/heartbeat": {
       "get": {
-        "description": "Get heartbeat. The request and response models are derived from the validated route contract.",
         "operationId": "getHeartbeat",
         "responses": {
           "200": {
@@ -5678,7 +5647,6 @@
     },
     "/api/links": {
       "get": {
-        "description": "Get links. The request and response models are derived from the validated route contract.",
         "operationId": "getLinks",
         "parameters": [
           {
@@ -5875,7 +5843,6 @@
         "x-umami-source": "src/app/api/links/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update links. The request and response models are derived from the validated route contract.",
         "operationId": "postLinks",
         "requestBody": {
           "content": {
@@ -6033,7 +6000,6 @@
     },
     "/api/links/{linkId}": {
       "delete": {
-        "description": "Delete links link id. The request and response models are derived from the validated route contract.",
         "operationId": "deleteLinksLinkId",
         "parameters": [
           {
@@ -6096,7 +6062,6 @@
         "x-umami-source": "src/app/api/links/[linkId]/contract.generated.ts"
       },
       "get": {
-        "description": "Get links link id. The request and response models are derived from the validated route contract.",
         "operationId": "getLinksLinkId",
         "parameters": [
           {
@@ -6198,7 +6163,6 @@
         "x-umami-source": "src/app/api/links/[linkId]/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update links link id. The request and response models are derived from the validated route contract.",
         "operationId": "postLinksLinkId",
         "parameters": [
           {
@@ -6357,7 +6321,6 @@
     },
     "/api/links/{linkId}/shares": {
       "get": {
-        "description": "Get links link id shares. The request and response models are derived from the validated route contract.",
         "operationId": "getLinksLinkIdShares",
         "parameters": [
           {
@@ -6796,7 +6759,6 @@
         "x-umami-source": "src/app/api/links/[linkId]/shares/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update links link id shares. The request and response models are derived from the validated route contract.",
         "operationId": "postLinksLinkIdShares",
         "parameters": [
           {
@@ -6987,7 +6949,6 @@
     },
     "/api/links/charts": {
       "get": {
-        "description": "Get links charts. The request and response models are derived from the validated route contract.",
         "operationId": "getLinksCharts",
         "parameters": [
           {
@@ -7116,7 +7077,6 @@
     },
     "/api/me": {
       "get": {
-        "description": "Get me. The request and response models are derived from the validated route contract.",
         "operationId": "getMe",
         "responses": {
           "200": {
@@ -7260,7 +7220,6 @@
     },
     "/api/me/password": {
       "post": {
-        "description": "Create or update me password. The request and response models are derived from the validated route contract.",
         "operationId": "postMePassword",
         "requestBody": {
           "content": {
@@ -7368,7 +7327,6 @@
     },
     "/api/me/teams": {
       "get": {
-        "description": "Get me teams. The request and response models are derived from the validated route contract.",
         "operationId": "getMeTeams",
         "parameters": [
           {
@@ -7555,7 +7513,6 @@
     },
     "/api/me/websites": {
       "get": {
-        "description": "Get me websites. The request and response models are derived from the validated route contract.",
         "operationId": "getMeWebsites",
         "parameters": [
           {
@@ -7894,7 +7851,6 @@
     },
     "/api/pixels": {
       "get": {
-        "description": "Get pixels. The request and response models are derived from the validated route contract.",
         "operationId": "getPixels",
         "parameters": [
           {
@@ -8087,7 +8043,6 @@
         "x-umami-source": "src/app/api/pixels/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update pixels. The request and response models are derived from the validated route contract.",
         "operationId": "postPixels",
         "requestBody": {
           "content": {
@@ -8236,7 +8191,6 @@
     },
     "/api/pixels/{pixelId}": {
       "delete": {
-        "description": "Delete pixels pixel id. The request and response models are derived from the validated route contract.",
         "operationId": "deletePixelsPixelId",
         "parameters": [
           {
@@ -8299,7 +8253,6 @@
         "x-umami-source": "src/app/api/pixels/[pixelId]/contract.generated.ts"
       },
       "get": {
-        "description": "Get pixels pixel id. The request and response models are derived from the validated route contract.",
         "operationId": "getPixelsPixelId",
         "parameters": [
           {
@@ -8397,7 +8350,6 @@
         "x-umami-source": "src/app/api/pixels/[pixelId]/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update pixels pixel id. The request and response models are derived from the validated route contract.",
         "operationId": "postPixelsPixelId",
         "parameters": [
           {
@@ -8548,7 +8500,6 @@
     },
     "/api/pixels/{pixelId}/shares": {
       "get": {
-        "description": "Get pixels pixel id shares. The request and response models are derived from the validated route contract.",
         "operationId": "getPixelsPixelIdShares",
         "parameters": [
           {
@@ -8987,7 +8938,6 @@
         "x-umami-source": "src/app/api/pixels/[pixelId]/shares/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update pixels pixel id shares. The request and response models are derived from the validated route contract.",
         "operationId": "postPixelsPixelIdShares",
         "parameters": [
           {
@@ -9178,7 +9128,6 @@
     },
     "/api/pixels/charts": {
       "get": {
-        "description": "Get pixels charts. The request and response models are derived from the validated route contract.",
         "operationId": "getPixelsCharts",
         "parameters": [
           {
@@ -9307,7 +9256,6 @@
     },
     "/api/realtime/{websiteId}": {
       "get": {
-        "description": "Get realtime website id. The request and response models are derived from the validated route contract.",
         "operationId": "getRealtimeWebsiteId",
         "parameters": [
           {
@@ -9791,7 +9739,6 @@
     },
     "/api/record": {
       "post": {
-        "description": "Create or update record. The request and response models are derived from the validated route contract.",
         "operationId": "postRecord",
         "requestBody": {
           "content": {
@@ -10078,7 +10025,6 @@
     },
     "/api/reports": {
       "get": {
-        "description": "Get reports. The request and response models are derived from the validated route contract.",
         "operationId": "getReports",
         "parameters": [
           {
@@ -10347,7 +10293,6 @@
         "x-umami-source": "src/app/api/reports/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update reports. The request and response models are derived from the validated route contract.",
         "operationId": "postReports",
         "requestBody": {
           "content": {
@@ -10546,7 +10491,6 @@
     },
     "/api/reports/{reportId}": {
       "delete": {
-        "description": "Delete reports report id. The request and response models are derived from the validated route contract.",
         "operationId": "deleteReportsReportId",
         "parameters": [
           {
@@ -10626,7 +10570,6 @@
         "x-umami-source": "src/app/api/reports/[reportId]/contract.generated.ts"
       },
       "get": {
-        "description": "Get reports report id. The request and response models are derived from the validated route contract.",
         "operationId": "getReportsReportId",
         "parameters": [
           {
@@ -10800,7 +10743,6 @@
         "x-umami-source": "src/app/api/reports/[reportId]/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update reports report id. The request and response models are derived from the validated route contract.",
         "operationId": "postReportsReportId",
         "parameters": [
           {
@@ -11026,7 +10968,6 @@
     },
     "/api/reports/attribution": {
       "post": {
-        "description": "Create or update reports attribution. The request and response models are derived from the validated route contract.",
         "operationId": "postReportsAttribution",
         "requestBody": {
           "content": {
@@ -11284,7 +11225,6 @@
     },
     "/api/reports/breakdown": {
       "post": {
-        "description": "Create or update reports breakdown. The request and response models are derived from the validated route contract.",
         "operationId": "postReportsBreakdown",
         "requestBody": {
           "content": {
@@ -11422,7 +11362,6 @@
     },
     "/api/reports/funnel": {
       "post": {
-        "description": "Create or update reports funnel. The request and response models are derived from the validated route contract.",
         "operationId": "postReportsFunnel",
         "requestBody": {
           "content": {
@@ -11580,7 +11519,6 @@
     },
     "/api/reports/goal": {
       "post": {
-        "description": "Create or update reports goal. The request and response models are derived from the validated route contract.",
         "operationId": "postReportsGoal",
         "requestBody": {
           "content": {
@@ -11693,7 +11631,6 @@
     },
     "/api/reports/heatmap": {
       "post": {
-        "description": "Create or update reports heatmap. The request and response models are derived from the validated route contract.",
         "operationId": "postReportsHeatmap",
         "requestBody": {
           "content": {
@@ -11978,7 +11915,6 @@
     },
     "/api/reports/journey": {
       "post": {
-        "description": "Create or update reports journey. The request and response models are derived from the validated route contract.",
         "operationId": "postReportsJourney",
         "requestBody": {
           "content": {
@@ -12118,7 +12054,6 @@
     },
     "/api/reports/performance": {
       "post": {
-        "description": "Create or update reports performance. The request and response models are derived from the validated route contract.",
         "operationId": "postReportsPerformance",
         "requestBody": {
           "content": {
@@ -12235,7 +12170,6 @@
     },
     "/api/reports/retention": {
       "post": {
-        "description": "Create or update reports retention. The request and response models are derived from the validated route contract.",
         "operationId": "postReportsRetention",
         "requestBody": {
           "content": {
@@ -12363,7 +12297,6 @@
     },
     "/api/reports/revenue": {
       "post": {
-        "description": "Create or update reports revenue. The request and response models are derived from the validated route contract.",
         "operationId": "postReportsRevenue",
         "requestBody": {
           "content": {
@@ -12577,7 +12510,6 @@
     },
     "/api/reports/utm": {
       "post": {
-        "description": "Create or update reports utm. The request and response models are derived from the validated route contract.",
         "operationId": "postReportsUtm",
         "requestBody": {
           "content": {
@@ -12707,7 +12639,6 @@
     },
     "/api/scripts/telemetry": {
       "get": {
-        "description": "Get scripts telemetry. The request and response models are derived from the validated route contract.",
         "operationId": "getScriptsTelemetry",
         "responses": {
           "200": {
@@ -12733,7 +12664,6 @@
     },
     "/api/send": {
       "post": {
-        "description": "Create or update send. The request and response models are derived from the validated route contract.",
         "operationId": "postSend",
         "requestBody": {
           "content": {
@@ -12946,7 +12876,6 @@
     },
     "/api/share": {
       "post": {
-        "description": "Create or update share. The request and response models are derived from the validated route contract.",
         "operationId": "postShare",
         "requestBody": {
           "content": {
@@ -13141,7 +13070,6 @@
     },
     "/api/share/{slug}": {
       "get": {
-        "description": "Get share slug. The request and response models are derived from the validated route contract.",
         "operationId": "getShareSlug",
         "parameters": [
           {
@@ -13196,7 +13124,6 @@
     },
     "/api/share/id/{shareId}": {
       "delete": {
-        "description": "Delete share id share id. The request and response models are derived from the validated route contract.",
         "operationId": "deleteShareIdShareId",
         "parameters": [
           {
@@ -13259,7 +13186,6 @@
         "x-umami-source": "src/app/api/share/id/[shareId]/contract.generated.ts"
       },
       "get": {
-        "description": "Get share id share id. The request and response models are derived from the validated route contract.",
         "operationId": "getShareIdShareId",
         "parameters": [
           {
@@ -13412,7 +13338,6 @@
         "x-umami-source": "src/app/api/share/id/[shareId]/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update share id share id. The request and response models are derived from the validated route contract.",
         "operationId": "postShareIdShareId",
         "parameters": [
           {
@@ -13626,7 +13551,6 @@
     },
     "/api/teams": {
       "get": {
-        "description": "Get teams. The request and response models are derived from the validated route contract.",
         "operationId": "getTeams",
         "parameters": [
           {
@@ -13811,7 +13735,6 @@
         "x-umami-source": "src/app/api/teams/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update teams. The request and response models are derived from the validated route contract.",
         "operationId": "postTeams",
         "requestBody": {
           "content": {
@@ -13977,7 +13900,6 @@
     },
     "/api/teams/{teamId}": {
       "delete": {
-        "description": "Delete teams team id. The request and response models are derived from the validated route contract.",
         "operationId": "deleteTeamsTeamId",
         "parameters": [
           {
@@ -14040,7 +13962,6 @@
         "x-umami-source": "src/app/api/teams/[teamId]/contract.generated.ts"
       },
       "get": {
-        "description": "Get teams team id. The request and response models are derived from the validated route contract.",
         "operationId": "getTeamsTeamId",
         "parameters": [
           {
@@ -14155,7 +14076,6 @@
         "x-umami-source": "src/app/api/teams/[teamId]/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update teams team id. The request and response models are derived from the validated route contract.",
         "operationId": "postTeamsTeamId",
         "parameters": [
           {
@@ -14288,7 +14208,6 @@
     },
     "/api/teams/{teamId}/boards": {
       "get": {
-        "description": "Get teams team id boards. The request and response models are derived from the validated route contract.",
         "operationId": "getTeamsTeamIdBoards",
         "parameters": [
           {
@@ -14554,7 +14473,6 @@
     },
     "/api/teams/{teamId}/links": {
       "get": {
-        "description": "Get teams team id links. The request and response models are derived from the validated route contract.",
         "operationId": "getTeamsTeamIdLinks",
         "parameters": [
           {
@@ -14765,7 +14683,6 @@
     },
     "/api/teams/{teamId}/pixels": {
       "get": {
-        "description": "Get teams team id pixels. The request and response models are derived from the validated route contract.",
         "operationId": "getTeamsTeamIdPixels",
         "parameters": [
           {
@@ -14972,7 +14889,6 @@
     },
     "/api/teams/{teamId}/users": {
       "get": {
-        "description": "Get teams team id users. The request and response models are derived from the validated route contract.",
         "operationId": "getTeamsTeamIdUsers",
         "parameters": [
           {
@@ -15172,7 +15088,6 @@
         "x-umami-source": "src/app/api/teams/[teamId]/users/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update teams team id users. The request and response models are derived from the validated route contract.",
         "operationId": "postTeamsTeamIdUsers",
         "parameters": [
           {
@@ -15304,7 +15219,6 @@
     },
     "/api/teams/{teamId}/users/{userId}": {
       "delete": {
-        "description": "Delete teams team id users user id. The request and response models are derived from the validated route contract.",
         "operationId": "deleteTeamsTeamIdUsersUserId",
         "parameters": [
           {
@@ -15392,7 +15306,6 @@
         "x-umami-source": "src/app/api/teams/[teamId]/users/[userId]/contract.generated.ts"
       },
       "get": {
-        "description": "Get teams team id users user id. The request and response models are derived from the validated route contract.",
         "operationId": "getTeamsTeamIdUsersUserId",
         "parameters": [
           {
@@ -15485,7 +15398,6 @@
         "x-umami-source": "src/app/api/teams/[teamId]/users/[userId]/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update teams team id users user id. The request and response models are derived from the validated route contract.",
         "operationId": "postTeamsTeamIdUsersUserId",
         "parameters": [
           {
@@ -15620,7 +15532,6 @@
     },
     "/api/teams/{teamId}/websites": {
       "get": {
-        "description": "Get teams team id websites. The request and response models are derived from the validated route contract.",
         "operationId": "getTeamsTeamIdWebsites",
         "parameters": [
           {
@@ -15971,7 +15882,6 @@
     },
     "/api/teams/join": {
       "post": {
-        "description": "Create or update teams join. The request and response models are derived from the validated route contract.",
         "operationId": "postTeamsJoin",
         "requestBody": {
           "content": {
@@ -16101,7 +16011,6 @@
     },
     "/api/users": {
       "post": {
-        "description": "Create or update users. The request and response models are derived from the validated route contract.",
         "operationId": "postUsers",
         "requestBody": {
           "content": {
@@ -16219,7 +16128,6 @@
     },
     "/api/users/{userId}": {
       "delete": {
-        "description": "Delete users user id. The request and response models are derived from the validated route contract.",
         "operationId": "deleteUsersUserId",
         "parameters": [
           {
@@ -16299,7 +16207,6 @@
         "x-umami-source": "src/app/api/users/[userId]/contract.generated.ts"
       },
       "get": {
-        "description": "Get users user id. The request and response models are derived from the validated route contract.",
         "operationId": "getUsersUserId",
         "parameters": [
           {
@@ -17144,7 +17051,6 @@
         "x-umami-source": "src/app/api/users/[userId]/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update users user id. The request and response models are derived from the validated route contract.",
         "operationId": "postUsersUserId",
         "parameters": [
           {
@@ -17285,7 +17191,6 @@
     },
     "/api/users/{userId}/teams": {
       "get": {
-        "description": "Get users user id teams. The request and response models are derived from the validated route contract.",
         "operationId": "getUsersUserIdTeams",
         "parameters": [
           {
@@ -17480,7 +17385,6 @@
     },
     "/api/users/{userId}/websites": {
       "get": {
-        "description": "Get users user id websites. The request and response models are derived from the validated route contract.",
         "operationId": "getUsersUserIdWebsites",
         "parameters": [
           {
@@ -18264,7 +18168,6 @@
     },
     "/api/websites/{websiteId}/active": {
       "get": {
-        "description": "Get websites website id active. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdActive",
         "parameters": [
           {
@@ -18333,7 +18236,6 @@
     },
     "/api/websites/{websiteId}/annotations": {
       "get": {
-        "description": "Get websites website id annotations. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdAnnotations",
         "parameters": [
           {
@@ -18534,7 +18436,6 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/annotations/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update websites website id annotations. The request and response models are derived from the validated route contract.",
         "operationId": "postWebsitesWebsiteIdAnnotations",
         "parameters": [
           {
@@ -18675,7 +18576,6 @@
     },
     "/api/websites/{websiteId}/annotations/{annotationId}": {
       "delete": {
-        "description": "Delete websites website id annotations annotation id. The request and response models are derived from the validated route contract.",
         "operationId": "deleteWebsitesWebsiteIdAnnotationsAnnotationId",
         "parameters": [
           {
@@ -18763,7 +18663,6 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/annotations/[annotationId]/contract.generated.ts"
       },
       "get": {
-        "description": "Get websites website id annotations annotation id. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdAnnotationsAnnotationId",
         "parameters": [
           {
@@ -18886,7 +18785,6 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/annotations/[annotationId]/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update websites website id annotations annotation id. The request and response models are derived from the validated route contract.",
         "operationId": "postWebsitesWebsiteIdAnnotationsAnnotationId",
         "parameters": [
           {
@@ -19052,7 +18950,6 @@
     },
     "/api/websites/{websiteId}/daterange": {
       "get": {
-        "description": "Get websites website id daterange. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdDaterange",
         "parameters": [
           {
@@ -19127,7 +19024,6 @@
     },
     "/api/websites/{websiteId}/event-data": {
       "get": {
-        "description": "Get websites website id event data. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEventData",
         "parameters": [
           {
@@ -19545,7 +19441,6 @@
     },
     "/api/websites/{websiteId}/event-data-pivot": {
       "get": {
-        "description": "Get websites website id event data pivot. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEventDataPivot",
         "parameters": [
           {
@@ -19978,7 +19873,6 @@
     },
     "/api/websites/{websiteId}/event-data-pivot/array-series": {
       "get": {
-        "description": "Get websites website id event data pivot array series. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEventDataPivotArraySeries",
         "parameters": [
           {
@@ -20330,7 +20224,6 @@
     },
     "/api/websites/{websiteId}/event-data-pivot/date-series": {
       "get": {
-        "description": "Get websites website id event data pivot date series. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEventDataPivotDateSeries",
         "parameters": [
           {
@@ -20670,7 +20563,6 @@
     },
     "/api/websites/{websiteId}/event-data-pivot/numeric-series": {
       "get": {
-        "description": "Get websites website id event data pivot numeric series. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEventDataPivotNumericSeries",
         "parameters": [
           {
@@ -21031,7 +20923,6 @@
     },
     "/api/websites/{websiteId}/event-data-pivot/numeric-stats": {
       "get": {
-        "description": "Get websites website id event data pivot numeric stats. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEventDataPivotNumericStats",
         "parameters": [
           {
@@ -21372,7 +21263,6 @@
     },
     "/api/websites/{websiteId}/event-data-pivot/property-series": {
       "get": {
-        "description": "Get websites website id event data pivot property series. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEventDataPivotPropertySeries",
         "parameters": [
           {
@@ -21724,7 +21614,6 @@
     },
     "/api/websites/{websiteId}/event-data/{eventId}": {
       "get": {
-        "description": "Get websites website id event data event id. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEventDataEventId",
         "parameters": [
           {
@@ -21857,7 +21746,6 @@
     },
     "/api/websites/{websiteId}/event-data/events": {
       "get": {
-        "description": "Get websites website id event data events. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEventDataEvents",
         "parameters": [
           {
@@ -22183,7 +22071,6 @@
     },
     "/api/websites/{websiteId}/event-data/fields": {
       "get": {
-        "description": "Get websites website id event data fields. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEventDataFields",
         "parameters": [
           {
@@ -22511,7 +22398,6 @@
     },
     "/api/websites/{websiteId}/event-data/properties": {
       "get": {
-        "description": "Get websites website id event data properties. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEventDataProperties",
         "parameters": [
           {
@@ -22835,7 +22721,6 @@
     },
     "/api/websites/{websiteId}/event-data/stats": {
       "get": {
-        "description": "Get websites website id event data stats. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEventDataStats",
         "parameters": [
           {
@@ -23152,7 +23037,6 @@
     },
     "/api/websites/{websiteId}/event-data/values": {
       "get": {
-        "description": "Get websites website id event data values. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEventDataValues",
         "parameters": [
           {
@@ -23492,7 +23376,6 @@
     },
     "/api/websites/{websiteId}/events": {
       "get": {
-        "description": "Get websites website id events. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEvents",
         "parameters": [
           {
@@ -23997,7 +23880,6 @@
     },
     "/api/websites/{websiteId}/events/series": {
       "get": {
-        "description": "Get websites website id events series. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEventsSeries",
         "parameters": [
           {
@@ -24341,7 +24223,6 @@
     },
     "/api/websites/{websiteId}/events/stats": {
       "get": {
-        "description": "Get websites website id events stats. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdEventsStats",
         "parameters": [
           {
@@ -24731,7 +24612,6 @@
     },
     "/api/websites/{websiteId}/export": {
       "get": {
-        "description": "Get websites website id export. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdExport",
         "parameters": [
           {
@@ -24914,7 +24794,6 @@
     },
     "/api/websites/{websiteId}/metrics": {
       "get": {
-        "description": "Get websites website id metrics. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdMetrics",
         "parameters": [
           {
@@ -25312,7 +25191,6 @@
     },
     "/api/websites/{websiteId}/metrics/expanded": {
       "get": {
-        "description": "Get websites website id metrics expanded. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdMetricsExpanded",
         "parameters": [
           {
@@ -25722,7 +25600,6 @@
     },
     "/api/websites/{websiteId}/pageviews": {
       "get": {
-        "description": "Get websites website id pageviews. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdPageviews",
         "parameters": [
           {
@@ -26124,7 +26001,6 @@
     },
     "/api/websites/{websiteId}/recorder": {
       "get": {
-        "description": "Get websites website id recorder. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdRecorder",
         "parameters": [
           {
@@ -26218,7 +26094,6 @@
     },
     "/api/websites/{websiteId}/replays": {
       "get": {
-        "description": "Get websites website id replays. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdReplays",
         "parameters": [
           {
@@ -26728,7 +26603,6 @@
     },
     "/api/websites/{websiteId}/replays/{replayId}": {
       "get": {
-        "description": "Get websites website id replays replay id. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdReplaysReplayId",
         "parameters": [
           {
@@ -26828,7 +26702,6 @@
     },
     "/api/websites/{websiteId}/replays/saved": {
       "get": {
-        "description": "Get websites website id replays saved. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdReplaysSaved",
         "parameters": [
           {
@@ -27006,7 +26879,6 @@
     },
     "/api/websites/{websiteId}/replays/saved/{replayId}": {
       "get": {
-        "description": "Get websites website id replays saved replay id. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdReplaysSavedReplayId",
         "parameters": [
           {
@@ -27081,7 +26953,6 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/replays/saved/[replayId]/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update websites website id replays saved replay id. The request and response models are derived from the validated route contract.",
         "operationId": "postWebsitesWebsiteIdReplaysSavedReplayId",
         "parameters": [
           {
@@ -27193,7 +27064,6 @@
     },
     "/api/websites/{websiteId}/reports": {
       "get": {
-        "description": "Get websites website id reports. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdReports",
         "parameters": [
           {
@@ -27463,7 +27333,6 @@
     },
     "/api/websites/{websiteId}/reset": {
       "post": {
-        "description": "Create or update websites website id reset. The request and response models are derived from the validated route contract.",
         "operationId": "postWebsitesWebsiteIdReset",
         "parameters": [
           {
@@ -27528,7 +27397,6 @@
     },
     "/api/websites/{websiteId}/revenue/chart": {
       "get": {
-        "description": "Get websites website id revenue chart. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdRevenueChart",
         "parameters": [
           {
@@ -27914,7 +27782,6 @@
     },
     "/api/websites/{websiteId}/revenue/metrics": {
       "get": {
-        "description": "Get websites website id revenue metrics. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdRevenueMetrics",
         "parameters": [
           {
@@ -28324,7 +28191,6 @@
     },
     "/api/websites/{websiteId}/revenue/sessions": {
       "get": {
-        "description": "Get websites website id revenue sessions. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdRevenueSessions",
         "parameters": [
           {
@@ -28845,7 +28711,6 @@
     },
     "/api/websites/{websiteId}/revenue/stats": {
       "get": {
-        "description": "Get websites website id revenue stats. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdRevenueStats",
         "parameters": [
           {
@@ -29206,7 +29071,6 @@
     },
     "/api/websites/{websiteId}/segments": {
       "get": {
-        "description": "Get websites website id segments. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSegments",
         "parameters": [
           {
@@ -29427,7 +29291,6 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/segments/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update websites website id segments. The request and response models are derived from the validated route contract.",
         "operationId": "postWebsitesWebsiteIdSegments",
         "parameters": [
           {
@@ -29656,7 +29519,6 @@
     },
     "/api/websites/{websiteId}/segments/{segmentId}": {
       "delete": {
-        "description": "Delete websites website id segments segment id. The request and response models are derived from the validated route contract.",
         "operationId": "deleteWebsitesWebsiteIdSegmentsSegmentId",
         "parameters": [
           {
@@ -29744,7 +29606,6 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/segments/[segmentId]/contract.generated.ts"
       },
       "get": {
-        "description": "Get websites website id segments segment id. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSegmentsSegmentId",
         "parameters": [
           {
@@ -29918,7 +29779,6 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/segments/[segmentId]/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update websites website id segments segment id. The request and response models are derived from the validated route contract.",
         "operationId": "postWebsitesWebsiteIdSegmentsSegmentId",
         "parameters": [
           {
@@ -30139,7 +29999,6 @@
     },
     "/api/websites/{websiteId}/session-data-pivot": {
       "get": {
-        "description": "Get websites website id session data pivot. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessionDataPivot",
         "parameters": [
           {
@@ -30564,7 +30423,6 @@
     },
     "/api/websites/{websiteId}/session-data/array-series": {
       "get": {
-        "description": "Get websites website id session data array series. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessionDataArraySeries",
         "parameters": [
           {
@@ -30908,7 +30766,6 @@
     },
     "/api/websites/{websiteId}/session-data/date-series": {
       "get": {
-        "description": "Get websites website id session data date series. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessionDataDateSeries",
         "parameters": [
           {
@@ -31240,7 +31097,6 @@
     },
     "/api/websites/{websiteId}/session-data/numeric-series": {
       "get": {
-        "description": "Get websites website id session data numeric series. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessionDataNumericSeries",
         "parameters": [
           {
@@ -31593,7 +31449,6 @@
     },
     "/api/websites/{websiteId}/session-data/numeric-stats": {
       "get": {
-        "description": "Get websites website id session data numeric stats. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessionDataNumericStats",
         "parameters": [
           {
@@ -31934,7 +31789,6 @@
     },
     "/api/websites/{websiteId}/session-data/properties": {
       "get": {
-        "description": "Get websites website id session data properties. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessionDataProperties",
         "parameters": [
           {
@@ -32262,7 +32116,6 @@
     },
     "/api/websites/{websiteId}/session-data/property-series": {
       "get": {
-        "description": "Get websites website id session data property series. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessionDataPropertySeries",
         "parameters": [
           {
@@ -32606,7 +32459,6 @@
     },
     "/api/websites/{websiteId}/session-data/stats": {
       "get": {
-        "description": "Get websites website id session data stats. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessionDataStats",
         "parameters": [
           {
@@ -32962,7 +32814,6 @@
     },
     "/api/websites/{websiteId}/session-data/values": {
       "get": {
-        "description": "Get websites website id session data values. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessionDataValues",
         "parameters": [
           {
@@ -33294,7 +33145,6 @@
     },
     "/api/websites/{websiteId}/sessions": {
       "get": {
-        "description": "Get websites website id sessions. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessions",
         "parameters": [
           {
@@ -33807,7 +33657,6 @@
     },
     "/api/websites/{websiteId}/sessions/{sessionId}": {
       "delete": {
-        "description": "Delete websites website id sessions session id. The request and response models are derived from the validated route contract.",
         "operationId": "deleteWebsitesWebsiteIdSessionsSessionId",
         "parameters": [
           {
@@ -33912,7 +33761,6 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/sessions/[sessionId]/contract.generated.ts"
       },
       "get": {
-        "description": "Get websites website id sessions session id. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessionsSessionId",
         "parameters": [
           {
@@ -34006,7 +33854,6 @@
     },
     "/api/websites/{websiteId}/sessions/{sessionId}/activity": {
       "get": {
-        "description": "Get websites website id sessions session id activity. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessionsSessionIdActivity",
         "parameters": [
           {
@@ -34171,7 +34018,6 @@
     },
     "/api/websites/{websiteId}/sessions/{sessionId}/properties": {
       "get": {
-        "description": "Get websites website id sessions session id properties. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessionsSessionIdProperties",
         "parameters": [
           {
@@ -34295,7 +34141,6 @@
     },
     "/api/websites/{websiteId}/sessions/{sessionId}/replays": {
       "get": {
-        "description": "Get websites website id sessions session id replays. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessionsSessionIdReplays",
         "parameters": [
           {
@@ -34597,7 +34442,6 @@
     },
     "/api/websites/{websiteId}/sessions/stats": {
       "get": {
-        "description": "Get websites website id sessions stats. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessionsStats",
         "parameters": [
           {
@@ -34899,7 +34743,6 @@
     },
     "/api/websites/{websiteId}/sessions/weekly": {
       "get": {
-        "description": "Get websites website id sessions weekly. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdSessionsWeekly",
         "parameters": [
           {
@@ -35214,7 +35057,6 @@
     },
     "/api/websites/{websiteId}/shares": {
       "get": {
-        "description": "Get websites website id shares. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdShares",
         "parameters": [
           {
@@ -35653,7 +35495,6 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/shares/contract.generated.ts"
       },
       "post": {
-        "description": "Create or update websites website id shares. The request and response models are derived from the validated route contract.",
         "operationId": "postWebsitesWebsiteIdShares",
         "parameters": [
           {
@@ -35844,7 +35685,6 @@
     },
     "/api/websites/{websiteId}/stats": {
       "get": {
-        "description": "Get websites website id stats. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdStats",
         "parameters": [
           {
@@ -36230,7 +36070,6 @@
     },
     "/api/websites/{websiteId}/transfer": {
       "post": {
-        "description": "Create or update websites website id transfer. The request and response models are derived from the validated route contract.",
         "operationId": "postWebsitesWebsiteIdTransfer",
         "parameters": [
           {
@@ -36436,7 +36275,6 @@
     },
     "/api/websites/{websiteId}/values": {
       "get": {
-        "description": "Get websites website id values. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesWebsiteIdValues",
         "parameters": [
           {
@@ -36593,7 +36431,6 @@
     },
     "/api/websites/charts": {
       "get": {
-        "description": "Get websites charts. The request and response models are derived from the validated route contract.",
         "operationId": "getWebsitesCharts",
         "parameters": [
           {

@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getAuthSubscription',
     summary: 'Get auth subscription',
-    description:
-      'Get auth subscription. The request and response models are derived from the validated route contract.',
     tags: ['Authentication'],
     parameters: [
       {

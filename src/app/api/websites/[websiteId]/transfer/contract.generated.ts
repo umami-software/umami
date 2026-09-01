@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postWebsitesWebsiteIdTransfer',
     summary: 'Create or update websites website id transfer',
-    description:
-      'Create or update websites website id transfer. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {

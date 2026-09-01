@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getWebsitesWebsiteIdSessionDataPivot',
     summary: 'Get websites website id session data pivot',
-    description:
-      'Get websites website id session data pivot. The request and response models are derived from the validated route contract.',
     tags: ['Websites'],
     parameters: [
       {

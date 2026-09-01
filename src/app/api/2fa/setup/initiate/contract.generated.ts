@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'post2faSetupInitiate',
     summary: 'Create or update 2fa setup initiate',
-    description:
-      'Create or update 2fa setup initiate. The request and response models are derived from the validated route contract.',
     tags: ['Two-factor authentication'],
     responses: {
       '200': {

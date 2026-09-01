@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getHeartbeat',
     summary: 'Get heartbeat',
-    description:
-      'Get heartbeat. The request and response models are derived from the validated route contract.',
     tags: ['System'],
     responses: {
       '200': {

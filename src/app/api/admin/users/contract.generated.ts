@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getAdminUsers',
     summary: 'Get admin users',
-    description:
-      'Get admin users. The request and response models are derived from the validated route contract.',
     tags: ['Administration'],
     parameters: [
       {

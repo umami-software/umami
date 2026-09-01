@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getPixels',
     summary: 'Get pixels',
-    description:
-      'Get pixels. The request and response models are derived from the validated route contract.',
     tags: ['Pixels'],
     parameters: [
       {
@@ -194,8 +192,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'postPixels',
     summary: 'Create or update pixels',
-    description:
-      'Create or update pixels. The request and response models are derived from the validated route contract.',
     tags: ['Pixels'],
     requestBody: {
       required: true,

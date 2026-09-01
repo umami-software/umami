@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getLinks',
     summary: 'Get links',
-    description:
-      'Get links. The request and response models are derived from the validated route contract.',
     tags: ['Links'],
     parameters: [
       {
@@ -198,8 +196,6 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'postLinks',
     summary: 'Create or update links',
-    description:
-      'Create or update links. The request and response models are derived from the validated route contract.',
     tags: ['Links'],
     requestBody: {
       required: true,

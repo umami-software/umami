@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postReportsAttribution',
     summary: 'Create or update reports attribution',
-    description:
-      'Create or update reports attribution. The request and response models are derived from the validated route contract.',
     tags: ['Reports'],
     requestBody: {
       required: true,

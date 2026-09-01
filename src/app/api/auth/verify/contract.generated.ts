@@ -11,8 +11,6 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'postAuthVerify',
     summary: 'Create or update auth verify',
-    description:
-      'Create or update auth verify. The request and response models are derived from the validated route contract.',
     tags: ['Authentication'],
     responses: {
       '200': {
