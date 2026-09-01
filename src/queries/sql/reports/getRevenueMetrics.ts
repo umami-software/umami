@@ -30,7 +30,7 @@ export async function getRevenueMetrics(
     filters: QueryFilters,
     type: RevenueMetricType,
   ]
-) {
+): Promise<RevenueMetricsResult[RevenueMetricType]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

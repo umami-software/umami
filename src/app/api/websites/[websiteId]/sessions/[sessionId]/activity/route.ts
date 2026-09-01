@@ -3,12 +3,9 @@ import { z } from 'zod';
 import { FIELD_LENGTH } from '@/lib/constants';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
+import type { SessionActivity } from '@/lib/types';
 import { canViewWebsiteSection } from '@/permissions';
-import {
-  getLinkedDistinctIds,
-  getLinkedSessionIds,
-  getSessionActivity,
-} from '@/queries/sql';
+import { getLinkedDistinctIds, getLinkedSessionIds, getSessionActivity } from '@/queries/sql';
 
 export async function GET(
   request: Request,
@@ -60,7 +57,7 @@ export async function GET(
 
   const filters = await getQueryFilters({ ...query, startAt, endAt }, websiteId);
 
-  const data = await getSessionActivity(websiteId, sessionIds, filters);
+  const data = (await getSessionActivity(websiteId, sessionIds, filters)) as SessionActivity[];
 
   return json(data);
 }

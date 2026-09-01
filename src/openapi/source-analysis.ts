@@ -30,6 +30,7 @@ export interface SourceOperationAnalysis {
   hasRequestSchema: boolean;
   requestSchema?: Schema;
   responseStatuses: number[];
+  responseSchemas: Record<number, Schema>;
   responseMediaType: string;
   returnsOk: boolean;
 }
@@ -55,6 +56,161 @@ const stringSchema = (): Schema => ({ type: 'string' });
 const numberSchema = (): Schema => ({ type: 'number' });
 const booleanSchema = (): Schema => ({ type: 'boolean' });
 const unknownSchema = (): Schema => ({});
+
+function isUnknownSchema(schema: Schema) {
+  return Object.keys(schema).length === 0;
+}
+
+function typeToSchema(
+  type: ts.Type,
+  checker: ts.TypeChecker,
+  location: ts.Node,
+  seen = new Set<ts.Type>(),
+  depth = 0,
+): Schema {
+  if (depth > 12 || seen.has(type)) {
+    return unknownSchema();
+  }
+
+  if (type.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown | ts.TypeFlags.TypeParameter)) {
+    return unknownSchema();
+  }
+
+  if (type.flags & ts.TypeFlags.Never) {
+    return unknownSchema();
+  }
+
+  if (type.flags & (ts.TypeFlags.Undefined | ts.TypeFlags.Void | ts.TypeFlags.Null)) {
+    return { type: 'null' };
+  }
+
+  if (type.isStringLiteral()) {
+    return { const: type.value };
+  }
+
+  if (type.flags & (ts.TypeFlags.String | ts.TypeFlags.TemplateLiteral)) {
+    return stringSchema();
+  }
+
+  if (type.isNumberLiteral()) {
+    return { const: type.value };
+  }
+
+  if (type.flags & (ts.TypeFlags.Number | ts.TypeFlags.BigInt)) {
+    return numberSchema();
+  }
+
+  if (type.flags & ts.TypeFlags.BooleanLiteral) {
+    return { const: checker.typeToString(type) === 'true' };
+  }
+
+  if (type.flags & ts.TypeFlags.Boolean) {
+    return booleanSchema();
+  }
+
+  if (type.isUnion()) {
+    const variants = type.types
+      .filter(variant => !(variant.flags & ts.TypeFlags.Undefined))
+      .map(variant => typeToSchema(variant, checker, location, new Set(seen), depth + 1));
+    const unique = [...new Map(variants.map(schema => [JSON.stringify(schema), schema])).values()];
+
+    if (unique.length === 0) return unknownSchema();
+    if (unique.length === 1) return unique[0];
+    return { anyOf: unique };
+  }
+
+  if (type.isIntersection()) {
+    return {
+      allOf: type.types.map(variant =>
+        typeToSchema(variant, checker, location, new Set(seen), depth + 1),
+      ),
+    };
+  }
+
+  const symbolName = type.aliasSymbol?.getName() ?? type.getSymbol()?.getName();
+  const promised = symbolName === 'Promise' ? checker.getAwaitedType(type) : undefined;
+  if (promised && promised !== type) {
+    return typeToSchema(promised, checker, location, seen, depth + 1);
+  }
+
+  if (symbolName === 'Date') {
+    return { type: 'string', format: 'date-time' };
+  }
+
+  if (checker.isTupleType(type)) {
+    const typeArguments = checker.getTypeArguments(type as ts.TypeReference);
+    const prefixItems = typeArguments.map(item =>
+      typeToSchema(item, checker, location, new Set(seen), depth + 1),
+    );
+    return {
+      type: 'array',
+      prefixItems,
+      minItems: prefixItems.length,
+      maxItems: prefixItems.length,
+    };
+  }
+
+  if (checker.isArrayType(type)) {
+    const item = checker.getTypeArguments(type as ts.TypeReference)[0];
+    return {
+      type: 'array',
+      items: item
+        ? typeToSchema(item, checker, location, new Set(seen), depth + 1)
+        : unknownSchema(),
+    };
+  }
+
+  if (type.flags & ts.TypeFlags.Object) {
+    const nextSeen = new Set(seen);
+    nextSeen.add(type);
+    const properties: Record<string, Schema> = {};
+    const requiredProperties: string[] = [];
+
+    checker.getPropertiesOfType(type).forEach(property => {
+      if (property.getName().startsWith('__@')) {
+        return;
+      }
+
+      const declaration = property.valueDeclaration ?? property.declarations?.[0] ?? location;
+      const propertyType = checker.getTypeOfSymbolAtLocation(property, declaration);
+
+      // Functions are not JSON values. This also prevents array prototype methods from
+      // leaking into schemas when an array is spread into an object literal.
+      if (propertyType.getCallSignatures().length) {
+        return;
+      }
+
+      properties[property.getName()] = typeToSchema(
+        propertyType,
+        checker,
+        declaration,
+        new Set(nextSeen),
+        depth + 1,
+      );
+
+      if (!(property.flags & ts.SymbolFlags.Optional)) {
+        requiredProperties.push(property.getName());
+      }
+    });
+
+    const stringIndex = checker.getIndexTypeOfType(type, ts.IndexKind.String);
+    const schema = objectSchema(properties, requiredProperties);
+
+    if (stringIndex) {
+      schema.additionalProperties = typeToSchema(
+        stringIndex,
+        checker,
+        location,
+        new Set(nextSeen),
+        depth + 1,
+      );
+    }
+
+    return schema;
+  }
+
+  return unknownSchema();
+}
 
 function required(schema: Schema): InferredSchema {
   return { schema, optional: false };
@@ -638,6 +794,7 @@ function getNumericStatus(options: ts.Expression | undefined, source: ts.SourceF
 export function analyzeSourceOperation(
   source: ts.SourceFile,
   method: ApiHttpMethod,
+  checker?: ts.TypeChecker,
 ): SourceOperationAnalysis {
   const handler = findHandler(source, method);
 
@@ -646,6 +803,7 @@ export function analyzeSourceOperation(
       auth: 'bearer',
       hasRequestSchema: false,
       responseStatuses: [200],
+      responseSchemas: {},
       responseMediaType: 'application/json',
       returnsOk: false,
     };
@@ -668,6 +826,23 @@ export function analyzeSourceOperation(
   let returnsOk = false;
   let responseMediaType = 'application/json';
   const responseStatuses = new Set<number>();
+  const responseSchemaVariants = new Map<number, Schema[]>();
+
+  const addResponseSchema = (status: number, expression: ts.Expression | undefined) => {
+    if (!expression) {
+      return;
+    }
+
+    const syntactic = inferExpression(expression, source, declarations).schema;
+    const typed = checker
+      ? typeToSchema(checker.getTypeAtLocation(expression), checker, expression)
+      : unknownSchema();
+    const schema = isUnknownSchema(typed) ? syntactic : typed;
+
+    if (!isUnknownSchema(schema)) {
+      responseSchemaVariants.set(status, [...(responseSchemaVariants.get(status) ?? []), schema]);
+    }
+  };
 
   const visit = (node: ts.Node) => {
     if (ts.isCallExpression(node)) {
@@ -691,10 +866,21 @@ export function analyzeSourceOperation(
       if (mappedStatus) {
         responseStatuses.add(mappedStatus);
         returnsOk ||= name === 'ok';
+
+        if (name === 'ok') {
+          responseSchemaVariants.set(mappedStatus, [
+            ...(responseSchemaVariants.get(mappedStatus) ?? []),
+            objectSchema({ ok: { const: true } }),
+          ]);
+        } else if (name === 'json') {
+          addResponseSchema(mappedStatus, node.arguments[0]);
+        }
       }
 
       if (calleeText === 'Response.json') {
-        responseStatuses.add(getNumericStatus(node.arguments[1], source) ?? 200);
+        const status = getNumericStatus(node.arguments[1], source) ?? 200;
+        responseStatuses.add(status);
+        addResponseSchema(status, node.arguments[0]);
       }
     }
 
@@ -731,6 +917,15 @@ export function analyzeSourceOperation(
     responseStatuses.add(200);
   }
 
+  const responseSchemas = Object.fromEntries(
+    [...responseSchemaVariants.entries()].map(([status, variants]) => {
+      const unique = [
+        ...new Map(variants.map(schema => [JSON.stringify(schema), schema])).values(),
+      ];
+      return [status, unique.length === 1 ? unique[0] : { anyOf: unique }];
+    }),
+  );
+
   return {
     auth,
     hasRequestSchema,
@@ -738,6 +933,7 @@ export function analyzeSourceOperation(
       ? inferExpression(schemaArgument, source, declarations).schema
       : undefined,
     responseStatuses: [...responseStatuses].sort((left, right) => left - right),
+    responseSchemas,
     responseMediaType,
     returnsOk,
   };

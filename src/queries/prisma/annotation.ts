@@ -1,6 +1,6 @@
-import type { Prisma } from '@/generated/prisma/client';
+import type { Annotation, Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import type { PageResult, QueryFilters } from '@/lib/types';
 
 export async function getAnnotation(annotationId: string) {
   return prisma.client.annotation.findUnique({
@@ -19,7 +19,7 @@ export async function getWebsiteAnnotation(websiteId: string, annotationId: stri
 export async function getWebsiteAnnotations(
   websiteId: string,
   filters: QueryFilters & { startDate?: Date; endDate?: Date } = {},
-) {
+): Promise<PageResult<Annotation[]>> {
   const { search, startDate, endDate } = filters;
   const { getSearchParameters, pagedQuery } = prisma;
 

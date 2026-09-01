@@ -1,6 +1,6 @@
-import type { Prisma } from '@/generated/prisma/client';
+import type { Prisma, Share } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import type { PageResult, QueryFilters } from '@/lib/types';
 
 export async function findShare(criteria: Prisma.ShareFindUniqueArgs) {
   return prisma.client.share.findUnique(criteria);
@@ -33,7 +33,10 @@ export async function getShareByEntityId(entityId: string) {
   });
 }
 
-export async function getSharesByEntityId(entityId: string, filters?: QueryFilters) {
+export async function getSharesByEntityId(
+  entityId: string,
+  filters?: QueryFilters,
+): Promise<PageResult<Share[]>> {
   const { pagedQuery } = prisma;
 
   return pagedQuery(

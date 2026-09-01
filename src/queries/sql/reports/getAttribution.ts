@@ -25,7 +25,7 @@ export interface AttributionResult {
 
 export async function getAttribution(
   ...args: [websiteId: string, parameters: AttributionParameters, filters: QueryFilters]
-) {
+): Promise<AttributionResult> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

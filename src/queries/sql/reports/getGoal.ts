@@ -11,9 +11,14 @@ export interface GoalParameters {
   value: string;
 }
 
+export interface GoalResult {
+  num: number;
+  total: number;
+}
+
 export async function getGoal(
   ...args: [websiteId: string, params: GoalParameters, filters: QueryFilters]
-) {
+): Promise<GoalResult> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

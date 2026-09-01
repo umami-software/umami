@@ -190,15 +190,132 @@ export interface PageResult<T> {
   isCapped?: boolean;
 }
 
+export interface ActiveVisitors {
+  visitors: number;
+}
+
+export interface WebsiteDateRange {
+  startDate: Date | null;
+  endDate: Date | null;
+}
+
+export interface PropertyMetric {
+  propertyName: string;
+  dataType: number;
+  total: number;
+}
+
+export interface PropertyValue {
+  value: string;
+  total: number;
+}
+
+export interface TimeSeriesValue {
+  t: string;
+  y: number;
+}
+
+export interface WebsiteSession {
+  id: string;
+  websiteId: string;
+  hostname: string;
+  browser: string;
+  os: string;
+  device: string;
+  screen: string;
+  language: string;
+  country: string;
+  region: string;
+  city: string;
+  firstAt: Date | string;
+  lastAt: Date | string;
+  visits: number;
+  views: number;
+  events: number;
+  createdAt: Date | string;
+}
+
+export interface WebsiteEvent {
+  id: string;
+  websiteId: string;
+  sessionId: string;
+  createdAt: Date | string;
+  hostname: string;
+  urlPath: string;
+  urlQuery: string;
+  referrerPath: string;
+  referrerQuery: string;
+  referrerDomain: string;
+  country: string;
+  city: string;
+  device: string;
+  os: string;
+  browser: string;
+  pageTitle: string;
+  eventType: number;
+  eventName: string;
+  hasData: boolean;
+}
+
+export interface EventDataPivotRow {
+  eventId: string;
+  sessionId: string;
+  eventName: string;
+  urlPath: string;
+  createdAt: Date | string;
+  propertyKeys: string[];
+  propertyValues: string[];
+}
+
+export interface SessionReplaySummary {
+  id: string;
+  sessionId: string;
+  websiteId: string;
+  browser: string;
+  os: string;
+  device: string;
+  country: string;
+  city: string;
+  eventCount: number;
+  chunkCount: number;
+  startedAt: Date | string;
+  endedAt: Date | string;
+  duration: number;
+  createdAt: Date | string;
+}
+
+export interface SessionActivity {
+  createdAt: Date | string;
+  urlPath: string;
+  urlQuery: string;
+  referrerDomain: string;
+  eventId: string;
+  eventType: number;
+  eventName: string;
+  visitId: string;
+  hostname: string;
+  hasData: boolean;
+}
+
+export interface SessionDataValue {
+  websiteId: string;
+  sessionId: string;
+  dataKey: string;
+  dataType: number;
+  stringValue: string | null;
+  numberValue: number | null;
+  dateValue: Date | string | null;
+  createdAt: Date | string;
+}
+
 export interface RealtimeData {
   countries: Record<string, number>;
-  events: any[];
-  pageviews: any[];
+  events: RealtimeEvent[];
   referrers: Record<string, number>;
   timestamp: number;
   series: {
-    views: any[];
-    visitors: any[];
+    views: EventDataSeriesPoint[];
+    visitors: EventDataSeriesPoint[];
   };
   totals: {
     views: number;
@@ -207,7 +324,23 @@ export interface RealtimeData {
     countries: number;
   };
   urls: Record<string, number>;
-  visitors: any[];
+}
+
+export interface RealtimeActivity {
+  sessionId: string;
+  eventName: string;
+  createdAt: Date | string;
+  browser: string;
+  os: string;
+  device: string;
+  country: string;
+  urlPath: string;
+  referrerDomain: string;
+  hostname: string;
+}
+
+export interface RealtimeEvent extends RealtimeActivity {
+  __type: 'session' | 'event' | 'pageview';
 }
 
 export interface ApiError extends Error {

@@ -1,9 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import {
-  EVENT_TYPE,
-  FILTER_COLUMNS,
-  SESSION_COLUMNS,
-} from '@/lib/constants';
+import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
@@ -15,13 +11,17 @@ export interface BreakdownParameters {
 }
 
 export interface BreakdownData {
-  x: string;
-  y: number;
+  views: number;
+  visitors: number;
+  visits: number;
+  bounces: number;
+  totaltime: number;
+  [field: string]: string | number;
 }
 
 export async function getBreakdown(
   ...args: [websiteId: string, parameters: BreakdownParameters, filters: QueryFilters]
-) {
+): Promise<BreakdownData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -35,18 +35,19 @@ async function relationalQuery(
 ): Promise<BreakdownData[]> {
   const { getTimestampDiffSQL, parseFilters, rawQuery } = prisma;
   const { startDate, endDate, fields } = parameters;
-  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } = parseFilters(
-    {
-      ...filters,
-      websiteId,
-      startDate,
-      endDate,
-      eventType: EVENT_TYPE.pageView,
-    },
-    {
-      joinSession: !!fields.find((name: string) => SESSION_COLUMNS.includes(name)),
-    },
-  );
+  const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } =
+    parseFilters(
+      {
+        ...filters,
+        websiteId,
+        startDate,
+        endDate,
+        eventType: EVENT_TYPE.pageView,
+      },
+      {
+        joinSession: !!fields.find((name: string) => SESSION_COLUMNS.includes(name)),
+      },
+    );
   const needsBounceEvents = filters.excludeBounce !== true;
   const bounceQuery = needsBounceEvents
     ? `sum(case when t.c = 1 and coalesce(e.has_custom_event, 0) = 0 then 1 else 0 end) as "bounces",`

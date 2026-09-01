@@ -32,7 +32,7 @@ export interface FunnelResult extends FunnelStep {
 
 export async function getFunnel(
   ...args: [websiteId: string, parameters: FunnelParameters, filters: QueryFilters]
-) {
+): Promise<FunnelResult[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

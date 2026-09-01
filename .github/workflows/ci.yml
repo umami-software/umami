@@ -23,6 +23,6 @@ jobs:
           node-version: 22
           cache: "pnpm"
       - run: pnpm install
-      - run: pnpm openapi:check
+      - run: pnpm openapi:check --explicit
       - run: pnpm test
       - run: pnpm build

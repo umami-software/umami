@@ -2,7 +2,7 @@ import clickhouse from '@/lib/clickhouse';
 import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { PropertyFilter, QueryFilters } from '@/lib/types';
+import type { PropertyFilter, PropertyMetric, QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getSessionDataProperties';
 
@@ -13,7 +13,7 @@ export async function getSessionDataProperties(
     propertyFilters?: PropertyFilter[],
     propertyName?: string,
   ]
-) {
+): Promise<PropertyMetric[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

@@ -7,6 +7,8 @@ contract wherever one exists.
 ## Commands
 
 - `pnpm openapi:generate` regenerates the public OpenAPI document.
+- `pnpm openapi:contracts` refreshes source-controlled contracts for routes without a curated
+  `contract.ts` module.
 - `pnpm openapi:check` validates contract alignment and checks that the generated file is current.
 - `pnpm openapi:check --explicit` also fails while any non-OPTIONS API route lacks a hand-authored
   contract.
@@ -17,9 +19,13 @@ tests and build steps.
 
 ## Adding an operation
 
-Create a `contract.ts` next to the matching `route.ts` and export an `operations` array. Define
-request and response shapes with Zod, and import the same request schema into the route handler for
-`parseRequest` validation.
+Run `pnpm openapi:contracts` to create a `contract.generated.ts` next to every route that does not
+have a curated contract. Generated contracts use the route's Zod request validation and TypeScript
+response types. They are checked in so operation IDs and client-facing schemas remain stable.
+
+For curated descriptions, examples, or runtime-shared Zod response models, replace the generated
+module with a `contract.ts` that exports an `operations` array. Define request and response shapes
+with Zod, and import the same request schema into the route handler for `parseRequest` validation.
 
 Contract modules must remain safe to import from a build script. They must not import route
 handlers, database clients, Redis clients, or modules with environment-dependent side effects.
@@ -34,8 +40,8 @@ Route paths and HTTP methods are discovered independently from `src/app/api/**/r
 requires all discovered non-OPTIONS operations in the artifact and rejects duplicate contracts,
 duplicate operation IDs, orphaned contracts, and mismatched dynamic path parameters.
 
-Inferred operations are marked with `x-umami-contract: inferred` and their source file. The inference
-layer extracts path parameters, Zod request fields, authentication, response status helpers, and
-response media types without importing route modules. Unknown response bodies remain free-form JSON
-instead of being assigned an unverified shape. Explicit contracts are marked `explicit` and remain
-the way to add exact response schemas, examples, and curated prose.
+New operations are initially marked with `x-umami-contract: inferred` and their source file. The
+inference layer extracts path parameters, Zod request fields, authentication, typed response bodies,
+response status helpers, and response media types without importing route modules. Running
+`pnpm openapi:contracts` snapshots that behavior into an explicit contract. Curated `contract.ts`
+modules remain the way to add examples, custom operation IDs, and hand-written prose.

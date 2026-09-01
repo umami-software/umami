@@ -43,6 +43,7 @@
     "download-language-names": "node scripts/download-language-names.js",
     "change-password": "node scripts/change-password.js",
     "openapi:generate": "tsx scripts/generate-openapi.ts",
+    "openapi:contracts": "tsx scripts/generate-openapi-contracts.ts",
     "openapi:check": "tsx scripts/check-openapi.ts",
     "postbuild": "node scripts/postbuild.js",
     "pretest": "pnpm build-db-client",

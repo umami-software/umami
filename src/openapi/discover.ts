@@ -103,16 +103,21 @@ export async function discoverApiOperations(
   const apiRoot = path.join(projectRoot, 'src', 'app', 'api');
   const routeFiles = await walk(apiRoot, name => ROUTE_FILE_PATTERN.test(name));
   const operations: DiscoveredApiOperation[] = [];
+  const configFile = ts.readConfigFile(path.join(projectRoot, 'tsconfig.json'), ts.sys.readFile);
+  const parsedConfig = ts.parseJsonConfigFileContent(configFile.config, ts.sys, projectRoot);
+  const program = ts.createProgram(parsedConfig.fileNames, parsedConfig.options);
+  const checker = program.getTypeChecker();
 
   for (const routeFile of routeFiles.sort()) {
-    const content = await readFile(routeFile, 'utf8');
-    const source = ts.createSourceFile(
-      routeFile,
-      content,
-      ts.ScriptTarget.Latest,
-      true,
-      routeFile.endsWith('x') ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
-    );
+    const source =
+      program.getSourceFile(routeFile) ??
+      ts.createSourceFile(
+        routeFile,
+        await readFile(routeFile, 'utf8'),
+        ts.ScriptTarget.Latest,
+        true,
+        routeFile.endsWith('x') ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
+      );
     const routePath = getRoutePath(apiRoot, routeFile);
     const relativeSource = path.relative(projectRoot, routeFile).replaceAll(path.sep, '/');
 
@@ -121,7 +126,7 @@ export async function discoverApiOperations(
         method,
         path: routePath,
         source: relativeSource,
-        analysis: analyzeSourceOperation(source, method),
+        analysis: analyzeSourceOperation(source, method, checker),
       });
     });
   }
@@ -134,5 +139,7 @@ export async function discoverApiOperations(
 export async function discoverContractFiles(projectRoot = process.cwd()) {
   const apiRoot = path.join(projectRoot, 'src', 'app', 'api');
 
-  return (await walk(apiRoot, name => name === 'contract.ts')).sort();
+  return (
+    await walk(apiRoot, name => name === 'contract.ts' || name === 'contract.generated.ts')
+  ).sort();
 }

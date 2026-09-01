@@ -1,13 +1,14 @@
 import clickhouse from '@/lib/clickhouse';
-import { DEFAULT_PAGE_SIZE } from '@/lib/constants';
-import { EVENT_TYPE } from '@/lib/constants';
+import { DEFAULT_PAGE_SIZE, EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import type { PageResult, QueryFilters, WebsiteEvent } from '@/lib/types';
 
 const FUNCTION_NAME = 'getWebsiteEvents';
 
-export function getWebsiteEvents(...args: [websiteId: string, filters: QueryFilters]) {
+export function getWebsiteEvents(
+  ...args: [websiteId: string, filters: QueryFilters]
+): Promise<PageResult<WebsiteEvent[]>> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

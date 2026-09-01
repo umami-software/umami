@@ -19,7 +19,7 @@ export interface RetentionResult {
 
 export async function getRetention(
   ...args: [websiteId: string, parameters: RetentionParameters, filters: QueryFilters]
-) {
+): Promise<RetentionResult[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

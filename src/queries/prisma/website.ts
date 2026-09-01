@@ -1,12 +1,21 @@
+import { z } from 'zod';
 import type { Prisma, Website } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
 import prisma, { getSchema } from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
-import type { QueryFilters } from '@/lib/types';
-import { z } from 'zod';
+import type { PageResult, QueryFilters } from '@/lib/types';
 
 const WEBSITE_SORT_FIELDS = ['name', 'domain', 'createdAt'] as const;
+
+export type WebsiteListItem = Website & {
+  shareId: string | null;
+  user?: { id: string; username: string } | null;
+  createUser?: { id: string; username: string } | null;
+  team?: {
+    members: { userId: string; role: string }[];
+  } | null;
+};
 
 async function deleteWebsiteDependentData(tx: any, websiteId: string) {
   await tx.sessionReplaySaved.deleteMany({
@@ -86,7 +95,10 @@ export async function getWebsite(websiteId: string) {
   return attachShareIdToWebsite(website);
 }
 
-export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters: QueryFilters) {
+export async function getWebsites(
+  criteria: Prisma.WebsiteFindManyArgs,
+  filters: QueryFilters,
+): Promise<PageResult<WebsiteListItem[]>> {
   const sortFilters = sanitizeSortFilters(filters, WEBSITE_SORT_FIELDS);
   const { search } = sortFilters;
   const { getSearchParameters, pagedQuery } = prisma;
@@ -307,14 +319,9 @@ export async function attachShareIdToWebsite(website: Website) {
   };
 }
 
-export async function attachShareIdToWebsites(websites: {
-  data: any;
-  count: any;
-  page: number;
-  pageSize: number;
-  orderBy: string;
-  search: string;
-}) {
+export async function attachShareIdToWebsites(
+  websites: PageResult<(Website & Partial<WebsiteListItem>)[]>,
+): Promise<PageResult<WebsiteListItem[]>> {
   const websiteIds = websites.data.map(website => website.id);
 
   if (websiteIds.length === 0) {

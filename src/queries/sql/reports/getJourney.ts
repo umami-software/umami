@@ -24,7 +24,7 @@ export interface JourneyResult {
 
 export async function getJourney(
   ...args: [websiteId: string, parameters: JourneyParameters, filters: QueryFilters]
-) {
+): Promise<JourneyResult[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

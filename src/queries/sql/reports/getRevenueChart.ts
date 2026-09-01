@@ -13,9 +13,18 @@ export interface RevenuParameters {
   compare?: string;
 }
 
+export interface RevenueChartResult {
+  chart: {
+    x: string;
+    t: string;
+    y: number;
+    count: number;
+  }[];
+}
+
 export async function getRevenueChart(
   ...args: [websiteId: string, parameters: RevenuParameters, filters: QueryFilters]
-) {
+): Promise<RevenueChartResult> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

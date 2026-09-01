@@ -87,3 +87,13 @@ export const serviceUnavailableResponse = errorResponse(
   'service-unavailable',
   'Service unavailable.',
 );
+
+export const errorResponseComponents = {
+  BadRequestResponse: badRequestResponse,
+  UnauthorizedResponse: unauthorizedResponse,
+  ForbiddenResponse: forbiddenResponse,
+  NotFoundResponse: notFoundResponse,
+  PayloadTooLargeResponse: payloadTooLargeResponse,
+  ServerErrorResponse: serverErrorResponse,
+  ServiceUnavailableResponse: serviceUnavailableResponse,
+};

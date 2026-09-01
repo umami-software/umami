@@ -10,6 +10,7 @@ import {
 import { discoverApiOperations } from '@/openapi/discover';
 import { inferApiContracts } from '@/openapi/infer';
 import type { ApiAudience } from '@/openapi/operation';
+import { errorResponseComponents } from '@/openapi/schemas';
 import { getSecurityRequirements, securitySchemes } from '@/openapi/security';
 
 export type DocumentAudience = ApiAudience | 'all';
@@ -108,6 +109,7 @@ export async function buildOpenApiDocument(
       paths,
       components: {
         securitySchemes,
+        responses: errorResponseComponents,
       },
     },
     {

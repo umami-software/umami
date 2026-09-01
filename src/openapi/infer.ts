@@ -74,7 +74,7 @@ function pascalCase(value: string) {
 }
 
 function getOperationId(method: ApiHttpMethod, path: string) {
-  return `inferred${pascalCase(method)}${getPathSegments(path).map(pascalCase).join('')}`;
+  return `${method}${getPathSegments(path).map(pascalCase).join('')}`;
 }
 
 function getSummary(method: ApiHttpMethod, path: string) {
@@ -144,18 +144,25 @@ function getQueryParameters(schema: InferredOpenApiSchema | undefined) {
   }));
 }
 
-function successResponse(mediaType: string, returnsOk: boolean): ZodOpenApiResponseObject {
+function successResponse(
+  mediaType: string,
+  returnsOk: boolean,
+  schema?: InferredOpenApiSchema,
+): ZodOpenApiResponseObject {
   return {
-    description: returnsOk
-      ? 'The operation completed successfully.'
-      : 'Successful response. The response shape is inferred as free-form because the handler does not expose a reusable response schema.',
+    description:
+      schema || returnsOk
+        ? 'The operation completed successfully.'
+        : 'Successful response. The response shape is inferred as free-form because the handler does not expose a reusable response schema.',
     content: {
       [mediaType]: {
-        schema: returnsOk
-          ? okSchema
-          : mediaType === 'application/json'
-            ? ({} as ZodOpenApiSchemaObject)
-            : ({ type: 'string' } as ZodOpenApiSchemaObject),
+        schema: schema
+          ? (schema as ZodOpenApiSchemaObject)
+          : returnsOk
+            ? okSchema
+            : mediaType === 'application/json'
+              ? ({} as ZodOpenApiSchemaObject)
+              : ({ type: 'string' } as ZodOpenApiSchemaObject),
       },
     },
   };
@@ -168,7 +175,11 @@ function getResponses(operation: DiscoveredApiOperation): ZodOpenApiResponsesObj
     const response = errorResponses[status];
     responses[`${status}` as `${1 | 2 | 3 | 4 | 5}${string}`] =
       response ??
-      successResponse(operation.analysis.responseMediaType, operation.analysis.returnsOk);
+      successResponse(
+        operation.analysis.responseMediaType,
+        operation.analysis.returnsOk,
+        operation.analysis.responseSchemas[status],
+      );
   });
 
   return responses;

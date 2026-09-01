@@ -1,4 +1,4 @@
-import { Prisma, type Team } from '@/generated/prisma/client';
+import { Prisma, type Team, type TeamUser } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
@@ -123,7 +123,10 @@ export async function getTeamOwner(teamId: string) {
   });
 }
 
-export async function createTeam(data: Prisma.TeamCreateInput, userId: string): Promise<any> {
+export async function createTeam(
+  data: Prisma.TeamCreateInput,
+  userId: string,
+): Promise<[Team, TeamUser]> {
   const { id } = data;
   const { client, transaction } = prisma;
 
@@ -139,7 +142,7 @@ export async function createTeam(data: Prisma.TeamCreateInput, userId: string): 
         role: ROLES.teamOwner,
       },
     }),
-  ]);
+  ]) as Promise<[Team, TeamUser]>;
 }
 
 export async function updateTeam(teamId: string, data: Prisma.TeamUpdateInput): Promise<Team> {
