@@ -7,9 +7,10 @@ import { serializeOpenApiDocument } from '@/openapi/serialize';
 
 const projectRoot = process.cwd();
 const outputFile = path.join(projectRoot, 'public', 'openapi.json');
-const strict = process.argv.includes('--strict') || process.env.OPENAPI_REQUIRE_COMPLETE === '1';
+const requireExplicit =
+  process.argv.includes('--explicit') || process.env.OPENAPI_REQUIRE_EXPLICIT === '1';
 const verbose = process.argv.includes('--verbose');
-const { document, coverage } = await buildOpenApiDocument('public', projectRoot);
+const { document, coverage } = await buildOpenApiDocument('all', projectRoot);
 const expected = serializeOpenApiDocument(document);
 let actual = '';
 
@@ -36,8 +37,13 @@ if (verbose && coverage.missing.length) {
   });
 }
 
-if (strict && coverage.missing.length) {
-  console.error('Strict OpenAPI coverage requires an explicit contract for every API operation.');
+if (coverage.missingGenerated.length) {
+  console.error('OpenAPI generation must include every discovered API operation.');
+  failed = true;
+}
+
+if (requireExplicit && coverage.missing.length) {
+  console.error('Explicit OpenAPI coverage requires a hand-authored contract for every operation.');
   failed = true;
 }
 

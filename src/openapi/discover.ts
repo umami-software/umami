@@ -2,6 +2,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import ts from 'typescript';
 import { API_HTTP_METHODS, type ApiHttpMethod } from '@/openapi/operation';
+import { analyzeSourceOperation, type SourceOperationAnalysis } from '@/openapi/source-analysis';
 
 const ROUTE_FILE_PATTERN = /^route\.(?:js|jsx|ts|tsx)$/;
 const METHOD_NAMES = new Set(API_HTTP_METHODS.map(method => method.toUpperCase()));
@@ -10,6 +11,7 @@ export interface DiscoveredApiOperation {
   method: ApiHttpMethod;
   path: `/${string}`;
   source: string;
+  analysis: SourceOperationAnalysis;
 }
 
 async function walk(directory: string, predicate: (name: string) => boolean): Promise<string[]> {
@@ -115,7 +117,12 @@ export async function discoverApiOperations(
     const relativeSource = path.relative(projectRoot, routeFile).replaceAll(path.sep, '/');
 
     getExportedMethods(source).forEach(method => {
-      operations.push({ method, path: routePath, source: relativeSource });
+      operations.push({
+        method,
+        path: routePath,
+        source: relativeSource,
+        analysis: analyzeSourceOperation(source, method),
+      });
     });
   }
 

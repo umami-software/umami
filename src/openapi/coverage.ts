@@ -8,7 +8,9 @@ import {
 export interface ContractCoverage {
   discovered: DiscoveredApiOperation[];
   contracted: LoadedApiOperationContract[];
+  generated: LoadedApiOperationContract[];
   missing: DiscoveredApiOperation[];
+  missingGenerated: DiscoveredApiOperation[];
   orphaned: LoadedApiOperationContract[];
   duplicateContracts: string[];
   duplicateOperationIds: string[];
@@ -23,11 +25,22 @@ function getContractPathParameters(contract: ApiOperationContract) {
   const schema = contract.operation.requestParams?.path as { shape?: unknown } | undefined;
   const shape = schema?.shape;
 
-  if (!shape || typeof shape !== 'object') {
-    return [];
+  if (shape && typeof shape === 'object') {
+    return Object.keys(shape).sort();
   }
 
-  return Object.keys(shape).sort();
+  return (contract.operation.parameters ?? [])
+    .filter(
+      parameter =>
+        parameter &&
+        typeof parameter === 'object' &&
+        'in' in parameter &&
+        parameter.in === 'path' &&
+        'name' in parameter &&
+        typeof parameter.name === 'string',
+    )
+    .map(parameter => ('name' in parameter ? (parameter.name as string) : ''))
+    .sort();
 }
 
 function arraysEqual(left: string[], right: string[]) {
@@ -37,13 +50,14 @@ function arraysEqual(left: string[], right: string[]) {
 export function analyzeContractCoverage(
   discovered: DiscoveredApiOperation[],
   contracted: LoadedApiOperationContract[],
+  generated: LoadedApiOperationContract[] = contracted,
 ): ContractCoverage {
   const relevantRoutes = discovered.filter(operation => operation.method !== 'options');
   const discoveredKeys = new Set(relevantRoutes.map(getOperationKey));
   const contractsByKey = new Map<string, LoadedApiOperationContract[]>();
   const contractsByOperationId = new Map<string, LoadedApiOperationContract[]>();
 
-  contracted.forEach(contract => {
+  generated.forEach(contract => {
     const key = getOperationKey(contract);
     const operationId = contract.operation.operationId;
 
@@ -69,11 +83,13 @@ export function analyzeContractCoverage(
     )
     .sort();
   const contractedKeys = new Set(contractsByKey.keys());
-  const missing = relevantRoutes.filter(
+  const explicitKeys = new Set(contracted.map(getOperationKey));
+  const missing = relevantRoutes.filter(operation => !explicitKeys.has(getOperationKey(operation)));
+  const missingGenerated = relevantRoutes.filter(
     operation => !contractedKeys.has(getOperationKey(operation)),
   );
-  const orphaned = contracted.filter(contract => !discoveredKeys.has(getOperationKey(contract)));
-  const pathParameterMismatches = contracted
+  const orphaned = generated.filter(contract => !discoveredKeys.has(getOperationKey(contract)));
+  const pathParameterMismatches = generated
     .map(contract => {
       const expected = getExpectedPathParameters(contract.path);
       const actual = getContractPathParameters(contract);
@@ -90,7 +106,9 @@ export function analyzeContractCoverage(
   return {
     discovered: relevantRoutes,
     contracted,
+    generated,
     missing,
+    missingGenerated,
     orphaned,
     duplicateContracts,
     duplicateOperationIds,
@@ -107,9 +125,13 @@ export function getCoverageErrors(coverage: ContractCoverage) {
         `Contract does not match a route: ${getOperationKey(contract)} (${contract.source})`,
     ),
     ...coverage.pathParameterMismatches.map(message => `Path parameter mismatch: ${message}`),
+    ...coverage.missingGenerated.map(
+      operation =>
+        `Generated spec is missing route: ${getOperationKey(operation)} (${operation.source})`,
+    ),
   ];
 }
 
 export function formatCoverageSummary(coverage: ContractCoverage) {
-  return `${coverage.contracted.length}/${coverage.discovered.length} API operations have explicit OpenAPI contracts; ${coverage.missing.length} remain.`;
+  return `${coverage.generated.length}/${coverage.discovered.length} API operations are included in the generated spec (${coverage.contracted.length} explicit, ${coverage.missing.length} source-inferred).`;
 }

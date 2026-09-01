@@ -6,7 +6,7 @@ import { serializeOpenApiDocument } from '@/openapi/serialize';
 
 const projectRoot = process.cwd();
 const outputFile = path.join(projectRoot, 'public', 'openapi.json');
-const { document, coverage } = await buildOpenApiDocument('public', projectRoot);
+const { document, coverage } = await buildOpenApiDocument('all', projectRoot);
 
 await mkdir(path.dirname(outputFile), { recursive: true });
 await writeFile(outputFile, serializeOpenApiDocument(document), 'utf8');

@@ -25,7 +25,7 @@ export async function loadApiContracts(
     const source = path.relative(projectRoot, contractFile).replaceAll(path.sep, '/');
 
     module.operations.forEach(operation => {
-      contracts.push({ ...operation, source });
+      contracts.push({ ...operation, source, origin: 'explicit' });
     });
   }
 

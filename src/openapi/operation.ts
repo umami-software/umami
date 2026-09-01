@@ -24,6 +24,7 @@ export interface ApiOperationContract {
 
 export interface LoadedApiOperationContract extends ApiOperationContract {
   source: string;
+  origin: 'explicit' | 'inferred';
 }
 
 export function defineOperation<const T extends ApiOperationContract>(contract: T): T {

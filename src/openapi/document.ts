@@ -8,6 +8,7 @@ import {
   getCoverageErrors,
 } from '@/openapi/coverage';
 import { discoverApiOperations } from '@/openapi/discover';
+import { inferApiContracts } from '@/openapi/infer';
 import type { ApiAudience } from '@/openapi/operation';
 import { getSecurityRequirements, securitySchemes } from '@/openapi/security';
 
@@ -46,12 +47,14 @@ export async function buildOpenApiDocument(
   audience: DocumentAudience = 'public',
   projectRoot = process.cwd(),
 ): Promise<OpenApiBuildResult> {
-  const [contracts, discovered, version] = await Promise.all([
+  const [explicitContracts, discovered, version] = await Promise.all([
     loadApiContracts(projectRoot),
     discoverApiOperations(projectRoot),
     getPackageVersion(projectRoot),
   ]);
-  const coverage = analyzeContractCoverage(discovered, contracts);
+  const inferredContracts = inferApiContracts(discovered, explicitContracts);
+  const contracts = [...explicitContracts, ...inferredContracts];
+  const coverage = analyzeContractCoverage(discovered, explicitContracts, contracts);
   const errors = getCoverageErrors(coverage);
 
   if (errors.length) {
@@ -77,6 +80,8 @@ export async function buildOpenApiDocument(
       ...contract.operation,
       security: getSecurityRequirements(contract.auth),
       'x-umami-audience': contract.audience,
+      'x-umami-contract': contract.origin,
+      'x-umami-source': contract.source,
     };
 
     Object.assign(pathItem, { [contract.method]: operation });
@@ -89,7 +94,7 @@ export async function buildOpenApiDocument(
         title: 'Umami API',
         version,
         description:
-          'REST API for Umami analytics. Self-hosted deployments serve these paths beneath their configured BASE_PATH.',
+          'REST API for Umami analytics. Every App Router API operation is included. Operations marked with x-umami-contract: inferred are generated from handler source; colocated explicit contracts provide curated descriptions and exact response models. Self-hosted deployments serve these paths beneath their configured BASE_PATH.',
         license: {
           name: 'MIT',
           identifier: 'MIT',
