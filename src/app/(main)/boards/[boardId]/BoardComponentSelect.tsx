@@ -21,6 +21,7 @@ import {
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 
 const COMPONENT_GROUP_ORDER: string[] = [
+  'All websites',
   'Traffic',
   'Events',
   'Behavior',
@@ -143,7 +144,6 @@ export function BoardComponentSelect({
 
   const needsWebsite = selectedDef?.requiresWebsite !== false;
   const isOpenType = isOpenBoardType(boardType);
-  const hasSelectedEntity = isOpenType ? !!selectedEntityId : !!boardEntityId;
   const resolvedEntityType = needsWebsite
     ? isOpenType
       ? selectedEntityType
@@ -445,62 +445,56 @@ export function BoardComponentSelect({
         <Column gap="3" height="100%" style={{ width: 280, flexShrink: 0, minWidth: 0 }}>
           <Text weight="bold">Components</Text>
           <Column border="left" paddingLeft="4" height="100%" style={{ minHeight: 0 }}>
-            {hasSelectedEntity ? (
-              <Column gap="1" height="100%" style={{ overflowY: 'auto', minHeight: 0 }}>
-                {groupedDefinitions.map(({ group, definitions }) => (
-                  <Column key={group} gap="1" paddingBottom="2">
-                    <Text size="sm" color="muted" weight="bold">
-                      {group}
-                    </Text>
-                    {definitions.map(def => {
-                      const Icon = def.icon;
+            <Column gap="1" height="100%" style={{ overflowY: 'auto', minHeight: 0 }}>
+              {groupedDefinitions.map(({ group, definitions }) => (
+                <Column key={group} gap="1" paddingBottom="2">
+                  <Text size="sm" color="muted" weight="bold">
+                    {group}
+                  </Text>
+                  {definitions.map(def => {
+                    const Icon = def.icon;
 
-                      return (
-                        <Row
-                          key={def.type}
-                          tabIndex={0}
-                          gap="3"
-                          alignItems="flex-start"
-                          paddingX="3"
-                          paddingY="2"
-                          borderRadius
-                          backgroundColor={
-                            selectedDef?.type === def.type ? 'surface-sunken' : undefined
-                          }
-                          hover={{ backgroundColor: 'surface-sunken' }}
-                          style={{ cursor: 'pointer' }}
-                          onClick={() => handleSelectComponent(def)}
-                        >
-                          <Icon size={16} />
-                          <Column gap="1">
-                            <Text
-                              size="sm"
-                              weight={selectedDef?.type === def.type ? 'bold' : undefined}
-                            >
-                              {def.name}
-                            </Text>
-                            <Text size="xs" color="muted">
-                              {def.description}
-                            </Text>
-                          </Column>
-                        </Row>
-                      );
-                    })}
-                  </Column>
-                ))}
-              </Column>
-            ) : (
-              <Column alignItems="center" justifyContent="center" height="100%">
-                <Text color="muted">{t(messages.selectBoardEntityFirst)}</Text>
-              </Column>
-            )}
+                    return (
+                      <Row
+                        key={def.type}
+                        tabIndex={0}
+                        gap="3"
+                        alignItems="flex-start"
+                        paddingX="3"
+                        paddingY="2"
+                        borderRadius
+                        backgroundColor={
+                          selectedDef?.type === def.type ? 'surface-sunken' : undefined
+                        }
+                        hover={{ backgroundColor: 'surface-sunken' }}
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => handleSelectComponent(def)}
+                      >
+                        <Icon size={16} />
+                        <Column gap="1">
+                          <Text
+                            size="sm"
+                            weight={selectedDef?.type === def.type ? 'bold' : undefined}
+                          >
+                            {def.name}
+                          </Text>
+                          <Text size="xs" color="muted">
+                            {def.description}
+                          </Text>
+                        </Column>
+                      </Row>
+                    );
+                  })}
+                </Column>
+              ))}
+            </Column>
           </Column>
         </Column>
 
         <Column gap="3" flexGrow={1} height="100%" style={{ minWidth: 0 }}>
           <Text weight="bold">Preview</Text>
           <Column border="left" paddingLeft="4" height="100%" style={{ minWidth: 0 }}>
-            {hasSelectedEntity && previewConfig && (!needsWebsite || resolvedEntityId) ? (
+            {previewConfig && (!needsWebsite || resolvedEntityId) ? (
               <BoardComponentRenderer
                 config={previewConfig}
                 websiteId={resolvedEntityId}
@@ -510,11 +504,9 @@ export function BoardComponentSelect({
             ) : (
               <Column alignItems="center" justifyContent="center" height="100%">
                 <Text color="muted">
-                  {!hasSelectedEntity
+                  {selectedDef && needsWebsite && !resolvedEntityId
                     ? t(messages.selectBoardEntityFirst)
-                    : resolvedEntityId
-                      ? t(messages.selectComponentPreview)
-                      : t(messages.selectBoardEntityFirst)}
+                    : t(messages.selectComponentPreview)}
                 </Text>
               </Column>
             )}
