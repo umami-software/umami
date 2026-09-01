@@ -1,8 +1,15 @@
+import { after } from 'next/server';
 import { beforeEach, expect, test, vi } from 'vitest';
 import { parseRequest } from '@/lib/request';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createLink } from '@/queries/prisma';
 import { POST } from './route';
+
+// The route defers the OG metadata backfill via `after()`, which throws when
+// called outside a Next.js request scope.
+vi.mock('next/server', () => ({
+  after: vi.fn(),
+}));
 
 vi.mock('@/lib/request', () => ({
   getQueryFilters: vi.fn(),
@@ -15,6 +22,7 @@ vi.mock('@/permissions', () => ({
 }));
 
 vi.mock('@/queries/prisma', () => ({
+  backfillOgMetadata: vi.fn(),
   createLink: vi.fn(),
   getUserLinks: vi.fn(),
 }));
@@ -23,12 +31,14 @@ const parseRequestMock = vi.mocked(parseRequest);
 const canCreateTeamWebsiteMock = vi.mocked(canCreateTeamWebsite);
 const canCreateWebsiteMock = vi.mocked(canCreateWebsite);
 const createLinkMock = vi.mocked(createLink);
+const afterMock = vi.mocked(after);
 
 beforeEach(() => {
   parseRequestMock.mockReset();
   canCreateTeamWebsiteMock.mockReset();
   canCreateWebsiteMock.mockReset();
   createLinkMock.mockReset();
+  afterMock.mockReset();
 });
 
 test('POST requires link slugs to be at least 8 characters so create matches edit validation', async () => {
@@ -53,12 +63,12 @@ test('POST requires link slugs to be at least 8 characters so create matches edi
     safeParse: (value: unknown) => { success: boolean };
   };
 
-  expect(schema.safeParse({ name: 'Docs', url: 'https://example.com', slug: '1234567' }).success).toBe(
-    false,
-  );
-  expect(schema.safeParse({ name: 'Docs', url: 'https://example.com', slug: '12345678' }).success).toBe(
-    true,
-  );
+  expect(
+    schema.safeParse({ name: 'Docs', url: 'https://example.com', slug: '1234567' }).success,
+  ).toBe(false);
+  expect(
+    schema.safeParse({ name: 'Docs', url: 'https://example.com', slug: '12345678' }).success,
+  ).toBe(true);
   expect(createLinkMock).toHaveBeenCalledWith({
     id: expect.any(String),
     name: 'Docs',
@@ -67,5 +77,6 @@ test('POST requires link slugs to be at least 8 characters so create matches edi
     teamId: undefined,
     userId: 'user-1',
   });
+  expect(afterMock).toHaveBeenCalledTimes(1);
   expect(response.status).toBe(200);
 });
