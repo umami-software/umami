@@ -670,7 +670,7 @@
     "securitySchemes": {
       "bearerAuth": {
         "bearerFormat": "JWT",
-        "description": "Token returned by POST /api/auth/login.",
+        "description": "Token returned by POST /api/auth/login, or an API key (`umami_…`) created under Settings → API keys (self-hosted only).",
         "scheme": "bearer",
         "type": "http"
       },
@@ -7084,6 +7084,21 @@
               "application/json": {
                 "schema": {
                   "properties": {
+                    "apiKey": {
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name"
+                      ],
+                      "type": "object"
+                    },
                     "shareToken": {
                       "properties": {
                         "boardId": {
@@ -7216,6 +7231,301 @@
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
         "x-umami-source": "src/app/api/me/contract.generated.ts"
+      }
+    },
+    "/api/me/api-keys": {
+      "get": {
+        "operationId": "getMeApiKeys",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "properties": {
+                      "createdAt": {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "keyPrefix": {
+                        "type": "string"
+                      },
+                      "lastUsedAt": {
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "createdAt",
+                      "name",
+                      "keyPrefix",
+                      "lastUsedAt"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "The operation completed successfully."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "unauthorized",
+                    "message": "Unauthorized.",
+                    "status": 401
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unauthorized."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "not-found",
+                    "message": "Not found.",
+                    "status": 404
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not found."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Get me api keys",
+        "tags": [
+          "Account"
+        ],
+        "x-umami-audience": "public",
+        "x-umami-contract": "explicit",
+        "x-umami-source": "src/app/api/me/api-keys/contract.generated.ts"
+      },
+      "post": {
+        "operationId": "postMeApiKeys",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "maximum": 255,
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "createdAt": {
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "key": {
+                      "type": "string"
+                    },
+                    "keyPrefix": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "key",
+                    "id",
+                    "createdAt",
+                    "name",
+                    "keyPrefix"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The operation completed successfully."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "bad-request",
+                    "message": "Bad request.",
+                    "status": 400
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "unauthorized",
+                    "message": "Unauthorized.",
+                    "status": 401
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unauthorized."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "not-found",
+                    "message": "Not found.",
+                    "status": 404
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not found."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Create or update me api keys",
+        "tags": [
+          "Account"
+        ],
+        "x-umami-audience": "public",
+        "x-umami-contract": "explicit",
+        "x-umami-source": "src/app/api/me/api-keys/contract.generated.ts"
+      }
+    },
+    "/api/me/api-keys/{keyId}": {
+      "delete": {
+        "operationId": "deleteMeApiKeysKeyId",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "keyId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "ok"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The operation completed successfully."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "unauthorized",
+                    "message": "Unauthorized.",
+                    "status": 401
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unauthorized."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "not-found",
+                    "message": "Not found.",
+                    "status": 404
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Not found."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Delete me api keys key id",
+        "tags": [
+          "Account"
+        ],
+        "x-umami-audience": "public",
+        "x-umami-contract": "explicit",
+        "x-umami-source": "src/app/api/me/api-keys/[keyId]/contract.generated.ts"
       }
     },
     "/api/me/password": {
@@ -16226,6 +16536,9 @@
                   "properties": {
                     "_count": {
                       "properties": {
+                        "apiKeys": {
+                          "type": "number"
+                        },
                         "boards": {
                           "type": "number"
                         },
@@ -16271,9 +16584,50 @@
                         "twoFactorAuth",
                         "twoFactorBackupCodes",
                         "twoFactorOtpUseds",
-                        "twoFactorRateLimit"
+                        "twoFactorRateLimit",
+                        "apiKeys"
                       ],
                       "type": "object"
+                    },
+                    "apiKeys": {
+                      "items": {
+                        "properties": {
+                          "createdAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "keyHash": {
+                            "type": "string"
+                          },
+                          "keyPrefix": {
+                            "type": "string"
+                          },
+                          "lastUsedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "userId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "userId",
+                          "createdAt",
+                          "name",
+                          "keyHash",
+                          "keyPrefix",
+                          "lastUsedAt"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
                     },
                     "boards": {
                       "items": {
@@ -17007,6 +17361,7 @@
                     "boards",
                     "twoFactorBackupCodes",
                     "twoFactorOtpUseds",
+                    "apiKeys",
                     "_count"
                   ],
                   "type": "object"

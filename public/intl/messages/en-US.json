@@ -425,7 +425,13 @@
     "two-factor-reset": "Reset 2FA",
     "two-factor-global-active-tooltip": "Global 2FA is enabled",
     "two-factor-verify": "Verify",
-    "two-factor-login": "Two-factor authentication"
+    "two-factor-login": "Two-factor authentication",
+    "api-keys": "API keys",
+    "api-key": "API key",
+    "create-api-key": "Create API key",
+    "last-used": "Last used",
+    "never": "Never",
+    "copy": "Copy"
   },
   "message": {
     "action-confirmation": "Type {confirmation} in the box below to confirm.",
@@ -510,6 +516,8 @@
     "two-factor-error-no-pending-setup": "No pending two-factor authentication setup found.",
     "two-factor-error-not-configured": "Two-factor authentication is not available because the server is missing a valid TWO_FACTOR_ENCRYPTION_KEY. Contact your administrator for help.",
     "two-factor-locked-message": "Too many failed attempts. Try again at {time}.",
-    "two-factor-active-description": "Your account is protected with two-factor authentication. Each login requires a code from your authenticator app."
+    "two-factor-active-description": "Your account is protected with two-factor authentication. Each login requires a code from your authenticator app.",
+    "api-key-created": "Copy your API key now. You won't be able to see it again.",
+    "no-api-keys": "You have not created any API keys."
   }
 }

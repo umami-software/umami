@@ -770,6 +770,46 @@ const operation2 = defineOperation({
                     required: ['id', 'userId', 'otp', 'expiresAt'],
                   },
                 },
+                apiKeys: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      id: {
+                        type: 'string',
+                      },
+                      userId: {
+                        type: 'string',
+                      },
+                      createdAt: {
+                        type: 'string',
+                        format: 'date-time',
+                      },
+                      name: {
+                        type: 'string',
+                      },
+                      keyHash: {
+                        type: 'string',
+                      },
+                      keyPrefix: {
+                        type: 'string',
+                      },
+                      lastUsedAt: {
+                        type: 'string',
+                        format: 'date-time',
+                      },
+                    },
+                    required: [
+                      'id',
+                      'userId',
+                      'createdAt',
+                      'name',
+                      'keyHash',
+                      'keyPrefix',
+                      'lastUsedAt',
+                    ],
+                  },
+                },
                 _count: {
                   type: 'object',
                   properties: {
@@ -806,6 +846,9 @@ const operation2 = defineOperation({
                     twoFactorRateLimit: {
                       type: 'number',
                     },
+                    apiKeys: {
+                      type: 'number',
+                    },
                   },
                   required: [
                     'websites',
@@ -819,6 +862,7 @@ const operation2 = defineOperation({
                     'twoFactorBackupCodes',
                     'twoFactorOtpUseds',
                     'twoFactorRateLimit',
+                    'apiKeys',
                   ],
                 },
               },
@@ -840,6 +884,7 @@ const operation2 = defineOperation({
                 'boards',
                 'twoFactorBackupCodes',
                 'twoFactorOtpUseds',
+                'apiKeys',
                 '_count',
               ],
             },

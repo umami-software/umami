@@ -38,6 +38,18 @@ const operation1 = defineOperation({
                   },
                   required: ['id', 'username', 'role', 'isAdmin'],
                 },
+                apiKey: {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      type: 'string',
+                    },
+                    name: {
+                      type: 'string',
+                    },
+                  },
+                  required: ['id', 'name'],
+                },
                 shareToken: {
                   type: 'object',
                   properties: {

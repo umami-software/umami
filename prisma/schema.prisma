@@ -32,8 +32,24 @@ model User {
   twoFactorBackupCodes TwoFactorBackupCode[]
   twoFactorOtpUseds    TwoFactorOtpUsed[]
   twoFactorRateLimit   TwoFactorRateLimit?
+  apiKeys              ApiKey[]
 
   @@map("user")
+}
+
+model ApiKey {
+  id         String    @id() @map("api_key_id") @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  name       String    @db.VarChar(255)
+  keyHash    String    @unique @map("key_hash") @db.VarChar(128)
+  keyPrefix  String    @map("key_prefix") @db.VarChar(20)
+  lastUsedAt DateTime? @map("last_used_at") @db.Timestamptz(6)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("api_key")
 }
 
 model Session {

@@ -208,6 +208,9 @@ if (isProd && cloudMode) {
 /** @type {import('next').NextConfig} */
 export default withNextIntl({
   reactStrictMode: false,
+  devIndicators: {
+    position: 'bottom-right',
+  },
   env: {
     apiUrl,
     basePath,
