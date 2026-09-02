@@ -61,6 +61,7 @@ function StepRow({
           <LookupField
             websiteId={websiteId}
             type={type}
+            allowCustomValue
             {...field}
             onValueChange={(v: string) => {
               setEventName(v);

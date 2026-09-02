@@ -72,7 +72,7 @@ export function GoalEditForm({
                   </FormField>
                   <FormField name="parameters.value" rules={{ required: t(labels.required) }}>
                     {({ field }) => {
-                      return <LookupField websiteId={websiteId} type={type} {...field} />;
+                      return <LookupField websiteId={websiteId} type={type} allowCustomValue {...field} />;
                     }}
                   </FormField>
                 </Column>
@@ -86,7 +86,7 @@ export function GoalEditForm({
                   <Column style={{ minWidth: 0 }}>
                     <FormField name="parameters.value" rules={{ required: t(labels.required) }}>
                       {({ field }) => {
-                        return <LookupField websiteId={websiteId} type={type} {...field} />;
+                        return <LookupField websiteId={websiteId} type={type} allowCustomValue {...field} />;
                       }}
                     </FormField>
                   </Column>
