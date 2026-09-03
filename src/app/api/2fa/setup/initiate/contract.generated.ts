@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'post2faSetupInitiate',
+    operationId: 'initiateTwoFactorSetup',
     summary: 'Create or update 2fa setup initiate',
     tags: ['Two-factor authentication'],
     responses: {

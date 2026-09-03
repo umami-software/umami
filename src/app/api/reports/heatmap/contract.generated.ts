@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'postReportsHeatmap',
+    operationId: 'runHeatmapReport',
     summary: 'Create or update reports heatmap',
     tags: ['Reports'],
     requestBody: {

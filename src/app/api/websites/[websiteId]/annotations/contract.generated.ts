@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getWebsitesWebsiteIdAnnotations',
+    operationId: 'getWebsiteAnnotations',
     summary: 'Get websites website id annotations',
     tags: ['Websites'],
     parameters: [
@@ -197,7 +197,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postWebsitesWebsiteIdAnnotations',
+    operationId: 'createWebsiteAnnotation',
     summary: 'Create or update websites website id annotations',
     tags: ['Websites'],
     parameters: [

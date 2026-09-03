@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postAuthSso',
+    operationId: 'sso',
     summary: 'Create or update auth sso',
     tags: ['Authentication'],
     responses: {

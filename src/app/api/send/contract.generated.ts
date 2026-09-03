@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'collect',
   auth: 'none',
   operation: {
-    operationId: 'postSend',
+    operationId: 'send',
     summary: 'Create or update send',
     tags: ['Collection'],
     requestBody: {

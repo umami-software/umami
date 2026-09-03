@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getBoardsBoardIdShares',
+    operationId: 'getBoardShares',
     summary: 'Get boards board id shares',
     tags: ['Boards'],
     parameters: [
@@ -428,7 +428,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postBoardsBoardIdShares',
+    operationId: 'createBoardShare',
     summary: 'Create or update boards board id shares',
     tags: ['Boards'],
     parameters: [

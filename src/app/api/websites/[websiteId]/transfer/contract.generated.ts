@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postWebsitesWebsiteIdTransfer',
+    operationId: 'transferWebsite',
     summary: 'Create or update websites website id transfer',
     tags: ['Websites'],
     parameters: [

@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'deleteMeApiKeysKeyId',
+    operationId: 'deleteMyApiKey',
     summary: 'Delete me api keys key id',
     tags: ['Account'],
     parameters: [

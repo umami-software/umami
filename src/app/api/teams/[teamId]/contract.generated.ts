@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'deleteTeamsTeamId',
+    operationId: 'deleteTeam',
     summary: 'Delete teams team id',
     tags: ['Teams'],
     parameters: [
@@ -66,7 +66,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getTeamsTeamId',
+    operationId: 'getTeam',
     summary: 'Get teams team id',
     tags: ['Teams'],
     parameters: [
@@ -173,7 +173,7 @@ const operation3 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postTeamsTeamId',
+    operationId: 'updateTeam',
     summary: 'Create or update teams team id',
     tags: ['Teams'],
     parameters: [

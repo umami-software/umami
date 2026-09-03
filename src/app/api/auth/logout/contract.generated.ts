@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postAuthLogout',
+    operationId: 'logout',
     summary: 'Create or update auth logout',
     tags: ['Authentication'],
     responses: {

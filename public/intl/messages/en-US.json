@@ -431,7 +431,9 @@
     "create-api-key": "Create API key",
     "last-used": "Last used",
     "never": "Never",
-    "copy": "Copy"
+    "copy": "Copy",
+    "authorize": "Authorize",
+    "deny": "Deny"
   },
   "message": {
     "action-confirmation": "Type {confirmation} in the box below to confirm.",
@@ -518,6 +520,15 @@
     "two-factor-locked-message": "Too many failed attempts. Try again at {time}.",
     "two-factor-active-description": "Your account is protected with two-factor authentication. Each login requires a code from your authenticator app.",
     "api-key-created": "Copy your API key now. You won't be able to see it again.",
-    "no-api-keys": "You have not created any API keys."
+    "no-api-keys": "You have not created any API keys.",
+    "oauth-login-prompt": "Sign in to continue.",
+    "oauth-consent": "{name} wants to access your Umami account.",
+    "oauth-permissions": "This will allow the application to:",
+    "oauth-scope-websites-read": "See the websites you have access to",
+    "oauth-scope-analytics-read": "Read analytics data for those websites",
+    "oauth-redirect-notice": "After you approve, you will be sent to {url}.",
+    "oauth-signed-in-as": "Signed in as {username}",
+    "oauth-invalid-request": "This authorization request is invalid.",
+    "oauth-redirecting": "Redirecting…"
   }
 }

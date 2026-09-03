@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getAuthSubscription',
+    operationId: 'getSubscription',
     summary: 'Get auth subscription',
     tags: ['Authentication'],
     parameters: [

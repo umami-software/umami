@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postMePassword',
+    operationId: 'updateMyPassword',
     summary: 'Create or update me password',
     tags: ['Account'],
     requestBody: {

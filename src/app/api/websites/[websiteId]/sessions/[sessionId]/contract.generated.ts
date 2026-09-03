@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'deleteWebsitesWebsiteIdSessionsSessionId',
+    operationId: 'deleteWebsiteSession',
     summary: 'Delete websites website id sessions session id',
     tags: ['Websites'],
     parameters: [
@@ -108,9 +108,10 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getWebsitesWebsiteIdSessionsSessionId',
+    operationId: 'getWebsiteSession',
     summary: 'Get websites website id sessions session id',
     tags: ['Websites'],
+    'x-umami-oauth-scope': 'analytics:read',
     parameters: [
       {
         name: 'websiteId',
