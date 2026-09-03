@@ -449,6 +449,7 @@ export const messages: Record<string, string> = {
   confirmDelete: 'message.confirm-delete',
   confirmRemove: 'message.confirm-remove',
   confirmLeave: 'message.confirm-leave',
+  maxLength: 'message.max-length',
   minPasswordLength: 'message.min-password-length',
   noTeams: 'message.no-teams',
   shareUrl: 'message.share-url',

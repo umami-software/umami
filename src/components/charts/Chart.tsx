@@ -12,6 +12,7 @@ import {
   ChartAnnotationMarkers,
 } from '@/components/charts/ChartAnnotationMarkers';
 import { Legend } from '@/components/metrics/Legend';
+import { getChartBucketIndex } from '@/lib/charts';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
 
 ChartJS.defaults.font.family = 'Inter';
@@ -26,7 +27,8 @@ export interface ChartProps extends BoxProps {
   hiddenLabels?: Set<string>;
   onLegendClick?: (label: string, willBeHidden: boolean) => void;
   annotations?: ChartAnnotation[];
-  onAnnotationClick?: (annotation: ChartAnnotation) => void;
+  onAnnotationClick?: (annotations: ChartAnnotation[]) => void;
+  onAnnotationMoreClick?: (annotations: ChartAnnotation[]) => void;
 }
 
 function isSameMarkers(a: AnnotationMarker[], b: AnnotationMarker[]) {
@@ -53,6 +55,7 @@ export function Chart({
   onLegendClick,
   annotations,
   onAnnotationClick,
+  onAnnotationMoreClick,
   ...props
 }: ChartProps) {
   const canvas = useRef(null);
@@ -79,7 +82,13 @@ export function Chart({
         const groups = new Map<number, AnnotationMarker>();
 
         for (const annotation of list) {
-          const x = Math.round(scales.x.getPixelForValue(annotation.date.getTime()));
+          const markerDate = annotation.markerDate || annotation.date;
+          const bucketIndex = getChartBucketIndex(
+            instance.data.datasets[0]?.data || [],
+            markerDate,
+          );
+          const bucket = instance.getDatasetMeta(0)?.data[bucketIndex];
+          const x = Math.round(bucket?.x ?? scales.x.getPixelForValue(markerDate.getTime()));
 
           if (!Number.isFinite(x) || x < chartArea.left || x > chartArea.right) {
             continue;
@@ -217,7 +226,11 @@ export function Chart({
         <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
           <canvas ref={canvas} style={{ position: 'absolute', top: 0, left: 0 }} />
           {markers.length > 0 && (
-            <ChartAnnotationMarkers markers={markers} onClick={onAnnotationClick} />
+            <ChartAnnotationMarkers
+              markers={markers}
+              onClick={onAnnotationClick}
+              onMoreClick={onAnnotationMoreClick}
+            />
           )}
         </div>
       </Box>

@@ -6,12 +6,10 @@ import { DialogButton } from '@/components/input/DialogButton';
 export function AnnotationDeleteButton({
   annotationId,
   websiteId,
-  name,
   onSave,
 }: {
   annotationId: string;
   websiteId: string;
-  name: string;
   onSave?: () => void;
 }) {
   const { t, labels, messages } = useMessages();
@@ -33,10 +31,7 @@ export function AnnotationDeleteButton({
     <DialogButton icon={<Trash />} variant="quiet" title={t(labels.confirm)} width="400px">
       {({ close }) => (
         <ConfirmationForm
-          message={t.rich(messages.confirmRemove, {
-            target: name,
-            b: chunks => <b>{chunks}</b>,
-          })}
+          message={t(messages.confirmDelete, { target: t(labels.note) })}
           isLoading={isPending}
           error={error}
           onConfirm={handleConfirm.bind(null, close)}

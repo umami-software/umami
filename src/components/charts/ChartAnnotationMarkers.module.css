@@ -37,6 +37,34 @@
 
 .note {
   max-width: 300px;
+  max-height: min(280px, 50vh);
+  overflow-y: auto;
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+.noteFull {
+  display: block;
+}
+
+.noteText {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.moreButton {
+  align-self: center;
+  min-height: 0;
+  padding: 2px 4px;
+  border-radius: 4px;
+  color: inherit;
+  opacity: 0.8;
+}
+
+.moreButton:hover,
+.moreButton:focus-visible {
+  background-color: rgba(255, 255, 255, 0.15);
+  opacity: 1;
 }
