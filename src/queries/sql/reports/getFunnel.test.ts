@@ -258,3 +258,111 @@ describe('getFunnel clickhouse branch', () => {
     expect(params).toMatchObject({ f_0_0_k: 'plan', f_0_0_v: '%pro%' });
   });
 });
+
+describe('funnel wildcard steps', () => {
+  test('postgres: a trailing wildcard switches to LIKE', async () => {
+    await getFunnel(
+      'website-1',
+      {
+        ...baseParameters,
+        steps: [
+          { type: 'path', value: '/blog/*' },
+          { type: 'event', value: 'file-download' },
+        ],
+      },
+      {},
+    );
+
+    const [query, params] = prismaRawQuery.mock.calls[0];
+    expect(query).toContain('and url_path like {{0}}');
+    expect(query).toContain('and we.event_name = {{1}}');
+    expect(params).toMatchObject({ 0: '/blog/%', 1: 'file-download' });
+  });
+
+  test('postgres: a mid-string * stays literal and % is escaped', async () => {
+    await getFunnel(
+      'website-1',
+      {
+        ...baseParameters,
+        steps: [
+          { type: 'path', value: '/blog/*/comments' },
+          { type: 'path', value: '/sale/100%*' },
+        ],
+      },
+      {},
+    );
+
+    const [query, params] = prismaRawQuery.mock.calls[0];
+    // no edge wildcard -> stays an equality match, value untouched
+    expect(query).toContain('and url_path = {{0}}');
+    expect(query).toContain('and we.url_path like {{1}}');
+    expect(params).toMatchObject({ 0: '/blog/*/comments', 1: '/sale/100\\%%' });
+  });
+
+  test('clickhouse: a leading wildcard switches to LIKE', async () => {
+    state.mode = 'clickhouse';
+
+    await getFunnel(
+      'website-1',
+      {
+        ...baseParameters,
+        steps: [
+          { type: 'path', value: '*/comments' },
+          { type: 'event', value: 'file-download' },
+        ],
+      },
+      {},
+    );
+
+    const [query, params] = clickhouseRawQuery.mock.calls[0];
+    expect(query).toContain('url_path like {param0:String}');
+    expect(query).toContain('event_name = {param1:String}');
+    expect(params).toMatchObject({ param0: '%/comments', param1: 'file-download' });
+  });
+
+  test('postgres: event step filters accept the wildcard operator', async () => {
+    await getFunnel(
+      'website-1',
+      {
+        ...baseParameters,
+        steps: [
+          {
+            type: 'event',
+            value: 'file-download',
+            filters: [{ property: 'file', operator: 'wc', value: 'liberica-*' }],
+          },
+          { type: 'event', value: 'confirm' },
+        ],
+      },
+      {},
+    );
+
+    const [query, params] = prismaRawQuery.mock.calls[0];
+    expect(query).toContain('ilike {{f_0_0_v}}');
+    expect(params).toMatchObject({ f_0_0_v: 'liberica-%' });
+  });
+
+  test('clickhouse: event step filters accept the wildcard operator', async () => {
+    state.mode = 'clickhouse';
+
+    await getFunnel(
+      'website-1',
+      {
+        ...baseParameters,
+        steps: [
+          {
+            type: 'event',
+            value: 'file-download',
+            filters: [{ property: 'file', operator: 'nwc', value: '*.zip' }],
+          },
+          { type: 'event', value: 'confirm' },
+        ],
+      },
+      {},
+    );
+
+    const [query, params] = clickhouseRawQuery.mock.calls[0];
+    expect(query).toContain('not like {f_0_0_v:String}');
+    expect(params).toMatchObject({ f_0_0_v: '%.zip' });
+  });
+});

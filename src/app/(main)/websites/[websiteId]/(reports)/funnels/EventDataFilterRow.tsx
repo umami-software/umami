@@ -156,6 +156,8 @@ function OperatorSelect({
       <ListItem id="neq">{t(labels.isNot)}</ListItem>
       <ListItem id="c">{t(labels.contains)}</ListItem>
       <ListItem id="dnc">{t(labels.doesNotContain)}</ListItem>
+      <ListItem id="wc">{t(labels.matches)}</ListItem>
+      <ListItem id="nwc">{t(labels.doesNotMatch)}</ListItem>
     </Select>
   );
 }

@@ -13,6 +13,8 @@ export function useOperatorLabels(): Record<string, string> {
     [OPERATORS.doesNotContain]: t(labels.doesNotContain),
     [OPERATORS.regex]: t(labels.regexMatch),
     [OPERATORS.notRegex]: t(labels.regexNotMatch),
+    [OPERATORS.matches]: t(labels.matches),
+    [OPERATORS.doesNotMatch]: t(labels.doesNotMatch),
     [OPERATORS.true]: t(labels.true),
     [OPERATORS.false]: t(labels.false),
     [OPERATORS.greaterThan]: t(labels.greaterThan),
