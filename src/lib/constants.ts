@@ -705,6 +705,7 @@ export const CURRENCIES = [
   { id: 'MYR', name: 'Malaysian Ringgit' },
   { id: 'INR', name: 'Indian Rupee' },
   { id: 'KRW', name: 'South Korean Won' },
+  { id: 'TWD', name: 'New Taiwan Dollar' },
   { id: 'BRL', name: 'Brazilian Real' },
   { id: 'TRY', name: 'Turkish Lira' },
   { id: 'CZK', name: 'Czech Koruna' },
