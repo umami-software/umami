@@ -4,6 +4,7 @@ import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { useMessages, useMobile } from '@/components/hooks';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
+import { TimeRangePickerForm } from '@/components/metrics/TimeRangePickerForm';
 import { getMaxSelectableDate, parseDateRange } from '@/lib/date';
 
 export interface DateFilterProps extends Omit<SelectProps, 'value' | 'onChange'> {
@@ -24,6 +25,7 @@ export function DateFilter({
 }: DateFilterProps) {
   const { t, labels } = useMessages();
   const [showPicker, setShowPicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
   const { startDate, endDate } = parseDateRange(value) || {};
   const { isMobile } = useMobile();
 
@@ -32,6 +34,27 @@ export function DateFilter({
     {
       label: t(labels.lastHours, { x: '24' }),
       value: '24hour',
+    },
+    {
+      label: t(labels.lastHours, { x: '12' }),
+      value: '12hour',
+    },
+    {
+      label: t(labels.lastHours, { x: '6' }),
+      value: '6hour',
+    },
+    {
+      label: t(labels.lastHours, { x: '4' }),
+      value: '4hour',
+    },
+    {
+      label: t(labels.lastHours, { x: '2' }),
+      value: '2hour',
+    },
+    {
+      label: t(labels.lastHours, { x: '1' }),
+      value: '1hour',
+      divider: true,
     },
     {
       label: t(labels.thisWeek),
@@ -75,6 +98,10 @@ export function DateFilter({
       value: 'custom',
       divider: true,
     },
+    {
+      label: t(labels.timeRange),
+      value: 'timeRange',
+    },
   ]
     .filter(n => n)
     .map((a, id) => ({ ...a, id }));
@@ -84,11 +111,20 @@ export function DateFilter({
       setShowPicker(true);
       return;
     }
+    if (value === 'timeRange') {
+      setShowTimePicker(true);
+      return;
+    }
     onChange(value.toString());
   };
 
   const handlePickerChange = (value: string) => {
     setShowPicker(false);
+    onChange(value.toString());
+  };
+
+  const handleTimePickerChange = (value: string) => {
+    setShowTimePicker(false);
     onChange(value.toString());
   };
 
@@ -143,6 +179,20 @@ export function DateFilter({
             </Dialog>
           </Modal>
         </ControlledDialog>
+      )}
+      {showTimePicker && (
+        <Modal isOpen={true}>
+          <Dialog>
+            <TimeRangePickerForm
+              startDate={startDate}
+              endDate={endDate}
+              minDate={new Date(2000, 0, 1)}
+              maxDate={endOfYear(new Date())}
+              onChange={handleTimePickerChange}
+              onClose={() => setShowTimePicker(false)}
+            />
+          </Dialog>
+        </Modal>
       )}
     </>
   );
