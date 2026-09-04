@@ -120,6 +120,7 @@ function ValueSelect({
     <ComboBox
       aria-label="ValueSelect"
       items={values}
+      value={value}
       inputValue={value}
       onInputValueChange={v => {
         onChange?.(v);
