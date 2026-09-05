@@ -56,12 +56,14 @@ export function WebsiteValueComboBox({
   }, [type, additionalType]);
 
   const items = useMemo(() => {
-    const values = [...(primaryQuery.data || []), ...(additionalQuery.data || [])]
-      .map(({ value }) => value)
-      .filter(Boolean);
+    const values = [
+      value,
+      ...(primaryQuery.data || []).map(({ value }) => value),
+      ...(additionalQuery.data || []).map(({ value }) => value),
+    ].filter(Boolean);
 
     return [...new Set<string>(values)];
-  }, [primaryQuery.data, additionalQuery.data]);
+  }, [value, primaryQuery.data, additionalQuery.data]);
 
   return (
     <div className={cn('flex flex-col gap-1', className)}>
