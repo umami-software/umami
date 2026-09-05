@@ -22,6 +22,7 @@ import {
   id,
   it,
   ja,
+  ka,
   km,
   ko,
   lt,
@@ -48,6 +49,7 @@ import {
 } from 'date-fns/locale';
 
 export const languages = {
+  'ka-GE': { label: 'ქართული', dateLocale: ka },
   'ar-SA': { label: 'العربية', dateLocale: arSA, dir: 'rtl' },
   'be-BY': { label: 'Беларуская', dateLocale: be },
   'bg-BG': { label: 'български език', dateLocale: bg },
