@@ -27,12 +27,26 @@ user/team permission checks as the web app.
 
 All tools are read-only. Dates are ISO 8601; results are paginated with a hard cap on page size.
 
-## Remote (Umami Cloud / self-hosted with OAuth)
+## Remote: Umami Cloud
+
+Connect to `https://cloud.umami.is/mcp` using your existing Cloud API key:
+
+```text
+Authorization: Bearer api_<your-cloud-api-key>
+```
+
+Clients that support custom headers may use `x-umami-api-key` instead. If both headers are
+provided, they must contain the same key. Use a client that supports API-key or bearer-header
+configuration; Cloud OAuth discovery is not implemented by this endpoint.
+
+Cloud MCP has the same subscription requirements and website/team permissions as the Cloud API.
+All tools call the Cloud API gateway, which validates the key and routes requests to your region.
+
+## Remote: self-hosted with OAuth
 
 Add the MCP endpoint to your client:
 
 ```text
-https://cloud.umami.is/mcp
 https://your-umami.example.com/mcp
 ```
 
@@ -66,6 +80,20 @@ Self-hosted instances can alternatively pass an API key (`umami_…`) as the bea
 | `UMAMI_API_URL`   | Full API base URL instead, e.g. `https://api.umami.is/v1`.         |
 | `UMAMI_API_TOKEN` | API key or login token (self-hosted).                              |
 | `UMAMI_API_KEY`   | Umami Cloud API key.                                               |
+
+For Cloud stdio, set `UMAMI_API_KEY` and omit `UMAMI_URL` and `UMAMI_API_TOKEN`:
+
+```json
+{
+  "mcpServers": {
+    "umami": {
+      "command": "npx",
+      "args": ["-y", "@umami/mcp"],
+      "env": { "UMAMI_API_KEY": "api_<your-cloud-api-key>" }
+    }
+  }
+}
+```
 
 ## Example prompts
 
