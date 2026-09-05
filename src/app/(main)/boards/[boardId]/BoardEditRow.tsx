@@ -8,17 +8,26 @@ import {
   Separator,
 } from 'react-resizable-panels';
 import { v4 as uuid } from 'uuid';
+import { FilterScopeProvider } from '@/components/common/FilterScopeProvider';
 import { useBoard } from '@/components/hooks';
 import { ChevronDown, GripVertical, Minus, Plus } from '@/components/icons';
-import type { BoardColumn as BoardColumnType, BoardComponentConfig } from '@/lib/types';
+import { getResolvedComponentEntity } from '@/lib/boards';
+import type {
+  BoardColumn as BoardColumnType,
+  BoardComponentConfig,
+  BoardRowFilters,
+} from '@/lib/types';
 import { BoardEditColumn } from './BoardEditColumn';
+import { BoardRowFilterButton } from './BoardRowFilterButton';
 import { MAX_COLUMNS, MIN_COLUMN_WIDTH } from './boardConstants';
+import { useBoardRowScope } from './useBoardRowScope';
 
 export function BoardEditRow({
   rowId,
   rowIndex,
   rowCount,
   columns,
+  filters,
   canEdit,
   onRemove,
   onMoveUp,
@@ -29,6 +38,7 @@ export function BoardEditRow({
   rowIndex: number;
   rowCount: number;
   columns: BoardColumnType[];
+  filters?: BoardRowFilters;
   canEdit: boolean;
   onRemove: (id: string) => void;
   onMoveUp: (id: string) => void;
@@ -37,6 +47,7 @@ export function BoardEditRow({
 }) {
   const { board, updateBoard } = useBoard();
   const [showActions, setShowActions] = useState(false);
+  const scope = useBoardRowScope(board, columns, filters);
   const moveUpDisabled = rowIndex === 0;
   const addColumnDisabled = columns.length >= MAX_COLUMNS;
   const moveDownDisabled = rowIndex === rowCount - 1;
@@ -84,6 +95,68 @@ export function BoardEditRow({
     });
   };
 
+  const columnsGroup = (
+    <Group groupRef={handleGroupRef}>
+      {columns?.map((column, index) => (
+        <Fragment key={`${column.id}:${column.size ?? 'auto'}`}>
+          <ResizablePanel
+            id={column.id}
+            minSize={MIN_COLUMN_WIDTH}
+            defaultSize={column.size != null ? `${column.size}%` : undefined}
+          >
+            {(() => {
+              const { entityId } = getResolvedComponentEntity(board, column.component);
+              const isScoped = scope.appliesTo(entityId);
+              const content = (
+                <BoardEditColumn
+                  {...column}
+                  canEdit={canEdit}
+                  onRemove={handleRemoveColumn}
+                  onSetComponent={handleSetComponent}
+                  canRemove={columns.length > 1}
+                  rowFilters={isScoped ? filters : undefined}
+                  filterWebsiteId={scope.targetWebsiteId}
+                />
+              );
+
+              return isScoped ? (
+                <FilterScopeProvider params={scope.params}>{content}</FilterScopeProvider>
+              ) : (
+                content
+              );
+            })()}
+          </ResizablePanel>
+          {index < columns.length - 1 && (
+            <Separator
+              style={{
+                width: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: 'none',
+                outline: 'none',
+                boxShadow: 'none',
+                background: 'transparent',
+              }}
+            >
+              <Row
+                width="100%"
+                height="100%"
+                alignItems="center"
+                justifyContent="center"
+                style={{ cursor: 'col-resize' }}
+              >
+                <Icon size="sm">
+                  <GripVertical />
+                </Icon>
+              </Row>
+            </Separator>
+          )}
+        </Fragment>
+      ))}
+    </Group>
+  );
+
   return (
     <Box
       position="relative"
@@ -91,51 +164,7 @@ export function BoardEditRow({
       onMouseEnter={() => setShowActions(true)}
       onMouseLeave={() => setShowActions(false)}
     >
-      <Group groupRef={handleGroupRef}>
-        {columns?.map((column, index) => (
-          <Fragment key={`${column.id}:${column.size ?? 'auto'}`}>
-            <ResizablePanel
-              id={column.id}
-              minSize={MIN_COLUMN_WIDTH}
-              defaultSize={column.size != null ? `${column.size}%` : undefined}
-            >
-              <BoardEditColumn
-                {...column}
-                canEdit={canEdit}
-                onRemove={handleRemoveColumn}
-                onSetComponent={handleSetComponent}
-                canRemove={columns.length > 1}
-              />
-            </ResizablePanel>
-            {index < columns.length - 1 && (
-              <Separator
-                style={{
-                  width: '12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  border: 'none',
-                  outline: 'none',
-                  boxShadow: 'none',
-                  background: 'transparent',
-                }}
-              >
-                <Row
-                  width="100%"
-                  height="100%"
-                  alignItems="center"
-                  justifyContent="center"
-                  style={{ cursor: 'col-resize' }}
-                >
-                  <Icon size="sm">
-                    <GripVertical />
-                  </Icon>
-                </Row>
-              </Separator>
-            )}
-          </Fragment>
-        ))}
-      </Group>
+      {columnsGroup}
       {canEdit && showActions && (
         <Column
           padding="2"
@@ -161,6 +190,12 @@ export function BoardEditRow({
             </Button>
             <Tooltip placement="top">Move row up</Tooltip>
           </TooltipTrigger>
+          <BoardRowFilterButton
+            rowId={rowId}
+            websiteId={scope.targetWebsiteId}
+            rowFilters={filters}
+            isActive={scope.hasFilters}
+          />
           <TooltipTrigger delay={0}>
             <Button
               variant="outline"
