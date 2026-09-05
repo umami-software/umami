@@ -118,6 +118,8 @@
     "event-data": "Tiltaksdata",
     "event-properties": "Tiltaksdata",
     "event-name": "Tiltaksnavn",
+    "export": "Útflutningur",
+    "export-data": "Útflutningsgøgn",
     "events": "Hendingar/tiltøk",
     "exclude-bounce": "Útiloka frástøyt",
     "exists": "Er til",

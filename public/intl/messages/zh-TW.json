@@ -118,6 +118,8 @@
     "event-data": "事件資料",
     "event-properties": "事件資料",
     "event-name": "事件名稱",
+    "export": "匯出",
+    "export-data": "匯出資料",
     "events": "事件",
     "exclude-bounce": "排除跳出",
     "exists": "存在",

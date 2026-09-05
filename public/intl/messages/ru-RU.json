@@ -118,6 +118,8 @@
     "event-data": "Данные о событии",
     "event-properties": "Данные о событии",
     "event-name": "Название события",
+    "export": "Экспорт",
+    "export-data": "Экспорт данных",
     "events": "События",
     "exclude-bounce": "Исключить отказы",
     "exists": "Существует",

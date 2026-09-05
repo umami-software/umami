@@ -118,6 +118,8 @@
     "event-data": "Olay verisi",
     "event-properties": "Olay verisi",
     "event-name": "Olay adı",
+    "export": "Dışa aktar",
+    "export-data": "Verileri dışa aktar",
     "events": "Olaylar",
     "exclude-bounce": "Hemen çıkışı hariç tut",
     "exists": "Mevcut",

@@ -118,6 +118,8 @@
     "event-data": "Hodisa ma'lumotlari",
     "event-properties": "Hodisa ma'lumotlari",
     "event-name": "Hodisa nomi",
+    "export": "Eksport",
+    "export-data": "Ma'lumotlarni eksport qilish",
     "events": "Hodisalar",
     "exclude-bounce": "Chiqib ketishni istisno qilish",
     "exists": "Mavjud",

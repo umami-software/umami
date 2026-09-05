@@ -118,6 +118,8 @@
     "event-data": "Data události",
     "event-properties": "Data události",
     "event-name": "Název události",
+    "export": "Export",
+    "export-data": "Export dat",
     "events": "Události",
     "exclude-bounce": "Vyloučit odmítnutí",
     "exists": "Existuje",

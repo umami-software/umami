@@ -118,6 +118,8 @@
     "event-data": "Datum gebeurtenis",
     "event-properties": "Datum gebeurtenis",
     "event-name": "Gebeurtenisnaam",
+    "export": "Exporteren",
+    "export-data": "Gegevens exporteren",
     "events": "Gebeurtenissen",
     "exclude-bounce": "Bounce uitsluiten",
     "exists": "Bestaat",

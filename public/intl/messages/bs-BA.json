@@ -118,6 +118,8 @@
     "event-data": "Podaci o događaju",
     "event-properties": "Podaci o događaju",
     "event-name": "Naziv događaja",
+    "export": "Izvoz",
+    "export-data": "Izvoz podataka",
     "events": "Događaji",
     "exclude-bounce": "Isključi odbijanja",
     "exists": "Postoji",

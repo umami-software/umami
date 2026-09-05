@@ -9,6 +9,7 @@ import {
 } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 import { WebsiteDeleteForm } from './WebsiteDeleteForm';
+import { WebsiteExportForm } from './WebsiteExportForm';
 import { WebsiteResetForm } from './WebsiteResetForm';
 import { WebsiteTransferForm } from './WebsiteTransferForm';
 
@@ -49,18 +50,33 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   return (
     <Column gap="6">
       {!isAdmin && (
-        <ActionForm label={t(labels.transferWebsite)} description={t(messages.transferWebsite)}>
-          <DialogTrigger>
-            <Button isDisabled={!canTransferWebsite}>{t(labels.transfer)}</Button>
-            <Modal>
-              <Dialog title={t(labels.transferWebsite)} style={{ width: 400 }}>
-                {({ close }) => (
-                  <WebsiteTransferForm websiteId={websiteId} onSave={handleSave} onClose={close} />
-                )}
-              </Dialog>
-            </Modal>
-          </DialogTrigger>
-        </ActionForm>
+        <>
+          <ActionForm label={t(labels.transferWebsite)} description={t(messages.transferWebsite)}>
+            <DialogTrigger>
+              <Button isDisabled={!canTransferWebsite}>{t(labels.transfer)}</Button>
+              <Modal>
+                <Dialog title={t(labels.transferWebsite)} style={{ width: 400 }}>
+                  {({ close }) => (
+                    <WebsiteTransferForm websiteId={websiteId} onSave={handleSave} onClose={close} />
+                  )}
+                </Dialog>
+              </Modal>
+            </DialogTrigger>
+          </ActionForm>
+
+          <ActionForm label={t(labels.exportData)} description={t(labels.exportData)}>
+            <DialogTrigger>
+              <Button>{t(labels.export)}</Button>
+              <Modal>
+                <Dialog title={t(labels.exportData)} style={{ width: 400 }}>
+                  {({ close }) => (
+                    <WebsiteExportForm websiteId={websiteId} onClose={close} />
+                  )}
+                </Dialog>
+              </Modal>
+            </DialogTrigger>
+          </ActionForm>
+        </>
       )}
 
       <ActionForm label={t(labels.resetWebsite)} description={t(messages.resetWebsiteWarning)}>
