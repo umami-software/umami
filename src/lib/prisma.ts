@@ -2,15 +2,23 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import debug from 'debug';
 import { PrismaClient } from '@/generated/prisma/client';
-import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
+import {
+  DATA_TYPE,
+  DEFAULT_PAGE_SIZE,
+  FILTER_COLUMNS,
+  OPERATORS,
+  SESSION_COLUMNS,
+} from './constants';
 import { filtersObjectToArray } from './params';
 import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
+import { wildcardToLikePattern } from './wildcard';
 
 const log = debug('umami:prisma');
 
 const EQUALITY_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
 const SEARCH_OPERATORS: Operator[] = [OPERATORS.contains, OPERATORS.doesNotContain];
 const REGEX_OPERATORS: Operator[] = [OPERATORS.regex, OPERATORS.notRegex];
+const WILDCARD_OPERATORS: Operator[] = [OPERATORS.matches, OPERATORS.doesNotMatch];
 
 const PRISMA = 'prisma';
 
@@ -34,7 +42,12 @@ export interface RawQueryClient extends RawQueryExecutor {
 }
 
 function isRawQueryExecutor(value: unknown): value is RawQueryExecutor {
-  return !!value && typeof value === 'object' && '$executeRawUnsafe' in value && '$queryRawUnsafe' in value;
+  return (
+    !!value &&
+    typeof value === 'object' &&
+    '$executeRawUnsafe' in value &&
+    '$queryRawUnsafe' in value
+  );
 }
 
 export function getRawQueryClient(
@@ -165,6 +178,10 @@ function mapFilter(
       return `${table}.${column} ~* ${value}`;
     case OPERATORS.notRegex:
       return `${table}.${column} !~* ${value}`;
+    case OPERATORS.matches:
+      return `${table}.${column} ilike ${value}`;
+    case OPERATORS.doesNotMatch:
+      return `${table}.${column} not ilike ${value}`;
     default:
       return '';
   }
@@ -274,7 +291,7 @@ function getDateQuery(filters: Record<string, any>) {
   return '';
 }
 
-function getQueryParams(filters: Record<string, any>) {
+function getQueryParams(filters: Record<string, any>): Record<string, any> {
   return {
     ...filters,
     ...filtersObjectToArray(filters).reduce((obj, { name, column, operator, value, paramName }) => {
@@ -285,7 +302,9 @@ function getQueryParams(filters: Record<string, any>) {
 
       const key = paramName ?? name;
 
-      if (SEARCH_OPERATORS.includes(operator)) {
+      if (WILDCARD_OPERATORS.includes(operator)) {
+        obj[key] = wildcardToLikePattern(String(value));
+      } else if (SEARCH_OPERATORS.includes(operator)) {
         obj[key] = `%${value}%`;
       } else if (EQUALITY_OPERATORS.includes(operator)) {
         obj[key] = Array.isArray(value) ? value : [value];
@@ -307,14 +326,13 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   const cohortFilters = Object.fromEntries(
     Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
   );
-  const {
-    sql: eventPropertyFilterQuery,
-    params: eventPropertyFilterParams,
-  } = getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
-  const {
-    sql: sessionPropertyFilterQuery,
-    params: sessionPropertyFilterParams,
-  } = getSessionPropertyFilterQuery((filters as QueryFilters).sessionPropertyFilters, filters.timezone);
+  const { sql: eventPropertyFilterQuery, params: eventPropertyFilterParams } =
+    getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
+  const { sql: sessionPropertyFilterQuery, params: sessionPropertyFilterParams } =
+    getSessionPropertyFilterQuery(
+      (filters as QueryFilters).sessionPropertyFilters,
+      filters.timezone,
+    );
 
   return {
     joinSessionQuery:
@@ -322,7 +340,11 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
         ? `inner join session on website_event.session_id = session.session_id and website_event.website_id = session.website_id`
         : '',
     dateQuery: getDateQuery(filters),
-    filterQuery: [getFilterQuery(filters, options), eventPropertyFilterQuery, sessionPropertyFilterQuery]
+    filterQuery: [
+      getFilterQuery(filters, options),
+      eventPropertyFilterQuery,
+      sessionPropertyFilterQuery,
+    ]
       .filter(Boolean)
       .join('\n'),
     queryParams: {
@@ -424,6 +446,13 @@ function getPropertyFilterQuery(
             operator === OPERATORS.regex
               ? `${col} ~* {{${valParam}}}`
               : `${col} !~* {{${valParam}}}`;
+        } else if (WILDCARD_OPERATORS.includes(operator)) {
+          if (!value) return;
+          params[valParam] = wildcardToLikePattern(value);
+          condition =
+            operator === OPERATORS.matches
+              ? `${col} ilike {{${valParam}}}`
+              : `${col} not ilike {{${valParam}}}`;
         } else {
           if (!value) return;
           params[valParam] = `%${value}%`;
@@ -552,6 +581,14 @@ function getEventPropertyFilterQuery(
             operator === OPERATORS.regex
               ? `${col} ~* {{${valParam}}}`
               : `${col} !~* {{${valParam}}}`;
+        } else if (WILDCARD_OPERATORS.includes(operator)) {
+          if (!value) return;
+
+          params[valParam] = wildcardToLikePattern(value);
+          condition =
+            operator === OPERATORS.matches
+              ? `${col} ilike {{${valParam}}}`
+              : `${col} not ilike {{${valParam}}}`;
         } else {
           if (!value) return;
 
@@ -678,6 +715,14 @@ function getSessionPropertyFilterQuery(
             operator === OPERATORS.regex
               ? `${col} ~* {{${valParam}}}`
               : `${col} !~* {{${valParam}}}`;
+        } else if (WILDCARD_OPERATORS.includes(operator)) {
+          if (!value) return;
+
+          params[valParam] = wildcardToLikePattern(value);
+          condition =
+            operator === OPERATORS.matches
+              ? `${col} ilike {{${valParam}}}`
+              : `${col} not ilike {{${valParam}}}`;
         } else {
           if (!value) return;
 

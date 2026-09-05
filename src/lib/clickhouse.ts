@@ -5,6 +5,7 @@ import { CLICKHOUSE } from '@/lib/db';
 import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from './constants';
 import { filtersObjectToArray } from './params';
 import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
+import { wildcardToLikePattern } from './wildcard';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   // %i is unsupported by ClickHouse before v23.4. %T and %R work on both
@@ -22,6 +23,7 @@ const log = debug('umami:clickhouse');
 
 const EQUALITY_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
 const REGEX_OPERATORS: Operator[] = [OPERATORS.regex, OPERATORS.notRegex];
+const WILDCARD_OPERATORS: Operator[] = [OPERATORS.matches, OPERATORS.doesNotMatch];
 
 let clickhouse: ClickHouseClient;
 const enabled = Boolean(process.env.CLICKHOUSE_URL);
@@ -104,6 +106,10 @@ function mapFilter(
       return `match(${column}, concat('(?i)', ${value}))`;
     case OPERATORS.notRegex:
       return `not match(${column}, concat('(?i)', ${value}))`;
+    case OPERATORS.matches:
+      return `${column} ILIKE ${value}`;
+    case OPERATORS.doesNotMatch:
+      return `${column} NOT ILIKE ${value}`;
     default:
       return '';
   }
@@ -214,7 +220,7 @@ function getDateQuery(filters: Record<string, any>) {
   return '';
 }
 
-function getQueryParams(filters: Record<string, any>) {
+function getQueryParams(filters: Record<string, any>): Record<string, any> {
   return {
     ...filters,
     ...filtersObjectToArray(filters).reduce((obj, { name, column, operator, value, paramName }) => {
@@ -225,11 +231,13 @@ function getQueryParams(filters: Record<string, any>) {
 
       const key = paramName ?? name;
 
-      obj[key] = EQUALITY_OPERATORS.includes(operator)
-        ? Array.isArray(value)
-          ? value
-          : [value]
-        : value;
+      if (EQUALITY_OPERATORS.includes(operator)) {
+        obj[key] = Array.isArray(value) ? value : [value];
+      } else if (WILDCARD_OPERATORS.includes(operator)) {
+        obj[key] = wildcardToLikePattern(String(value));
+      } else {
+        obj[key] = value;
+      }
 
       return obj;
     }, {}),
@@ -240,17 +248,20 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   const cohortFilters = Object.fromEntries(
     Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
   );
-  const {
-    sql: eventPropertyFilterQuery,
-    params: eventPropertyFilterParams,
-  } = getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
-  const {
-    sql: sessionPropertyFilterQuery,
-    params: sessionPropertyFilterParams,
-  } = getSessionPropertyFilterQuery((filters as QueryFilters).sessionPropertyFilters, filters.timezone);
+  const { sql: eventPropertyFilterQuery, params: eventPropertyFilterParams } =
+    getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
+  const { sql: sessionPropertyFilterQuery, params: sessionPropertyFilterParams } =
+    getSessionPropertyFilterQuery(
+      (filters as QueryFilters).sessionPropertyFilters,
+      filters.timezone,
+    );
 
   return {
-    filterQuery: [getFilterQuery(filters, options), eventPropertyFilterQuery, sessionPropertyFilterQuery]
+    filterQuery: [
+      getFilterQuery(filters, options),
+      eventPropertyFilterQuery,
+      sessionPropertyFilterQuery,
+    ]
       .filter(Boolean)
       .join('\n'),
     dateQuery: getDateQuery(filters),
@@ -346,6 +357,15 @@ function getPropertyFilterQuery(
           condition = mapFilter(
             col,
             operator === OPERATORS.regex ? OPERATORS.regex : OPERATORS.notRegex,
+            valParam,
+            'String',
+          );
+        } else if (WILDCARD_OPERATORS.includes(operator)) {
+          if (!value) return;
+          params[valParam] = wildcardToLikePattern(value);
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.matches ? OPERATORS.matches : OPERATORS.doesNotMatch,
             valParam,
             'String',
           );
@@ -473,6 +493,16 @@ function getEventPropertyFilterQuery(
             valParam,
             'String',
           );
+        } else if (WILDCARD_OPERATORS.includes(operator)) {
+          if (!value) return;
+
+          params[valParam] = wildcardToLikePattern(value);
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.matches ? OPERATORS.matches : OPERATORS.doesNotMatch,
+            valParam,
+            'String',
+          );
         } else {
           if (!value) return;
 
@@ -593,6 +623,16 @@ function getSessionPropertyFilterQuery(
           condition = mapFilter(
             col,
             operator === OPERATORS.regex ? OPERATORS.regex : OPERATORS.notRegex,
+            valParam,
+            'String',
+          );
+        } else if (WILDCARD_OPERATORS.includes(operator)) {
+          if (!value) return;
+
+          params[valParam] = wildcardToLikePattern(value);
+          condition = mapFilter(
+            col,
+            operator === OPERATORS.matches ? OPERATORS.matches : OPERATORS.doesNotMatch,
             valParam,
             'String',
           );

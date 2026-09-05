@@ -151,6 +151,8 @@ describe('useFilters', () => {
         { type: 'string', value: 'neq', label: 'neq' },
         { type: 'string', value: 'c', label: 'c' },
         { type: 'string', value: 'dnc', label: 'dnc' },
+        { type: 'string', value: 'wc', label: 'wc' },
+        { type: 'string', value: 'nwc', label: 'nwc' },
         { type: 'string', value: 're', label: 're' },
         { type: 'string', value: 'nre', label: 'nre' },
       ]);
@@ -167,5 +169,7 @@ describe('useFilters', () => {
 
     expect(operators).toContainEqual({ name: 'gt', type: 'number', label: 'greaterThan' });
     expect(operators.filter(o => o.type === 'boolean')).toHaveLength(2);
+    expect(operators).toContainEqual({ name: 'wc', type: 'string', label: 'matches' });
+    expect(operators).toContainEqual({ name: 'nwc', type: 'string', label: 'doesNotMatch' });
   });
 });

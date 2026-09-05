@@ -211,6 +211,8 @@ export const labels: Record<string, string> = {
   doesNotContain: 'label.does-not-contain',
   regexMatch: 'label.regex-match',
   regexNotMatch: 'label.regex-not-match',
+  matches: 'label.matches',
+  doesNotMatch: 'label.does-not-match',
   includes: 'label.includes',
   doesNotInclude: 'label.does-not-include',
   before: 'label.before',

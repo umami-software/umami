@@ -152,6 +152,8 @@ export const OPERATORS = {
   doesNotContain: 'dnc',
   regex: 're',
   notRegex: 'nre',
+  matches: 'wc',
+  doesNotMatch: 'nwc',
   true: 't',
   false: 'f',
   greaterThan: 'gt',
