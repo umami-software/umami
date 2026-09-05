@@ -697,6 +697,7 @@ export const CURRENCIES = [
   { id: 'PLN', name: 'Polish Złoty' },
   { id: 'NOK', name: 'Norwegian Krone' },
   { id: 'DKK', name: 'Danish Krone' },
+  { id: 'ISK', name: 'Icelandic Króna' },
   { id: 'NZD', name: 'New Zealand Dollar' },
   { id: 'ZAR', name: 'South African Rand' },
   { id: 'MXN', name: 'Mexican Peso' },
