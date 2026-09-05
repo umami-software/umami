@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'postBoardsBoardIdClone',
+    operationId: 'cloneBoard',
     summary: 'Create or update boards board id clone',
     tags: ['Boards'],
     parameters: [

@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getWebsitesWebsiteIdEventDataEventId',
+    operationId: 'getEventDataById',
     summary: 'Get websites website id event data event id',
     tags: ['Websites'],
     parameters: [

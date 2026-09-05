@@ -45,3 +45,23 @@ inference layer extracts path parameters, Zod request fields, authentication, ty
 response status helpers, and response media types without importing route modules. Running
 `pnpm openapi:contracts` snapshots that behavior into an explicit contract. Curated `contract.ts`
 modules remain the way to add examples, custom operation IDs, and hand-written prose.
+
+## Operation IDs
+
+Operation IDs are public: they become method names in `@umami/api-client`. Routes with a curated
+`contract.ts` set `operationId` directly. For inferred contracts, `src/openapi/operation-ids.ts`
+overrides the mechanical path-based name (`getWebsitesWebsiteIdStats` -> `getWebsiteStats`).
+Never rename an operation ID without a migration note for the client.
+
+## OAuth scopes
+
+`src/lib/oauth/scopes.ts` is the single allowlist of routes that accept OAuth access tokens and
+the scope each requires. The document builder adds `x-umami-oauth-scope` and an `oauth2` security
+requirement to those operations, and fails when an allowlist entry does not match a real route.
+The same list is enforced at runtime by `checkAuth`, and mirrored by the in-process MCP dispatch
+table (`src/lib/mcp/dispatch.ts`).
+
+## Generated API client
+
+`pnpm generate:api` regenerates the OpenAPI document and `packages/api-client/src/generated`.
+`pnpm check:api-client` fails in CI when the generated client is stale.

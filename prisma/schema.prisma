@@ -33,8 +33,60 @@ model User {
   twoFactorOtpUseds    TwoFactorOtpUsed[]
   twoFactorRateLimit   TwoFactorRateLimit?
   apiKeys              ApiKey[]
+  oauthAuthorizationCodes OauthAuthorizationCode[]
+  oauthRefreshTokens      OauthRefreshToken[]
 
   @@map("user")
+}
+
+model OauthClient {
+  id           String    @id() @map("oauth_client_id") @db.Uuid
+  name         String    @db.VarChar(255)
+  redirectUris Json      @map("redirect_uris")
+  metadata     Json?
+  createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("oauth_client")
+}
+
+model OauthAuthorizationCode {
+  id                  String    @id() @map("oauth_code_id") @db.Uuid
+  codeHash            String    @unique @map("code_hash") @db.VarChar(128)
+  userId              String    @map("user_id") @db.Uuid
+  clientId            String    @map("client_id") @db.VarChar(2048)
+  redirectUri         String    @map("redirect_uri") @db.VarChar(2048)
+  scope               String    @db.VarChar(500)
+  resource            String?   @db.VarChar(2048)
+  codeChallenge       String    @map("code_challenge") @db.VarChar(128)
+  codeChallengeMethod String    @map("code_challenge_method") @db.VarChar(10)
+  expiresAt           DateTime  @map("expires_at") @db.Timestamptz(6)
+  usedAt              DateTime? @map("used_at") @db.Timestamptz(6)
+  createdAt           DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("oauth_authorization_code")
+}
+
+model OauthRefreshToken {
+  id         String    @id() @map("oauth_refresh_token_id") @db.Uuid
+  tokenHash  String    @unique @map("token_hash") @db.VarChar(128)
+  userId     String    @map("user_id") @db.Uuid
+  clientId   String    @map("client_id") @db.VarChar(2048)
+  scope      String    @db.VarChar(500)
+  resource   String?   @db.VarChar(2048)
+  expiresAt  DateTime  @map("expires_at") @db.Timestamptz(6)
+  revokedAt  DateTime? @map("revoked_at") @db.Timestamptz(6)
+  lastUsedAt DateTime? @map("last_used_at") @db.Timestamptz(6)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([clientId])
+  @@map("oauth_refresh_token")
 }
 
 model ApiKey {

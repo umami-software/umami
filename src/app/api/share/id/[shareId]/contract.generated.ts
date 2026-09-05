@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'deleteShareIdShareId',
+    operationId: 'deleteShare',
     summary: 'Delete share id share id',
     tags: ['Shares'],
     parameters: [
@@ -66,7 +66,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getShareIdShareId',
+    operationId: 'getShare',
     summary: 'Get share id share id',
     tags: ['Shares'],
     parameters: [
@@ -207,7 +207,7 @@ const operation3 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postShareIdShareId',
+    operationId: 'updateShare',
     summary: 'Create or update share id share id',
     tags: ['Shares'],
     parameters: [

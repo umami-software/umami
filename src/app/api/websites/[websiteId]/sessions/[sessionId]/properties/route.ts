@@ -16,12 +16,7 @@ export async function GET(
   const { websiteId, sessionId } = await params;
 
   if (
-    !(await canViewWebsiteSection(auth, websiteId, [
-      'sessions',
-      'events',
-      'realtime',
-      'revenue',
-    ]))
+    !(await canViewWebsiteSection(auth, websiteId, ['sessions', 'events', 'realtime', 'revenue']))
   ) {
     return unauthorized();
   }

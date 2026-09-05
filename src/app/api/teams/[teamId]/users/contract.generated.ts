@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getTeamsTeamIdUsers',
+    operationId: 'getTeamUsers',
     summary: 'Get teams team id users',
     tags: ['Teams'],
     parameters: [
@@ -186,7 +186,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postTeamsTeamIdUsers',
+    operationId: 'createTeamUser',
     summary: 'Create or update teams team id users',
     tags: ['Teams'],
     parameters: [

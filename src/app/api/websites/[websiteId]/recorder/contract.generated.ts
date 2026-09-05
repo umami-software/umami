@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'collect',
   auth: 'none',
   operation: {
-    operationId: 'getWebsitesWebsiteIdRecorder',
+    operationId: 'getWebsiteRecorderConfig',
     summary: 'Get websites website id recorder',
     tags: ['Websites'],
     parameters: [

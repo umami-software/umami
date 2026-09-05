@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postAuthVerify',
+    operationId: 'verify',
     summary: 'Create or update auth verify',
     tags: ['Authentication'],
     responses: {

@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'deletePixelsPixelId',
+    operationId: 'deletePixel',
     summary: 'Delete pixels pixel id',
     tags: ['Pixels'],
     parameters: [
@@ -66,7 +66,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getPixelsPixelId',
+    operationId: 'getPixel',
     summary: 'Get pixels pixel id',
     tags: ['Pixels'],
     parameters: [
@@ -156,7 +156,7 @@ const operation3 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postPixelsPixelId',
+    operationId: 'updatePixel',
     summary: 'Create or update pixels pixel id',
     tags: ['Pixels'],
     parameters: [

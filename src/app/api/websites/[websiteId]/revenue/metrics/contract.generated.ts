@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getWebsitesWebsiteIdRevenueMetrics',
+    operationId: 'getWebsiteRevenueMetrics',
     summary: 'Get websites website id revenue metrics',
     tags: ['Websites'],
     parameters: [

@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postShare',
+    operationId: 'createShare',
     summary: 'Create or update share',
     tags: ['Shares'],
     requestBody: {

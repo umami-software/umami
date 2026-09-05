@@ -122,6 +122,20 @@
       }
     },
     "schemas": {
+      "ActiveVisitors": {
+        "additionalProperties": false,
+        "properties": {
+          "visitors": {
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "visitors"
+        ],
+        "type": "object"
+      },
       "ApiError": {
         "additionalProperties": false,
         "description": "Standard Umami API error response.",
@@ -337,6 +351,408 @@
         ],
         "type": "object"
       },
+      "MetricRow": {
+        "additionalProperties": false,
+        "properties": {
+          "t": {
+            "type": "string"
+          },
+          "x": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Dimension value (e.g. a path or country)."
+          },
+          "y": {
+            "description": "Count of views/events or unique visitors.",
+            "type": "number"
+          }
+        },
+        "required": [
+          "x",
+          "y"
+        ],
+        "type": "object"
+      },
+      "MetricRows": {
+        "items": {
+          "$ref": "#/components/schemas/MetricRow"
+        },
+        "type": "array"
+      },
+      "OAuthAuthorizationDecision": {
+        "properties": {
+          "client_id": {
+            "maxLength": 2048,
+            "type": "string"
+          },
+          "code_challenge": {
+            "maxLength": 128,
+            "type": "string"
+          },
+          "code_challenge_method": {
+            "maxLength": 10,
+            "type": "string"
+          },
+          "decision": {
+            "enum": [
+              "approve",
+              "deny"
+            ],
+            "type": "string"
+          },
+          "redirect_uri": {
+            "maxLength": 2048,
+            "type": "string"
+          },
+          "resource": {
+            "maxLength": 2048,
+            "type": "string"
+          },
+          "response_type": {
+            "type": "string"
+          },
+          "scope": {
+            "maxLength": 500,
+            "type": "string"
+          },
+          "state": {
+            "maxLength": 1024,
+            "type": "string"
+          }
+        },
+        "required": [
+          "client_id",
+          "decision"
+        ],
+        "type": "object"
+      },
+      "OAuthAuthorizationDetails": {
+        "additionalProperties": false,
+        "properties": {
+          "client": {
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "logoUri": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "source": {
+                "enum": [
+                  "metadata-document",
+                  "registered"
+                ],
+                "type": "string"
+              },
+              "uri": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "source"
+            ],
+            "type": "object"
+          },
+          "redirectUri": {
+            "type": "string"
+          },
+          "resource": {
+            "type": "string"
+          },
+          "scopes": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "scope": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "scope",
+                "description"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "client",
+          "scopes",
+          "redirectUri",
+          "resource"
+        ],
+        "type": "object"
+      },
+      "OAuthAuthorizationRedirect": {
+        "additionalProperties": false,
+        "properties": {
+          "redirectUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "redirectUrl"
+        ],
+        "type": "object"
+      },
+      "OAuthClientRegistrationRequest": {
+        "properties": {
+          "application_type": {
+            "enum": [
+              "web",
+              "native"
+            ],
+            "type": "string"
+          },
+          "client_name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "client_uri": {
+            "maxLength": 2048,
+            "type": "string"
+          },
+          "grant_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "logo_uri": {
+            "maxLength": 2048,
+            "type": "string"
+          },
+          "redirect_uris": {
+            "items": {
+              "maxLength": 2048,
+              "type": "string"
+            },
+            "maxItems": 20,
+            "minItems": 1,
+            "type": "array"
+          },
+          "response_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "scope": {
+            "maxLength": 500,
+            "type": "string"
+          },
+          "software_id": {
+            "maxLength": 255,
+            "type": "string"
+          },
+          "software_version": {
+            "maxLength": 255,
+            "type": "string"
+          },
+          "token_endpoint_auth_method": {
+            "const": "none",
+            "type": "string"
+          }
+        },
+        "required": [
+          "redirect_uris",
+          "client_name"
+        ],
+        "type": "object"
+      },
+      "OAuthClientRegistrationResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "application_type": {
+            "enum": [
+              "web",
+              "native"
+            ],
+            "type": "string"
+          },
+          "client_id": {
+            "type": "string"
+          },
+          "client_id_issued_at": {
+            "maximum": 9007199254740991,
+            "minimum": -9007199254740991,
+            "type": "integer"
+          },
+          "client_name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "client_uri": {
+            "maxLength": 2048,
+            "type": "string"
+          },
+          "grant_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "logo_uri": {
+            "maxLength": 2048,
+            "type": "string"
+          },
+          "redirect_uris": {
+            "items": {
+              "maxLength": 2048,
+              "type": "string"
+            },
+            "maxItems": 20,
+            "minItems": 1,
+            "type": "array"
+          },
+          "response_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "scope": {
+            "maxLength": 500,
+            "type": "string"
+          },
+          "software_id": {
+            "maxLength": 255,
+            "type": "string"
+          },
+          "software_version": {
+            "maxLength": 255,
+            "type": "string"
+          },
+          "token_endpoint_auth_method": {
+            "const": "none",
+            "type": "string"
+          }
+        },
+        "required": [
+          "redirect_uris",
+          "client_name",
+          "token_endpoint_auth_method",
+          "grant_types",
+          "response_types",
+          "client_id",
+          "client_id_issued_at"
+        ],
+        "type": "object"
+      },
+      "OAuthErrorResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "error_description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "type": "object"
+      },
+      "OAuthRevocationRequest": {
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "token_type_hint": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
+        ],
+        "type": "object"
+      },
+      "OAuthTokenRequest": {
+        "properties": {
+          "client_id": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "code_verifier": {
+            "type": "string"
+          },
+          "grant_type": {
+            "enum": [
+              "authorization_code",
+              "refresh_token"
+            ],
+            "type": "string"
+          },
+          "redirect_uri": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
+          },
+          "resource": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "grant_type"
+        ],
+        "type": "object"
+      },
+      "OAuthTokenResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "expires_in": {
+            "maximum": 9007199254740991,
+            "minimum": -9007199254740991,
+            "type": "integer"
+          },
+          "refresh_token": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "token_type": {
+            "const": "Bearer",
+            "type": "string"
+          }
+        },
+        "required": [
+          "access_token",
+          "token_type",
+          "expires_in",
+          "refresh_token",
+          "scope"
+        ],
+        "type": "object"
+      },
       "Ok": {
         "additionalProperties": false,
         "description": "Successful operation response.",
@@ -422,6 +838,24 @@
             "type": "number"
           }
         },
+        "type": "object"
+      },
+      "TimeSeriesPoint": {
+        "additionalProperties": false,
+        "properties": {
+          "x": {
+            "description": "Bucket start (ISO date/time).",
+            "type": "string"
+          },
+          "y": {
+            "description": "Value for the bucket.",
+            "type": "number"
+          }
+        },
+        "required": [
+          "x",
+          "y"
+        ],
         "type": "object"
       },
       "UpdateWebsiteRequest": {
@@ -609,6 +1043,150 @@
         ],
         "type": "object"
       },
+      "WebsiteEvent": {
+        "additionalProperties": {},
+        "properties": {
+          "createdAt": {
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
+            "type": "string"
+          },
+          "distinctId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "eventName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "eventType": {
+            "maximum": 9007199254740991,
+            "minimum": -9007199254740991,
+            "type": "integer"
+          },
+          "hostname": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "id": {
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+            "type": "string"
+          },
+          "pageTitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "referrerDomain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sessionId": {
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+            "type": "string"
+          },
+          "urlPath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "urlQuery": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "websiteId": {
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "websiteId",
+          "sessionId",
+          "createdAt",
+          "eventType"
+        ],
+        "type": "object"
+      },
+      "WebsiteEventPage": {
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/WebsiteEvent"
+            },
+            "type": "array"
+          },
+          "isCapped": {
+            "type": "boolean"
+          },
+          "page": {
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991,
+            "type": "integer"
+          },
+          "pageSize": {
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "count",
+          "page",
+          "pageSize"
+        ],
+        "type": "object"
+      },
       "WebsitePage": {
         "additionalProperties": false,
         "properties": {
@@ -648,6 +1226,328 @@
         ],
         "type": "object"
       },
+      "WebsitePageviews": {
+        "additionalProperties": false,
+        "properties": {
+          "compare": {
+            "additionalProperties": false,
+            "description": "Present when `compare` was requested.",
+            "properties": {
+              "endDate": {
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
+                "type": "string"
+              },
+              "pageviews": {
+                "items": {
+                  "$ref": "#/components/schemas/TimeSeriesPoint"
+                },
+                "type": "array"
+              },
+              "sessions": {
+                "items": {
+                  "$ref": "#/components/schemas/TimeSeriesPoint"
+                },
+                "type": "array"
+              },
+              "startDate": {
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "pageviews",
+              "sessions",
+              "startDate",
+              "endDate"
+            ],
+            "type": "object"
+          },
+          "endDate": {
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
+            "type": "string"
+          },
+          "pageviews": {
+            "items": {
+              "$ref": "#/components/schemas/TimeSeriesPoint"
+            },
+            "type": "array"
+          },
+          "sessions": {
+            "items": {
+              "$ref": "#/components/schemas/TimeSeriesPoint"
+            },
+            "type": "array"
+          },
+          "startDate": {
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "pageviews",
+          "sessions"
+        ],
+        "type": "object"
+      },
+      "WebsiteSession": {
+        "additionalProperties": {},
+        "properties": {
+          "browser": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
+            "type": "string"
+          },
+          "device": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "distinctId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "events": {
+            "type": "number"
+          },
+          "firstAt": {
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
+            "type": "string"
+          },
+          "hostname": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "id": {
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+            "type": "string"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lastAt": {
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
+            "type": "string"
+          },
+          "os": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "screen": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "views": {
+            "type": "number"
+          },
+          "visits": {
+            "type": "number"
+          },
+          "websiteId": {
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "websiteId",
+          "hostname",
+          "browser",
+          "os",
+          "device",
+          "screen",
+          "language",
+          "country",
+          "region",
+          "city",
+          "firstAt",
+          "lastAt",
+          "visits",
+          "views",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "WebsiteSessionPage": {
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/WebsiteSession"
+            },
+            "type": "array"
+          },
+          "isCapped": {
+            "type": "boolean"
+          },
+          "page": {
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991,
+            "type": "integer"
+          },
+          "pageSize": {
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "count",
+          "page",
+          "pageSize"
+        ],
+        "type": "object"
+      },
+      "WebsiteStats": {
+        "additionalProperties": false,
+        "properties": {
+          "bounces": {
+            "type": "number"
+          },
+          "comparison": {
+            "$ref": "#/components/schemas/WebsiteStatsValues",
+            "description": "The same totals for the comparison period (previous period by default)."
+          },
+          "pageviews": {
+            "type": "number"
+          },
+          "totaltime": {
+            "type": "number"
+          },
+          "visitors": {
+            "type": "number"
+          },
+          "visits": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "pageviews",
+          "visitors",
+          "visits",
+          "bounces",
+          "totaltime",
+          "comparison"
+        ],
+        "type": "object"
+      },
+      "WebsiteStatsValues": {
+        "additionalProperties": false,
+        "properties": {
+          "bounces": {
+            "type": "number"
+          },
+          "pageviews": {
+            "type": "number"
+          },
+          "totaltime": {
+            "type": "number"
+          },
+          "visitors": {
+            "type": "number"
+          },
+          "visits": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "pageviews",
+          "visitors",
+          "visits",
+          "bounces",
+          "totaltime"
+        ],
+        "type": "object"
+      },
       "WebsiteUser": {
         "additionalProperties": false,
         "properties": {
@@ -673,6 +1573,21 @@
         "description": "Token returned by POST /api/auth/login, or an API key (`umami_…`) created under Settings → API keys (self-hosted only).",
         "scheme": "bearer",
         "type": "http"
+      },
+      "oauth2": {
+        "description": "OAuth 2.1 access token (authorization code + PKCE). Only operations that declare an OAuth scope accept these tokens.",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "/oauth/authorize",
+            "refreshUrl": "/api/oauth/token",
+            "scopes": {
+              "analytics:read": "Read analytics data (traffic, metrics, events, sessions, reports).",
+              "websites:read": "List and view websites you have access to."
+            },
+            "tokenUrl": "/api/oauth/token"
+          }
+        },
+        "type": "oauth2"
       },
       "shareContext": {
         "description": "Required context header when authenticating with a share token.",
@@ -705,7 +1620,7 @@
   "paths": {
     "/api/2fa/disable": {
       "post": {
-        "operationId": "post2faDisable",
+        "operationId": "disableTwoFactor",
         "requestBody": {
           "content": {
             "application/json": {
@@ -918,7 +1833,7 @@
     },
     "/api/2fa/setup/cancel": {
       "post": {
-        "operationId": "post2faSetupCancel",
+        "operationId": "cancelTwoFactorSetup",
         "responses": {
           "200": {
             "content": {
@@ -989,7 +1904,7 @@
     },
     "/api/2fa/setup/confirm": {
       "post": {
-        "operationId": "post2faSetupConfirm",
+        "operationId": "confirmTwoFactorSetup",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1184,7 +2099,7 @@
     },
     "/api/2fa/setup/initiate": {
       "post": {
-        "operationId": "post2faSetupInitiate",
+        "operationId": "initiateTwoFactorSetup",
         "responses": {
           "200": {
             "content": {
@@ -1293,7 +2208,7 @@
     },
     "/api/2fa/status": {
       "get": {
-        "operationId": "get2faStatus",
+        "operationId": "getTwoFactorStatus",
         "responses": {
           "200": {
             "content": {
@@ -1394,7 +2309,7 @@
     },
     "/api/2fa/verify": {
       "post": {
-        "operationId": "post2faVerify",
+        "operationId": "verifyTwoFactor",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3053,7 +3968,7 @@
     },
     "/api/auth/logout": {
       "post": {
-        "operationId": "postAuthLogout",
+        "operationId": "logout",
         "responses": {
           "200": {
             "content": {
@@ -3107,7 +4022,7 @@
     },
     "/api/auth/sso": {
       "post": {
-        "operationId": "postAuthSso",
+        "operationId": "sso",
         "responses": {
           "200": {
             "content": {
@@ -3180,7 +4095,7 @@
     },
     "/api/auth/subscription": {
       "get": {
-        "operationId": "getAuthSubscription",
+        "operationId": "getSubscription",
         "parameters": [
           {
             "in": "query",
@@ -3313,7 +4228,7 @@
     },
     "/api/auth/verify": {
       "post": {
-        "operationId": "postAuthVerify",
+        "operationId": "verify",
         "responses": {
           "200": {
             "content": {
@@ -3365,7 +4280,7 @@
     },
     "/api/batch": {
       "post": {
-        "operationId": "postBatch",
+        "operationId": "batch",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3711,7 +4626,7 @@
         "x-umami-source": "src/app/api/boards/contract.generated.ts"
       },
       "post": {
-        "operationId": "postBoards",
+        "operationId": "createBoard",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3950,7 +4865,7 @@
     },
     "/api/boards/{boardId}": {
       "delete": {
-        "operationId": "deleteBoardsBoardId",
+        "operationId": "deleteBoard",
         "parameters": [
           {
             "in": "path",
@@ -4012,7 +4927,7 @@
         "x-umami-source": "src/app/api/boards/[boardId]/contract.generated.ts"
       },
       "get": {
-        "operationId": "getBoardsBoardId",
+        "operationId": "getBoard",
         "parameters": [
           {
             "in": "path",
@@ -4168,7 +5083,7 @@
         "x-umami-source": "src/app/api/boards/[boardId]/contract.generated.ts"
       },
       "post": {
-        "operationId": "postBoardsBoardId",
+        "operationId": "updateBoard",
         "parameters": [
           {
             "in": "path",
@@ -4395,7 +5310,7 @@
     },
     "/api/boards/{boardId}/clone": {
       "post": {
-        "operationId": "postBoardsBoardIdClone",
+        "operationId": "cloneBoard",
         "parameters": [
           {
             "in": "path",
@@ -4594,7 +5509,7 @@
     },
     "/api/boards/{boardId}/shares": {
       "get": {
-        "operationId": "getBoardsBoardIdShares",
+        "operationId": "getBoardShares",
         "parameters": [
           {
             "in": "path",
@@ -5032,7 +5947,7 @@
         "x-umami-source": "src/app/api/boards/[boardId]/shares/contract.generated.ts"
       },
       "post": {
-        "operationId": "postBoardsBoardIdShares",
+        "operationId": "createBoardShare",
         "parameters": [
           {
             "in": "path",
@@ -5843,7 +6758,7 @@
         "x-umami-source": "src/app/api/links/contract.generated.ts"
       },
       "post": {
-        "operationId": "postLinks",
+        "operationId": "createLink",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6000,7 +6915,7 @@
     },
     "/api/links/{linkId}": {
       "delete": {
-        "operationId": "deleteLinksLinkId",
+        "operationId": "deleteLink",
         "parameters": [
           {
             "in": "path",
@@ -6062,7 +6977,7 @@
         "x-umami-source": "src/app/api/links/[linkId]/contract.generated.ts"
       },
       "get": {
-        "operationId": "getLinksLinkId",
+        "operationId": "getLink",
         "parameters": [
           {
             "in": "path",
@@ -6163,7 +7078,7 @@
         "x-umami-source": "src/app/api/links/[linkId]/contract.generated.ts"
       },
       "post": {
-        "operationId": "postLinksLinkId",
+        "operationId": "updateLink",
         "parameters": [
           {
             "in": "path",
@@ -6321,7 +7236,7 @@
     },
     "/api/links/{linkId}/shares": {
       "get": {
-        "operationId": "getLinksLinkIdShares",
+        "operationId": "getLinkShares",
         "parameters": [
           {
             "in": "path",
@@ -6759,7 +7674,7 @@
         "x-umami-source": "src/app/api/links/[linkId]/shares/contract.generated.ts"
       },
       "post": {
-        "operationId": "postLinksLinkIdShares",
+        "operationId": "createLinkShare",
         "parameters": [
           {
             "in": "path",
@@ -7099,6 +8014,43 @@
                       ],
                       "type": "object"
                     },
+                    "authType": {
+                      "anyOf": [
+                        {
+                          "const": "session"
+                        },
+                        {
+                          "const": "share"
+                        },
+                        {
+                          "const": "api-key"
+                        },
+                        {
+                          "const": "oauth"
+                        }
+                      ]
+                    },
+                    "oauth": {
+                      "properties": {
+                        "clientId": {
+                          "type": "string"
+                        },
+                        "scopes": {
+                          "items": {
+                            "type": "string"
+                          },
+                          "type": "array"
+                        },
+                        "tokenId": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "clientId",
+                        "scopes"
+                      ],
+                      "type": "object"
+                    },
                     "shareToken": {
                       "properties": {
                         "boardId": {
@@ -7222,6 +8174,11 @@
         "security": [
           {
             "bearerAuth": []
+          },
+          {
+            "oauth2": [
+              "websites:read"
+            ]
           }
         ],
         "summary": "Get me",
@@ -7230,12 +8187,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "websites:read",
         "x-umami-source": "src/app/api/me/contract.generated.ts"
       }
     },
     "/api/me/api-keys": {
       "get": {
-        "operationId": "getMeApiKeys",
+        "operationId": "getMyApiKeys",
         "responses": {
           "200": {
             "content": {
@@ -7325,7 +8283,7 @@
         "x-umami-source": "src/app/api/me/api-keys/contract.generated.ts"
       },
       "post": {
-        "operationId": "postMeApiKeys",
+        "operationId": "createMyApiKey",
         "requestBody": {
           "content": {
             "application/json": {
@@ -7449,7 +8407,7 @@
     },
     "/api/me/api-keys/{keyId}": {
       "delete": {
-        "operationId": "deleteMeApiKeysKeyId",
+        "operationId": "deleteMyApiKey",
         "parameters": [
           {
             "in": "path",
@@ -7530,7 +8488,7 @@
     },
     "/api/me/password": {
       "post": {
-        "operationId": "postMePassword",
+        "operationId": "updateMyPassword",
         "requestBody": {
           "content": {
             "application/json": {
@@ -7637,7 +8595,7 @@
     },
     "/api/me/teams": {
       "get": {
-        "operationId": "getMeTeams",
+        "operationId": "getMyTeams",
         "parameters": [
           {
             "in": "query",
@@ -7823,7 +8781,7 @@
     },
     "/api/me/websites": {
       "get": {
-        "operationId": "getMeWebsites",
+        "operationId": "getMyWebsites",
         "parameters": [
           {
             "in": "query",
@@ -8159,6 +9117,361 @@
         "x-umami-source": "src/app/api/me/websites/contract.generated.ts"
       }
     },
+    "/api/oauth/authorize": {
+      "get": {
+        "description": "Validates an OAuth 2.1 authorization request and returns the client and scopes for the consent screen. Requires an interactive user session.",
+        "operationId": "describeOAuthAuthorization",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "response_type",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "client_id",
+            "required": true,
+            "schema": {
+              "maxLength": 2048,
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "redirect_uri",
+            "schema": {
+              "maxLength": 2048,
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "scope",
+            "schema": {
+              "maxLength": 500,
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "state",
+            "schema": {
+              "maxLength": 1024,
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "code_challenge",
+            "schema": {
+              "maxLength": 128,
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "code_challenge_method",
+            "schema": {
+              "maxLength": 10,
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "resource",
+            "schema": {
+              "maxLength": 2048,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthAuthorizationDetails"
+                }
+              }
+            },
+            "description": "Authorization request details."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid authorization request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "unauthorized",
+                    "message": "Unauthorized.",
+                    "status": 401
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unauthorized."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Describe a pending OAuth authorization request",
+        "tags": [
+          "OAuth"
+        ],
+        "x-umami-audience": "internal",
+        "x-umami-contract": "explicit",
+        "x-umami-source": "src/app/api/oauth/authorize/contract.ts"
+      },
+      "post": {
+        "description": "Records the user decision. On approval an authorization code is issued and the redirect URL (with code, state and iss) is returned.",
+        "operationId": "decideOAuthAuthorization",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OAuthAuthorizationDecision"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthAuthorizationRedirect"
+                }
+              }
+            },
+            "description": "Redirect URL for the browser."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "bad-request",
+                    "message": "Bad request.",
+                    "status": 400
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Bad request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "unauthorized",
+                    "message": "Unauthorized.",
+                    "status": 401
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Unauthorized."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Approve or deny an OAuth authorization request",
+        "tags": [
+          "OAuth"
+        ],
+        "x-umami-audience": "internal",
+        "x-umami-contract": "explicit",
+        "x-umami-source": "src/app/api/oauth/authorize/contract.ts"
+      }
+    },
+    "/api/oauth/register": {
+      "post": {
+        "description": "RFC 7591 compatibility endpoint for MCP clients without Client ID Metadata Document support. Registers a public client. Prefer Client ID Metadata Documents (https URL client_id).",
+        "operationId": "oauthRegisterClient",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OAuthClientRegistrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthClientRegistrationResponse"
+                }
+              }
+            },
+            "description": "Registered client."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid client metadata."
+          }
+        },
+        "security": [],
+        "summary": "Register an OAuth client (dynamic client registration)",
+        "tags": [
+          "OAuth"
+        ],
+        "x-umami-audience": "internal",
+        "x-umami-contract": "explicit",
+        "x-umami-source": "src/app/api/oauth/register/contract.ts"
+      }
+    },
+    "/api/oauth/revoke": {
+      "post": {
+        "description": "RFC 7009 revocation endpoint. Revokes the given refresh token; unknown tokens are accepted silently.",
+        "operationId": "oauthRevoke",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OAuthRevocationRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/OAuthRevocationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "properties": {},
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Token revoked (or already invalid)."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthErrorResponse"
+                }
+              }
+            },
+            "description": "Malformed request."
+          }
+        },
+        "security": [],
+        "summary": "Revoke an OAuth refresh token",
+        "tags": [
+          "OAuth"
+        ],
+        "x-umami-audience": "internal",
+        "x-umami-contract": "explicit",
+        "x-umami-source": "src/app/api/oauth/revoke/contract.ts"
+      }
+    },
+    "/api/oauth/token": {
+      "post": {
+        "description": "Exchanges an authorization code (with PKCE code_verifier) or a refresh token for an access token. Accepts application/x-www-form-urlencoded or JSON. Refresh tokens are rotated on every use.",
+        "operationId": "oauthToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OAuthTokenRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/OAuthTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthTokenResponse"
+                }
+              }
+            },
+            "description": "Access and refresh tokens."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid grant or request."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid client."
+          }
+        },
+        "security": [],
+        "summary": "OAuth 2.1 token endpoint",
+        "tags": [
+          "OAuth"
+        ],
+        "x-umami-audience": "internal",
+        "x-umami-contract": "explicit",
+        "x-umami-source": "src/app/api/oauth/token/contract.ts"
+      }
+    },
     "/api/pixels": {
       "get": {
         "operationId": "getPixels",
@@ -8353,7 +9666,7 @@
         "x-umami-source": "src/app/api/pixels/contract.generated.ts"
       },
       "post": {
-        "operationId": "postPixels",
+        "operationId": "createPixel",
         "requestBody": {
           "content": {
             "application/json": {
@@ -8501,7 +9814,7 @@
     },
     "/api/pixels/{pixelId}": {
       "delete": {
-        "operationId": "deletePixelsPixelId",
+        "operationId": "deletePixel",
         "parameters": [
           {
             "in": "path",
@@ -8563,7 +9876,7 @@
         "x-umami-source": "src/app/api/pixels/[pixelId]/contract.generated.ts"
       },
       "get": {
-        "operationId": "getPixelsPixelId",
+        "operationId": "getPixel",
         "parameters": [
           {
             "in": "path",
@@ -8660,7 +9973,7 @@
         "x-umami-source": "src/app/api/pixels/[pixelId]/contract.generated.ts"
       },
       "post": {
-        "operationId": "postPixelsPixelId",
+        "operationId": "updatePixel",
         "parameters": [
           {
             "in": "path",
@@ -8810,7 +10123,7 @@
     },
     "/api/pixels/{pixelId}/shares": {
       "get": {
-        "operationId": "getPixelsPixelIdShares",
+        "operationId": "getPixelShares",
         "parameters": [
           {
             "in": "path",
@@ -9248,7 +10561,7 @@
         "x-umami-source": "src/app/api/pixels/[pixelId]/shares/contract.generated.ts"
       },
       "post": {
-        "operationId": "postPixelsPixelIdShares",
+        "operationId": "createPixelShare",
         "parameters": [
           {
             "in": "path",
@@ -9566,7 +10879,7 @@
     },
     "/api/realtime/{websiteId}": {
       "get": {
-        "operationId": "getRealtimeWebsiteId",
+        "operationId": "getRealtime",
         "parameters": [
           {
             "in": "path",
@@ -10034,6 +11347,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -10044,12 +11362,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/realtime/[websiteId]/contract.generated.ts"
       }
     },
     "/api/record": {
       "post": {
-        "operationId": "postRecord",
+        "operationId": "record",
         "requestBody": {
           "content": {
             "application/json": {
@@ -10603,7 +11922,7 @@
         "x-umami-source": "src/app/api/reports/contract.generated.ts"
       },
       "post": {
-        "operationId": "postReports",
+        "operationId": "createReport",
         "requestBody": {
           "content": {
             "application/json": {
@@ -10801,7 +12120,7 @@
     },
     "/api/reports/{reportId}": {
       "delete": {
-        "operationId": "deleteReportsReportId",
+        "operationId": "deleteReport",
         "parameters": [
           {
             "in": "path",
@@ -10880,7 +12199,7 @@
         "x-umami-source": "src/app/api/reports/[reportId]/contract.generated.ts"
       },
       "get": {
-        "operationId": "getReportsReportId",
+        "operationId": "getReport",
         "parameters": [
           {
             "in": "path",
@@ -11053,7 +12372,7 @@
         "x-umami-source": "src/app/api/reports/[reportId]/contract.generated.ts"
       },
       "post": {
-        "operationId": "postReportsReportId",
+        "operationId": "updateReport",
         "parameters": [
           {
             "in": "path",
@@ -11278,7 +12597,7 @@
     },
     "/api/reports/attribution": {
       "post": {
-        "operationId": "postReportsAttribution",
+        "operationId": "runAttributionReport",
         "requestBody": {
           "content": {
             "application/json": {
@@ -11520,6 +12839,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -11530,12 +12854,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/reports/attribution/contract.generated.ts"
       }
     },
     "/api/reports/breakdown": {
       "post": {
-        "operationId": "postReportsBreakdown",
+        "operationId": "runBreakdownReport",
         "requestBody": {
           "content": {
             "application/json": {
@@ -11657,6 +12982,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -11667,12 +12997,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/reports/breakdown/contract.generated.ts"
       }
     },
     "/api/reports/funnel": {
       "post": {
-        "operationId": "postReportsFunnel",
+        "operationId": "runFunnelReport",
         "requestBody": {
           "content": {
             "application/json": {
@@ -11814,6 +13145,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -11824,12 +13160,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/reports/funnel/contract.generated.ts"
       }
     },
     "/api/reports/goal": {
       "post": {
-        "operationId": "postReportsGoal",
+        "operationId": "runGoalReport",
         "requestBody": {
           "content": {
             "application/json": {
@@ -11941,7 +13278,7 @@
     },
     "/api/reports/heatmap": {
       "post": {
-        "operationId": "postReportsHeatmap",
+        "operationId": "runHeatmapReport",
         "requestBody": {
           "content": {
             "application/json": {
@@ -12225,7 +13562,7 @@
     },
     "/api/reports/journey": {
       "post": {
-        "operationId": "postReportsJourney",
+        "operationId": "runJourneyReport",
         "requestBody": {
           "content": {
             "application/json": {
@@ -12349,6 +13686,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -12359,12 +13701,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/reports/journey/contract.generated.ts"
       }
     },
     "/api/reports/performance": {
       "post": {
-        "operationId": "postReportsPerformance",
+        "operationId": "runPerformanceReport",
         "requestBody": {
           "content": {
             "application/json": {
@@ -12480,7 +13823,7 @@
     },
     "/api/reports/retention": {
       "post": {
-        "operationId": "postReportsRetention",
+        "operationId": "runRetentionReport",
         "requestBody": {
           "content": {
             "application/json": {
@@ -12592,6 +13935,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -12602,12 +13950,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/reports/retention/contract.generated.ts"
       }
     },
     "/api/reports/revenue": {
       "post": {
-        "operationId": "postReportsRevenue",
+        "operationId": "runRevenueReport",
         "requestBody": {
           "content": {
             "application/json": {
@@ -12805,6 +14154,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -12815,12 +14169,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/reports/revenue/contract.generated.ts"
       }
     },
     "/api/reports/utm": {
       "post": {
-        "operationId": "postReportsUtm",
+        "operationId": "runUtmReport",
         "requestBody": {
           "content": {
             "application/json": {
@@ -12934,6 +14289,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -12944,6 +14304,7 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/reports/utm/contract.generated.ts"
       }
     },
@@ -12974,7 +14335,7 @@
     },
     "/api/send": {
       "post": {
-        "operationId": "postSend",
+        "operationId": "send",
         "requestBody": {
           "content": {
             "application/json": {
@@ -13186,7 +14547,7 @@
     },
     "/api/share": {
       "post": {
-        "operationId": "postShare",
+        "operationId": "createShare",
         "requestBody": {
           "content": {
             "application/json": {
@@ -13380,7 +14741,7 @@
     },
     "/api/share/{slug}": {
       "get": {
-        "operationId": "getShareSlug",
+        "operationId": "getShareBySlug",
         "parameters": [
           {
             "in": "path",
@@ -13434,7 +14795,7 @@
     },
     "/api/share/id/{shareId}": {
       "delete": {
-        "operationId": "deleteShareIdShareId",
+        "operationId": "deleteShare",
         "parameters": [
           {
             "in": "path",
@@ -13496,7 +14857,7 @@
         "x-umami-source": "src/app/api/share/id/[shareId]/contract.generated.ts"
       },
       "get": {
-        "operationId": "getShareIdShareId",
+        "operationId": "getShare",
         "parameters": [
           {
             "in": "path",
@@ -13648,7 +15009,7 @@
         "x-umami-source": "src/app/api/share/id/[shareId]/contract.generated.ts"
       },
       "post": {
-        "operationId": "postShareIdShareId",
+        "operationId": "updateShare",
         "parameters": [
           {
             "in": "path",
@@ -14045,7 +15406,7 @@
         "x-umami-source": "src/app/api/teams/contract.generated.ts"
       },
       "post": {
-        "operationId": "postTeams",
+        "operationId": "createTeam",
         "requestBody": {
           "content": {
             "application/json": {
@@ -14210,7 +15571,7 @@
     },
     "/api/teams/{teamId}": {
       "delete": {
-        "operationId": "deleteTeamsTeamId",
+        "operationId": "deleteTeam",
         "parameters": [
           {
             "in": "path",
@@ -14272,7 +15633,7 @@
         "x-umami-source": "src/app/api/teams/[teamId]/contract.generated.ts"
       },
       "get": {
-        "operationId": "getTeamsTeamId",
+        "operationId": "getTeam",
         "parameters": [
           {
             "in": "path",
@@ -14386,7 +15747,7 @@
         "x-umami-source": "src/app/api/teams/[teamId]/contract.generated.ts"
       },
       "post": {
-        "operationId": "postTeamsTeamId",
+        "operationId": "updateTeam",
         "parameters": [
           {
             "in": "path",
@@ -14518,7 +15879,7 @@
     },
     "/api/teams/{teamId}/boards": {
       "get": {
-        "operationId": "getTeamsTeamIdBoards",
+        "operationId": "getTeamBoards",
         "parameters": [
           {
             "in": "path",
@@ -14783,7 +16144,7 @@
     },
     "/api/teams/{teamId}/links": {
       "get": {
-        "operationId": "getTeamsTeamIdLinks",
+        "operationId": "getTeamLinks",
         "parameters": [
           {
             "in": "path",
@@ -14993,7 +16354,7 @@
     },
     "/api/teams/{teamId}/pixels": {
       "get": {
-        "operationId": "getTeamsTeamIdPixels",
+        "operationId": "getTeamPixels",
         "parameters": [
           {
             "in": "path",
@@ -15199,7 +16560,7 @@
     },
     "/api/teams/{teamId}/users": {
       "get": {
-        "operationId": "getTeamsTeamIdUsers",
+        "operationId": "getTeamUsers",
         "parameters": [
           {
             "in": "path",
@@ -15398,7 +16759,7 @@
         "x-umami-source": "src/app/api/teams/[teamId]/users/contract.generated.ts"
       },
       "post": {
-        "operationId": "postTeamsTeamIdUsers",
+        "operationId": "createTeamUser",
         "parameters": [
           {
             "in": "path",
@@ -15529,7 +16890,7 @@
     },
     "/api/teams/{teamId}/users/{userId}": {
       "delete": {
-        "operationId": "deleteTeamsTeamIdUsersUserId",
+        "operationId": "deleteTeamUser",
         "parameters": [
           {
             "in": "path",
@@ -15616,7 +16977,7 @@
         "x-umami-source": "src/app/api/teams/[teamId]/users/[userId]/contract.generated.ts"
       },
       "get": {
-        "operationId": "getTeamsTeamIdUsersUserId",
+        "operationId": "getTeamUser",
         "parameters": [
           {
             "in": "path",
@@ -15708,7 +17069,7 @@
         "x-umami-source": "src/app/api/teams/[teamId]/users/[userId]/contract.generated.ts"
       },
       "post": {
-        "operationId": "postTeamsTeamIdUsersUserId",
+        "operationId": "updateTeamUser",
         "parameters": [
           {
             "in": "path",
@@ -15842,7 +17203,7 @@
     },
     "/api/teams/{teamId}/websites": {
       "get": {
-        "operationId": "getTeamsTeamIdWebsites",
+        "operationId": "getTeamWebsites",
         "parameters": [
           {
             "in": "path",
@@ -16192,7 +17553,7 @@
     },
     "/api/teams/join": {
       "post": {
-        "operationId": "postTeamsJoin",
+        "operationId": "joinTeam",
         "requestBody": {
           "content": {
             "application/json": {
@@ -16321,7 +17682,7 @@
     },
     "/api/users": {
       "post": {
-        "operationId": "postUsers",
+        "operationId": "createUser",
         "requestBody": {
           "content": {
             "application/json": {
@@ -16438,7 +17799,7 @@
     },
     "/api/users/{userId}": {
       "delete": {
-        "operationId": "deleteUsersUserId",
+        "operationId": "deleteUser",
         "parameters": [
           {
             "in": "path",
@@ -16517,7 +17878,7 @@
         "x-umami-source": "src/app/api/users/[userId]/contract.generated.ts"
       },
       "get": {
-        "operationId": "getUsersUserId",
+        "operationId": "getUser",
         "parameters": [
           {
             "in": "path",
@@ -16546,6 +17907,12 @@
                           "type": "number"
                         },
                         "links": {
+                          "type": "number"
+                        },
+                        "oauthAuthorizationCodes": {
+                          "type": "number"
+                        },
+                        "oauthRefreshTokens": {
                           "type": "number"
                         },
                         "pixels": {
@@ -16585,7 +17952,9 @@
                         "twoFactorBackupCodes",
                         "twoFactorOtpUseds",
                         "twoFactorRateLimit",
-                        "apiKeys"
+                        "apiKeys",
+                        "oauthAuthorizationCodes",
+                        "oauthRefreshTokens"
                       ],
                       "type": "object"
                     },
@@ -16902,6 +18271,121 @@
                           "teamId",
                           "url",
                           "slug"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "oauthAuthorizationCodes": {
+                      "items": {
+                        "properties": {
+                          "clientId": {
+                            "type": "string"
+                          },
+                          "codeChallenge": {
+                            "type": "string"
+                          },
+                          "codeChallengeMethod": {
+                            "type": "string"
+                          },
+                          "codeHash": {
+                            "type": "string"
+                          },
+                          "createdAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "expiresAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "redirectUri": {
+                            "type": "string"
+                          },
+                          "resource": {
+                            "type": "string"
+                          },
+                          "scope": {
+                            "type": "string"
+                          },
+                          "usedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "userId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "userId",
+                          "createdAt",
+                          "codeHash",
+                          "expiresAt",
+                          "clientId",
+                          "redirectUri",
+                          "scope",
+                          "resource",
+                          "codeChallenge",
+                          "codeChallengeMethod",
+                          "usedAt"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "oauthRefreshTokens": {
+                      "items": {
+                        "properties": {
+                          "clientId": {
+                            "type": "string"
+                          },
+                          "createdAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "expiresAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "lastUsedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "resource": {
+                            "type": "string"
+                          },
+                          "revokedAt": {
+                            "format": "date-time",
+                            "type": "string"
+                          },
+                          "scope": {
+                            "type": "string"
+                          },
+                          "tokenHash": {
+                            "type": "string"
+                          },
+                          "userId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "userId",
+                          "createdAt",
+                          "expiresAt",
+                          "lastUsedAt",
+                          "clientId",
+                          "scope",
+                          "resource",
+                          "tokenHash",
+                          "revokedAt"
                         ],
                         "type": "object"
                       },
@@ -17362,6 +18846,8 @@
                     "twoFactorBackupCodes",
                     "twoFactorOtpUseds",
                     "apiKeys",
+                    "oauthAuthorizationCodes",
+                    "oauthRefreshTokens",
                     "_count"
                   ],
                   "type": "object"
@@ -17406,7 +18892,7 @@
         "x-umami-source": "src/app/api/users/[userId]/contract.generated.ts"
       },
       "post": {
-        "operationId": "postUsersUserId",
+        "operationId": "updateUser",
         "parameters": [
           {
             "in": "path",
@@ -17546,7 +19032,7 @@
     },
     "/api/users/{userId}/teams": {
       "get": {
-        "operationId": "getUsersUserIdTeams",
+        "operationId": "getUserTeams",
         "parameters": [
           {
             "in": "path",
@@ -17740,7 +19226,7 @@
     },
     "/api/users/{userId}/websites": {
       "get": {
-        "operationId": "getUsersUserIdWebsites",
+        "operationId": "getUserWebsites",
         "parameters": [
           {
             "in": "path",
@@ -18208,6 +19694,11 @@
         "security": [
           {
             "bearerAuth": []
+          },
+          {
+            "oauth2": [
+              "websites:read"
+            ]
           }
         ],
         "summary": "List websites",
@@ -18216,6 +19707,7 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "websites:read",
         "x-umami-source": "src/app/api/websites/contract.ts"
       },
       "post": {
@@ -18406,6 +19898,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "websites:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -18416,6 +19913,7 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "websites:read",
         "x-umami-source": "src/app/api/websites/[websiteId]/contract.ts"
       },
       "post": {
@@ -18523,13 +20021,18 @@
     },
     "/api/websites/{websiteId}/active": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdActive",
+        "description": "Returns the number of visitors active on the website in the last few minutes.",
+        "operationId": "getWebsiteActive",
         "parameters": [
           {
+            "description": "Website ID.",
             "in": "path",
             "name": "websiteId",
             "required": true,
             "schema": {
+              "description": "Website ID.",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           }
@@ -18539,19 +20042,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "visitors": {
-                      "type": "number"
-                    }
-                  },
-                  "required": [
-                    "visitors"
-                  ],
-                  "type": "object"
+                  "$ref": "#/components/schemas/ActiveVisitors"
                 }
               }
             },
-            "description": "The operation completed successfully."
+            "description": "Active visitor count."
           },
           "401": {
             "content": {
@@ -18576,22 +20071,28 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id active",
+        "summary": "Get current active visitors",
         "tags": [
           "Websites"
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
-        "x-umami-source": "src/app/api/websites/[websiteId]/active/contract.generated.ts"
+        "x-umami-oauth-scope": "analytics:read",
+        "x-umami-source": "src/app/api/websites/[websiteId]/active/contract.ts"
       }
     },
     "/api/websites/{websiteId}/annotations": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdAnnotations",
+        "operationId": "getWebsiteAnnotations",
         "parameters": [
           {
             "in": "path",
@@ -18791,7 +20292,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/annotations/contract.generated.ts"
       },
       "post": {
-        "operationId": "postWebsitesWebsiteIdAnnotations",
+        "operationId": "createWebsiteAnnotation",
         "parameters": [
           {
             "in": "path",
@@ -18931,7 +20432,7 @@
     },
     "/api/websites/{websiteId}/annotations/{annotationId}": {
       "delete": {
-        "operationId": "deleteWebsitesWebsiteIdAnnotationsAnnotationId",
+        "operationId": "deleteWebsiteAnnotation",
         "parameters": [
           {
             "in": "path",
@@ -19018,7 +20519,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/annotations/[annotationId]/contract.generated.ts"
       },
       "get": {
-        "operationId": "getWebsitesWebsiteIdAnnotationsAnnotationId",
+        "operationId": "getWebsiteAnnotation",
         "parameters": [
           {
             "in": "path",
@@ -19140,7 +20641,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/annotations/[annotationId]/contract.generated.ts"
       },
       "post": {
-        "operationId": "postWebsitesWebsiteIdAnnotationsAnnotationId",
+        "operationId": "updateWebsiteAnnotation",
         "parameters": [
           {
             "in": "path",
@@ -19305,7 +20806,7 @@
     },
     "/api/websites/{websiteId}/daterange": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdDaterange",
+        "operationId": "getWebsiteDateRange",
         "parameters": [
           {
             "in": "path",
@@ -19364,6 +20865,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -19374,12 +20880,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/websites/[websiteId]/daterange/contract.generated.ts"
       }
     },
     "/api/websites/{websiteId}/event-data": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEventData",
+        "operationId": "getEventData",
         "parameters": [
           {
             "in": "path",
@@ -19781,6 +21288,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -19791,12 +21303,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/websites/[websiteId]/event-data/contract.generated.ts"
       }
     },
     "/api/websites/{websiteId}/event-data-pivot": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEventDataPivot",
+        "operationId": "getEventDataPivot",
         "parameters": [
           {
             "in": "path",
@@ -20228,7 +21741,7 @@
     },
     "/api/websites/{websiteId}/event-data-pivot/array-series": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEventDataPivotArraySeries",
+        "operationId": "getEventDataArraySeries",
         "parameters": [
           {
             "in": "path",
@@ -20579,7 +22092,7 @@
     },
     "/api/websites/{websiteId}/event-data-pivot/date-series": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEventDataPivotDateSeries",
+        "operationId": "getEventDataDateSeries",
         "parameters": [
           {
             "in": "path",
@@ -20918,7 +22431,7 @@
     },
     "/api/websites/{websiteId}/event-data-pivot/numeric-series": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEventDataPivotNumericSeries",
+        "operationId": "getEventDataNumericSeries",
         "parameters": [
           {
             "in": "path",
@@ -21278,7 +22791,7 @@
     },
     "/api/websites/{websiteId}/event-data-pivot/numeric-stats": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEventDataPivotNumericStats",
+        "operationId": "getEventDataNumericStats",
         "parameters": [
           {
             "in": "path",
@@ -21618,7 +23131,7 @@
     },
     "/api/websites/{websiteId}/event-data-pivot/property-series": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEventDataPivotPropertySeries",
+        "operationId": "getEventDataPropertySeries",
         "parameters": [
           {
             "in": "path",
@@ -21969,7 +23482,7 @@
     },
     "/api/websites/{websiteId}/event-data/{eventId}": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEventDataEventId",
+        "operationId": "getEventDataById",
         "parameters": [
           {
             "in": "path",
@@ -22101,7 +23614,7 @@
     },
     "/api/websites/{websiteId}/event-data/events": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEventDataEvents",
+        "operationId": "getEventDataEvents",
         "parameters": [
           {
             "in": "path",
@@ -22426,7 +23939,7 @@
     },
     "/api/websites/{websiteId}/event-data/fields": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEventDataFields",
+        "operationId": "getEventDataFields",
         "parameters": [
           {
             "in": "path",
@@ -22753,7 +24266,7 @@
     },
     "/api/websites/{websiteId}/event-data/properties": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEventDataProperties",
+        "operationId": "getEventDataProperties",
         "parameters": [
           {
             "in": "path",
@@ -23061,6 +24574,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -23071,12 +24589,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/websites/[websiteId]/event-data/properties/contract.generated.ts"
       }
     },
     "/api/websites/{websiteId}/event-data/stats": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEventDataStats",
+        "operationId": "getEventDataStats",
         "parameters": [
           {
             "in": "path",
@@ -23377,6 +24896,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -23387,12 +24911,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/websites/[websiteId]/event-data/stats/contract.generated.ts"
       }
     },
     "/api/websites/{websiteId}/event-data/values": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEventDataValues",
+        "operationId": "getEventDataValues",
         "parameters": [
           {
             "in": "path",
@@ -23716,6 +25241,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -23726,25 +25256,30 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/websites/[websiteId]/event-data/values/contract.generated.ts"
       }
     },
     "/api/websites/{websiteId}/events": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEvents",
+        "description": "Returns a page of pageviews and custom events in the date range, newest first. Filter with `event` for a specific event name or `search` for free text.",
+        "operationId": "getWebsiteEvents",
         "parameters": [
           {
+            "description": "Website ID.",
             "in": "path",
             "name": "websiteId",
             "required": true,
             "schema": {
+              "description": "Website ID.",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "startAt",
-            "required": false,
             "schema": {
               "type": "number"
             }
@@ -23752,7 +25287,6 @@
           {
             "in": "query",
             "name": "endAt",
-            "required": false,
             "schema": {
               "type": "number"
             }
@@ -23760,25 +25294,20 @@
           {
             "in": "query",
             "name": "startDate",
-            "required": false,
             "schema": {
-              "format": "date-time",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "endDate",
-            "required": false,
             "schema": {
-              "format": "date-time",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "timezone",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23786,7 +25315,6 @@
           {
             "in": "query",
             "name": "unit",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23794,7 +25322,6 @@
           {
             "in": "query",
             "name": "compare",
-            "required": false,
             "schema": {
               "enum": [
                 "prev",
@@ -23806,7 +25333,6 @@
           {
             "in": "query",
             "name": "path",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23814,7 +25340,6 @@
           {
             "in": "query",
             "name": "referrer",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23822,7 +25347,6 @@
           {
             "in": "query",
             "name": "title",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23830,7 +25354,6 @@
           {
             "in": "query",
             "name": "query",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23838,7 +25361,6 @@
           {
             "in": "query",
             "name": "os",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23846,7 +25368,6 @@
           {
             "in": "query",
             "name": "browser",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23854,7 +25375,6 @@
           {
             "in": "query",
             "name": "device",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23862,7 +25382,6 @@
           {
             "in": "query",
             "name": "country",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23870,7 +25389,6 @@
           {
             "in": "query",
             "name": "region",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23878,7 +25396,6 @@
           {
             "in": "query",
             "name": "city",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23886,7 +25403,6 @@
           {
             "in": "query",
             "name": "tag",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23894,7 +25410,6 @@
           {
             "in": "query",
             "name": "hostname",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23902,7 +25417,6 @@
           {
             "in": "query",
             "name": "distinctId",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23910,7 +25424,6 @@
           {
             "in": "query",
             "name": "language",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23918,7 +25431,6 @@
           {
             "in": "query",
             "name": "event",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23926,7 +25438,6 @@
           {
             "in": "query",
             "name": "utmSource",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23934,7 +25445,6 @@
           {
             "in": "query",
             "name": "utmMedium",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23942,7 +25452,6 @@
           {
             "in": "query",
             "name": "utmCampaign",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23950,7 +25459,6 @@
           {
             "in": "query",
             "name": "utmContent",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23958,15 +25466,6 @@
           {
             "in": "query",
             "name": "utmTerm",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "excludeBounce",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -23974,34 +25473,40 @@
           {
             "in": "query",
             "name": "segment",
-            "required": false,
             "schema": {
               "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "cohort",
-            "required": false,
             "schema": {
               "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "eventType",
-            "required": false,
             "schema": {
-              "minimum": 1,
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991,
               "type": "integer"
             }
           },
           {
             "in": "query",
+            "name": "excludeBounce",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
             "name": "match",
-            "required": false,
             "schema": {
               "enum": [
                 "all",
@@ -24013,34 +25518,33 @@
           {
             "in": "query",
             "name": "page",
-            "required": false,
             "schema": {
-              "minimum": 1,
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991,
               "type": "integer"
             }
           },
           {
             "in": "query",
             "name": "pageSize",
-            "required": false,
             "schema": {
-              "minimum": 1,
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991,
               "type": "integer"
             }
           },
           {
             "in": "query",
             "name": "maxResults",
-            "required": false,
             "schema": {
-              "minimum": 1,
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991,
               "type": "integer"
             }
           },
           {
             "in": "query",
             "name": "search",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -24051,134 +25555,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "count": {
-                      "type": "number"
-                    },
-                    "data": {
-                      "items": {
-                        "properties": {
-                          "browser": {
-                            "type": "string"
-                          },
-                          "city": {
-                            "type": "string"
-                          },
-                          "country": {
-                            "type": "string"
-                          },
-                          "createdAt": {
-                            "anyOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "format": "date-time",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "device": {
-                            "type": "string"
-                          },
-                          "eventName": {
-                            "type": "string"
-                          },
-                          "eventType": {
-                            "type": "number"
-                          },
-                          "hasData": {
-                            "type": "boolean"
-                          },
-                          "hostname": {
-                            "type": "string"
-                          },
-                          "id": {
-                            "type": "string"
-                          },
-                          "os": {
-                            "type": "string"
-                          },
-                          "pageTitle": {
-                            "type": "string"
-                          },
-                          "referrerDomain": {
-                            "type": "string"
-                          },
-                          "referrerPath": {
-                            "type": "string"
-                          },
-                          "referrerQuery": {
-                            "type": "string"
-                          },
-                          "sessionId": {
-                            "type": "string"
-                          },
-                          "urlPath": {
-                            "type": "string"
-                          },
-                          "urlQuery": {
-                            "type": "string"
-                          },
-                          "websiteId": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "websiteId",
-                          "sessionId",
-                          "createdAt",
-                          "hostname",
-                          "urlPath",
-                          "urlQuery",
-                          "referrerPath",
-                          "referrerQuery",
-                          "referrerDomain",
-                          "country",
-                          "city",
-                          "device",
-                          "os",
-                          "browser",
-                          "pageTitle",
-                          "eventType",
-                          "eventName",
-                          "hasData"
-                        ],
-                        "type": "object"
-                      },
-                      "type": "array"
-                    },
-                    "isCapped": {
-                      "type": "boolean"
-                    },
-                    "orderBy": {
-                      "type": "string"
-                    },
-                    "page": {
-                      "type": "number"
-                    },
-                    "pageSize": {
-                      "type": "number"
-                    },
-                    "search": {
-                      "type": "string"
-                    },
-                    "sortDescending": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "data",
-                    "count",
-                    "page",
-                    "pageSize"
-                  ],
-                  "type": "object"
+                  "$ref": "#/components/schemas/WebsiteEventPage"
                 }
               }
             },
-            "description": "The operation completed successfully."
+            "description": "A page of events."
           },
           "400": {
             "content": {
@@ -24220,22 +25601,28 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id events",
+        "summary": "List tracked events",
         "tags": [
           "Websites"
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
-        "x-umami-source": "src/app/api/websites/[websiteId]/events/contract.generated.ts"
+        "x-umami-oauth-scope": "analytics:read",
+        "x-umami-source": "src/app/api/websites/[websiteId]/events/contract.ts"
       }
     },
     "/api/websites/{websiteId}/events/series": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEventsSeries",
+        "operationId": "getWebsiteEventSeries",
         "parameters": [
           {
             "in": "path",
@@ -24563,6 +25950,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -24573,12 +25965,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/websites/[websiteId]/events/series/contract.generated.ts"
       }
     },
     "/api/websites/{websiteId}/events/stats": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdEventsStats",
+        "operationId": "getWebsiteEventStats",
         "parameters": [
           {
             "in": "path",
@@ -24952,6 +26345,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -24962,12 +26360,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/websites/[websiteId]/events/stats/contract.generated.ts"
       }
     },
     "/api/websites/{websiteId}/export": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdExport",
+        "operationId": "exportWebsite",
         "parameters": [
           {
             "in": "path",
@@ -25149,20 +26548,24 @@
     },
     "/api/websites/{websiteId}/metrics": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdMetrics",
+        "description": "Returns the top values for one dimension (`type`), such as pages, referrers, countries, browsers, UTM parameters or events, ordered by count. Page-type dimensions count views/events; visitor dimensions count unique visitors.",
+        "operationId": "getWebsiteMetrics",
         "parameters": [
           {
+            "description": "Website ID.",
             "in": "path",
             "name": "websiteId",
             "required": true,
             "schema": {
+              "description": "Website ID.",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "startAt",
-            "required": false,
             "schema": {
               "type": "number"
             }
@@ -25170,7 +26573,6 @@
           {
             "in": "query",
             "name": "endAt",
-            "required": false,
             "schema": {
               "type": "number"
             }
@@ -25178,25 +26580,20 @@
           {
             "in": "query",
             "name": "startDate",
-            "required": false,
             "schema": {
-              "format": "date-time",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "endDate",
-            "required": false,
             "schema": {
-              "format": "date-time",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "timezone",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25204,7 +26601,6 @@
           {
             "in": "query",
             "name": "unit",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25212,7 +26608,6 @@
           {
             "in": "query",
             "name": "compare",
-            "required": false,
             "schema": {
               "enum": [
                 "prev",
@@ -25222,17 +26617,18 @@
             }
           },
           {
+            "description": "Dimension to rank: path, entry, exit, title, query, hostname, referrer, domain, channel, event, tag, browser, os, device, screen, language, country, region, city, distinctId, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.",
             "in": "query",
             "name": "type",
             "required": true,
             "schema": {
+              "description": "Dimension to rank: path, entry, exit, title, query, hostname, referrer, domain, channel, event, tag, browser, os, device, screen, language, country, region, city, distinctId, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "limit",
-            "required": false,
             "schema": {
               "type": "number"
             }
@@ -25240,7 +26636,6 @@
           {
             "in": "query",
             "name": "offset",
-            "required": false,
             "schema": {
               "type": "number"
             }
@@ -25248,7 +26643,6 @@
           {
             "in": "query",
             "name": "search",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25256,7 +26650,6 @@
           {
             "in": "query",
             "name": "path",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25264,7 +26657,6 @@
           {
             "in": "query",
             "name": "referrer",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25272,7 +26664,6 @@
           {
             "in": "query",
             "name": "title",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25280,7 +26671,6 @@
           {
             "in": "query",
             "name": "query",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25288,7 +26678,6 @@
           {
             "in": "query",
             "name": "os",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25296,7 +26685,6 @@
           {
             "in": "query",
             "name": "browser",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25304,7 +26692,6 @@
           {
             "in": "query",
             "name": "device",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25312,7 +26699,6 @@
           {
             "in": "query",
             "name": "country",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25320,7 +26706,6 @@
           {
             "in": "query",
             "name": "region",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25328,7 +26713,6 @@
           {
             "in": "query",
             "name": "city",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25336,7 +26720,6 @@
           {
             "in": "query",
             "name": "tag",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25344,7 +26727,6 @@
           {
             "in": "query",
             "name": "hostname",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25352,7 +26734,6 @@
           {
             "in": "query",
             "name": "distinctId",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25360,7 +26741,6 @@
           {
             "in": "query",
             "name": "language",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25368,7 +26748,6 @@
           {
             "in": "query",
             "name": "event",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25376,7 +26755,6 @@
           {
             "in": "query",
             "name": "utmSource",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25384,7 +26762,6 @@
           {
             "in": "query",
             "name": "utmMedium",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25392,7 +26769,6 @@
           {
             "in": "query",
             "name": "utmCampaign",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25400,7 +26776,6 @@
           {
             "in": "query",
             "name": "utmContent",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25408,15 +26783,6 @@
           {
             "in": "query",
             "name": "utmTerm",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "excludeBounce",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -25424,34 +26790,40 @@
           {
             "in": "query",
             "name": "segment",
-            "required": false,
             "schema": {
               "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "cohort",
-            "required": false,
             "schema": {
               "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "eventType",
-            "required": false,
             "schema": {
-              "minimum": 1,
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991,
               "type": "integer"
             }
           },
           {
             "in": "query",
+            "name": "excludeBounce",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
             "name": "match",
-            "required": false,
             "schema": {
               "enum": [
                 "all",
@@ -25466,30 +26838,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "items": {
-                    "properties": {
-                      "t": {
-                        "type": "string"
-                      },
-                      "x": {
-                        "type": "string"
-                      },
-                      "y": {
-                        "type": "number"
-                      }
-                    },
-                    "required": [
-                      "x",
-                      "t",
-                      "y"
-                    ],
-                    "type": "object"
-                  },
-                  "type": "array"
+                  "$ref": "#/components/schemas/MetricRows"
                 }
               }
             },
-            "description": "The operation completed successfully."
+            "description": "Ranked rows."
           },
           "400": {
             "content": {
@@ -25531,22 +26884,28 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id metrics",
+        "summary": "Get ranked metrics for a dimension",
         "tags": [
           "Websites"
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
-        "x-umami-source": "src/app/api/websites/[websiteId]/metrics/contract.generated.ts"
+        "x-umami-oauth-scope": "analytics:read",
+        "x-umami-source": "src/app/api/websites/[websiteId]/metrics/contract.ts"
       }
     },
     "/api/websites/{websiteId}/metrics/expanded": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdMetricsExpanded",
+        "operationId": "getWebsiteExpandedMetrics",
         "parameters": [
           {
             "in": "path",
@@ -25940,6 +27299,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -25950,25 +27314,30 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/websites/[websiteId]/metrics/expanded/contract.generated.ts"
       }
     },
     "/api/websites/{websiteId}/pageviews": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdPageviews",
+        "description": "Returns pageviews and sessions bucketed by `unit` (minute, hour, day, month, year) in the given `timezone`. When `compare` is set the comparison period is included.",
+        "operationId": "getWebsitePageviews",
         "parameters": [
           {
+            "description": "Website ID.",
             "in": "path",
             "name": "websiteId",
             "required": true,
             "schema": {
+              "description": "Website ID.",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "startAt",
-            "required": false,
             "schema": {
               "type": "number"
             }
@@ -25976,7 +27345,6 @@
           {
             "in": "query",
             "name": "endAt",
-            "required": false,
             "schema": {
               "type": "number"
             }
@@ -25984,25 +27352,20 @@
           {
             "in": "query",
             "name": "startDate",
-            "required": false,
             "schema": {
-              "format": "date-time",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "endDate",
-            "required": false,
             "schema": {
-              "format": "date-time",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "timezone",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26010,7 +27373,6 @@
           {
             "in": "query",
             "name": "unit",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26018,7 +27380,6 @@
           {
             "in": "query",
             "name": "compare",
-            "required": false,
             "schema": {
               "enum": [
                 "prev",
@@ -26030,7 +27391,6 @@
           {
             "in": "query",
             "name": "path",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26038,7 +27398,6 @@
           {
             "in": "query",
             "name": "referrer",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26046,7 +27405,6 @@
           {
             "in": "query",
             "name": "title",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26054,7 +27412,6 @@
           {
             "in": "query",
             "name": "query",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26062,7 +27419,6 @@
           {
             "in": "query",
             "name": "os",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26070,7 +27426,6 @@
           {
             "in": "query",
             "name": "browser",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26078,7 +27433,6 @@
           {
             "in": "query",
             "name": "device",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26086,7 +27440,6 @@
           {
             "in": "query",
             "name": "country",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26094,7 +27447,6 @@
           {
             "in": "query",
             "name": "region",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26102,7 +27454,6 @@
           {
             "in": "query",
             "name": "city",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26110,7 +27461,6 @@
           {
             "in": "query",
             "name": "tag",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26118,7 +27468,6 @@
           {
             "in": "query",
             "name": "hostname",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26126,7 +27475,6 @@
           {
             "in": "query",
             "name": "distinctId",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26134,7 +27482,6 @@
           {
             "in": "query",
             "name": "language",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26142,7 +27489,6 @@
           {
             "in": "query",
             "name": "event",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26150,7 +27496,6 @@
           {
             "in": "query",
             "name": "utmSource",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26158,7 +27503,6 @@
           {
             "in": "query",
             "name": "utmMedium",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26166,7 +27510,6 @@
           {
             "in": "query",
             "name": "utmCampaign",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26174,7 +27517,6 @@
           {
             "in": "query",
             "name": "utmContent",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26182,15 +27524,6 @@
           {
             "in": "query",
             "name": "utmTerm",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "excludeBounce",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -26198,34 +27531,40 @@
           {
             "in": "query",
             "name": "segment",
-            "required": false,
             "schema": {
               "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "cohort",
-            "required": false,
             "schema": {
               "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "eventType",
-            "required": false,
             "schema": {
-              "minimum": 1,
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991,
               "type": "integer"
             }
           },
           {
             "in": "query",
+            "name": "excludeBounce",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
             "name": "match",
-            "required": false,
             "schema": {
               "enum": [
                 "all",
@@ -26240,66 +27579,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "anyOf": [
-                    {
-                      "properties": {
-                        "compare": {
-                          "properties": {
-                            "endDate": {
-                              "format": "date-time",
-                              "type": "string"
-                            },
-                            "pageviews": {},
-                            "sessions": {},
-                            "startDate": {
-                              "format": "date-time",
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "pageviews",
-                            "sessions",
-                            "startDate",
-                            "endDate"
-                          ],
-                          "type": "object"
-                        },
-                        "endDate": {
-                          "format": "date-time",
-                          "type": "string"
-                        },
-                        "pageviews": {},
-                        "sessions": {},
-                        "startDate": {
-                          "format": "date-time",
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "pageviews",
-                        "sessions",
-                        "startDate",
-                        "endDate",
-                        "compare"
-                      ],
-                      "type": "object"
-                    },
-                    {
-                      "properties": {
-                        "pageviews": {},
-                        "sessions": {}
-                      },
-                      "required": [
-                        "pageviews",
-                        "sessions"
-                      ],
-                      "type": "object"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/WebsitePageviews"
                 }
               }
             },
-            "description": "The operation completed successfully."
+            "description": "Time series."
           },
           "400": {
             "content": {
@@ -26341,22 +27625,28 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id pageviews",
+        "summary": "Get pageview and session time series",
         "tags": [
           "Websites"
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
-        "x-umami-source": "src/app/api/websites/[websiteId]/pageviews/contract.generated.ts"
+        "x-umami-oauth-scope": "analytics:read",
+        "x-umami-source": "src/app/api/websites/[websiteId]/pageviews/contract.ts"
       }
     },
     "/api/websites/{websiteId}/recorder": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdRecorder",
+        "operationId": "getWebsiteRecorderConfig",
         "parameters": [
           {
             "in": "path",
@@ -26449,7 +27739,7 @@
     },
     "/api/websites/{websiteId}/replays": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdReplays",
+        "operationId": "getWebsiteReplays",
         "parameters": [
           {
             "in": "path",
@@ -26958,7 +28248,7 @@
     },
     "/api/websites/{websiteId}/replays/{replayId}": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdReplaysReplayId",
+        "operationId": "getWebsiteReplay",
         "parameters": [
           {
             "in": "path",
@@ -27057,7 +28347,7 @@
     },
     "/api/websites/{websiteId}/replays/saved": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdReplaysSaved",
+        "operationId": "getWebsiteSavedReplays",
         "parameters": [
           {
             "in": "path",
@@ -27234,7 +28524,7 @@
     },
     "/api/websites/{websiteId}/replays/saved/{replayId}": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdReplaysSavedReplayId",
+        "operationId": "getWebsiteReplaySaved",
         "parameters": [
           {
             "in": "path",
@@ -27308,7 +28598,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/replays/saved/[replayId]/contract.generated.ts"
       },
       "post": {
-        "operationId": "postWebsitesWebsiteIdReplaysSavedReplayId",
+        "operationId": "saveWebsiteReplay",
         "parameters": [
           {
             "in": "path",
@@ -27419,7 +28709,7 @@
     },
     "/api/websites/{websiteId}/reports": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdReports",
+        "operationId": "getWebsiteReports",
         "parameters": [
           {
             "in": "path",
@@ -27688,7 +28978,7 @@
     },
     "/api/websites/{websiteId}/reset": {
       "post": {
-        "operationId": "postWebsitesWebsiteIdReset",
+        "operationId": "resetWebsite",
         "parameters": [
           {
             "in": "path",
@@ -27752,7 +29042,7 @@
     },
     "/api/websites/{websiteId}/revenue/chart": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdRevenueChart",
+        "operationId": "getWebsiteRevenueChart",
         "parameters": [
           {
             "in": "path",
@@ -28137,7 +29427,7 @@
     },
     "/api/websites/{websiteId}/revenue/metrics": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdRevenueMetrics",
+        "operationId": "getWebsiteRevenueMetrics",
         "parameters": [
           {
             "in": "path",
@@ -28546,7 +29836,7 @@
     },
     "/api/websites/{websiteId}/revenue/sessions": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdRevenueSessions",
+        "operationId": "getWebsiteRevenueSessions",
         "parameters": [
           {
             "in": "path",
@@ -29066,7 +30356,7 @@
     },
     "/api/websites/{websiteId}/revenue/stats": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdRevenueStats",
+        "operationId": "getWebsiteRevenueStats",
         "parameters": [
           {
             "in": "path",
@@ -29426,7 +30716,7 @@
     },
     "/api/websites/{websiteId}/segments": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSegments",
+        "operationId": "getWebsiteSegments",
         "parameters": [
           {
             "in": "path",
@@ -29646,7 +30936,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/segments/contract.generated.ts"
       },
       "post": {
-        "operationId": "postWebsitesWebsiteIdSegments",
+        "operationId": "createWebsiteSegment",
         "parameters": [
           {
             "in": "path",
@@ -29874,7 +31164,7 @@
     },
     "/api/websites/{websiteId}/segments/{segmentId}": {
       "delete": {
-        "operationId": "deleteWebsitesWebsiteIdSegmentsSegmentId",
+        "operationId": "deleteWebsiteSegment",
         "parameters": [
           {
             "in": "path",
@@ -29961,7 +31251,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/segments/[segmentId]/contract.generated.ts"
       },
       "get": {
-        "operationId": "getWebsitesWebsiteIdSegmentsSegmentId",
+        "operationId": "getWebsiteSegment",
         "parameters": [
           {
             "in": "path",
@@ -30134,7 +31424,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/segments/[segmentId]/contract.generated.ts"
       },
       "post": {
-        "operationId": "postWebsitesWebsiteIdSegmentsSegmentId",
+        "operationId": "updateWebsiteSegment",
         "parameters": [
           {
             "in": "path",
@@ -30354,7 +31644,7 @@
     },
     "/api/websites/{websiteId}/session-data-pivot": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessionDataPivot",
+        "operationId": "getSessionDataPivot",
         "parameters": [
           {
             "in": "path",
@@ -30778,7 +32068,7 @@
     },
     "/api/websites/{websiteId}/session-data/array-series": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessionDataArraySeries",
+        "operationId": "getSessionDataArraySeries",
         "parameters": [
           {
             "in": "path",
@@ -31121,7 +32411,7 @@
     },
     "/api/websites/{websiteId}/session-data/date-series": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessionDataDateSeries",
+        "operationId": "getSessionDataDateSeries",
         "parameters": [
           {
             "in": "path",
@@ -31452,7 +32742,7 @@
     },
     "/api/websites/{websiteId}/session-data/numeric-series": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessionDataNumericSeries",
+        "operationId": "getSessionDataNumericSeries",
         "parameters": [
           {
             "in": "path",
@@ -31804,7 +33094,7 @@
     },
     "/api/websites/{websiteId}/session-data/numeric-stats": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessionDataNumericStats",
+        "operationId": "getSessionDataNumericStats",
         "parameters": [
           {
             "in": "path",
@@ -32144,7 +33434,7 @@
     },
     "/api/websites/{websiteId}/session-data/properties": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessionDataProperties",
+        "operationId": "getSessionDataProperties",
         "parameters": [
           {
             "in": "path",
@@ -32471,7 +33761,7 @@
     },
     "/api/websites/{websiteId}/session-data/property-series": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessionDataPropertySeries",
+        "operationId": "getSessionDataPropertySeries",
         "parameters": [
           {
             "in": "path",
@@ -32814,7 +34104,7 @@
     },
     "/api/websites/{websiteId}/session-data/stats": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessionDataStats",
+        "operationId": "getSessionDataStats",
         "parameters": [
           {
             "in": "path",
@@ -33169,7 +34459,7 @@
     },
     "/api/websites/{websiteId}/session-data/values": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessionDataValues",
+        "operationId": "getSessionDataValues",
         "parameters": [
           {
             "in": "path",
@@ -33500,20 +34790,24 @@
     },
     "/api/websites/{websiteId}/sessions": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessions",
+        "description": "Returns a page of visitor sessions in the date range, newest first. `search` matches distinct ID, city, browser, OS or device.",
+        "operationId": "getWebsiteSessions",
         "parameters": [
           {
+            "description": "Website ID.",
             "in": "path",
             "name": "websiteId",
             "required": true,
             "schema": {
+              "description": "Website ID.",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "startAt",
-            "required": false,
             "schema": {
               "type": "number"
             }
@@ -33521,7 +34815,6 @@
           {
             "in": "query",
             "name": "endAt",
-            "required": false,
             "schema": {
               "type": "number"
             }
@@ -33529,25 +34822,20 @@
           {
             "in": "query",
             "name": "startDate",
-            "required": false,
             "schema": {
-              "format": "date-time",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "endDate",
-            "required": false,
             "schema": {
-              "format": "date-time",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "timezone",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33555,7 +34843,6 @@
           {
             "in": "query",
             "name": "unit",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33563,7 +34850,6 @@
           {
             "in": "query",
             "name": "compare",
-            "required": false,
             "schema": {
               "enum": [
                 "prev",
@@ -33575,7 +34861,6 @@
           {
             "in": "query",
             "name": "path",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33583,7 +34868,6 @@
           {
             "in": "query",
             "name": "referrer",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33591,7 +34875,6 @@
           {
             "in": "query",
             "name": "title",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33599,7 +34882,6 @@
           {
             "in": "query",
             "name": "query",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33607,7 +34889,6 @@
           {
             "in": "query",
             "name": "os",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33615,7 +34896,6 @@
           {
             "in": "query",
             "name": "browser",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33623,7 +34903,6 @@
           {
             "in": "query",
             "name": "device",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33631,7 +34910,6 @@
           {
             "in": "query",
             "name": "country",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33639,7 +34917,6 @@
           {
             "in": "query",
             "name": "region",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33647,7 +34924,6 @@
           {
             "in": "query",
             "name": "city",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33655,7 +34931,6 @@
           {
             "in": "query",
             "name": "tag",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33663,7 +34938,6 @@
           {
             "in": "query",
             "name": "hostname",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33671,7 +34945,6 @@
           {
             "in": "query",
             "name": "distinctId",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33679,7 +34952,6 @@
           {
             "in": "query",
             "name": "language",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33687,7 +34959,6 @@
           {
             "in": "query",
             "name": "event",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33695,7 +34966,6 @@
           {
             "in": "query",
             "name": "utmSource",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33703,7 +34973,6 @@
           {
             "in": "query",
             "name": "utmMedium",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33711,7 +34980,6 @@
           {
             "in": "query",
             "name": "utmCampaign",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33719,7 +34987,6 @@
           {
             "in": "query",
             "name": "utmContent",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33727,15 +34994,6 @@
           {
             "in": "query",
             "name": "utmTerm",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "excludeBounce",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33743,34 +35001,40 @@
           {
             "in": "query",
             "name": "segment",
-            "required": false,
             "schema": {
               "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "cohort",
-            "required": false,
             "schema": {
               "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "eventType",
-            "required": false,
             "schema": {
-              "minimum": 1,
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991,
               "type": "integer"
             }
           },
           {
             "in": "query",
+            "name": "excludeBounce",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
             "name": "match",
-            "required": false,
             "schema": {
               "enum": [
                 "all",
@@ -33782,34 +35046,33 @@
           {
             "in": "query",
             "name": "page",
-            "required": false,
             "schema": {
-              "minimum": 1,
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991,
               "type": "integer"
             }
           },
           {
             "in": "query",
             "name": "pageSize",
-            "required": false,
             "schema": {
-              "minimum": 1,
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991,
               "type": "integer"
             }
           },
           {
             "in": "query",
             "name": "maxResults",
-            "required": false,
             "schema": {
-              "minimum": 1,
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991,
               "type": "integer"
             }
           },
           {
             "in": "query",
             "name": "search",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -33820,142 +35083,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "count": {
-                      "type": "number"
-                    },
-                    "data": {
-                      "items": {
-                        "properties": {
-                          "browser": {
-                            "type": "string"
-                          },
-                          "city": {
-                            "type": "string"
-                          },
-                          "country": {
-                            "type": "string"
-                          },
-                          "createdAt": {
-                            "anyOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "format": "date-time",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "device": {
-                            "type": "string"
-                          },
-                          "events": {
-                            "type": "number"
-                          },
-                          "firstAt": {
-                            "anyOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "format": "date-time",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "hostname": {
-                            "type": "string"
-                          },
-                          "id": {
-                            "type": "string"
-                          },
-                          "language": {
-                            "type": "string"
-                          },
-                          "lastAt": {
-                            "anyOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "format": "date-time",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "os": {
-                            "type": "string"
-                          },
-                          "region": {
-                            "type": "string"
-                          },
-                          "screen": {
-                            "type": "string"
-                          },
-                          "views": {
-                            "type": "number"
-                          },
-                          "visits": {
-                            "type": "number"
-                          },
-                          "websiteId": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "websiteId",
-                          "hostname",
-                          "browser",
-                          "os",
-                          "device",
-                          "screen",
-                          "language",
-                          "country",
-                          "region",
-                          "city",
-                          "firstAt",
-                          "lastAt",
-                          "visits",
-                          "views",
-                          "events",
-                          "createdAt"
-                        ],
-                        "type": "object"
-                      },
-                      "type": "array"
-                    },
-                    "isCapped": {
-                      "type": "boolean"
-                    },
-                    "orderBy": {
-                      "type": "string"
-                    },
-                    "page": {
-                      "type": "number"
-                    },
-                    "pageSize": {
-                      "type": "number"
-                    },
-                    "search": {
-                      "type": "string"
-                    },
-                    "sortDescending": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "data",
-                    "count",
-                    "page",
-                    "pageSize"
-                  ],
-                  "type": "object"
+                  "$ref": "#/components/schemas/WebsiteSessionPage"
                 }
               }
             },
-            "description": "The operation completed successfully."
+            "description": "A page of sessions."
           },
           "400": {
             "content": {
@@ -33997,22 +35129,28 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id sessions",
+        "summary": "List visitor sessions",
         "tags": [
           "Websites"
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
-        "x-umami-source": "src/app/api/websites/[websiteId]/sessions/contract.generated.ts"
+        "x-umami-oauth-scope": "analytics:read",
+        "x-umami-source": "src/app/api/websites/[websiteId]/sessions/contract.ts"
       }
     },
     "/api/websites/{websiteId}/sessions/{sessionId}": {
       "delete": {
-        "operationId": "deleteWebsitesWebsiteIdSessionsSessionId",
+        "operationId": "deleteWebsiteSession",
         "parameters": [
           {
             "in": "path",
@@ -34116,7 +35254,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/sessions/[sessionId]/contract.generated.ts"
       },
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessionsSessionId",
+        "operationId": "getWebsiteSession",
         "parameters": [
           {
             "in": "path",
@@ -34194,6 +35332,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -34204,12 +35347,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/websites/[websiteId]/sessions/[sessionId]/contract.generated.ts"
       }
     },
     "/api/websites/{websiteId}/sessions/{sessionId}/activity": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessionsSessionIdActivity",
+        "operationId": "getWebsiteSessionActivity",
         "parameters": [
           {
             "in": "path",
@@ -34358,6 +35502,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -34368,12 +35517,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/websites/[websiteId]/sessions/[sessionId]/activity/contract.generated.ts"
       }
     },
     "/api/websites/{websiteId}/sessions/{sessionId}/properties": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessionsSessionIdProperties",
+        "operationId": "getWebsiteSessionProperties",
         "parameters": [
           {
             "in": "path",
@@ -34481,6 +35631,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -34491,12 +35646,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/websites/[websiteId]/sessions/[sessionId]/properties/contract.generated.ts"
       }
     },
     "/api/websites/{websiteId}/sessions/{sessionId}/replays": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessionsSessionIdReplays",
+        "operationId": "getWebsiteSessionReplays",
         "parameters": [
           {
             "in": "path",
@@ -34797,7 +35953,7 @@
     },
     "/api/websites/{websiteId}/sessions/stats": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessionsStats",
+        "operationId": "getWebsiteSessionStats",
         "parameters": [
           {
             "in": "path",
@@ -35083,6 +36239,11 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
@@ -35093,12 +36254,13 @@
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
+        "x-umami-oauth-scope": "analytics:read",
         "x-umami-source": "src/app/api/websites/[websiteId]/sessions/stats/contract.generated.ts"
       }
     },
     "/api/websites/{websiteId}/sessions/weekly": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdSessionsWeekly",
+        "operationId": "getWebsiteSessionsWeekly",
         "parameters": [
           {
             "in": "path",
@@ -35412,7 +36574,7 @@
     },
     "/api/websites/{websiteId}/shares": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdShares",
+        "operationId": "getWebsiteShares",
         "parameters": [
           {
             "in": "path",
@@ -35850,7 +37012,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/shares/contract.generated.ts"
       },
       "post": {
-        "operationId": "postWebsitesWebsiteIdShares",
+        "operationId": "createWebsiteShare",
         "parameters": [
           {
             "in": "path",
@@ -36040,20 +37202,24 @@
     },
     "/api/websites/{websiteId}/stats": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdStats",
+        "description": "Returns pageviews, unique visitors, visits, bounces and total time on site for the date range, plus the same totals for the comparison period (`compare`: prev or yoy).",
+        "operationId": "getWebsiteStats",
         "parameters": [
           {
+            "description": "Website ID.",
             "in": "path",
             "name": "websiteId",
             "required": true,
             "schema": {
+              "description": "Website ID.",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "startAt",
-            "required": false,
             "schema": {
               "type": "number"
             }
@@ -36061,7 +37227,6 @@
           {
             "in": "query",
             "name": "endAt",
-            "required": false,
             "schema": {
               "type": "number"
             }
@@ -36069,25 +37234,20 @@
           {
             "in": "query",
             "name": "startDate",
-            "required": false,
             "schema": {
-              "format": "date-time",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "endDate",
-            "required": false,
             "schema": {
-              "format": "date-time",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "timezone",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36095,7 +37255,6 @@
           {
             "in": "query",
             "name": "unit",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36103,7 +37262,6 @@
           {
             "in": "query",
             "name": "compare",
-            "required": false,
             "schema": {
               "enum": [
                 "prev",
@@ -36115,7 +37273,6 @@
           {
             "in": "query",
             "name": "path",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36123,7 +37280,6 @@
           {
             "in": "query",
             "name": "referrer",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36131,7 +37287,6 @@
           {
             "in": "query",
             "name": "title",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36139,7 +37294,6 @@
           {
             "in": "query",
             "name": "query",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36147,7 +37301,6 @@
           {
             "in": "query",
             "name": "os",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36155,7 +37308,6 @@
           {
             "in": "query",
             "name": "browser",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36163,7 +37315,6 @@
           {
             "in": "query",
             "name": "device",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36171,7 +37322,6 @@
           {
             "in": "query",
             "name": "country",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36179,7 +37329,6 @@
           {
             "in": "query",
             "name": "region",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36187,7 +37336,6 @@
           {
             "in": "query",
             "name": "city",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36195,7 +37343,6 @@
           {
             "in": "query",
             "name": "tag",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36203,7 +37350,6 @@
           {
             "in": "query",
             "name": "hostname",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36211,7 +37357,6 @@
           {
             "in": "query",
             "name": "distinctId",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36219,7 +37364,6 @@
           {
             "in": "query",
             "name": "language",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36227,7 +37371,6 @@
           {
             "in": "query",
             "name": "event",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36235,7 +37378,6 @@
           {
             "in": "query",
             "name": "utmSource",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36243,7 +37385,6 @@
           {
             "in": "query",
             "name": "utmMedium",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36251,7 +37392,6 @@
           {
             "in": "query",
             "name": "utmCampaign",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36259,7 +37399,6 @@
           {
             "in": "query",
             "name": "utmContent",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36267,15 +37406,6 @@
           {
             "in": "query",
             "name": "utmTerm",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "excludeBounce",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -36283,34 +37413,40 @@
           {
             "in": "query",
             "name": "segment",
-            "required": false,
             "schema": {
               "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "cohort",
-            "required": false,
             "schema": {
               "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "type": "string"
             }
           },
           {
             "in": "query",
             "name": "eventType",
-            "required": false,
             "schema": {
-              "minimum": 1,
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991,
               "type": "integer"
             }
           },
           {
             "in": "query",
+            "name": "excludeBounce",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
             "name": "match",
-            "required": false,
             "schema": {
               "enum": [
                 "all",
@@ -36325,50 +37461,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "comparison": {
-                      "items": {
-                        "properties": {
-                          "bounces": {
-                            "type": "number"
-                          },
-                          "pageviews": {
-                            "type": "number"
-                          },
-                          "totaltime": {
-                            "type": "number"
-                          },
-                          "visitors": {
-                            "type": "number"
-                          },
-                          "visits": {
-                            "type": "number"
-                          }
-                        },
-                        "required": [
-                          "pageviews",
-                          "visitors",
-                          "visits",
-                          "bounces",
-                          "totaltime"
-                        ],
-                        "type": "object"
-                      },
-                      "type": "array"
-                    },
-                    "length": {
-                      "type": "number"
-                    }
-                  },
-                  "required": [
-                    "comparison",
-                    "length"
-                  ],
-                  "type": "object"
+                  "$ref": "#/components/schemas/WebsiteStats"
                 }
               }
             },
-            "description": "The operation completed successfully."
+            "description": "Summary stats with comparison."
           },
           "400": {
             "content": {
@@ -36410,22 +37507,28 @@
             "bearerAuth": []
           },
           {
+            "oauth2": [
+              "analytics:read"
+            ]
+          },
+          {
             "shareContext": [],
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id stats",
+        "summary": "Get website summary stats",
         "tags": [
           "Websites"
         ],
         "x-umami-audience": "public",
         "x-umami-contract": "explicit",
-        "x-umami-source": "src/app/api/websites/[websiteId]/stats/contract.generated.ts"
+        "x-umami-oauth-scope": "analytics:read",
+        "x-umami-source": "src/app/api/websites/[websiteId]/stats/contract.ts"
       }
     },
     "/api/websites/{websiteId}/transfer": {
       "post": {
-        "operationId": "postWebsitesWebsiteIdTransfer",
+        "operationId": "transferWebsite",
         "parameters": [
           {
             "in": "path",
@@ -36630,7 +37733,7 @@
     },
     "/api/websites/{websiteId}/values": {
       "get": {
-        "operationId": "getWebsitesWebsiteIdValues",
+        "operationId": "getWebsiteValues",
         "parameters": [
           {
             "in": "path",
@@ -36937,6 +38040,9 @@
     },
     {
       "name": "Links"
+    },
+    {
+      "name": "OAuth"
     },
     {
       "name": "Pixels"

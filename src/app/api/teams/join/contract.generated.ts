@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postTeamsJoin',
+    operationId: 'joinTeam',
     summary: 'Create or update teams join',
     tags: ['Teams'],
     requestBody: {

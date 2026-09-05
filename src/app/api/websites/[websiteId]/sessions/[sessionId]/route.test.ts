@@ -52,8 +52,8 @@ beforeEach(() => {
 test('GET returns not found when the session does not exist', async () => {
   parseRequestMock.mockResolvedValue({ auth: {}, error: undefined });
   canViewWebsiteSectionMock.mockResolvedValue(true);
-   isRelationalOnlyMock.mockReturnValue(true);
-   canDeleteWebsiteMock.mockResolvedValue(false);
+  isRelationalOnlyMock.mockReturnValue(true);
+  canDeleteWebsiteMock.mockResolvedValue(false);
   getWebsiteSessionMock.mockResolvedValue(undefined);
 
   const response = await GET(

@@ -9,9 +9,10 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getWebsitesWebsiteIdEventsStats',
+    operationId: 'getWebsiteEventStats',
     summary: 'Get websites website id events stats',
     tags: ['Websites'],
+    'x-umami-oauth-scope': 'analytics:read',
     parameters: [
       {
         name: 'websiteId',
