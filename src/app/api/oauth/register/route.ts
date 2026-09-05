@@ -11,6 +11,24 @@ import { createOauthClient } from '@/queries/prisma/oauth';
 import { clientRegistrationRequestSchema } from '../schema';
 
 const REGISTRATIONS_PER_HOUR = 20;
+const REGISTRATION_WINDOW_MS = 60 * 60 * 1000;
+let registrationWindow = { count: 0, expiresAt: 0 };
+
+function isLocalRegistrationLimited() {
+  const now = Date.now();
+
+  if (now >= registrationWindow.expiresAt) {
+    registrationWindow = { count: 0, expiresAt: now + REGISTRATION_WINDOW_MS };
+  }
+
+  // A process-wide cap keeps both registrations and limiter memory bounded without Redis.
+  if (registrationWindow.count >= REGISTRATIONS_PER_HOUR) {
+    return true;
+  }
+
+  registrationWindow.count++;
+  return false;
+}
 
 export function OPTIONS() {
   return corsPreflight();
@@ -37,17 +55,18 @@ export async function POST(request: Request) {
   }
 
   try {
-    if (redis.enabled) {
-      const ip = getIpAddress(request.headers) ?? 'unknown';
-      const allowed = await redis.client.rateLimit(
-        `oauth:register:${ip}`,
-        REGISTRATIONS_PER_HOUR,
-        60 * 60,
-      );
+    const limited = redis.enabled
+      ? await redis.client.rateLimit(
+          `oauth:register:${getIpAddress(request.headers) ?? 'unknown'}`,
+          REGISTRATIONS_PER_HOUR + 1,
+          REGISTRATION_WINDOW_MS / 1000,
+        )
+      : isLocalRegistrationLimited();
 
-      if (!allowed) {
-        throw new OAuthError('temporarily_unavailable', 'Too many registrations. Try again later.');
-      }
+    if (limited) {
+      throw new OAuthError('temporarily_unavailable', 'Too many registrations. Try again later.', {
+        status: 429,
+      });
     }
 
     if (!body.redirect_uris.every(isAcceptableRedirectUri)) {

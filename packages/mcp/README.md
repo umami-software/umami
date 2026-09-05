@@ -54,6 +54,9 @@ The client discovers `/.well-known/oauth-protected-resource/mcp`, sends you to U
 and approve access (`websites:read`, `analytics:read`), and receives an OAuth token. No API key
 is pasted anywhere. Clients register via Client ID Metadata Documents; dynamic client registration
 is available for compatibility (`OAUTH_DISABLE_DCR=1` turns it off).
+Registration is limited to 20 attempts per hour per IP when Redis is configured. Without Redis,
+the limit is shared by all clients in each server process and resets when that process restarts.
+Use Redis for a shared limit across multiple processes or serverless instances.
 
 Self-hosted instances can alternatively pass an API key (`umami_…`) as the bearer token.
 

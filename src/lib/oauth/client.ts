@@ -1,4 +1,8 @@
+import { lookup } from 'node:dns';
+import { Agent } from 'node:https';
 import debug from 'debug';
+import ipaddr from 'ipaddr.js';
+import nodeFetch from 'node-fetch';
 import { CLIENT_METADATA_CACHE_SECONDS } from '@/lib/oauth/config';
 import { OAuthError } from '@/lib/oauth/errors';
 import { isAcceptableRedirectUri, parseUrl } from '@/lib/oauth/redirect';
@@ -10,6 +14,40 @@ const log = debug('umami:oauth');
 const METADATA_FETCH_TIMEOUT_MS = 5000;
 const METADATA_MAX_BYTES = 64 * 1024;
 const MAX_REDIRECT_URIS = 20;
+
+const metadataAgent = new Agent({
+  keepAlive: false,
+  lookup(hostname, options, callback) {
+    // Validate the actual socket lookup, then connect only to those addresses. A separate
+    // preflight lookup would let a rebinding hostname return a private IP on the next lookup.
+    lookup(hostname, { all: true }, (error, addresses) => {
+      if (error) {
+        callback(error, '', 0);
+        return;
+      }
+
+      if (
+        !addresses.length ||
+        addresses.some(({ address }) => ipaddr.parse(address).range() !== 'unicast')
+      ) {
+        callback(new Error('Client metadata must resolve only to public addresses.'), '', 0);
+        return;
+      }
+
+      const destinations = options.family
+        ? addresses.filter(({ family }) => family === options.family)
+        : addresses;
+
+      if (!destinations.length) {
+        callback(new Error('No public address found for the requested address family.'), '', 0);
+      } else if (options.all) {
+        callback(null, destinations);
+      } else {
+        callback(null, destinations[0].address, destinations[0].family);
+      }
+    });
+  },
+});
 
 export interface ResolvedOAuthClient {
   clientId: string;
@@ -162,12 +200,32 @@ async function writeCache(clientId: string, value: ResolvedOAuthClient) {
   });
 }
 
-export type MetadataFetch = (url: string, init: RequestInit) => Promise<Response>;
+export type MetadataFetch = (
+  url: string,
+  init: RequestInit,
+) => Promise<Pick<Response, 'ok' | 'status' | 'text'>>;
+
+const fetchPublicMetadata: MetadataFetch = (url, init) =>
+  nodeFetch(url, {
+    method: 'GET',
+    headers: { accept: 'application/json' },
+    redirect: 'error',
+    signal: init.signal,
+    agent: metadataAgent,
+    size: METADATA_MAX_BYTES,
+  });
 
 export async function fetchClientMetadata(
   clientId: string,
-  fetchImpl: MetadataFetch = fetch,
+  fetchImpl: MetadataFetch = fetchPublicMetadata,
 ): Promise<ResolvedOAuthClient> {
+  if (!isClientMetadataUrl(clientId)) {
+    throw new OAuthError(
+      'invalid_client',
+      'Client metadata must use a public https URL with a path.',
+    );
+  }
+
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), METADATA_FETCH_TIMEOUT_MS);
 
@@ -188,7 +246,7 @@ export async function fetchClientMetadata(
 
     const text = await response.text();
 
-    if (text.length > METADATA_MAX_BYTES) {
+    if (Buffer.byteLength(text, 'utf8') > METADATA_MAX_BYTES) {
       throw new OAuthError('invalid_client_metadata', 'Client metadata document is too large.');
     }
 
@@ -215,6 +273,7 @@ export async function fetchClientMetadata(
     throw new OAuthError('invalid_client', 'Could not fetch client metadata document.');
   } finally {
     clearTimeout(timer);
+    controller.abort();
   }
 }
 

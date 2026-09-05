@@ -1,3 +1,4 @@
+import type { Prisma } from '@/generated/prisma/client';
 import { uuid } from '@/lib/crypto';
 import { getMcpResource, normalizeResource, REFRESH_TOKEN_TTL_SECONDS } from '@/lib/oauth/config';
 import { OAuthError } from '@/lib/oauth/errors';
@@ -9,6 +10,7 @@ import {
   hashToken,
   isRefreshToken,
 } from '@/lib/oauth/tokens';
+import prisma from '@/lib/prisma';
 import {
   consumeAuthorizationCode,
   createRefreshToken,
@@ -18,6 +20,10 @@ import {
   touchRefreshToken,
 } from '@/queries/prisma/oauth';
 import { getUser } from '@/queries/prisma/user';
+
+const transaction = prisma.transaction as <T>(
+  callback: (tx: Prisma.TransactionClient) => Promise<T>,
+) => Promise<T>;
 
 export interface TokenRequestParams {
   grant_type?: unknown;
@@ -60,14 +66,17 @@ async function loadUser(userId: string) {
   return user;
 }
 
-async function issueTokens(options: {
-  userId: string;
-  clientId: string;
-  scopes: string[];
-  resource: string;
-  issuer: string;
-  passwordHash?: string;
-}): Promise<TokenResponse> {
+async function issueTokens(
+  options: {
+    userId: string;
+    clientId: string;
+    scopes: string[];
+    resource: string;
+    issuer: string;
+    passwordHash?: string;
+  },
+  tx: Prisma.TransactionClient,
+): Promise<TokenResponse> {
   const scopes = normalizeScopes(options.scopes);
   const access = createAccessToken({
     userId: options.userId,
@@ -79,15 +88,18 @@ async function issueTokens(options: {
   });
   const refreshToken = generateRefreshToken();
 
-  await createRefreshToken({
-    id: uuid(),
-    tokenHash: hashToken(refreshToken),
-    userId: options.userId,
-    clientId: options.clientId,
-    scope: scopes.join(' '),
-    resource: options.resource,
-    expiresAt: new Date(Date.now() + REFRESH_TOKEN_TTL_SECONDS * 1000),
-  });
+  await createRefreshToken(
+    {
+      id: uuid(),
+      tokenHash: hashToken(refreshToken),
+      userId: options.userId,
+      clientId: options.clientId,
+      scope: scopes.join(' '),
+      resource: options.resource,
+      expiresAt: new Date(Date.now() + REFRESH_TOKEN_TTL_SECONDS * 1000),
+    },
+    tx,
+  );
 
   return {
     access_token: access.token,
@@ -105,52 +117,67 @@ export async function handleAuthorizationCodeGrant(
   const code = requireString(params.code, 'code', 512);
   const clientId = requireString(params.client_id, 'client_id', 2048);
   const codeVerifier = requireString(params.code_verifier, 'code_verifier', 128);
-  const { code: record, replayed } = await consumeAuthorizationCode(hashToken(code));
+  const result = await transaction(async tx => {
+    const { code: record, replayed } = await consumeAuthorizationCode(hashToken(code), tx);
 
-  if (!record) {
-    if (replayed) {
-      // Replay of a redeemed code: revoke everything that code produced (OAuth 2.1 §4.1.2).
-      await revokeRefreshTokensForClient(replayed.userId, replayed.clientId);
+    if (!record) {
+      if (replayed) {
+        // Replay of a redeemed code: revoke everything that code produced (OAuth 2.1 §4.1.2).
+        await revokeRefreshTokensForClient(replayed.userId, replayed.clientId, tx);
+      }
+
+      // Return the error so replay revocations commit before the request is rejected.
+      return new OAuthError(
+        'invalid_grant',
+        'Authorization code is invalid, expired or already used.',
+      );
     }
 
-    throw new OAuthError(
-      'invalid_grant',
-      'Authorization code is invalid, expired or already used.',
+    if (record.clientId !== clientId) {
+      throw new OAuthError('invalid_grant', 'client_id does not match the authorization code.');
+    }
+
+    const redirectUri = typeof params.redirect_uri === 'string' ? params.redirect_uri : undefined;
+
+    if (redirectUri !== undefined && redirectUri !== record.redirectUri) {
+      throw new OAuthError(
+        'invalid_grant',
+        'redirect_uri does not match the authorization request.',
+      );
+    }
+
+    if (!verifyPkce(codeVerifier, record.codeChallenge, record.codeChallengeMethod)) {
+      throw new OAuthError('invalid_grant', 'PKCE verification failed.');
+    }
+
+    const expectedResource = record.resource ?? getMcpResource(issuer);
+    const resourceParam =
+      typeof params.resource === 'string' ? normalizeResource(params.resource) : null;
+
+    if (params.resource !== undefined && resourceParam !== expectedResource) {
+      throw new OAuthError('invalid_target', `resource must be ${expectedResource}.`);
+    }
+
+    const user = await loadUser(record.userId);
+
+    return issueTokens(
+      {
+        userId: user.id,
+        clientId: record.clientId,
+        scopes: parseScopes(record.scope),
+        resource: expectedResource,
+        issuer,
+        passwordHash: user.password,
+      },
+      tx,
     );
-  }
-
-  if (record.clientId !== clientId) {
-    throw new OAuthError('invalid_grant', 'client_id does not match the authorization code.');
-  }
-
-  const redirectUri = typeof params.redirect_uri === 'string' ? params.redirect_uri : undefined;
-
-  if (redirectUri !== undefined && redirectUri !== record.redirectUri) {
-    throw new OAuthError('invalid_grant', 'redirect_uri does not match the authorization request.');
-  }
-
-  if (!verifyPkce(codeVerifier, record.codeChallenge, record.codeChallengeMethod)) {
-    throw new OAuthError('invalid_grant', 'PKCE verification failed.');
-  }
-
-  const expectedResource = record.resource ?? getMcpResource(issuer);
-  const resourceParam =
-    typeof params.resource === 'string' ? normalizeResource(params.resource) : null;
-
-  if (params.resource !== undefined && resourceParam !== expectedResource) {
-    throw new OAuthError('invalid_target', `resource must be ${expectedResource}.`);
-  }
-
-  const user = await loadUser(record.userId);
-
-  return issueTokens({
-    userId: user.id,
-    clientId: record.clientId,
-    scopes: parseScopes(record.scope),
-    resource: expectedResource,
-    issuer,
-    passwordHash: user.password,
   });
+
+  if (result instanceof OAuthError) {
+    throw result;
+  }
+
+  return result;
 }
 
 export async function handleRefreshTokenGrant(
@@ -195,21 +222,26 @@ export async function handleRefreshTokenGrant(
   const user = await loadUser(record.userId);
 
   // Rotate: the presented refresh token is retired and a new one issued (OAuth 2.1 §4.3.1).
-  const revoked = await revokeRefreshToken(record.id);
+  return transaction(async tx => {
+    const revoked = await revokeRefreshToken(record.id, tx);
 
-  if (!revoked) {
-    throw new OAuthError('invalid_grant', 'Refresh token has already been used.');
-  }
+    if (!revoked) {
+      throw new OAuthError('invalid_grant', 'Refresh token has already been used.');
+    }
 
-  await touchRefreshToken(record.id);
+    await touchRefreshToken(record.id, tx);
 
-  return issueTokens({
-    userId: user.id,
-    clientId: record.clientId,
-    scopes: narrowed,
-    resource: expectedResource,
-    issuer,
-    passwordHash: user.password,
+    return issueTokens(
+      {
+        userId: user.id,
+        clientId: record.clientId,
+        scopes: narrowed,
+        resource: expectedResource,
+        issuer,
+        passwordHash: user.password,
+      },
+      tx,
+    );
   });
 }
 

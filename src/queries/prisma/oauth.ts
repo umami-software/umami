@@ -1,4 +1,9 @@
+import type { Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
+
+type OAuthDatabase = Pick<Prisma.TransactionClient, 'oauthAuthorizationCode' | 'oauthRefreshToken'>;
+// The read-replica extension preserves these delegates, but changes their generic signatures.
+const oauthDatabase = prisma.client as OAuthDatabase;
 
 export async function createOauthClient(data: {
   id: string;
@@ -39,14 +44,17 @@ export async function createAuthorizationCode(data: {
  * Atomically marks a code as used and returns it, or `null` when the code is unknown, expired or
  * has already been redeemed. Reuse of a code is a replay signal, handled by the caller.
  */
-export async function consumeAuthorizationCode(codeHash: string) {
+export async function consumeAuthorizationCode(
+  codeHash: string,
+  db: OAuthDatabase = oauthDatabase,
+) {
   const now = new Date();
-  const { count } = await prisma.client.oauthAuthorizationCode.updateMany({
+  const { count } = await db.oauthAuthorizationCode.updateMany({
     where: { codeHash, usedAt: null, expiresAt: { gt: now } },
     data: { usedAt: now },
   });
 
-  const code = await prisma.client.oauthAuthorizationCode.findUnique({ where: { codeHash } });
+  const code = await db.oauthAuthorizationCode.findUnique({ where: { codeHash } });
 
   if (!code) {
     return { code: null, replayed: null };
@@ -60,24 +68,27 @@ export async function consumeAuthorizationCode(codeHash: string) {
   return { code: null, replayed: code.usedAt && code.usedAt < new Date() ? code : null };
 }
 
-export async function createRefreshToken(data: {
-  id: string;
-  tokenHash: string;
-  userId: string;
-  clientId: string;
-  scope: string;
-  resource?: string | null;
-  expiresAt: Date;
-}) {
-  return prisma.client.oauthRefreshToken.create({ data });
+export async function createRefreshToken(
+  data: {
+    id: string;
+    tokenHash: string;
+    userId: string;
+    clientId: string;
+    scope: string;
+    resource?: string | null;
+    expiresAt: Date;
+  },
+  db: OAuthDatabase = oauthDatabase,
+) {
+  return db.oauthRefreshToken.create({ data });
 }
 
 export async function getRefreshTokenByHash(tokenHash: string) {
   return prisma.client.oauthRefreshToken.findUnique({ where: { tokenHash } });
 }
 
-export async function revokeRefreshToken(id: string) {
-  const { count } = await prisma.client.oauthRefreshToken.updateMany({
+export async function revokeRefreshToken(id: string, db: OAuthDatabase = oauthDatabase) {
+  const { count } = await db.oauthRefreshToken.updateMany({
     where: { id, revokedAt: null },
     data: { revokedAt: new Date() },
   });
@@ -85,8 +96,12 @@ export async function revokeRefreshToken(id: string) {
   return count;
 }
 
-export async function revokeRefreshTokensForClient(userId: string, clientId: string) {
-  const { count } = await prisma.client.oauthRefreshToken.updateMany({
+export async function revokeRefreshTokensForClient(
+  userId: string,
+  clientId: string,
+  db: OAuthDatabase = oauthDatabase,
+) {
+  const { count } = await db.oauthRefreshToken.updateMany({
     where: { userId, clientId, revokedAt: null },
     data: { revokedAt: new Date() },
   });
@@ -94,8 +109,8 @@ export async function revokeRefreshTokensForClient(userId: string, clientId: str
   return count;
 }
 
-export async function touchRefreshToken(id: string) {
-  return prisma.client.oauthRefreshToken.update({
+export async function touchRefreshToken(id: string, db: OAuthDatabase = oauthDatabase) {
+  return db.oauthRefreshToken.update({
     where: { id },
     data: { lastUsedAt: new Date() },
   });

@@ -12,6 +12,14 @@ import { computeCodeChallenge } from './pkce';
 import { handleRevocationRequest, handleTokenRequest } from './token';
 import { generateRefreshToken, hashToken, verifyAccessToken } from './tokens';
 
+const { transactionClient } = vi.hoisted(() => ({ transactionClient: {} }));
+
+vi.mock('@/lib/prisma', () => ({
+  default: {
+    transaction: vi.fn(async callback => callback(transactionClient)),
+  },
+}));
+
 vi.mock('@/queries/prisma/oauth', () => ({
   consumeAuthorizationCode: vi.fn(),
   createRefreshToken: vi.fn(),
@@ -107,6 +115,7 @@ describe('authorization_code grant', () => {
         clientId: CLIENT_ID,
         tokenHash: hashToken(tokens.refresh_token),
       }),
+      transactionClient,
     );
   });
 
@@ -146,7 +155,11 @@ describe('authorization_code grant', () => {
     await expect(handleTokenRequest(grant(), ISSUER)).rejects.toMatchObject({
       code: 'invalid_grant',
     });
-    expect(revokeRefreshTokensForClientMock).toHaveBeenCalledWith(USER.id, CLIENT_ID);
+    expect(revokeRefreshTokensForClientMock).toHaveBeenCalledWith(
+      USER.id,
+      CLIENT_ID,
+      transactionClient,
+    );
   });
 
   test('rejects a mismatched resource indicator', async () => {
@@ -194,7 +207,7 @@ describe('refresh_token grant', () => {
     );
 
     expect(getRefreshTokenByHashMock).toHaveBeenCalledWith(hashToken(presented));
-    expect(revokeRefreshTokenMock).toHaveBeenCalledWith('rt-1');
+    expect(revokeRefreshTokenMock).toHaveBeenCalledWith('rt-1', transactionClient);
     expect(tokens.refresh_token).not.toBe(presented);
     expect(tokens.scope).toBe('analytics:read websites:read');
   });
