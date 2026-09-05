@@ -100,7 +100,12 @@ export function LoginTwoFactorPage() {
           <Text style={{ color: 'var(--zen-status-error)' }}>{lockMessage}</Text>
         )}
 
-        <Form onSubmit={handleSubmit} error={error ?? undefined} style={{ minWidth: 300 }}>
+        <Form
+          onSubmit={handleSubmit}
+          error={error ?? undefined}
+          defaultValues={{ backupCode: '' }}
+          style={{ minWidth: 300 }}
+        >
           {!useBackup ? (
             <Column gap="2">
               <Text weight="bold">{t(labels.twoFactorEnterCode)}</Text>
