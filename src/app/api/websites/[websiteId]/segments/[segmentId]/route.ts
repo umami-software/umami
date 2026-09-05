@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { json, notFound, ok, unauthorized } from '@/lib/response';
-import { anyObjectParam, segmentTypeParam } from '@/lib/schema';
+import { segmentParamSchema, segmentTypeParam } from '@/lib/schema';
 import { canDeleteWebsite, canUpdateWebsite, canViewSharedWebsiteFilters } from '@/permissions';
 import { deleteSegment, getWebsiteSegment, updateSegment } from '@/queries/prisma';
 
@@ -37,7 +37,7 @@ export async function POST(
   const schema = z.object({
     type: segmentTypeParam,
     name: z.string().max(200),
-    parameters: anyObjectParam,
+    parameters: segmentParamSchema,
   });
 
   const { auth, body, error } = await parseRequest(request, schema);

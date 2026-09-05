@@ -182,6 +182,8 @@ export const labels: Record<string, string> = {
   path: 'label.path',
   paths: 'label.paths',
   add: 'label.add',
+  addGroup: 'label.add-group',
+  deleteGroup: 'label.delete-group',
   update: 'label.update',
   window: 'label.window',
   runQuery: 'label.run-query',
