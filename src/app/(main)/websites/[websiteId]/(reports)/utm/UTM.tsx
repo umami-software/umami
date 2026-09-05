@@ -5,6 +5,10 @@ import { Panel } from '@/components/common/Panel';
 import { useMessages, useResultQuery } from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
 import { CHART_COLORS, UTM_PARAMS } from '@/lib/constants';
+import { DialogButton } from '@/components/input/DialogButton';
+import { Link } from 'lucide-react';
+import { SectionHeader } from '@/components/common/SectionHeader';
+import { BuildUTMLink } from './BuildUTMLink';
 
 export interface UTMProps {
   websiteId: string;
@@ -24,6 +28,18 @@ export function UTM({ websiteId, startDate, endDate }: UTMProps) {
     <LoadingPanel data={data} isLoading={isLoading} error={error} minHeight="300px">
       {data && (
         <Column gap>
+          <SectionHeader>
+            <DialogButton
+              variant="primary"
+              icon={<Link />}
+              label={t(labels.utmGenerator)}
+              title={t(labels.utmGenerator)}
+              minWidth="400px"
+              minHeight="300px"
+            >
+              {({ close }) => <BuildUTMLink onClose={close} />}
+            </DialogButton>
+          </SectionHeader>
           {UTM_PARAMS.map(param => {
             const items = data?.[param];
 
