@@ -12,12 +12,25 @@ export function SessionInfo({ data }) {
   const { formatValue } = useFormat();
   const { getRegionName } = useRegionNames(locale);
   const distinctId = data?.distinctId?.trim();
+  const distinctIds = (data?.distinctIds ?? []).map(id => id?.trim()).filter(Boolean);
   const stitchedSessionCount = data?.stitchedSessionCount;
 
   return (
     <Grid columns="repeat(auto-fit, minmax(200px, 1fr)" gap>
       <Info label={t(labels.distinctId)} icon={<KeyRound />}>
-        {distinctId ? <span style={{ overflowWrap: 'anywhere' }}>{distinctId}</span> : '—'}
+        {distinctIds.length > 1 ? (
+          <Column gap="1">
+            {distinctIds.map(id => (
+              <span key={id} style={{ overflowWrap: 'anywhere' }}>
+                {id}
+              </span>
+            ))}
+          </Column>
+        ) : distinctId ? (
+          <span style={{ overflowWrap: 'anywhere' }}>{distinctId}</span>
+        ) : (
+          '—'
+        )}
       </Info>
 
       <Info label={t(labels.lastSeen)} icon={<Calendar />}>
