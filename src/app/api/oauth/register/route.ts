@@ -4,31 +4,14 @@ import { isDynamicRegistrationEnabled } from '@/lib/oauth/config';
 import { OAuthError, oauthErrorResponse, oauthJson } from '@/lib/oauth/errors';
 import { corsPreflight } from '@/lib/oauth/metadata';
 import { isAcceptableRedirectUri } from '@/lib/oauth/redirect';
-import redis from '@/lib/redis';
+import { checkRateLimit } from '@/lib/rate-limit';
 import { parseRequest } from '@/lib/request';
 import { notFound } from '@/lib/response';
 import { createOauthClient } from '@/queries/prisma/oauth';
 import { clientRegistrationRequestSchema } from '../schema';
 
 const REGISTRATIONS_PER_HOUR = 20;
-const REGISTRATION_WINDOW_MS = 60 * 60 * 1000;
-let registrationWindow = { count: 0, expiresAt: 0 };
-
-function isLocalRegistrationLimited() {
-  const now = Date.now();
-
-  if (now >= registrationWindow.expiresAt) {
-    registrationWindow = { count: 0, expiresAt: now + REGISTRATION_WINDOW_MS };
-  }
-
-  // A process-wide cap keeps both registrations and limiter memory bounded without Redis.
-  if (registrationWindow.count >= REGISTRATIONS_PER_HOUR) {
-    return true;
-  }
-
-  registrationWindow.count++;
-  return false;
-}
+const REGISTRATION_WINDOW_SECONDS = 60 * 60;
 
 export function OPTIONS() {
   return corsPreflight();
@@ -55,15 +38,15 @@ export async function POST(request: Request) {
   }
 
   try {
-    const limited = redis.enabled
-      ? await redis.client.rateLimit(
-          `oauth:register:${getIpAddress(request.headers) ?? 'unknown'}`,
-          REGISTRATIONS_PER_HOUR + 1,
-          REGISTRATION_WINDOW_MS / 1000,
-        )
-      : isLocalRegistrationLimited();
+    // Budget is per source address so one requester cannot exhaust registration for every other
+    // client. Enforced via Redis when available, otherwise a bounded per-key in-process window.
+    const allowed = await checkRateLimit(
+      `oauth:register:${getIpAddress(request.headers) ?? 'unknown'}`,
+      REGISTRATIONS_PER_HOUR,
+      REGISTRATION_WINDOW_SECONDS,
+    );
 
-    if (limited) {
+    if (!allowed) {
       throw new OAuthError('temporarily_unavailable', 'Too many registrations. Try again later.', {
         status: 429,
       });
