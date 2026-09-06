@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'deleteBoardsBoardId',
+    operationId: 'deleteBoard',
     summary: 'Delete boards board id',
     tags: ['Boards'],
     parameters: [
@@ -66,7 +66,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getBoardsBoardId',
+    operationId: 'getBoard',
     summary: 'Get boards board id',
     tags: ['Boards'],
     parameters: [
@@ -211,7 +211,7 @@ const operation3 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'postBoardsBoardId',
+    operationId: 'updateBoard',
     summary: 'Create or update boards board id',
     tags: ['Boards'],
     parameters: [

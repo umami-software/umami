@@ -10,10 +10,13 @@ ARG PNPM_VERSION
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+# Workspace packages (@umami/api-client, @umami/mcp) must be present for a frozen install.
+COPY packages/api-client/package.json ./packages/api-client/
+COPY packages/mcp/package.json ./packages/mcp/
 RUN npm install -g pnpm@${PNPM_VERSION}
 
-RUN printf 'strictDepBuilds: false\n' > pnpm-workspace.yaml
+RUN printf 'strictDepBuilds: false\n' >> pnpm-workspace.yaml
 
 RUN pnpm install --frozen-lockfile
 

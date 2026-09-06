@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { Logo } from '@/components/svg';
 import { setClientAuthToken } from '@/lib/client';
+import { consumeReturnUrl } from '@/lib/return-url';
 import { setUser } from '@/store/app';
 
 export function LoginForm() {
@@ -30,7 +31,7 @@ export function LoginForm() {
         }
         setClientAuthToken(response.token);
         setUser(response.user);
-        router.push('/');
+        router.push(consumeReturnUrl() ?? '/');
       },
     });
   };

@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'getMeApiKeys',
+    operationId: 'getMyApiKeys',
     summary: 'Get me api keys',
     tags: ['Account'],
     responses: {
@@ -90,7 +90,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postMeApiKeys',
+    operationId: 'createMyApiKey',
     summary: 'Create or update me api keys',
     tags: ['Account'],
     requestBody: {

@@ -12,6 +12,7 @@ const operation1 = defineOperation({
     operationId: 'getMe',
     summary: 'Get me',
     tags: ['Account'],
+    'x-umami-oauth-scope': 'websites:read',
     responses: {
       '200': {
         description: 'The operation completed successfully.',
@@ -49,6 +50,40 @@ const operation1 = defineOperation({
                     },
                   },
                   required: ['id', 'name'],
+                },
+                authType: {
+                  anyOf: [
+                    {
+                      const: 'session',
+                    },
+                    {
+                      const: 'share',
+                    },
+                    {
+                      const: 'api-key',
+                    },
+                    {
+                      const: 'oauth',
+                    },
+                  ],
+                },
+                oauth: {
+                  type: 'object',
+                  properties: {
+                    clientId: {
+                      type: 'string',
+                    },
+                    scopes: {
+                      type: 'array',
+                      items: {
+                        type: 'string',
+                      },
+                    },
+                    tokenId: {
+                      type: 'string',
+                    },
+                  },
+                  required: ['clientId', 'scopes'],
                 },
                 shareToken: {
                   type: 'object',

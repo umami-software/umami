@@ -24,5 +24,8 @@ jobs:
           cache: "pnpm"
       - run: pnpm install
       - run: pnpm openapi:check --explicit
+      - run: pnpm check:api-client
+      - run: pnpm build-packages
       - run: pnpm test
+      - run: pnpm test:packages
       - run: pnpm build

@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'deleteLinksLinkId',
+    operationId: 'deleteLink',
     summary: 'Delete links link id',
     tags: ['Links'],
     parameters: [
@@ -66,7 +66,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getLinksLinkId',
+    operationId: 'getLink',
     summary: 'Get links link id',
     tags: ['Links'],
     parameters: [
@@ -160,7 +160,7 @@ const operation3 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postLinksLinkId',
+    operationId: 'updateLink',
     summary: 'Create or update links link id',
     tags: ['Links'],
     parameters: [

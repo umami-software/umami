@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'none',
   operation: {
-    operationId: 'getShareSlug',
+    operationId: 'getShareBySlug',
     summary: 'Get share slug',
     tags: ['Shares'],
     parameters: [

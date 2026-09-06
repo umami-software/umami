@@ -9,9 +9,10 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'postReportsJourney',
+    operationId: 'runJourneyReport',
     summary: 'Create or update reports journey',
     tags: ['Reports'],
+    'x-umami-oauth-scope': 'analytics:read',
     requestBody: {
       required: true,
       content: {

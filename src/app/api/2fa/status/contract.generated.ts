@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'get2faStatus',
+    operationId: 'getTwoFactorStatus',
     summary: 'Get 2fa status',
     tags: ['Two-factor authentication'],
     responses: {

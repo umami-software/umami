@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'none',
   operation: {
-    operationId: 'post2faVerify',
+    operationId: 'verifyTwoFactor',
     summary: 'Create or update 2fa verify',
     tags: ['Two-factor authentication'],
     requestBody: {

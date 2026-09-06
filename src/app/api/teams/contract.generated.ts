@@ -182,7 +182,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postTeams',
+    operationId: 'createTeam',
     summary: 'Create or update teams',
     tags: ['Teams'],
     requestBody: {

@@ -190,7 +190,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postPixels',
+    operationId: 'createPixel',
     summary: 'Create or update pixels',
     tags: ['Pixels'],
     requestBody: {

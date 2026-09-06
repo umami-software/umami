@@ -12,6 +12,8 @@ export type Role = ObjectValues<typeof ROLES>;
 export type DynamicDataType = ObjectValues<typeof DATA_TYPE>;
 export type Operator = (typeof OPERATORS)[keyof typeof OPERATORS];
 
+export type AuthType = 'session' | 'api-key' | 'oauth' | 'share';
+
 export interface Auth {
   user?: {
     id: string;
@@ -22,6 +24,14 @@ export interface Auth {
   apiKey?: {
     id: string;
     name: string;
+  };
+  /** How the request was authenticated. Undefined for legacy callers that build Auth manually. */
+  authType?: AuthType;
+  /** OAuth details when `authType` is `oauth`. Scopes never expand Umami permissions. */
+  oauth?: {
+    clientId: string;
+    scopes: string[];
+    tokenId?: string;
   };
   shareToken?: {
     shareType?: number;

@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'collect',
   auth: 'none',
   operation: {
-    operationId: 'postBatch',
+    operationId: 'batch',
     summary: 'Create or update batch',
     tags: ['Collection'],
     requestBody: {

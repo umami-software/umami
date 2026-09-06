@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'collect',
   auth: 'none',
   operation: {
-    operationId: 'postRecord',
+    operationId: 'record',
     summary: 'Create or update record',
     tags: ['Collection'],
     requestBody: {

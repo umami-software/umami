@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'deleteUsersUserId',
+    operationId: 'deleteUser',
     summary: 'Delete users user id',
     tags: ['Users'],
     parameters: [
@@ -83,7 +83,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getUsersUserId',
+    operationId: 'getUser',
     summary: 'Get users user id',
     tags: ['Users'],
     parameters: [
@@ -810,6 +810,121 @@ const operation2 = defineOperation({
                     ],
                   },
                 },
+                oauthAuthorizationCodes: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      id: {
+                        type: 'string',
+                      },
+                      userId: {
+                        type: 'string',
+                      },
+                      createdAt: {
+                        type: 'string',
+                        format: 'date-time',
+                      },
+                      codeHash: {
+                        type: 'string',
+                      },
+                      expiresAt: {
+                        type: 'string',
+                        format: 'date-time',
+                      },
+                      clientId: {
+                        type: 'string',
+                      },
+                      redirectUri: {
+                        type: 'string',
+                      },
+                      scope: {
+                        type: 'string',
+                      },
+                      resource: {
+                        type: 'string',
+                      },
+                      codeChallenge: {
+                        type: 'string',
+                      },
+                      codeChallengeMethod: {
+                        type: 'string',
+                      },
+                      usedAt: {
+                        type: 'string',
+                        format: 'date-time',
+                      },
+                    },
+                    required: [
+                      'id',
+                      'userId',
+                      'createdAt',
+                      'codeHash',
+                      'expiresAt',
+                      'clientId',
+                      'redirectUri',
+                      'scope',
+                      'resource',
+                      'codeChallenge',
+                      'codeChallengeMethod',
+                      'usedAt',
+                    ],
+                  },
+                },
+                oauthRefreshTokens: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      id: {
+                        type: 'string',
+                      },
+                      userId: {
+                        type: 'string',
+                      },
+                      createdAt: {
+                        type: 'string',
+                        format: 'date-time',
+                      },
+                      expiresAt: {
+                        type: 'string',
+                        format: 'date-time',
+                      },
+                      lastUsedAt: {
+                        type: 'string',
+                        format: 'date-time',
+                      },
+                      clientId: {
+                        type: 'string',
+                      },
+                      scope: {
+                        type: 'string',
+                      },
+                      resource: {
+                        type: 'string',
+                      },
+                      tokenHash: {
+                        type: 'string',
+                      },
+                      revokedAt: {
+                        type: 'string',
+                        format: 'date-time',
+                      },
+                    },
+                    required: [
+                      'id',
+                      'userId',
+                      'createdAt',
+                      'expiresAt',
+                      'lastUsedAt',
+                      'clientId',
+                      'scope',
+                      'resource',
+                      'tokenHash',
+                      'revokedAt',
+                    ],
+                  },
+                },
                 _count: {
                   type: 'object',
                   properties: {
@@ -849,6 +964,12 @@ const operation2 = defineOperation({
                     apiKeys: {
                       type: 'number',
                     },
+                    oauthAuthorizationCodes: {
+                      type: 'number',
+                    },
+                    oauthRefreshTokens: {
+                      type: 'number',
+                    },
                   },
                   required: [
                     'websites',
@@ -863,6 +984,8 @@ const operation2 = defineOperation({
                     'twoFactorOtpUseds',
                     'twoFactorRateLimit',
                     'apiKeys',
+                    'oauthAuthorizationCodes',
+                    'oauthRefreshTokens',
                   ],
                 },
               },
@@ -885,6 +1008,8 @@ const operation2 = defineOperation({
                 'twoFactorBackupCodes',
                 'twoFactorOtpUseds',
                 'apiKeys',
+                'oauthAuthorizationCodes',
+                'oauthRefreshTokens',
                 '_count',
               ],
             },
@@ -918,7 +1043,7 @@ const operation3 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postUsersUserId',
+    operationId: 'updateUser',
     summary: 'Create or update users user id',
     tags: ['Users'],
     parameters: [

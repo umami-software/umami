@@ -8,6 +8,7 @@ import type {
 import type { DiscoveredApiOperation } from '@/openapi/discover';
 import type { ApiAudience, ApiHttpMethod, LoadedApiOperationContract } from '@/openapi/operation';
 import { getOperationKey } from '@/openapi/operation';
+import { getOperationIdOverride } from '@/openapi/operation-ids';
 import {
   badRequestResponse,
   forbiddenResponse,
@@ -204,7 +205,7 @@ function getOperation(operation: DiscoveredApiOperation): ZodOpenApiOperationObj
       : undefined;
 
   return {
-    operationId: getOperationId(method, path),
+    operationId: getOperationIdOverride(method, path) ?? getOperationId(method, path),
     summary: getSummary(method, path),
     description:
       'Generated from the App Router handler and its request-validation source. Add a colocated contract.ts to supply exact response models and curated documentation.',

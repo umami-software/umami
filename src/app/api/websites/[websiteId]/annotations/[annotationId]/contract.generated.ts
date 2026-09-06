@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'deleteWebsitesWebsiteIdAnnotationsAnnotationId',
+    operationId: 'deleteWebsiteAnnotation',
     summary: 'Delete websites website id annotations annotation id',
     tags: ['Websites'],
     parameters: [
@@ -91,7 +91,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getWebsitesWebsiteIdAnnotationsAnnotationId',
+    operationId: 'getWebsiteAnnotation',
     summary: 'Get websites website id annotations annotation id',
     tags: ['Websites'],
     parameters: [
@@ -206,7 +206,7 @@ const operation3 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postWebsitesWebsiteIdAnnotationsAnnotationId',
+    operationId: 'updateWebsiteAnnotation',
     summary: 'Create or update websites website id annotations annotation id',
     tags: ['Websites'],
     parameters: [

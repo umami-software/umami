@@ -9,7 +9,7 @@ const operation1 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'deleteReportsReportId',
+    operationId: 'deleteReport',
     summary: 'Delete reports report id',
     tags: ['Reports'],
     parameters: [
@@ -83,7 +83,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'getReportsReportId',
+    operationId: 'getReport',
     summary: 'Get reports report id',
     tags: ['Reports'],
     parameters: [
@@ -245,7 +245,7 @@ const operation3 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postReportsReportId',
+    operationId: 'updateReport',
     summary: 'Create or update reports report id',
     tags: ['Reports'],
     parameters: [

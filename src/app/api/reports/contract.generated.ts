@@ -258,7 +258,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postReports',
+    operationId: 'createReport',
     summary: 'Create or update reports',
     tags: ['Reports'],
     requestBody: {

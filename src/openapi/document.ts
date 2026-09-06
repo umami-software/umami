@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { createDocument, type ZodOpenApiPathsObject } from 'zod-openapi';
+import { getContractOAuthScope, OAUTH_ROUTE_SCOPES } from '@/lib/oauth/scopes';
 import { loadApiContracts } from '@/openapi/contracts';
 import {
   analyzeContractCoverage,
@@ -9,7 +10,7 @@ import {
 } from '@/openapi/coverage';
 import { discoverApiOperations } from '@/openapi/discover';
 import { inferApiContracts } from '@/openapi/infer';
-import type { ApiAudience } from '@/openapi/operation';
+import { type ApiAudience, type ApiOperationContract, getOperationKey } from '@/openapi/operation';
 import { errorResponseComponents } from '@/openapi/schemas';
 import { getSecurityRequirements, securitySchemes } from '@/openapi/security';
 
@@ -26,6 +27,19 @@ async function getPackageVersion(projectRoot: string) {
   ) as { version: string };
 
   return packageJson.version;
+}
+
+/**
+ * Every OAuth-allowlisted route must correspond to a real API route, otherwise the runtime
+ * allowlist and the published contract silently drift apart.
+ */
+function getOAuthRouteErrors(discovered: Pick<ApiOperationContract, 'method' | 'path'>[]) {
+  const discoveredKeys = new Set(discovered.map(getOperationKey));
+
+  return OAUTH_ROUTE_SCOPES.filter(route => !discoveredKeys.has(getOperationKey(route))).map(
+    route =>
+      `OAuth scope allowlist entry does not match a route: ${getOperationKey(route)} (src/lib/oauth/scopes.ts)`,
+  );
 }
 
 function getDocumentTags(paths: ZodOpenApiPathsObject) {
@@ -56,7 +70,7 @@ export async function buildOpenApiDocument(
   const inferredContracts = inferApiContracts(discovered, explicitContracts);
   const contracts = [...explicitContracts, ...inferredContracts];
   const coverage = analyzeContractCoverage(discovered, explicitContracts, contracts);
-  const errors = getCoverageErrors(coverage);
+  const errors = [...getCoverageErrors(coverage), ...getOAuthRouteErrors(discovered)];
 
   if (errors.length) {
     throw new Error(`Invalid OpenAPI contracts:\n${errors.map(error => `- ${error}`).join('\n')}`);
@@ -77,12 +91,14 @@ export async function buildOpenApiDocument(
       paths[contract.path] = pathItem;
     }
 
+    const scope = getContractOAuthScope(contract.method, contract.path);
     const operation = {
       ...contract.operation,
-      security: getSecurityRequirements(contract.auth),
+      security: getSecurityRequirements(contract.auth, scope),
       'x-umami-audience': contract.audience,
       'x-umami-contract': contract.origin,
       'x-umami-source': contract.source,
+      ...(scope ? { 'x-umami-oauth-scope': scope } : {}),
     };
 
     Object.assign(pathItem, { [contract.method]: operation });

@@ -194,7 +194,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer',
   operation: {
-    operationId: 'postLinks',
+    operationId: 'createLink',
     summary: 'Create or update links',
     tags: ['Links'],
     requestBody: {

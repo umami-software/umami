@@ -17,6 +17,7 @@ import { OtpInput } from '@/components/common/OtpInput';
 import { useMessages, useTwoFactorVerifyMutation } from '@/components/hooks';
 import { Logo } from '@/components/svg';
 import { setClientAuthToken } from '@/lib/client';
+import { consumeReturnUrl } from '@/lib/return-url';
 import { setUser } from '@/store/app';
 
 export function LoginTwoFactorPage() {
@@ -64,7 +65,7 @@ export function LoginTwoFactorPage() {
       const data = await mutateAsync({ partialToken, token, backupCode });
       setClientAuthToken(data.token);
       setUser(data.user);
-      router.push('/');
+      router.push(consumeReturnUrl() ?? '/');
     } catch (err: any) {
       if (err.lockedUntil) {
         setLockUntil(new Date(err.lockedUntil));

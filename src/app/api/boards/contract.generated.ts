@@ -245,7 +245,7 @@ const operation2 = defineOperation({
   audience: 'public',
   auth: 'bearer-or-share',
   operation: {
-    operationId: 'postBoards',
+    operationId: 'createBoard',
     summary: 'Create or update boards',
     tags: ['Boards'],
     requestBody: {

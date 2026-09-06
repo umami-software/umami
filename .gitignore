@@ -23,6 +23,7 @@ next-env.d.ts
 /public/recorder.js
 /geo
 /dist
+/packages/*/dist
 /generated
 /src/generated
 pm2.yml

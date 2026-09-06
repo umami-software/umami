@@ -1,0 +1,32 @@
+{
+  "name": "@umami/api-client",
+  "version": "1.0.0-alpha.0",
+  "description": "TypeScript client for the Umami API, generated from the Umami OpenAPI contract.",
+  "author": "Umami Software, Inc. <hello@umami.is>",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.0",
+    "tsup": "^8.5.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.11"
+  }
+}
