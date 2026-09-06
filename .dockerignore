@@ -8,3 +8,9 @@ node_modules
 .env.*
 scripts/seed
 scripts/seed-data.ts
+tests
+playwright.config.ts
+playwright.api.config.ts
+docker-compose.test.yml
+playwright-report
+test-results

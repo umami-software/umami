@@ -62,17 +62,36 @@ function getUTCString(date?: Date | string | number) {
   return formatInTimeZone(date || new Date(), 'UTC', 'yyyy-MM-dd HH:mm:ss');
 }
 
+// ClickHouse time zone names are case-sensitive: several callers default to the
+// lowercase "utc" that Postgres accepts but ClickHouse rejects. Intl accepts any
+// casing and returns the canonical IANA name.
+function normalizeTimezone(timezone?: string) {
+  if (!timezone) {
+    return timezone;
+  }
+
+  try {
+    return Intl.DateTimeFormat(undefined, { timeZone: timezone }).resolvedOptions().timeZone;
+  } catch {
+    return timezone;
+  }
+}
+
 function getDateStringSQL(data: any, unit: string = 'utc', timezone?: string) {
-  if (timezone) {
-    return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}', '${timezone}')`;
+  const tz = normalizeTimezone(timezone);
+
+  if (tz) {
+    return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}', '${tz}')`;
   }
 
   return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}')`;
 }
 
 function getDateSQL(field: string, unit: string, timezone?: string) {
-  if (timezone) {
-    return `toDateTime(date_trunc('${unit}', ${field}, '${timezone}'), '${timezone}')`;
+  const tz = normalizeTimezone(timezone);
+
+  if (tz) {
+    return `toDateTime(date_trunc('${unit}', ${field}, '${tz}'), '${tz}')`;
   }
   return `toDateTime(date_trunc('${unit}', ${field}))`;
 }
@@ -236,21 +255,27 @@ function getQueryParams(filters: Record<string, any>) {
   };
 }
 
-function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
+function parseFilters(rawFilters: Record<string, any>, options?: QueryOptions) {
+  const filters = rawFilters.timezone
+    ? { ...rawFilters, timezone: normalizeTimezone(rawFilters.timezone) }
+    : rawFilters;
   const cohortFilters = Object.fromEntries(
     Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
   );
-  const {
-    sql: eventPropertyFilterQuery,
-    params: eventPropertyFilterParams,
-  } = getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
-  const {
-    sql: sessionPropertyFilterQuery,
-    params: sessionPropertyFilterParams,
-  } = getSessionPropertyFilterQuery((filters as QueryFilters).sessionPropertyFilters, filters.timezone);
+  const { sql: eventPropertyFilterQuery, params: eventPropertyFilterParams } =
+    getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
+  const { sql: sessionPropertyFilterQuery, params: sessionPropertyFilterParams } =
+    getSessionPropertyFilterQuery(
+      (filters as QueryFilters).sessionPropertyFilters,
+      filters.timezone,
+    );
 
   return {
-    filterQuery: [getFilterQuery(filters, options), eventPropertyFilterQuery, sessionPropertyFilterQuery]
+    filterQuery: [
+      getFilterQuery(filters, options),
+      eventPropertyFilterQuery,
+      sessionPropertyFilterQuery,
+    ]
       .filter(Boolean)
       .join('\n'),
     dateQuery: getDateQuery(filters),

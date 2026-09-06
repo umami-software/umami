@@ -112,7 +112,7 @@ async function clickhouseQuery(
       filtered_revenue as (
         select website_revenue.website_id, website_revenue.session_id, website_revenue.event_id, website_revenue.revenue
         from website_revenue
-        any inner join filtered_sessions
+        inner join filtered_sessions
           on filtered_sessions.website_id = website_revenue.website_id
          and filtered_sessions.session_id = website_revenue.session_id
         where website_revenue.website_id = {websiteId:UUID}

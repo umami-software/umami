@@ -19,7 +19,10 @@ RUN pnpm install --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM node:${NODE_IMAGE_VERSION} AS builder
+ARG PNPM_VERSION
 WORKDIR /app
+# build-openapi shells out to pnpm, so the builder stage needs it too
+RUN npm install -g pnpm@${PNPM_VERSION}
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 COPY docker/proxy.ts ./src
@@ -29,6 +32,9 @@ ARG BASE_PATH
 ENV BASE_PATH=$BASE_PATH
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV DATABASE_URL="postgresql://user:pass@localhost:5432/dummy"
+
+ARG SKIP_BUILD_GEO
+ENV SKIP_BUILD_GEO=$SKIP_BUILD_GEO
 
 RUN npm run build-docker
 
