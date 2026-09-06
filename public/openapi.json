@@ -1614,7 +1614,7 @@
       "name": "MIT"
     },
     "title": "Umami API",
-    "version": "3.3.0"
+    "version": "3.3.1"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -35280,11 +35280,13 @@
                 "schema": {
                   "properties": {
                     "canDelete": {},
+                    "distinctIds": {},
                     "stitchedSessionCount": {}
                   },
                   "required": [
                     "canDelete",
-                    "stitchedSessionCount"
+                    "stitchedSessionCount",
+                    "distinctIds"
                   ],
                   "type": "object"
                 }

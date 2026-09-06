@@ -16652,6 +16652,7 @@ export interface operations {
         content: {
           'application/json': {
             canDelete: unknown;
+            distinctIds: unknown;
             stitchedSessionCount: unknown;
           };
         };

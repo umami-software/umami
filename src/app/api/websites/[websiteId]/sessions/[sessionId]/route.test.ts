@@ -71,55 +71,38 @@ test('GET returns not found when the session does not exist', async () => {
   expect(getLinkedSessionIdsMock).not.toHaveBeenCalled();
 });
 
-test('GET keeps earlier linked identities visible after a colliding identify', async () => {
-  parseRequestMock.mockResolvedValue({ auth: {}, error: undefined });
-  canViewWebsiteSectionMock.mockResolvedValue(true);
-  isRelationalOnlyMock.mockReturnValue(true);
-  canDeleteWebsiteMock.mockResolvedValue(false);
-  // The session hash collided (shared IP + identical user agent), so user B's
-  // identify reassigned the primary distinctId that user A linked first.
-  getWebsiteSessionMock.mockResolvedValue({
-    id: 'session-1',
-    distinctId: 'user-b',
-  });
-  getLinkedDistinctIdsMock.mockResolvedValue(['user-a', 'user-b']);
-  getLinkedSessionIdsMock.mockImplementation(async (_websiteId, distinctId) =>
-    distinctId === 'user-a'
-      ? [{ sessionId: 'session-1', createdAt: '2026-09-03T10:00:00.000Z' }]
-      : [{ sessionId: 'session-1', createdAt: '2026-09-04T10:00:00.000Z' }],
-  );
-
-  const response = await GET(
-    new Request('http://localhost/api/websites/website-1/sessions/session-1'),
-    {
-      params: Promise.resolve({ websiteId: 'website-1', sessionId: 'session-1' }),
+test.each([
+  {
+    name: 'unions the link history with the primary after a colliding identify',
+    // Session hash collided (shared IP + identical UA), so user B's identify
+    // reassigned the primary distinctId that user A linked first.
+    primary: 'user-b',
+    linked: ['user-a', 'user-b'],
+    sessions: {
+      'user-a': [{ sessionId: 'session-1', createdAt: '2026-09-03T10:00:00.000Z' }],
+      'user-b': [{ sessionId: 'session-1', createdAt: '2026-09-04T10:00:00.000Z' }],
     },
-  );
-
-  expect(response.status).toBe(200);
-  await expect(response.json()).resolves.toMatchObject({
-    distinctId: 'user-b',
     distinctIds: ['user-b', 'user-a'],
     stitchedSessionCount: 1,
-  });
-  expect(getLinkedDistinctIdsMock).toHaveBeenCalledWith('website-1', 'session-1');
-  expect(getLinkedSessionIdsMock).toHaveBeenCalledWith('website-1', 'user-a');
-  expect(getLinkedSessionIdsMock).toHaveBeenCalledWith('website-1', 'user-b');
-});
-
-test('GET dedupes the primary distinctId against the link history', async () => {
+  },
+  {
+    name: 'dedupes a primary that is already in the link history',
+    primary: 'user-a',
+    linked: ['user-a'],
+    sessions: {
+      'user-a': [{ sessionId: 'session-2', createdAt: '2026-07-24T00:00:00.000Z' }],
+    },
+    distinctIds: ['user-a'],
+    stitchedSessionCount: 2,
+  },
+])('GET $name', async ({ primary, linked, sessions, distinctIds, stitchedSessionCount }) => {
   parseRequestMock.mockResolvedValue({ auth: {}, error: undefined });
   canViewWebsiteSectionMock.mockResolvedValue(true);
   isRelationalOnlyMock.mockReturnValue(true);
   canDeleteWebsiteMock.mockResolvedValue(false);
-  getWebsiteSessionMock.mockResolvedValue({
-    id: 'session-1',
-    distinctId: 'user-a',
-  });
-  getLinkedDistinctIdsMock.mockResolvedValue(['user-a']);
-  getLinkedSessionIdsMock.mockResolvedValue([
-    { sessionId: 'session-2', createdAt: '2026-07-24T00:00:00.000Z' },
-  ]);
+  getWebsiteSessionMock.mockResolvedValue({ id: 'session-1', distinctId: primary });
+  getLinkedDistinctIdsMock.mockResolvedValue(linked);
+  getLinkedSessionIdsMock.mockImplementation(async (_websiteId, distinctId) => sessions[distinctId]);
 
   const response = await GET(
     new Request('http://localhost/api/websites/website-1/sessions/session-1'),
@@ -130,9 +113,14 @@ test('GET dedupes the primary distinctId against the link history', async () => 
 
   expect(response.status).toBe(200);
   await expect(response.json()).resolves.toMatchObject({
-    distinctIds: ['user-a'],
-    stitchedSessionCount: 2,
+    distinctId: primary,
+    distinctIds,
+    stitchedSessionCount,
   });
+  expect(getLinkedDistinctIdsMock).toHaveBeenCalledWith('website-1', 'session-1');
+  linked.forEach(id =>
+    expect(getLinkedSessionIdsMock).toHaveBeenCalledWith('website-1', id),
+  );
 });
 
 test('GET includes canDelete when relational storage and delete permission are available', async () => {
