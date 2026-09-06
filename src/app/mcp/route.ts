@@ -5,7 +5,6 @@ import debug from 'debug';
 import { uuid } from '@/lib/crypto';
 import { authenticateMcpRequest, mcpAuthErrorResponse } from '@/lib/mcp/auth';
 import { createInProcessFetch } from '@/lib/mcp/dispatch';
-import { checkMcpRateLimit } from '@/lib/mcp/rate-limit';
 import { getIssuer, isOAuthEnabled } from '@/lib/oauth/config';
 import { corsPreflight } from '@/lib/oauth/metadata';
 
@@ -47,13 +46,6 @@ async function handle(request: Request) {
 
   if (!auth.ok) {
     return mcpAuthErrorResponse(auth, request.headers);
-  }
-
-  if (!(await checkMcpRateLimit(auth.userId, auth.authInfo.clientId))) {
-    return Response.json(
-      { error: 'rate_limited', error_description: 'Too many MCP requests. Slow down.' },
-      { status: 429, headers: { 'retry-after': '60' } },
-    );
   }
 
   const requestId = uuid();
