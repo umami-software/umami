@@ -47,12 +47,12 @@
 }
 
 .gray {
-  color: var(--zen-text-muted);
+  color: var(--zen-fg-muted);
   background: var(--zen-surface-sunken);
 }
 
 .gray .dot {
-  background: var(--zen-text-muted);
+  background: var(--zen-fg-muted);
 }
 
 :global([data-theme="dark"]) .good {

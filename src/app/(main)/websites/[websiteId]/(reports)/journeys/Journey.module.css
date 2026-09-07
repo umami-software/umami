@@ -43,7 +43,7 @@
 
 .dropoff {
   font-weight: 600;
-  color: var(--zen-text-muted);
+  color: var(--zen-fg-muted);
   background: var(--zen-surface-sunken);
   padding: 4px 8px;
   border-radius: 5px;
@@ -58,7 +58,7 @@
   height: 50px;
   font-size: 16px;
   font-weight: 700;
-  color: var(--zen-surface-base);
+  color: var(--zen-surface);
   background: var(--zen-surface-inverted);
   z-index: 1;
   margin: 0 auto 20px;
@@ -100,22 +100,22 @@
 }
 
 .node.selected {
-  color: var(--zen-surface-base);
+  color: var(--zen-surface);
   background: var(--zen-surface-inverted);
 }
 
 .node.active {
-  color: var(--zen-primary-foreground);
+  color: var(--zen-primary-fg);
   background: var(--zen-primary);
 }
 
 .node.selected .count {
-  color: var(--zen-surface-base);
+  color: var(--zen-surface);
   background: var(--zen-surface-inverted);
 }
 
 .node.selected.active .count {
-  color: var(--zen-primary-foreground);
+  color: var(--zen-primary-fg);
   background: var(--zen-primary);
 }
 
@@ -212,7 +212,7 @@
   position: absolute;
   border-radius: 100%;
   border: 3px solid var(--journey-line-color);
-  background: var(--zen-surface-base);
+  background: var(--zen-surface);
   width: 14px;
   height: 14px;
 }
