@@ -31,9 +31,13 @@ export async function GET(
   }
 
   let sessionIds = [sessionId];
-  const distinctIds = data.distinctId
-    ? [data.distinctId]
-    : await getLinkedDistinctIds(websiteId, sessionId);
+  // A colliding identify reassigns the primary distinctId, so the link history
+  // is the only record of the identities previously attached to this session.
+  const distinctIds = Array.from(
+    new Set(
+      [data.distinctId, ...(await getLinkedDistinctIds(websiteId, sessionId))].filter(Boolean),
+    ),
+  );
 
   if (!data.distinctId && distinctIds.length === 1) {
     data.distinctId = distinctIds[0];
@@ -54,6 +58,7 @@ export async function GET(
     ...data,
     canDelete,
     stitchedSessionCount,
+    distinctIds,
   });
 }
 

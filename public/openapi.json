@@ -35434,11 +35434,13 @@
                 "schema": {
                   "properties": {
                     "canDelete": {},
+                    "distinctIds": {},
                     "stitchedSessionCount": {}
                   },
                   "required": [
                     "canDelete",
-                    "stitchedSessionCount"
+                    "stitchedSessionCount",
+                    "distinctIds"
                   ],
                   "type": "object"
                 }

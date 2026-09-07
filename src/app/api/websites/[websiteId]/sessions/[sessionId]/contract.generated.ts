@@ -140,8 +140,9 @@ const operation2 = defineOperation({
               properties: {
                 canDelete: {},
                 stitchedSessionCount: {},
+                distinctIds: {},
               },
-              required: ['canDelete', 'stitchedSessionCount'],
+              required: ['canDelete', 'stitchedSessionCount', 'distinctIds'],
             },
           },
         },
