@@ -1,5 +1,6 @@
 import {
   arSA,
+  az,
   be,
   bg,
   bn,
@@ -49,6 +50,7 @@ import {
 
 export const languages = {
   'ar-SA': { label: 'العربية', dateLocale: arSA, dir: 'rtl' },
+  'az-AZ': { label: 'Azərbaycan', dateLocale: az },
   'be-BY': { label: 'Беларуская', dateLocale: be },
   'bg-BG': { label: 'български език', dateLocale: bg },
   'bn-BD': { label: 'বাংলা', dateLocale: bn },
