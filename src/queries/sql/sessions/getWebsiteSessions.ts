@@ -75,7 +75,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       session.country, 
       session.region, 
       session.city
-    order by max(website_event.created_at) desc
+    order by max(website_event.created_at) desc, session.session_id
     `,
     queryParams,
     filters,
@@ -138,7 +138,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ${normalizedFilterQuery}
     ${searchQuery}
     group by session_id
-    order by lastAt desc
+    order by lastAt desc, id
     `;
   } else {
     sql = `
@@ -168,7 +168,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ${normalizedFilterQuery}
     ${searchQuery}
     group by session_id
-    order by lastAt desc
+    order by lastAt desc, id
     `;
   }
 

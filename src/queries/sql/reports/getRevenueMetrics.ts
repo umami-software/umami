@@ -210,8 +210,8 @@ async function relationalQuery(
               we.utm_medium ilike '%ppc%' OR
               we.utm_medium ilike '%retargeting%' OR
               we.utm_medium ilike '%paid%' then 'paid' else 'organic' end AS prefix,
-        we.referrer_domain,
-        we.url_query,
+        coalesce(we.referrer_domain, '') as referrer_domain,
+        coalesce(we.url_query, '') as url_query,
         we.utm_medium,
         we.utm_source,
         we.hostname,
@@ -293,7 +293,7 @@ async function clickhouseQuery(
         website_revenue.created_at,
         website_revenue.revenue
       from website_revenue
-      any inner join filtered_sessions
+      inner join filtered_sessions
         on filtered_sessions.website_id = website_revenue.website_id
        and filtered_sessions.session_id = website_revenue.session_id
       where website_revenue.website_id = {websiteId:UUID}
@@ -312,7 +312,7 @@ async function clickhouseQuery(
         filtered_sessions.country as "name",
         sum(filtered_revenue.revenue) as "value"
       from filtered_revenue
-      any inner join filtered_sessions
+      inner join filtered_sessions
         on filtered_sessions.website_id = filtered_revenue.website_id
        and filtered_sessions.session_id = filtered_revenue.session_id
       group by filtered_sessions.country
@@ -333,7 +333,7 @@ async function clickhouseQuery(
         filtered_sessions.region as "name",
         sum(filtered_revenue.revenue) as "value"
       from filtered_revenue
-      any inner join filtered_sessions
+      inner join filtered_sessions
         on filtered_sessions.website_id = filtered_revenue.website_id
        and filtered_sessions.session_id = filtered_revenue.session_id
       group by 1, 2
@@ -354,7 +354,7 @@ async function clickhouseQuery(
           website_revenue.session_id,
           sum(website_revenue.revenue) as "value"
         from website_revenue
-        any inner join filtered_sessions
+        inner join filtered_sessions
           on filtered_sessions.website_id = website_revenue.website_id
          and filtered_sessions.session_id = website_revenue.session_id
         where website_revenue.website_id = {websiteId:UUID}
@@ -409,7 +409,7 @@ async function clickhouseQuery(
         website_revenue.session_id,
         sum(website_revenue.revenue) as "value"
       from website_revenue
-      any inner join filtered_sessions
+      inner join filtered_sessions
         on filtered_sessions.website_id = website_revenue.website_id
        and filtered_sessions.session_id = website_revenue.session_id
       where website_revenue.website_id = {websiteId:UUID}

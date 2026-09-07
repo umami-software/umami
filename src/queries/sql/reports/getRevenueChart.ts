@@ -123,7 +123,7 @@ async function clickhouseQuery(
           website_revenue.created_at,
           website_revenue.revenue
         from website_revenue
-        any inner join filtered_sessions
+        inner join filtered_sessions
           on filtered_sessions.website_id = website_revenue.website_id
          and filtered_sessions.session_id = website_revenue.session_id
         where website_revenue.website_id = {websiteId:UUID}

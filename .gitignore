@@ -53,3 +53,6 @@ yarn-error.log*
 *.env.*
 
 *.dev.yml
+
+# api integration test runtime state
+/tests/api/.runtime
