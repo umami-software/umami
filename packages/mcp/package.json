@@ -8,7 +8,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "umami-mcp": "./dist/cli.js"
+    "umami-mcp": "./bin/umami-mcp.js"
   },
   "exports": {
     ".": {
@@ -17,7 +17,7 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist", "README.md"],
+  "files": ["bin", "dist", "README.md"],
   "engines": {
     "node": ">=20"
   },

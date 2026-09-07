@@ -12,3 +12,4 @@ allowBuilds:
   sharp: false
 minimumReleaseAgeExclude:
   - '@umami/react-zen'
+  - cn@0.2.6

@@ -14,6 +14,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 # Workspace packages (@umami/api-client, @umami/mcp) must be present for a frozen install.
 COPY packages/api-client/package.json ./packages/api-client/
 COPY packages/mcp/package.json ./packages/mcp/
+COPY packages/mcp/bin ./packages/mcp/bin/
 RUN npm install -g pnpm@${PNPM_VERSION}
 
 RUN printf 'strictDepBuilds: false\n' >> pnpm-workspace.yaml
