@@ -20,6 +20,9 @@ const COMPOSE_FILE = 'docker-compose.test.yml';
 const PROJECT_NAME = process.env.COMPOSE_PROJECT_NAME || 'umami-api-test';
 const PORT = process.env.UMAMI_TEST_PORT || '3100';
 const BASE_URL = process.env.PLAYWRIGHT_BASE_URL || `http://localhost:${PORT}`;
+// PLAYWRIGHT_BASE_URL selects an already-running server: no Compose stack is
+// built, started, or torn down for it.
+const EXTERNAL_TARGET = !!process.env.PLAYWRIGHT_BASE_URL;
 const HEARTBEAT_TIMEOUT_MS = 180_000;
 // Mirrors RUNTIME_DIR in tests/api/paths.ts (one state dir per target host).
 const LOG_FILE = path.join(
@@ -46,6 +49,8 @@ Environment:
   UMAMI_TEST_PORT     Host port for the app (default 3100)
   UMAMI_TEST_IMAGE    Image tag to build/run (default umami-test:local)
   COMPOSE_PROJECT_NAME  Compose project name (default umami-api-test)
+  PLAYWRIGHT_BASE_URL  Test an already-running server instead of starting the
+                      Compose stack (pass --clickhouse if it stores analytics there)
   API_SKIP_SEED=1     Reuse the previous seed when re-running against a kept stack
                       (each run seeds additively otherwise)
 `;
@@ -193,6 +198,14 @@ async function main() {
     run('docker', composeArgs(['postgres', 'clickhouse'], ['down', '-v', '--remove-orphans']));
   };
 
+  if (EXTERNAL_TARGET && (options.upOnly || options.down)) {
+    console.error(
+      'PLAYWRIGHT_BASE_URL selects an already-running server; --up-only and --down manage ' +
+        'the local Compose stack and cannot be combined with it.',
+    );
+    return 2;
+  }
+
   if (options.down) {
     teardown();
     return 0;
@@ -226,20 +239,24 @@ async function main() {
   process.on('SIGTERM', onSignal);
 
   try {
-    console.log(`Starting test stack (profile: ${profile}, port: ${PORT})...`);
+    if (EXTERNAL_TARGET) {
+      console.log(`Using the already-running server at ${BASE_URL} (PLAYWRIGHT_BASE_URL is set).`);
+    } else {
+      console.log(`Starting test stack (profile: ${profile}, port: ${PORT})...`);
 
-    const upArgs = ['up', '-d', '--wait', '--wait-timeout', '300'];
+      const upArgs = ['up', '-d', '--wait', '--wait-timeout', '300'];
 
-    if (options.build) {
-      upArgs.push('--build');
-    }
+      if (options.build) {
+        upArgs.push('--build');
+      }
 
-    started = true;
+      started = true;
 
-    if (run('docker', composeArgs([profile], upArgs)) !== 0) {
-      console.error('docker compose up failed.');
-      dumpLogs();
-      return 1;
+      if (run('docker', composeArgs([profile], upArgs)) !== 0) {
+        console.error('docker compose up failed.');
+        dumpLogs();
+        return 1;
+      }
     }
 
     await waitForHeartbeat(BASE_URL, HEARTBEAT_TIMEOUT_MS);
@@ -272,7 +289,7 @@ async function main() {
         process.env.API_COVERAGE ?? (options.grep || options.coverageReport ? 'report' : 'enforce'),
     });
 
-    if (exitCode !== 0) {
+    if (exitCode !== 0 && started) {
       dumpLogs();
     }
 

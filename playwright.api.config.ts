@@ -20,8 +20,10 @@ export default defineConfig({
   testDir: './tests/api',
   testMatch: '**/*.spec.ts',
   outputDir: 'test-results/api',
+  // Specs share one seeded database and a few mutable globals (the shared users,
+  // the global 2FA requirement toggled by admin.spec.ts), so they must run serially.
   fullyParallel: false,
-  workers: process.env.API_WORKERS ? Number(process.env.API_WORKERS) : 1,
+  workers: 1,
   // Specs are deterministic and share coverage state; retries would only hide flakes.
   retries: 0,
   forbidOnly: !!process.env.CI,

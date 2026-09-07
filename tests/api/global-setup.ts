@@ -45,13 +45,13 @@ export default async function globalSetup(config: FullConfig) {
   }
 
   // API_SKIP_SEED=1 reuses the seed from a previous run against a kept stack
-  // (fast iteration on a single spec); coverage logs are then accumulated too.
+  // (fast iteration on a single spec).
   const skipSeed = !!process.env.API_SKIP_SEED && existsSync(SEED_FILE);
 
-  if (!skipSeed) {
-    rmSync(COVERAGE_DIR, { recursive: true, force: true });
-  }
-
+  // Coverage must reflect this run only: the per-process logs are append-only and
+  // the reporter merges every file in the directory, so stale logs from an earlier
+  // run would let removed endpoint calls still count as covered.
+  rmSync(COVERAGE_DIR, { recursive: true, force: true });
   mkdirSync(COVERAGE_DIR, { recursive: true });
 
   console.log(`Waiting for ${baseURL}/api/heartbeat ...`);
