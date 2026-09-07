@@ -14,6 +14,7 @@ import { spawnSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { assertDisposableTarget } from '../tests/api/paths';
 
 const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const COMPOSE_FILE = 'docker-compose.test.yml';
@@ -51,6 +52,8 @@ Environment:
   COMPOSE_PROJECT_NAME  Compose project name (default umami-api-test)
   PLAYWRIGHT_BASE_URL  Test an already-running server instead of starting the
                       Compose stack (pass --clickhouse if it stores analytics there)
+  API_ALLOW_DESTRUCTIVE=1  Required for non-loopback PLAYWRIGHT_BASE_URL targets: the suite
+                      recreates websites, ingests data and toggles global 2FA
   API_SKIP_SEED=1     Reuse the previous seed when re-running against a kept stack
                       (each run seeds additively otherwise)
 `;
@@ -240,6 +243,12 @@ async function main() {
 
   try {
     if (EXTERNAL_TARGET) {
+      try {
+        assertDisposableTarget(BASE_URL);
+      } catch (error) {
+        console.error((error as Error).message);
+        return 2;
+      }
       console.log(`Using the already-running server at ${BASE_URL} (PLAYWRIGHT_BASE_URL is set).`);
     } else {
       console.log(`Starting test stack (profile: ${profile}, port: ${PORT})...`);

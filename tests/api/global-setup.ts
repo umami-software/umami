@@ -3,7 +3,7 @@ import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { type FullConfig, request } from '@playwright/test';
 import { ApiClient } from './client';
 import { disableCoverageRecording } from './coverage/recorder';
-import { COVERAGE_DIR, SEED_FILE } from './paths';
+import { assertDisposableTarget, COVERAGE_DIR, SEED_FILE } from './paths';
 import { seedEnvironment } from './seed/setup';
 
 const HEARTBEAT_TIMEOUT_MS = 120_000;
@@ -43,6 +43,8 @@ export default async function globalSetup(config: FullConfig) {
   if (!baseURL) {
     throw new Error('playwright.api.config.ts must define use.baseURL');
   }
+
+  assertDisposableTarget(baseURL);
 
   // API_SKIP_SEED=1 reuses the seed from a previous run against a kept stack
   // (fast iteration on a single spec).
