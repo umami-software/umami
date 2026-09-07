@@ -1620,6 +1620,7 @@
   "paths": {
     "/api/2fa/disable": {
       "post": {
+        "description": "Disables two-factor authentication for the current user after verifying their password and authenticator code. Rejected when an administrator or team requires it.",
         "operationId": "disableTwoFactor",
         "requestBody": {
           "content": {
@@ -1822,7 +1823,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update 2fa disable",
+        "summary": "Disable two-factor authentication",
         "tags": [
           "Two-factor authentication"
         ],
@@ -1833,6 +1834,7 @@
     },
     "/api/2fa/setup/cancel": {
       "post": {
+        "description": "Deletes the current user's pending setup without changing an already enabled authenticator.",
         "operationId": "cancelTwoFactorSetup",
         "responses": {
           "200": {
@@ -1893,7 +1895,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update 2fa setup cancel",
+        "summary": "Cancel two-factor authentication setup",
         "tags": [
           "Two-factor authentication"
         ],
@@ -1904,6 +1906,7 @@
     },
     "/api/2fa/setup/confirm": {
       "post": {
+        "description": "Verifies an authenticator code, enables two-factor authentication, and returns a new set of backup codes.",
         "operationId": "confirmTwoFactorSetup",
         "requestBody": {
           "content": {
@@ -2088,7 +2091,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update 2fa setup confirm",
+        "summary": "Confirm two-factor authentication setup",
         "tags": [
           "Two-factor authentication"
         ],
@@ -2099,6 +2102,7 @@
     },
     "/api/2fa/setup/initiate": {
       "post": {
+        "description": "Starts or replaces the current user's pending setup and returns a QR code and manual setup key for an authenticator app.",
         "operationId": "initiateTwoFactorSetup",
         "responses": {
           "200": {
@@ -2197,7 +2201,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update 2fa setup initiate",
+        "summary": "Set up two-factor authentication",
         "tags": [
           "Two-factor authentication"
         ],
@@ -2208,6 +2212,7 @@
     },
     "/api/2fa/status": {
       "get": {
+        "description": "Returns whether two-factor authentication is enabled, configured, or required for the current user, including the reason it is required.",
         "operationId": "getTwoFactorStatus",
         "responses": {
           "200": {
@@ -2298,7 +2303,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get 2fa status",
+        "summary": "Get two-factor authentication status",
         "tags": [
           "Two-factor authentication"
         ],
@@ -2309,6 +2314,7 @@
     },
     "/api/2fa/verify": {
       "post": {
+        "description": "Exchanges a partial sign-in token and a valid authenticator or backup code for a full authentication token and user details.",
         "operationId": "verifyTwoFactor",
         "requestBody": {
           "content": {
@@ -2554,7 +2560,7 @@
           }
         },
         "security": [],
-        "summary": "Create or update 2fa verify",
+        "summary": "Complete two-factor sign-in",
         "tags": [
           "Two-factor authentication"
         ],
@@ -2565,6 +2571,7 @@
     },
     "/api/admin/2fa/global": {
       "post": {
+        "description": "Enables or disables the installation-wide requirement for users to set up two-factor authentication.",
         "operationId": "postAdmin2faGlobal",
         "requestBody": {
           "content": {
@@ -2679,7 +2686,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update admin 2fa global",
+        "summary": "Set the two-factor requirement for everyone",
         "tags": [
           "Administration"
         ],
@@ -2690,6 +2697,7 @@
     },
     "/api/admin/teams": {
       "get": {
+        "description": "Returns a paginated list of teams with member details and website and member counts for administration.",
         "operationId": "getAdminTeams",
         "parameters": [
           {
@@ -2877,7 +2885,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get admin teams",
+        "summary": "List all teams",
         "tags": [
           "Administration"
         ],
@@ -2888,6 +2896,7 @@
     },
     "/api/admin/teams/{teamId}/2fa": {
       "post": {
+        "description": "Enables or disables the requirement for members of the specified team to use two-factor authentication.",
         "operationId": "postAdminTeamsTeamId2fa",
         "parameters": [
           {
@@ -3016,7 +3025,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update admin teams team id 2fa",
+        "summary": "Set a team's two-factor requirement",
         "tags": [
           "Administration"
         ],
@@ -3027,6 +3036,7 @@
     },
     "/api/admin/users": {
       "get": {
+        "description": "Returns a paginated list of users and their website counts for administration, excluding passwords.",
         "operationId": "getAdminUsers",
         "parameters": [
           {
@@ -3211,7 +3221,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get admin users",
+        "summary": "List all users",
         "tags": [
           "Administration"
         ],
@@ -3222,6 +3232,7 @@
     },
     "/api/admin/users/{userId}/2fa": {
       "delete": {
+        "description": "Removes the specified user's authenticator setup, backup codes, used-code history, and failed-attempt limits so they can set up authentication again.",
         "operationId": "deleteAdminUsersUserId2fa",
         "parameters": [
           {
@@ -3312,7 +3323,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Delete admin users user id 2fa",
+        "summary": "Reset a user's two-factor authentication",
         "tags": [
           "Administration"
         ],
@@ -3321,6 +3332,7 @@
         "x-umami-source": "src/app/api/admin/users/[userId]/2fa/contract.generated.ts"
       },
       "get": {
+        "description": "Returns whether two-factor authentication is enabled for the specified user.",
         "operationId": "getAdminUsersUserId2fa",
         "parameters": [
           {
@@ -3391,7 +3403,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get admin users user id 2fa",
+        "summary": "Get a user's two-factor status",
         "tags": [
           "Administration"
         ],
@@ -3400,6 +3412,7 @@
         "x-umami-source": "src/app/api/admin/users/[userId]/2fa/contract.generated.ts"
       },
       "post": {
+        "description": "Enables or disables the requirement for the specified user to set up two-factor authentication.",
         "operationId": "postAdminUsersUserId2fa",
         "parameters": [
           {
@@ -3528,7 +3541,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update admin users user id 2fa",
+        "summary": "Set a user's two-factor requirement",
         "tags": [
           "Administration"
         ],
@@ -3539,6 +3552,7 @@
     },
     "/api/admin/websites": {
       "get": {
+        "description": "Returns a paginated, searchable list of websites across users and teams for administration.",
         "operationId": "getAdminWebsites",
         "parameters": [
           {
@@ -3870,7 +3884,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get admin websites",
+        "summary": "List all websites",
         "tags": [
           "Administration"
         ],
@@ -3881,7 +3895,7 @@
     },
     "/api/auth/login": {
       "post": {
-        "description": "Authenticates a self-hosted Umami user. Users with two-factor authentication receive a short-lived partial token instead of a full bearer token.",
+        "description": "Authenticates a user with a username and password. Users with two-factor authentication receive a short-lived partial token to complete sign-in.",
         "operationId": "login",
         "requestBody": {
           "content": {
@@ -3968,6 +3982,7 @@
     },
     "/api/auth/logout": {
       "post": {
+        "description": "Ends the current authentication session by removing its stored token when Redis-backed sessions are enabled.",
         "operationId": "logout",
         "responses": {
           "200": {
@@ -4011,7 +4026,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update auth logout",
+        "summary": "Log out",
         "tags": [
           "Authentication"
         ],
@@ -4022,6 +4037,7 @@
     },
     "/api/auth/sso": {
       "post": {
+        "description": "Returns the authenticated user and a new token valid for 24 hours. Requires Redis-backed authentication.",
         "operationId": "sso",
         "responses": {
           "200": {
@@ -4084,7 +4100,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update auth sso",
+        "summary": "Create a single sign-on token",
         "tags": [
           "Authentication"
         ],
@@ -4095,6 +4111,7 @@
     },
     "/api/auth/subscription": {
       "get": {
+        "description": "Returns subscription and feature availability for the current user or a specified team the user can access.",
         "operationId": "getSubscription",
         "parameters": [
           {
@@ -4217,7 +4234,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get auth subscription",
+        "summary": "Get subscription details",
         "tags": [
           "Authentication"
         ],
@@ -4228,6 +4245,7 @@
     },
     "/api/auth/verify": {
       "post": {
+        "description": "Validates the current authentication credentials and returns the user and their team memberships.",
         "operationId": "verify",
         "responses": {
           "200": {
@@ -4269,7 +4287,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update auth verify",
+        "summary": "Verify the current sign-in",
         "tags": [
           "Authentication"
         ],
@@ -4280,6 +4298,7 @@
     },
     "/api/batch": {
       "post": {
+        "description": "Processes up to 500 tracking payloads and returns processed and failed counts, individual error details, and a tracking cache token.",
         "operationId": "batch",
         "requestBody": {
           "content": {
@@ -4364,7 +4383,7 @@
           }
         },
         "security": [],
-        "summary": "Create or update batch",
+        "summary": "Send a batch of tracking requests",
         "tags": [
           "Collection"
         ],
@@ -4375,6 +4394,7 @@
     },
     "/api/boards": {
       "get": {
+        "description": "Returns a paginated list of the current user's boards, with search and sorting options.",
         "operationId": "getBoards",
         "parameters": [
           {
@@ -4617,7 +4637,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get boards",
+        "summary": "List my boards",
         "tags": [
           "Boards"
         ],
@@ -4626,6 +4646,7 @@
         "x-umami-source": "src/app/api/boards/contract.generated.ts"
       },
       "post": {
+        "description": "Creates a board with a name, type, and configuration, optionally assigned to a team. Validates access to its referenced resources and reports.",
         "operationId": "createBoard",
         "requestBody": {
           "content": {
@@ -4854,7 +4875,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Create or update boards",
+        "summary": "Create a board",
         "tags": [
           "Boards"
         ],
@@ -4865,6 +4886,7 @@
     },
     "/api/boards/{boardId}": {
       "delete": {
+        "description": "Deletes the specified board after checking the caller's permission to remove it.",
         "operationId": "deleteBoard",
         "parameters": [
           {
@@ -4918,7 +4940,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Delete boards board id",
+        "summary": "Delete a board",
         "tags": [
           "Boards"
         ],
@@ -4927,6 +4949,7 @@
         "x-umami-source": "src/app/api/boards/[boardId]/contract.generated.ts"
       },
       "get": {
+        "description": "Returns the specified board and its configuration.",
         "operationId": "getBoard",
         "parameters": [
           {
@@ -5074,7 +5097,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get boards board id",
+        "summary": "Get a board",
         "tags": [
           "Boards"
         ],
@@ -5083,6 +5106,7 @@
         "x-umami-source": "src/app/api/boards/[boardId]/contract.generated.ts"
       },
       "post": {
+        "description": "Updates a board's name, description, or configuration and validates the resources and reports it references.",
         "operationId": "updateBoard",
         "parameters": [
           {
@@ -5299,7 +5323,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Create or update boards board id",
+        "summary": "Update a board",
         "tags": [
           "Boards"
         ],
@@ -5310,6 +5334,7 @@
     },
     "/api/boards/{boardId}/clone": {
       "post": {
+        "description": "Creates a copy of a board with optional changes to its name, description, and configuration. Removes invalid report references from the copy.",
         "operationId": "cloneBoard",
         "parameters": [
           {
@@ -5498,7 +5523,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Create or update boards board id clone",
+        "summary": "Clone a board",
         "tags": [
           "Boards"
         ],
@@ -5509,6 +5534,7 @@
     },
     "/api/boards/{boardId}/shares": {
       "get": {
+        "description": "Returns a paginated list of shares for the specified board.",
         "operationId": "getBoardShares",
         "parameters": [
           {
@@ -5938,7 +5964,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get boards board id shares",
+        "summary": "List shares for a board",
         "tags": [
           "Boards"
         ],
@@ -5947,6 +5973,7 @@
         "x-umami-source": "src/app/api/boards/[boardId]/shares/contract.generated.ts"
       },
       "post": {
+        "description": "Creates a named share for the specified board with optional parameters.",
         "operationId": "createBoardShare",
         "parameters": [
           {
@@ -6126,7 +6153,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update boards board id shares",
+        "summary": "Create a share for a board",
         "tags": [
           "Boards"
         ],
@@ -6137,6 +6164,7 @@
     },
     "/api/config": {
       "get": {
+        "description": "Returns public application settings, including deployment mode, feature availability, and tracker and resource URLs.",
         "operationId": "getConfig",
         "responses": {
           "200": {
@@ -6191,7 +6219,7 @@
           }
         },
         "security": [],
-        "summary": "Get config",
+        "summary": "Get application configuration",
         "tags": [
           "Configuration"
         ],
@@ -6202,6 +6230,7 @@
     },
     "/api/dashboard": {
       "get": {
+        "description": "Returns the current user's personal dashboard board and its configuration.",
         "operationId": "getDashboard",
         "responses": {
           "200": {
@@ -6335,7 +6364,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get dashboard",
+        "summary": "Get my dashboard",
         "tags": [
           "Dashboard"
         ],
@@ -6344,6 +6373,7 @@
         "x-umami-source": "src/app/api/dashboard/contract.generated.ts"
       },
       "post": {
+        "description": "Creates or updates the current user's personal dashboard with the supplied name, description, and configuration.",
         "operationId": "postDashboard",
         "requestBody": {
           "content": {
@@ -6518,7 +6548,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update dashboard",
+        "summary": "Save my dashboard",
         "tags": [
           "Dashboard"
         ],
@@ -6529,6 +6559,7 @@
     },
     "/api/heartbeat": {
       "get": {
+        "description": "Returns a simple success response to confirm that the application can serve requests.",
         "operationId": "getHeartbeat",
         "responses": {
           "200": {
@@ -6551,7 +6582,7 @@
           }
         },
         "security": [],
-        "summary": "Get heartbeat",
+        "summary": "Check application availability",
         "tags": [
           "System"
         ],
@@ -6562,6 +6593,7 @@
     },
     "/api/links": {
       "get": {
+        "description": "Returns a paginated list of the current user's tracked links, with search and sorting options.",
         "operationId": "getLinks",
         "parameters": [
           {
@@ -6749,7 +6781,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get links",
+        "summary": "List my links",
         "tags": [
           "Links"
         ],
@@ -6758,6 +6790,7 @@
         "x-umami-source": "src/app/api/links/contract.generated.ts"
       },
       "post": {
+        "description": "Creates a tracked link with a name, destination URL, and slug, optionally assigned to a team.",
         "operationId": "createLink",
         "requestBody": {
           "content": {
@@ -6904,7 +6937,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update links",
+        "summary": "Create a tracked link",
         "tags": [
           "Links"
         ],
@@ -6915,6 +6948,7 @@
     },
     "/api/links/{linkId}": {
       "delete": {
+        "description": "Deletes the specified tracked link after checking the caller's permission to remove it.",
         "operationId": "deleteLink",
         "parameters": [
           {
@@ -6968,7 +7002,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Delete links link id",
+        "summary": "Delete a tracked link",
         "tags": [
           "Links"
         ],
@@ -6977,6 +7011,7 @@
         "x-umami-source": "src/app/api/links/[linkId]/contract.generated.ts"
       },
       "get": {
+        "description": "Returns the specified tracked link, including its destination URL and slug.",
         "operationId": "getLink",
         "parameters": [
           {
@@ -7069,7 +7104,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get links link id",
+        "summary": "Get a tracked link",
         "tags": [
           "Links"
         ],
@@ -7078,6 +7113,7 @@
         "x-umami-source": "src/app/api/links/[linkId]/contract.generated.ts"
       },
       "post": {
+        "description": "Updates a tracked link's name, destination URL, or slug.",
         "operationId": "updateLink",
         "parameters": [
           {
@@ -7225,7 +7261,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update links link id",
+        "summary": "Update a tracked link",
         "tags": [
           "Links"
         ],
@@ -7236,6 +7272,7 @@
     },
     "/api/links/{linkId}/shares": {
       "get": {
+        "description": "Returns a paginated list of shares for the specified link.",
         "operationId": "getLinkShares",
         "parameters": [
           {
@@ -7665,7 +7702,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get links link id shares",
+        "summary": "List shares for a link",
         "tags": [
           "Links"
         ],
@@ -7674,6 +7711,7 @@
         "x-umami-source": "src/app/api/links/[linkId]/shares/contract.generated.ts"
       },
       "post": {
+        "description": "Creates a named share for the specified link with optional parameters.",
         "operationId": "createLinkShare",
         "parameters": [
           {
@@ -7853,7 +7891,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update links link id shares",
+        "summary": "Create a share for a link",
         "tags": [
           "Links"
         ],
@@ -7864,6 +7902,7 @@
     },
     "/api/links/charts": {
       "get": {
+        "description": "Returns visitor totals and chart data for the requested links the caller can view, within the selected date range.",
         "operationId": "getLinksCharts",
         "parameters": [
           {
@@ -7981,7 +8020,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get links charts",
+        "summary": "Get visitor charts for links",
         "tags": [
           "Links"
         ],
@@ -7992,6 +8031,7 @@
     },
     "/api/me": {
       "get": {
+        "description": "Returns the current authentication context, including the authenticated user or share credentials.",
         "operationId": "getMe",
         "responses": {
           "200": {
@@ -8181,7 +8221,7 @@
             ]
           }
         ],
-        "summary": "Get me",
+        "summary": "Get my authentication details",
         "tags": [
           "Account"
         ],
@@ -8193,6 +8233,7 @@
     },
     "/api/me/api-keys": {
       "get": {
+        "description": "Returns metadata for the current user's API keys. Available on self-hosted installations.",
         "operationId": "getMyApiKeys",
         "responses": {
           "200": {
@@ -8274,7 +8315,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get me api keys",
+        "summary": "List my API keys",
         "tags": [
           "Account"
         ],
@@ -8283,6 +8324,7 @@
         "x-umami-source": "src/app/api/me/api-keys/contract.generated.ts"
       },
       "post": {
+        "description": "Creates a named API key for the current user and returns its secret value. Available on self-hosted installations.",
         "operationId": "createMyApiKey",
         "requestBody": {
           "content": {
@@ -8396,7 +8438,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update me api keys",
+        "summary": "Create an API key",
         "tags": [
           "Account"
         ],
@@ -8407,6 +8449,7 @@
     },
     "/api/me/api-keys/{keyId}": {
       "delete": {
+        "description": "Deletes an API key belonging to the current user, revoking its access. Available on self-hosted installations.",
         "operationId": "deleteMyApiKey",
         "parameters": [
           {
@@ -8477,7 +8520,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Delete me api keys key id",
+        "summary": "Delete an API key",
         "tags": [
           "Account"
         ],
@@ -8488,6 +8531,7 @@
     },
     "/api/me/password": {
       "post": {
+        "description": "Verifies the current password and replaces it with the supplied new password.",
         "operationId": "updateMyPassword",
         "requestBody": {
           "content": {
@@ -8584,7 +8628,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update me password",
+        "summary": "Change my password",
         "tags": [
           "Account"
         ],
@@ -8595,6 +8639,7 @@
     },
     "/api/me/teams": {
       "get": {
+        "description": "Returns a paginated list of teams the current user belongs to, with sorting options.",
         "operationId": "getMyTeams",
         "parameters": [
           {
@@ -8770,7 +8815,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get me teams",
+        "summary": "List my team memberships",
         "tags": [
           "Account"
         ],
@@ -8781,6 +8826,7 @@
     },
     "/api/me/websites": {
       "get": {
+        "description": "Returns a paginated list of the current user's websites, optionally including websites accessible through team membership.",
         "operationId": "getMyWebsites",
         "parameters": [
           {
@@ -9108,7 +9154,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get me websites",
+        "summary": "List my websites",
         "tags": [
           "Account"
         ],
@@ -9119,7 +9165,7 @@
     },
     "/api/oauth/authorize": {
       "get": {
-        "description": "Validates an OAuth 2.1 authorization request and returns the client and scopes for the consent screen. Requires an interactive user session.",
+        "description": "Validates an OAuth authorization request and returns the client and requested permissions for the consent screen. Requires an interactive user session.",
         "operationId": "describeOAuthAuthorization",
         "parameters": [
           {
@@ -9231,7 +9277,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Describe a pending OAuth authorization request",
+        "summary": "Get OAuth authorization request details",
         "tags": [
           "OAuth"
         ],
@@ -9240,7 +9286,7 @@
         "x-umami-source": "src/app/api/oauth/authorize/contract.ts"
       },
       "post": {
-        "description": "Records the user decision. On approval an authorization code is issued and the redirect URL (with code, state and iss) is returned.",
+        "description": "Records the user's consent decision and returns a redirect URL. Approval includes an authorization code, the request state, and the issuer.",
         "operationId": "decideOAuthAuthorization",
         "requestBody": {
           "content": {
@@ -9303,7 +9349,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Approve or deny an OAuth authorization request",
+        "summary": "Approve or deny OAuth access",
         "tags": [
           "OAuth"
         ],
@@ -9314,7 +9360,7 @@
     },
     "/api/oauth/register": {
       "post": {
-        "description": "RFC 7591 compatibility endpoint for MCP clients without Client ID Metadata Document support. Registers a public client. Prefer Client ID Metadata Documents (https URL client_id).",
+        "description": "Registers a public OAuth client for clients that do not support Client ID Metadata Documents. Clients that support them should use an HTTPS metadata URL as their client ID.",
         "operationId": "oauthRegisterClient",
         "requestBody": {
           "content": {
@@ -9349,7 +9395,7 @@
           }
         },
         "security": [],
-        "summary": "Register an OAuth client (dynamic client registration)",
+        "summary": "Register an OAuth client",
         "tags": [
           "OAuth"
         ],
@@ -9360,7 +9406,7 @@
     },
     "/api/oauth/revoke": {
       "post": {
-        "description": "RFC 7009 revocation endpoint. Revokes the given refresh token; unknown tokens are accepted silently.",
+        "description": "Revokes the supplied refresh token. Unknown tokens are accepted without revealing whether they existed.",
         "operationId": "oauthRevoke",
         "requestBody": {
           "content": {
@@ -9413,7 +9459,7 @@
     },
     "/api/oauth/token": {
       "post": {
-        "description": "Exchanges an authorization code (with PKCE code_verifier) or a refresh token for an access token. Accepts application/x-www-form-urlencoded or JSON. Refresh tokens are rotated on every use.",
+        "description": "Exchanges an authorization code and PKCE verifier, or a refresh token, for an access token. Accepts form-encoded or JSON requests and rotates refresh tokens on use.",
         "operationId": "oauthToken",
         "requestBody": {
           "content": {
@@ -9463,7 +9509,7 @@
           }
         },
         "security": [],
-        "summary": "OAuth 2.1 token endpoint",
+        "summary": "Get or refresh an OAuth access token",
         "tags": [
           "OAuth"
         ],
@@ -9474,6 +9520,7 @@
     },
     "/api/pixels": {
       "get": {
+        "description": "Returns a paginated list of the current user's tracking pixels, with search and sorting options.",
         "operationId": "getPixels",
         "parameters": [
           {
@@ -9657,7 +9704,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get pixels",
+        "summary": "List my tracking pixels",
         "tags": [
           "Pixels"
         ],
@@ -9666,6 +9713,7 @@
         "x-umami-source": "src/app/api/pixels/contract.generated.ts"
       },
       "post": {
+        "description": "Creates a tracking pixel with a name and slug, optionally assigned to a team.",
         "operationId": "createPixel",
         "requestBody": {
           "content": {
@@ -9803,7 +9851,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update pixels",
+        "summary": "Create a tracking pixel",
         "tags": [
           "Pixels"
         ],
@@ -9814,6 +9862,7 @@
     },
     "/api/pixels/{pixelId}": {
       "delete": {
+        "description": "Deletes the specified tracking pixel after checking the caller's permission to remove it.",
         "operationId": "deletePixel",
         "parameters": [
           {
@@ -9867,7 +9916,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Delete pixels pixel id",
+        "summary": "Delete a tracking pixel",
         "tags": [
           "Pixels"
         ],
@@ -9876,6 +9925,7 @@
         "x-umami-source": "src/app/api/pixels/[pixelId]/contract.generated.ts"
       },
       "get": {
+        "description": "Returns the specified tracking pixel and its configuration.",
         "operationId": "getPixel",
         "parameters": [
           {
@@ -9964,7 +10014,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get pixels pixel id",
+        "summary": "Get a tracking pixel",
         "tags": [
           "Pixels"
         ],
@@ -9973,6 +10023,7 @@
         "x-umami-source": "src/app/api/pixels/[pixelId]/contract.generated.ts"
       },
       "post": {
+        "description": "Updates a tracking pixel's name or slug.",
         "operationId": "updatePixel",
         "parameters": [
           {
@@ -10112,7 +10163,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update pixels pixel id",
+        "summary": "Update a tracking pixel",
         "tags": [
           "Pixels"
         ],
@@ -10123,6 +10174,7 @@
     },
     "/api/pixels/{pixelId}/shares": {
       "get": {
+        "description": "Returns a paginated list of shares for the specified tracking pixel.",
         "operationId": "getPixelShares",
         "parameters": [
           {
@@ -10552,7 +10604,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get pixels pixel id shares",
+        "summary": "List shares for a tracking pixel",
         "tags": [
           "Pixels"
         ],
@@ -10561,6 +10613,7 @@
         "x-umami-source": "src/app/api/pixels/[pixelId]/shares/contract.generated.ts"
       },
       "post": {
+        "description": "Creates a named share for the specified tracking pixel with optional parameters.",
         "operationId": "createPixelShare",
         "parameters": [
           {
@@ -10740,7 +10793,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update pixels pixel id shares",
+        "summary": "Create a share for a tracking pixel",
         "tags": [
           "Pixels"
         ],
@@ -10751,6 +10804,7 @@
     },
     "/api/pixels/charts": {
       "get": {
+        "description": "Returns visitor totals and chart data for the requested pixels the caller can view, within the selected date range.",
         "operationId": "getPixelsCharts",
         "parameters": [
           {
@@ -10868,7 +10922,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get pixels charts",
+        "summary": "Get visitor charts for tracking pixels",
         "tags": [
           "Pixels"
         ],
@@ -10879,6 +10933,7 @@
     },
     "/api/realtime/{websiteId}": {
       "get": {
+        "description": "Returns recent website activity and visitor data for the real-time view, applying the supplied filters.",
         "operationId": "getRealtime",
         "parameters": [
           {
@@ -11356,7 +11411,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get realtime website id",
+        "summary": "Get real-time website activity",
         "tags": [
           "Realtime"
         ],
@@ -11368,6 +11423,7 @@
     },
     "/api/record": {
       "post": {
+        "description": "Stores session replay events or heatmap clicks and scrolls for a website, using a valid tracking cache token to identify the session and visit.",
         "operationId": "record",
         "requestBody": {
           "content": {
@@ -11643,7 +11699,7 @@
           }
         },
         "security": [],
-        "summary": "Create or update record",
+        "summary": "Send session recordings or heatmap data",
         "tags": [
           "Collection"
         ],
@@ -11654,6 +11710,7 @@
     },
     "/api/reports": {
       "get": {
+        "description": "Returns a paginated list of saved reports for the requested website, optionally filtered by report type.",
         "operationId": "getReports",
         "parameters": [
           {
@@ -11913,7 +11970,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get reports",
+        "summary": "List saved reports",
         "tags": [
           "Reports"
         ],
@@ -11922,6 +11979,7 @@
         "x-umami-source": "src/app/api/reports/contract.generated.ts"
       },
       "post": {
+        "description": "Saves a report's name, description, type, and parameters for a website so it can be opened again later.",
         "operationId": "createReport",
         "requestBody": {
           "content": {
@@ -12109,7 +12167,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update reports",
+        "summary": "Save a report",
         "tags": [
           "Reports"
         ],
@@ -12120,6 +12178,7 @@
     },
     "/api/reports/{reportId}": {
       "delete": {
+        "description": "Deletes the specified saved report definition.",
         "operationId": "deleteReport",
         "parameters": [
           {
@@ -12190,7 +12249,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Delete reports report id",
+        "summary": "Delete a saved report",
         "tags": [
           "Reports"
         ],
@@ -12199,6 +12258,7 @@
         "x-umami-source": "src/app/api/reports/[reportId]/contract.generated.ts"
       },
       "get": {
+        "description": "Returns the specified report's saved name, description, type, and parameters.",
         "operationId": "getReport",
         "parameters": [
           {
@@ -12363,7 +12423,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get reports report id",
+        "summary": "Get a saved report",
         "tags": [
           "Reports"
         ],
@@ -12372,6 +12432,7 @@
         "x-umami-source": "src/app/api/reports/[reportId]/contract.generated.ts"
       },
       "post": {
+        "description": "Updates the specified report's website, name, description, type, and parameters.",
         "operationId": "updateReport",
         "parameters": [
           {
@@ -12586,7 +12647,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update reports report id",
+        "summary": "Update a saved report",
         "tags": [
           "Reports"
         ],
@@ -12597,6 +12658,7 @@
     },
     "/api/reports/attribution": {
       "post": {
+        "description": "Calculates how traffic sources contribute to conversions using the supplied attribution settings, date range, and filters.",
         "operationId": "runAttributionReport",
         "requestBody": {
           "content": {
@@ -12848,7 +12910,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Create or update reports attribution",
+        "summary": "Run an attribution report",
         "tags": [
           "Reports"
         ],
@@ -12860,6 +12922,7 @@
     },
     "/api/reports/breakdown": {
       "post": {
+        "description": "Groups website activity by the selected dimensions for the requested date range and filters.",
         "operationId": "runBreakdownReport",
         "requestBody": {
           "content": {
@@ -12991,7 +13054,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Create or update reports breakdown",
+        "summary": "Run a breakdown report",
         "tags": [
           "Reports"
         ],
@@ -13003,6 +13066,7 @@
     },
     "/api/reports/funnel": {
       "post": {
+        "description": "Calculates visitor progression through a sequence of pages or events using the supplied funnel steps and filters.",
         "operationId": "runFunnelReport",
         "requestBody": {
           "content": {
@@ -13154,7 +13218,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Create or update reports funnel",
+        "summary": "Run a funnel report",
         "tags": [
           "Reports"
         ],
@@ -13166,6 +13230,7 @@
     },
     "/api/reports/goal": {
       "post": {
+        "description": "Counts visitors who reached a matching page or triggered a matching event and returns the total visitor count for comparison.",
         "operationId": "runGoalReport",
         "requestBody": {
           "content": {
@@ -13267,7 +13332,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Create or update reports goal",
+        "summary": "Run a goal report",
         "tags": [
           "Reports"
         ],
@@ -13278,6 +13343,7 @@
     },
     "/api/reports/heatmap": {
       "post": {
+        "description": "Returns recorded click or scroll data for the selected page and date range to display as a heatmap.",
         "operationId": "runHeatmapReport",
         "requestBody": {
           "content": {
@@ -13551,7 +13617,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Create or update reports heatmap",
+        "summary": "Get page heatmap data",
         "tags": [
           "Reports"
         ],
@@ -13562,6 +13628,7 @@
     },
     "/api/reports/journey": {
       "post": {
+        "description": "Returns paths through pages or events using the supplied journey settings and website filters.",
         "operationId": "runJourneyReport",
         "requestBody": {
           "content": {
@@ -13695,7 +13762,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Create or update reports journey",
+        "summary": "Run a visitor journey report",
         "tags": [
           "Reports"
         ],
@@ -13707,6 +13774,7 @@
     },
     "/api/reports/performance": {
       "post": {
+        "description": "Returns performance trends, summary metrics, and breakdowns by page, page title, device, and browser for the selected website and date range.",
         "operationId": "runPerformanceReport",
         "requestBody": {
           "content": {
@@ -13812,7 +13880,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Create or update reports performance",
+        "summary": "Run a performance report",
         "tags": [
           "Reports"
         ],
@@ -13823,6 +13891,7 @@
     },
     "/api/reports/retention": {
       "post": {
+        "description": "Calculates how groups of visitors return over time using the supplied retention settings, date range, and filters.",
         "operationId": "runRetentionReport",
         "requestBody": {
           "content": {
@@ -13944,7 +14013,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Create or update reports retention",
+        "summary": "Run a retention report",
         "tags": [
           "Reports"
         ],
@@ -13956,6 +14025,7 @@
     },
     "/api/reports/revenue": {
       "post": {
+        "description": "Returns revenue trends, totals with a comparison period, and breakdowns by country, region, referrer, and channel.",
         "operationId": "runRevenueReport",
         "requestBody": {
           "content": {
@@ -14163,7 +14233,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Create or update reports revenue",
+        "summary": "Run a revenue report",
         "tags": [
           "Reports"
         ],
@@ -14175,6 +14245,7 @@
     },
     "/api/reports/utm": {
       "post": {
+        "description": "Returns traffic breakdowns for UTM source, medium, campaign, term, and content using the supplied date range and filters.",
         "operationId": "runUtmReport",
         "requestBody": {
           "content": {
@@ -14298,7 +14369,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Create or update reports utm",
+        "summary": "Run a campaign report",
         "tags": [
           "Reports"
         ],
@@ -14310,6 +14381,7 @@
     },
     "/api/scripts/telemetry": {
       "get": {
+        "description": "Returns JavaScript that sends the application version through a telemetry pixel, or an inactive script when telemetry is disabled.",
         "operationId": "getScriptsTelemetry",
         "responses": {
           "200": {
@@ -14324,7 +14396,7 @@
           }
         },
         "security": [],
-        "summary": "Get scripts telemetry",
+        "summary": "Get the installation telemetry script",
         "tags": [
           "Scripts"
         ],
@@ -14335,6 +14407,7 @@
     },
     "/api/send": {
       "post": {
+        "description": "Collects a pageview, custom event, visitor identification, or performance payload and returns session information and a tracking cache token when accepted.",
         "operationId": "send",
         "requestBody": {
           "content": {
@@ -14536,7 +14609,7 @@
           }
         },
         "security": [],
-        "summary": "Create or update send",
+        "summary": "Send tracking data",
         "tags": [
           "Collection"
         ],
@@ -14547,6 +14620,7 @@
     },
     "/api/share": {
       "post": {
+        "description": "Creates a named share for a website, board, link, or pixel with parameters and an optional custom slug.",
         "operationId": "createShare",
         "requestBody": {
           "content": {
@@ -14730,7 +14804,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update share",
+        "summary": "Create a share",
         "tags": [
           "Shares"
         ],
@@ -14741,6 +14815,7 @@
     },
     "/api/share/{slug}": {
       "get": {
+        "description": "Resolves a public share slug and returns its resource references, parameters, and an access token scoped to the shared resources.",
         "operationId": "getShareBySlug",
         "parameters": [
           {
@@ -14784,7 +14859,7 @@
           }
         },
         "security": [],
-        "summary": "Get share slug",
+        "summary": "Open a share by its slug",
         "tags": [
           "Shares"
         ],
@@ -14795,6 +14870,7 @@
     },
     "/api/share/id/{shareId}": {
       "delete": {
+        "description": "Deletes the specified share after checking permission to delete shares for its resource.",
         "operationId": "deleteShare",
         "parameters": [
           {
@@ -14848,7 +14924,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Delete share id share id",
+        "summary": "Delete a share",
         "tags": [
           "Shares"
         ],
@@ -14857,6 +14933,7 @@
         "x-umami-source": "src/app/api/share/id/[shareId]/contract.generated.ts"
       },
       "get": {
+        "description": "Returns a share's configuration by its ID after checking access to the shared resource.",
         "operationId": "getShare",
         "parameters": [
           {
@@ -15000,7 +15077,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get share id share id",
+        "summary": "Get a share",
         "tags": [
           "Shares"
         ],
@@ -15009,6 +15086,7 @@
         "x-umami-source": "src/app/api/share/id/[shareId]/contract.generated.ts"
       },
       "post": {
+        "description": "Updates the specified share's name, slug, and parameters.",
         "operationId": "updateShare",
         "parameters": [
           {
@@ -15211,7 +15289,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update share id share id",
+        "summary": "Update a share",
         "tags": [
           "Shares"
         ],
@@ -15222,6 +15300,7 @@
     },
     "/api/teams": {
       "get": {
+        "description": "Returns a paginated list of teams the current user belongs to, with sorting options.",
         "operationId": "getTeams",
         "parameters": [
           {
@@ -15397,7 +15476,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get teams",
+        "summary": "List my teams",
         "tags": [
           "Teams"
         ],
@@ -15406,6 +15485,7 @@
         "x-umami-source": "src/app/api/teams/contract.generated.ts"
       },
       "post": {
+        "description": "Creates a team with an access code and an owner. Administrators can specify a different user as the owner.",
         "operationId": "createTeam",
         "requestBody": {
           "content": {
@@ -15560,7 +15640,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update teams",
+        "summary": "Create a team",
         "tags": [
           "Teams"
         ],
@@ -15571,6 +15651,7 @@
     },
     "/api/teams/{teamId}": {
       "delete": {
+        "description": "Deletes the specified team after checking the caller's permission to remove it.",
         "operationId": "deleteTeam",
         "parameters": [
           {
@@ -15624,7 +15705,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Delete teams team id",
+        "summary": "Delete a team",
         "tags": [
           "Teams"
         ],
@@ -15633,6 +15714,7 @@
         "x-umami-source": "src/app/api/teams/[teamId]/contract.generated.ts"
       },
       "get": {
+        "description": "Returns the specified team's details, including its members.",
         "operationId": "getTeam",
         "parameters": [
           {
@@ -15738,7 +15820,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get teams team id",
+        "summary": "Get a team",
         "tags": [
           "Teams"
         ],
@@ -15747,6 +15829,7 @@
         "x-umami-source": "src/app/api/teams/[teamId]/contract.generated.ts"
       },
       "post": {
+        "description": "Updates the specified team's name or access code.",
         "operationId": "updateTeam",
         "parameters": [
           {
@@ -15868,7 +15951,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update teams team id",
+        "summary": "Update a team",
         "tags": [
           "Teams"
         ],
@@ -15879,6 +15962,7 @@
     },
     "/api/teams/{teamId}/boards": {
       "get": {
+        "description": "Returns a paginated list of boards belonging to the specified team, with search and sorting options.",
         "operationId": "getTeamBoards",
         "parameters": [
           {
@@ -16133,7 +16217,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get teams team id boards",
+        "summary": "List a team's boards",
         "tags": [
           "Teams"
         ],
@@ -16144,6 +16228,7 @@
     },
     "/api/teams/{teamId}/links": {
       "get": {
+        "description": "Returns a paginated list of tracked links belonging to the specified team, with search and sorting options.",
         "operationId": "getTeamLinks",
         "parameters": [
           {
@@ -16343,7 +16428,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get teams team id links",
+        "summary": "List a team's links",
         "tags": [
           "Teams"
         ],
@@ -16354,6 +16439,7 @@
     },
     "/api/teams/{teamId}/pixels": {
       "get": {
+        "description": "Returns a paginated list of tracking pixels belonging to the specified team, with search and sorting options.",
         "operationId": "getTeamPixels",
         "parameters": [
           {
@@ -16549,7 +16635,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get teams team id pixels",
+        "summary": "List a team's tracking pixels",
         "tags": [
           "Teams"
         ],
@@ -16560,6 +16646,7 @@
     },
     "/api/teams/{teamId}/users": {
       "get": {
+        "description": "Returns a paginated list of members of the specified team, including usernames and membership details.",
         "operationId": "getTeamUsers",
         "parameters": [
           {
@@ -16750,7 +16837,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get teams team id users",
+        "summary": "List team members",
         "tags": [
           "Teams"
         ],
@@ -16759,6 +16846,7 @@
         "x-umami-source": "src/app/api/teams/[teamId]/users/contract.generated.ts"
       },
       "post": {
+        "description": "Adds an existing user to the specified team with the supplied team role.",
         "operationId": "createTeamUser",
         "parameters": [
           {
@@ -16879,7 +16967,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update teams team id users",
+        "summary": "Add a team member",
         "tags": [
           "Teams"
         ],
@@ -16890,6 +16978,7 @@
     },
     "/api/teams/{teamId}/users/{userId}": {
       "delete": {
+        "description": "Removes a user's membership from the specified team, subject to team role and ownership restrictions.",
         "operationId": "deleteTeamUser",
         "parameters": [
           {
@@ -16968,7 +17057,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Delete teams team id users user id",
+        "summary": "Remove a team member",
         "tags": [
           "Teams"
         ],
@@ -16977,6 +17066,7 @@
         "x-umami-source": "src/app/api/teams/[teamId]/users/[userId]/contract.generated.ts"
       },
       "get": {
+        "description": "Returns the specified user's membership details for a team.",
         "operationId": "getTeamUser",
         "parameters": [
           {
@@ -17060,7 +17150,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get teams team id users user id",
+        "summary": "Get a team member",
         "tags": [
           "Teams"
         ],
@@ -17069,6 +17159,7 @@
         "x-umami-source": "src/app/api/teams/[teamId]/users/[userId]/contract.generated.ts"
       },
       "post": {
+        "description": "Updates a user's role in the specified team, subject to the caller's role and permissions.",
         "operationId": "updateTeamUser",
         "parameters": [
           {
@@ -17192,7 +17283,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update teams team id users user id",
+        "summary": "Change a team member's role",
         "tags": [
           "Teams"
         ],
@@ -17203,6 +17294,7 @@
     },
     "/api/teams/{teamId}/websites": {
       "get": {
+        "description": "Returns a paginated list of websites belonging to the specified team, with search and sorting options.",
         "operationId": "getTeamWebsites",
         "parameters": [
           {
@@ -17542,7 +17634,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get teams team id websites",
+        "summary": "List a team's websites",
         "tags": [
           "Teams"
         ],
@@ -17553,6 +17645,7 @@
     },
     "/api/teams/join": {
       "post": {
+        "description": "Adds the current user to a team as a member using the team's access code.",
         "operationId": "joinTeam",
         "requestBody": {
           "content": {
@@ -17671,7 +17764,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update teams join",
+        "summary": "Join a team",
         "tags": [
           "Teams"
         ],
@@ -17682,6 +17775,7 @@
     },
     "/api/users": {
       "post": {
+        "description": "Creates a user account with the supplied username, password, and role.",
         "operationId": "createUser",
         "requestBody": {
           "content": {
@@ -17788,7 +17882,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update users",
+        "summary": "Create a user",
         "tags": [
           "Users"
         ],
@@ -17799,6 +17893,7 @@
     },
     "/api/users/{userId}": {
       "delete": {
+        "description": "Deletes the specified user account. The current user cannot delete their own account through this operation.",
         "operationId": "deleteUser",
         "parameters": [
           {
@@ -17869,7 +17964,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Delete users user id",
+        "summary": "Delete a user",
         "tags": [
           "Users"
         ],
@@ -17878,6 +17973,7 @@
         "x-umami-source": "src/app/api/users/[userId]/contract.generated.ts"
       },
       "get": {
+        "description": "Returns details for the specified user account when the caller has permission to view it.",
         "operationId": "getUser",
         "parameters": [
           {
@@ -18883,7 +18979,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get users user id",
+        "summary": "Get a user",
         "tags": [
           "Users"
         ],
@@ -18892,6 +18988,7 @@
         "x-umami-source": "src/app/api/users/[userId]/contract.generated.ts"
       },
       "post": {
+        "description": "Updates a user's password. Administrators can also change the username and role.",
         "operationId": "updateUser",
         "parameters": [
           {
@@ -19021,7 +19118,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update users user id",
+        "summary": "Update a user",
         "tags": [
           "Users"
         ],
@@ -19032,6 +19129,7 @@
     },
     "/api/users/{userId}/teams": {
       "get": {
+        "description": "Returns a paginated list of teams for the specified user. Available to that user and administrators.",
         "operationId": "getUserTeams",
         "parameters": [
           {
@@ -19215,7 +19313,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get users user id teams",
+        "summary": "List a user's teams",
         "tags": [
           "Users"
         ],
@@ -19226,6 +19324,7 @@
     },
     "/api/users/{userId}/websites": {
       "get": {
+        "description": "Returns a paginated list of the specified user's websites, optionally including team access. Available to that user and administrators.",
         "operationId": "getUserWebsites",
         "parameters": [
           {
@@ -19569,7 +19668,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get users user id websites",
+        "summary": "List a user's websites",
         "tags": [
           "Users"
         ],
@@ -19580,7 +19679,7 @@
     },
     "/api/websites": {
       "get": {
-        "description": "Returns websites owned by the authenticated user.",
+        "description": "Returns a paginated list of the current user's websites, optionally including websites accessible through team membership.",
         "operationId": "listWebsites",
         "parameters": [
           {
@@ -19711,6 +19810,7 @@
         "x-umami-source": "src/app/api/websites/contract.ts"
       },
       "post": {
+        "description": "Creates a website with a name and domain, optionally assigning it to a team and creating a share.",
         "operationId": "createWebsite",
         "requestBody": {
           "content": {
@@ -19784,6 +19884,7 @@
     },
     "/api/websites/{websiteId}": {
       "delete": {
+        "description": "Deletes the specified website after checking the caller's permission to remove it.",
         "operationId": "deleteWebsite",
         "parameters": [
           {
@@ -19842,6 +19943,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/contract.ts"
       },
       "get": {
+        "description": "Returns the specified website's details and configuration.",
         "operationId": "getWebsite",
         "parameters": [
           {
@@ -19917,6 +20019,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/contract.ts"
       },
       "post": {
+        "description": "Updates a website's name, domain, sharing settings, or recording configuration.",
         "operationId": "updateWebsite",
         "parameters": [
           {
@@ -20080,7 +20183,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get current active visitors",
+        "summary": "Get active website visitors",
         "tags": [
           "Websites"
         ],
@@ -20092,6 +20195,7 @@
     },
     "/api/websites/{websiteId}/annotations": {
       "get": {
+        "description": "Returns a paginated list of dated notes for the website, optionally filtered by date range or search text.",
         "operationId": "getWebsiteAnnotations",
         "parameters": [
           {
@@ -20283,7 +20387,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id annotations",
+        "summary": "List website annotations",
         "tags": [
           "Websites"
         ],
@@ -20292,6 +20396,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/annotations/contract.generated.ts"
       },
       "post": {
+        "description": "Adds a dated note to the website, optionally marking it as an all-day annotation.",
         "operationId": "createWebsiteAnnotation",
         "parameters": [
           {
@@ -20421,7 +20526,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update websites website id annotations",
+        "summary": "Create a website annotation",
         "tags": [
           "Websites"
         ],
@@ -20432,6 +20537,7 @@
     },
     "/api/websites/{websiteId}/annotations/{annotationId}": {
       "delete": {
+        "description": "Deletes the specified dated note from the website.",
         "operationId": "deleteWebsiteAnnotation",
         "parameters": [
           {
@@ -20510,7 +20616,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Delete websites website id annotations annotation id",
+        "summary": "Delete a website annotation",
         "tags": [
           "Websites"
         ],
@@ -20519,6 +20625,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/annotations/[annotationId]/contract.generated.ts"
       },
       "get": {
+        "description": "Returns the date, all-day setting, and note for a specific website annotation.",
         "operationId": "getWebsiteAnnotation",
         "parameters": [
           {
@@ -20632,7 +20739,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id annotations annotation id",
+        "summary": "Get a website annotation",
         "tags": [
           "Websites"
         ],
@@ -20641,6 +20748,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/annotations/[annotationId]/contract.generated.ts"
       },
       "post": {
+        "description": "Changes the date, all-day setting, and note for a website annotation.",
         "operationId": "updateWebsiteAnnotation",
         "parameters": [
           {
@@ -20795,7 +20903,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update websites website id annotations annotation id",
+        "summary": "Update a website annotation",
         "tags": [
           "Websites"
         ],
@@ -20806,6 +20914,7 @@
     },
     "/api/websites/{websiteId}/daterange": {
       "get": {
+        "description": "Returns the earliest and latest recorded event dates for the website.",
         "operationId": "getWebsiteDateRange",
         "parameters": [
           {
@@ -20874,7 +20983,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id daterange",
+        "summary": "Get the website's available date range",
         "tags": [
           "Websites"
         ],
@@ -20886,6 +20995,7 @@
     },
     "/api/websites/{websiteId}/event-data": {
       "get": {
+        "description": "Returns a page of events in the selected date range, grouping each event's custom property records together.",
         "operationId": "getEventData",
         "parameters": [
           {
@@ -21297,7 +21407,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id event data",
+        "summary": "List events with custom properties",
         "tags": [
           "Websites"
         ],
@@ -21309,6 +21419,7 @@
     },
     "/api/websites/{websiteId}/event-data-pivot": {
       "get": {
+        "description": "Returns a page of occurrences of the specified event, with event details and property keys and values grouped into one row per occurrence.",
         "operationId": "getEventDataPivot",
         "parameters": [
           {
@@ -21730,7 +21841,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id event data pivot",
+        "summary": "List event properties in table form",
         "tags": [
           "Websites"
         ],
@@ -21741,6 +21852,7 @@
     },
     "/api/websites/{websiteId}/event-data-pivot/array-series": {
       "get": {
+        "description": "Counts individual values in an array property for the specified event, grouped by value and time interval.",
         "operationId": "getEventDataArraySeries",
         "parameters": [
           {
@@ -22081,7 +22193,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id event data pivot array series",
+        "summary": "Get event array values over time",
         "tags": [
           "Websites"
         ],
@@ -22092,6 +22204,7 @@
     },
     "/api/websites/{websiteId}/event-data-pivot/date-series": {
       "get": {
+        "description": "Counts occurrences of dates stored in the specified event property, grouping by the property's date value within the selected event date range.",
         "operationId": "getEventDataDateSeries",
         "parameters": [
           {
@@ -22420,7 +22533,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id event data pivot date series",
+        "summary": "Get the distribution of event date values",
         "tags": [
           "Websites"
         ],
@@ -22431,6 +22544,7 @@
     },
     "/api/websites/{websiteId}/event-data-pivot/numeric-series": {
       "get": {
+        "description": "Returns the sum, average, or count of a numeric property for the specified event, grouped by time interval.",
         "operationId": "getEventDataNumericSeries",
         "parameters": [
           {
@@ -22780,7 +22894,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id event data pivot numeric series",
+        "summary": "Get numeric event properties over time",
         "tags": [
           "Websites"
         ],
@@ -22791,6 +22905,7 @@
     },
     "/api/websites/{websiteId}/event-data-pivot/numeric-stats": {
       "get": {
+        "description": "Returns the total, average, median, minimum, and maximum of the specified numeric event property for the selected date range and filters.",
         "operationId": "getEventDataNumericStats",
         "parameters": [
           {
@@ -23120,7 +23235,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id event data pivot numeric stats",
+        "summary": "Get numeric event property statistics",
         "tags": [
           "Websites"
         ],
@@ -23131,6 +23246,7 @@
     },
     "/api/websites/{websiteId}/event-data-pivot/property-series": {
       "get": {
+        "description": "Counts occurrences of string values in the specified event property, grouped by value and time interval.",
         "operationId": "getEventDataPropertySeries",
         "parameters": [
           {
@@ -23471,7 +23587,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id event data pivot property series",
+        "summary": "Get event property values over time",
         "tags": [
           "Websites"
         ],
@@ -23482,6 +23598,7 @@
     },
     "/api/websites/{websiteId}/event-data/{eventId}": {
       "get": {
+        "description": "Returns the custom property records, data types, and values attached to a specific event.",
         "operationId": "getEventDataById",
         "parameters": [
           {
@@ -23603,7 +23720,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id event data event id",
+        "summary": "Get an event's custom properties",
         "tags": [
           "Websites"
         ],
@@ -23614,6 +23731,7 @@
     },
     "/api/websites/{websiteId}/event-data/events": {
       "get": {
+        "description": "Returns property names, types, and counts grouped by event name. When an event is specified, also groups by property value.",
         "operationId": "getEventDataEvents",
         "parameters": [
           {
@@ -23928,7 +24046,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id event data events",
+        "summary": "Summarize properties by event",
         "tags": [
           "Websites"
         ],
@@ -23939,6 +24057,7 @@
     },
     "/api/websites/{websiteId}/event-data/fields": {
       "get": {
+        "description": "Returns property names, data types, and counts for the selected date range, optionally restricted to an event name.",
         "operationId": "getEventDataFields",
         "parameters": [
           {
@@ -24255,7 +24374,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id event data fields",
+        "summary": "List event property fields",
         "tags": [
           "Websites"
         ],
@@ -24266,6 +24385,7 @@
     },
     "/api/websites/{websiteId}/event-data/properties": {
       "get": {
+        "description": "Returns event names and their custom property names, data types, and record counts for the selected date range and filters.",
         "operationId": "getEventDataProperties",
         "parameters": [
           {
@@ -24583,7 +24703,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id event data properties",
+        "summary": "List event property usage",
         "tags": [
           "Websites"
         ],
@@ -24595,6 +24715,7 @@
     },
     "/api/websites/{websiteId}/event-data/stats": {
       "get": {
+        "description": "Returns counts of events with custom data, distinct property names, and property records for the selected date range and filters.",
         "operationId": "getEventDataStats",
         "parameters": [
           {
@@ -24905,7 +25026,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id event data stats",
+        "summary": "Get event property totals",
         "tags": [
           "Websites"
         ],
@@ -24917,6 +25038,7 @@
     },
     "/api/websites/{websiteId}/event-data/values": {
       "get": {
+        "description": "Returns values and their occurrence counts for a custom event property, optionally restricted by event name and data type.",
         "operationId": "getEventDataValues",
         "parameters": [
           {
@@ -25250,7 +25372,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id event data values",
+        "summary": "List event property values",
         "tags": [
           "Websites"
         ],
@@ -25262,7 +25384,7 @@
     },
     "/api/websites/{websiteId}/events": {
       "get": {
-        "description": "Returns a page of pageviews and custom events in the date range, newest first. Filter with `event` for a specific event name or `search` for free text.",
+        "description": "Returns a page of pageviews and custom events in the date range, newest first. Supports filtering by event name and searching event details.",
         "operationId": "getWebsiteEvents",
         "parameters": [
           {
@@ -25622,6 +25744,7 @@
     },
     "/api/websites/{websiteId}/events/series": {
       "get": {
+        "description": "Returns counts grouped by event name and time interval, optionally limited to the most frequent event names.",
         "operationId": "getWebsiteEventSeries",
         "parameters": [
           {
@@ -25959,7 +26082,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id events series",
+        "summary": "Get custom event counts over time",
         "tags": [
           "Websites"
         ],
@@ -25971,6 +26094,7 @@
     },
     "/api/websites/{websiteId}/events/stats": {
       "get": {
+        "description": "Returns website event totals for the selected date range and filters, including totals for the comparison period.",
         "operationId": "getWebsiteEventStats",
         "parameters": [
           {
@@ -26354,7 +26478,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id events stats",
+        "summary": "Get website event statistics",
         "tags": [
           "Websites"
         ],
@@ -26366,6 +26490,7 @@
     },
     "/api/websites/{websiteId}/export": {
       "get": {
+        "description": "Returns a base64-encoded ZIP archive containing CSV exports of events, pages, referrers, browsers, operating systems, devices, and countries.",
         "operationId": "exportWebsite",
         "parameters": [
           {
@@ -26537,7 +26662,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id export",
+        "summary": "Export website analytics",
         "tags": [
           "Websites"
         ],
@@ -26548,7 +26673,7 @@
     },
     "/api/websites/{websiteId}/metrics": {
       "get": {
-        "description": "Returns the top values for one dimension (`type`), such as pages, referrers, countries, browsers, UTM parameters or events, ordered by count. Page-type dimensions count views/events; visitor dimensions count unique visitors.",
+        "description": "Returns the most frequent values for a dimension such as pages, referrers, countries, browsers, campaigns, or events. Counts pageviews or events for activity dimensions and unique visitors for visitor dimensions.",
         "operationId": "getWebsiteMetrics",
         "parameters": [
           {
@@ -26893,7 +27018,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get ranked metrics for a dimension",
+        "summary": "Get ranked website metrics",
         "tags": [
           "Websites"
         ],
@@ -26905,6 +27030,7 @@
     },
     "/api/websites/{websiteId}/metrics/expanded": {
       "get": {
+        "description": "Returns additional analytics for the selected page, event, visitor, or channel dimension, using the supplied date range and filters.",
         "operationId": "getWebsiteExpandedMetrics",
         "parameters": [
           {
@@ -27308,7 +27434,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id metrics expanded",
+        "summary": "Get detailed website metrics",
         "tags": [
           "Websites"
         ],
@@ -27320,7 +27446,7 @@
     },
     "/api/websites/{websiteId}/pageviews": {
       "get": {
-        "description": "Returns pageviews and sessions bucketed by `unit` (minute, hour, day, month, year) in the given `timezone`. When `compare` is set the comparison period is included.",
+        "description": "Returns pageviews and sessions grouped by the requested time interval and timezone, including a comparison period when requested.",
         "operationId": "getWebsitePageviews",
         "parameters": [
           {
@@ -27634,7 +27760,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get pageview and session time series",
+        "summary": "Get pageviews and sessions over time",
         "tags": [
           "Websites"
         ],
@@ -27646,6 +27772,7 @@
     },
     "/api/websites/{websiteId}/recorder": {
       "get": {
+        "description": "Returns public replay and heatmap settings, including sampling, masking, and duration limits. Returns disabled status when recording is unavailable.",
         "operationId": "getWebsiteRecorderConfig",
         "parameters": [
           {
@@ -27728,7 +27855,7 @@
           }
         },
         "security": [],
-        "summary": "Get websites website id recorder",
+        "summary": "Get website recording settings",
         "tags": [
           "Websites"
         ],
@@ -27739,6 +27866,7 @@
     },
     "/api/websites/{websiteId}/replays": {
       "get": {
+        "description": "Returns a paginated list of recorded sessions for the website, applying date, replay, and search filters.",
         "operationId": "getWebsiteReplays",
         "parameters": [
           {
@@ -28237,7 +28365,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id replays",
+        "summary": "List website session replays",
         "tags": [
           "Websites"
         ],
@@ -28248,6 +28376,7 @@
     },
     "/api/websites/{websiteId}/replays/{replayId}": {
       "get": {
+        "description": "Returns the merged recording events, session details, and event and chunk counts for a replay, with optional stopping points by timestamp, chunk, or event index.",
         "operationId": "getWebsiteReplay",
         "parameters": [
           {
@@ -28336,7 +28465,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id replays replay id",
+        "summary": "Get a session replay recording",
         "tags": [
           "Websites"
         ],
@@ -28347,6 +28476,7 @@
     },
     "/api/websites/{websiteId}/replays/saved": {
       "get": {
+        "description": "Returns a paginated, searchable list of replays saved for the website.",
         "operationId": "getWebsiteSavedReplays",
         "parameters": [
           {
@@ -28513,7 +28643,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id replays saved",
+        "summary": "List saved session replays",
         "tags": [
           "Websites"
         ],
@@ -28524,6 +28654,7 @@
     },
     "/api/websites/{websiteId}/replays/saved/{replayId}": {
       "get": {
+        "description": "Returns whether the specified replay is in the website's saved replays.",
         "operationId": "getWebsiteReplaySaved",
         "parameters": [
           {
@@ -28589,7 +28720,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id replays saved replay id",
+        "summary": "Check whether a replay is saved",
         "tags": [
           "Websites"
         ],
@@ -28598,6 +28729,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/replays/saved/[replayId]/contract.generated.ts"
       },
       "post": {
+        "description": "Adds a replay to the website's saved replays with an optional name, or removes it when isSaved is false.",
         "operationId": "saveWebsiteReplay",
         "parameters": [
           {
@@ -28698,7 +28830,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update websites website id replays saved replay id",
+        "summary": "Save or unsave a session replay",
         "tags": [
           "Websites"
         ],
@@ -28709,6 +28841,7 @@
     },
     "/api/websites/{websiteId}/reports": {
       "get": {
+        "description": "Returns a paginated list of saved report definitions for the website, optionally filtered by report type.",
         "operationId": "getWebsiteReports",
         "parameters": [
           {
@@ -28967,7 +29100,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id reports",
+        "summary": "List a website's saved reports",
         "tags": [
           "Websites"
         ],
@@ -28978,6 +29111,7 @@
     },
     "/api/websites/{websiteId}/reset": {
       "post": {
+        "description": "Clears the website's collected analytics data while keeping the website configuration.",
         "operationId": "resetWebsite",
         "parameters": [
           {
@@ -29031,7 +29165,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update websites website id reset",
+        "summary": "Reset website analytics",
         "tags": [
           "Websites"
         ],
@@ -29042,6 +29176,7 @@
     },
     "/api/websites/{websiteId}/revenue/chart": {
       "get": {
+        "description": "Returns revenue chart data for the selected currency, date range, and website filters.",
         "operationId": "getWebsiteRevenueChart",
         "parameters": [
           {
@@ -29416,7 +29551,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id revenue chart",
+        "summary": "Get website revenue over time",
         "tags": [
           "Websites"
         ],
@@ -29427,6 +29562,7 @@
     },
     "/api/websites/{websiteId}/revenue/metrics": {
       "get": {
+        "description": "Returns revenue grouped by the requested dimension, such as country or referrer, for the selected currency and date range.",
         "operationId": "getWebsiteRevenueMetrics",
         "parameters": [
           {
@@ -29825,7 +29961,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id revenue metrics",
+        "summary": "Get website revenue by dimension",
         "tags": [
           "Websites"
         ],
@@ -29836,6 +29972,7 @@
     },
     "/api/websites/{websiteId}/revenue/sessions": {
       "get": {
+        "description": "Returns a paginated list of sessions with revenue in the selected currency and date range, applying website and search filters.",
         "operationId": "getWebsiteRevenueSessions",
         "parameters": [
           {
@@ -30345,7 +30482,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id revenue sessions",
+        "summary": "List sessions with revenue",
         "tags": [
           "Websites"
         ],
@@ -30356,6 +30493,7 @@
     },
     "/api/websites/{websiteId}/revenue/stats": {
       "get": {
+        "description": "Returns revenue summary statistics for the selected currency and date range, including totals for the comparison period.",
         "operationId": "getWebsiteRevenueStats",
         "parameters": [
           {
@@ -30705,7 +30843,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id revenue stats",
+        "summary": "Get website revenue totals",
         "tags": [
           "Websites"
         ],
@@ -30716,6 +30854,7 @@
     },
     "/api/websites/{websiteId}/segments": {
       "get": {
+        "description": "Returns saved segments or cohorts for the website, filtered by the requested type and search text.",
         "operationId": "getWebsiteSegments",
         "parameters": [
           {
@@ -30927,7 +31066,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id segments",
+        "summary": "List website segments and cohorts",
         "tags": [
           "Websites"
         ],
@@ -30936,6 +31075,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/segments/contract.generated.ts"
       },
       "post": {
+        "description": "Saves a named segment or cohort with its type and filter parameters for the website.",
         "operationId": "createWebsiteSegment",
         "parameters": [
           {
@@ -31153,7 +31293,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update websites website id segments",
+        "summary": "Create a website segment or cohort",
         "tags": [
           "Websites"
         ],
@@ -31164,6 +31304,7 @@
     },
     "/api/websites/{websiteId}/segments/{segmentId}": {
       "delete": {
+        "description": "Deletes the specified saved segment or cohort from the website.",
         "operationId": "deleteWebsiteSegment",
         "parameters": [
           {
@@ -31242,7 +31383,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Delete websites website id segments segment id",
+        "summary": "Delete a website segment or cohort",
         "tags": [
           "Websites"
         ],
@@ -31251,6 +31392,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/segments/[segmentId]/contract.generated.ts"
       },
       "get": {
+        "description": "Returns a saved segment or cohort and its filter parameters for the website.",
         "operationId": "getWebsiteSegment",
         "parameters": [
           {
@@ -31415,7 +31557,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id segments segment id",
+        "summary": "Get a website segment or cohort",
         "tags": [
           "Websites"
         ],
@@ -31424,6 +31566,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/segments/[segmentId]/contract.generated.ts"
       },
       "post": {
+        "description": "Updates a saved segment or cohort's type, name, and filter parameters.",
         "operationId": "updateWebsiteSegment",
         "parameters": [
           {
@@ -31633,7 +31776,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update websites website id segments segment id",
+        "summary": "Update a website segment or cohort",
         "tags": [
           "Websites"
         ],
@@ -31644,6 +31787,7 @@
     },
     "/api/websites/{websiteId}/session-data-pivot": {
       "get": {
+        "description": "Returns a page of sessions matching the selected property and filters, with the latest property keys and values grouped into one row per session.",
         "operationId": "getSessionDataPivot",
         "parameters": [
           {
@@ -32057,7 +32201,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id session data pivot",
+        "summary": "List session properties in table form",
         "tags": [
           "Websites"
         ],
@@ -32068,6 +32212,7 @@
     },
     "/api/websites/{websiteId}/session-data/array-series": {
       "get": {
+        "description": "Counts distinct sessions for individual values in an array property, grouped by value and time interval.",
         "operationId": "getSessionDataArraySeries",
         "parameters": [
           {
@@ -32400,7 +32545,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id session data array series",
+        "summary": "Get session array values over time",
         "tags": [
           "Websites"
         ],
@@ -32411,6 +32556,7 @@
     },
     "/api/websites/{websiteId}/session-data/date-series": {
       "get": {
+        "description": "Counts distinct sessions by dates stored in the specified custom property, using the selected date range and filters.",
         "operationId": "getSessionDataDateSeries",
         "parameters": [
           {
@@ -32731,7 +32877,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id session data date series",
+        "summary": "Get the distribution of session date values",
         "tags": [
           "Websites"
         ],
@@ -32742,6 +32888,7 @@
     },
     "/api/websites/{websiteId}/session-data/numeric-series": {
       "get": {
+        "description": "Returns the sum, average, or count of a numeric session property, grouped by time interval for the selected date range and filters.",
         "operationId": "getSessionDataNumericSeries",
         "parameters": [
           {
@@ -33083,7 +33230,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id session data numeric series",
+        "summary": "Get numeric session properties over time",
         "tags": [
           "Websites"
         ],
@@ -33094,6 +33241,7 @@
     },
     "/api/websites/{websiteId}/session-data/numeric-stats": {
       "get": {
+        "description": "Returns the total, average, median, minimum, and maximum of the specified numeric session property for the selected date range and filters.",
         "operationId": "getSessionDataNumericStats",
         "parameters": [
           {
@@ -33423,7 +33571,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id session data numeric stats",
+        "summary": "Get numeric session property statistics",
         "tags": [
           "Websites"
         ],
@@ -33434,6 +33582,7 @@
     },
     "/api/websites/{websiteId}/session-data/properties": {
       "get": {
+        "description": "Returns custom session property names, data types, and distinct session counts, optionally restricted to sessions with a selected property.",
         "operationId": "getSessionDataProperties",
         "parameters": [
           {
@@ -33750,7 +33899,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id session data properties",
+        "summary": "List session property usage",
         "tags": [
           "Websites"
         ],
@@ -33761,6 +33910,7 @@
     },
     "/api/websites/{websiteId}/session-data/property-series": {
       "get": {
+        "description": "Counts distinct sessions for string values in a custom property, grouped by value and time interval.",
         "operationId": "getSessionDataPropertySeries",
         "parameters": [
           {
@@ -34093,7 +34243,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id session data property series",
+        "summary": "Get session property values over time",
         "tags": [
           "Websites"
         ],
@@ -34104,6 +34254,7 @@
     },
     "/api/websites/{websiteId}/session-data/stats": {
       "get": {
+        "description": "Returns session, visit, pageview, event, and total activity counts grouped by values of the specified session property.",
         "operationId": "getSessionDataStats",
         "parameters": [
           {
@@ -34448,7 +34599,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id session data stats",
+        "summary": "Get activity by session property",
         "tags": [
           "Websites"
         ],
@@ -34459,6 +34610,7 @@
     },
     "/api/websites/{websiteId}/session-data/values": {
       "get": {
+        "description": "Returns custom session property values and their occurrence counts, optionally filtered by property name and data type.",
         "operationId": "getSessionDataValues",
         "parameters": [
           {
@@ -34779,7 +34931,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id session data values",
+        "summary": "List session property values",
         "tags": [
           "Websites"
         ],
@@ -34790,7 +34942,7 @@
     },
     "/api/websites/{websiteId}/sessions": {
       "get": {
-        "description": "Returns a page of visitor sessions in the date range, newest first. `search` matches distinct ID, city, browser, OS or device.",
+        "description": "Returns a page of visitor sessions in the date range, newest first. Search matches distinct ID, city, browser, operating system, or device.",
         "operationId": "getWebsiteSessions",
         "parameters": [
           {
@@ -35150,6 +35302,7 @@
     },
     "/api/websites/{websiteId}/sessions/{sessionId}": {
       "delete": {
+        "description": "Deletes the specified session and its associated analytics data. Available on installations using only a relational database.",
         "operationId": "deleteWebsiteSession",
         "parameters": [
           {
@@ -35245,7 +35398,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Delete websites website id sessions session id",
+        "summary": "Delete a visitor session",
         "tags": [
           "Websites"
         ],
@@ -35254,6 +35407,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/sessions/[sessionId]/contract.generated.ts"
       },
       "get": {
+        "description": "Returns details for a website session, including linked visitor identities and whether session deletion is available to the caller.",
         "operationId": "getWebsiteSession",
         "parameters": [
           {
@@ -35341,7 +35495,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id sessions session id",
+        "summary": "Get a visitor session",
         "tags": [
           "Websites"
         ],
@@ -35353,6 +35507,7 @@
     },
     "/api/websites/{websiteId}/sessions/{sessionId}/activity": {
       "get": {
+        "description": "Returns activity for the specified session and sessions linked by visitor identity, using the requested date range and optional distinct ID.",
         "operationId": "getWebsiteSessionActivity",
         "parameters": [
           {
@@ -35511,7 +35666,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id sessions session id activity",
+        "summary": "Get a visitor's session activity",
         "tags": [
           "Websites"
         ],
@@ -35523,6 +35678,7 @@
     },
     "/api/websites/{websiteId}/sessions/{sessionId}/properties": {
       "get": {
+        "description": "Returns custom property records, data types, and values for the specified website session.",
         "operationId": "getWebsiteSessionProperties",
         "parameters": [
           {
@@ -35640,7 +35796,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id sessions session id properties",
+        "summary": "Get a session's custom properties",
         "tags": [
           "Websites"
         ],
@@ -35652,6 +35808,7 @@
     },
     "/api/websites/{websiteId}/sessions/{sessionId}/replays": {
       "get": {
+        "description": "Returns a paginated, searchable list of recordings for the specified website session.",
         "operationId": "getWebsiteSessionReplays",
         "parameters": [
           {
@@ -35942,7 +36099,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id sessions session id replays",
+        "summary": "List a visitor's session replays",
         "tags": [
           "Websites"
         ],
@@ -35953,6 +36110,7 @@
     },
     "/api/websites/{websiteId}/sessions/stats": {
       "get": {
+        "description": "Returns aggregate session metrics for the website over the selected date range and filters.",
         "operationId": "getWebsiteSessionStats",
         "parameters": [
           {
@@ -36248,7 +36406,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id sessions stats",
+        "summary": "Get visitor session statistics",
         "tags": [
           "Websites"
         ],
@@ -36260,6 +36418,7 @@
     },
     "/api/websites/{websiteId}/sessions/weekly": {
       "get": {
+        "description": "Returns distinct visitor counts grouped by day of the week and hour in the selected timezone and date range.",
         "operationId": "getWebsiteSessionsWeekly",
         "parameters": [
           {
@@ -36563,7 +36722,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id sessions weekly",
+        "summary": "Get traffic by weekday and hour",
         "tags": [
           "Websites"
         ],
@@ -36574,6 +36733,7 @@
     },
     "/api/websites/{websiteId}/shares": {
       "get": {
+        "description": "Returns a paginated list of shares for the specified website.",
         "operationId": "getWebsiteShares",
         "parameters": [
           {
@@ -37003,7 +37163,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id shares",
+        "summary": "List shares for a website",
         "tags": [
           "Websites"
         ],
@@ -37012,6 +37172,7 @@
         "x-umami-source": "src/app/api/websites/[websiteId]/shares/contract.generated.ts"
       },
       "post": {
+        "description": "Creates a named share for the specified website with optional parameters.",
         "operationId": "createWebsiteShare",
         "parameters": [
           {
@@ -37191,7 +37352,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update websites website id shares",
+        "summary": "Create a share for a website",
         "tags": [
           "Websites"
         ],
@@ -37202,7 +37363,7 @@
     },
     "/api/websites/{websiteId}/stats": {
       "get": {
-        "description": "Returns pageviews, unique visitors, visits, bounces and total time on site for the date range, plus the same totals for the comparison period (`compare`: prev or yoy).",
+        "description": "Returns pageviews, unique visitors, visits, bounces, and total time on site for the selected date range and comparison period.",
         "operationId": "getWebsiteStats",
         "parameters": [
           {
@@ -37516,7 +37677,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get website summary stats",
+        "summary": "Get website summary statistics",
         "tags": [
           "Websites"
         ],
@@ -37528,6 +37689,7 @@
     },
     "/api/websites/{websiteId}/transfer": {
       "post": {
+        "description": "Transfers the specified website to another user or team after checking permission for the destination.",
         "operationId": "transferWebsite",
         "parameters": [
           {
@@ -37722,7 +37884,7 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Create or update websites website id transfer",
+        "summary": "Transfer website ownership",
         "tags": [
           "Websites"
         ],
@@ -37733,6 +37895,7 @@
     },
     "/api/websites/{websiteId}/values": {
       "get": {
+        "description": "Returns available values for a website filter, including saved segments or cohorts when requested, to populate filter choices.",
         "operationId": "getWebsiteValues",
         "parameters": [
           {
@@ -37878,7 +38041,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites website id values",
+        "summary": "List website filter values",
         "tags": [
           "Websites"
         ],
@@ -37889,6 +38052,7 @@
     },
     "/api/websites/charts": {
       "get": {
+        "description": "Returns visitor totals and chart data for the requested websites the caller can view, within the selected date range.",
         "operationId": "getWebsitesCharts",
         "parameters": [
           {
@@ -38006,7 +38170,7 @@
             "shareToken": []
           }
         ],
-        "summary": "Get websites charts",
+        "summary": "Get visitor charts for websites",
         "tags": [
           "Websites"
         ],

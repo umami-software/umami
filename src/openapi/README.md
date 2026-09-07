@@ -23,7 +23,7 @@ Run `pnpm openapi:contracts` to create a `contract.generated.ts` next to every r
 have a curated contract. Generated contracts use the route's Zod request validation and TypeScript
 response types. They are checked in so operation IDs and client-facing schemas remain stable.
 
-For curated descriptions, examples, or runtime-shared Zod response models, replace the generated
+For examples or runtime-shared Zod response models, replace the generated
 module with a `contract.ts` that exports an `operations` array. Define request and response shapes
 with Zod, and import the same request schema into the route handler for `parseRequest` validation.
 
@@ -44,7 +44,29 @@ New operations are initially marked with `x-umami-contract: inferred` and their 
 inference layer extracts path parameters, Zod request fields, authentication, typed response bodies,
 response status helpers, and response media types without importing route modules. Running
 `pnpm openapi:contracts` snapshots that behavior into an explicit contract. Curated `contract.ts`
-modules remain the way to add examples, custom operation IDs, and hand-written prose.
+modules remain the way to add examples and custom operation IDs.
+
+## Summaries and descriptions
+
+Edit `src/openapi/operation-descriptions.ts` to maintain plain-language documentation without
+maintaining a full contract. This file is hand-written, committed, and never overwritten by
+either OpenAPI generator. Keys combine the uppercase HTTP method and the OpenAPI path:
+
+```ts
+'POST /api/links/{linkId}/shares': {
+  summary: 'Create a share for a link',
+  description: 'Creates a named share for the specified link with optional parameters.',
+},
+```
+
+The document builder applies these fields after loading explicit and inferred contracts. A summary
+is required for each entry; the longer description is optional. Omitted fields retain their
+contract values, and operations without an entry retain their existing documentation. Schemas and
+operation IDs continue to come from the contracts.
+
+Run `pnpm generate:api` after editing to refresh the OpenAPI document and API client. Generation and
+`pnpm openapi:check` reject entries that do not match a discovered route and method. Entries are
+optional, so documentation can be improved incrementally.
 
 ## Operation IDs
 

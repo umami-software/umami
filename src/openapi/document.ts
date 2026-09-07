@@ -11,6 +11,7 @@ import {
 import { discoverApiOperations } from '@/openapi/discover';
 import { inferApiContracts } from '@/openapi/infer';
 import { type ApiAudience, type ApiOperationContract, getOperationKey } from '@/openapi/operation';
+import { operationDescriptions } from '@/openapi/operation-descriptions';
 import { errorResponseComponents } from '@/openapi/schemas';
 import { getSecurityRequirements, securitySchemes } from '@/openapi/security';
 
@@ -70,7 +71,18 @@ export async function buildOpenApiDocument(
   const inferredContracts = inferApiContracts(discovered, explicitContracts);
   const contracts = [...explicitContracts, ...inferredContracts];
   const coverage = analyzeContractCoverage(discovered, explicitContracts, contracts);
-  const errors = [...getCoverageErrors(coverage), ...getOAuthRouteErrors(discovered)];
+  const discoveredKeys = new Set(discovered.map(getOperationKey));
+  const descriptionErrors = Object.keys(operationDescriptions)
+    .filter(key => !discoveredKeys.has(key))
+    .map(
+      key =>
+        `Operation description does not match a route: ${key} (src/openapi/operation-descriptions.ts)`,
+    );
+  const errors = [
+    ...getCoverageErrors(coverage),
+    ...getOAuthRouteErrors(discovered),
+    ...descriptionErrors,
+  ];
 
   if (errors.length) {
     throw new Error(`Invalid OpenAPI contracts:\n${errors.map(error => `- ${error}`).join('\n')}`);
@@ -94,6 +106,7 @@ export async function buildOpenApiDocument(
     const scope = getContractOAuthScope(contract.method, contract.path);
     const operation = {
       ...contract.operation,
+      ...operationDescriptions[getOperationKey(contract)],
       security: getSecurityRequirements(contract.auth, scope),
       'x-umami-audience': contract.audience,
       'x-umami-contract': contract.origin,

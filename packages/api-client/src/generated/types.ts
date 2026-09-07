@@ -11,7 +11,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update 2fa disable */
+    /**
+     * Disable two-factor authentication
+     * @description Disables two-factor authentication for the current user after verifying their password and authenticator code. Rejected when an administrator or team requires it.
+     */
     post: operations['disableTwoFactor'];
     delete?: never;
     options?: never;
@@ -28,7 +31,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update 2fa setup cancel */
+    /**
+     * Cancel two-factor authentication setup
+     * @description Deletes the current user's pending setup without changing an already enabled authenticator.
+     */
     post: operations['cancelTwoFactorSetup'];
     delete?: never;
     options?: never;
@@ -45,7 +51,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update 2fa setup confirm */
+    /**
+     * Confirm two-factor authentication setup
+     * @description Verifies an authenticator code, enables two-factor authentication, and returns a new set of backup codes.
+     */
     post: operations['confirmTwoFactorSetup'];
     delete?: never;
     options?: never;
@@ -62,7 +71,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update 2fa setup initiate */
+    /**
+     * Set up two-factor authentication
+     * @description Starts or replaces the current user's pending setup and returns a QR code and manual setup key for an authenticator app.
+     */
     post: operations['initiateTwoFactorSetup'];
     delete?: never;
     options?: never;
@@ -77,7 +89,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get 2fa status */
+    /**
+     * Get two-factor authentication status
+     * @description Returns whether two-factor authentication is enabled, configured, or required for the current user, including the reason it is required.
+     */
     get: operations['getTwoFactorStatus'];
     put?: never;
     post?: never;
@@ -96,7 +111,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update 2fa verify */
+    /**
+     * Complete two-factor sign-in
+     * @description Exchanges a partial sign-in token and a valid authenticator or backup code for a full authentication token and user details.
+     */
     post: operations['verifyTwoFactor'];
     delete?: never;
     options?: never;
@@ -113,7 +131,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update admin 2fa global */
+    /**
+     * Set the two-factor requirement for everyone
+     * @description Enables or disables the installation-wide requirement for users to set up two-factor authentication.
+     */
     post: operations['postAdmin2faGlobal'];
     delete?: never;
     options?: never;
@@ -128,7 +149,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get admin teams */
+    /**
+     * List all teams
+     * @description Returns a paginated list of teams with member details and website and member counts for administration.
+     */
     get: operations['getAdminTeams'];
     put?: never;
     post?: never;
@@ -147,7 +171,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update admin teams team id 2fa */
+    /**
+     * Set a team's two-factor requirement
+     * @description Enables or disables the requirement for members of the specified team to use two-factor authentication.
+     */
     post: operations['postAdminTeamsTeamId2fa'];
     delete?: never;
     options?: never;
@@ -162,7 +189,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get admin users */
+    /**
+     * List all users
+     * @description Returns a paginated list of users and their website counts for administration, excluding passwords.
+     */
     get: operations['getAdminUsers'];
     put?: never;
     post?: never;
@@ -179,12 +209,21 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get admin users user id 2fa */
+    /**
+     * Get a user's two-factor status
+     * @description Returns whether two-factor authentication is enabled for the specified user.
+     */
     get: operations['getAdminUsersUserId2fa'];
     put?: never;
-    /** Create or update admin users user id 2fa */
+    /**
+     * Set a user's two-factor requirement
+     * @description Enables or disables the requirement for the specified user to set up two-factor authentication.
+     */
     post: operations['postAdminUsersUserId2fa'];
-    /** Delete admin users user id 2fa */
+    /**
+     * Reset a user's two-factor authentication
+     * @description Removes the specified user's authenticator setup, backup codes, used-code history, and failed-attempt limits so they can set up authentication again.
+     */
     delete: operations['deleteAdminUsersUserId2fa'];
     options?: never;
     head?: never;
@@ -198,7 +237,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get admin websites */
+    /**
+     * List all websites
+     * @description Returns a paginated, searchable list of websites across users and teams for administration.
+     */
     get: operations['getAdminWebsites'];
     put?: never;
     post?: never;
@@ -219,7 +261,7 @@ export interface paths {
     put?: never;
     /**
      * Log in
-     * @description Authenticates a self-hosted Umami user. Users with two-factor authentication receive a short-lived partial token instead of a full bearer token.
+     * @description Authenticates a user with a username and password. Users with two-factor authentication receive a short-lived partial token to complete sign-in.
      */
     post: operations['login'];
     delete?: never;
@@ -237,7 +279,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update auth logout */
+    /**
+     * Log out
+     * @description Ends the current authentication session by removing its stored token when Redis-backed sessions are enabled.
+     */
     post: operations['logout'];
     delete?: never;
     options?: never;
@@ -254,7 +299,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update auth sso */
+    /**
+     * Create a single sign-on token
+     * @description Returns the authenticated user and a new token valid for 24 hours. Requires Redis-backed authentication.
+     */
     post: operations['sso'];
     delete?: never;
     options?: never;
@@ -269,7 +317,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get auth subscription */
+    /**
+     * Get subscription details
+     * @description Returns subscription and feature availability for the current user or a specified team the user can access.
+     */
     get: operations['getSubscription'];
     put?: never;
     post?: never;
@@ -288,7 +339,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update auth verify */
+    /**
+     * Verify the current sign-in
+     * @description Validates the current authentication credentials and returns the user and their team memberships.
+     */
     post: operations['verify'];
     delete?: never;
     options?: never;
@@ -305,7 +359,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update batch */
+    /**
+     * Send a batch of tracking requests
+     * @description Processes up to 500 tracking payloads and returns processed and failed counts, individual error details, and a tracking cache token.
+     */
     post: operations['batch'];
     delete?: never;
     options?: never;
@@ -320,10 +377,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get boards */
+    /**
+     * List my boards
+     * @description Returns a paginated list of the current user's boards, with search and sorting options.
+     */
     get: operations['getBoards'];
     put?: never;
-    /** Create or update boards */
+    /**
+     * Create a board
+     * @description Creates a board with a name, type, and configuration, optionally assigned to a team. Validates access to its referenced resources and reports.
+     */
     post: operations['createBoard'];
     delete?: never;
     options?: never;
@@ -338,12 +401,21 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get boards board id */
+    /**
+     * Get a board
+     * @description Returns the specified board and its configuration.
+     */
     get: operations['getBoard'];
     put?: never;
-    /** Create or update boards board id */
+    /**
+     * Update a board
+     * @description Updates a board's name, description, or configuration and validates the resources and reports it references.
+     */
     post: operations['updateBoard'];
-    /** Delete boards board id */
+    /**
+     * Delete a board
+     * @description Deletes the specified board after checking the caller's permission to remove it.
+     */
     delete: operations['deleteBoard'];
     options?: never;
     head?: never;
@@ -359,7 +431,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update boards board id clone */
+    /**
+     * Clone a board
+     * @description Creates a copy of a board with optional changes to its name, description, and configuration. Removes invalid report references from the copy.
+     */
     post: operations['cloneBoard'];
     delete?: never;
     options?: never;
@@ -374,10 +449,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get boards board id shares */
+    /**
+     * List shares for a board
+     * @description Returns a paginated list of shares for the specified board.
+     */
     get: operations['getBoardShares'];
     put?: never;
-    /** Create or update boards board id shares */
+    /**
+     * Create a share for a board
+     * @description Creates a named share for the specified board with optional parameters.
+     */
     post: operations['createBoardShare'];
     delete?: never;
     options?: never;
@@ -392,7 +473,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get config */
+    /**
+     * Get application configuration
+     * @description Returns public application settings, including deployment mode, feature availability, and tracker and resource URLs.
+     */
     get: operations['getConfig'];
     put?: never;
     post?: never;
@@ -409,10 +493,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get dashboard */
+    /**
+     * Get my dashboard
+     * @description Returns the current user's personal dashboard board and its configuration.
+     */
     get: operations['getDashboard'];
     put?: never;
-    /** Create or update dashboard */
+    /**
+     * Save my dashboard
+     * @description Creates or updates the current user's personal dashboard with the supplied name, description, and configuration.
+     */
     post: operations['postDashboard'];
     delete?: never;
     options?: never;
@@ -427,7 +517,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get heartbeat */
+    /**
+     * Check application availability
+     * @description Returns a simple success response to confirm that the application can serve requests.
+     */
     get: operations['getHeartbeat'];
     put?: never;
     post?: never;
@@ -444,10 +537,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get links */
+    /**
+     * List my links
+     * @description Returns a paginated list of the current user's tracked links, with search and sorting options.
+     */
     get: operations['getLinks'];
     put?: never;
-    /** Create or update links */
+    /**
+     * Create a tracked link
+     * @description Creates a tracked link with a name, destination URL, and slug, optionally assigned to a team.
+     */
     post: operations['createLink'];
     delete?: never;
     options?: never;
@@ -462,12 +561,21 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get links link id */
+    /**
+     * Get a tracked link
+     * @description Returns the specified tracked link, including its destination URL and slug.
+     */
     get: operations['getLink'];
     put?: never;
-    /** Create or update links link id */
+    /**
+     * Update a tracked link
+     * @description Updates a tracked link's name, destination URL, or slug.
+     */
     post: operations['updateLink'];
-    /** Delete links link id */
+    /**
+     * Delete a tracked link
+     * @description Deletes the specified tracked link after checking the caller's permission to remove it.
+     */
     delete: operations['deleteLink'];
     options?: never;
     head?: never;
@@ -481,10 +589,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get links link id shares */
+    /**
+     * List shares for a link
+     * @description Returns a paginated list of shares for the specified link.
+     */
     get: operations['getLinkShares'];
     put?: never;
-    /** Create or update links link id shares */
+    /**
+     * Create a share for a link
+     * @description Creates a named share for the specified link with optional parameters.
+     */
     post: operations['createLinkShare'];
     delete?: never;
     options?: never;
@@ -499,7 +613,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get links charts */
+    /**
+     * Get visitor charts for links
+     * @description Returns visitor totals and chart data for the requested links the caller can view, within the selected date range.
+     */
     get: operations['getLinksCharts'];
     put?: never;
     post?: never;
@@ -516,7 +633,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get me */
+    /**
+     * Get my authentication details
+     * @description Returns the current authentication context, including the authenticated user or share credentials.
+     */
     get: operations['getMe'];
     put?: never;
     post?: never;
@@ -533,10 +653,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get me api keys */
+    /**
+     * List my API keys
+     * @description Returns metadata for the current user's API keys. Available on self-hosted installations.
+     */
     get: operations['getMyApiKeys'];
     put?: never;
-    /** Create or update me api keys */
+    /**
+     * Create an API key
+     * @description Creates a named API key for the current user and returns its secret value. Available on self-hosted installations.
+     */
     post: operations['createMyApiKey'];
     delete?: never;
     options?: never;
@@ -554,7 +680,10 @@ export interface paths {
     get?: never;
     put?: never;
     post?: never;
-    /** Delete me api keys key id */
+    /**
+     * Delete an API key
+     * @description Deletes an API key belonging to the current user, revoking its access. Available on self-hosted installations.
+     */
     delete: operations['deleteMyApiKey'];
     options?: never;
     head?: never;
@@ -570,7 +699,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update me password */
+    /**
+     * Change my password
+     * @description Verifies the current password and replaces it with the supplied new password.
+     */
     post: operations['updateMyPassword'];
     delete?: never;
     options?: never;
@@ -585,7 +717,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get me teams */
+    /**
+     * List my team memberships
+     * @description Returns a paginated list of teams the current user belongs to, with sorting options.
+     */
     get: operations['getMyTeams'];
     put?: never;
     post?: never;
@@ -602,7 +737,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get me websites */
+    /**
+     * List my websites
+     * @description Returns a paginated list of the current user's websites, optionally including websites accessible through team membership.
+     */
     get: operations['getMyWebsites'];
     put?: never;
     post?: never;
@@ -620,14 +758,14 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Describe a pending OAuth authorization request
-     * @description Validates an OAuth 2.1 authorization request and returns the client and scopes for the consent screen. Requires an interactive user session.
+     * Get OAuth authorization request details
+     * @description Validates an OAuth authorization request and returns the client and requested permissions for the consent screen. Requires an interactive user session.
      */
     get: operations['describeOAuthAuthorization'];
     put?: never;
     /**
-     * Approve or deny an OAuth authorization request
-     * @description Records the user decision. On approval an authorization code is issued and the redirect URL (with code, state and iss) is returned.
+     * Approve or deny OAuth access
+     * @description Records the user's consent decision and returns a redirect URL. Approval includes an authorization code, the request state, and the issuer.
      */
     post: operations['decideOAuthAuthorization'];
     delete?: never;
@@ -646,8 +784,8 @@ export interface paths {
     get?: never;
     put?: never;
     /**
-     * Register an OAuth client (dynamic client registration)
-     * @description RFC 7591 compatibility endpoint for MCP clients without Client ID Metadata Document support. Registers a public client. Prefer Client ID Metadata Documents (https URL client_id).
+     * Register an OAuth client
+     * @description Registers a public OAuth client for clients that do not support Client ID Metadata Documents. Clients that support them should use an HTTPS metadata URL as their client ID.
      */
     post: operations['oauthRegisterClient'];
     delete?: never;
@@ -667,7 +805,7 @@ export interface paths {
     put?: never;
     /**
      * Revoke an OAuth refresh token
-     * @description RFC 7009 revocation endpoint. Revokes the given refresh token; unknown tokens are accepted silently.
+     * @description Revokes the supplied refresh token. Unknown tokens are accepted without revealing whether they existed.
      */
     post: operations['oauthRevoke'];
     delete?: never;
@@ -686,8 +824,8 @@ export interface paths {
     get?: never;
     put?: never;
     /**
-     * OAuth 2.1 token endpoint
-     * @description Exchanges an authorization code (with PKCE code_verifier) or a refresh token for an access token. Accepts application/x-www-form-urlencoded or JSON. Refresh tokens are rotated on every use.
+     * Get or refresh an OAuth access token
+     * @description Exchanges an authorization code and PKCE verifier, or a refresh token, for an access token. Accepts form-encoded or JSON requests and rotates refresh tokens on use.
      */
     post: operations['oauthToken'];
     delete?: never;
@@ -703,10 +841,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get pixels */
+    /**
+     * List my tracking pixels
+     * @description Returns a paginated list of the current user's tracking pixels, with search and sorting options.
+     */
     get: operations['getPixels'];
     put?: never;
-    /** Create or update pixels */
+    /**
+     * Create a tracking pixel
+     * @description Creates a tracking pixel with a name and slug, optionally assigned to a team.
+     */
     post: operations['createPixel'];
     delete?: never;
     options?: never;
@@ -721,12 +865,21 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get pixels pixel id */
+    /**
+     * Get a tracking pixel
+     * @description Returns the specified tracking pixel and its configuration.
+     */
     get: operations['getPixel'];
     put?: never;
-    /** Create or update pixels pixel id */
+    /**
+     * Update a tracking pixel
+     * @description Updates a tracking pixel's name or slug.
+     */
     post: operations['updatePixel'];
-    /** Delete pixels pixel id */
+    /**
+     * Delete a tracking pixel
+     * @description Deletes the specified tracking pixel after checking the caller's permission to remove it.
+     */
     delete: operations['deletePixel'];
     options?: never;
     head?: never;
@@ -740,10 +893,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get pixels pixel id shares */
+    /**
+     * List shares for a tracking pixel
+     * @description Returns a paginated list of shares for the specified tracking pixel.
+     */
     get: operations['getPixelShares'];
     put?: never;
-    /** Create or update pixels pixel id shares */
+    /**
+     * Create a share for a tracking pixel
+     * @description Creates a named share for the specified tracking pixel with optional parameters.
+     */
     post: operations['createPixelShare'];
     delete?: never;
     options?: never;
@@ -758,7 +917,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get pixels charts */
+    /**
+     * Get visitor charts for tracking pixels
+     * @description Returns visitor totals and chart data for the requested pixels the caller can view, within the selected date range.
+     */
     get: operations['getPixelsCharts'];
     put?: never;
     post?: never;
@@ -775,7 +937,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get realtime website id */
+    /**
+     * Get real-time website activity
+     * @description Returns recent website activity and visitor data for the real-time view, applying the supplied filters.
+     */
     get: operations['getRealtime'];
     put?: never;
     post?: never;
@@ -794,7 +959,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update record */
+    /**
+     * Send session recordings or heatmap data
+     * @description Stores session replay events or heatmap clicks and scrolls for a website, using a valid tracking cache token to identify the session and visit.
+     */
     post: operations['record'];
     delete?: never;
     options?: never;
@@ -809,10 +977,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get reports */
+    /**
+     * List saved reports
+     * @description Returns a paginated list of saved reports for the requested website, optionally filtered by report type.
+     */
     get: operations['getReports'];
     put?: never;
-    /** Create or update reports */
+    /**
+     * Save a report
+     * @description Saves a report's name, description, type, and parameters for a website so it can be opened again later.
+     */
     post: operations['createReport'];
     delete?: never;
     options?: never;
@@ -827,12 +1001,21 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get reports report id */
+    /**
+     * Get a saved report
+     * @description Returns the specified report's saved name, description, type, and parameters.
+     */
     get: operations['getReport'];
     put?: never;
-    /** Create or update reports report id */
+    /**
+     * Update a saved report
+     * @description Updates the specified report's website, name, description, type, and parameters.
+     */
     post: operations['updateReport'];
-    /** Delete reports report id */
+    /**
+     * Delete a saved report
+     * @description Deletes the specified saved report definition.
+     */
     delete: operations['deleteReport'];
     options?: never;
     head?: never;
@@ -848,7 +1031,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update reports attribution */
+    /**
+     * Run an attribution report
+     * @description Calculates how traffic sources contribute to conversions using the supplied attribution settings, date range, and filters.
+     */
     post: operations['runAttributionReport'];
     delete?: never;
     options?: never;
@@ -865,7 +1051,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update reports breakdown */
+    /**
+     * Run a breakdown report
+     * @description Groups website activity by the selected dimensions for the requested date range and filters.
+     */
     post: operations['runBreakdownReport'];
     delete?: never;
     options?: never;
@@ -882,7 +1071,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update reports funnel */
+    /**
+     * Run a funnel report
+     * @description Calculates visitor progression through a sequence of pages or events using the supplied funnel steps and filters.
+     */
     post: operations['runFunnelReport'];
     delete?: never;
     options?: never;
@@ -899,7 +1091,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update reports goal */
+    /**
+     * Run a goal report
+     * @description Counts visitors who reached a matching page or triggered a matching event and returns the total visitor count for comparison.
+     */
     post: operations['runGoalReport'];
     delete?: never;
     options?: never;
@@ -916,7 +1111,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update reports heatmap */
+    /**
+     * Get page heatmap data
+     * @description Returns recorded click or scroll data for the selected page and date range to display as a heatmap.
+     */
     post: operations['runHeatmapReport'];
     delete?: never;
     options?: never;
@@ -933,7 +1131,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update reports journey */
+    /**
+     * Run a visitor journey report
+     * @description Returns paths through pages or events using the supplied journey settings and website filters.
+     */
     post: operations['runJourneyReport'];
     delete?: never;
     options?: never;
@@ -950,7 +1151,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update reports performance */
+    /**
+     * Run a performance report
+     * @description Returns performance trends, summary metrics, and breakdowns by page, page title, device, and browser for the selected website and date range.
+     */
     post: operations['runPerformanceReport'];
     delete?: never;
     options?: never;
@@ -967,7 +1171,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update reports retention */
+    /**
+     * Run a retention report
+     * @description Calculates how groups of visitors return over time using the supplied retention settings, date range, and filters.
+     */
     post: operations['runRetentionReport'];
     delete?: never;
     options?: never;
@@ -984,7 +1191,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update reports revenue */
+    /**
+     * Run a revenue report
+     * @description Returns revenue trends, totals with a comparison period, and breakdowns by country, region, referrer, and channel.
+     */
     post: operations['runRevenueReport'];
     delete?: never;
     options?: never;
@@ -1001,7 +1211,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update reports utm */
+    /**
+     * Run a campaign report
+     * @description Returns traffic breakdowns for UTM source, medium, campaign, term, and content using the supplied date range and filters.
+     */
     post: operations['runUtmReport'];
     delete?: never;
     options?: never;
@@ -1016,7 +1229,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get scripts telemetry */
+    /**
+     * Get the installation telemetry script
+     * @description Returns JavaScript that sends the application version through a telemetry pixel, or an inactive script when telemetry is disabled.
+     */
     get: operations['getScriptsTelemetry'];
     put?: never;
     post?: never;
@@ -1035,7 +1251,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update send */
+    /**
+     * Send tracking data
+     * @description Collects a pageview, custom event, visitor identification, or performance payload and returns session information and a tracking cache token when accepted.
+     */
     post: operations['send'];
     delete?: never;
     options?: never;
@@ -1052,7 +1271,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update share */
+    /**
+     * Create a share
+     * @description Creates a named share for a website, board, link, or pixel with parameters and an optional custom slug.
+     */
     post: operations['createShare'];
     delete?: never;
     options?: never;
@@ -1067,7 +1289,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get share slug */
+    /**
+     * Open a share by its slug
+     * @description Resolves a public share slug and returns its resource references, parameters, and an access token scoped to the shared resources.
+     */
     get: operations['getShareBySlug'];
     put?: never;
     post?: never;
@@ -1084,12 +1309,21 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get share id share id */
+    /**
+     * Get a share
+     * @description Returns a share's configuration by its ID after checking access to the shared resource.
+     */
     get: operations['getShare'];
     put?: never;
-    /** Create or update share id share id */
+    /**
+     * Update a share
+     * @description Updates the specified share's name, slug, and parameters.
+     */
     post: operations['updateShare'];
-    /** Delete share id share id */
+    /**
+     * Delete a share
+     * @description Deletes the specified share after checking permission to delete shares for its resource.
+     */
     delete: operations['deleteShare'];
     options?: never;
     head?: never;
@@ -1103,10 +1337,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get teams */
+    /**
+     * List my teams
+     * @description Returns a paginated list of teams the current user belongs to, with sorting options.
+     */
     get: operations['getTeams'];
     put?: never;
-    /** Create or update teams */
+    /**
+     * Create a team
+     * @description Creates a team with an access code and an owner. Administrators can specify a different user as the owner.
+     */
     post: operations['createTeam'];
     delete?: never;
     options?: never;
@@ -1121,12 +1361,21 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get teams team id */
+    /**
+     * Get a team
+     * @description Returns the specified team's details, including its members.
+     */
     get: operations['getTeam'];
     put?: never;
-    /** Create or update teams team id */
+    /**
+     * Update a team
+     * @description Updates the specified team's name or access code.
+     */
     post: operations['updateTeam'];
-    /** Delete teams team id */
+    /**
+     * Delete a team
+     * @description Deletes the specified team after checking the caller's permission to remove it.
+     */
     delete: operations['deleteTeam'];
     options?: never;
     head?: never;
@@ -1140,7 +1389,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get teams team id boards */
+    /**
+     * List a team's boards
+     * @description Returns a paginated list of boards belonging to the specified team, with search and sorting options.
+     */
     get: operations['getTeamBoards'];
     put?: never;
     post?: never;
@@ -1157,7 +1409,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get teams team id links */
+    /**
+     * List a team's links
+     * @description Returns a paginated list of tracked links belonging to the specified team, with search and sorting options.
+     */
     get: operations['getTeamLinks'];
     put?: never;
     post?: never;
@@ -1174,7 +1429,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get teams team id pixels */
+    /**
+     * List a team's tracking pixels
+     * @description Returns a paginated list of tracking pixels belonging to the specified team, with search and sorting options.
+     */
     get: operations['getTeamPixels'];
     put?: never;
     post?: never;
@@ -1191,10 +1449,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get teams team id users */
+    /**
+     * List team members
+     * @description Returns a paginated list of members of the specified team, including usernames and membership details.
+     */
     get: operations['getTeamUsers'];
     put?: never;
-    /** Create or update teams team id users */
+    /**
+     * Add a team member
+     * @description Adds an existing user to the specified team with the supplied team role.
+     */
     post: operations['createTeamUser'];
     delete?: never;
     options?: never;
@@ -1209,12 +1473,21 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get teams team id users user id */
+    /**
+     * Get a team member
+     * @description Returns the specified user's membership details for a team.
+     */
     get: operations['getTeamUser'];
     put?: never;
-    /** Create or update teams team id users user id */
+    /**
+     * Change a team member's role
+     * @description Updates a user's role in the specified team, subject to the caller's role and permissions.
+     */
     post: operations['updateTeamUser'];
-    /** Delete teams team id users user id */
+    /**
+     * Remove a team member
+     * @description Removes a user's membership from the specified team, subject to team role and ownership restrictions.
+     */
     delete: operations['deleteTeamUser'];
     options?: never;
     head?: never;
@@ -1228,7 +1501,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get teams team id websites */
+    /**
+     * List a team's websites
+     * @description Returns a paginated list of websites belonging to the specified team, with search and sorting options.
+     */
     get: operations['getTeamWebsites'];
     put?: never;
     post?: never;
@@ -1247,7 +1523,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update teams join */
+    /**
+     * Join a team
+     * @description Adds the current user to a team as a member using the team's access code.
+     */
     post: operations['joinTeam'];
     delete?: never;
     options?: never;
@@ -1264,7 +1543,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update users */
+    /**
+     * Create a user
+     * @description Creates a user account with the supplied username, password, and role.
+     */
     post: operations['createUser'];
     delete?: never;
     options?: never;
@@ -1279,12 +1561,21 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get users user id */
+    /**
+     * Get a user
+     * @description Returns details for the specified user account when the caller has permission to view it.
+     */
     get: operations['getUser'];
     put?: never;
-    /** Create or update users user id */
+    /**
+     * Update a user
+     * @description Updates a user's password. Administrators can also change the username and role.
+     */
     post: operations['updateUser'];
-    /** Delete users user id */
+    /**
+     * Delete a user
+     * @description Deletes the specified user account. The current user cannot delete their own account through this operation.
+     */
     delete: operations['deleteUser'];
     options?: never;
     head?: never;
@@ -1298,7 +1589,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get users user id teams */
+    /**
+     * List a user's teams
+     * @description Returns a paginated list of teams for the specified user. Available to that user and administrators.
+     */
     get: operations['getUserTeams'];
     put?: never;
     post?: never;
@@ -1315,7 +1609,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get users user id websites */
+    /**
+     * List a user's websites
+     * @description Returns a paginated list of the specified user's websites, optionally including team access. Available to that user and administrators.
+     */
     get: operations['getUserWebsites'];
     put?: never;
     post?: never;
@@ -1334,11 +1631,14 @@ export interface paths {
     };
     /**
      * List websites
-     * @description Returns websites owned by the authenticated user.
+     * @description Returns a paginated list of the current user's websites, optionally including websites accessible through team membership.
      */
     get: operations['listWebsites'];
     put?: never;
-    /** Create a website */
+    /**
+     * Create a website
+     * @description Creates a website with a name and domain, optionally assigning it to a team and creating a share.
+     */
     post: operations['createWebsite'];
     delete?: never;
     options?: never;
@@ -1353,12 +1653,21 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get a website */
+    /**
+     * Get a website
+     * @description Returns the specified website's details and configuration.
+     */
     get: operations['getWebsite'];
     put?: never;
-    /** Update a website */
+    /**
+     * Update a website
+     * @description Updates a website's name, domain, sharing settings, or recording configuration.
+     */
     post: operations['updateWebsite'];
-    /** Delete a website */
+    /**
+     * Delete a website
+     * @description Deletes the specified website after checking the caller's permission to remove it.
+     */
     delete: operations['deleteWebsite'];
     options?: never;
     head?: never;
@@ -1373,7 +1682,7 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get current active visitors
+     * Get active website visitors
      * @description Returns the number of visitors active on the website in the last few minutes.
      */
     get: operations['getWebsiteActive'];
@@ -1392,10 +1701,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id annotations */
+    /**
+     * List website annotations
+     * @description Returns a paginated list of dated notes for the website, optionally filtered by date range or search text.
+     */
     get: operations['getWebsiteAnnotations'];
     put?: never;
-    /** Create or update websites website id annotations */
+    /**
+     * Create a website annotation
+     * @description Adds a dated note to the website, optionally marking it as an all-day annotation.
+     */
     post: operations['createWebsiteAnnotation'];
     delete?: never;
     options?: never;
@@ -1410,12 +1725,21 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id annotations annotation id */
+    /**
+     * Get a website annotation
+     * @description Returns the date, all-day setting, and note for a specific website annotation.
+     */
     get: operations['getWebsiteAnnotation'];
     put?: never;
-    /** Create or update websites website id annotations annotation id */
+    /**
+     * Update a website annotation
+     * @description Changes the date, all-day setting, and note for a website annotation.
+     */
     post: operations['updateWebsiteAnnotation'];
-    /** Delete websites website id annotations annotation id */
+    /**
+     * Delete a website annotation
+     * @description Deletes the specified dated note from the website.
+     */
     delete: operations['deleteWebsiteAnnotation'];
     options?: never;
     head?: never;
@@ -1429,7 +1753,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id daterange */
+    /**
+     * Get the website's available date range
+     * @description Returns the earliest and latest recorded event dates for the website.
+     */
     get: operations['getWebsiteDateRange'];
     put?: never;
     post?: never;
@@ -1446,7 +1773,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id event data */
+    /**
+     * List events with custom properties
+     * @description Returns a page of events in the selected date range, grouping each event's custom property records together.
+     */
     get: operations['getEventData'];
     put?: never;
     post?: never;
@@ -1463,7 +1793,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id event data pivot */
+    /**
+     * List event properties in table form
+     * @description Returns a page of occurrences of the specified event, with event details and property keys and values grouped into one row per occurrence.
+     */
     get: operations['getEventDataPivot'];
     put?: never;
     post?: never;
@@ -1480,7 +1813,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id event data pivot array series */
+    /**
+     * Get event array values over time
+     * @description Counts individual values in an array property for the specified event, grouped by value and time interval.
+     */
     get: operations['getEventDataArraySeries'];
     put?: never;
     post?: never;
@@ -1497,7 +1833,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id event data pivot date series */
+    /**
+     * Get the distribution of event date values
+     * @description Counts occurrences of dates stored in the specified event property, grouping by the property's date value within the selected event date range.
+     */
     get: operations['getEventDataDateSeries'];
     put?: never;
     post?: never;
@@ -1514,7 +1853,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id event data pivot numeric series */
+    /**
+     * Get numeric event properties over time
+     * @description Returns the sum, average, or count of a numeric property for the specified event, grouped by time interval.
+     */
     get: operations['getEventDataNumericSeries'];
     put?: never;
     post?: never;
@@ -1531,7 +1873,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id event data pivot numeric stats */
+    /**
+     * Get numeric event property statistics
+     * @description Returns the total, average, median, minimum, and maximum of the specified numeric event property for the selected date range and filters.
+     */
     get: operations['getEventDataNumericStats'];
     put?: never;
     post?: never;
@@ -1548,7 +1893,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id event data pivot property series */
+    /**
+     * Get event property values over time
+     * @description Counts occurrences of string values in the specified event property, grouped by value and time interval.
+     */
     get: operations['getEventDataPropertySeries'];
     put?: never;
     post?: never;
@@ -1565,7 +1913,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id event data event id */
+    /**
+     * Get an event's custom properties
+     * @description Returns the custom property records, data types, and values attached to a specific event.
+     */
     get: operations['getEventDataById'];
     put?: never;
     post?: never;
@@ -1582,7 +1933,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id event data events */
+    /**
+     * Summarize properties by event
+     * @description Returns property names, types, and counts grouped by event name. When an event is specified, also groups by property value.
+     */
     get: operations['getEventDataEvents'];
     put?: never;
     post?: never;
@@ -1599,7 +1953,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id event data fields */
+    /**
+     * List event property fields
+     * @description Returns property names, data types, and counts for the selected date range, optionally restricted to an event name.
+     */
     get: operations['getEventDataFields'];
     put?: never;
     post?: never;
@@ -1616,7 +1973,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id event data properties */
+    /**
+     * List event property usage
+     * @description Returns event names and their custom property names, data types, and record counts for the selected date range and filters.
+     */
     get: operations['getEventDataProperties'];
     put?: never;
     post?: never;
@@ -1633,7 +1993,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id event data stats */
+    /**
+     * Get event property totals
+     * @description Returns counts of events with custom data, distinct property names, and property records for the selected date range and filters.
+     */
     get: operations['getEventDataStats'];
     put?: never;
     post?: never;
@@ -1650,7 +2013,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id event data values */
+    /**
+     * List event property values
+     * @description Returns values and their occurrence counts for a custom event property, optionally restricted by event name and data type.
+     */
     get: operations['getEventDataValues'];
     put?: never;
     post?: never;
@@ -1669,7 +2035,7 @@ export interface paths {
     };
     /**
      * List tracked events
-     * @description Returns a page of pageviews and custom events in the date range, newest first. Filter with `event` for a specific event name or `search` for free text.
+     * @description Returns a page of pageviews and custom events in the date range, newest first. Supports filtering by event name and searching event details.
      */
     get: operations['getWebsiteEvents'];
     put?: never;
@@ -1687,7 +2053,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id events series */
+    /**
+     * Get custom event counts over time
+     * @description Returns counts grouped by event name and time interval, optionally limited to the most frequent event names.
+     */
     get: operations['getWebsiteEventSeries'];
     put?: never;
     post?: never;
@@ -1704,7 +2073,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id events stats */
+    /**
+     * Get website event statistics
+     * @description Returns website event totals for the selected date range and filters, including totals for the comparison period.
+     */
     get: operations['getWebsiteEventStats'];
     put?: never;
     post?: never;
@@ -1721,7 +2093,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id export */
+    /**
+     * Export website analytics
+     * @description Returns a base64-encoded ZIP archive containing CSV exports of events, pages, referrers, browsers, operating systems, devices, and countries.
+     */
     get: operations['exportWebsite'];
     put?: never;
     post?: never;
@@ -1739,8 +2114,8 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get ranked metrics for a dimension
-     * @description Returns the top values for one dimension (`type`), such as pages, referrers, countries, browsers, UTM parameters or events, ordered by count. Page-type dimensions count views/events; visitor dimensions count unique visitors.
+     * Get ranked website metrics
+     * @description Returns the most frequent values for a dimension such as pages, referrers, countries, browsers, campaigns, or events. Counts pageviews or events for activity dimensions and unique visitors for visitor dimensions.
      */
     get: operations['getWebsiteMetrics'];
     put?: never;
@@ -1758,7 +2133,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id metrics expanded */
+    /**
+     * Get detailed website metrics
+     * @description Returns additional analytics for the selected page, event, visitor, or channel dimension, using the supplied date range and filters.
+     */
     get: operations['getWebsiteExpandedMetrics'];
     put?: never;
     post?: never;
@@ -1776,8 +2154,8 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get pageview and session time series
-     * @description Returns pageviews and sessions bucketed by `unit` (minute, hour, day, month, year) in the given `timezone`. When `compare` is set the comparison period is included.
+     * Get pageviews and sessions over time
+     * @description Returns pageviews and sessions grouped by the requested time interval and timezone, including a comparison period when requested.
      */
     get: operations['getWebsitePageviews'];
     put?: never;
@@ -1795,7 +2173,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id recorder */
+    /**
+     * Get website recording settings
+     * @description Returns public replay and heatmap settings, including sampling, masking, and duration limits. Returns disabled status when recording is unavailable.
+     */
     get: operations['getWebsiteRecorderConfig'];
     put?: never;
     post?: never;
@@ -1812,7 +2193,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id replays */
+    /**
+     * List website session replays
+     * @description Returns a paginated list of recorded sessions for the website, applying date, replay, and search filters.
+     */
     get: operations['getWebsiteReplays'];
     put?: never;
     post?: never;
@@ -1829,7 +2213,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id replays replay id */
+    /**
+     * Get a session replay recording
+     * @description Returns the merged recording events, session details, and event and chunk counts for a replay, with optional stopping points by timestamp, chunk, or event index.
+     */
     get: operations['getWebsiteReplay'];
     put?: never;
     post?: never;
@@ -1846,7 +2233,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id replays saved */
+    /**
+     * List saved session replays
+     * @description Returns a paginated, searchable list of replays saved for the website.
+     */
     get: operations['getWebsiteSavedReplays'];
     put?: never;
     post?: never;
@@ -1863,10 +2253,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id replays saved replay id */
+    /**
+     * Check whether a replay is saved
+     * @description Returns whether the specified replay is in the website's saved replays.
+     */
     get: operations['getWebsiteReplaySaved'];
     put?: never;
-    /** Create or update websites website id replays saved replay id */
+    /**
+     * Save or unsave a session replay
+     * @description Adds a replay to the website's saved replays with an optional name, or removes it when isSaved is false.
+     */
     post: operations['saveWebsiteReplay'];
     delete?: never;
     options?: never;
@@ -1881,7 +2277,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id reports */
+    /**
+     * List a website's saved reports
+     * @description Returns a paginated list of saved report definitions for the website, optionally filtered by report type.
+     */
     get: operations['getWebsiteReports'];
     put?: never;
     post?: never;
@@ -1900,7 +2299,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update websites website id reset */
+    /**
+     * Reset website analytics
+     * @description Clears the website's collected analytics data while keeping the website configuration.
+     */
     post: operations['resetWebsite'];
     delete?: never;
     options?: never;
@@ -1915,7 +2317,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id revenue chart */
+    /**
+     * Get website revenue over time
+     * @description Returns revenue chart data for the selected currency, date range, and website filters.
+     */
     get: operations['getWebsiteRevenueChart'];
     put?: never;
     post?: never;
@@ -1932,7 +2337,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id revenue metrics */
+    /**
+     * Get website revenue by dimension
+     * @description Returns revenue grouped by the requested dimension, such as country or referrer, for the selected currency and date range.
+     */
     get: operations['getWebsiteRevenueMetrics'];
     put?: never;
     post?: never;
@@ -1949,7 +2357,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id revenue sessions */
+    /**
+     * List sessions with revenue
+     * @description Returns a paginated list of sessions with revenue in the selected currency and date range, applying website and search filters.
+     */
     get: operations['getWebsiteRevenueSessions'];
     put?: never;
     post?: never;
@@ -1966,7 +2377,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id revenue stats */
+    /**
+     * Get website revenue totals
+     * @description Returns revenue summary statistics for the selected currency and date range, including totals for the comparison period.
+     */
     get: operations['getWebsiteRevenueStats'];
     put?: never;
     post?: never;
@@ -1983,10 +2397,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id segments */
+    /**
+     * List website segments and cohorts
+     * @description Returns saved segments or cohorts for the website, filtered by the requested type and search text.
+     */
     get: operations['getWebsiteSegments'];
     put?: never;
-    /** Create or update websites website id segments */
+    /**
+     * Create a website segment or cohort
+     * @description Saves a named segment or cohort with its type and filter parameters for the website.
+     */
     post: operations['createWebsiteSegment'];
     delete?: never;
     options?: never;
@@ -2001,12 +2421,21 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id segments segment id */
+    /**
+     * Get a website segment or cohort
+     * @description Returns a saved segment or cohort and its filter parameters for the website.
+     */
     get: operations['getWebsiteSegment'];
     put?: never;
-    /** Create or update websites website id segments segment id */
+    /**
+     * Update a website segment or cohort
+     * @description Updates a saved segment or cohort's type, name, and filter parameters.
+     */
     post: operations['updateWebsiteSegment'];
-    /** Delete websites website id segments segment id */
+    /**
+     * Delete a website segment or cohort
+     * @description Deletes the specified saved segment or cohort from the website.
+     */
     delete: operations['deleteWebsiteSegment'];
     options?: never;
     head?: never;
@@ -2020,7 +2449,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id session data pivot */
+    /**
+     * List session properties in table form
+     * @description Returns a page of sessions matching the selected property and filters, with the latest property keys and values grouped into one row per session.
+     */
     get: operations['getSessionDataPivot'];
     put?: never;
     post?: never;
@@ -2037,7 +2469,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id session data array series */
+    /**
+     * Get session array values over time
+     * @description Counts distinct sessions for individual values in an array property, grouped by value and time interval.
+     */
     get: operations['getSessionDataArraySeries'];
     put?: never;
     post?: never;
@@ -2054,7 +2489,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id session data date series */
+    /**
+     * Get the distribution of session date values
+     * @description Counts distinct sessions by dates stored in the specified custom property, using the selected date range and filters.
+     */
     get: operations['getSessionDataDateSeries'];
     put?: never;
     post?: never;
@@ -2071,7 +2509,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id session data numeric series */
+    /**
+     * Get numeric session properties over time
+     * @description Returns the sum, average, or count of a numeric session property, grouped by time interval for the selected date range and filters.
+     */
     get: operations['getSessionDataNumericSeries'];
     put?: never;
     post?: never;
@@ -2088,7 +2529,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id session data numeric stats */
+    /**
+     * Get numeric session property statistics
+     * @description Returns the total, average, median, minimum, and maximum of the specified numeric session property for the selected date range and filters.
+     */
     get: operations['getSessionDataNumericStats'];
     put?: never;
     post?: never;
@@ -2105,7 +2549,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id session data properties */
+    /**
+     * List session property usage
+     * @description Returns custom session property names, data types, and distinct session counts, optionally restricted to sessions with a selected property.
+     */
     get: operations['getSessionDataProperties'];
     put?: never;
     post?: never;
@@ -2122,7 +2569,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id session data property series */
+    /**
+     * Get session property values over time
+     * @description Counts distinct sessions for string values in a custom property, grouped by value and time interval.
+     */
     get: operations['getSessionDataPropertySeries'];
     put?: never;
     post?: never;
@@ -2139,7 +2589,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id session data stats */
+    /**
+     * Get activity by session property
+     * @description Returns session, visit, pageview, event, and total activity counts grouped by values of the specified session property.
+     */
     get: operations['getSessionDataStats'];
     put?: never;
     post?: never;
@@ -2156,7 +2609,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id session data values */
+    /**
+     * List session property values
+     * @description Returns custom session property values and their occurrence counts, optionally filtered by property name and data type.
+     */
     get: operations['getSessionDataValues'];
     put?: never;
     post?: never;
@@ -2175,7 +2631,7 @@ export interface paths {
     };
     /**
      * List visitor sessions
-     * @description Returns a page of visitor sessions in the date range, newest first. `search` matches distinct ID, city, browser, OS or device.
+     * @description Returns a page of visitor sessions in the date range, newest first. Search matches distinct ID, city, browser, operating system, or device.
      */
     get: operations['getWebsiteSessions'];
     put?: never;
@@ -2193,11 +2649,17 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id sessions session id */
+    /**
+     * Get a visitor session
+     * @description Returns details for a website session, including linked visitor identities and whether session deletion is available to the caller.
+     */
     get: operations['getWebsiteSession'];
     put?: never;
     post?: never;
-    /** Delete websites website id sessions session id */
+    /**
+     * Delete a visitor session
+     * @description Deletes the specified session and its associated analytics data. Available on installations using only a relational database.
+     */
     delete: operations['deleteWebsiteSession'];
     options?: never;
     head?: never;
@@ -2211,7 +2673,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id sessions session id activity */
+    /**
+     * Get a visitor's session activity
+     * @description Returns activity for the specified session and sessions linked by visitor identity, using the requested date range and optional distinct ID.
+     */
     get: operations['getWebsiteSessionActivity'];
     put?: never;
     post?: never;
@@ -2228,7 +2693,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id sessions session id properties */
+    /**
+     * Get a session's custom properties
+     * @description Returns custom property records, data types, and values for the specified website session.
+     */
     get: operations['getWebsiteSessionProperties'];
     put?: never;
     post?: never;
@@ -2245,7 +2713,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id sessions session id replays */
+    /**
+     * List a visitor's session replays
+     * @description Returns a paginated, searchable list of recordings for the specified website session.
+     */
     get: operations['getWebsiteSessionReplays'];
     put?: never;
     post?: never;
@@ -2262,7 +2733,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id sessions stats */
+    /**
+     * Get visitor session statistics
+     * @description Returns aggregate session metrics for the website over the selected date range and filters.
+     */
     get: operations['getWebsiteSessionStats'];
     put?: never;
     post?: never;
@@ -2279,7 +2753,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id sessions weekly */
+    /**
+     * Get traffic by weekday and hour
+     * @description Returns distinct visitor counts grouped by day of the week and hour in the selected timezone and date range.
+     */
     get: operations['getWebsiteSessionsWeekly'];
     put?: never;
     post?: never;
@@ -2296,10 +2773,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id shares */
+    /**
+     * List shares for a website
+     * @description Returns a paginated list of shares for the specified website.
+     */
     get: operations['getWebsiteShares'];
     put?: never;
-    /** Create or update websites website id shares */
+    /**
+     * Create a share for a website
+     * @description Creates a named share for the specified website with optional parameters.
+     */
     post: operations['createWebsiteShare'];
     delete?: never;
     options?: never;
@@ -2315,8 +2798,8 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Get website summary stats
-     * @description Returns pageviews, unique visitors, visits, bounces and total time on site for the date range, plus the same totals for the comparison period (`compare`: prev or yoy).
+     * Get website summary statistics
+     * @description Returns pageviews, unique visitors, visits, bounces, and total time on site for the selected date range and comparison period.
      */
     get: operations['getWebsiteStats'];
     put?: never;
@@ -2336,7 +2819,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Create or update websites website id transfer */
+    /**
+     * Transfer website ownership
+     * @description Transfers the specified website to another user or team after checking permission for the destination.
+     */
     post: operations['transferWebsite'];
     delete?: never;
     options?: never;
@@ -2351,7 +2837,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites website id values */
+    /**
+     * List website filter values
+     * @description Returns available values for a website filter, including saved segments or cohorts when requested, to populate filter choices.
+     */
     get: operations['getWebsiteValues'];
     put?: never;
     post?: never;
@@ -2368,7 +2857,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get websites charts */
+    /**
+     * Get visitor charts for websites
+     * @description Returns visitor totals and chart data for the requested websites the caller can view, within the selected date range.
+     */
     get: operations['getWebsitesCharts'];
     put?: never;
     post?: never;

@@ -2715,7 +2715,8 @@ export abstract class GeneratedUmamiClient {
   ): Promise<OperationOutput<K>>;
 
   /**
-   * Create or update batch
+   * Send a batch of tracking requests
+   * Processes up to 500 tracking payloads and returns processed and failed counts, individual error details, and a tracking cache token.
    * `POST /api/batch`
    */
   batch(
@@ -2726,7 +2727,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update 2fa setup cancel
+   * Cancel two-factor authentication setup
+   * Deletes the current user's pending setup without changing an already enabled authenticator.
    * `POST /api/2fa/setup/cancel`
    */
   cancelTwoFactorSetup(
@@ -2737,7 +2739,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update boards board id clone
+   * Clone a board
+   * Creates a copy of a board with optional changes to its name, description, and configuration. Removes invalid report references from the copy.
    * `POST /api/boards/{boardId}/clone`
    */
   cloneBoard(
@@ -2748,7 +2751,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update 2fa setup confirm
+   * Confirm two-factor authentication setup
+   * Verifies an authenticator code, enables two-factor authentication, and returns a new set of backup codes.
    * `POST /api/2fa/setup/confirm`
    */
   confirmTwoFactorSetup(
@@ -2759,7 +2763,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update boards
+   * Create a board
+   * Creates a board with a name, type, and configuration, optionally assigned to a team. Validates access to its referenced resources and reports.
    * `POST /api/boards`
    */
   createBoard(
@@ -2770,7 +2775,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update boards board id shares
+   * Create a share for a board
+   * Creates a named share for the specified board with optional parameters.
    * `POST /api/boards/{boardId}/shares`
    */
   createBoardShare(
@@ -2781,7 +2787,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update links
+   * Create a tracked link
+   * Creates a tracked link with a name, destination URL, and slug, optionally assigned to a team.
    * `POST /api/links`
    */
   createLink(
@@ -2792,7 +2799,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update links link id shares
+   * Create a share for a link
+   * Creates a named share for the specified link with optional parameters.
    * `POST /api/links/{linkId}/shares`
    */
   createLinkShare(
@@ -2803,7 +2811,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update me api keys
+   * Create an API key
+   * Creates a named API key for the current user and returns its secret value. Available on self-hosted installations.
    * `POST /api/me/api-keys`
    */
   createMyApiKey(
@@ -2814,7 +2823,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update pixels
+   * Create a tracking pixel
+   * Creates a tracking pixel with a name and slug, optionally assigned to a team.
    * `POST /api/pixels`
    */
   createPixel(
@@ -2825,7 +2835,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update pixels pixel id shares
+   * Create a share for a tracking pixel
+   * Creates a named share for the specified tracking pixel with optional parameters.
    * `POST /api/pixels/{pixelId}/shares`
    */
   createPixelShare(
@@ -2836,7 +2847,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update reports
+   * Save a report
+   * Saves a report's name, description, type, and parameters for a website so it can be opened again later.
    * `POST /api/reports`
    */
   createReport(
@@ -2847,7 +2859,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update share
+   * Create a share
+   * Creates a named share for a website, board, link, or pixel with parameters and an optional custom slug.
    * `POST /api/share`
    */
   createShare(
@@ -2858,7 +2871,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update teams
+   * Create a team
+   * Creates a team with an access code and an owner. Administrators can specify a different user as the owner.
    * `POST /api/teams`
    */
   createTeam(
@@ -2869,7 +2883,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update teams team id users
+   * Add a team member
+   * Adds an existing user to the specified team with the supplied team role.
    * `POST /api/teams/{teamId}/users`
    */
   createTeamUser(
@@ -2880,7 +2895,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update users
+   * Create a user
+   * Creates a user account with the supplied username, password, and role.
    * `POST /api/users`
    */
   createUser(
@@ -2892,6 +2908,7 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Create a website
+   * Creates a website with a name and domain, optionally assigning it to a team and creating a share.
    * `POST /api/websites`
    */
   createWebsite(
@@ -2902,7 +2919,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update websites website id annotations
+   * Create a website annotation
+   * Adds a dated note to the website, optionally marking it as an all-day annotation.
    * `POST /api/websites/{websiteId}/annotations`
    */
   createWebsiteAnnotation(
@@ -2913,7 +2931,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update websites website id segments
+   * Create a website segment or cohort
+   * Saves a named segment or cohort with its type and filter parameters for the website.
    * `POST /api/websites/{websiteId}/segments`
    */
   createWebsiteSegment(
@@ -2924,7 +2943,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update websites website id shares
+   * Create a share for a website
+   * Creates a named share for the specified website with optional parameters.
    * `POST /api/websites/{websiteId}/shares`
    */
   createWebsiteShare(
@@ -2935,7 +2955,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Delete boards board id
+   * Delete a board
+   * Deletes the specified board after checking the caller's permission to remove it.
    * `DELETE /api/boards/{boardId}`
    */
   deleteBoard(
@@ -2946,7 +2967,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Delete links link id
+   * Delete a tracked link
+   * Deletes the specified tracked link after checking the caller's permission to remove it.
    * `DELETE /api/links/{linkId}`
    */
   deleteLink(
@@ -2957,7 +2979,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Delete me api keys key id
+   * Delete an API key
+   * Deletes an API key belonging to the current user, revoking its access. Available on self-hosted installations.
    * `DELETE /api/me/api-keys/{keyId}`
    */
   deleteMyApiKey(
@@ -2968,7 +2991,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Delete pixels pixel id
+   * Delete a tracking pixel
+   * Deletes the specified tracking pixel after checking the caller's permission to remove it.
    * `DELETE /api/pixels/{pixelId}`
    */
   deletePixel(
@@ -2979,7 +3003,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Delete reports report id
+   * Delete a saved report
+   * Deletes the specified saved report definition.
    * `DELETE /api/reports/{reportId}`
    */
   deleteReport(
@@ -2990,7 +3015,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Delete share id share id
+   * Delete a share
+   * Deletes the specified share after checking permission to delete shares for its resource.
    * `DELETE /api/share/id/{shareId}`
    */
   deleteShare(
@@ -3001,7 +3027,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Delete teams team id
+   * Delete a team
+   * Deletes the specified team after checking the caller's permission to remove it.
    * `DELETE /api/teams/{teamId}`
    */
   deleteTeam(
@@ -3012,7 +3039,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Delete teams team id users user id
+   * Remove a team member
+   * Removes a user's membership from the specified team, subject to team role and ownership restrictions.
    * `DELETE /api/teams/{teamId}/users/{userId}`
    */
   deleteTeamUser(
@@ -3023,7 +3051,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Delete users user id
+   * Delete a user
+   * Deletes the specified user account. The current user cannot delete their own account through this operation.
    * `DELETE /api/users/{userId}`
    */
   deleteUser(
@@ -3035,6 +3064,7 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Delete a website
+   * Deletes the specified website after checking the caller's permission to remove it.
    * `DELETE /api/websites/{websiteId}`
    */
   deleteWebsite(
@@ -3045,7 +3075,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Delete websites website id annotations annotation id
+   * Delete a website annotation
+   * Deletes the specified dated note from the website.
    * `DELETE /api/websites/{websiteId}/annotations/{annotationId}`
    */
   deleteWebsiteAnnotation(
@@ -3056,7 +3087,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Delete websites website id segments segment id
+   * Delete a website segment or cohort
+   * Deletes the specified saved segment or cohort from the website.
    * `DELETE /api/websites/{websiteId}/segments/{segmentId}`
    */
   deleteWebsiteSegment(
@@ -3067,7 +3099,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Delete websites website id sessions session id
+   * Delete a visitor session
+   * Deletes the specified session and its associated analytics data. Available on installations using only a relational database.
    * `DELETE /api/websites/{websiteId}/sessions/{sessionId}`
    */
   deleteWebsiteSession(
@@ -3078,7 +3111,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update 2fa disable
+   * Disable two-factor authentication
+   * Disables two-factor authentication for the current user after verifying their password and authenticator code. Rejected when an administrator or team requires it.
    * `POST /api/2fa/disable`
    */
   disableTwoFactor(
@@ -3089,7 +3123,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id export
+   * Export website analytics
+   * Returns a base64-encoded ZIP archive containing CSV exports of events, pages, referrers, browsers, operating systems, devices, and countries.
    * `GET /api/websites/{websiteId}/export`
    */
   exportWebsite(
@@ -3100,7 +3135,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get boards board id
+   * Get a board
+   * Returns the specified board and its configuration.
    * `GET /api/boards/{boardId}`
    */
   getBoard(
@@ -3111,7 +3147,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get boards
+   * List my boards
+   * Returns a paginated list of the current user's boards, with search and sorting options.
    * `GET /api/boards`
    */
   getBoards(
@@ -3122,7 +3159,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get boards board id shares
+   * List shares for a board
+   * Returns a paginated list of shares for the specified board.
    * `GET /api/boards/{boardId}/shares`
    */
   getBoardShares(
@@ -3133,7 +3171,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id event data
+   * List events with custom properties
+   * Returns a page of events in the selected date range, grouping each event's custom property records together.
    * `GET /api/websites/{websiteId}/event-data`
    * OAuth scope: `analytics:read`
    */
@@ -3145,7 +3184,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id event data pivot array series
+   * Get event array values over time
+   * Counts individual values in an array property for the specified event, grouped by value and time interval.
    * `GET /api/websites/{websiteId}/event-data-pivot/array-series`
    */
   getEventDataArraySeries(
@@ -3156,7 +3196,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id event data event id
+   * Get an event's custom properties
+   * Returns the custom property records, data types, and values attached to a specific event.
    * `GET /api/websites/{websiteId}/event-data/{eventId}`
    */
   getEventDataById(
@@ -3167,7 +3208,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id event data pivot date series
+   * Get the distribution of event date values
+   * Counts occurrences of dates stored in the specified event property, grouping by the property's date value within the selected event date range.
    * `GET /api/websites/{websiteId}/event-data-pivot/date-series`
    */
   getEventDataDateSeries(
@@ -3178,7 +3220,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id event data events
+   * Summarize properties by event
+   * Returns property names, types, and counts grouped by event name. When an event is specified, also groups by property value.
    * `GET /api/websites/{websiteId}/event-data/events`
    */
   getEventDataEvents(
@@ -3189,7 +3232,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id event data fields
+   * List event property fields
+   * Returns property names, data types, and counts for the selected date range, optionally restricted to an event name.
    * `GET /api/websites/{websiteId}/event-data/fields`
    */
   getEventDataFields(
@@ -3200,7 +3244,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id event data pivot numeric series
+   * Get numeric event properties over time
+   * Returns the sum, average, or count of a numeric property for the specified event, grouped by time interval.
    * `GET /api/websites/{websiteId}/event-data-pivot/numeric-series`
    */
   getEventDataNumericSeries(
@@ -3211,7 +3256,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id event data pivot numeric stats
+   * Get numeric event property statistics
+   * Returns the total, average, median, minimum, and maximum of the specified numeric event property for the selected date range and filters.
    * `GET /api/websites/{websiteId}/event-data-pivot/numeric-stats`
    */
   getEventDataNumericStats(
@@ -3222,7 +3268,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id event data pivot
+   * List event properties in table form
+   * Returns a page of occurrences of the specified event, with event details and property keys and values grouped into one row per occurrence.
    * `GET /api/websites/{websiteId}/event-data-pivot`
    */
   getEventDataPivot(
@@ -3233,7 +3280,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id event data properties
+   * List event property usage
+   * Returns event names and their custom property names, data types, and record counts for the selected date range and filters.
    * `GET /api/websites/{websiteId}/event-data/properties`
    * OAuth scope: `analytics:read`
    */
@@ -3245,7 +3293,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id event data pivot property series
+   * Get event property values over time
+   * Counts occurrences of string values in the specified event property, grouped by value and time interval.
    * `GET /api/websites/{websiteId}/event-data-pivot/property-series`
    */
   getEventDataPropertySeries(
@@ -3256,7 +3305,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id event data stats
+   * Get event property totals
+   * Returns counts of events with custom data, distinct property names, and property records for the selected date range and filters.
    * `GET /api/websites/{websiteId}/event-data/stats`
    * OAuth scope: `analytics:read`
    */
@@ -3268,7 +3318,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id event data values
+   * List event property values
+   * Returns values and their occurrence counts for a custom event property, optionally restricted by event name and data type.
    * `GET /api/websites/{websiteId}/event-data/values`
    * OAuth scope: `analytics:read`
    */
@@ -3280,7 +3331,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get links link id
+   * Get a tracked link
+   * Returns the specified tracked link, including its destination URL and slug.
    * `GET /api/links/{linkId}`
    */
   getLink(
@@ -3291,7 +3343,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get links
+   * List my links
+   * Returns a paginated list of the current user's tracked links, with search and sorting options.
    * `GET /api/links`
    */
   getLinks(
@@ -3302,7 +3355,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get links charts
+   * Get visitor charts for links
+   * Returns visitor totals and chart data for the requested links the caller can view, within the selected date range.
    * `GET /api/links/charts`
    */
   getLinksCharts(
@@ -3313,7 +3367,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get links link id shares
+   * List shares for a link
+   * Returns a paginated list of shares for the specified link.
    * `GET /api/links/{linkId}/shares`
    */
   getLinkShares(
@@ -3324,7 +3379,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get me
+   * Get my authentication details
+   * Returns the current authentication context, including the authenticated user or share credentials.
    * `GET /api/me`
    * OAuth scope: `websites:read`
    */
@@ -3336,7 +3392,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get me api keys
+   * List my API keys
+   * Returns metadata for the current user's API keys. Available on self-hosted installations.
    * `GET /api/me/api-keys`
    */
   getMyApiKeys(
@@ -3347,7 +3404,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get me teams
+   * List my team memberships
+   * Returns a paginated list of teams the current user belongs to, with sorting options.
    * `GET /api/me/teams`
    */
   getMyTeams(
@@ -3358,7 +3416,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get me websites
+   * List my websites
+   * Returns a paginated list of the current user's websites, optionally including websites accessible through team membership.
    * `GET /api/me/websites`
    */
   getMyWebsites(
@@ -3369,7 +3428,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get pixels pixel id
+   * Get a tracking pixel
+   * Returns the specified tracking pixel and its configuration.
    * `GET /api/pixels/{pixelId}`
    */
   getPixel(
@@ -3380,7 +3440,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get pixels
+   * List my tracking pixels
+   * Returns a paginated list of the current user's tracking pixels, with search and sorting options.
    * `GET /api/pixels`
    */
   getPixels(
@@ -3391,7 +3452,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get pixels charts
+   * Get visitor charts for tracking pixels
+   * Returns visitor totals and chart data for the requested pixels the caller can view, within the selected date range.
    * `GET /api/pixels/charts`
    */
   getPixelsCharts(
@@ -3402,7 +3464,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get pixels pixel id shares
+   * List shares for a tracking pixel
+   * Returns a paginated list of shares for the specified tracking pixel.
    * `GET /api/pixels/{pixelId}/shares`
    */
   getPixelShares(
@@ -3413,7 +3476,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get realtime website id
+   * Get real-time website activity
+   * Returns recent website activity and visitor data for the real-time view, applying the supplied filters.
    * `GET /api/realtime/{websiteId}`
    * OAuth scope: `analytics:read`
    */
@@ -3425,7 +3489,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get reports report id
+   * Get a saved report
+   * Returns the specified report's saved name, description, type, and parameters.
    * `GET /api/reports/{reportId}`
    */
   getReport(
@@ -3436,7 +3501,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get reports
+   * List saved reports
+   * Returns a paginated list of saved reports for the requested website, optionally filtered by report type.
    * `GET /api/reports`
    */
   getReports(
@@ -3447,7 +3513,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id session data array series
+   * Get session array values over time
+   * Counts distinct sessions for individual values in an array property, grouped by value and time interval.
    * `GET /api/websites/{websiteId}/session-data/array-series`
    */
   getSessionDataArraySeries(
@@ -3458,7 +3525,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id session data date series
+   * Get the distribution of session date values
+   * Counts distinct sessions by dates stored in the specified custom property, using the selected date range and filters.
    * `GET /api/websites/{websiteId}/session-data/date-series`
    */
   getSessionDataDateSeries(
@@ -3469,7 +3537,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id session data numeric series
+   * Get numeric session properties over time
+   * Returns the sum, average, or count of a numeric session property, grouped by time interval for the selected date range and filters.
    * `GET /api/websites/{websiteId}/session-data/numeric-series`
    */
   getSessionDataNumericSeries(
@@ -3480,7 +3549,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id session data numeric stats
+   * Get numeric session property statistics
+   * Returns the total, average, median, minimum, and maximum of the specified numeric session property for the selected date range and filters.
    * `GET /api/websites/{websiteId}/session-data/numeric-stats`
    */
   getSessionDataNumericStats(
@@ -3491,7 +3561,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id session data pivot
+   * List session properties in table form
+   * Returns a page of sessions matching the selected property and filters, with the latest property keys and values grouped into one row per session.
    * `GET /api/websites/{websiteId}/session-data-pivot`
    */
   getSessionDataPivot(
@@ -3502,7 +3573,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id session data properties
+   * List session property usage
+   * Returns custom session property names, data types, and distinct session counts, optionally restricted to sessions with a selected property.
    * `GET /api/websites/{websiteId}/session-data/properties`
    */
   getSessionDataProperties(
@@ -3513,7 +3585,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id session data property series
+   * Get session property values over time
+   * Counts distinct sessions for string values in a custom property, grouped by value and time interval.
    * `GET /api/websites/{websiteId}/session-data/property-series`
    */
   getSessionDataPropertySeries(
@@ -3524,7 +3597,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id session data stats
+   * Get activity by session property
+   * Returns session, visit, pageview, event, and total activity counts grouped by values of the specified session property.
    * `GET /api/websites/{websiteId}/session-data/stats`
    */
   getSessionDataStats(
@@ -3535,7 +3609,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id session data values
+   * List session property values
+   * Returns custom session property values and their occurrence counts, optionally filtered by property name and data type.
    * `GET /api/websites/{websiteId}/session-data/values`
    */
   getSessionDataValues(
@@ -3546,7 +3621,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get share id share id
+   * Get a share
+   * Returns a share's configuration by its ID after checking access to the shared resource.
    * `GET /api/share/id/{shareId}`
    */
   getShare(
@@ -3557,7 +3633,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get share slug
+   * Open a share by its slug
+   * Resolves a public share slug and returns its resource references, parameters, and an access token scoped to the shared resources.
    * `GET /api/share/{slug}`
    */
   getShareBySlug(
@@ -3568,7 +3645,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get auth subscription
+   * Get subscription details
+   * Returns subscription and feature availability for the current user or a specified team the user can access.
    * `GET /api/auth/subscription`
    */
   getSubscription(
@@ -3579,7 +3657,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get teams team id
+   * Get a team
+   * Returns the specified team's details, including its members.
    * `GET /api/teams/{teamId}`
    */
   getTeam(
@@ -3590,7 +3669,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get teams team id boards
+   * List a team's boards
+   * Returns a paginated list of boards belonging to the specified team, with search and sorting options.
    * `GET /api/teams/{teamId}/boards`
    */
   getTeamBoards(
@@ -3601,7 +3681,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get teams team id links
+   * List a team's links
+   * Returns a paginated list of tracked links belonging to the specified team, with search and sorting options.
    * `GET /api/teams/{teamId}/links`
    */
   getTeamLinks(
@@ -3612,7 +3693,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get teams team id pixels
+   * List a team's tracking pixels
+   * Returns a paginated list of tracking pixels belonging to the specified team, with search and sorting options.
    * `GET /api/teams/{teamId}/pixels`
    */
   getTeamPixels(
@@ -3623,7 +3705,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get teams
+   * List my teams
+   * Returns a paginated list of teams the current user belongs to, with sorting options.
    * `GET /api/teams`
    */
   getTeams(
@@ -3634,7 +3717,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get teams team id users user id
+   * Get a team member
+   * Returns the specified user's membership details for a team.
    * `GET /api/teams/{teamId}/users/{userId}`
    */
   getTeamUser(
@@ -3645,7 +3729,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get teams team id users
+   * List team members
+   * Returns a paginated list of members of the specified team, including usernames and membership details.
    * `GET /api/teams/{teamId}/users`
    */
   getTeamUsers(
@@ -3656,7 +3741,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get teams team id websites
+   * List a team's websites
+   * Returns a paginated list of websites belonging to the specified team, with search and sorting options.
    * `GET /api/teams/{teamId}/websites`
    */
   getTeamWebsites(
@@ -3667,7 +3753,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get 2fa status
+   * Get two-factor authentication status
+   * Returns whether two-factor authentication is enabled, configured, or required for the current user, including the reason it is required.
    * `GET /api/2fa/status`
    */
   getTwoFactorStatus(
@@ -3678,7 +3765,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get users user id
+   * Get a user
+   * Returns details for the specified user account when the caller has permission to view it.
    * `GET /api/users/{userId}`
    */
   getUser(
@@ -3689,7 +3777,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get users user id teams
+   * List a user's teams
+   * Returns a paginated list of teams for the specified user. Available to that user and administrators.
    * `GET /api/users/{userId}/teams`
    */
   getUserTeams(
@@ -3700,7 +3789,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get users user id websites
+   * List a user's websites
+   * Returns a paginated list of the specified user's websites, optionally including team access. Available to that user and administrators.
    * `GET /api/users/{userId}/websites`
    */
   getUserWebsites(
@@ -3712,6 +3802,7 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Get a website
+   * Returns the specified website's details and configuration.
    * `GET /api/websites/{websiteId}`
    * OAuth scope: `websites:read`
    */
@@ -3723,7 +3814,7 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get current active visitors
+   * Get active website visitors
    * Returns the number of visitors active on the website in the last few minutes.
    * `GET /api/websites/{websiteId}/active`
    * OAuth scope: `analytics:read`
@@ -3736,7 +3827,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id annotations annotation id
+   * Get a website annotation
+   * Returns the date, all-day setting, and note for a specific website annotation.
    * `GET /api/websites/{websiteId}/annotations/{annotationId}`
    */
   getWebsiteAnnotation(
@@ -3747,7 +3839,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id annotations
+   * List website annotations
+   * Returns a paginated list of dated notes for the website, optionally filtered by date range or search text.
    * `GET /api/websites/{websiteId}/annotations`
    */
   getWebsiteAnnotations(
@@ -3758,7 +3851,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id daterange
+   * Get the website's available date range
+   * Returns the earliest and latest recorded event dates for the website.
    * `GET /api/websites/{websiteId}/daterange`
    * OAuth scope: `analytics:read`
    */
@@ -3771,7 +3865,7 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * List tracked events
-   * Returns a page of pageviews and custom events in the date range, newest first. Filter with `event` for a specific event name or `search` for free text.
+   * Returns a page of pageviews and custom events in the date range, newest first. Supports filtering by event name and searching event details.
    * `GET /api/websites/{websiteId}/events`
    * OAuth scope: `analytics:read`
    */
@@ -3783,7 +3877,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id events series
+   * Get custom event counts over time
+   * Returns counts grouped by event name and time interval, optionally limited to the most frequent event names.
    * `GET /api/websites/{websiteId}/events/series`
    * OAuth scope: `analytics:read`
    */
@@ -3795,7 +3890,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id events stats
+   * Get website event statistics
+   * Returns website event totals for the selected date range and filters, including totals for the comparison period.
    * `GET /api/websites/{websiteId}/events/stats`
    * OAuth scope: `analytics:read`
    */
@@ -3807,7 +3903,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id metrics expanded
+   * Get detailed website metrics
+   * Returns additional analytics for the selected page, event, visitor, or channel dimension, using the supplied date range and filters.
    * `GET /api/websites/{websiteId}/metrics/expanded`
    * OAuth scope: `analytics:read`
    */
@@ -3819,8 +3916,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get ranked metrics for a dimension
-   * Returns the top values for one dimension (`type`), such as pages, referrers, countries, browsers, UTM parameters or events, ordered by count. Page-type dimensions count views/events; visitor dimensions count unique visitors.
+   * Get ranked website metrics
+   * Returns the most frequent values for a dimension such as pages, referrers, countries, browsers, campaigns, or events. Counts pageviews or events for activity dimensions and unique visitors for visitor dimensions.
    * `GET /api/websites/{websiteId}/metrics`
    * OAuth scope: `analytics:read`
    */
@@ -3832,8 +3929,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get pageview and session time series
-   * Returns pageviews and sessions bucketed by `unit` (minute, hour, day, month, year) in the given `timezone`. When `compare` is set the comparison period is included.
+   * Get pageviews and sessions over time
+   * Returns pageviews and sessions grouped by the requested time interval and timezone, including a comparison period when requested.
    * `GET /api/websites/{websiteId}/pageviews`
    * OAuth scope: `analytics:read`
    */
@@ -3845,7 +3942,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id recorder
+   * Get website recording settings
+   * Returns public replay and heatmap settings, including sampling, masking, and duration limits. Returns disabled status when recording is unavailable.
    * `GET /api/websites/{websiteId}/recorder`
    */
   getWebsiteRecorderConfig(
@@ -3856,7 +3954,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id replays replay id
+   * Get a session replay recording
+   * Returns the merged recording events, session details, and event and chunk counts for a replay, with optional stopping points by timestamp, chunk, or event index.
    * `GET /api/websites/{websiteId}/replays/{replayId}`
    */
   getWebsiteReplay(
@@ -3867,7 +3966,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id replays
+   * List website session replays
+   * Returns a paginated list of recorded sessions for the website, applying date, replay, and search filters.
    * `GET /api/websites/{websiteId}/replays`
    */
   getWebsiteReplays(
@@ -3878,7 +3978,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id replays saved replay id
+   * Check whether a replay is saved
+   * Returns whether the specified replay is in the website's saved replays.
    * `GET /api/websites/{websiteId}/replays/saved/{replayId}`
    */
   getWebsiteReplaySaved(
@@ -3889,7 +3990,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id reports
+   * List a website's saved reports
+   * Returns a paginated list of saved report definitions for the website, optionally filtered by report type.
    * `GET /api/websites/{websiteId}/reports`
    */
   getWebsiteReports(
@@ -3900,7 +4002,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id revenue chart
+   * Get website revenue over time
+   * Returns revenue chart data for the selected currency, date range, and website filters.
    * `GET /api/websites/{websiteId}/revenue/chart`
    */
   getWebsiteRevenueChart(
@@ -3911,7 +4014,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id revenue metrics
+   * Get website revenue by dimension
+   * Returns revenue grouped by the requested dimension, such as country or referrer, for the selected currency and date range.
    * `GET /api/websites/{websiteId}/revenue/metrics`
    */
   getWebsiteRevenueMetrics(
@@ -3922,7 +4026,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id revenue sessions
+   * List sessions with revenue
+   * Returns a paginated list of sessions with revenue in the selected currency and date range, applying website and search filters.
    * `GET /api/websites/{websiteId}/revenue/sessions`
    */
   getWebsiteRevenueSessions(
@@ -3933,7 +4038,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id revenue stats
+   * Get website revenue totals
+   * Returns revenue summary statistics for the selected currency and date range, including totals for the comparison period.
    * `GET /api/websites/{websiteId}/revenue/stats`
    */
   getWebsiteRevenueStats(
@@ -3944,7 +4050,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id replays saved
+   * List saved session replays
+   * Returns a paginated, searchable list of replays saved for the website.
    * `GET /api/websites/{websiteId}/replays/saved`
    */
   getWebsiteSavedReplays(
@@ -3955,7 +4062,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites charts
+   * Get visitor charts for websites
+   * Returns visitor totals and chart data for the requested websites the caller can view, within the selected date range.
    * `GET /api/websites/charts`
    */
   getWebsitesCharts(
@@ -3966,7 +4074,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id segments segment id
+   * Get a website segment or cohort
+   * Returns a saved segment or cohort and its filter parameters for the website.
    * `GET /api/websites/{websiteId}/segments/{segmentId}`
    */
   getWebsiteSegment(
@@ -3977,7 +4086,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id segments
+   * List website segments and cohorts
+   * Returns saved segments or cohorts for the website, filtered by the requested type and search text.
    * `GET /api/websites/{websiteId}/segments`
    */
   getWebsiteSegments(
@@ -3988,7 +4098,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id sessions session id
+   * Get a visitor session
+   * Returns details for a website session, including linked visitor identities and whether session deletion is available to the caller.
    * `GET /api/websites/{websiteId}/sessions/{sessionId}`
    * OAuth scope: `analytics:read`
    */
@@ -4000,7 +4111,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id sessions session id activity
+   * Get a visitor's session activity
+   * Returns activity for the specified session and sessions linked by visitor identity, using the requested date range and optional distinct ID.
    * `GET /api/websites/{websiteId}/sessions/{sessionId}/activity`
    * OAuth scope: `analytics:read`
    */
@@ -4012,7 +4124,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id sessions session id properties
+   * Get a session's custom properties
+   * Returns custom property records, data types, and values for the specified website session.
    * `GET /api/websites/{websiteId}/sessions/{sessionId}/properties`
    * OAuth scope: `analytics:read`
    */
@@ -4024,7 +4137,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id sessions session id replays
+   * List a visitor's session replays
+   * Returns a paginated, searchable list of recordings for the specified website session.
    * `GET /api/websites/{websiteId}/sessions/{sessionId}/replays`
    */
   getWebsiteSessionReplays(
@@ -4036,7 +4150,7 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * List visitor sessions
-   * Returns a page of visitor sessions in the date range, newest first. `search` matches distinct ID, city, browser, OS or device.
+   * Returns a page of visitor sessions in the date range, newest first. Search matches distinct ID, city, browser, operating system, or device.
    * `GET /api/websites/{websiteId}/sessions`
    * OAuth scope: `analytics:read`
    */
@@ -4048,7 +4162,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id sessions stats
+   * Get visitor session statistics
+   * Returns aggregate session metrics for the website over the selected date range and filters.
    * `GET /api/websites/{websiteId}/sessions/stats`
    * OAuth scope: `analytics:read`
    */
@@ -4060,7 +4175,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id sessions weekly
+   * Get traffic by weekday and hour
+   * Returns distinct visitor counts grouped by day of the week and hour in the selected timezone and date range.
    * `GET /api/websites/{websiteId}/sessions/weekly`
    */
   getWebsiteSessionsWeekly(
@@ -4071,7 +4187,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id shares
+   * List shares for a website
+   * Returns a paginated list of shares for the specified website.
    * `GET /api/websites/{websiteId}/shares`
    */
   getWebsiteShares(
@@ -4082,8 +4199,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get website summary stats
-   * Returns pageviews, unique visitors, visits, bounces and total time on site for the date range, plus the same totals for the comparison period (`compare`: prev or yoy).
+   * Get website summary statistics
+   * Returns pageviews, unique visitors, visits, bounces, and total time on site for the selected date range and comparison period.
    * `GET /api/websites/{websiteId}/stats`
    * OAuth scope: `analytics:read`
    */
@@ -4095,7 +4212,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get websites website id values
+   * List website filter values
+   * Returns available values for a website filter, including saved segments or cohorts when requested, to populate filter choices.
    * `GET /api/websites/{websiteId}/values`
    */
   getWebsiteValues(
@@ -4106,7 +4224,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update 2fa setup initiate
+   * Set up two-factor authentication
+   * Starts or replaces the current user's pending setup and returns a QR code and manual setup key for an authenticator app.
    * `POST /api/2fa/setup/initiate`
    */
   initiateTwoFactorSetup(
@@ -4117,7 +4236,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update teams join
+   * Join a team
+   * Adds the current user to a team as a member using the team's access code.
    * `POST /api/teams/join`
    */
   joinTeam(
@@ -4129,7 +4249,7 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * List websites
-   * Returns websites owned by the authenticated user.
+   * Returns a paginated list of the current user's websites, optionally including websites accessible through team membership.
    * `GET /api/websites`
    * OAuth scope: `websites:read`
    */
@@ -4142,7 +4262,7 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Log in
-   * Authenticates a self-hosted Umami user. Users with two-factor authentication receive a short-lived partial token instead of a full bearer token.
+   * Authenticates a user with a username and password. Users with two-factor authentication receive a short-lived partial token to complete sign-in.
    * `POST /api/auth/login`
    */
   login(
@@ -4153,7 +4273,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update auth logout
+   * Log out
+   * Ends the current authentication session by removing its stored token when Redis-backed sessions are enabled.
    * `POST /api/auth/logout`
    */
   logout(
@@ -4164,7 +4285,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update record
+   * Send session recordings or heatmap data
+   * Stores session replay events or heatmap clicks and scrolls for a website, using a valid tracking cache token to identify the session and visit.
    * `POST /api/record`
    */
   record(
@@ -4175,7 +4297,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update websites website id reset
+   * Reset website analytics
+   * Clears the website's collected analytics data while keeping the website configuration.
    * `POST /api/websites/{websiteId}/reset`
    */
   resetWebsite(
@@ -4186,7 +4309,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update reports attribution
+   * Run an attribution report
+   * Calculates how traffic sources contribute to conversions using the supplied attribution settings, date range, and filters.
    * `POST /api/reports/attribution`
    * OAuth scope: `analytics:read`
    */
@@ -4198,7 +4322,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update reports breakdown
+   * Run a breakdown report
+   * Groups website activity by the selected dimensions for the requested date range and filters.
    * `POST /api/reports/breakdown`
    * OAuth scope: `analytics:read`
    */
@@ -4210,7 +4335,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update reports funnel
+   * Run a funnel report
+   * Calculates visitor progression through a sequence of pages or events using the supplied funnel steps and filters.
    * `POST /api/reports/funnel`
    * OAuth scope: `analytics:read`
    */
@@ -4222,7 +4348,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update reports goal
+   * Run a goal report
+   * Counts visitors who reached a matching page or triggered a matching event and returns the total visitor count for comparison.
    * `POST /api/reports/goal`
    */
   runGoalReport(
@@ -4233,7 +4360,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update reports heatmap
+   * Get page heatmap data
+   * Returns recorded click or scroll data for the selected page and date range to display as a heatmap.
    * `POST /api/reports/heatmap`
    */
   runHeatmapReport(
@@ -4244,7 +4372,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update reports journey
+   * Run a visitor journey report
+   * Returns paths through pages or events using the supplied journey settings and website filters.
    * `POST /api/reports/journey`
    * OAuth scope: `analytics:read`
    */
@@ -4256,7 +4385,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update reports performance
+   * Run a performance report
+   * Returns performance trends, summary metrics, and breakdowns by page, page title, device, and browser for the selected website and date range.
    * `POST /api/reports/performance`
    */
   runPerformanceReport(
@@ -4267,7 +4397,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update reports retention
+   * Run a retention report
+   * Calculates how groups of visitors return over time using the supplied retention settings, date range, and filters.
    * `POST /api/reports/retention`
    * OAuth scope: `analytics:read`
    */
@@ -4279,7 +4410,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update reports revenue
+   * Run a revenue report
+   * Returns revenue trends, totals with a comparison period, and breakdowns by country, region, referrer, and channel.
    * `POST /api/reports/revenue`
    * OAuth scope: `analytics:read`
    */
@@ -4291,7 +4423,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update reports utm
+   * Run a campaign report
+   * Returns traffic breakdowns for UTM source, medium, campaign, term, and content using the supplied date range and filters.
    * `POST /api/reports/utm`
    * OAuth scope: `analytics:read`
    */
@@ -4303,7 +4436,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update websites website id replays saved replay id
+   * Save or unsave a session replay
+   * Adds a replay to the website's saved replays with an optional name, or removes it when isSaved is false.
    * `POST /api/websites/{websiteId}/replays/saved/{replayId}`
    */
   saveWebsiteReplay(
@@ -4314,7 +4448,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update send
+   * Send tracking data
+   * Collects a pageview, custom event, visitor identification, or performance payload and returns session information and a tracking cache token when accepted.
    * `POST /api/send`
    */
   send(input: OperationInput<'send'>, options?: RequestOptions): Promise<OperationOutput<'send'>> {
@@ -4322,7 +4457,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update auth sso
+   * Create a single sign-on token
+   * Returns the authenticated user and a new token valid for 24 hours. Requires Redis-backed authentication.
    * `POST /api/auth/sso`
    */
   sso(input?: OperationInput<'sso'>, options?: RequestOptions): Promise<OperationOutput<'sso'>> {
@@ -4330,7 +4466,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update websites website id transfer
+   * Transfer website ownership
+   * Transfers the specified website to another user or team after checking permission for the destination.
    * `POST /api/websites/{websiteId}/transfer`
    */
   transferWebsite(
@@ -4341,7 +4478,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update boards board id
+   * Update a board
+   * Updates a board's name, description, or configuration and validates the resources and reports it references.
    * `POST /api/boards/{boardId}`
    */
   updateBoard(
@@ -4352,7 +4490,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update links link id
+   * Update a tracked link
+   * Updates a tracked link's name, destination URL, or slug.
    * `POST /api/links/{linkId}`
    */
   updateLink(
@@ -4363,7 +4502,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update me password
+   * Change my password
+   * Verifies the current password and replaces it with the supplied new password.
    * `POST /api/me/password`
    */
   updateMyPassword(
@@ -4374,7 +4514,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update pixels pixel id
+   * Update a tracking pixel
+   * Updates a tracking pixel's name or slug.
    * `POST /api/pixels/{pixelId}`
    */
   updatePixel(
@@ -4385,7 +4526,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update reports report id
+   * Update a saved report
+   * Updates the specified report's website, name, description, type, and parameters.
    * `POST /api/reports/{reportId}`
    */
   updateReport(
@@ -4396,7 +4538,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update share id share id
+   * Update a share
+   * Updates the specified share's name, slug, and parameters.
    * `POST /api/share/id/{shareId}`
    */
   updateShare(
@@ -4407,7 +4550,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update teams team id
+   * Update a team
+   * Updates the specified team's name or access code.
    * `POST /api/teams/{teamId}`
    */
   updateTeam(
@@ -4418,7 +4562,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update teams team id users user id
+   * Change a team member's role
+   * Updates a user's role in the specified team, subject to the caller's role and permissions.
    * `POST /api/teams/{teamId}/users/{userId}`
    */
   updateTeamUser(
@@ -4429,7 +4574,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update users user id
+   * Update a user
+   * Updates a user's password. Administrators can also change the username and role.
    * `POST /api/users/{userId}`
    */
   updateUser(
@@ -4441,6 +4587,7 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Update a website
+   * Updates a website's name, domain, sharing settings, or recording configuration.
    * `POST /api/websites/{websiteId}`
    */
   updateWebsite(
@@ -4451,7 +4598,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update websites website id annotations annotation id
+   * Update a website annotation
+   * Changes the date, all-day setting, and note for a website annotation.
    * `POST /api/websites/{websiteId}/annotations/{annotationId}`
    */
   updateWebsiteAnnotation(
@@ -4462,7 +4610,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update websites website id segments segment id
+   * Update a website segment or cohort
+   * Updates a saved segment or cohort's type, name, and filter parameters.
    * `POST /api/websites/{websiteId}/segments/{segmentId}`
    */
   updateWebsiteSegment(
@@ -4473,7 +4622,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update auth verify
+   * Verify the current sign-in
+   * Validates the current authentication credentials and returns the user and their team memberships.
    * `POST /api/auth/verify`
    */
   verify(
@@ -4484,7 +4634,8 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Create or update 2fa verify
+   * Complete two-factor sign-in
+   * Exchanges a partial sign-in token and a valid authenticator or backup code for a full authentication token and user details.
    * `POST /api/2fa/verify`
    */
   verifyTwoFactor(
