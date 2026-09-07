@@ -56,9 +56,6 @@ importers:
       chartjs-adapter-date-fns:
         specifier: ^3.0.0
         version: 3.0.0(chart.js@4.5.1)(date-fns@4.4.0)
-      classnames:
-        specifier: ^2.3.1
-        version: 2.5.1
       colord:
         specifier: ^2.10.0
         version: 2.10.0
