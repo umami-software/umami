@@ -1,8 +1,8 @@
 /**
  * Generates `packages/api-client/src/generated/*` from `public/openapi.json`.
  *
- *   pnpm generate:api-client          write generated files
- *   pnpm generate:api-client --check  fail if generated files are stale
+ *   pnpm generate:api:client          write generated files
+ *   pnpm generate:api:client --check  fail if generated files are stale
  *
  * The OpenAPI document is the single source of truth: operation IDs become client method names,
  * parameter/body/response schemas become input/output types. Never edit generated files by hand.

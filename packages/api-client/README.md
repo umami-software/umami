@@ -76,7 +76,7 @@ From the Umami repository root:
 
 ```bash
 pnpm generate:api      # public/openapi.json → packages/api-client/src/generated
-pnpm check:api-client  # CI: fail if generated files are stale
+pnpm check:api:client  # CI: fail if generated files are stale
 ```
 
 See [MIGRATION.md](./MIGRATION.md) if you are upgrading from the previous hand-written client.

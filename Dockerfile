@@ -25,7 +25,7 @@ RUN pnpm install --frozen-lockfile
 FROM node:${NODE_IMAGE_VERSION} AS builder
 ARG PNPM_VERSION
 WORKDIR /app
-# build-openapi shells out to pnpm, so the builder stage needs it too
+# build:openapi shells out to pnpm, so the builder stage needs it too
 RUN npm install -g pnpm@${PNPM_VERSION}
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -40,7 +40,7 @@ ENV DATABASE_URL="postgresql://user:pass@localhost:5432/dummy"
 ARG SKIP_BUILD_GEO
 ENV SKIP_BUILD_GEO=$SKIP_BUILD_GEO
 
-RUN npm run build-docker
+RUN pnpm build:docker
 
 # Production image, copy all the files and run next
 FROM node:${NODE_IMAGE_VERSION} AS runner

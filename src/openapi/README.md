@@ -97,4 +97,4 @@ table (`src/lib/mcp/dispatch.ts`).
 ## Generated API client
 
 `pnpm generate:api` regenerates the OpenAPI document and `packages/api-client/src/generated`.
-`pnpm check:api-client` fails in CI when the generated client is stale.
+`pnpm check:api:client` fails in CI when the generated client is stale.
