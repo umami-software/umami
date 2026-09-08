@@ -1,10 +1,12 @@
 import { Column, Heading, Row, Text } from '@umami/react-zen';
+import { Empty } from '@/components/common/Empty';
 import { Panel } from '@/components/common/Panel';
 import { useBoard } from '@/components/hooks';
 import { getBoardType, getResolvedComponentEntity, isOpenBoardType } from '@/lib/boards';
 import type { BoardComponentConfig } from '@/lib/types';
 import { BoardEntityBadge } from '../BoardEntityBadge';
 import { getComponentDefinition } from '../boardComponentRegistry';
+import { useBoardEntityAvailability } from '../useBoardEntityAvailability';
 import { useBoardEntityBadgeProps } from '../useBoardEntityBadgeProps';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 
@@ -20,6 +22,7 @@ export function BoardViewColumn({
   const definition = component ? getComponentDefinition(component.type) : undefined;
   const { entityType, entityId } = getResolvedComponentEntity(board, component);
   const entityBadge = useBoardEntityBadgeProps(entityType, entityId, showEntityBadge);
+  const { isLoading, isUnavailable } = useBoardEntityAvailability(entityType, entityId);
 
   if (!component || (!entityId && definition?.requiresWebsite !== false)) {
     return null;
@@ -43,7 +46,16 @@ export function BoardViewColumn({
       {description && <Text color="muted">{description}</Text>}
       <Column width="100%" height="100%" style={{ minHeight: 0 }}>
         <Column width="100%" flexGrow={1} style={{ minHeight: 0 }}>
-          <BoardComponentRenderer config={component} websiteId={entityId} entityType={entityType} />
+          {!isLoading &&
+            (isUnavailable ? (
+              <Empty message="Selected item is no longer available." />
+            ) : (
+              <BoardComponentRenderer
+                config={component}
+                websiteId={entityId}
+                entityType={entityType}
+              />
+            ))}
         </Column>
       </Column>
     </Panel>
