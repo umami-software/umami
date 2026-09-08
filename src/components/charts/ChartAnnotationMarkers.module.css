@@ -37,21 +37,22 @@
 
 .note {
   max-width: 300px;
-  max-height: min(280px, 50vh);
-  overflow-y: auto;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
 .noteFull {
-  display: block;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
 }
 
 .noteText {
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
 }
 
 .moreButton {
