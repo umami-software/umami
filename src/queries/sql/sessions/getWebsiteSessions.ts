@@ -75,11 +75,11 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       session.country, 
       session.region, 
       session.city
-    order by max(website_event.created_at) desc, session.session_id
     `,
     queryParams,
     filters,
     FUNCTION_NAME,
+    'max(website_event.created_at) desc, session.session_id',
   );
 }
 
