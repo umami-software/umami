@@ -1,7 +1,8 @@
 import { Button, Column, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
-import { useReducedMotion, useSpring, useTransform } from 'motion/react';
+import { useSpring, useTransform } from 'motion/react';
 import { type ReactNode, useEffect } from 'react';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
+import { useReducedMotion } from '@/components/hooks/useReducedMotion';
 import { Info } from '@/components/icons';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { formatNumber } from '@/lib/format';

@@ -1,9 +1,10 @@
 import { Column, Text } from '@umami/react-zen';
-import { useReducedMotion, useSpring, useTransform } from 'motion/react';
+import { useSpring, useTransform } from 'motion/react';
 import { useEffect, useRef } from 'react';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { Badge } from '@/components/common/Badge';
 import { useMessages } from '@/components/hooks';
+import { useReducedMotion } from '@/components/hooks/useReducedMotion';
 import { WEB_VITALS_THRESHOLDS } from '@/lib/constants';
 import { formatNumber } from '@/lib/format';
 import styles from './PerformanceCard.module.css';

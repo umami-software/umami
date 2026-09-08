@@ -4,14 +4,20 @@ import { ListTable } from './ListTable';
 import { MetricCard } from './MetricCard';
 import { PerformanceCard } from './PerformanceCard';
 
-const preference = vi.hoisted(() => ({ reduced: true }));
-vi.mock('motion/react', async importOriginal => ({
-  ...(await importOriginal<typeof import('motion/react')>()),
-  useReducedMotion: () => preference.reduced,
-}));
+const preference = { reduced: true };
 
 beforeEach(() => {
   preference.reduced = true;
+  vi.spyOn(window, 'matchMedia').mockImplementation(query => ({
+    matches: query === '(prefers-reduced-motion: reduce)' && preference.reduced,
+    media: query,
+    onchange: null,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  }));
 });
 
 test('shows the final metric and percentage immediately with reduced motion', () => {

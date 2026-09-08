@@ -1,10 +1,11 @@
 import { Column, Grid, Row, Text } from '@umami/react-zen';
-import { useReducedMotion, useSpring, useTransform } from 'motion/react';
+import { useSpring, useTransform } from 'motion/react';
 import { type ReactNode, useEffect } from 'react';
 import { List, type RowComponentProps } from 'react-window';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { Empty } from '@/components/common/Empty';
 import { useMessages, useMobile } from '@/components/hooks';
+import { useReducedMotion } from '@/components/hooks/useReducedMotion';
 import { formatLongNumber } from '@/lib/format';
 
 const ITEM_SIZE = 30;
