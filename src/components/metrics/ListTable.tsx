@@ -1,5 +1,5 @@
 import { Column, Grid, Row, Text } from '@umami/react-zen';
-import { useSpring, useTransform } from 'motion/react';
+import { useReducedMotion, useSpring, useTransform } from 'motion/react';
 import { type ReactNode, useEffect } from 'react';
 import { List, type RowComponentProps } from 'react-window';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
@@ -43,6 +43,7 @@ export function ListTable({
 }: ListTableProps) {
   const { t, labels } = useMessages();
   const { isPhone } = useMobile();
+  const reducedMotion = useReducedMotion();
 
   const getRow = (row: ListData, index: number) => {
     const { label, count, percent } = row;
@@ -53,7 +54,7 @@ export function ListTable({
         label={renderLabel ? renderLabel(row, index) : (label ?? t(labels.unknown))}
         value={count}
         percent={percent}
-        animate={animate && !virtualize}
+        animate={animate && !virtualize && !reducedMotion}
         showPercentage={showPercentage}
         change={renderChange ? renderChange(row, index) : null}
         formatCount={formatCount}
@@ -145,7 +146,9 @@ const AnimatedRow = ({
       >
         {change}
         <Text weight="bold">
-          <AnimatedDiv title={String(value)}>{yText}</AnimatedDiv>
+          <AnimatedDiv title={String(value)}>
+            {animate ? yText : formatCount ? formatCount(y) : formatLongNumber(y)}
+          </AnimatedDiv>
         </Text>
       </Row>
       {showPercentage && (
@@ -158,7 +161,7 @@ const AnimatedRow = ({
           color="muted"
           paddingLeft="3"
         >
-          <AnimatedDiv>{widthText}</AnimatedDiv>
+          <AnimatedDiv>{animate ? widthText : `${percent?.toFixed?.(0)}%`}</AnimatedDiv>
         </Row>
       )}
     </Grid>

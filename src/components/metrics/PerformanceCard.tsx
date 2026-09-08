@@ -1,5 +1,5 @@
 import { Column, Text } from '@umami/react-zen';
-import { useSpring, useTransform } from 'motion/react';
+import { useReducedMotion, useSpring, useTransform } from 'motion/react';
 import { useEffect, useRef } from 'react';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { Badge } from '@/components/common/Badge';
@@ -40,6 +40,7 @@ export const PerformanceCard = ({
   selected = false,
 }: PerformanceCardProps) => {
   const { t, labels } = useMessages();
+  const reducedMotion = useReducedMotion();
   const rating = getRating(metric, value);
   const prevMetricRef = useRef(metric);
   const metricChanged = prevMetricRef.current !== metric;
@@ -50,9 +51,9 @@ export const PerformanceCard = ({
   const display = useTransform(spring, n => formatValue(n));
 
   useEffect(() => {
-    if (metricChanged) spring.jump(target);
+    if (metricChanged || reducedMotion) spring.jump(target);
     else spring.set(target);
-  }, [target, metricChanged, spring]);
+  }, [target, metricChanged, spring, reducedMotion]);
 
   return (
     <Column
@@ -71,7 +72,7 @@ export const PerformanceCard = ({
         {label}
       </Text>
       <Text size="4xl" weight="bold" wrap="nowrap">
-        <AnimatedDiv>{display}</AnimatedDiv>
+        <AnimatedDiv>{reducedMotion ? formatValue(target) : display}</AnimatedDiv>
       </Text>
       <Badge variant={RATING_VARIANTS[rating]}>
         {t(labels[rating === 'needs-improvement' ? 'needsImprovement' : rating])}
