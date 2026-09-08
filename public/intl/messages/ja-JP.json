@@ -118,6 +118,8 @@
     "event-data": "イベントデータ",
     "event-properties": "イベントデータ",
     "event-name": "イベント名",
+    "export": "エクスポート",
+    "export-data": "データをエクスポート",
     "events": "イベント",
     "exclude-bounce": "直帰を除外",
     "exists": "存在する",

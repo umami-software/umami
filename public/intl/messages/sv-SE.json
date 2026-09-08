@@ -118,6 +118,8 @@
     "event-data": "Händelsedata",
     "event-properties": "Händelsedata",
     "event-name": "Händelsenamn",
+    "export": "Exportera",
+    "export-data": "Exportera data",
     "events": "Händelser",
     "exclude-bounce": "Exkludera avvisning",
     "exists": "Existerar",

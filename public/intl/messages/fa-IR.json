@@ -118,6 +118,8 @@
     "event-data": "داده‌های رویداد",
     "event-properties": "داده‌های رویداد",
     "event-name": "نام رویداد",
+    "export": "صادرات",
+    "export-data": "صادرات داده‌ها",
     "events": "رویدادها",
     "exclude-bounce": "حذف نرخ پرش",
     "exists": "وجود دارد",

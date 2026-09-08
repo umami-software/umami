@@ -118,6 +118,8 @@
     "event-data": "이벤트 데이터",
     "event-properties": "이벤트 데이터",
     "event-name": "이벤트 이름",
+    "export": "내보내기",
+    "export-data": "데이터 내보내기",
     "events": "이벤트",
     "exclude-bounce": "이탈 제외",
     "exists": "존재함",

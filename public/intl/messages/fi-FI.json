@@ -118,6 +118,8 @@
     "event-data": "Tapahtumatiedot",
     "event-properties": "Tapahtumatiedot",
     "event-name": "Tapahtuman nimi",
+    "export": "Vienti",
+    "export-data": "Vie tiedot",
     "events": "Tapahtumat",
     "exclude-bounce": "Sulje poishyppäys pois",
     "exists": "On olemassa",

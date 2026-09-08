@@ -118,6 +118,8 @@
     "event-data": "Hændelsesdata",
     "event-properties": "Hændelsesdata",
     "event-name": "Hændelsesnavn",
+    "export": "Eksport",
+    "export-data": "Eksportér data",
     "events": "Hændelser",
     "exclude-bounce": "Ekskluder afvisning",
     "exists": "Findes",

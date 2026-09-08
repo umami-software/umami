@@ -118,6 +118,8 @@
     "event-data": "Event data",
     "event-properties": "Event Properties",
     "event-name": "Event name",
+    "export": "Export",
+    "export-data": "Export data",
     "events": "Events",
     "exclude-bounce": "Exclude bounce",
     "exists": "Exists",

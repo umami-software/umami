@@ -118,6 +118,8 @@
     "event-data": "ข้อมูลเหตุการณ์",
     "event-properties": "ข้อมูลเหตุการณ์",
     "event-name": "ชื่อเหตุการณ์",
+    "export": "ส่งออก",
+    "export-data": "ส่งออกข้อมูล",
     "events": "เหตุการณ์",
     "exclude-bounce": "ยกเว้นการตีกลับ",
     "exists": "มีอยู่",
