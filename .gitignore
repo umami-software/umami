@@ -21,6 +21,7 @@ next-env.d.ts
 /build
 /public/script.js
 /public/recorder.js
+/public/openapi.json
 /geo
 /dist
 /packages/*/dist

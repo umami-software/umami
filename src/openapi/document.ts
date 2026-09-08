@@ -9,6 +9,7 @@ import {
   getCoverageErrors,
 } from '@/openapi/coverage';
 import { discoverApiOperations } from '@/openapi/discover';
+import { applyFieldDescriptions } from '@/openapi/field-descriptions';
 import { inferApiContracts } from '@/openapi/infer';
 import { type ApiAudience, type ApiOperationContract, getOperationKey } from '@/openapi/operation';
 import { operationDescriptions } from '@/openapi/operation-descriptions';
@@ -146,6 +147,8 @@ export async function buildOpenApiDocument(
       cycles: 'ref',
     },
   );
+
+  applyFieldDescriptions(document);
 
   return { document, coverage };
 }

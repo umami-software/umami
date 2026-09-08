@@ -4,6 +4,9 @@ Umami generates `public/openapi.json` for every App Router API handler. It stati
 baseline contract from route source and replaces that baseline with a colocated, Zod-backed
 contract wherever one exists.
 
+`public/openapi.json` is an ignored build artifact and must not be committed. Generate it locally
+with `pnpm openapi:generate` before running checks or generating the API client.
+
 ## Commands
 
 - `pnpm openapi:generate` regenerates the public OpenAPI document.
@@ -14,8 +17,8 @@ contract wherever one exists.
   contract.
 - `pnpm openapi:check --verbose` lists operations that still use inferred contracts.
 
-The normal and Docker builds run the generator before the Next.js build. CI runs the check before
-tests and build steps.
+The normal and Docker builds run the generator before the Next.js build. CI generates the artifact
+and runs the check before tests and build steps.
 
 ## Adding an operation
 
@@ -67,6 +70,14 @@ operation IDs continue to come from the contracts.
 Run `pnpm generate:api` after editing to refresh the OpenAPI document and API client. Generation and
 `pnpm openapi:check` reject entries that do not match a discovered route and method. Entries are
 optional, so documentation can be improved incrementally.
+
+Field documentation lives in `src/openapi/field-descriptions.ts`. The document builder fills missing
+query/path parameter and request/response property descriptions after converting contracts to
+OpenAPI, including nested schemas and shared components. Existing contract descriptions take
+precedence. Keep shared wording limited to fields with consistent meanings; use endpoint-specific
+wording for fields such as the dashboard's `parameters`. Unknown fields are left undocumented
+rather than given an automatically generated label. Examples and schema validation rules are not
+modified. Run `pnpm generate:api` after editing this file as well.
 
 ## Operation IDs
 

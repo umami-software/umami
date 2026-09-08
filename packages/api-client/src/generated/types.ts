@@ -2875,12 +2875,15 @@ export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
     ActiveVisitors: {
+      /** @description Unique visitor counts for the selected period. */
       visitors: number;
     };
     /** @description Standard Umami API error response. */
     ApiError: {
+      /** @description Error details returned when the operation fails. */
       error: {
         code: string;
+        /** @description Human-readable explanation of the result. */
         message: string;
         status: number;
       } & {
@@ -2888,10 +2891,15 @@ export interface components {
       };
     };
     CreateWebsiteRequest: {
+      /** @description Domain name associated with the resource. */
       domain: string;
+      /** @description Unique identifier of the resource. */
       id?: string | null;
+      /** @description Display name of the resource. */
       name: string;
+      /** @description Identifier used to access a shared resource. */
       shareId?: string | null;
+      /** @description ID of the associated team. */
       teamId?: string | null;
     };
     LoginRequest: {
@@ -2902,27 +2910,45 @@ export interface components {
     };
     LoginResponse:
       | {
+          /** @description Temporary login token used to complete two-factor authentication. */
           partialToken: string;
-          /** @constant */
+          /**
+           * @description Whether login requires a second authentication factor.
+           * @constant
+           */
           requiresTwoFactor: true;
         }
       | {
           token: string;
+          /** @description User associated with the resource. */
           user: components['schemas']['LoginUser'];
         };
     LoginTeam: {
-      /** Format: uuid */
+      /**
+       * Format: uuid
+       * @description Unique identifier of the resource.
+       */
       id: string;
+      /** @description URL of the logo image. */
       logoUrl: string | null;
+      /** @description Display name of the resource. */
       name: string;
     };
     LoginUser: {
+      /** @description Date and time the record was created. */
       createdAt: string | null;
-      /** Format: uuid */
+      /**
+       * Format: uuid
+       * @description Unique identifier of the resource.
+       */
       id: string;
+      /** @description Whether the user has administrator privileges. */
       isAdmin: boolean;
+      /** @description Permission role assigned to the user. */
       role: string;
+      /** @description Teams associated with the user. */
       teams: components['schemas']['LoginTeam'][];
+      /** @description Username of the account. */
       username: string;
     };
     MetricRow: {
@@ -2934,30 +2960,43 @@ export interface components {
     };
     MetricRows: components['schemas']['MetricRow'][];
     OAuthAuthorizationDecision: {
+      /** @description OAuth client identifier. */
       client_id: string;
+      /** @description PKCE challenge derived from the code verifier. */
       code_challenge?: string;
+      /** @description Method used to derive the PKCE challenge; use S256. */
       code_challenge_method?: string;
       /** @enum {string} */
       decision: 'approve' | 'deny';
+      /** @description Registered redirect URI to receive the authorization response. */
       redirect_uri?: string;
+      /** @description Resource URI identifying the API targeted by the OAuth request. */
       resource?: string;
+      /** @description OAuth authorization response type; use code. */
       response_type?: string;
+      /** @description Space-separated OAuth permissions. */
       scope?: string;
+      /** @description Client-provided value returned unchanged to correlate the authorization response. */
       state?: string;
     };
     OAuthAuthorizationDetails: {
       client: {
+        /** @description Unique identifier of the resource. */
         id: string;
         logoUri?: string;
+        /** @description Display name of the resource. */
         name: string;
         /** @enum {string} */
         source: 'metadata-document' | 'registered';
         uri?: string;
       };
       redirectUri: string;
+      /** @description Resource URI identifying the API targeted by the OAuth request. */
       resource: string;
       scopes: {
+        /** @description Description of the resource. */
         description: string;
+        /** @description Space-separated OAuth permissions. */
         scope: string;
       }[];
     };
@@ -2967,87 +3006,146 @@ export interface components {
     OAuthClientRegistrationRequest: {
       /** @enum {string} */
       application_type?: 'web' | 'native';
+      /** @description Human-readable name of the OAuth client. */
       client_name: string;
+      /** @description URL of the OAuth client homepage. */
       client_uri?: string;
+      /** @description OAuth grant types supported by the client. */
       grant_types?: string[];
+      /** @description URL of the OAuth client logo. */
       logo_uri?: string;
+      /** @description Redirect URIs registered for the OAuth client. */
       redirect_uris: string[];
+      /** @description Authorization response types supported by the client. */
       response_types?: string[];
+      /** @description Space-separated OAuth permissions. */
       scope?: string;
       software_id?: string;
       software_version?: string;
-      /** @constant */
+      /**
+       * @description Client authentication method used at the token endpoint.
+       * @constant
+       */
       token_endpoint_auth_method?: 'none';
     };
     OAuthClientRegistrationResponse: {
       /** @enum {string} */
       application_type?: 'web' | 'native';
+      /** @description OAuth client identifier. */
       client_id: string;
       client_id_issued_at: number;
+      /** @description Human-readable name of the OAuth client. */
       client_name: string;
+      /** @description URL of the OAuth client homepage. */
       client_uri?: string;
+      /** @description OAuth grant types supported by the client. */
       grant_types: string[];
+      /** @description URL of the OAuth client logo. */
       logo_uri?: string;
+      /** @description Redirect URIs registered for the OAuth client. */
       redirect_uris: string[];
+      /** @description Authorization response types supported by the client. */
       response_types: string[];
+      /** @description Space-separated OAuth permissions. */
       scope?: string;
       software_id?: string;
       software_version?: string;
-      /** @constant */
+      /**
+       * @description Client authentication method used at the token endpoint.
+       * @constant
+       */
       token_endpoint_auth_method: 'none';
     };
     OAuthErrorResponse: {
+      /** @description Error details returned when the operation fails. */
       error: string;
+      /** @description Human-readable explanation of the OAuth error. */
       error_description?: string;
     };
     OAuthRevocationRequest: {
       token: string;
+      /** @description Hint indicating whether the revoked token is an access or refresh token. */
       token_type_hint?: string;
     };
     OAuthTokenRequest: {
+      /** @description OAuth client identifier. */
       client_id?: string;
       code?: string;
+      /** @description Original PKCE verifier used to obtain the authorization code. */
       code_verifier?: string;
-      /** @enum {string} */
+      /**
+       * @description OAuth grant used to obtain or refresh an access token.
+       * @enum {string}
+       */
       grant_type: 'authorization_code' | 'refresh_token';
+      /** @description Registered redirect URI to receive the authorization response. */
       redirect_uri?: string;
+      /** @description OAuth refresh token used to obtain a new access token. */
       refresh_token?: string;
+      /** @description Resource URI identifying the API targeted by the OAuth request. */
       resource?: string;
+      /** @description Space-separated OAuth permissions. */
       scope?: string;
     };
     OAuthTokenResponse: {
+      /** @description OAuth access token used to authorize API requests. */
       access_token: string;
+      /** @description Access token lifetime in seconds. */
       expires_in: number;
+      /** @description OAuth refresh token used to obtain a new access token. */
       refresh_token: string;
+      /** @description Space-separated OAuth permissions. */
       scope: string;
-      /** @constant */
+      /**
+       * @description Authorization scheme for the access token.
+       * @constant
+       */
       token_type: 'Bearer';
     };
     /** @description Successful operation response. */
     Ok: {
-      /** @constant */
+      /**
+       * @description Whether the operation succeeded.
+       * @constant
+       */
       ok: true;
     };
     ReplayConfig: {
+      /** @description CSS selector for elements excluded from recordings. */
       blockSelector?: string;
+      /** @description Whether heatmap recording is enabled. */
       heatmapEnabled?: boolean;
+      /** @description Fraction of sessions to record for heatmaps, from 0 to 1. */
       heatmapSampleRate?: number;
-      /** @enum {string} */
+      /**
+       * @description Privacy masking level used by the recorder: strict or moderate.
+       * @enum {string}
+       */
       maskLevel?: 'strict' | 'moderate';
       maxDuration?: number;
+      /** @description Whether session replay recording is enabled. */
       replayEnabled?: boolean;
+      /** @description Fraction of sessions to record for replay, from 0 to 1. */
       sampleRate?: number;
     } & {
       [key: string]: unknown;
     };
     ReplayConfigInput: {
+      /** @description CSS selector for elements excluded from recordings. */
       blockSelector?: string;
+      /** @description Whether heatmap recording is enabled. */
       heatmapEnabled?: boolean;
+      /** @description Fraction of sessions to record for heatmaps, from 0 to 1. */
       heatmapSampleRate?: number;
-      /** @enum {string} */
+      /**
+       * @description Privacy masking level used by the recorder: strict or moderate.
+       * @enum {string}
+       */
       maskLevel?: 'strict' | 'moderate';
       maxDuration?: number;
+      /** @description Whether session replay recording is enabled. */
       replayEnabled?: boolean;
+      /** @description Fraction of sessions to record for replay, from 0 to 1. */
       sampleRate?: number;
     };
     TimeSeriesPoint: {
@@ -3057,133 +3155,244 @@ export interface components {
       y: number;
     };
     UpdateWebsiteRequest: {
+      /** @description Domain name associated with the resource. */
       domain?: string;
+      /** @description Display name of the resource. */
       name?: string;
+      /** @description Session replay and heatmap recording configuration. */
       replayConfig?: components['schemas']['ReplayConfigInput'] | null;
+      /** @description Identifier used to access a shared resource. */
       shareId?: string | null;
     };
     Website: {
+      /** @description Date and time the record was created. */
       createdAt: string | null;
+      /** @description ID of the user who created the resource. */
       createdBy: string | null;
+      /** @description Date and time the record was deleted, if applicable. */
       deletedAt: string | null;
+      /** @description Domain name associated with the resource. */
       domain: string | null;
-      /** Format: uuid */
+      /**
+       * Format: uuid
+       * @description Unique identifier of the resource.
+       */
       id: string;
+      /** @description Display name of the resource. */
       name: string;
+      /** @description Whether recording is enabled for the website. */
       recorderEnabled: boolean;
+      /** @description Session replay and heatmap recording configuration. */
       replayConfig: components['schemas']['ReplayConfig'] | null;
+      /** @description Date and time the website analytics were last reset. */
       resetAt: string | null;
+      /** @description Identifier used to access a shared resource. */
       shareId: string | null;
+      /** @description ID of the associated team. */
       teamId: string | null;
+      /** @description Date and time the record was last updated. */
       updatedAt: string | null;
+      /** @description User associated with the resource. */
       user?: components['schemas']['WebsiteUser'];
+      /** @description ID of the associated user. */
       userId: string | null;
     };
     WebsiteEvent: {
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @description Date and time the record was created.
+       */
       createdAt: string;
+      /** @description Custom identifier assigned to the visitor. */
       distinctId?: string | null;
+      /** @description Name of the custom event. */
       eventName?: string | null;
+      /** @description Event type: 1 for a pageview or 2 for a custom event. */
       eventType: number;
+      /** @description Hostname on which the activity occurred. */
       hostname?: string | null;
-      /** Format: uuid */
+      /**
+       * Format: uuid
+       * @description Unique identifier of the resource.
+       */
       id: string;
+      /** @description Title of the page. */
       pageTitle?: string | null;
+      /** @description Domain of the referring page. */
       referrerDomain?: string | null;
-      /** Format: uuid */
+      /**
+       * Format: uuid
+       * @description ID of the visitor session.
+       */
       sessionId: string;
+      /** @description Path portion of the page URL. */
       urlPath?: string | null;
+      /** @description Query string portion of the page URL. */
       urlQuery?: string | null;
-      /** Format: uuid */
+      /**
+       * Format: uuid
+       * @description ID of the website.
+       */
       websiteId: string;
     } & {
       [key: string]: unknown;
     };
     WebsiteEventPage: {
+      /** @description Number of matching records. */
       count: number;
+      /** @description Data returned by the operation. */
       data: components['schemas']['WebsiteEvent'][];
+      /** @description Whether the results were truncated by the maximum result limit. */
       isCapped?: boolean;
+      /** @description Page number, starting at 1. */
       page: number;
+      /** @description Number of results per page. */
       pageSize: number;
     };
     WebsitePage: {
+      /** @description Number of matching records. */
       count: number;
+      /** @description Data returned by the operation. */
       data: components['schemas']['Website'][];
+      /** @description Field to sort the results by. */
       orderBy?: string;
+      /** @description Page number, starting at 1. */
       page: number;
+      /** @description Number of results per page. */
       pageSize: number;
+      /** @description Search text used to filter results. */
       search?: string;
     };
     WebsitePageviews: {
       /** @description Present when `compare` was requested. */
       compare?: {
-        /** Format: date-time */
+        /**
+         * Format: date-time
+         * @description End of the date range as an ISO 8601 date or date-time.
+         */
         endDate: string;
+        /** @description Pageview counts for the selected period. */
         pageviews: components['schemas']['TimeSeriesPoint'][];
         sessions: components['schemas']['TimeSeriesPoint'][];
-        /** Format: date-time */
+        /**
+         * Format: date-time
+         * @description Start of the date range as an ISO 8601 date or date-time.
+         */
         startDate: string;
       };
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @description End of the date range as an ISO 8601 date or date-time.
+       */
       endDate?: string;
+      /** @description Pageview counts for the selected period. */
       pageviews: components['schemas']['TimeSeriesPoint'][];
       sessions: components['schemas']['TimeSeriesPoint'][];
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @description Start of the date range as an ISO 8601 date or date-time.
+       */
       startDate?: string;
     };
     WebsiteSession: {
+      /** @description Browser used by the visitor. */
       browser: string | null;
+      /** @description City of the visitor. */
       city: string | null;
+      /** @description Country code of the visitor. */
       country: string | null;
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @description Date and time the record was created.
+       */
       createdAt: string;
+      /** @description Device category used by the visitor. */
       device: string | null;
+      /** @description Custom identifier assigned to the visitor. */
       distinctId?: string | null;
       events?: number;
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @description Date and time of the first recorded activity.
+       */
       firstAt: string;
+      /** @description Hostname on which the activity occurred. */
       hostname: string | null;
-      /** Format: uuid */
+      /**
+       * Format: uuid
+       * @description Unique identifier of the resource.
+       */
       id: string;
+      /** @description Preferred language reported by the visitor browser. */
       language: string | null;
-      /** Format: date-time */
+      /**
+       * Format: date-time
+       * @description Date and time of the most recent recorded activity.
+       */
       lastAt: string;
+      /** @description Operating system used by the visitor. */
       os: string | null;
+      /** @description Region or subdivision of the visitor. */
       region: string | null;
+      /** @description Screen resolution of the visitor device. */
       screen: string | null;
+      /** @description Pageview counts for the selected period. */
       views: number;
+      /** @description Visit counts for the selected period. */
       visits: number;
-      /** Format: uuid */
+      /**
+       * Format: uuid
+       * @description ID of the website.
+       */
       websiteId: string;
     } & {
       [key: string]: unknown;
     };
     WebsiteSessionPage: {
+      /** @description Number of matching records. */
       count: number;
+      /** @description Data returned by the operation. */
       data: components['schemas']['WebsiteSession'][];
+      /** @description Whether the results were truncated by the maximum result limit. */
       isCapped?: boolean;
+      /** @description Page number, starting at 1. */
       page: number;
+      /** @description Number of results per page. */
       pageSize: number;
     };
     WebsiteStats: {
+      /** @description Number of visits with only one pageview. */
       bounces: number;
       /** @description The same totals for the comparison period (previous period by default). */
       comparison: components['schemas']['WebsiteStatsValues'];
+      /** @description Pageview counts for the selected period. */
       pageviews: number;
+      /** @description Total visit duration in seconds. */
       totaltime: number;
+      /** @description Unique visitor counts for the selected period. */
       visitors: number;
+      /** @description Visit counts for the selected period. */
       visits: number;
     };
     WebsiteStatsValues: {
+      /** @description Number of visits with only one pageview. */
       bounces: number;
+      /** @description Pageview counts for the selected period. */
       pageviews: number;
+      /** @description Total visit duration in seconds. */
       totaltime: number;
+      /** @description Unique visitor counts for the selected period. */
       visitors: number;
+      /** @description Visit counts for the selected period. */
       visits: number;
     };
     WebsiteUser: {
-      /** Format: uuid */
+      /**
+       * Format: uuid
+       * @description Unique identifier of the resource.
+       */
       id: string;
+      /** @description Username of the account. */
       username: string;
     };
   };
@@ -3332,6 +3541,7 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Password used to authenticate the account. */
           password: string;
           token: string;
         };
@@ -3346,14 +3556,20 @@ export interface operations {
         content: {
           'application/json':
             | {
+                /** @description Error details returned when the operation fails. */
                 error: {
                   code: string;
-                  /** Format: date-time */
+                  /**
+                   * Format: date-time
+                   * @description Time until which further authentication attempts are blocked.
+                   */
                   lockedUntil: string;
+                  /** @description Human-readable explanation of the result. */
                   message: string;
                 };
               }
             | {
+                /** @description Whether the operation succeeded. */
                 ok: boolean;
               };
         };
@@ -3437,10 +3653,15 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Error details returned when the operation fails. */
             error: {
               code: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Time until which further authentication attempts are blocked.
+               */
               lockedUntil: string;
+              /** @description Human-readable explanation of the result. */
               message: string;
             };
           };
@@ -3482,6 +3703,7 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Whether the operation succeeded. */
             ok: boolean;
           };
         };
@@ -3547,14 +3769,20 @@ export interface operations {
         content: {
           'application/json':
             | {
+                /** @description Error details returned when the operation fails. */
                 error: {
                   code: string;
-                  /** Format: date-time */
+                  /**
+                   * Format: date-time
+                   * @description Time until which further authentication attempts are blocked.
+                   */
                   lockedUntil: string;
+                  /** @description Human-readable explanation of the result. */
                   message: string;
                 };
               }
             | {
+                /** @description Single-use backup codes for two-factor authentication. */
                 backupCodes: string[];
               };
         };
@@ -3620,10 +3848,15 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Error details returned when the operation fails. */
             error: {
               code: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Time until which further authentication attempts are blocked.
+               */
               lockedUntil: string;
+              /** @description Human-readable explanation of the result. */
               message: string;
             };
           };
@@ -3665,7 +3898,9 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Secret key for manually configuring an authenticator app. */
             manualKey: string;
+            /** @description Data URL of the QR code for authenticator setup. */
             qrCodeDataUrl: string;
           };
         };
@@ -3761,17 +3996,27 @@ export interface operations {
         content: {
           'application/json':
             | {
+                /** @description Whether two-factor authentication is required for all users. */
                 globalRequired: boolean;
+                /** @description Whether two-factor authentication has been configured. */
                 isConfigured: boolean;
+                /** @description Whether two-factor authentication is enabled. */
                 isEnabled: boolean;
+                /** @description Whether two-factor authentication is required for this user. */
                 isRequired: boolean;
+                /** @description Reason two-factor authentication is required. */
                 requiredReason: null;
               }
             | {
+                /** @description Whether two-factor authentication is required for all users. */
                 globalRequired: boolean;
+                /** @description Whether two-factor authentication has been configured. */
                 isConfigured: boolean;
+                /** @description Whether two-factor authentication is enabled. */
                 isEnabled: boolean;
+                /** @description Whether two-factor authentication is required for this user. */
                 isRequired: boolean;
+                /** @description Reason two-factor authentication is required. */
                 requiredReason: string;
               };
         };
@@ -3810,6 +4055,7 @@ export interface operations {
               token: string;
             }
           | {
+              /** @description Single-use backup code for two-factor authentication. */
               backupCode: string;
             };
       };
@@ -3823,26 +4069,43 @@ export interface operations {
         content: {
           'application/json':
             | {
+                /** @description Error details returned when the operation fails. */
                 error: {
                   code: string;
-                  /** Format: date-time */
+                  /**
+                   * Format: date-time
+                   * @description Time until which further authentication attempts are blocked.
+                   */
                   lockedUntil: string;
+                  /** @description Human-readable explanation of the result. */
                   message: string;
                 };
               }
             | {
                 token: string;
+                /** @description User associated with the resource. */
                 user: {
-                  /** Format: date-time */
+                  /**
+                   * Format: date-time
+                   * @description Date and time the record was created.
+                   */
                   createdAt: string;
+                  /** @description Unique identifier of the resource. */
                   id: string;
+                  /** @description Whether the user has administrator privileges. */
                   isAdmin: boolean;
+                  /** @description Permission role assigned to the user. */
                   role: string;
+                  /** @description Teams associated with the user. */
                   teams: {
+                    /** @description Unique identifier of the resource. */
                     id: string;
+                    /** @description URL of the logo image. */
                     logoUrl: string;
+                    /** @description Display name of the resource. */
                     name: string;
                   }[];
+                  /** @description Username of the account. */
                   username: string;
                 };
               };
@@ -3909,10 +4172,15 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Error details returned when the operation fails. */
             error: {
               code: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Time until which further authentication attempts are blocked.
+               */
               lockedUntil: string;
+              /** @description Human-readable explanation of the result. */
               message: string;
             };
           };
@@ -3960,6 +4228,7 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Whether the operation succeeded. */
             ok: boolean;
             required: unknown;
           };
@@ -4042,11 +4311,17 @@ export interface operations {
   getAdminTeams: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
@@ -4062,25 +4337,47 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
+              /** @description Code used to join the team. */
               accessCode: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description URL of the logo image. */
               logoUrl: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Whether two-factor authentication is required. */
               twoFactorRequired: boolean;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -4128,6 +4425,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the associated team. */
         teamId: string;
       };
       cookie?: never;
@@ -4147,8 +4445,11 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Whether the operation succeeded. */
             ok: boolean;
+            /** @description ID of the associated team. */
             teamId: string;
+            /** @description Whether two-factor authentication is required. */
             twoFactorRequired: unknown;
           };
         };
@@ -4230,11 +4531,17 @@ export interface operations {
   getAdminUsers: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
@@ -4250,23 +4557,38 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
               _count?: {
                 websites: number;
               };
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Permission role assigned to the user. */
               role: string;
+              /** @description Whether two-factor authentication is required. */
               twoFactorRequired: boolean;
+              /** @description Username of the account. */
               username: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -4314,6 +4636,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the associated user. */
         userId: string;
       };
       cookie?: never;
@@ -4327,6 +4650,7 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Whether two-factor authentication is enabled. */
             isEnabled: boolean;
           };
         };
@@ -4374,6 +4698,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the associated user. */
         userId: string;
       };
       cookie?: never;
@@ -4393,8 +4718,11 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Whether the operation succeeded. */
             ok: boolean;
+            /** @description Whether two-factor authentication is required. */
             twoFactorRequired: unknown;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -4478,6 +4806,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the associated user. */
         userId: string;
       };
       cookie?: never;
@@ -4491,13 +4820,16 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Whether the operation succeeded. */
             ok: boolean;
             reset: {
+              /** @description Single-use backup codes for two-factor authentication. */
               backupCodes: unknown;
               otpUsed: unknown;
               rateLimit: unknown;
               twoFactorAuth: unknown;
             };
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -4543,11 +4875,17 @@ export interface operations {
   getAdminWebsites: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
@@ -4563,17 +4901,31 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: ({
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description ID of the user who created the resource. */
               createdBy: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Domain name associated with the resource. */
               domain: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Whether recording is enabled for the website. */
               recorderEnabled: boolean;
+              /** @description Session replay and heatmap recording configuration. */
               replayConfig:
                 | string
                 | number
@@ -4593,34 +4945,59 @@ export interface operations {
                 | {
                     length: number;
                   };
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the website analytics were last reset.
+               */
               resetAt: string;
+              /** @description ID of the associated team. */
               teamId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             } & {
+              /** @description User who created the resource. */
               createUser?: {
+                /** @description Unique identifier of the resource. */
                 id: string;
+                /** @description Username of the account. */
                 username: string;
               };
+              /** @description Identifier used to access a shared resource. */
               shareId: string;
+              /** @description Team associated with the resource. */
               team?: {
+                /** @description Members of the team. */
                 members: {
+                  /** @description Permission role assigned to the user. */
                   role: string;
+                  /** @description ID of the associated user. */
                   userId: string;
                 }[];
               };
+              /** @description User associated with the resource. */
               user?: {
+                /** @description Unique identifier of the resource. */
                 id: string;
+                /** @description Username of the account. */
                 username: string;
               };
             })[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -4757,7 +5134,10 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** @constant */
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
             ok: true;
           };
         };
@@ -4799,6 +5179,7 @@ export interface operations {
         content: {
           'application/json': {
             token: string;
+            /** @description User associated with the resource. */
             user: unknown;
           };
         };
@@ -4844,6 +5225,7 @@ export interface operations {
   getSubscription: {
     parameters: {
       query?: {
+        /** @description ID of the associated team. */
         teamId?: string;
       };
       header?: never;
@@ -4860,8 +5242,10 @@ export interface operations {
         content: {
           'application/json':
             | {
+                /** @description Error details returned when the operation fails. */
                 error: {
                   code: string;
+                  /** @description Human-readable explanation of the result. */
                   message: string;
                   status: number;
                 };
@@ -4929,6 +5313,7 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Teams associated with the user. */
             teams: unknown;
           };
         };
@@ -5024,11 +5409,17 @@ export interface operations {
   getBoards: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
@@ -5044,13 +5435,22 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description Description of the resource. */
               description: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Configuration parameters for the resource. */
               parameters:
                 | string
                 | number
@@ -5070,17 +5470,28 @@ export interface operations {
                 | {
                     length: number;
                   };
+              /** @description ID of the associated team. */
               teamId: string;
               type: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -5133,18 +5544,32 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Description of the resource. */
           description?: string;
+          /** @description Display name of the resource. */
           name: string;
+          /** @description Configuration parameters for the resource. */
           parameters?: {
-            /** Format: uuid */
+            /**
+             * Format: uuid
+             * @description ID of the tracked link.
+             */
             linkId?: string;
-            /** Format: uuid */
+            /**
+             * Format: uuid
+             * @description ID of the tracking pixel.
+             */
             pixelId?: string;
-            /** Format: uuid */
+            /**
+             * Format: uuid
+             * @description ID of the website.
+             */
             websiteId?: string;
           };
+          /** @description ID of the associated team. */
           teamId?: string | null;
           type: never | 'open';
+          /** @description ID of the associated user. */
           userId?: string | null;
         };
       };
@@ -5157,11 +5582,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Description of the resource. */
             description: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -5181,10 +5613,15 @@ export interface operations {
               | {
                   length: number;
                 };
+            /** @description ID of the associated team. */
             teamId: string;
             type: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -5232,6 +5669,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the board. */
         boardId: string;
       };
       cookie?: never;
@@ -5245,11 +5683,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Description of the resource. */
             description: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -5269,10 +5714,15 @@ export interface operations {
               | {
                   length: number;
                 };
+            /** @description ID of the associated team. */
             teamId: string;
             type: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -5302,6 +5752,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the board. */
         boardId: string;
       };
       cookie?: never;
@@ -5309,8 +5760,11 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Description of the resource. */
           description?: string;
+          /** @description Display name of the resource. */
           name?: string;
+          /** @description Configuration parameters for the resource. */
           parameters?: Record<string, never>;
           type?: never | 'open';
         };
@@ -5324,11 +5778,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Description of the resource. */
             description: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -5348,10 +5809,15 @@ export interface operations {
               | {
                   length: number;
                 };
+            /** @description ID of the associated team. */
             teamId: string;
             type: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -5417,6 +5883,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the board. */
         boardId: string;
       };
       cookie?: never;
@@ -5430,7 +5897,10 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** @constant */
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
             ok: true;
           };
         };
@@ -5460,6 +5930,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the board. */
         boardId: string;
       };
       cookie?: never;
@@ -5467,8 +5938,11 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Description of the resource. */
           description?: string;
+          /** @description Display name of the resource. */
           name?: string;
+          /** @description Configuration parameters for the resource. */
           parameters?: Record<string, never>;
         };
       };
@@ -5481,11 +5955,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Description of the resource. */
             description: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -5505,10 +5986,15 @@ export interface operations {
               | {
                   length: number;
                 };
+            /** @description ID of the associated team. */
             teamId: string;
             type: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -5554,37 +6040,66 @@ export interface operations {
   getBoardShares: {
     parameters: {
       query?: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the board. */
         boardId: string;
       };
       cookie?: never;
@@ -5598,13 +6113,22 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description ID of the resource being shared. */
               entityId: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Configuration parameters for the resource. */
               parameters:
                 | string
                 | number
@@ -5624,16 +6148,27 @@ export interface operations {
                 | {
                     length: number;
                   };
+              /** @description Type of resource made available by the share. */
               shareType: number;
+              /** @description URL slug used to access the resource. */
               slug: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -5681,6 +6216,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the board. */
         boardId: string;
       };
       cookie?: never;
@@ -5688,7 +6224,9 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Display name of the resource. */
           name: string;
+          /** @description Configuration parameters for the resource. */
           parameters?: {
             [key: string]: unknown;
           };
@@ -5703,11 +6241,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description ID of the resource being shared. */
             entityId: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -5727,9 +6272,14 @@ export interface operations {
               | {
                   length: number;
                 };
+            /** @description Type of resource made available by the share. */
             shareType: number;
+            /** @description URL slug used to access the resource. */
             slug: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
           };
         };
@@ -5818,11 +6368,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Description of the dashboard. */
             description: string;
+            /** @description Dashboard board ID, equal to the owning user ID. */
             id: string;
+            /** @description Display name of the dashboard. */
             name: string;
+            /** @description Dashboard configuration, including components, layout, and saved reports. */
             parameters:
               | string
               | number
@@ -5842,10 +6399,16 @@ export interface operations {
               | {
                   length: number;
                 };
+            /** @description ID of the associated team, if any. */
             teamId: string;
+            /** @description Board type used for the dashboard. */
             type: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the user who owns the dashboard. */
             userId: string;
           };
         };
@@ -5880,8 +6443,11 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Description of the dashboard. */
           description?: string;
+          /** @description Display name of the dashboard. */
           name?: string;
+          /** @description Dashboard configuration, including components, layout, and saved reports. */
           parameters?: Record<string, never>;
         };
       };
@@ -5894,11 +6460,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Description of the dashboard. */
             description: string;
+            /** @description Dashboard board ID, equal to the owning user ID. */
             id: string;
+            /** @description Display name of the dashboard. */
             name: string;
+            /** @description Dashboard configuration, including components, layout, and saved reports. */
             parameters:
               | string
               | number
@@ -5918,10 +6491,16 @@ export interface operations {
               | {
                   length: number;
                 };
+            /** @description ID of the associated team, if any. */
             teamId: string;
+            /** @description Board type used for the dashboard. */
             type: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the user who owns the dashboard. */
             userId: string;
           };
         };
@@ -5980,6 +6559,7 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Whether the operation succeeded. */
             ok: boolean;
           };
         };
@@ -5989,11 +6569,17 @@ export interface operations {
   getLinks: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
@@ -6009,26 +6595,49 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description URL slug used to access the resource. */
               slug: string;
+              /** @description ID of the associated team. */
               teamId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description URL associated with the resource. */
               url: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -6081,10 +6690,15 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Unique identifier of the resource. */
           id?: string | null;
+          /** @description Display name of the resource. */
           name: string;
+          /** @description URL slug used to access the resource. */
           slug: string;
+          /** @description ID of the associated team. */
           teamId?: string | null;
+          /** @description URL associated with the resource. */
           url: string;
         };
       };
@@ -6097,17 +6711,32 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was deleted, if applicable.
+             */
             deletedAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description URL slug used to access the resource. */
             slug: string;
+            /** @description ID of the associated team. */
             teamId: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description URL associated with the resource. */
             url: string;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -6155,6 +6784,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the tracked link. */
         linkId: string;
       };
       cookie?: never;
@@ -6168,17 +6798,32 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was deleted, if applicable.
+             */
             deletedAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description URL slug used to access the resource. */
             slug: string;
+            /** @description ID of the associated team. */
             teamId: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description URL associated with the resource. */
             url: string;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -6208,6 +6853,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the tracked link. */
         linkId: string;
       };
       cookie?: never;
@@ -6215,8 +6861,11 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Display name of the resource. */
           name?: string;
+          /** @description URL slug used to access the resource. */
           slug?: string;
+          /** @description URL associated with the resource. */
           url?: string;
         };
       };
@@ -6229,17 +6878,32 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was deleted, if applicable.
+             */
             deletedAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description URL slug used to access the resource. */
             slug: string;
+            /** @description ID of the associated team. */
             teamId: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description URL associated with the resource. */
             url: string;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -6305,6 +6969,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the tracked link. */
         linkId: string;
       };
       cookie?: never;
@@ -6318,7 +6983,10 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** @constant */
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
             ok: true;
           };
         };
@@ -6346,37 +7014,66 @@ export interface operations {
   getLinkShares: {
     parameters: {
       query?: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the tracked link. */
         linkId: string;
       };
       cookie?: never;
@@ -6390,13 +7087,22 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description ID of the resource being shared. */
               entityId: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Configuration parameters for the resource. */
               parameters:
                 | string
                 | number
@@ -6416,16 +7122,27 @@ export interface operations {
                 | {
                     length: number;
                   };
+              /** @description Type of resource made available by the share. */
               shareType: number;
+              /** @description URL slug used to access the resource. */
               slug: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -6473,6 +7190,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the tracked link. */
         linkId: string;
       };
       cookie?: never;
@@ -6480,7 +7198,9 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Display name of the resource. */
           name: string;
+          /** @description Configuration parameters for the resource. */
           parameters?: {
             [key: string]: unknown;
           };
@@ -6495,11 +7215,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description ID of the resource being shared. */
             entityId: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -6519,9 +7246,14 @@ export interface operations {
               | {
                   length: number;
                 };
+            /** @description Type of resource made available by the share. */
             shareType: number;
+            /** @description URL slug used to access the resource. */
             slug: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
           };
         };
@@ -6567,9 +7299,13 @@ export interface operations {
   getLinksCharts: {
     parameters: {
       query: {
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description Comma-separated resource IDs. Provide between 1 and 20 IDs. */
         ids: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
       };
       header?: never;
@@ -6585,6 +7321,7 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Data returned by the operation. */
             data: {
               [key: string]: {
                 total: number;
@@ -6648,8 +7385,11 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description API key authentication details. */
             apiKey?: {
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
             };
             authType?: 'session' | 'share' | 'api-key' | 'oauth';
@@ -6659,25 +7399,36 @@ export interface operations {
               tokenId?: string;
             };
             shareToken?: {
+              /** @description ID of the board. */
               boardId?: string;
+              /** @description ID of the tracked link. */
               linkId?: string;
               linkIds?: string[];
+              /** @description Configuration parameters for the resource. */
               parameters?: {
                 allowFilter?: boolean;
                 theme?: 'light' | 'dark';
               } & {
                 [key: string]: false | true | 'light' | 'dark';
               };
+              /** @description ID of the tracking pixel. */
               pixelId?: string;
               pixelIds?: string[];
+              /** @description Type of resource made available by the share. */
               shareType?: number;
+              /** @description ID of the website. */
               websiteId?: string;
               websiteIds?: string[];
             };
+            /** @description User associated with the resource. */
             user?: {
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Whether the user has administrator privileges. */
               isAdmin: boolean;
+              /** @description Permission role assigned to the user. */
               role: string;
+              /** @description Username of the account. */
               username: string;
             };
           };
@@ -6719,12 +7470,21 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Visible prefix used to identify an API key. */
             keyPrefix: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the credential was last used.
+             */
             lastUsedAt: string;
+            /** @description Display name of the resource. */
             name: string;
           }[];
         };
@@ -6777,6 +7537,7 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Display name of the resource. */
           name: unknown;
         };
       };
@@ -6789,11 +7550,17 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
             key: string;
+            /** @description Visible prefix used to identify an API key. */
             keyPrefix: string;
+            /** @description Display name of the resource. */
             name: string;
           };
         };
@@ -6859,6 +7626,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the API key. */
         keyId: string;
       };
       cookie?: never;
@@ -6872,7 +7640,10 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** @constant */
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
             ok: true;
           };
         };
@@ -6925,7 +7696,9 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Current account password. */
           currentPassword: string;
+          /** @description New password to set for the account. */
           newPassword: string;
         };
       };
@@ -6938,10 +7711,16 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Permission role assigned to the user. */
             role: string;
+            /** @description Username of the account. */
             username: string;
           };
         };
@@ -6987,10 +7766,15 @@ export interface operations {
   getMyTeams: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
@@ -7006,25 +7790,47 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
+              /** @description Code used to join the team. */
               accessCode: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description URL of the logo image. */
               logoUrl: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Whether two-factor authentication is required. */
               twoFactorRequired: boolean;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -7070,11 +7876,17 @@ export interface operations {
   getMyWebsites: {
     parameters: {
       query?: {
+        /** @description Set a non-empty value to include websites accessible through team membership. */
         includeTeams?: string;
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
@@ -7090,17 +7902,31 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: ({
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description ID of the user who created the resource. */
               createdBy: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Domain name associated with the resource. */
               domain: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Whether recording is enabled for the website. */
               recorderEnabled: boolean;
+              /** @description Session replay and heatmap recording configuration. */
               replayConfig:
                 | string
                 | number
@@ -7120,34 +7946,59 @@ export interface operations {
                 | {
                     length: number;
                   };
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the website analytics were last reset.
+               */
               resetAt: string;
+              /** @description ID of the associated team. */
               teamId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             } & {
+              /** @description User who created the resource. */
               createUser?: {
+                /** @description Unique identifier of the resource. */
                 id: string;
+                /** @description Username of the account. */
                 username: string;
               };
+              /** @description Identifier used to access a shared resource. */
               shareId: string;
+              /** @description Team associated with the resource. */
               team?: {
+                /** @description Members of the team. */
                 members: {
+                  /** @description Permission role assigned to the user. */
                   role: string;
+                  /** @description ID of the associated user. */
                   userId: string;
                 }[];
               };
+              /** @description User associated with the resource. */
               user?: {
+                /** @description Unique identifier of the resource. */
                 id: string;
+                /** @description Username of the account. */
                 username: string;
               };
             })[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -7193,13 +8044,21 @@ export interface operations {
   describeOAuthAuthorization: {
     parameters: {
       query: {
+        /** @description OAuth client identifier. */
         client_id: string;
+        /** @description PKCE challenge derived from the code verifier. */
         code_challenge?: string;
+        /** @description Method used to derive the PKCE challenge; use S256. */
         code_challenge_method?: string;
+        /** @description Registered redirect URI to receive the authorization response. */
         redirect_uri?: string;
+        /** @description Resource URI identifying the API targeted by the OAuth request. */
         resource?: string;
+        /** @description OAuth authorization response type; use code. */
         response_type?: string;
+        /** @description Space-separated OAuth permissions. */
         scope?: string;
+        /** @description Client-provided value returned unchanged to correlate the authorization response. */
         state?: string;
       };
       header?: never;
@@ -7419,11 +8278,17 @@ export interface operations {
   getPixels: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
@@ -7439,25 +8304,47 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description URL slug used to access the resource. */
               slug: string;
+              /** @description ID of the associated team. */
               teamId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -7510,9 +8397,13 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Unique identifier of the resource. */
           id?: string | null;
+          /** @description Display name of the resource. */
           name: string;
+          /** @description URL slug used to access the resource. */
           slug: string;
+          /** @description ID of the associated team. */
           teamId?: string | null;
         };
       };
@@ -7525,16 +8416,30 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was deleted, if applicable.
+             */
             deletedAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description URL slug used to access the resource. */
             slug: string;
+            /** @description ID of the associated team. */
             teamId: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -7582,6 +8487,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the tracking pixel. */
         pixelId: string;
       };
       cookie?: never;
@@ -7595,16 +8501,30 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was deleted, if applicable.
+             */
             deletedAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description URL slug used to access the resource. */
             slug: string;
+            /** @description ID of the associated team. */
             teamId: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -7634,6 +8554,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the tracking pixel. */
         pixelId: string;
       };
       cookie?: never;
@@ -7641,7 +8562,9 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Display name of the resource. */
           name?: string;
+          /** @description URL slug used to access the resource. */
           slug?: string;
         };
       };
@@ -7654,16 +8577,30 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was deleted, if applicable.
+             */
             deletedAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description URL slug used to access the resource. */
             slug: string;
+            /** @description ID of the associated team. */
             teamId: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -7729,6 +8666,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the tracking pixel. */
         pixelId: string;
       };
       cookie?: never;
@@ -7742,7 +8680,10 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** @constant */
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
             ok: true;
           };
         };
@@ -7770,37 +8711,66 @@ export interface operations {
   getPixelShares: {
     parameters: {
       query?: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the tracking pixel. */
         pixelId: string;
       };
       cookie?: never;
@@ -7814,13 +8784,22 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description ID of the resource being shared. */
               entityId: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Configuration parameters for the resource. */
               parameters:
                 | string
                 | number
@@ -7840,16 +8819,27 @@ export interface operations {
                 | {
                     length: number;
                   };
+              /** @description Type of resource made available by the share. */
               shareType: number;
+              /** @description URL slug used to access the resource. */
               slug: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -7897,6 +8887,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the tracking pixel. */
         pixelId: string;
       };
       cookie?: never;
@@ -7904,7 +8895,9 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Display name of the resource. */
           name: string;
+          /** @description Configuration parameters for the resource. */
           parameters?: {
             [key: string]: unknown;
           };
@@ -7919,11 +8912,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description ID of the resource being shared. */
             entityId: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -7943,9 +8943,14 @@ export interface operations {
               | {
                   length: number;
                 };
+            /** @description Type of resource made available by the share. */
             shareType: number;
+            /** @description URL slug used to access the resource. */
             slug: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
           };
         };
@@ -7991,9 +8996,13 @@ export interface operations {
   getPixelsCharts: {
     parameters: {
       query: {
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description Comma-separated resource IDs. Provide between 1 and 20 IDs. */
         ids: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
       };
       header?: never;
@@ -8009,6 +9018,7 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Data returned by the operation. */
             data: {
               [key: string]: {
                 total: number;
@@ -8059,36 +9069,64 @@ export interface operations {
   getRealtime: {
     parameters: {
       query?: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -8107,26 +9145,38 @@ export interface operations {
             };
             events: {
               __type: 'event' | 'session' | 'pageview';
+              /** @description Browser used by the visitor. */
               browser: string;
+              /** @description Country code of the visitor. */
               country: string;
+              /** @description Date and time the record was created. */
               createdAt: string;
+              /** @description Device category used by the visitor. */
               device: string;
+              /** @description Name of the custom event. */
               eventName: string;
+              /** @description Hostname on which the activity occurred. */
               hostname: string;
+              /** @description Operating system used by the visitor. */
               os: string;
+              /** @description Domain of the referring page. */
               referrerDomain: string;
+              /** @description ID of the visitor session. */
               sessionId: string;
+              /** @description Path portion of the page URL. */
               urlPath: string;
             }[];
             referrers: {
               [key: string]: number;
             };
             series: {
+              /** @description Pageview counts for the selected period. */
               views: {
                 t: string;
                 x: string;
                 y: number;
               }[];
+              /** @description Unique visitor counts for the selected period. */
               visitors: {
                 t: string;
                 x: string;
@@ -8137,7 +9187,9 @@ export interface operations {
             totals: {
               countries: number;
               events: number;
+              /** @description Pageview counts for the selected period. */
               views: number;
+              /** @description Unique visitor counts for the selected period. */
               visitors: number;
             };
             urls: {
@@ -8208,28 +9260,40 @@ export interface operations {
               payload: {
                 events: (
                   | {
+                      /** @description Page height in pixels. */
                       pageH?: number;
+                      /** @description Page width in pixels. */
                       pageW?: number;
+                      /** @description Horizontal position on the page in pixels. */
                       pageX?: number;
+                      /** @description Vertical position on the page in pixels. */
                       pageY?: number;
                       timestamp?: number;
                       /** @constant */
                       type: 'click';
+                      /** @description URL associated with the resource. */
                       url: string;
+                      /** @description Viewport height in pixels. */
                       viewportH?: number;
+                      /** @description Viewport width in pixels. */
                       viewportW?: number;
                       x?: number;
                       y?: number;
                     }
                   | {
+                      /** @description Page height in pixels. */
                       pageH?: number;
+                      /** @description Page width in pixels. */
                       pageW?: number;
                       scrollPct?: number;
                       timestamp?: number;
                       /** @constant */
                       type: 'scroll';
+                      /** @description URL associated with the resource. */
                       url: string;
+                      /** @description Viewport height in pixels. */
                       viewportH?: number;
+                      /** @description Viewport width in pixels. */
                       viewportW?: number;
                     }
                 )[];
@@ -8251,9 +9315,11 @@ export interface operations {
         content: {
           'application/json':
             | {
+                /** @description Whether the operation succeeded. */
                 ok: boolean;
               }
             | {
+                /** @description Whether the operation succeeded. */
                 ok: boolean;
                 reason: string;
               }
@@ -8339,10 +9405,15 @@ export interface operations {
   getReports: {
     parameters: {
       query: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Type of resource or analytics dimension to return. */
         type?: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       header?: never;
@@ -8358,13 +9429,22 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: ({
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description Description of the resource. */
               description: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Configuration parameters for the resource. */
               parameters:
                 | string
                 | number
@@ -8385,21 +9465,34 @@ export interface operations {
                     length: number;
                   };
               type: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
+              /** @description ID of the website. */
               websiteId: string;
             } & {
               website?: {
+                /** @description Domain name associated with the resource. */
                 domain: string;
+                /** @description ID of the associated user. */
                 userId: string;
               };
             })[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -8452,13 +9545,19 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Description of the resource. */
           description?: string;
+          /** @description Display name of the resource. */
           name: string;
+          /** @description Configuration parameters for the resource. */
           parameters: {
             [key: string]: unknown;
           };
           type: string;
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the website.
+           */
           websiteId: string;
         };
       };
@@ -8471,11 +9570,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Description of the resource. */
             description: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -8496,9 +9602,14 @@ export interface operations {
                   length: number;
                 };
             type: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
+            /** @description ID of the website. */
             websiteId: string;
           };
         };
@@ -8546,6 +9657,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the saved report. */
         reportId: string;
       };
       cookie?: never;
@@ -8559,11 +9671,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Description of the resource. */
             description: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -8584,9 +9703,14 @@ export interface operations {
                   length: number;
                 };
             type: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
+            /** @description ID of the website. */
             websiteId: string;
           };
         };
@@ -8634,6 +9758,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the saved report. */
         reportId: string;
       };
       cookie?: never;
@@ -8641,13 +9766,19 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Description of the resource. */
           description?: string;
+          /** @description Display name of the resource. */
           name: string;
+          /** @description Configuration parameters for the resource. */
           parameters: {
             [key: string]: unknown;
           };
           type: string;
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the website.
+           */
           websiteId: string;
         };
       };
@@ -8660,11 +9791,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Description of the resource. */
             description: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -8685,9 +9823,14 @@ export interface operations {
                   length: number;
                 };
             type: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
+            /** @description ID of the website. */
             websiteId: string;
           };
         };
@@ -8753,6 +9896,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the saved report. */
         reportId: string;
       };
       cookie?: never;
@@ -8766,7 +9910,10 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** @constant */
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
             ok: true;
           };
         };
@@ -8819,14 +9966,19 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Filters applied to the analytics data. */
           filters: {
             [key: string]: unknown;
           };
+          /** @description Configuration parameters for the resource. */
           parameters: {
             [key: string]: unknown;
           };
           type: string;
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the website.
+           */
           websiteId: string;
         };
       };
@@ -8840,35 +9992,46 @@ export interface operations {
         content: {
           'application/json': {
             paidAds: {
+              /** @description Display name of the resource. */
               name: string;
               value: number;
             }[];
+            /** @description URL of the referring page. */
             referrer: {
+              /** @description Display name of the resource. */
               name: string;
               value: number;
             }[];
             total: {
+              /** @description Pageview counts for the selected period. */
               pageviews: number;
+              /** @description Unique visitor counts for the selected period. */
               visitors: number;
+              /** @description Visit counts for the selected period. */
               visits: number;
             };
             utm_campaign: {
+              /** @description Display name of the resource. */
               name: string;
               value: number;
             }[];
             utm_content: {
+              /** @description Display name of the resource. */
               name: string;
               value: number;
             }[];
             utm_medium: {
+              /** @description Display name of the resource. */
               name: string;
               value: number;
             }[];
             utm_source: {
+              /** @description Display name of the resource. */
               name: string;
               value: number;
             }[];
             utm_term: {
+              /** @description Display name of the resource. */
               name: string;
               value: number;
             }[];
@@ -8923,14 +10086,19 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Filters applied to the analytics data. */
           filters: {
             [key: string]: unknown;
           };
+          /** @description Configuration parameters for the resource. */
           parameters: {
             [key: string]: unknown;
           };
           type: string;
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the website.
+           */
           websiteId: string;
         };
       };
@@ -8943,10 +10111,15 @@ export interface operations {
         };
         content: {
           'application/json': ({
+            /** @description Number of visits with only one pageview. */
             bounces: number;
+            /** @description Total visit duration in seconds. */
             totaltime: number;
+            /** @description Pageview counts for the selected period. */
             views: number;
+            /** @description Unique visitor counts for the selected period. */
             visitors: number;
+            /** @description Visit counts for the selected period. */
             visits: number;
           } & {
             [key: string]: string | number;
@@ -9001,14 +10174,19 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Filters applied to the analytics data. */
           filters: {
             [key: string]: unknown;
           };
+          /** @description Configuration parameters for the resource. */
           parameters: {
             [key: string]: unknown;
           };
           type: string;
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the website.
+           */
           websiteId: string;
         };
       };
@@ -9023,6 +10201,7 @@ export interface operations {
           'application/json': {
             dropoff: number;
             dropped: number;
+            /** @description Filters applied to the analytics data. */
             filters?: {
               operator: string;
               property: string;
@@ -9032,6 +10211,7 @@ export interface operations {
             remaining: number;
             type: string;
             value: string;
+            /** @description Unique visitor counts for the selected period. */
             visitors: number;
           }[];
         };
@@ -9084,14 +10264,19 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Filters applied to the analytics data. */
           filters: {
             [key: string]: unknown;
           };
+          /** @description Configuration parameters for the resource. */
           parameters: {
             [key: string]: unknown;
           };
           type: string;
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the website.
+           */
           websiteId: string;
         };
       };
@@ -9157,14 +10342,19 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Filters applied to the analytics data. */
           filters: {
             [key: string]: unknown;
           };
+          /** @description Configuration parameters for the resource. */
           parameters: {
             [key: string]: unknown;
           };
           type: string;
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the website.
+           */
           websiteId: string;
         };
       };
@@ -9179,17 +10369,26 @@ export interface operations {
           'application/json': {
             mode: 'click' | 'scroll';
             pages: {
+              /** @description Number of matching records. */
               count: number;
               sessions: number;
+              /** @description Path portion of the page URL. */
               urlPath: string;
             }[];
             points: {
+              /** @description Number of matching records. */
               count: number;
+              /** @description Page height in pixels. */
               pageH: number;
+              /** @description Page width in pixels. */
               pageW: number;
+              /** @description Horizontal position on the page in pixels. */
               pageX: number;
+              /** @description Vertical position on the page in pixels. */
               pageY: number;
+              /** @description Viewport height in pixels. */
               viewportH: number;
+              /** @description Viewport width in pixels. */
               viewportW: number;
               x: number;
               y: number;
@@ -9197,26 +10396,40 @@ export interface operations {
             scroll: {
               buckets: {
                 depth: number;
+                /** @description Page height in pixels. */
                 pageH: number;
+                /** @description Page width in pixels. */
                 pageW: number;
                 sessions: number;
+                /** @description Viewport height in pixels. */
                 viewportH: number;
+                /** @description Viewport width in pixels. */
                 viewportW: number;
               }[];
+              /** @description Page height in pixels. */
               pageH: number;
+              /** @description Page width in pixels. */
               pageW: number;
               totalSessions: number;
+              /** @description Viewport height in pixels. */
               viewportH: number;
+              /** @description Viewport width in pixels. */
               viewportW: number;
             };
             snapshot: {
+              /** @description Unique identifier of the resource. */
               id: string;
               /** @constant */
               kind: 'iframe';
+              /** @description Page height in pixels. */
               pageH: number;
+              /** @description Page width in pixels. */
               pageW: number;
+              /** @description URL associated with the resource. */
               url: string;
+              /** @description Viewport height in pixels. */
               viewportH: number;
+              /** @description Viewport width in pixels. */
               viewportW: number;
             };
           };
@@ -9270,14 +10483,19 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Filters applied to the analytics data. */
           filters: {
             [key: string]: unknown;
           };
+          /** @description Configuration parameters for the resource. */
           parameters: {
             [key: string]: unknown;
           };
           type: string;
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the website.
+           */
           websiteId: string;
         };
       };
@@ -9290,6 +10508,7 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
             e1: string;
             e2: string;
@@ -9349,14 +10568,19 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Filters applied to the analytics data. */
           filters: {
             [key: string]: unknown;
           };
+          /** @description Configuration parameters for the resource. */
           parameters: {
             [key: string]: unknown;
           };
           type: string;
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the website.
+           */
           websiteId: string;
         };
       };
@@ -9426,14 +10650,19 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Filters applied to the analytics data. */
           filters: {
             [key: string]: unknown;
           };
+          /** @description Configuration parameters for the resource. */
           parameters: {
             [key: string]: unknown;
           };
           type: string;
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the website.
+           */
           websiteId: string;
         };
       };
@@ -9450,6 +10679,7 @@ export interface operations {
             day: number;
             percentage: number;
             returnVisitors: number;
+            /** @description Unique visitor counts for the selected period. */
             visitors: number;
           }[];
         };
@@ -9502,14 +10732,19 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Filters applied to the analytics data. */
           filters: {
             [key: string]: unknown;
           };
+          /** @description Configuration parameters for the resource. */
           parameters: {
             [key: string]: unknown;
           };
           type: string;
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the website.
+           */
           websiteId: string;
         };
       };
@@ -9523,25 +10758,34 @@ export interface operations {
         content: {
           'application/json': {
             channel: {
+              /** @description Display name of the resource. */
               name: string;
               value: number;
             }[];
             chart: {
+              /** @description Number of matching records. */
               count: number;
               t: string;
               x: string;
               y: number;
             }[];
+            /** @description Country code of the visitor. */
             country: {
+              /** @description Display name of the resource. */
               name: string;
               value: number;
             }[];
+            /** @description URL of the referring page. */
             referrer: {
+              /** @description Display name of the resource. */
               name: string;
               value: number;
             }[];
+            /** @description Region or subdivision of the visitor. */
             region: {
+              /** @description Country code of the visitor. */
               country: string;
+              /** @description Display name of the resource. */
               name: string;
               value: number;
             }[];
@@ -9597,14 +10841,19 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Filters applied to the analytics data. */
           filters: {
             [key: string]: unknown;
           };
+          /** @description Configuration parameters for the resource. */
           parameters: {
             [key: string]: unknown;
           };
           type: string;
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the website.
+           */
           websiteId: string;
         };
       };
@@ -9694,31 +10943,44 @@ export interface operations {
       content: {
         'application/json': {
           payload: {
+            /** @description Browser used by the visitor. */
             browser?: string;
             cls?: number;
+            /** @description Data returned by the operation. */
             data?: {
               [key: string]: unknown;
             };
+            /** @description Device category used by the visitor. */
             device?: string;
             fcp?: number;
+            /** @description Hostname on which the activity occurred. */
             hostname?: string;
+            /** @description Unique identifier of the resource. */
             id?: string;
             inp?: number;
             ip?: string;
+            /** @description Preferred language reported by the visitor browser. */
             language?: string;
             lcp?: number;
             /** Format: uuid */
             link?: string;
+            /** @description Display name of the resource. */
             name?: unknown;
+            /** @description Operating system used by the visitor. */
             os?: string;
             /** Format: uuid */
             pixel?: string;
+            /** @description URL of the referring page. */
             referrer?: string;
+            /** @description Screen resolution of the visitor device. */
             screen?: string;
+            /** @description Tag attached to the tracked activity. */
             tag?: unknown;
             timestamp?: number;
+            /** @description Title of the page. */
             title?: string;
             ttfb?: number;
+            /** @description URL associated with the resource. */
             url?: string;
             userAgent?: string;
             /** Format: uuid */
@@ -9742,7 +11004,9 @@ export interface operations {
               }
             | {
                 cache: unknown;
+                /** @description ID of the visitor session. */
                 sessionId: unknown;
+                /** @description ID of the visit. */
                 visitId: unknown;
               };
         };
@@ -9813,13 +11077,20 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the resource being shared.
+           */
           entityId: string;
+          /** @description Display name of the resource. */
           name: string;
+          /** @description Configuration parameters for the resource. */
           parameters: {
             [key: string]: unknown;
           };
+          /** @description Type of resource made available by the share. */
           shareType: number;
+          /** @description URL slug used to access the resource. */
           slug?: string;
         };
       };
@@ -9832,11 +11103,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description ID of the resource being shared. */
             entityId: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -9856,9 +11134,14 @@ export interface operations {
               | {
                   length: number;
                 };
+            /** @description Type of resource made available by the share. */
             shareType: number;
+            /** @description URL slug used to access the resource. */
             slug: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
           };
         };
@@ -9906,6 +11189,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description URL slug used to access the resource. */
         slug: string;
       };
       cookie?: never;
@@ -9948,6 +11232,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description Identifier used to access a shared resource. */
         shareId: string;
       };
       cookie?: never;
@@ -9961,11 +11246,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description ID of the resource being shared. */
             entityId: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -9985,9 +11277,14 @@ export interface operations {
               | {
                   length: number;
                 };
+            /** @description Type of resource made available by the share. */
             shareType: number;
+            /** @description URL slug used to access the resource. */
             slug: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
           };
         };
@@ -10017,6 +11314,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description Identifier used to access a shared resource. */
         shareId: string;
       };
       cookie?: never;
@@ -10024,10 +11322,13 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Display name of the resource. */
           name: string;
+          /** @description Configuration parameters for the resource. */
           parameters: {
             [key: string]: unknown;
           };
+          /** @description URL slug used to access the resource. */
           slug: string;
         };
       };
@@ -10040,11 +11341,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description ID of the resource being shared. */
             entityId: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -10064,9 +11372,14 @@ export interface operations {
               | {
                   length: number;
                 };
+            /** @description Type of resource made available by the share. */
             shareType: number;
+            /** @description URL slug used to access the resource. */
             slug: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
           };
         };
@@ -10132,6 +11445,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description Identifier used to access a shared resource. */
         shareId: string;
       };
       cookie?: never;
@@ -10145,7 +11459,10 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** @constant */
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
             ok: true;
           };
         };
@@ -10173,10 +11490,15 @@ export interface operations {
   getTeams: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
@@ -10192,25 +11514,47 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
+              /** @description Code used to join the team. */
               accessCode: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description URL of the logo image. */
               logoUrl: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Whether two-factor authentication is required. */
               twoFactorRequired: boolean;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -10263,6 +11607,7 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Display name of the resource. */
           name: string;
           /** Format: uuid */
           ownerId?: string;
@@ -10278,26 +11623,50 @@ export interface operations {
         content: {
           'application/json': [
             {
+              /** @description Code used to join the team. */
               accessCode: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description URL of the logo image. */
               logoUrl: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Whether two-factor authentication is required. */
               twoFactorRequired: boolean;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
             },
             {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Permission role assigned to the user. */
               role: string;
+              /** @description ID of the associated team. */
               teamId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             },
           ];
@@ -10346,6 +11715,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the associated team. */
         teamId: string;
       };
       cookie?: never;
@@ -10359,16 +11729,30 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Code used to join the team. */
             accessCode: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was deleted, if applicable.
+             */
             deletedAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description URL of the logo image. */
             logoUrl: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Whether two-factor authentication is required. */
             twoFactorRequired: boolean;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
           };
         };
@@ -10416,6 +11800,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the associated team. */
         teamId: string;
       };
       cookie?: never;
@@ -10423,7 +11808,9 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Code used to join the team. */
           accessCode?: string;
+          /** @description Display name of the resource. */
           name?: string;
         };
       };
@@ -10436,16 +11823,30 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Code used to join the team. */
             accessCode: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was deleted, if applicable.
+             */
             deletedAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description URL of the logo image. */
             logoUrl: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Whether two-factor authentication is required. */
             twoFactorRequired: boolean;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
           };
         };
@@ -10493,6 +11894,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the associated team. */
         teamId: string;
       };
       cookie?: never;
@@ -10506,7 +11908,10 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** @constant */
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
             ok: true;
           };
         };
@@ -10534,15 +11939,22 @@ export interface operations {
   getTeamBoards: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
       path: {
+        /** @description ID of the associated team. */
         teamId: string;
       };
       cookie?: never;
@@ -10556,13 +11968,22 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description Description of the resource. */
               description: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Configuration parameters for the resource. */
               parameters:
                 | string
                 | number
@@ -10582,17 +12003,28 @@ export interface operations {
                 | {
                     length: number;
                   };
+              /** @description ID of the associated team. */
               teamId: string;
               type: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -10638,15 +12070,22 @@ export interface operations {
   getTeamLinks: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
       path: {
+        /** @description ID of the associated team. */
         teamId: string;
       };
       cookie?: never;
@@ -10660,26 +12099,49 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description URL slug used to access the resource. */
               slug: string;
+              /** @description ID of the associated team. */
               teamId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description URL associated with the resource. */
               url: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -10725,15 +12187,22 @@ export interface operations {
   getTeamPixels: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
       path: {
+        /** @description ID of the associated team. */
         teamId: string;
       };
       cookie?: never;
@@ -10747,25 +12216,47 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description URL slug used to access the resource. */
               slug: string;
+              /** @description ID of the associated team. */
               teamId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -10811,13 +12302,18 @@ export interface operations {
   getTeamUsers: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the associated team. */
         teamId: string;
       };
       cookie?: never;
@@ -10831,27 +12327,48 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: ({
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Permission role assigned to the user. */
               role: string;
+              /** @description ID of the associated team. */
               teamId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             } & {
+              /** @description User associated with the resource. */
               user?: {
+                /** @description Unique identifier of the resource. */
                 id: string;
+                /** @description Username of the account. */
                 username: string;
               };
             })[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -10899,6 +12416,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the associated team. */
         teamId: string;
       };
       cookie?: never;
@@ -10906,9 +12424,15 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
-          /** @enum {string} */
+          /**
+           * @description Permission role assigned to the user.
+           * @enum {string}
+           */
           role: 'team-member' | 'team-view-only' | 'team-manager';
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the associated user.
+           */
           userId: string;
         };
       };
@@ -10921,13 +12445,23 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Permission role assigned to the user. */
             role: string;
+            /** @description ID of the associated team. */
             teamId: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -10975,7 +12509,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the associated team. */
         teamId: string;
+        /** @description ID of the associated user. */
         userId: string;
       };
       cookie?: never;
@@ -10989,13 +12525,23 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Permission role assigned to the user. */
             role: string;
+            /** @description ID of the associated team. */
             teamId: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -11025,7 +12571,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the associated team. */
         teamId: string;
+        /** @description ID of the associated user. */
         userId: string;
       };
       cookie?: never;
@@ -11033,7 +12581,10 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
-          /** @enum {string} */
+          /**
+           * @description Permission role assigned to the user.
+           * @enum {string}
+           */
           role: 'team-member' | 'team-view-only' | 'team-manager';
         };
       };
@@ -11046,13 +12597,23 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Permission role assigned to the user. */
             role: string;
+            /** @description ID of the associated team. */
             teamId: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -11100,7 +12661,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the associated team. */
         teamId: string;
+        /** @description ID of the associated user. */
         userId: string;
       };
       cookie?: never;
@@ -11114,7 +12677,10 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** @constant */
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
             ok: true;
           };
         };
@@ -11160,15 +12726,22 @@ export interface operations {
   getTeamWebsites: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
       path: {
+        /** @description ID of the associated team. */
         teamId: string;
       };
       cookie?: never;
@@ -11182,17 +12755,31 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: ({
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description ID of the user who created the resource. */
               createdBy: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Domain name associated with the resource. */
               domain: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Whether recording is enabled for the website. */
               recorderEnabled: boolean;
+              /** @description Session replay and heatmap recording configuration. */
               replayConfig:
                 | string
                 | number
@@ -11212,34 +12799,59 @@ export interface operations {
                 | {
                     length: number;
                   };
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the website analytics were last reset.
+               */
               resetAt: string;
+              /** @description ID of the associated team. */
               teamId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             } & {
+              /** @description User who created the resource. */
               createUser?: {
+                /** @description Unique identifier of the resource. */
                 id: string;
+                /** @description Username of the account. */
                 username: string;
               };
+              /** @description Identifier used to access a shared resource. */
               shareId: string;
+              /** @description Team associated with the resource. */
               team?: {
+                /** @description Members of the team. */
                 members: {
+                  /** @description Permission role assigned to the user. */
                   role: string;
+                  /** @description ID of the associated user. */
                   userId: string;
                 }[];
               };
+              /** @description User associated with the resource. */
               user?: {
+                /** @description Unique identifier of the resource. */
                 id: string;
+                /** @description Username of the account. */
                 username: string;
               };
             })[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -11292,6 +12904,7 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Code used to join the team. */
           accessCode: string;
         };
       };
@@ -11304,13 +12917,23 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Permission role assigned to the user. */
             role: string;
+            /** @description ID of the associated team. */
             teamId: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -11381,11 +13004,19 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description Unique identifier of the resource.
+           */
           id?: string;
+          /** @description Password used to authenticate the account. */
           password: string;
-          /** @enum {string} */
+          /**
+           * @description Permission role assigned to the user.
+           * @enum {string}
+           */
           role: 'admin' | 'user' | 'view-only';
+          /** @description Username of the account. */
           username: string;
         };
       };
@@ -11398,8 +13029,11 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Permission role assigned to the user. */
             role: string;
+            /** @description Username of the account. */
             username: string;
           };
         };
@@ -11447,6 +13081,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the associated user. */
         userId: string;
       };
       cookie?: never;
@@ -11461,14 +13096,21 @@ export interface operations {
         content: {
           'application/json': {
             _count: {
+              /** @description API keys associated with the user. */
               apiKeys: number;
+              /** @description Boards associated with the user. */
               boards: number;
+              /** @description ID of the user who created the resource. */
               createdBy: number;
+              /** @description Tracked links associated with the user. */
               links: number;
               oauthAuthorizationCodes: number;
               oauthRefreshTokens: number;
+              /** @description Tracking pixels associated with the user. */
               pixels: number;
+              /** @description Saved reports associated with the user. */
               reports: number;
+              /** @description Teams associated with the user. */
               teams: number;
               twoFactorAuth: number;
               twoFactorBackupCodes: number;
@@ -11476,23 +13118,42 @@ export interface operations {
               twoFactorRateLimit: number;
               websites: number;
             };
+            /** @description API keys associated with the user. */
             apiKeys: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
               keyHash: string;
+              /** @description Visible prefix used to identify an API key. */
               keyPrefix: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the credential was last used.
+               */
               lastUsedAt: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
+            /** @description Boards associated with the user. */
             boards: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description Description of the resource. */
               description: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Configuration parameters for the resource. */
               parameters:
                 | string
                 | number
@@ -11512,24 +13173,45 @@ export interface operations {
                 | {
                     length: number;
                   };
+              /** @description ID of the associated team. */
               teamId: string;
               type: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description ID of the user who created the resource. */
             createdBy: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description ID of the user who created the resource. */
               createdBy: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Domain name associated with the resource. */
               domain: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Whether recording is enabled for the website. */
               recorderEnabled: boolean;
+              /** @description Session replay and heatmap recording configuration. */
               replayConfig:
                 | string
                 | number
@@ -11549,26 +13231,51 @@ export interface operations {
                 | {
                     length: number;
                   };
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the website analytics were last reset.
+               */
               resetAt: string;
+              /** @description ID of the associated team. */
               teamId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Tracked links associated with the user. */
             links: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description URL slug used to access the resource. */
               slug: string;
+              /** @description ID of the associated team. */
               teamId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description URL associated with the resource. */
               url: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
             oauthAuthorizationCodes: {
@@ -11576,54 +13283,107 @@ export interface operations {
               codeChallenge: string;
               codeChallengeMethod: string;
               codeHash: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the credential expires.
+               */
               expiresAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
               redirectUri: string;
+              /** @description Resource URI identifying the API targeted by the OAuth request. */
               resource: string;
+              /** @description Space-separated OAuth permissions. */
               scope: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the code was used.
+               */
               usedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
             oauthRefreshTokens: {
               clientId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the credential expires.
+               */
               expiresAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the credential was last used.
+               */
               lastUsedAt: string;
+              /** @description Resource URI identifying the API targeted by the OAuth request. */
               resource: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the credential was revoked.
+               */
               revokedAt: string;
+              /** @description Space-separated OAuth permissions. */
               scope: string;
               tokenHash: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
+            /** @description Password used to authenticate the account. */
             password: string;
+            /** @description Tracking pixels associated with the user. */
             pixels: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description URL slug used to access the resource. */
               slug: string;
+              /** @description ID of the associated team. */
               teamId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
+            /** @description Saved reports associated with the user. */
             reports: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description Description of the resource. */
               description: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Configuration parameters for the resource. */
               parameters:
                 | string
                 | number
@@ -11644,68 +13404,126 @@ export interface operations {
                     length: number;
                   };
               type: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
+              /** @description ID of the website. */
               websiteId: string;
             }[];
+            /** @description Permission role assigned to the user. */
             role: string;
+            /** @description Teams associated with the user. */
             teams: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Permission role assigned to the user. */
               role: string;
+              /** @description ID of the associated team. */
               teamId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
             twoFactorAuth: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Whether two-factor authentication is enabled. */
               isEnabled: boolean;
               secret: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             };
             twoFactorBackupCodes: {
               codeHash: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
               used: boolean;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
             twoFactorOtpUseds: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the credential expires.
+               */
               expiresAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
               otp: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
             twoFactorRateLimit: {
               attempts: number;
+              /** @description Unique identifier of the resource. */
               id: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Time until which further authentication attempts are blocked.
+               */
               lockedUntil: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             };
+            /** @description Whether two-factor authentication is required. */
             twoFactorRequired: boolean;
+            /** @description Username of the account. */
             username: string;
             websites: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description ID of the user who created the resource. */
               createdBy: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Domain name associated with the resource. */
               domain: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Whether recording is enabled for the website. */
               recorderEnabled: boolean;
+              /** @description Session replay and heatmap recording configuration. */
               replayConfig:
                 | string
                 | number
@@ -11725,11 +13543,19 @@ export interface operations {
                 | {
                     length: number;
                   };
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the website analytics were last reset.
+               */
               resetAt: string;
+              /** @description ID of the associated team. */
               teamId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             }[];
           };
@@ -11760,6 +13586,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the associated user. */
         userId: string;
       };
       cookie?: never;
@@ -11767,9 +13594,14 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Password used to authenticate the account. */
           password?: string;
-          /** @enum {string} */
+          /**
+           * @description Permission role assigned to the user.
+           * @enum {string}
+           */
           role?: 'admin' | 'user' | 'view-only';
+          /** @description Username of the account. */
           username?: string;
         };
       };
@@ -11782,10 +13614,16 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Permission role assigned to the user. */
             role: string;
+            /** @description Username of the account. */
             username: string;
           };
         };
@@ -11851,6 +13689,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the associated user. */
         userId: string;
       };
       cookie?: never;
@@ -11864,7 +13703,10 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** @constant */
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
             ok: true;
           };
         };
@@ -11910,14 +13752,20 @@ export interface operations {
   getUserTeams: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
       path: {
+        /** @description ID of the associated user. */
         userId: string;
       };
       cookie?: never;
@@ -11931,25 +13779,47 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
+              /** @description Code used to join the team. */
               accessCode: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description URL of the logo image. */
               logoUrl: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Whether two-factor authentication is required. */
               twoFactorRequired: boolean;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -11995,16 +13865,24 @@ export interface operations {
   getUserWebsites: {
     parameters: {
       query?: {
+        /** @description Set a non-empty value to include websites accessible through team membership. */
         includeTeams?: string;
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
       path: {
+        /** @description ID of the associated user. */
         userId: string;
       };
       cookie?: never;
@@ -12018,17 +13896,31 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: ({
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description ID of the user who created the resource. */
               createdBy: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was deleted, if applicable.
+               */
               deletedAt: string;
+              /** @description Domain name associated with the resource. */
               domain: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Whether recording is enabled for the website. */
               recorderEnabled: boolean;
+              /** @description Session replay and heatmap recording configuration. */
               replayConfig:
                 | string
                 | number
@@ -12048,34 +13940,59 @@ export interface operations {
                 | {
                     length: number;
                   };
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the website analytics were last reset.
+               */
               resetAt: string;
+              /** @description ID of the associated team. */
               teamId: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
             } & {
+              /** @description User who created the resource. */
               createUser?: {
+                /** @description Unique identifier of the resource. */
                 id: string;
+                /** @description Username of the account. */
                 username: string;
               };
+              /** @description Identifier used to access a shared resource. */
               shareId: string;
+              /** @description Team associated with the resource. */
               team?: {
+                /** @description Members of the team. */
                 members: {
+                  /** @description Permission role assigned to the user. */
                   role: string;
+                  /** @description ID of the associated user. */
                   userId: string;
                 }[];
               };
+              /** @description User associated with the resource. */
               user?: {
+                /** @description Unique identifier of the resource. */
                 id: string;
+                /** @description Username of the account. */
                 username: string;
               };
             })[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -12123,11 +14040,17 @@ export interface operations {
       query?: {
         /** @description When present, include websites accessible through owned or managed teams. */
         includeTeams?: string;
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Field to sort the results by. */
         orderBy?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
       };
       header?: never;
@@ -12450,15 +14373,22 @@ export interface operations {
   getWebsiteAnnotations: {
     parameters: {
       query?: {
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -12472,25 +14402,44 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
+              /** @description Whether the annotation applies to the entire day. */
               allDay: boolean;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
               /** Format: date-time */
               date: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Text of the annotation. */
               note: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
+              /** @description ID of the website. */
               websiteId: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -12538,6 +14487,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -12545,9 +14495,11 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Whether the annotation applies to the entire day. */
           allDay?: boolean;
           /** Format: date-time */
           date: string;
+          /** @description Text of the annotation. */
           note: string;
         };
       };
@@ -12560,16 +14512,27 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Whether the annotation applies to the entire day. */
             allDay: boolean;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
             /** Format: date-time */
             date: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Text of the annotation. */
             note: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
+            /** @description ID of the website. */
             websiteId: string;
           };
         };
@@ -12617,7 +14580,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the annotation. */
         annotationId: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -12631,16 +14596,27 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Whether the annotation applies to the entire day. */
             allDay: boolean;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
             /** Format: date-time */
             date: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Text of the annotation. */
             note: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
+            /** @description ID of the website. */
             websiteId: string;
           };
         };
@@ -12688,7 +14664,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the annotation. */
         annotationId: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -12696,9 +14674,11 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Whether the annotation applies to the entire day. */
           allDay?: boolean;
           /** Format: date-time */
           date: string;
+          /** @description Text of the annotation. */
           note: string;
         };
       };
@@ -12711,16 +14691,27 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Whether the annotation applies to the entire day. */
             allDay: boolean;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
             /** Format: date-time */
             date: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Text of the annotation. */
             note: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
+            /** @description ID of the website. */
             websiteId: string;
           };
         };
@@ -12786,7 +14777,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the annotation. */
         annotationId: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -12800,7 +14793,10 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** @constant */
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
             ok: true;
           };
         };
@@ -12848,6 +14844,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -12861,9 +14858,15 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description End of the date range as an ISO 8601 date or date-time.
+             */
             endDate: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Start of the date range as an ISO 8601 date or date-time.
+             */
             startDate: string;
           };
         };
@@ -12891,39 +14894,70 @@ export interface operations {
   getEventData: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -12937,21 +14971,35 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
+              /** @description ID of the event. */
               eventId: string;
+              /** @description Name of the custom event. */
               eventName: string;
+              /** @description Custom properties recorded with the event. */
               eventProperties: {
+                /** @description Date and time the record was created. */
                 createdAt: string;
+                /** @description Name of the custom property. */
                 dataKey: string;
+                /** @description Data type of the custom property. */
                 dataType: number;
+                /** @description Custom property value stored as a date-time. */
                 dateValue: string;
+                /** @description Custom property value stored as a number. */
                 numberValue: number;
+                /** @description Custom property value stored as a string. */
                 stringValue: string;
               }[];
+              /** @description ID of the website. */
               websiteId: string;
             }[];
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
           };
         };
@@ -12997,42 +15045,76 @@ export interface operations {
   getEventDataPivot: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Name of the custom event. */
         eventName: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -13046,21 +15128,36 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
+              /** @description Date and time the record was created. */
               createdAt: string;
+              /** @description ID of the event. */
               eventId: string;
+              /** @description Name of the custom event. */
               eventName: string;
+              /** @description Names of the custom properties. */
               propertyKeys: string[];
+              /** @description Values of the custom properties. */
               propertyValues: string[];
+              /** @description ID of the visitor session. */
               sessionId: string;
+              /** @description Path portion of the page URL. */
               urlPath: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -13106,40 +15203,72 @@ export interface operations {
   getEventDataArraySeries: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Name of the custom event. */
         eventName: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Name of the custom event or session property. */
         propertyName: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -13200,39 +15329,70 @@ export interface operations {
   getEventDataDateSeries: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Name of the custom event. */
         eventName: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Name of the custom event or session property. */
         propertyName: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -13292,41 +15452,74 @@ export interface operations {
   getEventDataNumericSeries: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Name of the custom event. */
         eventName: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Numeric aggregation to calculate for the selected property. */
         metric?: 'sum' | 'avg' | 'count';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Name of the custom event or session property. */
         propertyName: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -13386,38 +15579,68 @@ export interface operations {
   getEventDataNumericStats: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Name of the custom event. */
         eventName: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Name of the custom event or session property. */
         propertyName: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -13431,9 +15654,13 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Arithmetic mean of the numeric property values. */
             average: number;
+            /** @description Maximum numeric property value. */
             max: number;
+            /** @description Median of the numeric property values. */
             median: number;
+            /** @description Minimum numeric property value. */
             min: number;
             total: number;
           };
@@ -13480,40 +15707,72 @@ export interface operations {
   getEventDataPropertySeries: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Name of the custom event. */
         eventName: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Name of the custom event or session property. */
         propertyName: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -13576,7 +15835,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the event. */
         eventId: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -13590,20 +15851,33 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Name of the custom property. */
             dataKey: string;
+            /** @description Data type of the custom property. */
             dataType: number;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Custom property value stored as a date-time.
+             */
             dateValue: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Custom property value stored as a number. */
             numberValue: {
               d: number[];
               e: number;
               s: number;
             };
+            /** @description Custom property value stored as a string. */
             stringValue: string;
+            /** @description ID of the website event. */
             websiteEventId: string;
+            /** @description ID of the website. */
             websiteId: string;
           }[];
         };
@@ -13631,36 +15905,64 @@ export interface operations {
   getEventDataEvents: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -13674,9 +15976,13 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Data type of the custom property. */
             dataType: number;
+            /** @description Name of the custom event. */
             eventName?: string;
+            /** @description Name of the custom event or session property. */
             propertyName: string;
+            /** @description Value of the custom property. */
             propertyValue?: string;
             total: number;
           }[];
@@ -13723,37 +16029,66 @@ export interface operations {
   getEventDataFields: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Name of the custom event. */
         eventName?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -13767,7 +16102,9 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Data type of the custom property. */
             dataType: number;
+            /** @description Name of the custom event or session property. */
             propertyName: string;
             total: number;
           }[];
@@ -13814,36 +16151,64 @@ export interface operations {
   getEventDataProperties: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -13857,8 +16222,11 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Data type of the custom property. */
             dataType: number;
+            /** @description Name of the custom event. */
             eventName: string;
+            /** @description Name of the custom event or session property. */
             propertyName: string;
             total: number;
           }[];
@@ -13905,36 +16273,64 @@ export interface operations {
   getEventDataStats: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -13995,39 +16391,70 @@ export interface operations {
   getEventDataValues: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Data type of the custom property. */
         dataType?: number;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Name of the custom event. */
         eventName?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Name of the custom event or session property. */
         propertyName: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -14087,41 +16514,77 @@ export interface operations {
   getWebsiteEvents: {
     parameters: {
       query?: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
         compare?: 'prev' | 'yoy';
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description End of the date range as an ISO 8601 date or date-time. */
         endDate?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description Start of the date range as an ISO 8601 date or date-time. */
         startDate?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
@@ -14183,39 +16646,70 @@ export interface operations {
   getWebsiteEventSeries: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Maximum number of rows to return. */
         limit?: number;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -14276,41 +16770,74 @@ export interface operations {
   getWebsiteEventStats: {
     parameters: {
       query?: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
         compare?: 'prev' | 'yoy';
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description End of the date range as an ISO 8601 date or date-time. */
         endDate?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description Start of the date range as an ISO 8601 date or date-time. */
         startDate?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -14324,11 +16851,16 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Data returned by the operation. */
             data: {
+              /** @description Analytics for the comparison period. */
               comparison: {
                 events: number;
+                /** @description Number of unique events. */
                 uniqueEvents: number;
+                /** @description Unique visitor counts for the selected period. */
                 visitors: number;
+                /** @description Visit counts for the selected period. */
                 visits: number;
               }[];
               length: number;
@@ -14377,19 +16909,30 @@ export interface operations {
   exportWebsite: {
     parameters: {
       query?: {
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
         compare?: 'prev' | 'yoy';
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description End of the date range as an ISO 8601 date or date-time. */
         endDate?: string;
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description Start of the date range as an ISO 8601 date or date-time. */
         startDate?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -14457,42 +17000,77 @@ export interface operations {
   getWebsiteMetrics: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
         compare?: 'prev' | 'yoy';
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description End of the date range as an ISO 8601 date or date-time. */
         endDate?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Maximum number of rows to return. */
         limit?: number;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Number of rows to skip before returning results. */
         offset?: number;
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description Start of the date range as an ISO 8601 date or date-time. */
         startDate?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
         /** @description Dimension to rank: path, entry, exit, title, query, hostname, referrer, domain, channel, event, tag, browser, os, device, screen, language, country, region, city, distinctId, utmSource, utmMedium, utmCampaign, utmContent, utmTerm. */
         type: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
@@ -14554,45 +17132,82 @@ export interface operations {
   getWebsiteExpandedMetrics: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
         compare?: 'prev' | 'yoy';
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description End of the date range as an ISO 8601 date or date-time. */
         endDate?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Maximum number of rows to return. */
         limit?: number;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Number of rows to skip before returning results. */
         offset?: number;
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description Start of the date range as an ISO 8601 date or date-time. */
         startDate?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Type of resource or analytics dimension to return. */
         type: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -14606,11 +17221,17 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of visits with only one pageview. */
             bounces: number;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Pageview counts for the selected period. */
             pageviews: number;
+            /** @description Total visit duration in seconds. */
             totaltime: number;
+            /** @description Unique visitor counts for the selected period. */
             visitors: number;
+            /** @description Visit counts for the selected period. */
             visits: number;
           }[];
         };
@@ -14656,37 +17277,69 @@ export interface operations {
   getWebsitePageviews: {
     parameters: {
       query?: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
         compare?: 'prev' | 'yoy';
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description End of the date range as an ISO 8601 date or date-time. */
         endDate?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description Start of the date range as an ISO 8601 date or date-time. */
         startDate?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
@@ -14750,6 +17403,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -14767,13 +17421,19 @@ export interface operations {
                 enabled: boolean;
               }
             | {
+                /** @description CSS selector for elements excluded from recordings. */
                 blockSelector: string;
                 enabled: boolean;
+                /** @description Whether heatmap recording is enabled. */
                 heatmapEnabled: boolean;
+                /** @description Fraction of sessions to record for heatmaps, from 0 to 1. */
                 heatmapSampleRate: number;
+                /** @description Privacy masking level used by the recorder: strict or moderate. */
                 maskLevel: 'strict' | 'moderate';
                 maxDuration: number;
+                /** @description Whether session replay recording is enabled. */
                 replayEnabled: boolean;
+                /** @description Fraction of sessions to record for replay, from 0 to 1. */
                 sampleRate: number;
               };
         };
@@ -14783,46 +17443,84 @@ export interface operations {
   getWebsiteReplays: {
     parameters: {
       query?: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
         compare?: 'prev' | 'yoy';
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description End of the date range as an ISO 8601 date or date-time. */
         endDate?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Minimum replay duration in seconds. */
         minDuration?: number;
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description Start of the date range as an ISO 8601 date or date-time. */
         startDate?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -14836,28 +17534,50 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
+              /** @description Browser used by the visitor. */
               browser: string;
+              /** @description Number of stored recording chunks. */
               chunkCount: number;
+              /** @description City of the visitor. */
               city: string;
+              /** @description Country code of the visitor. */
               country: string;
+              /** @description Date and time the record was created. */
               createdAt: string;
+              /** @description Device category used by the visitor. */
               device: string;
+              /** @description Replay duration in milliseconds. */
               duration: number;
+              /** @description Date and time the recording ended. */
               endedAt: string;
+              /** @description Number of recorded replay events. */
               eventCount: number;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Operating system used by the visitor. */
               os: string;
+              /** @description ID of the visitor session. */
               sessionId: string;
+              /** @description Date and time the recording started. */
               startedAt: string;
+              /** @description ID of the website. */
               websiteId: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -14905,7 +17625,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the session replay. */
         replayId: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -14919,13 +17641,22 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of stored recording chunks. */
             chunkCount: number;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the recording ended.
+             */
             endedAt: string;
+            /** @description Number of recorded replay events. */
             eventCount: number;
             events: unknown[];
+            /** @description ID of the visitor session. */
             sessionId: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the recording started.
+             */
             startedAt: string;
           };
         };
@@ -14953,13 +17684,18 @@ export interface operations {
   getWebsiteSavedReplays: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -14973,22 +17709,40 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the visit. */
               visitId: string;
+              /** @description ID of the website. */
               websiteId: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -15036,7 +17790,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the session replay. */
         replayId: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -15050,6 +17806,7 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Whether the replay has been saved. */
             isSaved: boolean;
           };
         };
@@ -15079,7 +17836,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the session replay. */
         replayId: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -15087,7 +17846,9 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Whether the replay has been saved. */
           isSaved: boolean;
+          /** @description Display name of the resource. */
           name?: string;
         };
       };
@@ -15100,6 +17861,7 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Whether the operation succeeded. */
             ok: boolean;
           };
         };
@@ -15145,13 +17907,18 @@ export interface operations {
   getWebsiteReports: {
     parameters: {
       query?: {
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Type of resource or analytics dimension to return. */
         type?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -15165,13 +17932,22 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: ({
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description Description of the resource. */
               description: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Configuration parameters for the resource. */
               parameters:
                 | string
                 | number
@@ -15192,21 +17968,34 @@ export interface operations {
                     length: number;
                   };
               type: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the associated user. */
               userId: string;
+              /** @description ID of the website. */
               websiteId: string;
             } & {
               website?: {
+                /** @description Domain name associated with the resource. */
                 domain: string;
+                /** @description ID of the associated user. */
                 userId: string;
               };
             })[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -15254,6 +18043,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -15267,7 +18057,10 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** @constant */
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
             ok: true;
           };
         };
@@ -15295,42 +18088,76 @@ export interface operations {
   getWebsiteRevenueChart: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
         compare?: 'prev' | 'yoy';
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Currency code used for revenue values. */
         currency: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description End of the date range as an ISO 8601 date or date-time. */
         endDate?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description Start of the date range as an ISO 8601 date or date-time. */
         startDate?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -15345,6 +18172,7 @@ export interface operations {
         content: {
           'application/json': {
             chart: {
+              /** @description Number of matching records. */
               count: number;
               t: string;
               x: string;
@@ -15394,43 +18222,78 @@ export interface operations {
   getWebsiteRevenueMetrics: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
         compare?: 'prev' | 'yoy';
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Currency code used for revenue values. */
         currency: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description End of the date range as an ISO 8601 date or date-time. */
         endDate?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description Start of the date range as an ISO 8601 date or date-time. */
         startDate?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Type of resource or analytics dimension to return. */
         type: 'country' | 'region' | 'referrer' | 'channel';
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -15445,11 +18308,14 @@ export interface operations {
         content: {
           'application/json':
             | {
+                /** @description Display name of the resource. */
                 name: string;
                 value: number;
               }[]
             | {
+                /** @description Country code of the visitor. */
                 country: string;
+                /** @description Display name of the resource. */
                 name: string;
                 value: number;
               }[];
@@ -15496,46 +18362,84 @@ export interface operations {
   getWebsiteRevenueSessions: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
         compare?: 'prev' | 'yoy';
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Currency code used for revenue values. */
         currency: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description End of the date range as an ISO 8601 date or date-time. */
         endDate?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description Start of the date range as an ISO 8601 date or date-time. */
         startDate?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -15549,31 +18453,55 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
+              /** @description Browser used by the visitor. */
               browser: string;
+              /** @description City of the visitor. */
               city: string;
+              /** @description Country code of the visitor. */
               country: string;
+              /** @description Date and time the record was created. */
               createdAt: string;
+              /** @description Device category used by the visitor. */
               device: string;
               events: number;
+              /** @description Date and time of the first recorded activity. */
               firstAt: string;
+              /** @description Hostname on which the activity occurred. */
               hostname: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Preferred language reported by the visitor browser. */
               language: string;
+              /** @description Date and time of the most recent recorded activity. */
               lastAt: string;
+              /** @description Operating system used by the visitor. */
               os: string;
+              /** @description Region or subdivision of the visitor. */
               region: string;
+              /** @description Screen resolution of the visitor device. */
               screen: string;
+              /** @description Pageview counts for the selected period. */
               views: number;
+              /** @description Visit counts for the selected period. */
               visits: number;
+              /** @description ID of the website. */
               websiteId: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -15619,42 +18547,76 @@ export interface operations {
   getWebsiteRevenueStats: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
         compare?: 'prev' | 'yoy';
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Currency code used for revenue values. */
         currency: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description End of the date range as an ISO 8601 date or date-time. */
         endDate?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description Start of the date range as an ISO 8601 date or date-time. */
         startDate?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -15668,6 +18630,7 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Analytics for the comparison period. */
             comparison: unknown;
           };
         };
@@ -15713,11 +18676,14 @@ export interface operations {
   getWebsiteSegments: {
     parameters: {
       query: {
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Type of resource or analytics dimension to return. */
         type: 'segment' | 'cohort';
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -15731,12 +18697,20 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Configuration parameters for the resource. */
               parameters:
                 | string
                 | number
@@ -15757,15 +18731,25 @@ export interface operations {
                     length: number;
                   };
               type: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
+              /** @description ID of the website. */
               websiteId: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -15813,6 +18797,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -15820,17 +18805,23 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Display name of the resource. */
           name: string;
+          /** @description Configuration parameters for the resource. */
           parameters: {
             action?: {
               type: string;
               value: string;
             };
             dateRange?: string;
+            /** @description Filters applied to the analytics data. */
             filters?: {
               [key: string]: unknown;
             }[];
-            /** @enum {string} */
+            /**
+             * @description Whether records must match all filters or any filter.
+             * @enum {string}
+             */
             match?: 'all' | 'any';
           };
           /** @enum {string} */
@@ -15846,10 +18837,16 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -15870,8 +18867,12 @@ export interface operations {
                   length: number;
                 };
             type: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the website. */
             websiteId: string;
           };
         };
@@ -15919,7 +18920,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the saved segment or cohort. */
         segmentId: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -15933,10 +18936,16 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -15957,8 +18966,12 @@ export interface operations {
                   length: number;
                 };
             type: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the website. */
             websiteId: string;
           };
         };
@@ -16006,7 +19019,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the saved segment or cohort. */
         segmentId: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -16014,7 +19029,9 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Display name of the resource. */
           name: string;
+          /** @description Configuration parameters for the resource. */
           parameters: {
             [key: string]: unknown;
           };
@@ -16031,10 +19048,16 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -16055,8 +19078,12 @@ export interface operations {
                   length: number;
                 };
             type: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the website. */
             websiteId: string;
           };
         };
@@ -16122,7 +19149,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the saved segment or cohort. */
         segmentId: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -16136,7 +19165,10 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** @constant */
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
             ok: true;
           };
         };
@@ -16182,42 +19214,76 @@ export interface operations {
   getSessionDataPivot: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Name of the custom event or session property. */
         propertyName: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -16231,19 +19297,32 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
+              /** @description Date and time the record was created. */
               createdAt: string;
+              /** @description Custom identifier assigned to the visitor. */
               distinctId: string;
+              /** @description Names of the custom properties. */
               propertyKeys: string[];
+              /** @description Values of the custom properties. */
               propertyValues: string[];
+              /** @description ID of the visitor session. */
               sessionId: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -16289,39 +19368,70 @@ export interface operations {
   getSessionDataArraySeries: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Name of the custom event or session property. */
         propertyName: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -16382,38 +19492,68 @@ export interface operations {
   getSessionDataDateSeries: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Name of the custom event or session property. */
         propertyName: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -16473,40 +19613,72 @@ export interface operations {
   getSessionDataNumericSeries: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Numeric aggregation to calculate for the selected property. */
         metric?: 'sum' | 'avg' | 'count';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Name of the custom event or session property. */
         propertyName: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -16566,38 +19738,68 @@ export interface operations {
   getSessionDataNumericStats: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Name of the custom event or session property. */
         propertyName: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -16611,9 +19813,13 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Arithmetic mean of the numeric property values. */
             average: number;
+            /** @description Maximum numeric property value. */
             max: number;
+            /** @description Median of the numeric property values. */
             median: number;
+            /** @description Minimum numeric property value. */
             min: number;
             total: number;
           };
@@ -16660,37 +19866,66 @@ export interface operations {
   getSessionDataProperties: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Name of the custom event or session property. */
         propertyName?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -16704,7 +19939,9 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Data type of the custom property. */
             dataType: number;
+            /** @description Name of the custom event or session property. */
             propertyName: string;
             total: number;
           }[];
@@ -16751,39 +19988,70 @@ export interface operations {
   getSessionDataPropertySeries: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Name of the custom event or session property. */
         propertyName: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -16844,39 +20112,70 @@ export interface operations {
   getSessionDataStats: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Name of the custom event or session property. */
         propertyName: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -16894,7 +20193,9 @@ export interface operations {
             events: number;
             label: string;
             sessions: number;
+            /** @description Pageview counts for the selected period. */
             views: number;
+            /** @description Visit counts for the selected period. */
             visits: number;
           }[];
         };
@@ -16940,38 +20241,68 @@ export interface operations {
   getSessionDataValues: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Data type of the custom property. */
         dataType?: number;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Name of the custom event or session property. */
         propertyName?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -17031,41 +20362,77 @@ export interface operations {
   getWebsiteSessions: {
     parameters: {
       query?: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
         compare?: 'prev' | 'yoy';
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description End of the date range as an ISO 8601 date or date-time. */
         endDate?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description Start of the date range as an ISO 8601 date or date-time. */
         startDate?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
@@ -17129,7 +20496,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the visitor session. */
         sessionId: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -17191,7 +20560,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the visitor session. */
         sessionId: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -17205,7 +20576,10 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** @constant */
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
             ok: true;
           };
         };
@@ -17269,13 +20643,18 @@ export interface operations {
   getWebsiteSessionActivity: {
     parameters: {
       query: {
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
       };
       header?: never;
       path: {
+        /** @description ID of the visitor session. */
         sessionId: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -17289,15 +20668,24 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Date and time the record was created. */
             createdAt: string;
+            /** @description ID of the event. */
             eventId: string;
+            /** @description Name of the custom event. */
             eventName: string;
+            /** @description Event type: 1 for a pageview or 2 for a custom event. */
             eventType: number;
             hasData: boolean;
+            /** @description Hostname on which the activity occurred. */
             hostname: string;
+            /** @description Domain of the referring page. */
             referrerDomain: string;
+            /** @description Path portion of the page URL. */
             urlPath: string;
+            /** @description Query string portion of the page URL. */
             urlQuery: string;
+            /** @description ID of the visit. */
             visitId: string;
           }[];
         };
@@ -17345,7 +20733,9 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the visitor session. */
         sessionId: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -17359,13 +20749,21 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Date and time the record was created. */
             createdAt: string;
+            /** @description Name of the custom property. */
             dataKey: string;
+            /** @description Data type of the custom property. */
             dataType: number;
+            /** @description Custom property value stored as a date-time. */
             dateValue: string;
+            /** @description Custom property value stored as a number. */
             numberValue: number;
+            /** @description ID of the visitor session. */
             sessionId: string;
+            /** @description Custom property value stored as a string. */
             stringValue: string;
+            /** @description ID of the website. */
             websiteId: string;
           }[];
         };
@@ -17393,21 +20791,34 @@ export interface operations {
   getWebsiteSessionReplays: {
     parameters: {
       query?: {
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
         compare?: 'prev' | 'yoy';
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description End of the date range as an ISO 8601 date or date-time. */
         endDate?: string;
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description Start of the date range as an ISO 8601 date or date-time. */
         startDate?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the visitor session. */
         sessionId: string;
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -17421,28 +20832,50 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
+              /** @description Browser used by the visitor. */
               browser: string;
+              /** @description Number of stored recording chunks. */
               chunkCount: number;
+              /** @description City of the visitor. */
               city: string;
+              /** @description Country code of the visitor. */
               country: string;
+              /** @description Date and time the record was created. */
               createdAt: string;
+              /** @description Device category used by the visitor. */
               device: string;
+              /** @description Replay duration in milliseconds. */
               duration: number;
+              /** @description Date and time the recording ended. */
               endedAt: string;
+              /** @description Number of recorded replay events. */
               eventCount: number;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Operating system used by the visitor. */
               os: string;
+              /** @description ID of the visitor session. */
               sessionId: string;
+              /** @description Date and time the recording started. */
               startedAt: string;
+              /** @description ID of the website. */
               websiteId: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -17488,36 +20921,64 @@ export interface operations {
   getWebsiteSessionStats: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -17574,37 +21035,66 @@ export interface operations {
   getWebsiteSessionsWeekly: {
     parameters: {
       query: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -17661,37 +21151,66 @@ export interface operations {
   getWebsiteShares: {
     parameters: {
       query?: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Page number, starting at 1. */
         page?: number;
+        /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -17705,13 +21224,22 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Number of matching records. */
             count: number;
+            /** @description Data returned by the operation. */
             data: {
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
               createdAt: string;
+              /** @description ID of the resource being shared. */
               entityId: string;
+              /** @description Unique identifier of the resource. */
               id: string;
+              /** @description Display name of the resource. */
               name: string;
+              /** @description Configuration parameters for the resource. */
               parameters:
                 | string
                 | number
@@ -17731,16 +21259,27 @@ export interface operations {
                 | {
                     length: number;
                   };
+              /** @description Type of resource made available by the share. */
               shareType: number;
+              /** @description URL slug used to access the resource. */
               slug: string;
-              /** Format: date-time */
+              /**
+               * Format: date-time
+               * @description Date and time the record was last updated.
+               */
               updatedAt: string;
             }[];
+            /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
+            /** @description Field to sort the results by. */
             orderBy?: string;
+            /** @description Page number, starting at 1. */
             page: number;
+            /** @description Number of results per page. */
             pageSize: number;
+            /** @description Search text used to filter results. */
             search?: string;
+            /** @description Whether to sort results in descending order. */
             sortDescending?: boolean;
           };
         };
@@ -17788,6 +21327,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -17795,7 +21335,9 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Display name of the resource. */
           name: string;
+          /** @description Configuration parameters for the resource. */
           parameters?: {
             [key: string]: unknown;
           };
@@ -17810,11 +21352,18 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description ID of the resource being shared. */
             entityId: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Configuration parameters for the resource. */
             parameters:
               | string
               | number
@@ -17834,9 +21383,14 @@ export interface operations {
               | {
                   length: number;
                 };
+            /** @description Type of resource made available by the share. */
             shareType: number;
+            /** @description URL slug used to access the resource. */
             slug: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
           };
         };
@@ -17882,37 +21436,69 @@ export interface operations {
   getWebsiteStats: {
     parameters: {
       query?: {
+        /** @description Browser used by the visitor. */
         browser?: string;
+        /** @description City of the visitor. */
         city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
         compare?: 'prev' | 'yoy';
+        /** @description Country code of the visitor. */
         country?: string;
+        /** @description Device category used by the visitor. */
         device?: string;
+        /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description End of the date range as an ISO 8601 date or date-time. */
         endDate?: string;
+        /** @description Filter by custom event name. */
         event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
         eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
         hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
         language?: string;
+        /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
         os?: string;
+        /** @description Filter by page URL path. */
         path?: string;
+        /** @description Filter by page URL query string. */
         query?: string;
+        /** @description Filter by referring URL. */
         referrer?: string;
+        /** @description Region or subdivision of the visitor. */
         region?: string;
+        /** @description ID of a saved segment used to filter results. */
         segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description Start of the date range as an ISO 8601 date or date-time. */
         startDate?: string;
+        /** @description Tag attached to the tracked activity. */
         tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Filter by page title. */
         title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
+        /** @description UTM campaign name. */
         utmCampaign?: string;
+        /** @description UTM campaign content. */
         utmContent?: string;
+        /** @description UTM campaign medium. */
         utmMedium?: string;
+        /** @description UTM campaign source. */
         utmSource?: string;
+        /** @description UTM campaign search term. */
         utmTerm?: string;
       };
       header?: never;
@@ -17976,6 +21562,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -17983,9 +21570,15 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the associated team.
+           */
           teamId?: string;
-          /** Format: uuid */
+          /**
+           * Format: uuid
+           * @description ID of the associated user.
+           */
           userId?: string;
         };
       };
@@ -17998,15 +21591,27 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
             createdAt: string;
+            /** @description ID of the user who created the resource. */
             createdBy: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was deleted, if applicable.
+             */
             deletedAt: string;
+            /** @description Domain name associated with the resource. */
             domain: string;
+            /** @description Unique identifier of the resource. */
             id: string;
+            /** @description Display name of the resource. */
             name: string;
+            /** @description Whether recording is enabled for the website. */
             recorderEnabled: boolean;
+            /** @description Session replay and heatmap recording configuration. */
             replayConfig:
               | string
               | number
@@ -18026,11 +21631,19 @@ export interface operations {
               | {
                   length: number;
                 };
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the website analytics were last reset.
+             */
             resetAt: string;
+            /** @description ID of the associated team. */
             teamId: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
             updatedAt: string;
+            /** @description ID of the associated user. */
             userId: string;
           };
         };
@@ -18076,18 +21689,28 @@ export interface operations {
   getWebsiteValues: {
     parameters: {
       query: {
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
         compare?: 'prev' | 'yoy';
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description End of the date range as an ISO 8601 date or date-time. */
         endDate?: string;
+        /** @description Search text used to filter results. */
         search?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description Start of the date range as an ISO 8601 date or date-time. */
         startDate?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
+        /** @description Type of resource or analytics dimension to return. */
         type: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the website. */
         websiteId: string;
       };
       cookie?: never;
@@ -18144,9 +21767,13 @@ export interface operations {
   getWebsitesCharts: {
     parameters: {
       query: {
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description Comma-separated resource IDs. Provide between 1 and 20 IDs. */
         ids: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
         timezone?: string;
       };
       header?: never;
@@ -18162,6 +21789,7 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Data returned by the operation. */
             data: {
               [key: string]: {
                 total: number;
