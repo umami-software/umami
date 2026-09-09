@@ -71,7 +71,7 @@
     "chart.js": "^4.5.1",
     "chartjs-adapter-date-fns": "^3.0.0",
     "classnames": "^2.3.1",
-    "colord": "^2.9.2",
+    "colord": "^2.9.4",
     "date-fns": "^4.4.0",
     "date-fns-tz": "^3.2.0",
     "debug": "^4.4.3",
