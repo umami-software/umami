@@ -7,7 +7,7 @@ import type { McpLogger } from './logger';
 export interface ToolContext {
   client: UmamiClient;
   logger: McpLogger;
-  /** Identity attached to the connection (HTTP/OAuth mode). Used for logs only. */
+  /** Identity attached to the connection (HTTP mode). Used for logs only. */
   identity?: { userId?: string; clientId?: string; requestId?: string };
 }
 

@@ -1,7 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { checkApiKeyAuth } from '@/lib/auth';
-import { createAccessToken } from '@/lib/oauth/tokens';
-import { getUser } from '@/queries/prisma/user';
 import { authenticateMcpRequest, mcpAuthErrorResponse } from './auth';
 
 vi.mock('@/lib/auth', () => ({
@@ -9,115 +7,78 @@ vi.mock('@/lib/auth', () => ({
   checkApiKeyAuth: vi.fn(),
 }));
 
-vi.mock('@/queries/prisma/user', () => ({
-  getUser: vi.fn(),
-}));
-
 const checkApiKeyAuthMock = vi.mocked(checkApiKeyAuth);
-const getUserMock = vi.mocked(getUser);
-const ISSUER = 'https://analytics.example.com';
-const USER = { id: 'user-1', username: 'admin', role: 'user', password: 'pw' };
 
 function request(token?: string) {
-  return new Request(`${ISSUER}/mcp`, {
+  return new Request('https://analytics.example.com/mcp', {
     method: 'POST',
-    headers: {
-      host: 'analytics.example.com',
-      'x-forwarded-proto': 'https',
-      ...(token ? { authorization: `Bearer ${token}` } : {}),
-    },
+    headers: token ? { authorization: `Bearer ${token}` } : {},
   });
-}
-
-function accessToken(overrides: Record<string, unknown> = {}) {
-  return createAccessToken({
-    userId: USER.id,
-    clientId: 'https://app.example.com/client.json',
-    scopes: ['websites:read', 'analytics:read'],
-    issuer: ISSUER,
-    resource: `${ISSUER}/mcp`,
-    passwordHash: USER.password,
-    ...overrides,
-  }).token;
 }
 
 beforeEach(() => {
-  process.env.APP_SECRET = 'test';
-  delete process.env.OAUTH_ISSUER;
-  delete process.env.CLOUD_MODE;
+  vi.unstubAllEnvs();
+  vi.stubEnv('CLOUD_MODE', '');
   checkApiKeyAuthMock.mockReset();
-  getUserMock.mockReset();
-  getUserMock.mockResolvedValue({ ...USER } as never);
 });
 
 describe('authenticateMcpRequest', () => {
-  test('rejects missing tokens with a resource metadata challenge', async () => {
+  test('rejects missing tokens with an API key challenge', async () => {
     const result = await authenticateMcpRequest(request());
-
-    expect(result.ok).toBe(false);
-
-    const response = mcpAuthErrorResponse(result as never, request().headers);
+    const response = mcpAuthErrorResponse(result);
 
     expect(response.status).toBe(401);
-    expect(response.headers.get('www-authenticate')).toContain(
-      `resource_metadata="${ISSUER}/.well-known/oauth-protected-resource/mcp"`,
+    expect(response.headers.get('www-authenticate')).toBe(
+      'Bearer realm="Umami MCP", error="invalid_request"',
     );
-    expect(response.headers.get('www-authenticate')).toContain(
-      'scope="websites:read analytics:read"',
-    );
+    expect(response.headers.get('cache-control')).toBe('no-store');
   });
 
-  test('accepts OAuth access tokens issued for this resource', async () => {
-    const result = await authenticateMcpRequest(request(accessToken()));
-
-    expect(result.ok).toBe(true);
-
-    if (result.ok) {
-      expect(result.userId).toBe(USER.id);
-      expect(result.authInfo).toMatchObject({
-        clientId: 'https://app.example.com/client.json',
-        scopes: ['analytics:read', 'websites:read'],
+  test.each(['not-a-token', 'eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoib2F1dGhfYWNjZXNzIn0.signature'])(
+    'rejects non-API-key credentials: %s',
+    async token => {
+      await expect(authenticateMcpRequest(request(token))).resolves.toMatchObject({
+        ok: false,
+        status: 401,
       });
-      expect(result.authInfo.extra).toMatchObject({ userId: USER.id, authType: 'oauth' });
-    }
-  });
+      expect(checkApiKeyAuthMock).not.toHaveBeenCalled();
+    },
+  );
 
-  test('rejects tokens issued for another deployment', async () => {
-    const foreign = createAccessToken({
-      userId: USER.id,
-      clientId: 'c',
-      scopes: ['websites:read'],
-      issuer: 'https://other.example.com',
-      resource: 'https://other.example.com/mcp',
-    }).token;
-
-    const result = await authenticateMcpRequest(request(foreign));
-
-    expect(result).toMatchObject({ ok: false, status: 401, error: 'invalid_token' });
-  });
-
-  test('rejects session tokens and garbage', async () => {
-    await expect(authenticateMcpRequest(request('not-a-token'))).resolves.toMatchObject({
-      ok: false,
-      status: 401,
-    });
-  });
-
-  test('accepts self-hosted API keys', async () => {
+  test('accepts self-hosted API keys and preserves owner identity', async () => {
     checkApiKeyAuthMock.mockResolvedValue({
       token: 'umami_key',
-      user: { id: USER.id, username: 'admin', role: 'user', isAdmin: false },
-      authType: 'api-key',
+      user: { id: 'user-1' },
       apiKey: { id: 'key-1', name: 'MCP' },
     } as never);
 
-    const result = await authenticateMcpRequest(request('umami_key'));
+    await expect(authenticateMcpRequest(request('umami_key'))).resolves.toMatchObject({
+      ok: true,
+      userId: 'user-1',
+      authInfo: {
+        token: 'umami_key',
+        clientId: 'api-key:key-1',
+        scopes: [],
+        extra: { userId: 'user-1', authType: 'api-key' },
+      },
+    });
+  });
 
-    expect(result.ok).toBe(true);
+  test('rejects revoked or unknown keys', async () => {
+    checkApiKeyAuthMock.mockResolvedValue(null);
+    await expect(authenticateMcpRequest(request('umami_revoked'))).resolves.toMatchObject({
+      ok: false,
+      status: 401,
+      error: 'invalid_token',
+    });
+  });
 
-    if (result.ok) {
-      expect(result.authInfo.clientId).toBe('api-key:key-1');
-      expect(result.authInfo.scopes).toEqual(['websites:read', 'analytics:read']);
-    }
+  test('rejects self-hosted keys in Cloud mode', async () => {
+    vi.stubEnv('CLOUD_MODE', '1');
+    await expect(authenticateMcpRequest(request('umami_key'))).resolves.toMatchObject({
+      ok: false,
+      status: 401,
+    });
+    expect(checkApiKeyAuthMock).not.toHaveBeenCalled();
   });
 });

@@ -12,7 +12,6 @@ const operation1 = defineOperation({
     operationId: 'getWebsiteSessionProperties',
     summary: 'Get websites website id sessions session id properties',
     tags: ['Websites'],
-    'x-umami-oauth-scope': 'analytics:read',
     parameters: [
       {
         name: 'websiteId',

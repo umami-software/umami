@@ -15,7 +15,6 @@ import {
 } from '@/lib/constants';
 import { createAuthKey, hash, secret } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
-import { verifyOAuthRequest } from '@/lib/oauth/verify';
 import redis from '@/lib/redis';
 import { ensureArray } from '@/lib/utils';
 import { getApiKeyByHash, updateApiKeyLastUsed } from '@/queries/prisma/apiKey';
@@ -73,19 +72,6 @@ export async function checkAuth(request: Request) {
 
   if (isApiKeyEnabled() && isApiKey(token)) {
     return checkApiKeyAuth(request, token);
-  }
-
-  // OAuth access tokens are only honoured on routes that explicitly opted in (see
-  // src/lib/oauth/scopes.ts) and never fall through to session handling.
-  const oauth = await verifyOAuthRequest(token, request.method, new URL(request.url).pathname);
-
-  if (oauth.status === 'ok') {
-    return oauth.auth;
-  }
-
-  if (oauth.status !== 'not-oauth') {
-    log('OAuth token rejected', oauth);
-    return null;
   }
 
   const payload = parseSecureToken(token, secret());

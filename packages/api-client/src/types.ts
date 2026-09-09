@@ -7,7 +7,7 @@ export interface UmamiClientOptions {
    */
   baseUrl?: string;
   /**
-   * Bearer token: a login token from `POST /api/auth/login`, an OAuth access token, or a
+   * Bearer token: a login token from `POST /api/auth/login`, or a
    * self-hosted API key (`umami_…`).
    */
   token?: string;

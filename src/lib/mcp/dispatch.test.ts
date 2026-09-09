@@ -1,17 +1,7 @@
 import { describe, expect, test } from 'vitest';
-import { OAUTH_ROUTE_SCOPES } from '@/lib/oauth/scopes';
-import { MCP_DISPATCH_ROUTES, matchDispatchRoute } from './dispatch';
+import { matchDispatchRoute } from './dispatch';
 
 describe('MCP dispatch table', () => {
-  test('covers exactly the OAuth-allowlisted routes', () => {
-    const dispatch = MCP_DISPATCH_ROUTES.map(route => `${route.method} ${route.path}`).sort();
-    const allowlist = OAUTH_ROUTE_SCOPES.map(
-      route => `${route.method.toUpperCase()} ${route.path}`,
-    ).sort();
-
-    expect(dispatch).toEqual(allowlist);
-  });
-
   test('matches concrete paths and extracts parameters', () => {
     const match = matchDispatchRoute('GET', '/api/websites/abc/sessions/def/activity');
 

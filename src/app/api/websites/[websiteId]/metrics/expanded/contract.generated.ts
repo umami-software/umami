@@ -12,7 +12,6 @@ const operation1 = defineOperation({
     operationId: 'getWebsiteExpandedMetrics',
     summary: 'Get websites website id metrics expanded',
     tags: ['Websites'],
-    'x-umami-oauth-scope': 'analytics:read',
     parameters: [
       {
         name: 'websiteId',

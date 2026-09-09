@@ -97,7 +97,7 @@ export function describeError(error: unknown, context: ErrorContext = {}): Descr
         return {
           code: 'access_denied',
           status: 403,
-          message: `You do not have permission to access ${label}${error.code === 'insufficient_scope' ? ' with the granted OAuth scopes' : ''}.`,
+          message: `You do not have permission to access ${label}.`,
         };
       case 404:
         return {

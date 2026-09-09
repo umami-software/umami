@@ -42,7 +42,7 @@ response types, or import `OperationInput<'getWebsiteStats'>` / `OperationOutput
 | Option    | Description                                                                                                 |
 | --------- | ----------------------------------------------------------------------------------------------------------- |
 | `baseUrl` | API root. Defaults to `https://api.umami.is/v1`. Self-hosted: `https://your-umami/api`.                    |
-| `token`   | Bearer token: login token, OAuth access token, or self-hosted API key.                                      |
+| `token`   | Bearer token: login token or self-hosted API key.                                      |
 | `apiKey`  | Umami Cloud API key (sent as `x-umami-api-key`; also sent as a bearer token when `token` is not provided). |
 | `headers` | Extra headers for every request.                                                                            |
 | `fetch`   | Custom `fetch` (tests, other runtimes, in-process dispatch).                                                |
