@@ -14,7 +14,7 @@ export function OPTIONS() {
 
 /**
  * Dynamic Client Registration (RFC 7591) compatibility endpoint for MCP clients that do not yet
- * support Client ID Metadata Documents. Public clients only; disable with OAUTH_DISABLE_DCR=1.
+ * support Client ID Metadata Documents. Public clients only; opt in with OAUTH_DCR_ENABLED=1.
  */
 export async function POST(request: Request) {
   if (!isDynamicRegistrationEnabled()) {

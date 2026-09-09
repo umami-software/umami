@@ -13,11 +13,11 @@ export const REFRESH_TOKEN_PREFIX = 'umami_rt_';
 export const MCP_RESOURCE_PATH = '/mcp';
 
 export function isOAuthEnabled() {
-  return process.env.OAUTH_DISABLED !== '1' && !process.env.DISABLE_LOGIN;
+  return process.env.MCP_ENABLED === '1' && !process.env.DISABLE_LOGIN;
 }
 
 export function isDynamicRegistrationEnabled() {
-  return isOAuthEnabled() && process.env.OAUTH_DISABLE_DCR !== '1';
+  return isOAuthEnabled() && process.env.OAUTH_DCR_ENABLED === '1';
 }
 
 function trimTrailingSlash(value: string) {

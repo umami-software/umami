@@ -54,6 +54,10 @@ Optional: set `TWO_FACTOR_ENCRYPTION_KEY` to a 64-character hex string to enable
 authentication. Generate one with `openssl rand -hex 32`. Two-factor authentication is unavailable
 and cannot be required until this key is set.
 
+MCP and its OAuth endpoints are disabled by default. To enable them, set `MCP_ENABLED=1` and
+`OAUTH_ISSUER` to Umami's public URL. Dynamic client registration remains disabled unless
+`OAUTH_DCR_ENABLED=1` is also set.
+
 The connection URL format:
 
 ```bash

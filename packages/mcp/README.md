@@ -44,6 +44,11 @@ All tools call the Cloud API gateway, which validates the key and routes request
 
 ## Remote: self-hosted with OAuth
 
+MCP is disabled by default. Set `MCP_ENABLED=1` and set `OAUTH_ISSUER` to the public URL of
+your Umami instance before exposing this endpoint. Dynamic client registration is disabled by
+default; clients should use Client ID Metadata Documents. Set `OAUTH_DCR_ENABLED=1` only when a
+client requires registration compatibility.
+
 Add the MCP endpoint to your client:
 
 ```text
@@ -53,10 +58,7 @@ https://your-umami.example.com/mcp
 The client discovers `/.well-known/oauth-protected-resource/mcp`, sends you to Umami to sign in
 and approve access (`websites:read`, `analytics:read`), and receives an OAuth token. No API key
 is pasted anywhere. Clients register via Client ID Metadata Documents; dynamic client registration
-is available for compatibility (`OAUTH_DISABLE_DCR=1` turns it off).
-Registration is limited to 20 attempts per hour per IP when Redis is configured. Without Redis,
-the limit is shared by all clients in each server process and resets when that process restarts.
-Use Redis for a shared limit across multiple processes or serverless instances.
+is available only when `OAUTH_DCR_ENABLED=1` is set.
 
 Self-hosted instances can alternatively pass an API key (`umami_…`) as the bearer token.
 

@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { hash } from '@/lib/crypto';
 import { getUser } from '@/queries/prisma/user';
 import { createAccessToken } from './tokens';
@@ -26,9 +26,13 @@ function token(scopes: string[], overrides: Record<string, unknown> = {}) {
 
 beforeEach(() => {
   process.env.APP_SECRET = 'test';
-  delete process.env.OAUTH_DISABLED;
+  process.env.MCP_ENABLED = '1';
   getUserMock.mockReset();
   getUserMock.mockResolvedValue({ ...USER } as never);
+});
+
+afterEach(() => {
+  delete process.env.MCP_ENABLED;
 });
 
 describe('verifyOAuthRequest', () => {
@@ -95,8 +99,8 @@ describe('verifyOAuthRequest', () => {
     ).resolves.toEqual({ status: 'invalid' });
   });
 
-  test('rejects everything when OAuth is disabled', async () => {
-    process.env.OAUTH_DISABLED = '1';
+  test('rejects everything when MCP is disabled', async () => {
+    delete process.env.MCP_ENABLED;
 
     await expect(
       verifyOAuthRequest(token(['websites:read']), 'GET', '/api/websites'),
