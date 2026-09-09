@@ -82,7 +82,7 @@ async function relationalQuery(
       percentile_cont(0.5) within group (order by ttfb) as ttfb_p50,
       percentile_cont(0.75) within group (order by ttfb) as ttfb_p75,
       percentile_cont(0.95) within group (order by ttfb) as ttfb_p95,
-      count(*) as count
+      count(${metric}) as count
     from website_event
     ${cohortQuery}
     ${joinSessionQuery}
@@ -172,7 +172,7 @@ async function clickhouseQuery(
       quantile(0.5)(ttfb) as ttfb_p50,
       quantile(0.75)(ttfb) as ttfb_p75,
       quantile(0.95)(ttfb) as ttfb_p95,
-      count() as count
+      count(${metric}) as count
     from website_event
     ${cohortQuery}
     where website_event.website_id = {websiteId:UUID}
