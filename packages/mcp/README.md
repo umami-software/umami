@@ -60,7 +60,7 @@ Authorization: Bearer umami_<your-api-key>
 Use a client that supports bearer tokens or custom authorization headers. The endpoint accepts
 self-hosted API keys; browser login tokens are not supported. Tools are read-only and respect
 the key owner's existing user/team permissions. Revoke the key in Settings to disconnect access.
-Set `MCP_DISABLED=1` to disable the endpoint.
+MCP is disabled by default. Set `MCP_ENABLED=1` to enable the endpoint.
 
 ## Local / stdio
 

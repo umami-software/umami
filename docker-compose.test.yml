@@ -38,6 +38,7 @@ x-umami-env: &umami-env
   DISABLE_BOT_CHECK: "1"
   DISABLE_TELEMETRY: "1"
   DISABLE_UPDATES: "1"
+  MCP_ENABLED: "1"
 
 services:
   db:

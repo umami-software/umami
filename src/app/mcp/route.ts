@@ -38,7 +38,7 @@ const handler = createUmamiMcpHttpHandler({
 });
 
 async function handle(request: Request) {
-  if (process.env.MCP_DISABLED === '1') {
+  if (process.env.MCP_ENABLED !== '1') {
     return new Response(null, { status: 404 });
   }
 
