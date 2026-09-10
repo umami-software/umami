@@ -277,78 +277,6 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     description:
       'Stores session replay events or heatmap clicks and scrolls for a website, using a valid tracking cache token to identify the session and visit.',
   },
-  'GET /api/reports': {
-    summary: 'List saved reports',
-    description:
-      'Returns a paginated list of saved reports for the requested website, optionally filtered by report type.',
-  },
-  'POST /api/reports': {
-    summary: 'Save a report',
-    description:
-      "Saves a report's name, description, type, and parameters for a website so it can be opened again later.",
-  },
-  'DELETE /api/reports/{reportId}': {
-    summary: 'Delete a saved report',
-    description: 'Deletes the specified saved report definition.',
-  },
-  'GET /api/reports/{reportId}': {
-    summary: 'Get a saved report',
-    description: "Returns the specified report's saved name, description, type, and parameters.",
-  },
-  'POST /api/reports/{reportId}': {
-    summary: 'Update a saved report',
-    description: "Updates the specified report's website, name, description, type, and parameters.",
-  },
-  'POST /api/reports/attribution': {
-    summary: 'Run an attribution report',
-    description:
-      'Calculates how traffic sources contribute to conversions using the supplied attribution settings, date range, and filters.',
-  },
-  'POST /api/reports/breakdown': {
-    summary: 'Run a breakdown report',
-    description:
-      'Groups website activity by the selected dimensions for the requested date range and filters.',
-  },
-  'POST /api/reports/funnel': {
-    summary: 'Run a funnel report',
-    description:
-      'Calculates visitor progression through a sequence of pages or events using the supplied funnel steps and filters.',
-  },
-  'POST /api/reports/goal': {
-    summary: 'Run a goal report',
-    description:
-      'Counts visitors who reached a matching page or triggered a matching event and returns the total visitor count for comparison.',
-  },
-  'POST /api/reports/heatmap': {
-    summary: 'Get page heatmap data',
-    description:
-      'Returns recorded click or scroll data for the selected page and date range to display as a heatmap.',
-  },
-  'POST /api/reports/journey': {
-    summary: 'Run a visitor journey report',
-    description:
-      'Returns paths through pages or events using the supplied journey settings and website filters.',
-  },
-  'POST /api/reports/performance': {
-    summary: 'Run a performance report',
-    description:
-      'Returns performance trends, summary metrics, and breakdowns by page, page title, device, and browser for the selected website and date range.',
-  },
-  'POST /api/reports/retention': {
-    summary: 'Run a retention report',
-    description:
-      'Calculates how groups of visitors return over time using the supplied retention settings, date range, and filters.',
-  },
-  'POST /api/reports/revenue': {
-    summary: 'Run a revenue report',
-    description:
-      'Returns revenue trends, totals with a comparison period, and breakdowns by country, region, referrer, and channel.',
-  },
-  'POST /api/reports/utm': {
-    summary: 'Run a campaign report',
-    description:
-      'Returns traffic breakdowns for UTM source, medium, campaign, term, and content using the supplied date range and filters.',
-  },
   'GET /api/scripts/telemetry': {
     summary: 'Get the installation telemetry script',
     description:
@@ -660,11 +588,6 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     summary: 'Save or unsave a session replay',
     description:
       "Adds a replay to the website's saved replays with an optional name, or removes it when isSaved is false.",
-  },
-  'GET /api/websites/{websiteId}/reports': {
-    summary: "List a website's saved reports",
-    description:
-      'Returns a paginated list of saved report definitions for the website, optionally filtered by report type.',
   },
   'POST /api/websites/{websiteId}/reset': {
     summary: 'Reset website analytics',

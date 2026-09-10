@@ -34,21 +34,6 @@ export const OPERATION_ID_OVERRIDES: Record<string, string> = {
   'GET /api/realtime/{websiteId}': 'getRealtime',
 
   // Reports
-  'GET /api/reports': 'getReports',
-  'POST /api/reports': 'createReport',
-  'GET /api/reports/{reportId}': 'getReport',
-  'POST /api/reports/{reportId}': 'updateReport',
-  'DELETE /api/reports/{reportId}': 'deleteReport',
-  'POST /api/reports/attribution': 'runAttributionReport',
-  'POST /api/reports/breakdown': 'runBreakdownReport',
-  'POST /api/reports/funnel': 'runFunnelReport',
-  'POST /api/reports/goal': 'runGoalReport',
-  'POST /api/reports/heatmap': 'runHeatmapReport',
-  'POST /api/reports/journey': 'runJourneyReport',
-  'POST /api/reports/performance': 'runPerformanceReport',
-  'POST /api/reports/retention': 'runRetentionReport',
-  'POST /api/reports/revenue': 'runRevenueReport',
-  'POST /api/reports/utm': 'runUtmReport',
 
   // Teams
   'POST /api/teams': 'createTeam',
@@ -118,7 +103,6 @@ export const OPERATION_ID_OVERRIDES: Record<string, string> = {
   'GET /api/websites/{websiteId}/export': 'exportWebsite',
   'POST /api/websites/{websiteId}/reset': 'resetWebsite',
   'POST /api/websites/{websiteId}/transfer': 'transferWebsite',
-  'GET /api/websites/{websiteId}/reports': 'getWebsiteReports',
   'GET /api/websites/{websiteId}/shares': 'getWebsiteShares',
   'POST /api/websites/{websiteId}/shares': 'createWebsiteShare',
   'GET /api/websites/{websiteId}/recorder': 'getWebsiteRecorderConfig',

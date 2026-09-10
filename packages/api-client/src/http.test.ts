@@ -19,11 +19,11 @@ const statsOperation: OperationDefinition = {
   hasBody: false,
 };
 
-const reportOperation: OperationDefinition = {
-  operationId: 'runFunnelReport',
+const funnelOperation: OperationDefinition = {
+  operationId: 'createWebsiteFunnel',
   method: 'post',
-  path: '/api/reports/funnel',
-  pathParams: [],
+  path: '/api/websites/{websiteId}/funnels',
+  pathParams: ['websiteId'],
   queryParams: [],
   hasBody: true,
 };
@@ -111,16 +111,15 @@ describe('splitInput', () => {
 
   test('routes unknown keys to the body for operations with a request body', () => {
     expect(
-      splitInput(reportOperation, {
+      splitInput(funnelOperation, {
         websiteId: 'w',
-        type: 'funnel',
+        name: 'Signup',
         parameters: { steps: [] },
-        filters: {},
       }),
     ).toEqual({
-      path: {},
+      path: { websiteId: 'w' },
       query: {},
-      body: { websiteId: 'w', type: 'funnel', parameters: { steps: [] }, filters: {} },
+      body: { websiteId: 'w', name: 'Signup', parameters: { steps: [] } },
     });
   });
 });
@@ -143,7 +142,7 @@ describe('sendRequest', () => {
 
     const result = await sendRequest(fetchImpl, {
       method: 'post',
-      url: new URL('https://example.com/api/reports/funnel'),
+      url: new URL('https://example.com/api/websites/w/funnels'),
       headers: { authorization: 'Bearer t', 'x-custom': '1' },
       body: { websiteId: 'w' },
     });

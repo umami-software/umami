@@ -12,7 +12,6 @@ import { applyFieldDescriptions } from '@/openapi/field-descriptions';
 import { inferApiContracts } from '@/openapi/infer';
 import { type ApiAudience, getOperationKey } from '@/openapi/operation';
 import { operationDescriptions } from '@/openapi/operation-descriptions';
-import { getReportDeprecation } from '@/openapi/report-deprecations';
 import { errorResponseComponents } from '@/openapi/schemas';
 import { getSecurityRequirements, securitySchemes } from '@/openapi/security';
 
@@ -87,16 +86,9 @@ export async function buildOpenApiDocument(
       paths[contract.path] = pathItem;
     }
 
-    const deprecation = getReportDeprecation(contract.method, contract.path);
-    const description =
-      operationDescriptions[getOperationKey(contract)]?.description ??
-      contract.operation.description;
     const operation = {
       ...contract.operation,
       ...operationDescriptions[getOperationKey(contract)],
-      ...(deprecation
-        ? { deprecated: true, description: [description, deprecation].filter(Boolean).join('\n\n') }
-        : {}),
       security: getSecurityRequirements(contract.auth),
       'x-umami-audience': contract.audience,
       'x-umami-contract': contract.origin,

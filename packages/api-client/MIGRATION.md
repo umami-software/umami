@@ -45,7 +45,7 @@ They are deprecated and will be removed in the next major release. The object fo
 ## Method names
 
 Method names are OpenAPI `operationId`s. Most match the old names (`getWebsiteStats`,
-`runFunnelReport`, `getRealtime`, `createTeam`, …). Endpoints that were not in the old client are
+`getWebsiteFunnelStats`, `getRealtime`, `createTeam`, …). Endpoints that were not in the old client are
 now available automatically. Endpoints under `/api/admin`, `/api/config`, `/api/dashboard` and
 other internal routes are intentionally excluded.
 

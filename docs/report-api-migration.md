@@ -82,10 +82,15 @@ Section-based sharing is preserved. Heatmaps remain authenticated-only. New defi
 support type-specific section sharing and exclude deleted websites. Legacy report list routes
 retain their original, differing authentication behavior during the transition.
 
-## Compatibility and removal gate
+## Compatibility routing and removal gate
 
 All legacy calculation and saved-report routes remain callable with their existing contracts.
-OpenAPI marks them deprecated; generated SDK methods carry `@deprecated` and remain available.
+Next.js rewrites the old URLs to handlers under `src/app/(compat)/compat/api` without
+changing request methods, bodies, query parameters, or response shapes. These handlers live
+outside `src/app/api`, so contract discovery, OpenAPI, and the generated SDK expose only the
+new feature APIs. Existing clients can continue calling the old URLs; new SDK versions use
+the replacements above. HTTP redirects to the feature APIs would not preserve compatibility
+because the methods, request envelopes, and some response shapes differ.
 Legacy handlers and new feature routes call the same SQL functions; no internal HTTP forwarding
 is involved. Legacy calculation envelopes and date precedence remain unchanged.
 
@@ -99,14 +104,13 @@ Before scheduling removal:
 5. Announce a compatibility window and the breaking release that will remove legacy routes.
 6. Verify the application, boards, SDK examples, and MCP no longer call legacy endpoints.
 
-No removal date or version is scheduled by this change. The metadata and documentation prepare
-the deprecation; they do not announce a release externally or delete historical records.
+No removal date or version is scheduled by this change. Historical records are preserved.
 
 ## Validation
 
 Unit tests cover GET serialization, invalid structured input, normalized ranges, permission
 checks, definition website/type mismatches, immutable update scope, SQL dataset separation for
-PostgreSQL and ClickHouse, cache keys, SDK requests, MCP composition, and deprecation metadata.
+PostgreSQL and ClickHouse, cache keys, SDK requests, MCP composition, and compatibility routing.
 
 `tests/api/report-migration.spec.ts` exercises legacy/new result parity, saved-definition
 lifecycles, shared access, and split datasets against the existing disposable API test stack.

@@ -504,22 +504,4 @@ export class UmamiClient extends GeneratedUmamiClient {
 
     return super.getWebsiteSessionProperties(first, second as RequestOptions | undefined);
   }
-
-  override getWebsiteReports(
-    input: Input<'getWebsiteReports'>,
-    options?: RequestOptions,
-  ): Output<'getWebsiteReports'>;
-  override getWebsiteReports(
-    websiteId: string,
-    params?: Params<'getWebsiteReports', 'websiteId'>,
-    options?: RequestOptions,
-  ): Output<'getWebsiteReports'>;
-  override getWebsiteReports(
-    first: string | Input<'getWebsiteReports'>,
-    second?: Record<string, unknown> | RequestOptions,
-    third?: RequestOptions,
-  ) {
-    const [input, options] = positional<'getWebsiteReports'>('websiteId', first, second, third);
-    return super.getWebsiteReports(input, options);
-  }
 }

@@ -68,16 +68,19 @@ describe('UmamiClient', () => {
   test('sends JSON bodies for POST operations', async () => {
     const { client, calls } = createClient([]);
 
-    await client.runFunnelReport({
+    await client.createWebsiteFunnel({
       websiteId: 'w1',
-      type: 'funnel',
-      filters: {},
-      parameters: { startDate: 'a', endDate: 'b', window: 60, steps: [] },
+      name: 'Signup funnel',
+      parameters: { window: 60, steps: [] },
     });
 
     expect(calls[0].method).toBe('POST');
-    expect(calls[0].url.pathname).toBe('/api/reports/funnel');
-    expect(JSON.parse(calls[0].body as string)).toMatchObject({ websiteId: 'w1', type: 'funnel' });
+    expect(calls[0].url.pathname).toBe('/api/websites/w1/funnels');
+    expect(JSON.parse(calls[0].body as string)).toEqual({
+      websiteId: 'w1',
+      name: 'Signup funnel',
+      parameters: { window: 60, steps: [] },
+    });
   });
 
   test('sends structured funnel criteria through the GET stats API', async () => {

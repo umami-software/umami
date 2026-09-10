@@ -106,14 +106,6 @@ export const operations = {
     queryParams: [],
     hasBody: true,
   },
-  createReport: {
-    operationId: 'createReport',
-    method: 'post',
-    path: '/api/reports',
-    pathParams: [],
-    queryParams: [],
-    hasBody: true,
-  },
   createShare: {
     operationId: 'createShare',
     method: 'post',
@@ -223,14 +215,6 @@ export const operations = {
     method: 'delete',
     path: '/api/pixels/{pixelId}',
     pathParams: ['pixelId'],
-    queryParams: [],
-    hasBody: false,
-  },
-  deleteReport: {
-    operationId: 'deleteReport',
-    method: 'delete',
-    path: '/api/reports/{reportId}',
-    pathParams: ['reportId'],
     queryParams: [],
     hasBody: false,
   },
@@ -1053,22 +1037,6 @@ export const operations = {
       'eventType',
       'match',
     ],
-    hasBody: false,
-  },
-  getReport: {
-    operationId: 'getReport',
-    method: 'get',
-    path: '/api/reports/{reportId}',
-    pathParams: ['reportId'],
-    queryParams: [],
-    hasBody: false,
-  },
-  getReports: {
-    operationId: 'getReports',
-    method: 'get',
-    path: '/api/reports',
-    pathParams: [],
-    queryParams: ['websiteId', 'type', 'page', 'pageSize', 'maxResults'],
     hasBody: false,
   },
   getSessionDataArraySeries: {
@@ -2307,14 +2275,6 @@ export const operations = {
     queryParams: [],
     hasBody: false,
   },
-  getWebsiteReports: {
-    operationId: 'getWebsiteReports',
-    method: 'get',
-    path: '/api/websites/{websiteId}/reports',
-    pathParams: ['websiteId'],
-    queryParams: ['type', 'page', 'pageSize', 'maxResults'],
-    hasBody: false,
-  },
   getWebsiteRetention: {
     operationId: 'getWebsiteRetention',
     method: 'get',
@@ -2995,86 +2955,6 @@ export const operations = {
     queryParams: [],
     hasBody: false,
   },
-  runAttributionReport: {
-    operationId: 'runAttributionReport',
-    method: 'post',
-    path: '/api/reports/attribution',
-    pathParams: [],
-    queryParams: [],
-    hasBody: true,
-  },
-  runBreakdownReport: {
-    operationId: 'runBreakdownReport',
-    method: 'post',
-    path: '/api/reports/breakdown',
-    pathParams: [],
-    queryParams: [],
-    hasBody: true,
-  },
-  runFunnelReport: {
-    operationId: 'runFunnelReport',
-    method: 'post',
-    path: '/api/reports/funnel',
-    pathParams: [],
-    queryParams: [],
-    hasBody: true,
-  },
-  runGoalReport: {
-    operationId: 'runGoalReport',
-    method: 'post',
-    path: '/api/reports/goal',
-    pathParams: [],
-    queryParams: [],
-    hasBody: true,
-  },
-  runHeatmapReport: {
-    operationId: 'runHeatmapReport',
-    method: 'post',
-    path: '/api/reports/heatmap',
-    pathParams: [],
-    queryParams: [],
-    hasBody: true,
-  },
-  runJourneyReport: {
-    operationId: 'runJourneyReport',
-    method: 'post',
-    path: '/api/reports/journey',
-    pathParams: [],
-    queryParams: [],
-    hasBody: true,
-  },
-  runPerformanceReport: {
-    operationId: 'runPerformanceReport',
-    method: 'post',
-    path: '/api/reports/performance',
-    pathParams: [],
-    queryParams: [],
-    hasBody: true,
-  },
-  runRetentionReport: {
-    operationId: 'runRetentionReport',
-    method: 'post',
-    path: '/api/reports/retention',
-    pathParams: [],
-    queryParams: [],
-    hasBody: true,
-  },
-  runRevenueReport: {
-    operationId: 'runRevenueReport',
-    method: 'post',
-    path: '/api/reports/revenue',
-    pathParams: [],
-    queryParams: [],
-    hasBody: true,
-  },
-  runUtmReport: {
-    operationId: 'runUtmReport',
-    method: 'post',
-    path: '/api/reports/utm',
-    pathParams: [],
-    queryParams: [],
-    hasBody: true,
-  },
   saveWebsiteReplay: {
     operationId: 'saveWebsiteReplay',
     method: 'post',
@@ -3136,14 +3016,6 @@ export const operations = {
     method: 'post',
     path: '/api/pixels/{pixelId}',
     pathParams: ['pixelId'],
-    queryParams: [],
-    hasBody: true,
-  },
-  updateReport: {
-    operationId: 'updateReport',
-    method: 'post',
-    path: '/api/reports/{reportId}',
-    pathParams: ['reportId'],
     queryParams: [],
     hasBody: true,
   },
@@ -3410,21 +3282,6 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Save a report
-   * @deprecated See the operation description for migration details.
-   * Saves a report's name, description, type, and parameters for a website so it can be opened again later.
-   *
-   * Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
-   * `POST /api/reports`
-   */
-  createReport(
-    input: OperationInput<'createReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'createReport'>> {
-    return this.execute('createReport', input, options);
-  }
-
-  /**
    * Create a share
    * Creates a named share for a website, board, link, or pixel with parameters and an optional custom slug.
    * `POST /api/share`
@@ -3588,21 +3445,6 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'deletePixel'>> {
     return this.execute('deletePixel', input, options);
-  }
-
-  /**
-   * Delete a saved report
-   * @deprecated See the operation description for migration details.
-   * Deletes the specified saved report definition.
-   *
-   * Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
-   * `DELETE /api/reports/{reportId}`
-   */
-  deleteReport(
-    input: OperationInput<'deleteReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'deleteReport'>> {
-    return this.execute('deleteReport', input, options);
   }
 
   /**
@@ -4093,36 +3935,6 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'getRealtime'>> {
     return this.execute('getRealtime', input, options);
-  }
-
-  /**
-   * Get a saved report
-   * @deprecated See the operation description for migration details.
-   * Returns the specified report's saved name, description, type, and parameters.
-   *
-   * Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
-   * `GET /api/reports/{reportId}`
-   */
-  getReport(
-    input: OperationInput<'getReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'getReport'>> {
-    return this.execute('getReport', input, options);
-  }
-
-  /**
-   * List saved reports
-   * @deprecated See the operation description for migration details.
-   * Returns a paginated list of saved reports for the requested website, optionally filtered by report type.
-   *
-   * Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
-   * `GET /api/reports`
-   */
-  getReports(
-    input: OperationInput<'getReports'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'getReports'>> {
-    return this.execute('getReports', input, options);
   }
 
   /**
@@ -4737,21 +4549,6 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * List a website's saved reports
-   * @deprecated See the operation description for migration details.
-   * Returns a paginated list of saved report definitions for the website, optionally filtered by report type.
-   *
-   * Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
-   * `GET /api/websites/{websiteId}/reports`
-   */
-  getWebsiteReports(
-    input: OperationInput<'getWebsiteReports'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'getWebsiteReports'>> {
-    return this.execute('getWebsiteReports', input, options);
-  }
-
-  /**
    * Get website retention
    * `GET /api/websites/{websiteId}/retention`
    */
@@ -5096,156 +4893,6 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Run an attribution report
-   * @deprecated See the operation description for migration details.
-   * Calculates how traffic sources contribute to conversions using the supplied attribution settings, date range, and filters.
-   *
-   * Deprecated: use GET /api/websites/{websiteId}/attribution. The legacy request and response remain supported during migration.
-   * `POST /api/reports/attribution`
-   */
-  runAttributionReport(
-    input: OperationInput<'runAttributionReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'runAttributionReport'>> {
-    return this.execute('runAttributionReport', input, options);
-  }
-
-  /**
-   * Run a breakdown report
-   * @deprecated See the operation description for migration details.
-   * Groups website activity by the selected dimensions for the requested date range and filters.
-   *
-   * Deprecated: use GET /api/websites/{websiteId}/breakdown. The legacy request and response remain supported during migration.
-   * `POST /api/reports/breakdown`
-   */
-  runBreakdownReport(
-    input: OperationInput<'runBreakdownReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'runBreakdownReport'>> {
-    return this.execute('runBreakdownReport', input, options);
-  }
-
-  /**
-   * Run a funnel report
-   * @deprecated See the operation description for migration details.
-   * Calculates visitor progression through a sequence of pages or events using the supplied funnel steps and filters.
-   *
-   * Deprecated: use GET /api/websites/{websiteId}/funnels/stats or /funnels/{funnelId}/stats. The legacy request and response remain supported during migration.
-   * `POST /api/reports/funnel`
-   */
-  runFunnelReport(
-    input: OperationInput<'runFunnelReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'runFunnelReport'>> {
-    return this.execute('runFunnelReport', input, options);
-  }
-
-  /**
-   * Run a goal report
-   * @deprecated See the operation description for migration details.
-   * Counts visitors who reached a matching page or triggered a matching event and returns the total visitor count for comparison.
-   *
-   * Deprecated: use GET /api/websites/{websiteId}/goals/stats or /goals/{goalId}/stats. The legacy request and response remain supported during migration.
-   * `POST /api/reports/goal`
-   */
-  runGoalReport(
-    input: OperationInput<'runGoalReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'runGoalReport'>> {
-    return this.execute('runGoalReport', input, options);
-  }
-
-  /**
-   * Get page heatmap data
-   * @deprecated See the operation description for migration details.
-   * Returns recorded click or scroll data for the selected page and date range to display as a heatmap.
-   *
-   * Deprecated: use GET /api/websites/{websiteId}/heatmaps. The legacy request and response remain supported during migration.
-   * `POST /api/reports/heatmap`
-   */
-  runHeatmapReport(
-    input: OperationInput<'runHeatmapReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'runHeatmapReport'>> {
-    return this.execute('runHeatmapReport', input, options);
-  }
-
-  /**
-   * Run a visitor journey report
-   * @deprecated See the operation description for migration details.
-   * Returns paths through pages or events using the supplied journey settings and website filters.
-   *
-   * Deprecated: use GET /api/websites/{websiteId}/journeys. The legacy request and response remain supported during migration.
-   * `POST /api/reports/journey`
-   */
-  runJourneyReport(
-    input: OperationInput<'runJourneyReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'runJourneyReport'>> {
-    return this.execute('runJourneyReport', input, options);
-  }
-
-  /**
-   * Run a performance report
-   * @deprecated See the operation description for migration details.
-   * Returns performance trends, summary metrics, and breakdowns by page, page title, device, and browser for the selected website and date range.
-   *
-   * Deprecated: use GET /api/websites/{websiteId}/performance/stats, /performance/chart, and /performance/metrics. The legacy request and response remain supported during migration.
-   * `POST /api/reports/performance`
-   */
-  runPerformanceReport(
-    input: OperationInput<'runPerformanceReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'runPerformanceReport'>> {
-    return this.execute('runPerformanceReport', input, options);
-  }
-
-  /**
-   * Run a retention report
-   * @deprecated See the operation description for migration details.
-   * Calculates how groups of visitors return over time using the supplied retention settings, date range, and filters.
-   *
-   * Deprecated: use GET /api/websites/{websiteId}/retention. The legacy request and response remain supported during migration.
-   * `POST /api/reports/retention`
-   */
-  runRetentionReport(
-    input: OperationInput<'runRetentionReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'runRetentionReport'>> {
-    return this.execute('runRetentionReport', input, options);
-  }
-
-  /**
-   * Run a revenue report
-   * @deprecated See the operation description for migration details.
-   * Returns revenue trends, totals with a comparison period, and breakdowns by country, region, referrer, and channel.
-   *
-   * Deprecated: use GET /api/websites/{websiteId}/revenue/stats, /revenue/chart, and /revenue/metrics. The legacy request and response remain supported during migration.
-   * `POST /api/reports/revenue`
-   */
-  runRevenueReport(
-    input: OperationInput<'runRevenueReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'runRevenueReport'>> {
-    return this.execute('runRevenueReport', input, options);
-  }
-
-  /**
-   * Run a campaign report
-   * @deprecated See the operation description for migration details.
-   * Returns traffic breakdowns for UTM source, medium, campaign, term, and content using the supplied date range and filters.
-   *
-   * Deprecated: use GET /api/websites/{websiteId}/utm/metrics for each UTM dimension. The legacy request and response remain supported during migration.
-   * `POST /api/reports/utm`
-   */
-  runUtmReport(
-    input: OperationInput<'runUtmReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'runUtmReport'>> {
-    return this.execute('runUtmReport', input, options);
-  }
-
-  /**
    * Save or unsave a session replay
    * Adds a replay to the website's saved replays with an optional name, or removes it when isSaved is false.
    * `POST /api/websites/{websiteId}/replays/saved/{replayId}`
@@ -5333,21 +4980,6 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'updatePixel'>> {
     return this.execute('updatePixel', input, options);
-  }
-
-  /**
-   * Update a saved report
-   * @deprecated See the operation description for migration details.
-   * Updates the specified report's website, name, description, type, and parameters.
-   *
-   * Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
-   * `POST /api/reports/{reportId}`
-   */
-  updateReport(
-    input: OperationInput<'updateReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'updateReport'>> {
-    return this.execute('updateReport', input, options);
   }
 
   /**
