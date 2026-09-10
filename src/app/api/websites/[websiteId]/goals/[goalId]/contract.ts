@@ -1,13 +1,13 @@
 import { z } from 'zod';
+import { goalDefinitionSchema } from '@/lib/analytics-schema';
 import { defineOperation } from '@/openapi/operation';
 import {
   badRequestResponse,
-  unauthorizedResponse,
-  notFoundResponse,
   jsonResponse,
+  notFoundResponse,
   okSchema,
+  unauthorizedResponse,
 } from '@/openapi/schemas';
-import { goalDefinitionSchema } from '@/lib/analytics-schema';
 
 export const operations = [
   defineOperation({

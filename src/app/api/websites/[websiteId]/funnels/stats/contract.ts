@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { defineOperation } from '@/openapi/operation';
-import { badRequestResponse, unauthorizedResponse, notFoundResponse } from '@/openapi/schemas';
 import { funnelQuerySchema } from '@/lib/analytics-schema';
+import { defineOperation } from '@/openapi/operation';
+import { badRequestResponse, notFoundResponse, unauthorizedResponse } from '@/openapi/schemas';
 
 export const operations = [
   defineOperation({

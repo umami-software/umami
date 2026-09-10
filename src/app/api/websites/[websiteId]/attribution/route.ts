@@ -2,7 +2,10 @@ import { attributionQuerySchema } from '@/lib/analytics-schema';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { canViewWebsiteSection } from '@/permissions';
-import { getAttribution, type AttributionParameters } from '@/queries/sql/attribution/getAttribution';
+import {
+  type AttributionParameters,
+  getAttribution,
+} from '@/queries/sql/attribution/getAttribution';
 
 export async function GET(
   request: Request,

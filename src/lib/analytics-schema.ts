@@ -5,9 +5,9 @@ import {
   filterParams,
   funnelReportSchema,
   goalReportSchema,
-  pagingParams,
   heatmapReportSchema,
   journeyReportSchema,
+  pagingParams,
   timezoneParam,
   unitParam,
 } from './schema';

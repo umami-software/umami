@@ -3,7 +3,7 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { canViewWebsiteSection } from '@/permissions';
 
-import { getGoal, type GoalParameters } from '@/queries/sql/goals/getGoal';
+import { type GoalParameters, getGoal } from '@/queries/sql/goals/getGoal';
 
 export async function GET(
   request: Request,

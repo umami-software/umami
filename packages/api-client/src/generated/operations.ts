@@ -3411,7 +3411,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Save a report
+   * @deprecated See the operation description for migration details.
    * Saves a report's name, description, type, and parameters for a website so it can be opened again later.
+   *
+   * Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
    * `POST /api/reports`
    */
   createReport(
@@ -3589,7 +3592,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Delete a saved report
+   * @deprecated See the operation description for migration details.
    * Deletes the specified saved report definition.
+   *
+   * Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
    * `DELETE /api/reports/{reportId}`
    */
   deleteReport(
@@ -4091,7 +4097,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Get a saved report
+   * @deprecated See the operation description for migration details.
    * Returns the specified report's saved name, description, type, and parameters.
+   *
+   * Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
    * `GET /api/reports/{reportId}`
    */
   getReport(
@@ -4103,7 +4112,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * List saved reports
+   * @deprecated See the operation description for migration details.
    * Returns a paginated list of saved reports for the requested website, optionally filtered by report type.
+   *
+   * Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
    * `GET /api/reports`
    */
   getReports(
@@ -4726,7 +4738,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * List a website's saved reports
+   * @deprecated See the operation description for migration details.
    * Returns a paginated list of saved report definitions for the website, optionally filtered by report type.
+   *
+   * Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
    * `GET /api/websites/{websiteId}/reports`
    */
   getWebsiteReports(
@@ -5082,7 +5097,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Run an attribution report
+   * @deprecated See the operation description for migration details.
    * Calculates how traffic sources contribute to conversions using the supplied attribution settings, date range, and filters.
+   *
+   * Deprecated: use GET /api/websites/{websiteId}/attribution. The legacy request and response remain supported during migration.
    * `POST /api/reports/attribution`
    */
   runAttributionReport(
@@ -5094,7 +5112,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Run a breakdown report
+   * @deprecated See the operation description for migration details.
    * Groups website activity by the selected dimensions for the requested date range and filters.
+   *
+   * Deprecated: use GET /api/websites/{websiteId}/breakdown. The legacy request and response remain supported during migration.
    * `POST /api/reports/breakdown`
    */
   runBreakdownReport(
@@ -5106,7 +5127,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Run a funnel report
+   * @deprecated See the operation description for migration details.
    * Calculates visitor progression through a sequence of pages or events using the supplied funnel steps and filters.
+   *
+   * Deprecated: use GET /api/websites/{websiteId}/funnels/stats or /funnels/{funnelId}/stats. The legacy request and response remain supported during migration.
    * `POST /api/reports/funnel`
    */
   runFunnelReport(
@@ -5118,7 +5142,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Run a goal report
+   * @deprecated See the operation description for migration details.
    * Counts visitors who reached a matching page or triggered a matching event and returns the total visitor count for comparison.
+   *
+   * Deprecated: use GET /api/websites/{websiteId}/goals/stats or /goals/{goalId}/stats. The legacy request and response remain supported during migration.
    * `POST /api/reports/goal`
    */
   runGoalReport(
@@ -5130,7 +5157,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Get page heatmap data
+   * @deprecated See the operation description for migration details.
    * Returns recorded click or scroll data for the selected page and date range to display as a heatmap.
+   *
+   * Deprecated: use GET /api/websites/{websiteId}/heatmaps. The legacy request and response remain supported during migration.
    * `POST /api/reports/heatmap`
    */
   runHeatmapReport(
@@ -5142,7 +5172,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Run a visitor journey report
+   * @deprecated See the operation description for migration details.
    * Returns paths through pages or events using the supplied journey settings and website filters.
+   *
+   * Deprecated: use GET /api/websites/{websiteId}/journeys. The legacy request and response remain supported during migration.
    * `POST /api/reports/journey`
    */
   runJourneyReport(
@@ -5154,7 +5187,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Run a performance report
+   * @deprecated See the operation description for migration details.
    * Returns performance trends, summary metrics, and breakdowns by page, page title, device, and browser for the selected website and date range.
+   *
+   * Deprecated: use GET /api/websites/{websiteId}/performance/stats, /performance/chart, and /performance/metrics. The legacy request and response remain supported during migration.
    * `POST /api/reports/performance`
    */
   runPerformanceReport(
@@ -5166,7 +5202,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Run a retention report
+   * @deprecated See the operation description for migration details.
    * Calculates how groups of visitors return over time using the supplied retention settings, date range, and filters.
+   *
+   * Deprecated: use GET /api/websites/{websiteId}/retention. The legacy request and response remain supported during migration.
    * `POST /api/reports/retention`
    */
   runRetentionReport(
@@ -5178,7 +5217,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Run a revenue report
+   * @deprecated See the operation description for migration details.
    * Returns revenue trends, totals with a comparison period, and breakdowns by country, region, referrer, and channel.
+   *
+   * Deprecated: use GET /api/websites/{websiteId}/revenue/stats, /revenue/chart, and /revenue/metrics. The legacy request and response remain supported during migration.
    * `POST /api/reports/revenue`
    */
   runRevenueReport(
@@ -5190,7 +5232,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Run a campaign report
+   * @deprecated See the operation description for migration details.
    * Returns traffic breakdowns for UTM source, medium, campaign, term, and content using the supplied date range and filters.
+   *
+   * Deprecated: use GET /api/websites/{websiteId}/utm/metrics for each UTM dimension. The legacy request and response remain supported during migration.
    * `POST /api/reports/utm`
    */
   runUtmReport(
@@ -5292,7 +5337,10 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Update a saved report
+   * @deprecated See the operation description for migration details.
    * Updates the specified report's website, name, description, type, and parameters.
+   *
+   * Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
    * `POST /api/reports/{reportId}`
    */
   updateReport(

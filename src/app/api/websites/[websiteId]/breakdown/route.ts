@@ -2,7 +2,7 @@ import { breakdownQuerySchema } from '@/lib/analytics-schema';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { canViewWebsiteSection } from '@/permissions';
-import { getBreakdown, type BreakdownParameters } from '@/queries/sql/breakdown/getBreakdown';
+import { type BreakdownParameters, getBreakdown } from '@/queries/sql/breakdown/getBreakdown';
 
 export async function GET(
   request: Request,

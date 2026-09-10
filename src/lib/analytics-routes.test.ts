@@ -30,11 +30,11 @@ vi.mock('@/queries/sql/breakdown/getBreakdown', () => ({ getBreakdown: mocks.que
 vi.mock('@/queries/sql/attribution/getAttribution', () => ({ getAttribution: mocks.query }));
 vi.mock('@/queries/sql/heatmap/getHeatmap', () => ({ getHeatmap: mocks.query }));
 
+import { GET as attribution } from '@/app/api/websites/[websiteId]/attribution/route';
+import { GET as breakdown } from '@/app/api/websites/[websiteId]/breakdown/route';
+import { GET as heatmaps } from '@/app/api/websites/[websiteId]/heatmaps/route';
 import { GET as journeys } from '@/app/api/websites/[websiteId]/journeys/route';
 import { GET as retention } from '@/app/api/websites/[websiteId]/retention/route';
-import { GET as breakdown } from '@/app/api/websites/[websiteId]/breakdown/route';
-import { GET as attribution } from '@/app/api/websites/[websiteId]/attribution/route';
-import { GET as heatmaps } from '@/app/api/websites/[websiteId]/heatmaps/route';
 
 const cases = [
   ['journeys', journeys, { steps: '3' }],

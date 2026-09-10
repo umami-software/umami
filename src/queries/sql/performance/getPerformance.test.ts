@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { getPerformance } from './getPerformance';
 import { getPerformanceChart } from './getPerformanceChart';
 import { getPerformanceStats } from './getPerformanceStats';
+
 const mocks = vi.hoisted(() => ({
   backend: 'prisma',
   rawQuery: vi.fn(),

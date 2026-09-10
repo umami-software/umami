@@ -1,9 +1,9 @@
-import { savedStatsQuerySchema, funnelParametersSchema } from '@/lib/analytics-schema';
+import { funnelParametersSchema, savedStatsQuerySchema } from '@/lib/analytics-schema';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { json, unauthorized, notFound, badRequest } from '@/lib/response';
-import { canViewWebsiteSection, canViewReport } from '@/permissions';
+import { badRequest, json, notFound, unauthorized } from '@/lib/response';
+import { canViewReport, canViewWebsiteSection } from '@/permissions';
 import { getReport } from '@/queries/prisma';
-import { getFunnel, type FunnelParameters } from '@/queries/sql/funnels/getFunnel';
+import { type FunnelParameters, getFunnel } from '@/queries/sql/funnels/getFunnel';
 
 export async function GET(
   request: Request,

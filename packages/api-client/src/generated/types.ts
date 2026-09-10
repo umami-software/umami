@@ -895,13 +895,19 @@ export interface paths {
     };
     /**
      * List saved reports
+     * @deprecated
      * @description Returns a paginated list of saved reports for the requested website, optionally filtered by report type.
+     *
+     *     Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
      */
     get: operations['getReports'];
     put?: never;
     /**
      * Save a report
+     * @deprecated
      * @description Saves a report's name, description, type, and parameters for a website so it can be opened again later.
+     *
+     *     Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
      */
     post: operations['createReport'];
     delete?: never;
@@ -919,18 +925,27 @@ export interface paths {
     };
     /**
      * Get a saved report
+     * @deprecated
      * @description Returns the specified report's saved name, description, type, and parameters.
+     *
+     *     Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
      */
     get: operations['getReport'];
     put?: never;
     /**
      * Update a saved report
+     * @deprecated
      * @description Updates the specified report's website, name, description, type, and parameters.
+     *
+     *     Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
      */
     post: operations['updateReport'];
     /**
      * Delete a saved report
+     * @deprecated
      * @description Deletes the specified saved report definition.
+     *
+     *     Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
      */
     delete: operations['deleteReport'];
     options?: never;
@@ -949,7 +964,10 @@ export interface paths {
     put?: never;
     /**
      * Run an attribution report
+     * @deprecated
      * @description Calculates how traffic sources contribute to conversions using the supplied attribution settings, date range, and filters.
+     *
+     *     Deprecated: use GET /api/websites/{websiteId}/attribution. The legacy request and response remain supported during migration.
      */
     post: operations['runAttributionReport'];
     delete?: never;
@@ -969,7 +987,10 @@ export interface paths {
     put?: never;
     /**
      * Run a breakdown report
+     * @deprecated
      * @description Groups website activity by the selected dimensions for the requested date range and filters.
+     *
+     *     Deprecated: use GET /api/websites/{websiteId}/breakdown. The legacy request and response remain supported during migration.
      */
     post: operations['runBreakdownReport'];
     delete?: never;
@@ -989,7 +1010,10 @@ export interface paths {
     put?: never;
     /**
      * Run a funnel report
+     * @deprecated
      * @description Calculates visitor progression through a sequence of pages or events using the supplied funnel steps and filters.
+     *
+     *     Deprecated: use GET /api/websites/{websiteId}/funnels/stats or /funnels/{funnelId}/stats. The legacy request and response remain supported during migration.
      */
     post: operations['runFunnelReport'];
     delete?: never;
@@ -1009,7 +1033,10 @@ export interface paths {
     put?: never;
     /**
      * Run a goal report
+     * @deprecated
      * @description Counts visitors who reached a matching page or triggered a matching event and returns the total visitor count for comparison.
+     *
+     *     Deprecated: use GET /api/websites/{websiteId}/goals/stats or /goals/{goalId}/stats. The legacy request and response remain supported during migration.
      */
     post: operations['runGoalReport'];
     delete?: never;
@@ -1029,7 +1056,10 @@ export interface paths {
     put?: never;
     /**
      * Get page heatmap data
+     * @deprecated
      * @description Returns recorded click or scroll data for the selected page and date range to display as a heatmap.
+     *
+     *     Deprecated: use GET /api/websites/{websiteId}/heatmaps. The legacy request and response remain supported during migration.
      */
     post: operations['runHeatmapReport'];
     delete?: never;
@@ -1049,7 +1079,10 @@ export interface paths {
     put?: never;
     /**
      * Run a visitor journey report
+     * @deprecated
      * @description Returns paths through pages or events using the supplied journey settings and website filters.
+     *
+     *     Deprecated: use GET /api/websites/{websiteId}/journeys. The legacy request and response remain supported during migration.
      */
     post: operations['runJourneyReport'];
     delete?: never;
@@ -1069,7 +1102,10 @@ export interface paths {
     put?: never;
     /**
      * Run a performance report
+     * @deprecated
      * @description Returns performance trends, summary metrics, and breakdowns by page, page title, device, and browser for the selected website and date range.
+     *
+     *     Deprecated: use GET /api/websites/{websiteId}/performance/stats, /performance/chart, and /performance/metrics. The legacy request and response remain supported during migration.
      */
     post: operations['runPerformanceReport'];
     delete?: never;
@@ -1089,7 +1125,10 @@ export interface paths {
     put?: never;
     /**
      * Run a retention report
+     * @deprecated
      * @description Calculates how groups of visitors return over time using the supplied retention settings, date range, and filters.
+     *
+     *     Deprecated: use GET /api/websites/{websiteId}/retention. The legacy request and response remain supported during migration.
      */
     post: operations['runRetentionReport'];
     delete?: never;
@@ -1109,7 +1148,10 @@ export interface paths {
     put?: never;
     /**
      * Run a revenue report
+     * @deprecated
      * @description Returns revenue trends, totals with a comparison period, and breakdowns by country, region, referrer, and channel.
+     *
+     *     Deprecated: use GET /api/websites/{websiteId}/revenue/stats, /revenue/chart, and /revenue/metrics. The legacy request and response remain supported during migration.
      */
     post: operations['runRevenueReport'];
     delete?: never;
@@ -1129,7 +1171,10 @@ export interface paths {
     put?: never;
     /**
      * Run a campaign report
+     * @deprecated
      * @description Returns traffic breakdowns for UTM source, medium, campaign, term, and content using the supplied date range and filters.
+     *
+     *     Deprecated: use GET /api/websites/{websiteId}/utm/metrics for each UTM dimension. The legacy request and response remain supported during migration.
      */
     post: operations['runUtmReport'];
     delete?: never;
@@ -2456,7 +2501,10 @@ export interface paths {
     };
     /**
      * List a website's saved reports
+     * @deprecated
      * @description Returns a paginated list of saved report definitions for the website, optionally filtered by report type.
+     *
+     *     Deprecated: use website-scoped /funnels or /goals resources for saved definitions. Existing IDs are preserved. Other legacy report types remain accessible here pending a persisted-data audit; no removal date has been scheduled.
      */
     get: operations['getWebsiteReports'];
     put?: never;

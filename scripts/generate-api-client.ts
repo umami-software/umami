@@ -38,6 +38,7 @@ interface OpenApiOperation {
   operationId?: string;
   summary?: string;
   description?: string;
+  deprecated?: boolean;
   tags?: string[];
   parameters?: OpenApiParameter[];
   requestBody?: { required?: boolean };
@@ -55,6 +56,7 @@ interface OperationDefinition {
   path: string;
   summary: string;
   description?: string;
+  deprecated?: boolean;
   tags: string[];
   pathParams: string[];
   queryParams: string[];
@@ -119,6 +121,7 @@ function collectOperations(document: OpenApiDocument): OperationDefinition[] {
         path: route,
         summary: operation.summary ?? operationId,
         description: operation.description,
+        deprecated: operation.deprecated,
         tags: operation.tags ?? [],
         pathParams,
         queryParams,
@@ -137,7 +140,7 @@ function collectOperations(document: OpenApiDocument): OperationDefinition[] {
 }
 
 function jsDoc(lines: (string | undefined)[]) {
-  const content = lines.filter((line): line is string => !!line);
+  const content = lines.filter((line): line is string => !!line).flatMap(line => line.split('\n'));
 
   if (!content.length) {
     return '';
@@ -170,6 +173,9 @@ function renderOperations(operations: OperationDefinition[], version: string) {
         !operation.bodyRequired;
       const doc = jsDoc([
         operation.summary,
+        operation.deprecated
+          ? '@deprecated See the operation description for migration details.'
+          : undefined,
         operation.description ? '' : undefined,
         operation.description,
         '',

@@ -1,9 +1,9 @@
-import { savedStatsQuerySchema, goalParametersSchema } from '@/lib/analytics-schema';
+import { goalParametersSchema, savedStatsQuerySchema } from '@/lib/analytics-schema';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { json, unauthorized, notFound, badRequest } from '@/lib/response';
-import { canViewWebsiteSection, canViewReport } from '@/permissions';
+import { badRequest, json, notFound, unauthorized } from '@/lib/response';
+import { canViewReport, canViewWebsiteSection } from '@/permissions';
 import { getReport } from '@/queries/prisma';
-import { getGoal, type GoalParameters } from '@/queries/sql/goals/getGoal';
+import { type GoalParameters, getGoal } from '@/queries/sql/goals/getGoal';
 
 export async function GET(
   request: Request,

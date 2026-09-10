@@ -97,7 +97,7 @@ describe('UmamiClient', () => {
     expect(calls[0].method).toBe('GET');
     expect(calls[0].body).toBeUndefined();
     expect(calls[0].url.pathname).toBe('/api/websites/w1/funnels/stats');
-    expect(JSON.parse(calls[0].url.searchParams.get('steps')!)).toEqual(steps);
+    expect(JSON.parse(calls[0].url.searchParams.get('steps') ?? 'null')).toEqual(steps);
     expect(calls[0].url.searchParams.get('browser1')).toBe('eq.Chrome');
   });
 

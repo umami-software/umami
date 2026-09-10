@@ -3,6 +3,7 @@ import { expect, test, vi } from 'vitest';
 import { useFunnelQuery } from './useFunnelQuery';
 import { usePerformanceStatsQuery } from './usePerformanceStatsQuery';
 import { useUTMMetricsQuery } from './useUTMMetricsQuery';
+
 const mocks = vi.hoisted(() => ({ get: vi.fn(), query: vi.fn((options: any) => options) }));
 vi.mock('../useApi', () => ({ useApi: () => ({ get: mocks.get, useQuery: mocks.query }) }));
 vi.mock('../useDateParameters', () => ({

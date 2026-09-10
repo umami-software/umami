@@ -424,7 +424,7 @@ describe('createUmamiMcpServer', () => {
     expect(init?.method).toBe('GET');
     expect(init?.body).toBeUndefined();
     expect(url.pathname).toBe(`/api/websites/${WEBSITE_ID}/funnels/stats`);
-    expect(JSON.parse(url.searchParams.get('steps')!)).toHaveLength(2);
+    expect(JSON.parse(url.searchParams.get('steps') ?? 'null')).toHaveLength(2);
     expect(url.searchParams.get('window')).toBe('60');
     expect(Number(url.searchParams.get('startAt'))).toBeGreaterThan(0);
   });

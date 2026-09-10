@@ -2,7 +2,10 @@ import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { reportResultSchema } from '@/lib/schema';
 import { canViewWebsiteSection } from '@/permissions';
-import { getPerformance, type PerformanceParameters } from '@/queries/sql/performance/getPerformance';
+import {
+  getPerformance,
+  type PerformanceParameters,
+} from '@/queries/sql/performance/getPerformance';
 import { getPerformanceMetrics } from '@/queries/sql/performance/getPerformanceMetrics';
 
 export async function POST(request: Request) {

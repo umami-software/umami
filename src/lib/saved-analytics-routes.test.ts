@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+
 const state = vi.hoisted(() => ({
   report: null as any,
   sectionAllowed: true,
@@ -33,10 +34,11 @@ vi.mock('@/lib/request', () => ({
   },
   getQueryFilters: async () => ({ startDate: new Date(1500), endDate: new Date(2000) }),
 }));
-import * as goal from '@/app/api/websites/[websiteId]/goals/[goalId]/route';
+
 import * as funnel from '@/app/api/websites/[websiteId]/funnels/[funnelId]/route';
-import { GET as goalStats } from '@/app/api/websites/[websiteId]/goals/[goalId]/stats/route';
 import { GET as funnelStats } from '@/app/api/websites/[websiteId]/funnels/[funnelId]/stats/route';
+import * as goal from '@/app/api/websites/[websiteId]/goals/[goalId]/route';
+import { GET as goalStats } from '@/app/api/websites/[websiteId]/goals/[goalId]/stats/route';
 
 const context = { params: Promise.resolve({ websiteId: 'website', goalId: 'id', funnelId: 'id' }) };
 const request = () =>

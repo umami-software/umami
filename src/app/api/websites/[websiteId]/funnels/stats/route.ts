@@ -3,7 +3,7 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { canViewWebsiteSection } from '@/permissions';
 
-import { getFunnel, type FunnelParameters } from '@/queries/sql/funnels/getFunnel';
+import { type FunnelParameters, getFunnel } from '@/queries/sql/funnels/getFunnel';
 
 export async function GET(
   request: Request,

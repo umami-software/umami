@@ -1,8 +1,8 @@
 import { funnelDefinitionSchema } from '@/lib/analytics-schema';
 import { parseRequest } from '@/lib/request';
 import { json, notFound, ok, unauthorized } from '@/lib/response';
-import { canViewReport, canUpdateReport, canDeleteReport } from '@/permissions';
-import { getReport, updateReport, deleteReport } from '@/queries/prisma';
+import { canDeleteReport, canUpdateReport, canViewReport } from '@/permissions';
+import { deleteReport, getReport, updateReport } from '@/queries/prisma';
 
 export async function GET(
   request: Request,
